@@ -43,19 +43,34 @@
 
 package org.alice.ide.preview.components;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import org.alice.ide.croquet.components.PreviewPanel;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.PageAxisPanel;
+import org.lgna.croquet.views.Separator;
+import org.lgna.croquet.views.SwingComponentView;
+
+import javax.swing.BorderFactory;
+import java.util.ResourceBundle;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PanelWithPreview extends org.lgna.croquet.views.BorderPanel {
+public abstract class PanelWithPreview extends BorderPanel {
 	private static final int PAD = 16;
 
 	public PanelWithPreview() {
 		this( null );
 	}
 
-	public PanelWithPreview( org.lgna.croquet.Composite<?> composite ) {
+	public PanelWithPreview( Composite<?> composite ) {
 		super( composite );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
+		this.setBorder( BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
 		this.setMinimumPreferredWidth( 320 );
 	}
 
@@ -63,26 +78,26 @@ public abstract class PanelWithPreview extends org.lgna.croquet.views.BorderPane
 		return true;
 	}
 
-	private org.alice.ide.croquet.components.PreviewPanel previewPanel;
+	private PreviewPanel previewPanel;
 
-	public abstract org.lgna.croquet.views.SwingComponentView<?> createPreviewSubComponent();
+	public abstract SwingComponentView<?> createPreviewSubComponent();
 
-	public org.alice.ide.croquet.components.PreviewPanel getPreviewPanel() {
+	public PreviewPanel getPreviewPanel() {
 		return this.previewPanel;
 	}
 
-	protected final org.alice.ide.croquet.components.PreviewPanel createPreviewPanel() {
-		return new org.alice.ide.croquet.components.PreviewPanel( this );
+	protected final PreviewPanel createPreviewPanel() {
+		return new PreviewPanel( this );
 	}
 
 	public void updatePreview() {
-		org.alice.ide.croquet.components.PreviewPanel previewPanel = this.getPreviewPanel();
+		PreviewPanel previewPanel = this.getPreviewPanel();
 		if( previewPanel != null ) {
 			previewPanel.refreshLater();
 		}
 	}
 
-	protected abstract org.lgna.croquet.views.SwingComponentView<?> createMainComponent();
+	protected abstract SwingComponentView<?> createMainComponent();
 
 	private void initializeIfNecessary() {
 		if( this.previewPanel != null ) {
@@ -92,17 +107,17 @@ public abstract class PanelWithPreview extends org.lgna.croquet.views.BorderPane
 
 			if( this.isPreviewDesired() ) {
 				this.previewPanel = this.createPreviewPanel();
-				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( PanelWithPreview.class.getPackage().getName() + ".previewPanel" );
+				ResourceBundle resourceBundle = ResourceBundle.getBundle( PanelWithPreview.class.getPackage().getName() + ".previewPanel" );
 				String previewText = resourceBundle.getString( "previewTitle" );
-				org.lgna.croquet.views.PageAxisPanel northPanel = new org.lgna.croquet.views.PageAxisPanel(
-						new org.lgna.croquet.views.LineAxisPanel(
-								org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 16 ),
-								new org.lgna.croquet.views.Label( previewText, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
-								org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 16 ),
+				PageAxisPanel northPanel = new PageAxisPanel(
+						new LineAxisPanel(
+								BoxUtilities.createHorizontalSliver( 16 ),
+								new Label( previewText, TextPosture.OBLIQUE, TextWeight.LIGHT ),
+								BoxUtilities.createHorizontalSliver( 16 ),
 								this.previewPanel ),
-						org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ),
-						org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(),
-						org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) );
+						BoxUtilities.createVerticalSliver( 8 ),
+						Separator.createInstanceSeparatingTopFromBottom(),
+						BoxUtilities.createVerticalSliver( 8 ) );
 				this.addPageStartComponent( northPanel );
 			}
 		}

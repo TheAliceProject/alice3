@@ -42,17 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class SystemExitOperation extends org.lgna.croquet.ActionOperation {
+public final class SystemExitOperation extends ActionOperation {
 	public SystemExitOperation() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "40b55a1c-d499-4937-a4b8-8499c4cd1a20" ) );
+		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "40b55a1c-d499-4937-a4b8-8499c4cd1a20" ) );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		step.finish();
+	protected void perform( UserActivity activity ) {
+		activity.finish();
 		System.exit( 0 );
 	}
 }

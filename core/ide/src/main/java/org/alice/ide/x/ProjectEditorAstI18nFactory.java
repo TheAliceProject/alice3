@@ -43,6 +43,8 @@
 
 package org.alice.ide.x;
 
+import org.lgna.project.ast.Comment;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,7 +61,7 @@ public class ProjectEditorAstI18nFactory extends AbstractProjectEditorAstI18nFac
 	}
 
 	@Override
-	public boolean isCommentMutable( org.lgna.project.ast.Comment comment ) {
+	public boolean isCommentMutable( Comment comment ) {
 		return true;
 	}
 }

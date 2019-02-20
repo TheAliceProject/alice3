@@ -42,27 +42,35 @@
  *******************************************************************************/
 package org.alice.ide.cascade.fillerinners;
 
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionFillerInner {
-	private org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private AbstractType<?, ?, ?> type;
 
-	public ExpressionFillerInner( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public ExpressionFillerInner( AbstractType<?, ?, ?> type ) {
 		this.type = type;
 	}
 
 	public ExpressionFillerInner( Class<?> cls ) {
-		this( org.lgna.project.ast.JavaType.getInstance( cls ) );
+		this( JavaType.getInstance( cls ) );
 	}
 
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+	protected AbstractType<?, ?, ?> getType() {
 		return this.type;
 	}
 
-	public boolean isAssignableTo( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public boolean isAssignableTo( AbstractType<?, ?, ?> type ) {
 		return this.type.isAssignableTo( type );
 	}
 
-	public abstract void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression );
+	public abstract void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression );
 }

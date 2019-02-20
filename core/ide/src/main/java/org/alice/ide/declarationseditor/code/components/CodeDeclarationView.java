@@ -43,16 +43,21 @@
 
 package org.alice.ide.declarationseditor.code.components;
 
+import org.alice.ide.codeeditor.CodeEditor;
+import org.alice.ide.declarationseditor.CodeComposite;
+import org.alice.ide.x.ProjectEditorAstI18nFactory;
+import org.lgna.croquet.views.AwtComponentView;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CodeDeclarationView extends AbstractCodeDeclarationView {
-	public CodeDeclarationView( org.alice.ide.declarationseditor.CodeComposite composite ) {
-		super( composite, new org.alice.ide.codeeditor.CodeEditor( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), composite.getDeclaration() ) );
+	public CodeDeclarationView( CodeComposite composite ) {
+		super( composite, new CodeEditor( ProjectEditorAstI18nFactory.getInstance(), composite.getDeclaration() ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.AwtComponentView<?> getMainComponent() {
+	protected AwtComponentView<?> getMainComponent() {
 		return this.getCodePanelWithDropReceptor();
 	}
 }

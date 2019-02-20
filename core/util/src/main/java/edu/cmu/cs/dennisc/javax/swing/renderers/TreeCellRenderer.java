@@ -42,17 +42,22 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.renderers;
 
+import javax.swing.JLabel;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TreeCellRenderer<E> extends javax.swing.tree.DefaultTreeCellRenderer {
-	protected abstract javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, E value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus );
+public abstract class TreeCellRenderer<E> extends DefaultTreeCellRenderer {
+	protected abstract JLabel updateListCellRendererComponent( JLabel rv, JTree tree, E value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus );
 
 	@Override
-	public final java.awt.Component getTreeCellRendererComponent( javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, sel, expanded, leaf, row, hasFocus );
-		if( rv instanceof javax.swing.JLabel ) {
-			updateListCellRendererComponent( (javax.swing.JLabel)rv, tree, (E)value, sel, expanded, leaf, row, hasFocus );
+	public final Component getTreeCellRendererComponent( JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		Component rv = super.getTreeCellRendererComponent( tree, value, sel, expanded, leaf, row, hasFocus );
+		if( rv instanceof JLabel ) {
+			updateListCellRendererComponent( (JLabel)rv, tree, (E)value, sel, expanded, leaf, row, hasFocus );
 		} else {
 			//todo
 		}

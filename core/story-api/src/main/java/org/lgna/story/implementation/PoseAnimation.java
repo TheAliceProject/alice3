@@ -42,6 +42,8 @@
  */
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Pose;
 
@@ -50,40 +52,42 @@ import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 
+import java.util.List;
+
 /**
  * @author Matt May
  */
 public class PoseAnimation extends DurationBasedAnimation {
-	private final org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel;
+	private final JointedModelImp<?, ?> jointedModel;
 	private final Pose<?> pose;
-	private transient java.util.List<JointInfo> jointInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private transient List<JointInfo> jointInfos = Lists.newLinkedList();
 
 	private static class JointInfo {
-		private final org.lgna.story.implementation.JointImp jointImp;
+		private final JointImp jointImp;
 
-		private edu.cmu.cs.dennisc.math.UnitQuaternion m_q0;
-		private edu.cmu.cs.dennisc.math.UnitQuaternion m_q1;
-		private edu.cmu.cs.dennisc.math.UnitQuaternion m_qBuffer;
-		private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_m0;
-		private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_m1;
-		private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_mBuffer;
+		private UnitQuaternion m_q0;
+		private UnitQuaternion m_q1;
+		private UnitQuaternion m_qBuffer;
+		private AffineMatrix4x4 m_m0;
+		private AffineMatrix4x4 m_m1;
+		private AffineMatrix4x4 m_mBuffer;
 
-		public JointInfo( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, JointIdTransformationPair jtPair ) {
+		public JointInfo( JointedModelImp<?, ?> jointedModel, JointIdTransformationPair jtPair ) {
 			this.jointImp = jointedModel.getJointImplementation( jtPair.getJointId() );
 
 			m_q0 = this.jointImp.getLocalOrientation().createUnitQuaternion();
 			m_q1 = jtPair.getTransformation().orientation.createUnitQuaternion();
-			m_qBuffer = edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN();
+			m_qBuffer = UnitQuaternion.createNaN();
 
 			m_m0 = this.jointImp.getLocalTransformation();
 			//If the pose affects the translation of the joint, use the supplied translation as the target
 			// Otherwise, use the current translation as the target
 			if( jtPair.affectsTranslation() ) {
-				m_m1 = new edu.cmu.cs.dennisc.math.AffineMatrix4x4( jtPair.getTransformation() );
+				m_m1 = new AffineMatrix4x4( jtPair.getTransformation() );
 			} else {
 				m_m1 = this.jointImp.getLocalTransformation();
 			}
-			m_mBuffer = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
+			m_mBuffer = AffineMatrix4x4.createNaN();
 		}
 
 		public void setPortion( double portion ) {
@@ -101,7 +105,7 @@ public class PoseAnimation extends DurationBasedAnimation {
 		}
 	}
 
-	public PoseAnimation( double duration, Style style, org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, Pose pose ) {
+	public PoseAnimation( double duration, Style style, JointedModelImp<?, ?> jointedModel, Pose pose ) {
 		super( duration, style );
 		this.jointedModel = jointedModel;
 		this.pose = pose;
@@ -115,7 +119,7 @@ public class PoseAnimation extends DurationBasedAnimation {
 		}
 	}
 
-	private static void appendJointInfos( java.util.List<JointInfo> jointInfos, org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, JointIdTransformationPair jtPair ) {
+	private static void appendJointInfos( List<JointInfo> jointInfos, JointedModelImp<?, ?> jointedModel, JointIdTransformationPair jtPair ) {
 		jointInfos.add( new JointInfo( jointedModel, jtPair ) );
 	}
 

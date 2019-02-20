@@ -44,6 +44,12 @@ package org.alice.stageide.ast.declaration;
 
 import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
 import org.alice.stageide.gallerybrowser.shapes.SphereDragModel;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.SSphere;
+import org.lgna.story.SetRadius;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -57,17 +63,17 @@ public class AddSphereManagedFieldComposite extends AddModelManagedFieldComposit
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> radiusState = this.createInitialPropertyValueExpressionState( "radiusState", 0.5, org.lgna.story.SSphere.class, "setRadius", Number.class, org.lgna.story.SetRadius.Detail[].class );
+	private final CustomItemState<Expression> radiusState = this.createInitialPropertyValueExpressionState( "radiusState", 0.5, SSphere.class, "setRadius", Number.class, SetRadius.Detail[].class );
 
 	private AddSphereManagedFieldComposite() {
-		super( java.util.UUID.fromString( "1e534a32-fcbd-41a8-870b-ca050ea94b1d" ), org.lgna.story.SSphere.class );
+		super( UUID.fromString( "1e534a32-fcbd-41a8-870b-ca050ea94b1d" ), SSphere.class );
 	}
 
 	@Override protected ShapeDragModel getDragModel() {
 		return SphereDragModel.getInstance();
 	}
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getRadiusState() {
+	public CustomItemState<Expression> getRadiusState() {
 		return this.radiusState;
 	}
 }

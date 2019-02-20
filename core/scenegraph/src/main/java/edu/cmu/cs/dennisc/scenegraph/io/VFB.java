@@ -45,19 +45,28 @@ package edu.cmu.cs.dennisc.scenegraph.io;
 
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  * @author Dennis Cosgrove
  */
 public class VFB {
-	public static Vertex[] loadVertices( java.io.InputStream is ) throws java.io.IOException, java.io.FileNotFoundException {
-		return (Vertex[])load( new java.io.BufferedInputStream( is ) )[ 0 ];
+	public static Vertex[] loadVertices( InputStream is ) throws IOException, FileNotFoundException {
+		return (Vertex[])load( new BufferedInputStream( is ) )[ 0 ];
 	}
 
-	public static int[] loadIndices( java.io.InputStream is ) throws java.io.IOException, java.io.FileNotFoundException {
-		return (int[])load( new java.io.BufferedInputStream( is ) )[ 1 ];
+	public static int[] loadIndices( InputStream is ) throws IOException, FileNotFoundException {
+		return (int[])load( new BufferedInputStream( is ) )[ 1 ];
 	}
 
-	public static Object[] load( java.io.BufferedInputStream bis ) throws java.io.IOException, java.io.FileNotFoundException {
+	public static Object[] load( BufferedInputStream bis ) throws IOException, FileNotFoundException {
 		int nByteCount = bis.available();
 		byte[] byteArray = new byte[ nByteCount ];
 		bis.read( byteArray );
@@ -71,8 +80,8 @@ public class VFB {
 			byteArray[ nByteIndex + 1 ] = byteArray[ nByteIndex + 2 ];
 			byteArray[ nByteIndex + 2 ] = b;
 		}
-		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( byteArray );
-		java.io.DataInputStream dis = new java.io.DataInputStream( bais );
+		ByteArrayInputStream bais = new ByteArrayInputStream( byteArray );
+		DataInputStream dis = new DataInputStream( bais );
 		Object[] verticesAndIndices = { null, null };
 		int nVersion = dis.readInt();
 		if( nVersion == 1 ) {
@@ -116,19 +125,19 @@ public class VFB {
 		return verticesAndIndices;
 	}
 
-	private static void store( java.io.BufferedOutputStream bos, int i ) throws java.io.IOException {
+	private static void store( BufferedOutputStream bos, int i ) throws IOException {
 		bos.write( (byte)( i & 0x000000FF ) );
 		bos.write( (byte)( ( i >> 8 ) & 0x000000FF ) );
 		bos.write( (byte)( ( i >> 16 ) & 0x000000FF ) );
 		bos.write( (byte)( ( i >> 24 ) & 0x000000FF ) );
 	}
 
-	private static void store( java.io.BufferedOutputStream bos, float f ) throws java.io.IOException {
+	private static void store( BufferedOutputStream bos, float f ) throws IOException {
 		store( bos, Float.floatToIntBits( f ) );
 	}
 
-	public static void store( java.io.OutputStream os, Vertex[] vertices, int[] indices ) throws java.io.IOException {
-		java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( os );
+	public static void store( OutputStream os, Vertex[] vertices, int[] indices ) throws IOException {
+		BufferedOutputStream bos = new BufferedOutputStream( os );
 		store( bos, 1 );
 		if( vertices != null ) {
 			store( bos, vertices.length );

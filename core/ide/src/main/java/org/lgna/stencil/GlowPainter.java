@@ -42,6 +42,15 @@
  *******************************************************************************/
 package org.lgna.stencil;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.Area;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,33 +61,33 @@ public class GlowPainter implements Painter {
 	//	private static final java.awt.Insets BOUNDS_INSETS = new java.awt.Insets( BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD );
 	private static final int HOLE_BEVEL_THICKNESS = 2;
 	//private static final java.awt.Stroke HOLE_BEVEL_STROKE = new java.awt.BasicStroke(2.0f);
-	private static final java.awt.Stroke[] HIGHLIGHT_STROKES;
+	private static final Stroke[] HIGHLIGHT_STROKES;
 	static {
 		final int N = 8;
-		HIGHLIGHT_STROKES = new java.awt.Stroke[ N ];
+		HIGHLIGHT_STROKES = new Stroke[ N ];
 		for( int i = 0; i < N; i++ ) {
-			HIGHLIGHT_STROKES[ i ] = new java.awt.BasicStroke( ( i + 1 ) * 5.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+			HIGHLIGHT_STROKES[ i ] = new BasicStroke( ( i + 1 ) * 5.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
 		}
 	};
 
-	private final java.awt.Paint paint;
+	private final Paint paint;
 
-	public GlowPainter( java.awt.Paint paint ) {
+	public GlowPainter( Paint paint ) {
 		this.paint = paint;
 	}
 
 	@Override
-	public void paint( java.awt.Graphics2D g2, java.awt.Shape shape ) {
-		java.awt.Paint prevPaint = g2.getPaint();
-		java.awt.Stroke prevStroke = g2.getStroke();
+	public void paint( Graphics2D g2, Shape shape ) {
+		Paint prevPaint = g2.getPaint();
+		Stroke prevStroke = g2.getStroke();
 		try {
-			java.awt.Shape prevClip = g2.getClip();
-			java.awt.geom.Area area = new java.awt.geom.Area( prevClip );
-			area.subtract( new java.awt.geom.Area( shape ) );
+			Shape prevClip = g2.getClip();
+			Area area = new Area( prevClip );
+			area.subtract( new Area( shape ) );
 			try {
 				g2.setClip( area );
 				g2.setPaint( paint );
-				for( java.awt.Stroke stroke : HIGHLIGHT_STROKES ) {
+				for( Stroke stroke : HIGHLIGHT_STROKES ) {
 					g2.setStroke( stroke );
 					g2.draw( shape );
 				}
@@ -87,8 +96,8 @@ public class GlowPainter implements Painter {
 				g2.setClip( prevClip );
 			}
 
-			if( shape instanceof java.awt.Rectangle ) {
-				java.awt.Rectangle rect = (java.awt.Rectangle)shape;
+			if( shape instanceof Rectangle ) {
+				Rectangle rect = (Rectangle)shape;
 
 				// g2.setPaint( java.awt.Color.GRAY );
 				// g2.draw3DRect(componentBounds.x, componentBounds.y,
@@ -98,10 +107,10 @@ public class GlowPainter implements Painter {
 				int y0 = rect.y;
 				int x1 = ( rect.x + rect.width ) - HOLE_BEVEL_THICKNESS;
 				int y1 = ( rect.y + rect.height ) - HOLE_BEVEL_THICKNESS;
-				g2.setPaint( java.awt.Color.DARK_GRAY );
+				g2.setPaint( Color.DARK_GRAY );
 				g2.fillRect( x0, y0, HOLE_BEVEL_THICKNESS, rect.height );
 				g2.fillRect( x0, y0, rect.width, HOLE_BEVEL_THICKNESS );
-				g2.setPaint( java.awt.Color.WHITE );
+				g2.setPaint( Color.WHITE );
 				g2.fillRect( x1, y0, HOLE_BEVEL_THICKNESS, rect.height );
 				g2.fillRect( x0, y1, rect.width, HOLE_BEVEL_THICKNESS );
 			}
@@ -112,8 +121,8 @@ public class GlowPainter implements Painter {
 	}
 
 	@Override
-	public java.awt.Rectangle getBounds( java.awt.Shape shape ) {
-		java.awt.Rectangle bounds = shape.getBounds();
+	public Rectangle getBounds( Shape shape ) {
+		Rectangle bounds = shape.getBounds();
 		//todo
 		return bounds;
 	}

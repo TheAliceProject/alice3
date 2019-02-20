@@ -43,29 +43,29 @@
 
 package org.lgna.croquet.triggers;
 
+import edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.PopupMenu;
+import org.lgna.croquet.views.ViewController;
+
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
 @Deprecated
 public class NullTrigger extends Trigger {
-	public static NullTrigger createUserInstance() {
-		return new NullTrigger();
+	public static UserActivity createUserActivity() {
+		return new NullTrigger().getUserActivity();
 	}
 
 	private NullTrigger() {
-	}
-
-	public NullTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+		super(Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel());
 	}
 
 	@Override
-	public org.lgna.croquet.views.ViewController<?, ?> getViewController() {
-		return null;
-	}
-
-	@Override
-	public void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu ) {
-		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
+	public void showPopupMenu( PopupMenu popupMenu ) {
+		PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new Point() );
 	}
 }

@@ -43,41 +43,46 @@
 
 package org.lgna.croquet.views;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SingleComponentPanel extends Panel {
-	protected static abstract class SingleComponentLayoutManager implements java.awt.LayoutManager {
+	protected static abstract class SingleComponentLayoutManager implements LayoutManager {
 		@Override
-		public void addLayoutComponent( String name, java.awt.Component comp ) {
+		public void addLayoutComponent( String name, Component comp ) {
 		}
 
 		@Override
-		public void removeLayoutComponent( java.awt.Component comp ) {
+		public void removeLayoutComponent( Component comp ) {
 		}
 
-		private java.awt.Dimension layoutSize( java.awt.Container parent ) {
+		private Dimension layoutSize( Container parent ) {
 			if( parent.getComponentCount() > 0 ) {
 				return parent.getComponent( 0 ).getPreferredSize();
 			} else {
-				return new java.awt.Dimension();
+				return new Dimension();
 			}
 		}
 
 		@Override
-		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
+		public Dimension minimumLayoutSize( Container parent ) {
 			return this.layoutSize( parent );
 		}
 
 		@Override
-		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+		public Dimension preferredLayoutSize( Container parent ) {
 			return this.layoutSize( parent );
 		}
 
-		protected abstract void layoutComponent( java.awt.Container parent, java.awt.Component component );
+		protected abstract void layoutComponent( Container parent, Component component );
 
 		@Override
-		public final void layoutContainer( java.awt.Container parent ) {
+		public final void layoutContainer( Container parent ) {
 			if( parent.getComponentCount() > 0 ) {
 				this.layoutComponent( parent, parent.getComponent( 0 ) );
 			}

@@ -43,20 +43,31 @@
 
 package org.alice.ide.ast.declaration.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.FontUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import org.alice.ide.common.TypeComponent;
+import org.lgna.croquet.views.FlowPanel;
+import org.lgna.croquet.views.Label;
+import org.lgna.project.ast.NamedUserType;
+
+import javax.swing.BorderFactory;
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeHeader extends org.lgna.croquet.views.FlowPanel {
-	public TypeHeader( org.lgna.project.ast.NamedUserType type ) {
+public class TypeHeader extends FlowPanel {
+	public TypeHeader( NamedUserType type ) {
 		super( Alignment.LEADING );
-		this.addComponent( new org.lgna.croquet.views.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
-		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type ) );
-		this.addComponent( new org.lgna.croquet.views.Label( " extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
-		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type != null ? type.getSuperType() : null ) );
+		this.addComponent( new Label( "class ", TextPosture.OBLIQUE, TextWeight.LIGHT ) );
+		this.addComponent( TypeComponent.createInstance( type ) );
+		this.addComponent( new Label( " extends ", TextPosture.OBLIQUE, TextWeight.LIGHT ) );
+		this.addComponent( TypeComponent.createInstance( type != null ? type.getSuperType() : null ) );
 
-		for( java.awt.Component awtComponent : this.getAwtComponent().getComponents() ) {
-			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( awtComponent, 1.8f );
+		for( Component awtComponent : this.getAwtComponent().getComponents() ) {
+			FontUtilities.setFontToScaledFont( awtComponent, 1.8f );
 		}
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 0, 8 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 0, 0, 0, 8 ) );
 	}
 }

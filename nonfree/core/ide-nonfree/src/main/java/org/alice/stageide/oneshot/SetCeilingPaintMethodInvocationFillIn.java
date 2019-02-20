@@ -42,37 +42,45 @@
  *******************************************************************************/
 package org.alice.stageide.oneshot;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SetCeilingPaintMethodInvocationFillIn extends OneShotJavaMethodInvocationFillIn {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, SetCeilingPaintMethodInvocationFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<InstanceFactory, JavaMethod, SetCeilingPaintMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
 
-	public static SetCeilingPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
-		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, SetCeilingPaintMethodInvocationFillIn>() {
+	public static SetCeilingPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaMethod method ) {
+		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new MapToMap.Initializer<InstanceFactory, JavaMethod, SetCeilingPaintMethodInvocationFillIn>() {
 			@Override
-			public SetCeilingPaintMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
+			public SetCeilingPaintMethodInvocationFillIn initialize( InstanceFactory instanceFactory, JavaMethod method ) {
 				return new SetCeilingPaintMethodInvocationFillIn( instanceFactory, method );
 			}
 		} );
 	}
 
-	public static SetCeilingPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaType type, String methodName, Class<?>... parameterClses ) {
-		org.lgna.project.ast.JavaMethod method = type.getDeclaredMethod( methodName, parameterClses );
+	public static SetCeilingPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaType type, String methodName, Class<?>... parameterClses ) {
+		JavaMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
 		return getInstance( instanceFactory, method );
 	}
 
-	public static SetCeilingPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( instanceFactory, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
+	public static SetCeilingPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
+		return getInstance( instanceFactory, JavaType.getInstance( cls ), methodName, parameterClses );
 	}
 
-	private SetCeilingPaintMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
-		super( java.util.UUID.fromString( "ca742ea8-e430-443c-b8e1-37394f211736" ), instanceFactory, method );
+	private SetCeilingPaintMethodInvocationFillIn( InstanceFactory instanceFactory, JavaMethod method ) {
+		super( UUID.fromString( "ca742ea8-e430-443c-b8e1-37394f211736" ), instanceFactory, method );
 	}
 
 	@Override
-	protected org.alice.stageide.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	protected MethodInvocationEditFactory createMethodInvocationEditFactory( InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions ) {
 		return new SetCeilingPaintMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
 	}
 }

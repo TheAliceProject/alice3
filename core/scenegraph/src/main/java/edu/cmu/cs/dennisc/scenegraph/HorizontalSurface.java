@@ -45,17 +45,17 @@ package edu.cmu.cs.dennisc.scenegraph;
 /**
  * @author alice
  */
-public class HorizontalSurface extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual {
+public class HorizontalSurface extends TexturedVisual {
 	public HorizontalSurface( boolean faceUp, float size, float height, float tiling ) {
 		this.faceUp = faceUp;
 		float k = this.getK();
-		for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : sgVertices ) {
+		for( Vertex vertex : sgVertices ) {
 			vertex.normal.set( 0, k, 0 );
 		}
 		this.setTiling( tiling, tiling );
 		this.setSize( size, size, height );
 		this.sgGeometry.vertices.setValue( this.sgVertices );
-		this.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgGeometry } );
+		this.geometries.setValue( new Geometry[] { this.sgGeometry } );
 	}
 
 	public HorizontalSurface( boolean faceUp ) {
@@ -63,7 +63,7 @@ public class HorizontalSurface extends edu.cmu.cs.dennisc.scenegraph.TexturedVis
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.Geometry getGeometry()
+	public Geometry getGeometry()
 	{
 		return this.sgGeometry;
 	}
@@ -75,19 +75,19 @@ public class HorizontalSurface extends edu.cmu.cs.dennisc.scenegraph.TexturedVis
 		else {
 			this.getAppearance().isDiffuseColorTextureClamped.setValue( false );
 		}
-		edu.cmu.cs.dennisc.scenegraph.Vertex v0 = sgVertices[ this.getIndex( 0 ) ];
+		Vertex v0 = sgVertices[ this.getIndex( 0 ) ];
 		v0.textureCoordinate0.u = xTiling;
 		v0.textureCoordinate0.v = 0;
 
-		edu.cmu.cs.dennisc.scenegraph.Vertex v1 = sgVertices[ this.getIndex( 1 ) ];
+		Vertex v1 = sgVertices[ this.getIndex( 1 ) ];
 		v1.textureCoordinate0.u = xTiling;
 		v1.textureCoordinate0.v = yTiling;
 
-		edu.cmu.cs.dennisc.scenegraph.Vertex v2 = sgVertices[ this.getIndex( 2 ) ];
+		Vertex v2 = sgVertices[ this.getIndex( 2 ) ];
 		v2.textureCoordinate0.u = 0;
 		v2.textureCoordinate0.v = yTiling;
 
-		edu.cmu.cs.dennisc.scenegraph.Vertex v3 = sgVertices[ this.getIndex( 3 ) ];
+		Vertex v3 = sgVertices[ this.getIndex( 3 ) ];
 		v3.textureCoordinate0.u = 0;
 		v3.textureCoordinate0.v = 0;
 	}
@@ -95,22 +95,22 @@ public class HorizontalSurface extends edu.cmu.cs.dennisc.scenegraph.TexturedVis
 	public void setSize( float width, float depth, float height ) {
 		float x = width / 2;
 		float z = depth / 2;
-		edu.cmu.cs.dennisc.scenegraph.Vertex v0 = sgVertices[ this.getIndex( 0 ) ];
+		Vertex v0 = sgVertices[ this.getIndex( 0 ) ];
 		v0.position.x = -x;
 		v0.position.y = height;
 		v0.position.z = +z;
 
-		edu.cmu.cs.dennisc.scenegraph.Vertex v1 = sgVertices[ this.getIndex( 1 ) ];
+		Vertex v1 = sgVertices[ this.getIndex( 1 ) ];
 		v1.position.x = -x;
 		v1.position.y = height;
 		v1.position.z = -z;
 
-		edu.cmu.cs.dennisc.scenegraph.Vertex v2 = sgVertices[ this.getIndex( 2 ) ];
+		Vertex v2 = sgVertices[ this.getIndex( 2 ) ];
 		v2.position.x = +x;
 		v2.position.y = height;
 		v2.position.z = -z;
 
-		edu.cmu.cs.dennisc.scenegraph.Vertex v3 = sgVertices[ this.getIndex( 3 ) ];
+		Vertex v3 = sgVertices[ this.getIndex( 3 ) ];
 		v3.position.x = +x;
 		v3.position.y = height;
 		v3.position.z = +z;
@@ -132,12 +132,12 @@ public class HorizontalSurface extends edu.cmu.cs.dennisc.scenegraph.TexturedVis
 		}
 	}
 
-	private final edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
-	private final edu.cmu.cs.dennisc.scenegraph.Vertex[] sgVertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
-			edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ),
-			edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 0 ),
-			edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 1 ),
-			edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 )
+	private final QuadArray sgGeometry = new QuadArray();
+	private final Vertex[] sgVertices = new Vertex[] {
+			Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ),
+			Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 0 ),
+			Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 1 ),
+			Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 )
 	};
 	private final boolean faceUp;
 }

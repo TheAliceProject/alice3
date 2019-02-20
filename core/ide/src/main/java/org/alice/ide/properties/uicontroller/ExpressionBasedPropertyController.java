@@ -43,6 +43,7 @@
 package org.alice.ide.properties.uicontroller;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.alice.ide.x.ProjectEditorAstI18nFactory;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.Panel;
 
@@ -99,7 +100,7 @@ public class ExpressionBasedPropertyController<P> extends BorderPanel implements
 		this.removeAllComponents();
 		if( propertyAdapter != null )
 		{
-			this.addCenterComponent( this.propertyAdapter.getExpressionState().createEditor( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance() ) );
+			this.addCenterComponent( this.propertyAdapter.getExpressionState().createEditor( ProjectEditorAstI18nFactory.getInstance() ) );
 		}
 	}
 

@@ -84,18 +84,8 @@ public final class ThisExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ThisExpression other = (ThisExpression)o;
-			//todo: check type?
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendString( "this" );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendThisReference();
 	}
 
 	private final AbstractType<?, ?, ?> typeForNoAncestorTypeCondition;

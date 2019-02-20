@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 
-public abstract class NameCriterion implements edu.cmu.cs.dennisc.pattern.Criterion {
+public abstract class NameCriterion implements Criterion {
 	public static final boolean IS_SENSITIVE_TO_CASE = true;
 	public static final boolean IS_NOT_SENSITIVE_TO_CASE = false;
 
@@ -55,8 +55,8 @@ public abstract class NameCriterion implements edu.cmu.cs.dennisc.pattern.Criter
 	@Override
 	public boolean accept( Object o ) {
 		boolean isAccepted;
-		if( o instanceof edu.cmu.cs.dennisc.pattern.Nameable ) {
-			edu.cmu.cs.dennisc.pattern.Nameable nameable = (edu.cmu.cs.dennisc.pattern.Nameable)o;
+		if( o instanceof Nameable ) {
+			Nameable nameable = (Nameable)o;
 			isAccepted = acceptName( nameable.getName() );
 		} else {
 			isAccepted = false;

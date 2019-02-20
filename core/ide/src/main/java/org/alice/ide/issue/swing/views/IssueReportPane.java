@@ -42,18 +42,51 @@
  *******************************************************************************/
 package org.alice.ide.issue.swing.views;
 
+import edu.cmu.cs.dennisc.issue.AbstractReport;
+import edu.cmu.cs.dennisc.issue.Issue;
+import edu.cmu.cs.dennisc.issue.IssueType;
 import edu.cmu.cs.dennisc.issue.ReportGenerator;
 import edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration;
+import edu.cmu.cs.dennisc.issue.StackTraceAttachment;
+import edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment;
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.lang.ThrowableUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.javax.swing.SpringUtilities;
+import edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea;
+import edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField;
+import edu.cmu.cs.dennisc.jira.JIRAReport;
+import org.alice.ide.issue.SubmitReportUtilities;
+import org.alice.ide.issue.swing.SubmitReportAction;
+import org.lgna.project.ProjectVersion;
+
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.net.URL;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IssueReportPane extends javax.swing.JPanel implements ReportGenerator {
+public abstract class IssueReportPane extends JPanel implements ReportGenerator {
 	protected abstract ReportSubmissionConfiguration getReportSubmissionConfiguration();
 
-	private static final java.util.List<String> systemPropertiesForEnnvironmentField = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( "java.version", "os.name", "os.arch" ) );
+	private static final List<String> systemPropertiesForEnnvironmentField = Collections.unmodifiableList( Lists.newArrayList( "java.version", "os.name", "os.arch" ) );
 
-	public static java.util.List<String> getSystemPropertiesForEnvironmentField() {
+	public static List<String> getSystemPropertiesForEnvironmentField() {
 		return systemPropertiesForEnnvironmentField;
 	}
 
@@ -78,23 +111,23 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 			sb.append( System.getProperty( propertyName ) );
 			intersticial = ";";
 		}
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+		if( SystemUtilities.isMac() ) {
 			sb.append( ";" );
 			sb.append( System.getProperty( "os.version" ) );
 		}
 		return sb.toString();
 	}
 
-	private class SubmitAction extends org.alice.ide.issue.swing.SubmitReportAction {
+	private class SubmitAction extends SubmitReportAction {
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			IssueReportPane.this.submit();
 		}
 	}
 
-	private final javax.swing.Action submitAction = new SubmitAction();
+	private final Action submitAction = new SubmitAction();
 
-	private javax.swing.JButton submitButton = new javax.swing.JButton( submitAction );
+	private JButton submitButton = new JButton( submitAction );
 
 	protected abstract int getPreferredDescriptionHeight();
 
@@ -104,7 +137,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	private static final String DESCRIPTION_SUGGESTIVE_TEXT = "please fill in a detailed description";
 	private static final String STEPS_SUGGESTIVE_TEXT = "please fill in the steps required to reproduce the bug";
 
-	protected javax.swing.Action getSubmitAction() {
+	protected Action getSubmitAction() {
 		return this.submitAction;
 	}
 
@@ -118,66 +151,66 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		return rv;
 	}
 
-	protected static javax.swing.JLabel createLabelForSingleLine( String text ) {
-		return new javax.swing.JLabel( text, javax.swing.SwingConstants.TRAILING );
+	protected static JLabel createLabelForSingleLine( String text ) {
+		return new JLabel( text, SwingConstants.TRAILING );
 	}
 
-	protected static javax.swing.JLabel createLabelForMultiLine( String text ) {
-		javax.swing.JLabel rv = createLabelForSingleLine( text );
-		rv.setVerticalAlignment( javax.swing.SwingConstants.TOP );
+	protected static JLabel createLabelForMultiLine( String text ) {
+		JLabel rv = createLabelForSingleLine( text );
+		rv.setVerticalAlignment( SwingConstants.TOP );
 		return rv;
 	}
 
-	private javax.swing.JLabel labelSummary = createLabelForSingleLine( "summary:" );
-	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField textSummary = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", this.getSummarySuggestiveText() );
-	protected java.awt.Component[] rowSummary = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelSummary, textSummary );
+	private JLabel labelSummary = createLabelForSingleLine( "summary:" );
+	private JSuggestiveTextField textSummary = new JSuggestiveTextField( "", this.getSummarySuggestiveText() );
+	protected Component[] rowSummary = SpringUtilities.createRow( labelSummary, textSummary );
 
-	private javax.swing.JLabel labelDescription = createLabelForMultiLine( "description:" );
-	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea textDescription = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea( "", DESCRIPTION_SUGGESTIVE_TEXT );
-	private javax.swing.JScrollPane scrollDescription = new javax.swing.JScrollPane( this.textDescription, javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) {
+	private JLabel labelDescription = createLabelForMultiLine( "description:" );
+	private JSuggestiveTextArea textDescription = new JSuggestiveTextArea( "", DESCRIPTION_SUGGESTIVE_TEXT );
+	private JScrollPane scrollDescription = new JScrollPane( this.textDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) {
 		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), IssueReportPane.this.getPreferredDescriptionHeight() );
+		public Dimension getPreferredSize() {
+			return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), IssueReportPane.this.getPreferredDescriptionHeight() );
 		}
 	};
-	protected java.awt.Component[] rowDescription = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelDescription, scrollDescription );
+	protected Component[] rowDescription = SpringUtilities.createRow( labelDescription, scrollDescription );
 
-	private javax.swing.JLabel labelSteps = createLabelForMultiLine( "steps:" );
-	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea textSteps = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea( "", STEPS_SUGGESTIVE_TEXT );
-	private javax.swing.JScrollPane scrollSteps = new javax.swing.JScrollPane( this.textSteps, javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) {
+	private JLabel labelSteps = createLabelForMultiLine( "steps:" );
+	private JSuggestiveTextArea textSteps = new JSuggestiveTextArea( "", STEPS_SUGGESTIVE_TEXT );
+	private JScrollPane scrollSteps = new JScrollPane( this.textSteps, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) {
 		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), IssueReportPane.this.getPreferredStepsHeight() );
+		public Dimension getPreferredSize() {
+			return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), IssueReportPane.this.getPreferredStepsHeight() );
 		}
 	};
-	protected java.awt.Component[] rowSteps = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelSteps, scrollSteps );
+	protected Component[] rowSteps = SpringUtilities.createRow( labelSteps, scrollSteps );
 
 	public IssueReportPane() {
-		java.awt.Font font = this.submitButton.getFont();
+		Font font = this.submitButton.getFont();
 		this.submitButton.setFont( font.deriveFont( font.getSize2D() * 1.5f ) );
-		this.submitButton.setAlignmentX( java.awt.Component.CENTER_ALIGNMENT );
+		this.submitButton.setAlignmentX( Component.CENTER_ALIGNMENT );
 
 		this.labelSummary.setToolTipText( textSummary.getTextForBlankCondition() );
 		this.labelDescription.setToolTipText( textDescription.getTextForBlankCondition() );
 		this.labelSteps.setToolTipText( textSteps.getTextForBlankCondition() );
 
-		this.scrollDescription.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		this.scrollSteps.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		this.scrollDescription.setBorder( BorderFactory.createEmptyBorder() );
+		this.scrollSteps.setBorder( BorderFactory.createEmptyBorder() );
 
 		this.textDescription.setLineWrap( true );
 		this.textDescription.setWrapStyleWord( true );
 		this.textSteps.setLineWrap( true );
 		this.textSteps.setWrapStyleWord( true );
 
-		this.setLayout( new java.awt.BorderLayout() );
-		javax.swing.JPanel southPane = new javax.swing.JPanel();
+		this.setLayout( new BorderLayout() );
+		JPanel southPane = new JPanel();
 		southPane.add( this.getSubmitButton() );
-		this.add( southPane, java.awt.BorderLayout.SOUTH );
+		this.add( southPane, BorderLayout.SOUTH );
 	}
 
 	protected abstract String getJIRAProjectKey();
 
-	protected abstract edu.cmu.cs.dennisc.issue.IssueType getIssueType();
+	protected abstract IssueType getIssueType();
 
 	protected String getSummaryText() {
 		return this.textSummary.getText();
@@ -202,7 +235,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	private String getExceptionText() {
 		Throwable throwable = this.getThrowable();
 		if( throwable != null ) {
-			return edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( throwable );
+			return ThrowableUtilities.getStackTraceAsString( throwable );
 		} else {
 			return "";
 		}
@@ -214,45 +247,45 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 
 	protected abstract boolean isInclusionOfCompleteSystemPropertiesDesired();
 
-	protected edu.cmu.cs.dennisc.issue.AbstractReport addAttachments( edu.cmu.cs.dennisc.issue.AbstractReport rv ) {
+	protected AbstractReport addAttachments( AbstractReport rv ) {
 		Throwable throwable = this.getThrowable();
 		if( throwable != null ) {
-			rv.addAttachment( new edu.cmu.cs.dennisc.issue.StackTraceAttachment( throwable ) );
+			rv.addAttachment( new StackTraceAttachment( throwable ) );
 		}
 		if( this.isInclusionOfCompleteSystemPropertiesDesired() ) {
-			rv.addAttachment( new edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment() );
+			rv.addAttachment( new SystemPropertiesAttachment() );
 		}
 		return rv;
 	}
 
-	private edu.cmu.cs.dennisc.issue.Issue.Builder createIssueBuilder() {
-		return new edu.cmu.cs.dennisc.issue.Issue.Builder()
+	private Issue.Builder createIssueBuilder() {
+		return new Issue.Builder()
 				.type( this.getIssueType() )
 				.summary( this.getSummaryText() )
 				.description( this.getDescriptionText() )
 				.environment( this.getEnvironmentText() )
 				.steps( this.getStepsText() )
 				.threadAndThrowable( this.getThread(), this.getThrowable() )
-				.version( org.lgna.project.ProjectVersion.getCurrentVersionText() )
+				.version( ProjectVersion.getCurrentVersionText() )
 				.reportedBy( this.getSMTPReplyToPersonal() )
 				.emailAddress( this.getSMTPReplyTo() );
 	}
 
-	private edu.cmu.cs.dennisc.jira.JIRAReport createJiraReport() {
-		edu.cmu.cs.dennisc.issue.Issue.Builder builder = this.createIssueBuilder();
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = new edu.cmu.cs.dennisc.jira.JIRAReport( builder.build(), this.getJIRAProjectKey() );
+	private JIRAReport createJiraReport() {
+		Issue.Builder builder = this.createIssueBuilder();
+		JIRAReport rv = new JIRAReport( builder.build(), this.getJIRAProjectKey() );
 		return rv;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC() {
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.createJiraReport();
+	public JIRAReport generateIssueForRPC() {
+		JIRAReport rv = this.createJiraReport();
 		return rv;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP() {
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.createJiraReport();
+	public JIRAReport generateIssueForSOAP() {
+		JIRAReport rv = this.createJiraReport();
 		this.addAttachments( rv );
 		return rv;
 	}
@@ -267,14 +300,14 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	//		return rv;
 	//	}
 
-	public javax.swing.JButton getSubmitButton() {
+	public JButton getSubmitButton() {
 		return this.submitButton;
 	}
 
 	private boolean isSubmitAttempted = false;
 	private boolean isSubmitSuccessful = false;
 	private boolean isSubmitDone = false;
-	private java.net.URL urlResult = null;
+	private URL urlResult = null;
 
 	public boolean isSubmitAttempted() {
 		return this.isSubmitAttempted;
@@ -288,7 +321,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		return this.isSubmitSuccessful;
 	}
 
-	public java.net.URL getURLResult() {
+	public URL getURLResult() {
 		return this.urlResult;
 	}
 
@@ -297,11 +330,11 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		this.isSubmitDone = false;
 		this.urlResult = null;
 		this.isSubmitAttempted = true;
-		ProgressPane progressPane = org.alice.ide.issue.SubmitReportUtilities.submitReport( this, this.getReportSubmissionConfiguration() );
+		ProgressPane progressPane = SubmitReportUtilities.submitReport( this, this.getReportSubmissionConfiguration() );
 		this.urlResult = progressPane.getURLResult();
 		this.isSubmitSuccessful = progressPane.isSuccessful();
 		this.isSubmitDone = progressPane.isDone();
-		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
+		Component root = SwingUtilities.getRoot( this );
 		if( root != null ) {
 			root.setVisible( false );
 		}

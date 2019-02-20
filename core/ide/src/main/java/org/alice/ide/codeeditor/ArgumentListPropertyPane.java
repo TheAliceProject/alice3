@@ -42,22 +42,39 @@
  *******************************************************************************/
 package org.alice.ide.codeeditor;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import org.alice.ide.ast.components.DeclarationNameLabel;
+import org.alice.ide.common.AbstractArgumentListPropertyPane;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.JavaConstructorParameter;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaMethodParameter;
+import org.lgna.project.ast.SimpleArgument;
+import org.lgna.project.ast.SimpleArgumentListProperty;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
+public class ArgumentListPropertyPane extends AbstractArgumentListPropertyPane {
+	public ArgumentListPropertyPane( AstI18nFactory factory, SimpleArgumentListProperty property ) {
 		super( factory, property );
 	}
 
-	protected boolean isNameDesired( org.lgna.project.ast.AbstractParameter parameter ) {
+	protected boolean isNameDesired( AbstractParameter parameter ) {
 		boolean rv;
 		if( parameter.getName() != null ) {
-			if( parameter instanceof org.lgna.project.ast.JavaMethodParameter ) {
-				org.lgna.project.ast.JavaMethodParameter javaMethodParameter = (org.lgna.project.ast.JavaMethodParameter)parameter;
-				org.lgna.project.ast.JavaMethod javaMethod = javaMethodParameter.getCode();
+			if( parameter instanceof JavaMethodParameter ) {
+				JavaMethodParameter javaMethodParameter = (JavaMethodParameter)parameter;
+				JavaMethod javaMethod = javaMethodParameter.getCode();
 				rv = javaMethod.isParameterInShortestChainedMethod( javaMethodParameter ) == false;
-			} else if( parameter instanceof org.lgna.project.ast.JavaConstructorParameter ) {
+			} else if( parameter instanceof JavaConstructorParameter ) {
 				//todo
 
 				//				org.lgna.project.ast.ParameterDeclaredInJavaConstructor parameterDeclaredInJavaConstructor = (org.lgna.project.ast.ParameterDeclaredInJavaConstructor)parameter;
@@ -75,17 +92,17 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 	}
 
 	@Override
-	protected org.lgna.croquet.views.AwtComponentView<?> createComponent( org.lgna.project.ast.SimpleArgument argument ) {
-		org.lgna.croquet.views.SwingComponentView<?> prefixPane;
-		if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
+	protected AwtComponentView<?> createComponent( SimpleArgument argument ) {
+		SwingComponentView<?> prefixPane;
+		if( FormatterState.isJava() ) {
 			prefixPane = null;
 		} else {
-			org.lgna.project.ast.AbstractParameter parameter = argument.parameter.getValue();
+			AbstractParameter parameter = argument.parameter.getValue();
 			boolean isNameDesired = this.isNameDesired( parameter );
 			if( isNameDesired ) {
-				org.alice.ide.ast.components.DeclarationNameLabel label = new org.alice.ide.ast.components.DeclarationNameLabel( argument.parameter.getValue() );
-				label.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-				prefixPane = new org.lgna.croquet.views.LineAxisPanel( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 4 ), label, new org.lgna.croquet.views.Label( ": ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+				DeclarationNameLabel label = new DeclarationNameLabel( argument.parameter.getValue() );
+				label.changeFont( TextPosture.OBLIQUE );
+				prefixPane = new LineAxisPanel( BoxUtilities.createHorizontalSliver( 4 ), label, new Label( ": ", TextPosture.OBLIQUE ) );
 			} else {
 				prefixPane = null;
 			}

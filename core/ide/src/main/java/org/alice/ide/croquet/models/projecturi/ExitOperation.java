@@ -42,10 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import org.alice.ide.IDE;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.history.UserActivity;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ExitOperation extends org.lgna.croquet.Operation {
+public final class ExitOperation extends Operation {
 	private static class SingletonHolder {
 		private static ExitOperation instance = new ExitOperation();
 	}
@@ -55,12 +62,12 @@ public final class ExitOperation extends org.lgna.croquet.Operation {
 	}
 
 	private ExitOperation() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "0079ff1b-f22f-4888-a30d-5594125435ab" ) );
+		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "0079ff1b-f22f-4888-a30d-5594125435ab" ) );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void performInActivity( UserActivity userActivity ) {
 		//todo: create substep?
-		org.alice.ide.IDE.getActiveInstance().handleQuit( trigger );
+		IDE.getActiveInstance().handleQuit( userActivity );
 	}
 }

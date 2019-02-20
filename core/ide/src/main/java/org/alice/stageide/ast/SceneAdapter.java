@@ -43,14 +43,19 @@
 
 package org.alice.stageide.ast;
 
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserType;
+import org.lgna.project.virtualmachine.MethodContext;
+import org.lgna.story.SScene;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SceneAdapter extends org.lgna.story.SScene {
-	private final org.lgna.project.virtualmachine.MethodContext context;
-	private final org.lgna.project.ast.UserType<?> type;
+public class SceneAdapter extends SScene {
+	private final MethodContext context;
+	private final UserType<?> type;
 
-	public SceneAdapter( org.lgna.project.virtualmachine.MethodContext context, org.lgna.project.ast.UserType<?> type, Object[] arguments ) {
+	public SceneAdapter( MethodContext context, UserType<?> type, Object[] arguments ) {
 		this.context = context;
 		this.type = type;
 		assert arguments.length == 0;
@@ -58,7 +63,7 @@ public class SceneAdapter extends org.lgna.story.SScene {
 
 	@Override
 	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
-		org.lgna.project.ast.UserMethod method = type.getDeclaredMethod( "handleActiveChanged", Boolean.class, Integer.class );
+		UserMethod method = type.getDeclaredMethod( "handleActiveChanged", Boolean.class, Integer.class );
 		this.context.invokeEntryPoint( method, isActive, activeCount );
 	}
 

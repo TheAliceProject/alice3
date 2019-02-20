@@ -43,11 +43,13 @@
 
 package org.lgna.story.fontattributes;
 
+import java.awt.font.TextAttribute;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Attribute<E> {
-	public java.awt.font.TextAttribute getKey();
+	public TextAttribute getKey();
 
 	public E getValue();
 }

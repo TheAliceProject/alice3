@@ -43,23 +43,31 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.math.ScaleUtilities;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.Text;
+import org.lgna.story.STextModel;
+
+import java.awt.Font;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TextModelImp extends SimpleModelImp {
-	public TextModelImp( org.lgna.story.STextModel abstraction ) {
+	public TextModelImp( STextModel abstraction ) {
 		this.abstraction = abstraction;
 		this.sgText.text.setValue( "" );
 
 		final int height = 12;
 		final double scale = 1.0 / height;
-		this.sgText.font.setValue( new java.awt.Font( null, 0, height ) );
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgText } );
-		this.getSgVisuals()[ 0 ].scale.setValue( edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleMatrix3d( scale, scale, scale ) );
+		this.sgText.font.setValue( new Font( null, 0, height ) );
+		this.getSgVisuals()[ 0 ].geometries.setValue( new Geometry[] { this.sgText } );
+		this.getSgVisuals()[ 0 ].scale.setValue( ScaleUtilities.newScaleMatrix3d( scale, scale, scale ) );
 	}
 
 	@Override
-	public org.lgna.story.STextModel getAbstraction() {
+	public STextModel getAbstraction() {
 		return this.abstraction;
 	}
 
@@ -76,11 +84,11 @@ public class TextModelImp extends SimpleModelImp {
 		updateSGText();
 	}
 
-	public java.awt.Font getFont() {
+	public Font getFont() {
 		return this.sgText.font.getValue();
 	}
 
-	public void setFont( java.awt.Font font ) {
+	public void setFont( Font font ) {
 		this.sgText.font.setValue( font );
 	}
 
@@ -140,11 +148,11 @@ public class TextModelImp extends SimpleModelImp {
 	}
 
 	@Override
-	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+	public void setSize( Dimension3 size ) {
 		this.setScale( getScaleForSize( size ) );
 	}
 
-	private final org.lgna.story.STextModel abstraction;
-	private final edu.cmu.cs.dennisc.scenegraph.Text sgText = new edu.cmu.cs.dennisc.scenegraph.Text();
+	private final STextModel abstraction;
+	private final Text sgText = new Text();
 	private StringBuffer sb = new StringBuffer();
 }

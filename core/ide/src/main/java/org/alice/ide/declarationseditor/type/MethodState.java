@@ -43,11 +43,17 @@
 
 package org.alice.ide.declarationseditor.type;
 
+import org.alice.ide.declarationseditor.type.data.MethodData;
+import org.lgna.croquet.Application;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodState extends FilteredMemberState<org.lgna.project.ast.UserMethod> {
-	public MethodState( java.util.UUID id, org.alice.ide.declarationseditor.type.data.MethodData data ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, id, data );
+public abstract class MethodState extends FilteredMemberState<UserMethod> {
+	public MethodState( UUID id, MethodData data ) {
+		super( Application.PROJECT_GROUP, id, data );
 	}
 }

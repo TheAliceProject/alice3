@@ -43,16 +43,19 @@
 
 package edu.cmu.cs.dennisc.jira;
 
+import edu.cmu.cs.dennisc.issue.AbstractReport;
+import edu.cmu.cs.dennisc.issue.Issue;
 import edu.cmu.cs.dennisc.issue.IssueType;
+import edu.cmu.cs.dennisc.issue.IssueUtilities;
 
 /**
  * @author Dennis Cosgrove
  */
-public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
+public class JIRAReport extends AbstractReport {
 	private final static int SUMMARY_MAX = 254;
 
 	private final String projectKey;
-	private final edu.cmu.cs.dennisc.issue.IssueType type;
+	private final IssueType type;
 	private final String summary;
 	private final String description;
 	private final String steps;
@@ -62,14 +65,14 @@ public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 	private final String reportedBy;
 	private final String emailAddress;
 
-	public JIRAReport( edu.cmu.cs.dennisc.issue.Issue issue, String projectKey ) {
+	public JIRAReport( Issue issue, String projectKey ) {
 		this.projectKey = projectKey;
 		this.type = issue.getType();
 		this.summary = issue.getSummary();
 		this.description = issue.getDescription();
 		this.steps = issue.getSteps();
 		this.environment = issue.getEnvironment();
-		this.exception = edu.cmu.cs.dennisc.issue.IssueUtilities.getThrowableText( issue.getThrowable() );
+		this.exception = IssueUtilities.getThrowableText( issue.getThrowable() );
 		String versionText = issue.getVersion();
 		if( versionText != null ) {
 			this.affectsVersions = new String[] { versionText };
@@ -84,7 +87,7 @@ public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 		return this.projectKey;
 	}
 
-	public edu.cmu.cs.dennisc.issue.IssueType getType() {
+	public IssueType getType() {
 		return this.type;
 	}
 

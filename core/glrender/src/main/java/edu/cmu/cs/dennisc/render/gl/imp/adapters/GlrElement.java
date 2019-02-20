@@ -43,12 +43,16 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.scenegraph.Element;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrElement<T extends edu.cmu.cs.dennisc.scenegraph.Element> extends GlrObject<T> {
-	/*package-private*/static void handlePropertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty ) {
-		edu.cmu.cs.dennisc.scenegraph.Element sgElement = (edu.cmu.cs.dennisc.scenegraph.Element)instanceProperty.getOwner();
+public abstract class GlrElement<T extends Element> extends GlrObject<T> {
+	/*package-private*/static void handlePropertyChanged( InstanceProperty<?> instanceProperty ) {
+		Element sgElement = (Element)instanceProperty.getOwner();
 		GlrElement<?> glrElement = AdapterFactory.getAdapterFor( sgElement );
 		glrElement.propertyChanged( instanceProperty );
 	}
@@ -56,13 +60,13 @@ public abstract class GlrElement<T extends edu.cmu.cs.dennisc.scenegraph.Element
 	@Override
 	public void initialize( T element ) {
 		super.initialize( element );
-		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : owner.getProperties() ) {
+		for( InstanceProperty<?> property : owner.getProperties() ) {
 			propertyChanged( property );
 		}
 	}
 
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "unhandled property:", property );
+	protected void propertyChanged( InstanceProperty<?> property ) {
+		Logger.info( "unhandled property:", property );
 	}
 
 	@Override

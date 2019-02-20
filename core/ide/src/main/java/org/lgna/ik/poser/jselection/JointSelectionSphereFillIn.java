@@ -43,12 +43,13 @@
 package org.lgna.ik.poser.jselection;
 
 import java.util.Map;
+import java.util.UUID;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.ImmutableCascadeFillIn;
 import org.lgna.croquet.imp.cascade.ItemNode;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
@@ -56,13 +57,13 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 /**
  * @author Matt May
  */
-public class JointSelectionSphereFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<JointSelectionSphere, Void> {
+public class JointSelectionSphereFillIn extends ImmutableCascadeFillIn<JointSelectionSphere, Void> {
 
 	private static Map<JointSelectionSphere, JointSelectionSphereFillIn> map = Maps.newHashMap();
 	private final JointSelectionSphere sphere;
 
 	public JointSelectionSphereFillIn( JointSelectionSphere sphere ) {
-		super( java.util.UUID.fromString( "097b8967-97ba-4a41-bf47-7e428fde95dc" ) );
+		super( UUID.fromString( "097b8967-97ba-4a41-bf47-7e428fde95dc" ) );
 		this.sphere = sphere;
 	}
 
@@ -72,7 +73,7 @@ public class JointSelectionSphereFillIn extends org.lgna.croquet.ImmutableCascad
 	}
 
 	@Override
-	public JointSelectionSphere createValue( ItemNode<? super JointSelectionSphere, Void> node, TransactionHistory transactionHistory ) {
+	public JointSelectionSphere createValue( ItemNode<? super JointSelectionSphere, Void> node ) {
 		return sphere;
 	}
 

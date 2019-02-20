@@ -42,11 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help;
 
+import org.alice.ide.browser.ImmutableBrowserOperation;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class BrowseReleaseNotesOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
+public class BrowseReleaseNotesOperation extends ImmutableBrowserOperation {
 	public BrowseReleaseNotesOperation() {
-		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ), "http://www.alice.org/get-alice/alice-3" );
+		super( UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ), "http://www.alice.org/get-alice/alice-3" );
 	}
 }

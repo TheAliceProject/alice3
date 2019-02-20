@@ -43,6 +43,11 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.imp.cascade.ItemNode;
+
+import javax.swing.JComponent;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +61,11 @@ public class CascadeLineSeparator extends CascadeSeparator {
 	}
 
 	private CascadeLineSeparator() {
-		super( java.util.UUID.fromString( "5103f9f4-b85d-4c49-b384-5a9785d1d2ac" ) );
+		super( UUID.fromString( "5103f9f4-b85d-4c49-b384-5a9785d1d2ac" ) );
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super Void, Void> step ) {
+	protected JComponent createMenuItemIconProxy( ItemNode<? super Void, Void> step ) {
 		return null;
 	}
 }

@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
+
 /**
  * @author Dennis Cosgrove
  */
 public class RenderUtils {
 	public static RenderFactory getDefaultRenderFactory() {
-		return edu.cmu.cs.dennisc.render.gl.GlrRenderFactory.getInstance();
+		return GlrRenderFactory.getInstance();
 	}
 }

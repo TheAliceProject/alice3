@@ -43,6 +43,8 @@
 
 package org.alice.ide.croquet.models.cascade.arithmetic;
 
+import org.lgna.project.ast.ArithmeticInfixExpression;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,25 +53,25 @@ public class ArithmeticUtilities {
 		throw new AssertionError();
 	}
 
-	public static final org.lgna.project.ast.ArithmeticInfixExpression.Operator[] PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS = {
-			org.lgna.project.ast.ArithmeticInfixExpression.Operator.PLUS,
-			org.lgna.project.ast.ArithmeticInfixExpression.Operator.MINUS,
-			org.lgna.project.ast.ArithmeticInfixExpression.Operator.TIMES,
-			org.lgna.project.ast.ArithmeticInfixExpression.Operator.REAL_DIVIDE
+	public static final ArithmeticInfixExpression.Operator[] PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS = {
+			ArithmeticInfixExpression.Operator.PLUS,
+			ArithmeticInfixExpression.Operator.MINUS,
+			ArithmeticInfixExpression.Operator.TIMES,
+			ArithmeticInfixExpression.Operator.REAL_DIVIDE
 	};
-	public static final org.lgna.project.ast.ArithmeticInfixExpression.Operator[] TUCKED_AWAY_DOUBLE_ARITHMETIC_OPERATORS = {
-			org.lgna.project.ast.ArithmeticInfixExpression.Operator.REAL_REMAINDER,
-			org.lgna.project.ast.ArithmeticInfixExpression.Operator.INTEGER_DIVIDE,
-			org.lgna.project.ast.ArithmeticInfixExpression.Operator.INTEGER_REMAINDER,
+	public static final ArithmeticInfixExpression.Operator[] TUCKED_AWAY_DOUBLE_ARITHMETIC_OPERATORS = {
+			ArithmeticInfixExpression.Operator.REAL_REMAINDER,
+			ArithmeticInfixExpression.Operator.INTEGER_DIVIDE,
+			ArithmeticInfixExpression.Operator.INTEGER_REMAINDER,
 	};
 
-	public static final org.lgna.project.ast.ArithmeticInfixExpression.Operator[] PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS = {
-			org.lgna.project.ast.ArithmeticInfixExpression.Operator.PLUS,
-			org.lgna.project.ast.ArithmeticInfixExpression.Operator.MINUS,
-			org.lgna.project.ast.ArithmeticInfixExpression.Operator.TIMES,
+	public static final ArithmeticInfixExpression.Operator[] PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS = {
+			ArithmeticInfixExpression.Operator.PLUS,
+			ArithmeticInfixExpression.Operator.MINUS,
+			ArithmeticInfixExpression.Operator.TIMES,
 	};
-	public static final org.lgna.project.ast.ArithmeticInfixExpression.Operator[] TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS = {
-			org.lgna.project.ast.ArithmeticInfixExpression.Operator.INTEGER_DIVIDE,
-			org.lgna.project.ast.ArithmeticInfixExpression.Operator.INTEGER_REMAINDER
+	public static final ArithmeticInfixExpression.Operator[] TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS = {
+			ArithmeticInfixExpression.Operator.INTEGER_DIVIDE,
+			ArithmeticInfixExpression.Operator.INTEGER_REMAINDER
 	};
 }

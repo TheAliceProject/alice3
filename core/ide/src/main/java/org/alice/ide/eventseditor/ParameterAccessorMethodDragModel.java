@@ -42,10 +42,26 @@
  *******************************************************************************/
 package org.alice.ide.eventseditor;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
+import org.alice.ide.croquet.models.ast.cascade.MethodUtilities;
+import org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascade;
+import org.lgna.croquet.Triggerable;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.UserParameter;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterAccessorMethodDragModel extends org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel {
+public class ParameterAccessorMethodDragModel extends AbstractExpressionDragModel {
 	//	private static class InternalComposite extends org.lgna.croquet.Composite {
 	//		private ParameterAccessorMethodDragModel dragModel;
 	//		public InternalComposite( ParameterAccessorMethodDragModel dragModel ) {
@@ -65,48 +81,48 @@ public class ParameterAccessorMethodDragModel extends org.alice.ide.ast.dragandd
 	//		}
 	//	}
 
-	private static class InternalDropModel extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascade {
-		private final org.lgna.project.ast.UserParameter parameter;
-		private final org.lgna.project.ast.AbstractMethod method;
+	private static class InternalDropModel extends ProjectExpressionPropertyCascade {
+		private final UserParameter parameter;
+		private final AbstractMethod method;
 
-		private InternalDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
-			super( java.util.UUID.fromString( "9645fc2e-6797-438b-9abd-289255b7d027" ), expressionProperty, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
+		private InternalDropModel( ExpressionProperty expressionProperty, UserParameter parameter, AbstractMethod method ) {
+			super( UUID.fromString( "9645fc2e-6797-438b-9abd-289255b7d027" ), expressionProperty, MethodUtilities.createParameterBlanks( method ) );
 			this.parameter = parameter;
 			this.method = method;
 		}
 
 		@Override
-		protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions ) {
-			return org.lgna.project.ast.AstUtilities.createMethodInvocation( new org.lgna.project.ast.ParameterAccess( this.parameter ), this.method, expressions );
+		protected Expression createExpression( Expression[] expressions ) {
+			return AstUtilities.createMethodInvocation( new ParameterAccess( this.parameter ), this.method, expressions );
 		}
 	}
 
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessorMethodDragModel> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<UserParameter, AbstractMethod, ParameterAccessorMethodDragModel> mapToMap = MapToMap.newInstance();
 
-	public static synchronized ParameterAccessorMethodDragModel getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
-		return mapToMap.getInitializingIfAbsent( parameter, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessorMethodDragModel>() {
+	public static synchronized ParameterAccessorMethodDragModel getInstance( UserParameter parameter, AbstractMethod method ) {
+		return mapToMap.getInitializingIfAbsent( parameter, method, new MapToMap.Initializer<UserParameter, AbstractMethod, ParameterAccessorMethodDragModel>() {
 			@Override
-			public ParameterAccessorMethodDragModel initialize( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+			public ParameterAccessorMethodDragModel initialize( UserParameter parameter, AbstractMethod method ) {
 				return new ParameterAccessorMethodDragModel( parameter, method );
 			}
 		} );
 	}
 
 	//	private final InternalComposite composite = new InternalComposite( this );
-	private final org.lgna.project.ast.UserParameter parameter;
-	private final org.lgna.project.ast.AbstractMethod method;
+	private final UserParameter parameter;
+	private final AbstractMethod method;
 
-	private ParameterAccessorMethodDragModel( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "c41ee1e7-aaea-4fa0-80fe-9b969998acb5" ) );
+	private ParameterAccessorMethodDragModel( UserParameter parameter, AbstractMethod method ) {
+		super( UUID.fromString( "c41ee1e7-aaea-4fa0-80fe-9b969998acb5" ) );
 		this.parameter = parameter;
 		this.method = method;
 	}
 
-	public org.lgna.project.ast.UserParameter getParameter() {
+	public UserParameter getParameter() {
 		return this.parameter;
 	}
 
-	public org.lgna.project.ast.AbstractMethod getMethod() {
+	public AbstractMethod getMethod() {
 		return this.method;
 	}
 
@@ -120,17 +136,12 @@ public class ParameterAccessorMethodDragModel extends org.alice.ide.ast.dragandd
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		throw new AssertionError();
-	}
-
-	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	protected Triggerable getDropOperation( ExpressionProperty expressionProperty ) {
 		return new InternalDropModel( expressionProperty, this.parameter, this.method );
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return this.method.getReturnType();
 	}
 }

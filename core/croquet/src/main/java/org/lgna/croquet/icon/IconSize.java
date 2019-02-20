@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,13 +53,13 @@ public enum IconSize {
 	MEDIUM( 32 ),
 	LARGE( 48 ),
 	EXTRA_LARGE( 256 );
-	private final java.awt.Dimension size;
+	private final Dimension size;
 
 	private IconSize( int size ) {
-		this.size = new java.awt.Dimension( size, size );
+		this.size = new Dimension( size, size );
 	}
 
-	public java.awt.Dimension getSize() {
+	public Dimension getSize() {
 		return this.size;
 	}
 }

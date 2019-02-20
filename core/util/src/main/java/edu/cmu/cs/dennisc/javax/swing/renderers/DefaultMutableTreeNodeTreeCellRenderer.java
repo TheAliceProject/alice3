@@ -42,14 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.renderers;
 
+import javax.swing.JLabel;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultMutableTreeNodeTreeCellRenderer<E> extends TreeCellRenderer<javax.swing.tree.DefaultMutableTreeNode> {
-	protected abstract javax.swing.JLabel getListCellRendererComponentForUserObject( javax.swing.JLabel rv, javax.swing.JTree tree, E value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus );
+public abstract class DefaultMutableTreeNodeTreeCellRenderer<E> extends TreeCellRenderer<DefaultMutableTreeNode> {
+	protected abstract JLabel getListCellRendererComponentForUserObject( JLabel rv, JTree tree, E value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus );
 
 	@Override
-	protected final javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, javax.swing.tree.DefaultMutableTreeNode node, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+	protected final JLabel updateListCellRendererComponent( JLabel rv, JTree tree, DefaultMutableTreeNode node, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
 		return this.getListCellRendererComponentForUserObject( rv, tree, (E)node.getUserObject(), sel, expanded, leaf, row, hasFocus );
 
 	}

@@ -43,47 +43,33 @@
 
 package org.lgna.story.implementation.eventhandling;
 
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.alice.interact.AbstractDragAdapter.CameraView;
-import org.lgna.story.HeldKeyPolicy;
-import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.SModel;
-import org.lgna.story.SMovableTurnable;
-import org.lgna.story.SThing;
-import org.lgna.story.Visual;
-import org.lgna.story.event.ArrowKeyEvent;
-import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.MouseClickOnObjectListener;
-import org.lgna.story.event.MouseClickOnScreenListener;
-import org.lgna.story.event.MoveWithArrows;
-import org.lgna.story.event.NumberKeyEvent;
-import org.lgna.story.event.NumberKeyPressListener;
-import org.lgna.story.event.OcclusionEndListener;
-import org.lgna.story.event.OcclusionStartListener;
-import org.lgna.story.event.PointOfViewChangeListener;
-import org.lgna.story.event.SceneActivationEvent;
-import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.TimeListener;
-import org.lgna.story.event.ViewEnterListener;
-import org.lgna.story.event.ViewExitListener;
-import org.lgna.story.event.WhileCollisionListener;
-import org.lgna.story.event.WhileInViewListener;
-import org.lgna.story.event.WhileOcclusionListener;
-import org.lgna.story.event.WhileProximityListener;
-import org.lgna.story.implementation.SceneImp;
-
+import edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
 import edu.cmu.cs.dennisc.matt.eventscript.InputEventRecorder;
 import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.alice.interact.DragAdapter;
+import org.alice.interact.DragAdapter.CameraView;
+import org.alice.interact.RuntimeDragAdapter;
+import org.lgna.story.HeldKeyPolicy;
+import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SModel;
+import org.lgna.story.SMovableTurnable;
+import org.lgna.story.SThing;
+import org.lgna.story.Visual;
+import org.lgna.story.event.*;
+import org.lgna.story.implementation.SceneImp;
+
+import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Matt May
@@ -125,9 +111,9 @@ public class EventManager {
 
 	public final CustomLenientMouseAdapter mouseAdapter = new CustomLenientMouseAdapter();
 
-	private class CustomLenientMouseAdapter extends edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter {
+	private class CustomLenientMouseAdapter extends LenientMouseClickAdapter {
 		@Override
-		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
+		protected void mouseQuoteClickedUnquote( MouseEvent e, int quoteClickCountUnquote ) {
 			inputRecorder.record( createWrapper( e ) );
 			EventManager.this.mouseHandler.handleMouseQuoteClickedUnquote( e, /* quoteClickCountUnquote, */EventManager.this.scene.getAbstraction() );
 		}
@@ -137,7 +123,7 @@ public class EventManager {
 		}
 	};
 
-	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
+	private KeyListener keyAdapter = new KeyListener() {
 		@Override
 		public void keyPressed( KeyEvent e ) {
 			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
@@ -153,11 +139,11 @@ public class EventManager {
 		}
 
 		@Override
-		public void keyTyped( java.awt.event.KeyEvent e ) {
+		public void keyTyped( KeyEvent e ) {
 		}
 	};
 
-	private java.awt.event.FocusListener focusAdapter = new java.awt.event.FocusListener() {
+	private FocusListener focusAdapter = new FocusListener() {
 
 		@Override public void focusGained( FocusEvent e ) {
 		}
@@ -170,7 +156,7 @@ public class EventManager {
 	//	private final java.util.List< org.lgna.story.event.MouseButtonListener > mouseButtonListeners = Collections.newCopyOnWriteArrayList();
 	//	private final java.util.List< org.lgna.story.event.KeyListener > keyListeners = Collections.newCopyOnWriteArrayList();
 
-	private org.alice.interact.AbstractDragAdapter dragAdapter;
+	private DragAdapter dragAdapter;
 
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;
@@ -196,7 +182,7 @@ public class EventManager {
 	}
 
 	public void addListenersTo( OnscreenRenderTarget onscreenRenderTarget ) {
-		java.awt.Component component = onscreenRenderTarget.getAwtComponent();
+		Component component = onscreenRenderTarget.getAwtComponent();
 		component.addMouseListener( this.mouseAdapter );
 		component.addMouseMotionListener( this.mouseAdapter );
 		component.addKeyListener( this.keyAdapter );
@@ -204,7 +190,7 @@ public class EventManager {
 	}
 
 	public void removeListenersFrom( OnscreenRenderTarget onscreenRenderTarget ) {
-		java.awt.Component component = onscreenRenderTarget.getAwtComponent();
+		Component component = onscreenRenderTarget.getAwtComponent();
 		component.removeMouseListener( this.mouseAdapter );
 		component.removeMouseMotionListener( this.mouseAdapter );
 		component.removeKeyListener( this.keyAdapter );
@@ -248,7 +234,7 @@ public class EventManager {
 	}
 
 	public void addKeyListener( KeyPressListener keyListener, MultipleEventPolicy eventPolicy, HeldKeyPolicy heldKeyPolicy ) {
-		this.keyHandler.addListener( keyListener, eventPolicy, null, heldKeyPolicy );
+		keyHandler.addListener(keyListener, eventPolicy, heldKeyPolicy );
 	}
 
 	public void addNumberKeyListener( NumberKeyPressListener keyPressListener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy ) {
@@ -299,7 +285,7 @@ public class EventManager {
 		if( this.dragAdapter != null ) {
 			//pass
 		} else {
-			this.dragAdapter = new org.alice.interact.RuntimeDragAdapter();
+			this.dragAdapter = new RuntimeDragAdapter();
 			OnscreenRenderTarget<?> renderTarget = this.scene.getProgram().getOnscreenRenderTarget();
 			SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)scene.findFirstCamera().getSgCamera();
 			//			for( int i = 0; i < lookingGlass.getCameraCount(); i++ ) {

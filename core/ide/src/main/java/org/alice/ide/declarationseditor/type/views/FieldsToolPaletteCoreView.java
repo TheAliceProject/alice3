@@ -42,28 +42,37 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import org.alice.ide.ast.declaration.AddUnmanagedFieldComposite;
+import org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite;
+import org.alice.ide.declarationseditor.type.ManagedFieldsComposite;
+import org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.ik.poser.croquet.DeclarePoseFieldOperation;
+import org.lgna.project.ast.NamedUserType;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FieldsToolPaletteCoreView extends MembersToolPaletteCoreView {
-	public FieldsToolPaletteCoreView( org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite composite ) {
+	public FieldsToolPaletteCoreView( FieldsToolPaletteCoreComposite composite ) {
 		super( composite );
-		org.alice.ide.declarationseditor.type.ManagedFieldsComposite managedFieldsComposite = composite.getManagedFieldsComposite();
+		ManagedFieldsComposite managedFieldsComposite = composite.getManagedFieldsComposite();
 
-		org.lgna.project.ast.NamedUserType type = composite.getMembersComposite().getType();
+		NamedUserType type = composite.getMembersComposite().getType();
 		if( managedFieldsComposite != null ) {
-			this.addComponent( composite.getManagedLabel().createLabel( 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( composite.getManagedLabel().createLabel( 1.2f, TextPosture.OBLIQUE ) );
 			this.addComponent( managedFieldsComposite.getView() );
-			this.addComponent( org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance().getLaunchOperation().createButton() );
-			this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalStrut( 24 ) );
-			this.addComponent( composite.getUnmanagedLabel().createLabel( 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( AddResourceKeyManagedFieldComposite.getInstance().getLaunchOperation().createButton() );
+			this.addComponent( BoxUtilities.createVerticalStrut( 24 ) );
+			this.addComponent( composite.getUnmanagedLabel().createLabel( 1.2f, TextPosture.OBLIQUE ) );
 		}
 		this.addComponent( composite.getMembersComposite().getView() );
-		this.addComponent( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getLaunchOperation().createButton() );
+		this.addComponent( AddUnmanagedFieldComposite.getInstance( type ).getLaunchOperation().createButton() );
 
 		final boolean IS_POSER_READY_FOR_PRIME_TIME = false;
 		if( IS_POSER_READY_FOR_PRIME_TIME ) {
-			org.lgna.ik.poser.croquet.DeclarePoseFieldOperation declarePoseFieldOperation = org.lgna.ik.poser.croquet.DeclarePoseFieldOperation.getInstance( type );
+			DeclarePoseFieldOperation declarePoseFieldOperation = DeclarePoseFieldOperation.getInstance( type );
 			if( declarePoseFieldOperation != null ) {
 				this.addComponent( declarePoseFieldOperation.createButton() );
 			}

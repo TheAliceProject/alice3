@@ -42,15 +42,18 @@
  *******************************************************************************/
 package org.lgna.story;
 
-public class STransport extends SJointedModel {
-	private final org.lgna.story.implementation.TransportImp implementation;
+import org.lgna.story.implementation.TransportImp;
+import org.lgna.story.resources.TransportResource;
 
-	public STransport( org.lgna.story.resources.TransportResource resource ) {
+public class STransport extends SJointedModel {
+	private final TransportImp implementation;
+
+	public STransport( TransportResource resource ) {
 		this.implementation = resource.createImplementation( this );
 	}
 
 	@Override
-	org.lgna.story.implementation.TransportImp getImplementation() {
+	TransportImp getImplementation() {
 		return implementation;
 	}
 }

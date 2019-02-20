@@ -43,12 +43,16 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.Composite;
+
+import javax.swing.BoxLayout;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LineAxisPanel extends AxisPanel {
-	public LineAxisPanel( org.lgna.croquet.Composite composite, AwtComponentView<?>... components ) {
-		super( composite, javax.swing.BoxLayout.LINE_AXIS, components );
+	public LineAxisPanel( Composite composite, AwtComponentView<?>... components ) {
+		super( composite, BoxLayout.LINE_AXIS, components );
 	}
 
 	public LineAxisPanel( AwtComponentView<?>... components ) {

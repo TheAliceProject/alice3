@@ -44,7 +44,11 @@ package org.lgna.ik.poser.animation.composites;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import org.alice.ide.ApiConfigurationManager;
+import org.alice.ide.ast.ExpressionCreator;
+import org.alice.stageide.StoryApiConfigurationManager;
 import org.lgna.common.ComponentExecutor;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
@@ -55,10 +59,10 @@ import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.CompositeView;
+import org.lgna.ik.poser.PoseAstUtilities;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLine;
@@ -71,16 +75,22 @@ import org.lgna.ik.poser.croquet.AnimatorComposite;
 import org.lgna.ik.poser.croquet.views.AnimatorControlView;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.JavaKeyedArgument;
+import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.ThisExpression;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.Duration;
+import org.lgna.story.DurationAnimationStyleArgumentFactory;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Pose;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.StrikePose;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.PoseUtilities;
 
 /**
@@ -88,22 +98,22 @@ import org.lgna.story.implementation.PoseUtilities;
  */
 public class AnimatorControlComposite<M extends SJointedModel> extends AbstractPoserControlComposite<AnimatorControlView> {
 
-	public static final Group GROUP = Group.getInstance( java.util.UUID.fromString( "813e60bb-77f3-45b5-a319-aa0bc42faffb" ), "AnimatorOperations" );
+	public static final Group GROUP = Group.getInstance( UUID.fromString( "813e60bb-77f3-45b5-a319-aa0bc42faffb" ), "AnimatorOperations" );
 	private final StringState nameState = createStringState( "nameState" );
 	private final TimeLineComposite tlComposite = new TimeLineComposite();
 	private final BoundedDoubleState currentTime = createBoundedDoubleState( "currentTime", new BoundedDoubleDetails() );
 	private final TimeLineModifierComposite tlModifierComposite = new TimeLineModifierComposite( tlComposite );
 
 	public AnimatorControlComposite( AbstractPoserOrAnimatorComposite parent ) {
-		super( parent, java.util.UUID.fromString( "09599add-4c1b-4ec6-ab5d-4c35f9053bae" ) );
+		super( parent, UUID.fromString( "09599add-4c1b-4ec6-ab5d-4c35f9053bae" ) );
 		currentTime.addValueListener( new ValueListener<Double>() {
 
 			@Override
-			public void changing( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+			public void changing( State<Double> state, Double prevValue, Double nextValue ) {
 			}
 
 			@Override
-			public void changed( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+			public void changed( State<Double> state, Double prevValue, Double nextValue ) {
 				tlComposite.getTimeLine().setCurrentTime( nextValue );
 			}
 		} );
@@ -157,13 +167,12 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		public void fireFinish( PoserEvent poserEvent ) {
 			TimeLine timeLine = tlComposite.getTimeLine();
 			KeyFrameData currentFrame = timeLine.getFrameForCurrentTime();
-			org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-			org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
+			// TODO not use Application.getActiveInstance().acquireOpenActivity()
+			UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
 			if( currentFrame != null ) {
-				step.commitAndInvokeDo( new ModifyPoseOnExistingKeyFrameInTimeLineEdit( step, timeLine, currentFrame, parent.getPose(), currentFrame.getPose() ) );
+				userActivity.commitAndInvokeDo( new ModifyPoseOnExistingKeyFrameInTimeLineEdit( userActivity, timeLine, currentFrame, parent.getPose(), currentFrame.getPose() ) );
 			} else {
-				step.commitAndInvokeDo( new AddKeyFrameToTimeLineEdit( step, timeLine, new KeyFrameData( timeLine.getCurrentTime(), parent.getPose() ) ) );
+				userActivity.commitAndInvokeDo( new AddKeyFrameToTimeLineEdit( userActivity, timeLine, new KeyFrameData( timeLine.getCurrentTime(), parent.getPose() ) ) );
 			}
 		}
 
@@ -176,7 +185,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		boolean stillRunning = true;
 
 		@Override
-		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public AbstractEdit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			final M model = (M)parent.getModel();
 			final TimeLine timeLine = tlComposite.getTimeLine();
 			final List<KeyFrameData> keyFrames = timeLine.getKeyFrames();
@@ -211,7 +220,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 					for( KeyFrameData data : keyFrames ) {
 						double duration = timeLine.getDurationForKeyFrame( data );
 						AnimationStyle styleForKeyFramePose = timeLine.getStyleForKeyFramePose( data );
-						org.lgna.story.implementation.JointedModelImp imp = EmployeesOnly.getImplementation( model );
+						JointedModelImp imp = EmployeesOnly.getImplementation( model );
 						imp.strikePose( data.getPoseActual(), duration, EmployeesOnly.getInternal( styleForKeyFramePose ) );
 						//						tlComposite.selectKeyFrame( data );
 					}
@@ -225,8 +234,8 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 	} );
 
 	public BlockStatement createMethodBody() {
-		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.stageide.StoryApiConfigurationManager.getInstance();
-		org.alice.ide.ast.ExpressionCreator expressionCreator = apiConfigurationManager.getExpressionCreator();
+		ApiConfigurationManager apiConfigurationManager = StoryApiConfigurationManager.getInstance();
+		ExpressionCreator expressionCreator = apiConfigurationManager.getExpressionCreator();
 
 		List<KeyFrameData> keyFrameList = tlComposite.getTimeLine().getKeyFrames();
 		ExpressionStatement[] miArr = new ExpressionStatement[ keyFrameList.size() ];
@@ -238,25 +247,25 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 				AnimationStyle style = tlComposite.getTimeLine().getStyleForKeyFramePose( event );
 
 				Class<? extends Pose> poseCls = PoseUtilities.getPoseClassForModelClass( parent.getModelClass() );
-				org.lgna.project.ast.JavaMethod STRIKE_POSE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( parent.getModelClass(), org.lgna.ik.poser.PoseAstUtilities.STRIKE_POSE_METHOD_NAME, poseCls, StrikePose.Detail[].class );
-				MethodInvocation methodInv = AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), STRIKE_POSE_METHOD, argumentExpression );
-				org.lgna.project.ast.JavaMethod durationKeyMethod = org.lgna.project.ast.JavaMethod.getInstance(
-						org.lgna.story.DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
+				JavaMethod STRIKE_POSE_METHOD = JavaMethod.getInstance( parent.getModelClass(), PoseAstUtilities.STRIKE_POSE_METHOD_NAME, poseCls, StrikePose.Detail[].class );
+				MethodInvocation methodInv = AstUtilities.createMethodInvocation( new ThisExpression(), STRIKE_POSE_METHOD, argumentExpression );
+				JavaMethod durationKeyMethod = JavaMethod.getInstance(
+						DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
 				methodInv.keyedArguments.add(
-						new org.lgna.project.ast.JavaKeyedArgument(
+						new JavaKeyedArgument(
 								methodInv.method.getValue().getKeyedParameter(),
 								durationKeyMethod,
-								new org.lgna.project.ast.DoubleLiteral( duration ) ) );
+								new DoubleLiteral( duration ) ) );
 
 				//animationStyle
-				org.lgna.project.ast.JavaMethod styleKeyMethod = org.lgna.project.ast.JavaMethod.getInstance(
-						org.lgna.story.DurationAnimationStyleArgumentFactory.class, "animationStyle", AnimationStyle.class );
-				methodInv.keyedArguments.add( new org.lgna.project.ast.JavaKeyedArgument( methodInv.method.getValue().getKeyedParameter(),
+				JavaMethod styleKeyMethod = JavaMethod.getInstance(
+						DurationAnimationStyleArgumentFactory.class, "animationStyle", AnimationStyle.class );
+				methodInv.keyedArguments.add( new JavaKeyedArgument( methodInv.method.getValue().getKeyedParameter(),
 						styleKeyMethod, expressionCreator.createExpression( style ) ) );
 				//
 				ExpressionStatement statement = new ExpressionStatement( methodInv );
 				miArr[ i ] = statement;
-			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+			} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
 				throw new RuntimeException( ccee );
 			}
 			++i;

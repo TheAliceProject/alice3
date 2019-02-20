@@ -42,16 +42,25 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.transfer;
 
+import javax.swing.JComponent;
+import javax.swing.TransferHandler;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FileTransferHandler extends javax.swing.TransferHandler {
-	protected abstract void handleFiles( java.util.List<java.io.File> files );
+public abstract class FileTransferHandler extends TransferHandler {
+	protected abstract void handleFiles( List<File> files );
 
 	@Override
-	public boolean canImport( javax.swing.JComponent component, java.awt.datatransfer.DataFlavor[] dataFlavors ) {
-		for( java.awt.datatransfer.DataFlavor dataFlavor : dataFlavors ) {
-			if( dataFlavor.equals( java.awt.datatransfer.DataFlavor.javaFileListFlavor ) ) {
+	public boolean canImport( JComponent component, DataFlavor[] dataFlavors ) {
+		for( DataFlavor dataFlavor : dataFlavors ) {
+			if( dataFlavor.equals( DataFlavor.javaFileListFlavor ) ) {
 				return true;
 			}
 		}
@@ -59,23 +68,23 @@ public abstract class FileTransferHandler extends javax.swing.TransferHandler {
 	}
 
 	@Override
-	public boolean importData( javax.swing.JComponent comp, java.awt.datatransfer.Transferable t ) {
-		for( java.awt.datatransfer.DataFlavor dataFlavor : t.getTransferDataFlavors() ) {
-			if( dataFlavor.equals( java.awt.datatransfer.DataFlavor.javaFileListFlavor ) ) {
+	public boolean importData( JComponent comp, Transferable t ) {
+		for( DataFlavor dataFlavor : t.getTransferDataFlavors() ) {
+			if( dataFlavor.equals( DataFlavor.javaFileListFlavor ) ) {
 				try {
-					final Object data = t.getTransferData( java.awt.datatransfer.DataFlavor.javaFileListFlavor );
-					if( data instanceof java.util.List ) {
+					final Object data = t.getTransferData( DataFlavor.javaFileListFlavor );
+					if( data instanceof List ) {
 						new Thread() {
 							@Override
 							public void run() {
-								handleFiles( (java.util.List<java.io.File>)data );
+								handleFiles( (List<File>)data );
 							}
 						}.start();
 					}
 					return true;
-				} catch( java.io.IOException ioe ) {
+				} catch( IOException ioe ) {
 					throw new RuntimeException( ioe );
-				} catch( java.awt.datatransfer.UnsupportedFlavorException ufe ) {
+				} catch( UnsupportedFlavorException ufe ) {
 					throw new RuntimeException( ufe );
 				}
 			} else {

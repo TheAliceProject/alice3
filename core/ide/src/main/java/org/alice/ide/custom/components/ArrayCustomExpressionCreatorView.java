@@ -42,21 +42,66 @@
  *******************************************************************************/
 package org.alice.ide.custom.components;
 
+import edu.cmu.cs.dennisc.java.awt.font.FontUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import edu.cmu.cs.dennisc.javax.swing.components.JCloseButton;
+import net.miginfocom.swing.MigLayout;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.cascade.ExpressionCascadeContext;
+import org.alice.ide.common.TypeIcon;
+import org.alice.ide.custom.ArrayCustomExpressionCreatorComposite;
+import org.alice.ide.x.AstI18nFactory;
+import org.alice.ide.x.DialogAstI18nFactory;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeWithInternalBlank;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.PopupPrepModel;
+import org.lgna.croquet.data.ListData;
+import org.lgna.croquet.data.MutableListData;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.croquet.views.AbstractLabel;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.DropDown;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.MutableList;
+import org.lgna.croquet.views.PopupButton;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorView {
-	private static abstract class ItemAtIndexCascade<T> extends org.lgna.croquet.CascadeWithInternalBlank<T> {
-		private final org.lgna.croquet.data.ListData<T> data;
+	private static abstract class ItemAtIndexCascade<T> extends CascadeWithInternalBlank<T> {
+		private final ListData<T> data;
 		private final int index;
 
-		public ItemAtIndexCascade( org.lgna.croquet.Group group, java.util.UUID migrationId, org.lgna.croquet.data.ListData<T> data, int index ) {
+		public ItemAtIndexCascade( Group group, UUID migrationId, ListData<T> data, int index ) {
 			super( group, migrationId, data.getItemCodec().getValueClass() );
 			this.data = data;
 			this.index = index;
 		}
 
-		public org.lgna.croquet.data.ListData<T> getData() {
+		public ListData<T> getData() {
 			return this.data;
 		}
 
@@ -65,7 +110,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 
 		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> completionStep, T[] values ) {
+		protected Edit createEdit( UserActivity userActivity, T[] values ) {
 			T[] items = this.data.toArray();
 			items[ this.index ] = values[ 0 ];
 			this.data.internalSetAllItems( items );
@@ -73,66 +118,66 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 	}
 
-	private static class ExpressionAtIndexContext implements org.alice.ide.cascade.ExpressionCascadeContext {
-		private final org.lgna.project.ast.Expression expression;
+	private static class ExpressionAtIndexContext implements ExpressionCascadeContext {
+		private final Expression expression;
 
-		public ExpressionAtIndexContext( org.lgna.project.ast.Expression expression ) {
+		public ExpressionAtIndexContext( Expression expression ) {
 			this.expression = expression;
 		}
 
 		@Override
-		public org.lgna.project.ast.Expression getPreviousExpression() {
+		public Expression getPreviousExpression() {
 			return this.expression;
 		}
 
 		@Override
-		public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
+		public BlockStatementIndexPair getBlockStatementIndexPair() {
 			return null;
 		}
 	}
 
-	private static class ExpressionAtIndexCascade extends ItemAtIndexCascade<org.lgna.project.ast.Expression> {
-		private final org.lgna.project.ast.AbstractType<?, ?, ?> componentType;
+	private static class ExpressionAtIndexCascade extends ItemAtIndexCascade<Expression> {
+		private final AbstractType<?, ?, ?> componentType;
 		private ExpressionAtIndexContext pushedContext;
 
-		public ExpressionAtIndexCascade( org.lgna.croquet.data.ListData<org.lgna.project.ast.Expression> data, int index, org.lgna.project.ast.AbstractType<?, ?, ?> componentType ) {
-			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "bbdd16fe-0ea0-41ae-8e09-fde5ee075e06" ), data, index );
+		public ExpressionAtIndexCascade( ListData<Expression> data, int index, AbstractType<?, ?, ?> componentType ) {
+			super( Application.INHERIT_GROUP, UUID.fromString( "bbdd16fe-0ea0-41ae-8e09-fde5ee075e06" ), data, index );
 			this.componentType = componentType;
 		}
 
 		@Override
-		protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+		protected void prologue() {
 			this.pushedContext = new ExpressionAtIndexContext( this.getData().getItemAt( this.getIndex() ) );
-			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
-			super.prologue( trigger );
+			IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
+			super.prologue();
 		}
 
 		@Override
 		protected void epilogue() {
 			super.epilogue();
-			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
+			IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
 			this.pushedContext = null;
 		}
 
 		@Override
-		protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<Expression> blankNode ) {
+			IDE ide = IDE.getActiveInstance();
 			ide.getExpressionCascadeManager().appendItems( rv, blankNode, this.componentType, null );
 			return rv;
 		}
 	}
 
-	private static class DeleteItemAtIndexOperation<T> extends org.lgna.croquet.ActionOperation {
-		private final org.lgna.croquet.data.ListData<T> data;
+	private static class DeleteItemAtIndexOperation<T> extends ActionOperation {
+		private final ListData<T> data;
 		private final int index;
 
-		public DeleteItemAtIndexOperation( org.lgna.croquet.data.ListData<T> data, int index ) {
-			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "138a9eae-eeb8-40ab-972a-64569a9e16e8" ) );
+		public DeleteItemAtIndexOperation( ListData<T> data, int index ) {
+			super( Application.INHERIT_GROUP, UUID.fromString( "138a9eae-eeb8-40ab-972a-64569a9e16e8" ) );
 			this.data = data;
 			this.index = index;
 		}
 
-		public org.lgna.croquet.data.ListData<T> getData() {
+		public ListData<T> getData() {
 			return this.data;
 		}
 
@@ -141,17 +186,17 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 
 		@Override
-		protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+		protected void perform( UserActivity activity ) {
 			this.data.internalRemoveItem( this.data.getItemAt( this.index ) );
-			step.finish();
+			activity.finish();
 		}
 	}
 
-	private static class ExpressionDropDown extends org.lgna.croquet.views.DropDown<org.lgna.croquet.PopupPrepModel> {
-		private class MainComponent extends org.lgna.croquet.views.BorderPanel {
-			private final org.alice.ide.x.AstI18nFactory factory;
+	private static class ExpressionDropDown extends DropDown<PopupPrepModel> {
+		private class MainComponent extends BorderPanel {
+			private final AstI18nFactory factory;
 
-			public MainComponent( org.alice.ide.x.AstI18nFactory factory ) {
+			public MainComponent( AstI18nFactory factory ) {
 				this.factory = factory;
 			}
 
@@ -159,9 +204,9 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 			protected void internalRefresh() {
 				super.internalRefresh();
 				this.forgetAndRemoveAllComponents();
-				org.lgna.project.ast.Expression expression = cascade.getData().getItemAt( cascade.getIndex() );
+				Expression expression = cascade.getData().getItemAt( cascade.getIndex() );
 				this.addLineStartComponent( factory.createExpressionPane( expression ) );
-				this.addCenterComponent( new org.lgna.croquet.views.Label() );
+				this.addCenterComponent( new Label() );
 				this.revalidateAndRepaint();
 			}
 		};
@@ -169,7 +214,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		private final ExpressionAtIndexCascade cascade;
 		private final MainComponent mainComponent;
 
-		public ExpressionDropDown( ExpressionAtIndexCascade cascade, org.alice.ide.x.AstI18nFactory factory ) {
+		public ExpressionDropDown( ExpressionAtIndexCascade cascade, AstI18nFactory factory ) {
 			super( cascade.getRoot().getPopupPrepModel() );
 			this.cascade = cascade;
 			this.mainComponent = new MainComponent( factory );
@@ -186,30 +231,30 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 	};
 
-	private static class ExpressionMutableList extends org.lgna.croquet.views.MutableList<org.lgna.project.ast.Expression> {
-		private final org.lgna.project.ast.AbstractType<?, ?, ?> componentType;
+	private static class ExpressionMutableList extends MutableList<Expression> {
+		private final AbstractType<?, ?, ?> componentType;
 
 		private class JExpressionItemAtIndexButton extends JItemAtIndexButton {
-			private final javax.swing.JLabel prefixLabel = new javax.swing.JLabel() {
+			private final JLabel prefixLabel = new JLabel() {
 				@Override
-				public java.awt.Color getForeground() {
-					return JExpressionItemAtIndexButton.this.getModel().isSelected() ? java.awt.Color.WHITE : java.awt.Color.BLACK;
+				public Color getForeground() {
+					return JExpressionItemAtIndexButton.this.getModel().isSelected() ? Color.WHITE : Color.BLACK;
 				}
 			};
 			private final ExpressionDropDown expressionDropDown;
 
-			public JExpressionItemAtIndexButton( int index, javax.swing.Action deleteAction ) {
+			public JExpressionItemAtIndexButton( int index, Action deleteAction ) {
 				this.prefixLabel.setText( "[" + index + "]" );
-				edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( this.prefixLabel, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+				FontUtilities.setFontToDerivedFont( this.prefixLabel, TextWeight.BOLD );
 
 				ExpressionAtIndexCascade cascade = new ExpressionAtIndexCascade( ExpressionMutableList.this.getData(), index, ExpressionMutableList.this.componentType );
-				this.expressionDropDown = new ExpressionDropDown( cascade, org.alice.ide.x.DialogAstI18nFactory.getInstance() );
+				this.expressionDropDown = new ExpressionDropDown( cascade, DialogAstI18nFactory.getInstance() );
 
-				this.setLayout( new net.miginfocom.swing.MigLayout( "insets 0", "[]8[]push[]" ) );
+				this.setLayout( new MigLayout( "insets 0", "[]8[]push[]" ) );
 				this.add( this.prefixLabel );
 				this.add( this.expressionDropDown.getAwtComponent() );
 				if( deleteAction != null ) {
-					javax.swing.JButton closeButton = new edu.cmu.cs.dennisc.javax.swing.components.JCloseButton( true );
+					JButton closeButton = new JCloseButton( true );
 					closeButton.setAction( deleteAction );
 					this.add( closeButton, "aligny top" );
 				}
@@ -221,14 +266,14 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 			}
 		}
 
-		public ExpressionMutableList( org.lgna.croquet.data.MutableListData<org.lgna.project.ast.Expression> data, org.lgna.project.ast.AbstractType<?, ?, ?> componentType ) {
-			super( (org.lgna.croquet.data.MutableListData<org.lgna.project.ast.Expression>)data );
+		public ExpressionMutableList( MutableListData<Expression> data, AbstractType<?, ?, ?> componentType ) {
+			super( (MutableListData<Expression>)data );
 			this.componentType = componentType;
 		}
 
 		@Override
 		protected JExpressionItemAtIndexButton createJItemAtIndexButton( int index ) {
-			DeleteItemAtIndexOperation<org.lgna.project.ast.Expression> deleteOperation = new DeleteItemAtIndexOperation<org.lgna.project.ast.Expression>( this.getData(), index );
+			DeleteItemAtIndexOperation<Expression> deleteOperation = new DeleteItemAtIndexOperation<Expression>( this.getData(), index );
 			return new JExpressionItemAtIndexButton( index, deleteOperation.getImp().getSwingModel().getAction() );
 		}
 
@@ -245,32 +290,32 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 	}
 
-	private java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+	private MouseListener mouseListener = new MouseListener() {
 		@Override
-		public void mousePressed( java.awt.event.MouseEvent e ) {
+		public void mousePressed( MouseEvent e ) {
 			expressionList.clearSelection();
 		}
 
 		@Override
-		public void mouseReleased( java.awt.event.MouseEvent e ) {
+		public void mouseReleased( MouseEvent e ) {
 		}
 
 		@Override
-		public void mouseEntered( java.awt.event.MouseEvent e ) {
+		public void mouseEntered( MouseEvent e ) {
 		}
 
 		@Override
-		public void mouseExited( java.awt.event.MouseEvent e ) {
+		public void mouseExited( MouseEvent e ) {
 		}
 
 		@Override
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		public void mouseClicked( MouseEvent e ) {
 		}
 	};
 
 	private final ExpressionMutableList expressionList;
 
-	public ArrayCustomExpressionCreatorView( org.alice.ide.custom.ArrayCustomExpressionCreatorComposite composite ) {
+	public ArrayCustomExpressionCreatorView( ArrayCustomExpressionCreatorComposite composite ) {
 		super( composite );
 		this.expressionList = new ExpressionMutableList( composite.getData(), composite.getArrayType().getComponentType() );
 		this.expressionList.setBackgroundColor( this.getBackgroundColor() );
@@ -289,20 +334,20 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createMainComponent() {
-		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( null, "insets 0, fillx", "[align right, grow 0]8[fill]", "[]8[]0[]" );
-		org.alice.ide.custom.ArrayCustomExpressionCreatorComposite composite = (org.alice.ide.custom.ArrayCustomExpressionCreatorComposite)this.getComposite();
+	protected SwingComponentView<?> createMainComponent() {
+		MigPanel rv = new MigPanel( null, "insets 0, fillx", "[align right, grow 0]8[fill]", "[]8[]0[]" );
+		ArrayCustomExpressionCreatorComposite composite = (ArrayCustomExpressionCreatorComposite)this.getComposite();
 
-		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( this.expressionList );
-		org.lgna.croquet.views.PopupButton popupButton = composite.getAddItemCascade().getRoot().getPopupPrepModel().createPopupButton();
-		scrollPane.getAwtComponent().setMinimumSize( new java.awt.Dimension( 0, 0 ) );
+		ScrollPane scrollPane = new ScrollPane( this.expressionList );
+		PopupButton popupButton = composite.getAddItemCascade().getRoot().getPopupPrepModel().createPopupButton();
+		scrollPane.getAwtComponent().setMinimumSize( new Dimension( 0, 0 ) );
 		popupButton.setMaximumSizeClampedToPreferredSize( true );
 
 		rv.addComponent( composite.getArrayTypeLabel().createLabel() );
-		rv.addComponent( new org.lgna.croquet.views.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getArrayType() ) ), "wrap" );
+		rv.addComponent( new Label( TypeIcon.getInstance( composite.getArrayType() ) ), "wrap" );
 
-		org.lgna.croquet.views.AbstractLabel label = composite.getValueLabel().createLabel();
-		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 0, 0 ) );
+		AbstractLabel label = composite.getValueLabel().createLabel();
+		label.setBorder( BorderFactory.createEmptyBorder( 4, 0, 0, 0 ) );
 		rv.addComponent( label, "aligny top, spany 2" );
 		rv.addComponent( scrollPane, "wrap" );
 

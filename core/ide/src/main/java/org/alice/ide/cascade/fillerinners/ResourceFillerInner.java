@@ -42,33 +42,46 @@
  *******************************************************************************/
 package org.alice.ide.cascade.fillerinners;
 
+import org.alice.ide.IDE;
+import org.lgna.common.Resource;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.project.Project;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ResourceExpression;
+
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceFillerInner<R extends org.lgna.common.Resource> extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+public abstract class ResourceFillerInner<R extends Resource> extends ExpressionFillerInner {
 	public ResourceFillerInner( Class<R> cls ) {
 		super( cls );
 	}
 
-	protected abstract org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.ResourceExpression, ?> getResourceExpressionFillIn( R resource );
+	protected abstract CascadeFillIn<ResourceExpression, ?> getResourceExpressionFillIn( R resource );
 
-	protected abstract org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.ResourceExpression, ?> getImportNewResourceFillIn();
+	protected abstract CascadeFillIn<ResourceExpression, ?> getImportNewResourceFillIn();
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
+		IDE ide = IDE.getActiveInstance();
+		Project project = ide.getProject();
 		if( project != null ) {
-			java.util.Set<org.lgna.common.Resource> resources = project.getResources();
+			Set<Resource> resources = project.getResources();
 			if( ( resources != null ) && ( resources.isEmpty() == false ) ) {
 				synchronized( resources ) {
-					for( org.lgna.common.Resource resource : resources ) {
+					for( Resource resource : resources ) {
 						if( this.getType().isAssignableFrom( resource.getClass() ) ) {
 							items.add( this.getResourceExpressionFillIn( (R)resource ) );
 						}
 					}
 				}
-				items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				items.add( CascadeLineSeparator.getInstance() );
 			}
 		}
 		items.add( this.getImportNewResourceFillIn() );

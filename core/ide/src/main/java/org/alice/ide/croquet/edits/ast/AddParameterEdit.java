@@ -42,17 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.croquet.edits.ast;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserParameter;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AddParameterEdit extends ParameterEdit {
 	private transient int index;
 
-	public AddParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameter ) {
-		super( completionStep, code, parameter );
+	public AddParameterEdit( UserActivity userActivity, UserCode code, UserParameter parameter ) {
+		super( userActivity, code, parameter );
 	}
 
-	public AddParameterEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public AddParameterEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
 
@@ -72,6 +79,6 @@ public class AddParameterEdit extends ParameterEdit {
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "declare:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.getParameter(), org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( rv, this.getParameter(), Application.getLocale() );
 	}
 }

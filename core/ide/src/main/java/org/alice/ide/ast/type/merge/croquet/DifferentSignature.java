@@ -45,11 +45,16 @@ package org.alice.ide.ast.type.merge.croquet;
 import org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite;
 import org.alice.ide.ast.type.merge.help.diffsig.croquet.FieldDifferentSignatureHelpComposite;
 import org.alice.ide.ast.type.merge.help.diffsig.croquet.MethodDifferentSignatureHelpComposite;
+import org.lgna.project.ast.Member;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
+
+import java.net.URI;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentSignature<M extends org.lgna.project.ast.Member> extends PotentialNameChanger<M> {
+public final class DifferentSignature<M extends Member> extends PotentialNameChanger<M> {
 	private static final String METHOD_POST_FIX = "<br><em>(different signature)</em>";
 	private static final String FIELD_POST_FIX = "<br><em>(different value class)</em>";
 	private final MemberHubWithNameState<M> importHub;
@@ -57,11 +62,11 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 	private final ProjectDifferentSignatureCardOwner projectCardOwner;
 	private final DifferentSignatureHelpComposite<M> helpComposite;
 
-	public DifferentSignature( java.net.URI uriForDescriptionPurposesOnly, M importMember, M projectMember ) {
+	public DifferentSignature( URI uriForDescriptionPurposesOnly, M importMember, M projectMember ) {
 		super( uriForDescriptionPurposesOnly );
 		this.importHub = new MemberHubWithNameState<M>( importMember, true ) {
 			@Override
-			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
+			public ActionStatus getActionStatus() {
 				if( importHub.getIsDesiredState().getValue() ) {
 					if( isRenameRequired() ) {
 						return ActionStatus.RENAME_REQUIRED;
@@ -76,7 +81,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 
 		this.projectHub = new MemberHubWithNameState<M>( projectMember, true ) {
 			@Override
-			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
+			public ActionStatus getActionStatus() {
 				if( importHub.getIsDesiredState().getValue() ) {
 					if( isRenameRequired() ) {
 						return ActionStatus.RENAME_REQUIRED;
@@ -96,10 +101,10 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 		this.projectCardOwner = new ProjectDifferentSignatureCardOwner( this );
 
 		//todo
-		if( importMember instanceof org.lgna.project.ast.UserMethod ) {
-			this.helpComposite = (DifferentSignatureHelpComposite<M>)new MethodDifferentSignatureHelpComposite( (DifferentSignature<org.lgna.project.ast.UserMethod>)this );
-		} else if( importMember instanceof org.lgna.project.ast.UserField ) {
-			this.helpComposite = (DifferentSignatureHelpComposite<M>)new FieldDifferentSignatureHelpComposite( (DifferentSignature<org.lgna.project.ast.UserField>)this );
+		if( importMember instanceof UserMethod ) {
+			this.helpComposite = (DifferentSignatureHelpComposite<M>)new MethodDifferentSignatureHelpComposite( (DifferentSignature<UserMethod>)this );
+		} else if( importMember instanceof UserField ) {
+			this.helpComposite = (DifferentSignatureHelpComposite<M>)new FieldDifferentSignatureHelpComposite( (DifferentSignature<UserField>)this );
 		} else {
 			//todo
 			this.helpComposite = null;
@@ -133,7 +138,7 @@ public final class DifferentSignature<M extends org.lgna.project.ast.Member> ext
 		return false;
 	}
 
-	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
+	public void appendStatusPreRejectorCheck( StringBuffer sb ) {
 		if( this.isRenameRequired() ) {
 			sb.append( "must not have same name: \"" );
 			sb.append( this.importHub.getMember().getName() );

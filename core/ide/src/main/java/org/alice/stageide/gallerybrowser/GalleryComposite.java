@@ -43,49 +43,73 @@
 
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingImportAndExportType;
+import org.alice.ide.icons.Icons;
 import org.alice.stageide.gallerybrowser.search.croquet.SearchTab;
+import org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView;
+import org.alice.stageide.gallerybrowser.views.GalleryView;
+import org.alice.stageide.icons.TorusIcon;
+import org.alice.stageide.modelresource.TreeUtilities;
+import org.lgna.croquet.ImmutableDataTabState;
+import org.lgna.croquet.SimpleComposite;
+
+import java.awt.Dimension;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.gallerybrowser.views.GalleryView> {
-	private final ResourceBasedTab resourceBasedTab = new ResourceBasedTab();
-	private final ThemeBasedTab themeBasedTab = new ThemeBasedTab();
-	private final GroupBasedTab groupBasedTab = new GroupBasedTab();
+public class GalleryComposite extends SimpleComposite<GalleryView> {
+	private final TreeOwningGalleryTab resourceBasedTab =
+		new TreeOwningGalleryTab( TreeUtilities.getClassTreeState(), "ResourceBasedTab");
+	private final TreeOwningGalleryTab themeBasedTab =
+		new TreeOwningGalleryTab( TreeUtilities.getThemeTreeState(), "ThemeBasedTab" );
+	private final TreeOwningGalleryTab groupBasedTab =
+		new TreeOwningGalleryTab( TreeUtilities.getGroupTreeState(), "GroupBasedTab" );
 	private final ShapesTab shapesTab = new ShapesTab();
 	private final SearchTab searchTab = new SearchTab();
 	private final ImportTab importTab = new ImportTab();
-	private final org.lgna.croquet.ImmutableDataTabState<GalleryTab> tabState = this.createImmutableTabState( "tabState", 0, GalleryTab.class,
-			org.alice.ide.croquet.models.ui.preferences.IsIncludingImportAndExportType.getValue()
+	private final TreeOwningGalleryTab myGalleryTab =
+		new TreeOwningGalleryTab( TreeUtilities.getUserTreeState(), "CustomGalleryTab" );
+	private final ImmutableDataTabState<GalleryTab> tabState = this.createImmutableTabState( "tabState", 0, GalleryTab.class,
+			IsIncludingImportAndExportType.getValue()
 					? new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.importTab }
 					: new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab }
 			);
 
 	public GalleryComposite() {
-		super( java.util.UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );
+		super( UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );
 	}
 
 	@Override
 	protected void localize() {
 		super.localize();
-		this.tabState.setItemIconForBothTrueAndFalse( this.shapesTab, new org.alice.stageide.icons.TorusIcon( new java.awt.Dimension( 24, 24 ) ) );
-		this.tabState.setItemIconForBothTrueAndFalse( this.resourceBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
-		this.tabState.setItemIconForBothTrueAndFalse( this.themeBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
-		this.tabState.setItemIconForBothTrueAndFalse( this.groupBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
-		this.tabState.setItemIconForBothTrueAndFalse( this.searchTab, org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView.SEARCH_ICON );
-		this.tabState.setItemIconForBothTrueAndFalse( this.importTab, org.alice.ide.icons.Icons.FOLDER_ICON_SMALL );
+		this.tabState.setItemIconForBothTrueAndFalse( this.shapesTab, new TorusIcon( new Dimension( 24, 24 ) ) );
+		this.tabState.setItemIconForBothTrueAndFalse( this.resourceBasedTab, Icons.EMPTY_HEIGHT_ICON_SMALL );
+		this.tabState.setItemIconForBothTrueAndFalse( this.themeBasedTab, Icons.EMPTY_HEIGHT_ICON_SMALL );
+		this.tabState.setItemIconForBothTrueAndFalse( this.groupBasedTab, Icons.EMPTY_HEIGHT_ICON_SMALL );
+		this.tabState.setItemIconForBothTrueAndFalse( this.searchTab, SearchTabView.SEARCH_ICON );
+		this.tabState.setItemIconForBothTrueAndFalse( this.importTab, Icons.FOLDER_ICON_SMALL );
+		this.tabState.setItemIconForBothTrueAndFalse( this.myGalleryTab, Icons.FOLDER_ICON_SMALL );
 	}
 
-	public org.lgna.croquet.ImmutableDataTabState<GalleryTab> getTabState() {
+	public ImmutableDataTabState<GalleryTab> getTabState() {
 		return this.tabState;
 	}
 
 	@Override
-	protected org.alice.stageide.gallerybrowser.views.GalleryView createView() {
-		return new org.alice.stageide.gallerybrowser.views.GalleryView( this );
+	protected GalleryView createView() {
+		return new GalleryView( this );
 	}
 
-	public org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel getDragModelForCls( Class<?> cls ) {
+	public GalleryDragModel getDragModelForCls( Class<?> cls ) {
 		return this.shapesTab.getDragModelForCls( cls );
+	}
+
+	public void modelUpdated() {
+		resourceBasedTab.modelUpdated();
+		searchTab.modelUpdated();
+		myGalleryTab.modelUpdated();
 	}
 }

@@ -42,20 +42,30 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.preview.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import org.alice.ide.ast.type.merge.croquet.MemberHub;
+import org.alice.ide.ast.type.merge.croquet.views.MemberPreviewPane;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.project.ast.Member;
+
+import java.awt.Color;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class MembersSubPane<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.views.MigPanel {
-	public MembersSubPane( String headerText, java.awt.Color baseColor, java.util.List<org.alice.ide.ast.type.merge.croquet.MemberHub<M>> hubs ) {
+public final class MembersSubPane<M extends Member> extends MigPanel {
+	public MembersSubPane( String headerText, Color baseColor, List<MemberHub<M>> hubs ) {
 		super( null, "fillx", "[grow]" );
-		java.awt.Color headerColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 0.9, 0.9 );
+		Color headerColor = ColorUtilities.scaleHSB( baseColor, 1.0, 0.9, 0.9 );
 
 		this.setBackgroundColor( headerColor );
-		org.lgna.croquet.views.Label headerLabel = new org.lgna.croquet.views.Label( headerText );
+		Label headerLabel = new Label( headerText );
 		headerLabel.setBackgroundColor( headerColor );
 		this.addComponent( headerLabel, "grow, shrink, wrap" );
-		for( org.alice.ide.ast.type.merge.croquet.MemberHub<M> hub : hubs ) {
-			this.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberPreviewPane.createView( hub, true ), "grow, shrink, wrap" );
+		for( MemberHub<M> hub : hubs ) {
+			this.addComponent( MemberPreviewPane.createView( hub, true ), "grow, shrink, wrap" );
 		}
 	}
 }

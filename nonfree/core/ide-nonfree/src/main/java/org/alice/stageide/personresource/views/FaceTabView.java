@@ -42,21 +42,36 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views;
 
+import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
+import org.alice.stageide.personresource.FaceTabComposite;
+import org.alice.stageide.personresource.views.renderers.FaceListCellRenderer;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+import org.lgna.croquet.views.List;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.ToggleButton;
+import org.lgna.story.resources.sims2.BaseEyeColor;
+import org.lgna.story.resources.sims2.BaseFace;
+
+import javax.swing.BorderFactory;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FaceTabView extends org.lgna.croquet.views.MigPanel {
-	public FaceTabView( org.alice.stageide.personresource.FaceTabComposite composite ) {
+public class FaceTabView extends MigPanel {
+	public FaceTabView( FaceTabComposite composite ) {
 		super( composite, "insets 2, fillx", "[right][left, grow, shrink]", "" );
-		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
+		Color backgroundColor = IngredientsView.BACKGROUND_COLOR;
 		this.setBackgroundColor( backgroundColor );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 
-		org.lgna.croquet.views.List<org.lgna.story.resources.sims2.BaseFace> faceList = new HorizontalWrapList<org.lgna.story.resources.sims2.BaseFace>( composite.getBaseFaceState(), -1, org.alice.stageide.personresource.views.renderers.FaceListCellRenderer.getInstance() );
-		faceList.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
+		List<BaseFace> faceList = new HorizontalWrapList<BaseFace>( composite.getBaseFaceState(), -1, FaceListCellRenderer.getInstance() );
+		faceList.setBackgroundColor( IngredientsView.BACKGROUND_COLOR );
 		this.addComponent( composite.getBaseFaceState().getSidekickLabel().createLabel(), "top" );
-		org.lgna.croquet.views.ScrollPane faceScrollPane = new org.lgna.croquet.views.ScrollPane( faceList );
-		faceScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.views.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		ScrollPane faceScrollPane = new ScrollPane( faceList );
+		faceScrollPane.setHorizontalScrollbarPolicy( ScrollPane.HorizontalScrollbarPolicy.NEVER );
 		faceScrollPane.setBothScrollBarIncrements( 66, 66 );
 		this.addComponent( faceScrollPane, "wrap, grow, shrink" );
 
@@ -65,16 +80,16 @@ public class FaceTabView extends org.lgna.croquet.views.MigPanel {
 		if( IS_LIST_DESIRED ) {
 			this.addComponent( new HorizontalWrapList( composite.getBaseEyeColorState(), 1 ), "wrap, shrink" );
 		} else {
-			org.lgna.croquet.ImmutableDataSingleSelectListState<org.lgna.story.resources.sims2.BaseEyeColor> eyeColorState = composite.getBaseEyeColorState();
-			org.lgna.story.resources.sims2.BaseEyeColor[] baseEyeColors = org.lgna.story.resources.sims2.BaseEyeColor.values();
+			ImmutableDataSingleSelectListState<BaseEyeColor> eyeColorState = composite.getBaseEyeColorState();
+			BaseEyeColor[] baseEyeColors = BaseEyeColor.values();
 			String constraint = "split " + baseEyeColors.length;
-			for( org.lgna.story.resources.sims2.BaseEyeColor baseEyeColor : baseEyeColors ) {
-				java.awt.Color awtColor = baseEyeColor.getColor();
-				org.lgna.croquet.BooleanState itemSelectedState = eyeColorState.getItemSelectedState( baseEyeColor );
+			for( BaseEyeColor baseEyeColor : baseEyeColors ) {
+				Color awtColor = baseEyeColor.getColor();
+				BooleanState itemSelectedState = eyeColorState.getItemSelectedState( baseEyeColor );
 				itemSelectedState.initializeIfNecessary();
 				itemSelectedState.setTextForBothTrueAndFalse( "" );
-				itemSelectedState.setIconForBothTrueAndFalse( new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( awtColor ) );
-				org.lgna.croquet.views.ToggleButton toggleButton = itemSelectedState.createToggleButton();
+				itemSelectedState.setIconForBothTrueAndFalse( new ColorIcon( awtColor ) );
+				ToggleButton toggleButton = itemSelectedState.createToggleButton();
 				toggleButton.tightenUpMargin( IngredientsView.COLOR_BUTTON_MARGIN );
 				this.addComponent( toggleButton, constraint );
 				constraint = "";

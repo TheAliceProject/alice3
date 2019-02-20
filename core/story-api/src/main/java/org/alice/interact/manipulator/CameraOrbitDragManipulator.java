@@ -45,7 +45,8 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import edu.cmu.cs.dennisc.math.Ray;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 
@@ -190,7 +191,7 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 					cameraForward.add( new Vector3( 0, downwardShiftFactor, 0 ) );
 					cameraForward.normalize();
 				}
-				Point3 pickPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, new edu.cmu.cs.dennisc.math.Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward ) );
+				Point3 pickPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward ) );
 				if( pickPoint != null ) {
 					this.setPivotPoint( pickPoint );
 					success = true;

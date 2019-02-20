@@ -43,16 +43,20 @@
 
 package org.alice.ide.declarationseditor.type.data;
 
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
 public class UnmanagedFieldData extends FieldData {
-	public UnmanagedFieldData( org.lgna.project.ast.NamedUserType type ) {
+	public UnmanagedFieldData( NamedUserType type ) {
 		super( type );
 	}
 
 	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.managementLevel.getValue() != org.lgna.project.ast.ManagementLevel.MANAGED;
+	protected boolean isAcceptableItem( UserField value ) {
+		return value.managementLevel.getValue() != ManagementLevel.MANAGED;
 	}
 }

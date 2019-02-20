@@ -42,6 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+
 /**
  * @author Dennis Cosgrove
  * 
@@ -52,23 +64,23 @@ public class IconUtilities {
 	}
 
 	private static final boolean IS_PRINT_USED = true;
-	private static final java.awt.Container privateContainer = new java.awt.Container();
+	private static final Container privateContainer = new Container();
 
-	public static javax.swing.Icon createIcon( java.awt.Component component ) {
-		javax.swing.Icon rv;
-		java.awt.Dimension size = component.getPreferredSize();
+	public static Icon createIcon( Component component ) {
+		Icon rv;
+		Dimension size = component.getPreferredSize();
 		if( ( size.width > 0 ) && ( size.height > 0 ) ) {
-			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( size.width, size.height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
-			java.awt.Graphics g = image.getGraphics();
+			BufferedImage image = new BufferedImage( size.width, size.height, BufferedImage.TYPE_INT_ARGB );
+			Graphics g = image.getGraphics();
 			if( IS_PRINT_USED ) {
 				component.print( g );
 			} else {
-				javax.swing.SwingUtilities.paintComponent( g, component, privateContainer, 0, 0, size.width, size.height );
+				SwingUtilities.paintComponent( g, component, privateContainer, 0, 0, size.width, size.height );
 			}
 			g.dispose();
-			rv = new javax.swing.ImageIcon( image );
+			rv = new ImageIcon( image );
 		} else {
-			rv = new javax.swing.Icon() {
+			rv = new Icon() {
 				@Override
 				public int getIconWidth() {
 					return 24;
@@ -80,50 +92,50 @@ public class IconUtilities {
 				}
 
 				@Override
-				public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+				public void paintIcon( Component c, Graphics g, int x, int y ) {
 				}
 			};
 		}
 		return rv;
 	}
 
-	public static javax.swing.ImageIcon createImageIcon( java.net.URL url ) {
+	public static ImageIcon createImageIcon( URL url ) {
 		if( url != null ) {
-			return new javax.swing.ImageIcon( url );
+			return new ImageIcon( url );
 		} else {
 			return null;
 		}
 	}
 
-	public static javax.swing.ImageIcon createImageIcon( java.awt.Image image ) {
+	public static ImageIcon createImageIcon( Image image ) {
 		if( image != null ) {
-			return new javax.swing.ImageIcon( image );
+			return new ImageIcon( image );
 		} else {
 			return null;
 		}
 	}
 
-	public static javax.swing.ImageIcon[] createImageIcons( java.net.URL... urls ) {
-		javax.swing.ImageIcon[] rv = new javax.swing.ImageIcon[ urls.length ];
+	public static ImageIcon[] createImageIcons( URL... urls ) {
+		ImageIcon[] rv = new ImageIcon[ urls.length ];
 		int i = 0;
-		for( java.net.URL url : urls ) {
+		for( URL url : urls ) {
 			rv[ i ] = createImageIcon( url );
 			i++;
 		}
 		return rv;
 	}
 
-	public static javax.swing.ImageIcon[] createImageIcons( java.awt.Image... images ) {
-		javax.swing.ImageIcon[] rv = new javax.swing.ImageIcon[ images.length ];
+	public static ImageIcon[] createImageIcons( Image... images ) {
+		ImageIcon[] rv = new ImageIcon[ images.length ];
 		int i = 0;
-		for( java.awt.Image image : images ) {
+		for( Image image : images ) {
 			rv[ i ] = createImageIcon( image );
 			i++;
 		}
 		return rv;
 	}
 
-	public static boolean areSizesEqual( javax.swing.Icon prevIcon, javax.swing.Icon nextIcon ) {
+	public static boolean areSizesEqual( Icon prevIcon, Icon nextIcon ) {
 		int prevWidth = prevIcon != null ? prevIcon.getIconWidth() : 0;
 		int prevHeight = prevIcon != null ? prevIcon.getIconHeight() : 0;
 		int nextWidth = nextIcon != null ? nextIcon.getIconWidth() : 0;
@@ -131,25 +143,25 @@ public class IconUtilities {
 		return ( prevWidth == nextWidth ) && ( prevHeight == nextHeight );
 	}
 
-	public static javax.swing.Icon getInformationIcon() {
-		return javax.swing.UIManager.getIcon( "OptionPane.informationIcon" );
+	public static Icon getInformationIcon() {
+		return UIManager.getIcon( "OptionPane.informationIcon" );
 	}
 
-	public static javax.swing.Icon getQuestionIcon() {
-		return javax.swing.UIManager.getIcon( "OptionPane.questionIcon" );
+	public static Icon getQuestionIcon() {
+		return UIManager.getIcon( "OptionPane.questionIcon" );
 	}
 
-	public static javax.swing.Icon getWarningIcon() {
-		return javax.swing.UIManager.getIcon( "OptionPane.warningIcon" );
+	public static Icon getWarningIcon() {
+		return UIManager.getIcon( "OptionPane.warningIcon" );
 	}
 
-	public static javax.swing.Icon getErrorIcon() {
-		return javax.swing.UIManager.getIcon( "OptionPane.errorIcon" );
+	public static Icon getErrorIcon() {
+		return UIManager.getIcon( "OptionPane.errorIcon" );
 	}
 
-	public static java.awt.Dimension newDimension( javax.swing.Icon icon ) {
+	public static Dimension newDimension( Icon icon ) {
 		if( icon != null ) {
-			return new java.awt.Dimension( icon.getIconWidth(), icon.getIconHeight() );
+			return new Dimension( icon.getIconWidth(), icon.getIconHeight() );
 		} else {
 			return null;
 		}

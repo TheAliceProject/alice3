@@ -43,30 +43,38 @@
 
 package org.alice.ide.custom.components;
 
+import org.alice.ide.custom.CustomExpressionCreatorComposite;
+import org.alice.ide.preview.components.PanelWithPreview;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.NullLiteral;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomExpressionCreatorView extends org.alice.ide.preview.components.PanelWithPreview {
-	public CustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
+public abstract class CustomExpressionCreatorView extends PanelWithPreview {
+	public CustomExpressionCreatorView( CustomExpressionCreatorComposite<?> composite ) {
 		super( composite );
 	}
 
-	private org.lgna.project.ast.Expression createValue() {
-		org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite = (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)this.getComposite();
+	private Expression createValue() {
+		CustomExpressionCreatorComposite<?> composite = (CustomExpressionCreatorComposite<?>)this.getComposite();
 		return composite.getPreviewValue();
 	}
 
 	@Override
-	public org.lgna.croquet.views.SwingComponentView<?> createPreviewSubComponent() {
-		org.lgna.project.ast.Expression expression;
+	public SwingComponentView<?> createPreviewSubComponent() {
+		Expression expression;
 		try {
 			expression = this.createValue();
 		} catch( RuntimeException re ) {
 			re.printStackTrace();
-			expression = new org.lgna.project.ast.NullLiteral();
+			expression = new NullLiteral();
 		}
-		return new org.lgna.croquet.views.BorderPanel.Builder()
-				.lineStart( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ) )
+		return new BorderPanel.Builder()
+				.lineStart( PreviewAstI18nFactory.getInstance().createExpressionPane( expression ) )
 				.build();
 	}
 }

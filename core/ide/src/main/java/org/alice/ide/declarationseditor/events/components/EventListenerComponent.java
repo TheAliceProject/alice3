@@ -44,13 +44,22 @@ package org.alice.ide.declarationseditor.events.components;
 
 import javax.swing.BorderFactory;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.alice.ide.ThemeUtilities;
 import org.alice.ide.codeeditor.ArgumentListPropertyPane;
+import org.alice.ide.common.BodyPane;
+import org.alice.ide.common.ThisPane;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.eventseditor.components.EventAccessorMethodsPanel;
 import org.alice.ide.formatter.Formatter;
+import org.alice.ide.x.ProjectEditorAstI18nFactory;
+import org.alice.ide.x.components.KeyedArgumentListPropertyView;
 import org.alice.ide.x.components.StatementListPropertyView;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.BoxUtilities;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.croquet.views.SwingComponentView;
@@ -80,20 +89,20 @@ public class EventListenerComponent extends BorderPanel {
 					Formatter formatter = FormatterState.getInstance().getValue();
 					LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel(
 							getDeclareProcedureLabel(),
-							org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 4 ),
-							new Label( formatter.getNameForDeclaration( singleAbstractMethod ), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ),
-							org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ),
-							new org.alice.ide.eventseditor.components.EventAccessorMethodsPanel( lambda )
+							BoxUtilities.createHorizontalSliver( 4 ),
+							new Label( formatter.getNameForDeclaration( singleAbstractMethod ), 1.5f, TextWeight.BOLD ),
+							BoxUtilities.createHorizontalSliver( 8 ),
+							new EventAccessorMethodsPanel( lambda )
 							);
 
-					StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements );
-					org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( putCodeHere );
+					StatementListPropertyView putCodeHere = new StatementListPropertyView( ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements );
+					BodyPane bodyPane = new BodyPane( putCodeHere );
 
 					BorderPanel codeContainer = new BorderPanel.Builder()
 							.pageStart( singleAbstractMethodHeader )
 							.center( bodyPane )
 							.build();
-					codeContainer.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getEventBodyColor() );
+					codeContainer.setBackgroundColor( ThemeUtilities.getActiveTheme().getEventBodyColor() );
 					codeContainer.setBorder( BorderFactory.createEmptyBorder( 8, 8, 4, 4 ) );
 					this.addCenterComponent( codeContainer );
 					bottom = 8;
@@ -108,13 +117,13 @@ public class EventListenerComponent extends BorderPanel {
 		AbstractMethod method = methodInvocation.method.getValue();
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.setBorder( BorderFactory.createEmptyBorder( 0, 0, 4, 0 ) );
-		rv.addComponent( new org.alice.ide.common.ThisPane() );
-		rv.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 4 ) );
-		Label label = new Label( formatter.getNameForDeclaration( method ), edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		rv.addComponent( new ThisPane() );
+		rv.addComponent( BoxUtilities.createHorizontalSliver( 4 ) );
+		Label label = new Label( formatter.getNameForDeclaration( method ), TextWeight.BOLD );
 		rv.addComponent( label );
 		if( method.getRequiredParameters() != null ) {
 			SimpleArgumentListProperty requiredArgumentsProperty = methodInvocation.getRequiredArgumentsProperty();
-			ArgumentListPropertyPane requiredParametersListView = new ArgumentListPropertyPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), requiredArgumentsProperty ) {
+			ArgumentListPropertyPane requiredParametersListView = new ArgumentListPropertyPane( ProjectEditorAstI18nFactory.getInstance(), requiredArgumentsProperty ) {
 				@Override
 				protected AwtComponentView<?> createComponent( SimpleArgument argument ) {
 					if( argument.expression.getValue() instanceof LambdaExpression ) {
@@ -131,14 +140,14 @@ public class EventListenerComponent extends BorderPanel {
 			//			System.out.println(requiredParametersListView);
 		}
 		if( method.getKeyedParameter() != null ) {
-			SwingComponentView<?> keyedArgumentListView = new org.alice.ide.x.components.KeyedArgumentListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), methodInvocation.getKeyedArgumentsProperty() );
+			SwingComponentView<?> keyedArgumentListView = new KeyedArgumentListPropertyView( ProjectEditorAstI18nFactory.getInstance(), methodInvocation.getKeyedArgumentsProperty() );
 			rv.addComponent( keyedArgumentListView );
 		}
 		return rv;
 	}
 
 	private Label getDeclareProcedureLabel() {
-		return new Label( localize( "declare" ) + " " + localize( "procedure" ), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+		return new Label( localize( "declare" ) + " " + localize( "procedure" ), TextPosture.OBLIQUE );
 	}
 
 	private String localize( String key ) {

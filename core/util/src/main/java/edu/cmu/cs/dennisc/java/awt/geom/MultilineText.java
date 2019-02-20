@@ -42,17 +42,27 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.geom;
 
+import edu.cmu.cs.dennisc.java.awt.TextAlignment;
+
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.geom.Area;
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Rectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MultilineText extends Transformable {
 	private edu.cmu.cs.dennisc.java.awt.MultilineText multilineText;
-	private java.awt.Font font;
-	private edu.cmu.cs.dennisc.java.awt.TextAlignment alignment;
-	private java.awt.Paint paint;
+	private Font font;
+	private TextAlignment alignment;
+	private Paint paint;
 	private float wrapWidth;
 
-	public MultilineText( String text, java.awt.Font font, edu.cmu.cs.dennisc.java.awt.TextAlignment alignment, java.awt.Paint paint ) {
+	public MultilineText( String text, Font font, TextAlignment alignment, Paint paint ) {
 		this.multilineText = new edu.cmu.cs.dennisc.java.awt.MultilineText( text );
 		this.font = font;
 		this.alignment = alignment;
@@ -60,27 +70,27 @@ public class MultilineText extends Transformable {
 		this.wrapWidth = Float.NaN;
 	}
 
-	public java.awt.Font getFont() {
+	public Font getFont() {
 		return this.font;
 	}
 
-	public void setFont( java.awt.Font font ) {
+	public void setFont( Font font ) {
 		this.font = font;
 	}
 
-	public edu.cmu.cs.dennisc.java.awt.TextAlignment getAlignment() {
+	public TextAlignment getAlignment() {
 		return this.alignment;
 	}
 
-	public void setAlignment( edu.cmu.cs.dennisc.java.awt.TextAlignment alignment ) {
+	public void setAlignment( TextAlignment alignment ) {
 		this.alignment = alignment;
 	}
 
-	public java.awt.Paint getPaint() {
+	public Paint getPaint() {
 		return this.paint;
 	}
 
-	public void setPaint( java.awt.Paint paint ) {
+	public void setPaint( Paint paint ) {
 		this.paint = paint;
 	}
 
@@ -92,23 +102,23 @@ public class MultilineText extends Transformable {
 		this.wrapWidth = wrapWidth;
 	}
 
-	public java.awt.geom.Rectangle2D getBounds( java.awt.Graphics g ) {
-		java.awt.geom.Dimension2D size = this.multilineText.getDimension( g, this.wrapWidth );
+	public Rectangle2D getBounds( Graphics g ) {
+		Dimension2D size = this.multilineText.getDimension( g, this.wrapWidth );
 		double width = size.getWidth();
 		double height = size.getHeight();
-		return new java.awt.geom.Rectangle2D.Double( -width * 0.5, -height * 0.5, width, height );
+		return new Rectangle2D.Double( -width * 0.5, -height * 0.5, width, height );
 	}
 
 	@Override
-	protected void paintComponent( edu.cmu.cs.dennisc.java.awt.geom.GraphicsContext gc ) {
-		java.awt.Graphics2D g2 = gc.getAWTGraphics2D();
+	protected void paintComponent( GraphicsContext gc ) {
+		Graphics2D g2 = gc.getAWTGraphics2D();
 		g2.setPaint( this.paint );
-		java.awt.geom.Rectangle2D bounds = this.getBounds( g2 );
+		Rectangle2D bounds = this.getBounds( g2 );
 		this.multilineText.paint( g2, this.wrapWidth, this.alignment, bounds );
 	}
 
 	@Override
-	protected java.awt.geom.Area update( java.awt.geom.Area rv, edu.cmu.cs.dennisc.java.awt.geom.TransformContext tc ) {
+	protected Area update( Area rv, TransformContext tc ) {
 		//todo
 		return rv;
 	}

@@ -43,14 +43,44 @@
 
 package org.alice.ide.name.validators;
 
+import org.alice.stageide.modelresource.ResourceNode;
+import org.alice.stageide.modelresource.TreeUtilities;
+import org.lgna.story.SThing;
+
 public class TypeNameValidator extends NodeNameValidator {
-	public TypeNameValidator( org.lgna.project.ast.NamedUserType type ) {
-		super( type );
+	public TypeNameValidator() {
+		super( null );
 	}
 
 	@Override
 	public boolean isNameAvailable( String name ) {
-		//todo
-		return true;
+		return !isGalleryClassName( name ) && !isSystemClassName( name ) && !isAliceClassName( name);
+	}
+
+	// This catches Cube, Biped, and other types that exist in Alice. It also rejects Thing
+	// and Turnable, which are not problems. This takes the more cautious approach, rejecting
+	// some valid, but perhaps confusing, names.
+	private boolean isAliceClassName( String name ) {
+		return isSystemClassName( "S" + name );
+	}
+
+	private boolean isSystemClassName( String name ) {
+		try {
+			Class c = Class.forName("org.lgna.story." + name);
+			return SThing.class.isAssignableFrom( c );
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
+	}
+
+	private boolean isGalleryClassName( String name ) {
+		return hasNodeNamed( TreeUtilities.getTreeBasedOnClassHierarchy(), name );
+	}
+
+	private boolean hasNodeNamed( ResourceNode node, String name ) {
+		if( name.equals( node.getResourceKey().getSearchText() ) ) {
+			return true;
+		}
+		return node.getNodeChildren().stream().anyMatch( child -> hasNodeNamed( child, name ) );
 	}
 }

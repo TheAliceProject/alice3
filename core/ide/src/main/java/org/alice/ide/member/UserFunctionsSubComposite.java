@@ -42,13 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.member;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.declaration.AddFunctionComposite;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class UserFunctionsSubComposite extends UserMethodsSubComposite {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, UserFunctionsSubComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<NamedUserType, UserFunctionsSubComposite> map = Maps.newHashMap();
 
-	public static synchronized UserFunctionsSubComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+	public static synchronized UserFunctionsSubComposite getInstance( NamedUserType type ) {
 		assert type != null;
 		UserFunctionsSubComposite rv = map.get( type );
 		if( rv != null ) {
@@ -60,18 +70,18 @@ public class UserFunctionsSubComposite extends UserMethodsSubComposite {
 		return rv;
 	}
 
-	private UserFunctionsSubComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "7e67d035-f06d-4a05-962c-b7924c48893a" ), type, org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( type ).getLaunchOperation() );
+	private UserFunctionsSubComposite( NamedUserType type ) {
+		super( UUID.fromString( "7e67d035-f06d-4a05-962c-b7924c48893a" ), type, AddFunctionComposite.getInstance( type ).getLaunchOperation() );
 		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "'s Editable Functions" );
 	}
 
 	@Override
-	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
+	protected boolean isAcceptable( AbstractMethod method ) {
 		return method.isFunction();
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractMethod getGetterOrSetter( org.lgna.project.ast.UserField field ) {
-		return field.getGetter();
+	protected List<? extends AbstractMethod> getGettersOrSetters( UserField field ) {
+		return field.getGetters();
 	}
 }

@@ -43,15 +43,17 @@
 
 package org.lgna.croquet.imp.cascade;
 
+import org.lgna.croquet.AbstractCascadeMenuModel;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MenuNode<F, B> extends BlankOwnerNode<F, B, org.lgna.croquet.AbstractCascadeMenuModel<F, B>> {
-	public static <F, B> MenuNode<F, B> createInstance( org.lgna.croquet.AbstractCascadeMenuModel<F, B> model ) {
+public class MenuNode<F, B> extends BlankOwnerNode<F, B, AbstractCascadeMenuModel<F, B>> {
+	public static <F, B> MenuNode<F, B> createInstance( AbstractCascadeMenuModel<F, B> model ) {
 		return new MenuNode<F, B>( model );
 	}
 
-	private MenuNode( org.lgna.croquet.AbstractCascadeMenuModel<F, B> model ) {
+	private MenuNode( AbstractCascadeMenuModel<F, B> model ) {
 		super( model );
 	}
 }

@@ -43,47 +43,66 @@
 
 package test.ik.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextFamily;
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.List;
+import org.lgna.croquet.views.PageAxisPanel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.Separator;
+import org.lgna.croquet.views.TextArea;
+import org.lgna.ik.core.solver.Bone;
+import test.ik.croquet.AnchorJointIdState;
+import test.ik.croquet.BonesState;
+import test.ik.croquet.ControlsComposite;
+import test.ik.croquet.EndJointIdState;
+import test.ik.croquet.InfoState;
+import test.ik.croquet.IsAngularEnabledState;
+import test.ik.croquet.IsLinearEnabledState;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ControlsPanel extends org.lgna.croquet.views.PageAxisPanel {
-	public ControlsPanel( test.ik.croquet.ControlsComposite composite ) {
+public class ControlsPanel extends PageAxisPanel {
+	public ControlsPanel( ControlsComposite composite ) {
 		super( composite );
 
-		this.addComponent( test.ik.croquet.IsLinearEnabledState.getInstance().createCheckBox() );
-		this.addComponent( test.ik.croquet.IsAngularEnabledState.getInstance().createCheckBox() );
+		this.addComponent( IsLinearEnabledState.getInstance().createCheckBox() );
+		this.addComponent( IsAngularEnabledState.getInstance().createCheckBox() );
 
-		this.addComponent( new org.lgna.croquet.views.LineAxisPanel(
-				new org.lgna.croquet.views.Label( "anchor:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
-				new JointIdDropDown( test.ik.croquet.AnchorJointIdState.getInstance() )
+		this.addComponent( new LineAxisPanel(
+				new Label( "anchor:", TextPosture.OBLIQUE ),
+				new JointIdDropDown( AnchorJointIdState.getInstance() )
 				) );
-		this.addComponent( new org.lgna.croquet.views.LineAxisPanel(
-				new org.lgna.croquet.views.Label( "end:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
-				new JointIdDropDown( test.ik.croquet.EndJointIdState.getInstance() )
+		this.addComponent( new LineAxisPanel(
+				new Label( "end:", TextPosture.OBLIQUE ),
+				new JointIdDropDown( EndJointIdState.getInstance() )
 				) );
 
-		this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 4 ) );
-		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom() );
-		this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 4 ) );
+		this.addComponent( BoxUtilities.createVerticalSliver( 4 ) );
+		this.addComponent( Separator.createInstanceSeparatingTopFromBottom() );
+		this.addComponent( BoxUtilities.createVerticalSliver( 4 ) );
 
-		this.addComponent( new org.lgna.croquet.views.Label( "chain:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+		this.addComponent( new Label( "chain:", TextPosture.OBLIQUE ) );
 
-		org.lgna.croquet.views.List<org.lgna.ik.core.solver.Bone> list = test.ik.croquet.BonesState.getInstance().createList();
+		List<Bone> list = BonesState.getInstance().createList();
 		list.setAlignmentX( 0.0f );
 		list.setBackgroundColor( null );
 		this.addComponent( list );
 
-		this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 4 ) );
-		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom() );
-		this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 4 ) );
+		this.addComponent( BoxUtilities.createVerticalSliver( 4 ) );
+		this.addComponent( Separator.createInstanceSeparatingTopFromBottom() );
+		this.addComponent( BoxUtilities.createVerticalSliver( 4 ) );
 
-		this.addComponent( new org.lgna.croquet.views.Label( "info:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+		this.addComponent( new Label( "info:", TextPosture.OBLIQUE ) );
 
-		org.lgna.croquet.views.TextArea textArea = test.ik.croquet.InfoState.getInstance().createTextArea();
+		TextArea textArea = InfoState.getInstance().createTextArea();
 		textArea.getAwtComponent().setEditable( false );
 		textArea.setBorder( null );
-		textArea.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
-		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( textArea );
+		textArea.changeFont( TextFamily.MONOSPACED );
+		ScrollPane scrollPane = new ScrollPane( textArea );
 		scrollPane.setAlignmentX( 0.0f );
 		this.addComponent( scrollPane );
 		this.setMinimumPreferredWidth( 200 );

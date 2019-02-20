@@ -42,87 +42,116 @@
  *******************************************************************************/
 package org.alice.ide;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ArrayInstanceCreation;
+import org.lgna.project.ast.Code;
+import org.lgna.project.ast.Comment;
+import org.lgna.project.ast.DoTogether;
+import org.lgna.project.ast.EachInArrayTogether;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InfixExpression;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.LogicalComplement;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.NullLiteral;
+import org.lgna.project.ast.ResourceExpression;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.StringConcatenation;
+import org.lgna.project.ast.UserLocal;
+import org.lgna.project.ast.UserMethod;
+
+import java.awt.Color;
+import java.awt.GradientPaint;
+import java.awt.Paint;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DefaultTheme implements Theme {
-	private static final java.awt.Color DEFAULT_NOUN_COLOR = new java.awt.Color( 0xFDF6C0 );
-	public static final java.awt.Color DEFAULT_TYPE_COLOR = DEFAULT_NOUN_COLOR;
-	public static final java.awt.Color DEFAULT_CONSTRUCTOR_COLOR = new java.awt.Color( 0xE6D4A3 );
-	public static final java.awt.Color DEFAULT_FIELD_COLOR = new java.awt.Color( 0xD6AC8B );
+	private static final Color DEFAULT_NOUN_COLOR = new Color( 0xFDF6C0 );
+	public static final Color DEFAULT_TYPE_COLOR = DEFAULT_NOUN_COLOR;
+	public static final Color DEFAULT_CONSTRUCTOR_COLOR = new Color( 0xE6D4A3 );
+	public static final Color DEFAULT_FIELD_COLOR = new Color( 0xD6AC8B );
 
-	public static final java.awt.Color DEFAULT_PROCEDURE_COLOR = new java.awt.Color( 0xB2B7D9 );
-	public static final java.awt.Color DEFAULT_FUNCTION_COLOR = new java.awt.Color( 0xADCF95 );
+	public static final Color DEFAULT_PROCEDURE_COLOR = new Color( 0xB2B7D9 );
+	public static final Color DEFAULT_FUNCTION_COLOR = new Color( 0xADCF95 );
 	//	private static final java.awt.Color DEFAULT_EVENT_COLOR = new Color( 100, 200, 100 );
 	//	private static final java.awt.Color DEFAULT_EVENT_BODY_COLOR = DEFAULT_EVENT_COLOR.brighter().brighter(); //new Color( 150, 225, 150 );
-	private static final java.awt.Color DEFAULT_EVENT_COLOR = new java.awt.Color( 0xd3d7f0 );
-	private static final java.awt.Color DEFAULT_EVENT_BODY_COLOR = DEFAULT_PROCEDURE_COLOR;
+	private static final Color DEFAULT_EVENT_COLOR = new Color( 0xd3d7f0 );
+	private static final Color DEFAULT_EVENT_BODY_COLOR = DEFAULT_PROCEDURE_COLOR;
 
-	private static final java.awt.Color DEFAULT_SELECTED_COLOR = new java.awt.Color( 255, 255, 179 );
-	private static final java.awt.Color DEFAULT_UNSELECTED_COLOR = new java.awt.Color( 141, 137, 166 );
-	private static final java.awt.Color DEFAULT_PRIMARY_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
-	private static final java.awt.Color DEFAULT_SECONDARY_BACKGROUND_COLOR = new java.awt.Color( 201, 201, 218 );
+	private static final Color DEFAULT_SELECTED_COLOR = new Color( 255, 255, 179 );
+	private static final Color DEFAULT_UNSELECTED_COLOR = new Color( 141, 137, 166 );
+	private static final Color DEFAULT_PRIMARY_BACKGROUND_COLOR = new Color( 173, 167, 208 );
+	private static final Color DEFAULT_SECONDARY_BACKGROUND_COLOR = new Color( 201, 201, 218 );
 
 	@Override
-	public java.awt.Color getTypeColor() {
+	public Color getTypeColor() {
 		return DEFAULT_TYPE_COLOR;
 	}
 
 	@Override
-	public java.awt.Color getMutedTypeColor() {
-		return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getTypeColor(), 1.0, 0.9, 0.9 );
+	public Color getMutedTypeColor() {
+		return ColorUtilities.scaleHSB( this.getTypeColor(), 1.0, 0.9, 0.9 );
 	}
 
 	@Override
-	public java.awt.Color getProcedureColor() {
+	public Color getProcedureColor() {
 		return DEFAULT_PROCEDURE_COLOR;
 	}
 
 	@Override
-	public java.awt.Color getFunctionColor() {
+	public Color getFunctionColor() {
 		return DEFAULT_FUNCTION_COLOR;
 	}
 
 	@Override
-	public java.awt.Color getConstructorColor() {
+	public Color getConstructorColor() {
 		return DEFAULT_CONSTRUCTOR_COLOR;
 	}
 
 	@Override
-	public java.awt.Color getFieldColor() {
+	public Color getFieldColor() {
 		return DEFAULT_FIELD_COLOR;
 	}
 
 	@Override
-	public java.awt.Color getLocalColor() {
+	public Color getLocalColor() {
 		return getFieldColor();
 	}
 
 	@Override
-	public java.awt.Color getParameterColor() {
+	public Color getParameterColor() {
 		return getFieldColor();
 	}
 
 	@Override
-	public java.awt.Color getEventColor() {
+	public Color getEventColor() {
 		return DEFAULT_EVENT_COLOR;
 	}
 
 	@Override
-	public java.awt.Color getEventBodyColor() {
+	public Color getEventBodyColor() {
 		return DEFAULT_EVENT_BODY_COLOR;
 	}
 
 	@Override
-	public java.awt.Paint getPaintFor( Class<? extends org.lgna.project.ast.Statement> cls, int x, int y, int width, int height ) {
-		java.awt.Color color = this.getColorFor( cls );
-		if( org.lgna.project.ast.Comment.class.isAssignableFrom( cls ) ) {
+	public Paint getPaintFor( Class<? extends Statement> cls, int x, int y, int width, int height ) {
+		Color color = this.getColorFor( cls );
+		if( Comment.class.isAssignableFrom( cls ) ) {
 			return color;
 		} else {
-			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, org.lgna.project.ast.DoTogether.class, org.lgna.project.ast.EachInArrayTogether.class ) ) {
-				java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.9, 0.85 );
-				java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.15 );
-				return new java.awt.GradientPaint( x, y, colorA, x + 200, y, colorB );
+			if( ClassUtilities.isAssignableToAtLeastOne( cls, DoTogether.class, EachInArrayTogether.class ) ) {
+				Color colorA = ColorUtilities.scaleHSB( color, 1.0, 0.9, 0.85 );
+				Color colorB = ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.15 );
+				return new GradientPaint( x, y, colorA, x + 200, y, colorB );
 			} else {
 				return color;
 				//return new java.awt.GradientPaint( x, y, colorB, x, y + 64, color );
@@ -131,62 +160,62 @@ public class DefaultTheme implements Theme {
 	}
 
 	@Override
-	public java.awt.Color getColorFor( Class<? extends org.lgna.project.ast.Node> cls ) {
-		if( org.lgna.project.ast.Statement.class.isAssignableFrom( cls ) ) {
-			if( org.lgna.project.ast.Comment.class.isAssignableFrom( cls ) ) {
-				return edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 245 );
+	public Color getColorFor( Class<? extends Node> cls ) {
+		if( Statement.class.isAssignableFrom( cls ) ) {
+			if( Comment.class.isAssignableFrom( cls ) ) {
+				return ColorUtilities.createGray( 245 );
 			} else {
 				//				if( org.lgna.project.ast.ExpressionStatement.class.isAssignableFrom( cls ) ) {
 				//					return new java.awt.Color( 255, 230, 180 );
 				////				} else if( org.lgna.project.ast.LocalDeclarationStatement.class.isAssignableFrom( cls ) ) {
 				////					return new java.awt.Color( 255, 230, 180 );
 				//				} else {
-				return new java.awt.Color( 0xd3d7f0 );
+				return new Color( 0xd3d7f0 );
 				//return new java.awt.Color( 255, 255, 210 );
 				//				}
 			}
-		} else if( org.lgna.project.ast.Expression.class.isAssignableFrom( cls ) ) {
-			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, org.lgna.project.ast.MethodInvocation.class ) ) {
-				return new java.awt.Color( 0xd3e7c7 );
-			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, org.lgna.project.ast.InfixExpression.class, org.lgna.project.ast.LogicalComplement.class, org.lgna.project.ast.StringConcatenation.class ) ) {
-				return new java.awt.Color( 0xDEEBD3 );
-			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, org.lgna.project.ast.InstanceCreation.class, org.lgna.project.ast.ArrayInstanceCreation.class ) ) {
+		} else if( Expression.class.isAssignableFrom( cls ) ) {
+			if( ClassUtilities.isAssignableToAtLeastOne( cls, MethodInvocation.class ) ) {
+				return new Color( 0xd3e7c7 );
+			} else if( ClassUtilities.isAssignableToAtLeastOne( cls, InfixExpression.class, LogicalComplement.class, StringConcatenation.class ) ) {
+				return new Color( 0xDEEBD3 );
+			} else if( ClassUtilities.isAssignableToAtLeastOne( cls, InstanceCreation.class, ArrayInstanceCreation.class ) ) {
 				//return new java.awt.Color( 0xbdcfb3 );
 				return DEFAULT_CONSTRUCTOR_COLOR;
-			} else if( org.lgna.project.ast.ResourceExpression.class.isAssignableFrom( cls ) ) {
-				return new java.awt.Color( 0xffffff );
+			} else if( ResourceExpression.class.isAssignableFrom( cls ) ) {
+				return new Color( 0xffffff );
 			} else {
-				if( org.lgna.project.ast.NullLiteral.class.isAssignableFrom( cls ) ) {
-					return java.awt.Color.RED;
+				if( NullLiteral.class.isAssignableFrom( cls ) ) {
+					return Color.RED;
 				} else {
 					return DEFAULT_NOUN_COLOR;
 				}
 			}
-		} else if( org.lgna.project.ast.AbstractField.class.isAssignableFrom( cls ) ) {
+		} else if( AbstractField.class.isAssignableFrom( cls ) ) {
 			return this.getFieldColor();
-		} else if( org.lgna.project.ast.AbstractParameter.class.isAssignableFrom( cls ) ) {
+		} else if( AbstractParameter.class.isAssignableFrom( cls ) ) {
 			return this.getParameterColor();
-		} else if( org.lgna.project.ast.AbstractType.class.isAssignableFrom( cls ) ) {
+		} else if( AbstractType.class.isAssignableFrom( cls ) ) {
 			return this.getTypeColor();
-		} else if( org.lgna.project.ast.UserLocal.class.isAssignableFrom( cls ) ) {
+		} else if( UserLocal.class.isAssignableFrom( cls ) ) {
 			return this.getLocalColor();
 		} else {
-			return java.awt.Color.BLUE;
+			return Color.BLUE;
 		}
 	}
 
 	@Override
-	public java.awt.Color getColorFor( org.lgna.project.ast.Node node ) {
+	public Color getColorFor( Node node ) {
 		if( node != null ) {
-			if( node instanceof org.lgna.project.ast.AbstractMethod ) {
-				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)node;
+			if( node instanceof AbstractMethod ) {
+				AbstractMethod method = (AbstractMethod)node;
 				if( method.isProcedure() ) {
 					return this.getProcedureColor();
 				} else {
 					return this.getFunctionColor();
 				}
 			} else {
-				Class<? extends org.lgna.project.ast.Node> cls = node.getClass();
+				Class<? extends Node> cls = node.getClass();
 				//				if( node instanceof org.lgna.project.ast.FieldAccess ) {
 				//					org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)node;
 				//					if( fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
@@ -198,48 +227,48 @@ public class DefaultTheme implements Theme {
 				return this.getColorFor( cls );
 			}
 		} else {
-			return java.awt.Color.RED;
+			return Color.RED;
 		}
 	}
 
 	@Override
-	public java.awt.Color getCommentForegroundColor() {
-		return new java.awt.Color( 0, 100, 0 );
+	public Color getCommentForegroundColor() {
+		return new Color( 0, 100, 0 );
 	}
 
 	@Override
-	public java.awt.Color getCodeColor( org.lgna.project.ast.Code code ) {
-		if( code instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)code;
+	public Color getCodeColor( Code code ) {
+		if( code instanceof UserMethod ) {
+			UserMethod userMethod = (UserMethod)code;
 			if( userMethod.isProcedure() ) {
 				return getProcedureColor();
 			} else {
 				return getFunctionColor();
 			}
-		} else if( code instanceof org.lgna.project.ast.NamedUserConstructor ) {
+		} else if( code instanceof NamedUserConstructor ) {
 			return getConstructorColor();
 		} else {
-			return java.awt.Color.GRAY;
+			return Color.GRAY;
 		}
 	}
 
 	@Override
-	public java.awt.Color getSelectedColor() {
+	public Color getSelectedColor() {
 		return DEFAULT_SELECTED_COLOR;
 	}
 
 	@Override
-	public java.awt.Color getUnselectedColor() {
+	public Color getUnselectedColor() {
 		return DEFAULT_UNSELECTED_COLOR;
 	}
 
 	@Override
-	public java.awt.Color getPrimaryBackgroundColor() {
+	public Color getPrimaryBackgroundColor() {
 		return DEFAULT_PRIMARY_BACKGROUND_COLOR;
 	}
 
 	@Override
-	public java.awt.Color getSecondaryBackgroundColor() {
+	public Color getSecondaryBackgroundColor() {
 		return DEFAULT_SECONDARY_BACKGROUND_COLOR;
 	}
 }

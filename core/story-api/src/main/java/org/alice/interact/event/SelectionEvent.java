@@ -42,27 +42,33 @@
  *******************************************************************************/
 package org.alice.interact.event;
 
+import edu.cmu.cs.dennisc.pattern.event.Event;
+import org.alice.interact.DragAdapter;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.STurnable;
+import org.lgna.story.implementation.AbstractTransformableImp;
+
 /**
  * @author David Culyba
  */
-public class SelectionEvent extends edu.cmu.cs.dennisc.pattern.event.Event<org.alice.interact.BareBonesDragAdapter> {
-	public SelectionEvent( org.alice.interact.BareBonesDragAdapter source, org.lgna.story.implementation.AbstractTransformableImp transformable ) {
+public class SelectionEvent extends Event<DragAdapter> {
+	public SelectionEvent( DragAdapter source, AbstractTransformableImp transformable ) {
 		super( source );
 		this.transformable = transformable;
 	}
 
-	public SelectionEvent( org.alice.interact.BareBonesDragAdapter source, org.lgna.story.STurnable mtTransformable ) {
+	public SelectionEvent( DragAdapter source, STurnable mtTransformable ) {
 		super( source );
 		if( mtTransformable != null ) {
-			this.transformable = org.lgna.story.EmployeesOnly.getImplementation( mtTransformable );
+			this.transformable = EmployeesOnly.getImplementation( mtTransformable );
 		} else {
 			this.transformable = null;
 		}
 	}
 
-	public org.lgna.story.implementation.AbstractTransformableImp getTransformable() {
+	public AbstractTransformableImp getTransformable() {
 		return this.transformable;
 	}
 
-	private final org.lgna.story.implementation.AbstractTransformableImp transformable;
+	private final AbstractTransformableImp transformable;
 }

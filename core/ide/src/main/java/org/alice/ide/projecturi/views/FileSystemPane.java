@@ -43,13 +43,16 @@
 
 package org.alice.ide.projecturi.views;
 
+import org.alice.ide.projecturi.FileSystemTab;
+import org.lgna.croquet.views.BorderPanel;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FileSystemPane extends TabContentPanel {
-	public FileSystemPane( org.alice.ide.projecturi.FileSystemTab composite ) {
+	public FileSystemPane( FileSystemTab composite ) {
 		super( composite );
-		org.lgna.croquet.views.BorderPanel pane = new org.lgna.croquet.views.BorderPanel.Builder()
+		BorderPanel pane = new BorderPanel.Builder()
 				.hgap( 4 )
 				.lineStart( composite.getPathState().getSidekickLabel().createLabel() )
 				.center( composite.getPathState().createTextField() )

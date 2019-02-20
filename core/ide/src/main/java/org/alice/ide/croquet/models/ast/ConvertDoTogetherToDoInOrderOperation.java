@@ -43,13 +43,21 @@
 
 package org.alice.ide.croquet.models.ast;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.project.ast.AbstractStatementWithBody;
+import org.lgna.project.ast.DoInOrder;
+import org.lgna.project.ast.DoTogether;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ConvertDoTogetherToDoInOrderOperation extends ConvertStatementWithBodyOperation {
-	private static java.util.Map<org.lgna.project.ast.DoTogether, ConvertDoTogetherToDoInOrderOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<DoTogether, ConvertDoTogetherToDoInOrderOperation> map = Maps.newHashMap();
 
-	public static synchronized ConvertDoTogetherToDoInOrderOperation getInstance( org.lgna.project.ast.DoTogether doTogether ) {
+	public static synchronized ConvertDoTogetherToDoInOrderOperation getInstance( DoTogether doTogether ) {
 		ConvertDoTogetherToDoInOrderOperation rv = map.get( doTogether );
 		if( rv != null ) {
 			//pass
@@ -60,12 +68,12 @@ public class ConvertDoTogetherToDoInOrderOperation extends ConvertStatementWithB
 		return rv;
 	}
 
-	private ConvertDoTogetherToDoInOrderOperation( org.lgna.project.ast.DoTogether doTogether ) {
-		super( java.util.UUID.fromString( "782c978e-4047-4351-a333-ecd9e3daf2d0" ), doTogether );
+	private ConvertDoTogetherToDoInOrderOperation( DoTogether doTogether ) {
+		super( UUID.fromString( "782c978e-4047-4351-a333-ecd9e3daf2d0" ), doTogether );
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractStatementWithBody createReplacement() {
-		return new org.lgna.project.ast.DoInOrder();
+	protected AbstractStatementWithBody createReplacement() {
+		return new DoInOrder();
 	}
 }

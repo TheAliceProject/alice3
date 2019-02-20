@@ -42,52 +42,27 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.event.ActivityEvent;
+import org.lgna.croquet.history.event.Listener;
+import org.lgna.croquet.imp.dialog.GatedCommitDialogContentComposite;
+import org.lgna.croquet.views.CompositeView;
+import org.lgna.croquet.views.Dialog;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, DCC extends org.lgna.croquet.imp.dialog.GatedCommitDialogContentComposite<?>> extends AdornedDialogCoreComposite<V, DCC> {
-	private final java.util.List<CommitRejector> commitRejectors = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-
-	public GatedCommitDialogCoreComposite( java.util.UUID migrationId ) {
+public abstract class GatedCommitDialogCoreComposite<V extends CompositeView<?, ?>, DCC extends GatedCommitDialogContentComposite<?>> extends AdornedDialogCoreComposite<V, DCC> {
+	public GatedCommitDialogCoreComposite( UUID migrationId ) {
 		super( migrationId );
 	}
 
-	public void addCommitRejector( CommitRejector commitRejector ) {
-		this.commitRejectors.add( commitRejector );
-	}
+	protected abstract Status getStatusPreRejectorCheck();
 
-	public void removeCommitRejector( CommitRejector commitRejector ) {
-		this.commitRejectors.remove( commitRejector );
-	}
-
-	public void clearCommitRejectors() {
-		this.commitRejectors.clear();
-	}
-
-	protected abstract Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step );
-
-	public final Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		Status status = this.getStatusPreRejectorCheck( step );
-		if( status == IS_GOOD_TO_GO_STATUS ) {
-			for( CommitRejector rejector : this.commitRejectors ) {
-				status = rejector.getRejectionStatus( step );
-				if( status == IS_GOOD_TO_GO_STATUS ) {
-					//pass
-				} else {
-					return status;
-				}
-			}
-		}
-		return status;
-	}
-
-	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
+	private final Listener listener = new Listener() {
 		@Override
-		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
-		}
-
-		@Override
-		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
+		public void changed( ActivityEvent e ) {
 			GatedCommitDialogCoreComposite.this.handleFiredEvent( e );
 		}
 	};
@@ -98,50 +73,32 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 
 	protected abstract void updateIsGoodToGo( boolean isGoodToGo );
 
-	private void updateStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		boolean isGoodToGo;
-		AbstractSeverityStatusComposite.Status status = this.getStatus( step );
-		if( status != null ) {
-			isGoodToGo = status.isGoodToGo();
-		} else {
-			isGoodToGo = true;
-		}
-		this.getDialogContentComposite().getView().getStatusLabel().setStatus( status );
-		this.updateIsGoodToGo( isGoodToGo );
-	}
-
 	protected void refreshStatus() {
-		//todo
-		org.lgna.croquet.history.CompletionStep<?> step = null;
-		this.updateStatus( step );
+		AbstractSeverityStatusComposite.Status status = getStatusPreRejectorCheck();
+		boolean isGoodToGo = status == null || status.isGoodToGo();
+
+		getDialogContentComposite().getView().getStatusLabel().setStatus( status );
+		updateIsGoodToGo( isGoodToGo );
 	}
 
-	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
-		org.lgna.croquet.history.CompletionStep<? super org.lgna.croquet.OwnedByCompositeOperation> s = null;
-		if( event != null ) {
-			org.lgna.croquet.history.TransactionNode<?> node = event.getNode();
-			if( node != null ) {
-				//todo:
-				s = node.getFirstStepOfModelAssignableTo( OwnedByCompositeOperation.class, org.lgna.croquet.history.CompletionStep.class );
-			}
-		}
-		this.updateStatus( s );
+	protected void handleFiredEvent( ActivityEvent event ) {
+		this.refreshStatus();
 	}
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		completionStep.addListener( this.listener );
-		this.updateStatus( completionStep );
-		super.handlePreShowDialog( completionStep );
+	protected void handlePreShowDialog( Dialog dialog ) {
+		openingActivity.addListener( this.listener );
+		this.refreshStatus();
+		super.handlePreShowDialog( dialog );
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		completionStep.removeListener( this.listener );
-		super.handlePostHideDialog( completionStep );
+	protected void handlePostHideDialog() {
+		openingActivity.removeListener( this.listener );
+		super.handlePostHideDialog();
 	}
 
-	protected void cancel( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		completionStep.cancel();
+	protected void cancel( CancelException ce ) {
+		openingActivity.cancel(ce);
 	}
 }

@@ -42,24 +42,27 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.event;
 
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SimplifiedDocumentAdapter implements javax.swing.event.DocumentListener {
-	protected abstract void updated( javax.swing.event.DocumentEvent e );
+public abstract class SimplifiedDocumentAdapter implements DocumentListener {
+	protected abstract void updated( DocumentEvent e );
 
 	@Override
-	public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+	public void changedUpdate( DocumentEvent e ) {
 		this.updated( e );
 	}
 
 	@Override
-	public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+	public void insertUpdate( DocumentEvent e ) {
 		this.updated( e );
 	}
 
 	@Override
-	public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+	public void removeUpdate( DocumentEvent e ) {
 		this.updated( e );
 	}
 }

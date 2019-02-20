@@ -42,14 +42,15 @@
  */
 package org.lgna.story;
 
+import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.QuadrupedResource;
 
 /**
  * @author Matt May
  */
-public class QuadrupedPoseBuilder extends PoseBuilder<org.lgna.story.SQuadruped, QuadrupedPose> {
-	public QuadrupedPoseBuilder joint( org.lgna.story.resources.JointId jointId, org.lgna.story.Orientation orientation ) {
+public class QuadrupedPoseBuilder extends PoseBuilder<SQuadruped, QuadrupedPose> {
+	public QuadrupedPoseBuilder joint( JointId jointId, Orientation orientation ) {
 		this.addJointIdQuaternionPair( jointId, orientation );
 		return this;
 	}
@@ -116,7 +117,7 @@ public class QuadrupedPoseBuilder extends PoseBuilder<org.lgna.story.SQuadruped,
 	}
 
 	@Override
-	protected org.lgna.story.QuadrupedPose build( org.lgna.story.implementation.JointIdTransformationPair[] buffer ) {
+	protected QuadrupedPose build( JointIdTransformationPair[] buffer ) {
 		return new QuadrupedPose( buffer );
 	}
 }

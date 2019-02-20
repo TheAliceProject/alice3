@@ -42,13 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.FieldAccess;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgna.project.ast.FieldAccess> {
-	private static java.util.Map<org.lgna.project.ast.AbstractField, ThisFieldAccessFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class ThisFieldAccessFillIn extends ExpressionFillInWithoutBlanks<FieldAccess> {
+	private static Map<AbstractField, ThisFieldAccessFillIn> map = Maps.newHashMap();
 
-	public static ThisFieldAccessFillIn getInstance( org.lgna.project.ast.AbstractField value ) {
+	public static ThisFieldAccessFillIn getInstance( AbstractField value ) {
 		synchronized( map ) {
 			ThisFieldAccessFillIn rv = map.get( value );
 			if( rv != null ) {
@@ -61,24 +69,24 @@ public class ThisFieldAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgn
 		}
 	}
 
-	private final org.lgna.project.ast.FieldAccess transientValue;
+	private final FieldAccess transientValue;
 
-	private ThisFieldAccessFillIn( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "dd377543-d7d4-4d40-857c-1c7bf6d9871d" ) );
+	private ThisFieldAccessFillIn( AbstractField field ) {
+		super( UUID.fromString( "dd377543-d7d4-4d40-857c-1c7bf6d9871d" ) );
 		this.transientValue = this.createValue( field );
 	}
 
-	private org.lgna.project.ast.FieldAccess createValue( org.lgna.project.ast.AbstractField field ) {
-		return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), field );
+	private FieldAccess createValue( AbstractField field ) {
+		return new FieldAccess(field);
 	}
 
 	@Override
-	public org.lgna.project.ast.FieldAccess createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.FieldAccess, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public FieldAccess createValue( ItemNode<? super FieldAccess, Void> node ) {
 		return this.createValue( this.transientValue.field.getValue() );
 	}
 
 	@Override
-	public org.lgna.project.ast.FieldAccess getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.FieldAccess, Void> node ) {
+	public FieldAccess getTransientValue( ItemNode<? super FieldAccess, Void> node ) {
 		return this.transientValue;
 	}
 }

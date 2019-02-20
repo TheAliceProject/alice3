@@ -43,24 +43,26 @@
 
 package org.lgna.story;
 
+import org.lgna.story.implementation.MarkerImp;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SMarker extends SMovableTurnable implements MutableRider {
 
 	@Override
-	/* package-private */abstract org.lgna.story.implementation.MarkerImp getImplementation();
+	/* package-private */abstract MarkerImp getImplementation();
 
 	@Override
 	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 
-	public org.lgna.story.Color getColorId() {
-		return (org.lgna.story.Color)this.getImplementation().paint.getValue();
+	public Color getColorId() {
+		return (Color)this.getImplementation().paint.getValue();
 	}
 
-	public void setColorId( org.lgna.story.Color color ) {
+	public void setColorId( Color color ) {
 		this.getImplementation().paint.setValue( color );
 	}
 

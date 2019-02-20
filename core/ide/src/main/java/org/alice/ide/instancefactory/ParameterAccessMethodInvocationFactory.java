@@ -43,13 +43,21 @@
 
 package org.alice.ide.instancefactory;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.UserParameter;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ParameterAccessMethodInvocationFactory extends MethodInvocationFactory {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationFactory> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<UserParameter, AbstractMethod, ParameterAccessMethodInvocationFactory> mapToMap = MapToMap.newInstance();
 
-	public static synchronized ParameterAccessMethodInvocationFactory getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+	public static synchronized ParameterAccessMethodInvocationFactory getInstance( UserParameter parameter, AbstractMethod method ) {
 		assert parameter != null;
 		ParameterAccessMethodInvocationFactory rv = mapToMap.get( parameter, method );
 		if( rv != null ) {
@@ -61,17 +69,17 @@ public class ParameterAccessMethodInvocationFactory extends MethodInvocationFact
 		return rv;
 	}
 
-	private final org.lgna.project.ast.UserParameter parameter;
+	private final UserParameter parameter;
 
-	private ParameterAccessMethodInvocationFactory( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+	private ParameterAccessMethodInvocationFactory( UserParameter parameter, AbstractMethod method ) {
 		super( method, parameter.name );
 		this.parameter = parameter;
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValidInstanceType( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
+	protected AbstractType<?, ?, ?> getValidInstanceType( AbstractType<?, ?, ?> type, AbstractCode code ) {
 		if( code != null ) {
-			if( this.parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class ) == code ) {
+			if( this.parameter.getFirstAncestorAssignableTo( AbstractCode.class ) == code ) {
 				return this.parameter.getValueType();
 			} else {
 				return null;
@@ -81,19 +89,19 @@ public class ParameterAccessMethodInvocationFactory extends MethodInvocationFact
 		}
 	}
 
-	public org.lgna.project.ast.UserParameter getParameter() {
+	public UserParameter getParameter() {
 		return this.parameter;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
+	protected Expression createTransientExpressionForMethodInvocation() {
 		//todo?
-		return new org.lgna.project.ast.ParameterAccess( this.parameter );
+		return new ParameterAccess( this.parameter );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
-		return new org.lgna.project.ast.ParameterAccess( this.parameter );
+	protected Expression createExpressionForMethodInvocation() {
+		return new ParameterAccess( this.parameter );
 	}
 
 	@Override

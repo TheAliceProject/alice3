@@ -42,14 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CameraUtilities {
 	//todo: better name
-	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateGoodLookAt( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, edu.cmu.cs.dennisc.math.Angle smallerViewingAngle, Component sgTarget, edu.cmu.cs.dennisc.math.Sphere sphere, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy ) {
+	public static AffineMatrix4x4 calculateGoodLookAt( AffineMatrix4x4 rv, Angle smallerViewingAngle, Component sgTarget, Sphere sphere, ReferenceFrame sgAsSeenBy ) {
 		sgTarget.getTransformation( rv, sgAsSeenBy );
 		double thetaInRadians = smallerViewingAngle.getAsRadians();
 		double distance = sphere.radius / Math.sin( thetaInRadians / 2.0 );
@@ -58,7 +62,7 @@ public abstract class CameraUtilities {
 	}
 
 	//todo: better name
-	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateGoodLookAt( edu.cmu.cs.dennisc.math.Angle smallerViewingAngle, Component sgTarget, edu.cmu.cs.dennisc.math.Sphere sphere, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy ) {
-		return calculateGoodLookAt( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), smallerViewingAngle, sgTarget, sphere, sgAsSeenBy );
+	public static AffineMatrix4x4 calculateGoodLookAt( Angle smallerViewingAngle, Component sgTarget, Sphere sphere, ReferenceFrame sgAsSeenBy ) {
+		return calculateGoodLookAt( AffineMatrix4x4.createNaN(), smallerViewingAngle, sgTarget, sphere, sgAsSeenBy );
 	}
 }

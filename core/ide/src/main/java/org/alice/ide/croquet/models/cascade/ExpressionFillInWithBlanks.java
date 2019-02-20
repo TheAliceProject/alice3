@@ -43,13 +43,19 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionFillInWithBlanks<F extends org.lgna.project.ast.Expression, B> extends ExpressionFillIn<F, B> {
+public abstract class ExpressionFillInWithBlanks<F extends Expression, B> extends ExpressionFillIn<F, B> {
 	private final Class<B> cls;
 
-	public ExpressionFillInWithBlanks( java.util.UUID id, Class<B> cls, org.lgna.croquet.CascadeBlank<B>... blanks ) {
+	public ExpressionFillInWithBlanks( UUID id, Class<B> cls, CascadeBlank<B>... blanks ) {
 		super( id, blanks );
 		this.cls = cls;
 	}
@@ -57,8 +63,8 @@ public abstract class ExpressionFillInWithBlanks<F extends org.lgna.project.ast.
 	protected abstract F createValue( B[] expressions );
 
 	@Override
-	public final F createValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return this.createValue( this.createFromBlanks( node, transactionHistory, this.cls ) );
+	public final F createValue( ItemNode<? super F, B> node ) {
+		return this.createValue( this.createFromBlanks( node, this.cls ) );
 	}
 	//	protected abstract F getTransientValue( B[] expressions );
 	//	@Override

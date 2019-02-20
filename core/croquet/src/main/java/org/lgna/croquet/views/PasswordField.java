@@ -42,15 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.components.JSuggestivePasswordField;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.StringState;
+
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PasswordField extends AbstractTextField<edu.cmu.cs.dennisc.javax.swing.components.JSuggestivePasswordField> {
-	public PasswordField( org.lgna.croquet.StringState model, org.lgna.croquet.Operation operation ) {
+public class PasswordField extends AbstractTextField<JSuggestivePasswordField> {
+	public PasswordField( StringState model, Operation operation ) {
 		super( model, operation );
 	}
 
-	public PasswordField( org.lgna.croquet.StringState model ) {
+	public PasswordField( StringState model ) {
 		this( model, null );
 	}
 
@@ -60,15 +66,15 @@ public class PasswordField extends AbstractTextField<edu.cmu.cs.dennisc.javax.sw
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestivePasswordField createAwtComponent() {
-		edu.cmu.cs.dennisc.javax.swing.components.JSuggestivePasswordField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestivePasswordField() {
+	protected JSuggestivePasswordField createAwtComponent() {
+		JSuggestivePasswordField rv = new JSuggestivePasswordField() {
 			@Override
-			public java.awt.Dimension getPreferredSize() {
+			public Dimension getPreferredSize() {
 				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 			}
 
 			@Override
-			public java.awt.Dimension getMaximumSize() {
+			public Dimension getMaximumSize() {
 				if( PasswordField.this.isMaximumSizeClampedToPreferredSize() ) {
 					return this.getPreferredSize();
 				} else {

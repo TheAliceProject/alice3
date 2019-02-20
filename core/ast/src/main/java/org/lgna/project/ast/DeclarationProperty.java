@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -75,7 +77,7 @@ package org.lgna.project.ast;
 //	private final boolean isReference;
 //}
 public abstract class DeclarationProperty<E extends Declaration> extends NodeProperty<E> {
-	public static <E extends Declaration> DeclarationProperty<E> createReferenceInstance( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	public static <E extends Declaration> DeclarationProperty<E> createReferenceInstance( InstancePropertyOwner owner ) {
 		return new DeclarationProperty<E>( owner ) {
 			@Override
 			public boolean isReference() {
@@ -84,7 +86,7 @@ public abstract class DeclarationProperty<E extends Declaration> extends NodePro
 		};
 	}
 
-	public DeclarationProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	public DeclarationProperty( InstancePropertyOwner owner ) {
 		super( owner );
 	}
 

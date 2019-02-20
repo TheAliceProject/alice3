@@ -43,16 +43,21 @@
 
 package test.ik.croquet;
 
+import org.lgna.croquet.SimpleComposite;
+import test.ik.croquet.views.ControlsPanel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ControlsComposite extends org.lgna.croquet.SimpleComposite<test.ik.croquet.views.ControlsPanel> {
+public class ControlsComposite extends SimpleComposite<ControlsPanel> {
 	public ControlsComposite() {
-		super( java.util.UUID.fromString( "88035214-3a37-4aa7-a083-ce093a24bb88" ) );
+		super( UUID.fromString( "88035214-3a37-4aa7-a083-ce093a24bb88" ) );
 	}
 
 	@Override
-	protected test.ik.croquet.views.ControlsPanel createView() {
-		return new test.ik.croquet.views.ControlsPanel( this );
+	protected ControlsPanel createView() {
+		return new ControlsPanel( this );
 	}
 }

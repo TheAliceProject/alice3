@@ -43,17 +43,24 @@
 
 package org.alice.stageide.perspectives.scenesetup;
 
+import org.alice.ide.sceneeditor.SceneComposite;
+import org.alice.stageide.sceneeditor.side.SideComposite;
+import org.lgna.croquet.SplitComposite;
+import org.lgna.croquet.views.SplitPane;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class SceneLayoutComposite extends org.lgna.croquet.SplitComposite {
+public final class SceneLayoutComposite extends SplitComposite {
 	public SceneLayoutComposite() {
-		super( java.util.UUID.fromString( "c1bb78a0-814c-4658-93b5-2a00c058b756" ), new org.alice.ide.sceneeditor.SceneComposite(), new org.alice.stageide.sceneeditor.side.SideComposite() );
+		super( UUID.fromString( "c1bb78a0-814c-4658-93b5-2a00c058b756" ), new SceneComposite(), new SideComposite() );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SplitPane createView() {
-		org.lgna.croquet.views.SplitPane rv = this.createHorizontalSplitPane();
+	protected SplitPane createView() {
+		SplitPane rv = this.createHorizontalSplitPane();
 		rv.setResizeWeight( 1.0 );
 		return rv;
 	}

@@ -43,11 +43,13 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
 public class OrientTo extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = OrientTo.class )
+	@ClassTemplate( keywordFactoryCls = OrientTo.class )
 	public static interface Detail {
 	}
 

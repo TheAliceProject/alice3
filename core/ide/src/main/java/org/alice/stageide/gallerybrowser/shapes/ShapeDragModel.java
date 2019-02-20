@@ -45,6 +45,11 @@ package org.alice.stageide.gallerybrowser.shapes;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -52,13 +57,12 @@ import org.alice.ide.formatter.Formatter;
 public abstract class ShapeDragModel extends GalleryDragModel {
 	private String text;
 
-	public ShapeDragModel( java.util.UUID migrationId ) {
+	public ShapeDragModel( UUID migrationId ) {
 		super( migrationId );
 	}
 
 	@Override
 	protected void localize() {
-		super.localize();
 		Formatter formatter = FormatterState.getInstance().getValue();
 		this.text = String.format(formatter.getNewFormat(), findDefaultLocalizedText(), "");
 	}
@@ -73,13 +77,8 @@ public abstract class ShapeDragModel extends GalleryDragModel {
 	}
 
 	@Override
-	public boolean isInstanceCreator() {
-		return true;
-	}
-
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		return this.getLeftButtonClickModel();
+	public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
+		return this.getLeftButtonClickOperation(null);
 	}
 
 }

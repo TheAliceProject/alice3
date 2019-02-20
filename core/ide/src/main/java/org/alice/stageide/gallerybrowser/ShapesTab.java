@@ -42,44 +42,63 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
+import org.alice.stageide.gallerybrowser.shapes.AxesDragModel;
+import org.alice.stageide.gallerybrowser.shapes.BillboardDragModel;
+import org.alice.stageide.gallerybrowser.shapes.BoxDragModel;
+import org.alice.stageide.gallerybrowser.shapes.ConeDragModel;
+import org.alice.stageide.gallerybrowser.shapes.CylinderDragModel;
+import org.alice.stageide.gallerybrowser.shapes.DiscDragModel;
+import org.alice.stageide.gallerybrowser.shapes.GroundDragModel;
+import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+import org.alice.stageide.gallerybrowser.shapes.SphereDragModel;
+import org.alice.stageide.gallerybrowser.shapes.TextModelDragModel;
+import org.alice.stageide.gallerybrowser.shapes.TorusDragModel;
+import org.alice.stageide.gallerybrowser.views.ShapesTabView;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ShapesTab extends GalleryTab {
 	// @formatter:off
-	private final java.util.List<org.alice.stageide.gallerybrowser.shapes.ShapeDragModel> dragModels = java.util.Collections.unmodifiableList(
-					edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
-						org.alice.stageide.gallerybrowser.shapes.DiscDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.ConeDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.CylinderDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.SphereDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.TorusDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.BoxDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.TextModelDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.BillboardDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.AxesDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.GroundDragModel.getInstance()
+	private final List<ShapeDragModel> dragModels = Collections.unmodifiableList(
+					Lists.newArrayList(
+						DiscDragModel.getInstance()
+						, ConeDragModel.getInstance()
+						, CylinderDragModel.getInstance()
+						, SphereDragModel.getInstance()
+						, TorusDragModel.getInstance()
+						, BoxDragModel.getInstance()
+						, TextModelDragModel.getInstance()
+						, BillboardDragModel.getInstance()
+						, AxesDragModel.getInstance()
+						, GroundDragModel.getInstance()
 					) );
 	// @formatter:on
 	public ShapesTab() {
-		super( java.util.UUID.fromString( "1e616f0e-4c57-460c-a4a7-919addbfc9d8" ) );
+		super( UUID.fromString( "1e616f0e-4c57-460c-a4a7-919addbfc9d8" ) );
 	}
 
 	@Override
-	protected org.alice.stageide.gallerybrowser.views.ShapesTabView createView() {
-		return new org.alice.stageide.gallerybrowser.views.ShapesTabView( this );
+	protected ShapesTabView createView() {
+		return new ShapesTabView( this );
 	}
 
-	public java.util.List<org.alice.stageide.gallerybrowser.shapes.ShapeDragModel> getDragModels() {
+	public List<ShapeDragModel> getDragModels() {
 		return this.dragModels;
 	}
 
-	public org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel getDragModelForCls( Class<?> cls ) {
+	public GalleryDragModel getDragModelForCls( Class<?> cls ) {
 		String simpleName = cls.getSimpleName();
 		if( simpleName.length() > 1 ) {
 			if( ( simpleName.charAt( 0 ) == 'S' ) && Character.isUpperCase( simpleName.charAt( 1 ) ) ) {
 				String desiredSimpleName = simpleName.substring( 1 ) + "DragModel";
-				for( org.alice.stageide.gallerybrowser.shapes.ShapeDragModel dragModel : this.dragModels ) {
+				for( ShapeDragModel dragModel : this.dragModels ) {
 					if( desiredSimpleName.contentEquals( dragModel.getClass().getSimpleName() ) ) {
 						return dragModel;
 					}

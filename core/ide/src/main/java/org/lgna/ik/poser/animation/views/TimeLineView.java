@@ -45,6 +45,7 @@ package org.lgna.ik.poser.animation.views;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,6 +55,8 @@ import java.util.Map;
 import javax.swing.AbstractButton;
 import javax.swing.JPanel;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.views.Panel;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLineListener;
@@ -67,7 +70,7 @@ import org.lgna.story.Pose;
 public class TimeLineView extends Panel {
 
 	private JTimeLineView jView;
-	private final Map<KeyFrameData, JTimeLinePoseMarker> map = edu.cmu.cs.dennisc.java.util.Maps.newConcurrentHashMap();
+	private final Map<KeyFrameData, JTimeLinePoseMarker> map = Maps.newConcurrentHashMap();
 
 	public TimeLineView( TimeLineComposite composite ) {
 		super( composite );
@@ -174,12 +177,12 @@ class TimeLineLayout implements LayoutManager {
 	}
 
 	public static int calculateMinX( Container parent ) {
-		java.awt.Insets insets = parent.getInsets();
+		Insets insets = parent.getInsets();
 		return insets.left + ( JTimeLinePoseMarker.SIZE.width / 2 );
 	}
 
 	public static int calculateMaxX( Container parent ) {
-		java.awt.Insets insets = parent.getInsets();
+		Insets insets = parent.getInsets();
 		return parent.getWidth() - insets.right - ( JTimeLinePoseMarker.SIZE.width / 2 );
 	}
 
@@ -215,7 +218,7 @@ class TimeLineLayout implements LayoutManager {
 				child.setLocation( x, 0 );
 				child.setSize( child.getPreferredSize() );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( child );
+				Logger.severe( child );
 			}
 		}
 	}

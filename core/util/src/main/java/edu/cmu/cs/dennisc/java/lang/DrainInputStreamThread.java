@@ -42,6 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.lang;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,10 +61,10 @@ package edu.cmu.cs.dennisc.java.lang;
 	}
 
 	static class PrintStreamLineAppender implements LineAppender {
-		private final java.io.PrintWriter pw;
+		private final PrintWriter pw;
 
-		public PrintStreamLineAppender( java.io.PrintStream ps ) {
-			this.pw = ps != null ? new java.io.PrintWriter( ps ) : null;
+		public PrintStreamLineAppender( PrintStream ps ) {
+			this.pw = ps != null ? new PrintWriter( ps ) : null;
 		}
 
 		@Override
@@ -68,9 +78,9 @@ package edu.cmu.cs.dennisc.java.lang;
 	}
 
 	static class StringListLineAppender implements LineAppender {
-		private final java.util.List<String> list;
+		private final List<String> list;
 
-		public StringListLineAppender( java.util.List<String> list ) {
+		public StringListLineAppender( List<String> list ) {
 			this.list = list;
 		}
 
@@ -80,11 +90,11 @@ package edu.cmu.cs.dennisc.java.lang;
 		}
 	}
 
-	private final java.io.InputStream is;
+	private final InputStream is;
 	private final LineAppender lineAppender;
-	private final java.util.concurrent.CyclicBarrier barrier;
+	private final CyclicBarrier barrier;
 
-	public DrainInputStreamThread( java.io.InputStream is, LineAppender lineAppender, java.util.concurrent.CyclicBarrier barrier ) {
+	public DrainInputStreamThread( InputStream is, LineAppender lineAppender, CyclicBarrier barrier ) {
 		this.is = is;
 		this.lineAppender = lineAppender;
 		this.barrier = barrier;
@@ -92,8 +102,8 @@ package edu.cmu.cs.dennisc.java.lang;
 
 	@Override
 	public void run() {
-		java.io.InputStreamReader isr = new java.io.InputStreamReader( this.is );
-		java.io.BufferedReader br = new java.io.BufferedReader( isr );
+		InputStreamReader isr = new InputStreamReader( this.is );
+		BufferedReader br = new BufferedReader( isr );
 		//java.io.PrintWriter pw = this.ps != null ? new java.io.PrintWriter( this.ps ) : null;
 		while( true ) {
 			try {
@@ -105,14 +115,14 @@ package edu.cmu.cs.dennisc.java.lang;
 				} else {
 					break;
 				}
-			} catch( java.io.IOException ioe ) {
+			} catch( IOException ioe ) {
 				throw new RuntimeException( ioe );
 			}
 		}
 		if( barrier != null ) {
 			try {
 				barrier.await();
-			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
+			} catch( BrokenBarrierException bbe ) {
 				throw new RuntimeException( bbe );
 			} catch( InterruptedException ie ) {
 				throw new RuntimeException( ie );

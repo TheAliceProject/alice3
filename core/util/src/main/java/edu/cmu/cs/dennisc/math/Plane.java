@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -78,7 +80,7 @@ public final class Plane {
 			//pass
 		} else {
 			double magnitude = Math.sqrt( magnitudeSquared );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( magnitude, xNormal, yNormal, zNormal );
+			Logger.severe( magnitude, xNormal, yNormal, zNormal );
 			xNormal /= magnitude;
 			yNormal /= magnitude;
 			zNormal /= magnitude;
@@ -86,26 +88,26 @@ public final class Plane {
 		return createInstance( xNormal, yNormal, zNormal, -( ( xNormal * xPosition ) + ( yNormal * yPosition ) + ( zNormal * zPosition ) ) );
 	}
 
-	public static Plane createInstance( edu.cmu.cs.dennisc.math.Point3 position, edu.cmu.cs.dennisc.math.Vector3 normal ) {
+	public static Plane createInstance( Point3 position, Vector3 normal ) {
 		assert position.isNaN() == false;
 		assert normal.isNaN() == false;
 		return createInstance( position.x, position.y, position.z, normal.x, normal.y, normal.z );
 	}
 
-	public static Plane createInstance( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+	public static Plane createInstance( AffineMatrix4x4 m ) {
 		assert m.isNaN() == false;
 		return createInstance( m.translation.x, m.translation.y, m.translation.z, -m.orientation.backward.x, -m.orientation.backward.y, -m.orientation.backward.z );
 	}
 
-	public static Plane createInstance( edu.cmu.cs.dennisc.math.Point3 a, edu.cmu.cs.dennisc.math.Point3 b, edu.cmu.cs.dennisc.math.Point3 c ) {
+	public static Plane createInstance( Point3 a, Point3 b, Point3 c ) {
 		assert a.isNaN() == false;
 		assert b.isNaN() == false;
 		assert c.isNaN() == false;
-		edu.cmu.cs.dennisc.math.Vector3 ac = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( c, a );
-		edu.cmu.cs.dennisc.math.Vector3 ab = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( b, a );
+		Vector3 ac = Vector3.createSubtraction( c, a );
+		Vector3 ab = Vector3.createSubtraction( b, a );
 		ac.normalize();
 		ab.normalize();
-		edu.cmu.cs.dennisc.math.Vector3 normal = edu.cmu.cs.dennisc.math.Vector3.createCrossProduct( ac, ab );
+		Vector3 normal = Vector3.createCrossProduct( ac, ab );
 		return createInstance( a, normal );
 	}
 
@@ -159,8 +161,8 @@ public final class Plane {
 	}
 
 	public double intersect( Ray ray ) {
-		edu.cmu.cs.dennisc.math.Point3 p = ray.getOrigin();
-		edu.cmu.cs.dennisc.math.Vector3 d = ray.getDirection();
+		Point3 p = ray.getOrigin();
+		Vector3 d = ray.getDirection();
 		double denom = ( this.a * d.x ) + ( this.b * d.y ) + ( this.c * d.z );
 		if( denom == 0 ) {
 			return Double.NaN;

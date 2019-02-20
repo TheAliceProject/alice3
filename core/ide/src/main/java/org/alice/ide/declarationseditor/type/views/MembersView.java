@@ -42,18 +42,26 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type.views;
 
+import org.alice.ide.declarationseditor.type.MembersComposite;
+import org.lgna.croquet.views.ListDataView;
+import org.lgna.project.ast.UserMember;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersView<T extends org.lgna.project.ast.UserMember> extends org.lgna.croquet.views.ListDataView<T> {
+public abstract class MembersView<T extends UserMember> extends ListDataView<T> {
 	/* package-private */static final float NAME_FONT_SCALE = 1.5f;
 
-	public MembersView( org.alice.ide.declarationseditor.type.MembersComposite<T> composite ) {
+	public MembersView( MembersComposite<T> composite ) {
 		super( composite );
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
+		return new BoxLayout( jPanel, BoxLayout.PAGE_AXIS );
 	}
 }

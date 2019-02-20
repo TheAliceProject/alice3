@@ -42,10 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ui.preferences;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.preferences.PreferenceBooleanState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IsIncludingConstructors extends org.lgna.croquet.preferences.PreferenceBooleanState {
+public class IsIncludingConstructors extends PreferenceBooleanState {
 	private static class SingletonHolder {
 		private static IsIncludingConstructors instance = new IsIncludingConstructors();
 	}
@@ -55,6 +60,6 @@ public class IsIncludingConstructors extends org.lgna.croquet.preferences.Prefer
 	}
 
 	private IsIncludingConstructors() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "53e023fc-f502-4126-89a0-982ee3af1ec3" ), false );
+		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "53e023fc-f502-4126-89a0-982ee3af1ec3" ), false );
 	}
 }

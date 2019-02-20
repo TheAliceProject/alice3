@@ -43,28 +43,36 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.pattern.Visitor;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent;
+
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrComposite<T extends edu.cmu.cs.dennisc.scenegraph.Composite> extends GlrComponent<T> {
-	/*package-private*/static void handleComponentAdded( edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent e ) {
+public abstract class GlrComposite<T extends Composite> extends GlrComponent<T> {
+	/*package-private*/static void handleComponentAdded( ComponentAddedEvent e ) {
 		GlrComposite<?> glrComposite = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		GlrComponent<?> glrChild = AdapterFactory.getAdapterFor( e.getChild() );
 		glrComposite.handleComponentAdded( glrChild );
 	}
 
-	/*package-private*/static void handleComponentRemoved( edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent e ) {
+	/*package-private*/static void handleComponentRemoved( ComponentRemovedEvent e ) {
 		GlrComposite<?> glrComposite = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		GlrComponent<?> glrChild = AdapterFactory.getAdapterFor( e.getChild() );
 		glrComposite.handleComponentRemoved( glrChild );
 	}
 
 	@Override
-	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
+	public void accept( Visitor visitor ) {
 		super.accept( visitor );
 		synchronized( this.glrChildren ) {
 			for( GlrComponent<?> glrChild : this.glrChildren ) {
@@ -88,9 +96,9 @@ public abstract class GlrComposite<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 	@Override
 	public void initialize( T sgE ) {
 		super.initialize( sgE );
-		Iterable<edu.cmu.cs.dennisc.scenegraph.Component> sgChildren = this.owner.getComponents();
+		Iterable<Component> sgChildren = this.owner.getComponents();
 		synchronized( sgChildren ) {
-			for( edu.cmu.cs.dennisc.scenegraph.Component sgChild : sgChildren ) {
+			for( Component sgChild : sgChildren ) {
 				GlrComponent<?> glrComponent = AdapterFactory.getAdapterFor( sgChild );
 				this.handleComponentAdded( glrComponent );
 			}
@@ -157,5 +165,5 @@ public abstract class GlrComposite<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 		return this.glrChildren;
 	}
 
-	private final java.util.List<GlrComponent<?>> glrChildren = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final List<GlrComponent<?>> glrChildren = Lists.newLinkedList();
 }

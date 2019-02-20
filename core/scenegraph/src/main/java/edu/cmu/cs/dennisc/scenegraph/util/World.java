@@ -42,6 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.scenegraph.AmbientLight;
 import edu.cmu.cs.dennisc.scenegraph.Background;
 import edu.cmu.cs.dennisc.scenegraph.DirectionalLight;
@@ -54,21 +57,21 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  */
 public class World extends Scene {
 	public World() {
-		this.sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1, 1 ) );
+		this.sgBackground.color.setValue( new Color4f( 0.5f, 0.5f, 1, 1 ) );
 		background.setValue( this.sgBackground );
 
 		this.sgAmbientLight.setParent( this );
-		this.sgAmbientLight.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.2f, 0.2f, 0.2f, 1 ) );
+		this.sgAmbientLight.color.setValue( new Color4f( 0.2f, 0.2f, 0.2f, 1 ) );
 
 		this.sgSunVehicle.setParent( this );
-		this.sgSunVehicle.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( -Math.PI / 2 ) ) );
+		this.sgSunVehicle.setLocalTransformation( AffineMatrix4x4.createRotationAboutXAxis( new AngleInRadians( -Math.PI / 2 ) ) );
 
-		this.sgSunLight.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 1, 1, 1, 1 ) );
+		this.sgSunLight.color.setValue( new Color4f( 1, 1, 1, 1 ) );
 		this.sgSunLight.setParent( this.sgSunVehicle );
 
 		this.sgCameraVehicle.setParent( this );
 
-		this.sgCameraVehicle.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createTranslation( 0, 0, 32 ) );
+		this.sgCameraVehicle.setLocalTransformation( AffineMatrix4x4.createTranslation( 0, 0, 32 ) );
 
 		this.sgCamera.farClippingPlaneDistance.setValue( 1000.0 );
 		this.sgCamera.setParent( this.sgCameraVehicle );

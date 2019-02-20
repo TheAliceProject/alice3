@@ -42,28 +42,33 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.ListDataComposite;
+
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ListDataView<T> extends Panel {
-	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+	private final ListDataListener listDataListener = new ListDataListener() {
 		@Override
-		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
+		public void contentsChanged( ListDataEvent e ) {
 			refreshLater();
 		}
 
 		@Override
-		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
+		public void intervalAdded( ListDataEvent e ) {
 			refreshLater();
 		}
 
 		@Override
-		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
+		public void intervalRemoved( ListDataEvent e ) {
 			refreshLater();
 		}
 	};
 
-	public ListDataView( org.lgna.croquet.ListDataComposite<T, ?> composite ) {
+	public ListDataView( ListDataComposite<T, ?> composite ) {
 		super( composite );
 	}
 
@@ -72,7 +77,7 @@ public abstract class ListDataView<T> extends Panel {
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
-		org.lgna.croquet.ListDataComposite<T, ?> composite = (org.lgna.croquet.ListDataComposite<T, ?>)this.getComposite();
+		ListDataComposite<T, ?> composite = (ListDataComposite<T, ?>)this.getComposite();
 
 		this.forgetAndRemoveAllComponents();
 		for( T item : composite.getData() ) {
@@ -82,7 +87,7 @@ public abstract class ListDataView<T> extends Panel {
 
 	@Override
 	protected void handleDisplayable() {
-		org.lgna.croquet.ListDataComposite<T, ?> composite = (org.lgna.croquet.ListDataComposite<T, ?>)this.getComposite();
+		ListDataComposite<T, ?> composite = (ListDataComposite<T, ?>)this.getComposite();
 		composite.getData().addListener( this.listDataListener );
 		this.refreshLater();
 		super.handleDisplayable();
@@ -91,7 +96,7 @@ public abstract class ListDataView<T> extends Panel {
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
-		org.lgna.croquet.ListDataComposite<T, ?> composite = (org.lgna.croquet.ListDataComposite<T, ?>)this.getComposite();
+		ListDataComposite<T, ?> composite = (ListDataComposite<T, ?>)this.getComposite();
 		composite.getData().removeListener( this.listDataListener );
 	}
 }

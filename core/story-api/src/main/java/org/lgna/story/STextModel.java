@@ -42,18 +42,21 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.GetterTemplate;
+import org.lgna.story.implementation.TextModelImp;
+
 /**
  * @author Dennis Cosgrove
  */
 public class STextModel extends SModel {
-	private final org.lgna.story.implementation.TextModelImp implementation = new org.lgna.story.implementation.TextModelImp( this );
+	private final TextModelImp implementation = new TextModelImp( this );
 
 	@Override
-	/* package-private */org.lgna.story.implementation.TextModelImp getImplementation() {
+	/* package-private */TextModelImp getImplementation() {
 		return this.implementation;
 	}
 
-	@org.lgna.project.annotations.GetterTemplate( isPersistent = true )
+	@GetterTemplate( isPersistent = true )
 	public String getValue() {
 		return this.implementation.getValue();
 	}

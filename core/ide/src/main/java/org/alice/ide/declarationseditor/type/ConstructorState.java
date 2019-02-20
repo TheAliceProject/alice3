@@ -43,13 +43,22 @@
 
 package org.alice.ide.declarationseditor.type;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.declarationseditor.type.data.ConstructorData;
+import org.lgna.croquet.Application;
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorState extends FilteredMemberState<org.lgna.project.ast.NamedUserConstructor> {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, ConstructorState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class ConstructorState extends FilteredMemberState<NamedUserConstructor> {
+	private static Map<NamedUserType, ConstructorState> map = Maps.newHashMap();
 
-	public static synchronized ConstructorState getInstance( org.lgna.project.ast.NamedUserType type ) {
+	public static synchronized ConstructorState getInstance( NamedUserType type ) {
 		ConstructorState rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -60,7 +69,7 @@ public class ConstructorState extends FilteredMemberState<org.lgna.project.ast.N
 		return rv;
 	}
 
-	private ConstructorState( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "53fca6d4-e24f-4662-844e-1e2be690dd45" ), new org.alice.ide.declarationseditor.type.data.ConstructorData( type ) );
+	private ConstructorState( NamedUserType type ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "53fca6d4-e24f-4662-844e-1e2be690dd45" ), new ConstructorData( type ) );
 	}
 }

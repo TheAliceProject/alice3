@@ -43,13 +43,20 @@
 
 package org.alice.ide.ast.rename;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.name.validators.ParameterNameValidator;
+import org.lgna.project.ast.UserParameter;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RenameParameterComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserParameter> {
-	private static java.util.Map<org.lgna.project.ast.UserParameter, RenameParameterComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class RenameParameterComposite extends RenameDeclarationComposite<UserParameter> {
+	private static Map<UserParameter, RenameParameterComposite> map = Maps.newHashMap();
 
-	public static synchronized RenameParameterComposite getInstance( org.lgna.project.ast.UserParameter parameter ) {
+	public static synchronized RenameParameterComposite getInstance( UserParameter parameter ) {
 		assert parameter != null;
 		RenameParameterComposite rv = map.get( parameter );
 		if( rv != null ) {
@@ -61,7 +68,7 @@ public class RenameParameterComposite extends RenameDeclarationComposite<org.lgn
 		return rv;
 	}
 
-	private RenameParameterComposite( org.lgna.project.ast.UserParameter parameter ) {
-		super( java.util.UUID.fromString( "bab60447-570c-49ac-aadb-9cba8d01bb13" ), new org.alice.ide.name.validators.ParameterNameValidator( parameter ), parameter );
+	private RenameParameterComposite( UserParameter parameter ) {
+		super( UUID.fromString( "bab60447-570c-49ac-aadb-9cba8d01bb13" ), new ParameterNameValidator( parameter ), parameter );
 	}
 }

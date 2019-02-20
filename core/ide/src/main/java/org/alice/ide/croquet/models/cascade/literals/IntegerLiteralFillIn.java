@@ -43,11 +43,19 @@
 
 package org.alice.ide.croquet.models.cascade.literals;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.IntegerLiteral;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.IntegerLiteral> {
-	private static java.util.Map<Integer, IntegerLiteralFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class IntegerLiteralFillIn extends ExpressionFillInWithoutBlanks<IntegerLiteral> {
+	private static Map<Integer, IntegerLiteralFillIn> map = Maps.newHashMap();
 
 	public static IntegerLiteralFillIn getInstance( int value ) {
 		synchronized( map ) {
@@ -62,20 +70,20 @@ public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 		}
 	}
 
-	private final org.lgna.project.ast.IntegerLiteral transientValue;
+	private final IntegerLiteral transientValue;
 
 	private IntegerLiteralFillIn( int value ) {
-		super( java.util.UUID.fromString( "edc6ae8d-6fb9-4678-b144-71b3e5c65300" ) );
-		this.transientValue = new org.lgna.project.ast.IntegerLiteral( value );
+		super( UUID.fromString( "edc6ae8d-6fb9-4678-b144-71b3e5c65300" ) );
+		this.transientValue = new IntegerLiteral( value );
 	}
 
 	@Override
-	public org.lgna.project.ast.IntegerLiteral getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.IntegerLiteral, Void> node ) {
+	public IntegerLiteral getTransientValue( ItemNode<? super IntegerLiteral, Void> node ) {
 		return this.transientValue;
 	}
 
 	@Override
-	public org.lgna.project.ast.IntegerLiteral createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.IntegerLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return new org.lgna.project.ast.IntegerLiteral( this.transientValue.value.getValue() );
+	public IntegerLiteral createValue( ItemNode<? super IntegerLiteral, Void> node ) {
+		return new IntegerLiteral( this.transientValue.value.getValue() );
 	}
 }

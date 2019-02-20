@@ -43,39 +43,53 @@
 
 package org.alice.ide.perspectives;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.clipboard.Clipboard;
+import org.alice.ide.codedrop.CodePanelWithDropReceptor;
+import org.alice.ide.croquet.models.IdeDragModel;
+import org.alice.ide.recyclebin.RecycleBin;
+import org.lgna.croquet.AbstractPerspective;
+import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.MenuBarComposite;
+import org.lgna.croquet.views.TrackableShape;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspective {
-	public ProjectPerspective( java.util.UUID id, org.alice.ide.ProjectDocumentFrame projectDocumentFrame, org.lgna.croquet.MenuBarComposite menuBar ) {
+public abstract class ProjectPerspective extends AbstractPerspective {
+	public ProjectPerspective( UUID id, ProjectDocumentFrame projectDocumentFrame, MenuBarComposite menuBar ) {
 		super( id );
 		this.projectDocumentFrame = projectDocumentFrame;
 		this.menuBar = menuBar;
 	}
 
-	public org.alice.ide.ProjectDocumentFrame getProjectDocumentFrame() {
+	public ProjectDocumentFrame getProjectDocumentFrame() {
 		return this.projectDocumentFrame;
 	}
 
 	@Override
-	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
+	public MenuBarComposite getMenuBarComposite() {
 		return this.menuBar;
 	}
 
-	public abstract org.lgna.croquet.views.TrackableShape getRenderWindow();
+	public abstract TrackableShape getRenderWindow();
 
-	public abstract org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus();
+	public abstract CodePanelWithDropReceptor getCodeDropReceptorInFocus();
 
-	protected abstract void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel );
+	protected abstract void addPotentialDropReceptors( List<DropReceptor> out, IdeDragModel dragModel );
 
-	public final java.util.List<org.lgna.croquet.DropReceptor> createListOfPotentialDropReceptors( org.alice.ide.croquet.models.IdeDragModel dragModel ) {
-		java.util.List<org.lgna.croquet.DropReceptor> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public final List<DropReceptor> createListOfPotentialDropReceptors( IdeDragModel dragModel ) {
+		List<DropReceptor> rv = Lists.newLinkedList();
 		this.addPotentialDropReceptors( rv, dragModel );
-		org.lgna.croquet.DropReceptor recycleBinDropReceptor = org.alice.ide.recyclebin.RecycleBin.SINGLETON.getDropReceptor();
+		DropReceptor recycleBinDropReceptor = RecycleBin.SINGLETON.getDropReceptor();
 		if( recycleBinDropReceptor.isPotentiallyAcceptingOf( dragModel ) ) {
 			rv.add( recycleBinDropReceptor );
 		}
-		org.lgna.croquet.DropReceptor clipboardDropReceptor = org.alice.ide.clipboard.Clipboard.SINGLETON.getDropReceptor();
+		DropReceptor clipboardDropReceptor = Clipboard.SINGLETON.getDropReceptor();
 		if( clipboardDropReceptor.isPotentiallyAcceptingOf( dragModel ) ) {
 			rv.add( clipboardDropReceptor );
 		}
@@ -87,6 +101,6 @@ public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspe
 		return this.getName();
 	}
 
-	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
-	private final org.lgna.croquet.MenuBarComposite menuBar;
+	private final ProjectDocumentFrame projectDocumentFrame;
+	private final MenuBarComposite menuBar;
 }

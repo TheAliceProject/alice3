@@ -42,45 +42,62 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import org.alice.ide.IDE;
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.draganddrop.expression.ThisExpressionDragModel;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.declarationseditor.DeclarationComposite;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.PaintUtilities;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractMember;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.ThisExpression;
+
+import java.awt.Graphics2D;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ThisPane extends AccessiblePane {
-	private static final org.lgna.project.ast.JavaType TYPE_FOR_NULL = org.lgna.project.ast.JavaType.getInstance( Void.class );
-	private org.lgna.project.ast.AbstractType<?, ?, ?> type = TYPE_FOR_NULL;
-	private org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> declarationListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>>() {
+	private static final JavaType TYPE_FOR_NULL = JavaType.getInstance( Void.class );
+	private AbstractType<?, ?, ?> type = TYPE_FOR_NULL;
+	private ValueListener<DeclarationComposite<?, ?>> declarationListener = new ValueListener<DeclarationComposite<?, ?>>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> e ) {
-			org.alice.ide.declarationseditor.DeclarationComposite<?, ?> nextValue = e.getNextValue();
+		public void valueChanged( ValueEvent<DeclarationComposite<?, ?>> e ) {
+			DeclarationComposite<?, ?> nextValue = e.getNextValue();
 			ThisPane.this.updateBasedOnFocusedDeclaration( nextValue != null ? nextValue.getDeclaration() : null );
 		}
 	};
 
 	public ThisPane() {
-		super( org.alice.ide.ast.draganddrop.expression.ThisExpressionDragModel.getInstance() );
-		this.addComponent( new org.lgna.croquet.views.Label( org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getTextForThis() ) );
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.ThisExpression.class ) );
+		super( ThisExpressionDragModel.getInstance() );
+		this.addComponent( new Label( FormatterState.getInstance().getValue().getTextForThis() ) );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getColorFor( ThisExpression.class ) );
 	}
 
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.updateBasedOnFocusedDeclaration( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getValue() );
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addAndInvokeNewSchoolValueListener( this.declarationListener );
+		this.updateBasedOnFocusedDeclaration( IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getValue() );
+		IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addAndInvokeNewSchoolValueListener( this.declarationListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationListener );
+		IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationListener );
 		super.handleUndisplayable();
 	}
 
-	private void updateBasedOnFocusedDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
+	private void updateBasedOnFocusedDeclaration( AbstractDeclaration declaration ) {
 		if( declaration != null ) {
-			if( declaration instanceof org.lgna.project.ast.AbstractMember ) {
-				this.type = ( (org.lgna.project.ast.AbstractMember)declaration ).getDeclaringType();
-			} else if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-				this.type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
+			if( declaration instanceof AbstractMember ) {
+				this.type = ( (AbstractMember)declaration ).getDeclaringType();
+			} else if( declaration instanceof AbstractType<?, ?, ?> ) {
+				this.type = (AbstractType<?, ?, ?>)declaration;
 			} else {
 				this.type = null;
 			}
@@ -88,7 +105,7 @@ public class ThisPane extends AccessiblePane {
 			this.type = null;
 		}
 		if( this.type != null ) {
-			this.setToolTipText( "the current instance of " + this.type.getName() + " is referred to as " + org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getTextForThis() );
+			this.setToolTipText( "the current instance of " + this.type.getName() + " is referred to as " + FormatterState.getInstance().getValue().getTextForThis() );
 		} else {
 			this.type = TYPE_FOR_NULL;
 			this.setToolTipText( null );
@@ -96,10 +113,10 @@ public class ThisPane extends AccessiblePane {
 	}
 
 	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected void paintEpilogue( Graphics2D g2, int x, int y, int width, int height ) {
 		super.paintEpilogue( g2, x, y, width, height );
 		if( this.type == TYPE_FOR_NULL ) {
-			g2.setPaint( org.lgna.croquet.views.PaintUtilities.getDisabledTexturePaint() );
+			g2.setPaint( PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}

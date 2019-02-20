@@ -42,16 +42,20 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface ItemCodec<T> {
 	public static class Arrays {
-		public static <T> T[] decodeArray( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, ItemCodec<T> itemCodec ) {
+		public static <T> T[] decodeArray( BinaryDecoder binaryDecoder, ItemCodec<T> itemCodec ) {
 			boolean isNotNull = binaryDecoder.decodeBoolean();
 			if( isNotNull ) {
 				final int N = binaryDecoder.decodeInt();
-				T[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( itemCodec.getValueClass(), N );
+				T[] rv = ReflectionUtilities.newTypedArrayInstance( itemCodec.getValueClass(), N );
 				for( int i = 0; i < rv.length; i++ ) {
 					rv[ i ] = itemCodec.decodeValue( binaryDecoder );
 				}
@@ -61,7 +65,7 @@ public interface ItemCodec<T> {
 			}
 		}
 
-		public static <T> void encodeArray( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, ItemCodec<T> itemCodec, T[] array ) {
+		public static <T> void encodeArray( BinaryEncoder binaryEncoder, ItemCodec<T> itemCodec, T[] array ) {
 			if( array != null ) {
 				binaryEncoder.encode( true );
 				binaryEncoder.encode( array.length );
@@ -76,9 +80,9 @@ public interface ItemCodec<T> {
 
 	public Class<T> getValueClass();
 
-	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+	public T decodeValue( BinaryDecoder binaryDecoder );
 
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value );
+	public void encodeValue( BinaryEncoder binaryEncoder, T value );
 
 	public void appendRepresentation( StringBuilder sb, T value );
 }

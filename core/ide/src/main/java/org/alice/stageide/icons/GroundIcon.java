@@ -42,17 +42,24 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Polygon;
+import java.awt.Shape;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GroundIcon extends ShapeIcon {
-	public GroundIcon( java.awt.Dimension size ) {
+	public GroundIcon( Dimension size ) {
 		super( size );
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-		java.awt.Shape shape = new java.awt.Polygon( new int[] { 0, width, (int)( width * .75 ), (int)( .25 * width ) }, new int[] { (int)( .8 * height ), (int)( .8 * height ), (int)( .2 * height ), (int)( .2 * height ) }, 4 );
+	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
+		Shape shape = new Polygon( new int[] { 0, width, (int)( width * .75 ), (int)( .25 * width ) }, new int[] { (int)( .8 * height ), (int)( .8 * height ), (int)( .2 * height ), (int)( .2 * height ) }, 4 );
 		g2.setPaint( fillPaint );
 		g2.fill( shape );
 	}

@@ -44,6 +44,8 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.story.event.ViewExitListener;
 
+import java.util.UUID;
+
 public class LeavesViewEventListenerFillIn extends LambdaExpressionFillIn {
 
 	private static class SingletonHolder {
@@ -55,6 +57,6 @@ public class LeavesViewEventListenerFillIn extends LambdaExpressionFillIn {
 	}
 
 	public LeavesViewEventListenerFillIn() {
-		super( java.util.UUID.fromString( "5527c6f4-a785-4c0d-9a7d-68f82e23f6a8" ), ViewExitListener.class );
+		super( UUID.fromString( "5527c6f4-a785-4c0d-9a7d-68f82e23f6a8" ), ViewExitListener.class );
 	}
 }

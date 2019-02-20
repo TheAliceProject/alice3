@@ -43,18 +43,25 @@
 
 package org.alice.ide.croquet.models.ast.cascade.expression;
 
+import org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation;
+import org.lgna.project.ast.ArrayLength;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayLengthOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
-	public ArrayLengthOperation( java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+public abstract class ArrayLengthOperation extends ProjectExpressionPropertyOperation {
+	public ArrayLengthOperation( UUID id, ExpressionProperty expressionProperty ) {
 		super( id, expressionProperty );
 	}
 
-	protected abstract org.lgna.project.ast.Expression createAccessExpression();
+	protected abstract Expression createAccessExpression();
 
 	@Override
-	protected final org.lgna.project.ast.Expression createExpression() {
-		return new org.lgna.project.ast.ArrayLength( this.createAccessExpression() );
+	protected final Expression createExpression() {
+		return new ArrayLength( this.createAccessExpression() );
 	}
 }

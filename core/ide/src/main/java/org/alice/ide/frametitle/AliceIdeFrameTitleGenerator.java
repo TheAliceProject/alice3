@@ -42,19 +42,25 @@
  *******************************************************************************/
 package org.alice.ide.frametitle;
 
+import edu.cmu.cs.dennisc.java.net.UriUtilities;
+import org.alice.ide.IDE;
+
+import java.io.File;
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AliceIdeFrameTitleGenerator implements IdeFrameTitleGenerator {
 	@Override
-	public String generateTitle( java.net.URI uri, boolean isDocumentUpToDateWithUri ) {
+	public String generateTitle( URI uri, boolean isDocumentUpToDateWithUri ) {
 		StringBuilder sb = new StringBuilder();
-		sb.append( org.alice.ide.IDE.getApplicationName() );
+		sb.append( IDE.getApplicationName() );
 		sb.append( " " );
-		sb.append( org.alice.ide.IDE.getVersionAdornment() );
+		sb.append( IDE.getVersionAdornment() );
 		sb.append( " " );
 		if( uri != null ) {
-			java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
+			File file = UriUtilities.getFile( uri );
 			if( file != null ) {
 				sb.append( file );
 			}

@@ -42,11 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.worker;
 
+import javax.swing.SwingWorker;
+import java.beans.PropertyChangeListener;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractWorker<T, V> {
-	protected class InternalSwingWorker extends javax.swing.SwingWorker<T, V> {
+	protected class InternalSwingWorker extends SwingWorker<T, V> {
 		@Override
 		protected final T doInBackground() throws Exception {
 			return AbstractWorker.this.do_onBackgroundThread();
@@ -63,7 +69,7 @@ public abstract class AbstractWorker<T, V> {
 					value = this.get();
 				} catch( InterruptedException ie ) {
 					throw new RuntimeException( ie );
-				} catch( java.util.concurrent.ExecutionException ee ) {
+				} catch( ExecutionException ee ) {
 					throw new RuntimeException( ee );
 				}
 				AbstractWorker.this.handleDone_onEventDispatchThread( value );
@@ -71,13 +77,13 @@ public abstract class AbstractWorker<T, V> {
 		}
 	}
 
-	protected abstract javax.swing.SwingWorker<T, V> getSwingWorker();
+	protected abstract SwingWorker<T, V> getSwingWorker();
 
-	public final void addPropertyChangeListener( java.beans.PropertyChangeListener listener ) {
+	public final void addPropertyChangeListener( PropertyChangeListener listener ) {
 		this.getSwingWorker().addPropertyChangeListener( listener );
 	}
 
-	public final void removePropertyChangeListener( java.beans.PropertyChangeListener listener ) {
+	public final void removePropertyChangeListener( PropertyChangeListener listener ) {
 		this.getSwingWorker().removePropertyChangeListener( listener );
 	}
 
@@ -85,15 +91,15 @@ public abstract class AbstractWorker<T, V> {
 
 	protected abstract void handleDone_onEventDispatchThread( T value );
 
-	public final T get_obviouslyLockingCurrentThreadUntilDone() throws InterruptedException, java.util.concurrent.ExecutionException {
+	public final T get_obviouslyLockingCurrentThreadUntilDone() throws InterruptedException, ExecutionException {
 		return this.getSwingWorker().get();
 	}
 
-	public final T get_obviouslyLockingCurrentThreadUntilDoneOrTimedOut( int timeout, java.util.concurrent.TimeUnit timeUnit ) throws InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException {
+	public final T get_obviouslyLockingCurrentThreadUntilDoneOrTimedOut( int timeout, TimeUnit timeUnit ) throws InterruptedException, ExecutionException, TimeoutException {
 		return this.getSwingWorker().get( timeout, timeUnit );
 	}
 
-	public final javax.swing.SwingWorker.StateValue getState() {
+	public final SwingWorker.StateValue getState() {
 		return this.getSwingWorker().getState();
 	}
 

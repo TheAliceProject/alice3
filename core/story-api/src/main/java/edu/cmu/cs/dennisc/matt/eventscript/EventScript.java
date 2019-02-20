@@ -42,8 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.matt.eventscript;
 
+import java.util.Collections;
 import java.util.List;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
 
@@ -52,8 +54,8 @@ import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
  */
 public class EventScript {
 
-	private final List<EventScriptListener> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final List<EventScriptEvent> masterEventList = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final List<EventScriptListener> listeners = Lists.newCopyOnWriteArrayList();
+	private final List<EventScriptEvent> masterEventList = Lists.newLinkedList();
 
 	public void record( double currentTime, Object e ) {
 		EventScriptEvent event = new EventScriptEvent( currentTime, e );
@@ -76,7 +78,7 @@ public class EventScript {
 	}
 
 	public List<EventScriptEvent> getEventList() {
-		return java.util.Collections.unmodifiableList( this.masterEventList );
+		return Collections.unmodifiableList( this.masterEventList );
 	}
 
 	public EventScriptIterator createEventScriptIterator() {

@@ -42,6 +42,15 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.util;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,146 +59,146 @@ public class Lists {
 		throw new Error();
 	}
 
-	public static <E> java.util.LinkedList<E> newLinkedList() {
-		return new java.util.LinkedList<E>();
+	public static <E> LinkedList<E> newLinkedList() {
+		return new LinkedList<E>();
 	}
 
-	public static <E> java.util.LinkedList<E> newLinkedList( java.util.Collection<E> other ) {
-		java.util.LinkedList<E> rv = new java.util.LinkedList<E>();
+	public static <E> LinkedList<E> newLinkedList( Collection<E> other ) {
+		LinkedList<E> rv = new LinkedList<E>();
 		rv.addAll( other );
 		return rv;
 	}
 
-	public static <E, X extends E> java.util.LinkedList<E> newLinkedList( X... array ) {
-		java.util.LinkedList<E> rv = new java.util.LinkedList<E>();
-		java.util.Collections.addAll( rv, array );
+	public static <E, X extends E> LinkedList<E> newLinkedList( X... array ) {
+		LinkedList<E> rv = new LinkedList<E>();
+		Collections.addAll( rv, array );
 		return rv;
 	}
 
-	public static <E> java.util.ArrayList<E> newArrayListWithInitialCapacity( int initialCapacity ) {
-		return new java.util.ArrayList<E>( initialCapacity );
+	public static <E> ArrayList<E> newArrayListWithInitialCapacity( int initialCapacity ) {
+		return new ArrayList<E>( initialCapacity );
 	}
 
-	public static <E> java.util.ArrayList<E> newArrayList() {
-		return new java.util.ArrayList<E>();
+	public static <E> ArrayList<E> newArrayList() {
+		return new ArrayList<E>();
 	}
 
-	public static <E, X extends E> java.util.ArrayList<E> newArrayList( X... array ) {
-		java.util.ArrayList<E> rv = new java.util.ArrayList<E>();
-		java.util.Collections.addAll( rv, array );
+	public static <E, X extends E> ArrayList<E> newArrayList( X... array ) {
+		ArrayList<E> rv = new ArrayList<E>();
+		Collections.addAll( rv, array );
 		return rv;
 	}
 
-	public static <E> java.util.ArrayList<E> newArrayList( java.util.Collection<E> other ) {
-		java.util.ArrayList<E> rv = new java.util.ArrayList<E>();
+	public static <E> ArrayList<E> newArrayList( Collection<E> other ) {
+		ArrayList<E> rv = new ArrayList<E>();
 		rv.addAll( other );
 		return rv;
 	}
 
-	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList() {
-		return new java.util.concurrent.CopyOnWriteArrayList<E>();
+	public static <E> CopyOnWriteArrayList<E> newCopyOnWriteArrayList() {
+		return new CopyOnWriteArrayList<E>();
 	}
 
-	public static <E, X extends E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( X... array ) {
-		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList<E>();
-		java.util.Collections.addAll( rv, array );
+	public static <E, X extends E> CopyOnWriteArrayList<E> newCopyOnWriteArrayList( X... array ) {
+		CopyOnWriteArrayList<E> rv = new CopyOnWriteArrayList<E>();
+		Collections.addAll( rv, array );
 		return rv;
 	}
 
-	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( java.util.Collection<E> other ) {
-		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList<E>();
+	public static <E> CopyOnWriteArrayList<E> newCopyOnWriteArrayList( Collection<E> other ) {
+		CopyOnWriteArrayList<E> rv = new CopyOnWriteArrayList<E>();
 		rv.addAll( other );
 		return rv;
 	}
 
-	public static java.util.List<Byte> newList( byte[] array ) {
+	public static List<Byte> newList( byte[] array ) {
 		if( array != null ) {
-			java.util.ArrayList<Byte> rv = newArrayListWithInitialCapacity( array.length );
+			ArrayList<Byte> rv = newArrayListWithInitialCapacity( array.length );
 			for( byte item : array ) {
 				rv.add( item );
 			}
 			return rv;
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	public static java.util.List<Short> newList( short[] array ) {
+	public static List<Short> newList( short[] array ) {
 		if( array != null ) {
-			java.util.ArrayList<Short> rv = newArrayListWithInitialCapacity( array.length );
+			ArrayList<Short> rv = newArrayListWithInitialCapacity( array.length );
 			for( short item : array ) {
 				rv.add( item );
 			}
 			return rv;
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	public static java.util.List<Integer> newList( int[] array ) {
+	public static List<Integer> newList( int[] array ) {
 		if( array != null ) {
-			java.util.ArrayList<Integer> rv = newArrayListWithInitialCapacity( array.length );
+			ArrayList<Integer> rv = newArrayListWithInitialCapacity( array.length );
 			for( int item : array ) {
 				rv.add( item );
 			}
 			return rv;
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	public static java.util.List<Long> newList( long[] array ) {
+	public static List<Long> newList( long[] array ) {
 		if( array != null ) {
-			java.util.ArrayList<Long> rv = newArrayListWithInitialCapacity( array.length );
+			ArrayList<Long> rv = newArrayListWithInitialCapacity( array.length );
 			for( long item : array ) {
 				rv.add( item );
 			}
 			return rv;
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	public static java.util.List<Float> newList( float[] array ) {
+	public static List<Float> newList( float[] array ) {
 		if( array != null ) {
-			java.util.ArrayList<Float> rv = newArrayListWithInitialCapacity( array.length );
+			ArrayList<Float> rv = newArrayListWithInitialCapacity( array.length );
 			for( float item : array ) {
 				rv.add( item );
 			}
 			return rv;
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	public static java.util.List<Character> newList( char[] array ) {
+	public static List<Character> newList( char[] array ) {
 		if( array != null ) {
-			java.util.ArrayList<Character> rv = newArrayListWithInitialCapacity( array.length );
+			ArrayList<Character> rv = newArrayListWithInitialCapacity( array.length );
 			for( char item : array ) {
 				rv.add( item );
 			}
 			return rv;
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	public static java.util.List<Double> newList( double[] array ) {
+	public static List<Double> newList( double[] array ) {
 		if( array != null ) {
-			java.util.ArrayList<Double> rv = newArrayListWithInitialCapacity( array.length );
+			ArrayList<Double> rv = newArrayListWithInitialCapacity( array.length );
 			for( double item : array ) {
 				rv.add( item );
 			}
 			return rv;
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	public static <E, X extends E> java.util.List<java.util.List<E>> newArrayListOfSingleArrayList( X... list0Array ) {
-		java.util.ArrayList<java.util.List<E>> rv = new java.util.ArrayList<java.util.List<E>>();
-		java.util.ArrayList<E> list0 = new java.util.ArrayList<E>();
-		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( list0, list0Array );
+	public static <E, X extends E> List<List<E>> newArrayListOfSingleArrayList( X... list0Array ) {
+		ArrayList<List<E>> rv = new ArrayList<List<E>>();
+		ArrayList<E> list0 = new ArrayList<E>();
+		ArrayUtilities.set( list0, list0Array );
 		rv.add( list0 );
 		return rv;
 	}

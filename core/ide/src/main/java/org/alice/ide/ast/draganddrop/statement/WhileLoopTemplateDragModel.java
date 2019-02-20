@@ -43,6 +43,15 @@
 
 package org.alice.ide.ast.draganddrop.statement;
 
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.cascade.statement.WhileLoopInsertCascade;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.WhileLoop;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +65,11 @@ public class WhileLoopTemplateDragModel extends PotentiallyEnvelopingStatementTe
 	}
 
 	private WhileLoopTemplateDragModel() {
-		super( java.util.UUID.fromString( "fef12a3b-6ebd-4cc3-81f0-8bc0d34cada3" ), org.lgna.project.ast.WhileLoop.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteWhileLoop() );
+		super( UUID.fromString( "fef12a3b-6ebd-4cc3-81f0-8bc0d34cada3" ), WhileLoop.class, IncompleteAstUtilities.createIncompleteWhileLoop() );
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.WhileLoopInsertCascade.getInstance( blockStatementIndexPair, isEnveloping );
+	protected Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		return WhileLoopInsertCascade.getInstance( blockStatementIndexPair, isEnveloping );
 	}
 }

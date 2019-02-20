@@ -43,21 +43,30 @@
 
 package org.alice.ide.croquet.models.declaration;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.models.cascade.AbstractInstanceCreationFillIn;
+import org.lgna.project.ast.AbstractConstructor;
+import org.lgna.project.ast.AbstractParameter;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class InstanceCreationFillInWithGalleryResourceParameter extends org.alice.ide.croquet.models.cascade.AbstractInstanceCreationFillIn {
-	private static java.util.Map<org.lgna.project.ast.AbstractConstructor, InstanceCreationFillInWithGalleryResourceParameter> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public final class InstanceCreationFillInWithGalleryResourceParameter extends AbstractInstanceCreationFillIn {
+	private static Map<AbstractConstructor, InstanceCreationFillInWithGalleryResourceParameter> map = Maps.newHashMap();
 
-	public static synchronized InstanceCreationFillInWithGalleryResourceParameter getInstance( org.lgna.project.ast.AbstractConstructor constructor ) {
+	public static synchronized InstanceCreationFillInWithGalleryResourceParameter getInstance( AbstractConstructor constructor ) {
 		InstanceCreationFillInWithGalleryResourceParameter rv = map.get( constructor );
 		if( rv != null ) {
 			//pass
 		} else {
-			java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
+			List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
 			GalleryResourceBlank[] blanks = new GalleryResourceBlank[ parameters.size() ];
 			int i = 0;
-			for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {
+			for( AbstractParameter parameter : constructor.getRequiredParameters() ) {
 				blanks[ i ] = GalleryResourceBlank.getInstance( parameter.getValueType() );
 				i++;
 			}
@@ -67,7 +76,7 @@ public final class InstanceCreationFillInWithGalleryResourceParameter extends or
 		return rv;
 	}
 
-	private InstanceCreationFillInWithGalleryResourceParameter( org.lgna.project.ast.AbstractConstructor constructor, GalleryResourceBlank... blanks ) {
-		super( java.util.UUID.fromString( "98dde1d1-ad25-463a-bbbf-67e96e11f87f" ), constructor, blanks );
+	private InstanceCreationFillInWithGalleryResourceParameter( AbstractConstructor constructor, GalleryResourceBlank... blanks ) {
+		super( UUID.fromString( "98dde1d1-ad25-463a-bbbf-67e96e11f87f" ), constructor, blanks );
 	}
 }

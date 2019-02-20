@@ -43,13 +43,18 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.MenuItemContainer;
+import org.lgna.croquet.views.ViewController;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class StandardMenuItemPrepModel extends MenuItemPrepModel {
-	public StandardMenuItemPrepModel( java.util.UUID id ) {
+	public StandardMenuItemPrepModel( UUID id ) {
 		super( id );
 	}
 
-	public abstract org.lgna.croquet.views.ViewController<?, ?> createMenuItemAndAddTo( org.lgna.croquet.views.MenuItemContainer menuItemContainer );
+	public abstract ViewController<?, ?> createMenuItemAndAddTo( MenuItemContainer menuItemContainer );
 }

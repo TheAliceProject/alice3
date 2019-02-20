@@ -42,22 +42,28 @@
  */
 package org.lgna.ik.poser.croquet;
 
+import org.alice.ide.IDE;
 import org.alice.ide.name.validators.MethodNameValidator;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.AbstractSeverityStatusComposite;
+import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Panel;
+
+import java.util.UUID;
 
 /**
  * @author Matt Mayy
  */
-public abstract class AnimationProcedureDialog extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<org.lgna.croquet.views.Panel> {
+public abstract class AnimationProcedureDialog extends SimpleOperationInputDialogCoreComposite<Panel> {
 
-	public AnimationProcedureDialog( java.util.UUID migrationId, org.lgna.ik.poser.croquet.AnimatorComposite animatorComposite ) {
-		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
+	public AnimationProcedureDialog( UUID migrationId, AnimatorComposite animatorComposite ) {
+		super( migrationId, IDE.PROJECT_GROUP );
 		this.animatorComposite = this.registerSubComposite( animatorComposite );
 		this.animatorComposite.addStatusListener( statusUpdateListener );
 	}
 
 	@Override
-	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
 		if( animatorComposite.getControlComposite().isEmpty() ) {
 			return empty;
 		}
@@ -76,11 +82,11 @@ public abstract class AnimationProcedureDialog extends org.lgna.croquet.SimpleOp
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		return new org.lgna.croquet.views.BorderPanel.Builder().center( this.animatorComposite.getRootComponent() ).build();
+	protected Panel createView() {
+		return new BorderPanel.Builder().center( this.animatorComposite.getRootComponent() ).build();
 	}
 
-	private final org.lgna.ik.poser.croquet.AnimatorComposite<?> animatorComposite;
+	private final AnimatorComposite<?> animatorComposite;
 
 	private final StatusUpdateListener statusUpdateListener = new StatusUpdateListener() {
 		@Override
@@ -89,11 +95,11 @@ public abstract class AnimationProcedureDialog extends org.lgna.croquet.SimpleOp
 		}
 	};
 
-	public org.lgna.ik.poser.croquet.AnimatorComposite<?> getAnimatorComposite() {
+	public AnimatorComposite<?> getAnimatorComposite() {
 		return this.animatorComposite;
 	}
 
-	private final org.lgna.croquet.AbstractSeverityStatusComposite.WarningStatus empty = createWarningStatus( "noPoses" );
-	private final org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus errorStatus = createErrorStatus( "errorStatus" );
+	private final AbstractSeverityStatusComposite.WarningStatus empty = createWarningStatus( "noPoses" );
+	private final AbstractSeverityStatusComposite.ErrorStatus errorStatus = createErrorStatus( "errorStatus" );
 	private MethodNameValidator validator;
 }

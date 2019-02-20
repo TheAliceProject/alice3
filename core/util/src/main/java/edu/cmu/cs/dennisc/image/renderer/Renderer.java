@@ -42,13 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.image.renderer;
 
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.image.BufferedImage;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Renderer {
-	private java.awt.image.BufferedImage m_bufferedImage = null;
+	private BufferedImage m_bufferedImage = null;
 
-	protected void createBufferedImageIfNecessary( java.awt.GraphicsConfiguration gc, int width, int height, int transparency ) {
+	protected void createBufferedImageIfNecessary( GraphicsConfiguration gc, int width, int height, int transparency ) {
 		if( m_bufferedImage != null ) {
 			if( ( m_bufferedImage.getWidth() < width ) || ( m_bufferedImage.getHeight() < height ) || ( m_bufferedImage.getTransparency() != transparency ) ) {
 				m_bufferedImage = null;
@@ -61,7 +65,7 @@ public abstract class Renderer {
 		}
 	}
 
-	protected java.awt.image.BufferedImage getBufferedImage() {
+	protected BufferedImage getBufferedImage() {
 		return m_bufferedImage;
 	}
 
@@ -87,15 +91,15 @@ public abstract class Renderer {
 
 	protected abstract int getTransparency();
 
-	public abstract void renderIntoBufferedImage( java.awt.GraphicsConfiguration gc );
+	public abstract void renderIntoBufferedImage( GraphicsConfiguration gc );
 
-	public abstract void paintBackground( java.awt.Graphics2D g2 );
+	public abstract void paintBackground( Graphics2D g2 );
 
-	public void paint( java.awt.Graphics2D g2 ) {
+	public void paint( Graphics2D g2 ) {
 		paint( g2, getWidth(), getHeight() );
 	}
 
-	protected final void paint( java.awt.Graphics2D g2, int width, int height ) {
+	protected final void paint( Graphics2D g2, int width, int height ) {
 		paintBackground( g2 );
 		renderIntoBufferedImage( g2.getDeviceConfiguration() );
 		g2.drawImage( m_bufferedImage, 0, 0, width, height, null );

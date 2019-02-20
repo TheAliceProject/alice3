@@ -43,26 +43,30 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.UserActivity;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPerspective extends AbstractElement implements Perspective {
 	private final class SetPerspectiveOperation extends ActionOperation {
 		public SetPerspectiveOperation() {
-			super( Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "6906f6c6-fa04-4527-b37c-20adc4793733" ) );
+			super( Application.APPLICATION_UI_GROUP, UUID.fromString( "6906f6c6-fa04-4527-b37c-20adc4793733" ) );
 		}
 
 		@Override
-		protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+		protected void perform( UserActivity activity ) {
 			PerspectiveApplication.getActiveInstance().setPerspective( AbstractPerspective.this );
-			step.finish();
+			activity.finish();
 		}
 	}
 
 	private final SetPerspectiveOperation setPerspectiveOperation = new SetPerspectiveOperation();
 	private String name;
 
-	public AbstractPerspective( java.util.UUID id ) {
+	public AbstractPerspective( UUID id ) {
 		super( id );
 	}
 

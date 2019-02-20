@@ -43,20 +43,29 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.nebulous.NebulousTexture;
+import edu.cmu.cs.dennisc.pattern.Lazy;
+import edu.cmu.cs.dennisc.texture.Texture;
+import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.ValueTemplate;
 import org.lgna.project.annotations.Visibility;
+import org.lgna.story.annotation.PortionDetails;
+import org.lgna.story.annotation.RoomCeilingAppearanceDetails;
+import org.lgna.story.annotation.RoomFloorAppearanceDetails;
+import org.lgna.story.annotation.RoomWallAppearanceDetails;
+import org.lgna.story.implementation.RoomImp;
 
 public class SRoom extends SThing implements MutableRider, VisualWithPaint {
-	private static class LazyTexture extends edu.cmu.cs.dennisc.pattern.Lazy<edu.cmu.cs.dennisc.texture.Texture> {
+	private static class LazyTexture extends Lazy<Texture> {
 		public LazyTexture( String textureKey ) {
 			this.textureKey = textureKey;
 		}
 
 		@Override
-		protected edu.cmu.cs.dennisc.texture.Texture create() {
-			return new edu.cmu.cs.dennisc.nebulous.NebulousTexture( this.textureKey );
+		protected Texture create() {
+			return new NebulousTexture( this.textureKey );
 		}
 
 		private final String textureKey;
@@ -113,7 +122,7 @@ public class SRoom extends SThing implements MutableRider, VisualWithPaint {
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.texture.Texture getTexture() {
+		public Texture getTexture() {
 			return this.lazyTexture.get();
 		}
 
@@ -162,7 +171,7 @@ public class SRoom extends SThing implements MutableRider, VisualWithPaint {
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.texture.Texture getTexture() {
+		public Texture getTexture() {
 			return this.lazyTexture.get();
 		}
 
@@ -211,7 +220,7 @@ public class SRoom extends SThing implements MutableRider, VisualWithPaint {
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.texture.Texture getTexture() {
+		public Texture getTexture() {
 			return this.lazyTexture.get();
 		}
 
@@ -224,10 +233,10 @@ public class SRoom extends SThing implements MutableRider, VisualWithPaint {
 		private final Paint fallback;
 	}
 
-	private final org.lgna.story.implementation.RoomImp implementation = new org.lgna.story.implementation.RoomImp( this );
+	private final RoomImp implementation = new RoomImp( this );
 
 	@Override
-			/* package-private */org.lgna.story.implementation.RoomImp getImplementation() {
+			/* package-private */RoomImp getImplementation() {
 		return this.implementation;
 	}
 
@@ -251,7 +260,7 @@ public class SRoom extends SThing implements MutableRider, VisualWithPaint {
 
 	@MethodTemplate( )
 	@GetterTemplate( isPersistent = true )
-	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.RoomFloorAppearanceDetails.class )
+	@ValueTemplate( detailsEnumCls = RoomFloorAppearanceDetails.class )
 	public Paint getFloorPaint() {
 		return this.getImplementation().floorPaint.getValue();
 	}
@@ -269,7 +278,7 @@ public class SRoom extends SThing implements MutableRider, VisualWithPaint {
 
 	@MethodTemplate( )
 	@GetterTemplate( isPersistent = true )
-	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.RoomWallAppearanceDetails.class )
+	@ValueTemplate( detailsEnumCls = RoomWallAppearanceDetails.class )
 	public Paint getWallPaint() {
 		return this.getImplementation().wallPaint.getValue();
 	}
@@ -287,7 +296,7 @@ public class SRoom extends SThing implements MutableRider, VisualWithPaint {
 
 	@MethodTemplate( )
 	@GetterTemplate( isPersistent = true )
-	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.RoomCeilingAppearanceDetails.class )
+	@ValueTemplate( detailsEnumCls = RoomCeilingAppearanceDetails.class )
 	public Paint getCeilingPaint() {
 		return this.getImplementation().ceilingPaint.getValue();
 	}
@@ -306,7 +315,7 @@ public class SRoom extends SThing implements MutableRider, VisualWithPaint {
 	@Override
 	@MethodTemplate( )
 	@GetterTemplate( isPersistent = true )
-	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
+	@ValueTemplate( detailsEnumCls = PortionDetails.class )
 	public Double getOpacity() {
 		return (double)this.getImplementation().opacity.getValue();
 	}
@@ -314,7 +323,7 @@ public class SRoom extends SThing implements MutableRider, VisualWithPaint {
 	@Override
 	@MethodTemplate( )
 	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsBetween0and1( opacity, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsBetween0and1( opacity, 0 );
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 

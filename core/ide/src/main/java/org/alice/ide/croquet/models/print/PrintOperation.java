@@ -42,37 +42,49 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.print;
 
+import org.alice.ide.operations.InconsequentialActionOperation;
+
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.Size2DSyntax;
+import javax.print.attribute.standard.MediaPrintableArea;
+import javax.print.attribute.standard.MediaSize;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PrintOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public PrintOperation( java.util.UUID individualId ) {
+public abstract class PrintOperation extends InconsequentialActionOperation {
+	public PrintOperation( UUID individualId ) {
 		super( individualId );
 	}
 
-	protected abstract java.awt.print.Printable getPrintable();
+	protected abstract Printable getPrintable();
 
 	@Override
-	protected final void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		java.awt.print.PrinterJob job = java.awt.print.PrinterJob.getPrinterJob();
-		java.awt.print.Printable printable = this.getPrintable();
+	protected final void performInternal() {
+		PrinterJob job = PrinterJob.getPrinterJob();
+		Printable printable = this.getPrintable();
 		if( printable != null ) {
 			job.setPrintable( printable );
 
-			int mm = javax.print.attribute.Size2DSyntax.MM;
-			javax.print.attribute.standard.MediaSize mediaSize = javax.print.attribute.standard.MediaSize.ISO.A4;
+			int mm = Size2DSyntax.MM;
+			MediaSize mediaSize = MediaSize.ISO.A4;
 
 			float mediaWidth = mediaSize.getX( mm );
 			float mediaHeight = mediaSize.getY( mm );
 			float margin = mediaWidth / 50.0f;
 
-			javax.print.attribute.PrintRequestAttributeSet set = new javax.print.attribute.HashPrintRequestAttributeSet();
+			PrintRequestAttributeSet set = new HashPrintRequestAttributeSet();
 			set.add( mediaSize.getMediaSizeName() );
-			set.add( new javax.print.attribute.standard.MediaPrintableArea( margin, margin, mediaWidth - margin - margin, mediaHeight - margin - margin, mm ) );
+			set.add( new MediaPrintableArea( margin, margin, mediaWidth - margin - margin, mediaHeight - margin - margin, mm ) );
 			if( job.printDialog( set ) ) {
 				try {
 					job.print( set );
-				} catch( java.awt.print.PrinterException pe ) {
+				} catch( PrinterException pe ) {
 					//todo
 					pe.printStackTrace();
 				}

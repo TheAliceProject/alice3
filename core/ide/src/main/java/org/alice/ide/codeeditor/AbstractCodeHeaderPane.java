@@ -42,13 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.codeeditor;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.Panel;
+import wrap.WrappedFlowLayout;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import java.awt.FlowLayout;
+import java.awt.LayoutManager;
 
 /**
  * @author Dennis Cosgrove
  */
-class AbstractCodeHeaderPane extends org.lgna.croquet.views.Panel {
+class AbstractCodeHeaderPane extends Panel {
 	static final float NAME_SCALE = 1.8f;
 	private final boolean isPreview;
 
@@ -57,11 +66,11 @@ class AbstractCodeHeaderPane extends org.lgna.croquet.views.Panel {
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
 		if( this.isPreview ) {
-			return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+			return new BoxLayout( jPanel, BoxLayout.LINE_AXIS );
 		} else {
-			return new wrap.WrappedFlowLayout( java.awt.FlowLayout.LEADING, 0, 0 );
+			return new WrappedFlowLayout( FlowLayout.LEADING, 0, 0 );
 		}
 	}
 
@@ -69,12 +78,12 @@ class AbstractCodeHeaderPane extends org.lgna.croquet.views.Panel {
 		return this.isPreview;
 	}
 
-	protected void addComponent( org.lgna.croquet.views.AwtComponentView<?> component ) {
+	protected void addComponent( AwtComponentView<?> component ) {
 		this.internalAddComponent( component );
 	}
 
 	Label getDeclareLabel() {
-		return new Label( localize("declare") + " ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+		return new Label( localize("declare") + " ", TextPosture.OBLIQUE );
 	}
 
 	String localize(String key) {

@@ -42,6 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.pattern;
 
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+
+import java.lang.reflect.Field;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -78,8 +82,8 @@ public class DefaultNameableAndClassOwnerTrackable extends DefaultNameable imple
 	}
 
 	public static void setNamesAndClassOwnersForPublicStaticFinalInstancesOwnedBy( Class<?> clsOwner ) {
-		for( java.lang.reflect.Field field : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicStaticFinalFields( clsOwner, DefaultNameableAndClassOwnerTrackable.class ) ) {
-			DefaultNameableAndClassOwnerTrackable instance = (DefaultNameableAndClassOwnerTrackable)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, null );
+		for( Field field : ReflectionUtilities.getPublicStaticFinalFields( clsOwner, DefaultNameableAndClassOwnerTrackable.class ) ) {
+			DefaultNameableAndClassOwnerTrackable instance = (DefaultNameableAndClassOwnerTrackable)ReflectionUtilities.get( field, null );
 			instance.setName( field.getName() );
 			instance.setClassOwner( clsOwner );
 		}

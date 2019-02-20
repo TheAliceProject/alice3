@@ -43,13 +43,18 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.scenegraph.PointLight;
+
+import java.nio.DoubleBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GlrPointLight<T extends edu.cmu.cs.dennisc.scenegraph.PointLight> extends GlrLight<T> {
+public class GlrPointLight<T extends PointLight> extends GlrLight<T> {
 	@Override
 	protected float[] getPosition( float[] rv ) {
-		java.nio.DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
+		DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
 		rv[ 0 ] = (float)db.get( 12 );
 		rv[ 1 ] = (float)db.get( 13 );
 		rv[ 2 ] = (float)db.get( 14 );
@@ -73,7 +78,7 @@ public class GlrPointLight<T extends edu.cmu.cs.dennisc.scenegraph.PointLight> e
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.constantAttenuation ) {
 			this.constant = owner.constantAttenuation.getValue().floatValue();
 		} else if( property == owner.linearAttenuation ) {

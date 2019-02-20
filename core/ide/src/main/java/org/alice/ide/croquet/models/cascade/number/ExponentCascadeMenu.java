@@ -43,10 +43,20 @@
 
 package org.alice.ide.croquet.models.cascade.number;
 
+import org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu;
+import org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn;
+import org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.Expression;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExponentCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.Expression> {
+public class ExponentCascadeMenu extends ExpressionCascadeMenu<Expression> {
 	private static class SingletonHolder {
 		private static ExponentCascadeMenu instance = new ExponentCascadeMenu();
 	}
@@ -56,13 +66,13 @@ public class ExponentCascadeMenu extends org.alice.ide.croquet.models.cascade.Ex
 	}
 
 	private ExponentCascadeMenu() {
-		super( java.util.UUID.fromString( "53e6ac46-5f75-4a6e-8149-9161b2e330d1" ) );
+		super( UUID.fromString( "53e6ac46-5f75-4a6e-8149-9161b2e330d1" ) );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "exp", Double.TYPE ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "log", Double.TYPE ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( Math.class, "E" ) );
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> context ) {
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "exp", Double.TYPE ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "log", Double.TYPE ) );
+		blankChildren.add( StaticFieldAccessFillIn.getInstance( Math.class, "E" ) );
 	}
 }

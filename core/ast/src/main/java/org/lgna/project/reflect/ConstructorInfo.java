@@ -42,23 +42,26 @@
  *******************************************************************************/
 package org.lgna.project.reflect;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+
+import java.lang.reflect.Constructor;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ConstructorInfo extends MemberWithParametersInfo {
-	private transient java.lang.reflect.Constructor<?> cnstrctr = null;
+	private transient Constructor<?> cnstrctr = null;
 
 	public ConstructorInfo( ClassInfo classInfo, String[] parameterClassNames, String[] parameterNames ) {
 		super( classInfo, parameterClassNames, parameterNames );
 	}
 
-	public ConstructorInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public ConstructorInfo( BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
-	public java.lang.reflect.Constructor<?> getCnstrctr() {
+	public Constructor<?> getCnstrctr() {
 		if( this.cnstrctr != null ) {
 			//pass
 		} else {

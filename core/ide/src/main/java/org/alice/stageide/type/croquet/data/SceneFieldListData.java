@@ -42,31 +42,45 @@
  *******************************************************************************/
 package org.alice.stageide.type.croquet.data;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.ProjectStack;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.alice.stageide.ast.StoryApiSpecificAstUtilities;
+import org.lgna.croquet.data.RefreshableListData;
+import org.lgna.project.Project;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.SThing;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SceneFieldListData extends org.lgna.croquet.data.RefreshableListData<org.lgna.project.ast.UserField> {
+public class SceneFieldListData extends RefreshableListData<UserField> {
 	public SceneFieldListData() {
-		super( org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ) );
+		super( NodeCodec.getInstance( UserField.class ) );
 	}
 
 	@Override
-	protected java.util.List<org.lgna.project.ast.UserField> createValues() {
-		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
-		org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
+	protected List<UserField> createValues() {
+		Project project = ProjectStack.peekProject();
+		NamedUserType sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
 		if( sceneType != null ) {
-			java.util.List<org.lgna.project.ast.UserField> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			List<UserField> rv = Lists.newLinkedList();
 
 			final boolean IS_SCENE_FIELD_DESIRED = true;
 			if( IS_SCENE_FIELD_DESIRED ) {
-				org.lgna.project.ast.NamedUserType programType = project.getProgramType();
-				org.lgna.project.ast.UserField sceneField = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneFieldFromProgramType( programType );
+				NamedUserType programType = project.getProgramType();
+				UserField sceneField = StoryApiSpecificAstUtilities.getSceneFieldFromProgramType( programType );
 				rv.add( sceneField );
 			}
 
-			for( org.lgna.project.ast.UserField field : sceneType.getDeclaredFields() ) {
-				if( field.isPrivateAccess() && field.isFinal() && ( field.getManagementLevel() == org.lgna.project.ast.ManagementLevel.MANAGED ) ) {
-					if( field.getValueType().isAssignableTo( org.lgna.story.SThing.class ) ) {
+			for( UserField field : sceneType.getDeclaredFields() ) {
+				if( field.isPrivateAccess() && field.isFinal() && ( field.getManagementLevel() == ManagementLevel.MANAGED ) ) {
+					if( field.getValueType().isAssignableTo( SThing.class ) ) {
 						rv.add( field );
 					}
 				}
@@ -74,7 +88,7 @@ public class SceneFieldListData extends org.lgna.croquet.data.RefreshableListDat
 
 			return rv;
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 }

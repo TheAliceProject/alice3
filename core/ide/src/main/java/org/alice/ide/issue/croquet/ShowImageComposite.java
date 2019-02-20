@@ -42,18 +42,25 @@
  *******************************************************************************/
 package org.alice.ide.issue.croquet;
 
+import org.alice.ide.issue.croquet.views.ShowImageView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite;
+
+import java.awt.Image;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShowImageComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.issue.croquet.views.ShowImageView> {
-	public ShowImageComposite( java.util.UUID migrationId ) {
-		super( migrationId, org.lgna.croquet.Application.INFORMATION_GROUP );
+public abstract class ShowImageComposite extends SimpleOperationUnadornedDialogCoreComposite<ShowImageView> {
+	public ShowImageComposite( UUID migrationId ) {
+		super( migrationId, Application.INFORMATION_GROUP );
 	}
 
-	public abstract java.awt.Image getImage();
+	public abstract Image getImage();
 
 	@Override
-	protected org.alice.ide.issue.croquet.views.ShowImageView createView() {
-		return new org.alice.ide.issue.croquet.views.ShowImageView( this );
+	protected ShowImageView createView() {
+		return new ShowImageView( this );
 	}
 }

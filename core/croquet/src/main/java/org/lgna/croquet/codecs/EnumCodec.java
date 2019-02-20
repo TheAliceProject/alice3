@@ -42,22 +42,34 @@
  *******************************************************************************/
 package org.lgna.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.lgna.croquet.ItemCodec;
+
+import javax.swing.JComponent;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<T> {
+public class EnumCodec<T extends Enum<T>> implements ItemCodec<T> {
 	public static interface LocalizationCustomizer<T extends Enum<T>> {
 		public String customize( String localization, T value );
 	}
 
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<Class, EnumCodec> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<Class, EnumCodec> map = Maps.newInitializingIfAbsentHashMap();
 
 	public static synchronized <T extends Enum<T>> EnumCodec<T> createInstance( Class<T> valueCls, final LocalizationCustomizer<T> localizationCustomizer ) {
 		return new EnumCodec<T>( valueCls, localizationCustomizer );
 	}
 
 	public static synchronized <T extends Enum<T>> EnumCodec<T> getInstance( Class<T> valueCls ) {
-		EnumCodec<T> rv = map.getInitializingIfAbsent( (Class)valueCls, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<Class, EnumCodec>() {
+		EnumCodec<T> rv = map.getInitializingIfAbsent( (Class)valueCls, new InitializingIfAbsentMap.Initializer<Class, EnumCodec>() {
 			@Override
 			public EnumCodec initialize( Class valueCls ) {
 				return new EnumCodec( valueCls, null );
@@ -68,7 +80,7 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 
 	private final Class<T> valueCls;
 	private final LocalizationCustomizer<T> localizationCustomizer;
-	private java.util.Map<T, String> mapValueToLocalization;
+	private Map<T, String> mapValueToLocalization;
 
 	private EnumCodec( Class<T> valueCls, LocalizationCustomizer<T> localizationCustomizer ) {
 		this.valueCls = valueCls;
@@ -85,12 +97,12 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 	}
 
 	@Override
-	public final T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public final T decodeValue( BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeEnum();
 	}
 
 	@Override
-	public final void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T t ) {
+	public final void encodeValue( BinaryEncoder binaryEncoder, T t ) {
 		binaryEncoder.encode( t );
 	}
 
@@ -100,10 +112,10 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 			if( this.mapValueToLocalization != null ) {
 				//pass
 			} else {
-				this.mapValueToLocalization = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+				this.mapValueToLocalization = Maps.newHashMap();
 				String bundleName = this.valueCls.getPackage().getName() + ".croquet";
 				try {
-					java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+					ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( bundleName, JComponent.getDefaultLocale() );
 					String clsName = this.valueCls.getSimpleName();
 					for( T enumConstant : this.valueCls.getEnumConstants() ) {
 						String localizationKey = clsName + "." + enumConstant.name();
@@ -113,11 +125,11 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 								localizationValue = this.localizationCustomizer.customize( localizationValue, enumConstant );
 							}
 							this.mapValueToLocalization.put( enumConstant, localizationValue );
-						} catch( java.util.MissingResourceException mre ) {
+						} catch( MissingResourceException mre ) {
 							//pass
 						}
 					}
-				} catch( java.util.MissingResourceException mre ) {
+				} catch( MissingResourceException mre ) {
 					//pass
 				}
 			}

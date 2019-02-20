@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.math.immutable.MOrthogonalMatrix3x3;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -83,7 +85,7 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 		set( right, up, backward );
 	}
 
-	public OrthogonalMatrix3x3( edu.cmu.cs.dennisc.math.immutable.MOrthogonalMatrix3x3 other ) {
+	public OrthogonalMatrix3x3( MOrthogonalMatrix3x3 other ) {
 		set( new Vector3( other.right ), new Vector3( other.up ), new Vector3( other.backward ) );
 	}
 
@@ -235,7 +237,7 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 	}
 
 	@Override
-	public void setValue( edu.cmu.cs.dennisc.math.ForwardAndUpGuide faug ) {
+	public void setValue( ForwardAndUpGuide faug ) {
 		assert faug.forward.isNaN() == false;
 
 		if( faug.forward.calculateMagnitudeSquared() == 0 ) {
@@ -521,7 +523,7 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 		backward.z = 1;
 	}
 
-	public edu.cmu.cs.dennisc.math.immutable.MOrthogonalMatrix3x3 createImmutable() {
-		return new edu.cmu.cs.dennisc.math.immutable.MOrthogonalMatrix3x3( this.right.createImmutable(), this.up.createImmutable(), this.backward.createImmutable() );
+	public MOrthogonalMatrix3x3 createImmutable() {
+		return new MOrthogonalMatrix3x3( this.right.createImmutable(), this.up.createImmutable(), this.backward.createImmutable() );
 	}
 }

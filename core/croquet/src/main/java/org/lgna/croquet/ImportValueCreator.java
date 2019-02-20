@@ -43,13 +43,18 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.importer.Importer;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ImportValueCreator<T, I> extends ValueCreator<T> {
-	private final org.lgna.croquet.importer.Importer<I> importer;
+	private final Importer<I> importer;
 
-	public ImportValueCreator( java.util.UUID migrationId, org.lgna.croquet.importer.Importer<I> importer ) {
+	public ImportValueCreator( UUID migrationId, Importer<I> importer ) {
 		super( migrationId );
 		this.importer = importer;
 	}
@@ -57,22 +62,12 @@ public abstract class ImportValueCreator<T, I> extends ValueCreator<T> {
 	protected abstract T createValueFromImportedValue( I importedValue );
 
 	@Override
-	protected T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
-		String dialogTitle = "Import";
-		T rv;
-		I importedValue = this.importer.createValue( dialogTitle );
+	protected T createValue( UserActivity userActivity ) {
+		I importedValue = this.importer.createValue( "Import" );
 		if( importedValue != null ) {
-			rv = this.createValueFromImportedValue( importedValue );
+			return this.createValueFromImportedValue( importedValue );
 		} else {
-			rv = null;
+			return null;
 		}
-		if( rv != null ) {
-			completionStep.finish();
-		} else {
-			completionStep.cancel();
-			throw new CancelException();
-		}
-		return rv;
 	}
 }

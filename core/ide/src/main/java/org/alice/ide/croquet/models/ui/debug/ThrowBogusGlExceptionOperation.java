@@ -42,10 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ui.debug;
 
+import com.jogamp.opengl.GLException;
+import org.alice.ide.operations.InconsequentialActionOperation;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ThrowBogusGlExceptionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class ThrowBogusGlExceptionOperation extends InconsequentialActionOperation {
 	private static class SingletonHolder {
 		private static ThrowBogusGlExceptionOperation instance = new ThrowBogusGlExceptionOperation();
 	}
@@ -55,7 +60,7 @@ public class ThrowBogusGlExceptionOperation extends org.alice.ide.operations.Inc
 	}
 
 	private ThrowBogusGlExceptionOperation() {
-		super( java.util.UUID.fromString( "4520732f-cf8c-4249-bf23-e4be9f2269ac" ) );
+		super( UUID.fromString( "4520732f-cf8c-4249-bf23-e4be9f2269ac" ) );
 	}
 
 	@Override
@@ -65,11 +70,11 @@ public class ThrowBogusGlExceptionOperation extends org.alice.ide.operations.Inc
 	}
 
 	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void performInternal() {
 		new Thread() {
 			@Override
 			public void run() {
-				throw new com.jogamp.opengl.GLException( "DELETE THIS BOGUS GL EXCEPTION" );
+				throw new GLException( "DELETE THIS BOGUS GL EXCEPTION" );
 			}
 		}.start();
 	}

@@ -43,30 +43,37 @@
 
 package org.lgna.story.implementation.sims2;
 
+import edu.cmu.cs.dennisc.nebulous.Model;
+import edu.cmu.cs.dennisc.nebulous.Person;
+import edu.cmu.cs.dennisc.nebulous.Thing;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.lgna.story.implementation.JointedModelImp;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NebulousVisualData<M extends edu.cmu.cs.dennisc.nebulous.Model> implements org.lgna.story.implementation.JointedModelImp.VisualData {
+public class NebulousVisualData<M extends Model> implements JointedModelImp.VisualData {
 	private final M nebModel;
-	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { new edu.cmu.cs.dennisc.scenegraph.Visual() };
-	private final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] { new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance() };
+	private final Visual[] sgVisuals = new Visual[] { new Visual() };
+	private final SimpleAppearance[] sgAppearances = new SimpleAppearance[] { new SimpleAppearance() };
 
 	public NebulousVisualData( M nebModel ) {
 		this.nebModel = nebModel;
 		this.nebModel.setVisual( sgVisuals[ 0 ] );
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebModel } );
+		this.getSgVisuals()[ 0 ].geometries.setValue( new Geometry[] { this.nebModel } );
 		this.getSgVisuals()[ 0 ].frontFacingAppearance.setValue( sgAppearances[ 0 ] );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances() {
+	public SimpleAppearance[] getSgAppearances() {
 		return this.sgAppearances;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
+	public Visual[] getSgVisuals() {
 		return this.sgVisuals;
 	}
 
@@ -80,9 +87,9 @@ public class NebulousVisualData<M extends edu.cmu.cs.dennisc.nebulous.Model> imp
 	}
 
 	@Override
-	public void setSGParent( edu.cmu.cs.dennisc.scenegraph.Composite parent ) {
+	public void setSGParent( Composite parent ) {
 		nebModel.setSGParent( parent );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
+		for( Visual sgVisual : this.getSgVisuals() ) {
 			sgVisual.setParent( parent );
 		}
 	}
@@ -93,11 +100,11 @@ public class NebulousVisualData<M extends edu.cmu.cs.dennisc.nebulous.Model> imp
 	}
 
 	public void unload() {
-		if( this.nebModel instanceof edu.cmu.cs.dennisc.nebulous.Person ) {
-			( (edu.cmu.cs.dennisc.nebulous.Person)this.nebModel ).synchronizedUnload();
+		if( this.nebModel instanceof Person ) {
+			( (Person)this.nebModel ).synchronizedUnload();
 		}
-		else if( this.nebModel instanceof edu.cmu.cs.dennisc.nebulous.Thing ) {
-			( (edu.cmu.cs.dennisc.nebulous.Thing)this.nebModel ).synchronizedUnload();
+		else if( this.nebModel instanceof Thing ) {
+			( (Thing)this.nebModel ).synchronizedUnload();
 		}
 	}
 

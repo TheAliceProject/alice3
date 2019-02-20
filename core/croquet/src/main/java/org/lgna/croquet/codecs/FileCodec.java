@@ -42,18 +42,24 @@
  *******************************************************************************/
 package org.lgna.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.ItemCodec;
+
+import java.io.File;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum FileCodec implements org.lgna.croquet.ItemCodec<java.io.File> {
+public enum FileCodec implements ItemCodec<File> {
 	SINGLETON;
 	@Override
-	public Class<java.io.File> getValueClass() {
-		return java.io.File.class;
+	public Class<File> getValueClass() {
+		return File.class;
 	}
 
 	@Override
-	public java.io.File decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public File decodeValue( BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
 			throw new RuntimeException( "todo" );
@@ -63,7 +69,7 @@ public enum FileCodec implements org.lgna.croquet.ItemCodec<java.io.File> {
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.io.File value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, File value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {
@@ -72,7 +78,7 @@ public enum FileCodec implements org.lgna.croquet.ItemCodec<java.io.File> {
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, java.io.File value ) {
+	public void appendRepresentation( StringBuilder sb, File value ) {
 		sb.append( value );
 	}
 }

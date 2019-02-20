@@ -42,19 +42,38 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.data.ListData;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.MultipleSelectionListView;
+
+import javax.swing.AbstractListModel;
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractCompletionModel {
-	private static class DataListModel<T> extends javax.swing.AbstractListModel {
-		private final org.lgna.croquet.data.ListData<T> data;
+	private static class DataListModel<T> extends AbstractListModel {
+		private final ListData<T> data;
 
 		//todo handle refresh/mutation
-		public DataListModel( org.lgna.croquet.data.ListData<T> data ) {
+		public DataListModel( ListData<T> data ) {
 			this.data = data;
 		}
 
-		public org.lgna.croquet.data.ListData<T> getData() {
+		public ListData<T> getData() {
 			return this.data;
 		}
 
@@ -71,28 +90,28 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
 
 	public static class SwingModel<T> {
 		private final DataListModel<T> listModel;
-		private final javax.swing.ListSelectionModel listSelectionModel = new javax.swing.DefaultListSelectionModel();
+		private final ListSelectionModel listSelectionModel = new DefaultListSelectionModel();
 
-		public SwingModel( final org.lgna.croquet.data.ListData<T> data ) {
+		public SwingModel( final ListData<T> data ) {
 			this.listModel = new DataListModel<T>( data );
 		}
 
-		public javax.swing.ListModel getListModel() {
+		public ListModel getListModel() {
 			return this.listModel;
 		}
 
-		public javax.swing.ListSelectionModel getListSelectionModel() {
+		public ListSelectionModel getListSelectionModel() {
 			return this.listSelectionModel;
 		}
 	}
 
-	private final java.util.List<org.lgna.croquet.event.ValueListener<java.util.List<T>>> newSchoolValueListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<ValueListener<List<T>>> newSchoolValueListeners = Lists.newCopyOnWriteArrayList();
 	private final SwingModel<T> swingModel;
 
 	private boolean isInTheMidstOfSettingSwingValue;
-	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+	private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
 		@Override
-		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+		public void valueChanged( ListSelectionEvent e ) {
 			if( isInTheMidstOfSettingSwingValue ) {
 				//pass
 			} else {
@@ -105,13 +124,13 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
 		}
 	};
 
-	public MultipleSelectionListState( Group group, java.util.UUID migrationId, org.lgna.croquet.data.ListData<T> data ) {
+	public MultipleSelectionListState( Group group, UUID migrationId, ListData<T> data ) {
 		super( group, migrationId );
 		this.swingModel = new SwingModel<T>( data );
 		this.swingModel.listSelectionModel.addListSelectionListener( this.listSelectionListener );
 	}
 
-	public org.lgna.croquet.data.ListData<T> getData() {
+	public ListData<T> getData() {
 		return this.swingModel.listModel.getData();
 	}
 
@@ -119,8 +138,8 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
 		return this.swingModel;
 	}
 
-	public java.util.List<T> getValue() {
-		java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public List<T> getValue() {
+		List<T> rv = Lists.newLinkedList();
 		final int N = this.swingModel.listModel.data.getItemCount();
 		for( int i = 0; i < N; i++ ) {
 			if( this.swingModel.listSelectionModel.isSelectedIndex( i ) ) {
@@ -130,7 +149,7 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
 		return rv;
 	}
 
-	public void setValue( java.util.List<T> list ) {
+	public void setValue( List<T> list ) {
 		this.isInTheMidstOfSettingSwingValue = true;
 		try {
 			this.swingModel.listSelectionModel.setValueIsAdjusting( true );
@@ -150,24 +169,24 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
 		}
 	}
 
-	public void addNewSchoolValueListener( org.lgna.croquet.event.ValueListener<java.util.List<T>> valueListener ) {
+	public void addNewSchoolValueListener( ValueListener<List<T>> valueListener ) {
 		if( this.newSchoolValueListeners.contains( valueListener ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener already contained", this, valueListener );
+			Logger.severe( "listener already contained", this, valueListener );
 		}
 		this.newSchoolValueListeners.add( valueListener );
 	}
 
-	public void addAndInvokeNewSchoolValueListener( org.lgna.croquet.event.ValueListener<java.util.List<T>> valueListener ) {
+	public void addAndInvokeNewSchoolValueListener( ValueListener<List<T>> valueListener ) {
 		this.addNewSchoolValueListener( valueListener );
-		org.lgna.croquet.event.ValueEvent<java.util.List<T>> e = org.lgna.croquet.event.ValueEvent.createInstance( this.getValue() );
+		ValueEvent<List<T>> e = ValueEvent.createInstance( this.getValue() );
 		valueListener.valueChanged( e );
 	}
 
-	public void removeNewSchoolValueListener( org.lgna.croquet.event.ValueListener<java.util.List<T>> valueListener ) {
+	public void removeNewSchoolValueListener( ValueListener<List<T>> valueListener ) {
 		if( this.newSchoolValueListeners.contains( valueListener ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener not contained", this, valueListener );
+			Logger.severe( "listener not contained", this, valueListener );
 		}
 		this.newSchoolValueListeners.remove( valueListener );
 	}
@@ -180,29 +199,25 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
 	//			}
 	//		}
 	//	}
-	private void fireChanged( java.util.List<T> nextValue ) {
+	private void fireChanged( List<T> nextValue ) {
 		if( this.newSchoolValueListeners.size() > 0 ) {
-			org.lgna.croquet.event.ValueEvent<java.util.List<T>> e = org.lgna.croquet.event.ValueEvent.createInstance( nextValue );
-			for( org.lgna.croquet.event.ValueListener<java.util.List<T>> valueListener : this.newSchoolValueListeners ) {
+			ValueEvent<List<T>> e = ValueEvent.createInstance( nextValue );
+			for( ValueListener<List<T>> valueListener : this.newSchoolValueListeners ) {
 				valueListener.valueChanged( e );
 			}
 		}
 	}
 
 	@Override
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
-		return java.util.Collections.emptyList();
-	}
-
-	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
+		return Collections.emptyList();
 	}
 
 	@Override
 	protected void localize() {
 	}
 
-	public org.lgna.croquet.views.MultipleSelectionListView<T> createMultipleSelectionListView() {
-		return new org.lgna.croquet.views.MultipleSelectionListView<T>( this );
+	public MultipleSelectionListView<T> createMultipleSelectionListView() {
+		return new MultipleSelectionListView<T>( this );
 	}
 }

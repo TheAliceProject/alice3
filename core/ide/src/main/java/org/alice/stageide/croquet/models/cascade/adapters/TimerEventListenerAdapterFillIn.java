@@ -44,6 +44,8 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.story.event.TimeListener;
 
+import java.util.UUID;
+
 /**
  * @author Matt May
  */
@@ -58,6 +60,6 @@ public class TimerEventListenerAdapterFillIn extends LambdaExpressionFillIn {
 	}
 
 	public TimerEventListenerAdapterFillIn() {
-		super( java.util.UUID.fromString( "0c3b6e28-affd-43a6-b646-acf28adf7cbe" ), TimeListener.class );
+		super( UUID.fromString( "0c3b6e28-affd-43a6-b646-acf28adf7cbe" ), TimeListener.class );
 	}
 }

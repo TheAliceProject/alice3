@@ -42,9 +42,12 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views;
 
-import java.awt.event.KeyEvent;
-
-import org.alice.interact.AbstractDragAdapter;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import org.alice.interact.DragAdapter;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementKey;
 import org.alice.interact.MovementType;
@@ -54,22 +57,20 @@ import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.condition.PickCondition;
+import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateKeyManipulator;
 import org.lgna.story.implementation.AbstractTransformableImp;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 /**
  * @author David Culyba
  */
-public class CreateAPersonDragAdapter extends AbstractDragAdapter {
-	public CreateAPersonDragAdapter() {
+public class CreateAPersonDragAdapter extends DragAdapter {
+	CreateAPersonDragAdapter() {
 		this.setUpControls();
 	}
 
@@ -81,9 +82,6 @@ public class CreateAPersonDragAdapter extends AbstractDragAdapter {
 				//Down
 				new MovementKey( KeyEvent.VK_PAGE_DOWN, new MovementDescription( MovementDirection.UP, MovementType.STOOD_UP ), .1d ),
 				new MovementKey( KeyEvent.VK_DOWN, new MovementDescription( MovementDirection.UP, MovementType.STOOD_UP ), .1d ),
-		};
-
-		MovementKey[] zoomKeys = {
 				//Zoom out
 				new MovementKey( KeyEvent.VK_MINUS, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL ) ),
 				new MovementKey( KeyEvent.VK_SUBTRACT, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL ) ),
@@ -102,13 +100,9 @@ public class CreateAPersonDragAdapter extends AbstractDragAdapter {
 		};
 
 		CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator( movementKeys );
-		cameraTranslateManip.addKeys( zoomKeys );
 		ManipulatorConditionSet cameraTranslate = new ManipulatorConditionSet( cameraTranslateManip );
 		for( MovementKey movementKey : movementKeys ) {
 			cameraTranslate.addCondition( new KeyPressCondition( movementKey.keyValue ) );
-		}
-		for( MovementKey zoomKey : zoomKeys ) {
-			cameraTranslate.addCondition( new KeyPressCondition( zoomKey.keyValue ) );
 		}
 		this.addManipulatorConditionSet( cameraTranslate );
 
@@ -119,7 +113,7 @@ public class CreateAPersonDragAdapter extends AbstractDragAdapter {
 		this.addManipulatorConditionSet( objectRotate );
 
 		ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator( MovementDirection.UP ) );
-		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getAnythingHint() ) );
+		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.getAnythingHint() ) );
 		mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
 		this.addManipulatorConditionSet( mouseRotateObjectLeftRight );
 
@@ -149,7 +143,7 @@ public class CreateAPersonDragAdapter extends AbstractDragAdapter {
 		cameraBounds.setMinimum( cameraMin );
 		cameraBounds.setMaximum( cameraMax );
 		for( ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets() ) {
-			org.alice.interact.manipulator.AbstractManipulator manipulator = manipulatorConditionSet.getManipulator();
+			AbstractManipulator manipulator = manipulatorConditionSet.getManipulator();
 			if( manipulator instanceof CameraTranslateKeyManipulator ) {
 				( (CameraTranslateKeyManipulator)manipulator ).setBounds( cameraBounds );
 			}
@@ -157,31 +151,6 @@ public class CreateAPersonDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
-	public boolean shouldSnapToRotation() {
-		return false;
-	}
-
-	@Override
-	public boolean shouldSnapToGround() {
-		return false;
-	}
-
-	@Override
-	public boolean shouldSnapToGrid() {
-		return false;
-	}
-
-	@Override
-	public double getGridSpacing() {
-		return 1.0;
-	}
-
-	@Override
-	public edu.cmu.cs.dennisc.math.Angle getRotationSnapAngle() {
-		return new edu.cmu.cs.dennisc.math.AngleInRadians( Math.PI / 16.0 );
-	}
-
-	@Override
-	public void undoRedoEndManipulation( org.alice.interact.manipulator.AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation ) {
+	public void undoRedoEndManipulation( AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation ) {
 	}
 }

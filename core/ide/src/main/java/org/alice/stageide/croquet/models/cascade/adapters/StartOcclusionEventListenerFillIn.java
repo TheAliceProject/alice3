@@ -44,6 +44,8 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.story.event.OcclusionStartListener;
 
+import java.util.UUID;
+
 public class StartOcclusionEventListenerFillIn extends LambdaExpressionFillIn {
 
 	private static class SingletonHolder {
@@ -55,6 +57,6 @@ public class StartOcclusionEventListenerFillIn extends LambdaExpressionFillIn {
 	}
 
 	public StartOcclusionEventListenerFillIn() {
-		super( java.util.UUID.fromString( "3e3f4c80-e82f-4d12-9263-959fdbb76735" ), OcclusionStartListener.class );
+		super( UUID.fromString( "3e3f4c80-e82f-4d12-9263-959fdbb76735" ), OcclusionStartListener.class );
 	}
 }

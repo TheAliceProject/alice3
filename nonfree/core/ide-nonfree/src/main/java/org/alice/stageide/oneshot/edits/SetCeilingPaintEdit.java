@@ -42,16 +42,23 @@
  *******************************************************************************/
 package org.alice.stageide.oneshot.edits;
 
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.implementation.PaintProperty;
+import org.lgna.story.implementation.RoomImp;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SetCeilingPaintEdit extends AbstractSetPaintEdit<org.lgna.story.implementation.RoomImp> {
-	public SetCeilingPaintEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		super( completionStep, instanceFactory, method, argumentExpressions );
+public class SetCeilingPaintEdit extends AbstractSetPaintEdit<RoomImp> {
+	public SetCeilingPaintEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
+		super( userActivity, instanceFactory, method, argumentExpressions );
 	}
 
 	@Override
-	protected org.lgna.story.implementation.PaintProperty getPaintProperty( org.lgna.story.implementation.RoomImp roomImp ) {
+	protected PaintProperty getPaintProperty( RoomImp roomImp ) {
 		return roomImp.ceilingPaint;
 	}
 }

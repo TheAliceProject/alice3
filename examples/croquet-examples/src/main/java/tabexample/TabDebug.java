@@ -42,29 +42,42 @@
  */
 package tabexample;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import org.lgna.croquet.DocumentFrame;
+import org.lgna.croquet.ImmutableDataTabState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.croquet.views.Frame;
+import tabexample.croquet.AbstractTab;
+import tabexample.croquet.TabExampleComposite;
+
+import javax.swing.SwingUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TabDebug {
 	public static void main( String[] args ) {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
-				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+				UIManagerUtilities.setLookAndFeel( "Nimbus" );
+				SimpleApplication app = new SimpleApplication();
 
-				tabexample.croquet.TabExampleComposite tabExampleComposite = new tabexample.croquet.TabExampleComposite();
+				TabExampleComposite tabExampleComposite = new TabExampleComposite();
 
-				org.lgna.croquet.ImmutableDataTabState<tabexample.croquet.AbstractTab> tabState = tabExampleComposite.getTabState();
-				tabState.addAndInvokeNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<tabexample.croquet.AbstractTab>() {
+				ImmutableDataTabState<AbstractTab> tabState = tabExampleComposite.getTabState();
+				tabState.addAndInvokeNewSchoolValueListener( new ValueListener<AbstractTab>() {
 					@Override
-					public void valueChanged( org.lgna.croquet.event.ValueEvent<tabexample.croquet.AbstractTab> e ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
+					public void valueChanged( ValueEvent<AbstractTab> e ) {
+						Logger.outln( e );
 					}
 				} );
 
-				org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
-				org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
+				DocumentFrame documentFrame = app.getDocumentFrame();
+				Frame frame = documentFrame.getFrame();
 				frame.setTitle( "Tab Example" );
 				frame.setMainComposite( tabExampleComposite );
 				frame.pack();

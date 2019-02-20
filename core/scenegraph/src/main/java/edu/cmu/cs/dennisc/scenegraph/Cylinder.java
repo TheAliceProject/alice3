@@ -43,6 +43,13 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -65,24 +72,24 @@ public class Cylinder extends Shape {
 			this.axis.set( x, y, z );
 		}
 
-		public edu.cmu.cs.dennisc.math.Vector3 accessVector() {
+		public Vector3 accessVector() {
 			return this.axis;
 		}
 
-		public edu.cmu.cs.dennisc.math.Vector3 getVector( edu.cmu.cs.dennisc.math.Vector3 rv ) {
+		public Vector3 getVector( Vector3 rv ) {
 			rv.set( this.axis );
 			return rv;
 		}
 
-		public edu.cmu.cs.dennisc.math.Vector3 getVector() {
-			return getVector( new edu.cmu.cs.dennisc.math.Vector3() );
+		public Vector3 getVector() {
+			return getVector( new Vector3() );
 		}
 
 		public boolean isPositive() {
 			return ( this.axis.x > 0 ) || ( this.axis.y > 0 ) || ( this.axis.z > 0 );
 		}
 
-		private final edu.cmu.cs.dennisc.math.Vector3 axis = new edu.cmu.cs.dennisc.math.Vector3();
+		private final Vector3 axis = new Vector3();
 	}
 
 	public double getActualTopRadius() {
@@ -140,7 +147,7 @@ public class Cylinder extends Shape {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getCenterOfTop( edu.cmu.cs.dennisc.math.Point3 rv ) {
+	public Point3 getCenterOfTop( Point3 rv ) {
 		double top = getTop();
 		BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
 		if( bottomToTopAxis == BottomToTopAxis.POSITIVE_X ) {
@@ -161,11 +168,11 @@ public class Cylinder extends Shape {
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getCenterOfTop() {
-		return getCenterOfTop( new edu.cmu.cs.dennisc.math.Point3() );
+	public Point3 getCenterOfTop() {
+		return getCenterOfTop( new Point3() );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getCenterOfBottom( edu.cmu.cs.dennisc.math.Point3 rv ) {
+	public Point3 getCenterOfBottom( Point3 rv ) {
 		double bottom = getBottom();
 		BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
 		if( bottomToTopAxis == BottomToTopAxis.POSITIVE_X ) {
@@ -186,12 +193,12 @@ public class Cylinder extends Shape {
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getCenterOfBottom() {
-		return getCenterOfBottom( new edu.cmu.cs.dennisc.math.Point3() );
+	public Point3 getCenterOfBottom() {
+		return getCenterOfBottom( new Point3() );
 	}
 
 	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
+	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
 		double top = getTop();
 		double bottom = getBottom();
 		double maxRadius = getMaxRadius();
@@ -267,10 +274,10 @@ public class Cylinder extends Shape {
 		}
 	};
 	//todo: change default to CENTER?
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<OriginAlignment> originAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<OriginAlignment>( this, OriginAlignment.BOTTOM ) {
+	public final InstanceProperty<OriginAlignment> originAlignment = new InstanceProperty<OriginAlignment>( this, OriginAlignment.BOTTOM ) {
 		@Override
 		public void setValue( OriginAlignment value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+			if( Objects.notEquals( value, this.getValue() ) ) {
 				Cylinder.this.markBoundsDirty();
 				super.setValue( value );
 				Cylinder.this.fireBoundChanged();
@@ -279,16 +286,16 @@ public class Cylinder extends Shape {
 	};
 
 	//todo: change default to POSITIVE_Z? NEGATIVE_Z?
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<BottomToTopAxis> bottomToTopAxis = new edu.cmu.cs.dennisc.property.InstanceProperty<BottomToTopAxis>( this, BottomToTopAxis.POSITIVE_Y ) {
+	public final InstanceProperty<BottomToTopAxis> bottomToTopAxis = new InstanceProperty<BottomToTopAxis>( this, BottomToTopAxis.POSITIVE_Y ) {
 		@Override
 		public void setValue( BottomToTopAxis value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+			if( Objects.notEquals( value, this.getValue() ) ) {
 				Cylinder.this.markBoundsDirty();
 				super.setValue( value );
 				Cylinder.this.fireBoundChanged();
 			}
 		};
 	};
-	public final edu.cmu.cs.dennisc.property.BooleanProperty hasBottomCap = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty hasTopCap = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
+	public final BooleanProperty hasBottomCap = new BooleanProperty( this, true );
+	public final BooleanProperty hasTopCap = new BooleanProperty( this, true );
 }

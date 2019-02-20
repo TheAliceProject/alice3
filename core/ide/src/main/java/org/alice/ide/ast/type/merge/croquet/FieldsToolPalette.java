@@ -42,16 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.alice.ide.ast.type.merge.croquet.views.FieldsView;
+import org.lgna.project.ast.UserField;
+
+import java.net.URI;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldsToolPalette extends MembersToolPalette<org.alice.ide.ast.type.merge.croquet.views.FieldsView, org.lgna.project.ast.UserField> {
-	public FieldsToolPalette( java.net.URI uriForDescriptionPurposesOnly, java.util.List<org.lgna.project.ast.UserField> projectFields ) {
-		super( java.util.UUID.fromString( "31f9d5d0-77ed-4a1d-9742-20541aab4e7a" ), uriForDescriptionPurposesOnly, projectFields );
+public final class FieldsToolPalette extends MembersToolPalette<FieldsView, UserField> {
+	public FieldsToolPalette( URI uriForDescriptionPurposesOnly, List<UserField> projectFields ) {
+		super( UUID.fromString( "31f9d5d0-77ed-4a1d-9742-20541aab4e7a" ), uriForDescriptionPurposesOnly, projectFields );
 	}
 
 	@Override
-	protected org.alice.ide.ast.type.merge.croquet.views.FieldsView createView() {
-		return new org.alice.ide.ast.type.merge.croquet.views.FieldsView( this );
+	protected FieldsView createView() {
+		return new FieldsView( this );
 	}
 }

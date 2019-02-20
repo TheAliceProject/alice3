@@ -42,11 +42,39 @@
  *******************************************************************************/
 package org.alice.stageide.ast;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
+import org.alice.ide.ProjectDocument;
+import org.alice.stageide.StageIDE;
+import org.lgna.croquet.Application;
+import org.lgna.project.Project;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.CrawlPolicy;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.JavaCodeGenerator;
+import org.lgna.project.ast.Lambda;
+import org.lgna.project.ast.LambdaExpression;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.SimpleArgument;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserLambda;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.story.SScene;
+import org.lgna.story.ast.EventListenerMethodUtilities;
+import org.lgna.story.ast.JavaCodeUtilities;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class StoryApiSpecificAstUtilities {
-	public static org.lgna.project.ast.UserField getSceneFieldFromProgramType( org.lgna.project.ast.NamedUserType programType ) {
+	public static UserField getSceneFieldFromProgramType( NamedUserType programType ) {
 		if( programType != null ) {
 			if( programType.fields.size() > 0 ) {
 				return programType.fields.get( 0 );
@@ -58,16 +86,16 @@ public class StoryApiSpecificAstUtilities {
 		}
 	}
 
-	public static org.lgna.project.ast.NamedUserType getSceneTypeFromProgramType( org.lgna.project.ast.NamedUserType programType ) {
-		org.lgna.project.ast.UserField sceneField = getSceneFieldFromProgramType( programType );
+	public static NamedUserType getSceneTypeFromProgramType( NamedUserType programType ) {
+		UserField sceneField = getSceneFieldFromProgramType( programType );
 		if( sceneField != null ) {
-			return (org.lgna.project.ast.NamedUserType)sceneField.getValueType();
+			return (NamedUserType)sceneField.getValueType();
 		} else {
 			return null;
 		}
 	}
 
-	public static org.lgna.project.ast.NamedUserType getSceneTypeFromProject( org.lgna.project.Project project ) {
+	public static NamedUserType getSceneTypeFromProject( Project project ) {
 		if( project != null ) {
 			return getSceneTypeFromProgramType( project.getProgramType() );
 		} else {
@@ -75,7 +103,7 @@ public class StoryApiSpecificAstUtilities {
 		}
 	}
 
-	public static org.lgna.project.ast.NamedUserType getSceneTypeFromDocument( org.alice.ide.ProjectDocument document ) {
+	public static NamedUserType getSceneTypeFromDocument( ProjectDocument document ) {
 		if( document != null ) {
 			return getSceneTypeFromProject( document.getProject() );
 		} else {
@@ -83,36 +111,36 @@ public class StoryApiSpecificAstUtilities {
 		}
 	}
 
-	public static java.util.List<org.lgna.project.ast.UserMethod> getUserMethodsInvokedSceneActivationListeners( org.lgna.project.ast.NamedUserType sceneType ) {
+	public static List<UserMethod> getUserMethodsInvokedSceneActivationListeners( NamedUserType sceneType ) {
 		if( sceneType != null ) {
-			java.util.List<org.lgna.project.ast.UserMethod> methods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			org.lgna.project.ast.UserMethod initializeEventListenersMethod = sceneType.getDeclaredMethod( org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
+			List<UserMethod> methods = Lists.newLinkedList();
+			UserMethod initializeEventListenersMethod = sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
 			if( initializeEventListenersMethod != null ) {
-				for( org.lgna.project.ast.Statement statement : initializeEventListenersMethod.body.getValue().statements ) {
-					if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-						org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-						org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-						if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-							org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
-							if( methodInvocation.method.getValue() == org.lgna.story.ast.EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD ) {
-								org.lgna.project.ast.SimpleArgument arg0 = methodInvocation.requiredArguments.get( 0 );
-								org.lgna.project.ast.Expression arg0Expression = arg0.expression.getValue();
-								if( arg0Expression instanceof org.lgna.project.ast.LambdaExpression ) {
-									org.lgna.project.ast.LambdaExpression lambdaExpression = (org.lgna.project.ast.LambdaExpression)arg0Expression;
-									org.lgna.project.ast.Lambda lambda = lambdaExpression.value.getValue();
-									if( lambda instanceof org.lgna.project.ast.UserLambda ) {
-										org.lgna.project.ast.UserLambda userLambda = (org.lgna.project.ast.UserLambda)lambda;
-										edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.MethodInvocation> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.MethodInvocation>( org.lgna.project.ast.MethodInvocation.class ) {
+				for( Statement statement : initializeEventListenersMethod.body.getValue().statements ) {
+					if( statement instanceof ExpressionStatement ) {
+						ExpressionStatement expressionStatement = (ExpressionStatement)statement;
+						Expression expression = expressionStatement.expression.getValue();
+						if( expression instanceof MethodInvocation ) {
+							MethodInvocation methodInvocation = (MethodInvocation)expression;
+							if( methodInvocation.method.getValue() == EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD ) {
+								SimpleArgument arg0 = methodInvocation.requiredArguments.get( 0 );
+								Expression arg0Expression = arg0.expression.getValue();
+								if( arg0Expression instanceof LambdaExpression ) {
+									LambdaExpression lambdaExpression = (LambdaExpression)arg0Expression;
+									Lambda lambda = lambdaExpression.value.getValue();
+									if( lambda instanceof UserLambda ) {
+										UserLambda userLambda = (UserLambda)lambda;
+										IsInstanceCrawler<MethodInvocation> crawler = new IsInstanceCrawler<MethodInvocation>( MethodInvocation.class ) {
 											@Override
-											protected boolean isAcceptable( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+											protected boolean isAcceptable( MethodInvocation methodInvocation ) {
 												return methodInvocation.method.getValue().isUserAuthored();
 											}
 										};
-										userLambda.crawl( crawler, org.lgna.project.ast.CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
-										for( org.lgna.project.ast.MethodInvocation mi : crawler.getList() ) {
-											org.lgna.project.ast.AbstractMethod m = mi.method.getValue();
-											if( m instanceof org.lgna.project.ast.UserMethod ) {
-												org.lgna.project.ast.UserMethod um = (org.lgna.project.ast.UserMethod)m;
+										userLambda.crawl( crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
+										for( MethodInvocation mi : crawler.getList() ) {
+											AbstractMethod m = mi.method.getValue();
+											if( m instanceof UserMethod ) {
+												UserMethod um = (UserMethod)m;
 												if( methods.contains( um ) ) {
 													//pass
 												} else {
@@ -130,41 +158,41 @@ public class StoryApiSpecificAstUtilities {
 			}
 			return methods;
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	public static org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod( org.lgna.project.ast.NamedUserType sceneType ) {
+	public static UserMethod getPerformEditorGeneratedSetUpMethod( NamedUserType sceneType ) {
 		if( sceneType != null ) {
-			return sceneType.getDeclaredMethod( org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME );
+			return sceneType.getDeclaredMethod( StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME );
 		} else {
 			return null;
 		}
 	}
 
-	public static org.lgna.project.ast.UserMethod getInitializeEventListenersMethod( org.lgna.project.ast.NamedUserType sceneType ) {
+	public static UserMethod getInitializeEventListenersMethod( NamedUserType sceneType ) {
 		if( sceneType != null ) {
-			return sceneType.getDeclaredMethod( org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
+			return sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
 		} else {
 			return null;
 		}
 	}
 
-	public static boolean isSceneType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static boolean isSceneType( AbstractType<?, ?, ?> type ) {
 		if( type != null ) {
-			return type.isAssignableTo( org.lgna.story.SScene.class );
+			return type.isAssignableTo( SScene.class );
 		} else {
 			return false;
 		}
 	}
 
-	private static org.lgna.project.ast.JavaCodeGenerator s_javaCodeGenerator;
+	private static JavaCodeGenerator s_javaCodeGenerator;
 
-	public static String getInnerCommentForMethodName( org.lgna.project.ast.AbstractType<?, ?, ?> type, String methodName ) {
+	public static String getInnerCommentForMethodName( AbstractType<?, ?, ?> type, String methodName ) {
 		if( s_javaCodeGenerator == null ) {
-			s_javaCodeGenerator = org.lgna.story.ast.JavaCodeUtilities.createJavaCodeGenerator();
+			s_javaCodeGenerator = JavaCodeUtilities.createJavaCodeGenerator();
 		}
-		return s_javaCodeGenerator.getLocalizedComment( type, methodName + ".inner", org.lgna.croquet.Application.getLocale() );
+		return s_javaCodeGenerator.getLocalizedComment( type, methodName + ".inner", Application.getLocale() );
 	}
 
 }

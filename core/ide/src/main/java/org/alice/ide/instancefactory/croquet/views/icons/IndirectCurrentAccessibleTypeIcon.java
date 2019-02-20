@@ -42,28 +42,40 @@
  *******************************************************************************/
 package org.alice.ide.instancefactory.croquet.views.icons;
 
+import org.alice.ide.IDE;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.ThisFieldAccessFactory;
+import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.UserField;
+
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
+public enum IndirectCurrentAccessibleTypeIcon implements Icon {
 	SINGLTON;
 
-	private static final java.awt.Dimension SIZE = new java.awt.Dimension( 32, 24 );
+	private static final Dimension SIZE = new Dimension( 32, 24 );
 
-	private org.lgna.croquet.icon.IconFactory getCurrentAccessibleTypeIconFactory() {
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+	private IconFactory getCurrentAccessibleTypeIconFactory() {
+		InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 		if( instanceFactory != null ) {
-			org.lgna.croquet.icon.IconFactory rv = null;
-			if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
-				org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
-				org.lgna.project.ast.UserField field = thisFieldAccessFactory.getField();
-				org.alice.ide.iconfactory.IconFactoryManager iconFactoryManager = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getIconFactoryManager();
-				rv = iconFactoryManager.getIconFactory( field, org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( field ) );
+			IconFactory rv = null;
+			if( instanceFactory instanceof ThisFieldAccessFactory ) {
+				ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory)instanceFactory;
+				UserField field = thisFieldAccessFactory.getField();
+				org.alice.ide.iconfactory.IconFactoryManager iconFactoryManager = IDE.getActiveInstance().getDocumentFrame().getIconFactoryManager();
+				rv = iconFactoryManager.getIconFactory( field, IconFactoryManager.getIconFactoryForField( field ) );
 			}
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( instanceFactory.getValueType() );
+				rv = IconFactoryManager.getIconFactoryForType( instanceFactory.getValueType() );
 			}
 			return rv;
 		} else {
@@ -73,7 +85,7 @@ public enum IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
 
 	@Override
 	public int getIconWidth() {
-		org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+		IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
 		if( iconFactory != null ) {
 			return SIZE.width;
 		} else {
@@ -83,7 +95,7 @@ public enum IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
 
 	@Override
 	public int getIconHeight() {
-		org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+		IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
 		if( iconFactory != null ) {
 			return SIZE.height;
 		} else {
@@ -92,8 +104,8 @@ public enum IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
+		IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
 		if( iconFactory != null ) {
 			iconFactory.getIcon( SIZE ).paintIcon( c, g, x, y );
 		}

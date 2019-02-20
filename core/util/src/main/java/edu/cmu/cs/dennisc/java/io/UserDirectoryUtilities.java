@@ -42,6 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.io;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
+import java.io.File;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,15 +54,15 @@ public class UserDirectoryUtilities {
 		throw new AssertionError();
 	}
 
-	public static java.io.File getBestGuessPicturesDirectory() {
-		java.io.File defaultDirectory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
-		java.io.File userDirectory;
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+	public static File getBestGuessPicturesDirectory() {
+		File defaultDirectory = FileUtilities.getDefaultDirectory();
+		File userDirectory;
+		if( SystemUtilities.isWindows() ) {
 			userDirectory = defaultDirectory.getParentFile();
 		} else {
 			userDirectory = defaultDirectory;
 		}
-		java.io.File file = new java.io.File( userDirectory, "Pictures" );
+		File file = new File( userDirectory, "Pictures" );
 		if( file.isDirectory() ) {
 			return file;
 		} else {

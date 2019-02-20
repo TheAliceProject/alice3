@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.StringProperty;
 import org.lgna.project.ast.localizer.AstLocalizer;
 
 /**
@@ -66,16 +68,14 @@ public final class StringLiteral extends AbstractValueLiteral<String> {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<String> getValueProperty() {
+	public InstanceProperty<String> getValueProperty() {
 		return this.value;
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendChar( '"' );
-		generator.appendString( this.value.getValue() );
-		generator.appendChar( '"' );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendEscapedStringLiteral(this);
 	}
 
-	public final edu.cmu.cs.dennisc.property.StringProperty value = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+	public final StringProperty value = new StringProperty( this, null );
 }

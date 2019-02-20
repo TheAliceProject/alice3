@@ -42,12 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.pattern;
 
+import java.lang.reflect.Array;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class VisitUtilities {
 	public static <E extends Visitable> Iterable<E> getAll( Visitable visitable, final Class<E> cls ) {
-		final java.util.List<E> rv = new java.util.LinkedList<E>();
+		final List<E> rv = new LinkedList<E>();
 		visitable.accept( new Visitor() {
 			@Override
 			public void visit( Visitable visitable ) {
@@ -60,7 +64,7 @@ public abstract class VisitUtilities {
 	}
 
 	public static <E extends Visitable> E getFirst( Visitable visitable, final Class<E> cls ) {
-		final E[] buffer = (E[])java.lang.reflect.Array.newInstance( cls, 1 );
+		final E[] buffer = (E[])Array.newInstance( cls, 1 );
 		visitable.accept( new Visitor() {
 			@Override
 			public void visit( Visitable visitable ) {

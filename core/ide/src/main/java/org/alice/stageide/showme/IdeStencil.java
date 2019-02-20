@@ -42,16 +42,21 @@
  *******************************************************************************/
 package org.alice.stageide.showme;
 
+import org.alice.ide.IDE;
+import org.lgna.croquet.StencilModel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeStencil extends org.lgna.croquet.StencilModel {
-	public IdeStencil( java.util.UUID migrationId ) {
+public abstract class IdeStencil extends StencilModel {
+	public IdeStencil( UUID migrationId ) {
 		super( migrationId );
 	}
 
 	@Override
 	protected void hideStencil() {
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().hideIfNecessary();
+		IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().hideIfNecessary();
 	}
 }

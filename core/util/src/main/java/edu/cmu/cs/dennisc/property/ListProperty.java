@@ -42,95 +42,108 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.property;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
+import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> implements Iterable<E> {
+public class ListProperty<E> extends InstanceProperty<ArrayList<E>> implements Iterable<E> {
 	public ListProperty( InstancePropertyOwner owner ) {
-		super( owner, new java.util.ArrayList<E>() );
+		super( owner, new ArrayList<E>() );
 	}
 
-	public void addListPropertyListener( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l ) {
+	public void addListPropertyListener( ListPropertyListener<E> l ) {
 		if( this.listPropertyListeners != null ) {
 			//pass
 		} else {
-			this.listPropertyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+			this.listPropertyListeners = Lists.newCopyOnWriteArrayList();
 		}
 		this.listPropertyListeners.add( l );
 	}
 
-	public void removeListPropertyListener( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l ) {
+	public void removeListPropertyListener( ListPropertyListener<E> l ) {
 		assert this.listPropertyListeners != null : this;
 		this.listPropertyListeners.remove( l );
 	}
 
-	private void fireAdding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e ) {
+	private void fireAdding( AddListPropertyEvent<E> e ) {
 		getOwner().fireAdding( e );
 		if( this.listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
+			for( ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.adding( e );
 			}
 		}
 	}
 
-	private void fireAdded( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e ) {
+	private void fireAdded( AddListPropertyEvent<E> e ) {
 		getOwner().fireAdded( e );
 		if( this.listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
+			for( ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.added( e );
 			}
 		}
 	}
 
-	private void fireClearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E> e ) {
+	private void fireClearing( ClearListPropertyEvent<E> e ) {
 		getOwner().fireClearing( e );
 		if( this.listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
+			for( ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.clearing( e );
 			}
 		}
 	}
 
-	private void fireCleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E> e ) {
+	private void fireCleared( ClearListPropertyEvent<E> e ) {
 		getOwner().fireCleared( e );
 		if( this.listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
+			for( ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.cleared( e );
 			}
 		}
 	}
 
-	private void fireRemoving( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<E> e ) {
+	private void fireRemoving( RemoveListPropertyEvent<E> e ) {
 		getOwner().fireRemoving( e );
 		if( this.listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
+			for( ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.removing( e );
 			}
 		}
 	}
 
-	private void fireRemoved( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<E> e ) {
+	private void fireRemoved( RemoveListPropertyEvent<E> e ) {
 		getOwner().fireRemoved( e );
 		if( this.listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
+			for( ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.removed( e );
 			}
 		}
 	}
 
-	private void fireSetting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e ) {
+	private void fireSetting( SetListPropertyEvent<E> e ) {
 		getOwner().fireSetting( e );
 		if( this.listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
+			for( ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.setting( e );
 			}
 		}
 	}
 
-	private void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e ) {
+	private void fireSet( SetListPropertyEvent<E> e ) {
 		getOwner().fireSet( e );
 		if( this.listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
+			for( ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.set( e );
 			}
 		}
@@ -145,7 +158,7 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 	}
 
 	public <T> T[] toArray( Class<T> componentType ) {
-		return this.toArray( (T[])java.lang.reflect.Array.newInstance( componentType, this.size() ) );
+		return this.toArray( (T[])Array.newInstance( componentType, this.size() ) );
 	}
 
 	public boolean isEmpty() {
@@ -156,7 +169,7 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 		return getValue().contains( o );
 	}
 
-	public boolean containsAll( java.util.Collection<?> c ) {
+	public boolean containsAll( Collection<?> c ) {
 		return getValue().containsAll( c );
 	}
 
@@ -164,12 +177,12 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 		return getValue().size();
 	}
 
-	public java.util.List<E> subList( int fromIndex, int upToButExcludingIndex ) {
+	public List<E> subList( int fromIndex, int upToButExcludingIndex ) {
 		return getValue().subList( fromIndex, upToButExcludingIndex );
 	}
 
-	public java.util.List<E> subListCopy( int fromIndex, int upToButExcludingIndex ) {
-		java.util.ArrayList<E> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+	public List<E> subListCopy( int fromIndex, int upToButExcludingIndex ) {
+		ArrayList<E> rv = Lists.newArrayList();
 		rv.ensureCapacity( ( ( upToButExcludingIndex - fromIndex ) + 1 ) - 1 );
 		rv.addAll( this.subList( fromIndex, upToButExcludingIndex ) );
 		return rv;
@@ -188,12 +201,12 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 	}
 
 	@Override
-	public java.util.Iterator<E> iterator() {
+	public Iterator<E> iterator() {
 		return getValue().iterator();
 	}
 
 	public void add( int index, E... elements ) {
-		edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e = new edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E>( this, index, elements );
+		AddListPropertyEvent<E> e = new AddListPropertyEvent<E>( this, index, elements );
 		fireAdding( e );
 		getValue().ensureCapacity( size() + elements.length );
 		int i = index;
@@ -207,21 +220,21 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 		add( size(), elements );
 	}
 
-	public boolean addAll( int index, java.util.Collection<? extends E> collection ) {
-		edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e = new edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E>( this, index, collection );
+	public boolean addAll( int index, Collection<? extends E> collection ) {
+		AddListPropertyEvent<E> e = new AddListPropertyEvent<E>( this, index, collection );
 		fireAdding( e );
 		boolean rv = getValue().addAll( index, collection );
 		fireAdded( e );
 		return rv;
 	}
 
-	public boolean addAll( java.util.Collection<? extends E> c ) {
+	public boolean addAll( Collection<? extends E> c ) {
 		return addAll( size(), c );
 	}
 
 	public void clear() {
 		//assert isLocked() == false;
-		edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E> e = new edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E>( this );
+		ClearListPropertyEvent<E> e = new ClearListPropertyEvent<E>( this );
 		fireClearing( e );
 		getValue().clear();
 		fireCleared( e );
@@ -229,7 +242,7 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 
 	public void removeExclusive( int fromIndex, int upToButExcludingIndex ) {
 		//assert isLocked() == false;
-		edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<E> e = new edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<E>( this, fromIndex, this.subListCopy( fromIndex, upToButExcludingIndex ) );
+		RemoveListPropertyEvent<E> e = new RemoveListPropertyEvent<E>( this, fromIndex, this.subListCopy( fromIndex, upToButExcludingIndex ) );
 		fireRemoving( e );
 		for( int i = fromIndex; i < upToButExcludingIndex; i++ ) {
 			getValue().remove( fromIndex );
@@ -248,7 +261,7 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 	}
 
 	public void set( int index, E... elements ) {
-		edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e = new edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E>( this, index, elements );
+		SetListPropertyEvent<E> e = new SetListPropertyEvent<E>( this, index, elements );
 		fireSetting( e );
 		for( int i = 0; i < elements.length; i++ ) {
 			getValue().set( index + i, elements[ i ] );
@@ -256,8 +269,8 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 		fireSet( e );
 	}
 
-	public void set( int index, java.util.List<E> elements ) {
-		edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e = new edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E>( this, index, elements );
+	public void set( int index, List<E> elements ) {
+		SetListPropertyEvent<E> e = new SetListPropertyEvent<E>( this, index, elements );
 		fireSetting( e );
 		for( int i = 0; i < elements.size(); i++ ) {
 			getValue().set( index + i, elements.get( i ) );
@@ -270,7 +283,7 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 			//todo: test
 			int indexMin = Math.min( indexA, indexB );
 			int indexMax = Math.max( indexA, indexB );
-			java.util.List<E> subList = this.subList( indexMin, indexMax + 1 );
+			List<E> subList = this.subList( indexMin, indexMax + 1 );
 			final int N = subList.size();
 			E eMin = subList.get( 0 );
 			E eMax = subList.get( N - 1 );
@@ -287,11 +300,11 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 			//todo: test
 			E element = this.getValue().get( prevIndex );
 			if( prevIndex < nextIndex ) {
-				java.util.List<E> subList = this.subListCopy( prevIndex + 1, nextIndex + ONE_TO_EXCLUDE );
+				List<E> subList = this.subListCopy( prevIndex + 1, nextIndex + ONE_TO_EXCLUDE );
 				subList.add( element );
 				this.set( prevIndex, subList );
 			} else {
-				java.util.List<E> subList = this.subListCopy( nextIndex, ( prevIndex - 1 ) + ONE_TO_EXCLUDE );
+				List<E> subList = this.subListCopy( nextIndex, ( prevIndex - 1 ) + ONE_TO_EXCLUDE );
 				subList.add( 0, element );
 				this.set( nextIndex, subList );
 			}
@@ -299,12 +312,12 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 	}
 
 	@Override
-	public void setValue( java.util.ArrayList<E> value ) {
+	public void setValue( ArrayList<E> value ) {
 
 		//todo?
 
-		edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E> eClear = new edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E>( this );
-		edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> eAdd = new edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E>( this, 0, value );
+		ClearListPropertyEvent<E> eClear = new ClearListPropertyEvent<E>( this );
+		AddListPropertyEvent<E> eAdd = new AddListPropertyEvent<E>( this, 0, value );
 		fireClearing( eClear );
 		fireAdding( eAdd );
 		super.setValue( value );
@@ -312,5 +325,5 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 		fireAdded( eAdd );
 	}
 
-	private java.util.List<edu.cmu.cs.dennisc.property.event.ListPropertyListener<E>> listPropertyListeners = null;
+	private List<ListPropertyListener<E>> listPropertyListeners = null;
 }

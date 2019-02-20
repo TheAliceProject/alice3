@@ -42,15 +42,31 @@
  *******************************************************************************/
 package org.alice.stageide.oneshot.edits;
 
+import edu.cmu.cs.dennisc.animation.TraditionalStyle;
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.common.ThreadUtilities;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.JointedModelImp;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
 	private static class JointUndoRunnable implements Runnable {
-		private final org.lgna.story.implementation.JointImp joint;
-		private final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation;
+		private final JointImp joint;
+		private final OrthogonalMatrix3x3 orientation;
 
-		public JointUndoRunnable( org.lgna.story.implementation.JointImp joint ) {
+		public JointUndoRunnable( JointImp joint ) {
 			this.joint = joint;
 			this.orientation = this.joint.getLocalTransformation().orientation;
 		}
@@ -61,30 +77,30 @@ public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
 
 		@Override
 		public void run() {
-			this.joint.animateLocalOrientationOnly( this.orientation, 1.0, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
+			this.joint.animateLocalOrientationOnly( this.orientation, 1.0, TraditionalStyle.BEGIN_AND_END_GENTLY );
 		}
 	}
 
 	private transient JointUndoRunnable[] jointUndoRunnables;
 
-	public AllJointLocalTransformationsEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		super( completionStep, instanceFactory, method, argumentExpressions );
+	public AllJointLocalTransformationsEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
+		super( userActivity, instanceFactory, method, argumentExpressions );
 	}
 
 	@Override
 	protected void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof org.lgna.story.SJointedModel ) {
-			org.lgna.story.SJointedModel jointedModel = (org.lgna.story.SJointedModel)instance;
-			org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp = org.lgna.story.EmployeesOnly.getImplementation( jointedModel );
-			Iterable<org.lgna.story.implementation.JointImp> joints = jointedModelImp.getJoints();
-			java.util.List<JointUndoRunnable> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			for( org.lgna.story.implementation.JointImp joint : joints ) {
+		if( instance instanceof SJointedModel ) {
+			SJointedModel jointedModel = (SJointedModel)instance;
+			JointedModelImp<?, ?> jointedModelImp = EmployeesOnly.getImplementation( jointedModel );
+			Iterable<JointImp> joints = jointedModelImp.getJoints();
+			List<JointUndoRunnable> list = Lists.newLinkedList();
+			for( JointImp joint : joints ) {
 				JointUndoRunnable jointUndoRunnable = new JointUndoRunnable( joint );
 				if( jointUndoRunnable.isUndoNecessary() ) {
 					list.add( jointUndoRunnable );
 				}
 			}
-			this.jointUndoRunnables = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, JointUndoRunnable.class );
+			this.jointUndoRunnables = ArrayUtilities.createArray( list, JointUndoRunnable.class );
 		} else {
 			this.jointUndoRunnables = new JointUndoRunnable[] {};
 		}
@@ -102,7 +118,7 @@ public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
 			new Thread() {
 				@Override
 				public void run() {
-					org.lgna.common.ThreadUtilities.doTogether( jointUndoRunnables );
+					ThreadUtilities.doTogether( jointUndoRunnables );
 				}
 			}.start();
 		}

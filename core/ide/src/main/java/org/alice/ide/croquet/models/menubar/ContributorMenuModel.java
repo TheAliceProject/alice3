@@ -42,11 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.menubar;
 
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.PredeterminedMenuModel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ContributorMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	public ContributorMenuModel( org.lgna.croquet.BooleanState localizeReviewIsShowingState ) {
-		super( java.util.UUID.fromString( "4215bc20-55ec-4b7e-9dc0-d573501ea985" ), localizeReviewIsShowingState.getMenuItemPrepModel() );
+public class ContributorMenuModel extends PredeterminedMenuModel {
+	public ContributorMenuModel( BooleanState localizeReviewIsShowingState ) {
+		super( UUID.fromString( "4215bc20-55ec-4b7e-9dc0-d573501ea985" ), localizeReviewIsShowingState.getMenuItemPrepModel() );
 	}
 }

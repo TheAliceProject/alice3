@@ -42,24 +42,29 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.border;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
 /**
  * @author Dennis Cosgrove
  */
 public class OutlinedBorder extends javax.swing.border.EmptyBorder {
-	private java.awt.Color color;
+	private Color color;
 
-	public OutlinedBorder( java.awt.Insets insets, java.awt.Color color ) {
+	public OutlinedBorder( Insets insets, Color color ) {
 		super( insets );
 		this.color = color;
 	}
 
-	public OutlinedBorder( int top, int left, int bottom, int right, java.awt.Color color ) {
+	public OutlinedBorder( int top, int left, int bottom, int right, Color color ) {
 		super( top, left, bottom, right );
 		this.color = color;
 	}
 
 	@Override
-	public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
+	public void paintBorder( Component c, Graphics g, int x, int y, int width, int height ) {
 		g.setColor( this.color );
 		g.drawRect( x, y, width - 1, height - 1 );
 	}

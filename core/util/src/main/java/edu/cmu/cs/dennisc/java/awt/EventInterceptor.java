@@ -42,9 +42,11 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import java.util.EventObject;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface EventInterceptor {
-	public boolean isEventIntercepted( java.util.EventObject e );
+	public boolean isEventIntercepted( EventObject e );
 }

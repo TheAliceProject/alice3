@@ -42,41 +42,55 @@
  *******************************************************************************/
 package org.alice.media.youtube.croquet.views;
 
+import org.alice.media.youtube.croquet.UploadComposite;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.CheckBox;
+import org.lgna.croquet.views.GridBagPanel;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.Panel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.TextArea;
+import org.lgna.croquet.views.TextField;
+
+import java.awt.GridBagConstraints;
+
 /**
  * @author Matt May
  */
-public class UploadView extends org.lgna.croquet.views.BorderPanel {
-	private final org.lgna.croquet.views.Panel youtubeDetailsPanel;
+public class UploadView extends BorderPanel {
+	private final Panel youtubeDetailsPanel;
 
-	public UploadView( org.alice.media.youtube.croquet.UploadComposite composite ) {
+	public UploadView( UploadComposite composite ) {
 		super( composite, 24, 0 );
 
-		org.lgna.croquet.views.MigPanel loginPanel = new org.lgna.croquet.views.MigPanel( null, "fill, inset 0", "", "[]0[]4[]0[]4[]" );
+		MigPanel loginPanel = new MigPanel( null, "fill, inset 0", "", "[]0[]4[]0[]4[]" );
 		loginPanel.addComponent( composite.getLoginComposite().getView(), "wrap" );
 
-		org.lgna.croquet.views.SwingComponentView<?> titleSidekickLabel = composite.getTitleState().getSidekickLabel().createImmutableTextField();
-		org.lgna.croquet.views.TextField titleTextField = composite.getTitleState().createTextField();
+		SwingComponentView<?> titleSidekickLabel = composite.getTitleState().getSidekickLabel().createImmutableTextField();
+		TextField titleTextField = composite.getTitleState().createTextField();
 
-		org.lgna.croquet.views.SwingComponentView<?> descriptionSidekickLabel = composite.getDescriptionState().getSidekickLabel().createImmutableTextField();
-		org.lgna.croquet.views.TextArea descriptionTextArea = composite.getDescriptionState().createTextArea();
+		SwingComponentView<?> descriptionSidekickLabel = composite.getDescriptionState().getSidekickLabel().createImmutableTextField();
+		TextArea descriptionTextArea = composite.getDescriptionState().createTextArea();
 		descriptionTextArea.getAwtComponent().setRows( 4 );
 		//description.getAwtComponent().setLineWrap( true );
-		org.lgna.croquet.views.ScrollPane descriptionScrollPane = new org.lgna.croquet.views.ScrollPane( descriptionTextArea );
+		ScrollPane descriptionScrollPane = new ScrollPane( descriptionTextArea );
 
-		org.lgna.croquet.views.SwingComponentView<?> tagsSidekickLabel = composite.getTagsState().getSidekickLabel().createImmutableTextField();
-		org.lgna.croquet.views.TextArea tagsTextArea = composite.getTagsState().createTextArea();
+		SwingComponentView<?> tagsSidekickLabel = composite.getTagsState().getSidekickLabel().createImmutableTextField();
+		TextArea tagsTextArea = composite.getTagsState().createTextArea();
 		tagsTextArea.getAwtComponent().setRows( 2 );
 		//tags.getAwtComponent().setLineWrap( true );
-		org.lgna.croquet.views.ScrollPane tagsScrollPane = new org.lgna.croquet.views.ScrollPane( tagsTextArea );
+		ScrollPane tagsScrollPane = new ScrollPane( tagsTextArea );
 
 		//		org.lgna.croquet.components.JComponent<?> categoryLabel = composite.getVideoCategoryState().getSidekickLabel().createImmutableTextField();
 		//		org.lgna.croquet.components.ComboBox<String> categoryComboBox = composite.getVideoCategoryState().getPrepModel().createComboBox();
 
-		org.lgna.croquet.views.CheckBox isPrivateCheckBox = composite.getIsPrivateState().createCheckBox();
+		CheckBox isPrivateCheckBox = composite.getIsPrivateState().createCheckBox();
 
 		final boolean IS_MIG_PANEL_WORKING_WITH_TEXT_AREAS = true;
 		if( IS_MIG_PANEL_WORKING_WITH_TEXT_AREAS ) {
-			org.lgna.croquet.views.MigPanel migPanel = new org.lgna.croquet.views.MigPanel( null, "insets 0, fill" );
+			MigPanel migPanel = new MigPanel( null, "insets 0, fill" );
 			migPanel.addComponent( titleSidekickLabel, "wrap" );
 			migPanel.addComponent( titleTextField, "wrap, growx" );
 			migPanel.addComponent( descriptionSidekickLabel, "wrap" );
@@ -88,13 +102,13 @@ public class UploadView extends org.lgna.croquet.views.BorderPanel {
 			migPanel.addComponent( isPrivateCheckBox, "wrap" );
 			this.youtubeDetailsPanel = migPanel;
 		} else {
-			org.lgna.croquet.views.GridBagPanel gridBagPanel = new org.lgna.croquet.views.GridBagPanel();
+			GridBagPanel gridBagPanel = new GridBagPanel();
 
 			final int TOP_INSET = 2;
-			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-			gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
-			gbc.fill = java.awt.GridBagConstraints.BOTH;
+			GridBagConstraints gbc = new GridBagConstraints();
+			gbc.gridwidth = GridBagConstraints.REMAINDER;
+			gbc.anchor = GridBagConstraints.NORTHWEST;
+			gbc.fill = GridBagConstraints.BOTH;
 			gbc.weightx = 1.0;
 			gbc.weighty = 0.0;
 
@@ -135,18 +149,18 @@ public class UploadView extends org.lgna.croquet.views.BorderPanel {
 			this.youtubeDetailsPanel = gridBagPanel;
 		}
 
-		this.addCenterComponent( new org.lgna.croquet.views.BorderPanel.Builder().pageStart( loginPanel ).center( this.youtubeDetailsPanel ).build() );
+		this.addCenterComponent( new BorderPanel.Builder().pageStart( loginPanel ).center( this.youtubeDetailsPanel ).build() );
 
-		org.lgna.croquet.views.MigPanel lineStartPanel = new org.lgna.croquet.views.MigPanel( null, "insets 0, fill", "", "" );
-		lineStartPanel.addComponent( new org.lgna.croquet.views.Label( "Preview:" ), "wrap" );
+		MigPanel lineStartPanel = new MigPanel( null, "insets 0, fill", "", "" );
+		lineStartPanel.addComponent( new Label( "Preview:" ), "wrap" );
 		lineStartPanel.addComponent( composite.getVideoComposite().getView(), "wrap" );
 		lineStartPanel.addComponent( composite.getExportToFileOperation().createButton(), "wrap" );
-		lineStartPanel.addComponent( new org.lgna.croquet.views.Label(), "push" );
+		lineStartPanel.addComponent( new Label(), "push" );
 
 		this.addLineStartComponent( lineStartPanel );
 	}
 
-	public org.lgna.croquet.views.Panel getYoutubeDetailsPanel() {
+	public Panel getYoutubeDetailsPanel() {
 		return this.youtubeDetailsPanel;
 	}
 }

@@ -43,7 +43,15 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureData;
+import com.jogamp.opengl.util.texture.TextureIO;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
@@ -51,36 +59,36 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 public final class TextureBinding implements ForgettableBinding {
 	//todo: investigate shared drawables
 	private static class Data {
-		private com.jogamp.opengl.util.texture.Texture texture;
-		private com.jogamp.opengl.util.texture.TextureData textureData;
-		private com.jogamp.opengl.GL gl;
+		private Texture texture;
+		private TextureData textureData;
+		private GL gl;
 
-		private void disposeTextureIdIfAppropriate( com.jogamp.opengl.GL gl ) {
+		private void disposeTextureIdIfAppropriate( GL gl ) {
 			if( this.texture != null ) {
 				if( this.gl != gl ) {
 					//pass
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.info( "disposing texture id", this.texture.getTextureObject( this.gl ) );
+					Logger.info( "disposing texture id", this.texture.getTextureObject( this.gl ) );
 					this.texture.destroy( this.gl );
 				}
 			}
 		}
 
-		private boolean isUpdateNecessary( com.jogamp.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData textureData ) {
+		private boolean isUpdateNecessary( GL gl, TextureData textureData ) {
 			if( this.texture != null ) {
 				if( this.textureData != textureData ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.info( "textureData changed", this.textureData, textureData );
+					Logger.info( "textureData changed", this.textureData, textureData );
 					return true;
 				} else {
 					if( this.gl != gl ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.info( "gl changed", this.gl, gl );
+						Logger.info( "gl changed", this.gl, gl );
 						return true;
 					} else {
 						int textureObject = this.texture.getTextureObject( this.gl );
 						if( gl.glIsTexture( textureObject ) ) {
 							return false;
 						} else {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.info( "glIsTexture is false" );
+							Logger.info( "glIsTexture is false" );
 							return true;
 						}
 					}
@@ -90,13 +98,13 @@ public final class TextureBinding implements ForgettableBinding {
 			}
 		}
 
-		public void updateIfNecessary( com.jogamp.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData textureData ) {
+		public void updateIfNecessary( GL gl, TextureData textureData ) {
 			if( this.isUpdateNecessary( gl, textureData ) ) {
 				this.disposeTextureIdIfAppropriate( gl );
 				this.textureData = textureData;
 				this.gl = gl;
-				this.texture = com.jogamp.opengl.util.texture.TextureIO.newTexture( this.textureData );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "allocated texture id", this.texture.getTextureObject( this.gl ), "gl", gl.hashCode() );
+				this.texture = TextureIO.newTexture( this.textureData );
+				Logger.info( "allocated texture id", this.texture.getTextureObject( this.gl ), "gl", gl.hashCode() );
 				//				for( RenderContextData value : map.values() ) {
 				//					System.err.print( value.gl.hashCode() + " " );
 				//				}
@@ -112,18 +120,18 @@ public final class TextureBinding implements ForgettableBinding {
 			this.texture.enable( this.gl );
 		}
 
-		public void forget( com.jogamp.opengl.GL gl ) {
+		public void forget( GL gl ) {
 			if( this.texture != null ) {
 				this.disposeTextureIdIfAppropriate( gl );
 				this.texture = null;
 				this.textureData = null;
 				this.gl = null;
-				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "dispose", this.texture );
+				Logger.info( "dispose", this.texture );
 			}
 		}
 	}
 
-	private final java.util.Map<RenderContext, Data> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Map<RenderContext, Data> map = Maps.newHashMap();
 
 	private Data getData( RenderContext rc ) {
 		Data rv = this.map.get( rc );
@@ -136,7 +144,7 @@ public final class TextureBinding implements ForgettableBinding {
 		return rv;
 	}
 
-	public void ensureUpToDate( RenderContext rc, com.jogamp.opengl.util.texture.TextureData textureData ) {
+	public void ensureUpToDate( RenderContext rc, TextureData textureData ) {
 		Data data = this.getData( rc );
 		data.updateIfNecessary( rc.gl, textureData );
 		data.bind();

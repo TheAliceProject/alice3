@@ -48,6 +48,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.cmu.cs.dennisc.media.jmf.Player;
+import org.alice.media.audio.AudioMuxer;
 import org.alice.media.audio.ScheduledAudioStream;
 
 import edu.cmu.cs.dennisc.media.MediaPlayerObserver;
@@ -62,7 +64,7 @@ public class WebmRecordingAdapter implements MediaPlayerObserver {
 	private Integer frameRate;
 	private Dimension dimension;
 
-	private org.alice.media.audio.AudioMuxer audioMuxer;
+	private AudioMuxer audioMuxer;
 	private ImagesToWebmEncoder encoder;
 
 	private List<MediaPlayerAnimation> playingAnimations = new ArrayList<MediaPlayerAnimation>();
@@ -83,7 +85,7 @@ public class WebmRecordingAdapter implements MediaPlayerObserver {
 	}
 
 	public void initializeAudioRecording() {
-		this.audioMuxer = new org.alice.media.audio.AudioMuxer();
+		this.audioMuxer = new AudioMuxer();
 	}
 
 	@Override
@@ -92,8 +94,8 @@ public class WebmRecordingAdapter implements MediaPlayerObserver {
 		edu.cmu.cs.dennisc.media.Player player = playerAnimation.getPlayer();
 		//Add the animation to the list of playing animations so we can stop any unfinished ones later
 		//	this.playingAnimations.add( playerAnimation );
-		if( player instanceof edu.cmu.cs.dennisc.media.jmf.Player ) {
-			edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
+		if( player instanceof Player ) {
+			Player jmfPlayer = (Player)player;
 			ScheduledAudioStream audioStream = new ScheduledAudioStream( jmfPlayer.getAudioResource(), playTime, jmfPlayer.getStartTime(), jmfPlayer.getStopTime(), jmfPlayer.getVolumeLevel() );
 			this.audioMuxer.addAudioStream( audioStream );
 		}

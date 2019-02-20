@@ -42,14 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.property.event;
 
+import edu.cmu.cs.dennisc.property.ListProperty;
+
+import java.util.Collection;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AddAllListPropertyEvent<E> extends ListPropertyEvent<E> {
 	private int m_index;
-	private java.util.Collection<? extends E> m_collection;
+	private Collection<? extends E> m_collection;
 
-	public AddAllListPropertyEvent( edu.cmu.cs.dennisc.property.ListProperty<E> source, int index, java.util.Collection<? extends E> collection ) {
+	public AddAllListPropertyEvent( ListProperty<E> source, int index, Collection<? extends E> collection ) {
 		super( source );
 		m_index = index;
 		m_collection = collection;
@@ -59,7 +63,7 @@ public class AddAllListPropertyEvent<E> extends ListPropertyEvent<E> {
 		return m_index;
 	}
 
-	public java.util.Collection<? extends E> getCollection() {
+	public Collection<? extends E> getCollection() {
 		return m_collection;
 	}
 }

@@ -42,15 +42,17 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Model extends Element {
-	public Iterable<ContextFactory<?>> getContextFactories();
+	UUID getMigrationId();
 
-	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
+	void relocalize();
 
-	public boolean isEnabled();
+	boolean isEnabled();
 
-	public void setEnabled( boolean isEnabled );
+	void setEnabled( boolean isEnabled );
 }

@@ -42,20 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.edits;
 
+import org.lgna.project.ast.Member;
+
 /**
  * @author Dennis Cosgrove
  */
 public class RenameMemberData {
-	private final org.lgna.project.ast.Member member;
+	private final Member member;
 	private final String nextName;
 	private String prevName;
 
-	public RenameMemberData( org.lgna.project.ast.Member member, String nextName ) {
+	public RenameMemberData( Member member, String nextName ) {
 		this.member = member;
 		this.nextName = nextName;
 	}
 
-	public org.lgna.project.ast.Member getMember() {
+	public Member getMember() {
 		return this.member;
 	}
 

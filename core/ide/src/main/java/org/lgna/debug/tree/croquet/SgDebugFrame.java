@@ -42,15 +42,28 @@
  *******************************************************************************/
 package org.lgna.debug.tree.croquet;
 
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.Leaf;
+import edu.cmu.cs.dennisc.scenegraph.Scene;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.debug.tree.core.ZTreeNode;
+import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SScene;
+import org.lgna.story.implementation.SceneImp;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SgDebugFrame extends DebugFrame<edu.cmu.cs.dennisc.scenegraph.Component> {
-	public static org.lgna.debug.tree.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component> createBuilder( edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
-		org.lgna.debug.tree.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component> rv = new org.lgna.debug.tree.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component>( sgComponent, sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Leaf );
-		if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
-			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgComponent;
-			for( edu.cmu.cs.dennisc.scenegraph.Component sgChild : sgComposite.getComponents() ) {
+public class SgDebugFrame extends DebugFrame<Component> {
+	public static ZTreeNode.Builder<Component> createBuilder( Component sgComponent ) {
+		ZTreeNode.Builder<Component> rv = new ZTreeNode.Builder<Component>( sgComponent, sgComponent instanceof Leaf );
+		if( sgComponent instanceof Composite ) {
+			Composite sgComposite = (Composite)sgComponent;
+			for( Component sgChild : sgComposite.getComponents() ) {
 				rv.addChildBuilder( createBuilder( sgChild ) );
 			}
 		}
@@ -58,15 +71,15 @@ public class SgDebugFrame extends DebugFrame<edu.cmu.cs.dennisc.scenegraph.Compo
 	}
 
 	public SgDebugFrame() {
-		super( java.util.UUID.fromString( "8d282704-d6b6-4455-bd1d-80b6a529a19d" ) );
+		super( UUID.fromString( "8d282704-d6b6-4455-bd1d-80b6a529a19d" ) );
 	}
 
 	@Override
-	protected org.lgna.debug.tree.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component> capture() {
-		org.lgna.project.virtualmachine.UserInstance sceneUserInstance = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getActiveSceneInstance();
-		org.lgna.story.SScene scene = sceneUserInstance.getJavaInstance( org.lgna.story.SScene.class );
-		org.lgna.story.implementation.SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( scene );
-		edu.cmu.cs.dennisc.scenegraph.Scene sgScene = sceneImp.getSgComposite();
+	protected ZTreeNode.Builder<Component> capture() {
+		UserInstance sceneUserInstance = StorytellingSceneEditor.getInstance().getActiveSceneInstance();
+		SScene scene = sceneUserInstance.getJavaInstance( SScene.class );
+		SceneImp sceneImp = EmployeesOnly.getImplementation( scene );
+		Scene sgScene = sceneImp.getSgComposite();
 		return createBuilder( sgScene );
 	}
 }

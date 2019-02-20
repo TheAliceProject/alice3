@@ -43,6 +43,15 @@
 
 package org.alice.ide.ast.draganddrop.statement;
 
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.ast.declaration.InsertLocalDeclarationStatementComposite;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.LocalDeclarationStatement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +65,11 @@ public class DeclareLocalDragModel extends StatementTemplateDragModel {
 	}
 
 	private DeclareLocalDragModel() {
-		super( java.util.UUID.fromString( "8a72ad5f-8273-4de9-a1c4-60bedda45b9e" ), org.lgna.project.ast.LocalDeclarationStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalDeclarationStatement() );
+		super( UUID.fromString( "8a72ad5f-8273-4de9-a1c4-60bedda45b9e" ), LocalDeclarationStatement.class, IncompleteAstUtilities.createIncompleteLocalDeclarationStatement() );
 	}
 
 	@Override
-	public org.lgna.croquet.Operation getDropModel( org.lgna.croquet.history.DragStep context, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.ast.declaration.InsertLocalDeclarationStatementComposite.getInstance( blockStatementIndexPair ).getLaunchOperation();
+	public Triggerable getDropOperation( DragStep context, BlockStatementIndexPair blockStatementIndexPair ) {
+		return InsertLocalDeclarationStatementComposite.getInstance( blockStatementIndexPair ).getLaunchOperation();
 	}
 }

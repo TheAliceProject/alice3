@@ -43,7 +43,30 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Queues;
+import edu.cmu.cs.dennisc.pattern.Releasable;
+import edu.cmu.cs.dennisc.pattern.event.ReleaseEvent;
+import edu.cmu.cs.dennisc.pattern.event.ReleaseListener;
+import edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.ImageBuffer;
+import edu.cmu.cs.dennisc.render.ImageCaptureRenderTarget;
+import edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+import edu.cmu.cs.dennisc.render.RenderFactory;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
+import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
+import edu.cmu.cs.dennisc.render.gl.imp.GlrImageBuffer;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.ChangeHandler;
+
+import java.awt.Component;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.Semaphore;
 
 /**
  * @author Dennis Cosgrove
@@ -82,9 +105,9 @@ class WaitingRunnable implements Runnable {
 /**
  * @author Dennis Cosgrove
  */
-public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory {
+public class GlrRenderFactory implements RenderFactory {
 	static {
-		edu.cmu.cs.dennisc.render.gl.RendererNativeLibraryLoader.initializeIfNecessary();
+		RendererNativeLibraryLoader.initializeIfNecessary();
 	}
 
 	private static class SingletonHolder {
@@ -99,12 +122,12 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.ImageBuffer createImageBuffer( edu.cmu.cs.dennisc.color.Color4f backgroundColor ) {
-		return new edu.cmu.cs.dennisc.render.gl.imp.GlrImageBuffer( backgroundColor );
+	public ImageBuffer createImageBuffer( Color4f backgroundColor ) {
+		return new GlrImageBuffer( backgroundColor );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.ImageBuffer createTransparentBackgroundImageBuffer() {
+	public ImageBuffer createTransparentBackgroundImageBuffer() {
 		return this.createImageBuffer( null );
 	}
 
@@ -113,7 +136,7 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory
 
 	private static boolean isDisplayDesired( GlrOnscreenRenderTarget lg ) {
 		if( lg.isRenderingEnabled() ) {
-			java.awt.Component component = lg.getAwtComponent();
+			Component component = lg.getAwtComponent();
 			if( component.isVisible() && component.isValid() && ( component.getWidth() > 0 ) && ( component.getHeight() > 0 ) ) {
 				if( lg.getSgCameraCount() > 0 ) {
 					return true;
@@ -126,7 +149,7 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory
 	/*package-private*/Animator.ThreadDeferenceAction step() {
 		Animator.ThreadDeferenceAction rv = Animator.ThreadDeferenceAction.SLEEP;
 		synchronized( this.toBeReleased ) {
-			for( edu.cmu.cs.dennisc.pattern.Releasable releasable : this.toBeReleased ) {
+			for( Releasable releasable : this.toBeReleased ) {
 				if( releasable instanceof GlrOnscreenRenderTarget ) {
 					GlrOnscreenRenderTarget onscreenLookingGlass = (GlrOnscreenRenderTarget)releasable;
 					if( onscreenLookingGlass instanceof GlrHeavyweightOnscreenRenderTarget ) {
@@ -225,7 +248,7 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+	public HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities ) {
 		GlrHeavyweightOnscreenRenderTarget holg = new GlrHeavyweightOnscreenRenderTarget( this, requestedCapabilities );
 		holg.addReleaseListener( this.releaseListener );
 		this.heavyweightOnscreenLookingGlasses.add( holg );
@@ -233,7 +256,7 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+	public LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities ) {
 		GlrLightweightOnscreenRenderTarget lolg = new GlrLightweightOnscreenRenderTarget( this, requestedCapabilities );
 		lolg.addReleaseListener( this.releaseListener );
 		this.lightweightOnscreenLookingGlasses.add( lolg );
@@ -241,7 +264,7 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, edu.cmu.cs.dennisc.render.RenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+	public OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
 		assert ( renderTargetToShareContextWith == null ) || ( renderTargetToShareContextWith instanceof GlrRenderTarget );
 		GlrOffscreenRenderTarget olg = new GlrOffscreenRenderTarget( this, width, height, (GlrRenderTarget)renderTargetToShareContextWith, requestedCapabilities );
 		olg.addReleaseListener( this.releaseListener );
@@ -250,27 +273,27 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.ImageCaptureRenderTarget createImageCaptureRenderTarget( int width, int height, edu.cmu.cs.dennisc.render.RenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+	public ImageCaptureRenderTarget createImageCaptureRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
 		return new GlrImageCaptureRenderTarget( this, width, height, (GlrRenderTarget)renderTargetToShareContextWith, requestedCapabilities );
 	}
 
 	@Override
-	public void addAutomaticDisplayListener( edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener ) {
+	public void addAutomaticDisplayListener( AutomaticDisplayListener automaticDisplayListener ) {
 		this.automaticDisplayListeners.add( automaticDisplayListener );
 	}
 
 	@Override
-	public void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener ) {
+	public void removeAutomaticDisplayListener( AutomaticDisplayListener automaticDisplayListener ) {
 		this.automaticDisplayListeners.remove( automaticDisplayListener );
 	}
 
 	@Override
-	public Iterable<edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener> getAutomaticDisplayListeners() {
+	public Iterable<AutomaticDisplayListener> getAutomaticDisplayListeners() {
 		return this.automaticDisplayListeners;
 	}
 
 	private void handleDisplayed() {
-		for( edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener : this.automaticDisplayListeners ) {
+		for( AutomaticDisplayListener automaticDisplayListener : this.automaticDisplayListeners ) {
 			automaticDisplayListener.automaticDisplayCompleted( reusableAutomaticDisplayEvent );
 		}
 		while( this.runnables.isEmpty() == false ) {
@@ -285,7 +308,7 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory
 	}
 
 	@Override
-	public void invokeAndWait( Runnable runnable ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
+	public void invokeAndWait( Runnable runnable ) throws InterruptedException, InvocationTargetException {
 		Thread currentThread = Thread.currentThread();
 		WaitingRunnable waitingRunnable = new WaitingRunnable( runnable, currentThread );
 		synchronized( currentThread ) {
@@ -293,7 +316,7 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory
 			currentThread.wait();
 		}
 		if( waitingRunnable.getException() != null ) {
-			throw new java.lang.reflect.InvocationTargetException( waitingRunnable.getException() );
+			throw new InvocationTargetException( waitingRunnable.getException() );
 		}
 	}
 
@@ -303,34 +326,34 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory
 			invokeAndWait( runnable );
 		} catch( InterruptedException ie ) {
 			throw new RuntimeException( ie );
-		} catch( java.lang.reflect.InvocationTargetException ie ) {
+		} catch( InvocationTargetException ie ) {
 			throw new RuntimeException( ie );
 		}
 	}
 
-	private final edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener = new edu.cmu.cs.dennisc.pattern.event.ReleaseListener() {
+	private final ReleaseListener releaseListener = new ReleaseListener() {
 		@Override
-		public void releasing( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent releaseEvent ) {
+		public void releasing( ReleaseEvent releaseEvent ) {
 		}
 
 		@Override
-		public void released( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent releaseEvent ) {
+		public void released( ReleaseEvent releaseEvent ) {
 			synchronized( toBeReleased ) {
 				toBeReleased.add( releaseEvent.getTypedSource() );
 			}
 		}
 	};
 
-	private final java.util.List<GlrLightweightOnscreenRenderTarget> lightweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<GlrHeavyweightOnscreenRenderTarget> heavyweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<GlrOffscreenRenderTarget> offscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<GlrLightweightOnscreenRenderTarget> lightweightOnscreenLookingGlasses = Lists.newCopyOnWriteArrayList();
+	private final List<GlrHeavyweightOnscreenRenderTarget> heavyweightOnscreenLookingGlasses = Lists.newCopyOnWriteArrayList();
+	private final List<GlrOffscreenRenderTarget> offscreenLookingGlasses = Lists.newCopyOnWriteArrayList();
 
-	private final java.util.List<edu.cmu.cs.dennisc.pattern.Releasable> toBeReleased = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final java.util.Queue<Runnable> runnables = edu.cmu.cs.dennisc.java.util.Queues.newConcurrentLinkedQueue();
+	private final List<Releasable> toBeReleased = Lists.newLinkedList();
+	private final Queue<Runnable> runnables = Queues.newConcurrentLinkedQueue();
 
-	private final java.util.concurrent.Semaphore renderingLock = new java.util.concurrent.Semaphore( 1 );
+	private final Semaphore renderingLock = new Semaphore( 1 );
 
-	private static class ReusableAutomaticDisplayEvent extends edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent {
+	private static class ReusableAutomaticDisplayEvent extends AutomaticDisplayEvent {
 		public ReusableAutomaticDisplayEvent( GlrRenderFactory lookingGlassFactory ) {
 			super( lookingGlassFactory );
 		}
@@ -342,7 +365,7 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory
 	};
 
 	private final ReusableAutomaticDisplayEvent reusableAutomaticDisplayEvent = new ReusableAutomaticDisplayEvent( this );
-	private final java.util.List<edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener> automaticDisplayListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<AutomaticDisplayListener> automaticDisplayListeners = Lists.newCopyOnWriteArrayList();
 
 	private Animator animator = null;
 }

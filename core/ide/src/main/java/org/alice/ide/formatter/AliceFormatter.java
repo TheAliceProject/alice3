@@ -42,6 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.formatter;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 /**
  * Formats code on Alice tiles in the Alice language.
  *
@@ -56,11 +67,11 @@ public class AliceFormatter extends Formatter {
 		return SingletonHolder.instance;
 	}
 
-	private java.util.Map<String, String> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private Map<String, String> map = Maps.newHashMap();
 
 	private AliceFormatter() {
 		super( "Alice" );
-		java.util.Locale locale = java.util.Locale.getDefault();
+		Locale locale = Locale.getDefault();
 		String[] bundleNames = {
 				"AliceFormatter",
 
@@ -98,12 +109,12 @@ public class AliceFormatter extends Formatter {
 		};
 		for( String bundleName : bundleNames ) {
 			try {
-				java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( "org.alice.ide.formatter." + bundleName, locale );
-				for( java.util.Enumeration<String> e = resourceBundle.getKeys(); e.hasMoreElements(); ) {
+				ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( "org.alice.ide.formatter." + bundleName, locale );
+				for( Enumeration<String> e = resourceBundle.getKeys(); e.hasMoreElements(); ) {
 					String key = e.nextElement();
 					map.put( key, resourceBundle.getString( key ) );
 				}
-			} catch( java.util.MissingResourceException mre ) {
+			} catch( MissingResourceException mre ) {
 				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( bundleName );
 				//pass
 			}
@@ -111,11 +122,11 @@ public class AliceFormatter extends Formatter {
 	}
 
 	@Override
-	public String getHeaderTextForCode( org.lgna.project.ast.UserCode code ) {
+	public String getHeaderTextForCode( UserCode code ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "declare " );
-		if( code instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
+		if( code instanceof UserMethod ) {
+			UserMethod method = (UserMethod)code;
 			if( method.isProcedure() ) {
 				sb.append( "procedure " );
 			} else {
@@ -131,7 +142,7 @@ public class AliceFormatter extends Formatter {
 	}
 
 	@Override
-	public String getTrailerTextForCode( org.lgna.project.ast.UserCode code ) {
+	public String getTrailerTextForCode( UserCode code ) {
 		return null;
 	}
 

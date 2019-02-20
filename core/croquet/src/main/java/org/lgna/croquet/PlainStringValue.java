@@ -43,27 +43,34 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+import org.lgna.croquet.views.ImmutableTextArea;
+import org.lgna.croquet.views.ImmutableTextField;
+
+import javax.swing.text.PlainDocument;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class PlainStringValue extends StringValue {
-	public PlainStringValue( java.util.UUID id ) {
-		super( id, new javax.swing.text.PlainDocument() );
+	public PlainStringValue( UUID id ) {
+		super( id, new PlainDocument() );
 	}
 
-	public org.lgna.croquet.views.ImmutableTextArea createImmutableTextArea( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
-		return new org.lgna.croquet.views.ImmutableTextArea( this, fontScalar, textAttributes );
+	public ImmutableTextArea createImmutableTextArea( float fontScalar, TextAttribute<?>... textAttributes ) {
+		return new ImmutableTextArea( this, fontScalar, textAttributes );
 	}
 
-	public org.lgna.croquet.views.ImmutableTextArea createImmutableTextArea( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public ImmutableTextArea createImmutableTextArea( TextAttribute<?>... textAttributes ) {
 		return this.createImmutableTextArea( 1.0f, textAttributes );
 	}
 
-	public org.lgna.croquet.views.ImmutableTextField createImmutableTextField( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
-		return new org.lgna.croquet.views.ImmutableTextField( this, fontScalar, textAttributes );
+	public ImmutableTextField createImmutableTextField( float fontScalar, TextAttribute<?>... textAttributes ) {
+		return new ImmutableTextField( this, fontScalar, textAttributes );
 	}
 
-	public org.lgna.croquet.views.ImmutableTextField createImmutableTextField( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public ImmutableTextField createImmutableTextField( TextAttribute<?>... textAttributes ) {
 		return this.createImmutableTextField( 1.0f, textAttributes );
 	}
 }

@@ -43,15 +43,24 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GLContext;
+import com.jogamp.opengl.GLException;
+import com.jogamp.opengl.GLOffscreenAutoDrawable;
+import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class GlrOffscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.OffscreenRenderTarget {
-	private final com.jogamp.opengl.GLOffscreenAutoDrawable glPbuffer;
+/*package-private*/class GlrOffscreenRenderTarget extends GlrRenderTarget implements OffscreenRenderTarget {
+	private final GLOffscreenAutoDrawable glPbuffer;
 
-	/* package-private */ GlrOffscreenRenderTarget( GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+	/* package-private */ GlrOffscreenRenderTarget( GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
 		super( lookingGlassFactory, requestedCapabilities );
-		com.jogamp.opengl.GLContext share;
+		GLContext share;
 		if( renderTargetToShareContextWith != null ) {
 			share = renderTargetToShareContextWith.getGLAutoDrawable().getContext();
 		} else {
@@ -61,7 +70,7 @@ package edu.cmu.cs.dennisc.render.gl;
 	}
 
 	@Override
-	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
+	protected Dimension getSurfaceSize( Dimension rv ) {
 		//TODO: Should we change this to getGLJPanelHeight and getGLJPanelWidth? This is returning the drawable width and height, not the size of the associated panel
 		if( this.glPbuffer != null ) {
 			rv.setSize( GlDrawableUtils.getGlDrawableWidth( this.glPbuffer ), GlDrawableUtils.getGlDrawableHeight( this.glPbuffer ) );
@@ -72,7 +81,7 @@ package edu.cmu.cs.dennisc.render.gl;
 	}
 
 	@Override
-	protected java.awt.Dimension getDrawableSize( java.awt.Dimension rv ) {
+	protected Dimension getDrawableSize( Dimension rv ) {
 		if( this.glPbuffer != null ) {
 			rv.setSize( GlDrawableUtils.getGlDrawableWidth( this.glPbuffer ), GlDrawableUtils.getGlDrawableHeight( this.glPbuffer ) );
 		} else {
@@ -95,11 +104,11 @@ package edu.cmu.cs.dennisc.render.gl;
 	}
 
 	@Override
-	public com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable() {
+	public GLAutoDrawable getGLAutoDrawable() {
 		if( this.glPbuffer != null ) {
 			return this.glPbuffer;
 		} else {
-			throw new com.jogamp.opengl.GLException();
+			throw new GLException();
 		}
 	}
 

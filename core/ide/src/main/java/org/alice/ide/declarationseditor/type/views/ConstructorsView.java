@@ -42,16 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type.views;
 
+import org.alice.ide.declarationseditor.type.ConstructorsComposite;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.NamedUserConstructor;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorsView extends MembersView<org.lgna.project.ast.NamedUserConstructor> {
-	public ConstructorsView( org.alice.ide.declarationseditor.type.ConstructorsComposite composite ) {
+public class ConstructorsView extends MembersView<NamedUserConstructor> {
+	public ConstructorsView( ConstructorsComposite composite ) {
 		super( composite );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createComponentForItem( org.lgna.project.ast.NamedUserConstructor constructor ) {
+	protected SwingComponentView<?> createComponentForItem( NamedUserConstructor constructor ) {
 		return new ConstructorView( constructor );
 	}
 }

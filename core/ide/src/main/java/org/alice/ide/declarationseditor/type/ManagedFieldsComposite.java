@@ -42,14 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.declarationseditor.type.data.ManagedFieldData;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ManagedFieldsComposite extends FieldsComposite {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, ManagedFieldsComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<NamedUserType, ManagedFieldsComposite> map = Maps.newHashMap();
 
-	public static synchronized ManagedFieldsComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
-		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
+	public static synchronized ManagedFieldsComposite getInstance( NamedUserType type ) {
+		if( IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
 			ManagedFieldsComposite rv = map.get( type );
 			if( rv != null ) {
 				//pass
@@ -63,7 +71,7 @@ public class ManagedFieldsComposite extends FieldsComposite {
 		}
 	}
 
-	private ManagedFieldsComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "02ffb55e-ab8b-4464-b6c8-72e54fc29522" ), new org.alice.ide.declarationseditor.type.data.ManagedFieldData( type ) );
+	private ManagedFieldsComposite( NamedUserType type ) {
+		super( UUID.fromString( "02ffb55e-ab8b-4464-b6c8-72e54fc29522" ), new ManagedFieldData( type ) );
 	}
 }

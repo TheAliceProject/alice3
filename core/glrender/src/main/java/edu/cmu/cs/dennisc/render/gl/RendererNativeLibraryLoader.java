@@ -42,6 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl;
 
+import com.jogamp.common.jvm.JNILibLoaderBase;
+import com.jogamp.opengl.GLProfile;
+import edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.Sets;
+
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,14 +65,14 @@ public class RendererNativeLibraryLoader {
 			//pass
 		} else {
 			try {
-				com.jogamp.common.jvm.JNILibLoaderBase.setLoadingAction( new com.jogamp.common.jvm.JNILibLoaderBase.LoaderAction() {
-					private final java.util.Set<String> loaded = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+				JNILibLoaderBase.setLoadingAction( new JNILibLoaderBase.LoaderAction() {
+					private final Set<String> loaded = Sets.newHashSet();
 
 					private boolean loadLibrary( String libraryName, boolean isIgnoringError ) {
-						edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle loadLibraryReportStyle = isIgnoringError ? edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle.SILENT : edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle.EXCEPTION;
+						LoadLibraryReportStyle loadLibraryReportStyle = isIgnoringError ? LoadLibraryReportStyle.SILENT : LoadLibraryReportStyle.EXCEPTION;
 						//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( libraryName, loadLibraryReportStyle );
 						try {
-							edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadLibrary( "jogl", libraryName, loadLibraryReportStyle );
+							SystemUtilities.loadLibrary( "jogl", libraryName, loadLibraryReportStyle );
 						} catch( UnsatisfiedLinkError ule ) {
 							String message = ule.getMessage();
 							if( isIgnoringError || ( ( message != null ) && message.contains( "already loaded" ) ) ) {
@@ -110,7 +118,7 @@ public class RendererNativeLibraryLoader {
 
 				//edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "initialize jogl" );
 				//timer.start();
-				com.jogamp.opengl.GLProfile.initSingleton();
+				GLProfile.initSingleton();
 				//timer.stopAndPrintResults();
 			} finally {
 				isInitializationAttempted = true;

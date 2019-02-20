@@ -43,9 +43,11 @@
 
 package org.lgna.project.annotations;
 
+import java.lang.reflect.Field;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface PublicStaticFieldValueDetails<T> extends ValueDetails<T> {
-	public java.lang.reflect.Field[] getFlds();
+	public Field[] getFlds();
 }

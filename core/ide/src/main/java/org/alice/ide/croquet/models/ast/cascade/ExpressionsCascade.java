@@ -43,11 +43,18 @@
 
 package org.alice.ide.croquet.models.ast.cascade;
 
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.ImmutableCascade;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionsCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.project.ast.Expression> {
-	public ExpressionsCascade( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
-		super( group, id, org.lgna.project.ast.Expression.class, blanks );
+public abstract class ExpressionsCascade extends ImmutableCascade<Expression> {
+	public ExpressionsCascade( Group group, UUID id, CascadeBlank<Expression>... blanks ) {
+		super( group, id, Expression.class, blanks );
 	}
 }

@@ -42,12 +42,14 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class PerspectiveApplication<D extends PerspectiveDocumentFrame> extends Application<D> {
 	public static PerspectiveApplication<?> getActiveInstance() {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), PerspectiveApplication.class );
+		return ClassUtilities.getInstance( Application.getActiveInstance(), PerspectiveApplication.class );
 	}
 
 	public Perspective getPerspective() {

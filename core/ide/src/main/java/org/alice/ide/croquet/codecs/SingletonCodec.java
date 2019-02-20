@@ -42,11 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.ItemCodec;
+
+import java.lang.reflect.Method;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SingletonCodec<T> implements org.lgna.croquet.ItemCodec<T> {
-	private static java.util.Map<Class<?>, SingletonCodec<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class SingletonCodec<T> implements ItemCodec<T> {
+	private static Map<Class<?>, SingletonCodec<?>> map = Maps.newHashMap();
 
 	public static synchronized <T> SingletonCodec<T> getInstance( Class<T> cls ) {
 		SingletonCodec<?> rv = map.get( cls );
@@ -70,13 +78,13 @@ public class SingletonCodec<T> implements org.lgna.croquet.ItemCodec<T> {
 	}
 
 	@Override
-	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public T decodeValue( BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
 			String clsName = binaryDecoder.decodeString();
 			try {
 				Class<?> cls = Class.forName( clsName );
-				java.lang.reflect.Method mthd = cls.getDeclaredMethod( "getInstance" );
+				Method mthd = cls.getDeclaredMethod( "getInstance" );
 				return (T)mthd.invoke( null );
 			} catch( Exception e ) {
 				throw new RuntimeException( e );
@@ -87,7 +95,7 @@ public class SingletonCodec<T> implements org.lgna.croquet.ItemCodec<T> {
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, T value ) {
 		if( value != null ) {
 			binaryEncoder.encode( true );
 			binaryEncoder.encode( value.getClass().getName() );

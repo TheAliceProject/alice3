@@ -43,30 +43,57 @@
 
 package org.alice.ide.instancefactory.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import org.alice.ide.IDE;
+import org.alice.ide.Theme;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory;
+import org.alice.ide.instancefactory.ThisInstanceFactory;
+import org.alice.ide.instancefactory.ThisMethodInvocationFactory;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.ImmutableCascadeFillIn;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.NamedUserType;
+
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.Dimension;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.alice.ide.instancefactory.InstanceFactory, Void> {
-	private class PropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
+public class InstanceFactoryFillIn extends ImmutableCascadeFillIn<InstanceFactory, Void> {
+	private class PropertyAdapter implements PropertyListener {
 		@Override
-		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		public void propertyChanging( PropertyEvent e ) {
 		}
 
 		@Override
-		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		public void propertyChanged( PropertyEvent e ) {
 			InstanceFactoryFillIn.this.markDirty();
 		}
 	}
 
-	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+	private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
+		public void valueChanged( ValueEvent<NamedUserType> e ) {
 			InstanceFactoryFillIn.this.markDirty();
 		}
 	};
-	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InstanceFactoryFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<InstanceFactory, InstanceFactoryFillIn> map = Maps.newHashMap();
 
-	public static InstanceFactoryFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory value ) {
+	public static InstanceFactoryFillIn getInstance( InstanceFactory value ) {
 		synchronized( map ) {
 			InstanceFactoryFillIn rv = map.get( value );
 			if( rv != null ) {
@@ -79,53 +106,53 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFill
 		}
 	}
 
-	private final org.alice.ide.instancefactory.InstanceFactory value;
+	private final InstanceFactory value;
 	private final PropertyAdapter propertyAdapter;
 
-	private InstanceFactoryFillIn( org.alice.ide.instancefactory.InstanceFactory value ) {
-		super( java.util.UUID.fromString( "2fce347e-f10e-4eec-8ac4-291225a5da4f" ) );
+	private InstanceFactoryFillIn( InstanceFactory value ) {
+		super( UUID.fromString( "2fce347e-f10e-4eec-8ac4-291225a5da4f" ) );
 		this.value = value;
 
-		if( this.value == org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ) {
-			org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addValueListener( this.typeListener );
+		if( this.value == ThisInstanceFactory.getInstance() ) {
+			IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addValueListener( this.typeListener );
 		}
 
-		edu.cmu.cs.dennisc.property.InstanceProperty<?>[] mutablePropertiesOfInterest = this.value.getMutablePropertiesOfInterest();
+		InstanceProperty<?>[] mutablePropertiesOfInterest = this.value.getMutablePropertiesOfInterest();
 		if( ( mutablePropertiesOfInterest != null ) && ( mutablePropertiesOfInterest.length > 0 ) ) {
 			this.propertyAdapter = new PropertyAdapter();
 		} else {
 			this.propertyAdapter = null;
 		}
 		if( ( mutablePropertiesOfInterest != null ) && ( this.propertyAdapter != null ) ) {
-			for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : mutablePropertiesOfInterest ) {
+			for( InstanceProperty<?> property : mutablePropertiesOfInterest ) {
 				property.addPropertyListener( this.propertyAdapter );
 			}
 		}
 	}
 
 	@Override
-	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, Void> step ) {
-		org.lgna.project.ast.Expression expression = this.value.createTransientExpression();
-		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
+	protected final JComponent createMenuItemIconProxy( ItemNode<? super InstanceFactory, Void> step ) {
+		Expression expression = this.value.createTransientExpression();
+		JComponent expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
 
-		java.awt.Dimension iconSize;
-		if( ( this.value instanceof org.alice.ide.instancefactory.ThisMethodInvocationFactory ) || ( this.value instanceof org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory ) ) {
-			iconSize = org.alice.ide.Theme.DEFAULT_SMALLER_ICON_SIZE;
+		Dimension iconSize;
+		if( ( this.value instanceof ThisMethodInvocationFactory ) || ( this.value instanceof ThisFieldAccessMethodInvocationFactory ) ) {
+			iconSize = Theme.DEFAULT_SMALLER_ICON_SIZE;
 		} else {
-			iconSize = org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE;
+			iconSize = Theme.DEFAULT_SMALL_ICON_SIZE;
 		}
 
-		javax.swing.Icon icon = this.value.getIconFactory().getIcon( iconSize );
-		javax.swing.JLabel label = new javax.swing.JLabel( icon );
+		Icon icon = this.value.getIconFactory().getIcon( iconSize );
+		JLabel label = new JLabel( icon );
 
 		expressionPane.setAlignmentY( 0.5f );
 		label.setAlignmentY( 0.5f );
 
-		javax.swing.JPanel rv = new javax.swing.JPanel();
+		JPanel rv = new JPanel();
 		//		rv.setLayout( new java.awt.BorderLayout() );
 		//		rv.add( label, java.awt.BorderLayout.LINE_START );
 		//		rv.add( expressionPane, java.awt.BorderLayout.CENTER );
-		rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
+		rv.setLayout( new BoxLayout( rv, BoxLayout.LINE_AXIS ) );
 		rv.add( label );
 		rv.add( expressionPane );
 		rv.setOpaque( false );
@@ -134,12 +161,12 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFill
 	}
 
 	@Override
-	public final org.alice.ide.instancefactory.InstanceFactory getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, Void> node ) {
+	public final InstanceFactory getTransientValue( ItemNode<? super InstanceFactory, Void> node ) {
 		return this.value;
 	}
 
 	@Override
-	public org.alice.ide.instancefactory.InstanceFactory createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public InstanceFactory createValue( ItemNode<? super InstanceFactory, Void> node ) {
 		return this.value;
 	}
 

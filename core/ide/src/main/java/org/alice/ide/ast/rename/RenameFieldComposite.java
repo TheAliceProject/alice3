@@ -43,13 +43,20 @@
 
 package org.alice.ide.ast.rename;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.name.validators.FieldNameValidator;
+import org.lgna.project.ast.UserField;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RenameFieldComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserField> {
-	private static java.util.Map<org.lgna.project.ast.UserField, RenameFieldComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class RenameFieldComposite extends RenameDeclarationComposite<UserField> {
+	private static Map<UserField, RenameFieldComposite> map = Maps.newHashMap();
 
-	public static synchronized RenameFieldComposite getInstance( org.lgna.project.ast.UserField field ) {
+	public static synchronized RenameFieldComposite getInstance( UserField field ) {
 		assert field != null;
 		RenameFieldComposite rv = map.get( field );
 		if( rv != null ) {
@@ -61,7 +68,7 @@ public class RenameFieldComposite extends RenameDeclarationComposite<org.lgna.pr
 		return rv;
 	}
 
-	private RenameFieldComposite( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "20163483-25a2-40b0-b1e5-330cb2d29414" ), new org.alice.ide.name.validators.FieldNameValidator( field ), field );
+	private RenameFieldComposite( UserField field ) {
+		super( UUID.fromString( "20163483-25a2-40b0-b1e5-330cb2d29414" ), new FieldNameValidator( field ), field );
 	}
 }

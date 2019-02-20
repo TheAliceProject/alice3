@@ -56,22 +56,18 @@ public final class ReturnStatement extends Statement {
 		this.expression.setValue( expression );
 	}
 
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ReturnStatement other = (ReturnStatement)o;
-			if( this.expressionType.valueContentEquals( other.expressionType, strictness, filter ) ) {
-				return this.expression.valueContentEquals( other.expression, strictness, filter );
-			}
-		}
-		return false;
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendReturnStatement(this);
 	}
 
 	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
-		generator.appendString( "return " );
-		generator.appendExpression( this.expression.getValue() );
-		generator.appendSemicolon();
+	boolean containsAtLeastOneEnabledReturnStatement() {
+		return isEnabled.getValue();
+	}
+
+	@Override
+	boolean containsAReturnForEveryPath() {
+		return isEnabled.getValue();
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );

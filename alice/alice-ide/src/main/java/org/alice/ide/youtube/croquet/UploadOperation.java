@@ -43,44 +43,43 @@
 package org.alice.ide.youtube.croquet;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import org.alice.ide.IDE;
+import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.ProjectStack;
 import org.alice.media.youtube.croquet.ExportToYouTubeWizardDialogComposite;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.OperationOwningComposite;
 import org.lgna.croquet.OwnedByCompositeOperation;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
 
 import edu.wustl.lookingglass.media.FFmpegProcess;
+import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Matt May
  */
 public class UploadOperation extends SingleThreadIteratingOperation {
-	public UploadOperation( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( IDE.EXPORT_GROUP, java.util.UUID.fromString( "9a855203-b1ce-4ba3-983d-b941a36b2c10" ) );
+	public UploadOperation( ProjectDocumentFrame projectDocumentFrame ) {
+		super( IDE.EXPORT_GROUP, UUID.fromString( "9a855203-b1ce-4ba3-983d-b941a36b2c10" ) );
 		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
 	private synchronized ExportToYouTubeWizardDialogComposite getWizard() {
-		if( this.exportToYouTubeWizardDialogComposite != null ) {
-			//pass
-		} else {
+		if ( this.exportToYouTubeWizardDialogComposite == null ) {
 			this.exportToYouTubeWizardDialogComposite = new ExportToYouTubeWizardDialogComposite();
 		}
 		return this.exportToYouTubeWizardDialogComposite;
 	}
 
-	private java.io.File getFFmpegFileIfNotExecutable() {
-		java.io.File fileKnownToBeNotExecuable;
+	private File getFFmpegFileIfNotExecutable() {
+		File fileKnownToBeNotExecuable;
 		if( FFmpegProcess.isArchitectureSpecificCommandAbsolute() ) {
 			String command = FFmpegProcess.getArchitectureSpecificCommand();
-			java.io.File file = new java.io.File( command );
+			File file = new File( command );
 			if( file.exists() ) {
 				fileKnownToBeNotExecuable = file.canExecute() ? null : file;
 			} else {
@@ -92,12 +91,12 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 		return fileKnownToBeNotExecuable;
 	}
 
-	private Model getExecutionPermissionModel( File file ) {
+	private Triggerable getExecutionPermissionModel( File file ) {
 		ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite( file );
 		return composite.getLaunchOperation();
 	}
 
-	private Model getWizardModel() {
+	private Triggerable getWizardModel() {
 		ExportToYouTubeWizardDialogComposite wizard = this.getWizard();
 		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
@@ -108,31 +107,30 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		int size = subSteps.size();
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		int size = finishedSteps.size();
 		if( size == 0 ) {
 			return true;
-		} else if( size == 1 ) {
-			Step<?> prevStep = subSteps.get( 0 );
-			Model prevModel = prevStep.getModel();
-			if( prevModel instanceof OwnedByCompositeOperation ) {
-				OwnedByCompositeOperation ownedByCompositeOperation = (OwnedByCompositeOperation)prevModel;
+		}
+		if( size == 1 ) {
+			UserActivity prevStep = finishedSteps.get( 0 );
+			CompletionModel prevModel = prevStep.getCompletionModel();
+			if ( prevModel instanceof OwnedByCompositeOperation ) {
+				OwnedByCompositeOperation ownedByCompositeOperation = (OwnedByCompositeOperation) prevModel;
 				OperationOwningComposite<?> composite = ownedByCompositeOperation.getComposite();
-				if( composite instanceof ExecutionPermissionFailedDialogComposite ) {
-					ExecutionPermissionFailedDialogComposite executionComposite = (ExecutionPermissionFailedDialogComposite)composite;
+				if ( composite instanceof ExecutionPermissionFailedDialogComposite ) {
+					ExecutionPermissionFailedDialogComposite executionComposite = (ExecutionPermissionFailedDialogComposite) composite;
 					return executionComposite.getIsFixed();
 				}
 			}
-			return false;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		java.io.File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
-		if( subSteps.size() == 0 ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
+		File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
+		if( finishedSteps.size() == 0 ) {
 			if( fileKnownToBeNotExecuable != null ) {
 				return getExecutionPermissionModel( fileKnownToBeNotExecuable );
 			} else {
@@ -145,9 +143,9 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ) {
 	}
 
-	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
+	private final ProjectDocumentFrame projectDocumentFrame;
 	private ExportToYouTubeWizardDialogComposite exportToYouTubeWizardDialogComposite;
 }

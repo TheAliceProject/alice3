@@ -45,11 +45,16 @@ package org.alice.ide.ast.type.merge.croquet;
 import org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite;
 import org.alice.ide.ast.type.merge.help.diffimp.croquet.FieldDifferentImplementationHelpComposite;
 import org.alice.ide.ast.type.merge.help.diffimp.croquet.MethodDifferentImplementationHelpComposite;
+import org.lgna.project.ast.Member;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
+
+import java.net.URI;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentImplementation<M extends org.lgna.project.ast.Member> extends PotentialNameChanger<M> {
+public final class DifferentImplementation<M extends Member> extends PotentialNameChanger<M> {
 	private final MemberHubWithNameState<M> importHub;
 	private final MemberHubWithNameState<M> projectHub;
 
@@ -58,11 +63,11 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 	private final DifferentImplementationHelpComposite<M> helpComposite;
 
-	public DifferentImplementation( java.net.URI uriForDescriptionPurposesOnly, M importMember, M projectMember ) {
+	public DifferentImplementation( URI uriForDescriptionPurposesOnly, M importMember, M projectMember ) {
 		super( uriForDescriptionPurposesOnly );
 		this.importHub = new MemberHubWithNameState<M>( importMember, false ) {
 			@Override
-			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
+			public ActionStatus getActionStatus() {
 				if( importHub.getIsDesiredState().getValue() ) {
 					if( projectHub.getIsDesiredState().getValue() ) {
 						if( isRenameRequired() ) {
@@ -85,7 +90,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 
 		this.projectHub = new MemberHubWithNameState<M>( projectMember, false ) {
 			@Override
-			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
+			public ActionStatus getActionStatus() {
 				if( importHub.getIsDesiredState().getValue() ) {
 					if( projectHub.getIsDesiredState().getValue() ) {
 						if( isRenameRequired() ) {
@@ -122,10 +127,10 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 				.build();
 
 		//todo
-		if( importMember instanceof org.lgna.project.ast.UserMethod ) {
-			this.helpComposite = (DifferentImplementationHelpComposite<M>)new MethodDifferentImplementationHelpComposite( (DifferentImplementation<org.lgna.project.ast.UserMethod>)this );
-		} else if( importMember instanceof org.lgna.project.ast.UserField ) {
-			this.helpComposite = (DifferentImplementationHelpComposite<M>)new FieldDifferentImplementationHelpComposite( (DifferentImplementation<org.lgna.project.ast.UserField>)this );
+		if( importMember instanceof UserMethod ) {
+			this.helpComposite = (DifferentImplementationHelpComposite<M>)new MethodDifferentImplementationHelpComposite( (DifferentImplementation<UserMethod>)this );
+		} else if( importMember instanceof UserField ) {
+			this.helpComposite = (DifferentImplementationHelpComposite<M>)new FieldDifferentImplementationHelpComposite( (DifferentImplementation<UserField>)this );
 		} else {
 			//todo
 			this.helpComposite = null;
@@ -165,7 +170,7 @@ public final class DifferentImplementation<M extends org.lgna.project.ast.Member
 		return false;
 	}
 
-	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
+	public void appendStatusPreRejectorCheck( StringBuffer sb ) {
 		boolean isAddDesired = this.importHub.getIsDesiredState().getValue();
 		boolean isKeepDesired = this.projectHub.getIsDesiredState().getValue();
 		if( isAddDesired ) {

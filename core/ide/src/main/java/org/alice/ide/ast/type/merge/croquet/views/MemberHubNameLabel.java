@@ -42,27 +42,32 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
+import org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.Label;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MemberHubNameLabel extends org.lgna.croquet.views.Label {
-	private final org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> memberHubWithNameState;
+public class MemberHubNameLabel extends Label {
+	private final MemberHubWithNameState<?> memberHubWithNameState;
 
-	private final org.lgna.croquet.event.ValueListener<String> nameListener = new org.lgna.croquet.event.ValueListener<String>() {
+	private final ValueListener<String> nameListener = new ValueListener<String>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
+		public void valueChanged( ValueEvent<String> e ) {
 			updateText();
 		}
 	};
 
-	private final org.lgna.croquet.event.ValueListener<Boolean> isDesiredListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+	private final ValueListener<Boolean> isDesiredListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			updateText();
 		}
 	};
 
-	public MemberHubNameLabel( org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> memberHubWithNameState ) {
+	public MemberHubNameLabel( MemberHubWithNameState<?> memberHubWithNameState ) {
 		this.memberHubWithNameState = memberHubWithNameState;
 	}
 

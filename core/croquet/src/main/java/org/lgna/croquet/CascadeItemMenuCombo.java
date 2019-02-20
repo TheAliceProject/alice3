@@ -61,7 +61,7 @@ public class CascadeItemMenuCombo<F> implements CascadeBlankChild<F> {
 	}
 
 	@Override
-	public org.lgna.croquet.CascadeItem<F, ?> getItemAt( int index ) {
+	public CascadeItem<F, ?> getItemAt( int index ) {
 		switch( index ) {
 		case 0:
 			return this.item;

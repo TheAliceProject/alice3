@@ -42,10 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.preferences.recursion;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.preferences.PreferenceBooleanState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IsIdentifierNameValidityStrictState extends org.lgna.croquet.preferences.PreferenceBooleanState {
+public class IsIdentifierNameValidityStrictState extends PreferenceBooleanState {
 	private static class SingletonHolder {
 		private static IsIdentifierNameValidityStrictState instance = new IsIdentifierNameValidityStrictState();
 	}
@@ -55,6 +60,6 @@ public class IsIdentifierNameValidityStrictState extends org.lgna.croquet.prefer
 	}
 
 	private IsIdentifierNameValidityStrictState() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "4cbb1a11-c028-463b-9468-366481885dd3" ), true );
+		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "4cbb1a11-c028-463b-9468-366481885dd3" ), true );
 	}
 }

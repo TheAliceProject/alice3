@@ -43,21 +43,23 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Appearance extends Element {
-	public abstract void setAmbientColor( edu.cmu.cs.dennisc.color.Color4f ambientColor );
+	public abstract void setAmbientColor( Color4f ambientColor );
 
-	public abstract void setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f diffuseColor );
+	public abstract void setDiffuseColor( Color4f diffuseColor );
 
 	public abstract void setOpacity( float opacity );
 
 	public abstract void setSpecularHighlightExponent( float specularHighlightExponent );
 
-	public abstract void setSpecularHighlightColor( edu.cmu.cs.dennisc.color.Color4f specularHighlightColor );
+	public abstract void setSpecularHighlightColor( Color4f specularHighlightColor );
 
-	public abstract void setEmissiveColor( edu.cmu.cs.dennisc.color.Color4f emissiveColor );
+	public abstract void setEmissiveColor( Color4f emissiveColor );
 
 	public abstract void setFillingStyle( FillingStyle fillingStyle );
 

@@ -43,22 +43,29 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
 public class OldMesh extends Geometry {
 	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
-		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, xyzs.getValue() );
+	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
+		BoundUtilities.getBoundingBox( boundingBox, xyzs.getValue() );
 	}
 
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingSphere( boundingSphere, xyzs.getValue() );
+		BoundUtilities.getBoundingSphere( boundingSphere, xyzs.getValue() );
 	}
 
 	@Override
-	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
+	protected void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation ) {
 		double[] xyzs = this.xyzs.getValue();
 		float[] ijks = this.ijks.getValue();
 		assert xyzs.length >= 6;
@@ -75,17 +82,17 @@ public class OldMesh extends Geometry {
 	}
 
 	@Override
-	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
+	public void transform( AbstractMatrix4x4 trans ) {
 		//todo
 	}
 
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<double[]> xyzs = new edu.cmu.cs.dennisc.property.InstanceProperty<double[]>( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<float[]> ijks = new edu.cmu.cs.dennisc.property.InstanceProperty<float[]>( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<float[]> uvs = new edu.cmu.cs.dennisc.property.InstanceProperty<float[]>( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<short[]> xyzTriangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty<short[]>( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<short[]> ijkTriangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty<short[]>( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<short[]> uvTriangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty<short[]>( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<short[]> xyzQuadrangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty<short[]>( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<short[]> ijkQuadrangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty<short[]>( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<short[]> uvQuadrangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty<short[]>( this, null );
+	public final InstanceProperty<double[]> xyzs = new InstanceProperty<double[]>( this, null );
+	public final InstanceProperty<float[]> ijks = new InstanceProperty<float[]>( this, null );
+	public final InstanceProperty<float[]> uvs = new InstanceProperty<float[]>( this, null );
+	public final InstanceProperty<short[]> xyzTriangleIndices = new InstanceProperty<short[]>( this, null );
+	public final InstanceProperty<short[]> ijkTriangleIndices = new InstanceProperty<short[]>( this, null );
+	public final InstanceProperty<short[]> uvTriangleIndices = new InstanceProperty<short[]>( this, null );
+	public final InstanceProperty<short[]> xyzQuadrangleIndices = new InstanceProperty<short[]>( this, null );
+	public final InstanceProperty<short[]> ijkQuadrangleIndices = new InstanceProperty<short[]>( this, null );
+	public final InstanceProperty<short[]> uvQuadrangleIndices = new InstanceProperty<short[]>( this, null );
 }

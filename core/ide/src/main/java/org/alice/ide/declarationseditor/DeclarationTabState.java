@@ -43,14 +43,43 @@
 
 package org.alice.ide.declarationseditor;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import org.alice.ide.DefaultTheme;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec;
+import org.alice.ide.icons.TabIcon;
+import org.alice.ide.project.ProjectChangeOfInterestManager;
+import org.alice.ide.project.events.ProjectChangeOfInterestListener;
+import org.lgna.croquet.MutableDataTabState;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.data.ListData;
+import org.lgna.project.ast.AbstractCode;
 import org.lgna.project.ast.AbstractConstructor;
+import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserType;
+
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.geom.Rectangle2D;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<DeclarationComposite<?, ?>> {
-	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+public class DeclarationTabState extends MutableDataTabState<DeclarationComposite<?, ?>> {
+	private final ProjectChangeOfInterestListener projectChangeOfInterestListener = new ProjectChangeOfInterestListener() {
 		@Override
 		public void projectChanged() {
 			handleAstChangeThatCouldBeOfInterest();
@@ -58,22 +87,22 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 	};
 
 	public DeclarationTabState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		super( IDE.DOCUMENT_UI_GROUP, UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), DeclarationCompositeCodec.SINGLETON );
+		ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
 	}
 
 	@Override
 	protected void setCurrentTruthAndBeautyValue( DeclarationComposite<?, ?> declarationComposite ) {
 		if( declarationComposite != null ) {
-			org.lgna.croquet.data.ListData<DeclarationComposite<?, ?>> data = this.getData();
+			ListData<DeclarationComposite<?, ?>> data = this.getData();
 			if( data.contains( declarationComposite ) ) {
 				//pass
 			} else {
 				class TypeListPair {
-					private final org.lgna.project.ast.NamedUserType type;
-					private final java.util.List<DeclarationComposite<?, ?>> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+					private final NamedUserType type;
+					private final List<DeclarationComposite<?, ?>> list = Lists.newLinkedList();
 
-					public TypeListPair( org.lgna.project.ast.NamedUserType type ) {
+					public TypeListPair( NamedUserType type ) {
 						this.type = type;
 					}
 
@@ -85,7 +114,7 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 						}
 					}
 
-					public void update( java.util.List<DeclarationComposite<?, ?>> updatee, boolean isTypeRequired ) {
+					public void update( List<DeclarationComposite<?, ?>> updatee, boolean isTypeRequired ) {
 						if( isTypeRequired ) {
 							TypeComposite typeComposite = TypeComposite.getInstance( this.type );
 							if( this.list.contains( typeComposite ) ) {
@@ -98,20 +127,20 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 					}
 				}
 
-				edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserType, TypeListPair> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
-				java.util.List<TypeListPair> typeListPairs = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				InitializingIfAbsentMap<NamedUserType, TypeListPair> map = Maps.newInitializingIfAbsentHashMap();
+				List<TypeListPair> typeListPairs = Lists.newLinkedList();
 
-				java.util.List<DeclarationComposite<?, ?>> prevItems = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( data.toArray() );
+				List<DeclarationComposite<?, ?>> prevItems = Lists.newArrayList( data.toArray() );
 				prevItems.add( declarationComposite );
 
-				java.util.List<DeclarationComposite<?, ?>> orphans = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				List<DeclarationComposite<?, ?>> orphans = Lists.newLinkedList();
 				for( DeclarationComposite<?, ?> item : prevItems ) {
 					if( item != null ) {
-						org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)item.getType();
+						NamedUserType namedUserType = (NamedUserType)item.getType();
 						if( namedUserType != null ) {
-							TypeListPair typeListPair = map.getInitializingIfAbsent( namedUserType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.NamedUserType, TypeListPair>() {
+							TypeListPair typeListPair = map.getInitializingIfAbsent( namedUserType, new InitializingIfAbsentMap.Initializer<NamedUserType, TypeListPair>() {
 								@Override
-								public TypeListPair initialize( org.lgna.project.ast.NamedUserType key ) {
+								public TypeListPair initialize( NamedUserType key ) {
 									return new TypeListPair( key );
 								}
 							} );
@@ -126,7 +155,7 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 						}
 					}
 				}
-				java.util.List<DeclarationComposite<?, ?>> nextItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				List<DeclarationComposite<?, ?>> nextItems = Lists.newLinkedList();
 				boolean isTypeRequired = true; //typeListPairs.size() > 1;
 				boolean isSeparatorDesired = false;
 				for( TypeListPair typeListPair : typeListPairs ) {
@@ -147,59 +176,59 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 		super.setCurrentTruthAndBeautyValue( declarationComposite );
 	}
 
-	private static final java.awt.Dimension ICON_SIZE = new java.awt.Dimension( 16, 16 );
-	private static final javax.swing.Icon TYPE_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, org.alice.ide.DefaultTheme.DEFAULT_TYPE_COLOR );
-	private static final javax.swing.Icon FIELD_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, org.alice.ide.DefaultTheme.DEFAULT_TYPE_COLOR ) {
+	private static final Dimension ICON_SIZE = new Dimension( 16, 16 );
+	private static final Icon TYPE_ICON = new TabIcon( ICON_SIZE, DefaultTheme.DEFAULT_TYPE_COLOR );
+	private static final Icon FIELD_ICON = new TabIcon( ICON_SIZE, DefaultTheme.DEFAULT_TYPE_COLOR ) {
 		@Override
-		protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+		protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
 			super.paintIcon( c, g2, width, height, fillPaint, drawPaint );
-			g2.setPaint( org.alice.ide.DefaultTheme.DEFAULT_FIELD_COLOR );
-			g2.fill( new java.awt.geom.Rectangle2D.Float( 0.3f * width, 0.7f * height, 0.6f * width, 0.1f * height ) );
+			g2.setPaint( DefaultTheme.DEFAULT_FIELD_COLOR );
+			g2.fill( new Rectangle2D.Float( 0.3f * width, 0.7f * height, 0.6f * width, 0.1f * height ) );
 		}
 	};
 
-	private static final javax.swing.Icon PROCEDURE_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, org.alice.ide.DefaultTheme.DEFAULT_PROCEDURE_COLOR );
-	private static final javax.swing.Icon FUNCTION_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, org.alice.ide.DefaultTheme.DEFAULT_FUNCTION_COLOR );
-	private static final javax.swing.Icon CONSTRUCTOR_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, org.alice.ide.DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR );
+	private static final Icon PROCEDURE_ICON = new TabIcon( ICON_SIZE, DefaultTheme.DEFAULT_PROCEDURE_COLOR );
+	private static final Icon FUNCTION_ICON = new TabIcon( ICON_SIZE, DefaultTheme.DEFAULT_FUNCTION_COLOR );
+	private static final Icon CONSTRUCTOR_ICON = new TabIcon( ICON_SIZE, DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR );
 
-	public static javax.swing.Icon getProcedureIcon() {
+	public static Icon getProcedureIcon() {
 		return PROCEDURE_ICON;
 	}
 
-	public static javax.swing.Icon getFunctionIcon() {
+	public static Icon getFunctionIcon() {
 		return FUNCTION_ICON;
 	}
 
-	public static javax.swing.Icon getFieldIcon() {
+	public static Icon getFieldIcon() {
 		return FIELD_ICON;
 	}
 
-	public static javax.swing.Icon getConstructorIcon() {
+	public static Icon getConstructorIcon() {
 		return CONSTRUCTOR_ICON;
 	}
 
-	public org.lgna.croquet.Operation getItemSelectionOperationForType( org.lgna.project.ast.NamedUserType type ) {
-		org.lgna.croquet.Operation rv = this.getItemSelectionOperation( TypeComposite.getInstance( type ) );
+	public Operation getItemSelectionOperationForType( NamedUserType type ) {
+		Operation rv = this.getItemSelectionOperation( TypeComposite.getInstance( type ) );
 		rv.setSmallIcon( TYPE_ICON );
 		return rv;
 	}
 
-	public org.lgna.croquet.Operation getItemSelectionOperationForMethod( org.lgna.project.ast.AbstractMethod method ) {
-		final org.lgna.croquet.Operation rv = this.getItemSelectionOperation( CodeComposite.getInstance( method ) );
+	public Operation getItemSelectionOperationForMethod( AbstractMethod method ) {
+		final Operation rv = this.getItemSelectionOperation( CodeComposite.getInstance( method ) );
 		if( method.isProcedure() ) {
 			rv.setSmallIcon( PROCEDURE_ICON );
 		} else {
 			rv.setSmallIcon( FUNCTION_ICON );
 		}
-		if( method instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
-			userMethod.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		if( method instanceof UserMethod ) {
+			UserMethod userMethod = (UserMethod)method;
+			userMethod.name.addPropertyListener( new PropertyListener() {
 				@Override
-				public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				public void propertyChanging( PropertyEvent e ) {
 				}
 
 				@Override
-				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				public void propertyChanged( PropertyEvent e ) {
 					rv.setName( (String)e.getValue() );
 				}
 			} );
@@ -208,13 +237,13 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 		return rv;
 	}
 
-	public org.lgna.croquet.Operation getItemSelectionOperationForConstructor( org.lgna.project.ast.AbstractConstructor constructor ) {
-		org.lgna.croquet.Operation rv = this.getItemSelectionOperation( CodeComposite.getInstance( constructor ) );
+	public Operation getItemSelectionOperationForConstructor( AbstractConstructor constructor ) {
+		Operation rv = this.getItemSelectionOperation( CodeComposite.getInstance( constructor ) );
 		rv.setSmallIcon( CONSTRUCTOR_ICON );
 		return rv;
 	}
 
-	public org.lgna.croquet.Operation getItemSelectionOperationForCode( org.lgna.project.ast.AbstractCode code ) {
+	public Operation getItemSelectionOperationForCode( AbstractCode code ) {
 		if( code instanceof AbstractMethod ) {
 			return this.getItemSelectionOperationForMethod( (AbstractMethod)code );
 		} else if( code instanceof AbstractConstructor ) {
@@ -225,7 +254,7 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 	}
 
 	private void handleAstChangeThatCouldBeOfInterest() {
-		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = this.getValue();
+		DeclarationComposite<?, ?> declarationComposite = this.getValue();
 		if( declarationComposite instanceof CodeComposite ) {
 			CodeComposite codeComposite = (CodeComposite)declarationComposite;
 			codeComposite.handleAstChangeThatCouldBeOfInterest();
@@ -233,13 +262,13 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabState<De
 	}
 
 	public void removeAllOrphans() {
-		java.util.List<DeclarationComposite<?, ?>> orphans = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<DeclarationComposite<?, ?>> orphans = Lists.newLinkedList();
 		for( DeclarationComposite<?, ?> composite : this ) {
 			if( composite != null ) {
-				org.lgna.project.ast.AbstractDeclaration declaration = composite.getDeclaration();
-				if( declaration instanceof org.lgna.project.ast.UserCode ) {
-					org.lgna.project.ast.UserCode code = (org.lgna.project.ast.UserCode)declaration;
-					org.lgna.project.ast.UserType<?> declaringType = code.getDeclaringType();
+				AbstractDeclaration declaration = composite.getDeclaration();
+				if( declaration instanceof UserCode ) {
+					UserCode code = (UserCode)declaration;
+					UserType<?> declaringType = code.getDeclaringType();
 					if( declaringType != null ) {
 						//pass
 					} else {

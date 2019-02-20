@@ -42,15 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.code.views;
 
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.ide.code.UserFunctionStatusComposite;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Label;
+
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+
 /**
  * @author Dennis Cosgrove
  */
-public class UserFunctionStatusView extends org.lgna.croquet.views.BorderPanel {
-	public UserFunctionStatusView( org.alice.ide.code.UserFunctionStatusComposite composite ) {
+public class UserFunctionStatusView extends BorderPanel {
+	public UserFunctionStatusView( UserFunctionStatusComposite composite ) {
 		super( composite, 8, 0 );
-		javax.swing.Icon errorIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.getErrorIcon();
-		this.addLineStartComponent( new org.lgna.croquet.views.Label( errorIcon ) );
+		Icon errorIcon = IconUtilities.getErrorIcon();
+		this.addLineStartComponent( new Label( errorIcon ) );
 		this.addCenterComponent( composite.getMetaStringValue().createLabel() );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 8, 0 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 8, 0, 8, 0 ) );
 	}
 }

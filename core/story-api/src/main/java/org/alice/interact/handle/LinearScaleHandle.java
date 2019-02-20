@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.interact.handle;
 
+import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
@@ -57,7 +58,7 @@ import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
  * @author David Culyba
  */
 public class LinearScaleHandle extends LinearDragHandle {
-	public static LinearScaleHandle createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
+	public static LinearScaleHandle createFromResizer( Resizer resizer ) {
 		LinearScaleHandle toReturn;
 		switch( resizer ) {
 		case UNIFORM:
@@ -87,7 +88,7 @@ public class LinearScaleHandle extends LinearDragHandle {
 		return toReturn;
 	}
 
-	public LinearScaleHandle( MovementDescription dragDescription, Color4f baseColor, boolean applyAlongAxis, edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
+	public LinearScaleHandle( MovementDescription dragDescription, Color4f baseColor, boolean applyAlongAxis, Resizer resizer ) {
 		super( dragDescription, baseColor );
 		this.applyAlongAxis = applyAlongAxis;
 		this.resizer = resizer;
@@ -120,7 +121,7 @@ public class LinearScaleHandle extends LinearDragHandle {
 		this.arrow.setParent( this );
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer getResizer() {
+	public Resizer getResizer() {
 		return this.resizer;
 	}
 
@@ -153,8 +154,6 @@ public class LinearScaleHandle extends LinearDragHandle {
 		}
 		AffineMatrix4x4 objectTransformation = this.getTransformationForAxis( this.dragAxis );
 		if( objectTransformation.isNaN() ) {
-			objectTransformation = this.getTransformationForAxis( this.dragAxis );
-			assert !objectTransformation.isNaN() : "Created NaN transformation from " + this.dragAxis;
 			objectTransformation = new AffineMatrix4x4();
 		}
 		this.setTransformation( objectTransformation, this.getReferenceFrame() );
@@ -177,7 +176,7 @@ public class LinearScaleHandle extends LinearDragHandle {
 		this.arrow.setVisualShowing( showing );
 	}
 
-	private final edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer;
+	private final Resizer resizer;
 	private final boolean applyAlongAxis;
 	private Arrow arrow;
 }

@@ -42,11 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.bound;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Hexahedron;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Sphere;
+import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
+import java.util.Vector;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CumulativeBound {
-	private java.util.Vector<edu.cmu.cs.dennisc.math.Point3> m_transformedPoints = new java.util.Vector<edu.cmu.cs.dennisc.math.Point3>();
+	private Vector<Point3> m_transformedPoints = new Vector<Point3>();
 
 	//	public CumulativeBound() {
 	//	}
@@ -58,51 +68,51 @@ public class CumulativeBound {
 	//			}
 	//		}
 	//	}
-	private void addPoint( edu.cmu.cs.dennisc.math.Point3 p, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+	private void addPoint( Point3 p, AffineMatrix4x4 trans ) {
 		assert p.isNaN() == false;
 		assert trans.isNaN() == false;
 		trans.transform( p );
 		m_transformedPoints.addElement( p );
 	}
 
-	public void add( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
-		edu.cmu.cs.dennisc.math.AxisAlignedBox box = sgVisual.getAxisAlignedMinimumBoundingBox();
+	public void add( Visual sgVisual, AffineMatrix4x4 trans ) {
+		AxisAlignedBox box = sgVisual.getAxisAlignedMinimumBoundingBox();
 		this.addBoundingBox( box, trans );
 	}
 
-	public void addSkeletonVisual( edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans, boolean ignoreJointOrientations ) {
-		edu.cmu.cs.dennisc.math.AxisAlignedBox box = sgSkeletonVisual.getAxisAlignedMinimumBoundingBox( new edu.cmu.cs.dennisc.math.AxisAlignedBox(), ignoreJointOrientations );
+	public void addSkeletonVisual( SkeletonVisual sgSkeletonVisual, AffineMatrix4x4 trans, boolean ignoreJointOrientations ) {
+		AxisAlignedBox box = sgSkeletonVisual.getAxisAlignedMinimumBoundingBox( new AxisAlignedBox(), ignoreJointOrientations );
 		this.addBoundingBox( box, trans );
 	}
 
-	public void addOrigin( edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
-		addPoint( edu.cmu.cs.dennisc.math.Point3.createZero(), trans );
+	public void addOrigin( AffineMatrix4x4 trans ) {
+		addPoint( Point3.createZero(), trans );
 	}
 
-	public void addBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox box, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+	public void addBoundingBox( AxisAlignedBox box, AffineMatrix4x4 trans ) {
 		if( box.isNaN() ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.math.Hexahedron hexahedron = box.getHexahedron();
+			Hexahedron hexahedron = box.getHexahedron();
 			for( int i = 0; i < 8; i++ ) {
 				addPoint( hexahedron.getPointAt( i ), trans );
 			}
 		}
 	}
 
-	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere rv ) {
+	public Sphere getBoundingSphere( Sphere rv ) {
 		return BoundUtilities.getBoundingSphere( rv, m_transformedPoints );
 	}
 
-	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere() {
-		return getBoundingSphere( new edu.cmu.cs.dennisc.math.Sphere() );
+	public Sphere getBoundingSphere() {
+		return getBoundingSphere( new Sphere() );
 	}
 
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
+	public AxisAlignedBox getBoundingBox( AxisAlignedBox rv ) {
 		return BoundUtilities.getBoundingBox( rv, m_transformedPoints );
 	}
 
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
-		return getBoundingBox( new edu.cmu.cs.dennisc.math.AxisAlignedBox() );
+	public AxisAlignedBox getBoundingBox() {
+		return getBoundingBox( new AxisAlignedBox() );
 	}
 }

@@ -42,11 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.java.awt.BeveledShape;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
+
+import java.awt.Shape;
+import java.awt.geom.Area;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShape {
-	private static java.util.List<Class<?>> s_roundTypes = new java.util.LinkedList<Class<?>>();
+public class BeveledShapeForType extends BeveledShape {
+	private static List<Class<?>> s_roundTypes = new LinkedList<Class<?>>();
 
 	public static void addRoundType( Class<?> cls ) {
 		s_roundTypes.add( cls );
@@ -60,31 +72,31 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 	private float m_yTop;
 	private float m_yBottom;
 
-	public BeveledShapeForType( java.awt.Shape base, java.awt.geom.GeneralPath highlightForRaised, java.awt.geom.GeneralPath neutralForRaised, java.awt.geom.GeneralPath shadowForRaised, java.awt.geom.GeneralPath highlightForSunken, java.awt.geom.GeneralPath neutralForSunken,
-			java.awt.geom.GeneralPath shadowForSunken, float x, float yTop, float yBottom ) {
+	public BeveledShapeForType( Shape base, GeneralPath highlightForRaised, GeneralPath neutralForRaised, GeneralPath shadowForRaised, GeneralPath highlightForSunken, GeneralPath neutralForSunken,
+			GeneralPath shadowForSunken, float x, float yTop, float yBottom ) {
 		super( base, highlightForRaised, neutralForRaised, shadowForRaised, highlightForSunken, neutralForSunken, shadowForSunken );
 		m_x = x;
 		m_yTop = yTop;
 		m_yBottom = yBottom;
 	}
 
-	public BeveledShapeForType( java.awt.Shape base, java.awt.geom.GeneralPath highlightForRaised, java.awt.geom.GeneralPath neutralForRaised, java.awt.geom.GeneralPath shadowForRaised, float x, float yTop, float yBottom ) {
+	public BeveledShapeForType( Shape base, GeneralPath highlightForRaised, GeneralPath neutralForRaised, GeneralPath shadowForRaised, float x, float yTop, float yBottom ) {
 		super( base, highlightForRaised, neutralForRaised, shadowForRaised );
 		m_x = x;
 		m_yTop = yTop;
 		m_yBottom = yBottom;
 	}
 
-	private static java.awt.geom.Area union( java.awt.Shape a, java.awt.Shape b ) {
-		java.awt.geom.Area rv;
+	private static Area union( Shape a, Shape b ) {
+		Area rv;
 		if( a != null ) {
-			rv = new java.awt.geom.Area( a );
+			rv = new Area( a );
 			if( b != null ) {
-				rv.add( new java.awt.geom.Area( b ) );
+				rv.add( new Area( b ) );
 			}
 		} else {
 			if( b != null ) {
-				rv = new java.awt.geom.Area( b );
+				rv = new Area( b );
 			} else {
 				rv = null;
 			}
@@ -92,14 +104,14 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 		return rv;
 	}
 
-	private void addRectShadow( java.awt.geom.GeneralPath shadowPath, float x0, float y0, float x1, float y1 ) {
+	private void addRectShadow( GeneralPath shadowPath, float x0, float y0, float x1, float y1 ) {
 		assert shadowPath != null;
 		shadowPath.moveTo( x0, y1 );
 		shadowPath.lineTo( x1, y1 );
 		shadowPath.lineTo( x1, y0 );
 	}
 
-	private void addRectHighlight( java.awt.geom.GeneralPath highlightPath, float x0, float y0, float x1, float y1 ) {
+	private void addRectHighlight( GeneralPath highlightPath, float x0, float y0, float x1, float y1 ) {
 		assert highlightPath != null;
 		highlightPath.moveTo( x1, y0 );
 		highlightPath.lineTo( x0, y0 );
@@ -122,7 +134,7 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 	//	x=x1; y=yA;	            base.lineTo(x,y);                           neut.moveTo(x,y);     shad.lineTo(x,y);
 	//	x=xB; y=y0;	a=x1; b=y0; base.quadTo(a,b,x,y);                       neut.quadTo(a,b,x,y);
 
-	public void union( java.awt.geom.Rectangle2D.Float rect ) {
+	public void union( Rectangle2D.Float rect ) {
 		float x0 = rect.x;
 		float x1 = rect.x + rect.width;
 		float y0 = rect.y;
@@ -140,7 +152,7 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 		}
 	}
 
-	private void addRoundRectShadow( java.awt.geom.GeneralPath shad, float x0, float y0, float xA, float yA, float xB, float yB, float x1, float y1 ) {
+	private void addRoundRectShadow( GeneralPath shad, float x0, float y0, float xA, float yA, float xB, float yB, float x1, float y1 ) {
 		float x;
 		float y;
 		float a;
@@ -163,7 +175,7 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 		shad.lineTo( x, y );
 	}
 
-	private void addRoundRectHighlight( java.awt.geom.GeneralPath high, float x0, float y0, float xA, float yA, float xB, float yB, float x1, float y1 ) {
+	private void addRoundRectHighlight( GeneralPath high, float x0, float y0, float xA, float yA, float xB, float yB, float x1, float y1 ) {
 		assert high != null;
 		float x;
 		float y;
@@ -187,7 +199,7 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 		high.lineTo( x, y );
 	}
 
-	public void union( java.awt.geom.RoundRectangle2D.Float roundRect ) {
+	public void union( RoundRectangle2D.Float roundRect ) {
 		float x0 = roundRect.x;
 		float xA = roundRect.x + roundRect.arcwidth;
 		float xB = ( roundRect.x + roundRect.width ) - roundRect.arcwidth;
@@ -210,15 +222,15 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 	}
 
 	//todo: make constructor
-	public static BeveledShapeForType createBeveledShapeFor( org.lgna.project.ast.AbstractType<?, ?, ?> type, float x0, float y0, float width, float height ) {
+	public static BeveledShapeForType createBeveledShapeFor( AbstractType<?, ?, ?> type, float x0, float y0, float width, float height ) {
 		assert type != null;
 		float x1 = x0 + width;
 		float y1 = y0 + height;
 		BeveledShapeForType rv;
-		if( type == org.lgna.project.ast.JavaType.VOID_TYPE ) {
-			java.awt.geom.GeneralPath basePath = new java.awt.geom.GeneralPath();
-			java.awt.geom.GeneralPath shadowPath = new java.awt.geom.GeneralPath();
-			java.awt.geom.GeneralPath highlightPath = new java.awt.geom.GeneralPath();
+		if( type == JavaType.VOID_TYPE ) {
+			GeneralPath basePath = new GeneralPath();
+			GeneralPath shadowPath = new GeneralPath();
+			GeneralPath highlightPath = new GeneralPath();
 			rv = new BeveledShapeForType( basePath, shadowPath, null, highlightPath, x1, y0, y0 );
 		} else if( type.isAssignableTo( String.class ) ) {
 
@@ -230,17 +242,17 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 			float xA = x0 + xDelta;
 			float xB = x1 - xDelta;
 
-			java.awt.geom.GeneralPath basePath = new java.awt.geom.GeneralPath();
+			GeneralPath basePath = new GeneralPath();
 			basePath.moveTo( x1, y0 );
 			basePath.curveTo( x0, y0, xB, yB, x0, yB );
 			basePath.lineTo( x0, y1 );
 			basePath.curveTo( x1, y1, xA, yA, x1, yA );
 
-			java.awt.geom.GeneralPath shadowPath = new java.awt.geom.GeneralPath();
+			GeneralPath shadowPath = new GeneralPath();
 			shadowPath.moveTo( x0, y1 );
 			shadowPath.curveTo( x1, y1, xA, yA, x1, yA );
 
-			java.awt.geom.GeneralPath highlightPath = new java.awt.geom.GeneralPath();
+			GeneralPath highlightPath = new GeneralPath();
 			highlightPath.moveTo( x1, y0 );
 			highlightPath.curveTo( x0, y0, xB, yB, x0, yB );
 			highlightPath.lineTo( x0, y1 );
@@ -274,7 +286,7 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 
 			float xA = x0 + ( ( yB - yA ) * 0.5f );
 
-			java.awt.geom.GeneralPath basePath = new java.awt.geom.GeneralPath();
+			GeneralPath basePath = new GeneralPath();
 			basePath.moveTo( x1, y0 );
 			basePath.lineTo( x0, y0 );
 			basePath.lineTo( x0, yA );
@@ -302,19 +314,19 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 			//			highlightRaisedPath.lineTo( x0, yB );
 			//			highlightRaisedPath.lineTo( x0, y1 );
 
-			java.awt.geom.GeneralPath shadowRaisedPath = new java.awt.geom.GeneralPath();
+			GeneralPath shadowRaisedPath = new GeneralPath();
 			shadowRaisedPath.moveTo( x0, yA );
 			shadowRaisedPath.lineTo( x1, yA );
 
 			shadowRaisedPath.moveTo( x0, y1 );
 			shadowRaisedPath.lineTo( x1, y1 );
 
-			java.awt.geom.GeneralPath neutralRaisedPath = new java.awt.geom.GeneralPath();
+			GeneralPath neutralRaisedPath = new GeneralPath();
 			neutralRaisedPath.moveTo( x1, yA );
 			neutralRaisedPath.lineTo( x1, yB );
 			neutralRaisedPath.lineTo( xA, yB );
 
-			java.awt.geom.GeneralPath highlightRaisedPath = new java.awt.geom.GeneralPath();
+			GeneralPath highlightRaisedPath = new GeneralPath();
 			highlightRaisedPath.moveTo( x1, y0 );
 			highlightRaisedPath.lineTo( x0, y0 );
 			highlightRaisedPath.lineTo( x0, yA );
@@ -323,7 +335,7 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 			highlightRaisedPath.lineTo( x0, yB );
 			highlightRaisedPath.lineTo( x0, y1 );
 
-			java.awt.geom.GeneralPath shadowSunkenPath = new java.awt.geom.GeneralPath();
+			GeneralPath shadowSunkenPath = new GeneralPath();
 			shadowSunkenPath.moveTo( x1, y0 );
 			shadowSunkenPath.lineTo( x0, y0 );
 			shadowSunkenPath.lineTo( x0, yA );
@@ -332,7 +344,7 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 			shadowSunkenPath.lineTo( x0, yB );
 			shadowSunkenPath.lineTo( x0, y1 );
 
-			java.awt.geom.GeneralPath highlightSunkenPath = new java.awt.geom.GeneralPath();
+			GeneralPath highlightSunkenPath = new GeneralPath();
 			highlightSunkenPath.moveTo( x0, yA );
 			highlightSunkenPath.lineTo( x1, yA );
 			highlightSunkenPath.moveTo( x0, y1 );
@@ -341,17 +353,17 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 		} else if( type.isAssignableTo( Boolean.class ) || type.isAssignableTo( Boolean.TYPE ) ) {
 			float xA = ( x0 + x1 ) * 0.7f;
 			float yA = ( y0 + y1 ) * 0.5f;
-			java.awt.geom.GeneralPath basePath = new java.awt.geom.GeneralPath();
+			GeneralPath basePath = new GeneralPath();
 			basePath.moveTo( x1, y0 );
 			basePath.lineTo( x0, y0 );
 			basePath.quadTo( xA, yA, x0, y1 );
 			basePath.lineTo( x1, y1 );
 
-			java.awt.geom.GeneralPath shadowPath = new java.awt.geom.GeneralPath();
+			GeneralPath shadowPath = new GeneralPath();
 			shadowPath.moveTo( x0, y1 );
 			shadowPath.lineTo( x1, y1 );
 
-			java.awt.geom.GeneralPath highlightPath = new java.awt.geom.GeneralPath();
+			GeneralPath highlightPath = new GeneralPath();
 			highlightPath.moveTo( x1, y0 );
 			highlightPath.lineTo( x0, y0 );
 			highlightPath.quadTo( xA, yA, x0, y1 );
@@ -363,15 +375,15 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 				if( type.isAssignableTo( cls ) ) {
 					//					java.awt.Shape base = new java.awt.geom.CubicCurve2D.Float( x1, y0, x0, y0, x0, y1, x1, y1 );
 
-					java.awt.geom.GeneralPath basePath = new java.awt.geom.GeneralPath();
+					GeneralPath basePath = new GeneralPath();
 					basePath.moveTo( x1, y0 );
 					basePath.curveTo( x0, y0, x0, y1, x1, y1 );
 
-					java.awt.geom.GeneralPath highlighPath = new java.awt.geom.GeneralPath();
+					GeneralPath highlighPath = new GeneralPath();
 					highlighPath.moveTo( x1, y0 );
 					highlighPath.curveTo( x0, y0, x0, y1, x1, y1 );
 
-					java.awt.geom.GeneralPath shadowPath = new java.awt.geom.GeneralPath();
+					GeneralPath shadowPath = new GeneralPath();
 
 					rv = new BeveledShapeForType( basePath, highlighPath, null, shadowPath, x1, y0, y1 );
 				}
@@ -380,18 +392,18 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 				//pass
 			} else {
 				//java.awt.Shape base = new java.awt.geom.Rectangle2D.Float( x0, y0, width, height );
-				java.awt.geom.GeneralPath basePath = new java.awt.geom.GeneralPath();
+				GeneralPath basePath = new GeneralPath();
 				basePath.moveTo( x1, y0 );
 				basePath.lineTo( x0, y0 );
 				basePath.lineTo( x0, y1 );
 				basePath.lineTo( x1, y1 );
 
-				java.awt.geom.GeneralPath highlighPath = new java.awt.geom.GeneralPath();
+				GeneralPath highlighPath = new GeneralPath();
 				highlighPath.moveTo( x1, y0 );
 				highlighPath.lineTo( x0, y0 );
 				highlighPath.lineTo( x0, y1 );
 
-				java.awt.geom.GeneralPath shadowPath = new java.awt.geom.GeneralPath();
+				GeneralPath shadowPath = new GeneralPath();
 				shadowPath.moveTo( x0, y1 );
 				shadowPath.lineTo( x1, y1 );
 
@@ -402,7 +414,7 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 	}
 
 	//todo: make constructor
-	public static BeveledShapeForType createBeveledShapeFor( org.lgna.project.ast.AbstractType<?, ?, ?> type, java.awt.geom.Rectangle2D.Float rect, float width, float height ) {
+	public static BeveledShapeForType createBeveledShapeFor( AbstractType<?, ?, ?> type, Rectangle2D.Float rect, float width, float height ) {
 		float x0 = rect.x - width;
 		float y0 = rect.y + ( ( rect.height - height ) * 0.5f );
 
@@ -413,7 +425,7 @@ public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShap
 	}
 
 	//todo: make constructor
-	public static BeveledShapeForType createBeveledShapeFor( org.lgna.project.ast.AbstractType<?, ?, ?> type, java.awt.geom.RoundRectangle2D.Float roundRect, float width, float height ) {
+	public static BeveledShapeForType createBeveledShapeFor( AbstractType<?, ?, ?> type, RoundRectangle2D.Float roundRect, float width, float height ) {
 		float x0 = roundRect.x - width;
 		float y0 = roundRect.y + ( ( roundRect.height - height ) * 0.5f );
 

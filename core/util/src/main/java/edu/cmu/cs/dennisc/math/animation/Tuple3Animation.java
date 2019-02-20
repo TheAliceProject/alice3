@@ -42,13 +42,15 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.animation;
 
+import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation;
+import edu.cmu.cs.dennisc.math.Tuple3;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Tuple3Animation<E extends edu.cmu.cs.dennisc.math.Tuple3> extends InterpolationAnimation<E> {
-	public Tuple3Animation( Number duration, edu.cmu.cs.dennisc.animation.Style style, E t0, E t1 ) {
+public abstract class Tuple3Animation<E extends Tuple3> extends InterpolationAnimation<E> {
+	public Tuple3Animation( Number duration, Style style, E t0, E t1 ) {
 		super( duration, style, t0, t1 );
 	}
 

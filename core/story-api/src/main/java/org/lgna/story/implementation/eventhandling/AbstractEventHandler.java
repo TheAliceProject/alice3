@@ -50,6 +50,7 @@ import org.lgna.common.ComponentExecutor;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
+import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
@@ -76,7 +77,7 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 			isFiringMap.get( listener ).put( o, false );
 		}
 		if( shouldFire ) {
-			ComponentExecutor thread = new org.lgna.common.ComponentExecutor( new Runnable() {
+			ComponentExecutor thread = new ComponentExecutor( new Runnable() {
 				@Override
 				public void run() {
 					fire( listener, event );
@@ -86,7 +87,7 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 					isFiringMap.get( listener ).put( o, false );
 				}
 			}, "eventThread" );
-			if( listener instanceof org.lgna.story.event.CollisionStartListener ) {
+			if( listener instanceof CollisionStartListener ) {
 				System.out.println( "event: " + event );
 				System.out.println( "object: " + o );
 			}

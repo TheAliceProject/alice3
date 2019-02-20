@@ -42,11 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.map;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MapToMapToMap<A, B, C, E> {
-	private MapToMap<A, B, java.util.Map<C, E>> m_outerMapToMap = new MapToMap<A, B, java.util.Map<C, E>>();
+	private MapToMap<A, B, Map<C, E>> m_outerMapToMap = new MapToMap<A, B, Map<C, E>>();
 
 	public static <A, B, C, E> MapToMapToMap<A, B, C, E> newInstance() {
 		return new MapToMapToMap<A, B, C, E>();
@@ -54,7 +57,7 @@ public class MapToMapToMap<A, B, C, E> {
 
 	//todo: add addtional map methods
 	public E get( A a, B b, C c ) {
-		java.util.Map<C, E> innerMap = m_outerMapToMap.get( a, b );
+		Map<C, E> innerMap = m_outerMapToMap.get( a, b );
 		if( innerMap != null ) {
 			return innerMap.get( c );
 		} else {
@@ -63,11 +66,11 @@ public class MapToMapToMap<A, B, C, E> {
 	}
 
 	public void put( A a, B b, C c, E value ) {
-		java.util.Map<C, E> innerMap = m_outerMapToMap.get( a, b );
+		Map<C, E> innerMap = m_outerMapToMap.get( a, b );
 		if( innerMap != null ) {
 			//pass
 		} else {
-			innerMap = new java.util.HashMap<C, E>();
+			innerMap = new HashMap<C, E>();
 			m_outerMapToMap.put( a, b, innerMap );
 		}
 		innerMap.put( c, value );

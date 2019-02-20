@@ -42,11 +42,23 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite;
+import org.alice.stageide.icons.BillboardIconFactory;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SBillboard;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BillboardDragModel extends ShapeDragModel {
-	private static final org.lgna.story.SBillboard sModel = new org.lgna.story.SBillboard();
+	private static final SBillboard sModel = new SBillboard();
 
 	private static class SingletonHolder {
 		private static BillboardDragModel instance = new BillboardDragModel();
@@ -57,12 +69,12 @@ public class BillboardDragModel extends ShapeDragModel {
 	}
 
 	private BillboardDragModel() {
-		super( java.util.UUID.fromString( "32148b19-0314-4ae5-807e-894f4af1c581" ) );
+		super( UUID.fromString( "32148b19-0314-4ae5-807e-894f4af1c581" ) );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
-		return org.lgna.story.EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
+	public AxisAlignedBox getBoundingBox() {
+		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
 	}
 
 	@Override
@@ -71,12 +83,12 @@ public class BillboardDragModel extends ShapeDragModel {
 	}
 
 	@Override
-	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite.getInstance().getLaunchOperation();
+	public Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller ) {
+		return AddBillboardManagedFieldComposite.getInstance().getLaunchOperation();
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.icons.BillboardIconFactory.getInstance();
+	public IconFactory getIconFactory() {
+		return BillboardIconFactory.getInstance();
 	}
 }

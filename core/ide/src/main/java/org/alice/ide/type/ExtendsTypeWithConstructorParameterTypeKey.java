@@ -43,13 +43,15 @@
 
 package org.alice.ide.type;
 
+import org.lgna.project.ast.AbstractType;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class ExtendsTypeWithConstructorParameterTypeKey extends AbstractExtendsTypeKey {
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> parameterType;
+	private final AbstractType<?, ?, ?> parameterType;
 
-	public ExtendsTypeWithConstructorParameterTypeKey( org.lgna.project.ast.AbstractType<?, ?, ?> superType, org.lgna.project.ast.AbstractType<?, ?, ?> parameterType ) {
+	public ExtendsTypeWithConstructorParameterTypeKey( AbstractType<?, ?, ?> superType, AbstractType<?, ?, ?> parameterType ) {
 		super( superType );
 		assert parameterType != null;
 		this.parameterType = parameterType;
@@ -77,7 +79,7 @@ public final class ExtendsTypeWithConstructorParameterTypeKey extends AbstractEx
 	}
 
 	@Override
-	protected boolean contentEquals( org.alice.ide.type.TypeKey other ) {
+	protected boolean contentEquals( TypeKey other ) {
 		// super class's equals methods ensures this.getClass() == other.getClass()
 		return super.contentEquals( other ) && ( this.parameterType == ( (ExtendsTypeWithConstructorParameterTypeKey)other ).parameterType );
 	}

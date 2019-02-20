@@ -43,24 +43,41 @@
 
 package org.alice.ide.declarationseditor.type.components;
 
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.rename.RenameFieldComposite;
+import org.alice.ide.common.FieldDeclarationPane;
+import org.alice.ide.croquet.models.ast.DeleteFieldOperation;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.SingleSelectListState;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.UserField;
+
+import javax.swing.BorderFactory;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldList extends MemberList<org.lgna.project.ast.UserField> {
-	public FieldList( org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.UserField, ?> model, org.lgna.croquet.Operation operation ) {
+public abstract class FieldList extends MemberList<UserField> {
+	public FieldList( SingleSelectListState<UserField, ?> model, Operation operation ) {
 		super( model, operation );
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getFieldColor() );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getFieldColor() );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createButtonLineStart( org.lgna.project.ast.UserField item ) {
-		org.lgna.project.ast.ManagementLevel managementLevel = item.managementLevel.getValue();
-		if( managementLevel == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label( "*" );
+	protected SwingComponentView<?> createButtonLineStart( UserField item ) {
+		ManagementLevel managementLevel = item.managementLevel.getValue();
+		if( managementLevel == ManagementLevel.MANAGED ) {
+			Label label = new Label( "*" );
 			label.setToolTipText( "managed by the scene editor" );
-			label.setForegroundColor( java.awt.Color.GRAY );
+			label.setForegroundColor( Color.GRAY );
 			label.scaleFont( 2.0f );
-			label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
+			label.setBorder( BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 			return label;
 		} else {
 			return null;
@@ -68,20 +85,20 @@ public abstract class FieldList extends MemberList<org.lgna.project.ast.UserFiel
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createButtonCenter( org.lgna.project.ast.UserField item ) {
-		org.lgna.project.ast.ManagementLevel managementLevel = item.managementLevel.getValue();
-		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), item, managementLevel != org.lgna.project.ast.ManagementLevel.MANAGED );
+	protected SwingComponentView<?> createButtonCenter( UserField item ) {
+		ManagementLevel managementLevel = item.managementLevel.getValue();
+		return new FieldDeclarationPane( PreviewAstI18nFactory.getInstance(), item, managementLevel != ManagementLevel.MANAGED );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createButtonLineEnd( org.lgna.project.ast.UserField item ) {
-		org.lgna.croquet.views.LineAxisPanel rv = new org.lgna.croquet.views.LineAxisPanel();
-		rv.addComponent( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( item ).getLaunchOperation().createButton() );
+	protected SwingComponentView<?> createButtonLineEnd( UserField item ) {
+		LineAxisPanel rv = new LineAxisPanel();
+		rv.addComponent( RenameFieldComposite.getInstance( item ).getLaunchOperation().createButton() );
 		if( item.isDeletionAllowed.getValue() ) {
-			rv.addComponent( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton() );
+			rv.addComponent( DeleteFieldOperation.getInstance( item ).createButton() );
 		} else {
 			//todo
-			rv.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 64 ) );
+			rv.addComponent( BoxUtilities.createHorizontalSliver( 64 ) );
 		}
 		return rv;
 	}

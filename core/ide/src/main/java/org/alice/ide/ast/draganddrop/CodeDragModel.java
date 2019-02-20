@@ -42,13 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.ast.draganddrop;
 
+import org.alice.ide.croquet.models.IdeDragModel;
+import org.lgna.project.ast.AbstractType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CodeDragModel extends org.alice.ide.croquet.models.IdeDragModel {
-	public CodeDragModel( java.util.UUID id ) {
+public abstract class CodeDragModel extends IdeDragModel {
+	public CodeDragModel( UUID id ) {
 		super( id );
 	}
 
-	public abstract org.lgna.project.ast.AbstractType<?, ?, ?> getType();
+	public abstract AbstractType<?, ?, ?> getType();
 }

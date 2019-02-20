@@ -42,13 +42,33 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.declaration.AddFunctionComposite;
+import org.alice.ide.ast.declaration.AddProcedureComposite;
+import org.alice.ide.ast.export.ExportTypeToFileDialogOperation;
+import org.alice.ide.ast.type.croquet.ImportTypeIteratingOperation;
+import org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite;
+import org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite;
+import org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite;
+import org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite;
+import org.alice.ide.declarationseditor.type.components.TypeDeclarationView;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.views.BooleanStateButton;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserType;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.NamedUserType, org.alice.ide.declarationseditor.type.components.TypeDeclarationView> {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, TypeComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class TypeComposite extends DeclarationComposite<NamedUserType, TypeDeclarationView> {
+	private static Map<NamedUserType, TypeComposite> map = Maps.newHashMap();
 
-	public static synchronized TypeComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+	public static synchronized TypeComposite getInstance( NamedUserType type ) {
 		if( type != null ) {
 			TypeComposite rv = map.get( type );
 			if( rv != null ) {
@@ -63,56 +83,56 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 		}
 	}
 
-	private final org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite constructorsToolPaletteCoreComposite;
-	private final org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite proceduresToolPaletteCoreComposite;
-	private final org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite functionsToolPaletteCoreComposite;
-	private final org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite fieldsToolPaletteCoreComposite;
-	private final org.alice.ide.ast.export.ExportTypeToFileDialogOperation exportOperation;
-	private final org.alice.ide.ast.type.croquet.ImportTypeIteratingOperation importOperation;
+	private final ConstructorsToolPaletteCoreComposite constructorsToolPaletteCoreComposite;
+	private final ProceduresToolPaletteCoreComposite proceduresToolPaletteCoreComposite;
+	private final FunctionsToolPaletteCoreComposite functionsToolPaletteCoreComposite;
+	private final FieldsToolPaletteCoreComposite fieldsToolPaletteCoreComposite;
+	private final ExportTypeToFileDialogOperation exportOperation;
+	private final ImportTypeIteratingOperation importOperation;
 
-	private TypeComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type, org.lgna.project.ast.NamedUserType.class );
-		this.constructorsToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite( type ) );
-		this.proceduresToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite( type ) );
-		this.functionsToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite( type ) );
-		this.fieldsToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite( type ) );
-		this.importOperation = new org.alice.ide.ast.type.croquet.ImportTypeIteratingOperation( type );
-		this.exportOperation = new org.alice.ide.ast.export.ExportTypeToFileDialogOperation( type );
+	private TypeComposite( NamedUserType type ) {
+		super( UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type, NamedUserType.class );
+		this.constructorsToolPaletteCoreComposite = this.registerSubComposite( new ConstructorsToolPaletteCoreComposite( type ) );
+		this.proceduresToolPaletteCoreComposite = this.registerSubComposite( new ProceduresToolPaletteCoreComposite( type ) );
+		this.functionsToolPaletteCoreComposite = this.registerSubComposite( new FunctionsToolPaletteCoreComposite( type ) );
+		this.fieldsToolPaletteCoreComposite = this.registerSubComposite( new FieldsToolPaletteCoreComposite( type ) );
+		this.importOperation = new ImportTypeIteratingOperation( type );
+		this.exportOperation = new ExportTypeToFileDialogOperation( type );
 	}
 
-	public org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite getConstructorsToolPaletteCoreComposite() {
+	public ConstructorsToolPaletteCoreComposite getConstructorsToolPaletteCoreComposite() {
 		return this.constructorsToolPaletteCoreComposite;
 	}
 
-	public org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite getProceduresToolPaletteCoreComposite() {
+	public ProceduresToolPaletteCoreComposite getProceduresToolPaletteCoreComposite() {
 		return this.proceduresToolPaletteCoreComposite;
 	}
 
-	public org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite getFunctionsToolPaletteCoreComposite() {
+	public FunctionsToolPaletteCoreComposite getFunctionsToolPaletteCoreComposite() {
 		return this.functionsToolPaletteCoreComposite;
 	}
 
-	public org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite getFieldsToolPaletteCoreComposite() {
+	public FieldsToolPaletteCoreComposite getFieldsToolPaletteCoreComposite() {
 		return this.fieldsToolPaletteCoreComposite;
 	}
 
-	public org.alice.ide.ast.type.croquet.ImportTypeIteratingOperation getImportOperation() {
+	public ImportTypeIteratingOperation getImportOperation() {
 		return this.importOperation;
 	}
 
-	public org.alice.ide.ast.export.ExportTypeToFileDialogOperation getExportOperation() {
+	public ExportTypeToFileDialogOperation getExportOperation() {
 		return this.exportOperation;
 	}
 
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
+	public boolean contains( Model model ) {
 		if( super.contains( model ) ) {
 			return true;
 		} else {
 			//todo: this should really leverage Composite.contains and create sub composites and models
-			if( ( model == org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( this.getType() ).getLaunchOperation() )
+			if( ( model == AddProcedureComposite.getInstance( this.getType() ).getLaunchOperation() )
 					||
-					( model == org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( this.getType() ).getLaunchOperation() ) ) {
+					( model == AddFunctionComposite.getInstance( this.getType() ).getLaunchOperation() ) ) {
 				return true;
 			} else {
 				//todo
@@ -122,19 +142,19 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 	}
 
 	@Override
-	public org.lgna.project.ast.UserType<?> getType() {
+	public UserType<?> getType() {
 		return this.getDeclaration();
 	}
 
 	@Override
-	public void customizeTitleComponentAppearance( org.lgna.croquet.views.BooleanStateButton<?> button ) {
+	public void customizeTitleComponentAppearance( BooleanStateButton<?> button ) {
 		super.customizeTitleComponentAppearance( button );
 		button.scaleFont( 1.8f );
 	}
 
 	@Override
 	public boolean isCloseable() {
-		DeclarationTabState tabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+		DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		for( DeclarationComposite tab : tabState ) {
 			if( tab != null ) {
 				if( ( tab != this ) && ( tab.getType() == this.getDeclaration() ) ) {
@@ -152,12 +172,12 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 
 	@Override
 	public boolean isValid() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check to see if type is in project" );
+		Logger.todo( "check to see if type is in project" );
 		return true;
 	}
 
 	@Override
-	protected org.alice.ide.declarationseditor.type.components.TypeDeclarationView createView() {
-		return new org.alice.ide.declarationseditor.type.components.TypeDeclarationView( this );
+	protected TypeDeclarationView createView() {
+		return new TypeDeclarationView( this );
 	}
 }

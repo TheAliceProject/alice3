@@ -42,14 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.data;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import org.lgna.croquet.codecs.EnumCodec;
+import org.lgna.croquet.data.RefreshableListData;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorNameListData extends org.lgna.croquet.data.RefreshableListData<HairColorName> {
+public class HairColorNameListData extends RefreshableListData<HairColorName> {
 	private HairHatStyle hairHatStyle;
 
 	public HairColorNameListData() {
-		super( org.lgna.croquet.codecs.EnumCodec.getInstance( HairColorName.class ) );
+		super( EnumCodec.getInstance( HairColorName.class ) );
 	}
 
 	public HairHatStyle getHairHatStyle() {
@@ -57,7 +65,7 @@ public class HairColorNameListData extends org.lgna.croquet.data.RefreshableList
 	}
 
 	public void setHairHatStyle( HairHatStyle hairHatStyle ) {
-		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.hairHatStyle, hairHatStyle ) ) {
+		if( Objects.equals( this.hairHatStyle, hairHatStyle ) ) {
 			//pass
 		} else {
 			this.hairHatStyle = hairHatStyle;
@@ -66,16 +74,16 @@ public class HairColorNameListData extends org.lgna.croquet.data.RefreshableList
 	}
 
 	@Override
-	protected java.util.List<HairColorName> createValues() {
+	protected List<HairColorName> createValues() {
 		if( this.hairHatStyle != null ) {
-			java.util.List<HairColorNameHairCombo> hairColorNameHairCombos = this.hairHatStyle.getHairColorNameHairCombos();
-			java.util.List<HairColorName> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( hairColorNameHairCombos.size() );
+			List<HairColorNameHairCombo> hairColorNameHairCombos = this.hairHatStyle.getHairColorNameHairCombos();
+			List<HairColorName> rv = Lists.newArrayListWithInitialCapacity( hairColorNameHairCombos.size() );
 			for( HairColorNameHairCombo hairColorNameHairCombo : hairColorNameHairCombos ) {
 				rv.add( hairColorNameHairCombo.getHairColorName() );
 			}
 			return rv;
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 }

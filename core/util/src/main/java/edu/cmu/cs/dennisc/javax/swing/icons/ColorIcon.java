@@ -43,40 +43,46 @@
 
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
-public class ColorIcon implements javax.swing.Icon {
+import javax.swing.Icon;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
+public class ColorIcon implements Icon {
 	public static final int DEFAULT_SIZE = 15;
-	private java.awt.Color fillColor;
-	private java.awt.Color outlineColor;
+	private Color fillColor;
+	private Color outlineColor;
 	private int width;
 	private int height;
 
-	public ColorIcon( java.awt.Color color ) {
+	public ColorIcon( Color color ) {
 		this( color, DEFAULT_SIZE );
 	}
 
-	public ColorIcon( java.awt.Color color, int size ) {
+	public ColorIcon( Color color, int size ) {
 		this( color, size, size );
 	}
 
-	public ColorIcon( java.awt.Color color, java.awt.Dimension size ) {
+	public ColorIcon( Color color, Dimension size ) {
 		this( color, size.width, size.height );
 	}
 
-	public ColorIcon( java.awt.Color color, int width, int height ) {
+	public ColorIcon( Color color, int width, int height ) {
 		this.fillColor = color;
 		this.width = width;
 		this.height = height;
 		float[] hsb = new float[ 3 ];
 		//todo
-		java.awt.Color.RGBtoHSB( this.fillColor.getRed(), this.fillColor.getGreen(), this.fillColor.getBlue(), hsb );
+		Color.RGBtoHSB( this.fillColor.getRed(), this.fillColor.getGreen(), this.fillColor.getBlue(), hsb );
 		if( hsb[ 2 ] > 0.9f ) {
-			this.outlineColor = java.awt.Color.GRAY;
+			this.outlineColor = Color.GRAY;
 		} else {
 			this.outlineColor = null;
 		}
 	}
 
-	public java.awt.Color getFillColor() {
+	public Color getFillColor() {
 		return this.fillColor;
 	}
 
@@ -91,7 +97,7 @@ public class ColorIcon implements javax.swing.Icon {
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
+	public void paintIcon( Component arg0, Graphics g, int x, int y ) {
 		g.setColor( this.fillColor );
 		g.fillRect( x, y, this.width, this.height );
 		if( this.outlineColor != null ) {

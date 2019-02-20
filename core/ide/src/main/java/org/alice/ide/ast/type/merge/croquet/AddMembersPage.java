@@ -42,25 +42,54 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.ast.type.croquet.ImportTypeWizard;
 import org.alice.ide.ast.type.merge.core.MergeUtilities;
+import org.alice.ide.ast.type.merge.croquet.edits.ImportTypeEdit;
+import org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData;
+import org.alice.ide.ast.type.merge.croquet.views.AddMembersPane;
+import org.lgna.common.Resource;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.Panel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.project.ast.AbstractNode;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.Member;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.code.CodeAppender;
+
+import java.io.File;
+import java.net.URI;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.views.Panel, org.alice.ide.ast.type.croquet.ImportTypeWizard> {
+public class AddMembersPage extends WizardPageComposite<Panel, ImportTypeWizard> {
 
-	public static String modifyFilenameLocalizedText( String s, java.net.URI uri ) {
-		java.io.File file = new java.io.File( uri );
+	public static String modifyFilenameLocalizedText( String s, URI uri ) {
+		File file = new File( uri );
 		return s.replaceAll( "</filename/>", file.getName() );
 	}
 
-	private final java.net.URI uriForDescriptionPurposesOnly;
+	private final URI uriForDescriptionPurposesOnly;
 
-	private final org.lgna.project.ast.NamedUserType importedRootType;
-	private final java.util.Set<org.lgna.common.Resource> importedResources;
+	private final NamedUserType importedRootType;
+	private final Set<Resource> importedResources;
 
-	private final org.lgna.project.ast.NamedUserType srcType;
-	private final org.lgna.project.ast.NamedUserType dstType;
+	private final NamedUserType srcType;
+	private final NamedUserType dstType;
 
 	private final ProceduresToolPalette addProceduresComposite;
 	private final FunctionsToolPalette addFunctionsComposite;
@@ -68,31 +97,31 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 
 	private final ErrorStatus actionItemsRemainingError = this.createErrorStatus( "actionItemsRemainingError" );
 
-	private final org.lgna.croquet.Operation acceptAllDifferentImplementationsOperation = this.createActionOperation( "acceptAllDifferentImplementationsOperation", new Action() {
+	private final Operation acceptAllDifferentImplementationsOperation = this.createActionOperation( "acceptAllDifferentImplementationsOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			acceptAllDifferentImplementations();
 			return null;
 		}
 	} );
-	private final org.lgna.croquet.Operation rejectAllDifferentImplementationsOperation = this.createActionOperation( "rejectAllDifferentImplementationsOperation", new Action() {
+	private final Operation rejectAllDifferentImplementationsOperation = this.createActionOperation( "rejectAllDifferentImplementationsOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			rejectAllDifferentImplementations();
 			return null;
 		}
 	} );
 
-	private final org.lgna.croquet.PlainStringValue differentImplementationsHeader = this.createStringValue( "differentImplementationsHeader" );
-	private final org.lgna.croquet.PlainStringValue differentImplementationsSubHeader = this.createStringValue( "differentImplementationsSubHeader" );
+	private final PlainStringValue differentImplementationsHeader = this.createStringValue( "differentImplementationsHeader" );
+	private final PlainStringValue differentImplementationsSubHeader = this.createStringValue( "differentImplementationsSubHeader" );
 
-	private boolean isManagementLevelAppropriate( org.lgna.project.ast.UserMethod method ) {
-		org.lgna.project.ast.ManagementLevel managementLevel = method.getManagementLevel();
-		return ( managementLevel == null ) || ( managementLevel == org.lgna.project.ast.ManagementLevel.NONE );
+	private boolean isManagementLevelAppropriate( UserMethod method ) {
+		ManagementLevel managementLevel = method.getManagementLevel();
+		return ( managementLevel == null ) || ( managementLevel == ManagementLevel.NONE );
 	}
 
-	public AddMembersPage( org.alice.ide.ast.type.croquet.ImportTypeWizard wizard, java.net.URI uriForDescriptionPurposesOnly, org.lgna.project.ast.NamedUserType importedRootType, java.util.Set<org.lgna.common.Resource> importedResources, org.lgna.project.ast.NamedUserType srcType, org.lgna.project.ast.NamedUserType dstType ) {
-		super( java.util.UUID.fromString( "d00d925e-0a2c-46c7-b6c8-0d3d1189bc5c" ), wizard );
+	public AddMembersPage( ImportTypeWizard wizard, URI uriForDescriptionPurposesOnly, NamedUserType importedRootType, Set<Resource> importedResources, NamedUserType srcType, NamedUserType dstType ) {
+		super( UUID.fromString( "d00d925e-0a2c-46c7-b6c8-0d3d1189bc5c" ), wizard );
 		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
 		this.importedRootType = importedRootType;
 		this.importedResources = importedResources;
@@ -100,9 +129,9 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 		this.dstType = dstType;
 
 		if( this.dstType != null ) {
-			java.util.List<org.lgna.project.ast.UserMethod> projectProcedures = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			java.util.List<org.lgna.project.ast.UserMethod> projectFunctions = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			for( org.lgna.project.ast.UserMethod projectMethod : this.dstType.methods ) {
+			List<UserMethod> projectProcedures = Lists.newLinkedList();
+			List<UserMethod> projectFunctions = Lists.newLinkedList();
+			for( UserMethod projectMethod : this.dstType.methods ) {
 				if( isManagementLevelAppropriate( projectMethod ) ) {
 					if( projectMethod.isProcedure() ) {
 						projectProcedures.add( projectMethod );
@@ -114,15 +143,15 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 			this.addProceduresComposite = this.registerSubComposite( new ProceduresToolPalette( this.uriForDescriptionPurposesOnly, projectProcedures ) );
 			this.addFunctionsComposite = this.registerSubComposite( new FunctionsToolPalette( this.uriForDescriptionPurposesOnly, projectFunctions ) );
 
-			java.util.List<org.lgna.project.ast.UserField> dstFields = this.dstType.getDeclaredFields();
-			java.util.List<org.lgna.project.ast.UserField> projectFields = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( dstFields.size() );
+			List<UserField> dstFields = this.dstType.getDeclaredFields();
+			List<UserField> projectFields = Lists.newArrayListWithInitialCapacity( dstFields.size() );
 			projectFields.addAll( dstFields );
 			this.addFieldsComposite = this.registerSubComposite( new FieldsToolPalette( this.uriForDescriptionPurposesOnly, projectFields ) );
 
-			for( org.lgna.project.ast.UserMethod importMethod : this.srcType.methods ) {
+			for( UserMethod importMethod : this.srcType.methods ) {
 				if( isManagementLevelAppropriate( importMethod ) ) {
 					MethodsToolPalette<?> addMethodsComposite = importMethod.isProcedure() ? this.addProceduresComposite : this.addFunctionsComposite;
-					org.lgna.project.ast.UserMethod projectMethod = MergeUtilities.findMethodWithMatchingName( importMethod, dstType );
+					UserMethod projectMethod = MergeUtilities.findMethodWithMatchingName( importMethod, dstType );
 					if( projectMethod != null ) {
 						if( MergeUtilities.isEquivalent( importMethod, projectMethod ) ) {
 							addMethodsComposite.addIdenticalMembers( importMethod, projectMethod );
@@ -142,8 +171,8 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 			this.addProceduresComposite.reifyProjectOnly();
 			this.addFunctionsComposite.reifyProjectOnly();
 
-			for( org.lgna.project.ast.UserField importField : this.srcType.fields ) {
-				org.lgna.project.ast.UserField projectField = dstType.getDeclaredField( importField.getName() );
+			for( UserField importField : this.srcType.fields ) {
+				UserField projectField = dstType.getDeclaredField( importField.getName() );
 				if( projectField != null ) {
 					if( MergeUtilities.isEquivalent( importField, projectField ) ) {
 						this.addFieldsComposite.addIdenticalMembers( importField, projectField );
@@ -169,7 +198,7 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
@@ -186,40 +215,40 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 	}
 
 	@Override
-	protected org.alice.ide.ast.type.merge.croquet.views.AddMembersPane createView() {
-		return new org.alice.ide.ast.type.merge.croquet.views.AddMembersPane( this );
+	protected AddMembersPane createView() {
+		return new AddMembersPane( this );
 	}
 
-	public org.lgna.project.ast.NamedUserType getImportedType() {
+	public NamedUserType getImportedType() {
 		return this.importedRootType;
 	}
 
-	public java.util.Set<org.lgna.common.Resource> getImportedResources() {
+	public Set<Resource> getImportedResources() {
 		return this.importedResources;
 	}
 
-	public org.lgna.project.ast.NamedUserType getDstType() {
+	public NamedUserType getDstType() {
 		return this.dstType;
 	}
 
-	private void addRenameIfNecessary( java.util.List<org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData> renames, MemberNameState<? extends org.lgna.project.ast.Member> nameState, org.lgna.project.ast.Member member ) {
+	private void addRenameIfNecessary( List<RenameMemberData> renames, MemberNameState<? extends Member> nameState, Member member ) {
 		String nextName = nameState.getValue();
 		if( nextName.contentEquals( member.getName() ) ) {
 			//pass
 		} else {
-			renames.add( new org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData( member, nextName ) );
+			renames.add( new RenameMemberData( member, nextName ) );
 		}
 	}
 
-	private void addRenameIfNecessary( java.util.List<org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData> renames, MemberNameState<? extends org.lgna.project.ast.Member> nameState ) {
+	private void addRenameIfNecessary( List<RenameMemberData> renames, MemberNameState<? extends Member> nameState ) {
 		addRenameIfNecessary( renames, nameState, nameState.getMember() );
 	}
 
-	private <M extends org.lgna.project.ast.Member> M createImportCopy( M original ) {
-		return org.lgna.project.ast.AstUtilities.createCopy( original, this.importedRootType );
+	private <M extends AbstractNode & CodeAppender> M createImportCopy( M original ) {
+		return AstUtilities.createCopy( original, this.importedRootType );
 	}
 
-	private <M extends org.lgna.project.ast.Member> void addMembersAndRenames( java.util.List<M> membersToAdd, java.util.List<M> membersToRemove, java.util.List<org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData> renames, MembersToolPalette<?, M> addMembersComposite ) {
+	private <M extends AbstractNode & Member & CodeAppender> void addMembersAndRenames( List<M> membersToAdd, List<M> membersToRemove, List<RenameMemberData> renames, MembersToolPalette<?, M> addMembersComposite ) {
 		for( ImportOnly<M> importOnly : addMembersComposite.getImportOnlys() ) {
 			if( importOnly.getImportHub().getIsDesiredState().getValue() ) {
 				membersToAdd.add( this.createImportCopy( importOnly.getImportHub().getMember() ) );
@@ -255,29 +284,29 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 		}
 	}
 
-	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public Edit createEdit( UserActivity userActivity ) {
 		if( this.dstType != null ) {
-			java.util.List<org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData> renames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			List<RenameMemberData> renames = Lists.newLinkedList();
 
-			java.util.List<org.lgna.project.ast.UserMethod> methodsToAdd = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			java.util.List<org.lgna.project.ast.UserMethod> methodsToRemove = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			List<UserMethod> methodsToAdd = Lists.newLinkedList();
+			List<UserMethod> methodsToRemove = Lists.newLinkedList();
 			for( MethodsToolPalette<?> addMethodsComposite : new MethodsToolPalette[] { this.addProceduresComposite, this.addFunctionsComposite } ) {
 				addMembersAndRenames( methodsToAdd, methodsToRemove, renames, addMethodsComposite );
 			}
 
-			java.util.List<org.lgna.project.ast.UserField> fieldsToAdd = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			java.util.List<org.lgna.project.ast.UserField> fieldsToRemove = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			List<UserField> fieldsToAdd = Lists.newLinkedList();
+			List<UserField> fieldsToRemove = Lists.newLinkedList();
 			addMembersAndRenames( fieldsToAdd, fieldsToRemove, renames, this.addFieldsComposite );
-			return new org.alice.ide.ast.type.merge.croquet.edits.ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.dstType, methodsToAdd, methodsToRemove, fieldsToAdd, fieldsToRemove, renames );
+			return new ImportTypeEdit( userActivity, this.uriForDescriptionPurposesOnly, this.dstType, methodsToAdd, methodsToRemove, fieldsToAdd, fieldsToRemove, renames );
 		} else {
 			return null;
 		}
 	}
 
-	private <M extends org.lgna.project.ast.Member> java.util.List<MemberHub<M>> getPreviewMemberHubs( MembersToolPalette<?, M> addMembersComposite ) {
+	private <M extends Member> List<MemberHub<M>> getPreviewMemberHubs( MembersToolPalette<?, M> addMembersComposite ) {
 		if( this.dstType != null ) {
 			boolean isIncludingAll = getOwner().getPreviewPage().getIsIncludingAllState().getValue();
-			java.util.List<MemberHub<M>> hubs = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			List<MemberHub<M>> hubs = Lists.newLinkedList();
 			for( ImportOnly<M> importOnly : addMembersComposite.getImportOnlys() ) {
 				if( isIncludingAll || importOnly.getImportHub().getIsDesiredState().getValue() ) {
 					hubs.add( importOnly.getImportHub() );
@@ -310,31 +339,31 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 
 			return hubs;
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	public java.util.List<MemberHub<org.lgna.project.ast.UserMethod>> getPreviewProcedureHubs() {
+	public List<MemberHub<UserMethod>> getPreviewProcedureHubs() {
 		return getPreviewMemberHubs( this.addProceduresComposite );
 	}
 
-	public java.util.List<MemberHub<org.lgna.project.ast.UserMethod>> getPreviewFunctionHubs() {
+	public List<MemberHub<UserMethod>> getPreviewFunctionHubs() {
 		return getPreviewMemberHubs( this.addFunctionsComposite );
 	}
 
-	public java.util.List<MemberHub<org.lgna.project.ast.UserField>> getPreviewFieldHubs() {
+	public List<MemberHub<UserField>> getPreviewFieldHubs() {
 		return getPreviewMemberHubs( this.addFieldsComposite );
 	}
 
 	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	public Status getPageStatus() {
 		//todo: remove; icons and components rely on repaint being called
 		this.getView().repaint();
 		//
 
 		StringBuffer sb = new StringBuffer();
 		for( MembersToolPalette<?, ?> addMembersComposite : new MembersToolPalette[] { this.addProceduresComposite, this.addFunctionsComposite, this.addFieldsComposite } ) {
-			addMembersComposite.appendStatusPreRejectorCheck( sb, step );
+			addMembersComposite.appendStatusPreRejectorCheck( sb );
 		}
 		if( sb.length() > 0 ) {
 			this.actionItemsRemainingError.setText( sb.toString() );
@@ -344,19 +373,19 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 		}
 	}
 
-	public org.lgna.croquet.PlainStringValue getDifferentImplementationsHeader() {
+	public PlainStringValue getDifferentImplementationsHeader() {
 		return this.differentImplementationsHeader;
 	}
 
-	public org.lgna.croquet.PlainStringValue getDifferentImplementationsSubHeader() {
+	public PlainStringValue getDifferentImplementationsSubHeader() {
 		return this.differentImplementationsSubHeader;
 	}
 
-	public org.lgna.croquet.Operation getAcceptAllDifferentImplementationsOperation() {
+	public Operation getAcceptAllDifferentImplementationsOperation() {
 		return this.acceptAllDifferentImplementationsOperation;
 	}
 
-	public org.lgna.croquet.Operation getRejectAllDifferentImplementationsOperation() {
+	public Operation getRejectAllDifferentImplementationsOperation() {
 		return this.rejectAllDifferentImplementationsOperation;
 	}
 

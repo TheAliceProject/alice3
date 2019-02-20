@@ -42,16 +42,25 @@
  *******************************************************************************/
 package org.alice.imageeditor.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Objects;
+
+import javax.swing.ComboBoxModel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import java.io.File;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class FilenameComboBoxModel implements javax.swing.ComboBoxModel {
+/* package-private */class FilenameComboBoxModel implements ComboBoxModel {
 	private boolean isWorking;
-	private java.util.List<java.io.File> data;
+	private List<File> data;
 
 	private Object selectedItem;
 
-	private final java.util.List<javax.swing.event.ListDataListener> listDataListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<ListDataListener> listDataListeners = Lists.newCopyOnWriteArrayList();
 
 	@Override
 	public int getSize() {
@@ -61,7 +70,7 @@ package org.alice.imageeditor.croquet;
 
 	@Override
 	public Object getElementAt( int index ) {
-		java.io.File file = ( index < this.data.size() ) ? this.data.get( index ) : null;
+		File file = ( index < this.data.size() ) ? this.data.get( index ) : null;
 		return file != null ? file.getAbsolutePath() : null;
 	}
 
@@ -72,7 +81,7 @@ package org.alice.imageeditor.croquet;
 
 	@Override
 	public void setSelectedItem( Object selectedItem ) {
-		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.selectedItem, selectedItem ) ) {
+		if( Objects.equals( this.selectedItem, selectedItem ) ) {
 			//pass
 		} else {
 			if( ( this.selectedItem != null ) && ( selectedItem != null ) && this.selectedItem.toString().contentEquals( selectedItem.toString() ) ) {
@@ -85,35 +94,35 @@ package org.alice.imageeditor.croquet;
 	}
 
 	@Override
-	public void addListDataListener( javax.swing.event.ListDataListener listener ) {
+	public void addListDataListener( ListDataListener listener ) {
 		this.listDataListeners.add( listener );
 	}
 
 	@Override
-	public void removeListDataListener( javax.swing.event.ListDataListener listener ) {
+	public void removeListDataListener( ListDataListener listener ) {
 		this.listDataListeners.remove( listener );
 	}
 
 	public void prologue() {
 		this.isWorking = true;
-		this.data = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+		this.data = Lists.newArrayList();
 		this.fireContentsChanged( 0, 0 );
 	}
 
-	public void addAll( java.util.List<java.io.File> files ) {
+	public void addAll( List<File> files ) {
 		int indexA = this.data.size();
 		this.data.addAll( files );
 		this.fireContentsChanged( indexA, this.data.size() - 1 );
 	}
 
-	public void done( java.io.File[] data ) {
+	public void done( File[] data ) {
 		//todo: check
 		this.isWorking = false;
 	}
 
 	private void fireContentsChanged( int indexA, int indexB ) {
-		javax.swing.event.ListDataEvent e = new javax.swing.event.ListDataEvent( this, javax.swing.event.ListDataEvent.CONTENTS_CHANGED, indexA, indexB );
-		for( javax.swing.event.ListDataListener listDataListener : listDataListeners ) {
+		ListDataEvent e = new ListDataEvent( this, ListDataEvent.CONTENTS_CHANGED, indexA, indexB );
+		for( ListDataListener listDataListener : listDataListeners ) {
 			listDataListener.contentsChanged( e );
 		}
 	}

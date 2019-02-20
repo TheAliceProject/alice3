@@ -43,37 +43,46 @@
 
 package org.alice.ide.croquet.models.ast.cascade.expression;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.UserParameter;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ParameterArrayAccessCascade extends ArrayAccessCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayAccessCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<UserParameter, ExpressionProperty, ParameterArrayAccessCascade> mapToMap = MapToMap.newInstance();
 
-	public static ParameterArrayAccessCascade getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static ParameterArrayAccessCascade getInstance( UserParameter parameter, ExpressionProperty expressionProperty ) {
 		assert parameter != null;
 		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( parameter, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayAccessCascade>() {
+		return mapToMap.getInitializingIfAbsent( parameter, expressionProperty, new MapToMap.Initializer<UserParameter, ExpressionProperty, ParameterArrayAccessCascade>() {
 			@Override
-			public ParameterArrayAccessCascade initialize( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+			public ParameterArrayAccessCascade initialize( UserParameter parameter, ExpressionProperty expressionProperty ) {
 				return new ParameterArrayAccessCascade( parameter, expressionProperty );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.UserParameter parameter;
+	private final UserParameter parameter;
 
-	private ParameterArrayAccessCascade( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "2b84b886-9b1d-4e1b-b0aa-2d35b88a71c2" ), expressionProperty );
+	private ParameterArrayAccessCascade( UserParameter parameter, ExpressionProperty expressionProperty ) {
+		super( UUID.fromString( "2b84b886-9b1d-4e1b-b0aa-2d35b88a71c2" ), expressionProperty );
 		this.parameter = parameter;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.ParameterAccess( this.parameter );
+	protected Expression createAccessExpression() {
+		return new ParameterAccess( this.parameter );
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getArrayType() {
+	protected AbstractType<?, ?, ?> getArrayType() {
 		return this.parameter.getValueType();
 	}
 }

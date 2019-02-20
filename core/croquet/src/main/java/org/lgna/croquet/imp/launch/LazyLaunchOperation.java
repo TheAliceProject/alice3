@@ -42,12 +42,20 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.launch;
 
+import org.lgna.croquet.AbstractOwnedByCompositeOperation;
+import org.lgna.croquet.Element;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.Initializer;
+import org.lgna.croquet.OperationOwningComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/final class LazyLaunchOperation<C extends org.lgna.croquet.OperationOwningComposite<?>> extends org.lgna.croquet.AbstractOwnedByCompositeOperation<C> {
-	public LazyLaunchOperation( LazyLaunchOperationFactory<C> factory, org.lgna.croquet.Group group, String subKeyText, org.lgna.croquet.Initializer<C> initializer ) {
-		super( group, java.util.UUID.fromString( "18050a9f-5354-4790-8e44-1724200f3cfa" ), initializer );
+/*package-private*/final class LazyLaunchOperation<C extends OperationOwningComposite<?>> extends AbstractOwnedByCompositeOperation<C> {
+	public LazyLaunchOperation( LazyLaunchOperationFactory<C> factory, Group group, String subKeyText, Initializer<C> initializer ) {
+		super( group, UUID.fromString( "18050a9f-5354-4790-8e44-1724200f3cfa" ), initializer );
 		this.subKeyText = subKeyText;
 		this.factory = factory;
 	}
@@ -63,12 +71,7 @@ package org.lgna.croquet.imp.launch;
 	}
 
 	@Override
-	protected org.lgna.croquet.OwnedByCompositeOperationSubKey getSubKey() {
-		return null;
-	}
-
-	@Override
-	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+	protected Class<? extends Element> getClassUsedForLocalization() {
 		return this.factory.getClassUsedForLocalization();
 	}
 

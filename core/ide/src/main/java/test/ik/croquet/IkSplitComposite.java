@@ -43,12 +43,18 @@
 
 package test.ik.croquet;
 
+import org.lgna.croquet.SplitComposite;
+import org.lgna.croquet.views.HorizontalSplitPane;
+import org.lgna.croquet.views.SplitPane;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IkSplitComposite extends org.lgna.croquet.SplitComposite {
+public class IkSplitComposite extends SplitComposite {
 	public IkSplitComposite() {
-		super( java.util.UUID.fromString( "0c407385-c75d-4bd1-b653-87abf9f1960c" ), new ControlsComposite(), new SceneComposite() );
+		super( UUID.fromString( "0c407385-c75d-4bd1-b653-87abf9f1960c" ), new ControlsComposite(), new SceneComposite() );
 	}
 
 	public ControlsComposite getControlsComposite() {
@@ -60,7 +66,7 @@ public class IkSplitComposite extends org.lgna.croquet.SplitComposite {
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SplitPane createView() {
-		return new org.lgna.croquet.views.HorizontalSplitPane( this );
+	protected SplitPane createView() {
+		return new HorizontalSplitPane( this );
 	}
 }

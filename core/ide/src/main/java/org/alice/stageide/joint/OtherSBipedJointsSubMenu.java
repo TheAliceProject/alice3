@@ -43,12 +43,16 @@
 
 package org.alice.stageide.joint;
 
+import org.lgna.story.SBiped;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class OtherSBipedJointsSubMenu<FB> extends JointsSubMenu<FB> {
 	public OtherSBipedJointsSubMenu() {
-		super( java.util.UUID.fromString( "1928d655-ff70-4dd8-a346-c627b342141c" ), org.lgna.story.SBiped.class, "getSpineUpper", "getSpineMiddle", "getLeftHand", "getLeftThumb", "getLeftThumbKnuckle", "getLeftIndexFinger", "getLeftIndexFingerKnuckle", "getLeftMiddleFinger", "getLeftMiddleFingerKnuckle", "getLeftPinkyFinger", "getLeftPinkyFingerKnuckle", "getRightHand", "getRightThumb", "getRightThumbKnuckle", "getRightIndexFinger", "getRightIndexFingerKnuckle", "getRightMiddleFinger",
+		super( UUID.fromString( "1928d655-ff70-4dd8-a346-c627b342141c" ), SBiped.class, "getSpineUpper", "getSpineMiddle", "getLeftHand", "getLeftThumb", "getLeftThumbKnuckle", "getLeftIndexFinger", "getLeftIndexFingerKnuckle", "getLeftMiddleFinger", "getLeftMiddleFingerKnuckle", "getLeftPinkyFinger", "getLeftPinkyFingerKnuckle", "getRightHand", "getRightThumb", "getRightThumbKnuckle", "getRightIndexFinger", "getRightIndexFingerKnuckle", "getRightMiddleFinger",
 				"getRightMiddleFingerKnuckle", "getRightPinkyFinger", "getRightPinkyFingerKnuckle", "getPelvisLowerBody", "getLeftFoot", "getLeftToes", "getRightFoot", "getRightToes" );
 	}
 }

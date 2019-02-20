@@ -42,161 +42,58 @@
  *******************************************************************************/
 package org.alice.ide.uricontent;
 
+import javax.swing.SwingUtilities;
+import java.awt.EventQueue;
+import java.net.URI;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+import java.util.function.Consumer;
+
 /**
  * @author Dennis Cosgrove
  */
 //todo: make more thread safe and more sophisticated
 public abstract class UriContentLoader<T> {
-	private static <T> void invokeOnEventDispatchThread( final GetContentObserver<T> observer, final T content ) {
-		if( java.awt.EventQueue.isDispatchThread() ) {
-			observer.completed( content );
-		} else {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					observer.completed( content );
-				}
-			} );
-		}
-	}
-
 	private class Worker {
-		private final java.util.List<GetContentObserver<T>> observers = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+		private final Consumer<T> consumer;
+		private final FutureTask<T> futureTask;
+		private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-		private final java.util.concurrent.FutureTask<T> futureTask;
-		private boolean isStarted;
-
-		private final java.util.concurrent.ExecutorService executorService = java.util.concurrent.Executors.newSingleThreadExecutor();
-
-		public Worker() {
-			this.futureTask = new java.util.concurrent.FutureTask<T>( new java.util.concurrent.Callable<T>() {
-				@Override
-				public T call() throws Exception {
-					return loadContent();
-				}
-			} ) {
+		Worker(Consumer<T> consumer) {
+			this.consumer = consumer;
+			futureTask = new FutureTask<T>(UriContentLoader.this::load) {
 				@Override
 				protected void done() {
 					super.done();
 					try {
-						invokeObserversOnEventDispatchThread( this.get() );
-					} catch( InterruptedException ie ) {
-						throw new Error( "done", ie );
-					} catch( java.util.concurrent.ExecutionException ee ) {
-						throw new Error( "done", ee );
+						acceptOnEventDispatchThread(get());
+					} catch (InterruptedException | ExecutionException e) {
+						throw new Error("done", e);
 					}
 				}
 			};
 		}
 
-		public void addObserver( GetContentObserver<T> observer ) {
-			this.observers.add( observer );
-		}
-
-		private T loadContent() throws Exception {
-			this.isStarted = true;
-			GetContentObserver<T> observer;
-			synchronized( this.observers ) {
-				if( this.observers.size() > 0 ) {
-					observer = this.observers.get( 0 );
-				} else {
-					observer = null;
-				}
-			}
-			if( observer != null ) {
-				observer.workStarted();
-			}
-			try {
-				return UriContentLoader.this.load();
-			} finally {
-				if( observer != null ) {
-					observer.workEnded();
-				}
-			}
-		}
-
-		public void executeIfNecessary() {
-			//note: this check may not be necessary
-			if( this.isStarted() ) {
-				//pass
+		private void acceptOnEventDispatchThread(final T content ) {
+			if( EventQueue.isDispatchThread() ) {
+				consumer.accept(content );
 			} else {
-				this.executorService.execute( this.futureTask );
+				SwingUtilities.invokeLater(() -> consumer.accept(content ));
 			}
 		}
 
-		public boolean isDone() {
-			return this.futureTask.isDone();
+		void execute() {
+			executorService.execute(futureTask);
 		}
+	}
 
-		public boolean isStarted() {
-			return this.isStarted;
-		}
-
-		public T getContent() throws InterruptedException, java.util.concurrent.ExecutionException {
-			return this.futureTask.get();
-		}
-
-		private void invokeObserversOnEventDispatchThread( T content ) {
-			for( GetContentObserver<T> observer : this.observers ) {
-				invokeOnEventDispatchThread( observer, content );
-			}
-		}
-	};
-
-	private Worker worker;
-
-	public abstract java.net.URI getUri();
+	public abstract URI getUri();
 
 	protected abstract T load();
 
-	protected boolean isWorkerValid() {
-		return this.worker != null;
-	}
-
-	protected boolean isWorkerCachingAppropriate( MutationPlan intention ) {
-		return intention == MutationPlan.PROMISE_NOT_TO_MUTATE;
-	}
-
-	protected void cacheWorkerIfAppropriate( MutationPlan intention, Worker worker ) {
-		if( this.isWorkerCachingAppropriate( intention ) ) {
-			this.worker = worker;
-		} else {
-			this.worker = null;
-		}
-	}
-
-	private Worker getWorker( MutationPlan intention ) {
-		Worker worker;
-		if( this.isWorkerValid() ) {
-			worker = this.worker;
-		} else {
-			worker = new Worker();
-		}
-		this.cacheWorkerIfAppropriate( intention, worker );
-		return worker;
-	}
-
-	protected abstract T createCopyIfNecessary( T value );
-
-	public static enum MutationPlan {
-		PROMISE_NOT_TO_MUTATE,
-		WILL_MUTATE
-	};
-
-	public synchronized void getContentOnEventDispatchThread( MutationPlan intention, GetContentObserver<T> observer ) throws Exception {
-		Worker worker = this.getWorker( intention );
-		if( worker.isDone() ) {
-			T content = this.createCopyIfNecessary( worker.getContent() );
-			invokeOnEventDispatchThread( observer, content );
-		} else {
-			worker.addObserver( observer );
-			worker.executeIfNecessary();
-		}
-	}
-
-	public T getContentWaitingIfNecessary( MutationPlan intention ) throws InterruptedException, java.util.concurrent.ExecutionException {
-		Worker worker = this.getWorker( intention );
-		worker.executeIfNecessary();
-		return this.createCopyIfNecessary( worker.getContent() );
+	public synchronized void deliverContentOnEventDispatchThread(Consumer<T> observer) {
+		new Worker(observer).execute();
 	}
 }

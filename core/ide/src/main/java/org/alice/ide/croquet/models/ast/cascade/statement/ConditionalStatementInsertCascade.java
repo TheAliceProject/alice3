@@ -43,15 +43,24 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.Statement;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ConditionalStatementInsertCascade extends PotentiallyEnvelopingStatementInsertCascade {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> mapEnveloping = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> mapInsert = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<BlockStatementIndexPair, ConditionalStatementInsertCascade> mapEnveloping = Maps.newHashMap();
+	private static Map<BlockStatementIndexPair, ConditionalStatementInsertCascade> mapInsert = Maps.newHashMap();
 
-	public static synchronized ConditionalStatementInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
+	public static synchronized ConditionalStatementInsertCascade getInstance( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		Map<BlockStatementIndexPair, ConditionalStatementInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
 		assert blockStatementIndexPair != null;
 		ConditionalStatementInsertCascade rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
@@ -63,12 +72,12 @@ public class ConditionalStatementInsertCascade extends PotentiallyEnvelopingStat
 		return rv;
 	}
 
-	private ConditionalStatementInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( java.util.UUID.fromString( "52743dfb-d19c-455a-a723-0bd3d59b2326" ), blockStatementIndexPair, isEnveloping, ConditionBlank.getInstance() );
+	private ConditionalStatementInsertCascade( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		super( UUID.fromString( "52743dfb-d19c-455a-a723-0bd3d59b2326" ), blockStatementIndexPair, isEnveloping, ConditionBlank.getInstance() );
 	}
 
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return org.lgna.project.ast.AstUtilities.createConditionalStatement( expressions[ 0 ] );
+	protected final Statement createStatement( Expression... expressions ) {
+		return AstUtilities.createConditionalStatement( expressions[ 0 ] );
 	}
 }

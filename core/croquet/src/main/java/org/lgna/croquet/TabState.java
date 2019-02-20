@@ -43,63 +43,43 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.data.ListData;
+import org.lgna.croquet.views.FolderTabbedPane;
+import org.lgna.croquet.views.ToolPaletteTabbedPane;
+
+import javax.swing.Icon;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabState<T extends TabComposite<?>, D extends org.lgna.croquet.data.ListData<T>> extends SingleSelectListState<T, D> {
-	public TabState( Group group, java.util.UUID id, int selectionIndex, D data ) {
+public abstract class TabState<T extends TabComposite<?>, D extends ListData<T>> extends SingleSelectListState<T, D> {
+	public TabState( Group group, UUID id, int selectionIndex, D data ) {
 		super( group, id, selectionIndex, data );
 	}
 
-	public org.lgna.croquet.views.FolderTabbedPane<T> createFolderTabbedPane() {
-		return new org.lgna.croquet.views.FolderTabbedPane<T>( this );
+	public FolderTabbedPane<T> createFolderTabbedPane() {
+		return new FolderTabbedPane<T>( this );
 	}
 
-	public org.lgna.croquet.views.ToolPaletteTabbedPane<T> createToolPaletteTabbedPane() {
-		return new org.lgna.croquet.views.ToolPaletteTabbedPane<T>( this );
+	public ToolPaletteTabbedPane<T> createToolPaletteTabbedPane() {
+		return new ToolPaletteTabbedPane<T>( this );
 	}
 
-	public org.lgna.croquet.views.SwingComponentView<?> getMainComponentFor( T item ) {
-		org.lgna.croquet.views.TabbedPane<T> tabbedPane = org.lgna.croquet.views.ComponentManager.getFirstComponent( this, org.lgna.croquet.views.TabbedPane.class );
-		if( tabbedPane != null ) {
-			return tabbedPane.getMainComponentFor( item );
-		} else {
-			return null;
-		}
-	}
-
-	public org.lgna.croquet.views.ScrollPane getScrollPaneFor( T item ) {
-		org.lgna.croquet.views.TabbedPane<T> tabbedPane = org.lgna.croquet.views.ComponentManager.getFirstComponent( this, org.lgna.croquet.views.TabbedPane.class );
-		if( tabbedPane != null ) {
-			return tabbedPane.getScrollPaneFor( item );
-		} else {
-			return null;
-		}
-	}
-
-	public org.lgna.croquet.views.SwingComponentView<?> getRootComponentFor( T item ) {
-		org.lgna.croquet.views.TabbedPane<T> tabbedPane = org.lgna.croquet.views.ComponentManager.getFirstComponent( this, org.lgna.croquet.views.TabbedPane.class );
-		if( tabbedPane != null ) {
-			return tabbedPane.getRootComponentFor( item );
-		} else {
-			return null;
-		}
-	}
-
-	public void setItemIconForBothTrueAndFalse( T item, javax.swing.Icon icon ) {
+	public void setItemIconForBothTrueAndFalse( T item, Icon icon ) {
 		this.getItemSelectedState( item ).setIconForBothTrueAndFalse( icon );
 	}
 
 	@Override
-	protected void fireChanging( T prevValue, T nextValue, org.lgna.croquet.State.IsAdjusting isAdjusting ) {
+	protected void fireChanging( T prevValue, T nextValue ) {
 		if( prevValue != null ) {
 			prevValue.handlePostDeactivation();
 		}
-		super.fireChanging( prevValue, nextValue, isAdjusting );
+		super.fireChanging( prevValue, nextValue );
 	}
 
 	@Override
-	protected void fireChanged( T prevValue, T nextValue, org.lgna.croquet.State.IsAdjusting isAdjusting ) {
+	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
 		super.fireChanged( prevValue, nextValue, isAdjusting );
 		if( nextValue != null ) {
 			nextValue.handlePreActivation();

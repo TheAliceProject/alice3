@@ -42,32 +42,36 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ClearableButtonGroup extends javax.swing.ButtonGroup {
-	private javax.swing.ButtonModel selection;
+public class ClearableButtonGroup extends ButtonGroup {
+	private ButtonModel selection;
 
 	@Override
-	public void add( javax.swing.AbstractButton b ) {
+	public void add( AbstractButton b ) {
 		super.add( b );
-		javax.swing.ButtonModel buttonModel = b.getModel();
+		ButtonModel buttonModel = b.getModel();
 		if( buttonModel.isSelected() ) {
 			this.selection = buttonModel;
 		}
 	}
 
 	@Override
-	public void remove( javax.swing.AbstractButton b ) {
+	public void remove( AbstractButton b ) {
 		super.remove( b );
-		javax.swing.ButtonModel buttonModel = b.getModel();
+		ButtonModel buttonModel = b.getModel();
 		if( this.selection == buttonModel ) {
 			this.selection = null;
 		}
 	}
 
 	@Override
-	public void setSelected( javax.swing.ButtonModel m, boolean b ) {
+	public void setSelected( ButtonModel m, boolean b ) {
 		super.setSelected( m, b );
 		if( b ) {
 			this.selection = m;
@@ -80,12 +84,12 @@ public class ClearableButtonGroup extends javax.swing.ButtonGroup {
 	}
 
 	@Override
-	public javax.swing.ButtonModel getSelection() {
+	public ButtonModel getSelection() {
 		return this.selection;
 	}
 
 	@Override
-	public boolean isSelected( javax.swing.ButtonModel m ) {
+	public boolean isSelected( ButtonModel m ) {
 		return this.getSelection() == m;
 	}
 

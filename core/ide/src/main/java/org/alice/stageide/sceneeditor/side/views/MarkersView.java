@@ -42,25 +42,61 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side.views;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import net.miginfocom.swing.MigLayout;
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.declarationseditor.type.FieldMenuModel;
+import org.alice.stageide.sceneeditor.side.MarkersToolPalette;
+import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.RefreshableDataSingleSelectListState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.BooleanStateButton;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.CustomRadioButtons;
+import org.lgna.croquet.views.FlowPanel;
+import org.lgna.croquet.views.HorizontalAlignment;
+import org.lgna.croquet.views.PopupButton;
+import org.lgna.project.ast.UserField;
+
+import javax.swing.AbstractButton;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.LayoutManager;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
+public abstract class MarkersView extends BorderPanel {
 
-	public static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
-	public static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
-	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+	public static final Color BACKGROUND_COLOR = new Color( 173, 167, 208 );
+	public static final Color SELECTED_COLOR = ColorUtilities.scaleHSB( Color.YELLOW, 1.0, 0.3, 1.0 );
+	public static final Color UNSELECTED_COLOR = ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 
-	private static class MarkerView extends org.lgna.croquet.views.BooleanStateButton<javax.swing.AbstractButton> {
-		public MarkerView( org.lgna.croquet.BooleanState model ) {
+	private static class MarkerView extends BooleanStateButton<AbstractButton> {
+		public MarkerView( BooleanState model ) {
 			super( model );
 		}
 
 		@Override
-		protected javax.swing.AbstractButton createAwtComponent() {
-			javax.swing.JToggleButton rv = new javax.swing.JToggleButton() {
+		protected AbstractButton createAwtComponent() {
+			JToggleButton rv = new JToggleButton() {
 				@Override
-				public java.awt.Color getBackground() {
+				public Color getBackground() {
 					if( this.isSelected() ) {
 						return SELECTED_COLOR;
 					} else {
@@ -75,12 +111,12 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 		}
 	}
 
-	private static class MarkerListView extends org.lgna.croquet.views.CustomRadioButtons<org.lgna.project.ast.UserField> {
-		private class MarkerPopupButton extends org.lgna.croquet.views.PopupButton {
-			private final org.lgna.project.ast.UserField field;
+	private class MarkerListView extends CustomRadioButtons<UserField> {
+		private class MarkerPopupButton extends PopupButton {
+			private final UserField field;
 
-			public MarkerPopupButton( org.lgna.project.ast.UserField field ) {
-				super( org.alice.ide.declarationseditor.type.FieldMenuModel.getInstance( field ).getPopupPrepModel() );
+			public MarkerPopupButton( UserField field ) {
+				super( FieldMenuModel.getInstance( field ).getPopupPrepModel() );
 				this.field = field;
 			}
 
@@ -89,17 +125,17 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 			}
 
 			@Override
-			protected javax.swing.AbstractButton createSwingButton() {
+			protected AbstractButton createSwingButton() {
 				return new JPopupButton() {
 					@Override
-					public void paint( java.awt.Graphics g ) {
-						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					public void paint( Graphics g ) {
+						Graphics2D g2 = (Graphics2D)g;
 						boolean isAlphaDesired = isFieldSelected();
-						java.awt.Composite prevComposite = g2.getComposite();
+						Composite prevComposite = g2.getComposite();
 						if( isAlphaDesired ) {
 							//pass
 						} else {
-							g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, 0.2f ) );
+							g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, 0.2f ) );
 						}
 						try {
 							super.paint( g );
@@ -125,34 +161,34 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 			}
 		}
 
-		private final java.util.Map<org.lgna.project.ast.UserField, MarkerPopupButton> mapFieldToPopupButton = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		private final Map<UserField, MarkerPopupButton> mapFieldToPopupButton = Maps.newHashMap();
 
-		private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField> selectionListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField>() {
+		private final ValueListener<UserField> selectionListener = new ValueListener<UserField>() {
 			@Override
-			public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.UserField> e ) {
-				repaint();
+			public void valueChanged( ValueEvent<UserField> e ) {
+				MarkersView.this.repaint();
 			}
 		};
 
-		public MarkerListView( org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.UserField> model ) {
+		public MarkerListView( RefreshableDataSingleSelectListState<UserField> model ) {
 			super( model );
 		}
 
 		@Override
-		protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+		protected void handleAddedTo( AwtComponentView<?> parent ) {
 			super.handleAddedTo( parent );
 			this.getModel().addNewSchoolValueListener( this.selectionListener );
 		}
 
 		@Override
-		protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+		protected void handleRemovedFrom( AwtComponentView<?> parent ) {
 			this.getModel().removeNewSchoolValueListener( this.selectionListener );
 			super.handleRemovedFrom( parent );
 		}
 
 		@Override
-		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-			return new net.miginfocom.swing.MigLayout();
+		protected LayoutManager createLayoutManager( JPanel jPanel ) {
+			return new MigLayout();
 		}
 
 		@Override
@@ -165,7 +201,7 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 		}
 
 		@Override
-		protected void addItem( org.lgna.project.ast.UserField item, org.lgna.croquet.views.BooleanStateButton<?> button ) {
+		protected void addItem( UserField item, BooleanStateButton<?> button ) {
 			this.internalAddComponent( this.mapFieldToPopupButton.get( item ) );
 			this.internalAddComponent( button, "wrap, grow" );
 		}
@@ -175,75 +211,75 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 		}
 
 		@Override
-		protected org.lgna.croquet.views.BooleanStateButton<?> createButtonForItemSelectedState( final org.lgna.project.ast.UserField item, final org.lgna.croquet.BooleanState itemSelectedState ) {
-			itemSelectedState.setIconForBothTrueAndFalse( org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities.getIconForMarkerField( item ) );
+		protected BooleanStateButton<?> createButtonForItemSelectedState( final UserField item, final BooleanState itemSelectedState ) {
+			itemSelectedState.setIconForBothTrueAndFalse( MarkerUtilities.getIconForMarkerField( item ) );
 
-			item.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+			item.name.addPropertyListener( new PropertyListener() {
 				@Override
-				public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				public void propertyChanging( PropertyEvent e ) {
 				}
 
 				@Override
-				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				public void propertyChanged( PropertyEvent e ) {
 					itemSelectedState.setTextForBothTrueAndFalse( item.name.getValue() );
 				}
 			} );
 
 			MarkerView rv = new MarkerView( itemSelectedState );
-			rv.setHorizontalAlignment( org.lgna.croquet.views.HorizontalAlignment.LEADING );
+			rv.setHorizontalAlignment( HorizontalAlignment.LEADING );
 			this.mapFieldToPopupButton.put( item, new MarkerPopupButton( item ) );
 			return rv;
 		}
 	}
 
-	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+	private final MouseListener mouseListener = new MouseListener() {
 		@Override
-		public void mouseEntered( java.awt.event.MouseEvent e ) {
+		public void mouseEntered( MouseEvent e ) {
 		}
 
 		@Override
-		public void mouseExited( java.awt.event.MouseEvent e ) {
+		public void mouseExited( MouseEvent e ) {
 		}
 
 		@Override
-		public void mousePressed( java.awt.event.MouseEvent e ) {
+		public void mousePressed( MouseEvent e ) {
 			unselectMarker();
 		}
 
 		@Override
-		public void mouseReleased( java.awt.event.MouseEvent e ) {
+		public void mouseReleased( MouseEvent e ) {
 		}
 
 		@Override
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		public void mouseClicked( MouseEvent e ) {
 		}
 	};
 
-	public MarkersView( org.alice.stageide.sceneeditor.side.MarkersToolPalette<?> composite ) {
+	public MarkersView( MarkersToolPalette<?> composite ) {
 		super( composite );
-		this.addPageStartComponent( new org.lgna.croquet.views.FlowPanel( org.lgna.croquet.views.FlowPanel.Alignment.LEADING,
+		this.addPageStartComponent( new FlowPanel( FlowPanel.Alignment.LEADING,
 				composite.getMoveToMarkerOperation().createButton(),
 				composite.getMoveMarkerToOperation().createButton() ) );
 		this.addCenterComponent( new MarkerListView( composite.getMarkerListState() ) );
-		this.addPageEndComponent( new org.lgna.croquet.views.FlowPanel( org.lgna.croquet.views.FlowPanel.Alignment.LEADING,
+		this.addPageEndComponent( new FlowPanel( FlowPanel.Alignment.LEADING,
 				composite.getAddOperation().createButton() ) );
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
 	}
 
 	private void unselectMarker() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "unselectMarker" );
-		org.alice.stageide.sceneeditor.side.MarkersToolPalette<?> composite = (org.alice.stageide.sceneeditor.side.MarkersToolPalette<?>)this.getComposite();
+		Logger.outln( "unselectMarker" );
+		MarkersToolPalette<?> composite = (MarkersToolPalette<?>)this.getComposite();
 		composite.getMarkerListState().clearSelection();
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+	protected void handleAddedTo( AwtComponentView<?> parent ) {
 		super.handleAddedTo( parent );
 		this.addMouseListener( this.mouseListener );
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
 		this.removeMouseListener( this.mouseListener );
 		super.handleRemovedFrom( parent );
 	}

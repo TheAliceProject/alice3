@@ -42,6 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GLCapabilities;
+import com.jogamp.opengl.GLCapabilitiesChooser;
+import com.jogamp.opengl.GLContext;
+import com.jogamp.opengl.GLEventListener;
+import com.jogamp.opengl.GLOffscreenAutoDrawable;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 
 
@@ -49,17 +56,17 @@ import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
  * @author Dennis Cosgrove
  */
 public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
-	private final com.jogamp.opengl.GLEventListener glEventListener = new com.jogamp.opengl.GLEventListener() {
+	private final GLEventListener glEventListener = new GLEventListener() {
 		@Override
-		public void init( com.jogamp.opengl.GLAutoDrawable drawable ) {
+		public void init( GLAutoDrawable drawable ) {
 		}
 
 		@Override
-		public void reshape( com.jogamp.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
+		public void reshape( GLAutoDrawable drawable, int x, int y, int width, int height ) {
 		}
 
 		@Override
-		public void display( com.jogamp.opengl.GLAutoDrawable drawable ) {
+		public void display( GLAutoDrawable drawable ) {
 			Throwable throwable = null;
 			try {
 				drawable.getGL();
@@ -70,9 +77,9 @@ public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
 			if( throwable != null ) {
 				if( throwable instanceof NullPointerException ) {
 					NullPointerException nullPointerException = (NullPointerException)throwable;
-					edu.cmu.cs.dennisc.java.util.logging.Logger.info( nullPointerException );
+					Logger.info( nullPointerException );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( throwable );
+					Logger.throwable( throwable );
 				}
 			} else {
 				fireDisplay( drawable.getGL().getGL2() );
@@ -80,25 +87,25 @@ public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
 		}
 
 		@Override
-		public void dispose( com.jogamp.opengl.GLAutoDrawable drawable ) {
+		public void dispose( GLAutoDrawable drawable ) {
 		}
 	};
 
-	private com.jogamp.opengl.GLOffscreenAutoDrawable glPixelBuffer;
+	private GLOffscreenAutoDrawable glPixelBuffer;
 
 	public PixelBufferOffscreenDrawable( DisplayCallback callback ) {
 		super( callback );
 	}
 
 	@Override
-	protected com.jogamp.opengl.GLOffscreenAutoDrawable getGlDrawable() {
+	protected GLOffscreenAutoDrawable getGlDrawable() {
 		return this.glPixelBuffer;
 	}
 
 	@Override
-	public void initialize( com.jogamp.opengl.GLCapabilities glRequestedCapabilities, com.jogamp.opengl.GLCapabilitiesChooser glCapabilitiesChooser, com.jogamp.opengl.GLContext glShareContext, int width, int height ) {
+	public void initialize( GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height ) {
 		if( this.glPixelBuffer != null ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			Logger.severe( this );
 		} else {
 			this.glPixelBuffer = GlDrawableUtils.createGlPixelBuffer( glRequestedCapabilities, glCapabilitiesChooser, width, height, glShareContext );
 			if( this.getCallback() != null ) {

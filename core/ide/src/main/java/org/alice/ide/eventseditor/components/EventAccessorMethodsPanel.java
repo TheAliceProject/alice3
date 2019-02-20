@@ -42,26 +42,35 @@
  *******************************************************************************/
 package org.alice.ide.eventseditor.components;
 
+import org.alice.ide.eventseditor.ParameterAccessorMethodDragModel;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.project.annotations.Visibility;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserParameter;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EventAccessorMethodsPanel extends org.lgna.croquet.views.LineAxisPanel {
-	public EventAccessorMethodsPanel( org.lgna.project.ast.UserCode code ) {
-		for( org.lgna.project.ast.UserParameter parameter : code.getRequiredParamtersProperty() ) {
+public class EventAccessorMethodsPanel extends LineAxisPanel {
+	public EventAccessorMethodsPanel( UserCode code ) {
+		for( UserParameter parameter : code.getRequiredParamtersProperty() ) {
 			this.addComponentsForParameter( parameter );
 		}
 	}
 
-	private void addComponentsForParameter( org.lgna.project.ast.UserParameter parameter ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = parameter.getValueType();
+	private void addComponentsForParameter( UserParameter parameter ) {
+		AbstractType<?, ?, ?> type = parameter.getValueType();
 		while( type != null ) {
-			for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
+			for( AbstractMethod method : type.getDeclaredMethods() ) {
 				if( method.isFunction() ) {
 					if( method.isPublicAccess() ) {
-						org.lgna.project.annotations.Visibility visibility = method.getVisibility();
-						if( ( visibility == null ) || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME ) ) {
-							this.addComponent( new EventAccessorMethodDragView( org.alice.ide.eventseditor.ParameterAccessorMethodDragModel.getInstance( parameter, method ) ) );
-							this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 4 ) );
+						Visibility visibility = method.getVisibility();
+						if( ( visibility == null ) || visibility.equals( Visibility.PRIME_TIME ) ) {
+							this.addComponent( new EventAccessorMethodDragView( ParameterAccessorMethodDragModel.getInstance( parameter, method ) ) );
+							this.addComponent( BoxUtilities.createHorizontalSliver( 4 ) );
 						}
 					}
 				}

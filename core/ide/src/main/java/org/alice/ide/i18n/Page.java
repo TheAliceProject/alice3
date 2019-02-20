@@ -42,8 +42,10 @@
  *******************************************************************************/
 package org.alice.ide.i18n;
 
+import java.util.regex.Pattern;
+
 public class Page {
-	private static final java.util.regex.Pattern NEW_LINE_PATTERN = java.util.regex.Pattern.compile( "\n" );
+	private static final Pattern NEW_LINE_PATTERN = Pattern.compile( "\n" );
 	private Line[] lines = null;
 
 	public Page( String s ) {

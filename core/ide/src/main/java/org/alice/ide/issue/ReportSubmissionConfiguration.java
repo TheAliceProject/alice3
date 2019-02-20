@@ -42,7 +42,11 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import org.alice.ide.issue.jira.soap.Authenticator;
+
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 
 public class ReportSubmissionConfiguration implements edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration {
 	public static final String JIRA_URL = "http://bugs.alice.org:8080/";
@@ -54,13 +58,13 @@ public class ReportSubmissionConfiguration implements edu.cmu.cs.dennisc.issue.R
 	}
 
 	@Override
-	public java.net.URL getJIRAViaRPCServer() throws java.net.MalformedURLException {
-		return new java.net.URL( JIRA_RPC_URL );
+	public URL getJIRAViaRPCServer() throws MalformedURLException {
+		return new URL( JIRA_RPC_URL );
 	}
 
 	@Override
-	public java.net.URL getJIRAViaSOAPServer() throws java.net.MalformedURLException {
-		return new java.net.URL( JIRA_SOAP_URL );
+	public URL getJIRAViaSOAPServer() throws MalformedURLException {
+		return new URL( JIRA_SOAP_URL );
 	}
 
 	@Override
@@ -70,7 +74,7 @@ public class ReportSubmissionConfiguration implements edu.cmu.cs.dennisc.issue.R
 
 	@Override
 	public edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator() {
-		return new org.alice.ide.issue.jira.soap.Authenticator();
+		return new Authenticator();
 	}
 
 	//	public String getMailServer() {

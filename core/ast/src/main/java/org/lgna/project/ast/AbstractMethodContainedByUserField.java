@@ -42,11 +42,15 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.StringProperty;
+import org.lgna.project.annotations.Visibility;
+import org.lgna.project.code.CodeAppender;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMethodContainedByUserField extends AbstractMethod {
-	/* package-private */AbstractMethodContainedByUserField( UserField field ) {
+public abstract class AbstractMethodContainedByUserField extends AbstractMethod implements CodeAppender {
+	AbstractMethodContainedByUserField( UserField field ) {
 		this.field = field;
 	}
 
@@ -55,7 +59,7 @@ public abstract class AbstractMethodContainedByUserField extends AbstractMethod 
 	}
 
 	@Override
-	public final org.lgna.project.ast.AbstractType<?, ?, ?> getDeclaringType() {
+	public final AbstractType<?, ?, ?> getDeclaringType() {
 		return this.field.getDeclaringType();
 	}
 
@@ -70,8 +74,8 @@ public abstract class AbstractMethodContainedByUserField extends AbstractMethod 
 	}
 
 	@Override
-	public final org.lgna.project.annotations.Visibility getVisibility() {
-		return org.lgna.project.annotations.Visibility.PRIME_TIME;
+	public final Visibility getVisibility() {
+		return Visibility.PRIME_TIME;
 	}
 
 	@Override
@@ -80,7 +84,7 @@ public abstract class AbstractMethodContainedByUserField extends AbstractMethod 
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public final StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
 

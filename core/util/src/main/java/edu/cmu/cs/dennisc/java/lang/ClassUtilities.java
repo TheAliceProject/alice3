@@ -43,13 +43,18 @@
 
 package edu.cmu.cs.dennisc.java.lang;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+
+import java.util.Collections;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ClassUtilities {
-	private static final java.util.Map<String, Class<?>> s_primativeTypeMap;
+	private static final Map<String, Class<?>> s_primativeTypeMap;
 	static {
-		java.util.Map<String, Class<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		Map<String, Class<?>> map = Maps.newHashMap();
 		map.put( Void.TYPE.getName(), Void.TYPE );
 		map.put( Boolean.TYPE.getName(), Boolean.TYPE );
 		map.put( Byte.TYPE.getName(), Byte.TYPE );
@@ -59,7 +64,7 @@ public class ClassUtilities {
 		map.put( Long.TYPE.getName(), Long.TYPE );
 		map.put( Double.TYPE.getName(), Double.TYPE );
 		map.put( Float.TYPE.getName(), Float.TYPE );
-		s_primativeTypeMap = java.util.Collections.unmodifiableMap( map );
+		s_primativeTypeMap = Collections.unmodifiableMap( map );
 	}
 
 	public static <E> E getInstance( Object o, Class<E> cls ) {

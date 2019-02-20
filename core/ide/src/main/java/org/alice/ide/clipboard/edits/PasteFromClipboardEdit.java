@@ -42,15 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.clipboard.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.Statement;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PasteFromClipboardEdit extends ClipboardEdit {
-	public PasteFromClipboardEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( completionStep, statement, blockStatementIndexPair );
+	public PasteFromClipboardEdit( UserActivity userActivity, Statement statement, BlockStatementIndexPair blockStatementIndexPair ) {
+		super( userActivity, statement, blockStatementIndexPair );
 	}
 
-	public PasteFromClipboardEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public PasteFromClipboardEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
 
@@ -67,6 +73,6 @@ public class PasteFromClipboardEdit extends ClipboardEdit {
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "paste from clipboard " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.getStatement() );
+		NodeUtilities.safeAppendRepr( rv, this.getStatement() );
 	}
 }

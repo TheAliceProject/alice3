@@ -42,15 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.projecturi.views;
 
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Image;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SnapshotIcon implements javax.swing.Icon {
+public class SnapshotIcon implements Icon {
 	private static final int WIDTH = 160;
 	private static final int HEIGHT = ( WIDTH * 9 ) / 16;
-	private final java.awt.Image image;
+	private final Image image;
 
-	public SnapshotIcon( java.awt.Image image ) {
+	public SnapshotIcon( Image image ) {
 		this.image = image;
 	}
 
@@ -65,7 +70,7 @@ public class SnapshotIcon implements javax.swing.Icon {
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
 		g.drawImage( this.image, x, y, WIDTH, HEIGHT, c );
 	}
 }

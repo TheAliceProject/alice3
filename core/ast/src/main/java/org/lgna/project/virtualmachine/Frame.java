@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.lgna.project.virtualmachine;
 
+import org.lgna.project.ast.UserLocal;
+import org.lgna.project.ast.UserParameter;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,17 +53,17 @@ public interface Frame extends LgnaStackTraceElement {
 
 	public UserInstance getThis();
 
-	public boolean isValidParameter( org.lgna.project.ast.UserParameter parameter );
+	public boolean isValidParameter( UserParameter parameter );
 
-	public boolean isValidLocal( org.lgna.project.ast.UserLocal local );
+	public boolean isValidLocal( UserLocal local );
 
-	public Object lookup( org.lgna.project.ast.UserParameter parameter );
+	public Object lookup( UserParameter parameter );
 
-	public Object get( org.lgna.project.ast.UserLocal local );
+	public Object get( UserLocal local );
 
-	public void set( org.lgna.project.ast.UserLocal local, Object value );
+	public void set( UserLocal local, Object value );
 
-	public void push( org.lgna.project.ast.UserLocal local, Object value );
+	public void push( UserLocal local, Object value );
 
-	public void pop( org.lgna.project.ast.UserLocal local );
+	public void pop( UserLocal local );
 }

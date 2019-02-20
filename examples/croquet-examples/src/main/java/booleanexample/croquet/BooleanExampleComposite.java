@@ -42,23 +42,28 @@
  */
 package booleanexample.croquet;
 
+import booleanexample.croquet.views.BooleanExampleView;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.SimpleComposite;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanExampleComposite extends org.lgna.croquet.SimpleComposite<booleanexample.croquet.views.BooleanExampleView> {
+public class BooleanExampleComposite extends SimpleComposite<BooleanExampleView> {
 	public BooleanExampleComposite() {
-		super( java.util.UUID.fromString( "eacc4043-77b9-4cdc-aa2c-d91c16eee7a7" ) );
+		super( UUID.fromString( "eacc4043-77b9-4cdc-aa2c-d91c16eee7a7" ) );
 	}
 
-	public org.lgna.croquet.BooleanState getIsAliveState() {
+	public BooleanState getIsAliveState() {
 		return this.isAliveState;
 	}
 
 	@Override
-	protected booleanexample.croquet.views.BooleanExampleView createView() {
-		return new booleanexample.croquet.views.BooleanExampleView( this );
+	protected BooleanExampleView createView() {
+		return new BooleanExampleView( this );
 	}
 
-	private final org.lgna.croquet.BooleanState isAliveState = this.createBooleanState( "isAliveState", true );
+	private final BooleanState isAliveState = this.createBooleanState( "isAliveState", true );
 }

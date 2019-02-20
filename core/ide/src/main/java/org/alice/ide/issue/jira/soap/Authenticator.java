@@ -42,12 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.issue.jira.soap;
 
+import com.atlassian.jira.rpc.soap.client.JiraSoapService;
+
+import java.rmi.RemoteException;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Authenticator implements edu.cmu.cs.dennisc.jira.soap.Authenticator {
 	@Override
-	public String login( com.atlassian.jira.rpc.soap.client.JiraSoapService service ) throws java.rmi.RemoteException {
+	public String login( JiraSoapService service ) throws RemoteException {
 		return service.login( "alice3_soap", "BW@U~1.455g45u" );
 	}
 }

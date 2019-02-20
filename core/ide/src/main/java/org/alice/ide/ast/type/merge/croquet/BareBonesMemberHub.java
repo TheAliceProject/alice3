@@ -42,10 +42,12 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.lgna.project.ast.Member;
+
 /**
  * @author Dennis Cosgrove
  */
-public class BareBonesMemberHub<M extends org.lgna.project.ast.Member> {
+public class BareBonesMemberHub<M extends Member> {
 	private final IsMemberDesiredState<M> isDesiredState;
 
 	public BareBonesMemberHub( M member, boolean initialValue ) {

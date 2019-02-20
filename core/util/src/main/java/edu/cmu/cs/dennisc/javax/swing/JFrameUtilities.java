@@ -42,12 +42,15 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import javax.swing.JFrame;
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JFrameUtilities {
-	public static javax.swing.JFrame createPackedJFrame( java.awt.Component content, String title, int closeOperation ) {
-		javax.swing.JFrame rv = new javax.swing.JFrame();
+	public static JFrame createPackedJFrame( Component content, String title, int closeOperation ) {
+		JFrame rv = new JFrame();
 		rv.setTitle( title );
 		rv.getContentPane().add( content );
 		rv.pack();

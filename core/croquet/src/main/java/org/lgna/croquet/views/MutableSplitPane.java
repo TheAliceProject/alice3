@@ -42,20 +42,24 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.MutableSplitComposite;
+
+import javax.swing.JSplitPane;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MutableSplitPane extends AbstractSplitPane<org.lgna.croquet.MutableSplitComposite> {
+public abstract class MutableSplitPane extends AbstractSplitPane<MutableSplitComposite> {
 	private final GridPanel leadingPanel = GridPanel.createGridPane( 1, 1 );
 	private final GridPanel trailingPanel = GridPanel.createGridPane( 1, 1 );
 
-	protected MutableSplitPane( org.lgna.croquet.MutableSplitComposite composite, int orientation ) {
+	protected MutableSplitPane( MutableSplitComposite composite, int orientation ) {
 		super( composite, orientation );
 	}
 
 	@Override
-	protected javax.swing.JSplitPane createJSplitPane( int orientation ) {
-		return new javax.swing.JSplitPane( orientation, this.leadingPanel.getAwtComponent(), this.trailingPanel.getAwtComponent() );
+	protected JSplitPane createJSplitPane( int orientation ) {
+		return new JSplitPane( orientation, this.leadingPanel.getAwtComponent(), this.trailingPanel.getAwtComponent() );
 	}
 
 	public void setLeadingComponent( AwtComponentView<?> component ) {

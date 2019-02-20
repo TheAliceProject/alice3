@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation.eventhandling;
 
+import java.awt.event.MouseEvent;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -52,6 +53,7 @@ import org.lgna.story.SModel;
 import org.lgna.story.SScene;
 import org.lgna.story.Visual;
 import org.lgna.story.event.MouseClickEvent;
+import org.lgna.story.event.MouseClickEventImp;
 import org.lgna.story.event.MouseClickOnObjectEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenEvent;
@@ -106,9 +108,9 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 		map.put( ALL_VISUALS, new CopyOnWriteArrayList<Object>() );
 	}
 
-	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, /* int quoteClickCountUnquote, */SScene scene ) {
+	public void handleMouseQuoteClickedUnquote( MouseEvent e, /* int quoteClickCountUnquote, */SScene scene ) {
 		if( this.isMouseButtonListenerInExistence() ) {
-			final org.lgna.story.event.MouseClickEventImp mbe = new org.lgna.story.event.MouseClickEventImp( e, scene );
+			final MouseClickEventImp mbe = new MouseClickEventImp( e, scene );
 			//			SModel model = mbe.getModelAtMouseLocation();
 			//todo
 			//			if( model != null ) {
@@ -143,7 +145,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 		}
 	}
 
-	public void fireAllTargeted( org.lgna.story.event.MouseClickEventImp event ) {
+	public void fireAllTargeted( MouseClickEventImp event ) {
 		if( shouldFire ) {
 			if( event != null ) {
 				CopyOnWriteArrayList<Object> listeners = new CopyOnWriteArrayList<Object>();

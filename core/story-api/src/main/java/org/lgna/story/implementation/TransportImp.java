@@ -42,15 +42,13 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import org.lgna.story.STransport;
 import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.TransportResource;
 
-public final class TransportImp extends JointedModelImp<org.lgna.story.STransport, org.lgna.story.resources.TransportResource> {
-	public TransportImp( org.lgna.story.STransport abstraction, JointImplementationAndVisualDataFactory<org.lgna.story.resources.TransportResource> factory ) {
+public final class TransportImp extends JointedModelImp<STransport, TransportResource> {
+	public TransportImp( STransport abstraction, JointImplementationAndVisualDataFactory<TransportResource> factory ) {
 		super( abstraction, factory );
 	}
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return this.getResource().getRootJointIds();
-	}
 }

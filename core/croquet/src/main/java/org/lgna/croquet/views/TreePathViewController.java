@@ -43,56 +43,75 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.models.TreeModel;
+import org.lgna.croquet.Operation;
 import org.lgna.croquet.SingleSelectTreeState;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.Point;
 
 /**
  * @author Dennis Cosgrove
  */
 public class TreePathViewController<T> extends PanelViewController<SingleSelectTreeState<T>> {
-	private static class BreadcrumbLayout implements java.awt.LayoutManager {
+	private static class BreadcrumbLayout implements LayoutManager {
 		private static final int AMOUNT_TO_SCOOT = 4;
 		private static final String SYNTH_UI_CLASS_NAME = "javax.swing.plaf.synth.SynthToggleButtonUI";
 
-		private java.awt.Component centerComponent;
+		private Component centerComponent;
 		private javax.swing.AbstractButton lineEndComponent;
 
 		@Override
-		public void addLayoutComponent( String name, java.awt.Component comp ) {
-			if( java.awt.BorderLayout.CENTER.equals( name ) ) {
+		public void addLayoutComponent( String name, Component comp ) {
+			if( BorderLayout.CENTER.equals( name ) ) {
 				this.centerComponent = comp;
-			} else if( java.awt.BorderLayout.LINE_END.equals( name ) ) {
+			} else if( BorderLayout.LINE_END.equals( name ) ) {
 				this.lineEndComponent = (javax.swing.AbstractButton)comp;
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( name, comp );
+				Logger.severe( name, comp );
 			}
 		}
 
 		@Override
-		public void removeLayoutComponent( java.awt.Component comp ) {
+		public void removeLayoutComponent( Component comp ) {
 			if( comp == this.centerComponent ) {
 				this.centerComponent = null;
 			} else if( comp == this.lineEndComponent ) {
 				this.lineEndComponent = null;
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( comp );
+				Logger.severe( comp );
 			}
 		}
 
 		@Override
-		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
+		public Dimension minimumLayoutSize( Container parent ) {
 			return this.preferredLayoutSize( parent );
 		}
 
 		@Override
-		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
-			java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
+		public Dimension preferredLayoutSize( Container parent ) {
+			Dimension rv = new Dimension( 0, 0 );
 			if( this.centerComponent != null ) {
-				java.awt.Dimension size = this.centerComponent.getPreferredSize();
+				Dimension size = this.centerComponent.getPreferredSize();
 				rv.width += size.width;
 				rv.height = Math.max( rv.height, size.height );
 			}
 			if( this.lineEndComponent != null ) {
-				java.awt.Dimension size = this.lineEndComponent.getPreferredSize();
+				Dimension size = this.lineEndComponent.getPreferredSize();
 				rv.width += size.width;
 				rv.height = Math.max( rv.height, size.height );
 				if( SYNTH_UI_CLASS_NAME.equals( this.lineEndComponent.getUI().getClass().getName() ) ) {
@@ -103,8 +122,8 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 		}
 
 		@Override
-		public void layoutContainer( java.awt.Container parent ) {
-			java.awt.Dimension parentSize = parent.getSize();
+		public void layoutContainer( Container parent ) {
+			Dimension parentSize = parent.getSize();
 			int x = 0;
 			if( this.centerComponent != null ) {
 				int width = this.centerComponent.getPreferredSize().width;
@@ -114,34 +133,33 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 			if( this.lineEndComponent != null ) {
 				int width = this.lineEndComponent.getPreferredSize().width;
 				this.lineEndComponent.setBounds( x, 0, width, parentSize.height );
-			}
-
-			if( SYNTH_UI_CLASS_NAME.equals( this.lineEndComponent.getUI().getClass().getName() ) ) {
-				java.awt.Point p = this.lineEndComponent.getLocation();
-				this.lineEndComponent.setLocation( p.x - AMOUNT_TO_SCOOT, p.y );
+				if ( SYNTH_UI_CLASS_NAME.equals( this.lineEndComponent.getUI().getClass().getName() ) ) {
+					Point p = this.lineEndComponent.getLocation();
+					this.lineEndComponent.setLocation( p.x - AMOUNT_TO_SCOOT, p.y );
+				}
 			}
 		}
 	}
 
-	private static java.awt.Insets MARGIN = new java.awt.Insets( 2, 2, 2, 0 );
+	private static Insets MARGIN = new Insets( 2, 2, 2, 0 );
 
 	private static class SelectDirectoryPanel<T> extends Panel {
-		private SelectDirectoryPanel( SingleSelectTreeState<T> treeSelectionState, T treeNode, java.awt.Color breadCrumbColor ) {
+		private SelectDirectoryPanel( SingleSelectTreeState<T> treeSelectionState, T treeNode, Color breadCrumbColor ) {
 			PopupButton selectChildButton = treeSelectionState.getCascadeFor( treeNode ).getRoot().getPopupPrepModel().createPopupButton();
-			if( javax.swing.UIManager.getLookAndFeel().getName().contains( "Nimbus" ) ) {
-				selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
+			if( UIManager.getLookAndFeel().getName().contains( "Nimbus" ) ) {
+				selectChildButton.setBorder( BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 			} else {
-				selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
+				selectChildButton.setBorder( BorderFactory.createLineBorder( Color.GRAY ) );
 			}
-			org.lgna.croquet.Operation operation = treeSelectionState.getItemSelectionOperation( treeNode );
+			Operation operation = treeSelectionState.getItemSelectionOperation( treeNode );
 			operation.initializeIfNecessary();
 			Button button = operation.createButton();
 
 			//button.tightenUpMargin( MARGIN );
 			button.setIconTextGap( 0 );
 
-			this.internalAddComponent( selectChildButton, java.awt.BorderLayout.LINE_END );
-			this.internalAddComponent( button, java.awt.BorderLayout.CENTER );
+			this.internalAddComponent( selectChildButton, BorderLayout.LINE_END );
+			this.internalAddComponent( button, BorderLayout.CENTER );
 
 			if( breadCrumbColor != null ) {
 				button.getAwtComponent().setBackground( breadCrumbColor );
@@ -151,15 +169,15 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 		}
 
 		@Override
-		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		protected LayoutManager createLayoutManager( JPanel jPanel ) {
 			return new BreadcrumbLayout();
 		}
 	}
 
 	private static class InternalPanel<T> extends LineAxisPanel {
-		private final java.awt.Color breadCrumbColor;
+		private final Color breadCrumbColor;
 
-		public InternalPanel( java.awt.Color breadCrumbColor ) {
+		public InternalPanel( Color breadCrumbColor ) {
 			this.breadCrumbColor = breadCrumbColor;
 			this.setBackgroundColor( null );
 		}
@@ -170,8 +188,8 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 			//todo
 			TreePathViewController<T> owner = (TreePathViewController<T>)this.getParent();
 
-			edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel = owner.getModel().getTreeModel();
-			javax.swing.tree.TreePath treePath = owner.treeSelectionModel.getSelectionPath();
+			TreeModel<T> treeModel = owner.getModel().getTreeModel();
+			TreePath treePath = owner.treeSelectionModel.getSelectionPath();
 			if( treePath != null ) {
 				final int N = treePath.getPathCount();
 				for( int i = 0; i < N; i++ ) {
@@ -193,21 +211,21 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 		}
 	}
 
-	private javax.swing.tree.TreeSelectionModel treeSelectionModel;
-	private javax.swing.event.TreeSelectionListener treeSelectionListener = new javax.swing.event.TreeSelectionListener() {
+	private TreeSelectionModel treeSelectionModel;
+	private TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
 		@Override
-		public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
+		public void valueChanged( TreeSelectionEvent e ) {
 			TreePathViewController.this.getInternalPanel().refreshLater();
 		}
 	};
 
-	public TreePathViewController( SingleSelectTreeState<T> model, java.awt.Color breadCrumbColor ) {
+	public TreePathViewController( SingleSelectTreeState<T> model, Color breadCrumbColor ) {
 		super( model, new InternalPanel<T>( breadCrumbColor ) );
 		this.setBackgroundColor( null );
 		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
 	}
 
-	private void setSwingTreeSelectionModel( javax.swing.tree.TreeSelectionModel treeSelectionModel ) {
+	private void setSwingTreeSelectionModel( TreeSelectionModel treeSelectionModel ) {
 		if( this.treeSelectionModel != null ) {
 			this.treeSelectionModel.removeTreeSelectionListener( this.treeSelectionListener );
 		}

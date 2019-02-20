@@ -43,19 +43,35 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.java.util.BufferUtilities;
+import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.DoubleBufferProperty;
+import edu.cmu.cs.dennisc.property.FloatBufferProperty;
+import edu.cmu.cs.dennisc.property.IntBufferProperty;
+import edu.cmu.cs.dennisc.property.IntegerProperty;
+import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
+
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+
 public class Mesh extends Geometry {
 	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
-		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, vertexBuffer.getValue() );
+	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
+		BoundUtilities.getBoundingBox( boundingBox, vertexBuffer.getValue() );
 	}
 
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingSphere( boundingSphere, vertexBuffer.getValue().array() );
+		BoundUtilities.getBoundingSphere( boundingSphere, vertexBuffer.getValue().array() );
 	}
 
 	@Override
-	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
+	protected void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation ) {
 
 		double[] xyzs = vertexBuffer.getValue().array();
 		float[] ijks = normalBuffer.getValue().array();
@@ -74,23 +90,34 @@ public class Mesh extends Geometry {
 	}
 
 	@Override
-	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
+	public void transform( AbstractMatrix4x4 trans ) {
 		//todo
 	}
 
-	public final edu.cmu.cs.dennisc.property.DoubleBufferProperty vertexBuffer = new edu.cmu.cs.dennisc.property.DoubleBufferProperty( this, (java.nio.DoubleBuffer)null ) {
+	public void scale(Vector3 scale) {
+		double[] vertices = BufferUtilities.convertDoubleBufferToArray( vertexBuffer.getValue() );
+		double[] newVertices = new double[vertices.length];
+		for (int i=0; i<vertices.length; i+=3) {
+			newVertices[i] = vertices[i] * scale.x;
+			newVertices[i+1] = vertices[i+1] * scale.y;
+			newVertices[i+2] = vertices[i+2] * scale.z;
+		}
+		vertexBuffer.setValue( BufferUtilities.createDirectDoubleBuffer(newVertices) );
+	}
+
+	public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty( this, (DoubleBuffer)null ) {
 		@Override
-		public void setValue( java.nio.DoubleBuffer value ) {
+		public void setValue( DoubleBuffer value ) {
 			Mesh.this.markBoundsDirty();
 			super.setValue( value );
 			Mesh.this.fireBoundChanged();
 		}
 	};
 
-	public final edu.cmu.cs.dennisc.property.FloatBufferProperty normalBuffer = new edu.cmu.cs.dennisc.property.FloatBufferProperty( this, (java.nio.FloatBuffer)null );
-	public final edu.cmu.cs.dennisc.property.FloatBufferProperty textCoordBuffer = new edu.cmu.cs.dennisc.property.FloatBufferProperty( this, (java.nio.FloatBuffer)null );
-	public final edu.cmu.cs.dennisc.property.IntBufferProperty indexBuffer = new edu.cmu.cs.dennisc.property.IntBufferProperty( this, (java.nio.IntBuffer)null );
-	public final edu.cmu.cs.dennisc.property.IntegerProperty textureId = new edu.cmu.cs.dennisc.property.IntegerProperty( this, -1 );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty cullBackfaces = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty useAlphaTest = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public final FloatBufferProperty normalBuffer = new FloatBufferProperty( this, (FloatBuffer)null );
+	public final FloatBufferProperty textCoordBuffer = new FloatBufferProperty( this, (FloatBuffer)null );
+	public final IntBufferProperty indexBuffer = new IntBufferProperty( this, (IntBuffer)null );
+	public final IntegerProperty textureId = new IntegerProperty( this, -1 );
+	public final BooleanProperty cullBackfaces = new BooleanProperty( this, Boolean.TRUE );
+	public final BooleanProperty useAlphaTest = new BooleanProperty( this, Boolean.FALSE );
 }

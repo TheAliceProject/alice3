@@ -43,16 +43,24 @@
 
 package org.alice.stageide.about;
 
+import org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.HtmlMultiLineLabel;
+import org.lgna.croquet.views.Panel;
+
+import javax.swing.BorderFactory;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CreditsComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.lgna.croquet.views.Panel> {
+public class CreditsComposite extends LazyOperationUnadornedDialogCoreComposite<Panel> {
 	public CreditsComposite() {
-		super( java.util.UUID.fromString( "05cb2e31-928a-461a-9695-9e2783b651a4" ) );
+		super( UUID.fromString( "05cb2e31-928a-461a-9695-9e2783b651a4" ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
+	protected Panel createView() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Alice 3 is designed and implemented by <strong>Dennis Cosgrove</strong>, <strong>David Culyba</strong>, and <strong>Matt May</strong>.<p>" );
 		sb.append( "It is inspired by many systems that have preceded it, most notably <strong>Caitlin Kelleher</strong>'s dissertation: Storytelling Alice.<p>" );
@@ -62,9 +70,9 @@ public class CreditsComposite extends org.lgna.croquet.LazyOperationUnadornedDia
 		sb.append( "Songs should be written about the instructors who bravely adopted Alice 3 in the alpha and beta stages, specifically <strong>Wanda Dann</strong> and <strong>Don Slater</strong>.<p>" );
 		sb.append( "A special thank you to <strong>Steve Seabolt</strong> and <strong>JoAnn Covington</strong> for faciliating the donation of The Sims <sup>TM</sup> 2 Art Assets.<p>" );
 
-		org.lgna.croquet.views.HtmlMultiLineLabel creditsLabel = new org.lgna.croquet.views.HtmlMultiLineLabel( sb.toString() );
-		org.lgna.croquet.views.Panel rv = new org.lgna.croquet.views.BorderPanel.Builder().center( creditsLabel ).build();
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
+		HtmlMultiLineLabel creditsLabel = new HtmlMultiLineLabel( sb.toString() );
+		Panel rv = new BorderPanel.Builder().center( creditsLabel ).build();
+		rv.setBorder( BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
 		return rv;
 	}
 }

@@ -42,27 +42,41 @@
  *******************************************************************************/
 package org.lgna.project;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import org.lgna.common.Resource;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.event.ResourceEvent;
+import org.lgna.project.event.ResourceListener;
+import org.lgna.project.properties.PropertyKey;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Project {
 
-	private final org.lgna.project.ast.NamedUserType programType;
-	private final java.util.Set<org.lgna.common.Resource> resources = edu.cmu.cs.dennisc.java.util.Sets.newCopyOnWriteArraySet();
-	private final java.util.Map/* < org.lgna.project.properties.PropertyKey< T >, T > */propertyMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes = edu.cmu.cs.dennisc.java.util.Sets.newCopyOnWriteArraySet();
+	private final NamedUserType programType;
+	private final Set<Resource> resources = Sets.newCopyOnWriteArraySet();
+	private final Map/* < org.lgna.project.properties.PropertyKey< T >, T > */propertyMap = Maps.newHashMap();
+	private final Set<NamedUserType> namedUserTypes = Sets.newCopyOnWriteArraySet();
 
-	private final java.util.List<org.lgna.project.event.ResourceListener> resourceListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<ResourceListener> resourceListeners = Lists.newCopyOnWriteArrayList();
 
 	private final Object lock = new Object();
 
-	public Project( org.lgna.project.ast.NamedUserType programType, java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes, java.util.Set<org.lgna.common.Resource> resources ) {
+	public Project( NamedUserType programType, Set<NamedUserType> namedUserTypes, Set<Resource> resources ) {
 		this( programType );
 		this.namedUserTypes.addAll( namedUserTypes );
 		this.resources.addAll( resources );
 	}
 
-	public Project( org.lgna.project.ast.NamedUserType programType ) {
+	public Project( NamedUserType programType ) {
 		this.programType = programType;
 	}
 
@@ -70,68 +84,68 @@ public class Project {
 		return this.lock;
 	}
 
-	public org.lgna.project.ast.NamedUserType getProgramType() {
+	public NamedUserType getProgramType() {
 		return this.programType;
 	}
 
-	public void addResourceListener( org.lgna.project.event.ResourceListener resourceListener ) {
+	public void addResourceListener( ResourceListener resourceListener ) {
 		this.resourceListeners.add( resourceListener );
 	}
 
-	public void removeResourceListener( org.lgna.project.event.ResourceListener resourceListener ) {
+	public void removeResourceListener( ResourceListener resourceListener ) {
 		this.resourceListeners.remove( resourceListener );
 	}
 
-	public void addResource( org.lgna.common.Resource resource ) {
+	public void addResource( Resource resource ) {
 		if( this.resources.contains( resource ) ) {
 			//todo
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains resource:", resource );
 		} else {
 			this.resources.add( resource );
 			if( this.resourceListeners.size() > 0 ) {
-				org.lgna.project.event.ResourceEvent e = new org.lgna.project.event.ResourceEvent( this, resource );
-				for( org.lgna.project.event.ResourceListener resourceListener : this.resourceListeners ) {
+				ResourceEvent e = new ResourceEvent( this, resource );
+				for( ResourceListener resourceListener : this.resourceListeners ) {
 					resourceListener.resourceAdded( e );
 				}
 			}
 		}
 	}
 
-	public void removeResource( org.lgna.common.Resource resource ) {
+	public void removeResource( Resource resource ) {
 		this.resources.remove( resource );
 		if( this.resourceListeners.size() > 0 ) {
-			org.lgna.project.event.ResourceEvent e = new org.lgna.project.event.ResourceEvent( this, resource );
-			for( org.lgna.project.event.ResourceListener resourceListener : this.resourceListeners ) {
+			ResourceEvent e = new ResourceEvent( this, resource );
+			for( ResourceListener resourceListener : this.resourceListeners ) {
 				resourceListener.resourceRemoved( e );
 			}
 		}
 	}
 
-	public java.util.Set<org.lgna.common.Resource> getResources() {
+	public Set<Resource> getResources() {
 		return this.resources;
 	}
 
-	public java.util.Set<org.lgna.project.properties.PropertyKey<Object>> getPropertyKeys() {
+	public Set<PropertyKey<Object>> getPropertyKeys() {
 		return this.propertyMap.keySet();
 	}
 
-	public <T> boolean containsValueFor( org.lgna.project.properties.PropertyKey<T> key ) {
+	public <T> boolean containsValueFor( PropertyKey<T> key ) {
 		return this.propertyMap.containsKey( key );
 	}
 
-	public <T> T getValueFor( org.lgna.project.properties.PropertyKey<T> key ) {
+	public <T> T getValueFor( PropertyKey<T> key ) {
 		return (T)this.propertyMap.get( key );
 	}
 
-	public <T> void putValueFor( org.lgna.project.properties.PropertyKey<T> key, T value ) {
+	public <T> void putValueFor( PropertyKey<T> key, T value ) {
 		this.propertyMap.put( key, value );
 	}
 
-	public <T> void removeValueFor( org.lgna.project.properties.PropertyKey<T> key ) {
+	public <T> void removeValueFor( PropertyKey<T> key ) {
 		this.propertyMap.remove( key );
 	}
 
-	public void addNamedUserType( org.lgna.project.ast.NamedUserType namedUserType ) {
+	public void addNamedUserType( NamedUserType namedUserType ) {
 		if( this.namedUserTypes.contains( namedUserType ) ) {
 			//todo
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains named user type:", namedUserType );
@@ -140,13 +154,13 @@ public class Project {
 		}
 	}
 
-	public void removeNamedUserType( org.lgna.project.ast.NamedUserType namedUserType ) {
+	public void removeNamedUserType( NamedUserType namedUserType ) {
 		this.namedUserTypes.remove( namedUserType );
 	}
 
-	public java.util.Set<org.lgna.project.ast.NamedUserType> getNamedUserTypes() {
+	public Set<NamedUserType> getNamedUserTypes() {
 		synchronized( this.getLock() ) {
-			this.namedUserTypes.addAll( org.lgna.project.ast.AstUtilities.getNamedUserTypes( this.programType ) );
+			this.namedUserTypes.addAll( AstUtilities.getNamedUserTypes( this.programType ) );
 			return this.namedUserTypes;
 		}
 	}

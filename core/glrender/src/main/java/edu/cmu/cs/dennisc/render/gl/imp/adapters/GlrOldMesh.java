@@ -51,19 +51,31 @@ import static com.jogamp.opengl.GL2GL3.GL_QUADS;
 import static com.jogamp.opengl.fixedfunc.GLPointerFunc.GL_NORMAL_ARRAY;
 import static com.jogamp.opengl.fixedfunc.GLPointerFunc.GL_TEXTURE_COORD_ARRAY;
 import static com.jogamp.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
+
+import com.jogamp.opengl.GL2;
+import edu.cmu.cs.dennisc.java.util.BufferUtilities;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.OldMesh;
+
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrOldMesh extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.OldMesh> {
+public class GlrOldMesh extends GlrGeometry<OldMesh> {
 	@Override
 	public boolean isAlphaBlended() {
 		return false;
 	}
 
-	private void glDraw( com.jogamp.opengl.GL2 gl, int mode, short[] xyzIndices, short[] ijkIndices, short[] uvIndices ) {
+	private void glDraw( GL2 gl, int mode, short[] xyzIndices, short[] ijkIndices, short[] uvIndices ) {
 		final int N = xyzIndices != null ? xyzIndices.length : 0;
 		if( N > 0 ) {
 			gl.glBegin( mode );
@@ -82,7 +94,7 @@ public class GlrOldMesh extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.OldMes
 		}
 	}
 
-	private void glDrawElements( com.jogamp.opengl.GL2 gl, int mode, boolean b ) {
+	private void glDrawElements( GL2 gl, int mode, boolean b ) {
 		if( b ) {
 			short[] xyzIndices;
 			if( mode == GL_TRIANGLES ) {
@@ -108,7 +120,7 @@ public class GlrOldMesh extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.OldMes
 				if( this.triangleIndexBuffer != null ) {
 					//pass
 				} else {
-					this.triangleIndexBuffer = edu.cmu.cs.dennisc.java.util.BufferUtilities.createDirectShortBuffer( this.xyzTriangleIndices );
+					this.triangleIndexBuffer = BufferUtilities.createDirectShortBuffer( this.xyzTriangleIndices );
 				}
 				this.triangleIndexBuffer.rewind();
 
@@ -117,7 +129,7 @@ public class GlrOldMesh extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.OldMes
 				if( this.quadrangleIndexBuffer != null ) {
 					//pass
 				} else {
-					this.quadrangleIndexBuffer = edu.cmu.cs.dennisc.java.util.BufferUtilities.createDirectShortBuffer( this.xyzQuadrangleIndices );
+					this.quadrangleIndexBuffer = BufferUtilities.createDirectShortBuffer( this.xyzQuadrangleIndices );
 					this.quadrangleIndexBuffer.rewind();
 				}
 				gl.glDrawElements( mode, this.xyzQuadrangleIndices.length / 4, GL_SHORT, this.quadrangleIndexBuffer );
@@ -127,7 +139,7 @@ public class GlrOldMesh extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.OldMes
 		}
 	}
 
-	private void glGeometry( com.jogamp.opengl.GL2 gl, boolean isArrayRenderingDesired ) {
+	private void glGeometry( GL2 gl, boolean isArrayRenderingDesired ) {
 		if( ( isArrayRenderingDesired == false ) || ( this.ijkTriangleIndices != null ) || ( this.uvTriangleIndices != null ) || ( this.ijkQuadrangleIndices != null ) || ( this.uvQuadrangleIndices != null ) ) {
 			glDraw( gl, GL_TRIANGLES, this.xyzTriangleIndices, this.ijkTriangleIndices, this.uvTriangleIndices );
 			glDraw( gl, GL_QUADS, this.xyzQuadrangleIndices, this.ijkQuadrangleIndices, this.uvQuadrangleIndices );
@@ -135,19 +147,19 @@ public class GlrOldMesh extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.OldMes
 			if( this.xyzBuffer != null ) {
 				//pass
 			} else {
-				this.xyzBuffer = edu.cmu.cs.dennisc.java.util.BufferUtilities.createDirectDoubleBuffer( xyzs );
+				this.xyzBuffer = BufferUtilities.createDirectDoubleBuffer( xyzs );
 			}
 			this.xyzBuffer.rewind();
 			if( this.ijkBuffer != null ) {
 				//pass
 			} else {
-				this.ijkBuffer = edu.cmu.cs.dennisc.java.util.BufferUtilities.createDirectFloatBuffer( ijks );
+				this.ijkBuffer = BufferUtilities.createDirectFloatBuffer( ijks );
 			}
 			this.ijkBuffer.rewind();
 			if( this.uvBuffer != null ) {
 				//pass
 			} else {
-				this.uvBuffer = edu.cmu.cs.dennisc.java.util.BufferUtilities.createDirectFloatBuffer( uvs );
+				this.uvBuffer = BufferUtilities.createDirectFloatBuffer( uvs );
 			}
 			this.uvBuffer.rewind();
 			gl.glEnableClientState( GL_VERTEX_ARRAY );
@@ -189,7 +201,7 @@ public class GlrOldMesh extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.OldMes
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.xyzs ) {
 			this.xyzs = owner.xyzs.getValue();
 			this.xyzBuffer = null;
@@ -228,7 +240,7 @@ public class GlrOldMesh extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.OldMes
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
+	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
 		rv.setNaN();
 		return rv;
 	}
@@ -243,9 +255,9 @@ public class GlrOldMesh extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.OldMes
 	private short[] ijkQuadrangleIndices;
 	private short[] uvQuadrangleIndices;
 
-	private java.nio.DoubleBuffer xyzBuffer;
-	private java.nio.FloatBuffer ijkBuffer;
-	private java.nio.FloatBuffer uvBuffer;
-	private java.nio.ShortBuffer triangleIndexBuffer;
-	private java.nio.ShortBuffer quadrangleIndexBuffer;
+	private DoubleBuffer xyzBuffer;
+	private FloatBuffer ijkBuffer;
+	private FloatBuffer uvBuffer;
+	private ShortBuffer triangleIndexBuffer;
+	private ShortBuffer quadrangleIndexBuffer;
 }

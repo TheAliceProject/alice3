@@ -60,8 +60,7 @@ public class EachInArrayTogether extends AbstractEachInTogether implements EachI
 		return this.array;
 	}
 
-	@Override
-	protected ExpressionProperty getArrayOrIterableProperty() {
+	@Override public ExpressionProperty getArrayOrIterableProperty() {
 		return this.getArrayProperty();
 	}
 

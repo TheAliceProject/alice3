@@ -43,11 +43,14 @@
 
 package edu.cmu.cs.dennisc.scenegraph.event;
 
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ComponentEvent extends ChildEvent<edu.cmu.cs.dennisc.scenegraph.Composite, edu.cmu.cs.dennisc.scenegraph.Component> {
-	public ComponentEvent( edu.cmu.cs.dennisc.scenegraph.Composite source, edu.cmu.cs.dennisc.scenegraph.Component child ) {
+public abstract class ComponentEvent extends ChildEvent<Composite, Component> {
+	public ComponentEvent( Composite source, Component child ) {
 		super( source, child );
 	}
 }

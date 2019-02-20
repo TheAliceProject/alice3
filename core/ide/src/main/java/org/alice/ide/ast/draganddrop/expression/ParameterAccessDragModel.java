@@ -43,25 +43,36 @@
 
 package org.alice.ide.ast.draganddrop.expression;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.cascade.expression.ParameterAccessOperation;
+import org.lgna.croquet.Triggerable;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.UserParameter;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ParameterAccessDragModel extends AbstractExpressionDragModel {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserParameter, ParameterAccessDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<UserParameter, ParameterAccessDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static ParameterAccessDragModel getInstance( org.lgna.project.ast.UserParameter parameter ) {
-		return map.getInitializingIfAbsent( parameter, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserParameter, ParameterAccessDragModel>() {
+	public static ParameterAccessDragModel getInstance( UserParameter parameter ) {
+		return map.getInitializingIfAbsent( parameter, new InitializingIfAbsentMap.Initializer<UserParameter, ParameterAccessDragModel>() {
 			@Override
-			public ParameterAccessDragModel initialize( org.lgna.project.ast.UserParameter parameter ) {
+			public ParameterAccessDragModel initialize( UserParameter parameter ) {
 				return new ParameterAccessDragModel( parameter );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.UserParameter parameter;
+	private final UserParameter parameter;
 
-	private ParameterAccessDragModel( org.lgna.project.ast.UserParameter parameter ) {
-		super( java.util.UUID.fromString( "5b79d910-bbeb-4f9c-9593-28c0697f4036" ) );
+	private ParameterAccessDragModel( UserParameter parameter ) {
+		super( UUID.fromString( "5b79d910-bbeb-4f9c-9593-28c0697f4036" ) );
 		this.parameter = parameter;
 	}
 
@@ -71,17 +82,12 @@ public class ParameterAccessDragModel extends AbstractExpressionDragModel {
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		throw new AssertionError();
-	}
-
-	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return this.parameter.getValueType();
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.ParameterAccessOperation.getInstance( this.parameter, expressionProperty );
+	protected Triggerable getDropOperation( ExpressionProperty expressionProperty ) {
+		return ParameterAccessOperation.getInstance( this.parameter, expressionProperty );
 	}
 }

@@ -42,33 +42,44 @@
  *******************************************************************************/
 package org.lgna.project.migration.ast;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.project.Project;
+import org.lgna.project.Version;
+import org.lgna.project.ast.AbstractArgument;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.story.SScene;
+import org.lgna.story.ast.EventListenerMethodUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MouseClickAstMigration extends org.lgna.project.migration.ast.MethodInvocationAstMigration {
-	public MouseClickAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version maximumVersion ) {
+public class MouseClickAstMigration extends MethodInvocationAstMigration {
+	public MouseClickAstMigration( Version minimumVersion, Version maximumVersion ) {
 		super( minimumVersion, maximumVersion );
 	}
 
 	@Override
-	protected void migrate( org.lgna.project.ast.MethodInvocation methodInvocation, org.lgna.project.Project projectIfApplicable ) {
-		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-		if( method instanceof org.lgna.project.ast.JavaMethod ) {
-			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)method;
-			if( javaMethod.getDeclaringType() == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SScene.class ) ) {
+	protected void migrate( MethodInvocation methodInvocation, Project projectIfApplicable ) {
+		AbstractMethod method = methodInvocation.method.getValue();
+		if( method instanceof JavaMethod ) {
+			JavaMethod javaMethod = (JavaMethod)method;
+			if( javaMethod.getDeclaringType() == JavaType.getInstance( SScene.class ) ) {
 				String methodName = javaMethod.getName();
 				if( methodName.equals( "addMouseClickOnScreenListener" ) ) {
-					for( org.lgna.project.ast.AbstractArgument argument : methodInvocation.keyedArguments ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "ALERT: migration removing", argument );
+					for( AbstractArgument argument : methodInvocation.keyedArguments ) {
+						Logger.errln( "ALERT: migration removing", argument );
 					}
 					methodInvocation.keyedArguments.clear();
-					methodInvocation.method.setValue( org.lgna.story.ast.EventListenerMethodUtilities.ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD );
+					methodInvocation.method.setValue( EventListenerMethodUtilities.ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD );
 				} else if( methodName.equals( "addMouseClickOnObjectListener" ) ) {
-					for( org.lgna.project.ast.AbstractArgument argument : methodInvocation.keyedArguments ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "ALERT: migration removing", argument );
+					for( AbstractArgument argument : methodInvocation.keyedArguments ) {
+						Logger.errln( "ALERT: migration removing", argument );
 					}
 					methodInvocation.keyedArguments.clear();
-					methodInvocation.method.setValue( org.lgna.story.ast.EventListenerMethodUtilities.ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD );
+					methodInvocation.method.setValue( EventListenerMethodUtilities.ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD );
 				}
 			}
 		}

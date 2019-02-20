@@ -43,16 +43,19 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import org.lgna.story.SThing;
+
 /**
  * @author Dennis Cosgrove
  */
-public class OrthographicCameraImp extends CameraImp<edu.cmu.cs.dennisc.scenegraph.OrthographicCamera> {
+public class OrthographicCameraImp extends CameraImp<OrthographicCamera> {
 	public OrthographicCameraImp() {
-		super( new edu.cmu.cs.dennisc.scenegraph.OrthographicCamera() );
+		super( new OrthographicCamera() );
 	}
 
 	@Override
-	public org.lgna.story.SThing getAbstraction() {
+	public SThing getAbstraction() {
 		return null;
 	}
 }

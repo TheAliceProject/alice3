@@ -42,7 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.draganddrop.statement.StatementDragModel;
+import org.alice.ide.croquet.models.ast.StatementContextMenu;
+import org.lgna.croquet.views.PaintUtilities;
 import org.lgna.project.ast.ExpressionStatement;
+
+import javax.swing.BoxLayout;
+import java.awt.Color;
+import java.awt.GradientPaint;
+import java.awt.Graphics2D;
+import java.awt.Paint;
 
 /**
  * @author Dennis Cosgrove
@@ -50,21 +61,21 @@ import org.lgna.project.ast.ExpressionStatement;
 public class AddEventListenerStatementPanel extends StatementLikeSubstance {
 	private final ExpressionStatement statement;
 
-	public AddEventListenerStatementPanel( org.lgna.project.ast.ExpressionStatement statement ) {
+	public AddEventListenerStatementPanel( ExpressionStatement statement ) {
 		super(
-				org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( statement ),
-				org.lgna.project.ast.ExpressionStatement.class,
-				javax.swing.BoxLayout.PAGE_AXIS );
+				StatementDragModel.getInstance( statement ),
+				ExpressionStatement.class,
+				BoxLayout.PAGE_AXIS );
 		this.statement = statement;
-		this.setPopupPrepModel( org.alice.ide.croquet.models.ast.StatementContextMenu.getInstance( statement ).getPopupPrepModel() );
+		this.setPopupPrepModel( StatementContextMenu.getInstance( statement ).getPopupPrepModel() );
 	}
 
 	@Override
-	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
-		java.awt.Color color = org.alice.ide.ThemeUtilities.getActiveTheme().getEventColor();
-		java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.15 );
-		java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.9, 0.85 );
-		return new java.awt.GradientPaint( x, y, colorA, x, y + 150, colorB );
+	protected Paint getBackgroundPaint( int x, int y, int width, int height ) {
+		Color color = ThemeUtilities.getActiveTheme().getEventColor();
+		Color colorA = ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.15 );
+		Color colorB = ColorUtilities.scaleHSB( color, 1.0, 0.9, 0.85 );
+		return new GradientPaint( x, y, colorA, x, y + 150, colorB );
 	}
 
 	@Override
@@ -73,12 +84,12 @@ public class AddEventListenerStatementPanel extends StatementLikeSubstance {
 	}
 
 	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected void paintEpilogue( Graphics2D g2, int x, int y, int width, int height ) {
 		super.paintEpilogue( g2, x, y, width, height );
 		if( this.statement.isEnabled.getValue() ) {
 			//pass
 		} else {
-			g2.setPaint( org.lgna.croquet.views.PaintUtilities.getDisabledTexturePaint() );
+			g2.setPaint( PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}

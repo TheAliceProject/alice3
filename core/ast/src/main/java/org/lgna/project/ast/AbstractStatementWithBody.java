@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.ast.localizer.AstLocalizer;
 
 /**
  * @author Dennis Cosgrove
@@ -56,21 +57,22 @@ public abstract class AbstractStatementWithBody extends Statement implements Sta
 	}
 
 	@Override
-	public org.lgna.project.ast.NodeProperty<org.lgna.project.ast.BlockStatement> getBodyProperty() {
+	boolean containsAtLeastOneEnabledReturnStatement() {
+		return isEnabled.getValue() && body.getValue().containsAtLeastOneEnabledReturnStatement();
+	}
+
+	@Override
+	boolean containsUnreachableCode() {
+		return isEnabled.getValue() && body.getValue().containsUnreachableCode();
+	}
+
+	@Override
+	public NodeProperty<BlockStatement> getBodyProperty() {
 		return this.body;
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			AbstractStatementWithBody other = (AbstractStatementWithBody)o;
-			return this.body.valueContentEquals( other.body, strictness, filter );
-		}
-		return false;
-	}
-
-	@Override
-	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
+	protected void appendRepr( AstLocalizer localizer ) {
 	}
 
 	public final NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );

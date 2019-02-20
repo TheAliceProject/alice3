@@ -42,11 +42,19 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
+import java.awt.Component;
+import java.awt.Dialog;
+import java.awt.Frame;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JDialogBuilder {
-	public JDialogBuilder owner( java.awt.Component owner ) {
+	public JDialogBuilder owner( Component owner ) {
 		this.owner = owner;
 		return this;
 	}
@@ -61,27 +69,27 @@ public class JDialogBuilder {
 		return this;
 	}
 
-	public javax.swing.JDialog build() {
-		javax.swing.JDialog rv;
+	public JDialog build() {
+		JDialog rv;
 		if( this.owner != null ) {
-			java.awt.Component root = javax.swing.SwingUtilities.getRoot( this.owner );
-			if( root instanceof java.awt.Frame ) {
-				rv = new javax.swing.JDialog( (java.awt.Frame)root );
-			} else if( root instanceof java.awt.Dialog ) {
-				rv = new javax.swing.JDialog( (java.awt.Dialog)root );
+			Component root = SwingUtilities.getRoot( this.owner );
+			if( root instanceof Frame ) {
+				rv = new JDialog( (Frame)root );
+			} else if( root instanceof Dialog ) {
+				rv = new JDialog( (Dialog)root );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "owner's root is not Frame or Dialog", this.owner, root );
-				rv = new javax.swing.JDialog();
+				Logger.warning( "owner's root is not Frame or Dialog", this.owner, root );
+				rv = new JDialog();
 			}
 		} else {
-			rv = new javax.swing.JDialog();
+			rv = new JDialog();
 		}
 		rv.setModal( isModal );
 		rv.setTitle( title );
 		return rv;
 	}
 
-	private java.awt.Component owner;
+	private Component owner;
 	private boolean isModal;
 	private String title;
 }

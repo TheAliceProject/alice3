@@ -42,6 +42,11 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import org.lgna.issue.ApplicationIssueConfiguration;
+import org.lgna.issue.swing.JSubmitPane;
+
+import javax.swing.JOptionPane;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -62,14 +67,14 @@ public class AliceIdeIssueConfiguration extends IdeIssueConfiguration {
 	}
 
 	@Override
-	public void submit( org.lgna.issue.swing.JSubmitPane jSubmitPane ) {
-		org.lgna.issue.ApplicationIssueConfiguration config = jSubmitPane.getConfig();
-		int option = javax.swing.JOptionPane.showConfirmDialog( jSubmitPane, "Submitting your current project might greatly help the " + config.getApplicationName() + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + config.getApplicationName() + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
-		if( option == javax.swing.JOptionPane.CANCEL_OPTION ) {
+	public void submit( JSubmitPane jSubmitPane ) {
+		ApplicationIssueConfiguration config = jSubmitPane.getConfig();
+		int option = JOptionPane.showConfirmDialog( jSubmitPane, "Submitting your current project might greatly help the " + config.getApplicationName() + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + config.getApplicationName() + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", JOptionPane.YES_NO_CANCEL_OPTION );
+		if( option == JOptionPane.CANCEL_OPTION ) {
 			//pass
 		} else {
 			jSubmitPane.setSubmitAttempted( true );
-			new org.alice.ide.issue.AliceIssueSubmissionProgressWorker( jSubmitPane, option == javax.swing.JOptionPane.YES_OPTION ).execute();
+			new AliceIssueSubmissionProgressWorker( jSubmitPane, option == JOptionPane.YES_OPTION ).execute();
 		}
 	}
 }

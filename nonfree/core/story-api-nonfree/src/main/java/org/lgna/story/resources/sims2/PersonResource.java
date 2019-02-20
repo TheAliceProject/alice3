@@ -43,20 +43,37 @@
 
 package org.lgna.story.resources.sims2;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.story.Color;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory;
+import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+
+import javax.swing.JComponent;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PersonResource implements org.lgna.story.resources.BipedResource {
+public abstract class PersonResource implements BipedResource {
 	private final Gender gender;
 	private final SkinTone skinTone;
-	private final org.lgna.story.Color skinColor;
+	private final Color skinColor;
 	private final EyeColor eyeColor;
 	private final Hair hair;
 	private final double obesityLevel;
 	private final Outfit outfit;
 	private final Face face;
 
-	private PersonResource( Gender gender, SkinTone skinTone, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
+	private PersonResource( Gender gender, SkinTone skinTone, Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
 		this.gender = gender;
 		this.skinTone = skinTone;
 		this.skinColor = skinColor;
@@ -67,25 +84,25 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		this.face = face;
 	}
 
-	private static org.lgna.story.Color getClosestColor( SkinTone skinTone ) {
+	private static Color getClosestColor( SkinTone skinTone ) {
 		BaseSkinTone baseSkinTone;
 		if( skinTone instanceof BaseSkinTone ) {
 			baseSkinTone = (BaseSkinTone)skinTone;
 		} else {
 			baseSkinTone = BaseSkinTone.getRandom();
 		}
-		return org.lgna.story.EmployeesOnly.createColor( baseSkinTone.getColor() );
+		return EmployeesOnly.createColor( baseSkinTone.getColor() );
 	}
 
 	protected static String getLocalizedDisplayText( String key ) {
-		Class cls = org.lgna.story.resources.sims2.PersonResource.class;
+		Class cls = PersonResource.class;
 		String bundleName = cls.getPackage().getName() + ".PersonStrings";
 		try {
-			java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+			ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( bundleName, JComponent.getDefaultLocale() );
 			String rv = resourceBundle.getString( key );
 			return rv;
-		} catch( java.util.MissingResourceException mre ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls, key );
+		} catch( MissingResourceException mre ) {
+			Logger.severe( cls, key );
 			return key;
 		}
 	}
@@ -94,8 +111,8 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		this( gender, skinTone, getClosestColor( skinTone ), eyeColor, hair, obesityLevel, outfit, face );
 	}
 
-	public PersonResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
-		this( gender, BaseSkinTone.getClosestToColor( org.lgna.story.EmployeesOnly.getAwtColor( skinColor ) ), skinColor, eyeColor, hair, obesityLevel, outfit, face );
+	public PersonResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
+		this( gender, BaseSkinTone.getClosestToColor( EmployeesOnly.getAwtColor( skinColor ) ), skinColor, eyeColor, hair, obesityLevel, outfit, face );
 	}
 
 	public abstract LifeStage getLifeStage();
@@ -109,7 +126,7 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		return this.skinTone;
 	}
 
-	public org.lgna.story.Color getSkinColor() {
+	public Color getSkinColor() {
 		return this.skinColor;
 	}
 
@@ -133,18 +150,18 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		return this.face;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds() {
-		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds() {
+		return BipedResource.JOINT_ID_ROOTS;
 	}
 
 	@Override
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
-		return org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( this );
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+		return JointImplementationAndVisualDataFactory.getInstance( this );
 	}
 
 	@Override
-	public final org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( this ) );
+	public final BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, JointImplementationAndVisualDataFactory.getInstance( this ) );
 	}
 
 	@Override
@@ -155,12 +172,12 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		if( obj instanceof PersonResource ) {
 			PersonResource other = (PersonResource)obj;
 			if( this.getClass() == other.getClass() ) {
-				if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.gender, other.gender ) ) {
-					if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.skinTone, other.skinTone ) ) {
-						if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.eyeColor, other.eyeColor ) ) {
-							if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.hair, other.hair ) ) {
-								if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.face, other.face ) ) {
-									if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.outfit, other.outfit ) ) {
+				if( Objects.equals( this.gender, other.gender ) ) {
+					if( Objects.equals( this.skinTone, other.skinTone ) ) {
+						if( Objects.equals( this.eyeColor, other.eyeColor ) ) {
+							if( Objects.equals( this.hair, other.hair ) ) {
+								if( Objects.equals( this.face, other.face ) ) {
+									if( Objects.equals( this.outfit, other.outfit ) ) {
 										return this.obesityLevel == other.obesityLevel;
 									}
 								}

@@ -42,14 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.x.components;
 
+import org.alice.ide.IDE;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.project.ast.InstanceCreation;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceCreationView extends AbstractExpressionView<org.lgna.project.ast.InstanceCreation> {
-	public InstanceCreationView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.InstanceCreation instanceCreation ) {
+public class InstanceCreationView extends AbstractExpressionView<InstanceCreation> {
+	public InstanceCreationView( AstI18nFactory factory, InstanceCreation instanceCreation ) {
 		super( factory, instanceCreation );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.croquet.views.AwtComponentView<?> prefixPane = ide != null ? ide.getPrefixPaneForInstanceCreationIfAppropriate( instanceCreation ) : null;
+		IDE ide = IDE.getActiveInstance();
+		AwtComponentView<?> prefixPane = ide != null ? ide.getPrefixPaneForInstanceCreationIfAppropriate( instanceCreation ) : null;
 		if( prefixPane != null ) {
 			this.addComponent( prefixPane );
 		}

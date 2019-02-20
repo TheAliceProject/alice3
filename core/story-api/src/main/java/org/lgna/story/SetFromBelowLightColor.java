@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SetFromBelowLightColor extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = SetFromBelowLightColor.class )
+	@ClassTemplate( keywordFactoryCls = SetFromBelowLightColor.class )
 	public static interface Detail {
 	}
 

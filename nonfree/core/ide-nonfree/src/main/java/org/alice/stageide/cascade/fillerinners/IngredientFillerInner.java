@@ -42,18 +42,28 @@
  *******************************************************************************/
 package org.alice.stageide.cascade.fillerinners;
 
+import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.LifeStage;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IngredientFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	public IngredientFillerInner( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+public abstract class IngredientFillerInner extends ExpressionFillerInner {
+	public IngredientFillerInner( AbstractType<?, ?, ?> type ) {
 		super( type );
 	}
 
-	protected abstract Class<?>[] getClses( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender );
+	protected abstract Class<?>[] getClses( LifeStage lifeStage, Gender gender );
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
 		//		org.lookingglassandalice.storytelling.LifeStage[] lifeStages = { org.lookingglassandalice.storytelling.LifeStage.ADULT, org.lookingglassandalice.storytelling.LifeStage.CHILD }; 
 		//		for( final org.lookingglassandalice.storytelling.LifeStage lifeStage : lifeStages ) {
 		//			for( final org.lookingglassandalice.storytelling.Gender gender : org.lookingglassandalice.storytelling.Gender.values() ) {

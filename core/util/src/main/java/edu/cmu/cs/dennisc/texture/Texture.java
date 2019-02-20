@@ -43,14 +43,24 @@
 
 package edu.cmu.cs.dennisc.texture;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.image.ImageGenerator;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.pattern.AbstractNameable;
+import edu.cmu.cs.dennisc.texture.event.TextureEvent;
+import edu.cmu.cs.dennisc.texture.event.TextureListener;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Texture extends edu.cmu.cs.dennisc.pattern.AbstractNameable implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, edu.cmu.cs.dennisc.image.ImageGenerator {
+public abstract class Texture extends AbstractNameable implements BinaryEncodableAndDecodable, ImageGenerator {
 	public Texture() {
 	}
 
-	public Texture( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Texture( BinaryDecoder binaryDecoder ) {
 	}
 
 	public boolean isValid() {
@@ -69,27 +79,27 @@ public abstract class Texture extends edu.cmu.cs.dennisc.pattern.AbstractNameabl
 	@Override
 	public abstract boolean isMipMappingDesired();
 
-	public void addTextureListener( edu.cmu.cs.dennisc.texture.event.TextureListener textureListener ) {
+	public void addTextureListener( TextureListener textureListener ) {
 		m_textureListeners.add( textureListener );
 	}
 
-	public void removeTextureListener( edu.cmu.cs.dennisc.texture.event.TextureListener textureListener ) {
+	public void removeTextureListener( TextureListener textureListener ) {
 		m_textureListeners.remove( textureListener );
 	}
 
-	public Iterable<edu.cmu.cs.dennisc.texture.event.TextureListener> accessTextureListeners() {
+	public Iterable<TextureListener> accessTextureListeners() {
 		return m_textureListeners;
 	}
 
-	public void fireTextureChanged( edu.cmu.cs.dennisc.texture.event.TextureEvent textureEvent ) {
-		for( edu.cmu.cs.dennisc.texture.event.TextureListener hl : m_textureListeners ) {
+	public void fireTextureChanged( TextureEvent textureEvent ) {
+		for( TextureListener hl : m_textureListeners ) {
 			hl.textureChanged( textureEvent );
 		}
 	}
 
 	public void fireTextureChanged() {
-		fireTextureChanged( new edu.cmu.cs.dennisc.texture.event.TextureEvent( this ) );
+		fireTextureChanged( new TextureEvent( this ) );
 	}
 
-	private final java.util.List<edu.cmu.cs.dennisc.texture.event.TextureListener> m_textureListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<TextureListener> m_textureListeners = Lists.newCopyOnWriteArrayList();
 }

@@ -42,11 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.numberpad;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.history.UserActivity;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BackspaceOperation extends NumberPadOperation {
-	private static java.util.Map<NumberModel<?>, BackspaceOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<NumberModel<?>, BackspaceOperation> map = Maps.newHashMap();
 
 	public static synchronized BackspaceOperation getInstance( NumberModel<?> model ) {
 		BackspaceOperation rv = map.get( model );
@@ -60,13 +66,13 @@ public class BackspaceOperation extends NumberPadOperation {
 	}
 
 	private BackspaceOperation( NumberModel<?> model ) {
-		super( java.util.UUID.fromString( "16a86a58-7672-4eb7-8138-9853978f2d00" ), model );
+		super( UUID.fromString( "16a86a58-7672-4eb7-8138-9853978f2d00" ), model );
 		this.setName( "\u2190" );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		this.numberModel.delete();
-		step.finish();
+		activity.finish();
 	}
 }

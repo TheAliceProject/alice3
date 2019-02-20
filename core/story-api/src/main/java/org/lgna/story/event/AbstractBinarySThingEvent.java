@@ -44,39 +44,41 @@ package org.lgna.story.event;
 
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
+import org.lgna.story.SMovableTurnable;
+import org.lgna.story.SThing;
 
 /**
  * @author Matt May
  */
 public class AbstractBinarySThingEvent extends AbstractEvent {
 
-	private final org.lgna.story.SThing a;
-	private final org.lgna.story.SThing b;
-	private final org.lgna.story.SMovableTurnable[] movables;
+	private final SThing a;
+	private final SThing b;
+	private final SMovableTurnable[] movables;
 
-	public AbstractBinarySThingEvent( org.lgna.story.SThing a, org.lgna.story.SThing b ) {
+	public AbstractBinarySThingEvent( SThing a, SThing b ) {
 		this.a = a;
 		this.b = b;
-		movables = new org.lgna.story.SMovableTurnable[ 2 ];
-		if( a instanceof org.lgna.story.SMovableTurnable ) {
-			movables[ 0 ] = (org.lgna.story.SMovableTurnable)a;
+		movables = new SMovableTurnable[ 2 ];
+		if( a instanceof SMovableTurnable ) {
+			movables[ 0 ] = (SMovableTurnable)a;
 		}
-		if( b instanceof org.lgna.story.SMovableTurnable ) {
-			movables[ 1 ] = (org.lgna.story.SMovableTurnable)b;
+		if( b instanceof SMovableTurnable ) {
+			movables[ 1 ] = (SMovableTurnable)b;
 		}
 	}
 
-	public org.lgna.story.SThing getSThingFromSetA() {
+	public SThing getSThingFromSetA() {
 		return a;
 	}
 
-	public org.lgna.story.SThing getSThingFromSetB() {
+	public SThing getSThingFromSetB() {
 		return b;
 	}
 
 	@Deprecated
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public org.lgna.story.SMovableTurnable[] getModels() {
+	public SMovableTurnable[] getModels() {
 		return movables;
 	}
 }

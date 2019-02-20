@@ -43,13 +43,21 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FieldArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.AbstractField, FieldArrayAtIndexAssignmentInsertCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<BlockStatementIndexPair, AbstractField, FieldArrayAtIndexAssignmentInsertCascade> mapToMap = MapToMap.newInstance();
 
-	public static synchronized FieldArrayAtIndexAssignmentInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
+	public static synchronized FieldArrayAtIndexAssignmentInsertCascade getInstance( BlockStatementIndexPair blockStatementIndexPair, AbstractField field ) {
 		FieldArrayAtIndexAssignmentInsertCascade rv = mapToMap.get( blockStatementIndexPair, field );
 		if( rv != null ) {
 			//pass
@@ -60,10 +68,10 @@ public class FieldArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssign
 		return rv;
 	}
 
-	private final org.lgna.project.ast.AbstractField field;
+	private final AbstractField field;
 
-	private FieldArrayAtIndexAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "9097fa73-b622-47a0-8f69-3c4bfaf55d71" ), blockStatementIndexPair, field.getValueType(), null );
+	private FieldArrayAtIndexAssignmentInsertCascade( BlockStatementIndexPair blockStatementIndexPair, AbstractField field ) {
+		super( UUID.fromString( "9097fa73-b622-47a0-8f69-3c4bfaf55d71" ), blockStatementIndexPair, field.getValueType(), null );
 		this.field = field;
 	}
 
@@ -73,11 +81,8 @@ public class FieldArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssign
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return org.lgna.project.ast.AstUtilities.createFieldAccess(
-				new org.lgna.project.ast.ThisExpression(),
-				field
-				);
+	protected Expression createAccessExpression() {
+		return new FieldAccess(field);
 	}
 	//todo
 	//	@Override

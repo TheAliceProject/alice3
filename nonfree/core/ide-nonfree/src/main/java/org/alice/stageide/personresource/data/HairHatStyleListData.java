@@ -42,16 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.data;
 
+import org.alice.stageide.personresource.codecs.HairHatStyleCodec;
+import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.LifeStage;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class HairHatStyleListData extends IngredientListData<HairHatStyle> {
 	public HairHatStyleListData() {
-		super( org.alice.stageide.personresource.codecs.HairHatStyleCodec.SINGLETON );
+		super( HairHatStyleCodec.SINGLETON );
 	}
 
 	@Override
-	protected java.util.List<HairHatStyle> createValues( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+	protected List<HairHatStyle> createValues( LifeStage lifeStage, Gender gender ) {
 		return HairUtilities.getHairHatStyles( lifeStage, gender );
 	}
 }

@@ -43,34 +43,43 @@
 
 package org.alice.ide.croquet.codecs.typeeditor;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.IDE;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.formatter.Formatter;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.project.ProgramTypeUtilities;
+import org.lgna.project.ast.AbstractDeclaration;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> {
+public enum DeclarationCompositeCodec implements ItemCodec<DeclarationComposite<?, ?>> {
 	SINGLETON;
 	@Override
-	public Class<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> getValueClass() {
-		return (Class)org.alice.ide.declarationseditor.DeclarationComposite.class;
+	public Class<DeclarationComposite<?, ?>> getValueClass() {
+		return (Class)DeclarationComposite.class;
 	}
 
 	@Override
-	public org.alice.ide.declarationseditor.DeclarationComposite<?, ?> decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public DeclarationComposite<?, ?> decodeValue( BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
-			java.util.UUID id = binaryDecoder.decodeId();
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			org.lgna.project.ast.AbstractDeclaration code = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), id );
-			return org.alice.ide.declarationseditor.DeclarationComposite.getInstance( code );
+			UUID id = binaryDecoder.decodeId();
+			IDE ide = IDE.getActiveInstance();
+			AbstractDeclaration code = ProgramTypeUtilities.lookupNode( ide.getProject(), id );
+			return DeclarationComposite.getInstance( code );
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.declarationseditor.DeclarationComposite<?, ?> value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, DeclarationComposite<?, ?> value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {
@@ -79,7 +88,7 @@ public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec<org.
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, org.alice.ide.declarationseditor.DeclarationComposite<?, ?> value ) {
+	public void appendRepresentation( StringBuilder sb, DeclarationComposite<?, ?> value ) {
 		if (value == null) {
 			sb.append((Object) null);
 		} else {

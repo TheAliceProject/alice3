@@ -43,24 +43,23 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.ViewController;
+
+import java.awt.event.WindowEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class WindowEventTrigger extends ComponentEventTrigger<java.awt.event.WindowEvent> {
-	public static WindowEventTrigger createUserInstance( java.awt.event.WindowEvent windowEvent ) {
-		return new WindowEventTrigger( null, windowEvent );
+public class WindowEventTrigger extends ComponentEventTrigger<WindowEvent> {
+	public static UserActivity createUserActivity( WindowEvent windowEvent ) {
+		return new WindowEventTrigger( null, null, windowEvent ).getUserActivity();
+	}
+	public static void setOnUserActivity( UserActivity userActivity, WindowEvent windowEvent ) {
+		new WindowEventTrigger( userActivity, null, windowEvent );
 	}
 
-	private WindowEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.WindowEvent windowEvent ) {
-		super( viewController, windowEvent );
-	}
-
-	public WindowEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected java.awt.Point getPoint() {
-		return null;
+	private WindowEventTrigger( UserActivity userActivity , ViewController<?, ?> viewController, WindowEvent windowEvent ) {
+		super( userActivity, viewController, windowEvent );
 	}
 }

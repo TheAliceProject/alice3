@@ -43,46 +43,56 @@
 
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.geom.GeneralPath;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DropDownArrowIcon extends AbstractArrowIcon {
-	private final java.awt.Paint selectedFillPaint;
+	private final Paint selectedFillPaint;
 
-	public DropDownArrowIcon( int size, java.awt.Paint selectedFillPaint ) {
+	public DropDownArrowIcon( int size, Paint selectedFillPaint ) {
 		super( size );
 		this.selectedFillPaint = selectedFillPaint;
 	}
 
-	protected javax.swing.ButtonModel getButtonModel( java.awt.Component c ) {
-		javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+	protected ButtonModel getButtonModel( Component c ) {
+		AbstractButton button = (AbstractButton)c;
 		return button.getModel();
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		javax.swing.ButtonModel buttonModel = this.getButtonModel( c );
-		java.awt.geom.GeneralPath path = this.createPath( x, y, Heading.SOUTH );
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
+		ButtonModel buttonModel = this.getButtonModel( c );
+		GeneralPath path = this.createPath( x, y, Heading.SOUTH );
+		Graphics2D g2 = (Graphics2D)g;
+		Object prevAntialiasing = g2.getRenderingHint( RenderingHints.KEY_ANTIALIASING );
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 
-		java.awt.Paint fillPaint;
-		java.awt.Paint drawPaint;
+		Paint fillPaint;
+		Paint drawPaint;
 		if( buttonModel.isEnabled() ) {
 			if( buttonModel.isPressed() || buttonModel.isSelected() ) {
 				fillPaint = selectedFillPaint;
 				drawPaint = null;
 			} else {
 				if( buttonModel.isRollover() || buttonModel.isArmed() ) {
-					fillPaint = java.awt.Color.DARK_GRAY;
+					fillPaint = Color.DARK_GRAY;
 				} else {
-					fillPaint = java.awt.Color.BLACK;
+					fillPaint = Color.BLACK;
 				}
 				drawPaint = null;
 			}
 		} else {
-			fillPaint = java.awt.Color.LIGHT_GRAY;
+			fillPaint = Color.LIGHT_GRAY;
 			drawPaint = null;
 		}
 		if( fillPaint != null ) {
@@ -93,6 +103,6 @@ public class DropDownArrowIcon extends AbstractArrowIcon {
 			g2.setPaint( drawPaint );
 			g2.draw( path );
 		}
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 	}
 }

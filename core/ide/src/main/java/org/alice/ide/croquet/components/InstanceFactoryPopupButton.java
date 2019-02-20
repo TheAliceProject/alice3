@@ -43,25 +43,49 @@
 
 package org.alice.ide.croquet.components;
 
+import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.FontUtilities;
+import edu.cmu.cs.dennisc.pattern.HowMuch;
+import org.alice.ide.IDE;
+import org.alice.ide.Theme;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.State;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.icon.EmptyIconFactory;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.croquet.views.CustomItemStatePopupButton;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.NamedUserType;
+
+import javax.swing.AbstractButton;
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.JLabel;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactoryPopupButton extends org.lgna.croquet.views.CustomItemStatePopupButton<org.alice.ide.instancefactory.InstanceFactory> {
+public class InstanceFactoryPopupButton extends CustomItemStatePopupButton<InstanceFactory> {
 	// note: for singleton ThisInstanceFactory
-	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+	private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
+		public void valueChanged( ValueEvent<NamedUserType> e ) {
 			InstanceFactoryPopupButton.this.repaint();
 		}
 	};
 
-	public InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState instanceFactoryState ) {
+	public InstanceFactoryPopupButton( InstanceFactoryState instanceFactoryState ) {
 		super( instanceFactoryState );
-		this.getAwtComponent().setLayout( new javax.swing.BoxLayout( this.getAwtComponent(), javax.swing.BoxLayout.LINE_AXIS ) );
+		this.getAwtComponent().setLayout( new BoxLayout( this.getAwtComponent(), BoxLayout.LINE_AXIS ) );
 	}
 
 	@Override
-	protected javax.swing.AbstractButton createSwingButton() {
+	protected AbstractButton createSwingButton() {
 		return new JFauxComboBoxPopupButton() {
 			@Override
 			public void invalidate() {
@@ -71,10 +95,10 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.views.CustomIte
 		};
 	}
 
-	private org.alice.ide.instancefactory.InstanceFactory nextValue;
+	private InstanceFactory nextValue;
 
 	@Override
-	protected void handleChanged( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+	protected void handleChanged( State<InstanceFactory> state, InstanceFactory prevValue, InstanceFactory nextValue ) {
 		this.nextValue = nextValue;
 		this.refreshLater();
 	}
@@ -84,20 +108,20 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.views.CustomIte
 
 	protected void internalRefresh() {
 		this.internalForgetAndRemoveAllComponents();
-		org.lgna.croquet.views.SwingComponentView<?> expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue != null ? nextValue.createTransientExpression() : null );
+		SwingComponentView<?> expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue != null ? nextValue.createTransientExpression() : null );
 
-		for( javax.swing.JLabel label : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( expressionPane.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.COMPONENT_AND_DESCENDANTS, javax.swing.JLabel.class ) ) {
-			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( label, 2.0f );
+		for( JLabel label : ComponentUtilities.findAllMatches( expressionPane.getAwtComponent(), HowMuch.COMPONENT_AND_DESCENDANTS, JLabel.class ) ) {
+			FontUtilities.setFontToScaledFont( label, 2.0f );
 		}
 
 		if( nextValue != null ) {
-			org.lgna.croquet.icon.IconFactory iconFactory = nextValue.getIconFactory();
-			if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
+			IconFactory iconFactory = nextValue.getIconFactory();
+			if( ( iconFactory != null ) && ( iconFactory != EmptyIconFactory.getInstance() ) ) {
 				final boolean IS_TRIMMED_ICON_DESIRED = true;
-				java.awt.Dimension size = IS_TRIMMED_ICON_DESIRED ? iconFactory.getTrimmedSizeForHeight( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE.height ) : org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE;
-				javax.swing.Icon icon = iconFactory.getIcon( size );
+				Dimension size = IS_TRIMMED_ICON_DESIRED ? iconFactory.getTrimmedSizeForHeight( Theme.DEFAULT_SMALL_ICON_SIZE.height ) : Theme.DEFAULT_SMALL_ICON_SIZE;
+				Icon icon = iconFactory.getIcon( size );
 				if( icon != null ) {
-					this.internalAddComponent( new org.lgna.croquet.views.Label( icon ) );
+					this.internalAddComponent( new Label( icon ) );
 				}
 			}
 		}
@@ -134,12 +158,12 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.views.CustomIte
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.refreshLater();
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addValueListener( this.typeListener );
+		IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addValueListener( this.typeListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().removeValueListener( this.typeListener );
+		IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().removeValueListener( this.typeListener );
 		super.handleUndisplayable();
 	}
 };

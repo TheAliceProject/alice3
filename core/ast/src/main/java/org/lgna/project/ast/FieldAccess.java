@@ -43,18 +43,24 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.ast.localizer.AstLocalizer;
+import org.lgna.project.code.PrecedentedAppender;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldAccess extends Expression {
+public final class FieldAccess extends Expression implements PrecedentedAppender {
 	public FieldAccess() {
 	}
 
 	public FieldAccess( Expression expression, AbstractField field ) {
 		this.expression.setValue( expression );
 		this.field.setValue( field );
+	}
+
+	public FieldAccess(AbstractField field ) {
+		this( ThisExpression.createInstanceThatCanExistWithoutAnAncestorType(field.getFirstAncestorAssignableTo(AbstractType.class)), field );
 	}
 
 	@Override
@@ -97,17 +103,6 @@ public final class FieldAccess extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			FieldAccess other = (FieldAccess)o;
-			if( this.expression.valueContentEquals( other.expression, strictness, filter ) ) {
-				return this.field.valueContentEquals( other.field, strictness, filter );
-			}
-		}
-		return false;
-	}
-
-	@Override
 	protected void appendRepr( AstLocalizer localizer ) {
 		safeAppendRepr( localizer, this.expression.getValue() );
 		localizer.appendDot();
@@ -115,10 +110,12 @@ public final class FieldAccess extends Expression {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendExpression( this.expression.getValue() );
-		generator.appendChar( '.' );
-		generator.appendString( this.field.getValue().getName() );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendFieldAccess( this );
+	}
+
+	@Override public int getLevelOfPrecedence() {
+		return 16;
 	}
 
 	public final ExpressionProperty expression = new ExpressionProperty( this ) {
@@ -128,7 +125,7 @@ public final class FieldAccess extends Expression {
 			if( f != null ) {
 				return f.getDeclaringType();
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "field.getValue() == null", field );
+				Logger.warning( "field.getValue() == null", field );
 				return JavaType.OBJECT_TYPE;
 			}
 		}

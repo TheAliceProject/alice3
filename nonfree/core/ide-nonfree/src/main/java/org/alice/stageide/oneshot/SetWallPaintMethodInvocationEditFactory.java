@@ -42,22 +42,29 @@
  *******************************************************************************/
 package org.alice.stageide.oneshot;
 
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.stageide.oneshot.edits.SetWallPaintEdit;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SetWallPaintMethodInvocationEditFactory implements MethodInvocationEditFactory {
-	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
-	private final org.lgna.project.ast.AbstractMethod method;
-	private final org.lgna.project.ast.Expression[] argumentExpressions;
+	private final InstanceFactory instanceFactory;
+	private final AbstractMethod method;
+	private final Expression[] argumentExpressions;
 
-	public SetWallPaintMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	public SetWallPaintMethodInvocationEditFactory( InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
 		this.instanceFactory = instanceFactory;
 		this.method = method;
 		this.argumentExpressions = argumentExpressions;
 	}
 
 	@Override
-	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
-		return new org.alice.stageide.oneshot.edits.SetWallPaintEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
+	public Edit createEdit( UserActivity userActivity ) {
+		return new SetWallPaintEdit( userActivity, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }

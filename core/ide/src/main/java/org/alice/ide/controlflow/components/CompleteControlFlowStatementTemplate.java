@@ -42,18 +42,30 @@
  *******************************************************************************/
 package org.alice.ide.controlflow.components;
 
+import org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel;
+import org.alice.ide.codeeditor.CommentPane;
+import org.alice.ide.common.DefaultStatementPane;
+import org.alice.ide.templates.StatementTemplate;
+import org.alice.ide.x.TemplateAstI18nFactory;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.Comment;
+import org.lgna.project.ast.Statement;
+
+import java.awt.Graphics2D;
+import java.awt.Shape;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CompleteControlFlowStatementTemplate extends org.alice.ide.templates.StatementTemplate {
-	public CompleteControlFlowStatementTemplate( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
+public class CompleteControlFlowStatementTemplate extends StatementTemplate {
+	public CompleteControlFlowStatementTemplate( StatementTemplateDragModel dragModel ) {
 		super( dragModel, dragModel.getStatementCls() );
-		org.lgna.project.ast.Statement incompleteStatement = dragModel.getPossiblyIncompleteStatement();
-		org.lgna.croquet.views.SwingComponentView<?> incompleteStatementPane;
-		if( incompleteStatement instanceof org.lgna.project.ast.Comment ) {
-			incompleteStatementPane = new org.alice.ide.codeeditor.CommentPane( null, org.alice.ide.x.TemplateAstI18nFactory.getInstance(), (org.lgna.project.ast.Comment)incompleteStatement, null ) {
+		Statement incompleteStatement = dragModel.getPossiblyIncompleteStatement();
+		SwingComponentView<?> incompleteStatementPane;
+		if( incompleteStatement instanceof Comment ) {
+			incompleteStatementPane = new CommentPane( null, TemplateAstI18nFactory.getInstance(), (Comment)incompleteStatement, null ) {
 				@Override
-				protected void paintOutline( java.awt.Graphics2D g2, java.awt.Shape shape ) {
+				protected void paintOutline( Graphics2D g2, Shape shape ) {
 				}
 
 				@Override
@@ -62,9 +74,9 @@ public class CompleteControlFlowStatementTemplate extends org.alice.ide.template
 				}
 			};
 		} else {
-			incompleteStatementPane = new org.alice.ide.common.DefaultStatementPane( null, org.alice.ide.x.TemplateAstI18nFactory.getInstance(), incompleteStatement, null ) {
+			incompleteStatementPane = new DefaultStatementPane( null, TemplateAstI18nFactory.getInstance(), incompleteStatement, null ) {
 				@Override
-				protected void paintOutline( java.awt.Graphics2D g2, java.awt.Shape shape ) {
+				protected void paintOutline( Graphics2D g2, Shape shape ) {
 				}
 
 				@Override

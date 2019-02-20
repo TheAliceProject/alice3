@@ -42,16 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.cascade.fillerinners;
 
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.resources.sims2.FullBodyOutfitManager;
+import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.LifeStage;
+import org.lgna.story.resources.sims2.Outfit;
+
 /**
  * @author Dennis Cosgrove
  */
 public class OutfitFillerInner extends IngredientFillerInner {
 	public OutfitFillerInner() {
-		super( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.Outfit.class ) );
+		super( JavaType.getInstance( Outfit.class ) );
 	}
 
 	@Override
-	protected Class<?>[] getClses( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
-		return org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender );
+	protected Class<?>[] getClses( LifeStage lifeStage, Gender gender ) {
+		return FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender );
 	}
 }

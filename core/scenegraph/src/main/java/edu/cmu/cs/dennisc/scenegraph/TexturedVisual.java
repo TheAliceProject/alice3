@@ -42,27 +42,29 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.texture.Texture;
+
 /**
  * @author alice
  *
  */
-public abstract class TexturedVisual extends edu.cmu.cs.dennisc.scenegraph.Visual {
+public abstract class TexturedVisual extends Visual {
 	public TexturedVisual() {
 		this.sgAppearance.setDiffuseColorTextureClamped( true );
 		this.frontFacingAppearance.setValue( this.sgAppearance );
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.TexturedAppearance getAppearance() {
+	public TexturedAppearance getAppearance() {
 		return sgAppearance;
 	}
 
-	public edu.cmu.cs.dennisc.texture.Texture getTexture() {
+	public Texture getTexture() {
 		return this.sgAppearance.diffuseColorTexture.getValue();
 	}
 
-	public void setTexture( edu.cmu.cs.dennisc.texture.Texture texture ) {
+	public void setTexture( Texture texture ) {
 		this.sgAppearance.setDiffuseColorTextureAndInferAlphaBlend( texture );
 	}
 
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
+	private final TexturedAppearance sgAppearance = new TexturedAppearance();
 }

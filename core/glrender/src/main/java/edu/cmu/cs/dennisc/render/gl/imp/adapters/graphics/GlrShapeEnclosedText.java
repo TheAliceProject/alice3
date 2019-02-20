@@ -42,41 +42,53 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics;
 
-public abstract class GlrShapeEnclosedText<T extends edu.cmu.cs.dennisc.scenegraph.graphics.ShapeEnclosedText> extends GlrText<T> {
-	private java.awt.Color fillColor = null;
-	private java.awt.Color outlineColor = null;
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.awt.MultilineText;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.render.Graphics2D;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.graphics.ShapeEnclosedText;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Rectangle;
+
+public abstract class GlrShapeEnclosedText<T extends ShapeEnclosedText> extends GlrText<T> {
+	private Color fillColor = null;
+	private Color outlineColor = null;
 
 	protected abstract void render(
-			edu.cmu.cs.dennisc.render.Graphics2D g2,
-			edu.cmu.cs.dennisc.render.RenderTarget renderTarget,
-			java.awt.Rectangle actualViewport,
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
-			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
-			java.awt.Font font,
-			java.awt.Color textColor,
+			Graphics2D g2,
+			RenderTarget renderTarget,
+			Rectangle actualViewport,
+			AbstractCamera camera,
+			MultilineText multilineText,
+			Font font,
+			Color textColor,
 			float wrapWidth,
-			java.awt.Color fillColor,
-			java.awt.Color outlineColor );
+			Color fillColor,
+			Color outlineColor );
 
 	@Override
 	protected void render(
-			edu.cmu.cs.dennisc.render.Graphics2D g2,
-			edu.cmu.cs.dennisc.render.RenderTarget renderTarget,
-			java.awt.Rectangle actualViewport,
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
-			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
-			java.awt.Font font,
-			java.awt.Color textColor,
+			Graphics2D g2,
+			RenderTarget renderTarget,
+			Rectangle actualViewport,
+			AbstractCamera camera,
+			MultilineText multilineText,
+			Font font,
+			Color textColor,
 			float wrapWidth ) {
 		this.render( g2, renderTarget, actualViewport, camera, multilineText, font, textColor, wrapWidth, this.fillColor, this.outlineColor );
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.fillColor ) {
-			this.fillColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.toAwtColor( this.owner.fillColor.getValue() );
+			this.fillColor = ColorUtilities.toAwtColor( this.owner.fillColor.getValue() );
 		} else if( property == owner.outlineColor ) {
-			this.outlineColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.toAwtColor( this.owner.outlineColor.getValue() );
+			this.outlineColor = ColorUtilities.toAwtColor( this.owner.outlineColor.getValue() );
 		} else {
 			super.propertyChanged( property );
 		}

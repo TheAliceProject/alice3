@@ -42,10 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade.literals;
 
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.NullLiteral;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NullLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.NullLiteral> {
+public class NullLiteralFillIn extends ExpressionFillInWithoutBlanks<NullLiteral> {
 	private static class SingletonHolder {
 		private static NullLiteralFillIn instance = new NullLiteralFillIn();
 	}
@@ -54,19 +60,19 @@ public class NullLiteralFillIn extends org.alice.ide.croquet.models.cascade.Expr
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.project.ast.NullLiteral transientValue = new org.lgna.project.ast.NullLiteral();
+	private final NullLiteral transientValue = new NullLiteral();
 
 	private NullLiteralFillIn() {
-		super( java.util.UUID.fromString( "e2cfad91-ac53-441e-8ac8-cb0d1c26520f" ) );
+		super( UUID.fromString( "e2cfad91-ac53-441e-8ac8-cb0d1c26520f" ) );
 	}
 
 	@Override
-	public org.lgna.project.ast.NullLiteral getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.NullLiteral, Void> node ) {
+	public NullLiteral getTransientValue( ItemNode<? super NullLiteral, Void> node ) {
 		return this.transientValue;
 	}
 
 	@Override
-	public org.lgna.project.ast.NullLiteral createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.NullLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return new org.lgna.project.ast.NullLiteral();
+	public NullLiteral createValue( ItemNode<? super NullLiteral, Void> node ) {
+		return new NullLiteral();
 	}
 }

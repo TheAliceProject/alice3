@@ -43,6 +43,29 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
+import edu.cmu.cs.dennisc.property.PropertyUtilities;
+import org.alice.serialization.xml.XmlEncoderDecoder;
+import org.lgna.project.VersionNotSupportedException;
+import org.lgna.project.annotations.AddEventListenerTemplate;
+import org.lgna.project.annotations.GetterTemplate;
+import org.lgna.project.code.CodeAppender;
+import org.w3c.dom.Document;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,37 +74,23 @@ public class AstUtilities {
 		throw new AssertionError();
 	}
 
-	public static <N extends Node> N createCopy( N original, NamedUserType root, DecodeIdPolicy policy ) {
-		java.util.Set<AbstractDeclaration> abstractDeclarations;
+	public static <N extends AbstractNode & CodeAppender> N createCopy( N original, NamedUserType root ) {
+		Set<AbstractDeclaration> abstractDeclarations;
 		if( root != null ) {
 			abstractDeclarations = root.createDeclarationSet();
-			( (AbstractNode)original ).removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
+			original.removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
 		} else {
-			abstractDeclarations = java.util.Collections.emptySet();
+			abstractDeclarations = Collections.emptySet();
 		}
-		java.util.Map<Integer, AbstractDeclaration> map = AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
-		org.w3c.dom.Document xmlDocument = ( (AbstractNode)original ).encode( abstractDeclarations );
+		XmlEncoderDecoder coder = new XmlEncoderDecoder();
+		Document xmlDocument = coder.encode( original , abstractDeclarations );
 		try {
-			AbstractNode dst = AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, policy );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
+			AbstractNode dst = coder.copy( xmlDocument, abstractDeclarations );
+			Logger.todo( "check copy", dst );
 			return (N)dst;
-		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+		} catch( VersionNotSupportedException vnse ) {
 			throw new AssertionError( vnse );
 		}
-	}
-
-	public static <N extends Node> N createCopy( N original, NamedUserType root ) {
-		return createCopy( original, root, DecodeIdPolicy.NEW_IDS );
-	}
-
-	public static <N extends Node> N createDeepCopy( N original, DecodeIdPolicy decodeIdPolicy ) {
-		return createCopy( original, null, decodeIdPolicy );
-	}
-
-	public static UserMethod createCopyWithoutBodyStatements( UserMethod original, NamedUserType root, DecodeIdPolicy policy ) {
-		UserMethod copy = createCopy( original, root, policy );
-		copy.body.getValue().statements.clear();
-		return copy;
 	}
 
 	public static boolean isKeywordExpression( Expression expression ) {
@@ -113,7 +122,7 @@ public class AstUtilities {
 
 	private static boolean isValidMethod( java.lang.reflect.Method mthd, AbstractType<?, ?, ?> valueType ) {
 		int modifiers = mthd.getModifiers();
-		if( java.lang.reflect.Modifier.isPublic( modifiers ) && java.lang.reflect.Modifier.isStatic( modifiers ) ) {
+		if( Modifier.isPublic( modifiers ) && Modifier.isStatic( modifiers ) ) {
 			return valueType.isAssignableFrom( mthd.getReturnType() );
 		} else {
 			return false;
@@ -121,7 +130,7 @@ public class AstUtilities {
 	}
 
 	public static Iterable<JavaMethod> getKeyMethods( AbstractParameter parameter ) {
-		java.util.List<JavaMethod> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<JavaMethod> rv = Lists.newLinkedList();
 		AbstractType<?, ?, ?> valueType = parameter.getValueType().getComponentType();
 		AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
 		if( keywordFactoryType != null ) {
@@ -158,12 +167,12 @@ public class AstUtilities {
 		return true;
 	}
 
-	private static java.util.List<JavaMethod> updatePersistentPropertyGetters( java.util.List<JavaMethod> rv, JavaType javaType ) {
+	private static List<JavaMethod> updatePersistentPropertyGetters( List<JavaMethod> rv, JavaType javaType ) {
 		for( JavaMethod method : javaType.getDeclaredMethods() ) {
 			java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
 			if( mthd != null ) {
-				if( mthd.isAnnotationPresent( org.lgna.project.annotations.GetterTemplate.class ) ) {
-					org.lgna.project.annotations.GetterTemplate gttrTemplate = mthd.getAnnotation( org.lgna.project.annotations.GetterTemplate.class );
+				if( mthd.isAnnotationPresent( GetterTemplate.class ) ) {
+					GetterTemplate gttrTemplate = mthd.getAnnotation( GetterTemplate.class );
 					if( gttrTemplate.isPersistent() ) {
 						rv.add( method );
 					}
@@ -174,13 +183,13 @@ public class AstUtilities {
 	}
 
 	public static Iterable<JavaMethod> getDeclaredPersistentPropertyGetters( JavaType javaType ) {
-		java.util.List<JavaMethod> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<JavaMethod> rv = Lists.newLinkedList();
 		updatePersistentPropertyGetters( rv, javaType );
 		return rv;
 	}
 
 	public static Iterable<JavaMethod> getPersistentPropertyGetters( AbstractType<?, ?, ?> type ) {
-		java.util.List<JavaMethod> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<JavaMethod> rv = Lists.newLinkedList();
 		JavaType javaType = type.getFirstEncounteredJavaType();
 		while( true ) {
 			if( javaType != null ) {
@@ -192,7 +201,7 @@ public class AstUtilities {
 				}
 				javaType = javaType.getSuperType();
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( type );
+				Logger.severe( type );
 				break;
 			}
 		}
@@ -201,7 +210,7 @@ public class AstUtilities {
 
 	public static JavaMethod getSetterForGetter( JavaMethod getter, JavaType type ) {
 		java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
-		java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( gttr, type.getClassReflectionProxy().getReification() );
+		java.lang.reflect.Method sttr = PropertyUtilities.getSetterForGetter( gttr, type.getClassReflectionProxy().getReification() );
 		if( sttr != null ) {
 			return JavaMethod.getInstance( sttr );
 		} else {
@@ -282,31 +291,24 @@ public class AstUtilities {
 		return AstUtilities.createMethodInvocation( new TypeExpression( method.getDeclaringType() ), method, argumentExpressions );
 	}
 
-	public static FieldAccess createFieldAccess( Expression expression, AbstractField field ) {
-		FieldAccess rv = new FieldAccess();
-		rv.expression.setValue( expression );
-		rv.field.setValue( field );
-		return rv;
-	}
-
 	public static FieldAccess createStaticFieldAccess( AbstractField field ) {
 		assert field.isStatic();
-		return createFieldAccess( new TypeExpression( field.getDeclaringType() ), field );
+		return new FieldAccess(new TypeExpression(field.getDeclaringType() ), field);
 	}
 
-	public static FieldAccess createStaticFieldAccess( java.lang.reflect.Field fld ) {
+	public static FieldAccess createStaticFieldAccess( Field fld ) {
 		return createStaticFieldAccess( JavaField.getInstance( fld ) );
 	}
 
 	public static FieldAccess createStaticFieldAccess( Class<?> cls, String fieldName ) {
-		return createStaticFieldAccess( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredField( cls, fieldName ) );
+		return createStaticFieldAccess( ReflectionUtilities.getDeclaredField( cls, fieldName ) );
 	}
 
 	public static MethodInvocation createNextMethodInvocation( MethodInvocation prevMethodInvocation, Expression expression, AbstractMethod nextMethod ) {
 		MethodInvocation rv = new MethodInvocation();
 		rv.expression.setValue( prevMethodInvocation.expression.getValue() );
 		rv.method.setValue( nextMethod );
-		java.util.List<? extends AbstractParameter> parameters = nextMethod.getRequiredParameters();
+		List<? extends AbstractParameter> parameters = nextMethod.getRequiredParameters();
 		final int N = parameters.size();
 		for( int i = 0; i < ( N - 1 ); i++ ) {
 			AbstractArgument argument = prevMethodInvocation.requiredArguments.get( i );
@@ -335,7 +337,7 @@ public class AstUtilities {
 	}
 
 	public static MethodInvocation createMethodInvocation( Expression instanceExpression, AbstractMethod method, Expression... argumentExpressions ) {
-		java.util.List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
+		List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
 		assert requiredParameters.size() == argumentExpressions.length : method;
 
 		MethodInvocation rv = new MethodInvocation();
@@ -394,12 +396,12 @@ public class AstUtilities {
 		return createArrayInstanceCreation( JavaType.getInstance( arrayCls ), expressions );
 	}
 
-	public static ArrayInstanceCreation createArrayInstanceCreation( AbstractType<?, ?, ?> arrayType, java.util.Collection<Expression> expressions ) {
-		return createArrayInstanceCreation( arrayType, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( expressions, Expression.class ) );
+	public static ArrayInstanceCreation createArrayInstanceCreation( AbstractType<?, ?, ?> arrayType, Collection<Expression> expressions ) {
+		return createArrayInstanceCreation( arrayType, ArrayUtilities.createArray( expressions, Expression.class ) );
 	}
 
-	public static ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, java.util.Collection<Expression> expressions ) {
-		return createArrayInstanceCreation( JavaType.getInstance( arrayCls ), edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( expressions, Expression.class ) );
+	public static ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, Collection<Expression> expressions ) {
+		return createArrayInstanceCreation( JavaType.getInstance( arrayCls ), ArrayUtilities.createArray( expressions, Expression.class ) );
 	}
 
 	public static JavaMethod lookupMethod( Class<?> cls, String methodName, Class<?>... parameterTypes ) {
@@ -492,7 +494,7 @@ public class AstUtilities {
 	//		return parameters.get( parameters.size()-1 );
 	//	}
 
-	public static java.util.Map<SimpleArgumentListProperty, SimpleArgument> removeParameter( java.util.Map<SimpleArgumentListProperty, SimpleArgument> rv, NodeListProperty<UserParameter> parametersProperty, UserParameter userParameter, int index, java.util.List<SimpleArgumentListProperty> argumentListProperties ) {
+	public static Map<SimpleArgumentListProperty, SimpleArgument> removeParameter( Map<SimpleArgumentListProperty, SimpleArgument> rv, NodeListProperty<UserParameter> parametersProperty, UserParameter userParameter, int index, List<SimpleArgumentListProperty> argumentListProperties ) {
 		assert rv != null;
 		assert parametersProperty.get( index ) == userParameter;
 		rv.clear();
@@ -506,14 +508,14 @@ public class AstUtilities {
 		return rv;
 	}
 
-	public static void addParameter( java.util.Map<SimpleArgumentListProperty, SimpleArgument> map, NodeListProperty<UserParameter> parametersProperty, UserParameter userParameter, int index, java.util.List<SimpleArgumentListProperty> argumentListProperties ) {
+	public static void addParameter( Map<SimpleArgumentListProperty, SimpleArgument> map, NodeListProperty<UserParameter> parametersProperty, UserParameter userParameter, int index, List<SimpleArgumentListProperty> argumentListProperties ) {
 		parametersProperty.add( index, userParameter );
 		for( SimpleArgumentListProperty argumentListProperty : argumentListProperties ) {
 			SimpleArgument argument = map.get( argumentListProperty );
 			if( argument != null ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "argument == null" );
+				Logger.todo( "argument == null" );
 				argument = new SimpleArgument( userParameter, new NullLiteral() );
 			}
 			argumentListProperty.add( index, argument );
@@ -521,7 +523,7 @@ public class AstUtilities {
 	}
 
 	public static AbstractType<?, ?, ?>[] getParameterValueTypes( AbstractMethod method ) {
-		java.util.List<? extends AbstractParameter> parameters = method.getRequiredParameters();
+		List<? extends AbstractParameter> parameters = method.getRequiredParameters();
 		AbstractType<?, ?, ?>[] rv = new AbstractType[ parameters.size() ];
 		int i = 0;
 		for( AbstractParameter parameter : parameters ) {
@@ -532,7 +534,7 @@ public class AstUtilities {
 	}
 
 	public static <M extends AbstractMethod> M getSingleAbstractMethod( AbstractType<?, M, ?> type ) {
-		java.util.List<M> methods = type.getDeclaredMethods();
+		List<M> methods = type.getDeclaredMethods();
 		assert methods.size() == 1 : type;
 		M singleAbstractMethod = methods.get( 0 );
 		assert singleAbstractMethod.isAbstract() : singleAbstractMethod;
@@ -541,7 +543,7 @@ public class AstUtilities {
 
 	public static UserLambda createUserLambda( AbstractType<?, ?, ?> type ) {
 		AbstractMethod singleAbstractMethod = getSingleAbstractMethod( type );
-		java.util.List<? extends AbstractParameter> srcRequiredParameters = singleAbstractMethod.getRequiredParameters();
+		List<? extends AbstractParameter> srcRequiredParameters = singleAbstractMethod.getRequiredParameters();
 		UserParameter[] dstRequiredParameters = new UserParameter[ srcRequiredParameters.size() ];
 		for( int i = 0; i < dstRequiredParameters.length; i++ ) {
 			AbstractParameter srcRequiredParameter = srcRequiredParameters.get( i );
@@ -579,7 +581,7 @@ public class AstUtilities {
 				AbstractMethod method = methodInvocation.method.getValue();
 				if( method instanceof JavaMethod ) {
 					JavaMethod javaMethod = (JavaMethod)method;
-					return javaMethod.isAnnotationPresent( org.lgna.project.annotations.AddEventListenerTemplate.class );
+					return javaMethod.isAnnotationPresent( AddEventListenerTemplate.class );
 				}
 			}
 		}
@@ -628,8 +630,8 @@ public class AstUtilities {
 		return getOverridenMethod( type.getSuperType(), method.getName(), getParameterTypes( method ) );
 	}
 
-	private static void addInvokedMethods( java.util.Set<UserMethod> set, UserMethod from ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<MethodInvocation> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<MethodInvocation>( MethodInvocation.class ) {
+	private static void addInvokedMethods( Set<UserMethod> set, UserMethod from ) {
+		IsInstanceCrawler<MethodInvocation> crawler = new IsInstanceCrawler<MethodInvocation>( MethodInvocation.class ) {
 			@Override
 			protected boolean isAcceptable( MethodInvocation methodInvocation ) {
 				return true;
@@ -650,15 +652,15 @@ public class AstUtilities {
 		}
 	}
 
-	public static java.util.Set<UserMethod> getAllInvokedMethods( UserMethod seed ) {
-		java.util.Set<UserMethod> set = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+	public static Set<UserMethod> getAllInvokedMethods( UserMethod seed ) {
+		Set<UserMethod> set = Sets.newHashSet();
 		addInvokedMethods( set, seed );
 		return set;
 	}
 
 	public static void fixRequiredArgumentsIfNecessary( MethodInvocation methodInvocation ) {
 		AbstractMethod method = methodInvocation.method.getValue();
-		java.util.List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
+		List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
 
 		assert requiredParameters.size() == methodInvocation.requiredArguments.size() : method;
 
@@ -674,10 +676,10 @@ public class AstUtilities {
 		}
 	}
 
-	public static java.util.Collection<NamedUserType> getNamedUserTypes( Node node ) {
-		edu.cmu.cs.dennisc.pattern.Criterion<Declaration> declarationFilter = null;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.NamedUserType> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.NamedUserType.class );
-		node.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE, declarationFilter );
+	public static Collection<NamedUserType> getNamedUserTypes( Node node ) {
+		Criterion<Declaration> declarationFilter = null;
+		IsInstanceCrawler<NamedUserType> crawler = IsInstanceCrawler.createInstance( NamedUserType.class );
+		node.crawl( crawler, CrawlPolicy.COMPLETE, declarationFilter );
 		return crawler.getList();
 	}
 
@@ -696,7 +698,7 @@ public class AstUtilities {
 		}
 	}
 
-	private static void updateAllMethods( java.util.List<AbstractMethod> allMethods, AbstractType<?, ?, ?> type ) {
+	private static void updateAllMethods( List<AbstractMethod> allMethods, AbstractType<?, ?, ?> type ) {
 		allMethods.addAll( type.getDeclaredMethods() );
 		AbstractType<?, ?, ?> superType = type.getSuperType();
 		if( superType != null ) {
@@ -704,8 +706,8 @@ public class AstUtilities {
 		}
 	}
 
-	public static java.util.List<AbstractMethod> getAllMethods( AbstractType<?, ?, ?> type ) {
-		java.util.List<AbstractMethod> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public static List<AbstractMethod> getAllMethods( AbstractType<?, ?, ?> type ) {
+		List<AbstractMethod> rv = Lists.newLinkedList();
 		updateAllMethods( rv, type );
 		return rv;
 	}

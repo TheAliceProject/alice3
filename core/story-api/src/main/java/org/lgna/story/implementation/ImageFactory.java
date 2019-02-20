@@ -42,60 +42,84 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import org.lgna.common.event.ResourceContentEvent;
+import org.lgna.common.event.ResourceContentListener;
+import org.lgna.common.resources.ImageResource;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class ImageFactory {
-	private static java.util.Map<org.lgna.common.resources.ImageResource, java.awt.image.BufferedImage> resourceToBufferedImageMap = new java.util.HashMap<org.lgna.common.resources.ImageResource, java.awt.image.BufferedImage>();
+	private static Map<ImageResource, BufferedImage> resourceToBufferedImageMap = new HashMap<ImageResource, BufferedImage>();
 
-	private static org.lgna.common.event.ResourceContentListener resourceContentListener = new org.lgna.common.event.ResourceContentListener() {
+	private static ResourceContentListener resourceContentListener = new ResourceContentListener() {
 		@Override
-		public void contentChanging( org.lgna.common.event.ResourceContentEvent e ) {
+		public void contentChanging( ResourceContentEvent e ) {
 		}
 
 		@Override
-		public void contentChanged( org.lgna.common.event.ResourceContentEvent e ) {
-			ImageFactory.forget( (org.lgna.common.resources.ImageResource)e.getTypedSource() );
+		public void contentChanged( ResourceContentEvent e ) {
+			ImageFactory.forget( (ImageResource)e.getTypedSource() );
 		}
 	};
 
 	private ImageFactory() {
 	}
 
-	public static void forget( org.lgna.common.resources.ImageResource imageResource ) {
+	public static void forget( ImageResource imageResource ) {
 		ImageFactory.resourceToBufferedImageMap.remove( imageResource );
 		imageResource.removeContentListener( ImageFactory.resourceContentListener );
 	}
 
-	public static java.awt.image.BufferedImage getBufferedImage( org.lgna.common.resources.ImageResource imageResource ) {
+	public static BufferedImage getBufferedImage( ImageResource imageResource ) {
 		assert imageResource != null;
-		java.awt.image.BufferedImage rv = ImageFactory.resourceToBufferedImageMap.get( imageResource );
-		if( rv != null ) {
-			//pass
-		} else {
-			try {
-				rv = javax.imageio.ImageIO.read( new java.io.ByteArrayInputStream( imageResource.getData() ) );
-				//				if( imageResource.getWidth() < 0 || imageResource.getHeight() < 0 ) {
-				imageResource.setWidth( rv.getWidth() );
-				imageResource.setHeight( rv.getHeight() );
-				//				}
-
-				imageResource.addContentListener( ImageFactory.resourceContentListener );
-				ImageFactory.resourceToBufferedImageMap.put( imageResource, rv );
-			} catch( java.io.IOException ioe ) {
-				//todo: return warning texture
-			}
+		BufferedImage cachedImage = ImageFactory.resourceToBufferedImageMap.get( imageResource );
+		if (cachedImage != null) {
+			return cachedImage;
 		}
-		return rv;
+		try {
+			BufferedImage image = ImageIO.read( new ByteArrayInputStream( imageResource.getData() ) );
+			if( image != null ) {
+				imageResource.setWidth( image.getWidth() );
+				imageResource.setHeight( image.getHeight() );
+				imageResource.addContentListener( ImageFactory.resourceContentListener );
+				ImageFactory.resourceToBufferedImageMap.put( imageResource, image );
+				return image;
+			}
+		} catch( IOException ioe ) {
+			//todo: return warning texture
+		}
+		return null;
 	}
 
-	public static org.lgna.common.resources.ImageResource createImageResource( java.io.File file ) throws java.io.IOException {
-		String contentType = org.lgna.common.resources.ImageResource.getContentType( file );
+	public static ImageResource createImageResource(BufferedImage image, String fileName) throws IOException {
+		String contentType = ImageResource.getContentType( fileName );
 		if( contentType != null ) {
-			org.lgna.common.resources.ImageResource rv = new org.lgna.common.resources.ImageResource( file, contentType );
+			ImageResource rv = new ImageResource(image, fileName, contentType );
+			ImageFactory.resourceToBufferedImageMap.put( rv, image );
+			return rv;
+		} else {
+			throw new RuntimeException( "content type not found for " + fileName );
+		}
+	}
+
+	public static ImageResource createImageResource( File file ) throws IOException {
+		String contentType = ImageResource.getContentType( file );
+		if( contentType != null ) {
+			ImageResource rv = new ImageResource( file, contentType );
 
 			//update width and height details
-			getBufferedImage( rv );
+			if (null == getBufferedImage( rv ) ) {
+				throw new IOException( "content not found for " + file );
+			}
 
 			return rv;
 		} else {

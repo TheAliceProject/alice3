@@ -43,13 +43,21 @@
 
 package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.EnumProperty;
+import edu.cmu.cs.dennisc.property.StringProperty;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.project.code.CodeGenerator;
+import org.lgna.project.code.CodeOrganizer;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class UserField extends AbstractField implements UserMember, CodeGenerator, CodeAppender {
+public final class UserField extends AbstractField implements UserMember, CodeGenerator {
 	public UserField() {
 	}
 
@@ -75,6 +83,26 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
 		}
 	}
 
+	public ArrayItemGetter getArrayItemGetter() {
+		initializeAccessors();
+		return arrayItemGetter;
+	}
+
+	public ArrayItemSetter getArrayItemSetter() {
+		initializeAccessors();
+		return arrayItemSetter;
+	}
+
+	public List<Getter> getGetters() {
+		initializeAccessors();
+		return getters;
+	}
+
+	public List<Setter> getSetters() {
+		initializeAccessors();
+		return setters;
+	}
+
 	@Override
 	public boolean isValid() {
 		return true;
@@ -91,12 +119,12 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return this.name;
 	}
 
 	@Override
-	public org.lgna.project.ast.ManagementLevel getManagementLevel() {
+	public ManagementLevel getManagementLevel() {
 		return this.managementLevel.getValue();
 	}
 
@@ -106,11 +134,11 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
 	}
 
 	@Override
-	public org.lgna.project.annotations.Visibility getVisibility() {
+	public Visibility getVisibility() {
 		return m_visibility;
 	}
 
-	public void setVisibility( org.lgna.project.annotations.Visibility visibility ) {
+	public void setVisibility( Visibility visibility ) {
 		m_visibility = visibility;
 	}
 
@@ -145,45 +173,63 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendFieldPrefix( this );
-		generator.appendAccessLevel( this.getAccessLevel() );
-		if( this.isStatic() ) {
-			generator.appendString( "static " );
-		}
-		if( this.isFinal() ) {
-			generator.appendString( "final " );
-		}
-		generator.appendTypeName( this.valueType.getValue() );
-		generator.appendSpace();
-		generator.appendString( this.name.getValue() );
-		generator.appendChar( '=' );
-		generator.appendExpression( this.initializer.getValue() );
-		generator.appendSemicolon();
-		generator.appendFieldPostfix( this );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendField(this);
 	}
 
-	@Override
-	public String generateJavaCode( JavaCodeGenerator generator ) {
-		this.appendJava( generator );
-		return generator.getText( false );
+	void addToOrganizer( CodeOrganizer codeOrganizer, boolean showPublicStaticFinal ) {
+		codeOrganizer.addField( this );
+		if (!showPublicStaticFinal && isPublicAccess() && isStatic() && isFinal()) {
+			return;
+		}
+		initializeAccessors();
+		codeOrganizer.addGetters( getters );
+		codeOrganizer.addSetters( setters );
 	}
 
-	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+	// This is to support the instantiation process used in deserialization. If that changes this could be moved
+	// into the constructor and only called once with the variables becoming final.
+	private void initializeAccessors() {
+		if ( getters == null ) {
+			if (valueType.getValue().isArray()) {
+				arrayItemGetter = new ArrayItemGetter( this );
+				getters = Collections.unmodifiableList( Lists.newArrayList( arrayItemGetter, getter ) );
+			} else {
+				getters = Collections.singletonList( getter );
+			}
+
+			if (isFinal()) {
+				setters = Collections.emptyList();
+			} else {
+				if (valueType.getValue().isArray()) {
+					arrayItemSetter = new ArrayItemSetter( this );
+					setters = Collections.unmodifiableList( Lists.newArrayList( arrayItemSetter, setter ) );
+				} else {
+					setters = Collections.singletonList( setter );
+				}
+			}
+		}
+	}
+
+	public final StringProperty name = new StringProperty( this, null );
 	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = DeclarationProperty.createReferenceInstance( this );
-	public final edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
-	public final edu.cmu.cs.dennisc.property.EnumProperty<FieldModifierFinalVolatileOrNeither> finalVolatileOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty<FieldModifierFinalVolatileOrNeither>( this, FieldModifierFinalVolatileOrNeither.NEITHER );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isTransient = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public final edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel> managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
+	public final EnumProperty<AccessLevel> accessLevel = new EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
+	public final EnumProperty<FieldModifierFinalVolatileOrNeither> finalVolatileOrNeither = new EnumProperty<FieldModifierFinalVolatileOrNeither>( this, FieldModifierFinalVolatileOrNeither.NEITHER );
+	public final BooleanProperty isStatic = new BooleanProperty( this, Boolean.FALSE );
+	public final BooleanProperty isTransient = new BooleanProperty( this, Boolean.FALSE );
+	public final EnumProperty<ManagementLevel> managementLevel = new EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
+	public final BooleanProperty isDeletionAllowed = new BooleanProperty( this, Boolean.TRUE );
 	public final ExpressionProperty initializer = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {
 			return UserField.this.valueType.getValue();
 		}
 	};
-	private org.lgna.project.annotations.Visibility m_visibility = org.lgna.project.annotations.Visibility.PRIME_TIME;
+	private Visibility m_visibility = Visibility.PRIME_TIME;
 	private final Getter getter = new Getter( this );
 	private final Setter setter = new Setter( this );
+	private ArrayItemGetter arrayItemGetter;
+	private ArrayItemSetter arrayItemSetter;
+	private List<Getter> getters;
+	private List<Setter> setters;
 }

@@ -43,6 +43,11 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+
+import java.util.Arrays;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -69,10 +74,10 @@ public class MenuItemContainerUtilities {
 	//	}
 
 	public static interface MenuElementObserver {
-		public void update( MenuItemContainer menuItemContainer, org.lgna.croquet.StandardMenuItemPrepModel model, ViewController<?, ?> menuElement );
+		public void update( MenuItemContainer menuItemContainer, StandardMenuItemPrepModel model, ViewController<?, ?> menuElement );
 	}
 
-	private static MenuItemContainer addMenuElement( MenuItemContainer menuItemContainer, org.lgna.croquet.StandardMenuItemPrepModel model, MenuElementObserver observer ) {
+	private static MenuItemContainer addMenuElement( MenuItemContainer menuItemContainer, StandardMenuItemPrepModel model, MenuElementObserver observer ) {
 		ViewController<?, ?> menuElement;
 		if( model != null ) {
 			menuElement = model.createMenuItemAndAddTo( menuItemContainer );
@@ -87,29 +92,30 @@ public class MenuItemContainerUtilities {
 		return menuItemContainer;
 	}
 
-	public static void setMenuElements( MenuItemContainer menuItemContainer, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models, MenuElementObserver observer ) {
+	public static void setMenuElements( MenuItemContainer menuItemContainer, java.util.List<StandardMenuItemPrepModel> models, MenuElementObserver observer ) {
 		final boolean IS_REUSE_READY_FOR_PRIME_TIME = false;
 		if( IS_REUSE_READY_FOR_PRIME_TIME ) {
 			for( AwtComponentView<?> component : menuItemContainer.getMenuComponents() ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
+				Logger.outln( component );
 			}
 		} else {
 			menuItemContainer.forgetAndRemoveAllMenuItems();
-			for( org.lgna.croquet.StandardMenuItemPrepModel model : models ) {
+			for( StandardMenuItemPrepModel model : models ) {
 				addMenuElement( menuItemContainer, model, observer );
 			}
 		}
 	}
 
-	public static void setMenuElements( MenuItemContainer menuItemContainer, org.lgna.croquet.StandardMenuItemPrepModel[] models, MenuElementObserver observer ) {
-		setMenuElements( menuItemContainer, java.util.Arrays.asList( models ), observer );
+	private static void setMenuElements( MenuItemContainer menuItemContainer, StandardMenuItemPrepModel[] models,
+																			 MenuElementObserver observer ) {
+		setMenuElements( menuItemContainer, Arrays.asList( models ), observer );
 	}
 
-	public static void setMenuElements( MenuItemContainer menuItemContainer, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models ) {
+	public static void setMenuElements( MenuItemContainer menuItemContainer, java.util.List<StandardMenuItemPrepModel> models ) {
 		setMenuElements( menuItemContainer, models, null );
 	}
 
-	public static void setMenuElements( MenuItemContainer menuItemContainer, org.lgna.croquet.StandardMenuItemPrepModel[] models ) {
+	public static void setMenuElements( MenuItemContainer menuItemContainer, StandardMenuItemPrepModel[] models ) {
 		setMenuElements( menuItemContainer, models, null );
 	}
 }

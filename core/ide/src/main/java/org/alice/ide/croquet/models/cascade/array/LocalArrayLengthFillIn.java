@@ -43,13 +43,21 @@
 
 package org.alice.ide.croquet.models.cascade.array;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LocalArrayLengthFillIn extends ArrayLengthFillIn {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalArrayLengthFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<UserLocal, LocalArrayLengthFillIn> map = Maps.newHashMap();
 
-	public static synchronized LocalArrayLengthFillIn getInstance( org.lgna.project.ast.UserLocal local ) {
+	public static synchronized LocalArrayLengthFillIn getInstance( UserLocal local ) {
 		assert local != null;
 		LocalArrayLengthFillIn rv = map.get( local );
 		if( rv != null ) {
@@ -61,15 +69,15 @@ public class LocalArrayLengthFillIn extends ArrayLengthFillIn {
 		return rv;
 	}
 
-	private final org.lgna.project.ast.UserLocal local;
+	private final UserLocal local;
 
-	private LocalArrayLengthFillIn( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "007ec992-c623-4a2b-afcc-5642dfd7be75" ) );
+	private LocalArrayLengthFillIn( UserLocal local ) {
+		super( UUID.fromString( "007ec992-c623-4a2b-afcc-5642dfd7be75" ) );
 		this.local = local;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.LocalAccess( this.local );
+	protected Expression createAccessExpression() {
+		return new LocalAccess( this.local );
 	}
 }

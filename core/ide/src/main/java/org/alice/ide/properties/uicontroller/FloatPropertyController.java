@@ -45,9 +45,12 @@ package org.alice.ide.properties.uicontroller;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class FloatPropertyController extends LabelBasedPropertyController<Float>
 {
-	private static java.text.NumberFormat FLOAT_FORMAT = new java.text.DecimalFormat( "0.0" );
+	private static NumberFormat FLOAT_FORMAT = new DecimalFormat( "0.0" );
 
 	public FloatPropertyController( AbstractPropertyAdapter<Float, ?> propertyAdapter )
 	{

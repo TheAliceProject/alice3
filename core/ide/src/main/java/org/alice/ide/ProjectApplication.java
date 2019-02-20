@@ -43,60 +43,93 @@
 
 package org.alice.ide;
 
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.java.net.UriUtilities;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import org.alice.ide.frametitle.IdeFrameTitleGenerator;
+import org.alice.ide.project.ProjectDocumentState;
+import org.alice.ide.recentprojects.RecentProjectsListData;
+import org.alice.ide.uricontent.FileProjectLoader;
+import org.alice.ide.uricontent.UriProjectLoader;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.PerspectiveApplication;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.undo.UndoHistory;
+import org.lgna.croquet.undo.event.HistoryClearEvent;
+import org.lgna.croquet.undo.event.HistoryInsertionIndexEvent;
+import org.lgna.croquet.undo.event.HistoryListener;
+import org.lgna.croquet.undo.event.HistoryPushEvent;
+import org.lgna.project.ProgramTypeUtilities;
+import org.lgna.project.Project;
 import org.lgna.project.ProjectVersion;
+import org.lgna.project.VersionNotSupportedException;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.ListIterator;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApplication<ProjectDocumentFrame> {
-	public static final org.lgna.croquet.Group HISTORY_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
-	public static final org.lgna.croquet.Group URI_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
+public abstract class ProjectApplication extends PerspectiveApplication<ProjectDocumentFrame> {
+	public static final Group HISTORY_GROUP = Group.getInstance( UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
+	public static final Group URI_GROUP = Group.getInstance( UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
+
+	private UserActivity projectActivity;
 
 	public static ProjectApplication getActiveInstance() {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.PerspectiveApplication.getActiveInstance(), ProjectApplication.class );
+		return ClassUtilities.getInstance( PerspectiveApplication.getActiveInstance(), ProjectApplication.class );
 	}
 
-	private org.lgna.croquet.undo.event.HistoryListener projectHistoryListener;
+	private HistoryListener projectHistoryListener;
 
 	public ProjectApplication( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager ) {
 		this.projectFileUtilities = new ProjectFileUtilities(this);
 		this.projectDocumentFrame = new ProjectDocumentFrame( ideConfiguration, apiConfigurationManager );
-		this.projectHistoryListener = new org.lgna.croquet.undo.event.HistoryListener() {
+		this.projectHistoryListener = new HistoryListener() {
 			@Override
-			public void operationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
+			public void operationPushing( HistoryPushEvent e ) {
 			}
 
 			@Override
-			public void operationPushed( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
+			public void operationPushed( HistoryPushEvent e ) {
 			}
 
 			@Override
-			public void insertionIndexChanging( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
+			public void insertionIndexChanging( HistoryInsertionIndexEvent e ) {
 			}
 
 			@Override
-			public void insertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
+			public void insertionIndexChanged( HistoryInsertionIndexEvent e ) {
 				ProjectApplication.this.handleInsertionIndexChanged( e );
 			}
 
 			@Override
-			public void clearing( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
+			public void clearing( HistoryClearEvent e ) {
 			}
 
 			@Override
-			public void cleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
+			public void cleared( HistoryClearEvent e ) {
 			}
 		};
 		this.updateTitle();
 	}
 
 	@Override
-	public org.alice.ide.ProjectDocumentFrame getDocumentFrame() {
+	public ProjectDocumentFrame getDocumentFrame() {
 		return this.projectDocumentFrame;
 	}
 
 	private void updateUndoRedoEnabled() {
-		org.lgna.croquet.undo.UndoHistory historyManager = this.getProjectHistory( org.lgna.croquet.Application.PROJECT_GROUP );
+		UndoHistory historyManager = this.getProjectHistory( Application.PROJECT_GROUP );
 		boolean isUndoEnabled;
 		boolean isRedoEnabled;
 		if( historyManager != null ) {
@@ -114,9 +147,9 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		documentFrame.getRedoOperation().setEnabled( isRedoEnabled );
 	}
 
-	protected void handleInsertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
+	protected void handleInsertionIndexChanged( HistoryInsertionIndexEvent e ) {
 		this.updateTitle();
-		org.lgna.croquet.undo.UndoHistory source = e.getTypedSource();
+		UndoHistory source = e.getTypedSource();
 		if( source.getGroup() == PROJECT_GROUP ) {
 			this.updateUndoRedoEnabled();
 		}
@@ -134,7 +167,8 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		return ProjectVersion.getCurrentVersion().getMajorAndMinor();
 	}
 
-	public static final String getApplicationSubPath() {
+	@Override
+	public String getApplicationSubPath() {
 		String rv = getApplicationName();
 		if( "Alice".equals( rv ) ) {
 			rv = "Alice3";
@@ -142,93 +176,26 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		return rv.replaceAll( " ", "" );
 	}
 
-	public void showUnableToOpenFileDialog( java.io.File file, String message ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Unable to open file " );
-		sb.append( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
-		sb.append( ".\n\n" );
-		sb.append( message );
-		new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
-				.title( "Cannot read file" )
-				.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
-				.buildAndShow();
+	public void handleVersionNotSupported( File file, VersionNotSupportedException vnse ) {
+		Dialogs.showUnableToOpenFileDialog(
+			file, String.format(
+				"%s is not backwards compatible with:\n    File Version: %s\n    (Minimum Supported Version: %s)",
+				getApplicationName(), vnse.getVersion(), vnse.getMinimumSupportedVersion()));
 	}
 
-	public void handleVersionNotSupported( java.io.File file, org.lgna.project.VersionNotSupportedException vnse ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( getApplicationName() );
-		sb.append( " is not backwards compatible with:" );
-		sb.append( "\n    File Version: " );
-		sb.append( vnse.getVersion() );
-		sb.append( "\n    (Minimum Supported Version: " );
-		sb.append( vnse.getMinimumSupportedVersion() );
-		sb.append( ")" );
-		this.showUnableToOpenFileDialog( file, sb.toString() );
-	}
+	private UriProjectLoader uriProjectLoader;
 
-	public void showUnableToOpenProjectMessageDialog( java.io.File file, boolean isValidZip ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Look for files with an " );
-		sb.append( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION );
-		sb.append( " extension." );
-		this.showUnableToOpenFileDialog( file, sb.toString() );
-	}
-
-	private org.alice.ide.uricontent.UriProjectLoader uriProjectLoader;
-
-	public org.alice.ide.uricontent.UriProjectLoader getUriProjectLoader() {
-		return this.uriProjectLoader;
-	}
-
-	public final java.net.URI getUri() {
+	public final URI getUri() {
 		return this.uriProjectLoader != null ? this.uriProjectLoader.getUri() : null;
 	}
 
-	private void setUriProjectPair( org.alice.ide.uricontent.UriProjectLoader uriProjectLoader ) {
-		this.uriProjectLoader = null;
-		org.lgna.project.Project project;
-		if( uriProjectLoader != null ) {
-			try {
-				project = uriProjectLoader.getContentWaitingIfNecessary( org.alice.ide.uricontent.UriContentLoader.MutationPlan.WILL_MUTATE );
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( ie );
-			} catch( java.util.concurrent.ExecutionException ee ) {
-				throw new RuntimeException( ee );
-			}
-		} else {
-			project = null;
-		}
-		if( project != null ) {
-			// Remove the old project history listener, so the old project can be cleaned up
-			if( ( this.getProject() != null ) && ( this.getProjectHistory() != null ) ) {
-				this.getProjectHistory().removeHistoryListener( this.projectHistoryListener );
-			}
-			this.setProject( project );
-			this.uriProjectLoader = uriProjectLoader;
-			this.getProjectHistory().addHistoryListener( this.projectHistoryListener );
-			java.net.URI uri = this.uriProjectLoader.getUri();
-			java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
-			try {
-				if( ( file != null ) && file.canWrite() ) {
-					//org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().handleOpen( file );
-					org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleOpen( file );
-				}
-			} catch( Throwable throwable ) {
-				throwable.printStackTrace();
-			}
-			this.updateTitle();
-		} else {
-			//actionContext.cancel();
-		}
-	}
-
 	@Deprecated
-	private final org.lgna.croquet.undo.UndoHistory getProjectHistory() {
+	private final UndoHistory getProjectHistory() {
 		return this.getProjectHistory( PROJECT_GROUP );
 	}
 
 	@Deprecated
-	private final org.lgna.croquet.undo.UndoHistory getProjectHistory( org.lgna.croquet.Group group ) {
+	private final UndoHistory getProjectHistory( Group group ) {
 		if( this.getDocument() == null ) {
 			return null;
 		} else {
@@ -243,7 +210,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	private int projectHistoryIndexSceneSetUp = 0;
 
 	public boolean isProjectUpToDateWithFile() {
-		org.lgna.croquet.undo.UndoHistory history = this.getProjectHistory();
+		UndoHistory history = this.getProjectHistory();
 		if( history == null ) {
 			return true;
 		} else {
@@ -252,7 +219,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	protected boolean isProjectUpToDateWithSceneSetUp() {
-		org.lgna.croquet.undo.UndoHistory history = this.getProjectHistory();
+		UndoHistory history = this.getProjectHistory();
 		if( history == null ) {
 			return true;
 		} else {
@@ -261,7 +228,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	private void updateHistoryIndexFileSync() {
-		org.lgna.croquet.undo.UndoHistory history = this.getProjectHistory();
+		UndoHistory history = this.getProjectHistory();
 		if( history != null ) {
 			this.projectHistoryIndexFile = history.getInsertionIndex();
 		} else {
@@ -272,7 +239,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	protected void updateHistoryIndexSceneSetUpSync() {
-		org.lgna.croquet.undo.UndoHistory history = this.getProjectHistory();
+		UndoHistory history = this.getProjectHistory();
 		if( history != null ) {
 			this.projectHistoryIndexSceneSetUp = history.getInsertionIndex();
 		} else {
@@ -280,9 +247,9 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 	}
 
-	private org.alice.ide.frametitle.IdeFrameTitleGenerator frameTitleGenerator;
+	private IdeFrameTitleGenerator frameTitleGenerator;
 
-	protected abstract org.alice.ide.frametitle.IdeFrameTitleGenerator createFrameTitleGenerator();
+	protected abstract IdeFrameTitleGenerator createFrameTitleGenerator();
 
 	protected final void updateTitle() {
 		if( frameTitleGenerator != null ) {
@@ -294,26 +261,26 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	private ProjectDocument getDocument() {
-		return org.alice.ide.project.ProjectDocumentState.getInstance().getValue();
+		return ProjectDocumentState.getInstance().getValue();
 	}
 
 	private void setDocument( ProjectDocument document ) {
-		org.alice.ide.project.ProjectDocumentState.getInstance().setValueTransactionlessly( document );
+		ProjectDocumentState.getInstance().setValueTransactionlessly( document );
 	}
 
-	public org.lgna.project.Project getProject() {
+	public Project getProject() {
 		ProjectDocument document = this.getDocument();
 		return document != null ? document.getProject() : null;
 	}
 
-	public void setProject( org.lgna.project.Project project ) {
+	public void setProject( Project project ) {
 		StringBuilder sb = new StringBuilder();
-		java.util.Set<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
-		for( org.lgna.project.ast.NamedUserType type : types ) {
+		Set<NamedUserType> types = project.getNamedUserTypes();
+		for( NamedUserType type : types ) {
 			boolean wasNullMethodRemoved = false;
-			java.util.ListIterator<org.lgna.project.ast.UserMethod> methodIterator = type.getDeclaredMethods().listIterator();
+			ListIterator<UserMethod> methodIterator = type.getDeclaredMethods().listIterator();
 			while( methodIterator.hasNext() ) {
-				org.lgna.project.ast.UserMethod method = methodIterator.next();
+				UserMethod method = methodIterator.next();
 				if( method != null ) {
 					//pass
 				} else {
@@ -322,9 +289,9 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 				}
 			}
 			boolean wasNullFieldRemoved = false;
-			java.util.ListIterator<org.lgna.project.ast.UserField> fieldIterator = type.getDeclaredFields().listIterator();
+			ListIterator<UserField> fieldIterator = type.getDeclaredFields().listIterator();
 			while( fieldIterator.hasNext() ) {
-				org.lgna.project.ast.UserField field = fieldIterator.next();
+				UserField field = fieldIterator.next();
 				if( field != null ) {
 					//pass
 				} else {
@@ -350,39 +317,81 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			}
 		}
 		if( sb.length() > 0 ) {
-			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
-					.title( "A Problem With Your Project Has Been Fixed" )
-					.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.WARNING )
-					.buildAndShow();
+			Dialogs.showWarning( "A Problem With Your Project Has Been Fixed", sb.toString() );
 		}
-		org.lgna.project.ProgramTypeUtilities.sanityCheckAllTypes( project );
-		this.setDocument( new ProjectDocument( project ) );
+		ProgramTypeUtilities.sanityCheckAllTypes( project );
+		this.setDocument( new ProjectDocument( project, newProjectActivity() ) );
 	}
 
-	public org.lgna.croquet.history.TransactionHistory getProjectTransactionHistory() {
-		return this.getDocument().getRootTransactionHistory();
+	private UserActivity newProjectActivity() {
+		// If present, this is the activity of opening or creating a project
+		UserActivity openChild = getOpenActivity();
+		if ( openChild != null ) {
+			openChild.finish();
+		}
+		// If there was a project the new one replaces it.
+		if (projectActivity != null) {
+			projectActivity.finish();
+		}
+		// Create a new project activity under the top level user activity
+		projectActivity = getOverallUserActivity().newChildActivity();
+		return projectActivity;
 	}
 
-	public final void loadProjectFrom( org.alice.ide.uricontent.UriProjectLoader uriProjectLoader ) {
-		this.setUriProjectPair( uriProjectLoader );
-		this.updateHistoryIndexFileSync();
-		this.updateUndoRedoEnabled();
+	public UserActivity getProjectUserActivity() {
+		return getDocument().getUserActivity();
+	}
+
+	//Look for an open child, if any. Otherwise return null.
+	@Override
+	public UserActivity getOpenActivity() {
+		UserActivity latest = super.getOpenActivity();
+		return latest == projectActivity ? null : latest;
+	}
+
+	public final void loadProject(UserActivity activity, UriProjectLoader uriProjectLoader ) {
+		this.uriProjectLoader = uriProjectLoader;
+		if ( uriProjectLoader != null ) {
+			uriProjectLoader.deliverContentOnEventDispatchThread(proj -> projectLoaded(activity, proj));
+		}
+	}
+
+	private void projectLoaded(UserActivity activity, Project project) {
+		if( project == null ) {
+			uriProjectLoader = null;
+			activity.cancel();
+		} else {
+			updateInterface(project);
+		}
+	}
+
+	private void updateInterface(Project project) {
+		// Remove the old project history listener, so the old project can be cleaned up
+		if( ( getProject() != null ) && ( getProjectHistory() != null ) ) {
+			getProjectHistory().removeHistoryListener( projectHistoryListener );
+		}
+		setProject( project );
+		getProjectHistory().addHistoryListener( projectHistoryListener );
+		URI uri = uriProjectLoader.getUri();
+		File file = UriUtilities.getFile(uri );
+		try {
+			if( ( file != null ) && file.canWrite() ) {
+				RecentProjectsListData.getInstance().handleOpen(file );
+			}
+		} catch( Throwable throwable ) {
+			throwable.printStackTrace();
+		}
+
+		updateHistoryIndexFileSync();
+		updateUndoRedoEnabled();
 		projectFileUtilities.startAutoSaving();
 	}
 
-	public final void loadProjectFrom( java.io.File file ) {
-		this.loadProjectFrom( new org.alice.ide.uricontent.FileProjectLoader( file ) );
-	}
+	protected abstract BufferedImage createThumbnail() throws Throwable;
 
-	public final void loadProjectFrom( String path ) {
-		loadProjectFrom( new java.io.File( path ) );
-	}
-
-	protected abstract java.awt.image.BufferedImage createThumbnail() throws Throwable;
-
-	public final void saveProjectTo( java.io.File file ) throws java.io.IOException {
-		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleSave( file );
-		uriProjectLoader = new org.alice.ide.uricontent.FileProjectLoader( file );
+	public final void saveProjectTo( File file ) throws IOException {
+		RecentProjectsListData.getInstance().handleSave( file );
+		uriProjectLoader = new FileProjectLoader( file );
 
 		//		long startTime = System.currentTimeMillis();
 
@@ -395,11 +404,11 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		this.updateHistoryIndexFileSync();
 	}
 
-	public java.io.File getMyProjectsDirectory() {
-		return org.alice.ide.croquet.models.ui.preferences.UserProjectsDirectoryState.getInstance().getDirectoryEnsuringExistance();
+	public final void exportProjectTo( File file ) throws IOException {
+		projectFileUtilities.exportCopyOfProjectTo( file );
 	}
 
-	public final org.lgna.project.Project getUpToDateProject() {
+	public final Project getUpToDateProject() {
 		this.ensureProjectCodeUpToDate();
 		return this.getProject();
 	}
@@ -408,4 +417,12 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	private final ProjectDocumentFrame projectDocumentFrame;
 	private final ProjectFileUtilities projectFileUtilities;
+
+	public String getAuthorName() {
+		return getPreferencesManager().getValue("authorName", System.getProperty( "user.name" ));
+	}
+
+	public void setAuthorName(String newName) {
+		getPreferencesManager().setValue("authorName", newName);
+	}
 }

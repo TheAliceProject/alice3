@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.project;
 
+import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +51,7 @@ public class ProjectVersion {
 	private static final String TEXT;
 	private static final Version CURRENT;
 	static {
-		TEXT = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( Version.class.getResourceAsStream( "Version.txt" ) ).trim();
+		TEXT = TextFileUtilities.read( Version.class.getResourceAsStream( "Version.txt" ) ).trim();
 		CURRENT = new Version( TEXT );
 	}
 

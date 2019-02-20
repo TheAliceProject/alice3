@@ -42,11 +42,40 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.menubar;
 
+import org.alice.ide.croquet.models.ui.debug.ActiveTransactionHistoryComposite;
+import org.alice.ide.croquet.models.ui.debug.BreakProjectAddNullMethodOperation;
+import org.alice.ide.croquet.models.ui.debug.RaiseAnomalousSituationOperation;
+import org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation;
+import org.alice.ide.croquet.models.ui.debug.ThrowBogusGlExceptionOperation;
+import org.alice.ide.croquet.models.ui.debug.ThrowBogusLgnaExceptionOperation;
+import org.alice.ide.croquet.models.ui.preferences.IsFullTypeHierarchyDesiredState;
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingManagedUserMethods;
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods;
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods;
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods;
+import org.alice.ide.highlight.ShowMeOperation;
+import org.alice.ide.javacode.croquet.JavaCodeFrameComposite;
+import org.alice.ide.testing.framesize.croquet.CycleFrameSizeOperation;
+import org.alice.stageide.raytrace.ExportToPovRayOperation;
+import org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.PredeterminedMenuModel;
+import org.lgna.croquet.imp.frame.LazyIsFrameShowingState;
+import org.lgna.debug.pick.croquet.PickDebugFrame;
+import org.lgna.debug.tree.croquet.GlrDebugFrame;
+import org.lgna.debug.tree.croquet.SgDebugFrame;
+
+import javax.swing.Action;
+import javax.swing.KeyStroke;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+public class InternalTestingMenuModel extends PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static InternalTestingMenuModel instance = new InternalTestingMenuModel();
 	}
@@ -55,69 +84,69 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 		return SingletonHolder.instance;
 	}
 
-	private static org.lgna.croquet.BooleanState createSgDebugFrameLazyIsFrameShowingState() {
-		org.lgna.croquet.BooleanState rv = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createNoArgumentConstructorInstance(
-				org.lgna.croquet.Application.INFORMATION_GROUP,
-				org.lgna.debug.tree.croquet.SgDebugFrame.class );
+	private static BooleanState createSgDebugFrameLazyIsFrameShowingState() {
+		BooleanState rv = LazyIsFrameShowingState.createNoArgumentConstructorInstance(
+				Application.INFORMATION_GROUP,
+				SgDebugFrame.class );
 
 		rv.initializeIfNecessary();
 		rv.setTextForBothTrueAndFalse( "Debug SceneGraph" );
-		rv.getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F7, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK ) );
+		rv.getImp().getSwingModel().getAction().putValue( Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke( KeyEvent.VK_F7, InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK ) );
 
 		return rv;
 	}
 
-	private static org.lgna.croquet.BooleanState createGlrDebugFrameLazyIsFrameShowingState() {
-		org.lgna.croquet.BooleanState rv = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createNoArgumentConstructorInstance(
-				org.lgna.croquet.Application.INFORMATION_GROUP,
-				org.lgna.debug.tree.croquet.GlrDebugFrame.class );
+	private static BooleanState createGlrDebugFrameLazyIsFrameShowingState() {
+		BooleanState rv = LazyIsFrameShowingState.createNoArgumentConstructorInstance(
+				Application.INFORMATION_GROUP,
+				GlrDebugFrame.class );
 
 		rv.initializeIfNecessary();
 		rv.setTextForBothTrueAndFalse( "Debug Render" );
-		rv.getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F8, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK ) );
+		rv.getImp().getSwingModel().getAction().putValue( Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke( KeyEvent.VK_F8, InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK ) );
 
 		return rv;
 	}
 
-	private static org.lgna.croquet.BooleanState createPickDebugFrameLazyIsFrameShowingState() {
-		org.lgna.croquet.BooleanState rv = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createNoArgumentConstructorInstance(
-				org.lgna.croquet.Application.INFORMATION_GROUP,
-				org.lgna.debug.pick.croquet.PickDebugFrame.class );
+	private static BooleanState createPickDebugFrameLazyIsFrameShowingState() {
+		BooleanState rv = LazyIsFrameShowingState.createNoArgumentConstructorInstance(
+				Application.INFORMATION_GROUP,
+				PickDebugFrame.class );
 
 		rv.initializeIfNecessary();
 		rv.setTextForBothTrueAndFalse( "Debug Pick" );
-		rv.getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F9, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK ) );
+		rv.getImp().getSwingModel().getAction().putValue( Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke( KeyEvent.VK_F9, InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK ) );
 
 		return rv;
 	}
 
 	private InternalTestingMenuModel() {
-		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
+		super( UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
 				createSgDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),
 				createGlrDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),
 				createPickDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),
 				SEPARATOR,
-				org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel(),
+				ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel(),
 				SEPARATOR,
-				org.alice.ide.javacode.croquet.JavaCodeFrameComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
+				JavaCodeFrameComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
 				SEPARATOR,
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusGlExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusLgnaExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.RaiseAnomalousSituationOperation.getInstance().getMenuItemPrepModel(),
+				ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(),
+				ThrowBogusGlExceptionOperation.getInstance().getMenuItemPrepModel(),
+				ThrowBogusLgnaExceptionOperation.getInstance().getMenuItemPrepModel(),
+				RaiseAnomalousSituationOperation.getInstance().getMenuItemPrepModel(),
 				SEPARATOR,
-				org.alice.ide.croquet.models.ui.debug.BreakProjectAddNullMethodOperation.getInstance().getMenuItemPrepModel(),
+				BreakProjectAddNullMethodOperation.getInstance().getMenuItemPrepModel(),
 				SEPARATOR,
-				new org.alice.ide.testing.framesize.croquet.CycleFrameSizeOperation().getMenuItemPrepModel(),
+				new CycleFrameSizeOperation().getMenuItemPrepModel(),
 				SEPARATOR,
-				org.alice.ide.croquet.models.ui.debug.ActiveTransactionHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
+				ActiveTransactionHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
 				//org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsFullTypeHierarchyDesiredState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingManagedUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.stageide.raytrace.ExportToPovRayOperation.getInstance().getMenuItemPrepModel(),
-				new org.alice.ide.highlight.ShowMeOperation().getMenuItemPrepModel() );
+				IsFullTypeHierarchyDesiredState.getInstance().getMenuItemPrepModel(),
+				IsIncludingPackagePrivateUserMethods.getInstance().getMenuItemPrepModel(),
+				IsIncludingProtectedUserMethods.getInstance().getMenuItemPrepModel(),
+				IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(),
+				IsIncludingManagedUserMethods.getInstance().getMenuItemPrepModel(),
+				ExportToPovRayOperation.getInstance().getMenuItemPrepModel(),
+				new ShowMeOperation().getMenuItemPrepModel() );
 	}
 }

@@ -43,33 +43,42 @@
 
 package org.alice.ide.croquet.components;
 
+import org.alice.ide.common.TypeIcon;
+import org.lgna.croquet.ItemState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.ViewController;
+import org.lgna.project.ast.AbstractType;
+
+import javax.swing.JLabel;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeView<T extends org.lgna.project.ast.AbstractType<?, ?, ?>> extends org.lgna.croquet.views.ViewController<javax.swing.JLabel, org.lgna.croquet.ItemState<T>> {
-	private final org.lgna.croquet.event.ValueListener<T> valueObserver = new org.lgna.croquet.event.ValueListener<T>() {
+public class TypeView<T extends AbstractType<?, ?, ?>> extends ViewController<JLabel, ItemState<T>> {
+	private final ValueListener<T> valueObserver = new ValueListener<T>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<T> e ) {
+		public void valueChanged( ValueEvent<T> e ) {
 			T nextValue = e.getNextValue();
-			org.lgna.project.ast.AbstractType<?, ?, ?> type;
+			AbstractType<?, ?, ?> type;
 			if( isArray ) {
 				type = nextValue.getArrayType();
 			} else {
 				type = nextValue;
 			}
-			TypeView.this.getAwtComponent().setIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
+			TypeView.this.getAwtComponent().setIcon( TypeIcon.getInstance( type ) );
 		}
 	};
 	private final boolean isArray;
 
-	public TypeView( org.lgna.croquet.ItemState<T> model, boolean isArray ) {
+	public TypeView( ItemState<T> model, boolean isArray ) {
 		super( model );
 		this.isArray = isArray;
 	}
 
 	@Override
-	protected javax.swing.JLabel createAwtComponent() {
-		javax.swing.JLabel rv = new javax.swing.JLabel();
+	protected JLabel createAwtComponent() {
+		JLabel rv = new JLabel();
 		return rv;
 	}
 

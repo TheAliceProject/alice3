@@ -43,8 +43,13 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 
 public class SkeletonVisual extends Visual {
 
@@ -101,7 +106,7 @@ public class SkeletonVisual extends Visual {
 		}
 	};
 
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv, boolean ignoreJointOrientations ) {
+	public AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox rv, boolean ignoreJointOrientations ) {
 		if( !ignoreJointOrientations && ( this.tracker != null ) ) {
 			this.tracker.getAxisAlignedMinimumBoundingBox( rv );
 		}
@@ -121,26 +126,26 @@ public class SkeletonVisual extends Visual {
 			//		This is probably the way to go, but we'll need to look into how often we want to ignoreJointOrientations and how often we don't have a tracker
 			if( this.hasDefaultPoseWeightedMeshes.getValue() ) {
 				if( this.defaultPoseWeightedMeshes.getValue() != null ) {
-					for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue() )
+					for( WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue() )
 					{
-						edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+						AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
 						rv.union( b );
 					}
 				}
 			}
 			else {
 				if( this.weightedMeshes.getValue() != null ) {
-					for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue() )
+					for( WeightedMesh wm : this.weightedMeshes.getValue() )
 					{
-						edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+						AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
 						rv.union( b );
 					}
 				}
 			}
 			if( this.geometries.getValue() != null ) {
-				for( edu.cmu.cs.dennisc.scenegraph.Geometry g : this.geometries.getValue() )
+				for( Geometry g : this.geometries.getValue() )
 				{
-					edu.cmu.cs.dennisc.math.AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
+					AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
 					rv.union( b );
 				}
 			}
@@ -153,7 +158,7 @@ public class SkeletonVisual extends Visual {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
+	public AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox rv ) {
 		if( this.tracker != null ) {
 			this.tracker.getAxisAlignedMinimumBoundingBox( rv );
 		}
@@ -161,26 +166,26 @@ public class SkeletonVisual extends Visual {
 			//See comment above
 			if( this.hasDefaultPoseWeightedMeshes.getValue() ) {
 				if( this.defaultPoseWeightedMeshes.getValue() != null ) {
-					for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue() )
+					for( WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue() )
 					{
-						edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+						AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
 						rv.union( b );
 					}
 				}
 			}
 			else {
 				if( this.weightedMeshes.getValue() != null ) {
-					for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue() )
+					for( WeightedMesh wm : this.weightedMeshes.getValue() )
 					{
-						edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+						AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
 						rv.union( b );
 					}
 				}
 			}
 			if( this.geometries.getValue() != null ) {
-				for( edu.cmu.cs.dennisc.scenegraph.Geometry g : this.geometries.getValue() )
+				for( Geometry g : this.geometries.getValue() )
 				{
-					edu.cmu.cs.dennisc.math.AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
+					AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
 					rv.union( b );
 				}
 			}
@@ -194,7 +199,7 @@ public class SkeletonVisual extends Visual {
 
 	@Override
 	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere rv ) {
-		edu.cmu.cs.dennisc.math.AxisAlignedBox box = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
+		AxisAlignedBox box = new AxisAlignedBox();
 		getAxisAlignedMinimumBoundingBox( box );
 		if( !box.isNaN() ) {
 			double diameter = Point3.calculateDistanceBetween( box.getMinimum(), box.getMaximum() );
@@ -208,7 +213,7 @@ public class SkeletonVisual extends Visual {
 
 	public boolean renderBackfaces() {
 		if( this.weightedMeshes.getValue() != null ) {
-			for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue() )
+			for( WeightedMesh wm : this.weightedMeshes.getValue() )
 			{
 				if( !wm.cullBackfaces.getValue() ) {
 					return true;
@@ -216,7 +221,7 @@ public class SkeletonVisual extends Visual {
 			}
 		}
 		if( this.geometries.getValue() != null ) {
-			for( edu.cmu.cs.dennisc.scenegraph.Geometry g : this.geometries.getValue() )
+			for( Geometry g : this.geometries.getValue() )
 			{
 				if( ( g instanceof Mesh ) && !( (Mesh)g ).cullBackfaces.getValue() ) {
 					return true;
@@ -226,12 +231,58 @@ public class SkeletonVisual extends Visual {
 		return false;
 	}
 
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> baseBoundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
+	//Used to normalize all the weights in the weighted meshes
+	//Weights for a given vertex should add up to 1
+	public void normalizeWeightedMeshes() {
+		for (WeightedMesh wm : weightedMeshes.getValue()) {
+			wm.normalizeWeights();
+		}
+		if (hasDefaultPoseWeightedMeshes.getValue()) {
+			for (WeightedMesh wm : defaultPoseWeightedMeshes.getValue()) {
+				wm.normalizeWeights();
+			}
+		}
+	}
+
+	public void scale(Vector3 scale) {
+		if (skeleton.getValue() != null) {
+			skeleton.getValue().scale(scale);
+		}
+		scaleMeshes( scale );
+	}
+
+	private void scaleMeshes(Vector3 scale) {
+		for ( Geometry g : geometries.getValue()) {
+			//The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
+			//If we start to support things like cylinders and boxes, then this would need to be updated
+			if (g instanceof Mesh) {
+				((Mesh)g).scale(scale);
+			}
+		}
+		for (WeightedMesh wm : weightedMeshes.getValue()) {
+			wm.scale(scale);
+		}
+	}
+
+	private void scaleJoints( Joint j, Vector3 scale) {
+		AffineMatrix4x4 newTransform = new AffineMatrix4x4( j.localTransformation.getValue() );
+		newTransform.translation.multiply( scale );
+		j.localTransformation.setValue( newTransform );
+		for( int i = 0; i < j.getComponentCount(); i++ )
+		{
+			Component comp = j.getComponentAt( i );
+			if (comp instanceof Joint) {
+				scaleJoints((Joint)comp, scale);
+			}
+		}
+	}
+
+	public final InstanceProperty<Joint> skeleton = new InstanceProperty<Joint>( this, null );
+	public final InstanceProperty<AxisAlignedBox> baseBoundingBox = new InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
 
 	private SkeletonVisualBoundingBoxTracker tracker = null;
 
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh> weightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh>( this, new WeightedMesh[ 0 ] )
+	public final CopyableArrayProperty<WeightedMesh> weightedMeshes = new CopyableArrayProperty<WeightedMesh>( this)
 	{
 		@Override
 		protected WeightedMesh[] createArray( int length ) {
@@ -245,7 +296,7 @@ public class SkeletonVisual extends Visual {
 		}
 	};
 
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<TexturedAppearance> textures = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<TexturedAppearance>( this, new TexturedAppearance[ 0 ] )
+	public final CopyableArrayProperty<TexturedAppearance> textures = new CopyableArrayProperty<TexturedAppearance>( this)
 	{
 		@Override
 		protected TexturedAppearance[] createArray( int length ) {
@@ -262,9 +313,9 @@ public class SkeletonVisual extends Visual {
 	//This property is used to indicate if the visual has a separate set of weighted meshes which have been transformed into the default pose.
 	//This is use to handle models which have different bind poses and default poses
 	//By default most models have the same bind pose and default pose so they do not have defaultPoseWeightedMeshes
-	public final edu.cmu.cs.dennisc.property.BooleanProperty hasDefaultPoseWeightedMeshes = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
+	public final BooleanProperty hasDefaultPoseWeightedMeshes = new BooleanProperty( this, false );
 
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh> defaultPoseWeightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh>( this, new WeightedMesh[ 0 ] )
+	public final CopyableArrayProperty<WeightedMesh> defaultPoseWeightedMeshes = new CopyableArrayProperty<WeightedMesh>( this)
 	{
 		@Override
 		protected WeightedMesh[] createArray( int length ) {

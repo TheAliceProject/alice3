@@ -43,6 +43,12 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.DoubleProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,7 +60,7 @@ public class Disc extends Shape {
 	}
 
 	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
+	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
 		double d = outerRadius.getValue();
 		Axis axis = this.axis.getValue();
 		if( axis == Axis.X ) {
@@ -77,17 +83,17 @@ public class Disc extends Shape {
 		boundingSphere.radius = outerRadius.getValue();
 	}
 
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Axis> axis = new edu.cmu.cs.dennisc.property.InstanceProperty<Axis>( this, Axis.Y ) {
+	public final InstanceProperty<Axis> axis = new InstanceProperty<Axis>( this, Axis.Y ) {
 		@Override
 		public void setValue( Axis value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+			if( Objects.notEquals( value, this.getValue() ) ) {
 				Disc.this.markBoundsDirty();
 				super.setValue( value );
 				Disc.this.fireBoundChanged();
 			}
 		};
 	};
-	public final edu.cmu.cs.dennisc.property.DoubleProperty innerRadius = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 0.0 ) {
+	public final DoubleProperty innerRadius = new DoubleProperty( this, 0.0 ) {
 		@Override
 		public void setValue( Double value ) {
 			assert value >= 0.0 : value;
@@ -101,6 +107,6 @@ public class Disc extends Shape {
 			super.setValue( value );
 		}
 	};
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isFrontFaceVisible = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isBackFaceVisible = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
+	public final BooleanProperty isFrontFaceVisible = new BooleanProperty( this, true );
+	public final BooleanProperty isBackFaceVisible = new BooleanProperty( this, true );
 }

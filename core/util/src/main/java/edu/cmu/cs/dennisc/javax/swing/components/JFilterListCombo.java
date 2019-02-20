@@ -42,13 +42,22 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.AbstractListModel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.BorderLayout;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JFilterListCombo extends javax.swing.JPanel {
-	class Model extends javax.swing.AbstractListModel {
+public class JFilterListCombo extends JPanel {
+	class Model extends AbstractListModel {
 		private String[] m_data = {};
-		private java.util.List<String> m_filteredData = new java.util.LinkedList<String>();
+		private List<String> m_filteredData = new LinkedList<String>();
 
 		@Override
 		public Object getElementAt( int index ) {
@@ -67,7 +76,7 @@ public class JFilterListCombo extends javax.swing.JPanel {
 		public void handleFilterChange( String filter ) {
 			//todo: allow sensitive and insensitive filtering
 			String filterLower = filter.toLowerCase();
-			m_filteredData = new java.util.LinkedList<String>();
+			m_filteredData = new LinkedList<String>();
 			for( String s : m_data ) {
 				String sLower = s.toLowerCase();
 				if( sLower.contains( filterLower ) ) {
@@ -80,35 +89,35 @@ public class JFilterListCombo extends javax.swing.JPanel {
 
 	private Model m_model = new Model();
 
-	private javax.swing.JTextField m_filter = new javax.swing.JTextField();
+	private JTextField m_filter = new JTextField();
 	private JList<String> m_list = new JList<String>();
 
 	public JFilterListCombo() {
 		m_list.setModel( m_model );
-		m_filter.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
+		m_filter.getDocument().addDocumentListener( new DocumentListener() {
 			@Override
-			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+			public void changedUpdate( DocumentEvent e ) {
 				JFilterListCombo.this.handleFilterChange( e );
 			}
 
 			@Override
-			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+			public void insertUpdate( DocumentEvent e ) {
 				JFilterListCombo.this.handleFilterChange( e );
 			}
 
 			@Override
-			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+			public void removeUpdate( DocumentEvent e ) {
 				JFilterListCombo.this.handleFilterChange( e );
 			}
 		} );
 
-		setLayout( new java.awt.BorderLayout() );
-		add( m_filter, java.awt.BorderLayout.NORTH );
-		add( new javax.swing.JScrollPane( m_list ), java.awt.BorderLayout.CENTER );
+		setLayout( new BorderLayout() );
+		add( m_filter, BorderLayout.NORTH );
+		add( new javax.swing.JScrollPane( m_list ), BorderLayout.CENTER );
 
 	}
 
-	public javax.swing.JTextField getTextField() {
+	public JTextField getTextField() {
 		return m_filter;
 	}
 
@@ -125,7 +134,7 @@ public class JFilterListCombo extends javax.swing.JPanel {
 		m_model.handleFilterChange( m_filter.getText() );
 	}
 
-	private void handleFilterChange( javax.swing.event.DocumentEvent e ) {
+	private void handleFilterChange( DocumentEvent e ) {
 		m_model.handleFilterChange( m_filter.getText() );
 	}
 }

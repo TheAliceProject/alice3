@@ -42,11 +42,15 @@
  *******************************************************************************/
 package org.lgna.stencil;
 
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Painter {
-	public void paint( java.awt.Graphics2D g2, java.awt.Shape shape );
+	public void paint( Graphics2D g2, Shape shape );
 
-	public java.awt.Rectangle getBounds( java.awt.Shape shape );
+	public Rectangle getBounds( Shape shape );
 }

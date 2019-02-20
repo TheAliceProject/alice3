@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.property.DoubleProperty;
+
 /**
  * linear fog affects visual elements based on their distance from a camera.
  * 
@@ -60,7 +62,7 @@ package edu.cmu.cs.dennisc.scenegraph;
  */
 public class LinearFog extends Fog {
 	//todo Double -> Float?
-	public final edu.cmu.cs.dennisc.property.DoubleProperty nearDistance = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 1.0 );
+	public final DoubleProperty nearDistance = new DoubleProperty( this, 1.0 );
 	//todo Double -> Float?
-	public final edu.cmu.cs.dennisc.property.DoubleProperty farDistance = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 256.0 );
+	public final DoubleProperty farDistance = new DoubleProperty( this, 256.0 );
 }

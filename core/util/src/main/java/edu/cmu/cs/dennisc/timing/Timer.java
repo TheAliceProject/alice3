@@ -43,12 +43,17 @@
 
 package edu.cmu.cs.dennisc.timing;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Timer {
 	private final String description;
-	private final java.util.List<Mark> marks = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final List<Mark> marks = Lists.newLinkedList();
 	private long tStart;
 
 	public Timer( String description ) {
@@ -67,16 +72,16 @@ public class Timer {
 	public void stopAndPrintResults() {
 		long tPrev = this.tStart;
 		long tStop = System.currentTimeMillis();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "timer:", this.description );
+		Logger.outln( "timer:", this.description );
 		if( this.marks.size() > 0 ) {
 			for( Mark mark : this.marks ) {
 				long tMark = mark.getTime();
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "...", tMark - tPrev, mark.getObject() );
+				Logger.outln( "...", tMark - tPrev, mark.getObject() );
 				tPrev = tMark;
 			}
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "... ", tStop - tPrev, "end" );
+			Logger.outln( "... ", tStop - tPrev, "end" );
 		}
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "total:", ( tStop - this.tStart ), "msec" );
+		Logger.outln( "total:", ( tStop - this.tStart ), "msec" );
 		this.marks.clear();
 	}
 }

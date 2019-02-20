@@ -43,17 +43,21 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.animation.Style;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.lgna.story.SCamera;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SymmetricPerspectiveCameraImp extends CameraImp<edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera> {
-	public SymmetricPerspectiveCameraImp( org.lgna.story.SCamera abstraction ) {
-		super( new edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera() );
+public class SymmetricPerspectiveCameraImp extends CameraImp<SymmetricPerspectiveCamera> {
+	public SymmetricPerspectiveCameraImp( SCamera abstraction ) {
+		super( new SymmetricPerspectiveCamera() );
 		this.abstraction = abstraction;
 	}
 
 	@Override
-	public org.lgna.story.SCamera getAbstraction() {
+	public SCamera getAbstraction() {
 		return this.abstraction;
 	}
 
@@ -75,10 +79,10 @@ public class SymmetricPerspectiveCameraImp extends CameraImp<edu.cmu.cs.dennisc.
 		data.epilogue();
 	}
 
-	public void animateSetTransformationToAGoodVantagePointOf( EntityImp other, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+	public void animateSetTransformationToAGoodVantagePointOf( EntityImp other, double duration, Style style ) {
 		GoodVantagePointData data = new GoodVantagePointData( this, other );
 		this.animateVantagePoint( data, duration, style );
 	}
 
-	private final org.lgna.story.SCamera abstraction;
+	private final SCamera abstraction;
 }

@@ -43,55 +43,67 @@
 
 package org.alice.ide.ast.delete.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.ast.delete.DeleteStatementOperation;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.alice.ide.croquet.edits.ast.StatementEdit;
+import org.alice.ide.project.ProjectChangeOfInterestManager;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.Statement;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteStatementEdit extends org.alice.ide.croquet.edits.ast.StatementEdit<org.alice.ide.ast.delete.DeleteStatementOperation> {
-	private final org.lgna.project.ast.BlockStatement blockStatement;
+public class DeleteStatementEdit extends StatementEdit<DeleteStatementOperation> {
+	private final BlockStatement blockStatement;
 	private final int index;
 
-	public DeleteStatementEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Statement statement ) {
-		super( completionStep, statement );
-		this.blockStatement = (org.lgna.project.ast.BlockStatement)statement.getParent();
+	public DeleteStatementEdit( UserActivity userActivity, Statement statement ) {
+		super( userActivity, statement );
+		this.blockStatement = (BlockStatement)statement.getParent();
 		assert this.blockStatement != null : statement;
 		this.index = this.blockStatement.statements.indexOf( statement );
 		assert this.index != -1 : statement;
 	}
 
-	public DeleteStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public DeleteStatementEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.blockStatement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).decodeValue( binaryDecoder );
+		this.blockStatement = NodeCodec.getInstance( BlockStatement.class ).decodeValue( binaryDecoder );
 		this.index = binaryDecoder.decodeInt();
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).encodeValue( binaryEncoder, this.blockStatement );
+		NodeCodec.getInstance( BlockStatement.class ).encodeValue( binaryEncoder, this.blockStatement );
 		binaryEncoder.encode( this.index );
 	}
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.lgna.project.ast.Statement statement = this.getStatement();
+		Statement statement = this.getStatement();
 		assert blockStatement.statements.indexOf( statement ) == this.index;
 		blockStatement.statements.remove( index );
 		//todo: remove
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
 	protected final void undoInternal() {
-		org.lgna.project.ast.Statement statement = this.getStatement();
+		Statement statement = this.getStatement();
 		blockStatement.statements.add( index, statement );
 		//todo: remove
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		org.lgna.project.ast.Statement statement = this.getStatement();
+		Statement statement = this.getStatement();
 		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, statement, org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( rv, statement, Application.getLocale() );
 	}
 }

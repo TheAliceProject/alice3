@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.animation;
 
+import edu.cmu.cs.dennisc.clock.Clock;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,7 +54,7 @@ public class ClockBasedAnimator extends AbstractAnimator {
 	@Override
 	protected void updateCurrentTime( boolean isPaused ) {
 		//todo: optimize for speed factor == 0
-		double tCurrentClock = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
+		double tCurrentClock = Clock.getCurrentTime();
 		double tCurrentSimulation;
 		if( Double.isNaN( m_tPreviousClock ) ) {
 			tCurrentSimulation = 0.0;

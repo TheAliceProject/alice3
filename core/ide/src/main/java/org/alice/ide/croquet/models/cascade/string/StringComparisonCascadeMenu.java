@@ -42,10 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade.string;
 
+import org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu;
+import org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.MethodInvocation;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class StringComparisonCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.MethodInvocation> {
+public class StringComparisonCascadeMenu extends ExpressionCascadeMenu<MethodInvocation> {
 	private static class SingletonHolder {
 		private static StringComparisonCascadeMenu instance = new StringComparisonCascadeMenu();
 	}
@@ -55,16 +65,16 @@ public class StringComparisonCascadeMenu extends org.alice.ide.croquet.models.ca
 	}
 
 	private StringComparisonCascadeMenu() {
-		super( java.util.UUID.fromString( "bcf7f58d-3431-4c6c-820c-55dc31b5d765" ) );
+		super( UUID.fromString( "bcf7f58d-3431-4c6c-820c-55dc31b5d765" ) );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.MethodInvocation> step ) {
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> step ) {
 		//rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "equals", Object.class ) ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance.getInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "contentEquals", CharSequence.class ) ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance.getInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "equalsIgnoreCase", String.class ) ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance.getInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "startsWith", String.class ) ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance.getInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "endsWith", String.class ) ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance.getInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "contains", CharSequence.class ) ) );
+		blankChildren.add( MethodInvocationFillInWithInstance.getInstance( JavaMethod.getInstance( String.class, "contentEquals", CharSequence.class ) ) );
+		blankChildren.add( MethodInvocationFillInWithInstance.getInstance( JavaMethod.getInstance( String.class, "equalsIgnoreCase", String.class ) ) );
+		blankChildren.add( MethodInvocationFillInWithInstance.getInstance( JavaMethod.getInstance( String.class, "startsWith", String.class ) ) );
+		blankChildren.add( MethodInvocationFillInWithInstance.getInstance( JavaMethod.getInstance( String.class, "endsWith", String.class ) ) );
+		blankChildren.add( MethodInvocationFillInWithInstance.getInstance( JavaMethod.getInstance( String.class, "contains", CharSequence.class ) ) );
 	}
 }

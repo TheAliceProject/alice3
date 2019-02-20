@@ -45,10 +45,17 @@ package org.alice.stageide.sceneeditor.viewmanager;
 
 import javax.swing.BorderFactory;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import org.alice.stageide.StageIDE;
+import org.lgna.croquet.views.BoxUtilities;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.MarkerImp;
+
+import java.awt.Color;
 
 public class MarkerFieldTile extends LineAxisPanel
 {
@@ -62,7 +69,7 @@ public class MarkerFieldTile extends LineAxisPanel
 		this.setBackgroundColor( null );
 		this.setBorder( BorderFactory.createEmptyBorder() );
 
-		this.textLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.REGULAR, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		this.textLabel.changeFont( TextPosture.REGULAR, TextWeight.BOLD );
 		this.textLabel.scaleFont( 1.4f );
 		this.textLabel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
@@ -74,17 +81,17 @@ public class MarkerFieldTile extends LineAxisPanel
 	}
 
 	public void setSelected( boolean isSelected ) {
-		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getMarkerForField( field );
-		java.awt.Color foregroundColor;
+		MarkerImp marker = StageIDE.getActiveInstance().getSceneEditor().getMarkerForField( field );
+		Color foregroundColor;
 		if( marker != null ) {
-			foregroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.toAwtColor( marker.getMarkerColor() );
+			foregroundColor = ColorUtilities.toAwtColor( marker.getMarkerColor() );
 			if( isSelected ) {
 				//pass
 			} else {
-				foregroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( foregroundColor, 1.0, 0.5, 0.5 );
+				foregroundColor = ColorUtilities.scaleHSB( foregroundColor, 1.0, 0.5, 0.5 );
 			}
 		} else {
-			foregroundColor = java.awt.Color.BLACK;
+			foregroundColor = Color.BLACK;
 		}
 		this.textLabel.setForegroundColor( foregroundColor );
 	}
@@ -95,11 +102,11 @@ public class MarkerFieldTile extends LineAxisPanel
 		this.field = field;
 
 		this.textLabel.setText( this.field.getName() );
-		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getMarkerForField( field );
-		this.textLabel.setForegroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.toAwtColor( marker.getMarkerColor() ) );
+		MarkerImp marker = StageIDE.getActiveInstance().getSceneEditor().getMarkerForField( field );
+		this.textLabel.setForegroundColor( ColorUtilities.toAwtColor( marker.getMarkerColor() ) );
 		this.iconLabel.setIcon( MarkerUtilities.getIconForMarkerField( field ) );
 		this.addComponent( iconLabel );
 		this.addComponent( this.textLabel );
-		this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 16 ) );
+		this.addComponent( BoxUtilities.createHorizontalSliver( 16 ) );
 	}
 }

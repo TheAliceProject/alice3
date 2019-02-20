@@ -42,10 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.scenegraph.HorizontalSurface;
+
 /**
  * @author alice
  * 
  */
-public class GlrHorizontalSurface<T extends edu.cmu.cs.dennisc.scenegraph.HorizontalSurface> extends GlrTexturedVisual<T> {
+public class GlrHorizontalSurface<T extends HorizontalSurface> extends GlrTexturedVisual<T> {
 
 }

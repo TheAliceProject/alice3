@@ -43,6 +43,9 @@
 
 package org.lgna.project.ast;
 
+import java.lang.reflect.Modifier;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -61,8 +64,8 @@ public enum TypeModifierFinalAbstractOrNeither {
 	//		}
 	//		return rv;
 	//	}
-	FINAL( java.lang.reflect.Modifier.FINAL ),
-	ABSTRACT( java.lang.reflect.Modifier.ABSTRACT ),
+	FINAL( Modifier.FINAL ),
+	ABSTRACT( Modifier.ABSTRACT ),
 	NEITHER();
 	private int[] m_modifiers;
 
@@ -70,7 +73,7 @@ public enum TypeModifierFinalAbstractOrNeither {
 		m_modifiers = modifiers;
 	}
 
-	public java.util.Set<Integer> updateModifiers( java.util.Set<Integer> rv ) {
+	public Set<Integer> updateModifiers( Set<Integer> rv ) {
 		for( int modifier : m_modifiers ) {
 			rv.add( modifier );
 		}
@@ -79,9 +82,9 @@ public enum TypeModifierFinalAbstractOrNeither {
 
 	//todo: rename
 	public static TypeModifierFinalAbstractOrNeither get( int modifiers ) {
-		if( java.lang.reflect.Modifier.isFinal( modifiers ) ) {
+		if( Modifier.isFinal( modifiers ) ) {
 			return TypeModifierFinalAbstractOrNeither.FINAL;
-		} else if( java.lang.reflect.Modifier.isAbstract( modifiers ) ) {
+		} else if( Modifier.isAbstract( modifiers ) ) {
 			return TypeModifierFinalAbstractOrNeither.ABSTRACT;
 		} else {
 			return TypeModifierFinalAbstractOrNeither.NEITHER;

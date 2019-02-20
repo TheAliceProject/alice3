@@ -42,6 +42,31 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.core;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
+import org.alice.ide.ProjectStack;
+import org.lgna.project.Project;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.CrawlPolicy;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.JavaCodeGenerator;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.code.CodeGenerator;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,8 +75,8 @@ public class MergeUtilities {
 		throw new AssertionError();
 	}
 
-	public static org.lgna.project.ast.NamedUserType findMatchingTypeInExistingTypes( org.lgna.project.ast.NamedUserType srcType, java.util.Collection<org.lgna.project.ast.NamedUserType> dstTypes ) {
-		for( org.lgna.project.ast.NamedUserType dstType : dstTypes ) {
+	public static NamedUserType findMatchingTypeInExistingTypes( NamedUserType srcType, Collection<NamedUserType> dstTypes ) {
+		for( NamedUserType dstType : dstTypes ) {
 			//todo
 			if( dstType.getName().contentEquals( srcType.getName() ) ) {
 				return dstType;
@@ -60,17 +85,17 @@ public class MergeUtilities {
 		return null;
 	}
 
-	public static org.lgna.project.ast.NamedUserType findMatchingTypeInExistingTypes( org.lgna.project.ast.NamedUserType type ) {
-		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
+	public static NamedUserType findMatchingTypeInExistingTypes( NamedUserType type ) {
+		Project project = ProjectStack.peekProject();
 		if( project != null ) {
-			java.util.Set<org.lgna.project.ast.NamedUserType> dstTypes = project.getNamedUserTypes();
+			Set<NamedUserType> dstTypes = project.getNamedUserTypes();
 			return findMatchingTypeInExistingTypes( type, dstTypes );
 		}
 		return null;
 	}
 
-	public static org.lgna.project.ast.UserMethod findMethodWithMatchingName( org.lgna.project.ast.UserMethod srcMethod, org.lgna.project.ast.NamedUserType dstType ) {
-		for( org.lgna.project.ast.UserMethod dstMethod : dstType.methods ) {
+	public static UserMethod findMethodWithMatchingName( UserMethod srcMethod, NamedUserType dstType ) {
+		for( UserMethod dstMethod : dstType.methods ) {
 			if( dstMethod.getName().contentEquals( srcMethod.getName() ) ) {
 				return dstMethod;
 			}
@@ -78,40 +103,31 @@ public class MergeUtilities {
 		return null;
 	}
 
-	private static org.lgna.project.ast.JavaCodeGenerator createJavaCodeGeneratorForEquivalence() {
-		return new org.lgna.project.ast.JavaCodeGenerator.Builder()
+	private static JavaCodeGenerator createJavaCodeGeneratorForEquivalence() {
+		return new JavaCodeGenerator.Builder()
 				.isLambdaSupported( true ) //don't care
 				.build();
 	}
 
-	public static boolean isHeaderEquivalent( org.lgna.project.ast.UserMethod a, org.lgna.project.ast.UserMethod b ) {
-		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = createJavaCodeGeneratorForEquivalence();
-		String aText = a.generateJavaCode( javaCodeGenerator );
-		String bText = b.generateJavaCode( javaCodeGenerator );
+	public static boolean isHeaderEquivalent( UserMethod a, UserMethod b ) {
+		String aText = a.generateHeaderJavaCode( createJavaCodeGeneratorForEquivalence() );
+		String bText = b.generateHeaderJavaCode( createJavaCodeGeneratorForEquivalence() );
 		return aText.contentEquals( bText );
 	}
 
-	public static boolean isEquivalent( org.lgna.project.ast.UserMethod a, org.lgna.project.ast.UserMethod b ) {
-		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = createJavaCodeGeneratorForEquivalence();
-		String aText = a.generateJavaCode( javaCodeGenerator );
-		String bText = b.generateJavaCode( javaCodeGenerator );
+	public static boolean isEquivalent( CodeGenerator a, CodeGenerator b ) {
+		String aText = a.generateCode( createJavaCodeGeneratorForEquivalence() );
+		String bText = b.generateCode( createJavaCodeGeneratorForEquivalence() );
 		return aText.contentEquals( bText );
 	}
 
-	public static boolean isEquivalent( org.lgna.project.ast.UserField a, org.lgna.project.ast.UserField b ) {
-		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = createJavaCodeGeneratorForEquivalence();
-		String aText = a.generateJavaCode( javaCodeGenerator );
-		String bText = b.generateJavaCode( javaCodeGenerator );
-		return aText.contentEquals( bText );
-	}
-
-	public static boolean isValueTypeEquivalent( org.lgna.project.ast.UserField a, org.lgna.project.ast.UserField b ) {
+	public static boolean isValueTypeEquivalent( UserField a, UserField b ) {
 		return a.getValueType().getName().contentEquals( b.getValueType().getName() ); //todo
 	}
 
-	private static org.lgna.project.ast.AbstractMethod findMatch( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractMethod original ) {
+	private static AbstractMethod findMatch( AbstractType<?, ?, ?> type, AbstractMethod original ) {
 		if( type != null ) {
-			for( org.lgna.project.ast.AbstractMethod candidate : type.getDeclaredMethods() ) {
+			for( AbstractMethod candidate : type.getDeclaredMethods() ) {
 				if( candidate.getName().contentEquals( original.getName() ) ) { //todo
 					return candidate;
 				}
@@ -122,9 +138,9 @@ public class MergeUtilities {
 		}
 	}
 
-	private static org.lgna.project.ast.AbstractField findMatch( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractField original ) {
+	private static AbstractField findMatch( AbstractType<?, ?, ?> type, AbstractField original ) {
 		if( type != null ) {
-			for( org.lgna.project.ast.AbstractField candidate : type.getDeclaredFields() ) {
+			for( AbstractField candidate : type.getDeclaredFields() ) {
 				if( candidate.getName().contentEquals( original.getName() ) ) { //todo
 					return candidate;
 				}
@@ -135,10 +151,10 @@ public class MergeUtilities {
 		}
 	}
 
-	private static boolean isAcceptableType( org.lgna.project.ast.AbstractType<?, ?, ?> declaringType, java.util.List<org.lgna.project.ast.NamedUserType> types ) {
+	private static boolean isAcceptableType( AbstractType<?, ?, ?> declaringType, List<NamedUserType> types ) {
 		if( declaringType != null ) {
-			if( declaringType instanceof org.lgna.project.ast.NamedUserType ) {
-				org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)declaringType;
+			if( declaringType instanceof NamedUserType ) {
+				NamedUserType namedUserType = (NamedUserType)declaringType;
 				return types.contains( namedUserType );
 			} else {
 				return true;
@@ -149,74 +165,74 @@ public class MergeUtilities {
 
 	}
 
-	private static void mendMethodInvocations( org.lgna.project.ast.Node node, java.util.List<org.lgna.project.ast.NamedUserType> types ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.MethodInvocation> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.MethodInvocation.class );
-		node.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE, null );
+	private static void mendMethodInvocations( Node node, List<NamedUserType> types ) {
+		IsInstanceCrawler<MethodInvocation> crawler = IsInstanceCrawler.createInstance( MethodInvocation.class );
+		node.crawl( crawler, CrawlPolicy.COMPLETE, null );
 
-		java.util.Map<org.lgna.project.ast.AbstractMethod, org.lgna.project.ast.AbstractMethod> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		for( org.lgna.project.ast.MethodInvocation methodInvocation : crawler.getList() ) {
-			org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+		Map<AbstractMethod, AbstractMethod> map = Maps.newHashMap();
+		for( MethodInvocation methodInvocation : crawler.getList() ) {
+			AbstractMethod method = methodInvocation.method.getValue();
 			if( isAcceptableType( method.getDeclaringType(), types ) ) {
 				//pass
 			} else {
-				org.lgna.project.ast.AbstractMethod replacement;
+				AbstractMethod replacement;
 				if( map.containsKey( method ) ) {
 					replacement = map.get( method );
 				} else {
-					org.lgna.project.ast.Expression expression = methodInvocation.expression.getValue();
-					org.lgna.project.ast.AbstractType<?, ?, ?> type = expression.getType();
+					Expression expression = methodInvocation.expression.getValue();
+					AbstractType<?, ?, ?> type = expression.getType();
 					replacement = findMatch( type, method );
 					if( replacement != null ) {
 						map.put( method, replacement );
 					}
 				}
 				if( replacement != null ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "mending", methodInvocation, method );
+					Logger.outln( "mending", methodInvocation, method );
 					methodInvocation.method.setValue( replacement );
-					org.lgna.project.ast.AstUtilities.fixRequiredArgumentsIfNecessary( methodInvocation );
+					AstUtilities.fixRequiredArgumentsIfNecessary( methodInvocation );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "cannot find replacement:", method );
+					Logger.severe( "cannot find replacement:", method );
 				}
 			}
 		}
 	}
 
-	private static void mendFieldAccesses( org.lgna.project.ast.Node node, java.util.List<org.lgna.project.ast.NamedUserType> types ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.FieldAccess> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.FieldAccess.class );
-		node.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE, null );
+	private static void mendFieldAccesses( Node node, List<NamedUserType> types ) {
+		IsInstanceCrawler<FieldAccess> crawler = IsInstanceCrawler.createInstance( FieldAccess.class );
+		node.crawl( crawler, CrawlPolicy.COMPLETE, null );
 
-		java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.project.ast.AbstractField> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		for( org.lgna.project.ast.FieldAccess fieldAccess : crawler.getList() ) {
-			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+		Map<AbstractField, AbstractField> map = Maps.newHashMap();
+		for( FieldAccess fieldAccess : crawler.getList() ) {
+			AbstractField field = fieldAccess.field.getValue();
 			if( isAcceptableType( field.getDeclaringType(), types ) ) {
 				//pass
 			} else {
-				org.lgna.project.ast.AbstractField replacement;
+				AbstractField replacement;
 				if( map.containsKey( field ) ) {
 					replacement = map.get( field );
 				} else {
-					org.lgna.project.ast.Expression expression = fieldAccess.expression.getValue();
-					org.lgna.project.ast.AbstractType<?, ?, ?> type = expression.getType();
+					Expression expression = fieldAccess.expression.getValue();
+					AbstractType<?, ?, ?> type = expression.getType();
 					replacement = findMatch( type, field );
 					if( replacement != null ) {
 						map.put( field, replacement );
 					}
 				}
 				if( replacement != null ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "mending", fieldAccess, field );
+					Logger.outln( "mending", fieldAccess, field );
 					fieldAccess.field.setValue( replacement );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "cannot find replacement:", field );
+					Logger.severe( "cannot find replacement:", field );
 				}
 			}
 		}
 	}
 
-	public static void mendMethodInvocationsAndFieldAccesses( org.lgna.project.ast.Node node ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.NamedUserType> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.NamedUserType.class );
-		node.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE, null );
-		for( org.lgna.project.ast.NamedUserType namedUserType : crawler.getList() ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( namedUserType );
+	public static void mendMethodInvocationsAndFieldAccesses( Node node ) {
+		IsInstanceCrawler<NamedUserType> crawler = IsInstanceCrawler.createInstance( NamedUserType.class );
+		node.crawl( crawler, CrawlPolicy.COMPLETE, null );
+		for( NamedUserType namedUserType : crawler.getList() ) {
+			Logger.outln( namedUserType );
 		}
 		mendMethodInvocations( node, crawler.getList() );
 		mendFieldAccesses( node, crawler.getList() );

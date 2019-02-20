@@ -42,34 +42,44 @@
  */
 package rename;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.simple.SimpleApplication;
+import rename.views.RenameExampleView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RenameExampleComposite extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<rename.views.RenameExampleView> {
+public class RenameExampleComposite extends SimpleOperationInputDialogCoreComposite<RenameExampleView> {
 	private static final String INITIAL_VALUE = "fred";
 
-	private final org.lgna.croquet.StringState nameState = this.createStringState( "nameState", INITIAL_VALUE );
+	private final StringState nameState = this.createStringState( "nameState", INITIAL_VALUE );
 
 	public RenameExampleComposite() {
-		super( java.util.UUID.fromString( "73adadcf-e434-4dfc-a8fd-507b741f5d58" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
+		super( UUID.fromString( "73adadcf-e434-4dfc-a8fd-507b741f5d58" ), Application.DOCUMENT_UI_GROUP );
 	}
 
-	public org.lgna.croquet.StringState getNameState() {
+	public StringState getNameState() {
 		return this.nameState;
 	}
 
 	@Override
-	protected rename.views.RenameExampleView createView() {
-		return new rename.views.RenameExampleView( this );
+	protected RenameExampleView createView() {
+		return new RenameExampleView( this );
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected Edit createEdit( UserActivity userActivity ) {
 		return null;
 	}
 
@@ -82,7 +92,7 @@ public class RenameExampleComposite extends org.lgna.croquet.SimpleOperationInpu
 	}
 
 	public static void main( String[] args ) {
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		SimpleApplication app = new SimpleApplication();
 		new RenameExampleComposite().getLaunchOperation().fire();
 		System.exit( 0 );
 	}

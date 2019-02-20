@@ -42,11 +42,12 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import org.lgna.project.code.PrecedentedAppender;
 import org.lgna.project.virtualmachine.VirtualMachine;
 /**
  * @author Dennis Cosgrove
  */
-public final class InstanceCreation extends Expression implements ArgumentOwner {
+public final class InstanceCreation extends Expression implements ArgumentOwner, PrecedentedAppender {
 	public InstanceCreation() {
 	}
 
@@ -70,22 +71,22 @@ public final class InstanceCreation extends Expression implements ArgumentOwner 
 	//		this( ConstructorDeclaredInJava.get( cnstrctr ), arguments );
 	//	}
 	@Override
-	public org.lgna.project.ast.DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
+	public DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
 		return this.constructor;
 	}
 
 	@Override
-	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
+	public SimpleArgumentListProperty getRequiredArgumentsProperty() {
 		return this.requiredArguments;
 	}
 
 	@Override
-	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
+	public SimpleArgumentListProperty getVariableArgumentsProperty() {
 		return this.variableArguments;
 	}
 
 	@Override
-	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
+	public KeyedArgumentListProperty getKeyedArgumentsProperty() {
 		return this.keyedArguments;
 	}
 
@@ -101,30 +102,12 @@ public final class InstanceCreation extends Expression implements ArgumentOwner 
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			InstanceCreation other = (InstanceCreation)o;
-			if( this.constructor.valueContentEquals( other.constructor, strictness, filter ) ) {
-				if( this.requiredArguments.valueContentEquals( other.requiredArguments, strictness, filter ) ) {
-					if( this.variableArguments.valueContentEquals( other.variableArguments, strictness, filter ) ) {
-						return this.keyedArguments.valueContentEquals( other.keyedArguments, strictness, filter );
-					}
-				}
-			}
-		}
-		return false;
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendInstantiation(this);
 	}
 
-	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendString( "new " );
-		AbstractType<?, ?, ?> type = getType();
-		if (null == type)
-			type = ((UserField) getParent()).valueType.getValue();
-		generator.appendTypeName( type );
-		generator.appendChar( '(' );
-		generator.appendArguments( this );
-		generator.appendChar( ')' );
+	@Override public int getLevelOfPrecedence() {
+		return 13;
 	}
 
 	//todo: AbstractConstructor -> Expression<AbstractConstructor>

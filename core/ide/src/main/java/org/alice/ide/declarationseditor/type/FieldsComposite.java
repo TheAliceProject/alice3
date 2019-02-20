@@ -42,16 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import org.alice.ide.declarationseditor.type.data.FieldData;
+import org.alice.ide.declarationseditor.type.views.FieldsView;
+import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldsComposite extends MembersComposite<org.lgna.project.ast.UserField> {
-	public FieldsComposite( java.util.UUID migrationId, org.alice.ide.declarationseditor.type.data.FieldData data ) {
+public abstract class FieldsComposite extends MembersComposite<UserField> {
+	public FieldsComposite( UUID migrationId, FieldData data ) {
 		super( migrationId, data );
 	}
 
 	@Override
-	protected final org.alice.ide.declarationseditor.type.views.FieldsView createView() {
-		return new org.alice.ide.declarationseditor.type.views.FieldsView( this );
+	protected final FieldsView createView() {
+		return new FieldsView( this );
 	}
 }

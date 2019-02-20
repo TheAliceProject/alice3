@@ -43,10 +43,13 @@
 
 package org.lgna.project.virtualmachine;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.common.LgnaRuntimeException;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LgnaVmException extends org.lgna.common.LgnaRuntimeException {
+public abstract class LgnaVmException extends LgnaRuntimeException {
 	private final Thread thread;
 	private final VirtualMachine vm;
 	private final LgnaStackTraceElement[] stackTrace;
@@ -86,7 +89,7 @@ public abstract class LgnaVmException extends org.lgna.common.LgnaRuntimeExcepti
 				if( stackTraceElement != null ) {
 					stackTraceElement.appendFormatted( sb );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
+					Logger.severe();
 				}
 			}
 			sb.append( "</ul>" );

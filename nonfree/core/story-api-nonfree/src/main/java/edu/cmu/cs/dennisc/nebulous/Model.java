@@ -42,6 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.nebulous;
 
+import com.jogamp.opengl.GL;
+import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Sphere;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.lgna.story.resources.JointId;
 import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
@@ -50,7 +62,7 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
+public abstract class Model extends Geometry {
 
 	static {
 		if( SystemUtilities.getBooleanProperty( "org.alice.ide.disableDefaultNebulousLoading", false ) ) {
@@ -62,13 +74,13 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 		//		Manager.setDebugDraw( true );
 	}
 
-	public Model() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+	public Model() throws LicenseRejectedException {
 		Manager.initializeIfNecessary();
 	}
 
-	private native void render( com.jogamp.opengl.GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque );
+	private native void render( GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque );
 
-	public void synchronizedRender( com.jogamp.opengl.GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque ) {
+	public void synchronizedRender( GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque ) {
 		synchronized( renderLock ) {
 			try {
 				this.render( gl, globalBrightness, renderAlpha, renderOpaque );
@@ -103,61 +115,61 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 		}
 	}
 
-	private native void getAxisAlignedBoundingBoxForJoint( org.lgna.story.resources.JointId name, org.lgna.story.resources.JointId parent, double[] bboxData );
+	private native void getAxisAlignedBoundingBoxForJoint( JointId name, JointId parent, double[] bboxData );
 
 	private native void updateAxisAlignedBoundingBox( double[] bboxData );
 
-	private native void getOriginalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name, org.lgna.story.resources.JointId parent );
+	private native void getOriginalTransformationForPartNamed( double[] transformOut, JointId name, JointId parent );
 
-	private native void getLocalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name, org.lgna.story.resources.JointId parent );
+	private native void getLocalTransformationForPartNamed( double[] transformOut, JointId name, JointId parent );
 
-	private native void setLocalTransformationForPartNamed( org.lgna.story.resources.JointId name, org.lgna.story.resources.JointId parent, double[] transformIn );
+	private native void setLocalTransformationForPartNamed( JointId name, JointId parent, double[] transformIn );
 
-	private native void getAbsoluteTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
+	private native void getAbsoluteTransformationForPartNamed( double[] transformOut, JointId name );
 
-	public void setVisual( edu.cmu.cs.dennisc.scenegraph.Visual visual ) {
+	public void setVisual( Visual visual ) {
 		this.sgAssociatedVisual = visual;
 	}
 
-	public void setSGParent( edu.cmu.cs.dennisc.scenegraph.Composite parent ) {
+	public void setSGParent( Composite parent ) {
 		this.sgParent = parent;
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Composite getSGParent() {
+	public Composite getSGParent() {
 		return this.sgParent;
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformationForJoint( org.lgna.story.resources.JointId joint ) {
+	public AffineMatrix4x4 getOriginalTransformationForJoint( JointId joint ) {
 		double[] buffer = new double[ 12 ];
 		try {
 			getOriginalTransformationForPartNamed( buffer, joint, joint.getParent() );
 		} catch( RuntimeException re ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( joint );
+			Logger.severe( joint );
 			throw re;
 		}
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 affineMatrix = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createFromColumnMajorArray12( buffer );
+		AffineMatrix4x4 affineMatrix = AffineMatrix4x4.createFromColumnMajorArray12( buffer );
 		return affineMatrix;
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformationForJoint( org.lgna.story.resources.JointId joint ) {
+	public AffineMatrix4x4 getLocalTransformationForJoint( JointId joint ) {
 		double[] buffer = new double[ 12 ];
 		try {
 			getLocalTransformationForPartNamed( buffer, joint, joint.getParent() );
 		} catch( RuntimeException re ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( joint );
+			Logger.severe( joint );
 			throw re;
 		}
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 affineMatrix = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createFromColumnMajorArray12( buffer );
+		AffineMatrix4x4 affineMatrix = AffineMatrix4x4.createFromColumnMajorArray12( buffer );
 		return affineMatrix;
 	}
 
-	public void setLocalTransformationForJoint( org.lgna.story.resources.JointId joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTrans ) {
+	public void setLocalTransformationForJoint( JointId joint, AffineMatrix4x4 localTrans ) {
 		synchronized( renderLock ) {
 			setLocalTransformationForPartNamed( joint, joint.getParent(), localTrans.getAsColumnMajorArray12() );
 		}
 	}
 
-	public boolean hasJoint( org.lgna.story.resources.JointId joint ) {
+	public boolean hasJoint( JointId joint ) {
 		//There's no specific "hasJoint" native call, so this uses the getLocalTransformationForPartNamed and catches the error if the joint isn't found
 		//TODO: implement a simpler "hasJoint" in the native code
 		double[] buffer = new double[ 12 ];
@@ -169,18 +181,18 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 		return true;
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformationForJoint( org.lgna.story.resources.JointId joint ) {
+	public AffineMatrix4x4 getAbsoluteTransformationForJoint( JointId joint ) {
 		double[] buffer = new double[ 12 ];
 		getAbsoluteTransformationForPartNamed( buffer, joint );
-		return edu.cmu.cs.dennisc.math.AffineMatrix4x4.createFromColumnMajorArray12( buffer );
+		return AffineMatrix4x4.createFromColumnMajorArray12( buffer );
 	}
 
 	@Override
-	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
+	public void transform( AbstractMatrix4x4 trans ) {
 		throw new RuntimeException( "todo" );
 	}
 
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedBoundingBoxForJoint( org.lgna.story.resources.JointId joint ) {
+	public AxisAlignedBox getAxisAlignedBoundingBoxForJoint( JointId joint ) {
 		double[] bboxData = new double[ 6 ];
 		getAxisAlignedBoundingBoxForJoint( joint, joint.getParent(), bboxData );
 		AxisAlignedBox bbox = new AxisAlignedBox( bboxData[ 0 ], bboxData[ 1 ], bboxData[ 2 ], bboxData[ 3 ], bboxData[ 4 ], bboxData[ 5 ] );
@@ -189,7 +201,7 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	}
 
 	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
+	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
 		//the bounding boxes come in the form (double[6])
 		double[] bboxData = new double[ 6 ];
 		updateAxisAlignedBoundingBox( bboxData );
@@ -198,17 +210,17 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	}
 
 	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
+	protected void updateBoundingSphere( Sphere boundingSphere ) {
 		boundingSphere.setNaN();
 	}
 
 	@Override
-	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
+	protected void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation ) {
 		throw new RuntimeException( "todo" );
 	}
 
-	protected edu.cmu.cs.dennisc.scenegraph.Composite sgParent;
-	protected edu.cmu.cs.dennisc.scenegraph.Visual sgAssociatedVisual;
+	protected Composite sgParent;
+	protected Visual sgAssociatedVisual;
 
 	protected final Object renderLock = new Object();
 }

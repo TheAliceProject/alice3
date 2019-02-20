@@ -42,16 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import org.alice.ide.ast.declaration.AddFunctionComposite;
+import org.alice.ide.declarationseditor.type.views.FunctionsToolPaletteCoreView;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FunctionsToolPaletteCoreComposite extends MethodsToolPaletteCoreComposite {
-	public FunctionsToolPaletteCoreComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "47e05482-b982-4dd6-a49a-7ec62cf783c6" ), FunctionsComposite.getInstance( type ), org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( type ).getLaunchOperation() );
+	public FunctionsToolPaletteCoreComposite( NamedUserType type ) {
+		super( UUID.fromString( "47e05482-b982-4dd6-a49a-7ec62cf783c6" ), FunctionsComposite.getInstance( type ), AddFunctionComposite.getInstance( type ).getLaunchOperation() );
 	}
 
 	@Override
-	protected org.alice.ide.declarationseditor.type.views.FunctionsToolPaletteCoreView createView() {
-		return new org.alice.ide.declarationseditor.type.views.FunctionsToolPaletteCoreView( this );
+	protected FunctionsToolPaletteCoreView createView() {
+		return new FunctionsToolPaletteCoreView( this );
 	}
 }

@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.StringProperty;
 import org.lgna.project.virtualmachine.VirtualMachine;
 /**
  * @author Dennis Cosgrove
@@ -55,9 +56,13 @@ public abstract class AbstractConstructor extends AbstractCode {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
 
 	public abstract Object evaluate( VirtualMachine vm, AbstractType fallbackType, Object[] arguments );
+
+	public Object instantiateFirstArgumentPassedToSuperConstructor() {
+		return null;
+	}
 }

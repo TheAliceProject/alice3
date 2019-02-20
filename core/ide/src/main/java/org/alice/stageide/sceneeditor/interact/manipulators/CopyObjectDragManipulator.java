@@ -43,9 +43,25 @@
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import org.alice.ide.IDE;
 import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
+import org.alice.stageide.ast.declaration.AddCopiedManagedFieldComposite;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.triggers.DropTrigger;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.ViewController;
+import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -65,7 +81,7 @@ import edu.cmu.cs.dennisc.scenegraph.util.ModestAxes;
  */
 public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipulator {
 
-	edu.cmu.cs.dennisc.scenegraph.AbstractTransformable objectToCopy = null;
+	AbstractTransformable objectToCopy = null;
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
@@ -113,7 +129,7 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
 				this.sgBoundingBoxTransformable.setTranslationOnly( this.getPerspectivePositionBasedOnInput( startInput ), AsSeenBy.SCENE );
 			}
 			addPlaneTransitionPointSphereToScene();
-			edu.cmu.cs.dennisc.math.AxisAlignedBox box = null;
+			AxisAlignedBox box = null;
 
 			EntityImp entityImplementation = EntityImp.getInstance( this.objectToCopy );
 			if( entityImplementation != null ) {
@@ -151,30 +167,30 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
 			this.sgAxes.isShowing.setValue( false );
 
 			if( endInput.getInputEventType() == InputState.InputEventType.MOUSE_UP ) {
-				org.lgna.croquet.Model model = null;
-				org.alice.stageide.modelresource.ResourceKey resourceKey = null;
 				EntityImp entityImplementation = EntityImp.getInstance( this.objectToCopy );
 				if( entityImplementation != null ) {
 
-					org.lgna.project.ast.UserField field = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM( entityImplementation.getAbstraction() );
+					UserField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM( entityImplementation.getAbstraction() );
 					if( field != null ) {
 
-						org.alice.stageide.ast.declaration.AddCopiedManagedFieldComposite addCopiedManagedFieldComposite = org.alice.stageide.ast.declaration.AddCopiedManagedFieldComposite.getInstance();
+						AddCopiedManagedFieldComposite addCopiedManagedFieldComposite = AddCopiedManagedFieldComposite.getInstance();
 						addCopiedManagedFieldComposite.setFieldToBeCopied( field );
-						model = addCopiedManagedFieldComposite.getLaunchOperation();
-						org.lgna.croquet.DropReceptor dropReceptor = ( (org.alice.stageide.sceneeditor.StorytellingSceneEditor)org.alice.ide.IDE.getActiveInstance().getSceneEditor() ).getDropReceptor();
-						org.lgna.croquet.views.SwingComponentView<?> component = dropReceptor.getViewController();
-						org.lgna.croquet.views.ViewController<?, ?> viewController;
-						if( component instanceof org.lgna.croquet.views.ViewController<?, ?> ) {
-							viewController = (org.lgna.croquet.views.ViewController<?, ?>)component;
+						Triggerable triggerable = addCopiedManagedFieldComposite.getLaunchOperation();
+						DropReceptor dropReceptor = ( (StorytellingSceneEditor)IDE.getActiveInstance().getSceneEditor() ).getDropReceptor();
+						SwingComponentView<?> component = dropReceptor.getViewController();
+						ViewController<?, ?> viewController;
+						if( component instanceof ViewController<?, ?> ) {
+							viewController = (ViewController<?, ?>)component;
 						} else {
 							viewController = null;
 						}
-						org.lgna.croquet.DropSite dropSite = new org.alice.stageide.sceneeditor.draganddrop.SceneDropSite( this.getManipulatedTransformable().getAbsoluteTransformation() );
+						DropSite dropSite = new SceneDropSite( this.getManipulatedTransformable().getAbsoluteTransformation() );
 						try {
-							java.awt.event.MouseEvent mouseEvent = endInput.getInputEvent() instanceof java.awt.event.MouseEvent ? (java.awt.event.MouseEvent)endInput.getInputEvent() : null;
-							org.lgna.croquet.history.Step<?> step = model.fire( org.lgna.croquet.triggers.DropTrigger.createUserInstance( viewController, mouseEvent, dropSite ) );
-						} catch( org.lgna.croquet.CancelException ce ) {
+							MouseEvent mouseEvent = endInput.getInputEvent() instanceof MouseEvent ? (MouseEvent)endInput.getInputEvent() : null;
+							UserActivity activity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
+							DropTrigger.setOnUserActivity( activity, viewController, mouseEvent, dropSite );
+							triggerable.fire( activity );
+						} catch( CancelException ce ) {
 							//Do nothing on cancel
 						}
 					}

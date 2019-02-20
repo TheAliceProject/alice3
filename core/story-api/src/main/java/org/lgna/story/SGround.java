@@ -43,9 +43,15 @@
 
 package org.lgna.story;
 
+import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.ValueTemplate;
+import org.lgna.story.annotation.GroundSurfaceAppearanceDetails;
+import org.lgna.story.annotation.PortionDetails;
+import org.lgna.story.implementation.GroundImp;
+
+import java.net.URL;
 
 /**
  * @author Dennis Cosgrove
@@ -89,15 +95,15 @@ public class SGround extends SThing implements MutableRider, VisualWithPaint {
 		}
 
 		@Override
-		public java.net.URL getResource() {
+		public URL getResource() {
 			return SGround.class.getResource( "resources/grounds/" + this.resourceName + ".png" );
 		}
 	}
 
-	private final org.lgna.story.implementation.GroundImp implementation = new org.lgna.story.implementation.GroundImp( this );
+	private final GroundImp implementation = new GroundImp( this );
 
 	@Override
-			/* package-private */org.lgna.story.implementation.GroundImp getImplementation() {
+			/* package-private */GroundImp getImplementation() {
 		return this.implementation;
 	}
 
@@ -109,7 +115,7 @@ public class SGround extends SThing implements MutableRider, VisualWithPaint {
 	@Override
 	@MethodTemplate( )
 	@GetterTemplate( isPersistent = true )
-	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.GroundSurfaceAppearanceDetails.class )
+	@ValueTemplate( detailsEnumCls = GroundSurfaceAppearanceDetails.class )
 	public Paint getPaint() {
 		return this.getImplementation().paint.getValue();
 	}
@@ -123,7 +129,7 @@ public class SGround extends SThing implements MutableRider, VisualWithPaint {
 	@Override
 	@MethodTemplate( )
 	@GetterTemplate( isPersistent = true )
-	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
+	@ValueTemplate( detailsEnumCls = PortionDetails.class )
 	public Double getOpacity() {
 		return (double)this.getImplementation().opacity.getValue();
 	}
@@ -131,7 +137,7 @@ public class SGround extends SThing implements MutableRider, VisualWithPaint {
 	@Override
 	@MethodTemplate( )
 	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsBetween0and1( opacity, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsBetween0and1( opacity, 0 );
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

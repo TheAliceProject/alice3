@@ -43,12 +43,20 @@
 
 package org.lgna.croquet.preferences;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.Group;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreferenceBooleanState extends org.lgna.croquet.BooleanState {
+public abstract class PreferenceBooleanState extends BooleanState {
 	private static boolean getInitialValue( String preferenceKey, boolean defaultInitialValue ) {
-		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
+		Preferences userPreferences = PreferenceManager.getUserPreferences();
 		if( userPreferences != null ) {
 			return userPreferences.getBoolean( preferenceKey, defaultInitialValue );
 		} else {
@@ -56,9 +64,9 @@ public abstract class PreferenceBooleanState extends org.lgna.croquet.BooleanSta
 		}
 	}
 
-	private static java.util.List<PreferenceBooleanState> instances = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private static List<PreferenceBooleanState> instances = Lists.newCopyOnWriteArrayList();
 
-	public final static void preserveAll( java.util.prefs.Preferences userPreferences ) {
+	public final static void preserveAll( Preferences userPreferences ) {
 		for( PreferenceBooleanState state : instances ) {
 			userPreferences.putBoolean( state.preferenceKey, state.getValue() );
 		}
@@ -66,7 +74,7 @@ public abstract class PreferenceBooleanState extends org.lgna.croquet.BooleanSta
 
 	private final String preferenceKey;
 
-	public PreferenceBooleanState( org.lgna.croquet.Group group, java.util.UUID migrationId, boolean initialValue, String preferenceKey ) {
+	public PreferenceBooleanState( Group group, UUID migrationId, boolean initialValue, String preferenceKey ) {
 		super( group, migrationId, getInitialValue( preferenceKey, initialValue ) );
 		assert instances.contains( this ) == false;
 		instances.add( this );
@@ -74,7 +82,7 @@ public abstract class PreferenceBooleanState extends org.lgna.croquet.BooleanSta
 		this.preferenceKey = preferenceKey;
 	}
 
-	public PreferenceBooleanState( org.lgna.croquet.Group group, java.util.UUID migrationId, boolean initialValue ) {
+	public PreferenceBooleanState( Group group, UUID migrationId, boolean initialValue ) {
 		this( group, migrationId, initialValue, migrationId.toString() );
 	}
 }

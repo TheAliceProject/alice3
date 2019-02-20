@@ -42,14 +42,18 @@
  */
 package focuswindow.views;
 
+import focuswindow.ExampleMainComposite;
+import org.lgna.croquet.views.Hyperlink;
+import org.lgna.croquet.views.MigPanel;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExampleMainPane extends org.lgna.croquet.views.MigPanel {
-	public ExampleMainPane( focuswindow.ExampleMainComposite composite ) {
+public class ExampleMainPane extends MigPanel {
+	public ExampleMainPane( ExampleMainComposite composite ) {
 		super( composite );
 		this.addComponent( composite.getQuestionState().createCheckBox() );
-		org.lgna.croquet.views.Hyperlink hyperlink = composite.getFocusWindow().getLaunchOperation().createHyperlink();
+		Hyperlink hyperlink = composite.getFocusWindow().getLaunchOperation().createHyperlink();
 		hyperlink.setUnderlinedOnlyWhenRolledOver( false );
 		this.addComponent( hyperlink );
 	}

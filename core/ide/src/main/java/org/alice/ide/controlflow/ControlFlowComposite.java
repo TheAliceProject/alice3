@@ -43,14 +43,40 @@
 
 package org.alice.ide.controlflow;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.statement.AssignmentTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel;
+import org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel;
+import org.alice.ide.controlflow.components.ControlFlowPanel;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ControlFlowComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.controlflow.components.ControlFlowPanel> {
+public class ControlFlowComposite extends SimpleComposite<ControlFlowPanel> {
 
-	private static java.util.Map<org.lgna.project.ast.AbstractCode, ControlFlowComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<AbstractCode, ControlFlowComposite> map = Maps.newHashMap();
 
-	public static synchronized ControlFlowComposite getInstance( org.lgna.project.ast.AbstractCode code ) {
+	public static synchronized ControlFlowComposite getInstance( AbstractCode code ) {
 		ControlFlowComposite rv = map.get( code );
 		if( rv != null ) {
 			//pass
@@ -61,16 +87,16 @@ public class ControlFlowComposite extends org.lgna.croquet.SimpleComposite<org.a
 		return rv;
 	}
 
-	private final java.util.List<org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final org.lgna.project.ast.AbstractCode code;
+	private final List<StatementTemplateDragModel> models = Lists.newLinkedList();
+	private final AbstractCode code;
 
-	private ControlFlowComposite( org.lgna.project.ast.AbstractCode code ) {
-		super( java.util.UUID.fromString( "27ff6dfc-2519-4378-bb4f-d8c2c2fb19e9" ) );
+	private ControlFlowComposite( AbstractCode code ) {
+		super( UUID.fromString( "27ff6dfc-2519-4378-bb4f-d8c2c2fb19e9" ) );
 		this.code = code;
 	}
 
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
+	public boolean contains( Model model ) {
 		if( super.contains( model ) ) {
 			return true;
 		} else {
@@ -78,43 +104,43 @@ public class ControlFlowComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 	}
 
-	public java.util.List<org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel> getModels() {
+	public List<StatementTemplateDragModel> getModels() {
 		return this.models;
 	}
 
 	@Override
-	protected org.alice.ide.controlflow.components.ControlFlowPanel createView() {
-		return new org.alice.ide.controlflow.components.ControlFlowPanel( this );
+	protected ControlFlowPanel createView() {
+		return new ControlFlowPanel( this );
 	}
 
 	@Override
 	protected void initialize() {
 		super.initialize();
 
-		java.util.Collections.addAll( this.models,
-				org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance(),
+		Collections.addAll( this.models,
+				DoInOrderTemplateDragModel.getInstance(),
 				null,
-				org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance(),
-				org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance(),
-				org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel.getInstance(),
+				CountLoopTemplateDragModel.getInstance(),
+				WhileLoopTemplateDragModel.getInstance(),
+				ForEachInArrayLoopTemplateDragModel.getInstance(),
 				null,
-				org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel.getInstance(),
+				ConditionalStatementTemplateDragModel.getInstance(),
 				null,
-				org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel.getInstance(),
-				org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel.getInstance(),
+				DoTogetherTemplateDragModel.getInstance(),
+				EachInArrayTogetherTemplateDragModel.getInstance(),
 				null,
-				org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance(),
-				org.alice.ide.ast.draganddrop.statement.AssignmentTemplateDragModel.getInstance(),
+				DeclareLocalDragModel.getInstance(),
+				AssignmentTemplateDragModel.getInstance(),
 				null,
-				org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance()
+				CommentTemplateDragModel.getInstance()
 				);
-		if( code instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
-			if( method.getReturnType() == org.lgna.project.ast.JavaType.VOID_TYPE ) {
+		if( code instanceof UserMethod ) {
+			UserMethod method = (UserMethod)code;
+			if( method.getReturnType() == JavaType.VOID_TYPE ) {
 				//pass
 			} else {
 				this.models.add( null );
-				this.models.add( org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance( method ) );
+				this.models.add( ReturnStatementTemplateDragModel.getInstance( method ) );
 			}
 		}
 	}

@@ -43,6 +43,30 @@
 
 package org.alice.ide.ast.declaration;
 
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import org.alice.ide.croquet.edits.ast.DeclareFieldEdit;
+import org.alice.ide.identifier.IdentifierNameGenerator;
+import org.alice.ide.typemanager.ConstructorArgumentUtilities;
+import org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState;
+import org.alice.stageide.icons.PlusIconFactory;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AccessLevel;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldModifierFinalVolatileOrNeither;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.JavaField;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.StaticAnalysisUtilities;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
+
+import java.awt.Dimension;
+import java.lang.reflect.Field;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,11 +75,11 @@ public abstract class AddFieldComposite extends FieldComposite {
 		private ApplicabilityStatus isFinalStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private boolean inFinalInitialValue;
 		private ApplicabilityStatus valueComponentTypeStatus;
-		private org.lgna.project.ast.AbstractType<?, ?, ?> valueComponentTypeInitialValue;
+		private AbstractType<?, ?, ?> valueComponentTypeInitialValue;
 		private ApplicabilityStatus valueIsArrayTypeStatus;
 		private boolean valueIsArrayTypeInitialValue;
 		private ApplicabilityStatus initializerStatus;
-		private org.lgna.project.ast.Expression initializerInitialValue;
+		private Expression initializerInitialValue;
 
 		public FieldDetailsBuilder isFinal( ApplicabilityStatus status, boolean initialValue ) {
 			this.isFinalStatus = status;
@@ -63,7 +87,7 @@ public abstract class AddFieldComposite extends FieldComposite {
 			return this;
 		}
 
-		public FieldDetailsBuilder valueComponentType( ApplicabilityStatus status, org.lgna.project.ast.AbstractType<?, ?, ?> initialValue ) {
+		public FieldDetailsBuilder valueComponentType( ApplicabilityStatus status, AbstractType<?, ?, ?> initialValue ) {
 			this.valueComponentTypeStatus = status;
 			this.valueComponentTypeInitialValue = initialValue;
 			return this;
@@ -75,7 +99,7 @@ public abstract class AddFieldComposite extends FieldComposite {
 			return this;
 		}
 
-		public FieldDetailsBuilder initializer( ApplicabilityStatus status, org.lgna.project.ast.Expression initialValue ) {
+		public FieldDetailsBuilder initializer( ApplicabilityStatus status, Expression initialValue ) {
 			this.initializerStatus = status;
 			this.initializerInitialValue = initialValue;
 			return this;
@@ -94,20 +118,20 @@ public abstract class AddFieldComposite extends FieldComposite {
 		}
 	}
 
-	public AddFieldComposite( java.util.UUID migrationId, Details details ) {
+	public AddFieldComposite( UUID migrationId, Details details ) {
 		super( migrationId, details );
 	}
 
-	protected abstract org.lgna.project.ast.ManagementLevel getManagementLevel();
+	protected abstract ManagementLevel getManagementLevel();
 
 	protected abstract boolean isFieldFinal();
 
-	private org.lgna.project.ast.UserField createField() {
-		org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField();
+	private UserField createField() {
+		UserField field = new UserField();
 		if( this.isFieldFinal() ) {
-			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+			field.finalVolatileOrNeither.setValue( FieldModifierFinalVolatileOrNeither.FINAL );
 		}
-		field.accessLevel.setValue( org.lgna.project.ast.AccessLevel.PRIVATE );
+		field.accessLevel.setValue( AccessLevel.PRIVATE );
 		field.managementLevel.setValue( this.getManagementLevel() );
 		field.valueType.setValue( this.getValueType() );
 		field.name.setValue( this.getDeclarationLikeSubstanceName() );
@@ -118,13 +142,13 @@ public abstract class AddFieldComposite extends FieldComposite {
 	@Override
 	protected void localize() {
 		super.localize();
-		int size = edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.getDefaultFontSize() + 4;
-		this.getLaunchOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( size, size ) ) );
+		int size = UIManagerUtilities.getDefaultFontSize() + 4;
+		this.getLaunchOperation().setSmallIcon( PlusIconFactory.getInstance().getIcon( new Dimension( size, size ) ) );
 	}
 
 	@Override
-	public String modifyNameIfNecessary( org.lgna.croquet.OwnedByCompositeOperationSubKey key, String text ) {
-		text = super.modifyNameIfNecessary( key, text );
+	public String modifyNameIfNecessary( String text ) {
+		text = super.modifyNameIfNecessary( text );
 		if( text != null ) {
 			String declaringTypeName;
 			if( this.getDeclaringType() != null ) {
@@ -138,38 +162,38 @@ public abstract class AddFieldComposite extends FieldComposite {
 	}
 
 	@Override
-	public org.lgna.project.ast.UserField getPreviewValue() {
+	public UserField getPreviewValue() {
 		return this.createField();
 	}
 
-	protected abstract org.alice.ide.croquet.edits.ast.DeclareFieldEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field );
+	protected abstract DeclareFieldEdit createEdit( UserActivity userActivity, UserType<?> declaringType, UserField field );
 
 	@Override
-	protected final org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return this.createEdit( completionStep, this.getDeclaringType(), this.createField() );
+	protected final Edit createEdit( UserActivity userActivity ) {
+		return this.createEdit( userActivity, this.getDeclaringType(), this.createField() );
 	}
 
 	@Override
 	protected boolean isNameAvailable( String name ) {
-		return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableFieldName( name, this.getDeclaringType() );
+		return StaticAnalysisUtilities.isAvailableFieldName( name, this.getDeclaringType() );
 	}
 
-	protected org.lgna.project.ast.InstanceCreation getInstanceCreationFromInitializer() {
-		org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initializerState = this.getInitializerState();
+	protected InstanceCreation getInstanceCreationFromInitializer() {
+		CustomItemState<Expression> initializerState = this.getInitializerState();
 		if( initializerState != null ) {
-			org.lgna.project.ast.Expression expression = initializerState.getValue();
-			if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
-				return (org.lgna.project.ast.InstanceCreation)expression;
+			Expression expression = initializerState.getValue();
+			if( expression instanceof InstanceCreation ) {
+				return (InstanceCreation)expression;
 			}
 		}
 		return null;
 	}
 
-	protected java.lang.reflect.Field getFldFromInstanceCreationInitializer( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+	protected Field getFldFromInstanceCreationInitializer( InstanceCreation instanceCreation ) {
 		if( instanceCreation != null ) {
-			org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( instanceCreation );
+			JavaField argumentField = ConstructorArgumentUtilities.getArgumentField( instanceCreation );
 			if( argumentField != null ) {
-				java.lang.reflect.Field fld = argumentField.getFieldReflectionProxy().getReification();
+				Field fld = argumentField.getFieldReflectionProxy().getReification();
 				return fld;
 			}
 		}
@@ -177,8 +201,8 @@ public abstract class AddFieldComposite extends FieldComposite {
 	}
 
 	protected String generateName() {
-		org.lgna.project.ast.InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
-		return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.createIdentifierNameFromInstanceCreation( instanceCreation );
+		InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
+		return IdentifierNameGenerator.SINGLETON.createIdentifierNameFromInstanceCreation( instanceCreation );
 	}
 
 	protected boolean isNumberAppendedToNameOfFirstField() {
@@ -186,7 +210,7 @@ public abstract class AddFieldComposite extends FieldComposite {
 	}
 
 	protected boolean isNameGenerationDesired() {
-		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue();
+		return IsPromptProvidingInitialFieldNamesState.getInstance().getValue();
 	}
 
 	@Override

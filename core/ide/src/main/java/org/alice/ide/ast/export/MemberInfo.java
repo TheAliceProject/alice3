@@ -42,37 +42,51 @@
  *******************************************************************************/
 package org.alice.ide.ast.export;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
+import org.lgna.project.ast.CrawlPolicy;
+import org.lgna.project.ast.Member;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserConstructor;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserType;
+
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MemberInfo<D extends org.lgna.project.ast.Member> extends DeclarationInfo<D> {
-	private class Dependencies implements edu.cmu.cs.dennisc.pattern.Crawler {
-		private final java.util.List<TypeInfo> typeInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		private final java.util.List<FieldInfo> fieldInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		private final java.util.List<MethodInfo> methodInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		private final java.util.List<ConstructorInfo> constructorInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+public class MemberInfo<D extends Member> extends DeclarationInfo<D> {
+	private class Dependencies implements Crawler {
+		private final List<TypeInfo> typeInfos = Lists.newLinkedList();
+		private final List<FieldInfo> fieldInfos = Lists.newLinkedList();
+		private final List<MethodInfo> methodInfos = Lists.newLinkedList();
+		private final List<ConstructorInfo> constructorInfos = Lists.newLinkedList();
 
 		@Override
-		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+		public void visit( Crawlable crawlable ) {
 			if( crawlable == MemberInfo.this.getDeclaration() ) {
 				//pass
 			} else {
-				if( crawlable instanceof org.lgna.project.ast.NamedUserType ) {
-					org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)crawlable;
+				if( crawlable instanceof NamedUserType ) {
+					NamedUserType type = (NamedUserType)crawlable;
 					TypeInfo typeInfo = getProjectInfo().getInfoForType( type );
 					this.typeInfos.add( typeInfo );
-				} else if( crawlable instanceof org.lgna.project.ast.UserConstructor ) {
-					org.lgna.project.ast.UserConstructor constructor = (org.lgna.project.ast.UserConstructor)crawlable;
+				} else if( crawlable instanceof UserConstructor ) {
+					UserConstructor constructor = (UserConstructor)crawlable;
 					TypeInfo typeInfo = getProjectInfo().getInfoForType( constructor.getDeclaringType() );
 					ConstructorInfo constructorInfo = typeInfo.getInfoForConstructor( constructor );
 					this.constructorInfos.add( constructorInfo );
-				} else if( crawlable instanceof org.lgna.project.ast.UserMethod ) {
-					org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)crawlable;
+				} else if( crawlable instanceof UserMethod ) {
+					UserMethod method = (UserMethod)crawlable;
 					TypeInfo typeInfo = getProjectInfo().getInfoForType( method.getDeclaringType() );
 					MethodInfo methodInfo = typeInfo.getInfoForMethod( method );
 					this.methodInfos.add( methodInfo );
-				} else if( crawlable instanceof org.lgna.project.ast.UserField ) {
-					org.lgna.project.ast.UserField field = (org.lgna.project.ast.UserField)crawlable;
+				} else if( crawlable instanceof UserField ) {
+					UserField field = (UserField)crawlable;
 					TypeInfo typeInfo = getProjectInfo().getInfoForType( field.getDeclaringType() );
 					FieldInfo fieldInfo = typeInfo.getInfoForField( field );
 					this.fieldInfos.add( fieldInfo );
@@ -111,13 +125,13 @@ public class MemberInfo<D extends org.lgna.project.ast.Member> extends Declarati
 
 	/* package-private */void updateDependencies() {
 		this.dependencies = new Dependencies();
-		this.declaringTypeInfo = this.getProjectInfo().getInfoForType( (org.lgna.project.ast.UserType<?>)this.getDeclaration().getDeclaringType() );
-		this.getDeclaration().crawl( this.dependencies, org.lgna.project.ast.CrawlPolicy.INCLUDE_REFERENCES_BUT_DO_NOT_TUNNEL, null );
+		this.declaringTypeInfo = this.getProjectInfo().getInfoForType( (UserType<?>)this.getDeclaration().getDeclaringType() );
+		this.getDeclaration().crawl( this.dependencies, CrawlPolicy.INCLUDE_REFERENCES_BUT_DO_NOT_TUNNEL, null );
 		this.getCheckBox().setToolTipText( this.dependencies.getToolTipText() );
 	}
 
 	@Override
-	protected void addRequired( java.util.Set<org.alice.ide.ast.export.DeclarationInfo<?>> visited ) {
+	protected void addRequired( Set<DeclarationInfo<?>> visited ) {
 		super.addRequired( visited );
 		this.declaringTypeInfo.updateRequired( visited );
 		for( TypeInfo info : this.dependencies.typeInfos ) {

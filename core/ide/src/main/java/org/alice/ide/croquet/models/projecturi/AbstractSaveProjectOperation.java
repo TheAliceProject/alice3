@@ -42,22 +42,30 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import org.alice.ide.ProjectApplication;
+import org.alice.stageide.StageIDE;
+import org.lgna.project.io.IoUtilities;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation {
-	public AbstractSaveProjectOperation( java.util.UUID individualUUID ) {
+	public AbstractSaveProjectOperation( UUID individualUUID ) {
 		super( individualUUID );
 	}
 
 	@Override
-	protected java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application ) {
-		return application.getMyProjectsDirectory();
+	protected File getDefaultDirectory( StageIDE application ) {
+		return application.getProjectsDirectory();
 	}
 
 	@Override
 	protected String getExtension() {
-		return org.lgna.project.io.IoUtilities.PROJECT_EXTENSION;
+		return IoUtilities.PROJECT_EXTENSION;
 	}
 
 	@Override
@@ -66,7 +74,7 @@ public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation
 	}
 
 	@Override
-	protected void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException {
+	protected void save( ProjectApplication application, File file ) throws IOException {
 		application.saveProjectTo( file );
 	}
 }

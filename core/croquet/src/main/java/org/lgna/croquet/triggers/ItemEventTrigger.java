@@ -43,24 +43,20 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+
+import java.awt.event.ItemEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ItemEventTrigger extends EventObjectTrigger<java.awt.event.ItemEvent> {
-	public static ItemEventTrigger createUserInstance( java.awt.event.ItemEvent itemEvent ) {
-		return new ItemEventTrigger( null, itemEvent );
+public class ItemEventTrigger extends EventObjectTrigger<ItemEvent> {
+	public static UserActivity createUserActivity( ItemEvent itemEvent ) {
+		return new ItemEventTrigger( itemEvent ).getUserActivity();
 	}
 
-	private ItemEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.ItemEvent itemEvent ) {
-		super( viewController, itemEvent );
-	}
-
-	public ItemEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected java.awt.Point getPoint() {
-		return null;
+	private ItemEventTrigger( ItemEvent itemEvent ) {
+		super( Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), null, itemEvent );
 	}
 }

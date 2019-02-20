@@ -43,13 +43,16 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.ItemState;
+
+import javax.swing.JComponent;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectable<J extends javax.swing.JComponent, T, M extends org.lgna.croquet.ItemState<T>> extends ViewController<J, M> {
+public abstract class ItemSelectable<J extends JComponent, T, M extends ItemState<T>> extends ViewController<J, M> {
 	public ItemSelectable( M model ) {
 		super( model );
 	}
 
-	public abstract TrackableShape getTrackableShapeFor( T item );
 }

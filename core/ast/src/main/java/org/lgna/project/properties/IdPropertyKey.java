@@ -43,21 +43,26 @@
 
 package org.lgna.project.properties;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IdPropertyKey extends PropertyKey<java.util.UUID> {
-	public IdPropertyKey( java.util.UUID id, String repr ) {
+public class IdPropertyKey extends PropertyKey<UUID> {
+	public IdPropertyKey( UUID id, String repr ) {
 		super( id, repr );
 	}
 
 	@Override
-	protected java.util.UUID decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	protected UUID decodeValue( BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeId();
 	}
 
 	@Override
-	protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.UUID value ) {
+	protected void encodeValue( BinaryEncoder binaryEncoder, UUID value ) {
 		binaryEncoder.encode( value );
 	}
 }

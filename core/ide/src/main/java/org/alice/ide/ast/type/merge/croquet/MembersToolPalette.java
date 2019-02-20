@@ -42,30 +42,43 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.ast.type.merge.croquet.views.MembersView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Element;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.ToolPaletteCoreComposite;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.project.ast.Member;
+
+import java.net.URI;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersToolPalette<V extends org.alice.ide.ast.type.merge.croquet.views.MembersView<?>, M extends org.lgna.project.ast.Member> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
-	private final java.net.URI uriForDescriptionPurposesOnly;
-	private final java.util.List<M> unusedProjectMembers;
-	private final java.util.List<ImportOnly<M>> importOnlys = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final java.util.List<DifferentSignature<M>> differentSignatures = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final java.util.List<DifferentImplementation<M>> differentImplementations = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final java.util.List<Identical<M>> identicals = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private java.util.List<ProjectOnly<M>> projectOnlys;
+public abstract class MembersToolPalette<V extends MembersView<?>, M extends Member> extends ToolPaletteCoreComposite<V> {
+	private final URI uriForDescriptionPurposesOnly;
+	private final List<M> unusedProjectMembers;
+	private final List<ImportOnly<M>> importOnlys = Lists.newLinkedList();
+	private final List<DifferentSignature<M>> differentSignatures = Lists.newLinkedList();
+	private final List<DifferentImplementation<M>> differentImplementations = Lists.newLinkedList();
+	private final List<Identical<M>> identicals = Lists.newLinkedList();
+	private List<ProjectOnly<M>> projectOnlys;
 
-	private final org.lgna.croquet.PlainStringValue fromImportHeader = this.createStringValue( "fromImportHeader" );
-	private final org.lgna.croquet.PlainStringValue alreadyInProjectHeader = this.createStringValue( "alreadyInProjectHeader" );
-	private final org.lgna.croquet.PlainStringValue resultHeader = this.createStringValue( "resultHeader" );
+	private final PlainStringValue fromImportHeader = this.createStringValue( "fromImportHeader" );
+	private final PlainStringValue alreadyInProjectHeader = this.createStringValue( "alreadyInProjectHeader" );
+	private final PlainStringValue resultHeader = this.createStringValue( "resultHeader" );
 
-	public MembersToolPalette( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<M> projectMembers ) {
-		super( migrationId, org.lgna.croquet.Application.INHERIT_GROUP, true );
+	public MembersToolPalette( UUID migrationId, URI uriForDescriptionPurposesOnly, List<M> projectMembers ) {
+		super( migrationId, Application.INHERIT_GROUP, true );
 		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
 		this.unusedProjectMembers = projectMembers;
 	}
 
 	@Override
-	protected String modifyLocalizedText( org.lgna.croquet.Element element, String localizedText ) {
+	protected String modifyLocalizedText( Element element, String localizedText ) {
 		String rv = super.modifyLocalizedText( element, localizedText );
 		if( rv != null ) {
 			if( element == this.fromImportHeader ) {
@@ -76,8 +89,8 @@ public abstract class MembersToolPalette<V extends org.alice.ide.ast.type.merge.
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
-		return new org.lgna.croquet.views.ScrollPane();
+	protected ScrollPane createScrollPaneIfDesired() {
+		return new ScrollPane();
 	}
 
 	public void addImportOnlyMember( M method ) {
@@ -100,41 +113,41 @@ public abstract class MembersToolPalette<V extends org.alice.ide.ast.type.merge.
 	}
 
 	public void reifyProjectOnly() {
-		this.projectOnlys = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		this.projectOnlys = Lists.newLinkedList();
 		for( M method : this.unusedProjectMembers ) {
 			this.projectOnlys.add( new ProjectOnly<M>( method ) );
 		}
 	}
 
-	public java.util.List<ImportOnly<M>> getImportOnlys() {
+	public List<ImportOnly<M>> getImportOnlys() {
 		return this.importOnlys;
 	}
 
-	public java.util.List<DifferentSignature<M>> getDifferentSignatures() {
+	public List<DifferentSignature<M>> getDifferentSignatures() {
 		return this.differentSignatures;
 	}
 
-	public java.util.List<DifferentImplementation<M>> getDifferentImplementations() {
+	public List<DifferentImplementation<M>> getDifferentImplementations() {
 		return this.differentImplementations;
 	}
 
-	public java.util.List<Identical<M>> getIdenticals() {
+	public List<Identical<M>> getIdenticals() {
 		return this.identicals;
 	}
 
-	public java.util.List<ProjectOnly<M>> getProjectOnlys() {
+	public List<ProjectOnly<M>> getProjectOnlys() {
 		return this.projectOnlys;
 	}
 
-	public org.lgna.croquet.PlainStringValue getFromImportHeader() {
+	public PlainStringValue getFromImportHeader() {
 		return this.fromImportHeader;
 	}
 
-	public org.lgna.croquet.PlainStringValue getAlreadyInProjectHeader() {
+	public PlainStringValue getAlreadyInProjectHeader() {
 		return this.alreadyInProjectHeader;
 	}
 
-	public org.lgna.croquet.PlainStringValue getResultHeader() {
+	public PlainStringValue getResultHeader() {
 		return this.resultHeader;
 	}
 
@@ -155,12 +168,12 @@ public abstract class MembersToolPalette<V extends org.alice.ide.ast.type.merge.
 		return this.importOnlys.size() + this.differentSignatures.size() + this.differentImplementations.size() + this.identicals.size() + this.projectOnlys.size();
 	}
 
-	public void appendStatusPreRejectorCheck( StringBuffer sb, org.lgna.croquet.history.CompletionStep<?> step ) {
+	public void appendStatusPreRejectorCheck( StringBuffer sb ) {
 		for( DifferentSignature<M> differentSignatureMember : this.differentSignatures ) {
-			differentSignatureMember.appendStatusPreRejectorCheck( sb, step );
+			differentSignatureMember.appendStatusPreRejectorCheck( sb );
 		}
 		for( DifferentImplementation<M> differentImplementationMember : this.differentImplementations ) {
-			differentImplementationMember.appendStatusPreRejectorCheck( sb, step );
+			differentImplementationMember.appendStatusPreRejectorCheck( sb );
 		}
 	}
 }

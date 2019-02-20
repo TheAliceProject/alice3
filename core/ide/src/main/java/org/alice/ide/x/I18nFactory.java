@@ -43,49 +43,76 @@
 
 package org.alice.ide.x;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
+import org.alice.ide.i18n.Chunk;
+import org.alice.ide.i18n.GetsChunk;
+import org.alice.ide.i18n.Line;
+import org.alice.ide.i18n.MethodInvocationChunk;
+import org.alice.ide.i18n.Page;
+import org.alice.ide.i18n.PropertyChunk;
+import org.alice.ide.i18n.TextChunk;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.PageAxisPanel;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.MethodInvocation;
+
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class I18nFactory {
-	protected abstract org.lgna.croquet.views.SwingComponentView<?> createGetsComponent( boolean isTowardLeadingEdge );
+	protected abstract SwingComponentView<?> createGetsComponent( boolean isTowardLeadingEdge );
 
-	protected abstract org.lgna.croquet.views.SwingComponentView<?> createPropertyComponent( edu.cmu.cs.dennisc.property.InstanceProperty<?> property, int underscoreCount );
+	protected abstract SwingComponentView<?> createPropertyComponent( InstanceProperty<?> property, int underscoreCount );
 
-	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.GetsChunk getsChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	private SwingComponentView<?> createComponent( GetsChunk getsChunk, InstancePropertyOwner owner ) {
 		return this.createGetsComponent( getsChunk.isTowardLeading() );
 	}
 
-	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.TextChunk textChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		return new org.lgna.croquet.views.Label( textChunk.getText() );
+	private SwingComponentView<?> createComponent( TextChunk textChunk, InstancePropertyOwner owner ) {
+		return new Label( textChunk.getText() );
 	}
 
-	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	private SwingComponentView<?> createComponent( PropertyChunk propertyChunk, InstancePropertyOwner owner ) {
 		int underscoreCount = propertyChunk.getUnderscoreCount();
 		String propertyName = propertyChunk.getPropertyName();
-		edu.cmu.cs.dennisc.property.InstanceProperty<?> property = owner.getPropertyNamed( propertyName );
+		InstanceProperty<?> property = owner.getPropertyNamed( propertyName );
 		if( property != null ) {
 			return createPropertyComponent( property, underscoreCount );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( propertyName, owner );
-			org.lgna.croquet.views.Label rv = new org.lgna.croquet.views.Label( "TODO: " + propertyName );
-			rv.setBackgroundColor( java.awt.Color.RED );
+			Logger.severe( propertyName, owner );
+			Label rv = new Label( "TODO: " + propertyName );
+			rv.setBackgroundColor( Color.RED );
 			return rv;
 		}
 	}
 
-	protected abstract org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner );
+	protected abstract SwingComponentView<?> createComponent( MethodInvocationChunk methodInvocationChunk, InstancePropertyOwner owner );
 
-	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.Chunk chunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		if( chunk instanceof org.alice.ide.i18n.TextChunk ) {
-			return createComponent( (org.alice.ide.i18n.TextChunk)chunk, owner );
-		} else if( chunk instanceof org.alice.ide.i18n.PropertyChunk ) {
-			return createComponent( (org.alice.ide.i18n.PropertyChunk)chunk, owner );
-		} else if( chunk instanceof org.alice.ide.i18n.MethodInvocationChunk ) {
-			return createComponent( (org.alice.ide.i18n.MethodInvocationChunk)chunk, owner );
-		} else if( chunk instanceof org.alice.ide.i18n.GetsChunk ) {
-			return createComponent( (org.alice.ide.i18n.GetsChunk)chunk, owner );
+	private SwingComponentView<?> createComponent( Chunk chunk, InstancePropertyOwner owner ) {
+		if( chunk instanceof TextChunk ) {
+			return createComponent( (TextChunk)chunk, owner );
+		} else if( chunk instanceof PropertyChunk ) {
+			return createComponent( (PropertyChunk)chunk, owner );
+		} else if( chunk instanceof MethodInvocationChunk ) {
+			return createComponent( (MethodInvocationChunk)chunk, owner );
+		} else if( chunk instanceof GetsChunk ) {
+			return createComponent( (GetsChunk)chunk, owner );
 		} else {
-			return new org.lgna.croquet.views.Label( "unhandled: " + chunk.toString() );
+			return new Label( "unhandled: " + chunk.toString() );
 		}
 	}
 
@@ -93,17 +120,17 @@ public abstract class I18nFactory {
 		return 4;
 	}
 
-	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.Line line, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	private SwingComponentView<?> createComponent( Line line, InstancePropertyOwner owner ) {
 		int indentCount = line.getIndentCount();
-		org.alice.ide.i18n.Chunk[] chunks = line.getChunks();
+		Chunk[] chunks = line.getChunks();
 		assert chunks.length > 0 : owner;
 		if( ( indentCount > 0 ) || ( chunks.length > 1 ) ) {
-			org.lgna.croquet.views.LineAxisPanel rv = new org.lgna.croquet.views.LineAxisPanel();
+			LineAxisPanel rv = new LineAxisPanel();
 			if( indentCount > 0 ) {
-				rv.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( indentCount * this.getPixelsPerIndent() ) );
+				rv.addComponent( BoxUtilities.createHorizontalSliver( indentCount * this.getPixelsPerIndent() ) );
 			}
-			for( org.alice.ide.i18n.Chunk chunk : chunks ) {
-				org.lgna.croquet.views.SwingComponentView<?> component = createComponent( chunk, owner );
+			for( Chunk chunk : chunks ) {
+				SwingComponentView<?> component = createComponent( chunk, owner );
 				assert component != null : chunk.toString();
 				//				rv.setAlignmentY( 0.5f );
 				rv.addComponent( component );
@@ -111,30 +138,30 @@ public abstract class I18nFactory {
 			return rv;
 		} else {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "skipping line" );
-			org.lgna.croquet.views.SwingComponentView<?> rv = createComponent( chunks[ 0 ], owner );
+			SwingComponentView<?> rv = createComponent( chunks[ 0 ], owner );
 			assert rv != null : chunks[ 0 ].toString();
 			return rv;
 		}
 	}
 
-	public org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.Page page, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		org.alice.ide.i18n.Line[] lines = page.getLines();
+	public SwingComponentView<?> createComponent( Page page, InstancePropertyOwner owner ) {
+		Line[] lines = page.getLines();
 		final int N = lines.length;
 		assert N > 0;
 		if( N > 1 ) {
 			final boolean isLoop = lines[ N - 1 ].isLoop();
-			org.lgna.croquet.views.PageAxisPanel pagePane = new org.lgna.croquet.views.PageAxisPanel() {
+			PageAxisPanel pagePane = new PageAxisPanel() {
 				@Override
-				protected javax.swing.JPanel createJPanel() {
+				protected JPanel createJPanel() {
 					return new DefaultJPanel() {
 						@Override
-						protected void paintComponent( java.awt.Graphics g ) {
-							java.awt.Color prev = g.getColor();
+						protected void paintComponent( Graphics g ) {
+							Color prev = g.getColor();
 							if( isLoop ) {
 								int n = this.getComponentCount();
-								java.awt.Component cFirst = this.getComponent( 0 );
-								java.awt.Component cLast = this.getComponent( n - 1 );
-								g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 160 ) );
+								Component cFirst = this.getComponent( 0 );
+								Component cLast = this.getComponent( n - 1 );
+								g.setColor( ColorUtilities.createGray( 160 ) );
 								int xB = I18nFactory.this.getPixelsPerIndent();
 								int xA = xB / 2;
 								int yTop = cFirst.getY() + cFirst.getHeight();
@@ -149,7 +176,7 @@ public abstract class I18nFactory {
 								g.drawLine( xD, yBottom, xD, cLast.getY() );
 
 								final int HALF_TRIANGLE_WIDTH = 3;
-								edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.NORTH, xA - HALF_TRIANGLE_WIDTH, yTop, HALF_TRIANGLE_WIDTH + 1 + HALF_TRIANGLE_WIDTH, 10 );
+								GraphicsUtilities.fillTriangle( g, GraphicsUtilities.Heading.NORTH, xA - HALF_TRIANGLE_WIDTH, yTop, HALF_TRIANGLE_WIDTH + 1 + HALF_TRIANGLE_WIDTH, 10 );
 							}
 							g.setColor( prev );
 							super.paintComponent( g );
@@ -157,11 +184,11 @@ public abstract class I18nFactory {
 					};
 				}
 			};
-			for( org.alice.ide.i18n.Line line : lines ) {
+			for( Line line : lines ) {
 				if( line.getChunks().length > 0 ) {
 					pagePane.addComponent( createComponent( line, owner ) );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( line );
+					Logger.severe( line );
 				}
 			}
 			pagePane.revalidateAndRepaint();
@@ -172,14 +199,14 @@ public abstract class I18nFactory {
 		}
 	}
 
-	public org.lgna.croquet.views.SwingComponentView<?> createComponent( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
-		org.lgna.croquet.views.SwingComponentView<?> rv;
+	public SwingComponentView<?> createComponent( InstancePropertyOwner owner ) {
+		Formatter formatter = FormatterState.getInstance().getValue();
+		SwingComponentView<?> rv;
 		if( owner != null ) {
 			String value;
-			if( owner instanceof org.lgna.project.ast.MethodInvocation ) {
-				org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)owner;
-				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+			if( owner instanceof MethodInvocation ) {
+				MethodInvocation methodInvocation = (MethodInvocation)owner;
+				AbstractMethod method = methodInvocation.method.getValue();
 				String text = formatter.getNameForDeclaration( method );
 				if( text.contains( "</expression/>" ) ) {
 					value = text;
@@ -195,10 +222,10 @@ public abstract class I18nFactory {
 				Class<?> cls = owner.getClass();
 				value = formatter.getTemplateText( cls );
 			}
-			org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
+			Page page = new Page( value );
 			rv = createComponent( page, owner );
 		} else {
-			rv = new org.lgna.croquet.views.Label( formatter.getTextForNull() );
+			rv = new Label( formatter.getTextForNull() );
 		}
 		return rv;
 	}

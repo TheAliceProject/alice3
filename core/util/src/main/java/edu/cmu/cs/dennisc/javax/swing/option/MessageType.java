@@ -43,15 +43,17 @@
 
 package edu.cmu.cs.dennisc.javax.swing.option;
 
+import javax.swing.JOptionPane;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum MessageType {
-	ERROR( javax.swing.JOptionPane.ERROR_MESSAGE ),
-	INFORMATION( javax.swing.JOptionPane.INFORMATION_MESSAGE ),
-	WARNING( javax.swing.JOptionPane.WARNING_MESSAGE ),
-	QUESTION( javax.swing.JOptionPane.QUESTION_MESSAGE ),
-	PLAIN( javax.swing.JOptionPane.PLAIN_MESSAGE );
+	ERROR( JOptionPane.ERROR_MESSAGE ),
+	INFORMATION( JOptionPane.INFORMATION_MESSAGE ),
+	WARNING( JOptionPane.WARNING_MESSAGE ),
+	QUESTION( JOptionPane.QUESTION_MESSAGE ),
+	PLAIN( JOptionPane.PLAIN_MESSAGE );
 	private final int internal;
 
 	MessageType( int internal ) {

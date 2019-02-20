@@ -60,16 +60,25 @@ import static com.jogamp.opengl.GL.GL_STENCIL_TEST;
 import static com.jogamp.opengl.GL2ES1.GL_CLIP_PLANE0;
 import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.pattern.VisitUtilities;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.Scene;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> {
+public class GlrScene extends GlrComposite<Scene> {
 	@Override
-	public void initialize( edu.cmu.cs.dennisc.scenegraph.Scene sgElement ) {
+	public void initialize( Scene sgElement ) {
 		super.initialize( sgElement );
-		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( owner, edu.cmu.cs.dennisc.scenegraph.Component.class ) ) {
+		for( Component sgComponent : VisitUtilities.getAll( owner, Component.class ) ) {
 			GlrComponent<?> glrComponent = AdapterFactory.getAdapterFor( sgComponent );
 			this.addDescendant( glrComponent );
 		}
@@ -129,10 +138,10 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 			}
 		}
 		synchronized( this.glrVisualDescendants ) {
-			for( GlrVisual<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter : this.glrVisualDescendants ) {
+			for( GlrVisual<? extends Visual> visualAdapter : this.glrVisualDescendants ) {
 				if( visualAdapter.isAlphaBlended() ) {
 					//todo: adapters should be removed
-					if( ( visualAdapter.owner != null ) && ( visualAdapter.owner.getRoot() instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) ) {
+					if( ( visualAdapter.owner != null ) && ( visualAdapter.owner.getRoot() instanceof Scene ) ) {
 						if( visualAdapter.isAllAlpha() ) {
 							visualAdapter.renderAllAlphaBlended( rc );
 						} else {
@@ -165,7 +174,7 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 		rc.gl.glDisable( GL_BLEND );
 	}
 
-	public void renderScene( RenderContext rc, GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, GlrBackground backgroundAdapter ) {
+	public void renderScene( RenderContext rc, GlrAbstractCamera<? extends AbstractCamera> cameraAdapter, GlrBackground backgroundAdapter ) {
 		rc.gl.glMatrixMode( GL_MODELVIEW );
 		synchronized( cameraAdapter ) {
 			rc.gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
@@ -221,7 +230,7 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.background ) {
 			this.backgroundAdapter = AdapterFactory.getAdapterFor( owner.background.getValue() );
 		} else if( property == owner.globalBrightness ) {
@@ -233,8 +242,8 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 
 	private GlrBackground backgroundAdapter;
 	private float globalBrightness;
-	private final java.util.List<GlrGhost> glrGhostDescendants = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final java.util.List<GlrVisual<?>> glrVisualDescendants = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final java.util.List<GlrPlanarReflector> glrPlanarReflectorDescendants = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final List<GlrGhost> glrGhostDescendants = Lists.newLinkedList();
+	private final List<GlrVisual<?>> glrVisualDescendants = Lists.newLinkedList();
+	private final List<GlrPlanarReflector> glrPlanarReflectorDescendants = Lists.newLinkedList();
 	private boolean isInitialized = false;
 }

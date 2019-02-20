@@ -42,34 +42,49 @@
  *******************************************************************************/
 package org.alice.ide.x.croquet.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit;
+import org.alice.stageide.StageIDE;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.project.virtualmachine.VirtualMachine;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.JointedModelResource;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SceneEditorUpdatingExpressionPropertyEdit extends org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit {
-	private final org.lgna.project.ast.UserField field;
+public class SceneEditorUpdatingExpressionPropertyEdit extends ExpressionPropertyEdit {
+	private final UserField field;
 
-	public SceneEditorUpdatingExpressionPropertyEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.Expression prevExpression, org.lgna.project.ast.Expression nextExpression, org.lgna.project.ast.UserField field ) {
-		super( completionStep, expressionProperty, prevExpression, nextExpression );
+	public SceneEditorUpdatingExpressionPropertyEdit( UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression, UserField field ) {
+		super( userActivity, expressionProperty, prevExpression, nextExpression );
 		this.field = field;
 	}
 
-	public SceneEditorUpdatingExpressionPropertyEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public SceneEditorUpdatingExpressionPropertyEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.field = null; //todo
 	}
 
 	@Override
-	protected void setValue( org.lgna.project.ast.Expression expression ) {
+	protected void setValue( Expression expression ) {
 		super.setValue( expression );
 		// update Scene Editor
-		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor();
-		org.lgna.story.SJointedModel model = sceneEditor.getInstanceInJavaVMForField( this.field, org.lgna.story.SJointedModel.class );
-		org.lgna.story.implementation.JointedModelImp<?, ?> imp = org.lgna.story.EmployeesOnly.getImplementation( model );
+		StorytellingSceneEditor sceneEditor = StageIDE.getActiveInstance().getSceneEditor();
+		SJointedModel model = sceneEditor.getInstanceInJavaVMForField( this.field, SJointedModel.class );
+		JointedModelImp<?, ?> imp = EmployeesOnly.getImplementation( model );
 
-		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getVirtualMachine();
-		org.lgna.project.virtualmachine.UserInstance userInstance = null;
-		Object[] array = vm.ENTRY_POINT_evaluate( userInstance, new org.lgna.project.ast.Expression[] { expression } );
-		org.lgna.story.resources.JointedModelResource resource = (org.lgna.story.resources.JointedModelResource)array[ 0 ];
+		VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
+		UserInstance userInstance = null;
+		Object[] array = vm.ENTRY_POINT_evaluate( userInstance, new Expression[] { expression } );
+		JointedModelResource resource = (JointedModelResource)array[ 0 ];
 		imp.setNewResource( resource );
 	}
 

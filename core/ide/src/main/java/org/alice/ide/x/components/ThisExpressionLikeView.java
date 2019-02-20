@@ -43,20 +43,27 @@
 
 package org.alice.ide.x.components;
 
+import org.alice.ide.ast.CurrentThisExpression;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.Label;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ThisExpression;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ThisExpressionLikeView extends AbstractExpressionView<org.lgna.project.ast.Expression> {
-	private ThisExpressionLikeView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Expression expression ) {
+public class ThisExpressionLikeView extends AbstractExpressionView<Expression> {
+	private ThisExpressionLikeView( AstI18nFactory factory, Expression expression ) {
 		super( factory, expression );
-		this.addComponent( new org.lgna.croquet.views.Label( org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getTextForThis() ) );
+		this.addComponent( new Label( FormatterState.getInstance().getValue().getTextForThis() ) );
 	}
 
-	public ThisExpressionLikeView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ThisExpression thisExpression ) {
-		this( factory, (org.lgna.project.ast.Expression)thisExpression );
+	public ThisExpressionLikeView( AstI18nFactory factory, ThisExpression thisExpression ) {
+		this( factory, (Expression)thisExpression );
 	}
 
-	public ThisExpressionLikeView( org.alice.ide.x.AstI18nFactory factory, org.alice.ide.ast.CurrentThisExpression currentThisExpression ) {
-		this( factory, (org.lgna.project.ast.Expression)currentThisExpression );
+	public ThisExpressionLikeView( AstI18nFactory factory, CurrentThisExpression currentThisExpression ) {
+		this( factory, (Expression)currentThisExpression );
 	}
 }

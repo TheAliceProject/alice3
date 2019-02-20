@@ -43,25 +43,36 @@
 
 package org.alice.stageide.ast.source;
 
+import org.lgna.common.Resource;
+import org.lgna.croquet.ImportValueCreator;
+import org.lgna.croquet.importer.Importer;
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.JavaConstructor;
+import org.lgna.project.ast.ResourceExpression;
+import org.lgna.project.ast.SimpleArgument;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SourceImportValueCreator<S, R extends org.lgna.common.Resource> extends org.lgna.croquet.ImportValueCreator<org.lgna.project.ast.InstanceCreation, R> {
+public abstract class SourceImportValueCreator<S, R extends Resource> extends ImportValueCreator<InstanceCreation, R> {
 	private final Class<S> sourceCls;
 	private final Class<R> resourceCls;
 
-	public SourceImportValueCreator( java.util.UUID migrationId, org.lgna.croquet.importer.Importer<R> importer, Class<S> sourceCls, Class<R> resourceCls ) {
+	public SourceImportValueCreator( UUID migrationId, Importer<R> importer, Class<S> sourceCls, Class<R> resourceCls ) {
 		super( migrationId, importer );
 		this.sourceCls = sourceCls;
 		this.resourceCls = resourceCls;
 	}
 
 	@Override
-	protected org.lgna.project.ast.InstanceCreation createValueFromImportedValue( R importedValue ) {
-		org.lgna.project.ast.ResourceExpression resourceExpression = new org.lgna.project.ast.ResourceExpression( this.resourceCls, importedValue );
-		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( this.sourceCls, this.resourceCls );
-		org.lgna.project.ast.AbstractParameter parameter0 = constructor.getRequiredParameters().get( 0 );
-		org.lgna.project.ast.SimpleArgument argument0 = new org.lgna.project.ast.SimpleArgument( parameter0, resourceExpression );
-		return new org.lgna.project.ast.InstanceCreation( constructor, argument0 );
+	protected InstanceCreation createValueFromImportedValue( R importedValue ) {
+		ResourceExpression resourceExpression = new ResourceExpression( this.resourceCls, importedValue );
+		JavaConstructor constructor = JavaConstructor.getInstance( this.sourceCls, this.resourceCls );
+		AbstractParameter parameter0 = constructor.getRequiredParameters().get( 0 );
+		SimpleArgument argument0 = new SimpleArgument( parameter0, resourceExpression );
+		return new InstanceCreation( constructor, argument0 );
 	}
 }

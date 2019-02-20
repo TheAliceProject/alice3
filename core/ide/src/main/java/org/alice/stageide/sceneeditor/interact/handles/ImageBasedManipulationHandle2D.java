@@ -46,31 +46,36 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleRenderState;
 import org.alice.interact.handle.ManipulationHandle2D;
+
+import javax.swing.Icon;
 
 /**
  * @author David Culyba
  */
 public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2D {
 	protected static interface ImageState {
-		public javax.swing.Icon getIcon();
+		public Icon getIcon();
 	}
 
 	public ImageBasedManipulationHandle2D( String maskResourceName ) {
 		BufferedImage image;
 		try {
-			image = edu.cmu.cs.dennisc.image.ImageUtilities.read( this.getClass().getResource( maskResourceName ) );
+			image = ImageUtilities.read( this.getClass().getResource( maskResourceName ) );
 		} catch( Throwable t ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( maskResourceName, this );
+			Logger.errln( maskResourceName, this );
 			image = null;
 		}
 		this.imageMask = image;
 
 		this.setStateBasedOnManipulationStatus();
-		javax.swing.Icon icon = this.getIcon();
-		Dimension size = edu.cmu.cs.dennisc.javax.swing.IconUtilities.newDimension( icon );
+		Icon icon = this.getIcon();
+		Dimension size = IconUtilities.newDimension( icon );
 		this.setSize( size );
 		this.setMinimumSize( size );
 		this.setPreferredSize( size );

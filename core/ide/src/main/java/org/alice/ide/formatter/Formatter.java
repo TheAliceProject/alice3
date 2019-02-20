@@ -42,7 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.formatter;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.stageide.modelresource.ClassResourceKey;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.InfixExpression;
+import org.lgna.project.ast.UserCode;
+
+import javax.swing.JComponent;
+import java.util.ResourceBundle;
 
 /**
  * Formats code expressed in org.lgna.project.ast.Statements.
@@ -56,22 +64,22 @@ public abstract class Formatter {
 		this.repr = repr;
 	}
 
-	public abstract String getHeaderTextForCode( org.lgna.project.ast.UserCode code );
+	public abstract String getHeaderTextForCode( UserCode code );
 
-	public abstract String getTrailerTextForCode( org.lgna.project.ast.UserCode code );
+	public abstract String getTrailerTextForCode( UserCode code );
 
 	public String getTemplateText( Class<?> cls ) {
-		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates");
+		return ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates");
 	}
 
-	public String getInfixExpressionText( org.lgna.project.ast.InfixExpression<?> infixExpression ) {
+	public String getInfixExpressionText( InfixExpression<?> infixExpression ) {
 		String clsName = infixExpression.getClass().getName();
-		java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( clsName, javax.swing.JComponent.getDefaultLocale() );
+		ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( clsName, JComponent.getDefaultLocale() );
 		Enum<?> e = infixExpression.operator.getValue();
 		return resourceBundle.getString( e.name() );
 	}
 
-	public String getNameForDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
+	public String getNameForDeclaration( AbstractDeclaration declaration ) {
 		return declaration.formatName(this::localizeName);
 	}
 
@@ -83,7 +91,7 @@ public abstract class Formatter {
 
 	public abstract String getTextForNull();
 
-	public String getTextForType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public String getTextForType( AbstractType<?, ?, ?> type ) {
 		return type == null ? getTextForNull() : type.formatName(this::localizeName);
 	}
 

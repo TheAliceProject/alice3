@@ -43,6 +43,8 @@
  */
 package edu.wustl.lookingglass.media;
 
+import java.awt.image.BufferedImage;
+
 /**
  * @author Kyle J. Harms
  */
@@ -51,5 +53,5 @@ public interface MediaEncoderListener {
 
 	public void encodingFinished( boolean success );
 
-	public void frameUpdate( int frameCount, java.awt.image.BufferedImage frame );
+	public void frameUpdate( int frameCount, BufferedImage frame );
 }

@@ -42,25 +42,40 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import org.alice.ide.x.AstI18nFactory;
+import org.alice.ide.x.MutableAstI18nFactory;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.views.PaintUtilities;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.StatementListProperty;
+
+import javax.swing.BoxLayout;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractStatementPane extends org.alice.ide.common.StatementLikeSubstance {
-	private static final java.awt.Color PASSIVE_OUTLINE_PAINT_FOR_NON_DRAGGABLE = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 160 );
+public abstract class AbstractStatementPane extends StatementLikeSubstance {
+	private static final Color PASSIVE_OUTLINE_PAINT_FOR_NON_DRAGGABLE = ColorUtilities.createGray( 160 );
 
-	public AbstractStatementPane( org.lgna.croquet.DragModel model, org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty owner ) {
-		super( model, org.alice.ide.common.StatementLikeSubstance.getClassFor( statement ), javax.swing.BoxLayout.LINE_AXIS );
+	public AbstractStatementPane( DragModel model, AstI18nFactory factory, Statement statement, StatementListProperty owner ) {
+		super( model, StatementLikeSubstance.getClassFor( statement ), BoxLayout.LINE_AXIS );
 		this.factory = factory;
 		this.statement = statement;
 		this.owner = owner;
-		if( this.factory instanceof org.alice.ide.x.MutableAstI18nFactory ) {
-			this.isEnabledListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		if( this.factory instanceof MutableAstI18nFactory ) {
+			this.isEnabledListener = new PropertyListener() {
 				@Override
-				public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				public void propertyChanging( PropertyEvent e ) {
 				}
 
 				@Override
-				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				public void propertyChanged( PropertyEvent e ) {
 					AbstractStatementPane.this.repaint();
 				}
 			};
@@ -69,12 +84,12 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 		}
 	}
 
-	public org.alice.ide.x.AstI18nFactory getFactory() {
+	public AstI18nFactory getFactory() {
 		return this.factory;
 	}
 
 	@Override
-	protected java.awt.Paint getPassiveOutlinePaint() {
+	protected Paint getPassiveOutlinePaint() {
 		if( this.getModel() != null ) {
 			return super.getPassiveOutlinePaint();
 		} else {
@@ -98,27 +113,27 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 		super.handleUndisplayable();
 	}
 
-	public org.lgna.project.ast.Statement getStatement() {
+	public Statement getStatement() {
 		return this.statement;
 	}
 
-	public org.lgna.project.ast.StatementListProperty getOwner() {
+	public StatementListProperty getOwner() {
 		return this.owner;
 	}
 
 	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected void paintEpilogue( Graphics2D g2, int x, int y, int width, int height ) {
 		super.paintEpilogue( g2, x, y, width, height );
 		if( this.statement.isEnabled.getValue() ) {
 			//pass
 		} else {
-			g2.setPaint( org.lgna.croquet.views.PaintUtilities.getDisabledTexturePaint() );
+			g2.setPaint( PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}
 
-	private final org.alice.ide.x.AstI18nFactory factory;
-	private final org.lgna.project.ast.Statement statement;
-	private final org.lgna.project.ast.StatementListProperty owner;
-	private final edu.cmu.cs.dennisc.property.event.PropertyListener isEnabledListener;
+	private final AstI18nFactory factory;
+	private final Statement statement;
+	private final StatementListProperty owner;
+	private final PropertyListener isEnabledListener;
 }

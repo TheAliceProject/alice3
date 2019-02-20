@@ -43,18 +43,30 @@
 
 package org.alice.stageide.instancefactory.croquet.joint.all;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.LocalAccessMethodInvocationFactory;
+import org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn;
+import org.alice.stageide.ast.JointedTypeInfo;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LocalAccessJointedTypeMenuModel extends JointedTypeMenuModel {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, Integer, LocalAccessJointedTypeMenuModel> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<UserLocal, Integer, LocalAccessJointedTypeMenuModel> mapToMap = MapToMap.newInstance();
 
-	public static LocalAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserLocal value ) {
-		java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( value.getValueType() );
+	public static LocalAccessJointedTypeMenuModel getInstance( UserLocal value ) {
+		List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances( value.getValueType() );
 		return getInstance( value, jointedTypeInfos, 0 );
 	}
 
-	private static LocalAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserLocal value, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+	private static LocalAccessJointedTypeMenuModel getInstance( UserLocal value, List<JointedTypeInfo> jointedTypeInfos, int index ) {
 		//todo
 		synchronized( mapToMap ) {
 			LocalAccessJointedTypeMenuModel rv = mapToMap.get( value, index );
@@ -68,20 +80,20 @@ public class LocalAccessJointedTypeMenuModel extends JointedTypeMenuModel {
 		}
 	}
 
-	private final org.lgna.project.ast.UserLocal local;
+	private final UserLocal local;
 
-	private LocalAccessJointedTypeMenuModel( org.lgna.project.ast.UserLocal local, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
-		super( java.util.UUID.fromString( "68729d94-33e9-4da7-a04c-cb88939b8c93" ), jointedTypeInfos, index );
+	private LocalAccessJointedTypeMenuModel( UserLocal local, List<JointedTypeInfo> jointedTypeInfos, int index ) {
+		super( UUID.fromString( "68729d94-33e9-4da7-a04c-cb88939b8c93" ), jointedTypeInfos, index );
 		this.local = local;
 	}
 
 	@Override
-	protected org.alice.stageide.instancefactory.croquet.joint.all.JointedTypeMenuModel getInstance( java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+	protected JointedTypeMenuModel getInstance( List<JointedTypeInfo> jointedTypeInfos, int index ) {
 		return getInstance( this.local, jointedTypeInfos, index );
 	}
 
 	@Override
-	protected org.lgna.croquet.CascadeFillIn<org.alice.ide.instancefactory.InstanceFactory, ?> getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.LocalAccessMethodInvocationFactory.getInstance( this.local, method ) );
+	protected CascadeFillIn<InstanceFactory, ?> getFillIn( AbstractMethod method ) {
+		return InstanceFactoryFillIn.getInstance( LocalAccessMethodInvocationFactory.getInstance( this.local, method ) );
 	}
 }

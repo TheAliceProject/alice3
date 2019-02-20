@@ -42,45 +42,61 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.common.TypeIcon;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+
+import javax.swing.Icon;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class TypeExpressionCascadeMenu extends ExpressionCascadeMenu<org.lgna.project.ast.Expression> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractType, TypeExpressionCascadeMenu> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public final class TypeExpressionCascadeMenu extends ExpressionCascadeMenu<Expression> {
+	private static InitializingIfAbsentMap<AbstractType, TypeExpressionCascadeMenu> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static TypeExpressionCascadeMenu getInstance( org.lgna.project.ast.AbstractType type ) {
-		return map.getInitializingIfAbsent( type, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractType, TypeExpressionCascadeMenu>() {
+	public static TypeExpressionCascadeMenu getInstance( AbstractType type ) {
+		return map.getInitializingIfAbsent( type, new InitializingIfAbsentMap.Initializer<AbstractType, TypeExpressionCascadeMenu>() {
 			@Override
-			public TypeExpressionCascadeMenu initialize( org.lgna.project.ast.AbstractType key ) {
+			public TypeExpressionCascadeMenu initialize( AbstractType key ) {
 				return new TypeExpressionCascadeMenu( key, null );
 			}
 		} );
 	}
 
 	public static TypeExpressionCascadeMenu getInstance( Class<?> cls ) {
-		return getInstance( org.lgna.project.ast.JavaType.getInstance( cls ) );
+		return getInstance( JavaType.getInstance( cls ) );
 	}
 
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> valueType;
-	private final org.lgna.project.annotations.ValueDetails<?> details;
+	private final AbstractType<?, ?, ?> valueType;
+	private final ValueDetails<?> details;
 
-	private TypeExpressionCascadeMenu( org.lgna.project.ast.AbstractType<?, ?, ?> valueType, org.lgna.project.annotations.ValueDetails<?> details ) {
-		super( java.util.UUID.fromString( "abafdc1c-7e12-4db4-94b2-17120c6a7110" ) );
+	private TypeExpressionCascadeMenu( AbstractType<?, ?, ?> valueType, ValueDetails<?> details ) {
+		super( UUID.fromString( "abafdc1c-7e12-4db4-94b2-17120c6a7110" ) );
 		this.valueType = valueType;
 		this.details = details;
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			ide.getExpressionCascadeManager().appendItems( blankChildren, blankNode, this.valueType, this.details );
 		}
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression> node ) {
-		return org.alice.ide.common.TypeIcon.getInstance( this.valueType );
+	public Icon getMenuItemIcon( ItemNode<? super Expression, Expression> node ) {
+		return TypeIcon.getInstance( this.valueType );
 	}
 
 }

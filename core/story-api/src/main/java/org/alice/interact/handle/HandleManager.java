@@ -42,6 +42,11 @@
  *******************************************************************************/
 package org.alice.interact.handle;
 
+import edu.cmu.cs.dennisc.java.util.DStack;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Stacks;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import org.alice.interact.PickHint;
 import org.alice.interact.PickUtilities;
 import org.alice.interact.event.ManipulationEvent;
@@ -50,6 +55,11 @@ import org.alice.interact.event.ManipulationListener;
 
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import org.lgna.story.implementation.AxesImp;
+import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.ModelImp;
+
+import java.util.List;
 
 /**
  * @author David Culyba
@@ -142,8 +152,8 @@ public class HandleManager implements ManipulationListener {
 		if( handle instanceof SelectionIndicator ) {
 			return ( objectPickHint.intersects( PickHint.PickType.SELECTABLE.pickHint() ) );
 		} else if( handle instanceof ManipulationAxes ) {
-			org.lgna.story.implementation.EntityImp entityImp = PickUtilities.getEntityImpFromPickedObject( selectedObject );
-			return !( entityImp instanceof org.lgna.story.implementation.AxesImp );
+			EntityImp entityImp = PickUtilities.getEntityImpFromPickedObject( selectedObject );
+			return !( entityImp instanceof AxesImp );
 		} else if( handle instanceof LinearTranslateHandle ) {
 			boolean doJointsMatch = objectPickHint.intersects( PickHint.PickType.JOINT.pickHint() ) == handle.isMemberOf( HandleSet.HandleGroup.JOINT );
 			return doJointsMatch && objectPickHint.intersects( PickHint.PickType.MOVEABLE.pickHint() );
@@ -153,11 +163,11 @@ public class HandleManager implements ManipulationListener {
 		} else if( handle instanceof LinearScaleHandle ) {
 			LinearScaleHandle scaleHandle = (LinearScaleHandle)handle;
 			if( objectPickHint.intersects( PickHint.PickType.RESIZABLE.pickHint() ) ) {
-				org.lgna.story.implementation.EntityImp entityImp = PickUtilities.getEntityImpFromPickedObject( selectedObject );
-				if( entityImp instanceof org.lgna.story.implementation.ModelImp ) {
-					org.lgna.story.implementation.ModelImp modelImp = (org.lgna.story.implementation.ModelImp)entityImp;
-					edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] resizers = modelImp.getResizers();
-					for( edu.cmu.cs.dennisc.scenegraph.scale.Resizer r : resizers ) {
+				EntityImp entityImp = PickUtilities.getEntityImpFromPickedObject( selectedObject );
+				if( entityImp instanceof ModelImp ) {
+					ModelImp modelImp = (ModelImp)entityImp;
+					Resizer[] resizers = modelImp.getResizers();
+					for( Resizer r : resizers ) {
 						if( r == scaleHandle.getResizer() ) {
 							return true;
 						}
@@ -201,7 +211,7 @@ public class HandleManager implements ManipulationListener {
 			AbstractTransformable selected = this.handles.get( 0 ).getManipulatedObject();
 			for( ManipulationHandle handle : this.handles ) {
 				if( ( handle.getManipulatedObject() != selected ) && !( handle instanceof ManipulationHandle2D ) ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "Handle " + handle + " selected (" + handle.getManipulatedObject() + ", does not equal " + selected );
+					PrintUtilities.println( "Handle " + handle + " selected (" + handle.getManipulatedObject() + ", does not equal " + selected );
 				}
 			}
 			return selected;
@@ -228,8 +238,8 @@ public class HandleManager implements ManipulationListener {
 		}
 	}
 
-	private java.util.List<ManipulationHandle> getSiblings( ManipulationHandle handle ) {
-		java.util.List<ManipulationHandle> siblings = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private List<ManipulationHandle> getSiblings( ManipulationHandle handle ) {
+		List<ManipulationHandle> siblings = Lists.newLinkedList();
 		HandleSet toCheck;
 		if( handle.isAlwaysVisible() ) {
 			toCheck = handle.getHandleSet();
@@ -256,7 +266,7 @@ public class HandleManager implements ManipulationListener {
 	}
 
 	public boolean isASiblingActive( ManipulationHandle handle ) {
-		java.util.List<ManipulationHandle> siblings = this.getSiblings( handle );
+		List<ManipulationHandle> siblings = this.getSiblings( handle );
 		for( ManipulationHandle sibling : siblings ) {
 			if( sibling.getHandleStateCopy().isActive() ) {
 				return true;
@@ -290,8 +300,8 @@ public class HandleManager implements ManipulationListener {
 	public void removeCondition( ManipulationEventCriteria condition ) {
 	}
 
-	private final edu.cmu.cs.dennisc.java.util.DStack<HandleSet> handleSetStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
-	private final java.util.List<ManipulationHandle> handles = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final DStack<HandleSet> handleSetStack = Stacks.newStack();
+	private final List<ManipulationHandle> handles = Lists.newCopyOnWriteArrayList();
 
 	private Point3 cameraPosition;
 }

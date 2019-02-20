@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.animation.TraditionalStyle;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -78,10 +80,10 @@ public enum AnimationStyle implements
 		//Cone
 		SetBaseRadius.Detail, SetLength.Detail
 {
-	BEGIN_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_ABRUPTLY ),
-	BEGIN_GENTLY_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_GENTLY_AND_END_ABRUPTLY ),
-	BEGIN_ABRUPTLY_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ),
-	BEGIN_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
+	BEGIN_AND_END_ABRUPTLY( TraditionalStyle.BEGIN_AND_END_ABRUPTLY ),
+	BEGIN_GENTLY_AND_END_ABRUPTLY( TraditionalStyle.BEGIN_GENTLY_AND_END_ABRUPTLY ),
+	BEGIN_ABRUPTLY_AND_END_GENTLY( TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ),
+	BEGIN_AND_END_GENTLY( TraditionalStyle.BEGIN_AND_END_GENTLY );
 
 	private static final AnimationStyle DEFAULT_VALUE = AnimationStyle.BEGIN_AND_END_GENTLY;
 	private edu.cmu.cs.dennisc.animation.Style internal;

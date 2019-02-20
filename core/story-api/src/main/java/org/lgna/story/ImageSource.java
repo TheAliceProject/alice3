@@ -42,17 +42,19 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.common.resources.ImageResource;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class ImageSource implements Paint {
-	private final org.lgna.common.resources.ImageResource imageResource;
+	private final ImageResource imageResource;
 
-	public ImageSource( org.lgna.common.resources.ImageResource imageResource ) {
+	public ImageSource( ImageResource imageResource ) {
 		this.imageResource = imageResource;
 	}
 
-	public org.lgna.common.resources.ImageResource getImageResource() {
+	public ImageResource getImageResource() {
 		return this.imageResource;
 	}
 }

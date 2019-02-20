@@ -43,19 +43,21 @@
 
 package edu.cmu.cs.dennisc.property;
 
+import java.nio.LongBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
-public class LongBufferProperty extends PrimitiveBufferProperty<java.nio.LongBuffer> {
-	public LongBufferProperty( InstancePropertyOwner owner, java.nio.LongBuffer value ) {
+public class LongBufferProperty extends PrimitiveBufferProperty<LongBuffer> {
+	public LongBufferProperty( InstancePropertyOwner owner, LongBuffer value ) {
 		super( owner, value );
 	}
 
 	public LongBufferProperty( InstancePropertyOwner owner, long[] value ) {
-		super( owner, java.nio.LongBuffer.wrap( value ) );
+		super( owner, LongBuffer.wrap( value ) );
 	}
 
 	public final void setValue( long[] value ) {
-		this.setValue( java.nio.LongBuffer.wrap( value ) );
+		this.setValue( LongBuffer.wrap( value ) );
 	}
 }

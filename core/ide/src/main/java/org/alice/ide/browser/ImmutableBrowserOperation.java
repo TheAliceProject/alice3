@@ -42,17 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.browser;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ImmutableBrowserOperation extends BrowserOperation {
-	private final java.net.URL url;
+	private final URL url;
 
-	public ImmutableBrowserOperation( java.util.UUID id, String spec ) {
+	public ImmutableBrowserOperation( UUID id, String spec ) {
 		super( id );
 		try {
-			this.url = new java.net.URL( spec );
-		} catch( java.net.MalformedURLException murle ) {
+			this.url = new URL( spec );
+		} catch( MalformedURLException murle ) {
 			throw new RuntimeException( spec, murle );
 		}
 	}
@@ -63,7 +69,7 @@ public class ImmutableBrowserOperation extends BrowserOperation {
 		this.setName( spec );
 		super.localize();
 		String name = this.getImp().getName();
-		if( edu.cmu.cs.dennisc.java.util.Objects.equals( spec, name ) ) {
+		if( Objects.equals( spec, name ) ) {
 			//pass
 		} else {
 			this.setToolTipText( spec );
@@ -71,7 +77,7 @@ public class ImmutableBrowserOperation extends BrowserOperation {
 	}
 
 	@Override
-	protected java.net.URL getUrl() {
+	protected URL getUrl() {
 		return this.url;
 	}
 }

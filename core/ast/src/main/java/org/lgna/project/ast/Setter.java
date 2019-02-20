@@ -42,13 +42,17 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.project.virtualmachine.VirtualMachine;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Setter extends AbstractMethodContainedByUserField implements CodeAppender {
-	/* package-private */Setter( UserField field ) {
+public class Setter extends AbstractMethodContainedByUserField {
+	Setter( UserField field ) {
 		super( field );
 	}
 
@@ -58,25 +62,13 @@ public class Setter extends AbstractMethodContainedByUserField implements CodeAp
 	}
 
 	@Override
-	public java.util.List<SetterParameter> getRequiredParameters() {
+	public List<AbstractParameter> getRequiredParameters() {
 		return this.requiredParameters;
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendMemberPrefix( this );
-
-		UserField field = this.getField();
-		generator.appendMethodHeader( this );
-		generator.appendChar( '{' );
-		generator.appendString( "this." );
-		generator.appendString( field.name.getValue() );
-		generator.appendChar( '=' );
-		generator.appendString( field.name.getValue() );
-		generator.appendSemicolon();
-		generator.appendChar( '}' );
-
-		generator.appendMemberPostfix( this );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendSetter( this );
 	}
 
 	@Override
@@ -92,5 +84,11 @@ public class Setter extends AbstractMethodContainedByUserField implements CodeAp
 		return sb.toString();
 	}
 
-	private final java.util.List<SetterParameter> requiredParameters = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( new SetterParameter( this ) ) );
+	@Override
+	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
+		virtualMachine.set( getField(), target, arguments[ 0 ] );
+		return null;
+	}
+
+	private final List<AbstractParameter> requiredParameters = Collections.unmodifiableList( Lists.newArrayList( new SetterParameter( this ) ) );
 }

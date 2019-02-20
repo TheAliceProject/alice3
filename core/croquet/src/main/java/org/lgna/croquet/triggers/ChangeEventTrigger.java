@@ -43,24 +43,20 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.ViewController;
+
+import javax.swing.event.ChangeEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ChangeEventTrigger extends EventObjectTrigger<javax.swing.event.ChangeEvent> {
-	public static ChangeEventTrigger createUserInstance( javax.swing.event.ChangeEvent changeEvent ) {
-		return new ChangeEventTrigger( null, changeEvent );
+public class ChangeEventTrigger extends EventObjectTrigger<ChangeEvent> {
+	public static ChangeEventTrigger createUserInstance( UserActivity userActivity, ChangeEvent changeEvent ) {
+		return new ChangeEventTrigger( userActivity, changeEvent );
 	}
 
-	private ChangeEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, javax.swing.event.ChangeEvent changeEvent ) {
-		super( viewController, changeEvent );
-	}
-
-	public ChangeEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected java.awt.Point getPoint() {
-		return null;
+	private ChangeEventTrigger( UserActivity userActivity, ChangeEvent changeEvent ) {
+		super( userActivity, null, changeEvent );
 	}
 }

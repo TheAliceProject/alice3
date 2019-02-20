@@ -43,13 +43,29 @@
 
 package org.alice.ide.statementfactory;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.annotations.ArrayIndexDetails;
+import org.lgna.project.ast.ArrayAccess;
+import org.lgna.project.ast.AssignmentExpression;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class LocalArrayAtIndexAssignmentFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.AssignmentExpression> {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalArrayAtIndexAssignmentFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class LocalArrayAtIndexAssignmentFillIn extends ExpressionFillInWithExpressionBlanks<AssignmentExpression> {
+	private static Map<UserLocal, LocalArrayAtIndexAssignmentFillIn> map = Maps.newHashMap();
 
-	public static synchronized LocalArrayAtIndexAssignmentFillIn getInstance( org.lgna.project.ast.UserLocal local ) {
+	public static synchronized LocalArrayAtIndexAssignmentFillIn getInstance( UserLocal local ) {
 		LocalArrayAtIndexAssignmentFillIn rv = map.get( local );
 		if( rv != null ) {
 			//pass
@@ -60,29 +76,29 @@ public class LocalArrayAtIndexAssignmentFillIn extends org.alice.ide.croquet.mod
 		return rv;
 	}
 
-	private final org.lgna.project.ast.AssignmentExpression transientValue;
+	private final AssignmentExpression transientValue;
 
-	private LocalArrayAtIndexAssignmentFillIn( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "dbb38402-a01a-43ff-a2eb-e946f81b5e2b" ),
-				org.alice.ide.croquet.models.cascade.ExpressionBlank.getBlankForType( Integer.class, org.lgna.project.annotations.ArrayIndexDetails.SINGLETON ),
-				org.alice.ide.croquet.models.cascade.ExpressionBlank.getBlankForType( local.valueType.getValue().getComponentType() ) );
+	private LocalArrayAtIndexAssignmentFillIn( UserLocal local ) {
+		super( UUID.fromString( "dbb38402-a01a-43ff-a2eb-e946f81b5e2b" ),
+				ExpressionBlank.getBlankForType( Integer.class, ArrayIndexDetails.SINGLETON ),
+				ExpressionBlank.getBlankForType( local.valueType.getValue().getComponentType() ) );
 
-		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalArrayAssignment( local );
+		this.transientValue = IncompleteAstUtilities.createIncompleteLocalArrayAssignment( local );
 	}
 
-	private org.lgna.project.ast.UserLocal getLocal() {
-		org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)this.transientValue.leftHandSide.getValue();
-		org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)arrayAccess.array.getValue();
+	private UserLocal getLocal() {
+		ArrayAccess arrayAccess = (ArrayAccess)this.transientValue.leftHandSide.getValue();
+		LocalAccess localAccess = (LocalAccess)arrayAccess.array.getValue();
 		return localAccess.local.getValue();
 	}
 
 	@Override
-	protected org.lgna.project.ast.AssignmentExpression createValue( org.lgna.project.ast.Expression[] expressions ) {
-		return org.lgna.project.ast.AstUtilities.createLocalArrayAssignment( this.getLocal(), expressions[ 0 ], expressions[ 1 ] );
+	protected AssignmentExpression createValue( Expression[] expressions ) {
+		return AstUtilities.createLocalArrayAssignment( this.getLocal(), expressions[ 0 ], expressions[ 1 ] );
 	}
 
 	@Override
-	public org.lgna.project.ast.AssignmentExpression getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AssignmentExpression, org.lgna.project.ast.Expression> node ) {
+	public AssignmentExpression getTransientValue( ItemNode<? super AssignmentExpression, Expression> node ) {
 		return this.transientValue;
 	}
 }

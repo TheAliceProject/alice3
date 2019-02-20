@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.property;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,7 +61,7 @@ public class DoubleProperty extends InstanceProperty<Double> {
 	public void setValue( Double value ) {
 		assert value != null : this;
 		assert ( Double.isNaN( value ) == false ) || this.isNaNAcceptable : this;
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+		if( Objects.notEquals( value, this.getValue() ) ) {
 			super.setValue( value );
 		}
 	}

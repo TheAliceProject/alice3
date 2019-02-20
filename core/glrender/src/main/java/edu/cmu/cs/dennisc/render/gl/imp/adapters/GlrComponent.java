@@ -43,19 +43,29 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.pattern.Visitable;
+import edu.cmu.cs.dennisc.pattern.Visitor;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.Scene;
+import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
+
+import java.nio.DoubleBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Component> extends GlrElement<T> implements edu.cmu.cs.dennisc.pattern.Visitable {
-	private static edu.cmu.cs.dennisc.math.AffineMatrix4x4 s_buffer = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
+public abstract class GlrComponent<T extends Component> extends GlrElement<T> implements Visitable {
+	private static AffineMatrix4x4 s_buffer = AffineMatrix4x4.createNaN();
 
-	/*package-private*/static void handleAbsoluteTransformationChanged( edu.cmu.cs.dennisc.scenegraph.Component component ) {
-		GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter = AdapterFactory.getAdapterFor( component );
+	/*package-private*/static void handleAbsoluteTransformationChanged( Component component ) {
+		GlrComponent<? extends Component> componentAdapter = AdapterFactory.getAdapterFor( component );
 		componentAdapter.handleAbsoluteTransformationChanged();
 	}
 
-	/*package-private*/static void handleHierarchyChanged( edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent e ) {
-		GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
+	/*package-private*/static void handleHierarchyChanged( HierarchyEvent e ) {
+		GlrComponent<? extends Component> componentAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		componentAdapter.handleHierarchyChanged();
 	}
 
@@ -64,7 +74,7 @@ public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 	}
 
 	@Override
-	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
+	public void accept( Visitor visitor ) {
 		visitor.visit( this );
 	}
 
@@ -79,10 +89,10 @@ public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 
 	private void handleHierarchyChanged() {
 		GlrScene glrScene;
-		edu.cmu.cs.dennisc.scenegraph.Composite sgRoot = owner.getRoot();
-		if( sgRoot instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) {
+		Composite sgRoot = owner.getRoot();
+		if( sgRoot instanceof Scene ) {
 			//edu.cmu.cs.dennisc.scenegraph.Scene sgScene = (edu.cmu.cs.dennisc.scenegraph.Scene)sgRoot;
-			glrScene = AdapterFactory.getAdapterFor( (edu.cmu.cs.dennisc.scenegraph.Scene)sgRoot );
+			glrScene = AdapterFactory.getAdapterFor( (Scene)sgRoot );
 		} else {
 			glrScene = null;
 		}
@@ -100,9 +110,9 @@ public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 	}
 
 	public GlrScene getGlrScene() {
-		edu.cmu.cs.dennisc.scenegraph.Composite sgRoot = owner.getRoot();
-		if( sgRoot instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) {
-			return AdapterFactory.getAdapterFor( (edu.cmu.cs.dennisc.scenegraph.Scene)sgRoot );
+		Composite sgRoot = owner.getRoot();
+		if( sgRoot instanceof Scene ) {
+			return AdapterFactory.getAdapterFor( (Scene)sgRoot );
 		} else {
 			return null;
 		}
@@ -132,20 +142,20 @@ public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 		}
 	}
 
-	public java.nio.DoubleBuffer accessAbsoluteTransformationAsBuffer() {
+	public DoubleBuffer accessAbsoluteTransformationAsBuffer() {
 		this.updateAbsoluteTransformationIfNecessary();
 		return this.absoluteBuffer;
 	}
 
-	public java.nio.DoubleBuffer accessInverseAbsoluteTransformationAsBuffer() {
+	public DoubleBuffer accessInverseAbsoluteTransformationAsBuffer() {
 		this.updateInverseAbsoluteTransformationIfNecessary();
 		return this.inverseAbsoluteBuffer;
 	}
 
 	private final double[] absolute = new double[ 16 ];
 	private final double[] inverseAbsolute = new double[ 16 ];
-	private final java.nio.DoubleBuffer absoluteBuffer = java.nio.DoubleBuffer.wrap( this.absolute );
-	private final java.nio.DoubleBuffer inverseAbsoluteBuffer = java.nio.DoubleBuffer.wrap( this.inverseAbsolute );
+	private final DoubleBuffer absoluteBuffer = DoubleBuffer.wrap( this.absolute );
+	private final DoubleBuffer inverseAbsoluteBuffer = DoubleBuffer.wrap( this.inverseAbsolute );
 
 	private GlrScene glrScene;
 }

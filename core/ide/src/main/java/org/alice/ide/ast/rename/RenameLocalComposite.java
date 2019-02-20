@@ -43,13 +43,20 @@
 
 package org.alice.ide.ast.rename;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.name.validators.LocalNameValidator;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RenameLocalComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserLocal> {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, RenameLocalComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class RenameLocalComposite extends RenameDeclarationComposite<UserLocal> {
+	private static Map<UserLocal, RenameLocalComposite> map = Maps.newHashMap();
 
-	public static synchronized RenameLocalComposite getInstance( org.lgna.project.ast.UserLocal local ) {
+	public static synchronized RenameLocalComposite getInstance( UserLocal local ) {
 		assert local != null;
 		RenameLocalComposite rv = map.get( local );
 		if( rv != null ) {
@@ -61,7 +68,7 @@ public class RenameLocalComposite extends RenameDeclarationComposite<org.lgna.pr
 		return rv;
 	}
 
-	private RenameLocalComposite( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "51ce6258-a1ac-4606-b4f8-faea8e732550" ), new org.alice.ide.name.validators.LocalNameValidator( local ), local );
+	private RenameLocalComposite( UserLocal local ) {
+		super( UUID.fromString( "51ce6258-a1ac-4606-b4f8-faea8e732550" ), new LocalNameValidator( local ), local );
 	}
 }

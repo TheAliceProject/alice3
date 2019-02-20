@@ -46,8 +46,6 @@ package org.lgna.croquet.history.event;
 /**
  * @author Dennis Cosgrove
  */
-public class FinishedEvent extends SuccessfulCompletionEvent {
-	public FinishedEvent( org.lgna.croquet.history.CompletionStep<?> step ) {
-		super( step );
-	}
+public class FinishedEvent implements ActivityEvent {
+	public FinishedEvent() {}
 }

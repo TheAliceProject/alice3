@@ -42,23 +42,29 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.layouts;
 
+import javax.swing.BoxLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PaddedBoxLayout extends javax.swing.BoxLayout {
-	private static int getPadCount( java.awt.Container target ) {
+public class PaddedBoxLayout extends BoxLayout {
+	private static int getPadCount( Container target ) {
 		return Math.max( target.getComponentCount() - 1, 0 );
 	}
 
-	public PaddedBoxLayout( java.awt.Container target, int axis, int pad ) {
+	public PaddedBoxLayout( Container target, int axis, int pad ) {
 		super( target, axis );
 		this.axis = axis;
 		this.pad = pad;
 	}
 
 	@Override
-	public java.awt.Dimension minimumLayoutSize( java.awt.Container target ) {
-		java.awt.Dimension rv = super.minimumLayoutSize( target );
+	public Dimension minimumLayoutSize( Container target ) {
+		Dimension rv = super.minimumLayoutSize( target );
 		final int NUM_PADS = getPadCount( target );
 		switch( this.axis ) {
 		case Y_AXIS:
@@ -74,8 +80,8 @@ public class PaddedBoxLayout extends javax.swing.BoxLayout {
 	}
 
 	@Override
-	public java.awt.Dimension preferredLayoutSize( java.awt.Container target ) {
-		java.awt.Dimension rv = super.preferredLayoutSize( target );
+	public Dimension preferredLayoutSize( Container target ) {
+		Dimension rv = super.preferredLayoutSize( target );
 		final int NUM_PADS = getPadCount( target );
 		switch( this.axis ) {
 		case Y_AXIS:
@@ -91,8 +97,8 @@ public class PaddedBoxLayout extends javax.swing.BoxLayout {
 	}
 
 	@Override
-	public java.awt.Dimension maximumLayoutSize( java.awt.Container target ) {
-		java.awt.Dimension rv = super.maximumLayoutSize( target );
+	public Dimension maximumLayoutSize( Container target ) {
+		Dimension rv = super.maximumLayoutSize( target );
 		final int NUM_PADS = getPadCount( target );
 		switch( this.axis ) {
 		case Y_AXIS:
@@ -108,12 +114,12 @@ public class PaddedBoxLayout extends javax.swing.BoxLayout {
 	}
 
 	@Override
-	public void layoutContainer( java.awt.Container target ) {
+	public void layoutContainer( Container target ) {
 		super.layoutContainer( target );
 		final int N = target.getComponentCount();
 		for( int i = 0; i < N; i++ ) {
-			java.awt.Component componentI = target.getComponent( i );
-			java.awt.Point p = componentI.getLocation();
+			Component componentI = target.getComponent( i );
+			Point p = componentI.getLocation();
 			//todo: handle right to left
 			switch( this.axis ) {
 			case Y_AXIS:

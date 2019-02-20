@@ -42,35 +42,45 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.datatransfer;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ClipboardUtilities {
-	private static class DoNothingOnLostOwnershipClipboardOwner implements java.awt.datatransfer.ClipboardOwner {
+	private static class DoNothingOnLostOwnershipClipboardOwner implements ClipboardOwner {
 		@Override
-		public void lostOwnership( java.awt.datatransfer.Clipboard clipboard, java.awt.datatransfer.Transferable contents ) {
+		public void lostOwnership( Clipboard clipboard, Transferable contents ) {
 			//pass
 		}
 	}
 
 	public static void setClipboardContents( String s ) {
-		java.awt.datatransfer.Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents( new java.awt.datatransfer.StringSelection( s ), new DoNothingOnLostOwnershipClipboardOwner() );
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents( new StringSelection( s ), new DoNothingOnLostOwnershipClipboardOwner() );
 	}
 
-	public static void setClipboardContents( java.awt.Image image ) {
+	public static void setClipboardContents( Image image ) {
 		setClipboardContents( image, null );
 	}
 
-	public static void setClipboardContents( java.awt.Image image, Integer dpi ) {
-		java.awt.datatransfer.Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
+	public static void setClipboardContents( Image image, Integer dpi ) {
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents( new TransferableImageWithDpi( image, dpi ), new DoNothingOnLostOwnershipClipboardOwner() );
 	}
 
 	public static void main( String[] args ) throws Exception {
-		java.awt.datatransfer.Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
-		java.awt.datatransfer.DataFlavor[] dataFlavors = clipboard.getAvailableDataFlavors();
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		DataFlavor[] dataFlavors = clipboard.getAvailableDataFlavors();
 		Object data = clipboard.getData( dataFlavors[ 0 ] );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dataFlavors[ 0 ], data );
+		Logger.outln( dataFlavors[ 0 ], data );
 	}
 }

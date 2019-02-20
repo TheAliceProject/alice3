@@ -43,11 +43,21 @@
 
 package test.ik;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.typemanager.TypeManager;
 import org.lgna.ik.poser.croquet.AbstractPoserOrAnimatorComposite;
 import org.lgna.ik.poser.croquet.BipedAnimator;
 import org.lgna.ik.poser.croquet.BipedPoser;
+import org.lgna.project.ast.JavaField;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
+import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.SBiped;
 import org.lgna.story.SProgram;
+import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.biped.OgreResource;
 
 //import test.ik.IkTestApplication;
 
@@ -61,16 +71,16 @@ public class TestPoser extends SProgram {
 		IkTestApplication app = new IkTestApplication();
 		app.initialize( args );
 
-		org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+		ReleaseVirtualMachine vm = new ReleaseVirtualMachine();
 
-		org.lgna.story.resources.BipedResource bipedResource = org.lgna.story.resources.biped.OgreResource.BROWN;
+		BipedResource bipedResource = OgreResource.BROWN;
 		//org.lgna.story.resources.BipedResource bipedResource = org.lgna.story.resources.biped.AlienResource.DEFAULT;
 
-		org.lgna.project.ast.JavaType ancestorType = org.lgna.project.ast.JavaType.getInstance( SBiped.class );
-		org.lgna.project.ast.JavaField argumentField = org.lgna.project.ast.JavaField.getInstance( bipedResource.getClass(), bipedResource.toString() );
-		org.lgna.project.ast.NamedUserType type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField( ancestorType, argumentField );
+		JavaType ancestorType = JavaType.getInstance( SBiped.class );
+		JavaField argumentField = JavaField.getInstance( bipedResource.getClass(), bipedResource.toString() );
+		NamedUserType type = TypeManager.getNamedUserTypeFromArgumentField( ancestorType, argumentField );
 
-		org.lgna.project.ast.NamedUserConstructor userConstructor = type.constructors.get( 0 );
+		NamedUserConstructor userConstructor = type.constructors.get( 0 );
 		final int N = userConstructor.requiredParameters.size();
 		Object[] arguments = new Object[ N ];
 		switch( N ) {
@@ -82,8 +92,8 @@ public class TestPoser extends SProgram {
 		case 2:
 			assert false : N;
 		}
-		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( userInstance );
+		UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
+		Logger.outln( userInstance );
 		userInstance.getJavaInstance( SBiped.class );
 		AbstractPoserOrAnimatorComposite composite;
 

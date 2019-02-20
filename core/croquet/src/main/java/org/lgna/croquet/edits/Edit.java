@@ -42,12 +42,13 @@
  *******************************************************************************/
 package org.lgna.croquet.edits;
 
+import org.lgna.croquet.Group;
 
 /**
  * @author Dennis Cosgrove
  */
 public interface Edit {
-	org.lgna.croquet.Group getGroup();
+	Group getGroup();
 
 	boolean canUndo();
 

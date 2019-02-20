@@ -43,10 +43,22 @@
 
 package org.alice.ide.croquet.models.cascade.number;
 
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu;
+import org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.ArithmeticInfixExpression;
+import org.lgna.project.ast.Expression;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.Expression> {
+public class MathCascadeMenu extends ExpressionCascadeMenu<Expression> {
 	private static class SingletonHolder {
 		private static MathCascadeMenu instance = new MathCascadeMenu();
 	}
@@ -56,25 +68,25 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 	}
 
 	private MathCascadeMenu() {
-		super( java.util.UUID.fromString( "d6d9501b-2a63-4b72-9ceb-3046ff079ba1" ) );
+		super( UUID.fromString( "d6d9501b-2a63-4b72-9ceb-3046ff079ba1" ) );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
-		org.lgna.project.ast.Expression prevExpression = org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> context ) {
+		Expression prevExpression = IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
 		if( prevExpression != null ) {
 			if( prevExpression.getType().isAssignableTo( Number.class ) ) {
-				for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-					blankChildren.add( org.alice.ide.croquet.models.cascade.number.NumberArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
+				for( ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
+					blankChildren.add( NumberArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
 				}
 			}
 		}
-		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-			blankChildren.add( org.alice.ide.croquet.models.cascade.number.NumberArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
+		for( ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
+			blankChildren.add( NumberArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
 
-		blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.number.MinMaxCascadeMenu.getInstance() );
+		blankChildren.add( CascadeLineSeparator.getInstance() );
+		blankChildren.add( MinMaxCascadeMenu.getInstance() );
 		blankChildren.add( FloorCeilingCascadeMenu.getInstance() );
 		blankChildren.add( PowerCascadeMenu.getInstance() );
 		blankChildren.add( TrigonometryCascadeMenu.getInstance() );

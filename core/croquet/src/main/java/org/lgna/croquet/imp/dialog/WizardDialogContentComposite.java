@@ -42,16 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.dialog;
 
+import org.lgna.croquet.WizardDialogCoreComposite;
+import org.lgna.croquet.imp.dialog.views.WizardDialogContentPane;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class WizardDialogContentComposite extends GatedCommitDialogContentComposite<org.lgna.croquet.imp.dialog.views.WizardDialogContentPane> {
-	public WizardDialogContentComposite( org.lgna.croquet.WizardDialogCoreComposite coreComposite ) {
-		super( java.util.UUID.fromString( "ecfac12c-7762-445b-a952-fcffc09126f9" ), coreComposite );
+public class WizardDialogContentComposite extends GatedCommitDialogContentComposite<WizardDialogContentPane> {
+	public WizardDialogContentComposite( WizardDialogCoreComposite coreComposite ) {
+		super( UUID.fromString( "ecfac12c-7762-445b-a952-fcffc09126f9" ), coreComposite );
 	}
 
 	@Override
-	protected org.lgna.croquet.imp.dialog.views.WizardDialogContentPane createView() {
-		return new org.lgna.croquet.imp.dialog.views.WizardDialogContentPane( this );
+	protected WizardDialogContentPane createView() {
+		return new WizardDialogContentPane( this );
 	}
 }

@@ -43,6 +43,12 @@
 
 package org.alice.ide.x;
 
+import org.alice.ide.common.AbstractStatementPane;
+import org.lgna.croquet.DragModel;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.StatementListProperty;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,12 +65,12 @@ public class PreviewAstI18nFactory extends ImmutableAstI18nFactory {
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
+	protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
 		return null;
 	}
 
 	@Override
-	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.croquet.DragModel dragModel, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
+	public AbstractStatementPane createStatementPane( DragModel dragModel, Statement statement, StatementListProperty statementListProperty ) {
 		//todo
 		dragModel = null;
 		return super.createStatementPane( dragModel, statement, statementListProperty );

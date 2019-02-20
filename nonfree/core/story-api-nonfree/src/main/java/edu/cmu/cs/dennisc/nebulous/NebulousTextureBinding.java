@@ -42,19 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.nebulous;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.render.gl.ForgettableBinding;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 /**
  * @author alice
  * 
  */
-public final class NebulousTextureBinding implements edu.cmu.cs.dennisc.render.gl.ForgettableBinding {
+public final class NebulousTextureBinding implements ForgettableBinding {
 	public void bind( RenderContext rc, NebulousTexture texture ) {
 		texture.doSetup( rc.gl );
 	}
 
 	@Override
 	public void forget( RenderContext rc ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "IMPLEMENT forget" );
+		Logger.todo( "IMPLEMENT forget" );
 	}
 }

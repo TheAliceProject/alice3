@@ -43,28 +43,34 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import org.alice.ide.IDE;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousExpressionBasedFillInWithBlanks<F extends org.lgna.project.ast.Expression, B> extends ExpressionFillInWithBlanks<F, B> {
-	public PreviousExpressionBasedFillInWithBlanks( java.util.UUID id, Class<B> cls, org.lgna.croquet.CascadeBlank<B>... blanks ) {
+public abstract class PreviousExpressionBasedFillInWithBlanks<F extends Expression, B> extends ExpressionFillInWithBlanks<F, B> {
+	public PreviousExpressionBasedFillInWithBlanks( UUID id, Class<B> cls, CascadeBlank<B>... blanks ) {
 		super( id, cls, blanks );
 	}
 
-	private org.lgna.project.ast.Expression getPreviousExpression() {
-		return org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
+	private Expression getPreviousExpression() {
+		return IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
 	}
 
-	private org.lgna.project.ast.Expression createCopyOfPreviousExpression() {
-		org.lgna.project.ast.Expression prevExpression = this.getPreviousExpression();
+	private Expression createCopyOfPreviousExpression() {
+		Expression prevExpression = this.getPreviousExpression();
 		if( prevExpression != null ) {
-			return org.alice.ide.IDE.getActiveInstance().createCopy( prevExpression );
+			return IDE.getActiveInstance().createCopy( prevExpression );
 		} else {
 			return null;
 		}
 	}
 
-	private org.lgna.project.ast.Expression cleanExpression;
+	private Expression cleanExpression;
 
 	@Override
 	protected void markClean() {
@@ -84,7 +90,7 @@ public abstract class PreviousExpressionBasedFillInWithBlanks<F extends org.lgna
 	//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
 	//		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
 	//	}
-	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression, B[] expressions );
+	protected abstract F createValue( Expression previousExpression, B[] expressions );
 
 	@Override
 	protected final F createValue( B[] expressions ) {

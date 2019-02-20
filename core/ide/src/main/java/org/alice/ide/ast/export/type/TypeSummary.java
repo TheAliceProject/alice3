@@ -42,6 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.ast.export.type;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.typemanager.ResourceTypeUtilities;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Declaration;
+import org.lgna.project.ast.JavaField;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,10 +62,10 @@ public final class TypeSummary {
 	public static final double CURRENT_VERSION = 3.1;
 	public static final double MINIMUM_ACCEPTABLE_VERSION = 3.1;
 
-	private static void addHierarchyClassNames( java.util.List<String> hierarchyClassNames, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	private static void addHierarchyClassNames( List<String> hierarchyClassNames, AbstractType<?, ?, ?> type ) {
 		if( type != null ) {
-			if( type instanceof org.lgna.project.ast.JavaType ) {
-				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
+			if( type instanceof JavaType ) {
+				JavaType javaType = (JavaType)type;
 				hierarchyClassNames.add( javaType.getClassReflectionProxy().getReification().getName() );
 			} else {
 				hierarchyClassNames.add( type.getName() );
@@ -65,35 +78,35 @@ public final class TypeSummary {
 
 	private final double version;
 	private final String typeName;
-	private final java.util.List<String> hierarchyClassNames;
+	private final List<String> hierarchyClassNames;
 	private final ResourceInfo resourceInfo;
-	private final java.util.List<String> procedureNames;
-	private final java.util.List<FunctionInfo> functionInfos;
-	private final java.util.List<FieldInfo> fieldInfos;
+	private final List<String> procedureNames;
+	private final List<FunctionInfo> functionInfos;
+	private final List<FieldInfo> fieldInfos;
 
-	public TypeSummary( org.lgna.project.ast.NamedUserType type ) {
+	public TypeSummary( NamedUserType type ) {
 		this.version = CURRENT_VERSION;
 		this.typeName = type.getName();
 
-		this.hierarchyClassNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		this.hierarchyClassNames = Lists.newLinkedList();
 		addHierarchyClassNames( this.hierarchyClassNames, type.getSuperType() );
 
-		org.lgna.project.ast.Declaration declaration = org.alice.ide.typemanager.ResourceTypeUtilities.getResourceFieldOrType( type );
-		if( declaration instanceof org.lgna.project.ast.JavaType ) {
-			org.lgna.project.ast.JavaType resourceType = (org.lgna.project.ast.JavaType)declaration;
+		Declaration declaration = ResourceTypeUtilities.getResourceFieldOrType( type );
+		if( declaration instanceof JavaType ) {
+			JavaType resourceType = (JavaType)declaration;
 			this.resourceInfo = new ResourceInfo( resourceType.getClassReflectionProxy().getName(), null );
-		} else if( declaration instanceof org.lgna.project.ast.JavaField ) {
-			org.lgna.project.ast.JavaField resourceField = (org.lgna.project.ast.JavaField)declaration;
+		} else if( declaration instanceof JavaField ) {
+			JavaField resourceField = (JavaField)declaration;
 			this.resourceInfo = new ResourceInfo( resourceField.getDeclaringType().getClassReflectionProxy().getName(), resourceField.getName() );
 		} else {
 			this.resourceInfo = null;
 		}
 
-		this.procedureNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		this.functionInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		for( org.lgna.project.ast.UserMethod method : type.methods ) {
-			org.lgna.project.ast.ManagementLevel managementLevel = method.getManagementLevel();
-			if( ( managementLevel == null ) || ( managementLevel == org.lgna.project.ast.ManagementLevel.NONE ) ) {
+		this.procedureNames = Lists.newLinkedList();
+		this.functionInfos = Lists.newLinkedList();
+		for( UserMethod method : type.methods ) {
+			ManagementLevel managementLevel = method.getManagementLevel();
+			if( ( managementLevel == null ) || ( managementLevel == ManagementLevel.NONE ) ) {
 				if( method.isProcedure() ) {
 					this.procedureNames.add( method.getName() );
 				} else {
@@ -101,13 +114,13 @@ public final class TypeSummary {
 				}
 			}
 		}
-		this.fieldInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		for( org.lgna.project.ast.UserField field : type.fields ) {
+		this.fieldInfos = Lists.newLinkedList();
+		for( UserField field : type.fields ) {
 			this.fieldInfos.add( new FieldInfo( field.getValueType().getName(), field.getName() ) );
 		}
 	}
 
-	public TypeSummary( double version, String typeName, java.util.List<String> hierarchyClassNames, ResourceInfo resourceInfo, java.util.List<String> procedureNames, java.util.List<FunctionInfo> functionInfos, java.util.List<FieldInfo> fieldInfos ) {
+	public TypeSummary( double version, String typeName, List<String> hierarchyClassNames, ResourceInfo resourceInfo, List<String> procedureNames, List<FunctionInfo> functionInfos, List<FieldInfo> fieldInfos ) {
 		this.version = version;
 		this.typeName = typeName;
 		this.resourceInfo = resourceInfo;
@@ -125,7 +138,7 @@ public final class TypeSummary {
 		return this.typeName;
 	}
 
-	public java.util.List<String> getHierarchyClassNames() {
+	public List<String> getHierarchyClassNames() {
 		return this.hierarchyClassNames;
 	}
 
@@ -133,15 +146,15 @@ public final class TypeSummary {
 		return this.resourceInfo;
 	}
 
-	public java.util.List<String> getProcedureNames() {
+	public List<String> getProcedureNames() {
 		return this.procedureNames;
 	}
 
-	public java.util.List<FunctionInfo> getFunctionInfos() {
+	public List<FunctionInfo> getFunctionInfos() {
 		return this.functionInfos;
 	}
 
-	public java.util.List<FieldInfo> getFieldInfos() {
+	public List<FieldInfo> getFieldInfos() {
 		return this.fieldInfos;
 	}
 }

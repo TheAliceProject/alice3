@@ -50,6 +50,8 @@ import org.lgna.ik.poser.croquet.views.PoserControlView;
 import org.lgna.project.ast.Expression;
 import org.lgna.story.Pose;
 
+import java.util.UUID;
+
 /**
  * @author Matt May
  */
@@ -57,7 +59,7 @@ public class PoserControlComposite extends AbstractPoserControlComposite<PoserCo
 
 	public PoserControlComposite( AbstractPoserOrAnimatorComposite parent ) {
 		super( parent,
-				java.util.UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
+				UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
 	}
 
 	@Override

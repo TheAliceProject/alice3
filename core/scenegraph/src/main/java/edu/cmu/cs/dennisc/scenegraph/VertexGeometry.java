@@ -43,12 +43,21 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.math.Vector3f;
+import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class VertexGeometry extends Geometry {
-	public static class VerticesProperty extends edu.cmu.cs.dennisc.property.CopyableArrayProperty<Vertex> {
-		public VerticesProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Vertex... vertices ) {
+	public static class VerticesProperty extends CopyableArrayProperty<Vertex> {
+		public VerticesProperty( InstancePropertyOwner owner, Vertex... vertices ) {
 			super( owner, vertices );
 		}
 
@@ -69,21 +78,21 @@ public abstract class VertexGeometry extends Geometry {
 	}
 
 	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
-		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, vertices.getValue() );
+	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
+		BoundUtilities.getBoundingBox( boundingBox, vertices.getValue() );
 	}
 
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingSphere( boundingSphere, vertices.getValue() );
+		BoundUtilities.getBoundingSphere( boundingSphere, vertices.getValue() );
 	}
 
 	@Override
-	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
-		edu.cmu.cs.dennisc.math.Point3 point0;
-		edu.cmu.cs.dennisc.math.Point3 point1;
-		edu.cmu.cs.dennisc.math.Vector3f normal;
-		edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices = this.vertices.getValue();
+	protected void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation ) {
+		Point3 point0;
+		Point3 point1;
+		Vector3f normal;
+		Vertex[] vertices = this.vertices.getValue();
 		assert vertices.length >= 2;
 		point0 = vertices[ 0 ].position;
 		point1 = vertices[ 1 ].position;
@@ -101,7 +110,7 @@ public abstract class VertexGeometry extends Geometry {
 	}
 
 	@Override
-	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
+	public void transform( AbstractMatrix4x4 trans ) {
 		//todo: does not seem to work
 		for( Vertex vertex : vertices.getValue() ) {
 			vertex.transform( trans );

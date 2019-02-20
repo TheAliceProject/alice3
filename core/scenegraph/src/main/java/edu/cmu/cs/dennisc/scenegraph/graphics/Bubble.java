@@ -43,20 +43,30 @@
 
 package edu.cmu.cs.dennisc.scenegraph.graphics;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.property.DoubleProperty;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+
+import java.awt.Font;
+import java.awt.Rectangle;
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Bubble extends ShapeEnclosedText {
 	public static interface Originator {
 		public void calculate(
-				java.awt.geom.Point2D.Float out_originOfTail,
-				java.awt.geom.Point2D.Float out_bodyConnectionLocationOfTail,
-				java.awt.geom.Point2D.Float out_textBoundsOffset,
+				Point2D.Float out_originOfTail,
+				Point2D.Float out_bodyConnectionLocationOfTail,
+				Point2D.Float out_textBoundsOffset,
 				Bubble bubble,
-				edu.cmu.cs.dennisc.render.RenderTarget renderTarget,
-				java.awt.Rectangle actualViewport,
-				edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
-				java.awt.geom.Dimension2D textSize
+				RenderTarget renderTarget,
+				Rectangle actualViewport,
+				AbstractCamera camera,
+				Dimension2D textSize
 				);
 	}
 
@@ -68,10 +78,10 @@ public abstract class Bubble extends ShapeEnclosedText {
 		TOP_RIGHT
 	}
 
-	public static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_TEXT_COLOR = edu.cmu.cs.dennisc.color.Color4f.BLACK;
-	public static final java.awt.Font DEFAULT_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 12 );
-	public static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_FILL_COLOR = edu.cmu.cs.dennisc.color.Color4f.WHITE;
-	public static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_OUTLINE_COLOR = edu.cmu.cs.dennisc.color.Color4f.BLACK;
+	public static final Color4f DEFAULT_TEXT_COLOR = Color4f.BLACK;
+	public static final Font DEFAULT_FONT = new Font( null, Font.PLAIN, 12 );
+	public static final Color4f DEFAULT_FILL_COLOR = Color4f.WHITE;
+	public static final Color4f DEFAULT_OUTLINE_COLOR = Color4f.BLACK;
 	public static final PositionPreference DEFAULT_POSITION_PREFERENCE = PositionPreference.AUTOMATIC;
 
 	public Bubble( Originator originator, PositionPreference positionPreference ) {
@@ -93,7 +103,7 @@ public abstract class Bubble extends ShapeEnclosedText {
 	}
 
 	//todo: better name
-	public final edu.cmu.cs.dennisc.property.DoubleProperty portion = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 0.0 );
+	public final DoubleProperty portion = new DoubleProperty( this, 0.0 );
 
 	private final Originator originator;
 	private final PositionPreference positionPreference;

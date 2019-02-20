@@ -42,28 +42,41 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.croquet;
 
+import org.alice.ide.instancefactory.ThisFieldAccessFactory;
+import org.alice.stageide.ast.sort.OneShotSorter;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.interact.croquet.edits.GetAGoodLookAtEdit;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.SCamera;
+import org.lgna.story.SThing;
+
+import java.util.UUID;
 
 /**
  * @author dculyba
  * 
  */
-public class GetAGoodLookAtActionOperation extends org.lgna.croquet.ActionOperation {
+public class GetAGoodLookAtActionOperation extends ActionOperation {
 
-	private final org.lgna.story.SCamera camera;
-	private final org.lgna.story.SThing toLookAt;
+	private final SCamera camera;
+	private final SThing toLookAt;
 
-	public GetAGoodLookAtActionOperation( org.lgna.croquet.Group group, org.lgna.story.SCamera camera, org.lgna.story.SThing toLookAt )
+	public GetAGoodLookAtActionOperation( Group group, SCamera camera, SThing toLookAt )
 	{
-		super( group, java.util.UUID.fromString( "566dedf3-e612-4eed-8025-a49763feeeb4" ) );
+		super( group, UUID.fromString( "566dedf3-e612-4eed-8025-a49763feeeb4" ) );
 		this.camera = camera;
 		this.toLookAt = toLookAt;
 	}
 
-	public static boolean IsValidOperation( org.lgna.story.SCamera camera, org.lgna.story.SThing toLookAt )
+	public static boolean IsValidOperation( SCamera camera, SThing toLookAt )
 	{
-		org.lgna.project.ast.UserField cameraField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( camera );
-		org.lgna.project.ast.UserField toLookAtField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( toLookAt );
+		UserField cameraField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( camera );
+		UserField toLookAtField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( toLookAt );
 		if( ( cameraField == null ) || ( toLookAtField == null ) || ( cameraField == toLookAtField ) ) {
 			return false;
 		}
@@ -71,12 +84,12 @@ public class GetAGoodLookAtActionOperation extends org.lgna.croquet.ActionOperat
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.project.ast.UserField cameraField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( this.camera );
-		org.lgna.project.ast.UserField toLookAtField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( this.toLookAt );
-		org.alice.ide.instancefactory.ThisFieldAccessFactory cameraInstanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( cameraField );
-		org.lgna.project.ast.Expression[] toLookAtExpressions = { new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), toLookAtField ) };
-		GetAGoodLookAtEdit edit = new GetAGoodLookAtEdit( step, cameraInstanceFactory, org.alice.stageide.ast.sort.OneShotSorter.MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD, toLookAtExpressions, camera, toLookAt );
-		step.commitAndInvokeDo( edit );
+	protected void perform( UserActivity activity ) {
+		UserField cameraField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( this.camera );
+		UserField toLookAtField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( this.toLookAt );
+		ThisFieldAccessFactory cameraInstanceFactory = ThisFieldAccessFactory.getInstance( cameraField );
+		Expression[] toLookAtExpressions = { new FieldAccess(toLookAtField) };
+		GetAGoodLookAtEdit edit = new GetAGoodLookAtEdit( activity, cameraInstanceFactory, OneShotSorter.MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD, toLookAtExpressions, camera, toLookAt );
+		activity.commitAndInvokeDo( edit );
 	}
 }

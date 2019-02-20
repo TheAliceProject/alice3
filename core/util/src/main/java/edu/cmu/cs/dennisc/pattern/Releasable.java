@@ -42,6 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.pattern;
 
+import edu.cmu.cs.dennisc.pattern.event.ReleaseListener;
+
+import java.util.Collection;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,9 +53,9 @@ package edu.cmu.cs.dennisc.pattern;
 public interface Releasable {
 	public void release();
 
-	public void addReleaseListener( edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener );
+	public void addReleaseListener( ReleaseListener releaseListener );
 
-	public void removeReleaseListener( edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener );
+	public void removeReleaseListener( ReleaseListener releaseListener );
 
-	public java.util.Collection<edu.cmu.cs.dennisc.pattern.event.ReleaseListener> getReleaseListeners();
+	public Collection<ReleaseListener> getReleaseListeners();
 }

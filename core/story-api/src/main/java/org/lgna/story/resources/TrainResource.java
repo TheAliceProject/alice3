@@ -55,7 +55,7 @@ public interface TrainResource extends TransportResource {
 
 	public static final JointArrayId WHEELS_ARRAY = new JointArrayId( "WHEELS", ROOT, TrainResource.class );
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
 }

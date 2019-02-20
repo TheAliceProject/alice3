@@ -42,34 +42,38 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.event;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
+import java.awt.event.KeyEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public class KeyEventUtilities {
 	public static int getQuoteControlUnquoteKey() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			return java.awt.event.KeyEvent.VK_ALT;
+		if( SystemUtilities.isMac() ) {
+			return KeyEvent.VK_ALT;
 		} else {
-			return java.awt.event.KeyEvent.VK_CONTROL;
+			return KeyEvent.VK_CONTROL;
 		}
 	}
 
 	public static int getQuoteAltUnquoteKey() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			return java.awt.event.KeyEvent.VK_CONTROL;
+		if( SystemUtilities.isMac() ) {
+			return KeyEvent.VK_CONTROL;
 		} else {
-			return java.awt.event.KeyEvent.VK_ALT;
+			return KeyEvent.VK_ALT;
 		}
 	}
 
-	public static java.awt.event.KeyEvent performPlatformFilter( java.awt.event.KeyEvent original ) {
-		java.awt.event.KeyEvent rv;
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+	public static KeyEvent performPlatformFilter( KeyEvent original ) {
+		KeyEvent rv;
+		if( SystemUtilities.isMac() ) {
 			int keyCode = original.getKeyCode();
 			switch( keyCode ) {
-			case java.awt.event.KeyEvent.VK_CONTROL:
-			case java.awt.event.KeyEvent.VK_ALT:
-			case java.awt.event.KeyEvent.VK_META:
+			case KeyEvent.VK_CONTROL:
+			case KeyEvent.VK_ALT:
+			case KeyEvent.VK_META:
 				rv = null;
 				break;
 			default:
@@ -79,17 +83,17 @@ public class KeyEventUtilities {
 				//pass
 			} else {
 				switch( keyCode ) {
-				case java.awt.event.KeyEvent.VK_CONTROL:
-					keyCode = java.awt.event.KeyEvent.VK_ALT;
+				case KeyEvent.VK_CONTROL:
+					keyCode = KeyEvent.VK_ALT;
 					break;
-				case java.awt.event.KeyEvent.VK_ALT:
-				case java.awt.event.KeyEvent.VK_META:
-					keyCode = java.awt.event.KeyEvent.VK_CONTROL;
+				case KeyEvent.VK_ALT:
+				case KeyEvent.VK_META:
+					keyCode = KeyEvent.VK_CONTROL;
 					break;
 				}
 				int completeModifiers = InputEventUtilities.getCompleteModifiers( original );
 				int filteredModifiers = InputEventUtilities.performPlatformModifiersFilter( completeModifiers );
-				rv = new java.awt.event.KeyEvent( original.getComponent(), original.getID(), original.getWhen(), filteredModifiers, original.getKeyCode(), original.getKeyChar() );
+				rv = new KeyEvent( original.getComponent(), original.getID(), original.getWhen(), filteredModifiers, original.getKeyCode(), original.getKeyChar() );
 			}
 		} else {
 			rv = original;

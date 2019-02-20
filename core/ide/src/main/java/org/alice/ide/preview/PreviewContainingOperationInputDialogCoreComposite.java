@@ -42,25 +42,33 @@
  *******************************************************************************/
 package org.alice.ide.preview;
 
+import org.alice.ide.preview.components.PanelWithPreview;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
+import org.lgna.croquet.history.event.ActivityEvent;
+import org.lgna.croquet.views.Dialog;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviewContainingOperationInputDialogCoreComposite<V extends org.alice.ide.preview.components.PanelWithPreview, T> extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<V> {
-	public PreviewContainingOperationInputDialogCoreComposite( java.util.UUID id, org.lgna.croquet.Group operationMigrationId ) {
+public abstract class PreviewContainingOperationInputDialogCoreComposite<V extends PanelWithPreview, T> extends SimpleOperationInputDialogCoreComposite<V> {
+	public PreviewContainingOperationInputDialogCoreComposite( UUID id, Group operationMigrationId ) {
 		super( id, operationMigrationId );
 	}
 
 	public abstract T getPreviewValue();
 
 	@Override
-	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
+	protected void handleFiredEvent( ActivityEvent event ) {
 		super.handleFiredEvent( event );
 		this.getView().updatePreview();
 	}
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		this.getView().updatePreview();
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( dialog );
 	}
 }

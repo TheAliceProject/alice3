@@ -43,10 +43,15 @@
 
 package org.alice.ide.projecturi;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.BoundedIntegerState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectCountState extends org.lgna.croquet.BoundedIntegerState {
+public class RecentProjectCountState extends BoundedIntegerState {
 	private static class SingletonHolder {
 		private static RecentProjectCountState instance = new RecentProjectCountState();
 	}
@@ -56,6 +61,6 @@ public class RecentProjectCountState extends org.lgna.croquet.BoundedIntegerStat
 	}
 
 	private RecentProjectCountState() {
-		super( new Details( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "15c030d1-d6c7-4415-ac20-e1b5bc6993de" ) ).minimum( 0 ).maximum( 100 ).initialValue( 10 ) );
+		super( new Details( Application.DOCUMENT_UI_GROUP, UUID.fromString( "15c030d1-d6c7-4415-ac20-e1b5bc6993de" ) ).minimum( 0 ).maximum( 100 ).initialValue( 10 ) );
 	}
 }

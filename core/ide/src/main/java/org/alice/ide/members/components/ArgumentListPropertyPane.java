@@ -42,26 +42,42 @@
  *******************************************************************************/
 package org.alice.ide.members.components;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import edu.cmu.cs.dennisc.javax.swing.border.OutlinedBorder;
+import org.alice.ide.ast.EmptyExpression;
+import org.alice.ide.common.AbstractArgumentListPropertyPane;
+import org.alice.ide.common.EmptyExpressionPane;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.project.ast.SimpleArgument;
+import org.lgna.project.ast.SimpleArgumentListProperty;
+
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
+public class ArgumentListPropertyPane extends AbstractArgumentListPropertyPane {
+	public ArgumentListPropertyPane( AstI18nFactory factory, SimpleArgumentListProperty property ) {
 		super( factory, property );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.AwtComponentView<?> createComponent( org.lgna.project.ast.SimpleArgument argument ) {
-		org.lgna.croquet.views.LineAxisPanel rv = new org.lgna.croquet.views.LineAxisPanel();
-		rv.setBackgroundColor( new java.awt.Color( 255, 255, 255, 127 ) );
-		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.OutlinedBorder( 1, 4, 1, 4, java.awt.Color.LIGHT_GRAY ) );
+	protected AwtComponentView<?> createComponent( SimpleArgument argument ) {
+		LineAxisPanel rv = new LineAxisPanel();
+		rv.setBackgroundColor( new Color( 255, 255, 255, 127 ) );
+		rv.setBorder( new OutlinedBorder( 1, 4, 1, 4, Color.LIGHT_GRAY ) );
 
-		String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getNameForDeclaration( argument.parameter.getValue() );
+		String parameterName = FormatterState.getInstance().getValue().getNameForDeclaration( argument.parameter.getValue() );
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );
 		if( ( parameterName != null ) && ( parameterName.length() > 0 ) ) {
-			rv.addComponent( new org.lgna.croquet.views.Label( parameterName + ": ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+			rv.addComponent( new Label( parameterName + ": ", TextPosture.OBLIQUE, TextWeight.LIGHT ) );
 		}
-		rv.addComponent( new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)argument.expression.getValue() ) );
+		rv.addComponent( new EmptyExpressionPane( (EmptyExpression)argument.expression.getValue() ) );
 		return rv;
 	}
 }

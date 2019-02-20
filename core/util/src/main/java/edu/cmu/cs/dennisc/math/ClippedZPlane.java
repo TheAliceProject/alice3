@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.math.immutable.MRectangleI;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,7 +60,7 @@ public class ClippedZPlane {
 		set( other );
 	}
 
-	public ClippedZPlane( ClippedZPlane other, edu.cmu.cs.dennisc.math.immutable.MRectangleI viewport ) {
+	public ClippedZPlane( ClippedZPlane other, MRectangleI viewport ) {
 		set( other, viewport );
 	}
 
@@ -76,7 +78,7 @@ public class ClippedZPlane {
 		this.halfHeight = other.halfHeight;
 	}
 
-	public void set( ClippedZPlane other, edu.cmu.cs.dennisc.math.immutable.MRectangleI viewport ) {
+	public void set( ClippedZPlane other, MRectangleI viewport ) {
 		this.set( other );
 		if( Double.isNaN( this.halfWidth ) ) {
 			if( Double.isNaN( this.halfHeight ) ) {

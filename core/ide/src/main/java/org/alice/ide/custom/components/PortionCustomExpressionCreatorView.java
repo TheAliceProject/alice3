@@ -43,28 +43,38 @@
 
 package org.alice.ide.custom.components;
 
+import org.alice.ide.custom.PortionCustomExpressionCreatorComposite;
+import org.lgna.croquet.views.LabeledFormRow;
+import org.lgna.croquet.views.Slider;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PortionCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
-	public PortionCustomExpressionCreatorView( org.alice.ide.custom.PortionCustomExpressionCreatorComposite composite ) {
+	public PortionCustomExpressionCreatorView( PortionCustomExpressionCreatorComposite composite ) {
 		super( composite );
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
-		org.alice.ide.custom.PortionCustomExpressionCreatorComposite composite = (org.alice.ide.custom.PortionCustomExpressionCreatorComposite)this.getComposite();
-		org.lgna.croquet.views.Slider slider = composite.getValueState().createSlider();
+	protected void appendRows( List<LabeledFormRow> rows ) {
+		PortionCustomExpressionCreatorComposite composite = (PortionCustomExpressionCreatorComposite)this.getComposite();
+		Slider slider = composite.getValueState().createSlider();
 
-		java.util.Dictionary<Integer, javax.swing.JComponent> labelTable = new java.util.Hashtable<Integer, javax.swing.JComponent>();
-		labelTable.put( 0, new javax.swing.JLabel( "0.0" ) );
-		labelTable.put( 100, new javax.swing.JLabel( "1.0" ) );
+		Dictionary<Integer, JComponent> labelTable = new Hashtable<Integer, JComponent>();
+		labelTable.put( 0, new JLabel( "0.0" ) );
+		labelTable.put( 100, new JLabel( "1.0" ) );
 		slider.setLabelTable( labelTable );
 		slider.setPaintLabels( true );
 
 		slider.setMajorTickSpacing( 10 );
 		slider.setPaintTicks( true );
 
-		rows.add( new org.lgna.croquet.views.LabeledFormRow( composite.getValueLabel(), slider ) );
+		rows.add( new LabeledFormRow( composite.getValueLabel(), slider ) );
 	}
 }

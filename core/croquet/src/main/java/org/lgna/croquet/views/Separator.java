@@ -43,16 +43,20 @@
 
 package org.lgna.croquet.views;
 
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class Separator extends SwingComponentView<javax.swing.JSeparator> {
+public final class Separator extends SwingComponentView<JSeparator> {
 	public static Separator createInstanceSeparatingTopFromBottom() {
-		return new Separator( javax.swing.SwingConstants.HORIZONTAL );
+		return new Separator( SwingConstants.HORIZONTAL );
 	}
 
 	public static Separator createInstanceSeparatingLeftFromRight() {
-		return new Separator( javax.swing.SwingConstants.VERTICAL );
+		return new Separator( SwingConstants.VERTICAL );
 	}
 
 	private Separator( int orientation ) {
@@ -60,13 +64,13 @@ public final class Separator extends SwingComponentView<javax.swing.JSeparator> 
 	}
 
 	@Override
-	protected javax.swing.JSeparator createAwtComponent() {
-		return new javax.swing.JSeparator() {
+	protected JSeparator createAwtComponent() {
+		return new JSeparator() {
 			@Override
-			public java.awt.Dimension getMaximumSize() {
-				java.awt.Dimension rv = super.getMaximumSize();
-				java.awt.Dimension preferredSize = this.getPreferredSize();
-				if( Separator.this.getAwtComponent().getOrientation() == javax.swing.JSeparator.HORIZONTAL ) {
+			public Dimension getMaximumSize() {
+				Dimension rv = super.getMaximumSize();
+				Dimension preferredSize = this.getPreferredSize();
+				if( Separator.this.getAwtComponent().getOrientation() == JSeparator.HORIZONTAL ) {
 					rv.height = preferredSize.height;
 				} else {
 					rv.width = preferredSize.width;

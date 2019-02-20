@@ -42,37 +42,45 @@
  *******************************************************************************/
 package org.alice.stageide.oneshot;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SetPaintMethodInvocationFillIn extends OneShotJavaMethodInvocationFillIn {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, SetPaintMethodInvocationFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<InstanceFactory, JavaMethod, SetPaintMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
 
-	public static SetPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
-		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, SetPaintMethodInvocationFillIn>() {
+	public static SetPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaMethod method ) {
+		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new MapToMap.Initializer<InstanceFactory, JavaMethod, SetPaintMethodInvocationFillIn>() {
 			@Override
-			public SetPaintMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
+			public SetPaintMethodInvocationFillIn initialize( InstanceFactory instanceFactory, JavaMethod method ) {
 				return new SetPaintMethodInvocationFillIn( instanceFactory, method );
 			}
 		} );
 	}
 
-	public static SetPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaType type, String methodName, Class<?>... parameterClses ) {
-		org.lgna.project.ast.JavaMethod method = type.getDeclaredMethod( methodName, parameterClses );
+	public static SetPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaType type, String methodName, Class<?>... parameterClses ) {
+		JavaMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
 		return getInstance( instanceFactory, method );
 	}
 
-	public static SetPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( instanceFactory, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
+	public static SetPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
+		return getInstance( instanceFactory, JavaType.getInstance( cls ), methodName, parameterClses );
 	}
 
-	private SetPaintMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
-		super( java.util.UUID.fromString( "7fb8b1c7-242f-4662-8bea-b58ed0318003" ), instanceFactory, method );
+	private SetPaintMethodInvocationFillIn( InstanceFactory instanceFactory, JavaMethod method ) {
+		super( UUID.fromString( "7fb8b1c7-242f-4662-8bea-b58ed0318003" ), instanceFactory, method );
 	}
 
 	@Override
-	protected org.alice.stageide.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	protected MethodInvocationEditFactory createMethodInvocationEditFactory( InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions ) {
 		return new SetPaintMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
 	}
 }

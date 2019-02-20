@@ -42,6 +42,11 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import com.jogamp.opengl.GLException;
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import org.alice.ide.story.AliceIde;
+import org.lgna.common.LgnaIllegalArgumentException;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,12 +56,12 @@ public class AliceUncaughtExceptionHandler extends IdeUncaughtExceptionHandler {
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		Thread.setDefaultUncaughtExceptionHandler( new AliceUncaughtExceptionHandler() );
 		final boolean IS_TESTING_LGNA = false;
 		if( IS_TESTING_LGNA ) {
-			org.alice.ide.story.AliceIde ide = new org.alice.ide.story.AliceIde( null );
-			throw new org.lgna.common.LgnaIllegalArgumentException( "DELETE ME", 0, null );
+			AliceIde ide = new AliceIde( null );
+			throw new LgnaIllegalArgumentException( "DELETE ME", 0, null );
 		} else {
 			//while( true ) {
 			new Thread() {
@@ -65,7 +70,7 @@ public class AliceUncaughtExceptionHandler extends IdeUncaughtExceptionHandler {
 					super.run();
 					final boolean IS_TESTING_GL = true;
 					if( IS_TESTING_GL ) {
-						throw new com.jogamp.opengl.GLException( "DELETE ME" );
+						throw new GLException( "DELETE ME" );
 					} else {
 						throw new RuntimeException( "DELETE ME" );
 					}

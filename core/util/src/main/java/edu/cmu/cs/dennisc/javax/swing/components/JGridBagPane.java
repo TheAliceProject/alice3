@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import java.awt.GridBagLayout;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JGridBagPane extends JPane {
 	public JGridBagPane() {
-		setLayout( new java.awt.GridBagLayout() );
+		setLayout( new GridBagLayout() );
 	}
 }

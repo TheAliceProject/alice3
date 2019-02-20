@@ -43,6 +43,8 @@
 
 package org.lgna.story.fontattributes;
 
+import java.awt.font.TextAttribute;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,8 +56,8 @@ public class SizeValue implements SizeAttribute {
 	}
 
 	@Override
-	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.SIZE;
+	public TextAttribute getKey() {
+		return TextAttribute.SIZE;
 	}
 
 	@Override

@@ -42,24 +42,31 @@
  *******************************************************************************/
 package org.alice.ide.members.components.templates;
 
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.ast.draganddrop.expression.FieldAccessDragModel;
+import org.alice.ide.templates.ExpressionTemplate;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
 //todo: reduce visibility
-public class GetterTemplate extends org.alice.ide.templates.ExpressionTemplate {
-	private org.lgna.project.ast.AbstractField field;
+public class GetterTemplate extends ExpressionTemplate {
+	private AbstractField field;
 
-	protected GetterTemplate( org.lgna.project.ast.AbstractField field ) {
-		super( org.alice.ide.ast.draganddrop.expression.FieldAccessDragModel.getInstance( field ) );
+	protected GetterTemplate( AbstractField field ) {
+		super( FieldAccessDragModel.getInstance( field ) );
 		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.UserField ) {
-			org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)this.field;
+		if( this.field instanceof UserField ) {
+			UserField userField = (UserField)this.field;
 			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
 		}
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( field );
+	protected Expression createIncompleteExpression() {
+		return IncompleteAstUtilities.createIncompleteFieldAccess( field );
 	}
 }

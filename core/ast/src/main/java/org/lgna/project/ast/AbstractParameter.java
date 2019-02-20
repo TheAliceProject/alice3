@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.annotations.ValueDetails;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,7 +62,7 @@ public abstract class AbstractParameter extends AbstractTransient {
 		return false;
 	}
 
-	public abstract org.lgna.project.annotations.ValueDetails<?> getDetails();
+	public abstract ValueDetails<?> getDetails();
 
 	@Override
 	public String getValidName( Node context ) {

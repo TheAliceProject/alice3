@@ -43,10 +43,12 @@
 
 package org.lgna.story.annotation;
 
+import org.lgna.project.annotations.NumberValueDetails;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum PortionDetails implements org.lgna.project.annotations.NumberValueDetails {
+public enum PortionDetails implements NumberValueDetails {
 	SINGLETON;
 	@Override
 	public Class<Number> getSupportedCls() {

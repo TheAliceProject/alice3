@@ -42,35 +42,51 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration.views;
 
+import org.alice.ide.Theme;
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.declaration.AddFieldComposite;
+import org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite;
+import org.alice.ide.common.FieldDeclarationPane;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState;
+import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.icon.EmptyIconFactory;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldView extends DeclarationView<org.lgna.project.ast.UserField> {
-	public FieldView( org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserField> composite ) {
+public abstract class FieldView extends DeclarationView<UserField> {
+	public FieldView( DeclarationLikeSubstanceComposite<UserField> composite ) {
 		super( composite );
 	}
 
-	private final org.lgna.croquet.views.Label typeIconView = new org.lgna.croquet.views.Label( org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) );
+	private final Label typeIconView = new Label( EmptyIconFactory.getInstance().getIcon( Theme.DEFAULT_LARGE_ICON_SIZE ) );
 
-	public FieldView( org.alice.ide.ast.declaration.AddFieldComposite composite ) {
+	public FieldView( AddFieldComposite composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getFieldColor() );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getFieldColor() );
 	}
 
 	@Override
-	public org.lgna.croquet.views.SwingComponentView<?> createPreviewSubComponent() {
-		org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserField> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserField>)this.getComposite();
-		org.lgna.project.ast.UserField field = composite.getPreviewValue();
-		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field );
+	public SwingComponentView<?> createPreviewSubComponent() {
+		DeclarationLikeSubstanceComposite<UserField> composite = (DeclarationLikeSubstanceComposite<UserField>)this.getComposite();
+		UserField field = composite.getPreviewValue();
+		return new FieldDeclarationPane( PreviewAstI18nFactory.getInstance(), field );
 	}
 
-	protected org.lgna.croquet.views.SwingComponentView<?> getSideView() {
+	protected SwingComponentView<?> getSideView() {
 		return this.typeIconView;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createPageStartComponent() {
-		return new org.lgna.croquet.views.BorderPanel.Builder()
+	protected SwingComponentView<?> createPageStartComponent() {
+		return new BorderPanel.Builder()
 				.lineStart( super.createPageStartComponent() )
 				.lineEnd( this.getSideView() )
 				.build();
@@ -78,7 +94,7 @@ public abstract class FieldView extends DeclarationView<org.lgna.project.ast.Use
 
 	@Override
 	protected boolean isPreviewDesired() {
-		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();
+		return IsPromptIncludingPreviewState.getInstance().getValue();
 	}
 
 	//	@Override
@@ -91,12 +107,12 @@ public abstract class FieldView extends DeclarationView<org.lgna.project.ast.Use
 	//	}
 
 	@Override
-	public void handleInitializerChanged( org.lgna.project.ast.Expression expression ) {
+	public void handleInitializerChanged( Expression expression ) {
 		super.handleInitializerChanged( expression );
-		org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserField> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserField>)this.getComposite();
-		org.lgna.project.ast.UserField field = composite.getPreviewValue();
-		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( field );
-		this.typeIconView.setIcon( iconFactory.getIcon( iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
+		DeclarationLikeSubstanceComposite<UserField> composite = (DeclarationLikeSubstanceComposite<UserField>)this.getComposite();
+		UserField field = composite.getPreviewValue();
+		IconFactory iconFactory = IconFactoryManager.getIconFactoryForField( field );
+		this.typeIconView.setIcon( iconFactory.getIcon( iconFactory.getDefaultSize( Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
 		this.typeIconView.revalidateAndRepaint();
 	}
 }

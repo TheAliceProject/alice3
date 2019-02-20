@@ -42,32 +42,38 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
+import java.awt.Component;
+import java.awt.Dialog;
+import java.awt.Frame;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JDialogUtilities {
-	public static javax.swing.JDialog createJDialog( java.awt.Component ownerComponent, String title, boolean isModal ) {
-		javax.swing.JDialog rv;
-		java.awt.Component root;
+	public static JDialog createJDialog( Component ownerComponent, String title, boolean isModal ) {
+		JDialog rv;
+		Component root;
 		if( ownerComponent != null ) {
-			root = javax.swing.SwingUtilities.getRoot( ownerComponent );
+			root = SwingUtilities.getRoot( ownerComponent );
 		} else {
 			root = null;
 		}
-		if( root instanceof java.awt.Frame ) {
-			rv = new javax.swing.JDialog( (java.awt.Frame)root );
-		} else if( root instanceof java.awt.Dialog ) {
-			rv = new javax.swing.JDialog( (java.awt.Dialog)root );
+		if( root instanceof Frame ) {
+			rv = new JDialog( (Frame)root );
+		} else if( root instanceof Dialog ) {
+			rv = new JDialog( (Dialog)root );
 		} else {
-			rv = new javax.swing.JDialog();
+			rv = new JDialog();
 		}
 		rv.setTitle( title );
 		rv.setModal( isModal );
 		return rv;
 	}
 
-	public static javax.swing.JDialog createPackedJDialog( java.awt.Component content, java.awt.Component ownerComponent, String title, boolean isModal, int closeOperation ) {
-		javax.swing.JDialog rv = createJDialog( ownerComponent, title, isModal );
+	public static JDialog createPackedJDialog( Component content, Component ownerComponent, String title, boolean isModal, int closeOperation ) {
+		JDialog rv = createJDialog( ownerComponent, title, isModal );
 		rv.getContentPane().add( content );
 		rv.pack();
 		rv.setDefaultCloseOperation( closeOperation );

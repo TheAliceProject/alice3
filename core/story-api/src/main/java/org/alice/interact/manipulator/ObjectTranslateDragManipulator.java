@@ -44,7 +44,9 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
@@ -79,8 +81,8 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	@Override
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
-		if( ( this.camera != null ) && ( this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) ) {
-			this.setManipulatedTransformable( (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)this.camera.getParent() );
+		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) ) {
+			this.setManipulatedTransformable( (AbstractTransformable)this.camera.getParent() );
 		}
 
 	}
@@ -96,12 +98,12 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget() {
+	public OnscreenRenderTarget getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
@@ -273,12 +275,12 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 
 	private Point3 initialClickPoint = new Point3();
 	protected Point3 initialObjectPosition = new Point3();
-	private Plane movementPlane = edu.cmu.cs.dennisc.math.Plane.XZ_PLANE;
+	private Plane movementPlane = Plane.XZ_PLANE;
 	private Plane badAnglePlane = null;
 	protected Point3 offsetToOrigin = null;
 	private Point initialMouseLocation = new Point();
 	private Boolean hasMoved = false;
 
 	private AbstractCamera camera = null;
-	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
+	private OnscreenRenderTarget onscreenRenderTarget;
 }

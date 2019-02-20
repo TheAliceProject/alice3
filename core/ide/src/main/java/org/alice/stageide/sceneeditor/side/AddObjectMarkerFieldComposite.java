@@ -42,7 +42,13 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
+import org.lgna.story.Color;
+import org.lgna.story.SThingMarker;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -57,7 +63,7 @@ public class AddObjectMarkerFieldComposite extends AddMarkerFieldComposite {
 	}
 
 	private AddObjectMarkerFieldComposite() {
-		super( java.util.UUID.fromString( "d342bfca-8f67-481a-a0ce-1b8f51eb673c" ), org.lgna.story.SThingMarker.class );
+		super( UUID.fromString( "d342bfca-8f67-481a-a0ce-1b8f51eb673c" ), SThingMarker.class );
 	}
 
 	@Override
@@ -66,12 +72,12 @@ public class AddObjectMarkerFieldComposite extends AddMarkerFieldComposite {
 	}
 
 	@Override
-	protected org.lgna.story.Color getInitialMarkerColor() {
-		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getColorForNewObjectMarker();
+	protected Color getInitialMarkerColor() {
+		return StageIDE.getActiveInstance().getSceneEditor().getColorForNewObjectMarker();
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInitialMarkerTransform() {
-		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getTransformForNewObjectMarker();
+	protected AffineMatrix4x4 getInitialMarkerTransform() {
+		return StageIDE.getActiveInstance().getSceneEditor().getTransformForNewObjectMarker();
 	}
 }

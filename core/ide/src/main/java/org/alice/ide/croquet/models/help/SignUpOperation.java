@@ -42,13 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help;
 
+import org.alice.ide.browser.ImmutableBrowserOperation;
 import org.alice.ide.issue.ReportSubmissionConfiguration;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SignUpOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
+public class SignUpOperation extends ImmutableBrowserOperation {
 	public SignUpOperation() {
-		super( java.util.UUID.fromString( "450727b2-d86a-4812-a77c-99eb785e10b2" ), ReportSubmissionConfiguration.JIRA_URL + "secure/Signup!default.jspa" );
+		super( UUID.fromString( "450727b2-d86a-4812-a77c-99eb785e10b2" ), ReportSubmissionConfiguration.JIRA_URL + "secure/Signup!default.jspa" );
 	}
 }

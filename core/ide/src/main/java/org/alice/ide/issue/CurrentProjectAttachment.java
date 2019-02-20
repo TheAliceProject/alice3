@@ -42,10 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import edu.cmu.cs.dennisc.issue.Attachment;
+import edu.cmu.cs.dennisc.java.lang.ThrowableUtilities;
+import org.alice.ide.IDE;
+import org.lgna.project.Project;
+import org.lgna.project.io.IoUtilities;
+
+import java.io.ByteArrayOutputStream;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CurrentProjectAttachment implements edu.cmu.cs.dennisc.issue.Attachment {
+public class CurrentProjectAttachment implements Attachment {
 	private boolean isCreateAttempted = false;
 	private boolean isCreateSuccessful = false;
 	private byte[] bytes = null;
@@ -55,15 +63,15 @@ public class CurrentProjectAttachment implements edu.cmu.cs.dennisc.issue.Attach
 			//pass
 		} else {
 			try {
-				org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-				org.lgna.project.Project project = ide.getUpToDateProject();
-				java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-				org.lgna.project.io.IoUtilities.writeProject( baos, project );
+				IDE ide = IDE.getActiveInstance();
+				Project project = ide.getUpToDateProject();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				IoUtilities.writeProject( baos, project );
 				baos.flush();
 				this.bytes = baos.toByteArray();
 				this.isCreateSuccessful = true;
 			} catch( Throwable t ) {
-				this.bytes = edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsByteArray( t );
+				this.bytes = ThrowableUtilities.getStackTraceAsByteArray( t );
 			}
 			this.isCreateAttempted = true;
 		}

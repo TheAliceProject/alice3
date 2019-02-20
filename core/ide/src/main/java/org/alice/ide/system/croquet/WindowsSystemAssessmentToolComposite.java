@@ -42,10 +42,32 @@
  *******************************************************************************/
 package org.alice.ide.system.croquet;
 
+import edu.cmu.cs.dennisc.java.lang.ProcessStartException;
+import edu.cmu.cs.dennisc.java.lang.ProcessUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import edu.cmu.cs.dennisc.worker.process.ProcessWorker;
+import org.alice.ide.system.croquet.views.WindowsSystemAssessmentToolPane;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.simple.SimpleApplication;
+
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import java.io.IOException;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class WindowsSystemAssessmentToolComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.system.croquet.views.WindowsSystemAssessmentToolPane> {
+public class WindowsSystemAssessmentToolComposite extends SimpleOperationUnadornedDialogCoreComposite<WindowsSystemAssessmentToolPane> {
 	private static class SingletonHolder {
 		private static WindowsSystemAssessmentToolComposite instance = new WindowsSystemAssessmentToolComposite();
 	}
@@ -54,23 +76,23 @@ public class WindowsSystemAssessmentToolComposite extends org.lgna.croquet.Simpl
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.PlainStringValue header = this.createStringValue( "header" );
-	private final org.lgna.croquet.StringState stardardOutAndStandardErrorState = this.createStringState( "stardardOutAndStandardErrorState" );
-	private final org.lgna.croquet.Operation executeWinsatOperation = this.createActionOperation( "executeWinsatOperation", new Action() {
+	private final PlainStringValue header = this.createStringValue( "header" );
+	private final StringState stardardOutAndStandardErrorState = this.createStringState( "stardardOutAndStandardErrorState" );
+	private final Operation executeWinsatOperation = this.createActionOperation( "executeWinsatOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			boolean isAbleToRunWinsatDirectly;
 			try {
 				StringBuilder sb = new StringBuilder();
-				int result = edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndDrainStandardOutAndStandardError( new ProcessBuilder( "winsat", "-?" ), sb );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "result:", result );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sb.toString() );
+				int result = ProcessUtilities.startAndDrainStandardOutAndStandardError( new ProcessBuilder( "winsat", "-?" ), sb );
+				Logger.outln( "result:", result );
+				Logger.outln( sb.toString() );
 				isAbleToRunWinsatDirectly = result == 0;
-			} catch( edu.cmu.cs.dennisc.java.lang.ProcessStartException pse ) {
+			} catch( ProcessStartException pse ) {
 				//User Account Control?
 				pse.printStackTrace();
 				isAbleToRunWinsatDirectly = false;
-			} catch( java.io.IOException ioe ) {
+			} catch( IOException ioe ) {
 				ioe.printStackTrace();
 				isAbleToRunWinsatDirectly = false;
 			}
@@ -100,13 +122,13 @@ public class WindowsSystemAssessmentToolComposite extends org.lgna.croquet.Simpl
 						new ProcessBuilder( "cmd", "/c", "winsat.exe dwm & winsat.exe d3d" )
 				};
 			}
-			final javax.swing.text.AttributeSet attributeSet = null;
-			edu.cmu.cs.dennisc.worker.process.ProcessWorker processWorker = new edu.cmu.cs.dennisc.worker.process.ProcessWorker( processBuilders ) {
+			final AttributeSet attributeSet = null;
+			ProcessWorker processWorker = new ProcessWorker( processBuilders ) {
 				private void appendText( String s ) {
-					javax.swing.text.Document document = stardardOutAndStandardErrorState.getSwingModel().getDocument();
+					Document document = stardardOutAndStandardErrorState.getSwingModel().getDocument();
 					try {
 						document.insertString( document.getLength(), s, attributeSet );
-					} catch( javax.swing.text.BadLocationException ble ) {
+					} catch( BadLocationException ble ) {
 						ble.printStackTrace();
 					}
 				}
@@ -137,29 +159,29 @@ public class WindowsSystemAssessmentToolComposite extends org.lgna.croquet.Simpl
 	} );
 
 	private WindowsSystemAssessmentToolComposite() {
-		super( java.util.UUID.fromString( "3c659189-6425-4741-9e30-4f4b3bde2b23" ), org.lgna.croquet.Application.APPLICATION_UI_GROUP );
+		super( UUID.fromString( "3c659189-6425-4741-9e30-4f4b3bde2b23" ), Application.APPLICATION_UI_GROUP );
 	}
 
-	public org.lgna.croquet.PlainStringValue getHeader() {
+	public PlainStringValue getHeader() {
 		return this.header;
 	}
 
-	public org.lgna.croquet.StringState getStardardOutAndStandardErrorState() {
+	public StringState getStardardOutAndStandardErrorState() {
 		return this.stardardOutAndStandardErrorState;
 	}
 
-	public org.lgna.croquet.Operation getExecuteWinsatOperation() {
+	public Operation getExecuteWinsatOperation() {
 		return this.executeWinsatOperation;
 	}
 
 	@Override
-	protected org.alice.ide.system.croquet.views.WindowsSystemAssessmentToolPane createView() {
-		return new org.alice.ide.system.croquet.views.WindowsSystemAssessmentToolPane( this );
+	protected WindowsSystemAssessmentToolPane createView() {
+		return new WindowsSystemAssessmentToolPane( this );
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		SimpleApplication app = new SimpleApplication();
 		WindowsSystemAssessmentToolComposite.getInstance().getLaunchOperation().fire();
 		System.exit( 0 );
 	}

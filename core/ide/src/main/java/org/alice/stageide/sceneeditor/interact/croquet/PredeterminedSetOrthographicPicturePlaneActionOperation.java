@@ -43,21 +43,29 @@
 
 package org.alice.stageide.sceneeditor.interact.croquet;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.UserActivity;
 
-public class PredeterminedSetOrthographicPicturePlaneActionOperation extends org.lgna.croquet.ActionOperation {
+import java.util.UUID;
+
+public class PredeterminedSetOrthographicPicturePlaneActionOperation extends ActionOperation {
 	private boolean isDoRequired;
-	private edu.cmu.cs.dennisc.animation.Animator animator;
+	private Animator animator;
 	private OrthographicCamera orthoCamera;
 	private double previousPicturePlaneHeight;
 	private double nextPicturePlaneHeight;
 
 	private String editPresentationKey;
 
-	public PredeterminedSetOrthographicPicturePlaneActionOperation( org.lgna.croquet.Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, OrthographicCamera orthoCamera, double previousPicturePlaneHeight, double nextPicturePlaneHeight, String editPresentationKey ) {
-		super( group, java.util.UUID.fromString( "67faf90c-97c6-40d4-9ddb-f31f22003682" ) );
+	public PredeterminedSetOrthographicPicturePlaneActionOperation( Group group, boolean isDoRequired, Animator animator, OrthographicCamera orthoCamera, double previousPicturePlaneHeight, double nextPicturePlaneHeight, String editPresentationKey ) {
+		super( group, UUID.fromString( "67faf90c-97c6-40d4-9ddb-f31f22003682" ) );
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;
 		this.orthoCamera = orthoCamera;
@@ -79,7 +87,7 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends org
 		if( this.animator != null ) {
 			class ZoomAnimation extends DoubleAnimation {
 				public ZoomAnimation() {
-					super( 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY, orthoCamera.picturePlane.getValue().getHeight(), height );
+					super( 0.5, TraditionalStyle.BEGIN_AND_END_GENTLY, orthoCamera.picturePlane.getValue().getHeight(), height );
 				}
 
 				@Override
@@ -96,8 +104,8 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends org
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new org.lgna.croquet.edits.AbstractEdit( step ) {
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( new AbstractEdit( activity ) {
 			@Override
 			protected void doOrRedoInternal( boolean isDo ) {
 				if( isDo && ( isDoRequired == false ) ) {

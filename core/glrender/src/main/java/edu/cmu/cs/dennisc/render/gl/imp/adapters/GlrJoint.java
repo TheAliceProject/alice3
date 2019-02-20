@@ -42,14 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.scenegraph.Joint;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrJoint extends GlrTransformable<edu.cmu.cs.dennisc.scenegraph.Joint> {
+public class GlrJoint extends GlrTransformable<Joint> {
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.jointID ) {
 			//pass
 		} else if( property == owner.isFreeInX ) {

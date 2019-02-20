@@ -42,6 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import java.awt.geom.GeneralPath;
+import java.awt.geom.RoundRectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +52,7 @@ public class BeveledRoundRectangle extends BeveledShape {
 	public BeveledRoundRectangle() {
 	}
 
-	public BeveledRoundRectangle( java.awt.geom.RoundRectangle2D.Float roundRect ) {
+	public BeveledRoundRectangle( RoundRectangle2D.Float roundRect ) {
 		initialize( roundRect );
 	}
 
@@ -58,10 +61,10 @@ public class BeveledRoundRectangle extends BeveledShape {
 	}
 
 	private void initialize( float x0, float y0, float xA, float yA, float xB, float yB, float x1, float y1 ) {
-		java.awt.geom.GeneralPath base = new java.awt.geom.GeneralPath();
-		java.awt.geom.GeneralPath high = new java.awt.geom.GeneralPath();
-		java.awt.geom.GeneralPath neut = new java.awt.geom.GeneralPath();
-		java.awt.geom.GeneralPath shad = new java.awt.geom.GeneralPath();
+		GeneralPath base = new GeneralPath();
+		GeneralPath high = new GeneralPath();
+		GeneralPath neut = new GeneralPath();
+		GeneralPath shad = new GeneralPath();
 
 		//		float x;
 		//		float y;
@@ -173,7 +176,7 @@ public class BeveledRoundRectangle extends BeveledShape {
 		initialize( x0, y0, xA, yA, xB, yB, x1, y1 );
 	}
 
-	public void initialize( java.awt.geom.RoundRectangle2D.Float roundRect ) {
+	public void initialize( RoundRectangle2D.Float roundRect ) {
 		initialize( roundRect.x, roundRect.y, roundRect.width, roundRect.height, roundRect.arcwidth, roundRect.archeight );
 	}
 }

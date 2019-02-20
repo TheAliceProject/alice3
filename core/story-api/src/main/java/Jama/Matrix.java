@@ -1,5 +1,7 @@
 package Jama;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -8,6 +10,8 @@ import java.text.FieldPosition;
 import java.io.PrintWriter;
 import java.io.BufferedReader;
 import java.io.StreamTokenizer;
+import java.util.Vector;
+
 import Jama.util.*;
 
 /**
@@ -53,7 +57,7 @@ import Jama.util.*;
 @version 5 August 1998
 */
 
-public class Matrix implements Cloneable, java.io.Serializable {
+public class Matrix implements Cloneable, Serializable {
 
 /* ------------------------
    Class variables
@@ -937,7 +941,7 @@ public class Matrix implements Cloneable, java.io.Serializable {
      * to use a NumberFormat that is set to US Locale.
    @param format A  Formatting object for individual elements.
    @param width     Field width for each column.
-   @see java.text.DecimalFormat#setDecimalFormatSymbols
+   @see DecimalFormat#setDecimalFormatSymbols
    */
 
    public void print (NumberFormat format, int width) {
@@ -956,7 +960,7 @@ public class Matrix implements Cloneable, java.io.Serializable {
    @param output the output stream.
    @param format A formatting object to format the matrix elements 
    @param width  Column width.
-   @see java.text.DecimalFormat#setDecimalFormatSymbols
+   @see DecimalFormat#setDecimalFormatSymbols
    */
 
    public void print (PrintWriter output, NumberFormat format, int width) {
@@ -982,7 +986,7 @@ public class Matrix implements Cloneable, java.io.Serializable {
    @param input the input stream.
    */
 
-   public static Matrix read (BufferedReader input) throws java.io.IOException {
+   public static Matrix read (BufferedReader input) throws IOException {
       StreamTokenizer tokenizer= new StreamTokenizer(input);
 
       // Although StreamTokenizer will parse numbers, it doesn't recognize
@@ -995,12 +999,12 @@ public class Matrix implements Cloneable, java.io.Serializable {
       tokenizer.wordChars(0,255);
       tokenizer.whitespaceChars(0, ' ');
       tokenizer.eolIsSignificant(true);
-      java.util.Vector<Double> vD = new java.util.Vector<Double>();
+      Vector<Double> vD = new Vector<Double>();
 
       // Ignore initial empty lines
       while (tokenizer.nextToken() == StreamTokenizer.TT_EOL);
       if (tokenizer.ttype == StreamTokenizer.TT_EOF)
-	throw new java.io.IOException("Unexpected EOF on matrix read.");
+	throw new IOException("Unexpected EOF on matrix read.");
       do {
          vD.addElement(Double.valueOf(tokenizer.sval)); // Read & store 1st row.
       } while (tokenizer.nextToken() == StreamTokenizer.TT_WORD);
@@ -1009,18 +1013,18 @@ public class Matrix implements Cloneable, java.io.Serializable {
       double row[] = new double[n];
       for (int j=0; j<n; j++)  // extract the elements of the 1st row.
          row[j]=vD.elementAt(j).doubleValue();
-      java.util.Vector<double[]> v = new java.util.Vector<double[]>();
+      Vector<double[]> v = new Vector<double[]>();
       v.addElement(row);  // Start storing rows instead of columns.
       while (tokenizer.nextToken() == StreamTokenizer.TT_WORD) {
          // While non-empty lines
          v.addElement(row = new double[n]);
          int j = 0;
          do {
-            if (j >= n) throw new java.io.IOException
+            if (j >= n) throw new IOException
                ("Row " + v.size() + " is too long.");
             row[j++] = Double.valueOf(tokenizer.sval).doubleValue();
          } while (tokenizer.nextToken() == StreamTokenizer.TT_WORD);
-         if (j < n) throw new java.io.IOException
+         if (j < n) throw new IOException
             ("Row " + v.size() + " is too short.");
       }
       int m = v.size();  // Now we've got the number of rows.

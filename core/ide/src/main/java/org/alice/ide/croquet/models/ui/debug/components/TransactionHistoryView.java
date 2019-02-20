@@ -43,14 +43,26 @@
 
 package org.alice.ide.croquet.models.ui.debug.components;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.croquet.models.ui.debug.TransactionHistoryComposite;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.history.event.ChangeEvent;
+import org.lgna.croquet.history.event.ActivityEvent;
+import org.lgna.croquet.history.event.Listener;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.ScrollPane;
+
+import javax.swing.JTree;
+import javax.swing.SwingUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionHistoryView extends org.lgna.croquet.views.BorderPanel {
+public class TransactionHistoryView extends BorderPanel {
 
-	private final org.lgna.croquet.history.event.Listener historyListener = new org.lgna.croquet.history.event.Listener() {
+	private final Listener historyListener = new Listener() {
 		private void reload() {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
 					treeModel.reload();
@@ -62,26 +74,21 @@ public class TransactionHistoryView extends org.lgna.croquet.views.BorderPanel {
 		}
 
 		@Override
-		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
-		}
-
-		@Override
-		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
-			if( ( e instanceof org.lgna.croquet.history.event.AddStepEvent ) || ( e instanceof org.lgna.croquet.history.event.AddTransactionEvent ) ) {
+		public void changed( ActivityEvent e ) {
+			if( e instanceof ChangeEvent ) {
 				this.reload();
-			} else if( ( e instanceof org.lgna.croquet.history.event.FinishedEvent ) || ( e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) ) {
-				tree.repaint();
 			}
+			tree.repaint();
 		}
 	};
 
-	private final org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane();
-	private final javax.swing.JTree tree = new javax.swing.JTree();
-	private org.lgna.croquet.history.TransactionHistory transactionHistory;
+	private final ScrollPane scrollPane = new ScrollPane();
+	private final JTree tree = new JTree();
+	private UserActivity rootActivity;
 	private boolean isCollapsingDesired = true;
 	private TransactionHistoryTreeModel treeModel;
 
-	public TransactionHistoryView( org.alice.ide.croquet.models.ui.debug.TransactionHistoryComposite composite ) {
+	public TransactionHistoryView( TransactionHistoryComposite composite ) {
 		super( composite );
 		this.scrollPane.getAwtComponent().setViewportView( this.tree );
 		this.tree.setRootVisible( false );
@@ -111,11 +118,14 @@ public class TransactionHistoryView extends org.lgna.croquet.views.BorderPanel {
 		}
 	}
 
-	public void setTransactionHistory( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		assert transactionHistory != null : this;
+	public void setRootActivity( UserActivity rootActivity ) {
+		if ( rootActivity == null ) {
+			Logger.outln( "No root activity provided to view." );
+			return;
+		}
 
 		this.removeTransactionListener();
-		this.transactionHistory = transactionHistory;
+		this.rootActivity = rootActivity;
 
 		if( this.isShowing() ) {
 			this.addTransactionListener();
@@ -135,18 +145,18 @@ public class TransactionHistoryView extends org.lgna.croquet.views.BorderPanel {
 	}
 
 	private void addTransactionListener() {
-		if( this.transactionHistory != null ) {
-			this.treeModel = new TransactionHistoryTreeModel( transactionHistory );
+		if( this.rootActivity != null ) {
+			this.treeModel = new TransactionHistoryTreeModel( rootActivity );
 			this.tree.setModel( this.treeModel );
 			this.revalidateAndRepaint();
 			this.treeModel.reload();
-			this.transactionHistory.addListener( this.historyListener );
+			this.rootActivity.addListener( this.historyListener );
 		}
 	}
 
 	private void removeTransactionListener() {
-		if( ( this.transactionHistory != null ) && ( this.transactionHistory.isListening( this.historyListener ) ) ) {
-			this.transactionHistory.removeListener( this.historyListener );
+		if( ( this.rootActivity != null ) && ( this.rootActivity.isListening( this.historyListener ) ) ) {
+			this.rootActivity.removeListener( this.historyListener );
 		}
 	}
 }

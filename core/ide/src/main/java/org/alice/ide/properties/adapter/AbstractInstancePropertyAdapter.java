@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.properties.adapter;
 
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.ide.croquet.models.StandardExpressionState;
 
 import edu.cmu.cs.dennisc.property.InstanceProperty;
@@ -52,14 +53,14 @@ import edu.cmu.cs.dennisc.property.event.PropertyEvent;
  * 
  */
 public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractPropertyAdapter<P, O> {
-	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener;
+	private PropertyListener propertyListener;
 	private InstanceProperty<P> property;
 
 	private void initializeListenersIfNecessary()
 	{
 		if( this.propertyListener == null )
 		{
-			this.propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener()
+			this.propertyListener = new PropertyListener()
 			{
 				@Override
 				public void propertyChanging( PropertyEvent e ) {
@@ -125,13 +126,13 @@ public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractProp
 
 	}
 
-	protected void addPropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
+	protected void addPropertyListener( PropertyListener propertyListener ) {
 		if( this.property != null ) {
 			property.addPropertyListener( propertyListener );
 		}
 	}
 
-	protected void removePropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
+	protected void removePropertyListener( PropertyListener propertyListener ) {
 		if( this.property != null ) {
 			property.removePropertyListener( propertyListener );
 		}

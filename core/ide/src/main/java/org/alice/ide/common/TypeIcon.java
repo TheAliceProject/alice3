@@ -42,26 +42,45 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.StaticAnalysisUtilities;
+import org.lgna.project.ast.UserMethod;
+
+import javax.swing.Icon;
+import javax.swing.UIManager;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeIcon implements javax.swing.Icon {
+public class TypeIcon implements Icon {
 	private static final int INDENT_PER_DEPTH = 12;
 	private static final int BONUS_GAP = 4;
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private final AbstractType<?, ?, ?> type;
 	private final TypeBorder border;
 	private final boolean isIndentForDepthAndMemberCountTextDesired;
-	private final java.awt.Font typeFont;
-	private final java.awt.Font bonusFont;
+	private final Font typeFont;
+	private final Font bonusFont;
 
-	public static TypeIcon getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static TypeIcon getInstance( AbstractType<?, ?, ?> type ) {
 		return new TypeIcon( type );
 	}
 
-	public TypeIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type, boolean isIndentForDepthAndMemberCountTextDesired, java.awt.Font typeFont, java.awt.Font bonusFont ) {
+	public TypeIcon( AbstractType<?, ?, ?> type, boolean isIndentForDepthAndMemberCountTextDesired, Font typeFont, Font bonusFont ) {
 		this.type = type;
 		this.border = TypeBorder.getSingletonFor( type );
 		this.isIndentForDepthAndMemberCountTextDesired = isIndentForDepthAndMemberCountTextDesired;
@@ -69,23 +88,23 @@ public class TypeIcon implements javax.swing.Icon {
 		this.bonusFont = bonusFont;
 	}
 
-	public TypeIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		this( type, false, javax.swing.UIManager.getFont( "defaultFont" ), null );
+	public TypeIcon( AbstractType<?, ?, ?> type ) {
+		this( type, false, UIManager.getFont( "defaultFont" ), null );
 	}
 
-	protected java.awt.Font getTypeFont() {
+	protected Font getTypeFont() {
 		return this.typeFont;
 	}
 
-	public java.awt.Font getBonusFont() {
+	public Font getBonusFont() {
 		return this.bonusFont;
 	}
 
-	protected java.awt.Color getTextColor( java.awt.Component c ) {
+	protected Color getTextColor( Component c ) {
 		if( c.isEnabled() ) {
-			return java.awt.Color.BLACK;
+			return Color.BLACK;
 		} else {
-			return java.awt.Color.GRAY;
+			return Color.GRAY;
 		}
 	}
 
@@ -96,11 +115,11 @@ public class TypeIcon implements javax.swing.Icon {
 
 	private String getBonusText() {
 		if( isIndentForDepthAndMemberCountTextDesired ) {
-			if( this.type instanceof org.lgna.project.ast.NamedUserType ) {
-				org.lgna.project.ast.NamedUserType userType = (org.lgna.project.ast.NamedUserType)this.type;
+			if( this.type instanceof NamedUserType ) {
+				NamedUserType userType = (NamedUserType)this.type;
 				int count = 0;
-				for( org.lgna.project.ast.UserMethod method : userType.methods ) {
-					if( method.getManagementLevel() == org.lgna.project.ast.ManagementLevel.NONE ) {
+				for( UserMethod method : userType.methods ) {
+					if( method.getManagementLevel() == ManagementLevel.NONE ) {
 						count += 1;
 					}
 				}
@@ -122,10 +141,10 @@ public class TypeIcon implements javax.swing.Icon {
 		}
 	}
 
-	private static java.awt.geom.Rectangle2D getTextBounds( String text, java.awt.Font font ) {
+	private static Rectangle2D getTextBounds( String text, Font font ) {
 		if( text != null ) {
-			java.awt.Graphics g = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.getGraphics();
-			java.awt.FontMetrics fm;
+			Graphics g = GraphicsUtilities.getGraphics();
+			FontMetrics fm;
 			if( font != null ) {
 				fm = g.getFontMetrics( font );
 			} else {
@@ -133,27 +152,27 @@ public class TypeIcon implements javax.swing.Icon {
 			}
 			return fm.getStringBounds( text, g );
 		} else {
-			return new java.awt.geom.Rectangle2D.Float( 0, 0, 0, 0 );
+			return new Rectangle2D.Float( 0, 0, 0, 0 );
 		}
 	}
 
-	private java.awt.geom.Rectangle2D getTypeTextBounds() {
+	private Rectangle2D getTypeTextBounds() {
 		return getTextBounds( this.getTypeText(), this.getTypeFont() );
 	}
 
-	private java.awt.geom.Rectangle2D getBonusTextBounds() {
+	private Rectangle2D getBonusTextBounds() {
 		return getTextBounds( this.getBonusText(), this.getBonusFont() );
 	}
 
 	private int getBorderWidth() {
-		java.awt.Insets insets = this.border.getBorderInsets( null );
-		java.awt.geom.Rectangle2D typeTextBounds = this.getTypeTextBounds();
+		Insets insets = this.border.getBorderInsets( null );
+		Rectangle2D typeTextBounds = this.getTypeTextBounds();
 		return insets.left + insets.right + (int)typeTextBounds.getWidth();
 	}
 
 	private int getBorderHeight() {
-		java.awt.Insets insets = this.border.getBorderInsets( null );
-		java.awt.geom.Rectangle2D bounds = this.getTypeTextBounds();
+		Insets insets = this.border.getBorderInsets( null );
+		Rectangle2D bounds = this.getTypeTextBounds();
 		return insets.top + insets.bottom + (int)bounds.getHeight();
 	}
 
@@ -161,14 +180,14 @@ public class TypeIcon implements javax.swing.Icon {
 	public int getIconWidth() {
 		int rv = this.getBorderWidth();
 		if( this.isIndentForDepthAndMemberCountTextDesired ) {
-			int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( type );
+			int depth = StaticAnalysisUtilities.getUserTypeDepth( type );
 			if( depth > 0 ) {
 				rv += ( depth * INDENT_PER_DEPTH );
 			}
 		}
 		if( this.isIndentForDepthAndMemberCountTextDesired ) {
 			rv += BONUS_GAP;
-			java.awt.geom.Rectangle2D bonusTextBounds = this.getBonusTextBounds();
+			Rectangle2D bonusTextBounds = this.getBonusTextBounds();
 			rv += (int)bonusTextBounds.getWidth();
 		}
 		return rv;
@@ -180,18 +199,18 @@ public class TypeIcon implements javax.swing.Icon {
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
 
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+		Graphics2D g2 = (Graphics2D)g;
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+		AffineTransform prevTransform = g2.getTransform();
 
 		//g.setColor( java.awt.Color.BLUE );
 		//g.fillRect( x, y, this.getIconWidth(), this.getIconHeight() );
 
 		int typePlusBonusWidth = this.getIconWidth();
 		if( this.isIndentForDepthAndMemberCountTextDesired ) {
-			int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( type );
+			int depth = StaticAnalysisUtilities.getUserTypeDepth( type );
 			if( depth > 0 ) {
 				int dx = depth * INDENT_PER_DEPTH;
 				g2.translate( dx, 0 );
@@ -211,14 +230,14 @@ public class TypeIcon implements javax.swing.Icon {
 		this.border.paintBorder( c, g, x, y, w, h );
 		g.setColor( this.getTextColor( c ) );
 
-		java.awt.Font prevFont = g.getFont();
+		Font prevFont = g.getFont();
 		g.setFont( this.getTypeFont() );
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, this.getTypeText(), x, y, w, h );
+		GraphicsUtilities.drawCenteredText( g, this.getTypeText(), x, y, w, h );
 
 		if( this.isIndentForDepthAndMemberCountTextDesired ) {
 			if( this.bonusFont != null ) {
 				g.setFont( this.bonusFont );
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, this.getBonusText(), x + w + BONUS_GAP, y, typePlusBonusWidth - w, h );
+				GraphicsUtilities.drawCenteredText( g, this.getBonusText(), x + w + BONUS_GAP, y, typePlusBonusWidth - w, h );
 			}
 		}
 		g.setFont( prevFont );

@@ -43,7 +43,19 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.QuadArray;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
+import edu.cmu.cs.dennisc.scenegraph.TexturedVisual;
+import edu.cmu.cs.dennisc.scenegraph.Vertex;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import edu.cmu.cs.dennisc.texture.Texture;
+import org.lgna.story.Paint;
+import org.lgna.story.SBillboard;
 
 /**
  * @author Dennis Cosgrove
@@ -54,40 +66,40 @@ public class BillboardImp extends VisualScaleModelImp {
 	private static final float MIN_V = 1.0f;
 	private static final float MAX_V = 0.0f;
 
-	private class Face extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual {
+	private class Face extends TexturedVisual {
 		public Face( boolean isFront ) {
 			putInstance( this );
 			putInstance( this.getAppearance() );
 			putInstance( this.sgGeometry );
 			this.isFront = isFront;
 			float k = this.getK();
-			for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : sgVertices ) {
+			for( Vertex vertex : sgVertices ) {
 				vertex.normal.set( 0, 0, k );
 			}
 			this.updateAspectRatio( 1.0 );
 			this.sgGeometry.vertices.setValue( this.sgVertices );
-			this.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgGeometry } );
+			this.geometries.setValue( new Geometry[] { this.sgGeometry } );
 		}
 
 		public void updateAspectRatio( double widthToHeightAspectRatio ) {
 			double x = widthToHeightAspectRatio * 0.5;
 
-			edu.cmu.cs.dennisc.scenegraph.Vertex v0 = sgVertices[ this.getIndex( 0 ) ];
+			Vertex v0 = sgVertices[ this.getIndex( 0 ) ];
 			v0.position.x = -x;
 			v0.position.y = 1;
 			v0.position.z = 0;
 
-			edu.cmu.cs.dennisc.scenegraph.Vertex v1 = sgVertices[ this.getIndex( 1 ) ];
+			Vertex v1 = sgVertices[ this.getIndex( 1 ) ];
 			v1.position.x = -x;
 			v1.position.y = 0;
 			v1.position.z = 0;
 
-			edu.cmu.cs.dennisc.scenegraph.Vertex v2 = sgVertices[ this.getIndex( 2 ) ];
+			Vertex v2 = sgVertices[ this.getIndex( 2 ) ];
 			v2.position.x = +x;
 			v2.position.y = 0;
 			v2.position.z = 0;
 
-			edu.cmu.cs.dennisc.scenegraph.Vertex v3 = sgVertices[ this.getIndex( 3 ) ];
+			Vertex v3 = sgVertices[ this.getIndex( 3 ) ];
 			v3.position.x = +x;
 			v3.position.y = 1;
 			v3.position.z = 0;
@@ -112,36 +124,36 @@ public class BillboardImp extends VisualScaleModelImp {
 			}
 		}
 
-		private final edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
-		private final edu.cmu.cs.dennisc.scenegraph.Vertex[] sgVertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
-				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MAX_V ),
-				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MIN_V ),
-				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MIN_V ),
-				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MAX_V )
+		private final QuadArray sgGeometry = new QuadArray();
+		private final Vertex[] sgVertices = new Vertex[] {
+				Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MAX_V ),
+				Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MIN_V ),
+				Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MIN_V ),
+				Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MAX_V )
 		};
 		private final boolean isFront;
 	}
 
-	public BillboardImp( org.lgna.story.SBillboard abstraction ) {
+	public BillboardImp( SBillboard abstraction ) {
 		this.abstraction = abstraction;
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.sgVisuals ) {
+		for( Visual sgVisual : this.sgVisuals ) {
 			sgVisual.setParent( this.getSgComposite() );
 		}
 	}
 
 	@Override
-	public org.lgna.story.SBillboard getAbstraction() {
+	public SBillboard getAbstraction() {
 		return this.abstraction;
 	}
 
 	@Override
-	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+	public void setSize( Dimension3 size ) {
 		this.setScale( getScaleForSize( size ) );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
-		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] { edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XY_PLANE, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.X_AXIS, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS };
+	public Resizer[] getResizers() {
+		return new Resizer[] { Resizer.XY_PLANE, Resizer.X_AXIS, Resizer.Y_AXIS };
 	}
 
 	@Override
@@ -164,22 +176,22 @@ public class BillboardImp extends VisualScaleModelImp {
 			double zScale = this.getScale().z;
 			if( resizer == Resizer.XY_PLANE ) {
 				double scaleChange = value / this.getScale().x;
-				this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, this.getScale().y * scaleChange, zScale ) );
+				this.setScale( new Dimension3( value, this.getScale().y * scaleChange, zScale ) );
 			} else if( resizer == Resizer.X_AXIS ) {
-				this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, this.getScale().y, zScale ) );
+				this.setScale( new Dimension3( value, this.getScale().y, zScale ) );
 			} else if( resizer == Resizer.Y_AXIS ) {
-				this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( this.getScale().x, value, zScale ) );
+				this.setScale( new Dimension3( this.getScale().x, value, zScale ) );
 			} else {
 				assert false : resizer;
 			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, value );
+			Logger.severe( this, value );
 		}
 	}
 
 	public void updateAspectRatio() {
-		edu.cmu.cs.dennisc.texture.Texture frontTexture = this.sgFrontFace.getTexture();
-		edu.cmu.cs.dennisc.texture.Texture backTexture = this.sgBackFace.getTexture();
+		Texture frontTexture = this.sgFrontFace.getTexture();
+		Texture backTexture = this.sgBackFace.getTexture();
 
 		int width;
 		int height;
@@ -213,7 +225,7 @@ public class BillboardImp extends VisualScaleModelImp {
 	//		return this.sgFrontFace.getPaint();
 	//	}
 	//
-	public void setFrontPaint( org.lgna.story.Paint frontPaint ) {
+	public void setFrontPaint( Paint frontPaint ) {
 		TexturedPaintUtilities.setPaint( this.sgFrontFace, frontPaint );
 		this.updateAspectRatio();
 	}
@@ -222,37 +234,37 @@ public class BillboardImp extends VisualScaleModelImp {
 	//		return this.sgBackFace.getPaint();
 	//	}
 	//
-	public void setBackPaint( org.lgna.story.Paint backPaint ) {
+	public void setBackPaint( Paint backPaint ) {
 		TexturedPaintUtilities.setPaint( this.sgBackFace, backPaint );
 		this.updateAspectRatio();
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
+	public Visual[] getSgVisuals() {
 		return this.sgVisuals;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgPaintAppearances() {
+	protected TexturedAppearance[] getSgPaintAppearances() {
 		return this.sgPaintAppearances;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
+	protected SimpleAppearance[] getSgOpacityAppearances() {
 		return this.sgOpacityAppearances;
 	}
 
-	private final org.lgna.story.SBillboard abstraction;
+	private final SBillboard abstraction;
 
 	private final Face sgFrontFace = new Face( true );
 	private final Face sgBackFace = new Face( false );
-	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = { this.sgFrontFace, this.sgBackFace };
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgPaintAppearances = { this.sgFrontFace.getAppearance() };
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgOpacityAppearances = { this.sgFrontFace.getAppearance(), this.sgBackFace.getAppearance() };
+	private final Visual[] sgVisuals = { this.sgFrontFace, this.sgBackFace };
+	private final TexturedAppearance[] sgPaintAppearances = { this.sgFrontFace.getAppearance() };
+	private final TexturedAppearance[] sgOpacityAppearances = { this.sgFrontFace.getAppearance(), this.sgBackFace.getAppearance() };
 
 	public final PaintProperty backPaint = new PaintProperty( BillboardImp.this ) {
 		@Override
-		protected void internalSetValue( org.lgna.story.Paint value ) {
+		protected void internalSetValue( Paint value ) {
 			TexturedPaintUtilities.setPaint( BillboardImp.this.sgBackFace, value );
 		}
 	};

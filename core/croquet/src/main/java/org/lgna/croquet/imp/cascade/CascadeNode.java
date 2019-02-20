@@ -43,23 +43,19 @@
 
 package org.lgna.croquet.imp.cascade;
 
+import org.lgna.croquet.Element;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeNode<P extends CascadeNode<?, ?>, E extends org.lgna.croquet.Element> extends org.lgna.croquet.history.TransactionNode<P> {
-	public CascadeNode( P parent, E element ) {
-		super( parent );
-		this.elememt = element;
+public abstract class CascadeNode<E> {
+	CascadeNode( E element ) {
+		this.element = element;
 	}
 
 	public E getElement() {
-		return this.elememt;
+		return this.element;
 	}
 
-	@Override
-	protected void appendContexts( java.util.List<org.lgna.croquet.Context> out ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "?" );
-	}
-
-	private final E elememt;
+	private final E element;
 }

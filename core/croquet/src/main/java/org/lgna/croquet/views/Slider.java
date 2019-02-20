@@ -43,13 +43,20 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.BoundedNumberState;
+
+import javax.swing.JComponent;
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
+import java.util.Dictionary;
+
 /**
  * @author Dennis Cosgrove
  */
-public class Slider extends ViewController<javax.swing.JSlider, org.lgna.croquet.BoundedNumberState<?>> {
+public class Slider extends ViewController<JSlider, BoundedNumberState<?>> {
 	public static enum Orientation {
-		HORIZONTAL( javax.swing.SwingConstants.HORIZONTAL ),
-		VERTICAL( javax.swing.SwingConstants.VERTICAL );
+		HORIZONTAL( SwingConstants.HORIZONTAL ),
+		VERTICAL( SwingConstants.VERTICAL );
 		private int internal;
 
 		private Orientation( int internal ) {
@@ -62,9 +69,9 @@ public class Slider extends ViewController<javax.swing.JSlider, org.lgna.croquet
 
 		public static Orientation valueOf( int swingConstant ) {
 			switch( swingConstant ) {
-			case javax.swing.SwingConstants.HORIZONTAL:
+			case SwingConstants.HORIZONTAL:
 				return HORIZONTAL;
-			case javax.swing.SwingConstants.VERTICAL:
+			case SwingConstants.VERTICAL:
 				return VERTICAL;
 			default:
 				return null;
@@ -72,13 +79,13 @@ public class Slider extends ViewController<javax.swing.JSlider, org.lgna.croquet
 		}
 	};
 
-	public Slider( org.lgna.croquet.BoundedNumberState<?> model ) {
+	public Slider( BoundedNumberState<?> model ) {
 		super( model );
 	}
 
 	@Override
-	protected javax.swing.JSlider createAwtComponent() {
-		return new javax.swing.JSlider( this.getModel().getSwingModel().getBoundedRangeModel() );
+	protected JSlider createAwtComponent() {
+		return new JSlider( this.getModel().getSwingModel().getBoundedRangeModel() );
 	}
 
 	public Orientation getOrientation() {
@@ -144,11 +151,11 @@ public class Slider extends ViewController<javax.swing.JSlider, org.lgna.croquet
 		this.getAwtComponent().setPaintLabels( paintLabels );
 	}
 
-	public java.util.Dictionary<Integer, javax.swing.JComponent> getLabelTable() {
+	public Dictionary<Integer, JComponent> getLabelTable() {
 		return this.getAwtComponent().getLabelTable();
 	}
 
-	public void setLabelTable( java.util.Dictionary<Integer, javax.swing.JComponent> labelTable ) {
+	public void setLabelTable( Dictionary<Integer, JComponent> labelTable ) {
 		this.checkEventDispatchThread();
 		this.getAwtComponent().setLabelTable( labelTable );
 	}

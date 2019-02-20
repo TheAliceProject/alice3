@@ -43,7 +43,16 @@
 
 package org.lgna.ik.core.solver;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import org.lgna.story.implementation.AsSeenBy;
+import org.lgna.story.implementation.JointImp;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -58,11 +67,11 @@ public class Bone {
 
 	// Axis does not know whether the joint is reverse or not. it just is an axis. it knows which bone and which index in joint it is, it contains the corrected axis for this chain.
 	public static class Axis {
-		private final edu.cmu.cs.dennisc.math.Vector3 axis;
+		private final Vector3 axis;
 
 		//these are not local. angular is naturally radian.
-		private final edu.cmu.cs.dennisc.math.Vector3 linearContribution = edu.cmu.cs.dennisc.math.Vector3.createZero();
-		private final edu.cmu.cs.dennisc.math.Vector3 angularContribution = edu.cmu.cs.dennisc.math.Vector3.createZero();
+		private final Vector3 linearContribution = Vector3.createZero();
+		private final Vector3 angularContribution = Vector3.createZero();
 		private final Bone bone;
 		private final int originalIndexInJoint;
 
@@ -73,30 +82,30 @@ public class Bone {
 		public Axis( Bone bone, int originalIndexInJoint ) {
 			this.bone = bone;
 			this.originalIndexInJoint = originalIndexInJoint;
-			this.axis = edu.cmu.cs.dennisc.math.Vector3.createZero();
+			this.axis = Vector3.createZero();
 		}
 
-		public edu.cmu.cs.dennisc.math.Vector3 getLinearContribution() {
+		public Vector3 getLinearContribution() {
 			return linearContribution;
 		}
 
-		public edu.cmu.cs.dennisc.math.Vector3 getAngularContribution() {
+		public Vector3 getAngularContribution() {
 			return angularContribution;
 		}
 
-		public void updateLinearContributions( edu.cmu.cs.dennisc.math.Vector3 jointEeVector ) {
-			edu.cmu.cs.dennisc.math.Vector3.setReturnValueToCrossProduct( this.linearContribution, this.axis, jointEeVector );
+		public void updateLinearContributions( Vector3 jointEeVector ) {
+			Vector3.setReturnValueToCrossProduct( this.linearContribution, this.axis, jointEeVector );
 		}
 
 		public void updateAngularContributions() {
 			this.angularContribution.set( this.axis );
 		}
 
-		public edu.cmu.cs.dennisc.math.Vector3 getCurrentValue() {
+		public Vector3 getCurrentValue() {
 			return axis;
 		}
 
-		public void setCurrentValue( edu.cmu.cs.dennisc.math.Vector3 axis ) {
+		public void setCurrentValue( Vector3 axis ) {
 			this.axis.set( axis );
 		}
 
@@ -119,14 +128,14 @@ public class Bone {
 		}
 
 		@Override
-		public boolean equals( java.lang.Object o ) {
+		public boolean equals( Object o ) {
 			if( o == this ) {
 				return true;
 			}
 			if( o instanceof Axis ) {
 				Axis ua = (Axis)o;
 				return ( this.originalIndexInJoint == ua.originalIndexInJoint ) &&
-						edu.cmu.cs.dennisc.java.util.Objects.equals( this.bone.getA(), ua.bone.getA() );
+						Objects.equals( this.bone.getA(), ua.bone.getA() );
 			} else {
 				return false;
 			}
@@ -135,26 +144,26 @@ public class Bone {
 		public void applyRotation( double angleInRadians ) {
 			//it's nicer to rotate around one axis once using Bone.applyLocalRotation(angle, axis)
 			//get the original axis
-			edu.cmu.cs.dennisc.math.Vector3 originalAxis = getLocalAxis();
+			Vector3 originalAxis = getLocalAxis();
 			//turn the joint around the original local vector
 			bone.getA().applyRotationInRadians( originalAxis, angleInRadians );
 		}
 
-		public edu.cmu.cs.dennisc.math.Vector3 getLocalAxis() {
+		public Vector3 getLocalAxis() {
 			return indexToLocalVector( originalIndexInJoint );
 		}
 
 		//TODO can never have a 2dof joint that rotates an axis? maybe I can? I just always need to apply rotations in order and I'll be fine?
 		//I was using axes to be global x, y, z. ooh, that's right.
 		//maybe the axis class should be keeping the original, which is inverted of current?
-		private edu.cmu.cs.dennisc.math.Vector3 indexToLocalVector( int originalIndexInJoint ) {
+		private Vector3 indexToLocalVector( int originalIndexInJoint ) {
 			switch( originalIndexInJoint ) {
 			case 0:
-				return edu.cmu.cs.dennisc.math.Vector3.accessPositiveXAxis();
+				return Vector3.accessPositiveXAxis();
 			case 1:
-				return edu.cmu.cs.dennisc.math.Vector3.accessPositiveYAxis();
+				return Vector3.accessPositiveYAxis();
 			case 2:
-				return edu.cmu.cs.dennisc.math.Vector3.accessPositiveZAxis();
+				return Vector3.accessPositiveZAxis();
 			}
 			//			if(bone.isABallJoint()) {
 			//				//return global x, y, z
@@ -178,15 +187,15 @@ public class Bone {
 	private final Chain chain;
 	private final int index;
 	private final Axis[] axesByIndex = new Axis[ 3 ];
-	private final java.util.List<Axis> axesList = new java.util.ArrayList<Axis>();
+	private final List<Axis> axesList = new ArrayList<Axis>();
 
-	private final edu.cmu.cs.dennisc.math.Point3 anchor = edu.cmu.cs.dennisc.math.Point3.createZero();
+	private final Point3 anchor = Point3.createZero();
 
 	public Bone( Chain chain, int index ) {
 		this.chain = chain;
 		this.index = index;
 
-		org.lgna.story.implementation.JointImp a = this.getA();
+		JointImp a = this.getA();
 
 		if( a.isFreeInX() ) {
 			Axis newAxis = new Axis( this, 0 );
@@ -220,11 +229,11 @@ public class Bone {
 		updateStateFromJoint();
 	}
 
-	public org.lgna.story.implementation.JointImp getA() {
+	public JointImp getA() {
 		return this.chain.getJointImpAt( this.index );
 	}
 
-	public java.util.List<Axis> getAxes() {
+	public List<Axis> getAxes() {
 		return axesList;
 	}
 
@@ -249,7 +258,7 @@ public class Bone {
 		return rv;
 	}
 
-	public void updateLinearContributions( edu.cmu.cs.dennisc.math.Vector3 jointEeVector ) {
+	public void updateLinearContributions( Vector3 jointEeVector ) {
 		for( Axis axis : axesByIndex ) {
 			if( axis != null ) {
 				axis.updateLinearContributions( jointEeVector );
@@ -267,7 +276,7 @@ public class Bone {
 
 	@Override
 	public String toString() {
-		org.lgna.story.implementation.JointImp a = this.getA();
+		JointImp a = this.getA();
 		//		org.lgna.story.implementation.JointImp b = this.getB();
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Bone[" );
@@ -294,7 +303,7 @@ public class Bone {
 		return sb.toString();
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getAnchorPosition() {
+	public Point3 getAnchorPosition() {
 		// this returns the curren anchor position that was just fed to this from the world
 		return anchor;
 	}
@@ -305,12 +314,12 @@ public class Bone {
 
 	public void updateStateFromJoint() {
 		//get anchor
-		anchor.set( getA().getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE ).translation );
+		anchor.set( getA().getTransformation( AsSeenBy.SCENE ).translation );
 
 		//get axes
 		//		if( !isABallJoint() ) {
-		org.lgna.story.implementation.JointImp a = getA();
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 atrans = a.getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE );
+		JointImp a = getA();
+		AffineMatrix4x4 atrans = a.getTransformation( AsSeenBy.SCENE );
 		//invert if reverse
 		if( a.isFreeInX() ) {
 			this.axesByIndex[ 0 ].setCurrentValue( atrans.orientation.right );
@@ -346,7 +355,7 @@ public class Bone {
 		//		throw new RuntimeException("todo invert axes if chain is reverse");
 	}
 
-	public void applyLocalRotation( edu.cmu.cs.dennisc.math.Vector3 axis, double angle ) {
+	public void applyLocalRotation( Vector3 axis, double angle ) {
 		getA().applyRotationInRadians( axis, angle );
 	}
 

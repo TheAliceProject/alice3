@@ -42,7 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.properties;
 
+import org.alice.ide.IDE;
 import org.lgna.croquet.BooleanState;
+
+import java.util.UUID;
 
 /**
  * @author dculyba
@@ -59,7 +62,7 @@ public class IsXZScaleLinkedState extends BooleanState
 	}
 
 	private IsXZScaleLinkedState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "14e9d2d1-50a4-4d49-85b3-52d6f457b288" ), true );
+		super( IDE.DOCUMENT_UI_GROUP, UUID.fromString( "14e9d2d1-50a4-4d49-85b3-52d6f457b288" ), true );
 		this.setIconForBothTrueAndFalse( LinkScaleIcon.SUB_SCALE_LONG_ICON );
 	}
 }

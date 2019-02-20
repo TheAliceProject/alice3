@@ -42,19 +42,25 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import org.alice.stageide.icons.GroupIconFactory;
+import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
+import org.lgna.croquet.icon.IconFactory;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GroupTagKey extends TagKey {
-	private final org.lgna.croquet.icon.IconFactory iconFactory;
+	private final IconFactory iconFactory;
 
-	public GroupTagKey( String groupTag, java.util.List<org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> iconFactories ) {
+	public GroupTagKey( String groupTag, List<AbstractSingleSourceImageIconFactory> iconFactories ) {
 		super( groupTag );
-		this.iconFactory = new org.alice.stageide.icons.GroupIconFactory( iconFactories );
+		this.iconFactory = new GroupIconFactory( iconFactories );
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+	public IconFactory getIconFactory() {
 		return this.iconFactory;
 	}
 }

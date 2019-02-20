@@ -43,17 +43,23 @@
 
 package org.alice.stageide.custom.components;
 
+import org.alice.ide.custom.components.RowBasedCustomExpressionCreatorView;
+import org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite;
+import org.lgna.croquet.views.LabeledFormRow;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class VolumeLevelCustomExpressionCreatorView extends org.alice.ide.custom.components.RowBasedCustomExpressionCreatorView {
-	public VolumeLevelCustomExpressionCreatorView( org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite composite ) {
+public class VolumeLevelCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
+	public VolumeLevelCustomExpressionCreatorView( VolumeLevelCustomExpressionCreatorComposite composite ) {
 		super( composite );
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
-		org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new org.lgna.croquet.views.LabeledFormRow( composite.getValueLabel(), new VolumeLevelSlider( composite.getValueState() ) ) );
+	protected void appendRows( List<LabeledFormRow> rows ) {
+		VolumeLevelCustomExpressionCreatorComposite composite = (VolumeLevelCustomExpressionCreatorComposite)this.getComposite();
+		rows.add( new LabeledFormRow( composite.getValueLabel(), new VolumeLevelSlider( composite.getValueState() ) ) );
 	}
 }

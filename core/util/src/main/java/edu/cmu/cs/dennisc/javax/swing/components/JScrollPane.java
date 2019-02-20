@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -71,11 +73,11 @@ public class JScrollPane extends javax.swing.JScrollPane {
 	public JScrollPane() {
 	}
 
-	public JScrollPane( java.awt.Component view ) {
+	public JScrollPane( Component view ) {
 		super( view );
 	}
 
-	public JScrollPane( java.awt.Component view, VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
+	public JScrollPane( Component view, VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
 		super( view, verticalScrollbarPolicy.internal, horizontalScrollbarPolicy.internal );
 	}
 

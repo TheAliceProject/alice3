@@ -43,23 +43,27 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import org.lgna.story.STarget;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TargetImp extends TransformableImp {
-	public TargetImp( org.lgna.story.STarget abstraction ) {
+	public TargetImp( STarget abstraction ) {
 		this.abstraction = abstraction;
 	}
 
 	@Override
-	public org.lgna.story.STarget getAbstraction() {
+	public STarget getAbstraction() {
 		return this.abstraction;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+	protected CumulativeBound updateCumulativeBound( CumulativeBound rv, AffineMatrix4x4 trans ) {
 		return rv;
 	}
 
-	private final org.lgna.story.STarget abstraction;
+	private final STarget abstraction;
 }

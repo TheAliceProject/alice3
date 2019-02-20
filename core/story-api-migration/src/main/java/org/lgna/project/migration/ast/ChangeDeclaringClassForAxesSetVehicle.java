@@ -42,27 +42,36 @@
  */
 package org.lgna.project.migration.ast;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.Project;
+import org.lgna.project.Version;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.MethodInvocation;
+import org.lgna.story.MutableRider;
+import org.lgna.story.SAxes;
+import org.lgna.story.SThing;
 
 /**
  * @author dculyba
  */
 public class ChangeDeclaringClassForAxesSetVehicle extends MethodInvocationAstMigration {
 
-	public ChangeDeclaringClassForAxesSetVehicle( org.lgna.project.Version minimumVersion, org.lgna.project.Version maximumVersion ) {
+	public ChangeDeclaringClassForAxesSetVehicle( Version minimumVersion, Version maximumVersion ) {
 		super( minimumVersion, maximumVersion );
 	}
 
 	@Override
 	protected void migrate( MethodInvocation methodInvocation, Project projectIfApplicable ) {
-		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-		if( method instanceof org.lgna.project.ast.JavaMethod ) {
-			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)method;
-			if( ( javaMethod.getDeclaringType() == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SAxes.class ) ) && javaMethod.getName().equals( "setVehicle" ) ) {
-				org.lgna.project.ast.AbstractMethod replacementMethod = org.lgna.project.ast.AstUtilities.lookupMethod( org.lgna.story.MutableRider.class, "setVehicle", org.lgna.story.SThing.class );
+		AbstractMethod method = methodInvocation.method.getValue();
+		if( method instanceof JavaMethod ) {
+			JavaMethod javaMethod = (JavaMethod)method;
+			if( ( javaMethod.getDeclaringType() == JavaType.getInstance( SAxes.class ) ) && javaMethod.getName().equals( "setVehicle" ) ) {
+				AbstractMethod replacementMethod = AstUtilities.lookupMethod( MutableRider.class, "setVehicle", SThing.class );
 				methodInvocation.method.setValue( replacementMethod );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "updating setVehicle method on Axes object" );
+				Logger.outln( "updating setVehicle method on Axes object" );
 			}
 		}
 	}

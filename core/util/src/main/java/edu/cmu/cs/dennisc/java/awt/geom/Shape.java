@@ -42,12 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.geom;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.geom.Area;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Shape extends Transformable {
-	private java.awt.Paint m_fillPaint = java.awt.Color.WHITE;
-	private java.awt.Paint m_drawPaint = java.awt.Color.BLACK;
+	private Paint m_fillPaint = Color.WHITE;
+	private Paint m_drawPaint = Color.BLACK;
 	private boolean m_isFilled = true;
 	private boolean m_isDrawn = true;
 
@@ -67,19 +72,19 @@ public abstract class Shape extends Transformable {
 		m_isDrawn = isDrawn;
 	}
 
-	public java.awt.Paint getDrawPaint() {
+	public Paint getDrawPaint() {
 		return m_drawPaint;
 	}
 
-	public void setDrawPaint( java.awt.Paint drawPaint ) {
+	public void setDrawPaint( Paint drawPaint ) {
 		m_drawPaint = drawPaint;
 	}
 
-	public java.awt.Paint getFillPaint() {
+	public Paint getFillPaint() {
 		return m_fillPaint;
 	}
 
-	public void setFillPaint( java.awt.Paint fillPaint ) {
+	public void setFillPaint( Paint fillPaint ) {
 		m_fillPaint = fillPaint;
 	}
 
@@ -89,7 +94,7 @@ public abstract class Shape extends Transformable {
 
 	@Override
 	protected void paintComponent( GraphicsContext gc ) {
-		java.awt.Graphics2D g2 = gc.getAWTGraphics2D();
+		Graphics2D g2 = gc.getAWTGraphics2D();
 
 		if( isFilled() ) {
 			java.awt.Shape fillShape = getFillShape();
@@ -108,11 +113,11 @@ public abstract class Shape extends Transformable {
 	}
 
 	@Override
-	protected java.awt.geom.Area update( java.awt.geom.Area rv, edu.cmu.cs.dennisc.java.awt.geom.TransformContext tc ) {
+	protected Area update( Area rv, TransformContext tc ) {
 		if( isFilled() ) {// TODO Auto-generated method stub
 			java.awt.Shape fillShape = getFillShape();
 			if( fillShape != null ) {
-				java.awt.geom.Area area = new java.awt.geom.Area( fillShape );
+				Area area = new Area( fillShape );
 				area.transform( tc.getAffineTransform() );
 				rv.add( area );
 			}

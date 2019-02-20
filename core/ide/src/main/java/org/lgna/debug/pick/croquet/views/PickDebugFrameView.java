@@ -42,55 +42,72 @@
  *******************************************************************************/
 package org.lgna.debug.pick.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
+import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 import edu.cmu.cs.dennisc.render.PickResult;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.debug.pick.croquet.PickDebugFrame;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PickDebugFrameView extends org.lgna.croquet.views.BorderPanel {
-	public PickDebugFrameView( org.lgna.debug.pick.croquet.PickDebugFrame composite ) {
+public class PickDebugFrameView extends BorderPanel {
+	public PickDebugFrameView( PickDebugFrame composite ) {
 		super( composite );
 		this.addPageEndComponent( composite.getRefreshOperation().createButton() );
-		this.getAwtComponent().add( this.pickView, java.awt.BorderLayout.CENTER );
-		javax.swing.JList jList = new javax.swing.JList( this.listModel );
-		jList.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<edu.cmu.cs.dennisc.scenegraph.Visual>() {
+		this.getAwtComponent().add( this.pickView, BorderLayout.CENTER );
+		JList jList = new JList( this.listModel );
+		jList.setCellRenderer( new ListCellRenderer<Visual>() {
 			@Override
-			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.scenegraph.Visual value, int index, boolean isSelected, boolean cellHasFocus ) {
+			protected JLabel getListCellRendererComponent( JLabel rv, JList list, Visual value, int index, boolean isSelected, boolean cellHasFocus ) {
 				rv.setText( value != null ? value.getName() : null );
 				rv.setIcon( mapSgVisualToColorIcon.get( value ) );
 				return rv;
 			}
 		} );
-		this.getAwtComponent().add( new javax.swing.JScrollPane( jList ), java.awt.BorderLayout.LINE_END );
+		this.getAwtComponent().add( new JScrollPane( jList ), BorderLayout.LINE_END );
 	}
 
-	public void setPickResults( edu.cmu.cs.dennisc.render.PickResult[][] pickResults ) {
+	public void setPickResults( PickResult[][] pickResults ) {
 		synchronized( pickResultsLock ) {
 			this.mapSgVisualToColorIcon.clear();
 			this.listModel.clear();
 			this.pickResults = pickResults;
 			if( this.pickResults != null ) {
-				java.awt.Color[] colors = {
-						java.awt.Color.RED,
-						java.awt.Color.GREEN,
-						java.awt.Color.BLUE,
-						java.awt.Color.CYAN,
-						java.awt.Color.MAGENTA,
-						java.awt.Color.YELLOW,
-						java.awt.Color.ORANGE,
-						java.awt.Color.WHITE,
+				Color[] colors = {
+						Color.RED,
+						Color.GREEN,
+						Color.BLUE,
+						Color.CYAN,
+						Color.MAGENTA,
+						Color.YELLOW,
+						Color.ORANGE,
+						Color.WHITE,
 
 				};
 				int colorIndex = 0;
 				for( PickResult[] line : pickResults ) {
 					for( PickResult pickResult : line ) {
-						edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
+						Visual sgVisual = pickResult.getVisual();
 						if( sgVisual != null ) {
 							if( this.mapSgVisualToColorIcon.containsKey( sgVisual ) ) {
 								//pass
 							} else {
 								this.listModel.addElement( sgVisual );
-								this.mapSgVisualToColorIcon.put( sgVisual, new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( colors[ colorIndex ] ) );
+								this.mapSgVisualToColorIcon.put( sgVisual, new ColorIcon( colors[ colorIndex ] ) );
 								colorIndex += 1;
 								colorIndex %= colors.length;
 							}
@@ -103,14 +120,14 @@ public class PickDebugFrameView extends org.lgna.croquet.views.BorderPanel {
 	}
 
 	private Object pickResultsLock = "pickResultsLock";
-	private edu.cmu.cs.dennisc.render.PickResult[][] pickResults;
-	private final java.util.Map<edu.cmu.cs.dennisc.scenegraph.Visual, edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon> mapSgVisualToColorIcon = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private PickResult[][] pickResults;
+	private final Map<Visual, ColorIcon> mapSgVisualToColorIcon = Maps.newHashMap();
 
-	private final javax.swing.DefaultListModel listModel = new javax.swing.DefaultListModel();
+	private final DefaultListModel listModel = new DefaultListModel();
 
-	private final javax.swing.JComponent pickView = new javax.swing.JComponent() {
+	private final JComponent pickView = new JComponent() {
 		@Override
-		protected void paintComponent( java.awt.Graphics g ) {
+		protected void paintComponent( Graphics g ) {
 			synchronized( pickResultsLock ) {
 				if( pickResults != null ) {
 					final int PIXELS_PER_PICK = 10;
@@ -118,12 +135,12 @@ public class PickDebugFrameView extends org.lgna.croquet.views.BorderPanel {
 						int yPixel = y * PIXELS_PER_PICK;
 						for( int x = 0; x < pickResults[ y ].length; x++ ) {
 							int xPixel = x * PIXELS_PER_PICK;
-							edu.cmu.cs.dennisc.render.PickResult pickResult = pickResults[ y ][ x ];
-							edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
+							PickResult pickResult = pickResults[ y ][ x ];
+							Visual sgVisual = pickResult.getVisual();
 							if( sgVisual != null ) {
 								g.setColor( mapSgVisualToColorIcon.get( sgVisual ).getFillColor() );
 							} else {
-								g.setColor( java.awt.Color.BLACK );
+								g.setColor( Color.BLACK );
 							}
 							g.fillRect( xPixel, yPixel, PIXELS_PER_PICK, PIXELS_PER_PICK );
 						}
@@ -133,8 +150,8 @@ public class PickDebugFrameView extends org.lgna.croquet.views.BorderPanel {
 		}
 
 		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return new java.awt.Dimension( 800, 450 );
+		public Dimension getPreferredSize() {
+			return new Dimension( 800, 450 );
 		}
 	};
 }

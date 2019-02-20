@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.property.AffineMatrix4x4Property;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -53,12 +56,12 @@ public class Transformable extends AbstractTransformable {
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 accessLocalTransformation() {
+	protected AffineMatrix4x4 accessLocalTransformation() {
 		return this.localTransformation.getValue();
 	}
 
 	@Override
-	protected void touchLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+	protected void touchLocalTransformation( AffineMatrix4x4 m ) {
 		if( m == this.localTransformation.getValue() ) {
 			this.localTransformation.touch();
 		} else {
@@ -66,9 +69,9 @@ public class Transformable extends AbstractTransformable {
 		}
 	}
 
-	public final edu.cmu.cs.dennisc.math.property.AffineMatrix4x4Property localTransformation = new edu.cmu.cs.dennisc.math.property.AffineMatrix4x4Property( this, edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity() ) {
+	public final AffineMatrix4x4Property localTransformation = new AffineMatrix4x4Property( this, AffineMatrix4x4.createIdentity() ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
+		public void setValue( AffineMatrix4x4 value ) {
 			super.setValue( value );
 			Transformable.this.fireAbsoluteTransformationChange();
 		}

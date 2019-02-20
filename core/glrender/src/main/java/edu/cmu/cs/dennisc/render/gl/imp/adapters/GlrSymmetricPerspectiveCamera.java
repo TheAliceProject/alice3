@@ -43,14 +43,26 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.AngleInDegrees;
+import edu.cmu.cs.dennisc.math.AngleInRadians;
+import edu.cmu.cs.dennisc.math.Matrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+
+import java.awt.Rectangle;
+import java.nio.DoubleBuffer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera> {
+public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<SymmetricPerspectiveCamera> {
 	@Override
-	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport ) {
+	public Ray getRayAtPixel( Ray rv, int xPixel, int yPixel, Rectangle actualViewport ) {
 		double vertical = getActualVerticalViewingAngle( actualViewport ).getAsRadians();
 		double near = -owner.nearClippingPlaneDistance.getValue();
 		double far = -owner.farClippingPlaneDistance.getValue();
@@ -67,11 +79,11 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 		double dy = tanHalfVertical * ( 1.0 - ( yPixel / halfHeight ) );
 
 		//todo: optimize?
-		edu.cmu.cs.dennisc.math.Point3 pNear = new edu.cmu.cs.dennisc.math.Point3( dx * near, dy * near, near );
-		edu.cmu.cs.dennisc.math.Point3 pFar = new edu.cmu.cs.dennisc.math.Point3( dx * far, dy * far, far );
+		Point3 pNear = new Point3( dx * near, dy * near, near );
+		Point3 pFar = new Point3( dx * far, dy * far, far );
 
 		rv.setOrigin( pNear );
-		edu.cmu.cs.dennisc.math.Vector3 direction = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( pFar, pNear );
+		Vector3 direction = Vector3.createSubtraction( pFar, pNear );
 		//todo: remove?
 		direction.normalize();
 		rv.setDirection( direction );
@@ -80,7 +92,7 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, java.awt.Rectangle actualViewport ) {
+	public Matrix4x4 getActualProjectionMatrix( Matrix4x4 rv, Rectangle actualViewport ) {
 		double zNear = owner.nearClippingPlaneDistance.getValue();
 		double zFar = owner.farClippingPlaneDistance.getValue();
 		double fovx = getActualHorizontalViewingAngle( actualViewport ).getAsRadians();
@@ -101,7 +113,7 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 	}
 
 	@Override
-	protected java.awt.Rectangle performLetterboxing( java.awt.Rectangle rv ) {
+	protected Rectangle performLetterboxing( Rectangle rv ) {
 		if( Double.isNaN( this.horizontalInDegrees ) || Double.isNaN( this.verticalInDegrees ) ) {
 			//pass
 		} else {
@@ -120,9 +132,9 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 		return rv;
 	}
 
-	private static final double DEFAULT_ACTUAL_VERTICAL_IN_DEGREES = new edu.cmu.cs.dennisc.math.AngleInRadians( 0.5 ).getAsDegrees();
+	private static final double DEFAULT_ACTUAL_VERTICAL_IN_DEGREES = new AngleInRadians( 0.5 ).getAsDegrees();
 
-	public edu.cmu.cs.dennisc.math.Angle getActualHorizontalViewingAngle( java.awt.Rectangle actualViewport ) {
+	public Angle getActualHorizontalViewingAngle( Rectangle actualViewport ) {
 		double horizontalInDegrees;
 		if( Double.isNaN( this.horizontalInDegrees ) ) {
 			double aspect = actualViewport.width / (double)actualViewport.height;
@@ -134,10 +146,10 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 		} else {
 			horizontalInDegrees = this.horizontalInDegrees;
 		}
-		return new edu.cmu.cs.dennisc.math.AngleInDegrees( horizontalInDegrees );
+		return new AngleInDegrees( horizontalInDegrees );
 	}
 
-	public edu.cmu.cs.dennisc.math.Angle getActualVerticalViewingAngle( java.awt.Rectangle actualViewport ) {
+	public Angle getActualVerticalViewingAngle( Rectangle actualViewport ) {
 		double verticalInDegrees;
 		if( Double.isNaN( this.verticalInDegrees ) ) {
 			double aspect = actualViewport.width / (double)actualViewport.height;
@@ -149,7 +161,7 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 		} else {
 			verticalInDegrees = this.verticalInDegrees;
 		}
-		return new edu.cmu.cs.dennisc.math.AngleInDegrees( verticalInDegrees );
+		return new AngleInDegrees( verticalInDegrees );
 	}
 
 	//	@Override
@@ -236,7 +248,7 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 	//	}
 
 	@Override
-	protected void setupProjection( Context context, java.awt.Rectangle actualViewport, float zNear, float zFar ) {
+	protected void setupProjection( Context context, Rectangle actualViewport, float zNear, float zFar ) {
 		//		double actualVerticalInDegrees = getActualVerticalViewingAngle( actualViewport, edu.cmu.cs.dennisc.math.UnitOfAngle.DEGREES );
 		//		context.glu.gluPerspective( actualVerticalInDegrees, actualViewport.width / (double)actualViewport.height, zNear, zFar );
 
@@ -249,16 +261,16 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 		//
 		//		context.gl.glFrustum( -xNear, +xNear, -yNear, +yNear, zNear, zFar );
 
-		edu.cmu.cs.dennisc.math.Matrix4x4 projection = new edu.cmu.cs.dennisc.math.Matrix4x4();
+		Matrix4x4 projection = new Matrix4x4();
 		double[] projectionArray = new double[ 16 ];
-		java.nio.DoubleBuffer projectionBuffer = java.nio.DoubleBuffer.wrap( projectionArray );
+		DoubleBuffer projectionBuffer = DoubleBuffer.wrap( projectionArray );
 		getActualProjectionMatrix( projection, actualViewport );
 		projection.getAsColumnMajorArray16( projectionArray );
 		context.gl.glMultMatrixd( projectionBuffer );
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.verticalViewingAngle ) {
 			this.verticalInDegrees = owner.verticalViewingAngle.getValue().getAsDegrees();
 		} else if( property == owner.horizontalViewingAngle ) {

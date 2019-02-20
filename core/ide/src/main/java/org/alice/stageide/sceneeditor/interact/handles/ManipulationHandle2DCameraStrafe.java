@@ -42,8 +42,12 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.handles;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.event.ManipulationEvent;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 /**
  * @author David Culyba
@@ -63,22 +67,22 @@ public class ManipulationHandle2DCameraStrafe extends ImageBasedManipulationHand
 		Right( "images/slideRight.png" );
 
 		private ControlState( String resourceString ) {
-			javax.swing.Icon icon;
+			Icon icon;
 			try {
-				icon = new javax.swing.ImageIcon( this.getClass().getResource( resourceString ) );
+				icon = new ImageIcon( this.getClass().getResource( resourceString ) );
 			} catch( Exception e ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot load", resourceString, this );
+				Logger.errln( "cannot load", resourceString, this );
 				icon = null;
 			}
 			this.icon = icon;
 		}
 
 		@Override
-		public javax.swing.Icon getIcon() {
+		public Icon getIcon() {
 			return this.icon;
 		}
 
-		private final javax.swing.Icon icon;
+		private final Icon icon;
 	}
 
 	private MovementDirection handleUp = MovementDirection.UP;

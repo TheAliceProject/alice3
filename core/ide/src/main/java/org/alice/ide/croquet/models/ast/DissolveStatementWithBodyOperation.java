@@ -43,15 +43,24 @@
 
 package org.alice.ide.croquet.models.ast;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.alice.ide.croquet.edits.ast.DissolveStatementWithBodyEdit;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.AbstractStatementWithBody;
+
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DissolveStatementWithBodyOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map<org.lgna.project.ast.AbstractStatementWithBody, DissolveStatementWithBodyOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class DissolveStatementWithBodyOperation extends ActionOperation {
+	private static Map<AbstractStatementWithBody, DissolveStatementWithBodyOperation> map = Maps.newHashMap();
 
-	public static synchronized DissolveStatementWithBodyOperation getInstance( org.lgna.project.ast.AbstractStatementWithBody statementWithBody ) {
+	public static synchronized DissolveStatementWithBodyOperation getInstance( AbstractStatementWithBody statementWithBody ) {
 		DissolveStatementWithBodyOperation rv = map.get( statementWithBody );
 		if( rv != null ) {
 			//pass
@@ -62,14 +71,14 @@ public class DissolveStatementWithBodyOperation extends org.lgna.croquet.ActionO
 		return rv;
 	}
 
-	private org.lgna.project.ast.AbstractStatementWithBody statementWithBody;
+	private AbstractStatementWithBody statementWithBody;
 
-	private DissolveStatementWithBodyOperation( org.lgna.project.ast.AbstractStatementWithBody statementWithBody ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "b48d1d87-9dbf-4fc5-bb07-daa56ae6bd7d" ) );
+	private DissolveStatementWithBodyOperation( AbstractStatementWithBody statementWithBody ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "b48d1d87-9dbf-4fc5-bb07-daa56ae6bd7d" ) );
 		this.statementWithBody = statementWithBody;
 	}
 
-	public org.lgna.project.ast.AbstractStatementWithBody getStatementWithBody() {
+	public AbstractStatementWithBody getStatementWithBody() {
 		return this.statementWithBody;
 	}
 
@@ -81,7 +90,7 @@ public class DissolveStatementWithBodyOperation extends org.lgna.croquet.ActionO
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DissolveStatementWithBodyEdit( step ) );
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( new DissolveStatementWithBodyEdit( activity ) );
 	}
 }

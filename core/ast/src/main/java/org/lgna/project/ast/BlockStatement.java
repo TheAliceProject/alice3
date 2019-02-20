@@ -55,26 +55,59 @@ public class BlockStatement extends Statement {
 		this.statements.add( statements );
 	}
 
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendBlock(this);
+	}
+
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			BlockStatement other = (BlockStatement)o;
-			return this.statements.valueContentEquals( other.statements, strictness, filter );
+	public boolean containsAtLeastOneEnabledReturnStatement() {
+		if (!isEnabled.getValue() ) {
+			return false;
+		}
+		for ( Statement statement: statements ) {
+			if (statement.containsAtLeastOneEnabledReturnStatement()) {
+				return true;
+			}
 		}
 		return false;
 	}
 
-	/* package-private */void appendBody( JavaCodeGenerator generator ) {
-		for( Statement statement : this.statements ) {
-			statement.appendJava( generator );
+	@Override
+	public boolean containsAReturnForEveryPath() {
+		if (!isEnabled.getValue() ) {
+			return false;
 		}
+		// Whether the block is executed sequentially or in a parallel, a single
+		// step that returns will be enough.
+		for ( Statement statement: statements ) {
+			if (statement.containsAReturnForEveryPath()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
-		generator.appendChar( '{' );
-		this.appendBody( generator );
-		generator.appendChar( '}' );
+	public boolean containsUnreachableCode() {
+		if (!isEnabled.getValue() ) {
+			return false;
+		}
+		final int N = statements.size();
+		boolean foundEnabledCodeAtEnd = false;
+		for( int i = N - 1; i >= 0; i-- ) {
+			Statement statement = statements.get( i );
+			if (statement.containsUnreachableCode()) {
+				return true;
+			}
+			if ( foundEnabledCodeAtEnd ) {
+				if( statement.containsAReturnForEveryPath() ) {
+					return true;
+				}
+			} else {
+				foundEnabledCodeAtEnd = statement.isEnabledNonCommment();
+			}
+		}
+		return false;
 	}
 
 	public final StatementListProperty statements = new StatementListProperty( this );

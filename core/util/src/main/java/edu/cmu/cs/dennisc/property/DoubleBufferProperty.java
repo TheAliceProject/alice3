@@ -43,19 +43,21 @@
 
 package edu.cmu.cs.dennisc.property;
 
+import java.nio.DoubleBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleBufferProperty extends PrimitiveBufferProperty<java.nio.DoubleBuffer> {
-	public DoubleBufferProperty( InstancePropertyOwner owner, java.nio.DoubleBuffer value ) {
+public class DoubleBufferProperty extends PrimitiveBufferProperty<DoubleBuffer> {
+	public DoubleBufferProperty( InstancePropertyOwner owner, DoubleBuffer value ) {
 		super( owner, value );
 	}
 
 	public DoubleBufferProperty( InstancePropertyOwner owner, double[] value ) {
-		super( owner, java.nio.DoubleBuffer.wrap( value ) );
+		super( owner, DoubleBuffer.wrap( value ) );
 	}
 
 	public final void setValue( double[] value ) {
-		this.setValue( java.nio.DoubleBuffer.wrap( value ) );
+		this.setValue( DoubleBuffer.wrap( value ) );
 	}
 }

@@ -42,17 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.history;
 
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.lgna.croquet.DocumentFrame;
+import org.lgna.croquet.undo.UndoHistory;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class UndoOperation extends HistoryOperation {
-	public UndoOperation( org.lgna.croquet.DocumentFrame documentFrame ) {
-		super( java.util.UUID.fromString( "8580fdfd-6862-4aef-bf86-c7dad41e9ccb" ), documentFrame );
-		this.setButtonIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( UndoOperation.class.getResource( "images/undo.png" ) ) );
+	public UndoOperation( DocumentFrame documentFrame ) {
+		super( UUID.fromString( "8580fdfd-6862-4aef-bf86-c7dad41e9ccb" ), documentFrame );
+		this.setButtonIcon( IconUtilities.createImageIcon( UndoOperation.class.getResource( "images/undo.png" ) ) );
 	}
 
 	@Override
-	protected void performInternal( org.lgna.croquet.undo.UndoHistory historyManager ) {
+	protected void performInternal( UndoHistory historyManager ) {
 		historyManager.performUndo();
 	}
 }

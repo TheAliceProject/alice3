@@ -42,11 +42,20 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+import org.lgna.croquet.StringValue;
+
+import javax.swing.BorderFactory;
+import javax.swing.UIManager;
+import javax.swing.text.JTextComponent;
+import java.awt.Color;
+import java.awt.Container;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImmutableTextComponent<J extends javax.swing.text.JTextComponent> extends SwingComponentView<J> {
-	protected static java.awt.Color getDesiredBackgroundColor( java.awt.Container awtParent ) {
+public abstract class ImmutableTextComponent<J extends JTextComponent> extends SwingComponentView<J> {
+	protected static Color getDesiredBackgroundColor( Container awtParent ) {
 		if( awtParent != null ) {
 			if( awtParent.isOpaque() ) {
 				return awtParent.getBackground();
@@ -54,31 +63,31 @@ public abstract class ImmutableTextComponent<J extends javax.swing.text.JTextCom
 				return getDesiredBackgroundColor( awtParent.getParent() );
 			}
 		} else {
-			return java.awt.Color.RED;
+			return Color.RED;
 		}
 	}
 
-	private final org.lgna.croquet.StringValue value;
+	private final StringValue value;
 
-	public ImmutableTextComponent( org.lgna.croquet.StringValue value, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public ImmutableTextComponent( StringValue value, float fontScalar, TextAttribute<?>... textAttributes ) {
 		this.value = value;
 		this.scaleFont( fontScalar );
 		this.changeFont( textAttributes );
 	}
 
-	public org.lgna.croquet.StringValue getValue() {
+	public StringValue getValue() {
 		return this.value;
 	}
 
-	protected void initializeJComponent( javax.swing.text.JTextComponent component ) {
+	protected void initializeJComponent( JTextComponent component ) {
 		//component.setOpaque( false );
 		component.setEditable( false );
 		component.setCursor( null );
 		component.setFocusable( false );
-		component.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		component.setFont( javax.swing.UIManager.getFont( "Label.font" ) );
+		component.setBorder( BorderFactory.createEmptyBorder() );
+		component.setFont( UIManager.getFont( "Label.font" ) );
 		component.setAlignmentX( 0.0f );
 		String disabledColorKey = "CheckBox.disabledText"; // why does "Label.disabledForeground" not work?
-		component.setDisabledTextColor( javax.swing.UIManager.getColor( disabledColorKey ) );
+		component.setDisabledTextColor( UIManager.getColor( disabledColorKey ) );
 	}
 }

@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration.views;
 
+import org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite;
+import org.lgna.project.ast.Declaration;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationView<N extends org.lgna.project.ast.Declaration> extends DeclarationLikeSubstanceView {
-	public DeclarationView( org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<N> composite ) {
+public abstract class DeclarationView<N extends Declaration> extends DeclarationLikeSubstanceView {
+	public DeclarationView( DeclarationLikeSubstanceComposite<N> composite ) {
 		super( composite );
 	}
 }

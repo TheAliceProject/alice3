@@ -42,26 +42,32 @@
  *******************************************************************************/
 package org.lgna.croquet.simple;
 
+import org.lgna.croquet.Document;
+import org.lgna.croquet.DocumentFrame;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.undo.UndoHistory;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class SimpleDocumentFrame extends org.lgna.croquet.DocumentFrame {
+/*package-private*/class SimpleDocumentFrame extends DocumentFrame {
 
 	@Override
-	public org.lgna.croquet.Document getDocument() {
+	public Document getDocument() {
 		return this.document;
 	}
 
-	private final org.lgna.croquet.Document document = new org.lgna.croquet.Document() {
-		private final org.lgna.croquet.history.TransactionHistory transactionHistory = new org.lgna.croquet.history.TransactionHistory();
+	private final Document document = new Document() {
+		private final UserActivity userActivity = new UserActivity();
 
 		@Override
-		public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
-			return this.transactionHistory;
+		public UserActivity getUserActivity() {
+			return userActivity;
 		}
 
 		@Override
-		public org.lgna.croquet.undo.UndoHistory getUndoHistory( org.lgna.croquet.Group group ) {
+		public UndoHistory getUndoHistory( Group group ) {
 			return null;
 		}
 	};

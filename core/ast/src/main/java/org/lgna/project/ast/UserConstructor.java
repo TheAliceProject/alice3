@@ -49,7 +49,7 @@ import org.lgna.project.code.CodeGenerator;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UserConstructor extends AbstractConstructor implements CodeGenerator, CodeAppender {
+public abstract class UserConstructor extends AbstractConstructor implements CodeGenerator {
 	@Override
 	public UserType<?> getDeclaringType() {
 		return (UserType<?>)super.getDeclaringType();
@@ -68,14 +68,5 @@ public abstract class UserConstructor extends AbstractConstructor implements Cod
 	@Override
 	public boolean isUserAuthored() {
 		return true;
-	}
-
-	@Override
-	public abstract void appendJava( JavaCodeGenerator generator );
-
-	@Override
-	public String generateJavaCode( JavaCodeGenerator generator ) {
-		this.appendJava( generator );
-		return generator.getText( false );
 	}
 }

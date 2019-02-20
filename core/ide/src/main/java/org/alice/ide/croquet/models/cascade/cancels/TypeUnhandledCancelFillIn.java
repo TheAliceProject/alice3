@@ -43,10 +43,12 @@
 
 package org.alice.ide.croquet.models.cascade.cancels;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeUnhandledCancelFillIn extends org.alice.ide.croquet.models.cascade.cancels.CancelFillIn {
+public class TypeUnhandledCancelFillIn extends CancelFillIn {
 	private static class SingletonHolder {
 		private static TypeUnhandledCancelFillIn instance = new TypeUnhandledCancelFillIn();
 	}
@@ -56,6 +58,6 @@ public class TypeUnhandledCancelFillIn extends org.alice.ide.croquet.models.casc
 	}
 
 	private TypeUnhandledCancelFillIn() {
-		super( java.util.UUID.fromString( "a8bc4d9f-7099-47ac-b071-10c6676a4be3" ) );
+		super( UUID.fromString( "a8bc4d9f-7099-47ac-b071-10c6676a4be3" ) );
 	}
 }

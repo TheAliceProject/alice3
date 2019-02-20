@@ -42,24 +42,38 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl;
 
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GLOffscreenAutoDrawable;
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.OnscreenRenderTarget<javax.swing.JPanel> {
+public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implements OnscreenRenderTarget<JPanel> {
 	public static interface Observer {
-		public void handleImage( java.awt.image.BufferedImage image, boolean isUpSideDown );
+		public void handleImage( BufferedImage image, boolean isUpSideDown );
 	}
 
-	private class JRecordPanel extends javax.swing.JPanel {
+	private class JRecordPanel extends JPanel {
 		public JRecordPanel() {
-			this.setBackground( java.awt.Color.BLACK );
+			this.setBackground( Color.BLACK );
 		}
 
 		@Override
-		public void paint( java.awt.Graphics g ) {
+		public void paint( Graphics g ) {
 			if( image != null ) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				java.awt.geom.AffineTransform m = g2.getTransform();
+				Graphics2D g2 = (Graphics2D)g;
+				AffineTransform m = g2.getTransform();
 				if( atIsUpSideDown[ 0 ] ) {
 					g2.translate( 0, this.getHeight() );
 					g2.scale( 1.0, -1.0 );
@@ -68,13 +82,13 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 					int imageWidth = image.getWidth();
 					int imageHeight = image.getHeight();
 
-					java.awt.Dimension componentSize = this.getSize();
+					Dimension componentSize = this.getSize();
 
 					if( ( imageWidth == componentSize.width ) || ( imageHeight == componentSize.height ) ) {
 						g.drawImage( image, 0, 0, this );
 					} else {
-						java.awt.Dimension imageSize = new java.awt.Dimension( imageWidth, imageHeight );
-						java.awt.Dimension size = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.calculateBestFittingSize( componentSize, imageSize.width / (double)imageSize.height );
+						Dimension imageSize = new Dimension( imageWidth, imageHeight );
+						Dimension size = DimensionUtilities.calculateBestFittingSize( componentSize, imageSize.width / (double)imageSize.height );
 
 						int x0 = ( componentSize.width - size.width ) / 2;
 						int x1 = x0 + size.width;
@@ -93,16 +107,16 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 		}
 	}
 
-	private final java.awt.Dimension size;
+	private final Dimension size;
 
 	private final JRecordPanel jPanel = new JRecordPanel();
 
-	private final com.jogamp.opengl.GLOffscreenAutoDrawable glPixelBuffer;
+	private final GLOffscreenAutoDrawable glPixelBuffer;
 
 	private boolean[] atIsUpSideDown = { false };
-	private java.awt.image.BufferedImage image;
+	private BufferedImage image;
 
-	public GlrCaptureFauxOnscreenRenderTarget( java.awt.Dimension size, GlrRenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+	public GlrCaptureFauxOnscreenRenderTarget( Dimension size, GlrRenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
 		super( GlrRenderFactory.getInstance(), requestedCapabilities );
 		this.size = size;
 		this.glPixelBuffer = GlDrawableUtils.createGlPixelBuffer(
@@ -113,28 +127,28 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 	}
 
 	@Override
-	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
+	protected Dimension getSurfaceSize( Dimension rv ) {
 		rv.setSize( this.size );
 		return rv;
 	}
 
 	@Override
-	protected java.awt.Dimension getDrawableSize( java.awt.Dimension rv ) {
+	protected Dimension getDrawableSize( Dimension rv ) {
 		//Drawable size and surface size are the same for this render target
 		rv.setSize( this.size );
 		return rv;
 	}
 
 	@Override
-	public com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable() {
+	public GLAutoDrawable getGLAutoDrawable() {
 		return this.glPixelBuffer;
 	}
 
-	public javax.swing.JPanel getJPanel() {
+	public JPanel getJPanel() {
 		return this.jPanel;
 	}
 
-	public java.awt.image.BufferedImage getImage() {
+	public BufferedImage getImage() {
 		return this.image;
 	}
 
@@ -154,7 +168,7 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 	}
 
 	@Override
-	public javax.swing.JPanel getAwtComponent() {
+	public JPanel getAwtComponent() {
 		return this.jPanel;
 	}
 

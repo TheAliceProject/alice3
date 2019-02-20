@@ -48,6 +48,7 @@ import java.util.List;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 
 public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsoluteTransformationWeightsPair
 {
@@ -56,25 +57,19 @@ public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsol
 	@Override
 	public void setWeights( float[] weightsIn )
 	{
-		List<Float> nonZeroWeights = new LinkedList<Float>();
-		List<Integer> nonZeroIndices = new LinkedList<Integer>();
+		List<Float> nonZeroWeights = new LinkedList<>();
+		List<Integer> nonZeroIndices = new LinkedList<>();
 		for( int i = 0; i < weightsIn.length; i++ )
 		{
 			if( weightsIn[ i ] != 0 )
 			{
-				nonZeroWeights.add( new Float( weightsIn[ i ] ) );
-				nonZeroIndices.add( new Integer( i ) );
+				nonZeroWeights.add(weightsIn[i]);
+				nonZeroIndices.add(i);
 			}
 		}
 
-		this.weights = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createFloatArray( nonZeroWeights );
-		this.indices = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createIntArray( nonZeroIndices );
-	}
-
-	public void setWeightsAndIndices( float[] weights, int[] indices )
-	{
-		this.weights = weights;
-		this.indices = indices;
+		this.weights = ArrayUtilities.createFloatArray( nonZeroWeights );
+		this.indices = ArrayUtilities.createIntArray( nonZeroIndices );
 	}
 
 	@Override

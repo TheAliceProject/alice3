@@ -42,32 +42,42 @@
  *******************************************************************************/
 package org.alice.stageide.type.croquet;
 
+import org.alice.stageide.type.croquet.views.AssignableTabPane;
+import org.lgna.croquet.MultipleSelectionListState;
+import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.views.Panel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AssignableTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.croquet.views.Panel> {
+public class AssignableTab extends SimpleTabComposite<Panel> {
 	private final OtherTypeDialog dialog;
 
 	public AssignableTab( OtherTypeDialog dialog ) {
-		super( java.util.UUID.fromString( "4e81305b-226b-411c-b99f-6d2a877bd6f8" ), IsCloseable.FALSE );
+		super( UUID.fromString( "4e81305b-226b-411c-b99f-6d2a877bd6f8" ), IsCloseable.FALSE );
 		this.dialog = dialog;
 	}
 
-	public org.lgna.croquet.MultipleSelectionListState<org.lgna.project.ast.UserField> getSceneFieldsState() {
+	public MultipleSelectionListState<UserField> getSceneFieldsState() {
 		return this.dialog.getSceneFieldsState();
 	}
 
-	public org.lgna.croquet.SingleSelectTreeState<TypeNode> getTypeTreeState() {
+	public SingleSelectTreeState<TypeNode> getTypeTreeState() {
 		return this.dialog.getTypeTreeState();
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		return new org.alice.stageide.type.croquet.views.AssignableTabPane( this );
+	protected Panel createView() {
+		return new AssignableTabPane( this );
 	}
 }

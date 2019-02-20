@@ -42,58 +42,63 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.nil;
 
+import edu.cmu.cs.dennisc.render.SynchronousImageCapturer;
+
+import java.awt.image.BufferedImage;
+import java.nio.FloatBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class NrSynchronousImageCapturer implements edu.cmu.cs.dennisc.render.SynchronousImageCapturer {
+/*package-private*/class NrSynchronousImageCapturer implements SynchronousImageCapturer {
 
 	@Override
-	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer() {
+	public BufferedImage createBufferedImageForUseAsColorBuffer() {
 		return null;
 	}
 
 	@Override
-	public java.awt.image.BufferedImage getColorBufferNotBotheringToFlipVertically( java.awt.image.BufferedImage rv, boolean[] atIsUpsideDown ) {
+	public BufferedImage getColorBufferNotBotheringToFlipVertically( BufferedImage rv, boolean[] atIsUpsideDown ) {
 		return rv;
 	}
 
 	@Override
-	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv ) {
+	public BufferedImage getColorBuffer( BufferedImage rv ) {
 		return rv;
 	}
 
 	@Override
-	public java.awt.image.BufferedImage getColorBuffer() {
+	public BufferedImage getColorBuffer() {
 		return null;
 	}
 
 	@Override
-	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
+	public BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
 		return null;
 	}
 
 	@Override
-	public java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer() {
+	public FloatBuffer createFloatBufferForUseAsDepthBuffer() {
 		return null;
 	}
 
 	@Override
-	public java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv ) {
+	public FloatBuffer getDepthBuffer( FloatBuffer rv ) {
 		return rv;
 	}
 
 	@Override
-	public java.nio.FloatBuffer getDepthBuffer() {
+	public FloatBuffer getDepthBuffer() {
 		return null;
 	}
 
 	@Override
-	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer ) {
+	public BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( BufferedImage rv, FloatBuffer depthBuffer ) {
 		return rv;
 	}
 
 	@Override
-	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer() {
+	public BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer() {
 		return null;
 	}
 

@@ -43,37 +43,47 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+import edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI;
+import org.lgna.croquet.Operation;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+import java.awt.Cursor;
+
 /**
  * @author Dennis Cosgrove
  */
-public class Hyperlink extends OperationButton<javax.swing.JButton, org.lgna.croquet.Operation> {
-	public Hyperlink( org.lgna.croquet.Operation model ) {
+public class Hyperlink extends OperationButton<JButton, Operation> {
+	public Hyperlink( Operation model ) {
 		super( model );
 	}
 
-	public Hyperlink( org.lgna.croquet.Operation model, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public Hyperlink( Operation model, float fontScalar, TextAttribute<?>... textAttributes ) {
 		this( model );
 		this.scaleFont( fontScalar );
 		this.changeFont( textAttributes );
 	}
 
-	public Hyperlink( org.lgna.croquet.Operation model, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public Hyperlink( Operation model, TextAttribute<?>... textAttributes ) {
 		this( model, 1.0f, textAttributes );
 	}
 
 	public boolean isUnderlinedOnlyWhenRolledOver() {
-		edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI ui = (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)this.getAwtComponent().getUI();
+		HyperlinkUI ui = (HyperlinkUI)this.getAwtComponent().getUI();
 		return ui.isUnderlinedOnlyWhenRolledOver();
 	}
 
 	public void setUnderlinedOnlyWhenRolledOver( boolean isUnderlinedOnlyWhenRolledOver ) {
-		edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI ui = (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)this.getAwtComponent().getUI();
+		HyperlinkUI ui = (HyperlinkUI)this.getAwtComponent().getUI();
 		ui.setUnderlinedOnlyWhenRolledOver( isUnderlinedOnlyWhenRolledOver );
 	}
 
 	@Override
-	protected final javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton() {
+	protected final JButton createAwtComponent() {
+		JButton rv = new JButton() {
 			@Override
 			public String getText() {
 				if( isTextClobbered() ) {
@@ -85,16 +95,16 @@ public class Hyperlink extends OperationButton<javax.swing.JButton, org.lgna.cro
 
 			@Override
 			public void updateUI() {
-				this.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI.createUI( this ) );
+				this.setUI( HyperlinkUI.createUI( this ) );
 			}
 		};
-		rv.setForeground( new java.awt.Color( 0, 0, 191 ) );
-		rv.setBackground( java.awt.Color.LIGHT_GRAY );
+		rv.setForeground( new Color( 0, 0, 191 ) );
+		rv.setBackground( Color.LIGHT_GRAY );
 		rv.setRolloverEnabled( true );
-		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		rv.setHorizontalAlignment( SwingConstants.LEADING );
+		rv.setBorder( BorderFactory.createEmptyBorder() );
 		rv.setOpaque( false );
-		rv.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
+		rv.setCursor( Cursor.getPredefinedCursor( Cursor.HAND_CURSOR ) );
 		return rv;
 	}
 }

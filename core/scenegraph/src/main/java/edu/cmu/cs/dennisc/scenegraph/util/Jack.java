@@ -42,10 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+
 /**
  * @author Dennis Cosgrove
  */
-public class Jack extends edu.cmu.cs.dennisc.scenegraph.Transformable {
+public class Jack extends Transformable {
 	public Jack() {
 		this.sgAxesModest.setParent( this );
 	}
@@ -67,6 +69,6 @@ public class Jack extends edu.cmu.cs.dennisc.scenegraph.Transformable {
 		}
 	}
 
-	private final edu.cmu.cs.dennisc.scenegraph.util.ModestAxes sgAxesModest = new edu.cmu.cs.dennisc.scenegraph.util.ModestAxes( 0.1 );
-	private final edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes sgAxesOrnate = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 0.5 );
+	private final ModestAxes sgAxesModest = new ModestAxes( 0.1 );
+	private final ExtravagantAxes sgAxesOrnate = new ExtravagantAxes( 0.5 );
 }

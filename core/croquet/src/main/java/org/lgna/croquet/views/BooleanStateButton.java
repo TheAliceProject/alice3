@@ -43,18 +43,20 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.BooleanState;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BooleanStateButton<J extends javax.swing.AbstractButton> extends AbstractButton<J, org.lgna.croquet.BooleanState> {
-	public BooleanStateButton( org.lgna.croquet.BooleanState model, String uiDefaultsName ) {
+public abstract class BooleanStateButton<J extends javax.swing.AbstractButton> extends AbstractButton<J, BooleanState> {
+	public BooleanStateButton( BooleanState model, String uiDefaultsName ) {
 		super( model, uiDefaultsName );
 		assert model != null;
 		this.setSwingButtonModel( this.getModel().getImp().getSwingModel().getButtonModel() );
 		this.setAction( this.getModel().getImp().getSwingModel().getAction() );
 	}
 
-	public BooleanStateButton( org.lgna.croquet.BooleanState model ) {
+	public BooleanStateButton( BooleanState model ) {
 		this( model, null );
 	}
 }

@@ -45,6 +45,7 @@ package org.lgna.story.implementation.eventhandling;
 import java.util.List;
 import java.util.Map;
 
+import edu.cmu.cs.dennisc.render.RenderUtils;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
@@ -80,12 +81,12 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 
 	public void enable() {
 		isEnabled = true;
-		edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().addAutomaticDisplayListener( this.automaticDisplayListener );
+		RenderUtils.getDefaultRenderFactory().addAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 
 	public void disable() {
 		isEnabled = false;
-		edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().removeAutomaticDisplayListener( this.automaticDisplayListener );
+		RenderUtils.getDefaultRenderFactory().removeAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 
 	public void addListener( TimeListener timerEventListener, Double frequency, MultipleEventPolicy policy ) {

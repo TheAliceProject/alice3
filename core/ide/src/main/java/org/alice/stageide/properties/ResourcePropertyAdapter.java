@@ -42,19 +42,25 @@
  *******************************************************************************/
 package org.alice.stageide.properties;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.JointedModelResource;
+
 /**
  * @author dculyba
  * 
  */
-public class ResourcePropertyAdapter extends org.alice.ide.properties.adapter.AbstractPropertyAdapter<org.lgna.story.resources.JointedModelResource, org.lgna.story.implementation.JointedModelImp<? extends org.lgna.story.SJointedModel, ? extends org.lgna.story.resources.JointedModelResource>> {
+public class ResourcePropertyAdapter extends AbstractPropertyAdapter<JointedModelResource, JointedModelImp<? extends SJointedModel, ? extends JointedModelResource>> {
 
-	public ResourcePropertyAdapter( org.lgna.story.implementation.JointedModelImp<? extends org.lgna.story.SJointedModel, ? extends org.lgna.story.resources.JointedModelResource> instance, org.alice.ide.croquet.models.StandardExpressionState expressionState )
+	public ResourcePropertyAdapter( JointedModelImp<? extends SJointedModel, ? extends JointedModelResource> instance, StandardExpressionState expressionState )
 	{
 		super( "Visual Resource", instance, expressionState );
 	}
 
 	@Override
-	public void setValue( org.lgna.story.resources.JointedModelResource value )
+	public void setValue( JointedModelResource value )
 	{
 		super.setValue( value );
 		if( this.instance != null )
@@ -64,13 +70,13 @@ public class ResourcePropertyAdapter extends org.alice.ide.properties.adapter.Ab
 	}
 
 	@Override
-	public Class<org.lgna.story.resources.JointedModelResource> getPropertyType()
+	public Class<JointedModelResource> getPropertyType()
 	{
-		return org.lgna.story.resources.JointedModelResource.class;
+		return JointedModelResource.class;
 	}
 
 	@Override
-	public org.lgna.story.resources.JointedModelResource getValue()
+	public JointedModelResource getValue()
 	{
 		if( this.instance != null )
 		{
@@ -80,7 +86,7 @@ public class ResourcePropertyAdapter extends org.alice.ide.properties.adapter.Ab
 	}
 
 	@Override
-	public org.lgna.story.resources.JointedModelResource getValueCopyIfMutable()
+	public JointedModelResource getValueCopyIfMutable()
 	{
 		return this.getValue();
 	}

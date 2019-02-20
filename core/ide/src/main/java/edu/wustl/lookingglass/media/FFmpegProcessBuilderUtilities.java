@@ -42,15 +42,19 @@
  *******************************************************************************/
 package edu.wustl.lookingglass.media;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FFmpegProcessBuilderUtilities {
 	public static ProcessBuilder createFFmpegProcessBuilder( String... args ) {
-		return new ProcessBuilder( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.concat( String.class, FFmpegProcess.getArchitectureSpecificCommand(), args ) );
+		return new ProcessBuilder( ArrayUtilities.concat( String.class, FFmpegProcess.getArchitectureSpecificCommand(), args ) );
 	}
 
-	public static ProcessBuilder createFFmpegProcessBuilder( java.util.List<String> args ) {
-		return createFFmpegProcessBuilder( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( args, String.class ) );
+	public static ProcessBuilder createFFmpegProcessBuilder( List<String> args ) {
+		return createFFmpegProcessBuilder( ArrayUtilities.createArray( args, String.class ) );
 	}
 }

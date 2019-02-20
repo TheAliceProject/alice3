@@ -43,10 +43,14 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.lgna.croquet.CascadeLabelSeparator;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CountSeparator extends org.lgna.croquet.CascadeLabelSeparator {
+public class CountSeparator extends CascadeLabelSeparator {
 	private static class SingletonHolder {
 		private static CountSeparator instance = new CountSeparator();
 	}
@@ -56,6 +60,6 @@ public class CountSeparator extends org.lgna.croquet.CascadeLabelSeparator {
 	}
 
 	private CountSeparator() {
-		super( java.util.UUID.fromString( "c94fadf9-c9ac-4b77-9f6a-84631c7fa605" ) );
+		super( UUID.fromString( "c94fadf9-c9ac-4b77-9f6a-84631c7fa605" ) );
 	}
 }

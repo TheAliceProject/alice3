@@ -42,13 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.CascadeLabelSeparator;
+import org.lgna.project.ast.AbstractMethod;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class MethodNameSeparator extends org.lgna.croquet.CascadeLabelSeparator {
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, MethodNameSeparator> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public final class MethodNameSeparator extends CascadeLabelSeparator {
+	private static Map<AbstractMethod, MethodNameSeparator> map = Maps.newHashMap();
 
-	public static synchronized MethodNameSeparator getInstance( org.lgna.project.ast.AbstractMethod method ) {
+	public static synchronized MethodNameSeparator getInstance( AbstractMethod method ) {
 		assert method != null;
 		MethodNameSeparator rv = map.get( method );
 		if( rv != null ) {
@@ -60,8 +67,8 @@ public final class MethodNameSeparator extends org.lgna.croquet.CascadeLabelSepa
 		return rv;
 	}
 
-	private MethodNameSeparator( org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "97ee9eae-c68a-48ef-bf68-2292383f3c91" ) );
+	private MethodNameSeparator( AbstractMethod method ) {
+		super( UUID.fromString( "97ee9eae-c68a-48ef-bf68-2292383f3c91" ) );
 		this.method = method;
 	}
 
@@ -70,5 +77,5 @@ public final class MethodNameSeparator extends org.lgna.croquet.CascadeLabelSepa
 		return this.method.getName();
 	}
 
-	private final org.lgna.project.ast.AbstractMethod method;
+	private final AbstractMethod method;
 }

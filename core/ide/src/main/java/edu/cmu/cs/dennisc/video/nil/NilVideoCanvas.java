@@ -42,18 +42,24 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.video.nil;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class NilVideoCanvas extends java.awt.Canvas {
+public final class NilVideoCanvas extends Canvas {
 	public NilVideoCanvas() {
-		this.setBackground( java.awt.Color.BLACK );
-		this.setForeground( java.awt.Color.WHITE );
+		this.setBackground( Color.BLACK );
+		this.setForeground( Color.WHITE );
 	}
 
 	@Override
-	public void paint( java.awt.Graphics g ) {
+	public void paint( Graphics g ) {
 		super.paint( g );
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, "unable to find vlc", this.getSize() );
+		GraphicsUtilities.drawCenteredText( g, "unable to find vlc", this.getSize() );
 	}
 }

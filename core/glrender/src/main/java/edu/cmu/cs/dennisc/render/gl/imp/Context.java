@@ -43,21 +43,27 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.glu.GLU;
+import com.jogamp.opengl.glu.GLUquadric;
+import edu.cmu.cs.dennisc.java.util.DStack;
+import edu.cmu.cs.dennisc.java.util.Stacks;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Context {
-	public com.jogamp.opengl.GL2 gl;
-	public com.jogamp.opengl.glu.GLU glu;
+	public GL2 gl;
+	public GLU glu;
 
-	private com.jogamp.opengl.glu.GLUquadric m_quadric;
+	private GLUquadric m_quadric;
 
 	public Context() {
-		glu = new com.jogamp.opengl.glu.GLU();
+		glu = new GLU();
 	}
 
 	private int scaledCount = 0;
-	private edu.cmu.cs.dennisc.java.util.DStack<Integer> scaledCountStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private DStack<Integer> scaledCountStack = Stacks.newStack();
 
 	public void initialize() {
 		this.scaledCount = 0;
@@ -97,7 +103,7 @@ public abstract class Context {
 	}
 
 	//todo: synchronize?
-	public com.jogamp.opengl.glu.GLUquadric getQuadric() {
+	public GLUquadric getQuadric() {
 		if( m_quadric == null ) {
 			m_quadric = glu.gluNewQuadric();
 		}
@@ -110,7 +116,7 @@ public abstract class Context {
 	//	public boolean isGLChanged() {
 	//		return this.isGLChanged;
 	//	}
-	public void setGL( com.jogamp.opengl.GL2 gl ) {
+	public void setGL( GL2 gl ) {
 		//		this.isGLChanged = this.gl != gl;
 		//		if( this.isGLChanged ) {
 		if( this.gl != gl ) {

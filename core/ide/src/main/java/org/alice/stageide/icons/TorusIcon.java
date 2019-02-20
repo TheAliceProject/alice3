@@ -42,26 +42,34 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TorusIcon extends ShapeIcon {
-	public TorusIcon( java.awt.Dimension size ) {
+	public TorusIcon( Dimension size ) {
 		super( size );
 	}
 
-	private static java.awt.geom.Ellipse2D.Float createEllipse( float portion, int width, int height ) {
+	private static Ellipse2D.Float createEllipse( float portion, int width, int height ) {
 		float diameter = Math.min( width, height ) * portion;
 		float x = ( width - diameter ) / 2;
 		float y = ( height - diameter ) / 2;
-		return new java.awt.geom.Ellipse2D.Float( x, y, diameter, diameter );
+		return new Ellipse2D.Float( x, y, diameter, diameter );
 	}
 
-	private static void paint( java.awt.Graphics2D g2, float outerPortion, float innerPortion, int width, int height, java.awt.Paint fillPaint, java.awt.Paint outerDrawPaint, java.awt.Paint innerDrawPaint ) {
-		java.awt.geom.Ellipse2D outer = createEllipse( outerPortion, width, height );
-		java.awt.geom.Ellipse2D inner = createEllipse( innerPortion, width, height );
-		java.awt.geom.Area area = new java.awt.geom.Area( outer );
-		area.subtract( new java.awt.geom.Area( inner ) );
+	private static void paint( Graphics2D g2, float outerPortion, float innerPortion, int width, int height, Paint fillPaint, Paint outerDrawPaint, Paint innerDrawPaint ) {
+		Ellipse2D outer = createEllipse( outerPortion, width, height );
+		Ellipse2D inner = createEllipse( innerPortion, width, height );
+		Area area = new Area( outer );
+		area.subtract( new Area( inner ) );
 		if( fillPaint != null ) {
 			g2.setPaint( fillPaint );
 			g2.fill( area );
@@ -77,13 +85,13 @@ public class TorusIcon extends ShapeIcon {
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-		paint( g2, 1.0f, 0.5f, width, height, fillPaint, drawPaint, java.awt.Color.GRAY );
+	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
+		paint( g2, 1.0f, 0.5f, width, height, fillPaint, drawPaint, Color.GRAY );
 		if( height > 64 ) {
-			paint( g2, 0.825f, 0.675f, width, height, new java.awt.Color( 255, 255, 255, 63 ), null, null );
-			paint( g2, 0.9f, 0.6f, width, height, new java.awt.Color( 255, 255, 255, 63 ), null, null );
+			paint( g2, 0.825f, 0.675f, width, height, new Color( 255, 255, 255, 63 ), null, null );
+			paint( g2, 0.9f, 0.6f, width, height, new Color( 255, 255, 255, 63 ), null, null );
 		} else {
-			paint( g2, 0.825f, 0.675f, width, height, new java.awt.Color( 255, 255, 255, 127 ), null, null );
+			paint( g2, 0.825f, 0.675f, width, height, new Color( 255, 255, 255, 127 ), null, null );
 		}
 	}
 }

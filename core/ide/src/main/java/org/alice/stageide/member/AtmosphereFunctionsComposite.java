@@ -42,10 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.member;
 
+import org.alice.ide.member.NameFilteredJavaFunctionsComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AtmosphereFunctionsComposite extends org.alice.ide.member.NameFilteredJavaFunctionsComposite {
+public class AtmosphereFunctionsComposite extends NameFilteredJavaFunctionsComposite {
 	private static class SingletonHolder {
 		private static AtmosphereFunctionsComposite instance = new AtmosphereFunctionsComposite();
 	}
@@ -55,6 +59,6 @@ public class AtmosphereFunctionsComposite extends org.alice.ide.member.NameFilte
 	}
 
 	private AtmosphereFunctionsComposite() {
-		super( java.util.UUID.fromString( "1bd18017-3acf-4538-81be-83137c35b38b" ), "getAtmosphereColor", "getFromAboveLightColor", "getFromBelowLightColor", "getFogDensity" );
+		super( UUID.fromString( "1bd18017-3acf-4538-81be-83137c35b38b" ), "getAtmosphereColor", "getFromAboveLightColor", "getFromBelowLightColor", "getFogDensity" );
 	}
 }

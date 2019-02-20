@@ -42,21 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
+import org.alice.ide.ast.type.merge.croquet.MemberHub;
+import org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState;
+import org.alice.ide.common.FieldDeclarationPane;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FieldHubDeclarationView extends org.alice.ide.common.FieldDeclarationPane {
-	private final org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField> fieldHub;
+public class FieldHubDeclarationView extends FieldDeclarationPane {
+	private final MemberHub<UserField> fieldHub;
 
-	public FieldHubDeclarationView( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField> fieldHub ) {
-		super( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), fieldHub.getMember() );
+	public FieldHubDeclarationView( MemberHub<UserField> fieldHub ) {
+		super( PreviewAstI18nFactory.getInstance(), fieldHub.getMember() );
 		this.fieldHub = fieldHub;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.AwtComponentView<?> createNameLabel() {
-		if( this.fieldHub instanceof org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> ) {
-			org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> fieldHubWithNameState = (org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?>)fieldHub;
+	protected AwtComponentView<?> createNameLabel() {
+		if( this.fieldHub instanceof MemberHubWithNameState<?> ) {
+			MemberHubWithNameState<?> fieldHubWithNameState = (MemberHubWithNameState<?>)fieldHub;
 			return new MemberHubNameLabel( fieldHubWithNameState );
 		} else {
 			return super.createNameLabel();

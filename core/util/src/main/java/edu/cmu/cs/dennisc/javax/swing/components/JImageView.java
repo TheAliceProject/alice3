@@ -42,34 +42,41 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
-public class JImageView extends javax.swing.JComponent {
-	private java.awt.Image image;
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 
-	public java.awt.Image getImage() {
+import javax.swing.JComponent;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+
+public class JImageView extends JComponent {
+	private Image image;
+
+	public Image getImage() {
 		return this.image;
 	}
 
-	public void setImage( java.awt.Image image ) {
+	public void setImage( Image image ) {
 		this.image = image;
 		this.repaint();
 	}
 
 	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
+	protected void paintComponent( Graphics g ) {
 		if( this.image != null ) {
 			int imageWidth = this.image.getWidth( this );
 			int imageHeight = this.image.getHeight( this );
 			double widthToHeightImageAspectRatio = imageWidth / (double)imageHeight;
 
-			java.awt.Dimension componentSize = this.getSize();
-			java.awt.Dimension drawSize = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.calculateBestFittingSize( componentSize, widthToHeightImageAspectRatio );
+			Dimension componentSize = this.getSize();
+			Dimension drawSize = DimensionUtilities.calculateBestFittingSize( componentSize, widthToHeightImageAspectRatio );
 
 			if( ( drawSize.width == componentSize.width ) && ( drawSize.height == componentSize.height ) ) {
 				g.drawImage( this.image, 0, 0, this );
 			} else {
 				super.paintComponent( g );
 				if( ( drawSize.width > 0 ) && ( drawSize.height > 0 ) ) {
-					g.drawImage( this.image.getScaledInstance( drawSize.width, drawSize.height, java.awt.Image.SCALE_SMOOTH ), 0, 0, this );
+					g.drawImage( this.image.getScaledInstance( drawSize.width, drawSize.height, Image.SCALE_SMOOTH ), 0, 0, this );
 				}
 				//int x = ( componentSize.width - drawSize.width ) / 2;
 				//int y = ( componentSize.height - drawSize.height ) / 2;

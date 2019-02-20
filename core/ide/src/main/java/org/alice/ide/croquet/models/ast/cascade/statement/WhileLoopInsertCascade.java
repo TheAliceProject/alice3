@@ -43,15 +43,24 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.Statement;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class WhileLoopInsertCascade extends PotentiallyEnvelopingStatementInsertCascade {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade> mapEnveloping = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade> mapInsert = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<BlockStatementIndexPair, WhileLoopInsertCascade> mapEnveloping = Maps.newHashMap();
+	private static Map<BlockStatementIndexPair, WhileLoopInsertCascade> mapInsert = Maps.newHashMap();
 
-	public static synchronized WhileLoopInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
+	public static synchronized WhileLoopInsertCascade getInstance( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		Map<BlockStatementIndexPair, WhileLoopInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
 		assert blockStatementIndexPair != null;
 		WhileLoopInsertCascade rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
@@ -63,12 +72,12 @@ public class WhileLoopInsertCascade extends PotentiallyEnvelopingStatementInsert
 		return rv;
 	}
 
-	private WhileLoopInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( java.util.UUID.fromString( "e23920c4-97fa-47e8-9307-24153e3d56a6" ), blockStatementIndexPair, isEnveloping, ConditionBlank.getInstance() );
+	private WhileLoopInsertCascade( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		super( UUID.fromString( "e23920c4-97fa-47e8-9307-24153e3d56a6" ), blockStatementIndexPair, isEnveloping, ConditionBlank.getInstance() );
 	}
 
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return org.lgna.project.ast.AstUtilities.createWhileLoop( expressions[ 0 ] );
+	protected final Statement createStatement( Expression... expressions ) {
+		return AstUtilities.createWhileLoop( expressions[ 0 ] );
 	}
 }

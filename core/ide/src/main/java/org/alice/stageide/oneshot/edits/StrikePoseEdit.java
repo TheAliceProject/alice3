@@ -42,31 +42,50 @@
  */
 package org.alice.stageide.oneshot.edits;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Dimension3;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.common.ThreadUtilities;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.JavaField;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.Pose;
 import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.JointIdTransformationPair;
+import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.JointedModelImp;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
 public class StrikePoseEdit extends MethodInvocationEdit {
 	private static class JointUndoRunnable implements Runnable {
-		private final org.lgna.story.implementation.JointImp joint;
-		private final edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation;
+		private final JointImp joint;
+		private final AffineMatrix4x4 transformation;
 
-		public JointUndoRunnable( org.lgna.story.implementation.JointImp joint ) {
+		public JointUndoRunnable( JointImp joint ) {
 			this.joint = joint;
 			this.transformation = this.joint.getLocalTransformation();
 		}
 
 		//Returns true if the pose will actually change the orientation and position of the joint
 		//Scale is passed in because poses that affect the translation of a joint must apply the model's scale to the translation
-		public boolean isUndoNecessary( org.lgna.story.Pose<? extends SJointedModel> pose, edu.cmu.cs.dennisc.math.Dimension3 scale ) {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 poseTransform = null;
+		public boolean isUndoNecessary( Pose<? extends SJointedModel> pose, Dimension3 scale ) {
+			AffineMatrix4x4 poseTransform = null;
 			boolean willNotRotateJoint = true;
 			boolean willNotTranslateJoint = true;
 			boolean affectsTranslation = false;
-			for( org.lgna.story.implementation.JointIdTransformationPair idTransformPair : pose.getJointIdTransformationPairs() ) {
+			for( JointIdTransformationPair idTransformPair : pose.getJointIdTransformationPairs() ) {
 				if( idTransformPair.getJointId() == this.joint.getJointId() ) {
-					poseTransform = new edu.cmu.cs.dennisc.math.AffineMatrix4x4( idTransformPair.getTransformation() );
+					poseTransform = new AffineMatrix4x4( idTransformPair.getTransformation() );
 					if( idTransformPair.affectsTranslation() ) {
 						//Apply the scale of the model to the translation
 						poseTransform.translation.multiply( scale );
@@ -92,20 +111,20 @@ public class StrikePoseEdit extends MethodInvocationEdit {
 
 	private transient JointUndoRunnable[] jointUndoRunnables;
 
-	private transient org.lgna.story.Pose<? extends SJointedModel> pose;
+	private transient Pose<? extends SJointedModel> pose;
 
-	private org.lgna.story.Pose<? extends SJointedModel> getPose( org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	private Pose<? extends SJointedModel> getPose( AbstractMethod method, Expression[] argumentExpressions ) {
 		if( argumentExpressions.length > 0 ) {
-			if( argumentExpressions[ 0 ] instanceof org.lgna.project.ast.FieldAccess ) {
-				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)argumentExpressions[ 0 ];
-				org.lgna.project.ast.JavaField poseField = (org.lgna.project.ast.JavaField)fieldAccess.field.getValue();
+			if( argumentExpressions[ 0 ] instanceof FieldAccess ) {
+				FieldAccess fieldAccess = (FieldAccess)argumentExpressions[ 0 ];
+				JavaField poseField = (JavaField)fieldAccess.field.getValue();
 				if( poseField.isStatic() ) {
-					java.lang.reflect.Field fld = poseField.getFieldReflectionProxy().getReification();
+					Field fld = poseField.getFieldReflectionProxy().getReification();
 					try {
 						Object o = fld.get( null );
 						if( o != null ) {
-							if( o instanceof org.lgna.story.Pose<?> ) {
-								return (org.lgna.story.Pose<?>)o;
+							if( o instanceof Pose<?> ) {
+								return (Pose<?>)o;
 							}
 						}
 					} catch( IllegalAccessException iae ) {
@@ -119,20 +138,20 @@ public class StrikePoseEdit extends MethodInvocationEdit {
 		return null;
 	}
 
-	public StrikePoseEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		super( completionStep, instanceFactory, method, argumentExpressions );
+	public StrikePoseEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
+		super( userActivity, instanceFactory, method, argumentExpressions );
 		this.pose = getPose( method, argumentExpressions );
 	}
 
 	@Override
 	protected void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof org.lgna.story.SJointedModel ) {
-			org.lgna.story.SJointedModel jointedModel = (org.lgna.story.SJointedModel)instance;
-			org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp = org.lgna.story.EmployeesOnly.getImplementation( jointedModel );
-			Iterable<org.lgna.story.implementation.JointImp> joints = jointedModelImp.getJoints();
-			java.util.List<JointUndoRunnable> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		if( instance instanceof SJointedModel ) {
+			SJointedModel jointedModel = (SJointedModel)instance;
+			JointedModelImp<?, ?> jointedModelImp = EmployeesOnly.getImplementation( jointedModel );
+			Iterable<JointImp> joints = jointedModelImp.getJoints();
+			List<JointUndoRunnable> list = Lists.newLinkedList();
 			//TODO: Possibly use the captured pose to determine if undo is appropriate per joint?
-			for( org.lgna.story.implementation.JointImp joint : joints ) {
+			for( JointImp joint : joints ) {
 				JointUndoRunnable jointUndoRunnable = new JointUndoRunnable( joint );
 				if( this.pose != null ) {
 					if( jointUndoRunnable.isUndoNecessary( this.pose, jointedModelImp.getScale() ) ) {
@@ -142,7 +161,7 @@ public class StrikePoseEdit extends MethodInvocationEdit {
 					list.add( jointUndoRunnable );
 				}
 			}
-			this.jointUndoRunnables = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, JointUndoRunnable.class );
+			this.jointUndoRunnables = ArrayUtilities.createArray( list, JointUndoRunnable.class );
 		} else {
 			this.jointUndoRunnables = new JointUndoRunnable[] {};
 		}
@@ -160,7 +179,7 @@ public class StrikePoseEdit extends MethodInvocationEdit {
 			new Thread() {
 				@Override
 				public void run() {
-					org.lgna.common.ThreadUtilities.doTogether( jointUndoRunnables );
+					ThreadUtilities.doTogether( jointUndoRunnables );
 				}
 			}.start();
 		}

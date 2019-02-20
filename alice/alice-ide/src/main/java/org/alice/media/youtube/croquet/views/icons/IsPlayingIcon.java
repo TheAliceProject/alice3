@@ -42,9 +42,15 @@
  *******************************************************************************/
 package org.alice.media.youtube.croquet.views.icons;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
+
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.GeneralPath;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
@@ -56,8 +62,8 @@ import javax.swing.Icon;
 public class IsPlayingIcon implements Icon {
 	private static final int SIZE = 20;
 	private static final Color PLAY_BASE_COLOR = new Color( 63, 191, 63 );
-	private static final Color PLAY_HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( PLAY_BASE_COLOR, 1.0, 1.0, 1.5 );
-	private static final Color PLAY_SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( PLAY_BASE_COLOR, 1.0, 1.0, 0.5 );
+	private static final Color PLAY_HIGHLIGHT_COLOR = ColorUtilities.scaleHSB( PLAY_BASE_COLOR, 1.0, 1.0, 1.5 );
+	private static final Color PLAY_SHADOW_COLOR = ColorUtilities.scaleHSB( PLAY_BASE_COLOR, 1.0, 1.0, 0.5 );
 	private static final Color PAUSE_COLOR = Color.BLACK;
 
 	@Override
@@ -73,7 +79,7 @@ public class IsPlayingIcon implements Icon {
 	@Override
 	public void paintIcon( Component c, Graphics g, int x, int y ) {
 		if( c instanceof AbstractButton ) {
-			edu.cmu.cs.dennisc.java.awt.GraphicsContext gc = edu.cmu.cs.dennisc.java.awt.GraphicsContext.getInstanceAndPushGraphics( g );
+			GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g );
 			gc.pushAndSetAntialiasing( true );
 			gc.pushPaint();
 			try {
@@ -94,13 +100,13 @@ public class IsPlayingIcon implements Icon {
 					double y0 = y + 2;
 					double y1 = ( y0 + SIZE ) - 4;
 					double yC = ( y0 + y1 ) * 0.5;
-					java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+					GeneralPath path = new GeneralPath();
 					path.moveTo( x0, y0 );
 					path.lineTo( x0, y1 );
 					path.lineTo( x1, yC );
 					path.closePath();
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					g2.setPaint( new java.awt.GradientPaint( x, y, PLAY_HIGHLIGHT_COLOR, x + SIZE, y + SIZE, PLAY_SHADOW_COLOR ) );
+					Graphics2D g2 = (Graphics2D)g;
+					g2.setPaint( new GradientPaint( x, y, PLAY_HIGHLIGHT_COLOR, x + SIZE, y + SIZE, PLAY_SHADOW_COLOR ) );
 					g2.fill( path );
 					g.setColor( Color.BLACK );
 					g2.draw( path );

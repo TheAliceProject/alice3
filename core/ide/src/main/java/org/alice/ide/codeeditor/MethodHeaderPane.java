@@ -45,12 +45,15 @@ package org.alice.ide.codeeditor;
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import org.alice.ide.common.TypeComponent;
 import org.alice.ide.croquet.models.ast.MethodHeaderMenuModel;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.x.AstI18nFactory;
 import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.croquet.views.ViewController;
+import org.lgna.project.ast.UserMethod;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,16 +62,16 @@ import java.awt.*;
  * @author Dennis Cosgrove
  */
 public class MethodHeaderPane extends AbstractCodeHeaderPane {
-	private final org.alice.ide.x.AstI18nFactory factory;
-	private final org.lgna.project.ast.UserMethod userMethod;
+	private final AstI18nFactory factory;
+	private final UserMethod userMethod;
 
-	public MethodHeaderPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserMethod userMethod, boolean isPreview ) {
+	public MethodHeaderPane( AstI18nFactory factory, UserMethod userMethod, boolean isPreview ) {
 		super( isPreview );
 		this.factory = factory;
 		this.userMethod = userMethod;
 	}
 
-	protected org.lgna.croquet.views.SwingComponentView<?> createNameLabel() {
+	protected SwingComponentView<?> createNameLabel() {
 		return factory.createNameView( userMethod );
 	}
 
@@ -77,7 +80,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		super.internalRefresh();
 		forgetAndRemoveAllComponents();
 
-		if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
+		if( FormatterState.isJava() ) {
 			addComponent( TypeComponent.createInstance( userMethod.getReturnType() ) );
 		} else {
 			addComponent( getDeclareLabel() );

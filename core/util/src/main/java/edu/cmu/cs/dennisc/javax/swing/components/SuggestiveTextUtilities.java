@@ -42,28 +42,41 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.awt.FontUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+
+import javax.swing.text.JTextComponent;
+import java.awt.ComponentOrientation;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.geom.Rectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
 class SuggestiveTextUtilities {
-	public static void drawBlankTextIfNecessary( javax.swing.text.JTextComponent textComponent, java.awt.Graphics g, String textForBlankCondition ) {
+	public static void drawBlankTextIfNecessary( JTextComponent textComponent, Graphics g, String textForBlankCondition ) {
 		if( textComponent.isEditable() && textComponent.isEnabled() ) {
 			String text = textComponent.getText();
 			if( ( text.length() > 0 ) || ( textForBlankCondition == null ) || ( textForBlankCondition.length() == 0 ) ) {
 				//pass
 			} else {
-				java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( textComponent.getFont(), edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+				Font font = FontUtilities.deriveFont( textComponent.getFont(), TextWeight.LIGHT, TextPosture.OBLIQUE );
 				g.setFont( font );
-				g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 ) );
-				java.awt.FontMetrics fm = g.getFontMetrics();
-				java.awt.Insets insets = textComponent.getInsets();
-				java.awt.ComponentOrientation componentOrientation = textComponent.getComponentOrientation();
+				g.setColor( ColorUtilities.createGray( 191 ) );
+				FontMetrics fm = g.getFontMetrics();
+				Insets insets = textComponent.getInsets();
+				ComponentOrientation componentOrientation = textComponent.getComponentOrientation();
 				int x;
 				if( componentOrientation.isLeftToRight() ) {
 					x = insets.left;
 				} else {
 					x = textComponent.getWidth() - insets.right;
-					java.awt.geom.Rectangle2D bounds = fm.getStringBounds( textForBlankCondition, g );
+					Rectangle2D bounds = fm.getStringBounds( textForBlankCondition, g );
 					x -= (int)( Math.ceil( bounds.getWidth() ) );
 				}
 				int y = insets.top + fm.getAscent();

@@ -42,28 +42,27 @@
  *******************************************************************************/
 package org.lgna.croquet.triggers;
 
+import edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.PopupMenu;
+import org.lgna.croquet.views.ViewController;
+
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
 public class IterationTrigger extends Trigger {
-	public static IterationTrigger createUserInstance() {
-		return new IterationTrigger();
+	public static IterationTrigger createUserInstance( UserActivity userActivity ) {
+		return new IterationTrigger(userActivity);
 	}
 
-	private IterationTrigger() {
-	}
-
-	public IterationTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	private IterationTrigger(UserActivity userActivity) {
+		super(userActivity);
 	}
 
 	@Override
-	public org.lgna.croquet.views.ViewController<?, ?> getViewController() {
-		return null;
-	}
-
-	@Override
-	public void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu ) {
-		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
+	public void showPopupMenu( PopupMenu popupMenu ) {
+		PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new Point() );
 	}
 }

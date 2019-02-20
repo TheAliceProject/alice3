@@ -42,10 +42,12 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SideBySideScrollPane extends SwingComponentView<edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane> {
+public class SideBySideScrollPane extends SwingComponentView<JSideBySideScrollPane> {
 	public AwtComponentView<?> getLeadingView() {
 		return AwtComponentView.lookup( this.getAwtComponent().getLeadingView() );
 	}
@@ -65,7 +67,7 @@ public class SideBySideScrollPane extends SwingComponentView<edu.cmu.cs.dennisc.
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane createAwtComponent() {
-		return new edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane();
+	protected JSideBySideScrollPane createAwtComponent() {
+		return new JSideBySideScrollPane();
 	}
 }

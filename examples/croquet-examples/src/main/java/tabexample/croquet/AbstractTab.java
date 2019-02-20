@@ -42,17 +42,23 @@
  */
 package tabexample.croquet;
 
+import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Panel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.croquet.views.Panel> {
-	public AbstractTab( java.util.UUID migrationId ) {
+public abstract class AbstractTab extends SimpleTabComposite<Panel> {
+	public AbstractTab( UUID migrationId ) {
 		super( migrationId, IsCloseable.FALSE );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		org.lgna.croquet.views.Panel rv = new org.lgna.croquet.views.BorderPanel();
+	protected Panel createView() {
+		Panel rv = new BorderPanel();
 		rv.setMinimumPreferredHeight( 100 );
 		return rv;
 	}

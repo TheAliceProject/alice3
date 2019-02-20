@@ -43,12 +43,18 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.render.Graphics2D;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Graphic;
+
+import java.awt.Rectangle;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrGraphic<T extends edu.cmu.cs.dennisc.scenegraph.Graphic> extends GlrElement<T> {
-	protected abstract void render( edu.cmu.cs.dennisc.render.Graphics2D g2, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera );
+public abstract class GlrGraphic<T extends Graphic> extends GlrElement<T> {
+	protected abstract void render( Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera );
 
-	protected abstract void forget( edu.cmu.cs.dennisc.render.Graphics2D g2 );
+	protected abstract void forget( Graphics2D g2 );
 }

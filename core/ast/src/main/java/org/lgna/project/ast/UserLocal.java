@@ -43,6 +43,9 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.StringProperty;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -71,7 +74,7 @@ public class UserLocal extends AbstractTransient {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return this.name;
 	}
 
@@ -89,12 +92,12 @@ public class UserLocal extends AbstractTransient {
 		return getName() != null ? getName() : generateName();
 	}
 
-	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null ) {
+	public final StringProperty name = new StringProperty( this, null ) {
 		@Override
 		protected boolean isNullAcceptable() {
 			return true;
 		}
 	};
 	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = DeclarationProperty.createReferenceInstance( this );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isFinal = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
+	public final BooleanProperty isFinal = new BooleanProperty( this, false );
 }

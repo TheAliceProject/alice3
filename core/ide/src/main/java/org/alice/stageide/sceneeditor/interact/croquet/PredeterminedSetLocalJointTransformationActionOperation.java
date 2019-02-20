@@ -42,23 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.croquet;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import org.lgna.croquet.Group;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+
+import java.util.UUID;
 
 /**
  * @author Dave Culyba
  */
 public class PredeterminedSetLocalJointTransformationActionOperation extends AbstractPredeterminedSetLocalTransformationActionOperation {
 
-	private final org.lgna.story.resources.JointId jointId;
+	private final JointId jointId;
 
-	public PredeterminedSetLocalJointTransformationActionOperation( org.lgna.croquet.Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, org.lgna.story.resources.JointId jointId, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
-		super( group, java.util.UUID.fromString( "5893d8da-19cc-4eb9-be05-dbd21dab1740" ), isDoRequired, animator, field, prevLT, nextLT, editPresentationKey );
+	public PredeterminedSetLocalJointTransformationActionOperation( Group group, boolean isDoRequired, Animator animator, UserField field, JointId jointId, AffineMatrix4x4 prevLT, AffineMatrix4x4 nextLT, String editPresentationKey ) {
+		super( group, UUID.fromString( "5893d8da-19cc-4eb9-be05-dbd21dab1740" ), isDoRequired, animator, field, prevLT, nextLT, editPresentationKey );
 		this.jointId = jointId;
 	}
 
 	@Override
 	protected AbstractTransformable getSGTransformable() {
-		org.lgna.story.implementation.JointedModelImp<org.lgna.story.SJointedModel, org.lgna.story.resources.JointedModelResource> jointedModelImp = (org.lgna.story.implementation.JointedModelImp<org.lgna.story.SJointedModel, org.lgna.story.resources.JointedModelResource>)getEntityImp();
+		JointedModelImp<SJointedModel, JointedModelResource> jointedModelImp = (JointedModelImp<SJointedModel, JointedModelResource>)getEntityImp();
 		return jointedModelImp.getJointImplementation( this.jointId ).getSgComposite();
 	}
 

@@ -43,11 +43,18 @@
 
 package org.alice.ide.croquet.models.ast.cascade;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ProjectExpressionPropertyCascade extends ExpressionPropertyCascade {
-	public ProjectExpressionPropertyCascade( java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, id, expressionProperty, blanks );
+	public ProjectExpressionPropertyCascade( UUID id, ExpressionProperty expressionProperty, CascadeBlank<Expression>... blanks ) {
+		super( Application.PROJECT_GROUP, id, expressionProperty, blanks );
 	}
 }

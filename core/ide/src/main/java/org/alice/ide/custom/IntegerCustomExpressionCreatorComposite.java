@@ -43,6 +43,12 @@
 
 package org.alice.ide.custom;
 
+import org.alice.ide.croquet.models.numberpad.IntegerModel;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.IntegerLiteral;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,14 +62,14 @@ public final class IntegerCustomExpressionCreatorComposite extends NumberCustomE
 	}
 
 	private IntegerCustomExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "a81686d4-eb5a-4bab-8d0b-6ae56ae67391" ), org.alice.ide.croquet.models.numberpad.IntegerModel.getInstance() );
+		super( UUID.fromString( "a81686d4-eb5a-4bab-8d0b-6ae56ae67391" ), IntegerModel.getInstance() );
 	}
 
 	@Override
-	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
+	protected String getTextForPreviousExpression( Expression expression ) {
 		String text;
-		if( expression instanceof org.lgna.project.ast.IntegerLiteral ) {
-			org.lgna.project.ast.IntegerLiteral integerLiteral = (org.lgna.project.ast.IntegerLiteral)expression;
+		if( expression instanceof IntegerLiteral ) {
+			IntegerLiteral integerLiteral = (IntegerLiteral)expression;
 			text = Integer.toString( integerLiteral.value.getValue() );
 		} else {
 			text = "";

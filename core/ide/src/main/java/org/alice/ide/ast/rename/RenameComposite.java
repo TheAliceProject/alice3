@@ -42,29 +42,38 @@
  *******************************************************************************/
 package org.alice.ide.ast.rename;
 
+import org.alice.ide.ast.rename.components.RenamePanel;
+import org.alice.ide.name.NameValidator;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.views.Dialog;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameComposite<V extends org.alice.ide.ast.rename.components.RenamePanel> extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<V> {
-	private final org.alice.ide.name.NameValidator nameValidator;
-	private final org.lgna.croquet.StringState nameState = this.createStringState( "nameState" );
+public abstract class RenameComposite<V extends RenamePanel> extends SimpleOperationInputDialogCoreComposite<V> {
+	private final NameValidator nameValidator;
+	private final StringState nameState = this.createStringState( "nameState" );
 	private final ErrorStatus errorStatus = this.createErrorStatus( "errorStatus" );
 
-	public RenameComposite( java.util.UUID migrationId, org.alice.ide.name.NameValidator nameValidator ) {
-		super( migrationId, org.lgna.croquet.Application.PROJECT_GROUP );
+	public RenameComposite( UUID migrationId, NameValidator nameValidator ) {
+		super( migrationId, Application.PROJECT_GROUP );
 		this.nameValidator = nameValidator;
 	}
 
-	protected org.alice.ide.name.NameValidator getNameValidator() {
+	protected NameValidator getNameValidator() {
 		return this.nameValidator;
 	}
 
-	public org.lgna.croquet.StringState getNameState() {
+	public StringState getNameState() {
 		return this.nameState;
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		if( nameValidator != null ) {
 			String candidate = this.nameState.getValue();
 			String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
@@ -82,9 +91,9 @@ public abstract class RenameComposite<V extends org.alice.ide.ast.rename.compone
 	protected abstract String getInitialValue();
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		this.nameState.setValueTransactionlessly( this.getInitialValue() );
 		this.nameState.selectAll();
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( dialog );
 	}
 }

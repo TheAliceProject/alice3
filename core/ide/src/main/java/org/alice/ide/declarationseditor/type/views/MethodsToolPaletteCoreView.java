@@ -42,12 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type.views;
 
+import org.alice.ide.declarationseditor.type.MethodsToolPaletteCoreComposite;
 
 /**
  * @author Dennis Cosgrove
  */
 public class MethodsToolPaletteCoreView extends MembersToolPaletteCoreView {
-	public MethodsToolPaletteCoreView( org.alice.ide.declarationseditor.type.MethodsToolPaletteCoreComposite composite ) {
+	public MethodsToolPaletteCoreView( MethodsToolPaletteCoreComposite composite ) {
 		super( composite );
 		this.addComponent( composite.getMembersComposite().getView() );
 		this.addComponent( composite.getAddMethodOperation().createButton() );

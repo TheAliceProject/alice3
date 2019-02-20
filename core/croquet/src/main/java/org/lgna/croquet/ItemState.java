@@ -43,35 +43,42 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.lang.callable.ValueCallable;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.triggers.ItemEventTrigger;
+
+import javax.swing.JToggleButton;
+import java.awt.event.ItemEvent;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend State
+public abstract class ItemState<T> extends State<T> {
 	private final ItemCodec<T> itemCodec;
 
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec<T> itemCodec ) {
+	public ItemState( Group group, UUID id, T initialValue, ItemCodec<T> itemCodec ) {
 		super( group, id, initialValue );
-		//assert itemCodec != null;
-		if( itemCodec != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "itemCodec is null for", this );
+		if ( itemCodec == null ) {
+			Logger.severe( "itemCodec is null for ", this );
 		}
 		this.itemCodec = itemCodec;
 	}
 
 	@Override
-	public Class<T> getItemClass() {
-		return this.itemCodec.getValueClass();
-	}
-
-	@Override
-	public final T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public final T decodeValue( BinaryDecoder binaryDecoder ) {
 		return this.itemCodec.decodeValue( binaryDecoder );
 	}
 
 	@Override
-	public final void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
+	public final void encodeValue( BinaryEncoder binaryEncoder, T value ) {
 		this.itemCodec.encodeValue( binaryEncoder, value );
 	}
 
@@ -89,7 +96,7 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		this.appendRepresentation( sb, this.getValue() );
 	}
 
-	private static <T> T getItem( java.util.concurrent.Callable<T> itemCallable ) {
+	private static <T> T getItem( Callable<T> itemCallable ) {
 		try {
 			return itemCallable.call();
 		} catch( Exception e ) {
@@ -97,53 +104,34 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		}
 	}
 
-	private static abstract class AbstractInternalItemSelectedState<T> extends BooleanState {
-		private final ItemState<T> state;
+	private static class RadioButtonesqueModel extends JToggleButton.ToggleButtonModel {
+		private boolean isIgnoringSetSelectedFalse;
 
-		private static class RadioButtonesqueModel extends javax.swing.JToggleButton.ToggleButtonModel {
-			private boolean isIgnoringSetSelectedFalse;
-
-			@Override
-			public void setSelected( boolean b ) {
-				if( ( b == false ) && this.isIgnoringSetSelectedFalse ) {
-					//pass
-				} else {
-					super.setSelected( b );
-				}
+		@Override
+		public void setSelected( boolean b ) {
+			if ( b || !this.isIgnoringSetSelectedFalse ) {
+				super.setSelected( b );
 			}
-
-			@Override
-			public void setPressed( boolean b ) {
-				if( this.isSelected() ) {
-					this.isIgnoringSetSelectedFalse = true;
-				}
-				super.setPressed( b );
-				this.isIgnoringSetSelectedFalse = false;
-			}
-		}
-
-		private AbstractInternalItemSelectedState( ItemState<T> state, java.util.UUID migrationId, boolean initialValue ) {
-			super( state.getGroup(), java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), initialValue, new RadioButtonesqueModel() );
-			assert state != null;
-			this.state = state;
-		}
-
-		public ItemState<T> getState() {
-			return this.state;
 		}
 
 		@Override
-		protected org.lgna.croquet.edits.StateEdit<Boolean> createEdit( org.lgna.croquet.history.CompletionStep<State<Boolean>> completionStep, Boolean nextValue ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, nextValue );
-			return null;
+		public void setPressed( boolean b ) {
+			if( this.isSelected() ) {
+				this.isIgnoringSetSelectedFalse = true;
+			}
+			super.setPressed( b );
+			this.isIgnoringSetSelectedFalse = false;
 		}
 	}
 
-	private static class InternalItemSelectedState<T> extends AbstractInternalItemSelectedState<T> {
-		private final java.util.concurrent.Callable<T> itemCallable;
+	private class InternalItemSelectedState extends BooleanState {
+		private final Callable<T> itemCallable;
 
-		private InternalItemSelectedState( ItemState<T> state, java.util.concurrent.Callable<T> itemCallable ) {
-			super( state, java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), state.getValue() == getItem( itemCallable ) );
+		private InternalItemSelectedState( ItemState<T> state, Callable<T> itemCallable ) {
+			super( state.getGroup(),
+						 UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ),
+						 state.getValue() == getItem( itemCallable ),
+						 new RadioButtonesqueModel() );
 			this.itemCallable = itemCallable;
 		}
 
@@ -151,22 +139,17 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		protected void localize() {
 			super.localize();
 			StringBuilder sb = new StringBuilder();
-			this.getState().getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
+			getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
 			this.setTextForBothTrueAndFalse( sb.toString() );
 		}
 
 		@Override
-		protected org.lgna.croquet.edits.StateEdit<Boolean> createEdit( org.lgna.croquet.history.CompletionStep<State<Boolean>> completionStep, Boolean nextValue ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, nextValue );
-			return null;
-		}
-
-		@Override
-		protected void handleItemStateChanged( java.awt.event.ItemEvent e ) {
+		protected void handleItemStateChanged( ItemEvent e ) {
 			//note: do not invoke super
-			if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+			if( e.getStateChange() == ItemEvent.SELECTED ) {
 				T item = getItem( this.itemCallable );
-				this.getState().changeValueFromIndirectModel( item, IsAdjusting.FALSE, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
+				final UserActivity activity = ItemEventTrigger.createUserActivity( e );
+				ItemState.this.changeValueFromIndirectModel( item, activity );
 			}
 		}
 
@@ -174,19 +157,16 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		protected void appendRepr( StringBuilder sb ) {
 			super.appendRepr( sb );
 			sb.append( ";item=" );
-			this.getState().getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
+			getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
 		}
 	}
 
-	private static class InternalSelectItemOperation<T> extends Operation {
-		private final ItemState<T> state;
-		private final java.util.concurrent.Callable<T> itemCallable;
+	private class InternalSelectItemOperation extends Operation {
+		private final Callable<T> itemCallable;
 		private final boolean isAlternateLocalization;
 
-		private InternalSelectItemOperation( ItemState<T> state, java.util.concurrent.Callable<T> itemCallable, boolean isAlternateLocalization ) {
-			super( state.getGroup(), java.util.UUID.fromString( "6de1225e-3fb6-4bd0-9c78-1188c642325c" ) );
-			assert state != null;
-			this.state = state;
+		private InternalSelectItemOperation( ItemState<T> state, Callable<T> itemCallable, boolean isAlternateLocalization ) {
+			super( state.getGroup(), UUID.fromString( "6de1225e-3fb6-4bd0-9c78-1188c642325c" ) );
 			this.itemCallable = itemCallable;
 			this.isAlternateLocalization = isAlternateLocalization;
 		}
@@ -198,129 +178,89 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 			if( this.isAlternateLocalization ) {
 				sb.append( "Edit" );
 			} else {
-				this.state.getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
+				getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
 			}
 			this.setName( sb.toString() );
 		}
 
 		@Override
-		protected org.lgna.croquet.history.CompletionStep<?> createTransactionAndInvokePerform( org.lgna.croquet.triggers.Trigger trigger ) {
-			T item = getItem( this.itemCallable );
-			return this.state.changeValueFromIndirectModel( item, IsAdjusting.FALSE, trigger );
-		}
-
-		@Override
-		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, transaction, trigger );
+		protected final void performInActivity( UserActivity userActivity ) {
+			ItemState.this.changeValueFromIndirectModel( getItem( this.itemCallable ), userActivity );
 		}
 	}
 
-	private java.util.Map<java.util.concurrent.Callable<T>, InternalItemSelectedState<T>> mapItemCallableToItemSelectedState;
+	private Map<Callable<T>, InternalItemSelectedState> mapItemCallableToItemSelectedState;
 
 	//note: itemCallable must be valid key
-	public BooleanState getItemSelectedState( java.util.concurrent.Callable<T> itemCallable ) {
-		if( mapItemCallableToItemSelectedState != null ) {
-			//pass
-		} else {
-			this.mapItemCallableToItemSelectedState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	public BooleanState getItemSelectedState( Callable<T> itemCallable ) {
+		if ( mapItemCallableToItemSelectedState == null ) {
+			this.mapItemCallableToItemSelectedState = Maps.newHashMap();
 		}
-		InternalItemSelectedState<T> rv = this.mapItemCallableToItemSelectedState.get( itemCallable );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new InternalItemSelectedState<T>( this, itemCallable );
+		InternalItemSelectedState rv = this.mapItemCallableToItemSelectedState.get( itemCallable );
+		if ( rv == null ) {
+			rv = new InternalItemSelectedState( this, itemCallable );
 			this.mapItemCallableToItemSelectedState.put( itemCallable, rv );
 		}
 		return rv;
 	}
 
 	public BooleanState getItemSelectedState( T item ) {
-		return getItemSelectedState( new edu.cmu.cs.dennisc.java.lang.callable.ValueCallable<T>( item ) );
+		return getItemSelectedState( new ValueCallable<>( item ) );
 	}
 
-	private java.util.Map<java.util.concurrent.Callable<T>, InternalSelectItemOperation<T>> mapItemCallableToSelectionOperation;
-	private java.util.Map<java.util.concurrent.Callable<T>, InternalSelectItemOperation<T>> mapItemCallableToSelectionOperationAlternate;
+	private Map<Callable<T>, InternalSelectItemOperation> mapItemCallableToSelectionOperation;
+	private Map<Callable<T>, InternalSelectItemOperation> mapItemCallableToSelectionOperationAlternate;
 
-	//note: itemCallable must be valid key
-
-	private java.util.Map<java.util.concurrent.Callable<T>, InternalSelectItemOperation<T>> getMapItemCallableToSelectionOperation( boolean isAlternateLocalization ) {
+	private Map<Callable<T>, InternalSelectItemOperation> getMapItemCallableToSelectionOperation( boolean isAlternateLocalization ) {
 		if( isAlternateLocalization ) {
-			if( mapItemCallableToSelectionOperationAlternate != null ) {
-				//pass
-			} else {
-				this.mapItemCallableToSelectionOperationAlternate = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+			if ( mapItemCallableToSelectionOperationAlternate == null ) {
+				this.mapItemCallableToSelectionOperationAlternate = Maps.newHashMap();
 			}
 			return this.mapItemCallableToSelectionOperationAlternate;
 		} else {
-			if( mapItemCallableToSelectionOperation != null ) {
-				//pass
-			} else {
-				this.mapItemCallableToSelectionOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+			if ( mapItemCallableToSelectionOperation == null ) {
+				this.mapItemCallableToSelectionOperation = Maps.newHashMap();
 			}
 			return this.mapItemCallableToSelectionOperation;
 		}
 	}
 
-	private Operation getItemSelectionOperation( java.util.concurrent.Callable<T> itemCallable, boolean isAlternateLocalization ) {
-		java.util.Map<java.util.concurrent.Callable<T>, InternalSelectItemOperation<T>> map = getMapItemCallableToSelectionOperation( isAlternateLocalization );
-		InternalSelectItemOperation<T> rv = map.get( itemCallable );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new InternalSelectItemOperation<T>( this, itemCallable, isAlternateLocalization );
+	private Operation getItemSelectionOperation( Callable<T> itemCallable, boolean isAlternateLocalization ) {
+		Map<Callable<T>, InternalSelectItemOperation> map = getMapItemCallableToSelectionOperation( isAlternateLocalization );
+		InternalSelectItemOperation rv = map.get( itemCallable );
+		if ( rv == null ) {
+			rv = new InternalSelectItemOperation( this, itemCallable, isAlternateLocalization );
 			map.put( itemCallable, rv );
 		}
 		return rv;
 	}
 
-	public Operation getItemSelectionOperation( java.util.concurrent.Callable<T> itemCallable ) {
+	public Operation getItemSelectionOperation( Callable<T> itemCallable ) {
 		return this.getItemSelectionOperation( itemCallable, false );
 	}
 
 	public final Operation getItemSelectionOperation( final T item ) {
-		return this.getItemSelectionOperation( new edu.cmu.cs.dennisc.java.lang.callable.ValueCallable<T>( item ) );
+		return this.getItemSelectionOperation( new ValueCallable<>( item ) );
 	}
 
-	public Operation getAlternateLocalizationItemSelectionOperation( java.util.concurrent.Callable<T> itemCallable ) {
+	private Operation getAlternateLocalizationItemSelectionOperation( Callable<T> itemCallable ) {
 		return this.getItemSelectionOperation( itemCallable, true );
 	}
 
 	public final Operation getAlternateLocalizationItemSelectionOperation( final T item ) {
-		return this.getAlternateLocalizationItemSelectionOperation( new edu.cmu.cs.dennisc.java.lang.callable.ValueCallable<T>( item ) );
+		return this.getAlternateLocalizationItemSelectionOperation( new ValueCallable<>( item ) );
 	}
 
 	@Override
-	protected void fireChanged( T prevValue, T nextValue, org.lgna.croquet.State.IsAdjusting isAdjusting ) {
+	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
 		super.fireChanged( prevValue, nextValue, isAdjusting );
 		//todo
 		if( this.mapItemCallableToItemSelectedState != null ) {
-			for( InternalItemSelectedState<T> itemSelectedState : this.mapItemCallableToItemSelectedState.values() ) {
+			for( InternalItemSelectedState itemSelectedState : this.mapItemCallableToItemSelectedState.values() ) {
 				T item = getItem( itemSelectedState.itemCallable );
-				boolean isSelected = edu.cmu.cs.dennisc.java.util.Objects.equals( item, nextValue );
+				boolean isSelected = Objects.equals( item, nextValue );
 				itemSelectedState.getImp().getSwingModel().getButtonModel().setSelected( isSelected );
 			}
 		}
 	}
-	//	@Override
-	//	protected void setCurrentTruthAndBeautyValue( T value ) {
-	//		super.setCurrentTruthAndBeautyValue( value );
-	//		if( this.mapItemCallableToItemSelectedState != null ) {
-	//			for( InternalItemSelectedState<T> itemSelectedState : this.mapItemCallableToItemSelectedState.values() ) {
-	//				T item = getItem( itemSelectedState.itemCallable );
-	//				boolean isSelected = item == value;
-	//				itemSelectedState.setCurrentTruthAndBeautyValue( isSelected );
-	//			}
-	//		}
-	//	}
-	//
-	//	@Override
-	//	protected void setSwingValue( T value ) {
-	//		if( this.mapItemCallableToItemSelectedState != null ) {
-	//			for( InternalItemSelectedState<T> itemSelectedState : this.mapItemCallableToItemSelectedState.values() ) {
-	//				T item = getItem( itemSelectedState.itemCallable );
-	//				boolean isSelected = item == value;
-	//				itemSelectedState.setSwingValue( isSelected );
-	//			}
-	//		}
-	//	}
 }

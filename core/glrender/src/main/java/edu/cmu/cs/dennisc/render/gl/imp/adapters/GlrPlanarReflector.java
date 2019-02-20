@@ -44,16 +44,28 @@
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import static com.jogamp.opengl.GL2ES1.GL_CLIP_PLANE0;
+
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Matrix4x4;
+import edu.cmu.cs.dennisc.math.Plane;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.PlanarReflector;
+
+import java.nio.DoubleBuffer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrPlanarReflector extends GlrVisual<edu.cmu.cs.dennisc.scenegraph.PlanarReflector> {
+public class GlrPlanarReflector extends GlrVisual<PlanarReflector> {
 	private void updateGeometryTransformation() {
-		edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries = owner.geometries.getValue();
+		Geometry[] sgGeometries = owner.geometries.getValue();
 		if( ( sgGeometries != null ) && ( sgGeometries.length > 0 ) ) {
-			edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = sgGeometries[ 0 ];
+			Geometry sgGeometry = sgGeometries[ 0 ];
 
 			sgGeometry.getPlane( this.geometryTransformation );
 			//			edu.cmu.cs.dennisc.math.PointD3 point0;
@@ -105,7 +117,7 @@ public class GlrPlanarReflector extends GlrVisual<edu.cmu.cs.dennisc.scenegraph.
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		super.propertyChanged( property );
 		if( property == owner.geometries ) {
 			updateGeometryTransformation();
@@ -127,23 +139,23 @@ public class GlrPlanarReflector extends GlrVisual<edu.cmu.cs.dennisc.scenegraph.
 	//		this.geometryAdapter.pick( pc, pickParameters.isSubElementRequired() );
 	//	}
 
-	public boolean isFacing( GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = owner.getTransformation( cameraAdapter.owner );
+	public boolean isFacing( GlrAbstractCamera<? extends AbstractCamera> cameraAdapter ) {
+		AffineMatrix4x4 m = owner.getTransformation( cameraAdapter.owner );
 		return m.orientation.backward.z > 0;
 	}
 
 	public synchronized void applyReflection( RenderContext rc ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = owner.getAbsoluteTransformation();
+		AffineMatrix4x4 m = owner.getAbsoluteTransformation();
 		m.multiply( this.geometryTransformation );
 
-		edu.cmu.cs.dennisc.math.Plane plane = edu.cmu.cs.dennisc.math.Plane.createInstance( m );
+		Plane plane = Plane.createInstance( m );
 		plane.getEquation( this.equation );
 		rc.gl.glClipPlane( GL_CLIP_PLANE0, this.equationBuffer );
 
-		edu.cmu.cs.dennisc.math.Point3 p = m.translation;
-		edu.cmu.cs.dennisc.math.Vector3 v = new edu.cmu.cs.dennisc.math.Vector3( -m.orientation.backward.x, -m.orientation.backward.y, -m.orientation.backward.z );
+		Point3 p = m.translation;
+		Vector3 v = new Vector3( -m.orientation.backward.x, -m.orientation.backward.y, -m.orientation.backward.z );
 
-		edu.cmu.cs.dennisc.math.Matrix4x4 r = new edu.cmu.cs.dennisc.math.Matrix4x4();
+		Matrix4x4 r = new Matrix4x4();
 
 		double p_dot_v = ( p.x * v.x ) + ( p.y * v.y ) + ( p.z * v.z );
 
@@ -177,9 +189,9 @@ public class GlrPlanarReflector extends GlrVisual<edu.cmu.cs.dennisc.scenegraph.
 		rc.gl.glPopMatrix();
 	}
 
-	private final edu.cmu.cs.dennisc.math.AffineMatrix4x4 geometryTransformation = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
+	private final AffineMatrix4x4 geometryTransformation = AffineMatrix4x4.createNaN();
 	private final double[] reflection = new double[ 16 ];
-	private final java.nio.DoubleBuffer reflectionBuffer = java.nio.DoubleBuffer.wrap( this.reflection );
+	private final DoubleBuffer reflectionBuffer = DoubleBuffer.wrap( this.reflection );
 	private final double[] equation = new double[ 4 ];
-	private final java.nio.DoubleBuffer equationBuffer = java.nio.DoubleBuffer.wrap( this.equation );
+	private final DoubleBuffer equationBuffer = DoubleBuffer.wrap( this.equation );
 }

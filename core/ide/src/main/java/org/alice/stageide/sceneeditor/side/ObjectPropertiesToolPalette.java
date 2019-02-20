@@ -43,29 +43,38 @@
 
 package org.alice.stageide.sceneeditor.side;
 
-public class ObjectPropertiesToolPalette extends SideToolPalette<org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel> {
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactoryListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+import org.alice.ide.IDE;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon;
+import org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+
+import java.util.UUID;
+
+public class ObjectPropertiesToolPalette extends SideToolPalette<SceneObjectPropertyManagerPanel> {
+	private final ValueListener<InstanceFactory> instanceFactoryListener = new ValueListener<InstanceFactory>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
+		public void valueChanged( ValueEvent<InstanceFactory> e ) {
 			ObjectPropertiesToolPalette.this.getOuterComposite().getIsExpandedState().updateNameAndIcon();
 		}
 	};
 
 	public ObjectPropertiesToolPalette() {
-		super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ), true );
-		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
+		super( UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ), true );
+		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( IndirectCurrentAccessibleTypeIcon.SINGLTON );
 	}
 
 	@Override
-	protected org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel createView() {
-		return new org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel();
+	protected SceneObjectPropertyManagerPanel createView() {
+		return new SceneObjectPropertyManagerPanel();
 	}
 
 	@Override
 	protected String modifyTextIfNecessary( String text, boolean isExpanded ) {
 		text = super.modifyTextIfNecessary( text, isExpanded );
 		if( text != null ) {
-			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+			InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 			String repr;
 			if( instanceFactory != null ) {
 				repr = instanceFactory.getRepr();
@@ -85,12 +94,12 @@ public class ObjectPropertiesToolPalette extends SideToolPalette<org.alice.stage
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactoryListener );
+		IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactoryListener );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().removeNewSchoolValueListener( this.instanceFactoryListener );
+		IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().removeNewSchoolValueListener( this.instanceFactoryListener );
 		super.handlePostDeactivation();
 	}
 }

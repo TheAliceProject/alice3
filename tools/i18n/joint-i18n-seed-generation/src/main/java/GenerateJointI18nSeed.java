@@ -41,6 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.story.SBiped;
+import org.lgna.story.SFlyer;
+import org.lgna.story.SJoint;
+import org.lgna.story.SQuadruped;
+import org.lgna.story.SSwimmer;
+import org.lgna.story.STransport;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,18 +74,18 @@ public class GenerateJointI18nSeed {
 
 	public static void main( String[] args ) throws Exception {
 		Class<?>[] clses = {
-				org.lgna.story.SBiped.class,
-				org.lgna.story.SQuadruped.class,
-				org.lgna.story.SFlyer.class,
-				org.lgna.story.SSwimmer.class,
-				org.lgna.story.STransport.class
+				SBiped.class,
+				SQuadruped.class,
+				SFlyer.class,
+				SSwimmer.class,
+				STransport.class
 		};
-		java.util.Set<String> methodNames = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+		Set<String> methodNames = Sets.newHashSet();
 		for( Class<?> cls : clses ) {
-			for( java.lang.reflect.Method method : cls.getDeclaredMethods() ) {
-				if( org.lgna.story.SJoint.class.isAssignableFrom( method.getReturnType() ) ) {
+			for( Method method : cls.getDeclaredMethods() ) {
+				if( SJoint.class.isAssignableFrom( method.getReturnType() ) ) {
 					if( method.getParameterTypes().length == 0 ) {
-						if( java.lang.reflect.Modifier.isPublic( method.getModifiers() ) ) {
+						if( Modifier.isPublic( method.getModifiers() ) ) {
 							String methodName = method.getName();
 							if( methodName.startsWith( "get" ) ) {
 								methodNames.add( method.getName() );
@@ -79,8 +95,8 @@ public class GenerateJointI18nSeed {
 				}
 			}
 		}
-		java.util.List<String> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( methodNames );
-		java.util.Collections.sort( list );
+		List<String> list = Lists.newArrayList( methodNames );
+		Collections.sort( list );
 		StringBuilder sb = new StringBuilder();
 		for( String methodName : list ) {
 			sb.append( methodName );
@@ -89,7 +105,7 @@ public class GenerateJointI18nSeed {
 			sb.append( "\n" );
 		}
 
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sb );
+		Logger.outln( sb );
 
 		//		java.io.File repoRoot = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "/gits/alice/" );
 		//		java.io.File srcRoot = new java.io.File( repoRoot, "core/i18n/src/main/resources" );//"core/ide/src/main/java/" );

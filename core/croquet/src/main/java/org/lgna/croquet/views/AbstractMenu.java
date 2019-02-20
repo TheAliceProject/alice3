@@ -43,18 +43,26 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.PrepModel;
+import org.lgna.croquet.views.imp.ScrollingPopupMenuUtilities;
+
+import javax.swing.Icon;
+import javax.swing.JMenu;
+import javax.swing.event.PopupMenuListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends ViewController<javax.swing.JMenu, M> implements MenuItemContainer {
+public abstract class AbstractMenu<M extends PrepModel> extends ViewController<JMenu, M> implements MenuItemContainer {
 	private boolean isIconSet;
-	private javax.swing.Icon setIcon;
+	private Icon setIcon;
 
 	public AbstractMenu( M model ) {
 		super( model );
 	}
 
-	protected javax.swing.Icon getSetIcon() {
+	protected Icon getSetIcon() {
 		return this.setIcon;
 	}
 
@@ -66,11 +74,11 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 		this.isIconSet = isIconSet;
 	}
 
-	public javax.swing.Icon getIcon() {
+	public Icon getIcon() {
 		return this.getAwtComponent().getIcon();
 	}
 
-	public void setIcon( javax.swing.Icon icon ) {
+	public void setIcon( Icon icon ) {
 		this.setIconSet( true );
 		this.setIcon = icon;
 	}
@@ -78,10 +86,10 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 	protected abstract boolean areIconsDisplayedInMenus();
 
 	@Override
-	protected javax.swing.JMenu createAwtComponent() {
-		javax.swing.JMenu rv = new javax.swing.JMenu() {
+	protected JMenu createAwtComponent() {
+		JMenu rv = new JMenu() {
 			@Override
-			public javax.swing.Icon getIcon() {
+			public Icon getIcon() {
 				if( AbstractMenu.this.areIconsDisplayedInMenus() ) {
 					if( AbstractMenu.this.isIconSet() ) {
 						return AbstractMenu.this.getSetIcon();
@@ -93,7 +101,7 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 				}
 			}
 		};
-		org.lgna.croquet.views.imp.ScrollingPopupMenuUtilities.initializeScrollingCapability( rv.getPopupMenu() );
+		ScrollingPopupMenuUtilities.initializeScrollingCapability( rv.getPopupMenu() );
 		return rv;
 	}
 
@@ -118,17 +126,17 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 	}
 
 	@Override
-	public final org.lgna.croquet.views.ViewController<?, ?> getViewController() {
+	public final ViewController<?, ?> getViewController() {
 		return this;
 	}
 
 	@Override
-	public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
+	public void addPopupMenuListener( PopupMenuListener listener ) {
 		this.getAwtComponent().getPopupMenu().addPopupMenuListener( listener );
 	}
 
 	@Override
-	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
+	public void removePopupMenuListener( PopupMenuListener listener ) {
 		this.getAwtComponent().getPopupMenu().removePopupMenuListener( listener );
 	}
 
@@ -151,10 +159,10 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 	}
 
 	@Override
-	public void addCascadeCombo( org.lgna.croquet.views.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.views.CascadeMenu cascadeMenu ) {
+	public void addCascadeCombo( CascadeMenuItem cascadeMenuItem, CascadeMenu cascadeMenu ) {
 		this.checkEventDispatchThread();
 		this.addCascadeMenuItem( cascadeMenuItem );
-		org.lgna.croquet.views.imp.ScrollingPopupMenuUtilities.addSideMenu( this.getAwtComponent().getPopupMenu(), cascadeMenu.getAwtComponent() );
+		ScrollingPopupMenuUtilities.addSideMenu( this.getAwtComponent().getPopupMenu(), cascadeMenu.getAwtComponent() );
 	}
 
 	@Override
@@ -188,14 +196,14 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 	public void removeAllMenuItems() {
 		this.checkEventDispatchThread();
 		//this.internalRemoveAllComponents();
-		org.lgna.croquet.views.imp.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent().getPopupMenu() );
+		ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent().getPopupMenu() );
 	}
 
 	@Override
 	public void forgetAndRemoveAllMenuItems() {
 		this.checkEventDispatchThread();
 		//this.internalForgetAndRemoveAllComponents();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "forget" );
-		org.lgna.croquet.views.imp.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent().getPopupMenu() );
+		Logger.todo( "forget" );
+		ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent().getPopupMenu() );
 	}
 }

@@ -42,12 +42,14 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author Matt May
  */
 public class AddViewEnterListener {
 
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = AddViewEnterListener.class )
+	@ClassTemplate( keywordFactoryCls = AddViewEnterListener.class )
 	public interface Detail {
 	}
 

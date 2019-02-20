@@ -42,13 +42,29 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast.declaration;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.common.TypeComponent;
+import org.alice.ide.common.TypeIcon;
+import org.lgna.croquet.ImmutableCascadeFillIn;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.StaticAnalysisUtilities;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna.project.ast.AbstractType<?, ?, ?>, Void> {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class TypeFillIn extends ImmutableCascadeFillIn<AbstractType<?, ?, ?>, Void> {
+	private static Map<AbstractType<?, ?, ?>, TypeFillIn> map = Maps.newHashMap();
 
-	public static synchronized TypeFillIn getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static synchronized TypeFillIn getInstance( AbstractType<?, ?, ?> type ) {
 		TypeFillIn rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -59,44 +75,44 @@ public class TypeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna
 		return rv;
 	}
 
-	private org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private AbstractType<?, ?, ?> type;
 
-	private TypeFillIn( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		super( java.util.UUID.fromString( "8f3e1f74-d1fd-4484-98e0-bc37da452005" ) );
+	private TypeFillIn( AbstractType<?, ?, ?> type ) {
+		super( UUID.fromString( "8f3e1f74-d1fd-4484-98e0-bc37da452005" ) );
 		this.type = type;
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public AbstractType createValue( ItemNode<? super AbstractType<?, ?, ?>, Void> node ) {
 		return this.type;
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node ) {
+	public AbstractType getTransientValue( ItemNode<? super AbstractType<?, ?, ?>, Void> node ) {
 		return this.type;
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node ) {
-		int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( this.type );
+	protected JComponent createMenuItemIconProxy( ItemNode<? super AbstractType<?, ?, ?>, Void> node ) {
+		int depth = StaticAnalysisUtilities.getUserTypeDepth( this.type );
 		if( depth > 0 ) {
 			StringBuilder sb = new StringBuilder();
 			for( int i = 0; i < depth; i++ ) {
 				sb.append( "+" );
 			}
-			return new org.lgna.croquet.views.LineAxisPanel( new org.lgna.croquet.views.Label( sb.toString() ), org.alice.ide.common.TypeComponent.createInstance( this.type ) ).getAwtComponent();
+			return new LineAxisPanel( new Label( sb.toString() ), TypeComponent.createInstance( this.type ) ).getAwtComponent();
 		} else {
 			throw new AssertionError();
 		}
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node ) {
-		int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( this.type );
+	public Icon getMenuItemIcon( ItemNode<? super AbstractType<?, ?, ?>, Void> node ) {
+		int depth = StaticAnalysisUtilities.getUserTypeDepth( this.type );
 		if( depth > 0 ) {
 			return super.getMenuItemIcon( node );
 		} else {
-			return org.alice.ide.common.TypeIcon.getInstance( this.type );
+			return TypeIcon.getInstance( this.type );
 		}
 	}
 
@@ -107,7 +123,7 @@ public class TypeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node ) {
-		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( type );
+	public String getMenuItemText() {
+		return IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( type );
 	}
 }

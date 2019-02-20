@@ -42,52 +42,75 @@
  *******************************************************************************/
 package org.alice.ide.localize.review.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.DesktopUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.localize.review.croquet.LocalizeReviewFrame;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.ComboBox;
+import org.lgna.croquet.views.LineAxisPanel;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.net.URI;
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
-public class LocalizeReviewFrameView extends org.lgna.croquet.views.BorderPanel {
-	public LocalizeReviewFrameView( org.alice.ide.localize.review.croquet.LocalizeReviewFrame composite ) {
+public class LocalizeReviewFrameView extends BorderPanel {
+	public LocalizeReviewFrameView( LocalizeReviewFrame composite ) {
 		super( composite );
-		org.lgna.croquet.views.ComboBox<java.util.Locale> comboBox = composite.getLocaleState().getPrepModel().createComboBox();
-		comboBox.setRenderer( new javax.swing.DefaultListCellRenderer() {
+		ComboBox<Locale> comboBox = composite.getLocaleState().getPrepModel().createComboBox();
+		comboBox.setRenderer( new DefaultListCellRenderer() {
 			@Override
-			public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+			public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 				super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
-				java.util.Locale locale = (java.util.Locale)value;
-				this.setText( locale.getDisplayName( locale ) + " (" + locale.getDisplayName( java.util.Locale.US ) + ")" );
+				Locale locale = (Locale)value;
+				this.setText( locale.getDisplayName( locale ) + " (" + locale.getDisplayName( Locale.US ) + ")" );
 				return this;
 			}
 		} );
 
-		this.addPageStartComponent( new org.lgna.croquet.views.LineAxisPanel(
+		this.addPageStartComponent( new LineAxisPanel(
 				composite.getLocaleState().getSidekickLabel().createLabel(),
 				comboBox,
 				composite.getIsIncludingUntranslatedState().createCheckBox()
 				) );
-		jTable = new javax.swing.JTable( composite.getTableModel() );
-		javax.swing.table.TableColumnModel tableColumnModel = jTable.getColumnModel();
-		javax.swing.table.TableColumn columnIndex = tableColumnModel.getColumn( 0 );
+		jTable = new JTable( composite.getTableModel() );
+		TableColumnModel tableColumnModel = jTable.getColumnModel();
+		TableColumn columnIndex = tableColumnModel.getColumn( 0 );
 		columnIndex.setHeaderValue( "index" );
 		columnIndex.setMaxWidth( 64 );
-		javax.swing.table.TableColumn columnContext = tableColumnModel.getColumn( 1 );
+		TableColumn columnContext = tableColumnModel.getColumn( 1 );
 		columnContext.setHeaderValue( "Context" );
-		javax.swing.table.TableColumn columnOriginal = tableColumnModel.getColumn( 2 );
+		TableColumn columnOriginal = tableColumnModel.getColumn( 2 );
 		columnOriginal.setHeaderValue( "Original text" );
-		javax.swing.table.TableColumn columnTranslated = tableColumnModel.getColumn( 3 );
+		TableColumn columnTranslated = tableColumnModel.getColumn( 3 );
 		columnTranslated.setHeaderValue( "Translated text" );
 
-		javax.swing.table.TableColumn columnReview = tableColumnModel.getColumn( 4 );
+		TableColumn columnReview = tableColumnModel.getColumn( 4 );
 		columnReview.setHeaderValue( "Review" );
 
-		final javax.swing.JLabel label = new javax.swing.JLabel( "<html><a href=\"\">review</a> [web]</html>" );
-		columnReview.setCellRenderer( new javax.swing.table.TableCellRenderer() {
+		final JLabel label = new JLabel( "<html><a href=\"\">review</a> [web]</html>" );
+		columnReview.setCellRenderer( new TableCellRenderer() {
 			@Override
-			public java.awt.Component getTableCellRendererComponent( javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column ) {
+			public Component getTableCellRendererComponent( JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column ) {
 				return label;
 			}
 		} );
-		javax.swing.JScrollPane jScrollPane = new javax.swing.JScrollPane( jTable );
-		this.getAwtComponent().add( jScrollPane, java.awt.BorderLayout.CENTER );
+		JScrollPane jScrollPane = new JScrollPane( jTable );
+		this.getAwtComponent().add( jScrollPane, BorderLayout.CENTER );
 	}
 
 	@Override
@@ -102,41 +125,41 @@ public class LocalizeReviewFrameView extends org.lgna.croquet.views.BorderPanel 
 		this.jTable.removeMouseListener( this.mouseListener );
 	}
 
-	private final javax.swing.JTable jTable;
-	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+	private final JTable jTable;
+	private final MouseListener mouseListener = new MouseListener() {
 		@Override
-		public void mousePressed( java.awt.event.MouseEvent e ) {
+		public void mousePressed( MouseEvent e ) {
 		}
 
 		@Override
-		public void mouseReleased( java.awt.event.MouseEvent e ) {
-			java.awt.Point pt = e.getPoint();
+		public void mouseReleased( MouseEvent e ) {
+			Point pt = e.getPoint();
 			int columnIndex = jTable.columnAtPoint( pt );
 			if( columnIndex == 4 ) {
 				int rowIndex = jTable.rowAtPoint( pt );
 				if( rowIndex >= 0 ) {
-					org.alice.ide.localize.review.croquet.LocalizeReviewFrame composite = (org.alice.ide.localize.review.croquet.LocalizeReviewFrame)getComposite();
-					java.net.URI uri = composite.createUri( rowIndex );
+					LocalizeReviewFrame composite = (LocalizeReviewFrame)getComposite();
+					URI uri = composite.createUri( rowIndex );
 					try {
-						edu.cmu.cs.dennisc.java.awt.DesktopUtilities.browse( uri );
+						DesktopUtilities.browse( uri );
 					} catch( Exception exc ) {
 						throw new RuntimeException( exc );
 					}
 				}
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rowIndex, columnIndex, jTable.getModel().getValueAt( rowIndex, columnIndex ) );
+				Logger.outln( rowIndex, columnIndex, jTable.getModel().getValueAt( rowIndex, columnIndex ) );
 			}
 		}
 
 		@Override
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		public void mouseClicked( MouseEvent e ) {
 		}
 
 		@Override
-		public void mouseEntered( java.awt.event.MouseEvent e ) {
+		public void mouseEntered( MouseEvent e ) {
 		}
 
 		@Override
-		public void mouseExited( java.awt.event.MouseEvent e ) {
+		public void mouseExited( MouseEvent e ) {
 		}
 	};
 }

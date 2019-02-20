@@ -43,12 +43,15 @@
 package org.alice.ide.ast.type.merge.help.diffsig.croquet;
 
 import org.alice.ide.ast.type.merge.croquet.DifferentSignature;
+import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldDifferentSignatureHelpComposite extends DifferentSignatureHelpComposite<org.lgna.project.ast.UserField> {
-	public FieldDifferentSignatureHelpComposite( DifferentSignature<org.lgna.project.ast.UserField> differentSignature ) {
-		super( java.util.UUID.fromString( "2f0ed547-7cfc-4edc-bf39-1908b3ef6f89" ), differentSignature, "value class" );
+public final class FieldDifferentSignatureHelpComposite extends DifferentSignatureHelpComposite<UserField> {
+	public FieldDifferentSignatureHelpComposite( DifferentSignature<UserField> differentSignature ) {
+		super( UUID.fromString( "2f0ed547-7cfc-4edc-bf39-1908b3ef6f89" ), differentSignature, "value class" );
 	}
 }

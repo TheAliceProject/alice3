@@ -42,16 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help;
 
+import org.alice.ide.croquet.models.help.views.GraphicsHelpView;
+import org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GraphicsHelpComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.ide.croquet.models.help.views.GraphicsHelpView> {
+public class GraphicsHelpComposite extends LazyOperationUnadornedDialogCoreComposite<GraphicsHelpView> {
 	public GraphicsHelpComposite() {
-		super( java.util.UUID.fromString( "cb7742ba-7de4-4083-aadd-41d640510cab" ) );
+		super( UUID.fromString( "cb7742ba-7de4-4083-aadd-41d640510cab" ) );
 	}
 
 	@Override
-	protected org.alice.ide.croquet.models.help.views.GraphicsHelpView createView() {
-		return new org.alice.ide.croquet.models.help.views.GraphicsHelpView();
+	protected GraphicsHelpView createView() {
+		return new GraphicsHelpView();
 	}
 }

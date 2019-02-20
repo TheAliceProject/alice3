@@ -43,23 +43,38 @@
 
 package org.alice.ide.declarationseditor.components;
 
+import org.alice.ide.croquet.models.IdeDragModel;
+import org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState;
+import org.alice.ide.declarationseditor.DeclarationComposite;
+import org.alice.ide.javacode.croquet.views.JavaCodeView;
+import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.SideBySideScrollPane;
+
+import javax.swing.BorderFactory;
+import java.awt.print.Printable;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationView extends org.lgna.croquet.views.BorderPanel {
-	public DeclarationView( org.alice.ide.declarationseditor.DeclarationComposite composite ) {
+public abstract class DeclarationView extends BorderPanel {
+	public DeclarationView( DeclarationComposite composite ) {
 		super( composite );
-		this.javaCodeView = new org.alice.ide.javacode.croquet.views.JavaCodeView( composite.getDeclaration() );
+		this.javaCodeView = new JavaCodeView( composite.getDeclaration() );
 		this.sideBySideScrollPane.setBackgroundColor( this.getBackgroundColor() );
-		this.sideBySideScrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 0, 0, 0 ) );
+		this.sideBySideScrollPane.setBorder( BorderFactory.createEmptyBorder( 2, 0, 0, 0 ) );
 	}
 
-	public abstract java.awt.print.Printable getPrintable();
+	public abstract Printable getPrintable();
 
-	public abstract void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel );
+	public abstract void addPotentialDropReceptors( List<DropReceptor> out, IdeDragModel dragModel );
 
 	protected void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
-		org.lgna.croquet.views.AwtComponentView<?> mainComponent = this.getMainComponent();
+		AwtComponentView<?> mainComponent = this.getMainComponent();
 		if( value ) {
 			if( isFirstTime ) {
 				//pass
@@ -81,9 +96,9 @@ public abstract class DeclarationView extends org.lgna.croquet.views.BorderPanel
 		}
 	}
 
-	private final org.lgna.croquet.event.ValueListener<Boolean> isJavaCodeOnTheSideListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+	private final ValueListener<Boolean> isJavaCodeOnTheSideListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			synchronized( getTreeLock() ) {
 				boolean isFirstTime = getCenterComponent() == null;
 				setJavaCodeOnTheSide( e.getNextValue(), isFirstTime );
@@ -94,22 +109,22 @@ public abstract class DeclarationView extends org.lgna.croquet.views.BorderPanel
 
 	@Override
 	protected void handleDisplayable() {
-		org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState.getInstance().addAndInvokeNewSchoolValueListener( this.isJavaCodeOnTheSideListener );
+		IsJavaCodeOnTheSideState.getInstance().addAndInvokeNewSchoolValueListener( this.isJavaCodeOnTheSideListener );
 		super.handleDisplayable();
 	}
 
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
-		org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState.getInstance().removeNewSchoolValueListener( this.isJavaCodeOnTheSideListener );
+		IsJavaCodeOnTheSideState.getInstance().removeNewSchoolValueListener( this.isJavaCodeOnTheSideListener );
 	}
 
-	public org.lgna.croquet.views.SideBySideScrollPane getSideBySideScrollPane() {
+	public SideBySideScrollPane getSideBySideScrollPane() {
 		return this.sideBySideScrollPane;
 	}
 
-	protected abstract org.lgna.croquet.views.AwtComponentView<?> getMainComponent();
+	protected abstract AwtComponentView<?> getMainComponent();
 
-	private final org.lgna.croquet.views.SideBySideScrollPane sideBySideScrollPane = new org.lgna.croquet.views.SideBySideScrollPane();
-	private final org.alice.ide.javacode.croquet.views.JavaCodeView javaCodeView;
+	private final SideBySideScrollPane sideBySideScrollPane = new SideBySideScrollPane();
+	private final JavaCodeView javaCodeView;
 }

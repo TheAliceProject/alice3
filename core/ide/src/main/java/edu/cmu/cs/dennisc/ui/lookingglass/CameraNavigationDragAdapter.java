@@ -42,6 +42,34 @@
  */
 package edu.cmu.cs.dennisc.ui.lookingglass;
 
+import edu.cmu.cs.dennisc.clock.Clock;
+import edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.rungekutta.RungeKuttaUtilities;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
+import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
+import edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
+import edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.ui.DragStyle;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+
 enum CameraNavigationMode {
 	TRANSLATE_XZ,
 	TRANSLATE_Y,
@@ -51,11 +79,11 @@ enum CameraNavigationMode {
 /**
  * @author Dennis Cosgrove
  */
-public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter implements java.awt.event.MouseWheelListener, edu.cmu.cs.dennisc.render.event.RenderTargetListener {
+public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter implements MouseWheelListener, RenderTargetListener {
 	private CameraNavigationFunction m_function = new CameraNavigationFunction();
 	private double m_tPrev = Double.NaN;
 
-	private java.awt.Cursor m_awtCursorPrev = null;
+	private Cursor m_awtCursorPrev = null;
 	private double m_metersPerMouseWheelTick;
 
 	public CameraNavigationDragAdapter() {
@@ -63,27 +91,27 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	}
 
 	@Override
-	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
-		return edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e );
+	protected boolean isAcceptable( MouseEvent e ) {
+		return MouseEventUtilities.isQuoteRightUnquoteMouseButton( e );
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenLookingGlass ) {
+	public void setOnscreenRenderTarget( OnscreenRenderTarget<?> onscreenLookingGlass ) {
 		super.setOnscreenRenderTarget( onscreenLookingGlass );
-		onscreenLookingGlass.getRenderFactory().addAutomaticDisplayListener( new edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener() {
+		onscreenLookingGlass.getRenderFactory().addAutomaticDisplayListener( new AutomaticDisplayListener() {
 			@Override
-			public void automaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e ) {
+			public void automaticDisplayCompleted( AutomaticDisplayEvent e ) {
 				CameraNavigationDragAdapter.this.handleDisplayed();
 			}
 		} );
 	}
 
 	private void handleDisplayed() {
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getSGCamera();
+		AbstractCamera sgCamera = getSGCamera();
 		if( sgCamera != null ) {
-			double tCurr = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
+			double tCurr = Clock.getCurrentTime();
 			if( Double.isNaN( m_tPrev ) ) {
-				m_tPrev = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
+				m_tPrev = Clock.getCurrentTime();
 			}
 			double tDelta = tCurr - m_tPrev;
 			update( tDelta );
@@ -94,12 +122,12 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	private int m_sgCameraIndex = 0;
 	private boolean isMultipleCameraWarningAlreadyDelivered = false;
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
-		edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenLookingGlass = getOnscreenRenderTarget();
+	public AbstractCamera getSGCamera() {
+		OnscreenRenderTarget<?> onscreenLookingGlass = getOnscreenRenderTarget();
 		if( onscreenLookingGlass != null ) {
 			int cameraCount = onscreenLookingGlass.getSgCameraCount();
 			if( ( cameraCount > 1 ) && ( this.isMultipleCameraWarningAlreadyDelivered == false ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "onscreenLookingGlass camera count:", onscreenLookingGlass.getSgCameraCount() );
+				Logger.warning( "onscreenLookingGlass camera count:", onscreenLookingGlass.getSgCameraCount() );
 				this.isMultipleCameraWarningAlreadyDelivered = true;
 			}
 			if( m_sgCameraIndex < cameraCount ) {
@@ -112,10 +140,10 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 		}
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Transformable getSGCameraTransformable() {
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getSGCamera();
+	public Transformable getSGCameraTransformable() {
+		AbstractCamera sgCamera = getSGCamera();
 		if( sgCamera != null ) {
-			return (edu.cmu.cs.dennisc.scenegraph.Transformable)sgCamera.getParent();
+			return (Transformable)sgCamera.getParent();
 		} else {
 			return null;
 		}
@@ -168,11 +196,11 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 		m_function.requestTarget( x, y, z );
 	}
 
-	public void requestTarget( edu.cmu.cs.dennisc.math.Point3 target ) {
+	public void requestTarget( Point3 target ) {
 		m_function.requestTarget( target.x, target.y, target.z );
 	}
 
-	public void requestYaw( edu.cmu.cs.dennisc.math.Angle yaw ) {
+	public void requestYaw( Angle yaw ) {
 		m_function.requestYaw( yaw );
 	}
 
@@ -180,11 +208,11 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 		m_function.requestDistance( distance );
 	}
 
-	public edu.cmu.cs.dennisc.math.Angle getYawRequested() {
+	public Angle getYawRequested() {
 		return m_function.getYawRequested();
 	}
 
-	public edu.cmu.cs.dennisc.math.Angle getPitchRequested() {
+	public Angle getPitchRequested() {
 		return m_function.getPitchRequested();
 	}
 
@@ -192,15 +220,15 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 		return m_function.getDistanceRequested();
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 accessTargetRequested() {
+	public Point3 accessTargetRequested() {
 		return m_function.accessTargetRequested();
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getTargetRequested( edu.cmu.cs.dennisc.math.Point3 rv ) {
+	public Point3 getTargetRequested( Point3 rv ) {
 		return m_function.getTargetRequested( rv );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getTargetRequested() {
+	public Point3 getTargetRequested() {
 		return m_function.getTargetRequested();
 	}
 
@@ -216,7 +244,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 
 	public void update( double tDelta ) {
 		if( m_isEnabled ) {
-			edu.cmu.cs.dennisc.math.rungekutta.RungeKuttaUtilities.rk4( m_function, 0, tDelta );
+			RungeKuttaUtilities.rk4( m_function, 0, tDelta );
 			//edu.cmu.cs.dennisc.print.PrintUtilities.printlns( m_function.getTransformation() );
 			getSGCameraTransformable().setLocalTransformation( m_function.getTransformation() );
 		}
@@ -225,8 +253,8 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	final int BOX_HALF_SIZE = 6;
 	final int DASH_SIZE = 6;
 
-	private void paintBox( java.awt.Graphics2D g ) {
-		g.setColor( java.awt.Color.BLUE );
+	private void paintBox( Graphics2D g ) {
+		g.setColor( Color.BLUE );
 		g.drawRect( m_xPixel0 - BOX_HALF_SIZE, m_yPixel0 - BOX_HALF_SIZE, BOX_HALF_SIZE + BOX_HALF_SIZE + 1, BOX_HALF_SIZE + BOX_HALF_SIZE + 1 );
 		g.drawLine( m_xPixel0 - BOX_HALF_SIZE, m_yPixel0, m_xPixel0 - BOX_HALF_SIZE - DASH_SIZE, m_yPixel0 );
 		g.drawLine( m_xPixel0 + BOX_HALF_SIZE + 1, m_yPixel0, m_xPixel0 + BOX_HALF_SIZE + DASH_SIZE + 1, m_yPixel0 );
@@ -234,12 +262,12 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 		g.drawLine( m_xPixel0, m_yPixel0 + BOX_HALF_SIZE + 1, m_xPixel0, m_yPixel0 + BOX_HALF_SIZE + DASH_SIZE + 1 );
 	}
 
-	private void paintDash( java.awt.Graphics2D g ) {
-		g.setColor( java.awt.Color.BLUE );
+	private void paintDash( Graphics2D g ) {
+		g.setColor( Color.BLUE );
 		g.drawLine( m_xPixel0 - BOX_HALF_SIZE - DASH_SIZE, m_yPixel0, m_xPixel0 + BOX_HALF_SIZE + DASH_SIZE, m_yPixel0 );
 	}
 
-	private void paintArrow( java.awt.Graphics2D g, int xPixelDelta, int yPixelDelta ) {
+	private void paintArrow( Graphics2D g, int xPixelDelta, int yPixelDelta ) {
 		int[] xPoints = { 0, 8, 8, 20, 20, 8, 8 };
 		int[] yPoints = { 0, 10, 5, 5, -5, -5, -10 };
 
@@ -247,15 +275,15 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 		g.translate( m_xPixelPrev, m_yPixelPrev );
 		g.rotate( theta );
 
-		g.setColor( java.awt.Color.DARK_GRAY );
+		g.setColor( Color.DARK_GRAY );
 		g.fillPolygon( xPoints, yPoints, xPoints.length );
-		g.setColor( java.awt.Color.LIGHT_GRAY );
+		g.setColor( Color.LIGHT_GRAY );
 		g.drawPolygon( xPoints, yPoints, xPoints.length );
 		g.rotate( -theta );
 		g.translate( -m_xPixelPrev, -m_yPixelPrev );
 	}
 
-	public void paint( java.awt.Graphics2D g ) {
+	public void paint( Graphics2D g ) {
 		if( m_cameraNavigationMode == CameraNavigationMode.TRANSLATE_XZ ) {
 			paintBox( g );
 			paintArrow( g, m_xPixel0 - m_xPixelPrev, m_yPixel0 - m_yPixelPrev );
@@ -263,37 +291,37 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 			paintDash( g );
 			paintArrow( g, 0, m_yPixel0 - m_yPixelPrev );
 		} else if( m_cameraNavigationMode == CameraNavigationMode.ORBIT ) {
-			g.setColor( java.awt.Color.BLACK );
+			g.setColor( Color.BLACK );
 			final int RADIUS = 10;
 			g.drawOval( m_xPixel0 - RADIUS, m_yPixel0 - RADIUS, RADIUS + RADIUS + 1, RADIUS + RADIUS + 1 );
 		}
 	}
 
 	@Override
-	public void initialized( edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent e ) {
+	public void initialized( RenderTargetInitializeEvent e ) {
 	}
 
 	@Override
-	public void resized( edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent e ) {
+	public void resized( RenderTargetResizeEvent e ) {
 	}
 
 	@Override
-	public void displayChanged( edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent e ) {
+	public void displayChanged( RenderTargetDisplayChangeEvent e ) {
 	}
 
 	@Override
-	public void cleared( edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent e ) {
+	public void cleared( RenderTargetRenderEvent e ) {
 	}
 
 	@Override
-	public void rendered( edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent e ) {
+	public void rendered( RenderTargetRenderEvent e ) {
 		paint( e.getGraphics2D() );
 	}
 
 	//todo: add get/set m_wheelFactor
 
 	@Override
-	protected void addListeners( java.awt.Component component ) {
+	protected void addListeners( Component component ) {
 		super.addListeners( component );
 
 		//todo
@@ -303,7 +331,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	}
 
 	@Override
-	protected void removeListeners( java.awt.Component component ) {
+	protected void removeListeners( Component component ) {
 		super.removeListeners( component );
 
 		//todo
@@ -313,7 +341,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	}
 
 	@Override
-	protected void handleMousePress( java.awt.Point current, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
+	protected void handleMousePress( Point current, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
 		CameraNavigationMode cameraNavigationMode;
 		if( dragStyle.isControlDown() ) {
 			if( dragStyle.isShiftDown() ) {
@@ -334,17 +362,17 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 		if( isOriginalAsOpposedToStyleChange ) {
 			getOnscreenRenderTarget().addRenderTargetListener( this );
 			m_awtCursorPrev = getAWTComponent().getCursor();
-			getAWTComponent().setCursor( new java.awt.Cursor( java.awt.Cursor.CROSSHAIR_CURSOR ) );
+			getAWTComponent().setCursor( new Cursor( Cursor.CROSSHAIR_CURSOR ) );
 		}
 	}
 
 	@Override
-	protected void handleMouseDrag( java.awt.Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, edu.cmu.cs.dennisc.ui.DragStyle dragStyle ) {
+	protected void handleMouseDrag( Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, DragStyle dragStyle ) {
 		handleMouseDragged( current.x, current.y );
 	}
 
 	@Override
-	protected java.awt.Point handleMouseRelease( java.awt.Point rvCurrent, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
+	protected Point handleMouseRelease( Point rvCurrent, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
 		stopCameraNavigationMode();
 		if( isOriginalAsOpposedToStyleChange ) {
 			getAWTComponent().setCursor( m_awtCursorPrev );
@@ -354,18 +382,18 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	}
 
 	@Override
-	public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
+	public void mouseWheelMoved( MouseWheelEvent e ) {
 		m_function.requestDistanceChange( e.getWheelRotation() * m_metersPerMouseWheelTick );
 	}
 
 	@Override
-	public void keyPressed( java.awt.event.KeyEvent e ) {
+	public void keyPressed( KeyEvent e ) {
 		super.keyPressed( e );
 		m_function.setKeyPressed( e.getKeyCode(), true );
 	}
 
 	@Override
-	public void keyReleased( java.awt.event.KeyEvent e ) {
+	public void keyReleased( KeyEvent e ) {
 		super.keyReleased( e );
 		m_function.setKeyPressed( e.getKeyCode(), false );
 	}

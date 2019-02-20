@@ -43,13 +43,19 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.IndexedPolygonArray;
+import edu.cmu.cs.dennisc.scenegraph.Vertex;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrIndexedPolygonArray<T extends edu.cmu.cs.dennisc.scenegraph.IndexedPolygonArray> extends GlrVertexGeometry<T> {
+public abstract class GlrIndexedPolygonArray<T extends IndexedPolygonArray> extends GlrVertexGeometry<T> {
 	public GlrIndexedPolygonArray( int mode, int indicesPerPolygon ) {
 		this.mode = mode;
 		this.indicesPerPolygon = indicesPerPolygon;
@@ -113,7 +119,7 @@ public abstract class GlrIndexedPolygonArray<T extends edu.cmu.cs.dennisc.sceneg
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.polygonData ) {
 			setIsGeometryChanged( true );
 		} else {
@@ -122,12 +128,12 @@ public abstract class GlrIndexedPolygonArray<T extends edu.cmu.cs.dennisc.sceneg
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
+	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
 		if( subElement != -1 ) {
 			int[] polygonData = owner.polygonData.getValueAsArray();
 			int index = subElement * indicesPerPolygon;
 			if( ( 0 <= index ) && ( index < polygonData.length ) ) {
-				edu.cmu.cs.dennisc.scenegraph.Vertex v = accessVertexAt( polygonData[ index ] );
+				Vertex v = accessVertexAt( polygonData[ index ] );
 				GlrGeometry.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, v.position.x, v.position.y, v.position.z, v.normal.x, v.normal.y, v.normal.z );
 			} else {
 				rv.setNaN();

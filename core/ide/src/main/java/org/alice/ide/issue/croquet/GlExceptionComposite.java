@@ -42,27 +42,35 @@
  *******************************************************************************/
 package org.alice.ide.issue.croquet;
 
+import com.jogamp.opengl.GLException;
+import org.alice.ide.issue.croquet.views.GlExceptionView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class GlExceptionComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.issue.croquet.views.GlExceptionView> {
-	private final com.jogamp.opengl.GLException glException;
+public final class GlExceptionComposite extends SimpleOperationUnadornedDialogCoreComposite<GlExceptionView> {
+	private final GLException glException;
 
-	public GlExceptionComposite( com.jogamp.opengl.GLException glException ) {
-		super( java.util.UUID.fromString( "430294d2-f4e4-4a69-93af-93fc2f7a89ba" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+	public GlExceptionComposite( GLException glException ) {
+		super( UUID.fromString( "430294d2-f4e4-4a69-93af-93fc2f7a89ba" ), Application.INFORMATION_GROUP );
 		this.glException = glException;
 	}
 
-	public com.jogamp.opengl.GLException getGlException() {
+	public GLException getGlException() {
 		return this.glException;
 	}
 
 	@Override
-	protected org.alice.ide.issue.croquet.views.GlExceptionView createView() {
-		return new org.alice.ide.issue.croquet.views.GlExceptionView( this );
+	protected GlExceptionView createView() {
+		return new GlExceptionView( this );
 	}
 
-	public org.lgna.croquet.Operation getDisplayDriverHelpOperation() {
+	public Operation getDisplayDriverHelpOperation() {
 		return GraphicsDriverHelpOperation.getInstance();
 	}
 }

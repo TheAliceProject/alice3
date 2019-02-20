@@ -42,11 +42,27 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.util.zip;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * @author Dennis Cosgrove
  */
-public interface DataSource {
-	public String getName();
+public abstract class DataSource {
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof DataSource) {
+			return this.getName().equals(((DataSource) obj).getName());
+		}
+		return super.equals(obj);
+	}
 
-	public void write( java.io.OutputStream os ) throws java.io.IOException;
+	@Override
+	public int hashCode() {
+		return getName().hashCode();
+	}
+
+	public abstract String getName();
+
+	public abstract void write(OutputStream os) throws IOException;
 }

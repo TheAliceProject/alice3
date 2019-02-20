@@ -42,49 +42,63 @@
  *******************************************************************************/
 package org.alice.ide.x.components;
 
+import org.alice.ide.ApiConfigurationManager;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.components.DeclarationNameLabel;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.x.AstI18nFactory;
+import org.alice.stageide.StoryApiConfigurationManager;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.TypeExpression;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast.FieldAccess> {
-	private final org.lgna.croquet.views.SwingComponentView<?> replacement;
+public class FieldAccessView extends AbstractExpressionView<FieldAccess> {
+	private final SwingComponentView<?> replacement;
 
-	public FieldAccessView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.FieldAccess fieldAccess ) {
+	public FieldAccessView( AstI18nFactory factory, FieldAccess fieldAccess ) {
 		super( factory, fieldAccess );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.croquet.views.AwtComponentView<?> prefixPane = ide != null ? ide.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess ) : null;
+		IDE ide = IDE.getActiveInstance();
+		AwtComponentView<?> prefixPane = ide != null ? ide.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess ) : null;
 		if( prefixPane != null ) {
 			this.addComponent( prefixPane );
 		}
 
-		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.stageide.StoryApiConfigurationManager.EPIC_HACK_getActiveInstance();
+		ApiConfigurationManager apiConfigurationManager = StoryApiConfigurationManager.EPIC_HACK_getActiveInstance();
 		this.replacement = apiConfigurationManager.createReplacementForFieldAccessIfAppropriate( fieldAccess );
 		if( this.replacement != null ) {
 			this.addComponent( this.replacement );
 		} else {
 			boolean isExpressionDesired;
 
-			if( fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
-				isExpressionDesired = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().isTypeExpressionDesired();
+			if( fieldAccess.expression.getValue() instanceof TypeExpression ) {
+				isExpressionDesired = FormatterState.getInstance().getValue().isTypeExpressionDesired();
 			} else {
 				isExpressionDesired = true;
 			}
 
 			if( isExpressionDesired ) {
 				this.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression ) );
-				if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
+				if( FormatterState.isJava() ) {
 					//pass
 				} else {
-					this.addComponent( new org.lgna.croquet.views.Label( "." ) );
+					this.addComponent( new Label( "." ) );
 				}
 			}
-			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
-			org.alice.ide.ast.components.DeclarationNameLabel nodeNameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( field );
+			AbstractField field = fieldAccess.field.getValue();
+			DeclarationNameLabel nodeNameLabel = new DeclarationNameLabel( field );
 			//nodeNameLabel.scaleFont( 1.2f );
 			//nodeNameLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-			boolean isGetter = ide != null ? ide.getAccessorAndMutatorDisplayStyle( field ) == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER : false;
+			boolean isGetter = ide != null ? ide.getAccessorAndMutatorDisplayStyle( field ) == IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER : false;
 			if( isExpressionDesired ) {
 				if( isGetter ) {
-					org.lgna.croquet.views.Label getLabel = new org.lgna.croquet.views.Label( "get" );
+					Label getLabel = new Label( "get" );
 					//getLabel.scaleFont( 1.2f );
 					//getLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 					this.addComponent( getLabel );
@@ -93,8 +107,8 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 			this.addComponent( nodeNameLabel );
 			if( isExpressionDesired ) {
 				if( isGetter ) {
-					if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
-						this.addComponent( new org.lgna.croquet.views.Label( "()" ) );
+					if( FormatterState.isJava() ) {
+						this.addComponent( new Label( "()" ) );
 					}
 				}
 			}
@@ -106,9 +120,9 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 		if( this.replacement != null ) {
 			return true;
 		} else {
-			org.lgna.project.ast.FieldAccess fieldAccess = this.getExpression();
+			FieldAccess fieldAccess = this.getExpression();
 			if( fieldAccess != null ) {
-				if( fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
+				if( fieldAccess.expression.getValue() instanceof TypeExpression ) {
 					return super.isExpressionTypeFeedbackDesired();
 				} else {
 					if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( fieldAccess ) ) {
@@ -124,8 +138,8 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType() {
-		org.lgna.project.ast.FieldAccess fieldAccess = this.getExpression();
+	public AbstractType<?, ?, ?> getExpressionType() {
+		FieldAccess fieldAccess = this.getExpression();
 		if( fieldAccess != null ) {
 			return fieldAccess.getType();
 		} else {

@@ -42,10 +42,19 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.enumconstant;
 
+import org.alice.stageide.gallerybrowser.enumconstant.data.EnumConstantResourceKeyListData;
+import org.alice.stageide.gallerybrowser.enumconstant.views.EnumConstantResourceKeySelectionView;
+import org.alice.stageide.modelresource.ClassResourceKey;
+import org.alice.stageide.modelresource.EnumConstantResourceKey;
+import org.lgna.croquet.RefreshableDataSingleSelectListState;
+import org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EnumConstantResourceKeySelectionComposite extends org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite<org.alice.stageide.gallerybrowser.enumconstant.views.EnumConstantResourceKeySelectionView, org.alice.stageide.modelresource.EnumConstantResourceKey> {
+public class EnumConstantResourceKeySelectionComposite extends SingleValueCreatorInputDialogCoreComposite<EnumConstantResourceKeySelectionView, EnumConstantResourceKey> {
 	private static class SingletonHolder {
 		private static EnumConstantResourceKeySelectionComposite instance = new EnumConstantResourceKeySelectionComposite();
 	}
@@ -54,26 +63,26 @@ public class EnumConstantResourceKeySelectionComposite extends org.lgna.croquet.
 		return SingletonHolder.instance;
 	}
 
-	private final org.alice.stageide.gallerybrowser.enumconstant.data.EnumConstantResourceKeyListData listData = new org.alice.stageide.gallerybrowser.enumconstant.data.EnumConstantResourceKeyListData();
-	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.alice.stageide.modelresource.EnumConstantResourceKey> enumConstantResourceKeyState = this.createRefreshableListState( "enumConstantResourceKeyState", this.listData, -1 );
+	private final EnumConstantResourceKeyListData listData = new EnumConstantResourceKeyListData();
+	private final RefreshableDataSingleSelectListState<EnumConstantResourceKey> enumConstantResourceKeyState = this.createRefreshableListState( "enumConstantResourceKeyState", this.listData, -1 );
 
 	private final ErrorStatus noSelectionErrorStatus = this.createErrorStatus( "noSelectionErrorStatus" );
 
 	private EnumConstantResourceKeySelectionComposite() {
-		super( java.util.UUID.fromString( "2a052ea8-1e92-4408-8ce1-8daec5b3e6ec" ) );
+		super( UUID.fromString( "2a052ea8-1e92-4408-8ce1-8daec5b3e6ec" ) );
 	}
 
-	public org.lgna.croquet.RefreshableDataSingleSelectListState<org.alice.stageide.modelresource.EnumConstantResourceKey> getEnumConstantResourceKeyState() {
+	public RefreshableDataSingleSelectListState<EnumConstantResourceKey> getEnumConstantResourceKeyState() {
 		return this.enumConstantResourceKeyState;
 	}
 
 	@Override
-	protected org.alice.stageide.gallerybrowser.enumconstant.views.EnumConstantResourceKeySelectionView createView() {
-		return new org.alice.stageide.gallerybrowser.enumconstant.views.EnumConstantResourceKeySelectionView( this );
+	protected EnumConstantResourceKeySelectionView createView() {
+		return new EnumConstantResourceKeySelectionView( this );
 	}
 
 	@Override
-	protected org.alice.stageide.modelresource.EnumConstantResourceKey createValue() {
+	protected EnumConstantResourceKey createValue() {
 		return this.enumConstantResourceKeyState.getValue();
 	}
 
@@ -83,7 +92,7 @@ public class EnumConstantResourceKeySelectionComposite extends org.lgna.croquet.
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		if( this.enumConstantResourceKeyState.getValue() != null ) {
 			return IS_GOOD_TO_GO_STATUS;
 		} else {
@@ -91,7 +100,7 @@ public class EnumConstantResourceKeySelectionComposite extends org.lgna.croquet.
 		}
 	}
 
-	public void setClassResourceKey( org.alice.stageide.modelresource.ClassResourceKey classResourceKey ) {
+	public void setClassResourceKey( ClassResourceKey classResourceKey ) {
 		this.enumConstantResourceKeyState.clearSelection();
 		this.listData.setClassResourceKey( classResourceKey );
 	}

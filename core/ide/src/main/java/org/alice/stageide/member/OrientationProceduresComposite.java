@@ -43,10 +43,14 @@
 
 package org.alice.stageide.member;
 
+import org.alice.ide.member.NameFilteredJavaProceduresComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class OrientationProceduresComposite extends org.alice.ide.member.NameFilteredJavaProceduresComposite {
+public class OrientationProceduresComposite extends NameFilteredJavaProceduresComposite {
 	private static class SingletonHolder {
 		private static OrientationProceduresComposite instance = new OrientationProceduresComposite();
 	}
@@ -56,6 +60,6 @@ public class OrientationProceduresComposite extends org.alice.ide.member.NameFil
 	}
 
 	private OrientationProceduresComposite() {
-		super( java.util.UUID.fromString( "2233c56a-156c-48ce-9403-67ce5278727d" ), "turn", "roll", "turnToFace", "orientTo", "orientToUpright", "pointAt" );
+		super( UUID.fromString( "2233c56a-156c-48ce-9403-67ce5278727d" ), "turn", "roll", "turnToFace", "orientTo", "orientToUpright", "pointAt" );
 	}
 }

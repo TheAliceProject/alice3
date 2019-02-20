@@ -43,13 +43,21 @@
 
 package org.alice.ide.croquet.models.cascade.arithmetic;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks;
+import org.lgna.project.ast.ArithmeticInfixExpression;
+import org.lgna.project.ast.Expression;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks<org.lgna.project.ast.ArithmeticInfixExpression> {
-	private static java.util.Map<org.lgna.project.ast.ArithmeticInfixExpression.Operator, ReplaceOperatorInPreviousArithmeticExpressionFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends PreviousExpressionBasedFillInWithoutBlanks<ArithmeticInfixExpression> {
+	private static Map<ArithmeticInfixExpression.Operator, ReplaceOperatorInPreviousArithmeticExpressionFillIn> map = Maps.newHashMap();
 
-	public static ReplaceOperatorInPreviousArithmeticExpressionFillIn getInstance( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
+	public static ReplaceOperatorInPreviousArithmeticExpressionFillIn getInstance( ArithmeticInfixExpression.Operator operator ) {
 		synchronized( map ) {
 			ReplaceOperatorInPreviousArithmeticExpressionFillIn rv = map.get( operator );
 			if( rv != null ) {
@@ -62,10 +70,10 @@ public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.ali
 		}
 	}
 
-	private final org.lgna.project.ast.ArithmeticInfixExpression.Operator operator;
+	private final ArithmeticInfixExpression.Operator operator;
 
-	private ReplaceOperatorInPreviousArithmeticExpressionFillIn( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "7699fe5b-b1bc-4bc2-9632-eace7166bdb6" ) );
+	private ReplaceOperatorInPreviousArithmeticExpressionFillIn( ArithmeticInfixExpression.Operator operator ) {
+		super( UUID.fromString( "7699fe5b-b1bc-4bc2-9632-eace7166bdb6" ) );
 		this.operator = operator;
 	}
 
@@ -74,10 +82,10 @@ public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.ali
 	//		return previousExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression;
 	//	}
 	@Override
-	protected org.lgna.project.ast.ArithmeticInfixExpression createValue( org.lgna.project.ast.Expression previousExpression ) {
-		assert previousExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression;
-		org.lgna.project.ast.ArithmeticInfixExpression previousArithmetic = (org.lgna.project.ast.ArithmeticInfixExpression)previousExpression;
-		return new org.lgna.project.ast.ArithmeticInfixExpression(
+	protected ArithmeticInfixExpression createValue( Expression previousExpression ) {
+		assert previousExpression instanceof ArithmeticInfixExpression;
+		ArithmeticInfixExpression previousArithmetic = (ArithmeticInfixExpression)previousExpression;
+		return new ArithmeticInfixExpression(
 				previousArithmetic.leftOperand.getValue(),
 				this.operator,
 				previousArithmetic.rightOperand.getValue(),

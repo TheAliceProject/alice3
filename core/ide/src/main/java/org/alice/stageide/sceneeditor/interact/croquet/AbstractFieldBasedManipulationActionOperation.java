@@ -42,17 +42,27 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.croquet;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Group;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.implementation.EntityImp;
+
+import java.util.UUID;
+
 /**
  * @author Dave Culyba
  */
-public abstract class AbstractFieldBasedManipulationActionOperation extends org.lgna.croquet.ActionOperation {
+public abstract class AbstractFieldBasedManipulationActionOperation extends ActionOperation {
 
 	private final boolean isDoRequired;
-	private final edu.cmu.cs.dennisc.animation.Animator animator;
-	private final org.lgna.project.ast.UserField field;
+	private final Animator animator;
+	private final UserField field;
 	private final String editPresentationKey;
 
-	public AbstractFieldBasedManipulationActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, String presentationKey ) {
+	public AbstractFieldBasedManipulationActionOperation( Group group, UUID individualId, boolean isDoRequired, Animator animator, UserField field, String presentationKey ) {
 		super( group, individualId );
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;
@@ -60,7 +70,7 @@ public abstract class AbstractFieldBasedManipulationActionOperation extends org.
 		this.editPresentationKey = presentationKey;
 	}
 
-	protected edu.cmu.cs.dennisc.animation.Animator getAnimator() {
+	protected Animator getAnimator() {
 		return this.animator;
 	}
 
@@ -72,11 +82,11 @@ public abstract class AbstractFieldBasedManipulationActionOperation extends org.
 		return this.editPresentationKey;
 	}
 
-	protected org.lgna.story.implementation.EntityImp getEntityImp() {
-		org.lgna.story.implementation.EntityImp entityImp = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getImplementation( this.field );
+	protected EntityImp getEntityImp() {
+		EntityImp entityImp = StorytellingSceneEditor.getInstance().getImplementation( this.field );
 		if( ( this.field == null ) || ( entityImp == null ) )
 		{
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "NULL EnityImp" );
+			Logger.severe( "NULL EnityImp" );
 		}
 		return entityImp;
 	}

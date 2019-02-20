@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import org.lgna.common.LgnaIllegalKeyArgumentException;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,7 +54,7 @@ public class DurationAnimationStyleArgumentFactory {
 	}
 
 	public static Duration duration( Number duration ) {
-		org.lgna.common.LgnaIllegalKeyArgumentException.checkArgumentIsPositiveOrZero( duration, "duration" );
+		LgnaIllegalKeyArgumentException.checkArgumentIsPositiveOrZero( duration, "duration" );
 		return new Duration( duration );
 	}
 

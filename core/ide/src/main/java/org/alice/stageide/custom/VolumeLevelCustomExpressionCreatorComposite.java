@@ -43,10 +43,19 @@
 
 package org.alice.stageide.custom;
 
+import org.alice.ide.custom.CustomExpressionCreatorComposite;
+import org.alice.stageide.custom.components.VolumeLevelCustomExpressionCreatorView;
+import org.lgna.croquet.BoundedIntegerState;
+import org.lgna.croquet.StringValue;
+import org.lgna.project.ast.DoubleLiteral;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class VolumeLevelCustomExpressionCreatorComposite extends org.alice.ide.custom.CustomExpressionCreatorComposite<org.alice.stageide.custom.components.VolumeLevelCustomExpressionCreatorView> {
+public class VolumeLevelCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<VolumeLevelCustomExpressionCreatorView> {
 	private static class SingletonHolder {
 		private static VolumeLevelCustomExpressionCreatorComposite instance = new VolumeLevelCustomExpressionCreatorComposite();
 	}
@@ -55,52 +64,52 @@ public class VolumeLevelCustomExpressionCreatorComposite extends org.alice.ide.c
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.BoundedIntegerState valueState = this.createBoundedIntegerState( "valueState", VolumeLevelUtilities.createDetails() );
-	private final org.lgna.croquet.StringValue silentLabel = this.createStringValue( "silentLabel" );
-	private final org.lgna.croquet.StringValue normalLabel = this.createStringValue( "normalLabel" );
-	private final org.lgna.croquet.StringValue louderLabel = this.createStringValue( "louderLabel" );
+	private final BoundedIntegerState valueState = this.createBoundedIntegerState( "valueState", VolumeLevelUtilities.createDetails() );
+	private final StringValue silentLabel = this.createStringValue( "silentLabel" );
+	private final StringValue normalLabel = this.createStringValue( "normalLabel" );
+	private final StringValue louderLabel = this.createStringValue( "louderLabel" );
 
 	private VolumeLevelCustomExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "1c80a46b-6ff8-4fbd-8003-5bbab71a3fca" ) );
+		super( UUID.fromString( "1c80a46b-6ff8-4fbd-8003-5bbab71a3fca" ) );
 	}
 
 	@Override
-	protected org.alice.stageide.custom.components.VolumeLevelCustomExpressionCreatorView createView() {
-		return new org.alice.stageide.custom.components.VolumeLevelCustomExpressionCreatorView( this );
+	protected VolumeLevelCustomExpressionCreatorView createView() {
+		return new VolumeLevelCustomExpressionCreatorView( this );
 	}
 
-	public org.lgna.croquet.BoundedIntegerState getValueState() {
+	public BoundedIntegerState getValueState() {
 		return this.valueState;
 	}
 
-	public org.lgna.croquet.StringValue getLouderLabel() {
+	public StringValue getLouderLabel() {
 		return this.louderLabel;
 	}
 
-	public org.lgna.croquet.StringValue getNormalLabel() {
+	public StringValue getNormalLabel() {
 		return this.normalLabel;
 	}
 
-	public org.lgna.croquet.StringValue getSilentLabel() {
+	public StringValue getSilentLabel() {
 		return this.silentLabel;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createValue() {
+	protected Expression createValue() {
 		double actualVolume = VolumeLevelUtilities.toDouble( this.valueState.getValue() );
-		return new org.lgna.project.ast.DoubleLiteral( actualVolume );
+		return new DoubleLiteral( actualVolume );
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
-	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+	protected void initializeToPreviousExpression( Expression expression ) {
 		double actualVolume;
-		if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
-			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;
+		if( expression instanceof DoubleLiteral ) {
+			DoubleLiteral doubleLiteral = (DoubleLiteral)expression;
 			actualVolume = doubleLiteral.value.getValue();
 		} else {
 			actualVolume = Double.NaN;

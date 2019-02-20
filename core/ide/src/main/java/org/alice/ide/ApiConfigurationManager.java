@@ -43,56 +43,90 @@
 
 package org.alice.ide;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.tree.DefaultNode;
+import edu.cmu.cs.dennisc.tree.Node;
+import org.alice.ide.ast.ExpressionCreator;
+import org.alice.ide.iconfactory.IconFactoryManager;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.member.FilteredJavaMethodsSubComposite;
+import org.alice.stageide.StoryApiConfigurationManager;
+import org.lgna.croquet.CascadeItem;
+import org.lgna.croquet.CascadeMenuModel;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ProgramTypeUtilities;
+import org.lgna.project.Project;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractConstructor;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Code;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserLocal;
+import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.UserType;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ApiConfigurationManager {
 	@Deprecated
 	public static ApiConfigurationManager EPIC_HACK_getActiveInstance() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			return ide.getApiConfigurationManager();
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "remove epic hack" );
-			return org.alice.stageide.StoryApiConfigurationManager.getInstance();
+			Logger.todo( "remove epic hack" );
+			return StoryApiConfigurationManager.getInstance();
 		}
 	}
 
-	public abstract java.util.Comparator<org.lgna.project.ast.AbstractType<?, ?, ?>> getTypeComparator();
+	public abstract Comparator<AbstractType<?, ?, ?>> getTypeComparator();
 
-	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getCategoryProcedureSubComposites();
+	public abstract List<FilteredJavaMethodsSubComposite> getCategoryProcedureSubComposites();
 
-	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getCategoryFunctionSubComposites();
+	public abstract List<FilteredJavaMethodsSubComposite> getCategoryFunctionSubComposites();
 
-	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalProcedureSubComposites();
+	public abstract List<FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalProcedureSubComposites();
 
-	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalFunctionSubComposites();
+	public abstract List<FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalFunctionSubComposites();
 
 	//override to create user types if desired
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getTypeFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public AbstractType<?, ?, ?> getTypeFor( AbstractType<?, ?, ?> type ) {
 		return type;
 	}
 
-	public final org.lgna.project.ast.AbstractType<?, ?, ?> getTypeFor( Class<?> cls ) {
-		return this.getTypeFor( org.lgna.project.ast.JavaType.getInstance( cls ) );
+	public final AbstractType<?, ?, ?> getTypeFor( Class<?> cls ) {
+		return this.getTypeFor( JavaType.getInstance( cls ) );
 	}
 
-	private final edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> getNamedUserTypesAsTree() {
+	private final DefaultNode<NamedUserType> getNamedUserTypesAsTree() {
 		IDE ide = IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
+		Project project = ide.getProject();
 		if( project != null ) {
-			return org.lgna.project.ProgramTypeUtilities.getNamedUserTypesAsTree( project );
+			return ProgramTypeUtilities.getNamedUserTypesAsTree( project );
 		} else {
 			return null;
 		}
 	}
 
-	protected abstract boolean isNamedUserTypesAcceptableForSelection( org.lgna.project.ast.NamedUserType type );
+	protected abstract boolean isNamedUserTypesAcceptableForSelection( NamedUserType type );
 
-	public final edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> getNamedUserTypesAsTreeFilteredForSelection() {
-		edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> rv = getNamedUserTypesAsTree();
+	public final Node<NamedUserType> getNamedUserTypesAsTreeFilteredForSelection() {
+		DefaultNode<NamedUserType> rv = getNamedUserTypesAsTree();
 		if( rv != null ) {
-			for( edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> child : rv.getChildren() ) {
+			for( DefaultNode<NamedUserType> child : rv.getChildren() ) {
 				if( this.isNamedUserTypesAcceptableForSelection( child.getValue() ) ) {
 					//pass
 				} else {
@@ -103,12 +137,12 @@ public abstract class ApiConfigurationManager {
 		return rv;
 	}
 
-	protected abstract boolean isNamedUserTypesAcceptableForGallery( org.lgna.project.ast.NamedUserType type );
+	protected abstract boolean isNamedUserTypesAcceptableForGallery( NamedUserType type );
 
-	public final edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> getNamedUserTypesAsTreeFilteredForGallery() {
-		edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> rv = getNamedUserTypesAsTree();
+	public final DefaultNode<NamedUserType> getNamedUserTypesAsTreeFilteredForGallery() {
+		DefaultNode<NamedUserType> rv = getNamedUserTypesAsTree();
 		if( rv != null ) {
-			for( edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> child : rv.getChildren() ) {
+			for( DefaultNode<NamedUserType> child : rv.getChildren() ) {
 				if( this.isNamedUserTypesAcceptableForGallery( child.getValue() ) ) {
 					//pass
 				} else {
@@ -119,14 +153,14 @@ public abstract class ApiConfigurationManager {
 		return rv;
 	}
 
-	public final java.util.List<org.lgna.project.ast.JavaType> getPrimeTimeSelectableJavaTypes() {
-		java.util.List<org.lgna.project.ast.JavaType> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public final List<JavaType> getPrimeTimeSelectableJavaTypes() {
+		List<JavaType> rv = Lists.newLinkedList();
 		this.addPrimeTimeJavaTypes( rv );
 		return rv;
 	}
 
-	public final java.util.List<org.lgna.project.ast.JavaType> getSecondarySelectableJavaTypes() {
-		java.util.List<org.lgna.project.ast.JavaType> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public final List<JavaType> getSecondarySelectableJavaTypes() {
+		List<JavaType> rv = Lists.newLinkedList();
 		this.addSecondaryJavaTypes( rv );
 		return rv;
 	}
@@ -136,19 +170,19 @@ public abstract class ApiConfigurationManager {
 	//		this.addAliceTypes( rv, true );
 	//		return rv;
 	//	}
-	protected java.util.List<? super org.lgna.project.ast.JavaType> addPrimeTimeJavaTypes( java.util.List<? super org.lgna.project.ast.JavaType> rv ) {
-		rv.add( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE );
-		rv.add( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE );
-		rv.add( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE );
-		rv.add( org.lgna.project.ast.JavaType.STRING_TYPE );
+	protected List<? super JavaType> addPrimeTimeJavaTypes( List<? super JavaType> rv ) {
+		rv.add( JavaType.DOUBLE_OBJECT_TYPE );
+		rv.add( JavaType.INTEGER_OBJECT_TYPE );
+		rv.add( JavaType.BOOLEAN_OBJECT_TYPE );
+		rv.add( JavaType.STRING_TYPE );
 		return rv;
 	}
 
-	protected java.util.List<? super org.lgna.project.ast.JavaType> addSecondaryJavaTypes( java.util.List<? super org.lgna.project.ast.JavaType> rv ) {
+	protected List<? super JavaType> addSecondaryJavaTypes( List<? super JavaType> rv ) {
 		return rv;
 	}
 
-	protected boolean isInclusionOfTypeDesired( org.lgna.project.ast.UserType<?> userType ) {
+	protected boolean isInclusionOfTypeDesired( UserType<?> userType ) {
 		return true;
 		//return valueTypeInAlice.methods.size() > 0 || valueTypeInAlice.fields.size() > 0;
 	}
@@ -174,63 +208,61 @@ public abstract class ApiConfigurationManager {
 	//		return rv;
 	//	}
 
-	private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, String> mapTypeToText = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Map<AbstractType<?, ?, ?>, String> mapTypeToText = Maps.newHashMap();
 
 	private static String createExampleText( String examples ) {
 		return "<html><em>examples:</em> " + examples + "</html>";
 	}
 
-	public String getMenuTextForType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public String getMenuTextForType( AbstractType<?, ?, ?> type ) {
 		if( this.mapTypeToText.size() == 0 ) {
-			this.mapTypeToText.put( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE, createExampleText( "0.25, 1.0, 3.14, 98.6" ) );
-			this.mapTypeToText.put( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, createExampleText( "1, 2, 42, 100" ) );
-			this.mapTypeToText.put( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE, createExampleText( "true, false" ) );
-			this.mapTypeToText.put( org.lgna.project.ast.JavaType.STRING_TYPE, createExampleText( "\"hello\", \"goodbye\"" ) );
+			this.mapTypeToText.put( JavaType.DOUBLE_OBJECT_TYPE, createExampleText( "0.25, 1.0, 3.14, 98.6" ) );
+			this.mapTypeToText.put( JavaType.INTEGER_OBJECT_TYPE, createExampleText( "1, 2, 42, 100" ) );
+			this.mapTypeToText.put( JavaType.BOOLEAN_OBJECT_TYPE, createExampleText( "true, false" ) );
+			this.mapTypeToText.put( JavaType.STRING_TYPE, createExampleText( "\"hello\", \"goodbye\"" ) );
 		}
 		return this.mapTypeToText.get( type );
 	}
 
-	public boolean isSignatureLocked( org.lgna.project.ast.Code code ) {
+	public boolean isSignatureLocked( Code code ) {
 		return code.isSignatureLocked();
 	}
 
-	public abstract boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType<?> type );
+	public abstract boolean isDeclaringTypeForManagedFields( UserType<?> type );
 
-	public final boolean isSelectable( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public final boolean isSelectable( AbstractType<?, ?, ?> type ) {
 		return this.isInstanceFactoryDesiredForType( type );
 	}
 
-	public abstract boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType<?, ?, ?> type );
+	public abstract boolean isInstanceFactoryDesiredForType( AbstractType<?, ?, ?> type );
 
-	public abstract org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType<?, ?, ?> type );
+	public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForThis( AbstractType<?, ?, ?> type );
 
-	public abstract org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field );
+	public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForThisFieldAccess( UserField field );
 
-	public abstract org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> getInstanceFactorySubMenuForParameterAccess( org.lgna.project.ast.UserParameter parameter );
+	public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForParameterAccess( UserParameter parameter );
 
-	public abstract org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> getInstanceFactorySubMenuForLocalAccess( org.lgna.project.ast.UserLocal local );
+	public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForLocalAccess( UserLocal local );
 
-	public abstract org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> getInstanceFactorySubMenuForParameterAccessMethodInvocation( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method );
+	public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForParameterAccessMethodInvocation( UserParameter parameter, AbstractMethod method );
 
-	public abstract java.util.List<org.lgna.project.ast.JavaType> getTopLevelGalleryTypes();
+	public abstract JavaType getGalleryResourceParentFor( JavaType type );
 
-	public abstract org.lgna.project.ast.JavaType getGalleryResourceParentFor( org.lgna.project.ast.JavaType type );
+	public abstract List<AbstractDeclaration> getGalleryResourceChildrenFor( AbstractType<?, ?, ?> type );
 
-	public abstract java.util.List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType<?, ?, ?> type );
+	public abstract AbstractConstructor getGalleryResourceConstructorFor( AbstractType<?, ?, ?> argumentType );
 
-	public abstract org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType<?, ?, ?> argumentType );
+	public abstract SwingComponentView<?> createReplacementForFieldAccessIfAppropriate( FieldAccess fieldAccess );
 
-	public abstract org.lgna.croquet.views.SwingComponentView<?> createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess );
+	public abstract CascadeItem<?, ?> getCustomFillInFor( ValueDetails<?> valueDetails );
 
-	public abstract org.lgna.croquet.CascadeItem<?, ?> getCustomFillInFor( org.lgna.project.annotations.ValueDetails<?> valueDetails );
+	public abstract ExpressionCreator getExpressionCreator();
 
-	public abstract org.alice.ide.ast.ExpressionCreator getExpressionCreator();
+	public abstract UserType<?> augmentTypeIfNecessary( UserType<?> rv );
 
-	public abstract org.lgna.project.ast.UserType<?> augmentTypeIfNecessary( org.lgna.project.ast.UserType<?> rv );
+	public abstract boolean isTabClosable( AbstractCode code );
 
-	public abstract boolean isTabClosable( org.lgna.project.ast.AbstractCode code );
+	public abstract boolean isExportTypeDesiredFor( NamedUserType type );
 
-	public abstract boolean isExportTypeDesiredFor( org.lgna.project.ast.NamedUserType type );
-
-	public abstract org.alice.ide.iconfactory.IconFactoryManager createIconFactoryManager();
+	public abstract IconFactoryManager createIconFactoryManager();
 }

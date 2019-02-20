@@ -42,10 +42,41 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.builder;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.codec.BufferUtilities;
+import edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder;
+import edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder;
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import edu.cmu.cs.dennisc.java.util.zip.DataSource;
+import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray;
+import edu.cmu.cs.dennisc.scenegraph.OldMesh;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.Vertex;
+import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import edu.cmu.cs.dennisc.texture.Texture;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Map;
+import java.util.Set;
+import java.util.zip.ZipOutputStream;
+
 public class ModelBuilder {
 	private ModelPart root;
-	private java.util.Set<edu.cmu.cs.dennisc.scenegraph.Geometry> geometries;
-	private java.util.Set<edu.cmu.cs.dennisc.texture.BufferedImageTexture> textures;
+	private Set<Geometry> geometries;
+	private Set<BufferedImageTexture> textures;
 
 	private static final String MAIN_ENTRY_PATH = "main.bin";
 	private static final String INDEXED_TRIANGLE_ARRAY_PREFIX = "indexedTriangleArrays/";
@@ -57,7 +88,7 @@ public class ModelBuilder {
 	private ModelBuilder() {
 	}
 
-	private static void safeEncode( edu.cmu.cs.dennisc.codec.BinaryEncoder encoder, short[] array ) {
+	private static void safeEncode( BinaryEncoder encoder, short[] array ) {
 		boolean isNotNull = array != null;
 		encoder.encode( isNotNull );
 		if( isNotNull ) {
@@ -65,7 +96,7 @@ public class ModelBuilder {
 		}
 	}
 
-	private static short[] safeDecodeShortArray( edu.cmu.cs.dennisc.codec.BinaryDecoder decoder ) {
+	private static short[] safeDecodeShortArray( BinaryDecoder decoder ) {
 		boolean isNotNull = decoder.decodeBoolean();
 		short[] rv;
 		if( isNotNull ) {
@@ -76,51 +107,51 @@ public class ModelBuilder {
 		return rv;
 	}
 
-	private static java.util.Map<java.io.File, ModelBuilder> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<File, ModelBuilder> map = Maps.newHashMap();
 
-	public java.util.Set<edu.cmu.cs.dennisc.scenegraph.Geometry> getGeometries() {
+	public Set<Geometry> getGeometries() {
 		return this.geometries;
 	}
 
-	public void replaceGeometries( java.util.Map<? extends edu.cmu.cs.dennisc.scenegraph.Geometry, ? extends edu.cmu.cs.dennisc.scenegraph.Geometry> map ) {
+	public void replaceGeometries( Map<? extends Geometry, ? extends Geometry> map ) {
 		this.geometries.clear();
 		this.geometries.addAll( map.values() );
 		this.root.replaceGeometries( map );
 	}
 
-	public static void forget( java.io.File file ) {
+	public static void forget( File file ) {
 		map.remove( file );
 	}
 
-	public static ModelBuilder getInstance( java.io.File file ) {
+	public static ModelBuilder getInstance( File file ) {
 		ModelBuilder rv = map.get( file );
 		if( rv != null ) {
 			//pass
 		} else {
 			rv = new ModelBuilder();
 			try {
-				java.util.Map<Integer, edu.cmu.cs.dennisc.scenegraph.Geometry> mapIdToGeometry = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-				java.util.Map<Integer, edu.cmu.cs.dennisc.texture.BufferedImageTexture> mapIdToTexture = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-				java.io.FileInputStream fis = new java.io.FileInputStream( file );
-				java.util.Map<String, byte[]> map = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extract( fis );
+				Map<Integer, Geometry> mapIdToGeometry = Maps.newHashMap();
+				Map<Integer, BufferedImageTexture> mapIdToTexture = Maps.newHashMap();
+				FileInputStream fis = new FileInputStream( file );
+				Map<String, byte[]> map = ZipUtilities.extract( fis );
 
-				java.io.InputStream isMainEntry = null;
+				InputStream isMainEntry = null;
 				for( String entryPath : map.keySet() ) {
-					java.io.InputStream is = new java.io.ByteArrayInputStream( map.get( entryPath ) );
+					InputStream is = new ByteArrayInputStream( map.get( entryPath ) );
 					if( entryPath.startsWith( INDEXED_TRIANGLE_ARRAY_PREFIX ) ) {
 						String s = entryPath.substring( INDEXED_TRIANGLE_ARRAY_PREFIX.length(), entryPath.length() - GEOMETRY_POSTFIX.length() );
 						int id = Integer.parseInt( s );
-						edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
-						edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ita = new edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray();
-						ita.vertices.setValue( decoder.decodeBinaryEncodableAndDecodableArray( edu.cmu.cs.dennisc.scenegraph.Vertex.class ) );
+						BinaryDecoder decoder = new InputStreamBinaryDecoder( is );
+						IndexedTriangleArray ita = new IndexedTriangleArray();
+						ita.vertices.setValue( decoder.decodeBinaryEncodableAndDecodableArray( Vertex.class ) );
 						ita.polygonData.setValue( decoder.decodeIntArray() );
 						mapIdToGeometry.put( id, ita );
 
 					} else if( entryPath.startsWith( MESH_PREFIX ) ) {
 						String s = entryPath.substring( MESH_PREFIX.length(), entryPath.length() - GEOMETRY_POSTFIX.length() );
 						int id = Integer.parseInt( s );
-						edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
-						edu.cmu.cs.dennisc.scenegraph.OldMesh mesh = new edu.cmu.cs.dennisc.scenegraph.OldMesh();
+						BinaryDecoder decoder = new InputStreamBinaryDecoder( is );
+						OldMesh mesh = new OldMesh();
 						mesh.xyzs.setValue( decoder.decodeDoubleArray() );
 						mesh.ijks.setValue( decoder.decodeFloatArray() );
 						mesh.uvs.setValue( decoder.decodeFloatArray() );
@@ -137,8 +168,8 @@ public class ModelBuilder {
 						boolean isPotentiallyAlphaBlended = s.charAt( 0 ) == 't';
 						int id = Integer.parseInt( s.substring( 1 ) );
 
-						java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is );
-						edu.cmu.cs.dennisc.texture.BufferedImageTexture texture = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
+						BufferedImage bufferedImage = ImageUtilities.read( ImageUtilities.PNG_CODEC_NAME, is );
+						BufferedImageTexture texture = new BufferedImageTexture();
 						texture.setBufferedImage( bufferedImage );
 						texture.setPotentiallyAlphaBlended( isPotentiallyAlphaBlended );
 						mapIdToTexture.put( id, texture );
@@ -147,13 +178,13 @@ public class ModelBuilder {
 						isMainEntry = is;
 					}
 				}
-				edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( isMainEntry );
+				BinaryDecoder decoder = new InputStreamBinaryDecoder( isMainEntry );
 				rv.root = decoder.decodeBinaryEncodableAndDecodable(/* ModelPart.class */);
 				rv.root.resolve( mapIdToGeometry, mapIdToTexture );
 
-				rv.geometries = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( mapIdToGeometry.values() );
-				rv.textures = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( mapIdToTexture.values() );
-			} catch( java.io.IOException ioe ) {
+				rv.geometries = Sets.newHashSet( mapIdToGeometry.values() );
+				rv.textures = Sets.newHashSet( mapIdToTexture.values() );
+			} catch( IOException ioe ) {
 				throw new RuntimeException( file.toString(), ioe );
 			}
 			map.put( file, rv );
@@ -161,27 +192,27 @@ public class ModelBuilder {
 		return rv;
 	}
 
-	public void encode( java.io.File file ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+	public void encode( File file ) throws IOException {
+		FileUtilities.createParentDirectoriesIfNecessary( file );
 
-		java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
-		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );
-		for( final edu.cmu.cs.dennisc.scenegraph.Geometry geometry : this.geometries ) {
-			edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
+		FileOutputStream fos = new FileOutputStream( file );
+		ZipOutputStream zos = new ZipOutputStream( fos );
+		for( final Geometry geometry : this.geometries ) {
+			ZipUtilities.write( zos, new DataSource() {
 				@Override
 				public String getName() {
 					return getEntryPath( geometry );
 				}
 
 				@Override
-				public void write( java.io.OutputStream os ) throws java.io.IOException {
-					edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( os );
-					if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ) {
-						edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ita = (edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray)geometry;
+				public void write( OutputStream os ) throws IOException {
+					BinaryEncoder encoder = new OutputStreamBinaryEncoder( os );
+					if( geometry instanceof IndexedTriangleArray ) {
+						IndexedTriangleArray ita = (IndexedTriangleArray)geometry;
 						encoder.encode( ita.vertices.getValue() );
-						edu.cmu.cs.dennisc.codec.BufferUtilities.encode( encoder, ita.polygonData.getValue(), false );
-					} else if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.OldMesh ) {
-						edu.cmu.cs.dennisc.scenegraph.OldMesh mesh = (edu.cmu.cs.dennisc.scenegraph.OldMesh)geometry;
+						BufferUtilities.encode( encoder, ita.polygonData.getValue(), false );
+					} else if( geometry instanceof OldMesh ) {
+						OldMesh mesh = (OldMesh)geometry;
 						encoder.encode( mesh.xyzs.getValue() );
 						encoder.encode( mesh.ijks.getValue() );
 						encoder.encode( mesh.uvs.getValue() );
@@ -198,28 +229,28 @@ public class ModelBuilder {
 				}
 			} );
 		}
-		for( final edu.cmu.cs.dennisc.texture.BufferedImageTexture texture : this.textures ) {
-			edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
+		for( final BufferedImageTexture texture : this.textures ) {
+			ZipUtilities.write( zos, new DataSource() {
 				@Override
 				public String getName() {
 					return getEntryPath( texture );
 				}
 
 				@Override
-				public void write( java.io.OutputStream os ) throws java.io.IOException {
-					edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, os, texture.getBufferedImage() );
+				public void write( OutputStream os ) throws IOException {
+					ImageUtilities.write( ImageUtilities.PNG_CODEC_NAME, os, texture.getBufferedImage() );
 				}
 			} );
 		}
-		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
+		ZipUtilities.write( zos, new DataSource() {
 			@Override
 			public String getName() {
 				return MAIN_ENTRY_PATH;
 			}
 
 			@Override
-			public void write( java.io.OutputStream os ) throws java.io.IOException {
-				edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( os );
+			public void write( OutputStream os ) throws IOException {
+				BinaryEncoder encoder = new OutputStreamBinaryEncoder( os );
 				encoder.encode( root );
 				encoder.flush();
 			}
@@ -228,32 +259,32 @@ public class ModelBuilder {
 		zos.close();
 	}
 
-	public static ModelBuilder newInstance( edu.cmu.cs.dennisc.scenegraph.Transformable transformable ) {
+	public static ModelBuilder newInstance( Transformable transformable ) {
 		ModelBuilder rv = new ModelBuilder();
-		rv.geometries = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
-		rv.textures = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+		rv.geometries = Sets.newHashSet();
+		rv.textures = Sets.newHashSet();
 		rv.root = ModelPart.newInstance( transformable, rv.geometries, rv.textures );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Transformable buildTransformable() {
-		edu.cmu.cs.dennisc.scenegraph.Transformable rv = this.root.build();
+	public Transformable buildTransformable() {
+		Transformable rv = this.root.build();
 		return rv;
 	}
 
-	private static String getEntryPath( edu.cmu.cs.dennisc.scenegraph.Geometry geometry ) {
-		if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ) {
+	private static String getEntryPath( Geometry geometry ) {
+		if( geometry instanceof IndexedTriangleArray ) {
 			return INDEXED_TRIANGLE_ARRAY_PREFIX + geometry.hashCode() + GEOMETRY_POSTFIX;
-		} else if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.OldMesh ) {
+		} else if( geometry instanceof OldMesh ) {
 			return MESH_PREFIX + geometry.hashCode() + GEOMETRY_POSTFIX;
 		} else {
 			return null;
 		}
 	}
 
-	private static String getEntryPath( edu.cmu.cs.dennisc.texture.Texture texture ) {
-		if( texture instanceof edu.cmu.cs.dennisc.texture.BufferedImageTexture ) {
-			edu.cmu.cs.dennisc.texture.BufferedImageTexture bufferedImageTexture = (edu.cmu.cs.dennisc.texture.BufferedImageTexture)texture;
+	private static String getEntryPath( Texture texture ) {
+		if( texture instanceof BufferedImageTexture ) {
+			BufferedImageTexture bufferedImageTexture = (BufferedImageTexture)texture;
 			char c;
 			if( bufferedImageTexture.isPotentiallyAlphaBlended() ) {
 				c = 't';

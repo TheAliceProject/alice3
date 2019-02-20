@@ -42,18 +42,24 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.dialog;
 
+import org.lgna.croquet.AdornedDialogCoreComposite;
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.imp.dialog.views.DialogContentPane;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogContentComposite<V extends org.lgna.croquet.imp.dialog.views.DialogContentPane> extends org.lgna.croquet.SimpleComposite<V> {
-	private final org.lgna.croquet.AdornedDialogCoreComposite<?, ?> coreComposite;
+public abstract class DialogContentComposite<V extends DialogContentPane> extends SimpleComposite<V> {
+	private final AdornedDialogCoreComposite<?, ?> coreComposite;
 
-	public DialogContentComposite( java.util.UUID migrationId, org.lgna.croquet.AdornedDialogCoreComposite<?, ?> coreComposite ) {
+	public DialogContentComposite( UUID migrationId, AdornedDialogCoreComposite<?, ?> coreComposite ) {
 		super( migrationId );
 		this.coreComposite = coreComposite;
 	}
 
-	public org.lgna.croquet.AdornedDialogCoreComposite<?, ?> getCoreComposite() {
+	public AdornedDialogCoreComposite<?, ?> getCoreComposite() {
 		return this.coreComposite;
 	}
 

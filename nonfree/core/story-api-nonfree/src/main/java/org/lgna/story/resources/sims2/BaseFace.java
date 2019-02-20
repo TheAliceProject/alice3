@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.story.resources.sims2;
 
+import edu.cmu.cs.dennisc.random.RandomUtilities;
+
 /**
  * @author Alice Build
  */
@@ -74,6 +76,6 @@ public enum BaseFace implements Face {
 	ALIEN;
 
 	public static BaseFace getRandom() {
-		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( BaseFace.class );
+		return RandomUtilities.getRandomEnumConstant( BaseFace.class );
 	}
 }

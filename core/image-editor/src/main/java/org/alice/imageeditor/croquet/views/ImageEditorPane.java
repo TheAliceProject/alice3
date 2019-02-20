@@ -42,20 +42,53 @@
  *******************************************************************************/
 package org.alice.imageeditor.croquet.views;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.JShowLabel;
+import org.alice.imageeditor.croquet.ImageEditorFrame;
+import org.alice.imageeditor.croquet.Tool;
+import org.alice.imageeditor.croquet.views.renderers.FilenameListCellRenderer;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.croquet.views.Button;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.Separator;
+
+import javax.swing.ComboBoxEditor;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.text.JTextComponent;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImageEditorPane extends org.lgna.croquet.views.MigPanel {
-	private final java.awt.event.FocusListener comboBoxEditorFocusListener = new java.awt.event.FocusListener() {
+public class ImageEditorPane extends MigPanel {
+	private final FocusListener comboBoxEditorFocusListener = new FocusListener() {
 		@Override
-		public void focusGained( java.awt.event.FocusEvent e ) {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		public void focusGained( FocusEvent e ) {
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
-					javax.swing.ComboBoxEditor editor = getComposite().getJComboBox().getEditor();
-					java.awt.Component editorComponent = editor.getEditorComponent();
-					if( editorComponent instanceof javax.swing.text.JTextComponent ) {
-						javax.swing.text.JTextComponent jTextComponent = (javax.swing.text.JTextComponent)editorComponent;
+					ComboBoxEditor editor = getComposite().getJComboBox().getEditor();
+					Component editorComponent = editor.getEditorComponent();
+					if( editorComponent instanceof JTextComponent ) {
+						JTextComponent jTextComponent = (JTextComponent)editorComponent;
 						String rootDirectoryPath = getComposite().getRootDirectoryState().getValue();
 						String path = jTextComponent.getText();
 						if( path.startsWith( rootDirectoryPath ) ) {
@@ -82,39 +115,39 @@ public class ImageEditorPane extends org.lgna.croquet.views.MigPanel {
 		}
 
 		@Override
-		public void focusLost( java.awt.event.FocusEvent e ) {
+		public void focusLost( FocusEvent e ) {
 		}
 	};
 
-	private final org.lgna.croquet.event.ValueListener<java.awt.Image> imageListener = new org.lgna.croquet.event.ValueListener<java.awt.Image>() {
+	private final ValueListener<Image> imageListener = new ValueListener<Image>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.awt.Image> e ) {
+		public void valueChanged( ValueEvent<Image> e ) {
 			repaint();
 		}
 	};
 
-	private final org.lgna.croquet.event.ValueListener<String> pathListener = new org.lgna.croquet.event.ValueListener<String>() {
+	private final ValueListener<String> pathListener = new ValueListener<String>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
+		public void valueChanged( ValueEvent<String> e ) {
 			updatePathLabel( e.getNextValue() );
 		}
 	};
 
-	private final org.lgna.croquet.event.ValueListener<Boolean> repaintImageViewListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+	private final ValueListener<Boolean> repaintImageViewListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			jImageView.repaint();
 		}
 	};
 
-	private final org.lgna.croquet.event.ValueListener<Boolean> revalidateImageViewAndResizeWindowIfNecessaryListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+	private final ValueListener<Boolean> revalidateImageViewAndResizeWindowIfNecessaryListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			jImageView.revalidate();
-			org.lgna.croquet.views.AbstractWindow<?> window = getRoot();
+			AbstractWindow<?> window = getRoot();
 			if( window != null ) {
-				java.awt.Dimension size = window.getSize();
-				java.awt.Dimension preferredSize = window.getAwtComponent().getPreferredSize();
+				Dimension size = window.getSize();
+				Dimension preferredSize = window.getAwtComponent().getPreferredSize();
 				if( ( size.width < preferredSize.width ) || ( size.height < preferredSize.height ) ) {
 					window.setSize( Math.max( size.width, preferredSize.width ), Math.max( size.height, preferredSize.height ) );
 				}
@@ -122,45 +155,45 @@ public class ImageEditorPane extends org.lgna.croquet.views.MigPanel {
 		}
 	};
 
-	private class SelectToolActionListener implements java.awt.event.ActionListener {
-		private final org.alice.imageeditor.croquet.Tool tool;
+	private class SelectToolActionListener implements ActionListener {
+		private final Tool tool;
 
-		public SelectToolActionListener( org.alice.imageeditor.croquet.Tool tool ) {
+		public SelectToolActionListener( Tool tool ) {
 			this.tool = tool;
 		}
 
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			getComposite().getToolState().setValueTransactionlessly( this.tool );
 		}
 	}
 
-	private static final javax.swing.KeyStroke CROP_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, 0 );
-	private static final javax.swing.KeyStroke RECTANGLE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F11, 0 );
-	private final java.awt.event.ActionListener cropListener = new SelectToolActionListener( org.alice.imageeditor.croquet.Tool.CROP_SELECT );
-	private final java.awt.event.ActionListener rectangleListener = new SelectToolActionListener( org.alice.imageeditor.croquet.Tool.ADD_RECTANGLE );
+	private static final KeyStroke CROP_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_F12, 0 );
+	private static final KeyStroke RECTANGLE_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_F11, 0 );
+	private final ActionListener cropListener = new SelectToolActionListener( Tool.CROP_SELECT );
+	private final ActionListener rectangleListener = new SelectToolActionListener( Tool.ADD_RECTANGLE );
 
 	private final JImageEditorView jImageView;
 
-	private final edu.cmu.cs.dennisc.javax.swing.JShowLabel jPathLabel = new edu.cmu.cs.dennisc.javax.swing.JShowLabel();
+	private final JShowLabel jPathLabel = new JShowLabel();
 
-	private final org.lgna.croquet.views.Button saveButton;
-	private final org.lgna.croquet.views.Button cropButton;
+	private final Button saveButton;
+	private final Button cropButton;
 
-	public ImageEditorPane( org.alice.imageeditor.croquet.ImageEditorFrame composite ) {
+	public ImageEditorPane( ImageEditorFrame composite ) {
 		super( composite, "fill", "[grow 0][grow 100]16[grow 0]", "[grow,shrink]16[grow 0, shrink 0][grow 0, shrink 0][grow 0, shrink 0]" );
 
 		this.jImageView = new JImageEditorView( composite );
 		this.saveButton = composite.getSaveOperation().createButton();
 
-		javax.swing.JComboBox jComboBox = composite.getJComboBox();
-		jComboBox.setRenderer( new org.alice.imageeditor.croquet.views.renderers.FilenameListCellRenderer() );
+		JComboBox jComboBox = composite.getJComboBox();
+		jComboBox.setRenderer( new FilenameListCellRenderer() );
 		jComboBox.setMaximumRowCount( 24 );
-		jComboBox.setMinimumSize( new java.awt.Dimension( 0, 0 ) );
+		jComboBox.setMinimumSize( new Dimension( 0, 0 ) );
 
 		this.getAwtComponent().add( this.jImageView, "align center, spanx 2" );
 
-		org.lgna.croquet.views.MigPanel panel = new org.lgna.croquet.views.MigPanel( null, "insets 0, fill" );
+		MigPanel panel = new MigPanel( null, "insets 0, fill" );
 
 		this.cropButton = composite.getCropOperation().createButton();
 		panel.addComponent( composite.getToolState().createVerticalDefaultRadioButtons(), "growx, wrap" );
@@ -168,7 +201,7 @@ public class ImageEditorPane extends org.lgna.croquet.views.MigPanel {
 		panel.addComponent( composite.getUncropOperation().createButton(), "growx, wrap" );
 		panel.addComponent( composite.getClearOperation().createButton(), "growx, wrap" );
 		panel.addComponent( composite.getDropShadowState().createCheckBox(), "growx, wrap" );
-		panel.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "growx, gap bottom 16, wrap" );
+		panel.addComponent( Separator.createInstanceSeparatingTopFromBottom(), "growx, gap bottom 16, wrap" );
 		panel.addComponent( composite.getShowInScreenResolutionState().getSidekickLabel().createLabel(), "split 2" );
 		panel.addComponent( composite.getShowInScreenResolutionState().createHorizontalToggleButtons(), "growx, wrap" );
 		panel.addComponent( composite.getShowDashedBorderState().createCheckBox(), "growx, wrap" );
@@ -180,48 +213,48 @@ public class ImageEditorPane extends org.lgna.croquet.views.MigPanel {
 		this.addComponent( composite.getBrowseOperation().createButton() );
 		this.addComponent( this.saveButton, "spany 3, grow, wrap" );
 
-		this.addComponent( new org.lgna.croquet.views.Label( "file:" ), "align right" );
+		this.addComponent( new Label( "file:" ), "align right" );
 		this.getAwtComponent().add( jComboBox, "growx, shrinkx, wrap" );
 		this.getAwtComponent().add( this.jPathLabel, "skip 1" );
 
-		this.jPathLabel.setForeground( java.awt.Color.DARK_GRAY );
+		this.jPathLabel.setForeground( Color.DARK_GRAY );
 
 		this.updatePathLabel( composite.getPathHolder().getValue() );
 	}
 
 	private void updatePathLabel( String nextPath ) {
-		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isValidPath( nextPath ) ) {
+		if( FileUtilities.isValidPath( nextPath ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "INVALID PATH:", nextPath );
+			Logger.outln( "INVALID PATH:", nextPath );
 		}
 
 		this.jPathLabel.setText( nextPath );
 		if( nextPath != null ) {
-			java.awt.Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
-			if( awtEditorComponent instanceof javax.swing.JTextField ) {
-				javax.swing.JTextField jTextField = (javax.swing.JTextField)awtEditorComponent;
+			Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
+			if( awtEditorComponent instanceof JTextField ) {
+				JTextField jTextField = (JTextField)awtEditorComponent;
 				boolean isEqual = jTextField.getText().contentEquals( nextPath );
-				boolean isShowing = false == ( isEqual || org.alice.imageeditor.croquet.ImageEditorFrame.INVALID_PATH_NOT_A_DIRECTORY.contentEquals( nextPath ) || org.alice.imageeditor.croquet.ImageEditorFrame.INVALID_PATH_EMPTY_SUB_PATH.contentEquals( nextPath ) );
+				boolean isShowing = false == ( isEqual || ImageEditorFrame.INVALID_PATH_NOT_A_DIRECTORY.contentEquals( nextPath ) || ImageEditorFrame.INVALID_PATH_EMPTY_SUB_PATH.contentEquals( nextPath ) );
 				this.jPathLabel.setShowing( isShowing );
 			}
 		}
 	}
 
 	@Override
-	public org.alice.imageeditor.croquet.ImageEditorFrame getComposite() {
-		return (org.alice.imageeditor.croquet.ImageEditorFrame)super.getComposite();
+	public ImageEditorFrame getComposite() {
+		return (ImageEditorFrame)super.getComposite();
 	}
 
-	public java.awt.Image render() {
-		org.alice.imageeditor.croquet.ImageEditorFrame composite = getComposite();
-		java.awt.Image image = composite.getImageHolder().getValue();
+	public Image render() {
+		ImageEditorFrame composite = getComposite();
+		Image image = composite.getImageHolder().getValue();
 		if( image != null ) {
 			int width;
 			int height;
-			java.awt.Rectangle selection = composite.getCropSelectHolder().getValue();
+			Rectangle selection = composite.getCropSelectHolder().getValue();
 			assert selection == null : selection;
-			java.awt.Rectangle crop = composite.getCropCommitHolder().getValue();
+			Rectangle crop = composite.getCropCommitHolder().getValue();
 			if( crop != null ) {
 				width = crop.width;
 				height = crop.height;
@@ -229,8 +262,8 @@ public class ImageEditorPane extends org.lgna.croquet.views.MigPanel {
 				width = image.getWidth( this.jImageView );
 				height = image.getHeight( this.jImageView );
 			}
-			java.awt.image.BufferedImage rv = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_BGR );
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)rv.getGraphics();
+			BufferedImage rv = new BufferedImage( width, height, BufferedImage.TYPE_INT_BGR );
+			Graphics2D g2 = (Graphics2D)rv.getGraphics();
 			this.jImageView.render( g2 );
 			g2.dispose();
 			return rv;
@@ -254,10 +287,10 @@ public class ImageEditorPane extends org.lgna.croquet.views.MigPanel {
 		this.getComposite().getDropShadowState().addNewSchoolValueListener( this.repaintImageViewListener );
 		this.getComposite().getImageHolder().addAndInvokeValueListener( this.imageListener );
 		this.getComposite().getPathHolder().addAndInvokeValueListener( this.pathListener );
-		java.awt.Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
+		Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
 		awtEditorComponent.addFocusListener( this.comboBoxEditorFocusListener );
 		this.setDefaultButtonToSave();
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
 				getComposite().getJComboBox().getEditor().getEditorComponent().requestFocusInWindow();
@@ -273,7 +306,7 @@ public class ImageEditorPane extends org.lgna.croquet.views.MigPanel {
 		super.handleCompositePostDeactivation();
 		this.unregisterKeyboardAction( RECTANGLE_KEY_STROKE );
 		this.unregisterKeyboardAction( CROP_KEY_STROKE );
-		java.awt.Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
+		Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
 		awtEditorComponent.removeFocusListener( this.comboBoxEditorFocusListener );
 		this.getComposite().getPathHolder().removeValueListener( this.pathListener );
 		this.getComposite().getImageHolder().removeValueListener( this.imageListener );

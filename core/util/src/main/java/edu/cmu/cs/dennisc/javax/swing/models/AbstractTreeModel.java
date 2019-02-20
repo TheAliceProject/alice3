@@ -42,52 +42,59 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.models;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreePath;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTreeModel<E> implements TreeModel<E> {
-	private java.util.List<javax.swing.event.TreeModelListener> treeModelListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private List<TreeModelListener> treeModelListeners = Lists.newCopyOnWriteArrayList();
 
 	@Override
-	public void addTreeModelListener( javax.swing.event.TreeModelListener treeModelListener ) {
+	public void addTreeModelListener( TreeModelListener treeModelListener ) {
 		this.treeModelListeners.add( 0, treeModelListener );
 	}
 
 	@Override
-	public void removeTreeModelListener( javax.swing.event.TreeModelListener treeModelListener ) {
+	public void removeTreeModelListener( TreeModelListener treeModelListener ) {
 		this.treeModelListeners.remove( treeModelListener );
 	}
 
 	protected void fireTreeNodeChanged( Object source, Object[] path, int[] childIndices, Object[] children ) {
-		javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent( source, path, childIndices, children );
-		for( javax.swing.event.TreeModelListener listener : this.treeModelListeners ) {
+		TreeModelEvent e = new TreeModelEvent( source, path, childIndices, children );
+		for( TreeModelListener listener : this.treeModelListeners ) {
 			listener.treeNodesChanged( e );
 		}
 	}
 
 	protected void fireTreeNodeInserted( Object source, Object[] path, int[] childIndices, Object[] children ) {
-		javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent( source, path, childIndices, children );
-		for( javax.swing.event.TreeModelListener listener : this.treeModelListeners ) {
+		TreeModelEvent e = new TreeModelEvent( source, path, childIndices, children );
+		for( TreeModelListener listener : this.treeModelListeners ) {
 			listener.treeNodesInserted( e );
 		}
 	}
 
 	protected void fireTreeNodeRemoved( Object source, Object[] path, int[] childIndices, Object[] children ) {
-		javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent( source, path, childIndices, children );
-		for( javax.swing.event.TreeModelListener listener : this.treeModelListeners ) {
+		TreeModelEvent e = new TreeModelEvent( source, path, childIndices, children );
+		for( TreeModelListener listener : this.treeModelListeners ) {
 			listener.treeNodesRemoved( e );
 		}
 	}
 
 	protected void fireTreeStructureChanged( Object source, Object[] path, int[] childIndices, Object[] children ) {
-		javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent( source, path, childIndices, children );
-		for( javax.swing.event.TreeModelListener listener : this.treeModelListeners ) {
+		TreeModelEvent e = new TreeModelEvent( source, path, childIndices, children );
+		for( TreeModelListener listener : this.treeModelListeners ) {
 			listener.treeStructureChanged( e );
 		}
 	}
 
 	@Override
-	public void valueForPathChanged( javax.swing.tree.TreePath path, Object newValue ) {
+	public void valueForPathChanged( TreePath path, Object newValue ) {
 		throw new RuntimeException( "todo" );
 	}
 }

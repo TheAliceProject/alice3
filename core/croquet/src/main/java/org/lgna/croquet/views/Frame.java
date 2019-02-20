@@ -43,18 +43,27 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.WindowStack;
+
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+import java.awt.Container;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class Frame extends AbstractWindow<javax.swing.JFrame> {
+public final class Frame extends AbstractWindow<JFrame> {
 	/**
 	 * @author Dennis Cosgrove
 	 */
 	public enum DefaultCloseOperation {
-		DO_NOTHING( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE ),
-		HIDE( javax.swing.WindowConstants.HIDE_ON_CLOSE ),
-		DISPOSE( javax.swing.WindowConstants.DISPOSE_ON_CLOSE ),
-		EXIT( javax.swing.WindowConstants.EXIT_ON_CLOSE );
+		DO_NOTHING( WindowConstants.DO_NOTHING_ON_CLOSE ),
+		HIDE( WindowConstants.HIDE_ON_CLOSE ),
+		DISPOSE( WindowConstants.DISPOSE_ON_CLOSE ),
+		EXIT( WindowConstants.EXIT_ON_CLOSE );
 		private int internal;
 
 		private DefaultCloseOperation( int internal ) {
@@ -71,27 +80,27 @@ public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 		}
 	}
 
-	private static final Frame applicationRootFrame = new Frame( edu.cmu.cs.dennisc.javax.swing.WindowStack.getRootFrame() );
+	private static final Frame applicationRootFrame = new Frame( WindowStack.getRootFrame() );
 
 	public static Frame getApplicationRootFrame() {
 		return applicationRootFrame;
 	}
 
 	public Frame() {
-		this( new javax.swing.JFrame() );
+		this( new JFrame() );
 	}
 
-	private Frame( javax.swing.JFrame jFrame ) {
+	private Frame( JFrame jFrame ) {
 		super( jFrame );
 	}
 
 	@Override
-	/* package-private */java.awt.Container getAwtContentPane() {
+	/* package-private */Container getAwtContentPane() {
 		return this.getAwtComponent().getContentPane();
 	}
 
 	@Override
-	/* package-private */javax.swing.JRootPane getJRootPane() {
+	/* package-private */JRootPane getJRootPane() {
 		return this.getAwtComponent().getRootPane();
 	}
 
@@ -118,10 +127,10 @@ public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 	public void setUndecorated( boolean isUndecorated ) {
 		if( isUndecorated != this.isUndecorated() ) {
 			if( this.getAwtComponent().isDisplayable() ) {
-				final java.awt.Container contentPane = this.getAwtComponent().getContentPane();
+				final Container contentPane = this.getAwtComponent().getContentPane();
 				this.getAwtComponent().dispose();
 				this.getAwtComponent().setUndecorated( this.getAwtComponent().isUndecorated() == false );
-				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				SwingUtilities.invokeLater( new Runnable() {
 					@Override
 					public void run() {
 						getAwtComponent().setContentPane( contentPane );
@@ -140,7 +149,7 @@ public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 	}
 
 	@Override
-	protected void setJMenuBar( javax.swing.JMenuBar jMenuBar ) {
+	protected void setJMenuBar( JMenuBar jMenuBar ) {
 		this.getAwtComponent().setJMenuBar( jMenuBar );
 	}
 }

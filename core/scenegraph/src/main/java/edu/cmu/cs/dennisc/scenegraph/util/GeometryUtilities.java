@@ -42,8 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
@@ -53,12 +62,12 @@ public class GeometryUtilities {
 		throw new AssertionError();
 	}
 
-	private static boolean isSharingVerticesNecessary( edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices ) {
+	private static boolean isSharingVerticesNecessary( Vertex[] vertices ) {
 		final int N = vertices.length;
 		for( int i = 0; i < N; i++ ) {
-			edu.cmu.cs.dennisc.scenegraph.Vertex vI = vertices[ i ];
+			Vertex vI = vertices[ i ];
 			for( int j = i + 1; j < N; j++ ) {
-				edu.cmu.cs.dennisc.scenegraph.Vertex vJ = vertices[ j ];
+				Vertex vJ = vertices[ j ];
 				if( vI.equals( vJ ) ) {
 					return true;
 				}
@@ -68,22 +77,22 @@ public class GeometryUtilities {
 	}
 
 	private static IndexedTriangleArray shareVertices( IndexedTriangleArray rv ) {
-		edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices = rv.vertices.getValue();
+		Vertex[] vertices = rv.vertices.getValue();
 		if( isSharingVerticesNecessary( vertices ) ) {
-			java.util.Map<Integer, Integer> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-			java.util.List<edu.cmu.cs.dennisc.scenegraph.Vertex> sharedVertices = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			Map<Integer, Integer> map = Maps.newHashMap();
+			List<Vertex> sharedVertices = Lists.newLinkedList();
 			final int N = vertices.length;
 			for( int i = 0; i < N; i++ ) {
 				if( map.keySet().contains( i ) ) {
 					//pass
 				} else {
-					edu.cmu.cs.dennisc.scenegraph.Vertex vI = vertices[ i ];
+					Vertex vI = vertices[ i ];
 					//assert vI.equals( vI );
 					int sharedIndex = sharedVertices.size();
 					sharedVertices.add( vI );
 					map.put( i, sharedIndex );
 					for( int j = i + 1; j < N; j++ ) {
-						edu.cmu.cs.dennisc.scenegraph.Vertex vJ = vertices[ j ];
+						Vertex vJ = vertices[ j ];
 						if( vI.equals( vJ ) ) {
 							map.put( j, sharedIndex );
 						}
@@ -92,7 +101,7 @@ public class GeometryUtilities {
 			}
 
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "sharing", rv.getName(), vertices.length, "--->", sharedVertices.size() );
-			rv.vertices.setValue( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( sharedVertices, edu.cmu.cs.dennisc.scenegraph.Vertex.class ) );
+			rv.vertices.setValue( ArrayUtilities.createArray( sharedVertices, Vertex.class ) );
 			int[] array = rv.polygonData.getValueAsArray();
 			for( int i = 0; i < array.length; i++ ) {
 				array[ i ] = map.get( array[ i ] );
@@ -188,7 +197,7 @@ public class GeometryUtilities {
 
 			int[] polygonData = rv.polygonData.getValueAsArray();
 
-			java.util.ArrayList<Triangle> triangles = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+			ArrayList<Triangle> triangles = Lists.newArrayList();
 			final int N_POLYGON_DATA = polygonData.length;
 			for( int i = 0; i < N_POLYGON_DATA; i += 3 ) {
 				int a = polygonData[ i + 0 ];
@@ -233,7 +242,7 @@ public class GeometryUtilities {
 			//			}
 			//			rv.polygonData.setValue( trimmedPolygonData );
 
-			java.util.LinkedList<Integer> trimmedPolygonData = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			LinkedList<Integer> trimmedPolygonData = Lists.newLinkedList();
 			for( Triangle triangle : triangles ) {
 				if( triangle.isToBeIncluded ) {
 					trimmedPolygonData.add( triangle.a );
@@ -243,10 +252,10 @@ public class GeometryUtilities {
 					assert triangle.b < vertices.length;
 					assert triangle.c < vertices.length;
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.info( "removing triangle" );
+					Logger.info( "removing triangle" );
 				}
 			}
-			rv.polygonData.setValue( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createIntArray( trimmedPolygonData ) );
+			rv.polygonData.setValue( ArrayUtilities.createIntArray( trimmedPolygonData ) );
 		}
 		return rv;
 	}
@@ -272,8 +281,8 @@ public class GeometryUtilities {
 		}
 
 		if( isRequiringTrimming ) {
-			java.util.List<Vertex> trimmedVertices = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			java.util.Map<Integer, Integer> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+			List<Vertex> trimmedVertices = Lists.newLinkedList();
+			Map<Integer, Integer> map = Maps.newHashMap();
 			for( int i = 0; i < N; i++ ) {
 				if( isReferencedArray[ i ] ) {
 					map.put( i, trimmedVertices.size() );
@@ -287,7 +296,7 @@ public class GeometryUtilities {
 				reassignedPolygonData[ i ] = map.get( polygonData[ i ] );
 			}
 
-			rv.vertices.setValue( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( trimmedVertices, Vertex.class ) );
+			rv.vertices.setValue( ArrayUtilities.createArray( trimmedVertices, Vertex.class ) );
 			rv.polygonData.setValue( reassignedPolygonData );
 		}
 		return rv;

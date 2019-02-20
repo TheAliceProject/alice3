@@ -43,36 +43,41 @@
 
 package edu.cmu.cs.dennisc.render;
 
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PickResult {
-	private edu.cmu.cs.dennisc.scenegraph.Component m_sgSource;
-	private edu.cmu.cs.dennisc.scenegraph.Visual m_sgVisual;
+	private Component m_sgSource;
+	private Visual m_sgVisual;
 	private boolean m_isFrontFacing;
-	private edu.cmu.cs.dennisc.scenegraph.Geometry m_sgGeometry;
+	private Geometry m_sgGeometry;
 	private int m_subElement;
-	private edu.cmu.cs.dennisc.math.Point3 m_xyzInSource = new edu.cmu.cs.dennisc.math.Point3();
-	private edu.cmu.cs.dennisc.math.Point3 m_xyzInVisual = new edu.cmu.cs.dennisc.math.Point3();
+	private Point3 m_xyzInSource = new Point3();
+	private Point3 m_xyzInVisual = new Point3();
 
 	public PickResult() {
 		setNaN();
 	}
 
-	public PickResult( edu.cmu.cs.dennisc.scenegraph.Component sgSource ) {
+	public PickResult( Component sgSource ) {
 		set( sgSource );
 	}
 
-	public PickResult( edu.cmu.cs.dennisc.scenegraph.Component sgSource, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, boolean isFrontFacing, edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry, int subElement, edu.cmu.cs.dennisc.math.Point3 xyzInSource ) {
+	public PickResult( Component sgSource, Visual sgVisual, boolean isFrontFacing, Geometry sgGeometry, int subElement, Point3 xyzInSource ) {
 		set( sgSource, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource );
 	}
 
-	public void set( edu.cmu.cs.dennisc.scenegraph.Component sgSource ) {
+	public void set( Component sgSource ) {
 		setNaN();
 		m_sgSource = sgSource;
 	}
 
-	public void set( edu.cmu.cs.dennisc.scenegraph.Component sgSource, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, boolean isFrontFacing, edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry, int subElement, edu.cmu.cs.dennisc.math.Point3 xyzInSource ) {
+	public void set( Component sgSource, Visual sgVisual, boolean isFrontFacing, Geometry sgGeometry, int subElement, Point3 xyzInSource ) {
 		m_sgSource = sgSource;
 		m_sgVisual = sgVisual;
 		m_isFrontFacing = isFrontFacing;
@@ -90,15 +95,15 @@ public class PickResult {
 		set( null, null, false, null, -1, null );
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Component getSource() {
+	public Component getSource() {
 		return m_sgSource;
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Visual getVisual() {
+	public Visual getVisual() {
 		return m_sgVisual;
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Geometry getGeometry() {
+	public Geometry getGeometry() {
 		return m_sgGeometry;
 	}
 
@@ -110,20 +115,20 @@ public class PickResult {
 		return m_subElement;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 accessPositionInSource() {
+	public Point3 accessPositionInSource() {
 		return m_xyzInSource;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPositionInSource( edu.cmu.cs.dennisc.math.Point3 rv ) {
+	public Point3 getPositionInSource( Point3 rv ) {
 		rv.set( accessPositionInSource() );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPositionInSource() {
-		return getPositionInSource( new edu.cmu.cs.dennisc.math.Point3() );
+	public Point3 getPositionInSource() {
+		return getPositionInSource( new Point3() );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 accessPositionInVisual() {
+	public Point3 accessPositionInVisual() {
 		if( m_xyzInSource.isNaN() ) {
 			if( m_xyzInVisual.isNaN() ) {
 				//pass
@@ -135,13 +140,13 @@ public class PickResult {
 		return m_xyzInVisual;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPositionInVisual( edu.cmu.cs.dennisc.math.Point3 rv ) {
+	public Point3 getPositionInVisual( Point3 rv ) {
 		rv.set( accessPositionInVisual() );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPositionInVisual() {
-		return getPositionInVisual( new edu.cmu.cs.dennisc.math.Point3() );
+	public Point3 getPositionInVisual() {
+		return getPositionInVisual( new Point3() );
 	}
 
 	@Override

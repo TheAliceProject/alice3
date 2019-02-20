@@ -42,6 +42,12 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import net.miginfocom.swing.MigLayout;
+import org.lgna.croquet.Composite;
+
+import javax.swing.JPanel;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,22 +57,22 @@ public class MigPanel extends Panel {
 	private final String columnConstraints;
 	private final String rowConstraints;
 
-	public MigPanel( org.lgna.croquet.Composite<?> composite, String layoutConstraints, String columnConstraints, String rowConstraints ) {
+	public MigPanel( Composite<?> composite, String layoutConstraints, String columnConstraints, String rowConstraints ) {
 		super( composite );
 		this.layoutConstraints = layoutConstraints;
 		this.columnConstraints = columnConstraints;
 		this.rowConstraints = rowConstraints;
 	}
 
-	public MigPanel( org.lgna.croquet.Composite<?> composite, String layoutConstraints, String columnConstraints ) {
+	public MigPanel( Composite<?> composite, String layoutConstraints, String columnConstraints ) {
 		this( composite, layoutConstraints, columnConstraints, DEFAULT_CONSTRAINT );
 	}
 
-	public MigPanel( org.lgna.croquet.Composite<?> composite, String layoutConstraints ) {
+	public MigPanel( Composite<?> composite, String layoutConstraints ) {
 		this( composite, layoutConstraints, DEFAULT_CONSTRAINT );
 	}
 
-	public MigPanel( org.lgna.croquet.Composite<?> composite ) {
+	public MigPanel( Composite<?> composite ) {
 		this( composite, DEFAULT_CONSTRAINT );
 	}
 
@@ -75,8 +81,8 @@ public class MigPanel extends Panel {
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		net.miginfocom.swing.MigLayout rv = new net.miginfocom.swing.MigLayout();
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
+		MigLayout rv = new MigLayout();
 		rv.setLayoutConstraints( this.layoutConstraints );
 		rv.setColumnConstraints( this.columnConstraints );
 		rv.setRowConstraints( this.rowConstraints );

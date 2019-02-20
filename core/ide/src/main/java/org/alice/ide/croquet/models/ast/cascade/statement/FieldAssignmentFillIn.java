@@ -42,13 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AssignmentExpression;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.ThisExpression;
+import org.lgna.project.ast.UserField;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldAssignmentFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.AssignmentExpression> {
-	private static java.util.Map<org.lgna.project.ast.UserField, FieldAssignmentFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public final class FieldAssignmentFillIn extends ExpressionFillInWithExpressionBlanks<AssignmentExpression> {
+	private static Map<UserField, FieldAssignmentFillIn> map = Maps.newHashMap();
 
-	public static synchronized FieldAssignmentFillIn getInstance( org.lgna.project.ast.UserField field ) {
+	public static synchronized FieldAssignmentFillIn getInstance( UserField field ) {
 		FieldAssignmentFillIn rv = map.get( field );
 		if( rv != null ) {
 			//pass
@@ -59,25 +74,25 @@ public final class FieldAssignmentFillIn extends org.alice.ide.croquet.models.ca
 		return rv;
 	}
 
-	private final org.lgna.project.ast.AssignmentExpression transientValue;
+	private final AssignmentExpression transientValue;
 
-	private FieldAssignmentFillIn( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "12140acf-ec33-4ec7-b07d-27a20f111a91" ), org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( field.valueType.getValue() ) );
-		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteAssignmentExpression( new org.lgna.project.ast.ThisExpression(), field );
+	private FieldAssignmentFillIn( UserField field ) {
+		super( UUID.fromString( "12140acf-ec33-4ec7-b07d-27a20f111a91" ), ExpressionBlank.createBlanks( field.valueType.getValue() ) );
+		this.transientValue = IncompleteAstUtilities.createIncompleteAssignmentExpression( new ThisExpression(), field );
 	}
 
-	private org.lgna.project.ast.UserField getField() {
-		org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)this.transientValue.leftHandSide.getValue();
-		return (org.lgna.project.ast.UserField)fieldAccess.field.getValue();
-	}
-
-	@Override
-	protected org.lgna.project.ast.AssignmentExpression createValue( org.lgna.project.ast.Expression[] expressions ) {
-		return org.lgna.project.ast.AstUtilities.createFieldAssignment( this.getField(), expressions[ 0 ] );
+	private UserField getField() {
+		FieldAccess fieldAccess = (FieldAccess)this.transientValue.leftHandSide.getValue();
+		return (UserField)fieldAccess.field.getValue();
 	}
 
 	@Override
-	public org.lgna.project.ast.AssignmentExpression getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AssignmentExpression, org.lgna.project.ast.Expression> node ) {
+	protected AssignmentExpression createValue( Expression[] expressions ) {
+		return AstUtilities.createFieldAssignment( this.getField(), expressions[ 0 ] );
+	}
+
+	@Override
+	public AssignmentExpression getTransientValue( ItemNode<? super AssignmentExpression, Expression> node ) {
 		return this.transientValue;
 	}
 }

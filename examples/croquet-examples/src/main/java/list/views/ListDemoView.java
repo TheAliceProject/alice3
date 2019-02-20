@@ -42,13 +42,18 @@
  */
 package list.views;
 
+import list.ListDemoComposite;
+import list.ZodiacSign;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+import org.lgna.croquet.views.BorderPanel;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ListDemoView extends org.lgna.croquet.views.BorderPanel {
-	public ListDemoView( list.ListDemoComposite composite ) {
+public class ListDemoView extends BorderPanel {
+	public ListDemoView( ListDemoComposite composite ) {
 		super( composite );
-		org.lgna.croquet.ImmutableDataSingleSelectListState<list.ZodiacSign> zodiacState = composite.getZodiacState();
+		ImmutableDataSingleSelectListState<ZodiacSign> zodiacState = composite.getZodiacState();
 		this.addCenterComponent( zodiacState.createList() );
 		this.addPageStartComponent( zodiacState.createHorizontalDefaultRadioButtons() );
 		this.addLineStartComponent( zodiacState.createVerticalDefaultRadioButtons() );

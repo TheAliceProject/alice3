@@ -43,11 +43,14 @@
 package edu.cmu.cs.dennisc.animation;
 
 //todo?
+
+import edu.cmu.cs.dennisc.java.lang.ThreadWithRevealingToString;
+
 /**
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class AnimationThread extends edu.cmu.cs.dennisc.java.lang.ThreadWithRevealingToString {
+public class AnimationThread extends ThreadWithRevealingToString {
 	private Animator m_animator;
 	private Animation m_animation;
 	private AnimationObserver m_animationObserver;

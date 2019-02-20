@@ -43,13 +43,19 @@
 
 package org.alice.ide.croquet.models.ast.cascade.resource;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.common.resources.AudioResource;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AudioResourceExpressionFillIn extends ResourceExpressionFillIn<org.lgna.common.resources.AudioResource> {
-	private static java.util.Map<org.lgna.common.resources.AudioResource, AudioResourceExpressionFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class AudioResourceExpressionFillIn extends ResourceExpressionFillIn<AudioResource> {
+	private static Map<AudioResource, AudioResourceExpressionFillIn> map = Maps.newHashMap();
 
-	public static synchronized AudioResourceExpressionFillIn getInstance( org.lgna.common.resources.AudioResource resource ) {
+	public static synchronized AudioResourceExpressionFillIn getInstance( AudioResource resource ) {
 		assert resource != null;
 		AudioResourceExpressionFillIn rv = map.get( resource );
 		if( rv != null ) {
@@ -61,7 +67,7 @@ public class AudioResourceExpressionFillIn extends ResourceExpressionFillIn<org.
 		return rv;
 	}
 
-	private AudioResourceExpressionFillIn( org.lgna.common.resources.AudioResource resource ) {
-		super( java.util.UUID.fromString( "c232e5f0-d45b-48c4-a4d5-69102d40b0f5" ), org.lgna.common.resources.AudioResource.class, resource );
+	private AudioResourceExpressionFillIn( AudioResource resource ) {
+		super( UUID.fromString( "c232e5f0-d45b-48c4-a4d5-69102d40b0f5" ), AudioResource.class, resource );
 	}
 }

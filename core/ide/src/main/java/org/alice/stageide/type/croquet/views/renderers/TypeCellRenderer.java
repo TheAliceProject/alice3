@@ -42,28 +42,38 @@
  *******************************************************************************/
 package org.alice.stageide.type.croquet.views.renderers;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer;
+import org.alice.ide.common.TypeIcon;
+import org.alice.stageide.type.croquet.TypeNode;
+
+import javax.swing.JLabel;
+import javax.swing.JTree;
+import javax.swing.tree.TreePath;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.alice.stageide.type.croquet.TypeNode> {
+public class TypeCellRenderer extends TreeCellRenderer<TypeNode> {
 	//private java.awt.Color isAssignableFromColor = new java.awt.Color( 160, 160, 220 );
 	private boolean isAssignableFrom;
 
 	@Override
-	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.stageide.type.croquet.TypeNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+	protected JLabel updateListCellRendererComponent( JLabel rv, JTree tree, TypeNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
 		if( value != null ) {
 			rv.setText( " " );
 			rv.setIconTextGap( 8 );
-			rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getType() ) );
+			rv.setIcon( TypeIcon.getInstance( value.getType() ) );
 			this.isAssignableFrom = false;
 			if( sel ) {
 				//pass
 			} else {
-				javax.swing.tree.TreePath path = tree.getSelectionPath();
+				TreePath path = tree.getSelectionPath();
 				if( path != null ) {
 					Object lastPathComponent = path.getLastPathComponent();
-					if( lastPathComponent instanceof org.alice.stageide.type.croquet.TypeNode ) {
-						org.alice.stageide.type.croquet.TypeNode selectedTypeNode = (org.alice.stageide.type.croquet.TypeNode)lastPathComponent;
+					if( lastPathComponent instanceof TypeNode ) {
+						TypeNode selectedTypeNode = (TypeNode)lastPathComponent;
 						if( value.getType().isAssignableFrom( selectedTypeNode.getType() ) ) {
 							this.isAssignableFrom = true;
 						}
@@ -75,9 +85,9 @@ public class TypeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.T
 	}
 
 	@Override
-	public void paint( java.awt.Graphics g ) {
+	public void paint( Graphics g ) {
 		if( this.isAssignableFrom ) {
-			g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackgroundSelectionColor(), 1.0, 1.0, 1.2 ) );
+			g.setColor( ColorUtilities.scaleHSB( this.getBackgroundSelectionColor(), 1.0, 1.0, 1.2 ) );
 			g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 		}
 		super.paint( g );

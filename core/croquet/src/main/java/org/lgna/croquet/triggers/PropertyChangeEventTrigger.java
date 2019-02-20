@@ -42,24 +42,20 @@
  *******************************************************************************/
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.ViewController;
+
+import java.beans.PropertyChangeEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PropertyChangeEventTrigger extends EventObjectTrigger<java.beans.PropertyChangeEvent> {
-	public static PropertyChangeEventTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.beans.PropertyChangeEvent propertyChangeEvent ) {
-		return new PropertyChangeEventTrigger( viewController, propertyChangeEvent );
+public class PropertyChangeEventTrigger extends EventObjectTrigger<PropertyChangeEvent> {
+	public static UserActivity createUserActivity( ViewController<?, ?> viewController, PropertyChangeEvent propertyChangeEvent ) {
+		return new PropertyChangeEventTrigger( viewController, propertyChangeEvent ).getUserActivity();
 	}
 
-	private PropertyChangeEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.beans.PropertyChangeEvent propertyChangeEvent ) {
+	private PropertyChangeEventTrigger( ViewController<?, ?> viewController, PropertyChangeEvent propertyChangeEvent ) {
 		super( viewController, propertyChangeEvent );
-	}
-
-	public PropertyChangeEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected java.awt.Point getPoint() {
-		return null;
 	}
 }

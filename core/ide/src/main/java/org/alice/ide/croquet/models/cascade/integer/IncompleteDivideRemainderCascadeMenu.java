@@ -43,10 +43,19 @@
 
 package org.alice.ide.croquet.models.cascade.integer;
 
+import org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu;
+import org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.ArithmeticInfixExpression;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteDivideRemainderCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.ArithmeticInfixExpression> {
+public class IncompleteDivideRemainderCascadeMenu extends ExpressionCascadeMenu<ArithmeticInfixExpression> {
 	private static class SingletonHolder {
 		private static IncompleteDivideRemainderCascadeMenu instance = new IncompleteDivideRemainderCascadeMenu();
 	}
@@ -56,13 +65,13 @@ public class IncompleteDivideRemainderCascadeMenu extends org.alice.ide.croquet.
 	}
 
 	private IncompleteDivideRemainderCascadeMenu() {
-		super( java.util.UUID.fromString( "a0289f52-a603-42a2-8afd-438b88ba54a4" ) );
+		super( UUID.fromString( "a0289f52-a603-42a2-8afd-438b88ba54a4" ) );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.ArithmeticInfixExpression> context ) {
-		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
-			blankChildren.add( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<ArithmeticInfixExpression> context ) {
+		for( ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
+			blankChildren.add( IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
 	}
 }

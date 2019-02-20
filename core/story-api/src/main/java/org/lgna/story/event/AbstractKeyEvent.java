@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.lgna.story.event;
 
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.Key;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,11 +55,11 @@ public abstract class AbstractKeyEvent extends AbstractEvent {
 		this.e = e;
 	}
 
-	public org.lgna.story.Key getKey() {
-		return org.lgna.story.EmployeesOnly.getKeyFromKeyCode( e.getKeyCode() );
+	public Key getKey() {
+		return EmployeesOnly.getKeyFromKeyCode( e.getKeyCode() );
 	}
 
-	public Boolean isKey( org.lgna.story.Key key ) {
+	public Boolean isKey( Key key ) {
 		return this.getKey() == key;
 	}
 

@@ -44,13 +44,14 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
 /**
  * @author Dennis Cosgrove
  */
 public class Sphere extends Shape {
 	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
+	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
 		double d = radius.getValue();
 		boundingBox.setMinimum( -d, -d, -d );
 		boundingBox.setMaximum( d, d, d );

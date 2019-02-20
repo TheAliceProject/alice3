@@ -43,11 +43,15 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.Cascade;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.croquet.State;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemDropDown<T, CM extends org.lgna.croquet.CustomItemState<T>> extends DropDown<org.lgna.croquet.Cascade.InternalRoot.InternalPopupPrepModel<T>> {
-	public ItemDropDown( CM state, org.lgna.croquet.views.SwingComponentView<?> prefixComponent, org.lgna.croquet.views.SwingComponentView<?> mainComponent, org.lgna.croquet.views.SwingComponentView<?> postfixComponent ) {
+public abstract class ItemDropDown<T, CM extends CustomItemState<T>> extends DropDown<Cascade.InternalRoot.InternalPopupPrepModel<T>> {
+	public ItemDropDown( CM state, SwingComponentView<?> prefixComponent, SwingComponentView<?> mainComponent, SwingComponentView<?> postfixComponent ) {
 		super( state.getCascadeRoot().getPopupPrepModel(), prefixComponent, mainComponent, postfixComponent );
 	}
 
@@ -55,33 +59,33 @@ public abstract class ItemDropDown<T, CM extends org.lgna.croquet.CustomItemStat
 		this( model, null, null, null );
 	}
 
-	private final org.lgna.croquet.State.ValueListener<T> valueListener = new org.lgna.croquet.State.ValueListener<T>() {
+	private final State.ValueListener<T> valueListener = new State.ValueListener<T>() {
 		@Override
-		public void changing( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+		public void changing( State<T> state, T prevValue, T nextValue ) {
 		}
 
 		@Override
-		public void changed( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
-			ItemDropDown.this.handleChanged( state, prevValue, nextValue, isAdjusting );
+		public void changed( State<T> state, T prevValue, T nextValue ) {
+			ItemDropDown.this.handleChanged( state, prevValue, nextValue );
 		}
 	};
 
-	protected abstract void handleChanged( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting );
+	protected abstract void handleChanged( State<T> state, T prevValue, T nextValue );
 
-	private org.lgna.croquet.CustomItemState<T> getState() {
-		org.lgna.croquet.Cascade.InternalRoot.InternalPopupPrepModel<T> model = this.getModel();
-		org.lgna.croquet.CustomItemState.InternalRoot<T> root = (org.lgna.croquet.CustomItemState.InternalRoot<T>)model.getCascadeRoot();
+	private CustomItemState<T> getState() {
+		Cascade.InternalRoot.InternalPopupPrepModel<T> model = this.getModel();
+		CustomItemState.InternalRoot<T> root = (CustomItemState.InternalRoot<T>)model.getCascadeRoot();
 		return root.getCompletionModel();
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+	protected void handleAddedTo( AwtComponentView<?> parent ) {
 		this.getState().addAndInvokeValueListener( this.valueListener );
 		super.handleAddedTo( parent );
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
 		super.handleRemovedFrom( parent );
 		this.getState().removeValueListener( this.valueListener );
 	}

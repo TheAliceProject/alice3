@@ -42,8 +42,11 @@
  *******************************************************************************/
 package org.alice.interact.condition;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.interact.InputState;
 import org.alice.interact.manipulator.AbstractManipulator;
+
+import java.util.List;
 
 /**
  * @author David Culyba
@@ -171,6 +174,6 @@ public final class ManipulatorConditionSet {
 
 	private final String name;
 	private final AbstractManipulator manipulator;
-	private final java.util.List<InputCondition> inputConditions = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<InputCondition> inputConditions = Lists.newCopyOnWriteArrayList();
 	private boolean enabled = true;
 }

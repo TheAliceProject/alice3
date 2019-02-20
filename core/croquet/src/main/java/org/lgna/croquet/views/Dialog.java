@@ -43,16 +43,24 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.Application;
+
+import javax.swing.JMenuBar;
+import javax.swing.JRootPane;
+import javax.swing.WindowConstants;
+import java.awt.Container;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
 	public enum DefaultCloseOperation {
-		DO_NOTHING( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE ),
-		HIDE( javax.swing.WindowConstants.HIDE_ON_CLOSE ),
-		DISPOSE( javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		DO_NOTHING( WindowConstants.DO_NOTHING_ON_CLOSE ),
+		HIDE( WindowConstants.HIDE_ON_CLOSE ),
+		DISPOSE( WindowConstants.DISPOSE_ON_CLOSE );
 		//note: no longer necessary
 		private int internal;
 
@@ -86,8 +94,8 @@ public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
 		@Override
 		public void setDefaultCloseOperation( int operation ) {
 			super.setDefaultCloseOperation( operation );
-			if( operation != javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( operation );
+			if( operation != WindowConstants.DO_NOTHING_ON_CLOSE ) {
+				Logger.warning( operation );
 			}
 		}
 	}
@@ -120,34 +128,34 @@ public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
 	}
 
 	private DefaultCloseOperation defaultCloseOperation = DefaultCloseOperation.HIDE;
-	private final java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
+	private final WindowListener windowListener = new WindowListener() {
 		@Override
-		public void windowOpened( java.awt.event.WindowEvent e ) {
+		public void windowOpened( WindowEvent e ) {
 		}
 
 		@Override
-		public void windowClosing( java.awt.event.WindowEvent e ) {
+		public void windowClosing( WindowEvent e ) {
 			Dialog.this.handleWindowClosing( e );
 		}
 
 		@Override
-		public void windowClosed( java.awt.event.WindowEvent e ) {
+		public void windowClosed( WindowEvent e ) {
 		}
 
 		@Override
-		public void windowActivated( java.awt.event.WindowEvent e ) {
+		public void windowActivated( WindowEvent e ) {
 		}
 
 		@Override
-		public void windowDeactivated( java.awt.event.WindowEvent e ) {
+		public void windowDeactivated( WindowEvent e ) {
 		}
 
 		@Override
-		public void windowIconified( java.awt.event.WindowEvent e ) {
+		public void windowIconified( WindowEvent e ) {
 		}
 
 		@Override
-		public void windowDeiconified( java.awt.event.WindowEvent e ) {
+		public void windowDeiconified( WindowEvent e ) {
 		}
 	};
 
@@ -162,7 +170,7 @@ public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
 	public Dialog( ScreenElement owner, boolean isModal ) {
 		super( Dialog.createJDialog( owner, isModal ) );
 		//		this.getAwtComponent().setModal( isModal );
-		this.getAwtComponent().setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );
+		this.getAwtComponent().setDefaultCloseOperation( WindowConstants.DO_NOTHING_ON_CLOSE );
 		this.addWindowListener( this.windowListener );
 	}
 
@@ -170,7 +178,7 @@ public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
 		return true;
 	}
 
-	private void handleWindowClosing( java.awt.event.WindowEvent e ) {
+	private void handleWindowClosing( WindowEvent e ) {
 		if( ( this.defaultCloseOperation == DefaultCloseOperation.DO_NOTHING ) || ( this.defaultCloseOperation == null ) ) {
 			//pass
 		} else {
@@ -185,12 +193,12 @@ public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
 	}
 
 	@Override
-	/* package-private */java.awt.Container getAwtContentPane() {
+	/* package-private */Container getAwtContentPane() {
 		return this.getAwtComponent().getContentPane();
 	}
 
 	@Override
-	/* package-private */javax.swing.JRootPane getJRootPane() {
+	/* package-private */JRootPane getJRootPane() {
 		return this.getAwtComponent().getRootPane();
 	}
 
@@ -223,7 +231,7 @@ public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
 	}
 
 	@Override
-	protected void setJMenuBar( javax.swing.JMenuBar jMenuBar ) {
+	protected void setJMenuBar( JMenuBar jMenuBar ) {
 		this.getAwtComponent().setJMenuBar( jMenuBar );
 	}
 

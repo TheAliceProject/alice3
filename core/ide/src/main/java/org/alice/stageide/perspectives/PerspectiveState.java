@@ -43,16 +43,23 @@
 
 package org.alice.stageide.perspectives;
 
+import org.alice.ide.perspectives.ProjectPerspective;
+import org.alice.ide.perspectives.codecs.IdePerspectiveCodec;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PerspectiveState extends org.lgna.croquet.ImmutableDataSingleSelectListState<org.alice.ide.perspectives.ProjectPerspective> {
-	public PerspectiveState( org.alice.ide.perspectives.ProjectPerspective... perspectives ) {
+public class PerspectiveState extends ImmutableDataSingleSelectListState<ProjectPerspective> {
+	public PerspectiveState( ProjectPerspective... perspectives ) {
 		super(
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
-				java.util.UUID.fromString( "9daef1a1-fd63-4069-8431-25126032ec1f" ),
+				Application.DOCUMENT_UI_GROUP,
+				UUID.fromString( "9daef1a1-fd63-4069-8431-25126032ec1f" ),
 				0,
-				org.alice.ide.perspectives.codecs.IdePerspectiveCodec.SINGLETON,
+				IdePerspectiveCodec.SINGLETON,
 				perspectives );
 	}
 }

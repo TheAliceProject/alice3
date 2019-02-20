@@ -43,6 +43,7 @@
 
 package org.alice.ide.properties.uicontroller;
 
+import edu.cmu.cs.dennisc.color.Color4f;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.stageide.properties.ModelSizeAdapter;
 import org.alice.stageide.properties.MutableRiderVehicleAdapter;
@@ -72,9 +73,9 @@ public class AdapterControllerUtilities
 			return new ExpressionBasedPropertyController( propertyAdapter );
 		}
 		//Now check based on desired type
-		if( edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom( propertyType ) )
+		if( Color4f.class.isAssignableFrom( propertyType ) )
 		{
-			return new Color4fPropertyController( (AbstractPropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, ?>)propertyAdapter );
+			return new Color4fPropertyController( (AbstractPropertyAdapter<Color4f, ?>)propertyAdapter );
 		}
 		else if( String.class.isAssignableFrom( propertyType ) )
 		{

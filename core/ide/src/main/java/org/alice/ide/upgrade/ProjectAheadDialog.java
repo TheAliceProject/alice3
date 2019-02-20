@@ -42,44 +42,57 @@
  *******************************************************************************/
 package org.alice.ide.upgrade;
 
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import org.alice.ide.upgrade.views.ProjectAheadView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.croquet.views.Panel;
+import org.lgna.project.ProjectVersion;
+import org.lgna.project.Version;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectAheadDialog extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<org.lgna.croquet.views.Panel> {
-	private final org.lgna.project.Version projectVersion;
+public class ProjectAheadDialog extends SimpleOperationInputDialogCoreComposite<Panel> {
+	private final Version projectVersion;
 
-	public ProjectAheadDialog( org.lgna.project.Version projectVersion ) {
-		super( java.util.UUID.fromString( "51405f1e-777c-4622-aa47-a5d65e87ea90" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+	public ProjectAheadDialog( Version projectVersion ) {
+		super( UUID.fromString( "51405f1e-777c-4622-aa47-a5d65e87ea90" ), Application.INFORMATION_GROUP );
 		this.projectVersion = projectVersion;
 	}
 
-	public org.lgna.project.Version getProjectVersion() {
+	public Version getProjectVersion() {
 		return this.projectVersion;
 	}
 
-	public org.lgna.project.Version getApplicationVersion() {
-		return org.lgna.project.ProjectVersion.getCurrentVersion();
+	public Version getApplicationVersion() {
+		return ProjectVersion.getCurrentVersion();
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected Edit createEdit( UserActivity userActivity ) {
 		return null;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		return new org.alice.ide.upgrade.views.ProjectAheadView( this );
+	protected Panel createView() {
+		return new ProjectAheadView( this );
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		new org.lgna.croquet.simple.SimpleApplication();
-		new ProjectAheadDialog( new org.lgna.project.Version( "3.1.112358.0.0" ) ).getLaunchOperation().fire();
+		UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		new SimpleApplication();
+		new ProjectAheadDialog( new Version( "3.1.112358.0.0" ) ).getLaunchOperation().fire();
 		System.exit( 0 );
 	}
 }

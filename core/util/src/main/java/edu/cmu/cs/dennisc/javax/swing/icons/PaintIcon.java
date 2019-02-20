@@ -42,27 +42,34 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PaintIcon implements javax.swing.Icon {
-	private java.awt.Paint fillPaint;
+public class PaintIcon implements Icon {
+	private Paint fillPaint;
 	private int width;
 	private int height;
 
-	public PaintIcon( java.awt.Paint fillPaint ) {
+	public PaintIcon( Paint fillPaint ) {
 		this( fillPaint, ColorIcon.DEFAULT_SIZE );
 	}
 
-	public PaintIcon( java.awt.Paint fillPaint, int size ) {
+	public PaintIcon( Paint fillPaint, int size ) {
 		this( fillPaint, size, size );
 	}
 
-	public PaintIcon( java.awt.Paint fillPaint, java.awt.Dimension size ) {
+	public PaintIcon( Paint fillPaint, Dimension size ) {
 		this( fillPaint, size.width, size.height );
 	}
 
-	public PaintIcon( java.awt.Paint fillPaint, int width, int height ) {
+	public PaintIcon( Paint fillPaint, int width, int height ) {
 		this.fillPaint = fillPaint;
 		this.width = width;
 		this.height = height;
@@ -79,8 +86,8 @@ public class PaintIcon implements javax.swing.Icon {
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+	public void paintIcon( Component arg0, Graphics g, int x, int y ) {
+		Graphics2D g2 = (Graphics2D)g;
 		g2.setPaint( this.fillPaint );
 		g2.translate( x, y );
 		g2.fillRect( 0, 0, this.width, this.height );

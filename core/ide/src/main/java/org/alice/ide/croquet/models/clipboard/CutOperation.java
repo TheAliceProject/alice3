@@ -42,12 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.clipboard;
 
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import org.alice.ide.operations.InconsequentialActionOperation;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CutOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class CutOperation extends InconsequentialActionOperation {
 	private static class SingletonHolder {
 		private static CutOperation instance = new CutOperation();
 	}
@@ -57,13 +60,11 @@ public class CutOperation extends org.alice.ide.operations.InconsequentialAction
 	}
 
 	private CutOperation() {
-		super( java.util.UUID.fromString( "48a0202c-8153-4772-89ca-08fe5a8f28b5" ) );
+		super( UUID.fromString( "48a0202c-8153-4772-89ca-08fe5a8f28b5" ) );
 	}
 
 	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		new OkDialog.Builder( findLocalizedText( "content" ) )
-				.title( findLocalizedText( "title" ) )
-				.buildAndShow();
+	protected void performInternal() {
+		Dialogs.showInfo( findLocalizedText( "title" ), findLocalizedText( "content" ) );
 	}
 }

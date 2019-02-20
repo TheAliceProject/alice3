@@ -42,6 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.typemanager;
 
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.ConstructorInvocationStatement;
+import org.lgna.project.ast.Declaration;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.JavaField;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,38 +62,38 @@ public class ResourceTypeUtilities {
 		throw new AssertionError();
 	}
 
-	public static org.lgna.project.ast.JavaType getResourceType( org.lgna.project.ast.NamedUserType type ) {
-		org.lgna.project.ast.Declaration declaration = getResourceFieldOrType( type );
-		if( declaration instanceof org.lgna.project.ast.JavaType ) {
-			org.lgna.project.ast.JavaType resourceType = (org.lgna.project.ast.JavaType)declaration;
+	public static JavaType getResourceType( NamedUserType type ) {
+		Declaration declaration = getResourceFieldOrType( type );
+		if( declaration instanceof JavaType ) {
+			JavaType resourceType = (JavaType)declaration;
 			return resourceType;
-		} else if( declaration instanceof org.lgna.project.ast.JavaField ) {
-			org.lgna.project.ast.JavaField resourceField = (org.lgna.project.ast.JavaField)declaration;
+		} else if( declaration instanceof JavaField ) {
+			JavaField resourceField = (JavaField)declaration;
 			return resourceField.getDeclaringType();
 		} else {
 			return null;
 		}
 	}
 
-	public static org.lgna.project.ast.Declaration getResourceFieldOrType( org.lgna.project.ast.NamedUserType type ) {
-		java.util.List<org.lgna.project.ast.NamedUserConstructor> constructors = type.getDeclaredConstructors();
+	public static Declaration getResourceFieldOrType( NamedUserType type ) {
+		List<NamedUserConstructor> constructors = type.getDeclaredConstructors();
 		final int CONSTRUCTOR_COUNT = constructors.size();
 		switch( CONSTRUCTOR_COUNT ) {
 		case 1:
-			org.lgna.project.ast.NamedUserConstructor constructor0 = constructors.get( 0 );
-			java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
+			NamedUserConstructor constructor0 = constructors.get( 0 );
+			List<? extends AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
 			final int REQUIRED_PARAMETER_COUNT = requiredParameters.size();
 			switch( REQUIRED_PARAMETER_COUNT ) {
 			case 0:
-				org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = constructor0.body.getValue().constructorInvocationStatement.getValue();
+				ConstructorInvocationStatement constructorInvocationStatement = constructor0.body.getValue().constructorInvocationStatement.getValue();
 				final int SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT = constructorInvocationStatement.requiredArguments.size();
 				switch( SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT ) {
 				case 0:
 					return null;
 				case 1:
-					org.lgna.project.ast.Expression expression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
-					if( expression instanceof org.lgna.project.ast.FieldAccess ) {
-						org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
+					Expression expression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
+					if( expression instanceof FieldAccess ) {
+						FieldAccess fieldAccess = (FieldAccess)expression;
 						return fieldAccess.field.getValue();
 					} else {
 						return null;
@@ -90,7 +102,7 @@ public class ResourceTypeUtilities {
 					return null;
 				}
 			case 1:
-				org.lgna.project.ast.AbstractParameter parameter0 = requiredParameters.get( 0 );
+				AbstractParameter parameter0 = requiredParameters.get( 0 );
 				return parameter0.getValueType();
 			default:
 				return null;

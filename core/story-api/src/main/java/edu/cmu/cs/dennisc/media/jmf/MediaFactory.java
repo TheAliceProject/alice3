@@ -42,25 +42,41 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.media.jmf;
 
+import com.sun.media.codec.audio.mp3.JavaDecoder;
+import edu.cmu.cs.dennisc.javax.media.protocol.ByteArrayDataSource;
+import edu.cmu.cs.dennisc.javax.media.renderer.audio.FixedJavaSoundRenderer;
+import org.lgna.common.event.ResourceContentEvent;
+import org.lgna.common.event.ResourceContentListener;
+import org.lgna.common.resources.AudioResource;
+
+import javax.media.CannotRealizeException;
+import javax.media.Manager;
+import javax.media.NoPlayerException;
+import javax.media.protocol.DataSource;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
-	private java.util.Map<org.lgna.common.resources.AudioResource, javax.media.protocol.DataSource> audioResourceToDataSourceMap = new java.util.HashMap<org.lgna.common.resources.AudioResource, javax.media.protocol.DataSource>();
-	private org.lgna.common.event.ResourceContentListener resourceContentListener = new org.lgna.common.event.ResourceContentListener() {
+	private Map<AudioResource, DataSource> audioResourceToDataSourceMap = new HashMap<AudioResource, DataSource>();
+	private ResourceContentListener resourceContentListener = new ResourceContentListener() {
 		@Override
-		public void contentChanging( org.lgna.common.event.ResourceContentEvent e ) {
+		public void contentChanging( ResourceContentEvent e ) {
 		}
 
 		@Override
-		public void contentChanged( org.lgna.common.event.ResourceContentEvent e ) {
-			MediaFactory.this.forget( (org.lgna.common.resources.AudioResource)e.getTypedSource() );
+		public void contentChanged( ResourceContentEvent e ) {
+			MediaFactory.this.forget( (AudioResource)e.getTypedSource() );
 		}
 	};
 	static {
 		System.out.print( "Attempting to register mp3 capability... " );
-		com.sun.media.codec.audio.mp3.JavaDecoder.main( new String[] {} );
-		edu.cmu.cs.dennisc.javax.media.renderer.audio.FixedJavaSoundRenderer.usurpControlFromJavaSoundRenderer();
+		JavaDecoder.main( new String[] {} );
+		FixedJavaSoundRenderer.usurpControlFromJavaSoundRenderer();
 	}
 
 	private static MediaFactory singleton;
@@ -75,15 +91,15 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 	private MediaFactory() {
 	}
 
-	private void forget( org.lgna.common.resources.AudioResource audioResource ) {
+	private void forget( AudioResource audioResource ) {
 		this.audioResourceToDataSourceMap.remove( audioResource );
 		audioResource.removeContentListener( this.resourceContentListener );
 	}
 
-	public org.lgna.common.resources.AudioResource createAudioResource( java.io.File file ) throws java.io.IOException {
-		String contentType = org.lgna.common.resources.AudioResource.getContentType( file );
+	public AudioResource createAudioResource( File file ) throws IOException {
+		String contentType = AudioResource.getContentType( file );
 		if( contentType != null ) {
-			final org.lgna.common.resources.AudioResource rv = new org.lgna.common.resources.AudioResource( file, contentType );
+			final AudioResource rv = new AudioResource( file, contentType );
 			Runnable runnable = new Runnable() {
 				@Override
 				public void run() {
@@ -104,29 +120,29 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 		}
 	}
 
-	private javax.media.Player createJMFPlayer( org.lgna.common.resources.AudioResource audioResource ) {
+	private javax.media.Player createJMFPlayer( AudioResource audioResource ) {
 		assert audioResource != null;
-		javax.media.protocol.DataSource dataSource = this.audioResourceToDataSourceMap.get( audioResource );
+		DataSource dataSource = this.audioResourceToDataSourceMap.get( audioResource );
 		if( dataSource != null ) {
 			//pass
 		} else {
-			dataSource = new edu.cmu.cs.dennisc.javax.media.protocol.ByteArrayDataSource( audioResource.getData(), audioResource.getContentType() );
+			dataSource = new ByteArrayDataSource( audioResource.getData(), audioResource.getContentType() );
 			audioResource.addContentListener( this.resourceContentListener );
 			this.audioResourceToDataSourceMap.put( audioResource, dataSource );
 		}
 		try {
-			return javax.media.Manager.createRealizedPlayer( dataSource );
-		} catch( javax.media.CannotRealizeException cre ) {
+			return Manager.createRealizedPlayer( dataSource );
+		} catch( CannotRealizeException cre ) {
 			throw new RuntimeException( audioResource.toString(), cre );
-		} catch( javax.media.NoPlayerException npe ) {
+		} catch( NoPlayerException npe ) {
 			throw new RuntimeException( audioResource.toString(), npe );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( audioResource.toString(), ioe );
 		}
 	}
 
 	@Override
-	public Player createPlayer( org.lgna.common.resources.AudioResource audioResource, double volume, double startTime, double stopTime ) {
+	public Player createPlayer( AudioResource audioResource, double volume, double startTime, double stopTime ) {
 		Player player = new Player( createJMFPlayer( audioResource ), volume, startTime, stopTime, audioResource );
 		if( Double.isNaN( audioResource.getDuration() ) ) {
 			player.realize();

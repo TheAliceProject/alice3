@@ -42,16 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.dialog;
 
+import org.lgna.croquet.InputDialogCoreComposite;
+import org.lgna.croquet.imp.dialog.views.InputDialogContentPane;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class InputDialogContentComposite extends GatedCommitDialogContentComposite<org.lgna.croquet.imp.dialog.views.InputDialogContentPane> {
-	public InputDialogContentComposite( org.lgna.croquet.InputDialogCoreComposite<?> coreComposite ) {
-		super( java.util.UUID.fromString( "7cb5123b-293e-4ec8-bc99-a221f8a10d1b" ), coreComposite );
+public final class InputDialogContentComposite extends GatedCommitDialogContentComposite<InputDialogContentPane> {
+	public InputDialogContentComposite( InputDialogCoreComposite<?> coreComposite ) {
+		super( UUID.fromString( "7cb5123b-293e-4ec8-bc99-a221f8a10d1b" ), coreComposite );
 	}
 
 	@Override
-	protected org.lgna.croquet.imp.dialog.views.InputDialogContentPane createView() {
-		return new org.lgna.croquet.imp.dialog.views.InputDialogContentPane( this );
+	protected InputDialogContentPane createView() {
+		return new InputDialogContentPane( this );
 	}
 }

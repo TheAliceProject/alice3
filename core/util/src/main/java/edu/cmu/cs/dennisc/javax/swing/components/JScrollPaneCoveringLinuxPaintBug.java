@@ -42,21 +42,37 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JViewport;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JScrollPaneCoveringLinuxPaintBug extends javax.swing.JScrollPane {
 
-	protected static class JViewBasedBackgroundColorScrollBar extends javax.swing.JScrollBar {
+	protected static class JViewBasedBackgroundColorScrollBar extends JScrollBar {
 		public JViewBasedBackgroundColorScrollBar( int orientation ) {
 			super( orientation );
 		}
 
 		@Override
-		public java.awt.Color getBackground() {
+		public Color getBackground() {
 			javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane)this.getParent();
 			if( scrollPane != null ) {
-				java.awt.Color scrollPaneBackground = scrollPane.getBackground();
+				Color scrollPaneBackground = scrollPane.getBackground();
 				return scrollPaneBackground;
 				//todo?			
 				//return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( scrollPaneBackground, 1.0, 0.7, 1.1 );
@@ -65,19 +81,19 @@ public class JScrollPaneCoveringLinuxPaintBug extends javax.swing.JScrollPane {
 		}
 	}
 
-	public JScrollPaneCoveringLinuxPaintBug( java.awt.Component view ) {
+	public JScrollPaneCoveringLinuxPaintBug( Component view ) {
 		super( view );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-			this.getViewport().setScrollMode( javax.swing.JViewport.SIMPLE_SCROLL_MODE );
+		if( SystemUtilities.isLinux() ) {
+			this.getViewport().setScrollMode( JViewport.SIMPLE_SCROLL_MODE );
 		}
-		int inset = edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI.INSET;
-		javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset );
-		javax.swing.JScrollBar verticalScrollBar = this.getVerticalScrollBar();
-		verticalScrollBar.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI.createUI() );
+		int inset = SmallerFootprintScrollBarUI.INSET;
+		Border border = BorderFactory.createEmptyBorder( inset, inset, inset, inset );
+		JScrollBar verticalScrollBar = this.getVerticalScrollBar();
+		verticalScrollBar.setUI( SmallerFootprintScrollBarUI.createUI() );
 		verticalScrollBar.setBorder( border );
 
-		javax.swing.JScrollBar horizontalScrollBar = this.getHorizontalScrollBar();
-		horizontalScrollBar.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI.createUI() );
+		JScrollBar horizontalScrollBar = this.getHorizontalScrollBar();
+		horizontalScrollBar.setUI( SmallerFootprintScrollBarUI.createUI() );
 		horizontalScrollBar.setBorder( border );
 	}
 
@@ -86,10 +102,10 @@ public class JScrollPaneCoveringLinuxPaintBug extends javax.swing.JScrollPane {
 	}
 
 	@Override
-	public java.awt.Color getBackground() {
-		javax.swing.JViewport viewport = this.getViewport();
+	public Color getBackground() {
+		JViewport viewport = this.getViewport();
 		if( viewport != null ) {
-			java.awt.Component view = viewport.getView();
+			Component view = viewport.getView();
 			if( view != null ) {
 				return view.getBackground();
 			}
@@ -98,24 +114,24 @@ public class JScrollPaneCoveringLinuxPaintBug extends javax.swing.JScrollPane {
 	}
 
 	@Override
-	public javax.swing.JScrollBar createHorizontalScrollBar() {
-		return new JViewBasedBackgroundColorScrollBar( javax.swing.JScrollBar.HORIZONTAL );
+	public JScrollBar createHorizontalScrollBar() {
+		return new JViewBasedBackgroundColorScrollBar( JScrollBar.HORIZONTAL );
 	}
 
 	@Override
-	public javax.swing.JScrollBar createVerticalScrollBar() {
-		return new JViewBasedBackgroundColorScrollBar( javax.swing.JScrollBar.VERTICAL );
+	public JScrollBar createVerticalScrollBar() {
+		return new JViewBasedBackgroundColorScrollBar( JScrollBar.VERTICAL );
 	}
 
 	public static void main( String[] args ) {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		javax.swing.UIManager.put( "ScrollBar.width", 11 );
-		javax.swing.JPanel view = new javax.swing.JPanel();
-		view.setPreferredSize( new java.awt.Dimension( 1000, 400 ) );
+		UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		UIManager.put( "ScrollBar.width", 11 );
+		JPanel view = new JPanel();
+		view.setPreferredSize( new Dimension( 1000, 400 ) );
 		JScrollPaneCoveringLinuxPaintBug scrollPane = new JScrollPaneCoveringLinuxPaintBug( view );
-		javax.swing.JFrame frame = new javax.swing.JFrame();
-		frame.getContentPane().add( scrollPane, java.awt.BorderLayout.CENTER );
-		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
+		JFrame frame = new JFrame();
+		frame.getContentPane().add( scrollPane, BorderLayout.CENTER );
+		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		frame.setSize( 320, 240 );
 		frame.setVisible( true );
 	}

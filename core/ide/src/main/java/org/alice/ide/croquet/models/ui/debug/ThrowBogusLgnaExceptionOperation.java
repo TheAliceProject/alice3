@@ -42,10 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ui.debug;
 
+import org.alice.ide.operations.InconsequentialActionOperation;
+import org.lgna.common.LgnaIllegalArgumentException;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ThrowBogusLgnaExceptionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class ThrowBogusLgnaExceptionOperation extends InconsequentialActionOperation {
 	private static class SingletonHolder {
 		private static ThrowBogusLgnaExceptionOperation instance = new ThrowBogusLgnaExceptionOperation();
 	}
@@ -55,7 +60,7 @@ public class ThrowBogusLgnaExceptionOperation extends org.alice.ide.operations.I
 	}
 
 	private ThrowBogusLgnaExceptionOperation() {
-		super( java.util.UUID.fromString( "d43ded9d-baa9-44be-9e90-8dfe2918cc4c" ) );
+		super( UUID.fromString( "d43ded9d-baa9-44be-9e90-8dfe2918cc4c" ) );
 	}
 
 	@Override
@@ -65,11 +70,11 @@ public class ThrowBogusLgnaExceptionOperation extends org.alice.ide.operations.I
 	}
 
 	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void performInternal() {
 		new Thread() {
 			@Override
 			public void run() {
-				throw new org.lgna.common.LgnaIllegalArgumentException( "DELETE THIS BOGUS LGNA EXCEPTION", 0, null );
+				throw new LgnaIllegalArgumentException( "DELETE THIS BOGUS LGNA EXCEPTION", 0, null );
 			}
 		}.start();
 	}

@@ -42,15 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import java.awt.CardLayout;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JCardPane extends JPane {
 	public JCardPane() {
-		setLayout( new java.awt.CardLayout() );
+		setLayout( new CardLayout() );
 	}
 
 	public void show( String key ) {
-		( (java.awt.CardLayout)this.getLayout() ).show( this, key );
+		( (CardLayout)this.getLayout() ).show( this, key );
 	}
 }

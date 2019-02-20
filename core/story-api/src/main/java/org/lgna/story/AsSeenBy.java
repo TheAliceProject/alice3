@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import org.lgna.story.implementation.ReferenceFrame;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -68,7 +70,7 @@ public class AsSeenBy implements
 		return defaultValue;
 	}
 
-	/* package-private */static org.lgna.story.implementation.ReferenceFrame getImplementation( Object[] details, org.lgna.story.implementation.ReferenceFrame defaultValue ) {
+	/* package-private */static ReferenceFrame getImplementation( Object[] details, ReferenceFrame defaultValue ) {
 		SThing entity = getValue( details, null );
 		return entity != null ? entity.getImplementation() : defaultValue;
 	}

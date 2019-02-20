@@ -43,46 +43,58 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.render.Graphics2D;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Graphic;
+import edu.cmu.cs.dennisc.scenegraph.Layer;
+import edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent;
+
+import java.awt.Rectangle;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GlrLayer extends GlrElement<edu.cmu.cs.dennisc.scenegraph.Layer> {
-	/*package-private*/static void handleGraphicAdded( edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent e ) {
+public class GlrLayer extends GlrElement<Layer> {
+	/*package-private*/static void handleGraphicAdded( GraphicAddedEvent e ) {
 		GlrLayer layerAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
-		GlrGraphic<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter = AdapterFactory.getAdapterFor( e.getChild() );
+		GlrGraphic<? extends Graphic> graphicAdapter = AdapterFactory.getAdapterFor( e.getChild() );
 		layerAdapter.handleGraphicAdded( graphicAdapter );
 	}
 
-	/*package-private*/static void handleGraphicRemoved( edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent e ) {
+	/*package-private*/static void handleGraphicRemoved( GraphicRemovedEvent e ) {
 		GlrLayer layerAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
-		GlrGraphic<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter = AdapterFactory.getAdapterFor( e.getChild() );
+		GlrGraphic<? extends Graphic> graphicAdapter = AdapterFactory.getAdapterFor( e.getChild() );
 		layerAdapter.handleGraphicRemoved( graphicAdapter );
 	}
 
-	private void handleGraphicAdded( GlrGraphic<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter ) {
+	private void handleGraphicAdded( GlrGraphic<? extends Graphic> graphicAdapter ) {
 		synchronized( this.activeGlrGraphics ) {
 			this.activeGlrGraphics.add( graphicAdapter );
 		}
 	}
 
-	private void handleGraphicRemoved( GlrGraphic<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter ) {
+	private void handleGraphicRemoved( GlrGraphic<? extends Graphic> graphicAdapter ) {
 		synchronized( this.forgetGlrGraphics ) {
 			this.forgetGlrGraphics.add( graphicAdapter );
 		}
 	}
 
 	@Override
-	public void initialize( edu.cmu.cs.dennisc.scenegraph.Layer sgLayer ) {
+	public void initialize( Layer sgLayer ) {
 		super.initialize( sgLayer );
-		for( edu.cmu.cs.dennisc.scenegraph.Graphic sgGraphic : sgLayer.getGraphics() ) {
+		for( Graphic sgGraphic : sgLayer.getGraphics() ) {
 			GlrGraphic<?> glrGraphic = AdapterFactory.getAdapterFor( sgGraphic );
 			handleGraphicAdded( glrGraphic );
 		}
 	}
 
-	/* package-private */void render( edu.cmu.cs.dennisc.render.Graphics2D g2, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+	/* package-private */void render( Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera ) {
 		synchronized( this.forgetGlrGraphics ) {
-			for( GlrGraphic<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter : this.forgetGlrGraphics ) {
+			for( GlrGraphic<? extends Graphic> graphicAdapter : this.forgetGlrGraphics ) {
 				graphicAdapter.forget( g2 );
 				synchronized( this.activeGlrGraphics ) {
 					this.activeGlrGraphics.remove( graphicAdapter );
@@ -91,12 +103,12 @@ public class GlrLayer extends GlrElement<edu.cmu.cs.dennisc.scenegraph.Layer> {
 			this.forgetGlrGraphics.clear();
 		}
 		synchronized( this.activeGlrGraphics ) {
-			for( GlrGraphic<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter : this.activeGlrGraphics ) {
+			for( GlrGraphic<? extends Graphic> graphicAdapter : this.activeGlrGraphics ) {
 				graphicAdapter.render( g2, renderTarget, actualViewport, camera );
 			}
 		}
 	}
 
-	private final java.util.List<GlrGraphic<?>> activeGlrGraphics = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final java.util.List<GlrGraphic<?>> forgetGlrGraphics = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final List<GlrGraphic<?>> activeGlrGraphics = Lists.newLinkedList();
+	private final List<GlrGraphic<?>> forgetGlrGraphics = Lists.newLinkedList();
 }

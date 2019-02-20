@@ -42,57 +42,50 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.ListProperty;
+import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
 import org.lgna.project.ast.localizer.AstLocalizer;
+import org.lgna.project.ast.localizer.AstLocalizerFactory;
+import org.lgna.project.ast.localizer.DefaultAstLocalizerFactory;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractNode extends Element implements Node {
-	private static final double CURRENT_VERSION = 3.10062;
-	private static final double MINIMUM_ACCEPTABLE_VERSION = 3.1;
 
-	private static org.lgna.project.ast.localizer.AstLocalizerFactory astLocalizerFactory = new org.lgna.project.ast.localizer.DefaultAstLocalizerFactory();
+	private static AstLocalizerFactory astLocalizerFactory = new DefaultAstLocalizerFactory();
 
-	public static org.lgna.project.ast.localizer.AstLocalizerFactory getAstLocalizerFactory() {
+	public static AstLocalizerFactory getAstLocalizerFactory() {
 		return AbstractNode.astLocalizerFactory;
 	}
 
-	public static void setAstLocalizerFactory( org.lgna.project.ast.localizer.AstLocalizerFactory astLocalizerFactory ) {
+	public static void setAstLocalizerFactory( AstLocalizerFactory astLocalizerFactory ) {
 		AbstractNode.astLocalizerFactory = astLocalizerFactory;
 	}
 
-	private java.util.UUID id = java.util.UUID.randomUUID();
+	private UUID id = UUID.randomUUID();
 	private AbstractNode parent;
 
-	//todo
-	public boolean isAppropriatelyIdenitifiedById() {
-		return true;
-	}
-
 	@Override
-	public final java.util.UUID getId() {
+	public final UUID getId() {
 		return this.id;
 	}
 
-	/* package-private */final void setId( java.util.UUID id ) {
+	public final void setId( UUID id ) {
 		this.id = id;
-	}
-
-	@Override
-	public boolean contentEquals( Node other, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( other != null ) {
-			Class<?> thisCls = this.getClass();
-			Class<?> otherCls = other.getClass();
-			return thisCls.equals( otherCls );
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public final boolean contentEquals( org.lgna.project.ast.Node other, org.lgna.project.ast.ContentEqualsStrictness strictness ) {
-		edu.cmu.cs.dennisc.property.PropertyFilter filter = null;
-		return this.contentEquals( other, strictness, filter );
 	}
 
 	@Override
@@ -104,7 +97,7 @@ public abstract class AbstractNode extends Element implements Node {
 		if( this.parent != parent ) {
 			if( this.parent != null ) {
 				if( parent != null ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "previous not null", this, this.parent );
+					Logger.warning( "previous not null", this, this.parent );
 				}
 			}
 			this.parent = parent;
@@ -134,9 +127,9 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+	public void firePropertyChanging( PropertyEvent e ) {
 		super.firePropertyChanging( e );
-		edu.cmu.cs.dennisc.property.InstanceProperty<?> property = e.getTypedSource();
+		InstanceProperty<?> property = e.getTypedSource();
 		if( property instanceof NodeProperty<?> ) {
 			NodeProperty<?> nodeProperty = (NodeProperty<?>)property;
 			boolean isReference;
@@ -157,8 +150,8 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		edu.cmu.cs.dennisc.property.InstanceProperty<?> property = e.getTypedSource();
+	public void firePropertyChanged( PropertyEvent e ) {
+		InstanceProperty<?> property = e.getTypedSource();
 		if( property instanceof NodeProperty<?> ) {
 			NodeProperty<?> nodeProperty = (NodeProperty<?>)property;
 			boolean isReference;
@@ -180,9 +173,9 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void fireClearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
+	public void fireClearing( ClearListPropertyEvent e ) {
 		super.fireClearing( e );
-		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
+		ListProperty<?> listProperty = (ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty<?> ) {
 			NodeListProperty<?> nodeListProperty = (NodeListProperty<?>)listProperty;
 			for( Node node : nodeListProperty ) {
@@ -194,9 +187,9 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void fireRemoving( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
+	public void fireRemoving( RemoveListPropertyEvent e ) {
 		super.fireRemoving( e );
-		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
+		ListProperty<?> listProperty = (ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
@@ -208,9 +201,9 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void fireSetting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
+	public void fireSetting( SetListPropertyEvent e ) {
 		super.fireSetting( e );
-		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
+		ListProperty<?> listProperty = (ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
@@ -222,8 +215,8 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
-		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
+	public void fireSet( SetListPropertyEvent e ) {
+		ListProperty<?> listProperty = (ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
@@ -236,9 +229,9 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void fireAdding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
+	public void fireAdding( AddListPropertyEvent e ) {
 		super.fireAdding( e );
-		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
+		ListProperty<?> listProperty = (ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
@@ -250,8 +243,8 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void fireAdded( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
-		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
+	public void fireAdded( AddListPropertyEvent e ) {
+		ListProperty<?> listProperty = (ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
@@ -263,7 +256,7 @@ public abstract class AbstractNode extends Element implements Node {
 		super.fireAdded( e );
 	}
 
-	private static void acceptIfCrawlable( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited, Object value, CrawlPolicy crawlPolicy, edu.cmu.cs.dennisc.pattern.Criterion<Declaration> declarationFilter ) {
+	private static void acceptIfCrawlable( Crawler crawler, Set<Crawlable> visited, Object value, CrawlPolicy crawlPolicy, Criterion<Declaration> declarationFilter ) {
 		if( value instanceof AbstractNode ) {
 			AbstractNode node = (AbstractNode)value;
 			if( declarationFilter != null ) {
@@ -272,24 +265,24 @@ public abstract class AbstractNode extends Element implements Node {
 					if( declarationFilter.accept( declaration ) ) {
 						//pass
 					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping", declaration );
+						Logger.errln( "skipping", declaration );
 						return;
 					}
 				}
 			}
 			node.accept( crawler, visited, crawlPolicy, declarationFilter );
-		} else if( value instanceof edu.cmu.cs.dennisc.pattern.Crawlable ) {
-			edu.cmu.cs.dennisc.pattern.Crawlable crawlable = (edu.cmu.cs.dennisc.pattern.Crawlable)value;
+		} else if( value instanceof Crawlable ) {
+			Crawlable crawlable = (Crawlable)value;
 			crawlable.accept( crawler, visited );
 		}
 	}
 
 	@Override
-	public void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited ) {
+	public void accept( Crawler crawler, Set<Crawlable> visited ) {
 		this.accept( crawler, visited, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY, null );
 	}
 
-	private void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited, CrawlPolicy crawlPolicy, edu.cmu.cs.dennisc.pattern.Criterion<Declaration> declarationFilter ) {
+	private void accept( Crawler crawler, Set<Crawlable> visited, CrawlPolicy crawlPolicy, Criterion<Declaration> declarationFilter ) {
 		if( visited.contains( this ) ) {
 			//pass
 		} else {
@@ -297,7 +290,7 @@ public abstract class AbstractNode extends Element implements Node {
 			crawler.visit( this );
 
 			// Look through this nodes properties to see if any have anything to crawl
-			for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : this.getProperties() ) {
+			for( InstanceProperty<?> property : this.getProperties() ) {
 				// Check if this is a reference
 				if( property instanceof DeclarationProperty<?> ) {
 					DeclarationProperty<?> declarationProperty = (DeclarationProperty<?>)property;
@@ -338,114 +331,12 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, CrawlPolicy crawlPolicy, edu.cmu.cs.dennisc.pattern.Criterion<Declaration> criterion ) {
-		this.accept( crawler, new java.util.HashSet<edu.cmu.cs.dennisc.pattern.Crawlable>(), crawlPolicy, criterion );
+	public final synchronized void crawl( Crawler crawler, CrawlPolicy crawlPolicy, Criterion<Declaration> criterion ) {
+		this.accept( crawler, new HashSet<Crawlable>(), crawlPolicy, criterion );
 	}
 
-	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, CrawlPolicy crawlPolicy ) {
+	public final synchronized void crawl( Crawler crawler, CrawlPolicy crawlPolicy ) {
 		this.crawl( crawler, crawlPolicy, null );
-	}
-
-	//	@Deprecated
-	//	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean followReferences ) {
-	//		CrawlPolicy crawlPolicy = followReferences ? CrawlPolicy.COMPLETE : CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY;
-	//		this.crawl( crawler, crawlPolicy );
-	//	}
-
-	private static org.w3c.dom.Element encodeValue( Object value, org.w3c.dom.Document xmlDocument, java.util.Map<AbstractDeclaration, Integer> map ) {
-		org.w3c.dom.Element rv;
-		if( value instanceof AbstractNode ) {
-			AbstractNode node = (AbstractNode)value;
-			rv = node.encode( xmlDocument, map );
-		} else if( value instanceof java.util.Collection ) {
-			rv = xmlDocument.createElement( "collection" );
-			rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, value.getClass().getName() );
-			java.util.Collection<?> collection = (java.util.Collection<?>)value;
-			for( Object item : collection ) {
-				rv.appendChild( encodeValue( item, xmlDocument, map ) );
-			}
-			//		} else if( value instanceof org.alice.virtualmachine.Resource ) {
-			//			org.alice.virtualmachine.Resource resource = (org.alice.virtualmachine.Resource)value;
-			//			rv = xmlDocument.createElement( "resource" );
-			//			java.util.UUID uuid = resource.getUUID();
-			//			assert uuid != null;
-			//			rv.setAttribute( CodecConstants.UUID_ATTRIBUTE, uuid.toString() );
-		} else {
-			rv = xmlDocument.createElement( "value" );
-			if( value != null ) {
-				rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, value.getClass().getName() );
-				String text;
-				if( value instanceof org.lgna.common.Resource ) {
-					org.lgna.common.Resource resource = (org.lgna.common.Resource)value;
-					text = resource.getId().toString();
-				} else {
-					text = value.toString();
-				}
-				rv.appendChild( xmlDocument.createTextNode( text ) );
-			} else {
-				rv.setAttribute( "isNull", "true" );
-			}
-		}
-		return rv;
-	}
-
-	protected final org.w3c.dom.Element encodeProperty( org.w3c.dom.Document xmlDocument, edu.cmu.cs.dennisc.property.InstanceProperty<?> property, java.util.Map<AbstractDeclaration, Integer> map ) {
-		org.w3c.dom.Element xmlProperty = xmlDocument.createElement( "property" );
-		xmlProperty.setAttribute( "name", property.getName() );
-		Object value = property.getValue();
-		xmlProperty.appendChild( encodeValue( value, xmlDocument, map ) );
-		return xmlProperty;
-	}
-
-	private static org.w3c.dom.Element encodeType( org.w3c.dom.Document xmlDocument, String nodeName, ClassReflectionProxy classReflectionProxy ) {
-		org.w3c.dom.Element rv = xmlDocument.createElement( nodeName );
-		rv.setAttribute( "name", classReflectionProxy.getName() );
-		return rv;
-	}
-
-	private static org.w3c.dom.Element encodeDeclaringClass( org.w3c.dom.Document xmlDocument, MemberReflectionProxy memberReflectionProxy ) {
-		return encodeType( xmlDocument, "declaringClass", memberReflectionProxy.getDeclaringClassReflectionProxy() );
-	}
-
-	private static org.w3c.dom.Element encodeParameters( org.w3c.dom.Document xmlDocument, ClassReflectionProxy[] parameterClassReflectionProxies ) {
-		org.w3c.dom.Element rv = xmlDocument.createElement( "parameters" );
-		for( ClassReflectionProxy parameterClassReflectionProxy : parameterClassReflectionProxies ) {
-			rv.appendChild( encodeType( xmlDocument, "type", parameterClassReflectionProxy ) );
-		}
-		return rv;
-	}
-
-	private static org.w3c.dom.Element encodeMember( org.w3c.dom.Document xmlDocument, String nodeName, MemberReflectionProxy memberReflectionProxy ) {
-		org.w3c.dom.Element rv = xmlDocument.createElement( nodeName );
-		//		String name = mmbr.getName();
-		//		if( name == null ) {
-		//			assert mmbr instanceof java.lang.reflect.Constructor< ? >;
-		//		} else {
-		//			rv.setAttribute( "name", name );
-		//		}
-		rv.appendChild( encodeDeclaringClass( xmlDocument, memberReflectionProxy ) );
-		return rv;
-	}
-
-	private static org.w3c.dom.Element encodeField( org.w3c.dom.Document xmlDocument, String nodeName, FieldReflectionProxy fieldReflectionProxy ) {
-		org.w3c.dom.Element rv = encodeMember( xmlDocument, nodeName, fieldReflectionProxy );
-		rv.setAttribute( "name", fieldReflectionProxy.getName() );
-		return rv;
-	}
-
-	private static org.w3c.dom.Element encodeConstructor( org.w3c.dom.Document xmlDocument, String nodeName, ConstructorReflectionProxy constructorReflectionProxy ) {
-		org.w3c.dom.Element rv = encodeMember( xmlDocument, nodeName, constructorReflectionProxy );
-		rv.setAttribute( "isVarArgs", Boolean.toString( constructorReflectionProxy.isVarArgs() ) );
-		rv.appendChild( encodeParameters( xmlDocument, constructorReflectionProxy.getParameterClassReflectionProxies() ) );
-		return rv;
-	}
-
-	private static org.w3c.dom.Element encodeMethod( org.w3c.dom.Document xmlDocument, String nodeName, MethodReflectionProxy methodReflectionProxy ) {
-		org.w3c.dom.Element rv = encodeMember( xmlDocument, nodeName, methodReflectionProxy );
-		rv.setAttribute( "name", methodReflectionProxy.getName() );
-		rv.setAttribute( "isVarArgs", Boolean.toString( methodReflectionProxy.isVarArgs() ) );
-		rv.appendChild( encodeParameters( xmlDocument, methodReflectionProxy.getParameterClassReflectionProxies() ) );
-		return rv;
 	}
 
 	// hashCode not terrible choice for "unique" key.
@@ -453,127 +344,9 @@ public abstract class AbstractNode extends Element implements Node {
 	//		return System.identityHashCode( declaration );
 	//	}
 
-	private static int createUniqueKey( AbstractDeclaration declaration, java.util.Map<?, ?> map ) {
-		return map.size() + 1;
-	}
-
-	private static int getUniqueKeyAndPutInEncodeMap( AbstractDeclaration declaration, java.util.Map<AbstractDeclaration, Integer> map ) {
-		int uniqueKey = createUniqueKey( declaration, map );
-		map.put( declaration, uniqueKey );
-		return uniqueKey;
-	}
-
-	private static int getUniqueKeyAndPutInDecodeMap( AbstractDeclaration declaration, java.util.Map<Integer, AbstractDeclaration> map ) {
-		int uniqueKey = createUniqueKey( declaration, map );
-		map.put( uniqueKey, declaration );
-		return uniqueKey;
-	}
-
-	public org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Map<AbstractDeclaration, Integer> map ) {
-		org.w3c.dom.Element rv = xmlDocument.createElement( "node" );
-		if( this instanceof AbstractDeclaration ) {
-			AbstractDeclaration abstractDeclaration = (AbstractDeclaration)this;
-			boolean isDeclarationAlreadyEncoded = map.containsKey( abstractDeclaration );
-			int key;
-			if( isDeclarationAlreadyEncoded ) {
-				key = map.get( abstractDeclaration );
-			} else {
-				key = getUniqueKeyAndPutInEncodeMap( abstractDeclaration, map );
-			}
-			rv.setAttribute( CodecConstants.UNIQUE_KEY_ATTRIBUTE, Integer.toHexString( key ) );
-			if( isDeclarationAlreadyEncoded ) {
-				return rv;
-			}
-		}
-		//todo
-		rv.setAttribute( CodecConstants.ID_ATTRIBUTE, this.id.toString() );
-		rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, getClass().getName() );
-		if( this instanceof JavaType ) {
-			JavaType javaType = (JavaType)this;
-			rv.appendChild( encodeType( xmlDocument, "type", javaType.getClassReflectionProxy() ) );
-		} else if( this instanceof UserArrayType ) {
-			UserArrayType userArrayType = (UserArrayType)this;
-
-			org.w3c.dom.Element xmlLeafType = xmlDocument.createElement( "leafType" );
-			xmlLeafType.appendChild( encodeValue( userArrayType.getLeafType(), xmlDocument, map ) );
-			rv.appendChild( xmlLeafType );
-
-			org.w3c.dom.Element xmlDimensionCount = xmlDocument.createElement( "dimensionCount" );
-			xmlDimensionCount.appendChild( xmlDocument.createTextNode( Integer.toString( userArrayType.getDimensionCount() ) ) );
-			rv.appendChild( xmlDimensionCount );
-
-		} else if( this instanceof JavaConstructor ) {
-			JavaConstructor constructorDeclaredInJava = (JavaConstructor)this;
-			rv.appendChild( encodeConstructor( xmlDocument, "constructor", constructorDeclaredInJava.getConstructorReflectionProxy() ) );
-		} else if( this instanceof JavaMethod ) {
-			JavaMethod methodDeclaredInJava = (JavaMethod)this;
-			rv.appendChild( encodeMethod( xmlDocument, "method", methodDeclaredInJava.getMethodReflectionProxy() ) );
-		} else if( this instanceof AbstractMethodContainedByUserField ) {
-			AbstractMethodContainedByUserField getterOrSetter = (AbstractMethodContainedByUserField)this;
-			UserField field = getterOrSetter.getField();
-			rv.appendChild( encodeValue( field, xmlDocument, map ) );
-		} else if( this instanceof JavaField ) {
-			JavaField fieldDeclaredInJavaWithField = (JavaField)this;
-			rv.appendChild( encodeField( xmlDocument, "field", fieldDeclaredInJavaWithField.getFieldReflectionProxy() ) );
-		} else if( this instanceof AnonymousUserConstructor ) {
-			AnonymousUserConstructor anonymousConstructor = (AnonymousUserConstructor)this;
-			org.w3c.dom.Element xmlType = xmlDocument.createElement( "anonymousType" );
-			xmlType.appendChild( encodeValue( anonymousConstructor.getDeclaringType(), xmlDocument, map ) );
-			rv.appendChild( xmlType );
-		} else if( this instanceof JavaConstructorParameter ) {
-			JavaConstructorParameter parameterDeclaredInJavaConstructor = (JavaConstructorParameter)this;
-			JavaConstructor constructor = parameterDeclaredInJavaConstructor.getCode();
-			rv.appendChild( encodeValue( constructor, xmlDocument, map ) );
-
-			org.w3c.dom.Element xmlIndex = xmlDocument.createElement( "index" );
-			xmlIndex.appendChild( xmlDocument.createTextNode( Integer.toString( parameterDeclaredInJavaConstructor.getIndex() ) ) );
-			rv.appendChild( xmlIndex );
-		} else if( this instanceof JavaMethodParameter ) {
-			JavaMethodParameter parameterDeclaredInJavaMethod = (JavaMethodParameter)this;
-			JavaMethod method = parameterDeclaredInJavaMethod.getCode();
-			rv.appendChild( encodeValue( method, xmlDocument, map ) );
-
-			org.w3c.dom.Element xmlIndex = xmlDocument.createElement( "index" );
-			xmlIndex.appendChild( xmlDocument.createTextNode( Integer.toString( parameterDeclaredInJavaMethod.getIndex() ) ) );
-			rv.appendChild( xmlIndex );
-		} else if( this instanceof SetterParameter ) {
-			SetterParameter setterParameter = (SetterParameter)this;
-			Setter setter = setterParameter.getCode();
-			rv.appendChild( encodeValue( setter, xmlDocument, map ) );
-		}
-		for( edu.cmu.cs.dennisc.property.InstanceProperty property : getProperties() ) {
-			rv.appendChild( encodeProperty( xmlDocument, property, map ) );
-		}
-		return rv;
-	}
-
-	public static java.util.Map<AbstractDeclaration, Integer> createEncodeMapFromDeclarationSet( java.util.Set<AbstractDeclaration> set ) {
-		java.util.Map<AbstractDeclaration, Integer> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		for( AbstractDeclaration declaration : set ) {
-			getUniqueKeyAndPutInEncodeMap( declaration, map );
-		}
-		return map;
-	}
-
-	private org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Set<AbstractDeclaration> set ) {
-		return this.encode( xmlDocument, createEncodeMapFromDeclarationSet( set ) );
-	}
-
-	public final org.w3c.dom.Document encode( java.util.Set<AbstractDeclaration> set ) {
-		org.w3c.dom.Document rv = edu.cmu.cs.dennisc.xml.XMLUtilities.createDocument();
-		org.w3c.dom.Element xmlElement = this.encode( rv, set );
-		xmlElement.setAttribute( "version", Double.toString( CURRENT_VERSION ) );
-		rv.appendChild( xmlElement );
-		return rv;
-	}
-
-	public final org.w3c.dom.Document encode() {
-		return encode( new java.util.HashSet<AbstractDeclaration>() );
-	}
-
-	protected java.util.Set<AbstractDeclaration> fillInDeclarationSet( java.util.Set<AbstractDeclaration> rv, java.util.Set<AbstractNode> nodes ) {
+	protected Set<AbstractDeclaration> fillInDeclarationSet( Set<AbstractDeclaration> rv, Set<AbstractNode> nodes ) {
 		nodes.add( this );
-		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : this.getProperties() ) {
+		for( InstanceProperty<?> property : this.getProperties() ) {
 			Object value = property.getValue();
 			if( value instanceof AbstractNode ) {
 				if( nodes.contains( value ) ) {
@@ -596,15 +369,15 @@ public abstract class AbstractNode extends Element implements Node {
 		return rv;
 	}
 
-	public java.util.Set<AbstractDeclaration> createDeclarationSet() {
-		java.util.Set<AbstractDeclaration> rv = new java.util.HashSet<AbstractDeclaration>();
-		fillInDeclarationSet( rv, new java.util.HashSet<AbstractNode>() );
+	public Set<AbstractDeclaration> createDeclarationSet() {
+		Set<AbstractDeclaration> rv = new HashSet<AbstractDeclaration>();
+		fillInDeclarationSet( rv, new HashSet<AbstractNode>() );
 		return rv;
 	}
 
-	private java.util.Set<AbstractDeclaration> removeDeclarationsThatNeedToBeCopied( java.util.Set<AbstractDeclaration> rv, java.util.Set<AbstractNode> nodes ) {
+	private Set<AbstractDeclaration> removeDeclarationsThatNeedToBeCopied( Set<AbstractDeclaration> rv, Set<AbstractNode> nodes ) {
 		nodes.add( this );
-		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : this.getProperties() ) {
+		for( InstanceProperty<?> property : this.getProperties() ) {
 			if( property instanceof DeclarationProperty ) {
 				DeclarationProperty<? extends AbstractDeclaration> declarationProperty = (DeclarationProperty<? extends AbstractDeclaration>)property;
 				if( declarationProperty.isReference() ) {
@@ -635,67 +408,8 @@ public abstract class AbstractNode extends Element implements Node {
 		return rv;
 	}
 
-	public java.util.Set<AbstractDeclaration> removeDeclarationsThatNeedToBeCopied( java.util.Set<AbstractDeclaration> rv ) {
-		return removeDeclarationsThatNeedToBeCopied( rv, new java.util.HashSet<AbstractNode>() );
-	}
-
-	public static java.util.Map<Integer, AbstractDeclaration> createMapOfDeclarationsThatShouldNotBeCopied( java.util.Set<AbstractDeclaration> set ) {
-		java.util.Map<Integer, AbstractDeclaration> rv = new java.util.HashMap<Integer, AbstractDeclaration>();
-		for( AbstractDeclaration abstractDeclaration : set ) {
-			getUniqueKeyAndPutInDecodeMap( abstractDeclaration, rv );
-		}
-		return rv;
-	}
-
-	protected void handleMissingProperty( String propertyName, Object value ) {
-		throw new RuntimeException( propertyName );
-	}
-
-	protected Object convertPropertyValueIfNecessary( edu.cmu.cs.dennisc.property.InstanceProperty property, Object value ) {
-		return value;
-	}
-
-	protected final void decodeNode( Decoder decoder, org.w3c.dom.Element xmlElement, java.util.Map<Integer, AbstractDeclaration> map ) {
-		org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
-		for( int i = 0; i < nodeList.getLength(); i++ ) {
-			org.w3c.dom.Node xmlNode = nodeList.item( i );
-			assert xmlNode instanceof org.w3c.dom.Element : xmlNode;
-			org.w3c.dom.Element xmlProperty = (org.w3c.dom.Element)xmlNode;
-			if( xmlProperty.getTagName().equals( "property" ) ) {
-				String propertyName = xmlProperty.getAttribute( "name" );
-				edu.cmu.cs.dennisc.property.InstanceProperty property = this.getPropertyNamed( propertyName );
-				Object value = decoder.decodeValue( (org.w3c.dom.Element)xmlProperty.getFirstChild(), map );
-				if( property != null ) {
-					value = this.convertPropertyValueIfNecessary( property, value );
-					property.setValue( value );
-				} else {
-					this.handleMissingProperty( propertyName, value );
-				}
-			}
-		}
-		this.postDecode();
-	}
-
-	protected void postDecode() {
-	}
-
-	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, org.lgna.project.Version projectVersion, java.util.Map<Integer, AbstractDeclaration> map, DecodeIdPolicy policy ) throws org.lgna.project.VersionNotSupportedException {
-		org.w3c.dom.Element xmlElement = xmlDocument.getDocumentElement();
-		double astVersion = Double.parseDouble( xmlElement.getAttribute( "version" ) );
-		if( astVersion >= MINIMUM_ACCEPTABLE_VERSION ) {
-			Decoder decoder = new Decoder( projectVersion, org.lgna.project.ProjectVersion.getCurrentVersion(), policy );
-			return decoder.decode( xmlElement, map );
-		} else {
-			throw new org.lgna.project.VersionNotSupportedException( MINIMUM_ACCEPTABLE_VERSION, astVersion );
-		}
-	}
-
-	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, org.lgna.project.Version projectVersion, java.util.Map<Integer, AbstractDeclaration> map ) throws org.lgna.project.VersionNotSupportedException {
-		return decode( xmlDocument, projectVersion, map, DecodeIdPolicy.PRESERVE_IDS );
-	}
-
-	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, org.lgna.project.Version projectVersion ) throws org.lgna.project.VersionNotSupportedException {
-		return decode( xmlDocument, projectVersion, new java.util.HashMap<Integer, AbstractDeclaration>() );
+	public Set<AbstractDeclaration> removeDeclarationsThatNeedToBeCopied( Set<AbstractDeclaration> rv ) {
+		return removeDeclarationsThatNeedToBeCopied( rv, new HashSet<AbstractNode>() );
 	}
 
 	//	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {

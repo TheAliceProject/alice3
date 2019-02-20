@@ -43,6 +43,12 @@
 
 package org.lgna.croquet.views;
 
+import javax.swing.JPanel;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,12 +58,12 @@ public class FixedCenterPanel extends SingleComponentPanel {
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
 		return new SingleComponentLayoutManager() {
 			@Override
-			protected void layoutComponent( java.awt.Container parent, java.awt.Component component ) {
-				java.awt.Dimension parentSize = parent.getSize();
-				java.awt.Dimension componentSize = component.getPreferredSize();
+			protected void layoutComponent( Container parent, Component component ) {
+				Dimension parentSize = parent.getSize();
+				Dimension componentSize = component.getPreferredSize();
 				component.setLocation( ( parentSize.width - componentSize.width ) / 2, ( parentSize.height - componentSize.height ) / 2 );
 				component.setSize( componentSize );
 			}

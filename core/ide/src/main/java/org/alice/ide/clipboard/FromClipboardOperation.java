@@ -43,25 +43,35 @@
 
 package org.alice.ide.clipboard;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.Statement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FromClipboardOperation extends org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation {
-	public FromClipboardOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+public abstract class FromClipboardOperation extends StatementInsertOperation {
+	public FromClipboardOperation( UUID id, BlockStatementIndexPair blockStatementIndexPair ) {
 		super( id, blockStatementIndexPair );
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.Statement statement );
+	protected abstract Edit createEdit( UserActivity userActivity, Statement statement );
 
 	@Override
-	protected final org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step ) {
-		org.lgna.project.ast.Node node = Clipboard.SINGLETON.peek();
+	protected final Edit createEdit( UserActivity userActivity ) {
+		Node node = Clipboard.SINGLETON.peek();
 		//todo: recast if necessary
-		if( node instanceof org.lgna.project.ast.Statement ) {
-			org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
-			return this.createEdit( step, statement );
+		if( node instanceof Statement ) {
+			Statement statement = (Statement)node;
+			return this.createEdit( userActivity, statement );
 		} else {
-			throw new org.lgna.croquet.CancelException();
+			throw new CancelException();
 		}
 	}
 }

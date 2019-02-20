@@ -43,24 +43,30 @@
 
 package org.alice.ide.name.validators;
 
-public class ResourceNameValidator extends org.alice.ide.name.NameValidator {
-	private org.lgna.common.Resource resource;
+import org.alice.ide.IDE;
+import org.alice.ide.name.NameValidator;
+import org.lgna.common.Resource;
+import org.lgna.project.Project;
+import org.lgna.project.ast.StaticAnalysisUtilities;
 
-	public org.lgna.common.Resource getResource() {
+public class ResourceNameValidator extends NameValidator {
+	private Resource resource;
+
+	public Resource getResource() {
 		return this.resource;
 	}
 
-	public void setResource( org.lgna.common.Resource resource ) {
+	public void setResource( Resource resource ) {
 		this.resource = resource;
 	}
 
 	@Override
 	public boolean isNameAvailable( String name ) {
 		if( this.resource != null ) {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+			IDE ide = IDE.getActiveInstance();
 			if( ide != null ) {
-				org.lgna.project.Project project = ide.getProject();
-				return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableResourceName( project, name, this.resource );
+				Project project = ide.getProject();
+				return StaticAnalysisUtilities.isAvailableResourceName( project, name, this.resource );
 			}
 		}
 		return true;

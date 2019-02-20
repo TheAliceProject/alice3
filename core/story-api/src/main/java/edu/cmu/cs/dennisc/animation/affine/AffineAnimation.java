@@ -42,35 +42,39 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.animation.affine;
 
+import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AffineAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
-	private edu.cmu.cs.dennisc.scenegraph.AbstractTransformable m_sgSubject = null;
-	private edu.cmu.cs.dennisc.scenegraph.ReferenceFrame m_sgAsSeenBy = null;
+public abstract class AffineAnimation extends DurationBasedAnimation {
+	private AbstractTransformable m_sgSubject = null;
+	private ReferenceFrame m_sgAsSeenBy = null;
 
 	public AffineAnimation() {
 	}
 
-	public AffineAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy ) {
+	public AffineAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy ) {
 		setSubject( sgSubject );
 		setAsSeenBy( sgAsSeenBy );
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSubject() {
+	public AbstractTransformable getSubject() {
 		return m_sgSubject;
 	}
 
-	public void setSubject( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject ) {
+	public void setSubject( AbstractTransformable sgSubject ) {
 		assert sgSubject != null;
 		m_sgSubject = sgSubject;
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getAsSeenBy() {
+	public ReferenceFrame getAsSeenBy() {
 		return m_sgAsSeenBy;
 	}
 
-	public void setAsSeenBy( edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy ) {
+	public void setAsSeenBy( ReferenceFrame sgAsSeenBy ) {
 		assert sgAsSeenBy != null;
 		m_sgAsSeenBy = sgAsSeenBy;
 	}

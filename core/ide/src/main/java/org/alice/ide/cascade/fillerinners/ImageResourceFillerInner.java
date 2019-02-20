@@ -42,21 +42,27 @@
  *******************************************************************************/
 package org.alice.ide.cascade.fillerinners;
 
+import org.alice.ide.ast.resource.ImageResourceImportValueCreator;
+import org.alice.ide.croquet.models.ast.cascade.resource.ImageResourceExpressionFillIn;
+import org.lgna.common.resources.ImageResource;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.project.ast.ResourceExpression;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImageResourceFillerInner extends ResourceFillerInner<org.lgna.common.resources.ImageResource> {
+public class ImageResourceFillerInner extends ResourceFillerInner<ImageResource> {
 	public ImageResourceFillerInner() {
-		super( org.lgna.common.resources.ImageResource.class );
+		super( ImageResource.class );
 	}
 
 	@Override
-	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.ResourceExpression, ?> getResourceExpressionFillIn( org.lgna.common.resources.ImageResource resource ) {
-		return org.alice.ide.croquet.models.ast.cascade.resource.ImageResourceExpressionFillIn.getInstance( resource );
+	protected CascadeFillIn<ResourceExpression, ?> getResourceExpressionFillIn( ImageResource resource ) {
+		return ImageResourceExpressionFillIn.getInstance( resource );
 	}
 
 	@Override
-	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.ResourceExpression, ?> getImportNewResourceFillIn() {
-		return org.alice.ide.ast.resource.ImageResourceImportValueCreator.getInstance().getFillIn();
+	protected CascadeFillIn<ResourceExpression, ?> getImportNewResourceFillIn() {
+		return ImageResourceImportValueCreator.getInstance().getFillIn();
 	}
 }

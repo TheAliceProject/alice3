@@ -43,11 +43,14 @@
 
 package edu.cmu.cs.dennisc.texture.event;
 
+import edu.cmu.cs.dennisc.pattern.event.Event;
+import edu.cmu.cs.dennisc.texture.Texture;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TextureEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.texture.Texture> {
-	public TextureEvent( edu.cmu.cs.dennisc.texture.Texture source ) {
+public class TextureEvent extends Event<Texture> {
+	public TextureEvent( Texture source ) {
 		super( source );
 	}
 }

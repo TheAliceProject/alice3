@@ -42,11 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldComposite extends DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserField> {
-	public FieldComposite( java.util.UUID migrationId, Details details ) {
+public abstract class FieldComposite extends DeclarationLikeSubstanceComposite<UserField> {
+	public FieldComposite( UUID migrationId, Details details ) {
 		super( migrationId, details );
 	}
 }

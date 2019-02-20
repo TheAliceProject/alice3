@@ -42,6 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.image;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -82,7 +86,7 @@ package edu.cmu.cs.dennisc.image;
 		return a | r | g | b;
 	}
 
-	/*package-private*/static java.awt.image.BufferedImage readTGA( java.io.BufferedInputStream bufferedInputStream ) throws java.io.IOException {
+	/*package-private*/static BufferedImage readTGA( BufferedInputStream bufferedInputStream ) throws IOException {
 		byte[] header = new byte[ 18 ];
 		bufferedInputStream.read( header );
 
@@ -130,16 +134,16 @@ package edu.cmu.cs.dennisc.image;
 			throw new RuntimeException( "TODO: handle tgaColorMapType = " + tgaColorMapType );
 		}
 
-		java.awt.image.BufferedImage bufferedImage;
+		BufferedImage bufferedImage;
 		switch( tgaImageType ) {
 		case 2:
-			bufferedImage = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
+			bufferedImage = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
 			break;
 		case 3:
 			if( bytesPerPixel != 1 ) {
 				throw new RuntimeException( "TODO: handle grey image with bytesPerPixel = " + bytesPerPixel );
 			}
-			bufferedImage = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_BYTE_GRAY );
+			bufferedImage = new BufferedImage( width, height, BufferedImage.TYPE_BYTE_GRAY );
 			break;
 		default:
 			throw new RuntimeException( "TODO: handle tgaImageType = " + tgaImageType );

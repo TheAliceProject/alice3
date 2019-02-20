@@ -42,11 +42,15 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.MutableSplitComposite;
+
+import javax.swing.JSplitPane;
+
 /**
  * @author Dennis Cosgrove
  */
 public class HorizontalMutableSplitPane extends MutableSplitPane {
-	public HorizontalMutableSplitPane( org.lgna.croquet.MutableSplitComposite splitComposite ) {
-		super( splitComposite, javax.swing.JSplitPane.HORIZONTAL_SPLIT );
+	public HorizontalMutableSplitPane( MutableSplitComposite splitComposite ) {
+		super( splitComposite, JSplitPane.HORIZONTAL_SPLIT );
 	}
 }

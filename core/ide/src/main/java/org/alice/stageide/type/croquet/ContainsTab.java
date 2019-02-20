@@ -42,18 +42,31 @@
  *******************************************************************************/
 package org.alice.stageide.type.croquet;
 
+import org.alice.stageide.type.croquet.data.MemberListData;
+import org.alice.stageide.type.croquet.views.ContainsTabPane;
+import org.lgna.croquet.RefreshableDataSingleSelectListState;
+import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.Panel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.project.ast.Member;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ContainsTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.croquet.views.Panel> {
-	private final org.lgna.croquet.StringState filterState = this.createStringState( "filterState" );
-	private final org.alice.stageide.type.croquet.data.MemberListData memberListData = new org.alice.stageide.type.croquet.data.MemberListData( this.filterState );
-	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.Member> memberListState = this.createRefreshableListState( "memberListState", this.memberListData, -1 );
+public class ContainsTab extends SimpleTabComposite<Panel> {
+	private final StringState filterState = this.createStringState( "filterState" );
+	private final MemberListData memberListData = new MemberListData( this.filterState );
+	private final RefreshableDataSingleSelectListState<Member> memberListState = this.createRefreshableListState( "memberListState", this.memberListData, -1 );
 
-	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Member> memberListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Member>() {
+	private final ValueListener<Member> memberListener = new ValueListener<Member>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Member> e ) {
-			org.lgna.project.ast.Member nextValue = e.getNextValue();
+		public void valueChanged( ValueEvent<Member> e ) {
+			Member nextValue = e.getNextValue();
 			if( nextValue != null ) {
 				dialog.getTypeTreeState().setValueTransactionlessly( dialog.getTypeNodeFor( nextValue.getDeclaringType() ) );
 			}
@@ -63,30 +76,30 @@ public class ContainsTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.cr
 	private final OtherTypeDialog dialog;
 
 	public ContainsTab( OtherTypeDialog dialog ) {
-		super( java.util.UUID.fromString( "f002ad52-4053-4f30-8460-752ad7394044" ), IsCloseable.FALSE );
+		super( UUID.fromString( "f002ad52-4053-4f30-8460-752ad7394044" ), IsCloseable.FALSE );
 		this.dialog = dialog;
 	}
 
-	public org.lgna.croquet.StringState getFilterState() {
+	public StringState getFilterState() {
 		return this.filterState;
 	}
 
-	public org.alice.stageide.type.croquet.data.MemberListData getMemberListData() {
+	public MemberListData getMemberListData() {
 		return this.memberListData;
 	}
 
-	public org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.Member> getMemberListState() {
+	public RefreshableDataSingleSelectListState<Member> getMemberListState() {
 		return this.memberListState;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		return new org.alice.stageide.type.croquet.views.ContainsTabPane( this );
+	protected Panel createView() {
+		return new ContainsTabPane( this );
 	}
 
 	@Override

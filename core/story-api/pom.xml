@@ -71,6 +71,17 @@
 			<artifactId>glrender</artifactId>
 		</dependency>
 
+		<!-- Required for accesss to ModelManifest -->
+		<dependency>
+			<groupId>org.alice</groupId>
+			<artifactId>tweedle</artifactId>
+		</dependency>
+		<!-- Required for access to ProjectVersion -->
+		<dependency>
+			<groupId>org.alice</groupId>
+			<artifactId>ast</artifactId>
+		</dependency>
+
 		<!-- Gallery/Models -->
 		<dependency>
 			<groupId>org.alice</groupId>
@@ -81,6 +92,12 @@
 		<dependency>
 			<groupId>com.sun</groupId>
 			<artifactId>javamp3</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.alice.external</groupId>
+			<artifactId>collada-schema-1-4-1</artifactId>
+			<version>1.0</version>
 		</dependency>
 	</dependencies>
 

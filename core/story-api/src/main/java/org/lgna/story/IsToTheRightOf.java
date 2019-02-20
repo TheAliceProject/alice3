@@ -42,11 +42,13 @@
  */
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author dculyba
  */
 public class IsToTheRightOf extends AsSeenByArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = IsToTheRightOf.class )
+	@ClassTemplate( keywordFactoryCls = IsToTheRightOf.class )
 	public static interface Detail {
 	}
 

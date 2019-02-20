@@ -42,75 +42,82 @@
  */
 package org.lgna.ik.poser.anchors;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.ik.poser.anchors.events.AnchorEvent;
+import org.lgna.ik.poser.anchors.events.AnchorListener;
+import org.lgna.story.resources.JointId;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Anchors {
-	private final java.util.List<org.lgna.ik.poser.anchors.events.AnchorListener> anchorListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private org.lgna.story.resources.JointId leftArm;
-	private org.lgna.story.resources.JointId rightArm;
-	private org.lgna.story.resources.JointId leftLeg;
-	private org.lgna.story.resources.JointId rightLeg;
+	private final List<AnchorListener> anchorListeners = Lists.newCopyOnWriteArrayList();
+	private JointId leftArm;
+	private JointId rightArm;
+	private JointId leftLeg;
+	private JointId rightLeg;
 
-	public void addAnchorListener( org.lgna.ik.poser.anchors.events.AnchorListener anchorListener ) {
+	public void addAnchorListener( AnchorListener anchorListener ) {
 		this.anchorListeners.add( anchorListener );
 	}
 
-	public void removeAnchorListener( org.lgna.ik.poser.anchors.events.AnchorListener anchorListener ) {
+	public void removeAnchorListener( AnchorListener anchorListener ) {
 		this.anchorListeners.remove( anchorListener );
 	}
 
-	public org.lgna.story.resources.JointId getLeftArm() {
+	public JointId getLeftArm() {
 		return this.leftArm;
 	}
 
-	public org.lgna.story.resources.JointId getRightArm() {
+	public JointId getRightArm() {
 		return this.rightArm;
 	}
 
-	public org.lgna.story.resources.JointId getLeftLeg() {
+	public JointId getLeftLeg() {
 		return this.leftLeg;
 	}
 
-	public org.lgna.story.resources.JointId getRightLeg() {
+	public JointId getRightLeg() {
 		return this.rightLeg;
 	}
 
-	public void setLeftArm( org.lgna.story.resources.JointId leftArm ) {
+	public void setLeftArm( JointId leftArm ) {
 		if( this.leftArm != leftArm ) {
-			org.lgna.ik.poser.anchors.events.AnchorEvent e = new org.lgna.ik.poser.anchors.events.AnchorEvent( this.leftArm, leftArm );
+			AnchorEvent e = new AnchorEvent( this.leftArm, leftArm );
 			this.leftArm = leftArm;
-			for( org.lgna.ik.poser.anchors.events.AnchorListener anchorListener : this.anchorListeners ) {
+			for( AnchorListener anchorListener : this.anchorListeners ) {
 				anchorListener.leftArmChanged( e );
 			}
 		}
 	}
 
-	public void setRightArm( org.lgna.story.resources.JointId rightArm ) {
+	public void setRightArm( JointId rightArm ) {
 		if( this.rightArm != rightArm ) {
-			org.lgna.ik.poser.anchors.events.AnchorEvent e = new org.lgna.ik.poser.anchors.events.AnchorEvent( this.rightArm, rightArm );
+			AnchorEvent e = new AnchorEvent( this.rightArm, rightArm );
 			this.rightArm = rightArm;
-			for( org.lgna.ik.poser.anchors.events.AnchorListener anchorListener : this.anchorListeners ) {
+			for( AnchorListener anchorListener : this.anchorListeners ) {
 				anchorListener.rightArmChanged( e );
 			}
 		}
 	}
 
-	public void setLeftLeg( org.lgna.story.resources.JointId leftLeg ) {
+	public void setLeftLeg( JointId leftLeg ) {
 		if( this.leftLeg != leftLeg ) {
-			org.lgna.ik.poser.anchors.events.AnchorEvent e = new org.lgna.ik.poser.anchors.events.AnchorEvent( this.leftLeg, leftLeg );
+			AnchorEvent e = new AnchorEvent( this.leftLeg, leftLeg );
 			this.leftLeg = leftLeg;
-			for( org.lgna.ik.poser.anchors.events.AnchorListener anchorListener : this.anchorListeners ) {
+			for( AnchorListener anchorListener : this.anchorListeners ) {
 				anchorListener.leftLegChanged( e );
 			}
 		}
 	}
 
-	public void setRightLeg( org.lgna.story.resources.JointId rightLeg ) {
+	public void setRightLeg( JointId rightLeg ) {
 		if( this.rightLeg != rightLeg ) {
-			org.lgna.ik.poser.anchors.events.AnchorEvent e = new org.lgna.ik.poser.anchors.events.AnchorEvent( this.rightLeg, rightLeg );
+			AnchorEvent e = new AnchorEvent( this.rightLeg, rightLeg );
 			this.rightLeg = rightLeg;
-			for( org.lgna.ik.poser.anchors.events.AnchorListener anchorListener : this.anchorListeners ) {
+			for( AnchorListener anchorListener : this.anchorListeners ) {
 				anchorListener.rightLegChanged( e );
 			}
 		}

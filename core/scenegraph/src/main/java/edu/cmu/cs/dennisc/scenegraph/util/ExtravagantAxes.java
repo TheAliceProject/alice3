@@ -42,11 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.math.property.Matrix3x3Property;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
@@ -89,10 +96,10 @@ public class ExtravagantAxes extends Transformable {
 		SimpleAppearance sgBlueAppearance = new SimpleAppearance();
 		SimpleAppearance sgWhiteAppearance = new SimpleAppearance();
 
-		sgRedAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.RED );
-		sgGreenAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.GREEN );
-		sgBlueAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.BLUE );
-		sgWhiteAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.WHITE );
+		sgRedAppearance.setDiffuseColor( Color4f.RED );
+		sgGreenAppearance.setDiffuseColor( Color4f.GREEN );
+		sgBlueAppearance.setDiffuseColor( Color4f.BLUE );
+		sgWhiteAppearance.setDiffuseColor( Color4f.WHITE );
 
 		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.POSITIVE_X, sgRedAppearance );
 		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.POSITIVE_Y, sgGreenAppearance );
@@ -108,7 +115,7 @@ public class ExtravagantAxes extends Transformable {
 		this.sgZAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Z, diameterScale );
 		this.sgFAxis = createArrow( unitLength, forwardFactor, Cylinder.BottomToTopAxis.NEGATIVE_Z, diameterScale );
 
-		sgVisuals = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.concatArrays( Visual.class, this.sgXAxis.getVisuals(), this.sgYAxis.getVisuals(), this.sgZAxis.getVisuals(), this.sgFAxis.getVisuals() );
+		sgVisuals = ArrayUtilities.concatArrays( Visual.class, this.sgXAxis.getVisuals(), this.sgYAxis.getVisuals(), this.sgZAxis.getVisuals(), this.sgFAxis.getVisuals() );
 
 		this.sgXAxis.setParent( this );
 		this.sgYAxis.setParent( this );
@@ -142,17 +149,17 @@ public class ExtravagantAxes extends Transformable {
 		this.sgFAxis.resize( lengthCylinder, radiusCylinder, lengthCone, radiusCone );
 	}
 
-	public void setScale( edu.cmu.cs.dennisc.math.Matrix3x3 scale ) {
+	public void setScale( Matrix3x3 scale ) {
 		this.scale.setValue( scale );
 		double scaleVal = scale.right.x;
 		resize( this.initialUnitLength * scaleVal, this.initialForwardFactor * scaleVal, this.initialDiameterScale * scaleVal );
 	}
 
-	public edu.cmu.cs.dennisc.math.Matrix3x3 getScale() {
+	public Matrix3x3 getScale() {
 		return this.scale.getValue();
 	}
 
-	public edu.cmu.cs.dennisc.math.property.Matrix3x3Property getScaleProperty() {
+	public Matrix3x3Property getScaleProperty() {
 		return this.scale;
 	}
 
@@ -185,9 +192,9 @@ public class ExtravagantAxes extends Transformable {
 		}
 	}
 
-	private final edu.cmu.cs.dennisc.math.property.Matrix3x3Property scale = new edu.cmu.cs.dennisc.math.property.Matrix3x3Property( this, edu.cmu.cs.dennisc.math.Matrix3x3.createIdentity() );
+	private final Matrix3x3Property scale = new Matrix3x3Property( this, Matrix3x3.createIdentity() );
 
-	private final java.util.Map<Cylinder.BottomToTopAxis, SimpleAppearance> axisToSGAppearanceMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Map<Cylinder.BottomToTopAxis, SimpleAppearance> axisToSGAppearanceMap = Maps.newHashMap();
 	private final SimpleAppearance[] sgAppearances = new SimpleAppearance[ 4 ];
 	private final Visual[] sgVisuals;
 	private final Arrow sgXAxis;

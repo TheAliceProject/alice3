@@ -43,11 +43,16 @@
 
 package org.alice.ide.resource.manager;
 
+import org.alice.ide.ast.importers.AudioResourceImporter;
+import org.lgna.common.resources.AudioResource;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ImportAudioResourceOperation extends ImportResourceOperation<org.lgna.common.resources.AudioResource> {
+public final class ImportAudioResourceOperation extends ImportResourceOperation<AudioResource> {
 	public ImportAudioResourceOperation() {
-		super( java.util.UUID.fromString( "4175976f-c37a-4d21-ab13-9690c16d72b6" ), org.alice.ide.ast.importers.AudioResourceImporter.getInstance() );
+		super( UUID.fromString( "4175976f-c37a-4d21-ab13-9690c16d72b6" ), AudioResourceImporter.getInstance() );
 	}
 }

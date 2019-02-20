@@ -42,27 +42,36 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import java.awt.BasicStroke;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ConeIcon extends ShapeIcon {
-	public ConeIcon( java.awt.Dimension size ) {
+	public ConeIcon( Dimension size ) {
 		super( size );
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
 		float capHeight = height * 0.2f;
 		float x = 0.1f * width;
 		float w = 0.8f * width;
-		java.awt.geom.Ellipse2D bottomCap = new java.awt.geom.Ellipse2D.Float( x, height - capHeight, w, capHeight );
-		java.awt.geom.GeneralPath core = new java.awt.geom.GeneralPath();
+		Ellipse2D bottomCap = new Ellipse2D.Float( x, height - capHeight, w, capHeight );
+		GeneralPath core = new GeneralPath();
 		core.moveTo( width * 0.5f, 0 );
 		core.lineTo( width * 0.9f, height - ( capHeight * 0.5f ) );
 		core.lineTo( width * 0.1f, height - ( capHeight * 0.5f ) );
 		core.closePath();
-		java.awt.geom.Area area = new java.awt.geom.Area( core );
-		area.add( new java.awt.geom.Area( bottomCap ) );
+		Area area = new Area( core );
+		area.add( new Area( bottomCap ) );
 
 		g2.setPaint( fillPaint );
 		g2.fill( area );
@@ -70,7 +79,7 @@ public class ConeIcon extends ShapeIcon {
 		g2.draw( area );
 
 		if( height > 128 ) {
-			g2.setStroke( new java.awt.BasicStroke( 0.0f, java.awt.BasicStroke.CAP_SQUARE, java.awt.BasicStroke.JOIN_MITER, 1.0f, new float[] { height * 0.05f }, 0.0f ) );
+			g2.setStroke( new BasicStroke( 0.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1.0f, new float[] { height * 0.05f }, 0.0f ) );
 			g2.draw( bottomCap );
 		}
 	}

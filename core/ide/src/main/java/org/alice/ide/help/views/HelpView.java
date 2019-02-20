@@ -42,30 +42,43 @@
  *******************************************************************************/
 package org.alice.ide.help.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import org.alice.ide.help.HelpComposite;
+import org.lgna.croquet.views.AbstractLabel;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Hyperlink;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.PageAxisPanel;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public class HelpView extends org.lgna.croquet.views.BorderPanel {
-	public HelpView( org.alice.ide.help.HelpComposite composite ) {
+public class HelpView extends BorderPanel {
+	public HelpView( HelpComposite composite ) {
 		super( composite );
-		org.lgna.croquet.views.Hyperlink hyperlink = composite.getBrowserOperation().createHyperlink();
-		org.lgna.croquet.views.Label iconLabel = new org.lgna.croquet.views.Label( new javax.swing.ImageIcon( HelpView.class.getResource( "images/help.png" ) ) );
-		org.lgna.croquet.views.AbstractLabel textLabel = composite.getWhereToFindHelpText().createLabel();
+		Hyperlink hyperlink = composite.getBrowserOperation().createHyperlink();
+		Label iconLabel = new Label( new ImageIcon( HelpView.class.getResource( "images/help.png" ) ) );
+		AbstractLabel textLabel = composite.getWhereToFindHelpText().createLabel();
 
 		textLabel.scaleFont( 2.0f );
-		textLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		textLabel.changeFont( TextWeight.BOLD );
 		hyperlink.scaleFont( 2.0f );
-		hyperlink.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		hyperlink.changeFont( TextWeight.BOLD );
 
-		org.lgna.croquet.views.PageAxisPanel pageAxisPanel = new org.lgna.croquet.views.PageAxisPanel(
-				org.lgna.croquet.views.BoxUtilities.createVerticalGlue(),
+		PageAxisPanel pageAxisPanel = new PageAxisPanel(
+				BoxUtilities.createVerticalGlue(),
 				textLabel,
 				hyperlink,
-				org.lgna.croquet.views.BoxUtilities.createVerticalGlue()
+				BoxUtilities.createVerticalGlue()
 				);
-		pageAxisPanel.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+		pageAxisPanel.setAlignmentY( Component.CENTER_ALIGNMENT );
 		this.addLineStartComponent( iconLabel );
 		this.addLineEndComponent( pageAxisPanel );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 	}
 }

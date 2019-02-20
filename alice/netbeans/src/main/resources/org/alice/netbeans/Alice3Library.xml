@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE library PUBLIC "-//NetBeans//DTD Library Declaration 1.0//EN" "http://www.netbeans.org/dtds/library-declaration-1_0.dtd">
+<library version="1.0">
+	<name>Alice3Library</name>
+	<type>j2se</type>
+	<localizing-bundle>org.alice.netbeans.Bundle</localizing-bundle>
+	<volume>
+		<type>classpath</type>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/com-google-code-gson/gson.jar</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/com-sun/javamp3.jar</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/com-sun-media/jai-codec.jar</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/javax-media/jai-core.jar</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/javax-media/jmf.jar</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-apache-commons/commons-text.jar</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-apache-commons/commons-lang3.jar</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-jogamp-gluegen/gluegen-rt.jar</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-jogamp-jogl/jogl-all.jar</resource>
+
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/util.jar</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/scenegraph.jar/</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/glrender.jar</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/ast.jar</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/story-api.jar/</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/tweedle.jar</resource>
+
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/alice-model-source.jar</resource>
+
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice-nonfree/nebulous-model-source.jar</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice-nonfree/story-api-nonfree.jar</resource>
+	</volume>
+	<volume>
+		<type>src</type>
+		<resource>nbinst:/src/aliceSource.jar</resource>
+	</volume>
+	<volume>
+		<type>javadoc</type>
+		<resource>nbinst:/doc/aliceDocs.zip</resource>
+	</volume>
+</library>

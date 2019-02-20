@@ -42,24 +42,31 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import org.lgna.croquet.icon.AbstractIconFactory;
+import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
+
+import javax.swing.Icon;
+import java.awt.Dimension;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GroupIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
-	private final java.util.List<? extends org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> iconFactories;
+public class GroupIconFactory extends AbstractIconFactory {
+	private final List<? extends AbstractSingleSourceImageIconFactory> iconFactories;
 
-	public GroupIconFactory( java.util.List<? extends org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> iconFactories ) {
+	public GroupIconFactory( List<? extends AbstractSingleSourceImageIconFactory> iconFactories ) {
 		super( IsCachingDesired.TRUE );
 		this.iconFactories = iconFactories;
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+	protected Icon createIcon( Dimension size ) {
 		return new GroupIcon( size, this.iconFactories );
 	}
 
 	@Override
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
 		if( this.iconFactories.size() > 0 ) {
 			return this.iconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
 		} else {

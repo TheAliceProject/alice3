@@ -42,6 +42,20 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.stageide.gallerybrowser.GalleryComposite;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.InstanceCreation;
+
+import javax.swing.JComponent;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +63,7 @@ public class RootResourceKey extends ResourceKey {
 	private final String keyText;
 	private final String defaultDisplayText;
 
-	public RootResourceKey( String keyText, String defaultDisplayText ) {
+	RootResourceKey( String keyText, String defaultDisplayText ) {
 		this.keyText = keyText;
 		this.defaultDisplayText = defaultDisplayText;
 	}
@@ -66,25 +80,24 @@ public class RootResourceKey extends ResourceKey {
 
 	@Override
 	public String getLocalizedDisplayText() {
-		Class cls = org.alice.stageide.gallerybrowser.GalleryComposite.class;
+		Class cls = GalleryComposite.class;
 		String bundleName = cls.getPackage().getName() + ".croquet";
 		try {
-			java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
-			String rv = resourceBundle.getString( this.keyText );
-			return rv;
-		} catch( java.util.MissingResourceException mre ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls, this.keyText );
+			ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( bundleName, JComponent.getDefaultLocale() );
+			return resourceBundle.getString( this.keyText );
+		} catch( MissingResourceException mre ) {
+			Logger.severe( cls, this.keyText );
 			return this.defaultDisplayText;
 		}
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+	public IconFactory getIconFactory() {
 		return null;
 	}
 
 	@Override
-	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
+	public InstanceCreation createInstanceCreation() {
 		throw new Error();
 	}
 
@@ -111,6 +124,16 @@ public class RootResourceKey extends ResourceKey {
 	@Override
 	public boolean isInstanceCreator() {
 		return false;
+	}
+
+	@Override
+	public Triggerable getLeftClickOperation( ResourceNode node, SingleSelectTreeState<ResourceNode> controller ) {
+		return null;
+	}
+
+	@Override
+	public Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite ) {
+		return null;
 	}
 
 	@Override

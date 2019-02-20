@@ -42,19 +42,22 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.event;
 
+import edu.cmu.cs.dennisc.render.Graphics2D;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+
 /**
  * @author Dennis Cosgrove
  */
 public class RenderTargetRenderEvent extends RenderTargetEvent {
 
-	public RenderTargetRenderEvent( edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.render.Graphics2D g ) {
+	public RenderTargetRenderEvent( RenderTarget renderTarget, Graphics2D g ) {
 		super( renderTarget );
 		this.g = g;
 	}
 
-	public edu.cmu.cs.dennisc.render.Graphics2D getGraphics2D() {
+	public Graphics2D getGraphics2D() {
 		return this.g;
 	}
 
-	private final edu.cmu.cs.dennisc.render.Graphics2D g;
+	private final Graphics2D g;
 }

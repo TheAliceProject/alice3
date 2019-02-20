@@ -43,19 +43,52 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
+import edu.cmu.cs.dennisc.java.awt.FontUtilities;
+import edu.cmu.cs.dennisc.java.awt.RectangleUtilities;
+import edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import javax.swing.plaf.UIResource;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelListener;
+import java.util.Locale;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AwtComponentView<J extends java.awt.Component> extends ScreenElement {
-	private static java.util.Map<java.awt.Component, AwtComponentView<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newWeakHashMap();
+public abstract class AwtComponentView<J extends Component> extends ScreenElement {
+	private static Map<Component, AwtComponentView<?>> map = Maps.newWeakHashMap();
 
-	private static class InternalAwtContainerAdapter extends AwtContainerView<java.awt.Container> {
-		private java.awt.Container awtContainer;
+	private static class InternalAwtContainerAdapter extends AwtContainerView<Container> {
+		private Container awtContainer;
 
-		public InternalAwtContainerAdapter( java.awt.Container awtContainer ) {
+		public InternalAwtContainerAdapter( Container awtContainer ) {
 			this.awtContainer = awtContainer;
 			//this.awtParent = awtContainer.getParent();
-			if( this.awtContainer instanceof javax.swing.plaf.UIResource ) {
+			if( this.awtContainer instanceof UIResource ) {
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "javax.swing.plaf.UIResource: ", awtContainer.getClass(), awtContainer.hashCode() );
 			} else {
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "creating adapter for: ", awtContainer.getClass(), awtContainer.hashCode() );
@@ -63,18 +96,18 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 		}
 
 		@Override
-		protected java.awt.Container createAwtComponent() {
+		protected Container createAwtComponent() {
 			return this.awtContainer;
 		}
 	}
 
-	private static class InternalAwtComponentAdapter extends AwtComponentView<java.awt.Component> {
-		private java.awt.Component awtComponent;
+	private static class InternalAwtComponentAdapter extends AwtComponentView<Component> {
+		private Component awtComponent;
 
-		public InternalAwtComponentAdapter( java.awt.Component awtComponent ) {
+		public InternalAwtComponentAdapter( Component awtComponent ) {
 			this.awtComponent = awtComponent;
 			//this.awtParent = awtComponent.getParent();
-			if( this.awtComponent instanceof javax.swing.plaf.UIResource ) {
+			if( this.awtComponent instanceof UIResource ) {
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "javax.swing.plaf.UIResource: ", awtComponent.getClass(), awtComponent.hashCode() );
 			} else {
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "creating adapter for: ", awtComponent.getClass(), awtComponent.hashCode() );
@@ -82,20 +115,20 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 		}
 
 		@Override
-		protected java.awt.Component createAwtComponent() {
+		protected Component createAwtComponent() {
 			return this.awtComponent;
 		}
 	}
 
 	//todo reduce visibility to /* package-private */
-	public static AwtComponentView<?> lookup( java.awt.Component awtComponent ) {
+	public static AwtComponentView<?> lookup( Component awtComponent ) {
 		if( awtComponent != null ) {
 			AwtComponentView<?> rv = AwtComponentView.map.get( awtComponent );
 			if( rv != null ) {
 				//pass
 			} else {
-				if( awtComponent instanceof java.awt.Container ) {
-					java.awt.Container awtContainer = (java.awt.Container)awtComponent;
+				if( awtComponent instanceof Container ) {
+					Container awtContainer = (Container)awtComponent;
 					rv = new InternalAwtContainerAdapter( awtContainer );
 				} else {
 					rv = new InternalAwtComponentAdapter( awtComponent );
@@ -112,9 +145,9 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 		}
 	}
 
-	private java.awt.event.HierarchyListener hierarchyListener = new java.awt.event.HierarchyListener() {
+	private HierarchyListener hierarchyListener = new HierarchyListener() {
 		@Override
-		public void hierarchyChanged( java.awt.event.HierarchyEvent e ) {
+		public void hierarchyChanged( HierarchyEvent e ) {
 			AwtComponentView.this.handleHierarchyChanged( e );
 		}
 	};
@@ -155,9 +188,9 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
 	}
 
-	private java.awt.Container awtParent;
+	private Container awtParent;
 
-	private void handleParentChange( java.awt.Container awtParent ) {
+	private void handleParentChange( Container awtParent ) {
 		if( this.awtParent != null ) {
 			AwtComponentView<?> parent = AwtComponentView.lookup( this.awtParent );
 			if( parent != null ) {
@@ -187,21 +220,21 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 
 	private static boolean isWarningAlreadyPrinted = false;
 
-	protected void handleHierarchyChanged( java.awt.event.HierarchyEvent e ) {
+	protected void handleHierarchyChanged( HierarchyEvent e ) {
 		//assert e.getComponent() == this.awtComponent : this;
-		java.awt.Component awtComponent = e.getComponent();
-		java.awt.Component awtChanged = e.getChanged();
-		java.awt.Container awtParent = e.getChangedParent();
+		Component awtComponent = e.getComponent();
+		Component awtChanged = e.getChanged();
+		Container awtParent = e.getChangedParent();
 		long flags = e.getChangeFlags();
-		if( ( flags & java.awt.event.HierarchyEvent.DISPLAYABILITY_CHANGED ) != 0 ) {
+		if( ( flags & HierarchyEvent.DISPLAYABILITY_CHANGED ) != 0 ) {
 			if( e.getComponent() == this.awtComponent ) {
 				this.trackDisplayability();
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleDisplayabilityChanged:", this.awtComponent.hashCode(), this.awtComponent.isDisplayable() );
+				PrintUtilities.println( "handleDisplayabilityChanged:", this.awtComponent.hashCode(), this.awtComponent.isDisplayable() );
 			}
 		}
 
-		if( ( flags & java.awt.event.HierarchyEvent.PARENT_CHANGED ) != 0 ) {
+		if( ( flags & HierarchyEvent.PARENT_CHANGED ) != 0 ) {
 
 			assert awtComponent == AwtComponentView.this.getAwtComponent();
 
@@ -213,7 +246,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 						//pass
 					} else {
 						//Thread.dumpStack();
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "investigate: hierarchyChanged seems to not be actually changing the parent" );
+						PrintUtilities.println( "investigate: hierarchyChanged seems to not be actually changing the parent" );
 						//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    flags:", flags );
 						//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
 						//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );
@@ -241,7 +274,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 			this.trackDisplayability();
 			this.awtComponent.addHierarchyListener( this.hierarchyListener );
 			this.awtComponent.setName( this.getClass().getName() );
-			java.awt.ComponentOrientation componentOrientation = java.awt.ComponentOrientation.getOrientation( javax.swing.JComponent.getDefaultLocale() );
+			ComponentOrientation componentOrientation = ComponentOrientation.getOrientation( JComponent.getDefaultLocale() );
 			if( componentOrientation.isLeftToRight() ) {
 				//pass
 			} else {
@@ -268,10 +301,10 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	}
 
 	protected void checkEventDispatchThread() {
-		if( javax.swing.SwingUtilities.isEventDispatchThread() ) {
+		if( SwingUtilities.isEventDispatchThread() ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( Thread.currentThread(), this );
+			Logger.severe( Thread.currentThread(), this );
 		}
 	}
 
@@ -280,20 +313,20 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 			if( Thread.holdsLock( this.getTreeLock() ) ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "tree lock required", this );
+				Logger.severe( "tree lock required", this );
 			}
 		}
 	}
 
-	public java.util.Locale getLocale() {
+	public Locale getLocale() {
 		return this.getAwtComponent().getLocale();
 	}
 
-	public java.awt.Font getFont() {
+	public Font getFont() {
 		return this.getAwtComponent().getFont();
 	}
 
-	public void setFont( java.awt.Font font ) {
+	public void setFont( Font font ) {
 		this.checkEventDispatchThread();
 		//		if( font != null ) {
 		this.getAwtComponent().setFont( font );
@@ -304,7 +337,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 
 	public final void scaleFont( float scaleFactor ) {
 		if( scaleFactor != 1.0f ) {
-			this.setFont( edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( this.getAwtComponent(), scaleFactor ) );
+			this.setFont( FontUtilities.scaleFont( this.getAwtComponent(), scaleFactor ) );
 		}
 	}
 
@@ -312,13 +345,13 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 		this.setFont( this.getFont().deriveFont( fontSize ) );
 	}
 
-	public final void changeFont( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public final void changeFont( TextAttribute<?>... textAttributes ) {
 		if( textAttributes.length > 0 ) {
-			this.setFont( edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( this.getAwtComponent(), textAttributes ) );
+			this.setFont( FontUtilities.deriveFont( this.getAwtComponent(), textAttributes ) );
 		}
 	}
 
-	protected java.awt.Dimension constrainPreferredSizeIfNecessary( java.awt.Dimension rv ) {
+	protected Dimension constrainPreferredSizeIfNecessary( Dimension rv ) {
 		if( minimumPreferredWidth != null ) {
 			rv.width = Math.max( rv.width, minimumPreferredWidth );
 		}
@@ -388,29 +421,29 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	//		this.getAwtComponent().setEnabled( isEnabled );
 	//	}
 
-	public java.awt.ComponentOrientation getComponentOrientation() {
+	public ComponentOrientation getComponentOrientation() {
 		return this.getAwtComponent().getComponentOrientation();
 	}
 
-	public void setComponentOrientation( java.awt.ComponentOrientation componentOrientation ) {
+	public void setComponentOrientation( ComponentOrientation componentOrientation ) {
 		this.checkEventDispatchThread();
 		this.getAwtComponent().setComponentOrientation( componentOrientation );
 	}
 
-	public java.awt.Color getForegroundColor() {
+	public Color getForegroundColor() {
 		return this.getAwtComponent().getForeground();
 	}
 
-	public void setForegroundColor( java.awt.Color color ) {
+	public void setForegroundColor( Color color ) {
 		this.checkEventDispatchThread();
 		this.getAwtComponent().setForeground( color );
 	}
 
-	public java.awt.Color getBackgroundColor() {
+	public Color getBackgroundColor() {
 		return this.getAwtComponent().getBackground();
 	}
 
-	public void setBackgroundColor( java.awt.Color color ) {
+	public void setBackgroundColor( Color color ) {
 		this.checkEventDispatchThread();
 		this.getAwtComponent().setBackground( color );
 	}
@@ -441,11 +474,11 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 		this.getAwtComponent().setIgnoreRepaint( ignoreRepaint );
 	}
 
-	public java.awt.Cursor getCursor() {
+	public Cursor getCursor() {
 		return this.getAwtComponent().getCursor();
 	}
 
-	public void setCursor( java.awt.Cursor cursor ) {
+	public void setCursor( Cursor cursor ) {
 		this.getAwtComponent().setCursor( cursor );
 	}
 
@@ -470,32 +503,32 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 		this.getAwtComponent().setLocation( x, y );
 	}
 
-	public final void setLocation( java.awt.Point pt ) {
+	public final void setLocation( Point pt ) {
 		this.setLocation( pt.x, pt.y );
 	}
 
-	public void setLocation( java.awt.Point pt, ScreenElement asSeenBy ) {
+	public void setLocation( Point pt, ScreenElement asSeenBy ) {
 		this.checkEventDispatchThread();
 		this.getAwtComponent().setLocation( asSeenBy.convertPoint( pt, this.getParent() ) );
 	}
 
 	public final void setLocation( int x, int y, ScreenElement asSeenBy ) {
-		this.setLocation( new java.awt.Point( x, y ), asSeenBy );
+		this.setLocation( new Point( x, y ), asSeenBy );
 	}
 
-	public java.awt.Point getLocationOnScreen() {
+	public Point getLocationOnScreen() {
 		return this.getAwtComponent().getLocationOnScreen();
 	}
 
-	public java.awt.Rectangle getVisibleRectangle() {
+	public Rectangle getVisibleRectangle() {
 		return this.getBounds();
 	}
 
-	public final java.awt.Rectangle getVisibleRectangle( ScreenElement asSeenBy ) {
+	public final Rectangle getVisibleRectangle( ScreenElement asSeenBy ) {
 		return this.convertRectangle( this.getVisibleRectangle(), asSeenBy );
 	}
 
-	public java.awt.Rectangle getBounds( ScreenElement asSeenBy ) {
+	public Rectangle getBounds( ScreenElement asSeenBy ) {
 		AwtContainerView<?> parent = this.getParent();
 		if( parent != null ) {
 			return parent.convertRectangle( this.getBounds(), asSeenBy );
@@ -505,22 +538,22 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	}
 
 	@Override
-	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
-		java.awt.Rectangle rv = this.getBounds( asSeenBy );
-		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( rv, insets );
+	public Shape getShape( ScreenElement asSeenBy, Insets insets ) {
+		Rectangle rv = this.getBounds( asSeenBy );
+		return RectangleUtilities.inset( rv, insets );
 	}
 
 	@Override
-	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
-		java.awt.Rectangle rv = this.getVisibleRectangle( asSeenBy );
-		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( rv, insets );
+	public Shape getVisibleShape( ScreenElement asSeenBy, Insets insets ) {
+		Rectangle rv = this.getVisibleRectangle( asSeenBy );
+		return RectangleUtilities.inset( rv, insets );
 	}
 
 	@Override
 	public boolean isInView() {
 		if( this.isVisible() ) { //&& this.getAwtComponent().isShowing() && this.getAwtComponent().isDisplayable() && this.getAwtComponent().isValid() ) {
-			java.awt.Rectangle visibleRect = this.getVisibleRectangle();
-			java.awt.Dimension size = this.getAwtComponent().getSize();
+			Rectangle visibleRect = this.getVisibleRectangle();
+			Dimension size = this.getAwtComponent().getSize();
 			return ( visibleRect.width == size.width ) || ( visibleRect.height == size.height );
 		} else {
 			return false;
@@ -545,12 +578,12 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 		return this.getFirstAncestorAssignableTo( ScrollPane.class );
 	}
 
-	public java.awt.Rectangle convertRectangle( java.awt.Rectangle rectangle, ScreenElement destination ) {
-		return javax.swing.SwingUtilities.convertRectangle( this.getAwtComponent(), rectangle, destination.getAwtComponent() );
+	public Rectangle convertRectangle( Rectangle rectangle, ScreenElement destination ) {
+		return SwingUtilities.convertRectangle( this.getAwtComponent(), rectangle, destination.getAwtComponent() );
 	}
 
-	public java.awt.event.MouseEvent convertMouseEvent( java.awt.event.MouseEvent e, ScreenElement destination ) {
-		return edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.convertMouseEvent( this.getAwtComponent(), e, destination.getAwtComponent() );
+	public MouseEvent convertMouseEvent( MouseEvent e, ScreenElement destination ) {
+		return MouseEventUtilities.convertMouseEvent( this.getAwtComponent(), e, destination.getAwtComponent() );
 	}
 
 	@Deprecated
@@ -561,7 +594,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	@Deprecated
 	@Override
 	public AbstractWindow<?> getRoot() {
-		return AbstractWindow.lookup( javax.swing.SwingUtilities.getRoot( this.getAwtComponent() ) );
+		return AbstractWindow.lookup( SwingUtilities.getRoot( this.getAwtComponent() ) );
 	}
 
 	public int getWidth() {
@@ -581,7 +614,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	}
 
 	public void requestFocusLater() {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
 				requestFocus();
@@ -590,63 +623,63 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	}
 
 	@Deprecated
-	public void addHierarchyListener( java.awt.event.HierarchyListener listener ) {
+	public void addHierarchyListener( HierarchyListener listener ) {
 		this.getAwtComponent().addHierarchyListener( listener );
 	}
 
 	@Deprecated
-	public void removeHierarchyListener( java.awt.event.HierarchyListener listener ) {
+	public void removeHierarchyListener( HierarchyListener listener ) {
 		this.getAwtComponent().removeHierarchyListener( listener );
 	}
 
 	@Deprecated
-	public void addKeyListener( java.awt.event.KeyListener listener ) {
+	public void addKeyListener( KeyListener listener ) {
 		this.getAwtComponent().addKeyListener( listener );
 	}
 
 	@Deprecated
-	public void removeKeyListener( java.awt.event.KeyListener listener ) {
+	public void removeKeyListener( KeyListener listener ) {
 		this.getAwtComponent().removeKeyListener( listener );
 	}
 
 	@Deprecated
-	public void addMouseListener( java.awt.event.MouseListener listener ) {
+	public void addMouseListener( MouseListener listener ) {
 		this.getAwtComponent().addMouseListener( listener );
 	}
 
 	@Deprecated
-	public void removeMouseListener( java.awt.event.MouseListener listener ) {
+	public void removeMouseListener( MouseListener listener ) {
 		this.getAwtComponent().removeMouseListener( listener );
 	}
 
 	@Deprecated
-	public void addMouseMotionListener( java.awt.event.MouseMotionListener listener ) {
+	public void addMouseMotionListener( MouseMotionListener listener ) {
 		this.getAwtComponent().addMouseMotionListener( listener );
 	}
 
 	@Deprecated
-	public void removeMouseMotionListener( java.awt.event.MouseMotionListener listener ) {
+	public void removeMouseMotionListener( MouseMotionListener listener ) {
 		this.getAwtComponent().removeMouseMotionListener( listener );
 	}
 
 	@Deprecated
-	public void addMouseWheelListener( java.awt.event.MouseWheelListener listener ) {
+	public void addMouseWheelListener( MouseWheelListener listener ) {
 		this.getAwtComponent().addMouseWheelListener( listener );
 	}
 
 	@Deprecated
-	public void removeMouseWheelListener( java.awt.event.MouseWheelListener listener ) {
+	public void removeMouseWheelListener( MouseWheelListener listener ) {
 		this.getAwtComponent().removeMouseWheelListener( listener );
 	}
 
 	@Deprecated
-	public void setPreferredSize( java.awt.Dimension preferredSize ) {
+	public void setPreferredSize( Dimension preferredSize ) {
 		this.getAwtComponent().setPreferredSize( preferredSize );
 	}
 
 	@Deprecated
 	public void makeStandOut() {
-		edu.cmu.cs.dennisc.java.awt.ComponentUtilities.makeStandOut( this.getAwtComponent() );
+		ComponentUtilities.makeStandOut( this.getAwtComponent() );
 	}
 
 	protected StringBuilder appendRepr( StringBuilder rv ) {

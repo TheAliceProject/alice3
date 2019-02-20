@@ -42,16 +42,21 @@
  *******************************************************************************/
 package org.lgna.project.properties;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class IntegerPropertyKey extends PropertyKey<Integer> {
-	public IntegerPropertyKey( java.util.UUID id, String repr ) {
+	public IntegerPropertyKey( UUID id, String repr ) {
 		super( id, repr );
 	}
 
 	@Override
-	protected Integer decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	protected Integer decodeValue( BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
 			return binaryDecoder.decodeInt();
@@ -61,7 +66,7 @@ public class IntegerPropertyKey extends PropertyKey<Integer> {
 	}
 
 	@Override
-	protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Integer value ) {
+	protected void encodeValue( BinaryEncoder binaryEncoder, Integer value ) {
 		binaryEncoder.encode( value != null );
 		binaryEncoder.encode( value );
 	}

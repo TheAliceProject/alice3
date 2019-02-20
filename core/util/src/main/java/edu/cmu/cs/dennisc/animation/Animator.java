@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.animation;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,7 +60,7 @@ public interface Animator {
 
 	public void invokeLater( Animation animation, AnimationObserver animationObserver );
 
-	public void invokeAndWait( Animation animation, AnimationObserver animationObserver ) throws InterruptedException, java.lang.reflect.InvocationTargetException;
+	public void invokeAndWait( Animation animation, AnimationObserver animationObserver ) throws InterruptedException, InvocationTargetException;
 
 	public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Animation animation, AnimationObserver animationObserver );
 

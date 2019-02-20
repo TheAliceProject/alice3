@@ -42,7 +42,7 @@
  */
 package org.lgna.ik.poser.animation.edits;
 
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLine;
 
@@ -55,8 +55,8 @@ public class ModifyTimeOfExistingKeyFrameInTimeLineEdit extends TimeLineEdit {
 	private final double newTime;
 	private final double prevTime;
 
-	public ModifyTimeOfExistingKeyFrameInTimeLineEdit( CompletionStep<?> completionStep, TimeLine timeLine, KeyFrameData data, double newTime, double previousTime ) {
-		super( completionStep, timeLine );
+	public ModifyTimeOfExistingKeyFrameInTimeLineEdit( UserActivity userActivity, TimeLine timeLine, KeyFrameData data, double newTime, double previousTime ) {
+		super( userActivity, timeLine );
 		this.keyFrameData = data;
 		this.newTime = newTime;
 		this.prevTime = previousTime;

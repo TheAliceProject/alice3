@@ -42,17 +42,24 @@
  */
 package edu.cmu.cs.dennisc.ui.scenegraph;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.pattern.Action;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SetPointOfViewAction implements edu.cmu.cs.dennisc.pattern.Action {
-	private edu.cmu.cs.dennisc.animation.Animator m_animator;
-	private edu.cmu.cs.dennisc.scenegraph.Transformable m_sgSubject;
-	private edu.cmu.cs.dennisc.scenegraph.ReferenceFrame m_sgAsSeenBy;
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_undoPOV;
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_redoPOV;
+public class SetPointOfViewAction implements Action {
+	private Animator m_animator;
+	private Transformable m_sgSubject;
+	private ReferenceFrame m_sgAsSeenBy;
+	private AffineMatrix4x4 m_undoPOV;
+	private AffineMatrix4x4 m_redoPOV;
 
-	public SetPointOfViewAction( edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.Transformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.AffineMatrix4x4 undoPOV, edu.cmu.cs.dennisc.math.AffineMatrix4x4 redoPOV ) {
+	public SetPointOfViewAction( Animator animator, Transformable sgSubject, ReferenceFrame sgAsSeenBy, AffineMatrix4x4 undoPOV, AffineMatrix4x4 redoPOV ) {
 		m_animator = animator;
 		m_sgSubject = sgSubject;
 		m_sgAsSeenBy = sgAsSeenBy;
@@ -67,9 +74,9 @@ public class SetPointOfViewAction implements edu.cmu.cs.dennisc.pattern.Action {
 		redo();
 	}
 
-	private void animate( edu.cmu.cs.dennisc.math.AffineMatrix4x4 pov ) {
+	private void animate( AffineMatrix4x4 pov ) {
 		if( m_animator != null ) {
-			m_animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary( new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( m_sgSubject, m_sgAsSeenBy, edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation.USE_EXISTING_VALUE_AT_RUN_TIME, pov ), null );
+			m_animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary( new PointOfViewAnimation( m_sgSubject, m_sgAsSeenBy, PointOfViewAnimation.USE_EXISTING_VALUE_AT_RUN_TIME, pov ), null );
 		}
 	}
 

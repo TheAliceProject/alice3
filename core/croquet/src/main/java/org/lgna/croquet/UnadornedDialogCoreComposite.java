@@ -42,22 +42,28 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.CompositeView;
+import org.lgna.croquet.views.Dialog;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractDialogComposite<V> {
-	public UnadornedDialogCoreComposite( java.util.UUID migrationId, IsModal isModal ) {
+public abstract class UnadornedDialogCoreComposite<V extends CompositeView<?, ?>> extends AbstractDialogComposite<V> {
+	public UnadornedDialogCoreComposite( UUID migrationId, IsModal isModal ) {
 		super( migrationId, isModal );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.CompositeView<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected CompositeView<?, ?> allocateView() {
 		//todo
 		return this.getView();
 	}
 
 	@Override
-	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.CompositeView<?, ?> view ) {
+	protected void releaseView( CompositeView<?, ?> view ) {
 		super.releaseView();
 		//todo
 	}
@@ -69,25 +75,23 @@ public abstract class UnadornedDialogCoreComposite<V extends org.lgna.croquet.vi
 	}
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		this.handlePreActivation();
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePostHideDialog() {
 		this.handlePostDeactivation();
-		step.finish();
+		if (openingActivity.isPending()) {
+			openingActivity.cancel();
+		}
 	}
 
-	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		this.showDialog( completionStep );
+	public void perform( UserActivity userActivity ) {
+		this.showDialog( userActivity );
 	}
 
-	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
-		return defaultValue;
-	}
-
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
+	public String modifyNameIfNecessary( String text ) {
 		return text;
 	}
 }

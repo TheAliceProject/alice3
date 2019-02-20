@@ -43,14 +43,17 @@
 
 package edu.cmu.cs.dennisc.preference.event;
 
+import edu.cmu.cs.dennisc.pattern.event.Event;
+import edu.cmu.cs.dennisc.preference.Preference;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PreferenceEvent<E> extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.preference.Preference<E>> {
+public class PreferenceEvent<E> extends Event<Preference<E>> {
 	private E prevValue;
 	private E nextValue;
 
-	public PreferenceEvent( edu.cmu.cs.dennisc.preference.Preference<E> source, E prevValue, E nextValue ) {
+	public PreferenceEvent( Preference<E> source, E prevValue, E nextValue ) {
 		super( source );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;

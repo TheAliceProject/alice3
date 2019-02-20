@@ -42,11 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.event;
 
+import edu.cmu.cs.dennisc.pattern.event.Event;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenderTargetEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.render.RenderTarget> {
-	public RenderTargetEvent( edu.cmu.cs.dennisc.render.RenderTarget renderTarget ) {
+public abstract class RenderTargetEvent extends Event<RenderTarget> {
+	public RenderTargetEvent( RenderTarget renderTarget ) {
 		super( renderTarget );
 	}
 }

@@ -42,52 +42,79 @@
  *******************************************************************************/
 package org.alice.ide.clipboard.components;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+import edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities;
+import edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip;
+import org.alice.ide.ast.draganddrop.statement.StatementDragModel;
+import org.alice.ide.clipboard.Clipboard;
+import org.alice.ide.clipboard.CopyToClipboardOperation;
+import org.alice.ide.clipboard.CutToClipboardOperation;
 import org.alice.ide.clipboard.DragReceptorState;
+import org.alice.ide.clipboard.icons.ClipboardIcon;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.AbstractDropReceptor;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.views.DragComponent;
+import org.lgna.croquet.views.FlowPanel;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.TrackableShape;
+import org.lgna.croquet.views.imp.JDragView;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.Statement;
+
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ClipboardDragComponent extends org.lgna.croquet.views.DragComponent<org.lgna.croquet.DragModel> {
-	private class ClipboardDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
-		private org.alice.ide.clipboard.DragReceptorState dragReceptorState = org.alice.ide.clipboard.DragReceptorState.IDLE;
+public class ClipboardDragComponent extends DragComponent<DragModel> {
+	private class ClipboardDropReceptor extends AbstractDropReceptor {
+		private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
 
 		@Override
-		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
-			return dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel;
+		public boolean isPotentiallyAcceptingOf( DragModel dragModel ) {
+			return dragModel instanceof StatementDragModel;
 		}
 
-		private void setDragReceptorState( org.alice.ide.clipboard.DragReceptorState dragReceptorState ) {
+		private void setDragReceptorState( DragReceptorState dragReceptorState ) {
 			this.dragReceptorState = dragReceptorState;
 			ClipboardDragComponent.this.repaint();
 		}
 
 		@Override
-		public void dragStarted( org.lgna.croquet.history.DragStep step ) {
-			this.setDragReceptorState( org.alice.ide.clipboard.DragReceptorState.STARTED );
+		public void dragStarted( DragStep step ) {
+			this.setDragReceptorState( DragReceptorState.STARTED );
 		}
 
 		@Override
-		public void dragEntered( org.lgna.croquet.history.DragStep step ) {
-			this.setDragReceptorState( org.alice.ide.clipboard.DragReceptorState.ENTERED );
+		public void dragEntered( DragStep step ) {
+			this.setDragReceptorState( DragReceptorState.ENTERED );
 			//			step.getDragSource().hideDragProxy();
 		}
 
 		@Override
-		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
-			return org.alice.ide.clipboard.Clipboard.SINGLETON.getDropSite();
+		public DropSite dragUpdated( DragStep step ) {
+			return Clipboard.SINGLETON.getDropSite();
 		}
 
 		@Override
-		protected org.lgna.croquet.Model dragDroppedPostRejectorCheck( org.lgna.croquet.history.DragStep step ) {
-			org.lgna.croquet.DragModel dragModel = step.getModel();
-			if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel ) {
-				org.alice.ide.ast.draganddrop.statement.StatementDragModel statementDragModel = (org.alice.ide.ast.draganddrop.statement.StatementDragModel)dragModel;
-				org.lgna.project.ast.Statement statement = statementDragModel.getStatement();
-				boolean isCopy = edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( step.getLatestMouseEvent() );
+		protected Triggerable dragDroppedPostRejectorCheck( DragStep step ) {
+			DragModel dragModel = step.getModel();
+			if( dragModel instanceof StatementDragModel ) {
+				StatementDragModel statementDragModel = (StatementDragModel)dragModel;
+				Statement statement = statementDragModel.getStatement();
+				boolean isCopy = InputEventUtilities.isQuoteControlUnquoteDown( step.getLatestMouseEvent() );
 				if( isCopy ) {
-					return org.alice.ide.clipboard.CopyToClipboardOperation.getInstance( statement );
+					return CopyToClipboardOperation.getInstance( statement );
 				} else {
-					return org.alice.ide.clipboard.CutToClipboardOperation.getInstance( statement );
+					return CutToClipboardOperation.getInstance( statement );
 				}
 			} else {
 				return null;
@@ -95,31 +122,31 @@ public class ClipboardDragComponent extends org.lgna.croquet.views.DragComponent
 		}
 
 		@Override
-		public void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
+		public void dragExited( DragStep step, boolean isDropRecipient ) {
 			//			step.getDragSource().showDragProxy();
 			this.setDragReceptorState( DragReceptorState.STARTED );
 		}
 
 		@Override
-		public void dragStopped( org.lgna.croquet.history.DragStep step ) {
+		public void dragStopped( DragStep step ) {
 			this.setDragReceptorState( DragReceptorState.IDLE );
 		}
 
 		@Override
-		public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+		public TrackableShape getTrackableShape( DropSite potentialDropSite ) {
 			return ClipboardDragComponent.this;
 		}
 
 		@Override
-		public org.lgna.croquet.views.SwingComponentView<?> getViewController() {
+		public SwingComponentView<?> getViewController() {
 			return ClipboardDragComponent.this;
 		}
 	}
 
 	private final ClipboardDropReceptor dropReceptor = new ClipboardDropReceptor();
-	private final org.lgna.croquet.views.FlowPanel subject = new org.lgna.croquet.views.FlowPanel();
+	private final FlowPanel subject = new FlowPanel();
 
-	public ClipboardDragComponent( org.lgna.croquet.DragModel dragModel ) {
+	public ClipboardDragComponent( DragModel dragModel ) {
 		super( dragModel, true );
 	}
 
@@ -128,13 +155,13 @@ public class ClipboardDragComponent extends org.lgna.croquet.views.DragComponent
 		return true;
 	}
 
-	public org.lgna.croquet.DropReceptor getDropReceptor() {
+	public DropReceptor getDropReceptor() {
 		return this.dropReceptor;
 	}
 
 	@Override
-	public org.lgna.croquet.DragModel getModel() {
-		if( org.alice.ide.clipboard.Clipboard.SINGLETON.isStackEmpty() ) {
+	public DragModel getModel() {
+		if( Clipboard.SINGLETON.isStackEmpty() ) {
 			return null;
 		} else {
 			return super.getModel();
@@ -143,14 +170,14 @@ public class ClipboardDragComponent extends org.lgna.croquet.views.DragComponent
 
 	public void refresh() {
 		this.subject.forgetAndRemoveAllComponents();
-		if( org.alice.ide.clipboard.Clipboard.SINGLETON.isStackEmpty() ) {
+		if( Clipboard.SINGLETON.isStackEmpty() ) {
 			this.setToolTipText( null );
 		} else {
 			this.setToolTipText( "" );
-			org.lgna.project.ast.Node node = org.alice.ide.clipboard.Clipboard.SINGLETON.peek();
-			if( node instanceof org.lgna.project.ast.Statement ) {
-				org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
-				subject.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( statement ) );
+			Node node = Clipboard.SINGLETON.peek();
+			if( node instanceof Statement ) {
+				Statement statement = (Statement)node;
+				subject.addComponent( PreviewAstI18nFactory.getInstance().createStatementPane( statement ) );
 				subject.revalidateAndRepaint();
 			}
 		}
@@ -158,40 +185,40 @@ public class ClipboardDragComponent extends org.lgna.croquet.views.DragComponent
 	}
 
 	@Override
-	public org.lgna.croquet.views.SwingComponentView<?> getSubject() {
+	public SwingComponentView<?> getSubject() {
 		return this.subject;
 	}
 
-	private static final org.alice.ide.clipboard.icons.ClipboardIcon ICON = new org.alice.ide.clipboard.icons.ClipboardIcon();
+	private static final ClipboardIcon ICON = new ClipboardIcon();
 
 	@Override
-	protected org.lgna.croquet.views.imp.JDragView createAwtComponent() {
-		org.lgna.croquet.views.imp.JDragView rv = new org.lgna.croquet.views.imp.JDragView() {
+	protected JDragView createAwtComponent() {
+		JDragView rv = new JDragView() {
 			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return new java.awt.Dimension( ( ICON.getOrigWidth() * 4 ) / 5, ( ICON.getOrigHeight() * 4 ) / 5 );
+			public Dimension getPreferredSize() {
+				return new Dimension( ( ICON.getOrigWidth() * 4 ) / 5, ( ICON.getOrigHeight() * 4 ) / 5 );
 			}
 
 			@Override
 			public javax.swing.JToolTip createToolTip() {
-				return new edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip( ClipboardDragComponent.this.subject.getAwtComponent() );
+				return new JToolTip( ClipboardDragComponent.this.subject.getAwtComponent() );
 			}
 
 			@Override
-			public void paint( java.awt.Graphics g ) {
+			public void paint( Graphics g ) {
 				super.paint( g );
 				synchronized( ICON ) {
 					ICON.setDimension( this.getSize() );
-					ICON.setFull( org.alice.ide.clipboard.Clipboard.SINGLETON.isStackEmpty() == false );
+					ICON.setFull( Clipboard.SINGLETON.isStackEmpty() == false );
 					ICON.setDragReceptorState( dropReceptor.dragReceptorState );
 					ICON.paintIcon( this, g, 0, 0 );
 				}
-				if( org.alice.ide.clipboard.Clipboard.SINGLETON.getStackSize() > 1 ) {
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					Object prevTextAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING );
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, Integer.toString( org.alice.ide.clipboard.Clipboard.SINGLETON.getStackSize() ), this.getSize() );
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
+				if( Clipboard.SINGLETON.getStackSize() > 1 ) {
+					Graphics2D g2 = (Graphics2D)g;
+					Object prevTextAntialiasing = g2.getRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING );
+					g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+					GraphicsUtilities.drawCenteredText( g, Integer.toString( Clipboard.SINGLETON.getStackSize() ), this.getSize() );
+					g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
 				}
 			}
 		};
@@ -200,15 +227,15 @@ public class ClipboardDragComponent extends org.lgna.croquet.views.DragComponent
 	}
 
 	@Override
-	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected void fillBounds( Graphics2D g2, int x, int y, int width, int height ) {
 		g2.fillRect( x, y, width, height );
 	}
 
 	@Override
-	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected void paintPrologue( Graphics2D g2, int x, int y, int width, int height ) {
 	}
 
 	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected void paintEpilogue( Graphics2D g2, int x, int y, int width, int height ) {
 	}
 }

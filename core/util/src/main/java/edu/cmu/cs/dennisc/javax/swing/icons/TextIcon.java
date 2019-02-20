@@ -42,53 +42,65 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.geom.Rectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TextIcon implements javax.swing.Icon {
+public class TextIcon implements Icon {
 	private final String text;
-	private final java.awt.Paint paint;
-	private final java.awt.Font font;
+	private final Paint paint;
+	private final Font font;
 
-	public TextIcon( String text, java.awt.Paint paint, java.awt.Font font ) {
+	public TextIcon( String text, Paint paint, Font font ) {
 		this.text = text;
 		this.paint = paint;
 		this.font = font;
 	}
 
-	private java.awt.geom.Rectangle2D getTextBounds( java.awt.Graphics g ) {
-		java.awt.FontMetrics fm = g.getFontMetrics();
+	private Rectangle2D getTextBounds( Graphics g ) {
+		FontMetrics fm = g.getFontMetrics();
 		return fm.getStringBounds( this.text, g );
 	}
 
 	@Override
 	public int getIconWidth() {
-		return this.getTextBounds( edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.getGraphics() ).getBounds().width;
+		return this.getTextBounds( GraphicsUtilities.getGraphics() ).getBounds().width;
 	}
 
 	@Override
 	public int getIconHeight() {
-		return this.getTextBounds( edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.getGraphics() ).getBounds().height;
+		return this.getTextBounds( GraphicsUtilities.getGraphics() ).getBounds().height;
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
+		Graphics2D g2 = (Graphics2D)g;
 
-		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+		Object prevAntialiasing = g2.getRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING );
+		g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
 
-		java.awt.Paint prevPaint = g2.getPaint();
+		Paint prevPaint = g2.getPaint();
 		g2.setPaint( this.paint );
 
-		java.awt.Font prevFont = g2.getFont();
+		Font prevFont = g2.getFont();
 		g2.setFont( this.font );
 
-		java.awt.FontMetrics fm = g.getFontMetrics();
+		FontMetrics fm = g.getFontMetrics();
 		g.drawString( this.text, x, y + fm.getMaxAscent() );
 
 		g2.setFont( prevFont );
 		g2.setPaint( prevPaint );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, prevAntialiasing );
+		g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, prevAntialiasing );
 	}
 }

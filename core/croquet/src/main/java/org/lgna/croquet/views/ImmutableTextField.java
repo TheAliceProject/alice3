@@ -42,11 +42,19 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+import org.lgna.croquet.PlainStringValue;
+
+import javax.swing.JTextField;
+import javax.swing.plaf.basic.BasicTextFieldUI;
+import java.awt.Color;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImmutableTextField extends ImmutableTextComponent<javax.swing.JTextField> {
-	public ImmutableTextField( org.lgna.croquet.PlainStringValue value, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+public class ImmutableTextField extends ImmutableTextComponent<JTextField> {
+	public ImmutableTextField( PlainStringValue value, float fontScalar, TextAttribute<?>... textAttributes ) {
 		super( value, fontScalar, textAttributes );
 	}
 
@@ -59,21 +67,21 @@ public class ImmutableTextField extends ImmutableTextComponent<javax.swing.JText
 	}
 
 	@Override
-	protected javax.swing.JTextField createAwtComponent() {
-		javax.swing.JTextField rv = new javax.swing.JTextField( this.getValue().getDocument(), null, 0 ) {
+	protected JTextField createAwtComponent() {
+		JTextField rv = new JTextField( this.getValue().getDocument(), null, 0 ) {
 			@Override
-			public java.awt.Color getBackground() {
+			public Color getBackground() {
 				return getDesiredBackgroundColor( this.getParent() );
 			}
 
 			@Override
-			public java.awt.Dimension getMaximumSize() {
+			public Dimension getMaximumSize() {
 				return this.getPreferredSize();
 			}
 
 			@Override
 			public void updateUI() {
-				this.setUI( new javax.swing.plaf.basic.BasicTextFieldUI() );
+				this.setUI( new BasicTextFieldUI() );
 			}
 		};
 		this.initializeJComponent( rv );

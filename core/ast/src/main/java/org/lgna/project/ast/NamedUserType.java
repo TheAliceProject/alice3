@@ -43,9 +43,13 @@
 
 package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.EnumProperty;
+import edu.cmu.cs.dennisc.property.StringProperty;
 import org.lgna.project.code.CodeGenerator;
 import org.lgna.project.code.CodeOrganizer;
+
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -71,7 +75,7 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return this.name;
 	}
 
@@ -81,7 +85,7 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 	}
 
 	@Override
-	public java.util.List<NamedUserConstructor> getDeclaredConstructors() {
+	public List<NamedUserConstructor> getDeclaredConstructors() {
 		return constructors.getValue();
 	}
 
@@ -111,21 +115,17 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 		return this.isStrictFloatingPoint.getValue();
 	}
 
-	@Override
-	public String generateJavaCode( JavaCodeGenerator generator ) {
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendClass( getCodeOrganizer( generator ), this );
+	}
 
-		generator.appendString( "class " );
-		generator.appendTypeName( this );
-		generator.appendString( " extends " );
-		generator.appendTypeName( this.superType.getValue() );
-		generator.appendString( "{" );
-
+	private CodeOrganizer getCodeOrganizer( SourceCodeGenerator generator ) {
 		CodeOrganizer codeOrganizer = generator.getNewCodeOrganizerForTypeName( this.getName() );
 		for( NamedUserConstructor constructor : this.constructors ) {
 			codeOrganizer.addConstructor( constructor );
 		}
 
-		for( UserMethod method : generator.getMethods( this ) ) {
+		for( UserMethod method : this.methods) {
 			if( method.isStatic() ) {
 				codeOrganizer.addStaticMethod( method );
 			} else {
@@ -134,46 +134,16 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 		}
 
 		for( UserField field : this.fields ) {
-			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
-				if( generator.isPublicStaticFinalFieldGetterDesired() ) {
-					//pass
-				} else {
-					continue;
-				}
-			}
-			codeOrganizer.addGetter( field.getGetter() );
-			if( field.isFinal() ) {
-				//pass
-			} else {
-				codeOrganizer.addSetter( field.getSetter() );
-			}
+			field.addToOrganizer( codeOrganizer, generator.isPublicStaticFinalFieldGetterDesired() );
 		}
 
-		for( UserField field : this.fields ) {
-			codeOrganizer.addField( field );
-		}
-
-		java.util.LinkedHashMap<String, java.util.List<CodeAppender>> orderedCode = codeOrganizer.getOrderedSections();
-		for( java.util.Map.Entry<String, java.util.List<CodeAppender>> entry : orderedCode.entrySet() ) {
-			if( !entry.getValue().isEmpty() ) {
-				boolean shouldCollapseSection = codeOrganizer.shouldCollapseSection( entry.getKey() );
-				generator.appendSectionPrefix( this, entry.getKey(), shouldCollapseSection );
-				for( CodeAppender item : entry.getValue() ) {
-					item.appendJava( generator );
-				}
-				generator.appendSectionPostfix( this, entry.getKey(), shouldCollapseSection );
-			}
-		}
-
-		generator.appendString( "}" );
-
-		return generator.getText( true );
+		return codeOrganizer;
 	}
 
-	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+	public final StringProperty name = new StringProperty( this, null );
 	public final DeclarationProperty<UserPackage> _package = DeclarationProperty.createReferenceInstance( this );
 	public final NodeListProperty<NamedUserConstructor> constructors = new NodeListProperty<NamedUserConstructor>( this );
-	public final edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
-	public final edu.cmu.cs.dennisc.property.EnumProperty<TypeModifierFinalAbstractOrNeither> finalAbstractOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty<TypeModifierFinalAbstractOrNeither>( this, TypeModifierFinalAbstractOrNeither.NEITHER );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public final EnumProperty<AccessLevel> accessLevel = new EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
+	public final EnumProperty<TypeModifierFinalAbstractOrNeither> finalAbstractOrNeither = new EnumProperty<TypeModifierFinalAbstractOrNeither>( this, TypeModifierFinalAbstractOrNeither.NEITHER );
+	public final BooleanProperty isStrictFloatingPoint = new BooleanProperty( this, Boolean.FALSE );
 }

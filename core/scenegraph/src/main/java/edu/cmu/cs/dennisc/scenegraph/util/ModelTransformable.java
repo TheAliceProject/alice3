@@ -42,10 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ModelTransformable extends edu.cmu.cs.dennisc.scenegraph.Transformable {
+public class ModelTransformable extends Transformable {
 	public ModelTransformable() {
 		this.sgVisual.setParent( this );
 	}

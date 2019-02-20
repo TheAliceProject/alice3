@@ -42,24 +42,28 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.animation;
 
+import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
+
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SubjectAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
-	private java.awt.Component m_awtSubject = null;
+public abstract class SubjectAnimation extends DurationBasedAnimation {
+	private Component m_awtSubject = null;
 
 	public SubjectAnimation() {
 	}
 
-	public SubjectAnimation( java.awt.Component awtSubject ) {
+	public SubjectAnimation( Component awtSubject ) {
 		setSubject( awtSubject );
 	}
 
-	public java.awt.Component getSubject() {
+	public Component getSubject() {
 		return m_awtSubject;
 	}
 
-	public void setSubject( java.awt.Component awtSubject ) {
+	public void setSubject( Component awtSubject ) {
 		assert awtSubject != null;
 		m_awtSubject = awtSubject;
 	}

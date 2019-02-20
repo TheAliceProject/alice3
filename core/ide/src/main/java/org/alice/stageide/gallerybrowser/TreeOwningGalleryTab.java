@@ -42,18 +42,36 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.alice.stageide.modelresource.ResourceNodeTreeState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TreeOwningGalleryTab extends GalleryTab {
-	public TreeOwningGalleryTab( java.util.UUID migrationId ) {
-		super( migrationId );
+public class TreeOwningGalleryTab extends GalleryTab {
+	private final ResourceNodeTreeState resourceNodeTreeSelectionState;
+	private final String localizationSubKey;
+
+	TreeOwningGalleryTab( ResourceNodeTreeState treeState, String localizationSubKey ) {
+		super( UUID.fromString( "569f0663-bef4-4d07-a96a-65cd75048a2e" ) );
+		resourceNodeTreeSelectionState = treeState;
+		this.localizationSubKey = localizationSubKey;
 	}
 
-	public abstract org.alice.stageide.modelresource.ResourceNodeTreeState getResourceNodeTreeSelectionState();
+	public ResourceNodeTreeState getResourceNodeTreeSelectionState() {
+		return resourceNodeTreeSelectionState;
+	}
 
 	@Override
-	protected final org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView createView() {
-		return new org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView( this );
+	public String getSubKeyForLocalization() {
+		return localizationSubKey;
+	}
+
+	@Override
+	protected final TreeOwningGalleryTabView createView() {
+		return new TreeOwningGalleryTabView( this );
 	}
 }

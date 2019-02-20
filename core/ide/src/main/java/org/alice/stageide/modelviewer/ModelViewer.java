@@ -42,17 +42,19 @@
  *******************************************************************************/
 package org.alice.stageide.modelviewer;
 
+import org.lgna.story.implementation.ModelImp;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ModelViewer extends Viewer {
-	private org.lgna.story.implementation.ModelImp model = null;
+	private ModelImp model = null;
 
-	public org.lgna.story.implementation.ModelImp getModel() {
+	public ModelImp getModel() {
 		return this.model;
 	}
 
-	public void setModel( org.lgna.story.implementation.ModelImp model ) {
+	public void setModel( ModelImp model ) {
 		if( model != this.model ) {
 			if( this.model != null ) {
 				this.model.setVehicle( null );

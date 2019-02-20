@@ -42,26 +42,37 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.preference;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder;
+import edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListPreference<E> extends Preference<java.util.List<E>> {
+public abstract class ListPreference<E> extends Preference<List<E>> {
 	private static final int LIST_VERSION = 1;
 	private static final String LIST_VERSION_SUFFIX = ".list_version";
 	private static final String ITEM_VERSION_SUFFIX = ".item_version";
 	private static final String DATA_SUFFIX = ".data";
 
-	public ListPreference( java.util.List<E> defaultValue ) {
+	public ListPreference( List<E> defaultValue ) {
 		super( defaultValue );
 	}
 
 	protected abstract int getItemVersion();
 
-	protected abstract void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, E item );
+	protected abstract void encode( BinaryEncoder binaryEncoder, E item );
 
-	private byte[] encode( java.util.List<E> value ) {
-		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-		edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
+	private byte[] encode( List<E> value ) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		BinaryEncoder binaryEncoder = new OutputStreamBinaryEncoder( baos );
 		binaryEncoder.encode( value.size() );
 		for( E item : value ) {
 			this.encode( binaryEncoder, item );
@@ -70,13 +81,13 @@ public abstract class ListPreference<E> extends Preference<java.util.List<E>> {
 		return baos.toByteArray();
 	}
 
-	protected abstract E decode( int itemVersion, edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+	protected abstract E decode( int itemVersion, BinaryDecoder binaryDecoder );
 
-	private java.util.List<E> decode( int version, byte[] value ) {
+	private List<E> decode( int version, byte[] value ) {
 		if( value != null ) {
-			java.util.List<E> rv = new java.util.LinkedList<E>();
-			java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( value );
-			edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
+			List<E> rv = new LinkedList<E>();
+			ByteArrayInputStream bais = new ByteArrayInputStream( value );
+			BinaryDecoder binaryDecoder = new InputStreamBinaryDecoder( bais );
 			final int N = binaryDecoder.decodeInt();
 			for( int i = 0; i < N; i++ ) {
 				E item = this.decode( version, binaryDecoder );
@@ -89,7 +100,7 @@ public abstract class ListPreference<E> extends Preference<java.util.List<E>> {
 	}
 
 	@Override
-	protected java.util.List<E> getValue( java.util.prefs.Preferences utilPrefs, String key, java.util.List<E> defaultValue ) {
+	protected List<E> getValue( Preferences utilPrefs, String key, List<E> defaultValue ) {
 		int listVersion = utilPrefs.getInt( key + LIST_VERSION_SUFFIX, 0 );
 		if( listVersion == 1 ) {
 			int itemVersion = utilPrefs.getInt( key + ITEM_VERSION_SUFFIX, 0 );
@@ -102,7 +113,7 @@ public abstract class ListPreference<E> extends Preference<java.util.List<E>> {
 	}
 
 	@Override
-	protected void setAndCommitValue( java.util.prefs.Preferences utilPrefs, String key, java.util.List<E> nextValue ) {
+	protected void setAndCommitValue( Preferences utilPrefs, String key, List<E> nextValue ) {
 		utilPrefs.putInt( key + LIST_VERSION_SUFFIX, LIST_VERSION );
 		utilPrefs.putInt( key + ITEM_VERSION_SUFFIX, this.getItemVersion() );
 		if( nextValue != null ) {

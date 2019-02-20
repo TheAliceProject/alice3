@@ -42,23 +42,25 @@
  */
 package org.lgna.ik.poser.anchors.events;
 
+import org.lgna.story.resources.JointId;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AnchorEvent {
-	private final org.lgna.story.resources.JointId previousValue;
-	private final org.lgna.story.resources.JointId nextValue;
+	private final JointId previousValue;
+	private final JointId nextValue;
 
-	public AnchorEvent( org.lgna.story.resources.JointId previousValue, org.lgna.story.resources.JointId nextValue ) {
+	public AnchorEvent( JointId previousValue, JointId nextValue ) {
 		this.previousValue = previousValue;
 		this.nextValue = nextValue;
 	}
 
-	public org.lgna.story.resources.JointId getPreviousValue() {
+	public JointId getPreviousValue() {
 		return this.previousValue;
 	}
 
-	public org.lgna.story.resources.JointId getNextValue() {
+	public JointId getNextValue() {
 		return this.nextValue;
 	}
 }

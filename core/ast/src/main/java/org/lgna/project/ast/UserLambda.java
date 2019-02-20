@@ -43,7 +43,9 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.StringProperty;
 import org.lgna.project.code.CodeAppender;
+import org.lgna.project.virtualmachine.VirtualMachine;
 
 /**
  * @author Dennis Cosgrove
@@ -61,7 +63,7 @@ public class UserLambda extends AbstractUserMethod implements Lambda, CodeAppend
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
 
@@ -81,27 +83,13 @@ public class UserLambda extends AbstractUserMethod implements Lambda, CodeAppend
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendMemberPrefix( this );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendLambda( this );
+	}
 
-		AbstractType<?, ?, ?> type = generator.peekTypeForLambda();
-		AbstractMethod singleAbstractMethod = AstUtilities.getSingleAbstractMethod( type );
-		if( generator.isLambdaSupported() ) {
-			generator.appendParameters( this );
-			generator.appendString( "->" );
-		} else {
-			generator.appendString( "new " );
-			generator.appendTypeName( type );
-			generator.appendString( "(){" );
-			generator.appendMethodHeader( singleAbstractMethod );
-		}
-		this.body.getValue().appendJava( generator );
-		if( generator.isLambdaSupported() ) {
-			//pass
-		} else {
-			generator.appendString( "}" );
-		}
-
-		generator.appendMemberPostfix( this );
+	@Override
+	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
+		// The VM evaluates lambda invoaction in a different way then other methods.
+		throw new RuntimeException();
 	}
 }

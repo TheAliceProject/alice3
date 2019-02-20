@@ -43,25 +43,32 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+import org.lgna.croquet.HtmlStringValue;
+
+import javax.swing.JEditorPane;
+import javax.swing.plaf.basic.BasicEditorPaneUI;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImmutableEditorPane extends ImmutableTextComponent<javax.swing.JEditorPane> {
-	public ImmutableEditorPane( org.lgna.croquet.HtmlStringValue value, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+public class ImmutableEditorPane extends ImmutableTextComponent<JEditorPane> {
+	public ImmutableEditorPane( HtmlStringValue value, float fontScalar, TextAttribute<?>... textAttributes ) {
 		super( value, fontScalar, textAttributes );
 	}
 
 	@Override
-	protected javax.swing.JEditorPane createAwtComponent() {
-		javax.swing.JEditorPane rv = new javax.swing.JEditorPane( "text/html", this.getValue().getText() ) {
+	protected JEditorPane createAwtComponent() {
+		JEditorPane rv = new JEditorPane( "text/html", this.getValue().getText() ) {
 			@Override
-			public java.awt.Color getBackground() {
+			public Color getBackground() {
 				return getDesiredBackgroundColor( this.getParent() );
 			}
 
 			@Override
 			public void updateUI() {
-				this.setUI( new javax.swing.plaf.basic.BasicEditorPaneUI() );
+				this.setUI( new BasicEditorPaneUI() );
 			}
 		};
 		this.initializeJComponent( rv );

@@ -42,6 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.ast.code;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.ast.draganddrop.statement.PotentiallyEnvelopingStatementTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.StatementDragModel;
+import org.lgna.croquet.DragModel;
+import org.lgna.project.ast.AbstractStatementWithBody;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.BooleanExpressionBodyPair;
+import org.lgna.project.ast.ConditionalStatement;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.Statement;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,8 +61,8 @@ public class ShiftDragStatementUtilities {
 		throw new AssertionError();
 	}
 
-	private static boolean isEqualToOrAncestor( org.lgna.project.ast.Statement fromI, org.lgna.project.ast.Node toBlock ) {
-		if( toBlock instanceof org.lgna.project.ast.Statement ) {
+	private static boolean isEqualToOrAncestor( Statement fromI, Node toBlock ) {
+		if( toBlock instanceof Statement ) {
 			if( fromI == toBlock ) {
 				return true;
 			} else {
@@ -62,9 +73,9 @@ public class ShiftDragStatementUtilities {
 		}
 	}
 
-	public static int calculateShiftMoveCount( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation ) {
-		org.lgna.project.ast.BlockStatement fromBlock = fromLocation.getBlockStatement();
-		org.lgna.project.ast.BlockStatement toBlock = toLocation.getBlockStatement();
+	public static int calculateShiftMoveCount( BlockStatementIndexPair fromLocation, BlockStatementIndexPair toLocation ) {
+		BlockStatement fromBlock = fromLocation.getBlockStatement();
+		BlockStatement toBlock = toLocation.getBlockStatement();
 		if( fromBlock == toBlock ) {
 			int fromIndex = fromLocation.getIndex();
 			int toIndex = toLocation.getIndex();
@@ -76,7 +87,7 @@ public class ShiftDragStatementUtilities {
 		} else {
 			int count = 0;
 			for( int i = fromLocation.getIndex(); i < fromBlock.statements.size(); i++ ) {
-				org.lgna.project.ast.Statement fromI = fromBlock.statements.get( i );
+				Statement fromI = fromBlock.statements.get( i );
 				if( isEqualToOrAncestor( fromI, toBlock ) ) {
 					break;
 				} else {
@@ -87,22 +98,22 @@ public class ShiftDragStatementUtilities {
 		}
 	}
 
-	public static boolean isCandidateForEnvelop( org.lgna.croquet.DragModel dragModel ) {
-		if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.PotentiallyEnvelopingStatementTemplateDragModel ) {
+	public static boolean isCandidateForEnvelop( DragModel dragModel ) {
+		if( dragModel instanceof PotentiallyEnvelopingStatementTemplateDragModel ) {
 			//org.alice.ide.ast.draganddrop.statement.PotentiallyEnvelopingStatementTemplateDragModel potentiallyEnvelopingStatementTemplateDragModel = (org.alice.ide.ast.draganddrop.statement.PotentiallyEnvelopingStatementTemplateDragModel)dragModel;
 			return true;
-		} else if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel ) {
+		} else if( dragModel instanceof StatementDragModel ) {
 			final boolean IS_READY_FOR_PRIME_TIME = false;
 			if( IS_READY_FOR_PRIME_TIME ) {
-				org.alice.ide.ast.draganddrop.statement.StatementDragModel statementDragModel = (org.alice.ide.ast.draganddrop.statement.StatementDragModel)dragModel;
-				org.lgna.project.ast.Statement statement = statementDragModel.getStatement();
-				if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
-					org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
+				StatementDragModel statementDragModel = (StatementDragModel)dragModel;
+				Statement statement = statementDragModel.getStatement();
+				if( statement instanceof AbstractStatementWithBody ) {
+					AbstractStatementWithBody statementWithBody = (AbstractStatementWithBody)statement;
 					return statementWithBody.body.getValue().statements.size() == 0;
-				} else if( statement instanceof org.lgna.project.ast.ConditionalStatement ) {
-					org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)statement;
+				} else if( statement instanceof ConditionalStatement ) {
+					ConditionalStatement conditionalStatement = (ConditionalStatement)statement;
 					if( conditionalStatement.elseBody.getValue().statements.size() == 0 ) {
-						for( org.lgna.project.ast.BooleanExpressionBodyPair booleanExpressionBodyPair : conditionalStatement.booleanExpressionBodyPairs ) {
+						for( BooleanExpressionBodyPair booleanExpressionBodyPair : conditionalStatement.booleanExpressionBodyPairs ) {
 							if( booleanExpressionBodyPair.body.getValue().statements.size() == 0 ) {
 								//pass
 							} else {

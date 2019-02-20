@@ -43,11 +43,13 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MoveAndOrientToAGoodVantagePointOf extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = MoveAndOrientToAGoodVantagePointOf.class )
+	@ClassTemplate( keywordFactoryCls = MoveAndOrientToAGoodVantagePointOf.class )
 	public static interface Detail {
 	}
 

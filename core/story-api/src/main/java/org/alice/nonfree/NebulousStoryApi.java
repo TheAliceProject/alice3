@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.nonfree;
 
+import edu.cmu.cs.dennisc.texture.Texture;
 import org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory;
 import org.lgna.story.resources.JointedModelResource;
 
@@ -85,6 +86,6 @@ public class NebulousStoryApi {
 		return null;
 	}
 
-	public void setMipMappingDesiredOnNebulousTexture( edu.cmu.cs.dennisc.texture.Texture texture ) {
+	public void setMipMappingDesiredOnNebulousTexture( Texture texture ) {
 	}
 }

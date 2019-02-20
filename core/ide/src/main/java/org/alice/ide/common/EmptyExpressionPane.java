@@ -42,30 +42,39 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import org.alice.ide.ast.EmptyExpression;
+import org.lgna.croquet.views.Label;
+import org.lgna.project.ast.AbstractType;
+
+import java.awt.Color;
+import java.awt.GradientPaint;
+import java.awt.Paint;
+
 /**
  * @author Dennis Cosgrove
  */
 public class EmptyExpressionPane extends ExpressionLikeSubstance {
-	private static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 180, 180, 220 );
-	private static final java.awt.Color TOP_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0f, 1.0f, 0.9f );
-	private static final java.awt.Color BOTTOM_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0f, 1.0f, 1.1f );
-	private final org.alice.ide.ast.EmptyExpression emptyExpression;
+	private static final Color BACKGROUND_COLOR = new Color( 180, 180, 220 );
+	private static final Color TOP_COLOR = ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0f, 1.0f, 0.9f );
+	private static final Color BOTTOM_COLOR = ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0f, 1.0f, 1.1f );
+	private final EmptyExpression emptyExpression;
 
-	public EmptyExpressionPane( org.alice.ide.ast.EmptyExpression emptyExpression ) {
+	public EmptyExpressionPane( EmptyExpression emptyExpression ) {
 		super( null );
 		this.emptyExpression = emptyExpression;
-		org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label( " ??? " );
+		Label label = new Label( " ??? " );
 		this.addComponent( label );
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType() {
+	public AbstractType<?, ?, ?> getExpressionType() {
 		return this.emptyExpression.getType();
 	}
 
 	@Override
-	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
-		return new java.awt.GradientPaint( 0, y, TOP_COLOR, 0, y + height, BOTTOM_COLOR );
+	protected Paint getBackgroundPaint( int x, int y, int width, int height ) {
+		return new GradientPaint( 0, y, TOP_COLOR, 0, y + height, BOTTOM_COLOR );
 	}
 
 	@Override

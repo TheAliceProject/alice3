@@ -42,13 +42,18 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceGalleryDragModel extends org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel {
-	public ResourceGalleryDragModel( java.util.UUID migrationId ) {
+public abstract class ResourceGalleryDragModel extends GalleryDragModel {
+	public ResourceGalleryDragModel( UUID migrationId ) {
 		super( migrationId );
 	}
 
-	public abstract java.util.List<ResourceNode> getNodeChildren();
+	public abstract List<ResourceNode> getNodeChildren();
 }

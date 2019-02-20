@@ -42,6 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.ziptree;
 
+import javax.swing.tree.TreeNode;
+import java.util.Enumeration;
+import java.util.Iterator;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,8 +58,8 @@ public class FileZipTreeNode extends ZipTreeNode {
 	}
 
 	@Override
-	public java.util.Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> iterator() {
-		return new java.util.Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>() {
+	public Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> iterator() {
+		return new Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>() {
 			@Override
 			public boolean hasNext() {
 				return false;
@@ -79,7 +83,7 @@ public class FileZipTreeNode extends ZipTreeNode {
 	}
 
 	@Override
-	public java.util.Enumeration<ZipTreeNode> children() {
+	public Enumeration<ZipTreeNode> children() {
 		return null;
 	}
 
@@ -99,7 +103,7 @@ public class FileZipTreeNode extends ZipTreeNode {
 	}
 
 	@Override
-	public int getIndex( javax.swing.tree.TreeNode node ) {
+	public int getIndex( TreeNode node ) {
 		return -1;
 	}
 

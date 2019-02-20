@@ -42,15 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JSingleColumnPane extends JGridPane {
-	public JSingleColumnPane( int hgap, int vgap, java.awt.Component... components ) {
-		super( false, hgap, vgap, new java.awt.Component[][] { components } );
+	public JSingleColumnPane( int hgap, int vgap, Component... components ) {
+		super( false, hgap, vgap, new Component[][] { components } );
 	}
 
-	public JSingleColumnPane( java.awt.Component... components ) {
+	public JSingleColumnPane( Component... components ) {
 		this( 0, 0, components );
 	}
 }

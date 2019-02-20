@@ -42,32 +42,38 @@
  *******************************************************************************/
 package org.lgna.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.ItemCodec;
+
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum ColorCodec implements org.lgna.croquet.ItemCodec<java.awt.Color> {
+public enum ColorCodec implements ItemCodec<Color> {
 	SINGLETON;
 	@Override
-	public Class<java.awt.Color> getValueClass() {
-		return java.awt.Color.class;
+	public Class<Color> getValueClass() {
+		return Color.class;
 	}
 
 	@Override
-	public java.awt.Color decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Color decodeValue( BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
 			int r = binaryDecoder.decodeInt();
 			int g = binaryDecoder.decodeInt();
 			int b = binaryDecoder.decodeInt();
 			int a = binaryDecoder.decodeInt();
-			return new java.awt.Color( r, g, b, a );
+			return new Color( r, g, b, a );
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.awt.Color value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, Color value ) {
 		boolean isNotNull = value != null;
 		binaryEncoder.encode( isNotNull );
 		if( isNotNull ) {
@@ -79,7 +85,7 @@ public enum ColorCodec implements org.lgna.croquet.ItemCodec<java.awt.Color> {
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, java.awt.Color value ) {
+	public void appendRepresentation( StringBuilder sb, Color value ) {
 		sb.append( value );
 	}
 }

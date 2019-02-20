@@ -42,12 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration.views;
 
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.declaration.AddProcedureComposite;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AddProcedureView extends AddMethodView {
-	public AddProcedureView( org.alice.ide.ast.declaration.AddProcedureComposite composite ) {
+	public AddProcedureView( AddProcedureComposite composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getProcedureColor() );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getProcedureColor() );
 	}
 }

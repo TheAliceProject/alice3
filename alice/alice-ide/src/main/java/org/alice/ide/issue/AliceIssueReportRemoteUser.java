@@ -42,13 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import com.atlassian.jira.rpc.soap.client.RemoteUser;
+import org.lgna.issue.IssueReportRemoteUser;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AliceIssueReportRemoteUser implements org.lgna.issue.IssueReportRemoteUser {
-	private final com.atlassian.jira.rpc.soap.client.RemoteUser jiraRemoteUser;
+public class AliceIssueReportRemoteUser implements IssueReportRemoteUser {
+	private final RemoteUser jiraRemoteUser;
 
-	public AliceIssueReportRemoteUser( com.atlassian.jira.rpc.soap.client.RemoteUser jiraRemoteUser ) {
+	public AliceIssueReportRemoteUser( RemoteUser jiraRemoteUser ) {
 		this.jiraRemoteUser = jiraRemoteUser;
 	}
 

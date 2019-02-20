@@ -42,20 +42,23 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import edu.cmu.cs.dennisc.render.PickFrontMostObserver;
+import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
+import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class PickFrontMostDisplayTask extends edu.cmu.cs.dennisc.render.gl.imp.PickDisplayTask {
-	public PickFrontMostDisplayTask( int xPixel, int yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.render.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.render.PickFrontMostObserver observer ) {
+/*package-private*/class PickFrontMostDisplayTask extends PickDisplayTask {
+	public PickFrontMostDisplayTask( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer ) {
 		super( xPixel, yPixel, pickSubElementPolicy, criterion );
 		this.observer = observer;
 	}
 
 	@Override
-	protected void fireDone( edu.cmu.cs.dennisc.render.gl.imp.PickParameters pickParameters ) {
+	protected void fireDone( PickParameters pickParameters ) {
 		this.observer.done( pickParameters.accessFrontMostPickResult() );
 	}
 
-	private final edu.cmu.cs.dennisc.render.PickFrontMostObserver observer;
+	private final PickFrontMostObserver observer;
 }

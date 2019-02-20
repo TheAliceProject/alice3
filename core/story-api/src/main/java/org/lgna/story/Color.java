@@ -43,56 +43,58 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.color.Color4f;
 import org.lgna.project.annotations.ValueTemplate;
+import org.lgna.story.annotation.PortionDetails;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class Color implements Paint {
-	public static final Color BLACK = new Color( edu.cmu.cs.dennisc.color.Color4f.BLACK );
-	public static final Color BLUE = new Color( edu.cmu.cs.dennisc.color.Color4f.BLUE );
-	public static final Color CYAN = new Color( edu.cmu.cs.dennisc.color.Color4f.CYAN );
-	public static final Color DARK_GRAY = new Color( edu.cmu.cs.dennisc.color.Color4f.DARK_GRAY );
-	public static final Color GRAY = new Color( edu.cmu.cs.dennisc.color.Color4f.GRAY );
-	public static final Color GREEN = new Color( edu.cmu.cs.dennisc.color.Color4f.GREEN );
-	public static final Color LIGHT_GRAY = new Color( edu.cmu.cs.dennisc.color.Color4f.LIGHT_GRAY );
-	public static final Color MAGENTA = new Color( edu.cmu.cs.dennisc.color.Color4f.MAGENTA );
-	public static final Color ORANGE = new Color( edu.cmu.cs.dennisc.color.Color4f.ORANGE );
-	public static final Color PINK = new Color( edu.cmu.cs.dennisc.color.Color4f.PINK );
-	public static final Color RED = new Color( edu.cmu.cs.dennisc.color.Color4f.RED );
-	public static final Color WHITE = new Color( edu.cmu.cs.dennisc.color.Color4f.WHITE );
-	public static final Color YELLOW = new Color( edu.cmu.cs.dennisc.color.Color4f.YELLOW );
+	public static final Color BLACK = new Color( Color4f.BLACK );
+	public static final Color BLUE = new Color( Color4f.BLUE );
+	public static final Color CYAN = new Color( Color4f.CYAN );
+	public static final Color DARK_GRAY = new Color( Color4f.DARK_GRAY );
+	public static final Color GRAY = new Color( Color4f.GRAY );
+	public static final Color GREEN = new Color( Color4f.GREEN );
+	public static final Color LIGHT_GRAY = new Color( Color4f.LIGHT_GRAY );
+	public static final Color MAGENTA = new Color( Color4f.MAGENTA );
+	public static final Color ORANGE = new Color( Color4f.ORANGE );
+	public static final Color PINK = new Color( Color4f.PINK );
+	public static final Color RED = new Color( Color4f.RED );
+	public static final Color WHITE = new Color( Color4f.WHITE );
+	public static final Color YELLOW = new Color( Color4f.YELLOW );
 	public static final Color LIGHT_BLUE = new Color( 149.0 / 255.0, 166.0 / 255.0, 216.0 / 255.0 );
 	public static final Color DARK_BLUE = new Color( 0 / 255.0, 0 / 255.0, 150.0 / 255.0 );
 
-	public static final Color PURPLE = new Color( edu.cmu.cs.dennisc.color.Color4f.PURPLE );
-	public static final Color BROWN = new Color( edu.cmu.cs.dennisc.color.Color4f.BROWN );
+	public static final Color PURPLE = new Color( Color4f.PURPLE );
+	public static final Color BROWN = new Color( Color4f.BROWN );
 
-	private final edu.cmu.cs.dennisc.color.Color4f internal;
+	private final Color4f internal;
 
 	public Color(
-			@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
+			@ValueTemplate( detailsEnumCls = PortionDetails.class )
 			Number red,
-			@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
+			@ValueTemplate( detailsEnumCls = PortionDetails.class )
 			Number green,
-			@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
+			@ValueTemplate( detailsEnumCls = PortionDetails.class )
 			Number blue ) {
-		this( new edu.cmu.cs.dennisc.color.Color4f( red.floatValue(), green.floatValue(), blue.floatValue(), 1.0f ) );
+		this( new Color4f( red.floatValue(), green.floatValue(), blue.floatValue(), 1.0f ) );
 	}
 
-	private Color( edu.cmu.cs.dennisc.color.Color4f internal ) {
+	private Color( Color4f internal ) {
 		this.internal = internal;
 	}
 
-	/* package-private */static Color createInstance( edu.cmu.cs.dennisc.color.Color4f internal ) {
+	/* package-private */static Color createInstance( Color4f internal ) {
 		return internal != null ? new Color( internal ) : null;
 	}
 
-	/* package-private */edu.cmu.cs.dennisc.color.Color4f getInternal() {
+	/* package-private */Color4f getInternal() {
 		return this.internal;
 	}
 
-	/* package-private */static edu.cmu.cs.dennisc.color.Color4f getInternal( Color color ) {
+	/* package-private */static Color4f getInternal( Color color ) {
 		return color != null ? color.internal : null;
 	}
 

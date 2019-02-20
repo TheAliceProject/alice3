@@ -42,11 +42,16 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+
+import javax.swing.JLayeredPane;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class LayeredPane extends SwingComponentView<javax.swing.JLayeredPane> {
-	private final java.util.Map<Integer, Layer> mapIdToLayer = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public final class LayeredPane extends SwingComponentView<JLayeredPane> {
+	private final Map<Integer, Layer> mapIdToLayer = Maps.newHashMap();
 
 	private final RootPane rootPane;
 
@@ -55,7 +60,7 @@ public final class LayeredPane extends SwingComponentView<javax.swing.JLayeredPa
 	}
 
 	@Override
-	protected javax.swing.JLayeredPane createAwtComponent() {
+	protected JLayeredPane createAwtComponent() {
 		return this.rootPane.getAwtComponent().getLayeredPane();
 	}
 

@@ -42,27 +42,34 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.nil;
 
+import edu.cmu.cs.dennisc.render.PickObserver;
+import edu.cmu.cs.dennisc.render.PickResult;
+import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
+import edu.cmu.cs.dennisc.render.SynchronousPicker;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class NrSynchronousPicker implements edu.cmu.cs.dennisc.render.SynchronousPicker {
+/*package-private*/class NrSynchronousPicker implements SynchronousPicker {
 	@Override
-	public java.util.List<edu.cmu.cs.dennisc.render.PickResult> pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.render.PickObserver pickObserver ) {
+	public List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver ) {
 		return null;
 	}
 
 	@Override
-	public final java.util.List<edu.cmu.cs.dennisc.render.PickResult> pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy pickSubElementPolicy ) {
+	public final List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy ) {
 		return this.pickAll( xPixel, yPixel, pickSubElementPolicy, null );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.PickResult pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.render.PickObserver pickObserver ) {
+	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver ) {
 		return null;
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.render.PickResult pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy pickSubElementPolicy ) {
+	public final PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy ) {
 		return this.pickFrontMost( xPixel, yPixel, pickSubElementPolicy, null );
 	}
 

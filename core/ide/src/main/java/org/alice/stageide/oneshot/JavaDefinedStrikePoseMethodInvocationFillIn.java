@@ -42,37 +42,45 @@
  */
 package org.alice.stageide.oneshot;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JavaDefinedStrikePoseMethodInvocationFillIn extends OneShotJavaMethodInvocationFillIn {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, JavaDefinedStrikePoseMethodInvocationFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<InstanceFactory, JavaMethod, JavaDefinedStrikePoseMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
 
-	public static JavaDefinedStrikePoseMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
-		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, JavaDefinedStrikePoseMethodInvocationFillIn>() {
+	public static JavaDefinedStrikePoseMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaMethod method ) {
+		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new MapToMap.Initializer<InstanceFactory, JavaMethod, JavaDefinedStrikePoseMethodInvocationFillIn>() {
 			@Override
-			public JavaDefinedStrikePoseMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
+			public JavaDefinedStrikePoseMethodInvocationFillIn initialize( InstanceFactory instanceFactory, JavaMethod method ) {
 				return new JavaDefinedStrikePoseMethodInvocationFillIn( instanceFactory, method );
 			}
 		} );
 	}
 
-	public static JavaDefinedStrikePoseMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaType type, String methodName, Class<?>... parameterClses ) {
-		org.lgna.project.ast.JavaMethod method = type.getDeclaredMethod( methodName, parameterClses );
+	public static JavaDefinedStrikePoseMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaType type, String methodName, Class<?>... parameterClses ) {
+		JavaMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
 		return getInstance( instanceFactory, method );
 	}
 
-	public static JavaDefinedStrikePoseMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( instanceFactory, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
+	public static JavaDefinedStrikePoseMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
+		return getInstance( instanceFactory, JavaType.getInstance( cls ), methodName, parameterClses );
 	}
 
-	private JavaDefinedStrikePoseMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
-		super( java.util.UUID.fromString( "669b2fde-6248-4510-9396-7ad53430993e" ), instanceFactory, method );
+	private JavaDefinedStrikePoseMethodInvocationFillIn( InstanceFactory instanceFactory, JavaMethod method ) {
+		super( UUID.fromString( "669b2fde-6248-4510-9396-7ad53430993e" ), instanceFactory, method );
 	}
 
 	@Override
-	protected org.alice.stageide.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	protected MethodInvocationEditFactory createMethodInvocationEditFactory( InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions ) {
 		return new StrikePoseMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
 	}
 }

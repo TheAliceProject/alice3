@@ -43,29 +43,21 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.ViewController;
+
+import java.awt.event.KeyEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class KeyEventTrigger extends ComponentEventTrigger<java.awt.event.KeyEvent> {
+public class KeyEventTrigger extends ComponentEventTrigger<KeyEvent> {
 
-	public static KeyEventTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.KeyEvent keyEvent ) {
-		return new KeyEventTrigger( viewController, keyEvent );
+	public static UserActivity createUserActivity( ViewController<?, ?> viewController, KeyEvent keyEvent ) {
+		return new KeyEventTrigger( viewController, keyEvent ).getUserActivity();
 	}
 
-	public static KeyEventTrigger createUserInstance( java.awt.event.KeyEvent keyEvent ) {
-		return createUserInstance( null, keyEvent );
-	}
-
-	private KeyEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.KeyEvent keyEvent ) {
+	private KeyEventTrigger( ViewController<?, ?> viewController, KeyEvent keyEvent ) {
 		super( viewController, keyEvent );
-	}
-
-	public KeyEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected java.awt.Point getPoint() {
-		return null;
 	}
 }

@@ -42,11 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.common.TypeIcon;
+import org.lgna.croquet.ImmutableCascadeFillIn;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractType;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationCompositeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<DeclarationComposite, Void> {
-	private static final java.util.Map<DeclarationComposite, DeclarationCompositeFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class DeclarationCompositeFillIn extends ImmutableCascadeFillIn<DeclarationComposite, Void> {
+	private static final Map<DeclarationComposite, DeclarationCompositeFillIn> map = Maps.newHashMap();
 
 	public static synchronized DeclarationCompositeFillIn getInstance( DeclarationComposite declarationComposite ) {
 		DeclarationCompositeFillIn rv = map.get( declarationComposite );
@@ -62,33 +75,33 @@ public class DeclarationCompositeFillIn extends org.lgna.croquet.ImmutableCascad
 	private final DeclarationComposite declarationComposite;
 
 	public DeclarationCompositeFillIn( DeclarationComposite declarationComposite ) {
-		super( java.util.UUID.fromString( "7d731332-2dd6-4861-b08e-386c50c7a580" ) );
+		super( UUID.fromString( "7d731332-2dd6-4861-b08e-386c50c7a580" ) );
 		this.declarationComposite = declarationComposite;
 	}
 
 	@Override
-	public org.alice.ide.declarationseditor.DeclarationComposite createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public DeclarationComposite createValue( ItemNode<? super DeclarationComposite, Void> node ) {
 		return this.declarationComposite;
 	}
 
 	@Override
-	public org.alice.ide.declarationseditor.DeclarationComposite getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, Void> node ) {
+	public DeclarationComposite getTransientValue( ItemNode<? super DeclarationComposite, Void> node ) {
 		return this.declarationComposite;
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, Void> node ) {
+	protected JComponent createMenuItemIconProxy( ItemNode<? super DeclarationComposite, Void> node ) {
 		throw new AssertionError();
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super DeclarationComposite, Void> node ) {
-		org.lgna.project.ast.AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
-		if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
+	public String getMenuItemText() {
+		AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
+		if( declaration instanceof AbstractType<?, ?, ?> ) {
+			AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>)declaration;
 			return null;
-		} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
-			org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)declaration;
+		} else if( declaration instanceof AbstractCode ) {
+			AbstractCode code = (AbstractCode)declaration;
 			return code.getName();
 		} else {
 			return null;
@@ -96,14 +109,14 @@ public class DeclarationCompositeFillIn extends org.lgna.croquet.ImmutableCascad
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super DeclarationComposite, Void> node ) {
-		org.lgna.project.ast.AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
-		if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
-			return org.alice.ide.common.TypeIcon.getInstance( type );
-		} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
-			org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)declaration;
-			return org.alice.ide.common.TypeIcon.getInstance( code.getDeclaringType() );
+	public Icon getMenuItemIcon( ItemNode<? super DeclarationComposite, Void> node ) {
+		AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
+		if( declaration instanceof AbstractType<?, ?, ?> ) {
+			AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>)declaration;
+			return TypeIcon.getInstance( type );
+		} else if( declaration instanceof AbstractCode ) {
+			AbstractCode code = (AbstractCode)declaration;
+			return TypeIcon.getInstance( code.getDeclaringType() );
 		} else {
 			return null;
 		}

@@ -43,18 +43,20 @@
 
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
+import javax.swing.Icon;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DefaultCompositeIcon extends AbstractCompositeIcon {
-	private final javax.swing.Icon[] componentIcons;
+	private final Icon[] componentIcons;
 
-	public DefaultCompositeIcon( javax.swing.Icon... componentIcons ) {
+	public DefaultCompositeIcon( Icon... componentIcons ) {
 		this.componentIcons = componentIcons;
 	}
 
 	@Override
-	protected javax.swing.Icon[] getComponentIcons() {
+	protected Icon[] getComponentIcons() {
 		return this.componentIcons;
 	}
 }

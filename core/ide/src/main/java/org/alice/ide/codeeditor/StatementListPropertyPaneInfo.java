@@ -42,35 +42,40 @@
  *******************************************************************************/
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.x.components.StatementListPropertyView;
+
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public class StatementListPropertyPaneInfo /* implements edu.cmu.cs.dennisc.croquet.TrackableShape */{
-	private org.alice.ide.x.components.StatementListPropertyView statementListPropertyPane;
-	private java.awt.Rectangle bounds;
+	private StatementListPropertyView statementListPropertyPane;
+	private Rectangle bounds;
 
-	public StatementListPropertyPaneInfo( org.alice.ide.x.components.StatementListPropertyView statementListPropertyPane, java.awt.Rectangle bounds ) {
+	public StatementListPropertyPaneInfo( StatementListPropertyView statementListPropertyPane, Rectangle bounds ) {
 		this.statementListPropertyPane = statementListPropertyPane;
 		this.bounds = bounds;
 	}
 
-	public boolean contains( java.awt.event.MouseEvent e ) {
+	public boolean contains( MouseEvent e ) {
 		return this.bounds.contains( e.getPoint() );
 	}
 
-	public org.alice.ide.x.components.StatementListPropertyView getStatementListPropertyPane() {
+	public StatementListPropertyView getStatementListPropertyPane() {
 		return this.statementListPropertyPane;
 	}
 
-	public void setStatementListPropertyPane( org.alice.ide.x.components.StatementListPropertyView statementListPropertyPane ) {
+	public void setStatementListPropertyPane( StatementListPropertyView statementListPropertyPane ) {
 		this.statementListPropertyPane = statementListPropertyPane;
 	}
 
-	public java.awt.Rectangle getBounds() {
+	public Rectangle getBounds() {
 		return this.bounds;
 	}
 
-	public void setBounds( java.awt.Rectangle bounds ) {
+	public void setBounds( Rectangle bounds ) {
 		this.bounds = bounds;
 	}
 }

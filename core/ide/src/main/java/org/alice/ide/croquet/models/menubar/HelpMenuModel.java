@@ -42,33 +42,44 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.menubar;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.IdeApp;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.PredeterminedMenuModel;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class HelpMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels( org.alice.ide.IdeApp app ) {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList(
+public class HelpMenuModel extends PredeterminedMenuModel {
+	private static StandardMenuItemPrepModel[] createMenuItemPrepModels( IdeApp app ) {
+		List<StandardMenuItemPrepModel> list = Lists.newLinkedList(
 				app.getHelpDialogLaunchOperation().getMenuItemPrepModel(),
 				app.getGraphicsHelpDialogLaunchOperation().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
+				MenuModel.SEPARATOR,
 				app.getReportBugLaunchOperation().getMenuItemPrepModel(),
 				app.getSuggestImprovementLaunchOperation().getMenuItemPrepModel(),
 				app.getRequestNewFeatureLaunchOperation().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
+				MenuModel.SEPARATOR,
 				app.getWarningDialogLaunchOperation().getMenuItemPrepModel(),
 				app.getShowSystemPropertiesDialogLaunchOperation().getMenuItemPrepModel(),
 				app.getBrowseReleaseNotesOperation().getMenuItemPrepModel()
 				);
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+		if( SystemUtilities.isMac() ) {
 			//pass
 		} else {
-			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
+			list.add( MenuModel.SEPARATOR );
 			list.add( app.getAboutDialogLaunchOperation().getMenuItemPrepModel() );
 		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
+		return ArrayUtilities.createArray( list, StandardMenuItemPrepModel.class );
 	}
 
-	public HelpMenuModel( org.alice.ide.IdeApp app ) {
-		super( java.util.UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), createMenuItemPrepModels( app ) );
+	public HelpMenuModel( IdeApp app ) {
+		super( UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), createMenuItemPrepModels( app ) );
 	}
 }

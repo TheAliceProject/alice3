@@ -1,6 +1,8 @@
 package Jama;
 import Jama.util.*;
 
+import java.io.Serializable;
+
 /** QR Decomposition.
 <P>
    For an m-by-n matrix A with m >= n, the QR decomposition is an m-by-n
@@ -14,7 +16,7 @@ import Jama.util.*;
    returns false.
 */
 
-public class QRDecomposition implements java.io.Serializable {
+public class QRDecomposition implements Serializable {
 
 /* ------------------------
    Class variables

@@ -42,79 +42,100 @@
  *******************************************************************************/
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite;
+import org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
+import org.lgna.croquet.AbstractDropReceptor;
+import org.lgna.croquet.CascadeRoot;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.views.DropDown;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.TrackableShape;
+import org.lgna.croquet.views.ViewController;
+import org.lgna.project.ast.ArrayAccess;
+import org.lgna.project.ast.AssignmentExpression;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.InfixExpression;
+import org.lgna.project.ast.LogicalComplement;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.Node;
+
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyDropDownPane extends org.lgna.croquet.views.DropDown<org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression>> {
-	private class ExpressionPropertyDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
+public class ExpressionPropertyDropDownPane extends DropDown<CascadeRoot.InternalPopupPrepModel<Expression>> {
+	private class ExpressionPropertyDropReceptor extends AbstractDropReceptor {
 		@Override
-		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
-			return dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
+		public boolean isPotentiallyAcceptingOf( DragModel dragModel ) {
+			return dragModel instanceof AbstractExpressionDragModel;
 		}
 
 		@Override
-		public void dragStarted( org.lgna.croquet.history.DragStep dragStep ) {
+		public void dragStarted( DragStep dragStep ) {
 		}
 
 		@Override
-		public void dragEntered( org.lgna.croquet.history.DragStep dragStep ) {
-			dragStep.getDragSource().setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), ExpressionPropertyDropDownPane.this.getMainComponent(), ExpressionPropertyDropDownPane.this.getBounds().height, -1 );
+		public void dragEntered( DragStep dragStep ) {
+			dragStep.getDragSource().setDropProxyLocationAndShowIfNecessary( new Point( 0, 0 ), ExpressionPropertyDropDownPane.this.getMainComponent(), ExpressionPropertyDropDownPane.this.getBounds().height, -1 );
 		}
 
 		@Override
-		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep dragStep ) {
+		public DropSite dragUpdated( DragStep dragStep ) {
 			return null;
 		}
 
 		@Override
-		protected org.lgna.croquet.Model dragDroppedPostRejectorCheck( org.lgna.croquet.history.DragStep dragStep ) {
-			org.lgna.croquet.DragModel dragModel = dragStep.getModel();
-			org.lgna.croquet.Model rv;
-			if( dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel ) {
-				org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel expressionDragModel = (org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)dragModel;
-				rv = expressionDragModel.getDropModel( dragStep, new org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite( ExpressionPropertyDropDownPane.this.expressionProperty ) );
+		protected Triggerable dragDroppedPostRejectorCheck( DragStep dragStep ) {
+			DragModel dragModel = dragStep.getModel();
+			Triggerable rv;
+			if( dragModel instanceof AbstractExpressionDragModel ) {
+				AbstractExpressionDragModel expressionDragModel = (AbstractExpressionDragModel)dragModel;
+				rv = expressionDragModel.getDropOperation( dragStep, new ExpressionPropertyDropSite( ExpressionPropertyDropDownPane.this.expressionProperty ) );
 			} else {
 				rv = null;
 			}
-			if( rv != null ) {
-				//pass
-			} else {
-				//				source.hideDropProxyIfNecessary();
-				dragStep.cancelTransaction( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+			if ( rv == null ) {
+				dragStep.cancelActivity();
 			}
 			return rv;
 		}
 
 		@Override
-		public void dragExited( org.lgna.croquet.history.DragStep dragStep, boolean isDropRecipient ) {
+		public void dragExited( DragStep dragStep, boolean isDropRecipient ) {
 			//			edu.cmu.cs.dennisc.croquet.DragComponent source = dragStep.getDragSource();
 			//			source.hideDropProxyIfNecessary();
 		}
 
 		@Override
-		public void dragStopped( org.lgna.croquet.history.DragStep dragStep ) {
+		public void dragStopped( DragStep dragStep ) {
 		}
 
 		@Override
-		public org.lgna.croquet.views.ViewController<?, ?> getViewController() {
+		public ViewController<?, ?> getViewController() {
 			return ExpressionPropertyDropDownPane.this;
 		}
 
 		@Override
-		public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+		public TrackableShape getTrackableShape( DropSite potentialDropSite ) {
 			return ExpressionPropertyDropDownPane.this;
 		}
 	}
 
 	private final ExpressionPropertyDropReceptor dropReceptor = new ExpressionPropertyDropReceptor();
-	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
+	private final ExpressionProperty expressionProperty;
 
-	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression> model, org.lgna.croquet.views.SwingComponentView<?> prefixPane, org.lgna.croquet.views.SwingComponentView<?> component, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public ExpressionPropertyDropDownPane( CascadeRoot.InternalPopupPrepModel<Expression> model, SwingComponentView<?> prefixPane, SwingComponentView<?> component, ExpressionProperty expressionProperty ) {
 		super( model, prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
 	}
 
-	public org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
+	public ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
 
@@ -124,12 +145,12 @@ public class ExpressionPropertyDropDownPane extends org.lgna.croquet.views.DropD
 
 	@Override
 	protected boolean isInactiveFeedbackDesired() {
-		org.lgna.project.ast.Expression expression = this.expressionProperty.getValue();
+		Expression expression = this.expressionProperty.getValue();
 		if( expression != null ) {
-			org.lgna.project.ast.Node parent = expression.getParent();
-			if( ( parent instanceof org.lgna.project.ast.InfixExpression ) || ( parent instanceof org.lgna.project.ast.LogicalComplement ) ) {
-				org.lgna.project.ast.Node grandparent = parent.getParent();
-				return ( grandparent instanceof org.lgna.project.ast.MethodInvocation ) || ( grandparent instanceof org.lgna.project.ast.AssignmentExpression ) || ( grandparent instanceof org.lgna.project.ast.ArrayAccess );
+			Node parent = expression.getParent();
+			if( ( parent instanceof InfixExpression ) || ( parent instanceof LogicalComplement ) ) {
+				Node grandparent = parent.getParent();
+				return ( grandparent instanceof MethodInvocation ) || ( grandparent instanceof AssignmentExpression ) || ( grandparent instanceof ArrayAccess );
 			}
 		}
 		return super.isInactiveFeedbackDesired();

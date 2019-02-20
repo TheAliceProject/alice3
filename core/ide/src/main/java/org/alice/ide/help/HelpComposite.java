@@ -42,15 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.help;
 
+import org.alice.ide.help.views.HelpView;
+import org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite;
+import org.lgna.croquet.PlainStringValue;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class HelpComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.ide.help.views.HelpView> {
+public final class HelpComposite extends LazyOperationUnadornedDialogCoreComposite<HelpView> {
 	public HelpComposite() {
-		super( java.util.UUID.fromString( "5b7c1e0d-18ed-4c1a-8eb0-13d3eb0c3c62" ) );
+		super( UUID.fromString( "5b7c1e0d-18ed-4c1a-8eb0-13d3eb0c3c62" ) );
 	}
 
-	public org.lgna.croquet.PlainStringValue getWhereToFindHelpText() {
+	public PlainStringValue getWhereToFindHelpText() {
 		return this.whereToFindHelpText;
 	}
 
@@ -59,10 +65,10 @@ public final class HelpComposite extends org.lgna.croquet.LazyOperationUnadorned
 	}
 
 	@Override
-	protected org.alice.ide.help.views.HelpView createView() {
-		return new org.alice.ide.help.views.HelpView( this );
+	protected HelpView createView() {
+		return new HelpView( this );
 	}
 
 	private final HelpBrowserOperation browserOperation = new HelpBrowserOperation();
-	private final org.lgna.croquet.PlainStringValue whereToFindHelpText = this.createStringValue( "whereToFindHelpText" );
+	private final PlainStringValue whereToFindHelpText = this.createStringValue( "whereToFindHelpText" );
 }

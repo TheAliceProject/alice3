@@ -41,24 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
+
 public abstract class Batch {
-	protected abstract void handle( java.io.File inFile, java.io.File outFile );
+	protected abstract void handle( File inFile, File outFile );
 	protected abstract boolean isSkipExistingOutFilesDesirable();
 	public void process( String inRootPath, String outRootPath, String inExt, String outExt ) {
 		boolean isSkipExistingOutFilesDesirable = this.isSkipExistingOutFilesDesirable();
 		
-		java.io.File inRoot = new java.io.File(inRootPath);
-		java.io.File outRoot = new java.io.File(outRootPath);
+		File inRoot = new File(inRootPath);
+		File outRoot = new File(outRootPath);
 		System.out.print( "FileUtilities.listDescendants... " );
-		java.io.File[] inFiles = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants( inRoot, inExt );
+		File[] inFiles = FileUtilities.listDescendants( inRoot, inExt );
 		System.out.println( "Done.  ( " + inFiles.length + " files )" );
 
-		java.util.Set< java.io.File > unhandledFiles = new java.util.HashSet< java.io.File >();
+		Set< File > unhandledFiles = new HashSet< File >();
 		//Runtime.getRuntime().gc();
 		//long freeMemory0 = Runtime.getRuntime().freeMemory();
-		for( java.io.File inFile : inFiles ) {
-			java.io.File outFile = edu.cmu.cs.dennisc.java.io.FileUtilities.getAnalogousFile(inFile, inRoot, outRoot, inExt, outExt );
-			if( isSkipExistingOutFilesDesirable && edu.cmu.cs.dennisc.java.io.FileUtilities.existsAndHasLengthGreaterThanZero( outFile ) ) {
+		for( File inFile : inFiles ) {
+			File outFile = FileUtilities.getAnalogousFile(inFile, inRoot, outRoot, inExt, outExt );
+			if( isSkipExistingOutFilesDesirable && FileUtilities.existsAndHasLengthGreaterThanZero( outFile ) ) {
 				//System.out.println( "SKIPPING: " + outFile + " exists." );
 			} else {
 				if( inFile.exists() ) {
@@ -80,7 +86,7 @@ public abstract class Batch {
 			//System.err.println( freeMemoryI + " " + (freeMemoryI-freeMemory0) );
 		}
 		System.out.flush();
-		for( java.io.File unhandledFile : unhandledFiles ) {
+		for( File unhandledFile : unhandledFiles ) {
 			System.err.println( "UNHANDLED FILE: " + unhandledFile );
 		}
 	}

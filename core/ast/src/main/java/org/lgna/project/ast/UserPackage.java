@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.StringProperty;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -65,9 +67,9 @@ public class UserPackage extends AbstractPackage {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return this.name;
 	}
 
-	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+	public final StringProperty name = new StringProperty( this, null );
 }

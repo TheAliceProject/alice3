@@ -43,11 +43,15 @@
 
 package org.alice.ide.projecturi;
 
+import org.alice.stageide.StageIDE;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MyProjectsTab extends DirectoryUriListTab {
 	public MyProjectsTab() {
-		super( java.util.UUID.fromString( "c7fb9c47-f215-47dc-941e-872842ce397e" ), org.alice.ide.IDE.getActiveInstance().getMyProjectsDirectory() );
+		super( UUID.fromString( "c7fb9c47-f215-47dc-941e-872842ce397e" ), StageIDE.getActiveInstance().getProjectsDirectory() );
 	}
 }

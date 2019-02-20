@@ -42,37 +42,44 @@
  *******************************************************************************/
 package org.lgna.croquet.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder;
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.Group;
-import org.lgna.croquet.Manager;
+import org.lgna.croquet.history.UserActivity;
+
+import javax.swing.undo.CannotRedoException;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEdit<M extends CompletionModel> implements Edit, edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public static <E extends AbstractEdit<?>> E createCopy( E original, org.lgna.croquet.history.CompletionStep<?> step ) {
-		assert step != null : original;
+public abstract class AbstractEdit<M extends CompletionModel> implements Edit, BinaryEncodableAndDecodable {
+	public static <E extends AbstractEdit<?>> E createCopy( E original, UserActivity activity ) {
+		assert activity != null : original;
 		original.preCopy();
-		edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder();
+		ByteArrayBinaryEncoder encoder = new ByteArrayBinaryEncoder();
 		encoder.encode( original );
-		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = encoder.createDecoder();
-		E rv = decoder.decodeBinaryEncodableAndDecodable( step );
+		BinaryDecoder decoder = encoder.createDecoder();
+		E rv = decoder.decodeBinaryEncodableAndDecodable( activity );
 		original.postCopy( rv );
 		return rv;
 	}
 
-	private transient org.lgna.croquet.history.CompletionStep<M> completionStep;
+	private transient UserActivity userActivity;
 
-	public AbstractEdit( org.lgna.croquet.history.CompletionStep<M> completionStep ) {
-		this.completionStep = completionStep;
+	public AbstractEdit( UserActivity userActivity ) {
+		this.userActivity = userActivity;
 	}
 
-	public AbstractEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		this.completionStep = (org.lgna.croquet.history.CompletionStep<M>)step;
+	public AbstractEdit( BinaryDecoder binaryDecoder, Object step ) {
+		this.userActivity = (UserActivity) step;
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 	}
 
 	protected void preCopy() {
@@ -81,16 +88,8 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, e
 	protected void postCopy( AbstractEdit<?> result ) {
 	}
 
-	public boolean isValid() {
-		return true;
-	}
-
 	public M getModel() {
-		if( this.completionStep != null ) {
-			return this.completionStep.getModel();
-		} else {
-			return null;
-		}
+		return userActivity != null ? (M) userActivity.getCompletionModel() : null;
 	}
 
 	@Override
@@ -101,15 +100,6 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, e
 		} else {
 			return null;
 		}
-	}
-
-	public org.lgna.croquet.history.CompletionStep<M> getCompletionStep() {
-		return this.completionStep;
-	}
-
-	public void setCompletionStep( org.lgna.croquet.history.CompletionStep<M> completionStep ) {
-		assert this.completionStep == null : this.completionStep;
-		this.completionStep = completionStep;
 	}
 
 	@Override
@@ -128,54 +118,18 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, e
 
 	@Override
 	public final void doOrRedo( boolean isDo ) {
-		if( isDo ) {
-			//pass
-		} else {
-			if( canRedo() ) {
-				//pass
-			} else {
-				throw new javax.swing.undo.CannotRedoException();
-			}
+		if ( !isDo && !canRedo() ) {
+			throw new CannotRedoException();
 		}
-		Manager.pushUndoOrRedo();
-		try {
-			this.doOrRedoInternal( isDo );
-		} finally {
-			Manager.popUndoOrRedo();
-		}
+		this.doOrRedoInternal( isDo );
 	}
 
 	@Override
 	public final void undo() {
-		if( canUndo() ) {
-			//pass
-		} else {
-			throw new javax.swing.undo.CannotRedoException();
+		if ( !canUndo() ) {
+			throw new CannotRedoException();
 		}
-		Manager.pushUndoOrRedo();
-		try {
-			this.undoInternal();
-		} finally {
-			Manager.popUndoOrRedo();
-		}
-	}
-
-	protected <D extends org.lgna.croquet.DropSite> D findFirstDropSite( Class<D> cls ) {
-		org.lgna.croquet.history.Step<?> step = this.getCompletionStep();
-		while( step != null ) {
-			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
-			if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
-				org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
-				org.lgna.croquet.DropSite dropSite = dropTrigger.getDropSite();
-				if( cls.isAssignableFrom( dropSite.getClass() ) ) {
-					return cls.cast( dropSite );
-				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( dropSite );
-				}
-			}
-			step = step.getPreviousStep();
-		}
-		return null;
+		this.undoInternal();
 	}
 
 	protected static enum DescriptionStyle {
@@ -222,7 +176,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, e
 		StringBuilder sb = new StringBuilder();
 		this.appendDescription( sb, DescriptionStyle.TERSE );
 		if( sb.length() == 0 ) {
-			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( this.getClass() ) );
+			sb.append( ClassUtilities.getTrimmedClassName( this.getClass() ) );
 		}
 		return sb.toString();
 	}

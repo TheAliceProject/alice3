@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type.views;
 
+import org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FunctionsToolPaletteCoreView extends MethodsToolPaletteCoreView {
-	public FunctionsToolPaletteCoreView( org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite composite ) {
+	public FunctionsToolPaletteCoreView( FunctionsToolPaletteCoreComposite composite ) {
 		super( composite );
 	}
 }

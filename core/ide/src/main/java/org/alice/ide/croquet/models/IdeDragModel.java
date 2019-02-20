@@ -42,53 +42,63 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models;
 
+import org.alice.ide.IDE;
+import org.alice.ide.perspectives.ProjectPerspective;
+import org.alice.ide.stencil.PotentialDropReceptorsFeedbackView;
+import org.lgna.croquet.AbstractModel;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.Perspective;
+import org.lgna.croquet.history.DragStep;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeDragModel extends org.lgna.croquet.DragModel {
-	public IdeDragModel( java.util.UUID id ) {
+public abstract class IdeDragModel extends AbstractModel implements  DragModel {
+	public IdeDragModel( UUID id ) {
 		super( id );
 	}
 
 	@Override
-	public final java.util.List<? extends org.lgna.croquet.DropReceptor> createListOfPotentialDropReceptors() {
-		org.lgna.croquet.Perspective perspective = org.alice.ide.IDE.getActiveInstance().getPerspective();
-		if( perspective instanceof org.alice.ide.perspectives.ProjectPerspective ) {
-			org.alice.ide.perspectives.ProjectPerspective idePerspective = (org.alice.ide.perspectives.ProjectPerspective)perspective;
+	public final List<? extends DropReceptor> createListOfPotentialDropReceptors() {
+		Perspective perspective = IDE.getActiveInstance().getPerspective();
+		if( perspective instanceof ProjectPerspective ) {
+			ProjectPerspective idePerspective = (ProjectPerspective)perspective;
 			return idePerspective.createListOfPotentialDropReceptors( this );
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	private org.alice.ide.stencil.PotentialDropReceptorsFeedbackView getPotentialDropReceptorsStencil() {
-		return org.alice.ide.IDE.getActiveInstance().getPotentialDropReceptorsFeedbackView();
+	@Override
+	protected void localize() {
+	}
+
+	private PotentialDropReceptorsFeedbackView getPotentialDropReceptorsStencil() {
+		return IDE.getActiveInstance().getPotentialDropReceptorsFeedbackView();
 	}
 
 	@Override
-	public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragStarted( step );
-		//		org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering;
-		//		if( (step.getLatestMouseEvent().getModifiers() & java.awt.event.MouseEvent.BUTTON1_MASK) != 0 ) {
-		//			reasonToDisableSomeAmountOfRendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.DRAG_AND_DROP;
-		//		} else {
-		//			reasonToDisableSomeAmountOfRendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK;
-		//		}
-		//		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( reasonToDisableSomeAmountOfRendering );
+	public void handleDragStarted( DragStep step ) {
+		this.getPotentialDropReceptorsStencil().handleDragStarted();
 	}
 
 	@Override
-	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragEnteredDropReceptor( step );
+	public void handleDragEnteredDropReceptor( DragStep step ) {
+		this.getPotentialDropReceptorsStencil().handleDragEnteredDropReceptor();
 	}
 
 	@Override
-	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragExitedDropReceptor( step );
+	public void handleDragExitedDropReceptor( DragStep step ) {
+		this.getPotentialDropReceptorsStencil().handleDragExitedDropReceptor();
 	}
 
 	@Override
-	public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragStopped( step );
+	public void handleDragStopped( DragStep step ) {
+		this.getPotentialDropReceptorsStencil().handleDragStopped();
 	}
 }

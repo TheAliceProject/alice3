@@ -42,13 +42,37 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.declaration.AddManagedFieldComposite;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.cascade.ExpressionCascadeContext;
+import org.alice.ide.croquet.models.declaration.ChangeResourceMenuModel;
+import org.alice.ide.croquet.models.declaration.InstanceCreationFillInWithGalleryResourceParameter;
 import org.alice.ide.identifier.IdentifierNameGenerator;
-import org.alice.stageide.modelresource.ResourceKey;
+import org.alice.stageide.modelresource.InstanceCreatorKey;
+import org.lgna.croquet.AbstractComposite;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.project.ast.AbstractConstructor;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InstanceCreation;
+
+import java.awt.Dimension;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.declaration.AddManagedFieldComposite {
+public class AddResourceKeyManagedFieldComposite extends AddManagedFieldComposite {
 	private static class SingletonHolder {
 		private static AddResourceKeyManagedFieldComposite instance = new AddResourceKeyManagedFieldComposite();
 	}
@@ -57,27 +81,27 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		return SingletonHolder.instance;
 	}
 
-	private static org.lgna.project.ast.AbstractType<?, ?, ?> getDeclaringTypeFromInitializer( org.lgna.project.ast.Expression expression ) {
-		if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
-			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
+	private static AbstractType<?, ?, ?> getDeclaringTypeFromInitializer( Expression expression ) {
+		if( expression instanceof InstanceCreation ) {
+			InstanceCreation instanceCreation = (InstanceCreation)expression;
 			return instanceCreation.constructor.getValue().getDeclaringType();
 		} else {
 			return null;
 		}
 	}
 
-	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> initializerListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
+	private final ValueListener<Expression> initializerListener = new ValueListener<Expression>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
+		public void valueChanged( ValueEvent<Expression> e ) {
 			AddResourceKeyManagedFieldComposite.this.handleInitializerChanged( e.getNextValue() );
 		}
 	};
 
-	private ResourceKey resourceKey;
+	private InstanceCreatorKey resourceKey;
 	private boolean isChangeResourceAllowed;
 
 	private AddResourceKeyManagedFieldComposite() {
-		super( java.util.UUID.fromString( "ae05629a-0b90-4670-bc20-0279acbbc164" ), new FieldDetailsBuilder()
+		super( UUID.fromString( "ae05629a-0b90-4670-bc20-0279acbbc164" ), new FieldDetailsBuilder()
 				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
 				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
 				.initializer( ApplicabilityStatus.EDITABLE, null )
@@ -85,17 +109,18 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		this.getInitializerState().addAndInvokeNewSchoolValueListener( initializerListener );
 	}
 
-	public void setResourceKeyToBeUsedByGetInitializerInitialValue( ResourceKey resourceKey, boolean isChangeResourceAllowed ) {
+	public Operation getLaunchOperationToCreateValue( InstanceCreatorKey resourceKey, boolean isChangeResourceAllowed ) {
 		this.resourceKey = resourceKey;
 		this.isChangeResourceAllowed = isChangeResourceAllowed;
+		return getLaunchOperation();
 	}
 
-	protected ResourceKey getResourceKey() {
+	protected InstanceCreatorKey getResourceKey() {
 		return resourceKey;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression getInitializerInitialValue() {
+	protected Expression getInitializerInitialValue() {
 		return resourceKey != null ? resourceKey.createInstanceCreation() : null;
 	}
 
@@ -105,28 +130,28 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
+	protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
 		return getDeclaringTypeFromInitializer( this.getInitializer() );
 	}
 
-	private void handleInitializerChanged( org.lgna.project.ast.Expression nextValue ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = getDeclaringTypeFromInitializer( nextValue );
+	private void handleInitializerChanged( Expression nextValue ) {
+		AbstractType<?, ?, ?> type = getDeclaringTypeFromInitializer( nextValue );
 		this.getValueComponentTypeState().setValueTransactionlessly( type );
 		this.getNameState().setValueTransactionlessly( this.getNameInitialValue() );
 		this.refreshStatus();
-		final org.lgna.croquet.views.AbstractWindow<?> root = this.getView().getRoot();
+		final AbstractWindow<?> root = this.getView().getRoot();
 		if( root != null ) {
-			java.awt.Dimension preferredSize = root.getAwtComponent().getPreferredSize();
-			java.awt.Dimension size = root.getSize();
+			Dimension preferredSize = root.getAwtComponent().getPreferredSize();
+			Dimension size = root.getSize();
 			if( ( preferredSize.width > size.width ) || ( preferredSize.height > size.height ) ) {
 				root.pack();
 			}
 		}
 	}
 
-	private class InitializerContext implements org.alice.ide.cascade.ExpressionCascadeContext {
+	private class InitializerContext implements ExpressionCascadeContext {
 		@Override
-		public org.lgna.project.ast.Expression getPreviousExpression() {
+		public Expression getPreviousExpression() {
 			//todo: investigate
 			//org.lgna.project.ast.UserField field = getPreviewValue();
 			//return field.initializer.getValue();
@@ -135,54 +160,58 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		}
 
 		@Override
-		public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
+		public BlockStatementIndexPair getBlockStatementIndexPair() {
 			return null;
 		}
 	}
 
-	private class ResourceKeyInitializerCustomizer implements ItemStateCustomizer<org.lgna.project.ast.Expression> {
-		private org.alice.ide.cascade.ExpressionCascadeContext pushedContext;
+	private class ResourceKeyInitializerCustomizer implements ItemStateCustomizer<Expression> {
+		private ExpressionCascadeContext pushedContext;
 
 		@Override
-		public org.lgna.croquet.CascadeFillIn getFillInFor( org.lgna.project.ast.Expression value ) {
+		public CascadeFillIn getFillInFor( Expression value ) {
 			return null;
 		}
 
 		@Override
-		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+		public void prologue() {
 			this.pushedContext = new InitializerContext();
-			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
+			IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
 		}
 
 		@Override
 		public void epilogue() {
-			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
+			IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
 			this.pushedContext = null;
 		}
 
 		@Override
-		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-			org.lgna.project.ast.Expression initializer = getInitializer();
-			if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
-				org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
-				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-				blankChildren.add( org.alice.ide.croquet.models.declaration.InstanceCreationFillInWithGalleryResourceParameter.getInstance( constructor ) );
-				blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		public void appendBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
+			Expression initializer = getInitializer();
+			if( initializer instanceof InstanceCreation ) {
+				InstanceCreation instanceCreation = (InstanceCreation)initializer;
+				AbstractConstructor constructor = instanceCreation.constructor.getValue();
+				blankChildren.add( InstanceCreationFillInWithGalleryResourceParameter.getInstance( constructor ) );
+				blankChildren.add( CascadeLineSeparator.getInstance() );
 			}
 			if( isChangeResourceAllowed ) {
-				blankChildren.add( org.alice.ide.croquet.models.declaration.ChangeResourceMenuModel.getInstance() );
+				blankChildren.add( ChangeResourceMenuModel.getInstance() );
 			}
 		}
 	}
 
 	@Override
-	protected org.lgna.croquet.AbstractComposite.ItemStateCustomizer<org.lgna.project.ast.Expression> createInitializerCustomizer() {
+	protected AbstractComposite.ItemStateCustomizer<Expression> createInitializerCustomizer() {
 		return new ResourceKeyInitializerCustomizer();
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
+	protected void handlePostHideDialog() {
+		super.handlePostHideDialog();
+		if( openingActivity.isCanceledByError() ) {
+			Dialogs.showWarning("Failed to create model",
+								"There was a problem putting that model in the scene.");
+		}
 		this.resourceKey = null;
 	}
 }

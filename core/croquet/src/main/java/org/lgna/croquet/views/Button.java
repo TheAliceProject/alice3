@@ -43,34 +43,40 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+import org.lgna.croquet.Operation;
+
+import javax.swing.Icon;
+import javax.swing.JButton;
+
 /**
  * @author Dennis Cosgrove
  */
-public class Button extends OperationButton<javax.swing.JButton, org.lgna.croquet.Operation> {
-	public Button( org.lgna.croquet.Operation model ) {
+public class Button extends OperationButton<JButton, Operation> {
+	public Button( Operation model ) {
 		super( model, "Button" );
 	}
 
-	public Button( org.lgna.croquet.Operation model, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public Button( Operation model, float fontScalar, TextAttribute<?>... textAttributes ) {
 		this( model );
 		this.scaleFont( fontScalar );
 		this.changeFont( textAttributes );
 	}
 
-	public Button( org.lgna.croquet.Operation model, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public Button( Operation model, TextAttribute<?>... textAttributes ) {
 		this( model, 1.0f, textAttributes );
 	}
 
 	@Override
-	protected final javax.swing.JButton createAwtComponent() {
-		return new javax.swing.JButton() {
+	protected final JButton createAwtComponent() {
+		return new JButton() {
 			@Override
-			public javax.swing.Icon getIcon() {
+			public Icon getIcon() {
 				if( Button.this.isIconClobbered() ) {
 					return Button.this.getClobberIcon();
 				} else {
-					org.lgna.croquet.Operation model = Button.this.getModel();
-					javax.swing.Icon buttonIcon = model.getButtonIcon();
+					Operation model = Button.this.getModel();
+					Icon buttonIcon = model.getButtonIcon();
 					if( buttonIcon != null ) {
 						return buttonIcon;
 					} else {

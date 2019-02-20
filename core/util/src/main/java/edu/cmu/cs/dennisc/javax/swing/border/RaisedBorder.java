@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.border;
 
+import java.awt.Insets;
+
 /**
  * @author Dennis Cosgrove
  */
 public class RaisedBorder extends BevelBorder {
-	public RaisedBorder( java.awt.Insets insets ) {
+	public RaisedBorder( Insets insets ) {
 		super( insets, true );
 	}
 

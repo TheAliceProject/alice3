@@ -42,40 +42,60 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.code.BackwardShiftParameterOperation;
+import org.alice.ide.ast.code.ForwardShiftParameterOperation;
+import org.alice.ide.ast.components.DeclarationNameLabel;
+import org.alice.ide.ast.draganddrop.expression.ParameterAccessDragModel;
+import org.alice.ide.ast.rename.RenameParameterComposite;
+import org.alice.ide.croquet.models.ast.ParameterAccessMenuModel;
+import org.alice.ide.operations.ast.DeleteParameterOperation;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.views.MenuItemContainerUtilities;
+import org.lgna.croquet.views.PopupMenu;
+import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.UserParameter;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ParameterPane extends TransientPane {
-	private org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserParameter> parametersProperty;
+	private NodeListProperty<UserParameter> parametersProperty;
 
-	public ParameterPane( org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserParameter> parametersProperty, final org.lgna.project.ast.UserParameter parameter ) {
-		super( org.alice.ide.ast.draganddrop.expression.ParameterAccessDragModel.getInstance( parameter ) );
+	public ParameterPane( NodeListProperty<UserParameter> parametersProperty, final UserParameter parameter ) {
+		super( ParameterAccessDragModel.getInstance( parameter ) );
 		this.parametersProperty = parametersProperty;
-		this.addComponent( new org.alice.ide.ast.components.DeclarationNameLabel( parameter ) );
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.ParameterAccess.class ) );
+		this.addComponent( new DeclarationNameLabel( parameter ) );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getColorFor( ParameterAccess.class ) );
 		if( this.parametersProperty != null ) {
-			final org.alice.ide.operations.ast.DeleteParameterOperation deleteParameterOperation = new org.alice.ide.operations.ast.DeleteParameterOperation( this.parametersProperty, parameter );
-			final org.alice.ide.ast.code.ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.ast.code.ForwardShiftParameterOperation( this.parametersProperty, parameter );
-			final org.alice.ide.ast.code.BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new org.alice.ide.ast.code.BackwardShiftParameterOperation( this.parametersProperty, parameter );
-			this.setPopupPrepModel( new org.lgna.croquet.MenuModel( java.util.UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
+			final DeleteParameterOperation deleteParameterOperation = new DeleteParameterOperation( this.parametersProperty, parameter );
+			final ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new ForwardShiftParameterOperation( this.parametersProperty, parameter );
+			final BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new BackwardShiftParameterOperation( this.parametersProperty, parameter );
+			this.setPopupPrepModel( new MenuModel( UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
 				@Override
-				public void handlePopupMenuPrologue( org.lgna.croquet.views.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
-					super.handlePopupMenuPrologue( popupMenu, context );
-					java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-					models.add( org.alice.ide.ast.rename.RenameParameterComposite.getInstance( parameter ).getLaunchOperation().getMenuItemPrepModel() );
+				public void handlePopupMenuPrologue( PopupMenu popupMenu ) {
+					super.handlePopupMenuPrologue( popupMenu );
+					List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
+					models.add( RenameParameterComposite.getInstance( parameter ).getLaunchOperation().getMenuItemPrepModel() );
 					if( forwardShiftCodeParameterOperation.isIndexAppropriate() ) {
 						models.add( forwardShiftCodeParameterOperation.getMenuItemPrepModel() );
 					}
 					if( backwardShiftCodeParameterOperation.isIndexAppropriate() ) {
 						models.add( backwardShiftCodeParameterOperation.getMenuItemPrepModel() );
 					}
-					models.add( org.lgna.croquet.MenuModel.SEPARATOR );
+					models.add( MenuModel.SEPARATOR );
 					models.add( deleteParameterOperation.getMenuItemPrepModel() );
-					org.lgna.croquet.views.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
+					MenuItemContainerUtilities.setMenuElements( popupMenu, models );
 				}
 			}.getPopupPrepModel() );
 		} else {
-			this.setPopupPrepModel( org.alice.ide.croquet.models.ast.ParameterAccessMenuModel.getInstance( parameter ).getPopupPrepModel() );
+			this.setPopupPrepModel( ParameterAccessMenuModel.getInstance( parameter ).getPopupPrepModel() );
 		}
 	}
 }

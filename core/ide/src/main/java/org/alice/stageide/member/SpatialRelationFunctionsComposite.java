@@ -42,10 +42,14 @@
  */
 package org.alice.stageide.member;
 
+import org.alice.ide.member.NameFilteredJavaFunctionsComposite;
+
+import java.util.UUID;
+
 /**
  * @author dculyba
  */
-public class SpatialRelationFunctionsComposite extends org.alice.ide.member.NameFilteredJavaFunctionsComposite {
+public class SpatialRelationFunctionsComposite extends NameFilteredJavaFunctionsComposite {
 	private static class SingletonHolder {
 		private static SpatialRelationFunctionsComposite instance = new SpatialRelationFunctionsComposite();
 	}
@@ -55,6 +59,6 @@ public class SpatialRelationFunctionsComposite extends org.alice.ide.member.Name
 	}
 
 	private SpatialRelationFunctionsComposite() {
-		super( java.util.UUID.fromString( "8f722e09-9406-4a17-ae84-12bc50661778" ), "getDistanceTo", "getDistanceAbove", "isAbove", "getDistanceBelow", "isBelow", "getDistanceToTheRightOf", "isToTheRightOf", "getDistanceToTheLeftOf", "isToTheLeftOf", "getDistanceInFrontOf", "isInFrontOf", "getDistanceBehind", "isBehind" );
+		super( UUID.fromString( "8f722e09-9406-4a17-ae84-12bc50661778" ), "getDistanceTo", "getDistanceAbove", "isAbove", "getDistanceBelow", "isBelow", "getDistanceToTheRightOf", "isToTheRightOf", "getDistanceToTheLeftOf", "isToTheLeftOf", "getDistanceInFrontOf", "isInFrontOf", "getDistanceBehind", "isBehind" );
 	}
 }

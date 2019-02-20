@@ -42,22 +42,30 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities;
+
+import javax.swing.SwingUtilities;
+import java.awt.AWTEvent;
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RedirectingEventQueue extends java.awt.EventQueue {
-	private java.awt.Component src;
-	private java.awt.Component dst;
-	private java.awt.Component last;
+public class RedirectingEventQueue extends EventQueue {
+	private Component src;
+	private Component dst;
+	private Component last;
 
-	public RedirectingEventQueue( java.awt.Component src, java.awt.Component dst ) {
+	public RedirectingEventQueue( Component src, Component dst ) {
 		this.src = src;
 		this.dst = dst;
 		this.last = null;
 	}
 
-	private static java.awt.Component getDeepestMouseListener( java.awt.Component dst, java.awt.Component descendant ) {
-		java.awt.Component rv = descendant;
+	private static Component getDeepestMouseListener( Component dst, Component descendant ) {
+		Component rv = descendant;
 		while( rv != null ) {
 			if( ( rv.getMouseListeners().length > 0 ) || ( rv.getMouseMotionListeners().length > 0 ) ) {
 				break;
@@ -72,49 +80,49 @@ public class RedirectingEventQueue extends java.awt.EventQueue {
 	}
 
 	@Override
-	protected void dispatchEvent( java.awt.AWTEvent e ) {
-		if( e instanceof java.awt.event.MouseEvent ) {
-			java.awt.event.MouseEvent me = (java.awt.event.MouseEvent)e;
-			java.awt.Component curr = me.getComponent();
+	protected void dispatchEvent( AWTEvent e ) {
+		if( e instanceof MouseEvent ) {
+			MouseEvent me = (MouseEvent)e;
+			Component curr = me.getComponent();
 			int id = me.getID();
 			if( curr == this.src ) {
-				if( ( id == java.awt.event.MouseEvent.MOUSE_ENTERED ) || ( id == java.awt.event.MouseEvent.MOUSE_EXITED ) ) {
-					e = edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.convertMouseEvent( this.src, me, this.dst );
-				} else if( id == java.awt.event.MouseEvent.MOUSE_MOVED ) {
-					me = edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.convertMouseEvent( this.src, me, dst );
-					java.awt.Component descendant = javax.swing.SwingUtilities.getDeepestComponentAt( this.dst, me.getX(), me.getY() );
+				if( ( id == MouseEvent.MOUSE_ENTERED ) || ( id == MouseEvent.MOUSE_EXITED ) ) {
+					e = MouseEventUtilities.convertMouseEvent( this.src, me, this.dst );
+				} else if( id == MouseEvent.MOUSE_MOVED ) {
+					me = MouseEventUtilities.convertMouseEvent( this.src, me, dst );
+					Component descendant = SwingUtilities.getDeepestComponentAt( this.dst, me.getX(), me.getY() );
 					descendant = RedirectingEventQueue.getDeepestMouseListener( dst, descendant );
 					if( this.last != descendant ) {
-						java.awt.Component exitComponent;
+						Component exitComponent;
 						if( this.last != null ) {
 							exitComponent = this.last;
 						} else {
 							exitComponent = this.src;
 						}
-						java.awt.event.MouseEvent exitEvent = new java.awt.event.MouseEvent( exitComponent, java.awt.event.MouseEvent.MOUSE_EXITED, me.getWhen(), me.getModifiers(), me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), me.getButton() );
-						exitEvent = edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.convertMouseEvent( this.src, exitEvent, exitComponent );
+						MouseEvent exitEvent = new MouseEvent( exitComponent, MouseEvent.MOUSE_EXITED, me.getWhen(), me.getModifiers(), me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), me.getButton() );
+						exitEvent = MouseEventUtilities.convertMouseEvent( this.src, exitEvent, exitComponent );
 						//edu.cmu.cs.dennisc.print.PrintUtilities.println( exitEvent );
 						super.dispatchEvent( exitEvent );
 					}
 					if( descendant != null ) {
-						e = edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.convertMouseEvent( dst, me, descendant );
+						e = MouseEventUtilities.convertMouseEvent( dst, me, descendant );
 					}
 					if( this.last != descendant ) {
-						java.awt.Component enterComponent;
+						Component enterComponent;
 						if( descendant != null ) {
 							enterComponent = descendant;
 						} else {
 							enterComponent = this.src;
 						}
-						java.awt.event.MouseEvent enterEvent = new java.awt.event.MouseEvent( enterComponent, java.awt.event.MouseEvent.MOUSE_ENTERED, me.getWhen(), me.getModifiers(), me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), me.getButton() );
-						enterEvent = edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.convertMouseEvent( this.src, enterEvent, enterComponent );
+						MouseEvent enterEvent = new MouseEvent( enterComponent, MouseEvent.MOUSE_ENTERED, me.getWhen(), me.getModifiers(), me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), me.getButton() );
+						enterEvent = MouseEventUtilities.convertMouseEvent( this.src, enterEvent, enterComponent );
 						//edu.cmu.cs.dennisc.print.PrintUtilities.println( enterEvent );
 						super.dispatchEvent( enterEvent );
 						this.last = descendant;
 					}
-				} else if( ( id == java.awt.event.MouseEvent.MOUSE_PRESSED ) || ( id == java.awt.event.MouseEvent.MOUSE_CLICKED ) || ( id == java.awt.event.MouseEvent.MOUSE_RELEASED ) || ( id == java.awt.event.MouseEvent.MOUSE_DRAGGED ) ) {
+				} else if( ( id == MouseEvent.MOUSE_PRESSED ) || ( id == MouseEvent.MOUSE_CLICKED ) || ( id == MouseEvent.MOUSE_RELEASED ) || ( id == MouseEvent.MOUSE_DRAGGED ) ) {
 					if( this.last != null ) {
-						e = edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.convertMouseEvent( this.src, me, this.last );
+						e = MouseEventUtilities.convertMouseEvent( this.src, me, this.last );
 					}
 				}
 			}

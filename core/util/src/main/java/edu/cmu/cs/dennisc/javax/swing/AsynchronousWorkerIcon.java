@@ -42,18 +42,23 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import edu.cmu.cs.dennisc.worker.Worker;
+
+import javax.swing.Icon;
+import java.util.concurrent.ExecutionException;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AsynchronousWorkerIcon extends AsynchronousIcon {
-	private class IconWorker extends edu.cmu.cs.dennisc.worker.Worker<javax.swing.Icon> {
+	private class IconWorker extends Worker<Icon> {
 		@Override
-		protected javax.swing.Icon do_onBackgroundThread() throws Exception {
+		protected Icon do_onBackgroundThread() throws Exception {
 			return AsynchronousWorkerIcon.this.do_onBackgroundThread();
 		}
 
 		@Override
-		protected void handleDone_onEventDispatchThread( javax.swing.Icon value ) {
+		protected void handleDone_onEventDispatchThread( Icon value ) {
 			AsynchronousWorkerIcon.this.handleDone_onEventDispatchThread( value );
 		}
 	}
@@ -73,18 +78,18 @@ public abstract class AsynchronousWorkerIcon extends AsynchronousIcon {
 		return this.iconHeightFallback;
 	}
 
-	private javax.swing.Icon getIconFromDoneWorker() {
+	private Icon getIconFromDoneWorker() {
 		try {
 			return this.worker.get_obviouslyLockingCurrentThreadUntilDone();
 		} catch( InterruptedException ie ) {
 			throw new Error( ie );
-		} catch( java.util.concurrent.ExecutionException ee ) {
+		} catch( ExecutionException ee ) {
 			throw new Error( ee );
 		}
 	}
 
 	@Override
-	protected javax.swing.Icon getResult( boolean isPaint ) {
+	protected Icon getResult( boolean isPaint ) {
 		if( this.worker != null ) {
 			if( this.worker.isDone() ) {
 				return this.getIconFromDoneWorker();
@@ -103,9 +108,9 @@ public abstract class AsynchronousWorkerIcon extends AsynchronousIcon {
 		}
 	}
 
-	protected abstract javax.swing.Icon do_onBackgroundThread() throws Exception;
+	protected abstract Icon do_onBackgroundThread() throws Exception;
 
-	private void handleDone_onEventDispatchThread( javax.swing.Icon value ) {
+	private void handleDone_onEventDispatchThread( Icon value ) {
 		this.repaintComponentsIfNecessary();
 	}
 

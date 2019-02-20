@@ -42,27 +42,60 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoundedRangeModel;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.plaf.UIResource;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.Point;
+import java.awt.Shape;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JSideBySideScrollPane extends javax.swing.JPanel {
+public class JSideBySideScrollPane extends JPanel {
 	//todo: handle right to left
-	private static class SideBySideLayout implements java.awt.LayoutManager {
-		public void setDividerLocationBasedOnMouseEvent( java.awt.event.MouseEvent e ) {
+	private static class SideBySideLayout implements LayoutManager {
+		public void setDividerLocationBasedOnMouseEvent( MouseEvent e ) {
 
 		}
 
 		@Override
-		public void layoutContainer( java.awt.Container parent ) {
+		public void layoutContainer( Container parent ) {
 			JSideBySideScrollPane jSideBySideScrollPane = (JSideBySideScrollPane)parent;
 
-			java.awt.Insets insets = jSideBySideScrollPane.getInsets();
+			Insets insets = jSideBySideScrollPane.getInsets();
 
-			java.awt.Dimension parentSize = jSideBySideScrollPane.getSize();
+			Dimension parentSize = jSideBySideScrollPane.getSize();
 
-			java.awt.Dimension separatorPreferredSize = jSideBySideScrollPane.divider.getPreferredSize();
-			java.awt.Dimension lineEndScrollBarPreferredSize = jSideBySideScrollPane.verticalScrollBar.getPreferredSize();
-			java.awt.Dimension pageEndScrollBarPreferredSize = jSideBySideScrollPane.horizontalScrollBar.getPreferredSize();
+			Dimension separatorPreferredSize = jSideBySideScrollPane.divider.getPreferredSize();
+			Dimension lineEndScrollBarPreferredSize = jSideBySideScrollPane.verticalScrollBar.getPreferredSize();
+			Dimension pageEndScrollBarPreferredSize = jSideBySideScrollPane.horizontalScrollBar.getPreferredSize();
 
 			int w = parentSize.width - lineEndScrollBarPreferredSize.width - separatorPreferredSize.width - insets.left - insets.right;
 			int h = parentSize.height - pageEndScrollBarPreferredSize.height - insets.top - insets.bottom;
@@ -88,29 +121,29 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		}
 
 		@Override
-		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
-			return new java.awt.Dimension( 0, 0 );
+		public Dimension minimumLayoutSize( Container parent ) {
+			return new Dimension( 0, 0 );
 		}
 
 		@Override
-		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+		public Dimension preferredLayoutSize( Container parent ) {
 			JSideBySideScrollPane jSideBySideScrollPane = (JSideBySideScrollPane)parent;
-			java.awt.Dimension leadingViewportPreferredSize = jSideBySideScrollPane.leadingViewport.getPreferredSize();
-			java.awt.Dimension trailingViewportPreferredSize = jSideBySideScrollPane.trailingViewport.getPreferredSize();
-			java.awt.Dimension pageEndScrollBarPreferredSize = jSideBySideScrollPane.horizontalScrollBar.getPreferredSize();
-			java.awt.Dimension lineEndScrollBarPreferredSize = jSideBySideScrollPane.verticalScrollBar.getPreferredSize();
+			Dimension leadingViewportPreferredSize = jSideBySideScrollPane.leadingViewport.getPreferredSize();
+			Dimension trailingViewportPreferredSize = jSideBySideScrollPane.trailingViewport.getPreferredSize();
+			Dimension pageEndScrollBarPreferredSize = jSideBySideScrollPane.horizontalScrollBar.getPreferredSize();
+			Dimension lineEndScrollBarPreferredSize = jSideBySideScrollPane.verticalScrollBar.getPreferredSize();
 
-			return new java.awt.Dimension(
+			return new Dimension(
 					leadingViewportPreferredSize.width + trailingViewportPreferredSize.width + lineEndScrollBarPreferredSize.width,
 					Math.max( leadingViewportPreferredSize.height, trailingViewportPreferredSize.height ) + pageEndScrollBarPreferredSize.height );
 		}
 
 		@Override
-		public void addLayoutComponent( String name, java.awt.Component comp ) {
+		public void addLayoutComponent( String name, Component comp ) {
 		}
 
 		@Override
-		public void removeLayoutComponent( java.awt.Component comp ) {
+		public void removeLayoutComponent( Component comp ) {
 		}
 
 		private float leadingPortion = 0.5f;
@@ -129,43 +162,43 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		this.verticalScrollBar.setBlockIncrement( 24 );
 
 		this.setLayout( new SideBySideLayout() );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-			this.leadingViewport.setScrollMode( javax.swing.JViewport.SIMPLE_SCROLL_MODE );
-			this.trailingViewport.setScrollMode( javax.swing.JViewport.SIMPLE_SCROLL_MODE );
+		if( SystemUtilities.isLinux() ) {
+			this.leadingViewport.setScrollMode( JViewport.SIMPLE_SCROLL_MODE );
+			this.trailingViewport.setScrollMode( JViewport.SIMPLE_SCROLL_MODE );
 		}
-		int inset = edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI.INSET;
-		this.verticalScrollBar.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );
-		this.horizontalScrollBar.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );
-		this.divider.setBackground( java.awt.Color.DARK_GRAY );
+		int inset = SmallerFootprintScrollBarUI.INSET;
+		this.verticalScrollBar.setBorder( BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );
+		this.horizontalScrollBar.setBorder( BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );
+		this.divider.setBackground( Color.DARK_GRAY );
 	}
 
-	public JSideBySideScrollPane( java.awt.Component leadingView, java.awt.Component trailingView ) {
+	public JSideBySideScrollPane( Component leadingView, Component trailingView ) {
 		this();
 		this.setLeadingView( leadingView );
 		this.setTrailingView( trailingView );
 	}
 
-	public java.awt.Component getLeadingView() {
+	public Component getLeadingView() {
 		return this.leadingViewport.getView();
 	}
 
-	public void setLeadingView( java.awt.Component leadingView ) {
+	public void setLeadingView( Component leadingView ) {
 		this.leadingViewport.setView( leadingView );
 	}
 
-	public java.awt.Component getTrailingView() {
+	public Component getTrailingView() {
 		return this.trailingViewport.getView();
 	}
 
-	public void setTrailingView( java.awt.Component trailingView ) {
+	public void setTrailingView( Component trailingView ) {
 		this.trailingViewport.setView( trailingView );
 	}
 
-	public javax.swing.JScrollBar getVerticalScrollBar() {
+	public JScrollBar getVerticalScrollBar() {
 		return this.verticalScrollBar;
 	}
 
-	public javax.swing.JScrollBar getHorizontalScrollBar() {
+	public JScrollBar getHorizontalScrollBar() {
 		return this.horizontalScrollBar;
 	}
 
@@ -189,23 +222,23 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		super.removeNotify();
 	}
 
-	private static void updateViewX( javax.swing.JViewport viewport, int value ) {
-		java.awt.Point viewPosition = viewport.getViewPosition();
+	private static void updateViewX( JViewport viewport, int value ) {
+		Point viewPosition = viewport.getViewPosition();
 		viewPosition.x = value;
 		viewport.setViewPosition( viewPosition );
 	}
 
-	private static void updateViewY( javax.swing.JViewport viewport, int value ) {
-		java.awt.Point viewPosition = viewport.getViewPosition();
+	private static void updateViewY( JViewport viewport, int value ) {
+		Point viewPosition = viewport.getViewPosition();
 		viewPosition.y = value;
 		viewport.setViewPosition( viewPosition );
 	}
 
 	private void updateScrollBars() {
-		java.awt.Dimension leadingExtentSize = this.leadingViewport.getExtentSize();
-		java.awt.Dimension leadingViewSize = this.leadingViewport.getViewSize();
-		java.awt.Dimension trailingExtentSize = this.trailingViewport.getExtentSize();
-		java.awt.Dimension trailingViewSize = this.trailingViewport.getViewSize();
+		Dimension leadingExtentSize = this.leadingViewport.getExtentSize();
+		Dimension leadingViewSize = this.leadingViewport.getViewSize();
+		Dimension trailingExtentSize = this.trailingViewport.getExtentSize();
+		Dimension trailingViewSize = this.trailingViewport.getViewSize();
 
 		int extentHorizontal;
 		int maxHorizontal;
@@ -242,11 +275,11 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		this.verticalScrollBar.getModel().setRangeProperties( verticalValue, extentVertical, 0, maxVertical, false );
 	}
 
-	private void handleMouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
+	private void handleMouseWheelMoved( MouseWheelEvent e ) {
 		int rotation = e.getWheelRotation();
 
-		javax.swing.BoundedRangeModel verticalModel = this.verticalScrollBar.getModel();
-		javax.swing.BoundedRangeModel horizontalModel = this.horizontalScrollBar.getModel();
+		BoundedRangeModel verticalModel = this.verticalScrollBar.getModel();
+		BoundedRangeModel horizontalModel = this.horizontalScrollBar.getModel();
 
 		boolean isVertical;
 		if( rotation > 0 ) {
@@ -260,14 +293,14 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 			}
 		}
 
-		javax.swing.JScrollBar scrollBar;
+		JScrollBar scrollBar;
 		if( isVertical ) {
 			scrollBar = this.verticalScrollBar;
 		} else {
 			scrollBar = this.horizontalScrollBar;
 		}
 		int units = scrollBar.getUnitIncrement();
-		javax.swing.BoundedRangeModel model = scrollBar.getModel();
+		BoundedRangeModel model = scrollBar.getModel();
 		int value;
 		if( rotation > 0 ) {
 			value = Math.min( model.getValue() + ( rotation * units ), model.getMaximum() );
@@ -277,7 +310,7 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		model.setValue( value );
 	}
 
-	private class JSideBySideDivider extends javax.swing.JComponent implements javax.swing.plaf.UIResource {
+	private class JSideBySideDivider extends JComponent implements UIResource {
 		@Override
 		public void addNotify() {
 			super.addNotify();
@@ -293,76 +326,76 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		}
 
 		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 4 );
+		public Dimension getPreferredSize() {
+			return DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 4 );
 		}
 
-		private void handleMouseDragged( java.awt.event.MouseEvent e ) {
-			java.awt.Point p = javax.swing.SwingUtilities.convertPoint( e.getComponent(), e.getPoint(), JSideBySideScrollPane.this );
+		private void handleMouseDragged( MouseEvent e ) {
+			Point p = SwingUtilities.convertPoint( e.getComponent(), e.getPoint(), JSideBySideScrollPane.this );
 
 			SideBySideLayout sideBySideLayout = (SideBySideLayout)JSideBySideScrollPane.this.getLayout();
 			sideBySideLayout.leadingPortion = p.x / (float)JSideBySideScrollPane.this.getWidth();
 			JSideBySideScrollPane.this.revalidate();
 		}
 
-		private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+		private final MouseListener mouseListener = new MouseListener() {
 			@Override
-			public void mouseEntered( java.awt.event.MouseEvent e ) {
-				edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSetPredefinedCursor( e.getComponent(), java.awt.Cursor.E_RESIZE_CURSOR );
+			public void mouseEntered( MouseEvent e ) {
+				CursorUtilities.pushAndSetPredefinedCursor( e.getComponent(), Cursor.E_RESIZE_CURSOR );
 			}
 
 			@Override
-			public void mouseExited( java.awt.event.MouseEvent e ) {
-				edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( e.getComponent() );
+			public void mouseExited( MouseEvent e ) {
+				CursorUtilities.popAndSet( e.getComponent() );
 			}
 
 			@Override
-			public void mousePressed( java.awt.event.MouseEvent e ) {
+			public void mousePressed( MouseEvent e ) {
 			}
 
 			@Override
-			public void mouseReleased( java.awt.event.MouseEvent e ) {
+			public void mouseReleased( MouseEvent e ) {
 			}
 
 			@Override
-			public void mouseClicked( java.awt.event.MouseEvent e ) {
+			public void mouseClicked( MouseEvent e ) {
 			}
 		};
 
-		private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
+		private final MouseMotionListener mouseMotionListener = new MouseMotionListener() {
 			@Override
-			public void mouseMoved( java.awt.event.MouseEvent e ) {
+			public void mouseMoved( MouseEvent e ) {
 			}
 
 			@Override
-			public void mouseDragged( java.awt.event.MouseEvent e ) {
+			public void mouseDragged( MouseEvent e ) {
 				handleMouseDragged( e );
 			}
 		};
 	}
 
-	private class JSideBySideScrollBar extends javax.swing.JScrollBar implements javax.swing.plaf.UIResource {
+	private class JSideBySideScrollBar extends JScrollBar implements UIResource {
 		public JSideBySideScrollBar( int orientation ) {
 			super( orientation );
 		}
 
 		@Override
-		public java.awt.Color getBackground() {
+		public Color getBackground() {
 			return JSideBySideScrollPane.this.getBackground();
 		}
 
 		@Override
 		public void updateUI() {
-			this.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI.createUI() );
+			this.setUI( SmallerFootprintScrollBarUI.createUI() );
 		}
 
 		@Override
-		protected void paintComponent( java.awt.Graphics g ) {
+		protected void paintComponent( Graphics g ) {
 			if( ScrollBarPaintUtilities.isPaintRequiredFor( this ) ) {
 				super.paintComponent( g );
 			} else {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				java.awt.Shape clip = g.getClip();
+				Graphics2D g2 = (Graphics2D)g;
+				Shape clip = g.getClip();
 				//				java.awt.Component component = trailingViewport.getView();
 				//				if( component != null ) {
 				//					//pass
@@ -381,34 +414,34 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		}
 	}
 
-	private final javax.swing.JViewport leadingViewport = new javax.swing.JViewport();
+	private final JViewport leadingViewport = new JViewport();
 	private final JSideBySideDivider divider = new JSideBySideDivider();
-	private final javax.swing.JViewport trailingViewport = new javax.swing.JViewport();
+	private final JViewport trailingViewport = new JViewport();
 
-	private final JSideBySideScrollBar verticalScrollBar = new JSideBySideScrollBar( javax.swing.JScrollBar.VERTICAL );
-	private final JSideBySideScrollBar horizontalScrollBar = new JSideBySideScrollBar( javax.swing.JScrollBar.HORIZONTAL );
+	private final JSideBySideScrollBar verticalScrollBar = new JSideBySideScrollBar( JScrollBar.VERTICAL );
+	private final JSideBySideScrollBar horizontalScrollBar = new JSideBySideScrollBar( JScrollBar.HORIZONTAL );
 
-	private final javax.swing.event.ChangeListener viewportListener = new javax.swing.event.ChangeListener() {
+	private final ChangeListener viewportListener = new ChangeListener() {
 		@Override
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+		public void stateChanged( ChangeEvent e ) {
 			updateScrollBars();
 		}
 	};
 
-	private final javax.swing.event.ChangeListener verticalScrollListener = new javax.swing.event.ChangeListener() {
+	private final ChangeListener verticalScrollListener = new ChangeListener() {
 		@Override
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			javax.swing.BoundedRangeModel model = (javax.swing.BoundedRangeModel)( e.getSource() );
+		public void stateChanged( ChangeEvent e ) {
+			BoundedRangeModel model = (BoundedRangeModel)( e.getSource() );
 			int leadingY = model.getValue(); //todo
 			int trailingY = model.getValue(); //todo
 			updateViewY( leadingViewport, leadingY );
 			updateViewY( trailingViewport, trailingY );
 		}
 	};
-	private final javax.swing.event.ChangeListener horizontalScrollListener = new javax.swing.event.ChangeListener() {
+	private final ChangeListener horizontalScrollListener = new ChangeListener() {
 		@Override
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			javax.swing.BoundedRangeModel model = (javax.swing.BoundedRangeModel)( e.getSource() );
+		public void stateChanged( ChangeEvent e ) {
+			BoundedRangeModel model = (BoundedRangeModel)( e.getSource() );
 			int leadingX = model.getValue(); //todo
 			int trailingX = model.getValue(); //todo
 			updateViewX( leadingViewport, leadingX );
@@ -416,36 +449,36 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		}
 	};
 
-	private final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+	private final MouseWheelListener mouseWheelListener = new MouseWheelListener() {
 		@Override
-		public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
+		public void mouseWheelMoved( MouseWheelEvent e ) {
 			handleMouseWheelMoved( e );
 		}
 	};
 
 	public static void main( String[] args ) {
-		class OvalPanel extends javax.swing.JPanel {
+		class OvalPanel extends JPanel {
 			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
+			protected void paintComponent( Graphics g ) {
 				super.paintComponent( g );
-				java.awt.Dimension size = this.getPreferredSize();
+				Dimension size = this.getPreferredSize();
 				g.fillOval( 0, 0, size.width, size.height );
 			}
 		}
-		javax.swing.JPanel leadingView = new OvalPanel();
-		leadingView.setPreferredSize( new java.awt.Dimension( 1000, 600 ) );
+		JPanel leadingView = new OvalPanel();
+		leadingView.setPreferredSize( new Dimension( 1000, 600 ) );
 
-		javax.swing.JPanel trailingView = new OvalPanel();
-		trailingView.setPreferredSize( new java.awt.Dimension( 600, 1000 ) );
+		JPanel trailingView = new OvalPanel();
+		trailingView.setPreferredSize( new Dimension( 600, 1000 ) );
 
-		leadingView.setBackground( java.awt.Color.RED );
-		trailingView.setBackground( java.awt.Color.WHITE );
+		leadingView.setBackground( Color.RED );
+		trailingView.setBackground( Color.WHITE );
 
 		JSideBySideScrollPane jSideBySideScrollPane = new JSideBySideScrollPane( leadingView, trailingView );
-		jSideBySideScrollPane.setBackground( java.awt.Color.GREEN );
+		jSideBySideScrollPane.setBackground( Color.GREEN );
 
-		javax.swing.JFrame frame = new javax.swing.JFrame();
-		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
+		JFrame frame = new JFrame();
+		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		frame.getContentPane().add( jSideBySideScrollPane );
 		frame.setSize( 400, 300 );
 		//frame.pack();

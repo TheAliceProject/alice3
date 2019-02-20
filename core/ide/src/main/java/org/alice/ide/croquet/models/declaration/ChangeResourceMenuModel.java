@@ -43,10 +43,20 @@
 
 package org.alice.ide.croquet.models.declaration;
 
+import org.alice.stageide.modelresource.ResourceNode;
+import org.alice.stageide.modelresource.TreeUtilities;
+import org.lgna.croquet.AbstractCascadeMenuModel;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.InstanceCreation;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ChangeResourceMenuModel extends org.lgna.croquet.AbstractCascadeMenuModel<org.lgna.project.ast.InstanceCreation, org.alice.stageide.modelresource.ResourceNode> {
+public class ChangeResourceMenuModel extends AbstractCascadeMenuModel<InstanceCreation, ResourceNode> {
 	private static class SingletonHolder {
 		private static ChangeResourceMenuModel instance = new ChangeResourceMenuModel();
 	}
@@ -56,19 +66,19 @@ public class ChangeResourceMenuModel extends org.lgna.croquet.AbstractCascadeMen
 	}
 
 	private ChangeResourceMenuModel() {
-		super( java.util.UUID.fromString( "11f6a90d-0d39-4893-a092-21a68205aaf1" ) );
+		super( UUID.fromString( "11f6a90d-0d39-4893-a092-21a68205aaf1" ) );
 	}
 
 	@Override
-	protected org.lgna.project.ast.InstanceCreation convertValue( org.alice.stageide.modelresource.ResourceNode value ) {
+	protected InstanceCreation convertValue( ResourceNode value ) {
 		return value.getResourceKey().createInstanceCreation();
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.alice.stageide.modelresource.ResourceNode> blankNode ) {
-		org.alice.stageide.modelresource.ResourceNode root = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
-		for( org.alice.stageide.modelresource.ResourceNode child : root.getNodeChildren() ) {
-			org.lgna.croquet.CascadeBlankChild blankChild = child.getAddFieldBlankChild();
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<ResourceNode> blankNode ) {
+		ResourceNode root = TreeUtilities.getTreeBasedOnClassHierarchy();
+		for( ResourceNode child : root.getNodeChildren() ) {
+			CascadeBlankChild blankChild = child.getAddFieldBlankChild();
 			assert blankChild != null : child;
 			blankChildren.add( blankChild );
 		}

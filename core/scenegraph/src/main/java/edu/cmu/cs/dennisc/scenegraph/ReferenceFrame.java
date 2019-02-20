@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,15 +54,15 @@ public interface ReferenceFrame {
 
 	public boolean isLocalOf( Component other );
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv );
+	public AffineMatrix4x4 getInverseAbsoluteTransformation( AffineMatrix4x4 rv );
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation();
+	public AffineMatrix4x4 getInverseAbsoluteTransformation();
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv );
+	public AffineMatrix4x4 getAbsoluteTransformation( AffineMatrix4x4 rv );
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation();
+	public AffineMatrix4x4 getAbsoluteTransformation();
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, ReferenceFrame other );
+	public AffineMatrix4x4 getTransformation( AffineMatrix4x4 rv, ReferenceFrame other );
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( ReferenceFrame other );
+	public AffineMatrix4x4 getTransformation( ReferenceFrame other );
 }

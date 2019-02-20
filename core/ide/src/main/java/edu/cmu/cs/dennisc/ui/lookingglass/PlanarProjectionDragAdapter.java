@@ -42,27 +42,38 @@
  */
 package edu.cmu.cs.dennisc.ui.lookingglass;
 
+import edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Plane;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.ui.DragStyle;
+
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PlanarProjectionDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter {
-	protected abstract edu.cmu.cs.dennisc.math.Plane getPlaneInAbsolute();
+public abstract class PlanarProjectionDragAdapter extends OnscreenLookingGlassDragAdapter {
+	protected abstract Plane getPlaneInAbsolute();
 
-	protected abstract void handlePointInAbsolute( edu.cmu.cs.dennisc.math.Point3 xyzInAbsolute );
+	protected abstract void handlePointInAbsolute( Point3 xyzInAbsolute );
 
 	@Override
-	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
-		return edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
+	protected boolean isAcceptable( MouseEvent e ) {
+		return MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
 	}
 
-	private edu.cmu.cs.dennisc.math.Point3 getPointInAbsolutePlane( java.awt.Point p ) {
-		edu.cmu.cs.dennisc.math.Point3 rv;
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getOnscreenRenderTarget().getCameraAtPixel( p.x, p.y );
+	private Point3 getPointInAbsolutePlane( Point p ) {
+		Point3 rv;
+		AbstractCamera sgCamera = getOnscreenRenderTarget().getCameraAtPixel( p.x, p.y );
 		if( sgCamera != null ) {
-			edu.cmu.cs.dennisc.math.Ray ray = getOnscreenRenderTarget().getRayAtPixel( p.x, p.y, sgCamera );
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
+			Ray ray = getOnscreenRenderTarget().getRayAtPixel( p.x, p.y, sgCamera );
+			AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
 			ray.transform( m );
-			edu.cmu.cs.dennisc.math.Plane planeInAbsolute = this.getPlaneInAbsolute();
+			Plane planeInAbsolute = this.getPlaneInAbsolute();
 			double t = planeInAbsolute.intersect( ray );
 			rv = ray.getPointAlong( t );
 		} else {
@@ -72,22 +83,22 @@ public abstract class PlanarProjectionDragAdapter extends edu.cmu.cs.dennisc.ui.
 	}
 
 	@Override
-	protected void handleMousePress( java.awt.Point current, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
+	protected void handleMousePress( Point current, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
 		if( isOriginalAsOpposedToStyleChange ) {
 		} else {
 		}
 	}
 
 	@Override
-	protected void handleMouseDrag( java.awt.Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, edu.cmu.cs.dennisc.ui.DragStyle dragStyle ) {
-		edu.cmu.cs.dennisc.math.Point3 xyzInAbsolute = getPointInAbsolutePlane( current );
+	protected void handleMouseDrag( Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, DragStyle dragStyle ) {
+		Point3 xyzInAbsolute = getPointInAbsolutePlane( current );
 		if( xyzInAbsolute != null ) {
 			handlePointInAbsolute( xyzInAbsolute );
 		}
 	}
 
 	@Override
-	protected java.awt.Point handleMouseRelease( java.awt.Point rv, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
+	protected Point handleMouseRelease( Point rv, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
 		return rv;
 	}
 }

@@ -42,16 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.animation.affine;
 
+import edu.cmu.cs.dennisc.math.InterpolationUtilities;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PositionAnimation extends AffineAnimation {
-	public static final edu.cmu.cs.dennisc.math.Point3 USE_EXISTING_VALUE_AT_RUN_TIME = null;
+	public static final Point3 USE_EXISTING_VALUE_AT_RUN_TIME = null;
 
-	private edu.cmu.cs.dennisc.math.Point3 m_posBegin = new edu.cmu.cs.dennisc.math.Point3();
-	private edu.cmu.cs.dennisc.math.Point3 m_posEnd = new edu.cmu.cs.dennisc.math.Point3();
+	private Point3 m_posBegin = new Point3();
+	private Point3 m_posEnd = new Point3();
 
-	private edu.cmu.cs.dennisc.math.Point3 m_posBeginUsedAtRuntime = new edu.cmu.cs.dennisc.math.Point3();
+	private Point3 m_posBeginUsedAtRuntime = new Point3();
 
 	public PositionAnimation() {
 		m_posBeginUsedAtRuntime.setNaN();
@@ -59,40 +64,40 @@ public class PositionAnimation extends AffineAnimation {
 		m_posEnd.setNaN();
 	}
 
-	public PositionAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Point3 posBegin, edu.cmu.cs.dennisc.math.Point3 posEnd ) {
+	public PositionAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Point3 posBegin, Point3 posEnd ) {
 		super( sgSubject, sgAsSeenBy );
 		m_posBeginUsedAtRuntime.setNaN();
 		setPositionBegin( posBegin );
 		setPositionEnd( posEnd );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 accessPositionBeginUsedAtRuntime() {
+	public Point3 accessPositionBeginUsedAtRuntime() {
 		return m_posBeginUsedAtRuntime;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPositionBeginUsedAtRuntime( edu.cmu.cs.dennisc.math.Point3 rv ) {
+	public Point3 getPositionBeginUsedAtRuntime( Point3 rv ) {
 		rv.set( m_posBeginUsedAtRuntime );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPositionBeginUsedAtRuntime() {
-		return getPositionBeginUsedAtRuntime( new edu.cmu.cs.dennisc.math.Point3() );
+	public Point3 getPositionBeginUsedAtRuntime() {
+		return getPositionBeginUsedAtRuntime( new Point3() );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 accessPositionBegin() {
+	public Point3 accessPositionBegin() {
 		return m_posBegin;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPositionBegin( edu.cmu.cs.dennisc.math.Point3 rv ) {
+	public Point3 getPositionBegin( Point3 rv ) {
 		rv.set( m_posBegin );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPositionBegin() {
-		return getPositionBegin( new edu.cmu.cs.dennisc.math.Point3() );
+	public Point3 getPositionBegin() {
+		return getPositionBegin( new Point3() );
 	}
 
-	public void setPositionBegin( edu.cmu.cs.dennisc.math.Point3 posBegin ) {
+	public void setPositionBegin( Point3 posBegin ) {
 		if( posBegin != USE_EXISTING_VALUE_AT_RUN_TIME ) {
 			m_posBegin.set( posBegin );
 		} else {
@@ -100,20 +105,20 @@ public class PositionAnimation extends AffineAnimation {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 accessPositionEnd() {
+	public Point3 accessPositionEnd() {
 		return m_posEnd;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPositionEnd( edu.cmu.cs.dennisc.math.Point3 rv ) {
+	public Point3 getPositionEnd( Point3 rv ) {
 		rv.set( m_posEnd );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPositionEnd() {
-		return getPositionEnd( new edu.cmu.cs.dennisc.math.Point3() );
+	public Point3 getPositionEnd() {
+		return getPositionEnd( new Point3() );
 	}
 
-	public void setPositionEnd( edu.cmu.cs.dennisc.math.Point3 posEnd ) {
+	public void setPositionEnd( Point3 posEnd ) {
 		m_posEnd.set( posEnd );
 	}
 
@@ -128,7 +133,7 @@ public class PositionAnimation extends AffineAnimation {
 
 	@Override
 	public void setPortion( double portion ) {
-		getSubject().setTranslationOnly( edu.cmu.cs.dennisc.math.InterpolationUtilities.interpolate( m_posBeginUsedAtRuntime, m_posEnd, portion ), getAsSeenBy() );
+		getSubject().setTranslationOnly( InterpolationUtilities.interpolate( m_posBeginUsedAtRuntime, m_posEnd, portion ), getAsSeenBy() );
 	}
 
 	@Override

@@ -55,17 +55,6 @@ public final class BooleanExpressionBodyPair extends AbstractNode {
 		this.body.setValue( body );
 	}
 
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			BooleanExpressionBodyPair other = (BooleanExpressionBodyPair)o;
-			if( this.expression.valueContentEquals( other.expression, strictness, filter ) ) {
-				return this.body.valueContentEquals( other.body, strictness, filter );
-			}
-		}
-		return false;
-	}
-
 	public final ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {

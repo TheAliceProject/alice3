@@ -42,20 +42,26 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ImmutableCascadeFillIn<F, B> extends CascadeFillIn<F, B> {
-	private final java.util.List<CascadeBlank<B>> blanks;
+	private final List<CascadeBlank<B>> blanks;
 
-	public ImmutableCascadeFillIn( java.util.UUID id, CascadeBlank<B>... blanks ) {
+	public ImmutableCascadeFillIn( UUID id, CascadeBlank<B>... blanks ) {
 		super( id );
-		this.blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( blanks ) );
+		this.blanks = Collections.unmodifiableList( Lists.newArrayList( blanks ) );
 	}
 
 	//todo: make final
 	@Override
-	public/* final */java.util.List<CascadeBlank<B>> getBlanks() {
+	public/* final */List<CascadeBlank<B>> getBlanks() {
 		return this.blanks;
 	}
 }

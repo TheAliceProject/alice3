@@ -42,13 +42,24 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.io;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.Writer;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TextFileUtilities {
-	public static String read( java.io.Reader reader ) {
+	public static String read( Reader reader ) {
 		final String SEPARATOR = System.getProperty( "line.separator" );
-		java.io.BufferedReader bufferedReader = new java.io.BufferedReader( reader );
+		BufferedReader bufferedReader = new BufferedReader( reader );
 		try {
 			try {
 				StringBuffer sb = new StringBuffer();
@@ -66,46 +77,46 @@ public class TextFileUtilities {
 			} finally {
 				bufferedReader.close();
 			}
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static String read( java.io.InputStream is ) {
-		return read( new java.io.InputStreamReader( is ) );
+	public static String read( InputStream is ) {
+		return read( new InputStreamReader( is ) );
 	}
 
-	public static String read( java.io.File file ) {
+	public static String read( File file ) {
 		try {
-			return read( new java.io.FileReader( file ) );
-		} catch( java.io.IOException ioe ) {
+			return read( new FileReader( file ) );
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
 	public static String read( String path ) {
-		return read( new java.io.File( path ) );
+		return read( new File( path ) );
 	}
 
-	public static void write( java.io.Writer writer, String contents ) {
+	public static void write( Writer writer, String contents ) {
 		try {
-			java.io.BufferedWriter bufferedWriter = new java.io.BufferedWriter( writer );
+			BufferedWriter bufferedWriter = new BufferedWriter( writer );
 			try {
 				bufferedWriter.write( contents );
 				bufferedWriter.flush();
 			} finally {
 				bufferedWriter.close();
 			}
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static void write( java.io.File file, String contents ) {
+	public static void write( File file, String contents ) {
 		file.getParentFile().mkdirs();
 		try {
-			write( new java.io.FileWriter( file ), contents );
-		} catch( java.io.IOException ioe ) {
+			write( new FileWriter( file ), contents );
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}

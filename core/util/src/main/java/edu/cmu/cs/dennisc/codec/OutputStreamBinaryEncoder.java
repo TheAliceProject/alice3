@@ -42,16 +42,20 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.codec;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+
 /**
  * @author Dennis Cosgrove
  */
 public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
-	private java.io.ObjectOutputStream m_oos;
+	private ObjectOutputStream m_oos;
 
-	public OutputStreamBinaryEncoder( java.io.OutputStream os ) {
+	public OutputStreamBinaryEncoder( OutputStream os ) {
 		try {
-			m_oos = new java.io.ObjectOutputStream( os );
-		} catch( java.io.IOException ioe ) {
+			m_oos = new ObjectOutputStream( os );
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -60,7 +64,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 	public void write( byte[] data ) {
 		try {
 			m_oos.write( data );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -69,7 +73,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 	public void write( byte[] data, int offset, int length ) {
 		try {
 			m_oos.write( data, offset, length );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -78,7 +82,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 	public void encode( boolean value ) {
 		try {
 			m_oos.writeBoolean( value );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -87,7 +91,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 	public void encode( byte value ) {
 		try {
 			m_oos.writeByte( value );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -96,7 +100,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 	public void encode( char value ) {
 		try {
 			m_oos.writeChar( value );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -105,7 +109,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 	public void encode( double value ) {
 		try {
 			m_oos.writeDouble( value );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -114,7 +118,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 	public void encode( float value ) {
 		try {
 			m_oos.writeFloat( value );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -123,7 +127,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 	public void encode( int value ) {
 		try {
 			m_oos.writeInt( value );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -132,7 +136,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 	public void encode( long value ) {
 		try {
 			m_oos.writeLong( value );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -141,7 +145,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 	public void encode( short value ) {
 		try {
 			m_oos.writeShort( value );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -154,7 +158,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 			if( isNotNull ) {
 				m_oos.writeUTF( value );
 			}
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -163,7 +167,7 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 	public final void flush() {
 		try {
 			m_oos.flush();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}

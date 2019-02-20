@@ -43,11 +43,14 @@
 
 package edu.cmu.cs.dennisc.scenegraph.event;
 
+import edu.cmu.cs.dennisc.pattern.event.Event;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AbsoluteTransformationEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.scenegraph.Component> {
-	public AbsoluteTransformationEvent( edu.cmu.cs.dennisc.scenegraph.Component source ) {
+public class AbsoluteTransformationEvent extends Event<Component> {
+	public AbsoluteTransformationEvent( Component source ) {
 		super( source );
 	}
 }

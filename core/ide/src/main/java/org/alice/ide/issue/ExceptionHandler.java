@@ -42,11 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import org.lgna.common.LgnaRuntimeException;
+
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ExceptionHandler implements Thread.UncaughtExceptionHandler {
-	protected abstract boolean handleLgnaRuntimeException( Thread thread, org.lgna.common.LgnaRuntimeException lgnare );
+	protected abstract boolean handleLgnaRuntimeException( Thread thread, LgnaRuntimeException lgnare );
 
 	protected abstract void handleThrowable( Thread thread, Throwable throwable );
 
@@ -56,17 +60,17 @@ public abstract class ExceptionHandler implements Thread.UncaughtExceptionHandle
 		if( throwable instanceof RuntimeException ) {
 			RuntimeException runtimeException = (RuntimeException)throwable;
 			Throwable cause = runtimeException.getCause();
-			if( cause instanceof java.lang.reflect.InvocationTargetException ) {
-				java.lang.reflect.InvocationTargetException invocationTargetException = (java.lang.reflect.InvocationTargetException)cause;
+			if( cause instanceof InvocationTargetException ) {
+				InvocationTargetException invocationTargetException = (InvocationTargetException)cause;
 				Throwable targetException = invocationTargetException.getTargetException();
-				if( targetException instanceof org.lgna.common.LgnaRuntimeException ) {
+				if( targetException instanceof LgnaRuntimeException ) {
 					throwable = targetException;
 				}
 			}
 		}
 		boolean isHandled;
-		if( throwable instanceof org.lgna.common.LgnaRuntimeException ) {
-			org.lgna.common.LgnaRuntimeException lgnare = (org.lgna.common.LgnaRuntimeException)throwable;
+		if( throwable instanceof LgnaRuntimeException ) {
+			LgnaRuntimeException lgnare = (LgnaRuntimeException)throwable;
 			isHandled = this.handleLgnaRuntimeException( thread, lgnare );
 		} else {
 			isHandled = false;

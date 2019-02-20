@@ -42,16 +42,28 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.io;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3f;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
+import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * @author Dennis Cosgrove
  */
 public class BIN {
-	public static Vertex[] loadVertices( java.io.InputStream is ) throws java.io.IOException {
+	public static Vertex[] loadVertices( InputStream is ) throws IOException {
 		Vertex[] vertices = null;
-		java.io.BufferedInputStream bis = new java.io.BufferedInputStream( is );
-		java.io.DataInputStream dis = new java.io.DataInputStream( bis );
+		BufferedInputStream bis = new BufferedInputStream( is );
+		DataInputStream dis = new DataInputStream( bis );
 		int version = dis.readInt();
 		if( version == 1 ) {
 			int vertexCount = dis.readInt();
@@ -65,93 +77,93 @@ public class BIN {
 				float k = (float)dis.readDouble();
 				float u = (float)dis.readDouble();
 				float v = (float)dis.readDouble();
-				vertices[ index ] = edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( x, y, z, i, j, k, u, v );
+				vertices[ index ] = Vertex.createXYZIJKUV( x, y, z, i, j, k, u, v );
 			}
 		} else if( version == 2 ) {
 			int vertexCount = dis.readInt();
 			vertices = new Vertex[ vertexCount ];
 			for( int index = 0; index < vertices.length; index++ ) {
 				int format = dis.readInt();
-				final edu.cmu.cs.dennisc.math.Point3 position = edu.cmu.cs.dennisc.math.Point3.createNaN();
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_POSITION ) != 0 ) {
+				final Point3 position = Point3.createNaN();
+				if( ( format & Vertex.FORMAT_POSITION ) != 0 ) {
 					position.x = dis.readDouble();
 					position.y = dis.readDouble();
 					position.z = dis.readDouble();
 				}
-				final edu.cmu.cs.dennisc.math.Vector3f normal = edu.cmu.cs.dennisc.math.Vector3f.createNaN();
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_NORMAL ) != 0 ) {
+				final Vector3f normal = Vector3f.createNaN();
+				if( ( format & Vertex.FORMAT_NORMAL ) != 0 ) {
 					normal.x = (float)dis.readDouble();
 					normal.y = (float)dis.readDouble();
 					normal.z = (float)dis.readDouble();
 				}
-				final edu.cmu.cs.dennisc.color.Color4f diffuseColor;
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_DIFFUSE_COLOR ) != 0 ) {
+				final Color4f diffuseColor;
+				if( ( format & Vertex.FORMAT_DIFFUSE_COLOR ) != 0 ) {
 					float red = (float)dis.readDouble();
 					float green = (float)dis.readDouble();
 					float blue = (float)dis.readDouble();
 					float alpha = (float)dis.readDouble();
-					diffuseColor = new edu.cmu.cs.dennisc.color.Color4f( red, green, blue, alpha );
+					diffuseColor = new Color4f( red, green, blue, alpha );
 				} else {
 					diffuseColor = null;
 				}
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR ) != 0 ) {
+				if( ( format & Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR ) != 0 ) {
 				}
-				final edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0;
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_TEXTURE_COORDINATE_0 ) != 0 ) {
+				final TextureCoordinate2f textureCoordinate0;
+				if( ( format & Vertex.FORMAT_TEXTURE_COORDINATE_0 ) != 0 ) {
 					float u = (float)dis.readDouble();
 					float v = (float)dis.readDouble();
-					textureCoordinate0 = new edu.cmu.cs.dennisc.texture.TextureCoordinate2f( u, v );
+					textureCoordinate0 = new TextureCoordinate2f( u, v );
 				} else {
 					textureCoordinate0 = null;
 				}
-				vertices[ index ] = new edu.cmu.cs.dennisc.scenegraph.Vertex( position, normal, diffuseColor, null, textureCoordinate0 );
+				vertices[ index ] = new Vertex( position, normal, diffuseColor, null, textureCoordinate0 );
 			}
 		} else if( version == 3 ) {
 			int vertexCount = dis.readInt();
 			vertices = new Vertex[ vertexCount ];
 			for( int index = 0; index < vertices.length; index++ ) {
 				int format = dis.readInt();
-				final edu.cmu.cs.dennisc.math.Point3 position = edu.cmu.cs.dennisc.math.Point3.createNaN();
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_POSITION ) != 0 ) {
+				final Point3 position = Point3.createNaN();
+				if( ( format & Vertex.FORMAT_POSITION ) != 0 ) {
 					position.x = dis.readDouble();
 					position.y = dis.readDouble();
 					position.z = dis.readDouble();
 				}
-				final edu.cmu.cs.dennisc.math.Vector3f normal = edu.cmu.cs.dennisc.math.Vector3f.createNaN();
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_NORMAL ) != 0 ) {
+				final Vector3f normal = Vector3f.createNaN();
+				if( ( format & Vertex.FORMAT_NORMAL ) != 0 ) {
 					normal.x = (float)dis.readDouble();
 					normal.y = (float)dis.readDouble();
 					normal.z = (float)dis.readDouble();
 				}
-				final edu.cmu.cs.dennisc.color.Color4f diffuseColor;
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_DIFFUSE_COLOR ) != 0 ) {
+				final Color4f diffuseColor;
+				if( ( format & Vertex.FORMAT_DIFFUSE_COLOR ) != 0 ) {
 					float red = dis.readFloat();
 					float green = dis.readFloat();
 					float blue = dis.readFloat();
 					float alpha = dis.readFloat();
-					diffuseColor = new edu.cmu.cs.dennisc.color.Color4f( red, green, blue, alpha );
+					diffuseColor = new Color4f( red, green, blue, alpha );
 				} else {
 					diffuseColor = null;
 				}
-				final edu.cmu.cs.dennisc.color.Color4f specularHighlightColor;
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR ) != 0 ) {
+				final Color4f specularHighlightColor;
+				if( ( format & Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR ) != 0 ) {
 					float red = dis.readFloat();
 					float green = dis.readFloat();
 					float blue = dis.readFloat();
 					float alpha = dis.readFloat();
-					specularHighlightColor = new edu.cmu.cs.dennisc.color.Color4f( red, green, blue, alpha );
+					specularHighlightColor = new Color4f( red, green, blue, alpha );
 				} else {
 					specularHighlightColor = null;
 				}
-				final edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0;
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_TEXTURE_COORDINATE_0 ) != 0 ) {
+				final TextureCoordinate2f textureCoordinate0;
+				if( ( format & Vertex.FORMAT_TEXTURE_COORDINATE_0 ) != 0 ) {
 					float u = dis.readFloat();
 					float v = dis.readFloat();
-					textureCoordinate0 = new edu.cmu.cs.dennisc.texture.TextureCoordinate2f( u, v );
+					textureCoordinate0 = new TextureCoordinate2f( u, v );
 				} else {
 					textureCoordinate0 = null;
 				}
-				vertices[ index ] = new edu.cmu.cs.dennisc.scenegraph.Vertex( position, normal, diffuseColor, specularHighlightColor, textureCoordinate0 );
+				vertices[ index ] = new Vertex( position, normal, diffuseColor, specularHighlightColor, textureCoordinate0 );
 			}
 		} else {
 			throw new RuntimeException( "invalid file version: " + version );
@@ -159,9 +171,9 @@ public class BIN {
 		return vertices;
 	}
 
-	public static void storeVertices( Vertex[] vertices, java.io.OutputStream os ) throws java.io.IOException {
-		java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( os );
-		java.io.DataOutputStream dos = new java.io.DataOutputStream( bos );
+	public static void storeVertices( Vertex[] vertices, OutputStream os ) throws IOException {
+		BufferedOutputStream bos = new BufferedOutputStream( os );
+		DataOutputStream dos = new DataOutputStream( bos );
 		dos.writeInt( 3 );
 		dos.writeInt( vertices.length );
 		for( Vertex vertice : vertices ) {
@@ -197,10 +209,10 @@ public class BIN {
 		dos.flush();
 	}
 
-	public static int[] loadTriangleData( java.io.InputStream is ) throws java.io.IOException {
+	public static int[] loadTriangleData( InputStream is ) throws IOException {
 		int[] indices = null;
-		java.io.BufferedInputStream bis = new java.io.BufferedInputStream( is );
-		java.io.DataInputStream dis = new java.io.DataInputStream( bis );
+		BufferedInputStream bis = new BufferedInputStream( is );
+		DataInputStream dis = new DataInputStream( bis );
 		int version = dis.readInt();
 		if( version == 1 ) {
 			int faceCount = dis.readInt();
@@ -221,9 +233,9 @@ public class BIN {
 		return indices;
 	}
 
-	public static void storeTriangleData( int[] indices, java.io.OutputStream os ) throws java.io.IOException {
-		java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( os );
-		java.io.DataOutputStream dos = new java.io.DataOutputStream( bos );
+	public static void storeTriangleData( int[] indices, OutputStream os ) throws IOException {
+		BufferedOutputStream bos = new BufferedOutputStream( os );
+		DataOutputStream dos = new DataOutputStream( bos );
 		dos.writeInt( 2 );
 		dos.writeInt( indices.length );
 		for( int indice : indices ) {

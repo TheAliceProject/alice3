@@ -42,14 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ColorUtilities {
-	public static final java.awt.Color GARISH_COLOR = java.awt.Color.MAGENTA;
+	public static final Color GARISH_COLOR = Color.MAGENTA;
 
-	public static java.awt.Color createGray( int grayscale ) {
-		return new java.awt.Color( grayscale, grayscale, grayscale );
+	public static Color createGray( int grayscale ) {
+		return new Color( grayscale, grayscale, grayscale );
 	}
 
 	private static float[] s_hsbBuffer = new float[ 3 ];
@@ -58,37 +62,37 @@ public class ColorUtilities {
 	private static float[] s_bBuffer = new float[ 4 ];
 	private static float[] s_rvBuffer = new float[ 4 ];
 
-	public static java.awt.Color interpolate( java.awt.Color a, java.awt.Color b, float portion ) {
+	public static Color interpolate( Color a, Color b, float portion ) {
 		synchronized( s_rvBuffer ) {
 			a.getComponents( s_aBuffer );
 			b.getComponents( s_bBuffer );
 			for( int i = 0; i < 4; i++ ) {
 				s_rvBuffer[ i ] = ( s_aBuffer[ i ] * ( 1 - portion ) ) + ( s_bBuffer[ i ] * portion );
 			}
-			return new java.awt.Color( s_rvBuffer[ 0 ], s_rvBuffer[ 1 ], s_rvBuffer[ 2 ], s_rvBuffer[ 3 ] );
+			return new Color( s_rvBuffer[ 0 ], s_rvBuffer[ 1 ], s_rvBuffer[ 2 ], s_rvBuffer[ 3 ] );
 		}
 	}
 
-	private static java.awt.Color constructColor( int rgb, int alpha ) {
-		java.awt.Color c = new java.awt.Color( rgb );
-		return new java.awt.Color( c.getRed(), c.getGreen(), c.getBlue(), alpha );
+	private static Color constructColor( int rgb, int alpha ) {
+		Color c = new Color( rgb );
+		return new Color( c.getRed(), c.getGreen(), c.getBlue(), alpha );
 	}
 
-	private static java.awt.Color constructColor( float[] hsb, int alpha ) {
-		return constructColor( java.awt.Color.HSBtoRGB( bound( hsb[ 0 ] ), bound( hsb[ 1 ] ), bound( hsb[ 2 ] ) ), alpha );
+	private static Color constructColor( float[] hsb, int alpha ) {
+		return constructColor( Color.HSBtoRGB( bound( hsb[ 0 ] ), bound( hsb[ 1 ] ), bound( hsb[ 2 ] ) ), alpha );
 	}
 
-	public static synchronized java.awt.Color setAlpha( java.awt.Color color, int alpha ) {
-		return new java.awt.Color( color.getRed(), color.getGreen(), color.getBlue(), alpha );
+	public static synchronized Color setAlpha( Color color, int alpha ) {
+		return new Color( color.getRed(), color.getGreen(), color.getBlue(), alpha );
 	}
 
 	private static float bound( float f ) {
 		return Math.max( Math.min( f, 1.0f ), 0.0f );
 	}
 
-	public static java.awt.Color shiftHSB( java.awt.Color color, double hueDelta, double saturationDelta, double brightnessDelta ) {
+	public static Color shiftHSB( Color color, double hueDelta, double saturationDelta, double brightnessDelta ) {
 		synchronized( s_hsbBuffer ) {
-			java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), s_hsbBuffer );
+			Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), s_hsbBuffer );
 			s_hsbBuffer[ 0 ] += hueDelta;
 			s_hsbBuffer[ 1 ] += saturationDelta;
 			s_hsbBuffer[ 2 ] += brightnessDelta;
@@ -96,9 +100,9 @@ public class ColorUtilities {
 		}
 	}
 
-	public static synchronized java.awt.Color scaleHSB( java.awt.Color color, double hueScale, double saturationScale, double brightnessScale ) {
+	public static synchronized Color scaleHSB( Color color, double hueScale, double saturationScale, double brightnessScale ) {
 		synchronized( s_hsbBuffer ) {
-			java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), s_hsbBuffer );
+			Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), s_hsbBuffer );
 			s_hsbBuffer[ 0 ] *= hueScale;
 			s_hsbBuffer[ 1 ] *= saturationScale;
 			s_hsbBuffer[ 2 ] *= brightnessScale;
@@ -106,40 +110,40 @@ public class ColorUtilities {
 		}
 	}
 
-	public static float getHue( java.awt.Color color ) {
+	public static float getHue( Color color ) {
 		synchronized( s_hsbBuffer ) {
-			java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), s_hsbBuffer );
+			Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), s_hsbBuffer );
 			return s_hsbBuffer[ 0 ];
 		}
 	}
 
-	public static float getSaturation( java.awt.Color color ) {
+	public static float getSaturation( Color color ) {
 		synchronized( s_hsbBuffer ) {
-			java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), s_hsbBuffer );
+			Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), s_hsbBuffer );
 			return s_hsbBuffer[ 1 ];
 		}
 	}
 
-	public static float getBrightness( java.awt.Color color ) {
+	public static float getBrightness( Color color ) {
 		synchronized( s_hsbBuffer ) {
-			java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), s_hsbBuffer );
+			Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), s_hsbBuffer );
 			return s_hsbBuffer[ 2 ];
 		}
 	}
 
-	public static String toHashText( java.awt.Color color ) {
+	public static String toHashText( Color color ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "#" );
 		sb.append( Integer.toHexString( color.getRGB() & 0xFFFFFF ) );
 		return sb.toString();
 	}
 
-	public static java.awt.Color toAwtColor( edu.cmu.cs.dennisc.color.Color4f color ) {
+	public static Color toAwtColor( Color4f color ) {
 		if( color != null ) {
 			if( color.isNaN() ) {
 				return null;
 			} else {
-				return new java.awt.Color( color.red, color.green, color.blue, color.alpha );
+				return new Color( color.red, color.green, color.blue, color.alpha );
 			}
 		} else {
 			return null;

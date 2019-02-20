@@ -42,47 +42,56 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
+import org.alice.stageide.sceneeditor.side.views.SnapDetailsToolPaletteCoreView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.BoundedDoubleState;
+import org.lgna.croquet.ToolPaletteCoreComposite;
+import org.lgna.croquet.views.ScrollPane;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SnapDetailsToolPaletteCoreComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.stageide.sceneeditor.side.views.SnapDetailsToolPaletteCoreView> {
-	private final org.lgna.croquet.BooleanState isGridShowingState = this.createBooleanState( "isGridShowingState", true );
-	private final org.lgna.croquet.BoundedDoubleState gridSpacingState = this.createBoundedDoubleState( "gridSpacingState", new BoundedDoubleDetails().initialValue( 0.5 ).minimum( 0.05 ).maximum( 10.0 ).stepSize( 0.05 ) );
-	private final org.lgna.croquet.BooleanState isRotationState = this.createBooleanState( "isRotationState", true );
-	private final org.lgna.croquet.BoundedDoubleState angleState = this.createBoundedDoubleState( "angleState", new BoundedDoubleDetails().initialValue( 30.0 ).minimum( 15.0 ).maximum( 360.0 ).stepSize( 15.0 ) );
-	private final org.lgna.croquet.BooleanState isSnapToGroundEnabledState = this.createBooleanState( "isSnapToGroundEnabledState", true );
+public class SnapDetailsToolPaletteCoreComposite extends ToolPaletteCoreComposite<SnapDetailsToolPaletteCoreView> {
+	private final BooleanState isGridShowingState = this.createBooleanState( "isGridShowingState", true );
+	private final BoundedDoubleState gridSpacingState = this.createBoundedDoubleState( "gridSpacingState", new BoundedDoubleDetails().initialValue( 0.5 ).minimum( 0.05 ).maximum( 10.0 ).stepSize( 0.05 ) );
+	private final BooleanState isRotationState = this.createBooleanState( "isRotationState", true );
+	private final BoundedDoubleState angleState = this.createBoundedDoubleState( "angleState", new BoundedDoubleDetails().initialValue( 30.0 ).minimum( 15.0 ).maximum( 360.0 ).stepSize( 15.0 ) );
+	private final BooleanState isSnapToGroundEnabledState = this.createBooleanState( "isSnapToGroundEnabledState", true );
 
 	public SnapDetailsToolPaletteCoreComposite() {
-		super( java.util.UUID.fromString( "ce1cebee-b951-4294-b4d6-e5979b7d13a5" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP, false );
+		super( UUID.fromString( "ce1cebee-b951-4294-b4d6-e5979b7d13a5" ), Application.DOCUMENT_UI_GROUP, false );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
-	public org.lgna.croquet.BooleanState getIsGridShowingState() {
+	public BooleanState getIsGridShowingState() {
 		return this.isGridShowingState;
 	}
 
-	public org.lgna.croquet.BoundedDoubleState getGridSpacingState() {
+	public BoundedDoubleState getGridSpacingState() {
 		return this.gridSpacingState;
 	}
 
-	public org.lgna.croquet.BooleanState getIsRotationState() {
+	public BooleanState getIsRotationState() {
 		return this.isRotationState;
 	}
 
-	public org.lgna.croquet.BoundedDoubleState getAngleState() {
+	public BoundedDoubleState getAngleState() {
 		return this.angleState;
 	}
 
-	public org.lgna.croquet.BooleanState getIsSnapToGroundEnabledState() {
+	public BooleanState getIsSnapToGroundEnabledState() {
 		return this.isSnapToGroundEnabledState;
 	}
 
 	@Override
-	protected org.alice.stageide.sceneeditor.side.views.SnapDetailsToolPaletteCoreView createView() {
-		return new org.alice.stageide.sceneeditor.side.views.SnapDetailsToolPaletteCoreView( this );
+	protected SnapDetailsToolPaletteCoreView createView() {
+		return new SnapDetailsToolPaletteCoreView( this );
 	}
 }

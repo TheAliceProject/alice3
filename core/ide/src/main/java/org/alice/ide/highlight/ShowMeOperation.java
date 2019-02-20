@@ -43,12 +43,17 @@
 
 package org.alice.ide.highlight;
 
+import org.alice.ide.IDE;
+import org.alice.ide.operations.InconsequentialActionOperation;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ShowMeOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class ShowMeOperation extends InconsequentialActionOperation {
 	public ShowMeOperation() {
-		super( java.util.UUID.fromString( "68e88159-a879-4f2b-ae0b-93288732929e" ) );
+		super( UUID.fromString( "68e88159-a879-4f2b-ae0b-93288732929e" ) );
 	}
 
 	@Override
@@ -59,8 +64,8 @@ public class ShowMeOperation extends org.alice.ide.operations.InconsequentialAct
 	}
 
 	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void performInternal() {
 		//org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverCroquetViewController( org.alice.stageide.croquet.models.run.RunOperation.getInstance(), "You can run your program by pressing this button." );
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverCroquetViewControllerAndRenderWindow( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getDeclarationMenu().getPopupPrepModel() );
+		IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverCroquetViewControllerAndRenderWindow( IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getDeclarationMenu().getPopupPrepModel() );
 	}
 }

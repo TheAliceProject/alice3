@@ -42,10 +42,18 @@
  *******************************************************************************/
 package org.alice.stageide.croquet.models.gallerybrowser;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImportTypeOperation extends org.lgna.croquet.Operation { //todo: ValueOperation?
+public class ImportTypeOperation extends Operation { //todo: ValueOperation?
 	private static class SingletonHolder {
 		private static ImportTypeOperation instance = new ImportTypeOperation();
 	}
@@ -55,14 +63,15 @@ public class ImportTypeOperation extends org.lgna.croquet.Operation { //todo: Va
 	}
 
 	private ImportTypeOperation() {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "7f07e40b-8ec6-4273-a79b-bffb28a013a5" ) );
+		super( Application.PROJECT_GROUP, UUID.fromString( "7f07e40b-8ec6-4273-a79b-bffb28a013a5" ) );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep step = TypeFromUriProducer.getInstance().fire( org.lgna.croquet.triggers.IterationTrigger.createUserInstance() );
-		org.lgna.project.ast.NamedUserType userType = (org.lgna.project.ast.NamedUserType)step.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( userType );
-		step.finish();
+	protected void performInActivity( UserActivity activity ) {
+		final UserActivity child = activity.newChildActivity();
+		TypeFromUriProducer.getInstance().fire( child );
+		NamedUserType userType = (NamedUserType) child.getProducedValue();
+		Logger.outln( userType );
+		child.finish();
 	}
 }

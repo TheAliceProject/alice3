@@ -42,23 +42,29 @@
  */
 package stringexample.croquet;
 
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.StringState;
+import stringexample.croquet.views.StringExampleView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class StringExampleComposite extends org.lgna.croquet.SimpleComposite<stringexample.croquet.views.StringExampleView> {
+public class StringExampleComposite extends SimpleComposite<StringExampleView> {
 	public StringExampleComposite() {
-		super( java.util.UUID.fromString( "eacc4043-77b9-4cdc-aa2c-d91c16eee7a7" ) );
+		super( UUID.fromString( "eacc4043-77b9-4cdc-aa2c-d91c16eee7a7" ) );
 		this.nameState.setValueTransactionlessly( "myFirstProcedure" );
 	}
 
-	public org.lgna.croquet.StringState getNameState() {
+	public StringState getNameState() {
 		return this.nameState;
 	}
 
 	@Override
-	protected stringexample.croquet.views.StringExampleView createView() {
-		return new stringexample.croquet.views.StringExampleView( this );
+	protected StringExampleView createView() {
+		return new StringExampleView( this );
 	}
 
-	private final org.lgna.croquet.StringState nameState = this.createStringState( "nameState", "" );
+	private final StringState nameState = this.createStringState( "nameState", "" );
 }

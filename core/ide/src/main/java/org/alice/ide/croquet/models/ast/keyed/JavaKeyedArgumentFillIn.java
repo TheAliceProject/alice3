@@ -43,62 +43,79 @@
 
 package org.alice.ide.croquet.models.ast.keyed;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.croquet.models.ast.cascade.MethodUtilities;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.ImmutableCascadeFillIn;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaKeyedArgument;
+import org.lgna.project.ast.JavaMethod;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JavaKeyedArgumentFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> {
-	private static java.util.Map<org.lgna.project.ast.JavaMethod, JavaKeyedArgumentFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class JavaKeyedArgumentFillIn extends ImmutableCascadeFillIn<JavaKeyedArgument, Expression> {
+	private static Map<JavaMethod, JavaKeyedArgumentFillIn> map = Maps.newHashMap();
 
-	public static JavaKeyedArgumentFillIn getInstance( org.lgna.project.ast.JavaMethod value ) {
+	public static JavaKeyedArgumentFillIn getInstance( JavaMethod value ) {
 		synchronized( map ) {
 			JavaKeyedArgumentFillIn rv = map.get( value );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new JavaKeyedArgumentFillIn( value, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( value ) );
+				rv = new JavaKeyedArgumentFillIn( value, MethodUtilities.createParameterBlanks( value ) );
 				map.put( value, rv );
 			}
 			return rv;
 		}
 	}
 
-	private final org.lgna.project.ast.JavaKeyedArgument transientValue;
+	private final JavaKeyedArgument transientValue;
 
-	private JavaKeyedArgumentFillIn( org.lgna.project.ast.JavaMethod keyMethod, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>[] blanks ) {
-		super( java.util.UUID.fromString( "484ff351-b7a9-4c7a-b2de-a6479b97ade7" ), blanks );
-		this.transientValue = new org.lgna.project.ast.JavaKeyedArgument();
-		this.transientValue.expression.setValue( org.alice.ide.ast.IncompleteAstUtilities.createIncompleteStaticMethodInvocation( keyMethod ) );
+	private JavaKeyedArgumentFillIn( JavaMethod keyMethod, CascadeBlank<Expression>[] blanks ) {
+		super( UUID.fromString( "484ff351-b7a9-4c7a-b2de-a6479b97ade7" ), blanks );
+		this.transientValue = new JavaKeyedArgument();
+		this.transientValue.expression.setValue( IncompleteAstUtilities.createIncompleteStaticMethodInvocation( keyMethod ) );
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
-		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
-		org.lgna.project.ast.JavaMethod method = this.transientValue.getKeyMethod();
+	public String getMenuItemText() {
+		Formatter formatter = FormatterState.getInstance().getValue();
+		JavaMethod method = this.transientValue.getKeyMethod();
 		return formatter.getNameForDeclaration( method );
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
+	public Icon getMenuItemIcon( ItemNode<? super JavaKeyedArgument, Expression> node ) {
 		return null;
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
+	protected JComponent createMenuItemIconProxy( ItemNode<? super JavaKeyedArgument, Expression> node ) {
 		throw new AssertionError();
 	}
 
 	@Override
-	public org.lgna.project.ast.JavaKeyedArgument createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		org.lgna.project.ast.Expression[] argumentExpressions = this.createFromBlanks( node, transactionHistory, org.lgna.project.ast.Expression.class );
-		org.lgna.project.ast.JavaMethod keyMethod = this.transientValue.getKeyMethod();
-		return new org.lgna.project.ast.JavaKeyedArgument(
+	public JavaKeyedArgument createValue( ItemNode<? super JavaKeyedArgument, Expression> node ) {
+		Expression[] argumentExpressions = this.createFromBlanks( node, Expression.class );
+		JavaMethod keyMethod = this.transientValue.getKeyMethod();
+		return new JavaKeyedArgument(
 				this.transientValue.parameter.getValue(),
 				keyMethod,
 				argumentExpressions );
 	}
 
 	@Override
-	public org.lgna.project.ast.JavaKeyedArgument getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
+	public JavaKeyedArgument getTransientValue( ItemNode<? super JavaKeyedArgument, Expression> node ) {
 		return this.transientValue;
 	}
 }

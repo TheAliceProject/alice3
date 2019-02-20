@@ -42,11 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.nil;
 
+import edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+
+import javax.swing.JPanel;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class NrLightweightOnscreenRenderTarget extends NrOnscreenRenderTarget<javax.swing.JPanel> implements edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget {
-	public NrLightweightOnscreenRenderTarget( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
-		super( requestedCapabilities, new javax.swing.JPanel() );
+/*package-private*/class NrLightweightOnscreenRenderTarget extends NrOnscreenRenderTarget<JPanel> implements LightweightOnscreenRenderTarget {
+	public NrLightweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities ) {
+		super( requestedCapabilities, new JPanel() );
 	}
 }

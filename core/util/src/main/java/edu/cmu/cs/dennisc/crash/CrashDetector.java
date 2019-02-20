@@ -42,6 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.crash;
 
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -53,31 +56,31 @@ public final class CrashDetector {
 		this.cls = cls;
 	}
 
-	private java.util.prefs.Preferences getPreferences() {
-		return java.util.prefs.Preferences.userNodeForPackage( cls );
+	private Preferences getPreferences() {
+		return Preferences.userNodeForPackage( cls );
 	}
 
 	public boolean isPreviouslyOpenedButNotSucessfullyClosed() {
-		java.util.prefs.Preferences preferences = this.getPreferences();
+		Preferences preferences = this.getPreferences();
 		boolean isOpened = preferences.getBoolean( IS_OPENED_KEY, false );
 		boolean isSuccessfullyClosed = preferences.getBoolean( IS_SUCCESSFULLY_CLOSED_KEY, false );
 		return isOpened && ( isSuccessfullyClosed == false );
 	}
 
 	public void open() {
-		java.util.prefs.Preferences preferences = this.getPreferences();
+		Preferences preferences = this.getPreferences();
 		preferences.putBoolean( IS_OPENED_KEY, true );
 		preferences.putBoolean( IS_SUCCESSFULLY_CLOSED_KEY, false );
 	}
 
 	public void close() {
-		java.util.prefs.Preferences preferences = this.getPreferences();
+		Preferences preferences = this.getPreferences();
 		preferences.putBoolean( IS_OPENED_KEY, true );
 		preferences.putBoolean( IS_SUCCESSFULLY_CLOSED_KEY, true );
 	}
 
-	public void clearCrashDetectionPreferences() throws java.util.prefs.BackingStoreException {
-		java.util.prefs.Preferences preferences = this.getPreferences();
+	public void clearCrashDetectionPreferences() throws BackingStoreException {
+		Preferences preferences = this.getPreferences();
 		preferences.clear();
 	}
 

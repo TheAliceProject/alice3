@@ -1,6 +1,8 @@
 package Jama;
 
-   /** Cholesky Decomposition.
+import java.io.Serializable;
+
+/** Cholesky Decomposition.
    <P>
    For a symmetric, positive definite matrix A, the Cholesky decomposition
    is an lower triangular matrix L so that A = L*L'.
@@ -10,7 +12,7 @@ package Jama;
    be queried by the isSPD() method.
    */
 
-public class CholeskyDecomposition implements java.io.Serializable {
+public class CholeskyDecomposition implements Serializable {
 
 /* ------------------------
    Class variables

@@ -42,15 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.story;
 
+import edu.cmu.cs.dennisc.crash.CrashDetector;
+import org.alice.stageide.StageIDE;
+import org.alice.stageide.apis.org.lgna.story.ClassInfoUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AliceIde extends org.alice.stageide.StageIDE {
+public class AliceIde extends StageIDE {
 	static {
-		org.alice.stageide.apis.org.lgna.story.ClassInfoUtilities.loadClassInfos();
+		ClassInfoUtilities.loadClassInfos();
 	}
 
-	public AliceIde( edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
+	public AliceIde( CrashDetector crashDetector ) {
 		super( new AliceIdeConfiguration(), crashDetector );
 	}
 }

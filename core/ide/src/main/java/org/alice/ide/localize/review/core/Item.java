@@ -42,6 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.localize.review.core;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,7 +65,7 @@ public final class Item {
 		this.defaultValue = defaultValue;
 	}
 
-	public java.net.URI createUri( String localeTag ) {
+	public URI createUri( String localeTag ) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append( "https://translate.zanata.org/zanata/webtrans/Application.seam?project=" );
@@ -74,8 +83,8 @@ public final class Item {
 		sb.append( bundleName );
 
 		try {
-			return new java.net.URI( sb.toString() );
-		} catch( java.net.URISyntaxException urise ) {
+			return new URI( sb.toString() );
+		} catch( URISyntaxException urise ) {
 			throw new RuntimeException( sb.toString(), urise );
 		}
 	}
@@ -104,15 +113,15 @@ public final class Item {
 		this.localizedValue = localizedValue;
 	}
 
-	public java.util.List<String> getDefaultValueTags() {
-		java.util.regex.Pattern pattern = java.util.regex.Pattern.compile( "</.*/>" );
-		java.util.regex.Matcher matcher = pattern.matcher( this.defaultValue );
+	public List<String> getDefaultValueTags() {
+		Pattern pattern = Pattern.compile( "</.*/>" );
+		Matcher matcher = pattern.matcher( this.defaultValue );
 
-		java.util.List<String> tags = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<String> tags = Lists.newLinkedList();
 		while( matcher.find() ) {
 			tags.add( matcher.group( 0 ) );
 		}
-		return java.util.Collections.unmodifiableList( tags );
+		return Collections.unmodifiableList( tags );
 	}
 
 	private final String projectName;

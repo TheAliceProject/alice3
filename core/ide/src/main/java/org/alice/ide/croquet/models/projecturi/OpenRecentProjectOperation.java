@@ -42,39 +42,48 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.uricontent.FileProjectLoader;
+import org.alice.ide.uricontent.UriProjectLoader;
+import org.lgna.croquet.history.UserActivity;
+
+import java.io.File;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class OpenRecentProjectOperation extends UriPotentialClearanceIteratingOperation {
-	private static java.util.Map<java.net.URI, OpenRecentProjectOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<URI, OpenRecentProjectOperation> map = Maps.newHashMap();
 
-	public static synchronized OpenRecentProjectOperation getInstance( java.net.URI uri ) {
+	public static synchronized OpenRecentProjectOperation getInstance( URI uri ) {
 		OpenRecentProjectOperation rv = map.get( uri );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new OpenRecentProjectOperation( org.alice.ide.IDE.getActiveInstance().getDocumentFrame(), uri );
+		if ( rv == null ) {
+			rv = new OpenRecentProjectOperation( uri );
 			map.put( uri, rv );
 		}
 		return rv;
 	}
 
-	private OpenRecentProjectOperation( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, java.net.URI uri ) {
-		super( java.util.UUID.fromString( "f51873eb-06ad-4974-9890-7345adff3ac4" ), projectDocumentFrame, null );
+	private OpenRecentProjectOperation( URI uri ) {
+		super( UUID.fromString( "f51873eb-06ad-4974-9890-7345adff3ac4" ), null );
 		this.uri = uri;
 	}
 
 	@Override
 	protected void localize() {
 		super.localize();
-		java.io.File file = new java.io.File( this.uri );
+		File file = new File( this.uri );
 		this.setName( file.getAbsolutePath() );
 	}
 
 	@Override
-	protected org.alice.ide.uricontent.UriProjectLoader getUriProjectLoader( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
-		return new org.alice.ide.uricontent.FileProjectLoader( new java.io.File( this.uri ) );
+	protected UriProjectLoader getUriProjectLoader( List<UserActivity> subSteps ) {
+		return new FileProjectLoader( new File( this.uri ) );
 	}
 
-	private final java.net.URI uri;
+	private final URI uri;
 }

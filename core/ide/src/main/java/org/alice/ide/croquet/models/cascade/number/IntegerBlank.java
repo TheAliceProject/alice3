@@ -42,10 +42,12 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade.number;
 
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerBlank extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
+public class IntegerBlank extends ExpressionBlank {
 	private static class SingletonHolder {
 		private static IntegerBlank instance = new IntegerBlank();
 	}
@@ -55,6 +57,6 @@ public class IntegerBlank extends org.alice.ide.croquet.models.cascade.Expressio
 	}
 
 	private IntegerBlank() {
-		super( java.util.UUID.fromString( "a30136a1-06fe-40f7-baad-c6bd7f6f83da" ), Integer.class );
+		super( Integer.class );
 	}
 }

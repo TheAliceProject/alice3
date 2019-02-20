@@ -43,6 +43,8 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,6 +58,6 @@ public class RelationalIntegerCascadeMenu extends AbstractRelationalCascadeMenu 
 	}
 
 	private RelationalIntegerCascadeMenu() {
-		super( java.util.UUID.fromString( "d527e85d-de5c-4a0a-a1e6-e51253893779" ), Integer.class );
+		super( UUID.fromString( "d527e85d-de5c-4a0a-a1e6-e51253893779" ), Integer.class );
 	}
 }

@@ -42,18 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeWithInternalBlank;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.imp.cascade.BlankNode;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class HistoryCascade extends org.lgna.croquet.CascadeWithInternalBlank<DeclarationComposite> {
-	public HistoryCascade( java.util.UUID id ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, id, DeclarationComposite.class );
+public abstract class HistoryCascade extends CascadeWithInternalBlank<DeclarationComposite> {
+	public HistoryCascade( UUID id ) {
+		super( Application.DOCUMENT_UI_GROUP, id, DeclarationComposite.class );
 	}
 
-	protected abstract java.util.List<DeclarationComposite<?, ?>> getList( DeclarationCompositeHistory declarationCompositeHistory );
+	protected abstract List<DeclarationComposite<?, ?>> getList( DeclarationCompositeHistory declarationCompositeHistory );
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<org.alice.ide.declarationseditor.DeclarationComposite> blankNode ) {
+	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<DeclarationComposite> blankNode ) {
 		for( DeclarationComposite declarationComposite : this.getList( DeclarationCompositeHistory.getInstance() ) ) {
 			rv.add( DeclarationCompositeFillIn.getInstance( declarationComposite ) );
 		}
@@ -61,7 +71,7 @@ public abstract class HistoryCascade extends org.lgna.croquet.CascadeWithInterna
 	}
 
 	@Override
-	protected final org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.alice.ide.declarationseditor.DeclarationComposite>> completionStep, org.alice.ide.declarationseditor.DeclarationComposite[] values ) {
+	protected final Edit createEdit( UserActivity userActivity, DeclarationComposite[] values ) {
 		DeclarationCompositeHistory.getInstance().setDeclarationComposite( values[ 0 ] );
 		return null;
 	}

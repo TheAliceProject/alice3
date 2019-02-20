@@ -42,6 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.net;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,10 +53,10 @@ public class UrlUtilities {
 		throw new AssertionError();
 	}
 
-	public static java.net.URL createUrl( String spec ) {
+	public static URL createUrl( String spec ) {
 		try {
-			return new java.net.URL( spec );
-		} catch( java.net.MalformedURLException murle ) {
+			return new URL( spec );
+		} catch( MalformedURLException murle ) {
 			throw new RuntimeException( spec, murle );
 		}
 	}

@@ -42,25 +42,42 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.uri;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.ast.type.croquet.ImportTypeWizard;
+import org.alice.ide.ast.type.merge.core.MergeUtilities;
 import org.alice.nonfree.NebulousIde;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite;
+import org.alice.stageide.modelresource.ClassResourceKey;
+import org.alice.stageide.modelresource.EnumConstantResourceKey;
+import org.alice.stageide.modelresource.ResourceKey;
+import org.lgna.common.Resource;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.SingleThreadIteratingOperation;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.VersionNotSupportedException;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.io.IoUtilities;
+import org.lgna.project.io.TypeResourcesPair;
 
-import java.util.Iterator;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceKeyUriIteratingOperation extends org.lgna.croquet.SingleThreadIteratingOperation {
-	public static ResourceKeyUriIteratingOperation getInstance( org.alice.stageide.modelresource.ResourceKey resourceKey, Class<?> thingCls, java.net.URI uri ) {
+public abstract class ResourceKeyUriIteratingOperation extends SingleThreadIteratingOperation {
+	public static ResourceKeyUriIteratingOperation getInstance( ResourceKey resourceKey, Class<?> thingCls, URI uri ) {
 		ResourceKeyUriIteratingOperation rv;
 		if( resourceKey != null ) {
-			if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
+			if( resourceKey instanceof ClassResourceKey ) {
 				//				org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
 				rv = ClassResourceKeyUriIteratingOperation.getInstance();
-			} else if( resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
+			} else if( resourceKey instanceof EnumConstantResourceKey ) {
 				rv = EnumConstantResourceKeyUriIteratingOperation.getInstance();
 			} else if( NebulousIde.nonfree.isInstanceOfPersonResourceKey( resourceKey ) ) {
 				rv = NebulousIde.nonfree.getPersonResourceKeyUriIteratingOperation();
@@ -76,11 +93,11 @@ public abstract class ResourceKeyUriIteratingOperation extends org.lgna.croquet.
 		return rv;
 	}
 
-	public ResourceKeyUriIteratingOperation( java.util.UUID migrationId ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, migrationId );
+	public ResourceKeyUriIteratingOperation( UUID migrationId ) {
+		super( Application.PROJECT_GROUP, migrationId );
 	}
 
-	public org.alice.stageide.modelresource.ResourceKey getResourceKey() {
+	public ResourceKey getResourceKey() {
 		return this.resourceKey;
 	}
 
@@ -88,11 +105,11 @@ public abstract class ResourceKeyUriIteratingOperation extends org.lgna.croquet.
 		return this.thingCls;
 	}
 
-	public java.net.URI getUri() {
+	public URI getUri() {
 		return this.uri;
 	}
 
-	private void setResourceKeyThingClsAndUri( org.alice.stageide.modelresource.ResourceKey resourceKey, Class<?> thingCls, java.net.URI uri ) {
+	private void setResourceKeyThingClsAndUri( ResourceKey resourceKey, Class<?> thingCls, URI uri ) {
 		this.resourceKey = resourceKey;
 		this.thingCls = thingCls;
 		this.uri = uri;
@@ -101,33 +118,32 @@ public abstract class ResourceKeyUriIteratingOperation extends org.lgna.croquet.
 	protected abstract int getStepCount();
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		return subSteps.size() < this.getStepCount();
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		return finishedSteps.size() < this.getStepCount();
 	}
 
-	protected org.lgna.croquet.Operation getAddResourceKeyManagedFieldCompositeOperation( org.alice.stageide.modelresource.EnumConstantResourceKey enumConstantResourceKey ) {
-		org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
-		addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( enumConstantResourceKey, false );
-		return addResourceKeyManagedFieldComposite.getLaunchOperation();
+	Operation getAddResourceKeyManagedFieldCompositeOperation( EnumConstantResourceKey enumConstantResourceKey ) {
+		return AddResourceKeyManagedFieldComposite.getInstance().
+			getLaunchOperationToCreateValue( enumConstantResourceKey, false );
 	}
 
-	protected org.lgna.croquet.Operation getMergeTypeOperation() {
-		org.lgna.project.io.TypeResourcesPair typeResourcesPair;
+	protected Operation getMergeTypeOperation() {
+		TypeResourcesPair typeResourcesPair;
 		try {
-			typeResourcesPair = org.lgna.project.io.IoUtilities.readType( new java.io.File( this.uri ) );
-		} catch( java.io.IOException ioe ) {
+			typeResourcesPair = IoUtilities.readType( new File( this.uri ) );
+		} catch( IOException ioe ) {
 			typeResourcesPair = null;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ioe, this.uri );
-		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+			Logger.throwable( ioe, this.uri );
+		} catch( VersionNotSupportedException vnse ) {
 			typeResourcesPair = null;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( vnse, this.uri );
+			Logger.throwable( vnse, this.uri );
 		}
 		if( typeResourcesPair != null ) {
-			org.lgna.project.ast.NamedUserType importedRootType = typeResourcesPair.getType();
-			java.util.Set<org.lgna.common.Resource> importedResources = typeResourcesPair.getResources();
-			org.lgna.project.ast.NamedUserType srcType = importedRootType;
-			org.lgna.project.ast.NamedUserType dstType = org.alice.ide.ast.type.merge.core.MergeUtilities.findMatchingTypeInExistingTypes( srcType );
-			org.alice.ide.ast.type.croquet.ImportTypeWizard wizard = new org.alice.ide.ast.type.croquet.ImportTypeWizard( this.uri, importedRootType, importedResources, srcType, dstType );
+			NamedUserType importedRootType = typeResourcesPair.getType();
+			Set<Resource> importedResources = typeResourcesPair.getResources();
+			NamedUserType srcType = importedRootType;
+			NamedUserType dstType = MergeUtilities.findMatchingTypeInExistingTypes( srcType );
+			ImportTypeWizard wizard = new ImportTypeWizard( this.uri, importedRootType, importedResources, srcType, dstType );
 			return wizard.getLaunchOperation();
 		} else {
 			return null;
@@ -135,15 +151,12 @@ public abstract class ResourceKeyUriIteratingOperation extends org.lgna.croquet.
 	}
 
 	@Override
-	protected abstract org.lgna.croquet.Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData );
-
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
-		step.finish();
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ) {
+		super.handleSuccessfulCompletionOfSubModels( activity );
 		this.resourceKey = null;
 	}
 
-	protected org.alice.stageide.modelresource.ResourceKey resourceKey;
+	protected ResourceKey resourceKey;
 	protected Class<?> thingCls;
-	private java.net.URI uri;
+	private URI uri;
 }

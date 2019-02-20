@@ -43,16 +43,22 @@
 
 package org.alice.stageide.apis.story.event;
 
+import org.lgna.project.ast.Lambda;
+import org.lgna.project.virtualmachine.LambdaContext;
+import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.story.event.SceneActivationEvent;
+import org.lgna.story.event.SceneActivationListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SceneActivationAdapter extends AbstractAdapter implements org.lgna.story.event.SceneActivationListener {
-	public SceneActivationAdapter( org.lgna.project.virtualmachine.LambdaContext context, org.lgna.project.ast.Lambda lambda, org.lgna.project.virtualmachine.UserInstance userInstance ) {
+public class SceneActivationAdapter extends AbstractAdapter implements SceneActivationListener {
+	public SceneActivationAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
 		super( context, lambda, userInstance );
 	}
 
 	@Override
-	public void sceneActivated( org.lgna.story.event.SceneActivationEvent e ) {
+	public void sceneActivated( SceneActivationEvent e ) {
 		invokeEntryPoint( e );
 	}
 }

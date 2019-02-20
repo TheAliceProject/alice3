@@ -42,14 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.member;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.project.ast.JavaMethod;
+
+import java.util.Comparator;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class NameFilteredJavaMethodsSubComposite extends FilteredJavaMethodsSubComposite {
-	private final java.util.Map<String, Integer> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
+	private final Map<String, Integer> map = Maps.newHashMap();
+	private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
 		@Override
-		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
+		public int compare( JavaMethod methodA, JavaMethod methodB ) {
 			Integer valueA = map.get( methodA.getName() );
 			Integer valueB = map.get( methodB.getName() );
 			if( ( valueA != null ) && ( valueB != null ) ) {
@@ -64,7 +71,7 @@ public abstract class NameFilteredJavaMethodsSubComposite extends FilteredJavaMe
 		}
 	};
 
-	public NameFilteredJavaMethodsSubComposite( java.util.UUID migrationId, String... methodNames ) {
+	public NameFilteredJavaMethodsSubComposite( UUID migrationId, String... methodNames ) {
 		super( migrationId, true );
 		for( int i = 0; i < methodNames.length; i++ ) {
 			this.map.put( methodNames[ i ], i );
@@ -72,12 +79,12 @@ public abstract class NameFilteredJavaMethodsSubComposite extends FilteredJavaMe
 	}
 
 	@Override
-	public java.util.Comparator<org.lgna.project.ast.JavaMethod> getComparator() {
+	public Comparator<JavaMethod> getComparator() {
 		return this.comparator;
 	}
 
 	@Override
-	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
+	protected boolean isAcceptingOf( JavaMethod method ) {
 		return this.map.keySet().contains( method.getName() );
 	}
 }

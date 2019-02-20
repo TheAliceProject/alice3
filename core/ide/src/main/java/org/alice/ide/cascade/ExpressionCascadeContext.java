@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.cascade;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.project.ast.Expression;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface ExpressionCascadeContext {
-	public org.lgna.project.ast.Expression getPreviousExpression();
+	public Expression getPreviousExpression();
 
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair();
+	public BlockStatementIndexPair getBlockStatementIndexPair();
 }

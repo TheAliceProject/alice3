@@ -43,19 +43,25 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+import org.lgna.croquet.views.ImmutableEditorPane;
+
+import javax.swing.text.html.HTMLDocument;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class HtmlStringValue extends StringValue {
-	public HtmlStringValue( java.util.UUID migrationId ) {
-		super( migrationId, new javax.swing.text.html.HTMLDocument() );
+	public HtmlStringValue( UUID migrationId ) {
+		super( migrationId, new HTMLDocument() );
 	}
 
-	public org.lgna.croquet.views.ImmutableEditorPane createImmutableEditorPane( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
-		return new org.lgna.croquet.views.ImmutableEditorPane( this, fontScalar, textAttributes );
+	public ImmutableEditorPane createImmutableEditorPane( float fontScalar, TextAttribute<?>... textAttributes ) {
+		return new ImmutableEditorPane( this, fontScalar, textAttributes );
 	}
 
-	public org.lgna.croquet.views.ImmutableEditorPane createImmutableEditorPane( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public ImmutableEditorPane createImmutableEditorPane( TextAttribute<?>... textAttributes ) {
 		return this.createImmutableEditorPane( 1.0f, textAttributes );
 	}
 }

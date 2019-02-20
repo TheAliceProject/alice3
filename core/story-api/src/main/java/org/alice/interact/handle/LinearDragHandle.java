@@ -58,6 +58,8 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.interact.debug.DebugInteractUtilities;
+import org.lgna.story.EmployeesOnly;
 
 /**
  * @author David Culyba
@@ -67,11 +69,11 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		this.dragDescription = dragDescription;
 		this.baseColor = baseColor;
 		this.standUpReference.setName( "Linear StandUp Reference" );
-		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() ) {
+		if( DebugInteractUtilities.isDebugEnabled() ) {
 			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 		this.snapReference.setName( "Linear Snap Reference" );
-		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() ) {
+		if( DebugInteractUtilities.isDebugEnabled() ) {
 			this.snapReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 		this.dragAxis = new Vector3( this.dragDescription.direction.getVector() );
@@ -105,7 +107,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 
 	@Override
 	protected Color4f getDesiredColor( HandleRenderState renderState ) {
-		Color desiredColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.toAwtColor( this.getBaseColor() );
+		Color desiredColor = ColorUtilities.toAwtColor( this.getBaseColor() );
 		switch( renderState ) {
 		case NOT_VISIBLE:
 			break; //Do nothing
@@ -123,7 +125,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		default:
 			break; //Do nothing
 		}
-		return org.lgna.story.EmployeesOnly.createColor4f( desiredColor );
+		return EmployeesOnly.createColor4f( desiredColor );
 	}
 
 	protected abstract void createShape();

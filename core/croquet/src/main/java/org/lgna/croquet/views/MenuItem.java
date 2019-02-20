@@ -43,17 +43,23 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import org.lgna.croquet.Operation;
+
+import javax.swing.Icon;
+import javax.swing.JMenuItem;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MenuItem extends OperationButton<javax.swing.JMenuItem, org.lgna.croquet.Operation> {
-	public MenuItem( org.lgna.croquet.Operation model ) {
+public class MenuItem extends OperationButton<JMenuItem, Operation> {
+	public MenuItem( Operation model ) {
 		super( model, "MenuItem" );
 	}
 
 	@Override
-	protected final javax.swing.JMenuItem createAwtComponent() {
-		return new javax.swing.JMenuItem() {
+	protected final JMenuItem createAwtComponent() {
+		return new JMenuItem() {
 			@Override
 			public String getText() {
 				if( isTextClobbered() ) {
@@ -64,8 +70,8 @@ public class MenuItem extends OperationButton<javax.swing.JMenuItem, org.lgna.cr
 			}
 
 			@Override
-			public javax.swing.Icon getIcon() {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus() ) {
+			public Icon getIcon() {
+				if( SystemUtilities.areIconsDisplayedInMenus() ) {
 					if( MenuItem.this.isIconClobbered() ) {
 						return MenuItem.this.getClobberIcon();
 					} else {

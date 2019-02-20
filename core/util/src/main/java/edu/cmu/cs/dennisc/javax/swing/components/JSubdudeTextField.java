@@ -42,30 +42,63 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
+import edu.cmu.cs.dennisc.java.util.Arrays;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.AWTEvent;
+import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.Rectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
 //TODO: provide custom java.awt.FocusTraversalPolicy to skip JSubtleTextFields?
-public class JSubdudeTextField extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField {
+public class JSubdudeTextField extends JSuggestiveTextField {
 	public JSubdudeTextField() {
-		javax.swing.InputMap inputMap = this.getInputMap();
-		inputMap.put( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ESCAPE, 0 ), this.transferFocusAction );
-		inputMap.put( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ENTER, 0 ), this.transferFocusAction );
+		InputMap inputMap = this.getInputMap();
+		inputMap.put( KeyStroke.getKeyStroke( KeyEvent.VK_ESCAPE, 0 ), this.transferFocusAction );
+		inputMap.put( KeyStroke.getKeyStroke( KeyEvent.VK_ENTER, 0 ), this.transferFocusAction );
 	}
 
 	@Override
-	public java.awt.Dimension getPreferredSize() {
-		java.awt.Insets insets = this.getInsets();
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 24 + insets.left + insets.right );
+	public Dimension getPreferredSize() {
+		Insets insets = this.getInsets();
+		return DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 24 + insets.left + insets.right );
 	}
 
 	@Override
-	public java.awt.Dimension getMaximumSize() {
+	public Dimension getMaximumSize() {
 		return this.getPreferredSize();
 	}
 
 	private void installListeners() {
-		if( edu.cmu.cs.dennisc.java.util.Arrays.contains( this.getMouseListeners(), this.mouseListener ) ) {
+		if( Arrays.contains( this.getMouseListeners(), this.mouseListener ) ) {
 			//pass
 		} else {
 			this.addMouseListener( this.mouseListener );
@@ -75,7 +108,7 @@ public class JSubdudeTextField extends edu.cmu.cs.dennisc.javax.swing.components
 	}
 
 	private void uninstallListeners() {
-		if( edu.cmu.cs.dennisc.java.util.Arrays.contains( this.getMouseListeners(), this.mouseListener ) ) {
+		if( Arrays.contains( this.getMouseListeners(), this.mouseListener ) ) {
 			this.getDocument().removeDocumentListener( this.documentListener );
 			this.removeFocusListener( this.focusListener );
 			this.removeMouseListener( this.mouseListener );
@@ -97,32 +130,32 @@ public class JSubdudeTextField extends edu.cmu.cs.dennisc.javax.swing.components
 	}
 
 	@Override
-	public void paint( java.awt.Graphics g ) {
+	public void paint( Graphics g ) {
 		if( this.hasFocus() ) {
 			super.paint( g );
 		} else {
-			edu.cmu.cs.dennisc.java.awt.GraphicsContext gc = edu.cmu.cs.dennisc.java.awt.GraphicsContext.getInstanceAndPushGraphics( g );
+			GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g );
 			gc.pushAndSetTextAntialiasing( true );
 			gc.pushFont();
 			gc.pushPaint();
-			java.awt.Color backgroundColor = this.getParent().getBackground();
+			Color backgroundColor = this.getParent().getBackground();
 			if( this.buttonModel.isRollover() ) {
-				backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( backgroundColor, 1.0, 0.9, 0.9 );
+				backgroundColor = ColorUtilities.scaleHSB( backgroundColor, 1.0, 0.9, 0.9 );
 			}
 			g.setColor( backgroundColor );
 			g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 			g.setColor( this.getForeground() );
 			g.setFont( this.getFont() );
-			java.awt.FontMetrics fm = g.getFontMetrics();
-			java.awt.Insets insets = this.getInsets();
-			java.awt.ComponentOrientation componentOrientation = this.getComponentOrientation();
+			FontMetrics fm = g.getFontMetrics();
+			Insets insets = this.getInsets();
+			ComponentOrientation componentOrientation = this.getComponentOrientation();
 			String text = this.getText();
 			int x;
 			if( componentOrientation.isLeftToRight() ) {
 				x = insets.left;
 			} else {
 				x = this.getWidth() - insets.right;
-				java.awt.geom.Rectangle2D bounds = fm.getStringBounds( text, g );
+				Rectangle2D bounds = fm.getStringBounds( text, g );
 				x -= (int)( Math.ceil( bounds.getWidth() ) );
 			}
 			int y = insets.top + fm.getAscent();
@@ -132,15 +165,15 @@ public class JSubdudeTextField extends edu.cmu.cs.dennisc.javax.swing.components
 		}
 	}
 
-	private final java.awt.event.AWTEventListener globalListener = new java.awt.event.AWTEventListener() {
+	private final AWTEventListener globalListener = new AWTEventListener() {
 		@Override
-		public void eventDispatched( java.awt.AWTEvent e ) {
-			if( e instanceof java.awt.event.MouseEvent ) {
-				java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent)e;
-				if( mouseEvent.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED ) {
+		public void eventDispatched( AWTEvent e ) {
+			if( e instanceof MouseEvent ) {
+				MouseEvent mouseEvent = (MouseEvent)e;
+				if( mouseEvent.getID() == MouseEvent.MOUSE_PRESSED ) {
 					if( mouseEvent.getComponent() == JSubdudeTextField.this ) {
 						//pass
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( mouseEvent );
+						Logger.outln( mouseEvent );
 					} else {
 						transferFocus();
 					}
@@ -149,74 +182,74 @@ public class JSubdudeTextField extends edu.cmu.cs.dennisc.javax.swing.components
 		}
 	};
 
-	private final java.awt.event.FocusListener focusListener = new java.awt.event.FocusListener() {
+	private final FocusListener focusListener = new FocusListener() {
 		@Override
-		public void focusGained( java.awt.event.FocusEvent e ) {
-			java.awt.Toolkit.getDefaultToolkit().addAWTEventListener( globalListener, java.awt.AWTEvent.MOUSE_EVENT_MASK );
+		public void focusGained( FocusEvent e ) {
+			Toolkit.getDefaultToolkit().addAWTEventListener( globalListener, AWTEvent.MOUSE_EVENT_MASK );
 		}
 
 		@Override
-		public void focusLost( java.awt.event.FocusEvent e ) {
-			java.awt.Toolkit.getDefaultToolkit().removeAWTEventListener( globalListener );
+		public void focusLost( FocusEvent e ) {
+			Toolkit.getDefaultToolkit().removeAWTEventListener( globalListener );
 		}
 	};
 
-	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+	private final MouseListener mouseListener = new MouseListener() {
 		@Override
-		public void mouseEntered( java.awt.event.MouseEvent e ) {
+		public void mouseEntered( MouseEvent e ) {
 			buttonModel.setRollover( true );
 			repaint();
 		}
 
 		@Override
-		public void mouseExited( java.awt.event.MouseEvent e ) {
+		public void mouseExited( MouseEvent e ) {
 			buttonModel.setRollover( false );
 			repaint();
 		}
 
 		@Override
-		public void mousePressed( java.awt.event.MouseEvent e ) {
+		public void mousePressed( MouseEvent e ) {
 		}
 
 		@Override
-		public void mouseReleased( java.awt.event.MouseEvent e ) {
+		public void mouseReleased( MouseEvent e ) {
 		}
 
 		@Override
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		public void mouseClicked( MouseEvent e ) {
 		}
 	};
 
-	private final javax.swing.Action transferFocusAction = new javax.swing.AbstractAction() {
+	private final Action transferFocusAction = new AbstractAction() {
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			transferFocus();
 		}
 	};
 
-	private final javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
+	private final DocumentListener documentListener = new DocumentListener() {
 		private void update() {
-			java.awt.Container parent = getParent();
-			if( parent instanceof javax.swing.JComponent ) {
-				( (javax.swing.JComponent)parent ).revalidate();
+			Container parent = getParent();
+			if( parent instanceof JComponent ) {
+				( (JComponent)parent ).revalidate();
 				parent.repaint();
 			}
 		}
 
 		@Override
-		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+		public void changedUpdate( DocumentEvent e ) {
 			this.update();
 		}
 
 		@Override
-		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+		public void insertUpdate( DocumentEvent e ) {
 			this.update();
 		}
 
 		@Override
-		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+		public void removeUpdate( DocumentEvent e ) {
 			this.update();
 		}
 	};
-	private final javax.swing.ButtonModel buttonModel = new javax.swing.DefaultButtonModel();
+	private final ButtonModel buttonModel = new DefaultButtonModel();
 }

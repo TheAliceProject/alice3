@@ -42,32 +42,50 @@
  *******************************************************************************/
 package org.alice.media.youtube.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+import org.alice.stageide.icons.ShapeIcon;
+import org.lgna.croquet.views.SwingComponentView;
+
+import javax.swing.AbstractButton;
+import javax.swing.JComponent;
+import javax.swing.JToggleButton;
+import javax.swing.plaf.basic.BasicButtonUI;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Stroke;
+import java.awt.geom.RoundRectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewVideoView extends org.lgna.croquet.views.SwingComponentView<javax.swing.AbstractButton> {
-	private static class PlayIcon extends org.alice.stageide.icons.ShapeIcon {
-		private final java.awt.Stroke stroke;
+public class PreviewVideoView extends SwingComponentView<AbstractButton> {
+	private static class PlayIcon extends ShapeIcon {
+		private final Stroke stroke;
 
-		public PlayIcon( java.awt.Dimension size ) {
+		public PlayIcon( Dimension size ) {
 			super( size );
-			stroke = new java.awt.BasicStroke( size.width / 25.0f );
+			stroke = new BasicStroke( size.width / 25.0f );
 		}
 
 		@Override
-		protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-			java.awt.Stroke prevStroke = g2.getStroke();
+		protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
+			Stroke prevStroke = g2.getStroke();
 			g2.setStroke( stroke );
-			java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 0, 0, width, height, width * 0.45f, height * 0.45f );
-			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 70 ) );
+			RoundRectangle2D.Float rr = new RoundRectangle2D.Float( 0, 0, width, height, width * 0.45f, height * 0.45f );
+			g2.setColor( ColorUtilities.createGray( 70 ) );
 			g2.fill( rr );
-			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 220 ) );
+			g2.setColor( ColorUtilities.createGray( 220 ) );
 			g2.draw( rr );
 
 			int w = (int)( width * 0.4 );
 			int h = (int)( height * 0.45 );
 			int xFudge = width / 20;
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST, ( ( width - w ) / 2 ) + xFudge, ( height - h ) / 2, w, h );
+			GraphicsUtilities.fillTriangle( g2, GraphicsUtilities.Heading.EAST, ( ( width - w ) / 2 ) + xFudge, ( height - h ) / 2, w, h );
 			g2.setStroke( prevStroke );
 		}
 	}
@@ -76,20 +94,20 @@ public class PreviewVideoView extends org.lgna.croquet.views.SwingComponentView<
 	}
 
 	@Override
-	protected javax.swing.AbstractButton createAwtComponent() {
-		javax.swing.AbstractButton rv = new javax.swing.JToggleButton() {
+	protected AbstractButton createAwtComponent() {
+		AbstractButton rv = new JToggleButton() {
 			@Override
 			public void updateUI() {
-				this.setUI( new javax.swing.plaf.basic.BasicButtonUI() {
+				this.setUI( new BasicButtonUI() {
 					@Override
-					public java.awt.Dimension getPreferredSize( javax.swing.JComponent c ) {
-						return new java.awt.Dimension( 320, 180 );
+					public Dimension getPreferredSize( JComponent c ) {
+						return new Dimension( 320, 180 );
 					}
 				} );
 			}
 		};
-		rv.setIcon( new PlayIcon( new java.awt.Dimension( 60, 60 ) ) );
-		rv.setBackground( java.awt.Color.BLACK );
+		rv.setIcon( new PlayIcon( new Dimension( 60, 60 ) ) );
+		rv.setBackground( Color.BLACK );
 		rv.setRolloverEnabled( true );
 		return rv;
 	}

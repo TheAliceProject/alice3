@@ -43,12 +43,13 @@
 
 package org.lgna.croquet.imp.cascade;
 
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import org.lgna.croquet.Element;
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class RtNode<E extends Element, N extends CascadeNode<?, E>> {
+abstract class RtNode<E, N extends CascadeNode<E>> {
 	private final E element;
 	private final N node;
 	private RtNode<?, ?> parent;
@@ -143,7 +144,7 @@ abstract class RtNode<E extends Element, N extends CascadeNode<?, E>> {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( this.getClass() );
+		ClassUtilities.getTrimmedClassName( this.getClass() );
 		sb.append( "[" );
 		sb.append( this.element );
 		sb.append( "]" );

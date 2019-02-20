@@ -42,22 +42,26 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class LaunchOperationWizardDialogCoreComposite extends OperationWizardDialogCoreComposite {
-	public LaunchOperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, WizardPageComposite<?, ?>... wizardPages ) {
+	public LaunchOperationWizardDialogCoreComposite( UUID migrationId, Group operationGroup, WizardPageComposite<?, ?>... wizardPages ) {
 		super( migrationId, wizardPages );
-		this.imp = new org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp( this, operationGroup );
+		this.imp = new LaunchOperationOwningCompositeImp( this, operationGroup );
 	}
 
-	protected org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp getImp() {
+	protected LaunchOperationOwningCompositeImp getImp() {
 		return this.imp;
 	}
 
-	public org.lgna.croquet.Operation getLaunchOperation( String subKeyText ) {
+	public Operation getLaunchOperation( String subKeyText ) {
 		return this.imp.getLaunchOperation( subKeyText );
 	}
 
-	private final org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp imp;
+	private final LaunchOperationOwningCompositeImp imp;
 }

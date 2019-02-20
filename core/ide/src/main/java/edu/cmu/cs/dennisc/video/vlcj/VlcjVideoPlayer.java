@@ -42,15 +42,32 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.video.vlcj;
 
+import edu.cmu.cs.dennisc.java.awt.Painter;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.video.VideoPlayer;
+import edu.cmu.cs.dennisc.video.event.MediaListener;
+import edu.wustl.lookingglass.media.FFmpegImageExtractor;
+import uk.co.caprica.vlcj.binding.internal.libvlc_media_t;
 import uk.co.caprica.vlcj.player.MediaPlayer;
+import uk.co.caprica.vlcj.player.MediaPlayerEventListener;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.io.File;
+import java.net.URI;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
-	private final uk.co.caprica.vlcj.player.MediaPlayerEventListener mediaPlayerEventListener = new uk.co.caprica.vlcj.player.MediaPlayerEventListener() {
+public class VlcjVideoPlayer implements VideoPlayer {
+	private final MediaPlayerEventListener mediaPlayerEventListener = new MediaPlayerEventListener() {
 		@Override
-		public void mediaChanged( MediaPlayer mediaPlayer, uk.co.caprica.vlcj.binding.internal.libvlc_media_t media, String mrl ) {
+		public void mediaChanged( MediaPlayer mediaPlayer, libvlc_media_t media, String mrl ) {
 			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "mediaChanged", mediaPlayer, media, mrl );
 			//uk.co.caprica.vlcj.player.MediaDetails mediaDetails = mediaPlayer.getMediaDetails();
 			fireMediaChanged();
@@ -139,7 +156,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 
 		@Override
-		public void mediaSubItemAdded( MediaPlayer mediaPlayer, uk.co.caprica.vlcj.binding.internal.libvlc_media_t subItem ) {
+		public void mediaSubItemAdded( MediaPlayer mediaPlayer, libvlc_media_t subItem ) {
 		}
 
 		@Override
@@ -192,14 +209,14 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 
 		}
 	};
-	private final java.util.List<edu.cmu.cs.dennisc.video.event.MediaListener> mediaListeners = new java.util.concurrent.CopyOnWriteArrayList<edu.cmu.cs.dennisc.video.event.MediaListener>();
+	private final List<MediaListener> mediaListeners = new CopyOnWriteArrayList<MediaListener>();
 	private final VlcjMediaPlayerComponent mediaPlayerComponent;
 
 	private String mediaPath = null;
 	private boolean isPrepared;
 
 	public VlcjVideoPlayer() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() && ( edu.cmu.cs.dennisc.java.lang.SystemUtilities.getJavaVersionAsDouble() >= 1.7 ) ) {
+		if( SystemUtilities.isMac() && ( SystemUtilities.getJavaVersionAsDouble() >= 1.7 ) ) {
 			// The mac for now needs to use a software renderer
 			this.mediaPlayerComponent = new LightweightMediaPlayerComponent( this );
 		} else {
@@ -207,8 +224,8 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
-		if( mediaPlayer instanceof uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer ) {
-			uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer embeddedMediaPlayer = (uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer)mediaPlayer;
+		if( mediaPlayer instanceof EmbeddedMediaPlayer ) {
+			EmbeddedMediaPlayer embeddedMediaPlayer = (EmbeddedMediaPlayer)mediaPlayer;
 			embeddedMediaPlayer.setEnableMouseInputHandling( false );
 			embeddedMediaPlayer.setEnableKeyInputHandling( false );
 		}
@@ -217,107 +234,107 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 
 	private void fireNewMedia() {
 		this.markPausedPositionAndTimeInMillisecondsInvalid();
-		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+		for( MediaListener mediaListener : mediaListeners ) {
 			mediaListener.newMedia( this );
 		}
 	}
 
 	private void fireVideoOutput( int count ) {
 		this.markPausedPositionAndTimeInMillisecondsInvalid();
-		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+		for( MediaListener mediaListener : mediaListeners ) {
 			mediaListener.videoOutput( this, count );
 		}
 	}
 
 	private void firePositionChanged( float position ) {
-		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+		for( MediaListener mediaListener : mediaListeners ) {
 			mediaListener.positionChanged( this, position );
 		}
 	}
 
 	private void fireLengthChanged( long length ) {
 		this.markPausedPositionAndTimeInMillisecondsInvalid();
-		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+		for( MediaListener mediaListener : mediaListeners ) {
 			mediaListener.lengthChanged( this, length );
 		}
 	}
 
 	private void fireMediaChanged() {
 		this.markPausedPositionAndTimeInMillisecondsInvalid();
-		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+		for( MediaListener mediaListener : mediaListeners ) {
 			mediaListener.mediaChanged( this );
 		}
 	}
 
 	private void fireOpening() {
 		this.markPausedPositionAndTimeInMillisecondsInvalid();
-		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+		for( MediaListener mediaListener : mediaListeners ) {
 			mediaListener.opening( this );
 		}
 	}
 
 	private void firePlaying() {
 		this.markPausedPositionAndTimeInMillisecondsInvalid();
-		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+		for( MediaListener mediaListener : mediaListeners ) {
 			mediaListener.playing( this );
 		}
 	}
 
 	private void firePaused() {
-		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+		for( MediaListener mediaListener : mediaListeners ) {
 			mediaListener.paused( this );
 		}
 	}
 
 	private void fireStopped() {
-		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+		for( MediaListener mediaListener : mediaListeners ) {
 			mediaListener.stopped( this );
 		}
 	}
 
 	private void fireFinished() {
-		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+		for( MediaListener mediaListener : mediaListeners ) {
 			mediaListener.finished( this );
 		}
 	}
 
 	private void fireError() {
-		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+		for( MediaListener mediaListener : mediaListeners ) {
 			mediaListener.error( this );
 		}
 	}
 
 	@Override
-	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener ) {
+	public void addMediaListener( MediaListener listener ) {
 		this.mediaListeners.add( listener );
 	}
 
 	@Override
-	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener ) {
+	public void removeMediaListener( MediaListener listener ) {
 		this.mediaListeners.add( listener );
 	}
 
 	@Override
-	public java.awt.Component getVideoSurface() {
+	public Component getVideoSurface() {
 		return this.mediaPlayerComponent.getVideoSurface();
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> getPainter() {
+	public Painter<VideoPlayer> getPainter() {
 		return this.mediaPlayerComponent.getPainter();
 	}
 
 	@Override
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter ) {
+	public void setPainter( Painter<VideoPlayer> painter ) {
 		this.mediaPlayerComponent.setPainter( painter );
 	}
 
 	@Override
-	public boolean prepareMedia( java.net.URI uri ) {
+	public boolean prepareMedia( URI uri ) {
 		if( uri != null ) {
 			String scheme = uri.getScheme();
 			if( scheme.equalsIgnoreCase( "file" ) ) {
-				java.io.File file = new java.io.File( uri );
+				File file = new File( uri );
 				this.mediaPath = file.getAbsolutePath();
 			} else {
 				this.mediaPath = uri.toString();
@@ -365,7 +382,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		if( mediaPlayer.isPlayable() ) {
 			mediaPlayer.play();
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "not playable (starting):", mediaPlayer );
+			Logger.outln( "not playable (starting):", mediaPlayer );
 			//			if( mediaPlayer.isSeekable() ) {
 			//				mediaPlayer.setPosition( 0.0f );
 			//			}
@@ -531,7 +548,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		mediaPlayer.mute( isMuted );
 	}
 
-	private static final boolean IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux();
+	private static final boolean IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED = SystemUtilities.isLinux();
 
 	private float getTimeInSeconds() {
 		// TODO: 1.0 means the video is over... so we need something to get the last frame of the video if it's 1.0.
@@ -541,11 +558,11 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	@Override
-	public boolean writeSnapshot( java.io.File file ) {
+	public boolean writeSnapshot( File file ) {
 		if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
 			try {
 				float seconds = this.getTimeInSeconds();
-				edu.wustl.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds, file );
+				FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds, file );
 				return true;
 			} catch( Exception e ) {
 				return false;
@@ -557,10 +574,10 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	@Override
-	public java.awt.Image getSnapshot() {
+	public Image getSnapshot() {
 		if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
 			float seconds = this.getTimeInSeconds();
-			return edu.wustl.lookingglass.media.FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds );
+			return FFmpegImageExtractor.getFrameAt( this.mediaPath, seconds );
 		} else {
 			MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 			return mediaPlayer.getSnapshot();
@@ -573,7 +590,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	@Override
-	public java.awt.Dimension getVideoSize() {
+	public Dimension getVideoSize() {
 		return this.mediaPlayerComponent.getMediaPlayer().getVideoDimension();
 	}
 }

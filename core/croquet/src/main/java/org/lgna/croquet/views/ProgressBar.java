@@ -42,31 +42,36 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import javax.swing.BoundedRangeModel;
+import javax.swing.DefaultBoundedRangeModel;
+import javax.swing.JProgressBar;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ProgressBar extends SwingComponentView<javax.swing.JProgressBar> {
-	private final javax.swing.BoundedRangeModel boundedRangeModel;
+public class ProgressBar extends SwingComponentView<JProgressBar> {
+	private final BoundedRangeModel boundedRangeModel;
 
 	public ProgressBar() {
-		this( new javax.swing.DefaultBoundedRangeModel() );
+		this( new DefaultBoundedRangeModel() );
 	}
 
-	public ProgressBar( javax.swing.BoundedRangeModel boundedRangeModel ) {
+	public ProgressBar( BoundedRangeModel boundedRangeModel ) {
 		this.boundedRangeModel = boundedRangeModel;
 	}
 
 	@Override
-	protected javax.swing.JProgressBar createAwtComponent() {
-		return new javax.swing.JProgressBar( this.boundedRangeModel ) {
+	protected JProgressBar createAwtComponent() {
+		return new JProgressBar( this.boundedRangeModel ) {
 			@Override
-			public java.awt.Dimension getPreferredSize() {
+			public Dimension getPreferredSize() {
 				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 			}
 
 			@Override
-			public java.awt.Dimension getMaximumSize() {
-				java.awt.Dimension rv = super.getMaximumSize();
+			public Dimension getMaximumSize() {
+				Dimension rv = super.getMaximumSize();
 				if( ProgressBar.this.isMaximumSizeClampedToPreferredSize() ) {
 					rv.setSize( this.getPreferredSize() );
 				}

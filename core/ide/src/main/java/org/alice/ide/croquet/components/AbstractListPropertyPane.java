@@ -42,50 +42,62 @@
  *******************************************************************************/
 package org.alice.ide.croquet.components;
 
+import edu.cmu.cs.dennisc.property.ListProperty;
+import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
+import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.Label;
+
+import java.util.ArrayList;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractListPropertyPane<P extends edu.cmu.cs.dennisc.property.ListProperty<T>, T> extends AbstractPropertyPane<P, java.util.ArrayList<T>> {
-	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<T> listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<T>() {
+public abstract class AbstractListPropertyPane<P extends ListProperty<T>, T> extends AbstractPropertyPane<P, ArrayList<T>> {
+	private final ListPropertyListener<T> listPropertyAdapter = new ListPropertyListener<T>() {
 		@Override
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<T> e ) {
+		public void adding( AddListPropertyEvent<T> e ) {
 		}
 
 		@Override
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<T> e ) {
+		public void added( AddListPropertyEvent<T> e ) {
 			AbstractListPropertyPane.this.refreshLater();
 		}
 
 		@Override
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<T> e ) {
+		public void clearing( ClearListPropertyEvent<T> e ) {
 		}
 
 		@Override
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<T> e ) {
+		public void cleared( ClearListPropertyEvent<T> e ) {
 			AbstractListPropertyPane.this.refreshLater();
 		}
 
 		@Override
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<T> e ) {
+		public void removing( RemoveListPropertyEvent<T> e ) {
 		}
 
 		@Override
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<T> e ) {
+		public void removed( RemoveListPropertyEvent<T> e ) {
 			AbstractListPropertyPane.this.refreshLater();
 		}
 
 		@Override
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<T> e ) {
+		public void setting( SetListPropertyEvent<T> e ) {
 		}
 
 		@Override
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<T> e ) {
+		public void set( SetListPropertyEvent<T> e ) {
 			AbstractListPropertyPane.this.refreshLater();
 		}
 
 	};
 
-	public AbstractListPropertyPane( org.alice.ide.x.AstI18nFactory factory, P property, int axis ) {
+	public AbstractListPropertyPane( AstI18nFactory factory, P property, int axis ) {
 		super( factory, property, axis );
 		this.refreshLater();
 	}
@@ -94,7 +106,7 @@ public abstract class AbstractListPropertyPane<P extends edu.cmu.cs.dennisc.prop
 		return true;
 	}
 
-	protected abstract org.lgna.croquet.views.AwtComponentView<?> createComponent( T instance );
+	protected abstract AwtComponentView<?> createComponent( T instance );
 
 	protected void addPrefixComponents() {
 	}
@@ -114,7 +126,7 @@ public abstract class AbstractListPropertyPane<P extends edu.cmu.cs.dennisc.prop
 		super.handleUndisplayable();
 	}
 
-	protected org.lgna.croquet.views.AwtComponentView<?> createInterstitial( int i, final int N ) {
+	protected AwtComponentView<?> createInterstitial( int i, final int N ) {
 		return null;
 	}
 
@@ -127,15 +139,15 @@ public abstract class AbstractListPropertyPane<P extends edu.cmu.cs.dennisc.prop
 		int i = 0;
 		for( T o : getProperty() ) {
 			if( this.isComponentDesiredFor( o, i, N ) ) {
-				org.lgna.croquet.views.AwtComponentView<?> component;
+				AwtComponentView<?> component;
 				if( o != null ) {
 					component = this.createComponent( o );
 				} else {
-					component = new org.lgna.croquet.views.Label( "null" );
+					component = new Label( "null" );
 				}
 				if( component != null ) {
 					this.addComponent( component );
-					org.lgna.croquet.views.AwtComponentView<?> interstitial = this.createInterstitial( i, N );
+					AwtComponentView<?> interstitial = this.createInterstitial( i, N );
 					if( interstitial != null ) {
 						this.addComponent( interstitial );
 					}

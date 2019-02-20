@@ -42,83 +42,93 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.ide.icons.Icons;
+import org.alice.stageide.StageIDE;
+import org.alice.stageide.gallerybrowser.views.ImportTabView;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.FileDialogValueCreator;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.io.IoUtilities;
+
+import java.io.File;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class ImportTab extends GalleryTab {
-	private final org.lgna.croquet.PlainStringValue notDirectoryText = this.createStringValue( "notDirectoryText" );
-	private final org.lgna.croquet.PlainStringValue noFilesText = this.createStringValue( "noFilesText" );
-	private final org.lgna.croquet.StringState directoryState = this.createStringState( "directoryState" );
-	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
+	private final PlainStringValue notDirectoryText = this.createStringValue( "notDirectoryText" );
+	private final PlainStringValue noFilesText = this.createStringValue( "noFilesText" );
+	private final StringState directoryState = this.createStringState( "directoryState" );
+	private final Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
+			File directory = new File( directoryState.getValue() );
+			FileDialogValueCreator fileOp = new FileDialogValueCreator( null, directory, IoUtilities.TYPE_EXTENSION );
 
-			java.io.File directory = new java.io.File( directoryState.getValue() );
-			if( directory.isDirectory() ) {
-				fileChooser.setCurrentDirectory( directory );
+			final UserActivity fileActivity = userActivity.newChildActivity();
+			fileOp.fire( fileActivity );
+
+			if (fileActivity.isCanceled() || fileActivity.getProducedValue() == null) {
+				throw new CancelException();
 			}
-			fileChooser.setFileSelectionMode( javax.swing.JFileChooser.FILES_AND_DIRECTORIES );
-			fileChooser.setFileFilter( new javax.swing.filechooser.FileNameExtensionFilter( "*." + org.lgna.project.io.IoUtilities.TYPE_EXTENSION, org.lgna.project.io.IoUtilities.TYPE_EXTENSION ) );
-			int option = fileChooser.showOpenDialog( null );
-			switch( option ) {
-			case javax.swing.JFileChooser.APPROVE_OPTION:
-				java.io.File file = fileChooser.getSelectedFile();
-				if( file.isFile() ) {
-					file = file.getParentFile();
-				}
-				directoryState.setValueTransactionlessly( file.getAbsolutePath() );
-				break;
-			default:
-				throw new org.lgna.croquet.CancelException();
+
+			File file = (File) fileActivity.getProducedValue();
+			if( file.isFile() ) {
+				file = file.getParentFile();
 			}
+			directoryState.setValueTransactionlessly( file.getAbsolutePath() );
 			return null;
 		}
 	} );
-	private final org.lgna.croquet.Operation restoreToDefaultOperation = this.createActionOperation( "restoreToDefaultOperation", new Action() {
+	private final Operation restoreToDefaultOperation = this.createActionOperation( "restoreToDefaultOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			restoreToDefault();
 			return null;
 		}
 	} );
 
 	public ImportTab() {
-		super( java.util.UUID.fromString( "89ae8138-80a3-40e8-a8e6-e2f9b47ac452" ) );
+		super( UUID.fromString( "89ae8138-80a3-40e8-a8e6-e2f9b47ac452" ) );
 		this.restoreToDefault();
-		this.browseOperation.setButtonIcon( org.alice.ide.icons.Icons.FOLDER_ICON_SMALL );
+		this.browseOperation.setButtonIcon( Icons.FOLDER_ICON_SMALL );
 	}
 
 	public boolean isDirectoryStateSetToDefault() {
-		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance().getAbsolutePath().contentEquals( this.directoryState.getValue() );
+		return StageIDE.getActiveInstance().getTypesDirectory().getAbsolutePath().contentEquals( this.directoryState.getValue() );
 	}
 
 	private void restoreToDefault() {
-		this.directoryState.setValueTransactionlessly( org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance().getAbsolutePath() );
+		this.directoryState.setValueTransactionlessly( StageIDE.getActiveInstance().getTypesDirectory().getAbsolutePath() );
 	}
 
-	public org.lgna.croquet.PlainStringValue getNotDirectoryText() {
+	public PlainStringValue getNotDirectoryText() {
 		return this.notDirectoryText;
 	}
 
-	public org.lgna.croquet.PlainStringValue getNoFilesText() {
+	public PlainStringValue getNoFilesText() {
 		return this.noFilesText;
 	}
 
-	public org.lgna.croquet.StringState getDirectoryState() {
+	public StringState getDirectoryState() {
 		return this.directoryState;
 	}
 
-	public org.lgna.croquet.Operation getBrowseOperation() {
+	public Operation getBrowseOperation() {
 		return this.browseOperation;
 	}
 
-	public org.lgna.croquet.Operation getRestoreToDefaultOperation() {
+	public Operation getRestoreToDefaultOperation() {
 		return this.restoreToDefaultOperation;
 	}
 
 	@Override
-	protected org.alice.stageide.gallerybrowser.views.ImportTabView createView() {
-		return new org.alice.stageide.gallerybrowser.views.ImportTabView( this );
+	protected ImportTabView createView() {
+		return new ImportTabView( this );
 	}
 }

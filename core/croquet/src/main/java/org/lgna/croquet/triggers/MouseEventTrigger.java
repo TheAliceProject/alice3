@@ -43,23 +43,31 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.ViewController;
+
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MouseEventTrigger extends AbstractMouseEventTrigger {
-	public static MouseEventTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
-		return new MouseEventTrigger( viewController, mouseEvent );
+	public static UserActivity setOnUserActivity( UserActivity userActivity, MouseEvent mouseEvent ) {
+		return new MouseEventTrigger( userActivity, null, mouseEvent ).getUserActivity();
+	}
+	public static UserActivity createUserActivity( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
+		return new MouseEventTrigger(viewController, mouseEvent ).getUserActivity();
 	}
 
-	public static MouseEventTrigger createUserInstance( java.awt.event.MouseEvent mouseEvent ) {
-		return createUserInstance( null, mouseEvent );
+	public static UserActivity createUserActivity( MouseEvent mouseEvent ) {
+		return new MouseEventTrigger(null, mouseEvent ).getUserActivity();
 	}
 
-	private MouseEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
+	private MouseEventTrigger( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
 		super( viewController, mouseEvent );
 	}
 
-	public MouseEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	private MouseEventTrigger( UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
+		super( userActivity, viewController, mouseEvent );
 	}
 }

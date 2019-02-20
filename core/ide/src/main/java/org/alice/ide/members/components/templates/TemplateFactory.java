@@ -42,6 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.members.components.templates;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.views.DragComponent;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractMethod;
+
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,39 +57,39 @@ public class TemplateFactory {
 		throw new AssertionError();
 	}
 
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, org.lgna.croquet.views.DragComponent> mapMethodToProcedureInvocationTemplate = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, org.lgna.croquet.views.DragComponent> mapMethodToFunctionInvocationTemplate = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<AbstractMethod, DragComponent> mapMethodToProcedureInvocationTemplate = Maps.newHashMap();
+	private static Map<AbstractMethod, DragComponent> mapMethodToFunctionInvocationTemplate = Maps.newHashMap();
 
-	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.views.DragComponent> mapMethodToAccessorTemplate = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.views.DragComponent> mapMethodToAccessArrayAtIndexTemplate = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.views.DragComponent> mapMethodToArrayLengthTemplate = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<AbstractField, DragComponent> mapMethodToAccessorTemplate = Maps.newHashMap();
+	private static Map<AbstractField, DragComponent> mapMethodToAccessArrayAtIndexTemplate = Maps.newHashMap();
+	private static Map<AbstractField, DragComponent> mapMethodToArrayLengthTemplate = Maps.newHashMap();
 
-	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.views.DragComponent> mapMethodToMutatorTemplate = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private static java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.croquet.views.DragComponent> mapMethodToMutateArrayAtIndexTemplate = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<AbstractField, DragComponent> mapMethodToMutatorTemplate = Maps.newHashMap();
+	private static Map<AbstractField, DragComponent> mapMethodToMutateArrayAtIndexTemplate = Maps.newHashMap();
 
-	public static org.lgna.croquet.views.DragComponent getProcedureInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
-		org.lgna.croquet.views.DragComponent rv = mapMethodToProcedureInvocationTemplate.get( method );
+	public static DragComponent getProcedureInvocationTemplate( AbstractMethod method ) {
+		DragComponent rv = mapMethodToProcedureInvocationTemplate.get( method );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new org.alice.ide.members.components.templates.ProcedureInvocationTemplate( method );
+			rv = new ProcedureInvocationTemplate( method );
 			mapMethodToProcedureInvocationTemplate.put( method, rv );
 		}
 		return rv;
 	}
 
-	public static org.lgna.croquet.views.DragComponent getFunctionInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
-		org.lgna.croquet.views.DragComponent rv = mapMethodToFunctionInvocationTemplate.get( method );
+	public static DragComponent getFunctionInvocationTemplate( AbstractMethod method ) {
+		DragComponent rv = mapMethodToFunctionInvocationTemplate.get( method );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new org.alice.ide.members.components.templates.FunctionInvocationTemplate( method );
+			rv = new FunctionInvocationTemplate( method );
 			mapMethodToFunctionInvocationTemplate.put( method, rv );
 		}
 		return rv;
 	}
 
-	public static org.lgna.croquet.views.DragComponent getMethodInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
+	public static DragComponent getMethodInvocationTemplate( AbstractMethod method ) {
 		if( method.isProcedure() ) {
 			return getProcedureInvocationTemplate( method );
 		} else {
@@ -90,34 +97,34 @@ public class TemplateFactory {
 		}
 	}
 
-	public static org.lgna.croquet.views.DragComponent getAccessorTemplate( org.lgna.project.ast.AbstractField field ) {
-		org.lgna.croquet.views.DragComponent rv = mapMethodToAccessorTemplate.get( field );
+	public static DragComponent getAccessorTemplate( AbstractField field ) {
+		DragComponent rv = mapMethodToAccessorTemplate.get( field );
 		if( rv != null ) {
 
 		} else {
-			rv = new org.alice.ide.members.components.templates.GetterTemplate( field );
+			rv = new GetterTemplate( field );
 			mapMethodToAccessorTemplate.put( field, rv );
 		}
 		return rv;
 	}
 
-	public static org.lgna.croquet.views.DragComponent getAccessArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
-		org.lgna.croquet.views.DragComponent rv = mapMethodToAccessArrayAtIndexTemplate.get( field );
+	public static DragComponent getAccessArrayAtIndexTemplate( AbstractField field ) {
+		DragComponent rv = mapMethodToAccessArrayAtIndexTemplate.get( field );
 		if( rv != null ) {
 
 		} else {
-			rv = new org.alice.ide.members.components.templates.AccessFieldArrayAtIndexTemplate( field );
+			rv = new AccessFieldArrayAtIndexTemplate( field );
 			mapMethodToAccessArrayAtIndexTemplate.put( field, rv );
 		}
 		return rv;
 	}
 
-	public static org.lgna.croquet.views.DragComponent getArrayLengthTemplate( org.lgna.project.ast.AbstractField field ) {
-		org.lgna.croquet.views.DragComponent rv = mapMethodToArrayLengthTemplate.get( field );
+	public static DragComponent getArrayLengthTemplate( AbstractField field ) {
+		DragComponent rv = mapMethodToArrayLengthTemplate.get( field );
 		if( rv != null ) {
 
 		} else {
-			rv = new org.alice.ide.members.components.templates.FieldArrayLengthTemplate( field );
+			rv = new FieldArrayLengthTemplate( field );
 			mapMethodToArrayLengthTemplate.put( field, rv );
 		}
 		return rv;

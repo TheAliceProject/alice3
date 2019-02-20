@@ -42,25 +42,29 @@
  */
 package org.lgna.ik.poser.croquet;
 
-import org.lgna.croquet.Model;
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.NamedUserType;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Matt May
  */
 public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserType, DeclarePoseFieldOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<NamedUserType, DeclarePoseFieldOperation> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static DeclarePoseFieldOperation getInstance( org.lgna.project.ast.NamedUserType declaringType ) {
+	public static DeclarePoseFieldOperation getInstance( NamedUserType declaringType ) {
 		if( PoserComposite.isPoseable( declaringType ) ) {
-			return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.NamedUserType, DeclarePoseFieldOperation>() {
+			return map.getInitializingIfAbsent( declaringType, new InitializingIfAbsentMap.Initializer<NamedUserType, DeclarePoseFieldOperation>() {
 				@Override
-				public DeclarePoseFieldOperation initialize( org.lgna.project.ast.NamedUserType declaringType ) {
+				public DeclarePoseFieldOperation initialize( NamedUserType declaringType ) {
 					return new DeclarePoseFieldOperation( declaringType );
 				}
 			} );
@@ -69,26 +73,26 @@ public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
 		}
 	}
 
-	private DeclarePoseFieldOperation( org.lgna.project.ast.NamedUserType declaringType ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "c20e6e66-78dd-4bb7-9ed9-8cb2096f5e18" ) );
+	private DeclarePoseFieldOperation( NamedUserType declaringType ) {
+		super( IDE.PROJECT_GROUP, UUID.fromString( "c20e6e66-78dd-4bb7-9ed9-8cb2096f5e18" ) );
 		this.declaringType = declaringType;
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		return subSteps.size() < 2;
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		return finishedSteps.size() < 2;
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		switch( subSteps.size() ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
+		switch( finishedSteps.size() ) {
 		case 0:
 			return PoseExpressionCreatorComposite.getInstance( this.declaringType ).getValueCreator();
 		case 1:
-			org.lgna.croquet.history.Step<?> prevSubStep = subSteps.get( 0 );
-			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {
-				org.lgna.project.ast.Expression expression = (org.lgna.project.ast.Expression)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
-				org.lgna.ik.poser.croquet.AddUnmanagedPoseFieldComposite addUnmanagedPoseFieldComposite = org.lgna.ik.poser.croquet.AddUnmanagedPoseFieldComposite.getInstance( this.declaringType );
+			UserActivity prevSubStep = finishedSteps.get( 0 );
+			if( prevSubStep.getProducedValue() != null ) {
+				Expression expression = (Expression)prevSubStep.getProducedValue();
+				AddUnmanagedPoseFieldComposite addUnmanagedPoseFieldComposite = AddUnmanagedPoseFieldComposite.getInstance( this.declaringType );
 				addUnmanagedPoseFieldComposite.setInitializerInitialValue( expression );
 				return addUnmanagedPoseFieldComposite.getLaunchOperation();
 			} else {
@@ -101,11 +105,11 @@ public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, java.util.List<Step<?>> subSteps ) {
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ) {
 		//		UserField field = getControlComposite().createPoseField( getControlComposite().getNameState().getValue() );
 		//		NamedUserType declaringType = this.getDeclaringType();
 		//		return new DeclareNonGalleryFieldEdit( completionStep, declaringType, field );
 	}
 
-	private final org.lgna.project.ast.NamedUserType declaringType;
+	private final NamedUserType declaringType;
 }

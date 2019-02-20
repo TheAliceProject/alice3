@@ -42,7 +42,14 @@
  */
 package examples.math.pictureplane;
 
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SProgram;
+import org.lgna.story.SSphere;
+import org.lgna.story.implementation.ProgramImp;
+import org.lgna.story.implementation.SphereImp;
+
+import java.awt.event.MouseEvent;
 
 /**
  * @author Dennis Cosgrove
@@ -52,14 +59,14 @@ class PicturePlaneProgram extends SProgram {
 
 	private void start() {
 		this.setActiveScene( this.scene );
-		org.lgna.story.SSphere sphere = this.scene.getSphere();
+		SSphere sphere = this.scene.getSphere();
 
-		org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.EmployeesOnly.getImplementation( this );
-		final org.lgna.story.implementation.SphereImp sphereImp = org.lgna.story.EmployeesOnly.getImplementation( sphere );
+		ProgramImp programImp = EmployeesOnly.getImplementation( this );
+		final SphereImp sphereImp = EmployeesOnly.getImplementation( sphere );
 
 		PicturePlaneInteraction picturePlaneInteraction = new PicturePlaneInteraction( programImp.getOnscreenRenderTarget(), programImp.getOnscreenRenderTarget().getSgCameraAt( 0 ) ) {
 			@Override
-			protected edu.cmu.cs.dennisc.scenegraph.Transformable pick( java.awt.event.MouseEvent e ) {
+			protected Transformable pick( MouseEvent e ) {
 				return sphereImp.getSgComposite();
 			}
 		};

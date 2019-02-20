@@ -43,14 +43,16 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType;
+import edu.cmu.cs.dennisc.scenegraph.ComponentArray;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrComponentArray extends GlrVertexGeometry<edu.cmu.cs.dennisc.scenegraph.ComponentArray> {
+public abstract class GlrComponentArray extends GlrVertexGeometry<ComponentArray> {
 	@Override
 	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
 		throw new RuntimeException( "todo" );
@@ -62,7 +64,7 @@ public abstract class GlrComponentArray extends GlrVertexGeometry<edu.cmu.cs.den
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.component ) {
 			setIsGeometryChanged( true );
 			throw new RuntimeException( "todo" );

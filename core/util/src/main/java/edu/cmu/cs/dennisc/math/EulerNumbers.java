@@ -43,10 +43,14 @@
 
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EulerNumbers implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public class EulerNumbers implements BinaryEncodableAndDecodable {
 	public double pitch;
 	public double yaw;
 	public double roll;
@@ -69,14 +73,14 @@ public class EulerNumbers implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 		set( other );
 	}
 
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public void decode( BinaryDecoder binaryDecoder ) {
 		pitch = binaryDecoder.decodeDouble();
 		yaw = binaryDecoder.decodeDouble();
 		roll = binaryDecoder.decodeDouble();
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( pitch );
 		binaryEncoder.encode( yaw );
 		binaryEncoder.encode( roll );

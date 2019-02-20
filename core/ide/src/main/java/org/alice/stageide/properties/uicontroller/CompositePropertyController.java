@@ -47,6 +47,7 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 
+import org.alice.ide.ThemeUtilities;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.uicontroller.LabelBasedPropertyController;
 import org.alice.stageide.properties.MutableRiderVehicleAdapter;
@@ -70,7 +71,7 @@ public class CompositePropertyController extends LabelBasedPropertyController<ST
 	{
 		super.initializeComponents();
 		this.label.setBorder( BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder( org.alice.ide.ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor(), 2 ),
+				BorderFactory.createLineBorder( ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor(), 2 ),
 				BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) ) );
 		this.label.getAwtComponent().setOpaque( true );
 		this.label.setBackgroundColor( Color.WHITE );

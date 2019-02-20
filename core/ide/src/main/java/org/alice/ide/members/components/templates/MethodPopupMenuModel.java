@@ -42,18 +42,26 @@
  *******************************************************************************/
 package org.alice.ide.members.components.templates;
 
+import org.alice.ide.IDE;
+import org.alice.ide.ast.rename.RenameMethodComposite;
+import org.alice.ide.croquet.models.ast.DeleteMethodOperation;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.PredeterminedMenuModel;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class MethodPopupMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	public MethodPopupMenuModel( org.lgna.project.ast.UserMethod userMethod ) {
+/* package-private */class MethodPopupMenuModel extends PredeterminedMenuModel {
+	public MethodPopupMenuModel( UserMethod userMethod ) {
 		super(
-				java.util.UUID.fromString( "5b1b6ac7-b2f9-453e-9fd9-ab06b621c473" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( userMethod ).getLaunchOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( userMethod ).getMenuItemPrepModel(),
-				org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod( userMethod ).getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( userMethod ).getMenuItemPrepModel() );
+				UUID.fromString( "5b1b6ac7-b2f9-453e-9fd9-ab06b621c473" ),
+				RenameMethodComposite.getInstance( userMethod ).getLaunchOperation().getMenuItemPrepModel(),
+				DeleteMethodOperation.getInstance( userMethod ).getMenuItemPrepModel(),
+				IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod( userMethod ).getMenuItemPrepModel(),
+				MenuModel.SEPARATOR,
+				DeleteMethodOperation.getInstance( userMethod ).getMenuItemPrepModel() );
 	}
 }

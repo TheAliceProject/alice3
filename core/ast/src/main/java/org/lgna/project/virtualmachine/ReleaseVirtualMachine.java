@@ -42,6 +42,11 @@
  *******************************************************************************/
 package org.lgna.project.virtualmachine;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractParameter;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserLambda;
@@ -49,13 +54,16 @@ import org.lgna.project.ast.UserLocal;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserParameter;
 
+import java.util.Deque;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ReleaseVirtualMachine extends VirtualMachine {
 	protected static abstract class AbstractFrame implements Frame {
 		private final Frame owner;
-		private final java.util.Map<UserLocal, Object> mapLocalToValue = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		private final Map<UserLocal, Object> mapLocalToValue = Maps.newHashMap();
 
 		//note: concurrent hashmaps cannot contain null
 		//private final java.util.Map<UserLocal, Object> mapLocalToValue = edu.cmu.cs.dennisc.java.util.Queues.newConcurrentHashMap();
@@ -74,7 +82,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 
 		@Override
-		public boolean isValidLocal( org.lgna.project.ast.UserLocal local ) {
+		public boolean isValidLocal( UserLocal local ) {
 			if( this.contains( local ) ) {
 				return true;
 			} else {
@@ -87,7 +95,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 
 		@Override
-		public boolean isValidParameter( org.lgna.project.ast.UserParameter parameter ) {
+		public boolean isValidParameter( UserParameter parameter ) {
 			if( this.owner != null ) {
 				return this.owner.isValidParameter( parameter );
 			} else {
@@ -108,7 +116,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 				if( this.owner != null ) {
 					return this.owner.get( local );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( local );
+					Logger.severe( local );
 					return null;
 				}
 			}
@@ -175,21 +183,21 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 
 		@Override
 		public Object lookup( UserParameter parameter ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( parameter );
+			Logger.severe( parameter );
 			return null;
 		}
 	}
 
 	protected static abstract class InvocationFrame extends AbstractFrame {
-		private final java.util.Map<AbstractParameter, Object> mapParameterToValue;
+		private final Map<AbstractParameter, Object> mapParameterToValue;
 
-		public InvocationFrame( Frame owner, java.util.Map<AbstractParameter, Object> mapParameterToValue ) {
+		public InvocationFrame( Frame owner, Map<AbstractParameter, Object> mapParameterToValue ) {
 			super( owner );
 			this.mapParameterToValue = mapParameterToValue;
 		}
 
 		@Override
-		public boolean isValidParameter( org.lgna.project.ast.UserParameter parameter ) {
+		public boolean isValidParameter( UserParameter parameter ) {
 			return this.mapParameterToValue.containsKey( parameter );
 		}
 
@@ -198,7 +206,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			if( this.mapParameterToValue.containsKey( parameter ) ) {
 				return this.mapParameterToValue.get( parameter );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( parameter );
+				Logger.severe( parameter );
 				return null;
 			}
 		}
@@ -226,13 +234,13 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		private final NamedUserType type;
 		private UserInstance instance;
 
-		public ConstructorInvocationFrame( Frame owner, NamedUserType type, java.util.Map<AbstractParameter, Object> mapParameterToValue ) {
+		public ConstructorInvocationFrame( Frame owner, NamedUserType type, Map<AbstractParameter, Object> mapParameterToValue ) {
 			super( owner, mapParameterToValue );
 			this.type = type;
 		}
 
 		@Override
-		public org.lgna.project.virtualmachine.UserInstance getThis() {
+		public UserInstance getThis() {
 			return this.instance;
 		}
 
@@ -250,7 +258,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	protected static abstract class AbstractMethodInvocationFrame extends InvocationFrame {
 		private final UserInstance instance;
 
-		public AbstractMethodInvocationFrame( Frame owner, java.util.Map<AbstractParameter, Object> mapParameterToValue, UserInstance instance ) {
+		public AbstractMethodInvocationFrame( Frame owner, Map<AbstractParameter, Object> mapParameterToValue, UserInstance instance ) {
 			super( owner, mapParameterToValue );
 			this.instance = instance;
 		}
@@ -264,7 +272,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	protected static class MethodInvocationFrame extends AbstractMethodInvocationFrame {
 		private final UserMethod method;
 
-		public MethodInvocationFrame( Frame owner, java.util.Map<AbstractParameter, Object> mapParameterToValue, UserInstance instance, UserMethod method ) {
+		public MethodInvocationFrame( Frame owner, Map<AbstractParameter, Object> mapParameterToValue, UserInstance instance, UserMethod method ) {
 			super( owner, mapParameterToValue, instance );
 			this.method = method;
 		}
@@ -294,9 +302,9 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 
 	protected static class LambdaInvocationFrame extends AbstractMethodInvocationFrame {
 		private final UserLambda lambda;
-		private final org.lgna.project.ast.AbstractMethod singleAbstractMethod;
+		private final AbstractMethod singleAbstractMethod;
 
-		public LambdaInvocationFrame( Frame owner, java.util.Map<AbstractParameter, Object> mapParameterToValue, UserInstance instance, UserLambda lambda, org.lgna.project.ast.AbstractMethod singleAbstractMethod ) {
+		public LambdaInvocationFrame( Frame owner, Map<AbstractParameter, Object> mapParameterToValue, UserInstance instance, UserLambda lambda, AbstractMethod singleAbstractMethod ) {
 			super( owner, mapParameterToValue, instance );
 			this.lambda = lambda;
 			this.singleAbstractMethod = singleAbstractMethod;
@@ -349,7 +357,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 	}
 
-	private final java.util.Map<Thread, Frame> mapThreadToFrame = edu.cmu.cs.dennisc.java.util.Maps.newConcurrentHashMap();
+	private final Map<Thread, Frame> mapThreadToFrame = Maps.newConcurrentHashMap();
 
 	private Frame getCurrentFrame() {
 		Frame rv = this.mapThreadToFrame.get( Thread.currentThread() );
@@ -369,12 +377,12 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	public LgnaStackTraceElement[] getStackTrace( Thread thread ) {
 		Frame frame = this.getFrameForThread( thread );
 		if( frame != null ) {
-			java.util.Deque<LgnaStackTraceElement> deque = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			Deque<LgnaStackTraceElement> deque = Lists.newLinkedList();
 			do {
 				deque.addLast( frame );
 				frame = frame.getOwner();
 			} while( frame != null );
-			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( deque, LgnaStackTraceElement.class );
+			return ArrayUtilities.createArray( deque, LgnaStackTraceElement.class );
 		} else {
 			return new LgnaStackTraceElement[] {};
 		}
@@ -391,19 +399,19 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	}
 
 	@Override
-	protected void pushBogusFrame( org.lgna.project.virtualmachine.UserInstance instance ) {
+	protected void pushBogusFrame( UserInstance instance ) {
 		Frame owner = getCurrentFrame();
 		this.pushFrame( new BogusFrame( owner, instance ) );
 	}
 
 	@Override
-	protected void pushConstructorFrame( org.lgna.project.ast.NamedUserType type, java.util.Map<AbstractParameter, Object> map ) {
+	protected void pushConstructorFrame( NamedUserType type, Map<AbstractParameter, Object> map ) {
 		Frame owner = getCurrentFrame();
 		this.pushFrame( new ConstructorInvocationFrame( owner, type, map ) );
 	}
 
 	@Override
-	protected void setConstructorFrameUserInstance( org.lgna.project.virtualmachine.UserInstance instance ) {
+	protected void setConstructorFrameUserInstance( UserInstance instance ) {
 		Frame currentFrame = getCurrentFrame();
 		assert currentFrame instanceof ConstructorInvocationFrame;
 		ConstructorInvocationFrame constructorInvocationFrame = (ConstructorInvocationFrame)currentFrame;
@@ -411,24 +419,24 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	}
 
 	@Override
-	protected void pushMethodFrame( UserInstance instance, UserMethod method, java.util.Map<AbstractParameter, Object> map ) {
+	protected void pushMethodFrame( UserInstance instance, UserMethod method, Map<AbstractParameter, Object> map ) {
 		Frame owner = getCurrentFrame();
 		this.pushFrame( new MethodInvocationFrame( owner, map, instance, method ) );
 	}
 
 	@Override
-	protected void pushLambdaFrame( org.lgna.project.virtualmachine.UserInstance instance, org.lgna.project.ast.UserLambda lambda, org.lgna.project.ast.AbstractMethod singleAbstractMethod, java.util.Map<org.lgna.project.ast.AbstractParameter, Object> map ) {
+	protected void pushLambdaFrame( UserInstance instance, UserLambda lambda, AbstractMethod singleAbstractMethod, Map<AbstractParameter, Object> map ) {
 		Frame owner = getCurrentFrame();
 		this.pushFrame( new LambdaInvocationFrame( owner, map, instance, lambda, singleAbstractMethod ) );
 	}
 
 	@Override
-	protected void pushLocal( org.lgna.project.ast.UserLocal local, Object value ) {
+	protected void pushLocal( UserLocal local, Object value ) {
 		getCurrentFrame().push( local, value );
 	}
 
 	@Override
-	protected void setLocal( org.lgna.project.ast.UserLocal local, Object value ) {
+	protected void setLocal( UserLocal local, Object value ) {
 		Frame frame = this.getCurrentFrame();
 		if( frame.isValidLocal( local ) ) {
 			frame.set( local, value );
@@ -438,7 +446,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	}
 
 	@Override
-	protected Object getLocal( org.lgna.project.ast.UserLocal local ) {
+	protected Object getLocal( UserLocal local ) {
 		Frame frame = this.getCurrentFrame();
 		if( frame.isValidLocal( local ) ) {
 			return frame.get( local );
@@ -448,7 +456,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	}
 
 	@Override
-	protected void popLocal( org.lgna.project.ast.UserLocal local ) {
+	protected void popLocal( UserLocal local ) {
 		getCurrentFrame().pop( local );
 	}
 

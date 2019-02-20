@@ -42,16 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type.views;
 
+import org.alice.ide.declarationseditor.type.FieldsComposite;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FieldsView extends MembersView<org.lgna.project.ast.UserField> {
-	public FieldsView( org.alice.ide.declarationseditor.type.FieldsComposite composite ) {
+public class FieldsView extends MembersView<UserField> {
+	public FieldsView( FieldsComposite composite ) {
 		super( composite );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createComponentForItem( org.lgna.project.ast.UserField field ) {
+	protected SwingComponentView<?> createComponentForItem( UserField field ) {
 		return new FieldView( field );
 	}
 }

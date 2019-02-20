@@ -42,6 +42,12 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import edu.cmu.cs.dennisc.issue.ReportGenerator;
+import org.alice.ide.issue.swing.views.ProgressPane;
+
+import javax.swing.JOptionPane;
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,19 +56,19 @@ public class SubmitReportUtilities {
 		throw new AssertionError();
 	}
 
-	public static org.alice.ide.issue.swing.views.ProgressPane submitReport( edu.cmu.cs.dennisc.issue.ReportGenerator issueReportGenerator, edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration reportSubmissionConfiguration ) {
-		org.alice.ide.issue.swing.views.ProgressPane progressPane = new org.alice.ide.issue.swing.views.ProgressPane();
+	public static ProgressPane submitReport( ReportGenerator issueReportGenerator, edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration reportSubmissionConfiguration ) {
+		ProgressPane progressPane = new ProgressPane();
 		progressPane.initializeAndExecuteWorker( issueReportGenerator, reportSubmissionConfiguration );
 
-		java.awt.Component owner = null;
+		Component owner = null;
 		String title = "Uploading Bug Report";
 		String text = "run in background";
-		int result = javax.swing.JOptionPane.showOptionDialog( owner, progressPane, title, javax.swing.JOptionPane.DEFAULT_OPTION, javax.swing.JOptionPane.PLAIN_MESSAGE, null, new String[] { text }, text );
+		int result = JOptionPane.showOptionDialog( owner, progressPane, title, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { text }, text );
 		switch( result ) {
-		case javax.swing.JOptionPane.OK_OPTION:
+		case JOptionPane.OK_OPTION:
 			System.out.println( "background" );
 			break;
-		case javax.swing.JOptionPane.CLOSED_OPTION:
+		case JOptionPane.CLOSED_OPTION:
 			System.out.println( "closed" );
 			break;
 		}

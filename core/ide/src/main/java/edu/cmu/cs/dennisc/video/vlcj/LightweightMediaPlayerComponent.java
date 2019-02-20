@@ -42,42 +42,63 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.video.vlcj;
 
+import com.sun.jna.Memory;
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.java.awt.Painter;
+import edu.cmu.cs.dennisc.video.VideoPlayer;
+import uk.co.caprica.vlcj.component.DirectMediaPlayerComponent;
+import uk.co.caprica.vlcj.player.direct.BufferFormat;
+import uk.co.caprica.vlcj.player.direct.BufferFormatCallback;
+import uk.co.caprica.vlcj.player.direct.DirectMediaPlayer;
+import uk.co.caprica.vlcj.player.direct.format.RV32BufferFormat;
+
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+
 /**
  * @author Kyle J. Harms
  */
-/* package-private */class LightweightMediaPlayerComponent extends uk.co.caprica.vlcj.component.DirectMediaPlayerComponent implements VlcjMediaPlayerComponent {
+/* package-private */class LightweightMediaPlayerComponent extends DirectMediaPlayerComponent implements VlcjMediaPlayerComponent {
 
-	private final javax.swing.JPanel panel;
+	private final JPanel panel;
 
 	private Object lock = "LightweightMediaPlayerComponent lock";
 
-	private java.awt.image.BufferedImage image;
+	private BufferedImage image;
 	private int[] rgbs;
-	private edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter;
+	private Painter<VideoPlayer> painter;
 
 	public LightweightMediaPlayerComponent( final VlcjVideoPlayer videoPlayer ) {
-		super( new uk.co.caprica.vlcj.player.direct.BufferFormatCallback() {
+		super( new BufferFormatCallback() {
 			@Override
-			public uk.co.caprica.vlcj.player.direct.BufferFormat getBufferFormat( int sourceWidth, int sourceHeight ) {
-				return new uk.co.caprica.vlcj.player.direct.format.RV32BufferFormat( sourceWidth, sourceHeight );
+			public BufferFormat getBufferFormat( int sourceWidth, int sourceHeight ) {
+				return new RV32BufferFormat( sourceWidth, sourceHeight );
 			}
 		} );
 
-		this.panel = new javax.swing.JPanel() {
+		this.panel = new JPanel() {
 			@Override
-			public void paint( java.awt.Graphics g ) {
+			public void paint( Graphics g ) {
 				synchronized( lock ) {
 					if( image != null ) {
 						int imageWidth = image.getWidth();
 						int imageHeight = image.getHeight();
 
-						java.awt.Dimension componentSize = this.getSize();
+						Dimension componentSize = this.getSize();
 
 						if( ( imageWidth == componentSize.width ) || ( imageHeight == componentSize.height ) ) {
 							g.drawImage( image, 0, 0, this );
 						} else {
-							java.awt.Dimension imageSize = new java.awt.Dimension( imageWidth, imageHeight );
-							java.awt.Dimension size = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.calculateBestFittingSize( componentSize, imageSize.width / (double)imageSize.height );
+							Dimension imageSize = new Dimension( imageWidth, imageHeight );
+							Dimension size = DimensionUtilities.calculateBestFittingSize( componentSize, imageSize.width / (double)imageSize.height );
 
 							int x0 = ( componentSize.width - size.width ) / 2;
 							int x1 = x0 + size.width;
@@ -93,16 +114,16 @@ package edu.cmu.cs.dennisc.video.vlcj;
 					}
 				}
 				if( painter != null ) {
-					painter.paint( (java.awt.Graphics2D)g, videoPlayer, this.getWidth(), this.getHeight() );
+					painter.paint( (Graphics2D)g, videoPlayer, this.getWidth(), this.getHeight() );
 				}
 			}
 		};
-		this.panel.setBackground( java.awt.Color.BLACK );
+		this.panel.setBackground( Color.BLACK );
 		this.panel.setOpaque( true );
 	}
 
 	@Override
-	public void display( uk.co.caprica.vlcj.player.direct.DirectMediaPlayer mediaPlayer, com.sun.jna.Memory[] nativeBuffers, uk.co.caprica.vlcj.player.direct.BufferFormat bufferFormat ) {
+	public void display( DirectMediaPlayer mediaPlayer, Memory[] nativeBuffers, BufferFormat bufferFormat ) {
 		//super.display( mediaPlayer, nativeBuffers, bufferFormat );
 		synchronized( this.lock ) {
 			int width = bufferFormat.getWidth();
@@ -123,7 +144,7 @@ package edu.cmu.cs.dennisc.video.vlcj;
 			if( this.image != null ) {
 				//pass
 			} else {
-				this.image = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage( width, height );
+				this.image = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage( width, height );
 			}
 			if( this.rgbs != null ) {
 				//pass
@@ -131,8 +152,8 @@ package edu.cmu.cs.dennisc.video.vlcj;
 				this.rgbs = new int[ width * height ];
 			}
 
-			java.nio.ByteBuffer byteBuffer = nativeBuffers[ 0 ].getByteBuffer( 0L, nativeBuffers[ 0 ].size() );
-			java.nio.IntBuffer intBuffer = byteBuffer.asIntBuffer();
+			ByteBuffer byteBuffer = nativeBuffers[ 0 ].getByteBuffer( 0L, nativeBuffers[ 0 ].size() );
+			IntBuffer intBuffer = byteBuffer.asIntBuffer();
 			intBuffer.get( this.rgbs, 0, bufferFormat.getHeight() * bufferFormat.getWidth() );
 
 			this.image.setRGB( 0, 0, width, height, this.rgbs, 0, width );
@@ -153,17 +174,17 @@ package edu.cmu.cs.dennisc.video.vlcj;
 	//	}
 
 	@Override
-	public java.awt.Component getVideoSurface() {
+	public Component getVideoSurface() {
 		return this.panel;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> getPainter() {
+	public Painter<VideoPlayer> getPainter() {
 		return this.painter;
 	}
 
 	@Override
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter ) {
+	public void setPainter( Painter<VideoPlayer> painter ) {
 		this.painter = painter;
 	}
 }

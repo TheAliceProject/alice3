@@ -42,6 +42,11 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import edu.cmu.cs.dennisc.pattern.HowMuch;
+
+import java.util.LinkedList;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,9 +55,9 @@ public class HierarchyUtilities {
 		throw new AssertionError();
 	}
 
-	public static final edu.cmu.cs.dennisc.pattern.HowMuch DEFAULT_HOW_MUCH = edu.cmu.cs.dennisc.pattern.HowMuch.COMPONENT_AND_DESCENDANTS;
+	public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.COMPONENT_AND_DESCENDANTS;
 
-	private static <E extends AwtComponentView<?>> E getFirstToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, AwtComponentView<?> component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	private static <E extends AwtComponentView<?>> E getFirstToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions ) {
 		assert component != null;
 		E rv = null;
 		boolean isAcceptedByAll;
@@ -62,7 +67,7 @@ public class HierarchyUtilities {
 				if( criterions == null ) {
 					//pass
 				} else {
-					for( edu.cmu.cs.dennisc.pattern.Criterion criterion : criterions ) {
+					for( Criterion criterion : criterions ) {
 						if( criterion.accept( component ) ) {
 							//pass
 						} else {
@@ -95,7 +100,7 @@ public class HierarchyUtilities {
 		return rv;
 	}
 
-	private static <E extends AwtComponentView<?>> void updateAllToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, java.util.List<E> list, AwtComponentView<?> component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	private static <E extends AwtComponentView<?>> void updateAllToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, java.util.List<E> list, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions ) {
 		assert component != null;
 
 		if( isComponentACandidate ) {
@@ -104,7 +109,7 @@ public class HierarchyUtilities {
 				if( criterions == null ) {
 					//pass
 				} else {
-					for( edu.cmu.cs.dennisc.pattern.Criterion criterion : criterions ) {
+					for( Criterion criterion : criterions ) {
 						if( criterion.accept( component ) ) {
 							//pass
 						} else {
@@ -129,53 +134,53 @@ public class HierarchyUtilities {
 		}
 	}
 
-	private static <E extends AwtComponentView<?>> E getFirstToAccept( edu.cmu.cs.dennisc.pattern.HowMuch candidateMask, AwtComponentView<?> component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	private static <E extends AwtComponentView<?>> E getFirstToAccept( HowMuch candidateMask, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions ) {
 		return getFirstToAccept( candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), component, cls, criterions );
 	}
 
-	private static <E extends AwtComponentView<?>> void updateAllToAccept( edu.cmu.cs.dennisc.pattern.HowMuch candidateMask, java.util.List<E> list, AwtComponentView<?> component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	private static <E extends AwtComponentView<?>> void updateAllToAccept( HowMuch candidateMask, java.util.List<E> list, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions ) {
 		updateAllToAccept( candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), list, component, cls, criterions );
 	}
 
-	public static <E extends AwtComponentView<?>> E findFirstMatch( AwtComponentView<?> component, edu.cmu.cs.dennisc.pattern.HowMuch howMuch, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	public static <E extends AwtComponentView<?>> E findFirstMatch( AwtComponentView<?> component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions ) {
 		return HierarchyUtilities.getFirstToAccept( howMuch, component, cls, criterions );
 	}
 
-	public static <E extends AwtComponentView<?>> E findFirstMatch( AwtComponentView<?> component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	public static <E extends AwtComponentView<?>> E findFirstMatch( AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions ) {
 		return findFirstMatch( component, DEFAULT_HOW_MUCH, cls, criterions );
 	}
 
 	public static <E extends AwtComponentView<?>> E findFirstMatch( AwtComponentView<?> component, Class<E> cls ) {
-		return findFirstMatch( component, cls, (edu.cmu.cs.dennisc.pattern.Criterion<?>[])null );
+		return findFirstMatch( component, cls, (Criterion<?>[])null );
 	}
 
-	public static AwtComponentView<?> findFirstMatch( AwtComponentView<?> component, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	public static AwtComponentView<?> findFirstMatch( AwtComponentView<?> component, Criterion<?>... criterions ) {
 		return findFirstMatch( component, null, criterions );
 	}
 
-	public static <E extends AwtComponentView<?>> java.util.List<E> findAllMatches( AwtComponentView<?> component, edu.cmu.cs.dennisc.pattern.HowMuch howMuch, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
-		java.util.List<E> list = new java.util.LinkedList<E>();
+	public static <E extends AwtComponentView<?>> java.util.List<E> findAllMatches( AwtComponentView<?> component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions ) {
+		java.util.List<E> list = new LinkedList<E>();
 		HierarchyUtilities.updateAllToAccept( howMuch, list, component, cls, criterions );
 		return list;
 	}
 
-	public static <E extends AwtComponentView<?>> java.util.List<E> findAllMatches( AwtComponentView<?> component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	public static <E extends AwtComponentView<?>> java.util.List<E> findAllMatches( AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions ) {
 		return findAllMatches( component, DEFAULT_HOW_MUCH, cls, criterions );
 	}
 
 	public static <E extends AwtComponentView<?>> java.util.List<E> findAllMatches( AwtComponentView<?> component, Class<E> cls ) {
-		return findAllMatches( component, cls, (edu.cmu.cs.dennisc.pattern.Criterion<?>[])null );
+		return findAllMatches( component, cls, (Criterion<?>[])null );
 	}
 
-	public static java.util.List<AwtComponentView<?>> findAllMatches( AwtComponentView<?> component, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	public static java.util.List<AwtComponentView<?>> findAllMatches( AwtComponentView<?> component, Criterion<?>... criterions ) {
 		return findAllMatches( component, null, criterions );
 	}
 
 	public static java.util.List<AwtComponentView<?>> findAllMatches( AwtComponentView<?> component ) {
-		return findAllMatches( component, null, (edu.cmu.cs.dennisc.pattern.Criterion<?>[])null );
+		return findAllMatches( component, null, (Criterion<?>[])null );
 	}
 
-	public static <E extends AwtComponentView<?>> E findFirstAncestor( AwtComponentView<?> component, boolean isComponentIncludedInSearch, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	public static <E extends AwtComponentView<?>> E findFirstAncestor( AwtComponentView<?> component, boolean isComponentIncludedInSearch, Class<E> cls, Criterion<?>... criterions ) {
 		AwtComponentView<?> c;
 		if( isComponentIncludedInSearch ) {
 			c = component;
@@ -189,7 +194,7 @@ public class HierarchyUtilities {
 				if( criterions == null ) {
 					//pass
 				} else {
-					for( edu.cmu.cs.dennisc.pattern.Criterion criterion : criterions ) {
+					for( Criterion criterion : criterions ) {
 						if( criterion.accept( component ) ) {
 							//pass
 						} else {
@@ -210,10 +215,10 @@ public class HierarchyUtilities {
 	}
 
 	public static <E extends AwtComponentView<?>> E findFirstAncestor( AwtComponentView<?> component, boolean isComponentIncludedInSearch, Class<E> cls ) {
-		return findFirstAncestor( component, isComponentIncludedInSearch, cls, (edu.cmu.cs.dennisc.pattern.Criterion<?>[])null );
+		return findFirstAncestor( component, isComponentIncludedInSearch, cls, (Criterion<?>[])null );
 	}
 
-	public static AwtComponentView<?> findFirstAncestor( AwtComponentView<?> component, boolean isComponentIncludedInSearch, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	public static AwtComponentView<?> findFirstAncestor( AwtComponentView<?> component, boolean isComponentIncludedInSearch, Criterion<?>... criterions ) {
 		return findFirstAncestor( component, isComponentIncludedInSearch, null, criterions );
 	}
 }

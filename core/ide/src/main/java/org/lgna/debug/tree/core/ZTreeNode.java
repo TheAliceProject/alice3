@@ -42,10 +42,19 @@
  *******************************************************************************/
 package org.lgna.debug.tree.core;
 
+import edu.cmu.cs.dennisc.java.util.Iterators;
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import javax.swing.tree.TreeNode;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ZTreeNode<T> implements javax.swing.tree.TreeNode {
+public final class ZTreeNode<T> implements TreeNode {
 	private static enum IsLeaf {
 		TRUE,
 		FALSE
@@ -57,7 +66,7 @@ public final class ZTreeNode<T> implements javax.swing.tree.TreeNode {
 			if( isLeaf ) {
 				this.childBuilders = null;
 			} else {
-				this.childBuilders = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				this.childBuilders = Lists.newLinkedList();
 			}
 		}
 
@@ -71,11 +80,11 @@ public final class ZTreeNode<T> implements javax.swing.tree.TreeNode {
 		}
 
 		//for pruning
-		public java.util.Iterator<Builder<T>> getChildBuildersIterator() {
+		public Iterator<Builder<T>> getChildBuildersIterator() {
 			if( this.childBuilders != null ) {
 				return this.childBuilders.iterator();
 			} else {
-				return edu.cmu.cs.dennisc.java.util.Iterators.emptyIterator();
+				return Iterators.emptyIterator();
 			}
 		}
 
@@ -85,17 +94,17 @@ public final class ZTreeNode<T> implements javax.swing.tree.TreeNode {
 		}
 
 		public ZTreeNode<T> build() {
-			java.util.List<ZTreeNode<T>> children;
+			List<ZTreeNode<T>> children;
 			IsLeaf isLeaf;
 			if( this.childBuilders != null ) {
-				java.util.List<ZTreeNode<T>> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( this.childBuilders.size() );
+				List<ZTreeNode<T>> list = Lists.newArrayListWithInitialCapacity( this.childBuilders.size() );
 				for( Builder<T> childBuilder : this.childBuilders ) {
 					list.add( childBuilder.build() );
 				}
-				children = java.util.Collections.unmodifiableList( list );
+				children = Collections.unmodifiableList( list );
 				isLeaf = IsLeaf.FALSE;
 			} else {
-				children = java.util.Collections.emptyList();
+				children = Collections.emptyList();
 				isLeaf = IsLeaf.TRUE;
 			}
 			ZTreeNode<T> rv = new ZTreeNode<T>( value, children, isLeaf );
@@ -106,10 +115,10 @@ public final class ZTreeNode<T> implements javax.swing.tree.TreeNode {
 		}
 
 		private final T value;
-		private final java.util.List<Builder<T>> childBuilders;
+		private final List<Builder<T>> childBuilders;
 	}
 
-	private ZTreeNode( T value, java.util.List<ZTreeNode<T>> children, IsLeaf isLeaf ) {
+	private ZTreeNode( T value, List<ZTreeNode<T>> children, IsLeaf isLeaf ) {
 		this.value = value;
 		this.children = children;
 		this.isLeaf = isLeaf;
@@ -120,7 +129,7 @@ public final class ZTreeNode<T> implements javax.swing.tree.TreeNode {
 	}
 
 	@Override
-	public javax.swing.tree.TreeNode getChildAt( int childIndex ) {
+	public TreeNode getChildAt( int childIndex ) {
 		return this.children.get( childIndex );
 	}
 
@@ -130,12 +139,12 @@ public final class ZTreeNode<T> implements javax.swing.tree.TreeNode {
 	}
 
 	@Override
-	public javax.swing.tree.TreeNode getParent() {
+	public TreeNode getParent() {
 		return this.parent;
 	}
 
 	@Override
-	public int getIndex( javax.swing.tree.TreeNode node ) {
+	public int getIndex( TreeNode node ) {
 		return this.children.indexOf( node );
 	}
 
@@ -150,12 +159,12 @@ public final class ZTreeNode<T> implements javax.swing.tree.TreeNode {
 	}
 
 	@Override
-	public java.util.Enumeration<ZTreeNode<T>> children() {
-		return java.util.Collections.enumeration( this.children );
+	public Enumeration<ZTreeNode<T>> children() {
+		return Collections.enumeration( this.children );
 	}
 
 	private final T value;
-	private final java.util.List<ZTreeNode<T>> children;
+	private final List<ZTreeNode<T>> children;
 	private final IsLeaf isLeaf;
 	private/*pseudo-final*/ZTreeNode<T> parent;
 }

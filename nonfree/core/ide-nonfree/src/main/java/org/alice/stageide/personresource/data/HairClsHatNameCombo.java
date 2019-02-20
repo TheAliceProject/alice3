@@ -42,20 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.data;
 
+import org.lgna.story.resources.sims2.Hair;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class HairClsHatNameCombo {
-	private final Class<? extends org.lgna.story.resources.sims2.Hair> hairCls;
+	private final Class<? extends Hair> hairCls;
 	private final String hatName;
 
-	public HairClsHatNameCombo( Class<? extends org.lgna.story.resources.sims2.Hair> hairCls, String hatName ) {
+	public HairClsHatNameCombo( Class<? extends Hair> hairCls, String hatName ) {
 		assert hairCls != null;
 		this.hairCls = hairCls;
 		this.hatName = hatName;
 	}
 
-	public Class<? extends org.lgna.story.resources.sims2.Hair> getHairCls() {
+	public Class<? extends Hair> getHairCls() {
 		return this.hairCls;
 	}
 

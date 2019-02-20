@@ -42,13 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.LineAxisPanel;
+
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypedDeclarationPane extends org.lgna.croquet.views.LineAxisPanel {
-	public TypedDeclarationPane( org.lgna.croquet.views.AwtComponentView<?>... components ) {
+public abstract class TypedDeclarationPane extends LineAxisPanel {
+	public TypedDeclarationPane( AwtComponentView<?>... components ) {
 		super( components );
-		this.setForegroundColor( java.awt.Color.GRAY );
+		this.setForegroundColor( Color.GRAY );
 	}
 	//	@Override
 	//	protected void paintComponent( java.awt.Graphics g ) {

@@ -42,13 +42,23 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.booleanstate;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.Operation;
 import org.lgna.croquet.PrepModel;
+import org.lgna.croquet.edits.Edit;
+
+import javax.swing.Action;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
 public class BooleanStateImp {
-	public BooleanStateImp( org.lgna.croquet.BooleanState state, boolean initialValue, javax.swing.ButtonModel buttonModel ) {
+	public BooleanStateImp( BooleanState state, boolean initialValue, ButtonModel buttonModel ) {
 		this.state = state;
 		this.swingModel = new BooleanStateSwingModel( state, buttonModel, initialValue );
 	}
@@ -65,9 +75,9 @@ public class BooleanStateImp {
 		this.swingModel.getAction().setEnabled( isEnabled );
 	}
 
-	public void updateNameAndIcon( boolean value, String trueText, javax.swing.Icon trueIcon, String falseText, javax.swing.Icon falseIcon ) {
+	public void updateNameAndIcon( boolean value, String trueText, Icon trueIcon, String falseText, Icon falseIcon ) {
 		String name;
-		javax.swing.Icon icon;
+		Icon icon;
 		if( value ) {
 			name = trueText;
 			icon = trueIcon;
@@ -75,8 +85,8 @@ public class BooleanStateImp {
 			name = falseText;
 			icon = falseIcon;
 		}
-		this.swingModel.getAction().putValue( javax.swing.Action.NAME, name );
-		this.swingModel.getAction().putValue( javax.swing.Action.SMALL_ICON, icon );
+		this.swingModel.getAction().putValue( Action.NAME, name );
+		this.swingModel.getAction().putValue( Action.SMALL_ICON, icon );
 
 		if( this.trueOperation != null ) {
 			this.trueOperation.setName( trueText );
@@ -88,7 +98,7 @@ public class BooleanStateImp {
 		}
 	}
 
-	public synchronized org.lgna.croquet.Operation getSetToTrueOperation() {
+	public synchronized Operation getSetToTrueOperation() {
 		if( this.trueOperation != null ) {
 			//pass
 		} else {
@@ -97,7 +107,7 @@ public class BooleanStateImp {
 		return this.trueOperation;
 	}
 
-	public synchronized org.lgna.croquet.Operation getSetToFalseOperation() {
+	public synchronized Operation getSetToFalseOperation() {
 		if( this.falseOperation != null ) {
 			//pass
 		} else {
@@ -106,11 +116,11 @@ public class BooleanStateImp {
 		return this.falseOperation;
 	}
 
-	public synchronized org.lgna.croquet.imp.booleanstate.BooleanStateMenuModel getMenuModel() {
+	public synchronized BooleanStateMenuModel getMenuModel() {
 		if( this.menuModel != null ) {
 			//pass
 		} else {
-			this.menuModel = new org.lgna.croquet.imp.booleanstate.BooleanStateMenuModel( this.state );
+			this.menuModel = new BooleanStateMenuModel( this.state );
 		}
 		return this.menuModel;
 	}
@@ -124,18 +134,18 @@ public class BooleanStateImp {
 		return this.menuPrepModel;
 	}
 
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
+	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
 		if( this.menuPrepModel != null ) {
-			return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.menuPrepModel );
+			return Lists.newArrayListOfSingleArrayList( this.menuPrepModel );
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
 	private final BooleanStateSwingModel swingModel;
-	private final org.lgna.croquet.BooleanState state;
-	private org.lgna.croquet.Operation trueOperation;
-	private org.lgna.croquet.Operation falseOperation;
+	private final BooleanState state;
+	private Operation trueOperation;
+	private Operation falseOperation;
 	private BooleanStateMenuModel menuModel;
 	private BooleanStateMenuItemPrepModel menuPrepModel;
 }

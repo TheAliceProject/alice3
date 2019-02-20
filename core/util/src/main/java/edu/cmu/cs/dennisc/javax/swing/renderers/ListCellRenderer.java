@@ -42,17 +42,22 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.renderers;
 
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListCellRenderer<E> extends javax.swing.DefaultListCellRenderer {
-	protected abstract javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E value, int index, boolean isSelected, boolean cellHasFocus );
+public abstract class ListCellRenderer<E> extends DefaultListCellRenderer {
+	protected abstract JLabel getListCellRendererComponent( JLabel rv, JList list, E value, int index, boolean isSelected, boolean cellHasFocus );
 
 	@Override
-	public final java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-		java.awt.Component rv = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
-		if( rv instanceof javax.swing.JLabel ) {
-			getListCellRendererComponent( (javax.swing.JLabel)rv, list, (E)value, index, isSelected, cellHasFocus );
+	public final Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+		Component rv = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+		if( rv instanceof JLabel ) {
+			getListCellRendererComponent( (JLabel)rv, list, (E)value, index, isSelected, cellHasFocus );
 		} else {
 			//todo
 		}

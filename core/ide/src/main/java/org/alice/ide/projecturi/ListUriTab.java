@@ -42,20 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.projecturi;
 
+import org.alice.ide.uricontent.UriProjectLoader;
+import org.lgna.croquet.SingleSelectListState;
+
+import java.net.URI;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ListUriTab extends SelectUriTab {
-	public ListUriTab( java.util.UUID migrationId ) {
+	public ListUriTab( UUID migrationId ) {
 		super( migrationId );
 	}
 
-	public abstract org.lgna.croquet.SingleSelectListState<java.net.URI, ?> getListSelectionState();
-
-	public abstract String getTextForZeroProjects();
+	public abstract SingleSelectListState<URI, ?> getListSelectionState();
 
 	@Override
-	public org.alice.ide.uricontent.UriProjectLoader getSelectedUri() {
-		return org.alice.ide.uricontent.UriProjectLoader.createInstance( this.getListSelectionState().getValue() );
+	public UriProjectLoader getSelectedUri() {
+		return UriProjectLoader.createInstance( this.getListSelectionState().getValue() );
 	}
 }

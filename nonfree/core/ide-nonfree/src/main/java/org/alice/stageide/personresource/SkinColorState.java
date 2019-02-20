@@ -42,14 +42,20 @@
  *******************************************************************************/
 package org.alice.stageide.personresource;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.color.ColorState;
+import org.lgna.story.resources.sims2.BaseSkinTone;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class SkinColorState extends org.lgna.croquet.color.ColorState {
+public final class SkinColorState extends ColorState {
 	private final MelaninChooserTabComposite melaninChooserTabComposite = new MelaninChooserTabComposite();
 
 	public SkinColorState() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "646ae40a-547a-4f52-962f-57a7dc4d970f" ), org.lgna.story.resources.sims2.BaseSkinTone.getRandom().getColor() );
+		super( Application.INHERIT_GROUP, UUID.fromString( "646ae40a-547a-4f52-962f-57a7dc4d970f" ), BaseSkinTone.getRandom().getColor() );
 		this.getChooserDialogCoreComposite().addSubComposite( this.melaninChooserTabComposite );
 	}
 

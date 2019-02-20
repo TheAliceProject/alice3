@@ -42,10 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.rigidbody;
 
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.math.rungekutta.Derivative;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TranslationDerivative extends edu.cmu.cs.dennisc.math.rungekutta.Derivative {
-	public edu.cmu.cs.dennisc.math.Vector3 velocity = new edu.cmu.cs.dennisc.math.Vector3();
-	public edu.cmu.cs.dennisc.math.Vector3 force = new edu.cmu.cs.dennisc.math.Vector3();
+public class TranslationDerivative extends Derivative {
+	public Vector3 velocity = new Vector3();
+	public Vector3 force = new Vector3();
 }

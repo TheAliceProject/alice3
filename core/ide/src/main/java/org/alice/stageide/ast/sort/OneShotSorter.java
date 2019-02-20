@@ -43,17 +43,58 @@
 
 package org.alice.stageide.ast.sort;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.sort.MemberSorter;
 import org.alice.nonfree.NebulousIde;
+import org.lgna.project.ast.AbstractMember;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.Move;
+import org.lgna.story.MoveAndOrientTo;
+import org.lgna.story.MoveAndOrientToAGoodVantagePointOf;
+import org.lgna.story.MoveAwayFrom;
+import org.lgna.story.MoveDirection;
+import org.lgna.story.MoveTo;
+import org.lgna.story.MoveToward;
+import org.lgna.story.OrientTo;
+import org.lgna.story.OrientToUpright;
+import org.lgna.story.Paint;
+import org.lgna.story.Place;
+import org.lgna.story.PointAt;
+import org.lgna.story.Roll;
+import org.lgna.story.RollDirection;
+import org.lgna.story.SCamera;
+import org.lgna.story.SFlyer;
+import org.lgna.story.SGround;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.SModel;
+import org.lgna.story.SMovableTurnable;
+import org.lgna.story.SThing;
+import org.lgna.story.STurnable;
+import org.lgna.story.SetOpacity;
+import org.lgna.story.SetPaint;
+import org.lgna.story.SpatialRelation;
+import org.lgna.story.StraightenOutJoints;
+import org.lgna.story.StrikePose;
+import org.lgna.story.Turn;
+import org.lgna.story.TurnDirection;
+import org.lgna.story.TurnToFace;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
+public enum OneShotSorter implements MemberSorter {
 	SINGLETON {
 		@Override
-		public <T extends org.lgna.project.ast.AbstractMember> java.util.List<T> createSortedList( java.util.List<T> src ) {
-			java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( src );
-			java.util.Collections.sort( rv, new java.util.Comparator<T>() {
+		public <T extends AbstractMember> List<T> createSortedList( List<T> src ) {
+			List<T> rv = Lists.newArrayList( src );
+			Collections.sort( rv, new Comparator<T>() {
 				@Override
 				public int compare( T o1, T o2 ) {
 					return Double.compare( getValue( o1 ), getValue( o2 ) );
@@ -62,79 +103,79 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 			return rv;
 		}
 	};
-	private static final java.util.Map<org.lgna.project.ast.JavaMethod, Double> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static final Map<JavaMethod, Double> map = Maps.newHashMap();
 
-	public static final org.lgna.project.ast.JavaMethod TURN_METHOD;
-	public static final org.lgna.project.ast.JavaMethod ROLL_METHOD;
-	public static final org.lgna.project.ast.JavaMethod TURN_TO_FACE_METHOD;
-	public static final org.lgna.project.ast.JavaMethod POINT_AT_METHOD;
-	public static final org.lgna.project.ast.JavaMethod ORIENT_TO_UPRIGHT_METHOD;
-	public static final org.lgna.project.ast.JavaMethod ORIENT_TO_METHOD;
+	public static final JavaMethod TURN_METHOD;
+	public static final JavaMethod ROLL_METHOD;
+	public static final JavaMethod TURN_TO_FACE_METHOD;
+	public static final JavaMethod POINT_AT_METHOD;
+	public static final JavaMethod ORIENT_TO_UPRIGHT_METHOD;
+	public static final JavaMethod ORIENT_TO_METHOD;
 
-	public static final org.lgna.project.ast.JavaMethod MOVE_METHOD;
-	public static final org.lgna.project.ast.JavaMethod MOVE_TOWARD_METHOD;
-	public static final org.lgna.project.ast.JavaMethod MOVE_AWAY_FROM_METHOD;
-	public static final org.lgna.project.ast.JavaMethod MOVE_TO_METHOD;
-	public static final org.lgna.project.ast.JavaMethod MOVE_AND_ORIENT_TO_METHOD;
-	public static final org.lgna.project.ast.JavaMethod PLACE_METHOD;
+	public static final JavaMethod MOVE_METHOD;
+	public static final JavaMethod MOVE_TOWARD_METHOD;
+	public static final JavaMethod MOVE_AWAY_FROM_METHOD;
+	public static final JavaMethod MOVE_TO_METHOD;
+	public static final JavaMethod MOVE_AND_ORIENT_TO_METHOD;
+	public static final JavaMethod PLACE_METHOD;
 
-	public static final org.lgna.project.ast.JavaMethod MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD;
+	public static final JavaMethod MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD;
 
-	public static final org.lgna.project.ast.JavaMethod STRAIGHTEN_OUT_JOINTS_METHOD;
-	public static final org.lgna.project.ast.JavaMethod SPREAD_WINGS_METHOD;
-	public static final org.lgna.project.ast.JavaMethod FOLD_WINGS_METHOD;
+	public static final JavaMethod STRAIGHTEN_OUT_JOINTS_METHOD;
+	public static final JavaMethod SPREAD_WINGS_METHOD;
+	public static final JavaMethod FOLD_WINGS_METHOD;
 
-	public static final org.lgna.project.ast.JavaMethod GROUND_SET_PAINT_METHOD;
-	public static final org.lgna.project.ast.JavaMethod MODEL_SET_PAINT_METHOD;
+	public static final JavaMethod GROUND_SET_PAINT_METHOD;
+	public static final JavaMethod MODEL_SET_PAINT_METHOD;
 
-	public static final org.lgna.project.ast.JavaMethod GROUND_SET_OPACITY_METHOD;
-	public static final org.lgna.project.ast.JavaMethod MODEL_SET_OPACITY_METHOD;
+	public static final JavaMethod GROUND_SET_OPACITY_METHOD;
+	public static final JavaMethod MODEL_SET_OPACITY_METHOD;
 
 	static {
-		org.lgna.project.ast.JavaType turnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class );
-		org.lgna.project.ast.JavaType movableTurnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMovableTurnable.class );
-		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
-		org.lgna.project.ast.JavaType flyerType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SFlyer.class );
-		org.lgna.project.ast.JavaType cameraType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCamera.class );
+		JavaType turnableType = JavaType.getInstance( STurnable.class );
+		JavaType movableTurnableType = JavaType.getInstance( SMovableTurnable.class );
+		JavaType jointedModelType = JavaType.getInstance( SJointedModel.class );
+		JavaType flyerType = JavaType.getInstance( SFlyer.class );
+		JavaType cameraType = JavaType.getInstance( SCamera.class );
 
-		org.lgna.project.ast.JavaType groundType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SGround.class );
-		org.lgna.project.ast.JavaType modelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SModel.class );
+		JavaType groundType = JavaType.getInstance( SGround.class );
+		JavaType modelType = JavaType.getInstance( SModel.class );
 
-		TURN_METHOD = turnableType.getDeclaredMethod( "turn", org.lgna.story.TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class );
+		TURN_METHOD = turnableType.getDeclaredMethod( "turn", TurnDirection.class, Number.class, Turn.Detail[].class );
 		assert TURN_METHOD != null;
-		ROLL_METHOD = turnableType.getDeclaredMethod( "roll", org.lgna.story.RollDirection.class, Number.class, org.lgna.story.Roll.Detail[].class );
+		ROLL_METHOD = turnableType.getDeclaredMethod( "roll", RollDirection.class, Number.class, Roll.Detail[].class );
 		assert ROLL_METHOD != null;
-		TURN_TO_FACE_METHOD = turnableType.getDeclaredMethod( "turnToFace", org.lgna.story.SThing.class, org.lgna.story.TurnToFace.Detail[].class );
+		TURN_TO_FACE_METHOD = turnableType.getDeclaredMethod( "turnToFace", SThing.class, TurnToFace.Detail[].class );
 		assert TURN_TO_FACE_METHOD != null;
-		POINT_AT_METHOD = turnableType.getDeclaredMethod( "pointAt", org.lgna.story.SThing.class, org.lgna.story.PointAt.Detail[].class );
+		POINT_AT_METHOD = turnableType.getDeclaredMethod( "pointAt", SThing.class, PointAt.Detail[].class );
 		assert POINT_AT_METHOD != null;
-		ORIENT_TO_UPRIGHT_METHOD = turnableType.getDeclaredMethod( "orientToUpright", org.lgna.story.OrientToUpright.Detail[].class );
+		ORIENT_TO_UPRIGHT_METHOD = turnableType.getDeclaredMethod( "orientToUpright", OrientToUpright.Detail[].class );
 		assert ORIENT_TO_UPRIGHT_METHOD != null;
-		ORIENT_TO_METHOD = turnableType.getDeclaredMethod( "orientTo", org.lgna.story.SThing.class, org.lgna.story.OrientTo.Detail[].class );
+		ORIENT_TO_METHOD = turnableType.getDeclaredMethod( "orientTo", SThing.class, OrientTo.Detail[].class );
 		assert ORIENT_TO_METHOD != null;
 
-		MOVE_METHOD = movableTurnableType.getDeclaredMethod( "move", org.lgna.story.MoveDirection.class, Number.class, org.lgna.story.Move.Detail[].class );
+		MOVE_METHOD = movableTurnableType.getDeclaredMethod( "move", MoveDirection.class, Number.class, Move.Detail[].class );
 		assert MOVE_METHOD != null;
-		MOVE_TOWARD_METHOD = movableTurnableType.getDeclaredMethod( "moveToward", org.lgna.story.SThing.class, Number.class, org.lgna.story.MoveToward.Detail[].class );
+		MOVE_TOWARD_METHOD = movableTurnableType.getDeclaredMethod( "moveToward", SThing.class, Number.class, MoveToward.Detail[].class );
 		assert MOVE_TOWARD_METHOD != null;
-		MOVE_AWAY_FROM_METHOD = movableTurnableType.getDeclaredMethod( "moveAwayFrom", org.lgna.story.SThing.class, Number.class, org.lgna.story.MoveAwayFrom.Detail[].class );
+		MOVE_AWAY_FROM_METHOD = movableTurnableType.getDeclaredMethod( "moveAwayFrom", SThing.class, Number.class, MoveAwayFrom.Detail[].class );
 		assert MOVE_AWAY_FROM_METHOD != null;
-		MOVE_TO_METHOD = movableTurnableType.getDeclaredMethod( "moveTo", org.lgna.story.SThing.class, org.lgna.story.MoveTo.Detail[].class );
+		MOVE_TO_METHOD = movableTurnableType.getDeclaredMethod( "moveTo", SThing.class, MoveTo.Detail[].class );
 		assert MOVE_TO_METHOD != null;
-		MOVE_AND_ORIENT_TO_METHOD = movableTurnableType.getDeclaredMethod( "moveAndOrientTo", org.lgna.story.SThing.class, org.lgna.story.MoveAndOrientTo.Detail[].class );
+		MOVE_AND_ORIENT_TO_METHOD = movableTurnableType.getDeclaredMethod( "moveAndOrientTo", SThing.class, MoveAndOrientTo.Detail[].class );
 		assert MOVE_AND_ORIENT_TO_METHOD != null;
-		PLACE_METHOD = movableTurnableType.getDeclaredMethod( "place", org.lgna.story.SpatialRelation.class, org.lgna.story.SThing.class, org.lgna.story.Place.Detail[].class );
+		PLACE_METHOD = movableTurnableType.getDeclaredMethod( "place", SpatialRelation.class, SThing.class, Place.Detail[].class );
 		assert PLACE_METHOD != null;
 
-		STRAIGHTEN_OUT_JOINTS_METHOD = jointedModelType.getDeclaredMethod( "straightenOutJoints", org.lgna.story.StraightenOutJoints.Detail[].class );
+		STRAIGHTEN_OUT_JOINTS_METHOD = jointedModelType.getDeclaredMethod( "straightenOutJoints", StraightenOutJoints.Detail[].class );
 		assert STRAIGHTEN_OUT_JOINTS_METHOD != null;
 
-		FOLD_WINGS_METHOD = flyerType.getDeclaredMethod( "foldWings", org.lgna.story.StrikePose.Detail[].class );
+		FOLD_WINGS_METHOD = flyerType.getDeclaredMethod( "foldWings", StrikePose.Detail[].class );
 		assert FOLD_WINGS_METHOD != null;
-		SPREAD_WINGS_METHOD = flyerType.getDeclaredMethod( "spreadWings", org.lgna.story.StrikePose.Detail[].class );
+		SPREAD_WINGS_METHOD = flyerType.getDeclaredMethod( "spreadWings", StrikePose.Detail[].class );
 		assert SPREAD_WINGS_METHOD != null;
 
-		MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD = cameraType.getDeclaredMethod( "moveAndOrientToAGoodVantagePointOf", org.lgna.story.SThing.class, org.lgna.story.MoveAndOrientToAGoodVantagePointOf.Detail[].class );
+		MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD = cameraType.getDeclaredMethod( "moveAndOrientToAGoodVantagePointOf", SThing.class, MoveAndOrientToAGoodVantagePointOf.Detail[].class );
 		assert MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD != null;
 
 		GROUND_SET_PAINT_METHOD = getSetPaintMethod( groundType );
@@ -176,19 +217,19 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 		value += INCREMENT;
 	}
 
-	private static org.lgna.project.ast.JavaMethod getSetPaintMethod( org.lgna.project.ast.JavaType type ) {
-		org.lgna.project.ast.JavaMethod rv = type.getDeclaredMethod( "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
+	private static JavaMethod getSetPaintMethod( JavaType type ) {
+		JavaMethod rv = type.getDeclaredMethod( "setPaint", Paint.class, SetPaint.Detail[].class );
 		assert rv != null : type;
 		return rv;
 	}
 
-	static org.lgna.project.ast.JavaMethod getSetOpacityMethod( org.lgna.project.ast.JavaType type ) {
-		org.lgna.project.ast.JavaMethod rv = type.getDeclaredMethod( "setOpacity", Number.class, org.lgna.story.SetOpacity.Detail[].class );
+	static JavaMethod getSetOpacityMethod( JavaType type ) {
+		JavaMethod rv = type.getDeclaredMethod( "setOpacity", Number.class, SetOpacity.Detail[].class );
 		assert rv != null : type;
 		return rv;
 	}
 
-	private static double getValue( org.lgna.project.ast.AbstractMember method ) {
+	private static double getValue( AbstractMember method ) {
 		Double rv = map.get( method );
 		if( rv != null ) {
 			//pass

@@ -42,11 +42,23 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite;
+import org.alice.stageide.icons.TorusIconFactory;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.STorus;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TorusDragModel extends ShapeDragModel {
-	private static final org.lgna.story.STorus sModel = new org.lgna.story.STorus();
+	private static final STorus sModel = new STorus();
 
 	private static class SingletonHolder {
 		private static TorusDragModel instance = new TorusDragModel();
@@ -57,12 +69,12 @@ public class TorusDragModel extends ShapeDragModel {
 	}
 
 	private TorusDragModel() {
-		super( java.util.UUID.fromString( "d86ba308-7869-4c9c-a5d6-93635c8159a6" ) );
+		super( UUID.fromString( "d86ba308-7869-4c9c-a5d6-93635c8159a6" ) );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
-		return org.lgna.story.EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
+	public AxisAlignedBox getBoundingBox() {
+		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
 	}
 
 	@Override
@@ -71,12 +83,12 @@ public class TorusDragModel extends ShapeDragModel {
 	}
 
 	@Override
-	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite.getInstance().getLaunchOperation();
+	public Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller ) {
+		return AddTorusManagedFieldComposite.getInstance().getLaunchOperation();
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.icons.TorusIconFactory.getInstance();
+	public IconFactory getIconFactory() {
+		return TorusIconFactory.getInstance();
 	}
 }

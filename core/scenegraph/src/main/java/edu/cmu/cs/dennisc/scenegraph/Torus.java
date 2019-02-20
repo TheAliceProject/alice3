@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,7 +60,7 @@ public class Torus extends Shape {
 			this.isZ = isZ;
 		}
 
-		public void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox, double yesRadius, double noRadius ) {
+		public void updateBoundingBox( AxisAlignedBox boundingBox, double yesRadius, double noRadius ) {
 			double x;
 			double y;
 			double z;
@@ -86,7 +89,7 @@ public class Torus extends Shape {
 	}
 
 	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
+	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
 		double yesRadius = majorRadius.getValue() + minorRadius.getValue();
 		double noRadius = minorRadius.getValue();
 		this.coordinatePlane.getValue().updateBoundingBox( boundingBox, yesRadius, noRadius );
@@ -99,7 +102,7 @@ public class Torus extends Shape {
 		boundingSphere.radius = outerRadius;
 	}
 
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<CoordinatePlane> coordinatePlane = new edu.cmu.cs.dennisc.property.InstanceProperty<CoordinatePlane>( this, CoordinatePlane.XZ ) {
+	public final InstanceProperty<CoordinatePlane> coordinatePlane = new InstanceProperty<CoordinatePlane>( this, CoordinatePlane.XZ ) {
 		@Override
 		public void setValue( CoordinatePlane value ) {
 			//todo: check isEqual

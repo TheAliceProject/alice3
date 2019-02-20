@@ -42,34 +42,53 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent;
+import org.alice.stageide.gallerybrowser.ImportTab;
+import org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.AbstractLabel;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.project.io.IoUtilities;
+
+import java.io.File;
+import java.net.URI;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ImportTabView extends GalleryTabView {
-	private final java.util.Map<java.net.URI, org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent> mapUriToDragComponent = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Map<URI, GalleryDragComponent> mapUriToDragComponent = Maps.newHashMap();
 
-	public synchronized org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( java.net.URI uri ) {
-		org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent rv = this.mapUriToDragComponent.get( uri );
+	public synchronized GalleryDragComponent getGalleryDragComponent( URI uri ) {
+		GalleryDragComponent rv = this.mapUriToDragComponent.get( uri );
 		if( rv != null ) {
 			//pass
 		} else {
-			org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel dragModel = org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel.getInstance( uri );
-			rv = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( dragModel );
+			UriGalleryDragModel dragModel = UriGalleryDragModel.getInstance( uri );
+			rv = new GalleryDragComponent( dragModel );
 			this.mapUriToDragComponent.put( uri, rv );
 		}
 		return rv;
 	}
 
-	private class DragComponentsView extends org.lgna.croquet.views.LineAxisPanel {
+	private class DragComponentsView extends LineAxisPanel {
 		@Override
 		protected void internalRefresh() {
 			super.internalRefresh();
 			this.removeAllComponents();
-			java.io.File directory = getDirectory();
+			File directory = getDirectory();
 			if( directory != null ) {
-				java.io.File[] files = edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, org.lgna.project.io.IoUtilities.TYPE_EXTENSION );
+				File[] files = FileUtilities.listFiles( directory, IoUtilities.TYPE_EXTENSION );
 				if( ( files != null ) && ( files.length > 0 ) ) {
-					for( java.io.File file : files ) {
+					for( File file : files ) {
 						this.addComponent( getGalleryDragComponent( file.toURI() ) );
 					}
 				} else {
@@ -81,27 +100,27 @@ public class ImportTabView extends GalleryTabView {
 		}
 	}
 
-	private final org.lgna.croquet.event.ValueListener<String> directoryListener = new org.lgna.croquet.event.ValueListener<String>() {
+	private final ValueListener<String> directoryListener = new ValueListener<String>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
+		public void valueChanged( ValueEvent<String> e ) {
 			handleDirectoryChanged();
 		}
 	};
-	private final org.lgna.croquet.views.AbstractLabel notDirectoryLabel = new org.lgna.croquet.views.Label( "", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-	private final org.lgna.croquet.views.AbstractLabel noFilesLabel = new org.lgna.croquet.views.Label( "", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+	private final AbstractLabel notDirectoryLabel = new Label( "", TextPosture.OBLIQUE );
+	private final AbstractLabel noFilesLabel = new Label( "", TextPosture.OBLIQUE );
 	private final DragComponentsView dragComponentsView = new DragComponentsView();
 
-	public ImportTabView( org.alice.stageide.gallerybrowser.ImportTab composite ) {
+	public ImportTabView( ImportTab composite ) {
 		super( composite );
 		//this.notDirectoryLabel = composite.getNotDirectoryText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 		//this.noFilesLabel = composite.getNoFilesText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 
-		org.lgna.croquet.views.MigPanel panel = new org.lgna.croquet.views.MigPanel( null, "insets 0, fill", "[shrink]4[grow]4[shrink]16[shrink]" );
+		MigPanel panel = new MigPanel( null, "insets 0, fill", "[shrink]4[grow]4[shrink]16[shrink]" );
 		panel.addComponent( composite.getDirectoryState().getSidekickLabel().createLabel() );
 		panel.addComponent( composite.getDirectoryState().createTextField(), "growx 100" );
 		panel.addComponent( composite.getBrowseOperation().createButton() );
 		panel.addComponent( composite.getRestoreToDefaultOperation().createButton(), "wrap" );
-		org.lgna.croquet.views.ScrollPane scrollPane = createGalleryScrollPane( this.dragComponentsView );
+		ScrollPane scrollPane = createGalleryScrollPane( this.dragComponentsView );
 		panel.addComponent( scrollPane, "span 4, wrap" );
 		this.addCenterComponent( panel );
 		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
@@ -112,7 +131,7 @@ public class ImportTabView extends GalleryTabView {
 
 	private void handleDirectoryChanged() {
 		this.dragComponentsView.refreshLater();
-		org.alice.stageide.gallerybrowser.ImportTab importTab = (org.alice.stageide.gallerybrowser.ImportTab)this.getComposite();
+		ImportTab importTab = (ImportTab)this.getComposite();
 		importTab.getRestoreToDefaultOperation().setEnabled( importTab.isDirectoryStateSetToDefault() == false );
 
 		String path = importTab.getDirectoryState().getValue();
@@ -120,10 +139,10 @@ public class ImportTabView extends GalleryTabView {
 		this.noFilesLabel.setText( importTab.getNoFilesText().getText().replace( "</directory/>", path ) );
 	}
 
-	private java.io.File getDirectory() {
-		org.alice.stageide.gallerybrowser.ImportTab importTab = (org.alice.stageide.gallerybrowser.ImportTab)this.getComposite();
+	private File getDirectory() {
+		ImportTab importTab = (ImportTab)this.getComposite();
 		String path = importTab.getDirectoryState().getValue();
-		java.io.File file = new java.io.File( path );
+		File file = new File( path );
 		if( file.isDirectory() ) {
 			return file;
 		} else {
@@ -134,13 +153,13 @@ public class ImportTabView extends GalleryTabView {
 	@Override
 	public void handleCompositePreActivation() {
 		super.handleCompositePreActivation();
-		org.alice.stageide.gallerybrowser.ImportTab importTab = (org.alice.stageide.gallerybrowser.ImportTab)this.getComposite();
+		ImportTab importTab = (ImportTab)this.getComposite();
 		importTab.getDirectoryState().addAndInvokeNewSchoolValueListener( this.directoryListener );
 	}
 
 	@Override
 	public void handleCompositePostDeactivation() {
-		org.alice.stageide.gallerybrowser.ImportTab importTab = (org.alice.stageide.gallerybrowser.ImportTab)this.getComposite();
+		ImportTab importTab = (ImportTab)this.getComposite();
 		importTab.getDirectoryState().removeNewSchoolValueListener( this.directoryListener );
 		super.handleCompositePostDeactivation();
 	}

@@ -43,13 +43,47 @@
 
 package org.alice.ide.croquet.models.ast;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.delete.DeleteStatementOperation;
+import org.alice.ide.clipboard.CopyToClipboardOperation;
+import org.alice.ide.croquet.models.ast.keyed.RemoveKeyedArgumentOperation;
+import org.alice.ide.issue.croquet.AnomalousSituationComposite;
+import org.alice.stageide.run.FastForwardToStatementOperation;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.views.MenuItemContainerUtilities;
+import org.lgna.croquet.views.PopupMenu;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractStatementWithBody;
+import org.lgna.project.ast.ArgumentOwner;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.Comment;
+import org.lgna.project.ast.ConditionalStatement;
+import org.lgna.project.ast.DoInOrder;
+import org.lgna.project.ast.DoTogether;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.JavaKeyedArgument;
+import org.lgna.project.ast.KeyedArgumentListProperty;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserMethod;
+
+import javax.swing.SwingUtilities;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class StatementContextMenu extends org.lgna.croquet.MenuModel {
-	private static java.util.Map<org.lgna.project.ast.Statement, StatementContextMenu> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class StatementContextMenu extends MenuModel {
+	private static Map<Statement, StatementContextMenu> map = Maps.newHashMap();
 
-	public static synchronized StatementContextMenu getInstance( org.lgna.project.ast.Statement statement ) {
+	public static synchronized StatementContextMenu getInstance( Statement statement ) {
 		StatementContextMenu rv = map.get( statement );
 		if( rv != null ) {
 			//pass
@@ -60,81 +94,81 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 		return rv;
 	}
 
-	private org.lgna.project.ast.Statement statement;
+	private Statement statement;
 
-	private StatementContextMenu( org.lgna.project.ast.Statement statement ) {
-		super( java.util.UUID.fromString( "6d152827-60e1-4d1c-b589-843ec554957c" ) );
+	private StatementContextMenu( Statement statement ) {
+		super( UUID.fromString( "6d152827-60e1-4d1c-b589-843ec554957c" ) );
 		this.statement = statement;
 	}
 
-	public org.lgna.project.ast.Statement getStatement() {
+	public Statement getStatement() {
 		return this.statement;
 	}
 
-	private java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> updatePopupOperations( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> rv, final org.lgna.project.ast.Statement statement ) {
-		if( statement instanceof org.lgna.project.ast.Comment ) {
+	private List<StandardMenuItemPrepModel> updatePopupOperations( List<StandardMenuItemPrepModel> rv, final Statement statement ) {
+		if( statement instanceof Comment ) {
 			//pass
 		} else {
-			rv.add( new org.alice.stageide.run.FastForwardToStatementOperation( statement ).getMenuItemPrepModel() );
-			rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			rv.add( org.alice.ide.croquet.models.ast.IsStatementEnabledState.getInstance( statement ).getMenuItemPrepModel() );
+			rv.add( new FastForwardToStatementOperation( statement ).getMenuItemPrepModel() );
+			rv.add( MenuModel.SEPARATOR );
+			rv.add( IsStatementEnabledState.getInstance( statement ).getMenuItemPrepModel() );
 		}
-		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-			org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-				org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
-				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-				if( method instanceof org.lgna.project.ast.UserMethod ) {
-					rv.add( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod( method ).getMenuItemPrepModel() );
+		if( statement instanceof ExpressionStatement ) {
+			ExpressionStatement expressionStatement = (ExpressionStatement)statement;
+			Expression expression = expressionStatement.expression.getValue();
+			if( expression instanceof MethodInvocation ) {
+				MethodInvocation methodInvocation = (MethodInvocation)expression;
+				AbstractMethod method = methodInvocation.method.getValue();
+				if( method instanceof UserMethod ) {
+					rv.add( IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod( method ).getMenuItemPrepModel() );
 				}
 			}
 		}
-		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		rv.add( org.alice.ide.clipboard.CopyToClipboardOperation.getInstance( statement ).getMenuItemPrepModel() );
-		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
+		rv.add( MenuModel.SEPARATOR );
+		rv.add( CopyToClipboardOperation.getInstance( statement ).getMenuItemPrepModel() );
+		rv.add( MenuModel.SEPARATOR );
 
-		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)statement.getParent();
+		BlockStatement blockStatement = (BlockStatement)statement.getParent();
 		if( blockStatement != null ) {
-			rv.add( org.alice.ide.ast.delete.DeleteStatementOperation.getInstance( statement ).getMenuItemPrepModel() );
+			rv.add( new DeleteStatementOperation( statement ).getMenuItemPrepModel() );
 		} else {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
 					StringBuilder sb = new StringBuilder();
 					try {
-						org.lgna.project.ast.NodeUtilities.safeAppendRepr( sb, statement );
+						NodeUtilities.safeAppendRepr( sb, statement );
 					} catch( Throwable t ) {
 						sb.append( statement );
 					}
 					sb.append( ";" );
 					sb.append( statement.getId() );
-					org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "Oh no!  A popup menu has been requested for a statement without a parent.", sb.toString() ).getLaunchOperation().fire();
+					AnomalousSituationComposite.createInstance( "Oh no!  A popup menu has been requested for a statement without a parent.", sb.toString() ).getLaunchOperation().fire();
 				}
 			} );
 			//throw new org.lgna.croquet.CancelException();
 		}
-		if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
-			org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
-			rv.add( org.alice.ide.croquet.models.ast.DissolveStatementWithBodyOperation.getInstance( statementWithBody ).getMenuItemPrepModel() );
-			if( statementWithBody instanceof org.lgna.project.ast.DoInOrder ) {
-				org.lgna.project.ast.DoInOrder doInOrder = (org.lgna.project.ast.DoInOrder)statementWithBody;
-				rv.add( org.alice.ide.croquet.models.ast.ConvertDoInOrderToDoTogetherOperation.getInstance( doInOrder ).getMenuItemPrepModel() );
-			} else if( statementWithBody instanceof org.lgna.project.ast.DoTogether ) {
-				org.lgna.project.ast.DoTogether doTogether = (org.lgna.project.ast.DoTogether)statementWithBody;
-				rv.add( org.alice.ide.croquet.models.ast.ConvertDoTogetherToDoInOrderOperation.getInstance( doTogether ).getMenuItemPrepModel() );
+		if( statement instanceof AbstractStatementWithBody ) {
+			AbstractStatementWithBody statementWithBody = (AbstractStatementWithBody)statement;
+			rv.add( DissolveStatementWithBodyOperation.getInstance( statementWithBody ).getMenuItemPrepModel() );
+			if( statementWithBody instanceof DoInOrder ) {
+				DoInOrder doInOrder = (DoInOrder)statementWithBody;
+				rv.add( ConvertDoInOrderToDoTogetherOperation.getInstance( doInOrder ).getMenuItemPrepModel() );
+			} else if( statementWithBody instanceof DoTogether ) {
+				DoTogether doTogether = (DoTogether)statementWithBody;
+				rv.add( ConvertDoTogetherToDoInOrderOperation.getInstance( doTogether ).getMenuItemPrepModel() );
 			}
-		} else if( statement instanceof org.lgna.project.ast.ConditionalStatement ) {
-			org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)statement;
+		} else if( statement instanceof ConditionalStatement ) {
+			ConditionalStatement conditionalStatement = (ConditionalStatement)statement;
 			//todo: dissolve to if, dissolve to else
-		} else if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-			org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-			if( expression instanceof org.lgna.project.ast.ArgumentOwner ) {
-				org.lgna.project.ast.ArgumentOwner argumentOwner = (org.lgna.project.ast.ArgumentOwner)expression;
-				org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty = argumentOwner.getKeyedArgumentsProperty();
-				for( org.lgna.project.ast.JavaKeyedArgument argument : argumentListProperty ) {
-					rv.add( org.alice.ide.croquet.models.ast.keyed.RemoveKeyedArgumentOperation.getInstance( argumentListProperty, argument ).getMenuItemPrepModel() );
+		} else if( statement instanceof ExpressionStatement ) {
+			ExpressionStatement expressionStatement = (ExpressionStatement)statement;
+			Expression expression = expressionStatement.expression.getValue();
+			if( expression instanceof ArgumentOwner ) {
+				ArgumentOwner argumentOwner = (ArgumentOwner)expression;
+				KeyedArgumentListProperty argumentListProperty = argumentOwner.getKeyedArgumentsProperty();
+				for( JavaKeyedArgument argument : argumentListProperty ) {
+					rv.add( RemoveKeyedArgumentOperation.getInstance( argumentListProperty, argument ).getMenuItemPrepModel() );
 				}
 			}
 		}
@@ -142,10 +176,10 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 	}
 
 	@Override
-	public void handlePopupMenuPrologue( org.lgna.croquet.views.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public void handlePopupMenuPrologue( PopupMenu popupMenu ) {
+		super.handlePopupMenuPrologue( popupMenu );
+		List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
 		this.updatePopupOperations( models, this.statement );
-		org.lgna.croquet.views.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
+		MenuItemContainerUtilities.setMenuElements( popupMenu, models );
 	}
 }

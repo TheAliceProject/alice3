@@ -42,45 +42,77 @@
  *******************************************************************************/
 package org.alice.ide.member.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.draganddrop.statement.AssignmentTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel;
+import org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel;
+import org.alice.ide.controlflow.components.CompleteControlFlowStatementTemplate;
+import org.alice.ide.controlflow.components.MiniControlFlowStatementTemplate;
+import org.alice.ide.declarationseditor.CodeComposite;
+import org.alice.ide.declarationseditor.DeclarationComposite;
+import org.alice.ide.member.ControlFlowTabComposite;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.AbstractLabel;
+import org.lgna.croquet.views.DragComponent;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractMethod;
+
+import javax.swing.SwingUtilities;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ControlFlowTabView extends org.lgna.croquet.views.MigPanel {
+public class ControlFlowTabView extends MigPanel {
 	private static final boolean IS_MINI_DESIRED = true;
 	private static final int GAP_TOP = IS_MINI_DESIRED ? 8 : 16;
 
-	private final org.lgna.croquet.views.AbstractLabel returnHeader;
-	private final org.lgna.croquet.views.DragComponent<?> returnDragComponent;
+	private final AbstractLabel returnHeader;
+	private final DragComponent<?> returnDragComponent;
 
-	public ControlFlowTabView( org.alice.ide.member.ControlFlowTabComposite composite ) {
+	public ControlFlowTabView( ControlFlowTabComposite composite ) {
 		super( composite, "insets 4, gap 0" );
 		this.addHeader( composite.getDoInOrderHeader() );
-		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance() );
+		this.addDragComponent( DoInOrderTemplateDragModel.getInstance() );
 		this.addHeader( composite.getDoTogetherHeader() );
-		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel.getInstance() );
+		this.addDragComponent( DoTogetherTemplateDragModel.getInstance() );
 		this.addHeader( composite.getLoopHeader() );
-		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance() );
-		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance() );
-		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel.getInstance() );
+		this.addDragComponent( CountLoopTemplateDragModel.getInstance() );
+		this.addDragComponent( WhileLoopTemplateDragModel.getInstance() );
+		this.addDragComponent( ForEachInArrayLoopTemplateDragModel.getInstance() );
 		this.addHeader( composite.getIfThenHeader() );
-		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel.getInstance() );
+		this.addDragComponent( ConditionalStatementTemplateDragModel.getInstance() );
 		this.addHeader( composite.getEachInTogetherHeader() );
-		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel.getInstance() );
+		this.addDragComponent( EachInArrayTogetherTemplateDragModel.getInstance() );
 		this.addHeader( composite.getCommentHeader() );
-		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance() );
+		this.addDragComponent( CommentTemplateDragModel.getInstance() );
 		this.addHeader( composite.getLocalHeader() );
-		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance() );
-		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.AssignmentTemplateDragModel.getInstance() );
+		this.addDragComponent( DeclareLocalDragModel.getInstance() );
+		this.addDragComponent( AssignmentTemplateDragModel.getInstance() );
 		this.returnHeader = this.createHeader( composite.getReturnHeader() );
-		this.returnDragComponent = this.createDragComponent( org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance( null ) );
-		this.setBackgroundColor( new java.awt.Color( 0xd29669 ) );
+		this.returnDragComponent = this.createDragComponent( ReturnStatementTemplateDragModel.getInstance( null ) );
+		this.setBackgroundColor( new Color( 0xd29669 ) );
 	}
 
-	private org.lgna.croquet.views.AbstractLabel createHeader( org.lgna.croquet.PlainStringValue stringValue ) {
-		return stringValue.createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+	private AbstractLabel createHeader( PlainStringValue stringValue ) {
+		return stringValue.createLabel( TextPosture.OBLIQUE );
 	}
 
-	private void addHeader( org.lgna.croquet.views.AbstractLabel label ) {
+	private void addHeader( AbstractLabel label ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "wrap" );
 		if( this.getComponentCount() > 0 ) {
@@ -90,42 +122,42 @@ public class ControlFlowTabView extends org.lgna.croquet.views.MigPanel {
 		this.addComponent( label, sb.toString() );
 	}
 
-	private void addHeader( org.lgna.croquet.PlainStringValue stringValue ) {
+	private void addHeader( PlainStringValue stringValue ) {
 		this.addHeader( this.createHeader( stringValue ) );
 	}
 
-	private org.lgna.croquet.views.DragComponent<?> createDragComponent( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
-		org.lgna.croquet.views.DragComponent<?> dragComponent;
+	private DragComponent<?> createDragComponent( StatementTemplateDragModel dragModel ) {
+		DragComponent<?> dragComponent;
 		if( IS_MINI_DESIRED ) {
-			dragComponent = new org.alice.ide.controlflow.components.MiniControlFlowStatementTemplate( dragModel );
+			dragComponent = new MiniControlFlowStatementTemplate( dragModel );
 		} else {
-			dragComponent = new org.alice.ide.controlflow.components.CompleteControlFlowStatementTemplate( dragModel );
+			dragComponent = new CompleteControlFlowStatementTemplate( dragModel );
 		}
 		return dragComponent;
 	}
 
-	private void addDragComponent( org.lgna.croquet.views.DragComponent<?> dragComponent ) {
+	private void addDragComponent( DragComponent<?> dragComponent ) {
 		this.addComponent( dragComponent, "wrap, gapleft 8" );
 	}
 
-	private void addDragComponent( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
+	private void addDragComponent( StatementTemplateDragModel dragModel ) {
 		this.addDragComponent( this.createDragComponent( dragModel ) );
 	}
 
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> declarationTabListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>>() {
+	private final ValueListener<DeclarationComposite<?, ?>> declarationTabListener = new ValueListener<DeclarationComposite<?, ?>>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> e ) {
+		public void valueChanged( ValueEvent<DeclarationComposite<?, ?>> e ) {
 			updateReturn( e.getNextValue() );
 		}
 	};
 
-	private void updateReturn( org.alice.ide.declarationseditor.DeclarationComposite declarationComposite ) {
+	private void updateReturn( DeclarationComposite declarationComposite ) {
 		final boolean isReturnDesired;
-		if( declarationComposite instanceof org.alice.ide.declarationseditor.CodeComposite ) {
-			org.alice.ide.declarationseditor.CodeComposite codeComposite = (org.alice.ide.declarationseditor.CodeComposite)declarationComposite;
-			org.lgna.project.ast.AbstractCode code = codeComposite.getDeclaration();
-			if( code instanceof org.lgna.project.ast.AbstractMethod ) {
-				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)code;
+		if( declarationComposite instanceof CodeComposite ) {
+			CodeComposite codeComposite = (CodeComposite)declarationComposite;
+			AbstractCode code = codeComposite.getDeclaration();
+			if( code instanceof AbstractMethod ) {
+				AbstractMethod method = (AbstractMethod)code;
 				isReturnDesired = method.isFunction();
 			} else {
 				isReturnDesired = false;
@@ -135,7 +167,7 @@ public class ControlFlowTabView extends org.lgna.croquet.views.MigPanel {
 		}
 		boolean isReturnShowing = this.returnHeader.isShowing();
 		if( isReturnDesired != isReturnShowing ) {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
 					synchronized( getTreeLock() ) {
@@ -151,18 +183,18 @@ public class ControlFlowTabView extends org.lgna.croquet.views.MigPanel {
 				}
 			} );
 		}
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( declarationComposite );
+		Logger.outln( declarationComposite );
 	}
 
 	@Override
 	public void handleCompositePreActivation() {
 		super.handleCompositePreActivation();
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addAndInvokeNewSchoolValueListener( this.declarationTabListener );
+		IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addAndInvokeNewSchoolValueListener( this.declarationTabListener );
 	}
 
 	@Override
 	public void handleCompositePostDeactivation() {
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationTabListener );
+		IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationTabListener );
 		super.handleCompositePostDeactivation();
 	}
 }

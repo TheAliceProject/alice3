@@ -42,6 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.codec;
 
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -70,11 +73,11 @@ public interface BinaryEncoder {
 
 	public void encode( Enum<?> value );
 
-	public void encode( java.util.UUID value );
+	public void encode( UUID value );
 
 	public void encode( BinaryEncodableAndDecodable value );
 
-	public void encode( ReferenceableBinaryEncodableAndDecodable value, java.util.Map<ReferenceableBinaryEncodableAndDecodable, Integer> map );
+	public void encode( ReferenceableBinaryEncodableAndDecodable value, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map );
 
 	public void encode( boolean[] array );
 
@@ -96,11 +99,11 @@ public interface BinaryEncoder {
 
 	public void encode( Enum<?>[] array );
 
-	public void encode( java.util.UUID[] array );
+	public void encode( UUID[] array );
 
 	public void encode( BinaryEncodableAndDecodable[] array );
 
-	public void encode( ReferenceableBinaryEncodableAndDecodable[] array, java.util.Map<ReferenceableBinaryEncodableAndDecodable, Integer> map );
+	public void encode( ReferenceableBinaryEncodableAndDecodable[] array, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map );
 
 	public void flush();
 }

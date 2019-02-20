@@ -42,13 +42,20 @@
  *******************************************************************************/
 package org.alice.stageide.apis.story.event;
 
-public abstract class AbstractAdapter {
-	private final org.lgna.project.virtualmachine.LambdaContext context;
-	private final org.lgna.project.virtualmachine.UserInstance userInstance;
-	private final org.lgna.project.ast.Lambda lambda;
-	private final org.lgna.project.ast.JavaMethod singleAbstractMethod;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.Lambda;
+import org.lgna.project.virtualmachine.LambdaContext;
+import org.lgna.project.virtualmachine.UserInstance;
 
-	public AbstractAdapter( org.lgna.project.virtualmachine.LambdaContext context, org.lgna.project.ast.Lambda lambda, org.lgna.project.virtualmachine.UserInstance userInstance ) {
+import java.lang.reflect.Method;
+
+public abstract class AbstractAdapter {
+	private final LambdaContext context;
+	private final UserInstance userInstance;
+	private final Lambda lambda;
+	private final JavaMethod singleAbstractMethod;
+
+	public AbstractAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
 		this.context = context;
 		this.lambda = lambda;
 		this.userInstance = userInstance;
@@ -56,9 +63,9 @@ public abstract class AbstractAdapter {
 
 		Class<?>[] interfaces = this.getClass().getInterfaces();
 		if( interfaces.length == 1 ) {
-			java.lang.reflect.Method[] mthds = interfaces[ 0 ].getDeclaredMethods();
+			Method[] mthds = interfaces[ 0 ].getDeclaredMethods();
 			if( mthds.length == 1 ) {
-				this.singleAbstractMethod = org.lgna.project.ast.JavaMethod.getInstance( mthds[ 0 ] );
+				this.singleAbstractMethod = JavaMethod.getInstance( mthds[ 0 ] );
 			} else {
 				this.singleAbstractMethod = null;
 			}

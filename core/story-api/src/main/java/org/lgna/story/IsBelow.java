@@ -42,11 +42,13 @@
  */
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author dculyba
  */
 public class IsBelow extends AsSeenByArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = IsBelow.class )
+	@ClassTemplate( keywordFactoryCls = IsBelow.class )
 	public static interface Detail {
 	}
 

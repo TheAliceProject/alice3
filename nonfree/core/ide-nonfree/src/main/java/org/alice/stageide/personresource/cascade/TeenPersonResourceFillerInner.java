@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.cascade;
 
+import org.lgna.story.resources.sims2.LifeStage;
+import org.lgna.story.resources.sims2.TeenPersonResource;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TeenPersonResourceFillerInner extends PersonResourceFillerInner {
 	public TeenPersonResourceFillerInner() {
-		super( org.lgna.story.resources.sims2.TeenPersonResource.class, org.lgna.story.resources.sims2.LifeStage.TEEN );
+		super( TeenPersonResource.class, LifeStage.TEEN );
 	}
 }

@@ -42,22 +42,30 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.Panel;
+import org.lgna.project.ast.Member;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ReplacePositiveImplementationCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
+public final class ReplacePositiveImplementationCard extends SimpleComposite<Panel> {
 	private final DifferentImplementation<?> differentImplementation;
 
 	public ReplacePositiveImplementationCard( DifferentImplementation<?> differentImplementation ) {
-		super( java.util.UUID.fromString( "889b8aad-d368-46c9-a299-c4d31c4703fd" ) );
+		super( UUID.fromString( "889b8aad-d368-46c9-a299-c4d31c4703fd" ) );
 		this.differentImplementation = differentImplementation;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		org.lgna.project.ast.Member member = this.differentImplementation.getImportHub().getMember();
-		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( this, "fill, insets 0" );
-		rv.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.createReplaceMemberLabel( member ) );
+	protected Panel createView() {
+		Member member = this.differentImplementation.getImportHub().getMember();
+		MigPanel rv = new MigPanel( this, "fill, insets 0" );
+		rv.addComponent( MemberViewUtilities.createReplaceMemberLabel( member ) );
 		return rv;
 	}
 }

@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.property;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -53,7 +55,7 @@ public class IntegerProperty extends InstanceProperty<Integer> {
 	@Override
 	public void setValue( Integer value ) {
 		assert value != null : this;
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+		if( Objects.notEquals( value, this.getValue() ) ) {
 			super.setValue( value );
 		}
 	}

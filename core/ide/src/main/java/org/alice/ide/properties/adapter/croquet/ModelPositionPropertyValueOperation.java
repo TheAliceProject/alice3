@@ -42,11 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.properties.adapter.croquet;
 
+import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ModelPositionPropertyValueOperation extends PropertyValueOperation<edu.cmu.cs.dennisc.math.Point3> {
-	public ModelPositionPropertyValueOperation( org.alice.ide.properties.adapter.AbstractPropertyAdapter<edu.cmu.cs.dennisc.math.Point3, ?> propertyAdapter, edu.cmu.cs.dennisc.math.Point3 nextValue ) {
-		super( java.util.UUID.fromString( "c4da3421-b4ea-4a6d-9718-7ba6b75cc3e3" ), propertyAdapter, nextValue );
+public final class ModelPositionPropertyValueOperation extends PropertyValueOperation<Point3> {
+	public ModelPositionPropertyValueOperation( AbstractPropertyAdapter<Point3, ?> propertyAdapter, Point3 nextValue ) {
+		super( UUID.fromString( "c4da3421-b4ea-4a6d-9718-7ba6b75cc3e3" ), propertyAdapter, nextValue );
 	}
 }

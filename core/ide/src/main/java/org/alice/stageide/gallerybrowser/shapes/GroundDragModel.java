@@ -42,12 +42,24 @@
  */
 package org.alice.stageide.gallerybrowser.shapes;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.stageide.ast.declaration.AddGroundManagedFieldComposite;
+import org.alice.stageide.icons.GroundIconFactory;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SGround;
+
+import java.util.UUID;
+
 /**
  * @author dculyba
  */
 public class GroundDragModel extends ShapeDragModel {
 
-	private static final org.lgna.story.SGround sModel = new org.lgna.story.SGround();
+	private static final SGround sModel = new SGround();
 
 	private static class SingletonHolder {
 		private static GroundDragModel instance = new GroundDragModel();
@@ -58,12 +70,12 @@ public class GroundDragModel extends ShapeDragModel {
 	}
 
 	private GroundDragModel() {
-		super( java.util.UUID.fromString( "3aa18490-f758-46e6-84eb-c9eff76c0185" ) );
+		super( UUID.fromString( "3aa18490-f758-46e6-84eb-c9eff76c0185" ) );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
-		return org.lgna.story.EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
+	public AxisAlignedBox getBoundingBox() {
+		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
 	}
 
 	@Override
@@ -72,13 +84,13 @@ public class GroundDragModel extends ShapeDragModel {
 	}
 
 	@Override
-	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return org.alice.stageide.ast.declaration.AddGroundManagedFieldComposite.getInstance().getLaunchOperation();
+	public Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller ) {
+		return AddGroundManagedFieldComposite.getInstance().getLaunchOperation();
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.icons.GroundIconFactory.getInstance();
+	public IconFactory getIconFactory() {
+		return GroundIconFactory.getInstance();
 	}
 
 }

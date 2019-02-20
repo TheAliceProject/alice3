@@ -43,12 +43,17 @@
 package edu.cmu.cs.dennisc.ui;
 
 //todo: move to core?
+
+import edu.cmu.cs.dennisc.pattern.Action;
+
+import java.util.Stack;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class UndoRedoManager {
-	private java.util.Stack<edu.cmu.cs.dennisc.pattern.Action> m_undoStack = new java.util.Stack<edu.cmu.cs.dennisc.pattern.Action>();
-	private java.util.Stack<edu.cmu.cs.dennisc.pattern.Action> m_redoStack = new java.util.Stack<edu.cmu.cs.dennisc.pattern.Action>();
+	private Stack<Action> m_undoStack = new Stack<Action>();
+	private Stack<Action> m_redoStack = new Stack<Action>();
 
 	protected abstract void handleChange();
 
@@ -60,26 +65,26 @@ public abstract class UndoRedoManager {
 		return m_redoStack.isEmpty();
 	}
 
-	public void runAndPush( edu.cmu.cs.dennisc.pattern.Action action ) {
+	public void runAndPush( Action action ) {
 		action.run();
 		pushAlreadyRunActionOntoUndoStack( action );
 	}
 
-	public void pushAlreadyRunActionOntoUndoStack( edu.cmu.cs.dennisc.pattern.Action action ) {
+	public void pushAlreadyRunActionOntoUndoStack( Action action ) {
 		m_undoStack.push( action );
 		m_redoStack.clear();
 		handleChange();
 	}
 
 	public void undo() {
-		edu.cmu.cs.dennisc.pattern.Action action = m_undoStack.pop();
+		Action action = m_undoStack.pop();
 		m_redoStack.push( action );
 		action.undo();
 		handleChange();
 	}
 
 	public void redo() {
-		edu.cmu.cs.dennisc.pattern.Action action = m_redoStack.pop();
+		Action action = m_redoStack.pop();
 		action.redo();
 		m_undoStack.push( action );
 		handleChange();

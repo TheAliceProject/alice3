@@ -42,16 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import org.alice.ide.ProjectDocumentFrame;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class NewProjectOperation extends PotentialClearanceUriCreatorIteratingOperation {
-	public NewProjectOperation( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "281eb394-1da5-4527-98a1-92ce5c604715" ), projectDocumentFrame, true );
-	}
-
-	@Override
-	public boolean isToolBarTextClobbered() {
-		return true;
+	public NewProjectOperation() {
+		super( UUID.fromString( "281eb394-1da5-4527-98a1-92ce5c604715" ), true );
 	}
 }

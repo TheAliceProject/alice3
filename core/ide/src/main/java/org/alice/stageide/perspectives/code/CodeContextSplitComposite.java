@@ -43,31 +43,54 @@
 
 package org.alice.stageide.perspectives.code;
 
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
+import org.alice.ide.declarationseditor.DeclarationComposite;
+import org.alice.ide.members.MembersComposite;
+import org.alice.ide.sceneeditor.SceneComposite;
+import org.alice.ide.typehierarchy.TypeHierarchyComposite;
+import org.alice.stageide.run.RunComposite;
+import org.alice.stageide.typecontext.NonSceneTypeComposite;
+import org.lgna.croquet.CardOwnerComposite;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.ImmutableSplitComposite;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.SplitPane;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.story.SScene;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitComposite {
+public class CodeContextSplitComposite extends ImmutableSplitComposite {
 	public CodeContextSplitComposite( CodePerspectiveComposite codePerspectiveComposite ) {
-		super( java.util.UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ) );
+		super( UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ) );
 		this.codePerspectiveComposite = codePerspectiveComposite;
 		this.sceneOrNonSceneComposite = this.createCardOwnerCompositeButDoNotRegister( this.sceneComposite, this.nonSceneTypeComposite );
-		this.typeOrCodeCardOwnerComposite = this.createCardOwnerCompositeButDoNotRegister( this.typeHierarchyComposite, org.alice.ide.members.MembersComposite.getInstance() );
+		this.typeOrCodeCardOwnerComposite = this.createCardOwnerCompositeButDoNotRegister( this.typeHierarchyComposite, MembersComposite.getInstance() );
 	}
 
 	@Override
-	public org.lgna.croquet.Composite<?> getLeadingComposite() {
+	public Composite<?> getLeadingComposite() {
 		return this.sceneOrNonSceneComposite;
 	}
 
 	@Override
-	public org.lgna.croquet.Composite<?> getTrailingComposite() {
+	public Composite<?> getTrailingComposite() {
 		return this.typeOrCodeCardOwnerComposite;
 	}
 
-	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
-		org.lgna.croquet.Composite<?> composite;
+	private void handleTypeStateChanged( NamedUserType nextValue ) {
+		Composite<?> composite;
 		if( nextValue != null ) {
-			if( nextValue.isAssignableTo( org.lgna.story.SScene.class ) ) {
+			if( nextValue.isAssignableTo( SScene.class ) ) {
 				composite = this.sceneComposite;
 			} else {
 				composite = this.nonSceneTypeComposite;
@@ -83,20 +106,20 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 		this.sceneOrNonSceneComposite.showCard( composite );
 	}
 
-	private void handleDeclarationStateChanged( org.alice.ide.declarationseditor.DeclarationComposite nextValue ) {
-		org.lgna.croquet.Composite<?> composite;
-		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+	private void handleDeclarationStateChanged( DeclarationComposite nextValue ) {
+		Composite<?> composite;
+		if( IsEmphasizingClassesState.getInstance().getValue() ) {
 			if( nextValue != null ) {
-				if( nextValue.getDeclaration() instanceof org.lgna.project.ast.AbstractType ) {
+				if( nextValue.getDeclaration() instanceof AbstractType ) {
 					composite = this.typeHierarchyComposite;
 				} else {
-					composite = org.alice.ide.members.MembersComposite.getInstance();
+					composite = MembersComposite.getInstance();
 				}
 			} else {
 				composite = null;
 			}
 		} else {
-			composite = org.alice.ide.members.MembersComposite.getInstance();
+			composite = MembersComposite.getInstance();
 		}
 		this.typeOrCodeCardOwnerComposite.showCard( composite );
 	}
@@ -110,8 +133,8 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SplitPane createView() {
-		org.lgna.croquet.views.SplitPane rv = this.createVerticalSplitPane();
+	protected SplitPane createView() {
+		SplitPane rv = this.createVerticalSplitPane();
 		rv.addDividerLocationChangeListener( this.dividerLocationListener );
 		rv.setResizeWeight( 0.0 );
 		return rv;
@@ -120,41 +143,41 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
+		ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
 		projectDocumentFrame.getTypeMetaState().addAndInvokeValueListener( this.typeListener );
 		projectDocumentFrame.getDeclarationsEditorComposite().getTabState().addAndInvokeNewSchoolValueListener( this.declarationListener );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
+		ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
 		projectDocumentFrame.getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationListener );
 		projectDocumentFrame.getTypeMetaState().removeValueListener( this.typeListener );
 		super.handlePostDeactivation();
 	}
 
-	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+	private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
+		public void valueChanged( ValueEvent<NamedUserType> e ) {
 			CodeContextSplitComposite.this.handleTypeStateChanged( e.getNextValue() );
 		}
 	};
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> declarationListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>>() {
+	private final ValueListener<DeclarationComposite<?, ?>> declarationListener = new ValueListener<DeclarationComposite<?, ?>>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> e ) {
+		public void valueChanged( ValueEvent<DeclarationComposite<?, ?>> e ) {
 			CodeContextSplitComposite.this.handleDeclarationStateChanged( e.getNextValue() );
 		}
 	};
 
-	private final java.beans.PropertyChangeListener dividerLocationListener = new java.beans.PropertyChangeListener() {
+	private final PropertyChangeListener dividerLocationListener = new PropertyChangeListener() {
 		@Override
-		public void propertyChange( java.beans.PropertyChangeEvent e ) {
+		public void propertyChange( PropertyChangeEvent e ) {
 			if( ignoreDividerChangeCount > 0 ) {
 				//pass
 			} else {
-				org.lgna.croquet.views.SplitPane otherSplitPane = codePerspectiveComposite.getView();
+				SplitPane otherSplitPane = codePerspectiveComposite.getView();
 				int prevValue = otherSplitPane.getDividerLocation();
-				int nextValue = (int)( (Integer)e.getNewValue() * org.alice.stageide.run.RunComposite.WIDTH_TO_HEIGHT_RATIO );
+				int nextValue = (int)( (Integer)e.getNewValue() * RunComposite.WIDTH_TO_HEIGHT_RATIO );
 				if( prevValue != nextValue ) {
 					codePerspectiveComposite.incrementIgnoreDividerLocationChangeCount();
 					try {
@@ -169,12 +192,12 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 	};
 
 	private final CodePerspectiveComposite codePerspectiveComposite;
-	private final org.lgna.croquet.CardOwnerComposite sceneOrNonSceneComposite;
-	private final org.lgna.croquet.CardOwnerComposite typeOrCodeCardOwnerComposite;
+	private final CardOwnerComposite sceneOrNonSceneComposite;
+	private final CardOwnerComposite typeOrCodeCardOwnerComposite;
 	private int ignoreDividerChangeCount = 0;
 
-	private final org.alice.ide.sceneeditor.SceneComposite sceneComposite = new org.alice.ide.sceneeditor.SceneComposite();
-	private final org.alice.stageide.typecontext.NonSceneTypeComposite nonSceneTypeComposite = new org.alice.stageide.typecontext.NonSceneTypeComposite();
+	private final SceneComposite sceneComposite = new SceneComposite();
+	private final NonSceneTypeComposite nonSceneTypeComposite = new NonSceneTypeComposite();
 
-	private final org.alice.ide.typehierarchy.TypeHierarchyComposite typeHierarchyComposite = new org.alice.ide.typehierarchy.TypeHierarchyComposite();
+	private final TypeHierarchyComposite typeHierarchyComposite = new TypeHierarchyComposite();
 }

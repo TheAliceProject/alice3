@@ -43,13 +43,15 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.EulerAngles;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3f;
+import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.math.property.EulerAnglesProperty;
 import edu.cmu.cs.dennisc.math.property.Vector3fProperty;
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.StringProperty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Joint extends Transformable implements ModelJoint
 {
@@ -89,12 +91,29 @@ public class Joint extends Transformable implements ModelJoint
 		return null;
 	}
 
+	public void scale( Vector3 scale) {
+		AffineMatrix4x4 newTransform = new AffineMatrix4x4( localTransformation.getValue() );
+		newTransform.translation.multiply( scale );
+		localTransformation.setValue( newTransform );
+		AxisAlignedBox bb = boundingBox.getValue();
+		if (bb != null) {
+			bb.scale(scale);
+		}
+		for( int i = 0; i < getComponentCount(); i++ )
+		{
+			Component comp = getComponentAt( i );
+			if (comp instanceof Joint) {
+				((Joint)comp).scale(scale);
+			}
+		}
+	}
+
 	public Joint getJoint( String jointID )
 	{
 		return getJoint( this, jointID );
 	}
 
-	private void getJoints( Composite c, String nameKey, java.util.List<Joint> joints )
+	private void getJoints( Composite c, String nameKey, List<Joint> joints )
 	{
 		if( c == null )
 		{
@@ -120,7 +139,7 @@ public class Joint extends Transformable implements ModelJoint
 
 	public Joint[] getJoints( String nameKey )
 	{
-		java.util.List<Joint> joints = new java.util.ArrayList<Joint>();
+		List<Joint> joints = new ArrayList<Joint>();
 		getJoints( this, nameKey, joints );
 		return joints.toArray( new Joint[ joints.size() ] );
 	}
@@ -201,14 +220,14 @@ public class Joint extends Transformable implements ModelJoint
 		sb.append( " jointId=" + this.jointID.getValue() );
 	}
 
-	public final edu.cmu.cs.dennisc.property.StringProperty jointID = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInX = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInY = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInZ = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
+	public final StringProperty jointID = new StringProperty( this, null );
+	public final BooleanProperty isFreeInX = new BooleanProperty( this, false );
+	public final BooleanProperty isFreeInY = new BooleanProperty( this, false );
+	public final BooleanProperty isFreeInZ = new BooleanProperty( this, false );
 
 	//    public final edu.cmu.cs.dennisc.property.DoubleProperty boundingRadius = new edu.cmu.cs.dennisc.property.DoubleProperty( this, Double.NaN, true);
 
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> boundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
+	public final InstanceProperty<AxisAlignedBox> boundingBox = new InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
 
 	public final Vector3fProperty oStiffness = new Vector3fProperty( this, new Vector3f() );
 	public final EulerAnglesProperty oBoneOrientation = new EulerAnglesProperty( this, EulerAngles.createIdentity() );

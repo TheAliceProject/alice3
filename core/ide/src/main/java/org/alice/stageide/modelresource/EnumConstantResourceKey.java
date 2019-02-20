@@ -42,54 +42,53 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.alice.ide.typemanager.TypeManager;
+import org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite;
+import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.JavaField;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.resources.ModelResource;
+
+import javax.swing.JComponent;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class EnumConstantResourceKey extends InstanceCreatorKey {
-	private static java.util.Map<org.lgna.project.ast.JavaType, org.lgna.project.ast.JavaType> mapResourceTypeToAbstractionType;
 
-	private final Enum<? extends org.lgna.story.resources.ModelResource> enumConstant;
+	private final Enum<? extends ModelResource> enumConstant;
 
-	public static org.lgna.project.ast.JavaType getAbstractionTypeForResourceType( org.lgna.project.ast.AbstractType<?, ?, ?> assignableFromResourceType ) {
-		if( mapResourceTypeToAbstractionType != null ) {
-			//pass
-		} else {
-			mapResourceTypeToAbstractionType = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-			java.util.List<org.lgna.project.ast.JavaType> abstractionTypes = org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes();
-			for( org.lgna.project.ast.JavaType abstractionType : abstractionTypes ) {
-				org.lgna.project.ast.JavaType resourceType = (org.lgna.project.ast.JavaType)abstractionType.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
-				mapResourceTypeToAbstractionType.put( resourceType, abstractionType );
-			}
-		}
-		org.lgna.project.ast.JavaType abstractionType = null;
-		for( org.lgna.project.ast.JavaType resourceType : mapResourceTypeToAbstractionType.keySet() ) {
-			if( resourceType.isAssignableFrom( assignableFromResourceType ) ) {
-				abstractionType = mapResourceTypeToAbstractionType.get( resourceType );
-				break;
-			}
-		}
-		return abstractionType;
-	}
 
-	public EnumConstantResourceKey( Enum<? extends org.lgna.story.resources.ModelResource> enumConstant ) {
+	public EnumConstantResourceKey( Enum<? extends ModelResource> enumConstant ) {
 		this.enumConstant = enumConstant;
 	}
 
-	public Enum<? extends org.lgna.story.resources.ModelResource> getEnumConstant() {
+	public Enum<? extends ModelResource> getEnumConstant() {
 		return this.enumConstant;
 	}
 
 	@Override
-	public Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls() {
+	public Class<? extends ModelResource> getModelResourceCls() {
 		return this.enumConstant.getDeclaringClass();
 	}
 
-	public org.lgna.project.ast.JavaField getField() {
+	public JavaField getField() {
 		try {
-			return org.lgna.project.ast.JavaField.getInstance( this.enumConstant.getClass().getField( this.enumConstant.name() ) );
+			return JavaField.getInstance( this.enumConstant.getClass().getField( this.enumConstant.name() ) );
 		} catch( NoSuchFieldException nsfe ) {
 			throw new RuntimeException( nsfe );
 		}
@@ -97,17 +96,17 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String getInternalText() {
-		return IdeAliceResourceUtilities.getModelClassName( this, null );
+		return AliceResourceUtilties.getModelClassName( enumConstant.getDeclaringClass(), enumConstant.name(), null );
 	}
 
 	@Override
 	public String getSearchText() {
-		return IdeAliceResourceUtilities.getModelClassName( this, javax.swing.JComponent.getDefaultLocale() );
+		return AliceResourceUtilties.getModelClassName( enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String getLocalizedDisplayText() {
-		String simpleName = IdeAliceResourceUtilities.getModelClassName( this, javax.swing.JComponent.getDefaultLocale() );
+		String simpleName = AliceResourceUtilties.getModelClassName( enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale() );
 		String params = this.enumConstant.getDeclaringClass().getEnumConstants().length > 1 ? this.enumConstant.name() : "";
 
 		Formatter formatter = FormatterState.getInstance().getValue();
@@ -115,26 +114,26 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceInstance( (org.lgna.story.resources.ModelResource)this.enumConstant );
+	public IconFactory getIconFactory() {
+		return IconFactoryManager.getIconFactoryForResourceInstance( (ModelResource)this.enumConstant );
 	}
 
 	@Override
-	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
-		org.lgna.project.ast.JavaField argumentField = this.getField();
+	public InstanceCreation createInstanceCreation() {
+		JavaField argumentField = this.getField();
 
-		org.lgna.project.ast.JavaType abstractionType = getAbstractionTypeForResourceType( org.lgna.project.ast.JavaType.getInstance( this.enumConstant.getClass() ) );
+		JavaType abstractionType = getAbstractionTypeForResourceType( JavaType.getInstance( this.enumConstant.getClass() ) );
 		if( abstractionType != null ) {
-			org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField( abstractionType, argumentField );
-			org.lgna.project.ast.NamedUserConstructor constructor = userType.getDeclaredConstructors().get( 0 );
-			org.lgna.project.ast.Expression[] argumentExpressions;
+			NamedUserType userType = TypeManager.getNamedUserTypeFromArgumentField( abstractionType, argumentField );
+			NamedUserConstructor constructor = userType.getDeclaredConstructors().get( 0 );
+			Expression[] argumentExpressions;
 			if( constructor.getRequiredParameters().size() == 1 ) {
-				argumentExpressions = new org.lgna.project.ast.Expression[] { org.lgna.project.ast.AstUtilities.createStaticFieldAccess( argumentField )
+				argumentExpressions = new Expression[] { AstUtilities.createStaticFieldAccess( argumentField )
 				};
 			} else {
-				argumentExpressions = new org.lgna.project.ast.Expression[] {};
+				argumentExpressions = new Expression[] {};
 			}
-			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, argumentExpressions );
+			return AstUtilities.createInstanceCreation( constructor, argumentExpressions );
 		} else {
 			return null;
 		}
@@ -147,17 +146,36 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String[] getTags() {
-		return IdeAliceResourceUtilities.getTags( this, javax.swing.JComponent.getDefaultLocale() );
+		return AliceResourceUtilties.getTags( enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String[] getGroupTags() {
-		return IdeAliceResourceUtilities.getGroupTags( this, javax.swing.JComponent.getDefaultLocale() );
+		return AliceResourceUtilties.getGroupTags( enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String[] getThemeTags() {
-		return IdeAliceResourceUtilities.getThemeTags( this, javax.swing.JComponent.getDefaultLocale() );
+		return AliceResourceUtilties.getThemeTags( enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale() );
+	}
+
+	@Override
+	public Triggerable getLeftClickOperation( ResourceNode node, SingleSelectTreeState<ResourceNode> controller ) {
+		return node.getDropOperation( null, null );
+	}
+
+	@Override
+	public Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite ) {
+		return AddResourceKeyManagedFieldComposite.getInstance().
+			getLaunchOperationToCreateValue( this, true );
+	}
+
+	@Override public AxisAlignedBox getBoundingBox() {
+		return AliceResourceUtilties.getBoundingBox( enumConstant.getDeclaringClass(), enumConstant.name() );
+	}
+
+	@Override public boolean getPlaceOnGround() {
+		return AliceResourceUtilties.getPlaceOnGround( enumConstant.getDeclaringClass(), enumConstant.name() );
 	}
 
 	@Override

@@ -46,11 +46,13 @@ import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.story.implementation.TextModelImp;
 
+import java.awt.Font;
+
 /**
  * @author dculyba
  * 
  */
-public class TextFontPropertyAdapter extends AbstractPropertyAdapter<java.awt.Font, TextModelImp> {
+public class TextFontPropertyAdapter extends AbstractPropertyAdapter<Font, TextModelImp> {
 
 	public TextFontPropertyAdapter( TextModelImp instance, StandardExpressionState expressionState )
 	{
@@ -58,7 +60,7 @@ public class TextFontPropertyAdapter extends AbstractPropertyAdapter<java.awt.Fo
 	}
 
 	@Override
-	public void setValue( java.awt.Font value )
+	public void setValue( Font value )
 	{
 		super.setValue( value );
 		if( this.instance != null )
@@ -68,13 +70,13 @@ public class TextFontPropertyAdapter extends AbstractPropertyAdapter<java.awt.Fo
 	}
 
 	@Override
-	public Class<java.awt.Font> getPropertyType()
+	public Class<Font> getPropertyType()
 	{
-		return java.awt.Font.class;
+		return Font.class;
 	}
 
 	@Override
-	public java.awt.Font getValue()
+	public Font getValue()
 	{
 		if( this.instance != null )
 		{
@@ -84,7 +86,7 @@ public class TextFontPropertyAdapter extends AbstractPropertyAdapter<java.awt.Fo
 	}
 
 	@Override
-	public java.awt.Font getValueCopyIfMutable()
+	public Font getValueCopyIfMutable()
 	{
 		return this.getValue();
 	}

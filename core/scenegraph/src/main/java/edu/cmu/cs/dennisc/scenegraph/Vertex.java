@@ -43,40 +43,49 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3f;
+import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public final class Vertex implements BinaryEncodableAndDecodable {
 	public static final int FORMAT_POSITION = 1;
 	public static final int FORMAT_NORMAL = 2;
 	public static final int FORMAT_DIFFUSE_COLOR = 4;
 	public static final int FORMAT_SPECULAR_HIGHLIGHT_COLOR = 8;
 	public static final int FORMAT_TEXTURE_COORDINATE_0 = 16;
 
-	public final edu.cmu.cs.dennisc.math.Point3 position;
-	public final edu.cmu.cs.dennisc.math.Vector3f normal;
-	public final edu.cmu.cs.dennisc.color.Color4f diffuseColor;
-	public final edu.cmu.cs.dennisc.color.Color4f specularHighlightColor;
-	public final edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0;
+	public final Point3 position;
+	public final Vector3f normal;
+	public final Color4f diffuseColor;
+	public final Color4f specularHighlightColor;
+	public final TextureCoordinate2f textureCoordinate0;
 
 	public Vertex(
-			edu.cmu.cs.dennisc.math.Point3 position,
-			edu.cmu.cs.dennisc.math.Vector3f normal,
-			edu.cmu.cs.dennisc.color.Color4f diffuseColor,
-			edu.cmu.cs.dennisc.color.Color4f specularHighlightColor,
-			edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0 ) {
-		this.position = position != null ? position : edu.cmu.cs.dennisc.math.Point3.createNaN();
-		this.normal = normal != null ? normal : edu.cmu.cs.dennisc.math.Vector3f.createNaN();
-		this.diffuseColor = diffuseColor != null ? diffuseColor : edu.cmu.cs.dennisc.color.Color4f.createNaN();
-		this.specularHighlightColor = specularHighlightColor != null ? specularHighlightColor : edu.cmu.cs.dennisc.color.Color4f.createNaN();
-		this.textureCoordinate0 = textureCoordinate0 != null ? textureCoordinate0 : edu.cmu.cs.dennisc.texture.TextureCoordinate2f.createNaN();
+			Point3 position,
+			Vector3f normal,
+			Color4f diffuseColor,
+			Color4f specularHighlightColor,
+			TextureCoordinate2f textureCoordinate0 ) {
+		this.position = position != null ? position : Point3.createNaN();
+		this.normal = normal != null ? normal : Vector3f.createNaN();
+		this.diffuseColor = diffuseColor != null ? diffuseColor : Color4f.createNaN();
+		this.specularHighlightColor = specularHighlightColor != null ? specularHighlightColor : Color4f.createNaN();
+		this.textureCoordinate0 = textureCoordinate0 != null ? textureCoordinate0 : TextureCoordinate2f.createNaN();
 	}
 
 	public Vertex( Vertex other ) {
 		this( other.position, other.normal, other.diffuseColor, other.specularHighlightColor, other.textureCoordinate0 );
 	}
 
-	public Vertex( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Vertex( BinaryDecoder binaryDecoder ) {
 		position = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		normal = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		diffuseColor = binaryDecoder.decodeBinaryEncodableAndDecodable();
@@ -85,7 +94,7 @@ public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( position );
 		binaryEncoder.encode( normal );
 		binaryEncoder.encode( diffuseColor );
@@ -93,7 +102,7 @@ public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 		binaryEncoder.encode( textureCoordinate0 );
 	}
 
-	public static Vertex createXYZ( edu.cmu.cs.dennisc.math.Point3 xyz ) {
+	public static Vertex createXYZ( Point3 xyz ) {
 		return new Vertex(
 				xyz,
 				null,
@@ -108,10 +117,10 @@ public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 	}
 
 	public static Vertex createXYZ( double x, double y, double z ) {
-		return createXYZ( new edu.cmu.cs.dennisc.math.Point3( x, y, z ) );
+		return createXYZ( new Point3( x, y, z ) );
 	}
 
-	public static Vertex createXYZUV( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv ) {
+	public static Vertex createXYZUV( Point3 xyz, TextureCoordinate2f uv ) {
 		return new Vertex(
 				xyz,
 				null,
@@ -121,10 +130,10 @@ public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 	}
 
 	public static Vertex createXYZUV( double x, double y, double z, float u, float v ) {
-		return createXYZUV( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), new edu.cmu.cs.dennisc.texture.TextureCoordinate2f( u, v ) );
+		return createXYZUV( new Point3( x, y, z ), new TextureCoordinate2f( u, v ) );
 	}
 
-	public static Vertex createXYZIJKUV( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.math.Vector3f ijk, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv ) {
+	public static Vertex createXYZIJKUV( Point3 xyz, Vector3f ijk, TextureCoordinate2f uv ) {
 		return new Vertex(
 				xyz,
 				ijk,
@@ -134,10 +143,10 @@ public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 	}
 
 	public static Vertex createXYZIJKUV( double x, double y, double z, float i, float j, float k, float u, float v ) {
-		return createXYZIJKUV( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), new edu.cmu.cs.dennisc.math.Vector3f( i, j, k ), new edu.cmu.cs.dennisc.texture.TextureCoordinate2f( u, v ) );
+		return createXYZIJKUV( new Point3( x, y, z ), new Vector3f( i, j, k ), new TextureCoordinate2f( u, v ) );
 	}
 
-	public static Vertex createXYZIJK( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.math.Vector3f ijk ) {
+	public static Vertex createXYZIJK( Point3 xyz, Vector3f ijk ) {
 		return new Vertex(
 				xyz,
 				ijk,
@@ -147,10 +156,10 @@ public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 	}
 
 	public static Vertex createXYZIJK( double x, double y, double z, float i, float j, float k ) {
-		return createXYZIJK( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), new edu.cmu.cs.dennisc.math.Vector3f( i, j, k ) );
+		return createXYZIJK( new Point3( x, y, z ), new Vector3f( i, j, k ) );
 	}
 
-	public static Vertex createXYZRGBA( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.color.Color4f rgba ) {
+	public static Vertex createXYZRGBA( Point3 xyz, Color4f rgba ) {
 		return new Vertex(
 				xyz,
 				null,
@@ -160,7 +169,7 @@ public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 	}
 
 	public static Vertex createXYZRGBA( double x, double y, double z, float r, float g, float b, float a ) {
-		return createXYZRGBA( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), new edu.cmu.cs.dennisc.color.Color4f( r, g, b, a ) );
+		return createXYZRGBA( new Point3( x, y, z ), new Color4f( r, g, b, a ) );
 	}
 
 	public static Vertex createXYZRGB( double x, double y, double z, float r, float g, float b ) {
@@ -262,7 +271,7 @@ public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 		return format;
 	}
 
-	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 m ) {
+	public void transform( AbstractMatrix4x4 m ) {
 		if( position.isNaN() == false ) {
 			m.transform( position );
 		}

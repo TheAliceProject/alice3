@@ -42,28 +42,49 @@
  *******************************************************************************/
 package org.alice.ide.stencil;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.models.IdeDragModel;
+import org.alice.ide.perspectives.ProjectPerspective;
+import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.croquet.views.AwtContainerView;
+import org.lgna.croquet.views.DragComponent;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AbstractType;
+
+import javax.swing.JLayeredPane;
+import javax.swing.SwingUtilities;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Stroke;
+import java.awt.geom.Area;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PotentialDropReceptorsFeedbackView extends CustomView {
-	private static final Integer LAYER_ID = javax.swing.JLayeredPane.POPUP_LAYER - 1;
-	private static final java.awt.Stroke THIN_STROKE = new java.awt.BasicStroke( 1.0f );
-	private static final java.awt.Stroke THICK_STROKE = new java.awt.BasicStroke( 3.0f );
+	private static final Integer LAYER_ID = JLayeredPane.POPUP_LAYER - 1;
+	private static final Stroke THIN_STROKE = new BasicStroke( 1.0f );
+	private static final Stroke THICK_STROKE = new BasicStroke( 3.0f );
 
-	private java.util.List<org.lgna.croquet.DropReceptor> holes = null;
-	private org.lgna.croquet.views.DragComponent<?> potentialDragSource;
-	private org.lgna.croquet.views.AwtComponentView<?> currentDropReceptorComponent;
+	private List<DropReceptor> holes = null;
+	private DragComponent<?> potentialDragSource;
 
-	private final org.lgna.croquet.views.AbstractWindow<?> window;
+	private final AbstractWindow<?> window;
 
-	public PotentialDropReceptorsFeedbackView( org.lgna.croquet.views.AbstractWindow<?> window ) {
+	public PotentialDropReceptorsFeedbackView( AbstractWindow<?> window ) {
 		this.window = window;
 	}
 
-	public void showStencilOver( org.lgna.croquet.views.DragComponent<?> potentialDragSource, final org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.alice.ide.perspectives.ProjectPerspective idePerspective = (org.alice.ide.perspectives.ProjectPerspective)ide.getPerspective();
-		java.util.List<org.lgna.croquet.DropReceptor> dropReceptors = idePerspective.createListOfPotentialDropReceptors( (org.alice.ide.croquet.models.IdeDragModel)potentialDragSource.getModel() );
+	public void showStencilOver( DragComponent<?> potentialDragSource, final AbstractType<?, ?, ?> type ) {
+		IDE ide = IDE.getActiveInstance();
+		ProjectPerspective idePerspective = (ProjectPerspective)ide.getPerspective();
+		List<DropReceptor> dropReceptors = idePerspective.createListOfPotentialDropReceptors( (IdeDragModel)potentialDragSource.getModel() );
 		if( dropReceptors.size() > 0 ) {
 			this.holes = dropReceptors;
 			this.potentialDragSource = potentialDragSource;
@@ -77,32 +98,27 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 		this.potentialDragSource = null;
 	}
 
-	public void handleDragStarted( org.lgna.croquet.history.DragStep dragAndDropContext ) {
+	public void handleDragStarted() {
 		this.potentialDragSource = null;
 		if( this.holes != null ) {
 			this.repaint();
 		}
 	}
 
-	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep dragAndDropContext ) {
+	public void handleDragEnteredDropReceptor() {
 	}
 
-	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		this.currentDropReceptorComponent = null;
+	public void handleDragExitedDropReceptor() {
 		if( this.holes != null ) {
 			this.repaint();
 		}
 	}
 
-	public void handleDragStopped( org.lgna.croquet.history.DragStep dragAndDropContext ) {
+	public void handleDragStopped() {
 	}
 
 	private boolean isFauxStencilDesired() {
-		return org.alice.ide.IDE.getActiveInstance().isDragInProgress();
-	}
-
-	public void setDragInProgress( boolean isDragInProgress ) {
-		this.currentDropReceptorComponent = null;
+		return IDE.getActiveInstance().isDragInProgress();
 	}
 
 	@Override
@@ -111,23 +127,19 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 	}
 
 	@Override
-	protected void paintComponentPrologue( java.awt.Graphics2D g2 ) {
+	protected void paintComponentPrologue( Graphics2D g2 ) {
 		if( this.holes != null ) {
 			synchronized( this.holes ) {
-				java.awt.geom.Area area = new java.awt.geom.Area( new java.awt.Rectangle( 0, 0, getWidth(), getHeight() ) );
-				if( this.currentDropReceptorComponent != null ) {
-					g2.setPaint( new java.awt.Color( 0, 0, 127, 95 ) );
-				} else {
-					g2.setPaint( new java.awt.Color( 0, 0, 127, 127 ) );
-				}
+				Area area = new Area( new Rectangle( 0, 0, getWidth(), getHeight() ) );
+				g2.setPaint( new Color( 0, 0, 127, 127 ) );
 
-				java.awt.Rectangle potentialDragSourceBounds;
+				Rectangle potentialDragSourceBounds;
 				if( this.potentialDragSource != null ) {
-					org.lgna.croquet.views.AwtContainerView<?> parent = this.potentialDragSource.getParent();
+					AwtContainerView<?> parent = this.potentialDragSource.getParent();
 					if( parent != null ) {
-						potentialDragSourceBounds = javax.swing.SwingUtilities.convertRectangle( parent.getAwtComponent(), this.potentialDragSource.getBounds(), this.getAwtComponent() );
+						potentialDragSourceBounds = SwingUtilities.convertRectangle( parent.getAwtComponent(), this.potentialDragSource.getBounds(), this.getAwtComponent() );
 					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.potentialDragSource );
+						Logger.severe( this.potentialDragSource );
 						potentialDragSourceBounds = null;
 					}
 				} else {
@@ -135,65 +147,55 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 				}
 
 				if( isFauxStencilDesired() ) {
-					for( org.lgna.croquet.DropReceptor dropReceptor : this.holes ) {
-						org.lgna.croquet.views.SwingComponentView<?> component = dropReceptor.getViewController();
-						java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this.getAwtComponent() );
-						area.subtract( new java.awt.geom.Area( holeBounds ) );
+					for( DropReceptor dropReceptor : this.holes ) {
+						SwingComponentView<?> component = dropReceptor.getViewController();
+						if (component != null && component.getParent() != null) {
+							Rectangle holeBounds = SwingUtilities
+								.convertRectangle(component.getParent().getAwtComponent(), component.getBounds(), this.getAwtComponent());
+							area.subtract(new Area(holeBounds));
+						}
 					}
 
 					if( potentialDragSourceBounds != null ) {
-						area.subtract( new java.awt.geom.Area( potentialDragSourceBounds ) );
+						area.subtract( new Area( potentialDragSourceBounds ) );
 					}
 					g2.fill( area );
 				}
 
 				g2.setStroke( THICK_STROKE );
 				final int BUFFER = 6;
-				for( org.lgna.croquet.DropReceptor dropReceptor : this.holes ) {
-					org.lgna.croquet.views.SwingComponentView<?> component = dropReceptor.getViewController();
+				for( DropReceptor dropReceptor : this.holes ) {
+					SwingComponentView<?> component = dropReceptor.getViewController();
 					if( component != null ) {
-						java.awt.Container awtContainer = component.getAwtComponent().getParent();
+						Container awtContainer = component.getAwtComponent().getParent();
 						if( awtContainer != null ) {
-							java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( awtContainer, component.getBounds(), this.getAwtComponent() );
+							Rectangle holeBounds = SwingUtilities.convertRectangle( awtContainer, component.getBounds(), this.getAwtComponent() );
 							holeBounds.x -= BUFFER;
 							holeBounds.y -= BUFFER;
 							holeBounds.width += 2 * BUFFER;
 							holeBounds.height += 2 * BUFFER;
 
-							g2.setColor( new java.awt.Color( 0, 0, 0 ) );
+							g2.setColor( new Color( 0, 0, 0 ) );
 							g2.draw( holeBounds );
-							if( this.currentDropReceptorComponent == component ) {
-								g2.setColor( new java.awt.Color( 0, 255, 0 ) );
-								g2.setStroke( THIN_STROKE );
-								g2.draw( holeBounds );
-								if( this.currentDropReceptorComponent == component ) {
-									g2.setColor( new java.awt.Color( 0, 255, 0 ) );
-									g2.setStroke( THIN_STROKE );
-									g2.draw( holeBounds );
-									g2.setStroke( THICK_STROKE );
-									g2.setColor( new java.awt.Color( 191, 255, 191, 63 ) );
-									g2.fill( holeBounds );
-								}
-							}
 						} else {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( dropReceptor );
+							Logger.severe( dropReceptor );
 						}
 					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( dropReceptor );
+						Logger.severe( dropReceptor );
 					}
 				}
 			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			Logger.severe( this );
 		}
 	}
 
 	@Override
-	protected void paintComponentEpilogue( java.awt.Graphics2D g2 ) {
+	protected void paintComponentEpilogue( Graphics2D g2 ) {
 	}
 
 	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2 ) {
+	protected void paintEpilogue( Graphics2D g2 ) {
 	}
 
 }

@@ -43,50 +43,61 @@
 
 package org.alice.ide.croquet.edits.ast.keyed;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.ArgumentOwner;
+import org.lgna.project.ast.JavaKeyedArgument;
+import org.lgna.project.ast.KeyedArgumentListProperty;
+import org.lgna.project.ast.NodeUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.AbstractEdit {
-	private org.lgna.project.ast.ArgumentOwner argumentOwner;
-	private org.lgna.project.ast.JavaKeyedArgument keyedArgument;
+public class AddKeyedArgumentEdit extends AbstractEdit {
+	private ArgumentOwner argumentOwner;
+	private JavaKeyedArgument keyedArgument;
 
-	public AddKeyedArgumentEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.ArgumentOwner argumentOwner, org.lgna.project.ast.JavaKeyedArgument keyedArgument ) {
-		super( completionStep );
+	public AddKeyedArgumentEdit( UserActivity userActivity, ArgumentOwner argumentOwner, JavaKeyedArgument keyedArgument ) {
+		super( userActivity );
 		this.argumentOwner = argumentOwner;
 		this.keyedArgument = keyedArgument;
 	}
 
-	public AddKeyedArgumentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public AddKeyedArgumentEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.argumentOwner = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.ArgumentOwner.class ).decodeValue( binaryDecoder );
-		this.keyedArgument = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.JavaKeyedArgument.class ).decodeValue( binaryDecoder );
+		this.argumentOwner = NodeCodec.getInstance( ArgumentOwner.class ).decodeValue( binaryDecoder );
+		this.keyedArgument = NodeCodec.getInstance( JavaKeyedArgument.class ).decodeValue( binaryDecoder );
 	}
 
-	public org.lgna.project.ast.ArgumentOwner getArgumentOwner() {
+	public ArgumentOwner getArgumentOwner() {
 		return this.argumentOwner;
 	}
 
-	public org.lgna.project.ast.JavaKeyedArgument getKeyedArgument() {
+	public JavaKeyedArgument getKeyedArgument() {
 		return this.keyedArgument;
 	}
 
 	@Override
 	protected void preCopy() {
 		super.preCopy();
-		org.alice.ide.croquet.codecs.NodeCodec.addNodeToGlobalMap( this.keyedArgument );
+		NodeCodec.addNodeToGlobalMap( this.keyedArgument );
 	}
 
 	@Override
-	protected void postCopy( org.lgna.croquet.edits.AbstractEdit result ) {
-		org.alice.ide.croquet.codecs.NodeCodec.removeNodeFromGlobalMap( this.keyedArgument );
+	protected void postCopy( AbstractEdit result ) {
+		NodeCodec.removeNodeFromGlobalMap( this.keyedArgument );
 		super.postCopy( result );
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.ArgumentOwner.class ).encodeValue( binaryEncoder, this.argumentOwner );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.JavaKeyedArgument.class ).encodeValue( binaryEncoder, this.keyedArgument );
+		NodeCodec.getInstance( ArgumentOwner.class ).encodeValue( binaryEncoder, this.argumentOwner );
+		NodeCodec.getInstance( JavaKeyedArgument.class ).encodeValue( binaryEncoder, this.keyedArgument );
 	}
 
 	@Override
@@ -96,7 +107,7 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.AbstractEdit {
 
 	@Override
 	protected final void undoInternal() {
-		org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty = this.argumentOwner.getKeyedArgumentsProperty();
+		KeyedArgumentListProperty argumentListProperty = this.argumentOwner.getKeyedArgumentsProperty();
 		int index = argumentListProperty.indexOf( this.keyedArgument );
 		argumentListProperty.remove( index );
 	}
@@ -104,6 +115,6 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.AbstractEdit {
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "add detail " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.keyedArgument, org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( rv, this.keyedArgument, Application.getLocale() );
 	}
 }

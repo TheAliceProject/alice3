@@ -42,6 +42,27 @@
  *******************************************************************************/
 package org.lgna.croquet.preferences;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder;
+import edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.SingleSelectListState;
+import org.lgna.croquet.data.ListData;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,14 +71,14 @@ public class PreferenceManager {
 		throw new AssertionError();
 	}
 
-	public static java.util.prefs.Preferences getUserPreferences() {
-		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+	static Preferences getUserPreferences() {
+		Application application = Application.getActiveInstance();
 		if( application != null ) {
-			java.util.prefs.Preferences rv = java.util.prefs.Preferences.userNodeForPackage( application.getClass() );
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+			Preferences rv = Preferences.userNodeForPackage( application.getClass() );
+			if( SystemUtilities.isPropertyTrue( PreferencesManager.ORG_ALICE_CLEAR_ALL_PREFERENCES ) ) {
 				try {
 					rv.clear();
-				} catch( java.util.prefs.BackingStoreException bse ) {
+				} catch( BackingStoreException bse ) {
 					throw new RuntimeException( bse );
 				}
 			}
@@ -113,36 +134,36 @@ public class PreferenceManager {
 	//		}
 	//	}
 
-	private static java.util.List<org.lgna.croquet.SingleSelectListState<?, ?>> selectionOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private static List<SingleSelectListState<?, ?>> selectionOfListSelectionStatePreferences = Lists.newLinkedList();
 	//private static java.util.List<org.lgna.croquet.ListSelectionState<?>> dataOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private static java.util.List<org.lgna.croquet.data.ListData<?>> registeredListData = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private static List<ListData<?>> registeredListData = Lists.newLinkedList();
 
-	private static String getKey( org.lgna.croquet.Model model ) {
+	private static String getKey( Model model ) {
 		return model.getMigrationId().toString();
 	}
 
-	private static <T> T decodeItem( byte[] data, org.lgna.croquet.ItemCodec<T> codec ) {
-		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
-		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
+	private static <T> T decodeItem( byte[] data, ItemCodec<T> codec ) {
+		ByteArrayInputStream bais = new ByteArrayInputStream( data );
+		BinaryDecoder decoder = new InputStreamBinaryDecoder( bais );
 		return codec.decodeValue( decoder );
 	}
 
-	private static <T> byte[] encodeItem( T value, org.lgna.croquet.ItemCodec<T> codec ) {
-		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
+	private static <T> byte[] encodeItem( T value, ItemCodec<T> codec ) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		BinaryEncoder encoder = new OutputStreamBinaryEncoder( baos );
 		codec.encodeValue( encoder, value );
 		encoder.flush();
 		return baos.toByteArray();
 	}
 
-	private static <T> T[] decodeArray( byte[] data, org.lgna.croquet.ItemCodec<T> codec ) {
-		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
-		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
+	private static <T> T[] decodeArray( byte[] data, ItemCodec<T> codec ) {
+		ByteArrayInputStream bais = new ByteArrayInputStream( data );
+		BinaryDecoder decoder = new InputStreamBinaryDecoder( bais );
 		boolean isNotNull = decoder.decodeBoolean();
 		if( isNotNull ) {
 			final int N = decoder.decodeInt();
 			Class<T> componentType = codec.getValueClass();
-			T[] rv = (T[])java.lang.reflect.Array.newInstance( componentType, N );
+			T[] rv = (T[])Array.newInstance( componentType, N );
 			for( int i = 0; i < rv.length; i++ ) {
 				rv[ i ] = codec.decodeValue( decoder );
 			}
@@ -152,9 +173,9 @@ public class PreferenceManager {
 		}
 	}
 
-	private static <T> byte[] encodeArray( T[] value, org.lgna.croquet.ItemCodec<T> codec ) {
-		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
+	private static <T> byte[] encodeArray( T[] value, ItemCodec<T> codec ) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		BinaryEncoder encoder = new OutputStreamBinaryEncoder( baos );
 		boolean isNotNull = value != null;
 		encoder.encode( isNotNull );
 		if( isNotNull ) {
@@ -167,13 +188,13 @@ public class PreferenceManager {
 		return baos.toByteArray();
 	}
 
-	private static <E, D extends org.lgna.croquet.data.ListData<E>> org.lgna.croquet.SingleSelectListState<E, D> decodeSelection( org.lgna.croquet.SingleSelectListState<E, D> rv, java.util.prefs.Preferences userPreferences ) {
-		org.lgna.croquet.ItemCodec<E> codec = rv.getItemCodec();
+	private static <E, D extends ListData<E>> SingleSelectListState<E, D> decodeSelection( SingleSelectListState<E, D> rv, Preferences userPreferences ) {
+		ItemCodec<E> codec = rv.getItemCodec();
 		E defaultValue = rv.getValue();
 		byte[] defaultEncoding = encodeItem( defaultValue, codec );
 		String key = getKey( rv );
 		byte[] encoding = userPreferences.getByteArray( key, defaultEncoding );
-		if( java.util.Arrays.equals( defaultEncoding, encoding ) ) {
+		if( Arrays.equals( defaultEncoding, encoding ) ) {
 			//pass
 		} else {
 			E value = decodeItem( encoding, codec );
@@ -182,13 +203,13 @@ public class PreferenceManager {
 		return rv;
 	}
 
-	private static <E, D extends org.lgna.croquet.data.ListData<E>> org.lgna.croquet.SingleSelectListState<E, D> decodeData( org.lgna.croquet.SingleSelectListState<E, D> rv, java.util.prefs.Preferences userPreferences ) {
-		org.lgna.croquet.ItemCodec<E> codec = rv.getItemCodec();
+	private static <E, D extends ListData<E>> SingleSelectListState<E, D> decodeData( SingleSelectListState<E, D> rv, Preferences userPreferences ) {
+		ItemCodec<E> codec = rv.getItemCodec();
 		E[] defaultValue = rv.toArray();
 		byte[] defaultEncoding = encodeArray( defaultValue, codec );
 		String key = getKey( rv );
 		byte[] encoding = userPreferences.getByteArray( key, defaultEncoding );
-		if( java.util.Arrays.equals( defaultEncoding, encoding ) ) {
+		if( Arrays.equals( defaultEncoding, encoding ) ) {
 			//pass
 		} else {
 			E[] value = decodeArray( encoding, codec );
@@ -197,21 +218,21 @@ public class PreferenceManager {
 		return rv;
 	}
 
-	private static <E> void encodeListData( org.lgna.croquet.data.ListData<E> listData, java.util.prefs.Preferences userPreferences ) {
-		org.lgna.croquet.ItemCodec<E> codec = listData.getItemCodec();
+	private static <E> void encodeListData( ListData<E> listData, Preferences userPreferences ) {
+		ItemCodec<E> codec = listData.getItemCodec();
 		E[] value = listData.toArray();
 		byte[] encoding = encodeArray( value, codec );
 		String key = listData.getPreferenceKey();
 		userPreferences.putByteArray( key, encoding );
 	}
 
-	public static <E> E[] decodeListData( String key, org.lgna.croquet.ItemCodec<E> codec, E[] defaultValue ) {
+	public static <E> E[] decodeListData( String key, ItemCodec<E> codec, E[] defaultValue ) {
 		E[] rv;
-		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
+		Preferences userPreferences = PreferenceManager.getUserPreferences();
 		if( userPreferences != null ) {
 			byte[] defaultEncoding = encodeArray( defaultValue, codec );
 			byte[] encoding = userPreferences.getByteArray( key, defaultEncoding );
-			if( java.util.Arrays.equals( defaultEncoding, encoding ) ) {
+			if( Arrays.equals( defaultEncoding, encoding ) ) {
 				rv = defaultValue;
 			} else {
 				rv = decodeArray( encoding, codec );
@@ -222,35 +243,35 @@ public class PreferenceManager {
 		return rv;
 	}
 
-	private static <E, D extends org.lgna.croquet.data.ListData<E>> void encodeSelection( org.lgna.croquet.SingleSelectListState<E, D> listSelectionState, java.util.prefs.Preferences userPreferences ) {
-		org.lgna.croquet.ItemCodec<E> codec = listSelectionState.getItemCodec();
+	private static <E, D extends ListData<E>> void encodeSelection( SingleSelectListState<E, D> listSelectionState, Preferences userPreferences ) {
+		ItemCodec<E> codec = listSelectionState.getItemCodec();
 		E value = listSelectionState.getValue();
 		byte[] encoding = encodeItem( value, codec );
 		String key = getKey( listSelectionState );
 		userPreferences.putByteArray( key, encoding );
 	}
 
-	private static <E, D extends org.lgna.croquet.data.ListData<E>> void encodeData( org.lgna.croquet.SingleSelectListState<E, D> listSelectionState, java.util.prefs.Preferences userPreferences ) {
-		org.lgna.croquet.ItemCodec<E> codec = listSelectionState.getItemCodec();
+	private static <E, D extends ListData<E>> void encodeData( SingleSelectListState<E, D> listSelectionState, Preferences userPreferences ) {
+		ItemCodec<E> codec = listSelectionState.getItemCodec();
 		E[] value = listSelectionState.toArray();
 		byte[] encoding = encodeArray( value, codec );
 		String key = getKey( listSelectionState );
 		userPreferences.putByteArray( key, encoding );
 	}
 
-	public static void registerListData( org.lgna.croquet.data.ListData<?> listData ) {
+	public static void registerListData( ListData<?> listData ) {
 		if( registeredListData.contains( listData ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( listData );
+			Logger.severe( listData );
 		}
 		registeredListData.add( listData );
 	}
 
 	//todo:
-	public static void registerAndInitializeSelectionOnlyOfListSelectionState( org.lgna.croquet.SingleSelectListState<?, ?> listSelectionState ) {
+	public static void registerAndInitializeSelectionOnlyOfListSelectionState( SingleSelectListState<?, ?> listSelectionState ) {
 		if( selectionOfListSelectionStatePreferences.contains( listSelectionState ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( listSelectionState );
+			Logger.severe( listSelectionState );
 		}
-		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
+		Preferences userPreferences = PreferenceManager.getUserPreferences();
 		if( userPreferences != null ) {
 			try {
 				decodeSelection( listSelectionState, userPreferences );
@@ -278,12 +299,12 @@ public class PreferenceManager {
 	//		}
 	//	}
 
-	public static void preservePreferences() throws java.util.prefs.BackingStoreException {
-		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
+	public static void preservePreferences() throws BackingStoreException {
+		Preferences userPreferences = PreferenceManager.getUserPreferences();
 		if( userPreferences != null ) {
-			org.lgna.croquet.preferences.PreferenceBooleanState.preserveAll( userPreferences );
-			org.lgna.croquet.preferences.PreferenceStringState.preserveAll( userPreferences );
-			for( org.lgna.croquet.SingleSelectListState<?, ?> listSelectionState : selectionOfListSelectionStatePreferences ) {
+			PreferenceBooleanState.preserveAll( userPreferences );
+			PreferenceStringState.preserveAll( userPreferences );
+			for( SingleSelectListState<?, ?> listSelectionState : selectionOfListSelectionStatePreferences ) {
 				try {
 					encodeSelection( listSelectionState, userPreferences );
 				} catch( Throwable t ) {
@@ -298,7 +319,7 @@ public class PreferenceManager {
 			//				}
 			//			}
 
-			for( org.lgna.croquet.data.ListData<?> listData : registeredListData ) {
+			for( ListData<?> listData : registeredListData ) {
 				encodeListData( listData, userPreferences );
 			}
 			userPreferences.flush();

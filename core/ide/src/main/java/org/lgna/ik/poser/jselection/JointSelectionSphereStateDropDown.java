@@ -44,12 +44,13 @@ package org.lgna.ik.poser.jselection;
 
 import org.lgna.croquet.State;
 import org.lgna.croquet.views.ItemDropDown;
+import org.lgna.croquet.views.Label;
 
 /**
  * @author Matt May
  */
 public class JointSelectionSphereStateDropDown extends ItemDropDown<JointSelectionSphere, JointSelectionSphereState> {
-	private final org.lgna.croquet.views.Label mainComponent = new org.lgna.croquet.views.Label();
+	private final Label mainComponent = new Label();
 
 	public JointSelectionSphereStateDropDown( JointSelectionSphereState model ) {
 		super( model );
@@ -57,7 +58,7 @@ public class JointSelectionSphereStateDropDown extends ItemDropDown<JointSelecti
 	}
 
 	@Override
-	protected void handleChanged( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+	protected void handleChanged( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
 		this.mainComponent.setText( nextValue != null ? nextValue.toString() : "null" );
 		this.revalidateAndRepaint();
 	}

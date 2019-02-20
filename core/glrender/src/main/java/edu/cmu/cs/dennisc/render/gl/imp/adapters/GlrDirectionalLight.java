@@ -43,13 +43,17 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.scenegraph.DirectionalLight;
+
+import java.nio.DoubleBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GlrDirectionalLight extends GlrLight<edu.cmu.cs.dennisc.scenegraph.DirectionalLight> {
+public class GlrDirectionalLight extends GlrLight<DirectionalLight> {
 	@Override
 	protected float[] getPosition( float[] rv ) {
-		java.nio.DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
+		DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
 		rv[ 0 ] = (float)db.get( 8 );
 		rv[ 1 ] = (float)db.get( 9 );
 		rv[ 2 ] = (float)db.get( 10 );

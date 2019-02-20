@@ -42,15 +42,19 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.JPanel;
+import java.awt.Component;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JPane extends javax.swing.JPanel {
+public class JPane extends JPanel {
 	public JPane() {
 		this.setOpaque( false );
 		this.setDoubleBuffered( false );
-		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+		this.setAlignmentX( Component.LEFT_ALIGNMENT );
+		this.setAlignmentY( Component.CENTER_ALIGNMENT );
 	}
 
 	//	@Override
@@ -63,7 +67,7 @@ public class JPane extends javax.swing.JPanel {
 	}
 
 	@Override
-	public java.awt.Dimension getMaximumSize() {
+	public Dimension getMaximumSize() {
 		if( isMaximumSizeClampedToPreferredSize() ) {
 			return this.getPreferredSize();
 		} else {

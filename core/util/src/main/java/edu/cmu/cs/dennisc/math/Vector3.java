@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.math.immutable.MVector3;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,7 +59,7 @@ public class Vector3 extends Tuple3 {
 		super( x, y, z );
 	}
 
-	public Vector3( edu.cmu.cs.dennisc.math.immutable.MVector3 other ) {
+	public Vector3( MVector3 other ) {
 		this( other.x, other.y, other.z );
 	}
 
@@ -144,8 +146,8 @@ public class Vector3 extends Tuple3 {
 
 	@Deprecated
 	public static boolean isWithinEpsilonOfPositiveOrNegativeYAxis( Vector3 v, double epsilon ) {
-		return edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinEpsilon( Math.abs( v.y ), 1.0, epsilon ) && edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinEpsilon( v.x, 0.0, epsilon )
-				&& edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinEpsilon( v.z, 0.0, epsilon );
+		return EpsilonUtilities.isWithinEpsilon( Math.abs( v.y ), 1.0, epsilon ) && EpsilonUtilities.isWithinEpsilon( v.x, 0.0, epsilon )
+				&& EpsilonUtilities.isWithinEpsilon( v.z, 0.0, epsilon );
 	}
 
 	private static final Vector3 ORIGIN = new Vector3( 0, 0, 0 );
@@ -239,8 +241,8 @@ public class Vector3 extends Tuple3 {
 		return this.equals( accessNegativeZAxis() );
 	}
 
-	public edu.cmu.cs.dennisc.math.immutable.MVector3 createImmutable() {
-		return new edu.cmu.cs.dennisc.math.immutable.MVector3( this.x, this.y, this.z );
+	public MVector3 createImmutable() {
+		return new MVector3( this.x, this.y, this.z );
 	}
 
 	//	

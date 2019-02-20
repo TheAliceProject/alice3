@@ -44,25 +44,28 @@ package org.lgna.story.resourceutilities;
 
 import edu.cmu.cs.dennisc.javax.swing.models.TreeModel;
 
-public class ModelResourceTreeNodeModel extends javax.swing.tree.DefaultTreeModel implements TreeModel<ModelResourceTreeNode> {
-	public ModelResourceTreeNodeModel( ModelResourceTreeNode root ) {
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+
+public class ModelResourceTreeNodeModel extends DefaultTreeModel implements TreeModel<TypeDefinedGalleryTreeNode> {
+	public ModelResourceTreeNodeModel( TypeDefinedGalleryTreeNode root ) {
 		super( root );
 	}
 
 	@Override
-	public ModelResourceTreeNode getChild( Object parent, int index ) {
-		return (ModelResourceTreeNode)super.getChild( parent, index );
+	public TypeDefinedGalleryTreeNode getChild( Object parent, int index ) {
+		return (TypeDefinedGalleryTreeNode)super.getChild( parent, index );
 	}
 
 	@Override
-	public ModelResourceTreeNode getRoot() {
-		return (ModelResourceTreeNode)super.getRoot();
+	public TypeDefinedGalleryTreeNode getRoot() {
+		return (TypeDefinedGalleryTreeNode)super.getRoot();
 	}
 
 	@Override
-	public javax.swing.tree.TreePath getTreePath( ModelResourceTreeNode e ) {
+	public TreePath getTreePath( TypeDefinedGalleryTreeNode e ) {
 		Object[] nodes = this.getPathToRoot( e );
-		javax.swing.tree.TreePath path = new javax.swing.tree.TreePath( nodes );
+		TreePath path = new TreePath( nodes );
 		return path;
 	}
 }

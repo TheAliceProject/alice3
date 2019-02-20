@@ -43,44 +43,57 @@
 
 package org.alice.ide.croquet.models.ast.cascade;
 
+import org.alice.ide.IDE;
+import org.alice.ide.cascade.ExpressionCascadeContext;
+import org.alice.ide.cascade.ExpressionPropertyContext;
+import org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.ImmutableCascade;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionPropertyCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.project.ast.Expression> {
-	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
-	private org.alice.ide.cascade.ExpressionCascadeContext pushedContext;
+public abstract class ExpressionPropertyCascade extends ImmutableCascade<Expression> {
+	private final ExpressionProperty expressionProperty;
+	private ExpressionCascadeContext pushedContext;
 
-	public ExpressionPropertyCascade( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
-		super( group, id, org.lgna.project.ast.Expression.class, blanks );
+	public ExpressionPropertyCascade( Group group, UUID id, ExpressionProperty expressionProperty, CascadeBlank<Expression>... blanks ) {
+		super( group, id, Expression.class, blanks );
 		this.expressionProperty = expressionProperty;
 	}
 
-	public final org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
+	public final ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
 
 	@Override
-	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
-		this.pushedContext = new org.alice.ide.cascade.ExpressionPropertyContext( this.expressionProperty );
-		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
-		super.prologue( trigger );
+	protected void prologue() {
+		this.pushedContext = new ExpressionPropertyContext( this.expressionProperty );
+		IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
+		super.prologue();
 	}
 
 	@Override
 	protected void epilogue() {
 		super.epilogue();
-		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
+		IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
 		this.pushedContext = null;
 	}
 
-	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions );
+	protected abstract Expression createExpression( Expression[] expressions );
 
-	protected org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit createExpressionPropertyEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.Expression prevExpression, org.lgna.project.ast.Expression nextExpression ) {
-		return new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, expressionProperty, prevExpression, nextExpression );
+	protected ExpressionPropertyEdit createExpressionPropertyEdit( UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression ) {
+		return new ExpressionPropertyEdit( userActivity, expressionProperty, prevExpression, nextExpression );
 	}
 
 	@Override
-	protected final org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.Expression[] values ) {
-		return this.createExpressionPropertyEdit( step, this.expressionProperty, this.expressionProperty.getValue(), this.createExpression( values ) );
+	protected final ExpressionPropertyEdit createEdit( UserActivity userActivity, Expression[] values ) {
+		return this.createExpressionPropertyEdit( userActivity, this.expressionProperty, this.expressionProperty.getValue(), this.createExpression( values ) );
 	}
 }

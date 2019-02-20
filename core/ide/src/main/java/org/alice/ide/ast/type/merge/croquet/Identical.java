@@ -42,10 +42,12 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.lgna.project.ast.Member;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class Identical<M extends org.lgna.project.ast.Member> {
+public final class Identical<M extends Member> {
 	private final BareBonesMemberHub<M> importHub;
 	private final MemberHub<M> projectHub;
 
@@ -53,7 +55,7 @@ public final class Identical<M extends org.lgna.project.ast.Member> {
 		this.importHub = new BareBonesMemberHub<M>( importMember, false );
 		this.projectHub = new MemberHub<M>( projectMember, true ) {
 			@Override
-			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
+			public ActionStatus getActionStatus() {
 				return ActionStatus.KEEP_IDENTICAL;
 			}
 		};

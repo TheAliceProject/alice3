@@ -42,21 +42,60 @@
  *******************************************************************************/
 package org.lgna.croquet.history;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.PrepModel;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.views.ViewController;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PrepStep<M extends org.lgna.croquet.PrepModel> extends Step<M> {
-	public PrepStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
+public abstract class PrepStep<M extends PrepModel> extends ActivityNode<M> {
+	PrepStep( UserActivity parent, M model, Trigger trigger ) {
 		super( parent, model, trigger );
 		if( parent != null ) {
 			parent.addPrepStep( this );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "PrepStep transaction is null" );
+			Logger.severe( "PrepStep parent activity is null" );
 		}
 	}
 
-	public void cancelTransaction( org.lgna.croquet.triggers.Trigger trigger ) {
-		CompletionStep step = CompletionStep.createAndAddToTransaction( this.getOwner(), null, trigger, null );
-		step.cancel();
+	protected ViewController<?, ?> getViewController() {
+		return this.trigger != null ? this.trigger.getViewController() : null;
+	}
+
+	public UserActivity getUserActivity() {
+		return this.getOwner();
+	}
+
+	protected void updateRepr( StringBuilder rv ) {
+		Model model = this.getModel();
+		if( model != null ) {
+			rv.append( "model=" );
+			rv.append( model );
+			rv.append( ";trigger=" );
+			Trigger trigger = this.getTrigger();
+			if( trigger != null ) {
+				trigger.appendRepr( rv );
+			}
+			rv.append( ";text=" );
+			model.appendUserRepr( rv );
+			rv.append( ";" );
+		}
+	}
+
+	@Override
+	public final String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		updateRepr( sb );
+		sb.append( "]" );
+		return sb.toString();
+	}
+
+	public void cancelActivity() {
+		getUserActivity().cancel();
 	}
 }

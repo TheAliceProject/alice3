@@ -48,13 +48,15 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.story.SBiped;
 
+import java.util.UUID;
+
 /**
  * @author Matt May
  */
 public class BipedAnimator extends AnimatorComposite<SBiped> {
 
 	public BipedAnimator( NamedUserType valueType, UserMethod editedMethod ) {
-		super( java.util.UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ), valueType, editedMethod );
+		super( UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ), valueType, editedMethod );
 	}
 
 	public BipedAnimator( NamedUserType type ) {

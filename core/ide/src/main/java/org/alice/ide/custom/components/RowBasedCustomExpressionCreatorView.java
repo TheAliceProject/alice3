@@ -43,26 +43,32 @@
 
 package org.alice.ide.custom.components;
 
+import org.alice.ide.custom.CustomExpressionCreatorComposite;
+import org.lgna.croquet.views.FormPanel;
+import org.lgna.croquet.views.LabeledFormRow;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressionCreatorView {
-	public RowBasedCustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
+	public RowBasedCustomExpressionCreatorView( CustomExpressionCreatorComposite<?> composite ) {
 		super( composite );
 	}
 
 	@Override
-	public org.alice.ide.custom.CustomExpressionCreatorComposite<?> getComposite() {
-		return (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)super.getComposite();
+	public CustomExpressionCreatorComposite<?> getComposite() {
+		return (CustomExpressionCreatorComposite<?>)super.getComposite();
 	}
 
-	protected abstract void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows );
+	protected abstract void appendRows( List<LabeledFormRow> rows );
 
 	@Override
-	public org.lgna.croquet.views.FormPanel createMainComponent() {
-		org.lgna.croquet.views.FormPanel rowsSpringPanel = new org.lgna.croquet.views.FormPanel() {
+	public FormPanel createMainComponent() {
+		FormPanel rowsSpringPanel = new FormPanel() {
 			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
+			protected void appendRows( List<LabeledFormRow> rows ) {
 				RowBasedCustomExpressionCreatorView.this.appendRows( rows );
 			}
 		};

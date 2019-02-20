@@ -43,19 +43,25 @@
 
 package test.ik.croquet.views;
 
+import org.lgna.croquet.State;
+import org.lgna.croquet.views.ItemDropDown;
+import org.lgna.croquet.views.Label;
+import org.lgna.story.resources.JointId;
+import test.ik.croquet.JointIdState;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JointIdDropDown extends org.lgna.croquet.views.ItemDropDown<org.lgna.story.resources.JointId, test.ik.croquet.JointIdState> {
-	private final org.lgna.croquet.views.Label mainComponent = new org.lgna.croquet.views.Label();
+public class JointIdDropDown extends ItemDropDown<JointId, JointIdState> {
+	private final Label mainComponent = new Label();
 
-	public JointIdDropDown( test.ik.croquet.JointIdState model ) {
+	public JointIdDropDown( JointIdState model ) {
 		super( model );
 		this.setMainComponent( this.mainComponent );
 	}
 
 	@Override
-	protected void handleChanged( org.lgna.croquet.State<org.lgna.story.resources.JointId> state, org.lgna.story.resources.JointId prevValue, org.lgna.story.resources.JointId nextValue, boolean isAdjusting ) {
+	protected void handleChanged( State<JointId> state, JointId prevValue, JointId nextValue ) {
 		this.mainComponent.setText( nextValue != null ? nextValue.toString() : "null" );
 		this.revalidateAndRepaint();
 	}

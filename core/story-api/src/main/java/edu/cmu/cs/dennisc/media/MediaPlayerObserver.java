@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.media;
 
+import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
+
 public interface MediaPlayerObserver {
-	public void mediaPlayerStarted( edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation playerAnimation, double playTime );
+	public void mediaPlayerStarted( MediaPlayerAnimation playerAnimation, double playTime );
 }

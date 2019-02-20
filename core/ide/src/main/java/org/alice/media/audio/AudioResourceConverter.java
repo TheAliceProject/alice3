@@ -61,6 +61,7 @@ import javax.media.datasink.DataSinkErrorEvent;
 import javax.media.datasink.DataSinkEvent;
 import javax.media.datasink.DataSinkListener;
 import javax.media.datasink.EndOfStreamEvent;
+import javax.media.protocol.DataSource;
 import javax.media.protocol.FileTypeDescriptor;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -68,14 +69,16 @@ import javax.sound.sampled.AudioSystem;
 
 import com.sun.media.renderer.audio.device.JavaSoundOutput;
 
+import edu.cmu.cs.dennisc.javax.media.protocol.ByteArrayDataSource;
 import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
+import org.lgna.common.resources.AudioResource;
 
 /**
  * @author Dave Culyba
  */
 public class AudioResourceConverter implements ControllerListener, DataSinkListener {
 
-	private org.lgna.common.resources.AudioResource audioResource;
+	private AudioResource audioResource;
 	private Processor processor = null;
 	private DataSink dataSink = null;
 	private boolean boolSaving = false;
@@ -97,7 +100,7 @@ public class AudioResourceConverter implements ControllerListener, DataSinkListe
 		}
 	}
 
-	public AudioResourceConverter( org.lgna.common.resources.AudioResource audioResource ) {
+	public AudioResourceConverter( AudioResource audioResource ) {
 		this.audioResource = audioResource;
 	}
 
@@ -214,17 +217,17 @@ public class AudioResourceConverter implements ControllerListener, DataSinkListe
 
 	private long startTime;
 
-	public org.lgna.common.resources.AudioResource convertTo( AudioFormat destFormat ) {
+	public AudioResource convertTo( AudioFormat destFormat ) {
 		javax.media.format.AudioFormat convertToFormat = JavaSoundOutput.convertFormat( destFormat );
 		return convertTo( convertToFormat );
 	}
 
-	public org.lgna.common.resources.AudioResource convertTo( javax.media.format.AudioFormat destFormat ) {
+	public AudioResource convertTo( javax.media.format.AudioFormat destFormat ) {
 		//		System.out.println( "Converting " + this.audioResource.getOriginalFileName() );
 
 		startTime = System.currentTimeMillis();
 		try {
-			javax.media.protocol.DataSource dataSource = new edu.cmu.cs.dennisc.javax.media.protocol.ByteArrayDataSource(
+			DataSource dataSource = new ByteArrayDataSource(
 					this.audioResource.getData(),
 					this.audioResource.getContentType() );
 			this.processor = Manager.createProcessor( dataSource );
@@ -265,7 +268,7 @@ public class AudioResourceConverter implements ControllerListener, DataSinkListe
 			isWaiting = true;
 			boolean success = waitForFileDone();
 
-			org.lgna.common.resources.AudioResource ar = MediaFactory.getSingleton().createAudioResource( tempFile );
+			AudioResource ar = MediaFactory.getSingleton().createAudioResource( tempFile );
 			tempFile.delete();
 
 			return ar;
@@ -275,17 +278,17 @@ public class AudioResourceConverter implements ControllerListener, DataSinkListe
 		return null;
 	}
 
-	public static org.lgna.common.resources.AudioResource convert( org.lgna.common.resources.AudioResource resource, javax.media.format.AudioFormat destFormat ) {
+	public static AudioResource convert( AudioResource resource, javax.media.format.AudioFormat destFormat ) {
 		AudioResourceConverter converter = new AudioResourceConverter( resource );
 		return converter.convertTo( destFormat );
 	}
 
-	public static org.lgna.common.resources.AudioResource convert( org.lgna.common.resources.AudioResource resource, javax.sound.sampled.AudioFormat destFormat ) {
+	public static AudioResource convert( AudioResource resource, AudioFormat destFormat ) {
 		AudioResourceConverter converter = new AudioResourceConverter( resource );
 		return converter.convertTo( destFormat );
 	}
 
-	public static boolean needsConverting( org.lgna.common.resources.AudioResource resource, javax.sound.sampled.AudioFormat destFormat ) {
+	public static boolean needsConverting( AudioResource resource, AudioFormat destFormat ) {
 		if( resource.getContentType().equals( "audio.mpeg" ) ) {
 			return true;
 		}
@@ -303,7 +306,7 @@ public class AudioResourceConverter implements ControllerListener, DataSinkListe
 		return needsConverting( currentFormat, destFormat );
 	}
 
-	public static boolean needsConverting( javax.sound.sampled.AudioFormat currentFormat, javax.sound.sampled.AudioFormat destFormat ) {
+	public static boolean needsConverting( AudioFormat currentFormat, AudioFormat destFormat ) {
 		if( currentFormat.getSampleRate() != destFormat.getSampleRate() ) {
 			return true;
 		}

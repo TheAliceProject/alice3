@@ -42,10 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.ListProperty;
+import org.lgna.project.code.PrecedentedAppender;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ArrayInstanceCreation extends Expression {
+public final class ArrayInstanceCreation extends Expression implements PrecedentedAppender {
 	public ArrayInstanceCreation() {
 	}
 
@@ -96,38 +99,15 @@ public final class ArrayInstanceCreation extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ArrayInstanceCreation other = (ArrayInstanceCreation)o;
-			if( this.arrayType.valueContentEquals( other.arrayType, strictness, filter ) ) {
-				if( this.lengths.valueEquals( other.lengths, filter ) ) {
-					return this.expressions.valueContentEquals( other.expressions, strictness, filter );
-				}
-			}
-		}
-		return false;
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendArrayInstantiation( this );
 	}
 
-	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendString( "new " );
-		generator.appendTypeName( this.arrayType.getValue().getComponentType() );
-
-		//todo: lengths
-		generator.appendChar( '[' );
-		generator.appendChar( ']' );
-
-		generator.appendChar( '{' );
-		String prefix = "";
-		for( Expression expression : this.expressions ) {
-			generator.appendString( prefix );
-			generator.appendExpression( expression );
-			prefix = ",";
-		}
-		generator.appendChar( '}' );
+	@Override public int getLevelOfPrecedence() {
+		return 13;
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = DeclarationProperty.createReferenceInstance( this );;
-	public final edu.cmu.cs.dennisc.property.ListProperty<Integer> lengths = new edu.cmu.cs.dennisc.property.ListProperty<Integer>( this );
+	public final ListProperty<Integer> lengths = new ListProperty<Integer>( this );
 	public final ExpressionListProperty expressions = new ExpressionListProperty( this );
 }

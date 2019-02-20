@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
+import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -103,7 +106,7 @@ package edu.cmu.cs.dennisc.render.gl;
 			while( true ) {
 				long tCurrent = System.currentTimeMillis();
 				if( ( tCurrent - tPrev ) < sleepMillis ) {
-					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( sleepMillis );
+					ThreadUtilities.sleep( sleepMillis );
 				} else {
 					millisSinceLastFps += (tCurrent - tPrev);
 					fps++;
@@ -118,11 +121,11 @@ package edu.cmu.cs.dennisc.render.gl;
 			}
 			ThreadDeferenceAction threadAction = this.step();
 			if( threadAction == ThreadDeferenceAction.SLEEP ) {
-				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( this.sleepMillis );
+				ThreadUtilities.sleep( this.sleepMillis );
 			} else if( threadAction == ThreadDeferenceAction.YIELD ) {
 				Thread.yield();
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "threadAction", threadAction );
+				PrintUtilities.println( "threadAction", threadAction );
 			}
 			this.frameCount++;
 		}

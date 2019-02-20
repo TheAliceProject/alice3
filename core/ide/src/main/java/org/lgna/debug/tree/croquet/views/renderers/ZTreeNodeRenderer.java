@@ -42,27 +42,35 @@
  *******************************************************************************/
 package org.lgna.debug.tree.croquet.views.renderers;
 
+import edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer;
+import org.lgna.debug.tree.core.ZTreeNode;
+
+import javax.swing.JLabel;
+import javax.swing.JTree;
+import java.awt.Color;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ZTreeNodeRenderer<T> extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.lgna.debug.tree.core.ZTreeNode<T>> {
+public class ZTreeNodeRenderer<T> extends TreeCellRenderer<ZTreeNode<T>> {
 	@Override
-	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.lgna.debug.tree.core.ZTreeNode<T> treeNode, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+	protected JLabel updateListCellRendererComponent( JLabel rv, JTree tree, ZTreeNode<T> treeNode, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
 		T value = treeNode.getValue();
 		rv.setText( value.toString() );
 		if( this.valuesToMute != null ) {
 			if( this.valuesToMute.contains( value ) ) {
-				rv.setForeground( java.awt.Color.LIGHT_GRAY );
+				rv.setForeground( Color.LIGHT_GRAY );
 			} else {
-				rv.setForeground( java.awt.Color.BLACK );
+				rv.setForeground( Color.BLACK );
 			}
 		}
 		return rv;
 	}
 
-	public void setValuesToMute( java.util.Set<T> valuesToMute ) {
+	public void setValuesToMute( Set<T> valuesToMute ) {
 		this.valuesToMute = valuesToMute;
 	}
 
-	private java.util.Set<T> valuesToMute;
+	private Set<T> valuesToMute;
 }

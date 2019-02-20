@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.common.LgnaIllegalKeyArgumentException;
+
 /**
  * @author dculyba
  * 
@@ -78,7 +80,7 @@ public class DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColo
 	}
 
 	public static TextScale textScale( Number textScale ) {
-		org.lgna.common.LgnaIllegalKeyArgumentException.checkArgumentIsPositive( textScale, "textScale" );
+		LgnaIllegalKeyArgumentException.checkArgumentIsPositive( textScale, "textScale" );
 		return new TextScale( textScale );
 	}
 }

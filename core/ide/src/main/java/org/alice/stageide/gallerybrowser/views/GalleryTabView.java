@@ -42,27 +42,41 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.views;
 
+import org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent;
+import org.alice.stageide.gallerybrowser.GalleryTab;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane;
+import org.lgna.croquet.views.ScrollPane;
+
+import javax.swing.*;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryTabView extends org.lgna.croquet.views.BorderPanel {
+public abstract class GalleryTabView extends BorderPanel {
 	protected static final int PAD = 4;
 	private final GalleryDragComponentCache cache = new GalleryDragComponentCache();
 
-	public GalleryTabView( org.alice.stageide.gallerybrowser.GalleryTab composite ) {
+	public GalleryTabView( GalleryTab composite ) {
 		super( composite, 0, PAD );
-		this.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
+		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+		this.setBorder( BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
 	}
 
-	protected org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( org.alice.stageide.modelresource.ResourceNode resourceNode ) {
-		return this.cache.getGalleryDragComponent( resourceNode );
+	protected GalleryDragComponent getGalleryDragComponent( ResourceNode resourceNode, SingleSelectTreeState<ResourceNode> controller ) {
+		return this.cache.getGalleryDragComponent( resourceNode, controller );
 	}
 
-	protected static org.lgna.croquet.views.ScrollPane createGalleryScrollPane( org.lgna.croquet.views.AwtComponentView<?> view ) {
-		org.lgna.croquet.views.ScrollPane rv = new org.lgna.croquet.views.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
+	protected static ScrollPane createGalleryScrollPane( AwtComponentView<?> view ) {
+		ScrollPane rv = new HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
 		rv.setBothScrollBarIncrements( 16, 160 );
 		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		return rv;
+	}
+
+	public void modelUpdated() {
 	}
 }

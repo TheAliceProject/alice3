@@ -42,20 +42,23 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import edu.cmu.cs.dennisc.render.PickAllObserver;
+import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
+import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
 
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/final class PickAllDisplayTask extends PickDisplayTask {
-	public PickAllDisplayTask( int xPixel, int yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.render.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.render.PickAllObserver observer ) {
+	public PickAllDisplayTask( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer ) {
 		super( xPixel, yPixel, pickSubElementPolicy, criterion );
 		this.observer = observer;
 	}
 
 	@Override
-	protected void fireDone( edu.cmu.cs.dennisc.render.gl.imp.PickParameters pickParameters ) {
+	protected void fireDone( PickParameters pickParameters ) {
 		this.observer.done( pickParameters.accessAllPickResults() );
 	}
 
-	private final edu.cmu.cs.dennisc.render.PickAllObserver observer;
+	private final PickAllObserver observer;
 }

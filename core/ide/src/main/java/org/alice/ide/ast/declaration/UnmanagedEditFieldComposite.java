@@ -42,22 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class UnmanagedEditFieldComposite extends EditFieldComposite {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, UnmanagedEditFieldComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<UserField, UnmanagedEditFieldComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static synchronized UnmanagedEditFieldComposite getInstance( org.lgna.project.ast.UserField field ) {
-		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, UnmanagedEditFieldComposite>() {
+	public static synchronized UnmanagedEditFieldComposite getInstance( UserField field ) {
+		return map.getInitializingIfAbsent( field, new InitializingIfAbsentMap.Initializer<UserField, UnmanagedEditFieldComposite>() {
 			@Override
-			public UnmanagedEditFieldComposite initialize( org.lgna.project.ast.UserField field ) {
+			public UnmanagedEditFieldComposite initialize( UserField field ) {
 				return new UnmanagedEditFieldComposite( field );
 			}
 		} );
 	}
 
-	public UnmanagedEditFieldComposite( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "269d16c4-f44c-4319-8939-4b20b06abd7f" ), field, ApplicabilityStatus.EDITABLE, /* don't care */null );
+	public UnmanagedEditFieldComposite( UserField field ) {
+		super( UUID.fromString( "269d16c4-f44c-4319-8939-4b20b06abd7f" ), field, ApplicabilityStatus.EDITABLE, /* don't care */null );
 	}
 }

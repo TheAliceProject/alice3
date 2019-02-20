@@ -42,47 +42,57 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.ListModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JList<E> extends javax.swing.JList {
-	private java.util.List<java.awt.event.ActionListener> m_actionListeners = new java.util.LinkedList<java.awt.event.ActionListener>();
+	private List<ActionListener> m_actionListeners = new LinkedList<ActionListener>();
 
 	public JList() {
 		initialize();
 	}
 
-	public JList( javax.swing.ListModel model ) {
+	public JList( ListModel model ) {
 		super( model );
 		initialize();
 	}
 
 	private void initialize() {
-		addMouseListener( new java.awt.event.MouseListener() {
+		addMouseListener( new MouseListener() {
 			@Override
-			public void mousePressed( java.awt.event.MouseEvent e ) {
+			public void mousePressed( MouseEvent e ) {
 				fireActionListeners( e.getWhen(), e.getModifiers(), true );
 			}
 
 			@Override
-			public void mouseReleased( java.awt.event.MouseEvent e ) {
+			public void mouseReleased( MouseEvent e ) {
 			}
 
 			@Override
-			public void mouseClicked( java.awt.event.MouseEvent e ) {
+			public void mouseClicked( MouseEvent e ) {
 			}
 
 			@Override
-			public void mouseEntered( java.awt.event.MouseEvent e ) {
+			public void mouseEntered( MouseEvent e ) {
 			}
 
 			@Override
-			public void mouseExited( java.awt.event.MouseEvent e ) {
+			public void mouseExited( MouseEvent e ) {
 			}
 		} );
-		addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+		addListSelectionListener( new ListSelectionListener() {
 			@Override
-			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+			public void valueChanged( ListSelectionEvent e ) {
 				if( e.getValueIsAdjusting() ) {
 					//pass
 				} else {
@@ -93,11 +103,11 @@ public class JList<E> extends javax.swing.JList {
 		} );
 	}
 
-	public void addActionListener( java.awt.event.ActionListener l ) {
+	public void addActionListener( ActionListener l ) {
 		m_actionListeners.add( l );
 	}
 
-	public void removeActionListener( java.awt.event.ActionListener l ) {
+	public void removeActionListener( ActionListener l ) {
 		m_actionListeners.remove( l );
 	}
 
@@ -114,8 +124,8 @@ public class JList<E> extends javax.swing.JList {
 			} else {
 				command = null;
 			}
-			java.awt.event.ActionEvent e = new java.awt.event.ActionEvent( this, java.awt.event.ActionEvent.ACTION_PERFORMED, command, when, modifiers );
-			for( java.awt.event.ActionListener l : m_actionListeners ) {
+			ActionEvent e = new ActionEvent( this, ActionEvent.ACTION_PERFORMED, command, when, modifiers );
+			for( ActionListener l : m_actionListeners ) {
 				l.actionPerformed( e );
 			}
 			m_selectedIndexPrev = selectedIndex;

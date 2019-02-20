@@ -43,13 +43,23 @@
 package edu.cmu.cs.dennisc.scenegraph.util;
 
 //todo: unify w/ lookingglass.TransformationUtilities?
+
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.math.Vector4;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+import edu.cmu.cs.dennisc.scenegraph.Scene;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class TransformationUtilities {
-	private static boolean isAbsolute( edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgReferenceFrame ) {
+	private static boolean isAbsolute( ReferenceFrame sgReferenceFrame ) {
 		//todo: call isSceneOf()?
-		if( ( sgReferenceFrame instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) || ( sgReferenceFrame == edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE ) ) {
+		if( ( sgReferenceFrame instanceof Scene ) || ( sgReferenceFrame == AsSeenBy.SCENE ) ) {
 			return true;
 		} else {
 			return false;
@@ -57,171 +67,171 @@ public abstract class TransformationUtilities {
 	}
 
 	//Vector4d
-	public static edu.cmu.cs.dennisc.math.Vector4 transformToAbsolute( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.math.Vector4 xyzwInFrom, edu.cmu.cs.dennisc.scenegraph.Component sgFrom ) {
+	public static Vector4 transformToAbsolute( Vector4 rv, Vector4 xyzwInFrom, Component sgFrom ) {
 		rv.set( xyzwInFrom );
 		transformToAbsolute_AffectReturnValuePassedIn( rv, sgFrom );
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformToAbsolute_New( edu.cmu.cs.dennisc.math.Vector4 xyzwInFrom, edu.cmu.cs.dennisc.scenegraph.Component sgFrom ) {
-		return transformToAbsolute( new edu.cmu.cs.dennisc.math.Vector4(), xyzwInFrom, sgFrom );
+	public static Vector4 transformToAbsolute_New( Vector4 xyzwInFrom, Component sgFrom ) {
+		return transformToAbsolute( new Vector4(), xyzwInFrom, sgFrom );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformToAbsolute_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.scenegraph.Component sgFrom ) {
+	public static Vector4 transformToAbsolute_AffectReturnValuePassedIn( Vector4 rv, Component sgFrom ) {
 		if( isAbsolute( sgFrom ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
+			AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
 			m.transform( rv );
 		}
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformFromAbsolute( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.math.Vector4 xyzwInAbsolute, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
+	public static Vector4 transformFromAbsolute( Vector4 rv, Vector4 xyzwInAbsolute, Component sgTo ) {
 		rv.set( xyzwInAbsolute );
 		transformFromAbsolute_AffectReturnValuePassedIn( rv, sgTo );
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformFromAbsolute_New( edu.cmu.cs.dennisc.math.Vector4 xyzwInAbsolute, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
-		return transformFromAbsolute( new edu.cmu.cs.dennisc.math.Vector4(), xyzwInAbsolute, sgTo );
+	public static Vector4 transformFromAbsolute_New( Vector4 xyzwInAbsolute, Component sgTo ) {
+		return transformFromAbsolute( new Vector4(), xyzwInAbsolute, sgTo );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformFromAbsolute_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
+	public static Vector4 transformFromAbsolute_AffectReturnValuePassedIn( Vector4 rv, Component sgTo ) {
 		if( isAbsolute( sgTo ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
+			AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
 			m.transform( rv );
 		}
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformTo( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.math.Vector4 xyzwInFrom, edu.cmu.cs.dennisc.scenegraph.Component sgFrom, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
+	public static Vector4 transformTo( Vector4 rv, Vector4 xyzwInFrom, Component sgFrom, Component sgTo ) {
 		rv.set( xyzwInFrom );
 		transformTo_AffectReturnValuePassedIn( rv, sgFrom, sgTo );
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformTo_New( edu.cmu.cs.dennisc.math.Vector4 xyzwInFrom, edu.cmu.cs.dennisc.scenegraph.Component sgFrom, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
-		return transformTo( new edu.cmu.cs.dennisc.math.Vector4(), xyzwInFrom, sgFrom, sgTo );
+	public static Vector4 transformTo_New( Vector4 xyzwInFrom, Component sgFrom, Component sgTo ) {
+		return transformTo( new Vector4(), xyzwInFrom, sgFrom, sgTo );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformTo_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.scenegraph.Component sgFrom, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
+	public static Vector4 transformTo_AffectReturnValuePassedIn( Vector4 rv, Component sgFrom, Component sgTo ) {
 		transformToAbsolute_AffectReturnValuePassedIn( rv, sgFrom );
 		transformFromAbsolute_AffectReturnValuePassedIn( rv, sgTo );
 		return rv;
 	}
 
 	//Vector3d
-	public static edu.cmu.cs.dennisc.math.Vector3 transformToAbsolute( edu.cmu.cs.dennisc.math.Vector3 rv, edu.cmu.cs.dennisc.math.Vector3 xyzInFrom, edu.cmu.cs.dennisc.scenegraph.Component sgFrom ) {
+	public static Vector3 transformToAbsolute( Vector3 rv, Vector3 xyzInFrom, Component sgFrom ) {
 		rv.set( xyzInFrom );
 		transformToAbsolute_AffectReturnValuePassedIn( rv, sgFrom );
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector3 transformToAbsolute_New( edu.cmu.cs.dennisc.math.Vector3 xyzInFrom, edu.cmu.cs.dennisc.scenegraph.Component sgFrom ) {
-		return transformToAbsolute( new edu.cmu.cs.dennisc.math.Vector3(), xyzInFrom, sgFrom );
+	public static Vector3 transformToAbsolute_New( Vector3 xyzInFrom, Component sgFrom ) {
+		return transformToAbsolute( new Vector3(), xyzInFrom, sgFrom );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector3 transformToAbsolute_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector3 rv, edu.cmu.cs.dennisc.scenegraph.Component sgFrom ) {
+	public static Vector3 transformToAbsolute_AffectReturnValuePassedIn( Vector3 rv, Component sgFrom ) {
 		if( isAbsolute( sgFrom ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
+			AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
 			m.transform( rv );
 		}
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector3 transformFromAbsolute( edu.cmu.cs.dennisc.math.Vector3 rv, edu.cmu.cs.dennisc.math.Vector3 xyzInAbsolute, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
+	public static Vector3 transformFromAbsolute( Vector3 rv, Vector3 xyzInAbsolute, Component sgTo ) {
 		rv.set( xyzInAbsolute );
 		transformFromAbsolute_AffectReturnValuePassedIn( rv, sgTo );
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector3 transformFromAbsolute_New( edu.cmu.cs.dennisc.math.Vector3 xyzInAbsolute, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
-		return transformFromAbsolute( new edu.cmu.cs.dennisc.math.Vector3(), xyzInAbsolute, sgTo );
+	public static Vector3 transformFromAbsolute_New( Vector3 xyzInAbsolute, Component sgTo ) {
+		return transformFromAbsolute( new Vector3(), xyzInAbsolute, sgTo );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector3 transformFromAbsolute_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector3 rv, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
+	public static Vector3 transformFromAbsolute_AffectReturnValuePassedIn( Vector3 rv, Component sgTo ) {
 		if( isAbsolute( sgTo ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
+			AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
 			m.transform( rv );
 		}
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector3 transformTo( edu.cmu.cs.dennisc.math.Vector3 rv, edu.cmu.cs.dennisc.math.Vector3 xyzInFrom, edu.cmu.cs.dennisc.scenegraph.Component sgFrom, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
+	public static Vector3 transformTo( Vector3 rv, Vector3 xyzInFrom, Component sgFrom, Component sgTo ) {
 		rv.set( xyzInFrom );
 		transformTo_AffectReturnValuePassedIn( rv, sgFrom, sgTo );
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector3 transformTo_New( edu.cmu.cs.dennisc.math.Vector3 xyzInFrom, edu.cmu.cs.dennisc.scenegraph.Component sgFrom, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
-		return transformTo( new edu.cmu.cs.dennisc.math.Vector3(), xyzInFrom, sgFrom, sgTo );
+	public static Vector3 transformTo_New( Vector3 xyzInFrom, Component sgFrom, Component sgTo ) {
+		return transformTo( new Vector3(), xyzInFrom, sgFrom, sgTo );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector3 transformTo_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector3 rv, edu.cmu.cs.dennisc.scenegraph.Component sgFrom, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
+	public static Vector3 transformTo_AffectReturnValuePassedIn( Vector3 rv, Component sgFrom, Component sgTo ) {
 		transformToAbsolute_AffectReturnValuePassedIn( rv, sgFrom );
 		transformFromAbsolute_AffectReturnValuePassedIn( rv, sgTo );
 		return rv;
 	}
 
 	//Point3d
-	public static edu.cmu.cs.dennisc.math.Point3 transformToAbsolute( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Point3 xyzInFrom, edu.cmu.cs.dennisc.scenegraph.Component sgFrom ) {
+	public static Point3 transformToAbsolute( Point3 rv, Point3 xyzInFrom, Component sgFrom ) {
 		rv.set( xyzInFrom );
 		transformToAbsolute_AffectReturnValuePassedIn( rv, sgFrom );
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Point3 transformToAbsolute_New( edu.cmu.cs.dennisc.math.Point3 xyzInFrom, edu.cmu.cs.dennisc.scenegraph.Component sgFrom ) {
-		return transformToAbsolute( new edu.cmu.cs.dennisc.math.Point3(), xyzInFrom, sgFrom );
+	public static Point3 transformToAbsolute_New( Point3 xyzInFrom, Component sgFrom ) {
+		return transformToAbsolute( new Point3(), xyzInFrom, sgFrom );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Point3 transformToAbsolute_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.scenegraph.Component sgFrom ) {
+	public static Point3 transformToAbsolute_AffectReturnValuePassedIn( Point3 rv, Component sgFrom ) {
 		if( isAbsolute( sgFrom ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
+			AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
 			m.transform( rv );
 		}
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Point3 transformFromAbsolute( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Point3 xyzInAbsolute, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
+	public static Point3 transformFromAbsolute( Point3 rv, Point3 xyzInAbsolute, Component sgTo ) {
 		rv.set( xyzInAbsolute );
 		transformFromAbsolute_AffectReturnValuePassedIn( rv, sgTo );
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Point3 transformFromAbsolute_New( edu.cmu.cs.dennisc.math.Point3 xyzInAbsolute, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
-		return transformFromAbsolute( new edu.cmu.cs.dennisc.math.Point3(), xyzInAbsolute, sgTo );
+	public static Point3 transformFromAbsolute_New( Point3 xyzInAbsolute, Component sgTo ) {
+		return transformFromAbsolute( new Point3(), xyzInAbsolute, sgTo );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Point3 transformFromAbsolute_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
+	public static Point3 transformFromAbsolute_AffectReturnValuePassedIn( Point3 rv, Component sgTo ) {
 		if( isAbsolute( sgTo ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
+			AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
 			m.transform( rv );
 		}
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Point3 transformTo( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Point3 xyzInFrom, edu.cmu.cs.dennisc.scenegraph.Component sgFrom, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
+	public static Point3 transformTo( Point3 rv, Point3 xyzInFrom, Component sgFrom, Component sgTo ) {
 		rv.set( xyzInFrom );
 		transformTo_AffectReturnValuePassedIn( rv, sgFrom, sgTo );
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Point3 transformTo_New( edu.cmu.cs.dennisc.math.Point3 xyzInFrom, edu.cmu.cs.dennisc.scenegraph.Component sgFrom, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
-		return transformTo( new edu.cmu.cs.dennisc.math.Point3(), xyzInFrom, sgFrom, sgTo );
+	public static Point3 transformTo_New( Point3 xyzInFrom, Component sgFrom, Component sgTo ) {
+		return transformTo( new Point3(), xyzInFrom, sgFrom, sgTo );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Point3 transformTo_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.scenegraph.Component sgFrom, edu.cmu.cs.dennisc.scenegraph.Component sgTo ) {
+	public static Point3 transformTo_AffectReturnValuePassedIn( Point3 rv, Component sgFrom, Component sgTo ) {
 		transformToAbsolute_AffectReturnValuePassedIn( rv, sgFrom );
 		transformFromAbsolute_AffectReturnValuePassedIn( rv, sgTo );
 		return rv;

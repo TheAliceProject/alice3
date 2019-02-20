@@ -42,72 +42,77 @@
  *******************************************************************************/
 package org.alice.ide.uricontent;
 
-/**
- * @author Dennis Cosgrove
- */
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import org.alice.ide.ProjectApplication;
+import org.lgna.project.Project;
+import org.lgna.project.ProjectVersion;
+import org.lgna.project.Version;
+import org.lgna.project.VersionNotSupportedException;
+import org.lgna.project.io.IoUtilities;
+import org.lgna.project.io.ProjectIo;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Locale;
+
 public abstract class AbstractFileProjectLoader extends UriProjectLoader {
-	public AbstractFileProjectLoader( java.io.File file ) {
+	AbstractFileProjectLoader( File file ) {
 		this.file = file;
 	}
 
-	protected java.io.File getFile() {
+	protected File getFile() {
 		return this.file;
 	}
 
 	@Override
-	protected boolean isCacheAndCopyStyle() {
-		return false;
-	}
-
-	@Override
-	protected org.lgna.project.Project load() {
-		if( file.exists() ) {
-			final java.util.Locale locale = java.util.Locale.ENGLISH;
-			String lcFilename = file.getName().toLowerCase( locale );
-			if( lcFilename.endsWith( ".a2w" ) ) {
-				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Alice3 does not load Alice2 worlds" )
-						.title( "Cannot read file" )
-						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
-						.buildAndShow();
-			} else if( lcFilename.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase( locale ) ) ) {
-				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.PROJECT_EXTENSION + " extension." )
-						.title( "Incorrect File Type" )
-						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
-						.buildAndShow();
-			} else {
-				boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase( locale ) );
-				java.util.zip.ZipFile zipFile;
-				try {
-					zipFile = new java.util.zip.ZipFile( file );
-				} catch( java.io.IOException ioe ) {
-					if( isWorthyOfException ) {
-						throw new RuntimeException( file.getAbsolutePath(), ioe );
-					} else {
-						org.alice.ide.ProjectApplication.getActiveInstance().showUnableToOpenProjectMessageDialog( file, false );
-						zipFile = null;
-					}
-				}
-				if( zipFile != null ) {
-					try {
-						return org.lgna.project.io.IoUtilities.readProject( zipFile );
-					} catch( org.lgna.project.VersionNotSupportedException vnse ) {
-						org.alice.ide.ProjectApplication.getActiveInstance().handleVersionNotSupported( file, vnse );
-					} catch( java.io.IOException ioe ) {
-						if( isWorthyOfException ) {
-							throw new RuntimeException( file.getAbsolutePath(), ioe );
-						} else {
-							org.alice.ide.ProjectApplication.getActiveInstance().showUnableToOpenProjectMessageDialog( file, true );
-						}
-					}
-				} else {
-					//actionContext.cancel();
-				}
+	protected Project load() {
+		if (!isAlice3ProjectFile()) {
+			return null;
+		}
+		try {
+			ProjectIo.ProjectReader reader = IoUtilities.projectReader(file );
+			if (isFromFutureVersion(reader)) {
+				return null;
 			}
-		} else {
-			org.alice.ide.ProjectApplication.getActiveInstance().showUnableToOpenFileDialog( file, "It does not exist." );
+			return reader.readProject();
+		} catch( VersionNotSupportedException vnse ) {
+			ProjectApplication.getActiveInstance().handleVersionNotSupported( file, vnse );
+		} catch( IOException ioe ) {
+			Dialogs.showUnableToOpenFileDialog( file, "" );
 		}
 		return null;
 	}
 
-	private final java.io.File file;
+	private boolean isAlice3ProjectFile() {
+		if (!file.exists()) {
+			Dialogs.showUnableToOpenFileDialog(file, "It does not exist." );
+			return false;
+		}
+		final Locale locale = Locale.ENGLISH;
+		String lcFilename = file.getName().toLowerCase(locale);
+		if (lcFilename.endsWith(".a2w")) {
+			Dialogs.showError("Cannot read file", "Alice3 does not load Alice2 worlds");
+			return false;
+		}
+		if (lcFilename.endsWith(IoUtilities.TYPE_EXTENSION.toLowerCase(locale))) {
+			Dialogs.showError("Incorrect File Type", file.getAbsolutePath()
+				+ " appears to be a class file and not a project file.\n\nLook for files with the extension "
+				+ IoUtilities.PROJECT_EXTENSION );
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isFromFutureVersion(ProjectIo.ProjectReader reader) throws IOException {
+		Version fromFutureVersion = reader.checkForFutureVersion();
+		if ( fromFutureVersion != null ) {
+			return !Dialogs.confirmWithWarning(
+				"From later Alice version", "WARNING: This project was produced by a newer version of Alice:" + fromFutureVersion + "\n"
+					+ "You are running " + ProjectVersion.getCurrentVersion() + " and should consider upgrading. Visit alice.org.\n\n"
+					+ "Would you like to try to load this anyway?" );
+		}
+		return false;
+	}
+
+	private final File file;
 }

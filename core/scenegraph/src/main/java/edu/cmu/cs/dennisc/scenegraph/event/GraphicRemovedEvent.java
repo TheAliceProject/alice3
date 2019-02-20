@@ -43,11 +43,14 @@
 
 package edu.cmu.cs.dennisc.scenegraph.event;
 
+import edu.cmu.cs.dennisc.scenegraph.Graphic;
+import edu.cmu.cs.dennisc.scenegraph.Layer;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GraphicRemovedEvent extends GraphicEvent {
-	public GraphicRemovedEvent( edu.cmu.cs.dennisc.scenegraph.Layer source, edu.cmu.cs.dennisc.scenegraph.Graphic child ) {
+	public GraphicRemovedEvent( Layer source, Graphic child ) {
 		super( source, child );
 	}
 }

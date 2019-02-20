@@ -43,18 +43,24 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.Composite;
+
+import javax.swing.JPanel;
+import java.awt.FlowLayout;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FlowPanel extends Panel {
 	public enum Alignment {
-		CENTER( java.awt.FlowLayout.CENTER ),
+		CENTER( FlowLayout.CENTER ),
 
-		LEFT( java.awt.FlowLayout.LEFT ),
-		LEADING( java.awt.FlowLayout.LEADING ),
+		LEFT( FlowLayout.LEFT ),
+		LEADING( FlowLayout.LEADING ),
 
-		RIGHT( java.awt.FlowLayout.RIGHT ),
-		TRAILING( java.awt.FlowLayout.TRAILING );
+		RIGHT( FlowLayout.RIGHT ),
+		TRAILING( FlowLayout.TRAILING );
 
 		private int internal;
 
@@ -68,7 +74,7 @@ public class FlowPanel extends Panel {
 	private final int vgap;
 
 	public FlowPanel( AwtComponentView<?>... components ) {
-		this( (org.lgna.croquet.Composite)null, components );
+		this( (Composite)null, components );
 	}
 
 	public FlowPanel( Alignment alignment, AwtComponentView<?>... components ) {
@@ -79,15 +85,15 @@ public class FlowPanel extends Panel {
 		this( null, alignment, hgap, vgap, components );
 	}
 
-	public FlowPanel( org.lgna.croquet.Composite composite, AwtComponentView<?>... components ) {
+	public FlowPanel( Composite composite, AwtComponentView<?>... components ) {
 		this( composite, Alignment.CENTER, components );
 	}
 
-	public FlowPanel( org.lgna.croquet.Composite composite, Alignment alignment, AwtComponentView<?>... components ) {
+	public FlowPanel( Composite composite, Alignment alignment, AwtComponentView<?>... components ) {
 		this( composite, alignment, 0, 0, components );
 	}
 
-	public FlowPanel( org.lgna.croquet.Composite composite, Alignment alignment, int hgap, int vgap, AwtComponentView<?>... components ) {
+	public FlowPanel( Composite composite, Alignment alignment, int hgap, int vgap, AwtComponentView<?>... components ) {
 		super( composite );
 		this.alignment = alignment;
 		this.hgap = hgap;
@@ -115,12 +121,12 @@ public class FlowPanel extends Panel {
 	////		rv.setPreferredSize( new java.awt.Dimension( 256, 1 ) );
 	//		return rv;
 	//	}
-	protected java.awt.FlowLayout createFlowLayout( int alignment, int hgap, int vgap ) {
-		return new java.awt.FlowLayout( alignment, hgap, vgap );
+	protected FlowLayout createFlowLayout( int alignment, int hgap, int vgap ) {
+		return new FlowLayout( alignment, hgap, vgap );
 	}
 
 	@Override
-	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+	protected final LayoutManager createLayoutManager( JPanel jPanel ) {
 		return this.createFlowLayout( this.alignment.internal, this.hgap, this.vgap );
 	}
 

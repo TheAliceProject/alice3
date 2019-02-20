@@ -43,6 +43,13 @@
 
 package org.alice.ide.custom;
 
+import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
+import org.alice.ide.croquet.models.numberpad.FloatModel;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FloatLiteral;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,15 +63,15 @@ public class FloatCustomExpressionCreatorComposite extends NumberCustomExpressio
 	}
 
 	private FloatCustomExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "9fe48aa9-d9cc-4110-9ada-696406bfd727" ), org.alice.ide.croquet.models.numberpad.FloatModel.getInstance() );
+		super( UUID.fromString( "9fe48aa9-d9cc-4110-9ada-696406bfd727" ), FloatModel.getInstance() );
 	}
 
 	@Override
-	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
+	protected String getTextForPreviousExpression( Expression expression ) {
 		String text;
-		if( expression instanceof org.lgna.project.ast.FloatLiteral ) {
-			org.lgna.project.ast.FloatLiteral floatLiteral = (org.lgna.project.ast.FloatLiteral)expression;
-			text = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatInCurrentDefaultLocale( floatLiteral.value.getValue() );
+		if( expression instanceof FloatLiteral ) {
+			FloatLiteral floatLiteral = (FloatLiteral)expression;
+			text = DoubleUtilities.formatInCurrentDefaultLocale( floatLiteral.value.getValue() );
 		} else {
 			text = "";
 		}

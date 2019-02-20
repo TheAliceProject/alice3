@@ -44,6 +44,8 @@
 package org.alice.ide.identifier;
 
 import org.alice.stageide.modelresource.ResourceKey;
+import org.lgna.project.ast.AbstractConstructor;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.JavaType;
 
@@ -95,9 +97,9 @@ public enum IdentifierNameGenerator {
 			// Try to use JavaType, untranslated, if it exists.
 			InstanceCreation creation = key.createInstanceCreation();
 			if( creation != null ) {
-				org.lgna.project.ast.AbstractConstructor constructor = creation.constructor.getValue();
+				AbstractConstructor constructor = creation.constructor.getValue();
 				if (constructor != null) {
-					org.lgna.project.ast.AbstractType<?, ?, ?> type = constructor.getDeclaringType();
+					AbstractType<?, ?, ?> type = constructor.getDeclaringType();
 					if (type != null && type instanceof JavaType) {
 						String typeName = type.getName();
 						if (typeName != null) {
@@ -123,16 +125,16 @@ public enum IdentifierNameGenerator {
 		return convertFirstCharacterToLowerCase(className);
 	}
 
-	public String createIdentifierNameFromInstanceCreation( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+	public String createIdentifierNameFromInstanceCreation( InstanceCreation instanceCreation ) {
 		String rv = "";
 		if( instanceCreation != null ) {
-			org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+			AbstractConstructor constructor = instanceCreation.constructor.getValue();
 			if( constructor != null ) {
-				org.lgna.project.ast.AbstractType<?, ?, ?> type = constructor.getDeclaringType();
+				AbstractType<?, ?, ?> type = constructor.getDeclaringType();
 				if( type != null ) {
 					String typeName = type.getName();
 					if( typeName != null ) {
-						if( type instanceof org.lgna.project.ast.JavaType ) {
+						if( type instanceof JavaType ) {
 							if( typeName.length() > 1 ) {
 								if( ( typeName.charAt( 0 ) == 'S' ) && Character.isUpperCase( typeName.charAt( 1 ) ) ) {
 									typeName = typeName.substring( 1 );

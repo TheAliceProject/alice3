@@ -43,23 +43,36 @@
 
 package org.alice.stageide.cascade.fillerinners;
 
+import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
+import org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn;
+import org.alice.stageide.custom.ColorCustomExpressionCreatorComposite;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.Color;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ColorFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+public class ColorFillerInner extends ExpressionFillerInner {
 	public ColorFillerInner() {
-		super( org.lgna.story.Color.class );
+		super( Color.class );
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = this.getType();
-		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
+		AbstractType<?, ?, ?> type = this.getType();
+		for( AbstractField field : type.getDeclaredFields() ) {
 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
-				items.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
+				items.add( StaticFieldAccessFillIn.getInstance( field ) );
 			}
 		}
-		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		items.add( org.alice.stageide.custom.ColorCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
+		items.add( CascadeLineSeparator.getInstance() );
+		items.add( ColorCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 	}
 }

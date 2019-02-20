@@ -44,6 +44,9 @@
 package org.lgna.project.ast;
 
 //todo: name
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -79,7 +82,7 @@ public abstract class AbstractCode extends AbstractMember implements Code {
 
 	@Override
 	public final AbstractParameter[] getAllParameters() {
-		java.util.List<? extends AbstractParameter> requiredParameters = this.getRequiredParameters();
+		List<? extends AbstractParameter> requiredParameters = this.getRequiredParameters();
 		AbstractParameter variableLengthParameter = this.getVariableLengthParameter();
 		AbstractParameter keyedParameter = this.getKeyedParameter();
 

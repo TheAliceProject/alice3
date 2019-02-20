@@ -42,19 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import org.alice.stageide.icons.ThemeIconFactory;
+import org.lgna.croquet.icon.IconFactory;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ThemeTagKey extends TagKey {
-	private final org.lgna.croquet.icon.IconFactory iconFactory;
+	private final IconFactory iconFactory;
 
 	public ThemeTagKey( String groupTag ) {
 		super( groupTag );
-		this.iconFactory = new org.alice.stageide.icons.ThemeIconFactory( this );
+		this.iconFactory = new ThemeIconFactory( this );
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+	public IconFactory getIconFactory() {
 		return this.iconFactory;
 	}
 }

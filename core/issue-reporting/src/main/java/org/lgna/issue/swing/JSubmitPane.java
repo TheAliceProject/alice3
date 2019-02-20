@@ -42,65 +42,94 @@
  *******************************************************************************/
 package org.lgna.issue.swing;
 
+import edu.cmu.cs.dennisc.issue.Issue;
+import edu.cmu.cs.dennisc.java.awt.font.FontUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon;
+import org.lgna.issue.ApplicationIssueConfiguration;
+
+import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonModel;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Shape;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class JSubmitPane extends javax.swing.JPanel {
+public final class JSubmitPane extends JPanel {
 	private static final String CONTRACTED_TEXT = "Provide details";
 	private static final String EXPANDED_TEXT = "Please describe the problem and what steps you took that lead you to this bug:";
 
-	public JSubmitPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget, org.lgna.issue.ApplicationIssueConfiguration config ) {
+	public JSubmitPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget, ApplicationIssueConfiguration config ) {
 		this.config = config;
 		this.insightPane = new JInsightPane( thread, originalThrowable, originalThrowableOrTarget );
-		this.toggleButton.setMargin( new java.awt.Insets( 0, 0, 0, 0 ) );
-		javax.swing.Action submitAction = new javax.swing.AbstractAction( config.getSubmitActionName() ) {
+		this.toggleButton.setMargin( new Insets( 0, 0, 0, 0 ) );
+		Action submitAction = new AbstractAction( config.getSubmitActionName() ) {
 			@Override
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
+			public void actionPerformed( ActionEvent e ) {
 				getConfig().submit( JSubmitPane.this );
 			}
 		};
-		this.submitButton = new javax.swing.JButton( submitAction );
+		this.submitButton = new JButton( submitAction );
 
-		javax.swing.JPanel headerPane = config.createHeaderPane( thread, originalThrowable, originalThrowableOrTarget );
+		JPanel headerPane = config.createHeaderPane( thread, originalThrowable, originalThrowableOrTarget );
 
-		javax.swing.JPanel insightHeaderPanel = new javax.swing.JPanel();
-		insightHeaderPanel.setLayout( new java.awt.BorderLayout() );
-		insightHeaderPanel.add( toggleButton, java.awt.BorderLayout.LINE_START );
+		JPanel insightHeaderPanel = new JPanel();
+		insightHeaderPanel.setLayout( new BorderLayout() );
+		insightHeaderPanel.add( toggleButton, BorderLayout.LINE_START );
 
-		javax.swing.JPanel mainPanel = new javax.swing.JPanel();
-		mainPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		mainPanel.setLayout( new java.awt.BorderLayout() );
-		mainPanel.add( insightHeaderPanel, java.awt.BorderLayout.PAGE_START );
-		mainPanel.add( insightPane, java.awt.BorderLayout.CENTER );
+		JPanel mainPanel = new JPanel();
+		mainPanel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		mainPanel.setLayout( new BorderLayout() );
+		mainPanel.add( insightHeaderPanel, BorderLayout.PAGE_START );
+		mainPanel.add( insightPane, BorderLayout.CENTER );
 
-		javax.swing.JPanel submitPanel = new javax.swing.JPanel();
-		submitPanel.setLayout( new java.awt.FlowLayout() );
+		JPanel submitPanel = new JPanel();
+		submitPanel.setLayout( new FlowLayout() );
 		submitPanel.add( submitButton );
 
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( headerPane, java.awt.BorderLayout.PAGE_START );
-		this.add( mainPanel, java.awt.BorderLayout.CENTER );
-		this.add( submitPanel, java.awt.BorderLayout.PAGE_END );
+		this.setLayout( new BorderLayout() );
+		this.add( headerPane, BorderLayout.PAGE_START );
+		this.add( mainPanel, BorderLayout.CENTER );
+		this.add( submitPanel, BorderLayout.PAGE_END );
 
 		this.toggleButton.addChangeListener( this.changeListener );
 
-		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( submitButton, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( submitButton, 1.6f );
+		FontUtilities.setFontToDerivedFont( submitButton, TextWeight.BOLD );
+		FontUtilities.setFontToScaledFont( submitButton, 1.6f );
 
-		this.toggleButton.setIcon( new edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon( 12 ) {
+		this.toggleButton.setIcon( new AbstractArrowIcon( 12 ) {
 			@Override
-			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-				javax.swing.ButtonModel buttonModel = button.getModel();
+			public void paintIcon( Component c, Graphics g, int x, int y ) {
+				Graphics2D g2 = (Graphics2D)g;
+				AbstractButton button = (AbstractButton)c;
+				ButtonModel buttonModel = button.getModel();
 				Heading heading = buttonModel.isSelected() ? Heading.SOUTH : Heading.EAST;
-				java.awt.Shape shape = this.createPath( x, y, heading );
-				g2.setPaint( java.awt.Color.DARK_GRAY );
+				Shape shape = this.createPath( x, y, heading );
+				g2.setPaint( Color.DARK_GRAY );
 				g2.fill( shape );
 			}
 		} );
 		this.toggleButton.setIconTextGap( 12 );
-		this.toggleButton.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+		this.toggleButton.setHorizontalTextPosition( SwingConstants.LEADING );
 		this.toggleButton.setFocusable( false );
 		final boolean IS_INSIGHT_EXPANDED_BY_DEFAULT = false;
 		if( IS_INSIGHT_EXPANDED_BY_DEFAULT ) {
@@ -114,11 +143,11 @@ public final class JSubmitPane extends javax.swing.JPanel {
 		this.getRootPane().setDefaultButton( this.submitButton );
 	}
 
-	public org.lgna.issue.ApplicationIssueConfiguration getConfig() {
+	public ApplicationIssueConfiguration getConfig() {
 		return this.config;
 	}
 
-	public edu.cmu.cs.dennisc.issue.Issue.Builder createIssueBuilder() {
+	public Issue.Builder createIssueBuilder() {
 		return this.insightPane.createIssueBuilder();
 	}
 
@@ -132,22 +161,22 @@ public final class JSubmitPane extends javax.swing.JPanel {
 
 	private final JInsightPane insightPane;
 
-	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+	private final ChangeListener changeListener = new ChangeListener() {
 		@Override
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+		public void stateChanged( ChangeEvent e ) {
 			Object src = e.getSource();
-			if( src instanceof javax.swing.JToggleButton ) {
-				javax.swing.JToggleButton button = (javax.swing.JToggleButton)src;
+			if( src instanceof JToggleButton ) {
+				JToggleButton button = (JToggleButton)src;
 				insightPane.setExpanded( button.isSelected() );
 				toggleButton.setText( button.isSelected() ? EXPANDED_TEXT : CONTRACTED_TEXT );
-				( (java.awt.Window)javax.swing.SwingUtilities.getRoot( button ) ).pack();
+				( (Window)SwingUtilities.getRoot( button ) ).pack();
 			}
 		}
 	};
-	private final javax.swing.JToggleButton toggleButton = new javax.swing.JToggleButton( CONTRACTED_TEXT );
-	private final javax.swing.JButton submitButton;
+	private final JToggleButton toggleButton = new JToggleButton( CONTRACTED_TEXT );
+	private final JButton submitButton;
 
-	private final org.lgna.issue.ApplicationIssueConfiguration config;
+	private final ApplicationIssueConfiguration config;
 
 	private boolean isSubmitAttempted;
 }

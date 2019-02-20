@@ -43,10 +43,15 @@
 
 package org.alice.ide.croquet.models.ui.preferences;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.preferences.PreferenceBooleanState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IsNullAllowedForFieldInitializers extends org.lgna.croquet.preferences.PreferenceBooleanState {
+public class IsNullAllowedForFieldInitializers extends PreferenceBooleanState {
 	private static class SingletonHolder {
 		private static IsNullAllowedForFieldInitializers instance = new IsNullAllowedForFieldInitializers();
 	}
@@ -56,6 +61,6 @@ public class IsNullAllowedForFieldInitializers extends org.lgna.croquet.preferen
 	}
 
 	private IsNullAllowedForFieldInitializers() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "bc1fc1d8-eebf-48d7-80ed-771d0f365229" ), false );
+		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "bc1fc1d8-eebf-48d7-80ed-771d0f365229" ), false );
 	}
 }

@@ -43,23 +43,32 @@
 
 package edu.cmu.cs.dennisc.java.lang;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 class StreamHandler extends Thread {
-	private final java.io.InputStream is;
-	private final java.io.PrintStream ps;
+	private final InputStream is;
+	private final PrintStream ps;
 
-	public StreamHandler( java.io.InputStream is, java.io.PrintStream ps ) {
+	public StreamHandler( InputStream is, PrintStream ps ) {
 		this.is = is;
 		this.ps = ps;
 	}
 
 	@Override
 	public void run() {
-		java.io.InputStreamReader isr = new java.io.InputStreamReader( this.is );
-		java.io.BufferedReader br = new java.io.BufferedReader( isr );
-		java.io.PrintWriter pw = this.ps != null ? new java.io.PrintWriter( this.ps ) : null;
+		InputStreamReader isr = new InputStreamReader( this.is );
+		BufferedReader br = new BufferedReader( isr );
+		PrintWriter pw = this.ps != null ? new PrintWriter( this.ps ) : null;
 		while( true ) {
 			try {
 				String line = br.readLine();
@@ -71,7 +80,7 @@ class StreamHandler extends Thread {
 				} else {
 					break;
 				}
-			} catch( java.io.IOException ioe ) {
+			} catch( IOException ioe ) {
 				throw new RuntimeException( ioe );
 			}
 		}
@@ -87,13 +96,13 @@ public class RuntimeUtilities {
 	private static final boolean IS_READING_FROM_PROCESS_DESIRED_EVEN_WHEN_SILENT = true;
 
 	//todo: reorder parameters
-	public static int exec( java.io.File workingDirectory, java.util.Map<String, String> environment, String[] cmds, java.io.PrintStream out, java.io.PrintStream err ) {
+	public static int exec( File workingDirectory, Map<String, String> environment, String[] cmds, PrintStream out, PrintStream err ) {
 		ProcessBuilder processBuilder = new ProcessBuilder( cmds );
 		if( workingDirectory != null ) {
 			processBuilder.directory( workingDirectory );
 		}
 		if( environment != null ) {
-			java.util.Map<String, String> map = processBuilder.environment();
+			Map<String, String> map = processBuilder.environment();
 			for( String key : environment.keySet() ) {
 				map.put( key, environment.get( key ) );
 			}
@@ -109,22 +118,22 @@ public class RuntimeUtilities {
 				errorHandler.start();
 			}
 			return process.waitFor();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		} catch( InterruptedException ie ) {
 			throw new RuntimeException( ie );
 		}
 	}
 
-	public static int exec( java.io.File workingDirectory, java.util.Map<String, String> environment, String[] cmds, java.io.PrintStream out ) {
+	public static int exec( File workingDirectory, Map<String, String> environment, String[] cmds, PrintStream out ) {
 		return exec( workingDirectory, environment, cmds, out, System.err );
 	}
 
-	public static int exec( java.io.File workingDirectory, java.util.Map<String, String> environment, String... cmds ) {
+	public static int exec( File workingDirectory, Map<String, String> environment, String... cmds ) {
 		return exec( workingDirectory, environment, cmds, System.out );
 	}
 
-	public static int exec( java.io.File workingDirectory, String... cmds ) {
+	public static int exec( File workingDirectory, String... cmds ) {
 		return exec( workingDirectory, null, cmds );
 	}
 
@@ -132,11 +141,11 @@ public class RuntimeUtilities {
 		return exec( null, cmds );
 	}
 
-	public static int execSilent( java.io.File workingDirectory, java.util.Map<String, String> environment, String... cmds ) {
+	public static int execSilent( File workingDirectory, Map<String, String> environment, String... cmds ) {
 		return exec( workingDirectory, environment, cmds, null, null );
 	}
 
-	public static int execSilent( java.io.File workingDirectory, String... cmds ) {
+	public static int execSilent( File workingDirectory, String... cmds ) {
 		return execSilent( workingDirectory, null, cmds );
 	}
 

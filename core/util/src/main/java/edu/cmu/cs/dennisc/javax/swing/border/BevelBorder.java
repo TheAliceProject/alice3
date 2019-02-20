@@ -42,17 +42,24 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.border;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class BevelBorder extends javax.swing.border.EmptyBorder {
-	private static final java.awt.Color INNER_SHADOW = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 63 );
-	private static final java.awt.Color INNER_HIGHLIGHT = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 );
-	private static final java.awt.Color OUTER_SHADOW = INNER_SHADOW.darker();
-	private static final java.awt.Color OUTER_HIGHLIGHT = INNER_HIGHLIGHT.brighter();
+	private static final Color INNER_SHADOW = ColorUtilities.createGray( 63 );
+	private static final Color INNER_HIGHLIGHT = ColorUtilities.createGray( 191 );
+	private static final Color OUTER_SHADOW = INNER_SHADOW.darker();
+	private static final Color OUTER_HIGHLIGHT = INNER_HIGHLIGHT.brighter();
 	private boolean isRaised;
 
-	public BevelBorder( java.awt.Insets insets, boolean isRaised ) {
+	public BevelBorder( Insets insets, boolean isRaised ) {
 		super( insets );
 		this.isRaised = isRaised;
 	}
@@ -63,18 +70,18 @@ public abstract class BevelBorder extends javax.swing.border.EmptyBorder {
 	}
 
 	@Override
-	public final void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
-		java.awt.Color prevColor = g.getColor();
+	public final void paintBorder( Component c, Graphics g, int x, int y, int width, int height ) {
+		Color prevColor = g.getColor();
 
 		int x0 = x;
 		int x1 = ( x0 + width ) - 1;
 		int y0 = y;
 		int y1 = ( y0 + height ) - 1;
 
-		java.awt.Color outerA;
-		java.awt.Color outerB;
-		java.awt.Color innerA;
-		java.awt.Color innerB;
+		Color outerA;
+		Color outerB;
+		Color innerA;
+		Color innerB;
 		if( this.isRaised ) {
 			outerA = OUTER_SHADOW;
 			innerA = INNER_SHADOW;

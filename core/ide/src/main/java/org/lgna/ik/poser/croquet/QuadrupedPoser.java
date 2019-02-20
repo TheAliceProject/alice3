@@ -47,13 +47,15 @@ import org.lgna.ik.poser.scene.QuadrupedPoserScene;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.SQuadruped;
 
+import java.util.UUID;
+
 /**
  * @author Matt May
  */
 public class QuadrupedPoser extends PoserComposite<SQuadruped> {
 
 	public QuadrupedPoser( NamedUserType valueType ) {
-		super( java.util.UUID.fromString( "b1a11f61-d63c-430b-9b3a-62ffb8fac0d8" ), valueType );
+		super( UUID.fromString( "b1a11f61-d63c-430b-9b3a-62ffb8fac0d8" ), valueType );
 	}
 
 	@Override

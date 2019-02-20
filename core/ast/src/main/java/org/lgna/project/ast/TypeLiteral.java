@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import org.lgna.project.ast.localizer.AstLocalizer;
 
 import edu.cmu.cs.dennisc.property.PropertyFilter;
@@ -68,14 +69,8 @@ public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<AbstractType<?, ?, ?>> getValueProperty() {
+	public InstanceProperty<AbstractType<?, ?, ?>> getValueProperty() {
 		return this.value;
-	}
-
-	@Override
-	protected boolean valuePropertyContentEquals( AbstractValueLiteral<AbstractType<?, ?, ?>> other, ContentEqualsStrictness strictness, PropertyFilter filter ) {
-		TypeLiteral otherTypeLiteral = (TypeLiteral)other;
-		return this.value.valueContentEquals( otherTypeLiteral.value, strictness, filter );
 	}
 
 	@Override
@@ -85,9 +80,8 @@ public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendTypeName( this.value.getValue() );
-		generator.appendString( ".class" );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendTypeLiteral( this );
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> value = DeclarationProperty.createReferenceInstance( this );

@@ -42,13 +42,31 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast.cascade;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.edits.ast.FillInMoreEdit;
+import org.alice.ide.croquet.models.cascade.ParameterBlank;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.ImmutableCascade;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.SimpleArgument;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MoreCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.project.ast.Expression> {
-	private static java.util.Map<org.lgna.project.ast.MethodInvocation, MoreCascade> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class MoreCascade extends ImmutableCascade<Expression> {
+	private static Map<MethodInvocation, MoreCascade> map = Maps.newHashMap();
 
-	public static synchronized MoreCascade getInstance( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+	public static synchronized MoreCascade getInstance( MethodInvocation methodInvocation ) {
 		MoreCascade rv = map.get( methodInvocation );
 		if( rv != null ) {
 			//pass
@@ -59,30 +77,30 @@ public class MoreCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.proj
 		return rv;
 	}
 
-	private static org.lgna.project.ast.AbstractParameter getNextParameter( org.lgna.project.ast.MethodInvocation methodInvocation ) {
-		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-		org.lgna.project.ast.AbstractMethod nextMethod = (org.lgna.project.ast.AbstractMethod)method.getNextLongerInChain();
-		java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = nextMethod.getRequiredParameters();
+	private static AbstractParameter getNextParameter( MethodInvocation methodInvocation ) {
+		AbstractMethod method = methodInvocation.method.getValue();
+		AbstractMethod nextMethod = (AbstractMethod)method.getNextLongerInChain();
+		List<? extends AbstractParameter> parameters = nextMethod.getRequiredParameters();
 		return parameters.get( parameters.size() - 1 );
 	}
 
-	private final org.lgna.project.ast.MethodInvocation methodInvocation;
-	private final org.lgna.project.ast.ExpressionStatement expressionStatement;
-	private final org.lgna.project.ast.MethodInvocation nextMethodInvocation;
+	private final MethodInvocation methodInvocation;
+	private final ExpressionStatement expressionStatement;
+	private final MethodInvocation nextMethodInvocation;
 
-	private MoreCascade( org.lgna.project.ast.MethodInvocation methodInvocation ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "7ed06ae1-3704-4745-afd2-47dc21366412" ), org.lgna.project.ast.Expression.class, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) );
+	private MoreCascade( MethodInvocation methodInvocation ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "7ed06ae1-3704-4745-afd2-47dc21366412" ), Expression.class, ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) );
 		assert methodInvocation != null;
 		this.methodInvocation = methodInvocation;
-		this.expressionStatement = (org.lgna.project.ast.ExpressionStatement)this.methodInvocation.getParent();
-		assert this.expressionStatement != null : ( (org.lgna.project.ast.JavaMethod)this.methodInvocation.method.getValue() ).getMethodReflectionProxy().getReification();
+		this.expressionStatement = (ExpressionStatement)this.methodInvocation.getParent();
+		assert this.expressionStatement != null : ( (JavaMethod)this.methodInvocation.method.getValue() ).getMethodReflectionProxy().getReification();
 
-		org.lgna.project.ast.AbstractMethod method = this.methodInvocation.method.getValue();
-		org.lgna.project.ast.AbstractMethod nextMethod = (org.lgna.project.ast.AbstractMethod)method.getNextLongerInChain();
-		this.nextMethodInvocation = new org.lgna.project.ast.MethodInvocation();
+		AbstractMethod method = this.methodInvocation.method.getValue();
+		AbstractMethod nextMethod = (AbstractMethod)method.getNextLongerInChain();
+		this.nextMethodInvocation = new MethodInvocation();
 		this.nextMethodInvocation.method.setValue( nextMethod );
-		for( org.lgna.project.ast.AbstractParameter parameter : nextMethod.getRequiredParameters() ) {
-			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, null );
+		for( AbstractParameter parameter : nextMethod.getRequiredParameters() ) {
+			SimpleArgument argument = new SimpleArgument( parameter, null );
 			this.nextMethodInvocation.requiredArguments.add( argument );
 		}
 		//		this.updateToolTipText();
@@ -93,15 +111,15 @@ public class MoreCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.proj
 	//		return org.lgna.croquet.Application.PROJECT_GROUP;
 	//	}
 
-	public org.lgna.project.ast.ExpressionStatement getExpressionStatement() {
+	public ExpressionStatement getExpressionStatement() {
 		return this.expressionStatement;
 	}
 
-	public org.lgna.project.ast.MethodInvocation getPrevMethodInvocation() {
+	public MethodInvocation getPrevMethodInvocation() {
 		return this.methodInvocation;
 	}
 
-	public org.lgna.project.ast.MethodInvocation getNextMethodInvocation() {
+	public MethodInvocation getNextMethodInvocation() {
 		return this.nextMethodInvocation;
 	}
 
@@ -133,7 +151,7 @@ public class MoreCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.proj
 	//		return lastParameter.getDesiredValueType();
 	//	}
 	@Override
-	protected org.alice.ide.croquet.edits.ast.FillInMoreEdit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.Expression[] values ) {
-		return new org.alice.ide.croquet.edits.ast.FillInMoreEdit( step, values[ 0 ] );
+	protected FillInMoreEdit createEdit( UserActivity userActivity, Expression[] values ) {
+		return new FillInMoreEdit( userActivity, values[ 0 ] );
 	}
 }

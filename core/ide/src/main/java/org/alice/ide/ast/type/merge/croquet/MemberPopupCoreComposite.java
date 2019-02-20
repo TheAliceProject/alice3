@@ -42,18 +42,26 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.alice.ide.ast.type.merge.croquet.views.MemberPopupCoreView;
+import org.lgna.croquet.HtmlStringValue;
+import org.lgna.croquet.PopupCoreComposite;
+import org.lgna.project.ast.Member;
+
+import javax.swing.Icon;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class MemberPopupCoreComposite extends org.lgna.croquet.PopupCoreComposite<org.alice.ide.ast.type.merge.croquet.views.MemberPopupCoreView> {
+public final class MemberPopupCoreComposite extends PopupCoreComposite<MemberPopupCoreView> {
 	private final MemberHub<?> memberHub;
 
-	private final org.lgna.croquet.HtmlStringValue description = new org.lgna.croquet.HtmlStringValue( java.util.UUID.fromString( "c6a7c06d-143a-4bd8-afca-c8e4b544473c" ) ) {
+	private final HtmlStringValue description = new HtmlStringValue( UUID.fromString( "c6a7c06d-143a-4bd8-afca-c8e4b544473c" ) ) {
 
 	};
 
 	public MemberPopupCoreComposite( MemberHub<?> memberHub ) {
-		super( java.util.UUID.fromString( "7f3eb347-2ef0-4447-a208-dab648d41112" ) );
+		super( UUID.fromString( "7f3eb347-2ef0-4447-a208-dab648d41112" ) );
 		this.memberHub = memberHub;
 	}
 
@@ -61,15 +69,15 @@ public final class MemberPopupCoreComposite extends org.lgna.croquet.PopupCoreCo
 		return this.memberHub;
 	}
 
-	public org.lgna.project.ast.Member getMember() {
+	public Member getMember() {
 		return this.memberHub.getMember();
 	}
 
-	public javax.swing.Icon getIcon() {
+	public Icon getIcon() {
 		return this.memberHub.getIcon();
 	}
 
-	public org.lgna.croquet.HtmlStringValue getDescription() {
+	public HtmlStringValue getDescription() {
 		return this.description;
 	}
 
@@ -80,7 +88,7 @@ public final class MemberPopupCoreComposite extends org.lgna.croquet.PopupCoreCo
 	}
 
 	@Override
-	protected org.alice.ide.ast.type.merge.croquet.views.MemberPopupCoreView createView() {
-		return new org.alice.ide.ast.type.merge.croquet.views.MemberPopupCoreView( this );
+	protected MemberPopupCoreView createView() {
+		return new MemberPopupCoreView( this );
 	}
 }

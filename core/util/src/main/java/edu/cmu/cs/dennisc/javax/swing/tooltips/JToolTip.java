@@ -42,21 +42,30 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.tooltips;
 
-class ToolTipUI extends javax.swing.plaf.basic.BasicToolTipUI {
+import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
+
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicToolTipUI;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+
+class ToolTipUI extends BasicToolTipUI {
 	private static ToolTipUI singleton = new ToolTipUI();
 
-	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent c ) {
+	public static ComponentUI createUI( JComponent c ) {
 		return ToolTipUI.singleton;
 	}
 
 	@Override
-	public java.awt.Dimension getPreferredSize( javax.swing.JComponent c ) {
+	public Dimension getPreferredSize( JComponent c ) {
 		JToolTip toolTip = (JToolTip)c;
-		java.awt.Component subject = toolTip.getSubject();
+		Component subject = toolTip.getSubject();
 		if( subject != null ) {
-			edu.cmu.cs.dennisc.java.awt.ComponentUtilities.invalidateTree( subject );
-			edu.cmu.cs.dennisc.java.awt.ComponentUtilities.doLayoutTree( subject );
-			edu.cmu.cs.dennisc.java.awt.ComponentUtilities.setSizeToPreferredSizeTree( subject );
+			ComponentUtilities.invalidateTree( subject );
+			ComponentUtilities.doLayoutTree( subject );
+			ComponentUtilities.setSizeToPreferredSizeTree( subject );
 			return subject.getPreferredSize();
 		} else {
 			return super.getPreferredSize( c );
@@ -78,19 +87,19 @@ class ToolTipUI extends javax.swing.plaf.basic.BasicToolTipUI {
  * @author Dennis Cosgrove
  */
 public class JToolTip extends javax.swing.JToolTip {
-	private java.awt.Component subject;
+	private Component subject;
 
-	public JToolTip( java.awt.Component subject ) {
-		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
+	public JToolTip( Component subject ) {
+		this.setLayout( new GridLayout( 1, 1 ) );
 		this.setSubject( subject );
 		this.setOpaque( false );
 	}
 
-	public java.awt.Component getSubject() {
+	public Component getSubject() {
 		return this.subject;
 	}
 
-	public void setSubject( java.awt.Component subject ) {
+	public void setSubject( Component subject ) {
 		if( this.subject != null ) {
 			this.remove( this.subject );
 		}

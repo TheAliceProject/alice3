@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.models;
 
+import java.lang.reflect.Array;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -89,11 +91,11 @@ public class ArrayListModel extends javax.swing.AbstractListModel {
 
 	@Override
 	public Object getElementAt( int index ) {
-		return java.lang.reflect.Array.get( this.array, index );
+		return Array.get( this.array, index );
 	}
 
 	@Override
 	public int getSize() {
-		return java.lang.reflect.Array.getLength( this.array );
+		return Array.getLength( this.array );
 	}
 }

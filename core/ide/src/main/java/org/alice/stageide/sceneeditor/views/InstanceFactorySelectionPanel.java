@@ -43,30 +43,84 @@
 
 package org.alice.stageide.sceneeditor.views;
 
+import edu.cmu.cs.dennisc.java.awt.event.AltTriggerMouseAdapter;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.property.event.ListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
+import edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter;
+import org.alice.ide.ApiConfigurationManager;
+import org.alice.ide.IDE;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.ThisFieldAccessFactory;
+import org.alice.ide.instancefactory.ThisInstanceFactory;
+import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.alice.stageide.StageIDE;
+import org.alice.stageide.oneshot.OneShotMenuModel;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.triggers.MouseEventTrigger;
+import org.lgna.croquet.views.Panel;
+import org.lgna.croquet.views.PanelViewController;
+import org.lgna.croquet.views.PopupButton;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
+
+import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.SizeRequirements;
+import java.awt.AlphaComposite;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.LayoutManager2;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelViewController<org.alice.ide.instancefactory.croquet.InstanceFactoryState> {
-	private static final class InstanceFactoryLayout implements java.awt.LayoutManager2 {
+public class InstanceFactorySelectionPanel extends PanelViewController<InstanceFactoryState> {
+	private static final class InstanceFactoryLayout implements LayoutManager2 {
 		private static final int INDENT = 16;
 
 		@Override
-		public void addLayoutComponent( String name, java.awt.Component comp ) {
+		public void addLayoutComponent( String name, Component comp ) {
 			this.invalidateLayout( comp.getParent() );
 		}
 
 		@Override
-		public void addLayoutComponent( java.awt.Component comp, Object constraints ) {
+		public void addLayoutComponent( Component comp, Object constraints ) {
 			this.invalidateLayout( comp.getParent() );
 		}
 
 		@Override
-		public void removeLayoutComponent( java.awt.Component comp ) {
+		public void removeLayoutComponent( Component comp ) {
 			this.invalidateLayout( comp.getParent() );
 		}
 
 		@Override
-		public void invalidateLayout( java.awt.Container target ) {
+		public void invalidateLayout( Container target ) {
 			synchronized( this ) {
 				this.xChildren = null;
 				this.yChildren = null;
@@ -75,76 +129,76 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 			}
 		}
 
-		private void ensureSizeRequirementsUpToDate( java.awt.Container target ) {
+		private void ensureSizeRequirementsUpToDate( Container target ) {
 			synchronized( this ) {
 				if( ( xChildren == null ) || ( yChildren == null ) ) {
 					int nChildren = target.getComponentCount();
-					xChildren = new javax.swing.SizeRequirements[ nChildren ];
-					yChildren = new javax.swing.SizeRequirements[ nChildren ];
+					xChildren = new SizeRequirements[ nChildren ];
+					yChildren = new SizeRequirements[ nChildren ];
 					for( int i = 0; i < nChildren; i++ ) {
-						java.awt.Component c = target.getComponent( i );
+						Component c = target.getComponent( i );
 						if( c.isVisible() ) {
-							java.awt.Dimension min = c.getMinimumSize();
-							java.awt.Dimension typ = c.getPreferredSize();
-							java.awt.Dimension max = c.getMaximumSize();
-							xChildren[ i ] = new javax.swing.SizeRequirements( min.width, typ.width, max.width, c.getAlignmentX() );
-							yChildren[ i ] = new javax.swing.SizeRequirements( min.height, typ.height, max.height, c.getAlignmentY() );
+							Dimension min = c.getMinimumSize();
+							Dimension typ = c.getPreferredSize();
+							Dimension max = c.getMaximumSize();
+							xChildren[ i ] = new SizeRequirements( min.width, typ.width, max.width, c.getAlignmentX() );
+							yChildren[ i ] = new SizeRequirements( min.height, typ.height, max.height, c.getAlignmentY() );
 						} else {
-							xChildren[ i ] = new javax.swing.SizeRequirements( 0, 0, 0, c.getAlignmentX() );
-							yChildren[ i ] = new javax.swing.SizeRequirements( 0, 0, 0, c.getAlignmentY() );
+							xChildren[ i ] = new SizeRequirements( 0, 0, 0, c.getAlignmentX() );
+							yChildren[ i ] = new SizeRequirements( 0, 0, 0, c.getAlignmentY() );
 						}
 					}
-					xTotal = javax.swing.SizeRequirements.getAlignedSizeRequirements( xChildren );
-					yTotal = javax.swing.SizeRequirements.getTiledSizeRequirements( yChildren );
+					xTotal = SizeRequirements.getAlignedSizeRequirements( xChildren );
+					yTotal = SizeRequirements.getTiledSizeRequirements( yChildren );
 				}
 			}
 		}
 
 		@Override
-		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
+		public Dimension minimumLayoutSize( Container parent ) {
 			this.ensureSizeRequirementsUpToDate( parent );
-			java.awt.Insets insets = parent.getInsets();
+			Insets insets = parent.getInsets();
 
-			return new java.awt.Dimension( this.xTotal.minimum + insets.left + insets.right + INDENT + xChildren[ xChildren.length - 1 ].minimum, this.yTotal.minimum + insets.top + insets.bottom );
+			return new Dimension( this.xTotal.minimum + insets.left + insets.right + INDENT + xChildren[ xChildren.length - 1 ].minimum, this.yTotal.minimum + insets.top + insets.bottom );
 		}
 
 		@Override
-		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+		public Dimension preferredLayoutSize( Container parent ) {
 			this.ensureSizeRequirementsUpToDate( parent );
-			java.awt.Insets insets = parent.getInsets();
-			return new java.awt.Dimension( this.xTotal.preferred + insets.left + insets.right + INDENT + xChildren[ xChildren.length - 1 ].preferred, this.yTotal.preferred + insets.top + insets.bottom );
+			Insets insets = parent.getInsets();
+			return new Dimension( this.xTotal.preferred + insets.left + insets.right + INDENT + xChildren[ xChildren.length - 1 ].preferred, this.yTotal.preferred + insets.top + insets.bottom );
 		}
 
 		@Override
-		public java.awt.Dimension maximumLayoutSize( java.awt.Container parent ) {
+		public Dimension maximumLayoutSize( Container parent ) {
 			this.ensureSizeRequirementsUpToDate( parent );
-			java.awt.Insets insets = parent.getInsets();
-			return new java.awt.Dimension( this.xTotal.maximum + insets.left + insets.right + INDENT + xChildren[ xChildren.length - 1 ].maximum, this.yTotal.maximum + insets.top + insets.bottom );
+			Insets insets = parent.getInsets();
+			return new Dimension( this.xTotal.maximum + insets.left + insets.right + INDENT + xChildren[ xChildren.length - 1 ].maximum, this.yTotal.maximum + insets.top + insets.bottom );
 		}
 
 		@Override
-		public void layoutContainer( java.awt.Container parent ) {
+		public void layoutContainer( Container parent ) {
 			int nChildren = parent.getComponentCount();
 			int[] xOffsets = new int[ nChildren ];
 			int[] xSpans = new int[ nChildren ];
 			int[] yOffsets = new int[ nChildren ];
 			int[] ySpans = new int[ nChildren ];
 
-			java.awt.Dimension size = parent.getSize();
-			java.awt.Insets insets = parent.getInsets();
+			Dimension size = parent.getSize();
+			Insets insets = parent.getInsets();
 
-			java.awt.Dimension availableSpace = new java.awt.Dimension( size );
+			Dimension availableSpace = new Dimension( size );
 			availableSpace.width -= insets.left + insets.right;
 			availableSpace.height -= insets.top + insets.bottom;
 
 			synchronized( this ) {
 				this.ensureSizeRequirementsUpToDate( parent );
-				javax.swing.SizeRequirements.calculateAlignedPositions( availableSpace.width, xTotal, xChildren, xOffsets, xSpans, true );
-				javax.swing.SizeRequirements.calculateTiledPositions( availableSpace.height, yTotal, yChildren, yOffsets, ySpans );
+				SizeRequirements.calculateAlignedPositions( availableSpace.width, xTotal, xChildren, xOffsets, xSpans, true );
+				SizeRequirements.calculateTiledPositions( availableSpace.height, yTotal, yChildren, yOffsets, ySpans );
 			}
 
 			for( int i = 0; i < nChildren; i++ ) {
-				java.awt.Component c = parent.getComponent( i );
+				Component c = parent.getComponent( i );
 				int x = insets.left + xOffsets[ i ];
 				int y = insets.top + yOffsets[ i ];
 				if( i > 0 ) {
@@ -153,26 +207,26 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 				c.setBounds( x, y, xSpans[ i ], ySpans[ i ] );
 			}
 
-			java.awt.Rectangle boundsI = new java.awt.Rectangle();
+			Rectangle boundsI = new Rectangle();
 			int indexOfFirstComponentThatFails = -1;
 			int indexOfSelectedComponent = -1;
 			for( int i = 0; i < ( nChildren - 1 ); i++ ) {
-				java.awt.Component c = parent.getComponent( i );
+				Component c = parent.getComponent( i );
 				if( indexOfFirstComponentThatFails == -1 ) {
 					c.getBounds( boundsI );
 					if( ( boundsI.y + boundsI.height ) >= ( size.height - insets.bottom ) ) {
 						indexOfFirstComponentThatFails = i;
 					}
 				}
-				if( c instanceof javax.swing.AbstractButton ) {
-					javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+				if( c instanceof AbstractButton ) {
+					AbstractButton button = (AbstractButton)c;
 					if( button.isSelected() ) {
 						indexOfSelectedComponent = i;
 					}
 				}
 			}
 
-			java.awt.Component lastComponent = parent.getComponent( nChildren - 1 );
+			Component lastComponent = parent.getComponent( nChildren - 1 );
 			if( indexOfFirstComponentThatFails != -1 ) {
 				if( indexOfFirstComponentThatFails > 0 ) {
 					for( int i = indexOfFirstComponentThatFails - 1; i < ( nChildren - 1 ); i++ ) {
@@ -183,9 +237,9 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 						}
 					}
 					int i = indexOfFirstComponentThatFails - 1;
-					java.awt.Point p = parent.getComponent( i ).getLocation();
+					Point p = parent.getComponent( i ).getLocation();
 					if( indexOfSelectedComponent >= i ) {
-						java.awt.Component c = parent.getComponent( indexOfSelectedComponent );
+						Component c = parent.getComponent( indexOfSelectedComponent );
 						c.setLocation( p );
 						p.x += c.getWidth();
 					}
@@ -197,61 +251,61 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 		}
 
 		@Override
-		public float getLayoutAlignmentX( java.awt.Container target ) {
+		public float getLayoutAlignmentX( Container target ) {
 			this.ensureSizeRequirementsUpToDate( target );
 			return this.xTotal.alignment;
 		}
 
 		@Override
-		public float getLayoutAlignmentY( java.awt.Container target ) {
+		public float getLayoutAlignmentY( Container target ) {
 			this.ensureSizeRequirementsUpToDate( target );
 			return this.yTotal.alignment;
 		}
 
-		private javax.swing.SizeRequirements[] xChildren;
-		private javax.swing.SizeRequirements[] yChildren;
-		private javax.swing.SizeRequirements xTotal;
-		private javax.swing.SizeRequirements yTotal;
+		private SizeRequirements[] xChildren;
+		private SizeRequirements[] yChildren;
+		private SizeRequirements xTotal;
+		private SizeRequirements yTotal;
 	}
 
-	private static final class InternalButton extends org.lgna.croquet.views.SwingComponentView<javax.swing.AbstractButton> {
-		private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
-		private final javax.swing.Action action = new javax.swing.AbstractAction() {
+	private static final class InternalButton extends SwingComponentView<AbstractButton> {
+		private final InstanceFactory instanceFactory;
+		private final Action action = new AbstractAction() {
 			@Override
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().setValueTransactionlessly( InternalButton.this.instanceFactory );
+			public void actionPerformed( ActionEvent e ) {
+				IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().setValueTransactionlessly( InternalButton.this.instanceFactory );
 			}
 
 		};
 
-		private final edu.cmu.cs.dennisc.java.awt.event.AltTriggerMouseAdapter altTriggerMouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.AltTriggerMouseAdapter() {
+		private final AltTriggerMouseAdapter altTriggerMouseAdapter = new AltTriggerMouseAdapter() {
 			@Override
-			protected void altTriggered( java.awt.event.MouseEvent e ) {
+			protected void altTriggered( MouseEvent e ) {
 				InternalButton.this.handleAltTriggered( e );
 			}
 		};
 
-		public InternalButton( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+		public InternalButton( InstanceFactory instanceFactory ) {
 			this.instanceFactory = instanceFactory;
 		}
 
 		@Override
-		protected javax.swing.AbstractButton createAwtComponent() {
-			javax.swing.JRadioButton rv = new javax.swing.JRadioButton( this.action ) {
+		protected AbstractButton createAwtComponent() {
+			JRadioButton rv = new JRadioButton( this.action ) {
 				@Override
-				protected void paintComponent( java.awt.Graphics g ) {
+				protected void paintComponent( Graphics g ) {
 					//note: do not invoke super
 					//super.paintComponent( g );
 				}
 
 				@Override
-				protected void paintChildren( java.awt.Graphics g ) {
+				protected void paintChildren( Graphics g ) {
 					//todo: better indication of selection/rollover
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					Graphics2D g2 = (Graphics2D)g;
 
-					java.awt.Composite prevComposite = g2.getComposite();
+					Composite prevComposite = g2.getComposite();
 
-					java.awt.Composite nextComposite = prevComposite;
+					Composite nextComposite = prevComposite;
 					float alpha;
 					if( model.isSelected() ) {
 						if( model.isRollover() ) {
@@ -267,7 +321,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 							alpha = 0.25f;
 						}
 					}
-					nextComposite = java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, alpha );
+					nextComposite = AlphaComposite.getInstance( AlphaComposite.SRC_OVER, alpha );
 
 					g2.setComposite( nextComposite );
 					try {
@@ -279,14 +333,14 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 			};
 			rv.setOpaque( false );
 
-			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
-			org.lgna.project.ast.Expression expression = this.instanceFactory.createTransientExpression();
-			rv.add( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent() );
+			rv.setLayout( new BoxLayout( rv, BoxLayout.LINE_AXIS ) );
+			Expression expression = this.instanceFactory.createTransientExpression();
+			rv.add( PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent() );
 			return rv;
 		}
 
-		protected void handleAltTriggered( java.awt.event.MouseEvent e ) {
-			org.alice.stageide.oneshot.OneShotMenuModel.getInstance( this.instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
+		protected void handleAltTriggered( MouseEvent e ) {
+			OneShotMenuModel.getInstance( this.instanceFactory ).getPopupPrepModel().fire( MouseEventTrigger.createUserActivity( e ) );
 		}
 
 		@Override
@@ -302,13 +356,13 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 		}
 	}
 
-	private static final class InternalPanel extends org.lgna.croquet.views.Panel {
+	private static final class InternalPanel extends Panel {
 		public InternalPanel() {
 			this.setBackgroundColor( null );
-			this.dropDown = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getCascadeRoot().getPopupPrepModel().createPopupButton();
+			this.dropDown = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getCascadeRoot().getPopupPrepModel().createPopupButton();
 		}
 
-		private InternalButton getButtonFor( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+		private InternalButton getButtonFor( InstanceFactory instanceFactory ) {
 			InternalButton rv = map.get( instanceFactory );
 			if( rv != null ) {
 				//pass
@@ -320,7 +374,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 		}
 
 		@Override
-		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		protected LayoutManager createLayoutManager( JPanel jPanel ) {
 			return new InstanceFactoryLayout();
 		}
 
@@ -328,16 +382,16 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 		protected void internalRefresh() {
 			super.internalRefresh();
 			this.removeAllComponents();
-			java.util.List<InternalButton> buttons = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			buttons.add( getButtonFor( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ) );
-			org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
-			org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
-			org.lgna.project.ast.NamedUserType sceneType = ide.getSceneType();
+			List<InternalButton> buttons = Lists.newLinkedList();
+			buttons.add( getButtonFor( ThisInstanceFactory.getInstance() ) );
+			StageIDE ide = StageIDE.getActiveInstance();
+			ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
+			NamedUserType sceneType = ide.getSceneType();
 			if( sceneType != null ) {
-				for( org.lgna.project.ast.UserField field : sceneType.fields ) {
-					if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+				for( UserField field : sceneType.fields ) {
+					if( field.managementLevel.getValue() == ManagementLevel.MANAGED ) {
 						if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-							buttons.add( getButtonFor( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) ) );
+							buttons.add( getButtonFor( ThisFieldAccessFactory.getInstance( field ) ) );
 						}
 					}
 				}
@@ -348,10 +402,10 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 			}
 
 			this.internalAddComponent( this.dropDown );
-			this.setSelected( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue() );
+			this.setSelected( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue() );
 		}
 
-		private void setSelected( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+		private void setSelected( InstanceFactory instanceFactory ) {
 			InternalButton button;
 			if( instanceFactory != null ) {
 				button = this.map.get( instanceFactory );
@@ -361,29 +415,29 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 			if( button != null ) {
 				this.buttonGroup.setSelected( button.getAwtComponent().getModel(), true );
 			} else {
-				javax.swing.ButtonModel buttonModel = this.buttonGroup.getSelection();
+				ButtonModel buttonModel = this.buttonGroup.getSelection();
 				if( buttonModel != null ) {
 					this.buttonGroup.setSelected( buttonModel, false );
 				}
 			}
 		}
 
-		private final javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-		private final java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InternalButton> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		private final org.lgna.croquet.views.PopupButton dropDown;
+		private final ButtonGroup buttonGroup = new ButtonGroup();
+		private final Map<InstanceFactory, InternalButton> map = Maps.newHashMap();
+		private final PopupButton dropDown;
 	}
 
 	public InstanceFactorySelectionPanel() {
-		super( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState(), new InternalPanel() );
+		super( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState(), new InternalPanel() );
 		this.setBackgroundColor( null );
 		this.getAwtComponent().setOpaque( false );
 	}
 
-	public org.lgna.project.ast.UserType getType() {
+	public UserType getType() {
 		return this.type;
 	}
 
-	public void setType( org.lgna.project.ast.UserType type ) {
+	public void setType( UserType type ) {
 		if( this.type != type ) {
 			if( this.type != null ) {
 				this.type.fields.removeListPropertyListener( this.fieldsListener );
@@ -408,21 +462,21 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 		super.handleUndisplayable();
 	}
 
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactoryListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+	private final ValueListener<InstanceFactory> instanceFactoryListener = new ValueListener<InstanceFactory>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
+		public void valueChanged( ValueEvent<InstanceFactory> e ) {
 			InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
 		}
 	};
 
-	private org.lgna.project.ast.UserType type;
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserField> fieldsListener = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<org.lgna.project.ast.UserField>() {
+	private UserType type;
+	private ListPropertyListener<UserField> fieldsListener = new SimplifiedListPropertyAdapter<UserField>() {
 		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserField> e ) {
+		protected void changing( ListPropertyEvent<UserField> e ) {
 		}
 
 		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserField> e ) {
+		protected void changed( ListPropertyEvent<UserField> e ) {
 			InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
 		}
 	};

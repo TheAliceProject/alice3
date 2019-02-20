@@ -43,15 +43,17 @@
 
 package org.lgna.croquet.views;
 
+import javax.swing.SwingConstants;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum HorizontalAlignment {
-	LEFT( javax.swing.SwingConstants.LEFT ),
-	CENTER( javax.swing.SwingConstants.CENTER ),
-	RIGHT( javax.swing.SwingConstants.RIGHT ),
-	LEADING( javax.swing.SwingConstants.LEADING ),
-	TRAILING( javax.swing.SwingConstants.TRAILING );
+	LEFT( SwingConstants.LEFT ),
+	CENTER( SwingConstants.CENTER ),
+	RIGHT( SwingConstants.RIGHT ),
+	LEADING( SwingConstants.LEADING ),
+	TRAILING( SwingConstants.TRAILING );
 	private int internal;
 
 	private HorizontalAlignment( int internal ) {

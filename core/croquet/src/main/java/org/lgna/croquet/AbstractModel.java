@@ -43,16 +43,23 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.views.ComponentManager;
+import org.lgna.croquet.views.SwingComponentView;
+
+import javax.swing.Action;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractModel extends AbstractElement implements Model {
-	private static int getMnemonicKey( javax.swing.Action action ) {
-		Object rv = action.getValue( javax.swing.Action.MNEMONIC_KEY );
+	private static int getMnemonicKey( Action action ) {
+		Object rv = action.getValue( Action.MNEMONIC_KEY );
 		return rv != null ? Integer.class.cast( rv ) : 0;
 	}
 
-	protected static void safeSetNameAndMnemonic( javax.swing.Action action, String nextName, int nextMnemonicKey ) {
+	protected static void safeSetNameAndMnemonic( Action action, String nextName, int nextMnemonicKey ) {
 		int index;
 		if( nextMnemonicKey != 0 ) {
 			char mnemonicChar = (char)nextMnemonicKey;
@@ -76,39 +83,31 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		}
 
 		int prevMnemonicKey = getMnemonicKey( action );
-		if( prevMnemonicKey != 0 ) {
-			action.putValue( javax.swing.Action.MNEMONIC_KEY, 0 );
+		if( prevMnemonicKey != 0 ) { // True if locale was just changed
+			action.putValue( Action.MNEMONIC_KEY, 0 );
 		}
-		action.putValue( javax.swing.Action.NAME, nextName );
+		action.putValue( Action.NAME, nextName );
 		if( index != -1 ) {
-			action.putValue( javax.swing.Action.MNEMONIC_KEY, nextMnemonicKey );
+			action.putValue( Action.MNEMONIC_KEY, nextMnemonicKey );
 		}
 	}
 
-	private final java.util.List<ContextFactory<?>> contextFactories = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-
-	//TODO: contemplate passing context factories on construction
-	public AbstractModel( java.util.UUID id/* , ContextFactory<?>... contextFactories */) {
+	protected AbstractModel( UUID id ) {
 		super( id );
+		this.migrationId = id;
+	}
+
+	private final UUID migrationId;
+
+	@Override
+	public UUID getMigrationId() {
+		return this.migrationId;
 	}
 
 	@Override
-	public Iterable<ContextFactory<?>> getContextFactories() {
-		return this.contextFactories;
+	public final void relocalize() {
+		this.localize();
 	}
-
-	public void addContextFactory( ContextFactory<?> contextFactory ) {
-		assert contextFactory != null : this;
-		this.contextFactories.add( contextFactory );
-	}
-
-	public void removeContextFactory( ContextFactory<?> contextFactory ) {
-		assert contextFactory != null : this;
-		this.contextFactories.remove( contextFactory );
-	}
-
-	@Override
-	public abstract org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
 
 	private boolean isEnabled = true;
 
@@ -121,8 +120,8 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 	public void setEnabled( boolean isEnabled ) {
 		if( this.isEnabled != isEnabled ) {
 			this.isEnabled = isEnabled;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: override setEnabled", this, isEnabled );
-			for( org.lgna.croquet.views.SwingComponentView<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
+			Logger.outln( "todo: override setEnabled", this, isEnabled );
+			for( SwingComponentView<?> component : ComponentManager.getComponents( this ) ) {
 				component.getAwtComponent().setEnabled( this.isEnabled );
 			}
 		}

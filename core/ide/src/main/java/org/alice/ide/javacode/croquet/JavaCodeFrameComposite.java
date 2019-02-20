@@ -42,10 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.javacode.croquet;
 
+import org.alice.ide.IDE;
+import org.alice.ide.MetaDeclarationFauxState;
+import org.alice.ide.javacode.croquet.views.JavaCodeView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.FrameCompositeWithInternalIsShowingState;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Panel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.project.ast.AbstractDeclaration;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JavaCodeFrameComposite extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<org.lgna.croquet.views.Panel> {
+public class JavaCodeFrameComposite extends FrameCompositeWithInternalIsShowingState<Panel> {
 	private static class SingletonHolder {
 		private static JavaCodeFrameComposite instance = new JavaCodeFrameComposite();
 	}
@@ -55,17 +67,17 @@ public class JavaCodeFrameComposite extends org.lgna.croquet.FrameCompositeWithI
 	}
 
 	private JavaCodeFrameComposite() {
-		super( java.util.UUID.fromString( "7015e117-22dd-49a1-a194-55d5fe17f821" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
+		super( UUID.fromString( "7015e117-22dd-49a1-a194-55d5fe17f821" ), Application.DOCUMENT_UI_GROUP );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
-		return new org.lgna.croquet.views.ScrollPane();
+	protected ScrollPane createScrollPaneIfDesired() {
+		return new ScrollPane();
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		return new org.lgna.croquet.views.BorderPanel.Builder()
+	protected Panel createView() {
+		return new BorderPanel.Builder()
 				//.center( this.stringValue.createImmutableEditorPane( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED ) )
 				.center( this.javaCodeView )
 				.build();
@@ -78,23 +90,23 @@ public class JavaCodeFrameComposite extends org.lgna.croquet.FrameCompositeWithI
 
 	@Override
 	public void handlePreActivation() {
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().addAndInvokeValueListener( this.declarationListener );
+		IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().addAndInvokeValueListener( this.declarationListener );
 		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
 		super.handlePostDeactivation();
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().removeValueListener( this.declarationListener );
+		IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().removeValueListener( this.declarationListener );
 	}
 
-	private final org.alice.ide.MetaDeclarationFauxState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationFauxState.ValueListener() {
+	private final MetaDeclarationFauxState.ValueListener declarationListener = new MetaDeclarationFauxState.ValueListener() {
 		@Override
-		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
+		public void changed( AbstractDeclaration prevValue, AbstractDeclaration nextValue ) {
 			javaCodeView.setDeclaration( nextValue );
 		}
 	};
 
-	private final org.alice.ide.javacode.croquet.views.JavaCodeView javaCodeView = new org.alice.ide.javacode.croquet.views.JavaCodeView();
+	private final JavaCodeView javaCodeView = new JavaCodeView();
 
 }

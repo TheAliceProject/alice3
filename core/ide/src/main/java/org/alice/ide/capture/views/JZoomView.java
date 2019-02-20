@@ -44,31 +44,42 @@ package org.alice.ide.capture.views;
 
 import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
 
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
 import javax.swing.JRootPane;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 
 /**
  * @author Dennis Cosgrove
  */
-public class JZoomView extends javax.swing.JComponent {
-	private static final java.awt.Dimension SIZE = new java.awt.Dimension( 192, 192 );
-	private java.awt.event.MouseEvent e;
+public class JZoomView extends JComponent {
+	private static final Dimension SIZE = new Dimension( 192, 192 );
+	private MouseEvent e;
 
 	public JZoomView() {
-		this.setBorder( javax.swing.BorderFactory.createMatteBorder( 4, 4, 4, 4, java.awt.Color.WHITE ) );
+		this.setBorder( BorderFactory.createMatteBorder( 4, 4, 4, 4, Color.WHITE ) );
 	}
 
 	@Override
-	public java.awt.Dimension getPreferredSize() {
+	public Dimension getPreferredSize() {
 		return SIZE;
 	}
 
-	public java.awt.event.MouseEvent getMouseEvent() {
+	public MouseEvent getMouseEvent() {
 		return this.e;
 	}
 
-	private void printSubComponent( java.awt.Graphics2D g2, java.awt.Component awtComponent ) {
-		java.awt.geom.AffineTransform m = g2.getTransform();
+	private void printSubComponent( Graphics2D g2, Component awtComponent ) {
+		AffineTransform m = g2.getTransform();
 		g2.scale( 4.0, 4.0 );
 		g2.translate( awtComponent.getX(), awtComponent.getY() );
 		//todo: map point?
@@ -86,22 +97,22 @@ public class JZoomView extends javax.swing.JComponent {
 	}
 
 	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
+	protected void paintComponent( Graphics g ) {
 		JRootPane jRootPane = getEventRootPane();
 		if( jRootPane != null ) {
-			java.awt.Component c = e.getComponent();
-			javax.swing.JMenuBar jMenuBar = jRootPane.getJMenuBar();
-			java.awt.Container jContentPane = jRootPane.getContentPane();
+			Component c = e.getComponent();
+			JMenuBar jMenuBar = jRootPane.getJMenuBar();
+			Container jContentPane = jRootPane.getContentPane();
 
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+			Graphics2D g2 = (Graphics2D) g;
 
 			int xCenter = SIZE.width / 2;
 			int yCenter = SIZE.height / 2;
 			printSubComponent( g2, jMenuBar );
 			printSubComponent( g2, jContentPane );
 
-			g2.setXORMode( java.awt.Color.WHITE );
-			g2.setColor( java.awt.Color.BLACK );
+			g2.setXORMode( Color.WHITE );
+			g2.setColor( Color.BLACK );
 			g2.fillRect( 0, yCenter, c.getWidth(), 1 );
 			g2.fillRect( xCenter, 0, 1, c.getHeight() );
 			g2.setPaintMode();
@@ -120,7 +131,7 @@ public class JZoomView extends javax.swing.JComponent {
 		return null;
 	}
 
-	public void handleMouseMovedOrDragged( java.awt.event.MouseEvent e ) {
+	public void handleMouseMovedOrDragged( MouseEvent e ) {
 		this.e = e;
 		this.repaint();
 	}

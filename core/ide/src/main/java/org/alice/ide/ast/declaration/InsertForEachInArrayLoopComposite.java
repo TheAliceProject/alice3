@@ -42,33 +42,43 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ForEachInArrayLoop;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class InsertForEachInArrayLoopComposite extends InsertEachInArrayComposite<org.lgna.project.ast.ForEachInArrayLoop> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertForEachInArrayLoopComposite> mapEnveloping = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertForEachInArrayLoopComposite> mapInsert = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public final class InsertForEachInArrayLoopComposite extends InsertEachInArrayComposite<ForEachInArrayLoop> {
+	private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertForEachInArrayLoopComposite> mapEnveloping = Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertForEachInArrayLoopComposite> mapInsert = Maps.newInitializingIfAbsentHashMap();
 
-	public static synchronized InsertForEachInArrayLoopComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, final boolean isEnveloping ) {
-		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertForEachInArrayLoopComposite> map = isEnveloping ? mapEnveloping : mapInsert;
-		return map.getInitializingIfAbsent( blockStatementIndexPair, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertForEachInArrayLoopComposite>() {
+	public static synchronized InsertForEachInArrayLoopComposite getInstance( BlockStatementIndexPair blockStatementIndexPair, final boolean isEnveloping ) {
+		InitializingIfAbsentMap<BlockStatementIndexPair, InsertForEachInArrayLoopComposite> map = isEnveloping ? mapEnveloping : mapInsert;
+		return map.getInitializingIfAbsent( blockStatementIndexPair, new InitializingIfAbsentMap.Initializer<BlockStatementIndexPair, InsertForEachInArrayLoopComposite>() {
 			@Override
-			public InsertForEachInArrayLoopComposite initialize( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+			public InsertForEachInArrayLoopComposite initialize( BlockStatementIndexPair blockStatementIndexPair ) {
 				return new InsertForEachInArrayLoopComposite( blockStatementIndexPair, isEnveloping );
 			}
 		} );
 	}
 
-	private InsertForEachInArrayLoopComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( java.util.UUID.fromString( "4341639b-4123-419a-b06f-16987fb7d356" ), blockStatementIndexPair, isEnveloping );
+	private InsertForEachInArrayLoopComposite( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		super( UUID.fromString( "4341639b-4123-419a-b06f-16987fb7d356" ), blockStatementIndexPair, isEnveloping );
 	}
 
 	@Override
-	protected org.lgna.project.ast.ForEachInArrayLoop createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
-		return new org.lgna.project.ast.ForEachInArrayLoop(
+	protected ForEachInArrayLoop createStatement( UserLocal item, Expression initializer ) {
+		return new ForEachInArrayLoop(
 				item,
 				initializer,
-				new org.lgna.project.ast.BlockStatement() );
+				new BlockStatement() );
 	}
 
 	public final ErrorStatus EPIC_HACK_externalErrorStatus = this.createErrorStatus( "EPIC_HACK_externalErrorStatus" );

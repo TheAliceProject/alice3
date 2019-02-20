@@ -42,10 +42,12 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import javax.swing.JRootPane;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RootPane extends SwingComponentView<javax.swing.JRootPane> {
+public class RootPane extends SwingComponentView<JRootPane> {
 	private final AbstractWindow<?> window;
 
 	private final LayeredPane layeredPane;
@@ -60,7 +62,7 @@ public class RootPane extends SwingComponentView<javax.swing.JRootPane> {
 	}
 
 	@Override
-	protected javax.swing.JRootPane createAwtComponent() {
+	protected JRootPane createAwtComponent() {
 		return this.window.getJRootPane();
 	}
 

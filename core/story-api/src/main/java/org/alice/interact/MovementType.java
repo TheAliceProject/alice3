@@ -53,35 +53,9 @@ import edu.cmu.cs.dennisc.scenegraph.StandIn;
  * @author David Culyba
  */
 public enum MovementType {
-	STOOD_UP( 0 ),
-	LOCAL( 1 ),
-	ABSOLUTE( 2 );
-
-	public static MovementType getMovementTypeForIndex( int index ) {
-		MovementType[] types = MovementType.values();
-		for( MovementType currentType : types ) {
-			if( currentType.isIndex( index ) ) {
-				return currentType;
-			}
-		}
-		return null;
-	}
-
-	private MovementType( int index ) {
-		this.index = index;
-	}
-
-	public int getIndex() {
-		return this.index;
-	}
-
-	public boolean isIndex( int index ) {
-		return ( this.index == index );
-	}
-
-	public void applyTranslation( AbstractTransformable transformable, Point3 translateAmount ) {
-		switch( this ) {
-		case STOOD_UP: {
+	STOOD_UP() {
+		@Override
+		public void applyTranslation( AbstractTransformable transformable, Point3 translateAmount ) {
 			StandIn standIn = new StandIn();
 			standIn.setVehicle( transformable );
 			try {
@@ -90,22 +64,9 @@ public enum MovementType {
 			} finally {
 				standIn.setVehicle( null );
 			}
-			break;
 		}
-		case LOCAL: {
-			transformable.applyTranslation( translateAmount, transformable );
-			break;
-		}
-		case ABSOLUTE: {
-			transformable.applyTranslation( translateAmount, AsSeenBy.SCENE );
-			break;
-		}
-		}
-	}
-
-	public void applyRotation( AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation ) {
-		switch( this ) {
-		case STOOD_UP: {
+		@Override
+		public void applyRotation( AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation ) {
 			StandIn standIn = new StandIn();
 			standIn.setVehicle( transformable );
 			try {
@@ -114,18 +75,36 @@ public enum MovementType {
 			} finally {
 				standIn.setVehicle( null );
 			}
-			break;
 		}
-		case LOCAL: {
-			transformable.applyRotationAboutArbitraryAxis( rotationAxis, rotation, transformable );
-			break;
-		}
-		case ABSOLUTE: {
-			transformable.applyRotationAboutArbitraryAxis( rotationAxis, rotation, AsSeenBy.SCENE );
-			break;
-		}
-		}
-	}
 
-	private final int index;
+	},
+	LOCAL() {
+		@Override
+		public void applyTranslation( AbstractTransformable transformable, Point3 translateAmount ) {
+			transformable.applyTranslation( translateAmount, transformable );
+		}
+
+		@Override
+		public void applyRotation( AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation ) {
+			transformable.applyRotationAboutArbitraryAxis( rotationAxis, rotation, transformable );
+		}
+
+	},
+	ABSOLUTE() {
+		@Override
+		public void applyTranslation( AbstractTransformable transformable, Point3 translateAmount ) {
+			transformable.applyTranslation( translateAmount, AsSeenBy.SCENE );
+		}
+
+		@Override
+		public void applyRotation( AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation ) {
+			transformable.applyRotationAboutArbitraryAxis( rotationAxis, rotation, AsSeenBy.SCENE );
+		}
+
+	};
+
+	public abstract void applyTranslation( AbstractTransformable transformable, Point3 translateAmount );
+
+	public abstract void applyRotation( AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation );
+
 }

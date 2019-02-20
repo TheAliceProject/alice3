@@ -42,42 +42,54 @@
  *******************************************************************************/
 package org.alice.ide.ast.components;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.property.StringProperty;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.AliceFormatter;
+import org.alice.ide.formatter.Formatter;
+import org.lgna.croquet.views.Label;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractMethodContainedByUserField;
+import org.lgna.project.ast.Declaration;
+
+import java.awt.Color;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationNameLabel extends org.lgna.croquet.views.Label {
-	private org.lgna.project.ast.AbstractDeclaration declaration;
+public class DeclarationNameLabel extends Label {
+	private AbstractDeclaration declaration;
 
-	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
+	private class NamePropertyAdapter implements PropertyListener {
 		@Override
-		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		public void propertyChanging( PropertyEvent e ) {
 		}
 
 		@Override
-		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		public void propertyChanged( PropertyEvent e ) {
 			DeclarationNameLabel.this.updateText();
 		}
 	}
 
 	private NamePropertyAdapter namePropertyAdapter = new NamePropertyAdapter();
 
-	public DeclarationNameLabel( org.lgna.project.ast.AbstractDeclaration declaration ) {
+	public DeclarationNameLabel( AbstractDeclaration declaration ) {
 		this.declaration = declaration;
 		this.updateText();
-		this.setForegroundColor( java.awt.Color.BLACK );
+		this.setForegroundColor( Color.BLACK );
 	}
 
-	public DeclarationNameLabel( org.lgna.project.ast.AbstractDeclaration declaration, float fontScaleFactor ) {
+	public DeclarationNameLabel( AbstractDeclaration declaration, float fontScaleFactor ) {
 		this( declaration );
 		this.scaleFont( fontScaleFactor );
 	}
 
-	private edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExistsForListening() {
-		org.lgna.project.ast.Declaration declarationForNameProperty;
-		if( this.declaration instanceof org.lgna.project.ast.AbstractMethodContainedByUserField ) {
-			org.lgna.project.ast.AbstractMethodContainedByUserField methodContainedByUserField = (org.lgna.project.ast.AbstractMethodContainedByUserField)this.declaration;
+	private StringProperty getNamePropertyIfItExistsForListening() {
+		Declaration declarationForNameProperty;
+		if( this.declaration instanceof AbstractMethodContainedByUserField ) {
+			AbstractMethodContainedByUserField methodContainedByUserField = (AbstractMethodContainedByUserField)this.declaration;
 			declarationForNameProperty = methodContainedByUserField.getField();
 		} else {
 			declarationForNameProperty = this.declaration;
@@ -89,7 +101,7 @@ public class DeclarationNameLabel extends org.lgna.croquet.views.Label {
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		if( this.declaration != null ) {
-			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExistsForListening();
+			StringProperty nameProperty = this.getNamePropertyIfItExistsForListening();
 			if( nameProperty != null ) {
 				nameProperty.addPropertyListener( this.namePropertyAdapter );
 				this.updateText();
@@ -100,7 +112,7 @@ public class DeclarationNameLabel extends org.lgna.croquet.views.Label {
 	@Override
 	protected void handleUndisplayable() {
 		if( this.declaration != null ) {
-			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExistsForListening();
+			StringProperty nameProperty = this.getNamePropertyIfItExistsForListening();
 			if( nameProperty != null ) {
 				nameProperty.removePropertyListener( this.namePropertyAdapter );
 			}
@@ -108,17 +120,17 @@ public class DeclarationNameLabel extends org.lgna.croquet.views.Label {
 		super.handleUndisplayable();
 	}
 
-	protected org.lgna.project.ast.AbstractDeclaration getDeclaration() {
+	protected AbstractDeclaration getDeclaration() {
 		return this.declaration;
 	}
 
 	protected String getNameText() {
-		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
+		Formatter formatter = FormatterState.getInstance().getValue();
 		return formatter.getNameForDeclaration( this.declaration );
 	}
 
 	protected String getTextForNullName() {
-		return org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getTextForNull();
+		return FormatterState.getInstance().getValue().getTextForNull();
 	}
 
 	protected final String getTextForBlankName() {
@@ -143,7 +155,7 @@ public class DeclarationNameLabel extends org.lgna.croquet.views.Label {
 		} else {
 			text = this.getTextForBlankName();
 		}
-		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.getText(), text ) ) {
+		if( Objects.equals( this.getText(), text ) ) {
 			//pass
 		} else {
 			this.setText( text );

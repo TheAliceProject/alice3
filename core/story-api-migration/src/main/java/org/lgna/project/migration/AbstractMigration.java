@@ -42,25 +42,27 @@
  *******************************************************************************/
 package org.lgna.project.migration;
 
+import org.lgna.project.Version;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMigration implements Migration {
-	private final org.lgna.project.Version minimumVersion;
-	private final org.lgna.project.Version resultVersion;
+	private final Version minimumVersion;
+	private final Version resultVersion;
 
-	public AbstractMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+	public AbstractMigration( Version minimumVersion, Version resultVersion ) {
 		this.minimumVersion = minimumVersion;
 		this.resultVersion = resultVersion;
 	}
 
 	@Override
-	public org.lgna.project.Version getResultVersion() {
+	public Version getResultVersion() {
 		return this.resultVersion;
 	}
 
 	@Override
-	public boolean isApplicable( org.lgna.project.Version version ) {
+	public boolean isApplicable( Version version ) {
 		if( ( this.minimumVersion != null ) && ( this.resultVersion != null ) ) {
 			return ( this.minimumVersion.compareTo( version ) <= 0 ) && ( this.resultVersion.compareTo( version ) > 0 );
 		} else {

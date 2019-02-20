@@ -43,32 +43,48 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import edu.cmu.cs.dennisc.texture.CustomTexture;
+import edu.cmu.cs.dennisc.texture.Texture;
+import edu.cmu.cs.dennisc.texture.event.TextureEvent;
+import edu.cmu.cs.dennisc.texture.event.TextureListener;
+
+import java.awt.color.ColorSpace;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.awt.image.ComponentColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferByte;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
+import java.nio.ByteBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
-class Pixels implements edu.cmu.cs.dennisc.texture.event.TextureListener {
-	private static final java.awt.image.ComponentColorModel RGBA_COLOR_MODEL = new java.awt.image.ComponentColorModel(
-			java.awt.color.ColorSpace.getInstance( java.awt.color.ColorSpace.CS_sRGB ),
+class Pixels implements TextureListener {
+	private static final ComponentColorModel RGBA_COLOR_MODEL = new ComponentColorModel(
+			ColorSpace.getInstance( ColorSpace.CS_sRGB ),
 			new int[] { 8, 8, 8, 8 },
 			true,
 			false,
-			java.awt.image.ComponentColorModel.TRANSLUCENT,
-			java.awt.image.DataBuffer.TYPE_BYTE
+			ComponentColorModel.TRANSLUCENT,
+			DataBuffer.TYPE_BYTE
 			);
 
-	private edu.cmu.cs.dennisc.texture.Texture m_texture;
+	private Texture m_texture;
 
-	private java.awt.image.WritableRaster m_writableRaster = null;
-	private java.awt.image.BufferedImage m_bufferedImage = null;
-	private java.nio.ByteBuffer m_data = null;
+	private WritableRaster m_writableRaster = null;
+	private BufferedImage m_bufferedImage = null;
+	private ByteBuffer m_data = null;
 
-	public Pixels( edu.cmu.cs.dennisc.texture.Texture texture ) {
+	public Pixels( Texture texture ) {
 		m_texture = texture;
 		m_texture.addTextureListener( this );
 	}
 
 	@Override
-	public void textureChanged( edu.cmu.cs.dennisc.texture.event.TextureEvent textureEvent ) {
+	public void textureChanged( TextureEvent textureEvent ) {
 		if( ( m_texture != null ) && ( m_writableRaster != null ) && ( m_bufferedImage != null ) ) {
 			if( ( m_texture.getWidth() != m_bufferedImage.getWidth() ) || ( m_texture.getHeight() != m_bufferedImage.getHeight() ) ) {
 				touchImage();
@@ -104,38 +120,38 @@ class Pixels implements edu.cmu.cs.dennisc.texture.event.TextureListener {
 		return m_texture.getHeight();
 	}
 
-	private java.awt.image.BufferedImage getBufferedImage() {
+	private BufferedImage getBufferedImage() {
 		if( m_bufferedImage != null ) {
 			//pass
 		} else {
-			m_writableRaster = java.awt.image.Raster.createInterleavedRaster( java.awt.image.DataBuffer.TYPE_BYTE, getWidth(), getHeight(), 4, null );
-			m_bufferedImage = new java.awt.image.BufferedImage( RGBA_COLOR_MODEL, m_writableRaster, false, null );
+			m_writableRaster = Raster.createInterleavedRaster( DataBuffer.TYPE_BYTE, getWidth(), getHeight(), 4, null );
+			m_bufferedImage = new BufferedImage( RGBA_COLOR_MODEL, m_writableRaster, false, null );
 		}
 		return m_bufferedImage;
 	}
 
-	public java.nio.ByteBuffer getRGBA() {
+	public ByteBuffer getRGBA() {
 		if( m_data != null ) {
 			//pass
 		} else {
-			java.awt.image.BufferedImage bufferedImage = getBufferedImage();
+			BufferedImage bufferedImage = getBufferedImage();
 			if( bufferedImage != null ) {
 				java.awt.Graphics2D g = bufferedImage.createGraphics();
-				java.awt.geom.AffineTransform gt = new java.awt.geom.AffineTransform();
+				AffineTransform gt = new AffineTransform();
 				gt.translate( 0, bufferedImage.getHeight() );
 				gt.scale( 1.0, -1.0 );
 				g.transform( gt );
-				if( m_texture instanceof edu.cmu.cs.dennisc.texture.BufferedImageTexture ) {
-					edu.cmu.cs.dennisc.texture.BufferedImageTexture bufferedImageTexture = (edu.cmu.cs.dennisc.texture.BufferedImageTexture)m_texture;
+				if( m_texture instanceof BufferedImageTexture ) {
+					BufferedImageTexture bufferedImageTexture = (BufferedImageTexture)m_texture;
 					g.drawImage( bufferedImageTexture.getBufferedImage(), null, null );
-				} else if( m_texture instanceof edu.cmu.cs.dennisc.texture.CustomTexture ) {
-					edu.cmu.cs.dennisc.texture.CustomTexture customTexture = (edu.cmu.cs.dennisc.texture.CustomTexture)m_texture;
+				} else if( m_texture instanceof CustomTexture ) {
+					CustomTexture customTexture = (CustomTexture)m_texture;
 					customTexture.paint( g, bufferedImage.getWidth(), bufferedImage.getHeight() );
 				}
 				g.dispose();
-				java.awt.image.DataBufferByte dataBufferByte = (java.awt.image.DataBufferByte)m_writableRaster.getDataBuffer();
+				DataBufferByte dataBufferByte = (DataBufferByte)m_writableRaster.getDataBuffer();
 				byte[] data = dataBufferByte.getData();
-				m_data = java.nio.ByteBuffer.wrap( data );
+				m_data = ByteBuffer.wrap( data );
 			} else {
 				m_data = null;
 			}

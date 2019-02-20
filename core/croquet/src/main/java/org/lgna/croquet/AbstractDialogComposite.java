@@ -42,12 +42,25 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.awt.WindowUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.croquet.views.CompositeView;
+import org.lgna.croquet.views.Dialog;
+import org.lgna.croquet.views.ScreenElement;
+import org.lgna.croquet.views.ViewController;
+
+import java.awt.Point;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractWindowComposite<V> {
-	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "4e436a8e-cfbc-447c-8c80-bc488d318f5b" ), "DIALOG_IMPLEMENTATION_GROUP" );
-	protected static final org.lgna.croquet.history.Step.Key<org.lgna.croquet.views.Dialog> DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "AbstractDialogComposite.DIALOG_KEY" );
+public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> extends AbstractWindowComposite<V> {
+	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( UUID.fromString( "4e436a8e-cfbc-447c-8c80-bc488d318f5b" ), "DIALOG_IMPLEMENTATION_GROUP" );
 
 	protected static enum IsModal {
 		TRUE( true ),
@@ -61,104 +74,108 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.C
 
 	private final boolean isModal;
 	private String title;
+	protected Dialog dialog;
+	protected UserActivity openingActivity;
 
-	public AbstractDialogComposite( java.util.UUID migrationId, IsModal isModal ) {
+	public AbstractDialogComposite( UUID migrationId, IsModal isModal ) {
 		super( migrationId );
 		this.isModal = isModal.value;
 	}
 
-	protected void showDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.Application<?> application = org.lgna.croquet.Application.getActiveInstance();
-		org.lgna.croquet.DocumentFrame documentFrame = application.getDocumentFrame();
+	public UserActivity getOpeningActivity() {
+		return openingActivity;
+	}
 
-		org.lgna.croquet.views.AbstractWindow<?> window = documentFrame.peekWindow();
+	protected void showDialog( UserActivity userActivity ) {
+		openingActivity = userActivity;
+		Application<?> application = Application.getActiveInstance();
+		DocumentFrame documentFrame = application.getDocumentFrame();
 
-		org.lgna.croquet.views.ScreenElement owner;
+		AbstractWindow<?> window = documentFrame.peekWindow();
+
+		ScreenElement owner;
 		if( window != null ) {
 			owner = window;
 		} else {
-			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
-			org.lgna.croquet.views.ViewController<?, ?> viewController = trigger.getViewController();
+//			Trigger trigger = completionStep.getTrigger();
+			ViewController<?, ?> viewController = null; //trigger.getViewController();
 			if( viewController != null ) {
 				owner = viewController;
 			} else {
 				owner = documentFrame.getFrame().getContentPane();
 			}
 		}
-		final org.lgna.croquet.views.Dialog dialog = new org.lgna.croquet.views.Dialog( owner, this.isModal );
-		step.putEphemeralDataFor( DIALOG_KEY, dialog );
-		class DialogWindowListener implements java.awt.event.WindowListener {
+		dialog = new Dialog( owner, this.isModal );
+		class DialogWindowListener implements WindowListener {
 			@Override
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				handleDialogOpened( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
+			public void windowOpened( WindowEvent e ) {
+				handleDialogOpened();
 			}
 
 			@Override
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				if( isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) ) ) {
-					dialog.setVisible( false );
-				}
+			public void windowClosing( WindowEvent e ) {
+				dialog.setVisible( false );
 			}
 
 			@Override
-			public void windowClosed( java.awt.event.WindowEvent e ) {
-				handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
+			public void windowClosed( WindowEvent e ) {
+				handleDialogClosed();
 			}
 
 			@Override
-			public void windowActivated( java.awt.event.WindowEvent e ) {
+			public void windowActivated( WindowEvent e ) {
 			}
 
 			@Override
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
+			public void windowDeactivated( WindowEvent e ) {
 			}
 
 			@Override
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
+			public void windowDeiconified( WindowEvent e ) {
 			}
 
 			@Override
-			public void windowIconified( java.awt.event.WindowEvent e ) {
+			public void windowIconified( WindowEvent e ) {
 			}
 		}
 		DialogWindowListener dialogWindowListener = new DialogWindowListener();
 		dialog.addWindowListener( dialogWindowListener );
-		org.lgna.croquet.views.CompositeView<?, ?> view = this.allocateView( step );
+		CompositeView<?, ?> view = this.allocateView();
 		try {
 			dialog.getAwtComponent().setContentPane( view.getAwtComponent() );
 			this.updateWindowSize( dialog );
 			if( window != null ) {
 				final int OFFSET = 32;
-				java.awt.Point p = window.getLocation();
+				Point p = window.getLocation();
 				dialog.setLocation( p.x + OFFSET, p.y + OFFSET );
 				//dialog.getAwtComponent().setLocationRelativeTo( ownerDialog.getAwtComponent() );
 			} else {
-				java.awt.Point location = this.getDesiredWindowLocation();
+				Point location = this.getDesiredWindowLocation();
 				if( location != null ) {
 					dialog.setLocation( location );
 				} else {
-					edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), owner.getAwtComponent() );
+					WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), owner.getAwtComponent() );
 				}
 			}
-			dialog.setTitle( this.getDialogTitle( step ) );
-			this.handlePreShowDialog( step );
+			dialog.setTitle( this.getDialogTitle() );
+			handlePreShowDialog( dialog );
 			//application.pushWindow( dialog );
 			dialog.setVisible( true );
 
 			if( isModal ) {
-				this.handlePostHideDialog( step );
+				this.handlePostHideDialog();
 				dialog.removeWindowListener( dialogWindowListener );
-				this.releaseView( step, view );
+				this.releaseView( view );
 				dialog.getAwtComponent().dispose();
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
+				Logger.outln( "todo: handle non-modal dialogs" );
 			}
 		} finally {
 			if( isModal ) {
 				//application.popWindow();
-				this.handleFinally( step, dialog );
+				this.handleFinally( dialog );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
+				Logger.outln( "todo: handle non-modal dialogs" );
 			}
 		}
 	}
@@ -170,18 +187,13 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.C
 	}
 
 	//todo
-	protected abstract org.lgna.croquet.views.CompositeView<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract CompositeView<?, ?> allocateView();
 
-	protected abstract void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.CompositeView<?, ?> view );
-
-	//todo: remove?
-	protected final boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
-		return true;
-	}
+	protected abstract void releaseView( CompositeView<?, ?> view );
 
 	protected abstract String getDefaultTitleText();
 
-	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected String getDialogTitle() {
 		this.initializeIfNecessary();
 		String rv = this.title;
 		if( rv != null ) {
@@ -199,21 +211,20 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.C
 		return rv;
 	}
 
-	private void handleDialogOpened( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
-		//org.lgna.croquet.history.TransactionManager.fireDialogOpened( dialog );
+	private void handleDialogOpened() {
 	}
 
-	private void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
+	private void handleDialogClosed() {
 	}
 
 	protected boolean isDefaultButtonDesired() {
 		return true;
 	}
 
-	protected abstract void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract void handlePreShowDialog( Dialog dialog );
 
-	protected abstract void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract void handlePostHideDialog();
 
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.Dialog dialog ) {
+	protected void handleFinally( Dialog dialog ) {
 	}
 }

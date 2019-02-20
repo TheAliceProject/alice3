@@ -42,21 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.croquet;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.animation.TraditionalStyle;
+import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import org.lgna.croquet.Group;
 
 import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.implementation.ModelImp;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public class PredeterminedScaleActionOperation extends AbstractFieldBasedManipulationActionOperation {
-	private edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer;
+	private Resizer resizer;
 	private double redoScale;
 	private double undoScale;
-	private edu.cmu.cs.dennisc.pattern.Criterion<edu.cmu.cs.dennisc.scenegraph.Component> criterion;
+	private Criterion<Component> criterion;
 
-	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField scalableField, edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double previousScale, double currentScale, edu.cmu.cs.dennisc.pattern.Criterion<edu.cmu.cs.dennisc.scenegraph.Component> criterion, String editPresentationKey ) {
-		super( group, java.util.UUID.fromString( "455cae50-c329-44e3-ba7c-9ef10f69d965" ), isDoRequired, animator, scalableField, editPresentationKey );
+	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, Animator animator, UserField scalableField, Resizer resizer, double previousScale, double currentScale, Criterion<Component> criterion, String editPresentationKey ) {
+		super( group, UUID.fromString( "455cae50-c329-44e3-ba7c-9ef10f69d965" ), isDoRequired, animator, scalableField, editPresentationKey );
 		this.resizer = resizer;
 
 		this.redoScale = currentScale;
@@ -69,19 +81,19 @@ public class PredeterminedScaleActionOperation extends AbstractFieldBasedManipul
 	}
 
 	private Scalable getScalable() {
-		org.lgna.story.implementation.ModelImp modelImp = (org.lgna.story.implementation.ModelImp)getEntityImp();
+		ModelImp modelImp = (ModelImp)getEntityImp();
 		return modelImp;
 	}
 
-	private edu.cmu.cs.dennisc.scenegraph.scale.Resizer getResizer() {
+	private Resizer getResizer() {
 		return this.resizer;
 	}
 
 	private void scale( final double startScale, final double endScale ) {
 		if( this.getAnimator() != null ) {
-			class ScaleAnimation extends edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation {
+			class ScaleAnimation extends DoubleAnimation {
 				public ScaleAnimation() {
-					super( 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY, startScale, endScale );
+					super( 0.5, TraditionalStyle.BEGIN_AND_END_GENTLY, startScale, endScale );
 				}
 
 				@Override
@@ -103,8 +115,8 @@ public class PredeterminedScaleActionOperation extends AbstractFieldBasedManipul
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new org.lgna.croquet.edits.AbstractEdit( step ) {
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( new AbstractEdit( activity ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
 				if( isDo && ( isDoRequired() == false ) ) {

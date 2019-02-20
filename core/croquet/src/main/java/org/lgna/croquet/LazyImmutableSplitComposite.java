@@ -42,11 +42,15 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.pattern.Lazy;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LazyImmutableSplitComposite<LC extends org.lgna.croquet.Composite<?>, TC extends org.lgna.croquet.Composite<?>> extends ImmutableSplitComposite {
-	public LazyImmutableSplitComposite( java.util.UUID id ) {
+public abstract class LazyImmutableSplitComposite<LC extends Composite<?>, TC extends Composite<?>> extends ImmutableSplitComposite {
+	public LazyImmutableSplitComposite( UUID id ) {
 		super( id );
 	}
 
@@ -64,13 +68,13 @@ public abstract class LazyImmutableSplitComposite<LC extends org.lgna.croquet.Co
 
 	protected abstract TC createTrailingComposite();
 
-	private final edu.cmu.cs.dennisc.pattern.Lazy<LC> leadingCompositeLazy = new edu.cmu.cs.dennisc.pattern.Lazy<LC>() {
+	private final Lazy<LC> leadingCompositeLazy = new Lazy<LC>() {
 		@Override
 		protected LC create() {
 			return createLeadingComposite();
 		}
 	};
-	private final edu.cmu.cs.dennisc.pattern.Lazy<TC> trailingCompositeLazy = new edu.cmu.cs.dennisc.pattern.Lazy<TC>() {
+	private final Lazy<TC> trailingCompositeLazy = new Lazy<TC>() {
 		@Override
 		protected TC create() {
 			return createTrailingComposite();

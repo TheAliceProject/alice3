@@ -42,10 +42,19 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.search.core;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.worker.WorkerWithProgress;
+import org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.alice.stageide.modelresource.TreeUtilities;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SearchGalleryWorker extends edu.cmu.cs.dennisc.worker.WorkerWithProgress<java.util.List<org.alice.stageide.modelresource.ResourceNode>, org.alice.stageide.modelresource.ResourceNode> {
+public class SearchGalleryWorker extends WorkerWithProgress<List<ResourceNode>, ResourceNode> {
 	private static enum Criterion {
 		STARTS_WITH {
 			@Override
@@ -62,12 +71,12 @@ public class SearchGalleryWorker extends edu.cmu.cs.dennisc.worker.WorkerWithPro
 		public abstract boolean accept( String lcName, String lcFilter );
 	}
 
-	public SearchGalleryWorker( String filter, org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView searchTabView ) {
+	public SearchGalleryWorker( String filter, SearchTabView searchTabView ) {
 		this.filter = filter;
 		this.searchTabView = searchTabView;
 	}
 
-	private void appendIfMatch( java.util.List<org.alice.stageide.modelresource.ResourceNode> rv, org.alice.stageide.modelresource.ResourceNode node, String lcFilter, Criterion criterion, String text ) {
+	private void appendIfMatch( List<ResourceNode> rv, ResourceNode node, String lcFilter, Criterion criterion, String text ) {
 		if( rv.contains( node ) ) {
 			//pass
 		} else {
@@ -79,7 +88,7 @@ public class SearchGalleryWorker extends edu.cmu.cs.dennisc.worker.WorkerWithPro
 		}
 	}
 
-	private void appendMatches( java.util.List<org.alice.stageide.modelresource.ResourceNode> matches, org.alice.stageide.modelresource.ResourceNode node, String lcFilter, Criterion criterion, boolean isTag ) {
+	private void appendMatches( List<ResourceNode> matches, ResourceNode node, String lcFilter, Criterion criterion, boolean isTag ) {
 		if( this.isCancelled() ) {
 			//pass
 		} else {
@@ -99,7 +108,7 @@ public class SearchGalleryWorker extends edu.cmu.cs.dennisc.worker.WorkerWithPro
 			if( node.getResourceKey().isLeaf() ) {
 				//pass
 			} else {
-				for( org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren() ) {
+				for( ResourceNode child : node.getNodeChildren() ) {
 					appendMatches( matches, child, lcFilter, criterion, isTag );
 				}
 			}
@@ -107,10 +116,10 @@ public class SearchGalleryWorker extends edu.cmu.cs.dennisc.worker.WorkerWithPro
 	}
 
 	@Override
-	protected java.util.List<org.alice.stageide.modelresource.ResourceNode> do_onBackgroundThread() throws Exception {
+	protected List<ResourceNode> do_onBackgroundThread() throws Exception {
 		if( filter.length() > 0 ) {
-			org.alice.stageide.modelresource.ResourceNode root = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
-			java.util.List<org.alice.stageide.modelresource.ResourceNode> matchingNodes = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			ResourceNode root = TreeUtilities.getTreeBasedOnClassHierarchy();
+			List<ResourceNode> matchingNodes = Lists.newLinkedList();
 			String lcFilter = filter.toLowerCase();
 			for( boolean isTag : new boolean[] { false, true } ) {
 				appendMatches( matchingNodes, root, lcFilter, Criterion.STARTS_WITH, isTag );
@@ -120,20 +129,20 @@ public class SearchGalleryWorker extends edu.cmu.cs.dennisc.worker.WorkerWithPro
 			}
 			return matchingNodes;
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
 	@Override
-	protected void handleProcess_onEventDispatchThread( java.util.List<org.alice.stageide.modelresource.ResourceNode> chunks ) {
+	protected void handleProcess_onEventDispatchThread( List<ResourceNode> chunks ) {
 		this.searchTabView.addGalleryDragComponents( chunks );
 	}
 
 	@Override
-	protected void handleDone_onEventDispatchThread( java.util.List<org.alice.stageide.modelresource.ResourceNode> matchingNodes ) {
+	protected void handleDone_onEventDispatchThread( List<ResourceNode> matchingNodes ) {
 		this.searchTabView.setComponentsToGalleryDragComponents( this.filter, matchingNodes );
 	}
 
 	private final String filter;
-	private final org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView searchTabView;
+	private final SearchTabView searchTabView;
 }

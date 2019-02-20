@@ -42,11 +42,19 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.ziptree;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import javax.swing.tree.TreeNode;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DirectoryZipTreeNode extends ZipTreeNode {
-	private java.util.List<ZipTreeNode> children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private List<ZipTreeNode> children = Lists.newLinkedList();
 	private boolean isSorted = false;
 
 	public DirectoryZipTreeNode( String path ) {
@@ -58,23 +66,23 @@ public class DirectoryZipTreeNode extends ZipTreeNode {
 		return true;
 	}
 
-	private java.util.List<? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> getSortedChildren() {
+	private List<? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> getSortedChildren() {
 		if( this.isSorted ) {
 			//pass
 		} else {
-			java.util.Collections.sort( this.children );
+			Collections.sort( this.children );
 			this.isSorted = true;
 		}
 		return this.children;
 	}
 
 	@Override
-	public java.util.Enumeration<? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> children() {
-		return java.util.Collections.enumeration( this.getSortedChildren() );
+	public Enumeration<? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> children() {
+		return Collections.enumeration( this.getSortedChildren() );
 	}
 
 	@Override
-	public java.util.Iterator iterator() {
+	public Iterator iterator() {
 		return this.children.iterator();
 	}
 
@@ -97,7 +105,7 @@ public class DirectoryZipTreeNode extends ZipTreeNode {
 	}
 
 	@Override
-	public int getIndex( javax.swing.tree.TreeNode node ) {
+	public int getIndex( TreeNode node ) {
 		return this.getSortedChildren().indexOf( node );
 	}
 

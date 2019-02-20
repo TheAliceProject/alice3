@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class TransientPane extends AccessiblePane {
-	public TransientPane( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
+	public TransientPane( AbstractExpressionDragModel model ) {
 		super( model );
 	}
 }

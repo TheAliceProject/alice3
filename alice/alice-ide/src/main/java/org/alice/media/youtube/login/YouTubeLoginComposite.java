@@ -49,6 +49,8 @@ import org.alice.media.youtube.croquet.UploadComposite;
 import com.google.gdata.client.GoogleService.InvalidCredentialsException;
 import com.google.gdata.util.AuthenticationException;
 
+import java.util.UUID;
+
 /**
  * @author Matt May
  */
@@ -57,7 +59,7 @@ public class YouTubeLoginComposite extends AbstractLoginComposite<LoginView> {
 	private final UploadComposite uploadComposite;
 
 	public YouTubeLoginComposite( UploadComposite uploadComposite ) {
-		super( java.util.UUID.fromString( "511e94a5-dc9b-4b2f-be3a-873f94dd6f93" ), null );
+		super( UUID.fromString( "511e94a5-dc9b-4b2f-be3a-873f94dd6f93" ), null );
 		this.uploadComposite = uploadComposite;
 	}
 

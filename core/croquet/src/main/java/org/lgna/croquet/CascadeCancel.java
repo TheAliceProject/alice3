@@ -43,26 +43,26 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.imp.cascade.ItemNode;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CascadeCancel<F> extends CascadeItem<F, Void> {
-	public CascadeCancel( java.util.UUID id ) {
+	public CascadeCancel( UUID id ) {
 		super( id );
 	}
 
 	@Override
-	public final F createValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		throw new CancelException( this.getMenuItemText( node ) );
+	public final F createValue( ItemNode<? super F, Void> node ) {
+		throw new CancelException( this.getMenuItemText() );
 	}
 
 	@Override
-	public final F getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> node ) {
+	public final F getTransientValue( ItemNode<? super F, Void> node ) {
 		return null;
 	}
 
-	@Override
-	public Iterable<? extends Model> getChildren() {
-		return java.util.Collections.emptyList();
-	}
 }

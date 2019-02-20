@@ -43,18 +43,31 @@
 
 package org.alice.stageide.instancefactory.croquet.joint.all;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.ThisMethodInvocationFactory;
+import org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn;
+import org.alice.stageide.ast.JointedTypeInfo;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ThisJointedTypeMenuModel extends JointedTypeMenuModel {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractType<?, ?, ?>, Integer, ThisJointedTypeMenuModel> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<AbstractType<?, ?, ?>, Integer, ThisJointedTypeMenuModel> mapToMap = MapToMap.newInstance();
 
-	public static ThisJointedTypeMenuModel getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> value ) {
-		java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( value );
+	public static ThisJointedTypeMenuModel getInstance( AbstractType<?, ?, ?> value ) {
+		List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances( value );
 		return getInstance( value, jointedTypeInfos, 0 );
 	}
 
-	private static ThisJointedTypeMenuModel getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> value, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+	private static ThisJointedTypeMenuModel getInstance( AbstractType<?, ?, ?> value, List<JointedTypeInfo> jointedTypeInfos, int index ) {
 		//todo
 		synchronized( mapToMap ) {
 			ThisJointedTypeMenuModel rv = mapToMap.get( value, index );
@@ -68,26 +81,26 @@ public class ThisJointedTypeMenuModel extends JointedTypeMenuModel {
 		}
 	}
 
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private final AbstractType<?, ?, ?> type;
 
-	private ThisJointedTypeMenuModel( org.lgna.project.ast.AbstractType<?, ?, ?> type, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
-		super( java.util.UUID.fromString( "f6e1f5de-56d7-45ea-a9b3-f8585cf2d01c" ), jointedTypeInfos, index );
+	private ThisJointedTypeMenuModel( AbstractType<?, ?, ?> type, List<JointedTypeInfo> jointedTypeInfos, int index ) {
+		super( UUID.fromString( "f6e1f5de-56d7-45ea-a9b3-f8585cf2d01c" ), jointedTypeInfos, index );
 		this.type = type;
 	}
 
 	@Override
-	protected org.alice.stageide.instancefactory.croquet.joint.all.JointedTypeMenuModel getInstance( java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+	protected JointedTypeMenuModel getInstance( List<JointedTypeInfo> jointedTypeInfos, int index ) {
 		return getInstance( this.type, jointedTypeInfos, index );
 	}
 
 	@Override
-	protected org.lgna.croquet.CascadeFillIn<org.alice.ide.instancefactory.InstanceFactory, ?> getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+	protected CascadeFillIn<InstanceFactory, ?> getFillIn( AbstractMethod method ) {
 		//todo: use this.type?
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisMethodInvocationFactory.getInstance( method );
+		InstanceFactory instanceFactory = ThisMethodInvocationFactory.getInstance( method );
 		if( instanceFactory != null ) {
-			return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( instanceFactory );
+			return InstanceFactoryFillIn.getInstance( instanceFactory );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no instance factory for", method );
+			Logger.info( "no instance factory for", method );
 			return null;
 		}
 	}

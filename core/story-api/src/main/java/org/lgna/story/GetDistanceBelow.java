@@ -42,11 +42,13 @@
  */
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author dculyba
  */
 public class GetDistanceBelow extends AsSeenByArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = GetDistanceBelow.class )
+	@ClassTemplate( keywordFactoryCls = GetDistanceBelow.class )
 	public static interface Detail {
 	}
 

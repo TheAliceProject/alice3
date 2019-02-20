@@ -42,10 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.util;
 
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public interface InitializingIfAbsentMap<K, V> extends java.util.Map<K, V> {
+public interface InitializingIfAbsentMap<K, V> extends Map<K, V> {
 	public static interface Initializer<K, V> {
 		public V initialize( K key );
 	}

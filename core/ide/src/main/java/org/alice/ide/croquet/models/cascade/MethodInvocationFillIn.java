@@ -43,10 +43,24 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.croquet.models.ast.cascade.MethodUtilities;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.MethodInvocation;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.MethodInvocation> {
+public abstract class MethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks<MethodInvocation> {
 	//
 	//
 	//
@@ -55,27 +69,27 @@ public abstract class MethodInvocationFillIn extends ExpressionFillInWithExpress
 	//
 	//
 	//
-	private final org.lgna.project.ast.MethodInvocation transientValue;
-	private final java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> lockedBlanks;
+	private final MethodInvocation transientValue;
+	private final List<CascadeBlank<Expression>> lockedBlanks;
 
-	private static java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> createBlanks( org.lgna.project.ast.AbstractMethod method ) {
-		return (java.util.List)java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) ) );
+	private static List<CascadeBlank<Expression>> createBlanks( AbstractMethod method ) {
+		return (List)Collections.unmodifiableList( Lists.newArrayList( MethodUtilities.createParameterBlanks( method ) ) );
 	}
 
-	public MethodInvocationFillIn( java.util.UUID id, org.lgna.project.ast.Expression transientValueExpression, org.lgna.project.ast.AbstractMethod method ) {
+	public MethodInvocationFillIn( UUID id, Expression transientValueExpression, AbstractMethod method ) {
 		super( id );
 		if( method.isSignatureLocked() ) {
 			this.lockedBlanks = createBlanks( method );
 		} else {
 			this.lockedBlanks = null;
 		}
-		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( transientValueExpression, method );
+		this.transientValue = IncompleteAstUtilities.createIncompleteMethodInvocation( transientValueExpression, method );
 	}
 
-	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression transientValueExpression );
+	protected abstract Expression createExpression( Expression transientValueExpression );
 
 	@Override
-	public java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> getBlanks() {
+	public List<CascadeBlank<Expression>> getBlanks() {
 		if( this.lockedBlanks != null ) {
 			return this.lockedBlanks;
 		} else {
@@ -84,12 +98,12 @@ public abstract class MethodInvocationFillIn extends ExpressionFillInWithExpress
 	}
 
 	@Override
-	protected org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {
-		return org.lgna.project.ast.AstUtilities.createMethodInvocation( this.createExpression( this.transientValue.expression.getValue() ), this.transientValue.method.getValue(), expressions );
+	protected MethodInvocation createValue( Expression[] expressions ) {
+		return AstUtilities.createMethodInvocation( this.createExpression( this.transientValue.expression.getValue() ), this.transientValue.method.getValue(), expressions );
 	}
 
 	@Override
-	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> step ) {
+	public MethodInvocation getTransientValue( ItemNode<? super MethodInvocation, Expression> step ) {
 		return this.transientValue;
 	}
 }

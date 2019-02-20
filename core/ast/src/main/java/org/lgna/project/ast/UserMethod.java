@@ -43,13 +43,16 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.StringProperty;
 import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeGenerator;
+import org.lgna.project.virtualmachine.VirtualMachine;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UserMethod extends AbstractUserMethod implements CodeGenerator, CodeAppender {
+public class UserMethod extends AbstractUserMethod implements CodeGenerator {
 	public UserMethod() {
 	}
 
@@ -68,7 +71,7 @@ public class UserMethod extends AbstractUserMethod implements CodeGenerator, Cod
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return this.name;
 	}
 
@@ -85,6 +88,11 @@ public class UserMethod extends AbstractUserMethod implements CodeGenerator, Cod
 	@Override
 	public boolean isFinal() {
 		return this.isFinal.getValue();
+	}
+
+	@Override
+	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
+		return virtualMachine.invokeUserMethod( target, this, arguments );
 	}
 
 	//	@Override
@@ -108,26 +116,17 @@ public class UserMethod extends AbstractUserMethod implements CodeGenerator, Cod
 	//	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendMethodPrefix( this );
-		generator.appendMethodHeader( this );
-		this.body.getValue().appendJava( generator );
-		generator.appendMethodPostfix( this );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendMethod(this);
 	}
 
 	public String generateHeaderJavaCode( JavaCodeGenerator generator ) {
 		generator.appendMethodHeader( this );
-		return generator.getText( false );
+		return generator.getText();
 	}
 
-	@Override
-	public String generateJavaCode( JavaCodeGenerator generator ) {
-		this.appendJava( generator );
-		return generator.getText( false );
-	}
-
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isAbstract = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isFinal = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+	public final BooleanProperty isStatic = new BooleanProperty( this, Boolean.FALSE );
+	public final BooleanProperty isAbstract = new BooleanProperty( this, Boolean.FALSE );
+	public final BooleanProperty isFinal = new BooleanProperty( this, Boolean.FALSE );
+	public final StringProperty name = new StringProperty( this, null );
 }

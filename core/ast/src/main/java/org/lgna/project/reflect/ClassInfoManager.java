@@ -42,29 +42,46 @@
  *******************************************************************************/
 package org.lgna.project.reflect;
 
+import edu.cmu.cs.dennisc.codec.CodecUtilities;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
+import edu.cmu.cs.dennisc.pattern.Lazy;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ClassInfoManager {
-	private static java.util.Map<String, edu.cmu.cs.dennisc.pattern.Lazy<ClassInfo>> s_map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<String, Lazy<ClassInfo>> s_map = Maps.newHashMap();
 
 	private ClassInfoManager() {
 	}
 
-	public static void addClassInfosFrom( java.io.InputStream is ) throws java.io.IOException {
-		java.util.zip.ZipInputStream zis = new java.util.zip.ZipInputStream( is );
+	public static void addClassInfosFrom( InputStream is ) throws IOException {
+		ZipInputStream zis = new ZipInputStream( is );
 		while( true ) {
-			java.util.zip.ZipEntry zipEntry = zis.getNextEntry();
+			ZipEntry zipEntry = zis.getNextEntry();
 			if( zipEntry != null ) {
 				if( zipEntry.isDirectory() ) {
 					//pass
 				} else {
-					String clsName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( zipEntry.getName() );
-					final byte[] data = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extractBytes( zis, zipEntry );
-					s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.Lazy<ClassInfo>() {
+					String clsName = FileUtilities.getBaseName( zipEntry.getName() );
+					final byte[] data = ZipUtilities.extractBytes( zis, zipEntry );
+					s_map.put( clsName, new Lazy<ClassInfo>() {
 						@Override
 						protected ClassInfo create() {
-							ClassInfo rv = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( data, ClassInfo.class );
+							ClassInfo rv = CodecUtilities.decodeBinary( data, ClassInfo.class );
 							//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rv );
 							return rv;
 						}
@@ -76,18 +93,18 @@ public class ClassInfoManager {
 		}
 	}
 
-	public static java.util.Set<String> getKeys() {
-		return java.util.Collections.unmodifiableSet( s_map.keySet() );
+	public static Set<String> getKeys() {
+		return Collections.unmodifiableSet( s_map.keySet() );
 	}
 
 	public static ClassInfo getInstance( String clsName ) {
 		if( clsName != null ) {
-			edu.cmu.cs.dennisc.pattern.Lazy<ClassInfo> lazyClassInfo = s_map.get( clsName );
+			Lazy<ClassInfo> lazyClassInfo = s_map.get( clsName );
 			if( lazyClassInfo != null ) {
 				try {
 					return lazyClassInfo.get();
 				} catch( Throwable t ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, clsName );
+					Logger.throwable( t, clsName );
 					return null;
 				}
 			} else {
@@ -106,7 +123,7 @@ public class ClassInfoManager {
 		}
 	}
 
-	public static java.util.List<MethodInfo> getMethodInfos( String clsName ) {
+	public static List<MethodInfo> getMethodInfos( String clsName ) {
 		ClassInfo clsInfo = getInstance( clsName );
 		if( clsInfo != null ) {
 			return clsInfo.getMethodInfos();
@@ -116,7 +133,7 @@ public class ClassInfoManager {
 		}
 	}
 
-	public static java.util.List<MethodInfo> getMethodInfos( Class<?> cls ) {
+	public static List<MethodInfo> getMethodInfos( Class<?> cls ) {
 		if( cls != null ) {
 			return getMethodInfos( cls.getName() );
 		} else {
@@ -124,7 +141,7 @@ public class ClassInfoManager {
 		}
 	}
 
-	public static String[] getParameterNamesFor( java.lang.reflect.Method mthd ) {
+	public static String[] getParameterNamesFor( Method mthd ) {
 		ClassInfo clsInfo = getInstance( mthd.getDeclaringClass() );
 		if( clsInfo != null ) {
 			MethodInfo methodInfo = clsInfo.lookupInfo( mthd );

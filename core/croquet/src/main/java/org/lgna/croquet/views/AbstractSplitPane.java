@@ -42,11 +42,17 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.AbstractSplitComposite;
+
+import javax.swing.JSplitPane;
+import java.awt.Dimension;
+import java.beans.PropertyChangeListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSplitPane<SC extends org.lgna.croquet.AbstractSplitComposite<?>> extends CompositeView<javax.swing.JSplitPane, SC> {
-	private static final java.awt.Dimension MINIMUM_SIZE = new java.awt.Dimension( 24, 24 );
+public abstract class AbstractSplitPane<SC extends AbstractSplitComposite<?>> extends CompositeView<JSplitPane, SC> {
+	private static final Dimension MINIMUM_SIZE = new Dimension( 24, 24 );
 	private final int orientation;
 
 	protected AbstractSplitPane( SC splitComposite, int orientation ) {
@@ -54,21 +60,21 @@ public abstract class AbstractSplitPane<SC extends org.lgna.croquet.AbstractSpli
 		this.orientation = orientation;
 	}
 
-	protected abstract javax.swing.JSplitPane createJSplitPane( int orientation );
+	protected abstract JSplitPane createJSplitPane( int orientation );
 
 	@Override
-	protected final javax.swing.JSplitPane createAwtComponent() {
-		javax.swing.JSplitPane rv = this.createJSplitPane( this.orientation );
+	protected final JSplitPane createAwtComponent() {
+		JSplitPane rv = this.createJSplitPane( this.orientation );
 		rv.getLeftComponent().setMinimumSize( MINIMUM_SIZE );
 		rv.getRightComponent().setMinimumSize( MINIMUM_SIZE );
 		return rv;
 	}
 
-	public void addDividerLocationChangeListener( java.beans.PropertyChangeListener changeListener ) {
+	public void addDividerLocationChangeListener( PropertyChangeListener changeListener ) {
 		this.getAwtComponent().addPropertyChangeListener( "dividerLocation", changeListener );
 	}
 
-	public void removeDividerLocationChangeListener( java.beans.PropertyChangeListener changeListener ) {
+	public void removeDividerLocationChangeListener( PropertyChangeListener changeListener ) {
 		this.getAwtComponent().removePropertyChangeListener( "dividerLocation", changeListener );
 	}
 

@@ -45,6 +45,8 @@ package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import java.awt.Color;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
@@ -59,6 +61,7 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+import org.lgna.croquet.Application;
 
 public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulator {
 	private static final Color IN = Color.RED;
@@ -134,15 +137,15 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
 			double newZoom = this.getCameraZoom();
 
 			if( newZoom == this.originalZoomValue ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Adding an undoable action for a manipulation that didn't actually change the zoom." );
+				Logger.warning( "Adding an undoable action for a manipulation that didn't actually change the zoom." );
 			}
-			edu.cmu.cs.dennisc.animation.Animator animator;
+			Animator animator;
 			if( this.dragAdapter != null ) {
 				animator = this.dragAdapter.getAnimator();
 			} else {
 				animator = null;
 			}
-			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, false, animator, (OrthographicCamera)this.camera, this.originalZoomValue, newZoom, getUndoRedoDescription() );
+			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation( Application.PROJECT_GROUP, false, animator, (OrthographicCamera)this.camera, this.originalZoomValue, newZoom, getUndoRedoDescription() );
 			undoOperation.fire();
 		}
 	}

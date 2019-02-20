@@ -42,18 +42,33 @@
  *******************************************************************************/
 package org.lgna.project.reflect;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public class ClassInfo implements BinaryEncodableAndDecodable {
 	private transient boolean isGetClassForNameAlreadyAttempted = false;
 	private transient Class<?> cls;
 	private final String clsName;
 
-	private final java.util.List<ConstructorInfo> constructorInfos = new java.util.LinkedList<ConstructorInfo>();
-	private final java.util.List<MethodInfo> methodInfos = new java.util.LinkedList<MethodInfo>();
+	private final List<ConstructorInfo> constructorInfos = new LinkedList<ConstructorInfo>();
+	private final List<MethodInfo> methodInfos = new LinkedList<MethodInfo>();
 
-	private static java.util.Map<String, ClassInfo> map = new java.util.HashMap<String, ClassInfo>();
+	private static Map<String, ClassInfo> map = new HashMap<String, ClassInfo>();
 
 	public static ClassInfo forName( String clsName ) {
 		ClassInfo rv = map.get( clsName );
@@ -69,10 +84,10 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		this.clsName = clsName;
 	}
 
-	public ClassInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public ClassInfo( BinaryDecoder binaryDecoder ) {
 		this.clsName = binaryDecoder.decodeString();
-		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( this.constructorInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( ConstructorInfo.class ) );
-		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( this.methodInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( MethodInfo.class ) );
+		ArrayUtilities.set( this.constructorInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( ConstructorInfo.class ) );
+		ArrayUtilities.set( this.methodInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( MethodInfo.class ) );
 	}
 
 	public String getClsName() {
@@ -80,10 +95,10 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.clsName );
-		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.constructorInfos, ConstructorInfo.class ) );
-		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.methodInfos, MethodInfo.class ) );
+		binaryEncoder.encode( ArrayUtilities.createArray( this.constructorInfos, ConstructorInfo.class ) );
+		binaryEncoder.encode( ArrayUtilities.createArray( this.methodInfos, MethodInfo.class ) );
 	}
 
 	/* package-private */Class<?> getCls() {
@@ -115,23 +130,23 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		this.methodInfos.add( methodInfo );
 	}
 
-	public java.util.List<ConstructorInfo> getConstructorInfos() {
-		return java.util.Collections.unmodifiableList( this.constructorInfos );
+	public List<ConstructorInfo> getConstructorInfos() {
+		return Collections.unmodifiableList( this.constructorInfos );
 	}
 
-	public java.util.List<MethodInfo> getMethodInfos() {
-		return java.util.Collections.unmodifiableList( this.methodInfos );
+	public List<MethodInfo> getMethodInfos() {
+		return Collections.unmodifiableList( this.methodInfos );
 	}
 
-	private java.util.Set<MethodInfo> outOfDateMethodInfos = new java.util.HashSet<MethodInfo>();
+	private Set<MethodInfo> outOfDateMethodInfos = new HashSet<MethodInfo>();
 
-	public MethodInfo lookupInfo( java.lang.reflect.Method mthd ) {
+	public MethodInfo lookupInfo( Method mthd ) {
 		for( MethodInfo methodInfo : getMethodInfos() ) {
 			if( this.outOfDateMethodInfos.contains( methodInfo ) ) {
 				//pass
 			} else {
 				try {
-					java.lang.reflect.Method m = methodInfo.getMthd();
+					Method m = methodInfo.getMthd();
 					if( m.equals( mthd ) ) {
 						return methodInfo;
 					}
@@ -144,7 +159,7 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		return null;
 	}
 
-	public ConstructorInfo lookupInfo( java.lang.reflect.Constructor<?> cnstrctr ) {
+	public ConstructorInfo lookupInfo( Constructor<?> cnstrctr ) {
 		for( ConstructorInfo constructorInfo : getConstructorInfos() ) {
 			if( constructorInfo.getCnstrctr().equals( cnstrctr ) ) {
 				return constructorInfo;

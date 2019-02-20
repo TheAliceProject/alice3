@@ -42,38 +42,50 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import org.alice.ide.Theme;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeMenuModel;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.croquet.imp.cascade.ItemNode;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceMenuModel extends org.lgna.croquet.CascadeMenuModel<ResourceNode> {
+public class ResourceMenuModel extends CascadeMenuModel<ResourceNode> {
 	private final ResourceNode resourceNode;
 
 	public ResourceMenuModel( ResourceNode resourceNode ) {
-		super( java.util.UUID.fromString( "5f0b30f5-6b05-4914-9281-c116ce6efbec" ) );
+		super( UUID.fromString( "5f0b30f5-6b05-4914-9281-c116ce6efbec" ) );
 		this.resourceNode = resourceNode;
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<ResourceNode> blankNode ) {
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<ResourceNode> blankNode ) {
 		for( ResourceNode child : resourceNode.getNodeChildren() ) {
 			blankChildren.add( child.getAddFieldBlankChild() );
 		}
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, org.alice.stageide.modelresource.ResourceNode> itemNode ) {
+	protected JComponent createMenuItemIconProxy( ItemNode<? super ResourceNode, ResourceNode> itemNode ) {
 		throw new Error();
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, org.alice.stageide.modelresource.ResourceNode> node ) {
+	public String getMenuItemText() {
 		return this.resourceNode.getText();
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, org.alice.stageide.modelresource.ResourceNode> node ) {
-		org.lgna.croquet.icon.IconFactory iconFactory = this.resourceNode.getIconFactory();
-		return iconFactory != null ? iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ) : null;
+	public Icon getMenuItemIcon( ItemNode<? super ResourceNode, ResourceNode> node ) {
+		IconFactory iconFactory = this.resourceNode.getIconFactory();
+		return iconFactory != null ? iconFactory.getIcon( Theme.DEFAULT_SMALL_ICON_SIZE ) : null;
 	}
 
 }

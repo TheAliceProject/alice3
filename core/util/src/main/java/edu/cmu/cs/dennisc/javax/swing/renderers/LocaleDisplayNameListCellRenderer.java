@@ -42,13 +42,15 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.renderers;
 
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
 //todo: move
 public class LocaleDisplayNameListCellRenderer extends LocaleListCellRenderer {
 	@Override
-	protected String getText( java.util.Locale value ) {
+	protected String getText( Locale value ) {
 		return value.getDisplayName();
 	}
 }

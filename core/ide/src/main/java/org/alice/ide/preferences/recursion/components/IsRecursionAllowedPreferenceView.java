@@ -42,35 +42,65 @@
  *******************************************************************************/
 package org.alice.ide.preferences.recursion.components;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.ide.browser.ImmutableBrowserOperation;
+import org.alice.ide.help.HelpBrowserOperation;
+import org.alice.ide.preferences.recursion.IsAccessToRecursionPreferenceAllowedState;
+import org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite;
+import org.alice.ide.preferences.recursion.IsRecursionAllowedState;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.AbstractLabel;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Button;
+import org.lgna.croquet.views.CheckBox;
+import org.lgna.croquet.views.FolderTabbedPane;
+import org.lgna.croquet.views.Hyperlink;
+import org.lgna.croquet.views.ImmutableTextArea;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.PageAxisPanel;
+import org.lgna.croquet.views.PaintUtilities;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IsRecursionAllowedPreferenceView extends org.lgna.croquet.views.BorderPanel {
+public class IsRecursionAllowedPreferenceView extends BorderPanel {
 	private static final int SPACING = 16;
 	private static final int INDENT = 32;
 
-	private static class RecursionAccessPanel extends org.lgna.croquet.views.PageAxisPanel {
-		private final org.lgna.croquet.views.AbstractLabel label;
-		private final org.lgna.croquet.views.Button button;
-		private final org.lgna.croquet.views.CheckBox checkBox = org.alice.ide.preferences.recursion.IsRecursionAllowedState.getInstance().createCheckBox();
+	private static class RecursionAccessPanel extends PageAxisPanel {
+		private final AbstractLabel label;
+		private final Button button;
+		private final CheckBox checkBox = IsRecursionAllowedState.getInstance().createCheckBox();
 
-		public RecursionAccessPanel( org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite composite ) {
-			this.label = composite.getRecursiveButtonText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+		public RecursionAccessPanel( IsRecursionAllowedPreferenceDialogComposite composite ) {
+			this.label = composite.getRecursiveButtonText().createLabel( TextPosture.OBLIQUE );
 			this.button = composite.getNext().createButton();
-			org.lgna.croquet.views.LineAxisPanel lineAxisPanel = new org.lgna.croquet.views.LineAxisPanel(
+			LineAxisPanel lineAxisPanel = new LineAxisPanel(
 					this.label, this.button
 					);
 			this.addComponent( checkBox );
 			this.addComponent( lineAxisPanel );
-			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, INDENT, 8, 8 ) );
+			this.setBorder( BorderFactory.createEmptyBorder( 8, INDENT, 8, 8 ) );
 		}
 
 		@Override
-		protected javax.swing.JPanel createJPanel() {
+		protected JPanel createJPanel() {
 			return new DefaultJPanel() {
 				@Override
 				public boolean contains( int x, int y ) {
-					if( org.alice.ide.preferences.recursion.IsAccessToRecursionPreferenceAllowedState.getInstance().getValue() ) {
+					if( IsAccessToRecursionPreferenceAllowedState.getInstance().getValue() ) {
 						return super.contains( x, y );
 					} else {
 						return false;
@@ -78,15 +108,15 @@ public class IsRecursionAllowedPreferenceView extends org.lgna.croquet.views.Bor
 				}
 
 				@Override
-				public void paint( java.awt.Graphics g ) {
+				public void paint( Graphics g ) {
 					super.paint( g );
-					if( org.alice.ide.preferences.recursion.IsAccessToRecursionPreferenceAllowedState.getInstance().getValue() ) {
+					if( IsAccessToRecursionPreferenceAllowedState.getInstance().getValue() ) {
 						//pass
 					} else {
-						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-						java.awt.Paint prevPaint = g2.getPaint();
+						Graphics2D g2 = (Graphics2D)g;
+						Paint prevPaint = g2.getPaint();
 						try {
-							g2.setPaint( org.lgna.croquet.views.PaintUtilities.getDisabledTexturePaint() );
+							g2.setPaint( PaintUtilities.getDisabledTexturePaint() );
 							g2.fill( g2.getClipBounds() );
 						} finally {
 							g2.setPaint( prevPaint );
@@ -97,14 +127,14 @@ public class IsRecursionAllowedPreferenceView extends org.lgna.croquet.views.Bor
 			};
 		}
 
-		private org.lgna.croquet.event.ValueListener<Boolean> valueObserver = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		private ValueListener<Boolean> valueObserver = new ValueListener<Boolean>() {
 			@Override
-			public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+			public void valueChanged( ValueEvent<Boolean> e ) {
 				Boolean nextValue = e.getNextValue();
 				if( nextValue ) {
 					//pass
 				} else {
-					org.alice.ide.preferences.recursion.IsRecursionAllowedState.getInstance().setValueTransactionlessly( false );
+					IsRecursionAllowedState.getInstance().setValueTransactionlessly( false );
 				}
 				label.getAwtComponent().setEnabled( nextValue );
 				button.getAwtComponent().setEnabled( nextValue );
@@ -116,37 +146,37 @@ public class IsRecursionAllowedPreferenceView extends org.lgna.croquet.views.Bor
 		@Override
 		protected void handleDisplayable() {
 			super.handleDisplayable();
-			org.alice.ide.preferences.recursion.IsAccessToRecursionPreferenceAllowedState.getInstance().addAndInvokeNewSchoolValueListener( valueObserver );
+			IsAccessToRecursionPreferenceAllowedState.getInstance().addAndInvokeNewSchoolValueListener( valueObserver );
 		}
 
 		@Override
 		protected void handleUndisplayable() {
-			org.alice.ide.preferences.recursion.IsAccessToRecursionPreferenceAllowedState.getInstance().removeNewSchoolValueListener( valueObserver );
+			IsAccessToRecursionPreferenceAllowedState.getInstance().removeNewSchoolValueListener( valueObserver );
 			super.handleUndisplayable();
 		}
 	}
 
-	public IsRecursionAllowedPreferenceView( org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite composite ) {
+	public IsRecursionAllowedPreferenceView( IsRecursionAllowedPreferenceDialogComposite composite ) {
 		super( composite );
 		//todo
-		org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d" ), org.alice.ide.help.HelpBrowserOperation.HELP_URL_SPEC + "recursion" );
-		org.lgna.croquet.views.Hyperlink hyperlink = browserOperation.createHyperlink();
-		hyperlink.setBorder( javax.swing.BorderFactory.createEmptyBorder( SPACING, INDENT, SPACING, 0 ) );
+		Operation browserOperation = new ImmutableBrowserOperation( UUID.fromString( "30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d" ), HelpBrowserOperation.HELP_URL_SPEC + "recursion" );
+		Hyperlink hyperlink = browserOperation.createHyperlink();
+		hyperlink.setBorder( BorderFactory.createEmptyBorder( SPACING, INDENT, SPACING, 0 ) );
 
-		org.lgna.croquet.views.CheckBox checkBox = org.alice.ide.preferences.recursion.IsAccessToRecursionPreferenceAllowedState.getInstance().createCheckBox();
+		CheckBox checkBox = IsAccessToRecursionPreferenceAllowedState.getInstance().createCheckBox();
 
-		org.lgna.croquet.views.ImmutableTextArea descriptionLabel = composite.getDescriptionText().createImmutableTextArea();
-		org.lgna.croquet.views.PageAxisPanel pageAxisPanel = new org.lgna.croquet.views.PageAxisPanel();
+		ImmutableTextArea descriptionLabel = composite.getDescriptionText().createImmutableTextArea();
+		PageAxisPanel pageAxisPanel = new PageAxisPanel();
 		pageAxisPanel.addComponent( descriptionLabel );
 		pageAxisPanel.addComponent( hyperlink );
 		pageAxisPanel.addComponent( checkBox );
 		pageAxisPanel.addComponent( new RecursionAccessPanel( composite ) );
-		pageAxisPanel.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalGlue() );
+		pageAxisPanel.addComponent( BoxUtilities.createVerticalGlue() );
 
-		this.addLineStartComponent( new org.lgna.croquet.views.Label( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( IsRecursionAllowedPreferenceView.class.getResource( "images/AliceWithKeyAtDoor.png" ) ) ) );
+		this.addLineStartComponent( new Label( IconUtilities.createImageIcon( IsRecursionAllowedPreferenceView.class.getResource( "images/AliceWithKeyAtDoor.png" ) ) ) );
 		this.addCenterComponent( pageAxisPanel );
 
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-		this.setBackgroundColor( org.lgna.croquet.views.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 	}
 }

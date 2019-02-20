@@ -42,18 +42,20 @@
  *******************************************************************************/
 package org.lgna.project.virtualmachine;
 
+import org.lgna.project.ast.UserLocal;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class LgnaVmIllegalLocalException extends LgnaVmException {
-	private final org.lgna.project.ast.UserLocal local;
+	private final UserLocal local;
 
-	public LgnaVmIllegalLocalException( VirtualMachine vm, org.lgna.project.ast.UserLocal local ) {
+	public LgnaVmIllegalLocalException( VirtualMachine vm, UserLocal local ) {
 		super( vm );
 		this.local = local;
 	}
 
-	public final org.lgna.project.ast.UserLocal getLocal() {
+	public final UserLocal getLocal() {
 		return this.local;
 	}
 

@@ -43,18 +43,37 @@
 
 package org.alice.stageide.ast.declaration.views;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import edu.cmu.cs.dennisc.texture.Texture;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.ViewController;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.virtualmachine.VirtualMachine;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.Paint;
+
+import javax.swing.JComponent;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PaintView extends org.lgna.croquet.views.ViewController<javax.swing.JComponent, org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> {
-	private org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> valueListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
+public class PaintView extends ViewController<JComponent, CustomItemState<Expression>> {
+	private ValueListener<Expression> valueListener = new ValueListener<Expression>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
+		public void valueChanged( ValueEvent<Expression> e ) {
 			PaintView.this.repaint();
 		}
 	};
 
-	public PaintView( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> model ) {
+	public PaintView( CustomItemState<Expression> model ) {
 		super( model );
 	}
 
@@ -71,41 +90,41 @@ public class PaintView extends org.lgna.croquet.views.ViewController<javax.swing
 	}
 
 	@Override
-	protected javax.swing.JComponent createAwtComponent() {
-		javax.swing.JComponent rv = new javax.swing.JComponent() {
+	protected JComponent createAwtComponent() {
+		JComponent rv = new JComponent() {
 			@Override
-			public java.awt.Dimension getMinimumSize() {
+			public Dimension getMinimumSize() {
 				return this.getPreferredSize();
 			}
 
 			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
+			protected void paintComponent( Graphics g ) {
 				super.paintComponent( g );
-				org.lgna.project.ast.Expression expression = PaintView.this.getModel().getValue();
+				Expression expression = PaintView.this.getModel().getValue();
 				if( expression != null ) {
-					org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getVirtualMachine();
+					VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
 
-					Object[] values = vm.ENTRY_POINT_evaluate( null, new org.lgna.project.ast.Expression[] { expression } );
+					Object[] values = vm.ENTRY_POINT_evaluate( null, new Expression[] { expression } );
 					assert values.length == 1;
-					if( values[ 0 ] instanceof org.lgna.story.Paint ) {
-						org.lgna.story.Paint paint = (org.lgna.story.Paint)values[ 0 ];
+					if( values[ 0 ] instanceof Paint ) {
+						Paint paint = (Paint)values[ 0 ];
 
-						edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.EmployeesOnly.getColor4f( paint, null );
-						edu.cmu.cs.dennisc.texture.Texture texture = org.lgna.story.EmployeesOnly.getTexture( paint, null );
+						Color4f color = EmployeesOnly.getColor4f( paint, null );
+						Texture texture = EmployeesOnly.getTexture( paint, null );
 
 						if( color != null ) {
-							g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.toAwtColor( color ) );
+							g.setColor( ColorUtilities.toAwtColor( color ) );
 							g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 						}
-						if( texture instanceof edu.cmu.cs.dennisc.texture.BufferedImageTexture ) {
-							edu.cmu.cs.dennisc.texture.BufferedImageTexture bufferedImageTexture = (edu.cmu.cs.dennisc.texture.BufferedImageTexture)texture;
-							edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredScaledToFitImage( g, bufferedImageTexture.getBufferedImage(), this );
+						if( texture instanceof BufferedImageTexture ) {
+							BufferedImageTexture bufferedImageTexture = (BufferedImageTexture)texture;
+							GraphicsUtilities.drawCenteredScaledToFitImage( g, bufferedImageTexture.getBufferedImage(), this );
 						}
 					}
 				}
 			}
 		};
-		rv.setPreferredSize( new java.awt.Dimension( 128, 128 ) );
+		rv.setPreferredSize( new Dimension( 128, 128 ) );
 		return rv;
 	}
 }

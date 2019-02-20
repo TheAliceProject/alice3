@@ -45,24 +45,31 @@ package org.lgna.croquet.views.imp;
 import org.lgna.croquet.views.DragComponent;
 import org.lgna.croquet.views.PaintUtilities;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JDragProxy extends JProxy {
-	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
+	private KeyListener keyAdapter = new KeyListener() {
 		@Override
-		public void keyPressed( java.awt.event.KeyEvent e ) {
+		public void keyPressed( KeyEvent e ) {
 		}
 
 		@Override
-		public void keyReleased( java.awt.event.KeyEvent e ) {
-			if( e.getKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE ) {
+		public void keyReleased( KeyEvent e ) {
+			if( e.getKeyCode() == KeyEvent.VK_ESCAPE ) {
 				JDragProxy.this.getDragComponent().handleCancel( e );
 			}
 		}
 
 		@Override
-		public void keyTyped( java.awt.event.KeyEvent e ) {
+		public void keyTyped( KeyEvent e ) {
 		}
 	};
 	private boolean isAlphaDesiredWhenOverDropReceptor;
@@ -75,8 +82,8 @@ public class JDragProxy extends JProxy {
 	private final int DROP_SHADOW_SIZE = 6;
 
 	@Override
-	public java.awt.Dimension getProxySize() {
-		java.awt.Dimension rv = super.getProxySize();
+	public Dimension getProxySize() {
+		Dimension rv = super.getProxySize();
 		rv.width += DROP_SHADOW_SIZE;
 		rv.height += DROP_SHADOW_SIZE;
 		return rv;
@@ -106,9 +113,9 @@ public class JDragProxy extends JProxy {
 	}
 
 	@Override
-	protected void paintProxy( java.awt.Graphics2D g2 ) {
-		java.awt.Paint prevPaint = g2.getPaint();
-		g2.setPaint( new java.awt.Color( 0, 0, 0, 64 ) );
+	protected void paintProxy( Graphics2D g2 ) {
+		Paint prevPaint = g2.getPaint();
+		g2.setPaint( new Color( 0, 0, 0, 64 ) );
 		//todo?
 		g2.translate( DROP_SHADOW_SIZE, DROP_SHADOW_SIZE );
 		fillBounds( g2 );

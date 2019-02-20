@@ -42,9 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
-import org.lgna.croquet.Model;
+import org.alice.ide.projecturi.SelectProjectUriComposite;
+import org.alice.ide.uricontent.UriProjectLoader;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
 
-import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -52,24 +56,29 @@ import java.util.Iterator;
 public abstract class PotentialClearanceUriCreatorIteratingOperation extends UriPotentialClearanceIteratingOperation {
 	private final boolean isNew;
 
-	public PotentialClearanceUriCreatorIteratingOperation( java.util.UUID migrationId, org.alice.ide.ProjectDocumentFrame projectDocumentFrame, boolean isNew ) {
-		super( migrationId, projectDocumentFrame, org.alice.ide.projecturi.SelectProjectUriComposite.getInstance().getValueCreator() );
+	PotentialClearanceUriCreatorIteratingOperation( UUID migrationId, boolean isNew ) {
+		super( migrationId, SelectProjectUriComposite.getInstance().getValueCreator() );
 		this.isNew = isNew;
 	}
 
 	@Override
-	protected Iterator<Model> createIteratingData() {
-		java.util.Iterator<org.lgna.croquet.Model> rv = super.createIteratingData();
-		org.alice.ide.projecturi.SelectProjectUriComposite.getInstance().selectAppropriateTab( this.isNew );
+	protected List<Triggerable> createIteratingData() {
+		List<Triggerable> rv = super.createIteratingData();
+		SelectProjectUriComposite.getInstance().selectAppropriateTab( this.isNew );
 		return rv;
 	}
 
 	@Override
-	protected org.alice.ide.uricontent.UriProjectLoader getUriProjectLoader( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+	protected UriProjectLoader getUriProjectLoader( List<UserActivity> subSteps ) {
 		if( subSteps.size() > 0 ) {
-			return (org.alice.ide.uricontent.UriProjectLoader)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( org.lgna.croquet.ValueCreator.VALUE_KEY ) );
+			return (UriProjectLoader)subSteps.get( subSteps.size() - 1 ).getProducedValue();
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public boolean isToolBarTextClobbered() {
+		return true;
 	}
 }

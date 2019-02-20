@@ -42,15 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.events;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.croquet.models.cascade.MethodInvocationFillIn;
+import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ThisExpression;
 
+import java.util.Map;
+import java.util.UUID;
+
 //todo: consolidate w/ similar class
 public class AddEventListenerMethodInvocationFillIn extends MethodInvocationFillIn {
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, AddEventListenerMethodInvocationFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<AbstractMethod, AddEventListenerMethodInvocationFillIn> map = Maps.newHashMap();
 
-	public static synchronized AddEventListenerMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractMethod method ) {
+	public static synchronized AddEventListenerMethodInvocationFillIn getInstance( AbstractMethod method ) {
 		AddEventListenerMethodInvocationFillIn rv = map.get( method );
 		if( rv != null ) {
 			//pass
@@ -61,8 +66,8 @@ public class AddEventListenerMethodInvocationFillIn extends MethodInvocationFill
 		return rv;
 	}
 
-	private AddEventListenerMethodInvocationFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "bcc0b92b-2154-4b59-aafc-5243d2d3422e" ), new ThisExpression(), method );
+	private AddEventListenerMethodInvocationFillIn( AbstractMethod method ) {
+		super( UUID.fromString( "bcc0b92b-2154-4b59-aafc-5243d2d3422e" ), new ThisExpression(), method );
 	}
 
 	@Override

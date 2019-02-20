@@ -43,17 +43,35 @@
 
 package org.alice.ide.croquet.models.gallerybrowser;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.stageide.StageIDE;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.croquet.AbstractModel;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.icon.IconFactory;
+
+import java.awt.Dimension;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
-	private static final java.awt.Dimension DEFAULT_LARGE_ICON_SIZE = new java.awt.Dimension( 160, 120 );
+public abstract class GalleryDragModel extends AbstractModel implements DragModel {
+	private static final Dimension DEFAULT_LARGE_ICON_SIZE = new Dimension( 160, 120 );
 
-	protected static java.awt.Dimension getDefaultLargeIconSize() {
+	protected static Dimension getDefaultLargeIconSize() {
 		return DEFAULT_LARGE_ICON_SIZE;
 	}
 
-	public GalleryDragModel( java.util.UUID migrationId ) {
+	public GalleryDragModel( UUID migrationId ) {
 		super( migrationId );
 	}
 
@@ -64,44 +82,42 @@ public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
 
 	public abstract String getText();
 
-	public abstract org.lgna.croquet.icon.IconFactory getIconFactory();
+	public abstract IconFactory getIconFactory();
 
-	public java.awt.Dimension getIconSize() {
+	public Dimension getIconSize() {
 		return DEFAULT_LARGE_ICON_SIZE;
 	}
 
-	public abstract org.lgna.croquet.Model getLeftButtonClickModel();
+	public abstract Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller );
 
 	@Override
-	public java.util.List<? extends org.lgna.croquet.DropReceptor> createListOfPotentialDropReceptors() {
-		org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
+	public List<? extends DropReceptor> createListOfPotentialDropReceptors() {
+		StageIDE ide = StageIDE.getActiveInstance();
 		if( ide != null ) {
-			org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = ide.getSceneEditor();
-			return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( sceneEditor.getDropReceptor() );
+			StorytellingSceneEditor sceneEditor = ide.getSceneEditor();
+			return Lists.newArrayList( sceneEditor.getDropReceptor() );
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
 	@Override
-	public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {
+	public void handleDragStarted( DragStep step ) {
 	}
 
 	@Override
-	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step ) {
+	public void handleDragEnteredDropReceptor( DragStep step ) {
 	}
 
 	@Override
-	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step ) {
+	public void handleDragExitedDropReceptor( DragStep step ) {
 	}
 
 	@Override
-	public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
+	public void handleDragStopped( DragStep step ) {
 	}
 
-	public abstract edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox();
+	public abstract AxisAlignedBox getBoundingBox();
 
 	public abstract boolean placeOnGround();
-
-	public abstract boolean isInstanceCreator();
 }

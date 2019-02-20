@@ -43,16 +43,20 @@
 
 package org.alice.ide.name.validators;
 
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserParameter;
+
 public class ParameterNameValidator extends TransientNameValidator {
-	private static org.lgna.project.ast.UserCode getCode( org.lgna.project.ast.UserParameter parameter ) {
-		return (org.lgna.project.ast.UserCode)parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
+	private static UserCode getCode( UserParameter parameter ) {
+		return (UserCode)parameter.getFirstAncestorAssignableTo( AbstractCode.class );
 	}
 
-	public ParameterNameValidator( org.lgna.project.ast.UserParameter parameter ) {
+	public ParameterNameValidator( UserParameter parameter ) {
 		super( parameter, getCode( parameter ), null );
 	}
 
-	public ParameterNameValidator( org.lgna.project.ast.UserCode code ) {
+	public ParameterNameValidator( UserCode code ) {
 		super( null, code, null );
 	}
 

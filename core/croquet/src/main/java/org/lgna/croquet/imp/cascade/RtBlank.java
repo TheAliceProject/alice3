@@ -43,6 +43,9 @@
 
 package org.lgna.croquet.imp.cascade;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.AbstractCascadeMenuModel;
 import org.lgna.croquet.CascadeBlank;
 import org.lgna.croquet.CascadeBlankChild;
@@ -52,16 +55,18 @@ import org.lgna.croquet.CascadeItem;
 import org.lgna.croquet.CascadeSeparator;
 import org.lgna.croquet.CascadeUnfilledInCancel;
 
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-class RtBlank<B> extends RtNode<CascadeBlank<B>, org.lgna.croquet.imp.cascade.BlankNode<B>> {
+class RtBlank<B> extends RtNode<CascadeBlank<B>, BlankNode<B>> {
 	public static class ItemChildrenAndComboOffsetsPair {
 		private final RtItem[] rtItems;
-		private final java.util.List<Integer> comboOffsets;
+		private final List<Integer> comboOffsets;
 
-		public ItemChildrenAndComboOffsetsPair( java.util.List<RtItem> baseRtItems, java.util.List<Integer> comboOffsets ) {
-			this.rtItems = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( baseRtItems, RtItem.class );
+		public ItemChildrenAndComboOffsetsPair( List<RtItem> baseRtItems, List<Integer> comboOffsets ) {
+			this.rtItems = ArrayUtilities.createArray( baseRtItems, RtItem.class );
 			if( comboOffsets.size() > 0 ) {
 				this.comboOffsets = comboOffsets;
 			} else {
@@ -98,7 +103,7 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, org.lgna.croquet.imp.cascade.Bl
 		return this.isAutomaticallyDetermined;
 	}
 
-	public org.lgna.croquet.imp.cascade.AbstractItemNode getSelectedFillInNode() {
+	public AbstractItemNode getSelectedFillInNode() {
 		if( this.rtSelectedFillIn != null ) {
 			return this.rtSelectedFillIn.getNode();
 		} else {
@@ -126,7 +131,7 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, org.lgna.croquet.imp.cascade.Bl
 			} else if( child instanceof RtSeparator ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unhandled child", child );
+				Logger.severe( "unhandled child", child );
 				return null;
 			}
 		}
@@ -137,8 +142,8 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, org.lgna.croquet.imp.cascade.Bl
 		if( this.itemChildrenAndComboOffsetsPair != null ) {
 			//pass
 		} else {
-			java.util.List<Integer> comboOffsets = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			java.util.List<RtItem> baseRtItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			List<Integer> comboOffsets = Lists.newLinkedList();
+			List<RtItem> baseRtItems = Lists.newLinkedList();
 			for( CascadeBlankChild blankChild : this.getElement().getFilteredChildren( this.getNode() ) ) {
 				final int N = blankChild.getItemCount();
 				switch( N ) {
@@ -148,7 +153,7 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, org.lgna.croquet.imp.cascade.Bl
 					comboOffsets.add( baseRtItems.size() );
 					break;
 				default:
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( N, blankChild );
+					Logger.severe( N, blankChild );
 				}
 				for( int i = 0; i < N; i++ ) {
 					CascadeItem item = blankChild.getItemAt( i );
@@ -218,9 +223,9 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, org.lgna.croquet.imp.cascade.Bl
 		}
 	}
 
-	public B createValue( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public B createValue() {
 		if( this.rtSelectedFillIn != null ) {
-			return this.rtSelectedFillIn.createValue( transactionHistory );
+			return this.rtSelectedFillIn.createValue();
 		} else {
 			throw new RuntimeException();
 		}

@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.math.immutable.MRay;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -179,8 +181,8 @@ public final class Ray {
 		//		this.direction = LinearAlgebra.newVector3d( transformedDirection );
 	}
 
-	public edu.cmu.cs.dennisc.math.immutable.MRay createImmutable() {
-		return new edu.cmu.cs.dennisc.math.immutable.MRay( this.origin.createImmutable(), this.direction.createImmutable() );
+	public MRay createImmutable() {
+		return new MRay( this.origin.createImmutable(), this.direction.createImmutable() );
 	}
 
 	@Override

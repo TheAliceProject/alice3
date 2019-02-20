@@ -42,15 +42,29 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import java.awt.Dimension;
 import java.text.MessageFormat;
+import java.util.UUID;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
 
+import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.stageide.oneshot.edits.LocalTransformationEdit;
 import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Element;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.UserField;
+import org.lgna.story.MoveAndOrientTo;
+import org.lgna.story.SMovableTurnable;
+import org.lgna.story.SThing;
+import org.lgna.story.SThingMarker;
 
 /**
  * @author dculyba
@@ -58,7 +72,7 @@ import org.lgna.project.ast.UserField;
  */
 public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 
-	protected static final java.awt.Dimension ICON_DIMENSION = new java.awt.Dimension( 25, 20 );
+	protected static final Dimension ICON_DIMENSION = new Dimension( 25, 20 );
 
 	private UserField markerField;
 	private UserField selectedField;
@@ -68,8 +82,8 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 
 	private MoveToImageIcon imageIcon;
 
-	protected ObjectMarkerMoveActionOperation( java.util.UUID id ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, id );
+	protected ObjectMarkerMoveActionOperation( UUID id ) {
+		super( Application.PROJECT_GROUP, id );
 		this.markerField = null;
 		this.selectedField = null;
 		this.imageIcon = new MoveToImageIcon();
@@ -100,7 +114,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 	}
 
 	@Override
-	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+	protected Class<? extends Element> getClassUsedForLocalization() {
 		return ObjectMarkerMoveActionOperation.class;
 	}
 
@@ -110,7 +124,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 		{
 			String unformattedTooltipText = this.findLocalizedText( "tooltip" );
 			MessageFormat formatter = new MessageFormat( "" );
-			formatter.setLocale( javax.swing.JComponent.getDefaultLocale() );
+			formatter.setLocale( JComponent.getDefaultLocale() );
 			formatter.applyPattern( unformattedTooltipText );
 			String tooltipText = formatter.format( new Object[] { this.toMoveField.getName(), this.toMoveToField.getName() } );
 			this.setToolTipText( tooltipText );
@@ -126,7 +140,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 
 	public void setMarkerField( UserField markerField )
 	{
-		if( ( markerField == null ) || markerField.getValueType().isAssignableTo( org.lgna.story.SThingMarker.class ) )
+		if( ( markerField == null ) || markerField.getValueType().isAssignableTo( SThingMarker.class ) )
 		{
 			this.markerField = markerField;
 		}
@@ -143,7 +157,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 
 	public void setSelectedField( AbstractField field )
 	{
-		if( ( field instanceof UserField ) && field.getValueType().isAssignableTo( org.lgna.story.SMovableTurnable.class ) )
+		if( ( field instanceof UserField ) && field.getValueType().isAssignableTo( SMovableTurnable.class ) )
 		{
 			this.selectedField = (UserField)field;
 		}
@@ -159,14 +173,14 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		if( ( this.toMoveField != null ) && ( this.toMoveToField != null ) ) {
-			org.lgna.project.ast.Expression toMoveToExpression = new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.toMoveToField );
-			AbstractMethod method = org.lgna.project.ast.AstUtilities.lookupMethod( org.lgna.story.SMovableTurnable.class, "moveAndOrientTo", new Class<?>[] { org.lgna.story.SThing.class, org.lgna.story.MoveAndOrientTo.Detail[].class } );
-			LocalTransformationEdit edit = new LocalTransformationEdit( step, org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( this.toMoveField ), method, new org.lgna.project.ast.Expression[] { toMoveToExpression } );
-			step.commitAndInvokeDo( edit );
+			Expression toMoveToExpression = new FieldAccess(toMoveToField);
+			AbstractMethod method = AstUtilities.lookupMethod( SMovableTurnable.class, "moveAndOrientTo", new Class<?>[] { SThing.class, MoveAndOrientTo.Detail[].class } );
+			LocalTransformationEdit edit = new LocalTransformationEdit( activity, ThisFieldAccessFactory.getInstance( this.toMoveField ), method, new Expression[] { toMoveToExpression } );
+			activity.commitAndInvokeDo( edit );
 		} else {
-			step.cancel();
+			activity.cancel();
 		}
 	}
 

@@ -43,10 +43,11 @@
 
 package org.alice.interact;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.alice.interact.HandleSupportingDragAdapter.ObjectType;
+import org.alice.interact.DragAdapter.ObjectType;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.handle.HandleSet;
 
@@ -71,7 +72,7 @@ public final class InteractionGroup {
 	}
 
 	public static class InteractionInfo {
-		public InteractionInfo( PossibleObjects possibleObjects, HandleSet handleSet, ManipulatorConditionSet manipulator, org.alice.interact.PickHint.PickType... acceptableTypes ) {
+		public InteractionInfo( PossibleObjects possibleObjects, HandleSet handleSet, ManipulatorConditionSet manipulator, PickHint.PickType... acceptableTypes ) {
 			this.possibleObjects = possibleObjects;
 			this.handleSet = handleSet;
 			this.manipulator = manipulator;
@@ -101,16 +102,14 @@ public final class InteractionGroup {
 	}
 
 	public InteractionGroup( InteractionInfo... interactionInfos ) {
-		for( InteractionInfo info : interactionInfos ) {
-			groups.add( info );
-		}
+		Collections.addAll( groups, interactionInfos );
 	}
 
 	public void addInteractionInfo( InteractionInfo info ) {
 		groups.add( info );
 	}
 
-	public void addInteractionInfo( PossibleObjects possibleObjects, HandleSet handleSet, ManipulatorConditionSet manipulator, org.alice.interact.PickHint.PickType... acceptableTypes ) {
+	public void addInteractionInfo( PossibleObjects possibleObjects, HandleSet handleSet, ManipulatorConditionSet manipulator, PickHint.PickType... acceptableTypes ) {
 		groups.add( new InteractionInfo( possibleObjects, handleSet, manipulator, acceptableTypes ) );
 	}
 

@@ -43,7 +43,10 @@
 
 package org.alice.stageide.properties;
 
+import org.alice.ide.IDE;
 import org.lgna.croquet.BooleanState;
+
+import java.util.UUID;
 
 public class IsAllScaleLinkedState extends BooleanState
 {
@@ -56,7 +59,7 @@ public class IsAllScaleLinkedState extends BooleanState
 	}
 
 	private IsAllScaleLinkedState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2667c9ff-fc8a-4675-aa4d-0ae317dbcf51" ), true );
+		super( IDE.DOCUMENT_UI_GROUP, UUID.fromString( "2667c9ff-fc8a-4675-aa4d-0ae317dbcf51" ), true );
 		this.setIconForBothTrueAndFalse( LinkScaleIcon.SCALE_ICON );
 	}
 }

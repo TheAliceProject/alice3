@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.alice.ide.x;
 
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AbstractType;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,7 +62,7 @@ public class MenuIconIdeAstI18nFactory extends ImmutableAstI18nFactory {
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
+	protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
 		return null;
 	}
 
@@ -66,7 +70,7 @@ public class MenuIconIdeAstI18nFactory extends ImmutableAstI18nFactory {
 	// this epic hack was inserted to account for menu item icons returning a size of 0,0
 	// dennisc
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.views.SwingComponentView<?> component ) {
-		return new org.lgna.croquet.views.LineAxisPanel( component );
+	protected SwingComponentView<?> EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( SwingComponentView<?> component ) {
+		return new LineAxisPanel( component );
 	}
 }

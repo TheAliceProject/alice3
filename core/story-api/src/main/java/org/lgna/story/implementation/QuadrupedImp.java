@@ -42,28 +42,27 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.Vector4;
+import org.lgna.story.SQuadruped;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.QuadrupedResource;
 
 /**
  * @author dculyba
  * 
  */
-public final class QuadrupedImp extends JointedModelImp<org.lgna.story.SQuadruped, org.lgna.story.resources.QuadrupedResource> {
-	public QuadrupedImp( org.lgna.story.SQuadruped abstraction, JointImplementationAndVisualDataFactory<org.lgna.story.resources.QuadrupedResource> factory ) {
+public final class QuadrupedImp extends JointedModelImp<SQuadruped, QuadrupedResource> {
+	public QuadrupedImp( SQuadruped abstraction, JointImplementationAndVisualDataFactory<QuadrupedResource> factory ) {
 		super( abstraction, factory );
 	}
 
 	@Override
-	public org.lgna.story.resources.JointId[] getRootJointIds() {
-		return org.lgna.story.resources.QuadrupedResource.JOINT_ID_ROOTS;
+	protected Vector4 getThoughtBubbleOffset() {
+		return this.getTopOffsetForJoint( this.getJointImplementation( QuadrupedResource.HEAD ) );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.QuadrupedResource.HEAD ) );
-	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.QuadrupedResource.MOUTH ) );
+	protected Vector4 getSpeechBubbleOffset() {
+		return this.getFrontOffsetForJoint( this.getJointImplementation( QuadrupedResource.MOUTH ) );
 	}
 }

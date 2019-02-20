@@ -42,27 +42,36 @@
  *******************************************************************************/
 package org.alice.stageide.showme;
 
+import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
+import org.alice.ide.IDE;
+import org.alice.ide.perspectives.ProjectPerspective;
+import org.lgna.croquet.ItemState;
+import org.lgna.croquet.Operation;
+
+import javax.swing.SwingUtilities;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ChangePerspectiveStencilModel extends IdeStencil {
-	private final org.alice.ide.perspectives.ProjectPerspective perspective;
+	private final ProjectPerspective perspective;
 
-	public ChangePerspectiveStencilModel( java.util.UUID migrationId, org.alice.ide.perspectives.ProjectPerspective perspective ) {
+	public ChangePerspectiveStencilModel( UUID migrationId, ProjectPerspective perspective ) {
 		super( migrationId );
 		this.perspective = perspective;
 	}
 
 	@Override
 	protected final void showStencil() {
-		final org.lgna.croquet.ItemState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getPerspectiveState();
-		org.lgna.croquet.Operation operation = perspectiveState.getItemSelectionOperation( this.perspective );
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverCroquetViewController( operation, this.getText() );
+		final ItemState<ProjectPerspective> perspectiveState = IDE.getActiveInstance().getDocumentFrame().getPerspectiveState();
+		Operation operation = perspectiveState.getItemSelectionOperation( this.perspective );
+		IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverCroquetViewController( operation, this.getText() );
 		new Thread() {
 			@Override
 			public void run() {
-				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
-				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				ThreadUtilities.sleep( 2000 );
+				SwingUtilities.invokeLater( new Runnable() {
 					@Override
 					public void run() {
 						perspectiveState.setValueTransactionlessly( perspective );

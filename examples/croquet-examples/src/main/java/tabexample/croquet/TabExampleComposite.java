@@ -42,25 +42,31 @@
  */
 package tabexample.croquet;
 
+import org.lgna.croquet.ImmutableDataTabState;
+import org.lgna.croquet.SimpleComposite;
+import tabexample.croquet.views.TabExampleView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TabExampleComposite extends org.lgna.croquet.SimpleComposite<tabexample.croquet.views.TabExampleView> {
+public class TabExampleComposite extends SimpleComposite<TabExampleView> {
 	public TabExampleComposite() {
-		super( java.util.UUID.fromString( "8ce6ffd5-a515-429d-a599-e79ff634ca85" ) );
+		super( UUID.fromString( "8ce6ffd5-a515-429d-a599-e79ff634ca85" ) );
 	}
 
-	public org.lgna.croquet.ImmutableDataTabState<AbstractTab> getTabState() {
+	public ImmutableDataTabState<AbstractTab> getTabState() {
 		return this.tabState;
 	}
 
 	@Override
-	protected tabexample.croquet.views.TabExampleView createView() {
-		return new tabexample.croquet.views.TabExampleView( this );
+	protected TabExampleView createView() {
+		return new TabExampleView( this );
 	}
 
 	private final TabA tabA = new TabA();
 	private final TabB tabB = new TabB();
-	private final org.lgna.croquet.ImmutableDataTabState<AbstractTab> tabState = this.createImmutableTabState( "tabState", 0, AbstractTab.class, this.tabA, this.tabB );
+	private final ImmutableDataTabState<AbstractTab> tabState = this.createImmutableTabState( "tabState", 0, AbstractTab.class, this.tabA, this.tabB );
 
 }

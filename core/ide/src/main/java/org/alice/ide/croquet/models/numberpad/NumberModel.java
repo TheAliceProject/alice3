@@ -42,56 +42,71 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.numberpad;
 
+import org.lgna.croquet.Group;
+import org.lgna.croquet.history.PrepStep;
+import org.lgna.croquet.history.EmptyPrepStep;
+import org.lgna.croquet.triggers.DocumentEventTrigger;
+import org.lgna.project.ast.Expression;
+
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Caret;
+import javax.swing.text.PlainDocument;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* extends edu.cmu.cs.dennisc.croquet.StringState */{
-	@Deprecated/* package-private */final static org.lgna.croquet.Group NUMBER_PAD_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "NUMBER_PAD_GROUP" );
+public abstract class NumberModel<N extends Expression> /* extends edu.cmu.cs.dennisc.croquet.StringState */{
+	@Deprecated/* package-private */final static Group NUMBER_PAD_GROUP = Group.getInstance( UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "NUMBER_PAD_GROUP" );
 
-	private final javax.swing.text.PlainDocument document = new javax.swing.text.PlainDocument();
-	private final javax.swing.JTextField textField = new javax.swing.JTextField();
+	private final PlainDocument document = new PlainDocument();
+	private final JTextField textField = new JTextField();
 
-	private static final class NumberDocumentListener implements javax.swing.event.DocumentListener {
+	private static final class NumberDocumentListener implements DocumentListener {
 		private int ignoreCount;
 
-		public void pushIgnore() {
+		void pushIgnore() {
 			this.ignoreCount++;
 		}
 
-		public void popIgnore() {
+		void popIgnore() {
 			this.ignoreCount--;
 		}
 
-		private void update( javax.swing.event.DocumentEvent e ) {
+		private void update( DocumentEvent e ) {
 			if( this.ignoreCount == 0 ) {
-				org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.DocumentEventTrigger.createUserInstance( e ) );
+				PrepStep step = new EmptyPrepStep( DocumentEventTrigger.createUserInstance( e ), "Key pressed");
+				step.getUserActivity().finish();
 			}
 		}
 
 		@Override
-		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+		public void changedUpdate( DocumentEvent e ) {
 			this.update( e );
 		}
 
 		@Override
-		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+		public void insertUpdate( DocumentEvent e ) {
 			this.update( e );
 		}
 
 		@Override
-		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+		public void removeUpdate( DocumentEvent e ) {
 			this.update( e );
 		}
 	}
 
 	private final NumberDocumentListener documentListener = new NumberDocumentListener();
 
-	public NumberModel( org.lgna.croquet.Group group, java.util.UUID id ) {
+	public NumberModel( Group group, UUID id ) {
 		this.textField.setDocument( this.document );
 		this.document.addDocumentListener( this.documentListener );
 	}
 
-	public javax.swing.JTextField getTextField() {
+	public JTextField getTextField() {
 		return this.textField;
 	}
 
@@ -129,7 +144,7 @@ public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* 
 				} else {
 					document.insertString( 0, "-", null );
 				}
-			} catch( javax.swing.text.BadLocationException ble ) {
+			} catch( BadLocationException ble ) {
 				throw new RuntimeException( ble );
 			}
 		} finally {
@@ -140,7 +155,7 @@ public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* 
 	public void delete() {
 		this.documentListener.pushIgnore();
 		try {
-			javax.swing.text.Caret caret = this.textField.getCaret();
+			Caret caret = this.textField.getCaret();
 			int dot = caret.getDot();
 			int mark = caret.getMark();
 			if( dot != mark ) {
@@ -149,7 +164,7 @@ public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* 
 				if( dot > 0 ) {
 					try {
 						document.remove( dot - 1, 1 );
-					} catch( javax.swing.text.BadLocationException ble ) {
+					} catch( BadLocationException ble ) {
 						throw new RuntimeException( ble );
 					}
 				}
@@ -164,7 +179,7 @@ public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* 
 		try {
 			try {
 				this.document.replace( 0, this.document.getLength(), text, null );
-			} catch( javax.swing.text.BadLocationException ble ) {
+			} catch( BadLocationException ble ) {
 				throw new RuntimeException( ble );
 			}
 		} finally {
@@ -187,7 +202,7 @@ public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* 
 			if( N > 0 ) {
 				String text = document.getText( 0, N );
 				try {
-					org.lgna.project.ast.Expression rv = this.valueOf( text );
+					Expression rv = this.valueOf( text );
 					if( rv != null ) {
 						return null;
 					} else {
@@ -199,7 +214,7 @@ public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* 
 			} else {
 				return "enterNumber";
 			}
-		} catch( javax.swing.text.BadLocationException ble ) {
+		} catch( BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
 	}
@@ -214,7 +229,7 @@ public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* 
 			} catch( NumberFormatException nfe ) {
 				return null;
 			}
-		} catch( javax.swing.text.BadLocationException ble ) {
+		} catch( BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
 	}

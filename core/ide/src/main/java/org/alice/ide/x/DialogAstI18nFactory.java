@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.x;
 
+import org.alice.ide.IDE;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,6 +57,6 @@ public class DialogAstI18nFactory extends MutableAstI18nFactory {
 	}
 
 	private DialogAstI18nFactory() {
-		super( org.alice.ide.IDE.INHERIT_GROUP );
+		super( IDE.INHERIT_GROUP );
 	}
 }

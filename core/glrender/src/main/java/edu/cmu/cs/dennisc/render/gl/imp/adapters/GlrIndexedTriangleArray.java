@@ -46,11 +46,12 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 import static com.jogamp.opengl.GL.GL_TRIANGLES;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrIndexedTriangleArray extends GlrIndexedPolygonArray<edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray> {
+public class GlrIndexedTriangleArray extends GlrIndexedPolygonArray<IndexedTriangleArray> {
 	public GlrIndexedTriangleArray() {
 		super( GL_TRIANGLES, 3 );
 	}

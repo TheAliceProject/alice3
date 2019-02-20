@@ -42,11 +42,20 @@
  */
 package edu.cmu.cs.dennisc.pathfinding;
 
+import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.awt.Component;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Grid {
-	private java.util.Random s_random = new java.util.Random( System.currentTimeMillis() );
+	private Random s_random = new Random( System.currentTimeMillis() );
 	private Cell[][] m_cells;
 
 	public Grid( int rowCount, int columnCount ) {
@@ -152,7 +161,7 @@ public class Grid {
 		return neighbors;
 	}
 
-	private Cell getCellWithMinimumF( java.util.Set<Cell> open, Cell dst ) {
+	private Cell getCellWithMinimumF( Set<Cell> open, Cell dst ) {
 		int fMin = Integer.MAX_VALUE;
 		Cell cellMin = null;
 		for( Cell cell : open ) {
@@ -167,7 +176,7 @@ public class Grid {
 		return cellMin;
 	}
 
-	public java.util.List<Cell> findShortestPathBetween( Cell src, Cell dst, java.util.Set<Cell> open, java.util.Set<Cell> closed, java.awt.Component observer ) {
+	public List<Cell> findShortestPathBetween( Cell src, Cell dst, Set<Cell> open, Set<Cell> closed, Component observer ) {
 		//todo: remove?
 		for( int row = 0; row < getRowCount(); row++ ) {
 			for( int column = 0; column < getColumnCount(); column++ ) {
@@ -187,11 +196,11 @@ public class Grid {
 		while( !open.isEmpty() ) {
 			if( observer != null ) {
 				observer.repaint();
-				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 100 );
+				ThreadUtilities.sleep( 100 );
 			}
 			Cell bestNeighbor = getCellWithMinimumF( open, dst );
 			if( bestNeighbor.equals( dst ) ) {
-				java.util.List<Cell> path = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( closed.size() + 1 );
+				List<Cell> path = Lists.newArrayListWithInitialCapacity( closed.size() + 1 );
 				Cell cell = dst;
 				while( cell != null ) {
 					path.add( cell );
@@ -226,14 +235,14 @@ public class Grid {
 		return null;
 	}
 
-	public java.util.List<Cell> findShortestPathBetween( Cell src, Cell dst ) {
+	public List<Cell> findShortestPathBetween( Cell src, Cell dst ) {
 		if( src.equals( dst ) ) {
-			java.util.List<Cell> path = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( 2 );
+			List<Cell> path = Lists.newArrayListWithInitialCapacity( 2 );
 			path.add( src );
 			path.add( dst );
 			return path;
 		} else {
-			return findShortestPathBetween( src, dst, new java.util.HashSet<Cell>(), new java.util.HashSet<Cell>(), null );
+			return findShortestPathBetween( src, dst, new HashSet<Cell>(), new HashSet<Cell>(), null );
 		}
 	}
 }

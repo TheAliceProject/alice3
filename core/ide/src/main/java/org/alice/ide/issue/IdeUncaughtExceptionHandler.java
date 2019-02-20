@@ -42,23 +42,38 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import edu.cmu.cs.dennisc.javax.swing.JDialogBuilder;
+import edu.cmu.cs.dennisc.javax.swing.WindowStack;
+import org.alice.ide.issue.croquet.LgnaExceptionComposite;
+import org.lgna.common.LgnaRuntimeException;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.views.Frame;
+import org.lgna.issue.AbstractUncaughtExceptionHandler;
+import org.lgna.issue.ApplicationIssueConfiguration;
+import org.lgna.issue.swing.JSubmitPane;
+
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import java.awt.BorderLayout;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeUncaughtExceptionHandler extends org.lgna.issue.AbstractUncaughtExceptionHandler {
+public abstract class IdeUncaughtExceptionHandler extends AbstractUncaughtExceptionHandler {
 	private static final String SILENTLY_FAIL_TEXT = "Silently Fail";
 	private static final String CONTINUE_TEXT = "Continue";
 
-	public IdeUncaughtExceptionHandler( org.lgna.issue.ApplicationIssueConfiguration config ) {
+	public IdeUncaughtExceptionHandler( ApplicationIssueConfiguration config ) {
 		this.config = config;
 	}
 
 	@Override
-	protected boolean handleUncaughtLgnaRuntimeException( Thread thread, Throwable originalThrowable, org.lgna.common.LgnaRuntimeException originalThrowableOrTarget ) {
-		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+	protected boolean handleUncaughtLgnaRuntimeException( Thread thread, Throwable originalThrowable, LgnaRuntimeException originalThrowableOrTarget ) {
+		Application application = Application.getActiveInstance();
 		if( application != null ) {
 			//todo: check to see if program running
-			new org.alice.ide.issue.croquet.LgnaExceptionComposite( thread, originalThrowableOrTarget ).getLaunchOperation().fire();
+			new LgnaExceptionComposite( thread, originalThrowableOrTarget ).getLaunchOperation().fire();
 			return true;
 		} else {
 			return false;
@@ -69,22 +84,22 @@ public abstract class IdeUncaughtExceptionHandler extends org.lgna.issue.Abstrac
 	protected void handleUncaughtException( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget ) {
 		this.count++;
 		if( this.isBugReportSubmissionPaneDesired ) {
-			final org.lgna.issue.swing.JSubmitPane jSubmitPane = new org.lgna.issue.swing.JSubmitPane( thread, originalThrowable, originalThrowableOrTarget, this.config );
+			final JSubmitPane jSubmitPane = new JSubmitPane( thread, originalThrowable, originalThrowableOrTarget, this.config );
 
 			StringBuilder sbTitle = new StringBuilder();
 			sbTitle.append( "Please Submit Bug Report: " );
 			sbTitle.append( config.getApplicationName() );
 
-			final javax.swing.JDialog dialog = new edu.cmu.cs.dennisc.javax.swing.JDialogBuilder()
+			final JDialog dialog = new JDialogBuilder()
 					.title( sbTitle.toString() )
 					.isModal( true )
 					.build();
 
-			dialog.getContentPane().add( jSubmitPane, java.awt.BorderLayout.CENTER );
+			dialog.getContentPane().add( jSubmitPane, BorderLayout.CENTER );
 			dialog.pack();
 
 			//todo
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
 					dialog.pack();
@@ -100,17 +115,17 @@ public abstract class IdeUncaughtExceptionHandler extends org.lgna.issue.Abstrac
 					Object[] options = { CONTINUE_TEXT, SILENTLY_FAIL_TEXT };
 					String message = "If you are caught in an unending stream of exceptions:\n    1) Press the \"" + SILENTLY_FAIL_TEXT + "\" button,\n    2) Attempt save your project to a different file (use Save As...), and\n    3) Restart " + config.getApplicationName() + ".\nElse\n    1) Press the \"" + CONTINUE_TEXT + "\" button.";
 					String title = "Multiple Exceptions Detected";
-					int resultIgnore = javax.swing.JOptionPane.showOptionDialog( edu.cmu.cs.dennisc.javax.swing.WindowStack.peek(), message, title, javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.ERROR_MESSAGE, null, options, CONTINUE_TEXT );
-					if( resultIgnore == javax.swing.JOptionPane.NO_OPTION ) {
+					int resultIgnore = JOptionPane.showOptionDialog( WindowStack.peek(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, CONTINUE_TEXT );
+					if( resultIgnore == JOptionPane.NO_OPTION ) {
 						this.isBugReportSubmissionPaneDesired = false;
 					}
 				}
 			}
 		}
 		boolean isSystemExitDesired = true;
-		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+		Application application = Application.getActiveInstance();
 		if( application != null ) {
-			org.lgna.croquet.views.Frame frame = application.getDocumentFrame().getFrame();
+			Frame frame = application.getDocumentFrame().getFrame();
 			if( frame != null ) {
 				if( frame.isVisible() ) {
 					isSystemExitDesired = false;
@@ -118,12 +133,12 @@ public abstract class IdeUncaughtExceptionHandler extends org.lgna.issue.Abstrac
 			}
 		}
 		if( isSystemExitDesired ) {
-			javax.swing.JOptionPane.showMessageDialog( null, "Exception occurred before application was able to show window.  Exiting." );
+			JOptionPane.showMessageDialog( null, "Exception occurred before application was able to show window.  Exiting." );
 			System.exit( -1 );
 		}
 	}
 
-	private final org.lgna.issue.ApplicationIssueConfiguration config;
+	private final ApplicationIssueConfiguration config;
 	private boolean isBugReportSubmissionPaneDesired = true;
 	private int count = 0;
 }

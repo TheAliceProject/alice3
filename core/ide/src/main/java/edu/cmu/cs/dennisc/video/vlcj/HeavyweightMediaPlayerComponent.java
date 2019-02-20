@@ -42,12 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.video.vlcj;
 
+import edu.cmu.cs.dennisc.java.awt.Painter;
+import edu.cmu.cs.dennisc.video.VideoPlayer;
+import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
+
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 /**
  * @author Kyle J. Harms
  */
-/* package-private */class HeavyweightMediaPlayerComponent extends uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent implements VlcjMediaPlayerComponent {
+/* package-private */class HeavyweightMediaPlayerComponent extends EmbeddedMediaPlayerComponent implements VlcjMediaPlayerComponent {
 
-	private edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter;
+	private Painter<VideoPlayer> painter;
 
 	private final VlcjVideoPlayer videoPlayer;
 
@@ -65,27 +74,27 @@ package edu.cmu.cs.dennisc.video.vlcj;
 	}
 
 	@Override
-	protected java.awt.Canvas onGetCanvas() {
-		java.awt.Canvas rv = new java.awt.Canvas() {
+	protected Canvas onGetCanvas() {
+		Canvas rv = new Canvas() {
 			@Override
-			public void paint( java.awt.Graphics g ) {
+			public void paint( Graphics g ) {
 				super.paint( g );
 				if( painter != null ) {
-					painter.paint( (java.awt.Graphics2D)g, videoPlayer, this.getWidth(), this.getHeight() );
+					painter.paint( (Graphics2D)g, videoPlayer, this.getWidth(), this.getHeight() );
 				}
 			}
 		};
-		rv.setBackground( java.awt.Color.BLACK );
+		rv.setBackground( Color.BLACK );
 		return rv;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> getPainter() {
+	public Painter<VideoPlayer> getPainter() {
 		return this.painter;
 	}
 
 	@Override
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter ) {
+	public void setPainter( Painter<VideoPlayer> painter ) {
 		this.painter = painter;
 	}
 }

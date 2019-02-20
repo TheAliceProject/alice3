@@ -42,51 +42,58 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.models;
 
+import edu.cmu.cs.dennisc.property.ListProperty;
+import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
+import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ListPropertyMutableListModel<E> extends AbstractReorderableListModel<E> implements MutableListModel<E> {
-	private edu.cmu.cs.dennisc.property.ListProperty<E> property;
+	private ListProperty<E> property;
 
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> listPropertyListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<E>() {
+	private ListPropertyListener<E> listPropertyListener = new ListPropertyListener<E>() {
 		@Override
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e ) {
+		public void adding( AddListPropertyEvent<E> e ) {
 		}
 
 		@Override
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e ) {
+		public void added( AddListPropertyEvent<E> e ) {
 			//todo
 		}
 
 		@Override
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E> e ) {
+		public void clearing( ClearListPropertyEvent<E> e ) {
 		}
 
 		@Override
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E> e ) {
+		public void cleared( ClearListPropertyEvent<E> e ) {
 			//todo
 		}
 
 		@Override
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<E> e ) {
+		public void removing( RemoveListPropertyEvent<E> e ) {
 		}
 
 		@Override
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<E> e ) {
+		public void removed( RemoveListPropertyEvent<E> e ) {
 			//todo
 		}
 
 		@Override
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e ) {
+		public void setting( SetListPropertyEvent<E> e ) {
 		}
 
 		@Override
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e ) {
+		public void set( SetListPropertyEvent<E> e ) {
 			//todo
 		}
 	};
 
-	public ListPropertyMutableListModel( edu.cmu.cs.dennisc.property.ListProperty<E> property ) {
+	public ListPropertyMutableListModel( ListProperty<E> property ) {
 		this.property = property;
 	}
 

@@ -42,20 +42,30 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+
+import javax.swing.SwingUtilities;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CyclicBarrier;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StencilModel extends org.lgna.croquet.AbstractCompletionModel {
-	private final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
+public abstract class StencilModel extends AbstractCompletionModel implements Triggerable {
+	private final CyclicBarrier barrier = new CyclicBarrier( 2 );
 	private String text;
 
-	public StencilModel( java.util.UUID migrationId ) {
-		super( org.lgna.croquet.Application.INFORMATION_GROUP, migrationId );
+	public StencilModel( UUID migrationId ) {
+		super( Application.INFORMATION_GROUP, migrationId );
 	}
 
 	@Override
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
-		return java.util.Collections.emptyList();
+	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -79,12 +89,11 @@ public abstract class StencilModel extends org.lgna.croquet.AbstractCompletionMo
 
 	protected abstract void hideStencil();
 
-	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this );
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected final void performInActivity( UserActivity userActivity ) {
+		Logger.outln( this );
+		userActivity.setCompletionModel( this );
 		this.barrier.reset();
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
 				showStencil();
@@ -92,6 +101,14 @@ public abstract class StencilModel extends org.lgna.croquet.AbstractCompletionMo
 		} );
 		this.barrierAwait();
 		this.hideStencil();
-		step.finish();
+		userActivity.finish();
+	}
+
+	@Override
+	public void fire( UserActivity activity ) {
+		if( this.isEnabled() ) {
+			this.initializeIfNecessary();
+			this.performInActivity( activity );
+		}
 	}
 }

@@ -43,31 +43,36 @@
 
 package org.alice.ide.instancefactory.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.croquet.ItemCodec;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum InstanceFactoryCodec implements org.lgna.croquet.ItemCodec<org.alice.ide.instancefactory.InstanceFactory> {
+public enum InstanceFactoryCodec implements ItemCodec<InstanceFactory> {
 	SINGLETON;
 	@Override
-	public Class<org.alice.ide.instancefactory.InstanceFactory> getValueClass() {
-		return org.alice.ide.instancefactory.InstanceFactory.class;
+	public Class<InstanceFactory> getValueClass() {
+		return InstanceFactory.class;
 	}
 
 	@Override
-	public org.alice.ide.instancefactory.InstanceFactory decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public InstanceFactory decodeValue( BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 		//org.lgna.croquet.resolvers.Resolver<org.alice.ide.instancefactory.InstanceFactory> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		//return resolver.getResolved();
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.instancefactory.InstanceFactory value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, InstanceFactory value ) {
 		throw new RuntimeException( "todo" );
 		//binaryEncoder.encode( value.getResolver() );
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, org.alice.ide.instancefactory.InstanceFactory value ) {
+	public void appendRepresentation( StringBuilder sb, InstanceFactory value ) {
 		sb.append( value );
 	}
 }

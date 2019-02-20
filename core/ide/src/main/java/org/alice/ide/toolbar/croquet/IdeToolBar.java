@@ -42,16 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.toolbar.croquet;
 
+import org.alice.ide.toolbar.croquet.views.IdeToolBarView;
+import org.lgna.croquet.ToolBarComposite;
+import org.lgna.croquet.views.ToolBarView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeToolBar extends org.lgna.croquet.ToolBarComposite {
-	public IdeToolBar( java.util.UUID migrationId ) {
+public abstract class IdeToolBar extends ToolBarComposite {
+	public IdeToolBar( UUID migrationId ) {
 		super( migrationId );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ToolBarView createView() {
-		return new org.alice.ide.toolbar.croquet.views.IdeToolBarView( this );
+	protected ToolBarView createView() {
+		return new IdeToolBarView( this );
 	}
 }

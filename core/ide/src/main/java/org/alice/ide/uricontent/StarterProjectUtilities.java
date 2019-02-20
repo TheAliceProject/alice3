@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.alice.ide.uricontent;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,29 +56,29 @@ public class StarterProjectUtilities {
 
 	private static final String PREFIX = "starter";
 
-	public static java.net.URI toUri( java.io.File file ) {
-		java.net.URI fileUri = file.toURI();
+	public static URI toUri( File file ) {
+		URI fileUri = file.toURI();
 		String str = PREFIX + fileUri.toString();
 		try {
-			return new java.net.URI( str );
-		} catch( java.net.URISyntaxException urise ) {
+			return new URI( str );
+		} catch( URISyntaxException urise ) {
 			throw new RuntimeException( str, urise );
 		}
 	}
 
-	public static java.net.URI toFileUriFromStarterUri( java.net.URI starterUri ) {
+	public static URI toFileUriFromStarterUri( URI starterUri ) {
 		try {
-			return new java.net.URI( starterUri.toString().substring( PREFIX.length() ) );
-		} catch( java.net.URISyntaxException urise ) {
+			return new URI( starterUri.toString().substring( PREFIX.length() ) );
+		} catch( URISyntaxException urise ) {
 			throw new RuntimeException( urise );
 		}
 	}
 
-	public static java.io.File toFile( java.net.URI uri ) {
+	public static File toFile( URI uri ) {
 		String str = uri.toString().substring( PREFIX.length() );
 		try {
-			return new java.io.File( new java.net.URI( str ) );
-		} catch( java.net.URISyntaxException urise ) {
+			return new File( new URI( str ) );
+		} catch( URISyntaxException urise ) {
 			throw new RuntimeException( str, urise );
 		}
 	}

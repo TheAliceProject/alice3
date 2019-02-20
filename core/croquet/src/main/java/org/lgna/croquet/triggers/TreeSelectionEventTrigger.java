@@ -43,24 +43,21 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.ViewController;
+
+import javax.swing.event.TreeSelectionEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TreeSelectionEventTrigger extends EventObjectTrigger<javax.swing.event.TreeSelectionEvent> {
-	public static TreeSelectionEventTrigger createUserInstance( javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
-		return new TreeSelectionEventTrigger( null, treeSelectionEvent );
+public class TreeSelectionEventTrigger extends EventObjectTrigger<TreeSelectionEvent> {
+	public static UserActivity createUserActivity( TreeSelectionEvent treeSelectionEvent ) {
+		return new TreeSelectionEventTrigger( null, treeSelectionEvent ).getUserActivity();
 	}
 
-	private TreeSelectionEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
-		super( viewController, treeSelectionEvent );
-	}
-
-	public TreeSelectionEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected java.awt.Point getPoint() {
-		return null;
+	private TreeSelectionEventTrigger( ViewController<?, ?> viewController, TreeSelectionEvent treeSelectionEvent ) {
+		super( Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), viewController, treeSelectionEvent );
 	}
 }

@@ -43,44 +43,60 @@
 
 package org.alice.ide.ast.draganddrop;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import org.alice.ide.ProjectStack;
+import org.alice.ide.declarationseditor.CodeComposite;
+import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.DropSite;
+import org.lgna.project.ProgramTypeUtilities;
+import org.lgna.project.Project;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.Statement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite {
-	private final org.lgna.project.ast.BlockStatement blockStatement;
+public final class BlockStatementIndexPair implements DropSite {
+	private final BlockStatement blockStatement;
 	private final int index;
 
-	public static BlockStatementIndexPair createInstanceFromChildStatement( org.lgna.project.ast.Statement statement ) {
+	public static BlockStatementIndexPair createInstanceFromChildStatement( Statement statement ) {
 		assert statement != null;
-		org.lgna.project.ast.Node parent = statement.getParent();
-		assert parent instanceof org.lgna.project.ast.BlockStatement : parent;
-		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)parent;
+		Node parent = statement.getParent();
+		assert parent instanceof BlockStatement : parent;
+		BlockStatement blockStatement = (BlockStatement)parent;
 		int index = blockStatement.statements.indexOf( statement );
-		return new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( blockStatement, index );
+		return new BlockStatementIndexPair( blockStatement, index );
 	}
 
-	public BlockStatementIndexPair( org.lgna.project.ast.BlockStatement blockStatement, int index ) {
+	public BlockStatementIndexPair( BlockStatement blockStatement, int index ) {
 		assert blockStatement != null;
 		assert index >= 0 : index + " " + blockStatement;
 		this.blockStatement = blockStatement;
 		this.index = index;
 	}
 
-	public BlockStatementIndexPair( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
-		java.util.UUID id = binaryDecoder.decodeId();
-		this.blockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, id );
+	public BlockStatementIndexPair( BinaryDecoder binaryDecoder ) {
+		Project project = ProjectStack.peekProject();
+		UUID id = binaryDecoder.decodeId();
+		this.blockStatement = ProgramTypeUtilities.lookupNode( project, id );
 		assert this.blockStatement != null;
 		this.index = binaryDecoder.decodeInt();
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.blockStatement.getId() );
 		binaryEncoder.encode( this.index );
 	}
 
-	public org.lgna.project.ast.BlockStatement getBlockStatement() {
+	public BlockStatement getBlockStatement() {
 		return this.blockStatement;
 	}
 
@@ -89,9 +105,9 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 	}
 
 	@Override
-	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
-		org.lgna.project.ast.AbstractCode code = this.blockStatement.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
-		return org.alice.ide.declarationseditor.CodeComposite.getInstance( code ).getView().getCodePanelWithDropReceptor().getDropReceptor();
+	public DropReceptor getOwningDropReceptor() {
+		AbstractCode code = this.blockStatement.getFirstAncestorAssignableTo( AbstractCode.class );
+		return CodeComposite.getInstance( code ).getView().getCodePanelWithDropReceptor().getDropReceptor();
 	}
 
 	@Override
@@ -101,7 +117,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 		}
 		if( o instanceof BlockStatementIndexPair ) {
 			BlockStatementIndexPair bsip = (BlockStatementIndexPair)o;
-			return edu.cmu.cs.dennisc.java.util.Objects.equals( this.blockStatement, bsip.blockStatement ) && ( this.index == bsip.index );
+			return Objects.equals( this.blockStatement, bsip.blockStatement ) && ( this.index == bsip.index );
 		} else {
 			return false;
 		}

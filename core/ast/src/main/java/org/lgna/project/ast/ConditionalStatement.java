@@ -56,30 +56,47 @@ public final class ConditionalStatement extends Statement {
 		this.elseBody.setValue( elseBody );
 	}
 
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ConditionalStatement other = (ConditionalStatement)o;
-			if( this.booleanExpressionBodyPairs.valueContentEquals( other.booleanExpressionBodyPairs, strictness, filter ) ) {
-				return this.elseBody.valueContentEquals( other.elseBody, strictness, filter );
-			}
-		}
-		return false;
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendConditional(this);
 	}
 
 	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
-		String text = "if";
-		for( BooleanExpressionBodyPair booleanExpressionBodyPair : this.booleanExpressionBodyPairs ) {
-			generator.appendString( text );
-			generator.appendString( "(" );
-			generator.appendExpression( booleanExpressionBodyPair.expression.getValue() );
-			generator.appendString( ")" );
-			booleanExpressionBodyPair.body.getValue().appendJava( generator );
-			text = "else if";
+	boolean containsAtLeastOneEnabledReturnStatement() {
+		if (!isEnabled.getValue()) {
+			return false;
 		}
-		generator.appendString( "else" );
-		this.elseBody.getValue().appendJava( generator );
+		for( BooleanExpressionBodyPair booleanExpressionBodyPair : booleanExpressionBodyPairs ) {
+			if ( booleanExpressionBodyPair.body.getValue().containsAtLeastOneEnabledReturnStatement() ) {
+				return true;
+			}
+		}
+		return elseBody.getValue().containsAtLeastOneEnabledReturnStatement();
+	}
+
+	@Override
+	boolean containsAReturnForEveryPath() {
+		if (!isEnabled.getValue()) {
+			return false;
+		}
+		for( BooleanExpressionBodyPair booleanExpressionBodyPair : booleanExpressionBodyPairs ) {
+			if ( !booleanExpressionBodyPair.body.getValue().containsAReturnForEveryPath() ) {
+				return false;
+			}
+		}
+		return elseBody.getValue().containsAReturnForEveryPath();
+	}
+
+	@Override
+	boolean containsUnreachableCode() {
+		if (!isEnabled.getValue()) {
+			return false;
+		}
+		for( BooleanExpressionBodyPair booleanExpressionBodyPair : booleanExpressionBodyPairs ) {
+			if ( booleanExpressionBodyPair.body.getValue().containsUnreachableCode() ) {
+				return true;
+			}
+		}
+		return elseBody.getValue().containsUnreachableCode();
 	}
 
 	public final NodeListProperty<BooleanExpressionBodyPair> booleanExpressionBodyPairs = new NodeListProperty<BooleanExpressionBodyPair>( this );

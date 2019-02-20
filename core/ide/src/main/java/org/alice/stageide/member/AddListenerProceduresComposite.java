@@ -43,10 +43,25 @@
 
 package org.alice.stageide.member;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.IDE;
+import org.alice.ide.declarationseditor.CodeComposite;
+import org.alice.ide.declarationseditor.DeclarationComposite;
+import org.alice.ide.declarationseditor.DeclarationTabState;
+import org.alice.ide.declarationseditor.DeclarationsEditorComposite;
+import org.alice.ide.member.FilteredJavaMethodsSubComposite;
+import org.alice.stageide.StageIDE;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.JavaMethod;
+
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AddListenerProceduresComposite extends org.alice.ide.member.FilteredJavaMethodsSubComposite {
+public class AddListenerProceduresComposite extends FilteredJavaMethodsSubComposite {
 	private static class SingletonHolder {
 		private static AddListenerProceduresComposite instance = new AddListenerProceduresComposite();
 	}
@@ -55,37 +70,37 @@ public class AddListenerProceduresComposite extends org.alice.ide.member.Filtere
 		return SingletonHolder.instance;
 	}
 
-	private final java.util.Collection<String> names = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( "addDefaultModelManipulation", "addObjectMoverFor" );
-	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
+	private final Collection<String> names = Lists.newArrayList( "addDefaultModelManipulation", "addObjectMoverFor" );
+	private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
 		@Override
-		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
+		public int compare( JavaMethod methodA, JavaMethod methodB ) {
 			return compareMethodNames( methodA, methodB );
 		}
 	};
 
 	private AddListenerProceduresComposite() {
-		super( java.util.UUID.fromString( "cfb5bd39-c07b-4436-a4e9-031dd25ca3b5" ), true );
+		super( UUID.fromString( "cfb5bd39-c07b-4436-a4e9-031dd25ca3b5" ), true );
 	}
 
 	@Override
-	public java.util.Comparator<org.lgna.project.ast.JavaMethod> getComparator() {
+	public Comparator<JavaMethod> getComparator() {
 		return this.comparator;
 	}
 
 	@Override
 	public boolean isShowingDesired() {
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite composite = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite();
+		DeclarationsEditorComposite composite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite();
 		if( composite != null ) {
-			org.alice.ide.declarationseditor.DeclarationTabState tabState = composite.getTabState();
+			DeclarationTabState tabState = composite.getTabState();
 			if( tabState != null ) {
-				org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = tabState.getValue();
-				if( declarationComposite instanceof org.alice.ide.declarationseditor.CodeComposite ) {
-					org.alice.ide.declarationseditor.CodeComposite codeComposite = (org.alice.ide.declarationseditor.CodeComposite)declarationComposite;
-					org.lgna.project.ast.AbstractCode code = codeComposite.getDeclaration();
+				DeclarationComposite<?, ?> declarationComposite = tabState.getValue();
+				if( declarationComposite instanceof CodeComposite ) {
+					CodeComposite codeComposite = (CodeComposite)declarationComposite;
+					AbstractCode code = codeComposite.getDeclaration();
 					if( code != null ) {
 						String name = code.getName();
 						if( name != null ) {
-							if( org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( name ) ) {
+							if( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( name ) ) {
 								return true;
 							}
 						}
@@ -97,7 +112,7 @@ public class AddListenerProceduresComposite extends org.alice.ide.member.Filtere
 	}
 
 	@Override
-	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
+	protected boolean isAcceptingOf( JavaMethod method ) {
 		String name = method.getName();
 		return method.isProcedure() && ( names.contains( name ) || ( name.startsWith( "add" ) && name.endsWith( "Listener" ) ) );
 	}

@@ -42,6 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.LineArray;
 import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
@@ -65,7 +66,7 @@ public class ModestAxes extends Visual {
 
 		LineArray sgLineArray = new LineArray();
 		sgLineArray.vertices.setValue( vertices );
-		geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { sgLineArray } );
+		geometries.setValue( new Geometry[] { sgLineArray } );
 		this.sgFrontFacingAppearance.setShadingStyle( ShadingStyle.NONE );
 		frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
 	}

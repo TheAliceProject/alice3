@@ -43,26 +43,36 @@
 
 package org.alice.ide.croquet.models.ast.keyed;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.croquet.edits.ast.keyed.RemoveKeyedArgumentEdit;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.JavaKeyedArgument;
+import org.lgna.project.ast.KeyedArgumentListProperty;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RemoveKeyedArgumentOperation extends org.lgna.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.KeyedArgumentListProperty, org.lgna.project.ast.JavaKeyedArgument, RemoveKeyedArgumentOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public class RemoveKeyedArgumentOperation extends ActionOperation {
+	private static MapToMap<KeyedArgumentListProperty, JavaKeyedArgument, RemoveKeyedArgumentOperation> mapToMap = MapToMap.newInstance();
 
-	public static RemoveKeyedArgumentOperation getInstance( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty, org.lgna.project.ast.JavaKeyedArgument argument ) {
-		return mapToMap.getInitializingIfAbsent( argumentListProperty, argument, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.KeyedArgumentListProperty, org.lgna.project.ast.JavaKeyedArgument, RemoveKeyedArgumentOperation>() {
+	public static RemoveKeyedArgumentOperation getInstance( KeyedArgumentListProperty argumentListProperty, JavaKeyedArgument argument ) {
+		return mapToMap.getInitializingIfAbsent( argumentListProperty, argument, new MapToMap.Initializer<KeyedArgumentListProperty, JavaKeyedArgument, RemoveKeyedArgumentOperation>() {
 			@Override
-			public RemoveKeyedArgumentOperation initialize( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty, org.lgna.project.ast.JavaKeyedArgument argument ) {
+			public RemoveKeyedArgumentOperation initialize( KeyedArgumentListProperty argumentListProperty, JavaKeyedArgument argument ) {
 				return new RemoveKeyedArgumentOperation( argumentListProperty, argument );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty;
-	private final org.lgna.project.ast.JavaKeyedArgument argument;
+	private final KeyedArgumentListProperty argumentListProperty;
+	private final JavaKeyedArgument argument;
 
-	private RemoveKeyedArgumentOperation( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty, org.lgna.project.ast.JavaKeyedArgument argument ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "b2332b11-7ed9-448f-8cfd-b61ea347d6ce" ) );
+	private RemoveKeyedArgumentOperation( KeyedArgumentListProperty argumentListProperty, JavaKeyedArgument argument ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "b2332b11-7ed9-448f-8cfd-b61ea347d6ce" ) );
 		this.argumentListProperty = argumentListProperty;
 		this.argument = argument;
 	}
@@ -73,16 +83,16 @@ public class RemoveKeyedArgumentOperation extends org.lgna.croquet.ActionOperati
 		this.setName( "Remove " + this.argument.getKeyMethod().getName() + " Argument" );
 	}
 
-	public org.lgna.project.ast.JavaKeyedArgument getArgument() {
+	public JavaKeyedArgument getArgument() {
 		return this.argument;
 	}
 
-	public org.lgna.project.ast.KeyedArgumentListProperty getArgumentListProperty() {
+	public KeyedArgumentListProperty getArgumentListProperty() {
 		return this.argumentListProperty;
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.keyed.RemoveKeyedArgumentEdit( step ) );
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( new RemoveKeyedArgumentEdit( activity ) );
 	}
 }

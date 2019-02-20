@@ -44,12 +44,15 @@
 package org.lgna.story.resources;
 
 import org.lgna.project.annotations.FieldTemplate;
+import org.lgna.project.annotations.ResourceTemplate;
 import org.lgna.project.annotations.Visibility;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
 
 /**
  * @author Dennis Cosgrove
  */
-@org.lgna.project.annotations.ResourceTemplate( modelClass = org.lgna.story.SBiped.class )
+@ResourceTemplate( modelClass = SBiped.class )
 public interface BipedResource extends JointedModelResource {
 	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	public static final JointId ROOT = new JointId( null, BipedResource.class );
@@ -119,9 +122,9 @@ public interface BipedResource extends JointedModelResource {
 	public static final JointId LEFT_PINKY_FINGER_KNUCKLE = new JointId( LEFT_PINKY_FINGER, BipedResource.class );
 	//	public static final JointId LEFT_PINKY_FINGER_TIP = new JointId( LEFT_PINKY_FINGER_KNUCKLE, BipedResource.class );
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction );
+	public BipedImp createImplementation( SBiped abstraction );
 
 }

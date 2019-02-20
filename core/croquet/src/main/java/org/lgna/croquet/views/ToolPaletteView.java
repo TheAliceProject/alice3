@@ -42,31 +42,45 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
-class ToolPaletteLayout implements java.awt.LayoutManager {
-	private final javax.swing.ButtonModel buttonModel;
-	private java.awt.Component pageStartComponent;
-	private java.awt.Component centerComponent;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.ToolPaletteCoreComposite;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
 
-	public ToolPaletteLayout( javax.swing.ButtonModel buttonModel ) {
+import javax.swing.ButtonModel;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+
+class ToolPaletteLayout implements LayoutManager {
+	private final ButtonModel buttonModel;
+	private Component pageStartComponent;
+	private Component centerComponent;
+
+	public ToolPaletteLayout( ButtonModel buttonModel ) {
 		this.buttonModel = buttonModel;
 	}
 
 	@Override
-	public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
-		return new java.awt.Dimension( 0, 0 );
+	public Dimension minimumLayoutSize( Container parent ) {
+		return new Dimension( 0, 0 );
 	}
 
 	@Override
-	public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
-		java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
+	public Dimension preferredLayoutSize( Container parent ) {
+		Dimension rv = new Dimension( 0, 0 );
 		if( this.pageStartComponent != null ) {
-			java.awt.Dimension size = this.pageStartComponent.getPreferredSize();
+			Dimension size = this.pageStartComponent.getPreferredSize();
 			rv.width = Math.max( rv.width, size.width );
 			rv.height += size.height;
 		}
 		if( this.centerComponent != null ) {
 			if( this.buttonModel.isSelected() ) {
-				java.awt.Dimension size = this.centerComponent.getPreferredSize();
+				Dimension size = this.centerComponent.getPreferredSize();
 				rv.width = Math.max( rv.width, size.width );
 				rv.height += size.height;
 			}
@@ -75,8 +89,8 @@ class ToolPaletteLayout implements java.awt.LayoutManager {
 	}
 
 	@Override
-	public void layoutContainer( java.awt.Container parent ) {
-		java.awt.Dimension parentSize = parent.getSize();
+	public void layoutContainer( Container parent ) {
+		Dimension parentSize = parent.getSize();
 		int y = 0;
 		if( this.pageStartComponent != null ) {
 			int height = this.pageStartComponent.getPreferredSize().height;
@@ -93,24 +107,24 @@ class ToolPaletteLayout implements java.awt.LayoutManager {
 	}
 
 	@Override
-	public void addLayoutComponent( String name, java.awt.Component comp ) {
-		if( java.awt.BorderLayout.PAGE_START.equals( name ) ) {
+	public void addLayoutComponent( String name, Component comp ) {
+		if( BorderLayout.PAGE_START.equals( name ) ) {
 			this.pageStartComponent = comp;
-		} else if( java.awt.BorderLayout.CENTER.equals( name ) ) {
+		} else if( BorderLayout.CENTER.equals( name ) ) {
 			this.centerComponent = comp;
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( name, comp );
+			Logger.severe( name, comp );
 		}
 	}
 
 	@Override
-	public void removeLayoutComponent( java.awt.Component comp ) {
+	public void removeLayoutComponent( Component comp ) {
 		if( this.pageStartComponent == comp ) {
 			this.pageStartComponent = null;
 		} else if( this.centerComponent == comp ) {
 			this.centerComponent = null;
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( comp );
+			Logger.severe( comp );
 		}
 	}
 }
@@ -119,31 +133,31 @@ class ToolPaletteLayout implements java.awt.LayoutManager {
  * @author Dennis Cosgrove
  */
 public final class ToolPaletteView extends Panel {
-	private final org.lgna.croquet.event.ValueListener<Boolean> isCoreShowingListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+	private final ValueListener<Boolean> isCoreShowingListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			ToolPaletteView.this.revalidateAndRepaint();
 		}
 	};
 
 	private final ToolPaletteTitle title;
 
-	public ToolPaletteView( org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite ) {
+	public ToolPaletteView( ToolPaletteCoreComposite.OuterComposite composite ) {
 		super( composite );
 		this.title = new ToolPaletteTitle( composite.getIsExpandedState() );
-		this.internalAddComponent( this.title, java.awt.BorderLayout.PAGE_START );
-		this.internalAddComponent( composite.getCoreComposite().getView(), java.awt.BorderLayout.CENTER );
+		this.internalAddComponent( this.title, BorderLayout.PAGE_START );
+		this.internalAddComponent( composite.getCoreComposite().getView(), BorderLayout.CENTER );
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite)this.getComposite();
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
+		ToolPaletteCoreComposite.OuterComposite composite = (ToolPaletteCoreComposite.OuterComposite)this.getComposite();
 		return new ToolPaletteLayout( composite.getIsExpandedState().getImp().getSwingModel().getButtonModel() );
 	}
 
 	@Override
 	protected void handleDisplayable() {
-		org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite)this.getComposite();
+		ToolPaletteCoreComposite.OuterComposite composite = (ToolPaletteCoreComposite.OuterComposite)this.getComposite();
 		composite.getIsExpandedState().addAndInvokeNewSchoolValueListener( this.isCoreShowingListener );
 		super.handleDisplayable();
 	}
@@ -153,19 +167,19 @@ public final class ToolPaletteView extends Panel {
 	}
 
 	public CompositeView<?, ?> getCenterView() {
-		org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite)this.getComposite();
+		ToolPaletteCoreComposite.OuterComposite composite = (ToolPaletteCoreComposite.OuterComposite)this.getComposite();
 		return composite.getCoreComposite().getView();
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite)this.getComposite();
+		ToolPaletteCoreComposite.OuterComposite composite = (ToolPaletteCoreComposite.OuterComposite)this.getComposite();
 		composite.getIsExpandedState().removeNewSchoolValueListener( this.isCoreShowingListener );
 		super.handleUndisplayable();
 	}
 
 	@Override
-	public void setBackgroundColor( java.awt.Color color ) {
+	public void setBackgroundColor( Color color ) {
 		super.setBackgroundColor( null );
 		for( AwtComponentView<?> component : this.getComponents() ) {
 			component.setBackgroundColor( color );

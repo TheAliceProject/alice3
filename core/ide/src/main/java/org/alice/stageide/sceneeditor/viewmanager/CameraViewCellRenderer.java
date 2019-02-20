@@ -49,14 +49,19 @@ import org.lgna.story.implementation.CameraMarkerImp;
 
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.border.Border;
+
 /**
  * @author dculyba
  * 
  */
 public class CameraViewCellRenderer extends ListCellRenderer<View> {
 
-	private final javax.swing.border.Border separatorBelowBorder = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 8, 0 );
-	private final javax.swing.border.Border emptyBorder = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 0 );
+	private final Border separatorBelowBorder = BorderFactory.createEmptyBorder( 2, 2, 8, 0 );
+	private final Border emptyBorder = BorderFactory.createEmptyBorder( 2, 2, 2, 0 );
 
 	private final CameraMarkerTracker cameraMarkerTracker;
 
@@ -65,7 +70,7 @@ public class CameraViewCellRenderer extends ListCellRenderer<View> {
 	}
 
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, View view, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected JLabel getListCellRendererComponent( JLabel rv, JList list, View view, int index, boolean isSelected, boolean cellHasFocus ) {
 		CameraMarkerImp value = this.cameraMarkerTracker.getCameraMarker( view );
 		rv.setText( MarkerUtilities.getNameForView( view ) );
 		if( index == 0 ) {

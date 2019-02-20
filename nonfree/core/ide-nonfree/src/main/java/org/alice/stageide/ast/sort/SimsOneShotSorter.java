@@ -46,26 +46,32 @@ package org.alice.stageide.ast.sort;
 import java.util.Map;
 
 import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.Paint;
+import org.lgna.story.SRoom;
+import org.lgna.story.SetCeilingPaint;
+import org.lgna.story.SetFloorPaint;
+import org.lgna.story.SetWallPaint;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SimsOneShotSorter {
 
-	public static final org.lgna.project.ast.JavaMethod ROOM_SET_CEILING_PAINT_METHOD;
-	public static final org.lgna.project.ast.JavaMethod ROOM_SET_WALL_PAINT_METHOD;
-	public static final org.lgna.project.ast.JavaMethod ROOM_SET_FLOOR_PAINT_METHOD;
+	public static final JavaMethod ROOM_SET_CEILING_PAINT_METHOD;
+	public static final JavaMethod ROOM_SET_WALL_PAINT_METHOD;
+	public static final JavaMethod ROOM_SET_FLOOR_PAINT_METHOD;
 
-	public static final org.lgna.project.ast.JavaMethod ROOM_SET_OPACITY_METHOD;
+	public static final JavaMethod ROOM_SET_OPACITY_METHOD;
 
 	static {
-		org.lgna.project.ast.JavaType roomType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SRoom.class );
+		JavaType roomType = JavaType.getInstance( SRoom.class );
 
-		ROOM_SET_CEILING_PAINT_METHOD = roomType.getDeclaredMethod( "setCeilingPaint", org.lgna.story.Paint.class, org.lgna.story.SetCeilingPaint.Detail[].class );
+		ROOM_SET_CEILING_PAINT_METHOD = roomType.getDeclaredMethod( "setCeilingPaint", Paint.class, SetCeilingPaint.Detail[].class );
 		assert ROOM_SET_CEILING_PAINT_METHOD != null : roomType;
-		ROOM_SET_WALL_PAINT_METHOD = roomType.getDeclaredMethod( "setWallPaint", org.lgna.story.Paint.class, org.lgna.story.SetWallPaint.Detail[].class );
+		ROOM_SET_WALL_PAINT_METHOD = roomType.getDeclaredMethod( "setWallPaint", Paint.class, SetWallPaint.Detail[].class );
 		assert ROOM_SET_WALL_PAINT_METHOD != null : roomType;
-		ROOM_SET_FLOOR_PAINT_METHOD = roomType.getDeclaredMethod( "setFloorPaint", org.lgna.story.Paint.class, org.lgna.story.SetFloorPaint.Detail[].class );
+		ROOM_SET_FLOOR_PAINT_METHOD = roomType.getDeclaredMethod( "setFloorPaint", Paint.class, SetFloorPaint.Detail[].class );
 		assert ROOM_SET_FLOOR_PAINT_METHOD != null : roomType;
 
 		ROOM_SET_OPACITY_METHOD = OneShotSorter.getSetOpacityMethod( roomType );

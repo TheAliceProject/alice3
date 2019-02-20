@@ -42,24 +42,32 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.media.renderer.audio;
 
+import com.sun.media.renderer.audio.JavaSoundRenderer;
+import com.sun.media.renderer.audio.device.AudioOutput;
+import com.sun.media.renderer.audio.device.JavaSoundOutput;
+
+import javax.media.Format;
+import javax.media.PlugInManager;
+import javax.media.format.AudioFormat;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FixedJavaSoundRenderer extends com.sun.media.renderer.audio.JavaSoundRenderer {
+public class FixedJavaSoundRenderer extends JavaSoundRenderer {
 	public static void usurpControlFromJavaSoundRenderer() {
-		final String OFFENDING_RENDERER_PLUGIN_NAME = com.sun.media.renderer.audio.JavaSoundRenderer.class.getName();
-		javax.media.Format[] rendererInputFormats = javax.media.PlugInManager.getSupportedInputFormats( OFFENDING_RENDERER_PLUGIN_NAME, javax.media.PlugInManager.RENDERER );
-		javax.media.Format[] rendererOutputFormats = javax.media.PlugInManager.getSupportedOutputFormats( OFFENDING_RENDERER_PLUGIN_NAME, javax.media.PlugInManager.RENDERER );
+		final String OFFENDING_RENDERER_PLUGIN_NAME = JavaSoundRenderer.class.getName();
+		Format[] rendererInputFormats = PlugInManager.getSupportedInputFormats( OFFENDING_RENDERER_PLUGIN_NAME, PlugInManager.RENDERER );
+		Format[] rendererOutputFormats = PlugInManager.getSupportedOutputFormats( OFFENDING_RENDERER_PLUGIN_NAME, PlugInManager.RENDERER );
 		if( ( rendererInputFormats != null ) || ( rendererOutputFormats != null ) ) {
 			final String REPLACEMENT_RENDERER_PLUGIN_NAME = FixedJavaSoundRenderer.class.getName();
-			javax.media.PlugInManager.removePlugIn( OFFENDING_RENDERER_PLUGIN_NAME, javax.media.PlugInManager.RENDERER );
-			javax.media.PlugInManager.addPlugIn( REPLACEMENT_RENDERER_PLUGIN_NAME, rendererInputFormats, rendererOutputFormats, javax.media.PlugInManager.RENDERER );
+			PlugInManager.removePlugIn( OFFENDING_RENDERER_PLUGIN_NAME, PlugInManager.RENDERER );
+			PlugInManager.addPlugIn( REPLACEMENT_RENDERER_PLUGIN_NAME, rendererInputFormats, rendererOutputFormats, PlugInManager.RENDERER );
 		}
 	}
 
 	@Override
-	protected com.sun.media.renderer.audio.device.AudioOutput createDevice( javax.media.format.AudioFormat format ) {
-		return new com.sun.media.renderer.audio.device.JavaSoundOutput() {
+	protected AudioOutput createDevice( AudioFormat format ) {
+		return new JavaSoundOutput() {
 			@Override
 			public void setGain( double g ) {
 				if( this.gc != null ) {

@@ -42,10 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.recentprojects;
 
+import org.lgna.croquet.LabelMenuSeparatorModel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NoRecentUrisSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
+public class NoRecentUrisSeparatorModel extends LabelMenuSeparatorModel {
 	private static class SingletonHolder {
 		private static NoRecentUrisSeparatorModel instance = new NoRecentUrisSeparatorModel();
 	}
@@ -55,6 +59,6 @@ public class NoRecentUrisSeparatorModel extends org.lgna.croquet.LabelMenuSepara
 	}
 
 	private NoRecentUrisSeparatorModel() {
-		super( java.util.UUID.fromString( "6548f15f-f680-4333-84e9-788c4fa7563c" ) );
+		super( UUID.fromString( "6548f15f-f680-4333-84e9-788c4fa7563c" ) );
 	}
 }

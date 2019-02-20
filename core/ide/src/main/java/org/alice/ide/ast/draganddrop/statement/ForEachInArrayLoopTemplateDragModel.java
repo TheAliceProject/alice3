@@ -43,6 +43,15 @@
 
 package org.alice.ide.ast.draganddrop.statement;
 
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.ast.declaration.InsertForEachInArrayLoopComposite;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.ForEachInArrayLoop;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +65,11 @@ public class ForEachInArrayLoopTemplateDragModel extends PotentiallyEnvelopingSt
 	}
 
 	private ForEachInArrayLoopTemplateDragModel() {
-		super( java.util.UUID.fromString( "1126a2d4-0f95-4e1f-bda1-79727e6f88fd" ), org.lgna.project.ast.ForEachInArrayLoop.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteForEachInArrayLoop() );
+		super( UUID.fromString( "1126a2d4-0f95-4e1f-bda1-79727e6f88fd" ), ForEachInArrayLoop.class, IncompleteAstUtilities.createIncompleteForEachInArrayLoop() );
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		return org.alice.ide.ast.declaration.InsertForEachInArrayLoopComposite.getInstance( blockStatementIndexPair, isEnveloping ).getLaunchOperation();
+	protected Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		return InsertForEachInArrayLoopComposite.getInstance( blockStatementIndexPair, isEnveloping ).getLaunchOperation();
 	}
 }

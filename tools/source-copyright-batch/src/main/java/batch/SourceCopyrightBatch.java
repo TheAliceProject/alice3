@@ -43,6 +43,15 @@
 
 package batch;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.io.File;
+import java.io.InputStream;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -62,23 +71,23 @@ public class SourceCopyrightBatch {
 				"2013_art_generated.txt",
 				"2014_art.txt",
 		};
-		java.util.List<String> headers = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( txtResourcePaths.length );
+		List<String> headers = Lists.newArrayListWithInitialCapacity( txtResourcePaths.length );
 
 		for( String txtResourcePath : txtResourcePaths ) {
-			java.io.InputStream is = SourceCopyrightBatch.class.getResourceAsStream( "headers/" + txtResourcePath );
+			InputStream is = SourceCopyrightBatch.class.getResourceAsStream( "headers/" + txtResourcePath );
 			assert is != null : txtResourcePath;
-			headers.add( edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( is ) );
+			headers.add( TextFileUtilities.read( is ) );
 		}
 
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( headers );
+		Logger.outln( headers );
 
-		java.io.File inRoot = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "alice" );
+		File inRoot = new File( FileUtilities.getDefaultDirectory(), "alice" );
 		assert inRoot.exists() : inRoot;
-		java.io.File[] inFiles = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants( inRoot, "java" );
+		File[] inFiles = FileUtilities.listDescendants( inRoot, "java" );
 		int countNoCopyright = 0;
 		int count = 0;
-		for( java.io.File inFile : inFiles ) {
-			String inFileText = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( inFile );
+		for( File inFile : inFiles ) {
+			String inFileText = TextFileUtilities.read( inFile );
 			boolean isFound = false;
 			for( String header : headers ) {
 				if( inFileText.startsWith( header ) ) {
@@ -92,11 +101,11 @@ public class SourceCopyrightBatch {
 					countNoCopyright++;
 				} else {
 					count++;
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "N", inFile );
+					Logger.errln( "N", inFile );
 				}
 			}
 		}
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( countNoCopyright );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( count );
+		Logger.outln( countNoCopyright );
+		Logger.outln( count );
 	}
 }

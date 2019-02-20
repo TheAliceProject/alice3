@@ -42,6 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import org.alice.ide.ProjectApplication;
+import org.alice.ide.uricontent.UriProjectLoader;
+import org.lgna.croquet.history.UserActivity;
+
+import java.net.URI;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,35 +63,31 @@ public class RevertProjectOperation extends UriActionOperation {
 	}
 
 	private RevertProjectOperation() {
-		super( java.util.UUID.fromString( "e1c3b3d7-dc4b-491c-8958-9a98710d5d1a" ) );
+		super( UUID.fromString( "e1c3b3d7-dc4b-491c-8958-9a98710d5d1a" ) );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.ide.ProjectApplication application = org.alice.ide.ProjectApplication.getActiveInstance();
-		edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult result = new edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog.Builder( "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?" )
-				.title( "Revert?" )
-				.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.WARNING )
-				.buildAndShow();
-		if( result == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult.YES ) {
-			java.net.URI uri = application.getUri();
+	protected void perform( UserActivity activity ) {
+		ProjectApplication application = ProjectApplication.getActiveInstance();
+		boolean confirmed = Dialogs.confirmWithWarning(
+			"Revert?", "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?" );
+		if( confirmed ) {
+			URI uri = application.getUri();
 			if( uri != null ) {
-				org.alice.ide.uricontent.UriProjectLoader loader = org.alice.ide.uricontent.UriProjectLoader.createInstance( uri );
+				UriProjectLoader loader = UriProjectLoader.createInstance( uri );
 				if( loader != null ) {
-					application.loadProjectFrom( loader );
-					step.finish();
+					application.loadProject(activity, loader );
+					activity.finish();
 				} else {
-					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "todo: revert loader == null " + uri )
-							.buildAndShow();
-					step.cancel();
+					Dialogs.showInfo( "todo: revert loader == null " + uri );
+					activity.cancel();
 				}
 			} else {
-				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "todo: revert uri == null" )
-						.buildAndShow();
-				step.cancel();
+				Dialogs.showInfo( "todo: revert uri == null" );
+				activity.cancel();
 			}
 		} else {
-			step.cancel();
+			activity.cancel();
 		}
 	}
 }

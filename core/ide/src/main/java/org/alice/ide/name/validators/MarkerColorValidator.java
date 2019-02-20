@@ -43,15 +43,19 @@
 
 package org.alice.ide.name.validators;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
 import org.lgna.story.SMarker;
 
 public class MarkerColorValidator extends MemberNameValidator {
 
-	public MarkerColorValidator( org.lgna.project.ast.UserField field ) {
+	public MarkerColorValidator( UserField field ) {
 		super( field, field.getDeclaringType() );
 	}
 
-	public MarkerColorValidator( org.lgna.project.ast.UserType<?> type ) {
+	public MarkerColorValidator( UserType<?> type ) {
 		super( null, type );
 	}
 
@@ -76,10 +80,10 @@ public class MarkerColorValidator extends MemberNameValidator {
 	public boolean isNameAvailable( String name ) {
 		String suffix = getColorAndNumberSuffix( name );
 
-		org.lgna.project.ast.Node node = this.getNode();
-		org.lgna.project.ast.UserType<?> type = this.getType();
+		Node node = this.getNode();
+		UserType<?> type = this.getType();
 		if( type != null ) {
-			for( org.lgna.project.ast.UserField field : type.fields ) {
+			for( UserField field : type.fields ) {
 				assert field != null;
 				if( field == node ) {
 					//pass
@@ -98,7 +102,7 @@ public class MarkerColorValidator extends MemberNameValidator {
 				}
 			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "type == null" );
+			Logger.todo( "type == null" );
 		}
 		return true;
 	}

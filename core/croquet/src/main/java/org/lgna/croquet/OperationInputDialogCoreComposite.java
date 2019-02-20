@@ -43,52 +43,48 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.CompositeView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	public OperationInputDialogCoreComposite( java.util.UUID migrationId ) {
+public abstract class OperationInputDialogCoreComposite<V extends CompositeView<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
+	OperationInputDialogCoreComposite( UUID migrationId ) {
 		super( migrationId );
 	}
 
 	@Override
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
-	}
-
-	@Override
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
+	public String modifyNameIfNecessary( String text ) {
 		return text;
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	protected abstract Edit createEdit( UserActivity userActivity );
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
-		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
-		if( isCommited != null ) { // close button condition
-			if( isCommited ) {
-				try {
-					org.lgna.croquet.edits.Edit edit = createEdit( completionStep );
-					if( edit != null ) {
-						completionStep.commitAndInvokeDo( edit );
-					} else {
-						completionStep.finish();
-					}
-				} catch( CancelException ce ) {
-					cancel( completionStep );
+	protected void handlePostHideDialog() {
+		super.handlePostHideDialog();
+		if( isCommitted ) { // close button condition
+			try {
+				Edit edit = createEdit( openingActivity );
+				if ( edit != null ) {
+					openingActivity.commitAndInvokeDo( edit );
+				} else {
+					openingActivity.finish();
 				}
-			} else {
-				cancel( completionStep );
+			} catch (CancelException ce) {
+				cancel(ce);
 			}
 		} else {
-			cancel( completionStep );
+			cancel( null );
 		}
 	}
 
 	@Override
-	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		this.showDialog( completionStep );
+	public void perform( UserActivity userActivity ) {
+		this.showDialog( userActivity );
 	}
 }

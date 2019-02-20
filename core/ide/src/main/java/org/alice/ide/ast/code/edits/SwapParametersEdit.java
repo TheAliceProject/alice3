@@ -42,44 +42,63 @@
  *******************************************************************************/
 package org.alice.ide.ast.code.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.code.SwapParametersOperation;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ProgramTypeUtilities;
+import org.lgna.project.Project;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.SimpleArgument;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserParameter;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SwapParametersEdit extends org.lgna.croquet.edits.AbstractEdit<org.alice.ide.ast.code.SwapParametersOperation> {
-	private final org.lgna.project.ast.UserMethod method;
+public class SwapParametersEdit extends AbstractEdit<SwapParametersOperation> {
+	private final UserMethod method;
 	private final int aIndex;
 
-	public SwapParametersEdit( org.lgna.croquet.history.CompletionStep<org.alice.ide.ast.code.SwapParametersOperation> completionStep, org.lgna.project.ast.UserCode code, int aIndex ) {
-		super( completionStep );
+	public SwapParametersEdit( UserActivity userActivity, UserCode code, int aIndex ) {
+		super( userActivity );
 		//todo: handle constructors
-		this.method = (org.lgna.project.ast.UserMethod)code;
+		this.method = (UserMethod)code;
 		this.aIndex = aIndex;
 	}
 
-	public SwapParametersEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public SwapParametersEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
-		java.util.UUID methodId = binaryDecoder.decodeId();
-		this.method = org.lgna.project.ProgramTypeUtilities.lookupNode( project, methodId );
+		IDE ide = IDE.getActiveInstance();
+		Project project = ide.getProject();
+		UUID methodId = binaryDecoder.decodeId();
+		this.method = ProgramTypeUtilities.lookupNode( project, methodId );
 		this.aIndex = binaryDecoder.decodeInt();
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.method.getId() );
 		binaryEncoder.encode( this.aIndex );
 	}
 
 	private void swap() {
-		java.util.List<org.lgna.project.ast.MethodInvocation> methodInvocations = org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method );
-		org.lgna.project.ast.UserParameter aParam = method.requiredParameters.get( aIndex );
-		org.lgna.project.ast.UserParameter bParam = method.requiredParameters.get( aIndex + 1 );
+		List<MethodInvocation> methodInvocations = IDE.getActiveInstance().getMethodInvocations( method );
+		UserParameter aParam = method.requiredParameters.get( aIndex );
+		UserParameter bParam = method.requiredParameters.get( aIndex + 1 );
 		method.requiredParameters.set( aIndex, bParam, aParam );
-		for( org.lgna.project.ast.MethodInvocation methodInvocation : methodInvocations ) {
-			org.lgna.project.ast.SimpleArgument aArg = methodInvocation.requiredArguments.get( aIndex );
-			org.lgna.project.ast.SimpleArgument bArg = methodInvocation.requiredArguments.get( aIndex + 1 );
+		for( MethodInvocation methodInvocation : methodInvocations ) {
+			SimpleArgument aArg = methodInvocation.requiredArguments.get( aIndex );
+			SimpleArgument bArg = methodInvocation.requiredArguments.get( aIndex + 1 );
 			assert aArg.parameter.getValue() == aParam;
 			assert bArg.parameter.getValue() == bParam;
 			methodInvocation.requiredArguments.set( aIndex, bArg, aArg );
@@ -98,12 +117,12 @@ public class SwapParametersEdit extends org.lgna.croquet.edits.AbstractEdit<org.
 
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		org.lgna.project.ast.UserParameter aParam = method.requiredParameters.get( aIndex );
-		org.lgna.project.ast.UserParameter bParam = method.requiredParameters.get( aIndex + 1 );
-		java.util.Locale locale = null;
+		UserParameter aParam = method.requiredParameters.get( aIndex );
+		UserParameter bParam = method.requiredParameters.get( aIndex + 1 );
+		Locale locale = null;
 		rv.append( "Swap Parameters " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, aParam, locale );
+		NodeUtilities.safeAppendRepr( rv, aParam, locale );
 		rv.append( " " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, bParam, locale );
+		NodeUtilities.safeAppendRepr( rv, bParam, locale );
 	}
 }

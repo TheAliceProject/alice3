@@ -42,18 +42,29 @@
  *******************************************************************************/
 package org.alice.ide.recyclebin;
 
+import org.alice.ide.icons.Icons;
+import org.lgna.croquet.Application;
+
+import javax.swing.Icon;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.geom.Ellipse2D;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum RecycleBinIcon implements javax.swing.Icon {
+public enum RecycleBinIcon implements Icon {
 	SINGLETON;
 
-	private static final javax.swing.Icon[] ICONS = { org.alice.ide.icons.Icons.TRASH_CAN_EMPTY_ICON, org.alice.ide.icons.Icons.TRASH_CAN_FULL_ICON };
+	private static final Icon[] ICONS = { Icons.TRASH_CAN_EMPTY_ICON, Icons.TRASH_CAN_FULL_ICON };
 
 	@Override
 	public int getIconWidth() {
 		int rv = 0;
-		for( javax.swing.Icon icon : ICONS ) {
+		for( Icon icon : ICONS ) {
 			rv = Math.max( rv, icon.getIconWidth() );
 		}
 		return rv;
@@ -62,31 +73,31 @@ public enum RecycleBinIcon implements javax.swing.Icon {
 	@Override
 	public int getIconHeight() {
 		int rv = 0;
-		for( javax.swing.Icon icon : ICONS ) {
+		for( Icon icon : ICONS ) {
 			rv = Math.max( rv, icon.getIconHeight() );
 		}
 		return rv;
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		org.alice.ide.icons.Icons.TRASH_CAN_EMPTY_ICON.paintIcon( c, g, x, y );
-		java.awt.Paint paint;
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
+		Icons.TRASH_CAN_EMPTY_ICON.paintIcon( c, g, x, y );
+		Paint paint;
 		final int ALPHA = 15;
-		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
-			paint = new java.awt.Color( 255, 255, 0, ALPHA );
+		if( Application.getActiveInstance().isDragInProgress() ) {
+			paint = new Color( 255, 255, 0, ALPHA );
 		} else {
 			//paint = new java.awt.Color( 0, 255, 0, ALPHA );
 			paint = null;
 		}
 		if( paint != null ) {
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			java.awt.Paint prevPaint = g2.getPaint();
+			Graphics2D g2 = (Graphics2D)g;
+			Paint prevPaint = g2.getPaint();
 			g2.setPaint( paint );
 			float xCenter = x + ( this.getIconWidth() * 0.5f );
 			float yCenter = y + ( this.getIconHeight() * 0.5f );
 			for( float radius = 4.0f; radius <= 16.0f; radius += 1.0f ) {
-				g2.fill( new java.awt.geom.Ellipse2D.Float( xCenter - radius, yCenter - radius, radius + radius, radius + radius ) );
+				g2.fill( new Ellipse2D.Float( xCenter - radius, yCenter - radius, radius + radius, radius + radius ) );
 			}
 			g2.setPaint( prevPaint );
 		}

@@ -43,19 +43,17 @@
 
 package org.lgna.croquet;
 
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CascadeBlankOwner<F, B> extends CascadeItem<F, B> {
-	public CascadeBlankOwner( java.util.UUID id ) {
+	public CascadeBlankOwner( UUID id ) {
 		super( id );
 	}
 
-	public abstract java.util.List<? extends CascadeBlank<B>> getBlanks();
+	public abstract List<? extends CascadeBlank<B>> getBlanks();
 
-	@Override
-	public Iterable<CascadeItem<B, ?>> getChildren() {
-		//todo: search blanks
-		return java.util.Collections.emptyList();
-	}
 }

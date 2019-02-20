@@ -42,10 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor;
 
+import org.lgna.croquet.LabelMenuSeparatorModel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldsSeparator extends org.lgna.croquet.LabelMenuSeparatorModel {
+public final class FieldsSeparator extends LabelMenuSeparatorModel {
 	private static class SingletonHolder {
 		private static FieldsSeparator instance = new FieldsSeparator();
 	}
@@ -55,6 +59,6 @@ public final class FieldsSeparator extends org.lgna.croquet.LabelMenuSeparatorMo
 	}
 
 	private FieldsSeparator() {
-		super( java.util.UUID.fromString( "1814409c-d317-41c5-afb3-2194809d5f2f" ) );
+		super( UUID.fromString( "1814409c-d317-41c5-afb3-2194809d5f2f" ) );
 	}
 }

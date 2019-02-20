@@ -43,13 +43,33 @@
 
 package org.alice.ide.croquet.models.declaration;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks;
+import org.alice.ide.typemanager.ConstructorArgumentUtilities;
+import org.alice.ide.typemanager.TypeManager;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.JavaField;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.NamedUserType;
+
+import javax.swing.Icon;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryResourceTypeFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.InstanceCreation> {
-	private static java.util.Map<org.lgna.project.ast.JavaType, GalleryResourceTypeFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class GalleryResourceTypeFillIn extends ExpressionFillInWithExpressionBlanks<InstanceCreation> {
+	private static Map<JavaType, GalleryResourceTypeFillIn> map = Maps.newHashMap();
 
-	public static synchronized GalleryResourceTypeFillIn getInstance( org.lgna.project.ast.JavaType type ) {
+	public static synchronized GalleryResourceTypeFillIn getInstance( JavaType type ) {
 		GalleryResourceTypeFillIn rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -60,53 +80,53 @@ public class GalleryResourceTypeFillIn extends org.alice.ide.croquet.models.casc
 		return rv;
 	}
 
-	private final org.lgna.project.ast.JavaType ancestorType;
+	private final JavaType ancestorType;
 
-	private GalleryResourceTypeFillIn( org.lgna.project.ast.JavaType ancestorType ) {
-		super( java.util.UUID.fromString( "281ad60a-090e-4fd8-bb47-da03a2508a4a" ), GalleryResourceBlank.getInstance( org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0Parameter0Type( ancestorType ) ) );
+	private GalleryResourceTypeFillIn( JavaType ancestorType ) {
+		super( UUID.fromString( "281ad60a-090e-4fd8-bb47-da03a2508a4a" ), GalleryResourceBlank.getInstance( ConstructorArgumentUtilities.getContructor0Parameter0Type( ancestorType ) ) );
 		this.ancestorType = ancestorType;
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression> step ) {
-		return org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0Parameter0Type( this.ancestorType ).getName();
+	public String getMenuItemText() {
+		return ConstructorArgumentUtilities.getContructor0Parameter0Type( this.ancestorType ).getName();
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression> step ) {
+	public Icon getMenuItemIcon( ItemNode<? super InstanceCreation, Expression> step ) {
 		return null;
 	}
 
 	@Override
-	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression> step ) {
+	public InstanceCreation getTransientValue( ItemNode<? super InstanceCreation, Expression> step ) {
 		return null;
 	}
 
 	@Override
-	protected org.lgna.project.ast.InstanceCreation createValue( org.lgna.project.ast.Expression[] expressions ) {
+	protected InstanceCreation createValue( Expression[] expressions ) {
 		if( expressions.length == 1 ) {
-			org.lgna.project.ast.Expression expression = expressions[ 0 ];
-			if( expression instanceof org.lgna.project.ast.FieldAccess ) {
-				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
-				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+			Expression expression = expressions[ 0 ];
+			if( expression instanceof FieldAccess ) {
+				FieldAccess fieldAccess = (FieldAccess)expression;
+				AbstractField field = fieldAccess.field.getValue();
 				if( field.isStatic() ) {
-					if( field instanceof org.lgna.project.ast.JavaField ) {
-						org.lgna.project.ast.JavaField argumentField = (org.lgna.project.ast.JavaField)field;
-						org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField( this.ancestorType, argumentField );
-						org.lgna.project.ast.NamedUserConstructor constructor = userType.getDeclaredConstructors().get( 0 );
-						org.lgna.project.ast.Expression[] argumentExpressions;
+					if( field instanceof JavaField ) {
+						JavaField argumentField = (JavaField)field;
+						NamedUserType userType = TypeManager.getNamedUserTypeFromArgumentField( this.ancestorType, argumentField );
+						NamedUserConstructor constructor = userType.getDeclaredConstructors().get( 0 );
+						Expression[] argumentExpressions;
 						if( constructor.getRequiredParameters().size() == 1 ) {
-							argumentExpressions = new org.lgna.project.ast.Expression[] {
-									org.lgna.project.ast.AstUtilities.createStaticFieldAccess( argumentField )
+							argumentExpressions = new Expression[] {
+									AstUtilities.createStaticFieldAccess( argumentField )
 							};
 						} else {
-							argumentExpressions = new org.lgna.project.ast.Expression[] {};
+							argumentExpressions = new Expression[] {};
 						}
-						return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, argumentExpressions );
+						return AstUtilities.createInstanceCreation( constructor, argumentExpressions );
 					}
 				}
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( expression );
+				Logger.severe( expression );
 			}
 		}
 		return null;

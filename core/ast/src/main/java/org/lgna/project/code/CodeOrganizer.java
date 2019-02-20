@@ -42,11 +42,18 @@
  *******************************************************************************/
 package org.lgna.project.code;
 
+import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Getter;
 import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.Setter;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author dculyba
@@ -54,8 +61,8 @@ import org.lgna.project.ast.UserMethod;
 public class CodeOrganizer {
 
 	public static class CodeOrganizerDefinition {
-		private final java.util.LinkedHashMap<String, String[]> codeSections = new java.util.LinkedHashMap<String, String[]>();
-		private final java.util.HashMap<String, Boolean> shouldCollapseSection = new java.util.HashMap<String, Boolean>();
+		private final LinkedHashMap<String, String[]> codeSections = new LinkedHashMap<String, String[]>();
+		private final HashMap<String, Boolean> shouldCollapseSection = new HashMap<String, Boolean>();
 
 		public CodeOrganizerDefinition() {
 		}
@@ -70,9 +77,33 @@ public class CodeOrganizer {
 		}
 	}
 
-	private final java.util.LinkedHashMap<String, String[]> codeSections;
-	private final java.util.HashMap<String, Boolean> shouldCollapseSection;
-	private final java.util.Map<String, java.util.List<CodeAppender>> itemLists = new java.util.HashMap<String, java.util.List<CodeAppender>>();
+	public static CodeOrganizerDefinition defaultCodeOrganizer = new CodeOrganizerDefinition();
+	public static CodeOrganizerDefinition sceneClassCodeOrganizer = new CodeOrganizerDefinition();
+	public static CodeOrganizerDefinition programClassCodeOrganizer = new CodeOrganizerDefinition();
+	static {
+		defaultCodeOrganizer.addSection( "ConstructorSection", CodeOrganizer.CONSTRUCTORS );
+		defaultCodeOrganizer.addSection( "MethodsAndFunctionsSection", CodeOrganizer.NON_STATIC_METHODS );
+		defaultCodeOrganizer.addSection( "GettersAndSettersSection", CodeOrganizer.GETTERS_AND_SETTERS );
+		defaultCodeOrganizer.addSection( "FieldsSection", CodeOrganizer.FIELDS );
+		defaultCodeOrganizer.addSection( "StaticMethodsSection", CodeOrganizer.STATIC_METHODS );
+
+		sceneClassCodeOrganizer.addSection( "ConstructorSection", CodeOrganizer.CONSTRUCTORS );
+		sceneClassCodeOrganizer.addSection( "EventListenersSection", "initializeEventListeners" );
+		sceneClassCodeOrganizer.addSection( "MethodsAndFunctionsSection", CodeOrganizer.NON_STATIC_METHODS );
+		sceneClassCodeOrganizer.addSection( "FieldsSection", true, CodeOrganizer.FIELDS );
+		sceneClassCodeOrganizer.addSection( "SceneSetupSection", true, "performCustomSetup", "performGeneratedSetUp" );
+		sceneClassCodeOrganizer.addSection( "MultipleSceneSection", true, "handleActiveChanged", CodeOrganizer.GETTERS_AND_SETTERS );
+		sceneClassCodeOrganizer.addSection( "StaticMethodsSection", CodeOrganizer.STATIC_METHODS );
+
+		programClassCodeOrganizer.addSection( "ConstructorSection", CodeOrganizer.CONSTRUCTORS );
+		programClassCodeOrganizer.addSection( "FieldsSection", "myScene", CodeOrganizer.FIELDS );
+		programClassCodeOrganizer.addSection( "MainFunction", "main" );
+		programClassCodeOrganizer.addSection( "GettersAndSettersSection", CodeOrganizer.GETTERS_AND_SETTERS );
+	}
+
+	private final LinkedHashMap<String, String[]> codeSections;
+	private final HashMap<String, Boolean> shouldCollapseSection;
+	private final Map<String, List<CodeAppender>> itemLists = new HashMap<String, List<CodeAppender>>();
 
 	public static final String ALL_METHODS = "ALL_METHODS";
 	public static final String NON_STATIC_METHODS = "NON_STATIC_METHODS";
@@ -91,7 +122,7 @@ public class CodeOrganizer {
 	}
 
 	private boolean hasItemKey( String itemKey ) {
-		for( java.util.Map.Entry<String, String[]> entry : codeSections.entrySet() ) {
+		for( Map.Entry<String, String[]> entry : codeSections.entrySet() ) {
 			for( String item : entry.getValue() ) {
 				if( itemKey.equalsIgnoreCase( item ) ) {
 					return true;
@@ -107,7 +138,7 @@ public class CodeOrganizer {
 		for( String itemKeyOption : keyOptions ) {
 			if( hasItemKey( itemKeyOption ) ) {
 				if( !itemLists.containsKey( itemKeyOption ) ) {
-					itemLists.put( itemKeyOption, new java.util.LinkedList<CodeAppender>() );
+					itemLists.put( itemKeyOption, new LinkedList<CodeAppender>() );
 				}
 				itemLists.get( itemKeyOption ).add( toAdd );
 				return;
@@ -115,7 +146,7 @@ public class CodeOrganizer {
 		}
 		//Put the item in the DEFAULT list if it doesn't match a list
 		if( !itemLists.containsKey( DEFAULT ) ) {
-			itemLists.put( DEFAULT, new java.util.LinkedList<CodeAppender>() );
+			itemLists.put( DEFAULT, new LinkedList<CodeAppender>() );
 		}
 		itemLists.get( DEFAULT ).add( toAdd );
 	}
@@ -132,12 +163,16 @@ public class CodeOrganizer {
 		addItem( method, method.getName(), NON_STATIC_METHODS, ALL_METHODS );
 	}
 
-	public void addGetter( Getter getter ) {
-		addItem( getter, getter.getName(), GETTERS, GETTERS_AND_SETTERS );
+	public void addGetters( List<Getter> getters ) {
+		for (Getter getter : getters) {
+			addItem( getter, getter.getName(), GETTERS, GETTERS_AND_SETTERS );
+		}
 	}
 
-	public void addSetter( Setter setter ) {
-		addItem( setter, setter.getName(), SETTERS, GETTERS_AND_SETTERS );
+	public void addSetters( List<Setter> setters ) {
+		for (Setter setter : setters) {
+			addItem( setter, setter.getName(), SETTERS, GETTERS_AND_SETTERS );
+		}
 	}
 
 	public void addField( UserField field ) {
@@ -151,10 +186,10 @@ public class CodeOrganizer {
 		return false;
 	}
 
-	public java.util.LinkedHashMap<String, java.util.List<CodeAppender>> getOrderedSections() {
-		java.util.LinkedHashMap<String, java.util.List<CodeAppender>> orderedMap = new java.util.LinkedHashMap<String, java.util.List<CodeAppender>>();
-		for( java.util.Map.Entry<String, String[]> entry : codeSections.entrySet() ) {
-			java.util.List<CodeAppender> orderedAppenders = new java.util.LinkedList<CodeAppender>();
+	public LinkedHashMap<String, List<CodeAppender>> getOrderedSections() {
+		LinkedHashMap<String, List<CodeAppender>> orderedMap = new LinkedHashMap<String, List<CodeAppender>>();
+		for( Map.Entry<String, String[]> entry : codeSections.entrySet() ) {
+			List<CodeAppender> orderedAppenders = new LinkedList<CodeAppender>();
 			for( String itemKey : entry.getValue() ) {
 				if( itemLists.containsKey( itemKey ) ) {
 					orderedAppenders.addAll( itemLists.get( itemKey ) );

@@ -42,10 +42,43 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI;
+import org.alice.ide.ast.type.merge.croquet.DifferentImplementation;
+import org.alice.ide.ast.type.merge.croquet.DifferentSignature;
+import org.alice.ide.ast.type.merge.croquet.Identical;
+import org.alice.ide.ast.type.merge.croquet.ImportOnly;
+import org.alice.ide.ast.type.merge.croquet.MembersToolPalette;
+import org.alice.ide.ast.type.merge.croquet.ProjectOnly;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.views.AbstractLabel;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.CheckBox;
+import org.lgna.croquet.views.Hyperlink;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.Separator;
+import org.lgna.croquet.views.TextField;
+import org.lgna.project.ast.Member;
+import org.lgna.project.ast.UserMethod;
+
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.GeneralPath;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersView<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.views.MigPanel {
+public abstract class MembersView<M extends Member> extends MigPanel {
 	//	private static final int DIFFERENT_SIGNATURE_PRE_GAP = 0;
 	//	private static final int DIFFERENT_SIGNATURE_POST_GAP = 0;
 	//	private static final int DIFFERENT_IMPLEMENTATION_PRE_GAP = 0;
@@ -59,31 +92,31 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 	private static final String COLUMN_1_CONSTRAINT = COLUMN_0_CONSTRAINT;
 	private static final String COLUMN_2_CONSTRAINT = "[grow 0]";
 
-	private static org.lgna.croquet.views.AbstractLabel createHeader( org.lgna.croquet.PlainStringValue stringValue ) {
-		final edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>[] HEADER_TEXT_ATTRIBUTES = { edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE };
-		org.lgna.croquet.views.AbstractLabel header = stringValue.createLabel( HEADER_TEXT_ATTRIBUTES );
+	private static AbstractLabel createHeader( PlainStringValue stringValue ) {
+		final TextAttribute<?>[] HEADER_TEXT_ATTRIBUTES = { TextWeight.BOLD, TextPosture.OBLIQUE };
+		AbstractLabel header = stringValue.createLabel( HEADER_TEXT_ATTRIBUTES );
 		return header;
 	}
 
-	private static org.lgna.croquet.views.Separator createSeparator() {
-		return org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom();
+	private static Separator createSeparator() {
+		return Separator.createInstanceSeparatingTopFromBottom();
 	}
 
 	private int row = 0;
-	private final java.util.List<java.util.List<java.awt.Component>> rows = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final java.util.List<Integer> startIndicesOfRowPairs = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final List<List<Component>> rows = Lists.newLinkedList();
+	private final List<Integer> startIndicesOfRowPairs = Lists.newLinkedList();
 
-	private static String getTitleText( org.alice.ide.ast.type.merge.croquet.MembersToolPalette<?, ?> composite ) {
+	private static String getTitleText( MembersToolPalette<?, ?> composite ) {
 		return composite.getOuterComposite().getIsExpandedState().getTrueText();
 	}
 
-	private static String createDifferentSignatureToolText( String titleText, org.lgna.project.ast.Member member ) {
+	private static String createDifferentSignatureToolText( String titleText, Member member ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>\"" );
 		sb.append( member.getName() );
 		sb.append( "\" " );
 		sb.append( titleText );
-		if( member instanceof org.lgna.project.ast.UserMethod ) {
+		if( member instanceof UserMethod ) {
 			sb.append( " have different signatures." );
 		} else {
 			sb.append( " have different value classes." );
@@ -92,13 +125,13 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 		return sb.toString();
 	}
 
-	private static String createDifferentImplementationToolText( String titleText, org.lgna.project.ast.Member member ) {
+	private static String createDifferentImplementationToolText( String titleText, Member member ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>\"" );
 		sb.append( member.getName() );
 		sb.append( "\" " );
 		sb.append( titleText );
-		if( member instanceof org.lgna.project.ast.UserMethod ) {
+		if( member instanceof UserMethod ) {
 			sb.append( " have different implementations." );
 		} else {
 			sb.append( " have different initializers." );
@@ -107,7 +140,7 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 		return sb.toString();
 	}
 
-	private static String createIdenticalToolText( String titleText, org.lgna.project.ast.Member member ) {
+	private static String createIdenticalToolText( String titleText, Member member ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>\"" );
 		sb.append( member.getName() );
@@ -118,11 +151,11 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 		return sb.toString();
 	}
 
-	public MembersView( org.alice.ide.ast.type.merge.croquet.MembersToolPalette<?, M> composite, java.awt.Color backgroundColor ) {
+	public MembersView( MembersToolPalette<?, M> composite, Color backgroundColor ) {
 		super( composite, "fill, insets 8 12 4 4, gapy " + GAP_Y, COLUMN_0_CONSTRAINT + 16 + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT + "24[grow]" );
 
 		//todo
-		backgroundColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( backgroundColor, 1.0, 1.0, 1.1 );
+		backgroundColor = ColorUtilities.scaleHSB( backgroundColor, 1.0, 1.0, 1.1 );
 		this.setBackgroundColor( backgroundColor );
 
 		String titleText = getTitleText( composite );
@@ -133,18 +166,18 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 		this.addComponent( createSeparator(), "grow, shrink" );
 		this.addComponent( createSeparator(), "span 2, grow, shrink, wrap" );
 
-		for( org.alice.ide.ast.type.merge.croquet.ImportOnly<M> importOnly : composite.getImportOnlys() ) {
+		for( ImportOnly<M> importOnly : composite.getImportOnlys() ) {
 			this.addComponent( importOnly.getImportHub().getIsDesiredState().createCheckBox() );
 
 			this.addComponent( MemberViewUtilities.createPopupView( importOnly.getImportHub().getPopup() ), "split 2, skip 1" );
-			org.lgna.croquet.views.AbstractLabel label = MemberViewUtilities.createAddMemberLabel( importOnly.getImportHub().getMember() );
+			AbstractLabel label = MemberViewUtilities.createAddMemberLabel( importOnly.getImportHub().getMember() );
 			this.addComponent( label, "wrap" );
 
 			//todo: removeValueListener somewhere
 			importOnly.getImportHub().getIsDesiredState().addNewSchoolValueListener( new IsAddDesiredListener( label ) );
 		}
 
-		for( final org.alice.ide.ast.type.merge.croquet.DifferentSignature<M> differentSignature : composite.getDifferentSignatures() ) {
+		for( final DifferentSignature<M> differentSignature : composite.getDifferentSignatures() ) {
 			this.markStartIndexOfRowPair();
 
 			//this.addSpacerNotTrackedAsRow( DIFFERENT_SIGNATURE_PRE_GAP );
@@ -155,15 +188,15 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 			this.addComponent( differentSignature.getImportHub().getIsDesiredState().createCheckBox() );
 
 			this.addComponent( MemberViewUtilities.createPopupView( differentSignature.getImportHub().getPopup() ), "skip 1, split 2" );
-			org.lgna.croquet.views.TextField textField = MemberViewUtilities.createTextField( differentSignature.getImportHub().getNameState(), differentSignature.getForegroundCustomizer() );
+			TextField textField = MemberViewUtilities.createTextField( differentSignature.getImportHub().getNameState(), differentSignature.getForegroundCustomizer() );
 			this.addComponent( textField );
 			//this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
-			org.lgna.croquet.views.Hyperlink helpHyperlink = differentSignature.getHelpComposite().getLaunchOperation().createHyperlink();
-			( (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)helpHyperlink.getAwtComponent().getUI() ).setUnderlinedOnlyWhenRolledOver( false );
+			Hyperlink helpHyperlink = differentSignature.getHelpComposite().getLaunchOperation().createHyperlink();
+			( (HyperlinkUI)helpHyperlink.getAwtComponent().getUI() ).setUnderlinedOnlyWhenRolledOver( false );
 			this.addComponent( helpHyperlink, "spany 2, gapright 8, wrap" );
 
-			org.lgna.croquet.views.CheckBox keepCheckBox = differentSignature.getProjectHub().getIsDesiredState().createCheckBox();
+			CheckBox keepCheckBox = differentSignature.getProjectHub().getIsDesiredState().createCheckBox();
 			this.addComponent( keepCheckBox, "skip 1" );
 
 			this.addComponent( MemberViewUtilities.createPopupView( differentSignature.getProjectHub().getPopup() ), "split 2" );
@@ -176,7 +209,7 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 			//this.addSpacerNotTrackedAsRow( DIFFERENT_SIGNATURE_POST_GAP );
 		}
 
-		for( final org.alice.ide.ast.type.merge.croquet.DifferentImplementation<M> differentImplementation : composite.getDifferentImplementations() ) {
+		for( final DifferentImplementation<M> differentImplementation : composite.getDifferentImplementations() ) {
 			this.markStartIndexOfRowPair();
 
 			//this.addSpacerNotTrackedAsRow( DIFFERENT_IMPLEMENTATION_PRE_GAP );
@@ -184,15 +217,15 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 			//BracketView rightBracket = new BracketView( false );
 			//rightBracket.setToolTipText( createDifferentImplementationToolText( titleText, differentImplementation.getImportMember() ) );
 
-			org.lgna.croquet.views.CheckBox addCheckBox = differentImplementation.getImportHub().getIsDesiredState().createCheckBox();
-			org.lgna.croquet.views.CheckBox keepCheckBox = differentImplementation.getProjectHub().getIsDesiredState().createCheckBox();
+			CheckBox addCheckBox = differentImplementation.getImportHub().getIsDesiredState().createCheckBox();
+			CheckBox keepCheckBox = differentImplementation.getProjectHub().getIsDesiredState().createCheckBox();
 			this.addComponent( addCheckBox );
 			this.addComponent( MemberViewUtilities.createPopupView( differentImplementation.getImportHub().getPopup() ), "skip 1, split 2" );
 			this.addComponent( differentImplementation.getImportCardOwner().getRootComponent() );
 			//this.addComponent( rightBracket, "grow, spany 2, wrap" );
 
-			org.lgna.croquet.views.Hyperlink helpHyperlink = differentImplementation.getHelpComposite().getLaunchOperation().createHyperlink();
-			( (edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI)helpHyperlink.getAwtComponent().getUI() ).setUnderlinedOnlyWhenRolledOver( false );
+			Hyperlink helpHyperlink = differentImplementation.getHelpComposite().getLaunchOperation().createHyperlink();
+			( (HyperlinkUI)helpHyperlink.getAwtComponent().getUI() ).setUnderlinedOnlyWhenRolledOver( false );
 			this.addComponent( helpHyperlink, "spany 2, gapright 8, wrap" );
 
 			this.addComponent( keepCheckBox, "skip 1" );
@@ -202,11 +235,11 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 			//this.addSpacerNotTrackedAsRow( DIFFERENT_IMPLEMENTATION_POST_GAP );
 		}
 
-		for( org.alice.ide.ast.type.merge.croquet.Identical<M> identical : composite.getIdenticals() ) {
+		for( Identical<M> identical : composite.getIdenticals() ) {
 			String toolTipText = createIdenticalToolText( titleText, identical.getImportHub().getMember() );
-			org.lgna.croquet.views.CheckBox addCheckBox = identical.getImportHub().getIsDesiredState().createCheckBox();
+			CheckBox addCheckBox = identical.getImportHub().getIsDesiredState().createCheckBox();
 			addCheckBox.setToolTipText( toolTipText );
-			org.lgna.croquet.views.CheckBox keepCheckBox = identical.getProjectHub().getIsDesiredState().createCheckBox();
+			CheckBox keepCheckBox = identical.getProjectHub().getIsDesiredState().createCheckBox();
 			keepCheckBox.setToolTipText( toolTipText );
 			this.addComponent( addCheckBox );
 			this.addComponent( keepCheckBox );
@@ -214,8 +247,8 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 			this.addComponent( MemberViewUtilities.createKeepIdenticalMemberLabel( identical.getProjectHub().getMember() ), "wrap" );
 		}
 
-		for( org.alice.ide.ast.type.merge.croquet.ProjectOnly<M> projectOnly : composite.getProjectOnlys() ) {
-			org.lgna.croquet.views.CheckBox keepCheckBox = projectOnly.getProjectHub().getIsDesiredState().createCheckBox();
+		for( ProjectOnly<M> projectOnly : composite.getProjectOnlys() ) {
+			CheckBox keepCheckBox = projectOnly.getProjectHub().getIsDesiredState().createCheckBox();
 			this.addComponent( keepCheckBox, "skip 1" );
 			this.addComponent( MemberViewUtilities.createPopupView( projectOnly.getProjectHub().getPopup() ), "split 2" );
 			this.addComponent( MemberViewUtilities.createKeepUniqueMemberLabel( projectOnly.getProjectHub().getMember() ), "wrap" );
@@ -232,21 +265,21 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 		this.startIndicesOfRowPairs.add( this.row );
 	}
 
-	private void addToRow( org.lgna.croquet.views.AwtComponentView<?> component ) {
+	private void addToRow( AwtComponentView<?> component ) {
 		while( this.rows.size() <= this.row ) {
-			this.rows.add( new java.util.LinkedList<java.awt.Component>() );
+			this.rows.add( new LinkedList<Component>() );
 		}
 		this.rows.get( this.row ).add( component.getAwtComponent() );
 	}
 
 	@Override
-	public void addComponent( org.lgna.croquet.views.AwtComponentView<?> component ) {
+	public void addComponent( AwtComponentView<?> component ) {
 		super.addComponent( component );
 		this.addToRow( component );
 	}
 
 	@Override
-	public void addComponent( org.lgna.croquet.views.AwtComponentView<?> component, String constraint ) {
+	public void addComponent( AwtComponentView<?> component, String constraint ) {
 		super.addComponent( component, constraint );
 		if( constraint.contains( "spany" ) ) {
 			//pass
@@ -258,11 +291,11 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 		}
 	}
 
-	private static java.awt.Rectangle getRowBounds( java.util.List<java.awt.Component> row ) {
+	private static Rectangle getRowBounds( List<Component> row ) {
 		if( row.size() > 0 ) {
-			java.awt.Rectangle rv = null;
-			for( java.awt.Component awtComponent : row ) {
-				java.awt.Rectangle bounds = awtComponent.getBounds();
+			Rectangle rv = null;
+			for( Component awtComponent : row ) {
+				Rectangle bounds = awtComponent.getBounds();
 				if( rv != null ) {
 					rv = rv.union( bounds );
 				} else {
@@ -271,26 +304,26 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 			}
 			return rv;
 		} else {
-			return new java.awt.Rectangle( 0, 0, 0, 0 );
+			return new Rectangle( 0, 0, 0, 0 );
 		}
 	}
 
 	@Override
-	protected javax.swing.JPanel createJPanel() {
+	protected JPanel createJPanel() {
 		class JMembersPanel extends DefaultJPanel {
 			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
+			protected void paintComponent( Graphics g ) {
 				super.paintComponent( g );
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				java.awt.Color brighterColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackground(), 1.0, 1.0, 1.1 );
+				Graphics2D g2 = (Graphics2D)g;
+				Color brighterColor = ColorUtilities.scaleHSB( this.getBackground(), 1.0, 1.0, 1.1 );
 				final int SKIP_ROW_COUNT = 2;
 				int rowIndex = 0;
 				int minX = Integer.MAX_VALUE;
 				int maxX = Integer.MIN_VALUE;
-				for( java.util.List<java.awt.Component> row : rows ) {
+				for( List<Component> row : rows ) {
 					if( rowIndex >= SKIP_ROW_COUNT ) {
-						for( java.awt.Component awtComponent : row ) {
-							java.awt.Rectangle bounds = awtComponent.getBounds();
+						for( Component awtComponent : row ) {
+							Rectangle bounds = awtComponent.getBounds();
 							minX = Math.min( minX, bounds.x );
 							maxX = Math.max( maxX, bounds.x + bounds.width );
 						}
@@ -311,12 +344,12 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 				if( this.getComponentCount() > 2 ) {
 					int xSeparator = getComponent( 2 ).getX() - ( SPACE / 2 ) - 2;
 					rowIndex = 0;
-					java.awt.Rectangle prevBounds = null;
-					for( java.util.List<java.awt.Component> row : rows ) {
+					Rectangle prevBounds = null;
+					for( List<Component> row : rows ) {
 						if( rowIndex >= SKIP_ROW_COUNT ) {
 							boolean isEvenRow = ( ( rowIndex - SKIP_ROW_COUNT ) % 2 ) == 0;
 							boolean isStartIndexOfRowPair = startIndicesOfRowPairs.contains( rowIndex );
-							java.awt.Rectangle bounds;
+							Rectangle bounds;
 							if( isEvenRow || isStartIndexOfRowPair || ( prevBounds != null ) ) {
 								bounds = getRowBounds( row );
 							} else {
@@ -329,21 +362,21 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 							}
 
 							if( prevBounds != null ) {
-								g.setColor( java.awt.Color.BLACK );
+								g.setColor( Color.BLACK );
 								double y0 = prevBounds.getCenterY();
 								double y1 = bounds.getCenterY();
 
 								int x0 = xSeparator + 12;
 								int x1 = x0 + BRACKET_WIDTH;
 
-								java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+								GeneralPath path = new GeneralPath();
 								path.moveTo( x1, y0 );
 								path.lineTo( x0, y0 );
 								path.lineTo( x0, y1 );
 								path.lineTo( x1, y1 );
 								g2.draw( path );
 
-								java.awt.Rectangle pairBounds = prevBounds.union( bounds );
+								Rectangle pairBounds = prevBounds.union( bounds );
 								g.drawRect( x, pairBounds.y - ( GAP_Y / 2 ) - 1, width, ( pairBounds.height + GAP_Y ) - 2 );
 							}
 							prevBounds = isStartIndexOfRowPair ? bounds : null;
@@ -351,7 +384,7 @@ public abstract class MembersView<M extends org.lgna.project.ast.Member> extends
 						rowIndex++;
 					}
 
-					java.awt.Color separatorColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackground(), 1.0, 0.8, 0.6 );
+					Color separatorColor = ColorUtilities.scaleHSB( this.getBackground(), 1.0, 0.8, 0.6 );
 					g.setColor( separatorColor );
 					g.fillRect( xSeparator, 0, 3, this.getHeight() );
 				}

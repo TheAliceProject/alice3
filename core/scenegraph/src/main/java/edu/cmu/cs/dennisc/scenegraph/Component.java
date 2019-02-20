@@ -43,12 +43,33 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.EulerAngles;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.math.Vector4;
+import edu.cmu.cs.dennisc.pattern.Visitable;
+import edu.cmu.cs.dennisc.pattern.Visitor;
+import edu.cmu.cs.dennisc.render.PicturePlaneUtils;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
+import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
+import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
+
+import java.awt.Point;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Component extends Element implements edu.cmu.cs.dennisc.pattern.Visitable, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame {
+public abstract class Component extends Element implements Visitable, ReferenceFrame {
 	@Override
-	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
+	public void accept( Visitor visitor ) {
 		visitor.visit( this );
 	}
 
@@ -61,7 +82,7 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+	public AffineMatrix4x4 getAbsoluteTransformation( AffineMatrix4x4 rv ) {
 		if( this.vehicle != null ) {
 			rv = this.vehicle.getAbsoluteTransformation( rv );
 		} else {
@@ -71,12 +92,12 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
-		return getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
+	public final AffineMatrix4x4 getAbsoluteTransformation() {
+		return getAbsoluteTransformation( AffineMatrix4x4.createNaN() );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+	public AffineMatrix4x4 getInverseAbsoluteTransformation( AffineMatrix4x4 rv ) {
 		if( this.vehicle != null ) {
 			rv = this.vehicle.getInverseAbsoluteTransformation( rv );
 		} else {
@@ -86,12 +107,12 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation() {
-		return getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
+	public final AffineMatrix4x4 getInverseAbsoluteTransformation() {
+		return getInverseAbsoluteTransformation( AffineMatrix4x4.createNaN() );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
+	public AffineMatrix4x4 getTransformation( AffineMatrix4x4 rv, ReferenceFrame asSeenBy ) {
 		if( this.vehicle != null ) {
 			return this.vehicle.getTransformation( rv, asSeenBy );
 		} else {
@@ -100,44 +121,44 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-		return getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), asSeenBy );
+	public final AffineMatrix4x4 getTransformation( ReferenceFrame asSeenBy ) {
+		return getTransformation( AffineMatrix4x4.createNaN(), asSeenBy );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getTranslation( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
+	public Point3 getTranslation( Point3 rv, ReferenceFrame asSeenBy ) {
 		rv.set( getTransformation( asSeenBy ).translation );
 		return rv;
 	}
 
-	public final edu.cmu.cs.dennisc.math.Point3 getTranslation( edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-		return getTranslation( new edu.cmu.cs.dennisc.math.Point3(), asSeenBy );
+	public final Point3 getTranslation( ReferenceFrame asSeenBy ) {
+		return getTranslation( new Point3(), asSeenBy );
 	}
 
-	public edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getAxes( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 rv, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
+	public OrthogonalMatrix3x3 getAxes( OrthogonalMatrix3x3 rv, ReferenceFrame asSeenBy ) {
 		rv.setValue( getTransformation( asSeenBy ).orientation );
 		return rv;
 	}
 
-	public final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getAxes( edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-		return getAxes( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createNaN(), asSeenBy );
+	public final OrthogonalMatrix3x3 getAxes( ReferenceFrame asSeenBy ) {
+		return getAxes( OrthogonalMatrix3x3.createNaN(), asSeenBy );
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getUnitQuaternionD( edu.cmu.cs.dennisc.math.UnitQuaternion rv, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
+	public UnitQuaternion getUnitQuaternionD( UnitQuaternion rv, ReferenceFrame asSeenBy ) {
 		rv.setValue( getTransformation( asSeenBy ).orientation );
 		return rv;
 	}
 
-	public final edu.cmu.cs.dennisc.math.UnitQuaternion getUnitQuaternionD( edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-		return getUnitQuaternionD( edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN(), asSeenBy );
+	public final UnitQuaternion getUnitQuaternionD( ReferenceFrame asSeenBy ) {
+		return getUnitQuaternionD( UnitQuaternion.createNaN(), asSeenBy );
 	}
 
-	public edu.cmu.cs.dennisc.math.EulerAngles getEulerAnglesD( edu.cmu.cs.dennisc.math.EulerAngles rv, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
+	public EulerAngles getEulerAnglesD( EulerAngles rv, ReferenceFrame asSeenBy ) {
 		rv.setValue( getTransformation( asSeenBy ).orientation );
 		return rv;
 	}
 
-	public final edu.cmu.cs.dennisc.math.EulerAngles getEulerAnglesD( edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-		return getEulerAnglesD( edu.cmu.cs.dennisc.math.EulerAngles.createNaN(), asSeenBy );
+	public final EulerAngles getEulerAnglesD( ReferenceFrame asSeenBy ) {
+		return getEulerAnglesD( EulerAngles.createNaN(), asSeenBy );
 	}
 
 	public Composite getParent() {
@@ -189,153 +210,153 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 		}
 	}
 
-	public void addAbsoluteTransformationListener( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener absoluteTransformationListener ) {
+	public void addAbsoluteTransformationListener( AbsoluteTransformationListener absoluteTransformationListener ) {
 		this.absoluteTransformationListeners.add( absoluteTransformationListener );
 	}
 
-	public void removeAbsoluteTransformationListener( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener absoluteTransformationListener ) {
+	public void removeAbsoluteTransformationListener( AbsoluteTransformationListener absoluteTransformationListener ) {
 		this.absoluteTransformationListeners.remove( absoluteTransformationListener );
 	}
 
-	private void fireAbsoluteTransformationChange( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent ) {
-		for( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener atl : this.absoluteTransformationListeners ) {
+	private void fireAbsoluteTransformationChange( AbsoluteTransformationEvent absoluteTransformationEvent ) {
+		for( AbsoluteTransformationListener atl : this.absoluteTransformationListeners ) {
 			atl.absoluteTransformationChanged( absoluteTransformationEvent );
 		}
 	}
 
 	protected void fireAbsoluteTransformationChange() {
-		fireAbsoluteTransformationChange( new edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent( this ) );
+		fireAbsoluteTransformationChange( new AbsoluteTransformationEvent( this ) );
 	}
 
-	public void addHierarchyListener( edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener hierarchyListener ) {
+	public void addHierarchyListener( HierarchyListener hierarchyListener ) {
 		this.hierarchyListeners.add( hierarchyListener );
 	}
 
-	public void removeHierarchyListener( edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener hierarchyListener ) {
+	public void removeHierarchyListener( HierarchyListener hierarchyListener ) {
 		this.hierarchyListeners.remove( hierarchyListener );
 	}
 
-	private void fireHierarchyChanged( edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent hierarchyEvent ) {
-		for( edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener hl : this.hierarchyListeners ) {
+	private void fireHierarchyChanged( HierarchyEvent hierarchyEvent ) {
+		for( HierarchyListener hl : this.hierarchyListeners ) {
 			hl.hierarchyChanged( hierarchyEvent );
 		}
 	}
 
 	protected void fireHierarchyChanged() {
-		fireHierarchyChanged( new edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent( this ) );
+		fireHierarchyChanged( new HierarchyEvent( this ) );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformTo( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, Component to ) {
-		return edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities.transformTo( rv, xyzw, this, to );
+	public Vector4 transformTo( Vector4 rv, Vector4 xyzw, Component to ) {
+		return TransformationUtilities.transformTo( rv, xyzw, this, to );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformFrom( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, Component from ) {
+	public Vector4 transformFrom( Vector4 rv, Vector4 xyzw, Component from ) {
 		return from.transformTo( rv, xyzw, this );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 transformTo( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Point3 xyz, Component to ) {
-		return edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities.transformTo( rv, xyz, this, to );
+	public Point3 transformTo( Point3 rv, Point3 xyz, Component to ) {
+		return TransformationUtilities.transformTo( rv, xyz, this, to );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 transformFrom( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Point3 xyz, Component from ) {
+	public Point3 transformFrom( Point3 rv, Point3 xyz, Component from ) {
 		return from.transformTo( rv, xyz, this );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 transformTo( edu.cmu.cs.dennisc.math.Vector3 rv, edu.cmu.cs.dennisc.math.Vector3 xyz, Component to ) {
-		return edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities.transformTo( rv, xyz, this, to );
+	public Vector3 transformTo( Vector3 rv, Vector3 xyz, Component to ) {
+		return TransformationUtilities.transformTo( rv, xyz, this, to );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 transformFrom( edu.cmu.cs.dennisc.math.Vector3 rv, edu.cmu.cs.dennisc.math.Vector3 xyz, Component from ) {
+	public Vector3 transformFrom( Vector3 rv, Vector3 xyz, Component from ) {
 		return from.transformTo( rv, xyz, this );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformTo_New( edu.cmu.cs.dennisc.math.Vector4 xyzw, Component to ) {
-		return edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities.transformTo_New( xyzw, this, to );
+	public Vector4 transformTo_New( Vector4 xyzw, Component to ) {
+		return TransformationUtilities.transformTo_New( xyzw, this, to );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformFrom_New( edu.cmu.cs.dennisc.math.Vector4 xyzw, Component from ) {
+	public Vector4 transformFrom_New( Vector4 xyzw, Component from ) {
 		return from.transformTo_New( xyzw, this );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 transformTo_New( edu.cmu.cs.dennisc.math.Point3 xyz, Component to ) {
-		return edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities.transformTo_New( xyz, this, to );
+	public Point3 transformTo_New( Point3 xyz, Component to ) {
+		return TransformationUtilities.transformTo_New( xyz, this, to );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 transformFrom_New( edu.cmu.cs.dennisc.math.Point3 xyz, Component from ) {
+	public Point3 transformFrom_New( Point3 xyz, Component from ) {
 		return from.transformTo_New( xyz, this );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 transformTo_New( edu.cmu.cs.dennisc.math.Vector3 xyz, Component to ) {
-		return edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities.transformTo_New( xyz, this, to );
+	public Vector3 transformTo_New( Vector3 xyz, Component to ) {
+		return TransformationUtilities.transformTo_New( xyz, this, to );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 transformFrom_New( edu.cmu.cs.dennisc.math.Vector3 xyz, Component from ) {
+	public Vector3 transformFrom_New( Vector3 xyz, Component from ) {
 		return from.transformTo_New( xyz, this );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformTo_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 xyzw, Component to ) {
-		return edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities.transformTo_AffectReturnValuePassedIn( xyzw, this, to );
+	public Vector4 transformTo_AffectReturnValuePassedIn( Vector4 xyzw, Component to ) {
+		return TransformationUtilities.transformTo_AffectReturnValuePassedIn( xyzw, this, to );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformFrom_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 xyzw, Component from ) {
+	public Vector4 transformFrom_AffectReturnValuePassedIn( Vector4 xyzw, Component from ) {
 		return from.transformTo_AffectReturnValuePassedIn( xyzw, this );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 transformTo_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Point3 xyz, Component to ) {
-		return edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities.transformTo_AffectReturnValuePassedIn( xyz, this, to );
+	public Point3 transformTo_AffectReturnValuePassedIn( Point3 xyz, Component to ) {
+		return TransformationUtilities.transformTo_AffectReturnValuePassedIn( xyz, this, to );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 transformFrom_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Point3 xyz, Component from ) {
+	public Point3 transformFrom_AffectReturnValuePassedIn( Point3 xyz, Component from ) {
 		return from.transformTo_AffectReturnValuePassedIn( xyz, this );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 transformTo_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector3 xyz, Component to ) {
-		return edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities.transformTo_AffectReturnValuePassedIn( xyz, this, to );
+	public Vector3 transformTo_AffectReturnValuePassedIn( Vector3 xyz, Component to ) {
+		return TransformationUtilities.transformTo_AffectReturnValuePassedIn( xyz, this, to );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 transformFrom_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector3 xyz, Component from ) {
+	public Vector3 transformFrom_AffectReturnValuePassedIn( Vector3 xyz, Component from ) {
 		return from.transformTo_AffectReturnValuePassedIn( xyz, this );
 	}
 
-	private static final edu.cmu.cs.dennisc.math.Vector4 s_buffer = new edu.cmu.cs.dennisc.math.Vector4();
+	private static final Vector4 s_buffer = new Vector4();
 
-	public java.awt.Point transformToAWT( java.awt.Point rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera ) {
+	public Point transformToAWT( Point rv, Vector4 xyzw, RenderTarget renderTarget, AbstractCamera camera ) {
 		synchronized( s_buffer ) {
 			if( this != camera ) {
 				transformTo( s_buffer, xyzw, camera );
 			} else {
 				s_buffer.set( xyzw );
 			}
-			edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromCameraToAWT( rv, s_buffer, renderTarget, camera );
+			PicturePlaneUtils.transformFromCameraToAWT( rv, s_buffer, renderTarget, camera );
 		}
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT( edu.cmu.cs.dennisc.math.Vector4 rv, java.awt.Point p, double z, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera ) {
-		edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromAWTToCamera( rv, p, z, renderTarget, camera );
+	public Vector4 transformFromAWT( Vector4 rv, Point p, double z, RenderTarget renderTarget, AbstractCamera camera ) {
+		PicturePlaneUtils.transformFromAWTToCamera( rv, p, z, renderTarget, camera );
 		if( this != camera ) {
 			transformFrom_AffectReturnValuePassedIn( rv, camera );
 		}
 		return rv;
 	}
 
-	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera ) {
-		return transformToAWT( new java.awt.Point(), xyzw, renderTarget, camera );
+	public Point transformToAWT_New( Vector4 xyzw, RenderTarget renderTarget, AbstractCamera camera ) {
+		return transformToAWT( new Point(), xyzw, renderTarget, camera );
 	}
 
-	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera ) {
-		return transformToAWT_New( new edu.cmu.cs.dennisc.math.Vector4( xyz.x, xyz.y, xyz.z, 1.0 ), renderTarget, camera );
+	public Point transformToAWT_New( Point3 xyz, RenderTarget renderTarget, AbstractCamera camera ) {
+		return transformToAWT_New( new Vector4( xyz.x, xyz.y, xyz.z, 1.0 ), renderTarget, camera );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT_NewVectorD4( java.awt.Point p, double z, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera ) {
-		return transformFromAWT( new edu.cmu.cs.dennisc.math.Vector4(), p, z, renderTarget, camera );
+	public Vector4 transformFromAWT_NewVectorD4( Point p, double z, RenderTarget renderTarget, AbstractCamera camera ) {
+		return transformFromAWT( new Vector4(), p, z, renderTarget, camera );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 transformFromAWT_NewPointD3( java.awt.Point p, double z, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera ) {
-		return edu.cmu.cs.dennisc.math.Point3.createFromXYZW( transformFromAWT_NewVectorD4( p, z, renderTarget, camera ) );
+	public Point3 transformFromAWT_NewPointD3( Point p, double z, RenderTarget renderTarget, AbstractCamera camera ) {
+		return Point3.createFromXYZW( transformFromAWT_NewVectorD4( p, z, renderTarget, camera ) );
 	}
 
-	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener> absoluteTransformationListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener> hierarchyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<AbsoluteTransformationListener> absoluteTransformationListeners = Lists.newCopyOnWriteArrayList();
+	private final List<HierarchyListener> hierarchyListeners = Lists.newCopyOnWriteArrayList();
 	private Composite vehicle = null;
 }

@@ -56,16 +56,31 @@ import static com.jogamp.opengl.glu.GLU.GLU_TESS_MISSING_END_CONTOUR;
 import static com.jogamp.opengl.glu.GLU.GLU_TESS_MISSING_END_POLYGON;
 import static com.jogamp.opengl.glu.GLU.GLU_TESS_NEED_COMBINE_CALLBACK;
 import static com.jogamp.opengl.glu.GLU.GLU_TESS_VERTEX;
+
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.glu.GLU;
+import com.jogamp.opengl.glu.GLUtessellator;
+import com.jogamp.opengl.glu.GLUtessellatorCallbackAdapter;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point2f;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Text;
+
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrText extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.Text> {
-	private static class MyTessAdapter extends com.jogamp.opengl.glu.GLUtessellatorCallbackAdapter {
-		public void set( com.jogamp.opengl.GL2 gl, double xOffset, double yOffset, double z, boolean isFront ) {
+public class GlrText extends GlrGeometry<Text> {
+	private static class MyTessAdapter extends GLUtessellatorCallbackAdapter {
+		public void set( GL2 gl, double xOffset, double yOffset, double z, boolean isFront ) {
 			this.gl = gl;
 			this.xOffset = xOffset;
 			this.yOffset = yOffset;
@@ -123,10 +138,10 @@ public class GlrText extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.Text> {
 		@Override
 		public void error( int arg0 ) {
 			super.error( arg0 );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( getErrorString( arg0 ), arg0 );
+			Logger.errln( getErrorString( arg0 ), arg0 );
 		}
 
-		private com.jogamp.opengl.GL2 gl;
+		private GL2 gl;
 		private double xOffset;
 		private double yOffset;
 		private double z;
@@ -143,44 +158,44 @@ public class GlrText extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.Text> {
 	private void renderFaceContours( Context context, double xOffset, double yOffset, double z, boolean isFront ) {
 		synchronized( s_tessAdapter ) {
 
-			java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> faceContours = owner.getGlyphVector().acquireFaceContours();
+			List<List<Point2f>> faceContours = owner.getGlyphVector().acquireFaceContours();
 
 			s_tessAdapter.set( context.gl, xOffset, yOffset, z, isFront );
 
-			com.jogamp.opengl.glu.GLUtessellator tesselator = com.jogamp.opengl.glu.GLU.gluNewTess();
-			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_BEGIN, s_tessAdapter );
-			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_VERTEX, s_tessAdapter );
-			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_END, s_tessAdapter );
-			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_COMBINE, s_tessAdapter );
+			GLUtessellator tesselator = GLU.gluNewTess();
+			GLU.gluTessCallback( tesselator, GLU_TESS_BEGIN, s_tessAdapter );
+			GLU.gluTessCallback( tesselator, GLU_TESS_VERTEX, s_tessAdapter );
+			GLU.gluTessCallback( tesselator, GLU_TESS_END, s_tessAdapter );
+			GLU.gluTessCallback( tesselator, GLU_TESS_COMBINE, s_tessAdapter );
 			//			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_COMBINE_DATA, s_tessAdapter );
 			final boolean IS_ERROR_OUTPUT_DESIRED = false;
 			if( IS_ERROR_OUTPUT_DESIRED ) {
-				com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_ERROR, s_tessAdapter );
+				GLU.gluTessCallback( tesselator, GLU_TESS_ERROR, s_tessAdapter );
 			}
 			//			context.glu.gluTessCallback( tesselator, GLU_TESS_ERROR_DATA, s_tessAdapter );
 			try {
-				com.jogamp.opengl.glu.GLU.gluBeginPolygon( tesselator );
+				GLU.gluBeginPolygon( tesselator );
 				try {
-					for( java.util.List<edu.cmu.cs.dennisc.math.Point2f> faceContour : faceContours ) {
-						com.jogamp.opengl.glu.GLU.gluTessBeginContour( tesselator );
+					for( List<Point2f> faceContour : faceContours ) {
+						GLU.gluTessBeginContour( tesselator );
 						try {
 							int n = faceContour.size();
 							for( int i = 0; i < n; i++ ) {
-								edu.cmu.cs.dennisc.math.Point2f p;
+								Point2f p;
 								if( isFront ) {
 									p = faceContour.get( n - i - 1 );
 								} else {
 									p = faceContour.get( i );
 								}
 								double[] xyz = { p.x, p.y, 0 };
-								com.jogamp.opengl.glu.GLU.gluTessVertex( tesselator, xyz, 0, xyz );
+								GLU.gluTessVertex( tesselator, xyz, 0, xyz );
 							}
 						} finally {
-							com.jogamp.opengl.glu.GLU.gluTessEndContour( tesselator );
+							GLU.gluTessEndContour( tesselator );
 						}
 					}
 				} finally {
-					com.jogamp.opengl.glu.GLU.gluTessEndPolygon( tesselator );
+					GLU.gluTessEndPolygon( tesselator );
 				}
 			} finally {
 				owner.getGlyphVector().releaseFaceContours();
@@ -189,7 +204,7 @@ public class GlrText extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.Text> {
 	}
 
 	private void glText( Context context, boolean isLightingEnabled ) {
-		edu.cmu.cs.dennisc.math.Vector3 alignmentOffset = owner.getAlignmentOffset();
+		Vector3 alignmentOffset = owner.getAlignmentOffset();
 		double zFront = alignmentOffset.z;
 		double zBack = zFront + owner.depth.getValue();
 
@@ -197,12 +212,12 @@ public class GlrText extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.Text> {
 		renderFaceContours( context, alignmentOffset.x, alignmentOffset.y, zBack, false );
 
 		if( zFront != zBack ) {
-			java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> outlineLines = owner.getGlyphVector().acquireOutlineLines();
+			List<List<Point2f>> outlineLines = owner.getGlyphVector().acquireOutlineLines();
 			try {
-				for( java.util.List<edu.cmu.cs.dennisc.math.Point2f> outlineLine : outlineLines ) {
+				for( List<Point2f> outlineLine : outlineLines ) {
 					context.gl.glBegin( GL_QUAD_STRIP );
-					edu.cmu.cs.dennisc.math.Point2f prev = null;
-					for( edu.cmu.cs.dennisc.math.Point2f curr : outlineLine ) {
+					Point2f prev = null;
+					for( Point2f curr : outlineLine ) {
 						if( prev == null ) {
 							//pass
 						} else {
@@ -252,7 +267,7 @@ public class GlrText extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.Text> {
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.text ) {
 			setIsGeometryChanged( true );
 		} else if( property == owner.font ) {
@@ -271,8 +286,8 @@ public class GlrText extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.Text> {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
-		edu.cmu.cs.dennisc.math.Vector3 alignmentOffset = owner.getAlignmentOffset();
+	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
+		Vector3 alignmentOffset = owner.getAlignmentOffset();
 		double zFront = alignmentOffset.z;
 		//todo: no reason to believe it hit the front 
 		return GlrGeometry.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, zFront, 0, 0, -1 );

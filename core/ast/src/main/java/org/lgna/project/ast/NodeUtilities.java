@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import javax.swing.JComponent;
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,7 +53,7 @@ public class NodeUtilities {
 		throw new AssertionError();
 	}
 
-	public static void safeAppendRepr( StringBuilder sbRepr, Node node, java.util.Locale locale ) {
+	public static void safeAppendRepr( StringBuilder sbRepr, Node node, Locale locale ) {
 		if( node != null ) {
 			sbRepr.append( node.getRepr() );
 		} else {
@@ -65,6 +68,6 @@ public class NodeUtilities {
 	}
 
 	public static void safeAppendRepr( StringBuilder sbRepr, Node node ) {
-		safeAppendRepr( sbRepr, node, javax.swing.JComponent.getDefaultLocale() );
+		safeAppendRepr( sbRepr, node, JComponent.getDefaultLocale() );
 	}
 }

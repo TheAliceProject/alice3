@@ -42,15 +42,19 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.rigidbody;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import edu.cmu.cs.dennisc.math.Vector3;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class TranslationAndOrientationFunction extends TranslationFunction<TranslationAndOrientationDerivative> {
-	private edu.cmu.cs.dennisc.math.UnitQuaternion m_orientation = edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN();
-	private edu.cmu.cs.dennisc.math.Vector3 m_angularMomentum = new edu.cmu.cs.dennisc.math.Vector3();
+	private UnitQuaternion m_orientation = UnitQuaternion.createNaN();
+	private Vector3 m_angularMomentum = new Vector3();
 
-	private edu.cmu.cs.dennisc.math.UnitQuaternion m_spin = edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN();
-	private edu.cmu.cs.dennisc.math.Vector3 m_angularVelocity = new edu.cmu.cs.dennisc.math.Vector3();
+	private UnitQuaternion m_spin = UnitQuaternion.createNaN();
+	private Vector3 m_angularVelocity = new Vector3();
 
 	//todo: use Matrix
 	private double m_inertiaTensor = 1 / 6.0;
@@ -66,20 +70,20 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
 	//		return pof;
 	//	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion accessOrientation() {
+	public UnitQuaternion accessOrientation() {
 		return m_orientation;
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getOrientation( edu.cmu.cs.dennisc.math.UnitQuaternion rv ) {
+	public UnitQuaternion getOrientation( UnitQuaternion rv ) {
 		rv.setValue( m_orientation );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getOrientation() {
-		return getOrientation( edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN() );
+	public UnitQuaternion getOrientation() {
+		return getOrientation( UnitQuaternion.createNaN() );
 	}
 
-	public void setOrientation( edu.cmu.cs.dennisc.math.UnitQuaternion orientation ) {
+	public void setOrientation( UnitQuaternion orientation ) {
 		m_orientation.setValue( orientation );
 	}
 
@@ -87,20 +91,20 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
 		m_orientation.set( x, y, z, w );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 accessAngularMomentum() {
+	public Vector3 accessAngularMomentum() {
 		return m_angularMomentum;
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 getAngularMomentum( edu.cmu.cs.dennisc.math.Vector3 rv ) {
+	public Vector3 getAngularMomentum( Vector3 rv ) {
 		rv.set( m_angularMomentum );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 getAngularMomentum() {
-		return getAngularMomentum( new edu.cmu.cs.dennisc.math.Vector3() );
+	public Vector3 getAngularMomentum() {
+		return getAngularMomentum( new Vector3() );
 	}
 
-	public void setAngularMomentum( edu.cmu.cs.dennisc.math.Vector3 angularMomentum ) {
+	public void setAngularMomentum( Vector3 angularMomentum ) {
 		m_angularMomentum.set( angularMomentum );
 	}
 
@@ -108,20 +112,20 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
 		m_angularMomentum.set( x, y, z );
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion accessSpin() {
+	public UnitQuaternion accessSpin() {
 		return m_spin;
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getSpin( edu.cmu.cs.dennisc.math.UnitQuaternion rv ) {
+	public UnitQuaternion getSpin( UnitQuaternion rv ) {
 		rv.setValue( m_spin );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getSpin() {
-		return getSpin( edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN() );
+	public UnitQuaternion getSpin() {
+		return getSpin( UnitQuaternion.createNaN() );
 	}
 
-	public void setSpin( edu.cmu.cs.dennisc.math.UnitQuaternion spin ) {
+	public void setSpin( UnitQuaternion spin ) {
 		m_spin.setValue( spin );
 	}
 
@@ -129,20 +133,20 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
 		m_spin.set( w, x, y, z );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 accessAngularVelocity() {
+	public Vector3 accessAngularVelocity() {
 		return m_angularVelocity;
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 getAngularVelocity( edu.cmu.cs.dennisc.math.Vector3 rv ) {
+	public Vector3 getAngularVelocity( Vector3 rv ) {
 		rv.set( m_angularVelocity );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 getAngularVelocity() {
-		return getAngularVelocity( new edu.cmu.cs.dennisc.math.Vector3() );
+	public Vector3 getAngularVelocity() {
+		return getAngularVelocity( new Vector3() );
 	}
 
-	public void setAngularVelocity( edu.cmu.cs.dennisc.math.Vector3 angularVelocity ) {
+	public void setAngularVelocity( Vector3 angularVelocity ) {
 		m_angularVelocity.set( angularVelocity );
 	}
 
@@ -159,21 +163,21 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
 		m_inverseInertiaTensor = 1 / m_inertiaTensor;
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+	public AffineMatrix4x4 getTransformation( AffineMatrix4x4 rv ) {
 		rv.set( m_orientation, accessTranslation() );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation() {
-		return getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
+	public AffineMatrix4x4 getTransformation() {
+		return getTransformation( AffineMatrix4x4.createNaN() );
 	}
 
-	public void setTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation ) {
+	public void setTransformation( AffineMatrix4x4 transformation ) {
 		accessTranslation().set( transformation.translation );
 		m_orientation.setValue( transformation.orientation );
 	}
 
-	protected abstract edu.cmu.cs.dennisc.math.Vector3 getTorque( edu.cmu.cs.dennisc.math.Vector3 rv, double t );
+	protected abstract Vector3 getTorque( Vector3 rv, double t );
 
 	@Override
 	protected TranslationAndOrientationDerivative newDerivative() {
@@ -190,9 +194,9 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
 	@Override
 	protected void update( double t, double dt, TranslationAndOrientationDerivative derivative ) {
 		super.update( t, dt, derivative );
-		m_orientation.add( edu.cmu.cs.dennisc.math.UnitQuaternion.createMultiplication( derivative.spin, dt ) );
+		m_orientation.add( UnitQuaternion.createMultiplication( derivative.spin, dt ) );
 		m_orientation.normalize();
-		m_angularMomentum.add( edu.cmu.cs.dennisc.math.Vector3.createMultiplication( derivative.torque, dt ) );
+		m_angularMomentum.add( Vector3.createMultiplication( derivative.torque, dt ) );
 	}
 
 	@Override
@@ -204,12 +208,12 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
 	public void update( TranslationAndOrientationDerivative a, TranslationAndOrientationDerivative b, TranslationAndOrientationDerivative c, TranslationAndOrientationDerivative d, double dt ) {
 		super.update( a, b, c, d, dt );
 		m_orientation.add(
-				edu.cmu.cs.dennisc.math.UnitQuaternion.createMultiplication(
-						edu.cmu.cs.dennisc.math.UnitQuaternion.createAddition(
+				UnitQuaternion.createMultiplication(
+						UnitQuaternion.createAddition(
 								a.spin,
-								edu.cmu.cs.dennisc.math.UnitQuaternion.createAddition(
-										edu.cmu.cs.dennisc.math.UnitQuaternion.createMultiplication(
-												edu.cmu.cs.dennisc.math.UnitQuaternion.createAddition(
+								UnitQuaternion.createAddition(
+										UnitQuaternion.createMultiplication(
+												UnitQuaternion.createAddition(
 														b.spin,
 														c.spin
 														),
@@ -223,12 +227,12 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
 				);
 		m_orientation.normalize();
 		m_angularMomentum.add(
-				edu.cmu.cs.dennisc.math.Vector3.createMultiplication(
-						edu.cmu.cs.dennisc.math.Vector3.createAddition(
+				Vector3.createMultiplication(
+						Vector3.createAddition(
 								a.torque,
-								edu.cmu.cs.dennisc.math.Vector3.createAddition(
-										edu.cmu.cs.dennisc.math.Vector3.createMultiplication(
-												edu.cmu.cs.dennisc.math.Vector3.createAddition(
+								Vector3.createAddition(
+										Vector3.createMultiplication(
+												Vector3.createAddition(
 														b.torque,
 														c.torque
 														),
@@ -247,8 +251,8 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
 		super.update();
 		m_angularVelocity.setToMultiplication( m_angularMomentum, m_inverseInertiaTensor );
 		m_spin.setToMultiplication(
-				edu.cmu.cs.dennisc.math.UnitQuaternion.createMultiplication(
-						new edu.cmu.cs.dennisc.math.UnitQuaternion( 0, m_angularVelocity.x, m_angularVelocity.y, m_angularVelocity.z ),
+				UnitQuaternion.createMultiplication(
+						new UnitQuaternion( 0, m_angularVelocity.x, m_angularVelocity.y, m_angularVelocity.z ),
 						m_orientation
 						),
 				0.5

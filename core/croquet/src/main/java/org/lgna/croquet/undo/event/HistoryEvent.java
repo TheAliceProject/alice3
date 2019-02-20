@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.lgna.croquet.undo.event;
 
+import edu.cmu.cs.dennisc.pattern.event.Event;
+import org.lgna.croquet.undo.UndoHistory;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class HistoryEvent extends edu.cmu.cs.dennisc.pattern.event.Event<org.lgna.croquet.undo.UndoHistory> {
-	public HistoryEvent( org.lgna.croquet.undo.UndoHistory source ) {
+public abstract class HistoryEvent extends Event<UndoHistory> {
+	public HistoryEvent( UndoHistory source ) {
 		super( source );
 	}
 }

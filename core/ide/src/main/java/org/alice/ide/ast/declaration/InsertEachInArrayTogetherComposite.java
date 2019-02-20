@@ -42,32 +42,42 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.EachInArrayTogether;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class InsertEachInArrayTogetherComposite extends InsertEachInArrayComposite<org.lgna.project.ast.EachInArrayTogether> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertEachInArrayTogetherComposite> mapEnveloping = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertEachInArrayTogetherComposite> mapInsert = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public final class InsertEachInArrayTogetherComposite extends InsertEachInArrayComposite<EachInArrayTogether> {
+	private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertEachInArrayTogetherComposite> mapEnveloping = Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertEachInArrayTogetherComposite> mapInsert = Maps.newInitializingIfAbsentHashMap();
 
-	public static synchronized InsertEachInArrayTogetherComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, final boolean isEnveloping ) {
-		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertEachInArrayTogetherComposite> map = isEnveloping ? mapEnveloping : mapInsert;
-		return map.getInitializingIfAbsent( blockStatementIndexPair, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertEachInArrayTogetherComposite>() {
+	public static synchronized InsertEachInArrayTogetherComposite getInstance( BlockStatementIndexPair blockStatementIndexPair, final boolean isEnveloping ) {
+		InitializingIfAbsentMap<BlockStatementIndexPair, InsertEachInArrayTogetherComposite> map = isEnveloping ? mapEnveloping : mapInsert;
+		return map.getInitializingIfAbsent( blockStatementIndexPair, new InitializingIfAbsentMap.Initializer<BlockStatementIndexPair, InsertEachInArrayTogetherComposite>() {
 			@Override
-			public InsertEachInArrayTogetherComposite initialize( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+			public InsertEachInArrayTogetherComposite initialize( BlockStatementIndexPair blockStatementIndexPair ) {
 				return new InsertEachInArrayTogetherComposite( blockStatementIndexPair, isEnveloping );
 			}
 		} );
 	}
 
-	private InsertEachInArrayTogetherComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( java.util.UUID.fromString( "314ebbd9-b810-49aa-9832-39825d54082a" ), blockStatementIndexPair, isEnveloping );
+	private InsertEachInArrayTogetherComposite( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		super( UUID.fromString( "314ebbd9-b810-49aa-9832-39825d54082a" ), blockStatementIndexPair, isEnveloping );
 	}
 
 	@Override
-	protected org.lgna.project.ast.EachInArrayTogether createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
-		return new org.lgna.project.ast.EachInArrayTogether(
+	protected EachInArrayTogether createStatement( UserLocal item, Expression initializer ) {
+		return new EachInArrayTogether(
 				item,
 				initializer,
-				new org.lgna.project.ast.BlockStatement() );
+				new BlockStatement() );
 	}
 }

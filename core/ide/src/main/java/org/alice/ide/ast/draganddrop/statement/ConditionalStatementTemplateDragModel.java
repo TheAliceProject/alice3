@@ -43,6 +43,15 @@
 
 package org.alice.ide.ast.draganddrop.statement;
 
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.cascade.statement.ConditionalStatementInsertCascade;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.ConditionalStatement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +65,11 @@ public class ConditionalStatementTemplateDragModel extends PotentiallyEnveloping
 	}
 
 	private ConditionalStatementTemplateDragModel() {
-		super( java.util.UUID.fromString( "b777b20e-9d46-4e42-a980-a155f0604773" ), org.lgna.project.ast.ConditionalStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteConditionalStatement() );
+		super( UUID.fromString( "b777b20e-9d46-4e42-a980-a155f0604773" ), ConditionalStatement.class, IncompleteAstUtilities.createIncompleteConditionalStatement() );
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.ConditionalStatementInsertCascade.getInstance( blockStatementIndexPair, isEnveloping );
+	protected Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		return ConditionalStatementInsertCascade.getInstance( blockStatementIndexPair, isEnveloping );
 	}
 }

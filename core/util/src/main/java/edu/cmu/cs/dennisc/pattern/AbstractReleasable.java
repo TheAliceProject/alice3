@@ -42,6 +42,15 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.pattern;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.pattern.event.ReleaseEvent;
+import edu.cmu.cs.dennisc.pattern.event.ReleaseListener;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,35 +64,35 @@ public abstract class AbstractReleasable implements Releasable {
 	public final void release() {
 		if( this.releaseListeners.size() > 0 ) {
 			//perhaps overdone?
-			edu.cmu.cs.dennisc.pattern.event.ReleaseListener[] copyOfReleaseListeners = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.releaseListeners, edu.cmu.cs.dennisc.pattern.event.ReleaseListener.class );
+			ReleaseListener[] copyOfReleaseListeners = ArrayUtilities.createArray( this.releaseListeners, ReleaseListener.class );
 
-			edu.cmu.cs.dennisc.pattern.event.ReleaseEvent e = new edu.cmu.cs.dennisc.pattern.event.ReleaseEvent( this );
-			for( edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener : copyOfReleaseListeners ) {
+			ReleaseEvent e = new ReleaseEvent( this );
+			for( ReleaseListener releaseListener : copyOfReleaseListeners ) {
 				releaseListener.releasing( e );
 			}
 
 			actuallyRelease();
 
-			for( edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener : copyOfReleaseListeners ) {
+			for( ReleaseListener releaseListener : copyOfReleaseListeners ) {
 				releaseListener.released( e );
 			}
 		}
 	}
 
 	@Override
-	public void addReleaseListener( edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener ) {
+	public void addReleaseListener( ReleaseListener releaseListener ) {
 		this.releaseListeners.add( releaseListener );
 	}
 
 	@Override
-	public void removeReleaseListener( edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener ) {
+	public void removeReleaseListener( ReleaseListener releaseListener ) {
 		this.releaseListeners.remove( releaseListener );
 	}
 
 	@Override
-	public java.util.Collection<edu.cmu.cs.dennisc.pattern.event.ReleaseListener> getReleaseListeners() {
-		return java.util.Collections.unmodifiableCollection( this.releaseListeners );
+	public Collection<ReleaseListener> getReleaseListeners() {
+		return Collections.unmodifiableCollection( this.releaseListeners );
 	}
 
-	private final java.util.List<edu.cmu.cs.dennisc.pattern.event.ReleaseListener> releaseListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<ReleaseListener> releaseListeners = Lists.newCopyOnWriteArrayList();
 }

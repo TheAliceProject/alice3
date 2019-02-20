@@ -42,12 +42,20 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import javax.swing.ImageIcon;
+import java.awt.Dimension;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIconFactory {
-	private final java.util.List<javax.swing.ImageIcon> sortedByWithSourceImageIcons;
-	private final javax.swing.ImageIcon defaultImageIcon;
+	private final List<ImageIcon> sortedByWithSourceImageIcons;
+	private final ImageIcon defaultImageIcon;
 
 	private static int compareInts( int a, int b ) {
 		if( a < b ) {
@@ -61,7 +69,7 @@ public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIco
 		}
 	}
 
-	public AbstractMultipleSourceImageIconFactory( int defaultIndex, javax.swing.ImageIcon... imageIcons ) {
+	public AbstractMultipleSourceImageIconFactory( int defaultIndex, ImageIcon... imageIcons ) {
 		super( IsCachingDesired.FALSE );
 		assert imageIcons.length > 0 : this;
 		assert defaultIndex >= 0 : defaultIndex;
@@ -69,29 +77,29 @@ public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIco
 
 		this.defaultImageIcon = imageIcons[ defaultIndex ];
 
-		java.util.List<javax.swing.ImageIcon> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( imageIcons );
+		List<ImageIcon> list = Lists.newArrayList( imageIcons );
 		assert list.contains( null ) == false : this;
 
-		java.util.Collections.sort( list, new java.util.Comparator<javax.swing.ImageIcon>() {
+		Collections.sort( list, new Comparator<ImageIcon>() {
 			@Override
-			public int compare( javax.swing.ImageIcon o1, javax.swing.ImageIcon o2 ) {
+			public int compare( ImageIcon o1, ImageIcon o2 ) {
 				return compareInts( o1.getIconWidth(), o2.getIconWidth() );
 			}
 		} );
 
-		this.sortedByWithSourceImageIcons = java.util.Collections.unmodifiableList( list );
+		this.sortedByWithSourceImageIcons = Collections.unmodifiableList( list );
 	}
 
-	public Iterable<javax.swing.ImageIcon> getSortedByWidthSourceImageIcons() {
+	public Iterable<ImageIcon> getSortedByWidthSourceImageIcons() {
 		return this.sortedByWithSourceImageIcons;
 	}
 
-	protected javax.swing.ImageIcon getDefaultImageIcon() {
+	protected ImageIcon getDefaultImageIcon() {
 		return this.defaultImageIcon;
 	}
 
-	protected javax.swing.ImageIcon getSourceImageIcon( java.awt.Dimension size ) {
-		for( javax.swing.ImageIcon icon : this.sortedByWithSourceImageIcons ) {
+	protected ImageIcon getSourceImageIcon( Dimension size ) {
+		for( ImageIcon icon : this.sortedByWithSourceImageIcons ) {
 			if( icon.getIconWidth() >= size.width ) {
 				return icon;
 			}
@@ -105,7 +113,7 @@ public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIco
 	}
 
 	@Override
-	public final java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		return new java.awt.Dimension( this.defaultImageIcon.getIconWidth(), this.defaultImageIcon.getIconHeight() );
+	public final Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
+		return new Dimension( this.defaultImageIcon.getIconWidth(), this.defaultImageIcon.getIconHeight() );
 	}
 }

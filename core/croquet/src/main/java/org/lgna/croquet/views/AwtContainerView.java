@@ -43,10 +43,15 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.awt.Component;
+import java.awt.Container;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AwtContainerView<J extends java.awt.Container> extends AwtComponentView<J> {
+public abstract class AwtContainerView<J extends Container> extends AwtComponentView<J> {
 	//	private java.awt.event.ContainerListener containerListener = new java.awt.event.ContainerListener() {
 	//		public void componentAdded(java.awt.event.ContainerEvent e) {
 	//			assert e.getContainer() == Component.this.getJComponent();
@@ -88,7 +93,7 @@ public abstract class AwtContainerView<J extends java.awt.Container> extends Awt
 
 	@Deprecated
 	public AwtComponentView<?>[] getComponents() {
-		java.awt.Component[] components = this.getAwtComponent().getComponents();
+		Component[] components = this.getAwtComponent().getComponents();
 		final int N = components.length;
 		AwtComponentView<?>[] rv = new AwtComponentView<?>[ N ];
 		for( int i = 0; i < N; i++ ) {
@@ -149,13 +154,13 @@ public abstract class AwtContainerView<J extends java.awt.Container> extends Awt
 	}
 
 	private final void internalRemoveAllComponents( boolean isReleaseDesired ) {
-		java.awt.Component[] awtComponents = this.getAwtComponent().getComponents();
-		for( java.awt.Component awtComponent : awtComponents ) {
+		Component[] awtComponents = this.getAwtComponent().getComponents();
+		for( Component awtComponent : awtComponents ) {
 			if( awtComponent != null ) {
 				AwtComponentView<?> component = lookup( awtComponent );
 				this.internalRemoveComponent( component, isReleaseDesired );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "encountered null component", this );
+				Logger.warning( "encountered null component", this );
 			}
 		}
 	}

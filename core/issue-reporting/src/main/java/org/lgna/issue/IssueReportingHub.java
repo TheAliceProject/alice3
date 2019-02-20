@@ -48,5 +48,5 @@ package org.lgna.issue;
 public interface IssueReportingHub {
 	boolean isLoginSupported();
 
-	void checkRemoteUser( String username, String password, org.lgna.issue.IssueReportingRemoteUserObserver observer );
+	void checkRemoteUser( String username, String password, IssueReportingRemoteUserObserver observer );
 }

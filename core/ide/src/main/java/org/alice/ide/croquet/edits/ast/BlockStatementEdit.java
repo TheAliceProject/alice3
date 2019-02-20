@@ -43,29 +43,37 @@
 
 package org.alice.ide.croquet.edits.ast;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.BlockStatement;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BlockStatementEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.AbstractEdit<M> {
-	private final org.lgna.project.ast.BlockStatement blockStatement;
+public abstract class BlockStatementEdit<M extends CompletionModel> extends AbstractEdit<M> {
+	private final BlockStatement blockStatement;
 
-	public BlockStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.lgna.project.ast.BlockStatement blockStatement ) {
-		super( completionStep );
+	public BlockStatementEdit( UserActivity userActivity, BlockStatement blockStatement ) {
+		super( userActivity );
 		this.blockStatement = blockStatement;
 	}
 
-	public BlockStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public BlockStatementEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.blockStatement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).decodeValue( binaryDecoder );
+		this.blockStatement = NodeCodec.getInstance( BlockStatement.class ).decodeValue( binaryDecoder );
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).encodeValue( binaryEncoder, this.blockStatement );
+		NodeCodec.getInstance( BlockStatement.class ).encodeValue( binaryEncoder, this.blockStatement );
 	}
 
-	public org.lgna.project.ast.BlockStatement getBlockStatement() {
+	public BlockStatement getBlockStatement() {
 		return this.blockStatement;
 	}
 }

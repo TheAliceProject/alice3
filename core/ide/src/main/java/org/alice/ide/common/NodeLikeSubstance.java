@@ -42,17 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import org.alice.ide.croquet.components.KnurlDragComponent;
+import org.lgna.croquet.DragModel;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NodeLikeSubstance extends org.alice.ide.croquet.components.KnurlDragComponent<org.lgna.croquet.DragModel> {
-	public NodeLikeSubstance( org.lgna.croquet.DragModel model ) {
+public abstract class NodeLikeSubstance extends KnurlDragComponent<DragModel> {
+	public NodeLikeSubstance( DragModel model ) {
 		super( model, true );
 		this.setMaximumSizeClampedToPreferredSize( true );
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
-		return new javax.swing.BoxLayout( jComponent, javax.swing.BoxLayout.LINE_AXIS );
+	protected LayoutManager createLayoutManager( JPanel jComponent ) {
+		return new BoxLayout( jComponent, BoxLayout.LINE_AXIS );
 	}
 }

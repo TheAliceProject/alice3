@@ -50,17 +50,17 @@ public class ThemeUtilities {
 		throw new AssertionError();
 	}
 
-	private static org.alice.ide.Theme fallbackTheme;
+	private static Theme fallbackTheme;
 
-	public static synchronized org.alice.ide.Theme getActiveTheme() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+	public static synchronized Theme getActiveTheme() {
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			return ide.getTheme();
 		} else {
 			if( fallbackTheme != null ) {
 				//pass
 			} else {
-				fallbackTheme = new org.alice.ide.DefaultTheme();
+				fallbackTheme = new DefaultTheme();
 			}
 			return fallbackTheme;
 		}

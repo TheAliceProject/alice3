@@ -42,33 +42,38 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.qa;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.Joint;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BadLocalTransformation implements Problem {
-	private final edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable;
+	private final AbstractTransformable sgTransformable;
 	private final boolean isOrientationMendingRequired;
 	private final boolean isTranslationMendingRequired;
 
-	public BadLocalTransformation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, boolean isOrientationMendingRequired, boolean isTranslationMendingRequired ) {
+	public BadLocalTransformation( AbstractTransformable sgTransformable, boolean isOrientationMendingRequired, boolean isTranslationMendingRequired ) {
 		this.sgTransformable = sgTransformable;
 		this.isOrientationMendingRequired = isOrientationMendingRequired;
 		this.isTranslationMendingRequired = isTranslationMendingRequired;
 	}
 
 	@Override
-	public void mend( edu.cmu.cs.dennisc.scenegraph.qa.Mender mender ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 original = sgTransformable.getLocalTransformation();
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 replacement;
-		if( sgTransformable instanceof edu.cmu.cs.dennisc.scenegraph.Joint ) {
-			edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = (edu.cmu.cs.dennisc.scenegraph.Joint)sgTransformable;
+	public void mend( Mender mender ) {
+		AffineMatrix4x4 original = sgTransformable.getLocalTransformation();
+		AffineMatrix4x4 replacement;
+		if( sgTransformable instanceof Joint ) {
+			Joint sgJoint = (Joint)sgTransformable;
 			replacement = mender.getMendTransformationFor( sgJoint );
 			//			if( isOrientationMendingRequired( m ) || isTranslationMendingRequired( m ) ) {
 			//				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( sgJoint );
 			//				m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
 			//			}
 		} else {
-			replacement = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+			replacement = AffineMatrix4x4.createIdentity();
 		}
 		if( isOrientationMendingRequired ) {
 			original.orientation.set( replacement.orientation.right, replacement.orientation.up, replacement.orientation.backward );
@@ -86,7 +91,7 @@ public class BadLocalTransformation implements Problem {
 		sb.append( "[" );
 		sb.append( this.sgTransformable );
 		sb.append( ";" );
-		sb.append( edu.cmu.cs.dennisc.print.PrintUtilities.append( sb, this.sgTransformable.getLocalTransformation() ) );
+		sb.append( PrintUtilities.append( sb, this.sgTransformable.getLocalTransformation() ) );
 		sb.append( "]" );
 		return sb.toString();
 	}

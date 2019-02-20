@@ -43,6 +43,13 @@
 
 package org.alice.ide.icons;
 
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon;
+import edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon;
+
+import javax.swing.Icon;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,22 +61,22 @@ public class Icons {
 	public static final int SMALL_WIDTH = 24;
 	public static final int SMALL_HEIGHT = 24;
 
-	public static final javax.swing.Icon EMPTY_HEIGHT_ICON_SMALL = new edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon( 0, SMALL_HEIGHT );
-	public static final javax.swing.Icon BOOKMARK_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/256x256/bookmark.png" ) );
-	public static final javax.swing.Icon BOOKMARK_ICON_SMALL = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( BOOKMARK_ICON_LARGE, SMALL_WIDTH, SMALL_HEIGHT );
+	public static final Icon EMPTY_HEIGHT_ICON_SMALL = new EmptyIcon( 0, SMALL_HEIGHT );
+	public static final Icon BOOKMARK_ICON_LARGE = IconUtilities.createImageIcon( Icons.class.getResource( "images/256x256/bookmark.png" ) );
+	public static final Icon BOOKMARK_ICON_SMALL = new ScaledIcon( BOOKMARK_ICON_LARGE, SMALL_WIDTH, SMALL_HEIGHT );
 
-	public static final javax.swing.Icon FOLDER_ICON_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/folder.png" ) );
-	public static final javax.swing.Icon FOLDER_BACK_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderBack.png" ) );
-	public static final javax.swing.Icon FOLDER_FRONT_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderFront.png" ) );
+	public static final Icon FOLDER_ICON_SMALL = IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/folder.png" ) );
+	public static final Icon FOLDER_BACK_ICON_LARGE = IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderBack.png" ) );
+	public static final Icon FOLDER_FRONT_ICON_LARGE = IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderFront.png" ) );
 
-	public static final java.awt.Dimension FOLDER_ICON_LARGE_SIZE = new java.awt.Dimension( FOLDER_BACK_ICON_LARGE.getIconWidth(), FOLDER_BACK_ICON_LARGE.getIconHeight() );
+	public static final Dimension FOLDER_ICON_LARGE_SIZE = new Dimension( FOLDER_BACK_ICON_LARGE.getIconWidth(), FOLDER_BACK_ICON_LARGE.getIconHeight() );
 
-	public static final javax.swing.Icon NEXT_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/go-next.png" ) );
-	public static final javax.swing.Icon PREVIOUS_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/go-previous.png" ) );
+	public static final Icon NEXT_SMALL = IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/go-next.png" ) );
+	public static final Icon PREVIOUS_SMALL = IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/go-previous.png" ) );
 
-	public static final javax.swing.Icon OPEN_DOCUMENT_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/document-open.png" ) );
-	public static final javax.swing.Icon SAVE_DOCUMENT_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/document-save.png" ) );
+	public static final Icon OPEN_DOCUMENT_SMALL = IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/document-open.png" ) );
+	public static final Icon SAVE_DOCUMENT_SMALL = IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/document-save.png" ) );
 
-	public static final javax.swing.Icon TRASH_CAN_FULL_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/32x40/fulltrash.png" ) );
-	public static final javax.swing.Icon TRASH_CAN_EMPTY_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/32x40/emptytrash.png" ) );
+	public static final Icon TRASH_CAN_FULL_ICON = IconUtilities.createImageIcon( Icons.class.getResource( "images/32x40/fulltrash.png" ) );
+	public static final Icon TRASH_CAN_EMPTY_ICON = IconUtilities.createImageIcon( Icons.class.getResource( "images/32x40/emptytrash.png" ) );
 }

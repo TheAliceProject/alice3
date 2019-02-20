@@ -43,25 +43,43 @@
 
 package org.lgna.croquet.preferences;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.apache.axis.encoding.Base64;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.StringState;
+
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.List;
+import java.util.UUID;
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreferenceStringState extends org.lgna.croquet.StringState {
+public abstract class PreferenceStringState extends StringState {
 	private static final String NULL_VALUE = "__null__";
 
 	private static final String CHARSET_NAME = "UTF-8";
 
-	private static javax.crypto.Cipher getCypher( byte[] encryptionKey, int mode ) throws java.security.InvalidKeyException, java.security.spec.InvalidKeySpecException, java.security.NoSuchAlgorithmException, javax.crypto.NoSuchPaddingException {
+	private static Cipher getCypher( byte[] encryptionKey, int mode ) throws InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchPaddingException {
 		final String ALGORITHM = "DES";
-		javax.crypto.spec.DESKeySpec keySpec = new javax.crypto.spec.DESKeySpec( encryptionKey );
-		javax.crypto.SecretKey secretKey = javax.crypto.SecretKeyFactory.getInstance( ALGORITHM ).generateSecret( keySpec );
-		javax.crypto.Cipher cipher = javax.crypto.Cipher.getInstance( ALGORITHM );
+		DESKeySpec keySpec = new DESKeySpec( encryptionKey );
+		SecretKey secretKey = SecretKeyFactory.getInstance( ALGORITHM ).generateSecret( keySpec );
+		Cipher cipher = Cipher.getInstance( ALGORITHM );
 		cipher.init( mode, secretKey );
 		return cipher;
 	}
 
 	private static String getInitialValue( String preferenceKey, String defaultInitialValue, byte[] encryptionKey ) {
-		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
+		Preferences userPreferences = PreferenceManager.getUserPreferences();
 		if( userPreferences != null ) {
 			if( defaultInitialValue != null ) {
 				//pass
@@ -71,8 +89,8 @@ public abstract class PreferenceStringState extends org.lgna.croquet.StringState
 			String rv = userPreferences.get( preferenceKey, defaultInitialValue );
 			if( encryptionKey != null ) {
 				try {
-					javax.crypto.Cipher cipher = getCypher( encryptionKey, javax.crypto.Cipher.DECRYPT_MODE );
-					byte[] base64 = org.apache.axis.encoding.Base64.decode( rv );
+					Cipher cipher = getCypher( encryptionKey, Cipher.DECRYPT_MODE );
+					byte[] base64 = Base64.decode( rv );
 					byte[] bytes = cipher.doFinal( base64 );
 					rv = new String( bytes, CHARSET_NAME );
 				} catch( Exception e ) {
@@ -89,9 +107,9 @@ public abstract class PreferenceStringState extends org.lgna.croquet.StringState
 		}
 	}
 
-	private static java.util.List<PreferenceStringState> instances = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private static List<PreferenceStringState> instances = Lists.newCopyOnWriteArrayList();
 
-	public final static void preserveAll( java.util.prefs.Preferences userPreferences ) {
+	public final static void preserveAll( Preferences userPreferences ) {
 		for( PreferenceStringState state : instances ) {
 			String key = state.getPreferenceKey();
 			String value = state.getValue();
@@ -103,9 +121,9 @@ public abstract class PreferenceStringState extends org.lgna.croquet.StringState
 			String possiblyEncryptedValue;
 			if( state.encryptionKey != null ) {
 				try {
-					javax.crypto.Cipher cipher = getCypher( state.encryptionKey, javax.crypto.Cipher.ENCRYPT_MODE );
+					Cipher cipher = getCypher( state.encryptionKey, Cipher.ENCRYPT_MODE );
 					byte[] bytes = cipher.doFinal( value.getBytes( CHARSET_NAME ) );
-					possiblyEncryptedValue = org.apache.axis.encoding.Base64.encode( bytes );
+					possiblyEncryptedValue = Base64.encode( bytes );
 				} catch( Exception e ) {
 					possiblyEncryptedValue = null;
 				}
@@ -129,7 +147,7 @@ public abstract class PreferenceStringState extends org.lgna.croquet.StringState
 		if( s != null ) {
 			try {
 				return s.getBytes( CHARSET_NAME );
-			} catch( java.io.UnsupportedEncodingException uee ) {
+			} catch( UnsupportedEncodingException uee ) {
 				throw new RuntimeException( CHARSET_NAME, uee );
 			}
 		} else {
@@ -137,7 +155,7 @@ public abstract class PreferenceStringState extends org.lgna.croquet.StringState
 		}
 	}
 
-	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID migrationId, String initialValue, String preferenceKey, byte[] encryptionKey ) {
+	public PreferenceStringState( Group group, UUID migrationId, String initialValue, String preferenceKey, byte[] encryptionKey ) {
 		super( group, migrationId, getInitialValue( preferenceKey, initialValue, encryptionKey ) );
 		this.preferenceKey = preferenceKey;
 		this.encryptionKey = encryptionKey;
@@ -145,11 +163,11 @@ public abstract class PreferenceStringState extends org.lgna.croquet.StringState
 		instances.add( this );
 	}
 
-	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID migrationId, String initialValue, byte[] encryptionKey ) {
+	public PreferenceStringState( Group group, UUID migrationId, String initialValue, byte[] encryptionKey ) {
 		this( group, migrationId, initialValue, migrationId.toString(), encryptionKey );
 	}
 
-	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID migrationId, String initialValue ) {
+	public PreferenceStringState( Group group, UUID migrationId, String initialValue ) {
 		this( group, migrationId, initialValue, migrationId.toString(), getEncryptionKey( null ) );
 	}
 

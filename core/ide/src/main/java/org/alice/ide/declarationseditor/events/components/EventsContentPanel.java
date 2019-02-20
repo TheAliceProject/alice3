@@ -42,17 +42,34 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.events.components;
 
+import edu.cmu.cs.dennisc.java.awt.PrintHelper;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.codedrop.CodePanelWithDropReceptor;
+import org.alice.ide.common.AddEventListenerStatementPanel;
+import org.alice.ide.x.ProjectEditorAstI18nFactory;
+import org.alice.ide.x.components.StatementListPropertyView;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.TrackableShape;
+import org.lgna.project.ast.AbstractCode;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserMethod;
+
+import java.awt.Color;
+import java.awt.print.Printable;
 
 /**
  * @author Matt May
  */
-public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDropReceptor {
-	private static class RootStatementListPropertyPane extends org.alice.ide.x.components.StatementListPropertyView {
-		public RootStatementListPropertyPane( org.lgna.project.ast.UserCode userCode ) {
-			super( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), userCode.getBodyProperty().getValue().statements );
+public class EventsContentPanel extends CodePanelWithDropReceptor {
+	private static class RootStatementListPropertyPane extends StatementListPropertyView {
+		public RootStatementListPropertyPane( UserCode userCode ) {
+			super( ProjectEditorAstI18nFactory.getInstance(), userCode.getBodyProperty().getValue().statements );
 		}
 
 		@Override
@@ -76,14 +93,14 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 		}
 
 		@Override
-		protected org.lgna.croquet.views.AwtComponentView<?> createComponent( org.lgna.project.ast.Statement statement ) {
+		protected AwtComponentView<?> createComponent( Statement statement ) {
 			if( statement instanceof ExpressionStatement ) {
 				ExpressionStatement expressionStatement = (ExpressionStatement)statement;
 				Expression expression = expressionStatement.expression.getValue();
 				if( expression instanceof MethodInvocation ) {
 					MethodInvocation methodInvocation = (MethodInvocation)expression;
-					org.alice.ide.common.AddEventListenerStatementPanel statementPanel = new org.alice.ide.common.AddEventListenerStatementPanel( expressionStatement );
-					statementPanel.addComponent( new org.alice.ide.declarationseditor.events.components.EventListenerComponent( methodInvocation ) );
+					AddEventListenerStatementPanel statementPanel = new AddEventListenerStatementPanel( expressionStatement );
+					statementPanel.addComponent( new EventListenerComponent( methodInvocation ) );
 					return statementPanel;
 				}
 			}
@@ -91,25 +108,25 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 		}
 	}
 
-	private final org.lgna.project.ast.AbstractCode code;
+	private final AbstractCode code;
 	private final RootStatementListPropertyPane rootPane;
 
-	public EventsContentPanel( org.lgna.project.ast.UserMethod code ) {
+	public EventsContentPanel( UserMethod code ) {
 		this.code = code;
 		this.rootPane = new RootStatementListPropertyPane( code );
 		this.addCenterComponent( this.rootPane );
-		java.awt.Color color = org.alice.ide.ThemeUtilities.getActiveTheme().getProcedureColor();
+		Color color = ThemeUtilities.getActiveTheme().getProcedureColor();
 		this.rootPane.setBackgroundColor( color );
 		this.setBackgroundColor( color );
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractCode getCode() {
+	public AbstractCode getCode() {
 		return this.code;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.AwtComponentView<?> getAsSeenBy() {
+	protected AwtComponentView<?> getAsSeenBy() {
 		return this;
 	}
 
@@ -118,14 +135,14 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 	}
 
 	@Override
-	public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( potentialDropSite );
+	public TrackableShape getTrackableShape( DropSite potentialDropSite ) {
+		Logger.todo( potentialDropSite );
 		return null;
 	}
 
 	@Override
-	public java.awt.print.Printable getPrintable() {
-		return new edu.cmu.cs.dennisc.java.awt.PrintHelper.Builder( this.getInsets(), this.getBackgroundColor() )
+	public Printable getPrintable() {
+		return new PrintHelper.Builder( this.getInsets(), this.getBackgroundColor() )
 				.center( this.rootPane.getAwtComponent() )
 				.build();
 	}

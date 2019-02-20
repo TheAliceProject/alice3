@@ -42,15 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearScaleHandle;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.manipulator.LinearDragManipulator;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedScaleActionOperation;
 
 import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
+import org.lgna.croquet.Application;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.SThing;
+import org.lgna.story.implementation.ModelImp;
 
 /**
  * @author David Culyba
@@ -76,7 +83,7 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 			LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
 			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 			if( scalable != null ) {
-				edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer = scaleHandle.getResizer();
+				Resizer resizer = scaleHandle.getResizer();
 				this.initialScale = scalable.getValueForResizer( resizer );
 			}
 		}
@@ -113,18 +120,18 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 	@Override
 	public void undoRedoEndManipulation() {
 		if( this.getManipulatedTransformable() != null ) {
-			edu.cmu.cs.dennisc.animation.Animator animator;
+			Animator animator;
 			if( this.dragAdapter != null ) {
 				animator = this.dragAdapter.getAnimator();
 			} else {
 				animator = null;
 			}
 			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
-			org.lgna.story.SThing aliceThing = ( (org.lgna.story.implementation.ModelImp)scalable ).getAbstraction();
-			org.lgna.project.ast.UserField manipulatedField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
+			SThing aliceThing = ( (ModelImp)scalable ).getAbstraction();
+			UserField manipulatedField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
 
 			LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
-			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, false, animator, manipulatedField, scaleHandle.getResizer(), initialScale, accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
+			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( Application.PROJECT_GROUP, false, animator, manipulatedField, scaleHandle.getResizer(), initialScale, accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
 			undoOperation.fire();
 		}
 	}

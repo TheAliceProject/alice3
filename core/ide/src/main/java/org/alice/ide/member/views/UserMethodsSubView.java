@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.member.views;
 
+import org.alice.ide.member.UserMethodsSubComposite;
+
 /**
  * @author Dennis Cosgrove
  */
-public class UserMethodsSubView extends MethodsSubView<org.alice.ide.member.UserMethodsSubComposite> {
-	public UserMethodsSubView( org.alice.ide.member.UserMethodsSubComposite composite ) {
+public class UserMethodsSubView extends MethodsSubView<UserMethodsSubComposite> {
+	public UserMethodsSubView( UserMethodsSubComposite composite ) {
 		super( composite );
 	}
 

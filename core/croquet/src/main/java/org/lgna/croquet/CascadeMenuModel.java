@@ -43,11 +43,13 @@
 
 package org.lgna.croquet;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CascadeMenuModel<FB> extends AbstractCascadeMenuModel<FB, FB> {
-	public CascadeMenuModel( java.util.UUID id ) {
+	public CascadeMenuModel( UUID id ) {
 		super( id );
 	}
 

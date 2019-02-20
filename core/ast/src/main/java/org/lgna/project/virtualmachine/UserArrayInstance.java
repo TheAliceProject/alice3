@@ -43,15 +43,17 @@
 
 package org.lgna.project.virtualmachine;
 
+import org.lgna.project.ast.UserArrayType;
+
 /**
  * @author Dennis Cosgrove
  */
 public class UserArrayInstance {
-	private final org.lgna.project.ast.UserArrayType type;
+	private final UserArrayType type;
 	private final int[] lengths;
 	private final Object[] values;
 
-	public UserArrayInstance( org.lgna.project.ast.UserArrayType type, int[] lengths, Object[] values ) {
+	public UserArrayInstance( UserArrayType type, int[] lengths, Object[] values ) {
 		assert lengths.length == 1;
 		this.type = type;
 		this.lengths = lengths;
@@ -65,7 +67,7 @@ public class UserArrayInstance {
 		}
 	}
 
-	public org.lgna.project.ast.UserArrayType getType() {
+	public UserArrayType getType() {
 		return this.type;
 	}
 

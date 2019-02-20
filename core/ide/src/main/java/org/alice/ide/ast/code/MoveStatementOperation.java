@@ -43,56 +43,36 @@
 
 package org.alice.ide.ast.code;
 
+import org.alice.ide.ast.code.edits.MoveStatementEdit;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.Statement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.Statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, MoveStatementOperation> mapSingle = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
-	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.Statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, MoveStatementOperation> mapMultiple = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
-
-	public static synchronized MoveStatementOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation, boolean isToTheEnd ) {
-		edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.Statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, MoveStatementOperation> map = isToTheEnd ? mapMultiple : mapSingle;
-		MoveStatementOperation rv = map.get( fromLocation, statement, toLocation );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MoveStatementOperation( fromLocation, statement, toLocation, isToTheEnd );
-			map.put( fromLocation, statement, toLocation, rv );
-		}
-		return rv;
-	}
-
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation;
-	private final org.lgna.project.ast.Statement statement;
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation;
+public final class MoveStatementOperation extends ActionOperation {
+	private final BlockStatementIndexPair fromLocation;
+	private final Statement statement;
+	private final BlockStatementIndexPair toLocation;
 	private final boolean isMultiple;
 
-	private MoveStatementOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation, boolean isMultiple ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "3fede3ef-ba7f-4286-842f-016da7dbacf7" ) );
+	public MoveStatementOperation( BlockStatementIndexPair fromLocation, Statement statement,
+																 BlockStatementIndexPair toLocation, boolean isMultiple ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "3fede3ef-ba7f-4286-842f-016da7dbacf7" ) );
 		this.fromLocation = fromLocation;
 		this.statement = statement;
 		this.toLocation = toLocation;
 		this.isMultiple = isMultiple;
 	}
 
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getFromLocation() {
-		return this.fromLocation;
-	}
-
-	public org.lgna.project.ast.Statement getStatement() {
-		return this.statement;
-	}
-
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getToLocation() {
-		return this.toLocation;
-	}
-
-	public boolean isMultiple() {
-		return this.isMultiple;
-	}
-
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep step ) {
-		step.commitAndInvokeDo( new org.alice.ide.ast.code.edits.MoveStatementEdit( step, this.fromLocation, this.statement, this.toLocation, this.isMultiple ) );
+	protected void perform( UserActivity activity ) {
+		activity
+				.commitAndInvokeDo( new MoveStatementEdit( activity, this.fromLocation, this.statement, this.toLocation, this.isMultiple ) );
 	}
 }

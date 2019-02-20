@@ -42,9 +42,68 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.io;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Tuple2f;
+import edu.cmu.cs.dennisc.math.Tuple3;
+import edu.cmu.cs.dennisc.math.Tuple3f;
+import edu.cmu.cs.dennisc.math.Vector2f;
+import edu.cmu.cs.dennisc.math.Vector3f;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.MemoryImageSource;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Vector;
+import java.util.zip.CRC32;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 //todo: handle Affector[] ?
 /**
@@ -52,14 +111,14 @@ import edu.cmu.cs.dennisc.scenegraph.Vertex;
  */
 abstract class AbstractPropertyReference {
 	private edu.cmu.cs.dennisc.scenegraph.Element m_element;
-	private edu.cmu.cs.dennisc.property.InstanceProperty m_property;
+	private InstanceProperty m_property;
 
-	public AbstractPropertyReference( edu.cmu.cs.dennisc.scenegraph.Element element, edu.cmu.cs.dennisc.property.InstanceProperty property ) {
+	public AbstractPropertyReference( edu.cmu.cs.dennisc.scenegraph.Element element, InstanceProperty property ) {
 		m_element = element;
 		m_property = property;
 	}
 
-	public abstract void resolve( java.util.HashMap<Integer, edu.cmu.cs.dennisc.scenegraph.Element> map );
+	public abstract void resolve( HashMap<Integer, edu.cmu.cs.dennisc.scenegraph.Element> map );
 
 	protected edu.cmu.cs.dennisc.scenegraph.Element getElement() {
 		return m_element;
@@ -80,18 +139,18 @@ abstract class AbstractPropertyReference {
 class PropertyReferenceToElement extends AbstractPropertyReference {
 	private Integer m_key;
 
-	public PropertyReferenceToElement( edu.cmu.cs.dennisc.scenegraph.Element element, edu.cmu.cs.dennisc.property.InstanceProperty<?> property, Integer key ) {
+	public PropertyReferenceToElement( edu.cmu.cs.dennisc.scenegraph.Element element, InstanceProperty<?> property, Integer key ) {
 		super( element, property );
 		m_key = key;
 	}
 
 	@Override
-	public void resolve( java.util.HashMap<Integer, edu.cmu.cs.dennisc.scenegraph.Element> map ) {
+	public void resolve( HashMap<Integer, edu.cmu.cs.dennisc.scenegraph.Element> map ) {
 		edu.cmu.cs.dennisc.scenegraph.Element value = map.get( m_key );
 		if( value != null ) {
 			setPropertyValue( value );
 		} else {
-			throw new RuntimeException( "could resolve reference- element: " + getElement() + "; propertyName: " + getPropertyName() + "; key: " + m_key );
+			throw new RuntimeException( "could not resolve reference- element: " + getElement() + "; propertyName: " + getPropertyName() + "; key: " + m_key );
 		}
 	}
 }
@@ -100,7 +159,7 @@ class PropertyReferenceToElement extends AbstractPropertyReference {
  * @author Dennis Cosgrove
  */
 class MatrixUtilities {
-	public static double[] getRow( double[] rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int row ) {
+	public static double[] getRow( double[] rv, AffineMatrix4x4 m, int row ) {
 		switch( row ) {
 		case 0:
 			rv[ 0 ] = m.orientation.right.x;
@@ -132,7 +191,7 @@ class MatrixUtilities {
 		return rv;
 	}
 
-	public static void setRow( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int row, double a, double b, double c, double d ) {
+	public static void setRow( AffineMatrix4x4 m, int row, double a, double b, double c, double d ) {
 		switch( row ) {
 		case 0:
 			m.orientation.right.x = a;
@@ -163,11 +222,11 @@ class MatrixUtilities {
 		}
 	}
 
-	public static void setRow( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int row, double[] abcd ) {
+	public static void setRow( AffineMatrix4x4 m, int row, double[] abcd ) {
 		setRow( m, row, abcd[ 0 ], abcd[ 1 ], abcd[ 2 ], abcd[ 3 ] );
 	}
 
-	public static double[] getRow( double[] rv, edu.cmu.cs.dennisc.math.Matrix3x3 m, int row ) {
+	public static double[] getRow( double[] rv, Matrix3x3 m, int row ) {
 		switch( row ) {
 		case 0:
 			rv[ 0 ] = m.right.x;
@@ -190,7 +249,7 @@ class MatrixUtilities {
 		return rv;
 	}
 
-	public static void setRow( edu.cmu.cs.dennisc.math.Matrix3x3 m, int row, double a, double b, double c ) {
+	public static void setRow( Matrix3x3 m, int row, double a, double b, double c ) {
 		switch( row ) {
 		case 0:
 			m.right.x = a;
@@ -212,7 +271,7 @@ class MatrixUtilities {
 		}
 	}
 
-	public static void setRow( edu.cmu.cs.dennisc.math.Matrix3x3 m, int row, double[] abc ) {
+	public static void setRow( Matrix3x3 m, int row, double[] abc ) {
 		setRow( m, row, abc[ 0 ], abc[ 1 ], abc[ 2 ] );
 	}
 
@@ -224,11 +283,11 @@ class MatrixUtilities {
 public class ASG {
 	private static final int SMALL_ENOUGH_PRIMATIVE_ARRAY_LENGTH_TO_ENCODE_AS_TEXT = 32;
 	private static final String ROOT_FILENAME = "root.xml";
-	private static java.util.Set<String> s_deadProperties = null;
+	private static Set<String> s_deadProperties = null;
 
 	private static boolean isDeadProperty( String property ) {
 		if( s_deadProperties == null ) {
-			s_deadProperties = new java.util.HashSet<String>();
+			s_deadProperties = new HashSet<String>();
 			s_deadProperties.add( "IsFirstClass" );
 			s_deadProperties.add( "OpacityMap" );
 			s_deadProperties.add( "EmissiveColorMap" );
@@ -278,57 +337,57 @@ public class ASG {
 		return className;
 	}
 
-	public static void encodeVertexArrayInBinary( edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices, java.io.OutputStream os ) {
-		java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( os );
-		java.io.DataOutputStream dos = new java.io.DataOutputStream( bos );
+	public static void encodeVertexArrayInBinary( Vertex[] vertices, OutputStream os ) {
+		BufferedOutputStream bos = new BufferedOutputStream( os );
+		DataOutputStream dos = new DataOutputStream( bos );
 		try {
 			dos.writeInt( 3 );
 			dos.writeInt( vertices.length );
 			for( Vertex vertice : vertices ) {
 				int format = vertice.getFormat();
 				dos.writeInt( format );
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_POSITION ) != 0 ) {
+				if( ( format & Vertex.FORMAT_POSITION ) != 0 ) {
 					dos.writeDouble( vertice.position.x );
 					dos.writeDouble( vertice.position.y );
 					dos.writeDouble( vertice.position.z );
 				}
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_NORMAL ) != 0 ) {
+				if( ( format & Vertex.FORMAT_NORMAL ) != 0 ) {
 					dos.writeDouble( vertice.normal.x );
 					dos.writeDouble( vertice.normal.y );
 					dos.writeDouble( vertice.normal.z );
 				}
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_DIFFUSE_COLOR ) != 0 ) {
+				if( ( format & Vertex.FORMAT_DIFFUSE_COLOR ) != 0 ) {
 					dos.writeFloat( vertice.diffuseColor.red );
 					dos.writeFloat( vertice.diffuseColor.green );
 					dos.writeFloat( vertice.diffuseColor.blue );
 					dos.writeFloat( vertice.diffuseColor.alpha );
 				}
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR ) != 0 ) {
+				if( ( format & Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR ) != 0 ) {
 					dos.writeFloat( vertice.specularHighlightColor.red );
 					dos.writeFloat( vertice.specularHighlightColor.green );
 					dos.writeFloat( vertice.specularHighlightColor.blue );
 					dos.writeFloat( vertice.specularHighlightColor.alpha );
 				}
-				if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_TEXTURE_COORDINATE_0 ) != 0 ) {
+				if( ( format & Vertex.FORMAT_TEXTURE_COORDINATE_0 ) != 0 ) {
 					dos.writeFloat( vertice.textureCoordinate0.u );
 					dos.writeFloat( vertice.textureCoordinate0.v );
 				}
 			}
 			dos.flush();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static edu.cmu.cs.dennisc.scenegraph.Vertex[] decodeVertexArrayInBinary( java.io.InputStream is ) {
-		edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices = null;
-		java.io.BufferedInputStream bis = new java.io.BufferedInputStream( is );
-		java.io.DataInputStream dis = new java.io.DataInputStream( bis );
+	public static Vertex[] decodeVertexArrayInBinary( InputStream is ) {
+		Vertex[] vertices = null;
+		BufferedInputStream bis = new BufferedInputStream( is );
+		DataInputStream dis = new DataInputStream( bis );
 		try {
 			int version = dis.readInt();
 			if( version == 1 ) {
 				int vertexCount = dis.readInt();
-				vertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[ vertexCount ];
+				vertices = new Vertex[ vertexCount ];
 				for( int index = 0; index < vertices.length; index++ ) {
 					double x = dis.readDouble();
 					double y = dis.readDouble();
@@ -338,106 +397,106 @@ public class ASG {
 					float k = (float)dis.readDouble();
 					float u = (float)dis.readDouble();
 					float v = (float)dis.readDouble();
-					vertices[ index ] = edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( x, y, z, i, j, k, u, v );
+					vertices[ index ] = Vertex.createXYZIJKUV( x, y, z, i, j, k, u, v );
 				}
 			} else if( version == 2 ) {
 				int vertexCount = dis.readInt();
-				vertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[ vertexCount ];
+				vertices = new Vertex[ vertexCount ];
 				for( int index = 0; index < vertices.length; index++ ) {
 					int format = dis.readInt();
-					final edu.cmu.cs.dennisc.math.Point3 position = edu.cmu.cs.dennisc.math.Point3.createNaN();
-					if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_POSITION ) != 0 ) {
+					final Point3 position = Point3.createNaN();
+					if( ( format & Vertex.FORMAT_POSITION ) != 0 ) {
 						position.x = dis.readDouble();
 						position.y = dis.readDouble();
 						position.z = dis.readDouble();
 					}
-					final edu.cmu.cs.dennisc.math.Vector3f normal = edu.cmu.cs.dennisc.math.Vector3f.createNaN();
-					if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_NORMAL ) != 0 ) {
+					final Vector3f normal = Vector3f.createNaN();
+					if( ( format & Vertex.FORMAT_NORMAL ) != 0 ) {
 						normal.x = (float)dis.readDouble();
 						normal.y = (float)dis.readDouble();
 						normal.z = (float)dis.readDouble();
 					}
-					final edu.cmu.cs.dennisc.color.Color4f diffuseColor;
-					if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_DIFFUSE_COLOR ) != 0 ) {
+					final Color4f diffuseColor;
+					if( ( format & Vertex.FORMAT_DIFFUSE_COLOR ) != 0 ) {
 						float red = (float)dis.readDouble();
 						float green = (float)dis.readDouble();
 						float blue = (float)dis.readDouble();
 						float alpha = (float)dis.readDouble();
-						diffuseColor = new edu.cmu.cs.dennisc.color.Color4f( red, green, blue, alpha );
+						diffuseColor = new Color4f( red, green, blue, alpha );
 					} else {
 						diffuseColor = null;
 					}
-					if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR ) != 0 ) {
+					if( ( format & Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR ) != 0 ) {
 					}
-					final edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0;
-					if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_TEXTURE_COORDINATE_0 ) != 0 ) {
+					final TextureCoordinate2f textureCoordinate0;
+					if( ( format & Vertex.FORMAT_TEXTURE_COORDINATE_0 ) != 0 ) {
 						float u = (float)dis.readDouble();
 						float v = (float)dis.readDouble();
-						textureCoordinate0 = new edu.cmu.cs.dennisc.texture.TextureCoordinate2f( u, v );
+						textureCoordinate0 = new TextureCoordinate2f( u, v );
 					} else {
 						textureCoordinate0 = null;
 					}
-					vertices[ index ] = new edu.cmu.cs.dennisc.scenegraph.Vertex( position, normal, diffuseColor, null, textureCoordinate0 );
+					vertices[ index ] = new Vertex( position, normal, diffuseColor, null, textureCoordinate0 );
 				}
 			} else if( version == 3 ) {
 				int vertexCount = dis.readInt();
-				vertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[ vertexCount ];
+				vertices = new Vertex[ vertexCount ];
 				for( int index = 0; index < vertices.length; index++ ) {
 					int format = dis.readInt();
-					final edu.cmu.cs.dennisc.math.Point3 position = edu.cmu.cs.dennisc.math.Point3.createNaN();
-					if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_POSITION ) != 0 ) {
+					final Point3 position = Point3.createNaN();
+					if( ( format & Vertex.FORMAT_POSITION ) != 0 ) {
 						position.x = dis.readDouble();
 						position.y = dis.readDouble();
 						position.z = dis.readDouble();
 					}
-					final edu.cmu.cs.dennisc.math.Vector3f normal = edu.cmu.cs.dennisc.math.Vector3f.createNaN();
-					if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_NORMAL ) != 0 ) {
+					final Vector3f normal = Vector3f.createNaN();
+					if( ( format & Vertex.FORMAT_NORMAL ) != 0 ) {
 						normal.x = (float)dis.readDouble();
 						normal.y = (float)dis.readDouble();
 						normal.z = (float)dis.readDouble();
 					}
-					final edu.cmu.cs.dennisc.color.Color4f diffuseColor;
-					if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_DIFFUSE_COLOR ) != 0 ) {
+					final Color4f diffuseColor;
+					if( ( format & Vertex.FORMAT_DIFFUSE_COLOR ) != 0 ) {
 						float red = dis.readFloat();
 						float green = dis.readFloat();
 						float blue = dis.readFloat();
 						float alpha = dis.readFloat();
-						diffuseColor = new edu.cmu.cs.dennisc.color.Color4f( red, green, blue, alpha );
+						diffuseColor = new Color4f( red, green, blue, alpha );
 					} else {
 						diffuseColor = null;
 					}
-					final edu.cmu.cs.dennisc.color.Color4f specularHighlightColor;
-					if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR ) != 0 ) {
+					final Color4f specularHighlightColor;
+					if( ( format & Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR ) != 0 ) {
 						float red = dis.readFloat();
 						float green = dis.readFloat();
 						float blue = dis.readFloat();
 						float alpha = dis.readFloat();
-						specularHighlightColor = new edu.cmu.cs.dennisc.color.Color4f( red, green, blue, alpha );
+						specularHighlightColor = new Color4f( red, green, blue, alpha );
 					} else {
 						specularHighlightColor = null;
 					}
-					final edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0;
-					if( ( format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_TEXTURE_COORDINATE_0 ) != 0 ) {
+					final TextureCoordinate2f textureCoordinate0;
+					if( ( format & Vertex.FORMAT_TEXTURE_COORDINATE_0 ) != 0 ) {
 						float u = dis.readFloat();
 						float v = dis.readFloat();
-						textureCoordinate0 = new edu.cmu.cs.dennisc.texture.TextureCoordinate2f( u, v );
+						textureCoordinate0 = new TextureCoordinate2f( u, v );
 					} else {
 						textureCoordinate0 = null;
 					}
-					vertices[ index ] = new edu.cmu.cs.dennisc.scenegraph.Vertex( position, normal, diffuseColor, specularHighlightColor, textureCoordinate0 );
+					vertices[ index ] = new Vertex( position, normal, diffuseColor, specularHighlightColor, textureCoordinate0 );
 				}
 			} else {
 				throw new RuntimeException( "invalid file version: " + version );
 			}
 			return vertices;
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static void encodeIntArrayInBinary( int[] array, java.io.OutputStream os ) {
-		java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( os );
-		java.io.DataOutputStream dos = new java.io.DataOutputStream( bos );
+	public static void encodeIntArrayInBinary( int[] array, OutputStream os ) {
+		BufferedOutputStream bos = new BufferedOutputStream( os );
+		DataOutputStream dos = new DataOutputStream( bos );
 		try {
 			dos.writeInt( 2 );
 			dos.writeInt( array.length );
@@ -445,15 +504,15 @@ public class ASG {
 				dos.writeInt( element );
 			}
 			dos.flush();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static int[] decodeIntArrayInBinary( java.io.InputStream is ) {
+	public static int[] decodeIntArrayInBinary( InputStream is ) {
 		int[] array = null;
-		java.io.BufferedInputStream bis = new java.io.BufferedInputStream( is );
-		java.io.DataInputStream dis = new java.io.DataInputStream( bis );
+		BufferedInputStream bis = new BufferedInputStream( is );
+		DataInputStream dis = new DataInputStream( bis );
 		try {
 			int version = dis.readInt();
 			if( version == 1 ) {
@@ -478,14 +537,14 @@ public class ASG {
 				throw new RuntimeException( "invalid file version: " + version );
 			}
 			return array;
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static void encodeDoubleArrayInBinary( double[] array, java.io.OutputStream os ) {
-		java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( os );
-		java.io.DataOutputStream dos = new java.io.DataOutputStream( bos );
+	public static void encodeDoubleArrayInBinary( double[] array, OutputStream os ) {
+		BufferedOutputStream bos = new BufferedOutputStream( os );
+		DataOutputStream dos = new DataOutputStream( bos );
 		try {
 			dos.writeInt( 2 );
 			dos.writeInt( array.length );
@@ -493,15 +552,15 @@ public class ASG {
 				dos.writeDouble( element );
 			}
 			dos.flush();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static double[] decodeDoubleArrayInBinary( java.io.InputStream is ) {
+	public static double[] decodeDoubleArrayInBinary( InputStream is ) {
 		double[] array = null;
-		java.io.BufferedInputStream bis = new java.io.BufferedInputStream( is );
-		java.io.DataInputStream dis = new java.io.DataInputStream( bis );
+		BufferedInputStream bis = new BufferedInputStream( is );
+		DataInputStream dis = new DataInputStream( bis );
 		try {
 			int version = dis.readInt();
 			if( version == 1 ) {
@@ -516,7 +575,7 @@ public class ASG {
 				throw new RuntimeException( "invalid file version: " + version );
 			}
 			return array;
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -602,7 +661,7 @@ public class ASG {
 		decodeDoubleArray( s, array, 0, array.length );
 	}
 
-	private static String encodeTuple3d( edu.cmu.cs.dennisc.math.Tuple3 tuple3d ) {
+	private static String encodeTuple3d( Tuple3 tuple3d ) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append( Double.toString( tuple3d.x ) );
 		buffer.append( ' ' );
@@ -612,7 +671,7 @@ public class ASG {
 		return buffer.toString();
 	}
 
-	private static void decodeTuple3d( String s, edu.cmu.cs.dennisc.math.Tuple3 tuple3d ) {
+	private static void decodeTuple3d( String s, Tuple3 tuple3d ) {
 		int begin = 0;
 		int end = s.indexOf( ' ', begin );
 		tuple3d.x = Double.parseDouble( s.substring( begin, end ) );
@@ -624,7 +683,7 @@ public class ASG {
 		tuple3d.z = Double.parseDouble( s.substring( begin, end ) );
 	}
 
-	private static String encodeTuple3f( edu.cmu.cs.dennisc.math.Tuple3f tuple3d ) {
+	private static String encodeTuple3f( Tuple3f tuple3d ) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append( Double.toString( tuple3d.x ) );
 		buffer.append( ' ' );
@@ -634,7 +693,7 @@ public class ASG {
 		return buffer.toString();
 	}
 
-	private static void decodeTuple3f( String s, edu.cmu.cs.dennisc.math.Tuple3f tuple3d ) {
+	private static void decodeTuple3f( String s, Tuple3f tuple3d ) {
 		int begin = 0;
 		int end = s.indexOf( ' ', begin );
 		tuple3d.x = Float.parseFloat( s.substring( begin, end ) );
@@ -653,7 +712,7 @@ public class ASG {
 	//		buffer.append( Float.toString( tuple2f.y ) );
 	//		return buffer.toString();
 	//	}
-	private static void decodeTuple2f( String s, edu.cmu.cs.dennisc.math.Tuple2f tuple2f ) {
+	private static void decodeTuple2f( String s, Tuple2f tuple2f ) {
 		int begin = 0;
 		int end = s.indexOf( ' ', begin );
 		tuple2f.x = Float.parseFloat( s.substring( begin, end ) );
@@ -687,7 +746,7 @@ public class ASG {
 	//		end = s.length();
 	//		tuple4f.w = Float.parseFloat( s.substring( begin, end ) );
 	//	}
-	private static String encodeTexCoord2f( edu.cmu.cs.dennisc.texture.TextureCoordinate2f tc2f ) {
+	private static String encodeTexCoord2f( TextureCoordinate2f tc2f ) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append( Float.toString( tc2f.u ) );
 		buffer.append( ' ' );
@@ -695,17 +754,17 @@ public class ASG {
 		return buffer.toString();
 	}
 
-	private static edu.cmu.cs.dennisc.texture.TextureCoordinate2f decodeTexCoord2f( String s ) {
+	private static TextureCoordinate2f decodeTexCoord2f( String s ) {
 		int begin = 0;
 		int end = s.indexOf( ' ', begin );
 		float u = Float.parseFloat( s.substring( begin, end ) );
 		begin = end + 1;
 		end = s.length();
 		float v = Float.parseFloat( s.substring( begin, end ) );
-		return new edu.cmu.cs.dennisc.texture.TextureCoordinate2f( u, v );
+		return new TextureCoordinate2f( u, v );
 	}
 
-	private static String encodeColor4f( edu.cmu.cs.dennisc.color.Color4f color4f ) {
+	private static String encodeColor4f( Color4f color4f ) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append( Float.toString( color4f.red ) );
 		buffer.append( ' ' );
@@ -717,7 +776,7 @@ public class ASG {
 		return buffer.toString();
 	}
 
-	private static edu.cmu.cs.dennisc.color.Color4f decodeColor4f( String s ) {
+	private static Color4f decodeColor4f( String s ) {
 		int begin = 0;
 		int end = s.indexOf( ' ', begin );
 		float red = Float.parseFloat( s.substring( begin, end ) );
@@ -730,7 +789,7 @@ public class ASG {
 		begin = end + 1;
 		end = s.length();
 		float alpha = Float.parseFloat( s.substring( begin, end ) );
-		return new edu.cmu.cs.dennisc.color.Color4f( red, green, blue, alpha );
+		return new Color4f( red, green, blue, alpha );
 	}
 
 	public static final double VERSION = 1.0;
@@ -739,20 +798,20 @@ public class ASG {
 		return Integer.toString( element.hashCode() );
 	}
 
-	private static org.w3c.dom.Element encodeElement( edu.cmu.cs.dennisc.scenegraph.Element element, org.w3c.dom.Document document, String s, java.util.HashMap<String, java.io.ByteArrayOutputStream> filenameToStreamMap, java.util.HashMap<String, edu.cmu.cs.dennisc.scenegraph.Element> keyToElementToBeEncodedMap,
+	private static Element encodeElement( edu.cmu.cs.dennisc.scenegraph.Element element, Document document, String s, HashMap<String, ByteArrayOutputStream> filenameToStreamMap, HashMap<String, edu.cmu.cs.dennisc.scenegraph.Element> keyToElementToBeEncodedMap,
 			boolean isTextAlwaysDesired ) {
-		org.w3c.dom.Element xmlElement = document.createElement( s );
+		Element xmlElement = document.createElement( s );
 		Class<? extends edu.cmu.cs.dennisc.scenegraph.Element> elementClass = element.getClass();
 		xmlElement.setAttribute( "class", elementClass.getName() );
 		xmlElement.setAttribute( "key", getKey( element ) );
-		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : element.getProperties() ) {
+		for( InstanceProperty<?> property : element.getProperties() ) {
 			String propertyName = property.getName();
 			if( propertyName.equals( "Parent" ) ) {
 				// pass
 			} else if( propertyName.equals( "Bonus" ) ) {
 				// pass
 			} else {
-				org.w3c.dom.Element xmlProperty = document.createElement( "property" );
+				Element xmlProperty = document.createElement( "property" );
 				xmlProperty.setAttribute( "name", propertyName );
 				Object value = property.getValue();
 				if( value != null ) {
@@ -760,43 +819,43 @@ public class ASG {
 					if( edu.cmu.cs.dennisc.scenegraph.Element.class.isAssignableFrom( propertyValueClass ) ) {
 						String key = Integer.toString( value.hashCode() );
 						xmlProperty.setAttribute( "key", key );
-						if( edu.cmu.cs.dennisc.scenegraph.Component.class.isAssignableFrom( propertyValueClass ) ) {
+						if( Component.class.isAssignableFrom( propertyValueClass ) ) {
 						} else {
 							keyToElementToBeEncodedMap.put( key, (edu.cmu.cs.dennisc.scenegraph.Element)value );
 						}
 					} else {
-						if( edu.cmu.cs.dennisc.math.AffineMatrix4x4.class.isAssignableFrom( propertyValueClass ) ) {
+						if( AffineMatrix4x4.class.isAssignableFrom( propertyValueClass ) ) {
 							xmlProperty.setAttribute( "class", "edu.cmu.cs.dennisc.math.Matrix4d" );
-							edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = (edu.cmu.cs.dennisc.math.AffineMatrix4x4)value;
+							AffineMatrix4x4 m = (AffineMatrix4x4)value;
 							double[] row = new double[ 4 ];
 							for( int rowIndex = 0; rowIndex < 4; rowIndex++ ) {
-								org.w3c.dom.Element xmlRow = document.createElement( "row" );
+								Element xmlRow = document.createElement( "row" );
 								MatrixUtilities.getRow( row, m, rowIndex );
 								xmlRow.appendChild( document.createTextNode( encodeDoubleArray( row ) ) );
 								xmlProperty.appendChild( xmlRow );
 							}
-						} else if( edu.cmu.cs.dennisc.math.Matrix3x3.class.isAssignableFrom( propertyValueClass ) ) {
+						} else if( Matrix3x3.class.isAssignableFrom( propertyValueClass ) ) {
 							xmlProperty.setAttribute( "class", "edu.cmu.cs.dennisc.math.Matrix3d" );
-							edu.cmu.cs.dennisc.math.Matrix3x3 m = (edu.cmu.cs.dennisc.math.Matrix3x3)value;
+							Matrix3x3 m = (Matrix3x3)value;
 							double[] row = new double[ 3 ];
 							for( int rowIndex = 0; rowIndex < 3; rowIndex++ ) {
-								org.w3c.dom.Element xmlRow = document.createElement( "row" );
+								Element xmlRow = document.createElement( "row" );
 								MatrixUtilities.getRow( row, m, rowIndex );
 								xmlRow.appendChild( document.createTextNode( encodeDoubleArray( row ) ) );
 								xmlProperty.appendChild( xmlRow );
 							}
-						} else if( java.awt.Image.class.isAssignableFrom( propertyValueClass ) ) {
-							java.awt.Image image = (java.awt.Image)value;
+						} else if( Image.class.isAssignableFrom( propertyValueClass ) ) {
+							Image image = (Image)value;
 							xmlProperty.setAttribute( "class", "java.awt.Image" );
 							if( isTextAlwaysDesired ) {
-								int width = edu.cmu.cs.dennisc.image.ImageUtilities.getWidth( image );
-								int height = edu.cmu.cs.dennisc.image.ImageUtilities.getHeight( image );
-								int[] pixels = edu.cmu.cs.dennisc.image.ImageUtilities.getPixels( image, width, height );
+								int width = ImageUtilities.getWidth( image );
+								int height = ImageUtilities.getHeight( image );
+								int[] pixels = ImageUtilities.getPixels( image, width, height );
 								xmlProperty.setAttribute( "width", Integer.toString( width ) );
 								xmlProperty.setAttribute( "height", Integer.toString( width ) );
 								int pixelIndex = 0;
 								for( int rowIndex = 0; rowIndex < height; rowIndex++ ) {
-									org.w3c.dom.Element xmlRow = document.createElement( "row" );
+									Element xmlRow = document.createElement( "row" );
 									// for( int colIndex=0; colIndex<width;
 									// colIndex++ ) {
 									// int pixel = pixels[ pixelIndex++ ];
@@ -818,29 +877,29 @@ public class ASG {
 									xmlProperty.appendChild( xmlRow );
 								}
 							} else {
-								java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+								ByteArrayOutputStream baos = new ByteArrayOutputStream();
 								try {
-									edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, baos, image );
+									ImageUtilities.write( ImageUtilities.PNG_CODEC_NAME, baos, image );
 									String filename = image.hashCode() + ".png";
 									xmlProperty.setAttribute( "filename", filename );
 									filenameToStreamMap.put( filename, baos );
-								} catch( java.io.IOException ioe ) {
+								} catch( IOException ioe ) {
 									throw new RuntimeException( ioe );
 								}
 							}
-						} else if( edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom( propertyValueClass ) ) {
+						} else if( Color4f.class.isAssignableFrom( propertyValueClass ) ) {
 							xmlProperty.setAttribute( "class", "edu.cmu.cs.dennisc.color.Color4f" );
-							edu.cmu.cs.dennisc.color.Color4f color = (edu.cmu.cs.dennisc.color.Color4f)value;
-							org.w3c.dom.Element xmlRed = document.createElement( "red" );
+							Color4f color = (Color4f)value;
+							Element xmlRed = document.createElement( "red" );
 							xmlRed.appendChild( document.createTextNode( Float.toString( color.red ) ) );
 							xmlProperty.appendChild( xmlRed );
-							org.w3c.dom.Element xmlGreen = document.createElement( "green" );
+							Element xmlGreen = document.createElement( "green" );
 							xmlGreen.appendChild( document.createTextNode( Float.toString( color.green ) ) );
 							xmlProperty.appendChild( xmlGreen );
-							org.w3c.dom.Element xmlBlue = document.createElement( "blue" );
+							Element xmlBlue = document.createElement( "blue" );
 							xmlBlue.appendChild( document.createTextNode( Float.toString( color.blue ) ) );
 							xmlProperty.appendChild( xmlBlue );
-							org.w3c.dom.Element xmlAlpha = document.createElement( "alpha" );
+							Element xmlAlpha = document.createElement( "alpha" );
 							xmlAlpha.appendChild( document.createTextNode( Float.toString( color.alpha ) ) );
 							xmlProperty.appendChild( xmlAlpha );
 						} else if( int[].class.isAssignableFrom( propertyValueClass ) ) {
@@ -850,7 +909,7 @@ public class ASG {
 								xmlProperty.setAttribute( "length", Integer.toString( array.length ) );
 								xmlProperty.appendChild( document.createTextNode( encodeIntArray( array, false ) ) );
 							} else {
-								java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+								ByteArrayOutputStream baos = new ByteArrayOutputStream();
 								encodeIntArrayInBinary( array, baos );
 								String filename = "int array " + array.hashCode() + ".bin";
 								xmlProperty.setAttribute( "filename", filename );
@@ -863,42 +922,42 @@ public class ASG {
 								xmlProperty.setAttribute( "length", Integer.toString( array.length ) );
 								xmlProperty.appendChild( document.createTextNode( encodeDoubleArray( array ) ) );
 							} else {
-								java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+								ByteArrayOutputStream baos = new ByteArrayOutputStream();
 								encodeDoubleArrayInBinary( array, baos );
 								String filename = "double array " + array.hashCode() + ".bin";
 								xmlProperty.setAttribute( "filename", filename );
 								filenameToStreamMap.put( filename, baos );
 							}
-						} else if( edu.cmu.cs.dennisc.scenegraph.Vertex[].class.isAssignableFrom( propertyValueClass ) ) {
-							edu.cmu.cs.dennisc.scenegraph.Vertex[] array = (edu.cmu.cs.dennisc.scenegraph.Vertex[])value;
+						} else if( Vertex[].class.isAssignableFrom( propertyValueClass ) ) {
+							Vertex[] array = (Vertex[])value;
 							xmlProperty.setAttribute( "class", "[Ledu.cmu.cs.dennisc.scenegraph.Vertex;" );
 							if( isTextAlwaysDesired || ( array.length == 0 ) ) {
 								for( Vertex vertex : array ) {
-									org.w3c.dom.Element xmlVertex = document.createElement( "vertex" );
+									Element xmlVertex = document.createElement( "vertex" );
 									if( vertex.position != null ) {
-										org.w3c.dom.Element xmlPosition = document.createElement( "position" );
+										Element xmlPosition = document.createElement( "position" );
 										xmlPosition.appendChild( document.createTextNode( encodeTuple3d( vertex.position ) ) );
 										xmlVertex.appendChild( xmlPosition );
 									}
 									if( vertex.normal != null ) {
-										org.w3c.dom.Element xmlNormal = document.createElement( "normal" );
+										Element xmlNormal = document.createElement( "normal" );
 										xmlNormal.appendChild( document.createTextNode( encodeTuple3f( vertex.normal ) ) );
 										xmlVertex.appendChild( xmlNormal );
 									}
 									if( vertex.diffuseColor != null ) {
-										org.w3c.dom.Element xmlDiffuseColor = document.createElement( "diffuseColor" );
+										Element xmlDiffuseColor = document.createElement( "diffuseColor" );
 										xmlDiffuseColor.appendChild( document.createTextNode( encodeColor4f( vertex.diffuseColor ) ) );
 										xmlVertex.appendChild( xmlDiffuseColor );
 									}
 									if( vertex.textureCoordinate0 != null ) {
-										org.w3c.dom.Element xmlTextureCoordinate0 = document.createElement( "textureCoordinate0" );
+										Element xmlTextureCoordinate0 = document.createElement( "textureCoordinate0" );
 										xmlTextureCoordinate0.appendChild( document.createTextNode( encodeTexCoord2f( vertex.textureCoordinate0 ) ) );
 										xmlVertex.appendChild( xmlTextureCoordinate0 );
 									}
 									xmlProperty.appendChild( xmlVertex );
 								}
 							} else {
-								java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+								ByteArrayOutputStream baos = new ByteArrayOutputStream();
 								encodeVertexArrayInBinary( array, baos );
 								String filename = "Vertex array " + array.hashCode() + ".bin";
 								xmlProperty.setAttribute( "filename", filename );
@@ -916,28 +975,28 @@ public class ASG {
 		return xmlElement;
 	}
 
-	private static org.w3c.dom.Element encodeComponent( edu.cmu.cs.dennisc.scenegraph.Component component, org.w3c.dom.Document document, String s, java.util.HashMap<String, java.io.ByteArrayOutputStream> filenameToStreamMap, java.util.HashMap<String, edu.cmu.cs.dennisc.scenegraph.Element> keyToElementToBeEncodedMap,
+	private static Element encodeComponent( Component component, Document document, String s, HashMap<String, ByteArrayOutputStream> filenameToStreamMap, HashMap<String, edu.cmu.cs.dennisc.scenegraph.Element> keyToElementToBeEncodedMap,
 			boolean isTextAlwaysDesired ) {
-		org.w3c.dom.Element xmlComponent = encodeElement( component, document, s, filenameToStreamMap, keyToElementToBeEncodedMap, isTextAlwaysDesired );
-		if( component instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
-			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)component;
-			for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgComposite.getComponents() ) {
+		Element xmlComponent = encodeElement( component, document, s, filenameToStreamMap, keyToElementToBeEncodedMap, isTextAlwaysDesired );
+		if( component instanceof Composite ) {
+			Composite sgComposite = (Composite)component;
+			for( Component sgComponent : sgComposite.getComponents() ) {
 				xmlComponent.appendChild( encodeComponent( sgComponent, document, "child", filenameToStreamMap, keyToElementToBeEncodedMap, isTextAlwaysDesired ) );
 			}
 		}
 		return xmlComponent;
 	}
 
-	private static void encodeInternal( edu.cmu.cs.dennisc.scenegraph.Component component, java.io.OutputStream os, java.util.HashMap<String, java.io.ByteArrayOutputStream> filenameToStreamMap, boolean isTextAlwaysDesired ) {
-		javax.xml.parsers.DocumentBuilderFactory factory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+	private static void encodeInternal( Component component, OutputStream os, HashMap<String, ByteArrayOutputStream> filenameToStreamMap, boolean isTextAlwaysDesired ) {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
-			javax.xml.parsers.DocumentBuilder builder = factory.newDocumentBuilder();
-			org.w3c.dom.Document document = builder.newDocument();
-			java.util.HashMap<String, edu.cmu.cs.dennisc.scenegraph.Element> keyToElementToBeEncodedMap = new java.util.HashMap<String, edu.cmu.cs.dennisc.scenegraph.Element>();
-			org.w3c.dom.Element rootNode = encodeComponent( component, document, "root", filenameToStreamMap, keyToElementToBeEncodedMap, isTextAlwaysDesired );
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.newDocument();
+			HashMap<String, edu.cmu.cs.dennisc.scenegraph.Element> keyToElementToBeEncodedMap = new HashMap<String, edu.cmu.cs.dennisc.scenegraph.Element>();
+			Element rootNode = encodeComponent( component, document, "root", filenameToStreamMap, keyToElementToBeEncodedMap, isTextAlwaysDesired );
 			rootNode.setAttribute( "version", Double.toString( VERSION ) );
 			while( keyToElementToBeEncodedMap.size() > 0 ) {
-				java.util.HashMap<String, edu.cmu.cs.dennisc.scenegraph.Element> tempCopy = new java.util.HashMap<String, edu.cmu.cs.dennisc.scenegraph.Element>( keyToElementToBeEncodedMap );
+				HashMap<String, edu.cmu.cs.dennisc.scenegraph.Element> tempCopy = new HashMap<String, edu.cmu.cs.dennisc.scenegraph.Element>( keyToElementToBeEncodedMap );
 				for( String key : tempCopy.keySet() ) {
 					edu.cmu.cs.dennisc.scenegraph.Element element = tempCopy.get( key );
 					rootNode.appendChild( encodeElement( element, document, "element", filenameToStreamMap, keyToElementToBeEncodedMap, isTextAlwaysDesired ) );
@@ -947,44 +1006,44 @@ public class ASG {
 			document.appendChild( rootNode );
 			document.getDocumentElement().normalize();
 			try {
-				javax.xml.transform.TransformerFactory tf = javax.xml.transform.TransformerFactory.newInstance();
-				javax.xml.transform.Transformer trans = tf.newTransformer();
-				trans.transform( new javax.xml.transform.dom.DOMSource( document ), new javax.xml.transform.stream.StreamResult( os ) );
-			} catch( javax.xml.transform.TransformerException te ) {
+				TransformerFactory tf = TransformerFactory.newInstance();
+				Transformer trans = tf.newTransformer();
+				trans.transform( new DOMSource( document ), new StreamResult( os ) );
+			} catch( TransformerException te ) {
 				throw new RuntimeException( te );
 			}
-		} catch( javax.xml.parsers.ParserConfigurationException pce ) {
+		} catch( ParserConfigurationException pce ) {
 			throw new RuntimeException( pce );
 		}
 	}
 
-	public static void encode( edu.cmu.cs.dennisc.scenegraph.Component component, java.io.OutputStream os ) {
-		java.util.HashMap<String, java.io.ByteArrayOutputStream> filenameToStreamMap = new java.util.HashMap<String, java.io.ByteArrayOutputStream>();
-		java.io.ByteArrayOutputStream rootBAOS = new java.io.ByteArrayOutputStream();
+	public static void encode( Component component, OutputStream os ) {
+		HashMap<String, ByteArrayOutputStream> filenameToStreamMap = new HashMap<String, ByteArrayOutputStream>();
+		ByteArrayOutputStream rootBAOS = new ByteArrayOutputStream();
 		encodeInternal( component, rootBAOS, filenameToStreamMap, false );
 		filenameToStreamMap.put( ROOT_FILENAME, rootBAOS );
-		java.util.zip.ZipOutputStream zos;
-		if( os instanceof java.util.zip.ZipOutputStream ) {
-			zos = (java.util.zip.ZipOutputStream)os;
+		ZipOutputStream zos;
+		if( os instanceof ZipOutputStream ) {
+			zos = (ZipOutputStream)os;
 		} else {
-			zos = new java.util.zip.ZipOutputStream( os );
+			zos = new ZipOutputStream( os );
 		}
-		java.util.zip.CRC32 crc32 = new java.util.zip.CRC32();
+		CRC32 crc32 = new CRC32();
 		try {
 			for( String filename : filenameToStreamMap.keySet() ) {
-				java.io.ByteArrayOutputStream baos = filenameToStreamMap.get( filename );
+				ByteArrayOutputStream baos = filenameToStreamMap.get( filename );
 				baos.flush();
 				byte[] ba = baos.toByteArray();
-				java.util.zip.ZipEntry zipEntry = new java.util.zip.ZipEntry( filename );
+				ZipEntry zipEntry = new ZipEntry( filename );
 				int method;
 				if( filename.endsWith( ".png" ) ) {
 					crc32.reset();
 					crc32.update( ba );
 					zipEntry.setCrc( crc32.getValue() );
 					zipEntry.setSize( ba.length );
-					method = java.util.zip.ZipOutputStream.STORED;
+					method = ZipOutputStream.STORED;
 				} else {
-					method = java.util.zip.ZipOutputStream.DEFLATED;
+					method = ZipOutputStream.DEFLATED;
 				}
 				zos.setMethod( method );
 				zos.putNextEntry( zipEntry );
@@ -993,33 +1052,33 @@ public class ASG {
 			}
 			zos.flush();
 			zos.finish();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static void encode( edu.cmu.cs.dennisc.scenegraph.Component component, java.io.File file ) {
+	public static void encode( Component component, File file ) {
 		try {
-			java.io.OutputStream os = new java.io.FileOutputStream( file );
+			OutputStream os = new FileOutputStream( file );
 			encode( component, os );
 			os.close();
-		} catch( java.io.FileNotFoundException fnfe ) {
+		} catch( FileNotFoundException fnfe ) {
 			throw new RuntimeException( fnfe );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static void encode( edu.cmu.cs.dennisc.scenegraph.Component component, String path ) {
-		encode( component, new java.io.File( path ) );
+	public static void encode( Component component, String path ) {
+		encode( component, new File( path ) );
 	}
 
-	private static org.w3c.dom.Element getFirstChild( org.w3c.dom.Node node, String tag ) {
-		org.w3c.dom.Node childNode = node.getFirstChild();
+	private static Element getFirstChild( Node node, String tag ) {
+		Node childNode = node.getFirstChild();
 		while( childNode != null ) {
-			if( childNode instanceof org.w3c.dom.Element ) {
+			if( childNode instanceof Element ) {
 				if( childNode.getNodeName().equals( tag ) ) {
-					return (org.w3c.dom.Element)childNode;
+					return (Element)childNode;
 				}
 			}
 			childNode = childNode.getNextSibling();
@@ -1027,27 +1086,27 @@ public class ASG {
 		return null;
 	}
 
-	private static org.w3c.dom.Element[] getChildren( org.w3c.dom.Node node, String tag ) {
-		java.util.Vector<org.w3c.dom.Element> vector = new java.util.Vector<org.w3c.dom.Element>();
-		org.w3c.dom.Node childNode = node.getFirstChild();
+	private static Element[] getChildren( Node node, String tag ) {
+		Vector<Element> vector = new Vector<Element>();
+		Node childNode = node.getFirstChild();
 		while( childNode != null ) {
-			if( childNode instanceof org.w3c.dom.Element ) {
+			if( childNode instanceof Element ) {
 				if( childNode.getNodeName().equals( tag ) ) {
-					vector.addElement( (org.w3c.dom.Element)childNode );
+					vector.addElement( (Element)childNode );
 				}
 			}
 			childNode = childNode.getNextSibling();
 		}
-		org.w3c.dom.Element[] array = new org.w3c.dom.Element[ vector.size() ];
+		Element[] array = new Element[ vector.size() ];
 		vector.copyInto( array );
 		return array;
 	}
 
-	private static String getNodeText( org.w3c.dom.Node node ) {
+	private static String getNodeText( Node node ) {
 		StringBuffer propertyTextBuffer = new StringBuffer();
-		org.w3c.dom.NodeList children = node.getChildNodes();
+		NodeList children = node.getChildNodes();
 		for( int j = 0; j < children.getLength(); j++ ) {
-			org.w3c.dom.Text textNode = (org.w3c.dom.Text)children.item( j );
+			Text textNode = (Text)children.item( j );
 			propertyTextBuffer.append( textNode.getData().trim() );
 		}
 		return propertyTextBuffer.toString();
@@ -1063,9 +1122,9 @@ public class ASG {
 		} else {
 			Class<?>[] parameterTypes = { String.class };
 			try {
-				java.lang.reflect.Method valueOfMethod = cls.getMethod( "valueOf", parameterTypes );
+				Method valueOfMethod = cls.getMethod( "valueOf", parameterTypes );
 				int modifiers = valueOfMethod.getModifiers();
-				if( java.lang.reflect.Modifier.isPublic( modifiers ) && java.lang.reflect.Modifier.isStatic( modifiers ) ) {
+				if( Modifier.isPublic( modifiers ) && Modifier.isStatic( modifiers ) ) {
 					Object[] parameters = { text };
 					return valueOfMethod.invoke( null, parameters );
 				} else {
@@ -1075,46 +1134,46 @@ public class ASG {
 				throw new RuntimeException( "NoSuchMethodException: class[" + cls.getName() + "]; method[" + text + "]" );
 			} catch( IllegalAccessException iae ) {
 				throw new RuntimeException( "IllegalAccessException: " + cls + " " + text );
-			} catch( java.lang.reflect.InvocationTargetException ite ) {
+			} catch( InvocationTargetException ite ) {
 				throw new RuntimeException( "java.lang.reflect.InvocationTargetException: " + cls + " " + text );
 			}
 		}
 	}
 
-	private static edu.cmu.cs.dennisc.scenegraph.Element decodeElement( org.w3c.dom.Element xmlElement, java.util.HashMap<String, java.io.InputStream> filenameToStreamMap, java.util.HashMap<Integer, edu.cmu.cs.dennisc.scenegraph.Element> keyToElementMap, java.util.Vector<AbstractPropertyReference> referencesToBeResolved ) {
+	private static edu.cmu.cs.dennisc.scenegraph.Element decodeElement( Element xmlElement, HashMap<String, InputStream> filenameToStreamMap, HashMap<Integer, edu.cmu.cs.dennisc.scenegraph.Element> keyToElementMap, Vector<AbstractPropertyReference> referencesToBeResolved ) {
 		String className = xmlElement.getAttribute( "class" );
 		Integer elementKey = Integer.parseInt( xmlElement.getAttribute( "key" ) );
 		String elementName = xmlElement.getAttribute( "name" );
 		className = convertClassnameIfNecessary( className );
-		edu.cmu.cs.dennisc.scenegraph.Element sgElement = (edu.cmu.cs.dennisc.scenegraph.Element)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( className );
+		edu.cmu.cs.dennisc.scenegraph.Element sgElement = (edu.cmu.cs.dennisc.scenegraph.Element)ReflectionUtilities.newInstance( className );
 		sgElement.setName( elementName );
 		keyToElementMap.put( elementKey, sgElement );
-		org.w3c.dom.Element[] xmlProperties = getChildren( xmlElement, "property" );
+		Element[] xmlProperties = getChildren( xmlElement, "property" );
 		for( Element xmlProperty : xmlProperties ) {
 			String propertyName = xmlProperty.getAttribute( "name" );
 			propertyName = convertPropertyIfNecessary( propertyName );
 			if( isDeadProperty( propertyName ) ) {
 				continue;
 			}
-			edu.cmu.cs.dennisc.property.InstanceProperty property = sgElement.getPropertyNamed( propertyName );
+			InstanceProperty property = sgElement.getPropertyNamed( propertyName );
 			if( xmlProperty.hasAttribute( "class" ) ) {
 				String propertyValueClassname = xmlProperty.getAttribute( "class" );
 				propertyValueClassname = convertClassnameIfNecessary( propertyValueClassname );
-				Class<?> propertyValueClass = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( propertyValueClassname );
+				Class<?> propertyValueClass = ReflectionUtilities.getClassForName( propertyValueClassname );
 				Object value;
 				if( xmlProperty.hasAttribute( "filename" ) ) {
 					String filename = xmlProperty.getAttribute( "filename" );
-					java.io.InputStream is = filenameToStreamMap.get( filename );
+					InputStream is = filenameToStreamMap.get( filename );
 					if( is != null ) {
-						if( java.awt.Image.class.isAssignableFrom( propertyValueClass ) ) {
-							String ext = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( filename );
-							String codecName = edu.cmu.cs.dennisc.image.ImageUtilities.getCodecNameForExtension( ext );
+						if( Image.class.isAssignableFrom( propertyValueClass ) ) {
+							String ext = FileUtilities.getExtension( filename );
+							String codecName = ImageUtilities.getCodecNameForExtension( ext );
 							try {
-								value = edu.cmu.cs.dennisc.image.ImageUtilities.read( codecName, is );
-							} catch( java.io.IOException ioe ) {
+								value = ImageUtilities.read( codecName, is );
+							} catch( IOException ioe ) {
 								throw new RuntimeException( filename, ioe );
 							}
-						} else if( edu.cmu.cs.dennisc.scenegraph.Vertex[].class.isAssignableFrom( propertyValueClass ) ) {
+						} else if( Vertex[].class.isAssignableFrom( propertyValueClass ) ) {
 							value = decodeVertexArrayInBinary( is );
 						} else if( int[].class.isAssignableFrom( propertyValueClass ) ) {
 							value = decodeIntArrayInBinary( is );
@@ -1127,28 +1186,28 @@ public class ASG {
 						throw new RuntimeException();
 					}
 				} else {
-					if( edu.cmu.cs.dennisc.math.AffineMatrix4x4.class.isAssignableFrom( propertyValueClass ) ) {
-						edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
-						org.w3c.dom.Element[] xmlRows = getChildren( xmlProperty, "row" );
+					if( AffineMatrix4x4.class.isAssignableFrom( propertyValueClass ) ) {
+						AffineMatrix4x4 m = AffineMatrix4x4.createNaN();
+						Element[] xmlRows = getChildren( xmlProperty, "row" );
 						double[] row = new double[ 4 ];
 						for( int rowIndex = 0; rowIndex < 4; rowIndex++ ) {
 							decodeDoubleArray( getNodeText( xmlRows[ rowIndex ] ), row );
 							MatrixUtilities.setRow( m, rowIndex, row );
 						}
 						value = m;
-					} else if( edu.cmu.cs.dennisc.math.Matrix3x3.class.isAssignableFrom( propertyValueClass ) ) {
-						edu.cmu.cs.dennisc.math.Matrix3x3 m = edu.cmu.cs.dennisc.math.Matrix3x3.createNaN();
-						org.w3c.dom.Element[] xmlRows = getChildren( xmlProperty, "row" );
+					} else if( Matrix3x3.class.isAssignableFrom( propertyValueClass ) ) {
+						Matrix3x3 m = Matrix3x3.createNaN();
+						Element[] xmlRows = getChildren( xmlProperty, "row" );
 						double[] row = new double[ 3 ];
 						for( int rowIndex = 0; rowIndex < 3; rowIndex++ ) {
 							decodeDoubleArray( getNodeText( xmlRows[ rowIndex ] ), row );
 							MatrixUtilities.setRow( m, rowIndex, row );
 						}
 						value = m;
-					} else if( java.awt.Image.class.isAssignableFrom( propertyValueClass ) ) {
+					} else if( Image.class.isAssignableFrom( propertyValueClass ) ) {
 						int width = Integer.parseInt( xmlProperty.getAttribute( "width" ) );
 						int height = Integer.parseInt( xmlProperty.getAttribute( "height" ) );
-						org.w3c.dom.Element[] xmlRows = getChildren( xmlProperty, "row" );
+						Element[] xmlRows = getChildren( xmlProperty, "row" );
 						int[] pixels = new int[ width * height ];
 						int pixelIndex = 0;
 						for( int rowIndex = 0; rowIndex < height; rowIndex++ ) {
@@ -1156,13 +1215,13 @@ public class ASG {
 							decodeIntArray( s, pixels, pixelIndex, width, true );
 							pixelIndex += width;
 						}
-						value = java.awt.Toolkit.getDefaultToolkit().createImage( new java.awt.image.MemoryImageSource( width, height, pixels, 0, width ) );
-					} else if( edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom( propertyValueClass ) ) {
+						value = Toolkit.getDefaultToolkit().createImage( new MemoryImageSource( width, height, pixels, 0, width ) );
+					} else if( Color4f.class.isAssignableFrom( propertyValueClass ) ) {
 						float red = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "red" ) ) );
 						float green = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "green" ) ) );
 						float blue = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "blue" ) ) );
 						float alpha = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "alpha" ) ) );
-						value = new edu.cmu.cs.dennisc.color.Color4f( red, green, blue, alpha );
+						value = new Color4f( red, green, blue, alpha );
 					} else if( int[].class.isAssignableFrom( propertyValueClass ) ) {
 						int length = Integer.parseInt( xmlProperty.getAttribute( "length" ) );
 						int[] array = new int[ length ];
@@ -1173,63 +1232,63 @@ public class ASG {
 						double[] array = new double[ length ];
 						decodeDoubleArray( getNodeText( xmlProperty ), array );
 						value = array;
-					} else if( edu.cmu.cs.dennisc.math.Point3[].class.isAssignableFrom( propertyValueClass ) ) {
-						org.w3c.dom.Element[] xmlPoints = getChildren( xmlProperty, "point" );
-						edu.cmu.cs.dennisc.math.Point3[] array = new edu.cmu.cs.dennisc.math.Point3[ xmlPoints.length ];
+					} else if( Point3[].class.isAssignableFrom( propertyValueClass ) ) {
+						Element[] xmlPoints = getChildren( xmlProperty, "point" );
+						Point3[] array = new Point3[ xmlPoints.length ];
 						for( int tupleIndex = 0; tupleIndex < xmlPoints.length; tupleIndex++ ) {
-							edu.cmu.cs.dennisc.math.Point3 point = new edu.cmu.cs.dennisc.math.Point3();
+							Point3 point = new Point3();
 							decodeTuple3d( getNodeText( xmlPoints[ tupleIndex ] ), point );
 							array[ tupleIndex ] = point;
 						}
 						value = array;
-					} else if( edu.cmu.cs.dennisc.math.Vector3f[].class.isAssignableFrom( propertyValueClass ) ) {
-						org.w3c.dom.Element[] xmlNormals = getChildren( xmlProperty, "normal" );
-						edu.cmu.cs.dennisc.math.Vector3f[] array = new edu.cmu.cs.dennisc.math.Vector3f[ xmlNormals.length ];
+					} else if( Vector3f[].class.isAssignableFrom( propertyValueClass ) ) {
+						Element[] xmlNormals = getChildren( xmlProperty, "normal" );
+						Vector3f[] array = new Vector3f[ xmlNormals.length ];
 						for( int tupleIndex = 0; tupleIndex < xmlNormals.length; tupleIndex++ ) {
-							edu.cmu.cs.dennisc.math.Vector3f v = new edu.cmu.cs.dennisc.math.Vector3f();
+							Vector3f v = new Vector3f();
 							decodeTuple3f( getNodeText( xmlNormals[ tupleIndex ] ), v );
 							array[ tupleIndex ] = v;
 						}
 						value = array;
-					} else if( edu.cmu.cs.dennisc.math.Vector2f[].class.isAssignableFrom( propertyValueClass ) ) {
-						org.w3c.dom.Element[] xmlTextureCoords = getChildren( xmlProperty, "textureCoordinate" );
-						edu.cmu.cs.dennisc.math.Vector2f[] array = new edu.cmu.cs.dennisc.math.Vector2f[ xmlTextureCoords.length ];
+					} else if( Vector2f[].class.isAssignableFrom( propertyValueClass ) ) {
+						Element[] xmlTextureCoords = getChildren( xmlProperty, "textureCoordinate" );
+						Vector2f[] array = new Vector2f[ xmlTextureCoords.length ];
 						for( int tupleIndex = 0; tupleIndex < xmlTextureCoords.length; tupleIndex++ ) {
-							edu.cmu.cs.dennisc.math.Vector2f v = new edu.cmu.cs.dennisc.math.Vector2f();
+							Vector2f v = new Vector2f();
 							decodeTuple2f( getNodeText( xmlTextureCoords[ tupleIndex ] ), v );
 							array[ tupleIndex ] = v;
 						}
 						value = array;
-					} else if( edu.cmu.cs.dennisc.scenegraph.Vertex[].class.isAssignableFrom( propertyValueClass ) ) {
-						org.w3c.dom.Element[] xmlVertices = getChildren( xmlProperty, "vertex" );
-						edu.cmu.cs.dennisc.scenegraph.Vertex[] array = new edu.cmu.cs.dennisc.scenegraph.Vertex[ xmlVertices.length ];
+					} else if( Vertex[].class.isAssignableFrom( propertyValueClass ) ) {
+						Element[] xmlVertices = getChildren( xmlProperty, "vertex" );
+						Vertex[] array = new Vertex[ xmlVertices.length ];
 						for( int vertexIndex = 0; vertexIndex < xmlVertices.length; vertexIndex++ ) {
-							org.w3c.dom.Element xmlVertex = xmlVertices[ vertexIndex ];
-							org.w3c.dom.Element xmlPosition = getFirstChild( xmlVertex, "position" );
-							edu.cmu.cs.dennisc.math.Point3 position = edu.cmu.cs.dennisc.math.Point3.createNaN();
+							Element xmlVertex = xmlVertices[ vertexIndex ];
+							Element xmlPosition = getFirstChild( xmlVertex, "position" );
+							Point3 position = Point3.createNaN();
 							if( xmlPosition != null ) {
 								decodeTuple3d( getNodeText( xmlPosition ), position );
 							}
-							org.w3c.dom.Element xmlNormal = getFirstChild( xmlVertex, "normal" );
-							edu.cmu.cs.dennisc.math.Vector3f normal = edu.cmu.cs.dennisc.math.Vector3f.createNaN();
+							Element xmlNormal = getFirstChild( xmlVertex, "normal" );
+							Vector3f normal = Vector3f.createNaN();
 							if( xmlNormal != null ) {
 								decodeTuple3f( getNodeText( xmlNormal ), normal );
 							}
-							org.w3c.dom.Element xmlDiffuseColor = getFirstChild( xmlVertex, "diffuseColor" );
-							final edu.cmu.cs.dennisc.color.Color4f diffuseColor;
+							Element xmlDiffuseColor = getFirstChild( xmlVertex, "diffuseColor" );
+							final Color4f diffuseColor;
 							if( xmlDiffuseColor != null ) {
 								diffuseColor = decodeColor4f( getNodeText( xmlDiffuseColor ) );
 							} else {
 								diffuseColor = null;
 							}
-							org.w3c.dom.Element xmlTextureCoordinate0 = getFirstChild( xmlVertex, "textureCoordinate0" );
-							final edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0;
+							Element xmlTextureCoordinate0 = getFirstChild( xmlVertex, "textureCoordinate0" );
+							final TextureCoordinate2f textureCoordinate0;
 							if( xmlTextureCoordinate0 != null ) {
 								textureCoordinate0 = decodeTexCoord2f( getNodeText( xmlTextureCoordinate0 ) );
 							} else {
 								textureCoordinate0 = null;
 							}
-							edu.cmu.cs.dennisc.scenegraph.Vertex vertex = new edu.cmu.cs.dennisc.scenegraph.Vertex(
+							Vertex vertex = new Vertex(
 									position,
 									normal,
 									diffuseColor,
@@ -1254,27 +1313,27 @@ public class ASG {
 		return sgElement;
 	}
 
-	private static edu.cmu.cs.dennisc.scenegraph.Component decodeComponent( org.w3c.dom.Element xmlComponent, java.util.HashMap<String, java.io.InputStream> filenameToStreamMap, java.util.HashMap<Integer, edu.cmu.cs.dennisc.scenegraph.Element> keyToElementMap, java.util.Vector<AbstractPropertyReference> referencesToBeResolved ) {
-		edu.cmu.cs.dennisc.scenegraph.Component sgComponent = (edu.cmu.cs.dennisc.scenegraph.Component)decodeElement( xmlComponent, filenameToStreamMap, keyToElementMap, referencesToBeResolved );
-		org.w3c.dom.Element[] xmlChildren = getChildren( xmlComponent, "child" );
+	private static Component decodeComponent( Element xmlComponent, HashMap<String, InputStream> filenameToStreamMap, HashMap<Integer, edu.cmu.cs.dennisc.scenegraph.Element> keyToElementMap, Vector<AbstractPropertyReference> referencesToBeResolved ) {
+		Component sgComponent = (Component)decodeElement( xmlComponent, filenameToStreamMap, keyToElementMap, referencesToBeResolved );
+		Element[] xmlChildren = getChildren( xmlComponent, "child" );
 		for( Element element : xmlChildren ) {
-			decodeComponent( element, filenameToStreamMap, keyToElementMap, referencesToBeResolved ).setParent( (edu.cmu.cs.dennisc.scenegraph.Composite)sgComponent );
+			decodeComponent( element, filenameToStreamMap, keyToElementMap, referencesToBeResolved ).setParent( (Composite)sgComponent );
 		}
 		return sgComponent;
 	}
 
-	private static edu.cmu.cs.dennisc.scenegraph.Component decodeInternal( java.io.InputStream is, java.util.HashMap<String, java.io.InputStream> filenameToStreamMap ) {
-		javax.xml.parsers.DocumentBuilderFactory factory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+	private static Component decodeInternal( InputStream is, HashMap<String, InputStream> filenameToStreamMap ) {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
-			javax.xml.parsers.DocumentBuilder builder = factory.newDocumentBuilder();
-			org.w3c.dom.Document document = builder.parse( is );
-			org.w3c.dom.Element xmlRoot = document.getDocumentElement();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.parse( is );
+			Element xmlRoot = document.getDocumentElement();
 			// double version = Double.parseDouble( elementNode.getAttribute(
 			// "version" ) );
-			java.util.HashMap<Integer, edu.cmu.cs.dennisc.scenegraph.Element> keyToElementMap = new java.util.HashMap<Integer, edu.cmu.cs.dennisc.scenegraph.Element>();
-			java.util.Vector<AbstractPropertyReference> referencesToBeResolved = new java.util.Vector<AbstractPropertyReference>();
-			edu.cmu.cs.dennisc.scenegraph.Component sgRoot = decodeComponent( xmlRoot, filenameToStreamMap, keyToElementMap, referencesToBeResolved );
-			org.w3c.dom.Element[] xmlElements = getChildren( xmlRoot, "element" );
+			HashMap<Integer, edu.cmu.cs.dennisc.scenegraph.Element> keyToElementMap = new HashMap<Integer, edu.cmu.cs.dennisc.scenegraph.Element>();
+			Vector<AbstractPropertyReference> referencesToBeResolved = new Vector<AbstractPropertyReference>();
+			Component sgRoot = decodeComponent( xmlRoot, filenameToStreamMap, keyToElementMap, referencesToBeResolved );
+			Element[] xmlElements = getChildren( xmlRoot, "element" );
 			for( Element xmlElement : xmlElements ) {
 				decodeElement( xmlElement, filenameToStreamMap, keyToElementMap, referencesToBeResolved );
 			}
@@ -1282,34 +1341,34 @@ public class ASG {
 				propertyReference.resolve( keyToElementMap );
 			}
 			return sgRoot;
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
-		} catch( org.xml.sax.SAXException saxe ) {
+		} catch( SAXException saxe ) {
 			throw new RuntimeException( saxe );
-		} catch( javax.xml.parsers.ParserConfigurationException pce ) {
+		} catch( ParserConfigurationException pce ) {
 			throw new RuntimeException( pce );
 		}
 	}
 
-	public static edu.cmu.cs.dennisc.scenegraph.Component decode( java.io.InputStream is, java.util.HashMap<String, java.io.InputStream> filenameToStreamMap ) {
-		java.io.BufferedInputStream bis;
-		if( is instanceof java.io.BufferedInputStream ) {
-			bis = (java.io.BufferedInputStream)is;
+	public static Component decode( InputStream is, HashMap<String, InputStream> filenameToStreamMap ) {
+		BufferedInputStream bis;
+		if( is instanceof BufferedInputStream ) {
+			bis = (BufferedInputStream)is;
 		} else {
-			bis = new java.io.BufferedInputStream( is );
+			bis = new BufferedInputStream( is );
 		}
 		return decodeInternal( bis, filenameToStreamMap );
 	}
 
-	public static edu.cmu.cs.dennisc.scenegraph.Component decodeZip( java.io.InputStream is ) {
-		java.util.zip.ZipInputStream zis;
-		if( is instanceof java.util.zip.ZipInputStream ) {
-			zis = (java.util.zip.ZipInputStream)is;
+	public static Component decodeZip( InputStream is ) {
+		ZipInputStream zis;
+		if( is instanceof ZipInputStream ) {
+			zis = (ZipInputStream)is;
 		} else {
-			zis = new java.util.zip.ZipInputStream( is );
+			zis = new ZipInputStream( is );
 		}
-		java.util.HashMap<String, java.io.InputStream> filenameToStreamMap = new java.util.HashMap<String, java.io.InputStream>();
-		java.util.zip.ZipEntry zipEntry;
+		HashMap<String, InputStream> filenameToStreamMap = new HashMap<String, InputStream>();
+		ZipEntry zipEntry;
 		try {
 			while( ( zipEntry = zis.getNextEntry() ) != null ) {
 				String name = zipEntry.getName();
@@ -1318,47 +1377,47 @@ public class ASG {
 				} else {
 					final int BUFFER_SIZE = 2048;
 					byte[] buffer = new byte[ BUFFER_SIZE ];
-					java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream( BUFFER_SIZE );
+					ByteArrayOutputStream baos = new ByteArrayOutputStream( BUFFER_SIZE );
 					int count;
 					while( ( count = zis.read( buffer, 0, BUFFER_SIZE ) ) != -1 ) {
 						baos.write( buffer, 0, count );
 					}
 					zis.closeEntry();
-					java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( baos.toByteArray() );
+					ByteArrayInputStream bais = new ByteArrayInputStream( baos.toByteArray() );
 					filenameToStreamMap.put( name, bais );
 				}
 			}
-			java.io.InputStream rootIS = filenameToStreamMap.get( ROOT_FILENAME );
+			InputStream rootIS = filenameToStreamMap.get( ROOT_FILENAME );
 			if( rootIS == null ) {
 				throw new RuntimeException( ROOT_FILENAME );
 			}
 			filenameToStreamMap.remove( ROOT_FILENAME );
 			return decode( rootIS, filenameToStreamMap );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static edu.cmu.cs.dennisc.scenegraph.Component decode( java.io.File file ) {
+	public static Component decode( File file ) {
 		try {
 			try {
-				java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( file );
+				ZipFile zipFile = new ZipFile( file );
 				zipFile.close();
-				return decodeZip( new java.util.zip.ZipInputStream( new java.io.FileInputStream( file ) ) );
-			} catch( java.util.zip.ZipException ze ) {
+				return decodeZip( new ZipInputStream( new FileInputStream( file ) ) );
+			} catch( ZipException ze ) {
 				// empty map
 				// todo: use null instead?
-				java.util.HashMap<String, java.io.InputStream> filenameToStreamMap = new java.util.HashMap<String, java.io.InputStream>();
-				return decode( new java.io.FileInputStream( file ), filenameToStreamMap );
+				HashMap<String, InputStream> filenameToStreamMap = new HashMap<String, InputStream>();
+				return decode( new FileInputStream( file ), filenameToStreamMap );
 			}
-		} catch( java.io.FileNotFoundException fnfe ) {
+		} catch( FileNotFoundException fnfe ) {
 			throw new RuntimeException( fnfe );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static edu.cmu.cs.dennisc.scenegraph.Component decode( String path ) {
-		return decode( new java.io.File( path ) );
+	public static Component decode( String path ) {
+		return decode( new File( path ) );
 	}
 }

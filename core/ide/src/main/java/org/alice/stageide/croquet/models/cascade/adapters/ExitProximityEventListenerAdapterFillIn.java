@@ -44,6 +44,8 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.story.event.ProximityEnterListener;
 
+import java.util.UUID;
+
 public class ExitProximityEventListenerAdapterFillIn extends LambdaExpressionFillIn {
 
 	private static class SingletonHolder {
@@ -55,6 +57,6 @@ public class ExitProximityEventListenerAdapterFillIn extends LambdaExpressionFil
 	}
 
 	public ExitProximityEventListenerAdapterFillIn() {
-		super( java.util.UUID.fromString( "af4e3b57-e586-48ee-a788-d823000f8d43" ), ProximityEnterListener.class );
+		super( UUID.fromString( "af4e3b57-e586-48ee-a788-d823000f8d43" ), ProximityEnterListener.class );
 	}
 }

@@ -42,44 +42,51 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.dialog.views;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import org.lgna.croquet.AdornedDialogCoreComposite;
+import org.lgna.croquet.imp.dialog.DialogContentComposite;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Button;
+import org.lgna.croquet.views.CompositeView;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogContentPane extends org.lgna.croquet.views.BorderPanel {
-	public DialogContentPane( org.lgna.croquet.imp.dialog.DialogContentComposite composite ) {
+public abstract class DialogContentPane extends BorderPanel {
+	public DialogContentPane( DialogContentComposite composite ) {
 		super( composite );
-		org.lgna.croquet.AdornedDialogCoreComposite coreComposite = composite.getCoreComposite();
+		AdornedDialogCoreComposite coreComposite = composite.getCoreComposite();
 		this.commitButton = coreComposite.getCommitOperation().createButton();
 		this.cancelButton = coreComposite.getCancelOperation().createButton();
-		org.lgna.croquet.views.CompositeView<?, ?> coreView = coreComposite.getView();
+		CompositeView<?, ?> coreView = coreComposite.getView();
 		this.setBackgroundColor( coreView.getBackgroundColor() );
 		this.addCenterComponent( coreView );
 	}
 
-	public org.lgna.croquet.views.Button getCommitButton() {
+	public Button getCommitButton() {
 		return this.commitButton;
 	}
 
-	public org.lgna.croquet.views.Button getCancelButton() {
+	public Button getCancelButton() {
 		return this.cancelButton;
 	}
 
-	protected org.lgna.croquet.views.Button getLeadingCommitCancelButton() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+	protected Button getLeadingCommitCancelButton() {
+		if( SystemUtilities.isWindows() ) {
 			return this.commitButton;
 		} else {
 			return this.cancelButton;
 		}
 	}
 
-	protected org.lgna.croquet.views.Button getTrailingCommitCancelButton() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+	protected Button getTrailingCommitCancelButton() {
+		if( SystemUtilities.isWindows() ) {
 			return this.cancelButton;
 		} else {
 			return this.commitButton;
 		}
 	}
 
-	private final org.lgna.croquet.views.Button commitButton;
-	private final org.lgna.croquet.views.Button cancelButton;
+	private final Button commitButton;
+	private final Button cancelButton;
 }

@@ -42,15 +42,32 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.lgna.croquet.views.Label;
+import org.lgna.project.ast.ExpressionStatement;
+
+import javax.swing.Icon;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.FontMetrics;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GetsPane extends org.lgna.croquet.views.Label {
-	private static java.awt.Paint createGradientPaint( int width, boolean isReversalDesired ) {
-		java.awt.Color colorStart = org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.ExpressionStatement.class );
-		java.awt.Color colorEnd = colorStart.darker();
-		java.awt.Color color0;
-		java.awt.Color color1;
+public class GetsPane extends Label {
+	private static Paint createGradientPaint( int width, boolean isReversalDesired ) {
+		Color colorStart = ThemeUtilities.getActiveTheme().getColorFor( ExpressionStatement.class );
+		Color colorEnd = colorStart.darker();
+		Color color0;
+		Color color1;
 		if( isReversalDesired ) {
 			color0 = colorEnd;
 			color1 = colorStart;
@@ -58,21 +75,21 @@ public class GetsPane extends org.lgna.croquet.views.Label {
 			color0 = colorStart;
 			color1 = colorEnd;
 		}
-		return new java.awt.GradientPaint( 0.0f, 0.0f, color0, width, 0.0f, color1 );
+		return new GradientPaint( 0.0f, 0.0f, color0, width, 0.0f, color1 );
 	}
 
 	private GetsPane( boolean isTowardLeadingEdge, int length ) {
 		this.isTowardLeadingEdge = isTowardLeadingEdge;
 		this.length = length;
-		this.setIcon( new javax.swing.Icon() {
-			private java.awt.FontMetrics getFontMetrics() {
+		this.setIcon( new Icon() {
+			private FontMetrics getFontMetrics() {
 				return GetsPane.this.getAwtComponent().getFontMetrics( GetsPane.this.getFont() );
 			}
 
 			@Override
 			public int getIconWidth() {
-				if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
-					java.awt.FontMetrics fontMetrics = this.getFontMetrics();
+				if( FormatterState.isJava() ) {
+					FontMetrics fontMetrics = this.getFontMetrics();
 					return fontMetrics.getHeight();
 				} else {
 					return ( this.getIconHeight() * GetsPane.this.length ) + 1;
@@ -81,8 +98,8 @@ public class GetsPane extends org.lgna.croquet.views.Label {
 
 			@Override
 			public int getIconHeight() {
-				if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
-					java.awt.FontMetrics fontMetrics = this.getFontMetrics();
+				if( FormatterState.isJava() ) {
+					FontMetrics fontMetrics = this.getFontMetrics();
 					return fontMetrics.charWidth( '=' );
 				} else {
 					return (int)( GetsPane.this.getFont().getSize2D() * 1.4f );
@@ -90,11 +107,11 @@ public class GetsPane extends org.lgna.croquet.views.Label {
 			}
 
 			@Override
-			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+			public void paintIcon( Component c, Graphics g, int x, int y ) {
 				int width = this.getIconWidth();
 				int height = this.getIconHeight();
-				if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, "=", x, y, width, height );
+				if( FormatterState.isJava() ) {
+					GraphicsUtilities.drawCenteredText( g, "=", x, y, width, height );
 				} else {
 
 					int halfLineSize = height / 5;
@@ -120,12 +137,12 @@ public class GetsPane extends org.lgna.croquet.views.Label {
 						}
 					}
 
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setRenderingHint( g2, java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+					Graphics2D g2 = (Graphics2D)g;
+					GraphicsUtilities.setRenderingHint( g2, RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 
 					g2.setPaint( GetsPane.createGradientPaint( width, isReversalDesired ) );
 					g2.fillPolygon( xPoints, yPoints, xPoints.length );
-					g2.setColor( java.awt.Color.GRAY );
+					g2.setColor( Color.GRAY );
 					g2.drawPolygon( xPoints, yPoints, xPoints.length );
 				}
 			}
@@ -137,7 +154,7 @@ public class GetsPane extends org.lgna.croquet.views.Label {
 	}
 
 	private boolean isReversalDesired() {
-		java.awt.ComponentOrientation componentOrientation = this.getComponentOrientation();
+		ComponentOrientation componentOrientation = this.getComponentOrientation();
 		if( componentOrientation.isLeftToRight() ) {
 			return isTowardLeadingEdge == false;
 		} else {

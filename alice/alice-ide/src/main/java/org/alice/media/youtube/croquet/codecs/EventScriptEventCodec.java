@@ -42,37 +42,46 @@
  *******************************************************************************/
 package org.alice.media.youtube.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
+import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
+import org.alice.media.youtube.croquet.ExportToYouTubeWizardDialogComposite;
+import org.lgna.croquet.ItemCodec;
+
+import java.awt.event.KeyEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EventScriptEventCodec implements org.lgna.croquet.ItemCodec<edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent> {
-	private final org.alice.media.youtube.croquet.ExportToYouTubeWizardDialogComposite wizard;
+public class EventScriptEventCodec implements ItemCodec<EventScriptEvent> {
+	private final ExportToYouTubeWizardDialogComposite wizard;
 
-	public EventScriptEventCodec( org.alice.media.youtube.croquet.ExportToYouTubeWizardDialogComposite wizard ) {
+	public EventScriptEventCodec( ExportToYouTubeWizardDialogComposite wizard ) {
 		this.wizard = wizard;
 	}
 
 	@Override
-	public Class<edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent> getValueClass() {
-		return edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent.class;
+	public Class<EventScriptEvent> getValueClass() {
+		return EventScriptEvent.class;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public EventScriptEvent decodeValue( BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, EventScriptEvent value ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent value ) {
+	public void appendRepresentation( StringBuilder sb, EventScriptEvent value ) {
 		String eventType = "";
-		if( value.getEvent() instanceof edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper ) {
+		if( value.getEvent() instanceof MouseEventWrapper ) {
 			eventType = this.wizard.getMouseEventName().getText();
-		} else if( value.getEvent() instanceof java.awt.event.KeyEvent ) {
+		} else if( value.getEvent() instanceof KeyEvent ) {
 			eventType = this.wizard.getKeyBoardEventName().getText();
 		} else {
 			eventType = "UNKNOWN EVENT TYPE: " + value.getEvent().getClass().getSimpleName();

@@ -42,17 +42,19 @@
  *******************************************************************************/
 package org.lgna.croquet.views.imp;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
 /* package-private */enum ScrollDirection {
-	UP( edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.NORTH, -1 ),
-	DOWN( edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, 1 );
+	UP( GraphicsUtilities.Heading.NORTH, -1 ),
+	DOWN( GraphicsUtilities.Heading.SOUTH, 1 );
 
 	private final int delta;
-	private final edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading arrowHeading;
+	private final GraphicsUtilities.Heading arrowHeading;
 
-	ScrollDirection( edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading arrowHeading, int delta ) {
+	ScrollDirection( GraphicsUtilities.Heading arrowHeading, int delta ) {
 		this.delta = delta;
 		this.arrowHeading = arrowHeading;
 	}
@@ -61,7 +63,7 @@ package org.lgna.croquet.views.imp;
 		return this.delta;
 	}
 
-	public edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading getArrowHeading() {
+	public GraphicsUtilities.Heading getArrowHeading() {
 		return this.arrowHeading;
 	}
 }

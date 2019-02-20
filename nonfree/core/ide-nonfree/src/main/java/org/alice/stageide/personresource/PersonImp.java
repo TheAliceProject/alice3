@@ -43,23 +43,45 @@
 
 package org.alice.stageide.personresource;
 
+import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.nebulous.Person;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.lgna.story.SThing;
+import org.lgna.story.implementation.SingleVisualModelImp;
+import org.lgna.story.resources.sims2.EyeColor;
+import org.lgna.story.resources.sims2.Face;
+import org.lgna.story.resources.sims2.FullBodyOutfit;
+import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.Hair;
+import org.lgna.story.resources.sims2.LifeStage;
+import org.lgna.story.resources.sims2.Outfit;
+import org.lgna.story.resources.sims2.PersonResource;
+import org.lgna.story.resources.sims2.TopAndBottomOutfit;
+
+import java.awt.Color;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PersonImp extends org.lgna.story.implementation.SingleVisualModelImp {
+public class PersonImp extends SingleVisualModelImp {
 	public PersonImp() {
-		super( new edu.cmu.cs.dennisc.scenegraph.Visual() );
+		super( new Visual() );
 	}
 
 	@Override
-	public org.lgna.story.SThing getAbstraction() {
+	public SThing getAbstraction() {
 		return null;
 	}
 
-	private final java.util.Map<org.lgna.story.resources.sims2.LifeStage, edu.cmu.cs.dennisc.nebulous.Person> mapLifeStageToNebPerson = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Map<LifeStage, Person> mapLifeStageToNebPerson = Maps.newHashMap();
 
-	private edu.cmu.cs.dennisc.scenegraph.Geometry getSgGeometry() {
-		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisuals()[ 0 ];
+	private Geometry getSgGeometry() {
+		Visual sgVisual = this.getSgVisuals()[ 0 ];
 		final int N = sgVisual.getGeometryCount();
 		if( N > 0 ) {
 			return sgVisual.getGeometryAt( 0 );
@@ -69,69 +91,69 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 	}
 
 	public void unload() {
-		for( java.util.Map.Entry<org.lgna.story.resources.sims2.LifeStage, edu.cmu.cs.dennisc.nebulous.Person> entry : this.mapLifeStageToNebPerson.entrySet() ) {
+		for( Map.Entry<LifeStage, Person> entry : this.mapLifeStageToNebPerson.entrySet() ) {
 			entry.getValue().synchronizedUnload();
 		}
 		this.mapLifeStageToNebPerson.clear();
 		this.setSgGeometry( null );
 	}
 
-	private void setSgGeometry( edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry ) {
-		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisuals()[ 0 ];
+	private void setSgGeometry( Geometry sgGeometry ) {
+		Visual sgVisual = this.getSgVisuals()[ 0 ];
 		sgVisual.setGeometry( sgGeometry );
 	}
 
 	/* package-private */void updateNebPerson() {
 		IngredientsComposite composite = PersonResourceComposite.getInstance().getIngredientsComposite();
-		org.lgna.story.resources.sims2.LifeStage lifeStage = composite.getLifeStageState().getValue();
-		edu.cmu.cs.dennisc.nebulous.Person nebPerson = this.mapLifeStageToNebPerson.get( lifeStage );
+		LifeStage lifeStage = composite.getLifeStageState().getValue();
+		Person nebPerson = this.mapLifeStageToNebPerson.get( lifeStage );
 		if( nebPerson != null ) {
 			//pass
 		} else {
 			try {
-				nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( lifeStage );
+				nebPerson = new Person( lifeStage );
 				this.mapLifeStageToNebPerson.put( lifeStage, nebPerson );
-			} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
+			} catch( LicenseRejectedException lre ) {
 				//todo
 				throw new RuntimeException( lre );
 			}
 		}
-		org.lgna.story.resources.sims2.PersonResource personResource = composite.createResourceFromStates();
+		PersonResource personResource = composite.createResourceFromStates();
 		if( personResource == null ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: null resource." );
+			Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: null resource." );
 		}
 		else {
 
 		}
-		org.lgna.story.resources.sims2.Gender gender = personResource.getGender();
-		java.awt.Color awtSkinColor = new java.awt.Color( personResource.getSkinColor().getRed().floatValue(), personResource.getSkinColor().getGreen().floatValue(), personResource.getSkinColor().getBlue().floatValue() );
-		org.lgna.story.resources.sims2.EyeColor eyeColor = personResource.getEyeColor();
+		Gender gender = personResource.getGender();
+		Color awtSkinColor = new Color( personResource.getSkinColor().getRed().floatValue(), personResource.getSkinColor().getGreen().floatValue(), personResource.getSkinColor().getBlue().floatValue() );
+		EyeColor eyeColor = personResource.getEyeColor();
 		double obesityLevel = personResource.getObesityLevel();
-		org.lgna.story.resources.sims2.Hair hair = personResource.getHair();
-		org.lgna.story.resources.sims2.Outfit outfit = personResource.getOutfit();
-		org.lgna.story.resources.sims2.Face face = personResource.getFace();
+		Hair hair = personResource.getHair();
+		Outfit outfit = personResource.getOutfit();
+		Face face = personResource.getFace();
 
 		if( ( gender == null ) || ( outfit == null ) || ( awtSkinColor == null ) || ( eyeColor == null ) || ( hair == null ) || ( face == null ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skinColor" + awtSkinColor + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", hair=" + hair + ", face=" + face );
+			Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skinColor" + awtSkinColor + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", hair=" + hair + ", face=" + face );
 		} else {
 			if( lifeStage.getGenderedHairInterfaceClass( gender ).isAssignableFrom( hair.getClass() ) ) {
-				if( ( ( ( outfit instanceof org.lgna.story.resources.sims2.FullBodyOutfit ) && lifeStage.getGenderedFullBodyOutfitInterfaceClass( gender ).isAssignableFrom( outfit.getClass() ) ) || ( ( outfit instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) && lifeStage.getGenderedTopPieceInterfaceClass( gender ).isAssignableFrom( ( (org.lgna.story.resources.sims2.TopAndBottomOutfit)outfit ).getTopPiece().getClass() ) && lifeStage.getGenderedBottomPieceInterfaceClass( gender ).isAssignableFrom( ( (org.lgna.story.resources.sims2.TopAndBottomOutfit)outfit ).getBottomPiece().getClass() ) ) ) ) {
+				if( ( ( ( outfit instanceof FullBodyOutfit ) && lifeStage.getGenderedFullBodyOutfitInterfaceClass( gender ).isAssignableFrom( outfit.getClass() ) ) || ( ( outfit instanceof TopAndBottomOutfit<?, ?> ) && lifeStage.getGenderedTopPieceInterfaceClass( gender ).isAssignableFrom( ( (TopAndBottomOutfit)outfit ).getTopPiece().getClass() ) && lifeStage.getGenderedBottomPieceInterfaceClass( gender ).isAssignableFrom( ( (TopAndBottomOutfit)outfit ).getBottomPiece().getClass() ) ) ) ) {
 					nebPerson.synchronizedSetAll( gender, outfit, awtSkinColor.getRGB(), obesityLevel, eyeColor, hair, face );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( outfit, lifeStage, gender );
+					Logger.severe( outfit, lifeStage, gender );
 				}
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( hair, lifeStage, gender );
+				Logger.severe( hair, lifeStage, gender );
 			}
 		}
-		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.getSgGeometry();
+		Geometry sgGeometry = this.getSgGeometry();
 		if( nebPerson != sgGeometry ) {
 			this.setSgGeometry( nebPerson );
 		}
 	}
 
 	@Override
-	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+	public void setSize( Dimension3 size ) {
 		this.setScale( getScaleForSize( size ) );
 	}
 }

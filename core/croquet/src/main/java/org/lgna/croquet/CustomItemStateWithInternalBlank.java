@@ -43,31 +43,37 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.imp.cascade.BlankNode;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CustomItemStateWithInternalBlank<T> extends CustomItemState<T> {
-	private final class CustomBlank extends org.lgna.croquet.CascadeBlank<T> {
-		public CustomBlank() {
-			super( java.util.UUID.fromString( "3fa6c08f-550d-4d80-b4a9-71c35c0fd186" ) );
+	private final class CustomBlank extends CascadeBlank<T> {
+		CustomBlank() {
 		}
 
 		@Override
-		protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode ) {
+		protected void updateChildren( List<CascadeBlankChild> children, BlankNode<T> blankNode ) {
 			CustomItemStateWithInternalBlank.this.updateBlankChildren( children, blankNode );
 		}
 	}
 
-	private final java.util.List<CustomBlank> blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( new CustomBlank() ) );
+	private final List<CustomBlank> blanks = Collections.unmodifiableList( Lists.newArrayList( new CustomBlank() ) );
 
-	public CustomItemStateWithInternalBlank( org.lgna.croquet.Group group, java.util.UUID id, T initialValue, org.lgna.croquet.ItemCodec<T> itemCodec ) {
+	public CustomItemStateWithInternalBlank( Group group, UUID id, T initialValue, ItemCodec<T> itemCodec ) {
 		super( group, id, initialValue, itemCodec );
 	}
 
 	@Override
-	protected java.util.List<? extends CascadeBlank<T>> getBlanks() {
+	protected List<? extends CascadeBlank<T>> getBlanks() {
 		return this.blanks;
 	}
 
-	protected abstract void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode );
+	protected abstract void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<T> blankNode );
 }

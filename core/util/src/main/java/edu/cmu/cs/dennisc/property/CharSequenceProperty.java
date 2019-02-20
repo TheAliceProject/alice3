@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.property;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,7 +59,7 @@ public class CharSequenceProperty extends InstanceProperty<CharSequence> {
 	@Override
 	public void setValue( CharSequence value ) {
 		assert ( value != null ) || this.isNullAcceptable() : this;
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+		if( Objects.notEquals( value, this.getValue() ) ) {
 			super.setValue( value );
 		}
 	}

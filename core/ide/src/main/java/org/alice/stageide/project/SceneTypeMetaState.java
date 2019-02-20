@@ -42,10 +42,17 @@
  *******************************************************************************/
 package org.alice.stageide.project;
 
+import org.alice.ide.ProjectDocument;
+import org.alice.ide.project.ProjectDocumentState;
+import org.alice.stageide.ast.StoryApiSpecificAstUtilities;
+import org.lgna.croquet.State;
+import org.lgna.croquet.meta.StateTrackingMetaState;
+import org.lgna.project.ast.NamedUserType;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SceneTypeMetaState extends org.lgna.croquet.meta.StateTrackingMetaState<org.lgna.project.ast.NamedUserType, org.alice.ide.ProjectDocument> {
+public class SceneTypeMetaState extends StateTrackingMetaState<NamedUserType, ProjectDocument> {
 	private static class SingletonHolder {
 		private static SceneTypeMetaState instance = new SceneTypeMetaState();
 	}
@@ -55,11 +62,11 @@ public class SceneTypeMetaState extends org.lgna.croquet.meta.StateTrackingMetaS
 	}
 
 	private SceneTypeMetaState() {
-		super( org.alice.ide.project.ProjectDocumentState.getInstance() );
+		super( ProjectDocumentState.getInstance() );
 	}
 
 	@Override
-	protected org.lgna.project.ast.NamedUserType getValue( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state ) {
-		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromDocument( state.getValue() );
+	protected NamedUserType getValue( State<ProjectDocument> state ) {
+		return StoryApiSpecificAstUtilities.getSceneTypeFromDocument( state.getValue() );
 	}
 }

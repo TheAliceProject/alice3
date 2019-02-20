@@ -42,17 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.ast.draganddrop.statement;
 
+import org.alice.ide.ast.draganddrop.CodeDragModel;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractStatementDragModel extends org.alice.ide.ast.draganddrop.CodeDragModel {
-	public AbstractStatementDragModel( java.util.UUID id ) {
+public abstract class AbstractStatementDragModel extends CodeDragModel {
+	public AbstractStatementDragModel( UUID id ) {
 		super( id );
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
-		return org.lgna.project.ast.JavaType.VOID_TYPE;
+	public AbstractType<?, ?, ?> getType() {
+		return JavaType.VOID_TYPE;
 	}
 
 	public abstract boolean isAddEventListenerLikeSubstance();

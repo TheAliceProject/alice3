@@ -43,65 +43,70 @@
 
 package org.alice.stageide.croquet.models.gallerybrowser;
 
-import org.lgna.croquet.Model;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite;
+import org.alice.stageide.personresource.PersonResourceComposite;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.SingleThreadIteratingOperation;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.story.resources.sims2.LifeStage;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldFromPersonResourceIteratingOperation extends org.lgna.croquet.SingleThreadIteratingOperation {
+public class DeclareFieldFromPersonResourceIteratingOperation extends SingleThreadIteratingOperation {
 	private static class SingletonHolder {
-		private static DeclareFieldFromPersonResourceIteratingOperation adultInstance = new DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage.ADULT );
-		private static DeclareFieldFromPersonResourceIteratingOperation childInstance = new DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage.CHILD );
-		private static DeclareFieldFromPersonResourceIteratingOperation toddlerInstance = new DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage.TODDLER );
-		private static DeclareFieldFromPersonResourceIteratingOperation teenInstance = new DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage.TEEN );
-		private static DeclareFieldFromPersonResourceIteratingOperation elderInstance = new DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage.ELDER );
+		private static DeclareFieldFromPersonResourceIteratingOperation adultInstance = new DeclareFieldFromPersonResourceIteratingOperation( LifeStage.ADULT );
+		private static DeclareFieldFromPersonResourceIteratingOperation childInstance = new DeclareFieldFromPersonResourceIteratingOperation( LifeStage.CHILD );
+		private static DeclareFieldFromPersonResourceIteratingOperation toddlerInstance = new DeclareFieldFromPersonResourceIteratingOperation( LifeStage.TODDLER );
+		private static DeclareFieldFromPersonResourceIteratingOperation teenInstance = new DeclareFieldFromPersonResourceIteratingOperation( LifeStage.TEEN );
+		private static DeclareFieldFromPersonResourceIteratingOperation elderInstance = new DeclareFieldFromPersonResourceIteratingOperation( LifeStage.ELDER );
 	}
 
-	public static DeclareFieldFromPersonResourceIteratingOperation getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) {
+	public static DeclareFieldFromPersonResourceIteratingOperation getInstanceForLifeStage( LifeStage lifeStage ) {
+		if( lifeStage == LifeStage.ELDER ) {
 			return SingletonHolder.elderInstance;
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
+		} else if( lifeStage == LifeStage.ADULT ) {
 			return SingletonHolder.adultInstance;
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+		} else if( lifeStage == LifeStage.TEEN ) {
 			return SingletonHolder.teenInstance;
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.CHILD ) {
+		} else if( lifeStage == LifeStage.CHILD ) {
 			return SingletonHolder.childInstance;
 		} else {
 			return SingletonHolder.toddlerInstance;
 		}
 	}
 
-	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
+	private final LifeStage lifeStage;
 
-	private DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "0ec73a7c-f272-4ff1-87eb-f5f25e480ace" ) );
+	private DeclareFieldFromPersonResourceIteratingOperation( LifeStage lifeStage ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "0ec73a7c-f272-4ff1-87eb-f5f25e480ace" ) );
 		this.lifeStage = lifeStage;
 	}
 
-	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
+	public LifeStage getLifeStage() {
 		return this.lifeStage;
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		return subSteps.size() < 2;
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		return finishedSteps.size() < 2;
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		switch( subSteps.size() ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
+		switch( finishedSteps.size() ) {
 		case 0:
-			return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage );
+			return PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage );
 		case 1:
-			org.lgna.croquet.history.Step<?> prevSubStep = subSteps.get( 0 );
-			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {
-				org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
-				org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite.getInstance();
+			UserActivity prevSubStep = finishedSteps.get( 0 );
+			if( prevSubStep.getProducedValue() != null ) {
+				InstanceCreation instanceCreation = (InstanceCreation)prevSubStep.getProducedValue();
+				AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = AddPersonResourceManagedFieldComposite.getInstance();
 				addPersonResourceManagedFieldComposite.setInitialPersonResourceInstanceCreation( instanceCreation );
 				return addPersonResourceManagedFieldComposite.getLaunchOperation();
 			} else {
@@ -110,10 +115,5 @@ public class DeclareFieldFromPersonResourceIteratingOperation extends org.lgna.c
 		default:
 			return null;
 		}
-	}
-
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
-		step.finish();
 	}
 }

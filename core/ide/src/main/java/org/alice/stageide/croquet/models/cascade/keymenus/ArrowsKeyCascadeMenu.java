@@ -45,6 +45,8 @@ package org.alice.stageide.croquet.models.cascade.keymenus;
 
 import org.lgna.story.Key;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,7 +60,7 @@ public class ArrowsKeyCascadeMenu extends AbstractKeyCascadeMenu {
 	}
 
 	private ArrowsKeyCascadeMenu() {
-		super( java.util.UUID.fromString( "36e94163-93e7-4817-a650-4201ce70c47a" ),
+		super( UUID.fromString( "36e94163-93e7-4817-a650-4201ce70c47a" ),
 				Key.LEFT,
 				Key.UP,
 				Key.RIGHT,

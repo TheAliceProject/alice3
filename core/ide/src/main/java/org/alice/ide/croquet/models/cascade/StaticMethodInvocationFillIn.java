@@ -43,51 +43,68 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.croquet.models.ast.cascade.MethodUtilities;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.MethodInvocation;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.MethodInvocation> {
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, StaticMethodInvocationFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks<MethodInvocation> {
+	private static Map<AbstractMethod, StaticMethodInvocationFillIn> map = Maps.newHashMap();
 
-	public static StaticMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractMethod method ) {
+	public static StaticMethodInvocationFillIn getInstance( AbstractMethod method ) {
 		synchronized( map ) {
 			StaticMethodInvocationFillIn rv = map.get( method );
 			if( rv != null ) {
 				//pass
 			} else {
-				java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = method.getRequiredParameters();
+				List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
 				//note: assuming static methods are in java, which therefore do not change their signatures
-				rv = new StaticMethodInvocationFillIn( method, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
+				rv = new StaticMethodInvocationFillIn( method, MethodUtilities.createParameterBlanks( method ) );
 				map.put( method, rv );
 			}
 			return rv;
 		}
 	}
 
-	public static StaticMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type, String methodName, Class<?>... parameterClses ) {
-		org.lgna.project.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
+	public static StaticMethodInvocationFillIn getInstance( AbstractType<?, ?, ?> type, String methodName, Class<?>... parameterClses ) {
+		AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
 		return getInstance( method );
 	}
 
 	public static StaticMethodInvocationFillIn getInstance( Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
+		return getInstance( JavaType.getInstance( cls ), methodName, parameterClses );
 	}
 
-	private final org.lgna.project.ast.MethodInvocation transientValue;
+	private final MethodInvocation transientValue;
 
-	private StaticMethodInvocationFillIn( org.lgna.project.ast.AbstractMethod method, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>[] blanks ) {
-		super( java.util.UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ), blanks );
-		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteStaticMethodInvocation( method );
-	}
-
-	@Override
-	protected org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {
-		return org.lgna.project.ast.AstUtilities.createStaticMethodInvocation( this.transientValue.method.getValue(), expressions );
+	private StaticMethodInvocationFillIn( AbstractMethod method, CascadeBlank<Expression>[] blanks ) {
+		super( UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ), blanks );
+		this.transientValue = IncompleteAstUtilities.createIncompleteStaticMethodInvocation( method );
 	}
 
 	@Override
-	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> step ) {
+	protected MethodInvocation createValue( Expression[] expressions ) {
+		return AstUtilities.createStaticMethodInvocation( this.transientValue.method.getValue(), expressions );
+	}
+
+	@Override
+	public MethodInvocation getTransientValue( ItemNode<? super MethodInvocation, Expression> step ) {
 		return this.transientValue;
 	}
 }

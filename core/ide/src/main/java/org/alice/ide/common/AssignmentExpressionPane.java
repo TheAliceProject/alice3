@@ -42,21 +42,40 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import org.alice.ide.IDE;
+import org.alice.ide.ast.components.DeclarationNameLabel;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.AxisPanel;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ArrayAccess;
+import org.lgna.project.ast.AssignmentExpression;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.UserLocal;
+import org.lgna.project.ast.UserParameter;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AssignmentExpressionPane extends org.lgna.croquet.views.LineAxisPanel {
-	private org.lgna.project.ast.AssignmentExpression assignmentExpression;
+public class AssignmentExpressionPane extends LineAxisPanel {
+	private AssignmentExpression assignmentExpression;
 
-	public AssignmentExpressionPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.AssignmentExpression assignmentExpression ) {
+	public AssignmentExpressionPane( AstI18nFactory factory, AssignmentExpression assignmentExpression ) {
 		this.assignmentExpression = assignmentExpression;
-		org.lgna.project.ast.Expression left = this.assignmentExpression.leftHandSide.getValue();
+		Expression left = this.assignmentExpression.leftHandSide.getValue();
 
-		org.lgna.project.ast.Expression expression;
-		org.lgna.croquet.views.AxisPanel parent;
-		if( left instanceof org.lgna.project.ast.ArrayAccess ) {
-			org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)left;
-			parent = new org.lgna.croquet.views.LineAxisPanel();
+		Expression expression;
+		AxisPanel parent;
+		if( left instanceof ArrayAccess ) {
+			ArrayAccess arrayAccess = (ArrayAccess)left;
+			parent = new LineAxisPanel();
 			expression = arrayAccess.array.getValue();
 			this.addComponent( parent );
 		} else {
@@ -66,64 +85,64 @@ public class AssignmentExpressionPane extends org.lgna.croquet.views.LineAxisPan
 
 		boolean isSetter = false;
 		if( expression != null ) {
-			if( expression instanceof org.lgna.project.ast.FieldAccess ) {
-				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
-				org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( fieldAccess.field.getValue() );
+			if( expression instanceof FieldAccess ) {
+				FieldAccess fieldAccess = (FieldAccess)expression;
+				DeclarationNameLabel nameLabel = new DeclarationNameLabel( fieldAccess.field.getValue() );
 				//			nameLabel.setFontToScaledFont( 1.5f );
-				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
-				org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getActiveInstance().getAccessorAndMutatorDisplayStyle( field );
-				isSetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
+				AbstractField field = fieldAccess.field.getValue();
+				IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = IDE.getActiveInstance().getAccessorAndMutatorDisplayStyle( field );
+				isSetter = accessorAndMutatorDisplayStyle == IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 				parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, field.getDeclaringType() ) );
-				if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
-					parent.addComponent( new org.lgna.croquet.views.Label( " . " ) );
+				if( FormatterState.isJava() ) {
+					parent.addComponent( new Label( " . " ) );
 				} else {
-					parent.addComponent( new org.lgna.croquet.views.Label( " " ) );
+					parent.addComponent( new Label( " " ) );
 				}
 				if( isSetter ) {
-					parent.addComponent( new org.lgna.croquet.views.Label( "set" ) );
+					parent.addComponent( new Label( "set" ) );
 				}
 				parent.addComponent( nameLabel );
 				if( isSetter ) {
-					if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
-						parent.addComponent( new org.lgna.croquet.views.Label( "( " ) );
+					if( FormatterState.isJava() ) {
+						parent.addComponent( new Label( "( " ) );
 					}
 				}
-			} else if( expression instanceof org.lgna.project.ast.LocalAccess ) {
-				org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)expression;
-				org.lgna.project.ast.UserLocal local = localAccess.local.getValue();
+			} else if( expression instanceof LocalAccess ) {
+				LocalAccess localAccess = (LocalAccess)expression;
+				UserLocal local = localAccess.local.getValue();
 				parent.addComponent( new LocalPane( local, factory.isLocalDraggableAndMutable( local ) ) );
-			} else if( expression instanceof org.lgna.project.ast.ParameterAccess ) {
-				org.lgna.project.ast.ParameterAccess parameterAccess = (org.lgna.project.ast.ParameterAccess)expression;
-				org.lgna.project.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();
-				parent.addComponent( new ParameterPane( null, (org.lgna.project.ast.UserParameter)parameter ) );
+			} else if( expression instanceof ParameterAccess ) {
+				ParameterAccess parameterAccess = (ParameterAccess)expression;
+				AbstractParameter parameter = parameterAccess.parameter.getValue();
+				parent.addComponent( new ParameterPane( null, (UserParameter)parameter ) );
 			} else {
-				parent.addComponent( new org.lgna.croquet.views.Label( "TODO" ) );
+				parent.addComponent( new Label( "TODO" ) );
 			}
 		} else {
-			parent.addComponent( new org.lgna.croquet.views.Label( "???" ) );
+			parent.addComponent( new Label( "???" ) );
 		}
 
-		if( left instanceof org.lgna.project.ast.ArrayAccess ) {
-			org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)left;
-			parent.addComponent( new org.lgna.croquet.views.Label( "[ " ) );
+		if( left instanceof ArrayAccess ) {
+			ArrayAccess arrayAccess = (ArrayAccess)left;
+			parent.addComponent( new Label( "[ " ) );
 			parent.addComponent( factory.createExpressionPropertyPane( arrayAccess.index ) );
-			parent.addComponent( new org.lgna.croquet.views.Label( " ]" ) );
+			parent.addComponent( new Label( " ]" ) );
 		}
 
 		if( isSetter ) {
 			//pass
 		} else {
-			if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
-				parent.addComponent( new org.lgna.croquet.views.Label( " = " ) );
+			if( FormatterState.isJava() ) {
+				parent.addComponent( new Label( " = " ) );
 			} else {
-				parent.addComponent( new org.alice.ide.common.GetsPane( true ) );
+				parent.addComponent( new GetsPane( true ) );
 			}
 		}
-		org.lgna.project.ast.AbstractType<?, ?, ?> rightHandValueType = this.assignmentExpression.expressionType.getValue();
+		AbstractType<?, ?, ?> rightHandValueType = this.assignmentExpression.expressionType.getValue();
 		parent.addComponent( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, rightHandValueType ) );
 		if( isSetter ) {
-			if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
-				parent.addComponent( new org.lgna.croquet.views.Label( " )" ) );
+			if( FormatterState.isJava() ) {
+				parent.addComponent( new Label( " )" ) );
 			}
 		}
 	}

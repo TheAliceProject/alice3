@@ -44,6 +44,8 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.story.event.NumberKeyPressListener;
 
+import java.util.UUID;
+
 public class NumberKeyAdapterFillIn extends LambdaExpressionFillIn {
 
 	private static class SingletonHolder {
@@ -55,6 +57,6 @@ public class NumberKeyAdapterFillIn extends LambdaExpressionFillIn {
 	}
 
 	public NumberKeyAdapterFillIn() {
-		super( java.util.UUID.fromString( "c9fbf4e3-15be-40de-a456-a94729852aa5" ), NumberKeyPressListener.class );
+		super( UUID.fromString( "c9fbf4e3-15be-40de-a456-a94729852aa5" ), NumberKeyPressListener.class );
 	}
 }

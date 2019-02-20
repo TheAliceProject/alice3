@@ -43,42 +43,40 @@
 
 package org.lgna.croquet.triggers;
 
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.ViewController;
+
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DropTrigger extends AbstractMouseEventTrigger {
-	public static DropTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
-		return new DropTrigger( viewController, mouseEvent, dropSite );
+	public static UserActivity setOnUserActivity( UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent mouseEvent, DropSite dropSite ) {
+		new DropTrigger( userActivity, viewController, mouseEvent, dropSite );
+		return userActivity;
 	}
 
-	public static DropTrigger createUserInstance( java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
-		return createUserInstance( null, mouseEvent, dropSite );
-	}
+	private DropSite dropSite;
 
-	private org.lgna.croquet.DropSite dropSite;
-
-	private DropTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropSite dropSite ) {
-		super( viewController, e );
-		if( dropSite != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "drop site is null for", this );
+	private DropTrigger( UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent e, DropSite dropSite ) {
+		super( userActivity, viewController, e );
+		if ( dropSite == null ) {
+			Logger.severe( "drop site is null for", this );
 		}
 		this.dropSite = dropSite;
 	}
 
-	public DropTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.dropSite = binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
-
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.dropSite );
 	}
 
-	public org.lgna.croquet.DropSite getDropSite() {
+	public DropSite getDropSite() {
 		return this.dropSite;
 	}
 

@@ -43,24 +43,34 @@
 
 package org.alice.ide.projecturi;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.croquet.codecs.UriCodec;
+import org.lgna.croquet.data.RefreshableListData;
+import org.lgna.project.io.IoUtilities;
+
+import java.io.File;
+import java.net.URI;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class DirectoryUriListData extends org.lgna.croquet.data.RefreshableListData<java.net.URI> {
-	private final java.io.File directory;
+public final class DirectoryUriListData extends RefreshableListData<URI> {
+	private final File directory;
 
-	public DirectoryUriListData( java.io.File directory ) {
-		super( org.alice.ide.croquet.codecs.UriCodec.SINGLETON );
+	public DirectoryUriListData( File directory ) {
+		super( UriCodec.SINGLETON );
 		this.directory = directory;
 	}
 
 	@Override
-	protected java.util.List<java.net.URI> createValues() {
+	protected List<URI> createValues() {
 		if( directory != null ) {
-			java.net.URI[] uris;
-			java.io.File[] files = org.lgna.project.io.IoUtilities.listProjectFiles( directory );
+			URI[] uris;
+			File[] files = IoUtilities.listProjectFiles( directory );
 			final int N = files.length;
-			uris = new java.net.URI[ N ];
+			uris = new URI[ N ];
 			for( int i = 0; i < N; i++ ) {
 				if( files[ i ] != null ) {
 					uris[ i ] = files[ i ].toURI();
@@ -68,13 +78,13 @@ public final class DirectoryUriListData extends org.lgna.croquet.data.Refreshabl
 					uris[ i ] = null;
 				}
 			}
-			return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( uris );
+			return Lists.newArrayList( uris );
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	public java.io.File getDirectory() {
+	public File getDirectory() {
 		return this.directory;
 	}
 }

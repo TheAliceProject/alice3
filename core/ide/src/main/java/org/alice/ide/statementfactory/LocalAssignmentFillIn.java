@@ -43,13 +43,27 @@
 
 package org.alice.ide.statementfactory;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AssignmentExpression;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class LocalAssignmentFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.AssignmentExpression> {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalAssignmentFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class LocalAssignmentFillIn extends ExpressionFillInWithExpressionBlanks<AssignmentExpression> {
+	private static Map<UserLocal, LocalAssignmentFillIn> map = Maps.newHashMap();
 
-	public static synchronized LocalAssignmentFillIn getInstance( org.lgna.project.ast.UserLocal local ) {
+	public static synchronized LocalAssignmentFillIn getInstance( UserLocal local ) {
 		LocalAssignmentFillIn rv = map.get( local );
 		if( rv != null ) {
 			//pass
@@ -60,25 +74,25 @@ public class LocalAssignmentFillIn extends org.alice.ide.croquet.models.cascade.
 		return rv;
 	}
 
-	private final org.lgna.project.ast.AssignmentExpression transientValue;
+	private final AssignmentExpression transientValue;
 
-	private LocalAssignmentFillIn( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "0a624cbf-fca2-4a89-a6b0-11415b8cc084" ), org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( local.valueType.getValue() ) );
-		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalAssignment( local );
+	private LocalAssignmentFillIn( UserLocal local ) {
+		super( UUID.fromString( "0a624cbf-fca2-4a89-a6b0-11415b8cc084" ), ExpressionBlank.createBlanks( local.valueType.getValue() ) );
+		this.transientValue = IncompleteAstUtilities.createIncompleteLocalAssignment( local );
 	}
 
-	private org.lgna.project.ast.UserLocal getLocal() {
-		org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)this.transientValue.leftHandSide.getValue();
+	private UserLocal getLocal() {
+		LocalAccess localAccess = (LocalAccess)this.transientValue.leftHandSide.getValue();
 		return localAccess.local.getValue();
 	}
 
 	@Override
-	protected org.lgna.project.ast.AssignmentExpression createValue( org.lgna.project.ast.Expression[] expressions ) {
-		return org.lgna.project.ast.AstUtilities.createLocalAssignment( this.getLocal(), expressions[ 0 ] );
+	protected AssignmentExpression createValue( Expression[] expressions ) {
+		return AstUtilities.createLocalAssignment( this.getLocal(), expressions[ 0 ] );
 	}
 
 	@Override
-	public org.lgna.project.ast.AssignmentExpression getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AssignmentExpression, org.lgna.project.ast.Expression> node ) {
+	public AssignmentExpression getTransientValue( ItemNode<? super AssignmentExpression, Expression> node ) {
 		return this.transientValue;
 	}
 }

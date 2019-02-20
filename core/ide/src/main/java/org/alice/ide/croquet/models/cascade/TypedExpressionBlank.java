@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade;
 
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractType;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class TypedExpressionBlank extends ExpressionBlank {
-	public TypedExpressionBlank( org.lgna.project.ast.AbstractType<?, ?, ?> valueType, org.lgna.project.annotations.ValueDetails<?> details ) {
-		super( java.util.UUID.fromString( "d03f9c80-7371-4d78-8579-63e392d18557" ), valueType, details );
+	public TypedExpressionBlank( AbstractType<?, ?, ?> valueType, ValueDetails<?> details ) {
+		super( valueType, details );
 	}
 }

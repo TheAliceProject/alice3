@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.lgna.project.virtualmachine.events;
 
+import org.lgna.project.ast.AbstractForEachLoop;
+import org.lgna.project.virtualmachine.VirtualMachine;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ForEachLoopIterationEvent extends VirtualMachineEvent {
-	public ForEachLoopIterationEvent( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.AbstractForEachLoop forEachLoop, Object value, Object[] array, int index ) {
+	public ForEachLoopIterationEvent( VirtualMachine vm, AbstractForEachLoop forEachLoop, Object value, Object[] array, int index ) {
 		super( vm );
 		this.forEachLoop = forEachLoop;
 		this.value = value;
@@ -54,7 +57,7 @@ public class ForEachLoopIterationEvent extends VirtualMachineEvent {
 		this.index = index;
 	}
 
-	public org.lgna.project.ast.AbstractForEachLoop getForEachLoop() {
+	public AbstractForEachLoop getForEachLoop() {
 		return this.forEachLoop;
 	}
 
@@ -70,7 +73,7 @@ public class ForEachLoopIterationEvent extends VirtualMachineEvent {
 		return this.index;
 	}
 
-	private final org.lgna.project.ast.AbstractForEachLoop forEachLoop;
+	private final AbstractForEachLoop forEachLoop;
 	private final Object value;
 	private final Object[] array;
 	private final int index;

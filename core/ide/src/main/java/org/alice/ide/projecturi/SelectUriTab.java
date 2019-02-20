@@ -43,20 +43,27 @@
 
 package org.alice.ide.projecturi;
 
+import org.alice.ide.projecturi.views.TabContentPanel;
+import org.alice.ide.uricontent.UriProjectLoader;
+import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.views.ScrollPane;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectUriTab extends org.lgna.croquet.SimpleTabComposite<org.alice.ide.projecturi.views.TabContentPanel> {
-	public SelectUriTab( java.util.UUID migrationId ) {
+public abstract class SelectUriTab extends SimpleTabComposite<TabContentPanel> {
+	public SelectUriTab( UUID migrationId ) {
 		super( migrationId, IsCloseable.FALSE );
 	}
 
-	public abstract org.alice.ide.uricontent.UriProjectLoader getSelectedUri();
+	public abstract UriProjectLoader getSelectedUri();
 
 	protected abstract void refresh();
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

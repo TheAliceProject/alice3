@@ -45,6 +45,8 @@ package org.alice.interact.manipulator.scenegraph;
 
 import java.util.List;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.interact.manipulator.SnapUtilities;
 
 import edu.cmu.cs.dennisc.color.Color4f;
@@ -156,7 +158,7 @@ public class SnapGrid extends Transformable implements PropertyListener {
 
 		for( Vertex line : lines ) {
 			if( line == null ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "line is null", this );
+				Logger.errln( "line is null", this );
 			}
 		}
 
@@ -234,6 +236,6 @@ public class SnapGrid extends Transformable implements PropertyListener {
 
 	private float opacity = .5f;
 
-	private final List<AbstractCamera> camerasToTrack = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<AbstractCamera> camerasToTrack = Lists.newCopyOnWriteArrayList();
 	private AbstractCamera currentCamera;
 }

@@ -43,8 +43,10 @@
 
 package org.alice.ide.croquet.models.ast;
 
+import org.lgna.croquet.CompletionModel;
+
 /**
  * @author Dennis Cosgrove
  */
-public interface InsertStatementCompletionModel extends StatementCompletionModel {
+public interface InsertStatementCompletionModel extends CompletionModel {
 }

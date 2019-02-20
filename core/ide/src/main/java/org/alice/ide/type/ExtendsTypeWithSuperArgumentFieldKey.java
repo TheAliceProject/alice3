@@ -43,13 +43,16 @@
 
 package org.alice.ide.type;
 
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ExtendsTypeWithSuperArgumentFieldKey extends AbstractExtendsTypeKey {
-	private final org.lgna.project.ast.AbstractField superArgumentField;
+	private final AbstractField superArgumentField;
 
-	public ExtendsTypeWithSuperArgumentFieldKey( org.lgna.project.ast.AbstractType<?, ?, ?> superType, org.lgna.project.ast.AbstractField superArgumentField ) {
+	public ExtendsTypeWithSuperArgumentFieldKey( AbstractType<?, ?, ?> superType, AbstractField superArgumentField ) {
 		super( superType );
 		assert superArgumentField != null;
 		this.superArgumentField = superArgumentField;
@@ -82,7 +85,7 @@ public class ExtendsTypeWithSuperArgumentFieldKey extends AbstractExtendsTypeKey
 	}
 
 	@Override
-	protected boolean contentEquals( org.alice.ide.type.TypeKey other ) {
+	protected boolean contentEquals( TypeKey other ) {
 		// super class's equals methods ensures this.getClass() == other.getClass()
 		return super.contentEquals( other ) && ( this.superArgumentField == ( (ExtendsTypeWithSuperArgumentFieldKey)other ).superArgumentField );
 	}

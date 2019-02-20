@@ -42,13 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.cascade.fillerinners;
 
-public class LeavesViewEventListenerFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
+import org.alice.stageide.croquet.models.cascade.adapters.LeavesViewEventListenerFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.event.ViewExitListener;
+
+import java.util.List;
+
+public class LeavesViewEventListenerFillerInner extends ExpressionFillerInner {
 	public LeavesViewEventListenerFillerInner() {
-		super( org.lgna.story.event.ViewExitListener.class );
+		super( ViewExitListener.class );
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		items.add( org.alice.stageide.croquet.models.cascade.adapters.LeavesViewEventListenerFillIn.getInstance() );
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
+		items.add( LeavesViewEventListenerFillIn.getInstance() );
 	}
 }

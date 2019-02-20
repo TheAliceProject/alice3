@@ -42,13 +42,21 @@
  *******************************************************************************/
 package org.alice.stageide.cascade.fillerinners;
 
-public class MouseClickOnObjectFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.event.MouseClickOnObjectListener;
+
+import java.util.List;
+
+public class MouseClickOnObjectFillerInner extends ExpressionFillerInner {
 	public MouseClickOnObjectFillerInner() {
-		super( org.lgna.story.event.MouseClickOnObjectListener.class );
+		super( MouseClickOnObjectListener.class );
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
 		items.add( org.alice.stageide.croquet.models.cascade.adapters.MouseClickOnObjectFillerInner.getInstance() );
 	}
 }

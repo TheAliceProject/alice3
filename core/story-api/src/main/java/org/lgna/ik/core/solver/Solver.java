@@ -43,10 +43,14 @@
 
 package org.lgna.ik.core.solver;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import Jama.SingularValueDecomposition;
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.ik.core.IkConstants;
 import org.lgna.ik.core.enforcer.Weights;
 import org.lgna.ik.core.solver.Bone.Axis;
@@ -96,8 +100,8 @@ public class Solver {
 		}
 	}
 
-	private final java.util.List<Chain> chains = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<Constraint> constraints = new java.util.ArrayList<Solver.Constraint>();
+	private final List<Chain> chains = Lists.newCopyOnWriteArrayList();
+	private final List<Constraint> constraints = new ArrayList<Solver.Constraint>();
 
 	private Map<Bone, Map<Axis, Vector3[]>> jacobianColumns;
 
@@ -192,9 +196,9 @@ public class Solver {
 		return angleSpeeds;
 	}
 
-	private Map<Bone, Map<Axis, Double>> calculateAngleSpeeds( Jama.Matrix ji ) {
-		Jama.Matrix pDot = createDesiredVelocitiesColumn( desiredVelocities );
-		Jama.Matrix mThetadot = ji.times( pDot );
+	private Map<Bone, Map<Axis, Double>> calculateAngleSpeeds( Matrix ji ) {
+		Matrix pDot = createDesiredVelocitiesColumn( desiredVelocities );
+		Matrix mThetadot = ji.times( pDot );
 
 		return createBoneSpeedsFromThetadot( mThetadot );
 	}
@@ -268,7 +272,7 @@ public class Solver {
 		}
 	}
 
-	private Map<Bone, Map<Axis, Double>> createBoneSpeedsFromThetadot( Jama.Matrix mThetadot ) {
+	private Map<Bone, Map<Axis, Double>> createBoneSpeedsFromThetadot( Matrix mThetadot ) {
 		Map<Bone, Map<Axis, Double>> boneSpeeds = new HashMap<Bone, Map<Axis, Double>>();
 
 		//trusting that this will give me the same order of axes as in createJacobianMatrix(). No reason to doubt this.  
@@ -292,8 +296,8 @@ public class Solver {
 		return boneSpeeds;
 	}
 
-	private Jama.Matrix createThetadotFromBoneSpeeds( Map<Bone, Map<Axis, Double>> boneSpeeds, int sizeHelper ) {
-		Jama.Matrix mThetadot = new Matrix( sizeHelper, 1 );
+	private Matrix createThetadotFromBoneSpeeds( Map<Bone, Map<Axis, Double>> boneSpeeds, int sizeHelper ) {
+		Matrix mThetadot = new Matrix( sizeHelper, 1 );
 
 		int row = 0;
 		for( Entry<Bone, Map<Axis, Vector3[]>> jce : jacobianColumns.entrySet() ) {
@@ -368,7 +372,7 @@ public class Solver {
 						throw new RuntimeException( "Axis already in column" );
 					}
 
-					columnForBone.put( axis, new edu.cmu.cs.dennisc.math.Vector3[ constraints.size() ] );
+					columnForBone.put( axis, new Vector3[ constraints.size() ] );
 				}
 			}
 		}
@@ -405,12 +409,12 @@ public class Solver {
 		}
 	}
 
-	private Jama.Matrix createJacobian() {
+	private Matrix createJacobian() {
 		return createJacobianMatrix( this.jacobianColumns );
 	}
 
-	private JacobianAndInverse invertJacobian( Jama.Matrix jacobian ) {
-		Jama.Matrix mj = jacobian;
+	private JacobianAndInverse invertJacobian( Matrix jacobian ) {
+		Matrix mj = jacobian;
 
 		boolean transposed = false;
 		int m = mj.getRowDimension();
@@ -423,19 +427,19 @@ public class Solver {
 			mj = mj.transpose();
 		}
 
-		Jama.SingularValueDecomposition svd = new Jama.SingularValueDecomposition( mj );
+		SingularValueDecomposition svd = new SingularValueDecomposition( mj );
 
-		Jama.Matrix u = svd.getU();
-		Jama.Matrix s = svd.getS();
-		Jama.Matrix v = svd.getV();
+		Matrix u = svd.getU();
+		Matrix s = svd.getS();
+		Matrix v = svd.getV();
 
-		Jama.Matrix sForBasic = s.copy();
+		Matrix sForBasic = s.copy();
 
 		reduceAndInvertSofSvdByDamping( s, IkConstants.SVD_DAMPING_CONSTANT );
 		reduceAndInvertSofSvdBasically( sForBasic );
 
-		Jama.Matrix pseudoInverseForMotion = v.times( s ).times( u.transpose() );
-		Jama.Matrix pseudoInverseForNullspace = v.times( sForBasic ).times( u.transpose() );
+		Matrix pseudoInverseForMotion = v.times( s ).times( u.transpose() );
+		Matrix pseudoInverseForNullspace = v.times( sForBasic ).times( u.transpose() );
 
 		if( transposed ) { //TODO perhaps record the fact that matrices are transposed and act accordingly. 
 			pseudoInverseForMotion = pseudoInverseForMotion.transpose();
@@ -445,8 +449,8 @@ public class Solver {
 		return new JacobianAndInverse( jacobian, pseudoInverseForMotion, pseudoInverseForNullspace );
 	}
 
-	private Jama.Matrix createDesiredVelocitiesColumn( DesiredVelocity[] desiredVelocities2 ) {
-		Jama.Matrix rv = new Jama.Matrix( desiredVelocities2.length * 3, 1 );
+	private Matrix createDesiredVelocitiesColumn( DesiredVelocity[] desiredVelocities2 ) {
+		Matrix rv = new Matrix( desiredVelocities2.length * 3, 1 );
 
 		int row = 0;
 		for( DesiredVelocity desiredVelocity : desiredVelocities2 ) {
@@ -459,7 +463,7 @@ public class Solver {
 		return rv;
 	}
 
-	private Jama.Matrix createJacobianMatrix( Map<Bone, Map<Axis, edu.cmu.cs.dennisc.math.Vector3[]>> jacobianColumns ) {
+	private Matrix createJacobianMatrix( Map<Bone, Map<Axis, Vector3[]>> jacobianColumns ) {
 		boolean found = false;
 		int numConstraints = 0;
 		int numColumns = 0;
@@ -479,7 +483,7 @@ public class Solver {
 			numColumns += columnsForBone.size();
 		}
 
-		Jama.Matrix j = new Jama.Matrix( numConstraints * 3, numColumns );
+		Matrix j = new Matrix( numConstraints * 3, numColumns );
 
 		int column = 0;
 
@@ -493,7 +497,7 @@ public class Solver {
 				Vector3[] contributions = e.getValue();
 
 				int row = 0;
-				for( edu.cmu.cs.dennisc.math.Vector3 contribution : contributions ) {
+				for( Vector3 contribution : contributions ) {
 					j.set( row, column, contribution.x * weight );
 					j.set( row + 1, column, contribution.y * weight );
 					j.set( row + 2, column, contribution.z * weight );
@@ -523,7 +527,7 @@ public class Solver {
 		}
 	}
 
-	private void reduceAndInvertSofSvdByClampingSmallEntries( Jama.Matrix s, double threshold ) {
+	private void reduceAndInvertSofSvdByClampingSmallEntries( Matrix s, double threshold ) {
 		assert ( s.getRowDimension() == s.getColumnDimension() );
 		for( int i = 0; i < s.getRowDimension(); ++i ) {
 			if( s.get( i, i ) < threshold ) {
@@ -535,15 +539,15 @@ public class Solver {
 		}
 	}
 
-	java.util.Map<Chain, edu.cmu.cs.dennisc.math.Vector3> desiredLinearVelocities = new java.util.HashMap<Chain, edu.cmu.cs.dennisc.math.Vector3>();
-	java.util.Map<Chain, edu.cmu.cs.dennisc.math.Vector3> desiredAngularVelocities = new java.util.HashMap<Chain, edu.cmu.cs.dennisc.math.Vector3>();
+	Map<Chain, Vector3> desiredLinearVelocities = new HashMap<Chain, Vector3>();
+	Map<Chain, Vector3> desiredAngularVelocities = new HashMap<Chain, Vector3>();
 
-	public void setDesiredEndEffectorLinearVelocity( Chain chain, edu.cmu.cs.dennisc.math.Vector3 linVelToUse ) {
+	public void setDesiredEndEffectorLinearVelocity( Chain chain, Vector3 linVelToUse ) {
 		//		chain.setDesiredEndEffectorLinearVelocity(linVelToUse);
 		desiredLinearVelocities.put( chain, linVelToUse );
 	}
 
-	public void setDesiredEndEffectorAngularVelocity( Chain chain, edu.cmu.cs.dennisc.math.Vector3 angVelToUse ) {
+	public void setDesiredEndEffectorAngularVelocity( Chain chain, Vector3 angVelToUse ) {
 		//		chain.setDesiredEndEffectorAngularVelocity(angVelToUse);
 		desiredAngularVelocities.put( chain, angVelToUse );
 	}

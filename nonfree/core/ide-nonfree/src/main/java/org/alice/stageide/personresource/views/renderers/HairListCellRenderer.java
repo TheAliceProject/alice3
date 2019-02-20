@@ -42,10 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views.renderers;
 
+import org.alice.stageide.personresource.IngredientsComposite;
+import org.alice.stageide.personresource.PersonResourceComposite;
+import org.alice.stageide.personresource.data.HairHatStyle;
+
 /**
  * @author Dennis Cosgrove
  */
-public class HairListCellRenderer extends IngredientListCellRenderer<org.alice.stageide.personresource.data.HairHatStyle> {
+public class HairListCellRenderer extends IngredientListCellRenderer<HairHatStyle> {
 	private static class SingletonHolder {
 		private static HairListCellRenderer instance = new HairListCellRenderer();
 	}
@@ -59,8 +63,8 @@ public class HairListCellRenderer extends IngredientListCellRenderer<org.alice.s
 	}
 
 	@Override
-	protected Object getValue( org.alice.stageide.personresource.data.HairHatStyle value ) {
-		org.alice.stageide.personresource.IngredientsComposite ingredientsComposite = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite();
+	protected Object getValue( HairHatStyle value ) {
+		IngredientsComposite ingredientsComposite = PersonResourceComposite.getInstance().getIngredientsComposite();
 		return ingredientsComposite.getHairForHairHatStyle( value );
 	}
 

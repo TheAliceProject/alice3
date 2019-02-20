@@ -42,11 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.dialog;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.Initializer;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.OperationOwningComposite;
+import org.lgna.croquet.OwnedByCompositeOperation;
+import org.lgna.croquet.OwnedByCompositeOperationSubKey;
+
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class LaunchOperationOwningCompositeImp<C extends org.lgna.croquet.OperationOwningComposite<?>> {
-	public LaunchOperationOwningCompositeImp( C composite, org.lgna.croquet.Group operationGroup ) {
+public final class LaunchOperationOwningCompositeImp<C extends OperationOwningComposite<?>> {
+	public LaunchOperationOwningCompositeImp( C composite, Group operationGroup ) {
 		this.composite = composite;
 		this.operationGroup = operationGroup;
 	}
@@ -55,13 +65,13 @@ public final class LaunchOperationOwningCompositeImp<C extends org.lgna.croquet.
 		return this.composite;
 	}
 
-	public org.lgna.croquet.Group getOperationGroup() {
+	public Group getOperationGroup() {
 		return this.operationGroup;
 	}
 
-	public org.lgna.croquet.Operation createAndRegisterLaunchOperation( String subKeyText, org.lgna.croquet.Initializer<C> initializer ) {
-		org.lgna.croquet.OwnedByCompositeOperationSubKey subKey = new org.lgna.croquet.OwnedByCompositeOperationSubKey( this.composite, subKeyText );
-		org.lgna.croquet.OwnedByCompositeOperation<C> rv = new org.lgna.croquet.OwnedByCompositeOperation<C>( this.operationGroup, this.composite, subKey, initializer );
+	public Operation createAndRegisterLaunchOperation( String subKeyText, Initializer<C> initializer ) {
+		OwnedByCompositeOperationSubKey subKey = new OwnedByCompositeOperationSubKey( this.composite, subKeyText );
+		OwnedByCompositeOperation<C> rv = new OwnedByCompositeOperation<C>( this.operationGroup, this.composite, subKey, initializer );
 		if( subKeyText != null ) {
 			assert mapSubKeyToInitializerLaunchOperation.containsKey( subKeyText ) == false : subKeyText;
 			this.mapSubKeyToInitializerLaunchOperation.put( subKeyText, rv );
@@ -72,11 +82,11 @@ public final class LaunchOperationOwningCompositeImp<C extends org.lgna.croquet.
 		return rv;
 	}
 
-	public org.lgna.croquet.Operation createAndRegisterNullKeyLaunchOperation() {
+	public Operation createAndRegisterNullKeyLaunchOperation() {
 		return this.createAndRegisterLaunchOperation( null, null );
 	}
 
-	public org.lgna.croquet.Operation getLaunchOperation( String subKeyText ) {
+	public Operation getLaunchOperation( String subKeyText ) {
 		if( subKeyText != null ) {
 			return this.mapSubKeyToInitializerLaunchOperation.get( subKeyText );
 		} else {
@@ -85,8 +95,8 @@ public final class LaunchOperationOwningCompositeImp<C extends org.lgna.croquet.
 	}
 
 	private final C composite;
-	private final org.lgna.croquet.Group operationGroup;
+	private final Group operationGroup;
 
-	private final java.util.Map<String, org.lgna.croquet.Operation> mapSubKeyToInitializerLaunchOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private org.lgna.croquet.Operation nullKeyLaunchOperation;
+	private final Map<String, Operation> mapSubKeyToInitializerLaunchOperation = Maps.newHashMap();
+	private Operation nullKeyLaunchOperation;
 }

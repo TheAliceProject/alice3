@@ -42,32 +42,39 @@
  *******************************************************************************/
 package org.alice.ide.resource.manager.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.croquet.codecs.ResourceCodec;
+import org.lgna.common.Resource;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.UserActivity;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class RenameResourceEdit extends org.lgna.croquet.edits.AbstractEdit {
-	private final org.lgna.common.Resource resource;
+public final class RenameResourceEdit extends AbstractEdit {
+	private final Resource resource;
 	private final String prevValue;
 	private final String nextValue;
 
-	public RenameResourceEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.common.Resource resource, String prevValue, String nextValue ) {
-		super( completionStep );
+	public RenameResourceEdit( UserActivity userActivity, Resource resource, String prevValue, String nextValue ) {
+		super( userActivity );
 		this.resource = resource;
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 	}
 
-	public RenameResourceEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public RenameResourceEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.resource = org.alice.ide.croquet.codecs.ResourceCodec.getInstance( org.lgna.common.Resource.class ).decodeValue( binaryDecoder );
+		this.resource = ResourceCodec.getInstance( Resource.class ).decodeValue( binaryDecoder );
 		this.prevValue = binaryDecoder.decodeString();
 		this.nextValue = binaryDecoder.decodeString();
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.ResourceCodec.getInstance( org.lgna.common.Resource.class ).encodeValue( binaryEncoder, this.resource );
+		ResourceCodec.getInstance( Resource.class ).encodeValue( binaryEncoder, this.resource );
 		binaryEncoder.encode( this.prevValue );
 		binaryEncoder.encode( this.nextValue );
 	}

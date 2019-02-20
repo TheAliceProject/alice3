@@ -42,61 +42,76 @@
  *******************************************************************************/
 package org.alice.ide.croquet.edits.ast;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.InsertStatementCompletionModel;
+import org.alice.ide.project.ProjectChangeOfInterestManager;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ProgramTypeUtilities;
+import org.lgna.project.Project;
+import org.lgna.project.ast.AbstractStatementWithBody;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.ConditionalStatement;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.Statement;
+
+import javax.swing.undo.CannotUndoException;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.InsertStatementCompletionModel> extends StatementEdit<M> {
+public class InsertStatementEdit<M extends InsertStatementCompletionModel> extends StatementEdit<M> {
 	public static final int AT_END = Short.MAX_VALUE;
-	private org.lgna.project.ast.BlockStatement blockStatement;
+	private BlockStatement blockStatement;
 	private int specifiedIndex;
-	private org.lgna.project.ast.Expression[] initialExpressions;
+	private Expression[] initialExpressions;
 	private final boolean isEnveloping;
 
-	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions, boolean isEnveloping ) {
-		super( completionStep, statement );
-		org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromHistoryBlockStatementIndexPair = this.findFirstDropSite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class );
-		if( edu.cmu.cs.dennisc.java.util.Objects.equals( blockStatementIndexPair, fromHistoryBlockStatementIndexPair ) ) {
-			//pass
-		} else {
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( blockStatementIndexPair, fromHistoryBlockStatementIndexPair );
-		}
+	public InsertStatementEdit( UserActivity userActivity, BlockStatementIndexPair blockStatementIndexPair, Statement statement, Expression[] initialExpressions, boolean isEnveloping ) {
+		super( userActivity, statement );
 		this.blockStatement = blockStatementIndexPair.getBlockStatement();
 		this.specifiedIndex = blockStatementIndexPair.getIndex();
 		this.initialExpressions = initialExpressions;
 		this.isEnveloping = isEnveloping;
 	}
 
-	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
-		this( completionStep, blockStatementIndexPair, statement, initialExpressions, false );
+	public InsertStatementEdit( UserActivity userActivity, BlockStatementIndexPair blockStatementIndexPair, Statement statement, Expression[] initialExpressions ) {
+		this( userActivity, blockStatementIndexPair, statement, initialExpressions, false );
 	}
 
-	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement ) {
-		this( completionStep, blockStatementIndexPair, statement, new org.lgna.project.ast.Expression[] {} );
+	public InsertStatementEdit( UserActivity userActivity, BlockStatementIndexPair blockStatementIndexPair, Statement statement ) {
+		this( userActivity, blockStatementIndexPair, statement, new Expression[] {} );
 	}
 
-	public InsertStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public InsertStatementEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
-		java.util.UUID blockStatementId = binaryDecoder.decodeId();
-		this.blockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, blockStatementId );
+		IDE ide = IDE.getActiveInstance();
+		Project project = ide.getProject();
+		UUID blockStatementId = binaryDecoder.decodeId();
+		this.blockStatement = ProgramTypeUtilities.lookupNode( project, blockStatementId );
 		this.specifiedIndex = binaryDecoder.decodeInt();
-		java.util.UUID[] ids = binaryDecoder.decodeIdArray();
+		UUID[] ids = binaryDecoder.decodeIdArray();
 		final int N = ids.length;
-		this.initialExpressions = new org.lgna.project.ast.Expression[ N ];
+		this.initialExpressions = new Expression[ N ];
 		for( int i = 0; i < N; i++ ) {
-			this.initialExpressions[ i ] = org.lgna.project.ProgramTypeUtilities.lookupNode( project, ids[ i ] );
+			this.initialExpressions[ i ] = ProgramTypeUtilities.lookupNode( project, ids[ i ] );
 		}
 		this.isEnveloping = binaryDecoder.decodeBoolean();
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.blockStatement.getId() );
 		binaryEncoder.encode( this.specifiedIndex );
 		final int N = this.initialExpressions.length;
-		java.util.UUID[] ids = new java.util.UUID[ N ];
+		UUID[] ids = new UUID[ N ];
 		for( int i = 0; i < N; i++ ) {
 			ids[ i ] = this.initialExpressions[ i ].getId();
 		}
@@ -104,7 +119,7 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		binaryEncoder.encode( this.isEnveloping );
 	}
 
-	public org.lgna.project.ast.BlockStatement getBlockStatement() {
+	public BlockStatement getBlockStatement() {
 		return this.blockStatement;
 	}
 
@@ -112,7 +127,7 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		return this.specifiedIndex;
 	}
 
-	public org.lgna.project.ast.Expression[] getInitialExpressions() {
+	public Expression[] getInitialExpressions() {
 		return this.initialExpressions;
 	}
 
@@ -120,12 +135,12 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		return Math.min( this.specifiedIndex, this.blockStatement.statements.size() );
 	}
 
-	private static org.lgna.project.ast.BlockStatement getDst( org.lgna.project.ast.Statement statement ) {
-		if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
-			org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
+	private static BlockStatement getDst( Statement statement ) {
+		if( statement instanceof AbstractStatementWithBody ) {
+			AbstractStatementWithBody statementWithBody = (AbstractStatementWithBody)statement;
 			return statementWithBody.body.getValue();
-		} else if( statement instanceof org.lgna.project.ast.ConditionalStatement ) {
-			org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)statement;
+		} else if( statement instanceof ConditionalStatement ) {
+			ConditionalStatement conditionalStatement = (ConditionalStatement)statement;
 			return conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue();
 		} else {
 			return null;
@@ -134,39 +149,39 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.lgna.project.ast.Statement statement = this.getStatement();
+		Statement statement = this.getStatement();
 		int actualIndex = this.getActualIndex();
 		if( this.isEnveloping ) {
-			org.lgna.project.ast.BlockStatement dst = getDst( statement );
+			BlockStatement dst = getDst( statement );
 			while( this.blockStatement.statements.size() > actualIndex ) {
-				org.lgna.project.ast.Statement s = this.blockStatement.statements.get( actualIndex );
+				Statement s = this.blockStatement.statements.get( actualIndex );
 				this.blockStatement.statements.remove( actualIndex );
 				dst.statements.add( s );
 			}
 		}
 		this.blockStatement.statements.add( actualIndex, statement );
 		//todo: remove
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
 	protected final void undoInternal() {
-		org.lgna.project.ast.Statement statement = this.getStatement();
+		Statement statement = this.getStatement();
 		int actualIndex = this.getActualIndex();
 		if( this.blockStatement.statements.get( actualIndex ) == statement ) {
 			this.blockStatement.statements.remove( actualIndex );
 			if( this.isEnveloping ) {
-				org.lgna.project.ast.BlockStatement dst = getDst( statement );
+				BlockStatement dst = getDst( statement );
 				while( dst.statements.size() > 0 ) {
-					org.lgna.project.ast.Statement s = dst.statements.get( 0 );
+					Statement s = dst.statements.get( 0 );
 					dst.statements.remove( 0 );
 					this.blockStatement.statements.add( s );
 				}
 			}
 			//todo: remove
-			org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+			ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 		} else {
-			throw new javax.swing.undo.CannotUndoException();
+			throw new CannotUndoException();
 		}
 	}
 
@@ -179,8 +194,8 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		org.lgna.project.ast.Statement statement = this.getStatement();
+		Statement statement = this.getStatement();
 		rv.append( "insert: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, statement, org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( rv, statement, Application.getLocale() );
 	}
 }

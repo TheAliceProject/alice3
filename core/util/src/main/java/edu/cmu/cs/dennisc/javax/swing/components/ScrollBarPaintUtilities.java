@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.JScrollBar;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ScrollBarPaintUtilities {
-	public static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {
+	public static boolean isPaintRequiredFor( JScrollBar jScrollBar ) {
 		if( jScrollBar != null ) {
 			return ( jScrollBar.getMinimum() != jScrollBar.getValue() ) || ( jScrollBar.getMaximum() != jScrollBar.getVisibleAmount() );
 		} else {

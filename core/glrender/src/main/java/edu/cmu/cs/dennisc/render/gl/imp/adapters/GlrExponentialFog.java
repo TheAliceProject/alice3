@@ -46,12 +46,15 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 import static com.jogamp.opengl.GL2ES1.GL_EXP;
 import static com.jogamp.opengl.GL2ES1.GL_FOG_DENSITY;
 import static com.jogamp.opengl.GL2ES1.GL_FOG_MODE;
+
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.ExponentialFog;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrExponentialFog extends GlrFog<edu.cmu.cs.dennisc.scenegraph.ExponentialFog> {
+public class GlrExponentialFog extends GlrFog<ExponentialFog> {
 	@Override
 	public void setupAffectors( RenderContext rc ) {
 		super.setupAffectors( rc );
@@ -60,7 +63,7 @@ public class GlrExponentialFog extends GlrFog<edu.cmu.cs.dennisc.scenegraph.Expo
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.density ) {
 			this.density = owner.density.getValue().floatValue();
 		} else {

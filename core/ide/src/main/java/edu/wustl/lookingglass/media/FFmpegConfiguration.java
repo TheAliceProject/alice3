@@ -42,26 +42,33 @@
  *******************************************************************************/
 package edu.wustl.lookingglass.media;
 
+import edu.cmu.cs.dennisc.java.lang.ProcessUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FFmpegConfiguration {
 	public static void main( String[] args ) throws Exception {
-		System.out.println( edu.cmu.cs.dennisc.java.lang.SystemUtilities.is32Bit() ? 32 : 64 );
+		System.out.println( SystemUtilities.is32Bit() ? 32 : 64 );
 		ProcessBuilder versionProcessBuilder = FFmpegProcessBuilderUtilities.createFFmpegProcessBuilder( "-version" );
-		java.util.List<String> versionOutList = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( versionProcessBuilder, versionOutList, null );
+		List<String> versionOutList = Lists.newLinkedList();
+		ProcessUtilities.startAndWaitFor( versionProcessBuilder, versionOutList, null );
 		for( String line : versionOutList ) {
 			System.out.println( line );
 		}
 
 		ProcessBuilder codecsProcessBuilder = FFmpegProcessBuilderUtilities.createFFmpegProcessBuilder( "-codecs", "-loglevel", "quiet" );
-		java.util.List<String> codecsOutList = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( codecsProcessBuilder, codecsOutList, null );
+		List<String> codecsOutList = Lists.newLinkedList();
+		ProcessUtilities.startAndWaitFor( codecsProcessBuilder, codecsOutList, null );
 
 		final String SEPARATOR = "-------";
 		boolean hasFoundSeparator = false;
-		java.util.List<FFmpegCodec> codecs = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<FFmpegCodec> codecs = Lists.newLinkedList();
 		for( String line : codecsOutList ) {
 			line = line.trim();
 			if( hasFoundSeparator ) {
@@ -77,7 +84,7 @@ public class FFmpegConfiguration {
 
 		for( FFmpegCodec codec : codecs ) {
 			if( codec.isEncodingSupported() && codec.isVideo() && codec.isIntraFrameOnly() && codec.isLossless() ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( codec );
+				Logger.outln( codec );
 			}
 		}
 	}

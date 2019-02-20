@@ -42,6 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.property;
 
+import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,23 +58,23 @@ public interface InstancePropertyOwner {
 
 	public String lookupNameFor( InstanceProperty<?> instanceProperty );
 
-	public void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e );
+	public void firePropertyChanging( PropertyEvent e );
 
-	public void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e );
+	public void firePropertyChanged( PropertyEvent e );
 
-	public void fireAdding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<?> e );
+	public void fireAdding( AddListPropertyEvent<?> e );
 
-	public void fireAdded( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<?> e );
+	public void fireAdded( AddListPropertyEvent<?> e );
 
-	public void fireClearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<?> e );
+	public void fireClearing( ClearListPropertyEvent<?> e );
 
-	public void fireCleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<?> e );
+	public void fireCleared( ClearListPropertyEvent<?> e );
 
-	public void fireRemoving( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<?> e );
+	public void fireRemoving( RemoveListPropertyEvent<?> e );
 
-	public void fireRemoved( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<?> e );
+	public void fireRemoved( RemoveListPropertyEvent<?> e );
 
-	public void fireSetting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<?> e );
+	public void fireSetting( SetListPropertyEvent<?> e );
 
-	public void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<?> e );
+	public void fireSet( SetListPropertyEvent<?> e );
 }

@@ -42,10 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ui.preferences;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.preferences.PreferenceBooleanState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IsJavaCodeOnTheSideState extends org.lgna.croquet.preferences.PreferenceBooleanState {
+public class IsJavaCodeOnTheSideState extends PreferenceBooleanState {
 	private static class SingletonHolder {
 		private static IsJavaCodeOnTheSideState instance = new IsJavaCodeOnTheSideState();
 	}
@@ -55,6 +60,6 @@ public class IsJavaCodeOnTheSideState extends org.lgna.croquet.preferences.Prefe
 	}
 
 	private IsJavaCodeOnTheSideState() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "cab8417a-b29f-4a27-93de-c89876312e25" ), false );
+		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "cab8417a-b29f-4a27-93de-c89876312e25" ), false );
 	}
 }

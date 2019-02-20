@@ -43,6 +43,15 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.RepaintManagerUtilities;
+
+import javax.swing.JPanel;
+import java.awt.AWTEvent;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -63,41 +72,41 @@ public abstract class LayerStencil extends Panel {
 		return this.layer;
 	}
 
-	protected abstract void paintComponentPrologue( java.awt.Graphics2D g2 );
+	protected abstract void paintComponentPrologue( Graphics2D g2 );
 
-	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
+	protected abstract void paintComponentEpilogue( Graphics2D g2 );
 
-	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
+	protected abstract void paintEpilogue( Graphics2D g2 );
 
 	protected abstract boolean contains( int x, int y, boolean superContains );
 
 	@Override
-	protected javax.swing.JPanel createJPanel() {
-		class JStencil extends javax.swing.JPanel {
+	protected JPanel createJPanel() {
+		class JStencil extends JPanel {
 			public JStencil() {
-				this.enableEvents( java.awt.AWTEvent.MOUSE_EVENT_MASK );
+				this.enableEvents( AWTEvent.MOUSE_EVENT_MASK );
 			}
 
 			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				java.awt.Paint prevPaint = g2.getPaint();
-				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			protected void paintComponent( Graphics g ) {
+				Graphics2D g2 = (Graphics2D)g;
+				Paint prevPaint = g2.getPaint();
+				Object prevAntialiasing = g2.getRenderingHint( RenderingHints.KEY_ANTIALIASING );
+				g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 				try {
 					LayerStencil.this.paintComponentPrologue( g2 );
 					super.paintComponent( g2 );
 					LayerStencil.this.paintComponentEpilogue( g2 );
 				} finally {
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+					g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 					g2.setPaint( prevPaint );
 				}
 			}
 
 			@Override
-			public void paint( java.awt.Graphics g ) {
+			public void paint( Graphics g ) {
 				super.paint( g );
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				Graphics2D g2 = (Graphics2D)g;
 				LayerStencil.this.paintEpilogue( g2 );
 			}
 
@@ -123,12 +132,12 @@ public abstract class LayerStencil extends Panel {
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		edu.cmu.cs.dennisc.javax.swing.RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
+		RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		edu.cmu.cs.dennisc.javax.swing.RepaintManagerUtilities.popStencil();
+		RepaintManagerUtilities.popStencil();
 		super.handleUndisplayable();
 	}
 }

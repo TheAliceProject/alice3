@@ -42,23 +42,32 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForLocalInitializers;
+import org.lgna.project.ast.LocalDeclarationStatement;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InsertLocalDeclarationStatementComposite extends InsertStatementComposite<org.lgna.project.ast.LocalDeclarationStatement> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertLocalDeclarationStatementComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public class InsertLocalDeclarationStatementComposite extends InsertStatementComposite<LocalDeclarationStatement> {
+	private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertLocalDeclarationStatementComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static synchronized InsertLocalDeclarationStatementComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return map.getInitializingIfAbsent( blockStatementIndexPair, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertLocalDeclarationStatementComposite>() {
+	public static synchronized InsertLocalDeclarationStatementComposite getInstance( BlockStatementIndexPair blockStatementIndexPair ) {
+		return map.getInitializingIfAbsent( blockStatementIndexPair, new InitializingIfAbsentMap.Initializer<BlockStatementIndexPair, InsertLocalDeclarationStatementComposite>() {
 			@Override
-			public InsertLocalDeclarationStatementComposite initialize( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+			public InsertLocalDeclarationStatementComposite initialize( BlockStatementIndexPair blockStatementIndexPair ) {
 				return new InsertLocalDeclarationStatementComposite( blockStatementIndexPair );
 			}
 		} );
 	}
 
-	private InsertLocalDeclarationStatementComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "1c257483-36c6-41d8-9d65-4a49bfa11009" ), new Details()
+	private InsertLocalDeclarationStatementComposite( BlockStatementIndexPair blockStatementIndexPair ) {
+		super( UUID.fromString( "1c257483-36c6-41d8-9d65-4a49bfa11009" ), new Details()
 				.isFinal( ApplicabilityStatus.EDITABLE, false )
 				.valueComponentType( ApplicabilityStatus.EDITABLE, null )
 				.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
@@ -68,14 +77,14 @@ public class InsertLocalDeclarationStatementComposite extends InsertStatementCom
 	}
 
 	@Override
-	protected org.lgna.project.ast.LocalDeclarationStatement createStatement() {
+	protected LocalDeclarationStatement createStatement() {
 		boolean isFinal = this.getIsFinalState().getValue();
-		org.lgna.project.ast.UserLocal variable = new org.lgna.project.ast.UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueType(), isFinal );
-		return new org.lgna.project.ast.LocalDeclarationStatement( variable, this.getInitializer() );
+		UserLocal variable = new UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueType(), isFinal );
+		return new LocalDeclarationStatement( variable, this.getInitializer() );
 	}
 
 	@Override
 	protected boolean isNullAllowedForInitializer() {
-		return org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForLocalInitializers.getInstance().getValue();
+		return IsNullAllowedForLocalInitializers.getInstance().getValue();
 	}
 }

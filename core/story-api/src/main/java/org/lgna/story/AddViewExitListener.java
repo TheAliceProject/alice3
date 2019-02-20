@@ -42,12 +42,14 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author Matt May
  */
 public class AddViewExitListener {
 
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = AddViewExitListener.class )
+	@ClassTemplate( keywordFactoryCls = AddViewExitListener.class )
 	public interface Detail {
 	}
 

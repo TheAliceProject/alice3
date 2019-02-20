@@ -43,6 +43,16 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import edu.cmu.cs.dennisc.scenegraph.util.ModestAxes;
+import org.lgna.story.SJoint;
+import org.lgna.story.resources.JointId;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,18 +62,18 @@ public abstract class JointImp extends AbstractTransformableImp {
 	}
 
 	@Override
-	public org.lgna.story.implementation.SceneImp getScene() {
+	public SceneImp getScene() {
 		return this.jointedModelImplementation.getScene();
 	}
 
-	public abstract org.lgna.story.resources.JointId getJointId();
+	public abstract JointId getJointId();
 
 	@Override
-	public final org.lgna.story.SJoint getAbstraction() {
+	public final SJoint getAbstraction() {
 		return this.abstraction;
 	}
 
-	public void setAbstraction( org.lgna.story.SJoint abstraction ) {
+	public void setAbstraction( SJoint abstraction ) {
 		assert abstraction != null;
 		assert this.abstraction == null : this.abstraction;
 		this.abstraction = abstraction;
@@ -76,24 +86,24 @@ public abstract class JointImp extends AbstractTransformableImp {
 	public abstract boolean isFreeInZ();
 
 	@Override
-	protected void postCheckSetVehicle( org.lgna.story.implementation.EntityImp vehicle ) {
+	protected void postCheckSetVehicle( EntityImp vehicle ) {
 		//note: do not call super
 		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
+	public UnitQuaternion getOriginalOrientation() {
 		return this.jointedModelImplementation.getOriginalJointOrientation( this.getJointId() );
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformation() {
+	public AffineMatrix4x4 getOriginalTransformation() {
 		return this.jointedModelImplementation.getOriginalJointTransformation( this.getJointId() );
 	}
 
-	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes getPivot() {
+	private ModestAxes getPivot() {
 		if( this.axes != null ) {
 			//pass
 		} else {
-			this.axes = new edu.cmu.cs.dennisc.scenegraph.util.ModestAxes( 0.1 );
+			this.axes = new ModestAxes( 0.1 );
 			putInstance( this.axes );
 		}
 		return this.axes;
@@ -117,6 +127,24 @@ public abstract class JointImp extends AbstractTransformableImp {
 		}
 	}
 
+	public JointImp getJointParent() {
+		return jointParent;
+	}
+
+	public List<JointImp> getJointChildren() {
+		return jointChildren;
+	}
+
+	void setJointParent(JointImp jointParent) {
+		if (this.jointParent != null) {
+			this.jointParent.getJointChildren().remove(this);
+		}
+		this.jointParent = jointParent;
+		if (this.jointParent != null) {
+			jointParent.getJointChildren().add(this);
+		}
+	}
+
 	public JointedModelImp<?, ?> getJointedModelParent() {
 		return this.jointedModelImplementation;
 	}
@@ -130,7 +158,7 @@ public abstract class JointImp extends AbstractTransformableImp {
 	public JointedModelImp<?, ?> getJointedModelImplementation() {
 		return jointedModelImplementation;
 }
-	public edu.cmu.cs.dennisc.math.Dimension3 getSize() {
+	public Dimension3 getSize() {
 		return getAxisAlignedMinimumBoundingBox().getSize();
 	}
 
@@ -146,7 +174,9 @@ public abstract class JointImp extends AbstractTransformableImp {
 		return this.getSize().z;
 	}
 
-	private org.lgna.story.SJoint abstraction;
+	private SJoint abstraction;
 	private final JointedModelImp<?, ?> jointedModelImplementation;
-	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes axes;
+	private JointImp jointParent;
+	private List<JointImp> jointChildren = new ArrayList<>();
+	private ModestAxes axes;
 }

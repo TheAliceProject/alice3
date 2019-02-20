@@ -46,6 +46,8 @@ import org.lgna.story.implementation.eventhandling.EventManager;
 
 import edu.cmu.cs.dennisc.animation.FrameBasedAnimator;
 
+import javax.swing.SwingUtilities;
+
 /**
  * @author Matt May
  */
@@ -66,7 +68,7 @@ public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
 	@Override
 	public void update() {
 		super.update();
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 
 			@Override
 			public void run() {

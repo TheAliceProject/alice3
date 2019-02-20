@@ -42,13 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.filechooser;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import javax.swing.filechooser.FileFilter;
+import java.io.File;
+import java.util.Collection;
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExtensionFileFilter extends javax.swing.filechooser.FileFilter {
+public class ExtensionFileFilter extends FileFilter {
 	private final String description;
 	private final boolean areDirectoriesAccepted;
-	private final java.util.Collection<String> extensions;
+	private final Collection<String> extensions;
 
 	public ExtensionFileFilter( String name, boolean areDirectoriesAccepted, String... extensions ) {
 		StringBuilder sb = new StringBuilder();
@@ -66,17 +74,17 @@ public class ExtensionFileFilter extends javax.swing.filechooser.FileFilter {
 		}
 		this.description = sb.toString();
 		this.areDirectoriesAccepted = areDirectoriesAccepted;
-		this.extensions = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( extensions );
+		this.extensions = Lists.newArrayList( extensions );
 	}
 
 	@Override
-	public boolean accept( java.io.File file ) {
+	public boolean accept( File file ) {
 		if( file.isDirectory() ) {
 			return this.areDirectoriesAccepted;
 		} else {
-			String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
+			String extension = FileUtilities.getExtension( file );
 			if( extension != null ) {
-				return this.extensions.contains( extension.toLowerCase( java.util.Locale.ENGLISH ) );
+				return this.extensions.contains( extension.toLowerCase( Locale.ENGLISH ) );
 			} else {
 				return false;
 			}

@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.util;
 
+import java.util.Stack;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -91,7 +93,7 @@ public class Stacks {
 			this.imp.setSize( size );
 		}
 
-		private final java.util.Stack<E> imp = new java.util.Stack<E>();
+		private final Stack<E> imp = new Stack<E>();
 	}
 
 	public static <E> DStack<E> newStack() {

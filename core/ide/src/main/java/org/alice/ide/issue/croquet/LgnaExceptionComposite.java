@@ -42,34 +42,41 @@
  *******************************************************************************/
 package org.alice.ide.issue.croquet;
 
+import org.alice.ide.issue.croquet.views.LgnaExceptionView;
+import org.lgna.common.LgnaRuntimeException;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class LgnaExceptionComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.issue.croquet.views.LgnaExceptionView> {
+public class LgnaExceptionComposite extends SimpleOperationUnadornedDialogCoreComposite<LgnaExceptionView> {
 	private final Thread thread;
-	private final org.lgna.common.LgnaRuntimeException lgnaRuntimeException;
+	private final LgnaRuntimeException lgnaRuntimeException;
 
-	public LgnaExceptionComposite( Thread thread, org.lgna.common.LgnaRuntimeException lgnaRuntimeException ) {
-		super( java.util.UUID.fromString( "430294d2-f4e4-4a69-93af-93fc2f7a89ba" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+	public LgnaExceptionComposite( Thread thread, LgnaRuntimeException lgnaRuntimeException ) {
+		super( UUID.fromString( "430294d2-f4e4-4a69-93af-93fc2f7a89ba" ), Application.INFORMATION_GROUP );
 		this.thread = thread;
 		this.lgnaRuntimeException = lgnaRuntimeException;
 	}
 
 	@Override
-	protected org.alice.ide.issue.croquet.views.LgnaExceptionView createView() {
-		return new org.alice.ide.issue.croquet.views.LgnaExceptionView( this );
+	protected LgnaExceptionView createView() {
+		return new LgnaExceptionView( this );
 	}
 
 	public Thread getThread() {
 		return this.thread;
 	}
 
-	public org.lgna.common.LgnaRuntimeException getLgnaRuntimeException() {
+	public LgnaRuntimeException getLgnaRuntimeException() {
 		return this.lgnaRuntimeException;
 	}
 
 	@Override
-	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected String getDialogTitle() {
 		return this.lgnaRuntimeException.getClass().getSimpleName();
 	}
 }

@@ -43,6 +43,12 @@
 
 package edu.cmu.cs.dennisc.java.awt;
 
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Rectangle;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,10 +57,10 @@ public class GraphicsDeviceUtilities {
 		throw new AssertionError();
 	}
 
-	public static java.awt.Rectangle getGraphicsDeviceConfigurationBoundsFor( java.awt.GraphicsDevice[] graphicsDevices, java.awt.Point p ) {
-		for( java.awt.GraphicsDevice graphicsDevice : graphicsDevices ) {
-			java.awt.GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
-			java.awt.Rectangle bounds = graphicsConfiguration.getBounds();
+	public static Rectangle getGraphicsDeviceConfigurationBoundsFor( GraphicsDevice[] graphicsDevices, Point p ) {
+		for( GraphicsDevice graphicsDevice : graphicsDevices ) {
+			GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
+			Rectangle bounds = graphicsConfiguration.getBounds();
 			if( bounds.contains( p ) ) {
 				return bounds;
 			}
@@ -71,17 +77,17 @@ public class GraphicsDeviceUtilities {
 		return null;
 	}
 
-	public static java.awt.Rectangle getGraphicsDeviceConfigurationBoundsFor( java.awt.Point p ) {
-		java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
+	public static Rectangle getGraphicsDeviceConfigurationBoundsFor( Point p ) {
+		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		return getGraphicsDeviceConfigurationBoundsFor( graphicsEnvironment.getScreenDevices(), p );
 	}
 
-	public static java.awt.Rectangle getScreenDeviceDefaultConfigurationBounds( int screenDeviceIndex ) {
-		java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
-		java.awt.GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
+	public static Rectangle getScreenDeviceDefaultConfigurationBounds( int screenDeviceIndex ) {
+		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
 		if( screenDeviceIndex < graphicsDevices.length ) {
-			java.awt.GraphicsDevice graphicsDevice = graphicsDevices[ screenDeviceIndex ];
-			java.awt.GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
+			GraphicsDevice graphicsDevice = graphicsDevices[ screenDeviceIndex ];
+			GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
 			return graphicsConfiguration.getBounds();
 		} else {
 			return null;

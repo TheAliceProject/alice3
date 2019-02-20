@@ -42,6 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.ast.crawlers;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.lgna.project.ast.Node;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +56,7 @@ public abstract class NodePropertyValueIsInstanceCrawler<T> extends NodeProperty
 	public static <T> NodePropertyValueIsInstanceCrawler<T> createInstance( Class<T> cls ) {
 		return new NodePropertyValueIsInstanceCrawler<T>( cls ) {
 			@Override
-			protected boolean isAcceptable( org.lgna.project.ast.Node node, edu.cmu.cs.dennisc.property.InstanceProperty<?> property, T value ) {
+			protected boolean isAcceptable( Node node, InstanceProperty<?> property, T value ) {
 				return true;
 			}
 		};
@@ -59,10 +66,10 @@ public abstract class NodePropertyValueIsInstanceCrawler<T> extends NodeProperty
 		this.cls = cls;
 	}
 
-	protected abstract boolean isAcceptable( org.lgna.project.ast.Node node, edu.cmu.cs.dennisc.property.InstanceProperty<?> property, T value );
+	protected abstract boolean isAcceptable( Node node, InstanceProperty<?> property, T value );
 
 	@Override
-	protected final void visitNodeProperty( org.lgna.project.ast.Node node, edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected final void visitNodeProperty( Node node, InstanceProperty<?> property ) {
 		Object value = property.getValue();
 		if( value != null ) {
 			if( this.cls.isAssignableFrom( value.getClass() ) ) {
@@ -73,10 +80,10 @@ public abstract class NodePropertyValueIsInstanceCrawler<T> extends NodeProperty
 		}
 	}
 
-	public java.util.List<edu.cmu.cs.dennisc.property.InstanceProperty<?>> getList() {
-		return java.util.Collections.unmodifiableList( this.list );
+	public List<InstanceProperty<?>> getList() {
+		return Collections.unmodifiableList( this.list );
 	}
 
 	private final Class<T> cls;
-	private final java.util.List<edu.cmu.cs.dennisc.property.InstanceProperty<?>> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final List<InstanceProperty<?>> list = Lists.newLinkedList();
 }

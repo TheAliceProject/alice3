@@ -43,6 +43,15 @@
 
 package org.alice.ide.ast.draganddrop.statement;
 
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.CountLoop;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +65,11 @@ public class CountLoopTemplateDragModel extends PotentiallyEnvelopingStatementTe
 	}
 
 	private CountLoopTemplateDragModel() {
-		super( java.util.UUID.fromString( "61ad4ccc-a384-42fa-8a18-7964cd513f8e" ), org.lgna.project.ast.CountLoop.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteCountLoop() );
+		super( UUID.fromString( "61ad4ccc-a384-42fa-8a18-7964cd513f8e" ), CountLoop.class, IncompleteAstUtilities.createIncompleteCountLoop() );
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade.getInstance( blockStatementIndexPair, isEnveloping );
+	protected Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		return CountLoopInsertCascade.getInstance( blockStatementIndexPair, isEnveloping );
 	}
 }

@@ -42,8 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GLCapabilities;
+import com.jogamp.opengl.GLCapabilitiesChooser;
+import com.jogamp.opengl.GLContext;
+import com.jogamp.opengl.GLDrawable;
+import com.jogamp.opengl.GLException;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 
+import java.awt.Dimension;
 
 /**
  * @author Dennis Cosgrove
@@ -52,16 +60,16 @@ import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 	/* package-private */static final boolean IS_HARDWARE_ACCELERATION_DESIRED = true;//edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "jogl.gljpanel.nohw", false ) == false;
 
 	public static interface DisplayCallback {
-		public void display( com.jogamp.opengl.GL2 gl );
+		public void display( GL2 gl );
 	}
 
-	public static OffscreenDrawable createInstance( DisplayCallback callback, com.jogamp.opengl.GLCapabilities glRequestedCapabilities, com.jogamp.opengl.GLCapabilitiesChooser glCapabilitiesChooser, com.jogamp.opengl.GLContext glShareContext, int width, int height ) {
+	public static OffscreenDrawable createInstance( DisplayCallback callback, GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height ) {
 		OffscreenDrawable od = null;
 		if( IS_HARDWARE_ACCELERATION_DESIRED && GlDrawableUtils.canCreateGlPixelBuffer() ) {
 			od = new PixelBufferOffscreenDrawable( callback );
 			try {
 				od.initialize( glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
-			} catch( com.jogamp.opengl.GLException gle ) {
+			} catch( GLException gle ) {
 				try {
 					od.destroy();
 				} catch( Throwable t ) {
@@ -73,11 +81,11 @@ import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 		if( od != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( callback );
+			Logger.severe( callback );
 			od = new SoftwareOffscreenDrawable( callback );
 			try {
 				od.initialize( glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
-			} catch( com.jogamp.opengl.GLException gle ) {
+			} catch( GLException gle ) {
 				try {
 					od.destroy();
 				} catch( Throwable t ) {
@@ -100,29 +108,29 @@ import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 		return this.callback;
 	}
 
-	public abstract void initialize( com.jogamp.opengl.GLCapabilities glRequestedCapabilities, com.jogamp.opengl.GLCapabilitiesChooser glCapabilitiesChooser, com.jogamp.opengl.GLContext glShareContext, int width, int height );
+	public abstract void initialize( GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height );
 
 	public abstract void destroy();
 
 	public abstract void display();
 
-	public final java.awt.Dimension getSize( java.awt.Dimension rv ) {
-		com.jogamp.opengl.GLDrawable glDrawable = this.getGlDrawable();
+	public final Dimension getSize( Dimension rv ) {
+		GLDrawable glDrawable = this.getGlDrawable();
 		if( glDrawable != null ) {
 			rv.width = GlDrawableUtils.getGlDrawableHeight( glDrawable );
 			rv.height = GlDrawableUtils.getGlDrawableHeight( glDrawable );
 		} else {
 			//todo?
-			throw new com.jogamp.opengl.GLException();
+			throw new GLException();
 		}
 		return rv;
 	}
 
 	public abstract boolean isHardwareAccelerated();
 
-	protected abstract com.jogamp.opengl.GLDrawable getGlDrawable();
+	protected abstract GLDrawable getGlDrawable();
 
-	protected final void fireDisplay( com.jogamp.opengl.GL2 gl ) {
+	protected final void fireDisplay( GL2 gl ) {
 		if( this.callback != null ) {
 			this.callback.display( gl );
 		}

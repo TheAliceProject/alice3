@@ -43,15 +43,21 @@
 
 package org.alice.ide.clipboard.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.Statement;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CutToClipboardEdit extends ClipboardEdit {
-	public CutToClipboardEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Statement statement ) {
-		super( completionStep, statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair.createInstanceFromChildStatement( statement ) );
+	public CutToClipboardEdit( UserActivity userActivity, Statement statement ) {
+		super( userActivity, statement, BlockStatementIndexPair.createInstanceFromChildStatement( statement ) );
 	}
 
-	public CutToClipboardEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public CutToClipboardEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
 
@@ -68,6 +74,6 @@ public class CutToClipboardEdit extends ClipboardEdit {
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "cut to clipboard" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.getStatement() );
+		NodeUtilities.safeAppendRepr( rv, this.getStatement() );
 	}
 }

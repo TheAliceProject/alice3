@@ -42,6 +42,27 @@
  *******************************************************************************/
 package org.alice.ide.x;
 
+import org.alice.ide.codeeditor.ConstructorHeaderPane;
+import org.alice.ide.codeeditor.MethodHeaderPane;
+import org.alice.ide.common.AbstractStatementPane;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
+import org.alice.ide.i18n.Page;
+import org.alice.stageide.StoryApiConfigurationManager;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.Code;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.StatementListProperty;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserMethod;
+
+import java.awt.Color;
+import java.awt.Paint;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,18 +70,18 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
 	private static final boolean IS_MUTABLE = true;
 
 	public AbstractProjectEditorAstI18nFactory() {
-		super( org.lgna.croquet.Application.PROJECT_GROUP );
+		super( Application.PROJECT_GROUP );
 	}
 
 	@Override
-	public java.awt.Paint getInvalidExpressionPaint( java.awt.Paint paint, int x, int y, int width, int height ) {
-		return java.awt.Color.RED;
+	public Paint getInvalidExpressionPaint( Paint paint, int x, int y, int width, int height ) {
+		return Color.RED;
 	}
 
 	@Override
-	public boolean isSignatureLocked( org.lgna.project.ast.Code code ) {
+	public boolean isSignatureLocked( Code code ) {
 		if( IS_MUTABLE ) {
-			return org.alice.stageide.StoryApiConfigurationManager.getInstance().isSignatureLocked( code );
+			return StoryApiConfigurationManager.getInstance().isSignatureLocked( code );
 		} else {
 			return true;
 		}
@@ -75,12 +96,12 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
 		}
 	}
 
-	public boolean isDraggable( org.lgna.project.ast.Statement statement ) {
+	public boolean isDraggable( Statement statement ) {
 		return IS_MUTABLE;
 	}
 
 	@Override
-	protected boolean isDropDownDesiredFor( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	protected boolean isDropDownDesiredFor( ExpressionProperty expressionProperty ) {
 		if( IS_MUTABLE ) {
 			return super.isDropDownDesiredFor( expressionProperty );
 		} else {
@@ -89,7 +110,7 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
 	}
 
 	@Override
-	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.croquet.DragModel dragModel, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
+	public AbstractStatementPane createStatementPane( DragModel dragModel, Statement statement, StatementListProperty statementListProperty ) {
 		if( this.isDraggable( statement ) ) {
 			//pass
 		} else {
@@ -98,13 +119,13 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
 		return super.createStatementPane( dragModel, statement, statementListProperty );
 	}
 
-	public org.lgna.croquet.views.SwingComponentView<?> createCodeHeader( org.lgna.project.ast.UserCode code ) {
+	public SwingComponentView<?> createCodeHeader( UserCode code ) {
 		final boolean IS_FORMATTER_READY_FOR_PRIME_TIME = false;
 		if( IS_FORMATTER_READY_FOR_PRIME_TIME ) {
-			org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
+			Formatter formatter = FormatterState.getInstance().getValue();
 			String headerText = formatter.getHeaderTextForCode( code );
 			if( ( headerText != null ) && ( headerText.length() > 0 ) ) {
-				org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( headerText );
+				Page page = new Page( headerText );
 				this.declarationNameFontScale = 1.8f;
 				try {
 					return this.createComponent( page, code );
@@ -115,12 +136,12 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
 				return null;
 			}
 		} else {
-			if( code instanceof org.lgna.project.ast.UserMethod ) {
-				org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)code;
-				return new org.alice.ide.codeeditor.MethodHeaderPane( this, userMethod, false );
-			} else if( code instanceof org.lgna.project.ast.NamedUserConstructor ) {
-				org.lgna.project.ast.NamedUserConstructor userConstructor = (org.lgna.project.ast.NamedUserConstructor)code;
-				return new org.alice.ide.codeeditor.ConstructorHeaderPane( userConstructor, false );
+			if( code instanceof UserMethod ) {
+				UserMethod userMethod = (UserMethod)code;
+				return new MethodHeaderPane( this, userMethod, false );
+			} else if( code instanceof NamedUserConstructor ) {
+				NamedUserConstructor userConstructor = (NamedUserConstructor)code;
+				return new ConstructorHeaderPane( userConstructor, false );
 			} else {
 				throw new RuntimeException();
 			}

@@ -42,39 +42,46 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.scenegraph.Cylinder;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCylinderImp extends ShapeImp {
 	public AbstractCylinderImp() {
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgCylinder } );
+		this.getSgVisuals()[ 0 ].geometries.setValue( new Geometry[] { this.sgCylinder } );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
-		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgCylinder.length, this.sgCylinder.bottomRadius };
+	protected InstanceProperty[] getScaleProperties() {
+		return new InstanceProperty[] { this.sgCylinder.length, this.sgCylinder.bottomRadius };
 	}
 
 	protected abstract void setXZ( double xz );
 
 	protected abstract double getXZ();
 
-	protected edu.cmu.cs.dennisc.scenegraph.Cylinder getSgCylinder() {
+	protected Cylinder getSgCylinder() {
 		return this.sgCylinder;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
-		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] { edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM };
+	public Resizer[] getResizers() {
+		return new Resizer[] { Resizer.Y_AXIS, Resizer.XZ_PLANE, Resizer.UNIFORM };
 	}
 
 	@Override
-	public double getValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
-		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
+	public double getValueForResizer( Resizer resizer ) {
+		if( resizer == Resizer.Y_AXIS ) {
 			return this.length.getValue();
-		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE ) {
+		} else if( resizer == Resizer.XZ_PLANE ) {
 			return this.sgCylinder.bottomRadius.getValue();
-		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM ) {
+		} else if( resizer == Resizer.UNIFORM ) {
 			return this.length.getValue();
 		} else {
 			assert false : resizer;
@@ -83,13 +90,13 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 	}
 
 	@Override
-	public void setValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double value ) {
+	public void setValueForResizer( Resizer resizer, double value ) {
 		assert value > 0.0 : value;
-		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
+		if( resizer == Resizer.Y_AXIS ) {
 			this.length.setValue( value );
-		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE ) {
+		} else if( resizer == Resizer.XZ_PLANE ) {
 			this.setXZ( value );
-		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM ) {
+		} else if( resizer == Resizer.UNIFORM ) {
 			double prevValue = this.sgCylinder.length.getValue();
 			this.length.setValue( value );
 			if( prevValue != 0.0 ) {
@@ -102,15 +109,15 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 	}
 
 	@Override
-	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+	public void setSize( Dimension3 size ) {
 		if( size.x != size.z ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Invalid size for " + this.getClass().getSimpleName() + ": " + size );
+			Logger.severe( "Invalid size for " + this.getClass().getSimpleName() + ": " + size );
 		}
 		this.length.setValue( size.y );
 		this.setXZ( size.x * .5 );
 	}
 
-	private final edu.cmu.cs.dennisc.scenegraph.Cylinder sgCylinder = new edu.cmu.cs.dennisc.scenegraph.Cylinder();
+	private final Cylinder sgCylinder = new Cylinder();
 
 	public final DoubleProperty length = new DoubleProperty( AbstractCylinderImp.this ) {
 		@Override

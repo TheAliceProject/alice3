@@ -42,16 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.member;
 
+import org.alice.ide.ast.declaration.AddFunctionComposite;
+import org.alice.ide.ast.declaration.AddMethodComposite;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class AddFunctionMenuModel extends AddMethodMenuModel {
 	public AddFunctionMenuModel() {
-		super( java.util.UUID.fromString( "2cc6b6ae-24ea-4e9f-bca7-0c1b537775a1" ) );
+		super( UUID.fromString( "2cc6b6ae-24ea-4e9f-bca7-0c1b537775a1" ) );
 	}
 
 	@Override
-	protected org.alice.ide.ast.declaration.AddMethodComposite getAddMethodComposite( org.lgna.project.ast.NamedUserType declaringType ) {
-		return org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( declaringType );
+	protected AddMethodComposite getAddMethodComposite( NamedUserType declaringType ) {
+		return AddFunctionComposite.getInstance( declaringType );
 	}
 }

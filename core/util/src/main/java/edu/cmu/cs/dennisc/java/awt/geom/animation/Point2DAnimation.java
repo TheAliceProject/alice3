@@ -42,20 +42,23 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.geom.animation;
 
+import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation;
+
+import java.awt.geom.Point2D;
 
 //todo: rename?
 //todo: support float
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Point2DAnimation extends InterpolationAnimation<java.awt.geom.Point2D> {
-	public Point2DAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, java.awt.geom.Point2D p0, java.awt.geom.Point2D p1 ) {
+public abstract class Point2DAnimation extends InterpolationAnimation<Point2D> {
+	public Point2DAnimation( Number duration, Style style, Point2D p0, Point2D p1 ) {
 		super( duration, style, p0, p1 );
 	}
 
 	@Override
-	protected java.awt.geom.Point2D newE( java.awt.geom.Point2D other ) {
+	protected Point2D newE( Point2D other ) {
 		double x;
 		double y;
 		if( other != null ) {
@@ -65,11 +68,11 @@ public abstract class Point2DAnimation extends InterpolationAnimation<java.awt.g
 			x = Double.NaN;
 			y = Double.NaN;
 		}
-		return new java.awt.geom.Point2D.Double( x, y );
+		return new Point2D.Double( x, y );
 	}
 
 	@Override
-	protected java.awt.geom.Point2D interpolate( java.awt.geom.Point2D rv, java.awt.geom.Point2D v0, java.awt.geom.Point2D v1, double portion ) {
+	protected Point2D interpolate( Point2D rv, Point2D v0, Point2D v1, double portion ) {
 		rv.setLocation(
 				v0.getX() + ( ( v1.getX() - v0.getX() ) * portion ),
 				v0.getY() + ( ( v1.getY() - v0.getY() ) * portion )

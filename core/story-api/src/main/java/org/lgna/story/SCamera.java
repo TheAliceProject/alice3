@@ -43,13 +43,15 @@
 
 package org.lgna.story;
 
+import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SCamera extends SMovableTurnable implements MutableRider {
-	private final org.lgna.story.implementation.SymmetricPerspectiveCameraImp implementation = new org.lgna.story.implementation.SymmetricPerspectiveCameraImp( this );
+	private final SymmetricPerspectiveCameraImp implementation = new SymmetricPerspectiveCameraImp( this );
 
 	@Override
 	public void setVehicle( SThing vehicle ) {
@@ -57,13 +59,13 @@ public class SCamera extends SMovableTurnable implements MutableRider {
 	}
 
 	@Override
-	/* package-private */org.lgna.story.implementation.SymmetricPerspectiveCameraImp getImplementation() {
+	/* package-private */SymmetricPerspectiveCameraImp getImplementation() {
 		return this.implementation;
 	}
 
 	@MethodTemplate( )
 	public void moveAndOrientToAGoodVantagePointOf( SThing entity, MoveAndOrientToAGoodVantagePointOf.Detail... details ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( entity, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( entity, 0 );
 		this.implementation.animateSetTransformationToAGoodVantagePointOf( entity.getImplementation(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

@@ -42,19 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class AwtAdapter extends AwtComponentView<java.awt.Component> {
-	private final java.awt.Component awtComponent;
+public class AwtAdapter extends AwtComponentView<Component> {
+	private final Component awtComponent;
 
-	public AwtAdapter( java.awt.Component awtComponent ) {
+	public AwtAdapter( Component awtComponent ) {
 		this.awtComponent = awtComponent;
 	}
 
 	@Override
-	protected java.awt.Component createAwtComponent() {
+	protected Component createAwtComponent() {
 		return this.awtComponent;
 	}
 }

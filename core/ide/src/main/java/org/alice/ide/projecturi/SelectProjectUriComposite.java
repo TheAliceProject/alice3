@@ -43,17 +43,28 @@
 
 package org.alice.ide.projecturi;
 
+import org.alice.ide.projecturi.views.TabContentPanel;
+import org.alice.ide.uricontent.UriProjectLoader;
+import org.lgna.croquet.ImmutableDataTabState;
+import org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.ComponentManager;
+import org.lgna.croquet.views.Dialog;
+import org.lgna.croquet.views.Panel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class SelectProjectUriComposite extends org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite<org.lgna.croquet.views.Panel, org.alice.ide.uricontent.UriProjectLoader> {
+public final class SelectProjectUriComposite extends SingleValueCreatorInputDialogCoreComposite<Panel, UriProjectLoader> {
 	private final ErrorStatus noSelectionError = this.createErrorStatus( "noSelectionError" );
 	private final StartersTab startersTab = new StartersTab();
 	private final TemplatesTab templatesTab = new TemplatesTab();
 	private final MyProjectsTab myProjectsTab = new MyProjectsTab();
 	private final RecentProjectsTab recentProjectsTab = new RecentProjectsTab();
 	private final FileSystemTab fileSystemTab = new FileSystemTab();
-	private final org.lgna.croquet.ImmutableDataTabState<SelectUriTab> tabState = this.createImmutableTabState(
+	private final ImmutableDataTabState<SelectUriTab> tabState = this.createImmutableTabState(
 			"tabState",
 			-1,
 			SelectUriTab.class,
@@ -63,21 +74,10 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.SingleValu
 			this.recentProjectsTab,
 			this.fileSystemTab );
 
-	private final class SelectedUriMetaState extends org.lgna.croquet.meta.TransactionHistoryTrackingMetaState<org.alice.ide.uricontent.UriProjectLoader> {
-		@Override
-		public org.alice.ide.uricontent.UriProjectLoader getValue() {
-			SelectUriTab tab = tabState.getValue();
-			if( tab != null ) {
-				return tab.getSelectedUri();
-			} else {
-				return null;
-			}
-		}
+	private UriProjectLoader getSelectedProject() {
+		SelectUriTab tab = tabState.getValue();
+		return tab != null ? tab.getSelectedUri() : null;
 	}
-
-	private final SelectedUriMetaState metaState = new SelectedUriMetaState();
-
-	private final ProjectSideComposite sideSubComposite;
 
 	private static class SingletonHolder {
 		private static SelectProjectUriComposite instance = new SelectProjectUriComposite();
@@ -88,55 +88,34 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.SingleValu
 	}
 
 	private SelectProjectUriComposite() {
-		super( java.util.UUID.fromString( "3b9ec3fb-3fe5-485c-ac2a-688a5468b0b9" ) );
-		final boolean IS_SIDE_SUB_COMPOSITE_READY_FOR_PRIME_TIME = false;
-		if( IS_SIDE_SUB_COMPOSITE_READY_FOR_PRIME_TIME ) {
-			this.sideSubComposite = new ProjectSideComposite();
-			this.registerSubComposite( this.sideSubComposite );
-		} else {
-			this.sideSubComposite = null;
-		}
+		super( UUID.fromString( "3b9ec3fb-3fe5-485c-ac2a-688a5468b0b9" ) );
 	}
 
-	public org.lgna.croquet.ImmutableDataTabState<SelectUriTab> getTabState() {
+	public ImmutableDataTabState<SelectUriTab> getTabState() {
 		return this.tabState;
 	}
 
-	public org.lgna.croquet.Composite<?> getSideSubComposite() {
-		return this.sideSubComposite;
-	}
-
-	public org.lgna.croquet.meta.MetaState<org.alice.ide.uricontent.UriProjectLoader> getMetaState() {
-		return this.metaState;
+	@Override
+	protected UriProjectLoader createValue() {
+		return getSelectedProject();
 	}
 
 	@Override
-	protected org.alice.ide.uricontent.UriProjectLoader createValue() {
-		return this.metaState.getValue();
+	protected Panel createView() {
+		BorderPanel view = new BorderPanel( this );
+		view.addCenterComponent( getTabState().createFolderTabbedPane() );
+		view.setBackgroundColor( TabContentPanel.DEFAULT_BACKGROUND_COLOR );
+		return view;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		return new org.alice.ide.projecturi.views.SelectProjectUriView( this );
-	}
-
-	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.ide.uricontent.UriProjectLoader uri = this.metaState.getValue();
-		if( uri != null ) {
-			return IS_GOOD_TO_GO_STATUS;
-		} else {
-			return this.noSelectionError;
-		}
+	protected Status getStatusPreRejectorCheck() {
+		return getSelectedProject() != null ? IS_GOOD_TO_GO_STATUS : this.noSelectionError;
 	}
 
 	@Override
 	protected Integer getWiderGoldenRatioSizeFromWidth() {
-		if( this.sideSubComposite != null ) {
-			return 960;
-		} else {
-			return 800;
-		}
+		return 800;
 	}
 
 	public void selectAppropriateTab( boolean isNew ) {
@@ -148,7 +127,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.SingleValu
 			tab = this.myProjectsTab; // todo: recentTab?
 		}
 		this.tabState.setValueTransactionlessly( tab );
-		org.lgna.croquet.views.ComponentManager.revalidateAndRepaintAllComponents( this.tabState );
+		ComponentManager.revalidateAndRepaintAllComponents( this.tabState );
 	}
 
 	private void refresh() {
@@ -157,35 +136,9 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.SingleValu
 		}
 	}
 
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.uricontent.UriProjectLoader> metaUriListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.uricontent.UriProjectLoader>() {
-		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.uricontent.UriProjectLoader> e ) {
-			handleMetaStateValueChanged( e.getNextValue() );
-		}
-	};
-
-	private void handleMetaStateValueChanged( org.alice.ide.uricontent.UriProjectLoader uri ) {
-		if( this.sideSubComposite != null ) {
-			this.sideSubComposite.handleMetaStateValueChanged( uri );
-		}
-	}
-
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		this.refresh();
-		if( this.sideSubComposite != null ) {
-			this.metaState.pushActivation( completionStep );
-			this.metaState.addValueListener( this.metaUriListener );
-		}
-		super.handlePreShowDialog( completionStep );
-	}
-
-	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		if( this.sideSubComposite != null ) {
-			this.metaState.removeValueListener( this.metaUriListener );
-			this.metaState.popActivation();
-		}
-		super.handlePostHideDialog( completionStep );
+		super.handlePreShowDialog( dialog );
 	}
 }

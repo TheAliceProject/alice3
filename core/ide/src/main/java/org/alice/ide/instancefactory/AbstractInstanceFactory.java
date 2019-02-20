@@ -43,41 +43,52 @@
 
 package org.alice.ide.instancefactory;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.CurrentThisExpression;
+import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ThisExpression;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractInstanceFactory implements InstanceFactory {
-	protected static org.lgna.project.ast.Expression createTransientThisExpression() {
-		return new org.alice.ide.ast.CurrentThisExpression();
+	protected static Expression createTransientThisExpression() {
+		return new CurrentThisExpression();
 	}
 
-	protected static org.lgna.project.ast.Expression createThisExpression() {
-		return new org.lgna.project.ast.ThisExpression();
+	protected static Expression createThisExpression() {
+		return new ThisExpression();
 	}
 
-	private final edu.cmu.cs.dennisc.property.InstanceProperty<?>[] mutablePropertiesOfInterest;
+	private final InstanceProperty<?>[] mutablePropertiesOfInterest;
 
-	public AbstractInstanceFactory( edu.cmu.cs.dennisc.property.InstanceProperty<?>... mutablePropertiesOfInterest ) {
+	public AbstractInstanceFactory( InstanceProperty<?>... mutablePropertiesOfInterest ) {
 		this.mutablePropertiesOfInterest = mutablePropertiesOfInterest;
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<?>[] getMutablePropertiesOfInterest() {
+	public final InstanceProperty<?>[] getMutablePropertiesOfInterest() {
 		return this.mutablePropertiesOfInterest;
 	}
 
-	protected abstract boolean isValid( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code );
+	protected abstract boolean isValid( AbstractType<?, ?, ?> type, AbstractCode code );
 
 	@Override
 	public final boolean isValid() {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type;
-		org.lgna.project.ast.AbstractCode code;
-		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getValue();
-		if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-			type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
+		AbstractType<?, ?, ?> type;
+		AbstractCode code;
+		AbstractDeclaration declaration = IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getValue();
+		if( declaration instanceof AbstractType<?, ?, ?> ) {
+			type = (AbstractType<?, ?, ?>)declaration;
 			code = null;
-		} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
-			code = (org.lgna.project.ast.AbstractCode)declaration;
+		} else if( declaration instanceof AbstractCode ) {
+			code = (AbstractCode)declaration;
 			type = code.getDeclaringType();
 		} else {
 			code = null;
@@ -87,8 +98,8 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( this.getValueType() );
+	public IconFactory getIconFactory() {
+		return IconFactoryManager.getIconFactoryForType( this.getValueType() );
 	}
 
 	@Override

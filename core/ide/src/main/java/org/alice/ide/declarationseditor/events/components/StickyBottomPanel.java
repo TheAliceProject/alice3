@@ -42,16 +42,29 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.events.components;
 
-class StickyLayout implements java.awt.LayoutManager2 {
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Panel;
+import org.lgna.croquet.views.SwingComponentView;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.LayoutManager2;
+
+class StickyLayout implements LayoutManager2 {
 	public StickyLayout( int vGap ) {
 		this.vGap = vGap;
 	}
 
 	@Override
-	public void addLayoutComponent( java.awt.Component comp, Object constraints ) {
-		if( org.lgna.croquet.views.BorderPanel.Constraint.CENTER.getInternal().equals( constraints ) ) {
+	public void addLayoutComponent( Component comp, Object constraints ) {
+		if( BorderPanel.Constraint.CENTER.getInternal().equals( constraints ) ) {
 			this.mainComponent = comp;
-		} else if( org.lgna.croquet.views.BorderPanel.Constraint.PAGE_END.getInternal().equals( constraints ) ) {
+		} else if( BorderPanel.Constraint.PAGE_END.getInternal().equals( constraints ) ) {
 			this.bottomComponent = comp;
 		} else {
 			assert false : constraints;
@@ -59,12 +72,12 @@ class StickyLayout implements java.awt.LayoutManager2 {
 	}
 
 	@Override
-	public void addLayoutComponent( String name, java.awt.Component comp ) {
+	public void addLayoutComponent( String name, Component comp ) {
 		this.addLayoutComponent( comp, name );
 	}
 
 	@Override
-	public void removeLayoutComponent( java.awt.Component comp ) {
+	public void removeLayoutComponent( Component comp ) {
 		if( this.mainComponent == comp ) {
 			this.mainComponent = null;
 		} else if( this.bottomComponent == comp ) {
@@ -72,26 +85,26 @@ class StickyLayout implements java.awt.LayoutManager2 {
 		}
 	}
 
-	private static java.awt.Dimension addInsets( java.awt.Dimension rv, java.awt.Container target ) {
-		java.awt.Insets insets = target.getInsets();
+	private static Dimension addInsets( Dimension rv, Container target ) {
+		Insets insets = target.getInsets();
 		rv.width += insets.left + insets.right;
 		rv.height += insets.top + insets.bottom;
 		return rv;
 	}
 
 	@Override
-	public java.awt.Dimension minimumLayoutSize( java.awt.Container target ) {
+	public Dimension minimumLayoutSize( Container target ) {
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "minimumLayoutSize", target );
 		synchronized( target.getTreeLock() ) {
-			java.awt.Dimension dim = new java.awt.Dimension( 0, 0 );
+			Dimension dim = new Dimension( 0, 0 );
 
 			if( this.mainComponent != null ) {
-				java.awt.Dimension d = this.mainComponent.getMinimumSize();
+				Dimension d = this.mainComponent.getMinimumSize();
 				dim.width = Math.max( d.width, dim.width );
 				dim.height += d.height + vGap;
 			}
 			if( this.bottomComponent != null ) {
-				java.awt.Dimension d = bottomComponent.getMinimumSize();
+				Dimension d = bottomComponent.getMinimumSize();
 				dim.width = Math.max( d.width, dim.width );
 				dim.height += d.height + vGap;
 			}
@@ -101,16 +114,16 @@ class StickyLayout implements java.awt.LayoutManager2 {
 	}
 
 	@Override
-	public java.awt.Dimension preferredLayoutSize( java.awt.Container target ) {
+	public Dimension preferredLayoutSize( Container target ) {
 		synchronized( target.getTreeLock() ) {
-			java.awt.Dimension dim = new java.awt.Dimension( 0, 0 );
+			Dimension dim = new Dimension( 0, 0 );
 			if( this.mainComponent != null ) {
-				java.awt.Dimension d = this.mainComponent.getPreferredSize();
+				Dimension d = this.mainComponent.getPreferredSize();
 				dim.width = Math.max( d.width, dim.width );
 				dim.height += d.height + vGap;
 			}
 			if( this.bottomComponent != null ) {
-				java.awt.Dimension d = this.bottomComponent.getPreferredSize();
+				Dimension d = this.bottomComponent.getPreferredSize();
 				dim.width = Math.max( d.width, dim.width );
 				dim.height += d.height + vGap;
 			}
@@ -121,14 +134,14 @@ class StickyLayout implements java.awt.LayoutManager2 {
 	}
 
 	@Override
-	public java.awt.Dimension maximumLayoutSize( java.awt.Container target ) {
-		return new java.awt.Dimension( Integer.MAX_VALUE, Integer.MAX_VALUE );
+	public Dimension maximumLayoutSize( Container target ) {
+		return new Dimension( Integer.MAX_VALUE, Integer.MAX_VALUE );
 	}
 
 	@Override
-	public void layoutContainer( java.awt.Container target ) {
+	public void layoutContainer( Container target ) {
 		synchronized( target.getTreeLock() ) {
-			java.awt.Insets insets = target.getInsets();
+			Insets insets = target.getInsets();
 			int top = insets.top;
 			int left = insets.left;
 			int bottom = target.getHeight() - insets.bottom;
@@ -138,7 +151,7 @@ class StickyLayout implements java.awt.LayoutManager2 {
 			int bottomHeight;
 			if( bottomComponent != null ) {
 				bottomComponent.setSize( width, bottomComponent.getHeight() );
-				java.awt.Dimension d = bottomComponent.getPreferredSize();
+				Dimension d = bottomComponent.getPreferredSize();
 				bottomHeight = d.height;
 			} else {
 				bottomHeight = 0;
@@ -146,9 +159,9 @@ class StickyLayout implements java.awt.LayoutManager2 {
 
 			if( this.mainComponent != null ) {
 				this.mainComponent.setSize( width, this.mainComponent.getHeight() );
-				java.awt.Dimension d = this.mainComponent.getPreferredSize();
-				if( this.mainComponent instanceof javax.swing.JScrollPane ) {
-					javax.swing.JScrollPane jScrollPane = (javax.swing.JScrollPane)this.mainComponent;
+				Dimension d = this.mainComponent.getPreferredSize();
+				if( this.mainComponent instanceof JScrollPane ) {
+					JScrollPane jScrollPane = (JScrollPane)this.mainComponent;
 					if( d.width > ( right - left ) ) {
 						d.height += jScrollPane.getHorizontalScrollBar().getPreferredSize().height;
 					}
@@ -166,39 +179,39 @@ class StickyLayout implements java.awt.LayoutManager2 {
 	}
 
 	@Override
-	public void invalidateLayout( java.awt.Container target ) {
+	public void invalidateLayout( Container target ) {
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "invalidateLayout", target );
 	}
 
 	@Override
-	public float getLayoutAlignmentX( java.awt.Container parent ) {
+	public float getLayoutAlignmentX( Container parent ) {
 		return 0.0f;
 	}
 
 	@Override
-	public float getLayoutAlignmentY( java.awt.Container parent ) {
+	public float getLayoutAlignmentY( Container parent ) {
 		return 0.0f;
 	}
 
-	public java.awt.Component getMainComponent() {
+	public Component getMainComponent() {
 		return this.mainComponent;
 	}
 
-	public java.awt.Component getBottomComponent() {
+	public Component getBottomComponent() {
 		return this.bottomComponent;
 	}
 
 	private final int vGap;
-	private java.awt.Component mainComponent;
-	private java.awt.Component bottomComponent;
+	private Component mainComponent;
+	private Component bottomComponent;
 }
 
-public class StickyBottomPanel extends org.lgna.croquet.views.Panel {
+public class StickyBottomPanel extends Panel {
 	//	public StickyBottomPanel() {
 	//		this.internalAddComponent( mainPanel, org.lgna.croquet.views.BorderPanel.Constraint.PAGE_START.getInternal() );
 	//	}
 
-	public void setTopView( org.lgna.croquet.views.SwingComponentView<?> top ) {
+	public void setTopView( SwingComponentView<?> top ) {
 		synchronized( this.getTreeLock() ) {
 			//			org.lgna.croquet.views.AwtComponentView<?> component = this.mainPanel.getCenterComponent();
 			//			if( component != null ) {
@@ -206,15 +219,15 @@ public class StickyBottomPanel extends org.lgna.croquet.views.Panel {
 			//			}
 			//			this.mainPanel.addCenterComponent( top );
 			StickyLayout stickyLayout = this.getLayout();
-			java.awt.Component awtComponent = stickyLayout.getMainComponent();
+			Component awtComponent = stickyLayout.getMainComponent();
 			if( awtComponent != null ) {
 				this.getAwtComponent().remove( awtComponent );
 			}
-			this.internalAddComponent( top, org.lgna.croquet.views.BorderPanel.Constraint.CENTER.getInternal() );
+			this.internalAddComponent( top, BorderPanel.Constraint.CENTER.getInternal() );
 		}
 	}
 
-	public void setBottomView( org.lgna.croquet.views.SwingComponentView<?> bottom ) {
+	public void setBottomView( SwingComponentView<?> bottom ) {
 		synchronized( this.getTreeLock() ) {
 			//			org.lgna.croquet.views.AwtComponentView<?> component = this.mainPanel.getPageEndComponent();
 			//			if( component != null ) {
@@ -222,11 +235,11 @@ public class StickyBottomPanel extends org.lgna.croquet.views.Panel {
 			//			}
 			//			this.mainPanel.addPageEndComponent( bottom );
 			StickyLayout stickyLayout = this.getLayout();
-			java.awt.Component awtComponent = stickyLayout.getBottomComponent();
+			Component awtComponent = stickyLayout.getBottomComponent();
 			if( awtComponent != null ) {
 				this.getAwtComponent().remove( awtComponent );
 			}
-			this.internalAddComponent( bottom, org.lgna.croquet.views.BorderPanel.Constraint.PAGE_END.getInternal() );
+			this.internalAddComponent( bottom, BorderPanel.Constraint.PAGE_END.getInternal() );
 		}
 	}
 
@@ -235,7 +248,7 @@ public class StickyBottomPanel extends org.lgna.croquet.views.Panel {
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
 		return new StickyLayout( 4 );
 		//return new java.awt.BorderLayout();
 	}

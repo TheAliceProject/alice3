@@ -43,11 +43,12 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.scenegraph.Shape;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrShape<T extends edu.cmu.cs.dennisc.scenegraph.Shape> extends GlrGeometry<T> {
+public abstract class GlrShape<T extends Shape> extends GlrGeometry<T> {
 	@Override
 	public boolean isAlphaBlended() {
 		return false;

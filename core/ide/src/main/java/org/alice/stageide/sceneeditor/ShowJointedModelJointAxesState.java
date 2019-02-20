@@ -42,15 +42,23 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.lgna.croquet.BooleanState;
+import org.lgna.project.ast.AbstractField;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author dculyba
  * 
  */
-public class ShowJointedModelJointAxesState extends org.lgna.croquet.BooleanState {
+public class ShowJointedModelJointAxesState extends BooleanState {
 
-	private static java.util.Map<org.lgna.project.ast.AbstractField, ShowJointedModelJointAxesState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<AbstractField, ShowJointedModelJointAxesState> map = Maps.newHashMap();
 
-	public static ShowJointedModelJointAxesState getInstance( org.lgna.project.ast.AbstractField value ) {
+	public static ShowJointedModelJointAxesState getInstance( AbstractField value ) {
 		synchronized( map ) {
 			ShowJointedModelJointAxesState rv = map.get( value );
 			if( rv != null ) {
@@ -63,14 +71,14 @@ public class ShowJointedModelJointAxesState extends org.lgna.croquet.BooleanStat
 		}
 	}
 
-	private org.lgna.project.ast.AbstractField field;
+	private AbstractField field;
 
-	private ShowJointedModelJointAxesState( org.lgna.project.ast.AbstractField field ) {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "3b3bdd30-4f04-4160-ae58-e466732a4c6c" ), false );
+	private ShowJointedModelJointAxesState( AbstractField field ) {
+		super( IDE.DOCUMENT_UI_GROUP, UUID.fromString( "3b3bdd30-4f04-4160-ae58-e466732a4c6c" ), false );
 		this.field = field;
 	}
 
-	public org.lgna.project.ast.AbstractField getField() {
+	public AbstractField getField() {
 		return this.field;
 	}
 

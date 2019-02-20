@@ -42,7 +42,11 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import org.lgna.story.resourceutilities.FindResourcesPanel;
+
+import java.io.File;
+import java.util.prefs.Preferences;
 
 /**
  * @author Dennis Cosgrove
@@ -57,10 +61,10 @@ public class StoryApiDirectoryUtilities {
 		throw new AssertionError();
 	}
 
-	private static java.io.File getDirectoryFromProperty( String propertyName ) {
+	private static File getDirectoryFromProperty( String propertyName ) {
 		String path = System.getProperty( propertyName );
 		if( path != null ) {
-			java.io.File file = new java.io.File( path );
+			File file = new File( path );
 			if( file.isDirectory() ) {
 				return file;
 			}
@@ -68,73 +72,69 @@ public class StoryApiDirectoryUtilities {
 		return null;
 	}
 
-	public static java.io.File getInstallDirectory() {
-		java.io.File rv = getDirectoryFromProperty( "org.alice.ide.rootDirectory" );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = getDirectoryFromProperty( "user.dir" );
+	private static File getInstallDirectory() {
+		File rootDir = getDirectoryFromProperty( "org.alice.ide.rootDirectory" );
+		if (rootDir == null) {
+			return getDirectoryFromProperty( "user.dir" );
 		}
-		return rv;
+		return rootDir;
 	}
 
-	private static java.io.File getFallbackDirectory() {
-		return edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
+	private static File getFallbackDirectory() {
+		return FileUtilities.getDefaultDirectory();
 	}
 
-	private static java.io.File modelGalleryDirectory;
+	private static File modelGalleryDirectory;
 
-	public static java.io.File getModelGalleryDirectory() {
-		if( StoryApiDirectoryUtilities.modelGalleryDirectory != null ) {
-			//pass
-		} else {
-			java.io.File installDirectory = getInstallDirectory();
-			if( installDirectory != null ) {
-				java.io.File file = new java.io.File( installDirectory, MODEL_GALLERY_NAME );
-				if( file.isDirectory() ) {
-					StoryApiDirectoryUtilities.modelGalleryDirectory = file;
-					try {
-						java.util.prefs.Preferences preferences = java.util.prefs.Preferences.userRoot();
-						preferences.put( MODEL_GALLERY_PREFRENCE_KEY, StoryApiDirectoryUtilities.modelGalleryDirectory.getAbsolutePath() );
-					} catch( Throwable t ) {
-						t.printStackTrace();
-					}
-				} else {
-					try {
-						java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
-						String path = rv.get( MODEL_GALLERY_PREFRENCE_KEY, null );
-						if( path != null ) {
-							java.io.File fileFromPreference = new java.io.File( path );
-							if( fileFromPreference.isDirectory() ) {
-								StoryApiDirectoryUtilities.modelGalleryDirectory = fileFromPreference;
-							}
-						}
-					} catch( Throwable t ) {
-						t.printStackTrace();
-					}
-				}
-			}
+	public static File getModelGalleryDirectory() {
+		if (StoryApiDirectoryUtilities.modelGalleryDirectory == null) {
+			initializeModelGallery();
 		}
-
-		if( StoryApiDirectoryUtilities.modelGalleryDirectory != null ) {
-			//pass
-		} else {
-			FindResourcesPanel.getInstance().show( null );
-			java.io.File fileFromUser = FindResourcesPanel.getInstance().getGalleryDir();
-			if( fileFromUser != null ) {
-				StoryApiDirectoryUtilities.modelGalleryDirectory = fileFromUser;
-			} else {
-				throw new RuntimeException();
-			}
+		if (StoryApiDirectoryUtilities.modelGalleryDirectory == null) {
+			askUserForModelGallery();
 		}
 		return StoryApiDirectoryUtilities.modelGalleryDirectory;
 	}
 
-	public static java.io.File getSoundGalleryDirectory() {
+	private static void initializeModelGallery() {
+		File installDirectory = getInstallDirectory();
+		if( installDirectory != null ) {
+			File file = new File( installDirectory, MODEL_GALLERY_NAME );
+			if( file.isDirectory() ) {
+				StoryApiDirectoryUtilities.modelGalleryDirectory = file;
+				try {
+					Preferences preferences = Preferences.userRoot();
+					preferences.put( MODEL_GALLERY_PREFRENCE_KEY, StoryApiDirectoryUtilities.modelGalleryDirectory.getAbsolutePath() );
+				} catch( Throwable t ) {
+					t.printStackTrace();
+				}
+			} else {
+				try {
+					Preferences rv = Preferences.userRoot();
+					String path = rv.get( MODEL_GALLERY_PREFRENCE_KEY, null );
+					if( path != null ) {
+						File fileFromPreference = new File( path );
+						if( fileFromPreference.isDirectory() ) {
+							StoryApiDirectoryUtilities.modelGalleryDirectory = fileFromPreference;
+						}
+					}
+				} catch( Throwable t ) {
+					t.printStackTrace();
+				}
+			}
+		}
+	}
+
+	private static void askUserForModelGallery() {
+		FindResourcesPanel.getInstance().show(null );
+		StoryApiDirectoryUtilities.modelGalleryDirectory = FindResourcesPanel.getInstance().getGalleryDir();
+	}
+
+	public static File getSoundGalleryDirectory() {
 		try {
-			java.io.File installDirectory = getInstallDirectory();
+			File installDirectory = getInstallDirectory();
 			if( installDirectory != null ) {
-				java.io.File soundGalleryDirectory = new java.io.File( installDirectory, SOUND_GALLERY_NAME );
+				File soundGalleryDirectory = new File( installDirectory, SOUND_GALLERY_NAME );
 				if( soundGalleryDirectory.isDirectory() ) {
 					return soundGalleryDirectory;
 				} else {
@@ -148,11 +148,11 @@ public class StoryApiDirectoryUtilities {
 		}
 	}
 
-	public static java.io.File getStarterProjectsDirectory() {
+	public static File getStarterProjectsDirectory() {
 		try {
-			java.io.File installDirectory = getInstallDirectory();
+			File installDirectory = getInstallDirectory();
 			if( installDirectory != null ) {
-				java.io.File starterProjectsDirectory = new java.io.File( installDirectory, STARTER_PROJECTS_NAME );
+				File starterProjectsDirectory = new File( installDirectory, STARTER_PROJECTS_NAME );
 				if( starterProjectsDirectory.isDirectory() ) {
 					return starterProjectsDirectory;
 				} else {
@@ -163,6 +163,22 @@ public class StoryApiDirectoryUtilities {
 			}
 		} catch( Throwable t ) {
 			return getFallbackDirectory();
+		}
+	}
+
+	private static File userGalleryDirectory = null;
+
+	public static void setUserGalleryDirectory( File userGalleryDirectory ) {
+		StoryApiDirectoryUtilities.userGalleryDirectory = userGalleryDirectory;
+	}
+
+	public static File getUserGalleryDirectory() {
+		if (StoryApiDirectoryUtilities.userGalleryDirectory != null) {
+			return StoryApiDirectoryUtilities.userGalleryDirectory;
+		}
+		else {
+			File userHome = getDirectoryFromProperty( "user.home" );
+			return new File(userHome,  "Alice3/MyGallery");
 		}
 	}
 }

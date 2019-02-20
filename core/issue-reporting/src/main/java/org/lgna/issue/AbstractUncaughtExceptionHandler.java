@@ -42,11 +42,15 @@
  *******************************************************************************/
 package org.lgna.issue;
 
+import org.lgna.common.LgnaRuntimeException;
+
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
-	protected abstract boolean handleUncaughtLgnaRuntimeException( Thread thread, Throwable originalThrowable, org.lgna.common.LgnaRuntimeException originalThrowableOrTarget );
+	protected abstract boolean handleUncaughtLgnaRuntimeException( Thread thread, Throwable originalThrowable, LgnaRuntimeException originalThrowableOrTarget );
 
 	protected abstract void handleUncaughtException( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget );
 
@@ -62,16 +66,16 @@ public abstract class AbstractUncaughtExceptionHandler implements Thread.Uncaugh
 			try {
 				Throwable cause = throwable.getCause();
 				Throwable originalThrowableOrTarget;
-				if( cause instanceof java.lang.reflect.InvocationTargetException ) {
-					java.lang.reflect.InvocationTargetException invocationTargetException = (java.lang.reflect.InvocationTargetException)cause;
+				if( cause instanceof InvocationTargetException ) {
+					InvocationTargetException invocationTargetException = (InvocationTargetException)cause;
 					originalThrowableOrTarget = invocationTargetException.getTargetException();
 				} else {
 					originalThrowableOrTarget = throwable;
 				}
 
 				boolean isHandled = false;
-				if( originalThrowableOrTarget instanceof org.lgna.common.LgnaRuntimeException ) {
-					org.lgna.common.LgnaRuntimeException lgnaRuntimeException = (org.lgna.common.LgnaRuntimeException)originalThrowableOrTarget;
+				if( originalThrowableOrTarget instanceof LgnaRuntimeException ) {
+					LgnaRuntimeException lgnaRuntimeException = (LgnaRuntimeException)originalThrowableOrTarget;
 					isHandled = this.handleUncaughtLgnaRuntimeException( thread, throwable, lgnaRuntimeException );
 				}
 				if( isHandled ) {

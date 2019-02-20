@@ -42,56 +42,77 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration.views;
 
+import org.alice.ide.IDE;
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.declaration.AddParameterComposite;
+import org.alice.ide.codeeditor.TypedParameterPane;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.PageAxisPanel;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.NullLiteral;
+import org.lgna.project.ast.SimpleArgumentListProperty;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserParameter;
+
+import javax.swing.BorderFactory;
+import javax.swing.UIManager;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AddParameterView extends DeclarationView<org.lgna.project.ast.UserParameter> {
-	private final org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label();
-	private final org.lgna.croquet.views.BorderPanel warningPanel;
+public class AddParameterView extends DeclarationView<UserParameter> {
+	private final Label label = new Label();
+	private final BorderPanel warningPanel;
 
-	public AddParameterView( org.alice.ide.ast.declaration.AddParameterComposite composite ) {
+	public AddParameterView( AddParameterComposite composite ) {
 		super( composite );
-		org.lgna.croquet.views.PageAxisPanel pane = new org.lgna.croquet.views.PageAxisPanel();
+		PageAxisPanel pane = new PageAxisPanel();
 		pane.addComponent( this.label );
-		pane.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) );
+		pane.addComponent( BoxUtilities.createVerticalSliver( 8 ) );
 		//TODO: Localize
-		pane.addComponent( new org.lgna.croquet.views.LineAxisPanel( new org.lgna.croquet.views.Label( "Tip: look for " ), org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( new org.lgna.project.ast.NullLiteral() ) ) );
-		pane.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) );
+		pane.addComponent( new LineAxisPanel( new Label( "Tip: look for " ), PreviewAstI18nFactory.getInstance().createExpressionPane( new NullLiteral() ) ) );
+		pane.addComponent( BoxUtilities.createVerticalSliver( 8 ) );
 		pane.addComponent( composite.getIsRequirementToUpdateInvocationsUnderstoodState().createCheckBox() );
 
-		org.lgna.croquet.views.Label warningLabel = new org.lgna.croquet.views.Label();
-		warningLabel.setIcon( javax.swing.UIManager.getIcon( "OptionPane.warningIcon" ) );
-		this.warningPanel = new org.lgna.croquet.views.BorderPanel.Builder().hgap( 32 ).lineStart( warningLabel ).center( pane ).build();
+		Label warningLabel = new Label();
+		warningLabel.setIcon( UIManager.getIcon( "OptionPane.warningIcon" ) );
+		this.warningPanel = new BorderPanel.Builder().hgap( 32 ).lineStart( warningLabel ).center( pane ).build();
 
-		this.warningPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 32, 8, 32, 8 ) );
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getParameterColor() );
+		this.warningPanel.setBorder( BorderFactory.createEmptyBorder( 32, 8, 32, 8 ) );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getParameterColor() );
 	}
 
 	@Override
-	public org.lgna.croquet.views.SwingComponentView<?> createPreviewSubComponent() {
-		org.alice.ide.ast.declaration.AddParameterComposite composite = (org.alice.ide.ast.declaration.AddParameterComposite)this.getComposite();
-		org.lgna.project.ast.UserParameter parameter = composite.getPreviewValue();
-		return new org.alice.ide.codeeditor.TypedParameterPane( null, parameter );
+	public SwingComponentView<?> createPreviewSubComponent() {
+		AddParameterComposite composite = (AddParameterComposite)this.getComposite();
+		UserParameter parameter = composite.getPreviewValue();
+		return new TypedParameterPane( null, parameter );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.BorderPanel createMainComponent() {
-		org.lgna.croquet.views.BorderPanel rv = super.createMainComponent();
+	protected BorderPanel createMainComponent() {
+		BorderPanel rv = super.createMainComponent();
 		rv.addPageEndComponent( this.warningPanel );
 		return rv;
 	}
 
 	@Override
 	protected void handleDisplayable() {
-		org.alice.ide.ast.declaration.AddParameterComposite composite = (org.alice.ide.ast.declaration.AddParameterComposite)this.getComposite();
-		org.lgna.project.ast.UserCode code = composite.getCode();
-		java.util.List<org.lgna.project.ast.SimpleArgumentListProperty> argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
+		AddParameterComposite composite = (AddParameterComposite)this.getComposite();
+		UserCode code = composite.getCode();
+		List<SimpleArgumentListProperty> argumentLists = IDE.getActiveInstance().getArgumentLists( code );
 		final int N = argumentLists.size();
 		this.warningPanel.setVisible( N > 0 );
 		if( this.warningPanel.isVisible() ) {
 			String codeText;
-			if( code instanceof org.lgna.project.ast.AbstractMethod ) {
-				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)code;
+			if( code instanceof AbstractMethod ) {
+				AbstractMethod method = (AbstractMethod)code;
 				if( method.isProcedure() ) {
 					codeText = "procedure";
 				} else {

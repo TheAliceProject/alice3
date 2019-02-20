@@ -42,6 +42,21 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -70,12 +85,12 @@ public abstract class CollageIcon extends ShapeIcon {
 		};
 	}
 
-	public CollageIcon( java.awt.Dimension size, java.util.List<? extends org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> iconFactories ) {
+	public CollageIcon( Dimension size, List<? extends AbstractSingleSourceImageIconFactory> iconFactories ) {
 		super( size );
 		if( size.width > 64 ) {
 			int subWidth = ( 2 * size.width ) / 3;
 			int subHeight = ( 2 * size.height ) / 3;
-			java.awt.Dimension subSize = new java.awt.Dimension( subWidth, subHeight );
+			Dimension subSize = new Dimension( subWidth, subHeight );
 			for( int i = 0; i < iconFactories.size(); i++ ) {
 				this.icons[ i ] = iconFactories.get( i ).getSourceImageIcon();
 			}
@@ -112,9 +127,9 @@ public abstract class CollageIcon extends ShapeIcon {
 
 	private static final double ROUND = 10;
 
-	protected abstract java.awt.Shape createBackShape( double width, double height );
+	protected abstract Shape createBackShape( double width, double height );
 
-	protected abstract java.awt.Shape createFrontShape( double width, double height );
+	protected abstract Shape createFrontShape( double width, double height );
 
 	protected double getX( int i ) {
 		return xs[ i ];
@@ -125,13 +140,13 @@ public abstract class CollageIcon extends ShapeIcon {
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
 		//g2.setPaint( java.awt.Color.red );
 		//g2.fillRect( 0, 0, width, height );
-		java.awt.Stroke prevStroke = g2.getStroke();
+		Stroke prevStroke = g2.getStroke();
 		double dx = width * 0.15;
 		double dy = height * 0.05;
-		java.awt.geom.AffineTransform t = g2.getTransform();
+		AffineTransform t = g2.getTransform();
 		double w = width - ( dx * 2 );
 		double h = height - ( dy * 2 );
 
@@ -140,10 +155,10 @@ public abstract class CollageIcon extends ShapeIcon {
 			g2.translate( 0, h );
 			g2.shear( 0.1, 0.0 );
 			g2.translate( 0, -h );
-			java.awt.Shape backShape = this.createBackShape( w, h );
-			java.awt.Shape frontShape = this.createFrontShape( w, h );
+			Shape backShape = this.createBackShape( w, h );
+			Shape frontShape = this.createFrontShape( w, h );
 			if( backShape != null ) {
-				java.awt.Paint backFillPaint = new java.awt.GradientPaint( 0, 0, java.awt.Color.WHITE, width, height, new java.awt.Color( 191, 191, 127 ) );
+				Paint backFillPaint = new GradientPaint( 0, 0, Color.WHITE, width, height, new Color( 191, 191, 127 ) );
 				g2.setPaint( backFillPaint );
 				g2.fill( backShape );
 				g2.setPaint( drawPaint );
@@ -156,19 +171,19 @@ public abstract class CollageIcon extends ShapeIcon {
 				int totalAvailableArea = width * height;
 				int totalIconArea = 0;
 				for( int i : this.drawOrder ) {
-					javax.swing.Icon icon = this.icons[ i ];
+					Icon icon = this.icons[ i ];
 					int iconIArea = icon.getIconWidth() * icon.getIconHeight();
 					totalIconArea += iconIArea;
 				}
 				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( totalAvailableArea, totalIconArea );
 				double scale = 0.5;
 				for( int i : this.drawOrder ) {
-					javax.swing.Icon icon = this.icons[ i ];
+					Icon icon = this.icons[ i ];
 					int x = (int)( this.getX( i ) * width );
 					int y = (int)( this.getY( i ) * height );
 
-					if( icon instanceof javax.swing.ImageIcon ) {
-						javax.swing.ImageIcon imageIcon = (javax.swing.ImageIcon)icon;
+					if( icon instanceof ImageIcon ) {
+						ImageIcon imageIcon = (ImageIcon)icon;
 						int imageWidth = imageIcon.getIconWidth();
 						int imageHeight = imageIcon.getIconHeight();
 
@@ -187,7 +202,7 @@ public abstract class CollageIcon extends ShapeIcon {
 				g2.translate( 0, h );
 				g2.shear( -0.4, 0.0 );
 				g2.translate( 0, -h );
-				java.awt.Paint frontFillPaint = new java.awt.GradientPaint( 0, height / 2, new java.awt.Color( 255, 255, 255, 255 ), width, height, new java.awt.Color( 221, 221, 127, 127 ) );
+				Paint frontFillPaint = new GradientPaint( 0, height / 2, new Color( 255, 255, 255, 255 ), width, height, new Color( 221, 221, 127, 127 ) );
 				g2.setPaint( frontFillPaint );
 				g2.fill( frontShape );
 				g2.setPaint( drawPaint );
@@ -199,6 +214,6 @@ public abstract class CollageIcon extends ShapeIcon {
 		}
 	}
 
-	private final javax.swing.Icon[] icons = { null, null, null, null, null };
+	private final Icon[] icons = { null, null, null, null, null };
 	private final int[] drawOrder;
 }

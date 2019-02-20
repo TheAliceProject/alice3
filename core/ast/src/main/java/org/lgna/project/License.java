@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.project;
 
+import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,6 +62,6 @@ public class License {
 		//		sb.append( "DISCLAIMER:\n\n" );
 		//		sb.append( "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n" );
 		//		TEXT = sb.toString();
-		TEXT = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( License.class.getResourceAsStream( "License.txt" ) );
+		TEXT = TextFileUtilities.read( License.class.getResourceAsStream( "License.txt" ) );
 	}
 }

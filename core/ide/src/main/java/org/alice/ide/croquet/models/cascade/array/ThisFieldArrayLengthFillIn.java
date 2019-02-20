@@ -43,13 +43,21 @@
 
 package org.alice.ide.croquet.models.cascade.array;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ThisFieldArrayLengthFillIn extends ArrayLengthFillIn {
-	private static java.util.Map<org.lgna.project.ast.AbstractField, ThisFieldArrayLengthFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<AbstractField, ThisFieldArrayLengthFillIn> map = Maps.newHashMap();
 
-	public static synchronized ThisFieldArrayLengthFillIn getInstance( org.lgna.project.ast.AbstractField field ) {
+	public static synchronized ThisFieldArrayLengthFillIn getInstance( AbstractField field ) {
 		assert field != null;
 		ThisFieldArrayLengthFillIn rv = map.get( field );
 		if( rv != null ) {
@@ -61,15 +69,15 @@ public class ThisFieldArrayLengthFillIn extends ArrayLengthFillIn {
 		return rv;
 	}
 
-	private final org.lgna.project.ast.AbstractField field;
+	private final AbstractField field;
 
-	private ThisFieldArrayLengthFillIn( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "b67e8cf6-e96f-4289-8cd2-1848b8a206ab" ) );
+	private ThisFieldArrayLengthFillIn( AbstractField field ) {
+		super( UUID.fromString( "b67e8cf6-e96f-4289-8cd2-1848b8a206ab" ) );
 		this.field = field;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.field );
+	protected Expression createAccessExpression() {
+		return new FieldAccess(field);
 	}
 }

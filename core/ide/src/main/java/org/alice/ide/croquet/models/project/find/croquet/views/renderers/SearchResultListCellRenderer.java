@@ -45,12 +45,18 @@ package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
+import org.alice.ide.croquet.models.project.find.core.SearchResult;
 import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
+
+import javax.swing.JLabel;
+import javax.swing.JList;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SearchResultListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.alice.ide.croquet.models.project.find.core.SearchResult> {
+public class SearchResultListCellRenderer extends ListCellRenderer<SearchResult> {
 
 	private final AbstractFindComposite composite;
 
@@ -59,7 +65,7 @@ public class SearchResultListCellRenderer extends edu.cmu.cs.dennisc.javax.swing
 	}
 
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.ide.croquet.models.project.find.core.SearchResult value, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected JLabel getListCellRendererComponent( JLabel rv, JList list, SearchResult value, int index, boolean isSelected, boolean cellHasFocus ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<HTML>" );
 		String finalValue = getNameString( value.getName(), composite.getSearchState().getValue() );
@@ -76,7 +82,7 @@ public class SearchResultListCellRenderer extends edu.cmu.cs.dennisc.javax.swing
 	private String getNameString( String name, String value ) {
 		String rv = name;
 		String unparsed = value.toLowerCase();
-		ArrayList<String> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+		ArrayList<String> list = Lists.newArrayList();
 		while( true ) {
 			if( unparsed.length() == 0 ) {
 				break;

@@ -42,45 +42,54 @@
  *******************************************************************************/
 package org.alice.imageeditor.croquet;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.worker.WorkerWithProgress;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class FilenameListWorker extends edu.cmu.cs.dennisc.worker.WorkerWithProgress<java.io.File[], java.io.File> {
-	private static final java.io.FileFilter PNG_FILE_FILTER = edu.cmu.cs.dennisc.java.io.FileUtilities.createFileWithExtensionFilter( ".png" );
-	private static final java.io.FileFilter DIRECTORY_FILTER = edu.cmu.cs.dennisc.java.io.FileUtilities.createDirectoryFilter();
+/* package-private */class FilenameListWorker extends WorkerWithProgress<File[], File> {
+	private static final FileFilter PNG_FILE_FILTER = FileUtilities.createFileWithExtensionFilter( ".png" );
+	private static final FileFilter DIRECTORY_FILTER = FileUtilities.createDirectoryFilter();
 
 	private final FilenameComboBoxModel filenameComboBoxModel;
-	private final java.io.File rootDirectory;
+	private final File rootDirectory;
 
-	public FilenameListWorker( FilenameComboBoxModel filenameComboBoxModel, java.io.File rootDirectory ) {
+	public FilenameListWorker( FilenameComboBoxModel filenameComboBoxModel, File rootDirectory ) {
 		this.filenameComboBoxModel = filenameComboBoxModel;
 		this.rootDirectory = rootDirectory;
 	}
 
-	public java.io.File getRootDirectory() {
+	public File getRootDirectory() {
 		return this.rootDirectory;
 	}
 
-	private void appendDescendants( java.util.List<java.io.File> descendants, java.io.File dir ) {
+	private void appendDescendants( List<File> descendants, File dir ) {
 		if( this.isCancelled() ) {
 			//pass
 		} else {
-			java.io.File[] files = dir.listFiles( PNG_FILE_FILTER );
+			File[] files = dir.listFiles( PNG_FILE_FILTER );
 			if( ( files != null ) && ( files.length > 0 ) ) {
-				for( java.io.File childFile : files ) {
-					descendants.add( childFile );
-				}
+				Collections.addAll( descendants, files );
 				this.publish( files );
 				boolean IS_YIELD_BEHAVING_THE_WAY_I_EXPECT = false;
 				if( IS_YIELD_BEHAVING_THE_WAY_I_EXPECT ) {
 					Thread.yield();
 				} else {
-					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 10 );
+					ThreadUtilities.sleep( 10 );
 				}
 			}
-			java.io.File[] dirs = dir.listFiles( DIRECTORY_FILTER );
+			File[] dirs = dir.listFiles( DIRECTORY_FILTER );
 			if( dirs != null ) {
-				for( java.io.File childDir : dirs ) {
+				for( File childDir : dirs ) {
 					this.appendDescendants( descendants, childDir );
 				}
 			}
@@ -88,26 +97,26 @@ package org.alice.imageeditor.croquet;
 	}
 
 	@Override
-	protected java.io.File[] do_onBackgroundThread() throws Exception {
+	protected File[] do_onBackgroundThread() throws Exception {
 		//Thread.currentThread().setPriority( Thread.MIN_PRIORITY );
 		if( this.rootDirectory.isDirectory() ) {
-			java.util.List<java.io.File> descendants = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			List<File> descendants = Lists.newLinkedList();
 			this.appendDescendants( descendants, this.rootDirectory );
-			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( descendants, java.io.File.class );
+			return ArrayUtilities.createArray( descendants, File.class );
 		} else {
-			return new java.io.File[ 0 ];
+			return new File[ 0 ];
 		}
 	}
 
 	@Override
-	protected void handleProcess_onEventDispatchThread( java.util.List<java.io.File> files ) {
+	protected void handleProcess_onEventDispatchThread( List<File> files ) {
 		synchronized( this.filenameComboBoxModel ) {
 			this.filenameComboBoxModel.addAll( files );
 		}
 	}
 
 	@Override
-	protected void handleDone_onEventDispatchThread( java.io.File[] value ) {
+	protected void handleDone_onEventDispatchThread( File[] value ) {
 		synchronized( this.filenameComboBoxModel ) {
 			this.filenameComboBoxModel.done( value );
 		}

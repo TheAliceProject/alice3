@@ -43,35 +43,31 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import org.lgna.project.code.CodeAppender;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Statement extends AbstractNode {
-	protected abstract void appendJavaInternal( JavaCodeGenerator generator );
-
+public abstract class Statement extends AbstractNode implements CodeAppender{
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			Statement other = (Statement)o;
-			return this.isEnabled.valueEquals( other.isEnabled, filter );
-		}
+	public abstract void appendCode( SourceCodeGenerator generator );
+
+	public final BooleanProperty isEnabled = new BooleanProperty( this, Boolean.TRUE );
+
+	boolean containsAtLeastOneEnabledReturnStatement() {
 		return false;
 	}
 
-	/* package-private */final void appendJava( JavaCodeGenerator generator ) {
-		boolean isDisabled = this.isEnabled.getValue() == false;
-		if( isDisabled ) {
-			generator.pushStatementDisabled();
-		}
-		try {
-			this.appendJavaInternal( generator );
-		} finally {
-			if( isDisabled ) {
-				generator.popStatementDisabled();
-			}
-		}
+	boolean containsAReturnForEveryPath() {
+		return false;
 	}
 
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isEnabled = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
+	boolean containsUnreachableCode() {
+		return false;
+	}
+
+	boolean isEnabledNonCommment() {
+		return isEnabled.getValue();
+	}
 }

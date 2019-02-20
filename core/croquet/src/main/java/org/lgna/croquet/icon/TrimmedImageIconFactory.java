@@ -42,32 +42,40 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.net.URL;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TrimmedImageIconFactory extends AbstractSingleSourceImageIconFactory {
-	private final java.awt.Dimension defaultSize;
+	private final Dimension defaultSize;
 
-	public TrimmedImageIconFactory( javax.swing.ImageIcon imageIcon, int width, int height ) {
+	public TrimmedImageIconFactory( ImageIcon imageIcon, int width, int height ) {
 		super( imageIcon );
-		this.defaultSize = new java.awt.Dimension( width, height );
+		this.defaultSize = new Dimension( width, height );
 	}
 
-	public TrimmedImageIconFactory( java.net.URL resource, int width, int height ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource ), width, height );
+	public TrimmedImageIconFactory( URL resource, int width, int height ) {
+		this( IconUtilities.createImageIcon( resource ), width, height );
 	}
 
-	public TrimmedImageIconFactory( java.awt.Image image, int width, int height ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ), width, height );
+	public TrimmedImageIconFactory( Image image, int width, int height ) {
+		this( IconUtilities.createImageIcon( image ), width, height );
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+	protected Icon createIcon( Dimension size ) {
 		return new TrimmedIcon( this.getSourceImageIcon(), size );
 	}
 
 	@Override
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
 		return this.defaultSize;
 	}
 }

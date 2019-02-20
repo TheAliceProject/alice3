@@ -42,13 +42,31 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.code.UserFunctionStatusComposite;
+import org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView;
+import org.alice.ide.declarationseditor.code.components.CodeDeclarationView;
+import org.alice.ide.declarationseditor.events.components.EventListenersView;
+import org.alice.stageide.StageIDE;
+import org.lgna.croquet.AbstractSeverityStatusComposite;
+import org.lgna.croquet.views.BooleanStateButton;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.StaticAnalysisUtilities;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CodeComposite extends DeclarationComposite<org.lgna.project.ast.AbstractCode, org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView> {
-	private static java.util.Map<org.lgna.project.ast.AbstractCode, CodeComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class CodeComposite extends DeclarationComposite<AbstractCode, AbstractCodeDeclarationView> {
+	private static Map<AbstractCode, CodeComposite> map = Maps.newHashMap();
 
-	public static synchronized CodeComposite getInstance( org.lgna.project.ast.AbstractCode code ) {
+	public static synchronized CodeComposite getInstance( AbstractCode code ) {
 		if( code != null ) {
 			CodeComposite rv = map.get( code );
 			if( rv != null ) {
@@ -63,12 +81,12 @@ public class CodeComposite extends DeclarationComposite<org.lgna.project.ast.Abs
 		}
 	}
 
-	private CodeComposite( org.lgna.project.ast.AbstractCode code ) {
-		super( java.util.UUID.fromString( "b8043e06-495b-4f24-9cfb-0e447d97cc7c" ), code, org.lgna.project.ast.AbstractCode.class );
-		if( code instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
+	private CodeComposite( AbstractCode code ) {
+		super( UUID.fromString( "b8043e06-495b-4f24-9cfb-0e447d97cc7c" ), code, AbstractCode.class );
+		if( code instanceof UserMethod ) {
+			UserMethod method = (UserMethod)code;
 			if( method.isFunction() ) {
-				this.userFunctionStatusComposite = new org.alice.ide.code.UserFunctionStatusComposite( method );
+				this.userFunctionStatusComposite = new UserFunctionStatusComposite( method );
 			} else {
 				this.userFunctionStatusComposite = null;
 			}
@@ -79,11 +97,11 @@ public class CodeComposite extends DeclarationComposite<org.lgna.project.ast.Abs
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return this.getDeclaration().getDeclaringType();
 	}
 
-	public org.alice.ide.code.UserFunctionStatusComposite getUserFunctionStatusComposite() {
+	public UserFunctionStatusComposite getUserFunctionStatusComposite() {
 		return this.userFunctionStatusComposite;
 	}
 
@@ -94,7 +112,7 @@ public class CodeComposite extends DeclarationComposite<org.lgna.project.ast.Abs
 
 	@Override
 	public boolean isCloseable() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			return ide.getApiConfigurationManager().isTabClosable( this.getDeclaration() );
 		} else {
@@ -103,32 +121,33 @@ public class CodeComposite extends DeclarationComposite<org.lgna.project.ast.Abs
 	}
 
 	@Override
-	public void customizeTitleComponentAppearance( org.lgna.croquet.views.BooleanStateButton<?> button ) {
+	public void customizeTitleComponentAppearance( BooleanStateButton<?> button ) {
 		super.customizeTitleComponentAppearance( button );
 		button.scaleFont( 1.2f );
 	}
 
 	@Override
-	protected org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView createView() {
-		if( org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( this.getDeclaration().getName() ) ) {
-			return new org.alice.ide.declarationseditor.events.components.EventListenersView( this );
+	protected AbstractCodeDeclarationView createView() {
+		if( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( this.getDeclaration().getName() ) ) {
+			return new EventListenersView( this );
 		} else {
-			return new org.alice.ide.declarationseditor.code.components.CodeDeclarationView( this );
+			return new CodeDeclarationView( this );
 		}
 	}
 
 	public void handleAstChangeThatCouldBeOfInterest() {
 		if( this.userFunctionStatusComposite != null ) {
-			org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus prevErrorStatus = this.userFunctionStatusComposite.getErrorStatus();
+			AbstractSeverityStatusComposite.ErrorStatus prevErrorStatus = this.userFunctionStatusComposite.getErrorStatus();
 
-			org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus nextErrorStatus;
-			org.lgna.project.ast.AbstractCode code = this.getDeclaration();
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
-			if( org.lgna.project.ast.StaticAnalysisUtilities.containsUnreachableCode( method ) ) {
+			AbstractSeverityStatusComposite.ErrorStatus nextErrorStatus;
+			AbstractCode code = this.getDeclaration();
+			UserMethod method = (UserMethod)code;
+			BlockStatement methodBody = method.body.getValue();
+			if( methodBody.containsUnreachableCode() ) {
 				nextErrorStatus = this.userFunctionStatusComposite.getUnreachableCodeError();
 			} else {
-				if( org.lgna.project.ast.StaticAnalysisUtilities.containsAtLeastOneEnabledReturnStatement( method ) ) {
-					if( org.lgna.project.ast.StaticAnalysisUtilities.containsAReturnForEveryPath( method ) ) {
+				if( methodBody.containsAtLeastOneEnabledReturnStatement() ) {
+					if( methodBody.containsAReturnForEveryPath() ) {
 						nextErrorStatus = null;
 					} else {
 						nextErrorStatus = this.userFunctionStatusComposite.getNotAllPathsEndInReturnStatementError();
@@ -144,5 +163,5 @@ public class CodeComposite extends DeclarationComposite<org.lgna.project.ast.Abs
 		}
 	}
 
-	private final org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite;
+	private final UserFunctionStatusComposite userFunctionStatusComposite;
 }

@@ -83,21 +83,12 @@ public final class ParameterAccess extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ParameterAccess other = (ParameterAccess)o;
-			return this.parameter.valueContentEquals( other.parameter, strictness, filter );
-		}
-		return false;
-	}
-
-	@Override
 	protected void appendRepr( AstLocalizer localizer ) {
 		safeAppendRepr( localizer, this.parameter.getValue() );
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendString( this.parameter.getValue().getName() );
 	}
 

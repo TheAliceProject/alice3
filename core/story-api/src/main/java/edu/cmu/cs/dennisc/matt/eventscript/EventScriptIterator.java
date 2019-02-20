@@ -45,6 +45,7 @@ package edu.cmu.cs.dennisc.matt.eventscript;
 import java.util.List;
 import java.util.ListIterator;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 
 /**
@@ -60,7 +61,7 @@ public class EventScriptIterator {
 	}
 
 	public List<Object> getEventsSinceLastQuery( double time ) {
-		List<Object> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<Object> rv = Lists.newLinkedList();
 		ListIterator<EventScriptEvent> itr = eventScript.getEventList().listIterator( itrIndex );
 		EventScriptEvent event;
 		while( itr.hasNext() ) {

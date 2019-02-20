@@ -43,7 +43,8 @@
 
 package org.alice.interact.manipulator;
 
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
@@ -65,12 +66,12 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 	private static final boolean SHOW_PICK_POINT = false;
 
 	@Override
-	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget() {
+	public OnscreenRenderTarget getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
@@ -210,5 +211,5 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 
 	private Plane cameraFacingPickPlane;
 	private Point3 pickPoint = null;
-	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
+	private OnscreenRenderTarget onscreenRenderTarget;
 }

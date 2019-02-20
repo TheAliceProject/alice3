@@ -42,9 +42,11 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface ColorCustomizer {
-	public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor );
+	public Color changeColorIfAppropriate( Color defaultColor );
 }

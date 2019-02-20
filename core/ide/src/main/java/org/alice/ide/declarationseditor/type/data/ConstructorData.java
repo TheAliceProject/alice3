@@ -43,16 +43,19 @@
 
 package org.alice.ide.declarationseditor.type.data;
 
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.NamedUserType;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorData extends FilteredMemberData<org.lgna.project.ast.NamedUserConstructor> {
-	public ConstructorData( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.project.ast.NamedUserConstructor.class, type, type.constructors );
+public class ConstructorData extends FilteredMemberData<NamedUserConstructor> {
+	public ConstructorData( NamedUserType type ) {
+		super( NamedUserConstructor.class, type, type.constructors );
 	}
 
 	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.NamedUserConstructor item ) {
+	protected boolean isAcceptableItem( NamedUserConstructor item ) {
 		return true;
 	}
 }

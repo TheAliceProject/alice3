@@ -42,15 +42,18 @@
  *******************************************************************************/
 package org.lgna.croquet.history;
 
+import org.lgna.croquet.SingleSelectListStateComboBoxPrepModel;
+import org.lgna.croquet.triggers.Trigger;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ListSelectionStatePrepStep<T> extends PrepStep<org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<T, ?>> {
-	public static <T> ListSelectionStatePrepStep<T> createAndAddToTransaction( Transaction parent, org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<T, ?> model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new ListSelectionStatePrepStep<T>( parent, model, trigger );
+public class ListSelectionStatePrepStep<T> extends PrepStep<SingleSelectListStateComboBoxPrepModel<T, ?>> {
+	public static <T> void createAndAddToActivity( SingleSelectListStateComboBoxPrepModel<T, ?> model, UserActivity activity ) {
+		new ListSelectionStatePrepStep<T>( activity, model, activity.getTrigger() );
 	}
 
-	private ListSelectionStatePrepStep( Transaction parent, org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<T, ?> model, org.lgna.croquet.triggers.Trigger trigger ) {
+	private ListSelectionStatePrepStep( UserActivity parent, SingleSelectListStateComboBoxPrepModel<T, ?> model, Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 }

@@ -43,24 +43,29 @@
 
 package org.alice.stageide.oneshot;
 
+import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.stageide.oneshot.edits.StrikePoseEdit;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
 
 /**
  * @author Dennis Cosgrove
  */
 public class StrikePoseMethodInvocationEditFactory implements MethodInvocationEditFactory {
-	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
-	private final org.lgna.project.ast.AbstractMethod method;
-	private final org.lgna.project.ast.Expression[] argumentExpressions;
+	private final InstanceFactory instanceFactory;
+	private final AbstractMethod method;
+	private final Expression[] argumentExpressions;
 
-	public StrikePoseMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	public StrikePoseMethodInvocationEditFactory( InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
 		this.instanceFactory = instanceFactory;
 		this.method = method;
 		this.argumentExpressions = argumentExpressions;
 	}
 
 	@Override
-	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
-		return new StrikePoseEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
+	public Edit createEdit( UserActivity userActivity ) {
+		return new StrikePoseEdit( userActivity, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }

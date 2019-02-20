@@ -44,32 +44,36 @@ package org.lgna.story;
 
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
+import org.lgna.story.implementation.FlyerImp;
+import org.lgna.story.resources.FlyerResource;
+
+import javax.swing.JOptionPane;
 
 /**
  * @author dculyba
  */
 public class SFlyer extends SJointedModel implements Articulable {
-	private final org.lgna.story.implementation.FlyerImp implementation;
+	private final FlyerImp implementation;
 
 	@Override
-			/* package-private */org.lgna.story.implementation.FlyerImp getImplementation() {
+			/* package-private */FlyerImp getImplementation() {
 		return this.implementation;
 	}
 
-	public SFlyer( org.lgna.story.resources.FlyerResource resource ) {
+	public SFlyer( FlyerResource resource ) {
 		this.implementation = resource.createImplementation( this );
 	}
 
 	@Override
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void walkTo( SThing entity ) {
-		javax.swing.JOptionPane.showMessageDialog( null, "todo: walkTo" );
+		JOptionPane.showMessageDialog( null, "todo: walkTo" );
 	}
 
 	@Override
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void touch( SThing entity ) {
-		javax.swing.JOptionPane.showMessageDialog( null, "todo: touch" );
+		JOptionPane.showMessageDialog( null, "todo: touch" );
 	}
 
 	public void spreadWings( StrikePose.Detail... details ) {
@@ -82,143 +86,143 @@ public class SFlyer extends SJointedModel implements Articulable {
 
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public SJoint getRoot() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.ROOT );
+		return SJoint.getJoint( this, FlyerResource.ROOT );
 	}
 
 	public SJoint getSpineBase() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.SPINE_BASE );
+		return SJoint.getJoint( this, FlyerResource.SPINE_BASE );
 	}
 
 	public SJoint getSpineMiddle() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.SPINE_MIDDLE );
+		return SJoint.getJoint( this, FlyerResource.SPINE_MIDDLE );
 	}
 
 	public SJoint getSpineUpper() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.SPINE_UPPER );
+		return SJoint.getJoint( this, FlyerResource.SPINE_UPPER );
 	}
 
 	public SJoint[] getNeckArray() {
-		return org.lgna.story.SJoint.getJointArray( this, this.getImplementation().getResource().getNeckArray() );
+		return SJoint.getJointArray( this, this.getImplementation().getResource().getNeckArray() );
 	}
 
 	public SJoint getNeck() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.NECK_0 );
+		return SJoint.getJoint( this, FlyerResource.NECK_0 );
 	}
 
 	public SJoint getHead() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.HEAD );
+		return SJoint.getJoint( this, FlyerResource.HEAD );
 	}
 
 	public SJoint getMouth() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.MOUTH );
+		return SJoint.getJoint( this, FlyerResource.MOUTH );
 	}
 
 	//	public SJoint getLowerLip() {
 	//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LOWER_LIP);
 	//	}
 	public SJoint getLeftEye() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_EYE );
+		return SJoint.getJoint( this, FlyerResource.LEFT_EYE );
 	}
 
 	public SJoint getRightEye() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_EYE );
+		return SJoint.getJoint( this, FlyerResource.RIGHT_EYE );
 	}
 
 	public SJoint getLeftEyelid() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_EYELID );
+		return SJoint.getJoint( this, FlyerResource.LEFT_EYELID );
 	}
 
 	public SJoint getRightEyelid() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_EYELID );
+		return SJoint.getJoint( this, FlyerResource.RIGHT_EYELID );
 	}
 
 	public SJoint getLeftWingShoulder() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_SHOULDER );
+		return SJoint.getJoint( this, FlyerResource.LEFT_WING_SHOULDER );
 	}
 
 	public SJoint getLeftWingElbow() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_ELBOW );
+		return SJoint.getJoint( this, FlyerResource.LEFT_WING_ELBOW );
 	}
 
 	public SJoint getLeftWingWrist() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_WRIST );
+		return SJoint.getJoint( this, FlyerResource.LEFT_WING_WRIST );
 	}
 
 	//	public SJoint getLeftWingTip() {
 	//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_TIP);
 	//	}
 	public SJoint getRightWingShoulder() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_SHOULDER );
+		return SJoint.getJoint( this, FlyerResource.RIGHT_WING_SHOULDER );
 	}
 
 	public SJoint getRightWingElbow() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_ELBOW );
+		return SJoint.getJoint( this, FlyerResource.RIGHT_WING_ELBOW );
 	}
 
 	public SJoint getRightWingWrist() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_WRIST );
+		return SJoint.getJoint( this, FlyerResource.RIGHT_WING_WRIST );
 	}
 
 	//	public SJoint getRightWingTip() {
 	//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_TIP);
 	//	}
 	public SJoint getPelvisLowerBody() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.PELVIS_LOWER_BODY );
+		return SJoint.getJoint( this, FlyerResource.PELVIS_LOWER_BODY );
 	}
 
 	public SJoint[] getTailArray() {
-		return org.lgna.story.SJoint.getJointArray( this, this.getImplementation().getResource().getTailArray() );
+		return SJoint.getJointArray( this, this.getImplementation().getResource().getTailArray() );
 	}
 
 	public SJoint getTail() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_0 );
+		return SJoint.getJoint( this, FlyerResource.TAIL_0 );
 	}
 
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	@Deprecated
 	public SJoint getTail2() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_1 );
+		return SJoint.getJoint( this, FlyerResource.TAIL_1 );
 	}
 
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	@Deprecated
 	public SJoint getTail3() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_2 );
+		return SJoint.getJoint( this, FlyerResource.TAIL_2 );
 	}
 
 	public SJoint getLeftHip() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_HIP );
+		return SJoint.getJoint( this, FlyerResource.LEFT_HIP );
 	}
 
 	public SJoint getLeftKnee() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_KNEE );
+		return SJoint.getJoint( this, FlyerResource.LEFT_KNEE );
 	}
 
 	public SJoint getLeftAnkle() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_ANKLE );
+		return SJoint.getJoint( this, FlyerResource.LEFT_ANKLE );
 	}
 
 	public SJoint getLeftFoot() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_FOOT );
+		return SJoint.getJoint( this, FlyerResource.LEFT_FOOT );
 	}
 
 	//	public SJoint getLeftToe() {
 	//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_TOE);
 	//	}
 	public SJoint getRightHip() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_HIP );
+		return SJoint.getJoint( this, FlyerResource.RIGHT_HIP );
 	}
 
 	public SJoint getRightKnee() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_KNEE );
+		return SJoint.getJoint( this, FlyerResource.RIGHT_KNEE );
 	}
 
 	public SJoint getRightAnkle() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_ANKLE );
+		return SJoint.getJoint( this, FlyerResource.RIGHT_ANKLE );
 	}
 
 	public SJoint getRightFoot() {
-		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_FOOT );
+		return SJoint.getJoint( this, FlyerResource.RIGHT_FOOT );
 	}
 
 	//	public SJoint getRightToe() {
@@ -226,7 +230,7 @@ public class SFlyer extends SJointedModel implements Articulable {
 	//	}
 
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public void strikePose( org.lgna.story.FlyerPose pose, StrikePose.Detail... details ) {
+	public void strikePose( FlyerPose pose, StrikePose.Detail... details ) {
 		super.strikePose( pose, details );
 	}
 }

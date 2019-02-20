@@ -42,12 +42,21 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import org.alice.interact.DragAdapter;
+import org.alice.stageide.modelviewer.ModelViewer;
+import org.alice.stageide.personresource.PersonImp;
+import org.lgna.story.resources.sims2.LifeStage;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
-	private final org.alice.stageide.personresource.PersonImp personImp = new org.alice.stageide.personresource.PersonImp();
-	private final org.alice.stageide.personresource.views.CreateAPersonDragAdapter dragAdapter = new org.alice.stageide.personresource.views.CreateAPersonDragAdapter();
+public class PersonViewer extends ModelViewer {
+	private final PersonImp personImp = new PersonImp();
+	private final CreateAPersonDragAdapter dragAdapter = new CreateAPersonDragAdapter();
 
 	public PersonViewer() {
 		this.setMinimumPreferredWidth( 300 );
@@ -72,15 +81,15 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		yFactor *= 0.65;
 		xzFactor *= 0.65;
 		if( this.getScene() != null ) {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevPOV = this.getCamera().getLocalTransformation();
+			AffineMatrix4x4 prevPOV = this.getCamera().getLocalTransformation();
 			this.getCamera().setTransformation( this.getScene().createOffsetStandIn( -0.3 * xzFactor, height * yFactor, -height * xzFactor ) );
 			this.getCamera().setOrientationOnlyToPointAt( this.getScene().createOffsetStandIn( 0, height * pointAtFactor, 0 ) );
-			edu.cmu.cs.dennisc.animation.Animator animator = this.getAnimator();
+			Animator animator = this.getAnimator();
 			if( ( duration > 0.0 ) && ( animator != null ) ) {
-				edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextPOV = this.getCamera().getLocalTransformation();
+				AffineMatrix4x4 nextPOV = this.getCamera().getLocalTransformation();
 				this.getCamera().setLocalTransformation( prevPOV );
 
-				edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation povAnimation = new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( this.getCamera().getSgComposite(), edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, nextPOV );
+				PointOfViewAnimation povAnimation = new PointOfViewAnimation( this.getCamera().getSgComposite(), AsSeenBy.PARENT, null, nextPOV );
 				povAnimation.setDuration( duration );
 
 				animator.completeAll( null );
@@ -94,13 +103,13 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	private final double CHILD_HEIGHT = 1.2;
 	private final double TODDLER_HEIGHT = .75;
 
-	public void setCameraToFullView( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+	public void setCameraToFullView( LifeStage lifeStage ) {
 		//		this.positionAndOrientCamera( ADULT_HEIGHT, 0, 0.5 );
 		double height;
-		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.CHILD ) ) {
+		if( ( lifeStage == LifeStage.ELDER ) || ( lifeStage == LifeStage.ADULT ) || ( lifeStage == LifeStage.TEEN ) || ( lifeStage == LifeStage.CHILD ) ) {
 			height = ADULT_HEIGHT;
 		}
-		else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+		else if( lifeStage == LifeStage.TODDLER ) {
 			height = ADULT_HEIGHT;
 		}
 		else {
@@ -109,14 +118,14 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		this.positionAndOrientCamera( height, 0, 0.5 );
 	}
 
-	public void setCameraToCloseUp( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+	public void setCameraToCloseUp( LifeStage lifeStage ) {
 		double height;
-		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ) {
+		if( ( lifeStage == LifeStage.ADULT ) || ( lifeStage == LifeStage.ELDER ) ) {
 			height = ADULT_HEIGHT;
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+		} else if( lifeStage == LifeStage.TEEN ) {
 			height = TEEN_HEIGHT;
 		}
-		else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.CHILD ) {
+		else if( lifeStage == LifeStage.CHILD ) {
 			height = CHILD_HEIGHT;
 		}
 		else {
@@ -125,11 +134,11 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		this.positionAndOrientCamera( height, 1, 0.5 );
 	}
 
-	public org.alice.stageide.personresource.PersonImp getPerson() {
-		return (org.alice.stageide.personresource.PersonImp)this.getModel();
+	public PersonImp getPerson() {
+		return (PersonImp)this.getModel();
 	}
 
-	public void setPerson( org.alice.stageide.personresource.PersonImp person ) {
+	public void setPerson( PersonImp person ) {
 		this.setModel( person );
 		this.dragAdapter.setSelectedImplementation( person );
 		this.positionAndOrientCamera( ADULT_HEIGHT, 0, 0.0 );
@@ -139,7 +148,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	protected void initialize() {
 		super.initialize();
 		this.dragAdapter.setOnscreenRenderTarget( this.getOnscreenRenderTarget() );
-		this.dragAdapter.addCameraView( org.alice.interact.AbstractDragAdapter.CameraView.MAIN, this.getCamera().getSgCamera(), null );
+		this.dragAdapter.addCameraView( DragAdapter.CameraView.MAIN, this.getCamera().getSgCamera(), null );
 		this.dragAdapter.makeCameraActive( this.getCamera().getSgCamera() );
 	}
 }

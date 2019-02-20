@@ -44,6 +44,9 @@
 package org.alice.interact.handle;
 
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+
+import javax.swing.Icon;
 
 /**
  * @author Dennis Cosgrove
@@ -55,19 +58,19 @@ public enum HandleStyle {
 	TRANSLATION( "translateHandlesIcon.png", "tooltipTranslation" ),
 	RESIZE( "resizeHandlesIcon.png", "tooltipResize" );
 
-	private javax.swing.Icon icon;
+	private Icon icon;
 	private String toolTipKey;
 
 	HandleStyle( String iconName, String toolTipKey )
 	{
 		if( iconName != null )
 		{
-			this.icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( HandleStyle.class.getResource( "images/" + iconName ) );
+			this.icon = IconUtilities.createImageIcon( HandleStyle.class.getResource( "images/" + iconName ) );
 		}
 		this.toolTipKey = toolTipKey;
 	}
 
-	public javax.swing.Icon getIcon()
+	public Icon getIcon()
 	{
 		return this.icon;
 	}

@@ -43,9 +43,11 @@
 
 package org.lgna.story;
 
+import java.net.URL;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface ImagePaint extends Paint {
-	public java.net.URL getResource();
+	public URL getResource();
 }

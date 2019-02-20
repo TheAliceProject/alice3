@@ -41,7 +41,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.ide.localize.review.core.Item;
+import org.alice.ide.localize.review.core.LocalizeUtils;
+import org.alice.ide.story.AliceIde;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * @author Dennis Cosgrove
@@ -49,7 +64,7 @@ import org.alice.ide.localize.review.core.Item;
 public class CheckTranslations {
 
 	private static class Mistranslation {
-		public Mistranslation( Item item, java.util.List<String> englishTags, String localizedValue, java.util.List<String> localizedTags ) {
+		public Mistranslation( Item item, List<String> englishTags, String localizedValue, List<String> localizedTags ) {
 			this.item = item;
 			this.englishTags = englishTags;
 			this.localizedValue = localizedValue;
@@ -57,32 +72,32 @@ public class CheckTranslations {
 		}
 
 		private final Item item;
-		private final java.util.List<String> englishTags;
+		private final List<String> englishTags;
 		private final String localizedValue;
-		private final java.util.List<String> localizedTags;
+		private final List<String> localizedTags;
 	}
 
 	public static void main( String[] args ) throws Exception {
 
-		java.util.List<java.util.Locale> ALL_LOCALES = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( new java.util.Locale( "pt" ), new java.util.Locale( "pt", "BR" ), new java.util.Locale( "es" ), new java.util.Locale( "fr" ), new java.util.Locale( "fr", "BE" ), new java.util.Locale( "it" ), new java.util.Locale( "nl" ), new java.util.Locale( "de" ), new java.util.Locale( "el" ), new java.util.Locale( "ro" ), new java.util.Locale( "cs" ), new java.util.Locale( "sl" ), new java.util.Locale( "lt" ), new java.util.Locale( "ru" ), new java.util.Locale( "uk" ), new java.util.Locale( "tr" ), new java.util.Locale( "ar" ), new java.util.Locale( "iw" ), new java.util.Locale( "in" ), new java.util.Locale( "zh", "CN" ), new java.util.Locale( "zh", "TW" ), new java.util.Locale( "ko" ) );
+		List<Locale> ALL_LOCALES = Lists.newArrayList( new Locale( "pt" ), new Locale( "pt", "BR" ), new Locale( "es" ), new Locale( "fr" ), new Locale( "fr", "BE" ), new Locale( "it" ), new Locale( "nl" ), new Locale( "de" ), new Locale( "el" ), new Locale( "ro" ), new Locale( "cs" ), new Locale( "sl" ), new Locale( "lt" ), new Locale( "ru" ), new Locale( "uk" ), new Locale( "tr" ), new Locale( "ar" ), new Locale( "iw" ), new Locale( "in" ), new Locale( "zh", "CN" ), new Locale( "zh", "TW" ), new Locale( "ko" ) );
 
-		final java.util.List<java.util.Locale> locales;
+		final List<Locale> locales;
 		if( args.length == 0 ) {
 			locales = ALL_LOCALES;
 		} else {
-			locales = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( args.length );
+			locales = Lists.newArrayListWithInitialCapacity( args.length );
 			for( String arg : args ) {
 				String[] languageCountryVariant = arg.split( "," );
-				java.util.Locale locale;
+				Locale locale;
 				switch( languageCountryVariant.length ) {
 				case 1:
-					locale = new java.util.Locale( languageCountryVariant[ 0 ] );
+					locale = new Locale( languageCountryVariant[ 0 ] );
 					break;
 				case 2:
-					locale = new java.util.Locale( languageCountryVariant[ 0 ], languageCountryVariant[ 1 ] );
+					locale = new Locale( languageCountryVariant[ 0 ], languageCountryVariant[ 1 ] );
 					break;
 				case 3:
-					locale = new java.util.Locale( languageCountryVariant[ 0 ], languageCountryVariant[ 1 ], languageCountryVariant[ 2 ] );
+					locale = new Locale( languageCountryVariant[ 0 ], languageCountryVariant[ 1 ], languageCountryVariant[ 2 ] );
 					break;
 				default:
 					throw new Exception( arg );
@@ -96,29 +111,29 @@ public class CheckTranslations {
 		}
 
 		System.out.println( "Checking locales: " );
-		for( java.util.Locale l : locales ) {
+		for( Locale l : locales ) {
 			System.out.println( "  " + l.getDisplayName() );
 		}
 
-		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<java.util.Locale, Mistranslation> mapLocaleToMistranslations = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentListHashMap();
+		InitializingIfAbsentListHashMap<Locale, Mistranslation> mapLocaleToMistranslations = Maps.newInitializingIfAbsentListHashMap();
 
-		java.util.List<Item> items = org.alice.ide.localize.review.core.LocalizeUtils.getItems( org.alice.ide.story.AliceIde.class, "alice-ide" );
+		List<Item> items = LocalizeUtils.getItems( AliceIde.class, "alice-ide" );
 		for( Item item : items ) {
 			String defaultValue = item.getDefaultValue();
-			java.util.List<String> englishTags = org.alice.ide.localize.review.core.LocalizeUtils.getTags( defaultValue );
+			List<String> englishTags = LocalizeUtils.getTags( defaultValue );
 			if( englishTags.size() > 0 ) {
 				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( item.getKey(), item.getDefaultValue() );
 
-				for( java.util.Locale locale : locales ) {
+				for( Locale locale : locales ) {
 
-					java.util.ResourceBundle resourceBundleB = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( item.getBundleName(), locale );
+					ResourceBundle resourceBundleB = ResourceBundleUtilities.getUtf8Bundle( item.getBundleName(), locale );
 					String localizedValue = resourceBundleB.getString( item.getKey() );
 
 					if( localizedValue.equals( defaultValue ) ) {
 						//pass
 					} else {
-						java.util.List<Mistranslation> mistranslations = mapLocaleToMistranslations.getInitializingIfAbsentToLinkedList( locale );
-						java.util.List<String> localizedTags = org.alice.ide.localize.review.core.LocalizeUtils.getTags( localizedValue );
+						List<Mistranslation> mistranslations = mapLocaleToMistranslations.getInitializingIfAbsentToLinkedList( locale );
+						List<String> localizedTags = LocalizeUtils.getTags( localizedValue );
 
 						//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( localizedValue );
 						for( String englishTag : englishTags ) {
@@ -140,11 +155,11 @@ public class CheckTranslations {
 		sb.append( "Alice Translations Validity Report" );
 		sb.append( "</title>" );
 		sb.append( "<h1>Alice Translations Validity Report</h1>" );
-		for( java.util.Locale locale : locales ) {
+		for( Locale locale : locales ) {
 			sb.append( "<h2>" );
 			sb.append( locale.getDisplayName() );
 			sb.append( "</h2>" );
-			java.util.List<Mistranslation> mistranslations = mapLocaleToMistranslations.getInitializingIfAbsentToLinkedList( locale );
+			List<Mistranslation> mistranslations = mapLocaleToMistranslations.getInitializingIfAbsentToLinkedList( locale );
 			for( Mistranslation mistranslation : mistranslations ) {
 				sb.append( "incorrect tag(s): " );
 				sb.append( "<a href=\"" );
@@ -157,22 +172,22 @@ public class CheckTranslations {
 		}
 
 		//java.util.Date date = new java.util.Date();
-		java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
 
 		sb.append( "<hr>" );
 		sb.append( "<em>generated: " );
-		sb.append( simpleDateFormat.format( new java.util.Date() ) );
+		sb.append( simpleDateFormat.format( new Date() ) );
 		sb.append( "</em>" );
 
 		sb.append( "</html>" );
 
-		java.io.File outputFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "latestTranslationsValidityReport.html" );
-		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( outputFile, sb.toString() );
+		File outputFile = new File( FileUtilities.getDefaultDirectory(), "latestTranslationsValidityReport.html" );
+		TextFileUtilities.write( outputFile, sb.toString() );
 
 		System.out.println( "Translation check finished." );
 		System.out.println( "Results:" );
-		for( java.util.Locale locale : locales ) {
-			java.util.List<Mistranslation> mistranslations = mapLocaleToMistranslations.getInitializingIfAbsentToLinkedList( locale );
+		for( Locale locale : locales ) {
+			List<Mistranslation> mistranslations = mapLocaleToMistranslations.getInitializingIfAbsentToLinkedList( locale );
 			System.out.println( "  " + locale.getDisplayName() + " : " + mistranslations.size() + " errors" );
 		}
 		System.out.println( "Results written to:\n" + outputFile.getCanonicalPath() );

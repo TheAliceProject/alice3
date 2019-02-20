@@ -42,12 +42,19 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import edu.cmu.cs.dennisc.javax.swing.ColorCustomizer;
+
+import javax.swing.JTextField;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JSuggestiveTextField extends javax.swing.JTextField {
+public class JSuggestiveTextField extends JTextField {
 	private String textForBlankCondition;
-	private edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer;
+	private ColorCustomizer foregroundCustomizer;
 
 	public JSuggestiveTextField( String text, String textForBlankCondition ) {
 		//this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
@@ -76,17 +83,17 @@ public class JSuggestiveTextField extends javax.swing.JTextField {
 		this.textForBlankCondition = textForBlankCondition;
 	}
 
-	public edu.cmu.cs.dennisc.javax.swing.ColorCustomizer getForegroundCustomizer() {
+	public ColorCustomizer getForegroundCustomizer() {
 		return this.foregroundCustomizer;
 	}
 
-	public void setForegroundCustomizer( edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer ) {
+	public void setForegroundCustomizer( ColorCustomizer foregroundCustomizer ) {
 		this.foregroundCustomizer = foregroundCustomizer;
 	}
 
 	@Override
-	public java.awt.Color getForeground() {
-		java.awt.Color rv = super.getForeground();
+	public Color getForeground() {
+		Color rv = super.getForeground();
 		if( this.foregroundCustomizer != null ) {
 			rv = this.foregroundCustomizer.changeColorIfAppropriate( rv );
 		}
@@ -94,15 +101,15 @@ public class JSuggestiveTextField extends javax.swing.JTextField {
 	}
 
 	@Override
-	public java.awt.Dimension getMaximumSize() {
-		java.awt.Dimension rv = super.getMaximumSize();
-		java.awt.Dimension preferred = getPreferredSize();
+	public Dimension getMaximumSize() {
+		Dimension rv = super.getMaximumSize();
+		Dimension preferred = getPreferredSize();
 		rv.height = preferred.height;
 		return rv;
 	}
 
 	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
+	protected void paintComponent( Graphics g ) {
 		super.paintComponent( g );
 		SuggestiveTextUtilities.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
 	}

@@ -43,6 +43,10 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AngleInRadians;
+import edu.cmu.cs.dennisc.math.property.AngleProperty;
+import edu.cmu.cs.dennisc.property.DoubleProperty;
+
 /**
  * a spot light emits a cone of light; behaving like a point light within its
  * inner beam angle; and falling off exponentially between its inner and outer
@@ -52,7 +56,7 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class SpotLight extends PointLight {
-	public final edu.cmu.cs.dennisc.math.property.AngleProperty innerBeamAngle = new edu.cmu.cs.dennisc.math.property.AngleProperty( this, new edu.cmu.cs.dennisc.math.AngleInRadians( 0.4 ) );
-	public final edu.cmu.cs.dennisc.math.property.AngleProperty outerBeamAngle = new edu.cmu.cs.dennisc.math.property.AngleProperty( this, new edu.cmu.cs.dennisc.math.AngleInRadians( 0.5 ) );
-	public final edu.cmu.cs.dennisc.property.DoubleProperty falloff = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 1.0 );
+	public final AngleProperty innerBeamAngle = new AngleProperty( this, new AngleInRadians( 0.4 ) );
+	public final AngleProperty outerBeamAngle = new AngleProperty( this, new AngleInRadians( 0.5 ) );
+	public final DoubleProperty falloff = new DoubleProperty( this, 1.0 );
 }

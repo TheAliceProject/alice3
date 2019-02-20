@@ -42,14 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.event;
 
-public abstract class TreeSelectionAdapter<E> implements javax.swing.event.TreeSelectionListener {
-	protected abstract void valueChanged( javax.swing.event.TreeSelectionEvent e, E oldLeadValue, E newLeadValue );
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
+
+public abstract class TreeSelectionAdapter<E> implements TreeSelectionListener {
+	protected abstract void valueChanged( TreeSelectionEvent e, E oldLeadValue, E newLeadValue );
 
 	@Override
-	public final void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
+	public final void valueChanged( TreeSelectionEvent e ) {
 		//javax.swing.JTree tree = (javax.swing.JTree)e.getSource();
-		javax.swing.tree.TreePath oldLeadPath = e.getOldLeadSelectionPath();
-		javax.swing.tree.TreePath newLeadPath = e.getNewLeadSelectionPath();
+		TreePath oldLeadPath = e.getOldLeadSelectionPath();
+		TreePath newLeadPath = e.getNewLeadSelectionPath();
 		//int oldRow = tree.getRowForPath( oldLeadPath );
 		//int newRow = tree.getRowForPath( newLeadPath );
 		E oldLeadValue;

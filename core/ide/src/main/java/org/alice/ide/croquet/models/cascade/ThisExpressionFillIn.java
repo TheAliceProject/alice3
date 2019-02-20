@@ -42,10 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade;
 
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.ThisExpression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ThisExpressionFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.ThisExpression> {
+public class ThisExpressionFillIn extends ExpressionFillInWithoutBlanks<ThisExpression> {
 	private static class SingletonHolder {
 		private static ThisExpressionFillIn instance = new ThisExpressionFillIn();
 	}
@@ -54,19 +59,19 @@ public class ThisExpressionFillIn extends org.alice.ide.croquet.models.cascade.E
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.project.ast.ThisExpression transientValue = new org.lgna.project.ast.ThisExpression();
+	private final ThisExpression transientValue = new ThisExpression();
 
 	private ThisExpressionFillIn() {
-		super( java.util.UUID.fromString( "9183fbda-6571-4421-9336-dde1ec9188de" ) );
+		super( UUID.fromString( "9183fbda-6571-4421-9336-dde1ec9188de" ) );
 	}
 
 	@Override
-	public org.lgna.project.ast.ThisExpression getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ThisExpression, Void> node ) {
+	public ThisExpression getTransientValue( ItemNode<? super ThisExpression, Void> node ) {
 		return this.transientValue;
 	}
 
 	@Override
-	public org.lgna.project.ast.ThisExpression createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ThisExpression, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return new org.lgna.project.ast.ThisExpression();
+	public ThisExpression createValue( ItemNode<? super ThisExpression, Void> node ) {
+		return new ThisExpression();
 	}
 }

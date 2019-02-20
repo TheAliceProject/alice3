@@ -43,13 +43,23 @@
 
 package org.alice.stageide.oneshot;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.ImmutableCascade;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ProceduresCascade extends org.lgna.croquet.ImmutableCascade<MethodInvocationEditFactory> {
-	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, ProceduresCascade> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class ProceduresCascade extends ImmutableCascade<MethodInvocationEditFactory> {
+	private static Map<InstanceFactory, ProceduresCascade> map = Maps.newHashMap();
 
-	public static ProceduresCascade getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+	public static ProceduresCascade getInstance( InstanceFactory instanceFactory ) {
 		synchronized( map ) {
 			ProceduresCascade rv = map.get( instanceFactory );
 			if( rv != null ) {
@@ -62,13 +72,13 @@ public class ProceduresCascade extends org.lgna.croquet.ImmutableCascade<MethodI
 		}
 	}
 
-	private ProceduresCascade( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance( instanceFactory ) );
+	private ProceduresCascade( InstanceFactory instanceFactory ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance( instanceFactory ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step, MethodInvocationEditFactory[] values ) {
+	protected Edit createEdit( UserActivity userActivity, MethodInvocationEditFactory[] values ) {
 		assert values.length == 1;
-		return values[ 0 ].createEdit( step );
+		return values[ 0 ].createEdit( userActivity );
 	}
 }

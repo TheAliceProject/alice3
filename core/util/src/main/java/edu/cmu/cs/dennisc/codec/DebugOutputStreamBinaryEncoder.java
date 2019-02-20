@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.codec;
 
+import java.io.OutputStream;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DebugOutputStreamBinaryEncoder extends OutputStreamBinaryEncoder {
-	public DebugOutputStreamBinaryEncoder( java.io.OutputStream os ) {
+	public DebugOutputStreamBinaryEncoder( OutputStream os ) {
 		super( os );
 	}
 

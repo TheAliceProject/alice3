@@ -42,11 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.event;
 
+import edu.cmu.cs.dennisc.pattern.event.Event;
+import edu.cmu.cs.dennisc.render.RenderFactory;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AutomaticDisplayEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.render.RenderFactory> {
-	public AutomaticDisplayEvent( edu.cmu.cs.dennisc.render.RenderFactory renderFactory ) {
+public class AutomaticDisplayEvent extends Event<RenderFactory> {
+	public AutomaticDisplayEvent( RenderFactory renderFactory ) {
 		super( renderFactory );
 	}
 }

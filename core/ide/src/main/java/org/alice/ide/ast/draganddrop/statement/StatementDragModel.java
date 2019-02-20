@@ -43,14 +43,25 @@
 
 package org.alice.ide.ast.draganddrop.statement;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.ConstructorInvocationStatement;
+import org.lgna.project.ast.Statement;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class StatementDragModel extends AbstractStatementDragModel {
-	private static java.util.Map<org.lgna.project.ast.Statement, StatementDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<Statement, StatementDragModel> map = Maps.newHashMap();
 
-	public static synchronized StatementDragModel getInstance( org.lgna.project.ast.Statement statement ) {
-		if( statement instanceof org.lgna.project.ast.ConstructorInvocationStatement ) {
+	public static synchronized StatementDragModel getInstance( Statement statement ) {
+		if( statement instanceof ConstructorInvocationStatement ) {
 			return null;
 		} else {
 			StatementDragModel rv = map.get( statement );
@@ -64,24 +75,24 @@ public class StatementDragModel extends AbstractStatementDragModel {
 		}
 	}
 
-	private org.lgna.project.ast.Statement statement;
+	private Statement statement;
 
-	private StatementDragModel( org.lgna.project.ast.Statement statement ) {
-		super( java.util.UUID.fromString( "e9c09a94-b2f0-440b-80ee-aff456b382e8" ) );
+	private StatementDragModel( Statement statement ) {
+		super( UUID.fromString( "e9c09a94-b2f0-440b-80ee-aff456b382e8" ) );
 		this.statement = statement;
 	}
 
 	@Override
 	public boolean isAddEventListenerLikeSubstance() {
-		return org.lgna.project.ast.AstUtilities.isAddEventListenerMethodInvocationStatement( this.statement );
+		return AstUtilities.isAddEventListenerMethodInvocationStatement( this.statement );
 	}
 
-	public org.lgna.project.ast.Statement getStatement() {
+	public Statement getStatement() {
 		return this.statement;
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+	public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
 		throw new RuntimeException( "todo" );
 	}
 }

@@ -42,48 +42,56 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.TexturePaint;
+import java.awt.image.BufferedImage;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PaintUtilities {
-	private static java.awt.Paint disabledTexturePaint = null;
+	private static Paint disabledTexturePaint = null;
 
-	public static java.awt.Paint getDisabledTexturePaint() {
+	public static Paint getDisabledTexturePaint() {
 		if( PaintUtilities.disabledTexturePaint != null ) {
 			//pass
 		} else {
 			int width = 8;
 			int height = 8;
-			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			g2.setColor( new java.awt.Color( 128, 128, 128, 31 ) );
+			BufferedImage image = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
+			Graphics2D g2 = (Graphics2D)image.getGraphics();
+			g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+			g2.setColor( new Color( 128, 128, 128, 31 ) );
 			g2.fillRect( 0, 0, width, height );
-			g2.setColor( new java.awt.Color( 31, 31, 31, 127 ) );
+			g2.setColor( new Color( 31, 31, 31, 127 ) );
 			g2.drawLine( 0, height, width, 0 );
 			g2.drawLine( 0, 0, 0, 0 );
 			g2.dispose();
-			PaintUtilities.disabledTexturePaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
+			PaintUtilities.disabledTexturePaint = new TexturePaint( image, new Rectangle( 0, 0, width, height ) );
 		}
 		return PaintUtilities.disabledTexturePaint;
 	}
 
-	private static java.awt.TexturePaint copyTexturePaint = null;
+	private static TexturePaint copyTexturePaint = null;
 
-	public static java.awt.TexturePaint getCopyTexturePaint() {
+	public static TexturePaint getCopyTexturePaint() {
 		if( PaintUtilities.copyTexturePaint != null ) {
 			//pass
 		} else {
 			int width = 8;
 			int height = 8;
-			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			g2.setColor( new java.awt.Color( 0, 0, 255, 96 ) );
+			BufferedImage image = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
+			Graphics2D g2 = (Graphics2D)image.getGraphics();
+			g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+			g2.setColor( new Color( 0, 0, 255, 96 ) );
 			g2.drawLine( 2, 4, 6, 4 );
 			g2.drawLine( 4, 2, 4, 6 );
 			g2.dispose();
-			PaintUtilities.copyTexturePaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
+			PaintUtilities.copyTexturePaint = new TexturePaint( image, new Rectangle( 0, 0, width, height ) );
 		}
 		return PaintUtilities.copyTexturePaint;
 	}

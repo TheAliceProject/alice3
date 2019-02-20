@@ -43,10 +43,20 @@
 
 package org.alice.ide.ast.importers;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import org.lgna.common.resources.ImageResource;
+import org.lgna.croquet.importer.Importer;
+import org.lgna.story.implementation.ImageFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ImageResourceImporter extends org.lgna.croquet.importer.Importer<org.lgna.common.resources.ImageResource> {
+public final class ImageResourceImporter extends Importer<ImageResource> {
 	private static class SingletonHolder {
 		private static ImageResourceImporter instance = new ImageResourceImporter();
 	}
@@ -57,15 +67,15 @@ public final class ImageResourceImporter extends org.lgna.croquet.importer.Impor
 
 	private ImageResourceImporter() {
 		super(
-				java.util.UUID.randomUUID(),
-				edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(),
-				edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ? "*.png;*.jpg;*.gif;*.bmp" : null,
-				org.lgna.common.resources.ImageResource.createFilenameFilter( true ),
+				UUID.randomUUID(),
+				FileUtilities.getDefaultDirectory(),
+				SystemUtilities.isWindows() ? "*.png;*.jpg;*.gif;*.bmp" : null,
+				ImageResource.createFilenameFilter( true ),
 				"png", "jpg", "gif", "bmp" );
 	}
 
 	@Override
-	protected org.lgna.common.resources.ImageResource createFromFile( java.io.File file ) throws java.io.IOException {
-		return org.lgna.story.implementation.ImageFactory.createImageResource( file );
+	protected ImageResource createFromFile( File file ) throws IOException {
+		return ImageFactory.createImageResource( file );
 	}
 }

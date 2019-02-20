@@ -43,10 +43,16 @@
 
 package org.alice.ide.croquet.models.cascade.logicalcomplement;
 
+import org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.LogicalComplement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class LogicalComplementOfPreviousExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks<org.lgna.project.ast.LogicalComplement> {
+public class LogicalComplementOfPreviousExpressionFillIn extends PreviousExpressionBasedFillInWithoutBlanks<LogicalComplement> {
 	private static class SingletonHolder {
 		private static LogicalComplementOfPreviousExpressionFillIn instance = new LogicalComplementOfPreviousExpressionFillIn();
 	}
@@ -56,7 +62,7 @@ public class LogicalComplementOfPreviousExpressionFillIn extends org.alice.ide.c
 	}
 
 	private LogicalComplementOfPreviousExpressionFillIn() {
-		super( java.util.UUID.fromString( "53574545-8136-40f3-83cc-1483522dfd73" ) );
+		super( UUID.fromString( "53574545-8136-40f3-83cc-1483522dfd73" ) );
 	}
 
 	//	@Override
@@ -64,7 +70,7 @@ public class LogicalComplementOfPreviousExpressionFillIn extends org.alice.ide.c
 	//		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
 	//	}
 	@Override
-	protected org.lgna.project.ast.LogicalComplement createValue( org.lgna.project.ast.Expression previousExpression ) {
-		return new org.lgna.project.ast.LogicalComplement( previousExpression );
+	protected LogicalComplement createValue( Expression previousExpression ) {
+		return new LogicalComplement( previousExpression );
 	}
 }

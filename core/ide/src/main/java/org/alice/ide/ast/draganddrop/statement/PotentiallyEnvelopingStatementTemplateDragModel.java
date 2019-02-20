@@ -42,23 +42,31 @@
  *******************************************************************************/
 package org.alice.ide.ast.draganddrop.statement;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.Statement;
+
+import java.awt.event.MouseEvent;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class PotentiallyEnvelopingStatementTemplateDragModel extends StatementTemplateDragModel {
-	public PotentiallyEnvelopingStatementTemplateDragModel( java.util.UUID id, Class<? extends org.lgna.project.ast.Statement> statementCls, org.lgna.project.ast.Statement possiblyIncompleteStatement ) {
+	public PotentiallyEnvelopingStatementTemplateDragModel( UUID id, Class<? extends Statement> statementCls, Statement possiblyIncompleteStatement ) {
 		super( id, statementCls, possiblyIncompleteStatement );
 	}
 
-	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping );
+	protected abstract Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping );
 
 	@Override
-	protected final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	protected final Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
 		boolean isEnveloping = false;
-		java.awt.event.MouseEvent e = step.getLatestMouseEvent();
+		MouseEvent e = step.getLatestMouseEvent();
 		if( e != null ) {
 			isEnveloping = e.isShiftDown();
 		}
-		return this.getDropModel( step, blockStatementIndexPair, isEnveloping );
+		return this.getDropOperation( step, blockStatementIndexPair, isEnveloping );
 	}
 }

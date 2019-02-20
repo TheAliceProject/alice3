@@ -42,6 +42,11 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import org.alice.ide.icons.Icons;
+
+import java.io.File;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,18 +60,18 @@ public class SaveProjectOperation extends AbstractSaveProjectOperation {
 	}
 
 	private SaveProjectOperation() {
-		super( java.util.UUID.fromString( "44ffba8a-3fb3-4cb5-97b6-55cd93c88e9d" ) );
+		super( UUID.fromString( "44ffba8a-3fb3-4cb5-97b6-55cd93c88e9d" ) );
 	}
 
 	@Override
-	protected boolean isPromptNecessary( java.io.File file ) {
+	protected boolean isPromptNecessary( File file ) {
 		return ( ( file != null ) && file.canWrite() ) == false;
 	}
 
 	@Override
 	protected void localize() {
 		super.localize();
-		this.setButtonIcon( org.alice.ide.icons.Icons.SAVE_DOCUMENT_SMALL );
+		this.setButtonIcon( Icons.SAVE_DOCUMENT_SMALL );
 	}
 
 	@Override

@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.plaf;
 
+import javax.swing.UIManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,8 +52,8 @@ public class PlafUtilities {
 		throw new AssertionError();
 	}
 
-	public static javax.swing.UIManager.LookAndFeelInfo getInstalledLookAndFeelInfoNamed( String plafName ) {
-		for( javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels() ) {
+	public static UIManager.LookAndFeelInfo getInstalledLookAndFeelInfoNamed( String plafName ) {
+		for( UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels() ) {
 			if( plafName.equals( info.getName() ) ) {
 				return info;
 			}

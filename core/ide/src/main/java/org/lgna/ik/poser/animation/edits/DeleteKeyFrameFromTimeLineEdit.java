@@ -42,7 +42,7 @@
  */
 package org.lgna.ik.poser.animation.edits;
 
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLine;
 
@@ -53,8 +53,8 @@ public class DeleteKeyFrameFromTimeLineEdit extends TimeLineEdit {
 
 	private final KeyFrameData keyFrameData;
 
-	public DeleteKeyFrameFromTimeLineEdit( CompletionStep<?> completionStep, TimeLine timeLine, KeyFrameData data ) {
-		super( completionStep, timeLine );
+	public DeleteKeyFrameFromTimeLineEdit( UserActivity userActivity, TimeLine timeLine, KeyFrameData data ) {
+		super( userActivity, timeLine );
 		this.keyFrameData = data;
 	}
 

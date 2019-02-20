@@ -42,14 +42,16 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.story.implementation.BoxImp;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SBox extends SShape {
-	private final org.lgna.story.implementation.BoxImp implementation = new org.lgna.story.implementation.BoxImp( this );
+	private final BoxImp implementation = new BoxImp( this );
 
 	@Override
-	/* package-private */org.lgna.story.implementation.BoxImp getImplementation() {
+	/* package-private */BoxImp getImplementation() {
 		return this.implementation;
 	}
 }

@@ -42,17 +42,24 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import org.lgna.croquet.icon.AbstractIconFactory;
+import org.lgna.croquet.icon.IconFactory;
+
+import javax.swing.Icon;
+import java.awt.Dimension;
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class UriGalleryIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
-	private final java.net.URI uri;
-	private final org.lgna.croquet.icon.IconFactory base;
-	private final java.awt.Dimension baseIconSize;
-	private final java.awt.Dimension defaultSize;
+public class UriGalleryIconFactory extends AbstractIconFactory {
+	private final URI uri;
+	private final IconFactory base;
+	private final Dimension baseIconSize;
+	private final Dimension defaultSize;
 
-	public UriGalleryIconFactory( java.net.URI uri, org.lgna.croquet.icon.IconFactory base, java.awt.Dimension baseIconSize, java.awt.Dimension defaultSize ) {
+	public UriGalleryIconFactory( URI uri, IconFactory base, Dimension baseIconSize, Dimension defaultSize ) {
 		super( IsCachingDesired.TRUE );
 		this.uri = uri;
 		this.base = base;
@@ -61,12 +68,12 @@ public class UriGalleryIconFactory extends org.lgna.croquet.icon.AbstractIconFac
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+	protected Icon createIcon( Dimension size ) {
 		return new UriGalleryIcon( size, this.base.getIcon( this.baseIconSize ) );
 	}
 
 	@Override
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
 		return this.defaultSize;
 	}
 }

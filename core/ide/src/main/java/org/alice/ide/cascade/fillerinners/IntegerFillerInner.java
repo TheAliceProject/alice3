@@ -42,13 +42,26 @@
  *******************************************************************************/
 package org.alice.ide.cascade.fillerinners;
 
+import org.alice.ide.croquet.models.cascade.integer.MathCascadeMenu;
+import org.alice.ide.croquet.models.cascade.integer.RandomCascadeMenu;
+import org.alice.ide.croquet.models.cascade.integer.RealToIntegerCascadeMenu;
+import org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn;
+import org.alice.ide.custom.IntegerCustomExpressionCreatorComposite;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.project.annotations.IntegerValueDetails;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.Expression;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class IntegerFillerInner extends AbstractNumberFillerInner {
-	public static int[] getLiterals( org.lgna.project.annotations.ValueDetails<?> details ) {
-		if( details instanceof org.lgna.project.annotations.IntegerValueDetails ) {
-			return ( (org.lgna.project.annotations.IntegerValueDetails)details ).getLiterals();
+	public static int[] getLiterals( ValueDetails<?> details ) {
+		if( details instanceof IntegerValueDetails ) {
+			return ( (IntegerValueDetails)details ).getLiterals();
 		} else {
 			return new int[] { 0, 1, 2, 3 };
 		}
@@ -59,21 +72,21 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
 		super.appendItems( items, details, isTop, prevExpression );
 		int[] literals = getLiterals( details );
 		for( int i : literals ) {
-			items.add( org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn.getInstance( i ) );
+			items.add( IntegerLiteralFillIn.getInstance( i ) );
 		}
 		if( isTop && ( prevExpression != null ) ) {
-			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			items.add( org.alice.ide.croquet.models.cascade.integer.RandomCascadeMenu.getInstance() );
-			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			items.add( org.alice.ide.croquet.models.cascade.integer.RealToIntegerCascadeMenu.getInstance() );
-			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			items.add( org.alice.ide.croquet.models.cascade.integer.MathCascadeMenu.getInstance() );
+			items.add( CascadeLineSeparator.getInstance() );
+			items.add( RandomCascadeMenu.getInstance() );
+			items.add( CascadeLineSeparator.getInstance() );
+			items.add( RealToIntegerCascadeMenu.getInstance() );
+			items.add( CascadeLineSeparator.getInstance() );
+			items.add( MathCascadeMenu.getInstance() );
 		}
-		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		items.add( org.alice.ide.custom.IntegerCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
+		items.add( CascadeLineSeparator.getInstance() );
+		items.add( IntegerCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 	}
 }

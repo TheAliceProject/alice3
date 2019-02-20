@@ -43,10 +43,14 @@
 
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyIcon implements javax.swing.Icon {
+public class EmptyIcon implements Icon {
 	private final int width;
 	private final int height;
 
@@ -66,6 +70,6 @@ public class EmptyIcon implements javax.swing.Icon {
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
 	}
 }

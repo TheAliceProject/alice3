@@ -42,9 +42,15 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics;
 
-public class GlrMainTitle extends GlrTitle<edu.cmu.cs.dennisc.scenegraph.graphics.MainTitle> {
+import edu.cmu.cs.dennisc.scenegraph.graphics.MainTitle;
+
+import java.awt.Rectangle;
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Rectangle2D;
+
+public class GlrMainTitle extends GlrTitle<MainTitle> {
 	@Override
-	protected java.awt.geom.Rectangle2D.Float getFillBounds( java.awt.geom.Rectangle2D.Float rv, java.awt.Rectangle actualViewport, java.awt.geom.Dimension2D multilineTextSize ) {
+	protected Rectangle2D.Float getFillBounds( Rectangle2D.Float rv, Rectangle actualViewport, Dimension2D multilineTextSize ) {
 		rv.setFrame( actualViewport );
 		return rv;
 	}

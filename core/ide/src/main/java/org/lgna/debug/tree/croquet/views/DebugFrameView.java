@@ -42,41 +42,55 @@
  *******************************************************************************/
 package org.lgna.debug.tree.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.components.JScrollPane;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.FlowPanel;
+import org.lgna.croquet.views.Panel;
+import org.lgna.debug.tree.croquet.DebugFrame;
+import org.lgna.debug.tree.croquet.views.renderers.ZTreeNodeRenderer;
+
+import javax.swing.JSplitPane;
+import javax.swing.JTree;
+import java.awt.BorderLayout;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DebugFrameView<T> extends org.lgna.croquet.views.BorderPanel {
-	private static org.lgna.croquet.views.Panel createPanel( org.lgna.croquet.Operation operation, org.lgna.croquet.BooleanState isPruneDesiredState, javax.swing.JTree jTree ) {
-		org.lgna.croquet.views.BorderPanel rv = new org.lgna.croquet.views.BorderPanel();
+public class DebugFrameView<T> extends BorderPanel {
+	private static Panel createPanel( Operation operation, BooleanState isPruneDesiredState, JTree jTree ) {
+		BorderPanel rv = new BorderPanel();
 		if( isPruneDesiredState != null ) {
-			rv.addPageStartComponent( new org.lgna.croquet.views.FlowPanel( operation.createButton(), isPruneDesiredState.createCheckBox() ) );
+			rv.addPageStartComponent( new FlowPanel( operation.createButton(), isPruneDesiredState.createCheckBox() ) );
 		} else {
 			rv.addPageStartComponent( operation.createButton() );
 		}
-		jTree.setCellRenderer( new org.lgna.debug.tree.croquet.views.renderers.ZTreeNodeRenderer() );
-		rv.getAwtComponent().add( new edu.cmu.cs.dennisc.javax.swing.components.JScrollPane( jTree ), java.awt.BorderLayout.CENTER );
+		jTree.setCellRenderer( new ZTreeNodeRenderer() );
+		rv.getAwtComponent().add( new JScrollPane( jTree ), BorderLayout.CENTER );
 		return rv;
 	}
 
-	public DebugFrameView( org.lgna.debug.tree.croquet.DebugFrame<T> composite ) {
+	public DebugFrameView( DebugFrame<T> composite ) {
 		super( composite );
 
-		this.jMarkTree = new javax.swing.JTree( composite.getMarkTreeModel() );
-		this.jCurrentTree = new javax.swing.JTree( composite.getCurrentTreeModel() );
+		this.jMarkTree = new JTree( composite.getMarkTreeModel() );
+		this.jCurrentTree = new JTree( composite.getCurrentTreeModel() );
 
-		org.lgna.croquet.views.Panel markPanel = createPanel( composite.getMarkOperation(), null, this.jMarkTree );
-		org.lgna.croquet.views.Panel currentPanel = createPanel( composite.getRefreshOperation(), composite.getIsPruningDesiredState(), this.jCurrentTree );
+		Panel markPanel = createPanel( composite.getMarkOperation(), null, this.jMarkTree );
+		Panel currentPanel = createPanel( composite.getRefreshOperation(), composite.getIsPruningDesiredState(), this.jCurrentTree );
 
-		javax.swing.JSplitPane jSplitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT, markPanel.getAwtComponent(), currentPanel.getAwtComponent() );
+		JSplitPane jSplitPane = new JSplitPane( JSplitPane.HORIZONTAL_SPLIT, markPanel.getAwtComponent(), currentPanel.getAwtComponent() );
 		jSplitPane.setDividerLocation( 0.5 );
-		this.getAwtComponent().add( jSplitPane, java.awt.BorderLayout.CENTER );
+		this.getAwtComponent().add( jSplitPane, BorderLayout.CENTER );
 	}
 
-	public void expandAllRowsAndUpdateCurrentTreeRenderer( java.util.Set<T> set ) {
-		org.lgna.debug.tree.croquet.views.renderers.ZTreeNodeRenderer<T> currentSgTreeNodeRenderer = (org.lgna.debug.tree.croquet.views.renderers.ZTreeNodeRenderer<T>)this.jCurrentTree.getCellRenderer();
+	public void expandAllRowsAndUpdateCurrentTreeRenderer( Set<T> set ) {
+		ZTreeNodeRenderer<T> currentSgTreeNodeRenderer = (ZTreeNodeRenderer<T>)this.jCurrentTree.getCellRenderer();
 		currentSgTreeNodeRenderer.setValuesToMute( set );
 
-		for( javax.swing.JTree jTree : new javax.swing.JTree[] { this.jMarkTree, this.jCurrentTree } ) {
+		for( JTree jTree : new JTree[] { this.jMarkTree, this.jCurrentTree } ) {
 			for( int i = 0; i < jTree.getRowCount(); i++ ) {
 				jTree.expandRow( i );
 			}
@@ -84,6 +98,6 @@ public class DebugFrameView<T> extends org.lgna.croquet.views.BorderPanel {
 		this.repaint();
 	}
 
-	private final javax.swing.JTree jMarkTree;
-	private final javax.swing.JTree jCurrentTree;
+	private final JTree jMarkTree;
+	private final JTree jCurrentTree;
 }

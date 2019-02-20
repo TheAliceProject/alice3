@@ -43,15 +43,21 @@
 
 package org.alice.ide.properties.uicontroller;
 
+import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
+import edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
 
 public class DoubleTextField extends JTextField
 {
-	private static final java.text.NumberFormat CENTI_FORMAT = new java.text.DecimalFormat( "0.00" );
+	private static final NumberFormat CENTI_FORMAT = new DecimalFormat( "0.00" );
 	protected boolean isDirty = false;
 	protected double trueValue = Double.NaN;
 
@@ -66,9 +72,9 @@ public class DoubleTextField extends JTextField
 				markValueSet();
 			}
 		} );
-		this.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter() {
+		this.getDocument().addDocumentListener( new SimplifiedDocumentAdapter() {
 			@Override
-			protected void updated( javax.swing.event.DocumentEvent e )
+			protected void updated( DocumentEvent e )
 			{
 				markValueTemporary();
 				DoubleTextField.this.isDirty = true;
@@ -79,7 +85,7 @@ public class DoubleTextField extends JTextField
 	public boolean isValueValid()
 	{
 		String text = this.getText();
-		Double value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( text );
+		Double value = DoubleUtilities.parseDoubleInCurrentDefaultLocale( text );
 		return Double.isNaN( value ) == false;
 	}
 
@@ -111,7 +117,7 @@ public class DoubleTextField extends JTextField
 	{
 		if( this.isDirty )
 		{
-			double value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( this.getText() );
+			double value = DoubleUtilities.parseDoubleInCurrentDefaultLocale( this.getText() );
 			this.trueValue = value;
 		}
 		this.isDirty = false;
@@ -123,7 +129,7 @@ public class DoubleTextField extends JTextField
 		if( value != null )
 		{
 			this.trueValue = value;
-			this.setText( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( this.trueValue, CENTI_FORMAT ) );
+			this.setText( DoubleUtilities.format( this.trueValue, CENTI_FORMAT ) );
 		}
 		else
 		{

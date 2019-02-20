@@ -42,12 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.sceneeditor;
 
+import org.alice.ide.ProjectApplication;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.lgna.croquet.MutableDataSingleSelectListState;
+import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
+
 /**
  * @author dculyba
  * 
  */
-public class SceneFieldState extends org.lgna.croquet.MutableDataSingleSelectListState<org.lgna.project.ast.UserField> {
+public class SceneFieldState extends MutableDataSingleSelectListState<UserField> {
 	public SceneFieldState() {
-		super( org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7ae55863-9782-4cd5-9cb4-710327fb5a69" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ) );
+		super( ProjectApplication.DOCUMENT_UI_GROUP, UUID.fromString( "7ae55863-9782-4cd5-9cb4-710327fb5a69" ), NodeCodec.getInstance( UserField.class ) );
 	}
 }

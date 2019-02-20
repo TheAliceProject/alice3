@@ -1,12 +1,28 @@
 package galleryutils;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
+import edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.ProjectVersion;
 import org.lgna.project.Version;
 
@@ -15,6 +31,7 @@ import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
+import org.lgna.story.resources.ModelResource;
 
 /*
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
@@ -65,7 +82,7 @@ import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
  */
 public class GalleryDiff {
 
-	private static class CustomClassLoader extends java.net.URLClassLoader {
+	private static class CustomClassLoader extends URLClassLoader {
 
 		public CustomClassLoader(URL[] urls) {
 			super(urls);
@@ -73,26 +90,27 @@ public class GalleryDiff {
 
 		// Workaround for a bug where the class loader holds onto a reference to
 		// a loaded jar file and doesn't let us delete the file
+		@Override
 		public void close() {
 			try {
-				Class clazz = java.net.URLClassLoader.class;
-				java.lang.reflect.Field ucp = clazz.getDeclaredField("ucp");
+				Class clazz = URLClassLoader.class;
+				Field ucp = clazz.getDeclaredField("ucp");
 				ucp.setAccessible(true);
 				Object sun_misc_URLClassPath = ucp.get(this);
-				java.lang.reflect.Field loaders = sun_misc_URLClassPath
+				Field loaders = sun_misc_URLClassPath
 						.getClass().getDeclaredField("loaders");
 				loaders.setAccessible(true);
 				Object java_util_Collection = loaders
 						.get(sun_misc_URLClassPath);
-				for (Object sun_misc_URLClassPath_JarLoader : ((java.util.Collection) java_util_Collection)
+				for (Object sun_misc_URLClassPath_JarLoader : ((Collection) java_util_Collection)
 						.toArray()) {
 					try {
-						java.lang.reflect.Field loader = sun_misc_URLClassPath_JarLoader
+						Field loader = sun_misc_URLClassPath_JarLoader
 								.getClass().getDeclaredField("jar");
 						loader.setAccessible(true);
 						Object java_util_jar_JarFile = loader
 								.get(sun_misc_URLClassPath_JarLoader);
-						((java.util.jar.JarFile) java_util_jar_JarFile).close();
+						((JarFile) java_util_jar_JarFile).close();
 					} catch (Throwable t) {
 						// if we got this far, this is probably not a JAR loader
 						// so skip it
@@ -105,15 +123,15 @@ public class GalleryDiff {
 		}
 	}
 
-	private org.lgna.project.Version prevVersion;
-	private org.lgna.project.Version curVersion;
+	private Version prevVersion;
+	private Version curVersion;
 
-	private java.util.List<String> prevSymbols;
-	private java.util.List<String> curSymbols;
+	private List<String> prevSymbols;
+	private List<String> curSymbols;
 
-	private java.util.List<String> unMatchedSymbols;
-	private java.util.List<String> alreadyMatchedSymbols;
-	private java.util.List<String> conversionMap;
+	private List<String> unMatchedSymbols;
+	private List<String> alreadyMatchedSymbols;
+	private List<String> conversionMap;
 
 	private GalleryDiffDialog diffDialog = new GalleryDiffDialog();
 
@@ -121,13 +139,13 @@ public class GalleryDiff {
 	
 	private static final String MIGRATION_FILE_NAME = "migrationData.txt";
 
-	private GalleryDiff(org.lgna.project.Version prevVersion,
-			org.lgna.project.Version curVersion) {
+	private GalleryDiff(Version prevVersion,
+			Version curVersion) {
 		initializeVersion(prevVersion, curVersion);
 	}
 
-	private void initializeVersion(org.lgna.project.Version prevVersion,
-			org.lgna.project.Version curVersion) {
+	private void initializeVersion(Version prevVersion,
+			Version curVersion) {
 		this.prevVersion = prevVersion;
 		this.curVersion = curVersion;
 	}
@@ -137,13 +155,13 @@ public class GalleryDiff {
 		this.curVersion = new Version(curVersion);
 	}
 
-	public GalleryDiff(org.lgna.project.Version prevVersion,
-			org.lgna.project.Version curVersion, java.io.File[] prevJars,
-			java.io.File[] curJars) {
+	public GalleryDiff(Version prevVersion,
+			Version curVersion, File[] prevJars,
+			File[] curJars) {
 		this(prevVersion, curVersion);
 
-		prevSymbols = new java.util.ArrayList<String>();
-		curSymbols = new java.util.ArrayList<String>();
+		prevSymbols = new ArrayList<String>();
+		curSymbols = new ArrayList<String>();
 		try {
 			for (File jar : prevJars) {
 				prevSymbols.addAll(loadResourceSymbols(jar));
@@ -165,20 +183,20 @@ public class GalleryDiff {
 	}
 
 	public GalleryDiff(String prevVersion, String curVersion,
-			java.io.File prevDataFile, java.io.File curDataFile,
+			File prevDataFile, File curDataFile,
 			String... jarFileNames) throws IOException {
 		this(new Version(prevVersion), new Version(curVersion), prevDataFile,
 				curDataFile, jarFileNames);
 	}
 
-	public GalleryDiff(org.lgna.project.Version prevVersion,
-			org.lgna.project.Version curVersion, java.io.File prevDataFile,
-			java.io.File curDataFile, String... jarFileNames)
+	public GalleryDiff(Version prevVersion,
+			Version curVersion, File prevDataFile,
+			File curDataFile, String... jarFileNames)
 			throws IOException {
 		this(prevVersion, curVersion);
 
-		prevSymbols = new java.util.ArrayList<String>();
-		curSymbols = new java.util.ArrayList<String>();
+		prevSymbols = new ArrayList<String>();
+		curSymbols = new ArrayList<String>();
 		for (String fileName : jarFileNames) {
 			byte[] prevData = getBytesFromDataZip(prevDataFile, fileName);
 			if (prevData == null) {
@@ -199,11 +217,11 @@ public class GalleryDiff {
 		doMatch();
 	}
 
-	public GalleryDiff(java.io.File prevDataFile, java.io.File curDataFile)
+	public GalleryDiff(File prevDataFile, File curDataFile)
 			throws IOException {
 
-		prevSymbols = new java.util.ArrayList<String>();
-		curSymbols = new java.util.ArrayList<String>();
+		prevSymbols = new ArrayList<String>();
+		curSymbols = new ArrayList<String>();
 
 		this.prevVersion = loadGalleryInfo(prevSymbols, prevDataFile);
 		this.curVersion = loadGalleryInfo(curSymbols, curDataFile);
@@ -220,8 +238,8 @@ public class GalleryDiff {
 
 		Version version = null;
 		try {
-			java.io.BufferedReader reader = new java.io.BufferedReader(
-					new java.io.FileReader(dataFile));
+			BufferedReader reader = new BufferedReader(
+					new FileReader(dataFile));
 			String line = reader.readLine();
 			version = new Version(line.trim());
 			while ((line = reader.readLine()) != null) {
@@ -238,11 +256,11 @@ public class GalleryDiff {
 
 	private void loadMigrationInfo(File dataFile) {
 
-		this.conversionMap = new java.util.ArrayList<String>();
-		this.alreadyMatchedSymbols = new java.util.ArrayList<String>();
+		this.conversionMap = new ArrayList<String>();
+		this.alreadyMatchedSymbols = new ArrayList<String>();
 		try {
-			java.io.BufferedReader reader = new java.io.BufferedReader(
-					new java.io.FileReader(dataFile));
+			BufferedReader reader = new BufferedReader(
+					new FileReader(dataFile));
 			String line;
 			boolean isSourceSymbol = true;
 			while ((line = reader.readLine()) != null) {
@@ -265,7 +283,7 @@ public class GalleryDiff {
 	public static File saveGalleryInfo(String version, String outputFilename,
 			File... jars) {
 
-		List<String> symbols = new java.util.ArrayList<String>();
+		List<String> symbols = new ArrayList<String>();
 		for (File jar : jars) {
 			try {
 				symbols.addAll(loadResourceSymbols(jar));
@@ -278,8 +296,8 @@ public class GalleryDiff {
 		File outputFile = new File(outputFilename);
 		try {
 			FileUtilities.createParentDirectoriesIfNecessary(outputFile);
-			java.io.BufferedWriter writer = new java.io.BufferedWriter(
-					new java.io.FileWriter(outputFile));
+			BufferedWriter writer = new BufferedWriter(
+					new FileWriter(outputFile));
 			writer.write(version.toString() + "\n");
 			for (String s : symbols) {
 				writer.write(s + "\n");
@@ -301,8 +319,8 @@ public class GalleryDiff {
 		File outputFile = new File(outputFilename);
 		try {
 			FileUtilities.createParentDirectoriesIfNecessary(outputFile);
-			java.io.BufferedWriter writer = new java.io.BufferedWriter(
-					new java.io.FileWriter(outputFile));
+			BufferedWriter writer = new BufferedWriter(
+					new FileWriter(outputFile));
 			for (int i=0; i<this.conversionMap.size(); i++) {
 				String s = this.conversionMap.get(i);
 				if (this.unMatchedSymbols.contains(s)) {
@@ -321,9 +339,9 @@ public class GalleryDiff {
 	}
 
 	private void doMatch() {
-		this.unMatchedSymbols = new java.util.ArrayList<String>();
+		this.unMatchedSymbols = new ArrayList<String>();
 		if (this.conversionMap == null) {
-			this.conversionMap = new java.util.ArrayList<String>();
+			this.conversionMap = new ArrayList<String>();
 		}
 		boolean askUser = true;
 		for (String symbol : prevSymbols) {
@@ -459,8 +477,8 @@ public class GalleryDiff {
 
 	private static byte[] getBytesFromDataZip(File dataZip, String fileName)
 			throws IOException {
-		java.util.zip.ZipInputStream zis = new java.util.zip.ZipInputStream(
-				new java.io.FileInputStream(dataZip));
+		ZipInputStream zis = new ZipInputStream(
+				new FileInputStream(dataZip));
 		ZipEntry entry = zis.getNextEntry();
 		while (entry != null) {
 			if (entry.getName().endsWith(fileName)) {
@@ -474,17 +492,17 @@ public class GalleryDiff {
 		return null;
 	}
 
-	private static java.io.InputStream getJarStreamFromDataZip(File dataZip,
+	private static InputStream getJarStreamFromDataZip(File dataZip,
 			String fileName) {
 		try {
-			java.util.zip.ZipInputStream zis = new java.util.zip.ZipInputStream(
-					new java.io.FileInputStream(dataZip));
+			ZipInputStream zis = new ZipInputStream(
+					new FileInputStream(dataZip));
 			ZipEntry entry = zis.getNextEntry();
 			while (entry != null) {
 				if (entry.getName().endsWith(fileName)) {
 					byte[] data = ZipUtilities.extractBytes(zis, entry);
 					zis.close();
-					return new java.io.ByteArrayInputStream(data);
+					return new ByteArrayInputStream(data);
 				}
 				entry = zis.getNextEntry();
 			}
@@ -497,7 +515,7 @@ public class GalleryDiff {
 	private static List<String> getMatchingSymbol(String symbol,
 			List<String> symbols) {
 		int minScore = Integer.MAX_VALUE;
-		List<String> best = new java.util.ArrayList<String>();
+		List<String> best = new ArrayList<String>();
 		boolean isSymbolEnum = isEnum(symbol);
 		for (String s : symbols) {
 			if (isEnum(s) == isSymbolEnum) {
@@ -514,11 +532,11 @@ public class GalleryDiff {
 		return best;
 	}
 
-	public static java.util.List<String> getClassNamesFromStream(
-			java.io.InputStream stream) {
-		List<String> classNames = new java.util.ArrayList<String>();
+	public static List<String> getClassNamesFromStream(
+			InputStream stream) {
+		List<String> classNames = new ArrayList<String>();
 		try {
-			java.util.zip.ZipInputStream zis = new java.util.zip.ZipInputStream(
+			ZipInputStream zis = new ZipInputStream(
 					stream);
 			ZipEntry entry = zis.getNextEntry();
 			while (entry != null) {
@@ -542,11 +560,11 @@ public class GalleryDiff {
 		return classNames;
 	}
 
-	public static java.util.List<String> getClassNamesFromJar(java.io.File jar) {
+	public static List<String> getClassNamesFromJar(File jar) {
 
-		List<String> classNames = new java.util.ArrayList<String>();
+		List<String> classNames = new ArrayList<String>();
 		try {
-			classNames = getClassNamesFromStream(new java.io.FileInputStream(
+			classNames = getClassNamesFromStream(new FileInputStream(
 					jar));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -577,33 +595,33 @@ public class GalleryDiff {
 		return true;
 	}
 
-	public static java.util.List<String> loadResourceSymbols(byte[] inputData)
-			throws MalformedURLException, java.io.IOException {
+	public static List<String> loadResourceSymbols(byte[] inputData)
+			throws MalformedURLException, IOException {
 
 		File tempFile = File.createTempFile("aliceGalleryDiff", ".jar");
 		writeDataToFile(inputData, tempFile);
 
-		List<String> symbols = new java.util.ArrayList<String>();
+		List<String> symbols = new ArrayList<String>();
 		List<String> classNames = getClassNamesFromJar(tempFile);
-		java.net.URL jarURL = tempFile.toURI().toURL();
+		URL jarURL = tempFile.toURI().toURL();
 		CustomClassLoader cl = new CustomClassLoader(
-				new java.net.URL[] { jarURL });
+				new URL[] { jarURL });
 
 		for (String className : classNames) {
 			try {
 				Class<?> cls = cl.loadClass(className);
-				if (org.lgna.story.resources.ModelResource.class
+				if (ModelResource.class
 						.isAssignableFrom(cls) && cls.isEnum()) {
-					org.lgna.story.resources.ModelResource[] enums = (org.lgna.story.resources.ModelResource[]) cls
+					ModelResource[] enums = (ModelResource[]) cls
 							.getEnumConstants();
-					for (org.lgna.story.resources.ModelResource resource : enums) {
+					for (ModelResource resource : enums) {
 						String resourceSymbol = resource.toString();
 						symbols.add(resourceSymbol);
 					}
 				}
 				symbols.add(cls.getName());
 			} catch (ClassNotFoundException cnfe) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger
+				Logger
 						.severe("FAILED TO LOAD GALLERY CLASS: " + className);
 			}
 		}
@@ -617,28 +635,28 @@ public class GalleryDiff {
 		return symbols;
 	}
 
-	public static java.util.List<String> loadResourceSymbols(java.io.File jar)
+	public static List<String> loadResourceSymbols(File jar)
 			throws MalformedURLException {
-		List<String> symbols = new java.util.ArrayList<String>();
+		List<String> symbols = new ArrayList<String>();
 		List<String> classNames = getClassNamesFromJar(jar);
-		java.net.URL jarURL = jar.toURI().toURL();
-		java.net.URLClassLoader cl = new java.net.URLClassLoader(
-				new java.net.URL[] { jarURL });
+		URL jarURL = jar.toURI().toURL();
+		URLClassLoader cl = new URLClassLoader(
+				new URL[] { jarURL });
 
 		for (String className : classNames) {
 			try {
 				Class<?> cls = cl.loadClass(className);
-				if (org.lgna.story.resources.ModelResource.class
+				if (ModelResource.class
 						.isAssignableFrom(cls) && cls.isEnum()) {
-					org.lgna.story.resources.ModelResource[] enums = (org.lgna.story.resources.ModelResource[]) cls.getEnumConstants();
-					for (org.lgna.story.resources.ModelResource resource : enums) {
+					ModelResource[] enums = (ModelResource[]) cls.getEnumConstants();
+					for (ModelResource resource : enums) {
 						String resourceSymbol = resource.toString();
 						symbols.add(cls.getName() + "." + resourceSymbol);
 					}
 				}
 				symbols.add(cls.getName());
 			} catch (ClassNotFoundException cnfe) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger
+				Logger
 						.severe("FAILED TO LOAD GALLERY CLASS: " + className);
 			}
 		}
@@ -646,9 +664,9 @@ public class GalleryDiff {
 	}
 
 	private static void writeDataToFile(byte[] data, File destFile) {
-		java.io.FileOutputStream fos = null;
+		FileOutputStream fos = null;
 		try {
-			fos = new java.io.FileOutputStream(destFile);
+			fos = new FileOutputStream(destFile);
 			fos.write(data);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -711,9 +729,9 @@ public class GalleryDiff {
 //		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
 //				.listDescendants(jarDir, "jar");
 		
-		File[] aliceJarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
+		File[] aliceJarFiles = FileUtilities
 				.listDescendants(aliceJarDir, "jar");
-		File[] nebulousJarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
+		File[] nebulousJarFiles = FileUtilities
 				.listDescendants(nebulousJarDir, "jar");
 		
 		File[] jarFiles = ArrayUtilities.concatArrays(File.class, aliceJarFiles, nebulousJarFiles);
@@ -753,7 +771,7 @@ public class GalleryDiff {
 			sb.append(code + "\n");
 		}
 		String finalCode = sb.toString();
-		edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities
+		ClipboardUtilities
 				.setClipboardContents(finalCode);
 		System.out.println(finalCode);
 		return;

@@ -42,10 +42,12 @@
  */
 package examples.math.pictureplane;
 
+import org.lgna.story.Color;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.SCamera;
 import org.lgna.story.SGround;
 import org.lgna.story.SScene;
+import org.lgna.story.SSphere;
 
 /**
  * @author Dennis Cosgrove
@@ -53,7 +55,7 @@ import org.lgna.story.SScene;
 class PicturePlaneScene extends SScene {
 	private final SGround snow = new SGround();
 	private final SCamera camera = new SCamera();
-	private final org.lgna.story.SSphere sphere = new org.lgna.story.SSphere();
+	private final SSphere sphere = new SSphere();
 
 	public SGround getSnow() {
 		return this.snow;
@@ -63,7 +65,7 @@ class PicturePlaneScene extends SScene {
 		return this.camera;
 	}
 
-	public org.lgna.story.SSphere getSphere() {
+	public SSphere getSphere() {
 		return this.sphere;
 	}
 
@@ -77,7 +79,7 @@ class PicturePlaneScene extends SScene {
 		this.snow.setVehicle( this );
 		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
 
-		this.sphere.setPaint( org.lgna.story.Color.RED );
+		this.sphere.setPaint( Color.RED );
 		this.sphere.setRadius( 0.1 );
 		this.sphere.move( MoveDirection.UP, 2.0 );
 		this.camera.move( MoveDirection.UP, 2.0 );

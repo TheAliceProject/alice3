@@ -43,11 +43,15 @@
 
 package org.alice.stageide.about;
 
+import org.lgna.project.License;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class SystemEulaComposite extends EulaComposite {
 	public SystemEulaComposite() {
-		super( java.util.UUID.fromString( "b5a92f6d-3d5f-445d-a283-d8b31121b78e" ), org.lgna.project.License.TEXT );
+		super( UUID.fromString( "b5a92f6d-3d5f-445d-a283-d8b31121b78e" ), License.TEXT );
 	}
 }

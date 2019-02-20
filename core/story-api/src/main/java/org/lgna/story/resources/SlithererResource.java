@@ -44,27 +44,32 @@
 package org.lgna.story.resources;
 
 import org.lgna.project.annotations.FieldTemplate;
+import org.lgna.project.annotations.ResourceTemplate;
+import org.lgna.project.annotations.Visibility;
+import org.lgna.story.SSlitherer;
+import org.lgna.story.implementation.SlithererImp;
 
-@org.lgna.project.annotations.ResourceTemplate( modelClass = org.lgna.story.SSlitherer.class )
+@ResourceTemplate( modelClass = SSlitherer.class )
 public interface SlithererResource extends JointedModelResource {
-	public static final org.lgna.story.resources.JointId ROOT = new JointId( null, SlithererResource.class );
-	public static final org.lgna.story.resources.JointId SPINE_BASE = new org.lgna.story.resources.JointId( ROOT, SlithererResource.class );
-	public static final org.lgna.story.resources.JointId SPINE_MIDDLE = new org.lgna.story.resources.JointId( SPINE_BASE, SlithererResource.class );
-	public static final org.lgna.story.resources.JointId SPINE_UPPER = new org.lgna.story.resources.JointId( SPINE_MIDDLE, SlithererResource.class );
-	public static final org.lgna.story.resources.JointId NECK = new org.lgna.story.resources.JointId( SPINE_UPPER, SlithererResource.class );
-	public static final org.lgna.story.resources.JointId HEAD = new org.lgna.story.resources.JointId( NECK, SlithererResource.class );
-	public static final org.lgna.story.resources.JointId MOUTH = new org.lgna.story.resources.JointId( HEAD, SlithererResource.class );
+	public static final JointId ROOT = new JointId( null, SlithererResource.class );
+	public static final JointId SPINE_BASE = new JointId( ROOT, SlithererResource.class );
+	public static final JointId SPINE_MIDDLE = new JointId( SPINE_BASE, SlithererResource.class );
+	public static final JointId SPINE_UPPER = new JointId( SPINE_MIDDLE, SlithererResource.class );
+	public static final JointId NECK = new JointId( SPINE_UPPER, SlithererResource.class );
+	public static final JointId HEAD = new JointId( NECK, SlithererResource.class );
+	public static final JointId MOUTH = new JointId( HEAD, SlithererResource.class );
 	//	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, SlithererResource.class );
-	public static final org.lgna.story.resources.JointId LEFT_EYE = new org.lgna.story.resources.JointId( HEAD, SlithererResource.class );
-	public static final org.lgna.story.resources.JointId RIGHT_EYE = new org.lgna.story.resources.JointId( HEAD, SlithererResource.class );
-	public static final org.lgna.story.resources.JointId LEFT_EYELID = new org.lgna.story.resources.JointId( HEAD, SlithererResource.class );
-	public static final org.lgna.story.resources.JointId RIGHT_EYELID = new org.lgna.story.resources.JointId( HEAD, SlithererResource.class );
+	public static final JointId LEFT_EYE = new JointId( HEAD, SlithererResource.class );
+	public static final JointId RIGHT_EYE = new JointId( HEAD, SlithererResource.class );
+	public static final JointId LEFT_EYELID = new JointId( HEAD, SlithererResource.class );
+	public static final JointId RIGHT_EYELID = new JointId( HEAD, SlithererResource.class );
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) public static final org.lgna.story.resources.JointId TAIL_0 = new org.lgna.story.resources.JointId( ROOT, SlithererResource.class );
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId TAIL_0 = new JointId( ROOT, SlithererResource.class );
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static JointId[] DEFAULT_TAIL = { TAIL_0 };
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) public static org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public org.lgna.story.resources.JointId[] getTailArray();
+	public JointId[] getTailArray();
 
-	public org.lgna.story.implementation.SlithererImp createImplementation( org.lgna.story.SSlitherer abstraction );
+	public SlithererImp createImplementation( SSlitherer abstraction );
 }

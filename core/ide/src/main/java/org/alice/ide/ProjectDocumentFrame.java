@@ -42,44 +42,98 @@
  *******************************************************************************/
 package org.alice.ide;
 
+import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.java.util.DStack;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.Stacks;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.pattern.Lazy;
+import org.alice.ide.capture.ImageCaptureComposite;
+import org.alice.ide.croquet.models.AliceMenuBar;
+import org.alice.ide.croquet.models.history.RedoOperation;
+import org.alice.ide.croquet.models.history.UndoOperation;
+import org.alice.ide.croquet.models.project.find.croquet.FindComposite;
+import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite;
+import org.alice.ide.croquet.models.projecturi.NewProjectOperation;
+import org.alice.ide.croquet.models.projecturi.OpenProjectOperation;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.declarationseditor.DeclarationComposite;
+import org.alice.ide.declarationseditor.DeclarationTabState;
+import org.alice.ide.declarationseditor.DeclarationsEditorComposite;
+import org.alice.ide.formatter.Formatter;
+import org.alice.ide.highlight.IdeHighlightStencil;
+import org.alice.ide.iconfactory.IconFactoryManager;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
+import org.alice.ide.perspectives.ProjectPerspective;
+import org.alice.ide.perspectives.noproject.NoProjectPerspective;
+import org.alice.ide.project.ProjectDocumentState;
+import org.alice.ide.resource.manager.ResourceManagerComposite;
+import org.alice.stageide.perspectives.CodePerspective;
+import org.alice.stageide.perspectives.PerspectiveState;
+import org.alice.stageide.perspectives.SetupScenePerspective;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.ItemState;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.PerspectiveDocumentFrame;
+import org.lgna.croquet.State;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.imp.frame.LazyIsFrameShowingState;
+import org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory;
+import org.lgna.croquet.meta.MetaState;
+import org.lgna.croquet.meta.StateTrackingMetaState;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.NamedUserType;
+
+import javax.swing.JLayeredPane;
+import javax.swing.KeyStroke;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFrame {
+public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
 	public ProjectDocumentFrame( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager ) {
 		this.apiConfigurationManager = apiConfigurationManager;
 
-		this.noProjectPerspective = new org.alice.ide.perspectives.noproject.NoProjectPerspective( this );
-		org.alice.ide.croquet.models.AliceMenuBar aliceMenuBar = new org.alice.ide.croquet.models.AliceMenuBar( this );
-		this.codePerspective = new org.alice.stageide.perspectives.CodePerspective( this, aliceMenuBar );
-		this.setupScenePerspective = new org.alice.stageide.perspectives.SetupScenePerspective( this, aliceMenuBar );
-		this.perspectiveState = new org.alice.stageide.perspectives.PerspectiveState( this.codePerspective, this.setupScenePerspective );
+		this.noProjectPerspective = new NoProjectPerspective( this );
+		AliceMenuBar aliceMenuBar = new AliceMenuBar( this );
+		this.codePerspective = new CodePerspective( this, aliceMenuBar );
+		this.setupScenePerspective = new SetupScenePerspective( this, aliceMenuBar );
+		this.perspectiveState = new PerspectiveState( this.codePerspective, this.setupScenePerspective );
 
 		this.metaDeclarationFauxState = new MetaDeclarationFauxState( this );
-		this.instanceFactoryState = new org.alice.ide.instancefactory.croquet.InstanceFactoryState( this );
-		this.findComposite = new org.alice.ide.croquet.models.project.find.croquet.FindComposite( this );
-		this.uploadOperations = ideConfiguration != null ? ideConfiguration.createUploadOperations( this ) : new org.lgna.croquet.Operation[ 0 ];
+		this.instanceFactoryState = new InstanceFactoryState( this );
+		this.findComposite = new FindComposite( this );
+		this.uploadOperations = ideConfiguration != null ? ideConfiguration.createUploadOperations( this ) : new Operation[ 0 ];
 		this.iconFactoryManager = apiConfigurationManager.createIconFactoryManager();
 	}
 
-	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_WINDOW_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.SHIFT_MASK );
-	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK );
-	private static final javax.swing.KeyStroke CAPTURE_RECTANGLE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, 0 );
+	private static final KeyStroke CAPTURE_ENTIRE_WINDOW_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_F12, InputEvent.SHIFT_MASK );
+	private static final KeyStroke CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_F12, InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK );
+	private static final KeyStroke CAPTURE_RECTANGLE_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_F12, 0 );
 
-	private void registerScreenCaptureKeyStrokes( org.lgna.croquet.views.AbstractWindow<?> window ) {
-		org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite = org.alice.ide.capture.ImageCaptureComposite.getInstance();
-		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireContentPaneOperation().getImp().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
-		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireWindowOperation().getImp().getSwingModel().getAction(), CAPTURE_ENTIRE_WINDOW_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
+	private void registerScreenCaptureKeyStrokes( AbstractWindow<?> window ) {
+		ImageCaptureComposite imageCaptureComposite = ImageCaptureComposite.getInstance();
+		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireContentPaneOperation().getImp().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
+		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireWindowOperation().getImp().getSwingModel().getAction(), CAPTURE_ENTIRE_WINDOW_KEY_STROKE, SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
 		if( window == this.getFrame() ) {
 			//pass
 		} else {
-			window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureRectangleOperation().getImp().getSwingModel().getAction(), CAPTURE_RECTANGLE_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
+			window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureRectangleOperation().getImp().getSwingModel().getAction(), CAPTURE_RECTANGLE_KEY_STROKE, SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
 		}
 	}
 
-	private void unregisterScreenCaptureKeyStrokes( org.lgna.croquet.views.AbstractWindow<?> window ) {
+	private void unregisterScreenCaptureKeyStrokes( AbstractWindow<?> window ) {
 		window.getContentPane().unregisterKeyboardAction( CAPTURE_ENTIRE_WINDOW_KEY_STROKE );
 		window.getContentPane().unregisterKeyboardAction( CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE );
 		window.getContentPane().unregisterKeyboardAction( CAPTURE_RECTANGLE_KEY_STROKE );
@@ -88,50 +142,50 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 	/*package-private*/void initialize() {
 		this.registerScreenCaptureKeyStrokes( this.getFrame() );
 		this.getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactoryListener );
-		org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().addNewSchoolValueListener( this.formatterListener );
+		FormatterState.getInstance().addNewSchoolValueListener( this.formatterListener );
 	}
 
 	@Override
-	public void pushWindow( final org.lgna.croquet.views.AbstractWindow<?> window ) {
+	public void pushWindow( final AbstractWindow<?> window ) {
 		this.registerScreenCaptureKeyStrokes( window );
 		super.pushWindow( window );
 	}
 
 	@Override
-	public org.lgna.croquet.views.AbstractWindow<?> popWindow() {
-		org.lgna.croquet.views.AbstractWindow<?> window = super.popWindow();
+	public AbstractWindow<?> popWindow() {
+		AbstractWindow<?> window = super.popWindow();
 		this.unregisterScreenCaptureKeyStrokes( window );
 		return window;
 	}
 
-	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
+	public void disableRendering( ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
 		this.stack.push( reasonToDisableSomeAmountOfRendering );
-		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().disableRendering( reasonToDisableSomeAmountOfRendering );
+		StorytellingSceneEditor.getInstance().disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 
 	public void enableRendering() {
 		if( this.stack.isEmpty() ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			Logger.severe( this );
 		} else {
-			org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = this.stack.pop();
-			org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
+			ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = this.stack.pop();
+			StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
 		}
 	}
 
 	@Override
 	public ProjectDocument getDocument() {
-		return org.alice.ide.project.ProjectDocumentState.getInstance().getValue();
+		return ProjectDocumentState.getInstance().getValue();
 	}
 
 	public ApiConfigurationManager getApiConfigurationManager() {
 		return this.apiConfigurationManager;
 	}
 
-	public org.lgna.croquet.Operation[] getUploadOperations() {
+	public Operation[] getUploadOperations() {
 		return this.uploadOperations;
 	}
 
-	public org.alice.ide.instancefactory.croquet.InstanceFactoryState getInstanceFactoryState() {
+	public InstanceFactoryState getInstanceFactoryState() {
 		return this.instanceFactoryState;
 	}
 
@@ -139,19 +193,19 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		return this.metaDeclarationFauxState;
 	}
 
-	public org.alice.ide.perspectives.noproject.NoProjectPerspective getNoProjectPerspective() {
+	public NoProjectPerspective getNoProjectPerspective() {
 		return this.noProjectPerspective;
 	}
 
-	public org.alice.stageide.perspectives.CodePerspective getCodePerspective() {
+	public CodePerspective getCodePerspective() {
 		return this.codePerspective;
 	}
 
-	public org.alice.stageide.perspectives.SetupScenePerspective getSetupScenePerspective() {
+	public SetupScenePerspective getSetupScenePerspective() {
 		return this.setupScenePerspective;
 	}
 
-	public org.lgna.croquet.ItemState<org.alice.ide.perspectives.ProjectPerspective> getPerspectiveState() {
+	public ItemState<ProjectPerspective> getPerspectiveState() {
 		return this.perspectiveState;
 	}
 
@@ -163,11 +217,11 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		return this.getPerspectiveState().getValue() == this.getSetupScenePerspective();
 	}
 
-	public org.lgna.croquet.Operation getSetToCodePerspectiveOperation() {
+	public Operation getSetToCodePerspectiveOperation() {
 		return this.getPerspectiveState().getItemSelectionOperation( this.getCodePerspective() );
 	}
 
-	public org.lgna.croquet.Operation getSetToSetupScenePerspectiveOperation() {
+	public Operation getSetToSetupScenePerspectiveOperation() {
 		return this.getPerspectiveState().getItemSelectionOperation( this.getSetupScenePerspective() );
 	}
 
@@ -179,21 +233,21 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		this.getPerspectiveState().setValueTransactionlessly( this.getSetupScenePerspective() );
 	}
 
-	public org.alice.ide.croquet.models.project.find.croquet.FindComposite getFindComposite() {
+	public FindComposite getFindComposite() {
 		return this.findComposite;
 	}
 
-	public org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> getTypeMetaState() {
+	public MetaState<NamedUserType> getTypeMetaState() {
 		if( this.typeMetaState != null ) {
 			//pass
 		} else {
-			org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = this.declarationsEditorComposite.getTabState();
-			this.typeMetaState = new org.lgna.croquet.meta.StateTrackingMetaState<org.lgna.project.ast.NamedUserType, DeclarationComposite<?, ?>>( declarationTabState ) {
+			DeclarationTabState declarationTabState = this.declarationsEditorComposite.getTabState();
+			this.typeMetaState = new StateTrackingMetaState<NamedUserType, DeclarationComposite<?, ?>>( declarationTabState ) {
 				@Override
-				protected org.lgna.project.ast.NamedUserType getValue( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> state ) {
+				protected NamedUserType getValue( State<DeclarationComposite<?, ?>> state ) {
 					DeclarationComposite<?, ?> declarationComposite = state.getValue();
 					if( declarationComposite != null ) {
-						return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( declarationComposite.getType(), org.lgna.project.ast.NamedUserType.class );
+						return ClassUtilities.getInstance( declarationComposite.getType(), NamedUserType.class );
 					} else {
 						return null;
 					}
@@ -203,49 +257,49 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		return this.typeMetaState;
 	}
 
-	public org.alice.ide.iconfactory.IconFactoryManager getIconFactoryManager() {
+	public IconFactoryManager getIconFactoryManager() {
 		return this.iconFactoryManager;
 	}
 
-	public org.alice.ide.declarationseditor.DeclarationsEditorComposite getDeclarationsEditorComposite() {
+	public DeclarationsEditorComposite getDeclarationsEditorComposite() {
 		return this.declarationsEditorComposite;
 	}
 
-	public org.lgna.croquet.Operation getResourcesDialogLaunchOperation() {
+	public Operation getResourcesDialogLaunchOperation() {
 		return this.resourcesDialogLaunchOperation;
 	}
 
-	public org.lgna.croquet.BooleanState getStasticsFrameIsShowingState() {
+	public BooleanState getStasticsFrameIsShowingState() {
 		return this.stasticsFrameIsShowingState;
 	}
 
-	private static final Integer HIGHLIGHT_STENCIL_LAYER = javax.swing.JLayeredPane.POPUP_LAYER - 2;
+	private static final Integer HIGHLIGHT_STENCIL_LAYER = JLayeredPane.POPUP_LAYER - 2;
 
-	public org.alice.ide.highlight.IdeHighlightStencil getHighlightStencil() {
+	public IdeHighlightStencil getHighlightStencil() {
 		if( this.highlightStencil != null ) {
 			//pass
 		} else {
-			this.highlightStencil = new org.alice.ide.highlight.IdeHighlightStencil( this.getFrame(), HIGHLIGHT_STENCIL_LAYER );
+			this.highlightStencil = new IdeHighlightStencil( this.getFrame(), HIGHLIGHT_STENCIL_LAYER );
 		}
 		return this.highlightStencil;
 	}
 
-	public org.lgna.project.ast.AbstractCode getFocusedCode() {
-		org.lgna.project.ast.AbstractDeclaration declaration = this.getMetaDeclarationFauxState().getValue();
-		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
-			return (org.lgna.project.ast.AbstractCode)declaration;
+	public AbstractCode getFocusedCode() {
+		AbstractDeclaration declaration = this.getMetaDeclarationFauxState().getValue();
+		if( declaration instanceof AbstractCode ) {
+			return (AbstractCode)declaration;
 		} else {
 			return null;
 		}
 	}
 
-	public void setFocusedCode( org.lgna.project.ast.AbstractCode nextFocusedCode ) {
+	public void setFocusedCode( AbstractCode nextFocusedCode ) {
 		this.selectDeclaration( nextFocusedCode );
 	}
 
-	public void selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite declarationComposite ) {
+	public void selectDeclarationComposite( DeclarationComposite declarationComposite ) {
 		if( declarationComposite != null ) {
-			org.lgna.project.ast.AbstractDeclaration declaration = declarationComposite.getDeclaration();
+			AbstractDeclaration declaration = declarationComposite.getDeclaration();
 			//			org.lgna.project.ast.AbstractType<?, ?, ?> type;
 			//			if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
 			//				type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
@@ -258,7 +312,7 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 			//			if( type instanceof org.lgna.project.ast.NamedUserType ) {
 			//				org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)type );
 			//			}
-			org.alice.ide.declarationseditor.DeclarationTabState tabState = this.getDeclarationsEditorComposite().getTabState();
+			DeclarationTabState tabState = this.getDeclarationsEditorComposite().getTabState();
 			//			if( tabState.containsItem( declarationComposite ) ) {
 			//				//pass
 			//			} else {
@@ -268,75 +322,75 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		}
 	}
 
-	private void selectDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		this.selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( declaration ) );
+	private void selectDeclaration( AbstractDeclaration declaration ) {
+		this.selectDeclarationComposite( DeclarationComposite.getInstance( declaration ) );
 	}
 
-	public org.lgna.croquet.Operation getNewProjectOperation() {
+	public Operation getNewProjectOperation() {
 		return this.newProjectOperation;
 	}
 
-	public org.lgna.croquet.Operation getOpenProjectOperation() {
+	public Operation getOpenProjectOperation() {
 		return this.openProjectOperation;
 	}
 
-	public org.lgna.croquet.Operation getUndoOperation() {
+	public Operation getUndoOperation() {
 		return this.undoOperation;
 	}
 
-	public org.lgna.croquet.Operation getRedoOperation() {
+	public Operation getRedoOperation() {
 		return this.redoOperation;
 	}
 
 	private final ApiConfigurationManager apiConfigurationManager;
 
-	private org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> typeMetaState;
+	private MetaState<NamedUserType> typeMetaState;
 
-	private final org.lgna.croquet.Operation[] uploadOperations;
+	private final Operation[] uploadOperations;
 
-	private final org.alice.ide.croquet.models.project.find.croquet.FindComposite findComposite;
+	private final FindComposite findComposite;
 
-	private final org.alice.ide.perspectives.noproject.NoProjectPerspective noProjectPerspective;
-	private final org.alice.stageide.perspectives.CodePerspective codePerspective;
-	private final org.alice.stageide.perspectives.SetupScenePerspective setupScenePerspective;
+	private final NoProjectPerspective noProjectPerspective;
+	private final CodePerspective codePerspective;
+	private final SetupScenePerspective setupScenePerspective;
 
-	private final org.alice.stageide.perspectives.PerspectiveState perspectiveState;
+	private final PerspectiveState perspectiveState;
 
 	private final MetaDeclarationFauxState metaDeclarationFauxState;
 
-	private final org.alice.ide.instancefactory.croquet.InstanceFactoryState instanceFactoryState;
+	private final InstanceFactoryState instanceFactoryState;
 
-	private final org.alice.ide.iconfactory.IconFactoryManager iconFactoryManager;
+	private final IconFactoryManager iconFactoryManager;
 
-	private final org.alice.ide.declarationseditor.DeclarationsEditorComposite declarationsEditorComposite = new org.alice.ide.declarationseditor.DeclarationsEditorComposite();
+	private final DeclarationsEditorComposite declarationsEditorComposite = new DeclarationsEditorComposite();
 
-	private final org.lgna.croquet.Operation resourcesDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
-			org.alice.ide.resource.manager.ResourceManagerComposite.class,
-			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.resource.manager.ResourceManagerComposite>() {
+	private final Operation resourcesDialogLaunchOperation = LazySimpleLaunchOperationFactory.createInstance(
+			ResourceManagerComposite.class,
+			new Lazy<ResourceManagerComposite>() {
 				@Override
-				protected org.alice.ide.resource.manager.ResourceManagerComposite create() {
-					return new org.alice.ide.resource.manager.ResourceManagerComposite( ProjectDocumentFrame.this );
+				protected ResourceManagerComposite create() {
+					return new ResourceManagerComposite( ProjectDocumentFrame.this );
 				}
-			}, org.lgna.croquet.Application.DOCUMENT_UI_GROUP ).getLaunchOperation();
+			}, Application.DOCUMENT_UI_GROUP ).getLaunchOperation();
 
-	private final org.lgna.croquet.BooleanState stasticsFrameIsShowingState = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createInstance(
-			org.lgna.croquet.Application.INFORMATION_GROUP,
-			org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite.class,
-			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite>() {
+	private final BooleanState stasticsFrameIsShowingState = LazyIsFrameShowingState.createInstance(
+			Application.INFORMATION_GROUP,
+			StatisticsFrameComposite.class,
+			new Lazy<StatisticsFrameComposite>() {
 				@Override
-				protected org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite create() {
-					return new org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite( ProjectDocumentFrame.this );
+				protected StatisticsFrameComposite create() {
+					return new StatisticsFrameComposite( ProjectDocumentFrame.this );
 				}
 			} );
-	private final edu.cmu.cs.dennisc.java.util.DStack<org.alice.ide.ReasonToDisableSomeAmountOfRendering> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final DStack<ReasonToDisableSomeAmountOfRendering> stack = Stacks.newStack();
 
-	private final java.util.Map<org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory> mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactoryListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+	private final Map<AbstractCode, InstanceFactory> mapCodeToInstanceFactory = Maps.newHashMap();
+	private final ValueListener<InstanceFactory> instanceFactoryListener = new ValueListener<InstanceFactory>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
-			org.alice.ide.instancefactory.InstanceFactory nextValue = e.getNextValue();
+		public void valueChanged( ValueEvent<InstanceFactory> e ) {
+			InstanceFactory nextValue = e.getNextValue();
 			if( nextValue != null ) {
-				org.lgna.project.ast.AbstractCode code = getFocusedCode();
+				AbstractCode code = getFocusedCode();
 				if( code != null ) {
 					mapCodeToInstanceFactory.put( code, nextValue );
 				}
@@ -344,18 +398,18 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		}
 	};
 
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.formatter.Formatter> formatterListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.formatter.Formatter>() {
+	private final ValueListener<Formatter> formatterListener = new ValueListener<Formatter>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.formatter.Formatter> e ) {
-			edu.cmu.cs.dennisc.java.awt.ComponentUtilities.revalidateTree( getFrame().getAwtComponent() );
+		public void valueChanged( ValueEvent<Formatter> e ) {
+			ComponentUtilities.revalidateTree( getFrame().getAwtComponent() );
 		}
 	};
 
-	private org.alice.ide.highlight.IdeHighlightStencil highlightStencil;
+	private IdeHighlightStencil highlightStencil;
 
-	private final org.lgna.croquet.Operation newProjectOperation = new org.alice.ide.croquet.models.projecturi.NewProjectOperation( this );
-	private final org.lgna.croquet.Operation openProjectOperation = new org.alice.ide.croquet.models.projecturi.OpenProjectOperation( this );
+	private final Operation newProjectOperation = new NewProjectOperation();
+	private final Operation openProjectOperation = new OpenProjectOperation();
 
-	private final org.lgna.croquet.Operation undoOperation = new org.alice.ide.croquet.models.history.UndoOperation( this );
-	private final org.lgna.croquet.Operation redoOperation = new org.alice.ide.croquet.models.history.RedoOperation( this );
+	private final Operation undoOperation = new UndoOperation( this );
+	private final Operation redoOperation = new RedoOperation( this );
 }

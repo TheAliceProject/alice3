@@ -42,19 +42,24 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import javax.swing.JComboBox;
+import java.lang.reflect.Field;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PopupFactoryUtilities {
-	public static javax.swing.JComboBox forceHeavyWeightPopups( javax.swing.JComboBox rv ) {
+	public static JComboBox forceHeavyWeightPopups( JComboBox rv ) {
 		rv.setLightWeightPopupEnabled( false );
 		try {
 			Class<?> cls = Class.forName( "javax.swing.PopupFactory" );
-			java.lang.reflect.Field field = cls.getDeclaredField( "forceHeavyWeightPopupKey" );
+			Field field = cls.getDeclaredField( "forceHeavyWeightPopupKey" );
 			field.setAccessible( true );
 			rv.putClientProperty( field.get( null ), Boolean.TRUE );
 		} catch( Exception e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "note: cannot forceHeavyWeightPopups" );
+			Logger.errln( "note: cannot forceHeavyWeightPopups" );
 		}
 		return rv;
 	}

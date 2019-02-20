@@ -43,6 +43,13 @@
 
 package org.alice.ide.custom;
 
+import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
+import org.alice.ide.croquet.models.numberpad.DoubleModel;
+import org.lgna.project.ast.DoubleLiteral;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,15 +63,15 @@ public final class DoubleCustomExpressionCreatorComposite extends NumberCustomEx
 	}
 
 	private DoubleCustomExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "5e7703fe-6a51-4be0-b828-9eae3d8d8999" ), org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() );
+		super( UUID.fromString( "5e7703fe-6a51-4be0-b828-9eae3d8d8999" ), DoubleModel.getInstance() );
 	}
 
 	@Override
-	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
+	protected String getTextForPreviousExpression( Expression expression ) {
 		String text;
-		if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
-			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;
-			text = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatInCurrentDefaultLocale( doubleLiteral.value.getValue() );
+		if( expression instanceof DoubleLiteral ) {
+			DoubleLiteral doubleLiteral = (DoubleLiteral)expression;
+			text = DoubleUtilities.formatInCurrentDefaultLocale( doubleLiteral.value.getValue() );
 		} else {
 			text = "";
 		}

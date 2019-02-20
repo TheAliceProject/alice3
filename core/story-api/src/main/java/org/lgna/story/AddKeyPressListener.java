@@ -42,9 +42,11 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 public class AddKeyPressListener {
 
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = AddKeyPressListener.class )
+	@ClassTemplate( keywordFactoryCls = AddKeyPressListener.class )
 	public static interface Detail {
 	}
 

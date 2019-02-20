@@ -42,10 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.ItemCodec;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum StringCodec implements org.lgna.croquet.ItemCodec<String> {
+public enum StringCodec implements ItemCodec<String> {
 	SINGLETON;
 	@Override
 	public Class<String> getValueClass() {
@@ -53,12 +57,12 @@ public enum StringCodec implements org.lgna.croquet.ItemCodec<String> {
 	}
 
 	@Override
-	public String decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public String decodeValue( BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeString();
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, String value ) {
 		binaryEncoder.encode( value );
 	}
 

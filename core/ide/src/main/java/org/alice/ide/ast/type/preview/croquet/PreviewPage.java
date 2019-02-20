@@ -43,29 +43,37 @@
 package org.alice.ide.ast.type.preview.croquet;
 
 import org.alice.ide.ast.type.croquet.ImportTypeWizard;
+import org.alice.ide.ast.type.preview.croquet.views.PreviewPane;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.Panel;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.views.Panel, ImportTypeWizard> {
-	private final org.lgna.croquet.BooleanState isIncludingAllState = this.createBooleanState( "isIncludingAllState", false );
-	private final org.lgna.croquet.event.ValueListener<Boolean> isIncludingAllListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+public class PreviewPage extends WizardPageComposite<Panel, ImportTypeWizard> {
+	private final BooleanState isIncludingAllState = this.createBooleanState( "isIncludingAllState", false );
+	private final ValueListener<Boolean> isIncludingAllListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			getView().refreshLater();
 		}
 	};
 
 	public PreviewPage( ImportTypeWizard wizard ) {
-		super( java.util.UUID.fromString( "2efecc6f-eb6a-4835-80e3-6898022c3cc2" ), wizard );
+		super( UUID.fromString( "2efecc6f-eb6a-4835-80e3-6898022c3cc2" ), wizard );
 	}
 
-	public org.lgna.croquet.BooleanState getIsIncludingAllState() {
+	public BooleanState getIsIncludingAllState() {
 		return this.isIncludingAllState;
 	}
 
 	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	public Status getPageStatus() {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
@@ -96,7 +104,7 @@ public class PreviewPage extends org.lgna.croquet.WizardPageComposite<org.lgna.c
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		return new org.alice.ide.ast.type.preview.croquet.views.PreviewPane( this );
+	protected Panel createView() {
+		return new PreviewPane( this );
 	}
 }

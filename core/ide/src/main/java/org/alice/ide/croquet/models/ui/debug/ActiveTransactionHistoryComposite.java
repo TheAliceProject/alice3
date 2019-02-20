@@ -43,6 +43,14 @@
 
 package org.alice.ide.croquet.models.ui.debug;
 
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectApplication;
+import org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView;
+
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,7 +64,7 @@ public class ActiveTransactionHistoryComposite extends TransactionHistoryComposi
 	}
 
 	private ActiveTransactionHistoryComposite() {
-		super( java.util.UUID.fromString( "2c299a2c-98fa-44d8-9d63-74c19da4bd2b" ), org.alice.ide.ProjectApplication.INFORMATION_GROUP );
+		super( UUID.fromString( "2c299a2c-98fa-44d8-9d63-74c19da4bd2b" ), ProjectApplication.INFORMATION_GROUP );
 		//todo: investigate
 		this.initializeIfNecessary();
 		final boolean IS_SHOWING_BY_DEFAULT = false;
@@ -69,14 +77,14 @@ public class ActiveTransactionHistoryComposite extends TransactionHistoryComposi
 	protected void localize() {
 		super.localize();
 		// do not want to bother localizers with this composite
-		this.getIsFrameShowingState().setTextForBothTrueAndFalse( "Transaction History" );
-		this.getIsFrameShowingState().getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F8, 0 ) );
+		this.getIsFrameShowingState().setTextForBothTrueAndFalse( "UserActivity History" );
+		this.getIsFrameShowingState().getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke( KeyEvent.VK_F8, 0 ) );
 	}
 
 	@Override
-	protected org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView createView() {
-		org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView rv = super.createView();
-		rv.setTransactionHistory( org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory() );
+	protected TransactionHistoryView createView() {
+		TransactionHistoryView rv = super.createView();
+		rv.setRootActivity( IDE.getActiveInstance().getOverallUserActivity() );
 		return rv;
 	}
 }

@@ -42,13 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.lgna.project.ast.Member;
+import org.lgna.project.ast.UserMethod;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum ActionStatus {
 	OMIT() {
 		@Override
-		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+		public String getDescriptionText( Member member ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
@@ -58,7 +61,7 @@ public enum ActionStatus {
 	},
 	ADD_UNIQUE() {
 		@Override
-		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+		public String getDescriptionText( Member member ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
@@ -68,7 +71,7 @@ public enum ActionStatus {
 	},
 	ADD_AND_RENAME() {
 		@Override
-		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+		public String getDescriptionText( Member member ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
@@ -78,7 +81,7 @@ public enum ActionStatus {
 	},
 	REPLACE_OVER_ORIGINAL() {
 		@Override
-		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+		public String getDescriptionText( Member member ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
@@ -88,7 +91,7 @@ public enum ActionStatus {
 	},
 	OMIT_IN_FAVOR_OF_ORIGINAL() {
 		@Override
-		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+		public String getDescriptionText( Member member ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
@@ -98,7 +101,7 @@ public enum ActionStatus {
 	},
 	DELETE_IN_FAVOR_OF_REPLACEMENT() {
 		@Override
-		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+		public String getDescriptionText( Member member ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
@@ -108,7 +111,7 @@ public enum ActionStatus {
 	},
 	KEEP_OVER_DIFFERENT_SIGNATURE() {
 		@Override
-		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+		public String getDescriptionText( Member member ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
@@ -118,7 +121,7 @@ public enum ActionStatus {
 	},
 	KEEP_OVER_REPLACEMENT() {
 		@Override
-		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+		public String getDescriptionText( Member member ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
@@ -128,7 +131,7 @@ public enum ActionStatus {
 	},
 	KEEP_AND_RENAME() {
 		@Override
-		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+		public String getDescriptionText( Member member ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
@@ -138,7 +141,7 @@ public enum ActionStatus {
 	},
 	KEEP_IDENTICAL() {
 		@Override
-		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+		public String getDescriptionText( Member member ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
@@ -148,7 +151,7 @@ public enum ActionStatus {
 	},
 	KEEP_UNIQUE() {
 		@Override
-		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+		public String getDescriptionText( Member member ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html><strong>" );
 			sb.append( member.getName() );
@@ -158,7 +161,7 @@ public enum ActionStatus {
 	},
 	RENAME_REQUIRED() {
 		@Override
-		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+		public String getDescriptionText( Member member ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html>You must rename at least one of the <strong>" );
 			sb.append( member.getName() );
@@ -170,7 +173,7 @@ public enum ActionStatus {
 	},
 	SELECTION_REQUIRED() {
 		@Override
-		public String getDescriptionText( org.lgna.project.ast.Member member ) {
+		public String getDescriptionText( Member member ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html>You must select which version of <strong>" );
 			sb.append( member.getName() );
@@ -179,11 +182,11 @@ public enum ActionStatus {
 		}
 	};
 
-	public abstract String getDescriptionText( org.lgna.project.ast.Member member );
+	public abstract String getDescriptionText( Member member );
 
-	private static String getSingularMemberClassText( org.lgna.project.ast.Member member ) {
-		if( member instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)member;
+	private static String getSingularMemberClassText( Member member ) {
+		if( member instanceof UserMethod ) {
+			UserMethod method = (UserMethod)member;
 			if( method.isProcedure() ) {
 				return "procedure";
 			} else {
@@ -194,9 +197,9 @@ public enum ActionStatus {
 		}
 	}
 
-	private static String getPluralMemberClassText( org.lgna.project.ast.Member member ) {
-		if( member instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)member;
+	private static String getPluralMemberClassText( Member member ) {
+		if( member instanceof UserMethod ) {
+			UserMethod method = (UserMethod)member;
 			if( method.isProcedure() ) {
 				return "procedures";
 			} else {

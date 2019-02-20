@@ -42,23 +42,30 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.scale;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.pattern.Criterion;
 import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ScaleUtilities {
-	private static void applyScale( edu.cmu.cs.dennisc.scenegraph.Component sgRoot, edu.cmu.cs.dennisc.scenegraph.Component sgComponent, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion<edu.cmu.cs.dennisc.scenegraph.Component> inclusionCriterion ) {
+	private static void applyScale( Component sgRoot, Component sgComponent, Vector3 axis, Criterion<Component> inclusionCriterion ) {
 		if( ( inclusionCriterion == null ) || inclusionCriterion.accept( sgComponent ) /* && !(sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Joint) */) {
-			if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
-				edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgComponent;
-				if( sgComposite instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
-					edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)sgComposite;
+			if( sgComponent instanceof Composite ) {
+				Composite sgComposite = (Composite)sgComponent;
+				if( sgComposite instanceof Transformable ) {
+					Transformable sgTransformable = (Transformable)sgComposite;
 					if( sgRoot == sgTransformable ) {
 						//pass
 					} else {
-						edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgTransformable.localTransformation.getValue();
+						AffineMatrix4x4 m = sgTransformable.localTransformation.getValue();
 						m.translation.multiply( axis );
 						sgTransformable.localTransformation.setValue( m );
 					}
@@ -67,21 +74,21 @@ public class ScaleUtilities {
 				for( int i = 0; i < N; i++ ) {
 					applyScale( sgRoot, sgComposite.getComponentAt( i ), axis, inclusionCriterion );
 				}
-			} else if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Visual ) {
-				edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = (edu.cmu.cs.dennisc.scenegraph.Visual)sgComponent;
-				edu.cmu.cs.dennisc.math.Matrix3x3 scale = sgVisual.scale.getValue();
+			} else if( sgComponent instanceof Visual ) {
+				Visual sgVisual = (Visual)sgComponent;
+				Matrix3x3 scale = sgVisual.scale.getValue();
 				edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
 				sgVisual.scale.setValue( scale );
 			}
 		}
 	}
 
-	public static void applyScale( edu.cmu.cs.dennisc.scenegraph.Component sgComponent, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion<edu.cmu.cs.dennisc.scenegraph.Component> inclusionCriterion ) {
+	public static void applyScale( Component sgComponent, Vector3 axis, Criterion<Component> inclusionCriterion ) {
 		applyScale( sgComponent, sgComponent, axis, inclusionCriterion );
 	}
 
-	public static void exorciseTheDemonsOfScaledSpace( edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgTransformable.localTransformation.getValue();
+	public static void exorciseTheDemonsOfScaledSpace( Transformable sgTransformable ) {
+		AffineMatrix4x4 m = sgTransformable.localTransformation.getValue();
 		if( m.orientation.isWithinReasonableEpsilonOfUnitLengthSquared() ) {
 			//pass
 		} else {
@@ -89,9 +96,9 @@ public class ScaleUtilities {
 			double yScale = m.orientation.up.calculateMagnitude();
 			double zScale = m.orientation.backward.calculateMagnitude();
 
-			applyScale( sgTransformable, new edu.cmu.cs.dennisc.math.Vector3( xScale, yScale, zScale ), null );
+			applyScale( sgTransformable, new Vector3( xScale, yScale, zScale ), null );
 
-			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 inverseScale = edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createIdentity();
+			OrthogonalMatrix3x3 inverseScale = OrthogonalMatrix3x3.createIdentity();
 			inverseScale.right.x = 1 / xScale;
 			inverseScale.up.y = 1 / yScale;
 			inverseScale.backward.z = 1 / zScale;
@@ -99,15 +106,15 @@ public class ScaleUtilities {
 
 			assert m.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 		}
-		for( edu.cmu.cs.dennisc.scenegraph.Component sgChild : sgTransformable.getComponents() ) {
-			if( sgChild instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
-				edu.cmu.cs.dennisc.scenegraph.Transformable sgChildTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)sgChild;
+		for( Component sgChild : sgTransformable.getComponents() ) {
+			if( sgChild instanceof Transformable ) {
+				Transformable sgChildTransformable = (Transformable)sgChild;
 				exorciseTheDemonsOfScaledSpace( sgChildTransformable );
 			}
 		}
 	}
 
-	public static Visual getSGVisualForTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable object )
+	public static Visual getSGVisualForTransformable( Transformable object )
 	{
 		if( object == null )
 		{

@@ -43,16 +43,23 @@
 
 package org.alice.ide.ast.fieldtree;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.project.ast.AbstractType;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeNode extends Node<org.lgna.project.ast.AbstractType<?, ?, ?>> {
+public class TypeNode extends Node<AbstractType<?, ?, ?>> {
 	private final int collapseThreshold;
 	private final int collapseThresholdForDescendants;
-	private final java.util.List<TypeNode> typeNodes = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final java.util.List<FieldNode> fieldNodes = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final List<TypeNode> typeNodes = Lists.newLinkedList();
+	private final List<FieldNode> fieldNodes = Lists.newLinkedList();
 
-	public static TypeNode createAndAddToParent( TypeNode parent, org.lgna.project.ast.AbstractType<?, ?, ?> type, int collapseThreshold, int collapseThresholdForDescendants ) {
+	public static TypeNode createAndAddToParent( TypeNode parent, AbstractType<?, ?, ?> type, int collapseThreshold, int collapseThresholdForDescendants ) {
 		TypeNode rv = new TypeNode( parent, type, collapseThreshold, collapseThresholdForDescendants );
 		if( parent != null ) {
 			parent.getTypeNodes().add( rv );
@@ -60,17 +67,17 @@ public class TypeNode extends Node<org.lgna.project.ast.AbstractType<?, ?, ?>> {
 		return rv;
 	}
 
-	protected TypeNode( TypeNode parent, org.lgna.project.ast.AbstractType<?, ?, ?> type, int collapseThreshold, int collapseThresholdForDescendants ) {
+	protected TypeNode( TypeNode parent, AbstractType<?, ?, ?> type, int collapseThreshold, int collapseThresholdForDescendants ) {
 		super( parent, type );
 		this.collapseThreshold = collapseThreshold;
 		this.collapseThresholdForDescendants = collapseThresholdForDescendants;
 	}
 
-	public java.util.List<TypeNode> getTypeNodes() {
+	public List<TypeNode> getTypeNodes() {
 		return this.typeNodes;
 	}
 
-	public java.util.List<FieldNode> getFieldNodes() {
+	public List<FieldNode> getFieldNodes() {
 		return this.fieldNodes;
 	}
 
@@ -96,7 +103,7 @@ public class TypeNode extends Node<org.lgna.project.ast.AbstractType<?, ?, ?>> {
 	}
 
 	public void removeEmptyTypeNodes() {
-		TypeNode[] copy = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.typeNodes, TypeNode.class );
+		TypeNode[] copy = ArrayUtilities.createArray( this.typeNodes, TypeNode.class );
 		for( TypeNode typeNode : copy ) {
 			typeNode.removeEmptyTypeNodes();
 		}
@@ -110,8 +117,8 @@ public class TypeNode extends Node<org.lgna.project.ast.AbstractType<?, ?, ?>> {
 	}
 
 	public void sort() {
-		java.util.Collections.sort( this.typeNodes );
-		java.util.Collections.sort( this.fieldNodes );
+		Collections.sort( this.typeNodes );
+		Collections.sort( this.fieldNodes );
 		for( TypeNode typeNode : this.typeNodes ) {
 			typeNode.sort();
 		}

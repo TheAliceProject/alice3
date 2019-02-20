@@ -42,29 +42,37 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import org.alice.ide.IDE;
+import org.alice.ide.ast.PreviousValueExpression;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.Expression;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PreviousValueExpressionPane extends org.lgna.croquet.views.BorderPanel {
-	private final org.alice.ide.x.AstI18nFactory factory;
-	private final org.alice.ide.ast.PreviousValueExpression expression;
+public class PreviousValueExpressionPane extends BorderPanel {
+	private final AstI18nFactory factory;
+	private final PreviousValueExpression expression;
 
-	public PreviousValueExpressionPane( org.alice.ide.x.AstI18nFactory factory, org.alice.ide.ast.PreviousValueExpression expression ) {
+	public PreviousValueExpressionPane( AstI18nFactory factory, PreviousValueExpression expression ) {
 		this.factory = factory;
 		this.expression = expression;
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+	protected void handleAddedTo( AwtComponentView<?> parent ) {
 		super.handleAddedTo( parent );
-		org.lgna.project.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
-		org.lgna.croquet.views.SwingComponentView<?> component = this.factory.createExpressionPane( previousExpression );
+		Expression previousExpression = IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
+		SwingComponentView<?> component = this.factory.createExpressionPane( previousExpression );
 		component.getAwtComponent().doLayout();
 		this.addCenterComponent( component );
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
 		this.forgetAndRemoveAllComponents();
 		super.handleRemovedFrom( parent );
 	}

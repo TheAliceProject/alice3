@@ -42,44 +42,64 @@
  *******************************************************************************/
 package org.alice.ide;
 
+import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.ThisFieldAccessFactory;
+import org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn;
+import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
+import org.alice.ide.properties.adapter.croquet.edits.PropertyValueEdit;
+import org.alice.stageide.sceneeditor.interact.croquet.AbstractFieldBasedManipulationActionOperation;
+import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.edits.StateEdit;
+import org.lgna.croquet.history.event.EditCommittedEvent;
+import org.lgna.croquet.history.event.ActivityEvent;
+import org.lgna.croquet.history.event.Listener;
+import org.lgna.croquet.undo.UndoHistory;
+import org.lgna.croquet.views.ComponentManager;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.UserField;
+
+import java.util.Map;
+
 /**
  * @author Kyle J. Harms
  */
 public class ProjectHistoryManager {
 
-	private org.lgna.croquet.history.event.Listener listener;
-	private java.util.Map<org.lgna.croquet.Group, org.lgna.croquet.undo.UndoHistory> map;
+	private Listener listener;
+	private Map<Group, UndoHistory> map;
 
 	public ProjectHistoryManager( ProjectDocument projectDocument ) {
-		this.listener = new org.lgna.croquet.history.event.Listener() {
+		this.listener = new Listener() {
 			@Override
-			public void changing( org.lgna.croquet.history.event.Event<?> e ) {
-			}
-
-			@Override
-			public void changed( org.lgna.croquet.history.event.Event<?> e ) {
-				if( e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
-					org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)e;
+			public void changed( ActivityEvent e ) {
+				if( e instanceof EditCommittedEvent ) {
+					EditCommittedEvent editCommittedEvent = (EditCommittedEvent)e;
 					ProjectHistoryManager.this.handleEditCommitted( editCommittedEvent.getEdit() );
 				}
 			}
 		};
-		projectDocument.getRootTransactionHistory().addListener( this.listener );
-		this.map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		projectDocument.getUserActivity().addListener( this.listener );
+		this.map = Maps.newHashMap();
 	}
 
-	public org.lgna.croquet.undo.UndoHistory getGroupHistory( org.lgna.croquet.Group group ) {
-		org.lgna.croquet.undo.UndoHistory rv;
+	public UndoHistory getGroupHistory( Group group ) {
+		UndoHistory rv;
 		if( group != null ) {
 			rv = this.map.get( group );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new org.lgna.croquet.undo.UndoHistory( group );
+				rv = new UndoHistory( group );
 				this.map.put( group, rv );
 			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "group==null" );
+			Logger.warning( "group==null" );
 			rv = null;
 		}
 		return rv;
@@ -89,40 +109,40 @@ public class ProjectHistoryManager {
 	private static int IS_ANIMATED = 0x2;
 	private static int IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED = IS_POSSIBLY_OPENING_SCENE | IS_ANIMATED;
 
-	private int isPossiblyOpeningSceneEdit( org.lgna.croquet.edits.Edit edit ) {
-		if( edit instanceof org.alice.ide.properties.adapter.croquet.edits.PropertyValueEdit ) {
+	private int isPossiblyOpeningSceneEdit( Edit edit ) {
+		if( edit instanceof PropertyValueEdit ) {
 			return IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED;
 		}
 
-		if( edit instanceof org.lgna.croquet.edits.StateEdit<?> ) {
-			org.lgna.croquet.edits.StateEdit<?> stateEdit = (org.lgna.croquet.edits.StateEdit<?>)edit;
+		if( edit instanceof StateEdit<?> ) {
+			StateEdit<?> stateEdit = (StateEdit<?>)edit;
 			if( stateEdit.getGroup() == IDE.PROJECT_GROUP ) {
 				return IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED;
 			}
 		}
 
-		org.lgna.croquet.CompletionModel completionModel = ( (org.lgna.croquet.edits.AbstractEdit<?>)edit ).getModel();
-		if( completionModel instanceof org.alice.stageide.sceneeditor.interact.croquet.AbstractFieldBasedManipulationActionOperation ) {
+		CompletionModel completionModel = ( (AbstractEdit<?>)edit ).getModel();
+		if( completionModel instanceof AbstractFieldBasedManipulationActionOperation ) {
 			return IS_POSSIBLY_OPENING_SCENE;
 		}
 
 		return 0;
 	}
 
-	private void markDirty( ProjectDocumentFrame projectDocumentFrame, org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory ) {
-		org.lgna.project.ast.UserField userField = thisFieldAccessFactory.getField();
+	private void markDirty( ProjectDocumentFrame projectDocumentFrame, ThisFieldAccessFactory thisFieldAccessFactory ) {
+		UserField userField = thisFieldAccessFactory.getField();
 		projectDocumentFrame.getIconFactoryManager().markIconFactoryForFieldDirty( userField );
-		org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( thisFieldAccessFactory ).markDirty();
-		for( org.lgna.croquet.views.SwingComponentView<?> component : org.lgna.croquet.views.ComponentManager.getComponents( projectDocumentFrame.getInstanceFactoryState().getCascadeRoot().getPopupPrepModel() ) ) {
+		InstanceFactoryFillIn.getInstance( thisFieldAccessFactory ).markDirty();
+		for( SwingComponentView<?> component : ComponentManager.getComponents( projectDocumentFrame.getInstanceFactoryState().getCascadeRoot().getPopupPrepModel() ) ) {
 			//note: rendering artifact for faux combo boxes when only invoking repaint.
 			//component.repaint();
 			component.revalidateAndRepaint();
 		}
 	}
 
-	private void handleEditCommitted( org.lgna.croquet.edits.Edit edit ) {
+	private void handleEditCommitted( Edit edit ) {
 		assert edit != null;
-		org.lgna.croquet.undo.UndoHistory projectHistory = this.getGroupHistory( edit.getGroup() );
+		UndoHistory projectHistory = this.getGroupHistory( edit.getGroup() );
 		if( projectHistory != null ) {
 			projectHistory.push( edit );
 		}
@@ -131,15 +151,15 @@ public class ProjectHistoryManager {
 		if( ( value & IS_POSSIBLY_OPENING_SCENE ) != 0 ) {
 			final ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
 			if( projectDocumentFrame != null ) {
-				final org.alice.ide.instancefactory.croquet.InstanceFactoryState instanceFactoryState = projectDocumentFrame.getInstanceFactoryState();
-				org.alice.ide.instancefactory.InstanceFactory instanceFactory = instanceFactoryState.getValue();
-				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
-					final org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
+				final InstanceFactoryState instanceFactoryState = projectDocumentFrame.getInstanceFactoryState();
+				InstanceFactory instanceFactory = instanceFactoryState.getValue();
+				if( instanceFactory instanceof ThisFieldAccessFactory ) {
+					final ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory)instanceFactory;
 					if( ( value & IS_ANIMATED ) != 0 ) {
 						new Thread() {
 							@Override
 							public void run() {
-								edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1100 );
+								ThreadUtilities.sleep( 1100 );
 								markDirty( projectDocumentFrame, thisFieldAccessFactory );
 							}
 						}.start();

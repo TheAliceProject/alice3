@@ -42,36 +42,46 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.enumconstant.data;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.stageide.gallerybrowser.enumconstant.codecs.EnumConstantResourceKeyCodec;
+import org.alice.stageide.modelresource.ClassResourceKey;
+import org.alice.stageide.modelresource.EnumConstantResourceKey;
+import org.lgna.croquet.data.RefreshableListData;
+import org.lgna.story.resources.ModelResource;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class EnumConstantResourceKeyListData extends org.lgna.croquet.data.RefreshableListData<org.alice.stageide.modelresource.EnumConstantResourceKey> {
-	private org.alice.stageide.modelresource.ClassResourceKey classResourceKey;
+public final class EnumConstantResourceKeyListData extends RefreshableListData<EnumConstantResourceKey> {
+	private ClassResourceKey classResourceKey;
 
 	public EnumConstantResourceKeyListData() {
-		super( org.alice.stageide.gallerybrowser.enumconstant.codecs.EnumConstantResourceKeyCodec.SINGLETON );
+		super( EnumConstantResourceKeyCodec.SINGLETON );
 	}
 
 	@Override
-	protected java.util.List<org.alice.stageide.modelresource.EnumConstantResourceKey> createValues() {
+	protected List<EnumConstantResourceKey> createValues() {
 		if( this.classResourceKey != null ) {
-			Class<? extends org.lgna.story.resources.ModelResource> cls = this.classResourceKey.getModelResourceCls();
+			Class<? extends ModelResource> cls = this.classResourceKey.getModelResourceCls();
 			if( cls.isEnum() ) {
-				java.util.List<org.alice.stageide.modelresource.EnumConstantResourceKey> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-				for( org.lgna.story.resources.ModelResource e : cls.getEnumConstants() ) {
-					rv.add( new org.alice.stageide.modelresource.EnumConstantResourceKey( (Enum)e ) );
+				List<EnumConstantResourceKey> rv = Lists.newLinkedList();
+				for( ModelResource e : cls.getEnumConstants() ) {
+					rv.add( new EnumConstantResourceKey( (Enum)e ) );
 				}
 				return rv;
 			} else {
 				//todo
-				return java.util.Collections.emptyList();
+				return Collections.emptyList();
 			}
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	public void setClassResourceKey( org.alice.stageide.modelresource.ClassResourceKey classResourceKey ) {
+	public void setClassResourceKey( ClassResourceKey classResourceKey ) {
 		this.classResourceKey = classResourceKey;
 		this.refresh();
 	}

@@ -42,23 +42,31 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import org.lgna.croquet.icon.AbstractIcon;
+import org.lgna.croquet.icon.TrimmedIcon;
+
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+
 /**
  * @author Dennis Cosgrove
  */
 @Deprecated
-public final class UriGalleryIcon extends org.lgna.croquet.icon.AbstractIcon {
-	private final javax.swing.Icon base;
+public final class UriGalleryIcon extends AbstractIcon {
+	private final Icon base;
 
-	public UriGalleryIcon( java.awt.Dimension size, javax.swing.Icon base ) {
+	public UriGalleryIcon( Dimension size, Icon base ) {
 		super( size );
 		this.base = base;
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
-		javax.swing.Icon icon;
-		if( this.base instanceof org.lgna.croquet.icon.TrimmedIcon ) {
-			org.lgna.croquet.icon.TrimmedIcon trimmedIcon = (org.lgna.croquet.icon.TrimmedIcon)this.base;
+	protected void paintIcon( Component c, Graphics2D g2 ) {
+		Icon icon;
+		if( this.base instanceof TrimmedIcon ) {
+			TrimmedIcon trimmedIcon = (TrimmedIcon)this.base;
 			icon = trimmedIcon.getImageIcon();
 		} else {
 			icon = this.base;

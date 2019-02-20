@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.alice.ide;
 
+import org.lgna.croquet.Operation;
+import org.lgna.issue.IssueReportingHub;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface IdeConfiguration {
-	org.lgna.croquet.Operation[] createUploadOperations( ProjectDocumentFrame projectDocumentFrame );
+	Operation[] createUploadOperations( ProjectDocumentFrame projectDocumentFrame );
 
-	org.lgna.issue.IssueReportingHub getIssueReportingHub();
+	IssueReportingHub getIssueReportingHub();
 }

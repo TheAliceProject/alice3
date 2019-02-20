@@ -42,6 +42,14 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.Torus;
+import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import org.lgna.story.STorus;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,33 +57,33 @@ public class TorusImp extends ShapeImp {
 
 	private static final double MINIMUM_VALUE = 0.01; //todo
 
-	public TorusImp( org.lgna.story.STorus abstraction ) {
+	public TorusImp( STorus abstraction ) {
 		this.abstraction = abstraction;
 		this.sgTorus.majorRadius.setValue( 0.375 );
 		this.sgTorus.minorRadius.setValue( 0.125 );
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgTorus } );
+		this.getSgVisuals()[ 0 ].geometries.setValue( new Geometry[] { this.sgTorus } );
 	}
 
 	@Override
-	public org.lgna.story.STorus getAbstraction() {
+	public STorus getAbstraction() {
 		return this.abstraction;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
-		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgTorus.majorRadius, this.sgTorus.minorRadius };
+	protected InstanceProperty[] getScaleProperties() {
+		return new InstanceProperty[] { this.sgTorus.majorRadius, this.sgTorus.minorRadius };
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
-		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] { edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS };
+	public Resizer[] getResizers() {
+		return new Resizer[] { Resizer.XZ_PLANE, Resizer.Y_AXIS };
 	}
 
 	@Override
-	public double getValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
-		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE ) {
+	public double getValueForResizer( Resizer resizer ) {
+		if( resizer == Resizer.XZ_PLANE ) {
 			return this.outerRadius.getValue();
-		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
+		} else if( resizer == Resizer.Y_AXIS ) {
 			return this.sgTorus.minorRadius.getValue();
 		} else {
 			assert false : resizer;
@@ -84,10 +92,10 @@ public class TorusImp extends ShapeImp {
 	}
 
 	@Override
-	public void setValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double value ) {
-		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE ) {
+	public void setValueForResizer( Resizer resizer, double value ) {
+		if( resizer == Resizer.XZ_PLANE ) {
 			this.outerRadius.setValue( value );
-		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
+		} else if( resizer == Resizer.Y_AXIS ) {
 			this.sgTorus.minorRadius.setValue( value );
 		} else {
 			assert false : resizer;
@@ -95,13 +103,13 @@ public class TorusImp extends ShapeImp {
 	}
 
 	@Override
-	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "setSize", size, this );
+	public void setSize( Dimension3 size ) {
+		Logger.outln( "setSize", size, this );
 		this.outerRadius.setValue( size.x * .5 );
 	}
 
-	private final org.lgna.story.STorus abstraction;
-	private final edu.cmu.cs.dennisc.scenegraph.Torus sgTorus = new edu.cmu.cs.dennisc.scenegraph.Torus();
+	private final STorus abstraction;
+	private final Torus sgTorus = new Torus();
 	public final DoubleProperty innerRadius = new DoubleProperty( TorusImp.this ) {
 		private double value = 0.25;
 

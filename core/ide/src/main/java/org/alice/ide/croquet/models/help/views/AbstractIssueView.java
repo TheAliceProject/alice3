@@ -42,31 +42,46 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import org.alice.ide.croquet.models.help.AbstractIssueComposite;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Button;
+import org.lgna.croquet.views.FlowPanel;
+import org.lgna.croquet.views.PageAxisPanel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.Separator;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.TextArea;
+
+import javax.swing.BorderFactory;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AbstractIssueView extends org.lgna.croquet.views.BorderPanel {
-	protected static org.lgna.croquet.views.SwingComponentView<?> createScrollPaneTextArea( org.lgna.croquet.StringState stringState ) {
-		org.lgna.croquet.views.TextArea textArea = stringState.createTextArea();
+public class AbstractIssueView extends BorderPanel {
+	protected static SwingComponentView<?> createScrollPaneTextArea( StringState stringState ) {
+		TextArea textArea = stringState.createTextArea();
 		textArea.getAwtComponent().setLineWrap( true );
 		textArea.getAwtComponent().setWrapStyleWord( true );
-		org.lgna.croquet.views.ScrollPane rv = new org.lgna.croquet.views.ScrollPane( textArea );
+		ScrollPane rv = new ScrollPane( textArea );
 		rv.setMinimumPreferredHeight( 128 );
 		return rv;
 	}
 
-	public AbstractIssueView( org.alice.ide.croquet.models.help.AbstractIssueComposite<?> composite ) {
+	public AbstractIssueView( AbstractIssueComposite<?> composite ) {
 		super( composite );
 
-		org.lgna.croquet.views.Button submitButton = composite.getSubmitBugOperation().createButton();
+		Button submitButton = composite.getSubmitBugOperation().createButton();
 		submitButton.scaleFont( 1.6f );
-		submitButton.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		submitButton.changeFont( TextWeight.BOLD );
 
-		org.lgna.croquet.views.FlowPanel submitPanel = new org.lgna.croquet.views.FlowPanel( org.lgna.croquet.views.FlowPanel.Alignment.CENTER );
+		FlowPanel submitPanel = new FlowPanel( FlowPanel.Alignment.CENTER );
 		submitPanel.addComponent( submitButton );
 
-		org.lgna.croquet.views.PageAxisPanel pageEndPanel = new org.lgna.croquet.views.PageAxisPanel( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ), submitPanel );
-		pageEndPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		PageAxisPanel pageEndPanel = new PageAxisPanel( Separator.createInstanceSeparatingTopFromBottom(), BoxUtilities.createVerticalSliver( 8 ), submitPanel );
+		pageEndPanel.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 
 		this.addPageEndComponent( pageEndPanel );
 	}

@@ -43,27 +43,46 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.CompositeView;
+import org.lgna.croquet.views.ScrollPane;
+
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSeverityStatusComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractComposite<V> {
+public abstract class AbstractSeverityStatusComposite<V extends CompositeView<?, ?>> extends AbstractComposite<V> {
 	public static final Status IS_GOOD_TO_GO_STATUS = null;
 
-	public static interface Status {
+	public interface Status {
 		boolean isGoodToGo();
 
 		String getText();
 	}
 
 	private static abstract class AbstractStatus extends AbstractInternalStringValue implements Status {
-		private AbstractStatus( java.util.UUID id, Key key ) {
+		private AbstractStatus( UUID id, Key key ) {
 			super( id, key );
+		}
+
+		public final boolean setText( String... texts) {
+			String and = " " + findLocalizedText( AbstractSeverityStatusComposite.class, "andConjuction" ) + " ";
+			final String text = Arrays.stream( texts ).filter( Objects::nonNull ).collect( Collectors.joining( and) );
+			if (!text.isEmpty() && !".".equals(text.substring(text.length() - 1))) {
+				setText( text + "." );
+			} else {
+				setText( text );
+			}
+			return !text.isEmpty();
 		}
 	}
 
 	public static final class WarningStatus extends AbstractStatus {
 		private WarningStatus( Key key ) {
-			super( java.util.UUID.fromString( "a1375dce-1d5f-4717-87a1-7d9759a12862" ), key );
+			super( UUID.fromString( "a1375dce-1d5f-4717-87a1-7d9759a12862" ), key );
 		}
 
 		@Override
@@ -74,7 +93,7 @@ public abstract class AbstractSeverityStatusComposite<V extends org.lgna.croquet
 
 	public static final class ErrorStatus extends AbstractStatus {
 		private ErrorStatus( Key key ) {
-			super( java.util.UUID.fromString( "e966c721-1a6e-478d-a22f-92725d68552e" ), key );
+			super( UUID.fromString( "e966c721-1a6e-478d-a22f-92725d68552e" ), key );
 		}
 
 		@Override
@@ -97,12 +116,12 @@ public abstract class AbstractSeverityStatusComposite<V extends org.lgna.croquet
 		return rv;
 	}
 
-	public AbstractSeverityStatusComposite( java.util.UUID id ) {
+	public AbstractSeverityStatusComposite( UUID id ) {
 		super( id );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

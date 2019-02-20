@@ -42,32 +42,48 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.ui;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.java.awt.EventInterceptor;
+import edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities;
+import edu.cmu.cs.dennisc.java.awt.event.KeyEventUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
+import java.awt.Component;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DragAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener, java.awt.event.KeyListener {
-	private edu.cmu.cs.dennisc.animation.Animator m_animator;
+public abstract class DragAdapter implements MouseListener, MouseMotionListener, KeyListener {
+	private Animator m_animator;
 	private UndoRedoManager m_undoRedoManager = null;
-	private java.awt.Component m_awtComponent = null;
+	private Component m_awtComponent = null;
 	private DragStyle m_dragStyleCurrent;
-	private java.awt.Point m_current = new java.awt.Point();
-	private java.awt.Point m_previous = new java.awt.Point();
-	private java.awt.Point m_press = new java.awt.Point();
+	private Point m_current = new Point();
+	private Point m_previous = new Point();
+	private Point m_press = new Point();
 
 	//	private int m_modifierMask = java.awt.event.MouseEvent.BUTTON1_MASK | java.awt.event.MouseEvent.BUTTON2_MASK | java.awt.event.MouseEvent.BUTTON3_MASK;
 	private boolean m_isActive = false;
 
-	private java.util.List<edu.cmu.cs.dennisc.java.awt.EventInterceptor> m_eventInterceptors = new java.util.LinkedList<edu.cmu.cs.dennisc.java.awt.EventInterceptor>();
+	private List<EventInterceptor> m_eventInterceptors = new LinkedList<EventInterceptor>();
 
-	public void addEventInterceptor( edu.cmu.cs.dennisc.java.awt.EventInterceptor eventInterceptor ) {
+	public void addEventInterceptor( EventInterceptor eventInterceptor ) {
 		m_eventInterceptors.add( eventInterceptor );
 	}
 
-	public void removeEventInterceptor( edu.cmu.cs.dennisc.java.awt.EventInterceptor eventInterceptor ) {
+	public void removeEventInterceptor( EventInterceptor eventInterceptor ) {
 		m_eventInterceptors.add( eventInterceptor );
 	}
 
-	public Iterable<edu.cmu.cs.dennisc.java.awt.EventInterceptor> accessEventInterceptors() {
+	public Iterable<EventInterceptor> accessEventInterceptors() {
 		return m_eventInterceptors;
 	}
 
@@ -94,11 +110,11 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 	//		m_awtComponent.setCursor( NULL_CURSOR );
 	//	}
 
-	protected java.awt.Component getAWTComponent() {
+	protected Component getAWTComponent() {
 		return m_awtComponent;
 	}
 
-	public void setAWTComponent( java.awt.Component awtComponent ) {
+	public void setAWTComponent( Component awtComponent ) {
 		if( m_awtComponent != null ) {
 			removeListeners( m_awtComponent );
 		}
@@ -118,15 +134,15 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 	//		return (m_modifierMask & modifierMask) != 0;
 	//	}
 
-	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
-		return ( e.getModifiers() & ( java.awt.event.MouseEvent.BUTTON1_MASK | java.awt.event.MouseEvent.BUTTON2_MASK | java.awt.event.MouseEvent.BUTTON3_MASK ) ) != 0;
+	protected boolean isAcceptable( MouseEvent e ) {
+		return ( e.getModifiers() & ( MouseEvent.BUTTON1_MASK | MouseEvent.BUTTON2_MASK | MouseEvent.BUTTON3_MASK ) ) != 0;
 	}
 
-	public edu.cmu.cs.dennisc.animation.Animator getAnimator() {
+	public Animator getAnimator() {
 		return m_animator;
 	}
 
-	public void setAnimator( edu.cmu.cs.dennisc.animation.Animator animator ) {
+	public void setAnimator( Animator animator ) {
 		m_animator = animator;
 	}
 
@@ -138,23 +154,23 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 		m_undoRedoManager = undoRedoManager;
 	}
 
-	protected void addListeners( java.awt.Component component ) {
+	protected void addListeners( Component component ) {
 		component.addMouseListener( this );
 		component.addMouseMotionListener( this );
 		component.addKeyListener( this );
 	}
 
-	protected void removeListeners( java.awt.Component component ) {
+	protected void removeListeners( Component component ) {
 		component.removeMouseListener( this );
 		component.removeMouseMotionListener( this );
 		component.removeKeyListener( this );
 	}
 
-	protected abstract void handleMousePress( java.awt.Point current, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange );
+	protected abstract void handleMousePress( Point current, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange );
 
-	protected abstract void handleMouseDrag( java.awt.Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, edu.cmu.cs.dennisc.ui.DragStyle dragStyle );
+	protected abstract void handleMouseDrag( Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, DragStyle dragStyle );
 
-	protected abstract java.awt.Point handleMouseRelease( java.awt.Point rvCurrent, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange );
+	protected abstract Point handleMouseRelease( Point rvCurrent, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange );
 
 	private boolean m_isDragInProgress = false;
 
@@ -173,27 +189,27 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 		handleMouseDrag( m_current, m_current.x - m_press.x, m_current.y - m_press.y, m_current.x - m_previous.x, m_current.y - m_previous.y, m_dragStyleCurrent );
 	}
 
-	private java.awt.Point invokeHandleMouseRelease( boolean isOriginalAsOpposedToStyleChange ) {
+	private Point invokeHandleMouseRelease( boolean isOriginalAsOpposedToStyleChange ) {
 		m_isDragInProgress = false;
 		return handleMouseRelease( m_current, m_dragStyleCurrent, isOriginalAsOpposedToStyleChange );
 	}
 
 	@Override
-	public final void mouseClicked( java.awt.event.MouseEvent e ) {
+	public final void mouseClicked( MouseEvent e ) {
 	}
 
 	@Override
-	public final void mouseEntered( java.awt.event.MouseEvent e ) {
+	public final void mouseEntered( MouseEvent e ) {
 	}
 
 	@Override
-	public final void mouseExited( java.awt.event.MouseEvent e ) {
+	public final void mouseExited( MouseEvent e ) {
 	}
 
 	@Override
-	public final void mousePressed( java.awt.event.MouseEvent e ) {
+	public final void mousePressed( MouseEvent e ) {
 		boolean isIntercepted = false;
-		for( edu.cmu.cs.dennisc.java.awt.EventInterceptor eventInterceptor : m_eventInterceptors ) {
+		for( EventInterceptor eventInterceptor : m_eventInterceptors ) {
 			if( eventInterceptor.isEventIntercepted( e ) ) {
 				isIntercepted = true;
 				break;
@@ -206,7 +222,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 			m_isActive = this.isAcceptable( e );
 		}
 		if( m_isActive ) {
-			if( edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( e ) ) {
+			if( InputEventUtilities.isQuoteControlUnquoteDown( e ) ) {
 				if( e.isShiftDown() ) {
 					m_dragStyleCurrent = DragStyle.CONTROL_SHIFT;
 				} else {
@@ -229,7 +245,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 	}
 
 	@Override
-	public final void mouseReleased( java.awt.event.MouseEvent e ) {
+	public final void mouseReleased( MouseEvent e ) {
 		if( m_isActive ) {
 			m_previous.x = m_current.x;
 			m_previous.y = m_current.y;
@@ -250,7 +266,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 	//		}
 	//	}
 	@Override
-	public final void mouseDragged( java.awt.event.MouseEvent e ) {
+	public final void mouseDragged( MouseEvent e ) {
 		//		if( m_cursorWarps.size() > 0 ) {
 		//			handleMouseWarp( e );
 		//		} else {
@@ -265,10 +281,10 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 	}
 
 	@Override
-	public final void mouseMoved( java.awt.event.MouseEvent e ) {
+	public final void mouseMoved( MouseEvent e ) {
 		//the mac does not report dragged events if control is pressed
 		if( m_isActive ) {
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+			if( SystemUtilities.isMac() ) {
 				if( e.isControlDown() ) {
 					mouseDragged( e );
 				}
@@ -277,7 +293,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 	}
 
 	protected void handleDragStyleChange( DragStyle from, DragStyle to ) {
-		java.awt.Point p = invokeHandleMouseRelease( false );
+		Point p = invokeHandleMouseRelease( false );
 		m_current.x = p.x;
 		m_current.y = p.y;
 		m_dragStyleCurrent = to;
@@ -293,7 +309,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 
 	private void addToDragStyleIfNecessary( int keyCode ) {
 		if( m_dragStyleCurrent != null ) {
-			if( keyCode == edu.cmu.cs.dennisc.java.awt.event.KeyEventUtilities.getQuoteControlUnquoteKey() ) {
+			if( keyCode == KeyEventUtilities.getQuoteControlUnquoteKey() ) {
 				if( m_dragStyleCurrent.isControlDown() ) {
 					//note: this should happen plenty, as key press events keep coming
 					//pass
@@ -304,7 +320,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 						handleDragStyleChange( m_dragStyleCurrent, DragStyle.CONTROL );
 					}
 				}
-			} else if( keyCode == java.awt.event.KeyEvent.VK_SHIFT ) {
+			} else if( keyCode == KeyEvent.VK_SHIFT ) {
 				if( m_dragStyleCurrent.isControlDown() ) {
 					handleDragStyleChange( m_dragStyleCurrent, DragStyle.CONTROL_SHIFT );
 				} else {
@@ -321,7 +337,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 
 	private void removeFromDragStyleIfNecessary( int keyCode ) {
 		if( m_dragStyleCurrent != null ) {
-			if( keyCode == edu.cmu.cs.dennisc.java.awt.event.KeyEventUtilities.getQuoteControlUnquoteKey() ) {
+			if( keyCode == KeyEventUtilities.getQuoteControlUnquoteKey() ) {
 				if( m_dragStyleCurrent.isControlDown() ) {
 					if( m_dragStyleCurrent.isShiftDown() ) {
 						handleDragStyleChange( m_dragStyleCurrent, DragStyle.SHIFT );
@@ -332,7 +348,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 					//note: this should not happen, as one only gets one key release event
 					//pass
 				}
-			} else if( keyCode == java.awt.event.KeyEvent.VK_SHIFT ) {
+			} else if( keyCode == KeyEvent.VK_SHIFT ) {
 				if( m_dragStyleCurrent.isControlDown() ) {
 					handleDragStyleChange( m_dragStyleCurrent, DragStyle.CONTROL );
 				} else {
@@ -348,16 +364,16 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 	}
 
 	@Override
-	public void keyPressed( java.awt.event.KeyEvent e ) {
+	public void keyPressed( KeyEvent e ) {
 		addToDragStyleIfNecessary( e.getKeyCode() );
 	}
 
 	@Override
-	public void keyReleased( java.awt.event.KeyEvent e ) {
+	public void keyReleased( KeyEvent e ) {
 		removeFromDragStyleIfNecessary( e.getKeyCode() );
 	}
 
 	@Override
-	public void keyTyped( java.awt.event.KeyEvent e ) {
+	public void keyTyped( KeyEvent e ) {
 	}
 }

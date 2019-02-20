@@ -42,54 +42,71 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GLAutoDrawable;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Matrix4x4;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.ScaleUtilities;
+import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
+
+import java.awt.Rectangle;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class PickDisplayTask extends DisplayTask {
-	public PickDisplayTask( int x, int y, edu.cmu.cs.dennisc.render.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.render.VisualInclusionCriterion criterion ) {
+	public PickDisplayTask( int x, int y, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion ) {
 		this.x = x;
 		this.y = y;
 		this.pickSubElementPolicy = pickSubElementPolicy;
 		this.criterion = criterion;
 
 		final int SIZEOF_INT = 4;
-		java.nio.ByteBuffer byteBuffer = java.nio.ByteBuffer.allocateDirect( SIZEOF_INT * SELECTION_CAPACITY );
-		byteBuffer.order( java.nio.ByteOrder.nativeOrder() );
+		ByteBuffer byteBuffer = ByteBuffer.allocateDirect( SIZEOF_INT * SELECTION_CAPACITY );
+		byteBuffer.order( ByteOrder.nativeOrder() );
 		this.selectionAsIntBuffer = byteBuffer.asIntBuffer();
 	}
 
-	protected abstract void fireDone( edu.cmu.cs.dennisc.render.gl.imp.PickParameters pickParameters );
+	protected abstract void fireDone( PickParameters pickParameters );
 
 	@Override
-	public final IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, com.jogamp.opengl.GLAutoDrawable drawable, com.jogamp.opengl.GL2 gl ) {
+	public final IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, GLAutoDrawable drawable, GL2 gl ) {
 		this.pickContext.gl = gl;
 
 		//todo:
 		ConformanceTestResults.SINGLETON.updateAsynchronousPickInformationIfNecessary( gl );
 
-		edu.cmu.cs.dennisc.render.RenderTarget rt = rtImp.getRenderTarget();
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = rtImp.getCameraAtPixel( this.x, this.y );
-		edu.cmu.cs.dennisc.render.gl.imp.PickParameters pickParameters = new edu.cmu.cs.dennisc.render.gl.imp.PickParameters( rt, sgCamera, this.x, this.y, this.pickSubElementPolicy == edu.cmu.cs.dennisc.render.PickSubElementPolicy.REQUIRED, null );
+		RenderTarget rt = rtImp.getRenderTarget();
+		AbstractCamera sgCamera = rtImp.getCameraAtPixel( this.x, this.y );
+		PickParameters pickParameters = new PickParameters( rt, sgCamera, this.x, this.y, this.pickSubElementPolicy == PickSubElementPolicy.REQUIRED, null );
 
-		GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
+		GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
 
 		this.selectionAsIntBuffer.rewind();
 		this.pickContext.gl.glSelectBuffer( SELECTION_CAPACITY, this.selectionAsIntBuffer );
 
-		this.pickContext.gl.glRenderMode( com.jogamp.opengl.GL2.GL_SELECT );
+		this.pickContext.gl.glRenderMode( GL2.GL_SELECT );
 		this.pickContext.gl.glInitNames();
 
-		java.awt.Rectangle actualViewport = rt.getActualViewportAsAwtRectangle( sgCamera );
+		Rectangle actualViewport = rt.getActualViewportAsAwtRectangle( sgCamera );
 		this.pickContext.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
 		cameraAdapter.performPick( this.pickContext, pickParameters, actualViewport );
 		this.pickContext.gl.glFlush();
 
 		this.selectionAsIntBuffer.rewind();
-		int length = this.pickContext.gl.glRenderMode( com.jogamp.opengl.GL2.GL_RENDER );
+		int length = this.pickContext.gl.glRenderMode( GL2.GL_RENDER );
 		//todo: invesigate negative length
 		//assert length >= 0;
 
@@ -106,11 +123,11 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 				double x = pickParameters.getX();
 				double y = pickParameters.getFlippedY( actualViewport );
 
-				edu.cmu.cs.dennisc.math.Matrix4x4 m = new edu.cmu.cs.dennisc.math.Matrix4x4();
+				Matrix4x4 m = new Matrix4x4();
 				m.translation.set( actualViewport.width - ( 2 * ( x - actualViewport.x ) ), actualViewport.height - ( 2 * ( y - actualViewport.y ) ), 0, 1 );
-				edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( m, actualViewport.width, actualViewport.height, 1.0 );
+				ScaleUtilities.applyScale( m, actualViewport.width, actualViewport.height, 1.0 );
 
-				edu.cmu.cs.dennisc.math.Matrix4x4 p = new edu.cmu.cs.dennisc.math.Matrix4x4();
+				Matrix4x4 p = new Matrix4x4();
 				cameraAdapter.getActualProjectionMatrix( p, actualViewport );
 
 				m.applyMultiplication( p );
@@ -119,11 +136,11 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 					selectionBufferInfo.updatePointInSource( m );
 				}
 			} else {
-				edu.cmu.cs.dennisc.math.Ray ray = new edu.cmu.cs.dennisc.math.Ray();
+				Ray ray = new Ray();
 				ray.setNaN();
 				cameraAdapter.getRayAtPixel( ray, pickParameters.getX(), pickParameters.getY(), actualViewport );
 				ray.accessDirection().normalize();
-				edu.cmu.cs.dennisc.math.AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation();
+				AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation();
 				for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
 					selectionBufferInfo.updatePointInSource( ray, inverseAbsoluteTransformation );
 				}
@@ -165,16 +182,16 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 				//						};
 				//					}
 				//				}
-				java.util.Comparator<SelectionBufferInfo> comparator;
+				Comparator<SelectionBufferInfo> comparator;
 				if( isPickFunctioningCorrectly ) {
-					comparator = new java.util.Comparator<SelectionBufferInfo>() {
+					comparator = new Comparator<SelectionBufferInfo>() {
 						@Override
 						public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
 							return Float.compare( sbi1.getZFront(), sbi2.getZFront() );
 						}
 					};
 				} else {
-					comparator = new java.util.Comparator<SelectionBufferInfo>() {
+					comparator = new Comparator<SelectionBufferInfo>() {
 						@Override
 						public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
 							double z1 = -sbi1.getPointInSource().z;
@@ -183,7 +200,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 						}
 					};
 				}
-				java.util.Arrays.sort( selectionBufferInfos, comparator );
+				Arrays.sort( selectionBufferInfos, comparator );
 			}
 			for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
 				pickParameters.addPickResult( sgCamera, selectionBufferInfo.getSgVisual(), selectionBufferInfo.isFrontFacing(), selectionBufferInfo.getSGGeometry(), selectionBufferInfo.getSubElement(), selectionBufferInfo.getPointInSource() );
@@ -196,10 +213,10 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 	private final int x;
 	private final int y;
-	private final edu.cmu.cs.dennisc.render.PickSubElementPolicy pickSubElementPolicy;
-	private final edu.cmu.cs.dennisc.render.VisualInclusionCriterion criterion;
+	private final PickSubElementPolicy pickSubElementPolicy;
+	private final VisualInclusionCriterion criterion;
 
 	private static final int SELECTION_CAPACITY = 256;
 	private final PickContext pickContext = new PickContext( false );
-	private final java.nio.IntBuffer selectionAsIntBuffer;
+	private final IntBuffer selectionAsIntBuffer;
 }

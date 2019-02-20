@@ -43,6 +43,7 @@
 package org.lgna.story;
 
 import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.PropResource;
 
 /**
  * @author dculyba
@@ -50,9 +51,9 @@ import org.lgna.story.implementation.JointedModelImp;
  */
 public class SProp extends SJointedModel {
 
-	private final org.lgna.story.implementation.JointedModelImp implementation;
+	private final JointedModelImp implementation;
 
-	public SProp( org.lgna.story.resources.PropResource resource ) {
+	public SProp( PropResource resource ) {
 		this.implementation = resource.createImplementation( this );
 	}
 

@@ -42,21 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.croquet.components;
 
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.project.ast.Expression;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionStateView extends org.lgna.croquet.views.BorderPanel {
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> model;
-	private final org.alice.ide.x.AstI18nFactory factory;
+public class ExpressionStateView extends BorderPanel {
+	private final CustomItemState<Expression> model;
+	private final AstI18nFactory factory;
 
-	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> valueListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
+	private final ValueListener<Expression> valueListener = new ValueListener<Expression>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
+		public void valueChanged( ValueEvent<Expression> e ) {
 			ExpressionStateView.this.refreshLater();
 		}
 	};
 
-	public ExpressionStateView( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> model, org.alice.ide.x.AstI18nFactory factory ) {
+	public ExpressionStateView( CustomItemState<Expression> model, AstI18nFactory factory ) {
 		this.model = model;
 		this.factory = factory;
 	}

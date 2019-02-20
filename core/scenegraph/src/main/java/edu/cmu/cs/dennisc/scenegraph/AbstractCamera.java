@@ -43,37 +43,45 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector4;
+import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCamera extends Leaf {
-	public java.awt.Point transformToAWT( java.awt.Point rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.render.RenderTarget renderTarget ) {
+	public Point transformToAWT( Point rv, Vector4 xyzw, RenderTarget renderTarget ) {
 		return transformToAWT( rv, xyzw, renderTarget, this );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT( edu.cmu.cs.dennisc.math.Vector4 rv, java.awt.Point p, double z, edu.cmu.cs.dennisc.render.RenderTarget renderTarget ) {
+	public Vector4 transformFromAWT( Vector4 rv, Point p, double z, RenderTarget renderTarget ) {
 		return transformFromAWT( rv, p, z, renderTarget, this );
 	}
 
-	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.render.RenderTarget renderTarget ) {
+	public Point transformToAWT_New( Vector4 xyzw, RenderTarget renderTarget ) {
 		return transformToAWT_New( xyzw, renderTarget, this );
 	}
 
-	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.render.RenderTarget renderTarget ) {
+	public Point transformToAWT_New( Point3 xyz, RenderTarget renderTarget ) {
 		return transformToAWT_New( xyz, renderTarget, this );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT_NewVectorD4( java.awt.Point p, double z, edu.cmu.cs.dennisc.render.RenderTarget renderTarget ) {
+	public Vector4 transformFromAWT_NewVectorD4( Point p, double z, RenderTarget renderTarget ) {
 		return transformFromAWT_NewVectorD4( p, z, renderTarget, this );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 transformFromAWT_NewPointD3( java.awt.Point p, double z, edu.cmu.cs.dennisc.render.RenderTarget renderTarget ) {
+	public Point3 transformFromAWT_NewPointD3( Point p, double z, RenderTarget renderTarget ) {
 		return transformFromAWT_NewPointD3( p, z, renderTarget, this );
 	}
 
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Background> background = new edu.cmu.cs.dennisc.property.InstanceProperty<Background>( this, null );
+	public final InstanceProperty<Background> background = new InstanceProperty<Background>( this, null );
 	//public final edu.cmu.cs.dennisc.property.ListProperty< Layer > postRenderLayers = new edu.cmu.cs.dennisc.property.ListProperty< Layer >( this );
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<Layer> postRenderLayers = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<Layer>( this, new Layer[ 0 ] ) {
+	public final CopyableArrayProperty<Layer> postRenderLayers = new CopyableArrayProperty<Layer>( this, new Layer[ 0 ] ) {
 		@Override
 		protected Layer[] createArray( int length ) {
 			return new Layer[ length ];

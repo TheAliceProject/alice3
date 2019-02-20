@@ -42,11 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.issue;
 
+import java.net.URL;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface WorkerListener {
-	public void process( java.util.List<String> chunks );
+	public void process( List<String> chunks );
 
-	public void done( boolean isSuccessful, java.net.URL urlResult );
+	public void done( boolean isSuccessful, URL urlResult );
 }

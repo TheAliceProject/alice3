@@ -42,15 +42,27 @@
  *******************************************************************************/
 package org.alice.ide.icons;
 
+import org.lgna.croquet.icon.AbstractIcon;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.GeneralPath;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CheckIcon extends org.lgna.croquet.icon.AbstractIcon {
-	private final java.awt.Shape shape;
-	private final java.awt.Stroke innerStroke;
-	private final java.awt.Stroke outerStroke;
+public class CheckIcon extends AbstractIcon {
+	private final Shape shape;
+	private final Stroke innerStroke;
+	private final Stroke outerStroke;
 
-	public CheckIcon( java.awt.Dimension size ) {
+	public CheckIcon( Dimension size ) {
 		super( size );
 		int unit = size.width;
 
@@ -62,26 +74,26 @@ public class CheckIcon extends org.lgna.croquet.icon.AbstractIcon {
 		double yB = xC;
 		double yC = xA;
 
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		GeneralPath path = new GeneralPath();
 		path.moveTo( xA * unit, yA * unit );
 		path.lineTo( xB * unit, yB * unit );
 		path.lineTo( xC * unit, yC * unit );
 		shape = path;
-		innerStroke = new java.awt.BasicStroke( unit * 0.2f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
-		outerStroke = new java.awt.BasicStroke( unit * 0.25f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
+		innerStroke = new BasicStroke( unit * 0.2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
+		outerStroke = new BasicStroke( unit * 0.25f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
 	}
 
-	protected java.awt.Paint getInnerPaint( java.awt.Component c ) {
-		return new java.awt.Color( 0, 127, 0 );
+	protected Paint getInnerPaint( Component c ) {
+		return new Color( 0, 127, 0 );
 	}
 
-	protected java.awt.Paint getOuterPaint( java.awt.Component c ) {
-		return java.awt.Color.WHITE;
+	protected Paint getOuterPaint( Component c ) {
+		return Color.WHITE;
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
-		java.awt.Stroke prevStroke = g2.getStroke();
+	protected void paintIcon( Component c, Graphics2D g2 ) {
+		Stroke prevStroke = g2.getStroke();
 		g2.setStroke( outerStroke );
 		g2.setPaint( this.getOuterPaint( c ) );
 		g2.draw( shape );

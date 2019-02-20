@@ -43,12 +43,19 @@
 
 package edu.cmu.cs.dennisc.tree;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Objects;
+
+import java.util.List;
+import java.util.ListIterator;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DefaultNode<T> implements Node<T> {
 	private final T value;
-	private final java.util.List<DefaultNode<T>> children;
+	private final List<DefaultNode<T>> children;
 
 	public static <T> DefaultNode<T> createUnsafeInstance( T value, Class<T> cls ) {
 		return new DefaultNode<T>( value, false );
@@ -61,9 +68,9 @@ public class DefaultNode<T> implements Node<T> {
 	private DefaultNode( T value, boolean isCopyOnWrite ) {
 		this.value = value;
 		if( isCopyOnWrite ) {
-			this.children = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+			this.children = Lists.newCopyOnWriteArrayList();
 		} else {
-			this.children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			this.children = Lists.newLinkedList();
 		}
 	}
 
@@ -72,7 +79,7 @@ public class DefaultNode<T> implements Node<T> {
 	}
 
 	public DefaultNode<T> addChild( T child ) {
-		DefaultNode<T> rv = new DefaultNode<T>( child, this.children instanceof java.util.concurrent.CopyOnWriteArrayList );
+		DefaultNode<T> rv = new DefaultNode<T>( child, this.children instanceof CopyOnWriteArrayList );
 		this.addChild( rv );
 		return rv;
 	}
@@ -82,7 +89,7 @@ public class DefaultNode<T> implements Node<T> {
 	}
 
 	public DefaultNode<T> removeChild( T child ) {
-		java.util.ListIterator<DefaultNode<T>> listIterator = this.children.listIterator();
+		ListIterator<DefaultNode<T>> listIterator = this.children.listIterator();
 		while( listIterator.hasNext() ) {
 			DefaultNode<T> node = listIterator.next();
 			if( node.getValue().equals( child ) ) {
@@ -99,7 +106,7 @@ public class DefaultNode<T> implements Node<T> {
 	}
 
 	@Override
-	public java.util.List<DefaultNode<T>> getChildren() {
+	public List<DefaultNode<T>> getChildren() {
 		return this.children;
 	}
 
@@ -109,8 +116,8 @@ public class DefaultNode<T> implements Node<T> {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.tree.DefaultNode<T> get( T value ) {
-		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.value, value ) ) {
+	public DefaultNode<T> get( T value ) {
+		if( Objects.equals( this.value, value ) ) {
 			return this;
 		} else {
 			for( DefaultNode<T> child : this.children ) {

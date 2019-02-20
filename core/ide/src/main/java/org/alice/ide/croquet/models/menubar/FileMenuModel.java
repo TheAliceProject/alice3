@@ -42,47 +42,70 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.menubar;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.croquet.models.projecturi.ExitOperation;
+import org.alice.ide.croquet.models.projecturi.ExportProjectOperation;
+import org.alice.ide.croquet.models.projecturi.RevertProjectOperation;
+import org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation;
+import org.alice.ide.croquet.models.projecturi.SaveProjectOperation;
+import org.alice.ide.recentprojects.RecentProjectsMenuModel;
+import org.alice.ide.resource.manager.ImportGalleryResourceOperation;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.StaticMenuModel;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FileMenuModel extends org.lgna.croquet.StaticMenuModel {
-	public FileMenuModel( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ) );
+public class FileMenuModel extends StaticMenuModel {
+
+	// Set to true to enable export feature that is still in development
+	private static final boolean ENABLE_EXPORT = false;
+
+	public FileMenuModel( ProjectDocumentFrame projectDocumentFrame ) {
+		super( UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ) );
 		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
 	@Override
-	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList(
-				this.projectDocumentFrame.getNewProjectOperation().getMenuItemPrepModel(),
-				this.projectDocumentFrame.getOpenProjectOperation().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.recentprojects.RecentProjectsMenuModel.getInstance(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance().getMenuItemPrepModel()
-				);
+	protected StandardMenuItemPrepModel[] createModels() {
+		List<StandardMenuItemPrepModel> list = Lists.newLinkedList(
+				projectDocumentFrame.getNewProjectOperation().getMenuItemPrepModel(),
+				projectDocumentFrame.getOpenProjectOperation().getMenuItemPrepModel(),
+				MenuModel.SEPARATOR,
+				RecentProjectsMenuModel.getInstance(),
+				MenuModel.SEPARATOR,
+				SaveProjectOperation.getInstance().getMenuItemPrepModel(),
+				SaveAsProjectOperation.getInstance().getMenuItemPrepModel());
+		if ( ENABLE_EXPORT ) {
+			list.add( new ExportProjectOperation().getMenuItemPrepModel() );
+		}
+		list.add( MenuModel.SEPARATOR );
+		list.add( RevertProjectOperation.getInstance().getMenuItemPrepModel() );
 
-		org.lgna.croquet.Operation[] uploadOperations = this.projectDocumentFrame.getUploadOperations();
+		Operation[] uploadOperations = this.projectDocumentFrame.getUploadOperations();
 		if( uploadOperations.length > 0 ) {
-			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			for( org.lgna.croquet.Operation operation : uploadOperations ) {
+			list.add( MenuModel.SEPARATOR );
+			for( Operation operation : uploadOperations ) {
 				list.add( operation.getMenuItemPrepModel() );
 			}
 		}
-		list.add( org.lgna.croquet.MenuModel.SEPARATOR );
+		list.add( MenuModel.SEPARATOR );
 		list.add( PrintMenuModel.getInstance() );
 		list.add( CaptureMenuModel.getInstance() );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			list.add( org.alice.ide.croquet.models.projecturi.ExitOperation.getInstance().getMenuItemPrepModel() );
+		if (!SystemUtilities.isMac()) {
+			list.add( MenuModel.SEPARATOR );
+			list.add( ExitOperation.getInstance().getMenuItemPrepModel() );
 		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
+		return ArrayUtilities.createArray( list, StandardMenuItemPrepModel.class );
 	}
 
-	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
+	private final ProjectDocumentFrame projectDocumentFrame;
 }

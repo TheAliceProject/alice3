@@ -42,17 +42,22 @@
  *******************************************************************************/
 package org.lgna.project.ast.crawlers;
 
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.lgna.project.ast.Node;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NodePropertyCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-	protected abstract void visitNodeProperty( org.lgna.project.ast.Node node, edu.cmu.cs.dennisc.property.InstanceProperty<?> property );
+public abstract class NodePropertyCrawler implements Crawler {
+	protected abstract void visitNodeProperty( Node node, InstanceProperty<?> property );
 
 	@Override
-	public final void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-		if( crawlable instanceof org.lgna.project.ast.Node ) {
-			org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)crawlable;
-			for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : node.getProperties() ) {
+	public final void visit( Crawlable crawlable ) {
+		if( crawlable instanceof Node ) {
+			Node node = (Node)crawlable;
+			for( InstanceProperty<?> property : node.getProperties() ) {
 				this.visitNodeProperty( node, property );
 			}
 		}

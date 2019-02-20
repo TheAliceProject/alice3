@@ -42,13 +42,20 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.Menu;
+import org.lgna.croquet.views.MenuItemContainer;
+import org.lgna.croquet.views.MenuItemContainerUtilities;
+import org.lgna.croquet.views.PopupMenu;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class StaticMenuModel extends MenuModel {
 	private StandardMenuItemPrepModel[] models;
 
-	public StaticMenuModel( java.util.UUID individualId ) {
+	public StaticMenuModel( UUID individualId ) {
 		super( individualId );
 	}
 
@@ -64,20 +71,20 @@ public abstract class StaticMenuModel extends MenuModel {
 		return this.models;
 	}
 
-	private void updateMenuItemContainer( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
-		org.lgna.croquet.views.MenuItemContainerUtilities.setMenuElements( menuItemContainer, this.getModels() );
+	private void updateMenuItemContainer( MenuItemContainer menuItemContainer ) {
+		MenuItemContainerUtilities.setMenuElements( menuItemContainer, this.getModels() );
 	}
 
 	@Override
-	public final org.lgna.croquet.views.Menu createMenu() {
-		org.lgna.croquet.views.Menu rv = super.createMenu();
+	public final Menu createMenu() {
+		Menu rv = super.createMenu();
 		this.updateMenuItemContainer( rv );
 		return rv;
 	}
 
 	@Override
-	public final void handlePopupMenuPrologue( org.lgna.croquet.views.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
+	public final void handlePopupMenuPrologue( PopupMenu popupMenu ) {
+		super.handlePopupMenuPrologue( popupMenu );
 		this.updateMenuItemContainer( popupMenu );
 	}
 

@@ -42,13 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.projecturi;
 
+import org.alice.ide.projecturi.views.RefreshableListContentPanel;
+import org.lgna.croquet.RefreshableDataSingleSelectListState;
+import org.lgna.croquet.data.RefreshableListData;
+
+import java.net.URI;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class RefreshableListUriTab extends ListUriTab {
-	private final org.lgna.croquet.RefreshableDataSingleSelectListState<java.net.URI> listState;
+	private final RefreshableDataSingleSelectListState<URI> listState;
 
-	public RefreshableListUriTab( java.util.UUID migrationId, org.lgna.croquet.data.RefreshableListData<java.net.URI> data ) {
+	public RefreshableListUriTab( UUID migrationId, RefreshableListData<URI> data ) {
 		super( migrationId );
 		this.listState = this.createRefreshableListState( "listState", data, -1 );
 	}
@@ -59,12 +66,12 @@ public abstract class RefreshableListUriTab extends ListUriTab {
 	}
 
 	@Override
-	public org.lgna.croquet.RefreshableDataSingleSelectListState<java.net.URI> getListSelectionState() {
+	public RefreshableDataSingleSelectListState<URI> getListSelectionState() {
 		return this.listState;
 	}
 
 	@Override
-	protected final org.alice.ide.projecturi.views.RefreshableListContentPanel createView() {
-		return new org.alice.ide.projecturi.views.RefreshableListContentPanel( this );
+	protected final RefreshableListContentPanel createView() {
+		return new RefreshableListContentPanel( this );
 	}
 }

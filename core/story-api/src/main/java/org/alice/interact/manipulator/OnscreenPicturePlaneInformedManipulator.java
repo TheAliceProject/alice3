@@ -42,13 +42,15 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+
 /**
  * @author David Culyba
  */
 public interface OnscreenPicturePlaneInformedManipulator {
 
-	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget();
+	public OnscreenRenderTarget getOnscreenRenderTarget();
 
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget );
+	public void setOnscreenRenderTarget( OnscreenRenderTarget onscreenRenderTarget );
 
 }

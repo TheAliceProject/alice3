@@ -42,14 +42,18 @@
  */
 package org.lgna.story.implementation;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import org.lgna.story.BipedPose;
 import org.lgna.story.BipedPoseBuilder;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.FlyerPose;
 import org.lgna.story.FlyerPoseBuilder;
+import org.lgna.story.Orientation;
 import org.lgna.story.Pose;
 import org.lgna.story.PoseBuilder;
 import org.lgna.story.QuadrupedPose;
@@ -59,6 +63,7 @@ import org.lgna.story.SFlyer;
 import org.lgna.story.SJoint;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SQuadruped;
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.FlyerResource;
 import org.lgna.story.resources.JointId;
@@ -77,7 +82,7 @@ public class PoseUtilities {
 
 	public static <M extends SJointedModel, P extends Pose<M>, B extends PoseBuilder<M, P>> B createBuilderForPoseClass( Class<P> cls ) {
 		Class<B> poseBuilderCls = getBuilderClassForPoseClass( cls );
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( poseBuilderCls );
+		return ReflectionUtilities.newInstance( poseBuilderCls );
 	}
 
 	public static <M extends SJointedModel, P extends Pose<M>> Class<P> getPoseClassForModelClass( Class<M> cls ) {
@@ -127,7 +132,7 @@ public class PoseUtilities {
 	}
 
 	public static void setTransformationOnJoint( SJoint sJoint, AffineMatrix4x4 transformation ) {
-		( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).setLocalTransformation( transformation );
+		( (JointImp)EmployeesOnly.getImplementation( sJoint ) ).setLocalTransformation( transformation );
 	}
 
 	public static void setOrientationOnly( SJoint sJoint, UnitQuaternion unitQuaternion ) {
@@ -135,7 +140,7 @@ public class PoseUtilities {
 	}
 
 	public static void setOrientationOnly( SJoint sJoint, OrthogonalMatrix3x3 orientation ) {
-		( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).setLocalOrientation( orientation );
+		( (JointImp)EmployeesOnly.getImplementation( sJoint ) ).setLocalOrientation( orientation );
 	}
 
 	public static <R extends JointedModelResource> Class<R> getResourceClassFromModelClass( Class<? extends SJointedModel> modelCls ) {
@@ -200,9 +205,10 @@ public class PoseUtilities {
 
 	protected static ArrayList<JointId> tunnel( JointId id, Class<? extends JointedModelResource> resource ) {
 		ArrayList<JointId> rv = Lists.newArrayList( id );
-		for( JointId child : id.getChildren( resource ) ) {
-			rv.addAll( tunnel( child, resource ) );
-		}
+		//TODO: Removed getChildren functionality from joints. Need to adapt this code
+//		for( JointId child : id.getChildren( resource ) ) {
+//			rv.addAll( tunnel( child, resource ) );
+//		}
 		return rv;
 	}
 
@@ -218,13 +224,13 @@ public class PoseUtilities {
 		}
 	}
 
-	public static java.lang.reflect.Method getSpecificPoseBuilderMethod( Class<? extends PoseBuilder> poseBuilderCls, JointId jointId ) {
-		java.lang.reflect.Field jField = jointId.getPublicStaticFinalFld();
+	public static Method getSpecificPoseBuilderMethod( Class<? extends PoseBuilder> poseBuilderCls, JointId jointId ) {
+		Field jField = jointId.getPublicStaticFinalFld();
 		if( jField != null ) {
 			String fieldName = jField.getName();
-			String camelCaseName = org.lgna.story.implementation.alice.AliceResourceUtilties.enumToCamelCase( fieldName, true );
+			String camelCaseName = AliceResourceUtilties.enumToCamelCase( fieldName, true );
 			try {
-				return poseBuilderCls.getMethod( camelCaseName, org.lgna.story.Orientation.class );
+				return poseBuilderCls.getMethod( camelCaseName, Orientation.class );
 			} catch( NoSuchMethodException nsme ) {
 				//not a problem
 			}
@@ -232,13 +238,13 @@ public class PoseUtilities {
 		return null;
 	}
 
-	public static java.lang.reflect.Method getCatchAllPoseBuilderMethod( Class<? extends PoseBuilder> poseBuilderCls ) {
-		java.lang.reflect.Method rv = null;
-		for( java.lang.reflect.Method jMethod : poseBuilderCls.getMethods() ) {
+	public static Method getCatchAllPoseBuilderMethod( Class<? extends PoseBuilder> poseBuilderCls ) {
+		Method rv = null;
+		for( Method jMethod : poseBuilderCls.getMethods() ) {
 			if( jMethod.getReturnType().equals( poseBuilderCls ) ) {
 				Class<?>[] jParameterTypes = jMethod.getParameterTypes();
 				if( jParameterTypes.length == 2 ) {
-					if( jParameterTypes[ 0 ].equals( JointId.class ) && jParameterTypes[ 1 ].equals( org.lgna.story.Orientation.class ) ) {
+					if( jParameterTypes[ 0 ].equals( JointId.class ) && jParameterTypes[ 1 ].equals( Orientation.class ) ) {
 						if( rv != null ) {
 							throw new RuntimeException( "unexpected methods found when only one should have catch all signature: " + rv.getName() + " " + jMethod.getName() );
 						} else {

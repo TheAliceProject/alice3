@@ -42,6 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.JScrollBar;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,14 +58,14 @@ public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends J
 		}
 
 		@Override
-		public void paint( java.awt.Graphics g ) {
-			javax.swing.JScrollBar otherScrollBar = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getOtherScrollBar( this );
+		public void paint( Graphics g ) {
+			JScrollBar otherScrollBar = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getOtherScrollBar( this );
 			if( ScrollBarPaintUtilities.isPaintRequiredFor( this ) || ( isPaintRequiredIfOtherRequiresIt() && ScrollBarPaintUtilities.isPaintRequiredFor( otherScrollBar ) ) ) {
 				super.paint( g );
 			} else {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				java.awt.Shape clip = g.getClip();
-				java.awt.Component component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getViewport().getView();
+				Graphics2D g2 = (Graphics2D)g;
+				Shape clip = g.getClip();
+				Component component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getViewport().getView();
 				if( component != null ) {
 					//pass
 				} else {
@@ -75,8 +81,8 @@ public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends J
 		return true;
 	}
 
-	private javax.swing.JScrollBar getOtherScrollBar( javax.swing.JScrollBar scrollBar ) {
-		if( scrollBar.getOrientation() == javax.swing.JScrollBar.HORIZONTAL ) {
+	private JScrollBar getOtherScrollBar( JScrollBar scrollBar ) {
+		if( scrollBar.getOrientation() == JScrollBar.HORIZONTAL ) {
 			return this.getVerticalScrollBar();
 		} else {
 			return this.getHorizontalScrollBar();

@@ -42,13 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.ast.code;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.ast.code.edits.EnvelopStatementsEdit;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class EnvelopStatementsOperation extends org.lgna.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, EnvelopStatementsOperation> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public final class EnvelopStatementsOperation extends ActionOperation {
+	private static MapToMap<BlockStatementIndexPair, BlockStatementIndexPair, EnvelopStatementsOperation> map = MapToMap.newInstance();
 
-	public static synchronized EnvelopStatementsOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation ) {
+	public static synchronized EnvelopStatementsOperation getInstance( BlockStatementIndexPair fromLocation, BlockStatementIndexPair toLocation ) {
 		EnvelopStatementsOperation rv = map.get( fromLocation, toLocation );
 		if( rv != null ) {
 			//pass
@@ -59,26 +68,26 @@ public final class EnvelopStatementsOperation extends org.lgna.croquet.ActionOpe
 		return rv;
 	}
 
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation;
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation;
+	private final BlockStatementIndexPair fromLocation;
+	private final BlockStatementIndexPair toLocation;
 
-	private EnvelopStatementsOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "170a3707-f31d-4c59-89a8-844fab44a7c4" ) );
+	private EnvelopStatementsOperation( BlockStatementIndexPair fromLocation, BlockStatementIndexPair toLocation ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "170a3707-f31d-4c59-89a8-844fab44a7c4" ) );
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
 	}
 
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getFromLocation() {
+	public BlockStatementIndexPair getFromLocation() {
 		return this.fromLocation;
 	}
 
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getToLocation() {
+	public BlockStatementIndexPair getToLocation() {
 		return this.toLocation;
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep step ) {
-		step.commitAndInvokeDo( new org.alice.ide.ast.code.edits.EnvelopStatementsEdit( step, this.fromLocation, this.toLocation ) );
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( new EnvelopStatementsEdit( activity, this.fromLocation, this.toLocation ) );
 	}
 
 }

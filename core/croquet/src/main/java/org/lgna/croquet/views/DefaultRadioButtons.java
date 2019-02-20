@@ -43,39 +43,47 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.SingleSelectListState;
+
+import javax.swing.JPanel;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DefaultRadioButtons<E> extends AbstractRadioButtons<E> {
-	private static final java.awt.GridBagConstraints GBC_VERTICAL;
-	private static final java.awt.GridBagConstraints GBC_HORIZONTAL;
+	private static final GridBagConstraints GBC_VERTICAL;
+	private static final GridBagConstraints GBC_HORIZONTAL;
 	static {
-		GBC_VERTICAL = new java.awt.GridBagConstraints();
-		GBC_VERTICAL.fill = java.awt.GridBagConstraints.BOTH;
-		GBC_VERTICAL.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		GBC_VERTICAL = new GridBagConstraints();
+		GBC_VERTICAL.fill = GridBagConstraints.BOTH;
+		GBC_VERTICAL.gridwidth = GridBagConstraints.REMAINDER;
 		GBC_VERTICAL.weightx = 1.0f;
 		GBC_VERTICAL.weighty = 0.0f;
 
-		GBC_HORIZONTAL = new java.awt.GridBagConstraints();
-		GBC_HORIZONTAL.fill = java.awt.GridBagConstraints.VERTICAL;
-		GBC_HORIZONTAL.anchor = java.awt.GridBagConstraints.NORTHWEST;
+		GBC_HORIZONTAL = new GridBagConstraints();
+		GBC_HORIZONTAL.fill = GridBagConstraints.VERTICAL;
+		GBC_HORIZONTAL.anchor = GridBagConstraints.NORTHWEST;
 		GBC_HORIZONTAL.weightx = 0.0f;
 	}
 	private final boolean isVertical;
 
-	public DefaultRadioButtons( org.lgna.croquet.SingleSelectListState<E, ?> model, boolean isVertical ) {
+	public DefaultRadioButtons( SingleSelectListState<E, ?> model, boolean isVertical ) {
 		super( model );
 		this.isVertical = isVertical;
 		this.setMaximumSizeClampedToPreferredSize( true );
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.GridBagLayout();
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
+		return new GridBagLayout();
 	}
 
 	@Override
-	protected org.lgna.croquet.views.BooleanStateButton<?> createButtonForItemSelectedState( E item, org.lgna.croquet.BooleanState itemSelectedState ) {
+	protected BooleanStateButton<?> createButtonForItemSelectedState( E item, BooleanState itemSelectedState ) {
 		//booleanState.setTextForBothTrueAndFalse( item.toString() );
 		return itemSelectedState.createRadioButton();
 	}
@@ -85,7 +93,7 @@ public class DefaultRadioButtons<E> extends AbstractRadioButtons<E> {
 		this.internalRemoveAllComponents();
 	}
 
-	private java.awt.GridBagConstraints getGridBagConstraints() {
+	private GridBagConstraints getGridBagConstraints() {
 		if( isVertical ) {
 			return GBC_VERTICAL;
 		} else {
@@ -107,10 +115,10 @@ public class DefaultRadioButtons<E> extends AbstractRadioButtons<E> {
 		if( this.isVertical ) {
 			//pass
 		} else {
-			GBC_HORIZONTAL.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+			GBC_HORIZONTAL.gridwidth = GridBagConstraints.REMAINDER;
 			GBC_HORIZONTAL.weightx = 1.0f;
 			this.internalAddComponent( BoxUtilities.createHorizontalGlue(), this.getGridBagConstraints() );
-			GBC_HORIZONTAL.gridwidth = java.awt.GridBagConstraints.RELATIVE;
+			GBC_HORIZONTAL.gridwidth = GridBagConstraints.RELATIVE;
 			GBC_HORIZONTAL.weightx = 0.0f;
 		}
 	}

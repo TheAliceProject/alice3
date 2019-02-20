@@ -42,19 +42,30 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
-public class BodyPane extends org.alice.ide.common.StatementLikeSubstance {
-	public BodyPane( org.lgna.croquet.views.AwtComponentView<?> statementListComponent ) {
-		super( null, org.lgna.project.ast.DoInOrder.class, javax.swing.BoxLayout.PAGE_AXIS );
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Label;
+import org.lgna.project.ast.DoInOrder;
 
-		String doInOrderText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringForKey( "DoInOrder", "org.alice.ide.controlflow.Templates");
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.LayoutManager;
 
-		this.addComponent( new org.lgna.croquet.views.Label( doInOrderText ), java.awt.BorderLayout.NORTH );
-		this.addComponent( statementListComponent, java.awt.BorderLayout.CENTER );
-		this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ), java.awt.BorderLayout.WEST );
+public class BodyPane extends StatementLikeSubstance {
+	public BodyPane( AwtComponentView<?> statementListComponent ) {
+		super( null, DoInOrder.class, BoxLayout.PAGE_AXIS );
+
+		String doInOrderText = ResourceBundleUtilities.getStringForKey( "DoInOrder", "org.alice.ide.controlflow.Templates");
+
+		this.addComponent( new Label( doInOrderText ), BorderLayout.NORTH );
+		this.addComponent( statementListComponent, BorderLayout.CENTER );
+		this.addComponent( BoxUtilities.createHorizontalSliver( 8 ), BorderLayout.WEST );
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
-		return new java.awt.BorderLayout();
+	protected LayoutManager createLayoutManager( JPanel jComponent ) {
+		return new BorderLayout();
 	}
 }

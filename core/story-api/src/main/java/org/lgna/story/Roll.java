@@ -43,11 +43,13 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Roll extends DurationAnimationStyleAsSeenByArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = Roll.class )
+	@ClassTemplate( keywordFactoryCls = Roll.class )
 	public static interface Detail {
 	}
 

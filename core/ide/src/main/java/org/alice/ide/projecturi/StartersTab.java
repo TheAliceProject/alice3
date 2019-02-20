@@ -42,22 +42,34 @@
  *******************************************************************************/
 package org.alice.ide.projecturi;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import org.alice.ide.croquet.codecs.UriCodec;
+import org.alice.ide.projecturi.views.ListContentPanel;
+import org.alice.ide.uricontent.StarterProjectUtilities;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+import org.lgna.story.implementation.StoryApiDirectoryUtilities;
+
+import java.io.File;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class StartersTab extends ListUriTab {
 	public StartersTab() {
-		super( java.util.UUID.fromString( "e31ab4b2-c305-4d04-8dcc-5de8cbb6facf" ) );
-		java.io.File starterProjectsDirectory = org.lgna.story.implementation.StoryApiDirectoryUtilities.getStarterProjectsDirectory();
-		java.io.File[] files = edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( starterProjectsDirectory, "a3p" );
-		java.net.URI[] uris = new java.net.URI[ files.length ];
+		super( UUID.fromString( "e31ab4b2-c305-4d04-8dcc-5de8cbb6facf" ) );
+		File starterProjectsDirectory = StoryApiDirectoryUtilities.getStarterProjectsDirectory();
+		File[] files = FileUtilities.listFiles( starterProjectsDirectory, "a3p" );
+		URI[] uris = new URI[ files.length ];
 		int i = 0;
-		java.util.Arrays.sort( files );
-		for( java.io.File file : files ) {
-			uris[ i ] = org.alice.ide.uricontent.StarterProjectUtilities.toUri( file );
+		Arrays.sort( files );
+		for( File file : files ) {
+			uris[ i ] = StarterProjectUtilities.toUri( file );
 			i++;
 		}
-		this.listState = this.createImmutableListState( "listState", java.net.URI.class, org.alice.ide.croquet.codecs.UriCodec.SINGLETON, -1, uris );
+		this.listState = this.createImmutableListState( "listState", URI.class, UriCodec.SINGLETON, -1, uris );
 	}
 
 	@Override
@@ -65,19 +77,14 @@ public class StartersTab extends ListUriTab {
 	}
 
 	@Override
-	public org.lgna.croquet.ImmutableDataSingleSelectListState<java.net.URI> getListSelectionState() {
+	public ImmutableDataSingleSelectListState<URI> getListSelectionState() {
 		return this.listState;
 	}
 
 	@Override
-	public final String getTextForZeroProjects() {
-		return "there are no starter projects.";
+	protected ListContentPanel createView() {
+		return new ListContentPanel( this );
 	}
 
-	@Override
-	protected org.alice.ide.projecturi.views.ListContentPanel createView() {
-		return new org.alice.ide.projecturi.views.ListContentPanel( this );
-	}
-
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<java.net.URI> listState;
+	private final ImmutableDataSingleSelectListState<URI> listState;
 }

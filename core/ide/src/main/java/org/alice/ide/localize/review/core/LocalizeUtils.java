@@ -42,6 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.localize.review.core;
 
+import edu.cmu.cs.dennisc.classpath.ClassPathUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import org.alice.ide.IDE;
+import org.alice.imageeditor.croquet.ImageEditorFrame;
+import org.alice.interact.handle.HandleStyle;
+import org.lgna.croquet.Element;
+import org.lgna.project.ast.AbstractNode;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,41 +68,41 @@ public class LocalizeUtils {
 		throw new Error();
 	}
 
-	public static java.util.List<String> getTags( String value ) {
-		java.util.regex.Pattern pattern = java.util.regex.Pattern.compile( "</(.+?)/>" );
-		java.util.regex.Matcher matcher = pattern.matcher( value );
+	public static List<String> getTags( String value ) {
+		Pattern pattern = Pattern.compile( "</(.+?)/>" );
+		Matcher matcher = pattern.matcher( value );
 
-		java.util.List<String> tags = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<String> tags = Lists.newLinkedList();
 		while( matcher.find() ) {
 			tags.add( matcher.group( 0 ) );
 		}
-		return java.util.Collections.unmodifiableList( tags );
+		return Collections.unmodifiableList( tags );
 	}
 
-	public static java.util.List<Item> getItems( Class<? extends org.alice.ide.IDE> specificIdeCls, String specificIdeProjectName ) {
+	public static List<Item> getItems( Class<? extends IDE> specificIdeCls, String specificIdeProjectName ) {
 		final String SUFFIX = ".properties";
 
-		java.util.List<ClassProjectNamePair> clsProjectNamePairs = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<ClassProjectNamePair> clsProjectNamePairs = Lists.newLinkedList();
 
-		clsProjectNamePairs.add( new ClassProjectNamePair( org.lgna.croquet.Element.class, "croquet" ) );
-		clsProjectNamePairs.add( new ClassProjectNamePair( org.lgna.project.ast.AbstractNode.class, "ast" ) );
-		clsProjectNamePairs.add( new ClassProjectNamePair( org.alice.interact.handle.HandleStyle.class, "story-api" ) );
-		clsProjectNamePairs.add( new ClassProjectNamePair( org.alice.imageeditor.croquet.ImageEditorFrame.class, "image-editor" ) );
-		clsProjectNamePairs.add( new ClassProjectNamePair( org.alice.ide.IDE.class, "ide" ) );
+		clsProjectNamePairs.add( new ClassProjectNamePair( Element.class, "croquet" ) );
+		clsProjectNamePairs.add( new ClassProjectNamePair( AbstractNode.class, "ast" ) );
+		clsProjectNamePairs.add( new ClassProjectNamePair( HandleStyle.class, "story-api" ) );
+		clsProjectNamePairs.add( new ClassProjectNamePair( ImageEditorFrame.class, "image-editor" ) );
+		clsProjectNamePairs.add( new ClassProjectNamePair( IDE.class, "ide" ) );
 
 		clsProjectNamePairs.add( new ClassProjectNamePair( specificIdeCls, specificIdeProjectName ) );
 
-		java.util.List<Item> _allItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<Item> _allItems = Lists.newLinkedList();
 
-		java.util.Locale prevLocale = java.util.Locale.getDefault();
-		java.util.Locale.setDefault( new java.util.Locale( "en", "US" ) );
+		Locale prevLocale = Locale.getDefault();
+		Locale.setDefault( new Locale( "en", "US" ) );
 
 		try {
 
 			for( ClassProjectNamePair clsProjectNamePair : clsProjectNamePairs ) {
-				java.util.List<String> classPathEntries;
+				List<String> classPathEntries;
 				try {
-					classPathEntries = edu.cmu.cs.dennisc.classpath.ClassPathUtilities.getClassPathEntries( clsProjectNamePair.getCls(), new edu.cmu.cs.dennisc.pattern.Criterion<String>() {
+					classPathEntries = ClassPathUtilities.getClassPathEntries( clsProjectNamePair.getCls(), new Criterion<String>() {
 						@Override
 						public boolean accept( String path ) {
 							if( path.startsWith( "META-INF/" ) ) {
@@ -98,25 +116,25 @@ public class LocalizeUtils {
 							}
 						}
 					} );
-				} catch( java.io.IOException ioe ) {
+				} catch( IOException ioe ) {
 					throw new RuntimeException( ioe );
 				}
 				for( String classPathEntry : classPathEntries ) {
 					String bundleName = classPathEntry.substring( 0, classPathEntry.length() - SUFFIX.length() );
 					try {
-						java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName );
+						ResourceBundle resourceBundle = ResourceBundle.getBundle( bundleName );
 						for( String key : resourceBundle.keySet() ) {
 							_allItems.add( new Item( clsProjectNamePair.getProjectName(), bundleName, key, resourceBundle.getString( key ) ) );
 						}
 					} catch( Throwable t ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to get resource bundle for:", bundleName );
+						Logger.severe( "unable to get resource bundle for:", bundleName );
 					}
 				}
 			}
 		} finally {
-			java.util.Locale.setDefault( prevLocale );
+			Locale.setDefault( prevLocale );
 		}
 
-		return java.util.Collections.unmodifiableList( _allItems );
+		return Collections.unmodifiableList( _allItems );
 	}
 }

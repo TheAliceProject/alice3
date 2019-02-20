@@ -42,33 +42,15 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NodeProperty<E extends Node> extends edu.cmu.cs.dennisc.property.InstanceProperty<E> {
-	public NodeProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+public class NodeProperty<E extends Node> extends InstanceProperty<E> {
+	public NodeProperty( InstancePropertyOwner owner ) {
 		super( owner, null );
 	}
 
-	public boolean valueContentEquals( NodeProperty<E> other, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( this.isToBeIgnored( other, filter ) ) {
-			return true;
-		} else {
-			E thisValue = this.getValue();
-			E otherValue = other.getValue();
-			if( thisValue != null ) {
-				if( otherValue != null ) {
-					return thisValue.contentEquals( otherValue, strictness, filter );
-				} else {
-					return false;
-				}
-			} else {
-				if( otherValue != null ) {
-					return false;
-				} else {
-					return true;
-				}
-			}
-		}
-	}
 }

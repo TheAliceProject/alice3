@@ -43,33 +43,45 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.models.cascade.blanks.TypeUnsetBlank;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression> {
-	public static <T> ExpressionBlank getBlankForType( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.annotations.ValueDetails<T> details ) {
+public abstract class ExpressionBlank extends CascadeBlank<Expression> {
+	public static <T> ExpressionBlank getBlankForType( AbstractType<?, ?, ?> type, ValueDetails<T> details ) {
 		ExpressionBlank rv;
 		if( type != null ) {
 			rv = new TypedExpressionBlank( type, details );
 		} else {
-			rv = org.alice.ide.croquet.models.cascade.blanks.TypeUnsetBlank.getInstance();
+			rv = TypeUnsetBlank.getInstance();
 		}
 		return rv;
 	}
 
-	public static <T> ExpressionBlank getBlankForType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static <T> ExpressionBlank getBlankForType( AbstractType<?, ?, ?> type ) {
 		return getBlankForType( type, null );
 	}
 
-	public static <T> ExpressionBlank getBlankForType( Class<T> cls, org.lgna.project.annotations.ValueDetails<T> details ) {
-		return getBlankForType( org.lgna.project.ast.JavaType.getInstance( cls ), details );
+	public static <T> ExpressionBlank getBlankForType( Class<T> cls, ValueDetails<T> details ) {
+		return getBlankForType( JavaType.getInstance( cls ), details );
 	}
 
 	public static <T> ExpressionBlank getBlankForType( Class<T> cls ) {
 		return getBlankForType( cls, null );
 	}
 
-	public static ExpressionBlank[] createBlanks( org.lgna.project.ast.AbstractType<?, ?, ?>... types ) {
+	public static ExpressionBlank[] createBlanks( AbstractType<?, ?, ?>... types ) {
 		ExpressionBlank[] rv = new ExpressionBlank[ types.length ];
 		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = getBlankForType( types[ i ] );
@@ -77,34 +89,33 @@ public abstract class ExpressionBlank extends org.lgna.croquet.CascadeBlank<org.
 		return rv;
 	}
 
-	public static org.alice.ide.croquet.models.cascade.ExpressionBlank[] createBlanks( Class<?>... clses ) {
-		return createBlanks( org.lgna.project.ast.JavaType.getInstances( clses ) );
+	public static ExpressionBlank[] createBlanks( Class<?>... clses ) {
+		return createBlanks( JavaType.getInstances( clses ) );
 	}
 
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> valueType;
-	private final org.lgna.project.annotations.ValueDetails<?> details;
+	private final AbstractType<?, ?, ?> valueType;
+	private final ValueDetails<?> details;
 
-	public ExpressionBlank( java.util.UUID id, org.lgna.project.ast.AbstractType<?, ?, ?> valueType, org.lgna.project.annotations.ValueDetails<?> details ) {
-		super( id );
+	public ExpressionBlank( AbstractType<?, ?, ?> valueType, ValueDetails<?> details ) {
 		this.valueType = valueType;
 		this.details = details;
 	}
 
-	public <T> ExpressionBlank( java.util.UUID id, Class<T> cls, org.lgna.project.annotations.ValueDetails<T> details ) {
-		this( id, org.lgna.project.ast.JavaType.getInstance( cls ), details );
+	public <T> ExpressionBlank( Class<T> cls, ValueDetails<T> details ) {
+		this( JavaType.getInstance( cls ), details );
 	}
 
-	public <T> ExpressionBlank( java.util.UUID id, Class<T> cls ) {
-		this( id, cls, null );
+	public <T> ExpressionBlank( Class<T> cls ) {
+		this( cls, null );
 	}
 
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
+	public AbstractType<?, ?, ?> getValueType() {
 		return this.valueType;
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<Expression> blankNode ) {
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			ide.getExpressionCascadeManager().appendItems( children, blankNode, this.valueType, this.details );
 		}

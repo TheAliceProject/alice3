@@ -42,19 +42,28 @@
  */
 package org.lgna.ik.poser.croquet;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
+import org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Panel;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.UUID;
 
 /**
  * @author Matt May
  */
-public final class PoseExpressionCreatorComposite extends org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite<org.lgna.croquet.views.Panel, org.lgna.project.ast.Expression> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserType, PoseExpressionCreatorComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public final class PoseExpressionCreatorComposite extends SingleValueCreatorInputDialogCoreComposite<Panel, Expression> {
+	private static InitializingIfAbsentMap<NamedUserType, PoseExpressionCreatorComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static PoseExpressionCreatorComposite getInstance( org.lgna.project.ast.NamedUserType declaringType ) {
+	public static PoseExpressionCreatorComposite getInstance( NamedUserType declaringType ) {
 		if( PoserComposite.isPoseable( declaringType ) ) {
-			return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.NamedUserType, PoseExpressionCreatorComposite>() {
+			return map.getInitializingIfAbsent( declaringType, new InitializingIfAbsentMap.Initializer<NamedUserType, PoseExpressionCreatorComposite>() {
 				@Override
-				public PoseExpressionCreatorComposite initialize( org.lgna.project.ast.NamedUserType declaringType ) {
+				public PoseExpressionCreatorComposite initialize( NamedUserType declaringType ) {
 					return new PoseExpressionCreatorComposite( declaringType );
 				}
 			} );
@@ -63,15 +72,15 @@ public final class PoseExpressionCreatorComposite extends org.lgna.croquet.Singl
 		}
 	}
 
-	private PoseExpressionCreatorComposite( org.lgna.project.ast.NamedUserType declaringType ) {
-		super( java.util.UUID.fromString( "4fc4dd4f-b33d-429a-994a-3a5cf13b6903" ) );
-		this.poserComposite = this.registerSubComposite( org.lgna.ik.poser.croquet.PoserComposite.getDialogForUserType( declaringType ) );
+	private PoseExpressionCreatorComposite( NamedUserType declaringType ) {
+		super( UUID.fromString( "4fc4dd4f-b33d-429a-994a-3a5cf13b6903" ) );
+		this.poserComposite = this.registerSubComposite( PoserComposite.getDialogForUserType( declaringType ) );
 		this.poserComposite.addStatusListener( this.statusUpdateListener );
 
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		if( this.poserComposite.isEmptyPose() ) {
 			return this.isEmptyPoseError;
 		} else {
@@ -80,7 +89,7 @@ public final class PoseExpressionCreatorComposite extends org.lgna.croquet.Singl
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createValue() {
+	protected Expression createValue() {
 		try {
 			return this.poserComposite.getControlComposite().createPoseExpression();
 		} catch( CannotCreateExpressionException e ) {
@@ -89,12 +98,12 @@ public final class PoseExpressionCreatorComposite extends org.lgna.croquet.Singl
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		return new org.lgna.croquet.views.BorderPanel.Builder().center( this.poserComposite.getRootComponent() ).build();
+	protected Panel createView() {
+		return new BorderPanel.Builder().center( this.poserComposite.getRootComponent() ).build();
 	}
 
 	private final ErrorStatus isEmptyPoseError = this.createErrorStatus( "isEmptyPoseError" );
-	private final org.lgna.ik.poser.croquet.PoserComposite<?> poserComposite;
+	private final PoserComposite<?> poserComposite;
 	private final StatusUpdateListener statusUpdateListener = new StatusUpdateListener() {
 		@Override
 		public void refreshStatus() {

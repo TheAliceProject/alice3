@@ -43,15 +43,19 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.CompositeView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WizardPageComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, O extends WizardDialogCoreComposite> extends AbstractSeverityStatusComposite<V> {
+public abstract class WizardPageComposite<V extends CompositeView<?, ?>, O extends WizardDialogCoreComposite> extends AbstractSeverityStatusComposite<V> {
 	private final O owner;
 	private String name;
 	private String title;
 
-	public WizardPageComposite( java.util.UUID migrationId, O owner ) {
+	public WizardPageComposite( UUID migrationId, O owner ) {
 		super( migrationId );
 		this.owner = owner;
 	}
@@ -79,7 +83,7 @@ public abstract class WizardPageComposite<V extends org.lgna.croquet.views.Compo
 		}
 	}
 
-	public abstract Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step );
+	public abstract Status getPageStatus();
 
 	public boolean isAccountedForInPreferredSizeCalculation() {
 		return true;
@@ -89,32 +93,26 @@ public abstract class WizardPageComposite<V extends org.lgna.croquet.views.Compo
 		return false;
 	}
 
-	public void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	public void handlePreShowDialog() {
 	}
 
-	public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	public void handlePostHideDialog() {
 	}
 
 	protected boolean isAutoAdvanceWorthAttempting() {
 		return this.isOptional();
 	}
 
-	protected boolean isClearedForAutoAdvance( org.lgna.croquet.history.CompletionStep<?> step ) {
-		Status status = this.getPageStatus( step );
-		return status == IS_GOOD_TO_GO_STATUS;
+	protected boolean isClearedForAutoAdvance() {
+		return getPageStatus() == IS_GOOD_TO_GO_STATUS;
 	}
 
-	public final boolean isAutoAdvanceDesired( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( this.isAutoAdvanceWorthAttempting() ) {
-			return this.isClearedForAutoAdvance( step );
-		} else {
-			return false;
-		}
+	final boolean isAutoAdvanceDesired() {
+		return isAutoAdvanceWorthAttempting() && isClearedForAutoAdvance();
 	}
 
 	public boolean isClearToCommit() {
-		org.lgna.croquet.history.CompletionStep<?> step = null;
-		return this.isOptional() || this.isAutoAdvanceDesired( step );
+		return this.isOptional() || this.isAutoAdvanceDesired();
 	}
 
 	public abstract void resetData();

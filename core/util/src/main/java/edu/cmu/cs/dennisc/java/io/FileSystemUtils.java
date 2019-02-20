@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.io;
 
+import java.io.File;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,7 +52,7 @@ public class FileSystemUtils {
 		throw new AssertionError();
 	}
 
-	public static void deleteIfExists( java.io.File file ) {
+	public static void deleteIfExists( File file ) {
 		if( file.exists() ) {
 			boolean isSuccessful = file.delete();
 			assert isSuccessful : file;

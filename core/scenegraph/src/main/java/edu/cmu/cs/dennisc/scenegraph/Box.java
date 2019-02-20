@@ -43,17 +43,20 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Box extends Shape {
-	public edu.cmu.cs.dennisc.math.Point3 getMinimum( edu.cmu.cs.dennisc.math.Point3 rv ) {
+	public Point3 getMinimum( Point3 rv ) {
 		rv.set( xMinimum.getValue(), yMinimum.getValue(), zMinimum.getValue() );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getMinimum() {
-		return getMinimum( new edu.cmu.cs.dennisc.math.Point3() );
+	public Point3 getMinimum() {
+		return getMinimum( new Point3() );
 	}
 
 	public void setMinimum( double x, double y, double z ) {
@@ -62,17 +65,17 @@ public class Box extends Shape {
 		zMinimum.setValue( z );
 	}
 
-	public void setMinimum( edu.cmu.cs.dennisc.math.Point3 minimum ) {
+	public void setMinimum( Point3 minimum ) {
 		setMinimum( minimum.x, minimum.y, minimum.z );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getMaximum( edu.cmu.cs.dennisc.math.Point3 rv ) {
+	public Point3 getMaximum( Point3 rv ) {
 		rv.set( xMaximum.getValue(), yMaximum.getValue(), zMaximum.getValue() );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getMaximum() {
-		return getMaximum( new edu.cmu.cs.dennisc.math.Point3() );
+	public Point3 getMaximum() {
+		return getMaximum( new Point3() );
 	}
 
 	public void setMaximum( double x, double y, double z ) {
@@ -81,22 +84,22 @@ public class Box extends Shape {
 		zMaximum.setValue( z );
 	}
 
-	public void setMaximum( edu.cmu.cs.dennisc.math.Point3 maximum ) {
+	public void setMaximum( Point3 maximum ) {
 		setMaximum( maximum.x, maximum.y, maximum.z );
 	}
 
-	public void set( edu.cmu.cs.dennisc.math.Point3 minimum, edu.cmu.cs.dennisc.math.Point3 maximum ) {
+	public void set( Point3 minimum, Point3 maximum ) {
 		setMinimum( minimum );
 		setMaximum( maximum );
 	}
 
-	public void set( edu.cmu.cs.dennisc.math.AxisAlignedBox box ) {
+	public void set( AxisAlignedBox box ) {
 		setMinimum( box.getXMinimum(), box.getYMinimum(), box.getZMinimum() );
 		setMaximum( box.getXMaximum(), box.getYMaximum(), box.getZMaximum() );
 	}
 
 	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
+	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
 		boundingBox.setMinimum( xMinimum.getValue(), yMinimum.getValue(), zMinimum.getValue() );
 		boundingBox.setMaximum( xMaximum.getValue(), yMaximum.getValue(), zMaximum.getValue() );
 	}

@@ -43,21 +43,26 @@
 
 package edu.cmu.cs.dennisc.issue;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractReport {
-	private final java.util.List<edu.cmu.cs.dennisc.issue.Attachment> attachments = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final List<Attachment> attachments = Lists.newLinkedList();
 
-	public void addAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
+	public void addAttachment( Attachment attachment ) {
 		this.attachments.add( attachment );
 	}
 
-	public void removeAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
+	public void removeAttachment( Attachment attachment ) {
 		this.attachments.remove( attachment );
 	}
 
-	public java.util.List<edu.cmu.cs.dennisc.issue.Attachment> getAttachments() {
-		return java.util.Collections.unmodifiableList( this.attachments );
+	public List<Attachment> getAttachments() {
+		return Collections.unmodifiableList( this.attachments );
 	}
 }

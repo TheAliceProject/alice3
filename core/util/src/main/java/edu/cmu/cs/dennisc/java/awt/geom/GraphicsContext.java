@@ -42,23 +42,26 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.geom;
 
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GraphicsContext extends TransformContext {
-	private java.awt.Graphics2D m_g2;
+	private Graphics2D m_g2;
 
-	public void initialize( java.awt.Graphics2D g2 ) {
+	public void initialize( Graphics2D g2 ) {
 		super.initialize();
 		m_g2 = g2;
 	}
 
-	public java.awt.Graphics2D getAWTGraphics2D() {
+	public Graphics2D getAWTGraphics2D() {
 		return m_g2;
 	}
 
 	@Override
-	protected void update( java.awt.geom.AffineTransform affineTransform ) {
+	protected void update( AffineTransform affineTransform ) {
 		m_g2.setTransform( affineTransform );
 	}
 }

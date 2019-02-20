@@ -42,11 +42,15 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.CompositeView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LazyOperationUnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends OperationUnadornedDialogCoreComposite<V> {
-	public LazyOperationUnadornedDialogCoreComposite( java.util.UUID migrationId ) {
+public abstract class LazyOperationUnadornedDialogCoreComposite<V extends CompositeView<?, ?>> extends OperationUnadornedDialogCoreComposite<V> {
+	public LazyOperationUnadornedDialogCoreComposite( UUID migrationId ) {
 		super( migrationId, IsModal.TRUE );
 	}
 

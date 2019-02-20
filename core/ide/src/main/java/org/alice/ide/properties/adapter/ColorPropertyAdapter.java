@@ -43,17 +43,19 @@
 
 package org.alice.ide.properties.adapter;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.lgna.story.Color;
+import org.lgna.story.implementation.Property;
 
-public class ColorPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<org.lgna.story.Color, O>
+public class ColorPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Color, O>
 {
-	public ColorPropertyAdapter( O instance, org.lgna.story.implementation.Property<org.lgna.story.Color> property, StandardExpressionState expressionState )
+	public ColorPropertyAdapter( O instance, Property<Color> property, StandardExpressionState expressionState )
 	{
 		this( "Color", instance, property, expressionState );
 	}
 
-	public ColorPropertyAdapter( String repr, O instance, org.lgna.story.implementation.Property<org.lgna.story.Color> property, StandardExpressionState expressionState )
+	public ColorPropertyAdapter( String repr, O instance, Property<Color> property, StandardExpressionState expressionState )
 	{
 		super( repr, instance, property, expressionState );
 	}
@@ -61,7 +63,7 @@ public class ColorPropertyAdapter<O> extends AbstractImplementationPropertyAdapt
 	@Override
 	public Color getValueCopyIfMutable()
 	{
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "Color is immutable.  No need to copy???" );
+		Logger.todo( "Color is immutable.  No need to copy???" );
 		//return new Color4f(this.getValue());
 		return this.getValue();
 	}

@@ -43,23 +43,28 @@
 
 package org.alice.ide.name.validators;
 
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.StaticAnalysisUtilities;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
+
 public class FieldNameValidator extends MemberNameValidator {
-	public FieldNameValidator( org.lgna.project.ast.UserField field ) {
+	public FieldNameValidator( UserField field ) {
 		super( field, field.getDeclaringType() );
 	}
 
-	public FieldNameValidator( org.lgna.project.ast.UserType<?> type ) {
+	public FieldNameValidator( UserType<?> type ) {
 		super( null, type );
 	}
 
 	@Override
 	public boolean isNameAvailable( String name ) {
-		org.lgna.project.ast.Node node = this.getNode();
+		Node node = this.getNode();
 		if( node != null ) {
-			return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableFieldName( name, (org.lgna.project.ast.UserField)node );
+			return StaticAnalysisUtilities.isAvailableFieldName( name, (UserField)node );
 		} else {
-			org.lgna.project.ast.UserType<?> type = this.getType();
-			return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableFieldName( name, type );
+			UserType<?> type = this.getType();
+			return StaticAnalysisUtilities.isAvailableFieldName( name, type );
 		}
 	}
 }

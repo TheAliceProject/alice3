@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SimpleOperationWizardDialogCoreComposite extends LaunchOperationWizardDialogCoreComposite {
-	public SimpleOperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
+	public SimpleOperationWizardDialogCoreComposite( UUID migrationId, Group operationGroup ) {
 		super( migrationId, operationGroup );
 		this.getImp().createAndRegisterNullKeyLaunchOperation();
 	}
@@ -57,7 +59,7 @@ public abstract class SimpleOperationWizardDialogCoreComposite extends LaunchOpe
 		return launchOperation != null ? launchOperation.getImp().getName() : null;
 	}
 
-	public org.lgna.croquet.Operation getLaunchOperation() {
+	public Operation getLaunchOperation() {
 		return this.getImp().getLaunchOperation( null );
 	}
 }

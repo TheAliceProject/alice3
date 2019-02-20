@@ -9,12 +9,12 @@ import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Collections;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import edu.cmu.cs.dennisc.issue.Attachment;
 import edu.cmu.cs.dennisc.jira.JIRAReport;
 
@@ -42,8 +42,7 @@ public class RestUtilities {
 	public static void addAttachment( URI jiraServer, BasicIssue issue, Attachment attachment) {
 		final IssueRestClient client = getJiraRestClient(jiraServer).getIssueClient();
 		final Issue newIssue = client.getIssue(issue.getKey()).claim();
-		byte[] bytes = attachment.getBytes();
-		InputStream stream = new ByteInputStream(bytes, bytes.length);
+		InputStream stream = new ByteArrayInputStream( attachment.getBytes() );
 		client.addAttachment(newIssue.getAttachmentsUri(), stream, attachment.getFileName()).claim();
 	}
 

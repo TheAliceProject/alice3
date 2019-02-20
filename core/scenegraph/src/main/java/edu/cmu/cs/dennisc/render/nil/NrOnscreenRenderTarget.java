@@ -42,13 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.nil;
 
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+
+import java.awt.Component;
 import java.awt.Dimension;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class NrOnscreenRenderTarget<C extends java.awt.Component> extends NrRenderTarget implements edu.cmu.cs.dennisc.render.OnscreenRenderTarget<C> {
-	public NrOnscreenRenderTarget( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities, C awtComponent ) {
+/*package-private*/abstract class NrOnscreenRenderTarget<C extends Component> extends NrRenderTarget implements OnscreenRenderTarget<C> {
+	public NrOnscreenRenderTarget( RenderCapabilities requestedCapabilities, C awtComponent ) {
 		super( requestedCapabilities );
 		this.awtComponent = awtComponent;
 	}

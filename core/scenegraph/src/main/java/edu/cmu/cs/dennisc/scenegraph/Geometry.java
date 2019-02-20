@@ -43,29 +43,45 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.DoubleProperty;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import edu.cmu.cs.dennisc.scenegraph.event.BoundEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.BoundListener;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Geometry extends Element {
-	protected abstract void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox );
+	protected abstract void updateBoundingBox( AxisAlignedBox boundingBox );
 
 	protected abstract void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere );
 
-	protected abstract void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation );
+	protected abstract void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation );
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPlane( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
-		edu.cmu.cs.dennisc.math.Vector3 forward = new edu.cmu.cs.dennisc.math.Vector3();
-		edu.cmu.cs.dennisc.math.Vector3 upGuide = new edu.cmu.cs.dennisc.math.Vector3();
+	public AffineMatrix4x4 getPlane( AffineMatrix4x4 rv ) {
+		Vector3 forward = new Vector3();
+		Vector3 upGuide = new Vector3();
 		updatePlane( forward, upGuide, rv.translation );
-		rv.orientation.setValue( new edu.cmu.cs.dennisc.math.ForwardAndUpGuide( forward, upGuide ) );
+		rv.orientation.setValue( new ForwardAndUpGuide( forward, upGuide ) );
 		return rv;
 	}
 
-	public abstract void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans );
+	public abstract void transform( AbstractMatrix4x4 trans );
 
 	//todo: better name
-	public class BoundDoubleProperty extends edu.cmu.cs.dennisc.property.DoubleProperty {
-		public BoundDoubleProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Double value ) {
+	public class BoundDoubleProperty extends DoubleProperty {
+		public BoundDoubleProperty( InstancePropertyOwner owner, Double value ) {
 			super( owner, value );
 		}
 
@@ -78,7 +94,7 @@ public abstract class Geometry extends Element {
 		};
 	}
 
-	public final edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
+	public final AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox boundingBox ) {
 		if( this.boundingBox.isNaN() )
 		{
 			updateBoundingBox( this.boundingBox );
@@ -87,8 +103,8 @@ public abstract class Geometry extends Element {
 		return boundingBox;
 	}
 
-	public final edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
-		return getAxisAlignedMinimumBoundingBox( new edu.cmu.cs.dennisc.math.AxisAlignedBox() );
+	public final AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+		return getAxisAlignedMinimumBoundingBox( new AxisAlignedBox() );
 	}
 
 	public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
@@ -103,16 +119,16 @@ public abstract class Geometry extends Element {
 		return getBoundingSphere( new edu.cmu.cs.dennisc.math.Sphere() );
 	}
 
-	public void addBoundListener( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundListener ) {
+	public void addBoundListener( BoundListener boundListener ) {
 		this.boundListeners.add( boundListener );
 	}
 
-	public void removeBoundListener( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundListener ) {
+	public void removeBoundListener( BoundListener boundListener ) {
 		this.boundListeners.remove( boundListener );
 	}
 
-	public java.util.Collection<edu.cmu.cs.dennisc.scenegraph.event.BoundListener> getBoundListeners() {
-		return java.util.Collections.unmodifiableCollection( this.boundListeners );
+	public Collection<BoundListener> getBoundListeners() {
+		return Collections.unmodifiableCollection( this.boundListeners );
 	}
 
 	protected void markBoundsDirty() {
@@ -121,14 +137,14 @@ public abstract class Geometry extends Element {
 	}
 
 	protected void fireBoundChanged() {
-		edu.cmu.cs.dennisc.scenegraph.event.BoundEvent e = new edu.cmu.cs.dennisc.scenegraph.event.BoundEvent( this );
-		for( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundListener : this.boundListeners ) {
+		BoundEvent e = new BoundEvent( this );
+		for( BoundListener boundListener : this.boundListeners ) {
 			boundListener.boundChanged( e );
 		}
 	}
 
-	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.BoundListener> boundListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
+	private final List<BoundListener> boundListeners = Lists.newCopyOnWriteArrayList();
+	private final AxisAlignedBox boundingBox = new AxisAlignedBox();
 	private final edu.cmu.cs.dennisc.math.Sphere boundingSphere = new edu.cmu.cs.dennisc.math.Sphere();
 
 }

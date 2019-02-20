@@ -43,19 +43,21 @@
 
 package edu.cmu.cs.dennisc.property;
 
+import java.nio.ShortBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ShortBufferProperty extends PrimitiveBufferProperty<java.nio.ShortBuffer> {
-	public ShortBufferProperty( InstancePropertyOwner owner, java.nio.ShortBuffer value ) {
+public class ShortBufferProperty extends PrimitiveBufferProperty<ShortBuffer> {
+	public ShortBufferProperty( InstancePropertyOwner owner, ShortBuffer value ) {
 		super( owner, value );
 	}
 
 	public ShortBufferProperty( InstancePropertyOwner owner, short[] value ) {
-		super( owner, java.nio.ShortBuffer.wrap( value ) );
+		super( owner, ShortBuffer.wrap( value ) );
 	}
 
 	public final void setValue( short[] value ) {
-		this.setValue( java.nio.ShortBuffer.wrap( value ) );
+		this.setValue( ShortBuffer.wrap( value ) );
 	}
 }

@@ -89,11 +89,11 @@ public abstract class PoserComposite<M extends SJointedModel> extends AbstractPo
 	//		}
 	//	}
 
-	public static boolean isPoseable( org.lgna.project.ast.NamedUserType declaringType ) {
+	public static boolean isPoseable( NamedUserType declaringType ) {
 		return getDialogForUserType( declaringType ) != null;
 	}
 
-	public static PoserComposite<?> getDialogForUserType( org.lgna.project.ast.NamedUserType declaringType ) {
+	public static PoserComposite<?> getDialogForUserType( NamedUserType declaringType ) {
 		if( declaringType.isAssignableTo( SBiped.class ) ) {
 			return new BipedPoser( declaringType );
 		} else if( declaringType.isAssignableTo( SQuadruped.class ) ) {

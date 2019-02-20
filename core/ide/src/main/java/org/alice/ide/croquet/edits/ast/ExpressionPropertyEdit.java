@@ -42,40 +42,56 @@
  *******************************************************************************/
 package org.alice.ide.croquet.edits.ast;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.IDE;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ProgramTypeUtilities;
+import org.lgna.project.Project;
+import org.lgna.project.ast.AbstractNode;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.NodeUtilities;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyEdit extends org.lgna.croquet.edits.AbstractEdit {
-	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
-	private final org.lgna.project.ast.Expression nextExpression;
-	private final org.lgna.project.ast.Expression prevExpression;
+public class ExpressionPropertyEdit extends AbstractEdit {
+	private final ExpressionProperty expressionProperty;
+	private final Expression nextExpression;
+	private final Expression prevExpression;
 
-	public ExpressionPropertyEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.Expression prevExpression, org.lgna.project.ast.Expression nextExpression ) {
-		super( completionStep );
+	public ExpressionPropertyEdit( UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression ) {
+		super( userActivity );
 		this.expressionProperty = expressionProperty;
 		this.prevExpression = prevExpression;
 		this.nextExpression = nextExpression;
 	}
 
-	public ExpressionPropertyEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public ExpressionPropertyEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		java.util.UUID expressionPropertyNodeId = binaryDecoder.decodeId();
+		UUID expressionPropertyNodeId = binaryDecoder.decodeId();
 		String propertyName = binaryDecoder.decodeString();
-		java.util.UUID prevExpressionId = binaryDecoder.decodeId();
-		java.util.UUID nextExpressionId = binaryDecoder.decodeId();
+		UUID prevExpressionId = binaryDecoder.decodeId();
+		UUID nextExpressionId = binaryDecoder.decodeId();
 
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
-		org.lgna.project.ast.AbstractNode node = org.lgna.project.ProgramTypeUtilities.lookupNode( project, expressionPropertyNodeId );
-		this.expressionProperty = (org.lgna.project.ast.ExpressionProperty)node.getPropertyNamed( propertyName );
-		this.prevExpression = org.lgna.project.ProgramTypeUtilities.lookupNode( project, prevExpressionId );
-		this.nextExpression = org.lgna.project.ProgramTypeUtilities.lookupNode( project, nextExpressionId );
+		IDE ide = IDE.getActiveInstance();
+		Project project = ide.getProject();
+		AbstractNode node = ProgramTypeUtilities.lookupNode( project, expressionPropertyNodeId );
+		this.expressionProperty = (ExpressionProperty)node.getPropertyNamed( propertyName );
+		this.prevExpression = ProgramTypeUtilities.lookupNode( project, prevExpressionId );
+		this.nextExpression = ProgramTypeUtilities.lookupNode( project, nextExpressionId );
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)this.expressionProperty.getOwner();
+		Node node = (Node)this.expressionProperty.getOwner();
 		binaryEncoder.encode( node.getId() );
 		binaryEncoder.encode( this.expressionProperty.getName() );
 
@@ -83,7 +99,7 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.AbstractEdit 
 		binaryEncoder.encode( this.nextExpression.getId() );
 	}
 
-	protected void setValue( org.lgna.project.ast.Expression expression ) {
+	protected void setValue( Expression expression ) {
 		this.expressionProperty.setValue( expression );
 	}
 
@@ -100,8 +116,8 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.AbstractEdit 
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "set: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.prevExpression, org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( rv, this.prevExpression, Application.getLocale() );
 		rv.append( " ===> " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.nextExpression, org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( rv, this.nextExpression, Application.getLocale() );
 	}
 }

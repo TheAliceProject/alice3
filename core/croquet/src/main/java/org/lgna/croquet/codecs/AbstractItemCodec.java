@@ -42,10 +42,12 @@
  *******************************************************************************/
 package org.lgna.croquet.codecs;
 
+import org.lgna.croquet.ItemCodec;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractItemCodec<T> implements org.lgna.croquet.ItemCodec<T> {
+public abstract class AbstractItemCodec<T> implements ItemCodec<T> {
 	private final Class<T> valueCls;
 
 	public AbstractItemCodec( Class<T> valueCls ) {

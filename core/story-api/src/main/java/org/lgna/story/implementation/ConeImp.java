@@ -43,11 +43,13 @@
 
 package org.lgna.story.implementation;
 
+import org.lgna.story.SCone;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ConeImp extends AbstractCylinderImp {
-	public ConeImp( org.lgna.story.SCone abstraction ) {
+	public ConeImp( SCone abstraction ) {
 		this.abstraction = abstraction;
 		this.getSgCylinder().bottomRadius.setValue( 0.5 );
 		this.getSgCylinder().topRadius.setValue( 0.0 );
@@ -55,7 +57,7 @@ public class ConeImp extends AbstractCylinderImp {
 	}
 
 	@Override
-	public org.lgna.story.SCone getAbstraction() {
+	public SCone getAbstraction() {
 		return this.abstraction;
 	}
 
@@ -69,7 +71,7 @@ public class ConeImp extends AbstractCylinderImp {
 		return this.baseRadius.getValue();
 	}
 
-	private final org.lgna.story.SCone abstraction;
+	private final SCone abstraction;
 	public final DoubleProperty baseRadius = new DoubleProperty( ConeImp.this ) {
 		@Override
 		public Double getValue() {

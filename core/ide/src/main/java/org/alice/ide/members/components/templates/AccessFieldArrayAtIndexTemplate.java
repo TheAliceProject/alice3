@@ -42,26 +42,36 @@
  *******************************************************************************/
 package org.alice.ide.members.components.templates;
 
+import org.alice.ide.ast.EmptyExpression;
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.ast.draganddrop.expression.FieldArrayAtIndexDragModel;
+import org.alice.ide.templates.ExpressionTemplate;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.ArrayAccess;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class AccessFieldArrayAtIndexTemplate extends org.alice.ide.templates.ExpressionTemplate {
-	private org.lgna.project.ast.AbstractField field;
+/* package-private */class AccessFieldArrayAtIndexTemplate extends ExpressionTemplate {
+	private AbstractField field;
 
-	public AccessFieldArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
-		super( org.alice.ide.ast.draganddrop.expression.FieldArrayAtIndexDragModel.getInstance( field ) );
+	public AccessFieldArrayAtIndexTemplate( AbstractField field ) {
+		super( FieldArrayAtIndexDragModel.getInstance( field ) );
 		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.UserField ) {
-			org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)this.field;
+		if( this.field instanceof UserField ) {
+			UserField userField = (UserField)this.field;
 			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
 		}
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return new org.lgna.project.ast.ArrayAccess(
+	protected Expression createIncompleteExpression() {
+		return new ArrayAccess(
 				field.getValueType(),
-				org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( field ),
-				new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) );
+				IncompleteAstUtilities.createIncompleteFieldAccess( field ),
+				new EmptyExpression( JavaType.INTEGER_OBJECT_TYPE ) );
 	}
 }

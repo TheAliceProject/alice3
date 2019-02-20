@@ -42,11 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AssignmentExpression;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AssignmentInsertCascade extends ExpressionStatementInsertCascade {
-	public AssignmentInsertCascade( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.alice.ide.croquet.models.cascade.ExpressionBlank[] blanks ) {
+	public AssignmentInsertCascade( UUID migrationId, BlockStatementIndexPair blockStatementIndexPair, ExpressionBlank[] blanks ) {
 		super( migrationId, blockStatementIndexPair, blanks );
 	}
 
@@ -61,18 +69,18 @@ public abstract class AssignmentInsertCascade extends ExpressionStatementInsertC
 		return text;
 	}
 
-	protected abstract org.lgna.project.ast.AbstractType<?, ?, ?> getValueType();
+	protected abstract AbstractType<?, ?, ?> getValueType();
 
-	protected abstract org.lgna.project.ast.Expression createLeftHandSide( org.lgna.project.ast.Expression... expressions );
+	protected abstract Expression createLeftHandSide( Expression... expressions );
 
 	protected abstract int getIndexOfRightHandSide();
 
 	@Override
-	protected final org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression... expressions ) {
-		org.lgna.project.ast.AssignmentExpression rv = new org.lgna.project.ast.AssignmentExpression(
+	protected final Expression createExpression( Expression... expressions ) {
+		AssignmentExpression rv = new AssignmentExpression(
 				this.getValueType(),
 				this.createLeftHandSide( expressions ),
-				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN,
+				AssignmentExpression.Operator.ASSIGN,
 				expressions[ this.getIndexOfRightHandSide() ]
 				);
 		return rv;

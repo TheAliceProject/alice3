@@ -42,6 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,22 +58,20 @@ public class JOptionPaneUtilities {
 		throw new Error();
 	}
 
-	public static void showMessageDialogInScrollableUneditableTextArea( java.awt.Component owner, String text, String title, int messageType, final int maxPreferredWidth, final int maxPreferredHeight ) {
-		assert ( messageType == javax.swing.JOptionPane.ERROR_MESSAGE ) || ( messageType == javax.swing.JOptionPane.INFORMATION_MESSAGE ) || ( messageType == javax.swing.JOptionPane.WARNING_MESSAGE ) || ( messageType == javax.swing.JOptionPane.PLAIN_MESSAGE );
-		javax.swing.JTextArea textArea = new javax.swing.JTextArea( text );
+	public static void showMessageDialogInScrollableUneditableTextArea( Component owner, String text, String title, int messageType) {
+		assert ( messageType == JOptionPane.ERROR_MESSAGE ) || ( messageType == JOptionPane.INFORMATION_MESSAGE )
+			|| ( messageType == JOptionPane.WARNING_MESSAGE ) || ( messageType == JOptionPane.PLAIN_MESSAGE );
+		JTextArea textArea = new JTextArea( text );
 		textArea.setEditable( false );
-		javax.swing.JOptionPane.showMessageDialog( owner, new javax.swing.JScrollPane( textArea ) {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		JOptionPane.showMessageDialog( owner, new JScrollPaneCoveringLinuxPaintBug( textArea ) {
 			@Override
-			public java.awt.Dimension getPreferredSize() {
-				java.awt.Dimension rv = super.getPreferredSize();
-				rv.width = Math.min( rv.width, maxPreferredWidth );
-				rv.height = Math.min( rv.height, maxPreferredHeight );
+			public Dimension getPreferredSize() {
+				Dimension rv = super.getPreferredSize();
+				rv.width = Math.min( rv.width, screenSize.width - 120 );
+				rv.height = Math.min( rv.height, screenSize.height - 150 );
 				return rv;
 			}
 		}, title, messageType );
-	}
-
-	public static void showMessageDialogInScrollableUneditableTextArea( java.awt.Component owner, String text, String title, int messageType ) {
-		showMessageDialogInScrollableUneditableTextArea( owner, text, title, messageType, 640, 480 );
 	}
 }

@@ -42,17 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.PlainStringValue;
+
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LabeledFormRow implements FormRow {
 	private final Label label;
-	private final org.lgna.croquet.PlainStringValue labelStringValue;
-	private final org.lgna.croquet.views.SwingComponentView<?> trailingComponent;
-	private final org.lgna.croquet.views.VerticalAlignment labelVerticalAlignment;
+	private final PlainStringValue labelStringValue;
+	private final SwingComponentView<?> trailingComponent;
+	private final VerticalAlignment labelVerticalAlignment;
 	private final boolean isFillHorizontal;
 
-	private LabeledFormRow( org.lgna.croquet.views.Label label, org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.SwingComponentView<?> trailingComponent, org.lgna.croquet.views.VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
+	private LabeledFormRow( Label label, PlainStringValue labelStringValue, SwingComponentView<?> trailingComponent, VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
 		this.label = label;
 		this.labelStringValue = labelStringValue;
 		this.trailingComponent = trailingComponent;
@@ -63,31 +67,31 @@ public class LabeledFormRow implements FormRow {
 		this.isFillHorizontal = isFillHorizontal;
 	}
 
-	public LabeledFormRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.SwingComponentView<?> component, org.lgna.croquet.views.VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
+	public LabeledFormRow( PlainStringValue labelStringValue, SwingComponentView<?> component, VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
 		this( null, labelStringValue, component, labelVerticalAlignment, isFillHorizontal );
 	}
 
-	public LabeledFormRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.SwingComponentView<?> component, org.lgna.croquet.views.VerticalAlignment labelVerticalAlignment ) {
+	public LabeledFormRow( PlainStringValue labelStringValue, SwingComponentView<?> component, VerticalAlignment labelVerticalAlignment ) {
 		this( labelStringValue, component, labelVerticalAlignment, true );
 	}
 
-	public LabeledFormRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.SwingComponentView<?> component, boolean isFillHorizontal ) {
-		this( labelStringValue, component, org.lgna.croquet.views.VerticalAlignment.CENTER, isFillHorizontal );
+	public LabeledFormRow( PlainStringValue labelStringValue, SwingComponentView<?> component, boolean isFillHorizontal ) {
+		this( labelStringValue, component, VerticalAlignment.CENTER, isFillHorizontal );
 	}
 
-	public LabeledFormRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.views.SwingComponentView<?> component ) {
-		this( labelStringValue, component, org.lgna.croquet.views.VerticalAlignment.CENTER );
+	public LabeledFormRow( PlainStringValue labelStringValue, SwingComponentView<?> component ) {
+		this( labelStringValue, component, VerticalAlignment.CENTER );
 	}
 
-	public static LabeledFormRow createFromLabel( org.lgna.croquet.views.Label label, org.lgna.croquet.views.SwingComponentView<?> component ) {
-		return new LabeledFormRow( label, null, component, org.lgna.croquet.views.VerticalAlignment.CENTER, true );
+	public static LabeledFormRow createFromLabel( Label label, SwingComponentView<?> component ) {
+		return new LabeledFormRow( label, null, component, VerticalAlignment.CENTER, true );
 	}
 
-	protected org.lgna.croquet.views.SwingComponentView<?> createLabel() {
+	protected SwingComponentView<?> createLabel() {
 		if( this.labelStringValue != null ) {
-			org.lgna.croquet.views.AbstractLabel textField = this.labelStringValue.createLabel();
-			textField.setHorizontalAlignment( org.lgna.croquet.views.HorizontalAlignment.TRAILING );
-			if( this.labelVerticalAlignment == org.lgna.croquet.views.VerticalAlignment.CENTER ) {
+			AbstractLabel textField = this.labelStringValue.createLabel();
+			textField.setHorizontalAlignment( HorizontalAlignment.TRAILING );
+			if( this.labelVerticalAlignment == VerticalAlignment.CENTER ) {
 				return textField;
 			} else {
 				//				org.lgna.croquet.components.BorderPanel.Constraint constraint;
@@ -104,12 +108,12 @@ public class LabeledFormRow implements FormRow {
 				return textField;
 			}
 		} else {
-			return new org.lgna.croquet.views.Label();
+			return new Label();
 		}
 	}
 
 	@Override
-	public void addComponents( org.lgna.croquet.views.FormPanel formPanel ) {
+	public void addComponents( FormPanel formPanel ) {
 		SwingComponentView<?> leadingComponent;
 		if( this.label != null ) {
 			leadingComponent = this.label;
@@ -123,11 +127,11 @@ public class LabeledFormRow implements FormRow {
 		sbTrailing.append( "wrap" );
 
 		StringBuilder sbLeading = new StringBuilder();
-		if( this.labelVerticalAlignment == org.lgna.croquet.views.VerticalAlignment.CENTER ) {
+		if( this.labelVerticalAlignment == VerticalAlignment.CENTER ) {
 			//pass
 		} else {
 			sbLeading.append( "aligny " );
-			sbLeading.append( this.labelVerticalAlignment.toString().toLowerCase( java.util.Locale.ENGLISH ) );
+			sbLeading.append( this.labelVerticalAlignment.toString().toLowerCase( Locale.ENGLISH ) );
 		}
 
 		formPanel.addComponent( leadingComponent, sbLeading.toString() );

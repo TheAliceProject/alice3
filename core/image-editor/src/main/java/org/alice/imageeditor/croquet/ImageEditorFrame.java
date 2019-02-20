@@ -42,62 +42,98 @@
  *******************************************************************************/
 package org.alice.imageeditor.croquet;
 
+import edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.io.UserDirectoryUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.DocumentUtilities;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import org.alice.imageeditor.croquet.views.ImageEditorPane;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.FrameCompositeWithInternalIsShowingState;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.ValueHolder;
+import org.lgna.croquet.codecs.EnumCodec;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.AbstractWindow;
+
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
+import java.awt.Component;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<org.alice.imageeditor.croquet.views.ImageEditorPane> {
+public class ImageEditorFrame extends FrameCompositeWithInternalIsShowingState<ImageEditorPane> {
 	public static String INVALID_PATH_NOT_A_DIRECTORY = "INVALID_PATH_NOT_A_DIRECTORY";
 	public static String INVALID_PATH_EMPTY_SUB_PATH = "INVALID_PATH_EMPTY_SUB_PATH";
-	private static final String DEFAULT_ROOT_DIRECTORY_PATH = edu.cmu.cs.dennisc.java.io.UserDirectoryUtilities.getBestGuessPicturesDirectory().getAbsolutePath();
+	private static final String DEFAULT_ROOT_DIRECTORY_PATH = UserDirectoryUtilities.getBestGuessPicturesDirectory().getAbsolutePath();
 
-	private final org.lgna.croquet.StringState rootDirectoryState = this.createPreferenceStringState( "rootDirectoryState", DEFAULT_ROOT_DIRECTORY_PATH, null );
+	private final StringState rootDirectoryState = this.createPreferenceStringState( "rootDirectoryState", DEFAULT_ROOT_DIRECTORY_PATH, null );
 
-	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
+	private final Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			String rootDirectoryPath = rootDirectoryState.getValue();
-			javax.swing.JFileChooser jFileChooser = new javax.swing.JFileChooser();
+			JFileChooser jFileChooser = new JFileChooser();
 			if( ( rootDirectoryPath != null ) && ( rootDirectoryPath.length() > 0 ) ) {
-				java.io.File rootDirectory = new java.io.File( rootDirectoryPath );
+				File rootDirectory = new File( rootDirectoryPath );
 				if( rootDirectory.exists() ) {
 					jFileChooser.setCurrentDirectory( rootDirectory );
 				}
 			}
-			jFileChooser.setDialogType( javax.swing.JFileChooser.SAVE_DIALOG );
+			jFileChooser.setDialogType( JFileChooser.SAVE_DIALOG );
 			jFileChooser.setApproveButtonText( "Set Root Directory" );
-			jFileChooser.setFileSelectionMode( javax.swing.JFileChooser.DIRECTORIES_ONLY );
-			java.awt.Component awtParent = ImageEditorFrame.this.getView().getAwtComponent();
+			jFileChooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
+			Component awtParent = ImageEditorFrame.this.getView().getAwtComponent();
 			int result = jFileChooser.showSaveDialog( awtParent );
-			if( result == javax.swing.JFileChooser.APPROVE_OPTION ) {
-				java.io.File file = jFileChooser.getSelectedFile();
+			if( result == JFileChooser.APPROVE_OPTION ) {
+				File file = jFileChooser.getSelectedFile();
 				if( file != null ) {
 					if( file.exists() ) {
 						if( file.isDirectory() ) {
 							rootDirectoryState.setValueTransactionlessly( file.getAbsolutePath() );
 						} else {
-							new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "file is not a directory" )
-									.buildAndShow();
+							Dialogs.showInfo( "file is not a directory" );
 						}
 					} else {
-						new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "file does not exist" )
-								.buildAndShow();
+						Dialogs.showInfo( "file does not exist" );
 					}
 				} else {
-					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "file is null" )
-							.buildAndShow();
+					Dialogs.showInfo( "file is null" );
 				}
 				return null;
 			} else {
-				throw new org.lgna.croquet.CancelException();
+				throw new CancelException();
 			}
 		}
 	} );
 
 	private final SaveOperation saveOperation = new SaveOperation( this );
 
-	private final org.lgna.croquet.Operation clearOperation = this.createActionOperation( "clearOperation", new Action() {
+	private final Operation clearOperation = this.createActionOperation( "clearOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			clearShapes();
 			//todo
 			getView().repaint();
@@ -105,39 +141,39 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInterna
 		}
 	} );
 
-	private final org.lgna.croquet.Operation cropOperation = this.createActionOperation( "cropOperation", new Action() {
+	private final Operation cropOperation = this.createActionOperation( "cropOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			crop();
 			return null;
 		}
 	} );
 
-	private final org.lgna.croquet.Operation uncropOperation = this.createActionOperation( "uncropOperation", new Action() {
+	private final Operation uncropOperation = this.createActionOperation( "uncropOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			uncrop();
 			return null;
 		}
 	} );
 
-	private final org.lgna.croquet.Operation copyOperation = this.createActionOperation( "copyOperation", new Action() {
+	private final Operation copyOperation = this.createActionOperation( "copyOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			if( isGoodToGoCroppingIfNecessary() ) {
 				copyImageToClipboard( getView().render() );
 				return null;
 			} else {
-				throw new org.lgna.croquet.CancelException();
+				throw new CancelException();
 			}
 		}
 	} );
 
-	private final org.lgna.croquet.BooleanState showDashedBorderState = this.createBooleanState( "showDashedBorderState", true );
-	private final org.lgna.croquet.BooleanState showInScreenResolutionState = this.createBooleanState( "showInScreenResolutionState", true );
-	private final org.lgna.croquet.BooleanState dropShadowState = this.createBooleanState( "dropShadowState", true );
+	private final BooleanState showDashedBorderState = this.createBooleanState( "showDashedBorderState", true );
+	private final BooleanState showInScreenResolutionState = this.createBooleanState( "showInScreenResolutionState", true );
+	private final BooleanState dropShadowState = this.createBooleanState( "dropShadowState", true );
 
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<Tool> toolState = this.createImmutableListStateForEnum( "toolState", Tool.class, new org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<Tool>() {
+	private final ImmutableDataSingleSelectListState<Tool> toolState = this.createImmutableListStateForEnum( "toolState", Tool.class, new EnumCodec.LocalizationCustomizer<Tool>() {
 		@Override
 		public String customize( String localization, Tool value ) {
 			if( value == Tool.ADD_RECTANGLE ) {
@@ -148,48 +184,48 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInterna
 		}
 	}, Tool.ADD_RECTANGLE );
 
-	private final org.lgna.croquet.ValueHolder<java.awt.Image> imageHolder = org.lgna.croquet.ValueHolder.createInstance( null );
+	private final ValueHolder<Image> imageHolder = ValueHolder.createInstance( null );
 
-	private final org.lgna.croquet.ValueHolder<String> pathHolder = org.lgna.croquet.ValueHolder.createInstance( INVALID_PATH_EMPTY_SUB_PATH );
+	private final ValueHolder<String> pathHolder = ValueHolder.createInstance( INVALID_PATH_EMPTY_SUB_PATH );
 
-	private final java.util.List<java.awt.Shape> shapes = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<Shape> shapes = Lists.newCopyOnWriteArrayList();
 
-	private final org.lgna.croquet.ValueHolder<java.awt.Rectangle> cropSelectHolder = org.lgna.croquet.ValueHolder.createInstance( null );
+	private final ValueHolder<Rectangle> cropSelectHolder = ValueHolder.createInstance( null );
 
-	private final org.lgna.croquet.ValueHolder<java.awt.Rectangle> cropCommitHolder = org.lgna.croquet.ValueHolder.createInstance( null );
+	private final ValueHolder<Rectangle> cropCommitHolder = ValueHolder.createInstance( null );
 
 	private final FilenameComboBoxModel filenameComboBoxModel = new FilenameComboBoxModel();
 
 	private FilenameListWorker worker;
 
-	private final org.lgna.croquet.event.ValueListener<java.awt.Rectangle> cropSelectListener = new org.lgna.croquet.event.ValueListener<java.awt.Rectangle>() {
+	private final ValueListener<Rectangle> cropSelectListener = new ValueListener<Rectangle>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
+		public void valueChanged( ValueEvent<Rectangle> e ) {
 			handleCropSelectChanged( e );
 		}
 	};
 
-	private final org.lgna.croquet.event.ValueListener<java.awt.Rectangle> cropCommitListener = new org.lgna.croquet.event.ValueListener<java.awt.Rectangle>() {
+	private final ValueListener<Rectangle> cropCommitListener = new ValueListener<Rectangle>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
+		public void valueChanged( ValueEvent<Rectangle> e ) {
 			handleCropCommitChanged( e );
 		}
 	};
 
-	private final org.lgna.croquet.event.ValueListener<String> rootDirectoryListener = new org.lgna.croquet.event.ValueListener<String>() {
+	private final ValueListener<String> rootDirectoryListener = new ValueListener<String>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
-			java.io.File file = new java.io.File( e.getNextValue() );
+		public void valueChanged( ValueEvent<String> e ) {
+			File file = new File( e.getNextValue() );
 			synchronized( filenameComboBoxModel ) {
 				if( worker != null ) {
 					if( worker.getRootDirectory().equals( file ) ) {
 						//pass
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "equal", worker.getRootDirectory(), file );
+						Logger.outln( "equal", worker.getRootDirectory(), file );
 					} else {
 						if( worker.isDone() ) {
 							//pass
 						} else {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "cancel" );
+							Logger.outln( "cancel" );
 							worker.cancel( true );
 						}
 						worker = null;
@@ -205,7 +241,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInterna
 					} else {
 						filenameComboBoxModel.setSelectedItem( "" );
 						filenameComboBoxModel.prologue();
-						filenameComboBoxModel.done( new java.io.File[ 0 ] );
+						filenameComboBoxModel.done( new File[ 0 ] );
 					}
 				}
 			}
@@ -213,28 +249,28 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInterna
 		}
 	};
 
-	private final javax.swing.event.DocumentListener editorListener = new javax.swing.event.DocumentListener() {
+	private final DocumentListener editorListener = new DocumentListener() {
 		@Override
-		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+		public void changedUpdate( DocumentEvent e ) {
 			handleEditorChanged( e );
 		}
 
 		@Override
-		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+		public void insertUpdate( DocumentEvent e ) {
 			handleEditorChanged( e );
 		}
 
 		@Override
-		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+		public void removeUpdate( DocumentEvent e ) {
 			handleEditorChanged( e );
 		}
 	};
 
 	//todo
-	private final javax.swing.JComboBox jComboBox = new javax.swing.JComboBox( this.filenameComboBoxModel );
+	private final JComboBox jComboBox = new JComboBox( this.filenameComboBoxModel );
 
 	public ImageEditorFrame() {
-		super( java.util.UUID.fromString( "19b37463-3d9a-44eb-9682-6d5ddf73f5b3" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP ); //todo?
+		super( UUID.fromString( "19b37463-3d9a-44eb-9682-6d5ddf73f5b3" ), Application.DOCUMENT_UI_GROUP ); //todo?
 		this.jComboBox.setEditable( true );
 		this.saveOperation.setEnabled( false );
 		this.cropOperation.setEnabled( false );
@@ -242,10 +278,10 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInterna
 	}
 
 	/* package-private */boolean isGoodToGoCroppingIfNecessary() {
-		java.awt.Rectangle cropSelection = this.getCropSelectHolder().getValue();
+		Rectangle cropSelection = this.getCropSelectHolder().getValue();
 		if( cropSelection != null ) {
-			int result = javax.swing.JOptionPane.showConfirmDialog( this.getView().getAwtComponent(), "You have set a crop rectangle.  Commit this crop and continue?", "Crop?", javax.swing.JOptionPane.OK_CANCEL_OPTION );
-			if( result == javax.swing.JOptionPane.OK_OPTION ) {
+			int result = JOptionPane.showConfirmDialog( this.getView().getAwtComponent(), "You have set a crop rectangle.  Commit this crop and continue?", "Crop?", JOptionPane.OK_CANCEL_OPTION );
+			if( result == JOptionPane.OK_OPTION ) {
 				this.crop();
 			} else {
 				//cancel
@@ -255,73 +291,73 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInterna
 		return true;
 	}
 
-	public org.lgna.croquet.ValueHolder<java.awt.Image> getImageHolder() {
+	public ValueHolder<Image> getImageHolder() {
 		return this.imageHolder;
 	}
 
-	public org.lgna.croquet.ValueHolder<String> getPathHolder() {
+	public ValueHolder<String> getPathHolder() {
 		return this.pathHolder;
 	}
 
-	public org.lgna.croquet.ValueHolder<java.awt.Rectangle> getCropSelectHolder() {
+	public ValueHolder<Rectangle> getCropSelectHolder() {
 		return this.cropSelectHolder;
 	}
 
-	public org.lgna.croquet.ValueHolder<java.awt.Rectangle> getCropCommitHolder() {
+	public ValueHolder<Rectangle> getCropCommitHolder() {
 		return this.cropCommitHolder;
 	}
 
-	public org.lgna.croquet.ImmutableDataSingleSelectListState<Tool> getToolState() {
+	public ImmutableDataSingleSelectListState<Tool> getToolState() {
 		return this.toolState;
 	}
 
-	public org.lgna.croquet.Operation getCropOperation() {
+	public Operation getCropOperation() {
 		return this.cropOperation;
 	}
 
-	public org.lgna.croquet.Operation getUncropOperation() {
+	public Operation getUncropOperation() {
 		return this.uncropOperation;
 	}
 
-	public org.lgna.croquet.Operation getClearOperation() {
+	public Operation getClearOperation() {
 		return this.clearOperation;
 	}
 
-	public org.lgna.croquet.Operation getCopyOperation() {
+	public Operation getCopyOperation() {
 		return this.copyOperation;
 	}
 
-	public org.lgna.croquet.BooleanState getShowDashedBorderState() {
+	public BooleanState getShowDashedBorderState() {
 		return this.showDashedBorderState;
 	}
 
-	public org.lgna.croquet.BooleanState getShowInScreenResolutionState() {
+	public BooleanState getShowInScreenResolutionState() {
 		return this.showInScreenResolutionState;
 	}
 
-	public org.lgna.croquet.BooleanState getDropShadowState() {
+	public BooleanState getDropShadowState() {
 		return this.dropShadowState;
 	}
 
-	public org.lgna.croquet.StringState getRootDirectoryState() {
+	public StringState getRootDirectoryState() {
 		return this.rootDirectoryState;
 	}
 
-	public javax.swing.JComboBox getJComboBox() {
+	public JComboBox getJComboBox() {
 		return this.jComboBox;
 	}
 
-	public org.lgna.croquet.Operation getBrowseOperation() {
+	public Operation getBrowseOperation() {
 		return this.browseOperation;
 	}
 
-	public org.lgna.croquet.Operation getSaveOperation() {
+	public Operation getSaveOperation() {
 		return this.saveOperation;
 	}
 
-	private void copyImageToClipboard( java.awt.Image image ) {
+	private void copyImageToClipboard( Image image ) {
 		if( image != null ) {
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image, 300 );
+			ClipboardUtilities.setClipboardContents( image, 300 );
 		}
 	}
 
@@ -338,7 +374,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInterna
 		this.getView().revalidateAndRepaint();
 	}
 
-	private void handleCropSelectChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
+	private void handleCropSelectChanged( ValueEvent<Rectangle> e ) {
 		this.cropOperation.setEnabled( e.getNextValue() != null );
 		if( this.cropOperation.isEnabled() ) {
 			this.getView().setDefaultButtonToCrop();
@@ -347,15 +383,15 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInterna
 		}
 	}
 
-	private void handleCropCommitChanged( org.lgna.croquet.event.ValueEvent<java.awt.Rectangle> e ) {
+	private void handleCropCommitChanged( ValueEvent<Rectangle> e ) {
 		this.uncropOperation.setEnabled( e.getNextValue() != null );
 	}
 
-	public void addShape( java.awt.Shape shape ) {
+	public void addShape( Shape shape ) {
 		this.shapes.add( shape );
 	}
 
-	public void removeShape( java.awt.Shape shape ) {
+	public void removeShape( Shape shape ) {
 		this.shapes.remove( shape );
 	}
 
@@ -363,38 +399,38 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInterna
 		this.shapes.clear();
 	}
 
-	public java.util.List<java.awt.Shape> getShapes() {
-		return java.util.Collections.unmodifiableList( this.shapes );
+	public List<Shape> getShapes() {
+		return Collections.unmodifiableList( this.shapes );
 	}
 
 	@Override
-	protected org.alice.imageeditor.croquet.views.ImageEditorPane createView() {
-		return new org.alice.imageeditor.croquet.views.ImageEditorPane( this );
+	protected ImageEditorPane createView() {
+		return new ImageEditorPane( this );
 	}
 
-	public void setImageClearShapesAndShowFrame( java.awt.Image image ) {
+	public void setImageClearShapesAndShowFrame( Image image ) {
 		this.clearShapes();
 		this.imageHolder.setValue( image );
 		this.getIsFrameShowingState().setValueTransactionlessly( true );
-		org.lgna.croquet.views.AbstractWindow<?> window = this.getView().getRoot();
+		AbstractWindow<?> window = this.getView().getRoot();
 		if( window != null ) {
 			this.getView().revalidateAndRepaint();
 			window.pack();
 		}
 	}
 
-	public java.io.File getFile() {
+	public File getFile() {
 		String path = this.pathHolder.getValue();
-		return new java.io.File( path );
+		return new File( path );
 	}
 
 	private void updatePath() {
 		String rootDirectoryPath = this.rootDirectoryState.getValue();
-		java.awt.Component awtComponent = this.jComboBox.getEditor().getEditorComponent();
-		if( awtComponent instanceof javax.swing.JTextField ) {
-			javax.swing.JTextField jTextField = (javax.swing.JTextField)awtComponent;
-			javax.swing.text.Document document = jTextField.getDocument();
-			String text = edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( document );
+		Component awtComponent = this.jComboBox.getEditor().getEditorComponent();
+		if( awtComponent instanceof JTextField ) {
+			JTextField jTextField = (JTextField)awtComponent;
+			Document document = jTextField.getDocument();
+			String text = DocumentUtilities.getText( document );
 			if( text.length() > 0 ) {
 				if( text.endsWith( ".png" ) ) {
 					//pass
@@ -407,14 +443,14 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInterna
 				} else {
 					text = text + ".png";
 				}
-				java.io.File rootDirectory = new java.io.File( rootDirectoryPath );
-				java.io.File file;
+				File rootDirectory = new File( rootDirectoryPath );
+				File file;
 				String path;
 				if( rootDirectory.isDirectory() ) {
 					if( text.startsWith( rootDirectoryPath ) ) {
-						file = new java.io.File( text );
+						file = new File( text );
 					} else {
-						file = new java.io.File( new java.io.File( rootDirectoryPath ), text );
+						file = new File( new File( rootDirectoryPath ), text );
 					}
 					path = file.getAbsolutePath();
 				} else {
@@ -427,7 +463,7 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInterna
 				} else {
 					this.saveOperation.setName( "save" );
 				}
-				this.saveOperation.setEnabled( edu.cmu.cs.dennisc.java.io.FileUtilities.isValidFile( file ) );
+				this.saveOperation.setEnabled( FileUtilities.isValidFile( file ) );
 			} else {
 				this.pathHolder.setValue( INVALID_PATH_EMPTY_SUB_PATH );
 				this.saveOperation.setName( "save" );
@@ -438,8 +474,8 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInterna
 		}
 	}
 
-	private void handleEditorChanged( javax.swing.event.DocumentEvent e ) {
-		String text = edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.getText( e.getDocument() );
+	private void handleEditorChanged( DocumentEvent e ) {
+		String text = DocumentUtilities.getText( e.getDocument() );
 		this.filenameComboBoxModel.setSelectedItem( text );
 		this.updatePath();
 	}
@@ -447,9 +483,9 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInterna
 	@Override
 	public void handlePreActivation() {
 		this.rootDirectoryState.addAndInvokeNewSchoolValueListener( this.rootDirectoryListener );
-		java.awt.Component awtEditorComponent = this.getJComboBox().getEditor().getEditorComponent();
-		if( awtEditorComponent instanceof javax.swing.JTextField ) {
-			javax.swing.JTextField jTextField = (javax.swing.JTextField)awtEditorComponent;
+		Component awtEditorComponent = this.getJComboBox().getEditor().getEditorComponent();
+		if( awtEditorComponent instanceof JTextField ) {
+			JTextField jTextField = (JTextField)awtEditorComponent;
 			jTextField.getDocument().addDocumentListener( this.editorListener );
 		}
 		this.updatePath();
@@ -463,9 +499,9 @@ public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInterna
 		super.handlePostDeactivation();
 		this.cropCommitHolder.removeValueListener( this.cropCommitListener );
 		this.cropSelectHolder.removeValueListener( this.cropSelectListener );
-		java.awt.Component awtEditorComponent = this.getJComboBox().getEditor().getEditorComponent();
-		if( awtEditorComponent instanceof javax.swing.JTextField ) {
-			javax.swing.JTextField jTextField = (javax.swing.JTextField)awtEditorComponent;
+		Component awtEditorComponent = this.getJComboBox().getEditor().getEditorComponent();
+		if( awtEditorComponent instanceof JTextField ) {
+			JTextField jTextField = (JTextField)awtEditorComponent;
 			jTextField.getDocument().removeDocumentListener( this.editorListener );
 		}
 		this.rootDirectoryState.removeNewSchoolValueListener( this.rootDirectoryListener );

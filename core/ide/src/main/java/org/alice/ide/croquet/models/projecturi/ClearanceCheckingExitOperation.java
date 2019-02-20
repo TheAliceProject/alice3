@@ -42,16 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import org.lgna.croquet.Application;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ClearanceCheckingExitOperation extends PotentialClearanceIteratingOperation {
-	public ClearanceCheckingExitOperation( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), projectDocumentFrame, new SystemExitOperation() );
-	}
-
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
-		step.finish();
+	public ClearanceCheckingExitOperation() {
+		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), new SystemExitOperation() );
 	}
 }

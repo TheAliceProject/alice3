@@ -42,13 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.operations.ast;
 
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.project.ast.UserCode;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCodeActionOperation extends org.lgna.croquet.ActionOperation {
-	public AbstractCodeActionOperation( java.util.UUID individualId ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, individualId );
+public abstract class AbstractCodeActionOperation extends ActionOperation {
+	public AbstractCodeActionOperation( UUID individualId ) {
+		super( Application.PROJECT_GROUP, individualId );
 	}
 
-	protected abstract org.lgna.project.ast.UserCode getCode();
+	protected abstract UserCode getCode();
 }

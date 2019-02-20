@@ -43,19 +43,27 @@
 
 package org.alice.ide.common;
 
+import org.alice.ide.IDE;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.project.ast.Expression;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SelectedInstanceFactoryExpressionPanel extends org.lgna.croquet.views.LineAxisPanel {
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactoryListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+public class SelectedInstanceFactoryExpressionPanel extends LineAxisPanel {
+	private final ValueListener<InstanceFactory> instanceFactoryListener = new ValueListener<InstanceFactory>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
+		public void valueChanged( ValueEvent<InstanceFactory> e ) {
 			SelectedInstanceFactoryExpressionPanel.this.refreshLater();
 		}
 	};
-	private final org.alice.ide.x.AstI18nFactory factory;
+	private final AstI18nFactory factory;
 
-	public SelectedInstanceFactoryExpressionPanel( org.alice.ide.x.AstI18nFactory factory ) {
+	public SelectedInstanceFactoryExpressionPanel( AstI18nFactory factory ) {
 		this.factory = factory;
 		this.refreshLater();
 	}
@@ -63,8 +71,8 @@ public class SelectedInstanceFactoryExpressionPanel extends org.lgna.croquet.vie
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
-		org.lgna.project.ast.Expression expression = instanceFactory != null ? instanceFactory.createTransientExpression() : null;
+		InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+		Expression expression = instanceFactory != null ? instanceFactory.createTransientExpression() : null;
 		this.forgetAndRemoveAllComponents();
 		this.internalAddComponent( this.factory.createExpressionPane( expression ) );
 	}
@@ -72,12 +80,12 @@ public class SelectedInstanceFactoryExpressionPanel extends org.lgna.croquet.vie
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactoryListener );
+		IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactoryListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().removeNewSchoolValueListener( this.instanceFactoryListener );
+		IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().removeNewSchoolValueListener( this.instanceFactoryListener );
 		super.handleUndisplayable();
 	}
 }

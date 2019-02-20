@@ -42,6 +42,13 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.data;
 
+import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
+import edu.cmu.cs.dennisc.javax.swing.icons.PaintIcon;
+
+import javax.swing.Icon;
+import java.awt.Color;
+import java.awt.GradientPaint;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -78,21 +85,21 @@ public enum HairColorName {
 	RED_STREAK( 0xc13e49, 0x000000 ),
 	STREAKED( 0x603879, 0xc13e49 );
 
-	private final javax.swing.Icon icon;
+	private final Icon icon;
 
-	private HairColorName( javax.swing.Icon icon ) {
+	private HairColorName( Icon icon ) {
 		this.icon = icon;
 	}
 
 	private HairColorName( int rgb ) {
-		this( new edu.cmu.cs.dennisc.javax.swing.icons.PaintIcon( new java.awt.Color( rgb ) ) );
+		this( new PaintIcon( new Color( rgb ) ) );
 	}
 
 	private HairColorName( int rgbTop, int rgbBottom ) {
-		this( new edu.cmu.cs.dennisc.javax.swing.icons.PaintIcon( new java.awt.GradientPaint( 0, 0, new java.awt.Color( rgbTop ), 0, edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon.DEFAULT_SIZE, new java.awt.Color( rgbBottom ) ) ) );
+		this( new PaintIcon( new GradientPaint( 0, 0, new Color( rgbTop ), 0, ColorIcon.DEFAULT_SIZE, new Color( rgbBottom ) ) ) );
 	}
 
-	public javax.swing.Icon getIcon() {
+	public Icon getIcon() {
 		return this.icon;
 	}
 }

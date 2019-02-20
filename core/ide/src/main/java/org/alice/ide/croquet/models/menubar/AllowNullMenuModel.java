@@ -42,10 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.menubar;
 
+import org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForFieldInitializers;
+import org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForLocalInitializers;
+import org.lgna.croquet.PredeterminedMenuModel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AllowNullMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+public class AllowNullMenuModel extends PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static AllowNullMenuModel instance = new AllowNullMenuModel();
 	}
@@ -55,8 +61,8 @@ public class AllowNullMenuModel extends org.lgna.croquet.PredeterminedMenuModel 
 	}
 
 	private AllowNullMenuModel() {
-		super( java.util.UUID.fromString( "95c7c508-4aea-4ada-ac3c-0ff2972f9766" ),
-				org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForFieldInitializers.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForLocalInitializers.getInstance().getMenuItemPrepModel() );
+		super( UUID.fromString( "95c7c508-4aea-4ada-ac3c-0ff2972f9766" ),
+				IsNullAllowedForFieldInitializers.getInstance().getMenuItemPrepModel(),
+				IsNullAllowedForLocalInitializers.getInstance().getMenuItemPrepModel() );
 	}
 }

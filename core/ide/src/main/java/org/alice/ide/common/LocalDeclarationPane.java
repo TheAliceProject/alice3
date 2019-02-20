@@ -42,31 +42,42 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.Label;
+import org.lgna.project.ast.EachInStatement;
+import org.lgna.project.ast.UserLocal;
+
+import javax.swing.BorderFactory;
+
 /**
  * @author Dennis Cosgrove
  */
 
 public class LocalDeclarationPane extends TypedDeclarationPane {
-	private org.lgna.project.ast.UserLocal userLocal;
-	private org.lgna.croquet.views.Label finalLabel = new org.lgna.croquet.views.Label();
+	private UserLocal userLocal;
+	private Label finalLabel = new Label();
 
-	public LocalDeclarationPane( org.lgna.project.ast.UserLocal userLocal, org.lgna.croquet.views.AwtComponentView<?> component ) {
+	public LocalDeclarationPane( UserLocal userLocal, AwtComponentView<?> component ) {
 		this.userLocal = userLocal;
-		if( org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getValue() ) {
+		if( IsExposingReassignableStatusState.getInstance().getValue() ) {
 			this.addComponent( finalLabel );
 		}
-		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.userLocal.valueType.getValue() ) );
+		this.addComponent( TypeComponent.createInstance( this.userLocal.valueType.getValue() ) );
 		this.addComponent( component );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		this.setBorder( BorderFactory.createEmptyBorder() );
 	}
 
 	private void updateFinalLabel() {
 		String text;
 		if( userLocal.isFinal.getValue() ) {
-			if( userLocal.getParent() instanceof org.lgna.project.ast.EachInStatement ) {
+			if( userLocal.getParent() instanceof EachInStatement ) {
 				text = "";
 			} else {
-				text = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getFinalText() + " ";
+				text = FormatterState.getInstance().getValue().getFinalText() + " ";
 			}
 		} else {
 			text = "";
@@ -74,13 +85,13 @@ public class LocalDeclarationPane extends TypedDeclarationPane {
 		this.finalLabel.setText( text );
 	}
 
-	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+	private PropertyListener propertyListener = new PropertyListener() {
 		@Override
-		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		public void propertyChanging( PropertyEvent e ) {
 		}
 
 		@Override
-		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		public void propertyChanged( PropertyEvent e ) {
 			updateFinalLabel();
 		}
 	};

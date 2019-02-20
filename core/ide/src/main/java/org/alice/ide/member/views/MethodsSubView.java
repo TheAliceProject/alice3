@@ -43,14 +43,30 @@
 
 package org.alice.ide.member.views;
 
+import org.alice.ide.IDE;
+import org.alice.ide.declarationseditor.DeclarationTabState;
+import org.alice.ide.member.MethodsSubComposite;
+import org.alice.ide.members.components.templates.TemplateFactory;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.DragComponent;
+import org.lgna.croquet.views.Hyperlink;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.PageAxisPanel;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.UserMethod;
+
+import javax.swing.BorderFactory;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MethodsSubView<C extends org.alice.ide.member.MethodsSubComposite> extends org.lgna.croquet.views.PageAxisPanel {
-	public MethodsSubView( org.alice.ide.member.MethodsSubComposite composite ) {
+public class MethodsSubView<C extends MethodsSubComposite> extends PageAxisPanel {
+	public MethodsSubView( MethodsSubComposite composite ) {
 		super( composite );
 		this.setMaximumSizeClampedToPreferredSize( true );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 8, 12, 0 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 0, 8, 12, 0 ) );
 	}
 
 	@Override
@@ -66,16 +82,16 @@ public class MethodsSubView<C extends org.alice.ide.member.MethodsSubComposite> 
 
 		composite.updateTabTitle();
 
-		for( org.lgna.project.ast.AbstractMethod method : composite.getMethods() ) {
-			org.lgna.croquet.views.DragComponent<?> dragComponent = org.alice.ide.members.components.templates.TemplateFactory.getMethodInvocationTemplate( method );
-			org.lgna.croquet.views.SwingComponentView<?> component;
-			if( method instanceof org.lgna.project.ast.UserMethod ) {
-				org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
-				org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-				org.lgna.croquet.Operation operation = tabState.getItemSelectionOperationForMethod( method );
-				org.lgna.croquet.views.Hyperlink hyperlink = operation.createHyperlink();
+		for( AbstractMethod method : composite.getMethods() ) {
+			DragComponent<?> dragComponent = TemplateFactory.getMethodInvocationTemplate( method );
+			SwingComponentView<?> component;
+			if( method instanceof UserMethod ) {
+				UserMethod userMethod = (UserMethod)method;
+				DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+				Operation operation = tabState.getItemSelectionOperationForMethod( method );
+				Hyperlink hyperlink = operation.createHyperlink();
 				hyperlink.setClobberText( "edit" );
-				component = new org.lgna.croquet.views.LineAxisPanel( hyperlink, org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ), dragComponent );
+				component = new LineAxisPanel( hyperlink, BoxUtilities.createHorizontalSliver( 8 ), dragComponent );
 			} else {
 				component = dragComponent;
 			}

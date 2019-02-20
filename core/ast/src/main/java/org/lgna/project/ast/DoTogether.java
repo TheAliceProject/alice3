@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.ast.localizer.AstLocalizer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,43 +57,30 @@ public final class DoTogether extends AbstractStatementWithBody {
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
+	protected void appendRepr( AstLocalizer localizer ) {
 		localizer.appendLocalizedText( DoTogether.class, "do together" );
 		super.appendRepr( localizer );
 	}
 
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendDoTogether(this);
+	}
+
 	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
-		JavaType threadUtilitiesType = JavaType.getInstance( org.lgna.common.ThreadUtilities.class );
-		JavaMethod doTogetherMethod = threadUtilitiesType.getDeclaredMethod( "doTogether", Runnable[].class );
-		TypeExpression callerExpression = new TypeExpression( threadUtilitiesType );
-		generator.appendCallerExpression( callerExpression, doTogetherMethod );
-		generator.appendString( doTogetherMethod.getName() );
-		generator.appendString( "(" );
-		String prefix = "";
-		for( Statement statement : this.body.getValue().statements ) {
-			generator.appendString( prefix );
-			if( generator.isLambdaSupported() ) {
-				generator.appendString( "()->{" );
-			} else {
-				generator.appendString( "new Runnable(){public void run(){" );
-			}
-			if( statement instanceof DoInOrder ) {
-				DoInOrder doInOrder = (DoInOrder)statement;
-				BlockStatement blockStatement = doInOrder.body.getValue();
-				for( Statement subStatement : blockStatement.statements ) {
-					subStatement.appendJava( generator );
-				}
-			} else {
-				statement.appendJava( generator );
-			}
-			if( generator.isLambdaSupported() ) {
-				generator.appendString( "}" );
-			} else {
-				generator.appendString( "}}" );
-			}
-			prefix = ",";
+	boolean containsAReturnForEveryPath() {
+		return isEnabled.getValue() && body.getValue().containsAReturnForEveryPath();
+	}
+
+	@Override
+	boolean containsUnreachableCode() {
+		if (!isEnabled.getValue() ) {
+			return false;
 		}
-		generator.appendString( ");" );
+		for ( Statement statement : body.getValue().statements) {
+			if ( statement.containsUnreachableCode() ) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

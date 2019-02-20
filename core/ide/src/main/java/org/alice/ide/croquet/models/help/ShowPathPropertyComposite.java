@@ -42,14 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help;
 
+import org.alice.ide.croquet.models.help.views.ShowPathPropertyView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShowPathPropertyComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.croquet.models.help.views.ShowPathPropertyView> {
+public abstract class ShowPathPropertyComposite extends SimpleOperationUnadornedDialogCoreComposite<ShowPathPropertyView> {
 	private final String propertyName;
 
-	public ShowPathPropertyComposite( java.util.UUID migrationId, String propertyName ) {
-		super( migrationId, org.lgna.croquet.Application.INFORMATION_GROUP );
+	public ShowPathPropertyComposite( UUID migrationId, String propertyName ) {
+		super( migrationId, Application.INFORMATION_GROUP );
 		this.propertyName = propertyName;
 	}
 
@@ -58,12 +64,12 @@ public abstract class ShowPathPropertyComposite extends org.lgna.croquet.SimpleO
 	}
 
 	@Override
-	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected String getDialogTitle() {
 		return "System Property: " + this.propertyName;
 	}
 
 	@Override
-	protected org.alice.ide.croquet.models.help.views.ShowPathPropertyView createView() {
-		return new org.alice.ide.croquet.models.help.views.ShowPathPropertyView( this );
+	protected ShowPathPropertyView createView() {
+		return new ShowPathPropertyView( this );
 	}
 }

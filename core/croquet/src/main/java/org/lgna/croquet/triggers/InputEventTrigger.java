@@ -43,27 +43,29 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.history.UserActivity;
+
+import java.awt.Point;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InputEventTrigger extends ComponentEventTrigger<java.awt.event.InputEvent> {
-	public static InputEventTrigger createUserInstance( java.awt.event.InputEvent inputEvent ) {
-		return new InputEventTrigger( null, inputEvent );
+public class InputEventTrigger extends ComponentEventTrigger<InputEvent> {
+	public static UserActivity createUserActivity( InputEvent inputEvent ) {
+		return new InputEventTrigger( inputEvent ).getUserActivity();
 	}
 
-	private InputEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.InputEvent inputEvent ) {
-		super( viewController, inputEvent );
-	}
-
-	public InputEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	private InputEventTrigger( InputEvent inputEvent ) {
+		super( null, inputEvent );
 	}
 
 	@Override
-	protected java.awt.Point getPoint() {
-		java.awt.event.InputEvent inputEvent = this.getEvent();
-		if( inputEvent instanceof java.awt.event.MouseEvent ) {
-			java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent)inputEvent;
+	protected Point getPoint() {
+		InputEvent inputEvent = this.getEvent();
+		if( inputEvent instanceof MouseEvent ) {
+			MouseEvent mouseEvent = (MouseEvent)inputEvent;
 			return mouseEvent.getPoint();
 		} else {
 			return null;

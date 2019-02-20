@@ -43,6 +43,18 @@
  */
 package edu.wustl.lookingglass.media;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.media.audio.AudioMuxer;
+
+import javax.imageio.ImageIO;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Kyle J. Harms
  */
@@ -50,7 +62,7 @@ public class ImagesToWebmEncoder {
 
 	private final double frameRate;
 	private int frameCount = 0;
-	private final java.awt.Dimension frameDimension;
+	private final Dimension frameDimension;
 
 	public static final String WEBM_EXTENSION = "webm";
 
@@ -58,13 +70,13 @@ public class ImagesToWebmEncoder {
 	private boolean success = true;
 
 	private FFmpegProcess ffmpegProcess;
-	private org.alice.media.audio.AudioMuxer audioMuxer;
+	private AudioMuxer audioMuxer;
 
-	private java.io.File encodedVideoFile = null;
+	private File encodedVideoFile = null;
 
-	private java.util.List<MediaEncoderListener> listeners = new java.util.LinkedList<MediaEncoderListener>();
+	private List<MediaEncoderListener> listeners = new LinkedList<MediaEncoderListener>();
 
-	public ImagesToWebmEncoder( double frameRate, java.awt.Dimension dimension ) {
+	public ImagesToWebmEncoder( double frameRate, Dimension dimension ) {
 		this.frameRate = frameRate;
 		this.frameDimension = dimension;
 		this.frameCount = -1;
@@ -74,7 +86,7 @@ public class ImagesToWebmEncoder {
 		assert ( ( frameDimension.getHeight() % 2 ) == 0 ) : "ffmpeg requires dimensions that are divisble by two";
 	}
 
-	public java.io.File getEncodedVideoFile() {
+	public File getEncodedVideoFile() {
 		return this.encodedVideoFile;
 	}
 
@@ -96,7 +108,7 @@ public class ImagesToWebmEncoder {
 		return start( null );
 	}
 
-	public synchronized boolean start( org.alice.media.audio.AudioMuxer audioCompiler ) {
+	public synchronized boolean start( AudioMuxer audioCompiler ) {
 		assert this.isRunning == false;
 
 		this.audioMuxer = audioCompiler;
@@ -106,13 +118,13 @@ public class ImagesToWebmEncoder {
 
 		try {
 			// Don't cache images during this process
-			javax.imageio.ImageIO.setUseCache( false );
+			ImageIO.setUseCache( false );
 
-			this.encodedVideoFile = java.io.File.createTempFile( "project", "." + WEBM_EXTENSION );
+			this.encodedVideoFile = File.createTempFile( "project", "." + WEBM_EXTENSION );
 			this.encodedVideoFile.deleteOnExit();
 			this.ffmpegProcess = new FFmpegProcess( "-y", "-r", String.format( "%d", (int)this.frameRate ), "-f", "image2pipe", "-vcodec", "ppm", "-i", "-", "-vf", "vflip", "-vcodec", "libvpx", "-quality", "good", "-cpu-used", "0", "-b:v", "500k", "-qmin", "10", "-qmax", "42", "-maxrate", "500k", "-bufsize", "1000k", "-pix_fmt", "yuv420p", this.encodedVideoFile.getAbsolutePath() );
 			this.ffmpegProcess.start();
-		} catch( java.io.IOException e ) {
+		} catch( IOException e ) {
 			handleEncodingError( new FFmpegProcessException( e ) );
 		} catch( FFmpegProcessException e ) {
 			handleEncodingError( e );
@@ -127,7 +139,7 @@ public class ImagesToWebmEncoder {
 		return this.success;
 	}
 
-	public synchronized void addBufferedImage( java.awt.image.BufferedImage frame, boolean isUpsideDown ) {
+	public synchronized void addBufferedImage( BufferedImage frame, boolean isUpsideDown ) {
 		assert this.isRunning;
 		assert frame != null;
 		assert ( frame.getWidth() == this.frameDimension.getWidth() );
@@ -136,7 +148,7 @@ public class ImagesToWebmEncoder {
 
 		this.frameCount++;
 		try {
-			java.io.OutputStream ffmpegStdOut = this.ffmpegProcess.getProcessOutputStream();
+			OutputStream ffmpegStdOut = this.ffmpegProcess.getProcessOutputStream();
 			if( ffmpegStdOut == null )
 			{
 				return;
@@ -146,7 +158,7 @@ public class ImagesToWebmEncoder {
 			//edu.cmu.cs.dennisc.java.io.InputStreamUtilities.drain( this.ffmpegProcess.getProcess().getErrorStream() );
 
 			synchronized( ffmpegStdOut ) {
-				javax.imageio.ImageIO.write( frame, "ppm", ffmpegStdOut );
+				ImageIO.write( frame, "ppm", ffmpegStdOut );
 				ffmpegStdOut.flush();
 			}
 
@@ -154,8 +166,8 @@ public class ImagesToWebmEncoder {
 			{
 				l.frameUpdate( this.frameCount, frame );
 			}
-		} catch( java.io.IOException e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "failed to write frame " + frame + " to ffmpeg" );
+		} catch( IOException e ) {
+			Logger.severe( "failed to write frame " + frame + " to ffmpeg" );
 			handleEncodingError( new FFmpegProcessException( e ) );
 		}
 	}
@@ -167,12 +179,12 @@ public class ImagesToWebmEncoder {
 		this.isRunning = false;
 
 		// Reset image caching back to default
-		javax.imageio.ImageIO.setUseCache( true );
+		ImageIO.setUseCache( true );
 
 		int status = this.ffmpegProcess.stop();
 		if( status != 0 ) {
 			this.success = false;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "video encoding failed; status != 0", status );
+			Logger.severe( "video encoding failed; status != 0", status );
 			handleEncodingError( new FFmpegProcessException( this.ffmpegProcess.getProcessInput(), this.ffmpegProcess.getProcessError() ) );
 		}
 
@@ -192,11 +204,11 @@ public class ImagesToWebmEncoder {
 		assert this.isRunning == false : "audio mixing is post process";
 
 		if( this.audioMuxer.hasAudioToMix() ) {
-			java.io.File muxVideoFile = null;
+			File muxVideoFile = null;
 			try {
-				muxVideoFile = java.io.File.createTempFile( "project", "." + WEBM_EXTENSION );
+				muxVideoFile = File.createTempFile( "project", "." + WEBM_EXTENSION );
 				muxVideoFile.deleteOnExit();
-				edu.wustl.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.lookingglass.media.FFmpegProcess( "-y", "-i", this.encodedVideoFile.getAbsolutePath(), "-codec:a", "pcm_s16le", "-i", "-", "-codec:v", "copy", "-codec:a", "libvorbis", muxVideoFile.getAbsolutePath() );
+				FFmpegProcess ffmpegProcess = new FFmpegProcess( "-y", "-i", this.encodedVideoFile.getAbsolutePath(), "-codec:a", "pcm_s16le", "-i", "-", "-codec:v", "copy", "-codec:a", "libvorbis", muxVideoFile.getAbsolutePath() );
 				ffmpegProcess.start();
 				this.audioMuxer.mixAudioStreams( ffmpegProcess.getProcessOutputStream(), getLength() );
 				ffmpegProcess.getProcessOutputStream().flush();
@@ -204,12 +216,12 @@ public class ImagesToWebmEncoder {
 				if( status != 0 ) {
 					this.success = false;
 					muxVideoFile.delete();
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "audio muxing encoding failed; status != 0", status );
+					Logger.severe( "audio muxing encoding failed; status != 0", status );
 					handleEncodingError( new FFmpegProcessException( ffmpegProcess.getProcessInput(), ffmpegProcess.getProcessError() ) );
 				}
 				this.encodedVideoFile.delete();
 				this.encodedVideoFile = muxVideoFile;
-			} catch( java.io.IOException e ) {
+			} catch( IOException e ) {
 				this.success = false;
 				muxVideoFile.delete();
 				handleEncodingError( new FFmpegProcessException( e ) );

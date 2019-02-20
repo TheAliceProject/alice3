@@ -43,10 +43,15 @@
 
 package test.ik.croquet;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.StringState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InfoState extends org.lgna.croquet.StringState {
+public class InfoState extends StringState {
 	private static class SingletonHolder {
 		private static InfoState instance = new InfoState();
 	}
@@ -56,6 +61,6 @@ public class InfoState extends org.lgna.croquet.StringState {
 	}
 
 	private InfoState() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "da932f7d-8a24-4cb4-af00-b519993b9044" ), "" );
+		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "da932f7d-8a24-4cb4-af00-b519993b9044" ), "" );
 	}
 }

@@ -43,6 +43,12 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.property.StringProperty;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,19 +65,19 @@ public class AnonymousUserType extends UserType<AnonymousUserConstructor> {
 	}
 
 	@Override
-	public java.util.List<AnonymousUserConstructor> getDeclaredConstructors() {
+	public List<AnonymousUserConstructor> getDeclaredConstructors() {
 		//todo?
 		if( this.constructors != null ) {
 			//pass
 		} else {
-			this.constructors = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+			this.constructors = Lists.newArrayList();
 			this.constructors.add( AnonymousUserConstructor.get( this ) );
 		}
 		return this.constructors;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
 
@@ -109,5 +115,5 @@ public class AnonymousUserType extends UserType<AnonymousUserConstructor> {
 		return false;
 	}
 
-	private java.util.ArrayList<AnonymousUserConstructor> constructors;
+	private ArrayList<AnonymousUserConstructor> constructors;
 }

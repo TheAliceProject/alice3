@@ -43,6 +43,20 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.PopupPrepStep;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.croquet.imp.cascade.RtRoot;
+import org.lgna.croquet.triggers.CascadeAutomaticDeterminationTrigger;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.views.PopupMenu;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,17 +65,12 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		private final CascadeRoot<T, ?> root;
 
 		private InternalPopupPrepModel( CascadeRoot<T, ?> root ) {
-			super( java.util.UUID.fromString( "56116a5f-a081-4ce8-9626-9c515c6c5887" ) );
+			super( UUID.fromString( "56116a5f-a081-4ce8-9626-9c515c6c5887" ) );
 			this.root = root;
 		}
 
 		public CascadeRoot<T, ?> getCascadeRoot() {
 			return this.root;
-		}
-
-		@Override
-		public Iterable<? extends Model> getChildren() {
-			return edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( this.root );
 		}
 
 		@Override
@@ -75,9 +84,9 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		}
 
 		@Override
-		protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+		protected void prologue( Trigger trigger ) {
 			super.prologue( trigger );
-			this.root.prologue( trigger );
+			this.root.prologue();
 		}
 
 		@Override
@@ -86,44 +95,40 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 			super.epilogue();
 		}
 
-		protected void handleFinally() {
+		void handleFinally() {
 			this.epilogue();
 		}
 
 		@Override
-		protected org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.triggers.Trigger trigger ) {
-			this.prologue( trigger );
-			final org.lgna.croquet.imp.cascade.RtRoot<T, ?> rtRoot = new org.lgna.croquet.imp.cascade.RtRoot( this.root );
-			org.lgna.croquet.history.Step<?> rv;
+		protected void perform( UserActivity activity ) {
+			this.prologue( activity.getTrigger() );
+			final RtRoot<T, ?> rtRoot = new RtRoot<>( this.root );
 			if( rtRoot.isAutomaticallyDetermined() ) {
-				rv = rtRoot.complete( new org.lgna.croquet.triggers.CascadeAutomaticDeterminationTrigger( trigger ) );
-				this.handleFinally();
+				rtRoot.complete( CascadeAutomaticDeterminationTrigger.createChildActivity(activity) );
 			} else {
-				final org.lgna.croquet.history.PopupPrepStep prepStep = org.lgna.croquet.history.TransactionManager.addPopupPrepStep( this, trigger );
-				final org.lgna.croquet.views.PopupMenu popupMenu = new org.lgna.croquet.views.PopupMenu( this );
-				popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
+				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( this, activity );
+				final PopupMenu popupMenu = new PopupMenu( this, activity );
+				popupMenu.addComponentListener( new ComponentListener() {
 					@Override
-					public void componentShown( java.awt.event.ComponentEvent e ) {
+					public void componentShown( ComponentEvent e ) {
 					}
 
 					@Override
-					public void componentMoved( java.awt.event.ComponentEvent e ) {
+					public void componentMoved( ComponentEvent e ) {
 					}
 
 					@Override
-					public void componentResized( java.awt.event.ComponentEvent e ) {
-						org.lgna.croquet.history.TransactionManager.firePopupMenuResized( prepStep );
+					public void componentResized( ComponentEvent e ) {
+						prepStep.firePopupMenuResized();
 					}
 
 					@Override
-					public void componentHidden( java.awt.event.ComponentEvent e ) {
+					public void componentHidden( ComponentEvent e ) {
 					}
 				} );
 				popupMenu.addPopupMenuListener( rtRoot.createPopupMenuListener( popupMenu ) );
-				trigger.showPopupMenu( popupMenu );
-				rv = prepStep;
+				prepStep.showPopupMenu( popupMenu );
 			}
-			return rv;
 		}
 
 		@Override
@@ -131,17 +136,12 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 			super.appendRepr( sb );
 			sb.append( this.root );
 		}
-
-		public org.lgna.croquet.views.FauxComboBoxPopupButton<T> createFauxComboBoxPopupButton() {
-			return new org.lgna.croquet.views.FauxComboBoxPopupButton<T>( this );
-		}
 	}
 
-	private final InternalPopupPrepModel<T> popupPrepModel = new InternalPopupPrepModel<T>( this );
-	private final java.util.List<CascadeRejector> cascadeRejectors = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final InternalPopupPrepModel<T> popupPrepModel = new InternalPopupPrepModel<>( this );
 	private String text;
 
-	public CascadeRoot( java.util.UUID id ) {
+	CascadeRoot( UUID id ) {
 		super( id );
 	}
 
@@ -149,26 +149,6 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	protected void localize() {
 		super.localize();
 		this.text = this.findDefaultLocalizedText();
-	}
-
-	public final int getCascadeRejectorCount() {
-		return this.cascadeRejectors.size();
-	}
-
-	public void addCascadeRejector( CascadeRejector cascadeRejector ) {
-		this.cascadeRejectors.add( cascadeRejector );
-	}
-
-	public void removeCascadeRejector( CascadeRejector cascadeRejector ) {
-		this.cascadeRejectors.remove( cascadeRejector );
-	}
-
-	public void clearCascadeRejectors() {
-		this.cascadeRejectors.clear();
-	}
-
-	public java.util.List<org.lgna.croquet.CascadeRejector> getCascadeRejectors() {
-		return java.util.Collections.unmodifiableList( this.cascadeRejectors );
 	}
 
 	public InternalPopupPrepModel<T> getPopupPrepModel() {
@@ -186,12 +166,12 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	@Override
-	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super T[], T> step ) {
+	protected final JComponent createMenuItemIconProxy( ItemNode<? super T[], T> step ) {
 		return null;
 	}
 
 	@Override
-	public final T[] createValue( org.lgna.croquet.imp.cascade.ItemNode<? super T[], T> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public final T[] createValue( ItemNode<? super T[], T> node ) {
 		//todo
 		//this.cascade.getComponentType();
 		//handled elsewhere for now
@@ -199,7 +179,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	@Override
-	public final T[] getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super T[], T> step ) {
+	public final T[] getTransientValue( ItemNode<? super T[], T> step ) {
 		//todo
 		//this.cascade.getComponentType();
 		//handled elsewhere for now
@@ -207,16 +187,16 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	@Override
-	public final String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super T[], T> step ) {
+	public final String getMenuItemText() {
 		return this.text;
 	}
 
 	@Override
-	public final javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super T[], T> step ) {
+	public final Icon getMenuItemIcon( ItemNode<? super T[], T> step ) {
 		return null;
 	}
 
-	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void prologue() {
 	}
 
 	protected void epilogue() {
@@ -226,16 +206,16 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
 	public abstract Class<T> getComponentType();
 
-	public abstract org.lgna.croquet.history.CompletionStep<CM> createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
+	final void recordCompletionModel( UserActivity userActivity ) {
+		userActivity.setCompletionModel( getCompletionModel() );
+	}
 
-	public abstract org.lgna.croquet.history.CompletionStep<CM> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.imp.cascade.RtRoot<T, CM> rtRoot );
+	public abstract void handleCompletion( UserActivity userActivity, RtRoot<T, CM> rtRoot );
 
-	public final void handleCancel( org.lgna.croquet.history.CompletionStep<CM> completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
+	public final void handleCancel( UserActivity userActivity ) {
 		try {
-			if( completionStep != null ) {
-				completionStep.cancel();
-			} else {
-				org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( this.getCompletionModel(), trigger );
+			if ( userActivity.getCompletionModel() == null ) {
+				userActivity.setCompletionModel( getCompletionModel() );
 			}
 		} finally {
 			this.getPopupPrepModel().handleFinally();

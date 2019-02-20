@@ -42,32 +42,40 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Stroke;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AxesIcon extends ShapeIcon {
-	private static void drawLine( java.awt.Graphics2D g2, java.awt.Paint paint, java.awt.Stroke stroke, float x0, float y0, float x1, float y1 ) {
+	private static void drawLine( Graphics2D g2, Paint paint, Stroke stroke, float x0, float y0, float x1, float y1 ) {
 		g2.setPaint( paint );
 		g2.setStroke( stroke );
 		drawLine( g2, x0, y0, x1, y1 );
 	}
 
-	public AxesIcon( java.awt.Dimension size ) {
+	public AxesIcon( Dimension size ) {
 		super( size );
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
 		float scaledWidth = width * .9f;
 		float scaledHeight = height * .9f;
 		float offsetOriginY = scaledHeight * 0.2f;
 		float xInset = ( width - scaledWidth );
 		float portion = 0.4f;
 		float originX = ( scaledWidth * portion ) + xInset;
-		java.awt.BasicStroke stroke = new java.awt.BasicStroke( scaledWidth * .04f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
-		drawLine( g2, java.awt.Color.GREEN, stroke, originX, offsetOriginY, originX, scaledHeight - offsetOriginY );
-		drawLine( g2, java.awt.Color.RED, stroke, xInset, scaledHeight, originX, scaledHeight - offsetOriginY );
-		drawLine( g2, java.awt.Color.BLUE, stroke, xInset, scaledHeight - offsetOriginY - ( offsetOriginY * ( portion / ( 1 - portion ) ) ), originX, scaledHeight - offsetOriginY );
-		drawLine( g2, java.awt.Color.WHITE, stroke, scaledWidth, scaledHeight, originX, scaledHeight - offsetOriginY );
+		BasicStroke stroke = new BasicStroke( scaledWidth * .04f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
+		drawLine( g2, Color.GREEN, stroke, originX, offsetOriginY, originX, scaledHeight - offsetOriginY );
+		drawLine( g2, Color.RED, stroke, xInset, scaledHeight, originX, scaledHeight - offsetOriginY );
+		drawLine( g2, Color.BLUE, stroke, xInset, scaledHeight - offsetOriginY - ( offsetOriginY * ( portion / ( 1 - portion ) ) ), originX, scaledHeight - offsetOriginY );
+		drawLine( g2, Color.WHITE, stroke, scaledWidth, scaledHeight, originX, scaledHeight - offsetOriginY );
 	}
 }

@@ -42,56 +42,69 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import com.atlassian.jira.rpc.soap.client.JiraSoapService;
+import com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator;
+import com.atlassian.jira.rpc.soap.client.RemotePermissionException;
+import com.atlassian.jira.rpc.soap.client.RemoteUser;
+import org.lgna.issue.IssueReportRemoteUser;
+import org.lgna.issue.IssueReportingHub;
+import org.lgna.issue.IssueReportingRemoteUserObserver;
+
+import javax.xml.rpc.ServiceException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.rmi.RemoteException;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AliceIssueReportingHub implements org.lgna.issue.IssueReportingHub {
+public class AliceIssueReportingHub implements IssueReportingHub {
 	@Override
 	public boolean isLoginSupported() {
 		return true;
 	}
 
 	@Override
-	public void checkRemoteUser( String username, String password, org.lgna.issue.IssueReportingRemoteUserObserver observer ) {
-		com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
-		com.atlassian.jira.rpc.soap.client.JiraSoapService service = null;
+	public void checkRemoteUser( String username, String password, IssueReportingRemoteUserObserver observer ) {
+		JiraSoapServiceServiceLocator jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
+		JiraSoapService service = null;
 		try {
-			java.net.URL url = new java.net.URL( ReportSubmissionConfiguration.JIRA_SOAP_URL );
+			URL url = new URL( ReportSubmissionConfiguration.JIRA_SOAP_URL );
 			service = jiraSoapServiceLocator.getJirasoapserviceV2( url );
-		} catch( java.net.MalformedURLException murle ) {
+		} catch( MalformedURLException murle ) {
 			// error
 			murle.printStackTrace();
-		} catch( javax.xml.rpc.ServiceException se ) {
+		} catch( ServiceException se ) {
 			se.printStackTrace();
 		}
 		boolean isConnectionSeeminglyPossible;
-		org.lgna.issue.IssueReportRemoteUser user = null;
+		IssueReportRemoteUser user = null;
 		if( service != null ) {
 			isConnectionSeeminglyPossible = true;
 			try {
 				String token = service.login( username, password );
 				try {
-					com.atlassian.jira.rpc.soap.client.RemoteUser jiraRemoteUser = service.getUser( token, username );
+					RemoteUser jiraRemoteUser = service.getUser( token, username );
 					if( jiraRemoteUser != null ) {
 						user = new AliceIssueReportRemoteUser( jiraRemoteUser );
 						//todo?
 						//edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, jiraRemoteUser.getFullname() );
 					}
-				} catch( com.atlassian.jira.rpc.soap.client.RemotePermissionException rpe ) {
+				} catch( RemotePermissionException rpe ) {
 					rpe.printStackTrace();
-				} catch( java.rmi.RemoteException re ) {
+				} catch( RemoteException re ) {
 					re.printStackTrace();
 				} finally {
 					try {
 						service.logout( token );
-					} catch( java.rmi.RemoteException re ) {
+					} catch( RemoteException re ) {
 						//todo?
 						re.printStackTrace();
 					}
 				}
 			} catch( com.atlassian.jira.rpc.soap.client.RemoteException jirare ) {
 				//could not log in
-			} catch( java.rmi.RemoteException re ) {
+			} catch( RemoteException re ) {
 				//could not connect
 				isConnectionSeeminglyPossible = false;
 			}

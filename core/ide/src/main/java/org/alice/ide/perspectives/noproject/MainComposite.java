@@ -42,16 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.perspectives.noproject;
 
+import org.alice.ide.ProjectDocumentFrame;
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.CompositeView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MainComposite extends org.lgna.croquet.SimpleComposite {
-	public MainComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "b5c8681f-5ab9-4a40-a2fa-7ddb2f49b712" ) );
+public class MainComposite extends SimpleComposite {
+	public MainComposite( ProjectDocumentFrame projectDocumentFrame ) {
+		super( UUID.fromString( "b5c8681f-5ab9-4a40-a2fa-7ddb2f49b712" ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.CompositeView createView() {
-		return new org.lgna.croquet.views.BorderPanel();
+	protected CompositeView createView() {
+		return new BorderPanel();
 	}
 }

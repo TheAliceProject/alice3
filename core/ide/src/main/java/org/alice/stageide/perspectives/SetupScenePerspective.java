@@ -43,22 +43,39 @@
 
 package org.alice.stageide.perspectives;
 
+import edu.cmu.cs.dennisc.pattern.Lazy;
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.codedrop.CodePanelWithDropReceptor;
+import org.alice.ide.croquet.models.IdeDragModel;
+import org.alice.ide.perspectives.ProjectPerspective;
+import org.alice.ide.preferences.IsToolBarShowing;
+import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
+import org.alice.stageide.perspectives.scenesetup.SetupSceneToolBarComposite;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.MenuBarComposite;
+import org.lgna.croquet.ToolBarComposite;
+import org.lgna.croquet.views.TrackableShape;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPerspective {
-	public SetupScenePerspective( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, org.alice.ide.croquet.models.MenuBarComposite menuBar ) {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), projectDocumentFrame, menuBar );
+public class SetupScenePerspective extends ProjectPerspective {
+	public SetupScenePerspective( ProjectDocumentFrame projectDocumentFrame, MenuBarComposite menuBar ) {
+		super( UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), projectDocumentFrame, menuBar );
 	}
 
 	@Override
-	public org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite getMainComposite() {
-		return org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance();
+	public SetupScenePerspectiveComposite getMainComposite() {
+		return SetupScenePerspectiveComposite.getInstance();
 	}
 
 	@Override
-	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
-		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
+	public ToolBarComposite getToolBarComposite() {
+		if( IsToolBarShowing.getValue() ) {
 			return this.toolBarLazy.get();
 		} else {
 			return null;
@@ -66,23 +83,23 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPer
 	}
 
 	@Override
-	public org.lgna.croquet.views.TrackableShape getRenderWindow() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+	public TrackableShape getRenderWindow() {
+		return StorytellingSceneEditor.getInstance();
 	}
 
 	@Override
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
+	public CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
 		return null;
 	}
 
 	@Override
-	protected void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
+	protected void addPotentialDropReceptors( List<DropReceptor> out, IdeDragModel dragModel ) {
 	}
 
-	private final edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.ToolBarComposite> toolBarLazy = new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.ToolBarComposite>() {
+	private final Lazy<ToolBarComposite> toolBarLazy = new Lazy<ToolBarComposite>() {
 		@Override
-		protected org.lgna.croquet.ToolBarComposite create() {
-			return new org.alice.stageide.perspectives.scenesetup.SetupSceneToolBarComposite( getProjectDocumentFrame() );
+		protected ToolBarComposite create() {
+			return new SetupSceneToolBarComposite( getProjectDocumentFrame() );
 		}
 	};
 }

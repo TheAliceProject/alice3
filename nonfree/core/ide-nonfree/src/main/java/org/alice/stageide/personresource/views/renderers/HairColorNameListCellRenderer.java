@@ -42,13 +42,20 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views.renderers;
 
+import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
+import org.alice.stageide.personresource.data.HairColorName;
+
+import javax.swing.Icon;
+import javax.swing.JLabel;
+import javax.swing.JList;
+
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorNameListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.alice.stageide.personresource.data.HairColorName> {
+public class HairColorNameListCellRenderer extends ListCellRenderer<HairColorName> {
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.stageide.personresource.data.HairColorName value, int index, boolean isSelected, boolean cellHasFocus ) {
-		javax.swing.Icon icon = value.getIcon();
+	protected JLabel getListCellRendererComponent( JLabel rv, JList list, HairColorName value, int index, boolean isSelected, boolean cellHasFocus ) {
+		Icon icon = value.getIcon();
 		rv.setIcon( icon );
 		String text = icon != null ? null : value.name();
 		rv.setText( text );

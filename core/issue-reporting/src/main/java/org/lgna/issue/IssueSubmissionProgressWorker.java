@@ -42,41 +42,54 @@
  *******************************************************************************/
 package org.lgna.issue;
 
+import edu.cmu.cs.dennisc.issue.Issue;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.JDialogBuilder;
+import edu.cmu.cs.dennisc.worker.WorkerWithProgress;
+import org.lgna.issue.swing.JProgressPane;
+import org.lgna.issue.swing.JSubmitPane;
+
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import java.awt.BorderLayout;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IssueSubmissionProgressWorker extends edu.cmu.cs.dennisc.worker.WorkerWithProgress<Boolean, String> {
+public abstract class IssueSubmissionProgressWorker extends WorkerWithProgress<Boolean, String> {
 	private static final String START_MESSAGE = "START_MESSAGE";
 	private static final String END_MESSAGE = "END_MESSAGE";
 
-	public IssueSubmissionProgressWorker( org.lgna.issue.swing.JSubmitPane owner ) {
+	public IssueSubmissionProgressWorker( JSubmitPane owner ) {
 		this.owner = owner;
 	}
 
-	protected abstract Boolean doInternal_onBackgroundThread( edu.cmu.cs.dennisc.issue.Issue.Builder issueBuilder ) throws Exception;
+	protected abstract Boolean doInternal_onBackgroundThread( Issue.Builder issueBuilder ) throws Exception;
 
 	@Override
 	protected final Boolean do_onBackgroundThread() throws Exception {
 		this.publish( START_MESSAGE );
-		edu.cmu.cs.dennisc.issue.Issue.Builder issueBuilder = this.owner.createIssueBuilder();
+		Issue.Builder issueBuilder = this.owner.createIssueBuilder();
 		boolean rv = this.doInternal_onBackgroundThread( issueBuilder );
 		this.publish( END_MESSAGE );
 		return rv;
 	}
 
 	@Override
-	protected final void handleProcess_onEventDispatchThread( java.util.List<String> chunks ) {
+	protected final void handleProcess_onEventDispatchThread( List<String> chunks ) {
 		for( String message : chunks ) {
 			if( START_MESSAGE.equals( message ) ) {
-				javax.swing.JDialog dialog = new edu.cmu.cs.dennisc.javax.swing.JDialogBuilder()
+				JDialog dialog = new JDialogBuilder()
 						.owner( this.owner )
 						.title( "Uploading Bug Report" )
 						.build();
-				dialog.add( this.progressPane, java.awt.BorderLayout.CENTER );
+				dialog.add( this.progressPane, BorderLayout.CENTER );
 				dialog.pack();
 				dialog.setVisible( true );
 			} else if( END_MESSAGE.equals( message ) ) {
-				javax.swing.SwingUtilities.getRoot( this.progressPane ).setVisible( false );
+				SwingUtilities.getRoot( this.progressPane ).setVisible( false );
 			} else {
 				this.progressPane.addMessage( message );
 			}
@@ -85,22 +98,22 @@ public abstract class IssueSubmissionProgressWorker extends edu.cmu.cs.dennisc.w
 
 	@Override
 	protected final void handleDone_onEventDispatchThread( Boolean value ) {
-		if( this.progressPane.isBackgrounded() || ( javax.swing.SwingUtilities.getRoot( this.owner ).isVisible() == false ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "issue submission result:", value );
+		if( this.progressPane.isBackgrounded() || ( SwingUtilities.getRoot( this.owner ).isVisible() == false ) ) {
+			Logger.outln( "issue submission result:", value );
 		} else {
 			if( value ) {
-				javax.swing.JOptionPane.showMessageDialog( this.owner, "Your bug report has been successfully submitted.  Thank you." );
+				JOptionPane.showMessageDialog( this.owner, "Your bug report has been successfully submitted.  Thank you." );
 			} else {
-				javax.swing.JOptionPane.showMessageDialog( this.owner, "Your bug report FAILED to submit.  Thank you for trying." );
+				JOptionPane.showMessageDialog( this.owner, "Your bug report FAILED to submit.  Thank you for trying." );
 			}
 			this.hideOwnerDialog();
 		}
 	}
 
 	public void hideOwnerDialog() {
-		javax.swing.SwingUtilities.getRoot( this.owner ).setVisible( false );
+		SwingUtilities.getRoot( this.owner ).setVisible( false );
 	}
 
-	private final org.lgna.issue.swing.JSubmitPane owner;
-	private final org.lgna.issue.swing.JProgressPane progressPane = new org.lgna.issue.swing.JProgressPane( this );
+	private final JSubmitPane owner;
+	private final JProgressPane progressPane = new JProgressPane( this );
 }

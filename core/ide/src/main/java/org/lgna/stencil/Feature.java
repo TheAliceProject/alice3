@@ -42,6 +42,38 @@
  *******************************************************************************/
 package org.lgna.stencil;
 
+import edu.cmu.cs.dennisc.java.awt.RectangleUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.polynomial.BezierCubic;
+import edu.cmu.cs.dennisc.math.polynomial.BezierQuadratic;
+import edu.cmu.cs.dennisc.math.polynomial.Polynomial;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.resolvers.RuntimeResolver;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.AwtContainerView;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.TrackableShape;
+
+import javax.swing.SwingConstants;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Paint;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.HierarchyBoundsListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,10 +88,10 @@ public abstract class Feature {
 	}
 
 	public enum Connection {
-		NORTH( javax.swing.SwingConstants.CENTER, javax.swing.SwingConstants.LEADING, false ),
-		SOUTH( javax.swing.SwingConstants.CENTER, javax.swing.SwingConstants.TRAILING, false ),
-		EAST( javax.swing.SwingConstants.TRAILING, javax.swing.SwingConstants.CENTER, true ),
-		WEST( javax.swing.SwingConstants.LEADING, javax.swing.SwingConstants.CENTER, true );
+		NORTH( SwingConstants.CENTER, SwingConstants.LEADING, false ),
+		SOUTH( SwingConstants.CENTER, SwingConstants.TRAILING, false ),
+		EAST( SwingConstants.TRAILING, SwingConstants.CENTER, true ),
+		WEST( SwingConstants.LEADING, SwingConstants.CENTER, true );
 		private int xConstraint;
 		private int yConstraint;
 		boolean isCurveDesired;
@@ -70,9 +102,9 @@ public abstract class Feature {
 			this.isCurveDesired = isCurveDesired;
 		}
 
-		public java.awt.Point getPoint( java.awt.Rectangle bounds ) {
-			java.awt.Point rv = edu.cmu.cs.dennisc.java.awt.RectangleUtilities.getPoint( bounds, this.xConstraint, this.yConstraint );
-			if( this.xConstraint == javax.swing.SwingConstants.CENTER ) {
+		public Point getPoint( Rectangle bounds ) {
+			Point rv = RectangleUtilities.getPoint( bounds, this.xConstraint, this.yConstraint );
+			if( this.xConstraint == SwingConstants.CENTER ) {
 				rv.x = Math.min( rv.x, bounds.x + 128 );
 			}
 			return rv;
@@ -83,14 +115,14 @@ public abstract class Feature {
 		}
 	}
 
-	private static final java.awt.Stroke ARROW_STROKE = new java.awt.BasicStroke( 3.0f );
+	private static final Stroke ARROW_STROKE = new BasicStroke( 3.0f );
 
-	private org.lgna.croquet.resolvers.RuntimeResolver<? extends org.lgna.croquet.views.TrackableShape> trackableShapeResolver;
+	private RuntimeResolver<? extends TrackableShape> trackableShapeResolver;
 	private ConnectionPreference connectionPreference;
 	private Integer heightConstraint = null;
 	private boolean isEntered = false;
 
-	public Feature( org.lgna.croquet.resolvers.RuntimeResolver<? extends org.lgna.croquet.views.TrackableShape> trackableShapeResolver, ConnectionPreference connectionPreference ) {
+	public Feature( RuntimeResolver<? extends TrackableShape> trackableShapeResolver, ConnectionPreference connectionPreference ) {
 		//assert trackableShape != null;
 		this.trackableShapeResolver = trackableShapeResolver;
 		this.connectionPreference = connectionPreference;
@@ -103,7 +135,7 @@ public abstract class Feature {
 	}
 
 	public String getStatus() {
-		org.lgna.croquet.views.TrackableShape trackableShape = this.trackableShapeResolver.getResolved();
+		TrackableShape trackableShape = this.trackableShapeResolver.getResolved();
 		if( trackableShape != null ) {
 			return IS_GOOD_TO_GO;//trackableShape.isInView();
 		} else {
@@ -114,12 +146,12 @@ public abstract class Feature {
 
 	protected abstract boolean isPathRenderingDesired();
 
-	public java.awt.Rectangle getBoundsForRepaint( org.lgna.croquet.views.AwtComponentView<?> asSeenBy ) {
-		org.lgna.croquet.views.TrackableShape trackableShape = this.getTrackableShape();
+	public Rectangle getBoundsForRepaint( AwtComponentView<?> asSeenBy ) {
+		TrackableShape trackableShape = this.getTrackableShape();
 		if( trackableShape != null ) {
-			java.awt.Insets boundsInsets = this.getBoundsInsets();
+			Insets boundsInsets = this.getBoundsInsets();
 			if( boundsInsets != null ) {
-				java.awt.Shape shape = trackableShape.getShape( asSeenBy, boundsInsets );
+				Shape shape = trackableShape.getShape( asSeenBy, boundsInsets );
 				if( shape != null ) {
 					return shape.getBounds();
 				} else {
@@ -138,51 +170,51 @@ public abstract class Feature {
 	}
 
 	private static void repaintAll() {
-		org.lgna.croquet.Application.getActiveInstance().getDocumentFrame().getFrame().getContentPane().repaint();
+		Application.getActiveInstance().getDocumentFrame().getFrame().getContentPane().repaint();
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "repaintAll" );
 	}
 
-	private java.awt.event.HierarchyBoundsListener hierarchyBoundsListener = new java.awt.event.HierarchyBoundsListener() {
+	private HierarchyBoundsListener hierarchyBoundsListener = new HierarchyBoundsListener() {
 		@Override
-		public void ancestorMoved( java.awt.event.HierarchyEvent e ) {
+		public void ancestorMoved( HierarchyEvent e ) {
 			repaintAll();
 		}
 
 		@Override
-		public void ancestorResized( java.awt.event.HierarchyEvent e ) {
-			repaintAll();
-		}
-	};
-	private java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
-		@Override
-		public void componentShown( java.awt.event.ComponentEvent e ) {
-		}
-
-		@Override
-		public void componentHidden( java.awt.event.ComponentEvent e ) {
-		}
-
-		@Override
-		public void componentMoved( java.awt.event.ComponentEvent e ) {
-			repaintAll();
-		}
-
-		@Override
-		public void componentResized( java.awt.event.ComponentEvent e ) {
+		public void ancestorResized( HierarchyEvent e ) {
 			repaintAll();
 		}
 	};
+	private ComponentListener componentListener = new ComponentListener() {
+		@Override
+		public void componentShown( ComponentEvent e ) {
+		}
 
-	protected org.lgna.croquet.resolvers.RuntimeResolver<? extends org.lgna.croquet.views.TrackableShape> getTrackableShapeResolver() {
+		@Override
+		public void componentHidden( ComponentEvent e ) {
+		}
+
+		@Override
+		public void componentMoved( ComponentEvent e ) {
+			repaintAll();
+		}
+
+		@Override
+		public void componentResized( ComponentEvent e ) {
+			repaintAll();
+		}
+	};
+
+	protected RuntimeResolver<? extends TrackableShape> getTrackableShapeResolver() {
 		return this.trackableShapeResolver;
 	}
 
-	private org.lgna.croquet.views.TrackableShape trackableShape;
+	private TrackableShape trackableShape;
 
 	public void updateTrackableShapeIfNecessary() {
-		org.lgna.croquet.views.TrackableShape nextTrackableShape = this.trackableShapeResolver.getResolved();
+		TrackableShape nextTrackableShape = this.trackableShapeResolver.getResolved();
 		if( nextTrackableShape != this.trackableShape ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "trackableShape change" );
+			Logger.info( "trackableShape change" );
 			if( this.trackableShape != null ) {
 				this.trackableShape.removeHierarchyBoundsListener( this.hierarchyBoundsListener );
 				this.trackableShape.removeComponentListener( this.componentListener );
@@ -203,7 +235,7 @@ public abstract class Feature {
 		this.trackableShape = null;
 	}
 
-	public org.lgna.croquet.views.TrackableShape getTrackableShape() {
+	public TrackableShape getTrackableShape() {
 		return this.trackableShape;
 	}
 
@@ -220,10 +252,10 @@ public abstract class Feature {
 		this.isEntered = isEntered;
 	}
 
-	private static java.awt.Shape constrainHeightIfNecessary( java.awt.Shape shape, Integer heightConstraint ) {
+	private static Shape constrainHeightIfNecessary( Shape shape, Integer heightConstraint ) {
 		if( heightConstraint != null ) {
-			if( shape instanceof java.awt.geom.Rectangle2D ) {
-				java.awt.geom.Rectangle2D rect = (java.awt.geom.Rectangle2D)shape;
+			if( shape instanceof Rectangle2D ) {
+				Rectangle2D rect = (Rectangle2D)shape;
 				rect.setFrame( rect.getX(), rect.getY(), rect.getWidth(), Math.min( rect.getHeight(), heightConstraint ) );
 				return rect;
 			} else {
@@ -239,44 +271,44 @@ public abstract class Feature {
 		return this.connectionPreference;
 	}
 
-	private static int getXForWestLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
+	private static int getXForWestLayout( Rectangle noteBounds, Rectangle featureComponentBounds ) {
 		int x = featureComponentBounds.x;
 		x -= 200;
 		x -= noteBounds.width;
 		return x;
 	}
 
-	private static int getXForEastLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
+	private static int getXForEastLayout( Rectangle noteBounds, Rectangle featureComponentBounds ) {
 		int x = featureComponentBounds.x;
 		x += featureComponentBounds.width;
 		x += 200;
 		return x;
 	}
 
-	private static int getYForNorthLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
+	private static int getYForNorthLayout( Rectangle noteBounds, Rectangle featureComponentBounds ) {
 		int y = featureComponentBounds.y;
 		y -= 200;
 		y -= noteBounds.height;
 		return y;
 	}
 
-	private static int getYForSouthLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
+	private static int getYForSouthLayout( Rectangle noteBounds, Rectangle featureComponentBounds ) {
 		int y = featureComponentBounds.y;
 		y += featureComponentBounds.height;
 		y += 200;
 		return y;
 	}
 
-	/* package-private */Connection calculateActualConnection( org.lgna.croquet.views.AwtComponentView<?> container, org.lgna.croquet.views.SwingComponentView<?> note ) {
+	/* package-private */Connection calculateActualConnection( AwtComponentView<?> container, SwingComponentView<?> note ) {
 		Connection actualConnection = null;
-		org.lgna.croquet.views.TrackableShape featureTrackableShape = this.getTrackableShape();
+		TrackableShape featureTrackableShape = this.getTrackableShape();
 		if( featureTrackableShape != null ) {
-			java.awt.Shape shape = featureTrackableShape.getShape( container, null );
+			Shape shape = featureTrackableShape.getShape( container, null );
 			if( shape != null ) {
 				shape = constrainHeightIfNecessary( shape, this.heightConstraint );
-				java.awt.Rectangle containerBounds = container.getLocalBounds();
-				java.awt.Rectangle noteBounds = note.getBounds( container );
-				java.awt.Rectangle featureComponentBounds = shape.getBounds();
+				Rectangle containerBounds = container.getLocalBounds();
+				Rectangle noteBounds = note.getBounds( container );
+				Rectangle featureComponentBounds = shape.getBounds();
 				if( ( noteBounds != null ) && ( featureComponentBounds != null ) ) {
 					final int x = featureComponentBounds.x - noteBounds.x;
 					final int y = featureComponentBounds.y - noteBounds.y;
@@ -315,18 +347,18 @@ public abstract class Feature {
 		return actualConnection;
 	}
 
-	public java.awt.Point calculateNoteLocation( org.lgna.croquet.views.AwtContainerView<?> container, org.lgna.croquet.views.AwtComponentView<?> note ) {
-		java.awt.Rectangle containerBounds = container.getLocalBounds();
-		java.awt.Rectangle noteBounds = note.getBounds( container );
+	public Point calculateNoteLocation( AwtContainerView<?> container, AwtComponentView<?> note ) {
+		Rectangle containerBounds = container.getLocalBounds();
+		Rectangle noteBounds = note.getBounds( container );
 
-		java.awt.Point rv = new java.awt.Point();
+		Point rv = new Point();
 		Connection actualConnection = null;
-		org.lgna.croquet.views.TrackableShape featureTrackableShape = this.getTrackableShape();
+		TrackableShape featureTrackableShape = this.getTrackableShape();
 		if( featureTrackableShape != null ) {
-			java.awt.Shape shape = featureTrackableShape.getShape( container, null );
+			Shape shape = featureTrackableShape.getShape( container, null );
 			if( shape != null ) {
 				shape = constrainHeightIfNecessary( shape, this.heightConstraint );
-				java.awt.Rectangle featureComponentBounds = shape.getBounds();
+				Rectangle featureComponentBounds = shape.getBounds();
 				int xFeatureComponentCenter = featureComponentBounds.x + ( featureComponentBounds.width / 2 );
 				int xCardCenter = ( containerBounds.x + containerBounds.width ) / 2;
 				int yFeatureComponentCenter = featureComponentBounds.y + ( featureComponentBounds.height / 2 );
@@ -383,7 +415,7 @@ public abstract class Feature {
 									new Inset( false, featureComponentBounds.y, Connection.NORTH ),
 									new Inset( false, containerBounds.height - ( featureComponentBounds.y + featureComponentBounds.height ), Connection.SOUTH ),
 							};
-							java.util.Arrays.sort( insets );
+							Arrays.sort( insets );
 							actualConnection = insets[ 0 ].connection;
 							final int PAD = 64;
 							if( insets[ 0 ].isX ) {
@@ -422,17 +454,17 @@ public abstract class Feature {
 		return rv;
 	}
 
-	protected abstract java.awt.Insets getBoundsInsets();
+	protected abstract Insets getBoundsInsets();
 
-	protected abstract java.awt.Insets getContainsInsets();
+	protected abstract Insets getContainsInsets();
 
-	protected abstract java.awt.Insets getPaintInsets();
+	protected abstract Insets getPaintInsets();
 
-	public java.awt.Shape getShape( org.lgna.croquet.views.AwtComponentView<?> asSeenBy, java.awt.Insets insets ) {
-		org.lgna.croquet.views.TrackableShape trackableShape = this.getTrackableShape();
+	public Shape getShape( AwtComponentView<?> asSeenBy, Insets insets ) {
+		TrackableShape trackableShape = this.getTrackableShape();
 		if( trackableShape != null ) {
 			if( trackableShape.isInView() ) {
-				java.awt.Shape shape = trackableShape.getVisibleShape( asSeenBy, insets );
+				Shape shape = trackableShape.getVisibleShape( asSeenBy, insets );
 				shape = constrainHeightIfNecessary( shape, this.heightConstraint );
 				return shape;
 			} else {
@@ -443,30 +475,30 @@ public abstract class Feature {
 		}
 	}
 
-	public java.awt.geom.Area getAreaToSubstractForContains( org.lgna.croquet.views.AwtComponentView<?> asSeenBy ) {
-		java.awt.Shape shape = this.getShape( asSeenBy, this.getContainsInsets() );
+	public Area getAreaToSubstractForContains( AwtComponentView<?> asSeenBy ) {
+		Shape shape = this.getShape( asSeenBy, this.getContainsInsets() );
 		if( shape != null ) {
-			return new java.awt.geom.Area( shape );
+			return new Area( shape );
 		} else {
 			return null;
 		}
 	}
 
-	public java.awt.geom.Area getAreaToSubstractForPaint( org.lgna.croquet.views.AwtComponentView<?> asSeenBy ) {
-		java.awt.Shape shape = this.getShape( asSeenBy, this.getPaintInsets() );
+	public Area getAreaToSubstractForPaint( AwtComponentView<?> asSeenBy ) {
+		Shape shape = this.getShape( asSeenBy, this.getPaintInsets() );
 		if( shape != null ) {
-			return new java.awt.geom.Area( shape );
+			return new Area( shape );
 		} else {
 			return null;
 		}
 	}
 
-	protected abstract void paint( java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection );
+	protected abstract void paint( Graphics2D g2, Shape shape, Connection actualConnection );
 
-	private static void drawPath( java.awt.Graphics2D g2, float xFrom, float yFrom, float xTo, float yTo, boolean isCurveDesired ) {
-		edu.cmu.cs.dennisc.math.polynomial.Polynomial xPolynomial;
-		edu.cmu.cs.dennisc.math.polynomial.Polynomial yPolynomial;
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+	private static void drawPath( Graphics2D g2, float xFrom, float yFrom, float xTo, float yTo, boolean isCurveDesired ) {
+		Polynomial xPolynomial;
+		Polynomial yPolynomial;
+		GeneralPath path = new GeneralPath();
 		path.moveTo( xFrom, yFrom );
 		if( isCurveDesired ) {
 			float xVector = xTo - xFrom;
@@ -487,14 +519,14 @@ public abstract class Feature {
 
 			path.curveTo( xC0, yC0, xC1, yC1, xTo, yTo );
 
-			xPolynomial = new edu.cmu.cs.dennisc.math.polynomial.BezierCubic( xFrom, xC0, xC1, xTo );
-			yPolynomial = new edu.cmu.cs.dennisc.math.polynomial.BezierCubic( yFrom, yC0, yC1, yTo );
+			xPolynomial = new BezierCubic( xFrom, xC0, xC1, xTo );
+			yPolynomial = new BezierCubic( yFrom, yC0, yC1, yTo );
 		} else {
 			float xC = xTo;
 			float yC = yFrom;
 			path.quadTo( xC, yC, xTo, yTo );
-			xPolynomial = new edu.cmu.cs.dennisc.math.polynomial.BezierQuadratic( xFrom, xC, xTo );
-			yPolynomial = new edu.cmu.cs.dennisc.math.polynomial.BezierQuadratic( yFrom, yC, yTo );
+			xPolynomial = new BezierQuadratic( xFrom, xC, xTo );
+			yPolynomial = new BezierQuadratic( yFrom, yC, yTo );
 
 		}
 		g2.draw( path );
@@ -525,11 +557,11 @@ public abstract class Feature {
 		if( Double.isNaN( theta ) ) {
 			//pass
 		} else {
-			java.awt.geom.AffineTransform m = g2.getTransform();
+			AffineTransform m = g2.getTransform();
 			try {
 				g2.translate( xTo, yTo );
 				g2.rotate( theta );
-				java.awt.geom.GeneralPath arrowHeadPath = new java.awt.geom.GeneralPath();
+				GeneralPath arrowHeadPath = new GeneralPath();
 				arrowHeadPath.moveTo( 0, 0 );
 				arrowHeadPath.lineTo( ARROW_HEAD_LENGTH, ARROW_HEAD_HALF_HEIGHT );
 				arrowHeadPath.lineTo( ARROW_HEAD_LENGTH, -ARROW_HEAD_HALF_HEIGHT );
@@ -541,35 +573,35 @@ public abstract class Feature {
 		}
 	}
 
-	public final void paint( java.awt.Graphics2D g2, org.lgna.croquet.views.AwtComponentView<?> asSeenBy, org.lgna.croquet.views.SwingComponentView<?> note ) {
-		java.awt.Shape shape = this.getShape( asSeenBy, this.getPaintInsets() );
+	public final void paint( Graphics2D g2, AwtComponentView<?> asSeenBy, SwingComponentView<?> note ) {
+		Shape shape = this.getShape( asSeenBy, this.getPaintInsets() );
 		if( shape != null ) {
 			Connection actualConnection = this.calculateActualConnection( asSeenBy, note );
-			java.awt.Paint prevPaint = g2.getPaint();
-			java.awt.Stroke prevStroke = g2.getStroke();
+			Paint prevPaint = g2.getPaint();
+			Stroke prevStroke = g2.getStroke();
 
 			this.paint( g2, shape, actualConnection );
 
 			if( this.isPathRenderingDesired() ) {
-				g2.setPaint( java.awt.Color.BLACK );
+				g2.setPaint( Color.BLACK );
 
-				org.lgna.croquet.views.AwtComponentView<?> component;
+				AwtComponentView<?> component;
 				if( note.getComponentCount() > 0 ) {
 					component = note.getComponent( 0 );
 				} else {
 					component = note;
 				}
-				java.awt.Rectangle noteBounds = component.getBounds( asSeenBy );
-				java.awt.Rectangle shapeBounds = shape.getBounds();
+				Rectangle noteBounds = component.getBounds( asSeenBy );
+				Rectangle shapeBounds = shape.getBounds();
 				if( shapeBounds != null ) {
-					java.awt.Point ptComponent = actualConnection.getPoint( shapeBounds );
+					Point ptComponent = actualConnection.getPoint( shapeBounds );
 					int xContraint;
 					if( noteBounds.x > ptComponent.x ) {
-						xContraint = javax.swing.SwingConstants.LEADING;
+						xContraint = SwingConstants.LEADING;
 					} else {
-						xContraint = javax.swing.SwingConstants.TRAILING;
+						xContraint = SwingConstants.TRAILING;
 					}
-					java.awt.Point ptNote = edu.cmu.cs.dennisc.java.awt.RectangleUtilities.getPoint( noteBounds, xContraint, javax.swing.SwingConstants.CENTER );
+					Point ptNote = RectangleUtilities.getPoint( noteBounds, xContraint, SwingConstants.CENTER );
 					g2.setStroke( ARROW_STROKE );
 					drawPath( g2, ptNote.x, ptNote.y, ptComponent.x, ptComponent.y, actualConnection.isCurveDesired() );
 				}

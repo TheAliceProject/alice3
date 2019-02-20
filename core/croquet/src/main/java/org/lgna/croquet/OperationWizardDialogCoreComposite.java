@@ -43,21 +43,23 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.Panel;
+
+import java.util.Iterator;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<org.lgna.croquet.views.Panel> {
-	public OperationWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
+public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<Panel> {
+	public OperationWizardDialogCoreComposite( UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
 		super( migrationId, wizardPages );
 	}
 
 	@Override
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
-	}
-
-	@Override
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
+	public String modifyNameIfNecessary( String text ) {
 		return text;
 	}
 
@@ -65,45 +67,40 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		return false;
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	protected abstract Edit createEdit();
 
-	private void createAndCommitEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	private void createAndCommitEdit() {
 		try {
-			org.lgna.croquet.edits.Edit edit = this.createEdit( completionStep );
+			Edit edit = this.createEdit();
 			if( edit != null ) {
-				completionStep.commitAndInvokeDo( edit );
+				openingActivity.commitAndInvokeDo( edit );
 			} else {
-				completionStep.finish();
+				openingActivity.finish();
 			}
 		} catch( CancelException ce ) {
-			cancel( completionStep );
+			cancel(ce);
 		}
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
-		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
-		if( isCommited != null ) { // close button condition
-			if( isCommited ) {
-				createAndCommitEdit( completionStep );
-			} else {
-				cancel( completionStep );
-			}
+	protected void handlePostHideDialog() {
+		super.handlePostHideDialog();
+		if( isCommitted ) { // close button condition
+			createAndCommitEdit();
 		} else {
-			cancel( completionStep );
+			cancel( null );
 		}
 	}
 
 	@Override
-	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public void perform( UserActivity userActivity ) {
 		boolean isAutoCommitDesired;
 		if( this.isAutoCommitWorthAttempting() ) {
-			java.util.Iterator<WizardPageComposite<?, ?>> iterator = this.getWizardPageIterator();
+			Iterator<WizardPageComposite<?, ?>> iterator = this.getWizardPageIterator();
 			isAutoCommitDesired = true;
 			while( iterator.hasNext() ) {
 				WizardPageComposite<?, ?> page = iterator.next();
-				if( page.isAutoAdvanceDesired( completionStep ) ) {
+				if( page.isAutoAdvanceDesired() ) {
 					//pass
 				} else {
 					isAutoCommitDesired = false;
@@ -113,9 +110,9 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 			isAutoCommitDesired = false;
 		}
 		if( isAutoCommitDesired ) {
-			this.createAndCommitEdit( completionStep );
+			this.createAndCommitEdit();
 		} else {
-			this.showDialog( completionStep );
+			this.showDialog( userActivity );
 		}
 	}
 }

@@ -42,11 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl;
 
+import com.jogamp.opengl.GLAutoDrawable;
+import edu.cmu.cs.dennisc.render.ImageCaptureRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class GlrImageCaptureRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.ImageCaptureRenderTarget {
-	public GlrImageCaptureRenderTarget( GlrRenderFactory renderFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+/*package-private*/class GlrImageCaptureRenderTarget extends GlrRenderTarget implements ImageCaptureRenderTarget {
+	public GlrImageCaptureRenderTarget( GlrRenderFactory renderFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
 		super( renderFactory, requestedCapabilities );
 		this.width = width;
 		this.height = height;
@@ -62,23 +68,23 @@ package edu.cmu.cs.dennisc.render.gl;
 	}
 
 	@Override
-	public com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable() {
+	public GLAutoDrawable getGLAutoDrawable() {
 		return this.glDrawable;
 	}
 
 	@Override
-	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
+	protected Dimension getSurfaceSize( Dimension rv ) {
 		rv.setSize( this.width, this.height );
 		return rv;
 	}
 
 	@Override
-	protected java.awt.Dimension getDrawableSize( java.awt.Dimension rv ) {
+	protected Dimension getDrawableSize( Dimension rv ) {
 		rv.setSize( this.width, this.height );
 		return rv;
 	}
 
 	private final int width;
 	private final int height;
-	private final com.jogamp.opengl.GLAutoDrawable glDrawable;
+	private final GLAutoDrawable glDrawable;
 }

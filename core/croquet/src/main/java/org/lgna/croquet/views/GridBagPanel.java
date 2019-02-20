@@ -43,6 +43,13 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.Composite;
+
+import javax.swing.JPanel;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,16 +58,16 @@ public class GridBagPanel extends Panel {
 		this( null );
 	}
 
-	public GridBagPanel( org.lgna.croquet.Composite composite ) {
+	public GridBagPanel( Composite composite ) {
 		super( composite );
 	}
 
 	@Override
-	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.GridBagLayout();
+	protected final LayoutManager createLayoutManager( JPanel jPanel ) {
+		return new GridBagLayout();
 	}
 
-	public void addComponent( AwtComponentView<?> component, java.awt.GridBagConstraints gbc ) {
+	public void addComponent( AwtComponentView<?> component, GridBagConstraints gbc ) {
 		this.internalAddComponent( component, gbc );
 	}
 }

@@ -42,35 +42,43 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.booleanstate;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+import org.lgna.croquet.BooleanState;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ButtonModel;
+import java.awt.event.ActionEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BooleanStateSwingModel {
-	/*package-private*/BooleanStateSwingModel( org.lgna.croquet.BooleanState state, javax.swing.ButtonModel buttonModel, boolean initialValue ) {
+	/*package-private*/BooleanStateSwingModel( BooleanState state, ButtonModel buttonModel, boolean initialValue ) {
 		this.state = state;
 		this.buttonModel = buttonModel;
 		this.buttonModel.setSelected( initialValue );
 	}
 
-	public javax.swing.ButtonModel getButtonModel() {
+	public ButtonModel getButtonModel() {
 		return this.buttonModel;
 	}
 
-	public javax.swing.Action getAction() {
+	public Action getAction() {
 		return this.action;
 	}
 
 	private boolean isTextVariable() {
-		return edu.cmu.cs.dennisc.java.util.Objects.notEquals( this.state.getTrueText(), this.state.getFalseText() );
+		return Objects.notEquals( this.state.getTrueText(), this.state.getFalseText() );
 	}
 
 	private boolean isIconVariable() {
-		return edu.cmu.cs.dennisc.java.util.Objects.notEquals( this.state.getTrueIcon(), this.state.getFalseIcon() );
+		return Objects.notEquals( this.state.getTrueIcon(), this.state.getFalseIcon() );
 	}
 
-	private final org.lgna.croquet.BooleanState state;
-	private final javax.swing.ButtonModel buttonModel;
-	private final javax.swing.Action action = new javax.swing.AbstractAction() {
+	private final BooleanState state;
+	private final ButtonModel buttonModel;
+	private final Action action = new AbstractAction() {
 		@Override
 		public Object getValue( String key ) {
 			if( NAME.equals( key ) ) {
@@ -83,7 +91,7 @@ public class BooleanStateSwingModel {
 		}
 
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			boolean isSelected = buttonModel.isSelected();
 			if( isTextVariable() ) {
 				//this.firePropertyChange( NAME, getTextFor( !isSelected ), getTextFor( isSelected ) );

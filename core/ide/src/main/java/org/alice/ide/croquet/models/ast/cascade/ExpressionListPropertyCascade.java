@@ -42,20 +42,30 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast.cascade;
 
+import org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionListProperty;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ExpressionListPropertyCascade extends ExpressionsCascade {
 	private final int index;
-	private final org.lgna.project.ast.ExpressionListProperty expressionListProperty;
+	private final ExpressionListProperty expressionListProperty;
 
-	public ExpressionListPropertyCascade( org.lgna.croquet.Group group, java.util.UUID id, int index, org.lgna.project.ast.ExpressionListProperty expressionListProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType ) {
-		super( group, id, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( desiredType ) );
+	public ExpressionListPropertyCascade( Group group, UUID id, int index, ExpressionListProperty expressionListProperty, AbstractType<?, ?, ?> desiredType ) {
+		super( group, id, ExpressionBlank.createBlanks( desiredType ) );
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;
 	}
 
-	public org.lgna.project.ast.ExpressionListProperty getExpressionListProperty() {
+	public ExpressionListProperty getExpressionListProperty() {
 		return this.expressionListProperty;
 	}
 
@@ -63,12 +73,12 @@ public class ExpressionListPropertyCascade extends ExpressionsCascade {
 		return this.index;
 	}
 
-	private org.lgna.project.ast.Expression getPreviousExpression() {
+	private Expression getPreviousExpression() {
 		return this.expressionListProperty.get( this.index );
 	}
 
 	@Override
-	protected org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.Expression[] values ) {
-		return new org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit( step, this.getPreviousExpression(), values[ 0 ] );
+	protected FillInExpressionListPropertyEdit createEdit( UserActivity userActivity, Expression[] values ) {
+		return new FillInExpressionListPropertyEdit( userActivity, this.getPreviousExpression(), values[ 0 ] );
 	}
 }

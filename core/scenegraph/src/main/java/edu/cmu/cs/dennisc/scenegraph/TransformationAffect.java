@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -69,7 +71,7 @@ public enum TransformationAffect {
 		m_isAffectTranslationZDesired = isAffectTranslationZDesired;
 	}
 
-	public void set( edu.cmu.cs.dennisc.math.AffineMatrix4x4 dst, edu.cmu.cs.dennisc.math.AffineMatrix4x4 src ) {
+	public void set( AffineMatrix4x4 dst, AffineMatrix4x4 src ) {
 		if( m_isAffectOrientationDesired ) {
 			dst.orientation.setValue( src.orientation );
 		}

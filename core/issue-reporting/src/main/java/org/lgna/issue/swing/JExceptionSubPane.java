@@ -42,10 +42,21 @@
  *******************************************************************************/
 package org.lgna.issue.swing;
 
+import edu.cmu.cs.dennisc.java.lang.ThrowableUtilities;
+import edu.cmu.cs.dennisc.javax.swing.JOptionPaneUtilities;
+import edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink;
+
+import javax.swing.AbstractAction;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import java.awt.event.ActionEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JExceptionSubPane extends javax.swing.JPanel {
+public class JExceptionSubPane extends JPanel {
 	private final Thread thread;
 	private final Throwable originalThrowable;
 	private final Throwable originalThrowableOrTarget;
@@ -57,11 +68,11 @@ public class JExceptionSubPane extends javax.swing.JPanel {
 		this.originalThrowable = originalThrowable;
 		this.originalThrowableOrTarget = originalThrowableOrTarget;
 		//this.removeAll();
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
-		edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink vcShowStackTrace = new edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink( new javax.swing.AbstractAction( "show complete stack trace..." ) {
+		this.setLayout( new BoxLayout( this, BoxLayout.PAGE_AXIS ) );
+		JFauxHyperlink vcShowStackTrace = new JFauxHyperlink( new AbstractAction( "show complete stack trace..." ) {
 			@Override
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				edu.cmu.cs.dennisc.javax.swing.JOptionPaneUtilities.showMessageDialogInScrollableUneditableTextArea( JExceptionSubPane.this, edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( getOriginalThrowable() ), "Stack Trace", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+			public void actionPerformed( ActionEvent e ) {
+				JOptionPaneUtilities.showMessageDialogInScrollableUneditableTextArea( JExceptionSubPane.this, ThrowableUtilities.getStackTraceAsString( getOriginalThrowable() ), "Stack Trace", JOptionPane.INFORMATION_MESSAGE );
 			}
 		} );
 
@@ -79,13 +90,13 @@ public class JExceptionSubPane extends javax.swing.JPanel {
 		sb.append( thread.getName() );
 		sb.append( "]" );
 
-		this.add( new javax.swing.JLabel( sb.toString() ) );
+		this.add( new JLabel( sb.toString() ) );
 		StackTraceElement[] elements = originalThrowable.getStackTrace();
 		if( elements.length > 0 ) {
 			StackTraceElement e0 = elements[ 0 ];
-			this.add( new javax.swing.JLabel( "class: " + e0.getClassName() ) );
-			this.add( new javax.swing.JLabel( "method: " + e0.getMethodName() ) );
-			this.add( new javax.swing.JLabel( "in file " + e0.getFileName() + " at line number " + e0.getLineNumber() ) );
+			this.add( new JLabel( "class: " + e0.getClassName() ) );
+			this.add( new JLabel( "method: " + e0.getMethodName() ) );
+			this.add( new JLabel( "in file " + e0.getFileName() + " at line number " + e0.getLineNumber() ) );
 		}
 		this.add( vcShowStackTrace );
 	}

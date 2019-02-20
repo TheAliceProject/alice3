@@ -42,18 +42,35 @@
  *******************************************************************************/
 package org.lgna.croquet.views.imp;
 
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+
 import javax.swing.AbstractAction;
+import javax.swing.ButtonModel;
+import javax.swing.JMenuItem;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class JScrollMenuItem extends javax.swing.JMenuItem {
-	private static final java.awt.Dimension ARROW_SIZE = new java.awt.Dimension( 10, 10 );
+/* package-private */class JScrollMenuItem extends JMenuItem {
+	private static final Dimension ARROW_SIZE = new Dimension( 10, 10 );
 
-	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+	private final ChangeListener changeListener = new ChangeListener() {
 		@Override
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			javax.swing.ButtonModel buttonModel = getModel();
+		public void stateChanged( ChangeEvent e ) {
+			ButtonModel buttonModel = getModel();
 			if( buttonModel.isArmed() ) {
 				if( timer.isRunning() ) {
 					//pass
@@ -84,19 +101,19 @@ import javax.swing.AbstractAction;
 		}
 
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			this.layout.adjustIndex( this.scrollDirection.getDelta() );
 		}
 	}
 
 	private final ScrollAction scrollAction;
-	private final javax.swing.Timer timer;
+	private final Timer timer;
 
 	private int count;
 
 	public JScrollMenuItem( ScrollingPopupMenuLayout layout, ScrollDirection scrollDirection ) {
 		this.scrollAction = new ScrollAction( layout, scrollDirection );
-		this.timer = new javax.swing.Timer( 100, this.scrollAction );
+		this.timer = new Timer( 100, this.scrollAction );
 	}
 
 	public int getCount() {
@@ -111,9 +128,9 @@ import javax.swing.AbstractAction;
 	}
 
 	@Override
-	protected void processMouseEvent( java.awt.event.MouseEvent e ) {
+	protected void processMouseEvent( MouseEvent e ) {
 		int id = e.getID();
-		if( ( id == java.awt.event.MouseEvent.MOUSE_PRESSED ) || ( id == java.awt.event.MouseEvent.MOUSE_RELEASED ) ) {
+		if( ( id == MouseEvent.MOUSE_PRESSED ) || ( id == MouseEvent.MOUSE_RELEASED ) ) {
 			//pass
 		} else {
 			super.processMouseEvent( e );
@@ -133,17 +150,17 @@ import javax.swing.AbstractAction;
 	}
 
 	@Override
-	public java.awt.Dimension getPreferredSize() {
-		java.awt.Font font = this.getFont();
-		java.awt.FontMetrics fontMetrics = this.getFontMetrics( font );
+	public Dimension getPreferredSize() {
+		Font font = this.getFont();
+		FontMetrics fontMetrics = this.getFontMetrics( font );
 		int height = Math.max( fontMetrics.getHeight(), ARROW_SIZE.height );
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), height + 8 );
+		return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), height + 8 );
 	}
 
 	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		javax.swing.ButtonModel model = this.getModel();
+	protected void paintComponent( Graphics g ) {
+		Graphics2D g2 = (Graphics2D)g;
+		ButtonModel model = this.getModel();
 		//		if( model.isArmed() ) {
 		//			//g.setColor( javax.swing.UIManager.getColor( "textBackground" ) );
 		//		} else {
@@ -152,25 +169,25 @@ import javax.swing.AbstractAction;
 		//		}
 		super.paintComponent( g );
 		if( model.isArmed() ) {
-			g.setColor( javax.swing.UIManager.getColor( "textHighlightText" ) );
+			g.setColor( UIManager.getColor( "textHighlightText" ) );
 		} else {
-			g.setColor( javax.swing.UIManager.getColor( "textForeground" ) );
+			g.setColor( UIManager.getColor( "textForeground" ) );
 		}
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading heading = this.scrollAction.getScrollDirection().getArrowHeading();
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+		GraphicsUtilities.Heading heading = this.scrollAction.getScrollDirection().getArrowHeading();
 		int x = ( this.getWidth() - ARROW_SIZE.width ) / 2;
 		int y = ( this.getHeight() - ARROW_SIZE.height ) / 2;
 
 		final int SPACE = 10;
 		for( int i = -2; i < 3; i++ ) {
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, heading, x + ( i * ( ARROW_SIZE.width + SPACE ) ), y, ARROW_SIZE.width, ARROW_SIZE.height );
+			GraphicsUtilities.fillTriangle( g2, heading, x + ( i * ( ARROW_SIZE.width + SPACE ) ), y, ARROW_SIZE.width, ARROW_SIZE.height );
 		}
 		if( count != 0 ) {
 			StringBuilder sb = new StringBuilder();
 			sb.append( "(" );
 			sb.append( this.count );
 			sb.append( ")" );
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+			g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
 			g2.drawString( sb.toString(), x + ( 3 * ( ARROW_SIZE.width + SPACE ) ), ( y + ARROW_SIZE.height ) - 2 );
 		}
 	}

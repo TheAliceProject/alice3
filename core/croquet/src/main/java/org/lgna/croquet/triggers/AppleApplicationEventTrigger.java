@@ -43,24 +43,18 @@
 
 package org.lgna.croquet.triggers;
 
+import com.apple.eawt.AppEvent;
+import org.lgna.croquet.history.UserActivity;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AppleApplicationEventTrigger extends EventObjectTrigger<java.util.EventObject> {
-	public static AppleApplicationEventTrigger createUserInstance( java.util.EventObject event ) {
-		return new AppleApplicationEventTrigger( null, event );
+public class AppleApplicationEventTrigger extends EventObjectTrigger<AppEvent> {
+	public static UserActivity setOnUserActivity( UserActivity activity, AppEvent event ) {
+		return new AppleApplicationEventTrigger( activity, event ).getUserActivity();
 	}
 
-	private AppleApplicationEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.util.EventObject event ) {
-		super( viewController, event );
-	}
-
-	public AppleApplicationEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected java.awt.Point getPoint() {
-		return null;
+	private AppleApplicationEventTrigger( UserActivity activity, AppEvent event ) {
+		super( activity, null, event );
 	}
 }

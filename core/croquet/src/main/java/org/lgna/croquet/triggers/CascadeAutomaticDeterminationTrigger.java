@@ -43,28 +43,35 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.PopupMenu;
+import org.lgna.croquet.views.ViewController;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CascadeAutomaticDeterminationTrigger extends Trigger {
-	private final transient org.lgna.croquet.triggers.Trigger previousTrigger;
 
-	public CascadeAutomaticDeterminationTrigger( org.lgna.croquet.triggers.Trigger previousTrigger ) {
+	public static UserActivity createChildActivity( UserActivity parent ) {
+		UserActivity childActivity = parent.newChildActivity();
+		new CascadeAutomaticDeterminationTrigger( childActivity, parent.getTrigger() );
+		return childActivity;
+	}
+
+	private final transient Trigger previousTrigger;
+
+	private CascadeAutomaticDeterminationTrigger( UserActivity activity, Trigger previousTrigger ) {
+		super(activity);
 		this.previousTrigger = previousTrigger;
 	}
 
-	public CascadeAutomaticDeterminationTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.previousTrigger = null;
-	}
-
 	@Override
-	public org.lgna.croquet.views.ViewController<?, ?> getViewController() {
+	public ViewController<?, ?> getViewController() {
 		return this.previousTrigger.getViewController();
 	}
 
 	@Override
-	public void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu ) {
+	public void showPopupMenu( PopupMenu popupMenu ) {
 		this.previousTrigger.showPopupMenu( popupMenu );
 	}
 }

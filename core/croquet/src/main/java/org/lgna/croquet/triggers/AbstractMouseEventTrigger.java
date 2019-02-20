@@ -42,28 +42,35 @@
  *******************************************************************************/
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.ViewController;
+
+import javax.swing.SwingUtilities;
+import java.awt.Component;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMouseEventTrigger extends ComponentEventTrigger<java.awt.event.MouseEvent> {
-	public AbstractMouseEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
+public abstract class AbstractMouseEventTrigger extends ComponentEventTrigger<MouseEvent> {
+	AbstractMouseEventTrigger( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
 		super( viewController, mouseEvent );
 	}
-
-	public AbstractMouseEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	AbstractMouseEventTrigger( UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
+		super( userActivity, viewController, mouseEvent );
 	}
 
 	@Override
-	protected java.awt.Point getPoint() {
-		java.awt.event.MouseEvent e = this.getEvent();
-		java.awt.Point p = e.getPoint();
-		org.lgna.croquet.views.ViewController<?, ?> viewController = this.getViewController();
-		java.awt.Component awtComponent = viewController != null ? viewController.getAwtComponent() : null;
+	protected Point getPoint() {
+		MouseEvent e = this.getEvent();
+		Point p = e.getPoint();
+		ViewController<?, ?> viewController = this.getViewController();
+		Component awtComponent = viewController != null ? viewController.getAwtComponent() : null;
 		if( ( awtComponent == null ) || ( e.getComponent() == awtComponent ) ) {
 			return p;
 		} else {
-			return javax.swing.SwingUtilities.convertPoint( e.getComponent(), p, awtComponent );
+			return SwingUtilities.convertPoint( e.getComponent(), p, awtComponent );
 		}
 	}
 }

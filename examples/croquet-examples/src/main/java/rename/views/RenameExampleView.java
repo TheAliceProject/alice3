@@ -42,18 +42,25 @@
  */
 package rename.views;
 
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.views.FormPanel;
+import org.lgna.croquet.views.LabeledFormRow;
+import rename.RenameExampleComposite;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RenameExampleView extends org.lgna.croquet.views.FormPanel {
-	public RenameExampleView( rename.RenameExampleComposite composite ) {
+public class RenameExampleView extends FormPanel {
+	public RenameExampleView( RenameExampleComposite composite ) {
 		super( composite );
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
-		rename.RenameExampleComposite composite = (rename.RenameExampleComposite)this.getComposite();
-		org.lgna.croquet.StringState nameState = composite.getNameState();
-		rows.add( new org.lgna.croquet.views.LabeledFormRow( nameState.getSidekickLabel(), nameState.createTextField() ) );
+	protected void appendRows( List<LabeledFormRow> rows ) {
+		RenameExampleComposite composite = (RenameExampleComposite)this.getComposite();
+		StringState nameState = composite.getNameState();
+		rows.add( new LabeledFormRow( nameState.getSidekickLabel(), nameState.createTextField() ) );
 	}
 }

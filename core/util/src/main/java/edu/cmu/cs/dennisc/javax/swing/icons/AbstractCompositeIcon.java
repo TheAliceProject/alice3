@@ -42,16 +42,20 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCompositeIcon implements javax.swing.Icon {
-	protected abstract javax.swing.Icon[] getComponentIcons();
+public abstract class AbstractCompositeIcon implements Icon {
+	protected abstract Icon[] getComponentIcons();
 
 	@Override
 	public int getIconWidth() {
 		int rv = 0;
-		for( javax.swing.Icon icon : this.getComponentIcons() ) {
+		for( Icon icon : this.getComponentIcons() ) {
 			rv = Math.max( rv, icon.getIconWidth() );
 		}
 		return rv;
@@ -60,15 +64,15 @@ public abstract class AbstractCompositeIcon implements javax.swing.Icon {
 	@Override
 	public int getIconHeight() {
 		int rv = 0;
-		for( javax.swing.Icon icon : this.getComponentIcons() ) {
+		for( Icon icon : this.getComponentIcons() ) {
 			rv = Math.max( rv, icon.getIconHeight() );
 		}
 		return rv;
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		for( javax.swing.Icon icon : this.getComponentIcons() ) {
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
+		for( Icon icon : this.getComponentIcons() ) {
 			icon.paintIcon( c, g, x, y );
 		}
 	}

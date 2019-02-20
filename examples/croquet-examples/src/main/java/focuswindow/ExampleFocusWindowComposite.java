@@ -42,32 +42,40 @@
  */
 package focuswindow;
 
+import focuswindow.views.ExampleFocusWindowPane;
+import org.lgna.croquet.FocusWindowComposite;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.views.Panel;
+import org.lgna.croquet.views.ScrollPane;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExampleFocusWindowComposite extends org.lgna.croquet.FocusWindowComposite {
-	private final org.lgna.croquet.PlainStringValue headerText = this.createStringValue( "headerText" );
-	private final org.lgna.croquet.PlainStringValue infoText = this.createStringValue( "infoText" );
+public class ExampleFocusWindowComposite extends FocusWindowComposite {
+	private final PlainStringValue headerText = this.createStringValue( "headerText" );
+	private final PlainStringValue infoText = this.createStringValue( "infoText" );
 
 	public ExampleFocusWindowComposite() {
-		super( java.util.UUID.fromString( "dcc99461-66aa-4bdf-a3c7-9cd90ca45d04" ) );
+		super( UUID.fromString( "dcc99461-66aa-4bdf-a3c7-9cd90ca45d04" ) );
 	}
 
-	public org.lgna.croquet.PlainStringValue getHeaderText() {
+	public PlainStringValue getHeaderText() {
 		return this.headerText;
 	}
 
-	public org.lgna.croquet.PlainStringValue getInfoText() {
+	public PlainStringValue getInfoText() {
 		return this.infoText;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		return new focuswindow.views.ExampleFocusWindowPane( this );
+	protected Panel createView() {
+		return new ExampleFocusWindowPane( this );
 	}
 }

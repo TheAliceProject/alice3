@@ -42,14 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
+import org.alice.ide.Theme;
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.type.merge.croquet.MemberHub;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FieldPreviewPane extends MemberPreviewPane<org.lgna.project.ast.UserField> {
-	public FieldPreviewPane( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField> fieldHub, boolean isAlphaDesiredWhenSelectionIsRequired ) {
+public class FieldPreviewPane extends MemberPreviewPane<UserField> {
+	public FieldPreviewPane( MemberHub<UserField> fieldHub, boolean isAlphaDesiredWhenSelectionIsRequired ) {
 		super( fieldHub, isAlphaDesiredWhenSelectionIsRequired );
-		org.lgna.project.ast.UserField field = fieldHub.getMember();
-		org.alice.ide.Theme theme = org.alice.ide.ThemeUtilities.getActiveTheme();
+		UserField field = fieldHub.getMember();
+		Theme theme = ThemeUtilities.getActiveTheme();
 		this.addComponent( new FieldHubDeclarationView( fieldHub ), "wrap" );
 		this.setBackgroundColor( theme.getFieldColor() );
 	}

@@ -42,27 +42,41 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast;
 
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.edits.DependentEdit;
+import org.alice.ide.croquet.models.ResponsibleModel;
+import org.alice.ide.declarationseditor.DeclarationTabState;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.AbstractMember;
+import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.UserType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.AbstractMember> extends org.lgna.croquet.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
+public abstract class DeleteMemberOperation<N extends AbstractMember> extends ActionOperation implements ResponsibleModel {
 	private N member;
-	private org.lgna.project.ast.UserType<?> declaringType;
+	private UserType<?> declaringType;
 
 	//todo
 	//note: index not preserved and restored
 	//in the case where it is undone across sessions, it will not know where to insert the declaration
 	private transient int index = -1;
 
-	public DeleteMemberOperation( java.util.UUID individualId, N node, org.lgna.project.ast.UserType<?> declaringType ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, individualId );
+	public DeleteMemberOperation( UUID individualId, N node, UserType<?> declaringType ) {
+		super( Application.PROJECT_GROUP, individualId );
 		this.member = node;
 		this.declaringType = declaringType;
 	}
 
 	public abstract Class<N> getNodeParameterType();
 
-	public org.lgna.project.ast.UserType<?> getDeclaringType() {
+	public UserType<?> getDeclaringType() {
 		return this.declaringType;
 	}
 
@@ -70,22 +84,22 @@ public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.Abstr
 		return this.member;
 	}
 
-	protected abstract org.lgna.project.ast.NodeListProperty<N> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType );
+	protected abstract NodeListProperty<N> getNodeListProperty( UserType<?> declaringType );
 
 	protected abstract boolean isClearToDelete( N node );
 
 	@Override
 	public void doOrRedoInternal( boolean isDo ) {
-		org.lgna.project.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.declaringType );
+		NodeListProperty<N> owner = this.getNodeListProperty( this.declaringType );
 		this.index = owner.indexOf( this.member );
 		owner.remove( index );
-		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+		DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		declarationTabState.removeAllOrphans();
 	}
 
 	@Override
 	public void undoInternal() {
-		org.lgna.project.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.declaringType );
+		NodeListProperty<N> owner = this.getNodeListProperty( this.declaringType );
 		if( this.index == -1 ) {
 			this.index += owner.size();
 		}
@@ -95,15 +109,15 @@ public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.Abstr
 	@Override
 	public void appendDescription( StringBuilder rv, boolean isDetailed ) {
 		rv.append( "delete: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, member, org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( rv, member, Application.getLocale() );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		if( this.isClearToDelete( this.member ) ) {
-			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>>( step ) );
+			activity.commitAndInvokeDo( new DependentEdit<DeleteMemberOperation<N>>( activity ) );
 		} else {
-			step.cancel();
+			activity.cancel();
 		}
 	}
 }

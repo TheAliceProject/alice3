@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.story.implementation.alice;
 
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,7 +56,7 @@ public class ModelResourceIoUtilities {
 
 	public static String getResourceSubDirWithSeparator( String className ) {
 		className = AliceResourceClassUtilities.getAliceClassName( className );
-		String classDir = ( className != null ) && ( className.length() > 0 ) ? className.toLowerCase( java.util.Locale.ENGLISH ) + "/" : "";
+		String classDir = ( className != null ) && ( className.length() > 0 ) ? className.toLowerCase( Locale.ENGLISH ) + "/" : "";
 
 		if( ( RESOURCE_SUB_DIR == null ) || ( RESOURCE_SUB_DIR.length() == 0 ) ) {
 			return classDir;

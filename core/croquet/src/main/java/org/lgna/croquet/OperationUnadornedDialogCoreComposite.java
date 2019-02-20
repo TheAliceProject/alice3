@@ -42,16 +42,16 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.CompositeView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationUnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends UnadornedDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	public OperationUnadornedDialogCoreComposite( java.util.UUID migrationId, IsModal isModal ) {
+public abstract class OperationUnadornedDialogCoreComposite<V extends CompositeView<?, ?>> extends UnadornedDialogCoreComposite<V> implements OperationOwningComposite<V> {
+	public OperationUnadornedDialogCoreComposite( UUID migrationId, IsModal isModal ) {
 		super( migrationId, isModal );
 	}
 
-	@Override
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
-	}
 }

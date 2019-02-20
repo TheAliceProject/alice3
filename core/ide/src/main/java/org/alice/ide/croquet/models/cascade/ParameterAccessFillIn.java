@@ -42,13 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.UserParameter;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgna.project.ast.ParameterAccess> {
-	private static java.util.Map<org.lgna.project.ast.UserParameter, ParameterAccessFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class ParameterAccessFillIn extends ExpressionFillInWithoutBlanks<ParameterAccess> {
+	private static Map<UserParameter, ParameterAccessFillIn> map = Maps.newHashMap();
 
-	public static ParameterAccessFillIn getInstance( org.lgna.project.ast.UserParameter value ) {
+	public static ParameterAccessFillIn getInstance( UserParameter value ) {
 		synchronized( map ) {
 			ParameterAccessFillIn rv = map.get( value );
 			if( rv != null ) {
@@ -61,24 +69,24 @@ public class ParameterAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgn
 		}
 	}
 
-	private final org.lgna.project.ast.ParameterAccess transientValue;
+	private final ParameterAccess transientValue;
 
-	private ParameterAccessFillIn( org.lgna.project.ast.UserParameter parameter ) {
-		super( java.util.UUID.fromString( "cdc84629-4448-428f-9f4f-0285778b6d13" ) );
+	private ParameterAccessFillIn( UserParameter parameter ) {
+		super( UUID.fromString( "cdc84629-4448-428f-9f4f-0285778b6d13" ) );
 		this.transientValue = this.createValue( parameter );
 	}
 
-	private org.lgna.project.ast.ParameterAccess createValue( org.lgna.project.ast.UserParameter parameter ) {
-		return new org.lgna.project.ast.ParameterAccess( parameter );
+	private ParameterAccess createValue( UserParameter parameter ) {
+		return new ParameterAccess( parameter );
 	}
 
 	@Override
-	public org.lgna.project.ast.ParameterAccess createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ParameterAccess, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public ParameterAccess createValue( ItemNode<? super ParameterAccess, Void> node ) {
 		return this.createValue( this.transientValue.parameter.getValue() );
 	}
 
 	@Override
-	public org.lgna.project.ast.ParameterAccess getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ParameterAccess, Void> node ) {
+	public ParameterAccess getTransientValue( ItemNode<? super ParameterAccess, Void> node ) {
 		return this.transientValue;
 	}
 }

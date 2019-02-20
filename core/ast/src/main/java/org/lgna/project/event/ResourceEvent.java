@@ -43,18 +43,23 @@
 
 package org.lgna.project.event;
 
+import org.lgna.common.Resource;
+import org.lgna.project.Project;
+
+import java.util.EventObject;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceEvent extends java.util.EventObject {
-	private final org.lgna.common.Resource resource;
+public class ResourceEvent extends EventObject {
+	private final Resource resource;
 
-	public ResourceEvent( org.lgna.project.Project project, org.lgna.common.Resource resource ) {
+	public ResourceEvent( Project project, Resource resource ) {
 		super( project );
 		this.resource = resource;
 	}
 
-	public org.lgna.common.Resource getResource() {
+	public Resource getResource() {
 		return this.resource;
 	}
 }

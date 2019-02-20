@@ -42,6 +42,19 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.lang.reflect;
 
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -61,40 +74,40 @@ public final class ReflectionUtilities {
 	private ReflectionUtilities() {
 	}
 
-	public static boolean isPublic( java.lang.reflect.Member mmbr ) {
-		return java.lang.reflect.Modifier.isPublic( mmbr.getModifiers() );
+	public static boolean isPublic( Member mmbr ) {
+		return Modifier.isPublic( mmbr.getModifiers() );
 	}
 
-	public static boolean isProtected( java.lang.reflect.Member mmbr ) {
-		return java.lang.reflect.Modifier.isProtected( mmbr.getModifiers() );
+	public static boolean isProtected( Member mmbr ) {
+		return Modifier.isProtected( mmbr.getModifiers() );
 	}
 
-	public static boolean isPrivate( java.lang.reflect.Member mmbr ) {
-		return java.lang.reflect.Modifier.isPrivate( mmbr.getModifiers() );
+	public static boolean isPrivate( Member mmbr ) {
+		return Modifier.isPrivate( mmbr.getModifiers() );
 	}
 
-	public static boolean isAbstract( java.lang.reflect.Member mmbr ) {
-		return java.lang.reflect.Modifier.isAbstract( mmbr.getModifiers() );
+	public static boolean isAbstract( Member mmbr ) {
+		return Modifier.isAbstract( mmbr.getModifiers() );
 	}
 
 	public static boolean isAbstract( Class<?> cls ) {
-		return java.lang.reflect.Modifier.isAbstract( cls.getModifiers() );
+		return Modifier.isAbstract( cls.getModifiers() );
 	}
 
 	public static boolean isFinal( Class<?> cls ) {
-		return java.lang.reflect.Modifier.isFinal( cls.getModifiers() );
+		return Modifier.isFinal( cls.getModifiers() );
 	}
 
 	public static boolean isStatic( Class<?> cls ) {
-		return java.lang.reflect.Modifier.isStatic( cls.getModifiers() );
+		return Modifier.isStatic( cls.getModifiers() );
 	}
 
-	public static boolean isStatic( java.lang.reflect.Method mthd ) {
-		return java.lang.reflect.Modifier.isStatic( mthd.getModifiers() );
+	public static boolean isStatic( Method mthd ) {
+		return Modifier.isStatic( mthd.getModifiers() );
 	}
 
-	public static boolean isStatic( java.lang.reflect.Field fld ) {
-		return java.lang.reflect.Modifier.isStatic( fld.getModifiers() );
+	public static boolean isStatic( Field fld ) {
+		return Modifier.isStatic( fld.getModifiers() );
 	}
 
 	//todo: add the rest of the modifiers
@@ -102,7 +115,7 @@ public final class ReflectionUtilities {
 	@Deprecated
 	public static Class<?> getClassForName( String className ) {
 		try {
-			return edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( className );
+			return ClassUtilities.forName( className );
 		} catch( ClassNotFoundException cnfe ) {
 			throw new RuntimeException( className, cnfe );
 		}
@@ -120,7 +133,7 @@ public final class ReflectionUtilities {
 	}
 
 	public static Class<?> getArrayClass( Class<?> componentCls ) {
-		Object array = java.lang.reflect.Array.newInstance( componentCls, 0 );
+		Object array = Array.newInstance( componentCls, 0 );
 		return array.getClass();
 	}
 
@@ -133,13 +146,13 @@ public final class ReflectionUtilities {
 		return rv;
 	}
 
-	public static <T> T newInstance( java.lang.reflect.Constructor<T> cnstrctr, Object... arguments ) {
+	public static <T> T newInstance( Constructor<T> cnstrctr, Object... arguments ) {
 		try {
 			return cnstrctr.newInstance( arguments );
-		} catch( java.lang.reflect.InvocationTargetException ite ) {
+		} catch( InvocationTargetException ite ) {
 			throw new RuntimeException( cnstrctr.toString(), ite );
 		} catch( InstantiationException ie ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ie, cnstrctr );
+			Logger.throwable( ie, cnstrctr );
 			throw new RuntimeException( cnstrctr.toString(), ie );
 		} catch( IllegalAccessException iae ) {
 			throw new RuntimeException( cnstrctr.toString(), iae );
@@ -172,7 +185,7 @@ public final class ReflectionUtilities {
 
 	private static Object newArrayInstance( Class<?> componentType, int length ) {
 		try {
-			return java.lang.reflect.Array.newInstance( componentType, length );
+			return Array.newInstance( componentType, length );
 		} catch( NegativeArraySizeException nase ) {
 			throw new RuntimeException( nase );
 		}
@@ -186,7 +199,7 @@ public final class ReflectionUtilities {
 		return (T[])newArrayInstance( componentType, length );
 	}
 
-	public static java.lang.reflect.Field getField( Class<?> cls, String name ) {
+	public static Field getField( Class<?> cls, String name ) {
 		try {
 			return cls.getField( name );
 		} catch( NoSuchFieldException nsfe ) {
@@ -194,7 +207,7 @@ public final class ReflectionUtilities {
 		}
 	}
 
-	public static java.lang.reflect.Field getDeclaredField( Class<?> cls, String name ) {
+	public static Field getDeclaredField( Class<?> cls, String name ) {
 		try {
 			return cls.getDeclaredField( name );
 		} catch( NoSuchFieldException nsfe ) {
@@ -202,7 +215,7 @@ public final class ReflectionUtilities {
 		}
 	}
 
-	public static java.lang.reflect.Method getMethod( Class<?> cls, String name, Class<?>... parameterTypes ) {
+	public static Method getMethod( Class<?> cls, String name, Class<?>... parameterTypes ) {
 		try {
 			return cls.getMethod( name, parameterTypes );
 		} catch( NoSuchMethodException nsme ) {
@@ -210,7 +223,7 @@ public final class ReflectionUtilities {
 		}
 	}
 
-	public static java.lang.reflect.Method getDeclaredMethod( Class<?> cls, String name, Class<?>... parameterTypes ) {
+	public static Method getDeclaredMethod( Class<?> cls, String name, Class<?>... parameterTypes ) {
 		try {
 			return cls.getDeclaredMethod( name, parameterTypes );
 		} catch( NoSuchMethodException nsme ) {
@@ -218,7 +231,7 @@ public final class ReflectionUtilities {
 		}
 	}
 
-	public static <T> java.lang.reflect.Constructor<T> getConstructor( Class<T> cls, Class<?>... parameterClses ) {
+	public static <T> Constructor<T> getConstructor( Class<T> cls, Class<?>... parameterClses ) {
 		try {
 			return cls.getConstructor( parameterClses );
 		} catch( NoSuchMethodException nsme ) {
@@ -232,7 +245,7 @@ public final class ReflectionUtilities {
 		}
 	}
 
-	public static <T> java.lang.reflect.Constructor<T> getDeclaredConstructor( Class<T> cls, Class<?>... parameterClses ) {
+	public static <T> Constructor<T> getDeclaredConstructor( Class<T> cls, Class<?>... parameterClses ) {
 		try {
 			return cls.getDeclaredConstructor( parameterClses );
 		} catch( NoSuchMethodException nsme ) {
@@ -240,9 +253,9 @@ public final class ReflectionUtilities {
 		}
 	}
 
-	private static <T> java.lang.reflect.Constructor<T> getConstructorForArguments( java.lang.reflect.Constructor<T>[] constructors, Object... arguments ) throws NoSuchMethodException {
-		java.lang.reflect.Constructor<T> rv = null;
-		for( java.lang.reflect.Constructor<T> constructor : constructors ) {
+	private static <T> Constructor<T> getConstructorForArguments( Constructor<T>[] constructors, Object... arguments ) throws NoSuchMethodException {
+		Constructor<T> rv = null;
+		for( Constructor<T> constructor : constructors ) {
 			Class<?>[] parameterClses = constructor.getParameterTypes();
 			if( parameterClses.length == arguments.length ) {
 				if( rv != null ) {
@@ -259,23 +272,23 @@ public final class ReflectionUtilities {
 		}
 	}
 
-	public static <T> java.lang.reflect.Constructor<T> getConstructorForArguments( Class<T> cls, Object... arguments ) {
+	public static <T> Constructor<T> getConstructorForArguments( Class<T> cls, Object... arguments ) {
 		try {
-			return getConstructorForArguments( (java.lang.reflect.Constructor<T>[])cls.getConstructors(), arguments );
+			return getConstructorForArguments( (Constructor<T>[])cls.getConstructors(), arguments );
 		} catch( NoSuchMethodException nsme ) {
 			throw new RuntimeException( cls.getName(), nsme );
 		}
 	}
 
-	public static <T> java.lang.reflect.Constructor<T> getDeclaredConstructorForArguments( Class<T> cls, Object... arguments ) {
+	public static <T> Constructor<T> getDeclaredConstructorForArguments( Class<T> cls, Object... arguments ) {
 		try {
-			return getConstructorForArguments( (java.lang.reflect.Constructor<T>[])cls.getDeclaredConstructors(), arguments );
+			return getConstructorForArguments( (Constructor<T>[])cls.getDeclaredConstructors(), arguments );
 		} catch( NoSuchMethodException nsme ) {
 			throw new RuntimeException( cls.getName(), nsme );
 		}
 	}
 
-	public static String getDetail( Object instance, java.lang.reflect.Method method, Object[] args ) {
+	public static String getDetail( Object instance, Method method, Object[] args ) {
 		StringBuffer sb = new StringBuffer();
 		sb.append( "instance=" );
 		sb.append( instance );
@@ -296,19 +309,19 @@ public final class ReflectionUtilities {
 		return sb.toString();
 	}
 
-	public static Object invoke( Object instance, java.lang.reflect.Method method, Object... args ) {
+	public static Object invoke( Object instance, Method method, Object... args ) {
 		try {
 			return method.invoke( instance, args );
 		} catch( IllegalAccessException iae ) {
 			throw new RuntimeException( getDetail( instance, method, args ), iae );
-		} catch( java.lang.reflect.InvocationTargetException ite ) {
+		} catch( InvocationTargetException ite ) {
 			throw new RuntimeException( getDetail( instance, method, args ), ite );
 		} catch( RuntimeException re ) {
 			throw new RuntimeException( getDetail( instance, method, args ), re );
 		}
 	}
 
-	public static Object get( java.lang.reflect.Field field, Object o ) {
+	public static Object get( Field field, Object o ) {
 		try {
 			return field.get( o );
 		} catch( IllegalArgumentException iae ) {
@@ -318,7 +331,7 @@ public final class ReflectionUtilities {
 		}
 	}
 
-	public static void set( java.lang.reflect.Field field, Object o, Object value ) {
+	public static void set( Field field, Object o, Object value ) {
 		try {
 			field.set( o, value );
 		} catch( IllegalArgumentException iae ) {
@@ -331,23 +344,23 @@ public final class ReflectionUtilities {
 	private static enum InclusionLevel {
 		ALL_DECLARED() {
 			@Override
-			public java.lang.reflect.Field[] getFields( Class<?> cls ) {
+			public Field[] getFields( Class<?> cls ) {
 				return cls.getDeclaredFields();
 			}
 		},
 		PUBLIC_INCLUDING_INHERITED {
 			@Override
-			public java.lang.reflect.Field[] getFields( Class<?> cls ) {
+			public Field[] getFields( Class<?> cls ) {
 				return cls.getFields();
 			}
 		};
-		public abstract java.lang.reflect.Field[] getFields( Class<?> cls );
+		public abstract Field[] getFields( Class<?> cls );
 	}
 
-	private static java.util.List<java.lang.reflect.Field> getFields( Class<?> cls, Class<?> clsAssignable, InclusionLevel inclusionLevel, int modifierMask ) {
-		java.util.List<java.lang.reflect.Field> rv = new java.util.LinkedList<java.lang.reflect.Field>();
-		java.lang.reflect.Field[] fields = inclusionLevel.getFields( cls );
-		for( java.lang.reflect.Field field : fields ) {
+	private static List<Field> getFields( Class<?> cls, Class<?> clsAssignable, InclusionLevel inclusionLevel, int modifierMask ) {
+		List<Field> rv = new LinkedList<Field>();
+		Field[] fields = inclusionLevel.getFields( cls );
+		for( Field field : fields ) {
 			if( clsAssignable.isAssignableFrom( field.getType() ) ) {
 				if( ( field.getModifiers() & modifierMask ) == modifierMask ) {
 					rv.add( field );
@@ -358,32 +371,32 @@ public final class ReflectionUtilities {
 	}
 
 	//todo
-	public static java.util.List<java.lang.reflect.Field> getPublicFinalFields( Class<?> cls, Class<?> clsAssignable ) {
-		return getFields( cls, clsAssignable, InclusionLevel.PUBLIC_INCLUDING_INHERITED, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.FINAL );
+	public static List<Field> getPublicFinalFields( Class<?> cls, Class<?> clsAssignable ) {
+		return getFields( cls, clsAssignable, InclusionLevel.PUBLIC_INCLUDING_INHERITED, Modifier.PUBLIC | Modifier.FINAL );
 	}
 
 	//todo
-	public static java.util.List<java.lang.reflect.Field> getPublicStaticFinalFields( Class<?> cls, Class<?> clsAssignable ) {
-		return getFields( cls, clsAssignable, InclusionLevel.PUBLIC_INCLUDING_INHERITED, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.STATIC | java.lang.reflect.Modifier.FINAL );
+	public static List<Field> getPublicStaticFinalFields( Class<?> cls, Class<?> clsAssignable ) {
+		return getFields( cls, clsAssignable, InclusionLevel.PUBLIC_INCLUDING_INHERITED, Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL );
 	}
 
 	//todo
-	public static java.util.List<java.lang.reflect.Field> getPublicFinalDeclaredFields( Class<?> cls, Class<?> clsAssignable ) {
-		return getFields( cls, clsAssignable, InclusionLevel.ALL_DECLARED, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.FINAL );
+	public static List<Field> getPublicFinalDeclaredFields( Class<?> cls, Class<?> clsAssignable ) {
+		return getFields( cls, clsAssignable, InclusionLevel.ALL_DECLARED, Modifier.PUBLIC | Modifier.FINAL );
 	}
 
 	//todo
-	public static java.util.List<java.lang.reflect.Field> getPublicStaticFinalDeclaredFields( Class<?> cls, Class<?> clsAssignable ) {
-		return getFields( cls, clsAssignable, InclusionLevel.ALL_DECLARED, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.STATIC | java.lang.reflect.Modifier.FINAL );
+	public static List<Field> getPublicStaticFinalDeclaredFields( Class<?> cls, Class<?> clsAssignable ) {
+		return getFields( cls, clsAssignable, InclusionLevel.ALL_DECLARED, Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL );
 	}
 
-	private static <E> java.util.List<E> getInstances( Class<?> cls, Class<E> clsAssignable, int modifierMask ) {
-		java.util.List<E> rv = new java.util.LinkedList<E>();
-		java.lang.reflect.Field[] fields = cls.getFields();
-		for( java.lang.reflect.Field field : fields ) {
+	private static <E> List<E> getInstances( Class<?> cls, Class<E> clsAssignable, int modifierMask ) {
+		List<E> rv = new LinkedList<E>();
+		Field[] fields = cls.getFields();
+		for( Field field : fields ) {
 			if( clsAssignable.isAssignableFrom( field.getType() ) ) {
 				if( ( field.getModifiers() & modifierMask ) == modifierMask ) {
-					E e = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, null );
+					E e = (E)ReflectionUtilities.get( field, null );
 					rv.add( e );
 				}
 			}
@@ -392,17 +405,17 @@ public final class ReflectionUtilities {
 	}
 
 	//todo
-	public static <E> java.util.List<E> getPublicFinalInstances( Class<?> cls, Class<E> clsAssignable ) {
-		return getInstances( cls, clsAssignable, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.FINAL );
+	public static <E> List<E> getPublicFinalInstances( Class<?> cls, Class<E> clsAssignable ) {
+		return getInstances( cls, clsAssignable, Modifier.PUBLIC | Modifier.FINAL );
 	}
 
 	//todo
-	public static <E> java.util.List<E> getPublicStaticFinalInstances( Class<?> cls, Class<E> clsAssignable ) {
-		return getInstances( cls, clsAssignable, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.STATIC | java.lang.reflect.Modifier.FINAL );
+	public static <E> List<E> getPublicStaticFinalInstances( Class<?> cls, Class<E> clsAssignable ) {
+		return getInstances( cls, clsAssignable, Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL );
 	}
 
 	public static <T> T valueOf( Class<T> cls, String s ) {
-		java.lang.reflect.Method mthd = getMethod( cls, "valueOf", new Class[] { String.class } );
+		Method mthd = getMethod( cls, "valueOf", new Class[] { String.class } );
 		return (T)invoke( null, mthd, new Object[] { s } );
 	}
 }

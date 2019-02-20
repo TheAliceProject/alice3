@@ -43,15 +43,22 @@
 
 package org.alice.ide.croquet.edits.ast.keyed;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.alice.ide.croquet.models.ast.keyed.RemoveKeyedArgumentOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.NodeUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RemoveKeyedArgumentEdit extends org.lgna.croquet.edits.AbstractEdit<org.alice.ide.croquet.models.ast.keyed.RemoveKeyedArgumentOperation> {
-	public RemoveKeyedArgumentEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
-		super( completionStep );
+public class RemoveKeyedArgumentEdit extends AbstractEdit<RemoveKeyedArgumentOperation> {
+	public RemoveKeyedArgumentEdit( UserActivity userActivity) {
+		super( userActivity );
 	}
 
-	public RemoveKeyedArgumentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public RemoveKeyedArgumentEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
 
@@ -69,6 +76,6 @@ public class RemoveKeyedArgumentEdit extends org.lgna.croquet.edits.AbstractEdit
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "add: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.getModel().getArgument(), org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( rv, this.getModel().getArgument(), Application.getLocale() );
 	}
 }

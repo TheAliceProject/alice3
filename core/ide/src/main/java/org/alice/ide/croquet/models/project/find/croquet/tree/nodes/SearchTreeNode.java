@@ -44,6 +44,7 @@ package org.alice.ide.croquet.models.project.find.croquet.tree.nodes;
 
 import java.util.List;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.project.ast.MethodInvocation;
 
 /**
@@ -52,7 +53,7 @@ import org.lgna.project.ast.MethodInvocation;
 public class SearchTreeNode {
 
 	private final SearchTreeNode parent;
-	private final List<SearchTreeNode> children = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+	private final List<SearchTreeNode> children = Lists.newArrayList();
 
 	public SearchTreeNode( SearchTreeNode parent ) {
 		this.parent = parent;

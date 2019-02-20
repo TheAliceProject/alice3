@@ -42,13 +42,15 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.texture.Texture;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface NonfreeTexturePaint extends Paint {
 	boolean isTextureValid();
 
-	edu.cmu.cs.dennisc.texture.Texture getTexture();
+	Texture getTexture();
 
 	Paint getFallback();
 }

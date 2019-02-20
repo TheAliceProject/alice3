@@ -42,6 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +52,7 @@ public class BeveledRectangle extends BeveledShape {
 	public BeveledRectangle() {
 	}
 
-	public BeveledRectangle( java.awt.geom.Rectangle2D.Float rect ) {
+	public BeveledRectangle( Rectangle2D.Float rect ) {
 		initialize( rect );
 	}
 
@@ -58,10 +61,10 @@ public class BeveledRectangle extends BeveledShape {
 	}
 
 	public void initialize( float x, float y, float width, float height ) {
-		java.awt.geom.Rectangle2D.Float base = new java.awt.geom.Rectangle2D.Float( x, y, width, height );
-		java.awt.geom.GeneralPath high = new java.awt.geom.GeneralPath();
-		java.awt.geom.GeneralPath neut = null;
-		java.awt.geom.GeneralPath shad = new java.awt.geom.GeneralPath();
+		Rectangle2D.Float base = new Rectangle2D.Float( x, y, width, height );
+		GeneralPath high = new GeneralPath();
+		GeneralPath neut = null;
+		GeneralPath shad = new GeneralPath();
 
 		float x1 = x + width;
 		float y1 = y + height;
@@ -77,7 +80,7 @@ public class BeveledRectangle extends BeveledShape {
 		initialize( base, high, neut, shad );
 	}
 
-	public void initialize( java.awt.geom.Rectangle2D.Float rect ) {
+	public void initialize( Rectangle2D.Float rect ) {
 		initialize( rect.x, rect.y, rect.width, rect.height );
 	}
 }

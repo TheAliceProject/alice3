@@ -54,9 +54,14 @@ import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_EMISSION;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SHININESS;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
-import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
-public class GlrSimpleAppearance<T extends edu.cmu.cs.dennisc.scenegraph.SimpleAppearance> extends GlrAppearance<T> {
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.FillingStyle;
+import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
+
+public class GlrSimpleAppearance<T extends SimpleAppearance> extends GlrAppearance<T> {
 	@Override
 	public boolean isActuallyShowing() {
 		return this.isMaterialActuallyShowing;
@@ -110,7 +115,7 @@ public class GlrSimpleAppearance<T extends edu.cmu.cs.dennisc.scenegraph.SimpleA
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.ambientColor ) {
 			owner.ambientColor.getValue().getAsArray( this.ambient );
 			this.isAmbientLinkedToDiffuse = Float.isNaN( this.ambient[ 0 ] );
@@ -127,24 +132,24 @@ public class GlrSimpleAppearance<T extends edu.cmu.cs.dennisc.scenegraph.SimpleA
 		} else if( property == owner.emissiveColor ) {
 			owner.emissiveColor.getValue().getAsArray( this.emissive );
 		} else if( property == owner.fillingStyle ) {
-			edu.cmu.cs.dennisc.scenegraph.FillingStyle fillingStyle = owner.fillingStyle.getValue();
-			if( fillingStyle.equals( edu.cmu.cs.dennisc.scenegraph.FillingStyle.SOLID ) ) {
+			FillingStyle fillingStyle = owner.fillingStyle.getValue();
+			if( fillingStyle.equals( FillingStyle.SOLID ) ) {
 				this.polygonMode = GL_FILL;
-			} else if( fillingStyle.equals( edu.cmu.cs.dennisc.scenegraph.FillingStyle.WIREFRAME ) ) {
+			} else if( fillingStyle.equals( FillingStyle.WIREFRAME ) ) {
 				this.polygonMode = GL_LINE;
-			} else if( fillingStyle.equals( edu.cmu.cs.dennisc.scenegraph.FillingStyle.POINTS ) ) {
+			} else if( fillingStyle.equals( FillingStyle.POINTS ) ) {
 				this.polygonMode = GL_POINT;
 			} else {
 				throw new RuntimeException();
 			}
 		} else if( property == owner.shadingStyle ) {
-			edu.cmu.cs.dennisc.scenegraph.ShadingStyle shadingStyle = owner.shadingStyle.getValue();
-			if( ( shadingStyle == null ) || shadingStyle.equals( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.NONE ) ) {
+			ShadingStyle shadingStyle = owner.shadingStyle.getValue();
+			if( ( shadingStyle == null ) || shadingStyle.equals( ShadingStyle.NONE ) ) {
 				this.isShaded = false;
-			} else if( shadingStyle.equals( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.FLAT ) ) {
+			} else if( shadingStyle.equals( ShadingStyle.FLAT ) ) {
 				this.isShaded = true;
 				//todo
-			} else if( shadingStyle.equals( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.SMOOTH ) ) {
+			} else if( shadingStyle.equals( ShadingStyle.SMOOTH ) ) {
 				this.isShaded = true;
 				//todo
 			} else {

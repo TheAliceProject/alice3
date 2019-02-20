@@ -45,6 +45,8 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.story.event.KeyPressListener;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,6 +60,6 @@ public class KeyAdapterFillIn extends LambdaExpressionFillIn {
 	}
 
 	private KeyAdapterFillIn() {
-		super( java.util.UUID.fromString( "58f52823-5d1d-4de2-ae5f-d62f2f6d5dde" ), KeyPressListener.class );
+		super( UUID.fromString( "58f52823-5d1d-4de2-ae5f-d62f2f6d5dde" ), KeyPressListener.class );
 	}
 }

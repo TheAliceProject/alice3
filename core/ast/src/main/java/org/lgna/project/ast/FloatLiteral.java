@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.FloatProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.lgna.project.ast.localizer.AstLocalizer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,7 +63,7 @@ public final class FloatLiteral extends AbstractValueLiteral<Float> {
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
+	protected void appendRepr( AstLocalizer localizer ) {
 		Float value = this.value.getValue();
 		if( value != null ) {
 			localizer.appendFloat( value );
@@ -69,14 +73,14 @@ public final class FloatLiteral extends AbstractValueLiteral<Float> {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<Float> getValueProperty() {
+	public InstanceProperty<Float> getValueProperty() {
 		return this.value;
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendFloat( this.value.getValue() );
 	}
 
-	public final edu.cmu.cs.dennisc.property.FloatProperty value = new edu.cmu.cs.dennisc.property.FloatProperty( this, 0.0f );
+	public final FloatProperty value = new FloatProperty( this, 0.0f );
 }

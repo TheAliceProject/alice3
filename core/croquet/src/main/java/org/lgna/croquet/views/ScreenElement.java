@@ -43,14 +43,24 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.resolvers.RuntimeResolver;
+
+import javax.swing.SwingUtilities;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.ComponentListener;
+import java.awt.event.HierarchyBoundsListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ScreenElement implements TrackableShape, org.lgna.croquet.resolvers.RuntimeResolver<ScreenElement> {
-	public abstract java.awt.Component getAwtComponent();
+public abstract class ScreenElement implements TrackableShape, RuntimeResolver<ScreenElement> {
+	public abstract Component getAwtComponent();
 
-	public final java.awt.Point convertPoint( java.awt.Point pt, ScreenElement destination ) {
-		return javax.swing.SwingUtilities.convertPoint( this.getAwtComponent(), pt, destination.getAwtComponent() );
+	public final Point convertPoint( Point pt, ScreenElement destination ) {
+		return SwingUtilities.convertPoint( this.getAwtComponent(), pt, destination.getAwtComponent() );
 	}
 
 	@Override
@@ -59,38 +69,38 @@ public abstract class ScreenElement implements TrackableShape, org.lgna.croquet.
 	}
 
 	@Override
-	public final void addComponentListener( java.awt.event.ComponentListener listener ) {
+	public final void addComponentListener( ComponentListener listener ) {
 		this.getAwtComponent().addComponentListener( listener );
 	}
 
 	@Override
-	public final void removeComponentListener( java.awt.event.ComponentListener listener ) {
+	public final void removeComponentListener( ComponentListener listener ) {
 		this.getAwtComponent().removeComponentListener( listener );
 	}
 
 	@Override
-	public final void addHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
+	public final void addHierarchyBoundsListener( HierarchyBoundsListener listener ) {
 		this.getAwtComponent().addHierarchyBoundsListener( listener );
 	}
 
 	@Override
-	public final void removeHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
+	public final void removeHierarchyBoundsListener( HierarchyBoundsListener listener ) {
 		this.getAwtComponent().removeHierarchyBoundsListener( listener );
 	}
 
-	public java.awt.Rectangle getLocalBounds() {
-		return javax.swing.SwingUtilities.getLocalBounds( this.getAwtComponent() );
+	public Rectangle getLocalBounds() {
+		return SwingUtilities.getLocalBounds( this.getAwtComponent() );
 	}
 
-	public java.awt.Rectangle getBounds() {
+	public Rectangle getBounds() {
 		return this.getAwtComponent().getBounds();
 	}
 
-	public java.awt.Point getLocation() {
+	public Point getLocation() {
 		return this.getAwtComponent().getLocation();
 	}
 
-	public java.awt.Dimension getSize() {
+	public Dimension getSize() {
 		return this.getAwtComponent().getSize();
 	}
 

@@ -42,15 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.CompositeView;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.ToolPaletteView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractComposite<V> {
+public abstract class ToolPaletteCoreComposite<V extends CompositeView<?, ?>> extends AbstractComposite<V> {
 	private static class InternalIsExpandedState extends BooleanState {
 		private final ToolPaletteCoreComposite<?> coreComposite;
 
 		private InternalIsExpandedState( Group group, boolean initialValue, ToolPaletteCoreComposite<?> coreComposite ) {
-			super( group, java.util.UUID.fromString( "470a871b-61ec-495b-8007-06a573a7a126" ), initialValue );
+			super( group, UUID.fromString( "470a871b-61ec-495b-8007-06a573a7a126" ), initialValue );
 			this.coreComposite = coreComposite;
 		}
 
@@ -65,12 +71,12 @@ public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.views.
 		}
 	}
 
-	public static final class OuterComposite extends AbstractComposite<org.lgna.croquet.views.ToolPaletteView> {
+	public static final class OuterComposite extends AbstractComposite<ToolPaletteView> {
 		private final BooleanState isExpandedState;
 		private final ToolPaletteCoreComposite<?> coreComposite;
 
 		private OuterComposite( BooleanState isExpandedState, ToolPaletteCoreComposite<?> coreComposite ) {
-			super( java.util.UUID.fromString( "92df5e68-7aa6-4bc7-9ab1-da5cf0a448c0" ) );
+			super( UUID.fromString( "92df5e68-7aa6-4bc7-9ab1-da5cf0a448c0" ) );
 			this.isExpandedState = isExpandedState;
 			this.coreComposite = coreComposite;
 		}
@@ -84,13 +90,13 @@ public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.views.
 		}
 
 		@Override
-		protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+		protected ScrollPane createScrollPaneIfDesired() {
 			return null;
 		}
 
 		@Override
-		protected org.lgna.croquet.views.ToolPaletteView createView() {
-			return new org.lgna.croquet.views.ToolPaletteView( this );
+		protected ToolPaletteView createView() {
+			return new ToolPaletteView( this );
 		}
 
 		@Override
@@ -108,7 +114,7 @@ public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.views.
 
 	private final OuterComposite outerComposite;
 
-	public ToolPaletteCoreComposite( java.util.UUID migrationId, Group group, boolean initialValue ) {
+	public ToolPaletteCoreComposite( UUID migrationId, Group group, boolean initialValue ) {
 		super( migrationId );
 		InternalIsExpandedState isExpandedState = new InternalIsExpandedState( group, initialValue, this );
 		this.outerComposite = new OuterComposite( isExpandedState, this );

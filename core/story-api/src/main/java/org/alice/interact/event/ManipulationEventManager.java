@@ -42,6 +42,11 @@
  *******************************************************************************/
 package org.alice.interact.event;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.util.List;
+
 /**
  * @author David Culyba
  */
@@ -50,7 +55,7 @@ public class ManipulationEventManager {
 		if( !this.manipulationListeners.contains( listener ) ) {
 			this.manipulationListeners.add( listener );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( listener, "already in", this );
+			Logger.errln( listener, "already in", this );
 		}
 	}
 
@@ -70,5 +75,5 @@ public class ManipulationEventManager {
 		}
 	}
 
-	private final java.util.List<ManipulationListener> manipulationListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<ManipulationListener> manipulationListeners = Lists.newCopyOnWriteArrayList();
 }

@@ -46,10 +46,11 @@ package org.alice.ide.properties.adapter;
 import org.alice.ide.croquet.models.StandardExpressionState;
 
 import edu.cmu.cs.dennisc.math.Dimension3;
+import org.lgna.story.implementation.Property;
 
 public class ScalePropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Dimension3, O>
 {
-	public ScalePropertyAdapter( String repr, O instance, org.lgna.story.implementation.Property<Dimension3> property, StandardExpressionState expressionState )
+	public ScalePropertyAdapter( String repr, O instance, Property<Dimension3> property, StandardExpressionState expressionState )
 	{
 		super( repr, instance, property, expressionState );
 	}

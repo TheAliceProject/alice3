@@ -42,21 +42,25 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.color.property;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+
 /**
  * @author Dennis Cosgrove
  */
-public class Color4fProperty extends edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.color.Color4f> {
-	public Color4fProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.color.Color4f value, boolean isNaNAcceptable ) {
+public class Color4fProperty extends InstanceProperty<Color4f> {
+	public Color4fProperty( InstancePropertyOwner owner, Color4f value, boolean isNaNAcceptable ) {
 		super( owner, value );
 		this.isNaNAcceptable = isNaNAcceptable;
 	}
 
-	public Color4fProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.color.Color4f value ) {
+	public Color4fProperty( InstancePropertyOwner owner, Color4f value ) {
 		this( owner, value, false );
 	}
 
 	@Override
-	public void setValue( edu.cmu.cs.dennisc.color.Color4f value ) {
+	public void setValue( Color4f value ) {
 		assert value != null : this;
 		assert ( value.isNaN() == false ) || this.isNaNAcceptable : this;
 		super.setValue( value );

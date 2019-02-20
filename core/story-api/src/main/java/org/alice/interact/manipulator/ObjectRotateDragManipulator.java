@@ -44,8 +44,12 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import edu.cmu.cs.dennisc.java.awt.RobotUtilities;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.PicturePlaneUtils;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
+import org.alice.interact.MovementType;
 import org.alice.interact.PickHint;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
@@ -66,6 +70,7 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
+import org.alice.interact.handle.StoodUpRotationRingHandle;
 
 /**
  * @author David Culyba
@@ -140,12 +145,12 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget() {
+	public OnscreenRenderTarget getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
@@ -154,7 +159,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 		this.setMainManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Rotate, null, this.manipulatedTransformable ) );
 		this.clearManipulationEvents();
 		if( rotationHandle != null ) {
-			org.alice.interact.MovementType type = this.rotationHandle instanceof org.alice.interact.handle.StoodUpRotationRingHandle ? org.alice.interact.MovementType.STOOD_UP : org.alice.interact.MovementType.LOCAL;
+			MovementType type = this.rotationHandle instanceof StoodUpRotationRingHandle ? MovementType.STOOD_UP : MovementType.LOCAL;
 			this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription( this.rotationHandle.getRotationDirection(), type ), this.manipulatedTransformable ) );
 		}
 	}
@@ -315,8 +320,8 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 		{
 			try {
 				Point3 pointInCamera = this.rotationHandle.getSphereLocation( this.getCamera() );
-				Point awtPoint = edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );
-				edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenRenderTarget.getAwtComponent(), awtPoint );
+				Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );
+				RobotUtilities.mouseMove( this.onscreenRenderTarget.getAwtComponent(), awtPoint );
 			} finally {
 				CursorUtilities.popAndSet( this.onscreenRenderTarget.getAwtComponent() );
 				//mmay ask dave?
@@ -355,6 +360,6 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	private Plane cameraFacingPlane;
 	protected RotationRingHandle rotationHandle;
 	private AbstractCamera camera = null;
-	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
+	private OnscreenRenderTarget onscreenRenderTarget;
 	private boolean hidCursor = false;
 }

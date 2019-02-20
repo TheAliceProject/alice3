@@ -43,16 +43,23 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.lang.ParameterAnnotation;
+import edu.cmu.cs.dennisc.property.StringProperty;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.annotations.ValueTemplate;
+
+import java.lang.annotation.Annotation;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class JavaParameter extends AbstractParameter {
-	public JavaParameter( java.lang.annotation.Annotation[] annotations ) {
+	public JavaParameter( Annotation[] annotations ) {
 		this.annotations = annotations;
 		if( this.annotations != null ) {
-			for( java.lang.annotation.Annotation annotation : this.annotations ) {
-				if( annotation instanceof org.lgna.project.annotations.ValueTemplate ) {
-					this.setValueTemplate( (org.lgna.project.annotations.ValueTemplate)annotation );
+			for( Annotation annotation : this.annotations ) {
+				if( annotation instanceof ValueTemplate ) {
+					this.setValueTemplate( (ValueTemplate)annotation );
 				}
 			}
 		}
@@ -64,15 +71,15 @@ public abstract class JavaParameter extends AbstractParameter {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
 
 	@Override
 	public boolean isVariableLength() {
-		for( java.lang.annotation.Annotation annotation : this.annotations ) {
-			if( annotation instanceof edu.cmu.cs.dennisc.java.lang.ParameterAnnotation ) {
-				edu.cmu.cs.dennisc.java.lang.ParameterAnnotation parameterAnnotation = (edu.cmu.cs.dennisc.java.lang.ParameterAnnotation)annotation;
+		for( Annotation annotation : this.annotations ) {
+			if( annotation instanceof ParameterAnnotation ) {
+				ParameterAnnotation parameterAnnotation = (ParameterAnnotation)annotation;
 				return parameterAnnotation.isVariable();
 			}
 		}
@@ -80,17 +87,17 @@ public abstract class JavaParameter extends AbstractParameter {
 	}
 
 	@Override
-	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
+	public ValueDetails<?> getDetails() {
 		return this.details;
 	}
 
-	/* package-private */void setValueTemplate( org.lgna.project.annotations.ValueTemplate valueTemplate ) {
-		Class<? extends Enum<? extends org.lgna.project.annotations.ValueDetails<?>>> detailsEnumCls = valueTemplate.detailsEnumCls();
-		Enum<? extends org.lgna.project.annotations.ValueDetails<?>>[] details = detailsEnumCls.getEnumConstants();
+	/* package-private */void setValueTemplate( ValueTemplate valueTemplate ) {
+		Class<? extends Enum<? extends ValueDetails<?>>> detailsEnumCls = valueTemplate.detailsEnumCls();
+		Enum<? extends ValueDetails<?>>[] details = detailsEnumCls.getEnumConstants();
 		assert details.length == 1;
-		this.details = (org.lgna.project.annotations.ValueDetails<?>)details[ 0 ];
+		this.details = (ValueDetails<?>)details[ 0 ];
 	}
 
-	private final java.lang.annotation.Annotation[] annotations;
-	private org.lgna.project.annotations.ValueDetails<?> details;
+	private final Annotation[] annotations;
+	private ValueDetails<?> details;
 }

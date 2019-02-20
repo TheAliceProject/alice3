@@ -43,10 +43,36 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.codecs.EnumCodec;
+import org.lgna.croquet.data.ListData;
+import org.lgna.croquet.data.MutableListData;
+import org.lgna.croquet.data.RefreshableListData;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.croquet.preferences.PreferenceBooleanState;
+import org.lgna.croquet.preferences.PreferenceStringState;
+import org.lgna.croquet.views.CompositeView;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.SplitPane;
+import org.lgna.croquet.views.SwingComponentView;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractElement implements Composite<V> {
+public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends AbstractElement implements Composite<V> {
 	protected static final class Key {
 		private final AbstractComposite<?> composite;
 		private final String localizationKey;
@@ -79,7 +105,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 			}
 			if( o instanceof Key ) {
 				Key key = (Key)o;
-				return edu.cmu.cs.dennisc.java.util.Objects.equals( this.composite, key.composite ) && edu.cmu.cs.dennisc.java.util.Objects.equals( this.localizationKey, key.localizationKey );
+				return Objects.equals( this.composite, key.composite ) && Objects.equals( this.localizationKey, key.localizationKey );
 			} else {
 				return false;
 			}
@@ -113,7 +139,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	protected static abstract class AbstractInternalStringValue extends PlainStringValue {
 		private final Key key;
 
-		public AbstractInternalStringValue( java.util.UUID id, Key key ) {
+		public AbstractInternalStringValue( UUID id, Key key ) {
 			super( id );
 			this.key = key;
 		}
@@ -142,7 +168,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 
 	private static final class InternalStringValue extends AbstractInternalStringValue {
 		private InternalStringValue( Key key ) {
-			super( java.util.UUID.fromString( "142b66a2-0b95-42d0-8ea4-a22a79c8ff8c" ), key );
+			super( UUID.fromString( "142b66a2-0b95-42d0-8ea4-a22a79c8ff8c" ), key );
 		}
 	}
 
@@ -150,7 +176,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		private final Key key;
 
 		private InternalStringState( String initialValue, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ed65869f-8d26-48b1-8240-cf74ba403a2f" ), initialValue );
+			super( Application.INHERIT_GROUP, UUID.fromString( "ed65869f-8d26-48b1-8240-cf74ba403a2f" ), initialValue );
 			this.key = key;
 		}
 
@@ -176,12 +202,12 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 	}
 
-	private static final class InternalPreferenceStringState extends org.lgna.croquet.preferences.PreferenceStringState {
+	private static final class InternalPreferenceStringState extends PreferenceStringState {
 		private final Key key;
 		private final BooleanState isStoringPreferenceDesiredState;
 
-		private InternalPreferenceStringState( String initialValue, Key key, BooleanState isStoringPreferenceDesiredState, java.util.UUID encryptionId ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ad98acf0-db41-43a6-8619-269a7d8cbc2d" ), initialValue, key.getPreferenceKey(), getEncryptionKey( encryptionId != null ? encryptionId.toString() : null ) );
+		private InternalPreferenceStringState( String initialValue, Key key, BooleanState isStoringPreferenceDesiredState, UUID encryptionId ) {
+			super( Application.INHERIT_GROUP, UUID.fromString( "ad98acf0-db41-43a6-8619-269a7d8cbc2d" ), initialValue, key.getPreferenceKey(), getEncryptionKey( encryptionId != null ? encryptionId.toString() : null ) );
 			this.key = key;
 			this.isStoringPreferenceDesiredState = isStoringPreferenceDesiredState;
 		}
@@ -217,7 +243,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		private final Key key;
 
 		private InternalBooleanState( boolean initialValue, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "5053e40f-9561-41c8-835d-069bd106723c" ), initialValue );
+			super( Application.INHERIT_GROUP, UUID.fromString( "5053e40f-9561-41c8-835d-069bd106723c" ), initialValue );
 			this.key = key;
 		}
 
@@ -243,11 +269,11 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 	}
 
-	private static final class InternalPreferenceBooleanState extends org.lgna.croquet.preferences.PreferenceBooleanState {
+	private static final class InternalPreferenceBooleanState extends PreferenceBooleanState {
 		private final Key key;
 
 		private InternalPreferenceBooleanState( boolean initialValue, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "034f99f7-74ec-4a89-8396-3c187d9684a2" ), initialValue, key.getPreferenceKey() );
+			super( Application.INHERIT_GROUP, UUID.fromString( "034f99f7-74ec-4a89-8396-3c187d9684a2" ), initialValue, key.getPreferenceKey() );
 			this.key = key;
 		}
 
@@ -273,11 +299,11 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 	}
 
-	private static final class InternalSingleSelectListState<T> extends SingleSelectListState<T, org.lgna.croquet.data.ListData<T>> {
+	private static final class InternalSingleSelectListState<T> extends SingleSelectListState<T, ListData<T>> {
 		private final Key key;
 
-		private InternalSingleSelectListState( int selectionIndex, org.lgna.croquet.data.ListData<T> data, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "4f0640c9-eceb-4801-a8bb-bf8e282cef0f" ), selectionIndex, data );
+		private InternalSingleSelectListState( int selectionIndex, ListData<T> data, Key key ) {
+			super( Application.INHERIT_GROUP, UUID.fromString( "4f0640c9-eceb-4801-a8bb-bf8e282cef0f" ), selectionIndex, data );
 			this.key = key;
 		}
 
@@ -307,7 +333,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		private final Key key;
 
 		private InternalImmutableDataSingleSelectListState( int selectionIndex, ItemCodec<T> codec, T[] values, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "091d5251-d278-4eb1-8214-a27c154f5378" ), selectionIndex, codec, values );
+			super( Application.INHERIT_GROUP, UUID.fromString( "091d5251-d278-4eb1-8214-a27c154f5378" ), selectionIndex, codec, values );
 			this.key = key;
 		}
 
@@ -336,8 +362,8 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	private static final class InternalRefreshableDataSingleSelectListState<T> extends RefreshableDataSingleSelectListState<T> {
 		private final Key key;
 
-		private InternalRefreshableDataSingleSelectListState( int selectionIndex, org.lgna.croquet.data.RefreshableListData<T> data, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "4d7ef91c-a8ae-4b17-9d8a-91ffac4ba12e" ), selectionIndex, data );
+		private InternalRefreshableDataSingleSelectListState( int selectionIndex, RefreshableListData<T> data, Key key ) {
+			super( Application.INHERIT_GROUP, UUID.fromString( "4d7ef91c-a8ae-4b17-9d8a-91ffac4ba12e" ), selectionIndex, data );
 			this.key = key;
 		}
 
@@ -366,8 +392,8 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	private static final class InternalMutableDataSingleSelectListState<T> extends MutableDataSingleSelectListState<T> {
 		private final Key key;
 
-		private InternalMutableDataSingleSelectListState( int selectionIndex, org.lgna.croquet.data.MutableListData<T> data, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "6cc16988-0fc8-476b-9026-b19fd15748ea" ), selectionIndex, data );
+		private InternalMutableDataSingleSelectListState( int selectionIndex, MutableListData<T> data, Key key ) {
+			super( Application.INHERIT_GROUP, UUID.fromString( "6cc16988-0fc8-476b-9026-b19fd15748ea" ), selectionIndex, data );
 			this.key = key;
 		}
 
@@ -397,7 +423,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		private final Key key;
 
 		public InternalTabState( int selectionIndex, Class<T> cls, T[] values, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "bea99c2f-45ad-40a8-a99c-9c125a72f0be" ), selectionIndex, cls, values );
+			super( Application.INHERIT_GROUP, UUID.fromString( "bea99c2f-45ad-40a8-a99c-9c125a72f0be" ), selectionIndex, cls, values );
 			this.key = key;
 		}
 
@@ -425,7 +451,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 
 	public static class BoundedIntegerDetails extends BoundedIntegerState.Details {
 		public BoundedIntegerDetails() {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "3cb7dfc5-de8c-442c-9e9a-deab2eff38e8" ) );
+			super( Application.INHERIT_GROUP, UUID.fromString( "3cb7dfc5-de8c-442c-9e9a-deab2eff38e8" ) );
 		}
 	}
 
@@ -457,7 +483,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 
 	public static class BoundedDoubleDetails extends BoundedDoubleState.Details {
 		public BoundedDoubleDetails() {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "603d4a60-cc60-41df-b5a5-992966128b41" ) );
+			super( Application.INHERIT_GROUP, UUID.fromString( "603d4a60-cc60-41df-b5a5-992966128b41" ) );
 		}
 	}
 
@@ -492,7 +518,8 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	}
 
 	protected static interface Action {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws CancelException;
+		// TODO remove userActivity if possible. It is used by only two implementors
+		Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException;
 	}
 
 	protected static final class InternalActionOperation extends ActionOperation {
@@ -500,7 +527,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		private final Key key;
 
 		private InternalActionOperation( Action action, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "2c311356-2bf2-4a57-b06b-f6cdb39b0d78" ) );
+			super( Application.INHERIT_GROUP, UUID.fromString( "2c311356-2bf2-4a57-b06b-f6cdb39b0d78" ) );
 			this.action = action;
 			this.key = key;
 		}
@@ -520,16 +547,16 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+		protected void perform( UserActivity activity ) {
 			try {
-				org.lgna.croquet.edits.Edit edit = this.action.perform( step, this );
+				Edit edit = this.action.perform( activity, this );
 				if( edit != null ) {
-					step.commitAndInvokeDo( edit );
+					activity.commitAndInvokeDo( edit );
 				} else {
-					step.finish();
+					activity.finish();
 				}
 			} catch( CancelException ce ) {
-				step.cancel();
+				activity.cancel(ce);
 			}
 		}
 
@@ -542,9 +569,9 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	}
 
 	protected static interface CascadeCustomizer<T> {
-		public void appendBlankChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode );
+		void appendBlankChildren( List<CascadeBlankChild> rv, BlankNode<T> blankNode );
 
-		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values );
+		Edit createEdit( T[] values );
 	}
 
 	protected static final class InternalCascadeWithInternalBlank<T> extends CascadeWithInternalBlank<T> {
@@ -552,7 +579,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		private final Key key;
 
 		private InternalCascadeWithInternalBlank( CascadeCustomizer<T> customizer, Class<T> componentType, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "165e65a4-fd9b-4a09-921d-ecc3cc808de0" ), componentType );
+			super( Application.INHERIT_GROUP, UUID.fromString( "165e65a4-fd9b-4a09-921d-ecc3cc808de0" ), componentType );
 			this.customizer = customizer;
 			this.key = key;
 		}
@@ -572,12 +599,12 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values ) {
-			return this.customizer.createEdit( completionStep, values );
+		protected Edit createEdit( UserActivity userActivity, T[] values ) {
+			return this.customizer.createEdit( values );
 		}
 
 		@Override
-		protected java.util.List<CascadeBlankChild> updateBlankChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode ) {
+		protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<T> blankNode ) {
 			this.customizer.appendBlankChildren( rv, blankNode );
 			return rv;
 		}
@@ -593,9 +620,9 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	protected static interface ItemStateCustomizer<T> {
 		public CascadeFillIn<T, ?> getFillInFor( T value );
 
-		public void appendBlankChildren( java.util.List<CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode );
+		public void appendBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<T> blankNode );
 
-		public void prologue( org.lgna.croquet.triggers.Trigger trigger );
+		public void prologue();
 
 		public void epilogue();
 	}
@@ -605,7 +632,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		private final Key key;
 
 		private InternalCustomItemState( ItemStateCustomizer<T> customizer, ItemCodec<T> itemCodec, T initialValue, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "eac974ec-8b09-4f1a-9a4c-7bae8f0780f1" ), itemCodec, initialValue );
+			super( Application.INHERIT_GROUP, UUID.fromString( "eac974ec-8b09-4f1a-9a4c-7bae8f0780f1" ), itemCodec, initialValue );
 			this.customizer = customizer;
 			this.key = key;
 		}
@@ -619,9 +646,9 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
-			super.prologue( trigger );
-			this.customizer.prologue( trigger );
+		protected void prologue() {
+			super.prologue();
+			this.customizer.prologue();
 		}
 
 		@Override
@@ -631,7 +658,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode ) {
+		protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<T> blankNode ) {
 			this.customizer.appendBlankChildren( blankChildren, blankNode );
 		}
 
@@ -648,14 +675,14 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		private final double resizeWeight;
 
 		private InternalSplitComposite( Composite<?> leadingComposite, Composite<?> trailingComposite, boolean isHorizontal, double resizeWeight ) {
-			super( java.util.UUID.fromString( "0a7dee81-a213-4168-b71c-99b9e364dcf3" ), leadingComposite, trailingComposite );
+			super( UUID.fromString( "0a7dee81-a213-4168-b71c-99b9e364dcf3" ), leadingComposite, trailingComposite );
 			this.isHorizontal = isHorizontal;
 			this.resizeWeight = resizeWeight;
 		}
 
 		@Override
-		protected org.lgna.croquet.views.SplitPane createView() {
-			org.lgna.croquet.views.SplitPane rv;
+		protected SplitPane createView() {
+			SplitPane rv;
 			if( this.isHorizontal ) {
 				rv = this.createHorizontalSplitPane();
 			} else {
@@ -668,33 +695,32 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 
 	private static final class InternalCardOwnerComposite extends CardOwnerComposite {
 		private InternalCardOwnerComposite( Composite<?>... cards ) {
-			super( java.util.UUID.fromString( "3a6b3b22-9c35-473b-96cf-f69640176948" ), cards );
+			super( UUID.fromString( "3a6b3b22-9c35-473b-96cf-f69640176948" ), cards );
 		}
 	}
 
-	private java.util.UUID cardId;
+	private UUID cardId;
 
 	private V view;
 
-	private final org.lgna.croquet.views.ScrollPane scrollPane;
+	private final ScrollPane scrollPane;
 
-	public AbstractComposite( java.util.UUID id ) {
+	public AbstractComposite( UUID id ) {
 		super( id );
 		this.scrollPane = this.createScrollPaneIfDesired();
-		Manager.registerComposite( this );
 	}
 
 	@Override
-	public synchronized java.util.UUID getCardId() {
+	public synchronized UUID getCardId() {
 		if( this.cardId != null ) {
 
 		} else {
-			this.cardId = java.util.UUID.randomUUID();
+			this.cardId = UUID.randomUUID();
 		}
 		return this.cardId;
 	}
 
-	protected abstract org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired();
+	protected abstract ScrollPane createScrollPaneIfDesired();
 
 	protected abstract V createView();
 
@@ -717,12 +743,12 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	}
 
 	@Override
-	public final org.lgna.croquet.views.ScrollPane getScrollPaneIfItExists() {
+	public final ScrollPane getScrollPaneIfItExists() {
 		return this.scrollPane;
 	}
 
 	@Override
-	public final org.lgna.croquet.views.SwingComponentView<?> getRootComponent() {
+	public final SwingComponentView<?> getRootComponent() {
 		V view = this.getView();
 		if( this.scrollPane != null ) {
 			return this.scrollPane;
@@ -736,7 +762,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		this.view = null;
 	}
 
-	private final java.util.List<Composite<?>> subComposites = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<Composite<?>> subComposites = Lists.newCopyOnWriteArrayList();
 
 	protected <C extends Composite<?>> C registerSubComposite( C subComposite ) {
 		this.subComposites.add( subComposite );
@@ -784,54 +810,53 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 	}
 
-	private final java.util.Map<Key, AbstractInternalStringValue> mapKeyToStringValue = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<Key, InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<Key, InternalPreferenceBooleanState> mapKeyToPreferenceBooleanState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<Key, InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<Key, InternalPreferenceStringState> mapKeyToPreferenceStringState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<Key, InternalSingleSelectListState> mapKeyToSingleSelectListState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<Key, InternalImmutableDataSingleSelectListState> mapKeyToImmutableSingleSelectListState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<Key, InternalRefreshableDataSingleSelectListState> mapKeyToRefreshableSingleSelectListState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<Key, InternalMutableDataSingleSelectListState> mapKeyToMutableSingleSelectListState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<Key, InternalTabState> mapKeyToTabState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<Key, InternalBoundedIntegerState> mapKeyToBoundedIntegerState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<Key, InternalBoundedDoubleState> mapKeyToBoundedDoubleState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<Key, InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<Key, InternalCascadeWithInternalBlank> mapKeyToCascade = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<Key, InternalCustomItemState> mapKeyToItemState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Map<Key, AbstractInternalStringValue> mapKeyToStringValue = Maps.newHashMap();
+	private final Map<Key, InternalBooleanState> mapKeyToBooleanState = Maps.newHashMap();
+	private final Map<Key, InternalPreferenceBooleanState> mapKeyToPreferenceBooleanState = Maps.newHashMap();
+	private final Map<Key, InternalStringState> mapKeyToStringState = Maps.newHashMap();
+	private final Map<Key, InternalPreferenceStringState> mapKeyToPreferenceStringState = Maps.newHashMap();
+	private final Map<Key, InternalSingleSelectListState> mapKeyToSingleSelectListState = Maps.newHashMap();
+	private final Map<Key, InternalImmutableDataSingleSelectListState> mapKeyToImmutableSingleSelectListState = Maps.newHashMap();
+	private final Map<Key, InternalRefreshableDataSingleSelectListState> mapKeyToRefreshableSingleSelectListState = Maps.newHashMap();
+	private final Map<Key, InternalMutableDataSingleSelectListState> mapKeyToMutableSingleSelectListState = Maps.newHashMap();
+	private final Map<Key, InternalTabState> mapKeyToTabState = Maps.newHashMap();
+	private final Map<Key, InternalBoundedIntegerState> mapKeyToBoundedIntegerState = Maps.newHashMap();
+	private final Map<Key, InternalBoundedDoubleState> mapKeyToBoundedDoubleState = Maps.newHashMap();
+	private final Map<Key, InternalActionOperation> mapKeyToActionOperation = Maps.newHashMap();
+	private final Map<Key, InternalCascadeWithInternalBlank> mapKeyToCascade = Maps.newHashMap();
+	private final Map<Key, InternalCustomItemState> mapKeyToItemState = Maps.newHashMap();
 
-	private final java.util.Set<TabState> registeredTabStates = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+	private final Set<TabState> registeredTabStates = Sets.newHashSet();
 
 	//	private java.util.Map<Key, InternalCardOwnerComposite> mapKeyToCardOwnerComposite = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private static final String SIDEKICK_LABEL_EPILOGUE = ".sidekickLabel";
 
-	private void localizeSidekicks( java.util.Map<Key, ? extends AbstractCompletionModel>... maps ) {
-		for( java.util.Map<Key, ? extends AbstractCompletionModel> map : maps ) {
+	private void localizeSidekicks( Map<Key, ? extends CompletionModel>... maps ) {
+		for( Map<Key, ? extends CompletionModel> map : maps ) {
 			for( Key key : map.keySet() ) {
-				AbstractCompletionModel model = map.get( key );
+				CompletionModel model = map.get( key );
 				String text = this.findLocalizedText( key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE );
 				if( text != null ) {
 					StringValue sidekickLabel = model.getSidekickLabel();
 					text = this.modifyLocalizedText( sidekickLabel, text );
 					sidekickLabel.setText( text );
 				} else {
-					StringValue sidekickLabel = model.peekSidekickLabel();
 					//todo: it is probably to early for this check as we don't know if it will be accessed by the composite's view later.  hmm...
-					if( sidekickLabel != null ) {
+					if( model.hasSidekickLabel() ) {
 						Class<?> cls = this.getClassUsedForLocalization();
 						String localizationKey = cls.getSimpleName() + "." + key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE;
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "WARNING: could not find localization for sidekick label" );
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "looking for:" );
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "   ", localizationKey );
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "in croquet.properties file in package:", cls.getPackage().getName() );
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( localizationKey, "has been copied to the clipboard for your convenience." );
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "if this does not solve your problem please feel free to ask dennis for help." );
-						edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( localizationKey );
+						Logger.errln();
+						Logger.errln( "WARNING: could not find localization for sidekick label" );
+						Logger.errln( "looking for:" );
+						Logger.errln();
+						Logger.errln( "   ", localizationKey );
+						Logger.errln();
+						Logger.errln( "in croquet.properties file in package:", cls.getPackage().getName() );
+						Logger.errln();
+						Logger.errln( localizationKey, "has been copied to the clipboard for your convenience." );
+						Logger.errln( "if this does not solve your problem please feel free to ask dennis for help." );
+						ClipboardUtilities.setClipboardContents( localizationKey );
 					}
 				}
 			}
@@ -973,14 +998,14 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		return createStringState( keyText, "" );
 	}
 
-	protected org.lgna.croquet.preferences.PreferenceStringState createPreferenceStringState( String keyText, String initialValue, BooleanState isStoringPreferenceDesiredState, java.util.UUID encryptionId ) {
+	protected PreferenceStringState createPreferenceStringState( String keyText, String initialValue, BooleanState isStoringPreferenceDesiredState, UUID encryptionId ) {
 		Key key = this.createKey( keyText );
 		InternalPreferenceStringState rv = new InternalPreferenceStringState( initialValue, key, isStoringPreferenceDesiredState, encryptionId );
 		this.mapKeyToPreferenceStringState.put( key, rv );
 		return rv;
 	}
 
-	protected org.lgna.croquet.preferences.PreferenceStringState createPreferenceStringState( String keyText, String initialValue, BooleanState isStoringPreferenceDesiredState ) {
+	protected PreferenceStringState createPreferenceStringState( String keyText, String initialValue, BooleanState isStoringPreferenceDesiredState ) {
 		return createPreferenceStringState( keyText, initialValue, isStoringPreferenceDesiredState, null );
 	}
 
@@ -991,7 +1016,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		return rv;
 	}
 
-	protected org.lgna.croquet.preferences.PreferenceBooleanState createPreferenceBooleanState( String keyText, boolean initialValue ) {
+	protected PreferenceBooleanState createPreferenceBooleanState( String keyText, boolean initialValue ) {
 		Key key = this.createKey( keyText );
 		InternalPreferenceBooleanState rv = new InternalPreferenceBooleanState( initialValue, key );
 		this.mapKeyToPreferenceBooleanState.put( key, rv );
@@ -1033,25 +1058,25 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		return rv;
 	}
 
-	protected <T> SingleSelectListState<T, org.lgna.croquet.data.ListData<T>> createGenericListState( String keyText, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
+	protected <T> SingleSelectListState<T, ListData<T>> createGenericListState( String keyText, ListData<T> data, int selectionIndex ) {
 		Key key = this.createKey( keyText );
 		InternalSingleSelectListState<T> rv = new InternalSingleSelectListState<T>( selectionIndex, data, key );
 		this.mapKeyToSingleSelectListState.put( key, rv );
 		return rv;
 	}
 
-	protected <T> ImmutableDataSingleSelectListState<T> createImmutableListState( String keyText, Class<T> valueCls, org.lgna.croquet.ItemCodec<T> codec, int selectionIndex, T... values ) {
+	protected <T> ImmutableDataSingleSelectListState<T> createImmutableListState( String keyText, Class<T> valueCls, ItemCodec<T> codec, int selectionIndex, T... values ) {
 		Key key = this.createKey( keyText );
 		InternalImmutableDataSingleSelectListState<T> rv = new InternalImmutableDataSingleSelectListState<T>( selectionIndex, codec, values, key );
 		this.mapKeyToImmutableSingleSelectListState.put( key, rv );
 		return rv;
 	}
 
-	protected <T extends Enum<T>> ImmutableDataSingleSelectListState<T> createImmutableListStateForEnum( String keyText, Class<T> valueCls, org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<T> localizationCustomizer, T initialValue ) {
+	protected <T extends Enum<T>> ImmutableDataSingleSelectListState<T> createImmutableListStateForEnum( String keyText, Class<T> valueCls, EnumCodec.LocalizationCustomizer<T> localizationCustomizer, T initialValue ) {
 		Key key = this.createKey( keyText );
 		T[] constants = valueCls.getEnumConstants();
-		int selectionIndex = java.util.Arrays.asList( constants ).indexOf( initialValue );
-		org.lgna.croquet.codecs.EnumCodec<T> enumCodec = localizationCustomizer != null ? org.lgna.croquet.codecs.EnumCodec.createInstance( valueCls, localizationCustomizer ) : org.lgna.croquet.codecs.EnumCodec.getInstance( valueCls );
+		int selectionIndex = Arrays.asList( constants ).indexOf( initialValue );
+		EnumCodec<T> enumCodec = localizationCustomizer != null ? EnumCodec.createInstance( valueCls, localizationCustomizer ) : EnumCodec.getInstance( valueCls );
 		InternalImmutableDataSingleSelectListState<T> rv = new InternalImmutableDataSingleSelectListState<T>( selectionIndex, enumCodec, constants, key );
 		this.mapKeyToImmutableSingleSelectListState.put( key, rv );
 		return rv;
@@ -1061,16 +1086,16 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		return this.createImmutableListStateForEnum( keyText, valueCls, null, initialValue );
 	}
 
-	protected <T> RefreshableDataSingleSelectListState<T> createRefreshableListState( String keyText, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {
+	protected <T> RefreshableDataSingleSelectListState<T> createRefreshableListState( String keyText, RefreshableListData<T> data, int selectionIndex ) {
 		Key key = this.createKey( keyText );
 		InternalRefreshableDataSingleSelectListState<T> rv = new InternalRefreshableDataSingleSelectListState<T>( selectionIndex, data, key );
 		this.mapKeyToRefreshableSingleSelectListState.put( key, rv );
 		return rv;
 	}
 
-	protected <T> MutableDataSingleSelectListState<T> createMutableListState( String keyText, Class<T> valueCls, org.lgna.croquet.ItemCodec<T> codec, int selectionIndex, T... values ) {
+	protected <T> MutableDataSingleSelectListState<T> createMutableListState( String keyText, Class<T> valueCls, ItemCodec<T> codec, int selectionIndex, T... values ) {
 		Key key = this.createKey( keyText );
-		InternalMutableDataSingleSelectListState<T> rv = new InternalMutableDataSingleSelectListState<T>( selectionIndex, new org.lgna.croquet.data.MutableListData<T>( codec, values ), key );
+		InternalMutableDataSingleSelectListState<T> rv = new InternalMutableDataSingleSelectListState<T>( selectionIndex, new MutableListData<T>( codec, values ), key );
 		this.mapKeyToMutableSingleSelectListState.put( key, rv );
 		return rv;
 	}

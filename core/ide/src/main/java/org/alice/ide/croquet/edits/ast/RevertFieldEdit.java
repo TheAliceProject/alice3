@@ -42,55 +42,67 @@
  *******************************************************************************/
 package org.alice.ide.croquet.edits.ast;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author dculyba
  * 
  */
-public class RevertFieldEdit extends org.lgna.croquet.edits.AbstractEdit {
-	private final org.lgna.project.ast.UserField field;
-	private final org.lgna.project.ast.Statement redoStateCode;
+public class RevertFieldEdit extends AbstractEdit {
+	private final UserField field;
+	private final Statement redoStateCode;
 
-	public RevertFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserField field ) {
-		super( step );
+	public RevertFieldEdit( UserActivity userActivity, UserField field ) {
+		super( userActivity );
 		this.field = field;
-		this.redoStateCode = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField( this.field );
+		this.redoStateCode = IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField( this.field );
 	}
 
-	public RevertFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public RevertFieldEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).decodeValue( binaryDecoder );
-		this.redoStateCode = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField( this.field );
+		this.field = NodeCodec.getInstance( UserField.class ).decodeValue( binaryDecoder );
+		this.redoStateCode = IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField( this.field );
 	}
 
-	protected org.lgna.project.ast.UserField getField() {
+	protected UserField getField() {
 		return this.field;
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).encodeValue( binaryEncoder, this.field );
+		NodeCodec.getInstance( UserField.class ).encodeValue( binaryEncoder, this.field );
 	}
 
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "declare:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, field, org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( rv, field, Application.getLocale() );
 	}
 
 	@Override
 	public void doOrRedoInternal( boolean isDo ) {
-		org.lgna.project.ast.UserField field = this.getField();
-		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.alice.ide.IDE.getActiveInstance().getSceneEditor().revertFieldToInitialState( field );
+		UserField field = this.getField();
+		if( field.managementLevel.getValue() == ManagementLevel.MANAGED ) {
+			IDE.getActiveInstance().getSceneEditor().revertFieldToInitialState( field );
 		}
 	}
 
 	@Override
 	public void undoInternal() {
-		org.lgna.project.ast.UserField field = this.getField();
-		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.alice.ide.IDE.getActiveInstance().getSceneEditor().setFieldToState( field, redoStateCode );
+		UserField field = this.getField();
+		if( field.managementLevel.getValue() == ManagementLevel.MANAGED ) {
+			IDE.getActiveInstance().getSceneEditor().setFieldToState( field, redoStateCode );
 		}
 	}
 }

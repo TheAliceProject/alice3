@@ -42,17 +42,26 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.operation;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.pattern.Lazy;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.PrepModel;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.edits.Edit;
+
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.KeyStroke;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class OperationImp {
-	public OperationImp( org.lgna.croquet.Operation operation ) {
+	public OperationImp( Operation operation ) {
 		this.operation = operation;
 		this.swingModel = new OperationSwingModel( operation );
-	}
-
-	public org.lgna.croquet.Operation getOperation() {
-		return this.operation;
 	}
 
 	public OperationSwingModel getSwingModel() {
@@ -60,78 +69,43 @@ public class OperationImp {
 	}
 
 	public String getName() {
-		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );
+		return String.class.cast( this.swingModel.action.getValue( Action.NAME ) );
 	}
 
 	public void setName( String name ) {
-		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
-	}
-
-	public String getShortDescription() {
-		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
+		this.swingModel.action.putValue( Action.NAME, name );
 	}
 
 	public void setShortDescription( String shortDescription ) {
-		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
+		this.swingModel.action.putValue( Action.SHORT_DESCRIPTION, shortDescription );
 	}
 
-	public String getLongDescription() {
-		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
+	public void setSmallIcon( Icon icon ) {
+		this.swingModel.action.putValue( Action.SMALL_ICON, icon );
 	}
 
-	public void setLongDescription( String longDescription ) {
-		this.swingModel.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
+	public void setAcceleratorKey( KeyStroke acceleratorKey ) {
+		this.swingModel.action.putValue( Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
-	public javax.swing.Icon getSmallIcon() {
-		return javax.swing.Icon.class.cast( this.swingModel.action.getValue( javax.swing.Action.SMALL_ICON ) );
-	}
-
-	public void setSmallIcon( javax.swing.Icon icon ) {
-		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
-	}
-
-	public void setMnemonicKey( int mnemonicKey ) {
-		this.swingModel.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
-	}
-
-	public javax.swing.KeyStroke getAcceleratorKey() {
-		return javax.swing.KeyStroke.class.cast( this.swingModel.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
-	}
-
-	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
-		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
-	}
-
-	public org.lgna.croquet.StandardMenuItemPrepModel getMenuItemPrepModel() {
+	public StandardMenuItemPrepModel getMenuItemPrepModel() {
 		return this.menuItemPrepModel.get();
 	}
 
-	public <F, B> org.lgna.croquet.CascadeItem<F, B> getFauxCascadeItem() {
-		return this.fauxCascadeItem.get();
-	}
-
-	public java.util.List<java.util.List<org.lgna.croquet.PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
+	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
 		if( this.menuItemPrepModel.peek() != null ) {
-			return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.menuItemPrepModel.get() );
+			return Lists.newArrayListOfSingleArrayList( this.menuItemPrepModel.get() );
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	private final org.lgna.croquet.Operation operation;
+	private final Operation operation;
 	private final OperationSwingModel swingModel;
-	private final edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.StandardMenuItemPrepModel> menuItemPrepModel = new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.StandardMenuItemPrepModel>() {
+	private final Lazy<StandardMenuItemPrepModel> menuItemPrepModel = new Lazy<StandardMenuItemPrepModel>() {
 		@Override
-		protected org.lgna.croquet.StandardMenuItemPrepModel create() {
+		protected StandardMenuItemPrepModel create() {
 			return new OperationMenuItemPrepModel( operation );
-		}
-	};
-
-	private final edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.CascadeItem> fauxCascadeItem = new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.CascadeItem>() {
-		@Override
-		protected org.lgna.croquet.CascadeItem<?, ?> create() {
-			return new OperationFauxCascadeItem( operation );
 		}
 	};
 }

@@ -43,51 +43,58 @@
 
 package org.alice.ide.instancefactory;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.MethodInvocation;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class MethodInvocationFactory extends AbstractInstanceFactory {
-	private final org.lgna.project.ast.AbstractMethod method;
+	private final AbstractMethod method;
 
-	public MethodInvocationFactory( org.lgna.project.ast.AbstractMethod method, edu.cmu.cs.dennisc.property.InstanceProperty<?>... mutablePropertiesOfInterest ) {
+	public MethodInvocationFactory( AbstractMethod method, InstanceProperty<?>... mutablePropertiesOfInterest ) {
 		super( mutablePropertiesOfInterest );
 		this.method = method;
 	}
 
-	protected abstract org.lgna.project.ast.AbstractType<?, ?, ?> getValidInstanceType( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code );
+	protected abstract AbstractType<?, ?, ?> getValidInstanceType( AbstractType<?, ?, ?> type, AbstractCode code );
 
 	@Override
-	protected final boolean isValid( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> methodDeclarationType = this.method.getDeclaringType();
+	protected final boolean isValid( AbstractType<?, ?, ?> type, AbstractCode code ) {
+		AbstractType<?, ?, ?> methodDeclarationType = this.method.getDeclaringType();
 		return ( methodDeclarationType != null ) && methodDeclarationType.isAssignableFrom( this.getValidInstanceType( type, code ) );
 	}
 
-	public org.lgna.project.ast.AbstractMethod getMethod() {
+	public AbstractMethod getMethod() {
 		return this.method;
 	}
 
-	protected abstract org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation();
+	protected abstract Expression createTransientExpressionForMethodInvocation();
 
-	protected abstract org.lgna.project.ast.Expression createExpressionForMethodInvocation();
+	protected abstract Expression createExpressionForMethodInvocation();
 
-	private org.lgna.project.ast.MethodInvocation createMethodInvocation( org.lgna.project.ast.Expression access ) {
-		return new org.lgna.project.ast.MethodInvocation(
+	private MethodInvocation createMethodInvocation( Expression access ) {
+		return new MethodInvocation(
 				access,
 				this.method );
 	}
 
 	@Override
-	public final org.lgna.project.ast.MethodInvocation createTransientExpression() {
+	public final MethodInvocation createTransientExpression() {
 		return this.createMethodInvocation( this.createTransientExpressionForMethodInvocation() );
 	}
 
 	@Override
-	public final org.lgna.project.ast.MethodInvocation createExpression() {
+	public final MethodInvocation createExpression() {
 		return this.createMethodInvocation( this.createExpressionForMethodInvocation() );
 	}
 
 	@Override
-	public final org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
+	public final AbstractType<?, ?, ?> getValueType() {
 		return this.method.getReturnType();
 	}
 

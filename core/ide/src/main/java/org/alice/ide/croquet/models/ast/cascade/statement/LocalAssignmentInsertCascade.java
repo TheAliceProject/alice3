@@ -43,14 +43,23 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LocalAssignmentInsertCascade extends SimpleAssignmentInsertCascade {
-	private final org.lgna.project.ast.UserLocal local;
+	private final UserLocal local;
 
-	public LocalAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "ae9cd20c-b158-4298-bcee-720810dcbef9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( local.getValueType() ) );
+	public LocalAssignmentInsertCascade( BlockStatementIndexPair blockStatementIndexPair, UserLocal local ) {
+		super( UUID.fromString( "ae9cd20c-b158-4298-bcee-720810dcbef9" ), blockStatementIndexPair, ExpressionBlank.createBlanks( local.getValueType() ) );
 		this.local = local;
 	}
 
@@ -60,12 +69,12 @@ public class LocalAssignmentInsertCascade extends SimpleAssignmentInsertCascade 
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
+	protected AbstractType<?, ?, ?> getValueType() {
 		return this.local.getValueType();
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createLeftHandSide( org.lgna.project.ast.Expression... expressions ) {
-		return new org.lgna.project.ast.LocalAccess( this.local );
+	protected Expression createLeftHandSide( Expression... expressions ) {
+		return new LocalAccess( this.local );
 	}
 }

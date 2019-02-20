@@ -60,18 +60,7 @@ public abstract class AbstractArgument extends AbstractNode implements CodeAppen
 	protected abstract AbstractType<?, ?, ?> getExpressionTypeForParameterType( AbstractType<?, ?, ?> parameterType );
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			AbstractArgument other = (AbstractArgument)o;
-			if( this.parameter.valueContentEquals( other.parameter, strictness, filter ) ) {
-				return this.expression.valueContentEquals( other.expression, strictness, filter );
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public abstract void appendJava( JavaCodeGenerator generator );
+	public abstract void appendCode( SourceCodeGenerator generator );
 
 	public final DeclarationProperty<AbstractParameter> parameter = DeclarationProperty.createReferenceInstance( this );
 	public final ExpressionProperty expression = new ExpressionProperty( this ) {

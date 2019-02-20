@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.IntegerProperty;
+import org.lgna.project.ast.localizer.AstLocalizer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,7 +63,7 @@ public final class IntegerLiteral extends AbstractValueLiteral<Integer> {
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
+	protected void appendRepr( AstLocalizer localizer ) {
 		Integer value = this.value.getValue();
 		if( value != null ) {
 			localizer.appendInt( value );
@@ -69,21 +73,14 @@ public final class IntegerLiteral extends AbstractValueLiteral<Integer> {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<Integer> getValueProperty() {
+	public InstanceProperty<Integer> getValueProperty() {
 		return this.value;
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		int n = this.value.getValue();
-		if( n == Integer.MAX_VALUE ) {
-			generator.appendString( "Integer.MAX_VALUE" );
-		} else if( n == Integer.MIN_VALUE ) {
-			generator.appendString( "Integer.MIN_VALUE" );
-		} else {
-			generator.appendInt( n );
-		}
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendInt( value.getValue() );
 	}
 
-	public final edu.cmu.cs.dennisc.property.IntegerProperty value = new edu.cmu.cs.dennisc.property.IntegerProperty( this, 0 );
+	public final IntegerProperty value = new IntegerProperty( this, 0 );
 }

@@ -43,10 +43,20 @@
 
 package org.alice.ide.croquet.models.cascade.number;
 
+import org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu;
+import org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn;
+import org.lgna.common.RandomUtilities;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.MethodInvocation;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RandomCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.MethodInvocation> {
+public class RandomCascadeMenu extends ExpressionCascadeMenu<MethodInvocation> {
 	private static class SingletonHolder {
 		private static RandomCascadeMenu instance = new RandomCascadeMenu();
 	}
@@ -56,12 +66,12 @@ public class RandomCascadeMenu extends org.alice.ide.croquet.models.cascade.Expr
 	}
 
 	private RandomCascadeMenu() {
-		super( java.util.UUID.fromString( "1cea7986-9a06-4796-a41b-52aacedf3e06" ) );
+		super( UUID.fromString( "1cea7986-9a06-4796-a41b-52aacedf3e06" ) );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.MethodInvocation> context ) {
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> context ) {
 		blankChildren.add( NextDouble01FillIn.getInstance() );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.RandomUtilities.class, "nextDoubleInRange", Number.class, Number.class ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( RandomUtilities.class, "nextDoubleInRange", Number.class, Number.class ) );
 	}
 }

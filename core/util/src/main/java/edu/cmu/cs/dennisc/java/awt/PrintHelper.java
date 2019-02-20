@@ -42,45 +42,61 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import javax.swing.JScrollPane;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PrintHelper implements java.awt.print.Printable {
+public class PrintHelper implements Printable {
 	public static class Builder {
-		private final java.awt.Insets insets;
-		private final java.awt.Paint clearPaint;
-		private java.awt.Component lineStart;
-		private java.awt.Component lineEnd;
-		private java.awt.Component pageStart;
-		private java.awt.Component pageEnd;
-		private java.awt.Component center;
+		private final Insets insets;
+		private final Paint clearPaint;
+		private Component lineStart;
+		private Component lineEnd;
+		private Component pageStart;
+		private Component pageEnd;
+		private Component center;
 
-		public Builder( java.awt.Insets insets, java.awt.Paint clearPaint ) {
+		public Builder( Insets insets, Paint clearPaint ) {
 			this.insets = insets;
 			this.clearPaint = clearPaint;
 		}
 
-		public Builder lineStart( java.awt.Component lineStart ) {
+		public Builder lineStart( Component lineStart ) {
 			this.lineStart = lineStart;
 			return this;
 		}
 
-		public Builder lineEnd( java.awt.Component lineEnd ) {
+		public Builder lineEnd( Component lineEnd ) {
 			this.lineEnd = lineEnd;
 			return this;
 		}
 
-		public Builder pageStart( java.awt.Component pageStart ) {
+		public Builder pageStart( Component pageStart ) {
 			this.pageStart = pageStart;
 			return this;
 		}
 
-		public Builder pageEnd( java.awt.Component pageEnd ) {
+		public Builder pageEnd( Component pageEnd ) {
 			this.pageEnd = pageEnd;
 			return this;
 		}
 
-		public Builder center( java.awt.Component center ) {
+		public Builder center( Component center ) {
 			this.center = center;
 			return this;
 		}
@@ -90,33 +106,33 @@ public class PrintHelper implements java.awt.print.Printable {
 		}
 	}
 
-	private final java.awt.Insets insets;
-	private final java.awt.Paint clearPaint;
-	private final java.awt.Component lineStart;
-	private final java.awt.Component lineEnd;
-	private final java.awt.Component pageStart;
-	private final java.awt.Component pageEnd;
-	private final java.awt.Component center;
+	private final Insets insets;
+	private final Paint clearPaint;
+	private final Component lineStart;
+	private final Component lineEnd;
+	private final Component pageStart;
+	private final Component pageEnd;
+	private final Component center;
 
-	private static java.awt.Component getViewportViewIfNecessary( java.awt.Component component ) {
-		if( component instanceof javax.swing.JScrollPane ) {
-			javax.swing.JScrollPane jScrollPane = (javax.swing.JScrollPane)component;
+	private static Component getViewportViewIfNecessary( Component component ) {
+		if( component instanceof JScrollPane ) {
+			JScrollPane jScrollPane = (JScrollPane)component;
 			return jScrollPane.getViewport().getView();
 		} else {
 			return component;
 		}
 	}
 
-	private static void printAll( java.awt.Graphics2D g2, java.awt.Component component ) {
+	private static void printAll( Graphics2D g2, Component component ) {
 		if( component != null ) {
 			int x = component.getX();
 			int y = component.getY();
 			g2.translate( x, y );
 			try {
-				java.awt.Shape prevClip = g2.getClip();
+				Shape prevClip = g2.getClip();
 				try {
-					java.awt.Component c = getViewportViewIfNecessary( component );
-					java.awt.Dimension size = c.getPreferredSize();
+					Component c = getViewportViewIfNecessary( component );
+					Dimension size = c.getPreferredSize();
 					g2.setClip( 0, 0, size.width, size.height );
 					getViewportViewIfNecessary( component ).printAll( g2 );
 				} finally {
@@ -139,23 +155,23 @@ public class PrintHelper implements java.awt.print.Printable {
 	}
 
 	@Override
-	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
+	public int print( Graphics g, PageFormat pageFormat, int pageIndex ) throws PrinterException {
 		if( pageIndex > 0 ) {
-			return java.awt.print.Printable.NO_SUCH_PAGE;
+			return Printable.NO_SUCH_PAGE;
 		} else {
-			java.awt.Dimension size = getViewportViewIfNecessary( this.center ).getPreferredSize();
+			Dimension size = getViewportViewIfNecessary( this.center ).getPreferredSize();
 			int width = size.width;
 			int height = size.height;
-			for( java.awt.Component component : new java.awt.Component[] { lineStart, lineEnd } ) {
+			for( Component component : new Component[] { lineStart, lineEnd } ) {
 				if( component != null ) {
-					java.awt.Dimension componentSize = component.getPreferredSize();
+					Dimension componentSize = component.getPreferredSize();
 					width += componentSize.width;
 					height = Math.max( height, componentSize.height );
 				}
 			}
-			for( java.awt.Component component : new java.awt.Component[] { pageStart, pageEnd } ) {
+			for( Component component : new Component[] { pageStart, pageEnd } ) {
 				if( component != null ) {
-					java.awt.Dimension componentSize = component.getPreferredSize();
+					Dimension componentSize = component.getPreferredSize();
 					width = Math.max( width, componentSize.width );
 					height += componentSize.height;
 				}
@@ -164,10 +180,10 @@ public class PrintHelper implements java.awt.print.Printable {
 			width += insets.left + insets.right;
 			height += insets.top + insets.bottom;
 
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+			Graphics2D g2 = (Graphics2D)g;
+			AffineTransform prevTransform = g2.getTransform();
 			try {
-				double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale( pageFormat, width, height );
+				double scale = PageFormatUtilities.calculateScale( pageFormat, width, height );
 				g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
 				if( scale > 1.0 ) {
 					g2.scale( 1.0 / scale, 1.0 / scale );
@@ -181,17 +197,17 @@ public class PrintHelper implements java.awt.print.Printable {
 				printAll( g2, this.lineStart );
 
 				if( lineEnd != null ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( lineEnd );
+					Logger.todo( lineEnd );
 				}
 
 				if( pageEnd != null ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( pageEnd );
+					Logger.todo( pageEnd );
 				}
 
 			} finally {
 				g2.setTransform( prevTransform );
 			}
-			return java.awt.print.Printable.PAGE_EXISTS;
+			return Printable.PAGE_EXISTS;
 		}
 	}
 

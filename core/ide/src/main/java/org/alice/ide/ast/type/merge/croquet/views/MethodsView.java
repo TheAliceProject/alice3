@@ -42,11 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
+import org.alice.ide.ast.type.merge.croquet.MethodsToolPalette;
+import org.lgna.project.ast.Method;
+
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodsView extends MembersView<org.lgna.project.ast.Method> {
-	public MethodsView( org.alice.ide.ast.type.merge.croquet.MethodsToolPalette composite, java.awt.Color backgroundColor ) {
+public abstract class MethodsView extends MembersView<Method> {
+	public MethodsView( MethodsToolPalette composite, Color backgroundColor ) {
 		super( composite, backgroundColor );
 	}
 }

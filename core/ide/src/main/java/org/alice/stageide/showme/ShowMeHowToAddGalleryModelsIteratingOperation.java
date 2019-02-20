@@ -42,6 +42,11 @@
  *******************************************************************************/
 package org.alice.stageide.showme;
 
+import org.alice.stageide.icons.ShowMeIconFactory;
+
+import java.awt.Dimension;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,13 +60,13 @@ public class ShowMeHowToAddGalleryModelsIteratingOperation extends StencilsItera
 	}
 
 	private ShowMeHowToAddGalleryModelsIteratingOperation() {
-		super( java.util.UUID.fromString( "c5856a7a-c03d-4432-a12f-e797cfbc8899" ), new SetupSceneStencilModel(), new DragIntoSceneStencilModel(), new EditCodeStencilModel() );
+		super( UUID.fromString( "c5856a7a-c03d-4432-a12f-e797cfbc8899" ), new SetupSceneStencilModel(), new DragIntoSceneStencilModel(), new EditCodeStencilModel() );
 	}
 
 	@Override
 	protected void localize() {
 		super.localize();
-		this.setButtonIcon( org.alice.stageide.icons.ShowMeIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
+		this.setButtonIcon( ShowMeIconFactory.getInstance().getIcon( new Dimension( 16, 16 ) ) );
 		//this.getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F2, 0 ) );
 	}
 }

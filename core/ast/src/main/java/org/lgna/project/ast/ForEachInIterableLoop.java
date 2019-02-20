@@ -61,7 +61,7 @@ public final class ForEachInIterableLoop extends AbstractForEachLoop implements 
 	}
 
 	@Override
-	protected org.lgna.project.ast.ExpressionProperty getArrayOrIterableProperty() {
+	protected ExpressionProperty getArrayOrIterableProperty() {
 		return this.getIterableProperty();
 	}
 

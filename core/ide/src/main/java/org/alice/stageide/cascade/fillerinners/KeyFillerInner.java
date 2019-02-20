@@ -42,20 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.cascade.fillerinners;
 
+import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
+import org.alice.stageide.croquet.models.cascade.keymenus.ArrowsKeyCascadeMenu;
+import org.alice.stageide.croquet.models.cascade.keymenus.DigitsKeyCascadeMenu;
+import org.alice.stageide.croquet.models.cascade.keymenus.LettersKeyCascadeMenu;
+import org.alice.stageide.custom.KeyCustomExpressionCreatorComposite;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.Key;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class KeyFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+public class KeyFillerInner extends ExpressionFillerInner {
 	public KeyFillerInner() {
-		super( org.lgna.story.Key.class );
+		super( Key.class );
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		items.add( org.alice.stageide.croquet.models.cascade.keymenus.LettersKeyCascadeMenu.getInstance() );
-		items.add( org.alice.stageide.croquet.models.cascade.keymenus.DigitsKeyCascadeMenu.getInstance() );
-		items.add( org.alice.stageide.croquet.models.cascade.keymenus.ArrowsKeyCascadeMenu.getInstance() );
-		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		items.add( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
+		items.add( LettersKeyCascadeMenu.getInstance() );
+		items.add( DigitsKeyCascadeMenu.getInstance() );
+		items.add( ArrowsKeyCascadeMenu.getInstance() );
+		items.add( CascadeLineSeparator.getInstance() );
+		items.add( KeyCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 	}
 }

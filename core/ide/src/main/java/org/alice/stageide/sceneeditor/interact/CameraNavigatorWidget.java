@@ -42,8 +42,8 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact;
 
-import org.alice.interact.AbstractDragAdapter;
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.DragAdapter;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.ModifierMask;
 import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.PickHint;
@@ -61,18 +61,22 @@ import org.alice.stageide.sceneeditor.interact.manipulators.Camera2DDragStrafeMa
 import org.alice.stageide.sceneeditor.interact.manipulators.Camera2DDragUpDownRotateManipulator;
 import org.alice.stageide.sceneeditor.interact.manipulators.OrthographicCameraDragStrafeManipulator;
 import org.alice.stageide.sceneeditor.interact.manipulators.OrthographicCameraDragZoomManipulator;
+import org.lgna.croquet.views.LineAxisPanel;
+
+import javax.swing.JPanel;
+import java.awt.event.MouseEvent;
 
 /**
  * @author David Culyba
  */
-public class CameraNavigatorWidget extends org.lgna.croquet.views.LineAxisPanel {
+public class CameraNavigatorWidget extends LineAxisPanel {
 
 	public static enum CameraMode {
 		ORTHOGRAPHIC,
 		PERSPECTIVE,
 	}
 
-	public CameraNavigatorWidget( AbstractDragAdapter dragAdapter, CameraView attachedView ) {
+	public CameraNavigatorWidget( DragAdapter dragAdapter, CameraView attachedView ) {
 		super();
 
 		//this.setLayout( new FlowLayout() );
@@ -144,7 +148,7 @@ public class CameraNavigatorWidget extends org.lgna.croquet.views.LineAxisPanel 
 		//The dragAdapter will automatically activate the correct manipulator based on which handle was clicked
 		strafeManipulator.setDragAdapter( this.dragAdapter );
 		ManipulatorConditionSet mouseHandleDrag_Shift = new ManipulatorConditionSet( strafeManipulator );
-		MouseDragCondition handleShiftCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TWO_D_HANDLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ) );
+		MouseDragCondition handleShiftCondition = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TWO_D_HANDLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ) );
 		mouseHandleDrag_Shift.addCondition( handleShiftCondition );
 		this.dragAdapter.addManipulatorConditionSet( mouseHandleDrag_Shift );
 
@@ -218,7 +222,7 @@ public class CameraNavigatorWidget extends org.lgna.croquet.views.LineAxisPanel 
 	protected void setControlsBasedOnMode( CameraMode mode ) {
 		this.removeAllComponents();
 		this.setExpanded( this.isExpanded );
-		javax.swing.JPanel jPanel = this.getAwtComponent();
+		JPanel jPanel = this.getAwtComponent();
 		switch( mode ) {
 		case PERSPECTIVE:
 			jPanel.add( this.cameraControlStrafe );
@@ -249,7 +253,7 @@ public class CameraNavigatorWidget extends org.lgna.croquet.views.LineAxisPanel 
 
 	private CameraMode cameraMode = CameraMode.PERSPECTIVE;
 	private boolean isExpanded = false;
-	private AbstractDragAdapter dragAdapter;
+	private DragAdapter dragAdapter;
 	private ManipulationHandle2DCameraDriver cameraDriver;
 	private ManipulationHandle2DCameraTurnUpDown cameraControlUpDown;
 	private ManipulationHandle2DCameraStrafe cameraControlStrafe;

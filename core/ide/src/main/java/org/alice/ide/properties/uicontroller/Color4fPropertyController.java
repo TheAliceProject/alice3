@@ -43,6 +43,7 @@
 
 package org.alice.ide.properties.uicontroller;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
 import edu.cmu.cs.dennisc.color.Color4f;
@@ -50,7 +51,7 @@ import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
 
 public class Color4fPropertyController extends LabelBasedPropertyController<Color4f>
 {
-	public Color4fPropertyController( AbstractPropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, ?> propertyAdapter )
+	public Color4fPropertyController( AbstractPropertyAdapter<Color4f, ?> propertyAdapter )
 	{
 		super( propertyAdapter );
 	}
@@ -58,16 +59,16 @@ public class Color4fPropertyController extends LabelBasedPropertyController<Colo
 	@Override
 	public Class<?> getPropertyType()
 	{
-		return edu.cmu.cs.dennisc.color.Color4f.class;
+		return Color4f.class;
 	}
 
 	@Override
-	protected void setValueOnUI( edu.cmu.cs.dennisc.color.Color4f color )
+	protected void setValueOnUI( Color4f color )
 	{
 		if( color != null )
 		{
 			this.label.setText( null );
-			this.label.setIcon( new ColorIcon( edu.cmu.cs.dennisc.java.awt.ColorUtilities.toAwtColor( color ), 50, 20 ) );
+			this.label.setIcon( new ColorIcon( ColorUtilities.toAwtColor( color ), 50, 20 ) );
 		}
 		else
 		{

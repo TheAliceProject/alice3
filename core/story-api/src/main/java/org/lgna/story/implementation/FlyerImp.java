@@ -42,141 +42,28 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.Vector4;
+import org.lgna.story.SFlyer;
+import org.lgna.story.resources.FlyerResource;
+import org.lgna.story.resources.JointId;
+
 /**
  * @author dculyba
  * 
  */
-public final class FlyerImp extends JointedModelImp<org.lgna.story.SFlyer, org.lgna.story.resources.FlyerResource> {
-	public FlyerImp( org.lgna.story.SFlyer abstraction, JointImplementationAndVisualDataFactory<org.lgna.story.resources.FlyerResource> factory ) {
+public final class FlyerImp extends JointedModelImp<SFlyer, FlyerResource> {
+	public FlyerImp( SFlyer abstraction, JointImplementationAndVisualDataFactory<FlyerResource> factory ) {
 		super( abstraction, factory );
 	}
 
 	@Override
-	public org.lgna.story.resources.JointId[] getRootJointIds() {
-		return org.lgna.story.resources.FlyerResource.JOINT_ID_ROOTS;
+	protected Vector4 getThoughtBubbleOffset() {
+		return this.getTopOffsetForJoint( this.getJointImplementation( FlyerResource.HEAD ) );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.FlyerResource.HEAD ) );
+	protected Vector4 getSpeechBubbleOffset() {
+		return this.getFrontOffsetForJoint( this.getJointImplementation( FlyerResource.MOUTH ) );
 	}
 
-	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.FlyerResource.MOUTH ) );
-	}
-
-	//	private static class WingJointData {
-	//		private final JointImp jointImp;
-	//		private final edu.cmu.cs.dennisc.math.UnitQuaternion q0;
-	//		private final edu.cmu.cs.dennisc.math.UnitQuaternion q1;
-	//
-	//		public WingJointData( JointImp jointImp ) {
-	//			this.jointImp = jointImp;
-	//			this.q0 = this.jointImp.getLocalOrientation().createUnitQuaternion();
-	//			ForwardAndUpGuide faug = new ForwardAndUpGuide( Vector3.accessPositiveXAxis(), Vector3.accessPositiveYAxis() );
-	//			//			edu.cmu.cs.dennisc.math.UnitQuaternion q = faug.createUnitQuaternion();
-	//			edu.cmu.cs.dennisc.math.UnitQuaternion q = edu.cmu.cs.dennisc.math.UnitQuaternion.createIdentity();
-	//			if( q != null ) {
-	//				if( this.q0.isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon( q ) ) {
-	//					this.q1 = null;
-	//				} else {
-	//					this.q1 = q;
-	//				}
-	//			} else {
-	//				this.q1 = null;
-	//			}
-	//		}
-	//
-	//		public void setPortion( double portion ) {
-	//			if( this.q1 != null ) {
-	//				this.jointImp.setLocalOrientationOnly( edu.cmu.cs.dennisc.math.UnitQuaternion.createInterpolation( this.q0, this.q1, portion ).createOrthogonalMatrix3x3() );
-	//			} else {
-	//				//System.err.println( "skipping: " + this.jointImp );
-	//			}
-	//		}
-	//
-	//		public void epilogue() {
-	//			if( this.q1 != null ) {
-	//				this.jointImp.setLocalOrientationOnly( this.q1.createOrthogonalMatrix3x3() );
-	//			} else {
-	//				//System.err.println( "skipping: " + this.jointImp );
-	//			}
-	//		}
-	//	}
-	//
-	//	private static class UnfoldWingsTreeWalkObserver implements TreeWalkObserver {
-	//		private java.util.List<WingJointData> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	//
-	//		public void pushJoint( JointImp jointImp ) {
-	//			if( ( jointImp != null ) && (
-	//					//( jointImp.getJointId() == FlyerResource.LEFT_WING_SHOULDER ) ||
-	//					( jointImp.getJointId() == FlyerResource.LEFT_WING_ELBOW ) ||
-	//							( jointImp.getJointId() == FlyerResource.LEFT_WING_WRIST ) ||
-	//							( jointImp.getJointId() == FlyerResource.LEFT_WING_TIP ) ||
-	//							//( jointImp.getJointId() == FlyerResource.RIGHT_WING_SHOULDER ) ||
-	//							( jointImp.getJointId() == FlyerResource.RIGHT_WING_ELBOW ) ||
-	//							( jointImp.getJointId() == FlyerResource.RIGHT_WING_WRIST ) ||
-	//					( jointImp.getJointId() == FlyerResource.RIGHT_WING_TIP )
-	//					) ) {
-	//				list.add( new WingJointData( jointImp ) );
-	//			}
-	//		}
-	//
-	//		public void handleBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
-	//		}
-	//
-	//		public void popJoint( JointImp joint ) {
-	//		}
-	//	};
-	//
-	//	public void unfoldWings() {
-	//		UnfoldWingsTreeWalkObserver treeWalkObserver = new UnfoldWingsTreeWalkObserver();
-	//		this.treeWalk( treeWalkObserver );
-	//		for( WingJointData jointData : treeWalkObserver.list ) {
-	//			jointData.epilogue();
-	//		}
-	//	}
-	//
-	//	public void animateUnfoldWings( double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-	//		duration = adjustDurationIfNecessary( duration );
-	//		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
-	//			this.unfoldWings();
-	//		} else {
-	//			final UnfoldWingsTreeWalkObserver treeWalkObserver = new UnfoldWingsTreeWalkObserver();
-	//			this.treeWalk( treeWalkObserver );
-	//			class UnfoldWingsAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
-	//				public UnfoldWingsAnimation( double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-	//					super( duration, style );
-	//				}
-	//
-	//				@Override
-	//				protected void prologue() {
-	//				}
-	//
-	//				@Override
-	//				protected void setPortion( double portion ) {
-	//					for( WingJointData jointData : treeWalkObserver.list ) {
-	//						jointData.setPortion( portion );
-	//					}
-	//				}
-	//
-	//				@Override
-	//				protected void epilogue() {
-	//					for( WingJointData jointData : treeWalkObserver.list ) {
-	//						jointData.epilogue();
-	//					}
-	//				}
-	//			}
-	//			perform( new UnfoldWingsAnimation( duration, style ) );
-	//		}
-	//	}
-	//
-	//	public void animateUnfoldWings( double duration ) {
-	//		this.animateUnfoldWings( duration, DEFAULT_STYLE );
-	//	}
-	//
-	//	public void animateUnfoldWings() {
-	//		this.animateUnfoldWings( DEFAULT_DURATION );
-	//	}
 }

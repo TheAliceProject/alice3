@@ -45,17 +45,25 @@ package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import java.awt.Point;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
 import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.manipulator.AbstractManipulator;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedScaleActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.SThing;
+import org.lgna.story.implementation.ModelImp;
 
 public class ResizeDragManipulator extends AbstractManipulator {
 	private static final double RESIZE_SCALE = .005;
 	public static final double MIN_SCALE = .1;
 
-	public ResizeDragManipulator( edu.cmu.cs.dennisc.scenegraph.scale.Resizer... resizers ) {
+	public ResizeDragManipulator( Resizer... resizers ) {
 		this.resizers = resizers;
 	}
 
@@ -86,11 +94,11 @@ public class ResizeDragManipulator extends AbstractManipulator {
 	public boolean doStartManipulator( InputState startInput ) {
 		this.setManipulatedTransformable( startInput.getClickPickTransformable() );
 		if( this.manipulatedTransformable != null ) {
-			edu.cmu.cs.dennisc.scenegraph.scale.Scalable scalable = this.manipulatedTransformable.getBonusDataFor( edu.cmu.cs.dennisc.scenegraph.scale.Scalable.KEY );
+			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 			if( scalable != null ) {
 				this.activeResizer = null;
-				for( edu.cmu.cs.dennisc.scenegraph.scale.Resizer toUse : this.resizers ) {
-					for( edu.cmu.cs.dennisc.scenegraph.scale.Resizer r : scalable.getResizers() ) {
+				for( Resizer toUse : this.resizers ) {
+					for( Resizer r : scalable.getResizers() ) {
 						if( r == toUse ) {
 							this.activeResizer = r;
 							break;
@@ -114,7 +122,7 @@ public class ResizeDragManipulator extends AbstractManipulator {
 	}
 
 	protected void applyScale( double scaleAmount ) {
-		edu.cmu.cs.dennisc.scenegraph.scale.Scalable scalable = this.manipulatedTransformable.getBonusDataFor( edu.cmu.cs.dennisc.scenegraph.scale.Scalable.KEY );
+		Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 		if( scalable != null ) {
 			if( ( this.initialScale + scaleAmount ) < MIN_SCALE ) {
 				scaleAmount = MIN_SCALE - this.initialScale;
@@ -141,16 +149,16 @@ public class ResizeDragManipulator extends AbstractManipulator {
 	@Override
 	public void undoRedoEndManipulation() {
 		if( this.getManipulatedTransformable() != null ) {
-			edu.cmu.cs.dennisc.animation.Animator animator;
+			Animator animator;
 			if( this.dragAdapter != null ) {
 				animator = this.dragAdapter.getAnimator();
 			} else {
 				animator = null;
 			}
-			edu.cmu.cs.dennisc.scenegraph.scale.Scalable scalable = this.manipulatedTransformable.getBonusDataFor( edu.cmu.cs.dennisc.scenegraph.scale.Scalable.KEY );
-			org.lgna.story.SThing aliceThing = ( (org.lgna.story.implementation.ModelImp)scalable ).getAbstraction();
-			org.lgna.project.ast.UserField scalableField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
-			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, false, animator, scalableField, this.activeResizer, this.initialScale, this.accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
+			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
+			SThing aliceThing = ( (ModelImp)scalable ).getAbstraction();
+			UserField scalableField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
+			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( Application.PROJECT_GROUP, false, animator, scalableField, this.activeResizer, this.initialScale, this.accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
 			undoOperation.fire();
 		}
 	}
@@ -163,6 +171,6 @@ public class ResizeDragManipulator extends AbstractManipulator {
 	private Point initialPoint;
 	private double initialScale = 1d;
 	private double accumulatedScale = 1d;
-	private final edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] resizers;
-	private edu.cmu.cs.dennisc.scenegraph.scale.Resizer activeResizer;
+	private final Resizer[] resizers;
+	private Resizer activeResizer;
 }

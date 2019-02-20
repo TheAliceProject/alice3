@@ -43,11 +43,13 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.SingleSelectListState;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CustomRadioButtons<E> extends AbstractRadioButtons<E> {
-	public CustomRadioButtons( org.lgna.croquet.SingleSelectListState<E, ?> model ) {
+	public CustomRadioButtons( SingleSelectListState<E, ?> model ) {
 		super( model );
 	}
 }

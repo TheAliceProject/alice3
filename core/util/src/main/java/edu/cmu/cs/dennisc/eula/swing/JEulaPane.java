@@ -42,48 +42,75 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.eula.swing;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.JDialogBuilder;
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JEulaPane extends javax.swing.JPanel {
+public class JEulaPane extends JPanel {
 	public JEulaPane( String eulaText ) {
-		javax.swing.JLabel headerLabel = new javax.swing.JLabel( "<html>Please read the following license agreement carefully.</html>" );
+		JLabel headerLabel = new JLabel( "<html>Please read the following license agreement carefully.</html>" );
 
-		javax.swing.JTextArea textArea = new javax.swing.JTextArea();
+		JTextArea textArea = new JTextArea();
 		textArea.setText( eulaText );
 		textArea.setEditable( false );
 		textArea.setLineWrap( true );
 		textArea.setWrapStyleWord( true );
 
-		javax.swing.JCheckBox reject = new javax.swing.JCheckBox();
+		JCheckBox reject = new JCheckBox();
 		this.accept.setText( "I accept the terms in the License Agreement" );
 		reject.setText( "I do not accept the terms in the License Agreement" );
 
-		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
+		ButtonGroup group = new ButtonGroup();
 		group.add( this.accept );
 		group.add( reject );
 		reject.setSelected( true );
 
-		final javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( textArea );
-		scrollPane.setPreferredSize( new java.awt.Dimension( 480, 320 ) );
+		final JScrollPane scrollPane = new JScrollPane( textArea );
+		scrollPane.setPreferredSize( new Dimension( 480, 320 ) );
 
-		headerLabel.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		scrollPane.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		this.accept.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		reject.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
+		headerLabel.setAlignmentX( Component.LEFT_ALIGNMENT );
+		scrollPane.setAlignmentX( Component.LEFT_ALIGNMENT );
+		this.accept.setAlignmentX( Component.LEFT_ALIGNMENT );
+		reject.setAlignmentX( Component.LEFT_ALIGNMENT );
 
 		this.accept.addChangeListener( this.changeListener );
 
-		javax.swing.JPanel mainPanel = new javax.swing.JPanel();
-		mainPanel.setLayout( new javax.swing.BoxLayout( mainPanel, javax.swing.BoxLayout.PAGE_AXIS ) );
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout( new BoxLayout( mainPanel, BoxLayout.PAGE_AXIS ) );
 		mainPanel.add( scrollPane );
-		mainPanel.add( javax.swing.Box.createVerticalStrut( 4 ) );
+		mainPanel.add( Box.createVerticalStrut( 4 ) );
 		mainPanel.add( this.accept );
 		mainPanel.add( reject );
-		mainPanel.add( javax.swing.Box.createVerticalStrut( 8 ) );
+		mainPanel.add( Box.createVerticalStrut( 8 ) );
 
-		String okButtonText = javax.swing.UIManager.getString( "OptionPane.okButtonText" );
-		String cancelButtonText = javax.swing.UIManager.getString( "OptionPane.cancelButtonText" );
+		String okButtonText = UIManager.getString( "OptionPane.okButtonText" );
+		String cancelButtonText = UIManager.getString( "OptionPane.cancelButtonText" );
 		if( ( okButtonText != null ) && ( okButtonText.length() > 0 ) ) {
 			//pass
 		} else {
@@ -95,24 +122,24 @@ public class JEulaPane extends javax.swing.JPanel {
 			cancelButtonText = "Cancel";
 		}
 
-		this.okButton = new javax.swing.JButton( new javax.swing.AbstractAction( okButtonText ) {
+		this.okButton = new JButton( new AbstractAction( okButtonText ) {
 			@Override
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
+			public void actionPerformed( ActionEvent e ) {
 				handleOkOrCancel( true );
 			}
 		} );
-		javax.swing.JButton cancelButton = new javax.swing.JButton( new javax.swing.AbstractAction( cancelButtonText ) {
+		JButton cancelButton = new JButton( new AbstractAction( cancelButtonText ) {
 			@Override
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
+			public void actionPerformed( ActionEvent e ) {
 				handleOkOrCancel( false );
 			}
 		} );
 
 		this.okButton.setEnabled( false );
 
-		javax.swing.JPanel controlPanel = new javax.swing.JPanel();
-		controlPanel.setLayout( new java.awt.FlowLayout( java.awt.FlowLayout.TRAILING ) );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+		JPanel controlPanel = new JPanel();
+		controlPanel.setLayout( new FlowLayout( FlowLayout.TRAILING ) );
+		if( SystemUtilities.isWindows() ) {
 			controlPanel.add( okButton );
 			controlPanel.add( cancelButton );
 		} else {
@@ -121,13 +148,13 @@ public class JEulaPane extends javax.swing.JPanel {
 		}
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( controlPanel.getComponentOrientation().isLeftToRight() );
 
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( headerLabel, java.awt.BorderLayout.PAGE_START );
-		this.add( mainPanel, java.awt.BorderLayout.CENTER );
-		this.add( controlPanel, java.awt.BorderLayout.PAGE_END );
+		this.setLayout( new BorderLayout() );
+		this.add( headerLabel, BorderLayout.PAGE_START );
+		this.add( mainPanel, BorderLayout.CENTER );
+		this.add( controlPanel, BorderLayout.PAGE_END );
 
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
 				scrollPane.getVerticalScrollBar().setValue( 0 );
@@ -143,39 +170,39 @@ public class JEulaPane extends javax.swing.JPanel {
 
 	private void handleOkOrCancel( boolean isCommitted ) {
 		this.isCommitted = isCommitted;
-		javax.swing.SwingUtilities.getRoot( this ).setVisible( false );
+		SwingUtilities.getRoot( this ).setVisible( false );
 	}
 
 	public boolean isAccepted() {
 		return this.isCommitted && this.accept.isSelected();
 	}
 
-	private final javax.swing.JButton okButton;
-	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+	private final JButton okButton;
+	private final ChangeListener changeListener = new ChangeListener() {
 		@Override
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+		public void stateChanged( ChangeEvent e ) {
 			okButton.setEnabled( accept.isSelected() );
 		}
 	};
 
-	private final javax.swing.JCheckBox accept = new javax.swing.JCheckBox();
+	private final JCheckBox accept = new JCheckBox();
 	private boolean isCommitted;
 
 	public static void main( String[] args ) {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
 				//				java.util.Locale locale = java.util.Locale.SIMPLIFIED_CHINESE;
 				//				java.util.Locale.setDefault( locale );
 				//				//javax.swing.JComponent.setDefaultLocale( locale );
 				//				//javax.swing.JOptionPane.showConfirmDialog( null, "hello", "title", javax.swing.JOptionPane.OK_CANCEL_OPTION );
-				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+				UIManagerUtilities.setLookAndFeel( "Nimbus" );
 				JEulaPane eulaPane = new JEulaPane( "eulaText" );
-				javax.swing.JDialog dialog = new edu.cmu.cs.dennisc.javax.swing.JDialogBuilder().isModal( true ).title( "title" ).build();
-				dialog.getContentPane().add( eulaPane, java.awt.BorderLayout.CENTER );
+				JDialog dialog = new JDialogBuilder().isModal( true ).title( "title" ).build();
+				dialog.getContentPane().add( eulaPane, BorderLayout.CENTER );
 				dialog.pack();
 				dialog.setVisible( true );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( eulaPane.isAccepted() );
+				Logger.outln( eulaPane.isAccepted() );
 				System.exit( 0 );
 			}
 		} );

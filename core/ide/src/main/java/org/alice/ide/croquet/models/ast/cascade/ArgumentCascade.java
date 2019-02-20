@@ -42,13 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast.cascade;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.project.ast.SimpleArgument;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ArgumentCascade extends AbstractArgumentCascade {
-	private static java.util.Map<org.lgna.project.ast.SimpleArgument, ArgumentCascade> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<SimpleArgument, ArgumentCascade> map = Maps.newHashMap();
 
-	public static synchronized ArgumentCascade getInstance( org.lgna.project.ast.SimpleArgument argument ) {
+	public static synchronized ArgumentCascade getInstance( SimpleArgument argument ) {
 		ArgumentCascade rv = map.get( argument );
 		if( rv != null ) {
 			//pass
@@ -59,7 +65,7 @@ public class ArgumentCascade extends AbstractArgumentCascade {
 		return rv;
 	}
 
-	private ArgumentCascade( org.lgna.project.ast.SimpleArgument argument ) {
-		super( java.util.UUID.fromString( "c60b0eec-d8ac-4256-a8be-54b16605fc0e" ), argument );
+	private ArgumentCascade( SimpleArgument argument ) {
+		super( UUID.fromString( "c60b0eec-d8ac-4256-a8be-54b16605fc0e" ), argument );
 	}
 }

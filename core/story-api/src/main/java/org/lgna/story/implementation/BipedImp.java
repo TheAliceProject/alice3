@@ -43,34 +43,32 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.Vector4;
 import org.lgna.ik.core.IKCore;
 import org.lgna.ik.core.IKCore.Limb;
 import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SBiped;
 import org.lgna.story.SThing;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.JointId;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class BipedImp extends JointedModelImp<org.lgna.story.SBiped, org.lgna.story.resources.BipedResource> {
+public final class BipedImp extends JointedModelImp<SBiped, BipedResource> {
 
-	public BipedImp( org.lgna.story.SBiped abstraction, JointImplementationAndVisualDataFactory<org.lgna.story.resources.BipedResource> factory ) {
+	public BipedImp( SBiped abstraction, JointImplementationAndVisualDataFactory<BipedResource> factory ) {
 		super( abstraction, factory );
 	}
 
 	@Override
-	public JointId[] getRootJointIds() {
-		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
+	protected Vector4 getThoughtBubbleOffset() {
+		return this.getTopOffsetForJoint( this.getJointImplementation( BipedResource.HEAD ) );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.BipedResource.HEAD ) );
-	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.BipedResource.MOUTH ) );
+	protected Vector4 getSpeechBubbleOffset() {
+		return this.getFrontOffsetForJoint( this.getJointImplementation( BipedResource.MOUTH ) );
 	}
 
 	public void reachFor( SThing entity, Limb reachingLimb ) {

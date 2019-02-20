@@ -42,11 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.media.protocol;
 
+import javax.media.protocol.ContentDescriptor;
+import javax.media.protocol.PullSourceStream;
+import javax.media.protocol.Seekable;
+import java.io.IOException;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ByteArraySeekablePullSourceStream implements javax.media.protocol.PullSourceStream, javax.media.protocol.Seekable {
-	private static final javax.media.protocol.ContentDescriptor RAW_CONTENT_DISCRIPTOR = new javax.media.protocol.ContentDescriptor( javax.media.protocol.ContentDescriptor.RAW );
+public class ByteArraySeekablePullSourceStream implements PullSourceStream, Seekable {
+	private static final ContentDescriptor RAW_CONTENT_DISCRIPTOR = new ContentDescriptor( ContentDescriptor.RAW );
 	private byte[] data;
 	private long location;
 
@@ -56,7 +61,7 @@ public class ByteArraySeekablePullSourceStream implements javax.media.protocol.P
 	}
 
 	@Override
-	public int read( byte[] buffer, int offset, int length ) throws java.io.IOException {
+	public int read( byte[] buffer, int offset, int length ) throws IOException {
 		long bytesLeft = ( this.data.length - this.location );
 		if( bytesLeft == 0 ) {
 			return -1;
@@ -84,7 +89,7 @@ public class ByteArraySeekablePullSourceStream implements javax.media.protocol.P
 	}
 
 	@Override
-	public javax.media.protocol.ContentDescriptor getContentDescriptor() {
+	public ContentDescriptor getContentDescriptor() {
 		return RAW_CONTENT_DISCRIPTOR;
 	}
 

@@ -44,20 +44,29 @@
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
+
+import edu.cmu.cs.dennisc.math.Matrix4x4;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.render.Graphics2D;
+import edu.cmu.cs.dennisc.render.RenderTarget;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+
+import java.awt.Rectangle;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> extends GlrLeaf<T> {
-	public abstract edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport );
+public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLeaf<T> {
+	public abstract Ray getRayAtPixel( Ray rv, int xPixel, int yPixel, Rectangle actualViewport );
 
-	protected abstract java.awt.Rectangle performLetterboxing( java.awt.Rectangle rv );
+	protected abstract Rectangle performLetterboxing( Rectangle rv );
 
-	public java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, int surfaceWidth, int surfaceHeight ) {
+	public Rectangle getActualViewport( Rectangle rv, int surfaceWidth, int surfaceHeight ) {
 		if( this.specifiedViewport != null ) {
 			rv.setBounds( this.specifiedViewport );
 		} else {
@@ -69,19 +78,19 @@ public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.
 		return rv;
 	}
 
-	public abstract edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, java.awt.Rectangle actualViewport );
+	public abstract Matrix4x4 getActualProjectionMatrix( Matrix4x4 rv, Rectangle actualViewport );
 
-	public java.awt.Rectangle getSpecifiedViewport() {
+	public Rectangle getSpecifiedViewport() {
 		if( this.specifiedViewport != null ) {
-			return new java.awt.Rectangle( this.specifiedViewport );
+			return new Rectangle( this.specifiedViewport );
 		} else {
 			return null;
 		}
 	}
 
-	public void setSpecifiedViewport( java.awt.Rectangle specifiedViewport ) {
+	public void setSpecifiedViewport( Rectangle specifiedViewport ) {
 		if( specifiedViewport != null ) {
-			this.specifiedViewport = new java.awt.Rectangle( specifiedViewport );
+			this.specifiedViewport = new Rectangle( specifiedViewport );
 		} else {
 			this.specifiedViewport = null;
 		}
@@ -95,12 +104,12 @@ public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.
 		this.isLetterboxedAsOpposedToDistorted = isLetterboxedAsOpposedToDistorted;
 	}
 
-	protected abstract void setupProjection( Context context, java.awt.Rectangle actualViewport );
+	protected abstract void setupProjection( Context context, Rectangle actualViewport );
 
 	public void performClearAndRenderOffscreen( RenderContext rc, int surfaceWidth, int surfaceHeight ) {
 		GlrScene sceneAdapter = getGlrScene();
 		if( sceneAdapter != null ) {
-			java.awt.Rectangle actualViewport = getActualViewport( new java.awt.Rectangle(), surfaceWidth, surfaceHeight );
+			Rectangle actualViewport = getActualViewport( new Rectangle(), surfaceWidth, surfaceHeight );
 			rc.gl.glMatrixMode( GL_PROJECTION );
 			rc.gl.glLoadIdentity();
 			setupProjection( rc, actualViewport );
@@ -109,16 +118,16 @@ public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.
 		}
 	}
 
-	public void postRender( RenderContext rc, int surfaceWidth, int surfaceHeight, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.render.Graphics2D g2 ) {
+	public void postRender( RenderContext rc, int surfaceWidth, int surfaceHeight, RenderTarget renderTarget, Graphics2D g2 ) {
 		if( this.glrLayers != null ) {
-			java.awt.Rectangle actualViewport = getActualViewport( new java.awt.Rectangle(), surfaceWidth, surfaceHeight );
+			Rectangle actualViewport = getActualViewport( new Rectangle(), surfaceWidth, surfaceHeight );
 			for( GlrLayer layerAdapter : this.glrLayers ) {
 				layerAdapter.render( g2, renderTarget, actualViewport, this.owner );
 			}
 		}
 	}
 
-	public void performPick( PickContext pc, PickParameters pickParameters, java.awt.Rectangle actualViewport ) {
+	public void performPick( PickContext pc, PickParameters pickParameters, Rectangle actualViewport ) {
 		GlrScene sceneAdapter = getGlrScene();
 		if( sceneAdapter != null ) {
 
@@ -142,7 +151,7 @@ public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.background ) {
 			this.glrBackground = AdapterFactory.getAdapterFor( owner.background.getValue() );
 		} else if( property == owner.postRenderLayers ) {
@@ -155,6 +164,6 @@ public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.
 	private GlrBackground glrBackground;
 	private GlrLayer[] glrLayers;
 
-	private java.awt.Rectangle specifiedViewport;
+	private Rectangle specifiedViewport;
 	private boolean isLetterboxedAsOpposedToDistorted = true;
 }

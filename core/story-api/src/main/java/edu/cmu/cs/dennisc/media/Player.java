@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.media;
 
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,10 +62,10 @@ public abstract class Player {
 
 	public abstract void stop();
 
-	public abstract java.awt.Component getControlPanelComponent();
+	public abstract Component getControlPanelComponent();
 
-	public abstract java.awt.Component getVisualComponent();
+	public abstract Component getVisualComponent();
 
 	//todo: remove
-	public abstract void test( java.awt.Component owner );
+	public abstract void test( Component owner );
 }

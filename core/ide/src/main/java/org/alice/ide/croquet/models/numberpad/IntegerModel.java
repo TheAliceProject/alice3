@@ -42,10 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.numberpad;
 
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.IntegerLiteral;
+import org.lgna.project.ast.JavaField;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.TypeExpression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerModel extends NumberModel<org.lgna.project.ast.Expression> {
+public class IntegerModel extends NumberModel<Expression> {
 	private static class SingletonHolder {
 		private static IntegerModel instance = new IntegerModel();
 	}
@@ -55,7 +64,7 @@ public class IntegerModel extends NumberModel<org.lgna.project.ast.Expression> {
 	}
 
 	private IntegerModel() {
-		super( NUMBER_PAD_GROUP, java.util.UUID.fromString( "fceee598-ccd1-46f9-8539-5f2a42b021b2" ) );
+		super( NUMBER_PAD_GROUP, UUID.fromString( "fceee598-ccd1-46f9-8539-5f2a42b021b2" ) );
 	}
 
 	@Override
@@ -64,22 +73,22 @@ public class IntegerModel extends NumberModel<org.lgna.project.ast.Expression> {
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression valueOf( String s ) {
+	protected Expression valueOf( String s ) {
 		long l = Long.parseLong( s );
 		if( l > Integer.MAX_VALUE ) {
-			return new org.lgna.project.ast.FieldAccess(
-					new org.lgna.project.ast.TypeExpression(
-							org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE
+			return new FieldAccess(
+					new TypeExpression(
+							JavaType.INTEGER_OBJECT_TYPE
 					),
-					org.lgna.project.ast.JavaField.getInstance( Integer.class, "MAX_VALUE" ) );
+					JavaField.getInstance( Integer.class, "MAX_VALUE" ) );
 		} else if( l < Integer.MIN_VALUE ) {
-			return new org.lgna.project.ast.FieldAccess(
-					new org.lgna.project.ast.TypeExpression(
-							org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE
+			return new FieldAccess(
+					new TypeExpression(
+							JavaType.INTEGER_OBJECT_TYPE
 					),
-					org.lgna.project.ast.JavaField.getInstance( Integer.class, "MIN_VALUE" ) );
+					JavaField.getInstance( Integer.class, "MIN_VALUE" ) );
 		} else {
-			return new org.lgna.project.ast.IntegerLiteral( (int)l );
+			return new IntegerLiteral( (int)l );
 		}
 	}
 }

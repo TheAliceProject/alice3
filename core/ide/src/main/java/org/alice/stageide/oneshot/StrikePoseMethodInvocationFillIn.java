@@ -45,16 +45,29 @@ package org.alice.stageide.oneshot;
 
 import javax.swing.JComponent;
 
+import edu.cmu.cs.dennisc.map.MapToMapToMap;
+import org.alice.ide.ast.SelectedInstanceFactoryExpression;
+import org.alice.ide.croquet.models.cascade.ParameterBlank;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.ImmutableCascadeFillIn;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.SimpleArgument;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dave Culyba
  */
-public class StrikePoseMethodInvocationFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<MethodInvocationEditFactory, org.lgna.project.ast.Expression> {
-	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, java.util.List<org.lgna.project.ast.SimpleArgument>, StrikePoseMethodInvocationFillIn> mapToMapToMap = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
+public class StrikePoseMethodInvocationFillIn extends ImmutableCascadeFillIn<MethodInvocationEditFactory, Expression> {
+	private static MapToMapToMap<InstanceFactory, JavaMethod, List<SimpleArgument>, StrikePoseMethodInvocationFillIn> mapToMapToMap = MapToMapToMap.newInstance();
 
-	public static StrikePoseMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method, java.util.List<org.lgna.project.ast.SimpleArgument> arguments ) {
+	public static StrikePoseMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaMethod method, List<SimpleArgument> arguments ) {
 		StrikePoseMethodInvocationFillIn rv = mapToMapToMap.get( instanceFactory, method, arguments );
 		if( rv != null ) {
 			//pass
@@ -65,34 +78,34 @@ public class StrikePoseMethodInvocationFillIn extends org.lgna.croquet.Immutable
 		return rv;
 	}
 
-	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
-	private final org.lgna.project.ast.MethodInvocation transientValue;
+	private final InstanceFactory instanceFactory;
+	private final MethodInvocation transientValue;
 
-	private StrikePoseMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method, java.util.List<org.lgna.project.ast.SimpleArgument> arguments ) {
-		super( java.util.UUID.fromString( "00505921-ef68-4c5a-bbf9-40e9a4dc56cd" ), new org.alice.ide.croquet.models.cascade.ParameterBlank[ 0 ] );
+	private StrikePoseMethodInvocationFillIn( InstanceFactory instanceFactory, JavaMethod method, List<SimpleArgument> arguments ) {
+		super( UUID.fromString( "00505921-ef68-4c5a-bbf9-40e9a4dc56cd" ), new ParameterBlank[ 0 ] );
 		this.instanceFactory = instanceFactory;
 
-		org.lgna.project.ast.MethodInvocation mi = new org.lgna.project.ast.MethodInvocation();
-		mi.expression.setValue( new org.alice.ide.ast.SelectedInstanceFactoryExpression( method.getDeclaringType() ) );
+		MethodInvocation mi = new MethodInvocation();
+		mi.expression.setValue( new SelectedInstanceFactoryExpression( method.getDeclaringType() ) );
 		mi.method.setValue( method );
-		for( org.lgna.project.ast.SimpleArgument argument : arguments ) {
+		for( SimpleArgument argument : arguments ) {
 			mi.requiredArguments.add( argument );
 		}
 		this.transientValue = mi;
 		this.transientValue.expression.setValue( instanceFactory.createExpression() );
 	}
 
-	protected MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	protected MethodInvocationEditFactory createMethodInvocationEditFactory( InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions ) {
 		return new StrikePoseMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
 	}
 
-	private org.lgna.project.ast.JavaMethod getMethod() {
-		return (org.lgna.project.ast.JavaMethod)this.transientValue.method.getValue();
+	private JavaMethod getMethod() {
+		return (JavaMethod)this.transientValue.method.getValue();
 	}
 
 	@Override
-	public MethodInvocationEditFactory createValue( org.lgna.croquet.imp.cascade.ItemNode<? super MethodInvocationEditFactory, org.lgna.project.ast.Expression> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		org.lgna.project.ast.Expression[] argumentExpressions = new org.lgna.project.ast.Expression[ this.transientValue.requiredArguments.size() ];
+	public MethodInvocationEditFactory createValue( ItemNode<? super MethodInvocationEditFactory, Expression> itemNode ) {
+		Expression[] argumentExpressions = new Expression[ this.transientValue.requiredArguments.size() ];
 		for( int i = 0; i < this.transientValue.requiredArguments.size(); i++ ) {
 			argumentExpressions[ i ] = this.transientValue.requiredArguments.get( i ).expression.getValue();
 		}
@@ -100,13 +113,13 @@ public class StrikePoseMethodInvocationFillIn extends org.lgna.croquet.Immutable
 	}
 
 	@Override
-	public MethodInvocationEditFactory getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super MethodInvocationEditFactory, org.lgna.project.ast.Expression> itemNode ) {
+	public MethodInvocationEditFactory getTransientValue( ItemNode<? super MethodInvocationEditFactory, Expression> itemNode ) {
 		return null;
 	}
 
 	@Override
 	protected JComponent createMenuItemIconProxy( ItemNode<? super MethodInvocationEditFactory, Expression> node ) {
-		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( new org.lgna.project.ast.ExpressionStatement( this.transientValue ) ).getAwtComponent();
+		return PreviewAstI18nFactory.getInstance().createStatementPane( new ExpressionStatement( this.transientValue ) ).getAwtComponent();
 	}
 
 }

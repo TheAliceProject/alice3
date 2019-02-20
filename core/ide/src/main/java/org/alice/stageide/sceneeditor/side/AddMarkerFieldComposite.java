@@ -42,37 +42,54 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
+import org.alice.ide.ast.ExpressionCreator;
 import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
+import org.alice.ide.ast.declaration.AddManagedFieldComposite;
+import org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite;
+import org.alice.stageide.StageIDE;
+import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.Dialog;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
+import org.lgna.story.Color;
 import org.lgna.story.EmployeesOnly;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.lgna.story.SMarker;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddMarkerFieldComposite extends org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite {
-	public AddMarkerFieldComposite( java.util.UUID migrationId, Class<? extends org.lgna.story.SMarker> cls ) {
+public abstract class AddMarkerFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
+	public AddMarkerFieldComposite( UUID migrationId, Class<? extends SMarker> cls ) {
 		super( migrationId, cls );
 	}
 
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> colorIdState = this.createInitialPropertyValueExpressionState( "colorIdState", org.lgna.story.Color.RED, org.lgna.story.SMarker.class, "setColorId", org.lgna.story.Color.class, null );
+	private final CustomItemState<Expression> colorIdState = this.createInitialPropertyValueExpressionState( "colorIdState", Color.RED, SMarker.class, "setColorId", Color.class, null );
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getColorIdState() {
+	public CustomItemState<Expression> getColorIdState() {
 		return this.colorIdState;
 	}
 
-	protected abstract org.lgna.story.Color getInitialMarkerColor();
+	protected abstract Color getInitialMarkerColor();
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.story.Color initialMarkerColor = this.getInitialMarkerColor();
+	protected void handlePreShowDialog( Dialog dialog ) {
+		Color initialMarkerColor = this.getInitialMarkerColor();
 		try {
-			org.lgna.project.ast.Expression colorExpresion = org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression( initialMarkerColor );
+			Expression colorExpresion = StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression( initialMarkerColor );
 			this.colorIdState.setValueTransactionlessly( colorExpresion );
-		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+		} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
 			ccee.printStackTrace();
 		}
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( dialog );
 	}
 
 	protected abstract AffineMatrix4x4 getInitialMarkerTransform();
@@ -93,19 +110,19 @@ public abstract class AddMarkerFieldComposite extends org.alice.ide.ast.declarat
 		return true;
 	}
 
-	private static org.lgna.project.ast.JavaMethod COLOR_ID_SETTER = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SMarker.class, "setColorId", org.lgna.story.Color.class );
+	private static JavaMethod COLOR_ID_SETTER = JavaMethod.getInstance( SMarker.class, "setColorId", Color.class );
 
 	@Override
-	protected org.alice.ide.ast.declaration.AddManagedFieldComposite.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, org.alice.ide.ast.declaration.AddManagedFieldComposite.EditCustomization rv ) {
-		super.customize( step, declaringType, field, rv );
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialMarkerTransform = this.getInitialMarkerTransform();
-		rv.addDoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement(
+	protected AddManagedFieldComposite.EditCustomization customize( UserActivity userActivity, UserType<?> declaringType, UserField field, AddManagedFieldComposite.EditCustomization rv ) {
+		super.customize( userActivity, declaringType, field, rv );
+		AffineMatrix4x4 initialMarkerTransform = this.getInitialMarkerTransform();
+		rv.addDoStatement( SetUpMethodGenerator.createSetterStatement(
 				false, field,
 				COLOR_ID_SETTER,
 				this.colorIdState.getValue()
 				) );
 		try {
-			org.lgna.project.ast.Statement orientationStatement = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createOrientationStatement(
+			Statement orientationStatement = SetUpMethodGenerator.createOrientationStatement(
 					false, field,
 					EmployeesOnly.createOrientation( initialMarkerTransform.orientation )
 					);
@@ -114,7 +131,7 @@ public abstract class AddMarkerFieldComposite extends org.alice.ide.ast.declarat
 			ccee.printStackTrace();
 		}
 		try {
-			org.lgna.project.ast.Statement positionStatement = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createPositionStatement(
+			Statement positionStatement = SetUpMethodGenerator.createPositionStatement(
 					false, field,
 					EmployeesOnly.createPosition( initialMarkerTransform.translation )
 					);

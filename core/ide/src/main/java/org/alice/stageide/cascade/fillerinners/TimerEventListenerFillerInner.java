@@ -42,16 +42,25 @@
  *******************************************************************************/
 package org.alice.stageide.cascade.fillerinners;
 
+import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
+import org.alice.stageide.croquet.models.cascade.adapters.TimerEventListenerAdapterFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.event.TimeListener;
+
+import java.util.List;
+
 /**
  * @author Matt May
  */
-public class TimerEventListenerFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+public class TimerEventListenerFillerInner extends ExpressionFillerInner {
 	public TimerEventListenerFillerInner() {
-		super( org.lgna.story.event.TimeListener.class );
+		super( TimeListener.class );
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		items.add( org.alice.stageide.croquet.models.cascade.adapters.TimerEventListenerAdapterFillIn.getInstance() );
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
+		items.add( TimerEventListenerAdapterFillIn.getInstance() );
 	}
 }

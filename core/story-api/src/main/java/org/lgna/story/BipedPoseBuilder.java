@@ -42,15 +42,16 @@
  */
 package org.lgna.story;
 
+import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.JointId;
 
 /**
  * @author Matt May
  */
-public class BipedPoseBuilder extends PoseBuilder<org.lgna.story.SBiped, BipedPose> {
+public class BipedPoseBuilder extends PoseBuilder<SBiped, BipedPose> {
 
-	public BipedPoseBuilder joint( org.lgna.story.resources.JointId jointId, org.lgna.story.Orientation orientation ) {
+	public BipedPoseBuilder joint( JointId jointId, Orientation orientation ) {
 		this.addJointIdQuaternionPair( jointId, orientation );
 		return this;
 	}
@@ -117,7 +118,7 @@ public class BipedPoseBuilder extends PoseBuilder<org.lgna.story.SBiped, BipedPo
 	}
 
 	@Override
-	protected org.lgna.story.BipedPose build( org.lgna.story.implementation.JointIdTransformationPair[] buffer ) {
+	protected BipedPose build( JointIdTransformationPair[] buffer ) {
 		return new BipedPose( buffer );
 	}
 }

@@ -42,13 +42,17 @@
  *******************************************************************************/
 package org.lgna.project.migration;
 
+import org.lgna.project.Project;
+import org.lgna.project.Version;
+import org.lgna.project.ast.Node;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AstMigration extends AbstractMigration {
-	public AstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+	public AstMigration( Version minimumVersion, Version resultVersion ) {
 		super( minimumVersion, resultVersion );
 	}
 
-	public abstract void migrate( org.lgna.project.ast.Node node, org.lgna.project.Project projectIfApplicable );
+	public abstract void migrate( Node node, Project projectIfApplicable );
 }

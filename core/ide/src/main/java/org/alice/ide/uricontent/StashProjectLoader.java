@@ -42,30 +42,29 @@
  *******************************************************************************/
 package org.alice.ide.uricontent;
 
+import org.lgna.project.Project;
+
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class StashProjectLoader extends UriProjectLoader {
-	private final org.lgna.project.Project project;
-	private final java.net.URI uri;
+	private final Project project;
+	private final URI uri;
 
-	public StashProjectLoader( org.lgna.project.Project project, java.net.URI uri ) {
+	public StashProjectLoader( Project project, URI uri ) {
 		this.project = project;
 		this.uri = uri;
 	}
 
 	@Override
-	protected org.lgna.project.Project load() {
+	protected Project load() {
 		return this.project;
 	}
 
 	@Override
-	public java.net.URI getUri() {
+	public URI getUri() {
 		return this.uri;
-	}
-
-	@Override
-	protected boolean isCacheAndCopyStyle() {
-		return false;
 	}
 }

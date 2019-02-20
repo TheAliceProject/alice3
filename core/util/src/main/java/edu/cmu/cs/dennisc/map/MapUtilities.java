@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.map;
 
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class MapUtilities {
-	public static <A, B> java.util.Map<A, B> fillInReverseMap( java.util.Map<A, B> rv, java.util.Map<B, A> src ) {
+	public static <A, B> Map<A, B> fillInReverseMap( Map<A, B> rv, Map<B, A> src ) {
 		assert rv.isEmpty();
 		assert src.isEmpty() == false;
 		for( B b : src.keySet() ) {

@@ -42,36 +42,60 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.Image;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ImageObserver;
+import java.awt.image.RenderedImage;
+import java.awt.image.renderable.RenderableImage;
+import java.text.AttributedCharacterIterator;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ProxyGraphics2D extends java.awt.Graphics2D {
-	public void setOther( java.awt.Graphics2D other ) {
+public class ProxyGraphics2D extends Graphics2D {
+	public void setOther( Graphics2D other ) {
 		this.other = other;
 	}
 
 	@Override
-	public void draw( java.awt.Shape s ) {
+	public void draw( Shape s ) {
 		this.other.draw( s );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image img, java.awt.geom.AffineTransform xform, java.awt.image.ImageObserver obs ) {
+	public boolean drawImage( Image img, AffineTransform xform, ImageObserver obs ) {
 		return this.other.drawImage( img, xform, obs );
 	}
 
 	@Override
-	public void drawImage( java.awt.image.BufferedImage img, java.awt.image.BufferedImageOp op, int x, int y ) {
+	public void drawImage( BufferedImage img, BufferedImageOp op, int x, int y ) {
 		this.other.drawImage( img, op, x, y );
 	}
 
 	@Override
-	public void drawRenderedImage( java.awt.image.RenderedImage img, java.awt.geom.AffineTransform xform ) {
+	public void drawRenderedImage( RenderedImage img, AffineTransform xform ) {
 		this.other.drawRenderedImage( img, xform );
 	}
 
 	@Override
-	public void drawRenderableImage( java.awt.image.renderable.RenderableImage img, java.awt.geom.AffineTransform xform ) {
+	public void drawRenderableImage( RenderableImage img, AffineTransform xform ) {
 		this.other.drawRenderableImage( img, xform );
 	}
 
@@ -81,67 +105,67 @@ public class ProxyGraphics2D extends java.awt.Graphics2D {
 	}
 
 	@Override
-	public void drawString( java.text.AttributedCharacterIterator iterator, float x, float y ) {
+	public void drawString( AttributedCharacterIterator iterator, float x, float y ) {
 		this.other.drawString( iterator, x, y );
 	}
 
 	@Override
-	public void drawGlyphVector( java.awt.font.GlyphVector g, float x, float y ) {
+	public void drawGlyphVector( GlyphVector g, float x, float y ) {
 		this.other.drawGlyphVector( g, x, y );
 	}
 
 	@Override
-	public void fill( java.awt.Shape s ) {
+	public void fill( Shape s ) {
 		this.other.fill( s );
 	}
 
 	@Override
-	public boolean hit( java.awt.Rectangle rect, java.awt.Shape s, boolean onStroke ) {
+	public boolean hit( Rectangle rect, Shape s, boolean onStroke ) {
 		return this.other.hit( rect, s, onStroke );
 	}
 
 	@Override
-	public java.awt.GraphicsConfiguration getDeviceConfiguration() {
+	public GraphicsConfiguration getDeviceConfiguration() {
 		return this.other.getDeviceConfiguration();
 	}
 
 	@Override
-	public void setComposite( java.awt.Composite comp ) {
+	public void setComposite( Composite comp ) {
 		this.other.setComposite( comp );
 	}
 
 	@Override
-	public void setPaint( java.awt.Paint paint ) {
+	public void setPaint( Paint paint ) {
 		this.other.setPaint( paint );
 	}
 
 	@Override
-	public void setStroke( java.awt.Stroke s ) {
+	public void setStroke( Stroke s ) {
 		this.other.setStroke( s );
 	}
 
 	@Override
-	public void setRenderingHint( java.awt.RenderingHints.Key hintKey, Object hintValue ) {
+	public void setRenderingHint( RenderingHints.Key hintKey, Object hintValue ) {
 		this.other.setRenderingHint( hintKey, hintValue );
 	}
 
 	@Override
-	public Object getRenderingHint( java.awt.RenderingHints.Key hintKey ) {
+	public Object getRenderingHint( RenderingHints.Key hintKey ) {
 		return this.other.getRenderingHint( hintKey );
 	}
 
 	@Override
-	public void setRenderingHints( java.util.Map<?, ?> hints ) {
+	public void setRenderingHints( Map<?, ?> hints ) {
 		this.other.setRenderingHints( hints );
 	}
 
 	@Override
-	public void addRenderingHints( java.util.Map<?, ?> hints ) {
+	public void addRenderingHints( Map<?, ?> hints ) {
 		this.other.addRenderingHints( hints );
 	}
 
 	@Override
-	public java.awt.RenderingHints getRenderingHints() {
+	public RenderingHints getRenderingHints() {
 		return this.other.getRenderingHints();
 	}
 
@@ -171,57 +195,57 @@ public class ProxyGraphics2D extends java.awt.Graphics2D {
 	}
 
 	@Override
-	public void transform( java.awt.geom.AffineTransform Tx ) {
+	public void transform( AffineTransform Tx ) {
 		this.other.transform( Tx );
 	}
 
 	@Override
-	public void setTransform( java.awt.geom.AffineTransform Tx ) {
+	public void setTransform( AffineTransform Tx ) {
 		this.other.setTransform( Tx );
 	}
 
 	@Override
-	public java.awt.geom.AffineTransform getTransform() {
+	public AffineTransform getTransform() {
 		return this.other.getTransform();
 	}
 
 	@Override
-	public java.awt.Paint getPaint() {
+	public Paint getPaint() {
 		return this.other.getPaint();
 	}
 
 	@Override
-	public java.awt.Composite getComposite() {
+	public Composite getComposite() {
 		return this.other.getComposite();
 	}
 
 	@Override
-	public void setBackground( java.awt.Color color ) {
+	public void setBackground( Color color ) {
 		this.other.setBackground( color );
 	}
 
 	@Override
-	public java.awt.Color getBackground() {
+	public Color getBackground() {
 		return this.other.getBackground();
 	}
 
 	@Override
-	public java.awt.Stroke getStroke() {
+	public Stroke getStroke() {
 		return this.other.getStroke();
 	}
 
 	@Override
-	public void clip( java.awt.Shape s ) {
+	public void clip( Shape s ) {
 		this.other.clip( s );
 	}
 
 	@Override
-	public java.awt.font.FontRenderContext getFontRenderContext() {
+	public FontRenderContext getFontRenderContext() {
 		return this.other.getFontRenderContext();
 	}
 
 	@Override
-	public java.awt.Graphics create() {
+	public Graphics create() {
 		return this.other.create();
 	}
 
@@ -231,12 +255,12 @@ public class ProxyGraphics2D extends java.awt.Graphics2D {
 	}
 
 	@Override
-	public java.awt.Color getColor() {
+	public Color getColor() {
 		return this.other.getColor();
 	}
 
 	@Override
-	public void setColor( java.awt.Color c ) {
+	public void setColor( Color c ) {
 		this.other.setColor( c );
 	}
 
@@ -246,27 +270,27 @@ public class ProxyGraphics2D extends java.awt.Graphics2D {
 	}
 
 	@Override
-	public void setXORMode( java.awt.Color c1 ) {
+	public void setXORMode( Color c1 ) {
 		this.other.setXORMode( c1 );
 	}
 
 	@Override
-	public java.awt.Font getFont() {
+	public Font getFont() {
 		return this.other.getFont();
 	}
 
 	@Override
-	public void setFont( java.awt.Font font ) {
+	public void setFont( Font font ) {
 		this.other.setFont( font );
 	}
 
 	@Override
-	public java.awt.FontMetrics getFontMetrics( java.awt.Font f ) {
+	public FontMetrics getFontMetrics( Font f ) {
 		return this.other.getFontMetrics( f );
 	}
 
 	@Override
-	public java.awt.Rectangle getClipBounds() {
+	public Rectangle getClipBounds() {
 		return this.other.getClipBounds();
 	}
 
@@ -281,12 +305,12 @@ public class ProxyGraphics2D extends java.awt.Graphics2D {
 	}
 
 	@Override
-	public java.awt.Shape getClip() {
+	public Shape getClip() {
 		return this.other.getClip();
 	}
 
 	@Override
-	public void setClip( java.awt.Shape clip ) {
+	public void setClip( Shape clip ) {
 		this.other.setClip( clip );
 	}
 
@@ -361,37 +385,37 @@ public class ProxyGraphics2D extends java.awt.Graphics2D {
 	}
 
 	@Override
-	public void drawString( java.text.AttributedCharacterIterator iterator, int x, int y ) {
+	public void drawString( AttributedCharacterIterator iterator, int x, int y ) {
 		this.other.drawString( iterator, x, y );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image img, int x, int y, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image img, int x, int y, ImageObserver observer ) {
 		return this.other.drawImage( img, x, y, observer );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image img, int x, int y, int width, int height, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image img, int x, int y, int width, int height, ImageObserver observer ) {
 		return this.other.drawImage( img, x, y, width, height, observer );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image img, int x, int y, java.awt.Color bgcolor, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image img, int x, int y, Color bgcolor, ImageObserver observer ) {
 		return this.other.drawImage( img, x, y, bgcolor, observer );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image img, int x, int y, int width, int height, java.awt.Color bgcolor, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer ) {
 		return this.other.drawImage( img, x, y, width, height, bgcolor, observer );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, ImageObserver observer ) {
 		return this.other.drawImage( img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.Color bgcolor, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer ) {
 		return this.other.drawImage( img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgcolor, observer );
 	}
 
@@ -400,6 +424,6 @@ public class ProxyGraphics2D extends java.awt.Graphics2D {
 		this.other.dispose();
 	}
 
-	private java.awt.Graphics2D other;
+	private Graphics2D other;
 
 }

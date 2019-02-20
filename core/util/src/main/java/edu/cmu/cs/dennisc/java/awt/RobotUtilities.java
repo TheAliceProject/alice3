@@ -42,6 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import javax.swing.SwingUtilities;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Robot;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,28 +61,28 @@ public class RobotUtilities {
 		throw new AssertionError();
 	}
 
-	private static java.awt.Robot robot = null;
+	private static Robot robot = null;
 
-	public static void mouseMove( java.awt.Component awtComponent, java.awt.Point p ) {
+	public static void mouseMove( Component awtComponent, Point p ) {
 		try {
-			java.awt.GraphicsConfiguration graphicsConfiguration = awtComponent.getGraphicsConfiguration();
-			java.awt.Rectangle graphicsConfigurationBounds = graphicsConfiguration.getBounds();
-			java.awt.GraphicsDevice graphicsDevice = graphicsConfiguration.getDevice();
-			robot = new java.awt.Robot( graphicsDevice );
-			javax.swing.SwingUtilities.convertPointToScreen( p, awtComponent );
+			GraphicsConfiguration graphicsConfiguration = awtComponent.getGraphicsConfiguration();
+			Rectangle graphicsConfigurationBounds = graphicsConfiguration.getBounds();
+			GraphicsDevice graphicsDevice = graphicsConfiguration.getDevice();
+			robot = new Robot( graphicsDevice );
+			SwingUtilities.convertPointToScreen( p, awtComponent );
 			p.x -= graphicsConfigurationBounds.x;
 			p.y -= graphicsConfigurationBounds.y;
 			robot.mouseMove( p.x, p.y );
 		} catch( Throwable t ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
+			Logger.throwable( t );
 		}
 	}
 
-	public static java.awt.Color getPixelColor( int x, int y ) {
+	public static Color getPixelColor( int x, int y ) {
 		if( robot != null ) {
 			return robot.getPixelColor( x, y );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( robot );
+			Logger.severe( robot );
 			return null;
 		}
 	}

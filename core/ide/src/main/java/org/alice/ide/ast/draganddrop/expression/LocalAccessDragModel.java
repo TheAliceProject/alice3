@@ -43,30 +43,45 @@
 
 package org.alice.ide.ast.draganddrop.expression;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite;
+import org.alice.ide.croquet.models.ast.cascade.expression.LocalAccessOperation;
+import org.alice.ide.statementfactory.LocalStatementCascade;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LocalAccessDragModel extends AbstractExpressionDragModel {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserLocal, LocalAccessDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<UserLocal, LocalAccessDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static LocalAccessDragModel getInstance( org.lgna.project.ast.UserLocal local ) {
-		return map.getInitializingIfAbsent( local, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserLocal, LocalAccessDragModel>() {
+	public static LocalAccessDragModel getInstance( UserLocal local ) {
+		return map.getInitializingIfAbsent( local, new InitializingIfAbsentMap.Initializer<UserLocal, LocalAccessDragModel>() {
 			@Override
-			public LocalAccessDragModel initialize( org.lgna.project.ast.UserLocal local ) {
+			public LocalAccessDragModel initialize( UserLocal local ) {
 				return new LocalAccessDragModel( local );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.UserLocal local;
+	private final UserLocal local;
 
-	private LocalAccessDragModel( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "57dbd70e-11e0-4311-905e-954a95403950" ) );
+	private LocalAccessDragModel( UserLocal local ) {
+		super( UUID.fromString( "57dbd70e-11e0-4311-905e-954a95403950" ) );
 		this.local = local;
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return this.local.getValueType();
 	}
 
@@ -76,12 +91,15 @@ public class LocalAccessDragModel extends AbstractExpressionDragModel {
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.statementfactory.LocalStatementCascade.getInstance( this.local, blockStatementIndexPair );
+	protected Triggerable getDropOperation( ExpressionProperty expressionProperty ) {
+		return LocalAccessOperation.getInstance( this.local, expressionProperty );
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.LocalAccessOperation.getInstance( this.local, expressionProperty );
+	public final Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
+		if( dropSite instanceof BlockStatementIndexPair ) {
+			return LocalStatementCascade.getInstance( this.local, (BlockStatementIndexPair)dropSite );
+		}
+		return super.getDropOperation( step, dropSite );
 	}
 }

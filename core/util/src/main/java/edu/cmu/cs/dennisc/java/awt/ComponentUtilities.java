@@ -42,21 +42,39 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import edu.cmu.cs.dennisc.pattern.HowMuch;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dialog;
+import java.awt.Frame;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ComponentUtilities {
-	public static void makeStandOut( java.awt.Component component ) {
+	public static void makeStandOut( Component component ) {
 		assert component != null;
-		if( component instanceof javax.swing.JComponent ) {
-			javax.swing.JComponent jComponent = (javax.swing.JComponent)component;
-			jComponent.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.RED, 4 ) );
+		if( component instanceof JComponent ) {
+			JComponent jComponent = (JComponent)component;
+			jComponent.setBorder( BorderFactory.createLineBorder( Color.RED, 4 ) );
 			jComponent.setOpaque( true );
 		}
-		component.setBackground( java.awt.Color.GREEN );
+		component.setBackground( Color.GREEN );
 	}
 
-	private static java.awt.Point getLocation( java.awt.Point rv, java.awt.Component c, java.awt.Component ancestor ) {
+	private static Point getLocation( Point rv, Component c, Component ancestor ) {
 		assert c != null;
 		if( c == ancestor ) {
 			return rv;
@@ -67,40 +85,40 @@ public class ComponentUtilities {
 		}
 	}
 
-	private static java.awt.Point getLocation( java.awt.Component c, java.awt.Component ancestor ) {
-		return getLocation( new java.awt.Point(), c, ancestor );
+	private static Point getLocation( Component c, Component ancestor ) {
+		return getLocation( new Point(), c, ancestor );
 	}
 
-	public static java.awt.Point convertPoint( java.awt.Component src, int srcX, int srcY, java.awt.Component dst ) {
-		java.awt.Component srcRoot = javax.swing.SwingUtilities.getRoot( src );
-		java.awt.Component dstRoot = javax.swing.SwingUtilities.getRoot( dst );
+	public static Point convertPoint( Component src, int srcX, int srcY, Component dst ) {
+		Component srcRoot = SwingUtilities.getRoot( src );
+		Component dstRoot = SwingUtilities.getRoot( dst );
 		//avoid tree lock, if possible
 		if( ( srcRoot != null ) && ( srcRoot == dstRoot ) ) {
-			java.awt.Point srcPt = getLocation( src, srcRoot );
-			java.awt.Point dstPt = getLocation( dst, dstRoot );
-			java.awt.Point rv = srcPt;
+			Point srcPt = getLocation( src, srcRoot );
+			Point dstPt = getLocation( dst, dstRoot );
+			Point rv = srcPt;
 			rv.x -= dstPt.x;
 			rv.y -= dstPt.y;
 			rv.x += srcX;
 			rv.y += srcY;
 			return rv;
 		} else {
-			return javax.swing.SwingUtilities.convertPoint( src, srcX, srcY, dst );
+			return SwingUtilities.convertPoint( src, srcX, srcY, dst );
 		}
 	}
 
-	public static java.awt.Point convertPoint( java.awt.Component src, java.awt.Point srcPt, java.awt.Component dst ) {
+	public static Point convertPoint( Component src, Point srcPt, Component dst ) {
 		return convertPoint( src, srcPt.x, srcPt.y, dst );
 	}
 
-	public static java.awt.Rectangle convertRectangle( java.awt.Component src, java.awt.Rectangle srcRect, java.awt.Component dst ) {
-		java.awt.Point pt = convertPoint( src, srcRect.x, srcRect.y, dst );
-		return new java.awt.Rectangle( pt.x, pt.y, srcRect.width, srcRect.height );
+	public static Rectangle convertRectangle( Component src, Rectangle srcRect, Component dst ) {
+		Point pt = convertPoint( src, srcRect.x, srcRect.y, dst );
+		return new Rectangle( pt.x, pt.y, srcRect.width, srcRect.height );
 	}
 
-	public static final edu.cmu.cs.dennisc.pattern.HowMuch DEFAULT_HOW_MUCH = edu.cmu.cs.dennisc.pattern.HowMuch.COMPONENT_AND_DESCENDANTS;
+	public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.COMPONENT_AND_DESCENDANTS;
 
-	private static <E extends java.awt.Component> E getFirstToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, java.awt.Component component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	private static <E extends Component> E getFirstToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, Component component, Class<E> cls, Criterion<?>... criterions ) {
 		assert component != null;
 		E rv = null;
 		boolean isAcceptedByAll;
@@ -110,7 +128,7 @@ public class ComponentUtilities {
 				if( criterions == null ) {
 					//pass
 				} else {
-					for( edu.cmu.cs.dennisc.pattern.Criterion criterion : criterions ) {
+					for( Criterion criterion : criterions ) {
 						if( criterion.accept( component ) ) {
 							//pass
 						} else {
@@ -129,8 +147,8 @@ public class ComponentUtilities {
 			rv = (E)component;
 		} else {
 			if( isChildACandidate ) {
-				if( component instanceof java.awt.Container ) {
-					for( java.awt.Component componentI : ( (java.awt.Container)component ).getComponents() ) {
+				if( component instanceof Container ) {
+					for( Component componentI : ( (Container)component ).getComponents() ) {
 						rv = getFirstToAccept( isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, componentI, cls, criterions );
 						if( rv != null ) {
 							break;
@@ -142,7 +160,7 @@ public class ComponentUtilities {
 		return rv;
 	}
 
-	private static <E extends java.awt.Component> void updateAllToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, java.util.List<E> list, java.awt.Component component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	private static <E extends Component> void updateAllToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, List<E> list, Component component, Class<E> cls, Criterion<?>... criterions ) {
 		assert component != null;
 
 		if( isComponentACandidate ) {
@@ -151,7 +169,7 @@ public class ComponentUtilities {
 				if( criterions == null ) {
 					//pass
 				} else {
-					for( edu.cmu.cs.dennisc.pattern.Criterion criterion : criterions ) {
+					for( Criterion criterion : criterions ) {
 						if( criterion.accept( component ) ) {
 							//pass
 						} else {
@@ -167,62 +185,62 @@ public class ComponentUtilities {
 		}
 
 		if( isChildACandidate ) {
-			if( component instanceof java.awt.Container ) {
-				for( java.awt.Component componentI : ( (java.awt.Container)component ).getComponents() ) {
+			if( component instanceof Container ) {
+				for( Component componentI : ( (Container)component ).getComponents() ) {
 					updateAllToAccept( isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criterions );
 				}
 			}
 		}
 	}
 
-	private static <E extends java.awt.Component> E getFirstToAccept( edu.cmu.cs.dennisc.pattern.HowMuch candidateMask, java.awt.Component component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	private static <E extends Component> E getFirstToAccept( HowMuch candidateMask, Component component, Class<E> cls, Criterion<?>... criterions ) {
 		return getFirstToAccept( candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), component, cls, criterions );
 	}
 
-	private static <E extends java.awt.Component> void updateAllToAccept( edu.cmu.cs.dennisc.pattern.HowMuch candidateMask, java.util.List<E> list, java.awt.Component component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	private static <E extends Component> void updateAllToAccept( HowMuch candidateMask, List<E> list, Component component, Class<E> cls, Criterion<?>... criterions ) {
 		updateAllToAccept( candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), list, component, cls, criterions );
 	}
 
-	public static <E extends java.awt.Component> E findFirstMatch( java.awt.Component component, edu.cmu.cs.dennisc.pattern.HowMuch howMuch, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	public static <E extends Component> E findFirstMatch( Component component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions ) {
 		return ComponentUtilities.getFirstToAccept( howMuch, component, cls, criterions );
 	}
 
-	public static <E extends java.awt.Component> E findFirstMatch( java.awt.Component component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	public static <E extends Component> E findFirstMatch( Component component, Class<E> cls, Criterion<?>... criterions ) {
 		return findFirstMatch( component, DEFAULT_HOW_MUCH, cls, criterions );
 	}
 
-	public static <E extends java.awt.Component> E findFirstMatch( java.awt.Component component, Class<E> cls ) {
-		return findFirstMatch( component, cls, (edu.cmu.cs.dennisc.pattern.Criterion<?>[])null );
+	public static <E extends Component> E findFirstMatch( Component component, Class<E> cls ) {
+		return findFirstMatch( component, cls, (Criterion<?>[])null );
 	}
 
-	public static java.awt.Component findFirstMatch( java.awt.Component component, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	public static Component findFirstMatch( Component component, Criterion<?>... criterions ) {
 		return findFirstMatch( component, null, criterions );
 	}
 
-	public static <E extends java.awt.Component> java.util.List<E> findAllMatches( java.awt.Component component, edu.cmu.cs.dennisc.pattern.HowMuch howMuch, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
-		java.util.List<E> list = new java.util.LinkedList<E>();
+	public static <E extends Component> List<E> findAllMatches( Component component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions ) {
+		List<E> list = new LinkedList<E>();
 		ComponentUtilities.updateAllToAccept( howMuch, list, component, cls, criterions );
 		return list;
 	}
 
-	public static <E extends java.awt.Component> java.util.List<E> findAllMatches( java.awt.Component component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	public static <E extends Component> List<E> findAllMatches( Component component, Class<E> cls, Criterion<?>... criterions ) {
 		return findAllMatches( component, DEFAULT_HOW_MUCH, cls, criterions );
 	}
 
-	public static <E extends java.awt.Component> java.util.List<E> findAllMatches( java.awt.Component component, Class<E> cls ) {
-		return findAllMatches( component, cls, (edu.cmu.cs.dennisc.pattern.Criterion<?>[])null );
+	public static <E extends Component> List<E> findAllMatches( Component component, Class<E> cls ) {
+		return findAllMatches( component, cls, (Criterion<?>[])null );
 	}
 
-	public static java.util.List<java.awt.Component> findAllMatches( java.awt.Component component, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	public static List<Component> findAllMatches( Component component, Criterion<?>... criterions ) {
 		return findAllMatches( component, null, criterions );
 	}
 
-	public static java.util.List<java.awt.Component> findAllMatches( java.awt.Component component ) {
-		return findAllMatches( component, null, (edu.cmu.cs.dennisc.pattern.Criterion<?>[])null );
+	public static List<Component> findAllMatches( Component component ) {
+		return findAllMatches( component, null, (Criterion<?>[])null );
 	}
 
-	public static <E extends java.awt.Component> E findFirstAncestor( java.awt.Component component, boolean isComponentIncludedInSearch, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
-		java.awt.Component c;
+	public static <E extends Component> E findFirstAncestor( Component component, boolean isComponentIncludedInSearch, Class<E> cls, Criterion<?>... criterions ) {
+		Component c;
 		if( isComponentIncludedInSearch ) {
 			c = component;
 		} else {
@@ -235,7 +253,7 @@ public class ComponentUtilities {
 				if( criterions == null ) {
 					//pass
 				} else {
-					for( edu.cmu.cs.dennisc.pattern.Criterion criterion : criterions ) {
+					for( Criterion criterion : criterions ) {
 						if( criterion.accept( component ) ) {
 							//pass
 						} else {
@@ -255,99 +273,99 @@ public class ComponentUtilities {
 		return null;
 	}
 
-	public static <E extends java.awt.Component> E findFirstAncestor( java.awt.Component component, boolean isComponentIncludedInSearch, Class<E> cls ) {
-		return findFirstAncestor( component, isComponentIncludedInSearch, cls, (edu.cmu.cs.dennisc.pattern.Criterion<?>[])null );
+	public static <E extends Component> E findFirstAncestor( Component component, boolean isComponentIncludedInSearch, Class<E> cls ) {
+		return findFirstAncestor( component, isComponentIncludedInSearch, cls, (Criterion<?>[])null );
 	}
 
-	public static java.awt.Component findFirstAncestor( java.awt.Component component, boolean isComponentIncludedInSearch, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+	public static Component findFirstAncestor( Component component, boolean isComponentIncludedInSearch, Criterion<?>... criterions ) {
 		return findFirstAncestor( component, isComponentIncludedInSearch, null, criterions );
 	}
 
-	public static void doLayoutTree( java.awt.Component c ) {
+	public static void doLayoutTree( Component c ) {
 		//c.doLayout();
-		if( c instanceof java.awt.Container ) {
-			java.awt.Container container = (java.awt.Container)c;
-			for( java.awt.Component component : container.getComponents() ) {
+		if( c instanceof Container ) {
+			Container container = (Container)c;
+			for( Component component : container.getComponents() ) {
 				doLayoutTree( component );
 			}
 		}
 		c.doLayout();
 	}
 
-	public static void setSizeToPreferredSizeTree( java.awt.Component c ) {
-		if( c instanceof java.awt.Container ) {
-			java.awt.Container container = (java.awt.Container)c;
-			for( java.awt.Component component : container.getComponents() ) {
+	public static void setSizeToPreferredSizeTree( Component c ) {
+		if( c instanceof Container ) {
+			Container container = (Container)c;
+			for( Component component : container.getComponents() ) {
 				setSizeToPreferredSizeTree( component );
 			}
 		}
 		c.setSize( c.getPreferredSize() );
 	}
 
-	public static void invalidateTree( java.awt.Component c ) {
+	public static void invalidateTree( Component c ) {
 		c.invalidate();
-		if( c instanceof java.awt.Container ) {
-			java.awt.Container container = (java.awt.Container)c;
-			for( java.awt.Component component : container.getComponents() ) {
+		if( c instanceof Container ) {
+			Container container = (Container)c;
+			for( Component component : container.getComponents() ) {
 				invalidateTree( component );
 			}
 		}
 	}
 
-	public static void validateTree( java.awt.Component c ) {
+	public static void validateTree( Component c ) {
 		c.validate();
-		if( c instanceof java.awt.Container ) {
-			java.awt.Container container = (java.awt.Container)c;
-			for( java.awt.Component component : container.getComponents() ) {
+		if( c instanceof Container ) {
+			Container container = (Container)c;
+			for( Component component : container.getComponents() ) {
 				validateTree( component );
 			}
 		}
 	}
 
-	public static void revalidateTree( java.awt.Component c ) {
-		if( c instanceof javax.swing.JComponent ) {
-			javax.swing.JComponent jc = (javax.swing.JComponent)c;
+	public static void revalidateTree( Component c ) {
+		if( c instanceof JComponent ) {
+			JComponent jc = (JComponent)c;
 			jc.revalidate();
 		}
-		if( c instanceof java.awt.Container ) {
-			java.awt.Container container = (java.awt.Container)c;
-			for( java.awt.Component component : container.getComponents() ) {
+		if( c instanceof Container ) {
+			Container container = (Container)c;
+			for( Component component : container.getComponents() ) {
 				revalidateTree( component );
 			}
 		}
 	}
 
-	public static java.awt.Frame getRootFrame( java.awt.Component c ) {
-		java.awt.Component root = javax.swing.SwingUtilities.getRoot( c );
-		if( root instanceof java.awt.Frame ) {
-			return (java.awt.Frame)root;
+	public static Frame getRootFrame( Component c ) {
+		Component root = SwingUtilities.getRoot( c );
+		if( root instanceof Frame ) {
+			return (Frame)root;
 		} else {
 			return null;
 		}
 	}
 
-	public static javax.swing.JFrame getRootJFrame( java.awt.Component c ) {
-		java.awt.Component root = javax.swing.SwingUtilities.getRoot( c );
-		if( root instanceof javax.swing.JFrame ) {
-			return (javax.swing.JFrame)root;
+	public static JFrame getRootJFrame( Component c ) {
+		Component root = SwingUtilities.getRoot( c );
+		if( root instanceof JFrame ) {
+			return (JFrame)root;
 		} else {
 			return null;
 		}
 	}
 
-	public static java.awt.Dialog getRootDialog( java.awt.Component c ) {
-		java.awt.Component root = javax.swing.SwingUtilities.getRoot( c );
-		if( root instanceof java.awt.Dialog ) {
-			return (java.awt.Dialog)root;
+	public static Dialog getRootDialog( Component c ) {
+		Component root = SwingUtilities.getRoot( c );
+		if( root instanceof Dialog ) {
+			return (Dialog)root;
 		} else {
 			return null;
 		}
 	}
 
-	public static javax.swing.JDialog getRootJDialog( java.awt.Component c ) {
-		java.awt.Component root = javax.swing.SwingUtilities.getRoot( c );
-		if( root instanceof javax.swing.JDialog ) {
-			return (javax.swing.JDialog)root;
+	public static JDialog getRootJDialog( Component c ) {
+		Component root = SwingUtilities.getRoot( c );
+		if( root instanceof JDialog ) {
+			return (JDialog)root;
 		} else {
 			return null;
 		}

@@ -42,23 +42,18 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
-import edu.cmu.cs.dennisc.javax.swing.option.YesNoResult;
+import org.lgna.croquet.views.Panel;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class YesNoConfirmDialogComposite<V extends org.lgna.croquet.views.Panel> extends SingleValueCreatorInputDialogCoreComposite<V, YesNoResult> {
-	private final MessageType messageType;
+public abstract class YesNoConfirmDialogComposite<V extends Panel> extends SingleValueCreatorInputDialogCoreComposite<V, Boolean> {
 	private String title;
 
-	public YesNoConfirmDialogComposite( java.util.UUID migrationId, MessageType messageType ) {
+	public YesNoConfirmDialogComposite( UUID migrationId ) {
 		super( migrationId );
-		this.messageType = messageType;
-	}
-
-	public YesNoConfirmDialogComposite( java.util.UUID migrationId ) {
-		this( migrationId, MessageType.QUESTION );
 	}
 
 	@Override
@@ -68,12 +63,12 @@ public abstract class YesNoConfirmDialogComposite<V extends org.lgna.croquet.vie
 	}
 
 	@Override
-	protected YesNoResult createValue() {
+	protected Boolean createValue() {
 		return null;
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return null;
 	}
 }

@@ -42,6 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.lang;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Vector;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,14 +66,14 @@ public class ArrayUtilities {
 	}
 
 	public static <E> E[] concat( Class<E> cls, E a, E... bs ) {
-		E[] rv = (E[])java.lang.reflect.Array.newInstance( cls, 1 + bs.length );
+		E[] rv = (E[])Array.newInstance( cls, 1 + bs.length );
 		rv[ 0 ] = a;
 		System.arraycopy( bs, 0, rv, 1, bs.length );
 		return rv;
 	}
 
 	public static <E> E[] concat( Class<E> cls, E[] as, E b ) {
-		E[] rv = (E[])java.lang.reflect.Array.newInstance( cls, as.length + 1 );
+		E[] rv = (E[])Array.newInstance( cls, as.length + 1 );
 		System.arraycopy( as, 0, rv, 0, as.length );
 		rv[ as.length ] = b;
 		return rv;
@@ -78,7 +85,7 @@ public class ArrayUtilities {
 			totalLength += array.length;
 		}
 		if( totalLength > 0 ) {
-			E[] rv = (E[])java.lang.reflect.Array.newInstance( cls, totalLength );
+			E[] rv = (E[])Array.newInstance( cls, totalLength );
 			int index = 0;
 			for( E[] array : arrays ) {
 				System.arraycopy( array, 0, rv, index, array.length );
@@ -92,7 +99,7 @@ public class ArrayUtilities {
 
 	}
 
-	public static <E> E[] createArray( java.util.Collection<E> collection, Class<E> cls, boolean isZeroLengthArrayDesiredForNull ) {
+	public static <E> E[] createArray( Collection<E> collection, Class<E> cls, boolean isZeroLengthArrayDesiredForNull ) {
 		int size;
 		if( collection != null ) {
 			size = collection.size();
@@ -105,7 +112,7 @@ public class ArrayUtilities {
 		}
 		E[] rv;
 		if( size >= 0 ) {
-			rv = (E[])java.lang.reflect.Array.newInstance( cls, size );
+			rv = (E[])Array.newInstance( cls, size );
 		} else {
 			rv = null;
 		}
@@ -115,28 +122,26 @@ public class ArrayUtilities {
 		return rv;
 	}
 
-	public static <E> E[] createArray( java.util.Collection<E> collection, Class<E> cls ) {
+	public static <E> E[] createArray( Collection<E> collection, Class<E> cls ) {
 		return createArray( collection, cls, false );
 	}
 
-	public static <E> void set( java.util.Collection<E> collection, E... array ) {
+	public static <E> void set( Collection<E> collection, E... array ) {
 		collection.clear();
 		if( array != null ) {
-			if( collection instanceof java.util.ArrayList<?> ) {
-				java.util.ArrayList<?> arrayList = (java.util.ArrayList<?>)collection;
+			if( collection instanceof ArrayList<?> ) {
+				ArrayList<?> arrayList = (ArrayList<?>)collection;
 				arrayList.ensureCapacity( array.length );
 			}
-			if( collection instanceof java.util.Vector<?> ) {
-				java.util.Vector<?> vector = (java.util.Vector<?>)collection;
+			if( collection instanceof Vector<?> ) {
+				Vector<?> vector = (Vector<?>)collection;
 				vector.ensureCapacity( array.length );
 			}
 		}
-		for( E e : array ) {
-			collection.add( e );
-		}
+		Collections.addAll( collection, array );
 	}
 
-	public static short[] createShortArray( java.util.Collection<Short> collection ) {
+	public static short[] createShortArray( Collection<Short> collection ) {
 		final int N = collection.size();
 		short[] rv = new short[ N ];
 		int i = 0;
@@ -146,7 +151,7 @@ public class ArrayUtilities {
 		return rv;
 	}
 
-	public static int[] createIntArray( java.util.Collection<Integer> collection ) {
+	public static int[] createIntArray( Collection<Integer> collection ) {
 		final int N = collection.size();
 		int[] rv = new int[ N ];
 		int i = 0;
@@ -156,7 +161,7 @@ public class ArrayUtilities {
 		return rv;
 	}
 
-	public static float[] createFloatArray( java.util.Collection<Float> collection ) {
+	public static float[] createFloatArray( Collection<Float> collection ) {
 		final int N = collection.size();
 		float[] rv = new float[ N ];
 		int i = 0;
@@ -166,7 +171,7 @@ public class ArrayUtilities {
 		return rv;
 	}
 
-	public static double[] createDoubleArray( java.util.Collection<Double> collection ) {
+	public static double[] createDoubleArray( Collection<Double> collection ) {
 		final int N = collection.size();
 		double[] rv = new double[ N ];
 		int i = 0;
@@ -179,21 +184,21 @@ public class ArrayUtilities {
 	public static String toString( Object o ) {
 		if( o != null ) {
 			if( o instanceof Object[] ) {
-				return java.util.Arrays.toString( (Object[])o );
+				return Arrays.toString( (Object[])o );
 			} else if( o instanceof byte[] ) {
-				return java.util.Arrays.toString( (byte[])o );
+				return Arrays.toString( (byte[])o );
 			} else if( o instanceof short[] ) {
-				return java.util.Arrays.toString( (short[])o );
+				return Arrays.toString( (short[])o );
 			} else if( o instanceof char[] ) {
-				return java.util.Arrays.toString( (char[])o );
+				return Arrays.toString( (char[])o );
 			} else if( o instanceof int[] ) {
-				return java.util.Arrays.toString( (int[])o );
+				return Arrays.toString( (int[])o );
 			} else if( o instanceof long[] ) {
-				return java.util.Arrays.toString( (long[])o );
+				return Arrays.toString( (long[])o );
 			} else if( o instanceof float[] ) {
-				return java.util.Arrays.toString( (float[])o );
+				return Arrays.toString( (float[])o );
 			} else if( o instanceof double[] ) {
-				return java.util.Arrays.toString( (double[])o );
+				return Arrays.toString( (double[])o );
 			} else {
 				return o.toString();
 			}

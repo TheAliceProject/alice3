@@ -42,13 +42,15 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.issue;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SystemPropertiesAttachment implements edu.cmu.cs.dennisc.issue.Attachment {
+public class SystemPropertiesAttachment implements Attachment {
 	@Override
 	public byte[] getBytes() {
-		return edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPropertiesAsXMLByteArray();
+		return SystemUtilities.getPropertiesAsXMLByteArray();
 	}
 
 	@Override

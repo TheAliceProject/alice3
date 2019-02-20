@@ -42,11 +42,18 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView;
+
+import javax.swing.text.Caret;
+import javax.swing.text.html.HTMLDocument;
+import java.awt.Image;
+import java.net.URL;
+
 /**
  * @author Dennis Cosgrove
  */
-public class HtmlView extends org.lgna.croquet.views.SwingComponentView<edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView> {
-	public javax.swing.text.html.HTMLDocument getHtmlDocument() {
+public class HtmlView extends SwingComponentView<JBrowserHtmlView> {
+	public HTMLDocument getHtmlDocument() {
 		return this.getAwtComponent().getHtmlDocument();
 	}
 
@@ -59,20 +66,20 @@ public class HtmlView extends org.lgna.croquet.views.SwingComponentView<edu.cmu.
 		this.getAwtComponent().setText( text );
 	}
 
-	public javax.swing.text.Caret getCaret() {
+	public Caret getCaret() {
 		return this.getAwtComponent().getCaret();
 	}
 
-	public void setCaret( javax.swing.text.Caret caret ) {
+	public void setCaret( Caret caret ) {
 		this.checkEventDispatchThread();
 		this.getAwtComponent().setCaret( caret );
 	}
 
-	public void setTextFromUrlLater( java.net.URL url ) {
+	public void setTextFromUrlLater( URL url ) {
 		this.getAwtComponent().setTextFromUrlLater( url );
 	}
 
-	public void addImageToCache( java.net.URL url, java.awt.Image image ) {
+	public void addImageToCache( URL url, Image image ) {
 		this.getAwtComponent().addImageToCache( url, image );
 	}
 
@@ -81,8 +88,8 @@ public class HtmlView extends org.lgna.croquet.views.SwingComponentView<edu.cmu.
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView createAwtComponent() {
-		return new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView() {
+	protected JBrowserHtmlView createAwtComponent() {
+		return new JBrowserHtmlView() {
 			@Override
 			protected boolean isRightToLeftComponentOrientationAllowed() {
 				return HtmlView.this.isRightToLeftComponentOrientationAllowed( super.isRightToLeftComponentOrientationAllowed() );

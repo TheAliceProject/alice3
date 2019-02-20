@@ -60,13 +60,14 @@ import java.nio.IntBuffer;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.GetUtilities;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Mesh;
 
 public class GlrMesh<T extends Mesh> extends GlrGeometry<T> {
-	/*package-private*/static void renderMesh( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer ) {
+	/*package-private*/static void renderMesh( RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer ) {
 		int maxIndices = GetUtilities.getInteger( rc.gl, GL_MAX_ELEMENTS_INDICES );
 		int maxVertices = GetUtilities.getInteger( rc.gl, GL_MAX_ELEMENTS_VERTICES );
 		if( ( ( vertexBuffer.capacity() / 3 ) >= maxVertices ) || ( indexBuffer.capacity() >= maxIndices ) ) {
@@ -76,7 +77,7 @@ public class GlrMesh<T extends Mesh> extends GlrGeometry<T> {
 		}
 	}
 
-	private static void renderMeshWithBuffers( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer ) {
+	private static void renderMeshWithBuffers( RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer ) {
 		rc.gl.glEnableClientState( GL_VERTEX_ARRAY );
 		vertexBuffer.rewind();
 		rc.gl.glVertexPointer( 3, GL_DOUBLE, 0, vertexBuffer );
@@ -97,7 +98,7 @@ public class GlrMesh<T extends Mesh> extends GlrGeometry<T> {
 	}
 
 	//This is really slow in debug mode
-	private static void renderMeshAsArrays( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer ) {
+	private static void renderMeshAsArrays( RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer ) {
 		indexBuffer.rewind();
 		rc.gl.glBegin( GL_TRIANGLES );
 		while( indexBuffer.hasRemaining() ) {
@@ -114,7 +115,7 @@ public class GlrMesh<T extends Mesh> extends GlrGeometry<T> {
 		rc.gl.glEnd();
 	}
 
-	/*package-private*/static void pickMesh( edu.cmu.cs.dennisc.render.gl.imp.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer ) {
+	/*package-private*/static void pickMesh( PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer ) {
 		int maxIndices = GetUtilities.getInteger( pc.gl, GL_MAX_ELEMENTS_INDICES );
 		int maxVertices = GetUtilities.getInteger( pc.gl, GL_MAX_ELEMENTS_VERTICES );
 		if( ( ( vertexBuffer.capacity() / 3 ) >= maxVertices ) || ( indexBuffer.capacity() >= maxIndices ) ) {
@@ -124,7 +125,7 @@ public class GlrMesh<T extends Mesh> extends GlrGeometry<T> {
 		}
 	}
 
-	private static void pickMeshWithBuffers( edu.cmu.cs.dennisc.render.gl.imp.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer ) {
+	private static void pickMeshWithBuffers( PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer ) {
 		pc.gl.glPushName( -1 );
 		pc.gl.glEnableClientState( GL_VERTEX_ARRAY );
 		vertexBuffer.rewind();
@@ -135,7 +136,7 @@ public class GlrMesh<T extends Mesh> extends GlrGeometry<T> {
 		pc.gl.glPopName();
 	}
 
-	private static void pickMeshAsArrays( edu.cmu.cs.dennisc.render.gl.imp.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer ) {
+	private static void pickMeshAsArrays( PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer ) {
 		pc.gl.glPushName( -1 );
 
 		indexBuffer.rewind();
@@ -171,7 +172,7 @@ public class GlrMesh<T extends Mesh> extends GlrGeometry<T> {
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.vertexBuffer ) {
 			this.vertexBuffer = owner.vertexBuffer.getValue();
 			setIsGeometryChanged( true );

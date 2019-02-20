@@ -42,33 +42,47 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
+import edu.cmu.cs.dennisc.property.event.ListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter;
+import org.alice.stageide.project.SceneTypeMetaState;
+import org.alice.stageide.sceneeditor.side.views.MarkersView;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.RefreshableDataSingleSelectListState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MarkersToolPalette<V extends org.alice.stageide.sceneeditor.side.views.MarkersView> extends SideToolPalette<V> {
-	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.UserField> markerListState;
+public abstract class MarkersToolPalette<V extends MarkersView> extends SideToolPalette<V> {
+	private final RefreshableDataSingleSelectListState<UserField> markerListState;
 
-	private org.lgna.project.ast.NamedUserType sceneType = null;
+	private NamedUserType sceneType = null;
 
-	private final edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<org.lgna.project.ast.UserField> sceneTypeFieldsListener = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<org.lgna.project.ast.UserField>() {
+	private final SimplifiedListPropertyAdapter<UserField> sceneTypeFieldsListener = new SimplifiedListPropertyAdapter<UserField>() {
 		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserField> e ) {
+		protected void changing( ListPropertyEvent<UserField> e ) {
 		}
 
 		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserField> e ) {
+		protected void changed( ListPropertyEvent<UserField> e ) {
 			updateTitle();
 		}
 	};
 
-	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> sceneTypeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+	private final ValueListener<NamedUserType> sceneTypeListener = new ValueListener<NamedUserType>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
+		public void valueChanged( ValueEvent<NamedUserType> e ) {
 			if( sceneType != null ) {
 				sceneType.fields.removeListPropertyListener( sceneTypeFieldsListener );
 			}
 			sceneType = e.getNextValue();
-			org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserField> fieldProperty;
+			NodeListProperty<UserField> fieldProperty;
 			if( sceneType != null ) {
 				fieldProperty = sceneType.fields;
 			} else {
@@ -84,21 +98,21 @@ public abstract class MarkersToolPalette<V extends org.alice.stageide.sceneedito
 		}
 	};
 
-	public MarkersToolPalette( java.util.UUID migrationId, MarkerFieldData markerFieldData ) {
+	public MarkersToolPalette( UUID migrationId, MarkerFieldData markerFieldData ) {
 		super( migrationId, false );
 		this.markerListState = this.createRefreshableListState( "markerListState", markerFieldData, -1 );
-		org.alice.stageide.project.SceneTypeMetaState.getInstance().addAndInvokeValueListener( this.sceneTypeListener );
+		SceneTypeMetaState.getInstance().addAndInvokeValueListener( this.sceneTypeListener );
 	}
 
-	public abstract org.lgna.croquet.Operation getMoveMarkerToOperation();
+	public abstract Operation getMoveMarkerToOperation();
 
-	public abstract org.lgna.croquet.Operation getMoveToMarkerOperation();
+	public abstract Operation getMoveToMarkerOperation();
 
-	public org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.UserField> getMarkerListState() {
+	public RefreshableDataSingleSelectListState<UserField> getMarkerListState() {
 		return this.markerListState;
 	}
 
-	public abstract org.lgna.croquet.Operation getAddOperation();
+	public abstract Operation getAddOperation();
 
 	@Override
 	protected String modifyTextIfNecessary( String text, boolean isExpanded ) {

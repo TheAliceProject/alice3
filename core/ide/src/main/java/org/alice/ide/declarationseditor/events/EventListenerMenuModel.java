@@ -42,11 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.events;
 
+import org.lgna.croquet.CascadeMenuModel;
+import org.lgna.project.ast.MethodInvocation;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EventListenerMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.MethodInvocation> {
-	public EventListenerMenuModel( java.util.UUID id ) {
+public abstract class EventListenerMenuModel extends CascadeMenuModel<MethodInvocation> {
+	public EventListenerMenuModel( UUID id ) {
 		super( id );
 	}
 

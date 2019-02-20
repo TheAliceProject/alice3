@@ -42,20 +42,22 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.story.implementation.TorusImp;
 
 /**
  * @author Dennis Cosgrove
  */
 public class STorus extends SShape {
-	private final org.lgna.story.implementation.TorusImp implementation = new org.lgna.story.implementation.TorusImp( this );
+	private final TorusImp implementation = new TorusImp( this );
 
 	@Override
-	/* package-private */org.lgna.story.implementation.TorusImp getImplementation() {
+	/* package-private */TorusImp getImplementation() {
 		return this.implementation;
 	}
 
-	@org.lgna.project.annotations.GetterTemplate( isPersistent = true )
+	@GetterTemplate( isPersistent = true )
 	@MethodTemplate( )
 	public Double getInnerRadius() {
 		return this.implementation.innerRadius.getValue();
@@ -66,7 +68,7 @@ public class STorus extends SShape {
 		this.implementation.innerRadius.animateValue( innerRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
-	@org.lgna.project.annotations.GetterTemplate( isPersistent = true )
+	@GetterTemplate( isPersistent = true )
 	@MethodTemplate( )
 	public Double getOuterRadius() {
 		return this.implementation.outerRadius.getValue();

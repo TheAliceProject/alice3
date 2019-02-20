@@ -43,13 +43,15 @@
 
 package org.lgna.croquet;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultCustomItemState<T> extends org.lgna.croquet.CustomItemStateWithInternalBlank<T> {
+public abstract class DefaultCustomItemState<T> extends CustomItemStateWithInternalBlank<T> {
 	private T swingValue;
 
-	public DefaultCustomItemState( Group group, java.util.UUID id, ItemCodec<T> itemCodec, T initialValue ) {
+	public DefaultCustomItemState( Group group, UUID id, ItemCodec<T> itemCodec, T initialValue ) {
 		super( group, id, initialValue, itemCodec );
 	}
 

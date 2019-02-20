@@ -43,10 +43,20 @@
 
 package org.alice.ide.croquet.models.cascade.number;
 
+import org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu;
+import org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn;
+import org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.Expression;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TrigonometryCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.Expression> {
+public class TrigonometryCascadeMenu extends ExpressionCascadeMenu<Expression> {
 	private static class SingletonHolder {
 		private static TrigonometryCascadeMenu instance = new TrigonometryCascadeMenu();
 	}
@@ -56,18 +66,18 @@ public class TrigonometryCascadeMenu extends org.alice.ide.croquet.models.cascad
 	}
 
 	private TrigonometryCascadeMenu() {
-		super( java.util.UUID.fromString( "fb160569-ac57-4fbc-a665-2239411e3f74" ) );
+		super( UUID.fromString( "fb160569-ac57-4fbc-a665-2239411e3f74" ) );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "sin", Double.TYPE ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "cos", Double.TYPE ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "tan", Double.TYPE ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "asin", Double.TYPE ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "acos", Double.TYPE ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "atan", Double.TYPE ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "atan2", Double.TYPE, Double.TYPE ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( Math.class, "PI" ) );
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> context ) {
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "sin", Double.TYPE ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "cos", Double.TYPE ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "tan", Double.TYPE ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "asin", Double.TYPE ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "acos", Double.TYPE ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "atan", Double.TYPE ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "atan2", Double.TYPE, Double.TYPE ) );
+		blankChildren.add( StaticFieldAccessFillIn.getInstance( Math.class, "PI" ) );
 	}
 }

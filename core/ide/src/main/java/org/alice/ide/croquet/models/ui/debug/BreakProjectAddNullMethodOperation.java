@@ -42,10 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ui.debug;
 
+import org.alice.stageide.StageIDE;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class BreakProjectAddNullMethodOperation extends org.lgna.croquet.ActionOperation {
+public class BreakProjectAddNullMethodOperation extends ActionOperation {
 	private static class SingletonHolder {
 		private static BreakProjectAddNullMethodOperation instance = new BreakProjectAddNullMethodOperation();
 	}
@@ -55,7 +63,7 @@ public class BreakProjectAddNullMethodOperation extends org.lgna.croquet.ActionO
 	}
 
 	private BreakProjectAddNullMethodOperation() {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "06927780-2f06-41ba-a32c-2bfefd2188e9" ) );
+		super( Application.PROJECT_GROUP, UUID.fromString( "06927780-2f06-41ba-a32c-2bfefd2188e9" ) );
 	}
 
 	@Override
@@ -65,9 +73,9 @@ public class BreakProjectAddNullMethodOperation extends org.lgna.croquet.ActionO
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.project.ast.UserMethod method = null;
-		org.alice.stageide.StageIDE.getActiveInstance().getSceneType().methods.add( method );
-		step.finish();
+	protected void perform( UserActivity activity ) {
+		UserMethod method = null;
+		StageIDE.getActiveInstance().getSceneType().methods.add( method );
+		activity.finish();
 	}
 }

@@ -43,16 +43,21 @@
 
 package org.alice.ide.typehierarchy;
 
+import org.alice.ide.typehierarchy.components.TypeHierarchyView;
+import org.lgna.croquet.SimpleComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class TypeHierarchyComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.typehierarchy.components.TypeHierarchyView> {
+public final class TypeHierarchyComposite extends SimpleComposite<TypeHierarchyView> {
 	public TypeHierarchyComposite() {
-		super( java.util.UUID.fromString( "fb9a3554-8ee3-478a-8773-5d73d26e39cf" ) );
+		super( UUID.fromString( "fb9a3554-8ee3-478a-8773-5d73d26e39cf" ) );
 	}
 
 	@Override
-	protected org.alice.ide.typehierarchy.components.TypeHierarchyView createView() {
-		return new org.alice.ide.typehierarchy.components.TypeHierarchyView( this );
+	protected TypeHierarchyView createView() {
+		return new TypeHierarchyView( this );
 	}
 }

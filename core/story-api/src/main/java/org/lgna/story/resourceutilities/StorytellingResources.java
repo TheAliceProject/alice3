@@ -43,22 +43,31 @@
 package org.lgna.story.resourceutilities;
 
 import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.prefs.Preferences;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.nonfree.NebulousStoryApi;
+import org.alice.tweedle.file.ManifestEncoderDecoder;
+import org.alice.tweedle.file.ModelManifest;
+import org.lgna.story.implementation.StoryApiDirectoryUtilities;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import org.lgna.story.resources.ModelResource;
+
+import javax.swing.JOptionPane;
 
 public enum StorytellingResources {
 	INSTANCE;
@@ -68,17 +77,19 @@ public enum StorytellingResources {
 
 	private static final String ALICE_RESOURCE_INSTALL_PATH = "assets/alice";
 
-	private List<Class<? extends org.lgna.story.resources.ModelResource>> aliceClassesLoaded = null;
-
+	private List<File> userGalleryResourceFiles = null;
+	private List<ModelManifest> userGalleryModelManifests = null;
+	private List<Class<? extends ModelResource>> installedAliceClassesLoaded = null;
 	private List<URLClassLoader> resourceClassLoaders;
-	private static final java.io.FileFilter DIR_FILE_FILTER = new java.io.FileFilter() {
+
+	private static final FileFilter DIR_FILE_FILTER = new FileFilter() {
 		@Override
-		public boolean accept( java.io.File file ) {
+		public boolean accept( File file ) {
 			return file.isDirectory();
 		}
 	};
 
-	public static File getGalleryDirectory( java.io.File dir ) {
+	public static File getGalleryDirectory( File dir ) {
 		if( dir.exists() && dir.isDirectory() ) {
 			File[] dirs = FileUtilities.listDescendants( dir, DIR_FILE_FILTER, 4 ); //only search a limited depth to avoid massive spidering
 			for( File subDir : dirs ) {
@@ -97,7 +108,7 @@ public enum StorytellingResources {
 		//			return rootGallery;
 		//		}
 		//		return null;
-		return org.lgna.story.implementation.StoryApiDirectoryUtilities.getModelGalleryDirectory();
+		return StoryApiDirectoryUtilities.getModelGalleryDirectory();
 	}
 
 	//	private static java.io.File getPathFromProperties( String[] propertyKeys, String[] subPaths ) {
@@ -137,7 +148,7 @@ public enum StorytellingResources {
 				while( resourcePath.endsWith( "/" ) ) {
 					resourcePath = resourcePath.substring( 0, resourcePath.length() - 1 );
 				}
-				java.io.File galleryDir = new java.io.File( resourcePath );
+				File galleryDir = new File( resourcePath );
 				if( galleryDir.exists() ) {
 					return resourcePath;
 				}
@@ -169,7 +180,7 @@ public enum StorytellingResources {
 		if( IS_IGNORING_PREFERENCES ) {
 			return null;
 		} else {
-			java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+			Preferences rv = Preferences.userRoot();
 			return rv.get( key, def );
 		}
 	}
@@ -203,7 +214,7 @@ public enum StorytellingResources {
 	}
 
 	public void setAliceResourceDirs( String[] dirs ) {
-		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		Preferences rv = Preferences.userRoot();
 		String dirsString = makeDirectoryPreferenceString( dirs );
 		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, dirsString );
 		String[] galleryDir = getGalleryPathsFromResourcePath( dirsString );
@@ -222,17 +233,19 @@ public enum StorytellingResources {
 	}
 
 	public void setGalleryResourceDirs( String[] dirs ) {
-		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		Preferences rv = Preferences.userRoot();
 		rv.put( GALLERY_DIRECTORY_PREF_KEY, makeDirectoryPreferenceString( dirs ) );
 	}
 
 	private static final String PATH_SEPARATOR = System.getProperty( "path.separator" );
 
-	public File[] getGalleryDirsFromPref() {
-		return getDirsFromPref( GALLERY_DIRECTORY_PREF_KEY, "" );
-	}
 
 	private List<File> findAliceResources() {
+		File customResourcesPath = findResourcePath( "assets/custom" );
+		if( customResourcesPath != null ) {
+			ResourcePathManager.addPath( ResourcePathManager.MODEL_RESOURCE_KEY, customResourcesPath );
+		}
+
 		File alicePath = findResourcePath( ALICE_RESOURCE_INSTALL_PATH );
 		if( alicePath != null ) {
 			ResourcePathManager.addPath( ResourcePathManager.MODEL_RESOURCE_KEY, alicePath );
@@ -242,9 +255,7 @@ public enum StorytellingResources {
 			File[] resourceDirs = getAliceDirsFromPref();
 
 			if( resourceDirs != null ) {
-				for( File resourceDir : resourceDirs ) {
-					directoryFromSavedPreference.add( resourceDir );
-				}
+				Collections.addAll( directoryFromSavedPreference, resourceDirs );
 			}
 			return directoryFromSavedPreference;
 		}
@@ -265,8 +276,8 @@ public enum StorytellingResources {
 		return baseName;
 	}
 
-	public static java.util.Map<File, List<String>> getClassNamesFromResources( File... resourceFiles ) {
-		java.util.HashMap<File, List<String>> rv = new java.util.HashMap<File, List<String>>();
+	public static Map<File, List<String>> getClassNamesFromResources( File... resourceFiles ) {
+		HashMap<File, List<String>> rv = new HashMap<File, List<String>>();
 		for( File resourceFile : resourceFiles ) {
 			try {
 				if( resourceFile.isDirectory() ) {
@@ -307,10 +318,21 @@ public enum StorytellingResources {
 		return rv;
 	}
 
+	public List<File> getDynamicModelFiles( File... directoriesToSearch ) {
+		List<File> dynamicModelFiles = new ArrayList<>();
+		for( File directory : directoriesToSearch ) {
+			if (directory.isDirectory()) {
+				File[] modelFiles = FileUtilities.listDescendants(directory, "json");
+				dynamicModelFiles.addAll(Arrays.asList(modelFiles));
+			}
+		}
+		return dynamicModelFiles;
+	}
+
 	public List<String> getClassNamesFromResourceFiles( File... resourceFiles ) {
 		List<String> classNames = new LinkedList<String>();
-		java.util.Map<File, List<String>> classNameMap = getClassNamesFromResources( resourceFiles );
-		for( java.util.Map.Entry<File, List<String>> entry : classNameMap.entrySet() ) {
+		Map<File, List<String>> classNameMap = getClassNamesFromResources( resourceFiles );
+		for( Map.Entry<File, List<String>> entry : classNameMap.entrySet() ) {
 			for( String className : entry.getValue() ) {
 				classNames.add( className );
 			}
@@ -318,18 +340,19 @@ public enum StorytellingResources {
 		return classNames;
 	}
 
-	public List<Class<? extends org.lgna.story.resources.ModelResource>> loadClassesFromResourceFiles( List<String> classNames, File... resourceFiles ) {
-		List<Class<? extends org.lgna.story.resources.ModelResource>> classes = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
+
+	public List<Class<? extends ModelResource>> loadClassesFromResourceFiles( List<String> classNames, File... resourceFiles ) {
+		List<Class<? extends ModelResource>> classes = new LinkedList<Class<? extends ModelResource>>();
 		try {
 			URL[] urlArray = new URL[ resourceFiles.length ];
 			for( int i = 0; i < resourceFiles.length; i++ ) {
 				urlArray[ i ] = resourceFiles[ i ].toURI().toURL();
 			}
-			URLClassLoader cl = new URLClassLoader( urlArray, null );
+			URLClassLoader cl = new URLClassLoader( urlArray, ClassLoader.getSystemClassLoader() );
 			for( String className : classNames ) {
 				try {
 					Class<?> cls = cl.loadClass( className );
-					if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( cls ) ) {
+					if( ModelResource.class.isAssignableFrom( cls ) ) {
 						//TEST
 						Field[] fields = cls.getDeclaredFields();
 						Method[] methods = cls.getDeclaredMethods();
@@ -337,17 +360,17 @@ public enum StorytellingResources {
 						Field[] fields2 = cls.getFields();
 						Method[] methods2 = cls.getMethods();
 
-						classes.add( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
+						classes.add( (Class<? extends ModelResource>)cls );
 					}
 				} catch( Throwable cnfe ) {
 
 					try {
 						Class<?> cls = ClassLoader.getSystemClassLoader().loadClass( className );
-						if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( cls ) ) {
-							classes.add( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
+						if( ModelResource.class.isAssignableFrom( cls ) ) {
+							classes.add( (Class<? extends ModelResource>)cls );
 						}
 					} catch( ClassNotFoundException cnfe2 ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "FAILED TO LOAD GALLERY CLASS: " + className );
+						Logger.severe( "FAILED TO LOAD GALLERY CLASS: " + className );
 					}
 				}
 			}
@@ -362,57 +385,14 @@ public enum StorytellingResources {
 		return classes;
 	}
 
-	public List<Class<? extends org.lgna.story.resources.ModelResource>> loadResourcesFromFiles( File... resourceFiles ) {
-		List<Class<? extends org.lgna.story.resources.ModelResource>> classes = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
-
-		List<String> classNames = new LinkedList<String>();
-		LinkedList<URL> urls = new LinkedList<URL>();
-
-		java.util.Map<File, List<String>> classNameMap = getClassNamesFromResources( resourceFiles );
-
-		for( java.util.Map.Entry<File, List<String>> entry : classNameMap.entrySet() ) {
-			try {
-				urls.add( entry.getKey().toURI().toURL() );
-				for( String className : entry.getValue() ) {
-					classNames.add( className );
-				}
-			} catch( java.net.MalformedURLException e ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Failed to load resources from jar: " + entry.getKey() );
-			}
-		}
-		try {
-			URL[] urlArray = urls.toArray( new URL[ urls.size() ] );
-			URLClassLoader cl = new URLClassLoader( urlArray );
-
-			for( String className : classNames ) {
-				try {
-					Class<?> cls = cl.loadClass( className );
-					if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( cls ) ) {
-						classes.add( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
-					}
-				} catch( ClassNotFoundException cnfe ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "FAILED TO LOAD GALLERY CLASS: " + className );
-				}
-			}
-			if( this.resourceClassLoaders == null ) {
-				this.resourceClassLoaders = new LinkedList<URLClassLoader>();
-			}
-			this.resourceClassLoaders.add( cl );
-
-		} catch( Exception e ) {
-			e.printStackTrace();
-		}
-		return classes;
-	}
-
-	public List<Class<? extends org.lgna.story.resources.ModelResource>> getAndLoadModelResourceClasses( List<File> resourcePaths ) {
+	public List<Class<? extends ModelResource>> getAndLoadModelResourceClasses( List<File> resourcePaths ) {
 		List<File> resourceFiles = new ArrayList<File>();
-		List<Class<? extends org.lgna.story.resources.ModelResource>> galleryClasses = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
+		List<Class<? extends ModelResource>> galleryClasses = new LinkedList<Class<? extends ModelResource>>();
 		for( File modelPath : resourcePaths ) {
 			if( modelPath.exists() ) {
 				if( modelPath.isDirectory() ) {
-					java.util.Collections.addAll( resourceFiles, FileUtilities.listFiles( modelPath, "jar" ) );
-					java.util.Collections.addAll( resourceFiles, FileUtilities.listDirectories( modelPath ) );
+					Collections.addAll( resourceFiles, FileUtilities.listFiles( modelPath, "jar" ) );
+					Collections.addAll( resourceFiles, FileUtilities.listDirectories( modelPath ) );
 				} else {
 					resourceFiles.add( modelPath );
 				}
@@ -445,20 +425,82 @@ public enum StorytellingResources {
 
 	private void clearAliceResourceInfo() {
 		ResourcePathManager.clearPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
-		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		Preferences rv = Preferences.userRoot();
 		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
 		rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
 
 	}
 
-	/*package-private*/List<Class<? extends org.lgna.story.resources.ModelResource>> findAndLoadAliceResourcesIfNecessary() {
-		if( this.aliceClassesLoaded == null ) {
+	public static boolean initializeModelClassPath() {
+		List<Class<? extends ModelResource>> classesLoaded = StorytellingResources.INSTANCE.findAndLoadInstalledAliceResourcesIfNecessary();
+		if( classesLoaded != null ) {
+			return true;
+		}
+		return false;
+	}
+
+	List<ModelManifest> findAndLoadUserGalleryResourcesIfNecessary() {
+		if (this.userGalleryModelManifests == null) {
+			this.userGalleryModelManifests = new ArrayList<>();
+			File userGalleryDirectory = StoryApiDirectoryUtilities.getUserGalleryDirectory();
+			List<File> dynamicModelFiles = getDynamicModelFiles(userGalleryDirectory);
+			for (File modelFile : dynamicModelFiles ) {
+				try {
+					String fileContent = new String(Files.readAllBytes(Paths.get(modelFile.toURI())));
+					ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
+					modelManifest.setRootFile(modelFile.getParentFile());
+					this.userGalleryModelManifests.add(modelManifest);
+				}
+				catch (IOException e) {
+					Logger.warning("Error loading model data from "+modelFile);
+				}
+			}
+		}
+		return this.userGalleryModelManifests;
+	}
+
+	List<ModelManifest> findNewUserGalleryResources() {
+		if (userGalleryModelManifests != null) {
+			List<ModelManifest> newModelManifests = new ArrayList<>();
+			File userGalleryDirectory = StoryApiDirectoryUtilities.getUserGalleryDirectory();
+			List<File> dynamicModelFiles = getDynamicModelFiles(userGalleryDirectory);
+			for (File modelFile : dynamicModelFiles ) {
+				try {
+					String fileContent = new String(Files.readAllBytes(Paths.get(modelFile.toURI())));
+					ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
+					modelManifest.setRootFile(modelFile.getParentFile());
+					if (manifestIsNew(modelManifest)) {
+						userGalleryModelManifests.add( modelManifest );
+						newModelManifests.add( modelManifest );
+					}
+				}
+				catch (IOException e) {
+					Logger.warning("Error loading model data from "+modelFile);
+				}
+			}
+			return newModelManifests;
+		}
+		return null;
+	}
+
+	private boolean manifestIsNew( ModelManifest newManifest ) {
+		for ( ModelManifest oldManifest: userGalleryModelManifests ) {
+			if ( oldManifest.getName().equals( newManifest.getName() ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/*package-private*/List<Class<? extends ModelResource>> findAndLoadInstalledAliceResourcesIfNecessary() {
+		if( this.installedAliceClassesLoaded == null ) {
 			List<File> resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
 			if( resourcePaths.size() == 0 ) {
 				resourcePaths = findAliceResources();
 			}
-			this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
-			if( aliceClassesLoaded.size() == 0 ) {
+
+			this.installedAliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
+			if( installedAliceClassesLoaded.size() == 0 ) {
 				//Clear previously cached info
 				clearAliceResourceInfo();
 				File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
@@ -472,10 +514,10 @@ public enum StorytellingResources {
 					setGalleryResourceDirs( dirArray );
 					//Try finding the resources again
 					resourcePaths = findAliceResources();
-					this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
+					this.installedAliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
 				}
 			}
-			if( this.aliceClassesLoaded.size() == 0 ) {
+			if( this.installedAliceClassesLoaded.size() == 0 ) {
 				//No resources were found
 				//Clear the cached data and display an error
 				clearAliceResourceInfo();
@@ -492,7 +534,7 @@ public enum StorytellingResources {
 					String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
 					sb.append( "\nVerify that " + phrase + " and verify that Alice is properly installed." );
 				}
-				javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
+				JOptionPane.showMessageDialog( null, sb.toString() );
 			} else {
 				String[] galleryDirs = new String[ resourcePaths.size() ];
 				for( int i = 0; i < resourcePaths.size(); i++ ) {
@@ -506,15 +548,25 @@ public enum StorytellingResources {
 				setAliceResourceDirs( galleryDirs );
 			}
 		}
-		return this.aliceClassesLoaded;
+		return this.installedAliceClassesLoaded;
+	}
+
+	public ModelManifest getModelManifest(String modelName) {
+		this.findAndLoadUserGalleryResourcesIfNecessary();
+		for (ModelManifest modelManifest : this.userGalleryModelManifests) {
+			if (modelManifest.getName().equals(modelName)) {
+				return modelManifest;
+			}
+		}
+		return null;
 	}
 
 	public URL getAliceResource( String resourceString ) {
 		if( resourceString.contains( "ı" ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( resourceString );
+			Logger.severe( resourceString );
 			resourceString = resourceString.replaceAll( "ı", "i" );
 		}
-		this.findAndLoadAliceResourcesIfNecessary();
+		this.findAndLoadInstalledAliceResourcesIfNecessary();
 		assert this.resourceClassLoaders != null;
 		URL foundResource = null;
 		for( URLClassLoader cl : this.resourceClassLoaders ) {
@@ -529,7 +581,7 @@ public enum StorytellingResources {
 	}
 
 	public InputStream getAliceResourceAsStream( String resourceString ) {
-		this.findAndLoadAliceResourcesIfNecessary();
+		this.findAndLoadInstalledAliceResourcesIfNecessary();
 		assert this.resourceClassLoaders != null;
 		InputStream foundResource = null;
 		for( URLClassLoader cl : this.resourceClassLoaders ) {

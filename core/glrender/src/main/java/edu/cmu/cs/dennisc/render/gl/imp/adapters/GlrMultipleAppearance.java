@@ -43,12 +43,14 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.MultipleAppearance;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrMultipleAppearance extends GlrAppearance<edu.cmu.cs.dennisc.scenegraph.MultipleAppearance> {
+public class GlrMultipleAppearance extends GlrAppearance<MultipleAppearance> {
 	@Override
 	public boolean isActuallyShowing() {
 		assert this.glrSingleAppearances != null;
@@ -109,7 +111,7 @@ public class GlrMultipleAppearance extends GlrAppearance<edu.cmu.cs.dennisc.scen
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.singleAppearances ) {
 			this.glrSingleAppearances = AdapterFactory.getAdaptersFor( owner.singleAppearances.getValue(), GlrTexturedAppearance.class );
 		} else {

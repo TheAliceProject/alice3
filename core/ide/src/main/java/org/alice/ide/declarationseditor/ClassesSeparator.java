@@ -42,10 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor;
 
+import edu.cmu.cs.dennisc.javax.swing.icons.TextIcon;
+import org.lgna.croquet.LabelMenuSeparatorModel;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ClassesSeparator extends org.lgna.croquet.LabelMenuSeparatorModel {
+public class ClassesSeparator extends LabelMenuSeparatorModel {
 	private static class SingletonHolder {
 		private static ClassesSeparator instance = new ClassesSeparator();
 	}
@@ -55,14 +62,14 @@ public class ClassesSeparator extends org.lgna.croquet.LabelMenuSeparatorModel {
 	}
 
 	private ClassesSeparator() {
-		super( java.util.UUID.fromString( "4fefc3e8-3440-4177-b644-48551de6bb33" ) );
+		super( UUID.fromString( "4fefc3e8-3440-4177-b644-48551de6bb33" ) );
 	}
 
 	@Override
 	protected void localize() {
 		super.localize();
 		String text = super.getName();
-		this.setIcon( new edu.cmu.cs.dennisc.javax.swing.icons.TextIcon( text, java.awt.Color.GRAY, new java.awt.Font( null, java.awt.Font.ITALIC, 12 ) ) );
+		this.setIcon( new TextIcon( text, Color.GRAY, new Font( null, Font.ITALIC, 12 ) ) );
 	}
 
 	@Override

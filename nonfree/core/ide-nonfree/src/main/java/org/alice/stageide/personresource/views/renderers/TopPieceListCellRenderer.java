@@ -42,10 +42,12 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views.renderers;
 
+import org.lgna.story.resources.sims2.TopPiece;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TopPieceListCellRenderer extends IngredientListCellRenderer<org.lgna.story.resources.sims2.TopPiece> {
+public class TopPieceListCellRenderer extends IngredientListCellRenderer<TopPiece> {
 	private static class SingletonHolder {
 		private static TopPieceListCellRenderer instance = new TopPieceListCellRenderer();
 	}

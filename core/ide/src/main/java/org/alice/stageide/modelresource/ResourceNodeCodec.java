@@ -42,10 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.ItemCodec;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum ResourceNodeCodec implements org.lgna.croquet.ItemCodec<ResourceNode> {
+public enum ResourceNodeCodec implements ItemCodec<ResourceNode> {
 	SINGLETON;
 	@Override
 	public Class<ResourceNode> getValueClass() {
@@ -53,12 +57,12 @@ public enum ResourceNodeCodec implements org.lgna.croquet.ItemCodec<ResourceNode
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, ResourceNode value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, ResourceNode value ) {
 		throw new AssertionError();
 	}
 
 	@Override
-	public ResourceNode decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public ResourceNode decodeValue( BinaryDecoder binaryDecoder ) {
 		throw new AssertionError();
 	}
 

@@ -47,12 +47,15 @@ import static com.jogamp.opengl.GL.GL_LINEAR;
 import static com.jogamp.opengl.GL2ES1.GL_FOG_END;
 import static com.jogamp.opengl.GL2ES1.GL_FOG_MODE;
 import static com.jogamp.opengl.GL2ES1.GL_FOG_START;
+
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.LinearFog;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrLinearFog extends GlrFog<edu.cmu.cs.dennisc.scenegraph.LinearFog> {
+public class GlrLinearFog extends GlrFog<LinearFog> {
 	@Override
 	public void setupAffectors( RenderContext rc ) {
 		super.setupAffectors( rc );
@@ -62,7 +65,7 @@ public class GlrLinearFog extends GlrFog<edu.cmu.cs.dennisc.scenegraph.LinearFog
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.nearDistance ) {
 			this.near = owner.nearDistance.getValue().floatValue();
 		} else if( property == owner.farDistance ) {

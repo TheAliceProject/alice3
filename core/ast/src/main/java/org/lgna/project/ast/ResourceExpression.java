@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import org.lgna.common.Resource;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,12 +51,12 @@ public final class ResourceExpression extends Expression {
 	public ResourceExpression() {
 	}
 
-	public ResourceExpression( AbstractType<?, ?, ?> type, org.lgna.common.Resource resource ) {
+	public ResourceExpression( AbstractType<?, ?, ?> type, Resource resource ) {
 		this.type.setValue( type );
 		this.resource.setValue( resource );
 	}
 
-	public <T extends org.lgna.common.Resource> ResourceExpression( Class<T> cls, T resource ) {
+	public <T extends Resource> ResourceExpression( Class<T> cls, T resource ) {
 		this( JavaType.getInstance( cls ), resource );
 	}
 
@@ -64,22 +66,10 @@ public final class ResourceExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ResourceExpression other = (ResourceExpression)o;
-			if( this.type.valueContentEquals( other.type, strictness, filter ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "resource equals strictness" );
-				return this.resource.valueEquals( other.resource, filter );
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendResourceExpression( this );
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> type = DeclarationProperty.createReferenceInstance( this );
-	public final org.lgna.project.ast.ResourceProperty resource = new org.lgna.project.ast.ResourceProperty( this );
+	public final ResourceProperty resource = new ResourceProperty( this );
 }

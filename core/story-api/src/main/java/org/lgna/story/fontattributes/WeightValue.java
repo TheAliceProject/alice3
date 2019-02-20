@@ -43,6 +43,8 @@
 
 package org.lgna.story.fontattributes;
 
+import java.awt.font.TextAttribute;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,8 +56,8 @@ public class WeightValue implements WeightAttribute {
 	}
 
 	@Override
-	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.WEIGHT;
+	public TextAttribute getKey() {
+		return TextAttribute.WEIGHT;
 	}
 
 	@Override

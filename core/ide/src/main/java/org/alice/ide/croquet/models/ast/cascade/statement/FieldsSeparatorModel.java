@@ -42,10 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.lgna.croquet.CascadeLabelSeparator;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldsSeparatorModel extends org.lgna.croquet.CascadeLabelSeparator {
+public final class FieldsSeparatorModel extends CascadeLabelSeparator {
 	private static class SingletonHolder {
 		private static FieldsSeparatorModel instance = new FieldsSeparatorModel();
 	}
@@ -55,6 +59,6 @@ public final class FieldsSeparatorModel extends org.lgna.croquet.CascadeLabelSep
 	}
 
 	private FieldsSeparatorModel() {
-		super( java.util.UUID.fromString( "6189318a-e871-430c-8f70-31845ac03f4e" ) );
+		super( UUID.fromString( "6189318a-e871-430c-8f70-31845ac03f4e" ) );
 	}
 }

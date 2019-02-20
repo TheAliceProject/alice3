@@ -42,6 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.cascade.fillerinners;
 
+import org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn;
+import org.alice.ide.custom.StringCustomExpressionCreatorComposite;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.Expression;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,12 +64,12 @@ public class StringFillerInner extends ExpressionFillerInner {
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
 		String[] literals = getLiterals();
 		for( String s : literals ) {
-			items.add( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( s ) );
+			items.add( StringLiteralFillIn.getInstance( s ) );
 		}
-		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		items.add( org.alice.ide.custom.StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
+		items.add( CascadeLineSeparator.getInstance() );
+		items.add( StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 	}
 }

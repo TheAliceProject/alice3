@@ -43,13 +43,20 @@
 
 package org.alice.ide.declarationseditor.type;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.declarationseditor.type.data.FunctionData;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FunctionState extends MethodState {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, FunctionState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<NamedUserType, FunctionState> map = Maps.newHashMap();
 
-	public static synchronized FunctionState getInstance( org.lgna.project.ast.NamedUserType type ) {
+	public static synchronized FunctionState getInstance( NamedUserType type ) {
 		FunctionState rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -60,7 +67,7 @@ public class FunctionState extends MethodState {
 		return rv;
 	}
 
-	private FunctionState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "042cf23a-65e6-4df8-b9cd-2964e44c7a34" ), new org.alice.ide.declarationseditor.type.data.FunctionData( type ) );
+	private FunctionState( NamedUserType type ) {
+		super( UUID.fromString( "042cf23a-65e6-4df8-b9cd-2964e44c7a34" ), new FunctionData( type ) );
 	}
 }

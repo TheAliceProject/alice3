@@ -43,11 +43,16 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.CompositeView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, T> extends InputDialogCoreComposite<V> implements ValueCreatorOwningComposite<V, T> {
-	public ValueCreatorInputDialogCoreComposite( java.util.UUID migrationId ) {
+public abstract class ValueCreatorInputDialogCoreComposite<V extends CompositeView<?, ?>, T> extends InputDialogCoreComposite<V> implements ValueCreatorOwningComposite<V, T> {
+	public ValueCreatorInputDialogCoreComposite( UUID migrationId ) {
 		super( migrationId );
 	}
 
@@ -63,22 +68,17 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.cr
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
-		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
-		if( isCommited != null ) { // close button condition
-			if( isCommited ) {
-				try {
-					this.value = createValue();
-					completionStep.finish();
-				} catch( CancelException ce ) {
-					completionStep.cancel();
-				}
-			} else {
-				completionStep.cancel();
+	protected void handlePostHideDialog() {
+		super.handlePostHideDialog();
+		if( isCommitted ) { // close button condition
+			try {
+				this.value = createValue();
+				openingActivity.finish();
+			} catch( CancelException ce ) {
+				openingActivity.cancel(ce);
 			}
 		} else {
-			completionStep.cancel();
+			openingActivity.cancel();
 		}
 	}
 
@@ -87,9 +87,9 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.cr
 	private T value;
 
 	@Override
-	public T createValue( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public T createValue( UserActivity userActivity ) {
 		this.value = null;
-		this.showDialog( completionStep );
+		this.showDialog( userActivity );
 		return this.value;
 	}
 

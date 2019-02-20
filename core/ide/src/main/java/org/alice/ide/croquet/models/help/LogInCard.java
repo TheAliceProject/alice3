@@ -42,23 +42,29 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help;
 
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.views.FlowPanel;
+import org.lgna.croquet.views.Panel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class LogInCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
+public final class LogInCard extends SimpleComposite<Panel> {
 	private AbstractLoginComposite loginComposite;
 	private LogInOutComposite parent;
 
 	public LogInCard( AbstractLoginComposite composite ) {
-		super( java.util.UUID.fromString( "7229bd12-7078-46b6-9bd3-509edd2dc203" ) );
+		super( UUID.fromString( "7229bd12-7078-46b6-9bd3-509edd2dc203" ) );
 		this.loginComposite = composite;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		return new org.lgna.croquet.views.FlowPanel(
+	protected Panel createView() {
+		return new FlowPanel(
 				this,
-				org.lgna.croquet.views.FlowPanel.Alignment.TRAILING,
+				FlowPanel.Alignment.TRAILING,
 				loginComposite.getLaunchOperation().createButton() );
 	}
 

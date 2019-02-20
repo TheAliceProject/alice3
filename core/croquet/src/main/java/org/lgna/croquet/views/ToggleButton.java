@@ -42,19 +42,24 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.BooleanState;
+
+import javax.swing.Icon;
+import javax.swing.JToggleButton;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ToggleButton extends BooleanStateButton<javax.swing.JToggleButton> {
-	public ToggleButton( org.lgna.croquet.BooleanState model ) {
+public class ToggleButton extends BooleanStateButton<JToggleButton> {
+	public ToggleButton( BooleanState model ) {
 		super( model, "ToggleButton" );
 	}
 
 	@Override
-	protected javax.swing.JToggleButton createAwtComponent() {
-		return new javax.swing.JToggleButton() {
+	protected JToggleButton createAwtComponent() {
+		return new JToggleButton() {
 			@Override
-			public javax.swing.Icon getIcon() {
+			public Icon getIcon() {
 				if( isIconClobbered() ) {
 					return getClobberIcon();
 				} else {

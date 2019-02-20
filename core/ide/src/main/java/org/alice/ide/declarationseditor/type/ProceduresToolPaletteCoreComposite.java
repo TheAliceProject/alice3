@@ -42,16 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import org.alice.ide.ast.declaration.AddProcedureComposite;
+import org.alice.ide.declarationseditor.type.views.ProceduresToolPaletteCoreView;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ProceduresToolPaletteCoreComposite extends MethodsToolPaletteCoreComposite {
-	public ProceduresToolPaletteCoreComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "cc7231d5-e01d-44c3-8f81-45555729c29a" ), ProceduresComposite.getInstance( type ), org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( type ).getLaunchOperation() );
+	public ProceduresToolPaletteCoreComposite( NamedUserType type ) {
+		super( UUID.fromString( "cc7231d5-e01d-44c3-8f81-45555729c29a" ), ProceduresComposite.getInstance( type ), AddProcedureComposite.getInstance( type ).getLaunchOperation() );
 	}
 
 	@Override
-	protected org.alice.ide.declarationseditor.type.views.ProceduresToolPaletteCoreView createView() {
-		return new org.alice.ide.declarationseditor.type.views.ProceduresToolPaletteCoreView( this );
+	protected ProceduresToolPaletteCoreView createView() {
+		return new ProceduresToolPaletteCoreView( this );
 	}
 }

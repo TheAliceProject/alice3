@@ -42,17 +42,28 @@
  *******************************************************************************/
 package org.alice.stageide.run.views.icons;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RunIcon implements javax.swing.Icon {
+public class RunIcon implements Icon {
 	//private static final java.awt.Color ENABLED_CIRCLE_COLOR = java.awt.Color.GREEN.darker();
 	//private static final java.awt.Color DISABLED_CIRCLE_COLOR = java.awt.Color.GRAY;
 
-	private static final java.awt.Color ROLLOVER_COLOR = new java.awt.Color( 191, 255, 191 );
-	private static final java.awt.Color PRESSED_COLOR = new java.awt.Color( 63, 127, 63 );
-	private static final java.awt.Color ENABLED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( ROLLOVER_COLOR, PRESSED_COLOR, 0.5f );
-	private static final java.awt.Color DISABLED_COLOR = java.awt.Color.GRAY;
+	private static final Color ROLLOVER_COLOR = new Color( 191, 255, 191 );
+	private static final Color PRESSED_COLOR = new Color( 63, 127, 63 );
+	private static final Color ENABLED_COLOR = ColorUtilities.interpolate( ROLLOVER_COLOR, PRESSED_COLOR, 0.5f );
+	private static final Color DISABLED_COLOR = Color.GRAY;
 
 	@Override
 	public int getIconHeight() {
@@ -65,14 +76,14 @@ public class RunIcon implements javax.swing.Icon {
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		if( c instanceof javax.swing.AbstractButton ) {
-			javax.swing.ButtonModel buttonModel = ( (javax.swing.AbstractButton)c ).getModel();
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			java.awt.Color prevColor = g2.getColor();
-			Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
+		if( c instanceof AbstractButton ) {
+			ButtonModel buttonModel = ( (AbstractButton)c ).getModel();
+			Graphics2D g2 = (Graphics2D)g;
+			Color prevColor = g2.getColor();
+			Object prevAntialiasing = g2.getRenderingHint( RenderingHints.KEY_ANTIALIASING );
 			try {
-				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 				int w = this.getIconWidth();
 				int h = this.getIconHeight();
 				int offset = w / 5;
@@ -102,10 +113,10 @@ public class RunIcon implements javax.swing.Icon {
 
 				g2.fillPolygon( xs, ys, 3 );
 
-				g2.setColor( java.awt.Color.DARK_GRAY );
+				g2.setColor( Color.DARK_GRAY );
 				g2.drawPolygon( xs, ys, 3 );
 			} finally {
-				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+				g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 				g2.setColor( prevColor );
 			}
 		}

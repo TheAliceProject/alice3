@@ -42,11 +42,14 @@
  */
 package tabexample.croquet.views;
 
+import org.lgna.croquet.views.BorderPanel;
+import tabexample.croquet.TabExampleComposite;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TabExampleView extends org.lgna.croquet.views.BorderPanel {
-	public TabExampleView( tabexample.croquet.TabExampleComposite composite ) {
+public class TabExampleView extends BorderPanel {
+	public TabExampleView( TabExampleComposite composite ) {
 		super( composite );
 		this.addCenterComponent( composite.getTabState().createFolderTabbedPane() );
 	}

@@ -45,14 +45,20 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import static com.jogamp.opengl.GL2ES3.GL_QUADS;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Box;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
+public class GlrBox extends GlrShape<Box> {
 	private void glBox( Context c, boolean isLightingEnabled, boolean isSubElementRequired, boolean isTexturingEnabled ) {
 		//todo: revist vertex ordering
 		//xMin face
@@ -243,9 +249,9 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
-		edu.cmu.cs.dennisc.math.Point3 origin = new edu.cmu.cs.dennisc.math.Point3( 0, 0, 0 );
-		edu.cmu.cs.dennisc.math.Vector3 direction = new edu.cmu.cs.dennisc.math.Vector3( 0, 0, 0 );
+	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
+		Point3 origin = new Point3( 0, 0, 0 );
+		Vector3 direction = new Vector3( 0, 0, 0 );
 		switch( subElement ) {
 		case 0:
 			origin.x = this.xMin;
@@ -280,7 +286,7 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.xMinimum ) {
 			this.xMin = owner.xMinimum.getValue();
 			setIsGeometryChanged( true );

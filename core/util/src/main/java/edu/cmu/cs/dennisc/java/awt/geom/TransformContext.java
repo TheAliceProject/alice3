@@ -42,31 +42,34 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.geom;
 
+import java.awt.geom.AffineTransform;
+import java.util.Stack;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TransformContext {
-	private java.util.Stack<java.awt.geom.AffineTransform> m_affineTransformStack = new java.util.Stack<java.awt.geom.AffineTransform>();
-	private java.awt.geom.AffineTransform m_affineTransform = new java.awt.geom.AffineTransform();
+	private Stack<AffineTransform> m_affineTransformStack = new Stack<AffineTransform>();
+	private AffineTransform m_affineTransform = new AffineTransform();
 
 	public void initialize() {
 		assert m_affineTransformStack.isEmpty();
 		m_affineTransform.setToIdentity();
 	}
 
-	protected void update( java.awt.geom.AffineTransform affineTransform ) {
+	protected void update( AffineTransform affineTransform ) {
 	}
 
-	public java.awt.geom.AffineTransform accessAffineTransform() {
+	public AffineTransform accessAffineTransform() {
 		return m_affineTransform;
 	}
 
-	public java.awt.geom.AffineTransform getAffineTransform() {
-		return new java.awt.geom.AffineTransform( m_affineTransform );
+	public AffineTransform getAffineTransform() {
+		return new AffineTransform( m_affineTransform );
 	}
 
 	public void pushAffineTransform() {
-		m_affineTransformStack.push( new java.awt.geom.AffineTransform( m_affineTransform ) );
+		m_affineTransformStack.push( new AffineTransform( m_affineTransform ) );
 	}
 
 	public void popAffineTransform() {
@@ -74,12 +77,12 @@ public class TransformContext {
 		update( m_affineTransform );
 	}
 
-	public void setAffineTransform( java.awt.geom.AffineTransform affineTransform ) {
+	public void setAffineTransform( AffineTransform affineTransform ) {
 		m_affineTransform.setTransform( affineTransform );
 		update( m_affineTransform );
 	}
 
-	public void multiplyAffineTransform( java.awt.geom.AffineTransform affineTransform ) {
+	public void multiplyAffineTransform( AffineTransform affineTransform ) {
 		m_affineTransform.concatenate( affineTransform );
 		update( m_affineTransform );
 	}

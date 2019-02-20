@@ -43,14 +43,17 @@
 
 package edu.cmu.cs.dennisc.math.polynomial;
 
+import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.math.Vector3;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class BasisMatrixQuadratic implements Quadratic {
-	private edu.cmu.cs.dennisc.math.Matrix3x3 m_h;
-	protected edu.cmu.cs.dennisc.math.Vector3 m_g; //todo: make private?
+	private Matrix3x3 m_h;
+	protected Vector3 m_g; //todo: make private?
 
-	protected BasisMatrixQuadratic( edu.cmu.cs.dennisc.math.Matrix3x3 h, edu.cmu.cs.dennisc.math.Vector3 g ) {
+	protected BasisMatrixQuadratic( Matrix3x3 h, Vector3 g ) {
 		m_h = h;
 		m_g = g;
 	}

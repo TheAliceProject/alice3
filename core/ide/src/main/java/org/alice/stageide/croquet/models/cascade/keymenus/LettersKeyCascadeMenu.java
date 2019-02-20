@@ -44,6 +44,8 @@ package org.alice.stageide.croquet.models.cascade.keymenus;
 
 import org.lgna.story.Key;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,7 +59,7 @@ public class LettersKeyCascadeMenu extends AbstractKeyCascadeMenu {
 	}
 
 	private LettersKeyCascadeMenu() {
-		super( java.util.UUID.fromString( "7acafa54-f6ed-4c69-b5fe-b00e68c549a6" ),
+		super( UUID.fromString( "7acafa54-f6ed-4c69-b5fe-b00e68c549a6" ),
 				Key.A,
 				Key.B,
 				Key.C,

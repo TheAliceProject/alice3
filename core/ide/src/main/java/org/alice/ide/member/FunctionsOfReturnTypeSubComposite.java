@@ -43,13 +43,26 @@
 
 package org.alice.ide.member;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.common.TypeIcon;
+import org.alice.ide.member.views.MethodsSubView;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.SJoint;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FunctionsOfReturnTypeSubComposite extends MethodsSubComposite {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, FunctionsOfReturnTypeSubComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<AbstractType<?, ?, ?>, FunctionsOfReturnTypeSubComposite> map = Maps.newHashMap();
 
-	public static synchronized FunctionsOfReturnTypeSubComposite getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static synchronized FunctionsOfReturnTypeSubComposite getInstance( AbstractType<?, ?, ?> type ) {
 		if( type != null ) {
 			FunctionsOfReturnTypeSubComposite rv = map.get( type );
 			if( rv != null ) {
@@ -64,34 +77,34 @@ public class FunctionsOfReturnTypeSubComposite extends MethodsSubComposite {
 		}
 	}
 
-	private java.util.List<org.lgna.project.ast.AbstractMethod> methods = java.util.Collections.emptyList();
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> returnType;
+	private List<AbstractMethod> methods = Collections.emptyList();
+	private final AbstractType<?, ?, ?> returnType;
 
-	private FunctionsOfReturnTypeSubComposite( org.lgna.project.ast.AbstractType<?, ?, ?> returnType ) {
-		super( java.util.UUID.fromString( "76b131c5-133c-43a0-9592-e200b9cd1f25" ), returnType != org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ) );
+	private FunctionsOfReturnTypeSubComposite( AbstractType<?, ?, ?> returnType ) {
+		super( UUID.fromString( "76b131c5-133c-43a0-9592-e200b9cd1f25" ), returnType != JavaType.getInstance( SJoint.class ) );
 		this.returnType = returnType;
 
-		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.returnType ) );
+		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new TypeIcon( this.returnType ) );
 		//this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( this.returnType ) );
 		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "Functions returning" );
 	}
 
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getReturnType() {
+	public AbstractType<?, ?, ?> getReturnType() {
 		return this.returnType;
 	}
 
 	@Override
-	public java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods() {
+	public List<? extends AbstractMethod> getMethods() {
 		return this.methods;
 	}
 
-	public void setMethods( java.util.List<org.lgna.project.ast.AbstractMethod> methods ) {
-		this.methods = java.util.Collections.unmodifiableList( methods );
+	public void setMethods( List<AbstractMethod> methods ) {
+		this.methods = Collections.unmodifiableList( methods );
 		this.getView().refreshLater();
 	}
 
 	@Override
-	protected org.alice.ide.member.views.MethodsSubView<FunctionsOfReturnTypeSubComposite> createView() {
-		return new org.alice.ide.member.views.MethodsSubView<FunctionsOfReturnTypeSubComposite>( this );
+	protected MethodsSubView<FunctionsOfReturnTypeSubComposite> createView() {
+		return new MethodsSubView<FunctionsOfReturnTypeSubComposite>( this );
 	}
 }

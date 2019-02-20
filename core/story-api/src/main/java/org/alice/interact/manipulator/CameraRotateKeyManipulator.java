@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.MovementKey;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;

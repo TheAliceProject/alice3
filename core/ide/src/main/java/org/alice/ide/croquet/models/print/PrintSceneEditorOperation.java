@@ -42,6 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.print;
 
+import edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities;
+import org.alice.ide.IDE;
+import org.alice.ide.sceneeditor.AbstractSceneEditor;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,27 +66,27 @@ public class PrintSceneEditorOperation extends PrintOperation {
 	}
 
 	private PrintSceneEditorOperation() {
-		super( java.util.UUID.fromString( "b38997ea-e970-416e-86db-58623d1c3352" ) );
+		super( UUID.fromString( "b38997ea-e970-416e-86db-58623d1c3352" ) );
 	}
 
 	@Override
-	protected java.awt.print.Printable getPrintable() {
-		return new java.awt.print.Printable() {
+	protected Printable getPrintable() {
+		return new Printable() {
 			@Override
-			public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
+			public int print( Graphics g, PageFormat pageFormat, int pageIndex ) throws PrinterException {
 				if( pageIndex > 0 ) {
 					return NO_SUCH_PAGE;
 				}
 				if( pageIndex > 0 ) {
 					return NO_SUCH_PAGE;
 				} else {
-					org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-					org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
+					IDE ide = IDE.getActiveInstance();
+					AbstractSceneEditor sceneEditor = ide.getSceneEditor();
 					if( sceneEditor != null ) {
-						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						Graphics2D g2 = (Graphics2D)g;
 						int width = sceneEditor.getWidth();
 						int height = sceneEditor.getHeight();
-						double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale( pageFormat, width, height );
+						double scale = PageFormatUtilities.calculateScale( pageFormat, width, height );
 						g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
 						if( scale > 1.0 ) {
 							g2.scale( 1.0 / scale, 1.0 / scale );

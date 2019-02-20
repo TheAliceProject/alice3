@@ -43,13 +43,24 @@
 
 package org.alice.ide.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.lgna.common.Resource;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.project.ProgramTypeUtilities;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceCodec<R extends org.lgna.common.Resource> implements org.lgna.croquet.ItemCodec<R> {
-	private static java.util.Map<Class<org.lgna.common.Resource>, ResourceCodec<org.lgna.common.Resource>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class ResourceCodec<R extends Resource> implements ItemCodec<R> {
+	private static Map<Class<Resource>, ResourceCodec<Resource>> map = Maps.newHashMap();
 
-	public static synchronized <R extends org.lgna.common.Resource> ResourceCodec<R> getInstance( Class<R> cls ) {
+	public static synchronized <R extends Resource> ResourceCodec<R> getInstance( Class<R> cls ) {
 		ResourceCodec<?> rv = map.get( cls );
 		if( rv != null ) {
 			//pass
@@ -71,19 +82,19 @@ public class ResourceCodec<R extends org.lgna.common.Resource> implements org.lg
 	}
 
 	@Override
-	public R decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public R decodeValue( BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
-			java.util.UUID id = binaryDecoder.decodeId();
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			return org.lgna.project.ProgramTypeUtilities.lookupResource( ide.getProject(), id );
+			UUID id = binaryDecoder.decodeId();
+			IDE ide = IDE.getActiveInstance();
+			return ProgramTypeUtilities.lookupResource( ide.getProject(), id );
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, R value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, R value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {

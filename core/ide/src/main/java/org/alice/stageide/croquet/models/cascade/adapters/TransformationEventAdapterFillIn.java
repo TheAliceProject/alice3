@@ -44,6 +44,8 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.story.event.PointOfViewChangeListener;
 
+import java.util.UUID;
+
 public class TransformationEventAdapterFillIn extends LambdaExpressionFillIn {
 
 	private static class SingletonHolder {
@@ -55,6 +57,6 @@ public class TransformationEventAdapterFillIn extends LambdaExpressionFillIn {
 	}
 
 	public TransformationEventAdapterFillIn() {
-		super( java.util.UUID.fromString( "486848e6-16a4-4697-bd69-c04f4d0e05ee" ), PointOfViewChangeListener.class );
+		super( UUID.fromString( "486848e6-16a4-4697-bd69-c04f4d0e05ee" ), PointOfViewChangeListener.class );
 	}
 }

@@ -43,20 +43,26 @@
 
 package org.alice.stageide.personresource.views;
 
+import org.alice.stageide.personresource.views.renderers.SimpleListCellRenderer;
+import org.lgna.croquet.SingleSelectListState;
+import org.lgna.croquet.views.List;
+
+import javax.swing.ListCellRenderer;
+
 /**
  * @author Dennis Cosgrove
  */
-public class HorizontalWrapList<T> extends org.lgna.croquet.views.List<T> {
-	public HorizontalWrapList( org.lgna.croquet.SingleSelectListState<T, ?> model, int visibleRowCount, javax.swing.ListCellRenderer cellRenderer ) {
+public class HorizontalWrapList<T> extends List<T> {
+	public HorizontalWrapList( SingleSelectListState<T, ?> model, int visibleRowCount, ListCellRenderer cellRenderer ) {
 		super( model );
-		this.setLayoutOrientation( org.lgna.croquet.views.List.LayoutOrientation.HORIZONTAL_WRAP );
+		this.setLayoutOrientation( List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.setVisibleRowCount( visibleRowCount );
-		this.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
+		this.setBackgroundColor( IngredientsView.BACKGROUND_COLOR );
 		this.setCellRenderer( cellRenderer );
 		this.getAwtComponent().setEnabled( model.isEnabled() );
 	}
 
-	public HorizontalWrapList( org.lgna.croquet.SingleSelectListState<T, ?> model, int visibleRowCount ) {
-		this( model, visibleRowCount, org.alice.stageide.personresource.views.renderers.SimpleListCellRenderer.SINGLETON );
+	public HorizontalWrapList( SingleSelectListState<T, ?> model, int visibleRowCount ) {
+		this( model, visibleRowCount, SimpleListCellRenderer.SINGLETON );
 	}
 }

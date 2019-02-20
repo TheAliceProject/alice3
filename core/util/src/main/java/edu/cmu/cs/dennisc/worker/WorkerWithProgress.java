@@ -42,6 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.worker;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import javax.swing.SwingWorker;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,7 +62,7 @@ public abstract class WorkerWithProgress<T, V> extends AbstractWorker<T, V> {
 		}
 
 		@Override
-		protected void process( java.util.List<V> chunks ) {
+		protected void process( List<V> chunks ) {
 			super.process( chunks );
 			if( this.isCancelled() ) {
 				//pass
@@ -69,13 +75,13 @@ public abstract class WorkerWithProgress<T, V> extends AbstractWorker<T, V> {
 	private final InternalSwingWorkerWithProgress swingWorker = new InternalSwingWorkerWithProgress();
 
 	@Override
-	protected final javax.swing.SwingWorker<T, V> getSwingWorker() {
+	protected final SwingWorker<T, V> getSwingWorker() {
 		return this.swingWorker;
 	}
 
 	protected final void publish( V... chunks ) {
 		if( this.isCancelled() ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isCancelled. omitting publish:", java.util.Arrays.toString( chunks ) );
+			Logger.outln( "isCancelled. omitting publish:", Arrays.toString( chunks ) );
 		} else {
 			this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_publish( chunks );
 		}
@@ -87,7 +93,7 @@ public abstract class WorkerWithProgress<T, V> extends AbstractWorker<T, V> {
 
 	protected final void setProgress( int progress ) {
 		if( this.isCancelled() ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isCancelled.  omitting setProgress:", progress );
+			Logger.outln( "isCancelled.  omitting setProgress:", progress );
 		} else {
 			assert progress >= 0 : progress;
 			assert progress <= 100 : progress;
@@ -95,5 +101,5 @@ public abstract class WorkerWithProgress<T, V> extends AbstractWorker<T, V> {
 		}
 	}
 
-	protected abstract void handleProcess_onEventDispatchThread( java.util.List<V> chunks );
+	protected abstract void handleProcess_onEventDispatchThread( List<V> chunks );
 }

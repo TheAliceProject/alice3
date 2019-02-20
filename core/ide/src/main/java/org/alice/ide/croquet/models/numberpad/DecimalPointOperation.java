@@ -42,11 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.numberpad;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.history.UserActivity;
+
+import java.text.DecimalFormatSymbols;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DecimalPointOperation extends NumberPadOperation {
-	private static java.util.Map<NumberModel<?>, DecimalPointOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<NumberModel<?>, DecimalPointOperation> map = Maps.newHashMap();
 
 	public static synchronized DecimalPointOperation getInstance( NumberModel<?> model ) {
 		DecimalPointOperation rv = map.get( model );
@@ -60,19 +67,19 @@ public class DecimalPointOperation extends NumberPadOperation {
 	}
 
 	private DecimalPointOperation( NumberModel<?> model ) {
-		super( java.util.UUID.fromString( "45fb7f55-166b-421c-9e6d-cf781b562936" ), model );
+		super( UUID.fromString( "45fb7f55-166b-421c-9e6d-cf781b562936" ), model );
 	}
 
 	@Override
 	protected void localize() {
 		super.localize();
-		java.text.DecimalFormatSymbols decimalFormatSymbols = new java.text.DecimalFormatSymbols();
+		DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
 		this.setName( "" + decimalFormatSymbols.getDecimalSeparator() );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		this.numberModel.replaceSelectionWithDecimalPoint();
-		step.finish();
+		activity.finish();
 	}
 }

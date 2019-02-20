@@ -43,29 +43,40 @@
 
 package org.alice.stageide.properties;
 
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.views.BooleanStateButton;
+
+import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonModel;
+import javax.swing.JToggleButton;
+import javax.swing.plaf.basic.BasicToggleButtonUI;
+import java.awt.Color;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
-public class LinkScaleButton extends org.lgna.croquet.views.BooleanStateButton<javax.swing.AbstractButton> {
-	public LinkScaleButton( org.lgna.croquet.BooleanState state ) {
+public class LinkScaleButton extends BooleanStateButton<AbstractButton> {
+	public LinkScaleButton( BooleanState state ) {
 		super( state );
 	}
 
 	@Override
-	protected javax.swing.AbstractButton createAwtComponent() {
-		javax.swing.AbstractButton rv = new javax.swing.JToggleButton() {
+	protected AbstractButton createAwtComponent() {
+		AbstractButton rv = new JToggleButton() {
 			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
+			protected void paintComponent( Graphics g ) {
 				super.paintComponent( g );
-				javax.swing.ButtonModel buttonModel = this.getModel();
-				java.awt.Color colorA;
-				java.awt.Color colorB;
+				ButtonModel buttonModel = this.getModel();
+				Color colorA;
+				Color colorB;
 				if( buttonModel.isPressed() ) {
-					colorA = java.awt.Color.DARK_GRAY;
-					colorB = java.awt.Color.WHITE;
+					colorA = Color.DARK_GRAY;
+					colorB = Color.WHITE;
 				} else if( buttonModel.isRollover() ) {
-					colorA = java.awt.Color.WHITE;
-					colorB = java.awt.Color.DARK_GRAY;
+					colorA = Color.WHITE;
+					colorB = Color.DARK_GRAY;
 				} else {
 					colorA = null;
 					colorB = null;
@@ -86,10 +97,10 @@ public class LinkScaleButton extends org.lgna.croquet.views.BooleanStateButton<j
 
 			@Override
 			public void updateUI() {
-				this.setUI( javax.swing.plaf.basic.BasicToggleButtonUI.createUI( this ) );
+				this.setUI( BasicToggleButtonUI.createUI( this ) );
 			}
 		};
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
+		rv.setBorder( BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
 		rv.setRolloverEnabled( true );
 		rv.setFocusable( false );
 		rv.setRolloverEnabled( true );

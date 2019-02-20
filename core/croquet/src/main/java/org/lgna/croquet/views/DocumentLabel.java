@@ -42,23 +42,32 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+
+import javax.swing.JLabel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DocumentLabel extends AbstractLabel {
-	private class JDocumentLabel extends javax.swing.JLabel {
+	private class JDocumentLabel extends JLabel {
 		public JDocumentLabel( String text ) {
 			super( text );
 		}
 
 		@Override
-		public java.awt.Dimension getPreferredSize() {
+		public Dimension getPreferredSize() {
 			return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 		}
 
 		@Override
-		public java.awt.Dimension getMaximumSize() {
-			java.awt.Dimension rv = super.getMaximumSize();
+		public Dimension getMaximumSize() {
+			Dimension rv = super.getMaximumSize();
 			if( isMaximumSizeClampedToPreferredSize() ) {
 				rv.setSize( this.getPreferredSize() );
 			}
@@ -66,41 +75,41 @@ public class DocumentLabel extends AbstractLabel {
 		}
 	}
 
-	private final javax.swing.text.Document document;
+	private final Document document;
 
-	private static String getText( javax.swing.text.Document document ) {
+	private static String getText( Document document ) {
 		try {
 			return document.getText( 0, document.getLength() );
-		} catch( javax.swing.text.BadLocationException ble ) {
+		} catch( BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
 	}
 
-	private final javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
+	private final DocumentListener documentListener = new DocumentListener() {
 		@Override
-		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+		public void changedUpdate( DocumentEvent e ) {
 			handleDocumentChanged();
 		}
 
 		@Override
-		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+		public void insertUpdate( DocumentEvent e ) {
 			handleDocumentChanged();
 		}
 
 		@Override
-		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+		public void removeUpdate( DocumentEvent e ) {
 			handleDocumentChanged();
 		}
 	};
 
-	public DocumentLabel( javax.swing.text.Document document, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public DocumentLabel( Document document, float fontScalar, TextAttribute<?>... textAttributes ) {
 		this.document = document;
 		this.scaleFont( fontScalar );
 		this.changeFont( textAttributes );
 	}
 
 	@Override
-	protected javax.swing.JLabel createAwtComponent() {
+	protected JLabel createAwtComponent() {
 		return new JDocumentLabel( DocumentLabel.getText( this.document ) );
 	}
 

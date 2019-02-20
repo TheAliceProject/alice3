@@ -43,16 +43,25 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.DoubleBufferProperty;
+import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
+
+import java.nio.DoubleBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ConvexHull extends Geometry {
 	@Override
-	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
-		java.nio.DoubleBuffer doubleBuffer = this.points.getValue();
+	public void transform( AbstractMatrix4x4 trans ) {
+		DoubleBuffer doubleBuffer = this.points.getValue();
 		double[] xyzs = doubleBuffer.array();
 
-		edu.cmu.cs.dennisc.math.Point3 p = edu.cmu.cs.dennisc.math.Point3.createNaN();
+		Point3 p = Point3.createNaN();
 
 		for( int i = 0; i < xyzs.length; i += 3 ) {
 			p.set( xyzs[ i ], xyzs[ i ], xyzs[ i ] );
@@ -64,22 +73,22 @@ public class ConvexHull extends Geometry {
 	}
 
 	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
-		java.nio.DoubleBuffer doubleBuffer = this.points.getValue();
+	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
+		DoubleBuffer doubleBuffer = this.points.getValue();
 		double[] xyzs = doubleBuffer.array();
-		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, xyzs );
+		BoundUtilities.getBoundingBox( boundingBox, xyzs );
 	}
 
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		java.nio.DoubleBuffer doubleBuffer = this.points.getValue();
+		DoubleBuffer doubleBuffer = this.points.getValue();
 		double[] xyzs = doubleBuffer.array();
-		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingSphere( boundingSphere, xyzs );
+		BoundUtilities.getBoundingSphere( boundingSphere, xyzs );
 	}
 
 	@Override
-	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
-		java.nio.DoubleBuffer doubleBuffer = this.points.getValue();
+	protected void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation ) {
+		DoubleBuffer doubleBuffer = this.points.getValue();
 		double[] xyzs = doubleBuffer.array();
 		translation.x = xyzs[ 0 ];
 		translation.y = xyzs[ 1 ];
@@ -87,5 +96,5 @@ public class ConvexHull extends Geometry {
 		throw new RuntimeException( "todo" );
 	}
 
-	public final edu.cmu.cs.dennisc.property.DoubleBufferProperty points = new edu.cmu.cs.dennisc.property.DoubleBufferProperty( this, new double[] {} );
+	public final DoubleBufferProperty points = new DoubleBufferProperty( this, new double[] {} );
 }

@@ -42,25 +42,37 @@
  *******************************************************************************/
 package org.alice.media.youtube.croquet;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
 import org.alice.media.youtube.croquet.views.EventRecordView;
 import org.alice.media.youtube.croquet.views.icons.IsPlayingIcon;
 import org.alice.stageide.StageIDE;
+import org.alice.stageide.ast.StoryApiSpecificAstUtilities;
 import org.alice.stageide.program.RunProgramContext;
 import org.lgna.common.RandomUtilities;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.MutableDataSingleSelectListState;
 import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.BorderPanel;
+import org.lgna.project.Project;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.ast.EventListenerMethodUtilities;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.animation.FrameObserver;
@@ -68,26 +80,30 @@ import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Matt May
  */
 public class EventRecordComposite extends WizardPageComposite<EventRecordView, ExportToYouTubeWizardDialogComposite> {
 
-	private static final java.util.List<org.lgna.project.ast.JavaMethod> interactiveMethods = java.util.Collections.unmodifiableList( org.lgna.story.ast.EventListenerMethodUtilities.ALL_MOUSE_CLICK_EVENT_METHODS );
+	private static final List<JavaMethod> interactiveMethods = Collections.unmodifiableList( EventListenerMethodUtilities.ALL_MOUSE_CLICK_EVENT_METHODS );
 	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( "cannotAdvanceBecauseRecording" );
 	private final BooleanState isRecordingState = this.createBooleanState( "isRecordingState", false );
 	private RunProgramContext programContext;
 	private EventScript eventScript;
 
 	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
-		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ), owner );
+		super( UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ), owner );
 		this.isRecordingState.setIconForBothTrueAndFalse( new IsPlayingIcon() );
 		isRecordingState.addNewSchoolValueListener( isRecordingListener );
 	}
 
 	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			if( isRecordingState.getValue() ) {
 				programContext.getProgramImp().startAnimator();
 				programContext.getProgramImp().getAnimator().setSpeedFactor( 1 );
@@ -119,7 +135,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	private final ActionOperation restartRecording = this.createActionOperation( "restart", new Action() {
 
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			isRecordingState.setValueTransactionlessly( false );
 			resetData();
 			return null;
@@ -158,7 +174,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 		programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 		programContext.getProgramImp().stopAnimator();
 		programContext.setActiveScene();
-		eventScript = ( (SceneImp)org.lgna.story.EmployeesOnly.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
+		eventScript = ( (SceneImp)EmployeesOnly.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
 		owner.setEventScript( eventScript );
 		getEventList().clear();
 		eventScript.addListener( this.listener );
@@ -183,7 +199,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	}
 
 	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	public Status getPageStatus() {
 		return isRecordingState.getValue() ? cannotAdvanceBecauseRecording : IS_GOOD_TO_GO_STATUS;
 	}
 
@@ -198,7 +214,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	}
 
 	@Override
-	protected boolean isClearedForAutoAdvance( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected boolean isClearedForAutoAdvance() {
 		return ( !this.containsInputEvents() && !this.containsRandom() );
 	}
 
@@ -209,16 +225,16 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 			ide.crawlFilteredProgramType( crawler );
 			return crawler.containsRandom;
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "containsRandom check skipped due to lack of ide" );
+			Logger.errln( "containsRandom check skipped due to lack of ide" );
 			return false;
 		}
 	}
 
-	private static class RandomUtilitiesMethodInvocationCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
+	private static class RandomUtilitiesMethodInvocationCrawler implements Crawler {
 		private boolean containsRandom;
 
 		@Override
-		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+		public void visit( Crawlable crawlable ) {
 			if( crawlable instanceof MethodInvocation ) {
 				MethodInvocation methodInvocation = (MethodInvocation)crawlable;
 				Statement statement = methodInvocation.getFirstAncestorAssignableTo( Statement.class );
@@ -236,8 +252,8 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	}
 
 	private boolean containsInputEvents() {
-		org.lgna.project.Project project = this.getOwner().getProject();
-		NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
+		Project project = this.getOwner().getProject();
+		NamedUserType sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
 		UserMethod initializeEventListeners = sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
 		BlockStatement body = initializeEventListeners.body.getValue();
 		for( Statement statement : body.statements ) {
@@ -256,7 +272,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 		return false;
 	}
 
-	public org.lgna.croquet.MutableDataSingleSelectListState<EventScriptEvent> getEventList() {
+	public MutableDataSingleSelectListState<EventScriptEvent> getEventList() {
 		return getOwner().getEventList();
 	}
 
@@ -272,8 +288,8 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	}
 
 	@Override
-	public void handlePostHideDialog( CompletionStep<?> step ) {
+	public void handlePostHideDialog() {
 		programContext.cleanUpProgram();
-		super.handlePostHideDialog( step );
+		super.handlePostHideDialog();
 	}
 }

@@ -43,11 +43,14 @@
 
 package org.alice.ide.declarationseditor.type.data;
 
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldData extends FilteredMemberData<org.lgna.project.ast.UserField> {
-	public FieldData( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.project.ast.UserField.class, type, type.fields );
+public abstract class FieldData extends FilteredMemberData<UserField> {
+	public FieldData( NamedUserType type ) {
+		super( UserField.class, type, type.fields );
 	}
 }

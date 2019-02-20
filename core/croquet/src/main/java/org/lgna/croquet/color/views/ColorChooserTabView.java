@@ -42,29 +42,35 @@
  *******************************************************************************/
 package org.lgna.croquet.color.views;
 
+import org.lgna.croquet.color.ColorChooserTabComposite;
+import org.lgna.croquet.views.CompositeView;
+
+import javax.swing.Icon;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ColorChooserTabView extends org.lgna.croquet.views.CompositeView<javax.swing.colorchooser.AbstractColorChooserPanel, org.lgna.croquet.color.ColorChooserTabComposite<?>> {
-	protected abstract class JColorChooserPanel extends javax.swing.colorchooser.AbstractColorChooserPanel {
+public abstract class ColorChooserTabView extends CompositeView<AbstractColorChooserPanel, ColorChooserTabComposite<?>> {
+	protected abstract class JColorChooserPanel extends AbstractColorChooserPanel {
 		@Override
 		public String getDisplayName() {
 			return ColorChooserTabView.this.getComposite().getName();
 		}
 
 		@Override
-		public javax.swing.Icon getLargeDisplayIcon() {
+		public Icon getLargeDisplayIcon() {
 			return ColorChooserTabView.this.getComposite().getLargeDisplayIcon();
 		}
 
 		@Override
-		public javax.swing.Icon getSmallDisplayIcon() {
+		public Icon getSmallDisplayIcon() {
 			return ColorChooserTabView.this.getComposite().getSmallDisplayIcon();
 		}
 
 	}
 
-	public ColorChooserTabView( org.lgna.croquet.color.ColorChooserTabComposite<?> composite ) {
+	public ColorChooserTabView( ColorChooserTabComposite<?> composite ) {
 		super( composite );
 	}
 }

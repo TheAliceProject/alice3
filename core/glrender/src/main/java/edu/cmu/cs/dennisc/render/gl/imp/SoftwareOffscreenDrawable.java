@@ -42,14 +42,23 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import com.jogamp.nativewindow.AbstractGraphicsDevice;
+import com.jogamp.opengl.GLCapabilities;
+import com.jogamp.opengl.GLCapabilitiesChooser;
+import com.jogamp.opengl.GLContext;
+import com.jogamp.opengl.GLDrawable;
+import com.jogamp.opengl.GLException;
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
+import jogamp.opengl.GLContextImpl;
+import jogamp.opengl.GLDrawableHelper;
+import jogamp.opengl.GLDrawableImpl;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
-	private jogamp.opengl.GLDrawableImpl glDrawable;
-	private jogamp.opengl.GLContextImpl glContext;
+	private GLDrawableImpl glDrawable;
+	private GLContextImpl glContext;
 
 	private final Runnable displayAdapter = new Runnable() {
 		@Override
@@ -62,30 +71,30 @@ public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 		public void run() {
 		}
 	};
-	private jogamp.opengl.GLDrawableHelper drawableHelper;
+	private GLDrawableHelper drawableHelper;
 
 	public SoftwareOffscreenDrawable( DisplayCallback callback ) {
 		super( callback );
 	}
 
 	@Override
-	protected com.jogamp.opengl.GLDrawable getGlDrawable() {
+	protected GLDrawable getGlDrawable() {
 		return this.glDrawable;
 	}
 
 	@Override
-	public void initialize( com.jogamp.opengl.GLCapabilities glRequestedCapabilities, com.jogamp.opengl.GLCapabilitiesChooser glCapabilitiesChooser, com.jogamp.opengl.GLContext glShareContext, int width, int height ) {
+	public void initialize( GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height ) {
 		assert this.glDrawable == null : this;
-		com.jogamp.opengl.GLCapabilities glCapabilities;
+		GLCapabilities glCapabilities;
 		if( IS_HARDWARE_ACCELERATION_DESIRED ) {
 			glCapabilities = glRequestedCapabilities;
 		} else {
-			glCapabilities = (com.jogamp.opengl.GLCapabilities)glRequestedCapabilities.clone();
+			glCapabilities = (GLCapabilities)glRequestedCapabilities.clone();
 			glCapabilities.setHardwareAccelerated( false );
 		}
 		this.glDrawable = GlDrawableUtils.createOffscreenDrawable( glCapabilities, glCapabilitiesChooser, width, height );
 		this.glDrawable.setRealized( true );
-		this.glContext = (jogamp.opengl.GLContextImpl)this.glDrawable.createContext( glShareContext );
+		this.glContext = (GLContextImpl)this.glDrawable.createContext( glShareContext );
 		//this.glContext.setSynchronized( true );
 	}
 
@@ -97,7 +106,7 @@ public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 			this.glContext = null;
 		}
 		if( this.glDrawable != null ) {
-			com.jogamp.nativewindow.AbstractGraphicsDevice graphicsDevice = this.glDrawable.getNativeSurface().getGraphicsConfiguration().getScreen().getDevice();
+			AbstractGraphicsDevice graphicsDevice = this.glDrawable.getNativeSurface().getGraphicsConfiguration().getScreen().getDevice();
 			this.glDrawable.setRealized( false );
 			this.glDrawable = null;
 			if( graphicsDevice != null ) {
@@ -111,7 +120,7 @@ public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 		if( this.drawableHelper != null ) {
 			//pass
 		} else {
-			this.drawableHelper = new jogamp.opengl.GLDrawableHelper();
+			this.drawableHelper = new GLDrawableHelper();
 		}
 		if( ( this.glDrawable != null ) && ( this.glContext != null ) && ( this.displayAdapter != null ) && ( this.initAdapter != null ) ) {
 			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this.glContext );
@@ -138,7 +147,7 @@ public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 			} else {
 				sb.append( "initAdapter is null;" );
 			}
-			throw new com.jogamp.opengl.GLException( sb.toString() );
+			throw new GLException( sb.toString() );
 		}
 	}
 

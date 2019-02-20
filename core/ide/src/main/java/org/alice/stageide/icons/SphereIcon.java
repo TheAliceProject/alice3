@@ -42,26 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.geom.Ellipse2D;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SphereIcon extends ShapeIcon {
-	public SphereIcon( java.awt.Dimension size ) {
+	public SphereIcon( Dimension size ) {
 		super( size );
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
 		int diameter = Math.min( width, height );
 		int x = ( width - diameter ) / 2;
 		int y = ( height - diameter ) / 2;
-		java.awt.geom.Ellipse2D core = new java.awt.geom.Ellipse2D.Float( x, y, diameter, diameter );
-		java.awt.geom.Ellipse2D slice = new java.awt.geom.Ellipse2D.Float( x, y + ( diameter * 0.35f ), diameter, diameter * 0.3f );
+		Ellipse2D core = new Ellipse2D.Float( x, y, diameter, diameter );
+		Ellipse2D slice = new Ellipse2D.Float( x, y + ( diameter * 0.35f ), diameter, diameter * 0.3f );
 
 		g2.setPaint( fillPaint );
 		g2.fill( core );
 
-		g2.setPaint( java.awt.Color.GRAY );
+		g2.setPaint( Color.GRAY );
 		g2.draw( slice );
 
 		g2.setPaint( drawPaint );

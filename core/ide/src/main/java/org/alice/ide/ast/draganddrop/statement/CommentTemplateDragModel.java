@@ -43,6 +43,15 @@
 
 package org.alice.ide.ast.draganddrop.statement;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.cascade.statement.CommentInsertOperation;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Comment;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +65,11 @@ public class CommentTemplateDragModel extends StatementTemplateDragModel {
 	}
 
 	private CommentTemplateDragModel() {
-		super( java.util.UUID.fromString( "6ef0a017-c3e7-4c4b-85c9-348ca34641fa" ), org.lgna.project.ast.Comment.class, org.lgna.project.ast.AstUtilities.createComment() );
+		super( UUID.fromString( "6ef0a017-c3e7-4c4b-85c9-348ca34641fa" ), Comment.class, AstUtilities.createComment() );
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.CommentInsertOperation.getInstance( blockStatementIndexPair );
+	public Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
+		return CommentInsertOperation.getInstance( blockStatementIndexPair );
 	}
 }

@@ -43,20 +43,40 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.PopupPrepStep;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.imp.cascade.RtRoot;
+import org.lgna.croquet.views.DragComponent;
+import org.lgna.croquet.views.MenuItemContainer;
+import org.lgna.croquet.views.imp.JDropProxy;
+
+import javax.swing.JMenu;
+import javax.swing.JPopupMenu;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import java.awt.event.ComponentEvent;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Cascade<T> extends AbstractCompletionModel implements org.lgna.croquet.views.imp.JDropProxy.Hider {
+public abstract class Cascade<T> extends AbstractCompletionModel implements Triggerable, JDropProxy.Hider {
 	public static final class InternalRoot<T> extends CascadeRoot<T, Cascade<T>> {
 		private final Cascade<T> cascade;
 
 		private InternalRoot( Cascade<T> cascade ) {
-			super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ) );
+			super( UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ) );
 			this.cascade = cascade;
 		}
 
 		@Override
-		public java.util.List<? extends CascadeBlank<T>> getBlanks() {
+		public List<? extends CascadeBlank<T>> getBlanks() {
 			return this.cascade.getBlanks();
 		}
 
@@ -71,9 +91,9 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		}
 
 		@Override
-		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
-			super.prologue( trigger );
-			this.cascade.prologue( trigger );
+		public void prologue() {
+			super.prologue();
+			this.cascade.prologue();
 		}
 
 		@Override
@@ -83,43 +103,37 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		}
 
 		@Override
-		public final org.lgna.croquet.history.CompletionStep<Cascade<T>> createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			return transaction.createAndSetCompletionStep( this.cascade, trigger, new org.lgna.croquet.history.TransactionHistory() );
-		}
-
-		@Override
-		public org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.imp.cascade.RtRoot<T, org.lgna.croquet.Cascade<T>> rtRoot ) {
-			org.lgna.croquet.history.Transaction transaction = transactionHistory.acquireActiveTransaction();
-			org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep = this.createCompletionStep( transaction, trigger );
-			try {
-				T[] values = rtRoot.createValues( completionStep.getTransactionHistory(), this.getComponentType() );
-				org.lgna.croquet.edits.Edit edit = this.cascade.createEdit( completionStep, values );
+		public void handleCompletion( UserActivity userActivity, RtRoot<T, Cascade<T>> rtRoot ) {
+				T[] values = rtRoot.createValues( this.getComponentType() );
+				Edit edit = cascade.createEdit( userActivity, values );
 				if( edit != null ) {
-					completionStep.commitAndInvokeDo( edit );
+					if (userActivity.getCompletionModel() == null) {
+						recordCompletionModel( userActivity );
+					}
+					userActivity.commitAndInvokeDo( edit );
 				} else {
-					completionStep.cancel();
+					if (userActivity.isPending()) {
+						throw new CancelException();
+					}
 				}
-			} finally {
 				this.getPopupPrepModel().handleFinally();
-			}
-			return completionStep;
 		}
 	}
 
 	private final Class<T> componentType;
 	private final InternalRoot<T> root;
 
-	public Cascade( Group group, java.util.UUID id, Class<T> componentType ) {
+	public Cascade( Group group, UUID id, Class<T> componentType ) {
 		super( group, id );
 		this.componentType = componentType;
 		this.root = new InternalRoot<T>( this );
 	}
 
-	protected abstract java.util.List<? extends CascadeBlank<T>> getBlanks();
+	protected abstract List<? extends CascadeBlank<T>> getBlanks();
 
 	@Override
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
-		return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.root.getPopupPrepModel() );
+	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
+		return Lists.newArrayListOfSingleArrayList( this.root.getPopupPrepModel() );
 	}
 
 	public InternalRoot<T> getRoot() {
@@ -131,35 +145,35 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 	}
 
 	@Override
-	@java.lang.Deprecated
-	protected org.lgna.croquet.Model getSurrogateModel() {
-		return this.root.getPopupPrepModel();
-	}
-
-	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		throw new UnsupportedOperationException();
+	public final void fire( UserActivity activity ) {
+		Triggerable surrogateModel = this.root.getPopupPrepModel();
+		if( surrogateModel != null ) {
+			Logger.errln( "todo: end use of surrogate", this );
+			surrogateModel.fire( activity );
+		} else {
+			throw new UnsupportedOperationException();
+		}
 	}
 
 	public Class<T> getComponentType() {
 		return this.componentType;
 	}
 
-	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void prologue() {
 	}
 
 	protected void epilogue() {
 		this.hideDropProxyIfNecessary();
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values );
+	protected abstract Edit createEdit( UserActivity userActivity, T[] values );
 
 	//todo: reduce visibility
 	public static final class InternalMenuModel<T> extends AbstractMenuModel {
 		private final Cascade<T> cascade;
 
 		private InternalMenuModel( Cascade<T> cascade ) {
-			super( java.util.UUID.fromString( "d5ac0f5a-6f04-4c68-94c3-96d32775fd4e" ), cascade.getClass() );
+			super( UUID.fromString( "d5ac0f5a-6f04-4c68-94c3-96d32775fd4e" ), cascade.getClass() );
 			this.cascade = cascade;
 		}
 
@@ -178,48 +192,48 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		}
 
 		private static class ComponentListener<T> implements java.awt.event.ComponentListener {
-			private org.lgna.croquet.history.PopupPrepStep prepStep;
+			private PopupPrepStep prepStep;
 
-			public ComponentListener( org.lgna.croquet.history.PopupPrepStep prepStep ) {
+			public ComponentListener( PopupPrepStep prepStep ) {
 				this.prepStep = prepStep;
 			}
 
-			public org.lgna.croquet.history.PopupPrepStep getPrepStep() {
+			public PopupPrepStep getPrepStep() {
 				return this.prepStep;
 			}
 
-			public void setPrepStep( org.lgna.croquet.history.PopupPrepStep prepStep ) {
+			public void setPrepStep( PopupPrepStep prepStep ) {
 				this.prepStep = prepStep;
 			}
 
 			@Override
-			public void componentShown( java.awt.event.ComponentEvent e ) {
+			public void componentShown( ComponentEvent e ) {
 			}
 
 			@Override
-			public void componentMoved( java.awt.event.ComponentEvent e ) {
+			public void componentMoved( ComponentEvent e ) {
 			}
 
 			@Override
-			public void componentResized( java.awt.event.ComponentEvent e ) {
-				org.lgna.croquet.history.TransactionManager.firePopupMenuResized( this.prepStep );
+			public void componentResized( ComponentEvent e ) {
+				prepStep.firePopupMenuResized();
 			}
 
 			@Override
-			public void componentHidden( java.awt.event.ComponentEvent e ) {
+			public void componentHidden( ComponentEvent e ) {
 			}
 		};
 
 		private static class Listeners {
-			private final javax.swing.event.PopupMenuListener popupMenuListener;
+			private final PopupMenuListener popupMenuListener;
 			private final ComponentListener componentListener;
 
-			public Listeners( javax.swing.event.PopupMenuListener popupMenuListener, ComponentListener componentListener ) {
+			public Listeners( PopupMenuListener popupMenuListener, ComponentListener componentListener ) {
 				this.popupMenuListener = popupMenuListener;
 				this.componentListener = componentListener;
 			}
 
-			public javax.swing.event.PopupMenuListener getPopupMenuListener() {
+			public PopupMenuListener getPopupMenuListener() {
 				return this.popupMenuListener;
 			}
 
@@ -228,7 +242,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 			}
 		}
 
-		private java.util.Map<org.lgna.croquet.views.MenuItemContainer, Listeners> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		private Map<MenuItemContainer, Listeners> map = Maps.newHashMap();
 
 		@Override
 		protected String findDefaultLocalizedText() {
@@ -238,23 +252,22 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		}
 
 		@Override
-		protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		protected void handleShowing( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
 			super.handleShowing( menuItemContainer, e );
-			javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)e.getSource();
+			JPopupMenu jPopupMenu = (JPopupMenu)e.getSource();
 			//javax.swing.JMenu jMenu = (javax.swing.JMenu)jPopupMenu.getInvoker();
 			//org.lgna.croquet.components.MenuItemContainer menuItemContainer = (org.lgna.croquet.components.MenuItemContainer)org.lgna.croquet.components.Component.lookup( jMenu );
-			final org.lgna.croquet.imp.cascade.RtRoot<T, Cascade<T>> rtRoot = new org.lgna.croquet.imp.cascade.RtRoot<T, Cascade<T>>( this.getCascade().getRoot() );
+			final RtRoot<T, Cascade<T>> rtRoot = new RtRoot<T, Cascade<T>>( this.getCascade().getRoot() );
 			if( rtRoot.isAutomaticallyDetermined() ) {
 				throw new RuntimeException( "todo" );
 			} else {
-				final org.lgna.croquet.history.PopupPrepStep prepStep = org.lgna.croquet.history.TransactionManager.addPopupPrepStep( cascade.getRoot().getPopupPrepModel(), null );
-
+				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( cascade.getRoot().getPopupPrepModel(), menuItemContainer.getActivity() );
 				Listeners listeners = map.get( menuItemContainer );
 				if( listeners != null ) {
 					listeners.componentListener.setPrepStep( prepStep );
 				} else {
 					ComponentListener componentListener = new ComponentListener<T>( prepStep );
-					javax.swing.event.PopupMenuListener popupMenuListener = rtRoot.createPopupMenuListener( menuItemContainer );
+					PopupMenuListener popupMenuListener = rtRoot.createPopupMenuListener( menuItemContainer );
 					listeners = new Listeners( popupMenuListener, componentListener );
 					this.map.put( menuItemContainer, listeners );
 				}
@@ -265,9 +278,9 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		}
 
 		@Override
-		protected void handleHiding( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		protected void handleHiding( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
 			Listeners listeners = map.get( menuItemContainer );
-			javax.swing.JPopupMenu jPopupMenu = ( (javax.swing.JMenu)menuItemContainer.getViewController().getAwtComponent() ).getPopupMenu();
+			JPopupMenu jPopupMenu = ( (JMenu)menuItemContainer.getViewController().getAwtComponent() ).getPopupMenu();
 			jPopupMenu.removeComponentListener( listeners.getComponentListener() );
 			//jPopupMenu.removePopupMenuListener( listeners.getPopupMenuListener() );
 			listeners.getPopupMenuListener().popupMenuWillBecomeInvisible( e );
@@ -275,7 +288,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		}
 
 		@Override
-		protected void handleCanceled( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		protected void handleCanceled( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
 			Listeners listeners = map.get( menuItemContainer );
 			listeners.getPopupMenuListener().popupMenuCanceled( e );
 			super.handleCanceled( menuItemContainer, e );
@@ -302,10 +315,10 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		sb.append( this.getRoot().getPopupPrepModel().getName() );
 	}
 
-	private org.lgna.croquet.views.DragComponent dragSource;
+	private DragComponent dragSource;
 
 	@Override
-	public final void setDragSource( org.lgna.croquet.views.DragComponent dragSource ) {
+	public final void setDragSource( DragComponent dragSource ) {
 		this.dragSource = dragSource;
 	}
 

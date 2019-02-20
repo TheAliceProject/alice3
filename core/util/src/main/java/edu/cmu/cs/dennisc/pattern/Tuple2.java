@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.pattern;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -86,7 +88,7 @@ public class Tuple2<A, B> {
 		} else {
 			if( other instanceof Tuple2<?, ?> ) {
 				Tuple2<?, ?> otherT = (Tuple2<?, ?>)other;
-				return edu.cmu.cs.dennisc.java.util.Objects.equals( this.a, otherT.a ) && edu.cmu.cs.dennisc.java.util.Objects.equals( this.b, otherT.b );
+				return Objects.equals( this.a, otherT.a ) && Objects.equals( this.b, otherT.b );
 			} else {
 				return false;
 			}

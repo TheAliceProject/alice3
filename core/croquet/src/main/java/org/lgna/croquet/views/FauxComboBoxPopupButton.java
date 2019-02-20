@@ -42,27 +42,43 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
+import edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon;
+import org.lgna.croquet.PopupPrepModel;
+
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Shape;
+import java.awt.geom.RoundRectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T>> {
-	public FauxComboBoxPopupButton( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T> model ) {
+public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<PopupPrepModel> {
+	public FauxComboBoxPopupButton( PopupPrepModel model ) {
 		super( model );
 	}
 
-	private static final java.awt.Color TOP_COLOR = new java.awt.Color( 255, 255, 255, 91 );
-	private static final java.awt.Color BOTTOM_COLOR = new java.awt.Color( 57, 105, 138, 91 );
-	private static final java.awt.Color LINE_COLOR = new java.awt.Color( 169, 176, 190 );
+	private static final Color TOP_COLOR = new Color( 255, 255, 255, 91 );
+	private static final Color BOTTOM_COLOR = new Color( 57, 105, 138, 91 );
+	private static final Color LINE_COLOR = new Color( 169, 176, 190 );
 
-	private static final java.awt.Color SELECTED_COLOR = new java.awt.Color( 57, 105, 138 );
-	private static final java.awt.Color SELECTED_HIGHTLIGHT_COLOR = SELECTED_COLOR.brighter();
-	private static final java.awt.Color SELECTED_LINE_COLOR = java.awt.Color.DARK_GRAY;
+	private static final Color SELECTED_COLOR = new Color( 57, 105, 138 );
+	private static final Color SELECTED_HIGHTLIGHT_COLOR = SELECTED_COLOR.brighter();
+	private static final Color SELECTED_LINE_COLOR = Color.DARK_GRAY;
 
 	protected class JFauxComboBoxPopupButton extends JPopupButton {
 		private final int OUTER_PAD = 6;
 
-		public JFauxComboBoxPopupButton() {
-			this.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+		protected JFauxComboBoxPopupButton() {
+			this.setHorizontalTextPosition( SwingConstants.LEADING );
 		}
 
 		private int getArrowSize() {
@@ -74,10 +90,10 @@ public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<org.lgna.cro
 		}
 
 		@Override
-		public java.awt.Insets getMargin() {
-			java.awt.Insets rv = super.getMargin();
+		public Insets getMargin() {
+			Insets rv = super.getMargin();
 			if( rv != null ) {
-				java.awt.ComponentOrientation componentOrientation = this.getComponentOrientation();
+				ComponentOrientation componentOrientation = this.getComponentOrientation();
 				int increment = this.getArrowSize() + this.getComboPad() + OUTER_PAD + TRAILING_PAD;
 				if( componentOrientation.isLeftToRight() ) {
 					rv.right += increment;
@@ -89,17 +105,17 @@ public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<org.lgna.cro
 		}
 
 		@Override
-		protected void paintBorder( java.awt.Graphics g ) {
+		protected void paintBorder( Graphics g ) {
 			super.paintBorder( g );
 			final int SIZE = this.getArrowSize();
-			final javax.swing.Icon ARROW_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( SIZE, java.awt.Color.WHITE );
+			final Icon ARROW_ICON = new DropDownArrowIcon( SIZE, Color.WHITE );
 
-			java.awt.Insets insets = this.getInsets();
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			Insets insets = this.getInsets();
+			Graphics2D g2 = (Graphics2D)g;
 			int width = this.getWidth();
 			int height = this.getHeight();
 
-			java.awt.ComponentOrientation componentOrientation = this.getComponentOrientation();
+			ComponentOrientation componentOrientation = this.getComponentOrientation();
 			int x;
 			int w;
 			int xArrow;
@@ -119,25 +135,25 @@ public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<org.lgna.cro
 				xLine = w;
 			}
 			if( this.getUI().getClass().getSimpleName().contains( "Synth" ) ) {
-				javax.swing.ButtonModel buttonModel = this.getModel();
+				ButtonModel buttonModel = this.getModel();
 				boolean isPressedOrSelected = buttonModel.isPressed() || buttonModel.isSelected();
 				double round = 8;
 				double inset = isPressedOrSelected ? 2 : 3;
 				double offsetY = isPressedOrSelected ? 1 : 0;
 
-				java.awt.geom.RoundRectangle2D r = new java.awt.geom.RoundRectangle2D.Double( inset, inset + offsetY, width - ( inset * 2 ), ( height - ( inset * 2 ) ), round, round );
+				RoundRectangle2D r = new RoundRectangle2D.Double( inset, inset + offsetY, width - ( inset * 2 ), ( height - ( inset * 2 ) ), round, round );
 
-				java.awt.Shape prevClip = g2.getClip();
+				Shape prevClip = g2.getClip();
 
-				g2.setClip( edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, r ) );
+				g2.setClip( AreaUtilities.createIntersection( prevClip, r ) );
 
 				if( isPressedOrSelected ) {
-					g2.setPaint( new java.awt.GradientPaint( width, 0, SELECTED_HIGHTLIGHT_COLOR, width, height / 6, SELECTED_COLOR ) );
+					g2.setPaint( new GradientPaint( width, 0, SELECTED_HIGHTLIGHT_COLOR, width, height / 6, SELECTED_COLOR ) );
 					g.fillRect( x, 0, w, height / 2 );
-					g2.setPaint( new java.awt.GradientPaint( width, ( 5 * height ) / 6, SELECTED_COLOR, width, height, SELECTED_HIGHTLIGHT_COLOR ) );
+					g2.setPaint( new GradientPaint( width, ( 5 * height ) / 6, SELECTED_COLOR, width, height, SELECTED_HIGHTLIGHT_COLOR ) );
 					g.fillRect( x, height / 2, w, ( height / 2 ) );
 				} else {
-					g2.setPaint( new java.awt.GradientPaint( width, 0, TOP_COLOR, width, ( 2 * height ) / 3, BOTTOM_COLOR ) );
+					g2.setPaint( new GradientPaint( width, 0, TOP_COLOR, width, ( 2 * height ) / 3, BOTTOM_COLOR ) );
 					g.fillRect( x, 0, w, height );
 				}
 				if( isPressedOrSelected ) {

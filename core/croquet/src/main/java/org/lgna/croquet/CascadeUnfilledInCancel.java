@@ -43,6 +43,11 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.imp.cascade.ItemNode;
+
+import javax.swing.JComponent;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,16 +61,16 @@ public class CascadeUnfilledInCancel<F> extends CascadeCancel<F> {
 	}
 
 	private CascadeUnfilledInCancel() {
-		super( java.util.UUID.fromString( "6f5f3cb4-420a-4532-ac61-4f8eb96806e4" ) );
+		super( UUID.fromString( "6f5f3cb4-420a-4532-ac61-4f8eb96806e4" ) );
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> step ) {
+	protected JComponent createMenuItemIconProxy( ItemNode<? super F, Void> step ) {
 		return null;
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> step ) {
+	public String getMenuItemText() {
 		return "No suitable fillins were found.  Canceling.";
 	}
 }

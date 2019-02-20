@@ -43,40 +43,50 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.RelationalInfixExpression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RelationalExpressionLeftAndRightOperandsFillIn extends ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.RelationalInfixExpression> {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.project.ast.RelationalInfixExpression.Operator, RelationalExpressionLeftAndRightOperandsFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public class RelationalExpressionLeftAndRightOperandsFillIn extends ExpressionFillInWithExpressionBlanks<RelationalInfixExpression> {
+	private static MapToMap<AbstractType<?, ?, ?>, RelationalInfixExpression.Operator, RelationalExpressionLeftAndRightOperandsFillIn> mapToMap = MapToMap.newInstance();
 
-	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> operandType, org.lgna.project.ast.RelationalInfixExpression.Operator operator ) {
-		return mapToMap.getInitializingIfAbsent( operandType, operator, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.project.ast.RelationalInfixExpression.Operator, RelationalExpressionLeftAndRightOperandsFillIn>() {
+	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( AbstractType<?, ?, ?> operandType, RelationalInfixExpression.Operator operator ) {
+		return mapToMap.getInitializingIfAbsent( operandType, operator, new MapToMap.Initializer<AbstractType<?, ?, ?>, RelationalInfixExpression.Operator, RelationalExpressionLeftAndRightOperandsFillIn>() {
 			@Override
-			public RelationalExpressionLeftAndRightOperandsFillIn initialize( org.lgna.project.ast.AbstractType<?, ?, ?> operandType, org.lgna.project.ast.RelationalInfixExpression.Operator operator ) {
+			public RelationalExpressionLeftAndRightOperandsFillIn initialize( AbstractType<?, ?, ?> operandType, RelationalInfixExpression.Operator operator ) {
 				return new RelationalExpressionLeftAndRightOperandsFillIn( operandType, operator );
 			}
 		} );
 	}
 
-	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( Class<?> operandCls, org.lgna.project.ast.RelationalInfixExpression.Operator operator ) {
-		return getInstance( org.lgna.project.ast.JavaType.getInstance( operandCls ), operator );
+	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( Class<?> operandCls, RelationalInfixExpression.Operator operator ) {
+		return getInstance( JavaType.getInstance( operandCls ), operator );
 	}
 
-	private final org.lgna.project.ast.RelationalInfixExpression transientValue;
+	private final RelationalInfixExpression transientValue;
 
-	private RelationalExpressionLeftAndRightOperandsFillIn( org.lgna.project.ast.AbstractType<?, ?, ?> operandType, org.lgna.project.ast.RelationalInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a" ), ExpressionBlank.createBlanks( operandType, operandType ) );
-		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteRelationalInfixExpression( operandType, operator, operandType );
+	private RelationalExpressionLeftAndRightOperandsFillIn( AbstractType<?, ?, ?> operandType, RelationalInfixExpression.Operator operator ) {
+		super( UUID.fromString( "f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a" ), ExpressionBlank.createBlanks( operandType, operandType ) );
+		this.transientValue = IncompleteAstUtilities.createIncompleteRelationalInfixExpression( operandType, operator, operandType );
 	}
 
 	@Override
-	protected org.lgna.project.ast.RelationalInfixExpression createValue( org.lgna.project.ast.Expression[] expressions ) {
+	protected RelationalInfixExpression createValue( Expression[] expressions ) {
 		assert expressions.length == 2;
-		return new org.lgna.project.ast.RelationalInfixExpression( expressions[ 0 ], this.transientValue.operator.getValue(), expressions[ 1 ], this.transientValue.leftOperandType.getValue(), this.transientValue.rightOperandType.getValue() );
+		return new RelationalInfixExpression( expressions[ 0 ], this.transientValue.operator.getValue(), expressions[ 1 ], this.transientValue.leftOperandType.getValue(), this.transientValue.rightOperandType.getValue() );
 	}
 
 	@Override
-	public org.lgna.project.ast.RelationalInfixExpression getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.RelationalInfixExpression, org.lgna.project.ast.Expression> step ) {
+	public RelationalInfixExpression getTransientValue( ItemNode<? super RelationalInfixExpression, Expression> step ) {
 		return this.transientValue;
 	}
 }

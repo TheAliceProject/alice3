@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
+import java.awt.Rectangle;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface AsynchronousImageCapturer {
-	void captureImageBuffer( RenderTask renderTask, java.awt.Rectangle viewport, ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer );
+	void captureImageBuffer( RenderTask renderTask, Rectangle viewport, ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer );
 
 	void captureImageBuffer( ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer );
 }

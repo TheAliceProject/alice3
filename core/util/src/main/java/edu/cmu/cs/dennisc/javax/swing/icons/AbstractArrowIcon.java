@@ -42,14 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
+import javax.swing.Icon;
+import java.awt.geom.GeneralPath;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractArrowIcon implements javax.swing.Icon {
+public abstract class AbstractArrowIcon implements Icon {
 	protected static enum Heading {
 		EAST() {
 			@Override
-			public java.awt.geom.GeneralPath addPoints( java.awt.geom.GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1 ) {
+			public GeneralPath addPoints( GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1 ) {
 				rv.moveTo( x0, y0 );
 				rv.lineTo( x1, yC );
 				rv.lineTo( x0, y1 );
@@ -58,14 +61,14 @@ public abstract class AbstractArrowIcon implements javax.swing.Icon {
 		},
 		SOUTH() {
 			@Override
-			public java.awt.geom.GeneralPath addPoints( java.awt.geom.GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1 ) {
+			public GeneralPath addPoints( GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1 ) {
 				rv.moveTo( x0, y0 );
 				rv.lineTo( x1, y0 );
 				rv.lineTo( xC, y1 );
 				return rv;
 			}
 		};
-		protected abstract java.awt.geom.GeneralPath addPoints( java.awt.geom.GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1 );
+		protected abstract GeneralPath addPoints( GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1 );
 	}
 
 	private int size;
@@ -84,14 +87,14 @@ public abstract class AbstractArrowIcon implements javax.swing.Icon {
 		return this.size;
 	}
 
-	protected java.awt.geom.GeneralPath createPath( int x, int y, Heading heading ) {
+	protected GeneralPath createPath( int x, int y, Heading heading ) {
 		float x0 = x;
 		float x1 = ( x + this.size ) - 1;
 		float xC = ( x0 + x1 ) * 0.5f;
 		float y0 = y;
 		float y1 = ( y + this.size ) - 1;
 		float yC = ( y0 + y1 ) * 0.5f;
-		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
+		GeneralPath rv = new GeneralPath();
 		heading.addPoints( rv, x0, xC, x1, y0, yC, y1 );
 		rv.closePath();
 		return rv;

@@ -42,24 +42,37 @@
  *******************************************************************************/
 package org.alice.ide.issue.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.ide.croquet.models.help.views.GraphicsHelpView;
+import org.alice.ide.issue.croquet.GlExceptionComposite;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.MigPanel;
+
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.UIManager;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GlExceptionView extends org.lgna.croquet.views.MigPanel {
-	public static final javax.swing.Icon ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GlExceptionView.class.getResource( "images/paintingTheRoses.png" ) );
+public class GlExceptionView extends MigPanel {
+	public static final Icon ICON = IconUtilities.createImageIcon( GlExceptionView.class.getResource( "images/paintingTheRoses.png" ) );
 
-	public GlExceptionView( org.alice.ide.issue.croquet.GlExceptionComposite composite ) {
+	public GlExceptionView( GlExceptionComposite composite ) {
 		super( composite, "", "", "[top][top]" );
 
-		this.addComponent( new org.lgna.croquet.views.Label( ICON ), "span 1 2" );
-		this.addComponent( new org.lgna.croquet.views.Label( "Alice has encountered a graphics problem", javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ), 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
-		this.addComponent( new org.alice.ide.croquet.models.help.views.GraphicsHelpView(), "wrap" );
-		this.addComponent( new org.lgna.croquet.views.LineAxisPanel(
-				new org.lgna.croquet.views.Label( "If you have updated your video drivers and the problem still persists please " ),
-				new org.lgna.croquet.views.Label( "submit a bug report", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
-				new org.lgna.croquet.views.Label( "." )
+		this.addComponent( new Label( ICON ), "span 1 2" );
+		this.addComponent( new Label( "Alice has encountered a graphics problem", UIManager.getIcon( "OptionPane.errorIcon" ), 2.0f, TextWeight.BOLD ), "wrap" );
+		this.addComponent( new GraphicsHelpView(), "wrap" );
+		this.addComponent( new LineAxisPanel(
+				new Label( "If you have updated your video drivers and the problem still persists please " ),
+				new Label( "submit a bug report", TextPosture.OBLIQUE ),
+				new Label( "." )
 				), "wrap, span 2" );
 
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 	}
 }

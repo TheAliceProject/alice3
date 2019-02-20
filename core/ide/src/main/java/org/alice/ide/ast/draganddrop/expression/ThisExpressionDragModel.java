@@ -43,6 +43,15 @@
 
 package org.alice.ide.ast.draganddrop.expression;
 
+import org.alice.ide.IDE;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.cascade.expression.ThisOperation;
+import org.lgna.croquet.Triggerable;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ExpressionProperty;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,7 +65,7 @@ public class ThisExpressionDragModel extends AbstractExpressionDragModel {
 	}
 
 	private ThisExpressionDragModel() {
-		super( java.util.UUID.fromString( "f1ae6805-24ec-400b-9459-7101f0663356" ) );
+		super( UUID.fromString( "f1ae6805-24ec-400b-9459-7101f0663356" ) );
 	}
 
 	@Override
@@ -65,17 +74,12 @@ public class ThisExpressionDragModel extends AbstractExpressionDragModel {
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		throw new AssertionError();
+	protected Triggerable getDropOperation( ExpressionProperty expressionProperty ) {
+		return ThisOperation.getInstance( expressionProperty );
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.ThisOperation.getInstance( expressionProperty );
-	}
-
-	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
-		return org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
+	public AbstractType<?, ?, ?> getType() {
+		return IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
 	}
 }

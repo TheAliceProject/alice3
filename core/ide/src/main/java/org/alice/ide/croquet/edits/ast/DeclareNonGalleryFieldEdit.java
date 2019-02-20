@@ -42,28 +42,38 @@
  *******************************************************************************/
 package org.alice.ide.croquet.edits.ast;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.ast.AstEventManager;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
+
+import javax.swing.undo.CannotUndoException;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DeclareNonGalleryFieldEdit extends DeclareFieldEdit {
 	private transient int index = -1;
 
-	private final org.lgna.project.ast.UserField field;
+	private final UserField field;
 
-	public DeclareNonGalleryFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
-		super( step, declaringType, field );
+	public DeclareNonGalleryFieldEdit( UserActivity userActivity, UserType<?> declaringType, UserField field ) {
+		super( userActivity, declaringType, field );
 		this.field = field;
 	}
 
-	public DeclareNonGalleryFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public DeclareNonGalleryFieldEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).decodeValue( binaryDecoder );
+		this.field = NodeCodec.getInstance( UserField.class ).decodeValue( binaryDecoder );
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).encodeValue( binaryEncoder, this.field );
+		NodeCodec.getInstance( UserField.class ).encodeValue( binaryEncoder, this.field );
 	}
 
 	@Override
@@ -79,7 +89,7 @@ public class DeclareNonGalleryFieldEdit extends DeclareFieldEdit {
 			insertionIndex = N;
 		}
 		this.getDeclaringType().fields.add( insertionIndex, this.getField() );
-		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
+		AstEventManager.fireTypeHierarchyListeners();
 	}
 
 	@Override
@@ -88,7 +98,7 @@ public class DeclareNonGalleryFieldEdit extends DeclareFieldEdit {
 		if( this.index != -1 ) {
 			this.getDeclaringType().fields.remove( this.index );
 		} else {
-			throw new javax.swing.undo.CannotUndoException();
+			throw new CannotUndoException();
 		}
 	}
 }

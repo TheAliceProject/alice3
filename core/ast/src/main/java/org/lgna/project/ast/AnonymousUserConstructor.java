@@ -43,20 +43,26 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.annotations.Visibility;
 import org.lgna.project.virtualmachine.VirtualMachine;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
  */
 public class AnonymousUserConstructor extends UserConstructor {
-	private static java.util.Map<AnonymousUserType, AnonymousUserConstructor> s_map;
+	private static Map<AnonymousUserType, AnonymousUserConstructor> s_map;
 
 	public static AnonymousUserConstructor get( AnonymousUserType type ) {
 		if( type != null ) {
 			if( s_map != null ) {
 				//pass
 			} else {
-				s_map = new java.util.HashMap<AnonymousUserType, AnonymousUserConstructor>();
+				s_map = new HashMap<AnonymousUserType, AnonymousUserConstructor>();
 			}
 			AnonymousUserConstructor rv = s_map.get( type );
 			if( rv != null ) {
@@ -75,7 +81,7 @@ public class AnonymousUserConstructor extends UserConstructor {
 		throw new RuntimeException( "todo" );
 	}
 
-	private java.util.ArrayList<AbstractParameter> parameters = new java.util.ArrayList<AbstractParameter>();
+	private ArrayList<AbstractParameter> parameters = new ArrayList<AbstractParameter>();
 
 	private AnonymousUserConstructor( AnonymousUserType type ) {
 		this.type = type;
@@ -87,7 +93,7 @@ public class AnonymousUserConstructor extends UserConstructor {
 	}
 
 	@Override
-	public org.lgna.project.ast.AccessLevel getAccessLevel() {
+	public AccessLevel getAccessLevel() {
 		return null;
 	}
 
@@ -97,27 +103,27 @@ public class AnonymousUserConstructor extends UserConstructor {
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractCode getNextLongerInChain() {
+	public AbstractCode getNextLongerInChain() {
 		return null;
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractCode getNextShorterInChain() {
+	public AbstractCode getNextShorterInChain() {
 		return null;
 	}
 
 	@Override
-	public java.util.List<AbstractParameter> getRequiredParameters() {
+	public List<AbstractParameter> getRequiredParameters() {
 		return this.parameters;
 	}
 
 	@Override
-	public org.lgna.project.annotations.Visibility getVisibility() {
+	public Visibility getVisibility() {
 		return null;
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		//todo?
 	}
 

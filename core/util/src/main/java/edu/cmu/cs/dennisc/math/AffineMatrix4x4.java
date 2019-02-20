@@ -43,10 +43,20 @@
 package edu.cmu.cs.dennisc.math;
 
 //todo: rename?
+
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4;
+
+import java.io.IOException;
+import java.text.DecimalFormat;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodableAndDecodable {
 	public final OrthogonalMatrix3x3 orientation = OrthogonalMatrix3x3.createIdentity();
 	public final Point3 translation = new Point3();
 
@@ -90,6 +100,68 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		return rv;
 	}
 
+	public static AffineMatrix4x4 createFromRowMajorArray12( double[] rowMajorArray ) {
+		assert rowMajorArray.length == 12;
+		AffineMatrix4x4 rv = AffineMatrix4x4.createNaN();
+		rv.orientation.right.x = rowMajorArray[ 0 ];
+		rv.orientation.up.x = rowMajorArray[ 1 ];
+		rv.orientation.backward.x = rowMajorArray[ 2 ];
+		rv.translation.x = rowMajorArray[ 3 ];
+		rv.orientation.right.y = rowMajorArray[ 4 ];
+		rv.orientation.up.y = rowMajorArray[ 5 ];
+		rv.orientation.backward.y = rowMajorArray[ 6 ];
+		rv.translation.y = rowMajorArray[ 7 ];
+		rv.orientation.right.z = rowMajorArray[ 8 ];
+		rv.orientation.up.z = rowMajorArray[ 9 ];
+		rv.orientation.backward.z = rowMajorArray[ 10 ];
+		rv.translation.z = rowMajorArray[ 11 ];
+		return rv;
+	}
+
+	public static AffineMatrix4x4 createFromRowMajorArray16( double[] rowMajorArray ) {
+		assert rowMajorArray.length == 16;
+		AffineMatrix4x4 rv = AffineMatrix4x4.createNaN();
+		rv.orientation.right.x = rowMajorArray[0];
+		rv.orientation.up.x = rowMajorArray[1];
+		rv.orientation.backward.x = rowMajorArray[2];
+		rv.translation.x = rowMajorArray[3];
+		rv.orientation.right.y = rowMajorArray[4];
+		rv.orientation.up.y = rowMajorArray[5];
+		rv.orientation.backward.y = rowMajorArray[6];
+		rv.translation.y = rowMajorArray[7];
+		rv.orientation.right.z = rowMajorArray[8];
+		rv.orientation.up.z = rowMajorArray[9];
+		rv.orientation.backward.z = rowMajorArray[10];
+		rv.translation.z = rowMajorArray[11];
+		assert rowMajorArray[ 12 ] == 0.0;
+		assert rowMajorArray[ 13 ] == 0.0;
+		assert rowMajorArray[ 14 ] == 0.0;
+		assert rowMajorArray[ 15 ] == 1.0;
+		return rv;
+	}
+
+	public static AffineMatrix4x4 createFromRowMajorArray16( float[] rowMajorArray ) {
+		assert rowMajorArray.length == 16;
+		AffineMatrix4x4 rv = AffineMatrix4x4.createNaN();
+		rv.orientation.right.x = rowMajorArray[0];
+		rv.orientation.up.x = rowMajorArray[1];
+		rv.orientation.backward.x = rowMajorArray[2];
+		rv.translation.x = rowMajorArray[3];
+		rv.orientation.right.y = rowMajorArray[4];
+		rv.orientation.up.y = rowMajorArray[5];
+		rv.orientation.backward.y = rowMajorArray[6];
+		rv.translation.y = rowMajorArray[7];
+		rv.orientation.right.z = rowMajorArray[8];
+		rv.orientation.up.z = rowMajorArray[9];
+		rv.orientation.backward.z = rowMajorArray[10];
+		rv.translation.z = rowMajorArray[11];
+		assert rowMajorArray[ 12 ] == 0.0;
+		assert rowMajorArray[ 13 ] == 0.0;
+		assert rowMajorArray[ 14 ] == 0.0;
+		assert rowMajorArray[ 15 ] == 1.0;
+		return rv;
+	}
+
 	//todo: reduce visibility to private
 	public AffineMatrix4x4() {
 	}
@@ -111,17 +183,17 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		set( other );
 	}
 
-	public AffineMatrix4x4( edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4 other ) {
+	public AffineMatrix4x4( MAffineMatrix4x4 other ) {
 		this( new OrthogonalMatrix3x3( other.orientation ), new Point3( other.translation ) );
 	}
 
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public void decode( BinaryDecoder binaryDecoder ) {
 		orientation.decode( binaryDecoder );
 		translation.decode( binaryDecoder );
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		orientation.encode( binaryEncoder );
 		translation.encode( binaryEncoder );
 	}
@@ -169,13 +241,65 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		return getAsColumnMajorArray12( new double[ 12 ] );
 	}
 
+	public double[] getAsRowMajorArray16( double[] rv ) {
+		assert rv.length == 16;
+		rv[0] = orientation.right.x;
+		rv[1] = orientation.up.x;
+		rv[2] = orientation.backward.x;
+		rv[3] = translation.x;
+
+		rv[4] = orientation.right.y;
+		rv[5] = orientation.up.y;
+		rv[6] = orientation.backward.y;
+		rv[7] = translation.y;
+
+		rv[8] = orientation.right.z;
+		rv[9] = orientation.up.z;
+		rv[10] = orientation.backward.z;
+		rv[11] = translation.z;
+
+		rv[12] = 0;
+		rv[13] = 0;
+		rv[14] = 0;
+		rv[15] = 1;
+
+		return rv;
+	}
+
+	public double[] getAsRowMajorArray12( double[] rv ) {
+		assert rv.length == 12;
+		rv[0] = orientation.right.x;
+		rv[1] = orientation.up.x;
+		rv[2] = orientation.backward.x;
+		rv[3] = translation.x;
+
+		rv[4] = orientation.right.y;
+		rv[5] = orientation.up.y;
+		rv[6] = orientation.backward.y;
+		rv[7] = translation.y;
+
+		rv[8] = orientation.right.z;
+		rv[9] = orientation.up.z;
+		rv[10] = orientation.backward.z;
+		rv[11] = translation.z;
+		return rv;
+	}
+
+	public final double[] getAsRowMajorArray12() {
+		return getAsRowMajorArray12( new double[ 12 ] );
+	}
+
+	public final double[] getAsRowMajorArray16() {
+		return getAsRowMajorArray16( new double[ 16 ] );
+	}
+
 	@Override
 	public boolean isAffine() {
 		return true;
 	}
 
 	@Override
-	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
+	public Appendable append( Appendable rv, DecimalFormat decimalFormat, boolean isLines ) throws IOException {
 		if( isLines ) {
 			int n = decimalFormat.format( 0.0 ).length() + 1;
 			rv.append( "+-" );
@@ -509,8 +633,9 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		setReturnValueToMultiplication( this, a, b );
 	}
 
-	public void multiply( AffineMatrix4x4 b ) {
+	public AffineMatrix4x4 multiply( AffineMatrix4x4 b ) {
 		setToMultiplication( this, b );
+		return this;
 	}
 
 	//Multiply
@@ -705,7 +830,7 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 			afRV = new double[ 3 ];
 			offsetDest = 0;
 		}
-		transformVector( afRV, offsetDest, afSrc, offsetSrc );
+		orientation.transformVector( afRV, offsetDest, afSrc, offsetSrc );
 		afRV[ offsetDest ] += this.translation.x;
 		afRV[ offsetDest + 1 ] += this.translation.y;
 		afRV[ offsetDest + 2 ] += this.translation.z;
@@ -736,20 +861,6 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		return transformVector( afRV, offsetDest, afSrc, offsetSrc );
 	}
 
-	private double[] transformVector( double[] afRV, int offsetDest, double[] afSrc, int offsetSrc )
-	{
-		if( afRV == null )
-		{
-			afRV = new double[ 3 ];
-			offsetDest = 0;
-		}
-
-		afRV[ offsetDest ] = ( this.orientation.right.x * afSrc[ offsetSrc ] ) + ( this.orientation.up.x * afSrc[ offsetSrc + 1 ] ) + ( this.orientation.backward.x * afSrc[ offsetSrc + 2 ] );
-		afRV[ offsetDest + 1 ] = ( this.orientation.right.y * afSrc[ offsetSrc ] ) + ( this.orientation.up.y * afSrc[ offsetSrc + 1 ] ) + ( this.orientation.backward.y * afSrc[ offsetSrc + 2 ] );
-		afRV[ offsetDest + 2 ] = ( this.orientation.right.z * afSrc[ offsetSrc ] ) + ( this.orientation.up.z * afSrc[ offsetSrc + 1 ] ) + ( this.orientation.backward.z * afSrc[ offsetSrc + 2 ] );
-		return afRV;
-	}
-
 	private float[] transformVector( float[] afRV, int offsetDest, float[] afSrc, int offsetSrc )
 	{
 		if( afRV == null )
@@ -771,8 +882,8 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		} else {
 			if( o instanceof AffineMatrix4x4 ) {
 				AffineMatrix4x4 other = (AffineMatrix4x4)o;
-				return edu.cmu.cs.dennisc.java.util.Objects.equals( this.orientation, other.orientation )
-						&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.translation, other.translation );
+				return Objects.equals( this.orientation, other.orientation )
+						&& Objects.equals( this.translation, other.translation );
 			} else {
 				return false;
 			}
@@ -796,7 +907,38 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		return this.orientation.isWithinEpsilonOfIdentity( epsilon ) && this.translation.isWithinEpsilonOfZero( epsilon );
 	}
 
-	public edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4 createImmutable() {
-		return new edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4( this.orientation.createImmutable(), this.translation.createImmutable() );
+	public MAffineMatrix4x4 createImmutable() {
+		return new MAffineMatrix4x4( this.orientation.createImmutable(), this.translation.createImmutable() );
+	}
+
+	static private DecimalFormat format = new DecimalFormat("0.000" );
+
+	public String displayString() {
+		StringBuilder sb = new StringBuilder();
+		try {
+			append(sb, format, true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
+	}
+
+	public void normalizeOrientation() {
+		if( orientation.isWithinReasonableEpsilonOfUnitLengthSquared() ) {
+			return;
+		}
+		double xScale = orientation.right.calculateMagnitude();
+		double yScale = orientation.up.calculateMagnitude();
+		double zScale = orientation.backward.calculateMagnitude();
+
+		OrthogonalMatrix3x3 inverseScale = OrthogonalMatrix3x3.createIdentity();
+		inverseScale.right.x = 1 / xScale;
+		inverseScale.up.y = 1 / yScale;
+		inverseScale.backward.z = 1 / zScale;
+		orientation.applyMultiplication( inverseScale );
+
+		translation.x /= xScale;
+		translation.y /= yScale;
+		translation.z /= zScale;
 	}
 }

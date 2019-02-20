@@ -42,49 +42,55 @@
  *******************************************************************************/
 package org.lgna.story.resources.sims2;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import edu.cmu.cs.dennisc.random.RandomUtilities;
+import org.lgna.story.Color;
+
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum LifeStage implements LocalizedResource {
 	TODDLER {
 		@Override
-		public PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
+		public PersonResource createResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 			return new ToddlerPersonResource( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
 		}
 	},
 	CHILD {
 		@Override
-		public PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
+		public PersonResource createResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 			return new ChildPersonResource( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
 		}
 	},
 	TEEN {
 		@Override
-		public PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
+		public PersonResource createResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 			return new TeenPersonResource( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
 		}
 	},
 	ADULT {
 		@Override
-		public PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
+		public PersonResource createResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 			return new AdultPersonResource( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
 		}
 	},
 	ELDER {
 		@Override
-		public PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
+		public PersonResource createResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 			return new ElderPersonResource( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
 		}
 	};
 
 	public static LifeStage getRandom() {
-		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( LifeStage.class );
+		return RandomUtilities.getRandomEnumConstant( LifeStage.class );
 	}
 
-	private static final edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends FullBodyOutfit>> mapLifeStageAndGenderToFullBodyOutfit = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private static final edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends TopPiece>> mapLifeStageAndGenderToTopPiece = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private static final edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends BottomPiece>> mapLifeStageAndGenderToBottomPiece = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private static final edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends Hair>> mapLifeStageAndGenderToHair = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static final MapToMap<LifeStage, Gender, Class<? extends FullBodyOutfit>> mapLifeStageAndGenderToFullBodyOutfit = MapToMap.newInstance();
+	private static final MapToMap<LifeStage, Gender, Class<? extends TopPiece>> mapLifeStageAndGenderToTopPiece = MapToMap.newInstance();
+	private static final MapToMap<LifeStage, Gender, Class<? extends BottomPiece>> mapLifeStageAndGenderToBottomPiece = MapToMap.newInstance();
+	private static final MapToMap<LifeStage, Gender, Class<? extends Hair>> mapLifeStageAndGenderToHair = MapToMap.newInstance();
 	static {
 		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.ELDER, Gender.MALE, MaleElderFullBodyOutfit.class );
 		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.ELDER, Gender.FEMALE, FemaleElderFullBodyOutfit.class );
@@ -143,17 +149,17 @@ public enum LifeStage implements LocalizedResource {
 		return mapLifeStageAndGenderToHair.get( this, gender );
 	}
 
-	public abstract PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face );
+	public abstract PersonResource createResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face );
 
 	public String getDisplayText() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.name().charAt( 0 ) );
-		sb.append( this.name().substring( 1 ).toLowerCase( java.util.Locale.ENGLISH ) );
+		sb.append( this.name().substring( 1 ).toLowerCase( Locale.ENGLISH ) );
 		return sb.toString();
 	}
 
 	@Override
 	public String getLocalizedDisplayText() {
-		return PersonResource.getLocalizedDisplayText( this.name().toLowerCase( java.util.Locale.ENGLISH ) );
+		return PersonResource.getLocalizedDisplayText( this.name().toLowerCase( Locale.ENGLISH ) );
 	}
 }

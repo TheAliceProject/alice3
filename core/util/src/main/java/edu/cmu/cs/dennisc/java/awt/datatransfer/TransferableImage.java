@@ -42,34 +42,40 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.datatransfer;
 
+import java.awt.Image;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TransferableImage implements java.awt.datatransfer.Transferable {
-	private static final java.awt.datatransfer.DataFlavor[] DATA_FLAVORS = { java.awt.datatransfer.DataFlavor.imageFlavor };
-	private final java.awt.Image image;
+public class TransferableImage implements Transferable {
+	private static final DataFlavor[] DATA_FLAVORS = { DataFlavor.imageFlavor };
+	private final Image image;
 
-	public TransferableImage( java.awt.Image image ) {
+	public TransferableImage( Image image ) {
 		assert image != null : this;
 		this.image = image;
 	}
 
 	@Override
-	public java.awt.datatransfer.DataFlavor[] getTransferDataFlavors() {
+	public DataFlavor[] getTransferDataFlavors() {
 		return DATA_FLAVORS;
 	}
 
 	@Override
-	public boolean isDataFlavorSupported( java.awt.datatransfer.DataFlavor flavor ) {
-		return java.awt.datatransfer.DataFlavor.imageFlavor.equals( flavor );
+	public boolean isDataFlavorSupported( DataFlavor flavor ) {
+		return DataFlavor.imageFlavor.equals( flavor );
 	}
 
 	@Override
-	public Object getTransferData( java.awt.datatransfer.DataFlavor flavor ) throws java.awt.datatransfer.UnsupportedFlavorException, java.io.IOException {
-		if( java.awt.datatransfer.DataFlavor.imageFlavor.equals( flavor ) ) {
+	public Object getTransferData( DataFlavor flavor ) throws UnsupportedFlavorException, IOException {
+		if( DataFlavor.imageFlavor.equals( flavor ) ) {
 			return this.image;
 		} else {
-			throw new java.awt.datatransfer.UnsupportedFlavorException( flavor );
+			throw new UnsupportedFlavorException( flavor );
 		}
 	}
 }

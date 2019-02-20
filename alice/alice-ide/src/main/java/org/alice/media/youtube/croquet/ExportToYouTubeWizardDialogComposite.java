@@ -43,39 +43,52 @@
 package org.alice.media.youtube.croquet;
 
 import java.io.File;
+import java.util.UUID;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectStack;
 import org.alice.media.youtube.croquet.codecs.EventScriptEventCodec;
 import org.lgna.common.RandomUtilities;
+import org.lgna.croquet.MutableDataSingleSelectListState;
+import org.lgna.croquet.SimpleOperationWizardDialogCoreComposite;
 import org.lgna.croquet.StringValue;
 
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.project.Project;
+import org.lgna.project.io.IoUtilities;
+
+import javax.swing.SwingUtilities;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.SimpleOperationWizardDialogCoreComposite {
+public class ExportToYouTubeWizardDialogComposite extends SimpleOperationWizardDialogCoreComposite {
 	private final EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
 	private final ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
 	//	private final UploadComposite uploadComposite = new UploadComposite( this );
 	private final VideoExportComposite videoExportComposite = new VideoExportComposite( this );
 	private final StringValue mouseEventName = createStringValue( "mouseEvent" );
 	private final StringValue keyBoardEventName = createStringValue( "keyboardEvent" );
-	private final org.lgna.croquet.MutableDataSingleSelectListState<EventScriptEvent> eventList = createMutableListState( "eventList", EventScriptEvent.class, new EventScriptEventCodec( this ), -1 );
+	private final MutableDataSingleSelectListState<EventScriptEvent> eventList = createMutableListState( "eventList", EventScriptEvent.class, new EventScriptEventCodec( this ), -1 );
 
-	private org.lgna.project.Project project;
+	private Project project;
 	private EventScript eventScript;
 	private File tempRecordedVideoFile;
 	private long randomSeed;
 
 	public ExportToYouTubeWizardDialogComposite() {
-		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
+		super( UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), IDE.EXPORT_GROUP );
 		this.addPage( this.eventRecordComposite );
 		this.addPage( this.imageRecordComposite );
 		this.addPage( this.videoExportComposite );
 	}
 
-	public org.lgna.croquet.MutableDataSingleSelectListState<EventScriptEvent> getEventList() {
+	public MutableDataSingleSelectListState<EventScriptEvent> getEventList() {
 		return this.eventList;
 	}
 
@@ -87,11 +100,11 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Simpl
 		return this.keyBoardEventName;
 	}
 
-	public org.lgna.project.Project getProject() {
+	public Project getProject() {
 		return this.project;
 	}
 
-	public void setProject( org.lgna.project.Project project ) {
+	public void setProject( Project project ) {
 		this.project = project;
 	}
 
@@ -110,7 +123,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Simpl
 	public void setTempRecordedVideoFile( File file ) {
 		this.tempRecordedVideoFile = file;
 		if( this.tempRecordedVideoFile != null ) {
-			edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( this.tempRecordedVideoFile );
+			FileUtilities.createParentDirectoriesIfNecessary( this.tempRecordedVideoFile );
 		}
 	}
 
@@ -129,18 +142,18 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Simpl
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected Edit createEdit() {
 		return null;
 	}
 
 	public static void main( final String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		new org.lgna.croquet.simple.SimpleApplication();
+		UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		new SimpleApplication();
 		File projectFile = new File( args[ 0 ] );
-		final org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( projectFile );
-		org.alice.ide.ProjectStack.pushProject( project );
+		final Project project = IoUtilities.readProject( projectFile );
+		ProjectStack.pushProject( project );
 
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
 				ExportToYouTubeWizardDialogComposite composite = new ExportToYouTubeWizardDialogComposite();

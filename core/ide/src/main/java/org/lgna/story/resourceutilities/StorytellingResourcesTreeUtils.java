@@ -42,12 +42,16 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
-import java.io.File;
-import java.util.List;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.tweedle.file.ModelManifest;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaType;
+import org.lgna.story.resources.ModelResource;
 
-import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -57,79 +61,73 @@ public enum StorytellingResourcesTreeUtils {
 
 	private ModelResourceTree getGalleryTreeInternal() {
 		if( this.galleryTree == null ) {
-			List<Class<? extends org.lgna.story.resources.ModelResource>> classes = StorytellingResources.INSTANCE.findAndLoadAliceResourcesIfNecessary();
+			List<Class<? extends ModelResource>> classes = StorytellingResources.INSTANCE.findAndLoadInstalledAliceResourcesIfNecessary();
 			this.galleryTree = new ModelResourceTree( classes );
+
+			List<ModelManifest> userModelResources = StorytellingResources.INSTANCE.findAndLoadUserGalleryResourcesIfNecessary();
+			this.galleryTree.addUserModels(userModelResources);
 		}
 		return this.galleryTree;
 	}
 
-	private ModelResourceTreeNode getGalleryResourceTreeNodeForJavaType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	private TypeDefinedGalleryTreeNode getGalleryResourceTreeNodeForJavaType( AbstractType<?, ?, ?> type ) {
 		return this.getGalleryTreeInternal().getGalleryResourceTreeNodeForJavaType( type );
 	}
 
-	public ModelResourceTreeNode getGalleryResourceTreeNodeForUserType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		return getGalleryTreeInternal().getGalleryResourceTreeNodeForUserType( type );
-	}
-
-	public ModelResourceTreeNode getGalleryTree() {
+	public GalleryResourceTreeNode getGalleryTree() {
 		return getGalleryTreeInternal().getTree();
 	}
 
-	public java.util.List<org.lgna.project.ast.JavaType> getTopLevelGalleryTypes() {
+	public List<ManifestDefinedGalleryTreeNode> updateGalleryTree() {
+		List<ModelManifest> newUserModelResources = StorytellingResources.INSTANCE.findNewUserGalleryResources();
+		return galleryTree.addUserModels(newUserModelResources);
+	}
+
+	public Collection<JavaType> getTopLevelGalleryTypes() {
 		if( this.rootTypes == null ) {
-			List<ModelResourceTreeNode> rootNodes = this.getGalleryTreeInternal().getSModelBasedNodes();
-			this.rootTypes = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
-			for( ModelResourceTreeNode node : rootNodes ) {
+			this.rootTypes = new HashSet<>();
+			for( TypeDefinedGalleryTreeNode node : getGalleryTreeInternal().getDynamicNodes() ) {
 				this.rootTypes.add( node.getUserType().getFirstEncounteredJavaType() );
 			}
 		}
-
 		return this.rootTypes;
 	}
 
-	private void buildGalleryTreeWithJars( File... resourceJars ) {
-		java.util.ArrayList<File> jarFiles = new java.util.ArrayList<File>();
-		for( File resourceJar : resourceJars ) {
-			jarFiles.add( resourceJar );
-		}
-		List<Class<? extends org.lgna.story.resources.ModelResource>> modelResourceClasses = StorytellingResources.INSTANCE.getAndLoadModelResourceClasses( jarFiles );
-		this.galleryTree = new ModelResourceTree( modelResourceClasses );
-	}
-
-	public void initializeGalleryTreeWithJars( File... resourceJars ) {
-		this.buildGalleryTreeWithJars( resourceJars );
-	}
-
-	public org.lgna.project.ast.JavaType getGalleryResourceParentFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		TreeNode<JavaType> child = this.getGalleryResourceTreeNodeForJavaType( type );
+	public JavaType getGalleryResourceParentFor( AbstractType<?, ?, ?> type ) {
+		GalleryResourceTreeNode child = this.getGalleryResourceTreeNodeForJavaType( type );
 		if( child != null ) {
-			ModelResourceTreeNode parent = (ModelResourceTreeNode)child.getParent();
-			//Go up an extra level if the node we're returning is a node with a single child (this mirrors what is happening in getResourceChildren)
+			TypeDefinedGalleryTreeNode parent = child.getParent();
+			//Go up an extra level if the node we're returning is a node with a single child (this mirrors what is happening in getGalleryResourceChildrenFor)
 			if( ( parent != null ) && hasSingleLeafChild( parent ) ) {
-				parent = (ModelResourceTreeNode)parent.getParent();
+				parent = parent.getParent();
 			}
-			return parent.getResourceJavaType();
+			if ( parent != null ) {
+				return parent.getResourceJavaType();
+			}
+			else {
+				return null;
+			}
 		} else {
 			return null;
 		}
 	}
 
-	private boolean hasSingleLeafChild( TreeNode<?> node ) {
+	private boolean hasSingleLeafChild( GalleryResourceTreeNode node ) {
 		return ( ( node.getChildCount() == 1 ) && ( node.getChildAt( 0 ).getChildCount() == 0 ) );
 	}
 
-	public List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public List<AbstractDeclaration> getGalleryResourceChildrenFor( AbstractType<?, ?, ?> type ) {
 		//System.out.println( "Getting children for type: " + type );
-		java.util.List<org.lgna.project.ast.AbstractDeclaration> toReturn = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
-		TreeNode<JavaType> typeNode = this.getGalleryResourceTreeNodeForJavaType( type );
+		List<AbstractDeclaration> toReturn = Lists.newArrayList();
+		GalleryResourceTreeNode typeNode = this.getGalleryResourceTreeNodeForJavaType( type );
 		if( typeNode != null ) {
 			for( int i = 0; i < typeNode.getChildCount(); i++ ) {
-				TreeNode<JavaType> child = typeNode.getChildAt( i );
+				GalleryResourceTreeNode child = typeNode.getChildAt( i );
 				//If the child has a single leaf child, go down a level and return that
 				if( hasSingleLeafChild( child ) ) {
 					child = child.getChildAt( 0 );
 				}
-				ModelResourceTreeNode node = (ModelResourceTreeNode)child;
+				TypeDefinedGalleryTreeNode node = (TypeDefinedGalleryTreeNode)child;
 				if( node.isLeaf() && ( node.getJavaField() != null ) ) {
 					//System.out.println( "  Returning field: " + node.getJavaField() );
 					toReturn.add( node.getJavaField() );
@@ -142,6 +140,6 @@ public enum StorytellingResourcesTreeUtils {
 		return toReturn;
 	}
 
-	private List<org.lgna.project.ast.JavaType> rootTypes = null;
+	private Collection<JavaType> rootTypes = null;
 	private ModelResourceTree galleryTree;
 }

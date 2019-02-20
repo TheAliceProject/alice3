@@ -43,11 +43,13 @@
 
 package org.alice.ide.declarationseditor.type.data;
 
+import org.lgna.project.ast.NamedUserType;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ManagedFieldData extends AbstractManagedFieldData {
-	public ManagedFieldData( org.lgna.project.ast.NamedUserType type ) {
+	public ManagedFieldData( NamedUserType type ) {
 		super( type );
 	}
 }

@@ -42,7 +42,32 @@
  *******************************************************************************/
 package org.lgna.project.virtualmachine;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.lang.IterableUtilities;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+import org.lgna.common.EachInTogetherRunnable;
+import org.lgna.common.ThreadUtilities;
 import org.lgna.project.ast.*;
+import org.lgna.project.virtualmachine.events.CountLoopIterationEvent;
+import org.lgna.project.virtualmachine.events.EachInTogetherItemEvent;
+import org.lgna.project.virtualmachine.events.ExpressionEvaluationEvent;
+import org.lgna.project.virtualmachine.events.ForEachLoopIterationEvent;
+import org.lgna.project.virtualmachine.events.StatementExecutionEvent;
+import org.lgna.project.virtualmachine.events.VirtualMachineListener;
+import org.lgna.project.virtualmachine.events.WhileLoopIterationEvent;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
@@ -54,25 +79,25 @@ public abstract class VirtualMachine {
 
 	protected abstract void pushBogusFrame( UserInstance instance );
 
-	protected abstract void pushConstructorFrame( org.lgna.project.ast.NamedUserType type, java.util.Map<org.lgna.project.ast.AbstractParameter, Object> map );
+	protected abstract void pushConstructorFrame( NamedUserType type, Map<AbstractParameter, Object> map );
 
 	protected abstract void setConstructorFrameUserInstance( UserInstance instance );
 
-	protected abstract void pushMethodFrame( UserInstance instance, org.lgna.project.ast.UserMethod method, java.util.Map<org.lgna.project.ast.AbstractParameter, Object> map );
+	protected abstract void pushMethodFrame( UserInstance instance, UserMethod method, Map<AbstractParameter, Object> map );
 
-	protected abstract void pushLambdaFrame( UserInstance instance, org.lgna.project.ast.UserLambda lambda, org.lgna.project.ast.AbstractMethod singleAbstractMethod, java.util.Map<org.lgna.project.ast.AbstractParameter, Object> map );
+	protected abstract void pushLambdaFrame( UserInstance instance, UserLambda lambda, AbstractMethod singleAbstractMethod, Map<AbstractParameter, Object> map );
 
 	protected abstract void popFrame();
 
-	protected abstract Object lookup( org.lgna.project.ast.UserParameter parameter );
+	protected abstract Object lookup( UserParameter parameter );
 
-	protected abstract void pushLocal( org.lgna.project.ast.UserLocal local, Object value );
+	protected abstract void pushLocal( UserLocal local, Object value );
 
-	protected abstract Object getLocal( org.lgna.project.ast.UserLocal local );
+	protected abstract Object getLocal( UserLocal local );
 
-	protected abstract void setLocal( org.lgna.project.ast.UserLocal local, Object value );
+	protected abstract void setLocal( UserLocal local, Object value );
 
-	protected abstract void popLocal( org.lgna.project.ast.UserLocal local );
+	protected abstract void popLocal( UserLocal local );
 
 	//	protected abstract Frame createCopyOfCurrentFrame();
 	protected abstract Frame getFrameForThread( Thread thread );
@@ -81,7 +106,7 @@ public abstract class VirtualMachine {
 
 	protected abstract void popCurrentThread();
 
-	public Object[] ENTRY_POINT_evaluate( UserInstance instance, org.lgna.project.ast.Expression[] expressions ) {
+	public Object[] ENTRY_POINT_evaluate( UserInstance instance, Expression[] expressions ) {
 		this.pushBogusFrame( instance );
 		try {
 			Object[] rv = new Object[ expressions.length ];
@@ -94,13 +119,13 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	public void ENTRY_POINT_invoke( UserInstance instance, org.lgna.project.ast.AbstractMethod method, Object... arguments ) {
-		this.invoke( instance, method, arguments );
+	public void ENTRY_POINT_invoke( UserInstance target, AbstractMethod method, Object... arguments ) {
+		invoke( target, method, arguments );
 	}
 
-	private org.lgna.project.ast.NamedUserConstructor getConstructor( org.lgna.project.ast.NamedUserType entryPointType, Object[] arguments ) {
-		for( org.lgna.project.ast.NamedUserConstructor constructor : entryPointType.constructors ) {
-			java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
+	private NamedUserConstructor getConstructor( NamedUserType entryPointType, Object[] arguments ) {
+		for( NamedUserConstructor constructor : entryPointType.constructors ) {
+			List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
 			if( parameters.size() == arguments.length ) {
 				//todo: check types
 				return constructor;
@@ -109,17 +134,8 @@ public abstract class VirtualMachine {
 		return null;
 	}
 
-	public UserInstance ENTRY_POINT_createInstance( org.lgna.project.ast.NamedUserType entryPointType, Object... arguments ) {
+	public UserInstance ENTRY_POINT_createInstance( NamedUserType entryPointType, Object... arguments ) {
 		return getConstructor( entryPointType, arguments ).evaluate( this, null, arguments );
-	}
-
-	public UserInstance ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMap( org.lgna.project.ast.NamedUserType entryPointType, Object... arguments ) {
-		pushCurrentThread( null );
-		try {
-			return UserInstance.createInstanceWithInverseMap( this, entryPointType.getDeclaredConstructor(), arguments );
-		} finally {
-			popCurrentThread();
-		}
 	}
 
 	public Object createAndSetFieldInstance( UserInstance userInstance, UserField field ) {
@@ -130,7 +146,7 @@ public abstract class VirtualMachine {
 		return rv;
 	}
 
-	public Object ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( UserInstance instance, org.lgna.project.ast.UserField field ) {
+	public Object ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( UserInstance instance, UserField field ) {
 		//pushCurrentThread( null );
 		//try {
 		this.pushBogusFrame( instance );
@@ -144,12 +160,8 @@ public abstract class VirtualMachine {
 		//}
 	}
 
-	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_removeField( UserInstance instance, org.lgna.project.ast.UserField field, UserInstance value ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( instance, field, value );
-	}
-
-	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( UserInstance instance, org.lgna.project.ast.Statement statement ) {
-		assert ( statement instanceof org.lgna.project.ast.ReturnStatement ) == false;
+	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( UserInstance instance, Statement statement ) {
+		assert ( statement instanceof ReturnStatement ) == false;
 		//pushCurrentThread( null );
 		//try {
 		this.pushBogusFrame( instance );
@@ -167,21 +179,21 @@ public abstract class VirtualMachine {
 		//}
 	}
 
-	private final java.util.Map<Class<?>, Class<?>> mapAbstractClsToAdapterCls = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<java.lang.reflect.Method, java.lang.reflect.Method> mapProtectedMthdToAdapterMthd = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Map<Class<?>, Class<?>> mapAbstractClsToAdapterCls = Maps.newHashMap();
+	private final Map<Method, Method> mapProtectedMthdToAdapterMthd = Maps.newHashMap();
 
 	public void registerAbstractClassAdapter( Class<?> abstractCls, Class<?> adapterCls ) {
-		if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isAbstract( abstractCls ) ) {
+		if( ReflectionUtilities.isAbstract( abstractCls ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( abstractCls );
+			Logger.severe( abstractCls );
 		}
 		this.mapAbstractClsToAdapterCls.put( abstractCls, adapterCls );
 	}
 
-	public void registerProtectedMethodAdapter( java.lang.reflect.Method anonymousMthd, java.lang.reflect.Method adapterMthd ) {
-		assert edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isPublic( adapterMthd ) : adapterMthd;
-		assert edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isStatic( adapterMthd ) : adapterMthd;
+	public void registerProtectedMethodAdapter( Method anonymousMthd, Method adapterMthd ) {
+		assert ReflectionUtilities.isPublic( adapterMthd ) : adapterMthd;
+		assert ReflectionUtilities.isStatic( adapterMthd ) : adapterMthd;
 
 		Class<?>[] anonymousParameterTypes = anonymousMthd.getParameterTypes();
 		Class<?>[] adapterParameterTypes = adapterMthd.getParameterTypes();
@@ -190,69 +202,69 @@ public abstract class VirtualMachine {
 		assert adapterParameterTypes.length > 0 : anonymousMthd;
 		assert adapterParameterTypes[ 0 ] == anonymousMthd.getDeclaringClass();
 
-		if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isProtected( anonymousMthd ) ) {
+		if( ReflectionUtilities.isProtected( anonymousMthd ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( anonymousMthd );
+			Logger.severe( anonymousMthd );
 		}
 		this.mapProtectedMthdToAdapterMthd.put( anonymousMthd, adapterMthd );
 	}
 
-	/* package-private */Object createInstance( org.lgna.project.ast.UserType<?> type, final UserInstance userInstance, java.lang.reflect.Constructor<?> cnstrctr, Object... arguments ) {
+	/* package-private */Object createInstance( UserType<?> type, final UserInstance userInstance, Constructor<?> cnstrctr, Object... arguments ) {
 		Class<?> cls = cnstrctr.getDeclaringClass();
 		Class<?> adapterCls = this.mapAbstractClsToAdapterCls.get( cls );
 		if( adapterCls != null ) {
 			MethodContext context = new MethodContext() {
 				@Override
-				public void invokeEntryPoint( org.lgna.project.ast.AbstractMethod method, final Object... arguments ) {
+				public void invokeEntryPoint( AbstractMethod method, final Object... arguments ) {
 					VirtualMachine.this.ENTRY_POINT_invoke( userInstance, method, arguments );
 				}
 			};
-			Class<?>[] parameterTypes = { MethodContext.class, org.lgna.project.ast.UserType.class, Object[].class };
+			Class<?>[] parameterTypes = { MethodContext.class, UserType.class, Object[].class };
 			Object[] args = { context, type, arguments };
-			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
+			return ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
 		} else {
-			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, arguments );
+			return ReflectionUtilities.newInstance( cnstrctr, arguments );
 		}
 	}
 
-	private UserArrayInstance createUserArrayInstance( org.lgna.project.ast.UserArrayType type, int[] lengths, Object[] values ) {
+	private UserArrayInstance createUserArrayInstance( UserArrayType type, int[] lengths, Object[] values ) {
 		return new UserArrayInstance( type, lengths, values );
 	}
 
-	private Object createJavaArrayInstance( org.lgna.project.ast.JavaType type, int[] lengths, Object[] values ) {
+	private Object createJavaArrayInstance( JavaType type, int[] lengths, Object[] values ) {
 		Class<?> cls = type.getClassReflectionProxy().getReification();
 		assert cls != null;
 		Class<?> componentCls = cls.getComponentType();
 		assert componentCls != null;
-		Object rv = java.lang.reflect.Array.newInstance( componentCls, lengths );
+		Object rv = Array.newInstance( componentCls, lengths );
 		for( int i = 0; i < values.length; i++ ) {
 			if( values[ i ] instanceof UserInstance ) {
 				UserInstance userValue = (UserInstance)values[ i ];
 				values[ i ] = userValue.getJavaInstance();
 			}
-			java.lang.reflect.Array.set( rv, i, values[ i ] );
+			Array.set( rv, i, values[ i ] );
 		}
 		return rv;
 	}
 
-	protected Object createArrayInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type, int[] lengths, Object... values ) {
+	protected Object createArrayInstance( AbstractType<?, ?, ?> type, int[] lengths, Object... values ) {
 		assert type != null;
-		if( type instanceof org.lgna.project.ast.UserArrayType ) {
-			return this.createUserArrayInstance( (org.lgna.project.ast.UserArrayType)type, lengths, values );
-		} else if( type instanceof org.lgna.project.ast.JavaType ) {
-			return this.createJavaArrayInstance( (org.lgna.project.ast.JavaType)type, lengths, values );
+		if( type instanceof UserArrayType ) {
+			return this.createUserArrayInstance( (UserArrayType)type, lengths, values );
+		} else if( type instanceof JavaType ) {
+			return this.createJavaArrayInstance( (JavaType)type, lengths, values );
 		} else {
 			throw new RuntimeException();
 		}
 	}
 
-	private Object evaluateArgument( org.lgna.project.ast.AbstractArgument argument ) {
+	private Object evaluateArgument( AbstractArgument argument ) {
 		assert argument != null;
-		org.lgna.project.ast.Expression expression = argument.expression.getValue();
+		Expression expression = argument.expression.getValue();
 		assert expression != null;
-		if( expression instanceof org.lgna.project.ast.LambdaExpression ) {
-			return this.EPIC_HACK_evaluateLambdaExpression( (org.lgna.project.ast.LambdaExpression)expression, argument );
+		if( expression instanceof LambdaExpression ) {
+			return this.EPIC_HACK_evaluateLambdaExpression( (LambdaExpression)expression, argument );
 		} else {
 			return this.evaluate( expression );
 		}
@@ -261,9 +273,9 @@ public abstract class VirtualMachine {
 	public Object[] evaluateArguments( AbstractCode code, NodeListProperty<SimpleArgument> arguments,
 					NodeListProperty<SimpleArgument> variableArguments, NodeListProperty<JavaKeyedArgument> keyedArguments ) {
 		//todo: when variable length and keyed parameters are offered in the IDE (User) this code will need to be updated
-		java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = code.getRequiredParameters();
-		org.lgna.project.ast.AbstractParameter variableParameter = code.getVariableLengthParameter();
-		org.lgna.project.ast.AbstractParameter keyedParameter = code.getKeyedParameter();
+		List<? extends AbstractParameter> requiredParameters = code.getRequiredParameters();
+		AbstractParameter variableParameter = code.getVariableLengthParameter();
+		AbstractParameter keyedParameter = code.getKeyedParameter();
 
 		final int REQUIRED_N = arguments.size();
 		assert requiredParameters.size() == REQUIRED_N : code.getName() + " " + requiredParameters.size() + " " + arguments.size();
@@ -282,25 +294,25 @@ public abstract class VirtualMachine {
 		}
 		if( variableParameter != null ) {
 			final int VARIABLE_N = variableArguments.size();
-			org.lgna.project.ast.JavaType variableArrayType = variableParameter.getValueType().getFirstEncounteredJavaType();
+			JavaType variableArrayType = variableParameter.getValueType().getFirstEncounteredJavaType();
 			assert variableArrayType.isArray();
 			Class<?> componentCls = variableArrayType.getComponentType().getClassReflectionProxy().getReification();
-			Object array = java.lang.reflect.Array.newInstance( componentCls, VARIABLE_N );
+			Object array = Array.newInstance( componentCls, VARIABLE_N );
 			for( int i = 0; i < VARIABLE_N; i++ ) {
 				//todo: support primitive types
-				java.lang.reflect.Array.set( array, i, this.evaluateArgument( variableArguments.get( rvIndex ) ) );
+				Array.set( array, i, this.evaluateArgument( variableArguments.get( rvIndex ) ) );
 			}
 			rv[ rvIndex ] = array;
 		}
 		if( keyedParameter != null ) {
 			final int KEYED_N = keyedArguments.size();
-			org.lgna.project.ast.JavaType keyedArrayType = keyedParameter.getValueType().getFirstEncounteredJavaType();
+			JavaType keyedArrayType = keyedParameter.getValueType().getFirstEncounteredJavaType();
 			assert keyedArrayType.isArray();
 			Class<?> componentCls = keyedArrayType.getComponentType().getClassReflectionProxy().getReification();
-			Object array = java.lang.reflect.Array.newInstance( componentCls, KEYED_N );
+			Object array = Array.newInstance( componentCls, KEYED_N );
 			for( int i = 0; i < KEYED_N; i++ ) {
 				//todo: support primitive types
-				java.lang.reflect.Array.set( array, i, this.evaluateArgument( keyedArguments.get( i ) ) );
+				Array.set( array, i, this.evaluateArgument( keyedArguments.get( i ) ) );
 			}
 			rv[ rvIndex ] = array;
 			//
@@ -332,80 +344,76 @@ public abstract class VirtualMachine {
 				UserArrayInstance userArrayInstance = (UserArrayInstance)array;
 				return userArrayInstance.getLength();
 			} else {
-				return java.lang.reflect.Array.getLength( array );
+				return Array.getLength( array );
 			}
 		} else {
 			throw new NullPointerException();
 		}
 	}
 
-	protected Object getUserField( org.lgna.project.ast.UserField field, Object instance ) {
+	protected Object getUserField( UserField field, Object instance ) {
 		assert instance != null : field.getName();
 		assert instance instanceof UserInstance;
 		UserInstance userInstance = (UserInstance)instance;
 		return userInstance.getFieldValue( field );
 	}
 
-	protected void setUserField( org.lgna.project.ast.UserField field, Object instance, Object value ) {
+	protected void setUserField( UserField field, Object instance, Object value ) {
 		assert instance instanceof UserInstance;
 		UserInstance userInstance = (UserInstance)instance;
 		userInstance.setFieldValue( field, value );
 	}
 
-	protected Object getFieldDeclaredInJavaWithField( org.lgna.project.ast.JavaField field, Object instance ) {
+	protected Object getFieldDeclaredInJavaWithField( JavaField field, Object instance ) {
 		instance = UserInstance.getJavaInstanceIfNecessary( instance );
-		java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
+		Field fld = field.getFieldReflectionProxy().getReification();
 		assert fld != null : field.getFieldReflectionProxy();
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, instance );
+		return ReflectionUtilities.get( fld, instance );
 	}
 
-	protected void setFieldDeclaredInJavaWithField( org.lgna.project.ast.JavaField field, Object instance, Object value ) {
+	protected void setFieldDeclaredInJavaWithField( JavaField field, Object instance, Object value ) {
 		instance = UserInstance.getJavaInstanceIfNecessary( instance );
-		java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
+		Field fld = field.getFieldReflectionProxy().getReification();
 		assert fld != null : field;
-		edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.set( fld, instance, value );
+		ReflectionUtilities.set( fld, instance, value );
 	}
 
-	protected Object get( org.lgna.project.ast.AbstractField field, Object instance ) {
+	public Object get( AbstractField field, Object instance ) {
 		assert field != null;
 		assert ( instance != null ) || field.isStatic() : field;
-		if( field instanceof org.lgna.project.ast.UserField ) {
-			return this.getUserField( (org.lgna.project.ast.UserField)field, instance );
-		} else if( field instanceof org.lgna.project.ast.JavaField ) {
-			return this.getFieldDeclaredInJavaWithField( (org.lgna.project.ast.JavaField)field, instance );
+		if( field instanceof UserField ) {
+			return this.getUserField( (UserField)field, instance );
+		} else if( field instanceof JavaField ) {
+			return this.getFieldDeclaredInJavaWithField( (JavaField)field, instance );
 		} else {
 			throw new RuntimeException();
 		}
 	}
 
-	protected void set( org.lgna.project.ast.AbstractField field, Object instance, Object value ) {
+	public void set( AbstractField field, Object instance, Object value ) {
 		assert field != null;
-		if( field instanceof org.lgna.project.ast.UserField ) {
-			this.setUserField( (org.lgna.project.ast.UserField)field, instance, value );
-		} else if( field instanceof org.lgna.project.ast.JavaField ) {
-			this.setFieldDeclaredInJavaWithField( (org.lgna.project.ast.JavaField)field, instance, value );
+		if( field instanceof UserField ) {
+			this.setUserField( (UserField)field, instance, value );
+		} else if( field instanceof JavaField ) {
+			this.setFieldDeclaredInJavaWithField( (JavaField)field, instance, value );
 		} else {
 			throw new RuntimeException();
 		}
 	}
 
 	private void checkIndex( int index, int length ) {
-		if( ( 0 <= index ) && ( index < length ) ) {
-			//pass
-		} else {
+		if ((index < 0) || (length <= index)) {
 			throw new LgnaVmArrayIndexOutOfBoundsException( this, index, length );
 		}
 	}
 
 	private void checkNotNull( Object value, String message ) {
-		if( value != null ) {
-			//pass
-		} else {
+		if (value == null) {
 			throw new LgnaVmNullPointerException( message, this );
 		}
 	}
 
-	protected Object getItemAtIndex( org.lgna.project.ast.AbstractType<?, ?, ?> arrayType, Object array, Integer index ) {
+	public Object getItemAtIndex( AbstractType<?, ?, ?> arrayType, Object array, Integer index ) {
 		assert arrayType != null;
 		assert arrayType.isArray();
 		if( array instanceof UserArrayInstance ) {
@@ -413,12 +421,12 @@ public abstract class VirtualMachine {
 			this.checkIndex( index, userArrayInstance.getLength() );
 			return userArrayInstance.get( index );
 		} else {
-			this.checkIndex( index, java.lang.reflect.Array.getLength( array ) );
-			return java.lang.reflect.Array.get( array, index );
+			this.checkIndex( index, Array.getLength( array ) );
+			return Array.get( array, index );
 		}
 	}
 
-	protected void setItemAtIndex( org.lgna.project.ast.AbstractType<?, ?, ?> arrayType, Object array, Integer index, Object value ) {
+	public void setItemAtIndex( AbstractType<?, ?, ?> arrayType, Object array, Integer index, Object value ) {
 		value = UserInstance.getJavaInstanceIfNecessary( value );
 		assert arrayType != null;
 		assert arrayType.isArray() : arrayType;
@@ -427,12 +435,12 @@ public abstract class VirtualMachine {
 			this.checkIndex( index, userArrayInstance.getLength() );
 			userArrayInstance.set( index, value );
 		} else {
-			this.checkIndex( index, java.lang.reflect.Array.getLength( array ) );
-			java.lang.reflect.Array.set( array, index, value );
+			this.checkIndex( index, Array.getLength( array ) );
+			Array.set( array, index, value );
 		}
 	}
 
-	protected Object invokeUserMethod( Object instance, org.lgna.project.ast.UserMethod method, Object... arguments ) {
+	public Object invokeUserMethod( Object instance, UserMethod method, Object... arguments ) {
 		if( method.isStatic() ) {
 			assert instance == null;
 		} else {
@@ -440,7 +448,7 @@ public abstract class VirtualMachine {
 			assert instance instanceof UserInstance : instance;
 		}
 		UserInstance userInstance = (UserInstance)instance;
-		java.util.Map<org.lgna.project.ast.AbstractParameter, Object> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		Map<AbstractParameter, Object> map = Maps.newHashMap();
 		for( int i = 0; i < arguments.length; i++ ) {
 			map.put( method.requiredParameters.get( i ), arguments[ i ] );
 		}
@@ -461,7 +469,7 @@ public abstract class VirtualMachine {
 
 	private static void checkArguments( Class<?>[] parameterTypes, Object[] arguments, IllegalArgumentException iae, String text ) {
 		if( parameterTypes.length != arguments.length ) {
-			throw new RuntimeException( "wrong number of arguments.  exprected: " + parameterTypes.length + "; received: " + arguments.length + ". " + text, iae );
+			throw new RuntimeException( "wrong number of arguments.  expected: " + parameterTypes.length + "; received: " + arguments.length + ". " + text, iae );
 		}
 		int i = 0;
 		for( Class<?> parameterType : parameterTypes ) {
@@ -481,10 +489,10 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected Object invokeMethodDeclaredInJava( Object instance, org.lgna.project.ast.JavaMethod method, Object... arguments ) {
+	public Object invokeMethodDeclaredInJava( Object instance, JavaMethod method, Object... arguments ) {
 		instance = UserInstance.getJavaInstanceIfNecessary( instance );
 		UserInstance.updateArrayWithInstancesInJavaIfNecessary( arguments );
-		java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
+		Method mthd = method.getMethodReflectionProxy().getReification();
 
 		Class<?>[] parameterTypes = mthd.getParameterTypes();
 		int lastParameterIndex = parameterTypes.length - 1;
@@ -493,93 +501,79 @@ public abstract class VirtualMachine {
 				Object[] fixedArguments = new Object[ parameterTypes.length ];
 				System.arraycopy( arguments, 0, fixedArguments, 0, arguments.length );
 				assert parameterTypes[ lastParameterIndex ].isArray() : parameterTypes[ lastParameterIndex ];
-				fixedArguments[ lastParameterIndex ] = java.lang.reflect.Array.newInstance( parameterTypes[ lastParameterIndex ].getComponentType(), 0 );
+				fixedArguments[ lastParameterIndex ] = Array.newInstance( parameterTypes[ lastParameterIndex ].getComponentType(), 0 );
 				arguments = fixedArguments;
 			}
 		}
 
-		if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isProtected( mthd ) ) {
+		if( ReflectionUtilities.isProtected( mthd ) ) {
 			Class<?> adapterCls = mapAbstractClsToAdapterCls.get( mthd.getDeclaringClass() );
 			if( adapterCls != null ) {
-				mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( adapterCls, mthd.getName(), mthd.getParameterTypes() );
+				mthd = ReflectionUtilities.getMethod( adapterCls, mthd.getName(), mthd.getParameterTypes() );
 			} else {
 				mthd = this.mapProtectedMthdToAdapterMthd.get( mthd );
 				assert mthd != null : method;
-				arguments = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.concat( Object.class, instance, arguments );
+				arguments = ArrayUtilities.concat( Object.class, instance, arguments );
 			}
 		}
-		assert edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isPublic( mthd ) : mthd;
+		assert ReflectionUtilities.isPublic( mthd ) : mthd;
 
 		try {
 			return mthd.invoke( instance, arguments );
 		} catch( IllegalArgumentException illegalArgumentException ) {
-			checkArguments( mthd.getParameterTypes(), arguments, illegalArgumentException, edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDetail( instance, mthd, arguments ) );
+			checkArguments( mthd.getParameterTypes(), arguments, illegalArgumentException, ReflectionUtilities.getDetail( instance, mthd, arguments ) );
 			throw illegalArgumentException;
 		} catch( IllegalAccessException illegalAccessException ) {
-			throw new RuntimeException( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDetail( instance, mthd, arguments ), illegalAccessException );
-		} catch( java.lang.reflect.InvocationTargetException ite ) {
+			throw new RuntimeException( ReflectionUtilities.getDetail( instance, mthd, arguments ), illegalAccessException );
+		} catch( InvocationTargetException ite ) {
 			Throwable throwable = ite.getTargetException();
 			if( throwable instanceof RuntimeException ) {
 				RuntimeException re = (RuntimeException)throwable;
 				throw re;
 			} else {
-				throw new RuntimeException( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDetail( instance, mthd, arguments ), throwable );
+				throw new RuntimeException( ReflectionUtilities.getDetail( instance, mthd, arguments ), throwable );
 			}
 		}
 	}
 
-	protected Object invoke( Object instance, org.lgna.project.ast.AbstractMethod method, Object... arguments ) {
+	protected Object invoke( Object instance, AbstractMethod method, Object... arguments ) {
 		assert method != null;
 
-		if( method.isStatic() ) {
-			//pass
-		} else {
-			this.checkNotNull( instance, "caller is null" );
+		if (!method.isStatic()) {
+			checkNotNull( instance, "Instance method target is null" );
 		}
-		if( method instanceof org.lgna.project.ast.UserMethod ) {
-			return this.invokeUserMethod( instance, (org.lgna.project.ast.UserMethod)method, arguments );
-		} else if( method instanceof org.lgna.project.ast.JavaMethod ) {
-			return this.invokeMethodDeclaredInJava( instance, (org.lgna.project.ast.JavaMethod)method, arguments );
-		} else if( method instanceof org.lgna.project.ast.Getter ) {
-			org.lgna.project.ast.Getter getter = (org.lgna.project.ast.Getter)method;
-			return this.get( getter.getField(), instance );
-		} else if( method instanceof org.lgna.project.ast.Setter ) {
-			org.lgna.project.ast.Setter setter = (org.lgna.project.ast.Setter)method;
-			this.set( setter.getField(), instance, arguments[ 0 ] );
-			return null;
-		} else {
-			throw new RuntimeException();
-		}
+
+		return method.invoke(this, instance, arguments);
 	}
 
-	protected Object evaluateAssignmentExpression( org.lgna.project.ast.AssignmentExpression assignmentExpression ) {
-		org.lgna.project.ast.Expression leftHandExpression = assignmentExpression.leftHandSide.getValue();
-		org.lgna.project.ast.Expression rightHandExpression = assignmentExpression.rightHandSide.getValue();
+	protected Object evaluateAssignmentExpression( AssignmentExpression assignmentExpression ) {
+		Expression leftHandExpression = assignmentExpression.leftHandSide.getValue();
+		Expression rightHandExpression = assignmentExpression.rightHandSide.getValue();
 		Object rightHandValue = this.evaluate( rightHandExpression );
-		if( assignmentExpression.operator.getValue() == org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN ) {
-			if( leftHandExpression instanceof org.lgna.project.ast.FieldAccess ) {
-				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)leftHandExpression;
+		if( assignmentExpression.operator.getValue() == AssignmentExpression.Operator.ASSIGN ) {
+			if( leftHandExpression instanceof FieldAccess ) {
+				FieldAccess fieldAccess = (FieldAccess)leftHandExpression;
 				this.set( fieldAccess.field.getValue(), this.evaluate( fieldAccess.expression.getValue() ), rightHandValue );
-			} else if( leftHandExpression instanceof org.lgna.project.ast.LocalAccess ) {
-				org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)leftHandExpression;
+			} else if( leftHandExpression instanceof LocalAccess ) {
+				LocalAccess localAccess = (LocalAccess)leftHandExpression;
 				this.setLocal( localAccess.local.getValue(), rightHandValue );
-			} else if( leftHandExpression instanceof org.lgna.project.ast.ArrayAccess ) {
-				org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)leftHandExpression;
+			} else if( leftHandExpression instanceof ArrayAccess ) {
+				ArrayAccess arrayAccess = (ArrayAccess)leftHandExpression;
 				this.setItemAtIndex( arrayAccess.arrayType.getValue(), this.evaluate( arrayAccess.array.getValue() ), this.evaluateInt( arrayAccess.index.getValue(), "array index is null" ), rightHandValue );
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: evaluateActual", assignmentExpression.leftHandSide.getValue(), rightHandValue );
+				PrintUtilities.println( "todo: evaluateActual", assignmentExpression.leftHandSide.getValue(), rightHandValue );
 			}
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: evaluateActual", assignmentExpression );
+			PrintUtilities.println( "todo: evaluateActual", assignmentExpression );
 		}
 		return null;
 	}
 
-	protected Object evaluateBooleanLiteral( org.lgna.project.ast.BooleanLiteral booleanLiteral ) {
+	protected Object evaluateBooleanLiteral( BooleanLiteral booleanLiteral ) {
 		return booleanLiteral.value.getValue();
 	}
 
-	protected Object evaluateArrayInstanceCreation( org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation ) {
+	protected Object evaluateArrayInstanceCreation( ArrayInstanceCreation arrayInstanceCreation ) {
 		Object[] values = new Object[ arrayInstanceCreation.expressions.size() ];
 		for( int i = 0; i < values.length; i++ ) {
 			values[ i ] = this.evaluate( arrayInstanceCreation.expressions.get( i ) );
@@ -591,58 +585,58 @@ public abstract class VirtualMachine {
 		return this.createArrayInstance( arrayInstanceCreation.arrayType.getValue(), lengths, values );
 	}
 
-	protected Object evaluateArrayAccess( org.lgna.project.ast.ArrayAccess arrayAccess ) {
+	protected Object evaluateArrayAccess( ArrayAccess arrayAccess ) {
 		return this.getItemAtIndex( arrayAccess.arrayType.getValue(), this.evaluate( arrayAccess.array.getValue() ), this.evaluateInt( arrayAccess.index.getValue(), "array index is null" ) );
 	}
 
-	protected Integer evaluateArrayLength( org.lgna.project.ast.ArrayLength arrayLength ) {
+	protected Integer evaluateArrayLength( ArrayLength arrayLength ) {
 		return this.getArrayLength( this.evaluate( arrayLength.array.getValue() ) );
 	}
 
-	protected Object evaluateFieldAccess( org.lgna.project.ast.FieldAccess fieldAccess ) {
+	protected Object evaluateFieldAccess( FieldAccess fieldAccess ) {
 		Object o = fieldAccess.field.getValue();
-		if( o instanceof org.lgna.project.ast.AbstractField ) {
-			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
-			org.lgna.project.ast.Expression expression = fieldAccess.expression.getValue();
+		if( o instanceof AbstractField ) {
+			AbstractField field = fieldAccess.field.getValue();
+			Expression expression = fieldAccess.expression.getValue();
 			Object value = this.evaluate( expression );
 			return this.get( field, value );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "field access field is not a field", o );
-			org.lgna.project.ast.Node node = fieldAccess;
+			Logger.errln( "field access field is not a field", o );
+			Node node = fieldAccess;
 			while( node != null ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "   ", node );
+				Logger.errln( "   ", node );
 				node = node.getParent();
 			}
 			return null;
 		}
 	}
 
-	protected Object evaluateLocalAccess( org.lgna.project.ast.LocalAccess localAccess ) {
+	protected Object evaluateLocalAccess( LocalAccess localAccess ) {
 		return this.getLocal( localAccess.local.getValue() );
 	}
 
-	protected Object evaluateArithmeticInfixExpression( org.lgna.project.ast.ArithmeticInfixExpression arithmeticInfixExpression ) {
+	protected Object evaluateArithmeticInfixExpression( ArithmeticInfixExpression arithmeticInfixExpression ) {
 		Number leftOperand = (Number)this.evaluate( arithmeticInfixExpression.leftOperand.getValue() );
 		Number rightOperand = (Number)this.evaluate( arithmeticInfixExpression.rightOperand.getValue() );
 		return arithmeticInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
 	}
 
-	protected Object evaluateBitwiseInfixExpression( org.lgna.project.ast.BitwiseInfixExpression bitwiseInfixExpression ) {
+	protected Object evaluateBitwiseInfixExpression( BitwiseInfixExpression bitwiseInfixExpression ) {
 		Object leftOperand = this.evaluate( bitwiseInfixExpression.leftOperand.getValue() );
 		Object rightOperand = this.evaluate( bitwiseInfixExpression.rightOperand.getValue() );
 		return bitwiseInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
 	}
 
-	protected Boolean evaluateConditionalInfixExpression( org.lgna.project.ast.ConditionalInfixExpression conditionalInfixExpression ) {
-		org.lgna.project.ast.ConditionalInfixExpression.Operator operator = conditionalInfixExpression.operator.getValue();
+	protected Boolean evaluateConditionalInfixExpression( ConditionalInfixExpression conditionalInfixExpression ) {
+		ConditionalInfixExpression.Operator operator = conditionalInfixExpression.operator.getValue();
 		Boolean leftOperand = (Boolean)this.evaluate( conditionalInfixExpression.leftOperand.getValue() );
-		if( operator == org.lgna.project.ast.ConditionalInfixExpression.Operator.AND ) {
+		if( operator == ConditionalInfixExpression.Operator.AND ) {
 			if( leftOperand ) {
 				return (Boolean)this.evaluate( conditionalInfixExpression.rightOperand.getValue() );
 			} else {
 				return false;
 			}
-		} else if( operator == org.lgna.project.ast.ConditionalInfixExpression.Operator.OR ) {
+		} else if( operator == ConditionalInfixExpression.Operator.OR ) {
 			if( leftOperand ) {
 				return true;
 			} else {
@@ -654,7 +648,7 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected Boolean evaluateRelationalInfixExpression( org.lgna.project.ast.RelationalInfixExpression relationalInfixExpression ) {
+	protected Boolean evaluateRelationalInfixExpression( RelationalInfixExpression relationalInfixExpression ) {
 		Object leftOperand = UserInstance.getJavaInstanceIfNecessary( this.evaluate( relationalInfixExpression.leftOperand.getValue() ) );
 		Object rightOperand = UserInstance.getJavaInstanceIfNecessary( this.evaluate( relationalInfixExpression.rightOperand.getValue() ) );
 		if( leftOperand != null ) {
@@ -672,18 +666,18 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected Object evaluateShiftInfixExpression( org.lgna.project.ast.ShiftInfixExpression shiftInfixExpression ) {
+	protected Object evaluateShiftInfixExpression( ShiftInfixExpression shiftInfixExpression ) {
 		Object leftOperand = this.evaluate( shiftInfixExpression.leftOperand.getValue() );
 		Object rightOperand = this.evaluate( shiftInfixExpression.rightOperand.getValue() );
 		return shiftInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
 	}
 
-	protected Object evaluateLogicalComplement( org.lgna.project.ast.LogicalComplement logicalComplement ) {
+	protected Object evaluateLogicalComplement( LogicalComplement logicalComplement ) {
 		Boolean operand = this.evaluateBoolean( logicalComplement.operand.getValue(), "logical complement expression is null" );
 		return !operand;
 	}
 
-	protected String evaluateStringConcatenation( org.lgna.project.ast.StringConcatenation stringConcatenation ) {
+	protected String evaluateStringConcatenation( StringConcatenation stringConcatenation ) {
 		StringBuffer sb = new StringBuffer();
 		Object leftOperand = this.evaluate( stringConcatenation.leftOperand.getValue() );
 		Object rightOperand = this.evaluate( stringConcatenation.rightOperand.getValue() );
@@ -692,7 +686,7 @@ public abstract class VirtualMachine {
 		return sb.toString();
 	}
 
-	protected Object evaluateMethodInvocation( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+	protected Object evaluateMethodInvocation( MethodInvocation methodInvocation ) {
 		if( methodInvocation.isValid() ) {
 			Object[] allArguments = this.evaluateArguments( methodInvocation.method.getValue(), methodInvocation.requiredArguments, methodInvocation.variableArguments, methodInvocation.keyedArguments );
 			int parameterCount = methodInvocation.method.getValue().getRequiredParameters().size();
@@ -703,89 +697,85 @@ public abstract class VirtualMachine {
 				parameterCount += 1;
 			}
 			assert parameterCount == allArguments.length : methodInvocation.method.getValue().getName();
-			org.lgna.project.ast.Expression callerExpression = methodInvocation.expression.getValue();
-			Object caller = this.evaluate( callerExpression );
-			org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-			if( method.isStatic() ) {
-				//pass
-			} else {
-				this.checkNotNull( caller, "caller is null" );
+			Expression targetExpression = methodInvocation.expression.getValue();
+			Object target = this.evaluate( targetExpression );
+
+			try {
+				return invoke(target, methodInvocation.method.getValue(), allArguments );
+			} catch (Throwable e) {
+				Logger.severe( "The method invocation threw an error. Continuing past.", methodInvocation.method.getValue(), e );
+				return null;
 			}
-			return this.invoke( caller, method, allArguments );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( methodInvocation.method.getValue() );
+			Logger.severe( "The method invocation is not valid. Continuing past.", methodInvocation.method.getValue() );
 			return null;
 		}
 	}
 
-	protected Object evaluateNullLiteral( org.lgna.project.ast.NullLiteral nullLiteral ) {
+	protected Object evaluateNullLiteral( NullLiteral nullLiteral ) {
 		return null;
 	}
 
-	protected Object evaluateNumberLiteral( org.lgna.project.ast.NumberLiteral numberLiteral ) {
-		return numberLiteral.value.getValue();
-	}
-
-	protected Object evaluateDoubleLiteral( org.lgna.project.ast.DoubleLiteral doubleLiteral ) {
+	protected Object evaluateDoubleLiteral( DoubleLiteral doubleLiteral ) {
 		return doubleLiteral.value.getValue();
 	}
 
-	protected Object evaluateFloatLiteral( org.lgna.project.ast.FloatLiteral floatLiteral ) {
+	protected Object evaluateFloatLiteral( FloatLiteral floatLiteral ) {
 		return floatLiteral.value.getValue();
 	}
 
-	protected Object evaluateIntegerLiteral( org.lgna.project.ast.IntegerLiteral integerLiteral ) {
+	protected Object evaluateIntegerLiteral( IntegerLiteral integerLiteral ) {
 		return integerLiteral.value.getValue();
 	}
 
-	protected Object evaluateParameterAccess( org.lgna.project.ast.ParameterAccess parameterAccess ) {
+	protected Object evaluateParameterAccess( ParameterAccess parameterAccess ) {
 		return this.lookup( parameterAccess.parameter.getValue() );
 	}
 
-	protected Object evaluateStringLiteral( org.lgna.project.ast.StringLiteral stringLiteral ) {
+	protected Object evaluateStringLiteral( StringLiteral stringLiteral ) {
 		return stringLiteral.value.getValue();
 	}
 
-	protected Object evaluateThisExpression( org.lgna.project.ast.ThisExpression thisExpression ) {
+	protected Object evaluateThisExpression( ThisExpression thisExpression ) {
 		Object rv = this.getThis();
 		assert rv != null;
 		return rv;
 	}
 
-	protected Object evaluateTypeExpression( org.lgna.project.ast.TypeExpression typeExpression ) {
+	protected Object evaluateTypeExpression( TypeExpression typeExpression ) {
 		return typeExpression.value.getValue();
 	}
 
-	protected Object evaluateTypeLiteral( org.lgna.project.ast.TypeLiteral typeLiteral ) {
+	protected Object evaluateTypeLiteral( TypeLiteral typeLiteral ) {
 		return typeLiteral.value.getValue();
 	}
 
-	protected Object evaluateResourceExpression( org.lgna.project.ast.ResourceExpression resourceExpression ) {
+	protected Object evaluateResourceExpression( ResourceExpression resourceExpression ) {
 		return resourceExpression.resource.getValue();
 	}
 
-	protected Object EPIC_HACK_evaluateLambdaExpression( org.lgna.project.ast.LambdaExpression lambdaExpression, org.lgna.project.ast.AbstractArgument argument ) {
-		org.lgna.project.ast.Lambda lambda = lambdaExpression.value.getValue();
+	protected Object EPIC_HACK_evaluateLambdaExpression( LambdaExpression lambdaExpression, AbstractArgument argument ) {
+		Lambda lambda = lambdaExpression.value.getValue();
 
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = argument.parameter.getValue().getValueType();
-		if( type instanceof org.lgna.project.ast.JavaType ) {
+		AbstractType<?, ?, ?> type = argument.parameter.getValue().getValueType();
+		if( type instanceof JavaType ) {
 
 			UserInstance thisInstance = this.getThis();
 			assert thisInstance != null;
 
-			org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
+			JavaType javaType = (JavaType)type;
 			Class<?> interfaceCls = javaType.getClassReflectionProxy().getReification();
 			Class<?> adapterCls = this.mapAbstractClsToAdapterCls.get( interfaceCls );
 			assert adapterCls != null : interfaceCls;
-			Class<?>[] parameterTypes = { org.lgna.project.virtualmachine.LambdaContext.class, org.lgna.project.ast.Lambda.class, org.lgna.project.virtualmachine.UserInstance.class };
+			Class<?>[] parameterTypes = { LambdaContext.class, Lambda.class, UserInstance.class };
 			Object[] arguments = {
 					new LambdaContext() {
 						@Override
-						public void invokeEntryPoint( org.lgna.project.ast.Lambda lambda, org.lgna.project.ast.AbstractMethod singleAbstractMethod, org.lgna.project.virtualmachine.UserInstance thisInstance, Object... arguments ) {
+						public void invokeEntryPoint( Lambda lambda, AbstractMethod singleAbstractMethod, UserInstance thisInstance, Object... arguments ) {
 							assert thisInstance != null;
-							if( lambda instanceof org.lgna.project.ast.UserLambda ) {
-								org.lgna.project.ast.UserLambda userLambda = (org.lgna.project.ast.UserLambda)lambda;
-								java.util.Map<org.lgna.project.ast.AbstractParameter, Object> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+							if( lambda instanceof UserLambda ) {
+								UserLambda userLambda = (UserLambda)lambda;
+								Map<AbstractParameter, Object> map = Maps.newHashMap();
 								for( int i = 0; i < arguments.length; i++ ) {
 									map.put( userLambda.requiredParameters.get( i ), arguments[ i ] );
 								}
@@ -793,7 +783,7 @@ public abstract class VirtualMachine {
 								try {
 									execute( userLambda.body.getValue() );
 								} catch( ReturnException re ) {
-									edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle return" );
+									Logger.todo( "handle return" );
 									assert false : re;
 								} finally {
 									popFrame();
@@ -805,7 +795,7 @@ public abstract class VirtualMachine {
 					thisInstance
 			};
 			try {
-				java.lang.reflect.Constructor<?> cnstrctr = adapterCls.getDeclaredConstructor( parameterTypes );
+				Constructor<?> cnstrctr = adapterCls.getDeclaredConstructor( parameterTypes );
 				return cnstrctr.newInstance( arguments );
 			} catch( Exception e ) {
 				throw new RuntimeException( e );
@@ -815,76 +805,74 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected Object evaluateLambdaExpression( org.lgna.project.ast.LambdaExpression lambdaExpression ) {
+	protected Object evaluateLambdaExpression( LambdaExpression lambdaExpression ) {
 		throw new RuntimeException( "todo" );
 	}
 
-	protected Object evaluate( org.lgna.project.ast.Expression expression ) {
+	protected Object evaluate( Expression expression ) {
 		if( expression != null ) {
 			Object rv;
-			if( expression instanceof org.lgna.project.ast.AssignmentExpression ) {
-				rv = this.evaluateAssignmentExpression( (org.lgna.project.ast.AssignmentExpression)expression );
-			} else if( expression instanceof org.lgna.project.ast.BooleanLiteral ) {
-				rv = this.evaluateBooleanLiteral( (org.lgna.project.ast.BooleanLiteral)expression );
-			} else if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
-				rv = ( (org.lgna.project.ast.InstanceCreation) expression ).evaluate(this );
-			} else if( expression instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
-				rv = this.evaluateArrayInstanceCreation( (org.lgna.project.ast.ArrayInstanceCreation)expression );
-			} else if( expression instanceof org.lgna.project.ast.ArrayLength ) {
-				rv = this.evaluateArrayLength( (org.lgna.project.ast.ArrayLength)expression );
-			} else if( expression instanceof org.lgna.project.ast.ArrayAccess ) {
-				rv = this.evaluateArrayAccess( (org.lgna.project.ast.ArrayAccess)expression );
-			} else if( expression instanceof org.lgna.project.ast.FieldAccess ) {
-				rv = this.evaluateFieldAccess( (org.lgna.project.ast.FieldAccess)expression );
-			} else if( expression instanceof org.lgna.project.ast.LocalAccess ) {
-				rv = this.evaluateLocalAccess( (org.lgna.project.ast.LocalAccess)expression );
-			} else if( expression instanceof org.lgna.project.ast.ArithmeticInfixExpression ) {
-				rv = this.evaluateArithmeticInfixExpression( (org.lgna.project.ast.ArithmeticInfixExpression)expression );
-			} else if( expression instanceof org.lgna.project.ast.BitwiseInfixExpression ) {
-				rv = this.evaluateBitwiseInfixExpression( (org.lgna.project.ast.BitwiseInfixExpression)expression );
-			} else if( expression instanceof org.lgna.project.ast.ConditionalInfixExpression ) {
-				rv = this.evaluateConditionalInfixExpression( (org.lgna.project.ast.ConditionalInfixExpression)expression );
-			} else if( expression instanceof org.lgna.project.ast.RelationalInfixExpression ) {
-				rv = this.evaluateRelationalInfixExpression( (org.lgna.project.ast.RelationalInfixExpression)expression );
-			} else if( expression instanceof org.lgna.project.ast.ShiftInfixExpression ) {
-				rv = this.evaluateShiftInfixExpression( (org.lgna.project.ast.ShiftInfixExpression)expression );
-			} else if( expression instanceof org.lgna.project.ast.LogicalComplement ) {
-				rv = this.evaluateLogicalComplement( (org.lgna.project.ast.LogicalComplement)expression );
-			} else if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-				rv = this.evaluateMethodInvocation( (org.lgna.project.ast.MethodInvocation)expression );
-			} else if( expression instanceof org.lgna.project.ast.NullLiteral ) {
-				rv = this.evaluateNullLiteral( (org.lgna.project.ast.NullLiteral)expression );
-			} else if( expression instanceof org.lgna.project.ast.StringConcatenation ) {
-				rv = this.evaluateStringConcatenation( (org.lgna.project.ast.StringConcatenation)expression );
-			} else if( expression instanceof org.lgna.project.ast.NumberLiteral ) {
-				rv = this.evaluateNumberLiteral( (org.lgna.project.ast.NumberLiteral)expression );
-			} else if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
-				rv = this.evaluateDoubleLiteral( (org.lgna.project.ast.DoubleLiteral)expression );
-			} else if( expression instanceof org.lgna.project.ast.FloatLiteral ) {
-				rv = this.evaluateFloatLiteral( (org.lgna.project.ast.FloatLiteral)expression );
-			} else if( expression instanceof org.lgna.project.ast.IntegerLiteral ) {
-				rv = this.evaluateIntegerLiteral( (org.lgna.project.ast.IntegerLiteral)expression );
-			} else if( expression instanceof org.lgna.project.ast.ParameterAccess ) {
-				rv = this.evaluateParameterAccess( (org.lgna.project.ast.ParameterAccess)expression );
-			} else if( expression instanceof org.lgna.project.ast.StringLiteral ) {
-				rv = this.evaluateStringLiteral( (org.lgna.project.ast.StringLiteral)expression );
-			} else if( expression instanceof org.lgna.project.ast.ThisExpression ) {
-				rv = this.evaluateThisExpression( (org.lgna.project.ast.ThisExpression)expression );
-			} else if( expression instanceof org.lgna.project.ast.TypeExpression ) {
-				rv = this.evaluateTypeExpression( (org.lgna.project.ast.TypeExpression)expression );
-			} else if( expression instanceof org.lgna.project.ast.TypeLiteral ) {
-				rv = this.evaluateTypeLiteral( (org.lgna.project.ast.TypeLiteral)expression );
-			} else if( expression instanceof org.lgna.project.ast.ResourceExpression ) {
-				rv = this.evaluateResourceExpression( (org.lgna.project.ast.ResourceExpression)expression );
-			} else if( expression instanceof org.lgna.project.ast.LambdaExpression ) {
-				rv = this.evaluateLambdaExpression( (org.lgna.project.ast.LambdaExpression)expression );
+			if( expression instanceof AssignmentExpression ) {
+				rv = this.evaluateAssignmentExpression( (AssignmentExpression)expression );
+			} else if( expression instanceof BooleanLiteral ) {
+				rv = this.evaluateBooleanLiteral( (BooleanLiteral)expression );
+			} else if( expression instanceof InstanceCreation ) {
+				rv = ( (InstanceCreation) expression ).evaluate(this );
+			} else if( expression instanceof ArrayInstanceCreation ) {
+				rv = this.evaluateArrayInstanceCreation( (ArrayInstanceCreation)expression );
+			} else if( expression instanceof ArrayLength ) {
+				rv = this.evaluateArrayLength( (ArrayLength)expression );
+			} else if( expression instanceof ArrayAccess ) {
+				rv = this.evaluateArrayAccess( (ArrayAccess)expression );
+			} else if( expression instanceof FieldAccess ) {
+				rv = this.evaluateFieldAccess( (FieldAccess)expression );
+			} else if( expression instanceof LocalAccess ) {
+				rv = this.evaluateLocalAccess( (LocalAccess)expression );
+			} else if( expression instanceof ArithmeticInfixExpression ) {
+				rv = this.evaluateArithmeticInfixExpression( (ArithmeticInfixExpression)expression );
+			} else if( expression instanceof BitwiseInfixExpression ) {
+				rv = this.evaluateBitwiseInfixExpression( (BitwiseInfixExpression)expression );
+			} else if( expression instanceof ConditionalInfixExpression ) {
+				rv = this.evaluateConditionalInfixExpression( (ConditionalInfixExpression)expression );
+			} else if( expression instanceof RelationalInfixExpression ) {
+				rv = this.evaluateRelationalInfixExpression( (RelationalInfixExpression)expression );
+			} else if( expression instanceof ShiftInfixExpression ) {
+				rv = this.evaluateShiftInfixExpression( (ShiftInfixExpression)expression );
+			} else if( expression instanceof LogicalComplement ) {
+				rv = this.evaluateLogicalComplement( (LogicalComplement)expression );
+			} else if( expression instanceof MethodInvocation ) {
+				rv = this.evaluateMethodInvocation( (MethodInvocation)expression );
+			} else if( expression instanceof NullLiteral ) {
+				rv = this.evaluateNullLiteral( (NullLiteral)expression );
+			} else if( expression instanceof StringConcatenation ) {
+				rv = this.evaluateStringConcatenation( (StringConcatenation)expression );
+			} else if( expression instanceof DoubleLiteral ) {
+				rv = this.evaluateDoubleLiteral( (DoubleLiteral)expression );
+			} else if( expression instanceof FloatLiteral ) {
+				rv = this.evaluateFloatLiteral( (FloatLiteral)expression );
+			} else if( expression instanceof IntegerLiteral ) {
+				rv = this.evaluateIntegerLiteral( (IntegerLiteral)expression );
+			} else if( expression instanceof ParameterAccess ) {
+				rv = this.evaluateParameterAccess( (ParameterAccess)expression );
+			} else if( expression instanceof StringLiteral ) {
+				rv = this.evaluateStringLiteral( (StringLiteral)expression );
+			} else if( expression instanceof ThisExpression ) {
+				rv = this.evaluateThisExpression( (ThisExpression)expression );
+			} else if( expression instanceof TypeExpression ) {
+				rv = this.evaluateTypeExpression( (TypeExpression)expression );
+			} else if( expression instanceof TypeLiteral ) {
+				rv = this.evaluateTypeLiteral( (TypeLiteral)expression );
+			} else if( expression instanceof ResourceExpression ) {
+				rv = this.evaluateResourceExpression( (ResourceExpression)expression );
+			} else if( expression instanceof LambdaExpression ) {
+				rv = this.evaluateLambdaExpression( (LambdaExpression)expression );
 			} else {
 				throw new RuntimeException( expression.getClass().getName() );
 			}
 			synchronized( this.virtualMachineListeners ) {
 				if( this.virtualMachineListeners.size() > 0 ) {
-					org.lgna.project.virtualmachine.events.ExpressionEvaluationEvent expressionEvaluationEvent = new org.lgna.project.virtualmachine.events.ExpressionEvaluationEvent( this, expression, rv );
-					for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : this.virtualMachineListeners ) {
+					ExpressionEvaluationEvent expressionEvaluationEvent = new ExpressionEvaluationEvent( this, expression, rv );
+					for( VirtualMachineListener virtualMachineListener : this.virtualMachineListeners ) {
 						virtualMachineListener.expressionEvaluated( expressionEvaluationEvent );
 					}
 				}
@@ -895,7 +883,7 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected final <E> E evaluate( org.lgna.project.ast.Expression expression, Class<E> cls ) {
+	protected final <E> E evaluate( Expression expression, Class<E> cls ) {
 		//in order to support python...
 		//if( result instanceof Integer ) {
 		//	condition = ((Integer)result) != 0;
@@ -913,7 +901,7 @@ public abstract class VirtualMachine {
 		return cls.cast( value );
 	}
 
-	private boolean evaluateBoolean( org.lgna.project.ast.Expression expression, String nullExceptionMessage ) {
+	private boolean evaluateBoolean( Expression expression, String nullExceptionMessage ) {
 		Object value = this.evaluate( expression );
 		this.checkNotNull( value, nullExceptionMessage );
 		if( value instanceof Boolean ) {
@@ -923,7 +911,7 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	private int evaluateInt( org.lgna.project.ast.Expression expression, String nullExceptionMessage ) {
+	private int evaluateInt( Expression expression, String nullExceptionMessage ) {
 		Object value = this.evaluate( expression );
 		this.checkNotNull( value, nullExceptionMessage );
 		if( value instanceof Integer ) {
@@ -933,21 +921,17 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected void executeAssertStatement( org.lgna.project.ast.AssertStatement assertStatement, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) {
-		assert this.evaluateBoolean( assertStatement.expression.getValue(), "assert condition is null" ) : this.evaluate( assertStatement.message.getValue() );
-	}
-
-	protected void executeBlockStatement( org.lgna.project.ast.BlockStatement blockStatement, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
+	protected void executeBlockStatement( BlockStatement blockStatement, VirtualMachineListener[] listeners ) throws ReturnException {
 		//todo?
-		org.lgna.project.ast.Statement[] array = new org.lgna.project.ast.Statement[ blockStatement.statements.size() ];
+		Statement[] array = new Statement[ blockStatement.statements.size() ];
 		blockStatement.statements.toArray( array );
-		for( org.lgna.project.ast.Statement statement : array ) {
+		for( Statement statement : array ) {
 			this.execute( statement );
 		}
 	}
 
-	protected void executeConditionalStatement( org.lgna.project.ast.ConditionalStatement conditionalStatement, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
-		for( org.lgna.project.ast.BooleanExpressionBodyPair booleanExpressionBodyPair : conditionalStatement.booleanExpressionBodyPairs ) {
+	protected void executeConditionalStatement( ConditionalStatement conditionalStatement, VirtualMachineListener[] listeners ) throws ReturnException {
+		for( BooleanExpressionBodyPair booleanExpressionBodyPair : conditionalStatement.booleanExpressionBodyPairs ) {
 			if( this.evaluateBoolean( booleanExpressionBodyPair.expression.getValue(), "if condition is null" ) ) {
 				this.execute( booleanExpressionBodyPair.body.getValue() );
 				return;
@@ -956,22 +940,25 @@ public abstract class VirtualMachine {
 		this.execute( conditionalStatement.elseBody.getValue() );
 	}
 
-	protected void executeComment( org.lgna.project.ast.Comment comment, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) {
+	protected void executeComment( Comment comment, VirtualMachineListener[] listeners ) {
 	}
 
-	protected void executeCountLoop( org.lgna.project.ast.CountLoop countLoop, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
-		org.lgna.project.ast.UserLocal variable = countLoop.variable.getValue();
-		org.lgna.project.ast.UserLocal constant = countLoop.constant.getValue();
+	protected void executeCountLoop( CountLoop countLoop, VirtualMachineListener[] listeners ) throws ReturnException {
+		UserLocal variable = countLoop.variable.getValue();
+		UserLocal constant = countLoop.constant.getValue();
 		this.pushLocal( variable, -1 );
 		try {
 			final int n = this.evaluateInt( countLoop.count.getValue(), "count expression is null" );
 			this.pushLocal( constant, n );
 			try {
 				for( int i = 0; i < n; i++ ) {
-					org.lgna.project.virtualmachine.events.CountLoopIterationEvent countLoopIterationEvent;
+					if (isStopped ) {
+						return;
+					}
+					CountLoopIterationEvent countLoopIterationEvent;
 					if( listeners != null ) {
-						countLoopIterationEvent = new org.lgna.project.virtualmachine.events.CountLoopIterationEvent( this, countLoop, i, n );
-						for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+						countLoopIterationEvent = new CountLoopIterationEvent( this, countLoop, i, n );
+						for( VirtualMachineListener virtualMachineListener : listeners ) {
 							virtualMachineListener.countLoopIterating( countLoopIterationEvent );
 						}
 					} else {
@@ -980,7 +967,7 @@ public abstract class VirtualMachine {
 					this.setLocal( variable, i );
 					this.execute( countLoop.body.getValue() );
 					if( listeners != null ) {
-						for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+						for( VirtualMachineListener virtualMachineListener : listeners ) {
 							virtualMachineListener.countLoopIterated( countLoopIterationEvent );
 						}
 					}
@@ -993,12 +980,12 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected void executeDoInOrder( org.lgna.project.ast.DoInOrder doInOrder, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
+	protected void executeDoInOrder( DoInOrder doInOrder, VirtualMachineListener[] listeners ) throws ReturnException {
 		execute( doInOrder.body.getValue() );
 	}
 
-	protected void executeDoTogether( org.lgna.project.ast.DoTogether doTogether, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
-		org.lgna.project.ast.BlockStatement blockStatement = doTogether.body.getValue();
+	protected void executeDoTogether( DoTogether doTogether, VirtualMachineListener[] listeners ) throws ReturnException {
+		BlockStatement blockStatement = doTogether.body.getValue();
 		//todo?
 		switch( blockStatement.statements.size() ) {
 		case 0:
@@ -1010,7 +997,7 @@ public abstract class VirtualMachine {
 			final Frame owner = this.getFrameForThread( Thread.currentThread() );
 			Runnable[] runnables = new Runnable[ blockStatement.statements.size() ];
 			for( int i = 0; i < runnables.length; i++ ) {
-				final org.lgna.project.ast.Statement statementI = blockStatement.statements.get( i );
+				final Statement statementI = blockStatement.statements.get( i );
 				runnables[ i ] = new Runnable() {
 					;
 					@Override
@@ -1027,25 +1014,28 @@ public abstract class VirtualMachine {
 					}
 				};
 			}
-			org.lgna.common.ThreadUtilities.doTogether( runnables );
+			ThreadUtilities.doTogether( runnables );
 		}
 	}
 
-	protected void executeExpressionStatement( org.lgna.project.ast.ExpressionStatement expressionStatement, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) {
+	protected void executeExpressionStatement( ExpressionStatement expressionStatement, VirtualMachineListener[] listeners ) {
 		@SuppressWarnings( "unused" ) Object unused = this.evaluate( expressionStatement.expression.getValue() );
 	}
 
-	protected void excecuteForEachLoop( org.lgna.project.ast.AbstractForEachLoop forEachInLoop, Object[] array, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
-		org.lgna.project.ast.UserLocal item = forEachInLoop.item.getValue();
-		org.lgna.project.ast.BlockStatement blockStatement = forEachInLoop.body.getValue();
+	protected void excecuteForEachLoop( AbstractForEachLoop forEachInLoop, Object[] array, VirtualMachineListener[] listeners ) throws ReturnException {
+		UserLocal item = forEachInLoop.item.getValue();
+		BlockStatement blockStatement = forEachInLoop.body.getValue();
 		this.pushLocal( item, -1 );
 		try {
 			int index = 0;
 			for( Object o : array ) {
-				org.lgna.project.virtualmachine.events.ForEachLoopIterationEvent forEachLoopIterationEvent;
+				if (isStopped ) {
+					return;
+				}
+				ForEachLoopIterationEvent forEachLoopIterationEvent;
 				if( listeners != null ) {
-					forEachLoopIterationEvent = new org.lgna.project.virtualmachine.events.ForEachLoopIterationEvent( this, forEachInLoop, o, array, index );
-					for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+					forEachLoopIterationEvent = new ForEachLoopIterationEvent( this, forEachInLoop, o, array, index );
+					for( VirtualMachineListener virtualMachineListener : listeners ) {
 						virtualMachineListener.forEachLoopIterating( forEachLoopIterationEvent );
 					}
 				} else {
@@ -1055,7 +1045,7 @@ public abstract class VirtualMachine {
 				this.setLocal( item, o );
 				this.execute( blockStatement );
 				if( listeners != null ) {
-					for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+					for( VirtualMachineListener virtualMachineListener : listeners ) {
 						virtualMachineListener.forEachLoopIterated( forEachLoopIterationEvent );
 					}
 				}
@@ -1066,21 +1056,21 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected final void executeForEachInArrayLoop( org.lgna.project.ast.ForEachInArrayLoop forEachInArrayLoop, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
+	protected final void executeForEachInArrayLoop( ForEachInArrayLoop forEachInArrayLoop, VirtualMachineListener[] listeners ) throws ReturnException {
 		Object[] array = this.evaluate( forEachInArrayLoop.array.getValue(), Object[].class );
 		this.checkNotNull( array, "for each array is null" );
 		excecuteForEachLoop( forEachInArrayLoop, array, listeners );
 	}
 
-	protected final void executeForEachInIterableLoop( org.lgna.project.ast.ForEachInIterableLoop forEachInIterableLoop, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
+	protected final void executeForEachInIterableLoop( ForEachInIterableLoop forEachInIterableLoop, VirtualMachineListener[] listeners ) throws ReturnException {
 		Iterable<?> iterable = this.evaluate( forEachInIterableLoop.iterable.getValue(), Iterable.class );
 		this.checkNotNull( iterable, "for each iterable is null" );
-		excecuteForEachLoop( forEachInIterableLoop, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ), listeners );
+		excecuteForEachLoop( forEachInIterableLoop, IterableUtilities.toArray( iterable ), listeners );
 	}
 
-	protected void excecuteEachInTogether( final org.lgna.project.ast.AbstractEachInTogether eachInTogether, final Object[] array, final org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
-		final org.lgna.project.ast.UserLocal item = eachInTogether.item.getValue();
-		final org.lgna.project.ast.BlockStatement blockStatement = eachInTogether.body.getValue();
+	protected void excecuteEachInTogether( final AbstractEachInTogether eachInTogether, final Object[] array, final VirtualMachineListener[] listeners ) throws ReturnException {
+		final UserLocal item = eachInTogether.item.getValue();
+		final BlockStatement blockStatement = eachInTogether.body.getValue();
 
 		switch( array.length ) {
 		case 0:
@@ -1089,10 +1079,10 @@ public abstract class VirtualMachine {
 			Object value = array[ 0 ];
 			VirtualMachine.this.pushLocal( item, value );
 			try {
-				org.lgna.project.virtualmachine.events.EachInTogetherItemEvent eachInTogetherEvent;
+				EachInTogetherItemEvent eachInTogetherEvent;
 				if( listeners != null ) {
-					eachInTogetherEvent = new org.lgna.project.virtualmachine.events.EachInTogetherItemEvent( this, eachInTogether, value, array );
-					for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+					eachInTogetherEvent = new EachInTogetherItemEvent( this, eachInTogether, value, array );
+					for( VirtualMachineListener virtualMachineListener : listeners ) {
 						virtualMachineListener.eachInTogetherItemExecuting( eachInTogetherEvent );
 					}
 				} else {
@@ -1100,7 +1090,7 @@ public abstract class VirtualMachine {
 				}
 				VirtualMachine.this.execute( blockStatement );
 				if( listeners != null ) {
-					for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+					for( VirtualMachineListener virtualMachineListener : listeners ) {
 						virtualMachineListener.eachInTogetherItemExecuted( eachInTogetherEvent );
 					}
 				}
@@ -1110,17 +1100,17 @@ public abstract class VirtualMachine {
 			break;
 		default:
 			final Frame owner = this.getFrameForThread( Thread.currentThread() );
-			org.lgna.common.ThreadUtilities.eachInTogether( new org.lgna.common.EachInTogetherRunnable<Object>() {
+			ThreadUtilities.eachInTogether( new EachInTogetherRunnable<Object>() {
 				@Override
 				public void run( Object value ) {
 					pushCurrentThread( owner );
 					try {
 						VirtualMachine.this.pushLocal( item, value );
 						try {
-							org.lgna.project.virtualmachine.events.EachInTogetherItemEvent eachInTogetherEvent;
+							EachInTogetherItemEvent eachInTogetherEvent;
 							if( listeners != null ) {
-								eachInTogetherEvent = new org.lgna.project.virtualmachine.events.EachInTogetherItemEvent( VirtualMachine.this, eachInTogether, value, array );
-								for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+								eachInTogetherEvent = new EachInTogetherItemEvent( VirtualMachine.this, eachInTogether, value, array );
+								for( VirtualMachineListener virtualMachineListener : listeners ) {
 									virtualMachineListener.eachInTogetherItemExecuting( eachInTogetherEvent );
 								}
 							} else {
@@ -1128,7 +1118,7 @@ public abstract class VirtualMachine {
 							}
 							VirtualMachine.this.execute( blockStatement );
 							if( listeners != null ) {
-								for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+								for( VirtualMachineListener virtualMachineListener : listeners ) {
 									virtualMachineListener.eachInTogetherItemExecuted( eachInTogetherEvent );
 								}
 							}
@@ -1145,31 +1135,31 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected final void executeEachInArrayTogether( org.lgna.project.ast.EachInArrayTogether eachInArrayTogether, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
+	protected final void executeEachInArrayTogether( EachInArrayTogether eachInArrayTogether, VirtualMachineListener[] listeners ) throws ReturnException {
 		Object[] array = this.evaluate( eachInArrayTogether.array.getValue(), Object[].class );
 		this.checkNotNull( array, "each in together array is null" );
 		excecuteEachInTogether( eachInArrayTogether, array, listeners );
 	}
 
-	protected final void executeEachInIterableTogether( org.lgna.project.ast.EachInIterableTogether eachInIterableTogether, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
+	protected final void executeEachInIterableTogether( EachInIterableTogether eachInIterableTogether, VirtualMachineListener[] listeners ) throws ReturnException {
 		Iterable<?> iterable = this.evaluate( eachInIterableTogether.iterable.getValue(), Iterable.class );
 		this.checkNotNull( iterable, "each in together iterable is null" );
-		excecuteEachInTogether( eachInIterableTogether, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ), listeners );
+		excecuteEachInTogether( eachInIterableTogether, IterableUtilities.toArray( iterable ), listeners );
 	}
 
-	protected void executeReturnStatement( org.lgna.project.ast.ReturnStatement returnStatement, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
+	protected void executeReturnStatement( ReturnStatement returnStatement, VirtualMachineListener[] listeners ) throws ReturnException {
 		Object returnValue = this.evaluate( returnStatement.expression.getValue() );
 		//setReturnValue( returnValue );
 		throw new ReturnException( returnValue );
 	}
 
-	protected void executeWhileLoop( org.lgna.project.ast.WhileLoop whileLoop, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
+	protected void executeWhileLoop( WhileLoop whileLoop, VirtualMachineListener[] listeners ) throws ReturnException {
 		int i = 0;
-		while( this.evaluateBoolean( whileLoop.conditional.getValue(), "while condition is null" ) ) {
-			org.lgna.project.virtualmachine.events.WhileLoopIterationEvent whileLoopIterationEvent;
+		while( !isStopped && evaluateBoolean( whileLoop.conditional.getValue(), "while condition is null" ) ) {
+			WhileLoopIterationEvent whileLoopIterationEvent;
 			if( listeners != null ) {
-				whileLoopIterationEvent = new org.lgna.project.virtualmachine.events.WhileLoopIterationEvent( this, whileLoop, i );
-				for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+				whileLoopIterationEvent = new WhileLoopIterationEvent( this, whileLoop, i );
+				for( VirtualMachineListener virtualMachineListener : listeners ) {
 					virtualMachineListener.whileLoopIterating( whileLoopIterationEvent );
 				}
 			} else {
@@ -1177,7 +1167,7 @@ public abstract class VirtualMachine {
 			}
 			this.execute( whileLoop.body.getValue() );
 			if( listeners != null ) {
-				for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+				for( VirtualMachineListener virtualMachineListener : listeners ) {
 					virtualMachineListener.whileLoopIterated( whileLoopIterationEvent );
 				}
 			}
@@ -1185,69 +1175,70 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected void executeLocalDeclarationStatement( org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) {
+	protected void executeLocalDeclarationStatement( LocalDeclarationStatement localDeclarationStatement, VirtualMachineListener[] listeners ) {
 		this.pushLocal( localDeclarationStatement.local.getValue(), this.evaluate( localDeclarationStatement.initializer.getValue() ) );
 		//handle pop on exit of owning block statement
 	}
 
-	protected void execute( org.lgna.project.ast.Statement statement ) throws ReturnException {
+	protected void execute( Statement statement ) throws ReturnException {
+		if ( isStopped ) {
+			return;
+		}
 		assert statement != null : this;
 		if( statement.isEnabled.getValue() ) {
-			org.lgna.project.virtualmachine.events.StatementExecutionEvent statementEvent;
-			org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners;
+			StatementExecutionEvent statementEvent;
+			VirtualMachineListener[] listeners;
 			synchronized( this.virtualMachineListeners ) {
 				if( this.virtualMachineListeners.size() > 0 ) {
-					statementEvent = new org.lgna.project.virtualmachine.events.StatementExecutionEvent( this, statement );
-					listeners = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.virtualMachineListeners, org.lgna.project.virtualmachine.events.VirtualMachineListener.class );
+					statementEvent = new StatementExecutionEvent( this, statement );
+					listeners = ArrayUtilities.createArray( this.virtualMachineListeners, VirtualMachineListener.class );
 				} else {
 					statementEvent = null;
 					listeners = null;
 				}
 			}
 			if( ( statementEvent != null ) && ( listeners != null ) ) {
-				for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+				for( VirtualMachineListener virtualMachineListener : listeners ) {
 					virtualMachineListener.statementExecuting( statementEvent );
 				}
 			}
 
 			try {
-				if( statement instanceof org.lgna.project.ast.AssertStatement ) {
-					this.executeAssertStatement( (org.lgna.project.ast.AssertStatement)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.BlockStatement ) {
-					this.executeBlockStatement( (org.lgna.project.ast.BlockStatement)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.ConditionalStatement ) {
-					this.executeConditionalStatement( (org.lgna.project.ast.ConditionalStatement)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.Comment ) {
-					this.executeComment( (org.lgna.project.ast.Comment)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.CountLoop ) {
-					this.executeCountLoop( (org.lgna.project.ast.CountLoop)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.DoTogether ) {
-					this.executeDoTogether( (org.lgna.project.ast.DoTogether)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.DoInOrder ) {
-					this.executeDoInOrder( (org.lgna.project.ast.DoInOrder)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-					this.executeExpressionStatement( (org.lgna.project.ast.ExpressionStatement)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.ForEachInArrayLoop ) {
-					this.executeForEachInArrayLoop( (org.lgna.project.ast.ForEachInArrayLoop)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.ForEachInIterableLoop ) {
-					this.executeForEachInIterableLoop( (org.lgna.project.ast.ForEachInIterableLoop)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.EachInArrayTogether ) {
-					this.executeEachInArrayTogether( (org.lgna.project.ast.EachInArrayTogether)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.EachInIterableTogether ) {
-					this.executeEachInIterableTogether( (org.lgna.project.ast.EachInIterableTogether)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.WhileLoop ) {
-					this.executeWhileLoop( (org.lgna.project.ast.WhileLoop)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.LocalDeclarationStatement ) {
-					this.executeLocalDeclarationStatement( (org.lgna.project.ast.LocalDeclarationStatement)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.ReturnStatement ) {
-					this.executeReturnStatement( (org.lgna.project.ast.ReturnStatement)statement, listeners );
+				if( statement instanceof BlockStatement ) {
+					this.executeBlockStatement( (BlockStatement)statement, listeners );
+				} else if( statement instanceof ConditionalStatement ) {
+					this.executeConditionalStatement( (ConditionalStatement)statement, listeners );
+				} else if( statement instanceof Comment ) {
+					this.executeComment( (Comment)statement, listeners );
+				} else if( statement instanceof CountLoop ) {
+					this.executeCountLoop( (CountLoop)statement, listeners );
+				} else if( statement instanceof DoTogether ) {
+					this.executeDoTogether( (DoTogether)statement, listeners );
+				} else if( statement instanceof DoInOrder ) {
+					this.executeDoInOrder( (DoInOrder)statement, listeners );
+				} else if( statement instanceof ExpressionStatement ) {
+					this.executeExpressionStatement( (ExpressionStatement)statement, listeners );
+				} else if( statement instanceof ForEachInArrayLoop ) {
+					this.executeForEachInArrayLoop( (ForEachInArrayLoop)statement, listeners );
+				} else if( statement instanceof ForEachInIterableLoop ) {
+					this.executeForEachInIterableLoop( (ForEachInIterableLoop)statement, listeners );
+				} else if( statement instanceof EachInArrayTogether ) {
+					this.executeEachInArrayTogether( (EachInArrayTogether)statement, listeners );
+				} else if( statement instanceof EachInIterableTogether ) {
+					this.executeEachInIterableTogether( (EachInIterableTogether)statement, listeners );
+				} else if( statement instanceof WhileLoop ) {
+					this.executeWhileLoop( (WhileLoop)statement, listeners );
+				} else if( statement instanceof LocalDeclarationStatement ) {
+					this.executeLocalDeclarationStatement( (LocalDeclarationStatement)statement, listeners );
+				} else if( statement instanceof ReturnStatement ) {
+					this.executeReturnStatement( (ReturnStatement)statement, listeners );
 					// note: does not return.  throws ReturnException.
 				} else {
 					throw new RuntimeException();
 				}
 			} finally {
 				if( ( statementEvent != null ) && ( listeners != null ) ) {
-					for( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener : listeners ) {
+					for( VirtualMachineListener virtualMachineListener : listeners ) {
 						virtualMachineListener.statementExecuted( statementEvent );
 					}
 				}
@@ -1255,23 +1246,28 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	public void addVirtualMachineListener( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener ) {
+	public void stopExecution() {
+		isStopped = true;
+	}
+
+	public void addVirtualMachineListener( VirtualMachineListener virtualMachineListener ) {
 		synchronized( this.virtualMachineListeners ) {
 			this.virtualMachineListeners.add( virtualMachineListener );
 		}
 	}
 
-	public void removeVirtualMachineListener( org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener ) {
+	public void removeVirtualMachineListener( VirtualMachineListener virtualMachineListener ) {
 		synchronized( this.virtualMachineListeners ) {
 			this.virtualMachineListeners.remove( virtualMachineListener );
 		}
 	}
 
-	public java.util.List<org.lgna.project.virtualmachine.events.VirtualMachineListener> getVirtualMachineListeners() {
+	public List<VirtualMachineListener> getVirtualMachineListeners() {
 		synchronized( this.virtualMachineListeners ) {
-			return java.util.Collections.unmodifiableList( this.virtualMachineListeners );
+			return Collections.unmodifiableList( this.virtualMachineListeners );
 		}
 	}
 
-	private final java.util.List<org.lgna.project.virtualmachine.events.VirtualMachineListener> virtualMachineListeners = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final List<VirtualMachineListener> virtualMachineListeners = Lists.newLinkedList();
+	private boolean isStopped = false;
 }

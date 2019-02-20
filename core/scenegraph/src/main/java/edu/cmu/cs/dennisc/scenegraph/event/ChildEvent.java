@@ -43,10 +43,12 @@
 
 package edu.cmu.cs.dennisc.scenegraph.event;
 
+import edu.cmu.cs.dennisc.pattern.event.Event;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ChildEvent<P, C> extends edu.cmu.cs.dennisc.pattern.event.Event<P> {
+public abstract class ChildEvent<P, C> extends Event<P> {
 	private C m_child;
 
 	public ChildEvent( P source, C child ) {

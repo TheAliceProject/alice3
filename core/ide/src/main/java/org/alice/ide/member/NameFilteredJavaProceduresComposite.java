@@ -43,16 +43,20 @@
 
 package org.alice.ide.member;
 
+import org.lgna.project.ast.JavaMethod;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class NameFilteredJavaProceduresComposite extends NameFilteredJavaMethodsSubComposite {
-	public NameFilteredJavaProceduresComposite( java.util.UUID migrationId, String... methodNames ) {
+	public NameFilteredJavaProceduresComposite( UUID migrationId, String... methodNames ) {
 		super( migrationId, methodNames );
 	}
 
 	@Override
-	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
+	protected boolean isAcceptingOf( JavaMethod method ) {
 		return method.isProcedure() && super.isAcceptingOf( method );
 	}
 }

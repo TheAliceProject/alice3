@@ -42,32 +42,47 @@
  *******************************************************************************/
 package org.alice.ide.x.components;
 
+import edu.cmu.cs.dennisc.pattern.event.NameEvent;
+import edu.cmu.cs.dennisc.pattern.event.NameListener;
+import org.alice.ide.croquet.components.AbstractPropertyPane;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.common.Resource;
+import org.lgna.common.resources.AudioResource;
+import org.lgna.common.resources.ImageResource;
+import org.lgna.croquet.views.Label;
+import org.lgna.project.ast.ResourceProperty;
+
+import javax.swing.BoxLayout;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ResourcePropertyView extends org.alice.ide.croquet.components.AbstractPropertyPane<org.lgna.project.ast.ResourceProperty, org.lgna.common.Resource> {
-	private static final java.text.NumberFormat DURATION_FORMAT = new java.text.DecimalFormat( "0.00" );
-	private final org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label();
-	private org.lgna.common.Resource prevResource;
-	private edu.cmu.cs.dennisc.pattern.event.NameListener nameListener;
+public class ResourcePropertyView extends AbstractPropertyPane<ResourceProperty, Resource> {
+	private static final NumberFormat DURATION_FORMAT = new DecimalFormat( "0.00" );
+	private final Label label = new Label();
+	private Resource prevResource;
+	private NameListener nameListener;
 
-	public ResourcePropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ResourceProperty property ) {
-		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
+	public ResourcePropertyView( AstI18nFactory factory, ResourceProperty property ) {
+		super( factory, property, BoxLayout.LINE_AXIS );
 		this.addComponent( this.label );
 		this.refreshLater();
 	}
 
-	private edu.cmu.cs.dennisc.pattern.event.NameListener getNameListener() {
+	private NameListener getNameListener() {
 		if( this.nameListener != null ) {
 			//pass
 		} else {
-			this.nameListener = new edu.cmu.cs.dennisc.pattern.event.NameListener() {
+			this.nameListener = new NameListener() {
 				@Override
-				public void nameChanging( edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent ) {
+				public void nameChanging( NameEvent nameEvent ) {
 				}
 
 				@Override
-				public void nameChanged( edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent ) {
+				public void nameChanged( NameEvent nameEvent ) {
 					ResourcePropertyView.this.refreshLater();
 				}
 			};
@@ -95,13 +110,13 @@ public class ResourcePropertyView extends org.alice.ide.croquet.components.Abstr
 		if( this.prevResource != null ) {
 			this.prevResource.removeNameListener( this.getNameListener() );
 		}
-		org.lgna.common.Resource nextResource = getProperty().getValue();
+		Resource nextResource = getProperty().getValue();
 		StringBuffer sb = new StringBuffer();
 		if( nextResource != null ) {
 			sb.append( "<html>" );
 			sb.append( nextResource.getName() );
-			if( nextResource instanceof org.lgna.common.resources.AudioResource ) {
-				org.lgna.common.resources.AudioResource audioResource = (org.lgna.common.resources.AudioResource)nextResource;
+			if( nextResource instanceof AudioResource ) {
+				AudioResource audioResource = (AudioResource)nextResource;
 				double duration = audioResource.getDuration();
 				if( Double.isNaN( duration ) ) {
 					//pass
@@ -112,8 +127,8 @@ public class ResourcePropertyView extends org.alice.ide.croquet.components.Abstr
 					sb.append( "</i>" );
 					sb.append( "</font>" );
 				}
-			} else if( nextResource instanceof org.lgna.common.resources.ImageResource ) {
-				org.lgna.common.resources.ImageResource imageResource = (org.lgna.common.resources.ImageResource)nextResource;
+			} else if( nextResource instanceof ImageResource ) {
+				ImageResource imageResource = (ImageResource)nextResource;
 				int width = imageResource.getWidth();
 				int height = imageResource.getHeight();
 				if( ( width >= 0 ) && ( height >= 0 ) ) {
@@ -126,7 +141,7 @@ public class ResourcePropertyView extends org.alice.ide.croquet.components.Abstr
 			}
 			sb.append( "</html>" );
 		} else {
-			sb.append( org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue().getTextForNull() );
+			sb.append( FormatterState.getInstance().getValue().getTextForNull() );
 		}
 		this.label.setText( sb.toString() );
 		if( nextResource != null ) {

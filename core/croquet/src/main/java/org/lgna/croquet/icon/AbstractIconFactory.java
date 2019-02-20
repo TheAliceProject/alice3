@@ -42,6 +42,13 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+
+import javax.swing.Icon;
+import java.awt.Dimension;
+import java.util.Collection;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,11 +58,11 @@ public abstract class AbstractIconFactory implements IconFactory {
 		FALSE;
 	}
 
-	private final java.util.Map<java.awt.Dimension, javax.swing.Icon> map;
+	private final Map<Dimension, Icon> map;
 
 	public AbstractIconFactory( IsCachingDesired isCachingDesired ) {
 		if( isCachingDesired == IsCachingDesired.TRUE ) {
-			this.map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+			this.map = Maps.newHashMap();
 		} else {
 			this.map = null;
 		}
@@ -65,16 +72,16 @@ public abstract class AbstractIconFactory implements IconFactory {
 	//		return this.map;
 	//	}
 
-	protected java.util.Collection<javax.swing.Icon> getMapValues() {
+	protected Collection<Icon> getMapValues() {
 		return this.map.values();
 	}
 
-	protected abstract javax.swing.Icon createIcon( java.awt.Dimension size );
+	protected abstract Icon createIcon( Dimension size );
 
 	@Override
-	public final javax.swing.Icon getIcon( java.awt.Dimension size ) {
+	public final Icon getIcon( Dimension size ) {
 		if( this.map != null ) {
-			javax.swing.Icon rv = this.map.get( size );
+			Icon rv = this.map.get( size );
 			if( rv != null ) {
 				//pass
 			} else {
@@ -88,7 +95,7 @@ public abstract class AbstractIconFactory implements IconFactory {
 	}
 
 	protected double getDefaultWidthToHeightAspectRatio() {
-		java.awt.Dimension defaultSize = this.getDefaultSize( null );
+		Dimension defaultSize = this.getDefaultSize( null );
 		if( defaultSize != null ) {
 			return defaultSize.width / (double)defaultSize.height;
 		} else {
@@ -100,33 +107,33 @@ public abstract class AbstractIconFactory implements IconFactory {
 		return this.getDefaultWidthToHeightAspectRatio();
 	}
 
-	protected java.awt.Dimension createDimensionForWidth( int width, double widthToHeigthAspectRatio ) {
+	protected Dimension createDimensionForWidth( int width, double widthToHeigthAspectRatio ) {
 		int height = (int)Math.round( width / widthToHeigthAspectRatio );
-		return new java.awt.Dimension( width, height );
+		return new Dimension( width, height );
 	}
 
-	protected java.awt.Dimension createDimensionForHeight( int height, double widthToHeigthAspectRatio ) {
+	protected Dimension createDimensionForHeight( int height, double widthToHeigthAspectRatio ) {
 		int width = (int)Math.round( height * widthToHeigthAspectRatio );
-		return new java.awt.Dimension( width, height );
+		return new Dimension( width, height );
 	}
 
 	@Override
-	public final java.awt.Dimension getDefaultSizeForWidth( int width ) {
+	public final Dimension getDefaultSizeForWidth( int width ) {
 		return this.createDimensionForWidth( width, this.getDefaultWidthToHeightAspectRatio() );
 	}
 
 	@Override
-	public final java.awt.Dimension getDefaultSizeForHeight( int height ) {
+	public final Dimension getDefaultSizeForHeight( int height ) {
 		return this.createDimensionForHeight( height, this.getDefaultWidthToHeightAspectRatio() );
 	}
 
 	@Override
-	public java.awt.Dimension getTrimmedSizeForWidth( int width ) {
+	public Dimension getTrimmedSizeForWidth( int width ) {
 		return this.createDimensionForWidth( width, this.getTrimmedWidthToHeightAspectRatio() );
 	}
 
 	@Override
-	public java.awt.Dimension getTrimmedSizeForHeight( int height ) {
+	public Dimension getTrimmedSizeForHeight( int height ) {
 		return this.createDimensionForHeight( height, this.getTrimmedWidthToHeightAspectRatio() );
 	}
 }

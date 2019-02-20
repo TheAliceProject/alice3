@@ -42,17 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.templates;
 
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
+import org.alice.ide.common.ExpressionCreatorPane;
+import org.alice.ide.x.TemplateAstI18nFactory;
+import org.lgna.project.ast.Expression;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionTemplate extends org.alice.ide.common.ExpressionCreatorPane {
+public abstract class ExpressionTemplate extends ExpressionCreatorPane {
 	private boolean isInitialized = false;
 
-	public ExpressionTemplate( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
+	public ExpressionTemplate( AbstractExpressionDragModel model ) {
 		super( model );
 	}
 
-	protected abstract org.lgna.project.ast.Expression createIncompleteExpression();
+	protected abstract Expression createIncompleteExpression();
 
 	@Override
 	protected void handleDisplayable() {
@@ -73,9 +79,9 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 
 	protected void refresh() {
 		this.removeAllComponents();
-		org.lgna.project.ast.Expression incompleteExpression = this.createIncompleteExpression();
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( incompleteExpression ) );
-		this.addComponent( org.alice.ide.x.TemplateAstI18nFactory.getInstance().createComponent( incompleteExpression ) );
+		Expression incompleteExpression = this.createIncompleteExpression();
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getColorFor( incompleteExpression ) );
+		this.addComponent( TemplateAstI18nFactory.getInstance().createComponent( incompleteExpression ) );
 	}
 
 	//	@Override

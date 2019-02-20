@@ -42,16 +42,26 @@
  *******************************************************************************/
 package org.alice.ide.issue.croquet.views;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import org.alice.ide.issue.croquet.ShowImageComposite;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.ScrollPane;
+
+import javax.swing.ImageIcon;
+import java.awt.Dimension;
+import java.awt.Image;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ShowImageView extends org.lgna.croquet.views.BorderPanel {
-	public ShowImageView( org.alice.ide.issue.croquet.ShowImageComposite composite ) {
+public class ShowImageView extends BorderPanel {
+	public ShowImageView( ShowImageComposite composite ) {
 		super( composite );
-		java.awt.Image image = composite.getImage();
-		int width = edu.cmu.cs.dennisc.image.ImageUtilities.getWidth( image );
-		int height = edu.cmu.cs.dennisc.image.ImageUtilities.getWidth( image );
-		this.addCenterComponent( new org.lgna.croquet.views.ScrollPane( new org.lgna.croquet.views.Label( new javax.swing.ImageIcon( image ) ) ) );
-		this.setPreferredSize( new java.awt.Dimension( width / 2, height / 2 ) );
+		Image image = composite.getImage();
+		int width = ImageUtilities.getWidth( image );
+		int height = ImageUtilities.getWidth( image );
+		this.addCenterComponent( new ScrollPane( new Label( new ImageIcon( image ) ) ) );
+		this.setPreferredSize( new Dimension( width / 2, height / 2 ) );
 	}
 }

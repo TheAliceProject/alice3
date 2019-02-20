@@ -42,7 +42,8 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.MovementKey;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -63,8 +64,8 @@ public class CameraTranslateKeyManipulator extends TranslateKeyManipulator imple
 	@Override
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
-		if( ( this.camera != null ) && ( this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) ) {
-			this.setManipulatedTransformable( (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)this.camera.getParent() );
+		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) ) {
+			this.setManipulatedTransformable( (AbstractTransformable)this.camera.getParent() );
 		}
 	}
 

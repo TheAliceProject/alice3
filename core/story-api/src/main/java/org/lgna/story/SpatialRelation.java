@@ -43,23 +43,25 @@
 
 package org.lgna.story;
 
+import org.lgna.story.implementation.SpatialRelationImp;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum SpatialRelation {
-	LEFT_OF( org.lgna.story.implementation.SpatialRelationImp.LEFT_OF ),
-	RIGHT_OF( org.lgna.story.implementation.SpatialRelationImp.RIGHT_OF ),
-	ABOVE( org.lgna.story.implementation.SpatialRelationImp.ABOVE ),
-	BELOW( org.lgna.story.implementation.SpatialRelationImp.BELOW ),
-	IN_FRONT_OF( org.lgna.story.implementation.SpatialRelationImp.IN_FRONT_OF ),
-	BEHIND( org.lgna.story.implementation.SpatialRelationImp.BEHIND );
-	private final org.lgna.story.implementation.SpatialRelationImp imp;
+	LEFT_OF( SpatialRelationImp.LEFT_OF ),
+	RIGHT_OF( SpatialRelationImp.RIGHT_OF ),
+	ABOVE( SpatialRelationImp.ABOVE ),
+	BELOW( SpatialRelationImp.BELOW ),
+	IN_FRONT_OF( SpatialRelationImp.IN_FRONT_OF ),
+	BEHIND( SpatialRelationImp.BEHIND );
+	private final SpatialRelationImp imp;
 
-	SpatialRelation( org.lgna.story.implementation.SpatialRelationImp imp ) {
+	SpatialRelation( SpatialRelationImp imp ) {
 		this.imp = imp;
 	}
 
-	/* package-private */org.lgna.story.implementation.SpatialRelationImp getImp() {
+	/* package-private */SpatialRelationImp getImp() {
 		return this.imp;
 	}
 }

@@ -43,10 +43,19 @@
 
 package org.alice.ide.croquet.models.cascade.logicalcomplement;
 
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.LogicalComplement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class LogicalComplementOperandFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.LogicalComplement> {
+public class LogicalComplementOperandFillIn extends ExpressionFillInWithExpressionBlanks<LogicalComplement> {
 	private static class SingletonHolder {
 		private static LogicalComplementOperandFillIn instance = new LogicalComplementOperandFillIn();
 	}
@@ -55,21 +64,21 @@ public class LogicalComplementOperandFillIn extends org.alice.ide.croquet.models
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.project.ast.LogicalComplement transientValue;
+	private final LogicalComplement transientValue;
 
 	private LogicalComplementOperandFillIn() {
-		super( java.util.UUID.fromString( "f70996fb-fd4e-4114-962b-ca14c33e134b" ), org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( Boolean.class ) );
-		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLogicalComplement();
+		super( UUID.fromString( "f70996fb-fd4e-4114-962b-ca14c33e134b" ), ExpressionBlank.createBlanks( Boolean.class ) );
+		this.transientValue = IncompleteAstUtilities.createIncompleteLogicalComplement();
 	}
 
 	@Override
-	protected org.lgna.project.ast.LogicalComplement createValue( org.lgna.project.ast.Expression[] expressions ) {
+	protected LogicalComplement createValue( Expression[] expressions ) {
 		assert expressions.length == 1;
-		return new org.lgna.project.ast.LogicalComplement( expressions[ 0 ] );
+		return new LogicalComplement( expressions[ 0 ] );
 	}
 
 	@Override
-	public org.lgna.project.ast.LogicalComplement getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.LogicalComplement, org.lgna.project.ast.Expression> step ) {
+	public LogicalComplement getTransientValue( ItemNode<? super LogicalComplement, Expression> step ) {
 		return this.transientValue;
 	}
 }

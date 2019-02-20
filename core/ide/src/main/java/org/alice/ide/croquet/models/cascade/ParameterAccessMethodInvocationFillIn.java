@@ -43,30 +43,38 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.UserParameter;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ParameterAccessMethodInvocationFillIn extends MethodInvocationFillIn {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<UserParameter, AbstractMethod, ParameterAccessMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
 
-	public static ParameterAccessMethodInvocationFillIn getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+	public static ParameterAccessMethodInvocationFillIn getInstance( UserParameter parameter, AbstractMethod method ) {
 		assert parameter != null;
 		assert method != null;
-		return mapToMap.getInitializingIfAbsent( parameter, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationFillIn>() {
+		return mapToMap.getInitializingIfAbsent( parameter, method, new MapToMap.Initializer<UserParameter, AbstractMethod, ParameterAccessMethodInvocationFillIn>() {
 			@Override
-			public ParameterAccessMethodInvocationFillIn initialize( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+			public ParameterAccessMethodInvocationFillIn initialize( UserParameter parameter, AbstractMethod method ) {
 				return new ParameterAccessMethodInvocationFillIn( parameter, method );
 			}
 		} );
 	}
 
-	private ParameterAccessMethodInvocationFillIn( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "356231af-d038-417c-a58b-f4ad3d77a743" ), new org.lgna.project.ast.ParameterAccess( parameter ), method );
+	private ParameterAccessMethodInvocationFillIn( UserParameter parameter, AbstractMethod method ) {
+		super( UUID.fromString( "356231af-d038-417c-a58b-f4ad3d77a743" ), new ParameterAccess( parameter ), method );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression transientValueExpression ) {
-		org.lgna.project.ast.ParameterAccess transientValueParameterAccess = (org.lgna.project.ast.ParameterAccess)transientValueExpression;
-		return new org.lgna.project.ast.ParameterAccess( transientValueParameterAccess.parameter.getValue() );
+	protected Expression createExpression( Expression transientValueExpression ) {
+		ParameterAccess transientValueParameterAccess = (ParameterAccess)transientValueExpression;
+		return new ParameterAccess( transientValueParameterAccess.parameter.getValue() );
 	}
 }

@@ -42,15 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.common.ParameterPane;
+import org.alice.ide.common.TypeComponent;
+import org.alice.ide.common.TypedDeclarationPane;
 import org.lgna.project.ast.NodeListProperty;
 import org.lgna.project.ast.UserParameter;
+
+import javax.swing.BorderFactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypedParameterPane extends org.alice.ide.common.TypedDeclarationPane {
-	public TypedParameterPane( NodeListProperty<UserParameter> parametersProperty, org.lgna.project.ast.UserParameter parameter ) {
-		super( org.alice.ide.common.TypeComponent.createInstance( parameter.getValueType() ), new org.alice.ide.common.ParameterPane( parametersProperty, parameter ) );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+public class TypedParameterPane extends TypedDeclarationPane {
+	public TypedParameterPane( NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
+		super( TypeComponent.createInstance( parameter.getValueType() ), new ParameterPane( parametersProperty, parameter ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
 }

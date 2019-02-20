@@ -42,19 +42,24 @@
  */
 package stringexample.croquet.views;
 
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.SubduedTextField;
+import org.lgna.croquet.views.TextField;
+import stringexample.croquet.StringExampleComposite;
+
 /**
  * @author Dennis Cosgrove
  */
-public class StringExampleView extends org.lgna.croquet.views.BorderPanel {
-	public StringExampleView( stringexample.croquet.StringExampleComposite composite ) {
+public class StringExampleView extends BorderPanel {
+	public StringExampleView( StringExampleComposite composite ) {
 		super( composite );
 		this.addLineStartComponent( composite.getNameState().getSidekickLabel().createLabel() );
 
-		org.lgna.croquet.views.TextField textField = composite.getNameState().createTextField();
+		TextField textField = composite.getNameState().createTextField();
 		textField.setMinimumPreferredWidth( 200 );
 		this.addCenterComponent( textField );
 
-		org.lgna.croquet.views.SubduedTextField subtleTextField = composite.getNameState().createSubduedTextField();
+		SubduedTextField subtleTextField = composite.getNameState().createSubduedTextField();
 		this.addPageEndComponent( subtleTextField );
 	}
 }

@@ -43,13 +43,16 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.util.texture.TextureData;
+import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrBufferedImageTexture extends GlrTexture<edu.cmu.cs.dennisc.texture.BufferedImageTexture> {
+public class GlrBufferedImageTexture extends GlrTexture<BufferedImageTexture> {
 	@Override
-	protected com.jogamp.opengl.util.texture.TextureData newTextureData( com.jogamp.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
+	protected TextureData newTextureData( GL gl, TextureData currentTextureData ) {
 		return newTextureData( gl, owner.getBufferedImage(), owner.isMipMappingDesired() );
 	}
 	//	

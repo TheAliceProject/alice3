@@ -43,27 +43,35 @@
 
 package org.alice.stageide.cascade;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.models.cascade.MethodInvocationFillIn;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JointExpressionFillIn extends org.alice.ide.croquet.models.cascade.MethodInvocationFillIn {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.Expression, org.lgna.project.ast.AbstractMethod, JointExpressionFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public class JointExpressionFillIn extends MethodInvocationFillIn {
+	private static MapToMap<Expression, AbstractMethod, JointExpressionFillIn> mapToMap = MapToMap.newInstance();
 
-	public static JointExpressionFillIn getInstance( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
-		return mapToMap.getInitializingIfAbsent( expression, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.Expression, org.lgna.project.ast.AbstractMethod, JointExpressionFillIn>() {
+	public static JointExpressionFillIn getInstance( Expression expression, AbstractMethod method ) {
+		return mapToMap.getInitializingIfAbsent( expression, method, new MapToMap.Initializer<Expression, AbstractMethod, JointExpressionFillIn>() {
 			@Override
-			public JointExpressionFillIn initialize( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
+			public JointExpressionFillIn initialize( Expression expression, AbstractMethod method ) {
 				return new JointExpressionFillIn( expression, method );
 			}
 		} );
 	}
 
-	private JointExpressionFillIn( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "0a118b23-0dde-4a8e-a769-9f967d16f2e9" ), expression, method );
+	private JointExpressionFillIn( Expression expression, AbstractMethod method ) {
+		super( UUID.fromString( "0a118b23-0dde-4a8e-a769-9f967d16f2e9" ), expression, method );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression transientValueExpression ) {
-		return org.alice.ide.IDE.getActiveInstance().createCopy( transientValueExpression );
+	protected Expression createExpression( Expression transientValueExpression ) {
+		return IDE.getActiveInstance().createCopy( transientValueExpression );
 	}
 }

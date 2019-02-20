@@ -42,17 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.image.renderer;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.Transparency;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class TranslucentRenderer extends Renderer {
 	@Override
 	protected int getTransparency() {
-		return java.awt.Transparency.TRANSLUCENT;
+		return Transparency.TRANSLUCENT;
 	}
 
-	protected void clear( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		g2.setComposite( java.awt.AlphaComposite.Clear );
+	protected void clear( Graphics2D g2, int x, int y, int width, int height ) {
+		g2.setComposite( AlphaComposite.Clear );
 		g2.fillRect( x, y, width, height );
 	}
 }

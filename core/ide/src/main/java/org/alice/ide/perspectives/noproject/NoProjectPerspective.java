@@ -42,13 +42,25 @@
  *******************************************************************************/
 package org.alice.ide.perspectives.noproject;
 
+import org.alice.ide.IdeApp;
+import org.alice.ide.ProjectDocumentFrame;
+import org.lgna.croquet.AbstractPerspective;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.ToolBarComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NoProjectPerspective extends org.lgna.croquet.AbstractPerspective {
-	public NoProjectPerspective( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "b907ab09-7537-4e93-9999-f3a55b561a0c" ) );
-		this.menuBarComposite = new MenuBarComposite( projectDocumentFrame );
+public class NoProjectPerspective extends AbstractPerspective {
+	public NoProjectPerspective( ProjectDocumentFrame projectDocumentFrame ) {
+		super( UUID.fromString( "b907ab09-7537-4e93-9999-f3a55b561a0c" ) );
+
+		menuBarComposite = new org.lgna.croquet.MenuBarComposite( UUID.fromString( "fe8aa489-bee2-4f68-be47-881d5657bab7" ) );
+		menuBarComposite.addItem( new FileMenuModel( projectDocumentFrame ) );
+		menuBarComposite.addItem( IdeApp.INSTANCE.getHelpMenu() );
+
 		this.mainComposite = new MainComposite( projectDocumentFrame );
 	}
 
@@ -58,15 +70,15 @@ public class NoProjectPerspective extends org.lgna.croquet.AbstractPerspective {
 	}
 
 	@Override
-	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
+	public ToolBarComposite getToolBarComposite() {
 		return null;
 	}
 
 	@Override
-	public org.lgna.croquet.Composite<?> getMainComposite() {
+	public Composite<?> getMainComposite() {
 		return this.mainComposite;
 	}
 
 	private final MainComposite mainComposite;
-	private final MenuBarComposite menuBarComposite;
+	private final org.lgna.croquet.MenuBarComposite menuBarComposite;
 }

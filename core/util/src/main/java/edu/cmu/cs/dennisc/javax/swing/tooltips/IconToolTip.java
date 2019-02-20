@@ -42,23 +42,27 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.tooltips;
 
+import javax.swing.Icon;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
 public class IconToolTip extends javax.swing.JToolTip {
-	private javax.swing.Icon icon;
+	private Icon icon;
 
-	public IconToolTip( javax.swing.Icon icon ) {
+	public IconToolTip( Icon icon ) {
 		this.icon = icon;
 	}
 
 	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return new java.awt.Dimension( this.icon.getIconWidth(), this.icon.getIconHeight() );
+	public Dimension getPreferredSize() {
+		return new Dimension( this.icon.getIconWidth(), this.icon.getIconHeight() );
 	}
 
 	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
+	protected void paintComponent( Graphics g ) {
 		this.icon.paintIcon( this, g, 0, 0 );
 	}
 }

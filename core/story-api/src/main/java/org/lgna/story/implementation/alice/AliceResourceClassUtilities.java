@@ -42,9 +42,17 @@
  *******************************************************************************/
 package org.lgna.story.implementation.alice;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.project.annotations.ResourceTemplate;
+import org.lgna.story.SModel;
+import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.ModelResource;
 
 /**
@@ -59,21 +67,21 @@ public class AliceResourceClassUtilities {
 		throw new AssertionError();
 	}
 
-	public static boolean isTopLevelResource( Class<? extends org.lgna.story.resources.ModelResource> resourceClass ) {
-		if( resourceClass.isAnnotationPresent( org.lgna.project.annotations.ResourceTemplate.class ) ) {
-			org.lgna.project.annotations.ResourceTemplate resourceTemplate = resourceClass.getAnnotation( org.lgna.project.annotations.ResourceTemplate.class );
+	public static boolean isTopLevelResource( Class<? extends ModelResource> resourceClass ) {
+		if( resourceClass.isAnnotationPresent( ResourceTemplate.class ) ) {
+			ResourceTemplate resourceTemplate = resourceClass.getAnnotation( ResourceTemplate.class );
 			return resourceTemplate.isTopLevelResource();
 		} else {
 			return false;
 		}
 	}
 
-	public static Class<? extends org.lgna.story.SModel> getModelClassForResourceClass( Class<? extends org.lgna.story.resources.ModelResource> resourceClass ) {
-		if( resourceClass.isAnnotationPresent( org.lgna.project.annotations.ResourceTemplate.class ) ) {
-			org.lgna.project.annotations.ResourceTemplate resourceTemplate = resourceClass.getAnnotation( org.lgna.project.annotations.ResourceTemplate.class );
+	public static Class<? extends SModel> getModelClassForResourceClass( Class<? extends ModelResource> resourceClass ) {
+		if( resourceClass.isAnnotationPresent( ResourceTemplate.class ) ) {
+			ResourceTemplate resourceTemplate = resourceClass.getAnnotation( ResourceTemplate.class );
 			Class<?> cls = resourceTemplate.modelClass();
-			if( org.lgna.story.SModel.class.isAssignableFrom( cls ) ) {
-				return (Class<? extends org.lgna.story.SModel>)cls;
+			if( SModel.class.isAssignableFrom( cls ) ) {
+				return (Class<? extends SModel>)cls;
 			} else {
 				return null;
 			}
@@ -82,20 +90,30 @@ public class AliceResourceClassUtilities {
 		}
 	}
 
-	public static Class<? extends org.lgna.story.resources.ModelResource> getResourceClassForModelClass( Class<? extends org.lgna.story.SModel> modelClass ) {
-		java.lang.reflect.Constructor<?>[] constructors = modelClass.getConstructors();
-		java.lang.reflect.Constructor<?> firstConstructor = ( constructors != null ) && ( constructors.length > 0 ) ? constructors[ 0 ] : null;
+	public static Class<? extends ModelResource> getResourceClassForModelClass( Class<? extends SModel> modelClass ) {
+		Constructor<?>[] constructors = modelClass.getConstructors();
+		Constructor<?> firstConstructor = ( constructors != null ) && ( constructors.length > 0 ) ? constructors[ 0 ] : null;
 		if( firstConstructor != null ) {
 			Class<?>[] parameterTypes = firstConstructor.getParameterTypes();
 			if( ( parameterTypes != null ) ) {
 				for( Class<?> parameterType : parameterTypes ) {
 					if( ModelResource.class.isAssignableFrom( parameterType ) ) {
-						return (Class<? extends org.lgna.story.resources.ModelResource>)parameterType;
+						return (Class<? extends ModelResource>)parameterType;
 					}
 				}
 			}
 		}
 		return null;
+	}
+
+	public static Class<? extends ModelResource> getResourceClassForAliceName( String aliceClassName ) {
+		String className = "org.lgna.story.resources." + aliceClassName + RESOURCE_SUFFIX;
+		try {
+			return (Class<? extends ModelResource>)Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			Logger.warning("No class found for "+className);
+			return null;
+		}
 	}
 
 	public static String getAliceMethodNameForEnum( String enumName ) {
@@ -122,7 +140,7 @@ public class AliceResourceClassUtilities {
 
 	public static List<String> splitOnCapitalsAndNumbers( String s ) {
 		StringBuilder sb = new StringBuilder();
-		List<String> split = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<String> split = Lists.newLinkedList();
 		boolean isOnNumber = false;
 		for( int i = 0; i < s.length(); i++ ) {
 			boolean shouldRestart = false;
@@ -159,11 +177,11 @@ public class AliceResourceClassUtilities {
 		if( s.length() <= 1 ) {
 			return s.toUpperCase();
 		}
-		return s.substring( 0, 1 ).toUpperCase( java.util.Locale.ENGLISH ) + s.substring( 1 ).toLowerCase( java.util.Locale.ENGLISH );
+		return s.substring( 0, 1 ).toUpperCase( Locale.ENGLISH ) + s.substring( 1 ).toLowerCase( Locale.ENGLISH );
 	}
 
 	public static String[] fullStringSplit( String name ) {
-		List<String> strings = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<String> strings = Lists.newLinkedList();
 		String[] nameParts = name.split( "[_ -]" );
 		for( String s : nameParts ) {
 			List<String> capitalSplit = splitOnCapitalsAndNumbers( s );
@@ -187,7 +205,7 @@ public class AliceResourceClassUtilities {
 
 	public static Field[] getFieldsOfType( Class<?> ownerClass, Class<?> ofType ) {
 		Field[] fields = ownerClass.getFields();
-		List<Field> fieldsOfType = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<Field> fieldsOfType = Lists.newLinkedList();
 		for( Field f : fields ) {
 			boolean matchesType = ofType.isAssignableFrom( f.getType() );
 			boolean matchesOwner = f.getDeclaringClass() == ownerClass;
@@ -196,6 +214,28 @@ public class AliceResourceClassUtilities {
 			}
 		}
 		return fieldsOfType.toArray( new Field[ fieldsOfType.size() ] );
+	}
+
+
+	public static List<JointId> getJoints(Class<? extends ModelResource> resourceClass) {
+		List<JointId> baseJoints = new ArrayList<>();
+		addJoints( resourceClass, baseJoints );
+		for ( Class<?> parent : resourceClass.getInterfaces() ) {
+			addJoints( parent, baseJoints );
+		}
+		return baseJoints;
+	}
+
+	private static void addJoints( Class<?> resourceClass, List<JointId> baseJoints ) {
+		Field[] jointFields = getFieldsOfType( resourceClass, JointId.class);
+		for (Field f : jointFields) {
+			try {
+				JointId id = (JointId) f.get(null);
+				baseJoints.add(id);
+			} catch (IllegalAccessException iae) {
+				iae.printStackTrace();
+			}
+		}
 	}
 
 }

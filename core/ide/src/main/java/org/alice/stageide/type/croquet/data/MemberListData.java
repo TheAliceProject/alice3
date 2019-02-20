@@ -42,40 +42,54 @@
  *******************************************************************************/
 package org.alice.stageide.type.croquet.data;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.alice.stageide.type.croquet.TypeNode;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.data.RefreshableListData;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Member;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MemberListData extends org.lgna.croquet.data.RefreshableListData<org.lgna.project.ast.Member> {
-	private final org.lgna.croquet.StringState filterState;
+public class MemberListData extends RefreshableListData<Member> {
+	private final StringState filterState;
 
-	private final org.lgna.croquet.event.ValueListener<String> filterListener = new org.lgna.croquet.event.ValueListener<String>() {
+	private final ValueListener<String> filterListener = new ValueListener<String>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
+		public void valueChanged( ValueEvent<String> e ) {
 			refresh();
 		}
 	};
-	private java.util.List<org.lgna.project.ast.Member> allMembers;
+	private List<Member> allMembers;
 
-	public MemberListData( org.lgna.croquet.StringState filterState ) {
-		super( org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Member.class ) );
+	public MemberListData( StringState filterState ) {
+		super( NodeCodec.getInstance( Member.class ) );
 		this.filterState = filterState;
 	}
 
-	private static void build( java.util.List<org.lgna.project.ast.Member> list, org.alice.stageide.type.croquet.TypeNode typeNode ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = typeNode.getType();
+	private static void build( List<Member> list, TypeNode typeNode ) {
+		AbstractType<?, ?, ?> type = typeNode.getType();
 		list.addAll( type.getDeclaredMethods() );
 		final int N = typeNode.getChildCount();
 		for( int i = 0; i < N; i++ ) {
-			build( list, (org.alice.stageide.type.croquet.TypeNode)typeNode.getChildAt( i ) );
+			build( list, (TypeNode)typeNode.getChildAt( i ) );
 		}
 	}
 
-	public void connect( org.alice.stageide.type.croquet.TypeNode root ) {
-		java.util.List<org.lgna.project.ast.Member> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public void connect( TypeNode root ) {
+		List<Member> list = Lists.newLinkedList();
 		build( list, root );
-		java.util.Collections.sort( list, new java.util.Comparator<org.lgna.project.ast.Member>() {
+		Collections.sort( list, new Comparator<Member>() {
 			@Override
-			public int compare( org.lgna.project.ast.Member o1, org.lgna.project.ast.Member o2 ) {
+			public int compare( Member o1, Member o2 ) {
 				return o1.getName().compareTo( o2.getName() );
 			}
 		} );
@@ -88,12 +102,12 @@ public class MemberListData extends org.lgna.croquet.data.RefreshableListData<or
 	}
 
 	@Override
-	protected java.util.List<org.lgna.project.ast.Member> createValues() {
+	protected List<Member> createValues() {
 		if( ( this.allMembers != null ) && ( this.allMembers.size() > 0 ) ) {
 			String filter = this.filterState.getValue();
 			if( ( filter != null ) && ( filter.length() > 0 ) ) {
-				java.util.List<org.lgna.project.ast.Member> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-				for( org.lgna.project.ast.Member member : this.allMembers ) {
+				List<Member> rv = Lists.newLinkedList();
+				for( Member member : this.allMembers ) {
 					if( member.getName().contains( filter ) ) {
 						rv.add( member );
 					}
@@ -103,7 +117,7 @@ public class MemberListData extends org.lgna.croquet.data.RefreshableListData<or
 				return this.allMembers;
 			}
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 }

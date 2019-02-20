@@ -43,6 +43,13 @@
 
 package org.alice.ide.instancefactory;
 
+import org.alice.ide.IDE;
+import org.alice.ide.ast.icons.ThisInstanceIconFactory;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,28 +66,28 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 	}
 
 	@Override
-	protected boolean isValid( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
+	protected boolean isValid( AbstractType<?, ?, ?> type, AbstractCode code ) {
 		return type != null;
 	}
 
 	@Override
-	public org.lgna.project.ast.Expression createTransientExpression() {
+	public Expression createTransientExpression() {
 		return createTransientThisExpression();
 	}
 
 	@Override
-	public org.lgna.project.ast.Expression createExpression() {
+	public Expression createExpression() {
 		return createThisExpression();
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
-		return org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
+	public AbstractType<?, ?, ?> getValueType() {
+		return IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.ide.ast.icons.ThisInstanceIconFactory.getInstance();
+	public IconFactory getIconFactory() {
+		return ThisInstanceIconFactory.getInstance();
 	}
 
 	@Override

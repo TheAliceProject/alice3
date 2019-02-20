@@ -42,6 +42,19 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.Element;
+import org.lgna.croquet.GapToolBarSeparator;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.PushToolBarSeparator;
+import org.lgna.croquet.SingleSelectListState;
+import org.lgna.croquet.ToolBarComposite;
+
+import javax.swing.BorderFactory;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -64,28 +77,28 @@ public abstract class ToolBarView extends MigPanel {
 	//		}
 	//	}
 
-	public ToolBarView( org.lgna.croquet.ToolBarComposite composite ) {
+	public ToolBarView( ToolBarComposite composite ) {
 		super( composite, "insets 0 0 2 0, gap 0", "", "" );
 		String constraints = "";
-		for( org.lgna.croquet.Element element : composite.getSubElements() ) {
+		for( Element element : composite.getSubElements() ) {
 			constraints = this.addViewForElement( element, constraints );
 		}
 
-		this.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 0, 1, 0, java.awt.Color.DARK_GRAY ) );
+		this.setBorder( BorderFactory.createMatteBorder( 0, 0, 1, 0, Color.DARK_GRAY ) );
 		//this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 	}
 
-	protected String addViewForElement( org.lgna.croquet.Element element, String constraints ) {
+	protected String addViewForElement( Element element, String constraints ) {
 		String nextConstraints;
-		if( element == org.lgna.croquet.GapToolBarSeparator.getInstance() ) {
+		if( element == GapToolBarSeparator.getInstance() ) {
 			nextConstraints = "gap 10";
-		} else if( element == org.lgna.croquet.PushToolBarSeparator.getInstance() ) {
+		} else if( element == PushToolBarSeparator.getInstance() ) {
 			this.addComponent( new Label(), "push" );
 			nextConstraints = "";
 		} else {
 			SwingComponentView<?> component;
-			if( element instanceof org.lgna.croquet.Operation ) {
-				org.lgna.croquet.Operation operation = (org.lgna.croquet.Operation)element;
+			if( element instanceof Operation ) {
+				Operation operation = (Operation)element;
 				Button button = operation.createButton();
 				if( operation.isToolBarTextClobbered() ) {
 					button.setToolTipText( operation.getImp().getName() );
@@ -93,18 +106,18 @@ public abstract class ToolBarView extends MigPanel {
 				}
 				button.tightenUpMargin();
 				component = button;
-			} else if( element instanceof org.lgna.croquet.SingleSelectListState<?, ?> ) {
-				org.lgna.croquet.SingleSelectListState<?, ?> listSelectionState = (org.lgna.croquet.SingleSelectListState<?, ?>)element;
+			} else if( element instanceof SingleSelectListState<?, ?> ) {
+				SingleSelectListState<?, ?> listSelectionState = (SingleSelectListState<?, ?>)element;
 				ComboBox<?> comboBox = listSelectionState.getPrepModel().createComboBoxWithItemCodecListCellRenderer();
 				component = comboBox;
-			} else if( element instanceof org.lgna.croquet.Composite<?> ) {
-				org.lgna.croquet.Composite<?> subComposite = (org.lgna.croquet.Composite<?>)element;
+			} else if( element instanceof Composite<?> ) {
+				Composite<?> subComposite = (Composite<?>)element;
 				component = subComposite.getView();
-			} else if( element instanceof org.lgna.croquet.PlainStringValue ) {
-				org.lgna.croquet.PlainStringValue stringValue = (org.lgna.croquet.PlainStringValue)element;
+			} else if( element instanceof PlainStringValue ) {
+				PlainStringValue stringValue = (PlainStringValue)element;
 				component = stringValue.createLabel();
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( element );
+				Logger.severe( element );
 				component = null;
 			}
 			if( component != null ) {

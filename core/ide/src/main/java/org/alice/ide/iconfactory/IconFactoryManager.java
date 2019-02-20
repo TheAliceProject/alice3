@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.iconfactory;
 
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface IconFactoryManager {
-	org.lgna.croquet.icon.IconFactory getIconFactory( org.lgna.project.ast.UserField field, org.lgna.croquet.icon.IconFactory defaultIconFactory );
+	IconFactory getIconFactory( UserField field, IconFactory defaultIconFactory );
 
-	void markIconFactoryForFieldDirty( org.lgna.project.ast.UserField field );
+	void markIconFactoryForFieldDirty( UserField field );
 }

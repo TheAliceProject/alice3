@@ -46,10 +46,14 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.IDE;
+import org.alice.ide.declarationseditor.DeclarationTabState;
+import org.lgna.project.ast.AbstractConstructor;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractParameter;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.LocalAccess;
@@ -67,7 +71,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 public class SearchResult {
 
 	private final AbstractDeclaration declaration;
-	private final List<Expression> references = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+	private final List<Expression> references = Lists.newArrayList();
 
 	@SuppressWarnings( "unchecked" ) private static final List<Class<? extends AbstractDeclaration>> clsList =
 			Lists.newArrayList( AbstractField.class, AbstractMethod.class, UserParameter.class, UserLocal.class );
@@ -103,22 +107,22 @@ public class SearchResult {
 	}
 
 	public Icon getIcon() {
-		if( this.declaration instanceof org.lgna.project.ast.AbstractMethod ) {
-			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)this.declaration;
+		if( this.declaration instanceof AbstractMethod ) {
+			AbstractMethod method = (AbstractMethod)this.declaration;
 			if( method.isProcedure() ) {
-				return org.alice.ide.declarationseditor.DeclarationTabState.getProcedureIcon();
+				return DeclarationTabState.getProcedureIcon();
 			} else {
-				return org.alice.ide.declarationseditor.DeclarationTabState.getFunctionIcon();
+				return DeclarationTabState.getFunctionIcon();
 			}
-		} else if( this.declaration instanceof org.lgna.project.ast.AbstractField ) {
-			return org.alice.ide.declarationseditor.DeclarationTabState.getFieldIcon();
-		} else if( this.declaration instanceof org.lgna.project.ast.AbstractConstructor ) {
-			return org.alice.ide.declarationseditor.DeclarationTabState.getConstructorIcon();
-		} else if( this.declaration instanceof org.lgna.project.ast.AbstractParameter ) {
+		} else if( this.declaration instanceof AbstractField ) {
+			return DeclarationTabState.getFieldIcon();
+		} else if( this.declaration instanceof AbstractConstructor ) {
+			return DeclarationTabState.getConstructorIcon();
+		} else if( this.declaration instanceof AbstractParameter ) {
 			//todo?
 			return null;
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.declaration );
+			Logger.severe( this.declaration );
 			return null;
 		}
 	}

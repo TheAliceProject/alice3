@@ -43,13 +43,16 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.texture.Texture;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrTexturedAppearance extends GlrSimpleAppearance<edu.cmu.cs.dennisc.scenegraph.TexturedAppearance> {
+public class GlrTexturedAppearance extends GlrSimpleAppearance<TexturedAppearance> {
 	@Override
 	public boolean isAlphaBlended() {
 		return super.isAlphaBlended() || this.isDiffuseColorTextureAlphaBlended;
@@ -85,7 +88,7 @@ public class GlrTexturedAppearance extends GlrSimpleAppearance<edu.cmu.cs.dennis
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.diffuseColorTexture ) {
 			GlrTexture<? extends Texture> newAdapter = AdapterFactory.getAdapterFor( owner.diffuseColorTexture.getValue() );
 
@@ -122,7 +125,7 @@ public class GlrTexturedAppearance extends GlrSimpleAppearance<edu.cmu.cs.dennis
 				}
 			}
 		} else if( property == owner.textureId ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle textureId?", property.getValue(), this.owner.hashCode(), this.owner );
+			Logger.todo( "handle textureId?", property.getValue(), this.owner.hashCode(), this.owner );
 		} else {
 			super.propertyChanged( property );
 		}

@@ -42,18 +42,25 @@
  *******************************************************************************/
 package org.alice.ide.member;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.views.BooleanStateButton;
+import org.lgna.croquet.views.CompositeView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberOrControlFlowTabComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
-	public MemberOrControlFlowTabComposite( java.util.UUID migrationId ) {
+public abstract class MemberOrControlFlowTabComposite<V extends CompositeView<?, ?>> extends SimpleTabComposite<V> {
+	public MemberOrControlFlowTabComposite( UUID migrationId ) {
 		super( migrationId, IsCloseable.FALSE );
 	}
 
 	@Override
-	public void customizeTitleComponentAppearance( org.lgna.croquet.views.BooleanStateButton<?> button ) {
+	public void customizeTitleComponentAppearance( BooleanStateButton<?> button ) {
 		super.customizeTitleComponentAppearance( button );
 		button.scaleFont( 1.4f );
-		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		button.changeFont( TextWeight.BOLD );
 	}
 }

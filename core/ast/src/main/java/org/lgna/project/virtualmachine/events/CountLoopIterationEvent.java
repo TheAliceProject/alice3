@@ -42,18 +42,21 @@
  *******************************************************************************/
 package org.lgna.project.virtualmachine.events;
 
+import org.lgna.project.ast.CountLoop;
+import org.lgna.project.virtualmachine.VirtualMachine;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CountLoopIterationEvent extends VirtualMachineEvent {
-	public CountLoopIterationEvent( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.CountLoop countLoop, int index, int total ) {
+	public CountLoopIterationEvent( VirtualMachine vm, CountLoop countLoop, int index, int total ) {
 		super( vm );
 		this.countLoop = countLoop;
 		this.index = index;
 		this.total = total;
 	}
 
-	public org.lgna.project.ast.CountLoop getCountLoop() {
+	public CountLoop getCountLoop() {
 		return this.countLoop;
 	}
 
@@ -65,7 +68,7 @@ public class CountLoopIterationEvent extends VirtualMachineEvent {
 		return this.total;
 	}
 
-	private final org.lgna.project.ast.CountLoop countLoop;
+	private final CountLoop countLoop;
 	private final int index;
 	private final int total;
 }

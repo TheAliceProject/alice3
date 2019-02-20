@@ -42,42 +42,33 @@
  *******************************************************************************/
 package org.alice.ide.uricontent;
 
+import edu.cmu.cs.dennisc.java.net.UriUtilities;
+import org.alice.stageide.openprojectpane.models.TemplateUriState;
+import org.lgna.project.Project;
+
+import java.io.File;
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriProjectLoader extends UriContentLoader<org.lgna.project.Project> {
-	public static UriProjectLoader createInstance( java.net.URI uri ) {
+public abstract class UriProjectLoader extends UriContentLoader<Project> {
+	public static UriProjectLoader createInstance( URI uri ) {
 		if( uri != null ) {
 			String scheme = uri.getScheme();
 			if( "file".equalsIgnoreCase( scheme ) ) {
-				java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
-				return new org.alice.ide.uricontent.FileProjectLoader( file );
+				File file = UriUtilities.getFile( uri );
+				return new FileProjectLoader( file );
 			} else if( "starterfile".equalsIgnoreCase( scheme ) ) {
 				return new StarterProjectFileLoader( uri );
-			} else if( org.alice.stageide.openprojectpane.models.TemplateUriState.Template.isValidUri( uri ) ) {
-				org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.getSurfaceAppearance( uri );
-				return new org.alice.ide.uricontent.BlankSlateProjectLoader( template );
+			} else if( TemplateUriState.Template.isValidUri( uri ) ) {
+				TemplateUriState.Template template = TemplateUriState.Template.getSurfaceAppearance( uri );
+				return new BlankSlateProjectLoader( template );
 			} else {
 				return null;
 			}
 		} else {
 			return null;
-		}
-	}
-
-	protected abstract boolean isCacheAndCopyStyle();
-
-	@Override
-	protected boolean isWorkerCachingAppropriate( org.alice.ide.uricontent.UriContentLoader.MutationPlan intention ) {
-		return this.isCacheAndCopyStyle() || super.isWorkerCachingAppropriate( intention );
-	}
-
-	@Override
-	protected org.lgna.project.Project createCopyIfNecessary( org.lgna.project.Project value ) {
-		if( this.isCacheAndCopyStyle() ) {
-			return org.lgna.project.CopyUtilities.createCopy( value );
-		} else {
-			return value;
 		}
 	}
 }

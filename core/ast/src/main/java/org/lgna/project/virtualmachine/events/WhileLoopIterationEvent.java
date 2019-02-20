@@ -42,17 +42,20 @@
  *******************************************************************************/
 package org.lgna.project.virtualmachine.events;
 
+import org.lgna.project.ast.WhileLoop;
+import org.lgna.project.virtualmachine.VirtualMachine;
+
 /**
  * @author Dennis Cosgrove
  */
 public class WhileLoopIterationEvent extends VirtualMachineEvent {
-	public WhileLoopIterationEvent( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.WhileLoop whileLoop, int index ) {
+	public WhileLoopIterationEvent( VirtualMachine vm, WhileLoop whileLoop, int index ) {
 		super( vm );
 		this.whileLoop = whileLoop;
 		this.index = index;
 	}
 
-	public org.lgna.project.ast.WhileLoop getWhileLoop() {
+	public WhileLoop getWhileLoop() {
 		return this.whileLoop;
 	}
 
@@ -60,7 +63,7 @@ public class WhileLoopIterationEvent extends VirtualMachineEvent {
 		return this.index;
 	}
 
-	private final org.lgna.project.ast.WhileLoop whileLoop;
+	private final WhileLoop whileLoop;
 	private final int index;
 
 }

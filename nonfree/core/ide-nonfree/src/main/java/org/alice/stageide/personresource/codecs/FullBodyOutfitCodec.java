@@ -42,28 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.story.resources.sims2.FullBodyOutfit;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum FullBodyOutfitCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.FullBodyOutfit> {
+public enum FullBodyOutfitCodec implements ItemCodec<FullBodyOutfit> {
 	SINGLETON;
 	@Override
-	public Class<org.lgna.story.resources.sims2.FullBodyOutfit> getValueClass() {
-		return org.lgna.story.resources.sims2.FullBodyOutfit.class;
+	public Class<FullBodyOutfit> getValueClass() {
+		return FullBodyOutfit.class;
 	}
 
 	@Override
-	public org.lgna.story.resources.sims2.FullBodyOutfit decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public FullBodyOutfit decodeValue( BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.FullBodyOutfit value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, FullBodyOutfit value ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.sims2.FullBodyOutfit value ) {
+	public void appendRepresentation( StringBuilder sb, FullBodyOutfit value ) {
 		sb.append( value );
 	}
 }

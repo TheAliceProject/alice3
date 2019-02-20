@@ -42,35 +42,47 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.tree.Node;
+import org.alice.ide.IDE;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.views.MenuItemContainerUtilities;
+import org.lgna.croquet.views.PopupMenu;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationMenu extends org.lgna.croquet.MenuModel {
+public class DeclarationMenu extends MenuModel {
 	public DeclarationMenu() {
-		super( java.util.UUID.fromString( "dabfd4e0-d835-4d7c-b3b0-922fb67bada1" ) );
+		super( UUID.fromString( "dabfd4e0-d835-4d7c-b3b0-922fb67bada1" ) );
 	}
 
-	private void addTypeFillIns( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models, edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> node ) {
-		org.lgna.project.ast.NamedUserType type = node.getValue();
+	private void addTypeFillIns( List<StandardMenuItemPrepModel> models, Node<NamedUserType> node ) {
+		NamedUserType type = node.getValue();
 		if( type != null ) {
 			models.add( TypeMenu.getInstance( type ) );
 		}
-		for( edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> child : node.getChildren() ) {
+		for( Node<NamedUserType> child : node.getChildren() ) {
 			addTypeFillIns( models, child );
 		}
 	}
 
 	@Override
-	public void handlePopupMenuPrologue( org.lgna.croquet.views.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
+	public void handlePopupMenuPrologue( PopupMenu popupMenu ) {
+		super.handlePopupMenuPrologue( popupMenu );
 
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
+		IDE ide = IDE.getActiveInstance();
+		Node<NamedUserType> root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
 
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
 		models.add( ClassesSeparator.getInstance() );
 		addTypeFillIns( models, root );
 
-		org.lgna.croquet.views.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
+		MenuItemContainerUtilities.setMenuElements( popupMenu, models );
 	}
 }

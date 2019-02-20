@@ -43,6 +43,12 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.Composite;
+
+import javax.swing.JPanel;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -53,7 +59,7 @@ public class GridPanel extends Panel {
 	private final int vgap;
 
 	public static class Details {
-		private org.lgna.croquet.Composite<?> composite;
+		private Composite<?> composite;
 		private int rowCount;
 		private int columnCount;
 		private int hgap;
@@ -62,7 +68,7 @@ public class GridPanel extends Panel {
 		public Details() {
 		}
 
-		public Details composite( org.lgna.croquet.Composite<?> composite ) {
+		public Details composite( Composite<?> composite ) {
 			this.composite = composite;
 			return this;
 		}
@@ -99,27 +105,27 @@ public class GridPanel extends Panel {
 		}
 	}
 
-	public static GridPanel createSingleRowGridPane( org.lgna.croquet.Composite<?> composite, AwtComponentView<?>... components ) {
+	public static GridPanel createSingleRowGridPane( Composite<?> composite, AwtComponentView<?>... components ) {
 		return new GridPanel( new Details().composite( composite ).rowCount( 1 ), components );
 	}
 
-	public static GridPanel createSingleRowGridPane( org.lgna.croquet.Composite<?> composite, int hgap, int vgap, AwtComponentView<?>... components ) {
+	public static GridPanel createSingleRowGridPane( Composite<?> composite, int hgap, int vgap, AwtComponentView<?>... components ) {
 		return new GridPanel( new Details().composite( composite ).rowCount( 1 ).hgap( hgap ).vgap( vgap ), components );
 	}
 
-	public static GridPanel createSingleColumnGridPane( org.lgna.croquet.Composite<?> composite, AwtComponentView<?>... components ) {
+	public static GridPanel createSingleColumnGridPane( Composite<?> composite, AwtComponentView<?>... components ) {
 		return new GridPanel( new Details().composite( composite ).columnCount( 1 ), components );
 	}
 
-	public static GridPanel createSingleColumnGridPane( org.lgna.croquet.Composite<?> composite, int hgap, int vgap, AwtComponentView<?>... components ) {
+	public static GridPanel createSingleColumnGridPane( Composite<?> composite, int hgap, int vgap, AwtComponentView<?>... components ) {
 		return new GridPanel( new Details().composite( composite ).columnCount( 1 ).hgap( hgap ).vgap( vgap ), components );
 	}
 
-	public static GridPanel createGridPane( org.lgna.croquet.Composite<?> composite, int rowCount, int columnCount, int hgap, int vgap, AwtComponentView<?>... components ) {
+	public static GridPanel createGridPane( Composite<?> composite, int rowCount, int columnCount, int hgap, int vgap, AwtComponentView<?>... components ) {
 		return new GridPanel( new Details().composite( composite ).rowCount( rowCount ).columnCount( columnCount ).hgap( hgap ).vgap( vgap ), components );
 	}
 
-	public static GridPanel createGridPane( org.lgna.croquet.Composite<?> composite, int rowCount, int columnCount, AwtComponentView<?>... components ) {
+	public static GridPanel createGridPane( Composite<?> composite, int rowCount, int columnCount, AwtComponentView<?>... components ) {
 		return new GridPanel( new Details().composite( composite ).rowCount( rowCount ).columnCount( columnCount ), components );
 	}
 
@@ -148,8 +154,8 @@ public class GridPanel extends Panel {
 	}
 
 	@Override
-	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.GridLayout( this.rowCount, this.columnCount, this.hgap, this.vgap );
+	protected final LayoutManager createLayoutManager( JPanel jPanel ) {
+		return new GridLayout( this.rowCount, this.columnCount, this.hgap, this.vgap );
 	}
 
 	public void addComponent( AwtComponentView<?> component ) {

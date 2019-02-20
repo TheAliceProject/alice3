@@ -42,18 +42,26 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.nebulous;
 
+import com.jogamp.opengl.GL;
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
+import edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy;
+import edu.cmu.cs.dennisc.texture.Texture;
 import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
+import java.awt.Graphics2D;
 
 /**
  * @author alice
  * 
  */
-public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
+public class NebulousTexture extends Texture {
 
 	static {
-		edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.register( edu.cmu.cs.dennisc.nebulous.NebulousTexture.class, edu.cmu.cs.dennisc.nebulous.NebulousTextureAdapter.class );
+		AdapterFactory.register( NebulousTexture.class, NebulousTextureAdapter.class );
 		if( SystemUtilities.getBooleanProperty( "org.alice.ide.disableDefaultNebulousLoading", false ) )
 		{
 			//Don't load nebulous resources if the default loading is disabled
@@ -71,7 +79,7 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 
 	public native void initializeIfNecessary( Object textureKey );
 
-	public native void setup( com.jogamp.opengl.GL gl );
+	public native void setup( GL gl );
 
 	public native void addReference();
 
@@ -82,20 +90,20 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 		this.initializeIfNecessary( m_textureKey );
 	}
 
-	public NebulousTexture( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public NebulousTexture( BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		m_textureKey = binaryDecoder.decodeString();
 		this.initializeIfNecessary( m_textureKey );
 	}
 
-	public void doSetup( com.jogamp.opengl.GL gl ) {
+	public void doSetup( GL gl ) {
 		assert m_textureKey != null;
 		this.initializeIfNecessary( m_textureKey );
 		this.setup( gl );
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		assert m_textureKey != null;
 		binaryEncoder.encode( m_textureKey );
 	}
@@ -149,12 +157,12 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy getMipMapGenerationPolicy() {
-		return edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy.PAINT_EACH_INDIVIDUAL_LEVEL;
+	public MipMapGenerationPolicy getMipMapGenerationPolicy() {
+		return MipMapGenerationPolicy.PAINT_EACH_INDIVIDUAL_LEVEL;
 	}
 
 	@Override
-	public void paint( java.awt.Graphics2D g, int width, int height ) {
+	public void paint( Graphics2D g, int width, int height ) {
 		throw new RuntimeException( "NOT SUPPORTED" );
 	}
 }

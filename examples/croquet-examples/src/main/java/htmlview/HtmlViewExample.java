@@ -42,28 +42,43 @@
  */
 package htmlview;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.net.UrlUtilities;
+import org.lgna.croquet.DocumentFrame;
+import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.croquet.views.Frame;
+import org.lgna.croquet.views.HtmlView;
+
+import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+
 /**
  * @author Dennis Cosgrove
  */
 public class HtmlViewExample {
 	public static void main( String[] args ) {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
-				org.lgna.croquet.views.HtmlView topView = new org.lgna.croquet.views.HtmlView();
+				HtmlView topView = new HtmlView();
 				String imageUrlSpec = "http://circleImage";
 
-				java.net.URL imageFromResourceUrl = HtmlViewExample.class.getResource( "images/yashAndYak.png" );
-				javax.swing.ImageIcon imageIconFromResource = new javax.swing.ImageIcon( imageFromResourceUrl );
+				URL imageFromResourceUrl = HtmlViewExample.class.getResource( "images/yashAndYak.png" );
+				ImageIcon imageIconFromResource = new ImageIcon( imageFromResourceUrl );
 
-				java.awt.Color backgroundColor = java.awt.Color.BLUE;
-				java.awt.Color textColor = java.awt.Color.YELLOW;
+				Color backgroundColor = Color.BLUE;
+				Color textColor = Color.YELLOW;
 				StringBuilder sb = new StringBuilder();
 				sb.append( "<html>" );
 				sb.append( "<body bgcolor=\"" );
-				sb.append( edu.cmu.cs.dennisc.java.awt.ColorUtilities.toHashText( backgroundColor ) );
+				sb.append( ColorUtilities.toHashText( backgroundColor ) );
 				sb.append( "\" text=\"" );
-				sb.append( edu.cmu.cs.dennisc.java.awt.ColorUtilities.toHashText( textColor ) );
+				sb.append( ColorUtilities.toHashText( textColor ) );
 				sb.append( "\">" );
 				sb.append( "<h2>drawn image</h2>" );
 				sb.append( "<img src=\"" );
@@ -77,23 +92,23 @@ public class HtmlViewExample {
 				sb.append( "</body>" );
 				sb.append( "</html>" );
 
-				java.awt.Image circleImage = new java.awt.image.BufferedImage( 64, 64, java.awt.image.BufferedImage.TYPE_3BYTE_BGR );
-				java.awt.Graphics g = circleImage.getGraphics();
-				g.setColor( java.awt.Color.RED );
+				Image circleImage = new BufferedImage( 64, 64, BufferedImage.TYPE_3BYTE_BGR );
+				Graphics g = circleImage.getGraphics();
+				g.setColor( Color.RED );
 				g.fillOval( 8, 8, 48, 48 );
 				g.dispose();
 
 				topView.addImageToCache( imageFromResourceUrl, imageIconFromResource.getImage() );
-				topView.addImageToCache( edu.cmu.cs.dennisc.java.net.UrlUtilities.createUrl( imageUrlSpec ), circleImage );
+				topView.addImageToCache( UrlUtilities.createUrl( imageUrlSpec ), circleImage );
 				topView.setText( sb.toString() );
 
-				org.lgna.croquet.views.HtmlView bottomView = new org.lgna.croquet.views.HtmlView();
-				bottomView.setTextFromUrlLater( edu.cmu.cs.dennisc.java.net.UrlUtilities.createUrl( "http://www.cs.cmu.edu/~dennisc" ) );
-				bottomView.getHtmlDocument().getStyleSheet().addRule( "A {color:" + edu.cmu.cs.dennisc.java.awt.ColorUtilities.toHashText( java.awt.Color.GREEN.darker() ) + "}" );
+				HtmlView bottomView = new HtmlView();
+				bottomView.setTextFromUrlLater( UrlUtilities.createUrl( "http://www.cs.cmu.edu/~dennisc" ) );
+				bottomView.getHtmlDocument().getStyleSheet().addRule( "A {color:" + ColorUtilities.toHashText( Color.GREEN.darker() ) + "}" );
 
-				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-				org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
-				org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
+				SimpleApplication app = new SimpleApplication();
+				DocumentFrame documentFrame = app.getDocumentFrame();
+				Frame frame = documentFrame.getFrame();
 				frame.getContentPane().addPageStartComponent( topView );
 				frame.getContentPane().addPageEndComponent( bottomView );
 				frame.setSize( 1000, 800 );

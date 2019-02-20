@@ -43,24 +43,33 @@
 
 package org.alice.ide.declarationseditor.type.data;
 
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingManagedUserMethods;
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods;
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods;
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods;
+import org.lgna.project.ast.AccessLevel;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserMethod;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodData extends FilteredMemberData<org.lgna.project.ast.UserMethod> {
-	public MethodData( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.project.ast.UserMethod.class, type, type.methods );
+public abstract class MethodData extends FilteredMemberData<UserMethod> {
+	public MethodData( NamedUserType type ) {
+		super( UserMethod.class, type, type.methods );
 	}
 
 	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
-		if( ( value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.NONE ) || org.alice.ide.croquet.models.ui.preferences.IsIncludingManagedUserMethods.getInstance().getValue() ) {
-			org.lgna.project.ast.AccessLevel accessLevel = value.getAccessLevel();
-			if( accessLevel == org.lgna.project.ast.AccessLevel.PRIVATE ) {
-				return org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getValue();
-			} else if( accessLevel == org.lgna.project.ast.AccessLevel.PROTECTED ) {
-				return org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getValue();
-			} else if( accessLevel == org.lgna.project.ast.AccessLevel.PACKAGE ) {
-				return org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getValue();
+	protected boolean isAcceptableItem( UserMethod value ) {
+		if( ( value.managementLevel.getValue() == ManagementLevel.NONE ) || IsIncludingManagedUserMethods.getInstance().getValue() ) {
+			AccessLevel accessLevel = value.getAccessLevel();
+			if( accessLevel == AccessLevel.PRIVATE ) {
+				return IsIncludingPrivateUserMethods.getInstance().getValue();
+			} else if( accessLevel == AccessLevel.PROTECTED ) {
+				return IsIncludingProtectedUserMethods.getInstance().getValue();
+			} else if( accessLevel == AccessLevel.PACKAGE ) {
+				return IsIncludingPackagePrivateUserMethods.getInstance().getValue();
 			} else {
 				return true;
 			}

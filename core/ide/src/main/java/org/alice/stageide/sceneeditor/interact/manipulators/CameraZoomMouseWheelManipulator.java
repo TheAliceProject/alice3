@@ -43,7 +43,8 @@
 
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
@@ -64,6 +65,7 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.lgna.croquet.Application;
 
 public class CameraZoomMouseWheelManipulator extends CameraManipulator implements AnimatorDependentManipulator {
 
@@ -267,7 +269,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
 				AffineMatrix4x4 targetTransform = new AffineMatrix4x4( targetOrientation, targetPosition );
 				this.cameraAnimation.setTarget( new QuaternionAndTranslation( targetTransform ) );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Mouse Wheel Camera Zoom: null cameraAnimation." );
+				Logger.severe( "Mouse Wheel Camera Zoom: null cameraAnimation." );
 			}
 		} else {
 			double amountToZoom = ORTHOGRAPHIC_ZOOM_PER_WHEEL_CLICK * direction;
@@ -340,15 +342,15 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
 			double newZoom = this.getCameraZoom();
 
 			if( newZoom == this.originalOrthographicZoomValue ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Adding an undoable action for a manipulation that didn't actually change the zoom." );
+				Logger.warning( "Adding an undoable action for a manipulation that didn't actually change the zoom." );
 			}
-			edu.cmu.cs.dennisc.animation.Animator animator;
+			Animator animator;
 			if( this.dragAdapter != null ) {
 				animator = this.dragAdapter.getAnimator();
 			} else {
 				animator = null;
 			}
-			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, false, animator, (OrthographicCamera)this.camera, this.originalOrthographicZoomValue, newZoom, getUndoRedoDescription() );
+			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation( Application.PROJECT_GROUP, false, animator, (OrthographicCamera)this.camera, this.originalOrthographicZoomValue, newZoom, getUndoRedoDescription() );
 			undoOperation.fire();
 		} else {
 			super.undoRedoEndManipulation();

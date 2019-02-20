@@ -42,33 +42,35 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.util;
 
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InitializingIfAbsentListHashMap<K, E> extends InitializingIfAbsentHashMap<K, java.util.List<E>> {
-	public java.util.List<E> getInitializingIfAbsentToLinkedList( K key ) {
-		return this.getInitializingIfAbsent( key, new Initializer<K, java.util.List<E>>() {
+public class InitializingIfAbsentListHashMap<K, E> extends InitializingIfAbsentHashMap<K, List<E>> {
+	public List<E> getInitializingIfAbsentToLinkedList( K key ) {
+		return this.getInitializingIfAbsent( key, new Initializer<K, List<E>>() {
 			@Override
-			public java.util.List<E> initialize( K key ) {
+			public List<E> initialize( K key ) {
 				return Lists.newLinkedList();
 			}
 		} );
 	}
 
-	public java.util.List<E> getInitializingIfAbsentToArrayList( K key ) {
-		return this.getInitializingIfAbsent( key, new Initializer<K, java.util.List<E>>() {
+	public List<E> getInitializingIfAbsentToArrayList( K key ) {
+		return this.getInitializingIfAbsent( key, new Initializer<K, List<E>>() {
 			@Override
-			public java.util.List<E> initialize( K key ) {
+			public List<E> initialize( K key ) {
 				return Lists.newArrayList();
 			}
 		} );
 	}
 
-	public java.util.List<E> getInitializingIfAbsentToCopyOnWriteArrayList( K key ) {
-		return this.getInitializingIfAbsent( key, new Initializer<K, java.util.List<E>>() {
+	public List<E> getInitializingIfAbsentToCopyOnWriteArrayList( K key ) {
+		return this.getInitializingIfAbsent( key, new Initializer<K, List<E>>() {
 			@Override
-			public java.util.List<E> initialize( K key ) {
-				return edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+			public List<E> initialize( K key ) {
+				return Lists.newCopyOnWriteArrayList();
 			}
 		} );
 	}

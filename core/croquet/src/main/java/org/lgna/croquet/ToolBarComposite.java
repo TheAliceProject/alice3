@@ -42,18 +42,23 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.ToolBarView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ToolBarComposite extends AbstractComposite<org.lgna.croquet.views.ToolBarView> {
-	public ToolBarComposite( java.util.UUID migrationId ) {
+public abstract class ToolBarComposite extends AbstractComposite<ToolBarView> {
+	public ToolBarComposite( UUID migrationId ) {
 		super( migrationId );
 	}
 
 	public abstract Iterable<? extends Element> getSubElements();
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

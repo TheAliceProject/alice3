@@ -42,13 +42,18 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon;
+import org.lgna.croquet.PopupPrepModel;
+
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PopupButton extends AbstractPopupButton<org.lgna.croquet.PopupPrepModel> {
-	public PopupButton( org.lgna.croquet.PopupPrepModel model ) {
+public class PopupButton extends AbstractPopupButton<PopupPrepModel> {
+	public PopupButton( PopupPrepModel model ) {
 		super( model );
-		this.setClobberIcon( new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 10, java.awt.Color.DARK_GRAY ) );
+		this.setClobberIcon( new DropDownArrowIcon( 10, Color.DARK_GRAY ) );
 		this.setHorizontalTextPosition( HorizontalTextPosition.LEADING );
 	}
 }

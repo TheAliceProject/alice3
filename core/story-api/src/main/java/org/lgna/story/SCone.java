@@ -45,15 +45,16 @@ package org.lgna.story;
 
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.story.implementation.ConeImp;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SCone extends SShape {
-	private final org.lgna.story.implementation.ConeImp implementation = new org.lgna.story.implementation.ConeImp( this );
+	private final ConeImp implementation = new ConeImp( this );
 
 	@Override
-	/* package-private */org.lgna.story.implementation.ConeImp getImplementation() {
+	/* package-private */ConeImp getImplementation() {
 		return this.implementation;
 	}
 

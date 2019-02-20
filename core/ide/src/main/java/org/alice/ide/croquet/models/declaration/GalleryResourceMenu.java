@@ -43,13 +43,24 @@
 
 package org.alice.ide.croquet.models.declaration;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeMenuModel;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryResourceMenu extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, GalleryResourceMenu> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class GalleryResourceMenu extends CascadeMenuModel<Expression> {
+	private static Map<AbstractType<?, ?, ?>, GalleryResourceMenu> map = Maps.newHashMap();
 
-	public static synchronized GalleryResourceMenu getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static synchronized GalleryResourceMenu getInstance( AbstractType<?, ?, ?> type ) {
 		GalleryResourceMenu rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -60,10 +71,10 @@ public class GalleryResourceMenu extends org.lgna.croquet.CascadeMenuModel<org.l
 		return rv;
 	}
 
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private final AbstractType<?, ?, ?> type;
 
-	private GalleryResourceMenu( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		super( java.util.UUID.fromString( "10f4d191-6bdd-4333-a8c9-0d617fa8ea64" ) );
+	private GalleryResourceMenu( AbstractType<?, ?, ?> type ) {
+		super( UUID.fromString( "10f4d191-6bdd-4333-a8c9-0d617fa8ea64" ) );
 		this.type = type;
 	}
 
@@ -73,7 +84,7 @@ public class GalleryResourceMenu extends org.lgna.croquet.CascadeMenuModel<org.l
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
 		GalleryResourceUtilities.updateChildren( blankChildren, blankNode, this.type );
 	}
 }

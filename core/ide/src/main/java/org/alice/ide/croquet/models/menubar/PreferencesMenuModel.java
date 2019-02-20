@@ -42,10 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.menubar;
 
+import org.alice.ide.IdeApp;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.croquet.models.ui.locale.LocaleState;
+import org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState;
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingConstructors;
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType;
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState;
+import org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.PredeterminedMenuModel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+public class PreferencesMenuModel extends PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static PreferencesMenuModel instance = new PreferencesMenuModel();
 	}
@@ -55,23 +68,23 @@ public class PreferencesMenuModel extends org.lgna.croquet.PredeterminedMenuMode
 	}
 
 	private PreferencesMenuModel() {
-		super( java.util.UUID.fromString( "e8f8a5b3-83be-4519-8956-3ef2b9546e23" ),
-				org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getMenuModel(),
-				org.alice.ide.croquet.models.ui.locale.LocaleState.getInstance().getMenuModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().getMenuModel(),
+		super( UUID.fromString( "e8f8a5b3-83be-4519-8956-3ef2b9546e23" ),
+				FormatterState.getInstance().getMenuModel(),
+				LocaleState.getInstance().getMenuModel(),
+				MenuModel.SEPARATOR,
+				IsJavaCodeOnTheSideState.getInstance().getMenuItemPrepModel(),
+				MenuModel.SEPARATOR,
+				IsIncludingThisForFieldAccessesState.getInstance().getMenuModel(),
 				//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getMenuItemPrepModel(),
 				//org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.IdeApp.INSTANCE.getIsRecursionAllowedPreferenceDialogLaunchOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingConstructors.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
+				MenuModel.SEPARATOR,
+				IdeApp.INSTANCE.getIsRecursionAllowedPreferenceDialogLaunchOperation().getMenuItemPrepModel(),
+				IsExposingReassignableStatusState.getInstance().getMenuItemPrepModel(),
+				IsIncludingProgramType.getInstance().getMenuItemPrepModel(),
+				IsIncludingConstructors.getInstance().getMenuItemPrepModel(),
+				MenuModel.SEPARATOR,
 				AllowNullMenuModel.getInstance(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
+				MenuModel.SEPARATOR,
 				GalleryMenuModel.getInstance() );
 	}
 }

@@ -43,9 +43,12 @@
 package org.lgna.ik.poser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.alice.ide.ProjectStack;
+import org.alice.stageide.ast.StoryApiSpecificAstUtilities;
 import org.alice.stageide.type.croquet.TypeNode;
+import org.lgna.project.Project;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.ConstructorInvocationStatement;
 import org.lgna.project.ast.Expression;
@@ -54,6 +57,7 @@ import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.UserField;
+import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.biped.OgreResource;
 
@@ -76,10 +80,10 @@ public class FieldFinder {
 	}
 
 	private NamedUserType sceneType;
-	private final org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+	private final ReleaseVirtualMachine vm = new ReleaseVirtualMachine();
 
 	public void refreshScene() {
-		sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( ProjectStack.peekProject() );
+		sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProject( ProjectStack.peekProject() );
 	}
 
 	public ArrayList<JointedModelResource> getResourcesForType( NamedUserType type ) {
@@ -89,7 +93,7 @@ public class FieldFinder {
 			JointedModelResource ogre = OgreResource.GREEN;
 			return Lists.newArrayList( ogre );
 		}
-		java.util.List<UserField> fields = sceneType.getDeclaredFields();
+		List<UserField> fields = sceneType.getDeclaredFields();
 		for( UserField field : fields ) {
 			if( field.getManagementLevel().isManaged() ) {
 				if( field.getValueType().isAssignableTo( type ) ) {
@@ -121,9 +125,9 @@ public class FieldFinder {
 
 	public static TypeNode populateList( AbstractType<?, ?, ?> rootType ) {
 		TypeNode rootNode = new TypeNode( rootType );
-		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
-		Iterable<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
-		for( org.lgna.project.ast.NamedUserType type : types ) {
+		Project project = ProjectStack.peekProject();
+		Iterable<NamedUserType> types = project.getNamedUserTypes();
+		for( NamedUserType type : types ) {
 			if( type.isAssignableTo( rootType ) ) {
 				TypeNode newNode = new TypeNode( type );
 				insert( newNode, rootNode );

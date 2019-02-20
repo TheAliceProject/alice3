@@ -42,10 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.apis.story.event;
 
+import org.lgna.project.ast.Lambda;
+import org.lgna.project.virtualmachine.LambdaContext;
+import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.event.MouseClickOnObjectEvent;
+import org.lgna.story.event.MouseClickOnObjectListener;
 
-public class MouseClickOnObjectAdapter extends AbstractAdapter implements org.lgna.story.event.MouseClickOnObjectListener {
-	public MouseClickOnObjectAdapter( org.lgna.project.virtualmachine.LambdaContext context, org.lgna.project.ast.Lambda lambda, org.lgna.project.virtualmachine.UserInstance userInstance ) {
+public class MouseClickOnObjectAdapter extends AbstractAdapter implements MouseClickOnObjectListener {
+	public MouseClickOnObjectAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
 		super( context, lambda, userInstance );
 	}
 

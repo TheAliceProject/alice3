@@ -43,10 +43,18 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.annotations.CountDetails;
+import org.lgna.project.ast.Expression;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CountBlank extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
+public class CountBlank extends ExpressionBlank {
 	private static class SingletonHolder {
 		private static CountBlank instance = new CountBlank();
 	}
@@ -56,11 +64,11 @@ public class CountBlank extends org.alice.ide.croquet.models.cascade.ExpressionB
 	}
 
 	private CountBlank() {
-		super( java.util.UUID.fromString( "8dde36e7-5d10-46fa-9539-c52ed6495661" ), Integer.class, org.lgna.project.annotations.CountDetails.SINGLETON );
+		super( Integer.class, CountDetails.SINGLETON );
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<Expression> blankNode ) {
 		children.add( CountSeparator.getInstance() );
 		super.updateChildren( children, blankNode );
 	}

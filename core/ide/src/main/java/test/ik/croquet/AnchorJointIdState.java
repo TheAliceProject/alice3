@@ -43,6 +43,8 @@
 
 package test.ik.croquet;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,6 +58,6 @@ public class AnchorJointIdState extends JointIdState {
 	}
 
 	private AnchorJointIdState() {
-		super( java.util.UUID.fromString( "2d24afe4-0c54-4c8e-a7b5-5448d2515d25" ) );
+		super( UUID.fromString( "2d24afe4-0c54-4c8e-a7b5-5448d2515d25" ) );
 	}
 }

@@ -42,10 +42,27 @@
  *******************************************************************************/
 package org.alice.stageide.croquet.models.gallerybrowser;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectApplication;
+import org.alice.stageide.StageIDE;
+import org.lgna.project.VersionNotSupportedException;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.io.IoUtilities;
+import org.lgna.project.io.TypeResourcesPair;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Locale;
+import java.util.UUID;
+import java.util.zip.ZipFile;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeFromUriProducer extends UriCreator<org.lgna.project.ast.NamedUserType> {
+public class TypeFromUriProducer extends UriCreator<NamedUserType> {
 	private static class SingletonHolder {
 		private static TypeFromUriProducer instance = new TypeFromUriProducer();
 	}
@@ -55,52 +72,44 @@ public class TypeFromUriProducer extends UriCreator<org.lgna.project.ast.NamedUs
 	}
 
 	private TypeFromUriProducer() {
-		super( java.util.UUID.fromString( "4ab159a0-7fee-4c0f-8b71-25591fda2b0d" ) );
+		super( UUID.fromString( "4ab159a0-7fee-4c0f-8b71-25591fda2b0d" ) );
 	}
 
 	@Override
 	protected String getExtension() {
-		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
+		return IoUtilities.TYPE_EXTENSION;
 	}
 
-	private static void showMessageDialog( java.io.File file, boolean isValidZip ) {
-		String applicationName = org.alice.ide.IDE.getApplicationName();
+	private static void showMessageDialog( File file, boolean isValidZip ) {
+		String applicationName = IDE.getApplicationName();
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Unable to create instance from file " );
-		sb.append( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
+		sb.append( FileUtilities.getCanonicalPathIfPossible( file ) );
 		sb.append( ".\n\n" );
 		sb.append( applicationName );
 		sb.append( " is able to create instances from class files saved by " );
 		sb.append( applicationName );
 		sb.append( ".\n\nLook for files with an " );
-		sb.append( org.lgna.project.io.IoUtilities.TYPE_EXTENSION );
+		sb.append( IoUtilities.TYPE_EXTENSION );
 		sb.append( " extension." );
-		new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
-				.title( "Cannot read file" )
-				.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
-				.buildAndShow();
+		Dialogs.showError( "Cannot read file", sb.toString() );
 	}
 
 	@Override
-	protected org.lgna.project.ast.NamedUserType internalGetValueFrom( java.io.File file ) {
-		final java.util.Locale locale = java.util.Locale.ENGLISH;
+	protected NamedUserType internalGetValueFrom( File file ) {
+		final Locale locale = Locale.ENGLISH;
 		String lcName = file.getName().toLowerCase( locale );
 		if( lcName.endsWith( ".a2c" ) ) {
-			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Alice3 does not load Alice2 characters" )
-					.title( "Incorrect File Type" )
-					.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
-					.buildAndShow();
-		} else if( lcName.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase( locale ) ) ) {
-			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.TYPE_EXTENSION + " extension." )
-					.title( "Incorrect File Type" )
-					.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
-					.buildAndShow();
+			Dialogs.showError( "Incorrect File Type", "Alice3 does not load Alice2 characters" );
+		} else if( lcName.endsWith( IoUtilities.PROJECT_EXTENSION.toLowerCase( locale ) ) ) {
+			Dialogs.showError( "Incorrect File Type",
+							   file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + IoUtilities.TYPE_EXTENSION + " extension."  );
 		} else {
-			boolean isWorthyOfException = lcName.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase( locale ) );
-			java.util.zip.ZipFile zipFile;
+			boolean isWorthyOfException = lcName.endsWith( IoUtilities.TYPE_EXTENSION.toLowerCase( locale ) );
+			ZipFile zipFile;
 			try {
-				zipFile = new java.util.zip.ZipFile( file );
-			} catch( java.io.IOException ioe ) {
+				zipFile = new ZipFile( file );
+			} catch( IOException ioe ) {
 				if( isWorthyOfException ) {
 					throw new RuntimeException( file.getAbsolutePath(), ioe );
 				} else {
@@ -109,15 +118,15 @@ public class TypeFromUriProducer extends UriCreator<org.lgna.project.ast.NamedUs
 				}
 			}
 			if( zipFile != null ) {
-				org.lgna.project.ast.NamedUserType type;
+				NamedUserType type;
 				try {
-					org.lgna.project.io.TypeResourcesPair typeResourcesPair = org.lgna.project.io.IoUtilities.readType( zipFile );
+					TypeResourcesPair typeResourcesPair = IoUtilities.readType( zipFile );
 					type = typeResourcesPair.getType();
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );
-				} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+					PrintUtilities.println( "TODO: add in resources" );
+				} catch( VersionNotSupportedException vnse ) {
 					type = null;
-					org.alice.ide.ProjectApplication.getActiveInstance().handleVersionNotSupported( file, vnse );
-				} catch( java.io.IOException ioe ) {
+					ProjectApplication.getActiveInstance().handleVersionNotSupported( file, vnse );
+				} catch( IOException ioe ) {
 					if( isWorthyOfException ) {
 						throw new RuntimeException( file.getAbsolutePath(), ioe );
 					} else {
@@ -132,7 +141,7 @@ public class TypeFromUriProducer extends UriCreator<org.lgna.project.ast.NamedUs
 	}
 
 	@Override
-	protected java.io.File getInitialDirectory() {
-		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
+	protected File getInitialDirectory() {
+		return StageIDE.getActiveInstance().getTypesDirectory();
 	}
 }

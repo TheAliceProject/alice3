@@ -43,6 +43,10 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.property.FloatProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+
 /**
  * the root of the scenegraph
  * 
@@ -50,13 +54,13 @@ package edu.cmu.cs.dennisc.scenegraph;
  */
 public class Scene extends Composite {
 	@Override
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+	public AffineMatrix4x4 getAbsoluteTransformation( AffineMatrix4x4 rv ) {
 		rv.setIdentity();
 		return rv;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+	public AffineMatrix4x4 getInverseAbsoluteTransformation( AffineMatrix4x4 rv ) {
 		rv.setIdentity();
 		return rv;
 	}
@@ -67,10 +71,10 @@ public class Scene extends Composite {
 	}
 
 	//todo: check to see if other is a descendant
-	public boolean isSceneOf( edu.cmu.cs.dennisc.scenegraph.ReferenceFrame other ) {
+	public boolean isSceneOf( ReferenceFrame other ) {
 		return true;
 	}
 
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Background> background = new edu.cmu.cs.dennisc.property.InstanceProperty<Background>( this, null );
-	public final edu.cmu.cs.dennisc.property.FloatProperty globalBrightness = new edu.cmu.cs.dennisc.property.FloatProperty( this, 1.0f );
+	public final InstanceProperty<Background> background = new InstanceProperty<Background>( this, null );
+	public final FloatProperty globalBrightness = new FloatProperty( this, 1.0f );
 }

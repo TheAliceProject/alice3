@@ -43,25 +43,34 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.InsertStatementCompletionModel;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOperation implements org.alice.ide.croquet.models.ast.InsertStatementCompletionModel {
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+public abstract class StatementInsertOperation extends ActionOperation implements InsertStatementCompletionModel {
+	private final BlockStatementIndexPair blockStatementIndexPair;
 
-	public StatementInsertOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, id );
+	public StatementInsertOperation( UUID id, BlockStatementIndexPair blockStatementIndexPair ) {
+		super( Application.PROJECT_GROUP, id );
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
+	public BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step );
+	protected abstract Edit createEdit( UserActivity userActivity );
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		step.commitAndInvokeDo( this.createEdit( step ) );
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( this.createEdit( activity ) );
 	}
 }

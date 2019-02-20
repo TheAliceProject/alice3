@@ -42,26 +42,33 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import com.jogamp.opengl.GL2;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Silhouette;
+
+import java.nio.FloatBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GlrSilhouette extends GlrElement<edu.cmu.cs.dennisc.scenegraph.Silhouette> {
-	public void setup( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, int face ) {
+public class GlrSilhouette extends GlrElement<Silhouette> {
+	public void setup( RenderContext rc, int face ) {
 		rc.gl.glLineWidth( this.lineWidth );
-		rc.gl.glPolygonMode( face, com.jogamp.opengl.GL2.GL_LINE );
+		rc.gl.glPolygonMode( face, GL2.GL_LINE );
 		rc.setIsShadingEnabled( false );
-		rc.gl.glDisable( com.jogamp.opengl.GL2.GL_TEXTURE_2D );
+		rc.gl.glDisable( GL2.GL_TEXTURE_2D );
 
 		//rc.gl.glEnable( com.jogamp.opengl.GL.GL_LINE_SMOOTH );
 		//rc.gl.glEnable( com.jogamp.opengl.GL2.GL_POLYGON_SMOOTH );
 		//rc.gl.glHint( com.jogamp.opengl.GL.GL_LINE_SMOOTH_HINT, com.jogamp.opengl.GL.GL_NICEST );
 		//rc.gl.glHint( com.jogamp.opengl.GL2.GL_POLYGON_SMOOTH_HINT, com.jogamp.opengl.GL.GL_NICEST );
 		rc.gl.glColor4fv( this.color );
-		rc.gl.glDisable( com.jogamp.opengl.GL2.GL_BLEND );
+		rc.gl.glDisable( GL2.GL_BLEND );
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.color ) {
 			owner.color.getValue().getAsFloatBuffer( this.color );
 		} else if( property == owner.width ) {
@@ -71,6 +78,6 @@ public class GlrSilhouette extends GlrElement<edu.cmu.cs.dennisc.scenegraph.Silh
 		}
 	}
 
-	private final java.nio.FloatBuffer color = java.nio.FloatBuffer.allocate( 4 );
+	private final FloatBuffer color = FloatBuffer.allocate( 4 );
 	private float lineWidth;
 }

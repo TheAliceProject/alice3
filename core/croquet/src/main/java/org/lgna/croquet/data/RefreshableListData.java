@@ -42,20 +42,28 @@
  *******************************************************************************/
 package org.lgna.croquet.data;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.ItemCodec;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RefreshableListData<T> extends org.lgna.croquet.data.AbstractMutableListData<T> {
+public abstract class RefreshableListData<T> extends AbstractMutableListData<T> {
 	private boolean isRefreshNecessary = true;
-	private java.util.List<T> values;
+	private List<T> values;
 
-	public RefreshableListData( org.lgna.croquet.ItemCodec<T> itemCodec ) {
+	public RefreshableListData( ItemCodec<T> itemCodec ) {
 		super( itemCodec );
 	}
 
 	private boolean refreshIfNecessary() {
 		if( this.isRefreshNecessary ) {
-			java.util.List<T> nextValues = this.createValues();
+			List<T> nextValues = this.createValues();
 
 			assert nextValues != null : this;
 
@@ -86,7 +94,7 @@ public abstract class RefreshableListData<T> extends org.lgna.croquet.data.Abstr
 		}
 	}
 
-	protected abstract java.util.List<T> createValues();
+	protected abstract List<T> createValues();
 
 	public final void refresh() {
 		this.isRefreshNecessary = true;
@@ -131,8 +139,8 @@ public abstract class RefreshableListData<T> extends org.lgna.croquet.data.Abstr
 	}
 
 	@Override
-	public final void internalSetAllItems( java.util.Collection<T> items ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( items );
+	public final void internalSetAllItems( Collection<T> items ) {
+		Logger.severe( items );
 	}
 
 	@Override
@@ -141,7 +149,7 @@ public abstract class RefreshableListData<T> extends org.lgna.croquet.data.Abstr
 	}
 
 	@Override
-	public final java.util.Iterator<T> iterator() {
+	public final Iterator<T> iterator() {
 		this.refreshIfNecessary();
 		return this.values.iterator();
 	}
@@ -149,6 +157,6 @@ public abstract class RefreshableListData<T> extends org.lgna.croquet.data.Abstr
 	@Override
 	protected final T[] toArray( Class<T> componentType ) {
 		this.refreshIfNecessary();
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.values, componentType );
+		return ArrayUtilities.createArray( this.values, componentType );
 	}
 }

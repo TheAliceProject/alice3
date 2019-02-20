@@ -42,18 +42,24 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.geom;
 
+import edu.cmu.cs.dennisc.math.Angle;
+
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.NoninvertibleTransformException;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Transformable {
-	private java.awt.geom.AffineTransform m_affineTransform = new java.awt.geom.AffineTransform();
-	private java.awt.geom.AffineTransform m_inverseAffineTransform = null;
+	private AffineTransform m_affineTransform = new AffineTransform();
+	private AffineTransform m_inverseAffineTransform = null;
 
-	public java.awt.geom.AffineTransform getInverseAffineTransform( java.awt.geom.AffineTransform rv ) {
+	public AffineTransform getInverseAffineTransform( AffineTransform rv ) {
 		if( m_inverseAffineTransform == null ) {
 			try {
 				m_inverseAffineTransform = m_affineTransform.createInverse();
-			} catch( java.awt.geom.NoninvertibleTransformException nte ) {
+			} catch( NoninvertibleTransformException nte ) {
 				throw new RuntimeException( nte );
 			}
 		}
@@ -61,20 +67,20 @@ public abstract class Transformable {
 		return rv;
 	}
 
-	public java.awt.geom.AffineTransform getInverseAffineTransform() {
-		return getInverseAffineTransform( new java.awt.geom.AffineTransform() );
+	public AffineTransform getInverseAffineTransform() {
+		return getInverseAffineTransform( new AffineTransform() );
 	}
 
-	public java.awt.geom.AffineTransform getAffineTransform( java.awt.geom.AffineTransform rv ) {
+	public AffineTransform getAffineTransform( AffineTransform rv ) {
 		rv.setTransform( m_affineTransform );
 		return rv;
 	}
 
-	public java.awt.geom.AffineTransform getAffineTransform() {
-		return getAffineTransform( new java.awt.geom.AffineTransform() );
+	public AffineTransform getAffineTransform() {
+		return getAffineTransform( new AffineTransform() );
 	}
 
-	public void setAffineTransform( java.awt.geom.AffineTransform affineTransform ) {
+	public void setAffineTransform( AffineTransform affineTransform ) {
 		m_affineTransform.setTransform( affineTransform );
 		m_inverseAffineTransform = null;
 
@@ -85,7 +91,7 @@ public abstract class Transformable {
 		m_inverseAffineTransform = null;
 	}
 
-	public void applyRotation( edu.cmu.cs.dennisc.math.Angle theta ) {
+	public void applyRotation( Angle theta ) {
 		m_affineTransform.rotate( theta.getAsRadians() );
 		m_inverseAffineTransform = null;
 	}
@@ -106,9 +112,9 @@ public abstract class Transformable {
 		gc.popAffineTransform();
 	}
 
-	protected abstract java.awt.geom.Area update( java.awt.geom.Area rv, TransformContext tc );
+	protected abstract Area update( Area rv, TransformContext tc );
 
-	public final java.awt.geom.Area getArea( java.awt.geom.Area rv, TransformContext tc ) {
+	public final Area getArea( Area rv, TransformContext tc ) {
 		tc.pushAffineTransform();
 		tc.multiplyAffineTransform( m_affineTransform );
 		update( rv, tc );
@@ -116,7 +122,7 @@ public abstract class Transformable {
 		return rv;
 	}
 
-	public final java.awt.geom.Area getArea( TransformContext tc ) {
-		return getArea( new java.awt.geom.Area(), tc );
+	public final Area getArea( TransformContext tc ) {
+		return getArea( new Area(), tc );
 	}
 }

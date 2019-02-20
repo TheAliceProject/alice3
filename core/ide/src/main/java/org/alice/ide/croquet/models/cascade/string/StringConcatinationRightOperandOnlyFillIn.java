@@ -43,10 +43,20 @@
 
 package org.alice.ide.croquet.models.cascade.string;
 
+import org.alice.ide.ast.EmptyExpression;
+import org.alice.ide.ast.PreviousValueExpression;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.StringConcatenation;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class StringConcatinationRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks<org.lgna.project.ast.StringConcatenation> {
+public class StringConcatinationRightOperandOnlyFillIn extends PreviousExpressionBasedFillInWithExpressionBlanks<StringConcatenation> {
 	private static class SingletonHolder {
 		private static StringConcatinationRightOperandOnlyFillIn instance = new StringConcatinationRightOperandOnlyFillIn();
 	}
@@ -55,23 +65,23 @@ public class StringConcatinationRightOperandOnlyFillIn extends org.alice.ide.cro
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.project.ast.StringConcatenation transientValue;
+	private final StringConcatenation transientValue;
 
 	private StringConcatinationRightOperandOnlyFillIn() {
-		super( java.util.UUID.fromString( "1470e7b1-4f71-4d1b-8f3d-bbd708d64282" ), org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( Object.class ) );
-		this.transientValue = new org.lgna.project.ast.StringConcatenation(
-				new org.alice.ide.ast.PreviousValueExpression( Object.class ),
-				new org.alice.ide.ast.EmptyExpression( Object.class )
+		super( UUID.fromString( "1470e7b1-4f71-4d1b-8f3d-bbd708d64282" ), ExpressionBlank.createBlanks( Object.class ) );
+		this.transientValue = new StringConcatenation(
+				new PreviousValueExpression( Object.class ),
+				new EmptyExpression( Object.class )
 				);
 	}
 
 	@Override
-	protected org.lgna.project.ast.StringConcatenation createValue( org.lgna.project.ast.Expression previousExpression, org.lgna.project.ast.Expression[] expressions ) {
-		return new org.lgna.project.ast.StringConcatenation( previousExpression, expressions[ 0 ] );
+	protected StringConcatenation createValue( Expression previousExpression, Expression[] expressions ) {
+		return new StringConcatenation( previousExpression, expressions[ 0 ] );
 	}
 
 	@Override
-	public org.lgna.project.ast.StringConcatenation getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.StringConcatenation, org.lgna.project.ast.Expression> step ) {
+	public StringConcatenation getTransientValue( ItemNode<? super StringConcatenation, Expression> step ) {
 		return this.transientValue;
 	}
 }

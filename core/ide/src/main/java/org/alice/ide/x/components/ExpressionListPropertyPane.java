@@ -42,25 +42,34 @@
  *******************************************************************************/
 package org.alice.ide.x.components;
 
+import org.alice.ide.croquet.components.AbstractListPropertyPane;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.Label;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionListProperty;
+
+import javax.swing.BoxLayout;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionListPropertyPane extends org.alice.ide.croquet.components.AbstractListPropertyPane<org.lgna.project.ast.ExpressionListProperty, org.lgna.project.ast.Expression> {
-	public ExpressionListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ExpressionListProperty property ) {
-		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
+public class ExpressionListPropertyPane extends AbstractListPropertyPane<ExpressionListProperty, Expression> {
+	public ExpressionListPropertyPane( AstI18nFactory factory, ExpressionListProperty property ) {
+		super( factory, property, BoxLayout.LINE_AXIS );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.AwtComponentView<?> createInterstitial( int i, final int N ) {
+	protected AwtComponentView<?> createInterstitial( int i, final int N ) {
 		if( i < ( N - 1 ) ) {
-			return new org.lgna.croquet.views.Label( ", " );
+			return new Label( ", " );
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	protected org.lgna.croquet.views.AwtComponentView<?> createComponent( org.lgna.project.ast.Expression expression ) {
+	protected AwtComponentView<?> createComponent( Expression expression ) {
 		return this.getFactory().createExpressionPane( expression );
 	}
 }

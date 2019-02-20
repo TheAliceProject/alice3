@@ -42,24 +42,35 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.frame;
 
+import edu.cmu.cs.dennisc.pattern.Lazy;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.Element;
+import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.Group;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class LazyIsFrameShowingState<C extends org.lgna.croquet.FrameComposite<?>> extends AbstractIsFrameShowingState {
-	public static <C extends org.lgna.croquet.FrameComposite<?>> org.lgna.croquet.BooleanState createInstance( org.lgna.croquet.Group group, Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy ) {
+public final class LazyIsFrameShowingState<C extends FrameComposite<?>> extends AbstractIsFrameShowingState {
+	public static <C extends FrameComposite<?>> BooleanState createInstance( Group group, Class<C> cls, Lazy<C> lazy ) {
 		return new LazyIsFrameShowingState<C>( group, cls, lazy );
 	}
 
-	public static <C extends org.lgna.croquet.FrameComposite<?>> org.lgna.croquet.BooleanState createNoArgumentConstructorInstance( org.lgna.croquet.Group group, Class<C> cls ) {
+	public static <C extends FrameComposite<?>> BooleanState createNoArgumentConstructorInstance( Group group, Class<C> cls ) {
 		try {
-			final java.lang.reflect.Constructor<C> jConstructor = cls.getConstructor();
-			assert java.lang.reflect.Modifier.isPublic( jConstructor.getModifiers() ) : jConstructor;
-			return createInstance( group, cls, new edu.cmu.cs.dennisc.pattern.Lazy<C>() {
+			final Constructor<C> jConstructor = cls.getConstructor();
+			assert Modifier.isPublic( jConstructor.getModifiers() ) : jConstructor;
+			return createInstance( group, cls, new Lazy<C>() {
 				@Override
 				protected C create() {
 					try {
 						return jConstructor.newInstance();
-					} catch( java.lang.reflect.InvocationTargetException ite ) {
+					} catch( InvocationTargetException ite ) {
 						throw new RuntimeException( jConstructor.toString(), ite );
 					} catch( IllegalAccessException iae ) {
 						throw new RuntimeException( jConstructor.toString(), iae );
@@ -73,14 +84,14 @@ public final class LazyIsFrameShowingState<C extends org.lgna.croquet.FrameCompo
 		}
 	}
 
-	private LazyIsFrameShowingState( org.lgna.croquet.Group group, Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy ) {
-		super( group, java.util.UUID.fromString( "e6efce56-7da5-4798-9ec3-6fcaab3962b5" ) );
+	private LazyIsFrameShowingState( Group group, Class<C> cls, Lazy<C> lazy ) {
+		super( group, UUID.fromString( "e6efce56-7da5-4798-9ec3-6fcaab3962b5" ) );
 		this.cls = cls;
 		this.lazy = lazy;
 	}
 
 	@Override
-	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+	protected Class<? extends Element> getClassUsedForLocalization() {
 		return this.cls;
 	}
 
@@ -90,5 +101,5 @@ public final class LazyIsFrameShowingState<C extends org.lgna.croquet.FrameCompo
 	}
 
 	private final Class<C> cls;
-	private final edu.cmu.cs.dennisc.pattern.Lazy<C> lazy;
+	private final Lazy<C> lazy;
 }

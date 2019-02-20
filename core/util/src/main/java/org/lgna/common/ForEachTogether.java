@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.lgna.common;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.util.Collection;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -77,16 +81,16 @@ public class ForEachTogether {
 			for( int i = 0; i < runnables.length; i++ ) {
 				runnables[ i ] = new ForEachRunnableAdapter( forEachRunnable, array[ i ] );
 			}
-			org.lgna.common.DoTogether.invokeAndWait( runnables );
+			DoTogether.invokeAndWait( runnables );
 		}
 	}
 
 	public static <E> void invokeAndWait( Iterable<E> iterable, final ForEachRunnable<E> forEachRunnable ) {
-		java.util.Collection<E> collection;
-		if( iterable instanceof java.util.Collection<?> ) {
-			collection = (java.util.Collection<E>)iterable;
+		Collection<E> collection;
+		if( iterable instanceof Collection<?> ) {
+			collection = (Collection<E>)iterable;
 		} else {
-			collection = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			collection = Lists.newLinkedList();
 			for( E item : iterable ) {
 				collection.add( item );
 			}
@@ -97,6 +101,6 @@ public class ForEachTogether {
 			runnables[ i ] = new ForEachRunnableAdapter( forEachRunnable, value );
 			i++;
 		}
-		org.lgna.common.DoTogether.invokeAndWait( runnables );
+		DoTogether.invokeAndWait( runnables );
 	}
 }

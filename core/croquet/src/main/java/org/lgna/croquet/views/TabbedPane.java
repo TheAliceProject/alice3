@@ -43,18 +43,27 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.SingleSelectListState;
+import org.lgna.croquet.TabComposite;
+
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.Font;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends ItemSelectablePanel<E> {
-	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+public abstract class TabbedPane<E extends TabComposite<?>> extends ItemSelectablePanel<E> {
+	private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
 		@Override
-		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+		public void valueChanged( ListSelectionEvent e ) {
 			if( e.getValueIsAdjusting() ) {
 				//pass
 			} else {
-				org.lgna.croquet.SingleSelectListState<E, ?> model = getModel();
-				int indexFromSwingModel = model.getImp().getSwingModel().getSelectionIndex();
+				SingleSelectListState<E, ?> model = getModel();
+				int indexFromSwingModel = model.getSwingModel().getSelectionIndex();
 				int indexFromCroquet = model.getSelectedIndex();
 				final boolean USE_CROQUET_OVER_SWING;
 				if( indexFromSwingModel != indexFromCroquet ) {
@@ -68,40 +77,40 @@ public abstract class TabbedPane<E extends org.lgna.croquet.TabComposite<?>> ext
 				}
 				E card;
 				if( USE_CROQUET_OVER_SWING ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( indexFromSwingModel, indexFromCroquet, this );
+					Logger.severe( indexFromSwingModel, indexFromCroquet, this );
 					card = model.getItemAt( indexFromCroquet );
 				} else {
-					card = (E)model.getImp().getSwingModel().getComboBoxModel().getElementAt( indexFromSwingModel );
+					card = (E)model.getSwingModel().getComboBoxModel().getElementAt( indexFromSwingModel );
 				}
 				TabbedPane.this.handleValueChanged( card );
 			}
 		}
 	};
 
-	public TabbedPane( org.lgna.croquet.SingleSelectListState<E, ?> model ) {
+	public TabbedPane( SingleSelectListState<E, ?> model ) {
 		super( model );
 	}
 
 	@Override
-	public void setFont( java.awt.Font font ) {
+	public void setFont( Font font ) {
 		super.setFont( font );
 		for( BooleanStateButton<?> button : this.getAllButtons() ) {
 			button.setFont( font );
 		}
 	}
 
-	protected void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, BooleanStateButton<?> button, E item ) {
+	protected void customizeTitleComponent( BooleanState booleanState, BooleanStateButton<?> button, E item ) {
 		item.customizeTitleComponentAppearance( button );
 	}
 
-	protected void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, BooleanStateButton<?> button, E item ) {
+	protected void releaseTitleComponent( BooleanState booleanState, BooleanStateButton<?> button, E item ) {
 	}
 
-	protected abstract BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, org.lgna.croquet.BooleanState itemSelectedState );
+	protected abstract BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, BooleanState itemSelectedState );
 
 	@Override
 	protected void handleDisplayable() {
-		this.getModel().getImp().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
+		this.getModel().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 		this.handleValueChanged( this.getModel().getValue() );
 		super.handleDisplayable();
 	}
@@ -109,13 +118,13 @@ public abstract class TabbedPane<E extends org.lgna.croquet.TabComposite<?>> ext
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
-		this.getModel().getImp().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
+		this.getModel().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
 	}
 
 	protected abstract void handleValueChanged( E card );
 
 	@Override
-	protected org.lgna.croquet.views.BooleanStateButton<?> createButtonForItemSelectedState( final E item, org.lgna.croquet.BooleanState itemSelectedState ) {
+	protected BooleanStateButton<?> createButtonForItemSelectedState( final E item, BooleanState itemSelectedState ) {
 		BooleanStateButton<?> rv = this.createTitleButton( item, itemSelectedState );
 		this.customizeTitleComponent( itemSelectedState, rv, item );
 		return rv;

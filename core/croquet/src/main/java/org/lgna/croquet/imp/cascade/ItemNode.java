@@ -47,11 +47,10 @@ package org.lgna.croquet.imp.cascade;
  * @author Dennis Cosgrove
  */
 public interface ItemNode<F, B> {
-	public int getBlankStepCount();
 
-	public BlankNode<B> getBlankStepAt( int index );
+	BlankNode<B> getBlankStepAt( int index );
 
-	public F getTransientValue();
+	F getTransientValue();
 
-	public F createValue( org.lgna.croquet.history.TransactionHistory transactionHistory );
+	F createValue();
 }

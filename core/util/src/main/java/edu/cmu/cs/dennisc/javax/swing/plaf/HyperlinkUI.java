@@ -42,23 +42,37 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.plaf;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicButtonUI;
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+
 /**
  * @author Dennis Cosgrove
  */
-public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
-	private java.awt.Color disabledColor = java.awt.Color.LIGHT_GRAY;
+public class HyperlinkUI extends BasicButtonUI {
+	private Color disabledColor = Color.LIGHT_GRAY;
 	private boolean isUnderlinedWhenDisabled = true;
 	private boolean isUnderlinedOnlyWhenRolledOver = true;
 
-	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent component ) {
+	public static ComponentUI createUI( JComponent component ) {
 		return new HyperlinkUI();
 	}
 
-	public java.awt.Color getDisabledColor() {
+	public Color getDisabledColor() {
 		return this.disabledColor;
 	}
 
-	public void setDisabledColor( java.awt.Color disabledColor ) {
+	public void setDisabledColor( Color disabledColor ) {
 		this.disabledColor = disabledColor;
 	}
 
@@ -79,20 +93,20 @@ public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
 	}
 
 	@Override
-	protected void paintText( java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle textRect, String text ) {
-		javax.swing.ButtonModel model = b.getModel();
+	protected void paintText( Graphics g, AbstractButton b, Rectangle textRect, String text ) {
+		ButtonModel model = b.getModel();
 
-		java.awt.Color backgroundColor = b.getBackground();
-		java.awt.Color foregroundColor = b.getForeground();
+		Color backgroundColor = b.getBackground();
+		Color foregroundColor = b.getForeground();
 
-		java.awt.Color color;
+		Color color;
 		if( b.isEnabled() ) {
 			//			if( model.isArmed() ) {
 			//				color = ARMED_COLOR;
 			//			} else {
 			if( model.isRollover() ) {
-				float foregroundBrightness = edu.cmu.cs.dennisc.java.awt.ColorUtilities.getBrightness( foregroundColor );
-				float backgroundBrightness = edu.cmu.cs.dennisc.java.awt.ColorUtilities.getBrightness( backgroundColor );
+				float foregroundBrightness = ColorUtilities.getBrightness( foregroundColor );
+				float backgroundBrightness = ColorUtilities.getBrightness( backgroundColor );
 				boolean isForegroundBrighter = foregroundBrightness > backgroundBrightness;
 				if( model.isPressed() ) {
 					color = isForegroundBrighter ? foregroundColor.darker().darker() : foregroundColor.brighter().brighter();
@@ -107,17 +121,17 @@ public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
 			color = this.disabledColor;
 		}
 		g.setColor( color );
-		java.awt.FontMetrics fm = g.getFontMetrics();
+		FontMetrics fm = g.getFontMetrics();
 		int x = textRect.x + this.getTextShiftOffset();
 		int y = textRect.y + fm.getAscent() + this.getTextShiftOffset();
 
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		Object prevTextAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+		Graphics2D g2 = (Graphics2D)g;
+		Object prevTextAntialiasing = g2.getRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING );
+		g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
 		try {
 			g.drawString( text, x, y );
 		} finally {
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
+			g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
 		}
 		if( ( b.isEnabled() || this.isUnderlinedWhenDisabled ) && ( ( this.isUnderlinedOnlyWhenRolledOver == false ) || model.isRollover() ) ) {
 			g.fillRect( x, y, textRect.width, 1 );

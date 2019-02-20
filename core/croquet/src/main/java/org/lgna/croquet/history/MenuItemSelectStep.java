@@ -43,28 +43,25 @@
 
 package org.lgna.croquet.history;
 
+import org.lgna.croquet.MenuItemPrepModel;
+import org.lgna.croquet.triggers.Trigger;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MenuItemSelectStep extends PrepStep<org.lgna.croquet.MenuItemPrepModel> {
-	public static MenuItemSelectStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.MenuBarComposite menuBarComposite, org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger trigger ) {
-		return new MenuItemSelectStep( parent, menuBarComposite, menuItemPrepModels, trigger );
+public class MenuItemSelectStep extends PrepStep<MenuItemPrepModel> {
+	static void createAndAddToActivity( UserActivity parent, MenuSelection selection, Trigger trigger ) {
+		new MenuItemSelectStep( parent, selection, trigger );
 	}
 
-	private final org.lgna.croquet.MenuBarComposite menuBarComposite;
-	private final org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels;
+	private final MenuSelection selection;
 
-	private MenuItemSelectStep( Transaction parent, org.lgna.croquet.MenuBarComposite menuBarComposite, org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger trigger ) {
-		super( parent, menuItemPrepModels[ menuItemPrepModels.length - 1 ], trigger );
-		this.menuBarComposite = menuBarComposite;
-		this.menuItemPrepModels = menuItemPrepModels;
+	private MenuItemSelectStep( UserActivity parent, MenuSelection selection, Trigger trigger ) {
+		super( parent, selection.getLastMenuItemPrepModel(), trigger );
+		this.selection = selection;
 	}
 
-	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
-		return this.menuBarComposite;
-	}
-
-	public org.lgna.croquet.MenuItemPrepModel[] getMenuItemPrepModels() {
-		return this.menuItemPrepModels;
+	MenuSelection getMenuSelection() {
+		return selection;
 	}
 }

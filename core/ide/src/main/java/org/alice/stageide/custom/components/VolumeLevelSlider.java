@@ -43,27 +43,37 @@
 
 package org.alice.stageide.custom.components;
 
+import org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite;
+import org.lgna.croquet.BoundedNumberState;
+import org.lgna.croquet.views.Slider;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import java.text.NumberFormat;
+import java.util.Dictionary;
+import java.util.Hashtable;
+
 /**
  * @author Dennis Cosgrove
  */
-public class VolumeLevelSlider extends org.lgna.croquet.views.Slider {
-	public VolumeLevelSlider( org.lgna.croquet.BoundedNumberState<?> model ) {
+public class VolumeLevelSlider extends Slider {
+	public VolumeLevelSlider( BoundedNumberState<?> model ) {
 		super( model );
 
-		org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite composite = org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite.getInstance();
+		VolumeLevelCustomExpressionCreatorComposite composite = VolumeLevelCustomExpressionCreatorComposite.getInstance();
 
-		java.text.NumberFormat format = java.text.NumberFormat.getNumberInstance();
+		NumberFormat format = NumberFormat.getNumberInstance();
 		format.setMinimumFractionDigits( 1 );
 		String silentText = composite.getSilentLabel().getText() + " (" + format.format( 0.0 ) + ")";
 		String normalText = composite.getNormalLabel().getText() + " (" + format.format( 1.0 ) + ")";
 		String louderText = composite.getLouderLabel().getText() + " (" + format.format( 2.0 ) + ")";
 
-		this.setOrientation( org.lgna.croquet.views.Slider.Orientation.VERTICAL );
+		this.setOrientation( Slider.Orientation.VERTICAL );
 
-		java.util.Dictionary<Integer, javax.swing.JComponent> labelTable = new java.util.Hashtable<Integer, javax.swing.JComponent>();
-		labelTable.put( 0, new javax.swing.JLabel( silentText ) );
-		labelTable.put( 100, new javax.swing.JLabel( normalText ) );
-		labelTable.put( 200, new javax.swing.JLabel( louderText ) );
+		Dictionary<Integer, JComponent> labelTable = new Hashtable<Integer, JComponent>();
+		labelTable.put( 0, new JLabel( silentText ) );
+		labelTable.put( 100, new JLabel( normalText ) );
+		labelTable.put( 200, new JLabel( louderText ) );
 		this.setLabelTable( labelTable );
 		this.setPaintLabels( true );
 

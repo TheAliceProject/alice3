@@ -43,8 +43,17 @@
 
 package org.alice.stageide.ast.declaration;
 
+import org.alice.ide.ast.declaration.views.AddManagedFieldView;
+import org.alice.stageide.ast.declaration.views.AddBillboardManagedFieldView;
 import org.alice.stageide.gallerybrowser.shapes.BillboardDragModel;
 import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.Paint;
+import org.lgna.story.SBillboard;
+import org.lgna.story.SetBackPaint;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -58,22 +67,22 @@ public class AddBillboardManagedFieldComposite extends AddModelManagedFieldCompo
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> backPaintState = this.createInitialPropertyValueExpressionState( "backPaintState", null, org.lgna.story.SBillboard.class, "setBackPaint", org.lgna.story.Paint.class, org.lgna.story.SetBackPaint.Detail[].class );
+	private final CustomItemState<Expression> backPaintState = this.createInitialPropertyValueExpressionState( "backPaintState", null, SBillboard.class, "setBackPaint", Paint.class, SetBackPaint.Detail[].class );
 
 	private AddBillboardManagedFieldComposite() {
-		super( java.util.UUID.fromString( "bba3fc83-4db4-4be4-87d4-5111dbda4f60" ), org.lgna.story.SBillboard.class );
+		super( UUID.fromString( "bba3fc83-4db4-4be4-87d4-5111dbda4f60" ), SBillboard.class );
 	}
 
 	@Override protected ShapeDragModel getDragModel() {
 		return BillboardDragModel.getInstance();
 	}
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getBackPaintState() {
+	public CustomItemState<Expression> getBackPaintState() {
 		return this.backPaintState;
 	}
 
 	@Override
-	protected org.alice.ide.ast.declaration.views.AddManagedFieldView createView() {
-		return new org.alice.stageide.ast.declaration.views.AddBillboardManagedFieldView( this );
+	protected AddManagedFieldView createView() {
+		return new AddBillboardManagedFieldView( this );
 	}
 }

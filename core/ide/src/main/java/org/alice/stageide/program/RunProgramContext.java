@@ -43,13 +43,17 @@
 
 package org.alice.stageide.program;
 
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.story.implementation.ProgramImp;
+
+import java.awt.Container;
 import java.awt.Dimension;
 
 /**
  * @author Dennis Cosgrove
  */
 public class RunProgramContext extends ProgramContext {
-	public RunProgramContext( org.lgna.project.ast.NamedUserType programType ) {
+	public RunProgramContext( NamedUserType programType ) {
 		super( programType );
 	}
 
@@ -57,18 +61,18 @@ public class RunProgramContext extends ProgramContext {
 		this( getUpToDateProgramTypeFromActiveIde() );
 	}
 
-	public void initializeInContainer( org.lgna.story.implementation.ProgramImp.AwtContainerInitializer awtContainerInitializer ) {
+	public void initializeInContainer( ProgramImp.AwtContainerInitializer awtContainerInitializer ) {
 		this.disableRendering();
 		this.getProgramImp().initializeInAwtContainer( awtContainerInitializer );
 	}
 
-	public void initializeInContainer( java.awt.Container awtContainer, int width, int height ) {
+	public void initializeInContainer( Container awtContainer, int width, int height ) {
 		this.disableRendering();
 		this.getProgramImp().initializeInAwtContainer( awtContainer );
 		this.getOnscreenRenderTarget().getAwtComponent().setPreferredSize( new Dimension( width, height ) );
 	}
 
-	public java.awt.Container getContainer() {
+	public Container getContainer() {
 		return this.getOnscreenRenderTarget().getAwtComponent().getParent();
 	}
 

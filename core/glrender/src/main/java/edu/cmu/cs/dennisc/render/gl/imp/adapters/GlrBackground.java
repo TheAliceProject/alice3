@@ -43,18 +43,20 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Background;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrBackground extends GlrElement<edu.cmu.cs.dennisc.scenegraph.Background> {
+public class GlrBackground extends GlrElement<Background> {
 	public void setup( RenderContext rc ) {
 		rc.setClearColor( this.color );
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.color ) {
 			owner.color.getValue().getAsArray( this.color );
 		} else {

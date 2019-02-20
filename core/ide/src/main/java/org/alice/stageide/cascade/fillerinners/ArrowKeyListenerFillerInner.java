@@ -42,13 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.cascade.fillerinners;
 
-public class ArrowKeyListenerFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
+import org.alice.stageide.croquet.models.cascade.adapters.ArrowKeyAdapterFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.event.ArrowKeyPressListener;
+
+import java.util.List;
+
+public class ArrowKeyListenerFillerInner extends ExpressionFillerInner {
 	public ArrowKeyListenerFillerInner() {
-		super( org.lgna.story.event.ArrowKeyPressListener.class );
+		super( ArrowKeyPressListener.class );
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		items.add( org.alice.stageide.croquet.models.cascade.adapters.ArrowKeyAdapterFillIn.getInstance() );
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
+		items.add( ArrowKeyAdapterFillIn.getInstance() );
 	}
 }

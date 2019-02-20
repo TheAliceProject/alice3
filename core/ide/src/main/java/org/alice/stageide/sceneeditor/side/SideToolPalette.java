@@ -42,16 +42,23 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.ToolPaletteCoreComposite;
+import org.lgna.croquet.views.CompositeView;
+import org.lgna.croquet.views.ScrollPane;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SideToolPalette<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
-	public SideToolPalette( java.util.UUID migrationId, boolean initialValue ) {
-		super( migrationId, org.lgna.croquet.Application.DOCUMENT_UI_GROUP, initialValue );
+public abstract class SideToolPalette<V extends CompositeView<?, ?>> extends ToolPaletteCoreComposite<V> {
+	public SideToolPalette( UUID migrationId, boolean initialValue ) {
+		super( migrationId, Application.DOCUMENT_UI_GROUP, initialValue );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 

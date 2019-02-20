@@ -43,13 +43,28 @@
 
 package org.alice.ide.croquet.models.ast.keyed;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ArgumentListProperty;
+import org.lgna.project.ast.JavaKeyedArgument;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public class KeyedBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.ast.JavaKeyedArgument> {
-	private static java.util.Map<org.lgna.project.ast.ArgumentListProperty<org.lgna.project.ast.JavaKeyedArgument>, KeyedBlank> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class KeyedBlank extends CascadeBlank<JavaKeyedArgument> {
+	private static Map<ArgumentListProperty<JavaKeyedArgument>, KeyedBlank> map = Maps.newHashMap();
 
-	public static synchronized KeyedBlank getInstance( org.lgna.project.ast.ArgumentListProperty<org.lgna.project.ast.JavaKeyedArgument> argumentListProperty ) {
+	public static synchronized KeyedBlank getInstance( ArgumentListProperty<JavaKeyedArgument> argumentListProperty ) {
 		KeyedBlank rv = map.get( argumentListProperty );
 		if( rv != null ) {
 			//pass
@@ -60,33 +75,32 @@ public class KeyedBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.a
 		return rv;
 	}
 
-	private static boolean isValidMethod( java.lang.reflect.Method mthd, org.lgna.project.ast.AbstractType<?, ?, ?> valueType ) {
+	private static boolean isValidMethod( Method mthd, AbstractType<?, ?, ?> valueType ) {
 		int modifiers = mthd.getModifiers();
-		if( java.lang.reflect.Modifier.isPublic( modifiers ) && java.lang.reflect.Modifier.isStatic( modifiers ) ) {
+		if( Modifier.isPublic( modifiers ) && Modifier.isStatic( modifiers ) ) {
 			return valueType.isAssignableFrom( mthd.getReturnType() );
 		} else {
 			return false;
 		}
 	}
 
-	private final org.lgna.project.ast.ArgumentListProperty<org.lgna.project.ast.JavaKeyedArgument> argumentListProperty;
+	private final ArgumentListProperty<JavaKeyedArgument> argumentListProperty;
 
-	private KeyedBlank( org.lgna.project.ast.ArgumentListProperty<org.lgna.project.ast.JavaKeyedArgument> argumentListProperty ) {
-		super( java.util.UUID.fromString( "c9b684e5-9e91-4c38-8cdf-ffce14de6a18" ) );
+	private KeyedBlank( ArgumentListProperty<JavaKeyedArgument> argumentListProperty ) {
 		this.argumentListProperty = argumentListProperty;
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.JavaKeyedArgument> blankNode ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = this.argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter().getValueType().getComponentType();
-		org.lgna.project.ast.AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
+	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<JavaKeyedArgument> blankNode ) {
+		AbstractType<?, ?, ?> valueType = this.argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter().getValueType().getComponentType();
+		AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
 		if( keywordFactoryType != null ) {
-			Class<?> cls = ( (org.lgna.project.ast.JavaType)keywordFactoryType ).getClassReflectionProxy().getReification();
-			for( java.lang.reflect.Method mthd : cls.getMethods() ) {
+			Class<?> cls = ( (JavaType)keywordFactoryType ).getClassReflectionProxy().getReification();
+			for( Method mthd : cls.getMethods() ) {
 				if( isValidMethod( mthd, valueType ) ) {
-					org.lgna.project.ast.JavaMethod keyMethod = org.lgna.project.ast.JavaMethod.getInstance( mthd );
+					JavaMethod keyMethod = JavaMethod.getInstance( mthd );
 					boolean isAlreadyFilledIn = false;
-					for( org.lgna.project.ast.JavaKeyedArgument keyedArgument : this.argumentListProperty ) {
+					for( JavaKeyedArgument keyedArgument : this.argumentListProperty ) {
 						if( keyedArgument.getKeyMethod() == keyMethod ) {
 							isAlreadyFilledIn = true;
 							break;
@@ -95,7 +109,7 @@ public class KeyedBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.a
 					if( isAlreadyFilledIn ) {
 						//pass
 					} else {
-						children.add( JavaKeyedArgumentFillIn.getInstance( org.lgna.project.ast.JavaMethod.getInstance( mthd ) ) );
+						children.add( JavaKeyedArgumentFillIn.getInstance( JavaMethod.getInstance( mthd ) ) );
 					}
 				}
 			}

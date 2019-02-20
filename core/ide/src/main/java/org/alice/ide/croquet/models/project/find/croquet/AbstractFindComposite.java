@@ -45,22 +45,33 @@ package org.alice.ide.croquet.models.project.find.croquet;
 import java.util.List;
 import java.util.UUID;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.ide.IDE;
+import org.alice.ide.ProjectDocument;
 import org.alice.ide.croquet.models.project.find.core.FindContentManager;
 import org.alice.ide.croquet.models.project.find.core.SearchResult;
 import org.alice.ide.croquet.models.project.find.core.criteria.AcceptIfNotGenerated;
 import org.alice.ide.croquet.models.project.find.croquet.tree.FindReferencesTreeState;
 import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
 import org.alice.ide.croquet.models.project.find.croquet.views.FindView;
+import org.alice.ide.declarationseditor.DeclarationComposite;
+import org.alice.ide.project.ProjectChangeOfInterestManager;
+import org.alice.ide.project.ProjectDocumentState;
+import org.alice.ide.project.events.ProjectChangeOfInterestListener;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
+import org.lgna.croquet.FrameCompositeWithInternalIsShowingState;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.RefreshableDataSingleSelectListState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.codecs.DefaultItemCodec;
 import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractType;
@@ -73,8 +84,8 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
 /**
  * @author Matt May
  */
-public abstract class AbstractFindComposite extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<FindView> {
-	public static final org.lgna.croquet.Group FIND_COMPOSITE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "609c0bf5-73c3-4987-a2b5-8225c19f7886" ) );
+public abstract class AbstractFindComposite extends FrameCompositeWithInternalIsShowingState<FindView> {
+	public static final Group FIND_COMPOSITE_GROUP = Group.getInstance( UUID.fromString( "609c0bf5-73c3-4987-a2b5-8225c19f7886" ) );
 
 	private final FindContentManager manager = new FindContentManager();
 	private final StringState searchState = createStringState( "searchState" );
@@ -89,7 +100,7 @@ public abstract class AbstractFindComposite extends org.lgna.croquet.FrameCompos
 
 	private final ValueListener<String> searchStateListener = new ValueListener<String>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
+		public void valueChanged( ValueEvent<String> e ) {
 			data.refresh();
 			referenceTreeState.refreshWith( searchResultsState.getValue() );
 			if( data.getItemCount() == 1 ) {
@@ -99,47 +110,47 @@ public abstract class AbstractFindComposite extends org.lgna.croquet.FrameCompos
 		}
 	};
 
-	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+	private final ProjectChangeOfInterestListener projectChangeOfInterestListener = new ProjectChangeOfInterestListener() {
 		@Override
 		public void projectChanged() {
 			refresh();
 		}
 	};
 
-	private final ValueListener<org.alice.ide.ProjectDocument> projectDocumentChangeListener = new ValueListener<org.alice.ide.ProjectDocument>() {
+	private final ValueListener<ProjectDocument> projectDocumentChangeListener = new ValueListener<ProjectDocument>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ProjectDocument> e ) {
+		public void valueChanged( ValueEvent<ProjectDocument> e ) {
 			refresh();
 		}
 	};
 
 	private final ValueListener<SearchResult> searchResultsListener = new ValueListener<SearchResult>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.croquet.models.project.find.core.SearchResult> e ) {
+		public void valueChanged( ValueEvent<SearchResult> e ) {
 			referenceTreeState.refreshWith( e.getNextValue() );
 		}
 	};
 
 	private final ValueListener<SearchTreeNode> referenceTreeListener = new ValueListener<SearchTreeNode>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<SearchTreeNode> e ) {
+		public void valueChanged( ValueEvent<SearchTreeNode> e ) {
 			SearchTreeNode nextValue = e.getNextValue();
 			if( isNavigationEnabledState.getValue() && ( nextValue != null ) ) {
 				if( nextValue.getValue() instanceof Expression ) {
-					IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
+					IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite( DeclarationComposite.getInstance( ( (Expression)nextValue.getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
 					SearchResult searchResults = searchResultsState.getValue();
 					if (searchResults != null) {
 						searchResults.stencilHighlightForReference( (Expression) nextValue.getValue() );
 					}
 				} else {
-					IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getChildren().get( 0 ).getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
+					IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite( DeclarationComposite.getInstance( ( (Expression)nextValue.getChildren().get( 0 ).getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
 					IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().hideIfNecessary();
 				}
 			}
 		}
 	};
 
-	private static final org.lgna.croquet.ItemCodec<SearchResult> SEARCH_RESULT_CODEC = DefaultItemCodec.createInstance( SearchResult.class );
+	private static final ItemCodec<SearchResult> SEARCH_RESULT_CODEC = DefaultItemCodec.createInstance( SearchResult.class );
 	private final RefreshableListData<SearchResult> data = new RefreshableListData<SearchResult>( SEARCH_RESULT_CODEC ) {
 
 		@Override
@@ -151,7 +162,7 @@ public abstract class AbstractFindComposite extends org.lgna.croquet.FrameCompos
 	private final ActionOperation howToAddOperation = createActionOperation( "howToAdd", new Action() {
 
 		@Override
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			//needs work
 			if( searchResultsState.getValue() != null ) {
 				AbstractDeclaration searchObject = searchResultsState.getValue().getDeclaration();
@@ -165,7 +176,7 @@ public abstract class AbstractFindComposite extends org.lgna.croquet.FrameCompos
 		}
 
 	} );
-	private final org.lgna.croquet.RefreshableDataSingleSelectListState<SearchResult> searchResultsState = createRefreshableListState( "searchResultsState", data, -1 );
+	private final RefreshableDataSingleSelectListState<SearchResult> searchResultsState = createRefreshableListState( "searchResultsState", data, -1 );
 
 	private void refresh() {
 		if( this.isActive ) {
@@ -189,8 +200,8 @@ public abstract class AbstractFindComposite extends org.lgna.croquet.FrameCompos
 		super.handlePreActivation();
 		searchState.addNewSchoolValueListener( searchStateListener );
 		searchResultsState.addNewSchoolValueListener( searchResultsListener );
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
-		org.alice.ide.project.ProjectDocumentState.getInstance().addNewSchoolValueListener( this.projectDocumentChangeListener );
+		ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		ProjectDocumentState.getInstance().addNewSchoolValueListener( this.projectDocumentChangeListener );
 		referenceTreeState.addNewSchoolValueListener( referenceTreeListener );
 		this.isActive = true;
 		//		manager.initialize( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType(), getCriteria() );
@@ -202,8 +213,8 @@ public abstract class AbstractFindComposite extends org.lgna.croquet.FrameCompos
 		this.isActive = false;
 		searchState.removeNewSchoolValueListener( searchStateListener );
 		searchResultsState.removeNewSchoolValueListener( searchResultsListener );
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
-		org.alice.ide.project.ProjectDocumentState.getInstance().removeNewSchoolValueListener( this.projectDocumentChangeListener );
+		ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		ProjectDocumentState.getInstance().removeNewSchoolValueListener( this.projectDocumentChangeListener );
 		referenceTreeState.removeNewSchoolValueListener( referenceTreeListener );
 		super.handlePostDeactivation();
 	}
@@ -212,7 +223,7 @@ public abstract class AbstractFindComposite extends org.lgna.croquet.FrameCompos
 		return this.searchState;
 	}
 
-	public org.lgna.croquet.RefreshableDataSingleSelectListState<SearchResult> getSearchResults() {
+	public RefreshableDataSingleSelectListState<SearchResult> getSearchResults() {
 		return this.searchResultsState;
 	}
 
@@ -229,7 +240,7 @@ public abstract class AbstractFindComposite extends org.lgna.croquet.FrameCompos
 	}
 
 	public List<Criterion> getCriteria() {
-		List<Criterion> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+		List<Criterion> rv = Lists.newArrayList();
 		if( !showGenerated ) {
 			rv.add( AcceptIfNotGenerated.getInstance() );
 		}

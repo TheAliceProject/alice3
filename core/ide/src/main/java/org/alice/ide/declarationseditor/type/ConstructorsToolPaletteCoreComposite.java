@@ -42,16 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import org.alice.ide.declarationseditor.type.views.ConstructorsToolPaletteCoreView;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ConstructorsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite<ConstructorsComposite> {
-	public ConstructorsToolPaletteCoreComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "f1dd7570-db0e-43c3-a066-b75e198c63ec" ), true, ConstructorsComposite.getInstance( type ) );
+	public ConstructorsToolPaletteCoreComposite( NamedUserType type ) {
+		super( UUID.fromString( "f1dd7570-db0e-43c3-a066-b75e198c63ec" ), true, ConstructorsComposite.getInstance( type ) );
 	}
 
 	@Override
-	protected org.alice.ide.declarationseditor.type.views.ConstructorsToolPaletteCoreView createView() {
-		return new org.alice.ide.declarationseditor.type.views.ConstructorsToolPaletteCoreView( this );
+	protected ConstructorsToolPaletteCoreView createView() {
+		return new ConstructorsToolPaletteCoreView( this );
 	}
 }

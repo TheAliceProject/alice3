@@ -42,6 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.ClippedZPlane;
+import edu.cmu.cs.dennisc.math.Matrix4x4;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.immutable.MRectangleI;
+import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,55 +71,55 @@ public interface RenderTarget {
 
 	int getSurfaceHeight();
 
-	java.awt.Dimension getSurfaceSize();
+	Dimension getSurfaceSize();
 
 	int getDrawableWidth();
 
 	int getDrawableHeight();
 
-	java.awt.Dimension getDrawableSize();
+	Dimension getDrawableSize();
 
 	String getDescription();
 
 	void setDescription( String description );
 
-	void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	void addSgCamera( AbstractCamera sgCamera );
 
-	void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	void removeSgCamera( AbstractCamera sgCamera );
 
 	void clearSgCameras();
 
-	java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getSgCameras();
+	List<AbstractCamera> getSgCameras();
 
-	edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index );
+	AbstractCamera getSgCameraAt( int index );
 
 	int getSgCameraCount();
 
-	void addRenderTargetListener( edu.cmu.cs.dennisc.render.event.RenderTargetListener listener );
+	void addRenderTargetListener( RenderTargetListener listener );
 
-	void removeRenderTargetListener( edu.cmu.cs.dennisc.render.event.RenderTargetListener listener );
+	void removeRenderTargetListener( RenderTargetListener listener );
 
-	java.util.List<edu.cmu.cs.dennisc.render.event.RenderTargetListener> getRenderTargetListeners();
+	List<RenderTargetListener> getRenderTargetListeners();
 
-	edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	Matrix4x4 getActualProjectionMatrix( AbstractCamera sgCamera );
 
-	edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera );
+	ClippedZPlane getActualPicturePlane( OrthographicCamera sgOrthographicCamera );
 
-	edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera sgFrustumPerspectiveCamera );
+	ClippedZPlane getActualPicturePlane( FrustumPerspectiveCamera sgFrustumPerspectiveCamera );
 
-	edu.cmu.cs.dennisc.math.Angle getActualHorizontalViewingAngle( edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera );
+	Angle getActualHorizontalViewingAngle( SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera );
 
-	edu.cmu.cs.dennisc.math.Angle getActualVerticalViewingAngle( edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera );
+	Angle getActualVerticalViewingAngle( SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera );
 
-	edu.cmu.cs.dennisc.scenegraph.AbstractCamera getCameraAtPixel( int xPixel, int yPixel );
+	AbstractCamera getCameraAtPixel( int xPixel, int yPixel );
 
-	edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	Ray getRayAtPixel( int xPixel, int yPixel, AbstractCamera sgCamera );
 
-	edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel );
+	Ray getRayAtPixel( int xPixel, int yPixel );
 
-	boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	boolean isLetterboxedAsOpposedToDistorted( AbstractCamera sgCamera );
 
-	void setLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted );
+	void setLetterboxedAsOpposedToDistorted( AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted );
 
 	boolean isRenderingEnabled();
 
@@ -123,27 +138,27 @@ public interface RenderTarget {
 	void clearUnusedTextures();
 
 	//todo: remove?
-	edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	Matrix4x4 getActualProjectionMatrix( Matrix4x4 rv, AbstractCamera sgCamera );
 
 	//todo: remove?
 	void release();
 
-	edu.cmu.cs.dennisc.math.immutable.MRectangleI getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	MRectangleI getActualViewport( AbstractCamera sgCamera );
 
-	edu.cmu.cs.dennisc.math.immutable.MRectangleI getSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	MRectangleI getSpecifiedViewport( AbstractCamera sgCamera );
 
-	void setSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, edu.cmu.cs.dennisc.math.immutable.MRectangleI viewport );
-
-	@Deprecated
-	java.awt.Rectangle getActualViewportAsAwtRectangle( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	void setSpecifiedViewport( AbstractCamera sgCamera, MRectangleI viewport );
 
 	@Deprecated
-	java.awt.Rectangle getSpecifiedViewportAsAwtRectangle( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	Rectangle getActualViewportAsAwtRectangle( AbstractCamera sgCamera );
 
 	@Deprecated
-	void setSpecifiedViewportAsAwtRectangle( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle viewport );
+	Rectangle getSpecifiedViewportAsAwtRectangle( AbstractCamera sgCamera );
+
+	@Deprecated
+	void setSpecifiedViewportAsAwtRectangle( AbstractCamera sgCamera, Rectangle viewport );
 
 	//todo: remove?
 	@Deprecated
-	java.awt.Rectangle getActualViewportAsAwtRectangle( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	Rectangle getActualViewportAsAwtRectangle( Rectangle rv, AbstractCamera sgCamera );
 }

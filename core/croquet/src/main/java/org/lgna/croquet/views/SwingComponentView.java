@@ -43,13 +43,22 @@
 
 package org.lgna.croquet.views;
 
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import java.awt.Color;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.event.ActionListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SwingComponentView<J extends javax.swing.JComponent> extends AwtContainerView<J> {
+public abstract class SwingComponentView<J extends JComponent> extends AwtContainerView<J> {
 
 	@Override
-	public void setBackgroundColor( java.awt.Color color ) {
+	public void setBackgroundColor( Color color ) {
 		super.setBackgroundColor( color );
 		this.getAwtComponent().setOpaque( color != null );
 	}
@@ -65,21 +74,21 @@ public abstract class SwingComponentView<J extends javax.swing.JComponent> exten
 	}
 
 	@Override
-	public java.awt.Rectangle getVisibleRectangle() {
+	public Rectangle getVisibleRectangle() {
 		return this.getAwtComponent().getVisibleRect();
 	}
 
-	public java.awt.Insets getInsets() {
+	public Insets getInsets() {
 		return this.getAwtComponent().getInsets();
 	}
 
-	private void scrollRectToVisible( java.awt.Rectangle rect ) {
+	private void scrollRectToVisible( Rectangle rect ) {
 		this.checkEventDispatchThread();
 		this.getAwtComponent().scrollRectToVisible( rect );
 	}
 
 	public final void scrollToVisible() {
-		this.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( this.getAwtComponent() ) );
+		this.scrollRectToVisible( SwingUtilities.getLocalBounds( this.getAwtComponent() ) );
 	}
 
 	public String getToolTipText() {
@@ -91,11 +100,11 @@ public abstract class SwingComponentView<J extends javax.swing.JComponent> exten
 		this.getAwtComponent().setToolTipText( toolTipText );
 	}
 
-	public javax.swing.border.Border getBorder() {
+	public Border getBorder() {
 		return this.getAwtComponent().getBorder();
 	}
 
-	public void setBorder( javax.swing.border.Border border ) {
+	public void setBorder( Border border ) {
 		this.checkEventDispatchThread();
 		this.getAwtComponent().setBorder( border );
 	}
@@ -106,9 +115,9 @@ public abstract class SwingComponentView<J extends javax.swing.JComponent> exten
 	}
 
 	public static enum Condition {
-		WHEN_FOCUSED( javax.swing.JComponent.WHEN_FOCUSED ),
-		WHEN_IN_FOCUSED_WINDOW( javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW ),
-		WHEN_ANCESTOR_OF_FOCUSED_COMPONENT( javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT );
+		WHEN_FOCUSED( JComponent.WHEN_FOCUSED ),
+		WHEN_IN_FOCUSED_WINDOW( JComponent.WHEN_IN_FOCUSED_WINDOW ),
+		WHEN_ANCESTOR_OF_FOCUSED_COMPONENT( JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT );
 		private int internal;
 
 		private Condition( int internal ) {
@@ -121,11 +130,11 @@ public abstract class SwingComponentView<J extends javax.swing.JComponent> exten
 
 		public static Condition valueOf( int constant ) {
 			switch( constant ) {
-			case javax.swing.JComponent.WHEN_FOCUSED:
+			case JComponent.WHEN_FOCUSED:
 				return WHEN_FOCUSED;
-			case javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW:
+			case JComponent.WHEN_IN_FOCUSED_WINDOW:
 				return WHEN_IN_FOCUSED_WINDOW;
-			case javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT:
+			case JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT:
 				return WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
 			default:
 				return null;
@@ -133,11 +142,11 @@ public abstract class SwingComponentView<J extends javax.swing.JComponent> exten
 		}
 	}
 
-	public void registerKeyboardAction( java.awt.event.ActionListener actionListener, javax.swing.KeyStroke keyStroke, Condition condition ) {
+	public void registerKeyboardAction( ActionListener actionListener, KeyStroke keyStroke, Condition condition ) {
 		this.getAwtComponent().registerKeyboardAction( actionListener, keyStroke, condition.getInternal() );
 	}
 
-	public void unregisterKeyboardAction( javax.swing.KeyStroke keyStroke ) {
+	public void unregisterKeyboardAction( KeyStroke keyStroke ) {
 		this.getAwtComponent().unregisterKeyboardAction( keyStroke );
 	}
 

@@ -43,12 +43,17 @@
 
 package org.alice.ide.projecturi;
 
+import org.alice.stageide.openprojectpane.components.TemplatesTabContentPane;
+import org.alice.stageide.openprojectpane.models.TemplateUriState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TemplatesTab extends ListUriTab {
 	public TemplatesTab() {
-		super( java.util.UUID.fromString( "e658dbd1-c58b-42ec-9338-49f186aecc71" ) );
+		super( UUID.fromString( "e658dbd1-c58b-42ec-9338-49f186aecc71" ) );
 	}
 
 	@Override
@@ -56,17 +61,12 @@ public class TemplatesTab extends ListUriTab {
 	}
 
 	@Override
-	public org.alice.stageide.openprojectpane.models.TemplateUriState getListSelectionState() {
-		return org.alice.stageide.openprojectpane.models.TemplateUriState.getInstance();
+	public TemplateUriState getListSelectionState() {
+		return TemplateUriState.getInstance();
 	}
 
 	@Override
-	public final String getTextForZeroProjects() {
-		return "there are no template projects.";
-	}
-
-	@Override
-	protected org.alice.stageide.openprojectpane.components.TemplatesTabContentPane createView() {
-		return new org.alice.stageide.openprojectpane.components.TemplatesTabContentPane( this );
+	protected TemplatesTabContentPane createView() {
+		return new TemplatesTabContentPane( this );
 	}
 }

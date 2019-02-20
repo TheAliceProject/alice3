@@ -42,6 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.video.vlcj;
 
+import com.sun.jna.Native;
+import com.sun.jna.NativeLibrary;
+import edu.cmu.cs.dennisc.app.ApplicationRoot;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.timing.Timer;
+import edu.cmu.cs.dennisc.video.VideoPlayer;
+import uk.co.caprica.vlcj.binding.LibVlc;
+import uk.co.caprica.vlcj.runtime.RuntimeUtil;
+
+import java.io.File;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,23 +65,23 @@ public class VlcjUtilities {
 			//pass
 		} else {
 			isInitializationAttempted = true;
-			edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "initialize vlcj" );
+			Timer timer = new Timer( "initialize vlcj" );
 			timer.start();
-			String vlcLibraryName = uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName();
+			String vlcLibraryName = RuntimeUtil.getLibVlcLibraryName();
 			boolean isWorthAttemptingToLoad;
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+			if( SystemUtilities.isLinux() ) {
 				isWorthAttemptingToLoad = true;
 			} else {
-				java.io.File archDirectory = edu.cmu.cs.dennisc.app.ApplicationRoot.getArchitectureSpecificDirectory();
-				java.io.File vlcDirectory = new java.io.File( archDirectory, "libvlc" );
-				java.io.File toBeSearchedDirectory;
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-					toBeSearchedDirectory = new java.io.File( vlcDirectory, "lib" );
+				File archDirectory = ApplicationRoot.getArchitectureSpecificDirectory();
+				File vlcDirectory = new File( archDirectory, "libvlc" );
+				File toBeSearchedDirectory;
+				if( SystemUtilities.isMac() ) {
+					toBeSearchedDirectory = new File( vlcDirectory, "lib" );
 				} else {
 					toBeSearchedDirectory = vlcDirectory;
 				}
 				if( toBeSearchedDirectory.exists() ) {
-					com.sun.jna.NativeLibrary.addSearchPath( vlcLibraryName, toBeSearchedDirectory.getAbsolutePath() );
+					NativeLibrary.addSearchPath( vlcLibraryName, toBeSearchedDirectory.getAbsolutePath() );
 					isWorthAttemptingToLoad = true;
 				} else {
 					isWorthAttemptingToLoad = false;
@@ -79,7 +90,7 @@ public class VlcjUtilities {
 
 			if( isWorthAttemptingToLoad ) {
 				try {
-					com.sun.jna.Native.loadLibrary( vlcLibraryName, uk.co.caprica.vlcj.binding.LibVlc.class );
+					Native.loadLibrary( vlcLibraryName, LibVlc.class );
 					isInitialized = true;
 				} catch( UnsatisfiedLinkError ule ) {
 					//uk.co.caprica.vlcj.discovery.NativeDiscovery nativeDiscovery = new uk.co.caprica.vlcj.discovery.NativeDiscovery();
@@ -93,7 +104,7 @@ public class VlcjUtilities {
 		}
 	}
 
-	public static edu.cmu.cs.dennisc.video.VideoPlayer createVideoPlayer() {
+	public static VideoPlayer createVideoPlayer() {
 		initializeIfNecessary();
 		if( isInitialized ) {
 			return new VlcjVideoPlayer();

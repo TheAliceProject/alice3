@@ -42,10 +42,15 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import org.lgna.croquet.icon.ResolutionIndependantIconFactory;
+
+import javax.swing.Icon;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SceneIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+public class SceneIconFactory extends ResolutionIndependantIconFactory {
 	private static class SingletonHolder {
 		private static SceneIconFactory instance = new SceneIconFactory();
 	}
@@ -59,12 +64,12 @@ public class SceneIconFactory extends org.lgna.croquet.icon.ResolutionIndependan
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+	protected Icon createIcon( Dimension size ) {
 		return new SceneIcon( size );
 	}
 
 	public void markAllIconsDirty() {
-		for( javax.swing.Icon icon : this.getMapValues() ) {
+		for( Icon icon : this.getMapValues() ) {
 			if( icon instanceof SceneIcon ) {
 				SceneIcon sceneIcon = (SceneIcon)icon;
 				sceneIcon.markDirty();

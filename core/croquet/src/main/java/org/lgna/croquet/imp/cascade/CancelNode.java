@@ -43,21 +43,18 @@
 
 package org.lgna.croquet.imp.cascade;
 
+import org.lgna.croquet.CascadeCancel;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CancelNode<F> extends AbstractItemNode<F, Void, org.lgna.croquet.CascadeCancel<F>> {
-	public static <F> CancelNode<F> createInstance( org.lgna.croquet.CascadeCancel<F> model ) {
+public class CancelNode<F> extends AbstractItemNode<F, Void, CascadeCancel<F>> {
+	public static <F> CancelNode<F> createInstance( CascadeCancel<F> model ) {
 		return new CancelNode<F>( model );
 	}
 
-	private CancelNode( org.lgna.croquet.CascadeCancel<F> model ) {
+	private CancelNode( CascadeCancel<F> model ) {
 		super( model );
-	}
-
-	@Override
-	public int getBlankStepCount() {
-		return 0;
 	}
 
 	@Override

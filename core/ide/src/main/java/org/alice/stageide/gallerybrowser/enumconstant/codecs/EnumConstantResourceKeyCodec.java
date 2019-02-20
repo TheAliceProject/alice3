@@ -42,28 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.enumconstant.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.stageide.modelresource.EnumConstantResourceKey;
+import org.lgna.croquet.ItemCodec;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum EnumConstantResourceKeyCodec implements org.lgna.croquet.ItemCodec<org.alice.stageide.modelresource.EnumConstantResourceKey> {
+public enum EnumConstantResourceKeyCodec implements ItemCodec<EnumConstantResourceKey> {
 	SINGLETON;
 	@Override
-	public Class<org.alice.stageide.modelresource.EnumConstantResourceKey> getValueClass() {
-		return org.alice.stageide.modelresource.EnumConstantResourceKey.class;
+	public Class<EnumConstantResourceKey> getValueClass() {
+		return EnumConstantResourceKey.class;
 	}
 
 	@Override
-	public org.alice.stageide.modelresource.EnumConstantResourceKey decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public EnumConstantResourceKey decodeValue( BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.stageide.modelresource.EnumConstantResourceKey value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, EnumConstantResourceKey value ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, org.alice.stageide.modelresource.EnumConstantResourceKey value ) {
+	public void appendRepresentation( StringBuilder sb, EnumConstantResourceKey value ) {
 		sb.append( value );
 	}
 }

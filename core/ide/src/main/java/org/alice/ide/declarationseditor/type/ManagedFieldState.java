@@ -43,13 +43,20 @@
 
 package org.alice.ide.declarationseditor.type;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.declarationseditor.type.data.ManagedFieldData;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ManagedFieldState extends AbstractManagedFieldState {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, ManagedFieldState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<NamedUserType, ManagedFieldState> map = Maps.newHashMap();
 
-	public static synchronized ManagedFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
+	public static synchronized ManagedFieldState getInstance( NamedUserType type ) {
 		ManagedFieldState rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -60,7 +67,7 @@ public class ManagedFieldState extends AbstractManagedFieldState {
 		return rv;
 	}
 
-	private ManagedFieldState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "23fc9ecb-3f89-44ef-baca-c1ad9ce1fbbe" ), new org.alice.ide.declarationseditor.type.data.ManagedFieldData( type ) );
+	private ManagedFieldState( NamedUserType type ) {
+		super( UUID.fromString( "23fc9ecb-3f89-44ef-baca-c1ad9ce1fbbe" ), new ManagedFieldData( type ) );
 	}
 }

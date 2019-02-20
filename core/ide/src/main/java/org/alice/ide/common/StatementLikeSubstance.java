@@ -42,33 +42,44 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import org.alice.ide.ThemeUtilities;
+import org.lgna.croquet.DragModel;
+import org.lgna.project.ast.Statement;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import java.awt.Graphics2D;
+import java.awt.LayoutManager;
+import java.awt.Paint;
+import java.awt.geom.RoundRectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class StatementLikeSubstance extends NodeLikeSubstance {
-	private final Class<? extends org.lgna.project.ast.Statement> statementCls;
+	private final Class<? extends Statement> statementCls;
 	private final int axis;
 
-	protected static Class<? extends org.lgna.project.ast.Statement> getClassFor( org.lgna.project.ast.Statement statement ) {
+	protected static Class<? extends Statement> getClassFor( Statement statement ) {
 		if( statement != null ) {
 			return statement.getClass();
 		} else {
-			return org.lgna.project.ast.Statement.class;
+			return Statement.class;
 		}
 	}
 
-	public StatementLikeSubstance( org.lgna.croquet.DragModel model, Class<? extends org.lgna.project.ast.Statement> statementCls, int axis ) {
+	public StatementLikeSubstance( DragModel model, Class<? extends Statement> statementCls, int axis ) {
 		super( model );
 		this.statementCls = statementCls;
 		this.axis = axis;
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
-		return new javax.swing.BoxLayout( jComponent, this.axis );
+	protected LayoutManager createLayoutManager( JPanel jComponent ) {
+		return new BoxLayout( jComponent, this.axis );
 	}
 
-	public Class<? extends org.lgna.project.ast.Statement> getStatementCls() {
+	public Class<? extends Statement> getStatementCls() {
 		return this.statementCls;
 	}
 
@@ -100,22 +111,22 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	}
 
 	@Override
-	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
-		return org.alice.ide.ThemeUtilities.getActiveTheme().getPaintFor( this.statementCls, x, y, width, height );
+	protected Paint getBackgroundPaint( int x, int y, int width, int height ) {
+		return ThemeUtilities.getActiveTheme().getPaintFor( this.statementCls, x, y, width, height );
 	}
 
 	@Override
-	protected java.awt.geom.RoundRectangle2D.Float createShape( int x, int y, int width, int height ) {
-		return new java.awt.geom.RoundRectangle2D.Float( x, y, width - 1, height - 1, 8, 8 );
+	protected RoundRectangle2D.Float createShape( int x, int y, int width, int height ) {
+		return new RoundRectangle2D.Float( x, y, width - 1, height - 1, 8, 8 );
 	}
 
 	@Override
-	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected void fillBounds( Graphics2D g2, int x, int y, int width, int height ) {
 		g2.fill( this.createShape( x, y, width, height ) );
 	}
 
 	@Override
-	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected void paintPrologue( Graphics2D g2, int x, int y, int width, int height ) {
 		this.fillBounds( g2, x, y, width, height );
 	}
 

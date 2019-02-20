@@ -42,35 +42,40 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.animation.affine;
 
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ApplyRotationAboutArbitraryAxisAnimation extends AbstractApplyRotationAnimation {
-	private edu.cmu.cs.dennisc.math.Vector3 m_axis = new edu.cmu.cs.dennisc.math.Vector3();
+	private Vector3 m_axis = new Vector3();
 
 	public ApplyRotationAboutArbitraryAxisAnimation() {
 		m_axis.setNaN();
 	}
 
-	public ApplyRotationAboutArbitraryAxisAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Angle angle, edu.cmu.cs.dennisc.math.Vector3 axis ) {
+	public ApplyRotationAboutArbitraryAxisAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Angle angle, Vector3 axis ) {
 		super( sgSubject, sgAsSeenBy, angle );
 		setAxis( axis );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 accessAxis() {
+	public Vector3 accessAxis() {
 		return m_axis;
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 getAxis( edu.cmu.cs.dennisc.math.Vector3 rv ) {
+	public Vector3 getAxis( Vector3 rv ) {
 		rv.set( m_axis );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector3 getAxis() {
-		return getAxis( new edu.cmu.cs.dennisc.math.Vector3() );
+	public Vector3 getAxis() {
+		return getAxis( new Vector3() );
 	}
 
-	public void setAxis( edu.cmu.cs.dennisc.math.Vector3 axis ) {
+	public void setAxis( Vector3 axis ) {
 		m_axis.set( axis );
 	}
 

@@ -42,13 +42,16 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.dialog.views;
 
+import org.lgna.croquet.imp.dialog.InputDialogContentComposite;
+import org.lgna.croquet.views.BoxUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class InputDialogContentPane extends GatedCommitDialogContentPane {
-	public InputDialogContentPane( org.lgna.croquet.imp.dialog.InputDialogContentComposite composite ) {
+	public InputDialogContentPane( InputDialogContentComposite composite ) {
 		super( composite );
-		this.getControlLine().addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalGlue() );
+		this.getControlLine().addComponent( BoxUtilities.createHorizontalGlue() );
 		this.getControlLine().addComponent( this.getLeadingCommitCancelButton() );
 		this.getControlLine().addComponent( this.getTrailingCommitCancelButton() );
 	}

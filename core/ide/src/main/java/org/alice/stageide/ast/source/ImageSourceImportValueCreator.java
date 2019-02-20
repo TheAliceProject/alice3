@@ -43,10 +43,16 @@
 
 package org.alice.stageide.ast.source;
 
+import org.alice.ide.ast.importers.ImageResourceImporter;
+import org.lgna.common.resources.ImageResource;
+import org.lgna.story.ImageSource;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImageSourceImportValueCreator extends SourceImportValueCreator<org.lgna.story.ImageSource, org.lgna.common.resources.ImageResource> {
+public class ImageSourceImportValueCreator extends SourceImportValueCreator<ImageSource, ImageResource> {
 	private static class SingletonHolder {
 		private static ImageSourceImportValueCreator instance = new ImageSourceImportValueCreator();
 	}
@@ -56,6 +62,6 @@ public class ImageSourceImportValueCreator extends SourceImportValueCreator<org.
 	}
 
 	private ImageSourceImportValueCreator() {
-		super( java.util.UUID.fromString( "cd545fef-0c4a-4e97-affb-dbf9388803cc" ), org.alice.ide.ast.importers.ImageResourceImporter.getInstance(), org.lgna.story.ImageSource.class, org.lgna.common.resources.ImageResource.class );
+		super( UUID.fromString( "cd545fef-0c4a-4e97-affb-dbf9388803cc" ), ImageResourceImporter.getInstance(), ImageSource.class, ImageResource.class );
 	}
 }

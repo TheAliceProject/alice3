@@ -43,13 +43,20 @@
 
 package org.alice.ide.ast.rename;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.name.validators.TypeNameValidator;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RenameTypeComposite extends RenameDeclarationComposite<org.lgna.project.ast.NamedUserType> {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, RenameTypeComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class RenameTypeComposite extends RenameDeclarationComposite<NamedUserType> {
+	private static Map<NamedUserType, RenameTypeComposite> map = Maps.newHashMap();
 
-	public static synchronized RenameTypeComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+	public static synchronized RenameTypeComposite getInstance( NamedUserType type ) {
 		assert type != null;
 		RenameTypeComposite rv = map.get( type );
 		if( rv != null ) {
@@ -61,7 +68,7 @@ public class RenameTypeComposite extends RenameDeclarationComposite<org.lgna.pro
 		return rv;
 	}
 
-	private RenameTypeComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "d4d98a8c-c59d-4949-bc34-ea59d7952c83" ), new org.alice.ide.name.validators.TypeNameValidator( type ), type );
+	private RenameTypeComposite( NamedUserType type ) {
+		super( UUID.fromString( "d4d98a8c-c59d-4949-bc34-ea59d7952c83" ), new TypeNameValidator(), type );
 	}
 }

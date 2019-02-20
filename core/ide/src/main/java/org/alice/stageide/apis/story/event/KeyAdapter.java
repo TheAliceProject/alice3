@@ -45,17 +45,19 @@ package org.alice.stageide.apis.story.event;
 import org.lgna.project.ast.Lambda;
 import org.lgna.project.virtualmachine.LambdaContext;
 import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.story.event.KeyEvent;
+import org.lgna.story.event.KeyPressListener;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KeyAdapter extends AbstractAdapter implements org.lgna.story.event.KeyPressListener {
+public class KeyAdapter extends AbstractAdapter implements KeyPressListener {
 	public KeyAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
 		super( context, lambda, userInstance );
 	}
 
 	@Override
-	public void keyPressed( org.lgna.story.event.KeyEvent e ) {
+	public void keyPressed( KeyEvent e ) {
 		invokeEntryPoint( e );
 	}
 }

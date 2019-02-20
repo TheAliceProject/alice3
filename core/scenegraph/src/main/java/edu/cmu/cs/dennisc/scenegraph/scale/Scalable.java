@@ -42,11 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.scale;
 
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import edu.cmu.cs.dennisc.scenegraph.Element;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Scalable {
-	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key<Scalable> KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "Scalable.KEY" );
+	public static final Element.Key<Scalable> KEY = Element.Key.createInstance( "Scalable.KEY" );
 
 	public Resizer[] getResizers();
 
@@ -54,7 +57,7 @@ public interface Scalable {
 
 	public void setValueForResizer( Resizer resizer, double value );
 
-	public void addScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener );
+	public void addScaleListener( PropertyListener listener );
 
-	public void removeScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener );
+	public void removeScaleListener( PropertyListener listener );
 }

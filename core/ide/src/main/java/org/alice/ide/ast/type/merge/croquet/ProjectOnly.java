@@ -42,16 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.lgna.project.ast.Member;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ProjectOnly<M extends org.lgna.project.ast.Member> {
+public final class ProjectOnly<M extends Member> {
 	private final MemberHub<M> projectHub;
 
 	public ProjectOnly( M projectMember ) {
 		this.projectHub = new MemberHub<M>( projectMember, true ) {
 			@Override
-			public org.alice.ide.ast.type.merge.croquet.ActionStatus getActionStatus() {
+			public ActionStatus getActionStatus() {
 				return ActionStatus.KEEP_UNIQUE;
 			}
 		};

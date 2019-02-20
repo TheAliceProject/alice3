@@ -42,20 +42,31 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration.views;
 
+import org.alice.ide.ast.declaration.InitialPropertyValuesToolPaletteCoreComposite;
+import org.alice.ide.croquet.components.ExpressionDropDown;
+import org.alice.ide.x.AstI18nFactory;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.croquet.views.FormPanel;
+import org.lgna.croquet.views.LabeledFormRow;
+import org.lgna.project.ast.Expression;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InitialPropertyValuesToolPaletteCoreView extends org.lgna.croquet.views.FormPanel {
-	public InitialPropertyValuesToolPaletteCoreView( org.alice.ide.ast.declaration.InitialPropertyValuesToolPaletteCoreComposite composite ) {
+public class InitialPropertyValuesToolPaletteCoreView extends FormPanel {
+	public InitialPropertyValuesToolPaletteCoreView( InitialPropertyValuesToolPaletteCoreComposite composite ) {
 		super( composite );
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
-		org.alice.ide.ast.declaration.InitialPropertyValuesToolPaletteCoreComposite composite = (org.alice.ide.ast.declaration.InitialPropertyValuesToolPaletteCoreComposite)this.getComposite();
-		org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.PreviewAstI18nFactory.getInstance();
-		for( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> state : composite.getInitialPropertyValueExpressionStates() ) {
-			rows.add( new org.lgna.croquet.views.LabeledFormRow( state.getSidekickLabel(), new org.alice.ide.croquet.components.ExpressionDropDown( state, factory ), false ) );
+	protected void appendRows( List<LabeledFormRow> rows ) {
+		InitialPropertyValuesToolPaletteCoreComposite composite = (InitialPropertyValuesToolPaletteCoreComposite)this.getComposite();
+		AstI18nFactory factory = PreviewAstI18nFactory.getInstance();
+		for( CustomItemState<Expression> state : composite.getInitialPropertyValueExpressionStates() ) {
+			rows.add( new LabeledFormRow( state.getSidekickLabel(), new ExpressionDropDown( state, factory ), false ) );
 		}
 	}
 }

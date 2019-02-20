@@ -42,36 +42,45 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+
+import javax.swing.JEditorPane;
+import javax.swing.plaf.basic.BasicEditorPaneUI;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.html.HTMLDocument;
+import java.awt.Color;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class HtmlMultiLineLabel extends MultiLineLabel<javax.swing.JEditorPane> {
-	public HtmlMultiLineLabel( String text, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
-		super( new javax.swing.text.html.HTMLDocument(), text, fontScalar, textAttributes );
+public class HtmlMultiLineLabel extends MultiLineLabel<JEditorPane> {
+	public HtmlMultiLineLabel( String text, float fontScalar, TextAttribute<?>... textAttributes ) {
+		super( new HTMLDocument(), text, fontScalar, textAttributes );
 	}
 
-	public HtmlMultiLineLabel( String text, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public HtmlMultiLineLabel( String text, TextAttribute<?>... textAttributes ) {
 		this( text, 1.0f, textAttributes );
 	}
 
-	public HtmlMultiLineLabel( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public HtmlMultiLineLabel( TextAttribute<?>... textAttributes ) {
 		this( "", textAttributes );
 	}
 
 	@Override
-	protected javax.swing.JEditorPane createJTextComponent( javax.swing.text.AbstractDocument document ) {
+	protected JEditorPane createJTextComponent( AbstractDocument document ) {
 		//todo: investigate
 		//String text = "";
 		String text = this.getText();
-		javax.swing.JEditorPane rv = new javax.swing.JEditorPane( "text/html", text ) {
+		JEditorPane rv = new JEditorPane( "text/html", text ) {
 			@Override
-			public java.awt.Dimension getPreferredSize() {
+			public Dimension getPreferredSize() {
 				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 			}
 
 			@Override
-			public java.awt.Dimension getMaximumSize() {
-				java.awt.Dimension rv = super.getMaximumSize();
+			public Dimension getMaximumSize() {
+				Dimension rv = super.getMaximumSize();
 				if( HtmlMultiLineLabel.this.isMaximumSizeClampedToPreferredSize() ) {
 					rv.setSize( this.getPreferredSize() );
 				}
@@ -79,13 +88,13 @@ public class HtmlMultiLineLabel extends MultiLineLabel<javax.swing.JEditorPane> 
 			}
 
 			@Override
-			public java.awt.Color getBackground() {
+			public Color getBackground() {
 				return getDesiredBackgroundColor( this.getParent() );
 			}
 
 			@Override
 			public void updateUI() {
-				this.setUI( new javax.swing.plaf.basic.BasicEditorPaneUI() );
+				this.setUI( new BasicEditorPaneUI() );
 			}
 		};
 		//todo: investigate

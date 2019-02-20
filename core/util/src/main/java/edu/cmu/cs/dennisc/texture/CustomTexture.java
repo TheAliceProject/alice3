@@ -42,6 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.texture;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+
+import java.awt.Graphics2D;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,17 +53,17 @@ public abstract class CustomTexture extends Texture {
 	public CustomTexture() {
 	}
 
-	public CustomTexture( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public CustomTexture( BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
 	@Override
-	public abstract edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy getMipMapGenerationPolicy();
+	public abstract MipMapGenerationPolicy getMipMapGenerationPolicy();
 
-	public abstract void layoutIfNecessary( java.awt.Graphics2D g2 );
+	public abstract void layoutIfNecessary( Graphics2D g2 );
 
 	@Override
-	public abstract void paint( java.awt.Graphics2D g2, int width, int height );
+	public abstract void paint( Graphics2D g2, int width, int height );
 
 	@Override
 	public abstract boolean isAnimated();

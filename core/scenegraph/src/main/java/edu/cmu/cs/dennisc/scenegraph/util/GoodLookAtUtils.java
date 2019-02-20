@@ -42,22 +42,30 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GoodLookAtUtils {
-	private static edu.cmu.cs.dennisc.math.AffineMatrix4x4 createLookAtMatrix( double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ ) {
-		edu.cmu.cs.dennisc.math.Vector3 f = new edu.cmu.cs.dennisc.math.Vector3( centerX - eyeX, centerY - eyeY, centerZ - eyeZ );
+	private static AffineMatrix4x4 createLookAtMatrix( double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ ) {
+		Vector3 f = new Vector3( centerX - eyeX, centerY - eyeY, centerZ - eyeZ );
 		f.normalize();
 
-		edu.cmu.cs.dennisc.math.Vector3 up = new edu.cmu.cs.dennisc.math.Vector3( upX, upY, upZ );
+		Vector3 up = new Vector3( upX, upY, upZ );
 		up.normalize();
 
-		edu.cmu.cs.dennisc.math.Vector3 s = edu.cmu.cs.dennisc.math.Vector3.createCrossProduct( f, up );
+		Vector3 s = Vector3.createCrossProduct( f, up );
 
-		edu.cmu.cs.dennisc.math.Vector3 u = edu.cmu.cs.dennisc.math.Vector3.createCrossProduct( s, f );
+		Vector3 u = Vector3.createCrossProduct( s, f );
 
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+		AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
 		m.orientation.right.set( s );
 		m.orientation.up.set( u );
 		m.orientation.right.set( -f.x, -f.y, -f.z );
@@ -67,39 +75,39 @@ public class GoodLookAtUtils {
 		return m;
 	}
 
-	private static edu.cmu.cs.dennisc.math.AffineMatrix4x4 createLookAtMatrix( edu.cmu.cs.dennisc.math.Point3 eye, edu.cmu.cs.dennisc.math.Point3 center, edu.cmu.cs.dennisc.math.Vector3 up ) {
+	private static AffineMatrix4x4 createLookAtMatrix( Point3 eye, Point3 center, Vector3 up ) {
 		return createLookAtMatrix( eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z );
 	}
 
-	public static double calculateGoodLookAtDistance( edu.cmu.cs.dennisc.math.AxisAlignedBox axisAlignedBox, edu.cmu.cs.dennisc.math.AffineMatrix4x4 visualAbsoluteTransform, edu.cmu.cs.dennisc.math.Angle verticalViewingAngle, double aspectRatio, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	public static double calculateGoodLookAtDistance( AxisAlignedBox axisAlignedBox, AffineMatrix4x4 visualAbsoluteTransform, Angle verticalViewingAngle, double aspectRatio, AbstractCamera sgCamera ) {
 		final double THRESHOLD = 100.0;
 		if( axisAlignedBox.getWidth() > THRESHOLD ) {
 			return Double.NaN;
 		} else {
-			edu.cmu.cs.dennisc.math.Point3[] localPoints = axisAlignedBox.getPoints();
-			edu.cmu.cs.dennisc.math.Point3[] transformedPoints = new edu.cmu.cs.dennisc.math.Point3[ localPoints.length ];
+			Point3[] localPoints = axisAlignedBox.getPoints();
+			Point3[] transformedPoints = new Point3[ localPoints.length ];
 			for( int i = 0; i < localPoints.length; i++ ) {
 				transformedPoints[ i ] = visualAbsoluteTransform.createTransformed( localPoints[ i ] );
 			}
 
-			edu.cmu.cs.dennisc.math.Point3 averageAbsolutePoint = edu.cmu.cs.dennisc.math.Point3.createZero();
-			for( edu.cmu.cs.dennisc.math.Point3 absolutePoint : transformedPoints ) {
+			Point3 averageAbsolutePoint = Point3.createZero();
+			for( Point3 absolutePoint : transformedPoints ) {
 				averageAbsolutePoint.add( absolutePoint );
 			}
 			averageAbsolutePoint.divide( transformedPoints.length );
 
-			for( edu.cmu.cs.dennisc.math.Point3 absolutePoint : transformedPoints ) {
+			for( Point3 absolutePoint : transformedPoints ) {
 				absolutePoint.subtract( averageAbsolutePoint );
 			}
 
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+			AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
 			final boolean IS_STRAIGHT_ON_VIEWING_DESIRED = true;
 			if( IS_STRAIGHT_ON_VIEWING_DESIRED ) {
 				//pass
 			} else {
 
 				//todo: investigate
-				edu.cmu.cs.dennisc.math.AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation();
+				AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation();
 
 				m = createLookAtMatrix( cameraAbsolute.translation, visualAbsoluteTransform.translation, cameraAbsolute.orientation.up );
 
@@ -114,7 +122,7 @@ public class GoodLookAtUtils {
 			double sineVertical = Math.sin( halfVerticalInRadians );
 			double cosineVertical = Math.cos( halfVerticalInRadians );
 
-			for( edu.cmu.cs.dennisc.math.Point3 p : transformedPoints ) {
+			for( Point3 p : transformedPoints ) {
 				double opposite = p.y;
 				double hypotenuse = opposite / sineVertical;
 				double adjacent = hypotenuse * cosineVertical;
@@ -126,7 +134,7 @@ public class GoodLookAtUtils {
 			double sineHorizontal = Math.sin( halfHorizontalInRadians );
 			double cosineHorizontal = Math.cos( halfHorizontalInRadians );
 
-			for( edu.cmu.cs.dennisc.math.Point3 p : transformedPoints ) {
+			for( Point3 p : transformedPoints ) {
 				double opposite = p.x;
 				double hypotenuse = opposite / sineHorizontal;
 				double adjacent = hypotenuse * cosineHorizontal;
@@ -146,9 +154,9 @@ public class GoodLookAtUtils {
 		}
 	}
 
-	public static double calculateGoodLookAtDistance( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, edu.cmu.cs.dennisc.math.Angle verticalViewingAngle, double aspectRatio, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		edu.cmu.cs.dennisc.math.AxisAlignedBox axisAlignedBox = sgVisual.getAxisAlignedMinimumBoundingBox();
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 visualAbsolute = sgVisual.getAbsoluteTransformation();
+	public static double calculateGoodLookAtDistance( Visual sgVisual, Angle verticalViewingAngle, double aspectRatio, AbstractCamera sgCamera ) {
+		AxisAlignedBox axisAlignedBox = sgVisual.getAxisAlignedMinimumBoundingBox();
+		AffineMatrix4x4 visualAbsolute = sgVisual.getAbsoluteTransformation();
 		return calculateGoodLookAtDistance( axisAlignedBox, visualAbsolute, verticalViewingAngle, aspectRatio, sgCamera );
 	}
 

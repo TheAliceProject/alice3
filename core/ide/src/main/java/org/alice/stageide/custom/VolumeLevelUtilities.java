@@ -43,6 +43,12 @@
 
 package org.alice.stageide.custom;
 
+import org.lgna.croquet.AbstractComposite;
+import org.lgna.croquet.BoundedIntegerState;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,19 +57,24 @@ public class VolumeLevelUtilities {
 	private static final int INITIAL_VALUE = 100;
 	private static final int MAXIMUM = 200;
 
-	public static org.lgna.croquet.BoundedIntegerState.Details createDetails() {
-		return new org.lgna.croquet.AbstractComposite.BoundedIntegerDetails().initialValue( INITIAL_VALUE ).minimum( MINIMUM ).maximum( MAXIMUM );
+	public static BoundedIntegerState.Details createDetails() {
+		return new AbstractComposite.BoundedIntegerDetails().initialValue( INITIAL_VALUE ).minimum( MINIMUM ).maximum( MAXIMUM );
 	}
 
 	public static double toDouble( int value ) {
-		java.math.BigDecimal decimal = new java.math.BigDecimal( value );
+		BigDecimal decimal = new BigDecimal( value );
 		decimal = decimal.movePointLeft( 2 );
 		return decimal.doubleValue();
 	}
 
 	public static int toInt( double value ) {
-		java.math.BigDecimal decimal = new java.math.BigDecimal( value, new java.math.MathContext( java.math.BigDecimal.ROUND_HALF_DOWN ) );
-		decimal = decimal.movePointRight( 2 );
-		return decimal.intValue();
+		if( Double.isFinite( value ) ) {
+			BigDecimal decimal = new BigDecimal( value, new MathContext( BigDecimal.ROUND_HALF_DOWN ) );
+			decimal = decimal.movePointRight( 2 );
+			return decimal.intValue();
+		} else {
+			// NaN ==> 0, POSITIVE_INFINITY ==> Integer.MAX_VALUE, NEGATIVE_INFINITY ==> Integer.MIN_VALUE
+			return (int) value;
+		}
 	}
 }

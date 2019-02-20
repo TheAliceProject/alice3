@@ -43,13 +43,27 @@
 
 package org.alice.ide.ast.draganddrop.statement;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.annotations.AddEventListenerTemplate;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.JavaMethod;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, ProcedureInvocationTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<AbstractMethod, ProcedureInvocationTemplateDragModel> map = Maps.newHashMap();
 
-	public static synchronized ProcedureInvocationTemplateDragModel getInstance( org.lgna.project.ast.AbstractMethod method ) {
+	public static synchronized ProcedureInvocationTemplateDragModel getInstance( AbstractMethod method ) {
 		ProcedureInvocationTemplateDragModel rv = map.get( method );
 		if( rv != null ) {
 			//pass
@@ -60,33 +74,30 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 		return rv;
 	}
 
-	private org.lgna.project.ast.AbstractMethod method;
+	private AbstractMethod method;
 
-	private ProcedureInvocationTemplateDragModel( org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocationStatement( method ) );
+	private ProcedureInvocationTemplateDragModel( AbstractMethod method ) {
+		super( UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ), ExpressionStatement.class, IncompleteAstUtilities.createIncompleteMethodInvocationStatement( method ) );
 		this.method = method;
 		assert this.method.isProcedure();
-
-		this.addContextFactory( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() );
-		this.addContextFactory( org.alice.ide.members.MembersComposite.getInstance().getTabState() );
 	}
 
 	@Override
 	public boolean isAddEventListenerLikeSubstance() {
-		if( this.method instanceof org.lgna.project.ast.JavaMethod ) {
-			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)this.method;
-			return javaMethod.isAnnotationPresent( org.lgna.project.annotations.AddEventListenerTemplate.class );
+		if( this.method instanceof JavaMethod ) {
+			JavaMethod javaMethod = (JavaMethod)this.method;
+			return javaMethod.isAnnotationPresent( AddEventListenerTemplate.class );
 		} else {
 			return false;
 		}
 	}
 
-	public org.lgna.project.ast.AbstractMethod getMethod() {
+	public AbstractMethod getMethod() {
 		return this.method;
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade.getInstance( blockStatementIndexPair, this.method );
+	public Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
+		return ProcedureInvocationInsertCascade.getInstance( blockStatementIndexPair, this.method );
 	}
 }

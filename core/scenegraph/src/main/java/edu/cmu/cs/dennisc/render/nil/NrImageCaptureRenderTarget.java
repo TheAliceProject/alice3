@@ -42,26 +42,32 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.nil;
 
+import edu.cmu.cs.dennisc.render.ImageCaptureRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NrImageCaptureRenderTarget extends NrRenderTarget implements edu.cmu.cs.dennisc.render.ImageCaptureRenderTarget {
-	public NrImageCaptureRenderTarget( int width, int height, edu.cmu.cs.dennisc.render.RenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+public class NrImageCaptureRenderTarget extends NrRenderTarget implements ImageCaptureRenderTarget {
+	public NrImageCaptureRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
 		super( requestedCapabilities );
-		this.surfaceSize = new java.awt.Dimension( width, height );
+		this.surfaceSize = new Dimension( width, height );
 		this.renderTargetToShareContextWith = renderTargetToShareContextWith;
 	}
 
 	@Override
-	public java.awt.Dimension getSurfaceSize() {
+	public Dimension getSurfaceSize() {
 		return this.surfaceSize;
 	}
 
 	@Override
-	public java.awt.Dimension getDrawableSize() {
+	public Dimension getDrawableSize() {
 		return this.surfaceSize;
 	}
 
-	private final java.awt.Dimension surfaceSize;
-	private final edu.cmu.cs.dennisc.render.RenderTarget renderTargetToShareContextWith;
+	private final Dimension surfaceSize;
+	private final RenderTarget renderTargetToShareContextWith;
 }

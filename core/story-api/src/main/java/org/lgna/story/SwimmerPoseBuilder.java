@@ -42,13 +42,14 @@
  */
 package org.lgna.story;
 
+import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.resources.JointId;
 
 /**
  * @author user
  */
-public class SwimmerPoseBuilder extends PoseBuilder<org.lgna.story.SSwimmer, SwimmerPose> {
-	public SwimmerPoseBuilder joint( org.lgna.story.resources.JointId jointId, org.lgna.story.Orientation orientation ) {
+public class SwimmerPoseBuilder extends PoseBuilder<SSwimmer, SwimmerPose> {
+	public SwimmerPoseBuilder joint( JointId jointId, Orientation orientation ) {
 		this.addJointIdQuaternionPair( jointId, orientation );
 		return this;
 	}
@@ -59,7 +60,7 @@ public class SwimmerPoseBuilder extends PoseBuilder<org.lgna.story.SSwimmer, Swi
 	}
 
 	@Override
-	protected org.lgna.story.SwimmerPose build( org.lgna.story.implementation.JointIdTransformationPair[] buffer ) {
+	protected SwimmerPose build( JointIdTransformationPair[] buffer ) {
 		return new SwimmerPose( buffer );
 	}
 }

@@ -42,14 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.members.components.templates;
 
+import org.alice.ide.ast.rename.RenameFieldComposite;
+import org.alice.ide.croquet.models.ast.DeleteFieldOperation;
+import org.lgna.croquet.PredeterminedMenuModel;
+import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class FieldMenu extends org.lgna.croquet.PredeterminedMenuModel {
-	public FieldMenu( org.lgna.project.ast.UserField field ) {
+/* package-private */class FieldMenu extends PredeterminedMenuModel {
+	public FieldMenu( UserField field ) {
 		super(
-				java.util.UUID.fromString( "525cb5c8-1490-4468-8eca-cee0affff602" ),
-				org.alice.ide.ast.rename.RenameFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+				UUID.fromString( "525cb5c8-1490-4468-8eca-cee0affff602" ),
+				RenameFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel(),
+				DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 	}
 }

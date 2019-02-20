@@ -42,25 +42,35 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite;
 import org.alice.ide.identifier.IdentifierNameGenerator;
 import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.Color;
+import org.lgna.story.Paint;
+import org.lgna.story.SModel;
+import org.lgna.story.SetOpacity;
+import org.lgna.story.SetPaint;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddModelManagedFieldComposite extends org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite {
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> paintState = this.createInitialPropertyValueExpressionState( "paintState", org.lgna.story.Color.WHITE, org.lgna.story.SModel.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> opacityState = this.createInitialPropertyValueExpressionState( "opacityState", 1.0, org.lgna.story.SModel.class, "setOpacity", Number.class, org.lgna.story.SetOpacity.Detail[].class );
+public abstract class AddModelManagedFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
+	private final CustomItemState<Expression> paintState = this.createInitialPropertyValueExpressionState( "paintState", Color.WHITE, SModel.class, "setPaint", Paint.class, SetPaint.Detail[].class );
+	private final CustomItemState<Expression> opacityState = this.createInitialPropertyValueExpressionState( "opacityState", 1.0, SModel.class, "setOpacity", Number.class, SetOpacity.Detail[].class );
 
-	public AddModelManagedFieldComposite( java.util.UUID id, Class<? extends org.lgna.story.SModel> cls ) {
+	public AddModelManagedFieldComposite( UUID id, Class<? extends SModel> cls ) {
 		super( id, cls );
 	}
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getPaintState() {
+	public CustomItemState<Expression> getPaintState() {
 		return this.paintState;
 	}
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getOpacityState() {
+	public CustomItemState<Expression> getOpacityState() {
 		return this.opacityState;
 	}
 

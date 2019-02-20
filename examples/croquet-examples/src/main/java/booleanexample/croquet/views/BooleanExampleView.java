@@ -42,24 +42,33 @@
  */
 package booleanexample.croquet.views;
 
+import booleanexample.croquet.BooleanExampleComposite;
+import org.lgna.croquet.views.BorderPanel;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JButton;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanExampleView extends org.lgna.croquet.views.BorderPanel {
-	public BooleanExampleView( final booleanexample.croquet.BooleanExampleComposite composite ) {
+public class BooleanExampleView extends BorderPanel {
+	public BooleanExampleView( final BooleanExampleComposite composite ) {
 		super( composite );
 		this.addCenterComponent( composite.getIsAliveState().createCheckBox() );
 
 		final boolean IS_DEBUG = true;
 		if( IS_DEBUG ) {
-			javax.swing.Action action = new javax.swing.AbstractAction() {
+			Action action = new AbstractAction() {
 				@Override
-				public void actionPerformed( java.awt.event.ActionEvent e ) {
+				public void actionPerformed( ActionEvent e ) {
 					composite.getIsAliveState().setValueTransactionlessly( composite.getIsAliveState().getValue() == false );
 				}
 			};
-			action.putValue( javax.swing.Action.NAME, "setValueTransactionlessly" );
-			this.getAwtComponent().add( new javax.swing.JButton( action ), java.awt.BorderLayout.PAGE_END );
+			action.putValue( Action.NAME, "setValueTransactionlessly" );
+			this.getAwtComponent().add( new JButton( action ), BorderLayout.PAGE_END );
 		}
 
 	}

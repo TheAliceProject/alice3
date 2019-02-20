@@ -43,15 +43,27 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.Model;
+
+import javax.swing.Action;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.Icon;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import java.awt.Insets;
+import java.util.Enumeration;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractButton<J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Model> extends ViewController<J, M> {
-	private static final javax.swing.ButtonModel MODEL_FOR_NULL = new javax.swing.DefaultButtonModel();
+public abstract class AbstractButton<J extends javax.swing.AbstractButton, M extends Model> extends ViewController<J, M> {
+	private static final ButtonModel MODEL_FOR_NULL = new DefaultButtonModel();
 
 	private final String uiDefaultsName;
 	private boolean isIconClobbered;
-	private javax.swing.Icon clobberIcon;
+	private Icon clobberIcon;
 
 	public AbstractButton( M model, String uiDefaultsName ) {
 		super( model );
@@ -66,11 +78,11 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 		this.isIconClobbered = isIconClobbered;
 	}
 
-	public javax.swing.Icon getClobberIcon() {
+	public Icon getClobberIcon() {
 		return this.clobberIcon;
 	}
 
-	public void setClobberIcon( javax.swing.Icon clobberIcon ) {
+	public void setClobberIcon( Icon clobberIcon ) {
 		this.clobberIcon = clobberIcon;
 		this.isIconClobbered = true;
 	}
@@ -84,9 +96,9 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 		this.getAwtComponent().setIconTextGap( iconTextGap );
 	}
 
-	private static final java.awt.Insets ZERO_MARGIN = new java.awt.Insets( 0, 0, 0, 0 );
+	private static final Insets ZERO_MARGIN = new Insets( 0, 0, 0, 0 );
 
-	public void tightenUpMargin( java.awt.Insets margin ) {
+	public void tightenUpMargin( Insets margin ) {
 		this.checkEventDispatchThread();
 		javax.swing.AbstractButton jButton = this.getAwtComponent();
 		if( "javax.swing.plaf.synth.SynthButtonUI".equals( jButton.getUI().getClass().getName() ) ) {
@@ -102,22 +114,22 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 					} else {
 						right = PAD;
 					}
-					margin = new java.awt.Insets( PAD, PAD, PAD, right );
+					margin = new Insets( PAD, PAD, PAD, right );
 				}
-				javax.swing.UIDefaults uiDefaults = new javax.swing.UIDefaults();
+				UIDefaults uiDefaults = new UIDefaults();
 				uiDefaults.put( this.uiDefaultsName + ".contentMargins", margin );
 				this.getAwtComponent().putClientProperty( "Nimbus.Overrides", uiDefaults );
 			} else {
-				java.util.Enumeration<Object> enm = javax.swing.UIManager.getDefaults().keys();
+				Enumeration<Object> enm = UIManager.getDefaults().keys();
 				while( enm.hasMoreElements() ) {
 					Object key = enm.nextElement();
 					if( key != null ) {
 						if( key.toString().endsWith( ".contentMargins" ) ) {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.errln( key, javax.swing.UIManager.get( key ) );
+							Logger.errln( key, UIManager.get( key ) );
 						}
 					}
 				}
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "uiDefaultsName is null:", this );
+				Logger.severe( "uiDefaultsName is null:", this );
 			}
 		} else {
 			this.setMargin( margin != null ? margin : ZERO_MARGIN );
@@ -128,7 +140,7 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 		this.tightenUpMargin( null );
 	}
 
-	/* package-private */void setSwingButtonModel( javax.swing.ButtonModel model ) {
+	/* package-private */void setSwingButtonModel( ButtonModel model ) {
 		if( model != null ) {
 			//pass
 		} else {
@@ -140,7 +152,7 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 		}
 	}
 
-	/* package-private */void setAction( javax.swing.Action action ) {
+	/* package-private */void setAction( Action action ) {
 		if( action != this.getAwtComponent().getAction() ) {
 			this.checkEventDispatchThread();
 			this.getAwtComponent().setAction( action );
@@ -172,11 +184,11 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 		this.getAwtComponent().setVerticalAlignment( verticalAlignment.getInternal() );
 	}
 
-	public java.awt.Insets getMargin() {
+	public Insets getMargin() {
 		return this.getAwtComponent().getMargin();
 	}
 
-	public void setMargin( java.awt.Insets margin ) {
+	public void setMargin( Insets margin ) {
 		this.checkEventDispatchThread();
 		this.getAwtComponent().setMargin( margin );
 	}

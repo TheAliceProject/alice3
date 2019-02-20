@@ -43,23 +43,36 @@
 
 package org.lgna.story.implementation.sims2;
 
+import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
+import edu.cmu.cs.dennisc.nebulous.Person;
+import org.lgna.story.Color;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.resources.sims2.EyeColor;
+import org.lgna.story.resources.sims2.Face;
+import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.Hair;
+import org.lgna.story.resources.sims2.LifeStage;
+import org.lgna.story.resources.sims2.Outfit;
+import org.lgna.story.resources.sims2.PersonResource;
+import org.lgna.story.resources.sims2.SkinTone;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.dennisc.nebulous.Person> {
-	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
-	private org.lgna.story.resources.sims2.Gender gender;
-	private org.lgna.story.resources.sims2.Outfit outfit;
-	private org.lgna.story.resources.sims2.SkinTone skinTone;
-	private org.lgna.story.Color skinColor;
+public class NebulousPersonVisualData extends NebulousVisualData<Person> {
+	private final LifeStage lifeStage;
+	private Gender gender;
+	private Outfit outfit;
+	private SkinTone skinTone;
+	private Color skinColor;
 	private double obesityLevel;
-	private org.lgna.story.resources.sims2.Hair hair;
-	private org.lgna.story.resources.sims2.EyeColor eyeColor;
-	private org.lgna.story.resources.sims2.Face face;
+	private Hair hair;
+	private EyeColor eyeColor;
+	private Face face;
 
 	private int atomicCount = 0;
 
-	public static NebulousPersonVisualData createInstance( org.lgna.story.resources.sims2.PersonResource personResource ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+	public static NebulousPersonVisualData createInstance( PersonResource personResource ) throws LicenseRejectedException {
 		NebulousPersonVisualData rv = new NebulousPersonVisualData( personResource.getLifeStage() );
 		rv.pushAtomic();
 		try {
@@ -77,12 +90,12 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 		return rv;
 	}
 
-	public NebulousPersonVisualData( org.lgna.story.resources.sims2.LifeStage lifeStage ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
-		super( new edu.cmu.cs.dennisc.nebulous.Person( lifeStage ) );
+	public NebulousPersonVisualData( LifeStage lifeStage ) throws LicenseRejectedException {
+		super( new Person( lifeStage ) );
 		this.lifeStage = lifeStage;
 	}
 
-	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
+	public LifeStage getLifeStage() {
 		return this.lifeStage;
 	}
 
@@ -100,22 +113,22 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 		}
 	}
 
-	public org.lgna.story.resources.sims2.Gender getGender() {
+	public Gender getGender() {
 		return this.gender;
 	}
 
-	public void setGender( org.lgna.story.resources.sims2.Gender gender ) {
+	public void setGender( Gender gender ) {
 		this.gender = gender;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().synchronizedSetGender( this.gender );
 		}
 	}
 
-	public org.lgna.story.resources.sims2.Outfit getOutfit() {
+	public Outfit getOutfit() {
 		return this.outfit;
 	}
 
-	public void setOutfit( org.lgna.story.resources.sims2.Outfit outfit ) {
+	public void setOutfit( Outfit outfit ) {
 		this.outfit = outfit;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().synchronizedSetOutfit( this.outfit );
@@ -123,26 +136,26 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 	}
 
 	private Object getValueForSkinTone() {
-		java.awt.Color awtColor = org.lgna.story.EmployeesOnly.getAwtColor( this.skinColor );
+		java.awt.Color awtColor = EmployeesOnly.getAwtColor( this.skinColor );
 		return awtColor.getRGB();
 	}
 
-	public org.lgna.story.Color getSkinColor() {
+	public Color getSkinColor() {
 		return this.skinColor;
 	}
 
-	public void setSkinColor( org.lgna.story.Color skinColor ) {
+	public void setSkinColor( Color skinColor ) {
 		this.skinColor = skinColor;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().synchronizedSetSkinTone( this.getValueForSkinTone() );
 		}
 	}
 
-	public org.lgna.story.resources.sims2.SkinTone getSkinTone() {
+	public SkinTone getSkinTone() {
 		return this.skinTone;
 	}
 
-	public void setSkinTone( org.lgna.story.resources.sims2.SkinTone skinTone ) {
+	public void setSkinTone( SkinTone skinTone ) {
 		this.skinTone = skinTone;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().synchronizedSetSkinTone( this.skinTone );
@@ -160,29 +173,29 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 		}
 	}
 
-	public org.lgna.story.resources.sims2.Hair getHair() {
+	public Hair getHair() {
 		return this.hair;
 	}
 
-	public void setHair( org.lgna.story.resources.sims2.Hair hair ) {
+	public void setHair( Hair hair ) {
 		this.hair = hair;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().synchronizedSetHair( this.hair );
 		}
 	}
 
-	public org.lgna.story.resources.sims2.EyeColor getEyeColor() {
+	public EyeColor getEyeColor() {
 		return this.eyeColor;
 	}
 
-	public void setEyeColor( org.lgna.story.resources.sims2.EyeColor eyeColor ) {
+	public void setEyeColor( EyeColor eyeColor ) {
 		this.eyeColor = eyeColor;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().synchronizedSetEyeColor( this.eyeColor );
 		}
 	}
 
-	public void setFace( org.lgna.story.resources.sims2.Face face ) {
+	public void setFace( Face face ) {
 		this.face = face;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().synchronizedSetFace( this.face );

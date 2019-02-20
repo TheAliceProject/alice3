@@ -44,11 +44,15 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
+import org.alice.interact.MovementType;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.condition.MovementDescription;
+import org.alice.interact.debug.DebugInteractUtilities;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle3D;
@@ -71,7 +75,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	public HandlelessObjectRotateDragManipulator() {
 		super();
 		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() ) {
+		if( DebugInteractUtilities.isDebugEnabled() ) {
 			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 	}
@@ -89,8 +93,8 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	@Override
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
-		if( ( this.camera != null ) && ( this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) ) {
-			this.setManipulatedTransformable( (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)this.camera.getParent() );
+		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) ) {
+			this.setManipulatedTransformable( (AbstractTransformable)this.camera.getParent() );
 		}
 	}
 
@@ -105,12 +109,12 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget() {
+	public OnscreenRenderTarget getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
@@ -139,7 +143,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 		this.setMainManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Rotate, null, this.manipulatedTransformable ) );
 		this.clearManipulationEvents();
 		if( this.rotateAxisDirection != null ) {
-			this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription( this.rotateAxisDirection, org.alice.interact.MovementType.STOOD_UP ), this.manipulatedTransformable ) );
+			this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription( this.rotateAxisDirection, MovementType.STOOD_UP ), this.manipulatedTransformable ) );
 		}
 	}
 
@@ -211,7 +215,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 
 	private Vector3 rotateAxis;
 	private MovementDirection rotateAxisDirection;
-	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
+	private OnscreenRenderTarget onscreenRenderTarget;
 
 	private Point initialPoint;
 	private Vector3 absoluteRotationAxis;

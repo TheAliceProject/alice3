@@ -43,6 +43,7 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.java.lang.ParameterAnnotation;
 import org.lgna.story.fontattributes.Attribute;
 import org.lgna.story.fontattributes.FamilyAttribute;
 import org.lgna.story.fontattributes.FamilyConstant;
@@ -53,6 +54,10 @@ import org.lgna.story.fontattributes.SizeValue;
 import org.lgna.story.fontattributes.WeightAttribute;
 import org.lgna.story.fontattributes.WeightConstant;
 
+import java.awt.font.TextAttribute;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,9 +65,9 @@ public final class Font {
 	private java.awt.Font m_awtFont;
 
 	public Font(
-			@edu.cmu.cs.dennisc.java.lang.ParameterAnnotation( isVariable = true )
+			@ParameterAnnotation( isVariable = true )
 			Attribute<?>... attributes ) {
-		java.util.Map<java.awt.font.TextAttribute, Object> map = new java.util.HashMap<java.awt.font.TextAttribute, Object>();
+		Map<TextAttribute, Object> map = new HashMap<TextAttribute, Object>();
 		for( Attribute<?> attribute : attributes ) {
 			map.put( attribute.getKey(), attribute.getValue() );
 		}

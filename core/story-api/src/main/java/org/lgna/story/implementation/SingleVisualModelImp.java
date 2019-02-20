@@ -47,14 +47,16 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SingleVisualModelImp extends VisualScaleModelImp {
-	public SingleVisualModelImp( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
-		this.sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { sgVisual };
+	public SingleVisualModelImp( Visual sgVisual ) {
+		this.sgVisuals = new Visual[] { sgVisual };
 		this.sgVisuals[ 0 ].frontFacingAppearance.setValue( this.sgAppearances[ 0 ] );
 		this.sgVisuals[ 0 ].setParent( this.getSgComposite() );
 		this.putInstance( this.sgVisuals[ 0 ] );
@@ -62,17 +64,17 @@ public abstract class SingleVisualModelImp extends VisualScaleModelImp {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
+	public Visual[] getSgVisuals() {
 		return this.sgVisuals;
 	}
 
 	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances() {
+	protected final SimpleAppearance[] getSgPaintAppearances() {
 		return this.sgAppearances;
 	}
 
 	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
+	protected final SimpleAppearance[] getSgOpacityAppearances() {
 		return this.getSgPaintAppearances();
 	}
 
@@ -83,6 +85,6 @@ public abstract class SingleVisualModelImp extends VisualScaleModelImp {
 		return new PickResult( sgSource, sgVisual, true, sgGeometry, -1, Point3.createNaN() );
 	}
 
-	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] { new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance() };
+	private final Visual[] sgVisuals;
+	private final TexturedAppearance[] sgAppearances = new TexturedAppearance[] { new TexturedAppearance() };
 }

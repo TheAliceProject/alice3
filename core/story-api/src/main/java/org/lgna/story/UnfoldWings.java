@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author Alice Build
  */
 public class UnfoldWings extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = UnfoldWings.class )
+	@ClassTemplate( keywordFactoryCls = UnfoldWings.class )
 	public static interface Detail {
 	}
 

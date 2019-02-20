@@ -42,14 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.help;
 
+import org.alice.ide.browser.ImmutableBrowserOperation;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class HelpBrowserOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
+public final class HelpBrowserOperation extends ImmutableBrowserOperation {
 	//public static final String HELP_URL_SPEC = "http://help.alice.org/";
 	public static final String HELP_URL_SPEC = "http://alice3.pbworks.com/";
 
 	public HelpBrowserOperation() {
-		super( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ), HELP_URL_SPEC );
+		super( UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ), HELP_URL_SPEC );
 	}
 }

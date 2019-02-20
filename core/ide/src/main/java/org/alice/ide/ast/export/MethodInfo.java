@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.ast.export;
 
+import org.lgna.project.ast.UserMethod;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInfo extends MemberInfo<org.lgna.project.ast.UserMethod> {
-	public MethodInfo( ProjectInfo projectInfo, org.lgna.project.ast.UserMethod method ) {
+public class MethodInfo extends MemberInfo<UserMethod> {
+	public MethodInfo( ProjectInfo projectInfo, UserMethod method ) {
 		super( projectInfo, method );
 	}
 }

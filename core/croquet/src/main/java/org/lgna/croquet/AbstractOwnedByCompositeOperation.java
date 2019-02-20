@@ -42,16 +42,18 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.UserActivity;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwningComposite<?>> extends Operation {
-	public AbstractOwnedByCompositeOperation( Group group, java.util.UUID migrationId, org.lgna.croquet.Initializer<C> initializer ) {
+	public AbstractOwnedByCompositeOperation( Group group, UUID migrationId, Initializer<C> initializer ) {
 		super( group, migrationId );
 		this.initializer = initializer;
 	}
-
-	protected abstract OwnedByCompositeOperationSubKey getSubKey();
 
 	protected abstract C getComposite();
 
@@ -61,26 +63,17 @@ public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwnin
 	@Override
 	protected abstract String getSubKeyForLocalization();
 
-	private org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfDesired( C composite ) {
-		org.lgna.croquet.history.TransactionHistory transactionHistory;
-		if( composite.isSubTransactionHistoryRequired() ) {
-			transactionHistory = new org.lgna.croquet.history.TransactionHistory();
-		} else {
-			transactionHistory = null;
-		}
-		return transactionHistory;
-	}
-
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected final void performInActivity( UserActivity userActivity ) {
 		C composite = this.getComposite();
-		org.lgna.croquet.history.CompletionStep<AbstractOwnedByCompositeOperation<C>> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, this.createTransactionHistoryIfDesired( composite ) );
+		// TODO set indicator on how to handle additional steps, the former isSubTransactionHistoryRequired()
+		// which was true for all except ModalFrameComposite
+		userActivity.setCompletionModel( this );
 		if( this.initializer != null ) {
 			this.initializer.initialize( composite );
 		}
-		OwnedByCompositeOperationSubKey subKey = this.getSubKey();
-		composite.perform( subKey, completionStep );
+		composite.perform( userActivity);
 	}
 
-	private final org.lgna.croquet.Initializer<C> initializer;
+	private final Initializer<C> initializer;
 }

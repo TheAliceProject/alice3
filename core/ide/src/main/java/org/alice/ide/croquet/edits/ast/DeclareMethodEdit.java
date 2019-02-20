@@ -42,60 +42,78 @@
  *******************************************************************************/
 package org.alice.ide.croquet.edits.ast;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.alice.ide.declarationseditor.CodeComposite;
+import org.alice.ide.declarationseditor.DeclarationComposite;
+import org.alice.ide.declarationseditor.DeclarationTabState;
+import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.UserType;
+
+import javax.swing.undo.CannotUndoException;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit<org.lgna.croquet.CompletionModel> {
-	private org.lgna.project.ast.UserType<?> declaringType;
+public final class DeclareMethodEdit extends AbstractEdit<CompletionModel> {
+	private UserType<?> declaringType;
 	private final String methodName;
-	private org.lgna.project.ast.AbstractType<?, ?, ?> returnType;
-	private org.lgna.project.ast.BlockStatement body;
+	private AbstractType<?, ?, ?> returnType;
+	private BlockStatement body;
 
-	private transient org.lgna.project.ast.UserMethod method;
-	private transient org.alice.ide.declarationseditor.DeclarationComposite prevDeclarationComposite;
+	private transient UserMethod method;
+	private transient DeclarationComposite prevDeclarationComposite;
 
-	public DeclareMethodEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserType<?> declaringType, String methodName, org.lgna.project.ast.AbstractType<?, ?, ?> returnType, org.lgna.project.ast.BlockStatement body ) {
-		super( completionStep );
+	public DeclareMethodEdit( UserActivity userActivity, UserType<?> declaringType, String methodName, AbstractType<?, ?, ?> returnType, BlockStatement body ) {
+		super( userActivity );
 		this.declaringType = declaringType;
 		this.methodName = methodName;
 		this.returnType = returnType;
 		this.body = body;
 	}
 
-	public DeclareMethodEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserType<?> declaringType, String methodName, org.lgna.project.ast.AbstractType<?, ?, ?> returnType ) {
-		this( completionStep, declaringType, methodName, returnType, new org.lgna.project.ast.BlockStatement() );
+	public DeclareMethodEdit( UserActivity userActivity, UserType<?> declaringType, String methodName, AbstractType<?, ?, ?> returnType ) {
+		this( userActivity, declaringType, methodName, returnType, new BlockStatement() );
 	}
 
-	public DeclareMethodEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public DeclareMethodEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).decodeValue( binaryDecoder );
+		this.declaringType = NodeCodec.getInstance( UserType.class ).decodeValue( binaryDecoder );
 		this.methodName = binaryDecoder.decodeString();
-		this.returnType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ).decodeValue( binaryDecoder );
-		this.body = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).decodeValue( binaryDecoder );
+		this.returnType = NodeCodec.getInstance( AbstractType.class ).decodeValue( binaryDecoder );
+		this.body = NodeCodec.getInstance( BlockStatement.class ).decodeValue( binaryDecoder );
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).encodeValue( binaryEncoder, this.declaringType );
+		NodeCodec.getInstance( UserType.class ).encodeValue( binaryEncoder, this.declaringType );
 		binaryEncoder.encode( this.methodName );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ).encodeValue( binaryEncoder, this.returnType );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).encodeValue( binaryEncoder, this.body );
+		NodeCodec.getInstance( AbstractType.class ).encodeValue( binaryEncoder, this.returnType );
+		NodeCodec.getInstance( BlockStatement.class ).encodeValue( binaryEncoder, this.body );
 	}
 
 	@Override
 	protected void preCopy() {
 		super.preCopy();
-		org.alice.ide.croquet.codecs.NodeCodec.addNodeToGlobalMap( this.body );
+		NodeCodec.addNodeToGlobalMap( this.body );
 	}
 
 	@Override
-	protected void postCopy( org.lgna.croquet.edits.AbstractEdit<?> result ) {
-		org.alice.ide.croquet.codecs.NodeCodec.removeNodeFromGlobalMap( this.body );
+	protected void postCopy( AbstractEdit<?> result ) {
+		NodeCodec.removeNodeFromGlobalMap( this.body );
 		super.postCopy( result );
 	}
 
-	public org.lgna.project.ast.UserType<?> getDeclaringType() {
+	public UserType<?> getDeclaringType() {
 		return this.declaringType;
 	}
 
@@ -103,7 +121,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 		return this.methodName;
 	}
 
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getReturnType() {
+	public AbstractType<?, ?, ?> getReturnType() {
 		return this.returnType;
 	}
 
@@ -111,7 +129,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 	//		return this.method;
 	//	}
 
-	public void EPIC_HACK_FOR_TUTORIAL_GENERATION_setMethod( org.lgna.project.ast.UserMethod method ) {
+	public void EPIC_HACK_FOR_TUTORIAL_GENERATION_setMethod( UserMethod method ) {
 		this.method = method;
 	}
 
@@ -119,12 +137,12 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 	protected final void doOrRedoInternal( boolean isDo ) {
 		if( isDo ) {
 			//todo: create new every time?
-			this.method = new org.lgna.project.ast.UserMethod( this.methodName, this.returnType, new org.lgna.project.ast.UserParameter[ 0 ], this.body );
+			this.method = new UserMethod( this.methodName, this.returnType, new UserParameter[ 0 ], this.body );
 		}
-		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+		DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		this.prevDeclarationComposite = declarationTabState.getValue();
 		this.declaringType.methods.add( this.method );
-		declarationTabState.setValueTransactionlessly( org.alice.ide.declarationseditor.CodeComposite.getInstance( this.method ) );
+		declarationTabState.setValueTransactionlessly( CodeComposite.getInstance( this.method ) );
 	}
 
 	@Override
@@ -132,7 +150,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 		int index = this.declaringType.methods.indexOf( this.method );
 		if( index != -1 ) {
 			this.declaringType.methods.remove( index );
-			org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+			DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 			if( this.prevDeclarationComposite != null ) {
 				if( declarationTabState.containsItem( this.prevDeclarationComposite ) ) {
 					declarationTabState.setValueTransactionlessly( this.prevDeclarationComposite );
@@ -140,7 +158,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 			}
 			declarationTabState.removeAllOrphans();
 		} else {
-			throw new javax.swing.undo.CannotUndoException();
+			throw new CannotUndoException();
 		}
 	}
 

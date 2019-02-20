@@ -43,29 +43,30 @@
 
 package org.alice.ide.croquet.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.alice.ide.croquet.models.ResponsibleModel;
+import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.UserActivity;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.AbstractEdit<M> {
-	public DependentEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
-		super( completionStep );
+public final class DependentEdit<M extends CompletionModel> extends AbstractEdit<M> {
+	public DependentEdit( UserActivity userActivity ) {
+		super( userActivity );
 	}
 
-	public DependentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public DependentEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
 
-	private org.alice.ide.croquet.models.ResponsibleModel getResponsibleModel() {
-		org.lgna.croquet.history.CompletionStep<?> step = this.getCompletionStep();
-		if( step != null ) {
-			org.lgna.croquet.CompletionModel model = step.getModel();
-			if( model instanceof org.alice.ide.croquet.models.ResponsibleModel ) {
-				return (org.alice.ide.croquet.models.ResponsibleModel)model;
-			} else {
-				throw new RuntimeException();
-			}
+	private ResponsibleModel getResponsibleModel() {
+		CompletionModel model = getModel();
+		if( model instanceof ResponsibleModel ) {
+			return (ResponsibleModel)model;
 		} else {
-			throw new NullPointerException();
+			throw new RuntimeException();
 		}
 	}
 

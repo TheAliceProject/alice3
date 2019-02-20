@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.recyclebin.icons;
 
+import javax.swing.Icon;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
@@ -57,7 +58,7 @@ import java.awt.geom.GeneralPath;
  * This class has been automatically generated using svg2java
  * 
  */
-public class FullTrashCanSymbolicStyleIcon implements javax.swing.Icon {
+public class FullTrashCanSymbolicStyleIcon implements Icon {
 
 	private float origAlpha = 1.0f;
 

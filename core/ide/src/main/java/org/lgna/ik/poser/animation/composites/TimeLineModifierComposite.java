@@ -51,8 +51,7 @@ import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.KeyFrameStyles;
 import org.lgna.ik.poser.animation.TimeLineListener;
@@ -60,6 +59,8 @@ import org.lgna.ik.poser.animation.edits.DeleteKeyFrameFromTimeLineEdit;
 import org.lgna.ik.poser.animation.edits.ModifyTimeOfExistingKeyFrameInTimeLineEdit;
 import org.lgna.ik.poser.animation.views.TimeLineModifierView;
 import org.lgna.story.Pose;
+
+import java.util.UUID;
 
 /**
  * @author Matt May
@@ -72,7 +73,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private final SingleSelectListState<KeyFrameStyles, ?> styleSelectionState = this.createImmutableListStateForEnum( "styleState", KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY );
 
 	public TimeLineModifierComposite( TimeLineComposite composite ) {
-		super( java.util.UUID.fromString( "b2c9fe7b-4566-4368-a5cc-2458b24a2375" ) );
+		super( UUID.fromString( "b2c9fe7b-4566-4368-a5cc-2458b24a2375" ) );
 		this.composite = composite;
 		currentTime = createBoundedDoubleState( "currentTime",
 				new BoundedDoubleDetails().initialValue( 0 ).minimum( 0 ).maximum( composite.getTimeLine().getEndTime() ).stepSize( .1 ) );
@@ -123,11 +124,11 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private final ValueListener<KeyFrameStyles> styleListener = new ValueListener<KeyFrameStyles>() {
 
 		@Override
-		public void changing( State<KeyFrameStyles> state, KeyFrameStyles prevValue, KeyFrameStyles nextValue, boolean isAdjusting ) {
+		public void changing( State<KeyFrameStyles> state, KeyFrameStyles prevValue, KeyFrameStyles nextValue ) {
 		}
 
 		@Override
-		public void changed( State<KeyFrameStyles> state, KeyFrameStyles prevValue, KeyFrameStyles nextValue, boolean isAdjusting ) {
+		public void changed( State<KeyFrameStyles> state, KeyFrameStyles prevValue, KeyFrameStyles nextValue ) {
 			selectedKeyFrame.setStyle( nextValue );
 		}
 	};
@@ -135,20 +136,18 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private final ValueListener<Double> timeListener = new ValueListener<Double>() {
 
 		@Override
-		public void changing( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+		public void changing( State<Double> state, Double prevValue, Double nextValue ) {
 		}
 
 		@Override
-		public void changed( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+		public void changed( State<Double> state, Double prevValue, Double nextValue ) {
 			//			assert isAdjusting == ( prevValue == nextValue );
 			//			if( isAdjusting ) {
 			//			System.out.println( "time changed" );
 			if( ( selectedKeyFrame != null ) ) {
-				org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-				org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
-				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
-
-				step.commitAndInvokeDo( new ModifyTimeOfExistingKeyFrameInTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame, nextValue, prevValue ) );
+				// TODO not use Application.getActiveInstance().acquireOpenActivity()
+				UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
+				userActivity.commitAndInvokeDo( new ModifyTimeOfExistingKeyFrameInTimeLineEdit( userActivity, composite.getTimeLine(), selectedKeyFrame, nextValue, prevValue ) );
 			}
 		}
 	};
@@ -173,9 +172,9 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private ActionOperation deletePoseOperation = createActionOperation( "deletePose", new Action() {
 
 		@Override
-		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public AbstractEdit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			//			composite.getTimeLine().removeKeyFrameData( selectedKeyFrame );
-			new DeleteKeyFrameFromTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame ).doOrRedo( true );
+			new DeleteKeyFrameFromTimeLineEdit( userActivity, composite.getTimeLine(), selectedKeyFrame ).doOrRedo( true );
 			return null;
 		}
 	} );

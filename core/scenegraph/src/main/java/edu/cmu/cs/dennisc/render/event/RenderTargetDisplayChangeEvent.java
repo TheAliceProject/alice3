@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.event;
 
+import edu.cmu.cs.dennisc.render.RenderTarget;
+
 /**
  * @author Dennis Cosgrove
  */
 public class RenderTargetDisplayChangeEvent extends RenderTargetEvent {
-	public RenderTargetDisplayChangeEvent( edu.cmu.cs.dennisc.render.RenderTarget renderTarget, boolean isModeChanged, boolean isDeviceChanged ) {
+	public RenderTargetDisplayChangeEvent( RenderTarget renderTarget, boolean isModeChanged, boolean isDeviceChanged ) {
 		super( renderTarget );
 		this.isModeChanged = isModeChanged;
 		this.isDeviceChanged = isDeviceChanged;

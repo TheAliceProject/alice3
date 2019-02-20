@@ -42,25 +42,34 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.worker.url;
 
+import edu.cmu.cs.dennisc.worker.Worker;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TextUrlWorker extends edu.cmu.cs.dennisc.worker.Worker<String> {
-	private final java.net.URL url;
+public abstract class TextUrlWorker extends Worker<String> {
+	private final URL url;
 
-	public TextUrlWorker( java.net.URL url ) {
+	public TextUrlWorker( URL url ) {
 		this.url = url;
 	}
 
 	@Override
 	protected String do_onBackgroundThread() throws Exception {
 		StringBuilder sb = new StringBuilder();
-		java.net.URLConnection urlConnection = url.openConnection();
+		URLConnection urlConnection = url.openConnection();
 		try {
-			java.io.InputStream inputStream = urlConnection.getInputStream();
+			InputStream inputStream = urlConnection.getInputStream();
 			try {
-				java.io.InputStreamReader reader = new java.io.InputStreamReader( inputStream );
-				java.io.BufferedReader bufferedReader = new java.io.BufferedReader( reader );
+				InputStreamReader reader = new InputStreamReader( inputStream );
+				BufferedReader bufferedReader = new BufferedReader( reader );
 				while( true ) {
 					String inputLine = bufferedReader.readLine();
 					if( inputLine != null ) {
@@ -74,9 +83,9 @@ public abstract class TextUrlWorker extends edu.cmu.cs.dennisc.worker.Worker<Str
 				inputStream.close();
 			}
 		} finally {
-			if( urlConnection instanceof java.net.HttpURLConnection ) {
+			if( urlConnection instanceof HttpURLConnection ) {
 				//todo?
-				( (java.net.HttpURLConnection)urlConnection ).disconnect();
+				( (HttpURLConnection)urlConnection ).disconnect();
 			}
 		}
 	}

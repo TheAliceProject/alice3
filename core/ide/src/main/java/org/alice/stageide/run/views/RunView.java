@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.run.views;
 
+import org.alice.stageide.run.RunComposite;
+import org.lgna.croquet.views.BorderPanel;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RunView extends org.lgna.croquet.views.BorderPanel {
-	public RunView( org.alice.stageide.run.RunComposite composite ) {
+public class RunView extends BorderPanel {
+	public RunView( RunComposite composite ) {
 		super( composite );
 	}
 }

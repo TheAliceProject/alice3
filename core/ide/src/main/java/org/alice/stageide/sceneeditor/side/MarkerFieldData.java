@@ -42,16 +42,21 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
+import org.alice.ide.ast.data.FilteredListPropertyData;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MarkerFieldData extends org.alice.ide.ast.data.FilteredListPropertyData<org.lgna.project.ast.UserField> {
+public abstract class MarkerFieldData extends FilteredListPropertyData<UserField> {
 	public MarkerFieldData() {
-		super( org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ) );
+		super( NodeCodec.getInstance( UserField.class ) );
 	}
 
 	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
+	protected boolean isAcceptableItem( UserField value ) {
+		return value.managementLevel.getValue() == ManagementLevel.MANAGED;
 	}
 }

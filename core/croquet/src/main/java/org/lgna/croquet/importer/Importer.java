@@ -43,42 +43,49 @@
 
 package org.lgna.croquet.importer;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import org.lgna.croquet.Application;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Set;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Importer<T> {
-	private final java.util.UUID sharingId;
-	private final java.io.File initialDirectory;
+	private final UUID sharingId;
+	private final File initialDirectory;
 	private final String initialFileText;
-	private final java.io.FilenameFilter filenameFilter;
-	private final java.util.Set<String> lowerCaseExtensions;
+	private final FilenameFilter filenameFilter;
+	private final Set<String> lowerCaseExtensions;
 
-	public Importer( java.util.UUID sharingId, java.io.File initialDirectory, String initialFileText, java.io.FilenameFilter filenameFilter, String... lowerCaseExtensions ) {
+	public Importer( UUID sharingId, File initialDirectory, String initialFileText, FilenameFilter filenameFilter, String... lowerCaseExtensions ) {
 		this.sharingId = sharingId;
 		this.initialDirectory = initialDirectory;
 		this.initialFileText = initialFileText;
 		this.filenameFilter = filenameFilter;
-		this.lowerCaseExtensions = java.util.Collections.unmodifiableSet( edu.cmu.cs.dennisc.java.util.Sets.newHashSet( lowerCaseExtensions ) );
+		this.lowerCaseExtensions = Collections.unmodifiableSet( Sets.newHashSet( lowerCaseExtensions ) );
 	}
 
-	protected abstract T createFromFile( java.io.File file ) throws java.io.IOException;
+	protected abstract T createFromFile( File file ) throws IOException;
 
 	public T createValue( String dialogTitle ) {
-		java.io.File file = org.lgna.croquet.Application.getActiveInstance().getDocumentFrame().showOpenFileDialog( this.sharingId, dialogTitle, this.initialDirectory, this.initialFileText, this.filenameFilter );
+		File file = Application.getActiveInstance().getDocumentFrame().showOpenFileDialog( dialogTitle, this.initialDirectory, this.initialFileText, this.filenameFilter );
 		if( file != null ) {
-			String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
-			if( ( extension != null ) && this.lowerCaseExtensions.contains( extension.toLowerCase( java.util.Locale.ENGLISH ) ) ) {
+			String extension = FileUtilities.getExtension( file );
+			if( ( extension != null ) && this.lowerCaseExtensions.contains( extension.toLowerCase( Locale.ENGLISH ) ) ) {
 				try {
 					return this.createFromFile( file );
-				} catch( java.io.IOException ioe ) {
+				} catch( IOException ioe ) {
 					ioe.printStackTrace();
-					StringBuilder sb = new StringBuilder();
-					sb.append( "Unable to import: " );
-					sb.append( file.getAbsolutePath() );
-					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
-							.title( "Exception Thrown" )
-							.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
-							.buildAndShow();
+					Dialogs.showError( "Exception Thrown", "Unable to import: " + file.getAbsolutePath() );
 					return null;
 				}
 			} else {
@@ -93,10 +100,7 @@ public abstract class Importer<T> {
 					prefix = ", ";
 				}
 				sb.append( " }." );
-				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
-						.title( "Content Type Not Supported" )
-						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
-						.buildAndShow();
+				Dialogs.showError( "Content Type Not Supported", sb.toString() );
 				return null;
 			}
 		} else {

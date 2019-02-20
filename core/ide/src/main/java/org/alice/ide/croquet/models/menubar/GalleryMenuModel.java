@@ -42,10 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.menubar;
 
+import org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState;
+import org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState;
+import org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState;
+import org.lgna.croquet.PredeterminedMenuModel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+public class GalleryMenuModel extends PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static GalleryMenuModel instance = new GalleryMenuModel();
 	}
@@ -55,12 +62,12 @@ public class GalleryMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	}
 
 	private GalleryMenuModel() {
-		super( java.util.UUID.fromString( "502915e7-f12b-47b6-a5d0-5fa49d378eca" ),
+		super( UUID.fromString( "502915e7-f12b-47b6-a5d0-5fa49d378eca" ),
 				//todo:
 				//				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptingUserForFieldNamesState.getInstance(),
 				//				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getMenuItemPrepModel(),
-				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getMenuItemPrepModel(),
-				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getMenuItemPrepModel() );
+				IsPromptProvidingInitialFieldNamesState.getInstance().getMenuItemPrepModel(),
+				IsPromptIncludingTypeAndInitializerState.getInstance().getMenuItemPrepModel(),
+				IsPromptIncludingPreviewState.getInstance().getMenuItemPrepModel() );
 	}
 }

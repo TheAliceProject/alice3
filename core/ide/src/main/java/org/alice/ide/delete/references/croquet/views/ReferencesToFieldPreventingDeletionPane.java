@@ -42,12 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.delete.references.croquet.views;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 
+import org.alice.ide.Theme;
 import org.alice.ide.delete.references.croquet.ReferencesToFieldPreventingDeletionDialog;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.TrimmedIcon;
+import org.lgna.croquet.views.AbstractLabel;
 import org.lgna.croquet.views.BorderPanel;
 
 /**
@@ -56,15 +59,15 @@ import org.lgna.croquet.views.BorderPanel;
 public class ReferencesToFieldPreventingDeletionPane extends BorderPanel {
 	public ReferencesToFieldPreventingDeletionPane( ReferencesToFieldPreventingDeletionDialog composite ) {
 		IconFactory iconFactory = IconFactoryManager.getIconFactoryForField( composite.getField() );
-		Icon icon = iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE );
+		Icon icon = iconFactory.getIcon( Theme.DEFAULT_LARGE_ICON_SIZE );
 		if( icon instanceof TrimmedIcon ) {
 			TrimmedIcon trimmedIcon = (TrimmedIcon)icon;
 			icon = trimmedIcon.getImageIcon();
 		}
-		org.lgna.croquet.views.AbstractLabel descriptionLabel = composite.getAppropriateDescriptionText().createLabel();
+		AbstractLabel descriptionLabel = composite.getAppropriateDescriptionText().createLabel();
 		descriptionLabel.setIcon( icon );
 		descriptionLabel.getAwtComponent().setIconTextGap( 16 );
 		this.addPageStartComponent( descriptionLabel );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
 	}
 }

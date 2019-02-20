@@ -42,10 +42,16 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.PopupPrepModel;
+
+import javax.swing.Icon;
+import javax.swing.JToggleButton;
+import java.awt.Insets;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPopupButton<M extends org.lgna.croquet.PopupPrepModel> extends AbstractButton<javax.swing.AbstractButton, M> {
+public abstract class AbstractPopupButton<M extends PopupPrepModel> extends AbstractButton<javax.swing.AbstractButton, M> {
 	public AbstractPopupButton( M model, String uiDefaultsName ) {
 		super( model, uiDefaultsName );
 	}
@@ -56,10 +62,10 @@ public abstract class AbstractPopupButton<M extends org.lgna.croquet.PopupPrepMo
 
 	protected static final int TRAILING_PAD = -2;
 
-	protected class JPopupButton extends javax.swing.JToggleButton {
+	protected class JPopupButton extends JToggleButton {
 		@Override
-		public java.awt.Insets getMargin() {
-			java.awt.Insets rv = super.getMargin();
+		public Insets getMargin() {
+			Insets rv = super.getMargin();
 			if( rv != null ) {
 				rv.right += TRAILING_PAD;
 			}
@@ -67,7 +73,7 @@ public abstract class AbstractPopupButton<M extends org.lgna.croquet.PopupPrepMo
 		}
 
 		@Override
-		public javax.swing.Icon getIcon() {
+		public Icon getIcon() {
 			if( AbstractPopupButton.this.isIconClobbered() ) {
 				return AbstractPopupButton.this.getClobberIcon();
 			} else {
@@ -83,7 +89,7 @@ public abstract class AbstractPopupButton<M extends org.lgna.croquet.PopupPrepMo
 	@Override
 	protected final javax.swing.AbstractButton createAwtComponent() {
 		javax.swing.AbstractButton rv = this.createSwingButton();
-		org.lgna.croquet.PopupPrepModel.SwingModel swingModel = this.getModel().getSwingModel();
+		PopupPrepModel.SwingModel swingModel = this.getModel().getSwingModel();
 		rv.setAction( swingModel.getAction() );
 		return rv;
 	}

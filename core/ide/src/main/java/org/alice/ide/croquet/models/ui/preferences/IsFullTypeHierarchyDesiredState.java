@@ -43,10 +43,15 @@
 
 package org.alice.ide.croquet.models.ui.preferences;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.preferences.PreferenceBooleanState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IsFullTypeHierarchyDesiredState extends org.lgna.croquet.preferences.PreferenceBooleanState {
+public class IsFullTypeHierarchyDesiredState extends PreferenceBooleanState {
 	private static class SingletonHolder {
 		private static IsFullTypeHierarchyDesiredState instance = new IsFullTypeHierarchyDesiredState();
 	}
@@ -56,6 +61,6 @@ public class IsFullTypeHierarchyDesiredState extends org.lgna.croquet.preference
 	}
 
 	private IsFullTypeHierarchyDesiredState() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "b389ea56-2b42-4354-a54e-3467846f0c06" ), false );
+		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "b389ea56-2b42-4354-a54e-3467846f0c06" ), false );
 	}
 }

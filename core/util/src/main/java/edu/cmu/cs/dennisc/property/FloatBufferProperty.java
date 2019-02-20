@@ -43,19 +43,21 @@
 
 package edu.cmu.cs.dennisc.property;
 
+import java.nio.FloatBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FloatBufferProperty extends PrimitiveBufferProperty<java.nio.FloatBuffer> {
-	public FloatBufferProperty( InstancePropertyOwner owner, java.nio.FloatBuffer value ) {
+public class FloatBufferProperty extends PrimitiveBufferProperty<FloatBuffer> {
+	public FloatBufferProperty( InstancePropertyOwner owner, FloatBuffer value ) {
 		super( owner, value );
 	}
 
 	public FloatBufferProperty( InstancePropertyOwner owner, float[] value ) {
-		super( owner, java.nio.FloatBuffer.wrap( value ) );
+		super( owner, FloatBuffer.wrap( value ) );
 	}
 
 	public final void setValue( float[] value ) {
-		this.setValue( java.nio.FloatBuffer.wrap( value ) );
+		this.setValue( FloatBuffer.wrap( value ) );
 	}
 }

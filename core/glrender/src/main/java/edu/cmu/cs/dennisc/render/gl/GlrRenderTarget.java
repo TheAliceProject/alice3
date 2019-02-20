@@ -43,13 +43,42 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
+import com.jogamp.opengl.GLAutoDrawable;
+import edu.cmu.cs.dennisc.java.awt.RectangleUtilities;
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.ClippedZPlane;
+import edu.cmu.cs.dennisc.math.Matrix4x4;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.immutable.MRectangleI;
+import edu.cmu.cs.dennisc.pattern.AbstractReleasable;
+import edu.cmu.cs.dennisc.render.AsynchronousImageCapturer;
+import edu.cmu.cs.dennisc.render.AsynchronousPicker;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+import edu.cmu.cs.dennisc.render.RenderFactory;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.render.SynchronousImageCapturer;
+import edu.cmu.cs.dennisc.render.SynchronousPicker;
+import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
+import edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrFrustumPerspectiveCamera;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrOrthographicCamera;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSymmetricPerspectiveCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.AbstractReleasable implements edu.cmu.cs.dennisc.render.RenderTarget {
-	public GlrRenderTarget( GlrRenderFactory glrRenderer, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+/*package-private*/abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarget {
+	public GlrRenderTarget( GlrRenderFactory glrRenderer, RenderCapabilities requestedCapabilities ) {
 		this.glrRenderer = glrRenderer;
 
 		this.requestedCapabilities = requestedCapabilities;
@@ -58,37 +87,37 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.RenderCapabilities getRequestedCapabilities() {
+	public RenderCapabilities getRequestedCapabilities() {
 		return this.requestedCapabilities;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.RenderCapabilities getActualCapabilities() {
+	public RenderCapabilities getActualCapabilities() {
 		return this.actualCapabilities;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.RenderFactory getRenderFactory() {
+	public RenderFactory getRenderFactory() {
 		return this.glrRenderer;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.SynchronousPicker getSynchronousPicker() {
+	public SynchronousPicker getSynchronousPicker() {
 		return this.imp.getSynchronousPicker();
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.SynchronousImageCapturer getSynchronousImageCapturer() {
+	public SynchronousImageCapturer getSynchronousImageCapturer() {
 		return this.imp.getSynchronousImageCapturer();
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.AsynchronousPicker getAsynchronousPicker() {
+	public AsynchronousPicker getAsynchronousPicker() {
 		return this.imp.getAsynchronousPicker();
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.AsynchronousImageCapturer getAsynchronousImageCapturer() {
+	public AsynchronousImageCapturer getAsynchronousImageCapturer() {
 		return this.imp.getAsynchronousImageCapturer();
 	}
 
@@ -103,12 +132,12 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 	}
 
 	@Override
-	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	public void addSgCamera( AbstractCamera sgCamera ) {
 		this.imp.addSgCamera( sgCamera, this.getGLAutoDrawable() );
 	}
 
 	@Override
-	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	public void removeSgCamera( AbstractCamera sgCamera ) {
 		this.imp.removeSgCamera( sgCamera, this.getGLAutoDrawable() );
 	}
 
@@ -123,42 +152,42 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index ) {
+	public AbstractCamera getSgCameraAt( int index ) {
 		return this.imp.getSgCameraAt( index );
 	}
 
 	@Override
-	public java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getSgCameras() {
+	public List<AbstractCamera> getSgCameras() {
 		return this.imp.getSgCameras();
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getCameraAtPixel( int xPixel, int yPixel ) {
+	public AbstractCamera getCameraAtPixel( int xPixel, int yPixel ) {
 		return this.imp.getCameraAtPixel( xPixel, yPixel );
 	}
 
 	@Override
-	public void addRenderTargetListener( edu.cmu.cs.dennisc.render.event.RenderTargetListener listener ) {
+	public void addRenderTargetListener( RenderTargetListener listener ) {
 		this.imp.addRenderTargetListener( listener );
 	}
 
 	@Override
-	public void removeRenderTargetListener( edu.cmu.cs.dennisc.render.event.RenderTargetListener listener ) {
+	public void removeRenderTargetListener( RenderTargetListener listener ) {
 		this.imp.removeRenderTargetListener( listener );
 	}
 
 	@Override
-	public java.util.List<edu.cmu.cs.dennisc.render.event.RenderTargetListener> getRenderTargetListeners() {
+	public List<RenderTargetListener> getRenderTargetListeners() {
 		return this.imp.getRenderTargetListeners();
 	}
 
-	protected abstract java.awt.Dimension getSurfaceSize( java.awt.Dimension rv );
+	protected abstract Dimension getSurfaceSize( Dimension rv );
 
-	protected abstract java.awt.Dimension getDrawableSize( java.awt.Dimension rv );
+	protected abstract Dimension getDrawableSize( Dimension rv );
 
 	@Override
-	public final java.awt.Dimension getDrawableSize() {
-		return getDrawableSize( new java.awt.Dimension() );
+	public final Dimension getDrawableSize() {
+		return getDrawableSize( new Dimension() );
 	}
 
 	@Override
@@ -178,8 +207,8 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 	}
 
 	@Override
-	public final java.awt.Dimension getSurfaceSize() {
-		return getSurfaceSize( new java.awt.Dimension() );
+	public final Dimension getSurfaceSize() {
+		return getSurfaceSize( new Dimension() );
 	}
 
 	@Override
@@ -199,110 +228,110 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.immutable.MRectangleI getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.toMRectangleI( this.getActualViewportAsAwtRectangle( sgCamera ) );
+	public MRectangleI getActualViewport( AbstractCamera sgCamera ) {
+		return RectangleUtilities.toMRectangleI( this.getActualViewportAsAwtRectangle( sgCamera ) );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.immutable.MRectangleI getSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.toMRectangleI( this.getSpecifiedViewportAsAwtRectangle( sgCamera ) );
+	public MRectangleI getSpecifiedViewport( AbstractCamera sgCamera ) {
+		return RectangleUtilities.toMRectangleI( this.getSpecifiedViewportAsAwtRectangle( sgCamera ) );
 	}
 
 	@Override
-	public void setSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, edu.cmu.cs.dennisc.math.immutable.MRectangleI viewport ) {
-		this.setSpecifiedViewportAsAwtRectangle( sgCamera, edu.cmu.cs.dennisc.java.awt.RectangleUtilities.toAwtRectangle( viewport ) );
+	public void setSpecifiedViewport( AbstractCamera sgCamera, MRectangleI viewport ) {
+		this.setSpecifiedViewportAsAwtRectangle( sgCamera, RectangleUtilities.toAwtRectangle( viewport ) );
 	}
 
 	@Override
-	public java.awt.Rectangle getSpecifiedViewportAsAwtRectangle( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
-		edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
+	public Rectangle getSpecifiedViewportAsAwtRectangle( AbstractCamera camera ) {
+		GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
 		return cameraAdapter.getSpecifiedViewport();
 	}
 
 	@Override
-	public void setSpecifiedViewportAsAwtRectangle( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, java.awt.Rectangle viewport ) {
-		edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
+	public void setSpecifiedViewportAsAwtRectangle( AbstractCamera camera, Rectangle viewport ) {
+		GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
 		cameraAdapter.setSpecifiedViewport( viewport );
 	}
 
-	public java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter ) {
-		java.awt.Dimension surfaceSize = this.getSurfaceSize();
+	public Rectangle getActualViewport( Rectangle rv, GlrAbstractCamera<? extends AbstractCamera> cameraAdapter ) {
+		Dimension surfaceSize = this.getSurfaceSize();
 		return cameraAdapter.getActualViewport( rv, surfaceSize.width, surfaceSize.height );
 	}
 
 	@Override
-	public java.awt.Rectangle getActualViewportAsAwtRectangle( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
-		edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera<?> glrCamera = AdapterFactory.getAdapterFor( camera );
+	public Rectangle getActualViewportAsAwtRectangle( Rectangle rv, AbstractCamera camera ) {
+		GlrAbstractCamera<?> glrCamera = AdapterFactory.getAdapterFor( camera );
 		return getActualViewport( rv, glrCamera );
 	}
 
 	@Override
-	public final java.awt.Rectangle getActualViewportAsAwtRectangle( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
-		return getActualViewportAsAwtRectangle( new java.awt.Rectangle(), camera );
+	public final Rectangle getActualViewportAsAwtRectangle( AbstractCamera camera ) {
+		return getActualViewportAsAwtRectangle( new Rectangle(), camera );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+	public Matrix4x4 getActualProjectionMatrix( Matrix4x4 rv, AbstractCamera camera ) {
 		synchronized( s_actualViewportBufferForReuse ) {
-			edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
+			GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
 			getActualViewport( s_actualViewportBufferForReuse, cameraAdapter );
 			return cameraAdapter.getActualProjectionMatrix( rv, s_actualViewportBufferForReuse );
 		}
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
-		return getActualProjectionMatrix( new edu.cmu.cs.dennisc.math.Matrix4x4(), camera );
+	public final Matrix4x4 getActualProjectionMatrix( AbstractCamera camera ) {
+		return getActualProjectionMatrix( new Matrix4x4(), camera );
 	}
 
-	private edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, edu.cmu.cs.dennisc.scenegraph.OrthographicCamera orthographicCamera ) {
+	private ClippedZPlane getActualPicturePlane( ClippedZPlane rv, OrthographicCamera orthographicCamera ) {
 		synchronized( s_actualViewportBufferForReuse ) {
-			edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrOrthographicCamera orthographicCameraAdapter = AdapterFactory.getAdapterFor( orthographicCamera );
+			GlrOrthographicCamera orthographicCameraAdapter = AdapterFactory.getAdapterFor( orthographicCamera );
 			getActualViewport( s_actualViewportBufferForReuse, orthographicCameraAdapter );
 			return orthographicCameraAdapter.getActualPicturePlane( rv, s_actualViewportBufferForReuse );
 		}
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.OrthographicCamera orthographicCamera ) {
-		return getActualPicturePlane( new edu.cmu.cs.dennisc.math.ClippedZPlane(), orthographicCamera );
+	public final ClippedZPlane getActualPicturePlane( OrthographicCamera orthographicCamera ) {
+		return getActualPicturePlane( new ClippedZPlane(), orthographicCamera );
 	}
 
-	private edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera frustumPerspectiveCamera ) {
+	private ClippedZPlane getActualPicturePlane( ClippedZPlane rv, FrustumPerspectiveCamera frustumPerspectiveCamera ) {
 		synchronized( s_actualViewportBufferForReuse ) {
-			edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrFrustumPerspectiveCamera frustumPerspectiveCameraAdapter = AdapterFactory.getAdapterFor( frustumPerspectiveCamera );
+			GlrFrustumPerspectiveCamera frustumPerspectiveCameraAdapter = AdapterFactory.getAdapterFor( frustumPerspectiveCamera );
 			getActualViewport( s_actualViewportBufferForReuse, frustumPerspectiveCameraAdapter );
 			return frustumPerspectiveCameraAdapter.getActualPicturePlane( rv, s_actualViewportBufferForReuse );
 		}
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera frustumPerspectiveCamera ) {
-		return getActualPicturePlane( new edu.cmu.cs.dennisc.math.ClippedZPlane(), frustumPerspectiveCamera );
+	public final ClippedZPlane getActualPicturePlane( FrustumPerspectiveCamera frustumPerspectiveCamera ) {
+		return getActualPicturePlane( new ClippedZPlane(), frustumPerspectiveCamera );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Angle getActualHorizontalViewingAngle( edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera symmetricPerspectiveCamera ) {
+	public Angle getActualHorizontalViewingAngle( SymmetricPerspectiveCamera symmetricPerspectiveCamera ) {
 		synchronized( s_actualViewportBufferForReuse ) {
-			edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSymmetricPerspectiveCamera symmetricPerspectiveCameraAdapter = AdapterFactory.getAdapterFor( symmetricPerspectiveCamera );
+			GlrSymmetricPerspectiveCamera symmetricPerspectiveCameraAdapter = AdapterFactory.getAdapterFor( symmetricPerspectiveCamera );
 			getActualViewport( s_actualViewportBufferForReuse, symmetricPerspectiveCameraAdapter );
 			return symmetricPerspectiveCameraAdapter.getActualHorizontalViewingAngle( s_actualViewportBufferForReuse );
 		}
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Angle getActualVerticalViewingAngle( edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera symmetricPerspectiveCamera ) {
+	public Angle getActualVerticalViewingAngle( SymmetricPerspectiveCamera symmetricPerspectiveCamera ) {
 		synchronized( s_actualViewportBufferForReuse ) {
-			edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSymmetricPerspectiveCamera symmetricPerspectiveCameraAdapter = AdapterFactory.getAdapterFor( symmetricPerspectiveCamera );
+			GlrSymmetricPerspectiveCamera symmetricPerspectiveCameraAdapter = AdapterFactory.getAdapterFor( symmetricPerspectiveCamera );
 			getActualViewport( s_actualViewportBufferForReuse, symmetricPerspectiveCameraAdapter );
 			return symmetricPerspectiveCameraAdapter.getActualVerticalViewingAngle( s_actualViewportBufferForReuse );
 		}
 	}
 
-	private edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	private Ray getRayAtPixel( Ray rv, int xPixel, int yPixel, AbstractCamera sgCamera ) {
 		if( sgCamera != null ) {
 			synchronized( s_actualViewportBufferForReuse ) {
-				edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
+				GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
 				getActualViewport( s_actualViewportBufferForReuse, cameraAdapter );
 				//			double halfWidth = s_actualViewportBufferForReuse.width / 2.0;
 				//			double halfHeight = s_actualViewportBufferForReuse.height / 2.0;
@@ -345,38 +374,38 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		return getRayAtPixel( new edu.cmu.cs.dennisc.math.Ray(), xPixel, yPixel, sgCamera );
+	public final Ray getRayAtPixel( int xPixel, int yPixel, AbstractCamera sgCamera ) {
+		return getRayAtPixel( new Ray(), xPixel, yPixel, sgCamera );
 	}
 
-	private edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel ) {
+	private Ray getRayAtPixel( Ray rv, int xPixel, int yPixel ) {
 		return getRayAtPixel( rv, xPixel, yPixel, getCameraAtPixel( xPixel, yPixel ) );
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel ) {
-		return getRayAtPixel( new edu.cmu.cs.dennisc.math.Ray(), xPixel, yPixel );
+	public final Ray getRayAtPixel( int xPixel, int yPixel ) {
+		return getRayAtPixel( new Ray(), xPixel, yPixel );
 	}
 
 	@Override
-	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
+	public boolean isLetterboxedAsOpposedToDistorted( AbstractCamera sgCamera ) {
+		GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
 		return cameraAdapter.isLetterboxedAsOpposedToDistorted();
 	}
 
 	@Override
-	public void setLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted ) {
-		edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
+	public void setLetterboxedAsOpposedToDistorted( AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted ) {
+		GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
 		cameraAdapter.setIsLetterboxedAsOpposedToDistorted( isLetterboxedAsOpposedToDistorted );
 	}
 
-	public double[] getActualPlane( double[] rv, java.awt.Dimension size, edu.cmu.cs.dennisc.scenegraph.OrthographicCamera orthographicCamera ) {
+	public double[] getActualPlane( double[] rv, Dimension size, OrthographicCamera orthographicCamera ) {
 		throw new RuntimeException( "todo" );
 		//		OrthographicCameraAdapter orthographicCameraAdapter = ElementAdapter.getAdapterFor( orthographicCamera );
 		//		return orthographicCameraAdapter.getActualPlane( rv, size );
 	}
 
-	public double[] getActualPlane( double[] rv, java.awt.Dimension size, edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera perspectiveCamera ) {
+	public double[] getActualPlane( double[] rv, Dimension size, FrustumPerspectiveCamera perspectiveCamera ) {
 		throw new RuntimeException( "todo" );
 		//		PerspectiveCameraAdapter perspectiveCameraAdapter = ElementAdapter.getAdapterFor( perspectiveCamera );
 		//		return perspectiveCameraAdapter.getActualPlane( rv, size );
@@ -421,23 +450,23 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 		this.imp.clearUnusedTextures();
 	}
 
-	protected edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp getRenderTargetImp() {
+	protected RenderTargetImp getRenderTargetImp() {
 		return this.imp;
 	}
 
 	private final GlrRenderFactory glrRenderer;
-	private final edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities;
-	private final edu.cmu.cs.dennisc.render.RenderCapabilities actualCapabilities;
+	private final RenderCapabilities requestedCapabilities;
+	private final RenderCapabilities actualCapabilities;
 
-	protected final edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp imp = new edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp( this );
+	protected final RenderTargetImp imp = new RenderTargetImp( this );
 
 	private String m_description = new String();
 
-	public abstract com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable();
+	public abstract GLAutoDrawable getGLAutoDrawable();
 
 	private boolean m_isRenderingEnabled = true;
 
 	//
-	private static java.awt.Rectangle s_actualViewportBufferForReuse = new java.awt.Rectangle();
-	private static java.awt.Dimension s_sizeBufferForReuse = new java.awt.Dimension();
+	private static Rectangle s_actualViewportBufferForReuse = new Rectangle();
+	private static Dimension s_sizeBufferForReuse = new Dimension();
 }

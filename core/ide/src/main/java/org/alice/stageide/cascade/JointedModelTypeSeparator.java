@@ -43,16 +43,22 @@
 
 package org.alice.stageide.cascade;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.lgna.croquet.CascadeLabelSeparator;
+import org.lgna.project.ast.AbstractType;
+
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class JointedModelTypeSeparator extends org.lgna.croquet.CascadeLabelSeparator {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, JointedModelTypeSeparator> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class JointedModelTypeSeparator extends CascadeLabelSeparator {
+	private static Map<AbstractType<?, ?, ?>, JointedModelTypeSeparator> map = Maps.newHashMap();
 
-	public static synchronized JointedModelTypeSeparator getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static synchronized JointedModelTypeSeparator getInstance( AbstractType<?, ?, ?> type ) {
 		assert type != null;
 		JointedModelTypeSeparator rv = map.get( type );
 		if( rv != null ) {
@@ -64,10 +70,10 @@ public class JointedModelTypeSeparator extends org.lgna.croquet.CascadeLabelSepa
 		return rv;
 	}
 
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private final AbstractType<?, ?, ?> type;
 
-	private JointedModelTypeSeparator( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		super( java.util.UUID.fromString( "200467b6-6cd7-45c1-850f-b853fa695187" ) );
+	private JointedModelTypeSeparator( AbstractType<?, ?, ?> type ) {
+		super( UUID.fromString( "200467b6-6cd7-45c1-850f-b853fa695187" ) );
 		this.type = type;
 	}
 

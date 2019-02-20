@@ -42,6 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.qa;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,54 +62,54 @@ public class QualityAssuranceUtilities {
 		throw new RuntimeException();
 	}
 
-	private static boolean isOrientationMendingRequired( edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt ) {
+	private static boolean isOrientationMendingRequired( AffineMatrix4x4 lt ) {
 		return lt.orientation.isNaN() || lt.orientation.right.isWithinReasonableEpsilonOfZero() || lt.orientation.up.isWithinReasonableEpsilonOfZero() || lt.orientation.backward.isWithinReasonableEpsilonOfZero();
 	}
 
-	private static boolean isTranslationMendingRequired( edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt ) {
+	private static boolean isTranslationMendingRequired( AffineMatrix4x4 lt ) {
 		return lt.translation.isNaN();
 	}
 
-	private static void appendProblems( java.util.List<Problem> problems, edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
+	private static void appendProblems( List<Problem> problems, Component sgComponent ) {
 		if( sgComponent != null ) {
-			if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
-				edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgComponent;
-				if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) {
-					edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)sgComponent;
-					edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt = sgTransformable.getLocalTransformation();
+			if( sgComponent instanceof Composite ) {
+				Composite sgComposite = (Composite)sgComponent;
+				if( sgComponent instanceof AbstractTransformable ) {
+					AbstractTransformable sgTransformable = (AbstractTransformable)sgComponent;
+					AffineMatrix4x4 lt = sgTransformable.getLocalTransformation();
 					boolean isOrientationMendingRequired = isOrientationMendingRequired( lt );
 					boolean isTranslationMendingRequired = isTranslationMendingRequired( lt );
 					if( isOrientationMendingRequired || isTranslationMendingRequired ) {
 						problems.add( new BadLocalTransformation( sgTransformable, isOrientationMendingRequired, isTranslationMendingRequired ) );
 					}
 				}
-				for( edu.cmu.cs.dennisc.scenegraph.Component sgChild : sgComposite.getComponents() ) {
+				for( Component sgChild : sgComposite.getComponents() ) {
 					appendProblems( problems, sgChild );
 				}
-			} else if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Visual ) {
-				edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = (edu.cmu.cs.dennisc.scenegraph.Visual)sgComponent;
-				edu.cmu.cs.dennisc.math.Matrix3x3 scale = sgVisual.scale.getValue();
+			} else if( sgComponent instanceof Visual ) {
+				Visual sgVisual = (Visual)sgComponent;
+				Matrix3x3 scale = sgVisual.scale.getValue();
 				if( scale.isNaN() ) { //todo: check isZero()?
 					problems.add( new BadScale( sgVisual ) );
 				}
-				if( sgVisual instanceof edu.cmu.cs.dennisc.scenegraph.SkeletonVisual ) {
-					edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = (edu.cmu.cs.dennisc.scenegraph.SkeletonVisual)sgVisual;
+				if( sgVisual instanceof SkeletonVisual ) {
+					SkeletonVisual sgSkeletonVisual = (SkeletonVisual)sgVisual;
 					appendProblems( problems, sgSkeletonVisual.skeleton.getValue() );
 				}
 			}
 		}
 	}
 
-	public static java.util.List<Problem> inspect( edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
-		java.util.List<Problem> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public static List<Problem> inspect( Component sgComponent ) {
+		List<Problem> rv = Lists.newLinkedList();
 		appendProblems( rv, sgComponent );
 		return rv;
 	}
 
-	public static void inspectAndMendIfNecessary( edu.cmu.cs.dennisc.scenegraph.Component sgComponent, Mender mender ) {
-		java.util.List<Problem> problems = inspect( sgComponent );
+	public static void inspectAndMendIfNecessary( Component sgComponent, Mender mender ) {
+		List<Problem> problems = inspect( sgComponent );
 		for( Problem problem : problems ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( problem );
+			Logger.errln( problem );
 			problem.mend( mender );
 		}
 	}

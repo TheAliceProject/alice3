@@ -43,37 +43,47 @@
 
 package org.alice.ide.swing;
 
-public abstract class SnapshotListCellRenderer implements javax.swing.ListCellRenderer {
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.GridLayout;
+
+public abstract class SnapshotListCellRenderer implements ListCellRenderer {
 	private final int PANEL_INSET = 4;
 	private final int LABEL_INSET = 8;
-	private javax.swing.JPanel panel = new javax.swing.JPanel();
-	private javax.swing.JLabel label = new javax.swing.JLabel();
+	private JPanel panel = new JPanel();
+	private JLabel label = new JLabel();
 
 	public SnapshotListCellRenderer() {
 		this.panel.setOpaque( false );
 		this.label.setOpaque( true );
-		this.panel.setBorder( javax.swing.BorderFactory.createEmptyBorder( PANEL_INSET, PANEL_INSET, PANEL_INSET, PANEL_INSET ) );
-		this.label.setBorder( javax.swing.BorderFactory.createEmptyBorder( LABEL_INSET, LABEL_INSET, LABEL_INSET, LABEL_INSET ) );
-		this.label.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
-		this.label.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
-		this.label.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
-		this.panel.setLayout( new java.awt.GridLayout( 1, 1 ) );
+		this.panel.setBorder( BorderFactory.createEmptyBorder( PANEL_INSET, PANEL_INSET, PANEL_INSET, PANEL_INSET ) );
+		this.label.setBorder( BorderFactory.createEmptyBorder( LABEL_INSET, LABEL_INSET, LABEL_INSET, LABEL_INSET ) );
+		this.label.setHorizontalTextPosition( SwingConstants.CENTER );
+		this.label.setVerticalTextPosition( SwingConstants.BOTTOM );
+		this.label.setHorizontalAlignment( SwingConstants.CENTER );
+		this.panel.setLayout( new GridLayout( 1, 1 ) );
 		this.panel.add( this.label );
 	}
 
-	protected abstract javax.swing.JLabel updateLabel( javax.swing.JLabel rv, Object value );
+	protected abstract JLabel updateLabel( JLabel rv, Object value );
 
 	@Override
-	public final java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+	public final Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 		this.updateLabel( this.label, value );
-		java.awt.Color background;
-		java.awt.Color foreground;
+		Color background;
+		Color foreground;
 		if( isSelected ) {
-			background = new java.awt.Color( 63, 63, 127 );
-			foreground = java.awt.Color.YELLOW;
+			background = new Color( 63, 63, 127 );
+			foreground = Color.YELLOW;
 		} else {
-			background = java.awt.Color.WHITE;
-			foreground = java.awt.Color.BLACK;
+			background = Color.WHITE;
+			foreground = Color.BLACK;
 		}
 		this.label.setBackground( background );
 		this.label.setForeground( foreground );

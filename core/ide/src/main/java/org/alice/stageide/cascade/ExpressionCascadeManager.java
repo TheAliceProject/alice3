@@ -42,57 +42,97 @@
  *******************************************************************************/
 package org.alice.stageide.cascade;
 
+import org.alice.stageide.ast.JointedTypeInfo;
+import org.alice.stageide.cascade.fillerinners.ArrowKeyListenerFillerInner;
+import org.alice.stageide.cascade.fillerinners.AudioSourceFillerInner;
+import org.alice.stageide.cascade.fillerinners.ColorFillerInner;
+import org.alice.stageide.cascade.fillerinners.ComesIntoViewEventListenerFillerInner;
+import org.alice.stageide.cascade.fillerinners.EndCollisionListenerFillerInner;
+import org.alice.stageide.cascade.fillerinners.EndOcclusionEventListenerFillerInner;
+import org.alice.stageide.cascade.fillerinners.EnterProximityEventListenerFillerInner;
+import org.alice.stageide.cascade.fillerinners.ExitProximityEventListenerFillerInner;
+import org.alice.stageide.cascade.fillerinners.ImagePaintFillerInner;
+import org.alice.stageide.cascade.fillerinners.ImageSourceFillerInner;
+import org.alice.stageide.cascade.fillerinners.KeyFillerInner;
+import org.alice.stageide.cascade.fillerinners.KeyListenerFillerInner;
+import org.alice.stageide.cascade.fillerinners.LeavesViewEventListenerFillerInner;
+import org.alice.stageide.cascade.fillerinners.MouseClickOnObjectFillerInner;
+import org.alice.stageide.cascade.fillerinners.MouseClickedOnScreenFillerInner;
+import org.alice.stageide.cascade.fillerinners.NumberKeyListenerFillerInner;
+import org.alice.stageide.cascade.fillerinners.SceneActivationEventFillerInner;
+import org.alice.stageide.cascade.fillerinners.StartCollisionListenerFillerInner;
+import org.alice.stageide.cascade.fillerinners.StartOcclusionEventListenerFillerInner;
+import org.alice.stageide.cascade.fillerinners.TimerEventListenerFillerInner;
+import org.alice.stageide.cascade.fillerinners.TransformationListenerFillerInner;
+import org.lgna.croquet.CascadeMenuModel;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.AnimationStyle;
+import org.lgna.story.Color;
+import org.lgna.story.Key;
+import org.lgna.story.MoveDirection;
+import org.lgna.story.Paint;
+import org.lgna.story.RollDirection;
+import org.lgna.story.SJoint;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.SThing;
+import org.lgna.story.Style;
+import org.lgna.story.TurnDirection;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCascadeManager {
 	public ExpressionCascadeManager() {
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ImagePaintFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ImageSourceFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.AudioSourceFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ColorFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.KeyFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ArrowKeyListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.NumberKeyListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.MouseClickedOnScreenFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.MouseClickOnObjectFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.TransformationListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ComesIntoViewEventListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.LeavesViewEventListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.StartCollisionListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.EndCollisionListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.EnterProximityEventListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ExitProximityEventListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.StartOcclusionEventListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.EndOcclusionEventListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.SceneActivationEventFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.TimerEventListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.KeyListenerFillerInner() );
+		this.addExpressionFillerInner( new ImagePaintFillerInner() );
+		this.addExpressionFillerInner( new ImageSourceFillerInner() );
+		this.addExpressionFillerInner( new AudioSourceFillerInner() );
+		this.addExpressionFillerInner( new ColorFillerInner() );
+		this.addExpressionFillerInner( new KeyFillerInner() );
+		this.addExpressionFillerInner( new ArrowKeyListenerFillerInner() );
+		this.addExpressionFillerInner( new NumberKeyListenerFillerInner() );
+		this.addExpressionFillerInner( new MouseClickedOnScreenFillerInner() );
+		this.addExpressionFillerInner( new MouseClickOnObjectFillerInner() );
+		this.addExpressionFillerInner( new TransformationListenerFillerInner() );
+		this.addExpressionFillerInner( new ComesIntoViewEventListenerFillerInner() );
+		this.addExpressionFillerInner( new LeavesViewEventListenerFillerInner() );
+		this.addExpressionFillerInner( new StartCollisionListenerFillerInner() );
+		this.addExpressionFillerInner( new EndCollisionListenerFillerInner() );
+		this.addExpressionFillerInner( new EnterProximityEventListenerFillerInner() );
+		this.addExpressionFillerInner( new ExitProximityEventListenerFillerInner() );
+		this.addExpressionFillerInner( new StartOcclusionEventListenerFillerInner() );
+		this.addExpressionFillerInner( new EndOcclusionEventListenerFillerInner() );
+		this.addExpressionFillerInner( new SceneActivationEventFillerInner() );
+		this.addExpressionFillerInner( new TimerEventListenerFillerInner() );
+		this.addExpressionFillerInner( new KeyListenerFillerInner() );
 
 		this.addSimsExpressionFillerInners();
 		//this.addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( org.lgna.story.Color.class ) );
 
-		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.SThing.class );
-		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.MoveDirection.class );
-		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.TurnDirection.class );
-		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.RollDirection.class );
-		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.Key.class );
-		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.Color.class );
-		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.Paint.class );
+		this.addRelationalTypeToBooleanFillerInner( SThing.class );
+		this.addRelationalTypeToBooleanFillerInner( MoveDirection.class );
+		this.addRelationalTypeToBooleanFillerInner( TurnDirection.class );
+		this.addRelationalTypeToBooleanFillerInner( RollDirection.class );
+		this.addRelationalTypeToBooleanFillerInner( Key.class );
+		this.addRelationalTypeToBooleanFillerInner( Color.class );
+		this.addRelationalTypeToBooleanFillerInner( Paint.class );
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getEnumTypeForInterfaceType( org.lgna.project.ast.AbstractType<?, ?, ?> interfaceType ) {
-		if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Style.class ) ) {
-			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.AnimationStyle.class );
+	protected AbstractType<?, ?, ?> getEnumTypeForInterfaceType( AbstractType<?, ?, ?> interfaceType ) {
+		if( interfaceType == JavaType.getInstance( Style.class ) ) {
+			return JavaType.getInstance( AnimationStyle.class );
 		} else {
 			return super.getEnumTypeForInterfaceType( interfaceType );
 		}
 	}
 
 	@Override
-	protected boolean areEnumConstantsDesired( org.lgna.project.ast.AbstractType enumType ) {
-		if( enumType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Key.class ) ) {
+	protected boolean areEnumConstantsDesired( AbstractType enumType ) {
+		if( enumType == JavaType.getInstance( Key.class ) ) {
 			return false;
 		} else {
 			return super.areEnumConstantsDesired( enumType );
@@ -100,12 +140,12 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 	}
 
 	@Override
-	protected org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> createPartMenuModel( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType,
-			org.lgna.project.ast.AbstractType<?, ?, ?> expressionType, boolean isOwnedByCascadeItemMenuCombo ) {
-		if( expressionType.isAssignableTo( org.lgna.story.SJointedModel.class ) ) {
-			if( desiredType.isAssignableFrom( org.lgna.story.SJoint.class ) ) {
-				if( org.alice.stageide.ast.JointedTypeInfo.isJointed( expressionType ) ) {
-					java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( expressionType );
+	protected CascadeMenuModel<Expression> createPartMenuModel( Expression expression, AbstractType<?, ?, ?> desiredType,
+			AbstractType<?, ?, ?> expressionType, boolean isOwnedByCascadeItemMenuCombo ) {
+		if( expressionType.isAssignableTo( SJointedModel.class ) ) {
+			if( desiredType.isAssignableFrom( SJoint.class ) ) {
+				if( JointedTypeInfo.isJointed( expressionType ) ) {
+					List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances( expressionType );
 					return new JointExpressionMenuModel( expression, jointedTypeInfos, 0, isOwnedByCascadeItemMenuCombo );
 				}
 			}
@@ -114,14 +154,14 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 	}
 
 	@Override
-	protected boolean isApplicableForPartFillIn( org.lgna.project.ast.AbstractType<?, ?, ?> desiredType, org.lgna.project.ast.AbstractType<?, ?, ?> expressionType ) {
-		return desiredType.isAssignableFrom( org.lgna.story.SJoint.class ) && expressionType.isAssignableTo( org.lgna.story.SJointedModel.class );
+	protected boolean isApplicableForPartFillIn( AbstractType<?, ?, ?> desiredType, AbstractType<?, ?, ?> expressionType ) {
+		return desiredType.isAssignableFrom( SJoint.class ) && expressionType.isAssignableTo( SJointedModel.class );
 	}
 
 	@Override
-	protected void appendOtherTypes( java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> otherTypes ) {
+	protected void appendOtherTypes( List<AbstractType<?, ?, ?>> otherTypes ) {
 		super.appendOtherTypes( otherTypes );
-		otherTypes.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class ) );
+		otherTypes.add( JavaType.getInstance( SThing.class ) );
 
 	}
 

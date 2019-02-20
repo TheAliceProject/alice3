@@ -42,13 +42,18 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.StringState;
+
+import javax.swing.JTextField;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTextField<V extends javax.swing.JTextField> extends TextComponent<V> {
-	private final org.lgna.croquet.Operation operation;
+public abstract class AbstractTextField<V extends JTextField> extends TextComponent<V> {
+	private final Operation operation;
 
-	public AbstractTextField( org.lgna.croquet.StringState model, org.lgna.croquet.Operation operation ) {
+	public AbstractTextField( StringState model, Operation operation ) {
 		super( model );
 		this.operation = operation;
 	}

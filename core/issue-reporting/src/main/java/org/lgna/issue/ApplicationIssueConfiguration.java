@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.lgna.issue;
 
+import org.lgna.issue.swing.JSubmitPane;
+
+import javax.swing.JPanel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,7 +58,7 @@ public interface ApplicationIssueConfiguration {
 
 	public String getSubmitActionName();
 
-	public javax.swing.JPanel createHeaderPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget );
+	public JPanel createHeaderPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget );
 
-	public void submit( org.lgna.issue.swing.JSubmitPane jSubmitPane );
+	public void submit( JSubmitPane jSubmitPane );
 }

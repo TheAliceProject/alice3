@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.ast.localizer.AstLocalizer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -84,17 +86,17 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 	}
 
 	@Override
-	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
+	public SimpleArgumentListProperty getRequiredArgumentsProperty() {
 		return this.requiredArguments;
 	}
 
 	@Override
-	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
+	public SimpleArgumentListProperty getVariableArgumentsProperty() {
 		return this.variableArguments;
 	}
 
 	@Override
-	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
+	public KeyedArgumentListProperty getKeyedArgumentsProperty() {
 		return this.keyedArguments;
 	}
 
@@ -137,24 +139,7 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			MethodInvocation other = (MethodInvocation)o;
-			if( this.expression.valueContentEquals( other.expression, strictness, filter ) ) {
-				if( this.method.valueContentEquals( other.method, strictness, filter ) ) {
-					if( this.requiredArguments.valueContentEquals( other.requiredArguments, strictness, filter ) ) {
-						if( this.variableArguments.valueContentEquals( other.variableArguments, strictness, filter ) ) {
-							return this.keyedArguments.valueContentEquals( other.keyedArguments, strictness, filter );
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	@Override
-	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
+	protected void appendRepr( AstLocalizer localizer ) {
 		safeAppendRepr( localizer, this.method.getValue() );
 		localizer.appendText( "(" );
 		String separator = "";
@@ -167,13 +152,8 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		AbstractMethod method = this.method.getValue();
-		generator.appendCallerExpression( this.expression.getValue(), method );
-		generator.appendString( method.getName() );
-		generator.appendChar( '(' );
-		generator.appendArguments( this );
-		generator.appendChar( ')' );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendMethodCall(this);
 	}
 
 	public final ExpressionProperty expression = new ExpressionProperty( this ) {

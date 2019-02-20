@@ -43,43 +43,35 @@
 
 package org.alice.ide.ast.draganddrop.expression;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.ast.draganddrop.CodeDragModel;
+import org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.ExpressionProperty;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractExpressionDragModel extends org.alice.ide.ast.draganddrop.CodeDragModel {
-	public AbstractExpressionDragModel( java.util.UUID id ) {
+public abstract class AbstractExpressionDragModel extends CodeDragModel {
+	public AbstractExpressionDragModel( UUID id ) {
 		super( id );
 	}
 
-	//	@Override
-	//	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
-	//		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-	//		if( ide != null ) {
-	//			org.alice.ide.codedrop.CodeDropReceptor codeEditor = ide.getCodeEditorInFocus();
-	//			if( codeEditor != null ) {
-	//				codeEditor.addPotentialDropReceptors( rv, this.getExpressionType() );
-	//				//codeEditor.addPotentialDropReceptors( rv, org.lgna.project.ast.JavaType.VOID_TYPE );
-	//			} else {
-	//				//todo: investigate
-	//			}
-	//		}
-	//		return rv;
-	//	}
 	public abstract boolean isPotentialStatementCreator();
 
-	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty );
-
-	protected abstract org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair );
+	protected abstract Triggerable getDropOperation( ExpressionProperty expressionProperty );
 
 	@Override
-	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		if( dropSite instanceof org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite ) {
-			org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite expressionPropertyDropSite = (org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite)dropSite;
-			return this.getDropModel( expressionPropertyDropSite.getExpressionProperty() );
-		} else if( dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair ) {
-			org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)dropSite;
-			return this.getDropModel( blockStatementIndexPair );
+	public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
+		if( dropSite instanceof ExpressionPropertyDropSite ) {
+			ExpressionPropertyDropSite expressionPropertyDropSite = (ExpressionPropertyDropSite)dropSite;
+			return this.getDropOperation( expressionPropertyDropSite.getExpressionProperty() );
+		} else if( dropSite instanceof BlockStatementIndexPair ) {
+			throw new AssertionError();
 		} else {
 			return null;
 		}

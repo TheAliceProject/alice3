@@ -42,12 +42,14 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author Matt May
  */
 public class AddOcclusionStartListener {
 
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = AddOcclusionStartListener.class )
+	@ClassTemplate( keywordFactoryCls = AddOcclusionStartListener.class )
 	public interface Detail {
 	}
 

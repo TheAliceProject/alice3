@@ -43,6 +43,7 @@
 package org.lgna.ik.poser.scene;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
 import edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent;
@@ -102,7 +103,7 @@ public class DebugOverlay implements RenderTargetListener {
 	}
 
 	private BufferedImage getImage( RenderTargetRenderEvent e ) {
-		java.awt.Dimension surfaceSize = e.getTypedSource().getSurfaceSize();
+		Dimension surfaceSize = e.getTypedSource().getSurfaceSize();
 		BufferedImage rv = new BufferedImage( surfaceSize.width, surfaceSize.height, BufferedImage.TYPE_INT_RGB );
 		for( int x = 0; x < surfaceSize.width; x += 2 ) {
 			for( int y = 0; y < surfaceSize.height; y += 2 ) {

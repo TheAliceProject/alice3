@@ -42,16 +42,35 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.events.components;
 
+import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
+import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
 import org.alice.ide.controlflow.ControlFlowComposite;
+import org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState;
+import org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState;
+import org.alice.ide.declarationseditor.CodeComposite;
+import org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView;
 import org.alice.ide.declarationseditor.events.AddEventListenerCascade;
+import org.alice.ide.project.ProjectChangeOfInterestManager;
+import org.alice.ide.project.events.ProjectChangeOfInterestListener;
+import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.croquet.views.PopupButton;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserMethod;
 
-public class EventListenersView extends org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView {
-	public EventListenersView( org.alice.ide.declarationseditor.CodeComposite composite ) {
-		super( composite, new EventsContentPanel( (org.lgna.project.ast.UserMethod)composite.getDeclaration() ) );
+import javax.swing.BorderFactory;
+import javax.swing.JScrollBar;
+import javax.swing.SwingUtilities;
+
+public class EventListenersView extends AbstractCodeDeclarationView {
+	public EventListenersView( CodeComposite composite ) {
+		super( composite, new EventsContentPanel( (UserMethod)composite.getDeclaration() ) );
 		PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 		LineAxisPanel bottom = new LineAxisPanel( button );
 		this.stickyBottomPanel = new StickyBottomPanel();
@@ -71,21 +90,21 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		//		} );
 
 		this.stickyBottomPanel.setBackgroundColor( this.getBackgroundColor() );
-		this.stickyBottomPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 12, 0 ) );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
+		this.stickyBottomPanel.setBorder( BorderFactory.createEmptyBorder( 0, 0, 12, 0 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 		this.scrollPane.setBackgroundColor( this.getBackgroundColor() );
-		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+		if( IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			this.addPageEndComponent( ControlFlowComposite.getInstance( composite.getDeclaration() ).getView() );
 		}
 	}
 
 	@Override
-	protected org.lgna.croquet.views.AwtComponentView<?> getMainComponent() {
+	protected AwtComponentView<?> getMainComponent() {
 		return this.stickyBottomPanel;
 	}
 
-	private javax.swing.JScrollBar getJVerticalScrollBar() {
-		if( org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState.getInstance().getValue() ) {
+	private JScrollBar getJVerticalScrollBar() {
+		if( IsJavaCodeOnTheSideState.getInstance().getValue() ) {
 			return this.getSideBySideScrollPane().getAwtComponent().getVerticalScrollBar();
 		} else {
 			return this.scrollPane.getAwtComponent().getVerticalScrollBar();
@@ -95,10 +114,10 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 	private void handleStatementsChanged( boolean isScrollDesired ) {
 		this.revalidateAndRepaint();
 		if( isScrollDesired ) {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
-					javax.swing.JScrollBar verticalScrollBar = getJVerticalScrollBar();
+					JScrollBar verticalScrollBar = getJVerticalScrollBar();
 					verticalScrollBar.setValue( verticalScrollBar.getMaximum() );
 				}
 			} );
@@ -108,22 +127,22 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.declarationseditor.CodeComposite codeComposite = (org.alice.ide.declarationseditor.CodeComposite)this.getComposite();
+		CodeComposite codeComposite = (CodeComposite)this.getComposite();
 		UserCode userCode = (UserCode)codeComposite.getDeclaration();
 		userCode.getBodyProperty().getValue().statements.addListPropertyListener( this.statementsListener );
 
 		//todo: remove
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
 		//
 	}
 
 	@Override
 	protected void handleUndisplayable() {
 		//todo: remove
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
 		//
 
-		org.alice.ide.declarationseditor.CodeComposite codeComposite = (org.alice.ide.declarationseditor.CodeComposite)this.getComposite();
+		CodeComposite codeComposite = (CodeComposite)this.getComposite();
 		UserCode userCode = (UserCode)codeComposite.getDeclaration();
 		userCode.getBodyProperty().getValue().statements.removeListPropertyListener( this.statementsListener );
 		super.handleUndisplayable();
@@ -132,7 +151,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 	@Override
 	protected void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
 		super.setJavaCodeOnTheSide( value, isFirstTime );
-		org.lgna.croquet.views.SwingComponentView<?> codePanel = this.getCodePanelWithDropReceptor();
+		SwingComponentView<?> codePanel = this.getCodePanelWithDropReceptor();
 		if( value ) {
 			this.scrollPane.setViewportView( null );
 			this.stickyBottomPanel.setTopView( codePanel );
@@ -147,53 +166,53 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		}
 	}
 
-	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<Statement> statementsListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<Statement>() {
+	private final ListPropertyListener<Statement> statementsListener = new ListPropertyListener<Statement>() {
 		@Override
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<Statement> e ) {
+		public void adding( AddListPropertyEvent<Statement> e ) {
 		}
 
 		@Override
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<Statement> e ) {
+		public void added( AddListPropertyEvent<Statement> e ) {
 			EventListenersView.this.handleStatementsChanged( true );
 		}
 
 		@Override
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<Statement> e ) {
+		public void clearing( ClearListPropertyEvent<Statement> e ) {
 		}
 
 		@Override
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<Statement> e ) {
+		public void cleared( ClearListPropertyEvent<Statement> e ) {
 			EventListenersView.this.handleStatementsChanged( false );
 		}
 
 		@Override
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<Statement> e ) {
+		public void removing( RemoveListPropertyEvent<Statement> e ) {
 		}
 
 		@Override
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<Statement> e ) {
+		public void removed( RemoveListPropertyEvent<Statement> e ) {
 			EventListenersView.this.handleStatementsChanged( false );
 		}
 
 		@Override
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<Statement> e ) {
+		public void setting( SetListPropertyEvent<Statement> e ) {
 		}
 
 		@Override
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<Statement> e ) {
+		public void set( SetListPropertyEvent<Statement> e ) {
 			EventListenersView.this.handleStatementsChanged( false );
 		}
 
 	};
 
-	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+	private final ProjectChangeOfInterestListener projectChangeOfInterestListener = new ProjectChangeOfInterestListener() {
 		@Override
 		public void projectChanged() {
 			revalidateAndRepaint();
 		}
 	};
 
-	private final org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane();
+	private final ScrollPane scrollPane = new ScrollPane();
 	private final StickyBottomPanel stickyBottomPanel;
 
 }

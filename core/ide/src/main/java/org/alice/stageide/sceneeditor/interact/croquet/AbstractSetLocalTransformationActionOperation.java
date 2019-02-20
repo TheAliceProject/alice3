@@ -42,24 +42,42 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.croquet;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
+import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.SThing;
+import org.lgna.story.implementation.EntityImp;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSetLocalTransformationActionOperation extends AbstractFieldBasedManipulationActionOperation {
 
-	public AbstractSetLocalTransformationActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, String editPresentationKey ) {
+	public AbstractSetLocalTransformationActionOperation( Group group, UUID individualId, boolean isDoRequired, Animator animator, UserField field, String editPresentationKey ) {
 		super( group, individualId, isDoRequired, animator, field, editPresentationKey );
 	}
 
-	protected abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSGTransformable();
+	protected abstract AbstractTransformable getSGTransformable();
 
-	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPrevLocalTransformation();
+	protected abstract AffineMatrix4x4 getPrevLocalTransformation();
 
-	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getNextLocalTransformation();
+	protected abstract AffineMatrix4x4 getNextLocalTransformation();
 
-	private void setLocalTransformation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt ) {
+	private void setLocalTransformation( AbstractTransformable sgTransformable, AffineMatrix4x4 lt ) {
 		if( this.getAnimator() != null ) {
-			edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation povAnimation = new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( sgTransformable, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, lt );
+			PointOfViewAnimation povAnimation = new PointOfViewAnimation( sgTransformable, AsSeenBy.PARENT, null, lt );
 			povAnimation.setDuration( 0.5 );
 			//this.animator.complete( null );
 			this.getAnimator().invokeLater( povAnimation, null );
@@ -68,42 +86,42 @@ public abstract class AbstractSetLocalTransformationActionOperation extends Abst
 		}
 	}
 
-	private static final java.text.NumberFormat MILLI_FORMAT = new java.text.DecimalFormat( "0.000" );
+	private static final NumberFormat MILLI_FORMAT = new DecimalFormat( "0.000" );
 
-	private static void appendPosition( StringBuilder sb, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+	private static void appendPosition( StringBuilder sb, AffineMatrix4x4 m ) {
 		sb.append( "(" );
-		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( m.translation.x, MILLI_FORMAT ) );
+		sb.append( DoubleUtilities.format( m.translation.x, MILLI_FORMAT ) );
 		sb.append( "," );
-		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( m.translation.y, MILLI_FORMAT ) );
+		sb.append( DoubleUtilities.format( m.translation.y, MILLI_FORMAT ) );
 		sb.append( "," );
-		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( m.translation.z, MILLI_FORMAT ) );
+		sb.append( DoubleUtilities.format( m.translation.z, MILLI_FORMAT ) );
 		sb.append( ")" );
 	}
 
-	private static void appendOrientation( StringBuilder sb, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
-		edu.cmu.cs.dennisc.math.UnitQuaternion q = m.orientation.createUnitQuaternion();
+	private static void appendOrientation( StringBuilder sb, AffineMatrix4x4 m ) {
+		UnitQuaternion q = m.orientation.createUnitQuaternion();
 		sb.append( "(" );
-		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( q.x, MILLI_FORMAT ) );
+		sb.append( DoubleUtilities.format( q.x, MILLI_FORMAT ) );
 		sb.append( "," );
-		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( q.y, MILLI_FORMAT ) );
+		sb.append( DoubleUtilities.format( q.y, MILLI_FORMAT ) );
 		sb.append( "," );
-		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( q.z, MILLI_FORMAT ) );
+		sb.append( DoubleUtilities.format( q.z, MILLI_FORMAT ) );
 		sb.append( "," );
-		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( q.w, MILLI_FORMAT ) );
+		sb.append( DoubleUtilities.format( q.w, MILLI_FORMAT ) );
 		sb.append( ")" );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		//		final edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = ;
-		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT = this.getPrevLocalTransformation();
-		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT = this.getNextLocalTransformation();
+		final AffineMatrix4x4 prevLT = this.getPrevLocalTransformation();
+		final AffineMatrix4x4 nextLT = this.getNextLocalTransformation();
 
 		assert prevLT != null;
 		assert nextLT != null;
 		assert prevLT.isNaN() == false;
 		assert nextLT.isNaN() == false;
-		step.commitAndInvokeDo( new org.lgna.croquet.edits.AbstractEdit( step ) {
+		activity.commitAndInvokeDo( new AbstractEdit( activity ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
 				if( isDo && ( isDoRequired() == false ) ) {
@@ -123,7 +141,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends Abst
 				String name = getEditPresentationKey();
 				rv.append( name );
 				if( descriptionStyle.isDetailed() ) {
-					org.lgna.story.SThing thing = org.lgna.story.implementation.EntityImp.getAbstractionFromSgElement( AbstractSetLocalTransformationActionOperation.this.getSGTransformable() );
+					SThing thing = EntityImp.getAbstractionFromSgElement( AbstractSetLocalTransformationActionOperation.this.getSGTransformable() );
 					rv.append( " " );
 					rv.append( thing );
 					if( name.contains( "Move" ) ) {

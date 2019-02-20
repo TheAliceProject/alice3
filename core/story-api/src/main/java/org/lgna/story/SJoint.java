@@ -43,33 +43,50 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.DynamicJointId;
+import org.lgna.story.resources.JointArrayId;
+import org.lgna.story.resources.JointId;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SJoint extends SMovableTurnable {
 
-	private static final edu.cmu.cs.dennisc.map.MapToMap<SJointedModel, org.lgna.story.resources.JointId, SJoint> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static final MapToMap<SJointedModel, JointId, SJoint> mapToJointIdJointMap = MapToMap.newInstance();
+	private static final MapToMap<SJointedModel, String, SJoint> mapToJointNameJointMap = MapToMap.newInstance();
 
-	private static final edu.cmu.cs.dennisc.map.MapToMap<SJointedModel, org.lgna.story.resources.JointId[], SJoint[]> mapToArrayMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static final MapToMap<SJointedModel, JointId[], SJoint[]> mapToArrayMap = MapToMap.newInstance();
 
-	private static final edu.cmu.cs.dennisc.map.MapToMap<SJointedModel, org.lgna.story.resources.JointArrayId, SJoint[]> mapToArrayIdMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static final MapToMap<SJointedModel, JointArrayId, SJoint[]> mapToArrayIdMap = MapToMap.newInstance();
 
-	/* package-private */static SJoint getJoint( SJointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
-		return mapToMap.getInitializingIfAbsent( jointedModel, jointId, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<SJointedModel, org.lgna.story.resources.JointId, SJoint>() {
+	/* package-private */static SJoint getJoint( SJointedModel jointedModel, JointId jointId ) {
+		return mapToJointIdJointMap.getInitializingIfAbsent( jointedModel, jointId, new MapToMap.Initializer<SJointedModel, JointId, SJoint>() {
 			@Override
-			public SJoint initialize( SJointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
-				org.lgna.story.implementation.JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
-				return org.lgna.story.SJoint.getInstance( jointedModelImplementation, jointId );
+			public SJoint initialize( SJointedModel jointedModel, JointId jointId ) {
+				JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
+				return SJoint.getInstance( jointedModelImplementation, jointId );
 			}
 		} );
 	}
 
-	/* package-private */static SJoint[] getJointArray( SJointedModel jointedModel, org.lgna.story.resources.JointId[] jointIdArray ) {
-		return mapToArrayMap.getInitializingIfAbsent( jointedModel, jointIdArray, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<SJointedModel, org.lgna.story.resources.JointId[], SJoint[]>() {
+	/* package-private */static SJoint getJoint( SJointedModel jointedModel, String jointName ) {
+		return mapToJointNameJointMap.getInitializingIfAbsent( jointedModel, jointName, new MapToMap.Initializer<SJointedModel, String, SJoint>() {
 			@Override
-			public SJoint[] initialize( SJointedModel jointedModel, org.lgna.story.resources.JointId[] jointIdArray ) {
+			public SJoint initialize( SJointedModel jointedModel, String jointName ) {
+				JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
+				return SJoint.getInstance( jointedModelImplementation, jointName);
+			}
+		} );
+	}
+
+	/* package-private */static SJoint[] getJointArray( SJointedModel jointedModel, JointId[] jointIdArray ) {
+		return mapToArrayMap.getInitializingIfAbsent( jointedModel, jointIdArray, new MapToMap.Initializer<SJointedModel, JointId[], SJoint[]>() {
+			@Override
+			public SJoint[] initialize( SJointedModel jointedModel, JointId[] jointIdArray ) {
 				SJoint[] jointArray = new SJoint[ jointIdArray.length ];
 				for( int i = 0; i < jointIdArray.length; i++ ) {
 					jointArray[ i ] = getJoint( jointedModel, jointIdArray[ i ] );
@@ -79,31 +96,41 @@ public class SJoint extends SMovableTurnable {
 		} );
 	}
 
-	/* package-private */static SJoint[] getJointArray( SJointedModel jointedModel, org.lgna.story.resources.JointArrayId jointArrayId ) {
-		org.lgna.story.implementation.JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
+	/* package-private */static SJoint[] getJointArray( SJointedModel jointedModel, JointArrayId jointArrayId ) {
+		JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
 		return getJointArray( jointedModel, jointedModelImplementation.getJointIdArray( jointArrayId ) );
 	}
 
-	private static SJoint getInstance( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
-		org.lgna.story.implementation.JointImp implementation = jointedModelImplementation.getJointImplementation( jointId );
-		SJoint rv = implementation.getAbstraction();
+	private static SJoint getInstance( JointedModelImp jointedModelImplementation, JointId jointId ) {
+		JointImp implementation = jointedModelImplementation.getJointImplementation( jointId );
+		return getInstance(jointedModelImplementation, implementation);
+	}
+
+	//String based lookup for DynamicJointIds
+	private static SJoint getInstance( JointedModelImp jointedModelImplementation, String jointName ) {
+		JointImp implementation = jointedModelImplementation.getJointImplementation( jointName );
+		return getInstance(jointedModelImplementation, implementation);
+	}
+
+	private static SJoint getInstance( JointedModelImp jointedModelImplementation, JointImp jointImp ) {
+		SJoint rv = jointImp.getAbstraction();
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new SJoint( implementation );
-			implementation.setAbstraction( rv );
+			rv = new SJoint( jointImp );
+			jointImp.setAbstraction( rv );
 		}
 		return rv;
 	}
 
-	private final org.lgna.story.implementation.JointImp implementation;
+	private final JointImp implementation;
 
-	private SJoint( org.lgna.story.implementation.JointImp implementation ) {
+	private SJoint( JointImp implementation ) {
 		this.implementation = implementation;
 	}
 
 	@Override
-			/* package-private */org.lgna.story.implementation.JointImp getImplementation() {
+			/* package-private */JointImp getImplementation() {
 		return this.implementation;
 	}
 

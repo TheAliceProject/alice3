@@ -43,6 +43,8 @@
 
 package org.lgna.croquet;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,7 +52,7 @@ public abstract class SplitComposite extends ImmutableSplitComposite {
 	private final Composite<?> leadingComposite;
 	private final Composite<?> trailingComposite;
 
-	public SplitComposite( java.util.UUID id, Composite<?> leadingComposite, Composite<?> trailingComposite ) {
+	public SplitComposite( UUID id, Composite<?> leadingComposite, Composite<?> trailingComposite ) {
 		super( id );
 		this.leadingComposite = leadingComposite;
 		this.trailingComposite = trailingComposite;

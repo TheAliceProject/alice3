@@ -42,16 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.personresource;
 
+import org.alice.stageide.personresource.views.OutfitTabView;
+import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.views.ScrollPane;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OutfitTabComposite<V extends org.alice.stageide.personresource.views.OutfitTabView> extends org.lgna.croquet.SimpleTabComposite<V> {
-	public OutfitTabComposite( java.util.UUID migrationId ) {
+public abstract class OutfitTabComposite<V extends OutfitTabView> extends SimpleTabComposite<V> {
+	public OutfitTabComposite( UUID migrationId ) {
 		super( migrationId, IsCloseable.FALSE );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

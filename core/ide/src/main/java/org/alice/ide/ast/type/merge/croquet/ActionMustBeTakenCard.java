@@ -42,22 +42,30 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.Panel;
+import org.lgna.project.ast.Member;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ActionMustBeTakenCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
+public final class ActionMustBeTakenCard extends SimpleComposite<Panel> {
 	private final DifferentImplementation<?> differentImplementation;
 
 	public ActionMustBeTakenCard( DifferentImplementation<?> differentImplementation ) {
-		super( java.util.UUID.fromString( "2fb6aba3-2df6-4731-ab8a-81ed77e0ec4a" ) );
+		super( UUID.fromString( "2fb6aba3-2df6-4731-ab8a-81ed77e0ec4a" ) );
 		this.differentImplementation = differentImplementation;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		org.lgna.project.ast.Member member = this.differentImplementation.getProjectHub().getMember();
-		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( this, "insets 0, fill" );
-		rv.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.createActionMustBeTakeMemberLabel( member ) );
+	protected Panel createView() {
+		Member member = this.differentImplementation.getProjectHub().getMember();
+		MigPanel rv = new MigPanel( this, "insets 0, fill" );
+		rv.addComponent( MemberViewUtilities.createActionMustBeTakeMemberLabel( member ) );
 		return rv;
 	}
 }

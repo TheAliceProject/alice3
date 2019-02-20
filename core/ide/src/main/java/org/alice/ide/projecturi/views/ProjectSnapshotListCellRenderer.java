@@ -43,12 +43,32 @@
 
 package org.alice.ide.projecturi.views;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.alice.ide.swing.SnapshotListCellRenderer;
+import org.alice.ide.uricontent.StarterProjectUtilities;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractNotAvailableIcon implements javax.swing.Icon {
+abstract class AbstractNotAvailableIcon implements Icon {
 	@Override
 	public int getIconWidth() {
 		return 160;
@@ -62,27 +82,27 @@ abstract class AbstractNotAvailableIcon implements javax.swing.Icon {
 	protected abstract String getText();
 
 	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
 		int width = this.getIconWidth();
 		int height = this.getIconHeight();
-		g.setColor( java.awt.Color.DARK_GRAY );
+		g.setColor( Color.DARK_GRAY );
 		g.fillRect( x, y, width, height );
-		g.setColor( java.awt.Color.LIGHT_GRAY );
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, this.getText(), x, y, width, height );
+		g.setColor( Color.LIGHT_GRAY );
+		GraphicsUtilities.drawCenteredText( g, this.getText(), x, y, width, height );
 	}
 }
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCellRenderer {
-	private static final javax.swing.Icon SNAPSHOT_NOT_AVAILABLE_ICON = new AbstractNotAvailableIcon() {
+public class ProjectSnapshotListCellRenderer extends SnapshotListCellRenderer {
+	private static final Icon SNAPSHOT_NOT_AVAILABLE_ICON = new AbstractNotAvailableIcon() {
 		@Override
 		protected String getText() {
 			return "snapshot not available";
 		}
 	};
-	private static final javax.swing.Icon FILE_DOES_NOT_EXIST_ICON = new AbstractNotAvailableIcon() {
+	private static final Icon FILE_DOES_NOT_EXIST_ICON = new AbstractNotAvailableIcon() {
 		@Override
 		protected String getText() {
 			return "snapshot does not exist";
@@ -94,10 +114,10 @@ public class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.Snapsho
 	private static String findLocalizedFileNameText( String key, String bundleName, Locale locale ) {
 		if( ( bundleName != null ) && ( key != null ) ) {
 			try {
-				java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, locale );
+				ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( bundleName, locale );
 				String rv = resourceBundle.getString( key );
 				return rv;
-			} catch( java.util.MissingResourceException mre ) {
+			} catch( MissingResourceException mre ) {
 				return null;
 			}
 		} else {
@@ -106,20 +126,20 @@ public class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.Snapsho
 	}
 
 	@Override
-	protected javax.swing.JLabel updateLabel( javax.swing.JLabel rv, Object value ) {
-		java.net.URI uri = (java.net.URI)value;
+	protected JLabel updateLabel( JLabel rv, Object value ) {
+		URI uri = (URI)value;
 		String text;
-		javax.swing.Icon icon;
+		Icon icon;
 		if( uri != null ) {
 			if( uri.isAbsolute() ) {
 				boolean isExtensionDesired;
 				if( "file".equals( uri.getScheme() ) ) {
 					isExtensionDesired = true;
 				} else {
-					uri = org.alice.ide.uricontent.StarterProjectUtilities.toFileUriFromStarterUri( uri );
+					uri = StarterProjectUtilities.toFileUriFromStarterUri( uri );
 					isExtensionDesired = false;
 				}
-				java.io.File file = new java.io.File( uri );
+				File file = new File( uri );
 				text = file.getName();
 				if( isExtensionDesired ) {
 					//pass
@@ -130,7 +150,7 @@ public class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.Snapsho
 					}
 
 					//Localize the text to display
-					String localizedName = findLocalizedFileNameText( text, PROJECT_LOCALIZATION_BUNDLE_NAME, javax.swing.JComponent.getDefaultLocale() );
+					String localizedName = findLocalizedFileNameText( text, PROJECT_LOCALIZATION_BUNDLE_NAME, JComponent.getDefaultLocale() );
 					if( localizedName != null ) {
 						text = localizedName;
 					}
@@ -153,11 +173,11 @@ public class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.Snapsho
 					//						//pass
 					//					} else {
 					try {
-						java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( file );
-						java.util.zip.ZipEntry zipEntry = zipFile.getEntry( "thumbnail.png" );
+						ZipFile zipFile = new ZipFile( file );
+						ZipEntry zipEntry = zipFile.getEntry( "thumbnail.png" );
 						if( zipEntry != null ) {
-							java.io.InputStream is = zipFile.getInputStream( zipEntry );
-							java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is );
+							InputStream is = zipFile.getInputStream( zipEntry );
+							Image image = ImageUtilities.read( ImageUtilities.PNG_CODEC_NAME, is );
 							icon = new SnapshotIcon( image );
 						} else {
 							icon = SNAPSHOT_NOT_AVAILABLE_ICON;

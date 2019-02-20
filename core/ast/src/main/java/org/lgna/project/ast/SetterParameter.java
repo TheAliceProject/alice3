@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.StringProperty;
+import org.lgna.project.annotations.ValueDetails;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -61,7 +64,7 @@ public class SetterParameter extends AbstractParameter {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
 
@@ -81,7 +84,7 @@ public class SetterParameter extends AbstractParameter {
 	}
 
 	@Override
-	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
+	public ValueDetails<?> getDetails() {
 		return null;
 	}
 

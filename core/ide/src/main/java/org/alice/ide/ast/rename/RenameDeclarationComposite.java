@@ -42,13 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.ast.rename;
 
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.rename.components.RenamePanel;
+import org.alice.ide.croquet.edits.ast.rename.RenameDeclarationEdit;
+import org.alice.ide.name.NameValidator;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.AbstractDeclaration;
+
+import java.awt.Color;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameDeclarationComposite<N extends org.lgna.project.ast.AbstractDeclaration> extends RenameComposite<org.alice.ide.ast.rename.components.RenamePanel> {
+public abstract class RenameDeclarationComposite<N extends AbstractDeclaration> extends RenameComposite<RenamePanel> {
 	private final N declaration;
 
-	public RenameDeclarationComposite( java.util.UUID migrationIde, org.alice.ide.name.NameValidator nameValidator, N declaration ) {
+	public RenameDeclarationComposite( UUID migrationIde, NameValidator nameValidator, N declaration ) {
 		super( migrationIde, nameValidator );
 		this.declaration = declaration;
 	}
@@ -59,17 +70,17 @@ public abstract class RenameDeclarationComposite<N extends org.lgna.project.ast.
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return new org.alice.ide.croquet.edits.ast.rename.RenameDeclarationEdit( completionStep, declaration, this.declaration.getName(), this.getNameState().getValue() );
+	protected Edit createEdit( UserActivity userActivity ) {
+		return new RenameDeclarationEdit( userActivity, declaration, this.declaration.getName(), this.getNameState().getValue() );
 	}
 
-	private java.awt.Color getViewBackgroundColor() {
-		return org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( this.declaration );
+	private Color getViewBackgroundColor() {
+		return ThemeUtilities.getActiveTheme().getColorFor( this.declaration );
 	}
 
 	@Override
-	protected org.alice.ide.ast.rename.components.RenamePanel createView() {
-		org.alice.ide.ast.rename.components.RenamePanel rv = new org.alice.ide.ast.rename.components.RenamePanel( this );
+	protected RenamePanel createView() {
+		RenamePanel rv = new RenamePanel( this );
 		rv.setMinimumPreferredWidth( 320 );
 		rv.setBackgroundColor( this.getViewBackgroundColor() );
 		return rv;

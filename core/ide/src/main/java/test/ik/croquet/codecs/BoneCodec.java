@@ -43,28 +43,33 @@
 
 package test.ik.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.ik.core.solver.Bone;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum BoneCodec implements org.lgna.croquet.ItemCodec<org.lgna.ik.core.solver.Bone> {
+public enum BoneCodec implements ItemCodec<Bone> {
 	SINGLETON;
 	@Override
-	public org.lgna.ik.core.solver.Bone decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Bone decodeValue( BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException();
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.ik.core.solver.Bone value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, Bone value ) {
 		throw new RuntimeException();
 	}
 
 	@Override
-	public java.lang.Class<org.lgna.ik.core.solver.Bone> getValueClass() {
-		return org.lgna.ik.core.solver.Bone.class;
+	public Class<Bone> getValueClass() {
+		return Bone.class;
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, org.lgna.ik.core.solver.Bone value ) {
+	public void appendRepresentation( StringBuilder sb, Bone value ) {
 		sb.append( value );
 	}
 }

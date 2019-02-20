@@ -43,14 +43,26 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug;
+
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
+import javax.swing.ScrollPaneLayout;
+import javax.swing.Scrollable;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ScrollPane extends SwingComponentView<javax.swing.JScrollPane> {
+public class ScrollPane extends SwingComponentView<JScrollPane> {
 	public enum VerticalScrollbarPolicy {
-		NEVER( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_NEVER ),
-		AS_NEEDED( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ),
-		ALWAYS( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
+		NEVER( JScrollPane.VERTICAL_SCROLLBAR_NEVER ),
+		AS_NEEDED( JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ),
+		ALWAYS( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
 		private int internal;
 
 		private VerticalScrollbarPolicy( int internal ) {
@@ -59,9 +71,9 @@ public class ScrollPane extends SwingComponentView<javax.swing.JScrollPane> {
 	}
 
 	public enum HorizontalScrollbarPolicy {
-		NEVER( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ),
-		AS_NEEDED( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED ),
-		ALWAYS( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS );
+		NEVER( JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ),
+		AS_NEEDED( JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED ),
+		ALWAYS( JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS );
 		private int internal;
 
 		private HorizontalScrollbarPolicy( int internal ) {
@@ -93,20 +105,20 @@ public class ScrollPane extends SwingComponentView<javax.swing.JScrollPane> {
 		}
 	}
 
-	private static class RightToLeftFixScrollPanelLayout extends javax.swing.ScrollPaneLayout {
+	private static class RightToLeftFixScrollPanelLayout extends ScrollPaneLayout {
 		@Override
-		public void layoutContainer( java.awt.Container parent ) {
+		public void layoutContainer( Container parent ) {
 			super.layoutContainer( parent );
-			javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane)parent;
+			JScrollPane scrollPane = (JScrollPane)parent;
 			if( scrollPane.getComponentOrientation().isLeftToRight() ) {
 				//pass
 			} else {
 				//todo?
-				javax.swing.JViewport viewport = scrollPane.getViewport();
-				java.awt.Rectangle viewportBounds = viewport.getBounds();
-				java.awt.Component view = viewport.getView();
+				JViewport viewport = scrollPane.getViewport();
+				Rectangle viewportBounds = viewport.getBounds();
+				Component view = viewport.getView();
 				if( view != null ) {
-					java.awt.Rectangle viewBounds = view.getBounds();
+					Rectangle viewBounds = view.getBounds();
 					if( viewBounds.width < viewportBounds.width ) {
 						viewBounds.x = 0;
 						viewBounds.width = viewportBounds.width;
@@ -117,11 +129,11 @@ public class ScrollPane extends SwingComponentView<javax.swing.JScrollPane> {
 		}
 	}
 
-	protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
-		edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug rv = new edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug() {
+	protected JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
+		JScrollPaneCoveringLinuxPaintBug rv = new JScrollPaneCoveringLinuxPaintBug() {
 			@Override
-			public java.awt.Dimension getPreferredSize() {
-				java.awt.Dimension rv = super.getPreferredSize();
+			public Dimension getPreferredSize() {
+				Dimension rv = super.getPreferredSize();
 				return constrainPreferredSizeIfNecessary( rv );
 			}
 		};
@@ -129,8 +141,8 @@ public class ScrollPane extends SwingComponentView<javax.swing.JScrollPane> {
 	}
 
 	@Override
-	protected final javax.swing.JScrollPane createAwtComponent() {
-		javax.swing.JScrollPane rv = this.createJScrollPane();
+	protected final JScrollPane createAwtComponent() {
+		JScrollPane rv = this.createJScrollPane();
 		rv.setOpaque( true );
 		rv.setBorder( null );
 		rv.setLayout( new RightToLeftFixScrollPanelLayout() );
@@ -142,10 +154,10 @@ public class ScrollPane extends SwingComponentView<javax.swing.JScrollPane> {
 	}
 
 	public void setViewportView( AwtComponentView<?> view ) {
-		javax.swing.JScrollPane jScrollPane = this.getAwtComponent();
+		JScrollPane jScrollPane = this.getAwtComponent();
 		if( view != null ) {
 			final boolean IS_SCROLLABLE_HEEDED = false;
-			if( IS_SCROLLABLE_HEEDED && ( view.getAwtComponent() instanceof javax.swing.Scrollable ) ) {
+			if( IS_SCROLLABLE_HEEDED && ( view.getAwtComponent() instanceof Scrollable ) ) {
 				//pass
 			} else {
 				if( jScrollPane.getHorizontalScrollBar().getUnitIncrement() == 1 ) {
@@ -170,7 +182,7 @@ public class ScrollPane extends SwingComponentView<javax.swing.JScrollPane> {
 		this.getAwtComponent().setHorizontalScrollBarPolicy( horizontalScrollbarPolicy.internal );
 	}
 
-	private void setScrollBarIncrements( javax.swing.JScrollBar scrollBar, int unitIncrement, int blockIncrement ) {
+	private void setScrollBarIncrements( JScrollBar scrollBar, int unitIncrement, int blockIncrement ) {
 		this.checkEventDispatchThread();
 		scrollBar.setUnitIncrement( unitIncrement );
 		scrollBar.setBlockIncrement( blockIncrement );

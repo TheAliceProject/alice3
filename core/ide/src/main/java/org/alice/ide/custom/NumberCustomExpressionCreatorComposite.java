@@ -43,42 +43,52 @@
 
 package org.alice.ide.custom;
 
+import edu.cmu.cs.dennisc.math.GoldenRatio;
+import org.alice.ide.croquet.models.numberpad.NumberModel;
+import org.alice.ide.custom.components.NumberCustomExpressionCreatorView;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.croquet.views.Dialog;
+import org.lgna.project.ast.Expression;
+
+import java.awt.Dimension;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NumberCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.NumberCustomExpressionCreatorView> {
+public abstract class NumberCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<NumberCustomExpressionCreatorView> {
 	private final ErrorStatus errorStatus = this.createErrorStatus( "errorStatus" );
-	private final org.alice.ide.croquet.models.numberpad.NumberModel numberModel;
+	private final NumberModel numberModel;
 
-	public NumberCustomExpressionCreatorComposite( java.util.UUID id, org.alice.ide.croquet.models.numberpad.NumberModel numberModel ) {
+	public NumberCustomExpressionCreatorComposite( UUID id, NumberModel numberModel ) {
 		super( id );
 		this.numberModel = numberModel;
 	}
 
 	@Override
-	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window ) {
-		java.awt.Dimension rv = super.calculateWindowSize( window );
+	protected Dimension calculateWindowSize( AbstractWindow<?> window ) {
+		Dimension rv = super.calculateWindowSize( window );
 		//todo
-		rv.width = (int)( rv.height / edu.cmu.cs.dennisc.math.GoldenRatio.PHI );
+		rv.width = (int)( rv.height / GoldenRatio.PHI );
 		return rv;
 	}
 
 	@Override
-	protected org.alice.ide.custom.components.NumberCustomExpressionCreatorView createView() {
-		return new org.alice.ide.custom.components.NumberCustomExpressionCreatorView( this );
+	protected NumberCustomExpressionCreatorView createView() {
+		return new NumberCustomExpressionCreatorView( this );
 	}
 
-	public org.alice.ide.croquet.models.numberpad.NumberModel getNumberModel() {
+	public NumberModel getNumberModel() {
 		return this.numberModel;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createValue() {
+	protected Expression createValue() {
 		return this.numberModel.getExpressionValue();
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		String text = this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
 		if( text != null ) {
 			String errorFormat = findLocalizedText( text );
@@ -89,18 +99,18 @@ public abstract class NumberCustomExpressionCreatorComposite extends CustomExpre
 		}
 	}
 
-	protected abstract String getTextForPreviousExpression( org.lgna.project.ast.Expression expression );
+	protected abstract String getTextForPreviousExpression( Expression expression );
 
 	@Override
-	protected final void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+	protected final void initializeToPreviousExpression( Expression expression ) {
 		String text = this.getTextForPreviousExpression( expression );
 		this.numberModel.setText( text );
 		this.numberModel.selectAll();
 	}
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		super.handlePreShowDialog( step );
+	protected void handlePreShowDialog( Dialog dialog ) {
+		super.handlePreShowDialog( dialog );
 		this.numberModel.getTextField().requestFocusInWindow();
 	}
 }

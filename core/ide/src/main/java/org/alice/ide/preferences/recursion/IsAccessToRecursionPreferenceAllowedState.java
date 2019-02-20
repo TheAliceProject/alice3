@@ -42,10 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.preferences.recursion;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.preferences.PreferenceBooleanState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IsAccessToRecursionPreferenceAllowedState extends org.lgna.croquet.preferences.PreferenceBooleanState {
+public class IsAccessToRecursionPreferenceAllowedState extends PreferenceBooleanState {
 	private static class SingletonHolder {
 		private static IsAccessToRecursionPreferenceAllowedState instance = new IsAccessToRecursionPreferenceAllowedState();
 	}
@@ -55,6 +60,6 @@ public class IsAccessToRecursionPreferenceAllowedState extends org.lgna.croquet.
 	}
 
 	private IsAccessToRecursionPreferenceAllowedState() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "feb28c71-be9f-46a4-84db-57e9205bc220" ), false );
+		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "feb28c71-be9f-46a4-84db-57e9205bc220" ), false );
 	}
 }

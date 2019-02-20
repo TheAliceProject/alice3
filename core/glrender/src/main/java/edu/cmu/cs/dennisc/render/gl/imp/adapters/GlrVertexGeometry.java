@@ -43,13 +43,16 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Vertex;
+import edu.cmu.cs.dennisc.scenegraph.VertexGeometry;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrVertexGeometry<T extends edu.cmu.cs.dennisc.scenegraph.VertexGeometry> extends GlrGeometry<T> {
+public abstract class GlrVertexGeometry<T extends VertexGeometry> extends GlrGeometry<T> {
 	private void updateVertices() {
 		//	    edu.cmu.cs.dennisc.scenegraph.VertexGeometry vg = this.sgE;
 		//	    int vertexCount = vg.getVertexCount();
@@ -61,7 +64,7 @@ public abstract class GlrVertexGeometry<T extends edu.cmu.cs.dennisc.scenegraph.
 		setIsGeometryChanged( true );
 		this.isAlphaBlended = false;
 		//	    this.isVertexColored = false;
-		for( edu.cmu.cs.dennisc.scenegraph.Vertex v : owner.vertices.getValue() ) {
+		for( Vertex v : owner.vertices.getValue() ) {
 			if( v.diffuseColor.isNaN() == false ) {
 				//this.isVertexColored = true;
 				if( v.diffuseColor.alpha < 1.0f ) {
@@ -81,13 +84,13 @@ public abstract class GlrVertexGeometry<T extends edu.cmu.cs.dennisc.scenegraph.
 	//    	return this.isVertexColored;
 	//    }
 
-	protected edu.cmu.cs.dennisc.scenegraph.Vertex accessVertexAt( int index ) {
+	protected Vertex accessVertexAt( int index ) {
 		return owner.vertices.getValue()[ index ];
 	}
 
 	public void renderPrimative( RenderContext rc, int mode ) {
 		rc.gl.glBegin( mode );
-		for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : owner.vertices.getValue() ) {
+		for( Vertex vertex : owner.vertices.getValue() ) {
 			rc.renderVertex( vertex );
 		}
 		rc.gl.glEnd();
@@ -96,7 +99,7 @@ public abstract class GlrVertexGeometry<T extends edu.cmu.cs.dennisc.scenegraph.
 	public void pickPrimative( PickContext pc, int mode ) {
 		pc.gl.glPushName( -1 );
 		pc.gl.glBegin( mode );
-		for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : owner.vertices.getValue() ) {
+		for( Vertex vertex : owner.vertices.getValue() ) {
 			pc.pickVertex( vertex );
 		}
 		pc.gl.glEnd();
@@ -104,7 +107,7 @@ public abstract class GlrVertexGeometry<T extends edu.cmu.cs.dennisc.scenegraph.
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.vertices ) {
 			updateVertices();
 			setIsGeometryChanged( true );

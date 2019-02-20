@@ -42,12 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.member.views;
 
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.member.ProcedureTabComposite;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ProcedureTabView extends MemberTabView {
-	public ProcedureTabView( org.alice.ide.member.ProcedureTabComposite composite ) {
+	public ProcedureTabView( ProcedureTabComposite composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getProcedureColor() );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getProcedureColor() );
 	}
 }

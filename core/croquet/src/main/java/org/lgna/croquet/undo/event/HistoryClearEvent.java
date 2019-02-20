@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.croquet.undo.event;
 
+import org.lgna.croquet.undo.UndoHistory;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +51,7 @@ public class HistoryClearEvent extends HistoryEvent {
 	private int prevIndex;
 	private int nextIndex;
 
-	public HistoryClearEvent( org.lgna.croquet.undo.UndoHistory source ) {
+	public HistoryClearEvent( UndoHistory source ) {
 		super( source );
 	}
 }

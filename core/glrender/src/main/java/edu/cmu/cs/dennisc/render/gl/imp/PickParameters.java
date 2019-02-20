@@ -43,19 +43,32 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.render.PickObserver;
+import edu.cmu.cs.dennisc.render.PickResult;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
+import java.awt.Rectangle;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PickParameters {
-	private final java.util.List<edu.cmu.cs.dennisc.render.PickResult> pickResults = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final edu.cmu.cs.dennisc.render.RenderTarget renderTarget;
-	private final edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera;
+	private final List<PickResult> pickResults = Lists.newLinkedList();
+	private final RenderTarget renderTarget;
+	private final AbstractCamera sgCamera;
 	private final int x;
 	private final int y;
 	private final boolean isSubElementRequired;
-	private final edu.cmu.cs.dennisc.render.PickObserver pickObserver;
+	private final PickObserver pickObserver;
 
-	public PickParameters( edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.render.PickObserver pickObserver ) {
+	public PickParameters( RenderTarget renderTarget, AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, PickObserver pickObserver ) {
 		this.renderTarget = renderTarget;
 		this.sgCamera = sgCamera;
 		this.x = x;
@@ -64,29 +77,29 @@ public class PickParameters {
 		this.pickObserver = pickObserver;
 	}
 
-	public void addPickResult( edu.cmu.cs.dennisc.scenegraph.Component source, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, boolean isFrontFacing, edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry, int subElement, edu.cmu.cs.dennisc.math.Point3 xyzInSource ) {
-		this.pickResults.add( new edu.cmu.cs.dennisc.render.PickResult( source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource ) );
+	public void addPickResult( Component source, Visual sgVisual, boolean isFrontFacing, Geometry sgGeometry, int subElement, Point3 xyzInSource ) {
+		this.pickResults.add( new PickResult( source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource ) );
 	}
 
-	public java.util.List<edu.cmu.cs.dennisc.render.PickResult> accessAllPickResults() {
+	public List<PickResult> accessAllPickResults() {
 		return this.pickResults;
 	}
 
-	public edu.cmu.cs.dennisc.render.PickResult accessFrontMostPickResult() {
-		edu.cmu.cs.dennisc.render.PickResult rv;
+	public PickResult accessFrontMostPickResult() {
+		PickResult rv;
 		if( this.pickResults.isEmpty() ) {
-			rv = new edu.cmu.cs.dennisc.render.PickResult( this.sgCamera );
+			rv = new PickResult( this.sgCamera );
 		} else {
 			rv = this.pickResults.get( 0 );
 		}
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.render.RenderTarget getRenderTarget() {
+	public RenderTarget getRenderTarget() {
 		return this.renderTarget;
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
+	public AbstractCamera getSGCamera() {
 		return this.sgCamera;
 	}
 
@@ -98,7 +111,7 @@ public class PickParameters {
 		return this.y;
 	}
 
-	public int getFlippedY( java.awt.Rectangle actualViewport ) {
+	public int getFlippedY( Rectangle actualViewport ) {
 		return actualViewport.height - this.y;
 	}
 
@@ -106,7 +119,7 @@ public class PickParameters {
 		return this.isSubElementRequired;
 	}
 
-	public edu.cmu.cs.dennisc.render.PickObserver getPickObserver() {
+	public PickObserver getPickObserver() {
 		return this.pickObserver;
 	}
 }

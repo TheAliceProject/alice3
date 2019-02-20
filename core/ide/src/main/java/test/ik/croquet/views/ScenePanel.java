@@ -43,16 +43,22 @@
 
 package test.ik.croquet.views;
 
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SProgram;
+import org.lgna.story.implementation.ProgramImp;
+import test.ik.croquet.SceneComposite;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ScenePanel extends org.lgna.croquet.views.BorderPanel {
-	public ScenePanel( test.ik.croquet.SceneComposite composite ) {
+public class ScenePanel extends BorderPanel {
+	public ScenePanel( SceneComposite composite ) {
 		super( composite );
 	}
 
-	public void initializeInAwtContainer( org.lgna.story.SProgram program ) {
-		org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.EmployeesOnly.getImplementation( program );
+	public void initializeInAwtContainer( SProgram program ) {
+		ProgramImp programImp = EmployeesOnly.getImplementation( program );
 		programImp.initializeInAwtContainer( this.getAwtComponent() );
 	}
 }

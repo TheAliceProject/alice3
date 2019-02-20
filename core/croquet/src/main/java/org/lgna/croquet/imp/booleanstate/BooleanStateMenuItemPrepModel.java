@@ -43,8 +43,11 @@
 package org.lgna.croquet.imp.booleanstate;
 
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.views.CheckBoxMenuItem;
+import org.lgna.croquet.views.MenuItemContainer;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -53,14 +56,9 @@ public class BooleanStateMenuItemPrepModel extends StandardMenuItemPrepModel {
 	private final BooleanState booleanState;
 
 	/*package-private*/BooleanStateMenuItemPrepModel( BooleanState booleanState ) {
-		super( java.util.UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );
+		super( UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );
 		assert booleanState != null;
 		this.booleanState = booleanState;
-	}
-
-	@Override
-	public Iterable<? extends Model> getChildren() {
-		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( this.booleanState );
 	}
 
 	@Override
@@ -82,8 +80,8 @@ public class BooleanStateMenuItemPrepModel extends StandardMenuItemPrepModel {
 	}
 
 	@Override
-	public org.lgna.croquet.views.CheckBoxMenuItem createMenuItemAndAddTo( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
-		org.lgna.croquet.views.CheckBoxMenuItem checkBoxMenuItem = new org.lgna.croquet.views.CheckBoxMenuItem( this.getBooleanState() );
+	public CheckBoxMenuItem createMenuItemAndAddTo( MenuItemContainer menuItemContainer ) {
+		CheckBoxMenuItem checkBoxMenuItem = new CheckBoxMenuItem( this.getBooleanState() );
 		menuItemContainer.addCheckBoxMenuItem( checkBoxMenuItem );
 		return checkBoxMenuItem;
 	}

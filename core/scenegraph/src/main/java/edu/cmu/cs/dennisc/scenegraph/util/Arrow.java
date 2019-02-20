@@ -43,6 +43,7 @@
 package edu.cmu.cs.dennisc.scenegraph.util;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
@@ -99,7 +100,7 @@ public class Arrow extends Transformable {
 	}
 
 	private void setConeTranslation( double lengthCylinder ) {
-		edu.cmu.cs.dennisc.math.Vector3 translation = edu.cmu.cs.dennisc.math.Vector3.createMultiplication( new edu.cmu.cs.dennisc.math.Vector3( lengthCylinder, lengthCylinder, lengthCylinder ), this.bottomToTopAxis.accessVector() );
+		Vector3 translation = Vector3.createMultiplication( new Vector3( lengthCylinder, lengthCylinder, lengthCylinder ), this.bottomToTopAxis.accessVector() );
 		AffineMatrix4x4 currentTransform = this.sgVisualCone.getTransformable().localTransformation.getValue();
 		currentTransform.translation.set( translation );
 		this.sgVisualCone.getTransformable().localTransformation.setValue( currentTransform );

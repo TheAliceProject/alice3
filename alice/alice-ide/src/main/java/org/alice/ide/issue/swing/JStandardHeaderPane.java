@@ -42,17 +42,32 @@
  *******************************************************************************/
 package org.alice.ide.issue.swing;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView;
+import net.miginfocom.swing.MigLayout;
+import org.alice.ide.issue.UserProgramRunningStateUtilities;
+import org.lgna.issue.ApplicationIssueConfiguration;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JStandardHeaderPane extends javax.swing.JPanel {
-	private static final javax.swing.ImageIcon LOGO_ICON = new javax.swing.ImageIcon( JStandardHeaderPane.class.getResource( "/org/alice/ide/issue/swing/views/images/meanQueen.png" ) );
+public class JStandardHeaderPane extends JPanel {
+	private static final ImageIcon LOGO_ICON = new ImageIcon( JStandardHeaderPane.class.getResource( "/org/alice/ide/issue/swing/views/images/meanQueen.png" ) );
 
-	public JStandardHeaderPane( org.lgna.issue.ApplicationIssueConfiguration config ) {
+	public JStandardHeaderPane( ApplicationIssueConfiguration config ) {
 		StringBuilder sbHeader = new StringBuilder();
 		sbHeader.append( "<html>" );
 		sbHeader.append( "<h1>" );
-		if( org.alice.ide.issue.UserProgramRunningStateUtilities.isUserProgramRunning() ) {
+		if( UserProgramRunningStateUtilities.isUserProgramRunning() ) {
 			sbHeader.append( "An exception has been caught during the running of your program.<p>" );
 			sbHeader.append( "<p>While this <em>could</em> be the result of a problem in your code,<br>it is likely a bug in " );
 			sbHeader.append( config.getApplicationName() );
@@ -67,14 +82,14 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		//sbHeader.append( "<p><p><p>Note:" );
 		sbHeader.append( "</html>" );
 
-		java.awt.Color backgroundColor = java.awt.Color.DARK_GRAY;
-		java.awt.Color foregroundColor = java.awt.Color.WHITE;
+		Color backgroundColor = Color.DARK_GRAY;
+		Color foregroundColor = Color.WHITE;
 		StringBuilder sbBottom = new StringBuilder();
 		sbBottom.append( "<html>" );
 		sbBottom.append( "<body bgcolor=\"" );
-		sbBottom.append( edu.cmu.cs.dennisc.java.awt.ColorUtilities.toHashText( backgroundColor ) );
+		sbBottom.append( ColorUtilities.toHashText( backgroundColor ) );
 		sbBottom.append( "\" text=\"" );
-		sbBottom.append( edu.cmu.cs.dennisc.java.awt.ColorUtilities.toHashText( foregroundColor ) );
+		sbBottom.append( ColorUtilities.toHashText( foregroundColor ) );
 		sbBottom.append( "\">" );
 		sbBottom.append( "Note: it is possible that this bug has already been fixed.<p>" );
 		sbBottom.append( "To download the latest release go to: <a href=\"" );
@@ -85,25 +100,25 @@ public class JStandardHeaderPane extends javax.swing.JPanel {
 		sbBottom.append( "</body>" );
 		sbBottom.append( "</html>" );
 
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sbBottom.toString() );
+		Logger.outln( sbBottom.toString() );
 
-		javax.swing.JLabel logoLabel = new javax.swing.JLabel( LOGO_ICON );
+		JLabel logoLabel = new JLabel( LOGO_ICON );
 
-		javax.swing.JLabel headerLabel = new javax.swing.JLabel( sbHeader.toString() );
+		JLabel headerLabel = new JLabel( sbHeader.toString() );
 		headerLabel.setForeground( foregroundColor );
-		headerLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
+		headerLabel.setVerticalAlignment( SwingConstants.TOP );
 
-		java.awt.Color linkColor = new java.awt.Color( 191, 191, 255 );
-		edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView browserView = new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView();
+		Color linkColor = new Color( 191, 191, 255 );
+		JBrowserHtmlView browserView = new JBrowserHtmlView();
 		browserView.setText( sbBottom.toString() );
-		browserView.getHtmlDocument().getStyleSheet().addRule( "A {color:" + edu.cmu.cs.dennisc.java.awt.ColorUtilities.toHashText( linkColor ) + "}" );
-		browserView.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		this.setLayout( new net.miginfocom.swing.MigLayout( "fill, insets 16 8 0 8" ) );
-		this.add( new javax.swing.JLabel( edu.cmu.cs.dennisc.javax.swing.IconUtilities.getErrorIcon() ), "aligny top, spany 2" );
+		browserView.getHtmlDocument().getStyleSheet().addRule( "A {color:" + ColorUtilities.toHashText( linkColor ) + "}" );
+		browserView.setBorder( BorderFactory.createEmptyBorder() );
+		this.setLayout( new MigLayout( "fill, insets 16 8 0 8" ) );
+		this.add( new JLabel( IconUtilities.getErrorIcon() ), "aligny top, spany 2" );
 		this.add( headerLabel );
 		this.add( logoLabel, "spany 2, wrap" );
 		this.add( browserView, "aligny bottom, gap bottom 8" );
-		this.setBackground( java.awt.Color.DARK_GRAY );
+		this.setBackground( Color.DARK_GRAY );
 		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 8, 0, 8 ) );
 	}
 }

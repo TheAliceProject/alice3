@@ -42,70 +42,77 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.Action;
+import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractHyperlink extends javax.swing.JLabel {
-	private javax.swing.Action action;
-	private java.awt.Color defaultColor = java.awt.Color.BLACK;
-	private java.awt.Color armedColor = java.awt.Color.BLUE;
+public abstract class AbstractHyperlink extends JLabel {
+	private Action action;
+	private Color defaultColor = Color.BLACK;
+	private Color armedColor = Color.BLUE;
 
 	public AbstractHyperlink() {
-		this.addMouseListener( new java.awt.event.MouseListener() {
+		this.addMouseListener( new MouseListener() {
 			@Override
-			public void mouseClicked( java.awt.event.MouseEvent e ) {
+			public void mouseClicked( MouseEvent e ) {
 				assert AbstractHyperlink.this.action != null;
 				AbstractHyperlink.this.action.actionPerformed( null );
 			}
 
 			@Override
-			public void mouseEntered( java.awt.event.MouseEvent e ) {
+			public void mouseEntered( MouseEvent e ) {
 				AbstractHyperlink.this.setForeground( armedColor );
 			}
 
 			@Override
-			public void mouseExited( java.awt.event.MouseEvent e ) {
+			public void mouseExited( MouseEvent e ) {
 				AbstractHyperlink.this.setForeground( defaultColor );
 			}
 
 			@Override
-			public void mousePressed( java.awt.event.MouseEvent e ) {
+			public void mousePressed( MouseEvent e ) {
 			}
 
 			@Override
-			public void mouseReleased( java.awt.event.MouseEvent e ) {
+			public void mouseReleased( MouseEvent e ) {
 			}
 		} );
 	}
 
 	@Override
-	public java.awt.Dimension getMaximumSize() {
+	public Dimension getMaximumSize() {
 		return this.getPreferredSize();
 	}
 
-	public java.awt.Color getDefaultColor() {
+	public Color getDefaultColor() {
 		return this.defaultColor;
 	}
 
-	public void setDefaultColor( java.awt.Color defaultColor ) {
+	public void setDefaultColor( Color defaultColor ) {
 		this.defaultColor = defaultColor;
 	}
 
-	public java.awt.Color getArmedColor() {
+	public Color getArmedColor() {
 		return this.armedColor;
 	}
 
-	public void setArmedColor( java.awt.Color armedColor ) {
+	public void setArmedColor( Color armedColor ) {
 		this.armedColor = armedColor;
 	}
 
-	public javax.swing.Action getAction() {
+	public Action getAction() {
 		return this.action;
 	}
 
-	public void setAction( javax.swing.Action action ) {
+	public void setAction( Action action ) {
 		assert action != null;
-		this.setContentText( (String)action.getValue( javax.swing.Action.NAME ) );
+		this.setContentText( (String)action.getValue( Action.NAME ) );
 		this.action = action;
 	}
 

@@ -43,14 +43,17 @@
 
 package edu.cmu.cs.dennisc.math.polynomial;
 
+import edu.cmu.cs.dennisc.math.Matrix4x4;
+import edu.cmu.cs.dennisc.math.Vector4;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class BasisMatrixCubic implements Cubic {
-	private edu.cmu.cs.dennisc.math.Matrix4x4 m_h;
-	private edu.cmu.cs.dennisc.math.Vector4 m_g;
+	private Matrix4x4 m_h;
+	private Vector4 m_g;
 
-	protected BasisMatrixCubic( edu.cmu.cs.dennisc.math.Matrix4x4 h, edu.cmu.cs.dennisc.math.Vector4 g ) {
+	protected BasisMatrixCubic( Matrix4x4 h, Vector4 g ) {
 		m_h = h;
 		m_g = g;
 	}

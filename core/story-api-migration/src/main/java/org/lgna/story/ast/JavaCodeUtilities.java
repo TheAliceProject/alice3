@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.lgna.story.ast;
 
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import org.lgna.common.EachInTogetherRunnable;
+import org.lgna.common.ThreadUtilities;
+import org.lgna.project.ast.JavaCodeGenerator;
 import org.lgna.project.code.CodeOrganizer;
 
 /**
@@ -49,57 +53,33 @@ import org.lgna.project.code.CodeOrganizer;
  */
 public class JavaCodeUtilities {
 
-	private static CodeOrganizer.CodeOrganizerDefinition s_defaultCodeOrganizer = new CodeOrganizer.CodeOrganizerDefinition();
-	private static CodeOrganizer.CodeOrganizerDefinition s_sceneClassCodeOrganizer = new CodeOrganizer.CodeOrganizerDefinition();
-	private static CodeOrganizer.CodeOrganizerDefinition s_programClassCodeOrganizer = new CodeOrganizer.CodeOrganizerDefinition();
-	static {
-		s_defaultCodeOrganizer.addSection( "ConstructorSection", CodeOrganizer.CONSTRUCTORS );
-		s_defaultCodeOrganizer.addSection( "MethodsAndFunctionsSection", CodeOrganizer.NON_STATIC_METHODS );
-		s_defaultCodeOrganizer.addSection( "GettersAndSettersSection", CodeOrganizer.GETTERS_AND_SETTERS );
-		s_defaultCodeOrganizer.addSection( "FieldsSection", CodeOrganizer.FIELDS );
-		s_defaultCodeOrganizer.addSection( "StaticMethodsSection", CodeOrganizer.STATIC_METHODS );
-
-		s_sceneClassCodeOrganizer.addSection( "ConstructorSection", CodeOrganizer.CONSTRUCTORS );
-		s_sceneClassCodeOrganizer.addSection( "EventListenersSection", "initializeEventListeners" );
-		s_sceneClassCodeOrganizer.addSection( "MethodsAndFunctionsSection", CodeOrganizer.NON_STATIC_METHODS );
-		s_sceneClassCodeOrganizer.addSection( "FieldsSection", true, CodeOrganizer.FIELDS );
-		s_sceneClassCodeOrganizer.addSection( "SceneSetupSection", true, "performCustomSetup", "performGeneratedSetUp" );
-		s_sceneClassCodeOrganizer.addSection( "MultipleSceneSection", true, "handleActiveChanged", CodeOrganizer.GETTERS_AND_SETTERS );
-		s_sceneClassCodeOrganizer.addSection( "StaticMethodsSection", CodeOrganizer.STATIC_METHODS );
-
-		s_programClassCodeOrganizer.addSection( "ConstructorSection", CodeOrganizer.CONSTRUCTORS );
-		s_programClassCodeOrganizer.addSection( "FieldsSection", "myScene", CodeOrganizer.FIELDS );
-		s_programClassCodeOrganizer.addSection( "MainFunction", "main" );
-		s_programClassCodeOrganizer.addSection( "GettersAndSettersSection", CodeOrganizer.GETTERS_AND_SETTERS );
-	}
-
 	private JavaCodeUtilities() {
 		throw new AssertionError();
 	}
 
-	public static org.lgna.project.ast.JavaCodeGenerator.Builder createJavaCodeGeneratorBuilder() {
-		return new org.lgna.project.ast.JavaCodeGenerator.Builder()
+	public static JavaCodeGenerator.Builder createJavaCodeGeneratorBuilder() {
+		return new JavaCodeGenerator.Builder()
 				.isLambdaSupported( true )
 				.isPublicStaticFinalFieldGetterDesired( false )
 				.addCommentsLocalizationBundleName( "org.lgna.story.CodeComments" )
 				.addImportOnDemandPackage( Package.getPackage( "org.lgna.story" ) )
-				.addDefaultCodeOrganizerDefinition( s_defaultCodeOrganizer )
-				.addCodeOrganizerDefinition( "Scene", s_sceneClassCodeOrganizer )
-				.addCodeOrganizerDefinition( "Program", s_programClassCodeOrganizer )
+				.addDefaultCodeOrganizerDefinition( CodeOrganizer.defaultCodeOrganizer )
+				.addCodeOrganizerDefinition( "Scene", CodeOrganizer.sceneClassCodeOrganizer )
+				.addCodeOrganizerDefinition( "Program", CodeOrganizer.programClassCodeOrganizer )
 				.addImportStaticMethod(
-						edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod(
-								org.lgna.common.ThreadUtilities.class,
+						ReflectionUtilities.getMethod(
+								ThreadUtilities.class,
 								"doTogether",
 								Runnable[].class ) )
 				.addImportStaticMethod(
-						edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod(
-								org.lgna.common.ThreadUtilities.class,
+						ReflectionUtilities.getMethod(
+								ThreadUtilities.class,
 								"eachInTogether",
-								org.lgna.common.EachInTogetherRunnable.class,
+								EachInTogetherRunnable.class,
 								Object[].class ) );
 	}
 
-	public static org.lgna.project.ast.JavaCodeGenerator createJavaCodeGenerator() {
+	public static JavaCodeGenerator createJavaCodeGenerator() {
 		return createJavaCodeGeneratorBuilder().build();
 	}
 }

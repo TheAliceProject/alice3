@@ -43,10 +43,12 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.code.PrecedentedAppender;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ArrayAccess extends Expression {
+public final class ArrayAccess extends Expression implements PrecedentedAppender {
 	public ArrayAccess() {
 	}
 
@@ -84,24 +86,12 @@ public final class ArrayAccess extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ArrayAccess other = (ArrayAccess)o;
-			if( this.arrayType.valueContentEquals( other.arrayType, strictness, filter ) ) {
-				if( this.array.valueContentEquals( other.array, strictness, filter ) ) {
-					return this.index.valueContentEquals( other.index, strictness, filter );
-				}
-			}
-		}
-		return false;
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendArrayAccess(this);
 	}
 
-	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendExpression( this.array.getValue() );
-		generator.appendChar( '[' );
-		generator.appendExpression( this.index.getValue() );
-		generator.appendChar( ']' );
+	@Override public int getLevelOfPrecedence() {
+		return 16;
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = DeclarationProperty.createReferenceInstance( this );;

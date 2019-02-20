@@ -43,35 +43,43 @@
 
 package org.alice.ide.croquet.models.ast.cascade.expression;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.IDE;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.FieldAccess;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FieldArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayLengthOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<AbstractField, ExpressionProperty, FieldArrayLengthOperation> mapToMap = MapToMap.newInstance();
 
-	public static FieldArrayLengthOperation getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static FieldArrayLengthOperation getInstance( AbstractField field, ExpressionProperty expressionProperty ) {
 		assert field != null;
 		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( field, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayLengthOperation>() {
+		return mapToMap.getInitializingIfAbsent( field, expressionProperty, new MapToMap.Initializer<AbstractField, ExpressionProperty, FieldArrayLengthOperation>() {
 			@Override
-			public FieldArrayLengthOperation initialize( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+			public FieldArrayLengthOperation initialize( AbstractField field, ExpressionProperty expressionProperty ) {
 				return new FieldArrayLengthOperation( field, expressionProperty );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.AbstractField field;
+	private final AbstractField field;
 
-	private FieldArrayLengthOperation( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "52ff6677-3ebe-44ba-8869-b1b2761ead6f" ), expressionProperty );
+	private FieldArrayLengthOperation( AbstractField field, ExpressionProperty expressionProperty ) {
+		super( UUID.fromString( "52ff6677-3ebe-44ba-8869-b1b2761ead6f" ), expressionProperty );
 		this.field = field;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return org.lgna.project.ast.AstUtilities.createFieldAccess(
-				org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(),
-				this.field
-				);
+	protected Expression createAccessExpression() {
+		return new FieldAccess(
+			IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(),
+			field);
 	}
 }

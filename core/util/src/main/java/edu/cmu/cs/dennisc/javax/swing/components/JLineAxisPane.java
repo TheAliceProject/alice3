@@ -42,13 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.BoxLayout;
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JLineAxisPane extends JBoxPane {
-	public JLineAxisPane( java.awt.Component... components ) {
-		super( javax.swing.BoxLayout.LINE_AXIS );
-		for( java.awt.Component component : components ) {
+	public JLineAxisPane( Component... components ) {
+		super( BoxLayout.LINE_AXIS );
+		for( Component component : components ) {
 			this.add( component );
 			component.doLayout();
 		}

@@ -42,21 +42,27 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.HorizontalSplitPane;
+import org.lgna.croquet.views.SplitPane;
+import org.lgna.croquet.views.VerticalSplitPane;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImmutableSplitComposite extends AbstractSplitComposite<org.lgna.croquet.views.SplitPane> {
-	public ImmutableSplitComposite( java.util.UUID id ) {
+public abstract class ImmutableSplitComposite extends AbstractSplitComposite<SplitPane> {
+	public ImmutableSplitComposite( UUID id ) {
 		super( id );
 	}
 
 	@Override
-	protected final org.lgna.croquet.views.HorizontalSplitPane createHorizontalSplitPane() {
-		return new org.lgna.croquet.views.HorizontalSplitPane( this );
+	protected final HorizontalSplitPane createHorizontalSplitPane() {
+		return new HorizontalSplitPane( this );
 	}
 
 	@Override
-	protected final org.lgna.croquet.views.VerticalSplitPane createVerticalSplitPane() {
-		return new org.lgna.croquet.views.VerticalSplitPane( this );
+	protected final VerticalSplitPane createVerticalSplitPane() {
+		return new VerticalSplitPane( this );
 	}
 }

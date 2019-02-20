@@ -42,15 +42,30 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help.views;
 
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.FontUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.TextFamily;
+import org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite;
+import org.lgna.croquet.views.BorderPanel;
+
+import javax.swing.BorderFactory;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import java.awt.Font;
+import java.util.Enumeration;
+import java.util.Properties;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ShowAllSystemPropertiesView extends org.lgna.croquet.views.BorderPanel {
-	public ShowAllSystemPropertiesView( org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite composite ) {
+public class ShowAllSystemPropertiesView extends BorderPanel {
+	public ShowAllSystemPropertiesView( ShowAllSystemPropertiesComposite composite ) {
 		super( composite );
-		java.util.Properties properties = System.getProperties();
-		java.util.Enumeration<String> nameEnum = (java.util.Enumeration<String>)properties.propertyNames();
-		java.util.SortedSet<String> names = new java.util.TreeSet<String>();
+		Properties properties = System.getProperties();
+		Enumeration<String> nameEnum = (Enumeration<String>)properties.propertyNames();
+		SortedSet<String> names = new TreeSet<String>();
 		int max = 0;
 		while( nameEnum.hasMoreElements() ) {
 			String name = nameEnum.nextElement();
@@ -66,23 +81,23 @@ public class ShowAllSystemPropertiesView extends org.lgna.croquet.views.BorderPa
 			sb.append( "\n" );
 		}
 
-		javax.swing.JTextArea textArea = new javax.swing.JTextArea( sb.toString() );
+		JTextArea textArea = new JTextArea( sb.toString() );
 		textArea.setEditable( false );
 
 		final boolean IS_SET_FONT_TO_DERIVED_FONT_WORKING = false;
 		if( IS_SET_FONT_TO_DERIVED_FONT_WORKING ) {
-			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( textArea, edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
+			FontUtilities.setFontToDerivedFont( textArea, TextFamily.MONOSPACED );
 		} else {
-			java.awt.Font font = textArea.getFont();
-			textArea.setFont( new java.awt.Font( "Monospaced", font.getStyle(), font.getSize() ) );
+			Font font = textArea.getFont();
+			textArea.setFont( new Font( "Monospaced", font.getStyle(), font.getSize() ) );
 		}
 
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( textArea );
+		JScrollPane scrollPane = new JScrollPane( textArea );
 
 		this.getAwtComponent().add( scrollPane );
 
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 
-		this.setPreferredSize( edu.cmu.cs.dennisc.java.awt.DimensionUtilities.createWiderGoldenRatioSizeFromWidth( 640 ) );
+		this.setPreferredSize( DimensionUtilities.createWiderGoldenRatioSizeFromWidth( 640 ) );
 	}
 }

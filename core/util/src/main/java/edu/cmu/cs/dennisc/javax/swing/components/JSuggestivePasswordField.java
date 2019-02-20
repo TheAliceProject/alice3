@@ -42,10 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.JPasswordField;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JSuggestivePasswordField extends javax.swing.JPasswordField {
+public class JSuggestivePasswordField extends JPasswordField {
 	private String textForBlankCondition;
 
 	public JSuggestivePasswordField( String text, String textForBlankCondition ) {
@@ -76,15 +80,15 @@ public class JSuggestivePasswordField extends javax.swing.JPasswordField {
 	}
 
 	@Override
-	public java.awt.Dimension getMaximumSize() {
-		java.awt.Dimension rv = super.getMaximumSize();
-		java.awt.Dimension preferred = getPreferredSize();
+	public Dimension getMaximumSize() {
+		Dimension rv = super.getMaximumSize();
+		Dimension preferred = getPreferredSize();
 		rv.height = preferred.height;
 		return rv;
 	}
 
 	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
+	protected void paintComponent( Graphics g ) {
 		super.paintComponent( g );
 		SuggestiveTextUtilities.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
 	}

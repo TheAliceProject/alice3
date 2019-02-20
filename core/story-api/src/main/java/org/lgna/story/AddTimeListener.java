@@ -42,9 +42,11 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 public class AddTimeListener {
 
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = AddTimeListener.class )
+	@ClassTemplate( keywordFactoryCls = AddTimeListener.class )
 	public interface Detail {
 	}
 

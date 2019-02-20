@@ -42,121 +42,50 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import org.lgna.croquet.views.ComponentManager;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public class Manager {
-	private static java.util.Map<java.util.UUID, java.util.Set<Model>> mapIdToModels = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-
-	private static java.util.Set<Model> lookupModels( java.util.UUID id ) {
-		synchronized( mapIdToModels ) {
-			return mapIdToModels.get( id );
-		}
-	}
-
-	@Deprecated
-	public static Model findFirstAppropriateModel( java.util.UUID id ) {
-		java.util.Set<Model> models = lookupModels( id );
-		for( Model model : models ) {
-			java.util.Queue<org.lgna.croquet.views.SwingComponentView<?>> components = ComponentManager.getComponents( model );
-			for( org.lgna.croquet.views.SwingComponentView<?> component : components ) {
-				if( component.getAwtComponent().isShowing() ) {
-					return model;
-				}
-			}
-			for( org.lgna.croquet.views.SwingComponentView<?> component : components ) {
-				if( component.getAwtComponent().isVisible() ) {
-					return model;
-				}
-			}
-		}
-		return null;
-	}
-
-	private static java.util.List<Composite> composites = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-
-	/* package-private */static void registerComposite( Composite composite ) {
-		composites.add( composite );
-	}
-
-	/* package-private */static void unregisterComposite( Composite composite ) {
-		composites.remove( composite );
-	}
-
-	public Iterable<Composite> getComposites() {
-		return composites;
-	}
+	private static final Map<UUID, Set<Model>> mapIdToModels = Maps.newHashMap();
 
 	public static void registerModel( Model model ) {
-		java.util.UUID id = model.getMigrationId();
+		UUID id = model.getMigrationId();
 		synchronized( mapIdToModels ) {
-			java.util.Set<Model> set = mapIdToModels.get( id );
-			if( set != null ) {
-				//pass
-			} else {
-				set = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
-				mapIdToModels.put( id, set );
-			}
+			Set<Model> set = mapIdToModels.computeIfAbsent( id, k -> Sets.newHashSet() );
 			set.add( model );
 		}
 	}
 
 	public static void unregisterModel( Model model ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "unregister:", model );
-		java.util.UUID id = model.getMigrationId();
+		UUID id = model.getMigrationId();
 		synchronized( mapIdToModels ) {
-			java.util.Set<Model> set = mapIdToModels.get( id );
+			Set<Model> set = mapIdToModels.get( id );
 			if( set != null ) {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "pre set size:", set.size() );
 				set.remove( model );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "post set size:", set.size() );
 				if( set.size() == 0 ) {
 					mapIdToModels.remove( id );
 				}
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "investigate set == null" );
+				Logger.todo( "investigate set == null" );
 			}
 		}
 	}
 
-	public static <M extends Model> Iterable<M> getRegisteredModels( Class<M> cls ) {
-		java.util.List<M> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		for( java.util.Set<Model> set : mapIdToModels.values() ) {
-			for( Model model : set ) {
-				if( cls.isAssignableFrom( model.getClass() ) ) {
-					rv.add( cls.cast( model ) );
-				}
-			}
-		}
-		return rv;
-	}
-
-	/* package-private */static void relocalizeAllElements() {
+	static void relocalizeAllElements() {
 		synchronized( mapIdToModels ) {
-			java.util.Collection<java.util.Set<Model>> sets = mapIdToModels.values();
-			for( java.util.Set<Model> set : sets ) {
+			for( Set<Model> set : mapIdToModels.values() ) {
 				for( Model model : set ) {
 					model.relocalize();
-					//					for( JComponent<?> component : model.getComponents() ) {
-					//					}
 				}
 			}
 		}
-	}
-
-	private static int isUndoOrRedoCount = 0;
-
-	public static boolean isInTheMidstOfUndoOrRedo() {
-		return isUndoOrRedoCount > 0;
-	}
-
-	public static void pushUndoOrRedo() {
-		isUndoOrRedoCount++;
-	}
-
-	public static void popUndoOrRedo() {
-		isUndoOrRedoCount--;
 	}
 }

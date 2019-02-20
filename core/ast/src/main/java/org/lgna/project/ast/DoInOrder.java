@@ -43,7 +43,7 @@
 
 package org.lgna.project.ast;
 
-import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.lgna.project.ast.localizer.AstLocalizer;
 
 /**
  * @author Dennis Cosgrove
@@ -57,17 +57,17 @@ public final class DoInOrder extends AbstractStatementWithBody {
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
+	protected void appendRepr( AstLocalizer localizer ) {
 		localizer.appendLocalizedText( DoInOrder.class, "do in order" );
 		super.appendRepr( localizer );
 	}
 
-	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
-		String statementName = ResourceBundleUtilities
-						.getStringFromSimpleNames( this.getClass(), "org.alice.ide.controlflow.Templates");
-		generator.appendString( "\n/*" + statementName + "*/ " );
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendDoInOrder(this);
+	}
 
-		this.body.getValue().appendJava( generator );
+	@Override
+	boolean containsAReturnForEveryPath() {
+		return isEnabled.getValue() && body.getValue().containsAReturnForEveryPath();
 	}
 }

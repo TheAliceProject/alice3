@@ -43,20 +43,27 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.CascadeItem;
+import org.lgna.croquet.imp.cascade.RtRoot;
+
+import javax.swing.Icon;
+import javax.swing.JMenuItem;
+import java.awt.Cursor;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeMenuItem extends ViewController<javax.swing.JMenuItem, org.lgna.croquet.CascadeItem<?, ?>> {
-	private final org.lgna.croquet.imp.cascade.RtRoot<?, ?> rtRoot;
+public class CascadeMenuItem extends ViewController<JMenuItem, CascadeItem<?, ?>> {
+	private final RtRoot<?, ?> rtRoot;
 	private boolean isIconSet;
-	private javax.swing.Icon setIcon;
+	private Icon setIcon;
 
-	public CascadeMenuItem( org.lgna.croquet.CascadeItem<?, ?> model, org.lgna.croquet.imp.cascade.RtRoot<?, ?> rtRoot ) {
+	public CascadeMenuItem( CascadeItem<?, ?> model, RtRoot<?, ?> rtRoot ) {
 		super( model );
 		this.rtRoot = rtRoot;
 	}
 
-	protected javax.swing.Icon getSetIcon() {
+	protected Icon getSetIcon() {
 		return this.setIcon;
 	}
 
@@ -68,22 +75,22 @@ public class CascadeMenuItem extends ViewController<javax.swing.JMenuItem, org.l
 		this.isIconSet = isIconSet;
 	}
 
-	public javax.swing.Icon getIcon() {
+	public Icon getIcon() {
 		return this.getAwtComponent().getIcon();
 	}
 
-	public void setIcon( javax.swing.Icon icon ) {
+	public void setIcon( Icon icon ) {
 		this.setIconSet( true );
 		this.setIcon = icon;
 	}
 
 	@Override
-	protected javax.swing.JMenuItem createAwtComponent() {
-		return new javax.swing.JMenuItem() {
-			private java.awt.Cursor pushedCursor;
+	protected JMenuItem createAwtComponent() {
+		return new JMenuItem() {
+			private Cursor pushedCursor;
 
 			@Override
-			public javax.swing.Icon getIcon() {
+			public Icon getIcon() {
 				//note: much of the cascading menu system leverages icons
 				//				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus() ) {
 				if( CascadeMenuItem.this.isIconSet() ) {

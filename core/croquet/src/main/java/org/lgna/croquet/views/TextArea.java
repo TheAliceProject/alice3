@@ -43,12 +43,13 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea;
 import org.lgna.croquet.StringState;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextArea extends TextComponent<edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea> {
+public class TextArea extends TextComponent<JSuggestiveTextArea> {
 	public TextArea( StringState model ) {
 		super( model );
 	}
@@ -59,8 +60,8 @@ public class TextArea extends TextComponent<edu.cmu.cs.dennisc.javax.swing.compo
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea createAwtComponent() {
-		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea() {
+	protected JSuggestiveTextArea createAwtComponent() {
+		JSuggestiveTextArea rv = new JSuggestiveTextArea() {
 			//			@Override
 			//			public java.awt.Dimension getPreferredSize() {
 			//				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );

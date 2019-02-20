@@ -42,11 +42,24 @@
  *******************************************************************************/
 package org.lgna.story.implementation.overlay;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.scenegraph.Layer;
+import edu.cmu.cs.dennisc.scenegraph.graphics.Bubble;
+import edu.cmu.cs.dennisc.scenegraph.graphics.BubbleManager;
+import org.lgna.story.implementation.CameraImp;
+import org.lgna.story.implementation.DoubleProperty;
+import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.ProgramImp;
+import org.lgna.story.implementation.PropertyOwnerImp;
+import org.lgna.story.implementation.SceneImp;
+
+import java.awt.Font;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BubbleImp extends org.lgna.story.implementation.PropertyOwnerImp {
-	public BubbleImp( org.lgna.story.implementation.EntityImp imp, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, String text, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
+public abstract class BubbleImp extends PropertyOwnerImp {
+	public BubbleImp( EntityImp imp, Bubble bubble, String text, Font font, Color4f textColor, Color4f fillColor, Color4f outlineColor ) {
 		this.imp = imp;
 		this.bubble = bubble;
 		this.bubble.text.setValue( text );
@@ -56,23 +69,23 @@ public abstract class BubbleImp extends org.lgna.story.implementation.PropertyOw
 		this.bubble.outlineColor.setValue( outlineColor );
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.graphics.Bubble getBubble() {
+	public Bubble getBubble() {
 		return this.bubble;
 	}
 
 	@Override
-	public org.lgna.story.implementation.ProgramImp getProgram() {
+	public ProgramImp getProgram() {
 		return this.imp.getProgram();
 	}
 
-	private final org.lgna.story.implementation.EntityImp imp;
-	private final edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble;
+	private final EntityImp imp;
+	private final Bubble bubble;
 
 	private static final double CLOSE_ENOUGH_TO_ZERO = 0.001;
-	public final org.lgna.story.implementation.DoubleProperty portion = new org.lgna.story.implementation.DoubleProperty( this ) {
-		private edu.cmu.cs.dennisc.scenegraph.Layer getSgLayer() {
-			org.lgna.story.implementation.SceneImp scene = imp.getScene();
-			org.lgna.story.implementation.CameraImp<?> camera = scene.findFirstCamera();
+	public final DoubleProperty portion = new DoubleProperty( this ) {
+		private Layer getSgLayer() {
+			SceneImp scene = imp.getScene();
+			CameraImp<?> camera = scene.findFirstCamera();
 			return camera.getPostRenderLayer();
 		}
 
@@ -95,7 +108,7 @@ public abstract class BubbleImp extends org.lgna.story.implementation.PropertyOw
 				if( nextValue < CLOSE_ENOUGH_TO_ZERO ) {
 					this.getSgLayer().removeGraphic( bubble );
 					//todo:
-					edu.cmu.cs.dennisc.scenegraph.graphics.BubbleManager.getInstance().removeBubble( bubble );
+					BubbleManager.getInstance().removeBubble( bubble );
 				}
 			}
 			bubble.portion.setValue( nextValue );

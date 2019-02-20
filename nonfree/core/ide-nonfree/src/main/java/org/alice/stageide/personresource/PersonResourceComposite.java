@@ -43,13 +43,40 @@
 
 package org.alice.stageide.personresource;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import org.alice.ide.IDE;
+import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
+import org.alice.ide.ast.ExpressionCreator;
+import org.alice.ide.cascade.ExpressionCascadeManager;
+import org.alice.stageide.StageIDE;
+import org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation;
 import org.alice.stageide.sceneeditor.SimsSetUpMethodGenerator;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.OwnedByCompositeValueCreator;
+import org.lgna.croquet.SplitComposite;
+import org.lgna.croquet.ValueConverter;
 import org.lgna.croquet.ValueCreator;
+import org.lgna.croquet.ValueCreatorInputDialogCoreComposite;
+import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Dialog;
+import org.lgna.croquet.views.Panel;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
+import org.lgna.story.resources.sims2.LifeStage;
+import org.lgna.story.resources.sims2.PersonResource;
+
+import javax.swing.SwingUtilities;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class PersonResourceComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.views.Panel, org.lgna.story.resources.sims2.PersonResource> {
+public final class PersonResourceComposite extends ValueCreatorInputDialogCoreComposite<Panel, PersonResource> {
 	private static class SingletonHolder {
 		private static PersonResourceComposite instance = new PersonResourceComposite();
 	}
@@ -58,80 +85,80 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		return SingletonHolder.instance;
 	}
 
-	private static final class PersonResourceToExpressionConverter extends org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> {
-		public PersonResourceToExpressionConverter( ValueCreator<org.lgna.story.resources.sims2.PersonResource> valueCreator ) {
-			super( java.util.UUID.fromString( "40894b2c-ebdc-4101-bc17-d920f3298d89" ), valueCreator );
+	private static final class PersonResourceToExpressionConverter extends ValueConverter<PersonResource, InstanceCreation> {
+		public PersonResourceToExpressionConverter( ValueCreator<PersonResource> valueCreator ) {
+			super( UUID.fromString( "40894b2c-ebdc-4101-bc17-d920f3298d89" ), valueCreator );
 		}
 
 		@Override
-		protected org.lgna.project.ast.InstanceCreation convert( org.lgna.story.resources.sims2.PersonResource value ) {
+		protected InstanceCreation convert( PersonResource value ) {
 			try {
-				org.lgna.project.ast.InstanceCreation instanceCreation = SimsSetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( value );
+				InstanceCreation instanceCreation = SimsSetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( value );
 				return instanceCreation;
-			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+			} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
 				throw new RuntimeException( ccee );
 			}
 		}
 	}
 
-	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> randomElderValueCreator =
-			new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
+	private final ValueCreator<PersonResource> randomElderValueCreator =
+			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
 				@Override
-				public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-					PersonResourceComposite.this.initializeRandom( org.lgna.story.resources.sims2.LifeStage.ELDER );
+				public void initialize() {
+					PersonResourceComposite.this.initializeRandom( LifeStage.ELDER );
 				}
 			}, "randomElder" );
-	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> randomAdultValueCreator =
-			new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
+	private final ValueCreator<PersonResource> randomAdultValueCreator =
+			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
 				@Override
-				public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-					PersonResourceComposite.this.initializeRandom( org.lgna.story.resources.sims2.LifeStage.ADULT );
+				public void initialize() {
+					PersonResourceComposite.this.initializeRandom( LifeStage.ADULT );
 				}
 			}, "randomAdult" );
-	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> randomTeenValueCreator =
-			new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
+	private final ValueCreator<PersonResource> randomTeenValueCreator =
+			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
 				@Override
-				public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-					PersonResourceComposite.this.initializeRandom( org.lgna.story.resources.sims2.LifeStage.TEEN );
+				public void initialize() {
+					PersonResourceComposite.this.initializeRandom( LifeStage.TEEN );
 				}
 			}, "randomTeen" );
-	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> randomChildValueCreator =
-			new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
+	private final ValueCreator<PersonResource> randomChildValueCreator =
+			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
 				@Override
-				public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-					PersonResourceComposite.this.initializeRandom( org.lgna.story.resources.sims2.LifeStage.CHILD );
+				public void initialize() {
+					PersonResourceComposite.this.initializeRandom( LifeStage.CHILD );
 				}
 			}, "randomChild" );
-	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> randomToddlerValueCreator =
-			new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
+	private final ValueCreator<PersonResource> randomToddlerValueCreator =
+			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
 				@Override
-				public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-					PersonResourceComposite.this.initializeRandom( org.lgna.story.resources.sims2.LifeStage.TODDLER );
+				public void initialize() {
+					PersonResourceComposite.this.initializeRandom( LifeStage.TODDLER );
 				}
 			}, "randomToddler" );
-	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> previousResourceExpressionValueCreator =
-			new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
+	private final ValueCreator<PersonResource> previousResourceExpressionValueCreator =
+			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
 				@Override
-				public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+				public void initialize() {
 					PersonResourceComposite.this.initializePreviousExpression();
 				}
 			}, "edit" );
 
-	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> randomElderExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomElderValueCreator );
-	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> randomAdultExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomAdultValueCreator );
-	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> randomTeenExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomTeenValueCreator );
-	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> randomChildExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomChildValueCreator );
-	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> randomToddlerExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomToddlerValueCreator );
-	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> previousResourceExpressionValueConverter =
+	private final ValueConverter<PersonResource, InstanceCreation> randomElderExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomElderValueCreator );
+	private final ValueConverter<PersonResource, InstanceCreation> randomAdultExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomAdultValueCreator );
+	private final ValueConverter<PersonResource, InstanceCreation> randomTeenExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomTeenValueCreator );
+	private final ValueConverter<PersonResource, InstanceCreation> randomChildExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomChildValueCreator );
+	private final ValueConverter<PersonResource, InstanceCreation> randomToddlerExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomToddlerValueCreator );
+	private final ValueConverter<PersonResource, InstanceCreation> previousResourceExpressionValueConverter =
 			new PersonResourceToExpressionConverter( this.previousResourceExpressionValueCreator );
 
 	private final PreviewComposite previewComposite = new PreviewComposite();
 	private final IngredientsComposite ingredientsComposite = new IngredientsComposite();
 
-	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( this.previewComposite, this.ingredientsComposite, 0.25f );
+	private final SplitComposite splitComposite = this.createHorizontalSplitComposite( this.previewComposite, this.ingredientsComposite, 0.25f );
 
 	private PersonResourceComposite() {
-		super( java.util.UUID.fromString( "a875beea-1feb-48a7-9fe0-5903af846d72" ) );
+		super( UUID.fromString( "a875beea-1feb-48a7-9fe0-5903af846d72" ) );
 	}
 
 	public IngredientsComposite getIngredientsComposite() {
@@ -142,55 +169,55 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		return this.previewComposite;
 	}
 
-	public org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> getRandomPersonValueCreator( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
+	public ValueCreator<PersonResource> getRandomPersonValueCreator( LifeStage lifeStage ) {
+		if( lifeStage == LifeStage.ADULT ) {
 			return this.randomAdultValueCreator;
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.CHILD ) {
+		} else if( lifeStage == LifeStage.CHILD ) {
 			return this.randomChildValueCreator;
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+		} else if( lifeStage == LifeStage.TEEN ) {
 			return this.randomTeenValueCreator;
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+		} else if( lifeStage == LifeStage.TODDLER ) {
 			return this.randomToddlerValueCreator;
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) {
+		} else if( lifeStage == LifeStage.ELDER ) {
 			return this.randomElderValueCreator;
 		} else {
 			return this.randomAdultValueCreator;
 		}
 	}
 
-	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getRandomPersonExpressionValueConverter( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
+	public ValueConverter<PersonResource, InstanceCreation> getRandomPersonExpressionValueConverter( LifeStage lifeStage ) {
+		if( lifeStage == LifeStage.ADULT ) {
 			return this.randomAdultExpressionValueConverter;
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.CHILD ) {
+		} else if( lifeStage == LifeStage.CHILD ) {
 			return this.randomChildExpressionValueConverter;
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+		} else if( lifeStage == LifeStage.TEEN ) {
 			return this.randomTeenExpressionValueConverter;
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+		} else if( lifeStage == LifeStage.TODDLER ) {
 			return this.randomToddlerExpressionValueConverter;
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) {
+		} else if( lifeStage == LifeStage.ELDER ) {
 			return this.randomElderExpressionValueConverter;
 		} else {
 			return this.randomAdultExpressionValueConverter;
 		}
 	}
 
-	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getPreviousResourceExpressionValueConverter() {
+	public ValueConverter<PersonResource, InstanceCreation> getPreviousResourceExpressionValueConverter() {
 		return this.previousResourceExpressionValueConverter;
 	}
 
-	private void initializeRandom( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+	private void initializeRandom( LifeStage lifeStage ) {
 		boolean isLifeStageStateEnabled = true;
 		if( EPIC_HACK_disableLifeStageStateOneTime ) {
 			isLifeStageStateEnabled = false;
 			EPIC_HACK_disableLifeStageStateOneTime = false;
 		}
 		this.ingredientsComposite.getLifeStageState().setEnabled( isLifeStageStateEnabled );
-		org.lgna.story.resources.sims2.PersonResource personResource = RandomPersonUtilities.createRandomResource( lifeStage );
+		PersonResource personResource = RandomPersonUtilities.createRandomResource( lifeStage );
 		this.ingredientsComposite.setStates( personResource );
 	}
 
-	private static final class InstanceCreatingVirtualMachine extends org.lgna.project.virtualmachine.ReleaseVirtualMachine {
-		public Object ENTRY_POINT_createInstance( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+	private static final class InstanceCreatingVirtualMachine extends ReleaseVirtualMachine {
+		public Object ENTRY_POINT_createInstance( InstanceCreation instanceCreation ) {
 			return this.evaluate( instanceCreation );
 		}
 	};
@@ -198,27 +225,27 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	private final InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
 
 	private void initializePreviousExpression() {
-		org.alice.ide.cascade.ExpressionCascadeManager expressionCascadeManager = org.alice.stageide.StageIDE.getActiveInstance().getExpressionCascadeManager();
-		org.lgna.project.ast.Expression expression = expressionCascadeManager.getPreviousExpression();
+		ExpressionCascadeManager expressionCascadeManager = StageIDE.getActiveInstance().getExpressionCascadeManager();
+		Expression expression = expressionCascadeManager.getPreviousExpression();
 		boolean isLifeStageStateEnabled = true;
-		if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
-			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceCreation.getType();
-			if( type instanceof org.lgna.project.ast.JavaType ) {
-				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
-				if( javaType.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
+		if( expression instanceof InstanceCreation ) {
+			InstanceCreation instanceCreation = (InstanceCreation)expression;
+			AbstractType<?, ?, ?> type = instanceCreation.getType();
+			if( type instanceof JavaType ) {
+				JavaType javaType = (JavaType)type;
+				if( javaType.isAssignableTo( PersonResource.class ) ) {
 					//note: duplicated below
 					isLifeStageStateEnabled = false;
 
 					Object instance = vm.ENTRY_POINT_createInstance( instanceCreation );
 
-					if( instance instanceof org.lgna.story.resources.sims2.PersonResource ) {
-						org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)instance;
+					if( instance instanceof PersonResource ) {
+						PersonResource personResource = (PersonResource)instance;
 						this.ingredientsComposite.setStates( personResource );
 						//note: duplicated above
 						isLifeStageStateEnabled = false;
 					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );
+						Logger.severe( instance );
 					}
 				}
 			}
@@ -232,17 +259,17 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		EPIC_HACK_disableLifeStageStateOneTime = true;
 	}
 
-	public org.lgna.croquet.SplitComposite getSplitComposite() {
+	public SplitComposite getSplitComposite() {
 		return this.splitComposite;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		return new org.lgna.croquet.views.BorderPanel.Builder().center( this.splitComposite.getView() ).build();
+	protected Panel createView() {
+		return new BorderPanel.Builder().center( this.splitComposite.getView() ).build();
 	}
 
 	@Override
-	protected org.lgna.story.resources.sims2.PersonResource createValue() {
+	protected PersonResource createValue() {
 		return this.ingredientsComposite.createResourceFromStates();
 	}
 
@@ -257,40 +284,40 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	}
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+	protected void handlePreShowDialog( Dialog dialog ) {
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
-			ide.getDocumentFrame().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
+			ide.getDocumentFrame().disableRendering( ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
 		}
-		super.handlePreShowDialog( completionStep );
+		super.handlePreShowDialog( dialog );
 	}
 
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.Dialog dialog ) {
-		super.handleFinally( step, dialog );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+	protected void handleFinally( Dialog dialog ) {
+		super.handleFinally( dialog );
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			ide.getDocumentFrame().enableRendering();
 		}
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	public static void main( String[] args ) throws Exception {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
-				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+				UIManagerUtilities.setLookAndFeel( "Nimbus" );
 
 				//new org.alice.stageide.StageIDE();
-				new org.lgna.croquet.simple.SimpleApplication();
+				new SimpleApplication();
 
 				try {
-					org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage.ADULT ).fire();
-				} catch( org.lgna.croquet.CancelException ce ) {
+					DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( LifeStage.ADULT ).fire();
+				} catch( CancelException ce ) {
 					//pass
 				}
 				System.exit( 0 );

@@ -42,26 +42,28 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.operation;
 
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.views.MenuItem;
+import org.lgna.croquet.views.MenuItemContainer;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class OperationMenuItemPrepModel extends org.lgna.croquet.StandardMenuItemPrepModel {
-	public OperationMenuItemPrepModel( org.lgna.croquet.Operation operation ) {
-		super( java.util.UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
+/*package-private*/class OperationMenuItemPrepModel extends StandardMenuItemPrepModel {
+	public OperationMenuItemPrepModel( Operation operation ) {
+		super( UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
 		assert operation != null;
 		this.operation = operation;
-	}
-
-	@Override
-	public Iterable<? extends org.lgna.croquet.Model> getChildren() {
-		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( this.operation );
 	}
 
 	@Override
 	protected void localize() {
 	}
 
-	public org.lgna.croquet.Operation getOperation() {
+	public Operation getOperation() {
 		return this.operation;
 	}
 
@@ -76,8 +78,8 @@ package org.lgna.croquet.imp.operation;
 	}
 
 	@Override
-	public org.lgna.croquet.views.MenuItem createMenuItemAndAddTo( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
-		org.lgna.croquet.views.MenuItem menuItem = new org.lgna.croquet.views.MenuItem( this.getOperation() );
+	public MenuItem createMenuItemAndAddTo( MenuItemContainer menuItemContainer ) {
+		MenuItem menuItem = new MenuItem( this.getOperation() );
 		menuItemContainer.addMenuItem( menuItem );
 		return menuItem;
 	}
@@ -89,5 +91,5 @@ package org.lgna.croquet.imp.operation;
 		sb.append( this.getOperation() );
 	}
 
-	private final org.lgna.croquet.Operation operation;
+	private final Operation operation;
 }

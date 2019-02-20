@@ -42,10 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ui.debug;
 
+import org.alice.ide.operations.InconsequentialActionOperation;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ThrowBogusExceptionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class ThrowBogusExceptionOperation extends InconsequentialActionOperation {
 	private static class SingletonHolder {
 		private static ThrowBogusExceptionOperation instance = new ThrowBogusExceptionOperation();
 	}
@@ -55,7 +59,7 @@ public class ThrowBogusExceptionOperation extends org.alice.ide.operations.Incon
 	}
 
 	private ThrowBogusExceptionOperation() {
-		super( java.util.UUID.fromString( "8c417baa-8be7-42e9-818c-b6ed4ecd8758" ) );
+		super( UUID.fromString( "8c417baa-8be7-42e9-818c-b6ed4ecd8758" ) );
 	}
 
 	@Override
@@ -65,7 +69,7 @@ public class ThrowBogusExceptionOperation extends org.alice.ide.operations.Incon
 	}
 
 	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void performInternal() {
 		new Thread() {
 			@Override
 			public void run() {

@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.ast.localizer.AstLocalizer;
 
 /**
  * @author Dennis Cosgrove
@@ -65,33 +66,14 @@ public abstract class AbstractForEachLoop extends AbstractLoop implements EachIn
 	protected abstract ExpressionProperty getArrayOrIterableProperty();
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			AbstractForEachLoop other = (AbstractForEachLoop)o;
-			if( this.item.valueContentEquals( other.item, strictness, filter ) ) {
-				return this.getArrayOrIterableProperty().valueContentEquals( other.getArrayOrIterableProperty(), strictness, filter );
-			}
-		}
-		return false;
-	}
-
-	@Override
-	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
+	protected void appendRepr( AstLocalizer localizer ) {
 		localizer.appendLocalizedText( AbstractForEachLoop.class, "for each in " );
 		safeAppendRepr( localizer, this.getArrayOrIterableProperty().getValue() );
 		super.appendRepr( localizer );
 	}
 
-	@Override
-	protected void appendJavaLoopPrefix( JavaCodeGenerator generator ) {
-		UserLocal itemValue = this.item.getValue();
-		generator.appendString( "for(" );
-		generator.appendTypeName( itemValue.getValueType() );
-		generator.appendSpace();
-		generator.appendString( itemValue.getValidName() );
-		generator.appendChar( ':' );
-		generator.appendExpression( this.getArrayOrIterableProperty().getValue() );
-		generator.appendChar( ')' );
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendForEach(this);
 	}
 
 	public final DeclarationProperty<UserLocal> item = new DeclarationProperty<UserLocal>( this ) {

@@ -42,10 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.apis.story.event;
 
+import org.lgna.project.ast.Lambda;
+import org.lgna.project.virtualmachine.LambdaContext;
+import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.event.MouseClickOnScreenEvent;
+import org.lgna.story.event.MouseClickOnScreenListener;
 
-public class MouseClickOnScreenAdapter extends AbstractAdapter implements org.lgna.story.event.MouseClickOnScreenListener {
-	public MouseClickOnScreenAdapter( org.lgna.project.virtualmachine.LambdaContext context, org.lgna.project.ast.Lambda lambda, org.lgna.project.virtualmachine.UserInstance userInstance ) {
+public class MouseClickOnScreenAdapter extends AbstractAdapter implements MouseClickOnScreenListener {
+	public MouseClickOnScreenAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
 		super( context, lambda, userInstance );
 	}
 

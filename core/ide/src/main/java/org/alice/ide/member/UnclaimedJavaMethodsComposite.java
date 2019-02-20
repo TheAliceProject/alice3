@@ -42,23 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.member;
 
+import org.lgna.project.ast.JavaMethod;
+
+import java.util.Comparator;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class UnclaimedJavaMethodsComposite extends FilteredJavaMethodsSubComposite {
-	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
+	private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
 		@Override
-		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
+		public int compare( JavaMethod methodA, JavaMethod methodB ) {
 			return compareMethodNames( methodA, methodB );
 		}
 	};
 
-	public UnclaimedJavaMethodsComposite( java.util.UUID migrationId ) {
+	public UnclaimedJavaMethodsComposite( UUID migrationId ) {
 		super( migrationId, true );
 	}
 
 	@Override
-	public java.util.Comparator<org.lgna.project.ast.JavaMethod> getComparator() {
+	public Comparator<JavaMethod> getComparator() {
 		return this.comparator;
 	}
 }

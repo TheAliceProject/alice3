@@ -43,10 +43,17 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.Expression;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionBlank extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
+public class ConditionBlank extends ExpressionBlank {
 	private static class SingletonHolder {
 		private static ConditionBlank instance = new ConditionBlank();
 	}
@@ -56,11 +63,11 @@ public class ConditionBlank extends org.alice.ide.croquet.models.cascade.Express
 	}
 
 	private ConditionBlank() {
-		super( java.util.UUID.fromString( "a5de4626-9fd1-4936-9958-7b85b1637262" ), Boolean.class );
+		super( Boolean.class );
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<Expression> blankNode ) {
 		children.add( ConditionSeparator.getInstance() );
 		super.updateChildren( children, blankNode );
 	}

@@ -43,8 +43,16 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
+import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.ReferenceFrame;
 
 /**
  * @author Dennis Cosgrove
@@ -57,8 +65,8 @@ public abstract class SMovableTurnable extends STurnable {
 
 	@MethodTemplate( )
 	public void move( MoveDirection direction, Number amount, Move.Detail... details ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( direction, 0 );
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNumber( amount, 1 );
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( direction, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNumber( amount, 1 );
 		this.getImplementation().animateApplyTranslation(
 				direction.createTranslation( amount.doubleValue() ),
 				AsSeenBy.getValue( details, this ).getImplementation(),
@@ -68,9 +76,9 @@ public abstract class SMovableTurnable extends STurnable {
 	}
 
 	private void internalMoveToward( SThing target, double amount, double duration, edu.cmu.cs.dennisc.animation.Style animationStyle ) {
-		edu.cmu.cs.dennisc.math.Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation;
-		edu.cmu.cs.dennisc.math.Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation;
-		edu.cmu.cs.dennisc.math.Vector3 v = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( tTarget, tThis );
+		Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation;
+		Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation;
+		Vector3 v = Vector3.createSubtraction( tTarget, tThis );
 		double length = v.calculateMagnitude();
 		if( length > 0 ) {
 			v.multiply( amount / length );
@@ -87,8 +95,8 @@ public abstract class SMovableTurnable extends STurnable {
 
 	@MethodTemplate( )
 	public void moveToward( SThing target, Number amount, MoveToward.Detail... details ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNumber( amount, 1 );
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNumber( amount, 1 );
 		this.internalMoveToward(
 				target,
 				amount.doubleValue(),
@@ -99,8 +107,8 @@ public abstract class SMovableTurnable extends STurnable {
 
 	@MethodTemplate( )
 	public void moveAwayFrom( SThing target, Number amount, MoveAwayFrom.Detail... details ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNumber( amount, 1 );
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNumber( amount, 1 );
 		this.internalMoveToward(
 				target,
 				-amount.doubleValue(),
@@ -111,22 +119,22 @@ public abstract class SMovableTurnable extends STurnable {
 
 	@MethodTemplate( )
 	public void moveTo( SThing target, MoveTo.Detail... details ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
 		this.getImplementation().animatePositionOnly( target.getImplementation(), null, PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void moveAndOrientTo( SThing target, MoveAndOrientTo.Detail... details ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
 		this.getImplementation().animateTransformation( target.getImplementation(), null, PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void place( SpatialRelation spatialRelation, SThing target, Place.Detail... details ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( spatialRelation, 0 );
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 1 );
-		org.lgna.story.implementation.EntityImp targetImp = target != null ? target.getImplementation() : null;
-		org.lgna.story.implementation.ReferenceFrame defaultAsSeenByImp = targetImp != null ? targetImp : org.lgna.story.implementation.AsSeenBy.SCENE;
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( spatialRelation, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 1 );
+		EntityImp targetImp = target != null ? target.getImplementation() : null;
+		ReferenceFrame defaultAsSeenByImp = targetImp != null ? targetImp : org.lgna.story.implementation.AsSeenBy.SCENE;
 
 		this.getImplementation().animatePlace(
 				spatialRelation.getImp(),
@@ -141,16 +149,16 @@ public abstract class SMovableTurnable extends STurnable {
 
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void setPositionRelativeToVehicle( Position position, SetPositionRelativeToVehicle.Detail... details ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( position, 0 );
-		org.lgna.story.implementation.EntityImp vehicle = this.getImplementation().getVehicle();
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( position, 0 );
+		EntityImp vehicle = this.getImplementation().getVehicle();
 		if( vehicle != null ) {
 			this.getImplementation().animatePositionOnly( vehicle, position.getInternal(), PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 		} else {
-			edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = this.getImplementation().getSgComposite();
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgTransformable.getLocalTransformation();
+			AbstractTransformable sgTransformable = this.getImplementation().getSgComposite();
+			AffineMatrix4x4 m = sgTransformable.getLocalTransformation();
 			m.translation.set( position.getInternal() );
 			sgTransformable.setLocalTransformation( m );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			Logger.severe( this );
 		}
 	}
 }

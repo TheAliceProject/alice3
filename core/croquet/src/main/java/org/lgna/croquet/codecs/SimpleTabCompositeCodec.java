@@ -43,13 +43,21 @@
 
 package org.lgna.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.SimpleTabComposite;
+
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposite<?>> implements org.lgna.croquet.ItemCodec<C> {
-	private static java.util.Map<Class<?>, SimpleTabCompositeCodec<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class SimpleTabCompositeCodec<C extends SimpleTabComposite<?>> implements ItemCodec<C> {
+	private static Map<Class<?>, SimpleTabCompositeCodec<?>> map = Maps.newHashMap();
 
-	public static synchronized <T extends org.lgna.croquet.SimpleTabComposite<?>> SimpleTabCompositeCodec<T> getInstance( Class<T> cls ) {
+	public static synchronized <T extends SimpleTabComposite<?>> SimpleTabCompositeCodec<T> getInstance( Class<T> cls ) {
 		SimpleTabCompositeCodec<?> rv = map.get( cls );
 		if( rv != null ) {
 			//pass
@@ -71,7 +79,7 @@ public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposi
 	}
 
 	@Override
-	public C decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public C decodeValue( BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
 			throw new RuntimeException( "todo" );
@@ -83,7 +91,7 @@ public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposi
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, C value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, C value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {

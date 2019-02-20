@@ -42,17 +42,26 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import org.alice.stageide.sceneeditor.ThumbnailGenerator;
+import org.lgna.croquet.icon.AbstractIcon;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SceneIcon extends org.lgna.croquet.icon.AbstractIcon {
-	public SceneIcon( java.awt.Dimension size ) {
+public class SceneIcon extends AbstractIcon {
+	public SceneIcon( Dimension size ) {
 		super( size );
 	}
 
-	private org.alice.stageide.sceneeditor.ThumbnailGenerator thumbnailGenerator;
+	private ThumbnailGenerator thumbnailGenerator;
 	private boolean isDirty = true;
-	private java.awt.image.BufferedImage image = null;
+	private BufferedImage image = null;
 
 	/* package-private */void markDirty() {
 		this.image = null;
@@ -60,13 +69,13 @@ public class SceneIcon extends org.lgna.croquet.icon.AbstractIcon {
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
+	protected void paintIcon( Component c, Graphics2D g2 ) {
 		if( this.isDirty ) {
 			try {
 				if( this.thumbnailGenerator != null ) {
 					//pass
 				} else {
-					this.thumbnailGenerator = new org.alice.stageide.sceneeditor.ThumbnailGenerator( this.getIconWidth(), this.getIconHeight() );
+					this.thumbnailGenerator = new ThumbnailGenerator( this.getIconWidth(), this.getIconHeight() );
 				}
 				this.image = this.thumbnailGenerator.createThumbnail();
 			} catch( Throwable t ) {
@@ -93,9 +102,9 @@ public class SceneIcon extends org.lgna.croquet.icon.AbstractIcon {
 		} else {
 			int w = this.getIconWidth();
 			int h = this.getIconHeight() / 2;
-			g2.setColor( java.awt.Color.BLUE );
+			g2.setColor( Color.BLUE );
 			g2.fillRect( 0, 0, w, h );
-			g2.setColor( java.awt.Color.GREEN );
+			g2.setColor( Color.GREEN );
 			g2.fillRect( 0, 0 + h, w, h );
 		}
 	}

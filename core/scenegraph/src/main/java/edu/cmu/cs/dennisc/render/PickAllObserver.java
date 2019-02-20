@@ -42,8 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public interface PickAllObserver extends Observer<java.util.List<PickResult>> {
+public interface PickAllObserver extends Observer<List<PickResult>> {
 }

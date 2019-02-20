@@ -42,15 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet.color;
 
+import org.lgna.croquet.AbstractComposite;
+import org.lgna.croquet.color.views.ColorChooserTabView;
+
+import javax.swing.Icon;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ColorChooserTabComposite<V extends org.lgna.croquet.color.views.ColorChooserTabView> extends org.lgna.croquet.AbstractComposite<V> {
+public abstract class ColorChooserTabComposite<V extends ColorChooserTabView> extends AbstractComposite<V> {
 	private String name;
-	private javax.swing.Icon largeDisplayIcon;
-	private javax.swing.Icon smallDisplayIcon;
+	private Icon largeDisplayIcon;
+	private Icon smallDisplayIcon;
 
-	public ColorChooserTabComposite( java.util.UUID migrationId ) {
+	public ColorChooserTabComposite( UUID migrationId ) {
 		super( migrationId );
 	}
 
@@ -64,19 +70,19 @@ public abstract class ColorChooserTabComposite<V extends org.lgna.croquet.color.
 		return this.name;
 	}
 
-	public javax.swing.Icon getSmallDisplayIcon() {
+	public Icon getSmallDisplayIcon() {
 		return this.smallDisplayIcon;
 	}
 
-	public void setSmallDisplayIcon( javax.swing.Icon smallDisplayIcon ) {
+	public void setSmallDisplayIcon( Icon smallDisplayIcon ) {
 		this.smallDisplayIcon = smallDisplayIcon;
 	}
 
-	public javax.swing.Icon getLargeDisplayIcon() {
+	public Icon getLargeDisplayIcon() {
 		return this.largeDisplayIcon;
 	}
 
-	public void setLargeDisplayIcon( javax.swing.Icon largeDisplayIcon ) {
+	public void setLargeDisplayIcon( Icon largeDisplayIcon ) {
 		this.largeDisplayIcon = largeDisplayIcon;
 	}
 }

@@ -42,15 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.CardOwnerComposite;
+import org.lgna.croquet.TabComposite;
 import org.lgna.croquet.TabState;
+
+import javax.swing.SwingUtilities;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CardBasedTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends TabbedPane<E> {
-	private static final class FolderTabbedPaneCardOwner extends org.lgna.croquet.CardOwnerComposite {
+public abstract class CardBasedTabbedPane<E extends TabComposite<?>> extends TabbedPane<E> {
+	private static final class FolderTabbedPaneCardOwner extends CardOwnerComposite {
 		public FolderTabbedPaneCardOwner() {
-			super( java.util.UUID.fromString( "31cf52f4-80ea-49f9-9875-7ea942d241e7" ) );
+			super( UUID.fromString( "31cf52f4-80ea-49f9-9875-7ea942d241e7" ) );
 		}
 	}
 
@@ -58,14 +64,14 @@ public abstract class CardBasedTabbedPane<E extends org.lgna.croquet.TabComposit
 
 	public CardBasedTabbedPane( TabState<E, ?> model ) {
 		super( model );
-		for( org.lgna.croquet.TabComposite<?> card : model ) {
+		for( TabComposite<?> card : model ) {
 			if( card != null ) {
 				this.cardOwner.addCard( card );
 			}
 		}
 	}
 
-	public org.lgna.croquet.CardOwnerComposite getCardOwner() {
+	public CardOwnerComposite getCardOwner() {
 		return this.cardOwner;
 	}
 
@@ -80,8 +86,8 @@ public abstract class CardBasedTabbedPane<E extends org.lgna.croquet.TabComposit
 			} else {
 				if( card != null ) {
 					this.cardOwner.addCard( card );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note invoke later showCard", card );
-					javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					Logger.outln( "note invoke later showCard", card );
+					SwingUtilities.invokeLater( new Runnable() {
 						@Override
 						public void run() {
 							cardOwner.showCardRefrainingFromActivation( card );

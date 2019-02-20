@@ -42,35 +42,59 @@
  *******************************************************************************/
 package org.alice.ide.member.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.member.AddMethodMenuModel;
+import org.alice.ide.member.FunctionsOfReturnTypeSubComposite;
+import org.alice.ide.member.MemberTabComposite;
+import org.alice.ide.member.MethodsSubComposite;
+import org.alice.ide.member.UserMethodsSubComposite;
+import org.alice.stageide.icons.PlusIconFactory;
+import org.lgna.croquet.views.ComboBox;
+import org.lgna.croquet.views.HorizontalTextPosition;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.PopupButton;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.Separator;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.ToolPaletteTitle;
+import org.lgna.croquet.views.ToolPaletteView;
+import org.lgna.project.ast.Member;
+
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberTabView extends org.lgna.croquet.views.MigPanel {
-	private final java.util.Map<org.lgna.project.ast.Member, org.lgna.croquet.views.SwingComponentView<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public abstract class MemberTabView extends MigPanel {
+	private final Map<Member, SwingComponentView<?>> map = Maps.newHashMap();
 
-	private final org.lgna.croquet.views.PopupButton popupButton;
-	private final org.lgna.croquet.views.ComboBox<String> comboBox;
+	private final PopupButton popupButton;
+	private final ComboBox<String> comboBox;
 
-	public MemberTabView( org.alice.ide.member.MemberTabComposite<?> composite ) {
+	public MemberTabView( MemberTabComposite<?> composite ) {
 		super( composite, "insets 0, fill", "[]", "[grow 0][]" );
-		org.alice.ide.member.AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
+		AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
 		if( addMethodMenuModel != null ) {
 			this.popupButton = addMethodMenuModel.getPopupPrepModel().createPopupButton();
-			this.popupButton.setClobberIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
-			this.popupButton.tightenUpMargin( new java.awt.Insets( -2, -10, -2, -8 ) );
+			this.popupButton.setClobberIcon( PlusIconFactory.getInstance().getIcon( new Dimension( 16, 16 ) ) );
+			this.popupButton.tightenUpMargin( new Insets( -2, -10, -2, -8 ) );
 		} else {
 			this.popupButton = null;
 		}
 		this.comboBox = composite.getSortState().getPrepModel().createComboBoxWithItemCodecListCellRenderer();
 	}
 
-	private static org.lgna.croquet.views.SwingComponentView<?> createDragView( org.lgna.project.ast.Member member ) {
-		return new org.lgna.croquet.views.Label( member.getName() );
+	private static SwingComponentView<?> createDragView( Member member ) {
+		return new Label( member.getName() );
 	}
 
-	protected org.lgna.croquet.views.SwingComponentView<?> getComponentFor( org.lgna.project.ast.Member member ) {
+	protected SwingComponentView<?> getComponentFor( Member member ) {
 		synchronized( this.map ) {
-			org.lgna.croquet.views.SwingComponentView<?> rv = this.map.get( member );
+			SwingComponentView<?> rv = this.map.get( member );
 			if( rv != null ) {
 				//pass
 			} else {
@@ -84,11 +108,11 @@ public abstract class MemberTabView extends org.lgna.croquet.views.MigPanel {
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
-		org.alice.ide.member.MemberTabComposite<?> composite = (org.alice.ide.member.MemberTabComposite<?>)this.getComposite();
+		MemberTabComposite<?> composite = (MemberTabComposite<?>)this.getComposite();
 		this.removeAllComponents();
 
-		org.alice.ide.member.AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
-		org.lgna.croquet.views.SwingComponentView<?> leftTopComponent;
+		AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
+		SwingComponentView<?> leftTopComponent;
 		if( addMethodMenuModel != null ) {
 			if( addMethodMenuModel.isRelevant() ) {
 				leftTopComponent = this.popupButton;
@@ -105,33 +129,33 @@ public abstract class MemberTabView extends org.lgna.croquet.views.MigPanel {
 		}
 		this.addComponent( this.comboBox, "align right, wrap" );
 
-		org.lgna.croquet.views.MigPanel scrollPaneView = new org.lgna.croquet.views.MigPanel( null, "insets 0", "[]", "[]0[]" );
-		for( org.alice.ide.member.MethodsSubComposite subComposite : composite.getSubComposites() ) {
-			if( subComposite != org.alice.ide.member.MemberTabComposite.SEPARATOR ) {
+		MigPanel scrollPaneView = new MigPanel( null, "insets 0", "[]", "[]0[]" );
+		for( MethodsSubComposite subComposite : composite.getSubComposites() ) {
+			if( subComposite != MemberTabComposite.SEPARATOR ) {
 				if( subComposite.isShowingDesired() ) {
-					org.lgna.croquet.views.ToolPaletteView view = subComposite.getOuterComposite().getView();
-					if( subComposite instanceof org.alice.ide.member.FunctionsOfReturnTypeSubComposite ) {
-						view.getTitle().setHorizontalTextPosition( org.lgna.croquet.views.HorizontalTextPosition.LEADING );
+					ToolPaletteView view = subComposite.getOuterComposite().getView();
+					if( subComposite instanceof FunctionsOfReturnTypeSubComposite ) {
+						view.getTitle().setHorizontalTextPosition( HorizontalTextPosition.LEADING );
 					}
-					view.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-					if( org.alice.ide.member.MemberTabComposite.ARE_TOOL_PALETTES_INERT ) {
+					view.getTitle().changeFont( TextPosture.OBLIQUE );
+					if( MemberTabComposite.ARE_TOOL_PALETTES_INERT ) {
 						view.getTitle().setInert( true );
 					} else {
-						view.getTitle().setRenderingStyle( org.lgna.croquet.views.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
+						view.getTitle().setRenderingStyle( ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
 					}
 					view.setBackgroundColor( this.getBackgroundColor() );
-					if( subComposite instanceof org.alice.ide.member.UserMethodsSubComposite ) {
-						org.alice.ide.member.UserMethodsSubComposite userMethodsSubComposite = (org.alice.ide.member.UserMethodsSubComposite)subComposite;
+					if( subComposite instanceof UserMethodsSubComposite ) {
+						UserMethodsSubComposite userMethodsSubComposite = (UserMethodsSubComposite)subComposite;
 						view.getTitle().setSuppressed( userMethodsSubComposite.isRelevant() == false );
 					}
 					scrollPaneView.addComponent( view, "wrap" );
 				}
 			} else {
-				scrollPaneView.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "wrap" );
+				scrollPaneView.addComponent( Separator.createInstanceSeparatingTopFromBottom(), "wrap" );
 			}
 		}
 		scrollPaneView.setBackgroundColor( this.getBackgroundColor() );
-		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( scrollPaneView );
+		ScrollPane scrollPane = new ScrollPane( scrollPaneView );
 		this.addComponent( scrollPane, scrollPaneConstraints );
 	}
 }

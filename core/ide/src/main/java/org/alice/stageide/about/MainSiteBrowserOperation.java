@@ -43,10 +43,14 @@
 
 package org.alice.stageide.about;
 
+import org.alice.ide.browser.ImmutableBrowserOperation;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MainSiteBrowserOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
+public class MainSiteBrowserOperation extends ImmutableBrowserOperation {
 	private static class SingletonHolder {
 		private static MainSiteBrowserOperation instance = new MainSiteBrowserOperation();
 	}
@@ -56,6 +60,6 @@ public class MainSiteBrowserOperation extends org.alice.ide.browser.ImmutableBro
 	}
 
 	private MainSiteBrowserOperation() {
-		super( java.util.UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea" ), "http://www.alice.org" );
+		super( UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea" ), "http://www.alice.org" );
 	}
 }

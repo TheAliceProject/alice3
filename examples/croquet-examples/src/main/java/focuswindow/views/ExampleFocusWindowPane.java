@@ -42,16 +42,24 @@
  */
 package focuswindow.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import focuswindow.ExampleFocusWindowComposite;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.Separator;
+
+import javax.swing.BorderFactory;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExampleFocusWindowPane extends org.lgna.croquet.views.MigPanel {
-	public ExampleFocusWindowPane( focuswindow.ExampleFocusWindowComposite composite ) {
+public class ExampleFocusWindowPane extends MigPanel {
+	public ExampleFocusWindowPane( ExampleFocusWindowComposite composite ) {
 		super( composite );
-		this.addComponent( composite.getHeaderText().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
-		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "growx, wrap" );
+		this.addComponent( composite.getHeaderText().createLabel( 1.4f, TextWeight.BOLD ), "wrap" );
+		this.addComponent( Separator.createInstanceSeparatingTopFromBottom(), "growx, wrap" );
 		this.addComponent( composite.getInfoText().createLabel() );
-		this.setBackgroundColor( new java.awt.Color( 221, 221, 191 ) );
-		this.setBorder( javax.swing.BorderFactory.createMatteBorder( 1, 1, 1, 1, java.awt.Color.BLACK ) );
+		this.setBackgroundColor( new Color( 221, 221, 191 ) );
+		this.setBorder( BorderFactory.createMatteBorder( 1, 1, 1, 1, Color.BLACK ) );
 	}
 }

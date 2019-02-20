@@ -42,16 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.alice.ide.ast.type.merge.croquet.views.FunctionsView;
+import org.lgna.project.ast.UserMethod;
+
+import java.net.URI;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class FunctionsToolPalette extends MethodsToolPalette<org.alice.ide.ast.type.merge.croquet.views.FunctionsView> {
-	public FunctionsToolPalette( java.net.URI uriForDescriptionPurposesOnly, java.util.List<org.lgna.project.ast.UserMethod> projectFunctions ) {
-		super( java.util.UUID.fromString( "ba4a37f1-c3e9-48f8-9e39-790db4ca5775" ), uriForDescriptionPurposesOnly, projectFunctions );
+public final class FunctionsToolPalette extends MethodsToolPalette<FunctionsView> {
+	public FunctionsToolPalette( URI uriForDescriptionPurposesOnly, List<UserMethod> projectFunctions ) {
+		super( UUID.fromString( "ba4a37f1-c3e9-48f8-9e39-790db4ca5775" ), uriForDescriptionPurposesOnly, projectFunctions );
 	}
 
 	@Override
-	protected org.alice.ide.ast.type.merge.croquet.views.FunctionsView createView() {
-		return new org.alice.ide.ast.type.merge.croquet.views.FunctionsView( this );
+	protected FunctionsView createView() {
+		return new FunctionsView( this );
 	}
 }

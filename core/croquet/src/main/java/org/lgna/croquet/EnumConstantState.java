@@ -42,11 +42,15 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.codecs.EnumCodec;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EnumConstantState<T extends Enum<T>> extends org.lgna.croquet.ImmutableDataSingleSelectListState<T> {
-	public EnumConstantState( org.lgna.croquet.Group group, java.util.UUID id, int selectionIndex, Class<T> cls ) {
-		super( group, id, selectionIndex, org.lgna.croquet.codecs.EnumCodec.getInstance( cls ), cls.getEnumConstants() );
+public class EnumConstantState<T extends Enum<T>> extends ImmutableDataSingleSelectListState<T> {
+	public EnumConstantState( Group group, UUID id, int selectionIndex, Class<T> cls ) {
+		super( group, id, selectionIndex, EnumCodec.getInstance( cls ), cls.getEnumConstants() );
 	}
 }

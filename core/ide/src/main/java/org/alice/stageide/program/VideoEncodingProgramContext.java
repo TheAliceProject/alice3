@@ -43,31 +43,45 @@
 
 package org.alice.stageide.program;
 
+import edu.cmu.cs.dennisc.animation.FrameBasedAnimator;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+import edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.story.SProgram;
+import org.lgna.story.implementation.ProgramImp;
+
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
 public class VideoEncodingProgramContext extends ProgramContext {
 	private static final boolean IS_CAPTURE_READY_FOR_PRIME_TIME = false;
-	private static final java.awt.Dimension SIZE = new java.awt.Dimension( 640, 360 );
+	private static final Dimension SIZE = new Dimension( 640, 360 );
 
-	private static edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> createOnscreenRenderTarget() {
-		edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities = new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().build();
-		return IS_CAPTURE_READY_FOR_PRIME_TIME ? new edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget( SIZE, null, requestedCapabilities ) : edu.cmu.cs.dennisc.render.gl.GlrRenderFactory.getInstance().createHeavyweightOnscreenRenderTarget( requestedCapabilities );
+	private static OnscreenRenderTarget<?> createOnscreenRenderTarget() {
+		RenderCapabilities requestedCapabilities = new RenderCapabilities.Builder().build();
+		return IS_CAPTURE_READY_FOR_PRIME_TIME ? new GlrCaptureFauxOnscreenRenderTarget( SIZE, null, requestedCapabilities ) : GlrRenderFactory.getInstance().createHeavyweightOnscreenRenderTarget( requestedCapabilities );
 	}
 
-	public static class FrameBasedProgramImp extends org.lgna.story.implementation.ProgramImp {
-		private edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator = new edu.cmu.cs.dennisc.animation.FrameBasedAnimator();
+	public static class FrameBasedProgramImp extends ProgramImp {
+		private FrameBasedAnimator animator = new FrameBasedAnimator();
 
-		public FrameBasedProgramImp( org.lgna.story.SProgram abstraction ) {
+		public FrameBasedProgramImp( SProgram abstraction ) {
 			super( abstraction, createOnscreenRenderTarget() );
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.animation.FrameBasedAnimator getAnimator() {
+		public FrameBasedAnimator getAnimator() {
 			return this.animator;
 		}
 
-		public void setAnimator( edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator ) {
+		public void setAnimator( FrameBasedAnimator animator ) {
 			this.animator = animator;
 		}
 
@@ -103,7 +117,7 @@ public class VideoEncodingProgramContext extends ProgramContext {
 		}
 	}
 
-	public VideoEncodingProgramContext( org.lgna.project.ast.NamedUserType programType, double frameRate ) {
+	public VideoEncodingProgramContext( NamedUserType programType, double frameRate ) {
 		super( programType );
 		this.getProgramImp().getAnimator().setFramesPerSecond( frameRate );
 	}
@@ -118,14 +132,14 @@ public class VideoEncodingProgramContext extends ProgramContext {
 	}
 
 	@Override
-	protected org.lgna.project.virtualmachine.UserInstance createProgramInstance( org.lgna.project.ast.NamedUserType programType ) {
-		org.lgna.story.implementation.ProgramImp.ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( FrameBasedProgramImp.class );
+	protected UserInstance createProgramInstance( NamedUserType programType ) {
+		ProgramImp.ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( FrameBasedProgramImp.class );
 		return super.createProgramInstance( programType );
 	}
 
 	//todo: add String[] args?
-	public void initializeInContainer( java.awt.Container container ) {
-		java.awt.Component awtComponent = this.getProgramImp().getOnscreenRenderTarget().getAwtComponent();
+	public void initializeInContainer( Container container ) {
+		Component awtComponent = this.getProgramImp().getOnscreenRenderTarget().getAwtComponent();
 		awtComponent.setSize( SIZE );
 		container.add( awtComponent );
 	}

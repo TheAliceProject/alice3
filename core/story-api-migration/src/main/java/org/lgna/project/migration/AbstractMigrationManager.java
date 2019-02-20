@@ -42,15 +42,24 @@
  *******************************************************************************/
 package org.lgna.project.migration;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.project.Project;
+import org.lgna.project.Version;
+import org.lgna.project.ast.Node;
+
+import java.util.List;
+import java.util.logging.Level;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMigrationManager implements MigrationManager {
-	private final java.util.List<Migration> versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<Migration> versionIndependentMigrations = Lists.newCopyOnWriteArrayList();
 
-	private final org.lgna.project.Version currentVersion;
+	private final Version currentVersion;
 
-	public AbstractMigrationManager( org.lgna.project.Version currentVersion ) {
+	AbstractMigrationManager(Version currentVersion) {
 		this.currentVersion = currentVersion;
 	}
 
@@ -58,23 +67,21 @@ public abstract class AbstractMigrationManager implements MigrationManager {
 
 	protected abstract AstMigration[] getAstMigrations();
 
-	@Override
-	public org.lgna.project.Version getCurrentVersion() {
+	Version getCurrentVersion() {
 		return this.currentVersion;
 	}
 
-	@Override
-	public boolean isDevoidOfVersionIndependentMigrations() {
-		return versionIndependentMigrations.size() == 0;
+	boolean hasVersionIndependentMigrations() {
+		return versionIndependentMigrations.size() > 0;
 	}
 
 	@Override
-	public String migrate( String source, org.lgna.project.Version version ) {
+	public String migrate( String source, Version version ) {
 		String rv = source;
 		for( TextMigration textMigration : this.getTextMigrations() ) {
 			if( textMigration.isApplicable( version ) ) {
-				if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, textMigration );
+				if( Logger.getLevel().intValue() < Level.SEVERE.intValue() ) {
+					Logger.outln( version, textMigration );
 				}
 				rv = textMigration.migrate( rv );
 				version = textMigration.getResultVersion();
@@ -84,12 +91,12 @@ public abstract class AbstractMigrationManager implements MigrationManager {
 	}
 
 	@Override
-	public void migrate( org.lgna.project.ast.Node root, org.lgna.project.Project projectIfApplicable, org.lgna.project.Version version ) {
+	public void migrate( Node root, Project projectIfApplicable, Version version ) {
 		for( AstMigration astMigration : this.getAstMigrations() ) {
 			if( astMigration != null ) {
 				if( astMigration.isApplicable( version ) ) {
-					if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, astMigration );
+					if( Logger.getLevel().intValue() < Level.SEVERE.intValue() ) {
+						Logger.outln( version, astMigration );
 					}
 					astMigration.migrate( root, projectIfApplicable );
 					version = astMigration.getResultVersion();
@@ -98,12 +105,10 @@ public abstract class AbstractMigrationManager implements MigrationManager {
 		}
 	}
 
-	@Override
 	public void addVersionIndependentMigration( Migration migration ) {
 		versionIndependentMigrations.add( migration );
 	}
 
-	@Override
 	public void removeVersionIndependentMigration( Migration migration ) {
 		versionIndependentMigrations.remove( migration );
 	}

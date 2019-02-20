@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,9 +54,9 @@ public abstract class TransformableImp extends AbstractTransformableImp {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgComposite() {
+	public Transformable getSgComposite() {
 		return this.sgTransformable;
 	}
 
-	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
+	private final Transformable sgTransformable = new Transformable();
 }

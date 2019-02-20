@@ -43,11 +43,14 @@
 
 package edu.cmu.cs.dennisc.scenegraph.event;
 
+import edu.cmu.cs.dennisc.scenegraph.Graphic;
+import edu.cmu.cs.dennisc.scenegraph.Layer;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GraphicEvent extends ChildEvent<edu.cmu.cs.dennisc.scenegraph.Layer, edu.cmu.cs.dennisc.scenegraph.Graphic> {
-	public GraphicEvent( edu.cmu.cs.dennisc.scenegraph.Layer source, edu.cmu.cs.dennisc.scenegraph.Graphic child ) {
+public abstract class GraphicEvent extends ChildEvent<Layer, Graphic> {
+	public GraphicEvent( Layer source, Graphic child ) {
 		super( source, child );
 	}
 }

@@ -42,10 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.media.protocol;
 
+import javax.media.Duration;
+import javax.media.Time;
+import javax.media.protocol.PullDataSource;
+import javax.media.protocol.PullSourceStream;
+import java.io.IOException;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ByteArrayDataSource extends javax.media.protocol.PullDataSource {
+public class ByteArrayDataSource extends PullDataSource {
 	private byte[] data;
 	private String contentType;
 
@@ -64,12 +70,12 @@ public class ByteArrayDataSource extends javax.media.protocol.PullDataSource {
 	}
 
 	@Override
-	public javax.media.Time getDuration() {
-		return javax.media.Duration.DURATION_UNKNOWN;
+	public Time getDuration() {
+		return Duration.DURATION_UNKNOWN;
 	}
 
 	@Override
-	public void connect() throws java.io.IOException {
+	public void connect() throws IOException {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource connect" );
 	}
 
@@ -79,12 +85,12 @@ public class ByteArrayDataSource extends javax.media.protocol.PullDataSource {
 	}
 
 	@Override
-	public void start() throws java.io.IOException {
+	public void start() throws IOException {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource start" );
 	}
 
 	@Override
-	public void stop() throws java.io.IOException {
+	public void stop() throws IOException {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource stop" );
 	}
 
@@ -101,8 +107,8 @@ public class ByteArrayDataSource extends javax.media.protocol.PullDataSource {
 	}
 
 	@Override
-	public javax.media.protocol.PullSourceStream[] getStreams() {
-		return new javax.media.protocol.PullSourceStream[] { new ByteArraySeekablePullSourceStream( this.data ) };
+	public PullSourceStream[] getStreams() {
+		return new PullSourceStream[] { new ByteArraySeekablePullSourceStream( this.data ) };
 	}
 
 	@Override

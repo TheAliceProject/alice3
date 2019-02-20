@@ -42,6 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.print;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import org.alice.ide.IDE;
+import org.alice.ide.declarationseditor.DeclarationComposite;
+import org.alice.ide.declarationseditor.components.DeclarationView;
+
+import java.awt.print.Printable;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,15 +64,15 @@ public class PrintCurrentCodeOperation extends PrintOperation {
 	}
 
 	private PrintCurrentCodeOperation() {
-		super( java.util.UUID.fromString( "097b41bf-d1ea-4991-a0d6-0fae51be35ef" ) );
+		super( UUID.fromString( "097b41bf-d1ea-4991-a0d6-0fae51be35ef" ) );
 	}
 
 	@Override
-	protected java.awt.print.Printable getPrintable() {
-		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-		java.awt.print.Printable printable = null;
+	protected Printable getPrintable() {
+		DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+		Printable printable = null;
 		if( declarationComposite != null ) {
-			org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
+			DeclarationView view = declarationComposite.getView();
 			if( view != null ) {
 				printable = view.getPrintable();
 			}
@@ -71,10 +80,9 @@ public class PrintCurrentCodeOperation extends PrintOperation {
 		if( printable != null ) {
 			return printable;
 		} else {
-			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Print not supported for " + declarationComposite )
-					.title( "Print not supported" )
-					.buildAndShow();
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "print not supported for:", declarationComposite );
+			Dialogs.showInfo( "Print not supported",
+							  "Print not supported for " + declarationComposite );
+			Logger.todo( "print not supported for:", declarationComposite );
 			return null;
 		}
 	}

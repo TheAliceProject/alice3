@@ -42,10 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.custom;
 
+import org.alice.ide.custom.CustomExpressionCreatorComposite;
+import org.alice.stageide.custom.components.KeyCustomExpressionCreatorView;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.TypeExpression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class KeyCustomExpressionCreatorComposite extends org.alice.ide.custom.CustomExpressionCreatorComposite<org.alice.stageide.custom.components.KeyCustomExpressionCreatorView> {
+public class KeyCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<KeyCustomExpressionCreatorView> {
 	private static class SingletonHolder {
 		private static KeyCustomExpressionCreatorComposite instance = new KeyCustomExpressionCreatorComposite();
 	}
@@ -54,19 +66,19 @@ public class KeyCustomExpressionCreatorComposite extends org.alice.ide.custom.Cu
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.PlainStringValue pressAnyKeyLabel = this.createStringValue( "pressAnyKeyLabel" );
+	private final PlainStringValue pressAnyKeyLabel = this.createStringValue( "pressAnyKeyLabel" );
 	private final ErrorStatus keyRequiredError = this.createErrorStatus( "keyRequiredError" );
 
 	private KeyCustomExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "908ee2c1-97a9-4fb4-9716-7846cb206549" ) );
+		super( UUID.fromString( "908ee2c1-97a9-4fb4-9716-7846cb206549" ) );
 	}
 
 	@Override
-	protected org.alice.stageide.custom.components.KeyCustomExpressionCreatorView createView() {
-		return new org.alice.stageide.custom.components.KeyCustomExpressionCreatorView( this );
+	protected KeyCustomExpressionCreatorView createView() {
+		return new KeyCustomExpressionCreatorView( this );
 	}
 
-	public org.lgna.croquet.PlainStringValue getPressAnyKeyLabel() {
+	public PlainStringValue getPressAnyKeyLabel() {
 		return this.pressAnyKeyLabel;
 	}
 
@@ -75,20 +87,20 @@ public class KeyCustomExpressionCreatorComposite extends org.alice.ide.custom.Cu
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createValue() {
+	protected Expression createValue() {
 		org.lgna.story.Key key = this.getValueState().getValue();
 		if( key != null ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Key.class );
-			org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, key.name() );
+			AbstractType<?, ?, ?> type = JavaType.getInstance( org.lgna.story.Key.class );
+			AbstractField field = type.getDeclaredField( type, key.name() );
 			assert field.isPublicAccess() && field.isStatic() && field.isFinal();
-			return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );
+			return new FieldAccess( new TypeExpression( type ), field );
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		if( this.getValueState().getValue() != null ) {
 			return IS_GOOD_TO_GO_STATUS;
 		} else {
@@ -102,13 +114,13 @@ public class KeyCustomExpressionCreatorComposite extends org.alice.ide.custom.Cu
 	}
 
 	@Override
-	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+	protected void initializeToPreviousExpression( Expression expression ) {
 		org.lgna.story.Key key = null;
-		if( expression instanceof org.lgna.project.ast.FieldAccess ) {
-			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = fieldAccess.getType();
-			if( type == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Key.class ) ) {
-				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+		if( expression instanceof FieldAccess ) {
+			FieldAccess fieldAccess = (FieldAccess)expression;
+			AbstractType<?, ?, ?> type = fieldAccess.getType();
+			if( type == JavaType.getInstance( org.lgna.story.Key.class ) ) {
+				AbstractField field = fieldAccess.field.getValue();
 				if( field != null ) {
 					key = Enum.valueOf( org.lgna.story.Key.class, field.getName() );
 				}

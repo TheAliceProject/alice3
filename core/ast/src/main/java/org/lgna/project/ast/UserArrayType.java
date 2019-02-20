@@ -43,11 +43,19 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.map.MapToMap;
+import edu.cmu.cs.dennisc.property.StringProperty;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class UserArrayType extends AbstractType {
-	private static edu.cmu.cs.dennisc.map.MapToMap<UserType<?>, Integer, UserArrayType> s_map = new edu.cmu.cs.dennisc.map.MapToMap<UserType<?>, Integer, UserArrayType>();
+	private static MapToMap<UserType<?>, Integer, UserArrayType> s_map = new MapToMap<UserType<?>, Integer, UserArrayType>();
 
 	public static UserArrayType getInstance( UserType<?> leafType, int dimensionCount ) {
 		UserArrayType rv = s_map.get( leafType, dimensionCount );
@@ -74,7 +82,7 @@ public class UserArrayType extends AbstractType {
 	}
 
 	@Override
-	protected boolean isAssignableFromType( org.lgna.project.ast.AbstractType other ) {
+	protected boolean isAssignableFromType( AbstractType other ) {
 		if( other.isArray() ) {
 			return this.getComponentType().isAssignableFrom( other.getComponentType() );
 		} else {
@@ -93,7 +101,7 @@ public class UserArrayType extends AbstractType {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		//todo?
 		return null;
 	}
@@ -125,14 +133,14 @@ public class UserArrayType extends AbstractType {
 
 	@Override
 	public AbstractType<?, ?, ?> getSuperType() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "the super type of a java array is Object" );
+		Logger.todo( "the super type of a java array is Object" );
 		AbstractType<?, ?, ?> leafSuperType = this.leafType.getSuperType();
 		if( leafSuperType instanceof UserType<?> ) {
 			return UserArrayType.getInstance( ( (UserType<?>)leafSuperType ), this.dimensionCount );
 		} else {
 			assert leafSuperType instanceof JavaType;
 			Class<?> leafSuperCls = ( (JavaType)leafSuperType ).getClassReflectionProxy().getReification();
-			Class<?> superCls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getArrayClass( leafSuperCls, this.dimensionCount );
+			Class<?> superCls = ReflectionUtilities.getArrayClass( leafSuperCls, this.dimensionCount );
 			return JavaType.getInstance( superCls );
 		}
 	}
@@ -160,18 +168,18 @@ public class UserArrayType extends AbstractType {
 	}
 
 	@Override
-	public java.util.List<AbstractConstructor> getDeclaredConstructors() {
-		return java.util.Collections.emptyList();
+	public List<AbstractConstructor> getDeclaredConstructors() {
+		return Collections.emptyList();
 	}
 
 	@Override
-	public java.util.List<AbstractField> getDeclaredFields() {
-		return java.util.Collections.emptyList();
+	public List<AbstractField> getDeclaredFields() {
+		return Collections.emptyList();
 	}
 
 	@Override
-	public java.util.List<AbstractMethod> getDeclaredMethods() {
-		return java.util.Collections.emptyList();
+	public List<AbstractMethod> getDeclaredMethods() {
+		return Collections.emptyList();
 	}
 
 	@Override

@@ -43,44 +43,53 @@
 
 package org.alice.stageide.personresource;
 
+import org.alice.stageide.personresource.data.HairColorName;
+import org.alice.stageide.personresource.data.HairColorNameListData;
 import org.alice.stageide.personresource.data.HairHatStyle;
+import org.alice.stageide.personresource.data.HairHatStyleListData;
+import org.alice.stageide.personresource.views.HairTabView;
+import org.lgna.croquet.RefreshableDataSingleSelectListState;
+import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.views.ScrollPane;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class HairTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.HairTabView> {
-	private final org.alice.stageide.personresource.data.HairColorNameListData hairColorNameData = new org.alice.stageide.personresource.data.HairColorNameListData();
-	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.alice.stageide.personresource.data.HairColorName> hairColorNameState = this.createRefreshableListState( "hairColorNameState", this.hairColorNameData, -1 );
-	private final org.alice.stageide.personresource.data.HairHatStyleListData hairHatStyleListData = new org.alice.stageide.personresource.data.HairHatStyleListData();
-	private final org.lgna.croquet.RefreshableDataSingleSelectListState<HairHatStyle> hairHatStyleState = this.createRefreshableListState( "hairHatStyleState", this.hairHatStyleListData, -1 );
+public final class HairTabComposite extends SimpleTabComposite<HairTabView> {
+	private final HairColorNameListData hairColorNameData = new HairColorNameListData();
+	private final RefreshableDataSingleSelectListState<HairColorName> hairColorNameState = this.createRefreshableListState( "hairColorNameState", this.hairColorNameData, -1 );
+	private final HairHatStyleListData hairHatStyleListData = new HairHatStyleListData();
+	private final RefreshableDataSingleSelectListState<HairHatStyle> hairHatStyleState = this.createRefreshableListState( "hairHatStyleState", this.hairHatStyleListData, -1 );
 
 	public HairTabComposite() {
-		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), IsCloseable.FALSE );
+		super( UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), IsCloseable.FALSE );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
 	@Override
-	protected org.alice.stageide.personresource.views.HairTabView createView() {
-		return new org.alice.stageide.personresource.views.HairTabView( this );
+	protected HairTabView createView() {
+		return new HairTabView( this );
 	}
 
-	public org.alice.stageide.personresource.data.HairColorNameListData getHairColorNameData() {
+	public HairColorNameListData getHairColorNameData() {
 		return this.hairColorNameData;
 	}
 
-	public org.lgna.croquet.RefreshableDataSingleSelectListState<org.alice.stageide.personresource.data.HairColorName> getHairColorNameState() {
+	public RefreshableDataSingleSelectListState<HairColorName> getHairColorNameState() {
 		return this.hairColorNameState;
 	}
 
-	public org.alice.stageide.personresource.data.HairHatStyleListData getHairHatStyleListData() {
+	public HairHatStyleListData getHairHatStyleListData() {
 		return this.hairHatStyleListData;
 	}
 
-	public org.lgna.croquet.RefreshableDataSingleSelectListState<HairHatStyle> getHairHatStyleState() {
+	public RefreshableDataSingleSelectListState<HairHatStyle> getHairHatStyleState() {
 		return this.hairHatStyleState;
 	}
 };

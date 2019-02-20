@@ -43,10 +43,16 @@
 
 package org.alice.stageide.ast.source;
 
+import org.alice.ide.ast.importers.AudioResourceImporter;
+import org.lgna.common.resources.AudioResource;
+import org.lgna.story.AudioSource;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceImportValueCreator extends SourceImportValueCreator<org.lgna.story.AudioSource, org.lgna.common.resources.AudioResource> {
+public class AudioSourceImportValueCreator extends SourceImportValueCreator<AudioSource, AudioResource> {
 	private static class SingletonHolder {
 		private static AudioSourceImportValueCreator instance = new AudioSourceImportValueCreator();
 	}
@@ -56,6 +62,6 @@ public class AudioSourceImportValueCreator extends SourceImportValueCreator<org.
 	}
 
 	private AudioSourceImportValueCreator() {
-		super( java.util.UUID.fromString( "96a6722d-6394-4be2-adba-f096067f09e1" ), org.alice.ide.ast.importers.AudioResourceImporter.getInstance(), org.lgna.story.AudioSource.class, org.lgna.common.resources.AudioResource.class );
+		super( UUID.fromString( "96a6722d-6394-4be2-adba-f096067f09e1" ), AudioResourceImporter.getInstance(), AudioSource.class, AudioResource.class );
 	}
 }

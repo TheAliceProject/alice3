@@ -42,23 +42,35 @@
  *******************************************************************************/
 package org.lgna.common.resources;
 
-public class AudioResource extends org.lgna.common.Resource {
-	private static java.util.Map<String, String> extensionToContentTypeMap;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import org.lgna.common.Resource;
+import org.w3c.dom.Element;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
+
+public class AudioResource extends Resource {
+	private static Map<String, String> extensionToContentTypeMap;
 
 	static {
-		AudioResource.extensionToContentTypeMap = new java.util.HashMap<String, String>();
+		AudioResource.extensionToContentTypeMap = new HashMap<String, String>();
 		AudioResource.extensionToContentTypeMap.put( "au", "audio.basic" );
 		AudioResource.extensionToContentTypeMap.put( "wav", "audio.x_wav" );
 		AudioResource.extensionToContentTypeMap.put( "mp3", "audio.mpeg" );
 	}
 
 	public static String getContentType( String path ) {
-		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( path );
-		String contentType = extension != null ? AudioResource.extensionToContentTypeMap.get( extension.toLowerCase( java.util.Locale.ENGLISH ) ) : null;
+		String extension = FileUtilities.getExtension( path );
+		String contentType = extension != null ? AudioResource.extensionToContentTypeMap.get( extension.toLowerCase( Locale.ENGLISH ) ) : null;
 		return contentType;
 	}
 
-	public static String getContentType( java.io.File file ) {
+	public static String getContentType( File file ) {
 		return getContentType( file.getName() );
 	}
 
@@ -66,11 +78,11 @@ public class AudioResource extends org.lgna.common.Resource {
 		return AudioResource.extensionToContentTypeMap.containsValue( contentType );
 	}
 
-	public static java.io.FilenameFilter createFilenameFilter( final boolean areDirectoriesAccepted ) {
-		return new java.io.FilenameFilter() {
+	public static FilenameFilter createFilenameFilter( final boolean areDirectoriesAccepted ) {
+		return new FilenameFilter() {
 			@Override
-			public boolean accept( java.io.File dir, String name ) {
-				java.io.File file = new java.io.File( dir, name );
+			public boolean accept( File dir, String name ) {
+				File file = new File( dir, name );
 				if( file.isDirectory() ) {
 					return areDirectoriesAccepted;
 				} else {
@@ -80,9 +92,9 @@ public class AudioResource extends org.lgna.common.Resource {
 		};
 	}
 
-	private static java.util.Map<java.util.UUID, AudioResource> uuidToResourceMap = new java.util.HashMap<java.util.UUID, AudioResource>();
+	private static Map<UUID, AudioResource> uuidToResourceMap = new HashMap<UUID, AudioResource>();
 
-	private static AudioResource get( java.util.UUID uuid ) {
+	private static AudioResource get( UUID uuid ) {
 		AudioResource rv = uuidToResourceMap.get( uuid );
 		if( rv != null ) {
 			//pass
@@ -94,12 +106,12 @@ public class AudioResource extends org.lgna.common.Resource {
 	}
 
 	public static AudioResource valueOf( String s ) {
-		return get( java.util.UUID.fromString( s ) );
+		return get( UUID.fromString( s ) );
 	}
 
 	private double duration = Double.NaN;
 
-	protected AudioResource( java.util.UUID uuid ) {
+	protected AudioResource( UUID uuid ) {
 		super( uuid );
 	}
 
@@ -112,12 +124,12 @@ public class AudioResource extends org.lgna.common.Resource {
 		this( cls, resourceName, getContentType( resourceName ) );
 	}
 
-	public AudioResource( java.io.File file, String contentType ) throws java.io.IOException {
+	public AudioResource( File file, String contentType ) throws IOException {
 		super( file, contentType );
 		uuidToResourceMap.put( this.getId(), this );
 	}
 
-	public AudioResource( java.io.File file ) throws java.io.IOException {
+	public AudioResource( File file ) throws IOException {
 		this( file, getContentType( file ) );
 	}
 
@@ -132,13 +144,13 @@ public class AudioResource extends org.lgna.common.Resource {
 	private static String XML_DURATION_ATTRIBUTE = "duration";
 
 	@Override
-	public void encodeAttributes( org.w3c.dom.Element xmlElement ) {
+	public void encodeAttributes( Element xmlElement ) {
 		super.encodeAttributes( xmlElement );
 		xmlElement.setAttribute( XML_DURATION_ATTRIBUTE, Double.toString( this.duration ) );
 	}
 
 	@Override
-	public void decodeAttributes( org.w3c.dom.Element xmlElement, byte[] data ) {
+	public void decodeAttributes( Element xmlElement, byte[] data ) {
 		super.decodeAttributes( xmlElement, data );
 		this.duration = Double.parseDouble( xmlElement.getAttribute( XML_DURATION_ATTRIBUTE ) );
 	}

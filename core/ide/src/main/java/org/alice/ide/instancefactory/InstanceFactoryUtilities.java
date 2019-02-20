@@ -43,6 +43,18 @@
 
 package org.alice.ide.instancefactory;
 
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.ThisExpression;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserParameter;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,52 +63,52 @@ public class InstanceFactoryUtilities {
 		throw new AssertionError();
 	}
 
-	public static InstanceFactory getInstanceFactoryForExpression( org.lgna.project.ast.Expression instanceExpression ) {
+	public static InstanceFactory getInstanceFactoryForExpression( Expression instanceExpression ) {
 		InstanceFactory rv;
-		if( instanceExpression instanceof org.lgna.project.ast.ThisExpression ) {
-			rv = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
-		} else if( instanceExpression instanceof org.lgna.project.ast.FieldAccess ) {
-			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)instanceExpression;
-			org.lgna.project.ast.Expression fieldAccessExpression = fieldAccess.expression.getValue();
-			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
-			if( fieldAccessExpression instanceof org.lgna.project.ast.ThisExpression ) {
-				if( field instanceof org.lgna.project.ast.UserField ) {
-					org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
-					rv = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( userField );
+		if( instanceExpression instanceof ThisExpression ) {
+			rv = ThisInstanceFactory.getInstance();
+		} else if( instanceExpression instanceof FieldAccess ) {
+			FieldAccess fieldAccess = (FieldAccess)instanceExpression;
+			Expression fieldAccessExpression = fieldAccess.expression.getValue();
+			AbstractField field = fieldAccess.field.getValue();
+			if( fieldAccessExpression instanceof ThisExpression ) {
+				if( field instanceof UserField ) {
+					UserField userField = (UserField)field;
+					rv = ThisFieldAccessFactory.getInstance( userField );
 				} else {
 					rv = null;
 				}
 			} else {
 				rv = null;
 			}
-		} else if( instanceExpression instanceof org.lgna.project.ast.MethodInvocation ) {
-			org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)instanceExpression;
-			org.lgna.project.ast.Expression methodInvocationInstanceExpression = methodInvocation.expression.getValue();
-			org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-			if( methodInvocationInstanceExpression instanceof org.lgna.project.ast.ThisExpression ) {
-				rv = org.alice.ide.instancefactory.ThisMethodInvocationFactory.getInstance( method );
-			} else if( methodInvocationInstanceExpression instanceof org.lgna.project.ast.FieldAccess ) {
-				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)methodInvocationInstanceExpression;
-				org.lgna.project.ast.Expression fieldAccessExpression = fieldAccess.expression.getValue();
-				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
-				if( fieldAccessExpression instanceof org.lgna.project.ast.ThisExpression ) {
-					if( field instanceof org.lgna.project.ast.UserField ) {
-						org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
-						rv = org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory.getInstance( userField, method );
+		} else if( instanceExpression instanceof MethodInvocation ) {
+			MethodInvocation methodInvocation = (MethodInvocation)instanceExpression;
+			Expression methodInvocationInstanceExpression = methodInvocation.expression.getValue();
+			AbstractMethod method = methodInvocation.method.getValue();
+			if( methodInvocationInstanceExpression instanceof ThisExpression ) {
+				rv = ThisMethodInvocationFactory.getInstance( method );
+			} else if( methodInvocationInstanceExpression instanceof FieldAccess ) {
+				FieldAccess fieldAccess = (FieldAccess)methodInvocationInstanceExpression;
+				Expression fieldAccessExpression = fieldAccess.expression.getValue();
+				AbstractField field = fieldAccess.field.getValue();
+				if( fieldAccessExpression instanceof ThisExpression ) {
+					if( field instanceof UserField ) {
+						UserField userField = (UserField)field;
+						rv = ThisFieldAccessMethodInvocationFactory.getInstance( userField, method );
 					} else {
 						rv = null;
 					}
 				} else {
 					rv = null;
 				}
-			} else if( methodInvocationInstanceExpression instanceof org.lgna.project.ast.LocalAccess ) {
-				org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)methodInvocationInstanceExpression;
+			} else if( methodInvocationInstanceExpression instanceof LocalAccess ) {
+				LocalAccess localAccess = (LocalAccess)methodInvocationInstanceExpression;
 				rv = LocalAccessMethodInvocationFactory.getInstance( localAccess.local.getValue(), method );
-			} else if( methodInvocationInstanceExpression instanceof org.lgna.project.ast.ParameterAccess ) {
-				org.lgna.project.ast.ParameterAccess parameterAccess = (org.lgna.project.ast.ParameterAccess)methodInvocationInstanceExpression;
-				org.lgna.project.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();
-				if( parameter instanceof org.lgna.project.ast.UserParameter ) {
-					org.lgna.project.ast.UserParameter userParameter = (org.lgna.project.ast.UserParameter)parameter;
+			} else if( methodInvocationInstanceExpression instanceof ParameterAccess ) {
+				ParameterAccess parameterAccess = (ParameterAccess)methodInvocationInstanceExpression;
+				AbstractParameter parameter = parameterAccess.parameter.getValue();
+				if( parameter instanceof UserParameter ) {
+					UserParameter userParameter = (UserParameter)parameter;
 					rv = ParameterAccessMethodInvocationFactory.getInstance( userParameter, method );
 				} else {
 					rv = null;
@@ -104,14 +116,14 @@ public class InstanceFactoryUtilities {
 			} else {
 				rv = null;
 			}
-		} else if( instanceExpression instanceof org.lgna.project.ast.LocalAccess ) {
-			org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)instanceExpression;
+		} else if( instanceExpression instanceof LocalAccess ) {
+			LocalAccess localAccess = (LocalAccess)instanceExpression;
 			rv = LocalAccessFactory.getInstance( localAccess.local.getValue() );
-		} else if( instanceExpression instanceof org.lgna.project.ast.ParameterAccess ) {
-			org.lgna.project.ast.ParameterAccess parameterAccess = (org.lgna.project.ast.ParameterAccess)instanceExpression;
-			org.lgna.project.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();
-			if( parameter instanceof org.lgna.project.ast.UserParameter ) {
-				org.lgna.project.ast.UserParameter userParameter = (org.lgna.project.ast.UserParameter)parameter;
+		} else if( instanceExpression instanceof ParameterAccess ) {
+			ParameterAccess parameterAccess = (ParameterAccess)instanceExpression;
+			AbstractParameter parameter = parameterAccess.parameter.getValue();
+			if( parameter instanceof UserParameter ) {
+				UserParameter userParameter = (UserParameter)parameter;
 				rv = ParameterAccessFactory.getInstance( userParameter );
 			} else {
 				rv = null;

@@ -42,32 +42,34 @@
  *******************************************************************************/
 package org.alice.stageide.showme;
 
-import org.lgna.croquet.Model;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.IteratingOperation;
+import org.lgna.croquet.StencilModel;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StencilsIteratingOperation extends org.lgna.croquet.IteratingOperation {
-	private final org.lgna.croquet.StencilModel[] stencilModels;
+public abstract class StencilsIteratingOperation extends IteratingOperation {
+	private final StencilModel[] stencilModels;
 
-	public StencilsIteratingOperation( java.util.UUID id, org.lgna.croquet.StencilModel... stencilModels ) {
-		super( org.lgna.croquet.Application.INFORMATION_GROUP, id );
+	StencilsIteratingOperation( UUID id, StencilModel... stencilModels ) {
+		super( Application.INFORMATION_GROUP, id );
 		this.stencilModels = stencilModels;
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		return subSteps.size() < stencilModels.length;
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		return finishedSteps.size() < stencilModels.length;
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		int i = subSteps.size();
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
+		int i = finishedSteps.size();
 		if( i < this.stencilModels.length ) {
 			return this.stencilModels[ i ];
 		} else {
@@ -76,17 +78,7 @@ public abstract class StencilsIteratingOperation extends org.lgna.croquet.Iterat
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
-		step.finish();
-	}
-
-	@Override
-	protected final void perform( final org.lgna.croquet.history.Transaction transaction, final org.lgna.croquet.triggers.Trigger trigger ) {
-		new Thread() {
-			@Override
-			public void run() {
-				iterateOverSubModels( transaction, trigger );
-			}
-		}.start();
+	protected final void performInActivity( final UserActivity userActivity ) {
+		new Thread( () -> iterateOverSubModels( userActivity ) ).start();
 	}
 }

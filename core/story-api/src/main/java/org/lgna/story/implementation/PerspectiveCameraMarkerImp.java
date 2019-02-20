@@ -43,9 +43,13 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.AngleInDegrees;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.Vector3f;
+import edu.cmu.cs.dennisc.scenegraph.Box;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
@@ -57,6 +61,9 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
+import org.lgna.story.PerspectiveCameraMarker;
+
+import java.util.List;
 
 /**
  * @author dculyba
@@ -77,7 +84,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 	private static final float LASER_LINE_GREEN = 0;
 	private static final float LASER_LINE_BLUE = 0;
 
-	public PerspectiveCameraMarkerImp( org.lgna.story.PerspectiveCameraMarker abstraction ) {
+	public PerspectiveCameraMarkerImp( PerspectiveCameraMarker abstraction ) {
 		super( abstraction );
 	}
 
@@ -87,25 +94,20 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 	}
 
 	@Override
-	protected float getDefaultMarkerOpacity() {
-		return 1;
-	}
-
-	@Override
 	protected void createVisuals() {
 
 		this.sgAppearance = new SimpleAppearance();
 		this.sgAppearances = new SimpleAppearance[] { sgAppearance };
 
-		this.sgDetailedComponents = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		this.sgDetailedComponents = Lists.newLinkedList();
 		this.farClippingPlane = 100;
-		this.horizontalViewAngle = new edu.cmu.cs.dennisc.math.AngleInDegrees( 90 );
-		this.verticalViewAngle = new edu.cmu.cs.dennisc.math.AngleInDegrees( 90 );
+		this.horizontalViewAngle = new AngleInDegrees( 90 );
+		this.verticalViewAngle = new AngleInDegrees( 90 );
 
 		Visual sgBoxVisual = new Visual();
 		sgBoxVisual.setName( "Camera Box Visual" );
 		sgBoxVisual.frontFacingAppearance.setValue( this.getSgPaintAppearances()[ 0 ] );
-		edu.cmu.cs.dennisc.scenegraph.Box sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
+		Box sgBox = new Box();
 		sgBox.setMinimum( new Point3( -WIDTH / 2, -HEIGHT / 2, 0 ) );
 		sgBox.setMaximum( new Point3( WIDTH / 2, HEIGHT / 2, LENGTH ) );
 		sgBoxVisual.geometries.setValue( new Geometry[] { sgBox } );
@@ -178,7 +180,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 		Vector3f negBottomNormalf = Vector3f.createMultiplication( bottomNormalf, -1 );
 		Vector3f negLeftNormalf = Vector3f.createMultiplication( leftNormalf, -1 );
 
-		TextureCoordinate2f uvs = edu.cmu.cs.dennisc.texture.TextureCoordinate2f.createNaN();
+		TextureCoordinate2f uvs = TextureCoordinate2f.createNaN();
 
 		sgLensVertices[ 0 ] = Vertex.createXYZIJKUV( outerTopLeft, topNormalf, uvs );
 		sgLensVertices[ 1 ] = Vertex.createXYZIJKUV( innerTopLeft, topNormalf, uvs );
@@ -260,7 +262,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 		sgLaserLineVisual.setParent( this.getSgComposite() );
 		sgDetailedComponents.add( sgLaserLineVisual );
 
-		setViewingAngle( new edu.cmu.cs.dennisc.math.AngleInDegrees( 90 ), new edu.cmu.cs.dennisc.math.AngleInDegrees( 45 ) );
+		setViewingAngle( new AngleInDegrees( 90 ), new AngleInDegrees( 45 ) );
 
 		sgLensVisual.setParent( this.getSgComposite() );
 		sgTransformableCylinder1.setParent( this.getSgComposite() );
@@ -292,7 +294,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 		updateViewGeometry();
 	}
 
-	public void setViewingAngle( edu.cmu.cs.dennisc.math.Angle horizontalViewAngle, edu.cmu.cs.dennisc.math.Angle verticalViewAngle ) {
+	public void setViewingAngle( Angle horizontalViewAngle, Angle verticalViewAngle ) {
 		this.horizontalViewAngle.set( horizontalViewAngle );
 		this.verticalViewAngle.set( verticalViewAngle );
 		updateViewGeometry();
@@ -321,17 +323,17 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 	}
 
 	private double farClippingPlane;
-	private edu.cmu.cs.dennisc.math.Angle horizontalViewAngle;
-	private edu.cmu.cs.dennisc.math.Angle verticalViewAngle;
+	private Angle horizontalViewAngle;
+	private Angle verticalViewAngle;
 
 	private Vertex[] sgLaserLineVertices;
 	private LineArray sgLaserLine;
 	private SimpleAppearance sgLaserLinesFrontFacingAppearance;
 
-	private edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
+	private Visual[] sgVisuals;
 	private SimpleAppearance sgAppearance;
 	private SimpleAppearance[] sgAppearances;
-	private java.util.List<Visual> sgDetailedComponents;
+	private List<Visual> sgDetailedComponents;
 
 	protected boolean showDetail = false;
 }

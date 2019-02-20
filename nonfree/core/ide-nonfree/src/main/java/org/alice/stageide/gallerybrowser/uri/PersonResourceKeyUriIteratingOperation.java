@@ -42,12 +42,21 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.uri;
 
-import org.lgna.croquet.Model;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite;
+import org.alice.stageide.modelresource.PersonResourceKey;
+import org.alice.stageide.personresource.PersonResourceComposite;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.story.resources.sims2.AdultPersonResource;
+import org.lgna.story.resources.sims2.ChildPersonResource;
+import org.lgna.story.resources.sims2.ElderPersonResource;
+import org.lgna.story.resources.sims2.LifeStage;
+import org.lgna.story.resources.sims2.TeenPersonResource;
+import org.lgna.story.resources.sims2.ToddlerPersonResource;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -62,7 +71,7 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
 	}
 
 	private PersonResourceKeyUriIteratingOperation() {
-		super( java.util.UUID.fromString( "587d7ef6-a811-43ff-9e73-7fd4bb198ce6" ) );
+		super( UUID.fromString( "587d7ef6-a811-43ff-9e73-7fd4bb198ce6" ) );
 	}
 
 	@Override
@@ -71,38 +80,38 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		org.alice.stageide.modelresource.PersonResourceKey personResourceKey = (org.alice.stageide.modelresource.PersonResourceKey)this.resourceKey;
-		switch( subSteps.size() ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
+		PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
+		switch( finishedSteps.size() ) {
 		case 0:
 			Class<?> resourceCls = personResourceKey.getModelResourceCls();
-			org.lgna.story.resources.sims2.LifeStage lifeStage;
-			if( org.lgna.story.resources.sims2.ToddlerPersonResource.class.isAssignableFrom( resourceCls ) ) {
-				lifeStage = org.lgna.story.resources.sims2.LifeStage.TODDLER;
-			} else if( org.lgna.story.resources.sims2.ChildPersonResource.class.isAssignableFrom( resourceCls ) ) {
-				lifeStage = org.lgna.story.resources.sims2.LifeStage.CHILD;
-			} else if( org.lgna.story.resources.sims2.TeenPersonResource.class.isAssignableFrom( resourceCls ) ) {
-				lifeStage = org.lgna.story.resources.sims2.LifeStage.TEEN;
-			} else if( org.lgna.story.resources.sims2.AdultPersonResource.class.isAssignableFrom( resourceCls ) ) {
-				lifeStage = org.lgna.story.resources.sims2.LifeStage.ADULT;
-			} else if( org.lgna.story.resources.sims2.ElderPersonResource.class.isAssignableFrom( resourceCls ) ) {
-				lifeStage = org.lgna.story.resources.sims2.LifeStage.ELDER;
+			LifeStage lifeStage;
+			if( ToddlerPersonResource.class.isAssignableFrom( resourceCls ) ) {
+				lifeStage = LifeStage.TODDLER;
+			} else if( ChildPersonResource.class.isAssignableFrom( resourceCls ) ) {
+				lifeStage = LifeStage.CHILD;
+			} else if( TeenPersonResource.class.isAssignableFrom( resourceCls ) ) {
+				lifeStage = LifeStage.TEEN;
+			} else if( AdultPersonResource.class.isAssignableFrom( resourceCls ) ) {
+				lifeStage = LifeStage.ADULT;
+			} else if( ElderPersonResource.class.isAssignableFrom( resourceCls ) ) {
+				lifeStage = LifeStage.ELDER;
 			} else {
 				lifeStage = null;
 			}
 
-			org.alice.stageide.personresource.PersonResourceComposite personResourceComposite = org.alice.stageide.personresource.PersonResourceComposite.getInstance();
+			PersonResourceComposite personResourceComposite = PersonResourceComposite.getInstance();
 			if( lifeStage != null ) {
 				personResourceComposite.EPIC_HACK_disableLifeStageStateOneTime();
 			}
 			return personResourceComposite.getRandomPersonExpressionValueConverter( lifeStage );
 		case 1:
-			org.lgna.croquet.history.Step<?> prevSubStep = subSteps.get( 0 );
-			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {
-				Object value = prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
-				if( value instanceof org.lgna.project.ast.InstanceCreation ) {
-					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)value;
-					org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite.getInstance();
+			UserActivity prevSubStep = finishedSteps.get( 0 );
+			if( prevSubStep.getProducedValue() != null ) {
+				Object value = prevSubStep.getProducedValue();
+				if( value instanceof InstanceCreation ) {
+					InstanceCreation instanceCreation = (InstanceCreation)value;
+					AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = AddPersonResourceManagedFieldComposite.getInstance();
 					addPersonResourceManagedFieldComposite.setInitialPersonResourceInstanceCreation( instanceCreation );
 					return addPersonResourceManagedFieldComposite.getLaunchOperation();
 				} else {

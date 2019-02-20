@@ -43,6 +43,7 @@
 
 package org.alice.stageide.properties.uicontroller;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -51,13 +52,21 @@ import java.awt.RenderingHints;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.IDE;
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.croquet.components.InstanceFactoryPopupButton;
+import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.properties.uicontroller.BasicPropertyController;
+import org.alice.stageide.oneshot.OneShotMenuModel;
 import org.alice.stageide.properties.SelectedInstanceAdapter;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.GridBagPanel;
 import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.SwingComponentView;
 
-public class SelectedInstancePropertyController extends BasicPropertyController<org.alice.ide.instancefactory.InstanceFactory>
+public class SelectedInstancePropertyController extends BasicPropertyController<InstanceFactory>
 {
 
 	private Label label;
@@ -70,15 +79,15 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 	@Override
 	protected AwtComponentView<?> createPropertyComponent()
 	{
-		this.label = new Label( "", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD )
+		this.label = new Label( "", 1.2f, TextWeight.BOLD )
 		{
 
 			@Override
 			protected JLabel createAwtComponent()
 			{
-				return new javax.swing.JLabel() {
+				return new JLabel() {
 					@Override
-					protected void paintComponent( java.awt.Graphics g ) {
+					protected void paintComponent( Graphics g ) {
 						g.setColor( this.getBackground() );
 						if( g instanceof Graphics2D )
 						{
@@ -90,10 +99,10 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 				};
 			}
 		};
-		this.label.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getSelectedColor() );
+		this.label.setBackgroundColor( ThemeUtilities.getActiveTheme().getSelectedColor() );
 		this.label.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
-		AwtComponentView itemSelector = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() );
+		AwtComponentView itemSelector = new InstanceFactoryPopupButton( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() );
 		GridBagPanel componentPanel = new GridBagPanel();
 		int xIndex = 0;
 		componentPanel.addComponent( itemSelector, new GridBagConstraints(
@@ -110,8 +119,8 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 				0 ) // ipadY
 		);
 
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
-		org.lgna.croquet.views.SwingComponentView<?> oneShotComponent = org.alice.stageide.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().createPopupButton();
+		InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+		SwingComponentView<?> oneShotComponent = OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().createPopupButton();
 		componentPanel.addComponent( oneShotComponent, new GridBagConstraints(
 				xIndex++, // gridX
 				0, // gridY
@@ -132,13 +141,13 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 	@Override
 	public Class<?> getPropertyType()
 	{
-		return org.alice.ide.instancefactory.InstanceFactory.class;
+		return InstanceFactory.class;
 	}
 
 	@Override
-	protected void setValueOnUI( org.alice.ide.instancefactory.InstanceFactory value )
+	protected void setValueOnUI( InstanceFactory value )
 	{
-		edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "NOT SUPPORTED", this, value );
+		Logger.warning( "NOT SUPPORTED", this, value );
 
 	}
 

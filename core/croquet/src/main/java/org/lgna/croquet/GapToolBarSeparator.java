@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,6 +57,6 @@ public class GapToolBarSeparator extends ToolBarSeparator {
 	}
 
 	private GapToolBarSeparator() {
-		super( java.util.UUID.fromString( "75b905d6-c7b0-4b83-9d85-1279df52dc66" ) );
+		super( UUID.fromString( "75b905d6-c7b0-4b83-9d85-1279df52dc66" ) );
 	}
 }

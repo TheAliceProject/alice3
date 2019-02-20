@@ -42,7 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.util;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
 import javax.swing.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 /**
@@ -53,16 +63,16 @@ public abstract class ResourceBundleUtilities {
 		throw new AssertionError();
 	}
 
-	private static final class Utf8ResourceBundleControl extends java.util.ResourceBundle.Control {
+	private static final class Utf8ResourceBundleControl extends ResourceBundle.Control {
 		@Override
-		public java.util.ResourceBundle newBundle( String baseName, java.util.Locale locale, String format, ClassLoader loader, boolean reload ) throws java.lang.IllegalAccessException, java.lang.InstantiationException, java.io.IOException {
+		public ResourceBundle newBundle( String baseName, Locale locale, String format, ClassLoader loader, boolean reload ) throws IllegalAccessException, InstantiationException, IOException {
 			String bundleName = this.toBundleName( baseName, locale );
 			String resourceName = this.toResourceName( bundleName, "properties" );
-			java.io.InputStream stream = null;
+			InputStream stream = null;
 			if( reload ) {
-				java.net.URL url = loader.getResource( resourceName );
+				URL url = loader.getResource( resourceName );
 				if( url != null ) {
-					java.net.URLConnection connection = url.openConnection();
+					URLConnection connection = url.openConnection();
 					if( connection != null ) {
 						connection.setUseCaches( false );
 						stream = connection.getInputStream();
@@ -71,10 +81,10 @@ public abstract class ResourceBundleUtilities {
 			} else {
 				stream = loader.getResourceAsStream( resourceName );
 			}
-			java.util.ResourceBundle bundle = null;
+			ResourceBundle bundle = null;
 			if( stream != null ) {
 				try {
-					bundle = new java.util.PropertyResourceBundle( new java.io.InputStreamReader( stream, "UTF-8" ) );
+					bundle = new PropertyResourceBundle( new InputStreamReader( stream, "UTF-8" ) );
 				} finally {
 					stream.close();
 				}
@@ -83,8 +93,8 @@ public abstract class ResourceBundleUtilities {
 		}
 	}
 
-	public static java.util.ResourceBundle getUtf8Bundle( String baseName, java.util.Locale locale ) {
-		return java.util.ResourceBundle.getBundle( baseName, locale, new Utf8ResourceBundleControl() );
+	public static ResourceBundle getUtf8Bundle( String baseName, Locale locale ) {
+		return ResourceBundle.getBundle( baseName, locale, new Utf8ResourceBundleControl() );
 	}
 
 	private static ResourceBundle getUtf8Bundle(String bundleName) {
@@ -94,8 +104,8 @@ public abstract class ResourceBundleUtilities {
 	public static String getStringForKey( String key, String bundleName) {
 		try {
 			return getUtf8Bundle( bundleName ).getString( key );
-		} catch( java.util.MissingResourceException mre ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( mre, bundleName, key );
+		} catch( MissingResourceException mre ) {
+			Logger.throwable( mre, bundleName, key );
 			return key;
 		}
 	}

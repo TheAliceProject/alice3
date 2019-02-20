@@ -43,39 +43,29 @@
 
 package org.alice.ide.ast.delete;
 
+import org.alice.ide.ast.delete.edits.DeleteStatementEdit;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.Statement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteStatementOperation extends DeleteDeclarationLikeSubstanceOperation<org.lgna.project.ast.Statement> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.Statement, DeleteStatementOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public class DeleteStatementOperation extends ActionOperation {
+	private final Statement statement;
 
-	public static DeleteStatementOperation getInstance( org.lgna.project.ast.Statement statement ) {
-		return map.getInitializingIfAbsent( statement, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.Statement, DeleteStatementOperation>() {
-			@Override
-			public DeleteStatementOperation initialize( org.lgna.project.ast.Statement statement ) {
-				return new DeleteStatementOperation( statement );
-			}
-		} );
-	}
-
-	private DeleteStatementOperation( org.lgna.project.ast.Statement statement ) {
-		super( java.util.UUID.fromString( "72f66253-976f-48dc-ad52-c5d02aeed5ba" ), statement );
+	public DeleteStatementOperation( Statement statement ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "72f66253-976f-48dc-ad52-c5d02aeed5ba" ));
+		this.statement = statement;
 	}
 
 	@Override
-	protected org.lgna.croquet.Operation getAlertModelIfNotAllowedToDelete() {
-		//todo
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.BooleanState getFindModel() {
-		//todo
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return new org.alice.ide.ast.delete.edits.DeleteStatementEdit( completionStep, this.getNode() );
+	protected void perform( UserActivity activity ) {
+		Edit edit = new DeleteStatementEdit( activity, statement );
+		activity.commitAndInvokeDo( edit );
 	}
 }

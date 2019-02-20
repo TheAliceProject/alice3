@@ -42,33 +42,42 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+
+import javax.swing.JTextArea;
+import javax.swing.plaf.basic.BasicTextAreaUI;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.PlainDocument;
+import java.awt.Color;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PlainMultiLineLabel extends MultiLineLabel<javax.swing.JTextArea> {
-	public PlainMultiLineLabel( String text, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
-		super( new javax.swing.text.PlainDocument(), text, fontScalar, textAttributes );
+public class PlainMultiLineLabel extends MultiLineLabel<JTextArea> {
+	public PlainMultiLineLabel( String text, float fontScalar, TextAttribute<?>... textAttributes ) {
+		super( new PlainDocument(), text, fontScalar, textAttributes );
 	}
 
-	public PlainMultiLineLabel( String text, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public PlainMultiLineLabel( String text, TextAttribute<?>... textAttributes ) {
 		this( text, 1.0f, textAttributes );
 	}
 
-	public PlainMultiLineLabel( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public PlainMultiLineLabel( TextAttribute<?>... textAttributes ) {
 		this( "", textAttributes );
 	}
 
 	@Override
-	protected javax.swing.JTextArea createJTextComponent( javax.swing.text.AbstractDocument document ) {
-		javax.swing.JTextArea rv = new javax.swing.JTextArea( document ) {
+	protected JTextArea createJTextComponent( AbstractDocument document ) {
+		JTextArea rv = new JTextArea( document ) {
 			@Override
-			public java.awt.Dimension getPreferredSize() {
+			public Dimension getPreferredSize() {
 				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 			}
 
 			@Override
-			public java.awt.Dimension getMaximumSize() {
-				java.awt.Dimension rv = super.getMaximumSize();
+			public Dimension getMaximumSize() {
+				Dimension rv = super.getMaximumSize();
 				if( PlainMultiLineLabel.this.isMaximumSizeClampedToPreferredSize() ) {
 					rv.setSize( this.getPreferredSize() );
 				}
@@ -76,16 +85,16 @@ public class PlainMultiLineLabel extends MultiLineLabel<javax.swing.JTextArea> {
 			}
 
 			@Override
-			public java.awt.Color getBackground() {
+			public Color getBackground() {
 				return getDesiredBackgroundColor( this.getParent() );
 			}
 
 			@Override
 			public void updateUI() {
-				this.setUI( new javax.swing.plaf.basic.BasicTextAreaUI() );
+				this.setUI( new BasicTextAreaUI() );
 			}
 		};
-		rv.setMinimumSize( new java.awt.Dimension() );
+		rv.setMinimumSize( new Dimension() );
 		rv.setWrapStyleWord( true );
 		rv.setLineWrap( true );
 		return rv;

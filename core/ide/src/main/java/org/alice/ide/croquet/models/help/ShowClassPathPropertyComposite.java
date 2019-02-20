@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ShowClassPathPropertyComposite extends ShowPathPropertyComposite {
 	public ShowClassPathPropertyComposite() {
-		super( java.util.UUID.fromString( "2783c62b-cae1-4366-bf73-7ed359cdd10d" ), "java.class.path" );
+		super( UUID.fromString( "2783c62b-cae1-4366-bf73-7ed359cdd10d" ), "java.class.path" );
 	}
 }

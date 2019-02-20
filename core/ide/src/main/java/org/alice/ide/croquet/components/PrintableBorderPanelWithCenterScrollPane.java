@@ -42,69 +42,85 @@
  *******************************************************************************/
 package org.alice.ide.croquet.components;
 
+import edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.ScrollPane;
+
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.geom.AffineTransform;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PrintableBorderPanelWithCenterScrollPane extends org.lgna.croquet.views.BorderPanel implements java.awt.print.Printable {
-	public PrintableBorderPanelWithCenterScrollPane( org.lgna.croquet.Composite<?> composite ) {
+public class PrintableBorderPanelWithCenterScrollPane extends BorderPanel implements Printable {
+	public PrintableBorderPanelWithCenterScrollPane( Composite<?> composite ) {
 		super( composite );
-		this.addCenterComponent( new org.lgna.croquet.views.ScrollPane() );
+		this.addCenterComponent( new ScrollPane() );
 	}
 
 	public PrintableBorderPanelWithCenterScrollPane() {
 		this( null );
 	}
 
-	public org.lgna.croquet.views.ScrollPane getScrollPane() {
-		return (org.lgna.croquet.views.ScrollPane)this.getCenterComponent();
+	public ScrollPane getScrollPane() {
+		return (ScrollPane)this.getCenterComponent();
 	}
 
 	@Override
-	public void addComponent( org.lgna.croquet.views.AwtComponentView<?> child, org.lgna.croquet.views.BorderPanel.Constraint constraint ) {
+	public void addComponent( AwtComponentView<?> child, BorderPanel.Constraint constraint ) {
 		if( constraint == Constraint.CENTER ) {
-			assert child instanceof org.lgna.croquet.views.ScrollPane : child;
+			assert child instanceof ScrollPane : child;
 		}
 		super.addComponent( child, constraint );
 	}
 
 	@Override
-	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
+	public int print( Graphics g, PageFormat pageFormat, int pageIndex ) throws PrinterException {
 		if( pageIndex > 0 ) {
 			return NO_SUCH_PAGE;
 		} else {
-			org.lgna.croquet.views.ScrollPane scrollPane = this.getScrollPane();
-			org.lgna.croquet.views.AwtComponentView<?> lineStart = this.getLineStartComponent();
-			org.lgna.croquet.views.AwtComponentView<?> lineEnd = this.getLineEndComponent();
-			org.lgna.croquet.views.AwtComponentView<?> pageStart = this.getPageStartComponent();
-			org.lgna.croquet.views.AwtComponentView<?> pageEnd = this.getPageEndComponent();
+			ScrollPane scrollPane = this.getScrollPane();
+			AwtComponentView<?> lineStart = this.getLineStartComponent();
+			AwtComponentView<?> lineEnd = this.getLineEndComponent();
+			AwtComponentView<?> pageStart = this.getPageStartComponent();
+			AwtComponentView<?> pageEnd = this.getPageEndComponent();
 
 			//todo: this code will not suffice in the limit
-			java.awt.Dimension scrollSize = scrollPane.getViewportView().getAwtComponent().getPreferredSize();
+			Dimension scrollSize = scrollPane.getViewportView().getAwtComponent().getPreferredSize();
 			int width = scrollSize.width;
 			int height = scrollSize.height;
-			for( org.lgna.croquet.views.AwtComponentView<?> component : new org.lgna.croquet.views.AwtComponentView[] { lineStart, lineEnd } ) {
+			for( AwtComponentView<?> component : new AwtComponentView[] { lineStart, lineEnd } ) {
 				if( component != null ) {
-					java.awt.Dimension componentSize = component.getAwtComponent().getPreferredSize();
+					Dimension componentSize = component.getAwtComponent().getPreferredSize();
 					width += componentSize.width;
 					height = Math.max( height, componentSize.height );
 				}
 			}
-			for( org.lgna.croquet.views.AwtComponentView<?> component : new org.lgna.croquet.views.AwtComponentView[] { pageStart, pageEnd } ) {
+			for( AwtComponentView<?> component : new AwtComponentView[] { pageStart, pageEnd } ) {
 				if( component != null ) {
-					java.awt.Dimension componentSize = component.getAwtComponent().getPreferredSize();
+					Dimension componentSize = component.getAwtComponent().getPreferredSize();
 					width = Math.max( width, componentSize.width );
 					height += componentSize.height;
 				}
 			}
 
-			java.awt.Insets insets = this.getInsets();
+			Insets insets = this.getInsets();
 			width += insets.left + insets.right;
 			height += insets.top + insets.bottom;
 
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+			Graphics2D g2 = (Graphics2D)g;
+			AffineTransform prevTransform = g2.getTransform();
 			try {
-				double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale( pageFormat, width, height );
+				double scale = PageFormatUtilities.calculateScale( pageFormat, width, height );
 				g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
 				if( scale > 1.0 ) {
 					g2.scale( 1.0 / scale, 1.0 / scale );
@@ -143,11 +159,11 @@ public class PrintableBorderPanelWithCenterScrollPane extends org.lgna.croquet.v
 				}
 
 				if( lineEnd != null ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( lineEnd );
+					Logger.todo( lineEnd );
 				}
 
 				if( pageEnd != null ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( pageEnd );
+					Logger.todo( pageEnd );
 				}
 
 			} finally {

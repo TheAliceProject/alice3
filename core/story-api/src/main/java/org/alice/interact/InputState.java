@@ -42,8 +42,14 @@
  *******************************************************************************/
 package org.alice.interact;
 
+import java.awt.Point;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.util.HashMap;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.scenegraph.Scalable;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import org.alice.interact.handle.ManipulationHandle;
 
 import edu.cmu.cs.dennisc.render.PickResult;
@@ -190,11 +196,11 @@ public class InputState {
 		return this.currentMouseWheelState;
 	}
 
-	public void setMouseLocation( java.awt.Point mouseLocation ) {
+	public void setMouseLocation( Point mouseLocation ) {
 		this.currentMouseLocation = mouseLocation;
 	}
 
-	public java.awt.Point getMouseLocation() {
+	public Point getMouseLocation() {
 		return this.currentMouseLocation;
 	}
 
@@ -206,7 +212,7 @@ public class InputState {
 		return this.currentInputEventType;
 	}
 
-	public void setClickPickResult( edu.cmu.cs.dennisc.render.PickResult pickResult ) {
+	public void setClickPickResult( PickResult pickResult ) {
 		this.clickPickResult = pickResult;
 		AbstractTransformable picked = this.getClickPickedTransformable( true );
 		PickHint clickedObjectType = PickUtilities.getPickType( this.clickPickResult );
@@ -227,7 +233,7 @@ public class InputState {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.render.PickResult getClickPickResult() {
+	public PickResult getClickPickResult() {
 		return this.clickPickResult;
 	}
 
@@ -308,17 +314,17 @@ public class InputState {
 			Visual sgVisual = pickResult.getVisual();
 			if( sgVisual != null ) {
 				Composite sgParent = sgVisual.getParent();
-				if( sgParent instanceof edu.cmu.cs.dennisc.scenegraph.Scalable ) {
+				if( sgParent instanceof Scalable ) {
 					sgParent = sgParent.getParent();
 				}
-				if( sgParent instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
+				if( sgParent instanceof Transformable ) {
 					if( getFirstClass ) {
 						Component firstClassComponent = PickUtilities.getFirstClassFromComponent( sgParent );
 						if( firstClassComponent instanceof AbstractTransformable ) {
 							return (AbstractTransformable)firstClassComponent;
 						}
 					} else {
-						return (edu.cmu.cs.dennisc.scenegraph.Transformable)sgParent;
+						return (Transformable)sgParent;
 					}
 				}
 			}
@@ -347,8 +353,8 @@ public class InputState {
 	}
 
 	public void copyState( InputState sourceState ) {
-		this.currentKeysToStatesMap = (java.util.HashMap<Integer, Boolean>)sourceState.currentKeysToStatesMap.clone();
-		this.currentMouseButtonsToStatesMap = (java.util.HashMap<Integer, Boolean>)sourceState.currentMouseButtonsToStatesMap.clone();
+		this.currentKeysToStatesMap = (HashMap<Integer, Boolean>)sourceState.currentKeysToStatesMap.clone();
+		this.currentMouseButtonsToStatesMap = (HashMap<Integer, Boolean>)sourceState.currentMouseButtonsToStatesMap.clone();
 		this.currentMouseLocation.setLocation( sourceState.currentMouseLocation );
 		this.currentMouseWheelState = sourceState.currentMouseWheelState;
 		this.currentInputEventType = sourceState.currentInputEventType;
@@ -378,7 +384,7 @@ public class InputState {
 				} else {
 					keyState += ", ";
 				}
-				keyState += java.awt.event.KeyEvent.getKeyText( (Integer)keyKey );
+				keyState += KeyEvent.getKeyText( (Integer)keyKey );
 			}
 		}
 		isFirst = true;
@@ -397,9 +403,9 @@ public class InputState {
 
 	}
 
-	private java.awt.Point currentMouseLocation = new java.awt.Point();
-	private java.util.HashMap<Integer, Boolean> currentKeysToStatesMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private java.util.HashMap<Integer, Boolean> currentMouseButtonsToStatesMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private Point currentMouseLocation = new Point();
+	private HashMap<Integer, Boolean> currentKeysToStatesMap = Maps.newHashMap();
+	private HashMap<Integer, Boolean> currentMouseButtonsToStatesMap = Maps.newHashMap();
 	private int currentMouseWheelState = 0;
 	private InputEventType currentInputEventType = InputEventType.NULL_EVENT;
 	private PickResult clickPickResult = null;

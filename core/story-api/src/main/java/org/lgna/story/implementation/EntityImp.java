@@ -43,28 +43,77 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
+import edu.cmu.cs.dennisc.animation.Style;
+import edu.cmu.cs.dennisc.animation.TraditionalStyle;
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.media.Player;
+import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
+import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
+import edu.cmu.cs.dennisc.property.PropertyUtilities;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.Element;
+import edu.cmu.cs.dennisc.scenegraph.Joint;
+import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import edu.cmu.cs.dennisc.scenegraph.qa.Mender;
+import edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities;
+import org.lgna.common.LgnaIllegalArgumentException;
+import org.lgna.common.ProgramClosedException;
 import org.lgna.story.AudioSource;
+import org.lgna.story.SThing;
 import org.lgna.story.implementation.eventhandling.AabbCollisionDetector;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.PlainDocument;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.text.DecimalFormatSymbols;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFrame {
-	protected static final edu.cmu.cs.dennisc.scenegraph.Element.Key<EntityImp> ENTITY_IMP_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "ENTITY_IMP_KEY" );
+	protected static final Element.Key<EntityImp> ENTITY_IMP_KEY = Element.Key.createInstance( "ENTITY_IMP_KEY" );
 
-	public static EntityImp getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
+	public static EntityImp getInstance( Element sgElement ) {
 		return sgElement != null ? sgElement.getBonusDataFor( ENTITY_IMP_KEY ) : null;
 	}
 
-	protected void putInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
+	protected void putInstance( Element sgElement ) {
 		sgElement.putBonusDataFor( ENTITY_IMP_KEY, this );
 	}
 
-	public static <T extends EntityImp> T getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement, Class<T> cls ) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getInstance( sgElement ), cls );
+	public static <T extends EntityImp> T getInstance( Element sgElement, Class<T> cls ) {
+		return ClassUtilities.getInstance( getInstance( sgElement ), cls );
 	}
 
-	public static org.lgna.story.SThing getAbstractionFromSgElement( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
+	public static SThing getAbstractionFromSgElement( Element sgElement ) {
 		EntityImp imp = getInstance( sgElement );
 		if( imp != null ) {
 			return imp.getAbstraction();
@@ -73,8 +122,8 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		}
 	}
 
-	public static <T extends org.lgna.story.SThing> T getAbstractionFromSgElement( edu.cmu.cs.dennisc.scenegraph.Element sgElement, Class<T> cls ) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getAbstractionFromSgElement( sgElement ), cls );
+	public static <T extends SThing> T getAbstractionFromSgElement( Element sgElement, Class<T> cls ) {
+		return ClassUtilities.getInstance( getAbstractionFromSgElement( sgElement ), cls );
 	}
 
 	public String getName() {
@@ -86,31 +135,31 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		this.getSgComposite().setName( name + ".sgComposite" );
 	}
 
-	public Property<?> getPropertyForAbstractionGetter( java.lang.reflect.Method getterMthd ) {
-		String propertyName = edu.cmu.cs.dennisc.property.PropertyUtilities.getPropertyNameForGetter( getterMthd );
-		java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getField( this.getClass(), propertyName );
-		return (Property<?>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, this );
+	public Property<?> getPropertyForAbstractionGetter( Method getterMthd ) {
+		String propertyName = PropertyUtilities.getPropertyNameForGetter( getterMthd );
+		Field fld = ReflectionUtilities.getField( this.getClass(), propertyName );
+		return (Property<?>)ReflectionUtilities.get( fld, this );
 	}
 
-	protected abstract edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans );
+	protected abstract CumulativeBound updateCumulativeBound( CumulativeBound rv, AffineMatrix4x4 trans );
 
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans = this.getTransformation( asSeenBy );
-		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound cumulativeBound = new edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound();
+	public AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
+		AffineMatrix4x4 trans = this.getTransformation( asSeenBy );
+		CumulativeBound cumulativeBound = new CumulativeBound();
 		this.updateCumulativeBound( cumulativeBound, trans );
 		return cumulativeBound.getBoundingBox();
 	}
 
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+	public AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
 		return getAxisAlignedMinimumBoundingBox( AsSeenBy.SELF );
 	}
 
 	//Returns a bounding box that reflects any changes to the given entity. Namely any changes to the skeleton of jointed models
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getDynamicAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
+	public AxisAlignedBox getDynamicAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
 		return this.getAxisAlignedMinimumBoundingBox( asSeenBy );
 	}
 
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getDynamicAxisAlignedMinimumBoundingBox() {
+	public AxisAlignedBox getDynamicAxisAlignedMinimumBoundingBox() {
 		return getDynamicAxisAlignedMinimumBoundingBox( AsSeenBy.SELF );
 	}
 
@@ -142,9 +191,9 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 	//		return getAxisAlignedMinimumBoundingBox( AsSeenBy.SELF );
 	//	}
 
-	public abstract org.lgna.story.SThing getAbstraction();
+	public abstract SThing getAbstraction();
 
-	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
+	public abstract Composite getSgComposite();
 
 	@Override
 	public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
@@ -156,16 +205,16 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		return this;
 	}
 
-	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
+	protected Composite getSgVehicle() {
 		return this.getSgComposite().getParent();
 	}
 
-	protected void setSgVehicle( edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle ) {
+	protected void setSgVehicle( Composite sgVehicle ) {
 		this.getSgComposite().setParent( sgVehicle );
 	}
 
 	//HACK
-	private EntityImp getEntityImpForSgObject( edu.cmu.cs.dennisc.scenegraph.Composite sgObject ) {
+	private EntityImp getEntityImpForSgObject( Composite sgObject ) {
 		EntityImp rv = getInstance( sgObject );
 		if( rv != null ) {
 			return rv;
@@ -176,7 +225,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 	}
 
 	public final EntityImp getVehicle() {
-		edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle = this.getSgVehicle();
+		Composite sgVehicle = this.getSgVehicle();
 		if( sgVehicle != null ) {
 			EntityImp rv = getInstance( sgVehicle );
 			if( rv != null ) {
@@ -188,11 +237,11 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 				//Therefore I realize that this is not a good fix in a generic EntityImp class.
 				//However I don't know what is. Therefore this is what I do for now.
 				rv = getEntityImpForSgObject( sgVehicle );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "No instance found for sgVehicle " + sgVehicle + ". Searched parent and got " + rv );
+				Logger.severe( "No instance found for sgVehicle " + sgVehicle + ". Searched parent and got " + rv );
 				if( rv != null ) {
 					//pass
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, sgVehicle );
+					Logger.severe( this, sgVehicle );
 				}
 			}
 			return rv;
@@ -211,10 +260,10 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		//		}
 		if( vehicle != null ) {
 			if( vehicle == this ) {
-				throw new org.lgna.common.LgnaIllegalArgumentException( "vehicle argument \"" + vehicle.getAbstraction() + "\" is the same as the instance \"" + this.getAbstraction() + "\"", 0, vehicle.getAbstraction() );
+				throw new LgnaIllegalArgumentException( "vehicle argument \"" + vehicle.getAbstraction() + "\" is the same as the instance \"" + this.getAbstraction() + "\"", 0, vehicle.getAbstraction() );
 			}
 			if( vehicle.isDescendantOf( this ) ) {
-				throw new org.lgna.common.LgnaIllegalArgumentException( "vehicle argument \"" + vehicle.getAbstraction() + "\" is descendant of the instance \"" + this.getAbstraction() + "\" which would cause a cycle", 0, vehicle.getAbstraction() );
+				throw new LgnaIllegalArgumentException( "vehicle argument \"" + vehicle.getAbstraction() + "\" is descendant of the instance \"" + this.getAbstraction() + "\" which would cause a cycle", 0, vehicle.getAbstraction() );
 			}
 		}
 
@@ -246,16 +295,16 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		return scene != null ? scene.getProgram() : null;
 	}
 
-	protected edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+	protected OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		ProgramImp program = this.getProgram();
 		return program != null ? program.getOnscreenRenderTarget() : null;
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
+	public AffineMatrix4x4 getAbsoluteTransformation() {
 		return this.getSgComposite().getAbsoluteTransformation();
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( ReferenceFrame asSeenBy ) {
+	public AffineMatrix4x4 getTransformation( ReferenceFrame asSeenBy ) {
 		return this.getSgComposite().getTransformation( asSeenBy.getSgReferenceFrame() );
 	}
 
@@ -267,18 +316,18 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 
 	public StandInImp createOffsetStandIn( double x, double y, double z ) {
 		StandInImp rv = this.createStandIn();
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+		AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
 		m.translation.set( x, y, z );
 		rv.setLocalTransformation( m );
 		return rv;
 	}
 
-	public java.awt.Point transformToAwt( edu.cmu.cs.dennisc.math.Point3 xyz, CameraImp<?> camera ) {
+	public Point transformToAwt( Point3 xyz, CameraImp<?> camera ) {
 		return this.getSgComposite().transformToAWT_New( xyz, this.getOnscreenRenderTarget(), camera.getSgCamera() );
 	}
 
 	protected static final double DEFAULT_DURATION = 1.0;
-	protected static final edu.cmu.cs.dennisc.animation.Style DEFAULT_STYLE = edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY;
+	protected static final Style DEFAULT_STYLE = TraditionalStyle.BEGIN_AND_END_GENTLY;
 
 	//	public static final Style DEFAULT_SPEED_STYLE = org.alice.apis.moveandturn.TraditionalStyle.BEGIN_AND_END_ABRUPTLY;
 	//	public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.THIS_AND_DESCENDANT_PARTS;
@@ -287,7 +336,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		if( duration == RIGHT_NOW ) {
 			//pass;
 		} else {
-			perform( new edu.cmu.cs.dennisc.animation.DurationBasedAnimation( duration) {
+			perform( new DurationBasedAnimation( duration) {
 				@Override
 				protected void prologue() {
 				}
@@ -308,15 +357,15 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 	}
 
 	public void playAudio( AudioSource audioSource ) {
-		edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
-		edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioSource.getAudioResource(), audioSource.getVolume(), audioSource.getStartTime(), audioSource.getStopTime() );
-		this.perform( new edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation( player ) );
+		edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = MediaFactory.getSingleton();
+		Player player = mediaFactory.createPlayer( audioSource.getAudioResource(), audioSource.getVolume(), audioSource.getStartTime(), audioSource.getStopTime() );
+		this.perform( new MediaPlayerAnimation( player ) );
 	}
 
-	private java.awt.Component getParentComponent() {
+	private Component getParentComponent() {
 		SceneImp scene = this.getScene();
 		if( scene != null ) {
-			edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+			OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
 			if( onscreenRenderTarget != null ) {
 				return onscreenRenderTarget.getAwtComponent();
 			}
@@ -324,75 +373,75 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		return null;
 	}
 
-	private static class JNumPad extends javax.swing.JPanel {
+	private static class JNumPad extends JPanel {
 
 		//todo: select all on focus?
 
-		private final javax.swing.event.AncestorListener ancestorListener = new javax.swing.event.AncestorListener() {
+		private final AncestorListener ancestorListener = new AncestorListener() {
 			@Override
-			public void ancestorAdded( javax.swing.event.AncestorEvent event ) {
+			public void ancestorAdded( AncestorEvent event ) {
 				textField.requestFocusInWindow();
 			}
 
 			@Override
-			public void ancestorMoved( javax.swing.event.AncestorEvent event ) {
+			public void ancestorMoved( AncestorEvent event ) {
 			}
 
 			@Override
-			public void ancestorRemoved( javax.swing.event.AncestorEvent event ) {
+			public void ancestorRemoved( AncestorEvent event ) {
 			}
 		};
 
-		private final javax.swing.JTextField textField;
+		private final JTextField textField;
 
 		public JNumPad( NumberModel<?> numberModel ) {
-			javax.swing.JPanel gridBagPanel = new javax.swing.JPanel();
-			gridBagPanel.setLayout( new java.awt.GridBagLayout() );
-			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-			gbc.fill = java.awt.GridBagConstraints.BOTH;
+			JPanel gridBagPanel = new JPanel();
+			gridBagPanel.setLayout( new GridBagLayout() );
+			GridBagConstraints gbc = new GridBagConstraints();
+			gbc.fill = GridBagConstraints.BOTH;
 			gbc.weightx = 1.0;
-			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 7 ] ), gbc );
-			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 8 ] ), gbc );
-			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 9 ] ), gbc );
+			gridBagPanel.add( new JButton( numberModel.numeralActions[ 7 ] ), gbc );
+			gridBagPanel.add( new JButton( numberModel.numeralActions[ 8 ] ), gbc );
+			gbc.gridwidth = GridBagConstraints.REMAINDER;
+			gridBagPanel.add( new JButton( numberModel.numeralActions[ 9 ] ), gbc );
 
 			gbc.weightx = 0.0;
 			gbc.gridwidth = 1;
-			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 4 ] ), gbc );
-			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 5 ] ), gbc );
-			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 6 ] ), gbc );
+			gridBagPanel.add( new JButton( numberModel.numeralActions[ 4 ] ), gbc );
+			gridBagPanel.add( new JButton( numberModel.numeralActions[ 5 ] ), gbc );
+			gbc.gridwidth = GridBagConstraints.REMAINDER;
+			gridBagPanel.add( new JButton( numberModel.numeralActions[ 6 ] ), gbc );
 
 			gbc.gridwidth = 1;
-			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 1 ] ), gbc );
-			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 2 ] ), gbc );
-			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-			gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 3 ] ), gbc );
+			gridBagPanel.add( new JButton( numberModel.numeralActions[ 1 ] ), gbc );
+			gridBagPanel.add( new JButton( numberModel.numeralActions[ 2 ] ), gbc );
+			gbc.gridwidth = GridBagConstraints.REMAINDER;
+			gridBagPanel.add( new JButton( numberModel.numeralActions[ 3 ] ), gbc );
 
 			DecimalPointAction decimalPointAction = numberModel.getDecimalPointAction();
 			if( decimalPointAction != null ) {
 				gbc.gridwidth = 1;
-				gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 0 ] ), gbc );
-				gridBagPanel.add( new javax.swing.JButton( decimalPointAction ), gbc );
+				gridBagPanel.add( new JButton( numberModel.numeralActions[ 0 ] ), gbc );
+				gridBagPanel.add( new JButton( decimalPointAction ), gbc );
 			} else {
 				gbc.gridwidth = 2;
-				gridBagPanel.add( new javax.swing.JButton( numberModel.numeralActions[ 0 ] ), gbc );
+				gridBagPanel.add( new JButton( numberModel.numeralActions[ 0 ] ), gbc );
 			}
-			gridBagPanel.add( new javax.swing.JButton( numberModel.negateAction ), gbc );
+			gridBagPanel.add( new JButton( numberModel.negateAction ), gbc );
 
-			this.textField = new javax.swing.JTextField( numberModel.document, "", 0 );
-			javax.swing.JPanel lineAxisPanel = new javax.swing.JPanel();
-			lineAxisPanel.setLayout( new javax.swing.BoxLayout( lineAxisPanel, javax.swing.BoxLayout.LINE_AXIS ) );
+			this.textField = new JTextField( numberModel.document, "", 0 );
+			JPanel lineAxisPanel = new JPanel();
+			lineAxisPanel.setLayout( new BoxLayout( lineAxisPanel, BoxLayout.LINE_AXIS ) );
 			lineAxisPanel.add( this.textField );
-			lineAxisPanel.add( new javax.swing.JButton( numberModel.backspaceAction ) );
+			lineAxisPanel.add( new JButton( numberModel.backspaceAction ) );
 
-			javax.swing.JLabel messageLabel = new javax.swing.JLabel( numberModel.message );
+			JLabel messageLabel = new JLabel( numberModel.message );
 			//messageLabel.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 			messageLabel.setAlignmentX( 0.0f );
 			lineAxisPanel.setAlignmentX( 0.0f );
 			gridBagPanel.setAlignmentX( 0.0f );
 
-			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
+			this.setLayout( new BoxLayout( this, BoxLayout.PAGE_AXIS ) );
 			this.add( messageLabel );
 			this.add( lineAxisPanel );
 			this.add( gridBagPanel );
@@ -409,7 +458,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 
 	private static abstract class NumberModel<N extends Number> {
 		private final String message;
-		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
+		private final Document document = new PlainDocument();
 		private final NumeralAction[] numeralActions = new NumeralAction[ 10 ];
 		private final NegateAction negateAction = new NegateAction( this );
 		private final BackspaceAction backspaceAction = new BackspaceAction( this );
@@ -426,7 +475,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		private void append( String s ) {
 			try {
 				this.document.insertString( this.document.getLength(), s, null );
-			} catch( javax.swing.text.BadLocationException ble ) {
+			} catch( BadLocationException ble ) {
 				throw new RuntimeException( ble );
 			}
 		}
@@ -436,9 +485,9 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		}
 
 		public void appendDecimalPoint() {
-			javax.swing.Action action = this.getDecimalPointAction();
+			Action action = this.getDecimalPointAction();
 			if( action != null ) {
-				this.append( (String)action.getValue( javax.swing.Action.NAME ) );
+				this.append( (String)action.getValue( Action.NAME ) );
 			}
 		}
 
@@ -457,7 +506,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 				} else {
 					this.document.insertString( 0, "-", null );
 				}
-			} catch( javax.swing.text.BadLocationException ble ) {
+			} catch( BadLocationException ble ) {
 				throw new RuntimeException( ble );
 			}
 		}
@@ -467,7 +516,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 			if( this.document.getLength() > 0 ) {
 				try {
 					this.document.remove( N - 1, 1 );
-				} catch( javax.swing.text.BadLocationException ble ) {
+				} catch( BadLocationException ble ) {
 					throw new RuntimeException( ble );
 				}
 			}
@@ -485,7 +534,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 				} catch( NumberFormatException nfe ) {
 					return null;
 				}
-			} catch( javax.swing.text.BadLocationException ble ) {
+			} catch( BadLocationException ble ) {
 				throw new RuntimeException( ble );
 			}
 		}
@@ -504,7 +553,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 
 		@Override
 		protected Double getValue( String text ) {
-			double d = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( text );
+			double d = DoubleUtilities.parseDoubleInCurrentDefaultLocale( text );
 			if( Double.isNaN( d ) ) {
 				return null;
 			} else {
@@ -534,7 +583,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		}
 	}
 
-	private static class BackspaceAction extends javax.swing.AbstractAction {
+	private static class BackspaceAction extends AbstractAction {
 		private final NumberModel<?> numberModel;
 
 		public BackspaceAction( NumberModel<?> numberModel ) {
@@ -543,12 +592,12 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		}
 
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			this.numberModel.deleteLastCharacter();
 		}
 	}
 
-	private static class NumeralAction extends javax.swing.AbstractAction {
+	private static class NumeralAction extends AbstractAction {
 		private final NumberModel<?> numberModel;
 		private final short digit;
 
@@ -559,12 +608,12 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		}
 
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			this.numberModel.appendDigit( digit );
 		}
 	}
 
-	private static class NegateAction extends javax.swing.AbstractAction {
+	private static class NegateAction extends AbstractAction {
 		private final NumberModel<?> numberModel;
 
 		public NegateAction( NumberModel<?> numberModel ) {
@@ -573,22 +622,22 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		}
 
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			this.numberModel.negate();
 		}
 	}
 
-	private static class DecimalPointAction extends javax.swing.AbstractAction {
+	private static class DecimalPointAction extends AbstractAction {
 		private final NumberModel<?> numberModel;
 
 		public DecimalPointAction( NumberModel<?> numberModel ) {
 			this.numberModel = numberModel;
-			java.text.DecimalFormatSymbols decimalFormatSymbols = new java.text.DecimalFormatSymbols();
+			DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
 			this.putValue( NAME, "" + decimalFormatSymbols.getDecimalSeparator() );
 		}
 
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			this.numberModel.appendDecimalPoint();
 		}
 	}
@@ -604,19 +653,19 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		sb.append( "\n?" );
 		int returnResult;
 		Object[] options;
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-			returnResult = javax.swing.JOptionPane.YES_OPTION;
+		if( SystemUtilities.isWindows() ) {
+			returnResult = JOptionPane.YES_OPTION;
 			options = new Object[] { optionA, optionB };
 		} else {
-			returnResult = javax.swing.JOptionPane.NO_OPTION;
+			returnResult = JOptionPane.NO_OPTION;
 			options = new Object[] { optionB, optionA };
 		}
-		int result = javax.swing.JOptionPane.showOptionDialog( this.getParentComponent(), sb.toString(), "Invalid Dialog Input", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, null, options, optionA );
+		int result = JOptionPane.showOptionDialog( this.getParentComponent(), sb.toString(), "Invalid Dialog Input", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, optionA );
 		if( result == returnResult ) {
 			return;
 		} else {
 			//javax.swing.SwingUtilities.getRoot( this.getProgram().getOnscreenLookingGlass().getAWTComponent() ).setVisible( false );
-			throw new org.lgna.common.ProgramClosedException( "user dialog" );
+			throw new ProgramClosedException( "user dialog" );
 		}
 	}
 
@@ -626,7 +675,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		while( true ) {
 			JNumPad numPad = model.createComponent();
 			numPad.addListeners();
-			javax.swing.JOptionPane.showMessageDialog( this.getParentComponent(), numPad, title, javax.swing.JOptionPane.QUESTION_MESSAGE );
+			JOptionPane.showMessageDialog( this.getParentComponent(), numPad, title, JOptionPane.QUESTION_MESSAGE );
 			numPad.removeListeners();
 			Double value = model.getValue();
 			if( value != null ) {
@@ -643,7 +692,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		while( true ) {
 			JNumPad numPad = model.createComponent();
 			numPad.addListeners();
-			javax.swing.JOptionPane.showMessageDialog( this.getParentComponent(), numPad, title, javax.swing.JOptionPane.QUESTION_MESSAGE );
+			JOptionPane.showMessageDialog( this.getParentComponent(), numPad, title, JOptionPane.QUESTION_MESSAGE );
 			numPad.removeListeners();
 			Integer value = model.getValue();
 			if( value != null ) {
@@ -655,17 +704,17 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 	}
 
 	public boolean getBooleanFromUser( String message ) {
-		java.awt.Component parentComponent = this.getParentComponent();
+		Component parentComponent = this.getParentComponent();
 		String title = null;
 		Object[] selectionValues = { "True", "False" };
-		javax.swing.Icon icon = null;
+		Icon icon = null;
 		Object initialSelectionValue = null;
 		while( true ) {
-			int option = javax.swing.JOptionPane.showOptionDialog( parentComponent, message, title, javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, icon, selectionValues, initialSelectionValue );
+			int option = JOptionPane.showOptionDialog( parentComponent, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon, selectionValues, initialSelectionValue );
 			switch( option ) {
-			case javax.swing.JOptionPane.YES_OPTION:
+			case JOptionPane.YES_OPTION:
 				return true;
-			case javax.swing.JOptionPane.NO_OPTION:
+			case JOptionPane.NO_OPTION:
 				return false;
 			default:
 				this.promptUserWithOptionToCancel();
@@ -674,13 +723,13 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 	}
 
 	public String getStringFromUser( String message ) {
-		java.awt.Component parentComponent = this.getParentComponent();
+		Component parentComponent = this.getParentComponent();
 		String title = null;
 
-		javax.swing.JOptionPane optionPane = new javax.swing.JOptionPane( message, javax.swing.JOptionPane.QUESTION_MESSAGE, javax.swing.JOptionPane.DEFAULT_OPTION );
+		JOptionPane optionPane = new JOptionPane( message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION );
 		optionPane.setWantsInput( true );
 
-		javax.swing.JDialog dialog = optionPane.createDialog( parentComponent, title );
+		JDialog dialog = optionPane.createDialog( parentComponent, title );
 
 		//		dialog.setResizable( true );
 
@@ -694,7 +743,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		while( true ) {
 			dialog.setVisible( true );
 			Object value = optionPane.getInputValue();
-			if( javax.swing.JOptionPane.UNINITIALIZED_VALUE.equals( value ) ) {
+			if( JOptionPane.UNINITIALIZED_VALUE.equals( value ) ) {
 				this.promptUserWithOptionToCancel();
 			} else {
 				dialog.dispose();
@@ -703,20 +752,20 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		}
 	}
 
-	public boolean isCollidingWith( org.lgna.story.SThing other ) {
+	public boolean isCollidingWith( SThing other ) {
 		return AabbCollisionDetector.doTheseCollide( this.getAbstraction(), other );
 	}
 
 	public void mendSceneGraphIfNecessary() {
-		edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities.inspectAndMendIfNecessary( this.getSgComposite(), new edu.cmu.cs.dennisc.scenegraph.qa.Mender() {
+		QualityAssuranceUtilities.inspectAndMendIfNecessary( this.getSgComposite(), new Mender() {
 			@Override
-			public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getMendTransformationFor( edu.cmu.cs.dennisc.scenegraph.Joint sgJoint ) {
+			public AffineMatrix4x4 getMendTransformationFor( Joint sgJoint ) {
 				EntityImp imp = EntityImp.getInstance( sgJoint );
 				if( imp instanceof JointImp ) {
 					JointImp jointImp = (JointImp)imp;
 					return jointImp.getOriginalTransformation();
 				} else {
-					return edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+					return AffineMatrix4x4.createIdentity();
 				}
 			}
 		} );

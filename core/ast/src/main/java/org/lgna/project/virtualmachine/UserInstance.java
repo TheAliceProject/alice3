@@ -43,8 +43,13 @@
 
 package org.lgna.project.virtualmachine;
 
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.project.ast.*;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -58,10 +63,10 @@ public class UserInstance {
 		} else if( instance instanceof UserArrayInstance ) {
 			UserArrayInstance userArrayInstance = (UserArrayInstance)instance;
 			int length = userArrayInstance.getLength();
-			org.lgna.project.ast.UserArrayType type = userArrayInstance.getType();
-			org.lgna.project.ast.AbstractType<?, ?, ?> componentType = type.getComponentType();
+			UserArrayType type = userArrayInstance.getType();
+			AbstractType<?, ?, ?> componentType = type.getComponentType();
 			Class<?> componentCls = componentType.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
-			Object[] rv = (Object[])java.lang.reflect.Array.newInstance( componentCls, length );
+			Object[] rv = (Object[])Array.newInstance( componentCls, length );
 			for( int i = 0; i < length; i++ ) {
 				rv[ i ] = getJavaInstanceIfNecessary( userArrayInstance.get( i ) );
 			}
@@ -80,21 +85,18 @@ public class UserInstance {
 
 	public static UserInstance createInstance( VirtualMachine vm, NamedUserConstructor constructor,
 					UserType<?> fallbackType, Object[] arguments ) {
-		return new UserInstance( vm, constructor, arguments, fallbackType, new java.util.HashMap<UserField, Object>(), null );
-	}
-
-	public static UserInstance createInstanceWithInverseMap( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments ) {
-		return new UserInstance( vm, constructor, arguments, null, new java.util.HashMap<UserField, Object>(), new java.util.HashMap<Object, UserField>() );
+		return new UserInstance( vm, constructor, arguments, fallbackType, new HashMap<>() );
 	}
 
 	private final VirtualMachine vm;
 	private final Object nextInstance;
 	private final UserType<?> type;
-	private final java.util.Map<UserField, Object> fieldMap;
-	private java.util.Map<Object, UserField> inverseFieldMap;
+	private final Map<UserField, Object> fieldMap;
+	// TODO Move this on to the scene, since that is the only user of this map
+	private Map<Object, UserField> inverseFieldMap;
 
 	private UserInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments,
-					UserType<?> fallbackType, Map<UserField, Object> fieldMap, Map<Object, UserField> inverseFieldMap ) {
+					UserType<?> fallbackType, Map<UserField, Object> fieldMap ) {
 		this.vm = vm;
 		UserType<?> constType = constructor.getDeclaringType();
 
@@ -103,25 +105,24 @@ public class UserInstance {
 		assert this.type != null : constructor.getId();
 
 		this.fieldMap = fieldMap;
-		this.inverseFieldMap = inverseFieldMap;
 
 		ConstructorBlockStatement constructorBlockStatement = constructor.body.getValue();
 		ConstructorInvocationStatement constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
 		AbstractConstructor nextConstructor = constructorInvocationStatement.constructor.getValue();
-		java.util.Map<org.lgna.project.ast.AbstractParameter, Object> stackMap = new java.util.HashMap<org.lgna.project.ast.AbstractParameter, Object>();
+		Map<AbstractParameter, Object> stackMap = new HashMap<AbstractParameter, Object>();
 		for( int i = 0; i < arguments.length; i++ ) {
 			stackMap.put( constructor.requiredParameters.get( i ), arguments[ i ] );
 		}
-		org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)constructor.getDeclaringType();
+		NamedUserType type = (NamedUserType)constructor.getDeclaringType();
 		vm.pushConstructorFrame( type, stackMap );
 		try {
 			Object[] nextArguments = vm.evaluateArguments( nextConstructor, constructorInvocationStatement.requiredArguments, constructorInvocationStatement.variableArguments, constructorInvocationStatement.keyedArguments );
 			if( nextConstructor.isUserAuthored() ) {
-				this.nextInstance = new UserInstance( vm, (NamedUserConstructor)nextConstructor, nextArguments, fallbackType, fieldMap, inverseFieldMap );
+				this.nextInstance = new UserInstance( vm, (NamedUserConstructor)nextConstructor, nextArguments, fallbackType, fieldMap );
 			} else {
 				JavaConstructor nextConstructorDeclaredInJava = (JavaConstructor)nextConstructor;
 				ConstructorReflectionProxy constructorReflectionProxy = nextConstructorDeclaredInJava.getConstructorReflectionProxy();
-				java.lang.reflect.Constructor<?> cnstrctr = constructorReflectionProxy.getReification();
+				Constructor<?> cnstrctr = constructorReflectionProxy.getReification();
 				assert cnstrctr != null : constructorReflectionProxy.getDeclaringClassReflectionProxy().getName();
 				this.nextInstance = vm.createInstance( this.type, this, cnstrctr, nextArguments );
 			}
@@ -146,14 +147,18 @@ public class UserInstance {
 	}
 
 	public void ensureInverseMapExists() {
-		if( this.inverseFieldMap != null ) {
-			//pass
-		} else {
-			this.inverseFieldMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-			for( UserField field : this.fieldMap.keySet() ) {
-				Object value = this.fieldMap.get( field );
-				this.inverseFieldMap.put( getJavaInstanceIfNecessary( value ), field );
+		if (inverseFieldMap == null) {
+			inverseFieldMap = Maps.newHashMap();
+			for( UserField field : fieldMap.keySet() ) {
+				Object value = fieldMap.get( field );
+				addToInverseMapIfManaged(field, value);
 			}
+		}
+	}
+
+	private void addToInverseMapIfManaged(UserField field, Object value) {
+		if (field.getManagementLevel() == ManagementLevel.MANAGED) {
+			inverseFieldMap.put( getJavaInstanceIfNecessary(value), field );
 		}
 	}
 
@@ -166,7 +171,7 @@ public class UserInstance {
 	}
 
 	public <E> E getJavaInstance( Class<E> cls ) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getJavaInstance(), cls );
+		return ClassUtilities.getInstance( this.getJavaInstance(), cls );
 	}
 
 	public Object getFieldValue( UserField field ) {
@@ -178,13 +183,13 @@ public class UserInstance {
 	}
 
 	public <E> E getFieldValueInstanceInJava( UserField field, Class<E> cls ) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getFieldValueInstanceInJava( field ), cls );
+		return ClassUtilities.getInstance( this.getFieldValueInstanceInJava( field ), cls );
 	}
 
-	public void setFieldValue( UserField field, Object value ) {
-		this.fieldMap.put( field, value );
-		if( this.inverseFieldMap != null ) {
-			this.inverseFieldMap.put( getJavaInstanceIfNecessary( value ), field );
+	void setFieldValue(UserField field, Object value) {
+		fieldMap.put(field, value);
+		if (inverseFieldMap != null) {
+			addToInverseMapIfManaged(field, value);
 		}
 	}
 

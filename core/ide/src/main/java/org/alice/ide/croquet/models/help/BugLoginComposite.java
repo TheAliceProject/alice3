@@ -42,9 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help;
 
+import com.atlassian.jira.rpc.soap.client.JiraSoapService;
+import com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator;
+import com.atlassian.jira.rpc.soap.client.RemotePermissionException;
+import com.atlassian.jira.rpc.soap.client.RemoteUser;
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import edu.cmu.cs.dennisc.login.AccountManager;
 import org.alice.ide.croquet.models.help.views.LoginView;
 import org.alice.ide.issue.ReportSubmissionConfiguration;
 import org.alice.ide.issue.swing.views.LogInStatusPane;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.simple.SimpleApplication;
+
+import javax.xml.rpc.ServiceException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.rmi.RemoteException;
+import java.util.UUID;
 
 /**
  * @author Matt May
@@ -59,20 +73,20 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 	}
 
 	private BugLoginComposite() {
-		super( java.util.UUID.fromString( "e73910c0-ee70-4e48-899d-52ca96d21c9f" ), ReportIssueComposite.ISSUE_GROUP );
+		super( UUID.fromString( "e73910c0-ee70-4e48-899d-52ca96d21c9f" ), ReportIssueComposite.ISSUE_GROUP );
 	}
 
-	private com.atlassian.jira.rpc.soap.client.RemoteUser remoteUser;
+	private RemoteUser remoteUser;
 
-	public com.atlassian.jira.rpc.soap.client.RemoteUser getRemoteUser() {
+	public RemoteUser getRemoteUser() {
 		return this.remoteUser;
 	}
 
 	@Override
 	protected boolean tryToLogin() {
 		try {
-			com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
-			com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( ReportSubmissionConfiguration.JIRA_SOAP_URL ) );
+			JiraSoapServiceServiceLocator jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
+			JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new URL( ReportSubmissionConfiguration.JIRA_SOAP_URL ) );
 			String username = userNameState.getValue();
 			String password = passwordState.getValue();
 			String token;
@@ -81,7 +95,7 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 			} catch( com.atlassian.jira.rpc.soap.client.RemoteException e ) {
 				//could not log in
 				return false;
-			} catch( java.rmi.RemoteException e ) {
+			} catch( RemoteException e ) {
 				//could not connect
 				this.setConnectionFailed( true );
 				return false;
@@ -90,23 +104,23 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 			try {
 				try {
 					remoteUser = service.getUser( token, username );
-				} catch( com.atlassian.jira.rpc.soap.client.RemotePermissionException e ) {
+				} catch( RemotePermissionException e ) {
 					e.printStackTrace();
-				} catch( java.rmi.RemoteException e ) {
+				} catch( RemoteException e ) {
 					e.printStackTrace();
 				}
-				edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
+				AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
 			} finally {
 				try {
 					service.logout( token );
-				} catch( java.rmi.RemoteException e ) {
+				} catch( RemoteException e ) {
 					e.printStackTrace();
 				}
 			}
 			return true;
-		} catch( java.net.MalformedURLException e1 ) {
+		} catch( MalformedURLException e1 ) {
 			e1.printStackTrace();
-		} catch( javax.xml.rpc.ServiceException e1 ) {
+		} catch( ServiceException e1 ) {
 			e1.printStackTrace();
 		}
 		return false;
@@ -114,7 +128,7 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 
 	@Override
 	public void logout() {
-		edu.cmu.cs.dennisc.login.AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
+		AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 		isLoggedIn.setValueTransactionlessly( false );
 	}
 
@@ -129,12 +143,12 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		SimpleApplication app = new SimpleApplication();
 		//new org.alice.stageide.StageIDE();
 		try {
 			new BugLoginComposite().getLaunchOperation().fire();
-		} catch( org.lgna.croquet.CancelException ce ) {
+		} catch( CancelException ce ) {
 			//pass
 		}
 	}

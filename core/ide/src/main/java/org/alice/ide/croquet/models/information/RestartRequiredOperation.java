@@ -42,11 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.information;
 
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import org.alice.ide.operations.InconsequentialActionOperation;
+
+import javax.swing.*;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RestartRequiredOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public static final javax.swing.Icon TWEEDLEDUM_AND_TWEEDLEDEE_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RestartRequiredOperation.class.getResource( "images/restartRequired.png" ) );
+public class RestartRequiredOperation extends InconsequentialActionOperation {
+	public static final Icon TWEEDLEDUM_AND_TWEEDLEDEE_ICON = IconUtilities.createImageIcon( RestartRequiredOperation.class.getResource( "images/restartRequired.png" ) );
 
 	private static class SingletonHolder {
 		private static RestartRequiredOperation instance = new RestartRequiredOperation();
@@ -57,14 +64,13 @@ public class RestartRequiredOperation extends org.alice.ide.operations.Inconsequ
 	}
 
 	private RestartRequiredOperation() {
-		super( java.util.UUID.fromString( "b3a861cb-1253-429c-b233-66209c1f4f65" ) );
+		super( UUID.fromString( "b3a861cb-1253-429c-b233-66209c1f4f65" ) );
 	}
 
 	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Exiting and restarting Alice is required." )
-				.title( "Restart Is Required" )
-				.icon( TWEEDLEDUM_AND_TWEEDLEDEE_ICON )
-				.buildAndShow();
+	protected void performInternal() {
+		Dialogs.showInfo( "Restart Is Required",
+						  "Exiting and restarting Alice is required.",
+						  TWEEDLEDUM_AND_TWEEDLEDEE_ICON );
 	}
 }

@@ -42,21 +42,33 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.ast.declaration.views.InitialPropertyValuesToolPaletteCoreView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.croquet.ToolPaletteCoreComposite;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.project.ast.Expression;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InitialPropertyValuesToolPaletteCoreComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.ide.ast.declaration.views.InitialPropertyValuesToolPaletteCoreView> {
-	private final java.util.List<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> initialPropertyValueExpressionStates = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+public class InitialPropertyValuesToolPaletteCoreComposite extends ToolPaletteCoreComposite<InitialPropertyValuesToolPaletteCoreView> {
+	private final List<CustomItemState<Expression>> initialPropertyValueExpressionStates = Lists.newLinkedList();
 
 	public InitialPropertyValuesToolPaletteCoreComposite() {
-		super( java.util.UUID.fromString( "527409db-68e6-4169-b59c-6fb53bdc5a24" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP, true );
+		super( UUID.fromString( "527409db-68e6-4169-b59c-6fb53bdc5a24" ), Application.DOCUMENT_UI_GROUP, true );
 	}
 
-	public Iterable<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> getInitialPropertyValueExpressionStates() {
-		return java.util.Collections.unmodifiableList( this.initialPropertyValueExpressionStates );
+	public Iterable<CustomItemState<Expression>> getInitialPropertyValueExpressionStates() {
+		return Collections.unmodifiableList( this.initialPropertyValueExpressionStates );
 	}
 
-	public void addInitialPropertyValueExpressionState( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> state ) {
+	public void addInitialPropertyValueExpressionState( CustomItemState<Expression> state ) {
 		this.initialPropertyValueExpressionStates.add( state );
 	}
 
@@ -65,12 +77,12 @@ public class InitialPropertyValuesToolPaletteCoreComposite extends org.lgna.croq
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
 	@Override
-	protected org.alice.ide.ast.declaration.views.InitialPropertyValuesToolPaletteCoreView createView() {
-		return new org.alice.ide.ast.declaration.views.InitialPropertyValuesToolPaletteCoreView( this );
+	protected InitialPropertyValuesToolPaletteCoreView createView() {
+		return new InitialPropertyValuesToolPaletteCoreView( this );
 	}
 }

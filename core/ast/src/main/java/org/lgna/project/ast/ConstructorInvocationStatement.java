@@ -73,33 +73,18 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 	}
 
 	@Override
-	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
+	public SimpleArgumentListProperty getRequiredArgumentsProperty() {
 		return this.requiredArguments;
 	}
 
 	@Override
-	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
+	public SimpleArgumentListProperty getVariableArgumentsProperty() {
 		return this.variableArguments;
 	}
 
 	@Override
-	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
+	public KeyedArgumentListProperty getKeyedArgumentsProperty() {
 		return this.keyedArguments;
-	}
-
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ConstructorInvocationStatement other = (ConstructorInvocationStatement)o;
-			if( this.constructor.valueContentEquals( other.constructor, strictness, filter ) ) {
-				if( this.requiredArguments.valueContentEquals( other.requiredArguments, strictness, filter ) ) {
-					if( this.variableArguments.valueContentEquals( other.variableArguments, strictness, filter ) ) {
-						return this.keyedArguments.valueContentEquals( other.keyedArguments, strictness, filter );
-					}
-				}
-			}
-		}
-		return false;
 	}
 
 	public final DeclarationProperty<AbstractConstructor> constructor = DeclarationProperty.createReferenceInstance( this );

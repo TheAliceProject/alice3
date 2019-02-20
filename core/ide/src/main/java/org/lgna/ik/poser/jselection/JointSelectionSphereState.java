@@ -43,6 +43,7 @@
 package org.lgna.ik.poser.jselection;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CustomItemStateWithInternalBlank;
@@ -62,7 +63,7 @@ public class JointSelectionSphereState extends CustomItemStateWithInternalBlank<
 	private final List<JointSelectionSphere> possibleStates;
 
 	public JointSelectionSphereState( JointSelectionSphere initialValue, List<JointSelectionSphere> possibleStates ) {
-		super( null, java.util.UUID.fromString( "26646dcd-2003-43af-9939-c3eb61fdf560" ), initialValue, new ItemCodec<JointSelectionSphere>() {
+		super( null, UUID.fromString( "26646dcd-2003-43af-9939-c3eb61fdf560" ), initialValue, new ItemCodec<JointSelectionSphere>() {
 
 			@Override
 			public Class<JointSelectionSphere> getValueClass() {
@@ -88,12 +89,12 @@ public class JointSelectionSphereState extends CustomItemStateWithInternalBlank<
 	}
 
 	@Override
-	protected org.lgna.ik.poser.jselection.JointSelectionSphere getSwingValue() {
+	protected JointSelectionSphere getSwingValue() {
 		return this.value;
 	}
 
 	@Override
-	protected void setSwingValue( org.lgna.ik.poser.jselection.JointSelectionSphere nextValue ) {
+	protected void setSwingValue( JointSelectionSphere nextValue ) {
 		this.value = nextValue;
 	}
 

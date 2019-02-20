@@ -43,6 +43,9 @@
 
 package org.lgna.project.ast;
 
+import javax.lang.model.element.Modifier;
+import java.util.Collection;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -62,18 +65,18 @@ public abstract class AbstractField extends AbstractMember implements Accessible
 	public abstract boolean isTransient();
 
 	@Override
-	public void addModifiers( java.util.Collection<javax.lang.model.element.Modifier> modifiers ) {
+	public void addModifiers( Collection<Modifier> modifiers ) {
 		super.addModifiers( modifiers );
 		if( this.isFinal() ) {
-			modifiers.add( javax.lang.model.element.Modifier.FINAL );
+			modifiers.add( Modifier.FINAL );
 		} else if( this.isVolatile() ) {
-			modifiers.add( javax.lang.model.element.Modifier.VOLATILE );
+			modifiers.add( Modifier.VOLATILE );
 		}
 		if( this.isStatic() ) {
-			modifiers.add( javax.lang.model.element.Modifier.STATIC );
+			modifiers.add( Modifier.STATIC );
 		}
 		if( this.isTransient() ) {
-			modifiers.add( javax.lang.model.element.Modifier.TRANSIENT );
+			modifiers.add( Modifier.TRANSIENT );
 		}
 	}
 

@@ -42,32 +42,40 @@
  *******************************************************************************/
 package org.alice.stageide.custom.components;
 
+import org.alice.stageide.custom.KeyState;
+import org.lgna.croquet.views.ViewController;
+
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public class KeyViewController extends org.lgna.croquet.views.ViewController<javax.swing.JLabel, org.alice.stageide.custom.KeyState> {
-	private final java.awt.event.KeyListener keyListener = new java.awt.event.KeyListener() {
+public class KeyViewController extends ViewController<JLabel, KeyState> {
+	private final KeyListener keyListener = new KeyListener() {
 		@Override
-		public void keyPressed( java.awt.event.KeyEvent e ) {
+		public void keyPressed( KeyEvent e ) {
 			KeyViewController.this.getModel().handleKeyPressed( KeyViewController.this, e );
 		}
 
 		@Override
-		public void keyReleased( java.awt.event.KeyEvent e ) {
+		public void keyReleased( KeyEvent e ) {
 		}
 
 		@Override
-		public void keyTyped( java.awt.event.KeyEvent e ) {
+		public void keyTyped( KeyEvent e ) {
 		}
 	};
 
-	public KeyViewController( org.alice.stageide.custom.KeyState state ) {
+	public KeyViewController( KeyState state ) {
 		super( state );
 	}
 
 	@Override
-	protected javax.swing.JLabel createAwtComponent() {
-		javax.swing.JLabel rv = new javax.swing.JLabel() {
+	protected JLabel createAwtComponent() {
+		JLabel rv = new JLabel() {
 			@Override
 			public void addNotify() {
 				super.addNotify();
@@ -84,7 +92,7 @@ public class KeyViewController extends org.lgna.croquet.views.ViewController<jav
 		};
 		rv.setFocusable( true );
 		rv.setFocusTraversalKeysEnabled( false );
-		rv.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
+		rv.setHorizontalAlignment( SwingConstants.CENTER );
 		return rv;
 	}
 

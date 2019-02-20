@@ -42,11 +42,18 @@
  *******************************************************************************/
 package org.alice.stageide.type.croquet;
 
+import org.alice.stageide.type.croquet.data.SceneFieldListData;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.MultipleSelectionListState;
+import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class SceneFieldsState extends org.lgna.croquet.MultipleSelectionListState<org.lgna.project.ast.UserField> {
-	public SceneFieldsState( org.alice.stageide.type.croquet.data.SceneFieldListData sceneFieldListData ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8ca04e01-acba-4a45-84ae-ba02f2decb9e" ), sceneFieldListData );
+public final class SceneFieldsState extends MultipleSelectionListState<UserField> {
+	public SceneFieldsState( SceneFieldListData sceneFieldListData ) {
+		super( Application.INHERIT_GROUP, UUID.fromString( "8ca04e01-acba-4a45-84ae-ba02f2decb9e" ), sceneFieldListData );
 	}
 }
