@@ -72,7 +72,6 @@
 		<alice.build.prerelease>-alpha</alice.build.prerelease>
 		<alice.build.metadata></alice.build.metadata>
 		<alice.model.version>2016.08.19</alice.model.version>
-		<starter.projects.version>2016.08.16</starter.projects.version>
 		<nebulous.model.version>2016.07.15</nebulous.model.version>
 		<nebulous.person.version>2014.08.12</nebulous.person.version>
 		<nebulous.lib.version>2017.05.01</nebulous.lib.version>

@@ -60,7 +60,6 @@
 		<project.resources.directory>${project.build.directory}/distribution</project.resources.directory>
 		<project.resources.application.directory>${project.resources.directory}/application</project.resources.application.directory>
 		<project.resources.gallery.directory>${project.resources.application.directory}/gallery</project.resources.gallery.directory>
-		<project.resources.starter-projects.directory>${project.resources.application.directory}/starter-projects</project.resources.starter-projects.directory>
 		<project.resources.platform.directory>${project.resources.directory}/platform</project.resources.platform.directory>
 	</properties>
 
@@ -106,13 +105,6 @@
 									<version>${alice.model.version}</version>
 									<type>zip</type>
 									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice</groupId>
-									<artifactId>starter-projects</artifactId>
-									<version>${starter.projects.version}</version>
-									<type>zip</type>
-									<outputDirectory>${project.resources.starter-projects.directory}</outputDirectory>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
