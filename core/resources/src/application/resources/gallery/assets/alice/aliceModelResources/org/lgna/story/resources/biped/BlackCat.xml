@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2013" creator="Laura Paoletti" name="BlackCat">
     <BoundingBox>
-        <Min x="-0.3089611530303956" y="-0.004720383852592103" z="-0.374455182745997"/>
-        <Max x="0.3089611530303954" y="0.47892986186347497" z="0.15164286038945313"/>
+        <Min x="-0.3089611530303956" y="-0.004720383852592103" z="-0.3393160015261399"/>
+        <Max x="0.3089611530303954" y="0.49975405215888813" z="0.15164286038945313"/>
     </BoundingBox>
     <Tags>
         <Tag>haunted</Tag>
