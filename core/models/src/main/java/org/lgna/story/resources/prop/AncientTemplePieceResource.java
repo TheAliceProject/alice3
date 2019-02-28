@@ -1,7 +1,7 @@
 /*
 * Alice 3 End User License Agreement
  * 
- * Copyright (c) 2006-2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2016, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
  * 
@@ -30,34 +30,34 @@ import org.lgna.story.Position;
 import org.lgna.story.resources.ImplementationAndVisualType;
 
 public enum AncientTemplePieceResource implements org.lgna.story.resources.PropResource {
-	PLAZA_INDIA_BRICK_D,
-	PLAZA_INDIA_LIGHT_BRICK_D,
-	PLAZA_INDIA_LIGHTEST_BRICK_D,
-	PLAZA_INDIA_MED_BRICK_D,
-	STACK_INDIA_BRICK_D,
-	STACK_INDIA_LIGHT_BRICK_D,
-	STACK_INDIA_LIGHTEST_BRICK_D,
-	STACK_INDIA_MED_BRICK_D,
-	ROOM_INDIA_BRICK_D,
-	ROOM_INDIA_LIGHT_BRICK_D,
-	ROOM_INDIA_LIGHTEST_BRICK_D,
-	ROOM_INDIA_MED_BRICK_D,
-	END_INDIA_BRICK_D,
-	END_INDIA_LIGHT_BRICK_D,
-	END_INDIA_LIGHTEST_BRICK_D,
-	END_INDIA_MED_BRICK_D,
-	LEDGE_AND_STAIRS_INDIA_BRICK_D,
-	LEDGE_AND_STAIRS_INDIA_LIGHT_BRICK_D,
-	LEDGE_AND_STAIRS_INDIA_LIGHTEST_BRICK_D,
-	LEDGE_AND_STAIRS_INDIA_MED_BRICK_D,
-	LEDGE_INDIA_BRICK_D,
-	LEDGE_INDIA_LIGHT_BRICK_D,
-	LEDGE_INDIA_LIGHTEST_BRICK_D,
-	LEDGE_INDIA_MED_BRICK_D,
-	STAIRS_INDIA_BRICK_D,
-	STAIRS_INDIA_LIGHT_BRICK_D,
-	STAIRS_INDIA_LIGHTEST_BRICK_D,
-	STAIRS_INDIA_MED_BRICK_D;
+	PLAZA_GRAY,
+	PLAZA_GOLD,
+	PLAZA_SAND,
+	PLAZA_RED,
+	STACK_GRAY,
+	STACK_GOLD,
+	STACK_SAND,
+	STACK_RED,
+	ROOM_GRAY,
+	ROOM_GOLD,
+	ROOM_SAND,
+	ROOM_RED,
+	END_GRAY,
+	END_GOLD,
+	END_SAND,
+	END_RED,
+	LEDGE_AND_STAIRS_GRAY,
+	LEDGE_AND_STAIRS_GOLD,
+	LEDGE_AND_STAIRS_SAND,
+	LEDGE_AND_STAIRS_RED,
+	LEDGE_GRAY,
+	LEDGE_GOLD,
+	LEDGE_SAND,
+	LEDGE_RED,
+	STAIRS_GRAY,
+	STAIRS_GOLD,
+	STAIRS_SAND,
+	STAIRS_RED;
 
 
 	private final ImplementationAndVisualType resourceType;

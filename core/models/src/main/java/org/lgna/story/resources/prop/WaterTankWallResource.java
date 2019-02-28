@@ -1,7 +1,7 @@
 /*
 * Alice 3 End User License Agreement
  * 
- * Copyright (c) 2006-2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2016, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
  * 
@@ -30,14 +30,14 @@ import org.lgna.story.Position;
 import org.lgna.story.resources.ImplementationAndVisualType;
 
 public enum WaterTankWallResource implements org.lgna.story.resources.PropResource {
-	ARCH_INDIA_WATER_TANK,
-	ARCH_INDIA_WATER_TANK_LIGHT,
-	ARCH_INDIA_WATER_TANK_LIGHTEST,
-	ARCH_INDIA_WATER_TANK_MED,
-	CIRCLE_INDIA_WATER_TANK,
-	CIRCLE_INDIA_WATER_TANK_LIGHT,
-	CIRCLE_INDIA_WATER_TANK_LIGHTEST,
-	CIRCLE_INDIA_WATER_TANK_MED;
+	ARCH_GRAY,
+	ARCH_GOLD,
+	ARCH_SAND,
+	ARCH_RED,
+	CIRCLE_GRAY,
+	CIRCLE_GOLD,
+	CIRCLE_SAND,
+	CIRCLE_RED;
 
 
 	private final ImplementationAndVisualType resourceType;

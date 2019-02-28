@@ -1,7 +1,7 @@
 /*
 * Alice 3 End User License Agreement
  * 
- * Copyright (c) 2006-2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2016, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
  * 
@@ -30,22 +30,22 @@ import org.lgna.story.Position;
 import org.lgna.story.resources.ImplementationAndVisualType;
 
 public enum AncientTempleBlockResource implements org.lgna.story.resources.PropResource {
-	SHELF_INDIA_BRICK_D,
-	SHELF_INDIA_LIGHT_BRICK_D,
-	SHELF_INDIA_LIGHTEST_BRICK_D,
-	SHELF_INDIA_MED_BRICK_D,
-	SOLID_INDIA_BRICK_D,
-	SOLID_INDIA_LIGHT_BRICK_D,
-	SOLID_INDIA_LIGHTEST_BRICK_D,
-	SOLID_INDIA_MED_BRICK_D,
-	PASSAGE_INDIA_BRICK_D,
-	PASSAGE_INDIA_LIGHT_BRICK_D,
-	PASSAGE_INDIA_LIGHTEST_BRICK_D,
-	PASSAGE_INDIA_MED_BRICK_D,
-	ARCHES_INDIA_BRICK_D,
-	ARCHES_INDIA_LIGHT_BRICK_D,
-	ARCHES_INDIA_LIGHTEST_BRICK_D,
-	ARCHES_INDIA_MED_BRICK_D;
+	SHELF_GRAY,
+	SHELF_GOLD,
+	SHELF_SAND,
+	SHELF_RED,
+	SOLID_GRAY,
+	SOLID_GOLD,
+	SOLID_SAND,
+	SOLID_RED,
+	PASSAGE_GRAY,
+	PASSAGE_GOLD,
+	PASSAGE_SAND,
+	PASSAGE_RED,
+	ARCHES_GRAY,
+	ARCHES_GOLD,
+	ARCHES_SAND,
+	ARCHES_RED;
 
 
 	private final ImplementationAndVisualType resourceType;

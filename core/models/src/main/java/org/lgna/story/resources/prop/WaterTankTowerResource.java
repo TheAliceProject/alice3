@@ -1,7 +1,7 @@
 /*
 * Alice 3 End User License Agreement
  * 
- * Copyright (c) 2006-2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2016, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
  * 
@@ -30,10 +30,10 @@ import org.lgna.story.Position;
 import org.lgna.story.resources.ImplementationAndVisualType;
 
 public enum WaterTankTowerResource implements org.lgna.story.resources.PropResource {
-	INDIA_WATER_TANK,
-	INDIA_WATER_TANK_LIGHT,
-	INDIA_WATER_TANK_LIGHTEST,
-	INDIA_WATER_TANK_MED;
+	GRAY,
+	GOLD,
+	SAND,
+	RED;
 
 
 	private final ImplementationAndVisualType resourceType;
