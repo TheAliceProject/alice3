@@ -455,7 +455,7 @@ public abstract class VirtualMachine {
 		this.pushMethodFrame( userInstance, method, map );
 		try {
 			this.execute( method.body.getValue() );
-			if( method.isProcedure() ) {
+			if( method.isProcedure() || isStopped) {
 				return null;
 			} else {
 				throw new LgnaVmNoReturnException( this );
@@ -703,7 +703,9 @@ public abstract class VirtualMachine {
 			try {
 				return invoke(target, methodInvocation.method.getValue(), allArguments );
 			} catch (Throwable e) {
-				Logger.severe( "The method invocation threw an error. Continuing past.", methodInvocation.method.getValue(), e );
+				if (!isStopped) {
+					Logger.severe( "The method invocation threw an error. Continuing past.", methodInvocation.method.getValue(), e );
+				}
 				return null;
 			}
 		} else {
