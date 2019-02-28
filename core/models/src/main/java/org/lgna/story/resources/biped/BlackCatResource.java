@@ -1,7 +1,7 @@
 /*
 * Alice 3 End User License Agreement
  * 
- * Copyright (c) 2006-2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2016, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
  * 
@@ -84,6 +84,7 @@ public enum BlackCatResource implements org.lgna.story.resources.BipedResource {
 		new JointIdTransformationPair( RIGHT_HAND, new Orientation(0.27195736738820653, 0.02782749231214745, -0.03208848355537363, 0.9613714943860203), new Position(1.776356799695581E-17, 5.329070399086743E-17, -0.027637111023068428) ),
 		new JointIdTransformationPair( RIGHT_SHOULDER, new Orientation(-0.21772136144144147, 0.7087523297237922, 0.5745943406699783, 0.34656729152246185), new Position(-0.0, 1.776356799695581E-17, -0.035654857754707336) ),
 		new JointIdTransformationPair( PELVIS_LOWER_BODY, new Orientation(-0.8333994670295659, 0.0, 0.0, 0.5526710851445329), new Position(-0.0, 0.0, -5.373144813347608E-5) ),
+		new JointIdTransformationPair( HEAD, new Orientation(-0.8731141544506754, 0.0, 0.0, 0.48751581851041725), new Position(-0.0, 0.0, -0.032331813126802444) ),
 		new JointIdTransformationPair( RIGHT_KNEE, new Orientation(-0.05465115593022331, -0.07695547221093887, -0.08873237818702032, 0.9915733313848035), new Position(-0.0, 0.0, -0.04377803951501846) ),
 		new JointIdTransformationPair( SPINE_BASE, new Orientation(0.5541517598673634, 0.0, -0.0, 0.8324156576109701), new Position(-0.0, 0.0, -5.373144813347608E-5) ),
 		new JointIdTransformationPair( RIGHT_FOOT, new Orientation(0.32027134612818564, -0.012375104249728179, -0.004184165883215375, 0.947235775506769), new Position(-0.0, 0.0, -0.04251011461019516) ),
