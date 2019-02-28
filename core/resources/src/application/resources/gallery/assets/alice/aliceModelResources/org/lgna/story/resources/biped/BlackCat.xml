@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="BlackCat">
+    <BoundingBox>
+        <Min x="-0.3089611530303956" y="-0.004720383852592103" z="-0.374455182745997"/>
+        <Max x="0.3089611530303954" y="0.47892986186347497" z="0.15164286038945313"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>black cat</Tag>
+        <Tag>cat</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="BlackCat" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

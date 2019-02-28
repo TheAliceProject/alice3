@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="MagicSpoon">
+    <BoundingBox>
+        <Min x="-0.1920025795698166" y="-0.021241242066025734" z="-0.026021752506494522"/>
+        <Max x="0.1920025795698166" y="0.021241219714283943" z="0.026021728292107582"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>spell</Tag>
+        <Tag>spoon</Tag>
+        <Tag>stir</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props:cauldron</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy:cauldron</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="MagicSpoon" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

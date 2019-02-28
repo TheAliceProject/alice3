@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="Phoenix">
+    <BoundingBox>
+        <Min x="-0.18992997705936432" y="7.995130593594768E-4" z="-0.4016084197374208"/>
+        <Max x="0.18992997705936432" y="0.8279863544103376" z="0.7270159510379051"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>magic</Tag>
+        <Tag>bird</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Phoenix" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

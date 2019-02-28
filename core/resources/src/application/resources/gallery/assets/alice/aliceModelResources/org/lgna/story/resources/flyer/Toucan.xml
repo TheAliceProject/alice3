@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Toucan">
+    <BoundingBox>
+        <Min x="-0.08670356593219025" y="-0.09565826602565677" z="-0.3466952267614798"/>
+        <Max x="0.09207911676563063" y="0.48245737060120825" z="0.31353654591857266"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>bird</Tag>
+        <Tag>toucan</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Toucan" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Greg Mirles" name="WaterTank">
+    <BoundingBox>
+        <Min x="-18.78028106689453" y="-0.4672136902809143" z="-17.924022674560547"/>
+        <Max x="18.199068069458008" y="16.496753692626953" z="19.1354923248291"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>temple</Tag>
+        <Tag>well</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery:water tank</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india:water tank</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Water" resourceName="WATER_INDIA_WATER_TANK" textureName="INDIA_WATER_TANK">
+        <BoundingBox>
+            <Min x="-18.19906997680664" y="0.035135746002197266" z="-17.924022674560547"/>
+            <Max x="18.199068069458008" y="16.496753692626953" z="17.924022674560547"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Water" resourceName="WATER_INDIA_WATER_TANK_LIGHT" textureName="INDIA_WATER_TANK_LIGHT">
+        <BoundingBox>
+            <Min x="-18.19906997680664" y="0.035135746002197266" z="-17.924022674560547"/>
+            <Max x="18.199068069458008" y="16.496753692626953" z="17.924022674560547"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Water" resourceName="WATER_INDIA_WATER_TANK_LIGHTEST" textureName="INDIA_WATER_TANK_LIGHTEST">
+        <BoundingBox>
+            <Min x="-18.19906997680664" y="0.035135746002197266" z="-17.924022674560547"/>
+            <Max x="18.199068069458008" y="16.496753692626953" z="17.924022674560547"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Water" resourceName="WATER_INDIA_WATER_TANK_MED" textureName="INDIA_WATER_TANK_MED">
+        <BoundingBox>
+            <Min x="-18.19906997680664" y="0.035135746002197266" z="-17.924022674560547"/>
+            <Max x="18.199068069458008" y="16.496753692626953" z="17.924022674560547"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="NoWater" resourceName="NO_WATER_INDIA_WATER_TANK" textureName="INDIA_WATER_TANK">
+        <BoundingBox>
+            <Min x="-18.78028106689453" y="-0.4672136902809143" z="-16.712553024291992"/>
+            <Max x="17.617856979370117" y="15.994403839111328" z="19.1354923248291"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="NoWater" resourceName="NO_WATER_INDIA_WATER_TANK_LIGHT" textureName="INDIA_WATER_TANK_LIGHT">
+        <BoundingBox>
+            <Min x="-18.78028106689453" y="-0.4672136902809143" z="-16.712553024291992"/>
+            <Max x="17.617856979370117" y="15.994403839111328" z="19.1354923248291"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="NoWater" resourceName="NO_WATER_INDIA_WATER_TANK_LIGHTEST" textureName="INDIA_WATER_TANK_LIGHTEST">
+        <BoundingBox>
+            <Min x="-18.78028106689453" y="-0.4672136902809143" z="-16.712553024291992"/>
+            <Max x="17.617856979370117" y="15.994403839111328" z="19.1354923248291"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="NoWater" resourceName="NO_WATER_INDIA_WATER_TANK_MED" textureName="INDIA_WATER_TANK_MED">
+        <BoundingBox>
+            <Min x="-18.78028106689453" y="-0.4672136902809143" z="-16.712553024291992"/>
+            <Max x="17.617856979370117" y="15.994403839111328" z="19.1354923248291"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

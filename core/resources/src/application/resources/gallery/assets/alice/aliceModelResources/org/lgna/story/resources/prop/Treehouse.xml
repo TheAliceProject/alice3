@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="Treehouse">
+    <BoundingBox>
+        <Min x="-3.9463300704956055" y="-0.11270534992218018" z="-4.914724826812744"/>
+        <Max x="2.6497344970703125" y="4.787164688110352" z="2.5240981578826904"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>rainforest</Tag>
+        <Tag>house</Tag>
+        <Tag>tree</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-3.9463300704956055" y="-0.11270534992218018" z="-4.914724826812744"/>
+            <Max x="2.6497344970703125" y="4.787164688110352" z="2.5240981578826904"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="WithWater" resourceName="WITH_WATER" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-3.9463300704956055" y="-0.11270534992218018" z="-4.914724826812744"/>
+            <Max x="2.6497344970703125" y="4.787164688110352" z="2.5240981578826904"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

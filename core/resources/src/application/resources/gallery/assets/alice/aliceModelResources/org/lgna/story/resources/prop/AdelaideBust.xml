@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="AdelaideBust">
+    <BoundingBox>
+        <Min x="-0.5010244609852103" y="-0.007593032490632701" z="-0.1594570850106138"/>
+        <Max x="0.4861202309338401" y="0.6917283626388134" z="0.4889560318189866"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>ghost</Tag>
+        <Tag>mausoleum</Tag>
+        <Tag>train</Tag>
+        <Tag>train car</Tag>
+        <Tag>prenderghast circus</Tag>
+        <Tag>haunted circus</Tag>
+        <Tag>haunted circus busts</Tag>
+        <Tag>statue</Tag>
+        <Tag>adelaide</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="AdelaideBust" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

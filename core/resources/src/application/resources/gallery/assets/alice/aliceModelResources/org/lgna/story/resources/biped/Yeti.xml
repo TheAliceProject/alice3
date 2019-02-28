@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="Yeti">
+    <BoundingBox>
+        <Min x="-0.9568519162122742" y="-1.8402214637609725E-4" z="-0.34099998154504196"/>
+        <Max x="0.9360444166632975" y="2.4934400379487593" z="0.8605365532953013"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>yeti</Tag>
+        <Tag>monster</Tag>
+        <Tag>abominable</Tag>
+        <Tag>villain</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.9568519162122742" y="-1.8402214637609725E-4" z="-0.323760888343731"/>
+            <Max x="0.9360444166632975" y="2.4934400379487593" z="0.8605365532953013"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.9568519162122742" y="-1.8402214637609725E-4" z="-0.34099998154504196"/>
+            <Max x="0.9360444166632975" y="2.4934400379487593" z="0.8605365532953013"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+</AliceModel>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="CedarTreeLog">
+    <BoundingBox>
+        <Min x="-2.3188822269439697" y="-0.4202134609222412" z="-1.7777845859527588"/>
+        <Max x="1.4406516551971436" y="10.324384689331055" z="1.8057210445404053"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>fir tree</Tag>
+        <Tag>cedar</Tag>
+        <Tag>log</Tag>
+        <Tag>tree stump</Tag>
+        <Tag>tree</Tag>
+        <Tag>northwest</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+        <ThemeTag>haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="CedarTreeLog" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

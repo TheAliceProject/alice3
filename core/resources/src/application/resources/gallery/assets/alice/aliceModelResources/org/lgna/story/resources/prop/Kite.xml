@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="Kite">
+    <BoundingBox>
+        <Min x="-0.45982155203819275" y="0.21429644525051117" z="-0.5372201800346375"/>
+        <Max x="0.45982155203819275" y="0.3348093032836914" z="0.5372202396392822"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>toy</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props:kite</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east:kite</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Kite" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

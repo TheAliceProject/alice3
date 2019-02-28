@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Owl">
+    <BoundingBox>
+        <Min x="-0.10442319325241528" y="-0.003022651465628796" z="-0.10994497373114917"/>
+        <Max x="0.10213505975606184" y="0.34504074530552387" z="0.1600546525186453"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>bird</Tag>
+        <Tag>southwest</Tag>
+        <Tag>magic</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Owl" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

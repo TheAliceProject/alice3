@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Seaweed">
+    <BoundingBox>
+        <Min x="-0.2118963897228241" y="0.0" z="-0.25701406598091125"/>
+        <Max x="0.23096829652786255" y="1.4985828399658203" z="0.3026053309440613"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>seaweed</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Seaweed1" resourceName="SEAWEED1" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.1737431287765503" y="0.0" z="-0.24727968871593475"/>
+            <Max x="0.2238033264875412" y="1.325911283493042" z="0.3026053309440613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Seaweed2" resourceName="SEAWEED2" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.2118963897228241" y="0.0" z="-0.23826095461845398"/>
+            <Max x="0.18170611560344696" y="1.4985828399658203" z="0.1399996280670166"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Seaweed3" resourceName="SEAWEED3" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.1737431287765503" y="0.0" z="-0.25701406598091125"/>
+            <Max x="0.23096829652786255" y="0.9444979429244995" z="0.12798504531383514"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

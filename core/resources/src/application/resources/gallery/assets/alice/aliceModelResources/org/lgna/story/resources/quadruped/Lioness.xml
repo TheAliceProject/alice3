@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Ethan Gagorik" name="Lioness">
+    <BoundingBox>
+        <Min x="-0.18470217909809095" y="-0.0160086325536803" z="-0.9037272606903872"/>
+        <Max x="0.18468495997868245" y="0.8759512344154561" z="0.7920665820389945"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>lion</Tag>
+        <Tag>africa</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Lioness" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

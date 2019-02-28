@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Matt Kline" name="Emerald">
+    <BoundingBox>
+        <Min x="-0.07440094649791718" y="-0.024296235293149948" z="-0.0744101032614708"/>
+        <Max x="0.0744008794426918" y="0.02429651841521263" z="0.0744101032614708"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>coin pile</Tag>
+        <Tag>treasure</Tag>
+        <Tag>treasure chest</Tag>
+        <Tag>jewel</Tag>
+        <Tag>emerald</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Emerald" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="DesertTortoise">
+    <BoundingBox>
+        <Min x="-0.37249838000412416" y="-0.01184620039117712" z="-0.5431759335738167"/>
+        <Max x="0.37249770639092195" y="0.413050936012056" z="0.4303272146878458"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>desert</Tag>
+        <Tag>turtle</Tag>
+        <Tag>reptile</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="DesertTortoise" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

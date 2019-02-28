@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Pei Hong Tan" name="Loki">
+    <BoundingBox>
+        <Min x="-0.27899470489696965" y="-0.00522034664632308" z="-0.19441611375178003"/>
+        <Max x="0.28885164584743284" y="1.7601698466952225" z="0.1266815281354069"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>loki</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Loki" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

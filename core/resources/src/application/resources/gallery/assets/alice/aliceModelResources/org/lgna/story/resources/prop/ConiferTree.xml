@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="ConiferTree">
+    <BoundingBox>
+        <Min x="-1.9948889017105103" y="-0.24145899713039398" z="-1.824282169342041"/>
+        <Max x="1.9739964008331299" y="4.751090049743652" z="2.1261403560638428"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>conifer</Tag>
+        <Tag>tree</Tag>
+        <Tag>fir tree</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Tall" resourceName="TALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.143951416015625" y="-1.5512210671435534E-17" z="-1.0110780000686646"/>
+            <Max x="1.1439530849456787" y="4.342192649841309" z="1.3297137022018433"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Short" resourceName="SHORT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.9948889017105103" y="-0.24145899713039398" z="-1.824282169342041"/>
+            <Max x="1.9739964008331299" y="4.751090049743652" z="2.1261403560638428"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

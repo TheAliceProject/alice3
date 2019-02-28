@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Matt Kline" name="Starfish">
+    <BoundingBox>
+        <Min x="-0.6551187038421631" y="-6.999999691004177E-9" z="-0.5718352198600769"/>
+        <Max x="0.661986768245697" y="0.17392459511756897" z="0.6875730752944946"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Red" resourceName="RED" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.6551187038421631" y="-6.999999691004177E-9" z="-0.5718352198600769"/>
+            <Max x="0.661986768245697" y="0.17392459511756897" z="0.6875730752944946"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Green" resourceName="GREEN" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.6551187038421631" y="-6.999999691004177E-9" z="-0.5718352198600769"/>
+            <Max x="0.661986768245697" y="0.17392459511756897" z="0.6875730752944946"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

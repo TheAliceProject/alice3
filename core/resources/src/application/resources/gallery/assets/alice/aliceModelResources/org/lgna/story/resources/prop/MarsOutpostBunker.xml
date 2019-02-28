@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Gregory Mirles" name="MarsOutpostBunker">
+    <BoundingBox>
+        <Min x="-6.651689529418945" y="-0.025142908096313477" z="-7.329073905944824"/>
+        <Max x="6.65168571472168" y="5.766165733337402" z="8.593441009521484"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>mars</Tag>
+        <Tag>bunker</Tag>
+        <Tag>outpost</Tag>
+        <Tag>space</Tag>
+        <Tag>base</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>outer space</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="MarsOutpostBunker" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

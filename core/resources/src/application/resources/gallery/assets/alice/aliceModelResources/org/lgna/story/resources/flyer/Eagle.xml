@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="Eagle">
+    <BoundingBox>
+        <Min x="-0.28214115848822696" y="-0.01530006242559935" z="-0.2485658381319917"/>
+        <Max x="0.2838693083371801" y="0.7464007469785555" z="0.3329241324543852"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>northwest</Tag>
+        <Tag>eagle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Eagle" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

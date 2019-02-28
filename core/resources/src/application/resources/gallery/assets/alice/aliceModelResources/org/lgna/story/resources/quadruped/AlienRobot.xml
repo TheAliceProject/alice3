@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="AlienRobot">
+    <BoundingBox>
+        <Min x="-0.64666508699355" y="-2.3603624132509144E-4" z="-0.4325928500748665"/>
+        <Max x="0.6466651077825512" y="0.7477798018117194" z="0.8090038540698105"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alien</Tag>
+        <Tag>robot</Tag>
+        <Tag>space</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*outer space</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="AlienRobot" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

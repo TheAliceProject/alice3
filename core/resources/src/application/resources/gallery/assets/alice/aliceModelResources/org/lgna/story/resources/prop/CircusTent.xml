@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="CircusTent">
+    <BoundingBox>
+        <Min x="-6.592116355895996" y="0.0" z="-8.194745063781738"/>
+        <Max x="6.592116355895996" y="6.401141166687012" z="4.757595539093018"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>train</Tag>
+        <Tag>railroad</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>circus</Tag>
+        <Tag>circus tent</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="CircusTentPrenderghast" resourceName="CIRCUS_TENT_PRENDERGHAST_PRENDERGHAST" textureName="PRENDERGHAST">
+        <BoundingBox>
+            <Min x="-6.592116355895996" y="0.0" z="-8.194745063781738"/>
+            <Max x="6.592116355895996" y="6.401141166687012" z="4.757595539093018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusTentPrenderghast" resourceName="CIRCUS_TENT_PRENDERGHAST_BLANK" textureName="BLANK">
+        <BoundingBox>
+            <Min x="-6.592116355895996" y="0.0" z="-8.194745063781738"/>
+            <Max x="6.592116355895996" y="6.401141166687012" z="4.757595539093018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusTentPrenderghast" resourceName="CIRCUS_TENT_PRENDERGHAST_PURPLE" textureName="PURPLE">
+        <BoundingBox>
+            <Min x="-6.592116355895996" y="0.0" z="-8.194745063781738"/>
+            <Max x="6.592116355895996" y="6.401141166687012" z="4.757595539093018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusTentPrenderghastBack" resourceName="CIRCUS_TENT_PRENDERGHAST_BACK_PRENDERGHAST" textureName="PRENDERGHAST">
+        <BoundingBox>
+            <Min x="-6.592116355895996" y="0.0" z="-8.194745063781738"/>
+            <Max x="6.592116355895996" y="6.401141166687012" z="3.4472200870513916"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusTentPrenderghastBack" resourceName="CIRCUS_TENT_PRENDERGHAST_BACK_BLANK" textureName="BLANK">
+        <BoundingBox>
+            <Min x="-6.592116355895996" y="0.0" z="-8.194745063781738"/>
+            <Max x="6.592116355895996" y="6.401141166687012" z="3.4472200870513916"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusTentPrenderghastBack" resourceName="CIRCUS_TENT_PRENDERGHAST_BACK_PURPLE" textureName="PURPLE">
+        <BoundingBox>
+            <Min x="-6.592116355895996" y="0.0" z="-8.194745063781738"/>
+            <Max x="6.592116355895996" y="6.401141166687012" z="3.4472200870513916"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusTentPrenderGhastFront" resourceName="CIRCUS_TENT_PRENDER_GHAST_FRONT_PRENDERGHAST" textureName="PRENDERGHAST">
+        <BoundingBox>
+            <Min x="-6.592116355895996" y="0.0" z="-4.7396650314331055"/>
+            <Max x="6.592116355895996" y="6.401141166687012" z="4.757595539093018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusTentPrenderGhastFront" resourceName="CIRCUS_TENT_PRENDER_GHAST_FRONT_BLANK" textureName="BLANK">
+        <BoundingBox>
+            <Min x="-6.592116355895996" y="0.0" z="-4.7396650314331055"/>
+            <Max x="6.592116355895996" y="6.401141166687012" z="4.757595539093018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusTentPrenderGhastFront" resourceName="CIRCUS_TENT_PRENDER_GHAST_FRONT_PURPLE" textureName="PURPLE">
+        <BoundingBox>
+            <Min x="-6.592116355895996" y="0.0" z="-4.7396650314331055"/>
+            <Max x="6.592116355895996" y="6.401141166687012" z="4.757595539093018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusTentPrenderGhastLeft" resourceName="CIRCUS_TENT_PRENDER_GHAST_LEFT_PRENDERGHAST" textureName="PRENDERGHAST">
+        <BoundingBox>
+            <Min x="-6.592116355895996" y="0.0" z="-8.194745063781738"/>
+            <Max x="5.518359184265137" y="6.401141166687012" z="4.757595539093018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusTentPrenderGhastLeft" resourceName="CIRCUS_TENT_PRENDER_GHAST_LEFT_BLANK" textureName="BLANK">
+        <BoundingBox>
+            <Min x="-6.592116355895996" y="0.0" z="-8.194745063781738"/>
+            <Max x="5.518359184265137" y="6.401141166687012" z="4.757595539093018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusTentPrenderGhastLeft" resourceName="CIRCUS_TENT_PRENDER_GHAST_LEFT_PURPLE" textureName="PURPLE">
+        <BoundingBox>
+            <Min x="-6.592116355895996" y="0.0" z="-8.194745063781738"/>
+            <Max x="5.518359184265137" y="6.401141166687012" z="4.757595539093018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusTentPrenderGhastRight" resourceName="CIRCUS_TENT_PRENDER_GHAST_RIGHT_PRENDERGHAST" textureName="PRENDERGHAST">
+        <BoundingBox>
+            <Min x="-5.478378772735596" y="0.0" z="-8.194745063781738"/>
+            <Max x="6.592116355895996" y="6.401141166687012" z="4.757595539093018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusTentPrenderGhastRight" resourceName="CIRCUS_TENT_PRENDER_GHAST_RIGHT_BLANK" textureName="BLANK">
+        <BoundingBox>
+            <Min x="-5.478378772735596" y="0.0" z="-8.194745063781738"/>
+            <Max x="6.592116355895996" y="6.401141166687012" z="4.757595539093018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusTentPrenderGhastRight" resourceName="CIRCUS_TENT_PRENDER_GHAST_RIGHT_PURPLE" textureName="PURPLE">
+        <BoundingBox>
+            <Min x="-5.478378772735596" y="0.0" z="-8.194745063781738"/>
+            <Max x="6.592116355895996" y="6.401141166687012" z="4.757595539093018"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

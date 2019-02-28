@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="Shrine">
+    <BoundingBox>
+        <Min x="-1.695753574371338" y="-0.0013800319284200668" z="-1.5908993482589722"/>
+        <Max x="1.6432137489318848" y="1.9359230995178223" z="1.622783899307251"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>temple</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Shrine" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

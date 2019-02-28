@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Orca" placeOnGround="TRUE">
+    <BoundingBox>
+        <Min x="-2.16398262708295" y="-2.0333520751646352" z="-3.439613378823862"/>
+        <Max x="2.163982669407093" y="3.404056606920879" z="6.256923722005211"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>killer</Tag>
+        <Tag>whale</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*ocean</ThemeTag>
+        <ThemeTag>snow</ThemeTag>
+        <ThemeTag>northwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Orca" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

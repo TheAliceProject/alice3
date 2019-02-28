@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="Tent">
+    <BoundingBox>
+        <Min x="-0.6156492085958324" y="0.004522684969147299" z="-0.8945019416909745"/>
+        <Max x="0.6156492075532981" y="0.9562370094686287" z="1.2657255295910834"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>tent</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Tent" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

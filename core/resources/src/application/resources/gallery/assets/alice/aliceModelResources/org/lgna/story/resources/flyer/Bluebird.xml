@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="Bluebird">
+    <BoundingBox>
+        <Min x="-0.11092233862869147" y="0.0014034440218938312" z="-0.24068656803325394"/>
+        <Max x="0.11092298459471284" y="0.3380172289304337" z="0.2733377493167918"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>bird</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Bluebird" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

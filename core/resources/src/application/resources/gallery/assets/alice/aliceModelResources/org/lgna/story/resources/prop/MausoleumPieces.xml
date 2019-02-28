@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="MausoleumPieces">
+    <BoundingBox>
+        <Min x="-1.5560152530670166" y="-0.0017824553651735187" z="-1.549221158027649"/>
+        <Max x="1.5560152530670166" y="3.845289468765259" z="1.5492210388183594"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>ghost</Tag>
+        <Tag>mausoleum</Tag>
+        <Tag>train</Tag>
+        <Tag>train car</Tag>
+        <Tag>prenderghast circus</Tag>
+        <Tag>haunted circus</Tag>
+        <Tag>pillar</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="PillarTall" resourceName="PILLAR_TALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.31907933950424194" y="0.0" z="-0.27908140420913696"/>
+            <Max x="0.24065066874027252" y="1.3154354095458984" z="0.31171995401382446"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Pillar" resourceName="PILLAR" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.3391259014606476" y="0.0" z="-0.310677170753479"/>
+            <Max x="0.3391258418560028" y="0.9555407762527466" z="0.310677170753479"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Rotunda" resourceName="ROTUNDA" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.5560152530670166" y="-0.0017824553651735187" z="-1.549221158027649"/>
+            <Max x="1.5560152530670166" y="3.845289468765259" z="1.5492210388183594"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="Track">
+    <BoundingBox>
+        <Min x="-4.204061031341553" y="0.0" z="-1.7257641553878784"/>
+        <Max x="6.035938739776611" y="0.022799888625741005" z="2.274235725402832"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>track</Tag>
+        <Tag>sport</Tag>
+        <Tag>sports</Tag>
+        <Tag>running</Tag>
+        <Tag>runner</Tag>
+        <Tag>race</Tag>
+        <Tag>racetrack</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Track" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

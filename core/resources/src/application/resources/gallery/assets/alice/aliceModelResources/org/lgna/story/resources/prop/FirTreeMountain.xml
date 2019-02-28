@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="FirTreeMountain">
+    <BoundingBox>
+        <Min x="-5.957905292510986" y="1.5563964552711695E-5" z="-8.881863594055176"/>
+        <Max x="5.957905292510986" y="7.11113977432251" z="6.40807580947876"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>mountain</Tag>
+        <Tag>fir tree mountain</Tag>
+        <Tag>rocky mountain</Tag>
+        <Tag>northwest</Tag>
+        <Tag>ghost town</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+        <ThemeTag>haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT_DAYLIGHT" textureName="DAYLIGHT">
+        <BoundingBox>
+            <Min x="-5.957905292510986" y="1.5563964552711695E-5" z="-8.881863594055176"/>
+            <Max x="5.54440975189209" y="7.11113977432251" z="6.40807580947876"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Default" resourceName="DEFAULT_DARK" textureName="DARK">
+        <BoundingBox>
+            <Min x="-5.957905292510986" y="1.5563964552711695E-5" z="-8.881863594055176"/>
+            <Max x="5.54440975189209" y="7.11113977432251" z="6.40807580947876"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Default" resourceName="DEFAULT_MEDIUM" textureName="MEDIUM">
+        <BoundingBox>
+            <Min x="-5.957905292510986" y="1.5563964552711695E-5" z="-8.881863594055176"/>
+            <Max x="5.54440975189209" y="7.11113977432251" z="6.40807580947876"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Default" resourceName="DEFAULT_LIGHT" textureName="LIGHT">
+        <BoundingBox>
+            <Min x="-5.957905292510986" y="1.5563964552711695E-5" z="-8.881863594055176"/>
+            <Max x="5.54440975189209" y="7.11113977432251" z="6.40807580947876"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flipped" resourceName="FLIPPED_DAYLIGHT" textureName="DAYLIGHT">
+        <BoundingBox>
+            <Min x="-5.54440975189209" y="1.5563964552711695E-5" z="-8.881863594055176"/>
+            <Max x="5.957905292510986" y="7.11113977432251" z="6.40807580947876"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flipped" resourceName="FLIPPED_DARK" textureName="DARK">
+        <BoundingBox>
+            <Min x="-5.54440975189209" y="1.5563964552711695E-5" z="-8.881863594055176"/>
+            <Max x="5.957905292510986" y="7.11113977432251" z="6.40807580947876"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flipped" resourceName="FLIPPED_MEDIUM" textureName="MEDIUM">
+        <BoundingBox>
+            <Min x="-5.54440975189209" y="1.5563964552711695E-5" z="-8.881863594055176"/>
+            <Max x="5.957905292510986" y="7.11113977432251" z="6.40807580947876"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flipped" resourceName="FLIPPED_LIGHT" textureName="LIGHT">
+        <BoundingBox>
+            <Min x="-5.54440975189209" y="1.5563964552711695E-5" z="-8.881863594055176"/>
+            <Max x="5.957905292510986" y="7.11113977432251" z="6.40807580947876"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

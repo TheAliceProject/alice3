@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Gregory Mirles" name="MarsOutpostComputer">
+    <BoundingBox>
+        <Min x="-2.052110433578491" y="-0.00653529167175293" z="-2.26523756980896"/>
+        <Max x="1.4222991466522217" y="2.1996726989746094" z="2.2652382850646973"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>mars</Tag>
+        <Tag>computer</Tag>
+        <Tag>outpost</Tag>
+        <Tag>space</Tag>
+        <Tag>base</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>outer space</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Computer1" resourceName="COMPUTER1" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-2.052110433578491" y="-0.00653529167175293" z="-2.0521113872528076"/>
+            <Max x="1.4222991466522217" y="2.1906182765960693" z="1.4222984313964844"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Computer2" resourceName="COMPUTER2" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.281972885131836" y="0.0025188918225467205" z="-2.26523756980896"/>
+            <Max x="0.5530246496200562" y="2.1996726989746094" z="2.2652382850646973"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

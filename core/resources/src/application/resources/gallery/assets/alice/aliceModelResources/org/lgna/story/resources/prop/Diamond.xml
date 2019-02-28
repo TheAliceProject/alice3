@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Matt Kline" name="Diamond">
+    <BoundingBox>
+        <Min x="-0.06221930310130119" y="-0.061947163194417953" z="-0.17470534145832062"/>
+        <Max x="0.062219321727752686" y="0.06194695457816124" z="0.17470534145832062"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>coin pile</Tag>
+        <Tag>treasure</Tag>
+        <Tag>treasure chest</Tag>
+        <Tag>jewel</Tag>
+        <Tag>diamond</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Diamond" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

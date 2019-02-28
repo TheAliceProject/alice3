@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Wolf">
+    <BoundingBox>
+        <Min x="-0.18310171692520158" y="0.001245664387406897" z="-0.6062504578137813"/>
+        <Max x="0.18310172319131576" y="0.9389810377257926" z="0.6871146372494645"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>wolf</Tag>
+        <Tag>southwest</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Wolf" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

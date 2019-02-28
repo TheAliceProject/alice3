@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="Alice">
+    <BoundingBox>
+        <Min x="-0.3890323934784534" y="-0.004976059326146031" z="-0.3735331742513436"/>
+        <Max x="0.3890323968907658" y="1.4121159528594471" z="0.35891728934203787"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alice</Tag>
+        <Tag>wonderland</Tag>
+        <Tag>person</Tag>
+        <Tag>girl</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Alice" resourceName="CARNEGIE_MELLON" textureName="CARNEGIE_MELLON"/>
+    <Resource modelName="Alice" resourceName="WONDERLAND" textureName="WONDERLAND"/>
+</AliceModel>

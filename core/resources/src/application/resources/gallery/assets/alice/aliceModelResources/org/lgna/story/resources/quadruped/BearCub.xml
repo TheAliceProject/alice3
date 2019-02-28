@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Pei Hong Tan" name="BearCub">
+    <BoundingBox>
+        <Min x="-0.16846427743306658" y="0.0013056147988055153" z="-0.4517519074138865"/>
+        <Max x="0.1684642774330671" y="0.49936624303959043" z="0.26595303470070164"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>northwest</Tag>
+        <Tag>bear</Tag>
+        <Tag>bear cub</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="BearCub" resourceName="BROWN" textureName="BROWN"/>
+    <Resource modelName="BearCub" resourceName="POLAR" textureName="POLAR"/>
+    <Resource modelName="BearCub" resourceName="BLACK" textureName="BLACK"/>
+</AliceModel>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="HauntedHouse">
+    <BoundingBox>
+        <Min x="-2.2629268169403076" y="-0.022135313600301743" z="-2.9188146591186523"/>
+        <Max x="2.262930154800415" y="9.35456371307373" z="2.5306200981140137"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>ghost</Tag>
+        <Tag>haunted house</Tag>
+        <Tag>train</Tag>
+        <Tag>train car</Tag>
+        <Tag>prenderghast circus</Tag>
+        <Tag>haunted circus</Tag>
+        <Tag>ghost town</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="HauntedHouse" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

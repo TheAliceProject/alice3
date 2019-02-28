@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="CircusGround">
+    <BoundingBox>
+        <Min x="-6.499468803405762" y="-1.5258788721439487E-7" z="-5.730159282684326"/>
+        <Max x="6.499468803405762" y="0.2740229666233063" z="4.68515157699585"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>train</Tag>
+        <Tag>railroad</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>circus</Tag>
+        <Tag>circus ground</Tag>
+        <Tag>ground</Tag>
+        <Tag>sand</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="CircusGround" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

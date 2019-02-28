@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="TeaTable">
+    <BoundingBox>
+        <Min x="-1.8845375776290894" y="8.468866144539788E-5" z="-0.6327542066574097"/>
+        <Max x="1.8845375776290894" y="0.7238142490386963" z="0.6327540278434753"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alice</Tag>
+        <Tag>wonderland</Tag>
+        <Tag>tea</Tag>
+        <Tag>table</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props:tea set</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland</ThemeTag>
+        <ThemeTag>household:kitchen</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="TeaTable" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="Panda">
+    <BoundingBox>
+        <Min x="-0.3800162542541493" y="-0.013405283478047333" z="-0.23373287952733784"/>
+        <Max x="0.3715928245042738" y="1.1394147313537748" z="0.29450694590320686"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>bear</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Panda" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

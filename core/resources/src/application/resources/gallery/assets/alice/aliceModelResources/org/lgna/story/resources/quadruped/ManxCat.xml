@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="ManxCat">
+    <BoundingBox>
+        <Min x="-0.18231375977723074" y="9.835518123605814E-4" z="-0.480378423743657"/>
+        <Max x="0.1823137614629173" y="0.8452433367809441" z="0.5346552488223926"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>cat</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="ManxCat" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Ethan Gagorik" name="Submarine" placeOnGround="TRUE">
+    <BoundingBox>
+        <Min x="-1.6311901807785034" y="-1.9301449060440063" z="-4.820784091949463"/>
+        <Max x="1.8597828149795532" y="2.507047414779663" z="2.5491299629211426"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>vehicle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Submarine" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

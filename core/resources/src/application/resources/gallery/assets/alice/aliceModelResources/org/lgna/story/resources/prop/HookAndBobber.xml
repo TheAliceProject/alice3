@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="HookAndBobber">
+    <BoundingBox>
+        <Min x="-0.019121544435620308" y="-0.05620088428258896" z="-0.018185626715421677"/>
+        <Max x="0.019121544435620308" y="0.03564562276005745" z="0.018185626715421677"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>boat</Tag>
+        <Tag>fishing pole</Tag>
+        <Tag>fishing</Tag>
+        <Tag>hook</Tag>
+        <Tag>bobber</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles:fishing boat accessories</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east:fishing boat accessories</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="HookAndBobber" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

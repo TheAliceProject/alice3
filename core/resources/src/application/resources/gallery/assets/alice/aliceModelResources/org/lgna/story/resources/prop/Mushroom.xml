@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Mushroom">
+    <BoundingBox>
+        <Min x="-0.9147940874099731" y="-0.038348034024238586" z="-0.8591030836105347"/>
+        <Max x="0.951277494430542" y="2.9958345890045166" z="0.9698776006698608"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alice</Tag>
+        <Tag>wonderland</Tag>
+        <Tag>mushroom</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="ShortRed" resourceName="SHORT_RED" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.9147940874099731" y="-0.030367938801646233" z="-0.8591030836105347"/>
+            <Max x="0.951277494430542" y="1.4924061298370361" z="0.9698776006698608"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>red</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="ShortWhite" resourceName="SHORT_WHITE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.6789024472236633" y="-0.00743038859218359" z="-0.6816080808639526"/>
+            <Max x="0.6789024472236633" y="0.6520143747329712" z="0.6644145250320435"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>white</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="TallRed" resourceName="TALL_RED" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.7786381840705872" y="-0.038348034024238586" z="-0.8336099982261658"/>
+            <Max x="0.8558228611946106" y="2.9958345890045166" z="0.7681704759597778"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>red</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="TallWhite" resourceName="TALL_WHITE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.6070300936698914" y="-0.00743038859218359" z="-0.6927367448806763"/>
+            <Max x="0.5862272381782532" y="2.81433367729187" z="0.6450930833816528"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>white</Tag>
+        </Tags>
+    </Resource>
+</AliceModel>

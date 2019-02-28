@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="MagicWand">
+    <BoundingBox>
+        <Min x="-0.25885817408561707" y="-0.01663793809711933" z="-0.016637882217764854"/>
+        <Max x="0.2588581442832947" y="0.016637902706861496" z="0.016637923195958138"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>spell</Tag>
+        <Tag>wand</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="MagicWand" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

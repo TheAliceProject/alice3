@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Sahana Vijai" name="Moose">
+    <BoundingBox>
+        <Min x="-0.7300908778548608" y="-6.623925606919246E-8" z="-0.98564490660705"/>
+        <Max x="0.7300908290356616" y="1.8800126253863305" z="0.7152252237039849"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>northwest</Tag>
+        <Tag>moose</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Moose" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

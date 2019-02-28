@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="JungleLog">
+    <BoundingBox>
+        <Min x="-0.9147180914878845" y="-0.48988309502601624" z="-3.146122455596924"/>
+        <Max x="0.9121987819671631" y="1.2870032787322998" z="3.146125316619873"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>rainforest</Tag>
+        <Tag>jungle</Tag>
+        <Tag>tree</Tag>
+        <Tag>branch</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="JungleLog" resourceName="LOG_BRIDGE" textureName="LOG_BRIDGE"/>
+    <Resource modelName="JungleLog" resourceName="LOG_BRIDGE1_DIFFUSE_ORIGINAL" textureName="LOG_BRIDGE1_DIFFUSE_ORIGINAL"/>
+</AliceModel>

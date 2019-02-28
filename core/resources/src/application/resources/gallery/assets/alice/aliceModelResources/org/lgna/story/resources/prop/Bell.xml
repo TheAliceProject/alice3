@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="Bell">
+    <BoundingBox>
+        <Min x="-0.25154587626457214" y="0.007751965429633856" z="-0.20072093605995178"/>
+        <Max x="0.25154587626457214" y="0.6490301489830017" z="0.18511298298835754"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>train</Tag>
+        <Tag>railroad</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>bell</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Bell" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

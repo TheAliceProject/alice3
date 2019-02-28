@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Pei Hong Tan" name="Gopher">
+    <BoundingBox>
+        <Min x="-0.11654491062007638" y="0.002317559606700384" z="-0.12908192630650558"/>
+        <Max x="0.09733873848873788" y="0.539397728418112" z="0.1585027149020515"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>prairie dog</Tag>
+        <Tag>mole</Tag>
+        <Tag>marmot</Tag>
+        <Tag>gopher</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Gopher" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

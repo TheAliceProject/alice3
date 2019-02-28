@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Gregory Mirles" name="SpaceShip">
+    <BoundingBox>
+        <Min x="-15.69714069366455" y="-8.404446601867676" z="-27.11649513244629"/>
+        <Max x="15.69714069366455" y="8.404447555541992" z="27.11649513244629"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>mars</Tag>
+        <Tag>spaceship</Tag>
+        <Tag>space</Tag>
+        <Tag>rocket</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>outer space</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="SpaceShip" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

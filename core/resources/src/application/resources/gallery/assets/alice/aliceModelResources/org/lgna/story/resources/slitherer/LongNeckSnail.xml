@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="LongNeckSnail">
+    <BoundingBox>
+        <Min x="-0.4029749543027927" y="-0.012680251222313157" z="-1.3465844728098584"/>
+        <Max x="0.4029749238006419" y="1.2334567620689256" z="0.5032915209701075"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>wonderland</Tag>
+        <Tag>alice</Tag>
+        <Tag>snail</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="LongNeckSnail" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

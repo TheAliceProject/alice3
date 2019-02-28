@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="John DeRiggi" name="WalrusBaby" placeOnGround="TRUE">
+    <BoundingBox>
+        <Min x="-0.4246645611125638" y="-0.33759447943000165" z="-0.4608043801470845"/>
+        <Max x="0.42466455053779606" y="0.32724702723677257" z="0.8516603355240793"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>walrus</Tag>
+        <Tag>baby</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>snow</ThemeTag>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="WalrusBaby" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

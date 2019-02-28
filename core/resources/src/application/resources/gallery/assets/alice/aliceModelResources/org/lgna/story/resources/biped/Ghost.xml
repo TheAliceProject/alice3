@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Laura Paoletti" name="Ghost">
+    <BoundingBox>
+        <Min x="-0.31226544567948533" y="0.005489332955272411" z="-0.25486470487462143"/>
+        <Max x="0.31269733001075994" y="1.3454470967606114" z="0.27338448750726585"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>ghost</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Sheet" resourceName="SHEET" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.29876315594265296" y="0.06059235418599338" z="-0.25486470487462143"/>
+            <Max x="0.29944612909482876" y="1.3454470967606114" z="0.27338448750726585"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>sheet</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Mitts" resourceName="MITTS" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.31226544567948533" y="0.005489332955272411" z="-0.2371865257276718"/>
+            <Max x="0.31269733001075994" y="1.329645548522278" z="0.16816959368362305"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>oven mitts</Tag>
+            <Tag>mitts</Tag>
+            <Tag>mittens</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.2935970922647868" y="0.005489332955272411" z="-0.2371865257276718"/>
+            <Max x="0.29437054233457094" y="1.329645548522278" z="0.16816959368362305"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

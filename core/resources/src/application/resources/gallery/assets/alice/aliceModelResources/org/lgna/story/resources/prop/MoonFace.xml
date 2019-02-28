@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="MoonFace">
+    <BoundingBox>
+        <Min x="-0.8348348722798875" y="-0.7481131045425854" z="-0.934474763749434"/>
+        <Max x="0.8348348731392203" y="0.9558913815714558" z="0.9038899517488901"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>moon</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="MoonFace" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

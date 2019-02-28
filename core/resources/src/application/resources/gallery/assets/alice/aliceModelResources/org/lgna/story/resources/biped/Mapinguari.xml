@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="Mapinguari">
+    <BoundingBox>
+        <Min x="-0.9182624755848446" y="-0.005722278247664139" z="-0.5163351268195726"/>
+        <Max x="0.8477757819781901" y="1.8313085618483964" z="0.4527147596887045"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>rainforest</Tag>
+        <Tag>monster</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Mapinguari" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

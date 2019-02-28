@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="PrayerFlags">
+    <BoundingBox>
+        <Min x="-2.6171996763095504" y="-0.04748127372427083" z="-2.1290318871543845"/>
+        <Max x="1.5067246982300562" y="2.6114173090761983" z="2.2643088811860785"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>flag</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="PrayerFlags" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

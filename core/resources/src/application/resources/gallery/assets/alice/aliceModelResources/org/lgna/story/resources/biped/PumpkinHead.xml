@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="PumpkinHead">
+    <BoundingBox>
+        <Min x="-0.46978862889402256" y="-0.0033272321387005266" z="-0.3272581463019381"/>
+        <Max x="0.46978861920320086" y="1.428668791594407" z="0.2650232574352855"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>pumpkin head</Tag>
+        <Tag>pumpkin</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.46978862889402256" y="-0.0033272321387005266" z="-0.3272581463019381"/>
+            <Max x="0.46978861920320086" y="1.428668791594407" z="0.2650232574352855"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Headless" resourceName="HEADLESS" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.46978862889402256" y="-0.0033272321387005266" z="-0.3272581463019381"/>
+            <Max x="0.46978861920320086" y="1.0306250266414925" z="0.2650232574352855"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>headless</Tag>
+        </Tags>
+    </Resource>
+</AliceModel>

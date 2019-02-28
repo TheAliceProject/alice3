@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Greg Mirles" name="WaterTankWall">
+    <BoundingBox>
+        <Min x="-0.987433135509491" y="0.04036090895533562" z="-2.6079940795898438"/>
+        <Max x="1.5760421752929688" y="4.43898868560791" z="2.6079940795898438"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>temple</Tag>
+        <Tag>well</Tag>
+        <Tag>wall</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery:water tank</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india:water tank</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Arch" resourceName="ARCH_INDIA_WATER_TANK" textureName="INDIA_WATER_TANK">
+        <BoundingBox>
+            <Min x="-0.987433135509491" y="0.06552191823720932" z="-2.6079940795898438"/>
+            <Max x="0.9625518321990967" y="4.381101608276367" z="2.6079940795898438"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>gate</Tag>
+            <Tag>passage</Tag>
+            <Tag>entrance</Tag>
+            <Tag>door</Tag>
+            <Tag>window</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Arch" resourceName="ARCH_INDIA_WATER_TANK_LIGHT" textureName="INDIA_WATER_TANK_LIGHT">
+        <BoundingBox>
+            <Min x="-0.987433135509491" y="0.06552191823720932" z="-2.6079940795898438"/>
+            <Max x="0.9625518321990967" y="4.381101608276367" z="2.6079940795898438"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>gate</Tag>
+            <Tag>passage</Tag>
+            <Tag>entrance</Tag>
+            <Tag>door</Tag>
+            <Tag>window</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Arch" resourceName="ARCH_INDIA_WATER_TANK_LIGHTEST" textureName="INDIA_WATER_TANK_LIGHTEST">
+        <BoundingBox>
+            <Min x="-0.987433135509491" y="0.06552191823720932" z="-2.6079940795898438"/>
+            <Max x="0.9625518321990967" y="4.381101608276367" z="2.6079940795898438"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>gate</Tag>
+            <Tag>passage</Tag>
+            <Tag>entrance</Tag>
+            <Tag>door</Tag>
+            <Tag>window</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Arch" resourceName="ARCH_INDIA_WATER_TANK_MED" textureName="INDIA_WATER_TANK_MED">
+        <BoundingBox>
+            <Min x="-0.987433135509491" y="0.06552191823720932" z="-2.6079940795898438"/>
+            <Max x="0.9625518321990967" y="4.381101608276367" z="2.6079940795898438"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>gate</Tag>
+            <Tag>passage</Tag>
+            <Tag>entrance</Tag>
+            <Tag>door</Tag>
+            <Tag>window</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Circle" resourceName="CIRCLE_INDIA_WATER_TANK" textureName="INDIA_WATER_TANK">
+        <BoundingBox>
+            <Min x="-0.35525742173194885" y="0.04036090895533562" z="-2.4442343711853027"/>
+            <Max x="1.5760421752929688" y="4.43898868560791" z="2.4442343711853027"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>window</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Circle" resourceName="CIRCLE_INDIA_WATER_TANK_LIGHT" textureName="INDIA_WATER_TANK_LIGHT">
+        <BoundingBox>
+            <Min x="-0.35525742173194885" y="0.04036090895533562" z="-2.4442343711853027"/>
+            <Max x="1.5760421752929688" y="4.43898868560791" z="2.4442343711853027"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>window</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Circle" resourceName="CIRCLE_INDIA_WATER_TANK_LIGHTEST" textureName="INDIA_WATER_TANK_LIGHTEST">
+        <BoundingBox>
+            <Min x="-0.35525742173194885" y="0.04036090895533562" z="-2.4442343711853027"/>
+            <Max x="1.5760421752929688" y="4.43898868560791" z="2.4442343711853027"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>window</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Circle" resourceName="CIRCLE_INDIA_WATER_TANK_MED" textureName="INDIA_WATER_TANK_MED">
+        <BoundingBox>
+            <Min x="-0.35525742173194885" y="0.04036090895533562" z="-2.4442343711853027"/>
+            <Max x="1.5760421752929688" y="4.43898868560791" z="2.4442343711853027"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>window</Tag>
+        </Tags>
+    </Resource>
+</AliceModel>

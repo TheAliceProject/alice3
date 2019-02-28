@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Ethan Gagorik" name="Tumbleweed">
+    <BoundingBox>
+        <Min x="-0.28516730666160583" y="-0.04133449122309685" z="-0.23612694442272186"/>
+        <Max x="0.21171706914901733" y="0.5320449471473694" z="0.3094561994075775"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>bush</Tag>
+        <Tag>brush</Tag>
+        <Tag>scrub</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="WeedA" resourceName="WEED_A" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.2117774337530136" y="-0.04133449122309685" z="-0.21938884258270264"/>
+            <Max x="0.17755289375782013" y="0.5320449471473694" z="0.3094561994075775"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="WeedB" resourceName="WEED_B" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.28516730666160583" y="-0.02351229451596737" z="-0.23612694442272186"/>
+            <Max x="0.21171706914901733" y="0.4483518898487091" z="0.2989251911640167"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

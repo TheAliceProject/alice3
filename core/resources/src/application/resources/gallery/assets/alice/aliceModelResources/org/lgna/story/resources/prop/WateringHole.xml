@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Greg Mirles" name="WateringHole">
+    <BoundingBox>
+        <Min x="-2.9745311737060547" y="0.0" z="-2.9745311737060547"/>
+        <Max x="2.974531412124634" y="0.09161040931940079" z="2.9745311737060547"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>africa</Tag>
+        <Tag>water</Tag>
+        <Tag>pong</Tag>
+        <Tag>lake</Tag>
+        <Tag>pool</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>africa</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="WateringHole" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="Horse">
+    <BoundingBox>
+        <Min x="-0.27224276103551553" y="-0.0061463531667417855" z="-0.8915166650958519"/>
+        <Max x="0.27199027978380086" y="1.7065917709513616" z="0.9667524614089069"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>desert</Tag>
+        <Tag>pony</Tag>
+        <Tag>stallion</Tag>
+        <Tag>mustang</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="LongMane" resourceName="LONG_MANE_INDIGO" textureName="INDIGO">
+        <BoundingBox>
+            <Min x="-0.27224276103551553" y="-0.0061463531667417855" z="-0.8915166650958519"/>
+            <Max x="0.27199027978380086" y="1.7065917709513616" z="0.9637275026487122"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LongMane" resourceName="LONG_MANE_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.27224276103551553" y="-0.0061463531667417855" z="-0.8915166650958519"/>
+            <Max x="0.27199027978380086" y="1.7065917709513616" z="0.9637275026487122"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ShortMane" resourceName="SHORT_MANE_INDIGO" textureName="INDIGO">
+        <BoundingBox>
+            <Min x="-0.271668603916264" y="-0.003969964087356097" z="-0.8836095126308448"/>
+            <Max x="0.27123492616073896" y="1.7022347164777105" z="0.9667524614089069"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ShortMane" resourceName="SHORT_MANE_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.271668603916264" y="-0.003969964087356097" z="-0.8836095126308448"/>
+            <Max x="0.27123492616073896" y="1.7022347164777105" z="0.9667524614089069"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

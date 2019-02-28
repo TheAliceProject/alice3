@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="WagonBed">
+    <BoundingBox>
+        <Min x="-0.4628317952156067" y="-0.08055145293474197" z="-0.8888139128684998"/>
+        <Max x="0.4628317654132843" y="0.32252898812294006" z="0.8888139128684998"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>circus</Tag>
+        <Tag>circus wagon</Tag>
+        <Tag>bed</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="WagonBed" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

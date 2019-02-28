@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Ethan Gagorik" name="Dolphin" placeOnGround="TRUE">
+    <BoundingBox>
+        <Min x="-0.43597468733787537" y="-0.6699150829433946" z="-0.9832156703015398"/>
+        <Max x="0.43597468733787537" y="0.46012920936095747" z="2.115752723519238"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>whale</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Dolphin" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

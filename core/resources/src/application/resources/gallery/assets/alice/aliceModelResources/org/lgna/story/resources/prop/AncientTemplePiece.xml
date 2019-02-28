@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Matt Kline" name="AncientTemplePiece">
+    <BoundingBox>
+        <Min x="-9.433136940002441" y="-0.0033332824241369963" z="-14.213590621948242"/>
+        <Max x="15.433136940002441" y="6.3206634521484375" z="6.48680305480957"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>ruin</Tag>
+        <Tag>temple</Tag>
+        <Tag>architecture</Tag>
+        <Tag>building</Tag>
+        <Tag>castle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery:ancient temple</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india:ancient temple</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Plaza" resourceName="PLAZA_INDIA_BRICK_D" textureName="INDIA_BRICK_D">
+        <BoundingBox>
+            <Min x="-0.43313705921173096" y="-0.0033332824241369963" z="-14.213590621948242"/>
+            <Max x="10.433136940002441" y="2.879999876022339" z="2.2135913372039795"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Plaza" resourceName="PLAZA_INDIA_LIGHT_BRICK_D" textureName="INDIA_LIGHT_BRICK_D">
+        <BoundingBox>
+            <Min x="-0.43313705921173096" y="-0.0033332824241369963" z="-14.213590621948242"/>
+            <Max x="10.433136940002441" y="2.879999876022339" z="2.2135913372039795"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Plaza" resourceName="PLAZA_INDIA_LIGHTEST_BRICK_D" textureName="INDIA_LIGHTEST_BRICK_D">
+        <BoundingBox>
+            <Min x="-0.43313705921173096" y="-0.0033332824241369963" z="-14.213590621948242"/>
+            <Max x="10.433136940002441" y="2.879999876022339" z="2.2135913372039795"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Plaza" resourceName="PLAZA_INDIA_MED_BRICK_D" textureName="INDIA_MED_BRICK_D">
+        <BoundingBox>
+            <Min x="-0.43313705921173096" y="-0.0033332824241369963" z="-14.213590621948242"/>
+            <Max x="10.433136940002441" y="2.879999876022339" z="2.2135913372039795"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Stack" resourceName="STACK_INDIA_BRICK_D" textureName="INDIA_BRICK_D">
+        <BoundingBox>
+            <Min x="-0.4331372082233429" y="0.0" z="-6.433136940002441"/>
+            <Max x="15.433136940002441" y="6.3206634521484375" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Stack" resourceName="STACK_INDIA_LIGHT_BRICK_D" textureName="INDIA_LIGHT_BRICK_D">
+        <BoundingBox>
+            <Min x="-0.4331372082233429" y="0.0" z="-6.433136940002441"/>
+            <Max x="15.433136940002441" y="6.3206634521484375" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Stack" resourceName="STACK_INDIA_LIGHTEST_BRICK_D" textureName="INDIA_LIGHTEST_BRICK_D">
+        <BoundingBox>
+            <Min x="-0.4331372082233429" y="0.0" z="-6.433136940002441"/>
+            <Max x="15.433136940002441" y="6.3206634521484375" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Stack" resourceName="STACK_INDIA_MED_BRICK_D" textureName="INDIA_MED_BRICK_D">
+        <BoundingBox>
+            <Min x="-0.4331372082233429" y="0.0" z="-6.433136940002441"/>
+            <Max x="15.433136940002441" y="6.3206634521484375" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Room" resourceName="ROOM_INDIA_BRICK_D" textureName="INDIA_BRICK_D">
+        <BoundingBox>
+            <Min x="-9.433136940002441" y="-2.2737367036103438E-15" z="-9.433136940002441"/>
+            <Max x="0.4331372082233429" y="3.657529830932617" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Room" resourceName="ROOM_INDIA_LIGHT_BRICK_D" textureName="INDIA_LIGHT_BRICK_D">
+        <BoundingBox>
+            <Min x="-9.433136940002441" y="-2.2737367036103438E-15" z="-9.433136940002441"/>
+            <Max x="0.4331372082233429" y="3.657529830932617" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Room" resourceName="ROOM_INDIA_LIGHTEST_BRICK_D" textureName="INDIA_LIGHTEST_BRICK_D">
+        <BoundingBox>
+            <Min x="-9.433136940002441" y="-2.2737367036103438E-15" z="-9.433136940002441"/>
+            <Max x="0.4331372082233429" y="3.657529830932617" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Room" resourceName="ROOM_INDIA_MED_BRICK_D" textureName="INDIA_MED_BRICK_D">
+        <BoundingBox>
+            <Min x="-9.433136940002441" y="-2.2737367036103438E-15" z="-9.433136940002441"/>
+            <Max x="0.4331372082233429" y="3.657529830932617" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="End" resourceName="END_INDIA_BRICK_D" textureName="INDIA_BRICK_D">
+        <BoundingBox>
+            <Min x="-5.433136940002441" y="0.0" z="-0.5916762351989746"/>
+            <Max x="0.0" y="2.879999876022339" z="6.48680305480957"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="End" resourceName="END_INDIA_LIGHT_BRICK_D" textureName="INDIA_LIGHT_BRICK_D">
+        <BoundingBox>
+            <Min x="-5.433136940002441" y="0.0" z="-0.5916762351989746"/>
+            <Max x="0.0" y="2.879999876022339" z="6.48680305480957"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="End" resourceName="END_INDIA_LIGHTEST_BRICK_D" textureName="INDIA_LIGHTEST_BRICK_D">
+        <BoundingBox>
+            <Min x="-5.433136940002441" y="0.0" z="-0.5916762351989746"/>
+            <Max x="0.0" y="2.879999876022339" z="6.48680305480957"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="End" resourceName="END_INDIA_MED_BRICK_D" textureName="INDIA_MED_BRICK_D">
+        <BoundingBox>
+            <Min x="-5.433136940002441" y="0.0" z="-0.5916762351989746"/>
+            <Max x="0.0" y="2.879999876022339" z="6.48680305480957"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LedgeAndStairs" resourceName="LEDGE_AND_STAIRS_INDIA_BRICK_D" textureName="INDIA_BRICK_D">
+        <BoundingBox>
+            <Min x="-3.003093719482422" y="-0.0033332824241369963" z="-6.295849323272705"/>
+            <Max x="2.2135913372039795" y="2.879999876022339" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LedgeAndStairs" resourceName="LEDGE_AND_STAIRS_INDIA_LIGHT_BRICK_D" textureName="INDIA_LIGHT_BRICK_D">
+        <BoundingBox>
+            <Min x="-3.003093719482422" y="-0.0033332824241369963" z="-6.295849323272705"/>
+            <Max x="2.2135913372039795" y="2.879999876022339" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LedgeAndStairs" resourceName="LEDGE_AND_STAIRS_INDIA_LIGHTEST_BRICK_D" textureName="INDIA_LIGHTEST_BRICK_D">
+        <BoundingBox>
+            <Min x="-3.003093719482422" y="-0.0033332824241369963" z="-6.295849323272705"/>
+            <Max x="2.2135913372039795" y="2.879999876022339" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LedgeAndStairs" resourceName="LEDGE_AND_STAIRS_INDIA_MED_BRICK_D" textureName="INDIA_MED_BRICK_D">
+        <BoundingBox>
+            <Min x="-3.003093719482422" y="-0.0033332824241369963" z="-6.295849323272705"/>
+            <Max x="2.2135913372039795" y="2.879999876022339" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Ledge" resourceName="LEDGE_INDIA_BRICK_D" textureName="INDIA_BRICK_D">
+        <BoundingBox>
+            <Min x="-3.003093719482422" y="0.0" z="-6.295849323272705"/>
+            <Max x="0.43313705921173096" y="2.879999876022339" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Ledge" resourceName="LEDGE_INDIA_LIGHT_BRICK_D" textureName="INDIA_LIGHT_BRICK_D">
+        <BoundingBox>
+            <Min x="-3.003093719482422" y="0.0" z="-6.295849323272705"/>
+            <Max x="0.43313705921173096" y="2.879999876022339" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Ledge" resourceName="LEDGE_INDIA_LIGHTEST_BRICK_D" textureName="INDIA_LIGHTEST_BRICK_D">
+        <BoundingBox>
+            <Min x="-3.003093719482422" y="0.0" z="-6.295849323272705"/>
+            <Max x="0.43313705921173096" y="2.879999876022339" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Ledge" resourceName="LEDGE_INDIA_MED_BRICK_D" textureName="INDIA_MED_BRICK_D">
+        <BoundingBox>
+            <Min x="-3.003093719482422" y="0.0" z="-6.295849323272705"/>
+            <Max x="0.43313705921173096" y="2.879999876022339" z="0.43313705921173096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Stairs" resourceName="STAIRS_INDIA_BRICK_D" textureName="INDIA_BRICK_D">
+        <BoundingBox>
+            <Min x="-0.43313705921173096" y="-0.0033332824241369963" z="-8.213591575622559"/>
+            <Max x="2.4331369400024414" y="2.879999876022339" z="2.2135913372039795"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Stairs" resourceName="STAIRS_INDIA_LIGHT_BRICK_D" textureName="INDIA_LIGHT_BRICK_D">
+        <BoundingBox>
+            <Min x="-0.43313705921173096" y="-0.0033332824241369963" z="-8.213591575622559"/>
+            <Max x="2.4331369400024414" y="2.879999876022339" z="2.2135913372039795"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Stairs" resourceName="STAIRS_INDIA_LIGHTEST_BRICK_D" textureName="INDIA_LIGHTEST_BRICK_D">
+        <BoundingBox>
+            <Min x="-0.43313705921173096" y="-0.0033332824241369963" z="-8.213591575622559"/>
+            <Max x="2.4331369400024414" y="2.879999876022339" z="2.2135913372039795"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Stairs" resourceName="STAIRS_INDIA_MED_BRICK_D" textureName="INDIA_MED_BRICK_D">
+        <BoundingBox>
+            <Min x="-0.43313705921173096" y="-0.0033332824241369963" z="-8.213591575622559"/>
+            <Max x="2.4331369400024414" y="2.879999876022339" z="2.2135913372039795"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="NordicOutpost">
+    <BoundingBox>
+        <Min x="-0.6797215342521667" y="-1.7881393432617188E-7" z="-1.0356658697128296"/>
+        <Max x="0.5639476180076599" y="3.413990020751953" z="0.9435769319534302"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>viking outpost</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="NordicOutpost" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Laura Paoletti" name="Skadi">
+    <BoundingBox>
+        <Min x="-0.30087480244546383" y="-0.013985099729545022" z="-0.2216238533657374"/>
+        <Max x="0.3034812053995305" y="1.9404882361957152" z="0.20515440272872865"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>skadi</Tag>
+        <Tag>arctic</Tag>
+        <Tag>snow</Tag>
+        <Tag>ice</Tag>
+        <Tag>hunting</Tag>
+        <Tag>bow and arrow</Tag>
+        <Tag>ski</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*norse</ThemeTag>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Skadi" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

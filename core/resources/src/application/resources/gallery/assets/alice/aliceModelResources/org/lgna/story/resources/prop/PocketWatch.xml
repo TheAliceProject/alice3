@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="PocketWatch">
+    <BoundingBox>
+        <Min x="-0.10515174054759413" y="-0.1051517629011002" z="-0.03192894905805588"/>
+        <Max x="0.10515178525097973" y="0.18765925977342315" z="0.027994761243462563"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alice</Tag>
+        <Tag>wonderland</Tag>
+        <Tag>clock</Tag>
+        <Tag>watch</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="PocketWatch" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

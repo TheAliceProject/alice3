@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="Yali">
+    <BoundingBox>
+        <Min x="-0.4689183871454111" y="-0.02814562266085446" z="-1.0365859315685382"/>
+        <Max x="0.46891843242419345" y="1.9947635572733036" z="0.6528366067828307"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>elephant</Tag>
+        <Tag>guard</Tag>
+        <Tag>demon</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Yali" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Yali" resourceName="STONE" textureName="STONE"/>
+</AliceModel>

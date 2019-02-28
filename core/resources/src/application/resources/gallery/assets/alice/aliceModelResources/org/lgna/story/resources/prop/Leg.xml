@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="Leg">
+    <BoundingBox>
+        <Min x="-0.02730414928440291" y="-0.021522783344879923" z="-0.3489743736986728"/>
+        <Max x="0.026385446051214772" y="0.02037341573611212" z="0.007294555462572033"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>skeleton</Tag>
+        <Tag>bones</Tag>
+        <Tag>pile of bones</Tag>
+        <Tag>leg</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted:bones</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="LegR" resourceName="LEG_R" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.02643159116479718" y="-0.02110039491854374" z="-0.34895793856149027"/>
+            <Max x="0.026160021383807186" y="0.02037341573611212" z="0.007294555462572033"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LegL" resourceName="LEG_L" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.02730414928440291" y="-0.021522783344879923" z="-0.3489743736986728"/>
+            <Max x="0.026385446051214772" y="0.019717846771197426" z="0.007270968915059822"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="Skull">
+    <BoundingBox>
+        <Min x="-0.17037254571914673" y="-0.06658207656878619" z="-0.15389057993888855"/>
+        <Max x="0.17037254571914673" y="0.31664255261421204" z="0.2199634462594986"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>skeleton</Tag>
+        <Tag>bones</Tag>
+        <Tag>pile of bones</Tag>
+        <Tag>skull</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted:bones</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Skull" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Camel">
+    <BoundingBox>
+        <Min x="-0.31444778511295074" y="0.0041891252548480725" z="-1.4412598424822485"/>
+        <Max x="0.31444778511295074" y="1.892267381980041" z="0.8229158992779136"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>camel</Tag>
+        <Tag>india</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Camel" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="AlienHelmet">
+    <BoundingBox>
+        <Min x="-0.30266571044921875" y="0.9395897388458252" z="-0.18503181636333466"/>
+        <Max x="0.30266571044921875" y="1.562437653541565" z="0.4283328652381897"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alien</Tag>
+        <Tag>space</Tag>
+        <Tag>helmet</Tag>
+        <Tag>space helmet</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*outer space</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="AlienHelmet" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

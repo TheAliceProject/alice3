@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="Arm">
+    <BoundingBox>
+        <Min x="-0.024434156727033394" y="-0.017644465479627322" z="-0.2861234952278243"/>
+        <Max x="0.0232663700451751" y="0.020351861259314357" z="0.0019064595201927093"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>skeleton</Tag>
+        <Tag>bones</Tag>
+        <Tag>pile of bones</Tag>
+        <Tag>arm</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted:bones</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="ArmR" resourceName="ARM_R" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.022770995818887165" y="-0.017644465479627322" z="-0.2860933184113799"/>
+            <Max x="0.0232663700451751" y="0.020351861259314357" z="0.0018689697190919542"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ArmL" resourceName="ARM_L" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.024434156727033394" y="-0.017285947335235124" z="-0.2861234952278243"/>
+            <Max x="0.023020984287677845" y="0.0196880928333283" z="0.0019064595201927093"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

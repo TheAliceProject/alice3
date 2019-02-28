@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="OvenMitts">
+    <BoundingBox>
+        <Min x="-0.07660842686891556" y="-0.04361720755696297" z="-0.1176161915063858"/>
+        <Max x="0.07660842686891556" y="0.04361724853515625" z="0.1176161915063858"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>ghost</Tag>
+        <Tag>mittens</Tag>
+        <Tag>oven mitts</Tag>
+        <Tag>mitts</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="OvenMittL" resourceName="OVEN_MITT_L" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.07660842686891556" y="-0.04361720755696297" z="-0.1176161915063858"/>
+            <Max x="0.07660842686891556" y="0.04361724853515625" z="0.1176161915063858"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="OvenMittR" resourceName="OVEN_MITT_R" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.07660842686891556" y="-0.04361720755696297" z="-0.11761612445116043"/>
+            <Max x="0.07660842686891556" y="0.04361724853515625" z="0.11761615425348282"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>
