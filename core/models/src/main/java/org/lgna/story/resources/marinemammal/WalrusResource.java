@@ -24,51 +24,56 @@
 package org.lgna.story.resources.marinemammal;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SSwimmer;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.SwimmerImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.MarineMammalResource;
 
-public enum WalrusResource implements org.lgna.story.resources.MarineMammalResource {
+public enum WalrusResource implements MarineMammalResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, WalrusResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, WalrusResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId BACK_RIGHT_FIN = new org.lgna.story.resources.JointId( TAIL, WalrusResource.class );
+	public static final JointId BACK_RIGHT_FIN = new JointId( TAIL, WalrusResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId BACK_RIGHT_FIN_MIDDLE = new org.lgna.story.resources.JointId( BACK_RIGHT_FIN, WalrusResource.class );
+	public static final JointId BACK_RIGHT_FIN_MIDDLE = new JointId( BACK_RIGHT_FIN, WalrusResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId BACK_RIGHT_FIN_TIP = new org.lgna.story.resources.JointId( BACK_RIGHT_FIN_MIDDLE, WalrusResource.class );
+	public static final JointId BACK_RIGHT_FIN_TIP = new JointId( BACK_RIGHT_FIN_MIDDLE, WalrusResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId BACK_LEFT_FIN = new org.lgna.story.resources.JointId( TAIL, WalrusResource.class );
+	public static final JointId BACK_LEFT_FIN = new JointId( TAIL, WalrusResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId BACK_LEFT_FIN_MIDDLE = new org.lgna.story.resources.JointId( BACK_LEFT_FIN, WalrusResource.class );
+	public static final JointId BACK_LEFT_FIN_MIDDLE = new JointId( BACK_LEFT_FIN, WalrusResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId BACK_LEFT_FIN_TIP = new org.lgna.story.resources.JointId( BACK_LEFT_FIN_MIDDLE, WalrusResource.class );
+	public static final JointId BACK_LEFT_FIN_TIP = new JointId( BACK_LEFT_FIN_MIDDLE, WalrusResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId FRONT_LEFT_FIN_MIDDLE = new org.lgna.story.resources.JointId( FRONT_LEFT_FIN, WalrusResource.class );
+	public static final JointId FRONT_LEFT_FIN_MIDDLE = new JointId( FRONT_LEFT_FIN, WalrusResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FRONT_LEFT_FIN_TIP = new org.lgna.story.resources.JointId( FRONT_LEFT_FIN_MIDDLE, WalrusResource.class );
+	public static final JointId FRONT_LEFT_FIN_TIP = new JointId( FRONT_LEFT_FIN_MIDDLE, WalrusResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId FRONT_RIGHT_FIN_MIDDLE = new org.lgna.story.resources.JointId( FRONT_RIGHT_FIN, WalrusResource.class );
+	public static final JointId FRONT_RIGHT_FIN_MIDDLE = new JointId( FRONT_RIGHT_FIN, WalrusResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FRONT_RIGHT_FIN_TIP = new org.lgna.story.resources.JointId( FRONT_RIGHT_FIN_MIDDLE, WalrusResource.class );
+	public static final JointId FRONT_RIGHT_FIN_TIP = new JointId( FRONT_RIGHT_FIN_MIDDLE, WalrusResource.class );
 
 	private final ImplementationAndVisualType resourceType;
-	private WalrusResource() {
+	WalrusResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private WalrusResource( ImplementationAndVisualType resourceType ) {
+	WalrusResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.SwimmerImp createImplementation( org.lgna.story.SSwimmer abstraction ) {
-		return new org.lgna.story.implementation.SwimmerImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public SwimmerImp createImplementation( SSwimmer abstraction ) {
+		return new SwimmerImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

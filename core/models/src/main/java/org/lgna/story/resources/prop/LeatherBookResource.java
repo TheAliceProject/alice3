@@ -24,12 +24,19 @@
 package org.lgna.story.resources.prop;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.PropResource;
 
-public enum LeatherBookResource implements org.lgna.story.resources.PropResource {
+public enum LeatherBookResource implements PropResource {
 	BLANK,
 	GREEN,
 	AQUA,
@@ -70,38 +77,41 @@ public enum LeatherBookResource implements org.lgna.story.resources.PropResource
 	LEATHER_BOOK_TALL_CALCULUS3_D;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId ROOT = new org.lgna.story.resources.JointId( null, LeatherBookResource.class );
+	public static final JointId ROOT = new JointId( null, LeatherBookResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId BACK_COVER = new org.lgna.story.resources.JointId( ROOT, LeatherBookResource.class );
+	public static final JointId BACK_COVER = new JointId( ROOT, LeatherBookResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId FRONT_COVER = new org.lgna.story.resources.JointId( ROOT, LeatherBookResource.class );
+	public static final JointId FRONT_COVER = new JointId( ROOT, LeatherBookResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public static final org.lgna.story.JointedModelPose OPEN_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose OPEN_POSE = new JointedModelPose(
 		new JointIdTransformationPair( FRONT_COVER, new Orientation(0.0, -0.717083913125823, 0.0, 0.6969868445933232), new Position(-0.022763729095458984, -1.0658140798173486E-16, -0.04561522603034973) ),
 		new JointIdTransformationPair( BACK_COVER, new Orientation(0.0, 0.7234047982217257, 0.0, 0.6904241434870194), new Position(-0.023308169096708298, -1.776356733521132E-16, 0.04543914273381233) )
 	);
 
 
 	private final ImplementationAndVisualType resourceType;
-	private LeatherBookResource() {
+	LeatherBookResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private LeatherBookResource( ImplementationAndVisualType resourceType ) {
+	LeatherBookResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return LeatherBookResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction ) {
-		return new org.lgna.story.implementation.BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
+		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

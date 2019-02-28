@@ -24,61 +24,67 @@
 package org.lgna.story.resources.quadruped;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SQuadruped;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.QuadrupedImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.QuadrupedResource;
 
-public enum ElephantResource implements org.lgna.story.resources.QuadrupedResource {
+public enum ElephantResource implements QuadrupedResource {
 	ASIAN,
 	ASIAN_WITH_HOWDAH,
 	AFRICAN,
 	AFRICAN_WITH_HOWDAH;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, ElephantResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, ElephantResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_TIP = new org.lgna.story.resources.JointId( LEFT_EAR, ElephantResource.class );
+	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, ElephantResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_TIP = new org.lgna.story.resources.JointId( RIGHT_EAR, ElephantResource.class );
+	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, ElephantResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME, methodNameHint="getTrunk")
-	public static final org.lgna.story.resources.JointId TRUNK_0 = new org.lgna.story.resources.JointId( HEAD, ElephantResource.class );
+	public static final JointId TRUNK_0 = new JointId( HEAD, ElephantResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TRUNK_1 = new org.lgna.story.resources.JointId( TRUNK_0, ElephantResource.class );
+	public static final JointId TRUNK_1 = new JointId( TRUNK_0, ElephantResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TRUNK_2 = new org.lgna.story.resources.JointId( TRUNK_1, ElephantResource.class );
+	public static final JointId TRUNK_2 = new JointId( TRUNK_1, ElephantResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TRUNK_3 = new org.lgna.story.resources.JointId( TRUNK_2, ElephantResource.class );
+	public static final JointId TRUNK_3 = new JointId( TRUNK_2, ElephantResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TRUNK_4 = new org.lgna.story.resources.JointId( TRUNK_3, ElephantResource.class );
+	public static final JointId TRUNK_4 = new JointId( TRUNK_3, ElephantResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TRUNK_5 = new org.lgna.story.resources.JointId( TRUNK_4, ElephantResource.class );
+	public static final JointId TRUNK_5 = new JointId( TRUNK_4, ElephantResource.class );
 
-	public static final org.lgna.story.resources.JointId[] TRUNK_ARRAY = { TRUNK_0, TRUNK_1, TRUNK_2, TRUNK_3, TRUNK_4, TRUNK_5 };
+	public static final JointId[] TRUNK_ARRAY = { TRUNK_0, TRUNK_1, TRUNK_2, TRUNK_3, TRUNK_4, TRUNK_5 };
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
-	public org.lgna.story.resources.JointId[] getTailArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
+	@Override
+	public JointId[] getTailArray(){
 		return ElephantResource.TAIL_ARRAY;
 	}
 
 	private final ImplementationAndVisualType resourceType;
-	private ElephantResource() {
+	ElephantResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private ElephantResource( ImplementationAndVisualType resourceType ) {
+	ElephantResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.QuadrupedResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds(){
+		return QuadrupedResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.SQuadruped abstraction ) {
-		return new org.lgna.story.implementation.QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public QuadrupedImp createImplementation( SQuadruped abstraction ) {
+		return new QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

@@ -60,7 +60,7 @@ public class NebulousStoryApi {
 	private static final String NONFREE_STORY_API_CLASSNAME = "org.alice.nonfree.StoryApiNonfree";
 
 	static {
-		NebulousStoryApi nonfreeInstance = null;
+		NebulousStoryApi nonfreeInstance;
 		try {
 			Class<?> nonfreeClass = ClassUtilities.forName( NONFREE_STORY_API_CLASSNAME );
 			nonfreeInstance = (NebulousStoryApi)ReflectionUtilities.newInstance( nonfreeClass );
@@ -71,7 +71,7 @@ public class NebulousStoryApi {
 		nonfree = nonfreeInstance;
 	}
 
-	protected NebulousStoryApi() {
+	NebulousStoryApi() {
 	}
 
 	public boolean isNonFreeEnabled() {
@@ -82,7 +82,7 @@ public class NebulousStoryApi {
 		return null;
 	}
 
-	public JointImplementationAndVisualDataFactory<?> getFactory( JointedModelResource resource ) {
+	public <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getFactory( R resource ) {
 		return null;
 	}
 

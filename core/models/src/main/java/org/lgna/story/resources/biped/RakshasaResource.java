@@ -24,83 +24,88 @@
 package org.lgna.story.resources.biped;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum RakshasaResource implements org.lgna.story.resources.BipedResource {
+public enum RakshasaResource implements BipedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, RakshasaResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_THUMB_TIP = new org.lgna.story.resources.JointId( LEFT_THUMB_KNUCKLE, RakshasaResource.class );
+	public static final JointId LEFT_THUMB_TIP = new JointId( LEFT_THUMB_KNUCKLE, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_THUMB_END = new org.lgna.story.resources.JointId( LEFT_THUMB_TIP, RakshasaResource.class );
+	public static final JointId LEFT_THUMB_END = new JointId( LEFT_THUMB_TIP, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_INDEX_FINGER_KNUCKLE, RakshasaResource.class );
+	public static final JointId LEFT_INDEX_FINGER_TIP = new JointId( LEFT_INDEX_FINGER_KNUCKLE, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_INDEX_FINGER_END = new org.lgna.story.resources.JointId( LEFT_INDEX_FINGER_TIP, RakshasaResource.class );
+	public static final JointId LEFT_INDEX_FINGER_END = new JointId( LEFT_INDEX_FINGER_TIP, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_MIDDLE_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_MIDDLE_FINGER_KNUCKLE, RakshasaResource.class );
+	public static final JointId LEFT_MIDDLE_FINGER_TIP = new JointId( LEFT_MIDDLE_FINGER_KNUCKLE, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_MIDDLE_FINGER_END = new org.lgna.story.resources.JointId( LEFT_MIDDLE_FINGER_TIP, RakshasaResource.class );
+	public static final JointId LEFT_MIDDLE_FINGER_END = new JointId( LEFT_MIDDLE_FINGER_TIP, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER = new org.lgna.story.resources.JointId( LEFT_HAND, RakshasaResource.class );
+	public static final JointId LEFT_RING_FINGER = new JointId( LEFT_HAND, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( LEFT_RING_FINGER, RakshasaResource.class );
+	public static final JointId LEFT_RING_FINGER_KNUCKLE = new JointId( LEFT_RING_FINGER, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_RING_FINGER_KNUCKLE, RakshasaResource.class );
+	public static final JointId LEFT_RING_FINGER_TIP = new JointId( LEFT_RING_FINGER_KNUCKLE, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_END = new org.lgna.story.resources.JointId( LEFT_RING_FINGER_TIP, RakshasaResource.class );
+	public static final JointId LEFT_RING_FINGER_END = new JointId( LEFT_RING_FINGER_TIP, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_PINKY_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_PINKY_FINGER_KNUCKLE, RakshasaResource.class );
+	public static final JointId LEFT_PINKY_FINGER_TIP = new JointId( LEFT_PINKY_FINGER_KNUCKLE, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_PINKY_FINGER_END = new org.lgna.story.resources.JointId( LEFT_PINKY_FINGER_TIP, RakshasaResource.class );
+	public static final JointId LEFT_PINKY_FINGER_END = new JointId( LEFT_PINKY_FINGER_TIP, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_THUMB_TIP = new org.lgna.story.resources.JointId( RIGHT_THUMB_KNUCKLE, RakshasaResource.class );
+	public static final JointId RIGHT_THUMB_TIP = new JointId( RIGHT_THUMB_KNUCKLE, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_THUMB_END = new org.lgna.story.resources.JointId( RIGHT_THUMB_TIP, RakshasaResource.class );
+	public static final JointId RIGHT_THUMB_END = new JointId( RIGHT_THUMB_TIP, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_INDEX_FINGER_KNUCKLE, RakshasaResource.class );
+	public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId( RIGHT_INDEX_FINGER_KNUCKLE, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_INDEX_FINGER_END = new org.lgna.story.resources.JointId( RIGHT_INDEX_FINGER_TIP, RakshasaResource.class );
+	public static final JointId RIGHT_INDEX_FINGER_END = new JointId( RIGHT_INDEX_FINGER_TIP, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_MIDDLE_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, RakshasaResource.class );
+	public static final JointId RIGHT_MIDDLE_FINGER_TIP = new JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_MIDDLE_FINGER_END = new org.lgna.story.resources.JointId( RIGHT_MIDDLE_FINGER_TIP, RakshasaResource.class );
+	public static final JointId RIGHT_MIDDLE_FINGER_END = new JointId( RIGHT_MIDDLE_FINGER_TIP, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER = new org.lgna.story.resources.JointId( RIGHT_HAND, RakshasaResource.class );
+	public static final JointId RIGHT_RING_FINGER = new JointId( RIGHT_HAND, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( RIGHT_RING_FINGER, RakshasaResource.class );
+	public static final JointId RIGHT_RING_FINGER_KNUCKLE = new JointId( RIGHT_RING_FINGER, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_RING_FINGER_KNUCKLE, RakshasaResource.class );
+	public static final JointId RIGHT_RING_FINGER_TIP = new JointId( RIGHT_RING_FINGER_KNUCKLE, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_END = new org.lgna.story.resources.JointId( RIGHT_RING_FINGER_TIP, RakshasaResource.class );
+	public static final JointId RIGHT_RING_FINGER_END = new JointId( RIGHT_RING_FINGER_TIP, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_PINKY_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_PINKY_FINGER_KNUCKLE, RakshasaResource.class );
+	public static final JointId RIGHT_PINKY_FINGER_TIP = new JointId( RIGHT_PINKY_FINGER_KNUCKLE, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_PINKY_FINGER_END = new org.lgna.story.resources.JointId( RIGHT_PINKY_FINGER_TIP, RakshasaResource.class );
+	public static final JointId RIGHT_PINKY_FINGER_END = new JointId( RIGHT_PINKY_FINGER_TIP, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOES = new org.lgna.story.resources.JointId( LEFT_FOOT, RakshasaResource.class );
+	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, RakshasaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOES = new org.lgna.story.resources.JointId( RIGHT_FOOT, RakshasaResource.class );
+	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, RakshasaResource.class );
 
 	private final ImplementationAndVisualType resourceType;
-	private RakshasaResource() {
+	RakshasaResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private RakshasaResource( ImplementationAndVisualType resourceType ) {
+	RakshasaResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

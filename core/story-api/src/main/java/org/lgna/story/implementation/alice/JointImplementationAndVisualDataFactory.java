@@ -64,7 +64,9 @@ import java.util.Map;
 /**
  * @author Dennis Cosgrove
  */
-public class JointImplementationAndVisualDataFactory implements JointedModelImp.JointImplementationAndVisualDataFactory {
+public class JointImplementationAndVisualDataFactory<R extends JointedModelResource>
+	implements JointedModelImp.JointImplementationAndVisualDataFactory<R> {
+
 	private static final Map<JointedModelResource, JointImplementationAndVisualDataFactory> map = Maps.newHashMap();
 
 	private static class VisualData implements JointedModelImp.VisualData {
@@ -109,25 +111,25 @@ public class JointImplementationAndVisualDataFactory implements JointedModelImp.
 		}
 	}
 
-	public static JointImplementationAndVisualDataFactory getInstance( JointedModelResource resource ) {
+	public static <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getInstance( R resource ) {
 		synchronized( map ) {
-			JointImplementationAndVisualDataFactory rv = map.get( resource );
+			JointImplementationAndVisualDataFactory<R> rv = map.get( resource );
 			if ( rv == null ) {
-				rv = new JointImplementationAndVisualDataFactory( resource );
+				rv = new JointImplementationAndVisualDataFactory<>( resource );
 				map.put( resource, rv );
 			}
 			return rv;
 		}
 	}
 
-	private final JointedModelResource resource;
+	private final R resource;
 
-	private JointImplementationAndVisualDataFactory( JointedModelResource resource ) {
+	private JointImplementationAndVisualDataFactory( R resource ) {
 		this.resource = resource;
 	}
 
 	@Override
-	public JointedModelResource getResource() {
+	public R getResource() {
 		return this.resource;
 	}
 

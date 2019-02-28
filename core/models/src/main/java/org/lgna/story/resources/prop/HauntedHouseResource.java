@@ -24,161 +24,167 @@
 package org.lgna.story.resources.prop;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.PropResource;
 
-public enum HauntedHouseResource implements org.lgna.story.resources.PropResource {
+public enum HauntedHouseResource implements PropResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId ROOT = new org.lgna.story.resources.JointId( null, HauntedHouseResource.class );
+	public static final JointId ROOT = new JointId( null, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_HINGE = new org.lgna.story.resources.JointId( ROOT, HauntedHouseResource.class );
+	public static final JointId RIGHT_HINGE = new JointId( ROOT, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_DOOR_FRONT = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId RIGHT_DOOR_FRONT = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_SHUTTER_FRONT_BOTTOM = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId RIGHT_SHUTTER_FRONT_BOTTOM = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_SHUTTER_RIGHT_SIDE_FIRST = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId RIGHT_SHUTTER_RIGHT_SIDE_FIRST = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_SHUTTER_RIGHT_SIDE_FIRST = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId LEFT_SHUTTER_RIGHT_SIDE_FIRST = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_SHUTTER_RIGHT_SIDE_SECOND = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId LEFT_SHUTTER_RIGHT_SIDE_SECOND = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_SHUTTER_RIGHT_SIDE_SECOND = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId RIGHT_SHUTTER_RIGHT_SIDE_SECOND = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_SHUTTER_FRONT_TOP = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId RIGHT_SHUTTER_FRONT_TOP = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_DOOR_BACK = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId RIGHT_DOOR_BACK = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Y_00 = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId STAIRS_Y_00 = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Y_01 = new org.lgna.story.resources.JointId( STAIRS_Y_00, HauntedHouseResource.class );
+	public static final JointId STAIRS_Y_01 = new JointId( STAIRS_Y_00, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Y_02 = new org.lgna.story.resources.JointId( STAIRS_Y_01, HauntedHouseResource.class );
+	public static final JointId STAIRS_Y_02 = new JointId( STAIRS_Y_01, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Y_03 = new org.lgna.story.resources.JointId( STAIRS_Y_02, HauntedHouseResource.class );
+	public static final JointId STAIRS_Y_03 = new JointId( STAIRS_Y_02, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Y_04 = new org.lgna.story.resources.JointId( STAIRS_Y_03, HauntedHouseResource.class );
+	public static final JointId STAIRS_Y_04 = new JointId( STAIRS_Y_03, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Y_05 = new org.lgna.story.resources.JointId( STAIRS_Y_04, HauntedHouseResource.class );
+	public static final JointId STAIRS_Y_05 = new JointId( STAIRS_Y_04, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Y_06 = new org.lgna.story.resources.JointId( STAIRS_Y_05, HauntedHouseResource.class );
+	public static final JointId STAIRS_Y_06 = new JointId( STAIRS_Y_05, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Y_07 = new org.lgna.story.resources.JointId( STAIRS_Y_06, HauntedHouseResource.class );
+	public static final JointId STAIRS_Y_07 = new JointId( STAIRS_Y_06, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Y_08 = new org.lgna.story.resources.JointId( STAIRS_Y_07, HauntedHouseResource.class );
+	public static final JointId STAIRS_Y_08 = new JointId( STAIRS_Y_07, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Y_09 = new org.lgna.story.resources.JointId( STAIRS_Y_08, HauntedHouseResource.class );
+	public static final JointId STAIRS_Y_09 = new JointId( STAIRS_Y_08, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Y_10 = new org.lgna.story.resources.JointId( STAIRS_Y_09, HauntedHouseResource.class );
+	public static final JointId STAIRS_Y_10 = new JointId( STAIRS_Y_09, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_X_0 = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId STAIRS_X_0 = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_X_1 = new org.lgna.story.resources.JointId( STAIRS_X_0, HauntedHouseResource.class );
+	public static final JointId STAIRS_X_1 = new JointId( STAIRS_X_0, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_X_2 = new org.lgna.story.resources.JointId( STAIRS_X_1, HauntedHouseResource.class );
+	public static final JointId STAIRS_X_2 = new JointId( STAIRS_X_1, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_X_3 = new org.lgna.story.resources.JointId( STAIRS_X_2, HauntedHouseResource.class );
+	public static final JointId STAIRS_X_3 = new JointId( STAIRS_X_2, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_X_4 = new org.lgna.story.resources.JointId( STAIRS_X_3, HauntedHouseResource.class );
+	public static final JointId STAIRS_X_4 = new JointId( STAIRS_X_3, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_W_0 = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId STAIRS_W_0 = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_W_1 = new org.lgna.story.resources.JointId( STAIRS_W_0, HauntedHouseResource.class );
+	public static final JointId STAIRS_W_1 = new JointId( STAIRS_W_0, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_W_2 = new org.lgna.story.resources.JointId( STAIRS_W_1, HauntedHouseResource.class );
+	public static final JointId STAIRS_W_2 = new JointId( STAIRS_W_1, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_W_3 = new org.lgna.story.resources.JointId( STAIRS_W_2, HauntedHouseResource.class );
+	public static final JointId STAIRS_W_3 = new JointId( STAIRS_W_2, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_W_4 = new org.lgna.story.resources.JointId( STAIRS_W_3, HauntedHouseResource.class );
+	public static final JointId STAIRS_W_4 = new JointId( STAIRS_W_3, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId MARKER_TOP_W = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId MARKER_TOP_W = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId MARKER_BASE_W = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId MARKER_BASE_W = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId MARKER_BASE_X = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId MARKER_BASE_X = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId MARKER_TOP_X = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId MARKER_TOP_X = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId MARKER_BASE_Y = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId MARKER_BASE_Y = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId MARKER_TOP_Y = new org.lgna.story.resources.JointId( RIGHT_HINGE, HauntedHouseResource.class );
+	public static final JointId MARKER_TOP_Y = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_HINGE = new org.lgna.story.resources.JointId( ROOT, HauntedHouseResource.class );
+	public static final JointId LEFT_HINGE = new JointId( ROOT, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_DOOR_FRONT = new org.lgna.story.resources.JointId( LEFT_HINGE, HauntedHouseResource.class );
+	public static final JointId LEFT_DOOR_FRONT = new JointId( LEFT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_SHUTTER_FRONT_BOTTOM = new org.lgna.story.resources.JointId( LEFT_HINGE, HauntedHouseResource.class );
+	public static final JointId LEFT_SHUTTER_FRONT_BOTTOM = new JointId( LEFT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_SHUTTER_FRONT_TOP = new org.lgna.story.resources.JointId( LEFT_HINGE, HauntedHouseResource.class );
+	public static final JointId LEFT_SHUTTER_FRONT_TOP = new JointId( LEFT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_SHUTTER_LEFT_SIDE_FIRST = new org.lgna.story.resources.JointId( LEFT_HINGE, HauntedHouseResource.class );
+	public static final JointId RIGHT_SHUTTER_LEFT_SIDE_FIRST = new JointId( LEFT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_SHUTTER_LEFT_SIDE_FIRST = new org.lgna.story.resources.JointId( LEFT_HINGE, HauntedHouseResource.class );
+	public static final JointId LEFT_SHUTTER_LEFT_SIDE_FIRST = new JointId( LEFT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_SHUTTER_LEFT_SIDE_SECOND = new org.lgna.story.resources.JointId( LEFT_HINGE, HauntedHouseResource.class );
+	public static final JointId RIGHT_SHUTTER_LEFT_SIDE_SECOND = new JointId( LEFT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_SHUTTER_LEFT_SIDE_SECOND = new org.lgna.story.resources.JointId( LEFT_HINGE, HauntedHouseResource.class );
+	public static final JointId LEFT_SHUTTER_LEFT_SIDE_SECOND = new JointId( LEFT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId MARKER_TOP_Z = new org.lgna.story.resources.JointId( LEFT_HINGE, HauntedHouseResource.class );
+	public static final JointId MARKER_TOP_Z = new JointId( LEFT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId MARKER_BASE_Z = new org.lgna.story.resources.JointId( LEFT_HINGE, HauntedHouseResource.class );
+	public static final JointId MARKER_BASE_Z = new JointId( LEFT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_DOOR_BACK = new org.lgna.story.resources.JointId( LEFT_HINGE, HauntedHouseResource.class );
+	public static final JointId LEFT_DOOR_BACK = new JointId( LEFT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Z_00 = new org.lgna.story.resources.JointId( LEFT_HINGE, HauntedHouseResource.class );
+	public static final JointId STAIRS_Z_00 = new JointId( LEFT_HINGE, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Z_01 = new org.lgna.story.resources.JointId( STAIRS_Z_00, HauntedHouseResource.class );
+	public static final JointId STAIRS_Z_01 = new JointId( STAIRS_Z_00, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Z_02 = new org.lgna.story.resources.JointId( STAIRS_Z_01, HauntedHouseResource.class );
+	public static final JointId STAIRS_Z_02 = new JointId( STAIRS_Z_01, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Z_03 = new org.lgna.story.resources.JointId( STAIRS_Z_02, HauntedHouseResource.class );
+	public static final JointId STAIRS_Z_03 = new JointId( STAIRS_Z_02, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Z_04 = new org.lgna.story.resources.JointId( STAIRS_Z_03, HauntedHouseResource.class );
+	public static final JointId STAIRS_Z_04 = new JointId( STAIRS_Z_03, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Z_05 = new org.lgna.story.resources.JointId( STAIRS_Z_04, HauntedHouseResource.class );
+	public static final JointId STAIRS_Z_05 = new JointId( STAIRS_Z_04, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Z_06 = new org.lgna.story.resources.JointId( STAIRS_Z_05, HauntedHouseResource.class );
+	public static final JointId STAIRS_Z_06 = new JointId( STAIRS_Z_05, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Z_07 = new org.lgna.story.resources.JointId( STAIRS_Z_06, HauntedHouseResource.class );
+	public static final JointId STAIRS_Z_07 = new JointId( STAIRS_Z_06, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Z_08 = new org.lgna.story.resources.JointId( STAIRS_Z_07, HauntedHouseResource.class );
+	public static final JointId STAIRS_Z_08 = new JointId( STAIRS_Z_07, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Z_09 = new org.lgna.story.resources.JointId( STAIRS_Z_08, HauntedHouseResource.class );
+	public static final JointId STAIRS_Z_09 = new JointId( STAIRS_Z_08, HauntedHouseResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_Z_10 = new org.lgna.story.resources.JointId( STAIRS_Z_09, HauntedHouseResource.class );
+	public static final JointId STAIRS_Z_10 = new JointId( STAIRS_Z_09, HauntedHouseResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public static final org.lgna.story.resources.JointId[] STAIRS_W_ARRAY = { STAIRS_W_0, STAIRS_W_1, STAIRS_W_2, STAIRS_W_3, STAIRS_W_4 };
+	public static final JointId[] STAIRS_W_ARRAY = { STAIRS_W_0, STAIRS_W_1, STAIRS_W_2, STAIRS_W_3, STAIRS_W_4 };
 
-	public static final org.lgna.story.resources.JointId[] STAIRS_X_ARRAY = { STAIRS_X_0, STAIRS_X_1, STAIRS_X_2, STAIRS_X_3, STAIRS_X_4 };
+	public static final JointId[] STAIRS_X_ARRAY = { STAIRS_X_0, STAIRS_X_1, STAIRS_X_2, STAIRS_X_3, STAIRS_X_4 };
 
-	public static final org.lgna.story.resources.JointId[] STAIRS_Y_ARRAY = { STAIRS_Y_00, STAIRS_Y_01, STAIRS_Y_02, STAIRS_Y_03, STAIRS_Y_04, STAIRS_Y_05, STAIRS_Y_06, STAIRS_Y_07, STAIRS_Y_08, STAIRS_Y_09, STAIRS_Y_10 };
+	public static final JointId[] STAIRS_Y_ARRAY = { STAIRS_Y_00, STAIRS_Y_01, STAIRS_Y_02, STAIRS_Y_03, STAIRS_Y_04, STAIRS_Y_05, STAIRS_Y_06, STAIRS_Y_07, STAIRS_Y_08, STAIRS_Y_09, STAIRS_Y_10 };
 
-	public static final org.lgna.story.resources.JointId[] STAIRS_Z_ARRAY = { STAIRS_Z_00, STAIRS_Z_01, STAIRS_Z_02, STAIRS_Z_03, STAIRS_Z_04, STAIRS_Z_05, STAIRS_Z_06, STAIRS_Z_07, STAIRS_Z_08, STAIRS_Z_09, STAIRS_Z_10 };
+	public static final JointId[] STAIRS_Z_ARRAY = { STAIRS_Z_00, STAIRS_Z_01, STAIRS_Z_02, STAIRS_Z_03, STAIRS_Z_04, STAIRS_Z_05, STAIRS_Z_06, STAIRS_Z_07, STAIRS_Z_08, STAIRS_Z_09, STAIRS_Z_10 };
 
 	private final ImplementationAndVisualType resourceType;
-	private HauntedHouseResource() {
+	HauntedHouseResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private HauntedHouseResource( ImplementationAndVisualType resourceType ) {
+	HauntedHouseResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return HauntedHouseResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction ) {
-		return new org.lgna.story.implementation.BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
+		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

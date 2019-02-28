@@ -51,16 +51,16 @@ import org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisua
 public enum ImplementationAndVisualType {
 	ALICE() {
 		@Override
-		public JointImplementationAndVisualDataFactory getFactory( JointedModelResource resource ) {
+		public <R extends JointedModelResource>  JointImplementationAndVisualDataFactory<R> getFactory( R resource ) {
 			return org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory.getInstance( resource );
 		}
 	},
 	SIMS2() {
 		@Override
-		public JointImplementationAndVisualDataFactory getFactory( JointedModelResource resource ) {
+		public <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getFactory( R resource ) {
 			return NebulousStoryApi.nonfree.getFactory( resource );
 		}
 	};
 
-	public abstract JointImplementationAndVisualDataFactory getFactory( JointedModelResource resource );
+	public abstract <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getFactory( R resource );
 }

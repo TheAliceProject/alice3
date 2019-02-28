@@ -24,79 +24,85 @@
 package org.lgna.story.resources.prop;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.PropResource;
 
-public enum PrayerFlagsResource implements org.lgna.story.resources.PropResource {
+public enum PrayerFlagsResource implements PropResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId ROOT = new org.lgna.story.resources.JointId( null, PrayerFlagsResource.class );
+	public static final JointId ROOT = new JointId( null, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId TOP = new org.lgna.story.resources.JointId( ROOT, PrayerFlagsResource.class );
+	public static final JointId TOP = new JointId( ROOT, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STRING_1 = new org.lgna.story.resources.JointId( TOP, PrayerFlagsResource.class );
+	public static final JointId STRING_1 = new JointId( TOP, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_05 = new org.lgna.story.resources.JointId( STRING_1, PrayerFlagsResource.class );
+	public static final JointId FLAG_05 = new JointId( STRING_1, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_06 = new org.lgna.story.resources.JointId( STRING_1, PrayerFlagsResource.class );
+	public static final JointId FLAG_06 = new JointId( STRING_1, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_07 = new org.lgna.story.resources.JointId( STRING_1, PrayerFlagsResource.class );
+	public static final JointId FLAG_07 = new JointId( STRING_1, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_08 = new org.lgna.story.resources.JointId( STRING_1, PrayerFlagsResource.class );
+	public static final JointId FLAG_08 = new JointId( STRING_1, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_09 = new org.lgna.story.resources.JointId( STRING_1, PrayerFlagsResource.class );
+	public static final JointId FLAG_09 = new JointId( STRING_1, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STRING_0 = new org.lgna.story.resources.JointId( TOP, PrayerFlagsResource.class );
+	public static final JointId STRING_0 = new JointId( TOP, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_00 = new org.lgna.story.resources.JointId( STRING_0, PrayerFlagsResource.class );
+	public static final JointId FLAG_00 = new JointId( STRING_0, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_01 = new org.lgna.story.resources.JointId( STRING_0, PrayerFlagsResource.class );
+	public static final JointId FLAG_01 = new JointId( STRING_0, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_02 = new org.lgna.story.resources.JointId( STRING_0, PrayerFlagsResource.class );
+	public static final JointId FLAG_02 = new JointId( STRING_0, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_03 = new org.lgna.story.resources.JointId( STRING_0, PrayerFlagsResource.class );
+	public static final JointId FLAG_03 = new JointId( STRING_0, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_04 = new org.lgna.story.resources.JointId( STRING_0, PrayerFlagsResource.class );
+	public static final JointId FLAG_04 = new JointId( STRING_0, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STRING_2 = new org.lgna.story.resources.JointId( TOP, PrayerFlagsResource.class );
+	public static final JointId STRING_2 = new JointId( TOP, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_10 = new org.lgna.story.resources.JointId( STRING_2, PrayerFlagsResource.class );
+	public static final JointId FLAG_10 = new JointId( STRING_2, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_11 = new org.lgna.story.resources.JointId( STRING_2, PrayerFlagsResource.class );
+	public static final JointId FLAG_11 = new JointId( STRING_2, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_12 = new org.lgna.story.resources.JointId( STRING_2, PrayerFlagsResource.class );
+	public static final JointId FLAG_12 = new JointId( STRING_2, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_13 = new org.lgna.story.resources.JointId( STRING_2, PrayerFlagsResource.class );
+	public static final JointId FLAG_13 = new JointId( STRING_2, PrayerFlagsResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAG_14 = new org.lgna.story.resources.JointId( STRING_2, PrayerFlagsResource.class );
+	public static final JointId FLAG_14 = new JointId( STRING_2, PrayerFlagsResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public static final org.lgna.story.resources.JointId[] FLAG_ARRAY = { FLAG_00, FLAG_01, FLAG_02, FLAG_03, FLAG_04, FLAG_05, FLAG_06, FLAG_07, FLAG_08, FLAG_09, FLAG_10, FLAG_11, FLAG_12, FLAG_13, FLAG_14 };
+	public static final JointId[] FLAG_ARRAY = { FLAG_00, FLAG_01, FLAG_02, FLAG_03, FLAG_04, FLAG_05, FLAG_06, FLAG_07, FLAG_08, FLAG_09, FLAG_10, FLAG_11, FLAG_12, FLAG_13, FLAG_14 };
 
-	public static final org.lgna.story.resources.JointId[] STRING_ARRAY = { STRING_0, STRING_1, STRING_2 };
+	public static final JointId[] STRING_ARRAY = { STRING_0, STRING_1, STRING_2 };
 
 	private final ImplementationAndVisualType resourceType;
-	private PrayerFlagsResource() {
+	PrayerFlagsResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private PrayerFlagsResource( ImplementationAndVisualType resourceType ) {
+	PrayerFlagsResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return PrayerFlagsResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction ) {
-		return new org.lgna.story.implementation.BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
+		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

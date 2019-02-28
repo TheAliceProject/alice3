@@ -24,23 +24,30 @@
 package org.lgna.story.resources.biped;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum YetiResource implements org.lgna.story.resources.BipedResource {
+public enum YetiResource implements BipedResource {
 	DEFAULT,
 	TUTU;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, YetiResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, YetiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOES = new org.lgna.story.resources.JointId( LEFT_FOOT, YetiResource.class );
+	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, YetiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOES = new org.lgna.story.resources.JointId( RIGHT_FOOT, YetiResource.class );
+	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, YetiResource.class );
 
-	public static final org.lgna.story.JointedModelPose ROAR_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose ROAR_POSE = new JointedModelPose(
 		new JointIdTransformationPair( RIGHT_WRIST, new Orientation(-0.31559790155431544, -0.02659484737617487, -0.2910022193351527, 0.9027781493642645), new Position(-6.750155905017657E-16, 0.0, -0.40061911940574646) ),
 		new JointIdTransformationPair( LEFT_WRIST, new Orientation(-0.3146514737305478, 0.07418748807729088, 0.32356037635276624, 0.8892689972929634), new Position(3.9079850255047273E-16, -5.684341759025859E-16, -0.4006199240684509) ),
 		new JointIdTransformationPair( RIGHT_ELBOW, new Orientation(0.02864537854932153, 0.4992243350015387, 0.016516264182847115, 0.8658416244599701), new Position(-2.4868995857482625E-16, -2.8421708795129297E-16, -0.5225135684013367) ),
@@ -52,7 +59,7 @@ public enum YetiResource implements org.lgna.story.resources.BipedResource {
 	);
 
 
-	public static final org.lgna.story.JointedModelPose TWIRL_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose TWIRL_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_HAND, new Orientation(-0.17383781549158972, 0.052801120109634975, 0.024806775958052012, 0.983044800345766), new Position(-0.0, 0.0, -0.19329427182674408) ),
 		new JointIdTransformationPair( SPINE_UPPER, new Orientation(-0.23694982801206957, 0.0, 0.0, 0.9715218880730637), new Position(-0.0, 0.0, -0.4716648757457733) ),
 		new JointIdTransformationPair( RIGHT_PINKY_FINGER, new Orientation(-0.07631152784628686, 0.03828326266545354, -0.11576685533576367, 0.989600413158322), new Position(0.15566129982471466, 0.005552301649004221, -0.15427255630493164) ),
@@ -94,19 +101,21 @@ public enum YetiResource implements org.lgna.story.resources.BipedResource {
 
 
 	private final ImplementationAndVisualType resourceType;
-	private YetiResource() {
+	YetiResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private YetiResource( ImplementationAndVisualType resourceType ) {
+	YetiResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

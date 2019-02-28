@@ -24,43 +24,49 @@
 package org.lgna.story.resources.prop;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.PropResource;
 
 @Deprecated
-public enum HelicopterPropResource implements org.lgna.story.resources.PropResource {
+public enum HelicopterPropResource implements PropResource {
 	EXECUTIVE( ImplementationAndVisualType.SIMS2 ),
 	MILITARY( ImplementationAndVisualType.SIMS2 );
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId ROOT = new org.lgna.story.resources.JointId( null, HelicopterPropResource.class );
+	public static final JointId ROOT = new JointId( null, HelicopterPropResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId COLLECTIVE = new org.lgna.story.resources.JointId( ROOT, HelicopterPropResource.class );
+	public static final JointId COLLECTIVE = new JointId( ROOT, HelicopterPropResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId BLADES = new org.lgna.story.resources.JointId( COLLECTIVE, HelicopterPropResource.class );
+	public static final JointId BLADES = new JointId( COLLECTIVE, HelicopterPropResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
 	private final ImplementationAndVisualType resourceType;
-	private HelicopterPropResource() {
+	HelicopterPropResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private HelicopterPropResource( ImplementationAndVisualType resourceType ) {
+	HelicopterPropResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return HelicopterPropResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction ) {
-		return new org.lgna.story.implementation.BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
+		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

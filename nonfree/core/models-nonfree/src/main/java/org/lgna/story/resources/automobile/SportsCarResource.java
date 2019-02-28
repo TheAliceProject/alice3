@@ -23,39 +23,46 @@
 
 package org.lgna.story.resources.automobile;
 
-import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.project.annotations.FieldTemplate;
+import org.lgna.project.annotations.Visibility;
+import org.lgna.story.STransport;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.TransportImp;
+import org.lgna.story.resources.AutomobileResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum SportsCarResource implements org.lgna.story.resources.AutomobileResource {
+public enum SportsCarResource implements AutomobileResource {
 	SUPER( ImplementationAndVisualType.SIMS2 ),
 	MODERATE( ImplementationAndVisualType.SIMS2 ),
 	USED( ImplementationAndVisualType.SIMS2 );
 
+@FieldTemplate(visibility= Visibility.PRIME_TIME)
+	public static final JointId FRONT_LEFT_DOOR = new JointId( ROOT, SportsCarResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId FRONT_LEFT_DOOR = new org.lgna.story.resources.JointId( ROOT, SportsCarResource.class );
-@FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId FRONT_RIGHT_DOOR = new org.lgna.story.resources.JointId( ROOT, SportsCarResource.class );
+	public static final JointId FRONT_RIGHT_DOOR = new JointId( ROOT, SportsCarResource.class );
 
 	private final ImplementationAndVisualType resourceType;
-	private SportsCarResource() {
+	SportsCarResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private SportsCarResource( ImplementationAndVisualType resourceType ) {
+	SportsCarResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.AutomobileResource.JOINT_ID_ROOTS;
+	@Override
+	public JointId[] getRootJointIds(){
+		return AutomobileResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.TransportImp createImplementation( org.lgna.story.STransport abstraction ) {
-		return new org.lgna.story.implementation.TransportImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public TransportImp createImplementation( STransport abstraction ) {
+		return new TransportImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

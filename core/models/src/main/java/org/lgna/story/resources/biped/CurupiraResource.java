@@ -24,55 +24,60 @@
 package org.lgna.story.resources.biped;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum CurupiraResource implements org.lgna.story.resources.BipedResource {
+public enum CurupiraResource implements BipedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, CurupiraResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, CurupiraResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_EAR = new org.lgna.story.resources.JointId( HEAD, CurupiraResource.class );
+	public static final JointId LEFT_EAR = new JointId( HEAD, CurupiraResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_TIP = new org.lgna.story.resources.JointId( LEFT_EAR, CurupiraResource.class );
+	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, CurupiraResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR = new org.lgna.story.resources.JointId( HEAD, CurupiraResource.class );
+	public static final JointId RIGHT_EAR = new JointId( HEAD, CurupiraResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_TIP = new org.lgna.story.resources.JointId( RIGHT_EAR, CurupiraResource.class );
+	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, CurupiraResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER = new org.lgna.story.resources.JointId( LEFT_HAND, CurupiraResource.class );
+	public static final JointId LEFT_RING_FINGER = new JointId( LEFT_HAND, CurupiraResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( LEFT_RING_FINGER, CurupiraResource.class );
+	public static final JointId LEFT_RING_FINGER_KNUCKLE = new JointId( LEFT_RING_FINGER, CurupiraResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_THUMB_TIP = new org.lgna.story.resources.JointId( LEFT_THUMB_KNUCKLE, CurupiraResource.class );
+	public static final JointId LEFT_THUMB_TIP = new JointId( LEFT_THUMB_KNUCKLE, CurupiraResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER = new org.lgna.story.resources.JointId( RIGHT_HAND, CurupiraResource.class );
+	public static final JointId RIGHT_RING_FINGER = new JointId( RIGHT_HAND, CurupiraResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( RIGHT_RING_FINGER, CurupiraResource.class );
+	public static final JointId RIGHT_RING_FINGER_KNUCKLE = new JointId( RIGHT_RING_FINGER, CurupiraResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_THUMB_TIP = new org.lgna.story.resources.JointId( RIGHT_THUMB_KNUCKLE, CurupiraResource.class );
+	public static final JointId RIGHT_THUMB_TIP = new JointId( RIGHT_THUMB_KNUCKLE, CurupiraResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOES = new org.lgna.story.resources.JointId( LEFT_FOOT, CurupiraResource.class );
+	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, CurupiraResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOES = new org.lgna.story.resources.JointId( RIGHT_FOOT, CurupiraResource.class );
+	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, CurupiraResource.class );
 
 	private final ImplementationAndVisualType resourceType;
-	private CurupiraResource() {
+	CurupiraResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private CurupiraResource( ImplementationAndVisualType resourceType ) {
+	CurupiraResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

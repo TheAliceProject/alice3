@@ -24,49 +24,55 @@
 package org.lgna.story.resources.train;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.STransport;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.TransportImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.TrainResource;
 
-public enum TrainCarFlatResource implements org.lgna.story.resources.TrainResource {
+public enum TrainCarFlatResource implements TrainResource {
 	DEFAULT,
 	CIRCUS,
 	CIRCUS_LIGHTS,
 	ICE;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId AXLE_0 = new org.lgna.story.resources.JointId( ROOT, TrainCarFlatResource.class );
+	public static final JointId AXLE_0 = new JointId( ROOT, TrainCarFlatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId WHEELS_0 = new org.lgna.story.resources.JointId( AXLE_0, TrainCarFlatResource.class );
+	public static final JointId WHEELS_0 = new JointId( AXLE_0, TrainCarFlatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId WHEELS_1 = new org.lgna.story.resources.JointId( AXLE_0, TrainCarFlatResource.class );
+	public static final JointId WHEELS_1 = new JointId( AXLE_0, TrainCarFlatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId AXLE_1 = new org.lgna.story.resources.JointId( ROOT, TrainCarFlatResource.class );
+	public static final JointId AXLE_1 = new JointId( ROOT, TrainCarFlatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId WHEELS_2 = new org.lgna.story.resources.JointId( AXLE_1, TrainCarFlatResource.class );
+	public static final JointId WHEELS_2 = new JointId( AXLE_1, TrainCarFlatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId WHEELS_3 = new org.lgna.story.resources.JointId( AXLE_1, TrainCarFlatResource.class );
+	public static final JointId WHEELS_3 = new JointId( AXLE_1, TrainCarFlatResource.class );
 
-	public static final org.lgna.story.resources.JointId[] AXLE_ARRAY = { AXLE_0, AXLE_1 };
+	public static final JointId[] AXLE_ARRAY = { AXLE_0, AXLE_1 };
 
 	private final ImplementationAndVisualType resourceType;
-	private TrainCarFlatResource() {
+	TrainCarFlatResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private TrainCarFlatResource( ImplementationAndVisualType resourceType ) {
+	TrainCarFlatResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.TrainResource.JOINT_ID_ROOTS;
+	@Override
+	public JointId[] getRootJointIds(){
+		return TrainResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.TransportImp createImplementation( org.lgna.story.STransport abstraction ) {
-		return new org.lgna.story.implementation.TransportImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public TransportImp createImplementation( STransport abstraction ) {
+		return new TransportImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

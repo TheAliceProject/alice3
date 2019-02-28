@@ -23,33 +23,38 @@
 
 package org.lgna.story.resources.watercraft;
 
-import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.STransport;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.TransportImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.WatercraftResource;
 
-public enum PirateShipResource implements org.lgna.story.resources.WatercraftResource {
+public enum PirateShipResource implements WatercraftResource {
 	DEFAULT;
 
 
 	private final ImplementationAndVisualType resourceType;
-	private PirateShipResource() {
+	PirateShipResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private PirateShipResource( ImplementationAndVisualType resourceType ) {
+	PirateShipResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return new org.lgna.story.resources.JointId[0];
+	@Override
+	public JointId[] getRootJointIds(){
+		return new JointId[0];
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.TransportImp createImplementation( org.lgna.story.STransport abstraction ) {
-		return new org.lgna.story.implementation.TransportImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public TransportImp createImplementation( STransport abstraction ) {
+		return new TransportImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

@@ -24,64 +24,71 @@
 package org.lgna.story.resources.biped;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum FreyaResource implements org.lgna.story.resources.BipedResource {
+public enum FreyaResource implements BipedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.PRIME_TIME, methodNameHint="getHair")
-	public static final org.lgna.story.resources.JointId HAIR_0 = new org.lgna.story.resources.JointId( HEAD, FreyaResource.class );
+	public static final JointId HAIR_0 = new JointId( HEAD, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_1 = new org.lgna.story.resources.JointId( HAIR_0, FreyaResource.class );
+	public static final JointId HAIR_1 = new JointId( HAIR_0, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_2 = new org.lgna.story.resources.JointId( HAIR_1, FreyaResource.class );
+	public static final JointId HAIR_2 = new JointId( HAIR_1, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_3 = new org.lgna.story.resources.JointId( HAIR_2, FreyaResource.class );
+	public static final JointId HAIR_3 = new JointId( HAIR_2, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_4 = new org.lgna.story.resources.JointId( HAIR_3, FreyaResource.class );
+	public static final JointId HAIR_4 = new JointId( HAIR_3, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_5 = new org.lgna.story.resources.JointId( HAIR_4, FreyaResource.class );
+	public static final JointId HAIR_5 = new JointId( HAIR_4, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_6 = new org.lgna.story.resources.JointId( HAIR_5, FreyaResource.class );
+	public static final JointId HAIR_6 = new JointId( HAIR_5, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, FreyaResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_THUMB_TIP = new org.lgna.story.resources.JointId( LEFT_THUMB_KNUCKLE, FreyaResource.class );
+	public static final JointId LEFT_THUMB_TIP = new JointId( LEFT_THUMB_KNUCKLE, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_INDEX_FINGER_KNUCKLE, FreyaResource.class );
+	public static final JointId LEFT_INDEX_FINGER_TIP = new JointId( LEFT_INDEX_FINGER_KNUCKLE, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_MIDDLE_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_MIDDLE_FINGER_KNUCKLE, FreyaResource.class );
+	public static final JointId LEFT_MIDDLE_FINGER_TIP = new JointId( LEFT_MIDDLE_FINGER_KNUCKLE, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER = new org.lgna.story.resources.JointId( LEFT_HAND, FreyaResource.class );
+	public static final JointId LEFT_RING_FINGER = new JointId( LEFT_HAND, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( LEFT_RING_FINGER, FreyaResource.class );
+	public static final JointId LEFT_RING_FINGER_KNUCKLE = new JointId( LEFT_RING_FINGER, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_RING_FINGER_KNUCKLE, FreyaResource.class );
+	public static final JointId LEFT_RING_FINGER_TIP = new JointId( LEFT_RING_FINGER_KNUCKLE, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_PINKY_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_PINKY_FINGER_KNUCKLE, FreyaResource.class );
+	public static final JointId LEFT_PINKY_FINGER_TIP = new JointId( LEFT_PINKY_FINGER_KNUCKLE, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_THUMB_TIP = new org.lgna.story.resources.JointId( RIGHT_THUMB_KNUCKLE, FreyaResource.class );
+	public static final JointId RIGHT_THUMB_TIP = new JointId( RIGHT_THUMB_KNUCKLE, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_INDEX_FINGER_KNUCKLE, FreyaResource.class );
+	public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId( RIGHT_INDEX_FINGER_KNUCKLE, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_MIDDLE_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, FreyaResource.class );
+	public static final JointId RIGHT_MIDDLE_FINGER_TIP = new JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER = new org.lgna.story.resources.JointId( RIGHT_HAND, FreyaResource.class );
+	public static final JointId RIGHT_RING_FINGER = new JointId( RIGHT_HAND, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( RIGHT_RING_FINGER, FreyaResource.class );
+	public static final JointId RIGHT_RING_FINGER_KNUCKLE = new JointId( RIGHT_RING_FINGER, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_RING_FINGER_KNUCKLE, FreyaResource.class );
+	public static final JointId RIGHT_RING_FINGER_TIP = new JointId( RIGHT_RING_FINGER_KNUCKLE, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_PINKY_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_PINKY_FINGER_KNUCKLE, FreyaResource.class );
+	public static final JointId RIGHT_PINKY_FINGER_TIP = new JointId( RIGHT_PINKY_FINGER_KNUCKLE, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOES = new org.lgna.story.resources.JointId( LEFT_FOOT, FreyaResource.class );
+	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, FreyaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOES = new org.lgna.story.resources.JointId( RIGHT_FOOT, FreyaResource.class );
+	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, FreyaResource.class );
 
-	public static final org.lgna.story.JointedModelPose STRAIGHT_HAIR_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose STRAIGHT_HAIR_POSE = new JointedModelPose(
 		new JointIdTransformationPair( HAIR_5, new Orientation(-0.12799943958844273, 4.941312245704286E-8, 6.3773121724839114E-9, 0.9917742401701317), new Position(-6.93864757317364E-11, 7.105427198782324E-17, -0.11929963529109955) ),
 		new JointIdTransformationPair( HAIR_0, new Orientation(0.0, 0.9169989149925444, 0.39888969641054445, 6.123233995736766E-17), new Position(-6.395538321157801E-9, 0.058704935014247894, 0.06564968824386597) ),
 		new JointIdTransformationPair( HAIR_4, new Orientation(0.018896074315177255, 4.7698425088848027E-8, -9.014648639728618E-10, 0.9998214532482652), new Position(-3.892767705404587E-11, -1.4210854397564648E-16, -0.12737232446670532) ),
@@ -91,22 +98,24 @@ public enum FreyaResource implements org.lgna.story.resources.BipedResource {
 	);
 
 
-	public static final org.lgna.story.resources.JointId[] HAIR_ARRAY = { HAIR_0, HAIR_1, HAIR_2, HAIR_3, HAIR_4, HAIR_5, HAIR_6 };
+	public static final JointId[] HAIR_ARRAY = { HAIR_0, HAIR_1, HAIR_2, HAIR_3, HAIR_4, HAIR_5, HAIR_6 };
 
 	private final ImplementationAndVisualType resourceType;
-	private FreyaResource() {
+	FreyaResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private FreyaResource( ImplementationAndVisualType resourceType ) {
+	FreyaResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

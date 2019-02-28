@@ -23,35 +23,40 @@
 
 package org.lgna.story.resources.prop;
 
-import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.PropResource;
 
-public enum HotTubResource implements org.lgna.story.resources.PropResource {
+public enum HotTubResource implements PropResource {
 	BASIC_CALM( ImplementationAndVisualType.SIMS2 ),
 	BASIC_BUBBLES( ImplementationAndVisualType.SIMS2 ),
 	FANCY_CALM( ImplementationAndVisualType.SIMS2 ),
 	FANCY_BUBBLES( ImplementationAndVisualType.SIMS2 );
 
 	private final ImplementationAndVisualType resourceType;
-	private HotTubResource() {
+	HotTubResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private HotTubResource( ImplementationAndVisualType resourceType ) {
+	HotTubResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return new org.lgna.story.resources.JointId[0];
+	@Override
+	public JointId[] getRootJointIds(){
+		return new JointId[0];
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction ) {
-		return new org.lgna.story.implementation.BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
+		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

@@ -24,21 +24,28 @@
 package org.lgna.story.resources.flyer;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SFlyer;
+import org.lgna.story.implementation.FlyerImp;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.FlyerResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum PhoenixResource implements org.lgna.story.resources.FlyerResource {
+public enum PhoenixResource implements FlyerResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOE = new org.lgna.story.resources.JointId( LEFT_FOOT, PhoenixResource.class );
+	public static final JointId LEFT_TOE = new JointId( LEFT_FOOT, PhoenixResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOE = new org.lgna.story.resources.JointId( RIGHT_FOOT, PhoenixResource.class );
+	public static final JointId RIGHT_TOE = new JointId( RIGHT_FOOT, PhoenixResource.class );
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.JointedModelPose SPREAD_WINGS_POSE = new org.lgna.story.JointedModelPose( 
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointedModelPose SPREAD_WINGS_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_WING_WRIST, new Orientation(-0.10756514695679051, 0.08416097973752806, 0.012540087358762657, 0.9905500567153677), new Position(-1.776356799695581E-17, -7.105427198782324E-17, -0.19206586480140686) ),
 		new JointIdTransformationPair( RIGHT_WING_SHOULDER, new Orientation(-0.34911977282524415, -0.5797043594429134, 0.3331980276489753, 0.6565343206841239), new Position(0.06489770114421844, 0.03269122913479805, 0.024828080087900162) ),
 		new JointIdTransformationPair( LEFT_WING_ELBOW, new Orientation(-0.036220903958123205, 0.07711411006008148, 2.6283713882083745E-4, 0.9963640855945866), new Position(1.3322675997716858E-17, 2.1316281596346973E-16, -0.16212941706180573) ),
@@ -47,12 +54,13 @@ public enum PhoenixResource implements org.lgna.story.resources.FlyerResource {
 		new JointIdTransformationPair( LEFT_WING_SHOULDER, new Orientation(-0.3491203169204957, 0.5797045939495106, -0.33319756664830913, 0.6565340582535011), new Position(-0.06489770114421844, 0.03268999978899956, 0.024828080087900162) )
 	);
 
-	public org.lgna.story.JointedModelPose getSpreadWingsPose(){
+	@Override
+	public JointedModelPose getSpreadWingsPose(){
 		return PhoenixResource.SPREAD_WINGS_POSE;
 	}
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.JointedModelPose FOLD_WINGS_POSE = new org.lgna.story.JointedModelPose( 
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointedModelPose FOLD_WINGS_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_WING_WRIST, new Orientation(-0.31047152376899495, 0.9318084483260477, -0.11743458168929075, 0.14679770972403852), new Position(-0.0, 0.0, -0.19206586480140686) ),
 		new JointIdTransformationPair( RIGHT_WING_SHOULDER, new Orientation(0.49337480427386626, 0.8535870060771169, -0.14450558594802004, 0.08419418741129137), new Position(0.06489770114421844, 0.03269122913479805, 0.024828080087900162) ),
 		new JointIdTransformationPair( LEFT_WING_ELBOW, new Orientation(-0.02675302666781874, -0.9955314295170998, 0.018931482438077542, 0.08856098113981903), new Position(-0.0, 0.0, -0.16212941706180573) ),
@@ -61,39 +69,44 @@ public enum PhoenixResource implements org.lgna.story.resources.FlyerResource {
 		new JointIdTransformationPair( LEFT_WING_SHOULDER, new Orientation(0.4933735167627242, -0.8535879183854677, 0.14450474751087622, 0.08419392193242974), new Position(-0.06489770114421844, 0.03268999978899956, 0.024828080087900162) )
 	);
 
-	public org.lgna.story.JointedModelPose getFoldWingsPose(){
+	@Override
+	public JointedModelPose getFoldWingsPose(){
 		return PhoenixResource.FOLD_WINGS_POSE;
 	}
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] NECK_ARRAY = { NECK_0, NECK_1 };
-	public org.lgna.story.resources.JointId[] getNeckArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] NECK_ARRAY = { NECK_0, NECK_1 };
+	@Override
+	public JointId[] getNeckArray(){
 		return PhoenixResource.NECK_ARRAY;
 	}
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2 };
-	public org.lgna.story.resources.JointId[] getTailArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2 };
+	@Override
+	public JointId[] getTailArray(){
 		return PhoenixResource.TAIL_ARRAY;
 	}
 
 	private final ImplementationAndVisualType resourceType;
-	private PhoenixResource() {
+	PhoenixResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private PhoenixResource( ImplementationAndVisualType resourceType ) {
+	PhoenixResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.FlyerResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds(){
+		return FlyerResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.FlyerImp createImplementation( org.lgna.story.SFlyer abstraction ) {
-		return new org.lgna.story.implementation.FlyerImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public FlyerImp createImplementation( SFlyer abstraction ) {
+		return new FlyerImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

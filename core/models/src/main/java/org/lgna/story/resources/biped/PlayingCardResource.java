@@ -24,12 +24,19 @@
 package org.lgna.story.resources.biped;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum PlayingCardResource implements org.lgna.story.resources.BipedResource {
+public enum PlayingCardResource implements BipedResource {
 	BLANK,
 	ONE1,
 	TWO2,
@@ -43,41 +50,41 @@ public enum PlayingCardResource implements org.lgna.story.resources.BipedResourc
 	TEN10;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, PlayingCardResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_THUMB_TIP = new org.lgna.story.resources.JointId( LEFT_THUMB_KNUCKLE, PlayingCardResource.class );
+	public static final JointId LEFT_THUMB_TIP = new JointId( LEFT_THUMB_KNUCKLE, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_INDEX_FINGER_KNUCKLE, PlayingCardResource.class );
+	public static final JointId LEFT_INDEX_FINGER_TIP = new JointId( LEFT_INDEX_FINGER_KNUCKLE, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_MIDDLE_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_MIDDLE_FINGER_KNUCKLE, PlayingCardResource.class );
+	public static final JointId LEFT_MIDDLE_FINGER_TIP = new JointId( LEFT_MIDDLE_FINGER_KNUCKLE, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER = new org.lgna.story.resources.JointId( LEFT_HAND, PlayingCardResource.class );
+	public static final JointId LEFT_RING_FINGER = new JointId( LEFT_HAND, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( LEFT_RING_FINGER, PlayingCardResource.class );
+	public static final JointId LEFT_RING_FINGER_KNUCKLE = new JointId( LEFT_RING_FINGER, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_RING_FINGER_KNUCKLE, PlayingCardResource.class );
+	public static final JointId LEFT_RING_FINGER_TIP = new JointId( LEFT_RING_FINGER_KNUCKLE, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_PINKY_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_PINKY_FINGER_KNUCKLE, PlayingCardResource.class );
+	public static final JointId LEFT_PINKY_FINGER_TIP = new JointId( LEFT_PINKY_FINGER_KNUCKLE, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_THUMB_TIP = new org.lgna.story.resources.JointId( RIGHT_THUMB_KNUCKLE, PlayingCardResource.class );
+	public static final JointId RIGHT_THUMB_TIP = new JointId( RIGHT_THUMB_KNUCKLE, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_INDEX_FINGER_KNUCKLE, PlayingCardResource.class );
+	public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId( RIGHT_INDEX_FINGER_KNUCKLE, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_MIDDLE_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, PlayingCardResource.class );
+	public static final JointId RIGHT_MIDDLE_FINGER_TIP = new JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER = new org.lgna.story.resources.JointId( RIGHT_HAND, PlayingCardResource.class );
+	public static final JointId RIGHT_RING_FINGER = new JointId( RIGHT_HAND, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( RIGHT_RING_FINGER, PlayingCardResource.class );
+	public static final JointId RIGHT_RING_FINGER_KNUCKLE = new JointId( RIGHT_RING_FINGER, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_RING_FINGER_KNUCKLE, PlayingCardResource.class );
+	public static final JointId RIGHT_RING_FINGER_TIP = new JointId( RIGHT_RING_FINGER_KNUCKLE, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_PINKY_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_PINKY_FINGER_KNUCKLE, PlayingCardResource.class );
+	public static final JointId RIGHT_PINKY_FINGER_TIP = new JointId( RIGHT_PINKY_FINGER_KNUCKLE, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOES = new org.lgna.story.resources.JointId( LEFT_FOOT, PlayingCardResource.class );
+	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, PlayingCardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOES = new org.lgna.story.resources.JointId( RIGHT_FOOT, PlayingCardResource.class );
+	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, PlayingCardResource.class );
 
-	public static final org.lgna.story.JointedModelPose STANDING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose STANDING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( SPINE_UPPER, new Orientation(-0.05976186503631742, 0.0, 0.0, 0.9982126624559423), new Position(3.355605754861909E-19, 5.329070399086743E-17, -0.26492035388946533) ),
 		new JointIdTransformationPair( LEFT_INDEX_FINGER, new Orientation(0.0, 0.6488543744550531, 0.0, 0.7609126104557222), new Position(-0.07335834950208664, 0.0019372437382116914, -0.041472021490335464) ),
 		new JointIdTransformationPair( RIGHT_PINKY_FINGER, new Orientation(-0.07036511573050964, -0.6817773545879214, -0.06615585790211664, 0.7251563912181721), new Position(0.07867980003356934, -5.684341759025859E-16, 0.022841691970825195) ),
@@ -109,7 +116,7 @@ public enum PlayingCardResource implements org.lgna.story.resources.BipedResourc
 	);
 
 
-	public static final org.lgna.story.JointedModelPose TUNNEL_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose TUNNEL_POSE = new JointedModelPose(
 		new JointIdTransformationPair( SPINE_UPPER, new Orientation(-0.37068145334872094, 0.0, 0.0, 0.9287600659714434), new Position(3.355605754861909E-19, 5.329070399086743E-17, -0.26492035388946533) ),
 		new JointIdTransformationPair( LEFT_INDEX_FINGER, new Orientation(0.0, 0.5533916891901902, 0.0, 0.8329211477296202), new Position(-0.07335834950208664, 0.0019372437382116914, -0.041472021490335464) ),
 		new JointIdTransformationPair( RIGHT_PINKY_FINGER, new Orientation(-0.08245690478758833, -0.8162295575699238, -0.05028623516285384, 0.5695976323293516), new Position(0.07867980003356934, -5.684341759025859E-16, 0.022841691970825195) ),
@@ -142,19 +149,21 @@ public enum PlayingCardResource implements org.lgna.story.resources.BipedResourc
 
 
 	private final ImplementationAndVisualType resourceType;
-	private PlayingCardResource() {
+	PlayingCardResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private PlayingCardResource( ImplementationAndVisualType resourceType ) {
+	PlayingCardResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

@@ -24,12 +24,15 @@
 package org.lgna.story.resources.prop;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.PropResource;
 
-public enum BathtubResource implements org.lgna.story.resources.PropResource {
+public enum BathtubResource implements PropResource {
 	COLONIAL_WHITE_CEDAR_RIM( ImplementationAndVisualType.SIMS2 ),
 	COLONIAL_RED_CEDAR_RIM( ImplementationAndVisualType.SIMS2 ),
 	COLONIAL_GREEN_CEDAR_RIM( ImplementationAndVisualType.SIMS2 ),
@@ -51,32 +54,35 @@ public enum BathtubResource implements org.lgna.story.resources.PropResource {
 	VALUE_DARK_GREEN( ImplementationAndVisualType.SIMS2 );
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId ROOT = new org.lgna.story.resources.JointId( null, BathtubResource.class );
+	public static final JointId ROOT = new JointId( null, BathtubResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_KNOB = new org.lgna.story.resources.JointId( ROOT, BathtubResource.class );
+	public static final JointId LEFT_KNOB = new JointId( ROOT, BathtubResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_KNOB = new org.lgna.story.resources.JointId( ROOT, BathtubResource.class );
+	public static final JointId RIGHT_KNOB = new JointId( ROOT, BathtubResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
 	private final ImplementationAndVisualType resourceType;
-	private BathtubResource() {
+	BathtubResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private BathtubResource( ImplementationAndVisualType resourceType ) {
+	BathtubResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return BathtubResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction ) {
-		return new org.lgna.story.implementation.BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
+		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

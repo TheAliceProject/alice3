@@ -24,41 +24,47 @@
 package org.lgna.story.resources.watercraft;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.STransport;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.TransportImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.WatercraftResource;
 
-public enum SubmarineResource implements org.lgna.story.resources.WatercraftResource {
+public enum SubmarineResource implements WatercraftResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId ROOT = new org.lgna.story.resources.JointId( null, SubmarineResource.class );
+	public static final JointId ROOT = new JointId( null, SubmarineResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId PROPELLER = new org.lgna.story.resources.JointId( ROOT, SubmarineResource.class );
+	public static final JointId PROPELLER = new JointId( ROOT, SubmarineResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RUDDER = new org.lgna.story.resources.JointId( ROOT, SubmarineResource.class );
+	public static final JointId RUDDER = new JointId( ROOT, SubmarineResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
 	private final ImplementationAndVisualType resourceType;
-	private SubmarineResource() {
+	SubmarineResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private SubmarineResource( ImplementationAndVisualType resourceType ) {
+	SubmarineResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return SubmarineResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.TransportImp createImplementation( org.lgna.story.STransport abstraction ) {
-		return new org.lgna.story.implementation.TransportImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public TransportImp createImplementation( STransport abstraction ) {
+		return new TransportImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

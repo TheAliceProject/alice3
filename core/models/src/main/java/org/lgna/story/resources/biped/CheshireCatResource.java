@@ -24,56 +24,61 @@
 package org.lgna.story.resources.biped;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum CheshireCatResource implements org.lgna.story.resources.BipedResource {
+public enum CheshireCatResource implements BipedResource {
 	DEFAULT,
 	CHESHIRE_CAT_GRIN;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, CheshireCatResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, CheshireCatResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_EAR = new org.lgna.story.resources.JointId( HEAD, CheshireCatResource.class );
+	public static final JointId LEFT_EAR = new JointId( HEAD, CheshireCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_TIP = new org.lgna.story.resources.JointId( LEFT_EAR, CheshireCatResource.class );
+	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, CheshireCatResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR = new org.lgna.story.resources.JointId( HEAD, CheshireCatResource.class );
+	public static final JointId RIGHT_EAR = new JointId( HEAD, CheshireCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_TIP = new org.lgna.story.resources.JointId( RIGHT_EAR, CheshireCatResource.class );
+	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, CheshireCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOES = new org.lgna.story.resources.JointId( LEFT_FOOT, CheshireCatResource.class );
+	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, CheshireCatResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME, methodNameHint="getTail")
-	public static final org.lgna.story.resources.JointId TAIL_0 = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, CheshireCatResource.class );
+	public static final JointId TAIL_0 = new JointId( PELVIS_LOWER_BODY, CheshireCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_1 = new org.lgna.story.resources.JointId( TAIL_0, CheshireCatResource.class );
+	public static final JointId TAIL_1 = new JointId( TAIL_0, CheshireCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_2 = new org.lgna.story.resources.JointId( TAIL_1, CheshireCatResource.class );
+	public static final JointId TAIL_2 = new JointId( TAIL_1, CheshireCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_3 = new org.lgna.story.resources.JointId( TAIL_2, CheshireCatResource.class );
+	public static final JointId TAIL_3 = new JointId( TAIL_2, CheshireCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_4 = new org.lgna.story.resources.JointId( TAIL_3, CheshireCatResource.class );
+	public static final JointId TAIL_4 = new JointId( TAIL_3, CheshireCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOES = new org.lgna.story.resources.JointId( RIGHT_FOOT, CheshireCatResource.class );
+	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, CheshireCatResource.class );
 
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4 };
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4 };
 
 	private final ImplementationAndVisualType resourceType;
-	private CheshireCatResource() {
+	CheshireCatResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private CheshireCatResource( ImplementationAndVisualType resourceType ) {
+	CheshireCatResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

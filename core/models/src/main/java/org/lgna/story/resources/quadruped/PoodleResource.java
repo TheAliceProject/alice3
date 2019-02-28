@@ -24,40 +24,46 @@
 package org.lgna.story.resources.quadruped;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SQuadruped;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.QuadrupedImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.QuadrupedResource;
 
-public enum PoodleResource implements org.lgna.story.resources.QuadrupedResource {
+public enum PoodleResource implements QuadrupedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId JAW_TIP = new org.lgna.story.resources.JointId( MOUTH, PoodleResource.class );
+	public static final JointId JAW_TIP = new JointId( MOUTH, PoodleResource.class );
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
-	public org.lgna.story.resources.JointId[] getTailArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
+	@Override
+	public JointId[] getTailArray(){
 		return PoodleResource.TAIL_ARRAY;
 	}
 
 	private final ImplementationAndVisualType resourceType;
-	private PoodleResource() {
+	PoodleResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private PoodleResource( ImplementationAndVisualType resourceType ) {
+	PoodleResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.QuadrupedResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds(){
+		return QuadrupedResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.SQuadruped abstraction ) {
-		return new org.lgna.story.implementation.QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public QuadrupedImp createImplementation( SQuadruped abstraction ) {
+		return new QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

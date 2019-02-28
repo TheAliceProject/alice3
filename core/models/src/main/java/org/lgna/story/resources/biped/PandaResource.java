@@ -24,30 +24,37 @@
 package org.lgna.story.resources.biped;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum PandaResource implements org.lgna.story.resources.BipedResource {
+public enum PandaResource implements BipedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, PandaResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, PandaResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_EAR = new org.lgna.story.resources.JointId( HEAD, PandaResource.class );
+	public static final JointId LEFT_EAR = new JointId( HEAD, PandaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_TIP = new org.lgna.story.resources.JointId( LEFT_EAR, PandaResource.class );
+	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, PandaResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR = new org.lgna.story.resources.JointId( HEAD, PandaResource.class );
+	public static final JointId RIGHT_EAR = new JointId( HEAD, PandaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_TIP = new org.lgna.story.resources.JointId( RIGHT_EAR, PandaResource.class );
+	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, PandaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOE = new org.lgna.story.resources.JointId( LEFT_FOOT, PandaResource.class );
+	public static final JointId LEFT_TOE = new JointId( LEFT_FOOT, PandaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOE = new org.lgna.story.resources.JointId( RIGHT_FOOT, PandaResource.class );
+	public static final JointId RIGHT_TOE = new JointId( RIGHT_FOOT, PandaResource.class );
 
-	public static final org.lgna.story.JointedModelPose STANDING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose STANDING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( RIGHT_WRIST, new Orientation(-0.0865510122859929, -0.18635759833238288, 0.11986472916776969, 0.9712940927018929), new Position(-0.0, 0.0, -0.18063582479953766) ),
 		new JointIdTransformationPair( LEFT_ANKLE, new Orientation(0.27047420802523603, 0.0, -0.0, 0.9627272213836697), new Position(-0.0, 0.0, -0.08641287684440613) ),
 		new JointIdTransformationPair( LEFT_KNEE, new Orientation(-0.07137178820650658, 0.0, 0.0, 0.9974497821184811), new Position(-0.0, 0.0, -0.09508147835731506) ),
@@ -74,7 +81,7 @@ public enum PandaResource implements org.lgna.story.resources.BipedResource {
 	);
 
 
-	public static final org.lgna.story.JointedModelPose SLEEPING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose SLEEPING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( RIGHT_WRIST, new Orientation(-0.15962858143801892, -0.01043902550231364, -0.10918143074503309, 0.9810653178637574), new Position(-0.0, 0.0, -0.18063582479953766) ),
 		new JointIdTransformationPair( LEFT_ANKLE, new Orientation(-0.1777834143423886, 0.0, 0.0, 0.9840696406173511), new Position(-0.0, 0.0, -0.08641287684440613) ),
 		new JointIdTransformationPair( LEFT_EYE, new Orientation(-0.10604842786246452, 0.12434150378286112, -0.023893152957396715, 0.9862667177932503), new Position(-0.06755576282739639, -0.014510521665215492, -0.1889897733926773) ),
@@ -101,7 +108,7 @@ public enum PandaResource implements org.lgna.story.resources.BipedResource {
 	);
 
 
-	public static final org.lgna.story.JointedModelPose CRAWLING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose CRAWLING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( RIGHT_WRIST, new Orientation(0.4051785303209904, 0.056840255955348536, -0.01568000458993149, 0.9123341938817773), new Position(-0.0, 0.0, -0.18063582479953766) ),
 		new JointIdTransformationPair( LEFT_ANKLE, new Orientation(0.5691843239915646, 0.0, -0.0, 0.8222099520939075), new Position(-0.0, 0.0, -0.08641287684440613) ),
 		new JointIdTransformationPair( LEFT_EYE, new Orientation(-0.05191408395892141, 0.16959984015626342, -0.04207997733294665, 0.9832446784058049), new Position(-0.06755576282739639, -0.014510521665215492, -0.1889897733926773) ),
@@ -129,19 +136,21 @@ public enum PandaResource implements org.lgna.story.resources.BipedResource {
 
 
 	private final ImplementationAndVisualType resourceType;
-	private PandaResource() {
+	PandaResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private PandaResource( ImplementationAndVisualType resourceType ) {
+	PandaResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

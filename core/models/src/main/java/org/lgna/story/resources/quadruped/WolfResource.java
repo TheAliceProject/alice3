@@ -24,18 +24,25 @@
 package org.lgna.story.resources.quadruped;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SQuadruped;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.QuadrupedImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.QuadrupedResource;
 
-public enum WolfResource implements org.lgna.story.resources.QuadrupedResource {
+public enum WolfResource implements QuadrupedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId JAW_TIP = new org.lgna.story.resources.JointId( MOUTH, WolfResource.class );
+	public static final JointId JAW_TIP = new JointId( MOUTH, WolfResource.class );
 
-	public static final org.lgna.story.JointedModelPose WEREWOLF_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose WEREWOLF_POSE = new JointedModelPose(
 		new JointIdTransformationPair( TAIL_2, new Orientation(-0.13339085033728823, 0.0, 0.0, 0.9910635100972567), new Position(2.4194579225153686E-15, -7.105427198782324E-17, -0.11782891303300858) ),
 		new JointIdTransformationPair( TAIL_1, new Orientation(0.392091971993757, 0.0, -0.0, 0.9199260217528619), new Position(1.290822307441035E-15, 0.0, -0.14247725903987885) ),
 		new JointIdTransformationPair( TAIL_0, new Orientation(-0.2556558629550482, 0.0, 0.0, 0.9667678520393144), new Position(-2.0252616002365445E-16, 0.0, -0.23027469217777252) ),
@@ -67,29 +74,32 @@ public enum WolfResource implements org.lgna.story.resources.QuadrupedResource {
 	);
 
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
-	public org.lgna.story.resources.JointId[] getTailArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
+	@Override
+	public JointId[] getTailArray(){
 		return WolfResource.TAIL_ARRAY;
 	}
 
 	private final ImplementationAndVisualType resourceType;
-	private WolfResource() {
+	WolfResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private WolfResource( ImplementationAndVisualType resourceType ) {
+	WolfResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.QuadrupedResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds(){
+		return QuadrupedResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.SQuadruped abstraction ) {
-		return new org.lgna.story.implementation.QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public QuadrupedImp createImplementation( SQuadruped abstraction ) {
+		return new QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

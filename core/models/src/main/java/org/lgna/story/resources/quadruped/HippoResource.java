@@ -24,23 +24,30 @@
 package org.lgna.story.resources.quadruped;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SQuadruped;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.QuadrupedImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.QuadrupedResource;
 
-public enum HippoResource implements org.lgna.story.resources.QuadrupedResource {
+public enum HippoResource implements QuadrupedResource {
 	DEFAULT,
 	TUTU;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, HippoResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, HippoResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_TIP = new org.lgna.story.resources.JointId( LEFT_EAR, HippoResource.class );
+	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, HippoResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_TIP = new org.lgna.story.resources.JointId( RIGHT_EAR, HippoResource.class );
+	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, HippoResource.class );
 
-	public static final org.lgna.story.JointedModelPose STANDING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose STANDING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( NECK, new Orientation(0.0022508653460187713, 0.0, -0.0, 0.9999974667993885), new Position(-8.925206679297754E-17, -1.2434497928741312E-16, -0.289608895778656) ),
 		new JointIdTransformationPair( FRONT_LEFT_KNEE, new Orientation(-0.05426715218312285, 0.003955025736003041, -0.010615048389096788, 0.9984621949343192), new Position(-5.684341759025859E-16, 7.105427198782324E-17, -0.26132869720458984) ),
 		new JointIdTransformationPair( FRONT_RIGHT_KNEE, new Orientation(-0.05426584566892725, -0.00396666352640805, 0.010615279448153062, 0.9984622173204863), new Position(8.526512638538789E-16, -7.105427198782324E-17, -0.261328786611557) ),
@@ -55,7 +62,7 @@ public enum HippoResource implements org.lgna.story.resources.QuadrupedResource 
 	);
 
 
-	public static final org.lgna.story.JointedModelPose SWIMMING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose SWIMMING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( BACK_RIGHT_KNEE, new Orientation(-0.5608510909828361, 0.0, 0.0, 0.8279166949297269), new Position(-0.0, 0.0, -0.21854940056800842) ),
 		new JointIdTransformationPair( LEFT_EYE, new Orientation(0.4401825001844438, 0.0, -0.0, 0.8979083285789101), new Position(-0.14629380404949188, 0.2564859092235565, 9.687237325124443E-4) ),
 		new JointIdTransformationPair( FRONT_RIGHT_KNEE, new Orientation(0.12967483877842592, -0.24337506629399683, 0.3849773330245208, 0.880764137752843), new Position(-0.0, 0.0, -0.261328786611557) ),
@@ -84,29 +91,32 @@ public enum HippoResource implements org.lgna.story.resources.QuadrupedResource 
 	);
 
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
-	public org.lgna.story.resources.JointId[] getTailArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
+	@Override
+	public JointId[] getTailArray(){
 		return HippoResource.TAIL_ARRAY;
 	}
 
 	private final ImplementationAndVisualType resourceType;
-	private HippoResource() {
+	HippoResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private HippoResource( ImplementationAndVisualType resourceType ) {
+	HippoResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.QuadrupedResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds(){
+		return QuadrupedResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.SQuadruped abstraction ) {
-		return new org.lgna.story.implementation.QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public QuadrupedImp createImplementation( SQuadruped abstraction ) {
+		return new QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

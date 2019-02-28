@@ -24,37 +24,42 @@
 package org.lgna.story.resources.biped;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum YetiBabyResource implements org.lgna.story.resources.BipedResource {
+public enum YetiBabyResource implements BipedResource {
 	WITH_SCARF,
 	DEFAULT,
 	TUTU;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, YetiBabyResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, YetiBabyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOES = new org.lgna.story.resources.JointId( LEFT_FOOT, YetiBabyResource.class );
+	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, YetiBabyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOES = new org.lgna.story.resources.JointId( RIGHT_FOOT, YetiBabyResource.class );
+	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, YetiBabyResource.class );
 
 	private final ImplementationAndVisualType resourceType;
-	private YetiBabyResource() {
+	YetiBabyResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private YetiBabyResource( ImplementationAndVisualType resourceType ) {
+	YetiBabyResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

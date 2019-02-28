@@ -24,47 +24,53 @@
 package org.lgna.story.resources.prop;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.PropResource;
 
-public enum WaterTowerResource implements org.lgna.story.resources.PropResource {
+public enum WaterTowerResource implements PropResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId ROOT = new org.lgna.story.resources.JointId( null, WaterTowerResource.class );
+	public static final JointId ROOT = new JointId( null, WaterTowerResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId WATER_BARREL = new org.lgna.story.resources.JointId( ROOT, WaterTowerResource.class );
+	public static final JointId WATER_BARREL = new JointId( ROOT, WaterTowerResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId SPOUT_0 = new org.lgna.story.resources.JointId( ROOT, WaterTowerResource.class );
+	public static final JointId SPOUT_0 = new JointId( ROOT, WaterTowerResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId SPOUT_1 = new org.lgna.story.resources.JointId( SPOUT_0, WaterTowerResource.class );
+	public static final JointId SPOUT_1 = new JointId( SPOUT_0, WaterTowerResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId SPOUT_2 = new org.lgna.story.resources.JointId( SPOUT_1, WaterTowerResource.class );
+	public static final JointId SPOUT_2 = new JointId( SPOUT_1, WaterTowerResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public static final org.lgna.story.resources.JointId[] SPOUT_ARRAY = { SPOUT_0, SPOUT_1, SPOUT_2 };
+	public static final JointId[] SPOUT_ARRAY = { SPOUT_0, SPOUT_1, SPOUT_2 };
 
 	private final ImplementationAndVisualType resourceType;
-	private WaterTowerResource() {
+	WaterTowerResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private WaterTowerResource( ImplementationAndVisualType resourceType ) {
+	WaterTowerResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return WaterTowerResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction ) {
-		return new org.lgna.story.implementation.BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
+		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

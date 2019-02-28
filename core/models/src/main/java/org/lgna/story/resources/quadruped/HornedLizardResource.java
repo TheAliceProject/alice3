@@ -24,50 +24,56 @@
 package org.lgna.story.resources.quadruped;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SQuadruped;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.QuadrupedImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.QuadrupedResource;
 
-public enum HornedLizardResource implements org.lgna.story.resources.QuadrupedResource {
+public enum HornedLizardResource implements QuadrupedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, HornedLizardResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, HornedLizardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TONGUE_0 = new org.lgna.story.resources.JointId( MOUTH, HornedLizardResource.class );
+	public static final JointId TONGUE_0 = new JointId( MOUTH, HornedLizardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TONGUE_1 = new org.lgna.story.resources.JointId( TONGUE_0, HornedLizardResource.class );
+	public static final JointId TONGUE_1 = new JointId( TONGUE_0, HornedLizardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TONGUE_2 = new org.lgna.story.resources.JointId( TONGUE_1, HornedLizardResource.class );
+	public static final JointId TONGUE_2 = new JointId( TONGUE_1, HornedLizardResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TONGUE_3 = new org.lgna.story.resources.JointId( TONGUE_2, HornedLizardResource.class );
+	public static final JointId TONGUE_3 = new JointId( TONGUE_2, HornedLizardResource.class );
 
-	public static final org.lgna.story.resources.JointId[] TONGUE_ARRAY = { TONGUE_0, TONGUE_1, TONGUE_2, TONGUE_3 };
+	public static final JointId[] TONGUE_ARRAY = { TONGUE_0, TONGUE_1, TONGUE_2, TONGUE_3 };
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
-	public org.lgna.story.resources.JointId[] getTailArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
+	@Override
+	public JointId[] getTailArray(){
 		return HornedLizardResource.TAIL_ARRAY;
 	}
 
 	private final ImplementationAndVisualType resourceType;
-	private HornedLizardResource() {
+	HornedLizardResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private HornedLizardResource( ImplementationAndVisualType resourceType ) {
+	HornedLizardResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.QuadrupedResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds(){
+		return QuadrupedResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.SQuadruped abstraction ) {
-		return new org.lgna.story.implementation.QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public QuadrupedImp createImplementation( SQuadruped abstraction ) {
+		return new QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

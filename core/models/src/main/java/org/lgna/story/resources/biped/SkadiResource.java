@@ -24,78 +24,85 @@
 package org.lgna.story.resources.biped;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum SkadiResource implements org.lgna.story.resources.BipedResource {
+public enum SkadiResource implements BipedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, SkadiResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_0 = new org.lgna.story.resources.JointId( HEAD, SkadiResource.class );
+	public static final JointId HAIR_0 = new JointId( HEAD, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_1 = new org.lgna.story.resources.JointId( HAIR_0, SkadiResource.class );
+	public static final JointId HAIR_1 = new JointId( HAIR_0, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_2 = new org.lgna.story.resources.JointId( HAIR_1, SkadiResource.class );
+	public static final JointId HAIR_2 = new JointId( HAIR_1, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_3 = new org.lgna.story.resources.JointId( HAIR_2, SkadiResource.class );
+	public static final JointId HAIR_3 = new JointId( HAIR_2, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_4 = new org.lgna.story.resources.JointId( HAIR_3, SkadiResource.class );
+	public static final JointId HAIR_4 = new JointId( HAIR_3, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_5 = new org.lgna.story.resources.JointId( HAIR_4, SkadiResource.class );
+	public static final JointId HAIR_5 = new JointId( HAIR_4, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_6 = new org.lgna.story.resources.JointId( HAIR_5, SkadiResource.class );
+	public static final JointId HAIR_6 = new JointId( HAIR_5, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_7 = new org.lgna.story.resources.JointId( HAIR_6, SkadiResource.class );
+	public static final JointId HAIR_7 = new JointId( HAIR_6, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_8 = new org.lgna.story.resources.JointId( HAIR_7, SkadiResource.class );
+	public static final JointId HAIR_8 = new JointId( HAIR_7, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_9 = new org.lgna.story.resources.JointId( HAIR_8, SkadiResource.class );
+	public static final JointId HAIR_9 = new JointId( HAIR_8, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_THUMB_TIP = new org.lgna.story.resources.JointId( LEFT_THUMB_KNUCKLE, SkadiResource.class );
+	public static final JointId LEFT_THUMB_TIP = new JointId( LEFT_THUMB_KNUCKLE, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_INDEX_FINGER_KNUCKLE, SkadiResource.class );
+	public static final JointId LEFT_INDEX_FINGER_TIP = new JointId( LEFT_INDEX_FINGER_KNUCKLE, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_MIDDLE_10 = new org.lgna.story.resources.JointId( LEFT_HAND, SkadiResource.class );
+	public static final JointId LEFT_MIDDLE_10 = new JointId( LEFT_HAND, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_MIDDLE_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_MIDDLE_FINGER_KNUCKLE, SkadiResource.class );
+	public static final JointId LEFT_MIDDLE_FINGER_TIP = new JointId( LEFT_MIDDLE_FINGER_KNUCKLE, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_RING_10 = new org.lgna.story.resources.JointId( LEFT_HAND, SkadiResource.class );
+	public static final JointId LEFT_RING_10 = new JointId( LEFT_HAND, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( LEFT_RING_10, SkadiResource.class );
+	public static final JointId LEFT_RING_FINGER_KNUCKLE = new JointId( LEFT_RING_10, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_RING_FINGER_KNUCKLE, SkadiResource.class );
+	public static final JointId LEFT_RING_FINGER_TIP = new JointId( LEFT_RING_FINGER_KNUCKLE, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_PINKY_10 = new org.lgna.story.resources.JointId( LEFT_HAND, SkadiResource.class );
+	public static final JointId LEFT_PINKY_10 = new JointId( LEFT_HAND, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_PINKY_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_PINKY_FINGER_KNUCKLE, SkadiResource.class );
+	public static final JointId LEFT_PINKY_FINGER_TIP = new JointId( LEFT_PINKY_FINGER_KNUCKLE, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_THUMB_TIP = new org.lgna.story.resources.JointId( RIGHT_THUMB_KNUCKLE, SkadiResource.class );
+	public static final JointId RIGHT_THUMB_TIP = new JointId( RIGHT_THUMB_KNUCKLE, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_INDEX_FINGER_KNUCKLE, SkadiResource.class );
+	public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId( RIGHT_INDEX_FINGER_KNUCKLE, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_MIDDLE_10 = new org.lgna.story.resources.JointId( RIGHT_HAND, SkadiResource.class );
+	public static final JointId RIGHT_MIDDLE_10 = new JointId( RIGHT_HAND, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_MIDDLE_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, SkadiResource.class );
+	public static final JointId RIGHT_MIDDLE_FINGER_TIP = new JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_10 = new org.lgna.story.resources.JointId( RIGHT_HAND, SkadiResource.class );
+	public static final JointId RIGHT_RING_10 = new JointId( RIGHT_HAND, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( RIGHT_RING_10, SkadiResource.class );
+	public static final JointId RIGHT_RING_FINGER_KNUCKLE = new JointId( RIGHT_RING_10, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_RING_FINGER_KNUCKLE, SkadiResource.class );
+	public static final JointId RIGHT_RING_FINGER_TIP = new JointId( RIGHT_RING_FINGER_KNUCKLE, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_PINKY_10 = new org.lgna.story.resources.JointId( RIGHT_HAND, SkadiResource.class );
+	public static final JointId RIGHT_PINKY_10 = new JointId( RIGHT_HAND, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_PINKY_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_PINKY_FINGER_KNUCKLE, SkadiResource.class );
+	public static final JointId RIGHT_PINKY_FINGER_TIP = new JointId( RIGHT_PINKY_FINGER_KNUCKLE, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOES = new org.lgna.story.resources.JointId( LEFT_FOOT, SkadiResource.class );
+	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, SkadiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOES = new org.lgna.story.resources.JointId( RIGHT_FOOT, SkadiResource.class );
+	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, SkadiResource.class );
 
-	public static final org.lgna.story.JointedModelPose POWER_STANCE_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose POWER_STANCE_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_PINKY_FINGER_TIP, new Orientation(0.0, 0.0, 0.0, 1.0), new Position(1.2434497928741312E-16, -1.4210854397564648E-16, -0.02273881435394287) ),
 		new JointIdTransformationPair( LEFT_EYE, new Orientation(0.09600571854815176, 0.2799007737975888, -0.028144141738189556, 0.9548017417869454), new Position(-0.04338232800364494, 0.142164409160614, -0.073753222823143) ),
 		new JointIdTransformationPair( SPINE_UPPER, new Orientation(-0.1610564079627629, 0.0, 0.0, 0.9869452028629209), new Position(3.0589787561811205E-16, 6.394884346555194E-16, -0.27901291847229004) ),
@@ -155,7 +162,7 @@ public enum SkadiResource implements org.lgna.story.resources.BipedResource {
 	);
 
 
-	public static final org.lgna.story.JointedModelPose BOW_DRAW_MID_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose BOW_DRAW_MID_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_PINKY_FINGER_TIP, new Orientation(-0.5083801031745258, 0.0, 0.0, 0.8611327834290473), new Position(-0.0, 0.0, -0.02273881435394287) ),
 		new JointIdTransformationPair( RIGHT_RING_FINGER_KNUCKLE, new Orientation(-0.5289194386826935, -0.00739636631782105, -0.03368822807140712, 0.8479708865511161), new Position(-0.0, 0.0, -0.02180512621998787) ),
 		new JointIdTransformationPair( RIGHT_MIDDLE_10, new Orientation(-0.550120437951657, 0.04852838721811353, -0.027328159606814124, 0.83322606240707), new Position(-0.0038367819506675005, 0.0017272414406761527, -0.03253864124417305) ),
@@ -200,7 +207,7 @@ public enum SkadiResource implements org.lgna.story.resources.BipedResource {
 	);
 
 
-	public static final org.lgna.story.JointedModelPose BOW_DRAW_START_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose BOW_DRAW_START_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_PINKY_FINGER_TIP, new Orientation(-0.5083801031745258, 0.0, 0.0, 0.8611327834290473), new Position(-0.0, 0.0, -0.02273881435394287) ),
 		new JointIdTransformationPair( RIGHT_RING_FINGER_KNUCKLE, new Orientation(-0.5289194386826935, -0.00739636631782105, -0.03368822807140712, 0.8479708865511161), new Position(-0.0, 0.0, -0.02180512621998787) ),
 		new JointIdTransformationPair( RIGHT_MIDDLE_10, new Orientation(-0.550120437951657, 0.04852838721811353, -0.027328159606814124, 0.83322606240707), new Position(-0.0038367819506675005, 0.0017272414406761527, -0.03253864124417305) ),
@@ -245,7 +252,7 @@ public enum SkadiResource implements org.lgna.story.resources.BipedResource {
 	);
 
 
-	public static final org.lgna.story.JointedModelPose BOW_DRAW_END_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose BOW_DRAW_END_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_PINKY_FINGER_TIP, new Orientation(-0.5083801031745258, 0.0, 0.0, 0.8611327834290473), new Position(-0.0, 0.0, -0.02273881435394287) ),
 		new JointIdTransformationPair( RIGHT_RING_FINGER_KNUCKLE, new Orientation(-0.5289194386826935, -0.00739636631782105, -0.03368822807140712, 0.8479708865511161), new Position(-0.0, 0.0, -0.02180512621998787) ),
 		new JointIdTransformationPair( RIGHT_MIDDLE_10, new Orientation(-0.550120437951657, 0.04852838721811353, -0.027328159606814124, 0.83322606240707), new Position(-0.0038367819506675005, 0.0017272414406761527, -0.03253864124417305) ),
@@ -290,22 +297,24 @@ public enum SkadiResource implements org.lgna.story.resources.BipedResource {
 	);
 
 
-	public static final org.lgna.story.resources.JointId[] HAIR_ARRAY = { HAIR_0, HAIR_1, HAIR_2, HAIR_3, HAIR_4, HAIR_5, HAIR_6, HAIR_7, HAIR_8, HAIR_9 };
+	public static final JointId[] HAIR_ARRAY = { HAIR_0, HAIR_1, HAIR_2, HAIR_3, HAIR_4, HAIR_5, HAIR_6, HAIR_7, HAIR_8, HAIR_9 };
 
 	private final ImplementationAndVisualType resourceType;
-	private SkadiResource() {
+	SkadiResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private SkadiResource( ImplementationAndVisualType resourceType ) {
+	SkadiResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

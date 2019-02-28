@@ -24,22 +24,29 @@
 package org.lgna.story.resources.quadruped;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SQuadruped;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.QuadrupedImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.QuadrupedResource;
 
-public enum GopherResource implements org.lgna.story.resources.QuadrupedResource {
+public enum GopherResource implements QuadrupedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, GopherResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, GopherResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_TIP = new org.lgna.story.resources.JointId( LEFT_EAR, GopherResource.class );
+	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, GopherResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_TIP = new org.lgna.story.resources.JointId( RIGHT_EAR, GopherResource.class );
+	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, GopherResource.class );
 
-	public static final org.lgna.story.JointedModelPose STANDING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose STANDING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( BACK_RIGHT_ANKLE, new Orientation(0.10769756659306254, 0.0, -0.0, 0.9941837024161746), new Position(3.543831903073829E-15, -5.127441138341737E-9, -0.04050196334719658) ),
 		new JointIdTransformationPair( BACK_RIGHT_KNEE, new Orientation(-0.2427685443265368, 0.0, 0.0, 0.9700842406129347), new Position(2.7444712406404217E-15, -9.6486743927926E-8, -0.06502123922109604) ),
 		new JointIdTransformationPair( FRONT_RIGHT_KNEE, new Orientation(0.21759046043616914, 0.0, -0.0, 0.9760401587676482), new Position(-8.48055048408014E-9, 1.8329589579479943E-7, -0.08825784176588058) ),
@@ -66,7 +73,7 @@ public enum GopherResource implements org.lgna.story.resources.QuadrupedResource
 	);
 
 
-	public static final org.lgna.story.JointedModelPose CROUCH_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose CROUCH_POSE = new JointedModelPose(
 		new JointIdTransformationPair( BACK_RIGHT_ANKLE, new Orientation(0.32906592654394085, 0.0, -0.0, 0.9443069500897352), new Position(-0.0, -5.127441138341737E-9, -0.04050196334719658) ),
 		new JointIdTransformationPair( BACK_RIGHT_KNEE, new Orientation(-0.5877016847467218, 0.0, 0.0, 0.809077703157036), new Position(-0.0, -9.6486743927926E-8, -0.06502123922109604) ),
 		new JointIdTransformationPair( FRONT_RIGHT_KNEE, new Orientation(0.3413932815288471, 0.0, -0.0, 0.9399205430923219), new Position(-8.48055048408014E-9, 1.8329589579479943E-7, -0.08825784176588058) ),
@@ -93,29 +100,32 @@ public enum GopherResource implements org.lgna.story.resources.QuadrupedResource
 	);
 
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
-	public org.lgna.story.resources.JointId[] getTailArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
+	@Override
+	public JointId[] getTailArray(){
 		return GopherResource.TAIL_ARRAY;
 	}
 
 	private final ImplementationAndVisualType resourceType;
-	private GopherResource() {
+	GopherResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private GopherResource( ImplementationAndVisualType resourceType ) {
+	GopherResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.QuadrupedResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds(){
+		return QuadrupedResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.SQuadruped abstraction ) {
-		return new org.lgna.story.implementation.QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public QuadrupedImp createImplementation( SQuadruped abstraction ) {
+		return new QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

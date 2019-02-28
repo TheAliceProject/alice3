@@ -24,56 +24,63 @@
 package org.lgna.story.resources.biped;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum BlackCatResource implements org.lgna.story.resources.BipedResource {
+public enum BlackCatResource implements BipedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, BlackCatResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_EAR = new org.lgna.story.resources.JointId( HEAD, BlackCatResource.class );
+	public static final JointId LEFT_EAR = new JointId( HEAD, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_TIP = new org.lgna.story.resources.JointId( LEFT_EAR, BlackCatResource.class );
+	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR = new org.lgna.story.resources.JointId( HEAD, BlackCatResource.class );
+	public static final JointId RIGHT_EAR = new JointId( HEAD, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_TIP = new org.lgna.story.resources.JointId( RIGHT_EAR, BlackCatResource.class );
+	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_MIDDLE_10 = new org.lgna.story.resources.JointId( LEFT_HAND, BlackCatResource.class );
+	public static final JointId LEFT_MIDDLE_10 = new JointId( LEFT_HAND, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_MIDDLE_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_MIDDLE_FINGER_KNUCKLE, BlackCatResource.class );
+	public static final JointId LEFT_MIDDLE_FINGER_TIP = new JointId( LEFT_MIDDLE_FINGER_KNUCKLE, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_PINKY_10 = new org.lgna.story.resources.JointId( LEFT_HAND, BlackCatResource.class );
+	public static final JointId LEFT_PINKY_10 = new JointId( LEFT_HAND, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_PINKY_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_PINKY_FINGER_KNUCKLE, BlackCatResource.class );
+	public static final JointId LEFT_PINKY_FINGER_TIP = new JointId( LEFT_PINKY_FINGER_KNUCKLE, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_INDEX_FINGER_KNUCKLE, BlackCatResource.class );
+	public static final JointId LEFT_INDEX_FINGER_TIP = new JointId( LEFT_INDEX_FINGER_KNUCKLE, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_MIDDLE_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, BlackCatResource.class );
+	public static final JointId RIGHT_MIDDLE_FINGER_TIP = new JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_INDEX_FINGER_KNUCKLE, BlackCatResource.class );
+	public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId( RIGHT_INDEX_FINGER_KNUCKLE, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_PINKY_10 = new org.lgna.story.resources.JointId( RIGHT_HAND, BlackCatResource.class );
+	public static final JointId RIGHT_PINKY_10 = new JointId( RIGHT_HAND, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_PINKY_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_PINKY_FINGER_KNUCKLE, BlackCatResource.class );
+	public static final JointId RIGHT_PINKY_FINGER_TIP = new JointId( RIGHT_PINKY_FINGER_KNUCKLE, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOES = new org.lgna.story.resources.JointId( LEFT_FOOT, BlackCatResource.class );
+	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOES = new org.lgna.story.resources.JointId( RIGHT_FOOT, BlackCatResource.class );
+	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME, methodNameHint="getTail")
-	public static final org.lgna.story.resources.JointId TAIL_0 = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, BlackCatResource.class );
+	public static final JointId TAIL_0 = new JointId( PELVIS_LOWER_BODY, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_1 = new org.lgna.story.resources.JointId( TAIL_0, BlackCatResource.class );
+	public static final JointId TAIL_1 = new JointId( TAIL_0, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_2 = new org.lgna.story.resources.JointId( TAIL_1, BlackCatResource.class );
+	public static final JointId TAIL_2 = new JointId( TAIL_1, BlackCatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_3 = new org.lgna.story.resources.JointId( TAIL_2, BlackCatResource.class );
+	public static final JointId TAIL_3 = new JointId( TAIL_2, BlackCatResource.class );
 
-	public static final org.lgna.story.JointedModelPose STANDING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose STANDING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_HAND, new Orientation(0.2727423655177994, -0.03029732835356901, 0.02650303819642, 0.9612446425924829), new Position(2.220445916901415E-17, 4.44089183380283E-17, -0.027636880055069923) ),
 		new JointIdTransformationPair( RIGHT_WRIST, new Orientation(-0.18209673314977978, -0.025798338270240025, -0.013040863240693791, 0.9828556157465905), new Position(-1.3107292757674055E-13, 1.846913681019524E-12, -0.042175695300102234) ),
 		new JointIdTransformationPair( LEFT_FOOT, new Orientation(0.32027099669152587, 0.012374577008681066, 0.004183981785786851, 0.9472359013564092), new Position(-0.0, 0.0, -0.042510129511356354) ),
@@ -101,7 +108,7 @@ public enum BlackCatResource implements org.lgna.story.resources.BipedResource {
 	);
 
 
-	public static final org.lgna.story.JointedModelPose RESTING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose RESTING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_HAND, new Orientation(-0.03139075779155093, -0.03690439438533802, 0.016075053804207762, 0.9986962894922137), new Position(4.44089183380283E-17, 8.88178366760566E-17, -0.027636880055069923) ),
 		new JointIdTransformationPair( RIGHT_WRIST, new Orientation(-0.3574109358804209, -0.013353488579581957, -0.01382696527981797, 0.9337493894439703), new Position(-2.621458551534811E-13, 1.846913681019524E-12, -0.042175695300102234) ),
 		new JointIdTransformationPair( LEFT_FOOT, new Orientation(0.32027099669152587, 0.012374577008681066, 0.004183981785786851, 0.9472359013564092), new Position(1.776356799695581E-17, 4.44089183380283E-17, -0.042510129511356354) ),
@@ -128,22 +135,24 @@ public enum BlackCatResource implements org.lgna.story.resources.BipedResource {
 	);
 
 
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
 
 	private final ImplementationAndVisualType resourceType;
-	private BlackCatResource() {
+	BlackCatResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private BlackCatResource( ImplementationAndVisualType resourceType ) {
+	BlackCatResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

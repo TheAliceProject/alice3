@@ -24,38 +24,43 @@
 package org.lgna.story.resources.marinemammal;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SSwimmer;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.SwimmerImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.MarineMammalResource;
 
-public enum ManateeResource implements org.lgna.story.resources.MarineMammalResource {
+public enum ManateeResource implements MarineMammalResource {
 	DEFAULT,
 	MOSSY;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, ManateeResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, ManateeResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FRONT_LEFT_FIN_TIP = new org.lgna.story.resources.JointId( FRONT_LEFT_FIN, ManateeResource.class );
+	public static final JointId FRONT_LEFT_FIN_TIP = new JointId( FRONT_LEFT_FIN, ManateeResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FRONT_RIGHT_FIN_TIP = new org.lgna.story.resources.JointId( FRONT_RIGHT_FIN, ManateeResource.class );
+	public static final JointId FRONT_RIGHT_FIN_TIP = new JointId( FRONT_RIGHT_FIN, ManateeResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId FIN_TIP = new org.lgna.story.resources.JointId( TAIL, ManateeResource.class );
+	public static final JointId FIN_TIP = new JointId( TAIL, ManateeResource.class );
 
 	private final ImplementationAndVisualType resourceType;
-	private ManateeResource() {
+	ManateeResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private ManateeResource( ImplementationAndVisualType resourceType ) {
+	ManateeResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.SwimmerImp createImplementation( org.lgna.story.SSwimmer abstraction ) {
-		return new org.lgna.story.implementation.SwimmerImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public SwimmerImp createImplementation( SSwimmer abstraction ) {
+		return new SwimmerImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

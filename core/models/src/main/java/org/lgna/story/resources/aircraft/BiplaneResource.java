@@ -23,60 +23,67 @@
 
 package org.lgna.story.resources.aircraft;
 
-import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.project.annotations.FieldTemplate;
+import org.lgna.project.annotations.Visibility;
+import org.lgna.story.STransport;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.TransportImp;
+import org.lgna.story.resources.AircraftResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum BiplaneResource implements org.lgna.story.resources.AircraftResource {
+public enum BiplaneResource implements AircraftResource {
 	PLANE2,
 	PLANE3,
 	PLANE1,
 	PLANE4,
 	PLANE5;
 
+@FieldTemplate(visibility= Visibility.PRIME_TIME)
+	public static final JointId BIPLANE_ROOT = new JointId( null, BiplaneResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId BIPLANE_ROOT = new org.lgna.story.resources.JointId( null, BiplaneResource.class );
+	public static final JointId BIPLANE_PROPELLER = new JointId( BIPLANE_ROOT, BiplaneResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId BIPLANE_PROPELLER = new org.lgna.story.resources.JointId( BIPLANE_ROOT, BiplaneResource.class );
+	public static final JointId LEFT_BIPLANE_TOP_WING_FIN = new JointId( BIPLANE_ROOT, BiplaneResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_BIPLANE_TOP_WING_FIN = new org.lgna.story.resources.JointId( BIPLANE_ROOT, BiplaneResource.class );
+	public static final JointId LEFT_BIPLANE_BOTTOM_WING_FIN = new JointId( BIPLANE_ROOT, BiplaneResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_BIPLANE_BOTTOM_WING_FIN = new org.lgna.story.resources.JointId( BIPLANE_ROOT, BiplaneResource.class );
+	public static final JointId LEFT_BIPLANE_TAIL_FIN = new JointId( BIPLANE_ROOT, BiplaneResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_BIPLANE_TAIL_FIN = new org.lgna.story.resources.JointId( BIPLANE_ROOT, BiplaneResource.class );
+	public static final JointId LEFT_BIPLANE_WHEEL = new JointId( BIPLANE_ROOT, BiplaneResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_BIPLANE_WHEEL = new org.lgna.story.resources.JointId( BIPLANE_ROOT, BiplaneResource.class );
+	public static final JointId RIGHT_BIPLANE_TOP_WING_FIN = new JointId( BIPLANE_ROOT, BiplaneResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_BIPLANE_TOP_WING_FIN = new org.lgna.story.resources.JointId( BIPLANE_ROOT, BiplaneResource.class );
+	public static final JointId RIGHT_BIPLANE_BOTTOM_WING_FIN = new JointId( BIPLANE_ROOT, BiplaneResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_BIPLANE_BOTTOM_WING_FIN = new org.lgna.story.resources.JointId( BIPLANE_ROOT, BiplaneResource.class );
+	public static final JointId RIGHT_BIPLANE_TAIL_FIN = new JointId( BIPLANE_ROOT, BiplaneResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_BIPLANE_TAIL_FIN = new org.lgna.story.resources.JointId( BIPLANE_ROOT, BiplaneResource.class );
-@FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_BIPLANE_WHEEL = new org.lgna.story.resources.JointId( BIPLANE_ROOT, BiplaneResource.class );
+	public static final JointId RIGHT_BIPLANE_WHEEL = new JointId( BIPLANE_ROOT, BiplaneResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { BIPLANE_ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { BIPLANE_ROOT };
 
 	private final ImplementationAndVisualType resourceType;
-	private BiplaneResource() {
+	BiplaneResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private BiplaneResource( ImplementationAndVisualType resourceType ) {
+	BiplaneResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return BiplaneResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.TransportImp createImplementation( org.lgna.story.STransport abstraction ) {
-		return new org.lgna.story.implementation.TransportImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public TransportImp createImplementation( STransport abstraction ) {
+		return new TransportImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

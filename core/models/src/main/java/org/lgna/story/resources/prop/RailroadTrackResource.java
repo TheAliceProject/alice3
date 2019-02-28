@@ -24,12 +24,16 @@
 package org.lgna.story.resources.prop;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointArrayId;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.PropResource;
 
-public enum RailroadTrackResource implements org.lgna.story.resources.PropResource {
+public enum RailroadTrackResource implements PropResource {
 	STRAIGHT_TRESTLE,
 	SLIGHT_CURVE_TRESTLE,
 	RIGHT_CURVE_TRESTLE,
@@ -37,32 +41,35 @@ public enum RailroadTrackResource implements org.lgna.story.resources.PropResour
 	RIGHT_CURVE_TRESTLE_MIRROR;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId ROOT = new org.lgna.story.resources.JointId( null, RailroadTrackResource.class );
+	public static final JointId ROOT = new JointId( null, RailroadTrackResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId NEXT_TRACK_MARKER = new org.lgna.story.resources.JointId( ROOT, RailroadTrackResource.class );
+	public static final JointId NEXT_TRACK_MARKER = new JointId( ROOT, RailroadTrackResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointArrayId PATH_ARRAY = new org.lgna.story.resources.JointArrayId( "PATH", ROOT, RailroadTrackResource.class );
+	public static final JointArrayId PATH_ARRAY = new JointArrayId( "PATH", ROOT, RailroadTrackResource.class );
 
 	private final ImplementationAndVisualType resourceType;
-	private RailroadTrackResource() {
+	RailroadTrackResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private RailroadTrackResource( ImplementationAndVisualType resourceType ) {
+	RailroadTrackResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return RailroadTrackResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction ) {
-		return new org.lgna.story.implementation.BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
+		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

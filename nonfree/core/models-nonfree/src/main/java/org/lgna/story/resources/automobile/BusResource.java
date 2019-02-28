@@ -24,39 +24,45 @@
 package org.lgna.story.resources.automobile;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.STransport;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.TransportImp;
+import org.lgna.story.resources.AutomobileResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum BusResource implements org.lgna.story.resources.AutomobileResource {
+public enum BusResource implements AutomobileResource {
 	TEAM( ImplementationAndVisualType.SIMS2 ),
 	SCHOOL( ImplementationAndVisualType.SIMS2 );
 
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId DOOR_1 = new org.lgna.story.resources.JointId( ROOT, BusResource.class );
+	public static final JointId DOOR_1 = new JointId( ROOT, BusResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId DOOR_2 = new org.lgna.story.resources.JointId( DOOR_1, BusResource.class );
+	public static final JointId DOOR_2 = new JointId( DOOR_1, BusResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId DOOR_HANDLE = new org.lgna.story.resources.JointId( ROOT, BusResource.class );
+	public static final JointId DOOR_HANDLE = new JointId( ROOT, BusResource.class );
 
 	private final ImplementationAndVisualType resourceType;
-	private BusResource() {
+	BusResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private BusResource( ImplementationAndVisualType resourceType ) {
+	BusResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.AutomobileResource.JOINT_ID_ROOTS;
+	@Override
+	public JointId[] getRootJointIds(){
+		return AutomobileResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.TransportImp createImplementation( org.lgna.story.STransport abstraction ) {
-		return new org.lgna.story.implementation.TransportImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public TransportImp createImplementation( STransport abstraction ) {
+		return new TransportImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

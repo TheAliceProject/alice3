@@ -24,97 +24,102 @@
 package org.lgna.story.resources.biped;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum ValkyrieResource implements org.lgna.story.resources.BipedResource {
+public enum ValkyrieResource implements BipedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, ValkyrieResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HEAD_0 = new org.lgna.story.resources.JointId( HEAD, ValkyrieResource.class );
+	public static final JointId HEAD_0 = new JointId( HEAD, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId HEAD_TOP = new org.lgna.story.resources.JointId( HEAD_0, ValkyrieResource.class );
+	public static final JointId HEAD_TOP = new JointId( HEAD_0, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId CAPE_TOP_0 = new org.lgna.story.resources.JointId( NECK, ValkyrieResource.class );
+	public static final JointId CAPE_TOP_0 = new JointId( NECK, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId CAPE_0 = new org.lgna.story.resources.JointId( CAPE_TOP_0, ValkyrieResource.class );
+	public static final JointId CAPE_0 = new JointId( CAPE_TOP_0, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId CAPE_1 = new org.lgna.story.resources.JointId( CAPE_0, ValkyrieResource.class );
+	public static final JointId CAPE_1 = new JointId( CAPE_0, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId CAPE_2 = new org.lgna.story.resources.JointId( CAPE_1, ValkyrieResource.class );
+	public static final JointId CAPE_2 = new JointId( CAPE_1, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_TOP_0 = new org.lgna.story.resources.JointId( NECK, ValkyrieResource.class );
+	public static final JointId HAIR_TOP_0 = new JointId( NECK, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_0 = new org.lgna.story.resources.JointId( HAIR_TOP_0, ValkyrieResource.class );
+	public static final JointId HAIR_0 = new JointId( HAIR_TOP_0, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_1 = new org.lgna.story.resources.JointId( HAIR_0, ValkyrieResource.class );
+	public static final JointId HAIR_1 = new JointId( HAIR_0, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_2 = new org.lgna.story.resources.JointId( HAIR_1, ValkyrieResource.class );
+	public static final JointId HAIR_2 = new JointId( HAIR_1, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId HAIR_BOTTOM_0 = new org.lgna.story.resources.JointId( HAIR_2, ValkyrieResource.class );
+	public static final JointId HAIR_BOTTOM_0 = new JointId( HAIR_2, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_THUMB_TIP = new org.lgna.story.resources.JointId( RIGHT_THUMB_KNUCKLE, ValkyrieResource.class );
+	public static final JointId RIGHT_THUMB_TIP = new JointId( RIGHT_THUMB_KNUCKLE, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_INDEX_FINGER_KNUCKLE, ValkyrieResource.class );
+	public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId( RIGHT_INDEX_FINGER_KNUCKLE, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_MIDDLE_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, ValkyrieResource.class );
+	public static final JointId RIGHT_MIDDLE_FINGER_TIP = new JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER = new org.lgna.story.resources.JointId( RIGHT_HAND, ValkyrieResource.class );
+	public static final JointId RIGHT_RING_FINGER = new JointId( RIGHT_HAND, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( RIGHT_RING_FINGER, ValkyrieResource.class );
+	public static final JointId RIGHT_RING_FINGER_KNUCKLE = new JointId( RIGHT_RING_FINGER, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_RING_FINGER_KNUCKLE, ValkyrieResource.class );
+	public static final JointId RIGHT_RING_FINGER_TIP = new JointId( RIGHT_RING_FINGER_KNUCKLE, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_PINKY_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_PINKY_FINGER_KNUCKLE, ValkyrieResource.class );
+	public static final JointId RIGHT_PINKY_FINGER_TIP = new JointId( RIGHT_PINKY_FINGER_KNUCKLE, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_THUMB_TIP = new org.lgna.story.resources.JointId( LEFT_THUMB_KNUCKLE, ValkyrieResource.class );
+	public static final JointId LEFT_THUMB_TIP = new JointId( LEFT_THUMB_KNUCKLE, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_INDEX_FINGER_KNUCKLE, ValkyrieResource.class );
+	public static final JointId LEFT_INDEX_FINGER_TIP = new JointId( LEFT_INDEX_FINGER_KNUCKLE, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_MIDDLE_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_MIDDLE_FINGER_KNUCKLE, ValkyrieResource.class );
+	public static final JointId LEFT_MIDDLE_FINGER_TIP = new JointId( LEFT_MIDDLE_FINGER_KNUCKLE, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER = new org.lgna.story.resources.JointId( LEFT_HAND, ValkyrieResource.class );
+	public static final JointId LEFT_RING_FINGER = new JointId( LEFT_HAND, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( LEFT_RING_FINGER, ValkyrieResource.class );
+	public static final JointId LEFT_RING_FINGER_KNUCKLE = new JointId( LEFT_RING_FINGER, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_RING_FINGER_KNUCKLE, ValkyrieResource.class );
+	public static final JointId LEFT_RING_FINGER_TIP = new JointId( LEFT_RING_FINGER_KNUCKLE, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_PINKY_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_PINKY_FINGER_KNUCKLE, ValkyrieResource.class );
+	public static final JointId LEFT_PINKY_FINGER_TIP = new JointId( LEFT_PINKY_FINGER_KNUCKLE, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOES = new org.lgna.story.resources.JointId( LEFT_FOOT, ValkyrieResource.class );
+	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, ValkyrieResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOES = new org.lgna.story.resources.JointId( RIGHT_FOOT, ValkyrieResource.class );
+	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, ValkyrieResource.class );
 
-	public static final org.lgna.story.resources.JointId[] HAIR_BOTTOM_ARRAY = { HAIR_BOTTOM_0 };
+	public static final JointId[] HAIR_BOTTOM_ARRAY = { HAIR_BOTTOM_0 };
 
-	public static final org.lgna.story.resources.JointId[] CAPE_ARRAY = { CAPE_0, CAPE_1, CAPE_2 };
+	public static final JointId[] CAPE_ARRAY = { CAPE_0, CAPE_1, CAPE_2 };
 
-	public static final org.lgna.story.resources.JointId[] HAIR_TOP_ARRAY = { HAIR_TOP_0 };
+	public static final JointId[] HAIR_TOP_ARRAY = { HAIR_TOP_0 };
 
-	public static final org.lgna.story.resources.JointId[] CAPE_TOP_ARRAY = { CAPE_TOP_0 };
+	public static final JointId[] CAPE_TOP_ARRAY = { CAPE_TOP_0 };
 
-	public static final org.lgna.story.resources.JointId[] HEAD_ARRAY = { HEAD_0 };
+	public static final JointId[] HEAD_ARRAY = { HEAD_0 };
 
-	public static final org.lgna.story.resources.JointId[] HAIR_ARRAY = { HAIR_0, HAIR_1, HAIR_2 };
+	public static final JointId[] HAIR_ARRAY = { HAIR_0, HAIR_1, HAIR_2 };
 
 	private final ImplementationAndVisualType resourceType;
-	private ValkyrieResource() {
+	ValkyrieResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private ValkyrieResource( ImplementationAndVisualType resourceType ) {
+	ValkyrieResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

@@ -24,65 +24,71 @@
 package org.lgna.story.resources.prop;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.PropResource;
 
-public enum StaircaseDownResource implements org.lgna.story.resources.PropResource {
+public enum StaircaseDownResource implements PropResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId ROOT = new org.lgna.story.resources.JointId( null, StaircaseDownResource.class );
+	public static final JointId ROOT = new JointId( null, StaircaseDownResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId MARKER_TOP_OF_STAIRS = new org.lgna.story.resources.JointId( ROOT, StaircaseDownResource.class );
+	public static final JointId MARKER_TOP_OF_STAIRS = new JointId( ROOT, StaircaseDownResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId MARKER_BASE_OF_STAIRS = new org.lgna.story.resources.JointId( ROOT, StaircaseDownResource.class );
+	public static final JointId MARKER_BASE_OF_STAIRS = new JointId( ROOT, StaircaseDownResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_00 = new org.lgna.story.resources.JointId( ROOT, StaircaseDownResource.class );
+	public static final JointId STAIRS_00 = new JointId( ROOT, StaircaseDownResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_01 = new org.lgna.story.resources.JointId( STAIRS_00, StaircaseDownResource.class );
+	public static final JointId STAIRS_01 = new JointId( STAIRS_00, StaircaseDownResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_02 = new org.lgna.story.resources.JointId( STAIRS_01, StaircaseDownResource.class );
+	public static final JointId STAIRS_02 = new JointId( STAIRS_01, StaircaseDownResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_03 = new org.lgna.story.resources.JointId( STAIRS_02, StaircaseDownResource.class );
+	public static final JointId STAIRS_03 = new JointId( STAIRS_02, StaircaseDownResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_04 = new org.lgna.story.resources.JointId( STAIRS_03, StaircaseDownResource.class );
+	public static final JointId STAIRS_04 = new JointId( STAIRS_03, StaircaseDownResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_05 = new org.lgna.story.resources.JointId( STAIRS_04, StaircaseDownResource.class );
+	public static final JointId STAIRS_05 = new JointId( STAIRS_04, StaircaseDownResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_06 = new org.lgna.story.resources.JointId( STAIRS_05, StaircaseDownResource.class );
+	public static final JointId STAIRS_06 = new JointId( STAIRS_05, StaircaseDownResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_07 = new org.lgna.story.resources.JointId( STAIRS_06, StaircaseDownResource.class );
+	public static final JointId STAIRS_07 = new JointId( STAIRS_06, StaircaseDownResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_08 = new org.lgna.story.resources.JointId( STAIRS_07, StaircaseDownResource.class );
+	public static final JointId STAIRS_08 = new JointId( STAIRS_07, StaircaseDownResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_09 = new org.lgna.story.resources.JointId( STAIRS_08, StaircaseDownResource.class );
+	public static final JointId STAIRS_09 = new JointId( STAIRS_08, StaircaseDownResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId STAIRS_10 = new org.lgna.story.resources.JointId( STAIRS_09, StaircaseDownResource.class );
+	public static final JointId STAIRS_10 = new JointId( STAIRS_09, StaircaseDownResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public static final org.lgna.story.resources.JointId[] STAIRS_ARRAY = { STAIRS_00, STAIRS_01, STAIRS_02, STAIRS_03, STAIRS_04, STAIRS_05, STAIRS_06, STAIRS_07, STAIRS_08, STAIRS_09, STAIRS_10 };
+	public static final JointId[] STAIRS_ARRAY = { STAIRS_00, STAIRS_01, STAIRS_02, STAIRS_03, STAIRS_04, STAIRS_05, STAIRS_06, STAIRS_07, STAIRS_08, STAIRS_09, STAIRS_10 };
 
 	private final ImplementationAndVisualType resourceType;
-	private StaircaseDownResource() {
+	StaircaseDownResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private StaircaseDownResource( ImplementationAndVisualType resourceType ) {
+	StaircaseDownResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return StaircaseDownResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction ) {
-		return new org.lgna.story.implementation.BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
+		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

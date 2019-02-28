@@ -24,61 +24,67 @@
 package org.lgna.story.resources.prop;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.PropResource;
 
-public enum RibCageResource implements org.lgna.story.resources.PropResource {
+public enum RibCageResource implements PropResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId ROOT = new org.lgna.story.resources.JointId( null, RibCageResource.class );
+	public static final JointId ROOT = new JointId( null, RibCageResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId SPINE_BASE = new org.lgna.story.resources.JointId( ROOT, RibCageResource.class );
+	public static final JointId SPINE_BASE = new JointId( ROOT, RibCageResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId SPINE_MIDDLE = new org.lgna.story.resources.JointId( SPINE_BASE, RibCageResource.class );
+	public static final JointId SPINE_MIDDLE = new JointId( SPINE_BASE, RibCageResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId SPINE_UPPER = new org.lgna.story.resources.JointId( SPINE_MIDDLE, RibCageResource.class );
+	public static final JointId SPINE_UPPER = new JointId( SPINE_MIDDLE, RibCageResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId NECK = new org.lgna.story.resources.JointId( SPINE_UPPER, RibCageResource.class );
+	public static final JointId NECK = new JointId( SPINE_UPPER, RibCageResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId HEAD = new org.lgna.story.resources.JointId( NECK, RibCageResource.class );
+	public static final JointId HEAD = new JointId( NECK, RibCageResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_CLAVICLE = new org.lgna.story.resources.JointId( SPINE_UPPER, RibCageResource.class );
+	public static final JointId LEFT_CLAVICLE = new JointId( SPINE_UPPER, RibCageResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_SHOULDER = new org.lgna.story.resources.JointId( LEFT_CLAVICLE, RibCageResource.class );
+	public static final JointId LEFT_SHOULDER = new JointId( LEFT_CLAVICLE, RibCageResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_CLAVICLE = new org.lgna.story.resources.JointId( SPINE_UPPER, RibCageResource.class );
+	public static final JointId RIGHT_CLAVICLE = new JointId( SPINE_UPPER, RibCageResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_SHOULDER = new org.lgna.story.resources.JointId( RIGHT_CLAVICLE, RibCageResource.class );
+	public static final JointId RIGHT_SHOULDER = new JointId( RIGHT_CLAVICLE, RibCageResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId PELVIS_LOWER_BODY = new org.lgna.story.resources.JointId( ROOT, RibCageResource.class );
+	public static final JointId PELVIS_LOWER_BODY = new JointId( ROOT, RibCageResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_HIP = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, RibCageResource.class );
+	public static final JointId LEFT_HIP = new JointId( PELVIS_LOWER_BODY, RibCageResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_HIP = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, RibCageResource.class );
+	public static final JointId RIGHT_HIP = new JointId( PELVIS_LOWER_BODY, RibCageResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
 	private final ImplementationAndVisualType resourceType;
-	private RibCageResource() {
+	RibCageResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private RibCageResource( ImplementationAndVisualType resourceType ) {
+	RibCageResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return RibCageResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction ) {
-		return new org.lgna.story.implementation.BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
+		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

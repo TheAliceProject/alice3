@@ -24,32 +24,39 @@
 package org.lgna.story.resources.biped;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum GhostResource implements org.lgna.story.resources.BipedResource {
+public enum GhostResource implements BipedResource {
 	SHEET,
 	MITTS,
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, GhostResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, GhostResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_INDEX_FINGER_KNUCKLE, GhostResource.class );
+	public static final JointId LEFT_INDEX_FINGER_TIP = new JointId( LEFT_INDEX_FINGER_KNUCKLE, GhostResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_THUMB_TIP = new org.lgna.story.resources.JointId( LEFT_THUMB_KNUCKLE, GhostResource.class );
+	public static final JointId LEFT_THUMB_TIP = new JointId( LEFT_THUMB_KNUCKLE, GhostResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_INDEX_FINGER_KNUCKLE, GhostResource.class );
+	public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId( RIGHT_INDEX_FINGER_KNUCKLE, GhostResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_THUMB_TIP = new org.lgna.story.resources.JointId( RIGHT_THUMB_KNUCKLE, GhostResource.class );
+	public static final JointId RIGHT_THUMB_TIP = new JointId( RIGHT_THUMB_KNUCKLE, GhostResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOES = new org.lgna.story.resources.JointId( LEFT_FOOT, GhostResource.class );
+	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, GhostResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOES = new org.lgna.story.resources.JointId( RIGHT_FOOT, GhostResource.class );
+	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, GhostResource.class );
 
-	public static final org.lgna.story.JointedModelPose CREEPING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose CREEPING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_HAND, new Orientation(-0.1965038708122167, -0.4027165454209268, 0.42045403897141076, 0.7889385362071483), new Position(-7.77156120546332E-18, -2.8421708795129297E-16, -0.047627706080675125) ),
 		new JointIdTransformationPair( RIGHT_WRIST, new Orientation(-0.011855369576217484, 0.22368657232118294, -0.03140317621559547, 0.9740829575036121), new Position(-8.881783998477905E-18, -2.8421708795129297E-16, -0.20072419941425323) ),
 		new JointIdTransformationPair( LEFT_EYE, new Orientation(0.10481637607089465, 0.08710637279234093, 0.011390172983206766, 0.990603993069753), new Position(-0.05225023254752159, 0.1934623271226883, -0.12080084532499313) ),
@@ -72,7 +79,7 @@ public enum GhostResource implements org.lgna.story.resources.BipedResource {
 	);
 
 
-	public static final org.lgna.story.JointedModelPose FLOATING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose FLOATING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_HAND, new Orientation(0.024431752912424103, 0.14346747926479664, 0.010370799971493672, 0.9892990540534154), new Position(-7.77156120546332E-18, -2.8421708795129297E-16, -0.047627706080675125) ),
 		new JointIdTransformationPair( LEFT_EYE, new Orientation(0.10481637607089465, 0.08710637279234093, 0.011390172983206766, 0.990603993069753), new Position(-0.05225023254752159, 0.1934623271226883, -0.12080084532499313) ),
 		new JointIdTransformationPair( LEFT_SHOULDER, new Orientation(-0.1575832551863549, -0.24839207463981314, -0.09280473994765444, 0.9512392838735425), new Position(1.776356799695581E-17, -4.2632563192693945E-16, -0.11649160087108612) ),
@@ -91,7 +98,7 @@ public enum GhostResource implements org.lgna.story.resources.BipedResource {
 	);
 
 
-	public static final org.lgna.story.JointedModelPose HAUNTING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose HAUNTING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_HAND, new Orientation(-0.08510964664752639, 0.14144094551244069, 0.026171092553025528, 0.9859340144729063), new Position(-7.77156120546332E-18, -2.8421708795129297E-16, -0.047627706080675125) ),
 		new JointIdTransformationPair( RIGHT_WRIST, new Orientation(0.031176597567351853, -0.029782044368235533, -0.10363359388791483, 0.9936805964771812), new Position(-8.881783998477905E-18, -2.8421708795129297E-16, -0.20072419941425323) ),
 		new JointIdTransformationPair( LEFT_EYE, new Orientation(0.10481637607089465, 0.08710637279234093, 0.011390172983206766, 0.990603993069753), new Position(-0.05225023254752159, 0.1934623271226883, -0.12080084532499313) ),
@@ -113,19 +120,21 @@ public enum GhostResource implements org.lgna.story.resources.BipedResource {
 
 
 	private final ImplementationAndVisualType resourceType;
-	private GhostResource() {
+	GhostResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private GhostResource( ImplementationAndVisualType resourceType ) {
+	GhostResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

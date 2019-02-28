@@ -24,54 +24,61 @@
 package org.lgna.story.resources.biped;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum BatResource implements org.lgna.story.resources.BipedResource {
+public enum BatResource implements BipedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, BatResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, BatResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_EAR = new org.lgna.story.resources.JointId( HEAD, BatResource.class );
+	public static final JointId LEFT_EAR = new JointId( HEAD, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_TIP = new org.lgna.story.resources.JointId( LEFT_EAR, BatResource.class );
+	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, BatResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR = new org.lgna.story.resources.JointId( HEAD, BatResource.class );
+	public static final JointId RIGHT_EAR = new JointId( HEAD, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_TIP = new org.lgna.story.resources.JointId( RIGHT_EAR, BatResource.class );
+	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_INDEX_FINGER_KNUCKLE, BatResource.class );
+	public static final JointId LEFT_INDEX_FINGER_TIP = new JointId( LEFT_INDEX_FINGER_KNUCKLE, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_THUMB_TIP = new org.lgna.story.resources.JointId( LEFT_THUMB_KNUCKLE, BatResource.class );
+	public static final JointId LEFT_THUMB_TIP = new JointId( LEFT_THUMB_KNUCKLE, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_MIDDLE_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_MIDDLE_FINGER_KNUCKLE, BatResource.class );
+	public static final JointId LEFT_MIDDLE_FINGER_TIP = new JointId( LEFT_MIDDLE_FINGER_KNUCKLE, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER = new org.lgna.story.resources.JointId( LEFT_HAND, BatResource.class );
+	public static final JointId LEFT_RING_FINGER = new JointId( LEFT_HAND, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( LEFT_RING_FINGER, BatResource.class );
+	public static final JointId LEFT_RING_FINGER_KNUCKLE = new JointId( LEFT_RING_FINGER, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_TIP = new org.lgna.story.resources.JointId( LEFT_RING_FINGER_KNUCKLE, BatResource.class );
+	public static final JointId LEFT_RING_FINGER_TIP = new JointId( LEFT_RING_FINGER_KNUCKLE, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_INDEX_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_INDEX_FINGER_KNUCKLE, BatResource.class );
+	public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId( RIGHT_INDEX_FINGER_KNUCKLE, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_THUMB_TIP = new org.lgna.story.resources.JointId( RIGHT_THUMB_KNUCKLE, BatResource.class );
+	public static final JointId RIGHT_THUMB_TIP = new JointId( RIGHT_THUMB_KNUCKLE, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_MIDDLE_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, BatResource.class );
+	public static final JointId RIGHT_MIDDLE_FINGER_TIP = new JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER = new org.lgna.story.resources.JointId( RIGHT_HAND, BatResource.class );
+	public static final JointId RIGHT_RING_FINGER = new JointId( RIGHT_HAND, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( RIGHT_RING_FINGER, BatResource.class );
+	public static final JointId RIGHT_RING_FINGER_KNUCKLE = new JointId( RIGHT_RING_FINGER, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_TIP = new org.lgna.story.resources.JointId( RIGHT_RING_FINGER_KNUCKLE, BatResource.class );
+	public static final JointId RIGHT_RING_FINGER_TIP = new JointId( RIGHT_RING_FINGER_KNUCKLE, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOES = new org.lgna.story.resources.JointId( LEFT_FOOT, BatResource.class );
+	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, BatResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOES = new org.lgna.story.resources.JointId( RIGHT_FOOT, BatResource.class );
+	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, BatResource.class );
 
-	public static final org.lgna.story.JointedModelPose VAMPIRE_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose VAMPIRE_POSE = new JointedModelPose(
 		new JointIdTransformationPair( NECK, new Orientation(-0.045034516130712916, 0.0, 0.0, 0.9989854315038196), new Position(-0.0, -6.139261321536083E-10, -0.08239995688199997) ),
 		new JointIdTransformationPair( LEFT_RING_FINGER_KNUCKLE, new Orientation(0.15177071095584116, 0.1754681997147109, -0.01613972275722365, 0.9725821669834157), new Position(-0.0, 0.0, -0.386800616979599) ),
 		new JointIdTransformationPair( LEFT_WRIST, new Orientation(0.061347280072770224, -0.11167795460090776, 0.14520817079164294, 0.9811621338082589), new Position(-0.0, 0.0, -0.3228152096271515) ),
@@ -86,7 +93,7 @@ public enum BatResource implements org.lgna.story.resources.BipedResource {
 	);
 
 
-	public static final org.lgna.story.JointedModelPose SPREAD_WINGS_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose SPREAD_WINGS_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_RING_FINGER, new Orientation(0.0832721588037895, 0.8407141289343514, 0.5064930510913522, 0.17242473771035363), new Position(-0.013824241235852242, -0.049429282546043396, 0.02175980433821678) ),
 		new JointIdTransformationPair( RIGHT_RING_FINGER_KNUCKLE, new Orientation(-0.034938145810165154, -0.1741100936583258, 0.0457180712608002, 0.9830436710613771), new Position(-0.0, 0.0, -0.38680312037467957) ),
 		new JointIdTransformationPair( RIGHT_WRIST, new Orientation(0.0028564924152008567, 0.0286021788255718, -0.020951224542654804, 0.9993672007864153), new Position(-0.0, 0.0, -0.32281410694122314) ),
@@ -112,7 +119,7 @@ public enum BatResource implements org.lgna.story.resources.BipedResource {
 	);
 
 
-	public static final org.lgna.story.JointedModelPose FOLD_WINGS_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose FOLD_WINGS_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_RING_FINGER, new Orientation(-0.01545301789540626, 0.5850520957862128, 0.7933695498929247, 0.16745150568681835), new Position(-0.013824241235852242, -0.049429282546043396, 0.02175980433821678) ),
 		new JointIdTransformationPair( RIGHT_RING_FINGER_KNUCKLE, new Orientation(0.5438187132210545, -0.11495978193094278, 0.13852331793401826, 0.8196686806738058), new Position(-0.0, 0.0, -0.38680312037467957) ),
 		new JointIdTransformationPair( RIGHT_WRIST, new Orientation(0.1375857878871946, -0.03542143618924948, 0.38847166322459065, 0.9104423318921804), new Position(-0.0, 0.0, -0.32281410694122314) ),
@@ -139,19 +146,21 @@ public enum BatResource implements org.lgna.story.resources.BipedResource {
 
 
 	private final ImplementationAndVisualType resourceType;
-	private BatResource() {
+	BatResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private BatResource( ImplementationAndVisualType resourceType ) {
+	BatResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

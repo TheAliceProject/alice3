@@ -24,181 +24,187 @@
 package org.lgna.story.resources.prop;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.PropResource;
 
-public enum FlamesResource implements org.lgna.story.resources.PropResource {
+public enum FlamesResource implements PropResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId ROOT = new org.lgna.story.resources.JointId( null, FlamesResource.class );
+	public static final JointId ROOT = new JointId( null, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId FLAME_BASE = new org.lgna.story.resources.JointId( ROOT, FlamesResource.class );
+	public static final JointId FLAME_BASE = new JointId( ROOT, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_ONE_0 = new org.lgna.story.resources.JointId( FLAME_BASE, FlamesResource.class );
+	public static final JointId FLAME_ONE_0 = new JointId( FLAME_BASE, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_ONE_1 = new org.lgna.story.resources.JointId( FLAME_ONE_0, FlamesResource.class );
+	public static final JointId FLAME_ONE_1 = new JointId( FLAME_ONE_0, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_ONE_2 = new org.lgna.story.resources.JointId( FLAME_ONE_1, FlamesResource.class );
+	public static final JointId FLAME_ONE_2 = new JointId( FLAME_ONE_1, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_ONE_3 = new org.lgna.story.resources.JointId( FLAME_ONE_2, FlamesResource.class );
+	public static final JointId FLAME_ONE_3 = new JointId( FLAME_ONE_2, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_ONE_4 = new org.lgna.story.resources.JointId( FLAME_ONE_3, FlamesResource.class );
+	public static final JointId FLAME_ONE_4 = new JointId( FLAME_ONE_3, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_ONE_5 = new org.lgna.story.resources.JointId( FLAME_ONE_4, FlamesResource.class );
+	public static final JointId FLAME_ONE_5 = new JointId( FLAME_ONE_4, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_ONE_6 = new org.lgna.story.resources.JointId( FLAME_ONE_5, FlamesResource.class );
+	public static final JointId FLAME_ONE_6 = new JointId( FLAME_ONE_5, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_TWO_0 = new org.lgna.story.resources.JointId( FLAME_BASE, FlamesResource.class );
+	public static final JointId FLAME_TWO_0 = new JointId( FLAME_BASE, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_TWO_1 = new org.lgna.story.resources.JointId( FLAME_TWO_0, FlamesResource.class );
+	public static final JointId FLAME_TWO_1 = new JointId( FLAME_TWO_0, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_TWO_2 = new org.lgna.story.resources.JointId( FLAME_TWO_1, FlamesResource.class );
+	public static final JointId FLAME_TWO_2 = new JointId( FLAME_TWO_1, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_TWO_3 = new org.lgna.story.resources.JointId( FLAME_TWO_2, FlamesResource.class );
+	public static final JointId FLAME_TWO_3 = new JointId( FLAME_TWO_2, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_THREE_0 = new org.lgna.story.resources.JointId( FLAME_BASE, FlamesResource.class );
+	public static final JointId FLAME_THREE_0 = new JointId( FLAME_BASE, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_THREE_1 = new org.lgna.story.resources.JointId( FLAME_THREE_0, FlamesResource.class );
+	public static final JointId FLAME_THREE_1 = new JointId( FLAME_THREE_0, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_THREE_2 = new org.lgna.story.resources.JointId( FLAME_THREE_1, FlamesResource.class );
+	public static final JointId FLAME_THREE_2 = new JointId( FLAME_THREE_1, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_THREE_3 = new org.lgna.story.resources.JointId( FLAME_THREE_2, FlamesResource.class );
+	public static final JointId FLAME_THREE_3 = new JointId( FLAME_THREE_2, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_THREE_4 = new org.lgna.story.resources.JointId( FLAME_THREE_3, FlamesResource.class );
+	public static final JointId FLAME_THREE_4 = new JointId( FLAME_THREE_3, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_THREE_5 = new org.lgna.story.resources.JointId( FLAME_THREE_4, FlamesResource.class );
+	public static final JointId FLAME_THREE_5 = new JointId( FLAME_THREE_4, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_FOUR_0 = new org.lgna.story.resources.JointId( FLAME_THREE_2, FlamesResource.class );
+	public static final JointId FLAME_FOUR_0 = new JointId( FLAME_THREE_2, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_FOUR_1 = new org.lgna.story.resources.JointId( FLAME_FOUR_0, FlamesResource.class );
+	public static final JointId FLAME_FOUR_1 = new JointId( FLAME_FOUR_0, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_FOUR_2 = new org.lgna.story.resources.JointId( FLAME_FOUR_1, FlamesResource.class );
+	public static final JointId FLAME_FOUR_2 = new JointId( FLAME_FOUR_1, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_FOUR_3 = new org.lgna.story.resources.JointId( FLAME_FOUR_2, FlamesResource.class );
+	public static final JointId FLAME_FOUR_3 = new JointId( FLAME_FOUR_2, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_FOUR_4 = new org.lgna.story.resources.JointId( FLAME_FOUR_3, FlamesResource.class );
+	public static final JointId FLAME_FOUR_4 = new JointId( FLAME_FOUR_3, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_FOUR_5 = new org.lgna.story.resources.JointId( FLAME_FOUR_4, FlamesResource.class );
+	public static final JointId FLAME_FOUR_5 = new JointId( FLAME_FOUR_4, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_FIVE_0 = new org.lgna.story.resources.JointId( FLAME_THREE_2, FlamesResource.class );
+	public static final JointId FLAME_FIVE_0 = new JointId( FLAME_THREE_2, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_FIVE_1 = new org.lgna.story.resources.JointId( FLAME_FIVE_0, FlamesResource.class );
+	public static final JointId FLAME_FIVE_1 = new JointId( FLAME_FIVE_0, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_FIVE_2 = new org.lgna.story.resources.JointId( FLAME_FIVE_1, FlamesResource.class );
+	public static final JointId FLAME_FIVE_2 = new JointId( FLAME_FIVE_1, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_SIX_0 = new org.lgna.story.resources.JointId( FLAME_BASE, FlamesResource.class );
+	public static final JointId FLAME_SIX_0 = new JointId( FLAME_BASE, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_SIX_1 = new org.lgna.story.resources.JointId( FLAME_SIX_0, FlamesResource.class );
+	public static final JointId FLAME_SIX_1 = new JointId( FLAME_SIX_0, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_SIX_2 = new org.lgna.story.resources.JointId( FLAME_SIX_1, FlamesResource.class );
+	public static final JointId FLAME_SIX_2 = new JointId( FLAME_SIX_1, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_SIX_3 = new org.lgna.story.resources.JointId( FLAME_SIX_2, FlamesResource.class );
+	public static final JointId FLAME_SIX_3 = new JointId( FLAME_SIX_2, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_SIX_4 = new org.lgna.story.resources.JointId( FLAME_SIX_3, FlamesResource.class );
+	public static final JointId FLAME_SIX_4 = new JointId( FLAME_SIX_3, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_SIX_5 = new org.lgna.story.resources.JointId( FLAME_SIX_4, FlamesResource.class );
+	public static final JointId FLAME_SIX_5 = new JointId( FLAME_SIX_4, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_SEVEN_0 = new org.lgna.story.resources.JointId( FLAME_BASE, FlamesResource.class );
+	public static final JointId FLAME_SEVEN_0 = new JointId( FLAME_BASE, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_SEVEN_1 = new org.lgna.story.resources.JointId( FLAME_SEVEN_0, FlamesResource.class );
+	public static final JointId FLAME_SEVEN_1 = new JointId( FLAME_SEVEN_0, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_SEVEN_2 = new org.lgna.story.resources.JointId( FLAME_SEVEN_1, FlamesResource.class );
+	public static final JointId FLAME_SEVEN_2 = new JointId( FLAME_SEVEN_1, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_SEVEN_3 = new org.lgna.story.resources.JointId( FLAME_SEVEN_2, FlamesResource.class );
+	public static final JointId FLAME_SEVEN_3 = new JointId( FLAME_SEVEN_2, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_SEVEN_4 = new org.lgna.story.resources.JointId( FLAME_SEVEN_3, FlamesResource.class );
+	public static final JointId FLAME_SEVEN_4 = new JointId( FLAME_SEVEN_3, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_SEVEN_5 = new org.lgna.story.resources.JointId( FLAME_SEVEN_4, FlamesResource.class );
+	public static final JointId FLAME_SEVEN_5 = new JointId( FLAME_SEVEN_4, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_EIGHT_0 = new org.lgna.story.resources.JointId( FLAME_BASE, FlamesResource.class );
+	public static final JointId FLAME_EIGHT_0 = new JointId( FLAME_BASE, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_EIGHT_1 = new org.lgna.story.resources.JointId( FLAME_EIGHT_0, FlamesResource.class );
+	public static final JointId FLAME_EIGHT_1 = new JointId( FLAME_EIGHT_0, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_EIGHT_2 = new org.lgna.story.resources.JointId( FLAME_EIGHT_1, FlamesResource.class );
+	public static final JointId FLAME_EIGHT_2 = new JointId( FLAME_EIGHT_1, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_EIGHT_3 = new org.lgna.story.resources.JointId( FLAME_EIGHT_2, FlamesResource.class );
+	public static final JointId FLAME_EIGHT_3 = new JointId( FLAME_EIGHT_2, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_EIGHT_4 = new org.lgna.story.resources.JointId( FLAME_EIGHT_3, FlamesResource.class );
+	public static final JointId FLAME_EIGHT_4 = new JointId( FLAME_EIGHT_3, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_EIGHT_5 = new org.lgna.story.resources.JointId( FLAME_EIGHT_4, FlamesResource.class );
+	public static final JointId FLAME_EIGHT_5 = new JointId( FLAME_EIGHT_4, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_EIGHT_6 = new org.lgna.story.resources.JointId( FLAME_EIGHT_5, FlamesResource.class );
+	public static final JointId FLAME_EIGHT_6 = new JointId( FLAME_EIGHT_5, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_NINE_0 = new org.lgna.story.resources.JointId( FLAME_BASE, FlamesResource.class );
+	public static final JointId FLAME_NINE_0 = new JointId( FLAME_BASE, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_NINE_1 = new org.lgna.story.resources.JointId( FLAME_NINE_0, FlamesResource.class );
+	public static final JointId FLAME_NINE_1 = new JointId( FLAME_NINE_0, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_NINE_2 = new org.lgna.story.resources.JointId( FLAME_NINE_1, FlamesResource.class );
+	public static final JointId FLAME_NINE_2 = new JointId( FLAME_NINE_1, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_NINE_3 = new org.lgna.story.resources.JointId( FLAME_NINE_2, FlamesResource.class );
+	public static final JointId FLAME_NINE_3 = new JointId( FLAME_NINE_2, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_NINE_4 = new org.lgna.story.resources.JointId( FLAME_NINE_3, FlamesResource.class );
+	public static final JointId FLAME_NINE_4 = new JointId( FLAME_NINE_3, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_TEN_0 = new org.lgna.story.resources.JointId( FLAME_BASE, FlamesResource.class );
+	public static final JointId FLAME_TEN_0 = new JointId( FLAME_BASE, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_TEN_1 = new org.lgna.story.resources.JointId( FLAME_TEN_0, FlamesResource.class );
+	public static final JointId FLAME_TEN_1 = new JointId( FLAME_TEN_0, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_TEN_2 = new org.lgna.story.resources.JointId( FLAME_TEN_1, FlamesResource.class );
+	public static final JointId FLAME_TEN_2 = new JointId( FLAME_TEN_1, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_TEN_3 = new org.lgna.story.resources.JointId( FLAME_TEN_2, FlamesResource.class );
+	public static final JointId FLAME_TEN_3 = new JointId( FLAME_TEN_2, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_TEN_4 = new org.lgna.story.resources.JointId( FLAME_TEN_3, FlamesResource.class );
+	public static final JointId FLAME_TEN_4 = new JointId( FLAME_TEN_3, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_TEN_5 = new org.lgna.story.resources.JointId( FLAME_TEN_4, FlamesResource.class );
+	public static final JointId FLAME_TEN_5 = new JointId( FLAME_TEN_4, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_ELEVEN_0 = new org.lgna.story.resources.JointId( FLAME_BASE, FlamesResource.class );
+	public static final JointId FLAME_ELEVEN_0 = new JointId( FLAME_BASE, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_ELEVEN_1 = new org.lgna.story.resources.JointId( FLAME_ELEVEN_0, FlamesResource.class );
+	public static final JointId FLAME_ELEVEN_1 = new JointId( FLAME_ELEVEN_0, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_ELEVEN_2 = new org.lgna.story.resources.JointId( FLAME_ELEVEN_1, FlamesResource.class );
+	public static final JointId FLAME_ELEVEN_2 = new JointId( FLAME_ELEVEN_1, FlamesResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FLAME_ELEVEN_3 = new org.lgna.story.resources.JointId( FLAME_ELEVEN_2, FlamesResource.class );
+	public static final JointId FLAME_ELEVEN_3 = new JointId( FLAME_ELEVEN_2, FlamesResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public static final org.lgna.story.resources.JointId[] FLAME_FOUR_ARRAY = { FLAME_FOUR_0, FLAME_FOUR_1, FLAME_FOUR_2, FLAME_FOUR_3, FLAME_FOUR_4, FLAME_FOUR_5 };
+	public static final JointId[] FLAME_FOUR_ARRAY = { FLAME_FOUR_0, FLAME_FOUR_1, FLAME_FOUR_2, FLAME_FOUR_3, FLAME_FOUR_4, FLAME_FOUR_5 };
 
-	public static final org.lgna.story.resources.JointId[] FLAME_NINE_ARRAY = { FLAME_NINE_0, FLAME_NINE_1, FLAME_NINE_2, FLAME_NINE_3, FLAME_NINE_4 };
+	public static final JointId[] FLAME_NINE_ARRAY = { FLAME_NINE_0, FLAME_NINE_1, FLAME_NINE_2, FLAME_NINE_3, FLAME_NINE_4 };
 
-	public static final org.lgna.story.resources.JointId[] FLAME_TEN_ARRAY = { FLAME_TEN_0, FLAME_TEN_1, FLAME_TEN_2, FLAME_TEN_3, FLAME_TEN_4, FLAME_TEN_5 };
+	public static final JointId[] FLAME_TEN_ARRAY = { FLAME_TEN_0, FLAME_TEN_1, FLAME_TEN_2, FLAME_TEN_3, FLAME_TEN_4, FLAME_TEN_5 };
 
-	public static final org.lgna.story.resources.JointId[] FLAME_ELEVEN_ARRAY = { FLAME_ELEVEN_0, FLAME_ELEVEN_1, FLAME_ELEVEN_2, FLAME_ELEVEN_3 };
+	public static final JointId[] FLAME_ELEVEN_ARRAY = { FLAME_ELEVEN_0, FLAME_ELEVEN_1, FLAME_ELEVEN_2, FLAME_ELEVEN_3 };
 
-	public static final org.lgna.story.resources.JointId[] FLAME_THREE_ARRAY = { FLAME_THREE_0, FLAME_THREE_1, FLAME_THREE_2, FLAME_THREE_3, FLAME_THREE_4, FLAME_THREE_5 };
+	public static final JointId[] FLAME_THREE_ARRAY = { FLAME_THREE_0, FLAME_THREE_1, FLAME_THREE_2, FLAME_THREE_3, FLAME_THREE_4, FLAME_THREE_5 };
 
-	public static final org.lgna.story.resources.JointId[] FLAME_SEVEN_ARRAY = { FLAME_SEVEN_0, FLAME_SEVEN_1, FLAME_SEVEN_2, FLAME_SEVEN_3, FLAME_SEVEN_4, FLAME_SEVEN_5 };
+	public static final JointId[] FLAME_SEVEN_ARRAY = { FLAME_SEVEN_0, FLAME_SEVEN_1, FLAME_SEVEN_2, FLAME_SEVEN_3, FLAME_SEVEN_4, FLAME_SEVEN_5 };
 
-	public static final org.lgna.story.resources.JointId[] FLAME_FIVE_ARRAY = { FLAME_FIVE_0, FLAME_FIVE_1, FLAME_FIVE_2 };
+	public static final JointId[] FLAME_FIVE_ARRAY = { FLAME_FIVE_0, FLAME_FIVE_1, FLAME_FIVE_2 };
 
-	public static final org.lgna.story.resources.JointId[] FLAME_TWO_ARRAY = { FLAME_TWO_0, FLAME_TWO_1, FLAME_TWO_2, FLAME_TWO_3 };
+	public static final JointId[] FLAME_TWO_ARRAY = { FLAME_TWO_0, FLAME_TWO_1, FLAME_TWO_2, FLAME_TWO_3 };
 
-	public static final org.lgna.story.resources.JointId[] FLAME_ONE_ARRAY = { FLAME_ONE_0, FLAME_ONE_1, FLAME_ONE_2, FLAME_ONE_3, FLAME_ONE_4, FLAME_ONE_5, FLAME_ONE_6 };
+	public static final JointId[] FLAME_ONE_ARRAY = { FLAME_ONE_0, FLAME_ONE_1, FLAME_ONE_2, FLAME_ONE_3, FLAME_ONE_4, FLAME_ONE_5, FLAME_ONE_6 };
 
-	public static final org.lgna.story.resources.JointId[] FLAME_SIX_ARRAY = { FLAME_SIX_0, FLAME_SIX_1, FLAME_SIX_2, FLAME_SIX_3, FLAME_SIX_4, FLAME_SIX_5 };
+	public static final JointId[] FLAME_SIX_ARRAY = { FLAME_SIX_0, FLAME_SIX_1, FLAME_SIX_2, FLAME_SIX_3, FLAME_SIX_4, FLAME_SIX_5 };
 
-	public static final org.lgna.story.resources.JointId[] FLAME_EIGHT_ARRAY = { FLAME_EIGHT_0, FLAME_EIGHT_1, FLAME_EIGHT_2, FLAME_EIGHT_3, FLAME_EIGHT_4, FLAME_EIGHT_5, FLAME_EIGHT_6 };
+	public static final JointId[] FLAME_EIGHT_ARRAY = { FLAME_EIGHT_0, FLAME_EIGHT_1, FLAME_EIGHT_2, FLAME_EIGHT_3, FLAME_EIGHT_4, FLAME_EIGHT_5, FLAME_EIGHT_6 };
 
 	private final ImplementationAndVisualType resourceType;
-	private FlamesResource() {
+	FlamesResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private FlamesResource( ImplementationAndVisualType resourceType ) {
+	FlamesResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return FlamesResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction ) {
-		return new org.lgna.story.implementation.BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
+		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

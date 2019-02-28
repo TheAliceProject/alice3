@@ -24,21 +24,28 @@
 package org.lgna.story.resources.flyer;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SFlyer;
+import org.lgna.story.implementation.FlyerImp;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.FlyerResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum ToucanResource implements org.lgna.story.resources.FlyerResource {
+public enum ToucanResource implements FlyerResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOE = new org.lgna.story.resources.JointId( LEFT_FOOT, ToucanResource.class );
+	public static final JointId LEFT_TOE = new JointId( LEFT_FOOT, ToucanResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOE = new org.lgna.story.resources.JointId( RIGHT_FOOT, ToucanResource.class );
+	public static final JointId RIGHT_TOE = new JointId( RIGHT_FOOT, ToucanResource.class );
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.JointedModelPose SPREAD_WINGS_POSE = new org.lgna.story.JointedModelPose( 
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointedModelPose SPREAD_WINGS_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_WING_WRIST, new Orientation(-0.09691421792553971, 0.3553246179879511, -0.2446392974181501, 0.8969412825677897), new Position(-5.329070399086743E-17, -1.0302869372059921E-15, -0.10181731730699539) ),
 		new JointIdTransformationPair( RIGHT_WING_SHOULDER, new Orientation(-0.3256089350511457, -0.7890678977060188, 0.44892117127382664, 0.2642356073787152), new Position(0.034449100494384766, 0.03586234152317047, -0.03468025475740433) ),
 		new JointIdTransformationPair( RIGHT_WING_ELBOW, new Orientation(0.12399960212650232, 0.6065952090023534, -0.1572740039465371, 0.7693706770929634), new Position(2.220445916901415E-17, -2.1316281596346973E-16, -0.07598204910755157) ),
@@ -47,12 +54,13 @@ public enum ToucanResource implements org.lgna.story.resources.FlyerResource {
 		new JointIdTransformationPair( LEFT_WING_SHOULDER, new Orientation(-0.3256084119806618, 0.7890674826058739, -0.4489221641070238, 0.26423580475576536), new Position(-0.03444909676909447, 0.03586234897375107, -0.03468045964837074) )
 	);
 
-	public org.lgna.story.JointedModelPose getSpreadWingsPose(){
+	@Override
+	public JointedModelPose getSpreadWingsPose(){
 		return ToucanResource.SPREAD_WINGS_POSE;
 	}
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.JointedModelPose FOLD_WINGS_POSE = new org.lgna.story.JointedModelPose( 
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointedModelPose FOLD_WINGS_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_WING_WRIST, new Orientation(-0.22330181442399732, 0.8607634098940861, -0.14064340945419676, 0.43524944944199007), new Position(-0.0, 0.0, -0.10181731730699539) ),
 		new JointIdTransformationPair( RIGHT_WING_SHOULDER, new Orientation(0.18922996933352004, 0.8886177647498341, -0.4097739096998681, 0.08146060278642564), new Position(0.034449100494384766, 0.03586234152317047, -0.03468025475740433) ),
 		new JointIdTransformationPair( RIGHT_WING_ELBOW, new Orientation(-0.29855720077309306, 0.9060560546748658, -0.011099871321366417, 0.29967118064672243), new Position(-0.0, 0.0, -0.07598204910755157) ),
@@ -61,39 +69,44 @@ public enum ToucanResource implements org.lgna.story.resources.FlyerResource {
 		new JointIdTransformationPair( LEFT_WING_SHOULDER, new Orientation(0.1316780576093391, -0.9061701775238433, 0.3923625208297738, 0.08699511916621112), new Position(-0.03444909676909447, 0.03586234897375107, -0.03468045964837074) )
 	);
 
-	public org.lgna.story.JointedModelPose getFoldWingsPose(){
+	@Override
+	public JointedModelPose getFoldWingsPose(){
 		return ToucanResource.FOLD_WINGS_POSE;
 	}
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] NECK_ARRAY = { NECK_0, NECK_1 };
-	public org.lgna.story.resources.JointId[] getNeckArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] NECK_ARRAY = { NECK_0, NECK_1 };
+	@Override
+	public JointId[] getNeckArray(){
 		return ToucanResource.NECK_ARRAY;
 	}
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2 };
-	public org.lgna.story.resources.JointId[] getTailArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2 };
+	@Override
+	public JointId[] getTailArray(){
 		return ToucanResource.TAIL_ARRAY;
 	}
 
 	private final ImplementationAndVisualType resourceType;
-	private ToucanResource() {
+	ToucanResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private ToucanResource( ImplementationAndVisualType resourceType ) {
+	ToucanResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.FlyerResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds(){
+		return FlyerResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.FlyerImp createImplementation( org.lgna.story.SFlyer abstraction ) {
-		return new org.lgna.story.implementation.FlyerImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public FlyerImp createImplementation( SFlyer abstraction ) {
+		return new FlyerImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

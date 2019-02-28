@@ -24,12 +24,19 @@
 package org.lgna.story.resources.quadruped;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SQuadruped;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.QuadrupedImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.QuadrupedResource;
 
-public enum DragonBabyResource implements org.lgna.story.resources.QuadrupedResource {
+public enum DragonBabyResource implements QuadrupedResource {
 	DEFAULT_PINK,
 	DEFAULT_AQUA,
 	DEFAULT_BLUE,
@@ -42,37 +49,37 @@ public enum DragonBabyResource implements org.lgna.story.resources.QuadrupedReso
 	TUTU_RED;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, DragonBabyResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, DragonBabyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_TIP = new org.lgna.story.resources.JointId( LEFT_EAR, DragonBabyResource.class );
+	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, DragonBabyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_TIP = new org.lgna.story.resources.JointId( RIGHT_EAR, DragonBabyResource.class );
+	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, DragonBabyResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_WING_SHOULDER = new org.lgna.story.resources.JointId( FRONT_LEFT_CLAVICLE, DragonBabyResource.class );
+	public static final JointId LEFT_WING_SHOULDER = new JointId( FRONT_LEFT_CLAVICLE, DragonBabyResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_WING_ELBOW = new org.lgna.story.resources.JointId( LEFT_WING_SHOULDER, DragonBabyResource.class );
+	public static final JointId LEFT_WING_ELBOW = new JointId( LEFT_WING_SHOULDER, DragonBabyResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_WING_WRIST = new org.lgna.story.resources.JointId( LEFT_WING_ELBOW, DragonBabyResource.class );
+	public static final JointId LEFT_WING_WRIST = new JointId( LEFT_WING_ELBOW, DragonBabyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_WING_TIP = new org.lgna.story.resources.JointId( LEFT_WING_WRIST, DragonBabyResource.class );
+	public static final JointId LEFT_WING_TIP = new JointId( LEFT_WING_WRIST, DragonBabyResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_WING_SHOULDER = new org.lgna.story.resources.JointId( FRONT_RIGHT_CLAVICLE, DragonBabyResource.class );
+	public static final JointId RIGHT_WING_SHOULDER = new JointId( FRONT_RIGHT_CLAVICLE, DragonBabyResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_WING_ELBOW = new org.lgna.story.resources.JointId( RIGHT_WING_SHOULDER, DragonBabyResource.class );
+	public static final JointId RIGHT_WING_ELBOW = new JointId( RIGHT_WING_SHOULDER, DragonBabyResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_WING_WRIST = new org.lgna.story.resources.JointId( RIGHT_WING_ELBOW, DragonBabyResource.class );
+	public static final JointId RIGHT_WING_WRIST = new JointId( RIGHT_WING_ELBOW, DragonBabyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_WING_TIP = new org.lgna.story.resources.JointId( RIGHT_WING_WRIST, DragonBabyResource.class );
+	public static final JointId RIGHT_WING_TIP = new JointId( RIGHT_WING_WRIST, DragonBabyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_4 = new org.lgna.story.resources.JointId( TAIL_3, DragonBabyResource.class );
+	public static final JointId TAIL_4 = new JointId( TAIL_3, DragonBabyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_5 = new org.lgna.story.resources.JointId( TAIL_4, DragonBabyResource.class );
+	public static final JointId TAIL_5 = new JointId( TAIL_4, DragonBabyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_6 = new org.lgna.story.resources.JointId( TAIL_5, DragonBabyResource.class );
+	public static final JointId TAIL_6 = new JointId( TAIL_5, DragonBabyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_7 = new org.lgna.story.resources.JointId( TAIL_6, DragonBabyResource.class );
+	public static final JointId TAIL_7 = new JointId( TAIL_6, DragonBabyResource.class );
 
-	public static final org.lgna.story.JointedModelPose LEAP_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose LEAP_POSE = new JointedModelPose(
 		new JointIdTransformationPair( TAIL_2, new Orientation(1.3050571535089177E-4, -0.31563858039726966, 0.11130551463057665, 0.9423286857280092), new Position(-0.0, 0.0, -0.29213982820510864) ),
 		new JointIdTransformationPair( TAIL_1, new Orientation(0.13148393274826833, 0.03748822795851807, -0.1551271486777222, 0.9783875387272156), new Position(-0.0, 0.0, -0.3043278753757477) ),
 		new JointIdTransformationPair( TAIL_0, new Orientation(0.21686737104728582, -0.01698670849253014, -0.11132151449104151, 0.9696842349554052), new Position(-0.0, -0.020908674225211143, -0.31986454129219055) ),
@@ -115,7 +122,7 @@ public enum DragonBabyResource implements org.lgna.story.resources.QuadrupedReso
 	);
 
 
-	public static final org.lgna.story.JointedModelPose SITTING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose SITTING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( TAIL_2, new Orientation(-0.016010302147572587, 0.0, 0.0, 0.9998718268983997), new Position(-0.0, 0.0, -0.29213982820510864) ),
 		new JointIdTransformationPair( TAIL_1, new Orientation(0.03408407735284543, 0.0, -0.0, 0.9994189690370127), new Position(-0.0, 0.0, -0.3043278753757477) ),
 		new JointIdTransformationPair( TAIL_0, new Orientation(0.0774837883021087, 0.0, -0.0, 0.9969936120910474), new Position(-0.0, -0.020908674225211143, -0.31986454129219055) ),
@@ -143,29 +150,32 @@ public enum DragonBabyResource implements org.lgna.story.resources.QuadrupedReso
 	);
 
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4, TAIL_5, TAIL_6, TAIL_7 };
-	public org.lgna.story.resources.JointId[] getTailArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4, TAIL_5, TAIL_6, TAIL_7 };
+	@Override
+	public JointId[] getTailArray(){
 		return DragonBabyResource.TAIL_ARRAY;
 	}
 
 	private final ImplementationAndVisualType resourceType;
-	private DragonBabyResource() {
+	DragonBabyResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private DragonBabyResource( ImplementationAndVisualType resourceType ) {
+	DragonBabyResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.QuadrupedResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds(){
+		return QuadrupedResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.SQuadruped abstraction ) {
-		return new org.lgna.story.implementation.QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public QuadrupedImp createImplementation( SQuadruped abstraction ) {
+		return new QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

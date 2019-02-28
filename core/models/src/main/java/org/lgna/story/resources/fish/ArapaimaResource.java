@@ -24,39 +24,44 @@
 package org.lgna.story.resources.fish;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SSwimmer;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.SwimmerImp;
+import org.lgna.story.resources.FishResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum ArapaimaResource implements org.lgna.story.resources.FishResource {
+public enum ArapaimaResource implements FishResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, ArapaimaResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, ArapaimaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId BACK_TOP_FIN_TIP = new org.lgna.story.resources.JointId( TAIL, ArapaimaResource.class );
+	public static final JointId BACK_TOP_FIN_TIP = new JointId( TAIL, ArapaimaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId BACK_BOTTOM_FIN_TIP = new org.lgna.story.resources.JointId( TAIL, ArapaimaResource.class );
+	public static final JointId BACK_BOTTOM_FIN_TIP = new JointId( TAIL, ArapaimaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FRONT_LEFT_FIN_TIP = new org.lgna.story.resources.JointId( FRONT_LEFT_FIN, ArapaimaResource.class );
+	public static final JointId FRONT_LEFT_FIN_TIP = new JointId( FRONT_LEFT_FIN, ArapaimaResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId FRONT_RIGHT_FIN_TIP = new org.lgna.story.resources.JointId( FRONT_RIGHT_FIN, ArapaimaResource.class );
+	public static final JointId FRONT_RIGHT_FIN_TIP = new JointId( FRONT_RIGHT_FIN, ArapaimaResource.class );
 
 	private final ImplementationAndVisualType resourceType;
-	private ArapaimaResource() {
+	ArapaimaResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private ArapaimaResource( ImplementationAndVisualType resourceType ) {
+	ArapaimaResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.SwimmerImp createImplementation( org.lgna.story.SSwimmer abstraction ) {
-		return new org.lgna.story.implementation.SwimmerImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public SwimmerImp createImplementation( SSwimmer abstraction ) {
+		return new SwimmerImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

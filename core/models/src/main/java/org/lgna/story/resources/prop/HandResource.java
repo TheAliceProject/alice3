@@ -24,82 +24,88 @@
 package org.lgna.story.resources.prop;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.PropResource;
 
-public enum HandResource implements org.lgna.story.resources.PropResource {
+public enum HandResource implements PropResource {
 	HAND_R,
 	HAND_L;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId ROOT = new org.lgna.story.resources.JointId( null, HandResource.class );
+	public static final JointId ROOT = new JointId( null, HandResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId WRIST = new org.lgna.story.resources.JointId( ROOT, HandResource.class );
+	public static final JointId WRIST = new JointId( ROOT, HandResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId HAND = new org.lgna.story.resources.JointId( WRIST, HandResource.class );
+	public static final JointId HAND = new JointId( WRIST, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId THUMB_0 = new org.lgna.story.resources.JointId( HAND, HandResource.class );
+	public static final JointId THUMB_0 = new JointId( HAND, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId THUMB_1 = new org.lgna.story.resources.JointId( THUMB_0, HandResource.class );
+	public static final JointId THUMB_1 = new JointId( THUMB_0, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId THUMB_2 = new org.lgna.story.resources.JointId( THUMB_1, HandResource.class );
+	public static final JointId THUMB_2 = new JointId( THUMB_1, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId INDEX_0 = new org.lgna.story.resources.JointId( HAND, HandResource.class );
+	public static final JointId INDEX_0 = new JointId( HAND, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId INDEX_1 = new org.lgna.story.resources.JointId( INDEX_0, HandResource.class );
+	public static final JointId INDEX_1 = new JointId( INDEX_0, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId INDEX_2 = new org.lgna.story.resources.JointId( INDEX_1, HandResource.class );
+	public static final JointId INDEX_2 = new JointId( INDEX_1, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId MIDDLE_0 = new org.lgna.story.resources.JointId( HAND, HandResource.class );
+	public static final JointId MIDDLE_0 = new JointId( HAND, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId MIDDLE_1 = new org.lgna.story.resources.JointId( MIDDLE_0, HandResource.class );
+	public static final JointId MIDDLE_1 = new JointId( MIDDLE_0, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId MIDDLE_2 = new org.lgna.story.resources.JointId( MIDDLE_1, HandResource.class );
+	public static final JointId MIDDLE_2 = new JointId( MIDDLE_1, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RING_0 = new org.lgna.story.resources.JointId( HAND, HandResource.class );
+	public static final JointId RING_0 = new JointId( HAND, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RING_1 = new org.lgna.story.resources.JointId( RING_0, HandResource.class );
+	public static final JointId RING_1 = new JointId( RING_0, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RING_2 = new org.lgna.story.resources.JointId( RING_1, HandResource.class );
+	public static final JointId RING_2 = new JointId( RING_1, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId PINKY_0 = new org.lgna.story.resources.JointId( HAND, HandResource.class );
+	public static final JointId PINKY_0 = new JointId( HAND, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId PINKY_1 = new org.lgna.story.resources.JointId( PINKY_0, HandResource.class );
+	public static final JointId PINKY_1 = new JointId( PINKY_0, HandResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId PINKY_2 = new org.lgna.story.resources.JointId( PINKY_1, HandResource.class );
+	public static final JointId PINKY_2 = new JointId( PINKY_1, HandResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public static final org.lgna.story.resources.JointId[] RING_ARRAY = { RING_0, RING_1, RING_2 };
+	public static final JointId[] RING_ARRAY = { RING_0, RING_1, RING_2 };
 
-	public static final org.lgna.story.resources.JointId[] INDEX_ARRAY = { INDEX_0, INDEX_1, INDEX_2 };
+	public static final JointId[] INDEX_ARRAY = { INDEX_0, INDEX_1, INDEX_2 };
 
-	public static final org.lgna.story.resources.JointId[] THUMB_ARRAY = { THUMB_0, THUMB_1, THUMB_2 };
+	public static final JointId[] THUMB_ARRAY = { THUMB_0, THUMB_1, THUMB_2 };
 
-	public static final org.lgna.story.resources.JointId[] MIDDLE_ARRAY = { MIDDLE_0, MIDDLE_1, MIDDLE_2 };
+	public static final JointId[] MIDDLE_ARRAY = { MIDDLE_0, MIDDLE_1, MIDDLE_2 };
 
-	public static final org.lgna.story.resources.JointId[] PINKY_ARRAY = { PINKY_0, PINKY_1, PINKY_2 };
+	public static final JointId[] PINKY_ARRAY = { PINKY_0, PINKY_1, PINKY_2 };
 
 	private final ImplementationAndVisualType resourceType;
-	private HandResource() {
+	HandResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private HandResource( ImplementationAndVisualType resourceType ) {
+	HandResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return HandResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction ) {
-		return new org.lgna.story.implementation.BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
+		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

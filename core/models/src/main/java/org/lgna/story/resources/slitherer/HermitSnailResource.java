@@ -24,70 +24,76 @@
 package org.lgna.story.resources.slitherer;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SSlitherer;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.SlithererImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.SlithererResource;
 
-public enum HermitSnailResource implements org.lgna.story.resources.SlithererResource {
+public enum HermitSnailResource implements SlithererResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_1 = new org.lgna.story.resources.JointId( TAIL_0, HermitSnailResource.class );
+	public static final JointId TAIL_1 = new JointId( TAIL_0, HermitSnailResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_2 = new org.lgna.story.resources.JointId( TAIL_1, HermitSnailResource.class );
+	public static final JointId TAIL_2 = new JointId( TAIL_1, HermitSnailResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_3 = new org.lgna.story.resources.JointId( TAIL_2, HermitSnailResource.class );
+	public static final JointId TAIL_3 = new JointId( TAIL_2, HermitSnailResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_4 = new org.lgna.story.resources.JointId( TAIL_3, HermitSnailResource.class );
+	public static final JointId TAIL_4 = new JointId( TAIL_3, HermitSnailResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId SHELL_0 = new org.lgna.story.resources.JointId( TAIL_0, HermitSnailResource.class );
+	public static final JointId SHELL_0 = new JointId( TAIL_0, HermitSnailResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId SHELL_1 = new org.lgna.story.resources.JointId( SHELL_0, HermitSnailResource.class );
+	public static final JointId SHELL_1 = new JointId( SHELL_0, HermitSnailResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, HermitSnailResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, HermitSnailResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TENTACLE_0 = new org.lgna.story.resources.JointId( HEAD, HermitSnailResource.class );
+	public static final JointId LEFT_TENTACLE_0 = new JointId( HEAD, HermitSnailResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TENTACLE_1 = new org.lgna.story.resources.JointId( LEFT_TENTACLE_0, HermitSnailResource.class );
+	public static final JointId LEFT_TENTACLE_1 = new JointId( LEFT_TENTACLE_0, HermitSnailResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TENTACLE_2 = new org.lgna.story.resources.JointId( LEFT_TENTACLE_1, HermitSnailResource.class );
+	public static final JointId LEFT_TENTACLE_2 = new JointId( LEFT_TENTACLE_1, HermitSnailResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TENTACLE_0 = new org.lgna.story.resources.JointId( HEAD, HermitSnailResource.class );
+	public static final JointId RIGHT_TENTACLE_0 = new JointId( HEAD, HermitSnailResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TENTACLE_1 = new org.lgna.story.resources.JointId( RIGHT_TENTACLE_0, HermitSnailResource.class );
+	public static final JointId RIGHT_TENTACLE_1 = new JointId( RIGHT_TENTACLE_0, HermitSnailResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TENTACLE_2 = new org.lgna.story.resources.JointId( RIGHT_TENTACLE_1, HermitSnailResource.class );
+	public static final JointId RIGHT_TENTACLE_2 = new JointId( RIGHT_TENTACLE_1, HermitSnailResource.class );
 
-	public static final org.lgna.story.resources.JointId[] SHELL_ARRAY = { SHELL_0, SHELL_1 };
+	public static final JointId[] SHELL_ARRAY = { SHELL_0, SHELL_1 };
 
-	public static final org.lgna.story.resources.JointId[] LEFT_TENTACLE_ARRAY = { LEFT_TENTACLE_0, LEFT_TENTACLE_1, LEFT_TENTACLE_2 };
+	public static final JointId[] LEFT_TENTACLE_ARRAY = { LEFT_TENTACLE_0, LEFT_TENTACLE_1, LEFT_TENTACLE_2 };
 
-	public static final org.lgna.story.resources.JointId[] RIGHT_TENTACLE_ARRAY = { RIGHT_TENTACLE_0, RIGHT_TENTACLE_1, RIGHT_TENTACLE_2 };
+	public static final JointId[] RIGHT_TENTACLE_ARRAY = { RIGHT_TENTACLE_0, RIGHT_TENTACLE_1, RIGHT_TENTACLE_2 };
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4 };
-	public org.lgna.story.resources.JointId[] getTailArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4 };
+	@Override
+	public JointId[] getTailArray(){
 		return HermitSnailResource.TAIL_ARRAY;
 	}
 
 	private final ImplementationAndVisualType resourceType;
-	private HermitSnailResource() {
+	HermitSnailResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private HermitSnailResource( ImplementationAndVisualType resourceType ) {
+	HermitSnailResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.SlithererResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds(){
+		return SlithererResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.SlithererImp createImplementation( org.lgna.story.SSlitherer abstraction ) {
-		return new org.lgna.story.implementation.SlithererImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public SlithererImp createImplementation( SSlitherer abstraction ) {
+		return new SlithererImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

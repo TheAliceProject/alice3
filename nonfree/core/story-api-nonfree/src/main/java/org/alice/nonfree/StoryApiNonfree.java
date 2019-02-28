@@ -61,7 +61,7 @@ public class StoryApiNonfree extends NebulousStoryApi {
 	}
 
 	@Override
-	public JointImplementationAndVisualDataFactory getFactory( JointedModelResource resource ) {
+	public <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getFactory( R resource ) {
 		return org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( resource );
 	}
 

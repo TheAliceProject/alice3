@@ -24,55 +24,60 @@
 package org.lgna.story.resources.biped;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.BipedImp;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum BunnyResource implements org.lgna.story.resources.BipedResource {
+public enum BunnyResource implements BipedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, BunnyResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, BunnyResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_EAR = new org.lgna.story.resources.JointId( HEAD, BunnyResource.class );
+	public static final JointId LEFT_EAR = new JointId( HEAD, BunnyResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_MIDDLE = new org.lgna.story.resources.JointId( LEFT_EAR, BunnyResource.class );
+	public static final JointId LEFT_EAR_MIDDLE = new JointId( LEFT_EAR, BunnyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_TIP = new org.lgna.story.resources.JointId( LEFT_EAR_MIDDLE, BunnyResource.class );
+	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR_MIDDLE, BunnyResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR = new org.lgna.story.resources.JointId( HEAD, BunnyResource.class );
+	public static final JointId RIGHT_EAR = new JointId( HEAD, BunnyResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_MIDDLE = new org.lgna.story.resources.JointId( RIGHT_EAR, BunnyResource.class );
+	public static final JointId RIGHT_EAR_MIDDLE = new JointId( RIGHT_EAR, BunnyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_TIP = new org.lgna.story.resources.JointId( RIGHT_EAR_MIDDLE, BunnyResource.class );
+	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR_MIDDLE, BunnyResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME, methodNameHint="getTail")
-	public static final org.lgna.story.resources.JointId TAIL_0 = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, BunnyResource.class );
+	public static final JointId TAIL_0 = new JointId( PELVIS_LOWER_BODY, BunnyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_1 = new org.lgna.story.resources.JointId( TAIL_0, BunnyResource.class );
+	public static final JointId TAIL_1 = new JointId( TAIL_0, BunnyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_2 = new org.lgna.story.resources.JointId( TAIL_1, BunnyResource.class );
+	public static final JointId TAIL_2 = new JointId( TAIL_1, BunnyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOES = new org.lgna.story.resources.JointId( LEFT_FOOT, BunnyResource.class );
+	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, BunnyResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOES = new org.lgna.story.resources.JointId( RIGHT_FOOT, BunnyResource.class );
+	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, BunnyResource.class );
 
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2 };
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2 };
 
 	private final ImplementationAndVisualType resourceType;
-	private BunnyResource() {
+	BunnyResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private BunnyResource( ImplementationAndVisualType resourceType ) {
+	BunnyResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
-		return new org.lgna.story.implementation.BipedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BipedImp createImplementation( SBiped abstraction ) {
+		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

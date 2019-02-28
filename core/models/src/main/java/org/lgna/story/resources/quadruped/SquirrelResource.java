@@ -24,56 +24,63 @@
 package org.lgna.story.resources.quadruped;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SQuadruped;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.QuadrupedImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.QuadrupedResource;
 
-public enum SquirrelResource implements org.lgna.story.resources.QuadrupedResource {
+public enum SquirrelResource implements QuadrupedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, SquirrelResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_0 = new org.lgna.story.resources.JointId( HEAD, SquirrelResource.class );
+	public static final JointId LEFT_EAR_0 = new JointId( HEAD, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_MIDDLE = new org.lgna.story.resources.JointId( LEFT_EAR, SquirrelResource.class );
+	public static final JointId LEFT_EAR_MIDDLE = new JointId( LEFT_EAR, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_TIP = new org.lgna.story.resources.JointId( LEFT_EAR_MIDDLE, SquirrelResource.class );
+	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR_MIDDLE, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_0 = new org.lgna.story.resources.JointId( HEAD, SquirrelResource.class );
+	public static final JointId RIGHT_EAR_0 = new JointId( HEAD, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_MIDDLE = new org.lgna.story.resources.JointId( RIGHT_EAR, SquirrelResource.class );
+	public static final JointId RIGHT_EAR_MIDDLE = new JointId( RIGHT_EAR, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_TIP = new org.lgna.story.resources.JointId( RIGHT_EAR_MIDDLE, SquirrelResource.class );
+	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR_MIDDLE, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOE_0 = new org.lgna.story.resources.JointId( FRONT_LEFT_FOOT, SquirrelResource.class );
+	public static final JointId LEFT_TOE_0 = new JointId( FRONT_LEFT_FOOT, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOE_1 = new org.lgna.story.resources.JointId( FRONT_LEFT_FOOT, SquirrelResource.class );
+	public static final JointId LEFT_TOE_1 = new JointId( FRONT_LEFT_FOOT, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOE_2 = new org.lgna.story.resources.JointId( FRONT_LEFT_FOOT, SquirrelResource.class );
+	public static final JointId LEFT_TOE_2 = new JointId( FRONT_LEFT_FOOT, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOE_3 = new org.lgna.story.resources.JointId( FRONT_LEFT_FOOT, SquirrelResource.class );
+	public static final JointId LEFT_TOE_3 = new JointId( FRONT_LEFT_FOOT, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOE_4 = new org.lgna.story.resources.JointId( FRONT_LEFT_FOOT, SquirrelResource.class );
+	public static final JointId LEFT_TOE_4 = new JointId( FRONT_LEFT_FOOT, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOE_0 = new org.lgna.story.resources.JointId( FRONT_RIGHT_FOOT, SquirrelResource.class );
+	public static final JointId RIGHT_TOE_0 = new JointId( FRONT_RIGHT_FOOT, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOE_1 = new org.lgna.story.resources.JointId( FRONT_RIGHT_FOOT, SquirrelResource.class );
+	public static final JointId RIGHT_TOE_1 = new JointId( FRONT_RIGHT_FOOT, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOE_2 = new org.lgna.story.resources.JointId( FRONT_RIGHT_FOOT, SquirrelResource.class );
+	public static final JointId RIGHT_TOE_2 = new JointId( FRONT_RIGHT_FOOT, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOE_3 = new org.lgna.story.resources.JointId( FRONT_RIGHT_FOOT, SquirrelResource.class );
+	public static final JointId RIGHT_TOE_3 = new JointId( FRONT_RIGHT_FOOT, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOE_4 = new org.lgna.story.resources.JointId( FRONT_RIGHT_FOOT, SquirrelResource.class );
+	public static final JointId RIGHT_TOE_4 = new JointId( FRONT_RIGHT_FOOT, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_4 = new org.lgna.story.resources.JointId( TAIL_3, SquirrelResource.class );
+	public static final JointId TAIL_4 = new JointId( TAIL_3, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_5 = new org.lgna.story.resources.JointId( TAIL_4, SquirrelResource.class );
+	public static final JointId TAIL_5 = new JointId( TAIL_4, SquirrelResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_6 = new org.lgna.story.resources.JointId( TAIL_5, SquirrelResource.class );
+	public static final JointId TAIL_6 = new JointId( TAIL_5, SquirrelResource.class );
 
-	public static final org.lgna.story.JointedModelPose STANDING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose STANDING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( LEFT_EYE, new Orientation(-0.0750122314029591, 0.5122789842817386, -0.11398096587507828, 0.847910223326387), new Position(-0.01959327608346939, 0.024357903748750687, -0.013047268614172935) ),
 		new JointIdTransformationPair( FRONT_RIGHT_KNEE, new Orientation(0.30511380499923824, -0.05548389494640932, -0.05167312338404807, 0.9492928903769371), new Position(-1.776356799695581E-17, -3.552713599391162E-17, -0.049763813614845276) ),
 		new JointIdTransformationPair( FRONT_LEFT_ANKLE, new Orientation(0.12131786279857901, 0.21458499480220022, 0.7750750994676942, 0.5818022399036195), new Position(-2.6645351995433716E-17, 3.552713599391162E-17, -0.06343860179185867) ),
@@ -95,7 +102,7 @@ public enum SquirrelResource implements org.lgna.story.resources.QuadrupedResour
 	);
 
 
-	public static final org.lgna.story.JointedModelPose EATING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose EATING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( TAIL_2, new Orientation(-0.27258462046971743, 0.0, 0.0, 0.9621318125305806), new Position(4.3043247117170193E-16, 3.88578060273166E-18, -0.04868576303124428) ),
 		new JointIdTransformationPair( TAIL_1, new Orientation(0.3665320044382992, 0.0, -0.0, 0.9304054437300131), new Position(-2.5349795581145807E-16, -1.776356799695581E-17, -0.05074014887213707) ),
 		new JointIdTransformationPair( TAIL_0, new Orientation(0.8883682570710801, 0.0, -0.0, 0.4591316149302847), new Position(-1.7927340659254572E-19, 0.028838425874710083, -0.051523223519325256) ),
@@ -125,7 +132,7 @@ public enum SquirrelResource implements org.lgna.story.resources.QuadrupedResour
 	);
 
 
-	public static final org.lgna.story.JointedModelPose ALERT_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose ALERT_POSE = new JointedModelPose(
 		new JointIdTransformationPair( TAIL_2, new Orientation(0.11424007441104207, 0.0, -0.0, 0.9934531722223043), new Position(4.3043247117170193E-16, 3.88578060273166E-18, -0.04868576303124428) ),
 		new JointIdTransformationPair( TAIL_1, new Orientation(0.07592027633689055, 0.0, -0.0, 0.9971138910079079), new Position(-2.5349795581145807E-16, -1.776356799695581E-17, -0.05074014887213707) ),
 		new JointIdTransformationPair( TAIL_0, new Orientation(0.23819743699201085, 0.0, -0.0, 0.9712167528468797), new Position(-1.7927340659254572E-19, 0.028838425874710083, -0.051523223519325256) ),
@@ -153,37 +160,40 @@ public enum SquirrelResource implements org.lgna.story.resources.QuadrupedResour
 	);
 
 
-	public static final org.lgna.story.resources.JointId[] LEFT_TOE_ARRAY = { LEFT_TOE_0, LEFT_TOE_1, LEFT_TOE_2, LEFT_TOE_3, LEFT_TOE_4 };
+	public static final JointId[] LEFT_TOE_ARRAY = { LEFT_TOE_0, LEFT_TOE_1, LEFT_TOE_2, LEFT_TOE_3, LEFT_TOE_4 };
 
-	public static final org.lgna.story.resources.JointId[] RIGHT_TOE_ARRAY = { RIGHT_TOE_0, RIGHT_TOE_1, RIGHT_TOE_2, RIGHT_TOE_3, RIGHT_TOE_4 };
+	public static final JointId[] RIGHT_TOE_ARRAY = { RIGHT_TOE_0, RIGHT_TOE_1, RIGHT_TOE_2, RIGHT_TOE_3, RIGHT_TOE_4 };
 
-	public static final org.lgna.story.resources.JointId[] RIGHT_EAR_ARRAY = { RIGHT_EAR_0 };
+	public static final JointId[] RIGHT_EAR_ARRAY = { RIGHT_EAR_0 };
 
-	public static final org.lgna.story.resources.JointId[] LEFT_EAR_ARRAY = { LEFT_EAR_0 };
+	public static final JointId[] LEFT_EAR_ARRAY = { LEFT_EAR_0 };
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4, TAIL_5, TAIL_6 };
-	public org.lgna.story.resources.JointId[] getTailArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4, TAIL_5, TAIL_6 };
+	@Override
+	public JointId[] getTailArray(){
 		return SquirrelResource.TAIL_ARRAY;
 	}
 
 	private final ImplementationAndVisualType resourceType;
-	private SquirrelResource() {
+	SquirrelResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private SquirrelResource( ImplementationAndVisualType resourceType ) {
+	SquirrelResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.QuadrupedResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds(){
+		return QuadrupedResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.SQuadruped abstraction ) {
-		return new org.lgna.story.implementation.QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public QuadrupedImp createImplementation( SQuadruped abstraction ) {
+		return new QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

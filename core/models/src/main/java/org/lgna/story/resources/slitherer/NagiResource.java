@@ -24,120 +24,126 @@
 package org.lgna.story.resources.slitherer;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SSlitherer;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.SlithererImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.SlithererResource;
 
-public enum NagiResource implements org.lgna.story.resources.SlithererResource {
+public enum NagiResource implements SlithererResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, NagiResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_EAR = new org.lgna.story.resources.JointId( HEAD, NagiResource.class );
+	public static final JointId LEFT_EAR = new JointId( HEAD, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_TIP = new org.lgna.story.resources.JointId( LEFT_EAR, NagiResource.class );
+	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR = new org.lgna.story.resources.JointId( HEAD, NagiResource.class );
+	public static final JointId RIGHT_EAR = new JointId( HEAD, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_TIP = new org.lgna.story.resources.JointId( RIGHT_EAR, NagiResource.class );
+	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_CLAVICLE = new org.lgna.story.resources.JointId( SPINE_UPPER, NagiResource.class );
+	public static final JointId LEFT_CLAVICLE = new JointId( SPINE_UPPER, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_SHOULDER = new org.lgna.story.resources.JointId( LEFT_CLAVICLE, NagiResource.class );
+	public static final JointId LEFT_SHOULDER = new JointId( LEFT_CLAVICLE, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_ELBOW = new org.lgna.story.resources.JointId( LEFT_SHOULDER, NagiResource.class );
+	public static final JointId LEFT_ELBOW = new JointId( LEFT_SHOULDER, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_WRIST = new org.lgna.story.resources.JointId( LEFT_ELBOW, NagiResource.class );
+	public static final JointId LEFT_WRIST = new JointId( LEFT_ELBOW, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_HAND = new org.lgna.story.resources.JointId( LEFT_WRIST, NagiResource.class );
+	public static final JointId LEFT_HAND = new JointId( LEFT_WRIST, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_PINKY_FINGER = new org.lgna.story.resources.JointId( LEFT_HAND, NagiResource.class );
+	public static final JointId LEFT_PINKY_FINGER = new JointId( LEFT_HAND, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_PINKY_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( LEFT_PINKY_FINGER, NagiResource.class );
+	public static final JointId LEFT_PINKY_FINGER_KNUCKLE = new JointId( LEFT_PINKY_FINGER, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_MIDDLE_FINGER = new org.lgna.story.resources.JointId( LEFT_HAND, NagiResource.class );
+	public static final JointId LEFT_MIDDLE_FINGER = new JointId( LEFT_HAND, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_MIDDLE_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( LEFT_MIDDLE_FINGER, NagiResource.class );
+	public static final JointId LEFT_MIDDLE_FINGER_KNUCKLE = new JointId( LEFT_MIDDLE_FINGER, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER = new org.lgna.story.resources.JointId( LEFT_HAND, NagiResource.class );
+	public static final JointId LEFT_RING_FINGER = new JointId( LEFT_HAND, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( LEFT_RING_FINGER, NagiResource.class );
+	public static final JointId LEFT_RING_FINGER_KNUCKLE = new JointId( LEFT_RING_FINGER, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_INDEX_FINGER = new org.lgna.story.resources.JointId( LEFT_HAND, NagiResource.class );
+	public static final JointId LEFT_INDEX_FINGER = new JointId( LEFT_HAND, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_INDEX_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( LEFT_INDEX_FINGER, NagiResource.class );
+	public static final JointId LEFT_INDEX_FINGER_KNUCKLE = new JointId( LEFT_INDEX_FINGER, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_THUMB = new org.lgna.story.resources.JointId( LEFT_HAND, NagiResource.class );
+	public static final JointId LEFT_THUMB = new JointId( LEFT_HAND, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_THUMB_KNUCKLE = new org.lgna.story.resources.JointId( LEFT_THUMB, NagiResource.class );
+	public static final JointId LEFT_THUMB_KNUCKLE = new JointId( LEFT_THUMB, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_THUMB_TIP = new org.lgna.story.resources.JointId( LEFT_THUMB_KNUCKLE, NagiResource.class );
+	public static final JointId LEFT_THUMB_TIP = new JointId( LEFT_THUMB_KNUCKLE, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_CLAVICLE = new org.lgna.story.resources.JointId( SPINE_UPPER, NagiResource.class );
+	public static final JointId RIGHT_CLAVICLE = new JointId( SPINE_UPPER, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_SHOULDER = new org.lgna.story.resources.JointId( RIGHT_CLAVICLE, NagiResource.class );
+	public static final JointId RIGHT_SHOULDER = new JointId( RIGHT_CLAVICLE, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_ELBOW = new org.lgna.story.resources.JointId( RIGHT_SHOULDER, NagiResource.class );
+	public static final JointId RIGHT_ELBOW = new JointId( RIGHT_SHOULDER, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_WRIST = new org.lgna.story.resources.JointId( RIGHT_ELBOW, NagiResource.class );
+	public static final JointId RIGHT_WRIST = new JointId( RIGHT_ELBOW, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_HAND = new org.lgna.story.resources.JointId( RIGHT_WRIST, NagiResource.class );
+	public static final JointId RIGHT_HAND = new JointId( RIGHT_WRIST, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_PINKY_FINGER = new org.lgna.story.resources.JointId( RIGHT_HAND, NagiResource.class );
+	public static final JointId RIGHT_PINKY_FINGER = new JointId( RIGHT_HAND, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_PINKY_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( RIGHT_PINKY_FINGER, NagiResource.class );
+	public static final JointId RIGHT_PINKY_FINGER_KNUCKLE = new JointId( RIGHT_PINKY_FINGER, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_MIDDLE_FINGER = new org.lgna.story.resources.JointId( RIGHT_HAND, NagiResource.class );
+	public static final JointId RIGHT_MIDDLE_FINGER = new JointId( RIGHT_HAND, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_MIDDLE_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( RIGHT_MIDDLE_FINGER, NagiResource.class );
+	public static final JointId RIGHT_MIDDLE_FINGER_KNUCKLE = new JointId( RIGHT_MIDDLE_FINGER, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER = new org.lgna.story.resources.JointId( RIGHT_HAND, NagiResource.class );
+	public static final JointId RIGHT_RING_FINGER = new JointId( RIGHT_HAND, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_RING_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( RIGHT_RING_FINGER, NagiResource.class );
+	public static final JointId RIGHT_RING_FINGER_KNUCKLE = new JointId( RIGHT_RING_FINGER, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_INDEX_FINGER = new org.lgna.story.resources.JointId( RIGHT_HAND, NagiResource.class );
+	public static final JointId RIGHT_INDEX_FINGER = new JointId( RIGHT_HAND, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_INDEX_FINGER_KNUCKLE = new org.lgna.story.resources.JointId( RIGHT_INDEX_FINGER, NagiResource.class );
+	public static final JointId RIGHT_INDEX_FINGER_KNUCKLE = new JointId( RIGHT_INDEX_FINGER, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_THUMB = new org.lgna.story.resources.JointId( RIGHT_HAND, NagiResource.class );
+	public static final JointId RIGHT_THUMB = new JointId( RIGHT_HAND, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_THUMB_KNUCKLE = new org.lgna.story.resources.JointId( RIGHT_THUMB, NagiResource.class );
+	public static final JointId RIGHT_THUMB_KNUCKLE = new JointId( RIGHT_THUMB, NagiResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_THUMB_TIP = new org.lgna.story.resources.JointId( RIGHT_THUMB_KNUCKLE, NagiResource.class );
+	public static final JointId RIGHT_THUMB_TIP = new JointId( RIGHT_THUMB_KNUCKLE, NagiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_1 = new org.lgna.story.resources.JointId( TAIL_0, NagiResource.class );
+	public static final JointId TAIL_1 = new JointId( TAIL_0, NagiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_2 = new org.lgna.story.resources.JointId( TAIL_1, NagiResource.class );
+	public static final JointId TAIL_2 = new JointId( TAIL_1, NagiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_3 = new org.lgna.story.resources.JointId( TAIL_2, NagiResource.class );
+	public static final JointId TAIL_3 = new JointId( TAIL_2, NagiResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TAIL_4 = new org.lgna.story.resources.JointId( TAIL_3, NagiResource.class );
+	public static final JointId TAIL_4 = new JointId( TAIL_3, NagiResource.class );
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4 };
-	public org.lgna.story.resources.JointId[] getTailArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4 };
+	@Override
+	public JointId[] getTailArray(){
 		return NagiResource.TAIL_ARRAY;
 	}
 
 	private final ImplementationAndVisualType resourceType;
-	private NagiResource() {
+	NagiResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private NagiResource( ImplementationAndVisualType resourceType ) {
+	NagiResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.SlithererResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds(){
+		return SlithererResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.SlithererImp createImplementation( org.lgna.story.SSlitherer abstraction ) {
-		return new org.lgna.story.implementation.SlithererImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public SlithererImp createImplementation( SSlitherer abstraction ) {
+		return new SlithererImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

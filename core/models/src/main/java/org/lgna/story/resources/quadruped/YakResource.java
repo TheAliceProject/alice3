@@ -24,62 +24,68 @@
 package org.lgna.story.resources.quadruped;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SQuadruped;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.QuadrupedImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.QuadrupedResource;
 
-public enum YakResource implements org.lgna.story.resources.QuadrupedResource {
+public enum YakResource implements QuadrupedResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, YakResource.class );
+	public static final JointId LOWER_LIP = new JointId( MOUTH, YakResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_HORN = new org.lgna.story.resources.JointId( HEAD, YakResource.class );
+	public static final JointId LEFT_HORN = new JointId( HEAD, YakResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_HORN_TIP = new org.lgna.story.resources.JointId( LEFT_HORN, YakResource.class );
+	public static final JointId LEFT_HORN_TIP = new JointId( LEFT_HORN, YakResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_HORN = new org.lgna.story.resources.JointId( HEAD, YakResource.class );
+	public static final JointId RIGHT_HORN = new JointId( HEAD, YakResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_HORN_TIP = new org.lgna.story.resources.JointId( RIGHT_HORN, YakResource.class );
+	public static final JointId RIGHT_HORN_TIP = new JointId( RIGHT_HORN, YakResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME, methodNameHint="getTongue")
-	public static final org.lgna.story.resources.JointId TONGUE_0 = new org.lgna.story.resources.JointId( HEAD, YakResource.class );
+	public static final JointId TONGUE_0 = new JointId( HEAD, YakResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TONGUE_1 = new org.lgna.story.resources.JointId( TONGUE_0, YakResource.class );
+	public static final JointId TONGUE_1 = new JointId( TONGUE_0, YakResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TONGUE_2 = new org.lgna.story.resources.JointId( TONGUE_1, YakResource.class );
+	public static final JointId TONGUE_2 = new JointId( TONGUE_1, YakResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId TONGUE_3 = new org.lgna.story.resources.JointId( TONGUE_2, YakResource.class );
+	public static final JointId TONGUE_3 = new JointId( TONGUE_2, YakResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_EAR_TIP = new org.lgna.story.resources.JointId( LEFT_EAR, YakResource.class );
+	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, YakResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_EAR_TIP = new org.lgna.story.resources.JointId( RIGHT_EAR, YakResource.class );
+	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, YakResource.class );
 
-	public static final org.lgna.story.resources.JointId[] TONGUE_ARRAY = { TONGUE_0, TONGUE_1, TONGUE_2, TONGUE_3 };
+	public static final JointId[] TONGUE_ARRAY = { TONGUE_0, TONGUE_1, TONGUE_2, TONGUE_3 };
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
-	public org.lgna.story.resources.JointId[] getTailArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
+	@Override
+	public JointId[] getTailArray(){
 		return YakResource.TAIL_ARRAY;
 	}
 
 	private final ImplementationAndVisualType resourceType;
-	private YakResource() {
+	YakResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private YakResource( ImplementationAndVisualType resourceType ) {
+	YakResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.QuadrupedResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds(){
+		return QuadrupedResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.SQuadruped abstraction ) {
-		return new org.lgna.story.implementation.QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public QuadrupedImp createImplementation( SQuadruped abstraction ) {
+		return new QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

@@ -24,29 +24,36 @@
 package org.lgna.story.resources.flyer;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.SFlyer;
+import org.lgna.story.implementation.FlyerImp;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.FlyerResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
-public enum EagleResource implements org.lgna.story.resources.FlyerResource {
+public enum EagleResource implements FlyerResource {
 	DEFAULT;
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId LEFT_TOE = new org.lgna.story.resources.JointId( LEFT_FOOT, EagleResource.class );
+	public static final JointId LEFT_TOE = new JointId( LEFT_FOOT, EagleResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_HINDFOOT = new org.lgna.story.resources.JointId( LEFT_ANKLE, EagleResource.class );
+	public static final JointId LEFT_HINDFOOT = new JointId( LEFT_ANKLE, EagleResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_HINDTOE = new org.lgna.story.resources.JointId( LEFT_HINDFOOT, EagleResource.class );
+	public static final JointId LEFT_HINDTOE = new JointId( LEFT_HINDFOOT, EagleResource.class );
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId RIGHT_TOE = new org.lgna.story.resources.JointId( RIGHT_FOOT, EagleResource.class );
+	public static final JointId RIGHT_TOE = new JointId( RIGHT_FOOT, EagleResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_HINDFOOT = new org.lgna.story.resources.JointId( RIGHT_ANKLE, EagleResource.class );
+	public static final JointId RIGHT_HINDFOOT = new JointId( RIGHT_ANKLE, EagleResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_HINDTOE = new org.lgna.story.resources.JointId( RIGHT_HINDFOOT, EagleResource.class );
+	public static final JointId RIGHT_HINDTOE = new JointId( RIGHT_HINDFOOT, EagleResource.class );
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.JointedModelPose SPREAD_WINGS_POSE = new org.lgna.story.JointedModelPose( 
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointedModelPose SPREAD_WINGS_POSE = new JointedModelPose(
 		new JointIdTransformationPair( TAIL_1, new Orientation(-0.0685296254659093, 0.0, 0.0, 0.9976490818085797), new Position(-0.0, 0.0, -0.09041246026754379) ),
 		new JointIdTransformationPair( TAIL_0, new Orientation(-0.4229670272245295, 0.0, 0.0, 0.9061450733082668), new Position(-0.0, 0.0, -0.12702907621860504) ),
 		new JointIdTransformationPair( LEFT_FOOT, new Orientation(-0.5956637171144652, -0.05580200799850926, 0.05924754372906666, 0.7990998689643147), new Position(-0.0, 0.0, -0.08203809708356857) ),
@@ -70,11 +77,12 @@ public enum EagleResource implements org.lgna.story.resources.FlyerResource {
 		new JointIdTransformationPair( LEFT_HIP, new Orientation(-0.04068523609396077, -0.41497714236588346, -0.8246616693391402, 0.3821934248526609), new Position(0.12353269755840302, -0.08568517863750458, -0.025270670652389526) )
 	);
 
-	public org.lgna.story.JointedModelPose getSpreadWingsPose(){
+	@Override
+	public JointedModelPose getSpreadWingsPose(){
 		return EagleResource.SPREAD_WINGS_POSE;
 	}
 
-	public static final org.lgna.story.JointedModelPose FLYING_POSE = new org.lgna.story.JointedModelPose( 
+	public static final JointedModelPose FLYING_POSE = new JointedModelPose(
 		new JointIdTransformationPair( TAIL_1, new Orientation(-0.0685296254659093, 0.0, 0.0, 0.9976490818085797), new Position(-3.0429468047697607E-16, -1.776356799695581E-17, -0.09041246026754379) ),
 		new JointIdTransformationPair( TAIL_0, new Orientation(-0.4229670272245295, 0.0, 0.0, 0.9061450733082668), new Position(-3.7602505681027566E-17, -3.552713599391162E-17, -0.12702907621860504) ),
 		new JointIdTransformationPair( LEFT_FOOT, new Orientation(-0.5956637171144652, -0.05580200799850926, 0.05924754372906666, 0.7990998689643147), new Position(-5.329070399086743E-17, -2.6645351995433716E-17, -0.08203809708356857) ),
@@ -102,8 +110,8 @@ public enum EagleResource implements org.lgna.story.resources.FlyerResource {
 	);
 
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.JointedModelPose FOLD_WINGS_POSE = new org.lgna.story.JointedModelPose( 
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointedModelPose FOLD_WINGS_POSE = new JointedModelPose(
 		new JointIdTransformationPair( TAIL_1, new Orientation(0.3362022066716763, 0.0, -0.0, 0.9417898259320364), new Position(-3.0429468047697607E-16, -1.776356799695581E-17, -0.09041246026754379) ),
 		new JointIdTransformationPair( TAIL_0, new Orientation(-0.18651920333769886, 0.0, 0.0, 0.9824513152244594), new Position(-3.7602505681027566E-17, -3.552713599391162E-17, -0.12702907621860504) ),
 		new JointIdTransformationPair( LEFT_ANKLE, new Orientation(0.581910460005932, 0.045253128343971126, 0.004204627254871233, 0.8119819530139917), new Position(-5.329070399086743E-17, 8.881783998477905E-18, -0.07284130156040192) ),
@@ -127,39 +135,44 @@ public enum EagleResource implements org.lgna.story.resources.FlyerResource {
 		new JointIdTransformationPair( LEFT_HINDFOOT, new Orientation(0.08735958944235667, -0.9661844713797868, -0.23625839512931573, 0.055116604829624216), new Position(0.018377147614955902, -0.04763346537947655, 0.0038255846593528986) )
 	);
 
-	public org.lgna.story.JointedModelPose getFoldWingsPose(){
+	@Override
+	public JointedModelPose getFoldWingsPose(){
 		return EagleResource.FOLD_WINGS_POSE;
 	}
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] NECK_ARRAY = { NECK_0, NECK_1 };
-	public org.lgna.story.resources.JointId[] getNeckArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] NECK_ARRAY = { NECK_0, NECK_1 };
+	@Override
+	public JointId[] getNeckArray(){
 		return EagleResource.NECK_ARRAY;
 	}
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2 };
-	public org.lgna.story.resources.JointId[] getTailArray(){
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2 };
+	@Override
+	public JointId[] getTailArray(){
 		return EagleResource.TAIL_ARRAY;
 	}
 
 	private final ImplementationAndVisualType resourceType;
-	private EagleResource() {
+	EagleResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private EagleResource( ImplementationAndVisualType resourceType ) {
+	EagleResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
-		return org.lgna.story.resources.FlyerResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds(){
+		return FlyerResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.FlyerImp createImplementation( org.lgna.story.SFlyer abstraction ) {
-		return new org.lgna.story.implementation.FlyerImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public FlyerImp createImplementation( SFlyer abstraction ) {
+		return new FlyerImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

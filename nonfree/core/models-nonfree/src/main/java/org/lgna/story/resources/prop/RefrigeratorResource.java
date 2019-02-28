@@ -24,12 +24,15 @@
 package org.lgna.story.resources.prop;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.PropResource;
 
-public enum RefrigeratorResource implements org.lgna.story.resources.PropResource {
+public enum RefrigeratorResource implements PropResource {
 	BASIC_WHITE( ImplementationAndVisualType.SIMS2 ),
 	BASIC_GREEN( ImplementationAndVisualType.SIMS2 ),
 	BASIC_CREAM( ImplementationAndVisualType.SIMS2 ),
@@ -46,32 +49,35 @@ public enum RefrigeratorResource implements org.lgna.story.resources.PropResourc
 	STAINLESS_STEEL_WHITE( ImplementationAndVisualType.SIMS2 );
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId ROOT = new org.lgna.story.resources.JointId( null, RefrigeratorResource.class );
+	public static final JointId ROOT = new JointId( null, RefrigeratorResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId RIGHT_DOOR = new org.lgna.story.resources.JointId( ROOT, RefrigeratorResource.class );
+	public static final JointId RIGHT_DOOR = new JointId( ROOT, RefrigeratorResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId LEFT_DOOR = new org.lgna.story.resources.JointId( ROOT, RefrigeratorResource.class );
+	public static final JointId LEFT_DOOR = new JointId( ROOT, RefrigeratorResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
 	private final ImplementationAndVisualType resourceType;
-	private RefrigeratorResource() {
+	RefrigeratorResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private RefrigeratorResource( ImplementationAndVisualType resourceType ) {
+	RefrigeratorResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return RefrigeratorResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction ) {
-		return new org.lgna.story.implementation.BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
+		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }

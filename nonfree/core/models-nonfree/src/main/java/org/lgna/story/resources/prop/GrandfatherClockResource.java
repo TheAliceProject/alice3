@@ -24,45 +24,51 @@
 package org.lgna.story.resources.prop;
 
 import org.lgna.project.annotations.*;
-import org.lgna.story.implementation.JointIdTransformationPair;
-import org.lgna.story.Orientation;
-import org.lgna.story.Position;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.PropResource;
 
-public enum GrandfatherClockResource implements org.lgna.story.resources.PropResource {
+public enum GrandfatherClockResource implements PropResource {
 	GRANDFATHER_CLOCK( ImplementationAndVisualType.SIMS2 );
 
 @FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public static final org.lgna.story.resources.JointId ROOT = new org.lgna.story.resources.JointId( null, GrandfatherClockResource.class );
+	public static final JointId ROOT = new JointId( null, GrandfatherClockResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId HOUR_HAND = new org.lgna.story.resources.JointId( ROOT, GrandfatherClockResource.class );
+	public static final JointId HOUR_HAND = new JointId( ROOT, GrandfatherClockResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId PENDULUM = new org.lgna.story.resources.JointId( ROOT, GrandfatherClockResource.class );
+	public static final JointId PENDULUM = new JointId( ROOT, GrandfatherClockResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId DOOR = new org.lgna.story.resources.JointId( ROOT, GrandfatherClockResource.class );
+	public static final JointId DOOR = new JointId( ROOT, GrandfatherClockResource.class );
 @FieldTemplate(visibility=Visibility.PRIME_TIME)
-	public static final org.lgna.story.resources.JointId MINUTE_HAND = new org.lgna.story.resources.JointId( ROOT, GrandfatherClockResource.class );
+	public static final JointId MINUTE_HAND = new JointId( ROOT, GrandfatherClockResource.class );
 
-@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public static final org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
 	private final ImplementationAndVisualType resourceType;
-	private GrandfatherClockResource() {
+	GrandfatherClockResource() {
 		this( ImplementationAndVisualType.ALICE );
 	}
 
-	private GrandfatherClockResource( ImplementationAndVisualType resourceType ) {
+	GrandfatherClockResource( ImplementationAndVisualType resourceType ) {
 		this.resourceType = resourceType;
 	}
 
-	public org.lgna.story.resources.JointId[] getRootJointIds(){
+	@Override
+	public JointId[] getRootJointIds(){
 		return GrandfatherClockResource.JOINT_ID_ROOTS;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
+	@Override
+	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
 		return this.resourceType.getFactory( this );
 	}
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction ) {
-		return new org.lgna.story.implementation.BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
+	@Override
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
+		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
 	}
 }
