@@ -21,8 +21,8 @@
     <ThemeTags>
         <ThemeTag>india:ancient temple</ThemeTag>
     </ThemeTags>
-    <Resource modelName="AncientTempleWell" resourceName="INDIA_BRICK_D" textureName="INDIA_BRICK_D"/>
-    <Resource modelName="AncientTempleWell" resourceName="INDIA_LIGHT_BRICK_D" textureName="INDIA_LIGHT_BRICK_D"/>
-    <Resource modelName="AncientTempleWell" resourceName="INDIA_LIGHTEST_BRICK_D" textureName="INDIA_LIGHTEST_BRICK_D"/>
-    <Resource modelName="AncientTempleWell" resourceName="INDIA_MED_BRICK_D" textureName="INDIA_MED_BRICK_D"/>
+    <Resource modelName="AncientTempleWell" resourceName="GRAY" textureName="GRAY"/>
+    <Resource modelName="AncientTempleWell" resourceName="GOLD" textureName="GOLD"/>
+    <Resource modelName="AncientTempleWell" resourceName="SAND" textureName="SAND"/>
+    <Resource modelName="AncientTempleWell" resourceName="RED" textureName="RED"/>
 </AliceModel>

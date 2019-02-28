@@ -17,8 +17,8 @@
     <ThemeTags>
         <ThemeTag>india:water tank</ThemeTag>
     </ThemeTags>
-    <Resource modelName="WaterTankPillar" resourceName="INDIA_WATER_TANK" textureName="INDIA_WATER_TANK"/>
-    <Resource modelName="WaterTankPillar" resourceName="INDIA_WATER_TANK_LIGHT" textureName="INDIA_WATER_TANK_LIGHT"/>
-    <Resource modelName="WaterTankPillar" resourceName="INDIA_WATER_TANK_LIGHTEST" textureName="INDIA_WATER_TANK_LIGHTEST"/>
-    <Resource modelName="WaterTankPillar" resourceName="INDIA_WATER_TANK_MED" textureName="INDIA_WATER_TANK_MED"/>
+    <Resource modelName="WaterTankPillar" resourceName="GRAY" textureName="GRAY"/>
+    <Resource modelName="WaterTankPillar" resourceName="GOLD" textureName="GOLD"/>
+    <Resource modelName="WaterTankPillar" resourceName="SAND" textureName="SAND"/>
+    <Resource modelName="WaterTankPillar" resourceName="RED" textureName="RED"/>
 </AliceModel>

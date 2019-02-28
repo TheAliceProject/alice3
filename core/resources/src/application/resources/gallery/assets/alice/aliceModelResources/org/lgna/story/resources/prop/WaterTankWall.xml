@@ -16,7 +16,7 @@
     <ThemeTags>
         <ThemeTag>india:water tank</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Arch" resourceName="ARCH_INDIA_WATER_TANK" textureName="INDIA_WATER_TANK">
+    <Resource modelName="Arch" resourceName="ARCH_GRAY" textureName="GRAY">
         <BoundingBox>
             <Min x="-0.987433135509491" y="0.06552191823720932" z="-2.6079940795898438"/>
             <Max x="0.9625518321990967" y="4.381101608276367" z="2.6079940795898438"/>
@@ -29,7 +29,7 @@
             <Tag>window</Tag>
         </Tags>
     </Resource>
-    <Resource modelName="Arch" resourceName="ARCH_INDIA_WATER_TANK_LIGHT" textureName="INDIA_WATER_TANK_LIGHT">
+    <Resource modelName="Arch" resourceName="ARCH_GOLD" textureName="GOLD">
         <BoundingBox>
             <Min x="-0.987433135509491" y="0.06552191823720932" z="-2.6079940795898438"/>
             <Max x="0.9625518321990967" y="4.381101608276367" z="2.6079940795898438"/>
@@ -42,7 +42,7 @@
             <Tag>window</Tag>
         </Tags>
     </Resource>
-    <Resource modelName="Arch" resourceName="ARCH_INDIA_WATER_TANK_LIGHTEST" textureName="INDIA_WATER_TANK_LIGHTEST">
+    <Resource modelName="Arch" resourceName="ARCH_SAND" textureName="SAND">
         <BoundingBox>
             <Min x="-0.987433135509491" y="0.06552191823720932" z="-2.6079940795898438"/>
             <Max x="0.9625518321990967" y="4.381101608276367" z="2.6079940795898438"/>
@@ -55,7 +55,7 @@
             <Tag>window</Tag>
         </Tags>
     </Resource>
-    <Resource modelName="Arch" resourceName="ARCH_INDIA_WATER_TANK_MED" textureName="INDIA_WATER_TANK_MED">
+    <Resource modelName="Arch" resourceName="ARCH_RED" textureName="RED">
         <BoundingBox>
             <Min x="-0.987433135509491" y="0.06552191823720932" z="-2.6079940795898438"/>
             <Max x="0.9625518321990967" y="4.381101608276367" z="2.6079940795898438"/>
@@ -68,7 +68,7 @@
             <Tag>window</Tag>
         </Tags>
     </Resource>
-    <Resource modelName="Circle" resourceName="CIRCLE_INDIA_WATER_TANK" textureName="INDIA_WATER_TANK">
+    <Resource modelName="Circle" resourceName="CIRCLE_GRAY" textureName="GRAY">
         <BoundingBox>
             <Min x="-0.35525742173194885" y="0.04036090895533562" z="-2.4442343711853027"/>
             <Max x="1.5760421752929688" y="4.43898868560791" z="2.4442343711853027"/>
@@ -77,7 +77,7 @@
             <Tag>window</Tag>
         </Tags>
     </Resource>
-    <Resource modelName="Circle" resourceName="CIRCLE_INDIA_WATER_TANK_LIGHT" textureName="INDIA_WATER_TANK_LIGHT">
+    <Resource modelName="Circle" resourceName="CIRCLE_GOLD" textureName="GOLD">
         <BoundingBox>
             <Min x="-0.35525742173194885" y="0.04036090895533562" z="-2.4442343711853027"/>
             <Max x="1.5760421752929688" y="4.43898868560791" z="2.4442343711853027"/>
@@ -86,7 +86,7 @@
             <Tag>window</Tag>
         </Tags>
     </Resource>
-    <Resource modelName="Circle" resourceName="CIRCLE_INDIA_WATER_TANK_LIGHTEST" textureName="INDIA_WATER_TANK_LIGHTEST">
+    <Resource modelName="Circle" resourceName="CIRCLE_SAND" textureName="SAND">
         <BoundingBox>
             <Min x="-0.35525742173194885" y="0.04036090895533562" z="-2.4442343711853027"/>
             <Max x="1.5760421752929688" y="4.43898868560791" z="2.4442343711853027"/>
@@ -95,7 +95,7 @@
             <Tag>window</Tag>
         </Tags>
     </Resource>
-    <Resource modelName="Circle" resourceName="CIRCLE_INDIA_WATER_TANK_MED" textureName="INDIA_WATER_TANK_MED">
+    <Resource modelName="Circle" resourceName="CIRCLE_RED" textureName="RED">
         <BoundingBox>
             <Min x="-0.35525742173194885" y="0.04036090895533562" z="-2.4442343711853027"/>
             <Max x="1.5760421752929688" y="4.43898868560791" z="2.4442343711853027"/>
