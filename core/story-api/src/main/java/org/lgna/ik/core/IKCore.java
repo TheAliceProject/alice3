@@ -60,7 +60,6 @@ import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.Point3;
-import org.lgna.story.resources.biped.OgreResource;
 
 /**
  * @author Matt May
@@ -74,7 +73,7 @@ public class IKCore {
 		LEFT_LEG
 	}
 
-	private static final SBiped ogre = new SBiped( OgreResource.GREEN );
+	private static final SBiped ogre = new SBiped( null );
 	private static final boolean USING_OLD = false;
 	private static List<JointId> defaultAnchors = Lists.newArrayList(
 			( (JointImp)EmployeesOnly.getImplementation( ogre.getRightShoulder() ) ).getJointId(),

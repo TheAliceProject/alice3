@@ -80,8 +80,6 @@ import org.lgna.story.implementation.JointedModelImp.VisualData;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.ImplementationAndVisualType;
 import org.lgna.story.resources.JointedModelResource;
-import org.lgna.story.resources.biped.AliceResource;
-import org.lgna.story.resources.prop.SledResource;
 import org.lgna.story.resourceutilities.exporterutils.collada.*;
 import org.lgna.story.resourceutilities.exporterutils.collada.Asset.Unit;
 import org.lgna.story.resourceutilities.exporterutils.collada.COLLADA.Scene;
@@ -1137,24 +1135,4 @@ public class JointedModelColladaExporter {
 		JointedModelColladaExporter exporter = new JointedModelColladaExporter(sgSkeletonVisual, modelManifest.models.get(0), modelManifest.description.name);
 		return exportAliceModelToDir(exporter, rootDir);
 	}
-
-
-	public static void main( String[] args ) {
-
-//		File outputRootDir = Paths.get(".").toFile();
-//		File outputRootDir = new File("C:\\Users\\dculyba\\Documents\\Projects\\Alice\\Unity\\trilibtest\\Win64");
-		File outputRootDir = new File("C:\\Users\\dculyba\\Documents\\Projects\\Alice\\Code\\alice-unity-player\\Assets\\Models");
-		try {
-			List<File> aliceFiles = exportAliceModelResourceToDir(AliceResource.WONDERLAND, outputRootDir);
-//		List<File> pirateShipFiles = exportAliceModelResourceToDir(PirateShipResource.DEFAULT, outputRootDir);
-//		List<File> colaBottleFiles = exportAliceModelResourceToDir(ColaBottleResource.DEFAULT, outputRootDir);
-			List<File> sledFiles = exportAliceModelResourceToDir(SledResource.DEFAULT, outputRootDir);
-//		testModelExport(YetiBabyResource.TUTU, new File(outputRootDir, "YetiBaby"));
-		}
-		catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
-
-	}
-
 }

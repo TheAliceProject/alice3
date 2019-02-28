@@ -82,12 +82,6 @@
 			<artifactId>ast</artifactId>
 		</dependency>
 
-		<!-- Gallery/Models -->
-		<dependency>
-			<groupId>org.alice</groupId>
-			<artifactId>alice-model-source</artifactId>
-		</dependency>
-
 		<!-- External -->
 		<dependency>
 			<groupId>com.sun</groupId>

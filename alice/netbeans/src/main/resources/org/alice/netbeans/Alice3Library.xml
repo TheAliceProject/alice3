@@ -23,9 +23,9 @@
 		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/story-api.jar/</resource>
 		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/tweedle.jar</resource>
 
-		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/alice-model-source.jar</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/models.jar</resource>
+		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice-nonfree/models-nonfree.jar</resource>
 
-		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice-nonfree/nebulous-model-source.jar</resource>
 		<resource>nbinst:/modules/ext/org.alice.netbeans/org-alice-nonfree/story-api-nonfree.jar</resource>
 	</volume>
 	<volume>

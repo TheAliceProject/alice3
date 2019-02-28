@@ -7,10 +7,6 @@ import org.junit.Test;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.ImplementationAndVisualType;
 import org.lgna.story.resources.JointedModelResource;
-import org.lgna.story.resources.biped.AliceResource;
-import org.lgna.story.resources.biped.AlienResource;
-import org.lgna.story.resources.quadruped.DragonResource;
-import org.lgna.story.resources.watercraft.PirateShipResource;
 import org.lgna.story.resourceutilities.exporterutils.collada.COLLADA;
 
 import java.nio.file.Path;
@@ -43,26 +39,26 @@ public class ModelExportTest {
         return modelInfo;
     }
 
-    private static final SkeletonVisual ALIEN_VISUAL = (SkeletonVisual)ImplementationAndVisualType.ALICE.getFactory(AlienResource.DEFAULT).createVisualData().getSgVisuals()[ 0 ];
-    private static final ModelResourceInfo ALIEN_MODEL_INFO = AliceResourceUtilties.getModelResourceInfo( AlienResource.class, AlienResource.DEFAULT.toString() );
-
-    private static final SkeletonVisual PIRATE_SHIP_VISUAL = (SkeletonVisual)ImplementationAndVisualType.ALICE.getFactory(PirateShipResource.DEFAULT).createVisualData().getSgVisuals()[ 0 ];
-    private static final ModelResourceInfo PIRATE_SHIP_INFO = AliceResourceUtilties.getModelResourceInfo( PirateShipResource.class, PirateShipResource.DEFAULT.toString() );
-
-    private static final SkeletonVisual ALICE_WONDERLAND_VISUAL = (SkeletonVisual)ImplementationAndVisualType.ALICE.getFactory(AliceResource.WONDERLAND).createVisualData().getSgVisuals()[ 0 ];
-    private static final ModelResourceInfo ALICE_WONDERLAND_INFO = AliceResourceUtilties.getModelResourceInfo( AliceResource.class, AliceResource.WONDERLAND.toString() );
-
-    private static final SkeletonVisual ALICE_CARNEGIE_VISUAL = (SkeletonVisual)ImplementationAndVisualType.ALICE.getFactory(AliceResource.CARNEGIE_MELLON).createVisualData().getSgVisuals()[ 0 ];
-    private static final ModelResourceInfo ALICE_CARNEGIE_INFO = AliceResourceUtilties.getModelResourceInfo( AliceResource.class, AliceResource.CARNEGIE_MELLON.toString() );
-
-    private static final SkeletonVisual DRAGON_DEFAULT_BLUE_VISUAL = (SkeletonVisual)ImplementationAndVisualType.ALICE.getFactory(DragonResource.DEFAULT_BLUE).createVisualData().getSgVisuals()[ 0 ];
-    private static final ModelResourceInfo DRAGON_DEFAULT_BLUE_MODEL_INFO = AliceResourceUtilties.getModelResourceInfo( DragonResource.class, DragonResource.DEFAULT_BLUE.toString() );
-
-    private static final SkeletonVisual DRAGON_DEFAULT_GREEN_VISUAL = (SkeletonVisual)ImplementationAndVisualType.ALICE.getFactory(DragonResource.DEFAULT_GREEN).createVisualData().getSgVisuals()[ 0 ];
-    private static final ModelResourceInfo DRAGON_DEFAULT_GREEN_MODEL_INFO = AliceResourceUtilties.getModelResourceInfo( DragonResource.class, DragonResource.DEFAULT_GREEN.toString() );
-
-    private static final SkeletonVisual DRAGON_TUTU_GREEN_VISUAL = (SkeletonVisual)ImplementationAndVisualType.ALICE.getFactory(DragonResource.TUTU_GREEN).createVisualData().getSgVisuals()[ 0 ];
-    private static final ModelResourceInfo DRAGON_TUTU_GREEN_MODEL_INFO = AliceResourceUtilties.getModelResourceInfo( DragonResource.class, DragonResource.TUTU_GREEN.toString() );
+//    private static final SkeletonVisual ALIEN_VISUAL = (SkeletonVisual)ImplementationAndVisualType.ALICE.getFactory(AlienResource.DEFAULT).createVisualData().getSgVisuals()[ 0 ];
+//    private static final ModelResourceInfo ALIEN_MODEL_INFO = AliceResourceUtilties.getModelResourceInfo( AlienResource.class, AlienResource.DEFAULT.toString() );
+//
+//    private static final SkeletonVisual PIRATE_SHIP_VISUAL = (SkeletonVisual)ImplementationAndVisualType.ALICE.getFactory(PirateShipResource.DEFAULT).createVisualData().getSgVisuals()[ 0 ];
+//    private static final ModelResourceInfo PIRATE_SHIP_INFO = AliceResourceUtilties.getModelResourceInfo( PirateShipResource.class, PirateShipResource.DEFAULT.toString() );
+//
+//    private static final SkeletonVisual ALICE_WONDERLAND_VISUAL = (SkeletonVisual)ImplementationAndVisualType.ALICE.getFactory(AliceResource.WONDERLAND).createVisualData().getSgVisuals()[ 0 ];
+//    private static final ModelResourceInfo ALICE_WONDERLAND_INFO = AliceResourceUtilties.getModelResourceInfo( AliceResource.class, AliceResource.WONDERLAND.toString() );
+//
+//    private static final SkeletonVisual ALICE_CARNEGIE_VISUAL = (SkeletonVisual)ImplementationAndVisualType.ALICE.getFactory(AliceResource.CARNEGIE_MELLON).createVisualData().getSgVisuals()[ 0 ];
+//    private static final ModelResourceInfo ALICE_CARNEGIE_INFO = AliceResourceUtilties.getModelResourceInfo( AliceResource.class, AliceResource.CARNEGIE_MELLON.toString() );
+//
+//    private static final SkeletonVisual DRAGON_DEFAULT_BLUE_VISUAL = (SkeletonVisual)ImplementationAndVisualType.ALICE.getFactory(DragonResource.DEFAULT_BLUE).createVisualData().getSgVisuals()[ 0 ];
+//    private static final ModelResourceInfo DRAGON_DEFAULT_BLUE_MODEL_INFO = AliceResourceUtilties.getModelResourceInfo( DragonResource.class, DragonResource.DEFAULT_BLUE.toString() );
+//
+//    private static final SkeletonVisual DRAGON_DEFAULT_GREEN_VISUAL = (SkeletonVisual)ImplementationAndVisualType.ALICE.getFactory(DragonResource.DEFAULT_GREEN).createVisualData().getSgVisuals()[ 0 ];
+//    private static final ModelResourceInfo DRAGON_DEFAULT_GREEN_MODEL_INFO = AliceResourceUtilties.getModelResourceInfo( DragonResource.class, DragonResource.DEFAULT_GREEN.toString() );
+//
+//    private static final SkeletonVisual DRAGON_TUTU_GREEN_VISUAL = (SkeletonVisual)ImplementationAndVisualType.ALICE.getFactory(DragonResource.TUTU_GREEN).createVisualData().getSgVisuals()[ 0 ];
+//    private static final ModelResourceInfo DRAGON_TUTU_GREEN_MODEL_INFO = AliceResourceUtilties.getModelResourceInfo( DragonResource.class, DragonResource.TUTU_GREEN.toString() );
 
     /*
         //Create the collada model data source

@@ -97,13 +97,6 @@
         </include>
         <dependencies />
       </component>
-      <component name="aliceModelSource" id="84" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
-        <description />
-        <include all="false">
-          <entry location="ext/org/alice/alice-model-source" fileType="regular" />
-        </include>
-        <dependencies />
-      </component>
       <component name="aliceSimsSource" id="85" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
         <description />
         <include all="false">

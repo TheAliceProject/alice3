@@ -71,10 +71,10 @@ import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.SphereImp;
 import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.DynamicBipedResource;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.math.Point3;
-import org.lgna.story.resources.biped.OgreResource;
 import test.ik.croquet.AnchorJointIdState;
 import test.ik.croquet.BonesState;
 import test.ik.croquet.EndJointIdState;
@@ -91,7 +91,7 @@ import java.util.Map;
  */
 class IkProgram extends SProgram {
 	private final SCamera camera = new SCamera();
-	private final SBiped ogre = new SBiped( OgreResource.BROWN );
+	private final SBiped ogre = new SBiped( new DynamicBipedResource("ogre", "ogre"));
 	private final SSphere target = new SSphere();
 	private final IkScene scene = new IkScene( camera, ogre, target );
 	private final CameraNavigationDragAdapter cameraNavigationDragAdapter = new CameraNavigationDragAdapter();

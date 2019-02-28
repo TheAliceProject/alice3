@@ -217,11 +217,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
-			<artifactId>alice-model-source</artifactId>
+			<artifactId>models</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.alice.nonfree</groupId>
-			<artifactId>nebulous-model-source</artifactId>
+			<artifactId>models-nonfree</artifactId>
 		</dependency>
 
 		<dependency>

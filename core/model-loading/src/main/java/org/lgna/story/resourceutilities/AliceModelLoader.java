@@ -16,7 +16,6 @@ import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.implementation.alice.ModelResourceIoUtilities;
 import org.lgna.story.resources.ImplementationAndVisualType;
 import org.lgna.story.resources.JointId;
-import org.lgna.story.resources.fish.ClownFishResource;
 
 import javax.swing.*;
 import java.awt.*;

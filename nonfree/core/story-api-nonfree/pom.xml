@@ -63,7 +63,7 @@
 		<!-- Gallery/Models -->
 		<dependency>
 			<groupId>org.alice.nonfree</groupId>
-			<artifactId>nebulous-model-source</artifactId>
+			<artifactId>models-nonfree</artifactId>
 		</dependency>
 	</dependencies>
 

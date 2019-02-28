@@ -61,7 +61,6 @@
 		<project.resources.directory>${project.basedir}/../../../core/resources/target/distribution/</project.resources.directory>
 		
 		<project.resources.application.directory>${project.resources.directory}/application</project.resources.application.directory>
-		<project.resources.gallery.directory>${project.resources.application.directory}/gallery</project.resources.gallery.directory>
 		<project.resources.platform.directory>${project.resources.directory}/platform</project.resources.platform.directory>
 	</properties>
 
@@ -93,31 +92,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
-					<execution>
-						<id>distribution-gallery</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-model-resources</artifactId>
-									<version>${nebulous.model.version}</version>
-									<type>zip</type>
-									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-person-resources</artifactId>
-									<version>${nebulous.person.version}</version>
-									<type>zip</type>
-									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
 					<execution>
 						<id>distribution-platform</id>
 						<phase>generate-resources</phase>
