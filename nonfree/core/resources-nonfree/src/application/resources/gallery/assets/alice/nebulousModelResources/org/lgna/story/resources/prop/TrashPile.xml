@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="TrashPile">
+    <BoundingBox>
+        <Min x="-0.5058993101119995" y="0.0" z="-0.4915076494216919"/>
+        <Max x="0.5058993101119995" y="0.3180229663848877" z="0.4915076494216919"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>trash</Tag>
+        <Tag>rubbish</Tag>
+        <Tag>debris</Tag>
+        <Tag>garbage</Tag>
+        <Tag>mess</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:kitchen</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Large" resourceName="LARGE" textureName="LARGE">
+        <BoundingBox>
+            <Min x="-0.5058993101119995" y="0.0" z="-0.4915076494216919"/>
+            <Max x="0.5058993101119995" y="0.3095426857471466" z="0.4915076494216919"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Medium" resourceName="MEDIUM" textureName="MEDIUM">
+        <BoundingBox>
+            <Min x="-0.3513389229774475" y="0.0" z="-0.33540448546409607"/>
+            <Max x="0.3513389229774475" y="0.3180229663848877" z="0.33540448546409607"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Small" resourceName="SMALL" textureName="SMALL">
+        <BoundingBox>
+            <Min x="-0.2881814241409302" y="0.0" z="-0.2589106559753418"/>
+            <Max x="0.2881814241409302" y="0.1493608057498932" z="0.2589106559753418"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LargeElectronics" resourceName="LARGE_ELECTRONICS" textureName="LARGE_ELECTRONICS">
+        <BoundingBox>
+            <Min x="-0.444951593875885" y="0.0" z="-0.4670446813106537"/>
+            <Max x="0.444951593875885" y="0.1375143826007843" z="0.4670446813106537"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="MediumElectronics" resourceName="MEDIUM_ELECTRONICS" textureName="MEDIUM_ELECTRONICS">
+        <BoundingBox>
+            <Min x="-0.3653593361377716" y="0.0" z="-0.3716074824333191"/>
+            <Max x="0.3653593361377716" y="0.09819348901510239" z="0.3716074824333191"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SmallElectronics" resourceName="SMALL_ELECTRONICS" textureName="SMALL_ELECTRONICS">
+        <BoundingBox>
+            <Min x="-0.23690754175186157" y="0.0" z="-0.23538851737976074"/>
+            <Max x="0.23690754175186157" y="0.0645032599568367" z="0.23538851737976074"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LargeFurniture" resourceName="LARGE_FURNITURE" textureName="LARGE_FURNITURE">
+        <BoundingBox>
+            <Min x="-0.4892359972000122" y="0.0" z="-0.4886743426322937"/>
+            <Max x="0.4892359972000122" y="0.294716477394104" z="0.4886743426322937"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="MediumFurniture" resourceName="MEDIUM_FURNITURE" textureName="MEDIUM_FURNITURE">
+        <BoundingBox>
+            <Min x="-0.3763314485549927" y="0.0" z="-0.3520156443119049"/>
+            <Max x="0.3763314485549927" y="0.09357995539903641" z="0.3520156443119049"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SmallFurniture" resourceName="SMALL_FURNITURE" textureName="SMALL_FURNITURE">
+        <BoundingBox>
+            <Min x="-0.2331235259771347" y="0.0" z="-0.27206486463546753"/>
+            <Max x="0.2331235259771347" y="0.08101650327444077" z="0.27206486463546753"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SmallAsh" resourceName="SMALL_ASH" textureName="SMALL_ASH">
+        <BoundingBox>
+            <Min x="-0.20889735221862793" y="0.0" z="-0.2140500396490097"/>
+            <Max x="0.20889735221862793" y="0.058095064014196396" z="0.2140500396490097"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LargeAsh" resourceName="LARGE_ASH" textureName="LARGE_ASH">
+        <BoundingBox>
+            <Min x="-0.4892359972000122" y="0.0" z="-0.4886743426322937"/>
+            <Max x="0.4892359972000122" y="0.294716477394104" z="0.4886743426322937"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

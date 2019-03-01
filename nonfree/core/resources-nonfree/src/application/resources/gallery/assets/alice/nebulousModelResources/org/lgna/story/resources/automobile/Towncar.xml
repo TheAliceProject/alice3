@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Towncar">
+    <BoundingBox>
+        <Min x="-1.0378634929656982" y="-1.3426841860564309E-8" z="-2.5756192207336426"/>
+        <Max x="1.0378634929656982" y="1.4665215015411377" z="2.5756192207336426"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>car</Tag>
+        <Tag>sedan</Tag>
+        <Tag>limousine</Tag>
+        <Tag>luxury</Tag>
+        <Tag>vehicle</Tag>
+        <Tag>car</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Towncar" resourceName="TOWNCAR" textureName="TOWNCAR"/>
+</AliceModel>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="WoodenBoat">
+    <BoundingBox>
+        <Min x="-0.6016528010368347" y="0.0" z="-1.7784007787704468"/>
+        <Max x="0.6016528010368347" y="0.41051754355430603" z="1.7784007787704468"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>boat</Tag>
+        <Tag>rowboat</Tag>
+        <Tag>ship</Tag>
+        <Tag>water</Tag>
+        <Tag>vehicle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="WoodenBoat" resourceName="WOODEN_BOAT" textureName="WOODEN_BOAT"/>
+</AliceModel>

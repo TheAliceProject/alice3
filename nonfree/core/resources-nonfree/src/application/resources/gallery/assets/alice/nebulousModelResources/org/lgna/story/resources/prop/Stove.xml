@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Stove">
+    <BoundingBox>
+        <Min x="-0.45053014159202576" y="0.0" z="-0.33655521273612976"/>
+        <Max x="0.45053014159202576" y="1.0106364488601685" z="0.33655527234077454"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>stove</Tag>
+        <Tag>burner</Tag>
+        <Tag>cook</Tag>
+        <Tag>stovetop</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:kitchen</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Basic" resourceName="BASIC_WHITE" textureName="WHITE">
+        <BoundingBox>
+            <Min x="-0.45053014159202576" y="0.0" z="-0.33266860246658325"/>
+            <Max x="0.45053014159202576" y="1.0106364488601685" z="0.33266860246658325"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Basic" resourceName="BASIC_BLACK" textureName="BLACK">
+        <BoundingBox>
+            <Min x="-0.45053014159202576" y="0.0" z="-0.33266860246658325"/>
+            <Max x="0.45053014159202576" y="1.0106364488601685" z="0.33266860246658325"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Fancy" resourceName="FANCY" textureName="FANCY">
+        <BoundingBox>
+            <Min x="-0.45053014159202576" y="0.0" z="-0.33655521273612976"/>
+            <Max x="0.45053014159202576" y="1.0106364488601685" z="0.33655527234077454"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cheap" resourceName="CHEAP_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.44048237800598145" y="0.0" z="-0.32028183341026306"/>
+            <Max x="0.44048234820365906" y="1.0045068264007568" z="0.32028186321258545"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cheap" resourceName="CHEAP_YELLOW" textureName="YELLOW">
+        <BoundingBox>
+            <Min x="-0.44048237800598145" y="0.0" z="-0.32028183341026306"/>
+            <Max x="0.44048234820365906" y="1.0045068264007568" z="0.32028186321258545"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cheap" resourceName="CHEAP_ORANGE" textureName="ORANGE">
+        <BoundingBox>
+            <Min x="-0.44048237800598145" y="0.0" z="-0.32028183341026306"/>
+            <Max x="0.44048234820365906" y="1.0045068264007568" z="0.32028186321258545"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cheap" resourceName="CHEAP_PINK" textureName="PINK">
+        <BoundingBox>
+            <Min x="-0.44048237800598145" y="0.0" z="-0.32028183341026306"/>
+            <Max x="0.44048234820365906" y="1.0045068264007568" z="0.32028186321258545"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cheap" resourceName="CHEAP_WHITE" textureName="WHITE">
+        <BoundingBox>
+            <Min x="-0.44048237800598145" y="0.0" z="-0.32028183341026306"/>
+            <Max x="0.44048234820365906" y="1.0045068264007568" z="0.32028186321258545"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

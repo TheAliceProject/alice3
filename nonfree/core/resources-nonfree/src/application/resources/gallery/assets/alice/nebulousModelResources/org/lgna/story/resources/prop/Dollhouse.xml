@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Dollhouse">
+    <BoundingBox>
+        <Min x="-0.3691318929195404" y="0.0" z="-0.38187623023986816"/>
+        <Max x="0.3691318929195404" y="0.782345712184906" z="0.38187623023986816"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>doll</Tag>
+        <Tag>toy</Tag>
+        <Tag>house</Tag>
+        <Tag>home</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:recreation room</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:recreation room</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Dollhouse" resourceName="DOLLHOUSE" textureName="DOLLHOUSE"/>
+</AliceModel>

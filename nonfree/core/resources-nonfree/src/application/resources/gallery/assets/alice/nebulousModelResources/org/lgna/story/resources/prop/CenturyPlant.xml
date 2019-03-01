@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="CenturyPlant">
+    <BoundingBox>
+        <Min x="-0.39731350541114807" y="0.0" z="-0.397132933139801"/>
+        <Max x="0.39731350541114807" y="2.747711181640625" z="0.397132933139801"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>tree</Tag>
+        <Tag>agave</Tag>
+        <Tag>cactus</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="CenturyPlant" resourceName="CENTURY_PLANT" textureName="CENTURY_PLANT"/>
+</AliceModel>

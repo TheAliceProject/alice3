@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="TelevisionRemote">
+    <BoundingBox>
+        <Min x="-0.03969447314739227" y="0.0" z="-0.12442497164011002"/>
+        <Max x="0.03969447314739227" y="0.030168656259775162" z="0.12442497164011002"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>tv</Tag>
+        <Tag>remote</Tag>
+        <Tag>clicker</Tag>
+        <Tag>channel</Tag>
+        <Tag>television</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:living room</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:living room</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="TelevisionRemote" resourceName="TELEVISION_REMOTE" textureName="TELEVISION_REMOTE"/>
+</AliceModel>

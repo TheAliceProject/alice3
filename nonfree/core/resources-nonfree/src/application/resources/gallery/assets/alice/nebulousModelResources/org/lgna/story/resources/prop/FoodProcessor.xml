@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="FoodProcessor">
+    <BoundingBox>
+        <Min x="-0.13073770701885223" y="0.0" z="-0.18205717206001282"/>
+        <Max x="0.13073770701885223" y="0.436954528093338" z="0.18205717206001282"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>blender</Tag>
+        <Tag>food</Tag>
+        <Tag>appliance</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:kitchen</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="FoodProcessor" resourceName="CHOPPING" textureName="CHOPPING"/>
+    <Resource modelName="FoodProcessor" resourceName="CHOPPED" textureName="CHOPPED"/>
+</AliceModel>

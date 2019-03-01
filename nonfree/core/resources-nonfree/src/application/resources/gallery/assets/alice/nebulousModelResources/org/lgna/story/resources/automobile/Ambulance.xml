@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Ambulance">
+    <BoundingBox>
+        <Min x="-1.3375277519226074" y="1.4545745941063615E-8" z="-3.2327332496643066"/>
+        <Max x="1.3375277519226074" y="2.5049731731414795" z="3.2327330112457275"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>vehicle</Tag>
+        <Tag>car</Tag>
+        <Tag>truck</Tag>
+        <Tag>hospital</Tag>
+        <Tag>doctor</Tag>
+        <Tag>emergency</Tag>
+        <Tag>car</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Ambulance" resourceName="AMBULANCE" textureName="AMBULANCE"/>
+</AliceModel>

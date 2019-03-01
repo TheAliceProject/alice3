@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Computer">
+    <BoundingBox>
+        <Min x="-0.3117891848087311" y="0.0" z="-0.35465922951698303"/>
+        <Max x="0.3117891848087311" y="0.5415282845497131" z="0.35465922951698303"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>computer</Tag>
+        <Tag>pc</Tag>
+        <Tag>mac</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:recreation room</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:recreation room</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Computer" resourceName="OFF" textureName="OFF"/>
+    <Resource modelName="Computer" resourceName="BOOT" textureName="BOOT"/>
+    <Resource modelName="Computer" resourceName="ON" textureName="ON"/>
+</AliceModel>

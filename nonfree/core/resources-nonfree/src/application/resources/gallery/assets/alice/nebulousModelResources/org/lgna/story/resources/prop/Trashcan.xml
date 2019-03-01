@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Trashcan">
+    <BoundingBox>
+        <Min x="-0.1582896113395691" y="0.0" z="-0.1532563418149948"/>
+        <Max x="0.1582895815372467" y="0.4672243595123291" z="0.1532563418149948"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>trashcan</Tag>
+        <Tag>garbage</Tag>
+        <Tag>bin</Tag>
+        <Tag>receptacle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:kitchen</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Trashcan" resourceName="TRASHCAN" textureName="TRASHCAN"/>
+</AliceModel>

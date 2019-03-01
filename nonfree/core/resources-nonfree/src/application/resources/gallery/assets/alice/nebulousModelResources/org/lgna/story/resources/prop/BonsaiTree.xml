@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="BonsaiTree">
+    <BoundingBox>
+        <Min x="-0.2507580816745758" y="0.0" z="-0.16854561865329742"/>
+        <Max x="0.2507580816745758" y="0.6445313096046448" z="0.16854561865329742"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>pot</Tag>
+        <Tag>potted</Tag>
+        <Tag>container</Tag>
+        <Tag>houseplant</Tag>
+        <Tag>tree</Tag>
+        <Tag>japan</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Large" resourceName="LARGE" textureName="LARGE">
+        <BoundingBox>
+            <Min x="-0.14851349592208862" y="0.0" z="-0.11208231747150421"/>
+            <Max x="0.14851349592208862" y="0.2813349962234497" z="0.11208231747150421"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Small" resourceName="SMALL" textureName="SMALL">
+        <BoundingBox>
+            <Min x="-0.2507580816745758" y="0.0" z="-0.16854561865329742"/>
+            <Max x="0.2507580816745758" y="0.6445313096046448" z="0.16854561865329742"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

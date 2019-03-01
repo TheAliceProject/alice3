@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Sedan">
+    <BoundingBox>
+        <Min x="-1.0333435535430908" y="1.1189035253877933E-9" z="-2.3416659832000732"/>
+        <Max x="1.0333434343338013" y="1.4743703603744507" z="2.341665744781494"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>car</Tag>
+        <Tag>vehicle</Tag>
+        <Tag>car</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Sedan" resourceName="SEDAN" textureName="SEDAN"/>
+</AliceModel>
