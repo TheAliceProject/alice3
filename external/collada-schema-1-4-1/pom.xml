@@ -6,17 +6,13 @@
 		<groupId>org.alice.external</groupId>
 		<artifactId>external</artifactId>
 		<version>1.0</version>
-		<relativePath>../</relativePath>
 	</parent>
 
 	<artifactId>collada-schema-1-4-1</artifactId>
-	<version>1.0</version>
+	<version>1.4.1</version>
 	<packaging>jar</packaging>
 
 	<name>Collada Scheme 1.4.1</name>
 	<url>https://www.khronos.org/files/collada_schema_1_4_1.xsd</url>
-
-	<!-- Deploy Command -->
-	<!-- mvn deploy -->
 
 </project>

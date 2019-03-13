@@ -104,6 +104,12 @@
 		<module>nonfree/core/story-api-nonfree</module>
 		<module>nonfree/core/models-nonfree</module>
 
+		<module>external</module>
+		<module>external/collada</module>
+		<module>external/collada-schema-1-4-1</module>
+		<module>external/wrapped-flow-layout</module>
+		<module>external/mmsc</module>
+
 		<module>alice/alice-ide</module>
 		<module>alice/netbeans</module>
 		<module>installer</module>
@@ -194,12 +200,6 @@
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 
-			<dependency>
-				<groupId>org.alice.external</groupId>
-				<artifactId>collada-schema-1-4-1</artifactId>
-				<version>1.0</version>
-			</dependency>
-
 			<!-- Non-free libraries/models -->
 			<dependency>
 				<groupId>org.alice.nonfree</groupId>
@@ -230,7 +230,28 @@
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 
-			<!-- Third Party Libraries -->
+			<!-- Third Party Libraries in project-->
+			<dependency>
+				<groupId>org.alice.external</groupId>
+				<artifactId>collada-schema-1-4-1</artifactId>
+				<version>1.4.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.alice.external</groupId>
+				<artifactId>wrapped-flow-layout</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.dddviewr</groupId>
+				<artifactId>collada</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>uk.co.mmscomputing</groupId>
+				<artifactId>mmsc</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<!-- Third Party Libraries from maven-->
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
@@ -294,11 +315,6 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0-M3</version>
 				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.dddviewr</groupId>
-				<artifactId>collada</artifactId>
-				<version>1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun</groupId>

@@ -113,7 +113,6 @@
 		<dependency>
 			<groupId>uk.co.mmscomputing</groupId>
 			<artifactId>mmsc</artifactId>
-			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>de.java2html</groupId>

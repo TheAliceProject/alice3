@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>mmsc - PPM (Portable PixMap), PGM, PBM image file java image reader/writer</title>
+<meta name="description" content="Classes that enable the java imageio system to read and write *.pbm (P4), *.pgm (P5), *.ppm (P6) files.">
+<link rel=StyleSheet href="../../../../../css/general.css" type="text/css" title="mmsc-style" media="screen">
+<link rel=StyleSheet href="../../../../../css/print.css" type="text/css" title="mmsc-style" media="print">
+</head>
+<body>
+<div id="container">
+<div id="header"><FONT COLOR="#0000ff">m</FONT><FONT COLOR="#ff0000">m</FONT>'<FONT COLOR="#7bc618">s</FONT> <FONT COLOR="#ffff00">c</FONT>omputing</div>
+<div id="menu">
+<ul>
+<li><a href="../../../../../index.html">home</a></li>
+<li><a href="../../../../../uk/co/mmscomputing/news/index.html">news</a></li>
+<li><a href="../../../../../uk/co/mmscomputing/download/index.html">download</a></li>
+<li><a href="../../../../../uk/co/mmscomputing/donation/index.html">donation</a></li>
+<li><a href="../../../../../uk/co/mmscomputing/contact/index.html">contact</a></li>
+</ul>
+</div>
+<div id="nav">&nbsp;
+<div class="roundrect">
+<div class="roundrect-top"><div></div></div>
+<div class="roundrect-left"><div class="roundrect-right">
+<div class="roundrect-gradient"><b>sub-directories</b></div>
+<ul>
+<li><a href="../index.html">up</a></li>
+</ul>
+</div></div>
+<div class="roundrect-bottom"><div></div></div>
+</div>
+</div>
+<div id="content">
+<div id="abstract">
+Classes that enable the java imageio system to read and write *.pbm (P4), *.pgm (P5), *.ppm (P6) files.
+</div>
+<div id="desc">
+<p>
+In order to read/write pbm (Portable BitMap), pgm (Portable GrayMap), ppm (Portable PixMap) files with the java imageio classes we need an
+ImageWriterSpi, ImageWriter, ImageReaderSpi and ImageReader.
+Additional to that we need to tell the java imageio system that we have a new ImageWriterSpi and ImageReaderSpi for it.
+To do this you need to put the file <i>javax.imageio.spi.ImageReaderSpi, javax.imageio.spi.ImageWriterSpi</i> into the folder
+<i>{$your java programs root directory}/META-INF/services/</i> or if those files already exist,
+add the lines <i>uk.co.mmscomputing.imageio.ppm.PPMImageReaderSpi</i> and <i>uk.co.mmscomputing.imageio.ppm.PPMImageWriterSpi</i> accordingly.
+</p>
+<p class="remark">These classes can only handle the 'raw' version (P4,P5,P6).
+They cannot read or write the ASCII formats P1, P2 and P3.
+</p>
+</div>
+<div id="files">
+Package : uk.co.mmscomputing.imageio.ppm
+<ol>
+<li><a href="PBMImageWriter.java">PBMImageWriter.java</a></li>
+<li><a href="PBMImageWriterSpi.java">PBMImageWriterSpi.java</a></li>
+<li><a href="PGMImageWriter.java">PGMImageWriter.java</a></li>
+<li><a href="PGMImageWriterSpi.java">PGMImageWriterSpi.java</a></li>
+<li><a href="PPMConstants.java">PPMConstants.java</a></li>
+<li><a href="PPMImageReader.java">PPMImageReader.java</a></li>
+<li><a href="PPMImageReaderSpi.java">PPMImageReaderSpi.java</a></li>
+<li><a href="PPMImageWriter.java">PPMImageWriter.java</a></li>
+<li><a href="PPMImageWriterSpi.java">PPMImageWriterSpi.java</a></li>
+<li><a href="javax.imageio.spi.ImageReaderSpi">javax.imageio.spi.ImageReaderSpi</a></li>
+<li><a href="javax.imageio.spi.ImageWriterSpi">javax.imageio.spi.ImageWriterSpi</a></li>
+</ol>
+</div>
+<div id="dirlist">
+</div>
+<div id="projects">
+Projects :
+<ol>
+<li><a href="../../../../../uk/co/mmscomputing/application/imageviewer/index.html">uk.co.mmscomputing.application.imageviewer</a>:
+<br>A simple Multi Page Image Viewer Applet. To view multipage *.sff, *.tiff and *.gif files. Twain and SANE test application.
+</li>
+<li><a href="../../../../../uk/co/mmscomputing/imageio/bmp/index.html">uk.co.mmscomputing.imageio.bmp</a>:
+<br>Classes that enable the java imageio system to read and write *.bmp files.
+</li>
+<li><a href="../../../../../uk/co/mmscomputing/imageio/sff/index.html">uk.co.mmscomputing.imageio.sff</a>:
+<br>Classes that enable the java imageio system to read and write *.sff (structured fax format) files.
+</li>
+</ol>
+</div>
+</div>
+<div id="fcontainer">
+<div id="gnu">
+All software on this site is free software; you can redistribute it and/or modify it under the terms of the <a href="http://www.gnu.org/copyleft/lesser.html" target="_blank"> GNU Lesser General Public License </a> as published by the Free Software Foundation
+</div>
+<div id="footer">
+<br><FONT COLOR="#0000ff">m</FONT><FONT COLOR="#ff0000">m</FONT>'<FONT COLOR="#7bc618">s</FONT> <FONT COLOR="#ffff00">c</FONT>omputing<br>2010-03-04
+</div>
+</div>
+</div>
+</body>
+</html>

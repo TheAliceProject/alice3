@@ -91,7 +91,6 @@
 		<dependency>
 			<groupId>org.alice.external</groupId>
 			<artifactId>collada-schema-1-4-1</artifactId>
-			<version>1.0</version>
 		</dependency>
 	</dependencies>
 

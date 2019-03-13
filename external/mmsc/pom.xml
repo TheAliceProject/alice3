@@ -6,7 +6,6 @@
 		<groupId>org.alice.external</groupId>
 		<artifactId>external</artifactId>
 		<version>1.0</version>
-		<relativePath>../</relativePath>
 	</parent>
 
 	<groupId>uk.co.mmscomputing</groupId>
@@ -25,35 +24,6 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
-	<!-- Deploy Command -->
-	<!-- mvn deploy -->
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-artifacts</id>
-						<phase>package</phase>
-						<goals>
-							<goal>attach-artifact</goal>
-						</goals>
-						<configuration>
-							<artifacts>
-								<artifact>
-									<file>mmsc.jar</file>
-									<type>jar</type>
-								</artifact>
-							</artifacts>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>
 

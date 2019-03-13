@@ -8,18 +8,9 @@
   <version>1.0</version>
   <packaging>jar</packaging>
 
-  <build>
-    <sourceDirectory>src/dae4j/src</sourceDirectory>
-  </build>
-
   <parent>
   	<groupId>org.alice.external</groupId>
   	<artifactId>external</artifactId>
   	<version>1.0</version>
-  	<relativePath>../</relativePath>
   </parent>
-
-  <!-- Deploy Command -->
-  <!-- mvn deploy -->
-
 </project>
