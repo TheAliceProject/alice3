@@ -7,9 +7,10 @@
 		<groupId>org.alice</groupId>
 		<artifactId>parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../</relativePath>
 	</parent>
 
+	<name>Alice Core</name>
+	<description>Core modules for Alice</description>
 	<artifactId>core</artifactId>
 	<packaging>pom</packaging>
 

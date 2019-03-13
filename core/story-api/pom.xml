@@ -51,9 +51,9 @@
 		<groupId>org.alice</groupId>
 		<artifactId>core</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../core/</relativePath>
 	</parent>
 
+	<name>Story API</name>
 	<artifactId>story-api</artifactId>
 	<packaging>jar</packaging>
 

@@ -48,9 +48,9 @@
 		<groupId>org.alice</groupId>
 		<artifactId>core</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>..</relativePath>
 	</parent>
 
+	<name>Gallery Resources</name>
 	<artifactId>resources</artifactId>
 	<!-- Note: The packaging should really be pom; jar is wrong. -->
 	<!-- m2eclipse won't build the platform directory needed without this hack. -->

@@ -52,6 +52,7 @@
 		<relativePath>../..</relativePath>
 	</parent>
 
+	<name>Alice Plugin for NetBeans 8</name>
 	<artifactId>netbeans</artifactId>
 	<packaging>nbm</packaging>
 

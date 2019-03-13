@@ -51,6 +51,7 @@
 		<relativePath>../../core/</relativePath>
 	</parent>
 
+	<name>Alice IDE</name>
 	<artifactId>alice-ide</artifactId>
 	<packaging>jar</packaging>
 

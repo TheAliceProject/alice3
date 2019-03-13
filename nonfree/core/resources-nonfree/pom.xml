@@ -48,9 +48,9 @@
 		<groupId>org.alice.nonfree</groupId>
 		<artifactId>core-nonfree</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../</relativePath>
 	</parent>
 
+	<name>Alice Resources nonfree</name>
 	<artifactId>resources-nonfree</artifactId>
 	<!-- Note: The packaging should really be pom; jar is wrong. -->
 	<!-- m2eclipse won't build the platform directory needed without this hack. -->

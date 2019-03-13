@@ -48,9 +48,9 @@
 		<groupId>org.alice.nonfree</groupId>
 		<artifactId>core-nonfree</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../</relativePath>
 	</parent>
 
+	<name>Alice Story API nonfree extensions</name>
 	<artifactId>story-api-nonfree</artifactId>
 	<packaging>jar</packaging>
 
