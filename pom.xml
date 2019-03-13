@@ -615,17 +615,4 @@
 		</repository>
 	</repositories>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>org.alice</id>
-			<name>Alice Repository</name>
-			<url>http://maven.alice.org/alice</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>org.alice.external</id>
-			<name>Alice External Repository</name>
-			<url>http://maven.alice.org/external</url>
-		</pluginRepository>
-	</pluginRepositories>
-
 </project>
