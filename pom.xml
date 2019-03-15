@@ -316,11 +316,6 @@
 				<version>3.0.0-M3</version>
 				<scope>test</scope>
 			</dependency>
-			<dependency>
-				<groupId>com.sun</groupId>
-				<artifactId>tools</artifactId>
-				<version>1.0</version>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
