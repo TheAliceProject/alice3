@@ -2,7 +2,11 @@ package Jama.util;
 
 public class Maths {
 
-   /** sqrt(a^2 + b^2) without under/overflow. **/
+   /**
+    * @param a side length
+    * @param b side length
+    * @return sqrt(a^2 + b^2) without under/overflow.
+    **/
 
    public static double hypot(double a, double b) {
       double r;

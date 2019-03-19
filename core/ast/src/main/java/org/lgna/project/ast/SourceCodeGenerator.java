@@ -70,7 +70,7 @@ public abstract class SourceCodeGenerator {
 		return codeStringBuilder;
 	}
 
-	/** Class structure **/
+	// ** Class structure **
 
 	CodeOrganizer getNewCodeOrganizerForTypeName( String typeName ) {
 		return new CodeOrganizer( codeOrganizerDefinitions.getOrDefault( typeName, defaultCodeOrganizerDefn ) );
@@ -97,7 +97,7 @@ public abstract class SourceCodeGenerator {
 
   protected abstract void appendClassFooter();
 
-	/** Methods and Fields **/
+	// ** Methods and Fields **
 
 	public abstract void appendConstructor( NamedUserConstructor constructor );
 
@@ -188,7 +188,7 @@ public abstract class SourceCodeGenerator {
 		});
 	}
 
-	/** Statements **/
+	// ** Statements **
 
 	protected final void appendStatement( Statement stmt ) {
 		boolean isDisabled = !stmt.isEnabled.getValue();
@@ -330,7 +330,7 @@ public abstract class SourceCodeGenerator {
 		return statementDisabledCount == 0;
 	}
 
-	/** Code Flow **/
+	// ** Code Flow **
 
 	protected void appendCodeFlowStatement( Statement stmt, Runnable appender ) {
 		appender.run();
@@ -428,7 +428,7 @@ public abstract class SourceCodeGenerator {
 		return true;
 	}
 
-	/** Expressions **/
+	// ** Expressions **
 
 	protected void appendExpression( Expression expression ) {
 		expression.appendCode( this );
@@ -570,7 +570,7 @@ public abstract class SourceCodeGenerator {
 						expr.getLevelOfPrecedence() < operatorStack.peek().getLevelOfPrecedence();
 	}
 
-	/** Comments **/
+	// ** Comments **
 
 	public void formatMultiLineComment( String comment ) {
 		for( String line : splitIntoLines(comment) ) {
@@ -590,7 +590,7 @@ public abstract class SourceCodeGenerator {
 
 	public abstract String getLocalizedComment( AbstractType<?, ?, ?> type, String itemName, Locale locale );
 
-	/** Primitives and syntax **/
+	// ** Primitives and syntax **
 
 	void appendNull() {
 		appendString( "null" );
@@ -694,8 +694,6 @@ public abstract class SourceCodeGenerator {
 		appendTypeName( typeLiteral.value.getValue() );
 		appendString( ".class" );
 	}
-
-	/** **/
 
 	// TODO move in use by NamedUserType and push down to JavaCodeGenerator
 	boolean isPublicStaticFinalFieldGetterDesired() {

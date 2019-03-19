@@ -150,12 +150,4 @@ public class FieldFinder {
 			rootNode.add( newNode );
 		}
 	}
-
-	/**
-	 * HACK FOR NOW
-	 */
-	public boolean isSceneTypeNull() {
-		refreshScene();
-		return sceneType != null;
-	}
 }
