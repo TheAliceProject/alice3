@@ -351,7 +351,7 @@ public enum StorytellingResources {
 			URLClassLoader cl = new URLClassLoader( urlArray, ClassLoader.getSystemClassLoader() );
 			for( String className : classNames ) {
 				try {
-					Class<?> cls = cl.loadClass( className );
+					Class<?> cls = Class.forName(className);
 					if( ModelResource.class.isAssignableFrom( cls ) ) {
 						//TEST
 						Field[] fields = cls.getDeclaredFields();
