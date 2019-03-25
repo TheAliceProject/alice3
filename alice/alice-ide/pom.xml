@@ -61,11 +61,6 @@
 			<artifactId>ide</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.alice.nonfree</groupId>
-			<artifactId>ide-nonfree</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>com.google.gdata</groupId>
 			<artifactId>core</artifactId>
 			<version>1.47.1</version>
@@ -74,9 +69,12 @@
 
 	<profiles>
 		<profile>
-			<id>non-free</id>
+			<id>includeSims</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>includeSims</name>
+					<value>!true</value>
+				</property>
 			</activation>
 
 			<dependencies>

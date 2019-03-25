@@ -21,20 +21,42 @@ Clone the Alice 3 repository into a local directory, (`${alice3}`)
 
 Compile Alice to run locally:
 
+    cd ${alice3}
     mvn compile
-
-Build Alice jars, NetBeans plugin, and installers (these rely on Install4J):
-
-    mvn install
-
-Run unit tests
-
-    mvn test
 
 Launch Alice
 
     cd alice/alice-ide
     mvn exec:java -Dentry-point
+
+Run unit tests
+
+    cd ${alice3}
+    mvn test
+
+Build Alice jars, NetBeans plugin, and installers (the last rely on Install4J):
+
+    cd ${alice3}
+    mvn install
+
+The Alice installers are built using Install4J, which requires a license.
+You may skip this build step.
+
+    cd ${alice3}
+    mvn -Dinstall4j.skip install
+
+## Working without the Sims
+
+The compile and install phases can all be limited to not include the Sims assets.
+To do that disable the `includeSims` maven profile. It is a good idea to apply `clean`
+if you have previously made a full build to prevent leftover Sims artifacts getting bundled in.
+
+    cd ${alice3}
+    mvn -DincludeSims=false clean compile
+Or:
+
+    cd ${alice3}
+    mvn -DincludeSims=false clean install
 
 
 ## How to contribute
