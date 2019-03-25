@@ -11,10 +11,19 @@
 	<name>Alice</name>
 	<url>http://www.alice.org/</url>
 
+	<distributionManagement>
+		<site>
+			<name>Alice 3</name>
+			<id>alice3</id>
+			<url>https://www.alice.org/</url>
+		</site>
+	</distributionManagement>
+
 	<licenses>
 		<license>
 			<name>Alice 3 End User License Agreement</name>
-			<url>License.txt</url>
+			<!-- TODO Correct and restore this element when the plain text license is publicly available at a static URL.-->
+			<!--<url>License.txt</url>-->
 			<distribution>repo</distribution>
 			<!--
 				Alice 3 End User License Agreement
@@ -442,6 +451,33 @@
 							<goal>aggregate</goal>
 						</goals>
 						<phase>site</phase>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.7.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>3.0.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>1.19</version>
+				<executions>
+					<execution>
+						<id>aggregate-download-licenses</id>
+						<goals>
+							<goal>aggregate-download-licenses</goal>
+						</goals>
+						<configuration>
+							<excludedGroups>org.alice</excludedGroups>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
