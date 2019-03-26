@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
@@ -132,6 +133,27 @@ public class BoxImp extends ShapeImp {
 		this.sgBox.yMaximum.setValue( size.y );
 		this.sgBox.zMinimum.setValue( -z );
 		this.sgBox.zMaximum.setValue( +z );
+	}
+
+	@Override
+	public void animateResizeWidth( double factor, boolean isVolumePreserved, double duration, Style style ) {
+		Dimension3 newSize = getSize();
+		newSize.multiply( Dimension.LEFT_TO_RIGHT.getResizeAxis( factor, isVolumePreserved ) );
+		animateSetSize( newSize, duration, style );
+	}
+
+	@Override
+	public void animateResizeHeight( double factor, boolean isVolumePreserved, double duration, Style style ) {
+		Dimension3 newSize = getSize();
+		newSize.multiply( Dimension.TOP_TO_BOTTOM.getResizeAxis( factor, isVolumePreserved ) );
+		animateSetSize( newSize, duration, style );
+	}
+
+	@Override
+	public void animateResizeDepth( double factor, boolean isVolumePreserved, double duration, Style style ) {
+		Dimension3 newSize = getSize();
+		newSize.multiply( Dimension.FRONT_TO_BACK.getResizeAxis( factor, isVolumePreserved ) );
+		animateSetSize( newSize, duration, style );
 	}
 
 	private final SBox abstraction;
