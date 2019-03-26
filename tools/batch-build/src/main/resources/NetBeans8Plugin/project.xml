@@ -209,36 +209,36 @@
                 <binary-origin>release/modules/ext/nebulous-model-source-___NEBULOUS_MODEL_SOURCE_VERSION___.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/ast-0.0.1-SNAPSHOT.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/ast-0.0.1-SNAPSHOT.jar</binary-origin>
+                <runtime-relative-path>ext/ast-5.0.1-SNAPSHOT.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/ast-5.0.1-SNAPSHOT.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/story-api-0.0.1-SNAPSHOT.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/story-api-0.0.1-SNAPSHOT.jar</binary-origin>
+                <runtime-relative-path>ext/story-api-5.0.1-SNAPSHOT.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/story-api-5.0.1-SNAPSHOT.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/story-api-migration-0.0.1-SNAPSHOT.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/story-api-migration-0.0.1-SNAPSHOT.jar</binary-origin>
+                <runtime-relative-path>ext/story-api-migration-5.0.1-SNAPSHOT.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/story-api-migration-5.0.1-SNAPSHOT.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/util-0.0.1-SNAPSHOT.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/util-0.0.1-SNAPSHOT.jar</binary-origin>
+                <runtime-relative-path>ext/util-5.0.1-SNAPSHOT.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/util-5.0.1-SNAPSHOT.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/scenegraph-0.0.1-SNAPSHOT.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/scenegraph-0.0.1-SNAPSHOT.jar</binary-origin>
+                <runtime-relative-path>ext/scenegraph-5.0.1-SNAPSHOT.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/scenegraph-5.0.1-SNAPSHOT.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/glrender-0.0.1-SNAPSHOT.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/glrender-0.0.1-SNAPSHOT.jar</binary-origin>
+                <runtime-relative-path>ext/glrender-5.0.1-SNAPSHOT.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/glrender-5.0.1-SNAPSHOT.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/story-api-nonfree-0.0.1-SNAPSHOT.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/story-api-nonfree-0.0.1-SNAPSHOT.jar</binary-origin>
+                <runtime-relative-path>ext/story-api-nonfree-5.0.1-SNAPSHOT.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/story-api-nonfree-5.0.1-SNAPSHOT.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/tweedle-0.0.1-SNAPSHOT.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/tweedle-0.0.1-SNAPSHOT.jar</binary-origin>
+                <runtime-relative-path>ext/tweedle-5.0.1-SNAPSHOT.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/tweedle-5.0.1-SNAPSHOT.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
                 <runtime-relative-path>ext/commons-text-1.1.jar</runtime-relative-path>
