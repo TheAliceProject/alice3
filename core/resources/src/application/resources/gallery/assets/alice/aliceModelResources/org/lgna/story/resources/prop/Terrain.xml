@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Matt Kline" name="Terrain">
+    <BoundingBox>
+        <Min x="-3.917612314224243" y="-0.10441349446773529" z="-4.883711814880371"/>
+        <Max x="9.174805641174316" y="1.6267298460006714" z="9.1748046875"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>beach</Tag>
+        <Tag>desert</Tag>
+        <Tag>hill</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Square" resourceName="SQUARE_DESERT" textureName="DESERT">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_BEACH" textureName="BEACH">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_SNOW" textureName="SNOW">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_GRASS" textureName="GRASS">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_GRASS_DARK" textureName="GRASS_DARK">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_DRY_GRASS" textureName="DRY_GRASS">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_FOREST_FLOOR" textureName="FOREST_FLOOR">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_FOREST_FLOOR_BROWN" textureName="FOREST_FLOOR_BROWN">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_FOREST_FLOOR_RED" textureName="FOREST_FLOOR_RED">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_JUNGLE" textureName="JUNGLE">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_ROCKY_BROWN" textureName="ROCKY_BROWN">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_ROCKY_SAND" textureName="ROCKY_SAND">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_SAVANA_GRASS" textureName="SAVANA_GRASS">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_SAVANA_GRASS_DRY" textureName="SAVANA_GRASS_DRY">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_MOON" textureName="MOON">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_MARS" textureName="MARS">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_MARS_LIGHT" textureName="MARS_LIGHT">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Square" resourceName="SQUARE_MAGIC_GRASS" textureName="MAGIC_GRASS">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.1000000461935997" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="1.2491332292556763" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_DESERT" textureName="DESERT">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_BEACH" textureName="BEACH">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_SNOW" textureName="SNOW">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_GRASS" textureName="GRASS">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_DRY_GRASS" textureName="DRY_GRASS">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_FOREST_FLOOR" textureName="FOREST_FLOOR">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_FOREST_FLOOR_BROWN" textureName="FOREST_FLOOR_BROWN">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_FOREST_FLOOR_RED" textureName="FOREST_FLOOR_RED">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_JUNGLE" textureName="JUNGLE">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_ROCKY_BROWN" textureName="ROCKY_BROWN">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_ROCKY_SAND" textureName="ROCKY_SAND">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_SAVANA_GRASS" textureName="SAVANA_GRASS">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_SAVANA_GRASS_DRY" textureName="SAVANA_GRASS_DRY">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_MOON" textureName="MOON">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_MARS" textureName="MARS">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_MARS_LIGHT" textureName="MARS_LIGHT">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Crescent" resourceName="CRESCENT_MAGIC_GRASS" textureName="MAGIC_GRASS">
+        <BoundingBox>
+            <Min x="-3.917612314224243" y="-0.10441349446773529" z="-2.513903856277466"/>
+            <Max x="3.917612314224243" y="0.7397412657737732" z="2.5139050483703613"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_DESERT" textureName="DESERT">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_BEACH" textureName="BEACH">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_SNOW" textureName="SNOW">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_GRASS" textureName="GRASS">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_DRY_GRASS" textureName="DRY_GRASS">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_FOREST_FLOOR" textureName="FOREST_FLOOR">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_FOREST_FLOOR_BROWN" textureName="FOREST_FLOOR_BROWN">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_FOREST_FLOOR_RED" textureName="FOREST_FLOOR_RED">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_JUNGLE" textureName="JUNGLE">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_ROCKY_BROWN" textureName="ROCKY_BROWN">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_ROCKY_SAND" textureName="ROCKY_SAND">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_SAVANA_GRASS" textureName="SAVANA_GRASS">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_SAVANA_GRASS_DRY" textureName="SAVANA_GRASS_DRY">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_MOON" textureName="MOON">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_MARS" textureName="MARS">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_MARS_LIGHT" textureName="MARS_LIGHT">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blob" resourceName="BLOB_MAGIC_GRASS" textureName="MAGIC_GRASS">
+        <BoundingBox>
+            <Min x="-2.581796884536743" y="-1.0728835597717534E-8" z="-4.883711814880371"/>
+            <Max x="2.581796884536743" y="1.6267298460006714" z="4.883712291717529"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_DESERT" textureName="DESERT">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_BEACH" textureName="BEACH">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_SNOW" textureName="SNOW">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_GRASS" textureName="GRASS">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_DRY_GRASS" textureName="DRY_GRASS">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_FOREST_FLOOR" textureName="FOREST_FLOOR">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_FOREST_FLOOR_BROWN" textureName="FOREST_FLOOR_BROWN">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_FOREST_FLOOR_RED" textureName="FOREST_FLOOR_RED">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_JUNGLE" textureName="JUNGLE">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_ROCKY_BROWN" textureName="ROCKY_BROWN">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_ROCKY_SAND" textureName="ROCKY_SAND">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_SAVANA_GRASS" textureName="SAVANA_GRASS">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_SAVANA_GRASS_DRY" textureName="SAVANA_GRASS_DRY">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_MOON" textureName="MOON">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_MARS" textureName="MARS">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_MARS_LIGHT" textureName="MARS_LIGHT">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Oval" resourceName="OVAL_MAGIC_GRASS" textureName="MAGIC_GRASS">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.0" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.5367840528488159" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_DESERT" textureName="DESERT">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_BEACH" textureName="BEACH">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_SNOW" textureName="SNOW">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_GRASS" textureName="GRASS">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_DRY_GRASS" textureName="DRY_GRASS">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_FOREST_FLOOR" textureName="FOREST_FLOOR">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_FOREST_FLOOR_BROWN" textureName="FOREST_FLOOR_BROWN">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_FOREST_FLOOR_RED" textureName="FOREST_FLOOR_RED">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_JUNGLE" textureName="JUNGLE">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_OCEAN" textureName="OCEAN">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_OCEAN_NIGHT" textureName="OCEAN_NIGHT">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_ICE" textureName="ICE">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_BRICK" textureName="BRICK">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_WOOD" textureName="WOOD">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_SWAMP" textureName="SWAMP">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_SWAMP_POISON" textureName="SWAMP_POISON">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_SWAMP_WATER" textureName="SWAMP_WATER">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_ROCKY_BROWN" textureName="ROCKY_BROWN">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_ROCKY_SAND" textureName="ROCKY_SAND">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_SAVANA_GRASS" textureName="SAVANA_GRASS">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_SAVANA_GRASS_DRY" textureName="SAVANA_GRASS_DRY">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_MOON" textureName="MOON">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_MARS" textureName="MARS">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_MARS_LIGHT" textureName="MARS_LIGHT">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_MAGIC_GRASS" textureName="MAGIC_GRASS">
+        <BoundingBox>
+            <Min x="6.099999723119254E-7" y="0.09999999403953552" z="-3.099999901223782E-7"/>
+            <Max x="9.174805641174316" y="0.09999999403953552" z="9.1748046875"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_DESERT" textureName="DESERT">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_BEACH" textureName="BEACH">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_SNOW" textureName="SNOW">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_GRASS" textureName="GRASS">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_DRY_GRASS" textureName="DRY_GRASS">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_FOREST_FLOOR" textureName="FOREST_FLOOR">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_FOREST_FLOOR_BROWN" textureName="FOREST_FLOOR_BROWN">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_FOREST_FLOOR_RED" textureName="FOREST_FLOOR_RED">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_JUNGLE" textureName="JUNGLE">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_OCEAN" textureName="OCEAN">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_OCEAN_NIGHT" textureName="OCEAN_NIGHT">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_ICE" textureName="ICE">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_BRICK" textureName="BRICK">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_WOOD" textureName="WOOD">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_SWAMP" textureName="SWAMP">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_SWAMP_POISON" textureName="SWAMP_POISON">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_SWAMP_WATER" textureName="SWAMP_WATER">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_ROCKY_BROWN" textureName="ROCKY_BROWN">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_ROCKY_SAND" textureName="ROCKY_SAND">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_SAVANA_GRASS" textureName="SAVANA_GRASS">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_SAVANA_GRASS_DRY" textureName="SAVANA_GRASS_DRY">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_MOON" textureName="MOON">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_MARS" textureName="MARS">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_MARS_LIGHT" textureName="MARS_LIGHT">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_MAGIC_GRASS" textureName="MAGIC_GRASS">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FlatOval" resourceName="FLAT_OVAL_UNDERWATER_SAND" textureName="UNDERWATER_SAND">
+        <BoundingBox>
+            <Min x="-1.5044384002685547" y="0.009999999776482582" z="-1.8794158697128296"/>
+            <Max x="1.5044384002685547" y="0.009999999776482582" z="1.8794158697128296"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

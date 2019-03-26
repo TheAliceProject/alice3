@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Cattails">
+    <BoundingBox>
+        <Min x="-0.4411848485469818" y="0.0" z="-0.4182482957839966"/>
+        <Max x="0.4411848485469818" y="1.595105767250061" z="0.4182482957839966"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>typha</Tag>
+        <Tag>flower</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Cluster1" resourceName="CLUSTER1" textureName="CLUSTER1">
+        <BoundingBox>
+            <Min x="-0.3297971785068512" y="0.0" z="-0.38511115312576294"/>
+            <Max x="0.3297971785068512" y="1.595105767250061" z="0.38511115312576294"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cluster2" resourceName="CLUSTER2" textureName="CLUSTER2">
+        <BoundingBox>
+            <Min x="-0.4411848485469818" y="0.0" z="-0.4182482957839966"/>
+            <Max x="0.4411848485469818" y="1.5033820867538452" z="0.4182482957839966"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cluster3" resourceName="CLUSTER3" textureName="CLUSTER3">
+        <BoundingBox>
+            <Min x="-0.2676108479499817" y="0.0" z="-0.411761075258255"/>
+            <Max x="0.2676108479499817" y="1.5006577968597412" z="0.411761075258255"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

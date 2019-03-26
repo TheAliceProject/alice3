@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="UpperArm">
+    <BoundingBox>
+        <Min x="-0.02332535216437316" y="-0.02376159737275361" z="-0.3096847831668871"/>
+        <Max x="0.023253576732223728" y="0.022306365938273887" z="0.02454321706097565"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>skeleton</Tag>
+        <Tag>bones</Tag>
+        <Tag>pile of bones</Tag>
+        <Tag>upper arm</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted:bones</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="UpperArmR" resourceName="UPPER_ARM_R" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.02332535216437316" y="-0.02376159737275361" z="-0.3096847831668871"/>
+            <Max x="0.022281283671260116" y="0.02216384264931241" z="0.024522842850652034"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="UpperArmL" resourceName="UPPER_ARM_L" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.022199820642113607" y="-0.023612776821542066" z="-0.309676214323226"/>
+            <Max x="0.023253576732223728" y="0.022306365938273887" z="0.02454321706097565"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

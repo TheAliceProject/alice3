@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Matt Kline" name="SpiralShell">
+    <BoundingBox>
+        <Min x="-0.05934619903564453" y="-0.041924089193344116" z="-0.07426249980926514"/>
+        <Max x="0.0638841837644577" y="0.21759353578090668" z="0.0975138247013092"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>shell</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="SpiralShell" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

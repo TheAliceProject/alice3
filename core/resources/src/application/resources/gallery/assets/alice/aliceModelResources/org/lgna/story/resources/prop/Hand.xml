@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="Hand">
+    <BoundingBox>
+        <Min x="-0.028239732231970127" y="-0.03296072029756593" z="-0.19044530015871242"/>
+        <Max x="0.03049998154961075" y="0.0824999379530106" z="9.107071561938502E-5"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>skeleton</Tag>
+        <Tag>bones</Tag>
+        <Tag>pile of bones</Tag>
+        <Tag>hand</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted:bones</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="HandR" resourceName="HAND_R" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.028239732231970127" y="-0.03269326699584085" z="-0.19044530015871242"/>
+            <Max x="0.010868482206689886" y="0.0824999379530106" z="9.107071561938502E-5"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="HandL" resourceName="HAND_L" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.010159884800569414" y="-0.03296072029756593" z="-0.19003398717137604"/>
+            <Max x="0.03049998154961075" y="0.08192213540072904" z="-4.1763830628170804E-7"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

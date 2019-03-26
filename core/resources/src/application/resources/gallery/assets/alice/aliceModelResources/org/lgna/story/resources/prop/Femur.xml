@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="Femur">
+    <BoundingBox>
+        <Min x="-0.05928364907727914" y="-0.05958179498108163" z="-0.3468166885611012"/>
+        <Max x="0.05844520660078652" y="0.03129530189930478" z="0.029321700315057965"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>skeleton</Tag>
+        <Tag>bones</Tag>
+        <Tag>pile of bones</Tag>
+        <Tag>femur</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted:bones</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="FemurR" resourceName="FEMUR_R" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.03141711960987323" y="-0.05958179498108163" z="-0.3468166885611012"/>
+            <Max x="0.05844520660078652" y="0.03129530189930478" z="0.029321700315057965"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FemurL" resourceName="FEMUR_L" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.05928364907727914" y="-0.058196299070903" z="-0.3468156883542563"/>
+            <Max x="0.031206701668309775" y="0.031169969740834014" z="0.029319633229318222"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

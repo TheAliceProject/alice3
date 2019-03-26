@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="Hippo">
+    <BoundingBox>
+        <Min x="-1.0541594287896754" y="-0.013988485224834148" z="-1.0466136973717266"/>
+        <Max x="1.0317232358212476" y="2.575470231513846" z="0.9609256211807797"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>africa</Tag>
+        <Tag>river</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>africa</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.7023523206783258" y="-0.013988485224834148" z="-0.6509260521884056"/>
+            <Max x="0.7278885939464623" y="2.575470231513846" z="0.4863726302489712"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.0541594287896754" y="-0.013988485224834148" z="-1.0466136973717266"/>
+            <Max x="1.0317232358212476" y="2.575470231513846" z="0.9609256211807797"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

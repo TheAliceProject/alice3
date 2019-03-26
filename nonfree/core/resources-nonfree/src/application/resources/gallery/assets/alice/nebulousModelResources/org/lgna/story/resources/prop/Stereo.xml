@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Stereo">
+    <BoundingBox>
+        <Min x="-0.7323148846626282" y="0.0" z="-0.3845582604408264"/>
+        <Max x="0.7323148846626282" y="1.1290560960769653" z="0.3845582604408264"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>stereo</Tag>
+        <Tag>music</Tag>
+        <Tag>boombox</Tag>
+        <Tag>player</Tag>
+        <Tag>cd</Tag>
+        <Tag>radio</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:recreation room</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:recreation room</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="BoomBox" resourceName="BOOM_BOX" textureName="BOOM_BOX">
+        <BoundingBox>
+            <Min x="-0.23914696276187897" y="0.0" z="-0.09927975386381149"/>
+            <Max x="0.23914696276187897" y="0.3850395381450653" z="0.09927975386381149"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Fancy" resourceName="FANCY" textureName="FANCY">
+        <BoundingBox>
+            <Min x="-0.7323148846626282" y="0.0" z="-0.3845582604408264"/>
+            <Max x="0.7323148846626282" y="1.1290560960769653" z="0.3845582604408264"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Basic" resourceName="BASIC_SILVER" textureName="SILVER">
+        <BoundingBox>
+            <Min x="-0.33672934770584106" y="0.0" z="-0.12351398915052414"/>
+            <Max x="0.33672934770584106" y="0.7453713417053223" z="0.12351398915052414"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Basic" resourceName="BASIC_BLACK" textureName="BLACK">
+        <BoundingBox>
+            <Min x="-0.33672934770584106" y="0.0" z="-0.12351398915052414"/>
+            <Max x="0.33672934770584106" y="0.7453713417053223" z="0.12351398915052414"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

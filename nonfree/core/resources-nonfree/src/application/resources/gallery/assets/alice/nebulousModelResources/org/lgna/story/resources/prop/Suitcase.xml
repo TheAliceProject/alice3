@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Suitcase">
+    <BoundingBox>
+        <Min x="-0.09825602173805237" y="1.3986294344903172E-9" z="-0.3174651265144348"/>
+        <Max x="0.09825602173805237" y="0.4803602993488312" z="0.3174651265144348"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>suitcase</Tag>
+        <Tag>luggage</Tag>
+        <Tag>bag travel</Tag>
+        <Tag>voyage</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Suitcase" resourceName="SUITCASE" textureName="SUITCASE"/>
+</AliceModel>

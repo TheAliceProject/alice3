@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Pei Hong Tan" name="IceSkater">
+    <BoundingBox>
+        <Min x="-0.216242740492528" y="0.005338555166714122" z="-0.13450836539196845"/>
+        <Max x="0.21875802394526955" y="1.5654326116088877" z="0.15402129309551066"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>ice</Tag>
+        <Tag>ice skater</Tag>
+        <Tag>skater</Tag>
+        <Tag>person</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="IceSkater" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

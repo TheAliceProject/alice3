@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Pei Hong Tan" name="RiverOtter">
+    <BoundingBox>
+        <Min x="-0.19474147176223472" y="-0.043779067309644246" z="-0.788973816438316"/>
+        <Max x="0.19474168121814664" y="0.6274898099439237" z="1.0346063552475764"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>northwest</Tag>
+        <Tag>river otter</Tag>
+        <Tag>otter</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="RiverOtter" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

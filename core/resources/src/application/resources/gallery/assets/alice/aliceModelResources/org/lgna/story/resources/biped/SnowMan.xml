@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Sahana Vijai" name="SnowMan">
+    <BoundingBox>
+        <Min x="-1.090472581456777" y="-0.008737383482085683" z="-0.5875816834589405"/>
+        <Max x="1.0904726427958644" y="1.9859788265272693" z="0.39153726541402395"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>snowman</Tag>
+        <Tag>frosty</Tag>
+        <Tag>winter</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="SnowMan" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

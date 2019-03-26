@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Fireplace">
+    <BoundingBox>
+        <Min x="-0.9017093777656555" y="0.0" z="-0.3355739414691925"/>
+        <Max x="0.9017093777656555" y="1.3634461164474487" z="0.3355739414691925"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>fire</Tag>
+        <Tag>cozy</Tag>
+        <Tag>mantle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:living room</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:living room</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Colonial" resourceName="COLONIAL_PINK" textureName="PINK">
+        <BoundingBox>
+            <Min x="-0.8302459120750427" y="0.0" z="-0.29285159707069397"/>
+            <Max x="0.8302459120750427" y="1.348616123199463" z="0.29285159707069397"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Colonial" resourceName="COLONIAL_CREAM" textureName="CREAM">
+        <BoundingBox>
+            <Min x="-0.8302459120750427" y="0.0" z="-0.29285159707069397"/>
+            <Max x="0.8302459120750427" y="1.348616123199463" z="0.29285159707069397"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Colonial" resourceName="COLONIAL_WHITE" textureName="WHITE">
+        <BoundingBox>
+            <Min x="-0.8302459120750427" y="0.0" z="-0.29285159707069397"/>
+            <Max x="0.8302459120750427" y="1.348616123199463" z="0.29285159707069397"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Colonial" resourceName="COLONIAL_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-0.8302459120750427" y="0.0" z="-0.29285159707069397"/>
+            <Max x="0.8302459120750427" y="1.348616123199463" z="0.29285159707069397"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Colonial" resourceName="COLONIAL_REDWOOD" textureName="REDWOOD">
+        <BoundingBox>
+            <Min x="-0.8302459120750427" y="0.0" z="-0.29285159707069397"/>
+            <Max x="0.8302459120750427" y="1.348616123199463" z="0.29285159707069397"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.9017093777656555" y="0.0" z="-0.3355739414691925"/>
+            <Max x="0.9017093777656555" y="1.3461270332336426" z="0.3355739414691925"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-0.9017093777656555" y="0.0" z="-0.3355739414691925"/>
+            <Max x="0.9017093777656555" y="1.3461270332336426" z="0.3355739414691925"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_CONCRETE" textureName="CONCRETE">
+        <BoundingBox>
+            <Min x="-0.9017093777656555" y="0.0" z="-0.3355739414691925"/>
+            <Max x="0.9017093777656555" y="1.3461270332336426" z="0.3355739414691925"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_STEEL" textureName="STEEL">
+        <BoundingBox>
+            <Min x="-0.9017093777656555" y="0.0" z="-0.3355739414691925"/>
+            <Max x="0.9017093777656555" y="1.3461270332336426" z="0.3355739414691925"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_ORANGE" textureName="ORANGE">
+        <BoundingBox>
+            <Min x="-0.9017093777656555" y="0.0" z="-0.3355739414691925"/>
+            <Max x="0.9017093777656555" y="1.3461270332336426" z="0.3355739414691925"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Morrocan" resourceName="MORROCAN_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.8314547538757324" y="0.0" z="-0.22468583285808563"/>
+            <Max x="0.8314547538757324" y="1.3634461164474487" z="0.22468583285808563"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Morrocan" resourceName="MORROCAN_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-0.8314547538757324" y="0.0" z="-0.22468583285808563"/>
+            <Max x="0.8314547538757324" y="1.3634461164474487" z="0.22468583285808563"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Morrocan" resourceName="MORROCAN_ORANGE" textureName="ORANGE">
+        <BoundingBox>
+            <Min x="-0.8314547538757324" y="0.0" z="-0.22468583285808563"/>
+            <Max x="0.8314547538757324" y="1.3634461164474487" z="0.22468583285808563"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Morrocan" resourceName="MORROCAN_WHITE" textureName="WHITE">
+        <BoundingBox>
+            <Min x="-0.8314547538757324" y="0.0" z="-0.22468583285808563"/>
+            <Max x="0.8314547538757324" y="1.3634461164474487" z="0.22468583285808563"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

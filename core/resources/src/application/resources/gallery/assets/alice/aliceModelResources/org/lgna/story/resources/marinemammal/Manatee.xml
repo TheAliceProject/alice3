@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="Manatee" placeOnGround="TRUE">
+    <BoundingBox>
+        <Min x="-0.4042009845954562" y="-0.8547042131231192" z="-0.9592251094185855"/>
+        <Max x="0.40420096412287365" y="0.29900901573989347" z="1.7571341151550035"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>river</Tag>
+        <Tag>underwater</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon</ThemeTag>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Manatee" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Manatee" resourceName="MOSSY" textureName="MOSSY"/>
+</AliceModel>

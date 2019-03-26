@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Pei Hong Tan" name="Elk">
+    <BoundingBox>
+        <Min x="-1.0343098676858449" y="-0.008675915883657074" z="-1.552697358777221"/>
+        <Max x="1.0343098649994196" y="2.922513054851021" z="0.9905894886220428"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>northwest</Tag>
+        <Tag>elk</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Elk" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

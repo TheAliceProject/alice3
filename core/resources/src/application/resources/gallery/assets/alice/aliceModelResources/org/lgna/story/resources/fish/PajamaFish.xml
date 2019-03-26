@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="PajamaFish" placeOnGround="TRUE">
+    <BoundingBox>
+        <Min x="-0.11408562665108551" y="-0.1058964419146371" z="-0.20159371266424508"/>
+        <Max x="0.11412384140202972" y="0.5014652132679743" z="0.5067500400534092"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="PajamaFish" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

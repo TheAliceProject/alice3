@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Philodendron">
+    <BoundingBox>
+        <Min x="-0.4446888566017151" y="0.0" z="-0.44965922832489014"/>
+        <Max x="0.4446888566017151" y="1.3700339794158936" z="0.44965922832489014"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>pot</Tag>
+        <Tag>potted</Tag>
+        <Tag>container</Tag>
+        <Tag>houseplant</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Philodendron" resourceName="PHILODENDRON" textureName="PHILODENDRON"/>
+</AliceModel>

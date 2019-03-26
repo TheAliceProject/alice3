@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Pei Hong Tan" name="Bear">
+    <BoundingBox>
+        <Min x="-0.5449734838698763" y="-0.008509068072969587" z="-1.5082760061131655"/>
+        <Max x="0.5449734838698774" y="1.5081193592323598" z="1.1873576144553977"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>northwest</Tag>
+        <Tag>bear</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Bear" resourceName="BROWN" textureName="BROWN"/>
+    <Resource modelName="Bear" resourceName="POLAR" textureName="POLAR"/>
+</AliceModel>

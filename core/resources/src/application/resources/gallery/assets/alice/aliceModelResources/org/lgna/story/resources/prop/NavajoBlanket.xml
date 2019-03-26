@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Pei Hong Tan" name="NavajoBlanket">
+    <BoundingBox>
+        <Min x="-0.5810836595541057" y="-0.04792313857589219" z="-0.27836093577539345"/>
+        <Max x="0.5810836374233205" y="0.12710804530634107" z="0.278360937264535"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>horse</Tag>
+        <Tag>rug</Tag>
+        <Tag>carpet</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Flat" resourceName="FLAT_ZIG_ZAGS" textureName="ZIG_ZAGS">
+        <BoundingBox>
+            <Min x="-0.5810836595541057" y="0.009999999441206463" z="-0.27836093577539345"/>
+            <Max x="0.5810836374233205" y="0.009999999999999995" z="0.278360937264535"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flat" resourceName="FLAT_BORDERED" textureName="BORDERED">
+        <BoundingBox>
+            <Min x="-0.5810836595541057" y="0.009999999441206463" z="-0.27836093577539345"/>
+            <Max x="0.5810836374233205" y="0.009999999999999995" z="0.278360937264535"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Rolled" resourceName="ROLLED_ZIG_ZAGS" textureName="ZIG_ZAGS">
+        <BoundingBox>
+            <Min x="-0.569973131335703" y="-0.04792313857589219" z="-0.14623719880996688"/>
+            <Max x="0.5699731374201802" y="0.12710804530634107" z="0.14623722013096702"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Rolled" resourceName="ROLLED_BORDERED" textureName="BORDERED">
+        <BoundingBox>
+            <Min x="-0.569973131335703" y="-0.04792313857589219" z="-0.14623719880996688"/>
+            <Max x="0.5699731374201802" y="0.12710804530634107" z="0.14623722013096702"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

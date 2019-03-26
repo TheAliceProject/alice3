@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="Bat">
+    <BoundingBox>
+        <Min x="-0.3248660615622049" y="-0.006436239067022017" z="-0.5487980908168095"/>
+        <Max x="0.3363153941514645" y="1.1560493762031023" z="0.06533544350798959"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>bat</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Bat" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

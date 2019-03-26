@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Humvee">
+    <BoundingBox>
+        <Min x="-1.4115769863128662" y="1.4545745941063615E-8" z="-2.2205402851104736"/>
+        <Max x="1.4115772247314453" y="1.7508095502853394" z="2.2205405235290527"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>army</Tag>
+        <Tag>war</Tag>
+        <Tag>jeep</Tag>
+        <Tag>truck</Tag>
+        <Tag>vehicle</Tag>
+        <Tag>car</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Humvee" resourceName="HUMVEE" textureName="HUMVEE"/>
+</AliceModel>

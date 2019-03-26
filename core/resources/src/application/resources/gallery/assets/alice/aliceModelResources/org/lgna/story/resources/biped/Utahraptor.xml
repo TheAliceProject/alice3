@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Pei Hong Tan" name="Utahraptor">
+    <BoundingBox>
+        <Min x="-0.4945126088623083" y="-0.028830259456547276" z="-1.8902367417844324"/>
+        <Max x="0.4945125801199554" y="2.252399376999022" z="3.0796939044370677"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>dinosaur</Tag>
+        <Tag>utahraptor</Tag>
+        <Tag>raptor</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Utahraptor" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

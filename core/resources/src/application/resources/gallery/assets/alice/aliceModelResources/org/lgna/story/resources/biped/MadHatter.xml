@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="MadHatter">
+    <BoundingBox>
+        <Min x="-0.3020360617694144" y="-0.0018274865297992892" z="-0.1873234915446128"/>
+        <Max x="0.30203606265149735" y="1.9300282530099506" z="0.6507742084114323"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>wonderland</Tag>
+        <Tag>alice</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="MadHatter" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

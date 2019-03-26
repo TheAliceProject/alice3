@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="Nagi">
+    <BoundingBox>
+        <Min x="-0.3811758587693027" y="-0.006132661577030259" z="-0.289930977283328"/>
+        <Max x="0.3772451019694326" y="1.198158045428504" z="0.6605952582592348"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>naga</Tag>
+        <Tag>nagi</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Nagi" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

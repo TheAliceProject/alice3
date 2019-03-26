@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="Skeleton">
+    <BoundingBox>
+        <Min x="-0.2824290621060821" y="-0.002755604108941697" z="-0.2000060630071881"/>
+        <Max x="0.276003118918969" y="1.8783803417772613" z="0.3289850761751564"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>skeleton</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="WithHat" resourceName="WITH_HAT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.2295944661533792" y="-0.002755604108941697" z="-0.18299324813257106"/>
+            <Max x="0.229594466204598" y="1.8783803417772613" z="0.3289850761751564"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.2209158350692246" y="-0.002755604108941697" z="-0.18299324813257106"/>
+            <Max x="0.22091599649978508" y="1.7424329989607206" z="0.2664303330770135"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="WithCoat" resourceName="WITH_COAT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.2824290621060821" y="-0.002755604108941697" z="-0.2000060630071881"/>
+            <Max x="0.276003118918969" y="1.8783803417772613" z="0.3289850761751564"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

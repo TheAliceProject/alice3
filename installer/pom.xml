@@ -48,9 +48,9 @@
 		<groupId>org.alice</groupId>
 		<artifactId>parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../</relativePath>
 	</parent>
 
+	<name>Install4J Installers</name>
 	<artifactId>installer</artifactId>
 	<packaging>pom</packaging>
 
@@ -76,7 +76,7 @@
 							<goal>compile</goal>
 						</goals>
 						<configuration>
-							<projectFile>${parent.basedir}/tools/batch-build/src/main/resources/Installer/aliceinstallerproject.install4j</projectFile>
+							<projectFile>aliceinstallerproject.install4j</projectFile>
 							<attach>true</attach>
 							<release>${alice.build.version}${alice.build.prerelease}${alice.build.metadata}</release>
 						</configuration>

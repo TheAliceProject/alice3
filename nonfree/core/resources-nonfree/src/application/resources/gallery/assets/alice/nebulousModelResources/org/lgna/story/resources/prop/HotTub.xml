@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="HotTub">
+    <BoundingBox>
+        <Min x="-1.4463305473327637" y="0.0" z="-1.5281871557235718"/>
+        <Max x="1.4463304281234741" y="1.7324169874191284" z="1.5281871557235718"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>jacuzzi</Tag>
+        <Tag>jacuzi</Tag>
+        <Tag>bathtub</Tag>
+        <Tag>bath</Tag>
+        <Tag>pool</Tag>
+        <Tag>swim</Tag>
+        <Tag>bubbles</Tag>
+        <Tag>relax</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:yard</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:yard</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Basic" resourceName="BASIC_CALM" textureName="CALM">
+        <BoundingBox>
+            <Min x="-1.3425058126449585" y="0.0" z="-1.33787202835083"/>
+            <Max x="1.3425058126449585" y="1.4526041746139526" z="1.33787202835083"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Basic" resourceName="BASIC_BUBBLES" textureName="BUBBLES">
+        <BoundingBox>
+            <Min x="-1.3425058126449585" y="0.0" z="-1.33787202835083"/>
+            <Max x="1.3425058126449585" y="1.4526041746139526" z="1.33787202835083"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Fancy" resourceName="FANCY_CALM" textureName="CALM">
+        <BoundingBox>
+            <Min x="-1.4463305473327637" y="0.0" z="-1.5281871557235718"/>
+            <Max x="1.4463304281234741" y="1.7324169874191284" z="1.5281871557235718"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Fancy" resourceName="FANCY_BUBBLES" textureName="BUBBLES">
+        <BoundingBox>
+            <Min x="-1.4463305473327637" y="0.0" z="-1.5281871557235718"/>
+            <Max x="1.4463304281234741" y="1.7324169874191284" z="1.5281871557235718"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

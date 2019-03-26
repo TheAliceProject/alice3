@@ -58,8 +58,8 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
+import org.lgna.story.resources.DynamicBipedResource;
 import org.lgna.story.resources.JointedModelResource;
-import org.lgna.story.resources.biped.OgreResource;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 
@@ -90,7 +90,7 @@ public class FieldFinder {
 		ArrayList<JointedModelResource> rv = Lists.newArrayList();
 		refreshScene();
 		if( sceneType == null ) {
-			JointedModelResource ogre = OgreResource.GREEN;
+			JointedModelResource ogre = new DynamicBipedResource( "ogre", "ogre");
 			return Lists.newArrayList( ogre );
 		}
 		List<UserField> fields = sceneType.getDeclaredFields();
@@ -149,13 +149,5 @@ public class FieldFinder {
 		if( newNode.getParent() == null ) {
 			rootNode.add( newNode );
 		}
-	}
-
-	/**
-	 * HACK FOR NOW
-	 */
-	public boolean isSceneTypeNull() {
-		refreshScene();
-		return sceneType != null;
 	}
 }

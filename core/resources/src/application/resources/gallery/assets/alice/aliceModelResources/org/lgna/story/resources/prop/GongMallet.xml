@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="GongMallet">
+    <BoundingBox>
+        <Min x="-0.04957976192235947" y="-0.047185976058244705" z="-0.2887023985385895"/>
+        <Max x="0.04957976192235947" y="0.0471859835088253" z="0.2887023985385895"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>instrument</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="GongMallet" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

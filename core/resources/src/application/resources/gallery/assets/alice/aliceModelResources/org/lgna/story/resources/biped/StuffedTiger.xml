@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="StuffedTiger">
+    <BoundingBox>
+        <Min x="-0.284563678172821" y="2.866710161639718E-4" z="-0.20913548248058156"/>
+        <Max x="0.2823131688283409" y="1.0088093057585916" z="0.4038893238178391"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>tiger</Tag>
+        <Tag>cat</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="StuffedTiger" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

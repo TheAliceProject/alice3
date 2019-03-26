@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="ScottyDog">
+    <BoundingBox>
+        <Min x="-0.16150598768757013" y="-0.0015555164514654476" z="-0.5005590941389154"/>
+        <Max x="0.16214978220976303" y="0.6142358516070369" z="0.3259100591322063"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>dog</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="ScottyDog" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

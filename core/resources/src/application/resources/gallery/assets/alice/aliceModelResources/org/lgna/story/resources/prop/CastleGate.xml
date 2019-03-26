@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="CastleGate">
+    <BoundingBox>
+        <Min x="-2.5569756031036377" y="-3.049999861559627E-7" z="-0.998848557472229"/>
+        <Max x="2.7274651527404785" y="4.218381881713867" z="0.663722813129425"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>castle</Tag>
+        <Tag>rampart</Tag>
+        <Tag>entrance</Tag>
+        <Tag>gate</Tag>
+        <Tag>door</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props:castle</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy:castle</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="CastleGate" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

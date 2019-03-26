@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="WagonDesk">
+    <BoundingBox>
+        <Min x="-0.45917633175849915" y="-0.007752914447337389" z="-1.0947185754776"/>
+        <Max x="0.45977458357810974" y="1.9969066381454468" z="1.0911688804626465"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>circus</Tag>
+        <Tag>circus wagon</Tag>
+        <Tag>desk</Tag>
+        <Tag>ghost town</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="WagonDesk" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

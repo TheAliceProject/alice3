@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="PaintBrush">
+    <BoundingBox>
+        <Min x="-0.11017981171607971" y="0.0" z="-0.0055531528778374195"/>
+        <Max x="0.11017981171607971" y="0.011106236837804317" z="0.0055531528778374195"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>painting</Tag>
+        <Tag>art</Tag>
+        <Tag>paint</Tag>
+        <Tag>brush</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:recreation room</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:recreation room</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="PaintBrush" resourceName="PAINT_BRUSH" textureName="PAINT_BRUSH"/>
+</AliceModel>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="HermitSnail">
+    <BoundingBox>
+        <Min x="-0.43222664637982616" y="-0.00875433859338642" z="-0.5136665582340021"/>
+        <Max x="0.4405538852103775" y="0.9470112174205917" z="0.642813082227808"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>wonderland</Tag>
+        <Tag>alice</Tag>
+        <Tag>snail</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="HermitSnail" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

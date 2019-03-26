@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="PlayingCard">
+    <BoundingBox>
+        <Min x="-0.27753516340668716" y="-0.006053644428788042" z="-0.23272279993771564"/>
+        <Max x="0.2943470248988489" y="1.608330881226938" z="0.2741415390639966"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alice</Tag>
+        <Tag>wonderland</Tag>
+        <Tag>card</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="PlayingCard" resourceName="BLANK" textureName="BLANK"/>
+    <Resource modelName="PlayingCard" resourceName="ONE1" textureName="ONE1"/>
+    <Resource modelName="PlayingCard" resourceName="TWO2" textureName="TWO2"/>
+    <Resource modelName="PlayingCard" resourceName="THREE3" textureName="THREE3"/>
+    <Resource modelName="PlayingCard" resourceName="FOUR4" textureName="FOUR4"/>
+    <Resource modelName="PlayingCard" resourceName="FIVE5" textureName="FIVE5"/>
+    <Resource modelName="PlayingCard" resourceName="SIX6" textureName="SIX6"/>
+    <Resource modelName="PlayingCard" resourceName="SEVEN7" textureName="SEVEN7"/>
+    <Resource modelName="PlayingCard" resourceName="EIGHT8" textureName="EIGHT8"/>
+    <Resource modelName="PlayingCard" resourceName="NINE9" textureName="NINE9"/>
+    <Resource modelName="PlayingCard" resourceName="TEN10" textureName="TEN10"/>
+</AliceModel>

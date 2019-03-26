@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="AbyssinianCat">
+    <BoundingBox>
+        <Min x="-0.15246895527888646" y="0.0014014456943636558" z="-0.4117898750876087"/>
+        <Max x="0.15246895696185023" y="0.8328749394317903" z="0.8425962091120871"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>cat</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="AbyssinianCat" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

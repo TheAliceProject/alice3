@@ -351,7 +351,7 @@ public enum StorytellingResources {
 			URLClassLoader cl = new URLClassLoader( urlArray, ClassLoader.getSystemClassLoader() );
 			for( String className : classNames ) {
 				try {
-					Class<?> cls = cl.loadClass( className );
+					Class<?> cls = Class.forName(className);
 					if( ModelResource.class.isAssignableFrom( cls ) ) {
 						//TEST
 						Field[] fields = cls.getDeclaredFields();
@@ -425,18 +425,10 @@ public enum StorytellingResources {
 
 	private void clearAliceResourceInfo() {
 		ResourcePathManager.clearPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
-		Preferences rv = Preferences.userRoot();
-		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
-		rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
+		Preferences preferences = Preferences.userRoot();
+		preferences.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
+		preferences.put( GALLERY_DIRECTORY_PREF_KEY, "" );
 
-	}
-
-	public static boolean initializeModelClassPath() {
-		List<Class<? extends ModelResource>> classesLoaded = StorytellingResources.INSTANCE.findAndLoadInstalledAliceResourcesIfNecessary();
-		if( classesLoaded != null ) {
-			return true;
-		}
-		return false;
 	}
 
 	List<ModelManifest> findAndLoadUserGalleryResourcesIfNecessary() {
@@ -492,7 +484,7 @@ public enum StorytellingResources {
 		return true;
 	}
 
-	/*package-private*/List<Class<? extends ModelResource>> findAndLoadInstalledAliceResourcesIfNecessary() {
+	List<Class<? extends ModelResource>> findAndLoadInstalledAliceResourcesIfNecessary() {
 		if( this.installedAliceClassesLoaded == null ) {
 			List<File> resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
 			if( resourcePaths.size() == 0 ) {

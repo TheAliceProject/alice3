@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="GideonBust">
+    <BoundingBox>
+        <Min x="-0.3609718978404998" y="-0.00953232403844595" z="-0.20189091568765508"/>
+        <Max x="0.34648022055625916" y="0.7709232539786486" z="0.4116468458349944"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>ghost</Tag>
+        <Tag>mausoleum</Tag>
+        <Tag>train</Tag>
+        <Tag>train car</Tag>
+        <Tag>prenderghast circus</Tag>
+        <Tag>haunted circus</Tag>
+        <Tag>haunted circus busts</Tag>
+        <Tag>statue</Tag>
+        <Tag>gideon</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="GideonBust" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

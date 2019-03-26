@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Greg Mirles" name="SavanaGrass">
+    <BoundingBox>
+        <Min x="-0.6944501996040344" y="-0.0020536184310913086" z="-0.8634562492370605"/>
+        <Max x="0.8953670859336853" y="0.8672206401824951" z="0.9448370337486267"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>africa</Tag>
+        <Tag>plains</Tag>
+        <Tag>savana</Tag>
+        <Tag>grass</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>africa</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Grass1" resourceName="GRASS1" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.578629195690155" y="-0.0020536184310913086" z="-0.8634562492370605"/>
+            <Max x="0.7485851049423218" y="0.84079909324646" z="0.9448370337486267"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Grass1" resourceName="GRASS1_YELLOW_GREEN" textureName="YELLOW_GREEN">
+        <BoundingBox>
+            <Min x="-0.578629195690155" y="-0.0020536184310913086" z="-0.8634562492370605"/>
+            <Max x="0.7485851049423218" y="0.84079909324646" z="0.9448370337486267"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Grass1" resourceName="GRASS1_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.578629195690155" y="-0.0020536184310913086" z="-0.8634562492370605"/>
+            <Max x="0.7485851049423218" y="0.84079909324646" z="0.9448370337486267"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Grass1" resourceName="GRASS1_DARK_GREEN" textureName="DARK_GREEN">
+        <BoundingBox>
+            <Min x="-0.578629195690155" y="-0.0020536184310913086" z="-0.8634562492370605"/>
+            <Max x="0.7485851049423218" y="0.84079909324646" z="0.9448370337486267"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Grass1" resourceName="GRASS1_BRIGHT_GREEN" textureName="BRIGHT_GREEN">
+        <BoundingBox>
+            <Min x="-0.578629195690155" y="-0.0020536184310913086" z="-0.8634562492370605"/>
+            <Max x="0.7485851049423218" y="0.84079909324646" z="0.9448370337486267"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Grass2" resourceName="GRASS2" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.6944501996040344" y="-8.698281561692056E-8" z="-0.7969671487808228"/>
+            <Max x="0.8953670859336853" y="0.8672206401824951" z="0.9376003742218018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Grass2" resourceName="GRASS2_YELLOW_GREEN" textureName="YELLOW_GREEN">
+        <BoundingBox>
+            <Min x="-0.6944501996040344" y="-8.698281561692056E-8" z="-0.7969671487808228"/>
+            <Max x="0.8953670859336853" y="0.8672206401824951" z="0.9376003742218018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Grass2" resourceName="GRASS2_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.6944501996040344" y="-8.698281561692056E-8" z="-0.7969671487808228"/>
+            <Max x="0.8953670859336853" y="0.8672206401824951" z="0.9376003742218018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Grass2" resourceName="GRASS2_DARK_GREEN" textureName="DARK_GREEN">
+        <BoundingBox>
+            <Min x="-0.6944501996040344" y="-8.698281561692056E-8" z="-0.7969671487808228"/>
+            <Max x="0.8953670859336853" y="0.8672206401824951" z="0.9376003742218018"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Grass2" resourceName="GRASS2_BRIGHT_GREEN" textureName="BRIGHT_GREEN">
+        <BoundingBox>
+            <Min x="-0.6944501996040344" y="-8.698281561692056E-8" z="-0.7969671487808228"/>
+            <Max x="0.8953670859336853" y="0.8672206401824951" z="0.9376003742218018"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

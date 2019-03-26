@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Seagull">
+    <BoundingBox>
+        <Min x="-0.16578958384158493" y="-0.002032221906276646" z="-0.31306513835511735"/>
+        <Max x="0.16578985851986106" y="0.695032143241002" z="0.3545710960212122"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>bird</Tag>
+        <Tag>underwater</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Seagull" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

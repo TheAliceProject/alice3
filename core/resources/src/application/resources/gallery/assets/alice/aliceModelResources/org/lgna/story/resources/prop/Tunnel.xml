@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="Tunnel">
+    <BoundingBox>
+        <Min x="-10.67335319519043" y="-0.5549049377441406" z="-7.0503830909729"/>
+        <Max x="10.67335319519043" y="8.140056610107422" z="6.223926067352295"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>tunnel</Tag>
+        <Tag>train</Tag>
+        <Tag>mountain</Tag>
+        <Tag>rocks</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+        <ThemeTag>haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-10.67335319519043" y="-0.5549049377441406" z="-7.0503830909729"/>
+            <Max x="10.67335319519043" y="8.140056610107422" z="6.223926067352295"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Shallow" resourceName="SHALLOW" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-10.67335319519043" y="-0.5549049377441406" z="-7.0503830909729"/>
+            <Max x="10.67335319519043" y="8.140056610107422" z="6.223926067352295"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="MonkeyKing">
+    <BoundingBox>
+        <Min x="-0.34451078206682606" y="-0.012214050201727729" z="-0.2374675785968769"/>
+        <Max x="0.39510901444719515" y="1.2835662059879311" z="0.5590853814110508"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>king</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="MonkeyKing" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

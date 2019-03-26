@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="RockyOutcrop">
+    <BoundingBox>
+        <Min x="-1.0048987865447998" y="-0.1190701276063919" z="-0.9248619079589844"/>
+        <Max x="3.5132787227630615" y="4.370865821838379" z="0.7619901299476624"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>mountain</Tag>
+        <Tag>spire</Tag>
+        <Tag>scenery</Tag>
+        <Tag>cliff</Tag>
+        <Tag>rock</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Large" resourceName="LARGE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.1489047259092331" y="-0.1190701276063919" z="-0.9248619079589844"/>
+            <Max x="3.5132787227630615" y="4.370865821838379" z="0.7619901299476624"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Medium" resourceName="MEDIUM" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.0048987865447998" y="-0.0686967670917511" z="-0.6864525675773621"/>
+            <Max x="0.23342794179916382" y="3.071084499359131" z="0.5266755223274231"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Small" resourceName="SMALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.6923672556877136" y="-0.05932365357875824" z="-0.8443366885185242"/>
+            <Max x="0.7450790405273438" y="2.438124656677246" z="0.7541944980621338"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="Oar">
+    <BoundingBox>
+        <Min x="-0.015877684578299522" y="0.007208175491541624" z="-0.9472888112068176"/>
+        <Max x="0.015877684578299522" y="0.15807518362998962" z="0.9026893973350525"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>boat</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles:fishing boat accessories</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east:fishing boat accessories</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Oar" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

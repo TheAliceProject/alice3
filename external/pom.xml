@@ -2,52 +2,17 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<name>External Libraries</name>
+	<description>External libraries built from source</description>
 	<groupId>org.alice.external</groupId>
 	<artifactId>external</artifactId>
 	<version>1.0</version>
 	<packaging>pom</packaging>
 
-	<distributionManagement>
-		<repository>
-			<id>org.alice.external</id>
-			<name>Alice External Repository</name>
-			<url>${alice-deploy-url}/external</url>
-		</repository>
-	</distributionManagement>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>3.0.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>3.0.0-M1</version>
-					<dependencies>
-						<dependency>
-							<groupId>org.apache.maven.wagon</groupId>
-							<artifactId>wagon-ssh</artifactId>
-							<version>3.3.1</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+	<parent>
+		<groupId>org.alice</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 
 </project>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="RailroadTrack">
+    <BoundingBox>
+        <Min x="-19.154052734375" y="-0.0034447860020367198" z="-21.053863532701037"/>
+        <Max x="19.15405255336556" y="0.3239933002590134" z="0.029332595688076262"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>train</Tag>
+        <Tag>track</Tag>
+        <Tag>haunted</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>railroad</Tag>
+        <Tag>train track</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource creator="Laura Paoletti" modelName="StraightTrestle" resourceName="STRAIGHT_TRESTLE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-2.0233190180162084" y="-0.003444785950705409" z="-10.000000009902797"/>
+            <Max x="2.0285369850448993" y="0.31627506960258067" z="0.029332595688076262"/>
+        </BoundingBox>
+    </Resource>
+    <Resource creator="Laura Paoletti" modelName="SlightCurveTrestle" resourceName="SLIGHT_CURVE_TRESTLE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.8621439846823562" y="-0.003444785950705409" z="-14.74486523542422"/>
+            <Max x="6.745557646556929" y="0.3239933002590134" z="3.2541039539562724E-5"/>
+        </BoundingBox>
+    </Resource>
+    <Resource creator="Laura Paoletti" modelName="RightCurveTrestle" resourceName="RIGHT_CURVE_TRESTLE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.862143975195658" y="-0.0034447860020367198" z="-21.053863532701037"/>
+            <Max x="19.15405255336556" y="0.3239933002590134" z="3.242699937864109E-5"/>
+        </BoundingBox>
+    </Resource>
+    <Resource creator="Laura Paoletti" modelName="SlightCurveTrestleMirror" resourceName="SLIGHT_CURVE_TRESTLE_MIRROR" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-6.81166431328473" y="-0.0034447860020367198" z="-14.804543903368169"/>
+            <Max x="1.8621439642298463" y="0.3239933002590134" z="3.248447345867536E-5"/>
+        </BoundingBox>
+    </Resource>
+    <Resource creator="Laura Paoletti" modelName="RightCurveTrestleMirror" resourceName="RIGHT_CURVE_TRESTLE_MIRROR" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-19.154052734375" y="-0.003444785950705409" z="-21.053863525390625"/>
+            <Max x="1.8621439933776855" y="0.3239932954311371" z="3.2644868042552844E-5"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

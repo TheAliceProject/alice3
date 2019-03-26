@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="RiverPiece">
+    <BoundingBox>
+        <Min x="-4.123780250549316" y="-0.11846719682216644" z="-4.364546775817871"/>
+        <Max x="6.0233612060546875" y="0.7416458129882812" z="5.5791850090026855"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>rainforest</Tag>
+        <Tag>jungle</Tag>
+        <Tag>river</Tag>
+        <Tag>stream</Tag>
+        <Tag>creek</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Straight1" resourceName="STRAIGHT1_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-3.813051462173462" y="-0.05202117934823036" z="-3.9623401165008545"/>
+            <Max x="3.560032367706299" y="0.7416458129882812" z="4.023017406463623"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Straight1" resourceName="STRAIGHT1_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-3.813051462173462" y="-0.05202117934823036" z="-3.9623401165008545"/>
+            <Max x="3.560032367706299" y="0.7416458129882812" z="4.023017406463623"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Straight2" resourceName="STRAIGHT2_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-3.8088505268096924" y="-0.05202117934823036" z="-3.960392951965332"/>
+            <Max x="3.690889835357666" y="0.7416458129882812" z="3.990976572036743"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Straight2" resourceName="STRAIGHT2_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-3.8088505268096924" y="-0.05202117934823036" z="-3.960392951965332"/>
+            <Max x="3.690889835357666" y="0.7416458129882812" z="3.990976572036743"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Straight3" resourceName="STRAIGHT3_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-3.8528099060058594" y="-0.015078422613441944" z="-3.894853353500366"/>
+            <Max x="3.690889835357666" y="0.7416458129882812" z="4.023017883300781"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Straight3" resourceName="STRAIGHT3_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-3.8528099060058594" y="-0.015078422613441944" z="-3.894853353500366"/>
+            <Max x="3.690889835357666" y="0.7416458129882812" z="4.023017883300781"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Straight4" resourceName="STRAIGHT4_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-3.6821916103363037" y="-0.05202117934823036" z="-3.9623401165008545"/>
+            <Max x="3.573909282684326" y="0.7416458129882812" z="4.023017883300781"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Straight4" resourceName="STRAIGHT4_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-3.6821916103363037" y="-0.05202117934823036" z="-3.9623401165008545"/>
+            <Max x="3.573909282684326" y="0.7416458129882812" z="4.023017883300781"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Curve1" resourceName="CURVE1_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-4.123780250549316" y="-0.0282711423933506" z="-3.8936033248901367"/>
+            <Max x="5.598100662231445" y="0.6912153363227844" z="4.848239898681641"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Curve1" resourceName="CURVE1_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-4.123780250549316" y="-0.0282711423933506" z="-3.8936033248901367"/>
+            <Max x="5.598100662231445" y="0.6912153363227844" z="4.848239898681641"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Curve2" resourceName="CURVE2_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-3.8036928176879883" y="-0.05359195917844772" z="-3.9574830532073975"/>
+            <Max x="6.0233612060546875" y="0.605852484703064" z="4.564121723175049"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Curve2" resourceName="CURVE2_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-3.8036928176879883" y="-0.05359195917844772" z="-3.9574830532073975"/>
+            <Max x="6.0233612060546875" y="0.605852484703064" z="4.564121723175049"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Curve3" resourceName="CURVE3_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-3.3420703411102295" y="-0.031656842678785324" z="-4.118349552154541"/>
+            <Max x="6.008213996887207" y="0.5565396547317505" z="5.5791850090026855"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Curve3" resourceName="CURVE3_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-3.3420703411102295" y="-0.031656842678785324" z="-4.118349552154541"/>
+            <Max x="6.008213996887207" y="0.5565396547317505" z="5.5791850090026855"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Curve4" resourceName="CURVE4_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-3.7005443572998047" y="-0.051512256264686584" z="-4.2100348472595215"/>
+            <Max x="5.519876480102539" y="0.4517795741558075" z="4.574095249176025"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Curve4" resourceName="CURVE4_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-3.7005443572998047" y="-0.051512256264686584" z="-4.2100348472595215"/>
+            <Max x="5.519876480102539" y="0.4517795741558075" z="4.574095249176025"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Bow1" resourceName="BOW1_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-3.813051462173462" y="-0.11846719682216644" z="-4.1567535400390625"/>
+            <Max x="4.633589267730713" y="0.7416458129882812" z="4.830646514892578"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Bow1" resourceName="BOW1_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-3.813051462173462" y="-0.11846719682216644" z="-4.1567535400390625"/>
+            <Max x="4.633589267730713" y="0.7416458129882812" z="4.830646514892578"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Bow2" resourceName="BOW2_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-3.813051462173462" y="-0.05797262489795685" z="-4.364546775817871"/>
+            <Max x="4.954219818115234" y="0.7416458129882812" z="4.3086838722229"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Bow2" resourceName="BOW2_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-3.813051462173462" y="-0.05797262489795685" z="-4.364546775817871"/>
+            <Max x="4.954219818115234" y="0.7416458129882812" z="4.3086838722229"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Bow3" resourceName="BOW3_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-3.813051700592041" y="-0.03877506032586098" z="-4.158050060272217"/>
+            <Max x="5.456695556640625" y="0.7416458129882812" z="4.5750346183776855"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Bow3" resourceName="BOW3_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-3.813051700592041" y="-0.03877506032586098" z="-4.158050060272217"/>
+            <Max x="5.456695556640625" y="0.7416458129882812" z="4.5750346183776855"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SharpBend" resourceName="SHARP_BEND_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-3.740485191345215" y="-0.049197740852832794" z="-4.257534980773926"/>
+            <Max x="4.44296407699585" y="0.5561761856079102" z="3.841749906539917"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SharpBend" resourceName="SHARP_BEND_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-3.740485191345215" y="-0.049197740852832794" z="-4.257534980773926"/>
+            <Max x="4.44296407699585" y="0.5561761856079102" z="3.841749906539917"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

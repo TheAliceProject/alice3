@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Bus">
+    <BoundingBox>
+        <Min x="-1.2800021171569824" y="-3.076984667060856E-9" z="-3.8260843753814697"/>
+        <Max x="1.2800021171569824" y="2.5452892780303955" z="3.8260843753814697"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>bus</Tag>
+        <Tag>car</Tag>
+        <Tag>vehicle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Team" resourceName="TEAM" textureName="TEAM">
+        <BoundingBox>
+            <Min x="-1.2800021171569824" y="-3.076984667060856E-9" z="-3.8260843753814697"/>
+            <Max x="1.2800021171569824" y="2.5452890396118164" z="3.8260843753814697"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="School" resourceName="SCHOOL" textureName="SCHOOL">
+        <BoundingBox>
+            <Min x="-1.2800019979476929" y="-3.076984667060856E-9" z="-3.8260841369628906"/>
+            <Max x="1.2800021171569824" y="2.5452892780303955" z="3.8260836601257324"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

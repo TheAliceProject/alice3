@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="BayLaurelTree">
+    <BoundingBox>
+        <Min x="-3.147827386856079" y="0.0" z="-3.0601284503936768"/>
+        <Max x="3.147827386856079" y="6.839366436004639" z="3.0601284503936768"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>tree</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="BayLaurelTree" resourceName="GREEN" textureName="GREEN"/>
+    <Resource modelName="BayLaurelTree" resourceName="YELLOW" textureName="YELLOW"/>
+</AliceModel>

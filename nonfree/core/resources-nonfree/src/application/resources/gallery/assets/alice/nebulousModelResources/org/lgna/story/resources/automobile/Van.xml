@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Van">
+    <BoundingBox>
+        <Min x="-1.1474789381027222" y="-5.874243313996885E-9" z="-2.2970077991485596"/>
+        <Max x="1.1474789381027222" y="1.7143720388412476" z="2.2970077991485596"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>van</Tag>
+        <Tag>vehicle</Tag>
+        <Tag>car</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Minivan" resourceName="MINIVAN" textureName="MINIVAN">
+        <BoundingBox>
+            <Min x="-1.1474789381027222" y="-5.874243313996885E-9" z="-2.2970077991485596"/>
+            <Max x="1.1474789381027222" y="1.7143720388412476" z="2.2970077991485596"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>family</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="CleaningService" resourceName="CLEANING_SERVICE" textureName="CLEANING_SERVICE">
+        <BoundingBox>
+            <Min x="-1.1474789381027222" y="-5.874243313996885E-9" z="-2.2970077991485596"/>
+            <Max x="1.1474789381027222" y="1.7143720388412476" z="2.2970077991485596"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

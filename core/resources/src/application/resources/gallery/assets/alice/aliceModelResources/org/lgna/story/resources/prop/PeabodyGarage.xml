@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="PeabodyGarage">
+    <BoundingBox>
+        <Min x="-2.0010910034179688" y="-1.9550323315797868E-7" z="-2.5559959411621094"/>
+        <Max x="2.0010910034179688" y="4.493721008300781" z="2.081714391708374"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>house</Tag>
+        <Tag>garage</Tag>
+        <Tag>northwest</Tag>
+        <Tag>ghost town</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="PeabodyGarage" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

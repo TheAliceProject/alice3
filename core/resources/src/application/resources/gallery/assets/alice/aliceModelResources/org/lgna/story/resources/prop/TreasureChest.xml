@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="TreasureChest">
+    <BoundingBox>
+        <Min x="-0.7568453550338745" y="-3.099441414633475E-8" z="-0.4661484658718109"/>
+        <Max x="0.756464421749115" y="1.1269221305847168" z="0.4661484360694885"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>treasure</Tag>
+        <Tag>booty</Tag>
+        <Tag>loot</Tag>
+        <Tag>pirate</Tag>
+        <Tag>chest</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="TreasureChest" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="TreasureChestOpen" resourceName="TREASURE_CHEST_OPEN" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.9617345333099365" y="-0.002226661890745163" z="-0.46614846295008533"/>
+            <Max x="1.5502903461456299" y="1.1260082401335514" z="0.8421181440353394"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

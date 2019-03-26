@@ -43,10 +43,7 @@
 
 package org.alice.ide.typemanager;
 
-import com.sun.tools.internal.ws.processor.model.java.JavaParameter;
 import org.lgna.project.ast.*;
-import org.lgna.story.resources.ModelResource;
-import org.lgna.story.resources.ModelStructure;
 
 import java.util.List;
 

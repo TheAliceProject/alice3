@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Mathew Kline" name="PlankHouse">
+    <BoundingBox>
+        <Min x="-3.9782893657684326" y="-0.003983153495937586" z="-2.745354652404785"/>
+        <Max x="0.5529739260673523" y="2.1515390872955322" z="2.762371063232422"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>northwest</Tag>
+        <Tag>native american</Tag>
+        <Tag>house</Tag>
+        <Tag>big house</Tag>
+        <Tag>plant house</Tag>
+        <Tag>long house</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="PlankHouse" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="CircusTrapeze">
+    <BoundingBox>
+        <Min x="-2.6431984901428223" y="0.10135802626609802" z="-2.810272693634033"/>
+        <Max x="2.750192403793335" y="5.058357439935207" z="-1.3856638669967651"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>train</Tag>
+        <Tag>railroad</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>circus</Tag>
+        <Tag>circus tent</Tag>
+        <Tag>trapeze</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="CircusTrapeze" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

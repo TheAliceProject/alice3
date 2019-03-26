@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Fern">
+    <BoundingBox>
+        <Min x="-0.3225964605808258" y="0.0" z="-0.3045155107975006"/>
+        <Max x="0.3225964605808258" y="0.772581934928894" z="0.3045155107975006"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>pot</Tag>
+        <Tag>potted</Tag>
+        <Tag>container</Tag>
+        <Tag>houseplant</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Tall" resourceName="TALL" textureName="TALL">
+        <BoundingBox>
+            <Min x="-0.2509709596633911" y="0.0" z="-0.24172347784042358"/>
+            <Max x="0.2509709596633911" y="0.772581934928894" z="0.24172347784042358"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Short" resourceName="SHORT" textureName="SHORT">
+        <BoundingBox>
+            <Min x="-0.3225964605808258" y="0.0" z="-0.3045155107975006"/>
+            <Max x="0.3225964605808258" y="0.4361778795719147" z="0.3045155107975006"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

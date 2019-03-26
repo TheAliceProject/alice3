@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Matt Kline" name="ScubaHelmet">
+    <BoundingBox>
+        <Min x="-0.4131810963153839" y="-0.21686099469661713" z="-0.4794977903366089"/>
+        <Max x="0.4131810963153839" y="0.7180734276771545" z="0.4794977903366089"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>scuba</Tag>
+        <Tag>scuba gear</Tag>
+        <Tag>scuba helmet</Tag>
+        <Tag>helmet</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="ScubaHelmet" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

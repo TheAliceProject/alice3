@@ -98,9 +98,9 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 	public static interface JointImplementationAndVisualDataFactory<R extends JointedModelResource> {
 		public R getResource();
 
-		public JointImp createJointImplementation( JointedModelImp<?, ?> jointedModelImplementation, JointId jointId );
+		public JointImp createJointImplementation( JointedModelImp<?, R> jointedModelImplementation, JointId jointId );
 
-		public boolean hasJointImplementation( JointedModelImp<?, ?> jointedModelImplementation, JointId jointId );
+		public boolean hasJointImplementation( JointedModelImp<?, R> jointedModelImplementation, JointId jointId );
 
 		public JointId[] getJointArrayIds( JointedModelImp jointedModelImplementation, JointArrayId jointArrayId );
 

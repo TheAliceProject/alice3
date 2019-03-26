@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="Arapaima" placeOnGround="TRUE">
+    <BoundingBox>
+        <Min x="-0.40829818075397467" y="-0.48309783433956016" z="-0.9527537955734896"/>
+        <Max x="0.40829798579216003" y="0.9564636079037506" z="3.0222824306186884"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>river</Tag>
+        <Tag>underwater</Tag>
+        <Tag>fish</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Arapaima" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

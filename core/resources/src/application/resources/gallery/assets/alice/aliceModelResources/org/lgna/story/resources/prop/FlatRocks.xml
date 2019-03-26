@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="FlatRocks">
+    <BoundingBox>
+        <Min x="-1.9296096563339233" y="-0.4231608510017395" z="-0.7942089438438416"/>
+        <Max x="1.6516963243484497" y="0.5445213317871094" z="0.8368394374847412"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>rocks</Tag>
+        <Tag>stones</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Rocks1" resourceName="ROCKS1" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.9296096563339233" y="-0.3419967591762543" z="-0.7862774729728699"/>
+            <Max x="1.6516963243484497" y="0.5445213317871094" z="0.7619901299476624"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Rocks2" resourceName="ROCKS2" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.6062536239624023" y="-0.25171130895614624" z="-0.6200251579284668"/>
+            <Max x="0.5801980495452881" y="0.3441290259361267" z="0.5741363167762756"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Rocks3" resourceName="ROCKS3" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.6923672556877136" y="-0.4231608510017395" z="-0.7942089438438416"/>
+            <Max x="0.7450790405273438" y="0.2213873565196991" z="0.8368394374847412"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

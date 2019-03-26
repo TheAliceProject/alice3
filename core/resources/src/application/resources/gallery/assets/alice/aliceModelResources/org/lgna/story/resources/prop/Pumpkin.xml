@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="Pumpkin">
+    <BoundingBox>
+        <Min x="-0.2352703958749771" y="-1.352700055576861E-4" z="-0.2171814888715744"/>
+        <Max x="0.2352703958749771" y="0.48782798647880554" z="0.23946955800056458"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>pumpkin head</Tag>
+        <Tag>pumpkin</Tag>
+        <Tag>head</Tag>
+        <Tag>jack o lantern</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Pumpkin" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

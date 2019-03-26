@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="RingmasterCoat">
+    <BoundingBox>
+        <Min x="-0.29280173778533936" y="0.07103845477104187" z="-0.1447315514087677"/>
+        <Max x="0.28749969601631165" y="1.1692684888839722" z="0.20665764808654785"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>skeleton</Tag>
+        <Tag>coat</Tag>
+        <Tag>ringmaster coat</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="RingmasterCoat" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="Flames">
+    <BoundingBox>
+        <Min x="-0.5496781266592295" y="-0.4188629182754777" z="-0.6457306164779408"/>
+        <Max x="0.5888679481918474" y="2.1088456036518544" z="0.6329151391905172"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>flames</Tag>
+        <Tag>fire</Tag>
+        <Tag>campfire</Tag>
+        <Tag>bonfire</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+        <ThemeTag>haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Flames" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="HotAirBalloon">
+    <BoundingBox>
+        <Min x="-8.722858428955078" y="0.0" z="-8.722861289978027"/>
+        <Max x="8.722858428955078" y="28.437559127807617" z="8.722861289978027"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>balloon</Tag>
+        <Tag>air</Tag>
+        <Tag>fly</Tag>
+        <Tag>float</Tag>
+        <Tag>vehicle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="HotAirBalloon" resourceName="HOT_AIR_BALLOON" textureName="HOT_AIR_BALLOON"/>
+</AliceModel>

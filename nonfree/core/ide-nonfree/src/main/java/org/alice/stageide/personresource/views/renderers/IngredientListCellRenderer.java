@@ -172,7 +172,7 @@ public abstract class IngredientListCellRenderer<E> extends ListCellRenderer<E> 
 		return value;
 	}
 
-	protected String getValidIconPath( SkinTone baseSkinTone, String clsName, String enumConstantName ) {
+	private String getValidIconPath( SkinTone baseSkinTone, String clsName, String enumConstantName ) {
 		String path = null;
 
 		boolean lookForSkinToneIcon = true;

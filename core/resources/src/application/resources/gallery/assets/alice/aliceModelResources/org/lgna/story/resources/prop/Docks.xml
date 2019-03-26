@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="Docks">
+    <BoundingBox>
+        <Min x="-1.4775032997131348" y="-0.0790780633687973" z="-0.07071090489625931"/>
+        <Max x="1.477503776550293" y="1.8335806131362915" z="5.472357749938965"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>docks</Tag>
+        <Tag>wooden dock</Tag>
+        <Tag>dock</Tag>
+        <Tag>nordic dock</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Docks" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

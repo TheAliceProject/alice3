@@ -32,7 +32,7 @@ import Jama.util.*;
    decomposition classes.  These decompositions are accessed by the Matrix
    class to compute solutions of simultaneous linear equations, determinants,
    inverses and other matrix functions.  The five decompositions are:
-<P><UL>
+<UL>
    <LI>Cholesky Decomposition of symmetric, positive definite matrices.
    <LI>LU Decomposition of rectangular matrices.
    <LI>QR Decomposition of rectangular matrices.
@@ -41,9 +41,8 @@ import Jama.util.*;
 </UL>
 <DL>
 <DT><B>Example of use:</B></DT>
-<P>
 <DD>Solve a linear system A x = b and compute the residual norm, ||b - A x||.
-<P><PRE>
+<PRE>
       double[][] vals = {{1.,2.,3},{4.,5.,6.},{7.,8.,10.}};
       Matrix A = new Matrix(vals);
       Matrix b = Matrix.random(3,1);
@@ -162,6 +161,7 @@ public class Matrix implements Cloneable, Serializable {
    /** Construct a matrix from a copy of a 2-D array.
    @param A    Two-dimensional array of doubles.
    @exception  IllegalArgumentException All rows must have the same length
+   @return     Copy of A
    */
 
    public static Matrix constructWithCopy(double[][] A) {
@@ -182,6 +182,7 @@ public class Matrix implements Cloneable, Serializable {
    }
 
    /** Make a deep copy of a matrix
+   @return     Copy
    */
 
    public Matrix copy () {
@@ -272,7 +273,7 @@ public class Matrix implements Cloneable, Serializable {
    @param i    Row index.
    @param j    Column index.
    @return     A(i,j)
-   @exception  ArrayIndexOutOfBoundsException
+   @exception  ArrayIndexOutOfBoundsException indices
    */
 
    public double get (int i, int j) {
@@ -375,7 +376,7 @@ public class Matrix implements Cloneable, Serializable {
    @param i    Row index.
    @param j    Column index.
    @param s    A(i,j).
-   @exception  ArrayIndexOutOfBoundsException
+   @exception  ArrayIndexOutOfBoundsException Matrix indices
    */
 
    public void set (int i, int j, double s) {
@@ -984,6 +985,8 @@ public class Matrix implements Cloneable, Serializable {
      * whitespace, all the elements for each row appear on a single line,
      * the last row is followed by a blank line.
    @param input the input stream.
+   @return matrix from stream
+   @exception  IOException stream must have complete valid matrix
    */
 
    public static Matrix read (BufferedReader input) throws IOException {

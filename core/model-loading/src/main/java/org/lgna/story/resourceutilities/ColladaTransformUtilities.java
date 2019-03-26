@@ -4,20 +4,20 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 import java.util.Arrays;
 
+/**
+ * 	Alice models are in a different geometric space than Maya models
+ *	Maya models are modeled with:
+ *	  forward = +z
+ *	  right   = -x
+ *	  up      = +y
+ *
+ *	Alice models are modeled with:
+ *	  forward = -z
+ *	  right   = +x
+ *	  up      = +y
+ */
 public class ColladaTransformUtilities {
 
-    /**
-     * 	Alice models are in a different geometric space than Maya models
-     *	Maya models are modeled with:
-     *	  forward = +z
-     *	  right   = -x
-     *	  up      = +y
-     *
-     *	Alice models are modeled with:
-     *	  forward = -z
-     *	  right   = +x
-     *	  up      = +y
-     */
 
     public static AffineMatrix4x4 createFlippedAffineTransform(AffineMatrix4x4 transform ) {
         AffineMatrix4x4 flippedTransform = new AffineMatrix4x4(transform);

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Gregory Mirles" name="MarsOutpostStage">
+    <BoundingBox>
+        <Min x="-12.297983169555664" y="-0.20586349070072174" z="-12.050467491149902"/>
+        <Max x="12.297983169555664" y="0.4235430061817169" z="12.050467491149902"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>mars</Tag>
+        <Tag>stage</Tag>
+        <Tag>outpost</Tag>
+        <Tag>space</Tag>
+        <Tag>base</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>outer space</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Small" resourceName="SMALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-7.3980278968811035" y="0.011816024780273438" z="-7.235939979553223"/>
+            <Max x="7.398026466369629" y="0.4235430061817169" z="7.235939979553223"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Large" resourceName="LARGE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-12.297983169555664" y="-0.20586349070072174" z="-12.050467491149902"/>
+            <Max x="12.297983169555664" y="0.20586349070072174" z="12.050467491149902"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

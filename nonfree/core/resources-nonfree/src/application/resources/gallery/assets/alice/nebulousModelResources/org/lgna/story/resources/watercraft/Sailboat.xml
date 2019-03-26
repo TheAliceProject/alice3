@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Sailboat">
+    <BoundingBox>
+        <Min x="-2.0816195011138916" y="0.0" z="-7.5191450119018555"/>
+        <Max x="2.0816195011138916" y="16.59060287475586" z="7.5191450119018555"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>boat</Tag>
+        <Tag>ship</Tag>
+        <Tag>yacht</Tag>
+        <Tag>schooner</Tag>
+        <Tag>sail</Tag>
+        <Tag>water</Tag>
+        <Tag>vehicle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Sailboat" resourceName="SAILBOAT" textureName="SAILBOAT"/>
+</AliceModel>

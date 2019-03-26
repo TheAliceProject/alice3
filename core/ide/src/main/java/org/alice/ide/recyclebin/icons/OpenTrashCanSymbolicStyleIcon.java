@@ -322,6 +322,9 @@ public class OpenTrashCanSymbolicStyleIcon implements Icon {
 
 	/**
 	 * Creates a new transcoded SVG image.
+	 * @param width dimension
+	 * @param height dimension
+	 * @param fillColor background
 	 */
 	public OpenTrashCanSymbolicStyleIcon( int width, int height, Color fillColor ) {
 		this.width = width;

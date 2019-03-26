@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="DragonBaby">
+    <BoundingBox>
+        <Min x="-0.53242342031809" y="-0.04767248430145244" z="-1.2955087723500482"/>
+        <Max x="0.5295462320914837" y="0.9503628908009712" z="2.807639535984293"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>baby</Tag>
+        <Tag>dragon</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT_PINK" textureName="PINK">
+        <BoundingBox>
+            <Min x="-0.5295462574740605" y="-0.005437082610578119" z="-1.2955087723500482"/>
+            <Max x="0.5295462320914837" y="0.8709196536900281" z="2.807639535984293"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Default" resourceName="DEFAULT_AQUA" textureName="AQUA">
+        <BoundingBox>
+            <Min x="-0.5295462574740605" y="-0.005437082610578119" z="-1.2955087723500482"/>
+            <Max x="0.5295462320914837" y="0.8709196536900281" z="2.807639535984293"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Default" resourceName="DEFAULT_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-0.5295462574740605" y="-0.005437082610578119" z="-1.2955087723500482"/>
+            <Max x="0.5295462320914837" y="0.8709196536900281" z="2.807639535984293"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Default" resourceName="DEFAULT_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.5295462574740605" y="-0.005437082610578119" z="-1.2955087723500482"/>
+            <Max x="0.5295462320914837" y="0.8709196536900281" z="2.807639535984293"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Default" resourceName="DEFAULT_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.5295462574740605" y="-0.005437082610578119" z="-1.2955087723500482"/>
+            <Max x="0.5295462320914837" y="0.8709196536900281" z="2.807639535984293"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_PINK" textureName="PINK">
+        <BoundingBox>
+            <Min x="-0.53242342031809" y="-0.04767248430145244" z="-1.2955087425842777"/>
+            <Max x="0.5295462320909464" y="0.9503628908009712" z="2.807639493103476"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_AQUA" textureName="AQUA">
+        <BoundingBox>
+            <Min x="-0.53242342031809" y="-0.04767248430145244" z="-1.2955087425842777"/>
+            <Max x="0.5295462320909464" y="0.9503628908009712" z="2.807639493103476"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-0.53242342031809" y="-0.04767248430145244" z="-1.2955087425842777"/>
+            <Max x="0.5295462320909464" y="0.9503628908009712" z="2.807639493103476"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.53242342031809" y="-0.04767248430145244" z="-1.2955087425842777"/>
+            <Max x="0.5295462320909464" y="0.9503628908009712" z="2.807639493103476"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.53242342031809" y="-0.04767248430145244" z="-1.2955087425842777"/>
+            <Max x="0.5295462320909464" y="0.9503628908009712" z="2.807639493103476"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+</AliceModel>

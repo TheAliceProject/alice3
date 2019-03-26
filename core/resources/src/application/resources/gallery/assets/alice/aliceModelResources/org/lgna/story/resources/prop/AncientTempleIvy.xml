@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Matt Kline" name="AncientTempleIvy" placeOnGround="TRUE">
+    <BoundingBox>
+        <Min x="-0.42406824231147766" y="0.0" z="-0.10672454535961151"/>
+        <Max x="0.42406824231147766" y="0.8481363654136658" z="1.999999987845058E-8"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>ruin</Tag>
+        <Tag>temple</Tag>
+        <Tag>architecture</Tag>
+        <Tag>building</Tag>
+        <Tag>castle</Tag>
+        <Tag>plants</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery:ancient temple</GroupTag>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india:ancient temple</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="AncientTempleIvy" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

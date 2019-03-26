@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="Bush">
+    <BoundingBox>
+        <Min x="-0.3476421535015106" y="-0.0705903172492981" z="-0.47470247745513916"/>
+        <Max x="0.3476433753967285" y="0.7500014901161194" z="0.4396973252296448"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>bush</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Squat" resourceName="SQUAT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.3476421535015106" y="-0.0705903172492981" z="-0.47470247745513916"/>
+            <Max x="0.3476433753967285" y="0.7500014901161194" z="0.4396973252296448"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tall" resourceName="TALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.3476421535015106" y="-0.0705903172492981" z="-0.47470247745513916"/>
+            <Max x="0.3476433753967285" y="0.7500014901161194" z="0.4396973252296448"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

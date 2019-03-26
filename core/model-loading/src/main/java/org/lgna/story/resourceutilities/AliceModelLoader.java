@@ -16,7 +16,6 @@ import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.implementation.alice.ModelResourceIoUtilities;
 import org.lgna.story.resources.ImplementationAndVisualType;
 import org.lgna.story.resources.JointId;
-import org.lgna.story.resources.fish.ClownFishResource;
 
 import javax.swing.*;
 import java.awt.*;
@@ -247,120 +246,6 @@ public class AliceModelLoader {
 		return AliceResourceUtilties.getTextureResourceFileName(
 				modelResourceName, textureName);
 	}
-
-	
-	public static void saveModelResourceFiles(SkeletonVisual sv, ModelResourceExporter mre, String rootPath) throws PipelineException{
-		
-		String modelResourceName = sv.getName();
-		String rootModelPath = rootPath + "/"+ modelResourceName;
-		String srcPath = rootModelPath +"/src";
-		String resourcePath = rootModelPath +"/resource";
-		String directoryString = JavaCodeUtilities.getDirectoryStringForPackage(mre.getPackageString());
-		String fullResourcePath = resourcePath
-				+ "/"
-				+ directoryString
-				+ "/"
-				+ ModelResourceIoUtilities.getResourceSubDirWithSeparator(mre
-						.getClassName());
-
-		File visualFile = new File(
-				fullResourcePath
-						+ AliceResourceUtilties
-								.getVisualResourceFileNameFromModelName(modelResourceName));
-		
-		sv.setTracker(null);
-		if (mre.shouldMoveCenterToBottom() || mre.shouldRecenterXZ()) {
-			AxisAlignedBox bbox = sv.baseBoundingBox.getValue();
-			double heightToCenter = mre.shouldMoveCenterToBottom() ? -bbox.getYMinimum() : 0;
-			double xDistToCenter = mre.shouldRecenterXZ() ? -(bbox.getXMaximum() + bbox.getXMinimum())*.5 : 0;
-			double zDistToCenter = mre.shouldRecenterXZ() ? -(bbox.getZMaximum() + bbox.getZMinimum())*.5 : 0;
-			
-			translateSkeletonVisual(sv, new Vector3(xDistToCenter, heightToCenter,
-					zDistToCenter));
-			
-		}
-
-		sv = addMissingJoints(sv, mre.getClassData().superClass);
-		
-		java.util.List<Problem> problems = QualityAssuranceUtilities.inspect(sv);
-		if (problems.size() != 0) {
-			StringBuilder sb = new StringBuilder();
-			for (Problem p : problems) {
-				sb.append(p.toString() +"\n");
-			}
-			throw new PipelineException("Problems on resource "+sv.getName()+": \n"+sb.toString());
-		}
-		
-		// Null out the appearance since we save the textures separately
-		TexturedAppearance[] modelTexture = sv.textures.getValue();
-		sv.textures.setValue(new TexturedAppearance[0]);
-		// Save out the visual
-		try {
-			AliceResourceUtilties.encodeVisual(sv, visualFile);
-		}
-		catch (IOException e) {
-			throw new PipelineException("Error writing model file for "+modelResourceName+ " to file "+visualFile, e);
-		}
-		
-		// Save out the textures and add their names to resource
-		// exporter
-		
-		String textureName = getAliceTextureName(AliceResourceUtilties.getDefaultTextureEnumName(modelResourceName));
-		String aliceTextureName = getAliceResourceNameForImageFile(modelResourceName, textureName);
-		File textureFile = new File(fullResourcePath + aliceTextureName);
-		try {
-			AliceResourceUtilties.encodeTexture(modelTexture, textureFile);
-		}
-		catch (IOException e) {
-			throw new PipelineException("Error writing texture file for "+modelResourceName+ " to file "+textureFile, e);
-		}
-		//Attribution is already set on the model, so we pass null to attributionName and attributionYear
-		mre.addResource(modelResourceName, textureName, ImplementationAndVisualType.ALICE.toString(), null, null);
-		String thumbName = AliceResourceUtilties
-				.getThumbnailResourceFileName(modelResourceName,
-						textureName);
-		File thumbnailFile = new File(mre.getThumbnailPath(resourcePath,
-				thumbName));
-			sv.textures.setValue(modelTexture);
-		try {
-			BufferedImage thumbnail = AdaptiveRecenteringThumbnailMaker.getInstance(160, 120).createThumbnail(sv);
-			try {
-				ImageUtilities.write(thumbnailFile, thumbnail);
-			} catch (IOException e) {
-				System.err.println("Error writing thumbnail for "+modelResourceName);
-				throw new PipelineException("Error writing thumbnail for "+modelResourceName+ thumbnailFile, e);
-			}
-		}
-		catch (Exception e) {
-			System.err.println("Error generating thumbnail for "+modelResourceName);
-				throw new PipelineException(
-						"Error writing thumbnail for "+modelResourceName
-								+ thumbnailFile, e);
-		}
-		mre.addExistingThumbnail(textureName, thumbnailFile);
-		
-		
-		String sourceFileName = modelResourceName+"Source.jar";
-		String resourceFileName = modelResourceName+"Resource.jar";
-		File sourceJarFile = new File(rootModelPath+"/"+sourceFileName);
-		FileUtilities.createParentDirectoriesIfNecessary(sourceJarFile);
-		File resourceJarFile = new File(rootModelPath+"/"+resourceFileName);
-		FileUtilities.createParentDirectoriesIfNecessary(resourceJarFile);
-		try {
-			JarOutputStream aliceSourceStream = new JarOutputStream(new FileOutputStream(sourceJarFile));
-			JarOutputStream aliceResourceStream = new JarOutputStream(new FileOutputStream(resourceJarFile));
-			
-			ModelResourceInfo returnInfo = mre.addToJar(srcPath, resourcePath, aliceResourceStream, aliceSourceStream, "", true, true);
-			
-			aliceSourceStream.close();
-			aliceResourceStream.close();
-		}
-		catch (IOException e) {
-			throw new PipelineException(
-					"Error writing jars for "+modelResourceName, e);
-		}
-
-	}
 	
 	private static JPanel showVisual( SkeletonVisual sv, JPanel existingImagePanel ) {
 		BufferedImage image = AdaptiveRecenteringThumbnailMaker.getInstance(800, 600).createThumbnail(sv, false);
@@ -380,36 +265,6 @@ public class AliceModelLoader {
 		frame.setVisible( true );
 		
 		return imagePanel;
-	}
-	
-	public static void main( String[] args ) {
-			File rootDir = new File("C:\\Users\\dculyba\\Documents\\Alice3\\MyProjects\\alienExport\\models\\Alien");
-			File colladaFile  = new File( rootDir, "Alien_Alien.dae" );
-
-			Logger modelLogger = Logger.getLogger( "org.lgna.story.resourceutilities.AliceColladaModelLoader" );
-			JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter(colladaFile, modelLogger);
-
-			SkeletonVisual sv = null;
-			try {
-				sv = colladaImporter.loadSkeletonVisual();
-			}
-			catch (ModelLoadingException e) {
-				e.printStackTrace();
-			}
-			
-//			renameJoints(sv);
-			
-			JPanel imagePanel = showVisual( sv, null );
-			
-			ModelResourceExporter mre = createModelExporter( sv, sv.getName(), ModelClassData.BIPED_CLASS_DATA );
-			try {
-				saveModelResourceFiles(sv, mre, "C:/Users/dculyba/Documents/Alice/Alice Export/");
-			}
-			catch (PipelineException e) {
-				e.printStackTrace();
-			}
-			
-			
 	}
 	
 	private static List<String> buildJointIDsList( Joint joint, List<String> jointIDs ) {
@@ -479,37 +334,7 @@ public class AliceModelLoader {
 		}
 		return jointAndParentList;
 	}
-	
-	public static ModelResourceExporter createModelExporter( SkeletonVisual sv, String modelName, ModelClassData modelClassData ) {
-		String creatorName = "Creator Name";
-		String creationYear = "Creation Year";
-		String[] groupTags = { "custom" };
-		String[] themeTags = { "custom" };
-		
-		ModelResourceExporter mre = new ModelResourceExporter( modelName, modelClassData );
 
-		List<Tuple2<String, String>> jointAndParentList = makeJointAndParentListFromSkeleton(sv.skeleton.getValue(), new ArrayList<Tuple2<String, String>>());
-		
-//		mre.addArrayNamesToHideElementsOf(classData.hideArrayElements);
-//		mre.addJointIdsToSuppress(classData.jointsToSuppress);
-		mre.addArrayNamesToExposeFirstElementOf(PipelineNamingUtilities.getDefaultArraysToExposeFirstElementOf());
-//		mre.addArrayNamesToExposeFirstElementOf(classData.exposeFirstElementInArrayList);
-		mre.setHasNewData(true);
-		mre.setForceRebuildCode(true);
-		mre.setForceRebuildXML(true);
-//		mre.addTags(classData.tags);
-		mre.addGroupTags(groupTags);
-		mre.addThemeTags(themeTags);
-		mre.addAttribution(creatorName, creationYear);
-//		mre.setRecenterXZ(data.shouldRecenterXZ());
-//		mre.setMoveCenterToBottom(data.shouldMoveCenterToBottom());
-//		mre.setPlaceOnGround(classData.placeOnGround);
-//		mre.setEnableArrays(!classData.disableArrays);
-		
-		mre.setJointMap( jointAndParentList );
-		
-		return mre;
-	}
 	public static SkeletonVisual loadAliceModelFromCollada(File colladaModelFile, String modelName) {
 		SkeletonVisual sv = null;
 		try {

@@ -10,6 +10,7 @@
 		<relativePath>../../core/</relativePath>
 	</parent>
 
+	<name>Alice Core nonfree</name>
 	<groupId>org.alice.nonfree</groupId>
 	<artifactId>core-nonfree</artifactId>
 	<packaging>pom</packaging>

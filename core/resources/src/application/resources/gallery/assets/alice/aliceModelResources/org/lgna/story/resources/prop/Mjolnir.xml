@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Pei Hong Tan" name="Mjolnir">
+    <BoundingBox>
+        <Min x="-0.16160546243190765" y="-0.004433946684002876" z="-0.10095289349555969"/>
+        <Max x="0.1616053730249405" y="0.7451390624046326" z="0.10095289349555969"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>mjolnir</Tag>
+        <Tag>thor</Tag>
+        <Tag>hammer</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Mjolnir" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

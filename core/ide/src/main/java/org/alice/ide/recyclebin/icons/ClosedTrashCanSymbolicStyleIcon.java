@@ -323,6 +323,9 @@ public class ClosedTrashCanSymbolicStyleIcon implements Icon {
 
 	/**
 	 * Creates a new transcoded SVG image.
+	 * @param width dimension
+	 * @param height dimension
+	 * @param fillColor background
 	 */
 	public ClosedTrashCanSymbolicStyleIcon( int width, int height, Color fillColor ) {
 		this.width = width;

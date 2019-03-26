@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Ogre">
+    <BoundingBox>
+        <Min x="-0.5191929676368109" y="-3.917271173071654E-8" z="-0.4665387593058474"/>
+        <Max x="0.5154907633580281" y="1.999605074308607" z="0.2690691987331512"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>monster</Tag>
+        <Tag>magic</Tag>
+        <Tag>ogre</Tag>
+        <Tag>beast</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Ogre" resourceName="BROWN" textureName="BROWN"/>
+    <Resource modelName="Ogre" resourceName="GREEN" textureName="GREEN"/>
+</AliceModel>

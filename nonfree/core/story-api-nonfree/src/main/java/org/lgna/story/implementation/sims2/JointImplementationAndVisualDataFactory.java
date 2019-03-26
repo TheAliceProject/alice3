@@ -65,16 +65,15 @@ import java.util.Map;
 /**
  * @author Dennis Cosgrove
  */
-public class JointImplementationAndVisualDataFactory implements JointedModelImp.JointImplementationAndVisualDataFactory {
-	private static Map<JointedModelResource, JointImplementationAndVisualDataFactory> map = Maps.newHashMap();
+public class JointImplementationAndVisualDataFactory<R extends JointedModelResource>
+	implements JointedModelImp.JointImplementationAndVisualDataFactory {
+	private static final Map<JointedModelResource, JointImplementationAndVisualDataFactory> map = Maps.newHashMap();
 
-	public static JointImplementationAndVisualDataFactory getInstance( JointedModelResource resource ) {
+	public static <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getInstance( R resource ) {
 		synchronized( map ) {
-			JointImplementationAndVisualDataFactory rv = map.get( resource );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new JointImplementationAndVisualDataFactory( resource );
+			JointImplementationAndVisualDataFactory<R> rv = map.get( resource );
+			if (rv == null) {
+				rv = new JointImplementationAndVisualDataFactory<>( resource );
 				map.put( resource, rv );
 			}
 			return rv;

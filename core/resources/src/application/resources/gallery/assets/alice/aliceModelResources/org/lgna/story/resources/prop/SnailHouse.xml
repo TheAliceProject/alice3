@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Matt Kline" name="SnailHouse">
+    <BoundingBox>
+        <Min x="-0.10662709921598434" y="-2.0027000573463738E-4" z="-0.07752716541290283"/>
+        <Max x="0.06684524565935135" y="0.16093853116035461" z="0.08096756041049957"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>snail</Tag>
+        <Tag>snail house</Tag>
+        <Tag>house</Tag>
+        <Tag>shell</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="SnailHouse" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

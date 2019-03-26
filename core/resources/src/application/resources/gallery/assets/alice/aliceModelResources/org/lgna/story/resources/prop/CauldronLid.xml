@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="CauldronLid">
+    <BoundingBox>
+        <Min x="-0.7025936841964722" y="-0.13969697058200836" z="-0.6850025057792664"/>
+        <Max x="0.7025936841964722" y="0.1396978497505188" z="0.6850022077560425"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>pot</Tag>
+        <Tag>spell</Tag>
+        <Tag>lid</Tag>
+        <Tag>top</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props:cauldron</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy:cauldron</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="CauldronLid" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

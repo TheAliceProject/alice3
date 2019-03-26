@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="NicholasBust">
+    <BoundingBox>
+        <Min x="-0.2591045796871185" y="-0.013045484909997462" z="-0.1815520213748663"/>
+        <Max x="0.2582765221595764" y="0.7699560265267789" z="0.3105473122588786"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>ghost</Tag>
+        <Tag>mausoleum</Tag>
+        <Tag>train</Tag>
+        <Tag>train car</Tag>
+        <Tag>prenderghast circus</Tag>
+        <Tag>haunted circus</Tag>
+        <Tag>haunted circus busts</Tag>
+        <Tag>statue</Tag>
+        <Tag>nicholas</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="NicholasBust" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

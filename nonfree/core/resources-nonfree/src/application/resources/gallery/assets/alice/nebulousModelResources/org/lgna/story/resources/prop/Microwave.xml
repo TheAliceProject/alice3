@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Microwave">
+    <BoundingBox>
+        <Min x="-0.2928445637226105" y="0.0" z="-0.20529527962207794"/>
+        <Max x="0.2928445637226105" y="0.36103078722953796" z="0.20529524981975555"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>appliance</Tag>
+        <Tag>food</Tag>
+        <Tag>oven</Tag>
+        <Tag>cook</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:kitchen</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Microwave" resourceName="MICROWAVE" textureName="MICROWAVE"/>
+</AliceModel>

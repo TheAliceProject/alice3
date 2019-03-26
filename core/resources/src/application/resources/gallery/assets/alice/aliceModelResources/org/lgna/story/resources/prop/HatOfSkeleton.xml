@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="HatOfSkeleton">
+    <BoundingBox>
+        <Min x="-0.22959446907043457" y="-0.014178161509335041" z="-0.22742633521556854"/>
+        <Max x="0.22959446907043457" y="0.22217467427253723" z="0.24523375928401947"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>skeleton</Tag>
+        <Tag>hat</Tag>
+        <Tag>top hat</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="HatOfSkeleton" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

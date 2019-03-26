@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="Lightning">
+    <BoundingBox>
+        <Min x="-0.3186734914779663" y="0.0" z="-0.5099600553512573"/>
+        <Max x="0.5734819173812866" y="2.9540045261383057" z="0.47252893447875977"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>thor</Tag>
+        <Tag>lightning</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Lightning" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="JadeHouseplant">
+    <BoundingBox>
+        <Min x="-0.231143057346344" y="0.0" z="-0.2585900127887726"/>
+        <Max x="0.231143057346344" y="0.9175053834915161" z="0.2585900127887726"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>pot</Tag>
+        <Tag>potted</Tag>
+        <Tag>container</Tag>
+        <Tag>houseplant</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="JadeHouseplant" resourceName="JADE_HOUSEPLANT" textureName="JADE_HOUSEPLANT"/>
+</AliceModel>

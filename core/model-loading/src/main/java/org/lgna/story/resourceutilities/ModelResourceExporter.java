@@ -1710,68 +1710,6 @@ public class ModelResourceExporter {
 		return thumbnailFiles;
 	}
 
-	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream, String destResourceDirPrefix, boolean rebuildJavaFile, boolean rebuildXmlFile ) throws IOException {
-		if( !sourceDirectory.endsWith( "/" ) && !sourceDirectory.endsWith( "\\" ) ) {
-			sourceDirectory += File.separator;
-		}
-		xmlFile = getXMLFile( resourceDirectory );
-		if( ( rebuildXmlFile || !xmlFile.exists() || ( xmlFile.length() == 0 ) || isMoreRecentThan( this.lastEdited, xmlFile ) ) && ( resourceJarStream != null ) ) {
-			xmlFile = createXMLFile( resourceDirectory, rebuildXmlFile );
-		}
-		boolean shouldAddResources = ( resourceJarStream != null ) && this.getExportGalleryResources();
-		boolean addResources = false;
-		File resourceDir = null;
-		if( shouldAddResources && ( xmlFile != null ) ) {
-			addResources = true;
-			resourceDir = xmlFile.getParentFile();
-			List<File> thumbnailFiles = saveThumbnailsToDir( resourceDirectory );
-		} else if( shouldAddResources ) {
-			throw new IOException( "FAILED TO MAKE XML FILE FOR " + this.getClassName() + "--NOT ADDING IT TO JARS." );
-		}
-		boolean addClassData = false;
-		File sourceDir = null;
-		boolean shouldAddClassData = ( this.classData != null ) && ( sourceJarStream != null );
-		if( shouldAddClassData ) {
-			sourceDir = getJavaCodeDir( sourceDirectory );
-			javaFile = getJavaFile( sourceDirectory );
-			File classFile = getJavaClassFile( sourceDirectory );
-			if( rebuildJavaFile || !javaFile.exists() || !classFile.exists() || ( javaFile.length() == 0 ) || isMoreRecentThan( this.lastEdited, javaFile ) ) {
-				try {
-					javaFile = createJavaCode( sourceDirectory );
-				} catch( Exception e ) {
-					e.printStackTrace();
-					throw new IOException( "FAILED TO MAKE JAVA FILE FOR " + this.getClassName() + "--NOT ADDING IT TO JARS.\n" + e.toString() );
-				}
-			}
-			try {
-				JavaCodeUtilities.compileJavaFile( javaFile );
-				addClassData = true;
-			} catch( IOException ioe ) {
-				throw ioe;
-			}
-
-		}
-		if( shouldAddResources && addResources ) {
-			try {
-				System.out.println( "Adding " + resourceDir );
-				add( resourceDir, resourceJarStream, resourceDirectory, destResourceDirPrefix, true );
-			} catch( Exception e ) {
-				throw new IOException( "FAILED ADDING RESROUCES TO RESOURCE JAR." + e );
-			}
-		}
-		if( shouldAddClassData && addClassData ) {
-			try {
-				System.out.println( "Adding " + sourceDir );
-				add( sourceDir, sourceJarStream, sourceDirectory, "", false );
-			} catch( Exception e ) {
-				throw new IOException( "FAILED ADDING RESROUCES TO SOURCE JAR." + e );
-			}
-		}
-		Document doc = XMLUtilities.read( xmlFile );
-		ModelResourceInfo returnInfo = new ModelResourceInfo( doc );
-		return returnInfo;
-	}
-
 	public boolean isValidEnumName( String modelName, String enumName ) {
 		if( this.forcedEnumNamesMap.containsKey( modelName ) ) {
 			List<String> validEnums = this.forcedEnumNamesMap.get( modelName );
@@ -1824,30 +1762,6 @@ public class ModelResourceExporter {
 				nameList.addAll( enumNames );
 			}
 		}
-	}
-
-	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos, String destResourceDirPrefix ) throws IOException {
-		return addToJar( sourceDirectory, resourceDirectory, jos, jos, destResourceDirPrefix, true, true );
-	}
-
-	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos, String destResourceDirPrefix, boolean rebuildFiles ) throws IOException {
-		return addToJar( sourceDirectory, resourceDirectory, jos, jos, destResourceDirPrefix, rebuildFiles, rebuildFiles );
-	}
-
-	public File export( String sourceDirectory, String resourceDirectory, String outputDir, String destResourceDirPrefix ) {
-
-		File outputFile = new File( outputDir + this.getJavaClassName() + ".jar" );
-		try {
-			FileUtilities.createParentDirectoriesIfNecessary( outputFile );
-			FileOutputStream fos = new FileOutputStream( outputFile );
-			JarOutputStream jos = new JarOutputStream( fos );
-			addToJar( sourceDirectory, resourceDirectory, jos, destResourceDirPrefix );
-			jos.close();
-		} catch( Exception e ) {
-			e.printStackTrace();
-			return null;
-		}
-		return outputFile;
 	}
 
 	/*

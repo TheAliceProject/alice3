@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="Coyote">
+    <BoundingBox>
+        <Min x="-0.15643480085097639" y="-5.436575905821044E-8" z="-0.5487170968577884"/>
+        <Max x="0.15643480901717627" y="0.6373922877592065" z="0.526704993462141"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>desert</Tag>
+        <Tag>dog</Tag>
+        <Tag>canine</Tag>
+        <Tag>wolf</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Coyote" resourceName="INDIGO" textureName="INDIGO"/>
+    <Resource modelName="Coyote" resourceName="BROWN" textureName="BROWN"/>
+</AliceModel>

@@ -51,9 +51,9 @@
 		<groupId>org.alice</groupId>
 		<artifactId>core</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../core/</relativePath>
 	</parent>
 
+	<name>Story API</name>
 	<artifactId>story-api</artifactId>
 	<packaging>jar</packaging>
 
@@ -82,12 +82,6 @@
 			<artifactId>ast</artifactId>
 		</dependency>
 
-		<!-- Gallery/Models -->
-		<dependency>
-			<groupId>org.alice</groupId>
-			<artifactId>alice-model-source</artifactId>
-		</dependency>
-
 		<!-- External -->
 		<dependency>
 			<groupId>com.sun</groupId>
@@ -97,7 +91,6 @@
 		<dependency>
 			<groupId>org.alice.external</groupId>
 			<artifactId>collada-schema-1-4-1</artifactId>
-			<version>1.0</version>
 		</dependency>
 	</dependencies>
 

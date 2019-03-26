@@ -48,9 +48,9 @@
 		<groupId>org.alice</groupId>
 		<artifactId>core</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../core/</relativePath>
 	</parent>
 
+	<name>Gallery Resources</name>
 	<artifactId>resources</artifactId>
 	<!-- Note: The packaging should really be pom; jar is wrong. -->
 	<!-- m2eclipse won't build the platform directory needed without this hack. -->
@@ -59,9 +59,6 @@
 	<properties>
 		<project.resources.directory>${project.build.directory}/distribution</project.resources.directory>
 		<project.resources.application.directory>${project.resources.directory}/application</project.resources.application.directory>
-		<project.resources.gallery.directory>${project.resources.application.directory}/gallery</project.resources.gallery.directory>
-		<project.resources.sound-gallery.directory>${project.resources.application.directory}/sound-gallery</project.resources.sound-gallery.directory>
-		<project.resources.starter-projects.directory>${project.resources.application.directory}/starter-projects</project.resources.starter-projects.directory>
 		<project.resources.platform.directory>${project.resources.directory}/platform</project.resources.platform.directory>
 	</properties>
 
@@ -93,38 +90,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
-					<execution>
-						<id>distribution-gallery</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.alice</groupId>
-									<artifactId>alice-model-resources</artifactId>
-									<version>${alice.model.version}</version>
-									<type>zip</type>
-									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice</groupId>
-									<artifactId>sound-gallery</artifactId>
-									<version>${sound.gallery.version}</version>
-									<type>zip</type>
-									<outputDirectory>${project.resources.sound-gallery.directory}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice</groupId>
-									<artifactId>starter-projects</artifactId>
-									<version>${starter.projects.version}</version>
-									<type>zip</type>
-									<outputDirectory>${project.resources.starter-projects.directory}</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
 					<execution>
 						<id>distribution-platform</id>
 						<phase>generate-resources</phase>

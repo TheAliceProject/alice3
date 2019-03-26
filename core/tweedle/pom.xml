@@ -7,9 +7,9 @@
     <groupId>org.alice</groupId>
     <artifactId>core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <relativePath>../../core</relativePath>
   </parent>
 
+  <name>Tweedle Language</name>
   <artifactId>tweedle</artifactId>
   <packaging>jar</packaging>
 

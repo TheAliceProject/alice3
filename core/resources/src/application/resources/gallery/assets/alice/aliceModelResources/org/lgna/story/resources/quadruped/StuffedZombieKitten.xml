@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="StuffedZombieKitten">
+    <BoundingBox>
+        <Min x="-0.10794609785079956" y="-1.5887826185207777E-4" z="-0.2982807635545404"/>
+        <Max x="0.10794609785079956" y="0.45230666154550425" z="0.25396413248330457"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>black cat</Tag>
+        <Tag>cat</Tag>
+        <Tag>stuffed zombie kitten</Tag>
+        <Tag>zombie</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="StuffedZombieKitten" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="StuffedZombieKitten" resourceName="GREEN" textureName="GREEN"/>
+    <Resource modelName="StuffedZombieKitten" resourceName="ORANGE" textureName="ORANGE"/>
+    <Resource modelName="StuffedZombieKitten2" resourceName="STUFFED_ZOMBIE_KITTEN2" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.10016064345836638" y="-0.0010256058252172805" z="-0.2731386368792056"/>
+            <Max x="0.10016064345836638" y="0.35029794525530167" z="0.20787620947719684"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StuffedZombieKitten2" resourceName="STUFFED_ZOMBIE_KITTEN2_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.10016064345836638" y="-0.0010256058252172805" z="-0.2731386368792056"/>
+            <Max x="0.10016064345836638" y="0.35029794525530167" z="0.20787620947719684"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StuffedZombieKitten2" resourceName="STUFFED_ZOMBIE_KITTEN2_ORANGE" textureName="ORANGE">
+        <BoundingBox>
+            <Min x="-0.10016064345836638" y="-0.0010256058252172805" z="-0.2731386368792056"/>
+            <Max x="0.10016064345836638" y="0.35029794525530167" z="0.20787620947719684"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StuffedZombieKitten3" resourceName="STUFFED_ZOMBIE_KITTEN3" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.08301831036806107" y="-1.0176124555063219E-4" z="-0.21444989738340647"/>
+            <Max x="0.08301831036806107" y="0.289714394692824" z="0.20623863572009885"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StuffedZombieKitten3" resourceName="STUFFED_ZOMBIE_KITTEN3_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.08301831036806107" y="-1.0176124555063219E-4" z="-0.21444989738340647"/>
+            <Max x="0.08301831036806107" y="0.289714394692824" z="0.20623863572009885"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StuffedZombieKitten3" resourceName="STUFFED_ZOMBIE_KITTEN3_ORANGE" textureName="ORANGE">
+        <BoundingBox>
+            <Min x="-0.08301831036806107" y="-1.0176124555063219E-4" z="-0.21444989738340647"/>
+            <Max x="0.08301831036806107" y="0.289714394692824" z="0.20623863572009885"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StuffedZombieKitten4" resourceName="STUFFED_ZOMBIE_KITTEN4" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.07821258157491683" y="-4.2470042882383747E-4" z="-0.19040266727506844"/>
+            <Max x="0.07821258157491683" y="0.24995164587938531" z="0.169476863915476"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StuffedZombieKitten4" resourceName="STUFFED_ZOMBIE_KITTEN4_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.07821258157491683" y="-4.2470042882383747E-4" z="-0.19040266727506844"/>
+            <Max x="0.07821258157491683" y="0.24995164587938531" z="0.169476863915476"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StuffedZombieKitten4" resourceName="STUFFED_ZOMBIE_KITTEN4_ORANGE" textureName="ORANGE">
+        <BoundingBox>
+            <Min x="-0.07821258157491683" y="-4.2470042882383747E-4" z="-0.19040266727506844"/>
+            <Max x="0.07821258157491683" y="0.24995164587938531" z="0.169476863915476"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StuffedZombieKitten5" resourceName="STUFFED_ZOMBIE_KITTEN5" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.058190762996673584" y="1.4802114003049452E-4" z="-0.13669629874995123"/>
+            <Max x="0.05744544789195061" y="0.1891104259650259" z="0.09121040075128797"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StuffedZombieKitten5" resourceName="STUFFED_ZOMBIE_KITTEN5_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.058190762996673584" y="1.4802114003049452E-4" z="-0.13669629874995123"/>
+            <Max x="0.05744544789195061" y="0.1891104259650259" z="0.09121040075128797"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StuffedZombieKitten5" resourceName="STUFFED_ZOMBIE_KITTEN5_ORANGE" textureName="ORANGE">
+        <BoundingBox>
+            <Min x="-0.058190762996673584" y="1.4802114003049452E-4" z="-0.13669629874995123"/>
+            <Max x="0.05744544789195061" y="0.1891104259650259" z="0.09121040075128797"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

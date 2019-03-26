@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Matt Kline" name="CoinStack">
+    <BoundingBox>
+        <Min x="-0.08973044902086258" y="-0.002226661890745163" z="-0.10088673233985901"/>
+        <Max x="0.08973041921854019" y="0.2565517723560333" z="0.10088673233985901"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>coin stack</Tag>
+        <Tag>coin pile</Tag>
+        <Tag>treasure</Tag>
+        <Tag>treasure chest</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Group" resourceName="GROUP" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.08973044902086258" y="-0.002226661890745163" z="-0.10088673233985901"/>
+            <Max x="0.08973041921854019" y="0.1379576325416565" z="0.10088673233985901"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Single" resourceName="SINGLE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.03407556563615799" y="0.0" z="-0.03403856232762337"/>
+            <Max x="0.03407556563615799" y="0.2565517723560333" z="0.03403856232762337"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

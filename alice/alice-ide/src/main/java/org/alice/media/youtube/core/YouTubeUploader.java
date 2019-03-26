@@ -259,7 +259,7 @@ public class YouTubeUploader {
 	/**
 	 * Uploads a new video to YouTube.
 	 * 
-	 * @param service An authenticated YouTubeService object.
+	 * @param videoEntry A video entry for the youtube feeds.
 	 * @throws IOException Problems reading user input.
 	 */
 	public void uploadVideo( final VideoEntry videoEntry ) throws IOException

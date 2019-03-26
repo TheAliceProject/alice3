@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="RattlerCottage">
+    <BoundingBox>
+        <Min x="-2.904810667037964" y="-3.695488004495928E-8" z="-2.226318836212158"/>
+        <Max x="2.904810667037964" y="3.2956957817077637" z="2.866542339324951"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>house</Tag>
+        <Tag>cottage</Tag>
+        <Tag>northwest</Tag>
+        <Tag>ghost town</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="RattlerCottage" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

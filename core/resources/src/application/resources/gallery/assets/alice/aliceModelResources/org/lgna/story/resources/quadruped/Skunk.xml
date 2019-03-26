@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Pei Hong Tan" name="Skunk">
+    <BoundingBox>
+        <Min x="-0.07721681484423336" y="-0.011081024769997606" z="-0.248802026724507"/>
+        <Max x="0.0772168148442335" y="0.28381080816571713" z="0.41888948769093015"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>northwest</Tag>
+        <Tag>skunk</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Skunk" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

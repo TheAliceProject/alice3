@@ -42,15 +42,9 @@
  */
 package org.lgna.story.resourceutilities;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 
-import com.sun.tools.javac.Main;
 import org.lgna.project.License;
-
-//note: requires tools.jar (from the jdk) in classpath
 
 /**
  * @author Alice Build
@@ -82,17 +76,4 @@ public class JavaCodeUtilities {
 		}
 		return sb.toString();
 	}
-
-	public static void compileJavaFile( File javaFile ) throws IOException {
-		String[] args = new String[] { javaFile.getAbsolutePath(), "-target", "1.8", "-classpath", System.getProperty( "java.class.path" ), "-Xlint:unchecked" };
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		PrintWriter pw = new PrintWriter( baos );
-		int status = Main.compile( args, pw );
-
-		String compileOutput = baos.toString( "UTF-8" );
-		if( status != 0 ) {
-			throw new IOException( "Java code for " + javaFile.getName() + " failed to compile: " + compileOutput );
-		}
-	}
-
 }

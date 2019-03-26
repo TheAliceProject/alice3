@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="GardenGnome">
+    <BoundingBox>
+        <Min x="-0.1814243644475937" y="0.0" z="-0.09586378931999207"/>
+        <Max x="0.1814243644475937" y="0.612524688243866" z="0.09586378931999207"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>gnome</Tag>
+        <Tag>garden</Tag>
+        <Tag>elf</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:yard</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:yard</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="GardenGnome" resourceName="RED_HAT" textureName="RED_HAT"/>
+    <Resource modelName="GardenGnome" resourceName="YELLOW_HAT" textureName="YELLOW_HAT"/>
+    <Resource modelName="GardenGnome" resourceName="ALOHA" textureName="ALOHA"/>
+    <Resource modelName="GardenGnome" resourceName="ALIEN" textureName="ALIEN"/>
+</AliceModel>

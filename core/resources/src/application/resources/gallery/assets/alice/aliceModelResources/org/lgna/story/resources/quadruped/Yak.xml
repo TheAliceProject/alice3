@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="Yak">
+    <BoundingBox>
+        <Min x="-0.6358642445267694" y="0.0019021198803631009" z="-1.3857729679631532"/>
+        <Max x="0.6358642445267695" y="1.8086306089811564" z="1.8994644322698648"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>buffalo</Tag>
+        <Tag>cow</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Yak" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

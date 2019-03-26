@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Matt Kline" name="AncientTempleTile">
+    <BoundingBox>
+        <Min x="-1.5" y="-0.15414656698703766" z="-1.5"/>
+        <Max x="1.5" y="0.1541467308998108" z="1.5"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>ruin</Tag>
+        <Tag>temple</Tag>
+        <Tag>architecture</Tag>
+        <Tag>building</Tag>
+        <Tag>castle</Tag>
+        <Tag>pond</Tag>
+        <Tag>fountain</Tag>
+        <Tag>water</Tag>
+        <Tag>tile</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery:ancient temple</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india:ancient temple</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="AncientTempleTile" resourceName="GRAY" textureName="GRAY"/>
+    <Resource modelName="AncientTempleTile" resourceName="GOLD" textureName="GOLD"/>
+    <Resource modelName="AncientTempleTile" resourceName="SAND" textureName="SAND"/>
+    <Resource modelName="AncientTempleTile" resourceName="RED" textureName="RED"/>
+</AliceModel>

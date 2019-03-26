@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="Foot">
+    <BoundingBox>
+        <Min x="-0.03929325031875149" y="-0.07755632262445258" z="-0.17378943420205584"/>
+        <Max x="0.03954150439343737" y="0.06723415724830883" z="0.012149151476659806"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>skeleton</Tag>
+        <Tag>bones</Tag>
+        <Tag>pile of bones</Tag>
+        <Tag>foot</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted:bones</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="FootR" resourceName="FOOT_R" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.03929325031875149" y="-0.07755632262445258" z="-0.17376449934010396"/>
+            <Max x="0.039439221696642435" y="0.06723415724830883" z="0.012124167651497325"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="FootL" resourceName="FOOT_L" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.03927343181427668" y="-0.0775529592959718" z="-0.17378943420205584"/>
+            <Max x="0.03954150439343737" y="0.06697475501848847" z="0.012149151476659806"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

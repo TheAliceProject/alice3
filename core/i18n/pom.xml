@@ -48,9 +48,9 @@
 		<groupId>org.alice</groupId>
 		<artifactId>core</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../core/</relativePath>
 	</parent>
 
+	<name>Internationalization</name>
 	<artifactId>i18n</artifactId>
 	<packaging>jar</packaging>
 

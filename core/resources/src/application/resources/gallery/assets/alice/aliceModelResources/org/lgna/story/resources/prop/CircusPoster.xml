@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="CircusPoster">
+    <BoundingBox>
+        <Min x="-0.2006056308746338" y="0.006132735870778561" z="-1.7173504829406738"/>
+        <Max x="0.5833930373191833" y="4.67684268951416" z="1.71406090259552"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>train</Tag>
+        <Tag>railroad</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>circus</Tag>
+        <Tag>circus tent</Tag>
+        <Tag>circus poster</Tag>
+        <Tag>poster</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="CircusPoster" resourceName="NICHOLAS" textureName="NICHOLAS"/>
+    <Resource modelName="CircusPoster" resourceName="GIDEON" textureName="GIDEON"/>
+    <Resource modelName="CircusPoster" resourceName="ESTHER" textureName="ESTHER"/>
+    <Resource modelName="CircusPoster" resourceName="ADELAIDE" textureName="ADELAIDE"/>
+</AliceModel>

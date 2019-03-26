@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="Quilt">
+    <BoundingBox>
+        <Min x="-0.5753633975982666" y="-0.03867815062403679" z="-0.7909938097000122"/>
+        <Max x="0.5753633975982666" y="0.09867814928293228" z="0.7909938097000122"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>circus</Tag>
+        <Tag>circus wagon</Tag>
+        <Tag>quilt</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Quilt" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

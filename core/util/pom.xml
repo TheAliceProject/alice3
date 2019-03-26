@@ -48,9 +48,9 @@
 		<groupId>org.alice</groupId>
 		<artifactId>core</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../</relativePath>
 	</parent>
 
+	<name>Utilities</name>
 	<artifactId>util</artifactId>
 	<packaging>jar</packaging>
 

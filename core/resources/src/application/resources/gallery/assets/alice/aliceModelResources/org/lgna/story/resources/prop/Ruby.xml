@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Matt Kline" name="Ruby">
+    <BoundingBox>
+        <Min x="-0.09881020337343216" y="-0.03142958879470825" z="-0.0992514044046402"/>
+        <Max x="0.10215072333812714" y="0.07482226938009262" z="0.10188250988721848"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>coin pile</Tag>
+        <Tag>treasure</Tag>
+        <Tag>treasure chest</Tag>
+        <Tag>jewel</Tag>
+        <Tag>ruby</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Ruby" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

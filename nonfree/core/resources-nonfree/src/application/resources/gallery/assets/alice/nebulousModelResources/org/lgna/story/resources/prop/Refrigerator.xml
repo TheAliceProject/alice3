@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Refrigerator">
+    <BoundingBox>
+        <Min x="-0.45055142045021057" y="0.0" z="-0.3002612590789795"/>
+        <Max x="0.45055142045021057" y="2.007174253463745" z="0.3002612590789795"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>fridge</Tag>
+        <Tag>kitchen</Tag>
+        <Tag>appliance</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:kitchen</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Basic" resourceName="BASIC_WHITE" textureName="WHITE">
+        <BoundingBox>
+            <Min x="-0.4505513608455658" y="0.0" z="-0.3001638948917389"/>
+            <Max x="0.4505513608455658" y="1.7735453844070435" z="0.3001638948917389"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Basic" resourceName="BASIC_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.4505513608455658" y="0.0" z="-0.3001638948917389"/>
+            <Max x="0.4505513608455658" y="1.7735453844070435" z="0.3001638948917389"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Basic" resourceName="BASIC_CREAM" textureName="CREAM">
+        <BoundingBox>
+            <Min x="-0.4505513608455658" y="0.0" z="-0.3001638948917389"/>
+            <Max x="0.4505513608455658" y="1.7735453844070435" z="0.3001638948917389"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Basic" resourceName="BASIC_YELLOW" textureName="YELLOW">
+        <BoundingBox>
+            <Min x="-0.4505513608455658" y="0.0" z="-0.3001638948917389"/>
+            <Max x="0.4505513608455658" y="1.7735453844070435" z="0.3001638948917389"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Basic" resourceName="BASIC_PINK" textureName="PINK">
+        <BoundingBox>
+            <Min x="-0.4505513608455658" y="0.0" z="-0.3001638948917389"/>
+            <Max x="0.4505513608455658" y="1.7735453844070435" z="0.3001638948917389"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Basic" resourceName="BASIC_ORANGE" textureName="ORANGE">
+        <BoundingBox>
+            <Min x="-0.4505513608455658" y="0.0" z="-0.3001638948917389"/>
+            <Max x="0.4505513608455658" y="1.7735453844070435" z="0.3001638948917389"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StainlessSteel" resourceName="STAINLESS_STEEL_BLACK" textureName="BLACK">
+        <BoundingBox>
+            <Min x="-0.45055142045021057" y="0.0" z="-0.3002612590789795"/>
+            <Max x="0.45055142045021057" y="2.007174253463745" z="0.3002612590789795"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StainlessSteel" resourceName="STAINLESS_STEEL_DARK_OAK" textureName="DARK_OAK">
+        <BoundingBox>
+            <Min x="-0.45055142045021057" y="0.0" z="-0.3002612590789795"/>
+            <Max x="0.45055142045021057" y="2.007174253463745" z="0.3002612590789795"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StainlessSteel" resourceName="STAINLESS_STEEL_LIGHT_OAK" textureName="LIGHT_OAK">
+        <BoundingBox>
+            <Min x="-0.45055142045021057" y="0.0" z="-0.3002612590789795"/>
+            <Max x="0.45055142045021057" y="2.007174253463745" z="0.3002612590789795"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StainlessSteel" resourceName="STAINLESS_STEEL_SILVER" textureName="SILVER">
+        <BoundingBox>
+            <Min x="-0.45055142045021057" y="0.0" z="-0.3002612590789795"/>
+            <Max x="0.45055142045021057" y="2.007174253463745" z="0.3002612590789795"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StainlessSteel" resourceName="STAINLESS_STEEL_OAK" textureName="OAK">
+        <BoundingBox>
+            <Min x="-0.45055142045021057" y="0.0" z="-0.3002612590789795"/>
+            <Max x="0.45055142045021057" y="2.007174253463745" z="0.3002612590789795"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StainlessSteel" resourceName="STAINLESS_STEEL_MAHOGANY" textureName="MAHOGANY">
+        <BoundingBox>
+            <Min x="-0.45055142045021057" y="0.0" z="-0.3002612590789795"/>
+            <Max x="0.45055142045021057" y="2.007174253463745" z="0.3002612590789795"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StainlessSteel" resourceName="STAINLESS_STEEL_RED_OAK" textureName="RED_OAK">
+        <BoundingBox>
+            <Min x="-0.45055142045021057" y="0.0" z="-0.3002612590789795"/>
+            <Max x="0.45055142045021057" y="2.007174253463745" z="0.3002612590789795"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="StainlessSteel" resourceName="STAINLESS_STEEL_WHITE" textureName="WHITE">
+        <BoundingBox>
+            <Min x="-0.45055142045021057" y="0.0" z="-0.3002612590789795"/>
+            <Max x="0.45055142045021057" y="2.007174253463745" z="0.3002612590789795"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

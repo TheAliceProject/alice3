@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="Bridge">
+    <BoundingBox>
+        <Min x="-0.0778656005859375" y="-0.3509500026702881" z="-0.9900265336036682"/>
+        <Max x="5.3105010986328125" y="1.5878206491470337" z="0.9900264739990234"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>bridge</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Bridge" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

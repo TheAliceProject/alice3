@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Ethan Gagorik" name="Hogan">
+    <BoundingBox>
+        <Min x="-2.451136350631714" y="-0.005584883037954569" z="-3.108957529067993"/>
+        <Max x="2.3748490810394287" y="3.8099582195281982" z="2.193023920059204"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>navajo</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Hogan" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

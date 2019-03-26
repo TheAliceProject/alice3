@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="LogWall">
+    <BoundingBox>
+        <Min x="-0.11488236486911774" y="-0.024080509319901466" z="-2.517765998840332"/>
+        <Max x="0.8832384943962097" y="1.5506457090377808" z="0.11874599009752274"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>walls</Tag>
+        <Tag>barricade</Tag>
+        <Tag>pikes</Tag>
+        <Tag>fort</Tag>
+        <Tag>logs</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Straight" resourceName="STRAIGHT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.11488236486911774" y="-0.0028992199804633856" z="-2.517765998840332"/>
+            <Max x="0.1148836761713028" y="1.5079392194747925" z="0.035299547016620636"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="TightCurve" resourceName="TIGHT_CURVE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.008988509885966778" y="-0.002749699866399169" z="-1.6487371921539307"/>
+            <Max x="0.8832384943962097" y="1.4616175889968872" z="0.11874599009752274"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LongCurve" resourceName="LONG_CURVE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.030919529497623444" y="-0.024080509319901466" z="-2.4207818508148193"/>
+            <Max x="0.6201032400131226" y="1.5506457090377808" z="0.05215325579047203"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

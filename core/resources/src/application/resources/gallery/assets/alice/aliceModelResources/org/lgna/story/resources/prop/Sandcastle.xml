@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Matt Kline" name="Sandcastle">
+    <BoundingBox>
+        <Min x="-0.7805664539337158" y="-5.424999835668132E-5" z="-0.772917628288269"/>
+        <Max x="0.7805664539337158" y="1.3957573175430298" z="0.772917628288269"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>sandcastle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Base" resourceName="BASE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.7805664539337158" y="-5.424999835668132E-5" z="-0.772917628288269"/>
+            <Max x="0.7805664539337158" y="1.3957573175430298" z="0.772917628288269"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Rampart" resourceName="RAMPART" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.40177398920059204" y="0.0" z="-0.40177392959594727"/>
+            <Max x="0.40177392959594727" y="1.027748942375183" z="0.40177398920059204"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>rampart</Tag>
+        </Tags>
+    </Resource>
+</AliceModel>

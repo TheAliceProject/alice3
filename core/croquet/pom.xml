@@ -48,9 +48,9 @@
 		<groupId>org.alice</groupId>
 		<artifactId>core</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../core/</relativePath>
 	</parent>
 
+	<name>Croquet</name>
 	<artifactId>croquet</artifactId>
 	<packaging>jar</packaging>
 
@@ -63,7 +63,6 @@
 		<dependency>
 			<groupId>org.alice.external</groupId>
 			<artifactId>wrapped-flow-layout</artifactId>
-			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.yuvimasory</groupId>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="Peacock">
+    <BoundingBox>
+        <Min x="-0.3608285059108654" y="-0.003019033605969501" z="-0.4889693978623612"/>
+        <Max x="0.32844855991877664" y="1.0223751997276944" z="1.140665366519075"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>peahen</Tag>
+        <Tag>bird</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Peacock" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Greg Mirles" name="WaterTankWell">
+    <BoundingBox>
+        <Min x="-18.19906997680664" y="0.035135746002197266" z="-17.924022674560547"/>
+        <Max x="18.19906997680664" y="2.8745341300964355" z="17.924022674560547"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>temple</Tag>
+        <Tag>well</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery:water tank</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india:water tank</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Water" resourceName="WATER_GRAY" textureName="GRAY">
+        <BoundingBox>
+            <Min x="-18.19906997680664" y="0.035135746002197266" z="-17.924022674560547"/>
+            <Max x="18.19906997680664" y="2.8745341300964355" z="17.924022674560547"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Water" resourceName="WATER_GOLD" textureName="GOLD">
+        <BoundingBox>
+            <Min x="-18.19906997680664" y="0.035135746002197266" z="-17.924022674560547"/>
+            <Max x="18.19906997680664" y="2.8745341300964355" z="17.924022674560547"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Water" resourceName="WATER_SAND" textureName="SAND">
+        <BoundingBox>
+            <Min x="-18.19906997680664" y="0.035135746002197266" z="-17.924022674560547"/>
+            <Max x="18.19906997680664" y="2.8745341300964355" z="17.924022674560547"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Water" resourceName="WATER_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-18.19906997680664" y="0.035135746002197266" z="-17.924022674560547"/>
+            <Max x="18.19906997680664" y="2.8745341300964355" z="17.924022674560547"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="NoWater" resourceName="NO_WATER_GRAY" textureName="GRAY">
+        <BoundingBox>
+            <Min x="-18.19906997680664" y="0.035135746002197266" z="-17.924022674560547"/>
+            <Max x="18.19906997680664" y="2.8745341300964355" z="17.924022674560547"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="NoWater" resourceName="NO_WATER_GOLD" textureName="GOLD">
+        <BoundingBox>
+            <Min x="-18.19906997680664" y="0.035135746002197266" z="-17.924022674560547"/>
+            <Max x="18.19906997680664" y="2.8745341300964355" z="17.924022674560547"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="NoWater" resourceName="NO_WATER_SAND" textureName="SAND">
+        <BoundingBox>
+            <Min x="-18.19906997680664" y="0.035135746002197266" z="-17.924022674560547"/>
+            <Max x="18.19906997680664" y="2.8745341300964355" z="17.924022674560547"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="NoWater" resourceName="NO_WATER_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-18.19906997680664" y="0.035135746002197266" z="-17.924022674560547"/>
+            <Max x="18.19906997680664" y="2.8745341300964355" z="17.924022674560547"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Pei Hong Tan" name="GopherHole">
+    <BoundingBox>
+        <Min x="-0.36523786187171936" y="-9.791168122319505E-5" z="-0.35073110461235046"/>
+        <Max x="0.39444419741630554" y="0.06515736132860184" z="0.32562845945358276"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>prairie dog</Tag>
+        <Tag>mole</Tag>
+        <Tag>marmot</Tag>
+        <Tag>hole</Tag>
+        <Tag>gopher</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="GopherHole" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>
