@@ -7,7 +7,7 @@
 
 	<files>
 		<file>
-			<source>${project.build.directory}/netbeans-0.0.1-SNAPSHOT.nbm</source>
+			<source>${project.build.directory}/netbeans-5.0.0.nbm</source>
 			<destName>Alice3_netbeans_8_plugin_${alice.build.version}${alice.build.prerelease}${alice.build.metadata}.nbm</destName>
 		</file>
 	</files>
