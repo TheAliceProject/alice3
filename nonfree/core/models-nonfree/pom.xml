@@ -48,7 +48,7 @@
 	<parent>
 		<groupId>org.alice.nonfree</groupId>
 		<artifactId>core-nonfree</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>5.0.1-SNAPSHOT</version>
 	</parent>
 
 	<name>Gallery Models nonfree additions</name>

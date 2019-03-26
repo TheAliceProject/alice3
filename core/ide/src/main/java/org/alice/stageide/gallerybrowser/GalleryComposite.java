@@ -74,8 +74,8 @@ public class GalleryComposite extends SimpleComposite<GalleryView> {
 		new TreeOwningGalleryTab( TreeUtilities.getUserTreeState(), "CustomGalleryTab" );
 	private final ImmutableDataTabState<GalleryTab> tabState = this.createImmutableTabState( "tabState", 0, GalleryTab.class,
 			IsIncludingImportAndExportType.getValue()
-					? new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.importTab }
-					: new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab }
+				? new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.importTab, this.myGalleryTab }
+				: new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.myGalleryTab }
 			);
 
 	public GalleryComposite() {

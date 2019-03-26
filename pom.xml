@@ -6,7 +6,7 @@
 	<groupId>org.alice</groupId>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
-	<version>5.0.0</version>
+	<version>5.0.1-SNAPSHOT</version>
 
 	<name>Alice</name>
 	<url>http://www.alice.org/</url>
@@ -77,7 +77,7 @@
 
 		<jogl.version>2.3.2</jogl.version>
 
-		<alice.build.version>3.5.0.0</alice.build.version>
+		<alice.build.version>3.5.0.1</alice.build.version>
 		<alice.build.prerelease>-alpha</alice.build.prerelease>
 		<alice.build.metadata></alice.build.metadata>
 		<nebulous.person.version>2014.08.12</nebulous.person.version>
@@ -124,90 +124,90 @@
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>util</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>ast</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>croquet</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>image-editor</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>scenegraph</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>glrender</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>issue-reporting</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>story-api</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>story-api-migration</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>resources</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>ide</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>i18n</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>alice-ide</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>model-loading</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>tweedle</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>netbeans</artifactId>
-				<version>5.0.0</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 
 			<!-- Gallery/Models -->
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>models</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>5.0.1-SNAPSHOT</version>
 			</dependency>
 
 			<!-- Third Party Libraries in project-->
@@ -549,22 +549,22 @@
 					<dependency>
 						<groupId>org.alice.nonfree</groupId>
 						<artifactId>models-nonfree</artifactId>
-						<version>0.0.1-SNAPSHOT</version>
+						<version>5.0.1-SNAPSHOT</version>
 					</dependency>
 					<dependency>
 						<groupId>org.alice.nonfree</groupId>
 						<artifactId>resources-nonfree</artifactId>
-						<version>0.0.1-SNAPSHOT</version>
+						<version>5.0.1-SNAPSHOT</version>
 					</dependency>
 					<dependency>
 						<groupId>org.alice.nonfree</groupId>
 						<artifactId>story-api-nonfree</artifactId>
-						<version>0.0.1-SNAPSHOT</version>
+						<version>5.0.1-SNAPSHOT</version>
 					</dependency>
 					<dependency>
 						<groupId>org.alice.nonfree</groupId>
 						<artifactId>ide-nonfree</artifactId>
-						<version>0.0.1-SNAPSHOT</version>
+						<version>5.0.1-SNAPSHOT</version>
 					</dependency>
 				</dependencies>
 			</dependencyManagement>
