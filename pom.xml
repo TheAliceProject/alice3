@@ -537,11 +537,11 @@
 			</activation>
 
 			<modules>
-				<module>nonfree/core</module>
-				<module>nonfree/core/ide-nonfree</module>
-				<module>nonfree/core/resources-nonfree</module>
-				<module>nonfree/core/story-api-nonfree</module>
-				<module>nonfree/core/models-nonfree</module>
+				<module>core-nonfree</module>
+				<module>core-nonfree/ide-nonfree</module>
+				<module>core-nonfree/resources-nonfree</module>
+				<module>core-nonfree/story-api-nonfree</module>
+				<module>core-nonfree/models-nonfree</module>
 			</modules>
 
 			<dependencyManagement>

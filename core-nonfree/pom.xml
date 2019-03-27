@@ -7,7 +7,7 @@
 		<groupId>org.alice</groupId>
 		<artifactId>core</artifactId>
 		<version>5.0.1-SNAPSHOT</version>
-		<relativePath>../../core/</relativePath>
+		<relativePath>../core/</relativePath>
 	</parent>
 
 	<name>Alice Core nonfree</name>
