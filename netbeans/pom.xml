@@ -49,7 +49,6 @@
 		<groupId>org.alice</groupId>
 		<artifactId>parent</artifactId>
 		<version>5.0.1-SNAPSHOT</version>
-		<relativePath>../..</relativePath>
 	</parent>
 
 	<name>Alice Plugin for NetBeans 8</name>
@@ -295,10 +294,10 @@
 				<version>3.1.0</version>
 				<configuration>
 					<sourcepath>
-						${project.basedir}/../../core/util/src/main/java/:
-						${project.basedir}/../../core/scenegraph/src/main/java/:
-						${project.basedir}/../../core/ast/src/main/java/:
-						${project.basedir}/../../core/story-api/src/main/java/
+						${project.basedir}/../core/util/src/main/java/:
+						${project.basedir}/../core/scenegraph/src/main/java/:
+						${project.basedir}/../core/ast/src/main/java/:
+						${project.basedir}/../core/story-api/src/main/java/
 					</sourcepath>
 					<encoding>UTF-8</encoding>
 					<docencoding>UTF-8</docencoding>
@@ -332,7 +331,7 @@
 							<outputDirectory>${basedir}/target/nbm/netbeans/extra/src/aliceSource.jar_root/platform</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${project.basedir}/../../core/resources/target/distribution/platform</directory>
+									<directory>${project.basedir}/../core/resources/target/distribution/platform</directory>
 									<excludes>
 										<exclude>**/ffmpeg/**</exclude>
 										<exclude>**/libvlc/**</exclude>

@@ -46,9 +46,8 @@
 
 	<parent>
 		<groupId>org.alice</groupId>
-		<artifactId>core</artifactId>
+		<artifactId>parent</artifactId>
 		<version>5.0.1-SNAPSHOT</version>
-		<relativePath>../../core/</relativePath>
 	</parent>
 
 	<name>Alice IDE</name>
@@ -129,7 +128,7 @@
 						</systemProperty>
 						<systemProperty>
 							<key>org.alice.ide.rootDirectory</key>
-							<value>../../core/resources/target/distribution</value>
+							<value>../core/resources/target/distribution</value>
 						</systemProperty>
 						<systemProperty>
 							<key>com.apple.mrj.application.apple.menu.about.name</key>
