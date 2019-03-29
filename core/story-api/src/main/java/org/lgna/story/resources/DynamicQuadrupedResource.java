@@ -4,8 +4,6 @@ import org.alice.tweedle.file.ModelManifest;
 import org.lgna.story.SQuadruped;
 import org.lgna.story.implementation.QuadrupedImp;
 
-import java.net.URI;
-
 public class DynamicQuadrupedResource extends DynamicResource<QuadrupedImp, SQuadruped> implements QuadrupedResource {
 
 	public DynamicQuadrupedResource(String modelName, String resourceName) {

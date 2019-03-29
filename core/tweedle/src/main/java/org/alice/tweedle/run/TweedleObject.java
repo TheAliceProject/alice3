@@ -2,7 +2,6 @@ package org.alice.tweedle.run;
 
 import org.alice.tweedle.TweedleField;
 import org.alice.tweedle.TweedleClass;
-import org.alice.tweedle.TweedleType;
 import org.alice.tweedle.TweedleValue;
 
 public class TweedleObject extends TweedleValue {

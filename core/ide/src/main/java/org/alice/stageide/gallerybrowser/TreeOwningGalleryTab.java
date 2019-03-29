@@ -43,7 +43,6 @@
 package org.alice.stageide.gallerybrowser;
 
 import org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView;
-import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.modelresource.ResourceNodeTreeState;
 
 import java.util.UUID;

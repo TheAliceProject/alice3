@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.projecturi;
 
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
-
 import java.io.File;
 import java.util.UUID;
 

@@ -44,7 +44,6 @@ package org.lgna.croquet;
 
 import org.lgna.croquet.data.MutableListData;
 
-import java.util.Collection;
 import java.util.UUID;
 
 /**

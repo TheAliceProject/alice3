@@ -50,7 +50,7 @@ import org.lgna.story.SGround;
 import org.lgna.story.SetPaint;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
-import javax.swing.*;
+import javax.swing.JComponent;
 import java.util.UUID;
 
 /**

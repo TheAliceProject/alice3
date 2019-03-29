@@ -44,7 +44,6 @@ package org.lgna.story.implementation;
 
 import org.lgna.story.SJointedModel;
 import org.lgna.story.resources.BasicResource;
-import org.lgna.story.resources.JointId;
 
 /**
  * @author dculyba

@@ -46,7 +46,6 @@ package org.alice.ide.ast.draganddrop.expression;
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
-import org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite;
 import org.alice.ide.croquet.models.ast.cascade.expression.LocalAccessOperation;
 import org.alice.ide.statementfactory.LocalStatementCascade;
 import org.lgna.croquet.DropSite;

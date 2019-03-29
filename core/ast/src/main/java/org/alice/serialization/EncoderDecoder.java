@@ -46,7 +46,6 @@ package org.alice.serialization;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractNode;
-import org.lgna.project.ast.AbstractType;
 import org.lgna.project.code.CodeAppender;
 
 import java.util.Set;

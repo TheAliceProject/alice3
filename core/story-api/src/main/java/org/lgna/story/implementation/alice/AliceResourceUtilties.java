@@ -55,7 +55,6 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
-import javax.wsdl.Output;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;

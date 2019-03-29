@@ -45,8 +45,6 @@ package org.lgna.project.ast;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import org.lgna.project.ast.localizer.AstLocalizer;
 
-import edu.cmu.cs.dennisc.property.PropertyFilter;
-
 /**
  * @author Dennis Cosgrove
  */

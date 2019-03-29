@@ -1,9 +1,6 @@
 package uk.co.mmscomputing.imageio.ppm;
 
 import java.io.IOException;
-import java.nio.ByteOrder;
-import java.util.Iterator;
-import java.util.ArrayList;
 
 import java.awt.image.*;
 
@@ -47,7 +44,7 @@ public class PGMImageWriter extends ImageWriter implements PPMConstants{
     PixelGrabber grabber = new PixelGrabber(image, 0, 0, width, height, false);
     try{
       grabber.grabPixels();
-    }catch(InterruptedException e){ 
+    }catch(InterruptedException e){
       throw new IOException(getClass().getName()+".pgm: couldn't grab pixels from image !");
     }
     String header="P5\n"+width+" "+height+"\n255\n";
@@ -61,7 +58,7 @@ public class PGMImageWriter extends ImageWriter implements PPMConstants{
         bitmap[k++]=(byte)raster.getSample(x,y,0);
       }
     }
-    out.write(bitmap);            
+    out.write(bitmap);
   }
 
   public void write(IIOMetadata streamMetadata,IIOImage img,ImageWriteParam param)throws IOException{
@@ -71,7 +68,7 @@ public class PGMImageWriter extends ImageWriter implements PPMConstants{
     }
     BufferedImage image=(BufferedImage)img.getRenderedImage();
     if(image.getType()!=BufferedImage.TYPE_BYTE_GRAY){
-      image=new GrayScale().filter(image); 
+      image=new GrayScale().filter(image);
     }
     pgm(out,image);
   }

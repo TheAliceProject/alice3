@@ -44,7 +44,6 @@
 package org.lgna.croquet.triggers;
 
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.views.ViewController;
 
 import javax.swing.event.ChangeEvent;
 

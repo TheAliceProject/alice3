@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.project.code;
 
-import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Getter;
 import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.Setter;

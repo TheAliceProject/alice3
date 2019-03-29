@@ -49,7 +49,6 @@ import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import org.alice.ide.ProjectStack;
 import org.alice.stageide.type.croquet.data.SceneFieldListData;
 import org.alice.stageide.type.croquet.views.OtherTypeDialogPane;
-import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Element;
 import org.lgna.croquet.HtmlStringValue;
 import org.lgna.croquet.ImmutableDataTabState;

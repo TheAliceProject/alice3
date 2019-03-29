@@ -54,7 +54,6 @@ import org.netbeans.spi.editor.completion.CompletionResultSet;
 import org.netbeans.spi.editor.completion.CompletionTask;
 import org.netbeans.spi.editor.completion.support.AsyncCompletionQuery;
 import org.netbeans.spi.editor.completion.support.AsyncCompletionTask;
-import org.openide.text.CloneableEditorSupport;
 import org.openide.util.Exceptions;
 
 /**

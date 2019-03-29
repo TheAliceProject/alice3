@@ -1,8 +1,6 @@
 package uk.co.mmscomputing.image.operators;
 
 import java.awt.image.*;
-import java.awt.color.*;
-import java.util.*;
 
 abstract public class Operator{
 

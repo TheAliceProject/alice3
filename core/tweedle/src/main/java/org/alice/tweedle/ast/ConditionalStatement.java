@@ -2,7 +2,6 @@ package org.alice.tweedle.ast;
 
 import org.alice.tweedle.TweedleStatement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ConditionalStatement extends TweedleStatement {

@@ -43,7 +43,6 @@
 package org.alice.ide.eventseditor;
 
 import edu.cmu.cs.dennisc.map.MapToMap;
-import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
 import org.alice.ide.croquet.models.ast.cascade.MethodUtilities;
 import org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascade;

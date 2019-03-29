@@ -45,7 +45,6 @@ package org.alice.ide.ast.draganddrop.expression;
 
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.cascade.expression.ParameterAccessOperation;
 import org.lgna.croquet.Triggerable;
 import org.lgna.project.ast.AbstractType;

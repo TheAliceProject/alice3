@@ -43,7 +43,6 @@
 package org.lgna.story.implementation;
 
 import org.lgna.story.STransport;
-import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.TransportResource;
 
 public final class TransportImp extends JointedModelImp<STransport, TransportResource> {

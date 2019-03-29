@@ -44,7 +44,6 @@ package org.alice.ide.croquet.edits.ast;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.java.util.Objects;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.InsertStatementCompletionModel;

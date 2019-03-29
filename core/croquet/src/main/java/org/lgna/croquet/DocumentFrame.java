@@ -48,7 +48,6 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.DStack;
 import edu.cmu.cs.dennisc.java.util.Stacks;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.triggers.WindowEventTrigger;
 import org.lgna.croquet.views.AbstractWindow;
 import org.lgna.croquet.views.Frame;
 
@@ -56,7 +55,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove

@@ -1,6 +1,5 @@
 package org.lgna.story.resourceutilities;
 
-import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -10,25 +9,18 @@ import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.*;
-import edu.cmu.cs.dennisc.scenegraph.qa.Problem;
-import edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
-import org.lgna.story.implementation.alice.ModelResourceIoUtilities;
-import org.lgna.story.resources.ImplementationAndVisualType;
 import org.lgna.story.resources.JointId;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.DoubleBuffer;
 import java.util.*;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.jar.JarOutputStream;
 import java.util.logging.Logger;
 
 public class AliceModelLoader {

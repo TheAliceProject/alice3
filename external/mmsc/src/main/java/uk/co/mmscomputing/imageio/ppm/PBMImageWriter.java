@@ -1,9 +1,6 @@
 package uk.co.mmscomputing.imageio.ppm;
 
 import java.io.IOException;
-import java.nio.ByteOrder;
-import java.util.Iterator;
-import java.util.ArrayList;
 
 import java.awt.image.*;
 
@@ -47,7 +44,7 @@ public class PBMImageWriter extends ImageWriter implements PPMConstants{
     PixelGrabber grabber = new PixelGrabber(image, 0, 0, width, height, false);
     try{
       grabber.grabPixels();
-    }catch(InterruptedException e){ 
+    }catch(InterruptedException e){
       throw new IOException(getClass().getName()+".pbm: couldn't grab pixels from image !");
     }
     int bpl=((width%8)==0)?width>>3:(width+8)>>3;   // bytes per line
@@ -69,7 +66,7 @@ public class PBMImageWriter extends ImageWriter implements PPMConstants{
         bitmap[k++]=b;
       }
     }
-    out.write(bitmap);            
+    out.write(bitmap);
   }
 
   public void write(IIOMetadata streamMetadata,IIOImage img,ImageWriteParam param)throws IOException{
@@ -81,11 +78,11 @@ public class PBMImageWriter extends ImageWriter implements PPMConstants{
     switch(image.getType()){
     case BufferedImage.TYPE_BYTE_BINARY: // 1, 2, 4 bit possible; expect 1 bit
       break;
-    case BufferedImage.TYPE_BYTE_GRAY: 
+    case BufferedImage.TYPE_BYTE_GRAY:
       image=new Binarization().filter(image);
       break;
     default:
-      image=new GrayScale().filter(image); 
+      image=new GrayScale().filter(image);
       image=new Binarization().filter(image);
       break;
     }

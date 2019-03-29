@@ -50,7 +50,6 @@ import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**

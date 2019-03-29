@@ -64,8 +64,6 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
 import java.util.Map;

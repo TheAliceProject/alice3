@@ -48,7 +48,6 @@ import org.lgna.croquet.data.ListData;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.MultipleSelectionListView;
 
 import javax.swing.AbstractListModel;

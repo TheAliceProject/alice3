@@ -1,7 +1,6 @@
 package org.alice.ide.type;
 
 import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.InstanceCreation;
 
 public class ExtendsTypeWithNamedType extends AbstractExtendsTypeKey  {
 	private final String typeName;

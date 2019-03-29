@@ -48,8 +48,6 @@ import org.lgna.croquet.history.event.PopupMenuResizedEvent;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.PopupMenu;
 
-import java.awt.event.ComponentEvent;
-
 /**
  * @author Dennis Cosgrove
  */

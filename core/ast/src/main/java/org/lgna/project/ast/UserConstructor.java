@@ -43,7 +43,6 @@
 
 package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeGenerator;
 
 /**

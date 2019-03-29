@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.map.MapToMap;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
-import org.lgna.story.resources.DynamicJointId;
 import org.lgna.story.resources.JointArrayId;
 import org.lgna.story.resources.JointId;
 

@@ -54,7 +54,6 @@ import org.lgna.croquet.views.BooleanStateButton;
 import org.lgna.project.ast.AbstractCode;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.BlockStatement;
-import org.lgna.project.ast.StaticAnalysisUtilities;
 import org.lgna.project.ast.UserMethod;
 
 import java.util.Map;

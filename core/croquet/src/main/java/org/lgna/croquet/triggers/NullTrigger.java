@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.PopupMenu;
-import org.lgna.croquet.views.ViewController;
 
 import java.awt.Point;
 

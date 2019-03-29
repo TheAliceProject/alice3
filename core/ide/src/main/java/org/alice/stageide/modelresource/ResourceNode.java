@@ -49,8 +49,6 @@ import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.story.SModel;
-import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 
 import java.util.Collections;
 import java.util.List;

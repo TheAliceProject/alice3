@@ -43,13 +43,9 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.java.util.BufferUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class WeightedMesh extends Mesh {

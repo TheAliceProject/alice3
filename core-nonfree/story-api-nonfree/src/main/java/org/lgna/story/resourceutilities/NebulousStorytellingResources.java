@@ -43,23 +43,11 @@
 package org.lgna.story.resourceutilities;
 
 import java.io.File;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.prefs.Preferences;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
-import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
-
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.nebulous.Manager;
 
 import javax.swing.JOptionPane;

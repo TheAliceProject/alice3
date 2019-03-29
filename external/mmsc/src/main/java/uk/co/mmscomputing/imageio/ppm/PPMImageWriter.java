@@ -1,7 +1,6 @@
 package uk.co.mmscomputing.imageio.ppm;
 
 import java.io.*;
-import java.util.*;
 
 import java.awt.image.*;
 
@@ -44,7 +43,7 @@ public class PPMImageWriter extends ImageWriter{
     PixelGrabber grabber = new PixelGrabber(image, 0, 0, width, height, data, 0, width);
     try{
       grabber.grabPixels();
-    }catch(InterruptedException e){ 
+    }catch(InterruptedException e){
       throw new IOException(getClass().getName()+".ppm: couldn't grab pixels from image !");
     }
 
@@ -63,7 +62,7 @@ public class PPMImageWriter extends ImageWriter{
         bitmap[k++]=(byte)model.getBlue(col);
       }
     }
-    out.write(bitmap);            
+    out.write(bitmap);
   }
 
   public void write(IIOMetadata streamMetadata,IIOImage img,ImageWriteParam param)throws IOException{

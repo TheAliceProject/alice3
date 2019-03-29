@@ -45,7 +45,6 @@ package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.StringProperty;
-import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeGenerator;
 import org.lgna.project.virtualmachine.VirtualMachine;
 

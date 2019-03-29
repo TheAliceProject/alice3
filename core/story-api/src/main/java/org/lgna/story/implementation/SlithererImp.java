@@ -44,7 +44,6 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.math.Vector4;
 import org.lgna.story.SSlitherer;
-import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.SlithererResource;
 
 /**

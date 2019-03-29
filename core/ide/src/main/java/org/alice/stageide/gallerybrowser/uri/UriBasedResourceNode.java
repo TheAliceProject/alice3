@@ -44,14 +44,11 @@ package org.alice.stageide.gallerybrowser.uri;
 
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceNode;
-import org.alice.stageide.modelresource.ResourceNodeTreeState;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 
 import java.net.URI;
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 /**

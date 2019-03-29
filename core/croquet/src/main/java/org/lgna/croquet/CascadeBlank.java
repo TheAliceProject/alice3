@@ -49,7 +49,6 @@ import org.lgna.croquet.imp.cascade.BlankNode;
 
 import java.util.List;
 import java.util.ListIterator;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove

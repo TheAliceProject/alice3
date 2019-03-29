@@ -44,7 +44,6 @@ package org.lgna.story.event;
 
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.story.SModel;
 
 /**
  * @author Matt May

@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
-import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.icons.Icons;
 
 import java.util.UUID;

@@ -54,7 +54,6 @@ import java.util.ResourceBundle;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
-import org.alice.ide.name.validators.MarkerColorValidator;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
@@ -64,7 +63,6 @@ import org.lgna.croquet.icon.IconSize;
 import org.lgna.croquet.icon.ImageIconFactory;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.CameraMarker;
 import org.lgna.story.Color;

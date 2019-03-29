@@ -46,7 +46,6 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType;
 import edu.cmu.cs.dennisc.scenegraph.ComponentArray;
 
 /**

@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.liststate;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.ListSelectionModel;

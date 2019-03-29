@@ -44,7 +44,6 @@
 package org.alice.ide.ast.draganddrop.expression;
 
 import org.alice.ide.IDE;
-import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.cascade.expression.ThisOperation;
 import org.lgna.croquet.Triggerable;
 import org.lgna.project.ast.AbstractType;

@@ -44,8 +44,6 @@
 package org.lgna.croquet.triggers;
 
 import org.lgna.croquet.DragModel;
-import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.views.DragComponent;
 import org.lgna.croquet.views.ViewController;
 import org.lgna.croquet.views.imp.JDragView;
 

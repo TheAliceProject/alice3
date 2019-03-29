@@ -48,7 +48,6 @@ import org.lgna.croquet.AbstractDropReceptor;
 import org.lgna.croquet.CascadeRoot;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Operation;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.DropDown;

@@ -43,8 +43,6 @@
 
 package org.lgna.croquet.imp.cascade;
 
-import org.lgna.croquet.Element;
-
 /**
  * @author Dennis Cosgrove
  */

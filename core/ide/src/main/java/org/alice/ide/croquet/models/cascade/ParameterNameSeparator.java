@@ -43,12 +43,10 @@
 
 package org.alice.ide.croquet.models.cascade;
 
-import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.lgna.croquet.CascadeLabelSeparator;
 import org.lgna.project.ast.AbstractParameter;
 
-import java.util.Map;
 import java.util.UUID;
 
 /**

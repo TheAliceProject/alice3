@@ -50,7 +50,6 @@ import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SBiped;
 import org.lgna.story.SThing;
 import org.lgna.story.resources.BipedResource;
-import org.lgna.story.resources.JointId;
 
 /**
  * @author Dennis Cosgrove

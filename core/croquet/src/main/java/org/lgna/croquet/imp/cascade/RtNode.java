@@ -44,7 +44,6 @@
 package org.lgna.croquet.imp.cascade;
 
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
-import org.lgna.croquet.Element;
 
 /**
  * @author Dennis Cosgrove
