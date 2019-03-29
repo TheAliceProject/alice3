@@ -1,0 +1,3 @@
+[submodule "tweedle-lang"]
+	path = tweedle-lang
+	url = https://github.com/TheAliceProject/tweedle.git

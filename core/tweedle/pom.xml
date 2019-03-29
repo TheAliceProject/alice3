@@ -60,6 +60,14 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <sourceDirectory>../../tweedle-lang/Grammar</sourceDirectory>
+          <outputDirectory>${project.build.directory}/generated-sources/antlr4/org/alice/tweedle</outputDirectory>
+          <arguments>
+            <argument>-package</argument>
+            <argument>org.alice.tweedle</argument>
+          </arguments>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
