@@ -42,8 +42,8 @@ public class JsonModelIo extends DataSourceIo{
     private final ExportFormat exportFormat;
 
     public enum ExportFormat {
-        COLLADA ("dae", "png"),
-        ALICE ("a3r", "a3t");
+        COLLADA("dae", "png"),
+        ALICE("a3r", "a3t");
 
         public final String modelExtension;
         public final String textureExtension;

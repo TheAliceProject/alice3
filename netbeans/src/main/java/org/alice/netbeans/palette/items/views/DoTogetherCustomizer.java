@@ -76,8 +76,8 @@ public class DoTogetherCustomizer extends javax.swing.JPanel {
         dialogOK = false;
 
         String displayName = "Do Together";
-        descriptor = new DialogDescriptor
-                (this, displayName, true,
+        descriptor = new DialogDescriptor(
+                this, displayName, true,
                 DialogDescriptor.OK_CANCEL_OPTION, DialogDescriptor.OK_OPTION,
                 new ActionListener() {
                     @Override

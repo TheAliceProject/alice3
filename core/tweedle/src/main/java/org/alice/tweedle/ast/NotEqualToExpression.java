@@ -11,6 +11,6 @@ public class NotEqualToExpression extends BinaryExpression {
 	}
 
 	@Override TweedlePrimitiveValue<Boolean> evaluate( TweedleValue left, TweedleValue right ) {
-		return TweedleTypes.BOOLEAN.createValue( ! left.equals( right ) );
+		return TweedleTypes.BOOLEAN.createValue( !left.equals( right ) );
 	}
 }

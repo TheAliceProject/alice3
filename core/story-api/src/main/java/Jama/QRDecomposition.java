@@ -47,7 +47,7 @@ public class QRDecomposition implements Serializable {
    @param A    Rectangular matrix
    */
 
-   public QRDecomposition (Matrix A) {
+   public QRDecomposition(Matrix A) {
       // Initialize.
       QR = A.getArrayCopy();
       m = A.getRowDimension();
@@ -96,7 +96,7 @@ public class QRDecomposition implements Serializable {
    @return     true if R, and hence A, has full rank.
    */
 
-   public boolean isFullRank () {
+   public boolean isFullRank() {
       for (int j = 0; j < n; j++) {
          if (Rdiag[j] == 0)
             return false;
@@ -108,7 +108,7 @@ public class QRDecomposition implements Serializable {
    @return     Lower trapezoidal matrix whose columns define the reflections
    */
 
-   public Matrix getH () {
+   public Matrix getH() {
       Matrix X = new Matrix(m,n);
       double[][] H = X.getArray();
       for (int i = 0; i < m; i++) {
@@ -127,7 +127,7 @@ public class QRDecomposition implements Serializable {
    @return     R
    */
 
-   public Matrix getR () {
+   public Matrix getR() {
       Matrix X = new Matrix(n,n);
       double[][] R = X.getArray();
       for (int i = 0; i < n; i++) {
@@ -148,7 +148,7 @@ public class QRDecomposition implements Serializable {
    @return     Q
    */
 
-   public Matrix getQ () {
+   public Matrix getQ() {
       Matrix X = new Matrix(m,n);
       double[][] Q = X.getArray();
       for (int k = n-1; k >= 0; k--) {
@@ -179,7 +179,7 @@ public class QRDecomposition implements Serializable {
    @exception  RuntimeException  Matrix is rank deficient.
    */
 
-   public Matrix solve (Matrix B) {
+   public Matrix solve(Matrix B) {
       if (B.getRowDimension() != m) {
          throw new IllegalArgumentException("Matrix row dimensions must agree.");
       }

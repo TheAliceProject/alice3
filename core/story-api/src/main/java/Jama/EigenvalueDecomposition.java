@@ -61,7 +61,7 @@ public class EigenvalueDecomposition implements Serializable {
 
    // Symmetric Householder reduction to tridiagonal form.
 
-   private void tred2 () {
+   private void tred2() {
 
    //  This is derived from the Algol procedures tred2 by
    //  Bowdler, Martin, Reinsch, and Wilkinson, Handbook for
@@ -178,7 +178,7 @@ public class EigenvalueDecomposition implements Serializable {
 
    // Symmetric tridiagonal QL algorithm.
 
-   private void tql2 () {
+   private void tql2() {
 
    //  This is derived from the Algol procedures tql2, by
    //  Bowdler, Martin, Reinsch, and Wilkinson, Handbook for
@@ -298,7 +298,7 @@ public class EigenvalueDecomposition implements Serializable {
 
    // Nonsymmetric reduction to Hessenberg form.
 
-   private void orthes () {
+   private void orthes() {
 
       //  This is derived from the Algol procedures orthes and ortran,
       //  by Martin and Wilkinson, Handbook for Auto. Comp.,
@@ -411,7 +411,7 @@ public class EigenvalueDecomposition implements Serializable {
 
    // Nonsymmetric reduction from Hessenberg to real Schur form.
 
-   private void hqr2 () {
+   private void hqr2() {
 
       //  This is derived from the Algol procedure hqr2,
       //  by Martin and Wilkinson, Handbook for Auto. Comp.,
@@ -861,7 +861,7 @@ public class EigenvalueDecomposition implements Serializable {
    @param Arg    Square matrix
    */
 
-   public EigenvalueDecomposition (Matrix Arg) {
+   public EigenvalueDecomposition(Matrix Arg) {
       double[][] A = Arg.getArray();
       n = Arg.getColumnDimension();
       V = new double[n][n];
@@ -914,7 +914,7 @@ public class EigenvalueDecomposition implements Serializable {
    @return     V
    */
 
-   public Matrix getV () {
+   public Matrix getV() {
       return new Matrix(V,n,n);
    }
 
@@ -922,7 +922,7 @@ public class EigenvalueDecomposition implements Serializable {
    @return     real(diag(D))
    */
 
-   public double[] getRealEigenvalues () {
+   public double[] getRealEigenvalues() {
       return d;
    }
 
@@ -930,7 +930,7 @@ public class EigenvalueDecomposition implements Serializable {
    @return     imag(diag(D))
    */
 
-   public double[] getImagEigenvalues () {
+   public double[] getImagEigenvalues() {
       return e;
    }
 
@@ -938,7 +938,7 @@ public class EigenvalueDecomposition implements Serializable {
    @return     D
    */
 
-   public Matrix getD () {
+   public Matrix getD() {
       Matrix X = new Matrix(n,n);
       double[][] D = X.getArray();
       for (int i = 0; i < n; i++) {

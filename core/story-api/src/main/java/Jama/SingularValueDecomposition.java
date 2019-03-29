@@ -49,7 +49,7 @@ public class SingularValueDecomposition implements Serializable {
    @param Arg    Rectangular matrix
    */
 
-   public SingularValueDecomposition (Matrix Arg) {
+   public SingularValueDecomposition(Matrix Arg) {
 
       // Derived from LINPACK code.
       // Initialize.
@@ -63,11 +63,11 @@ public class SingularValueDecomposition implements Serializable {
 	  throw new IllegalArgumentException("Jama SVD only works for m >= n"); }
       */
       int nu = Math.min(m,n);
-      s = new double [Math.min(m+1,n)];
-      U = new double [m][nu];
-      V = new double [n][n];
-      double[] e = new double [n];
-      double[] work = new double [m];
+      s = new double[Math.min(m+1,n)];
+      U = new double[m][nu];
+      V = new double[n][n];
+      double[] e = new double[n];
+      double[] work = new double[m];
       boolean wantu = true;
       boolean wantv = true;
 
@@ -479,7 +479,7 @@ public class SingularValueDecomposition implements Serializable {
    @return     U
    */
 
-   public Matrix getU () {
+   public Matrix getU() {
       return new Matrix(U,m,Math.min(m+1,n));
    }
 
@@ -487,7 +487,7 @@ public class SingularValueDecomposition implements Serializable {
    @return     V
    */
 
-   public Matrix getV () {
+   public Matrix getV() {
       return new Matrix(V,n,n);
    }
 
@@ -495,7 +495,7 @@ public class SingularValueDecomposition implements Serializable {
    @return     diagonal of S.
    */
 
-   public double[] getSingularValues () {
+   public double[] getSingularValues() {
       return s;
    }
 
@@ -503,7 +503,7 @@ public class SingularValueDecomposition implements Serializable {
    @return     S
    */
 
-   public Matrix getS () {
+   public Matrix getS() {
       Matrix X = new Matrix(n,n);
       double[][] S = X.getArray();
       for (int i = 0; i < n; i++) {
@@ -519,7 +519,7 @@ public class SingularValueDecomposition implements Serializable {
    @return     max(S)
    */
 
-   public double norm2 () {
+   public double norm2() {
       return s[0];
    }
 
@@ -527,7 +527,7 @@ public class SingularValueDecomposition implements Serializable {
    @return     max(S)/min(S)
    */
 
-   public double cond () {
+   public double cond() {
       return s[0]/s[Math.min(m,n)-1];
    }
 
@@ -535,7 +535,7 @@ public class SingularValueDecomposition implements Serializable {
    @return     Number of nonnegligible singular values.
    */
 
-   public int rank () {
+   public int rank() {
       double eps = Math.pow(2.0,-52.0);
       double tol = Math.max(m,n)*s[0]*eps;
       int r = 0;

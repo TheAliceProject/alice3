@@ -46,7 +46,7 @@ public class LUDecomposition implements Serializable {
    @param  A Rectangular matrix
    */
 
-   public LUDecomposition (Matrix A) {
+   public LUDecomposition(Matrix A) {
 
    // Use a "left-looking", dot-product, Crout/Doolittle algorithm.
 
@@ -180,7 +180,7 @@ public class LUDecomposition implements Serializable {
    @return     true if U, and hence A, is nonsingular.
    */
 
-   public boolean isNonsingular () {
+   public boolean isNonsingular() {
       for (int j = 0; j < n; j++) {
          if (LU[j][j] == 0)
             return false;
@@ -192,7 +192,7 @@ public class LUDecomposition implements Serializable {
    @return     L
    */
 
-   public Matrix getL () {
+   public Matrix getL() {
       Matrix X = new Matrix(m,n);
       double[][] L = X.getArray();
       for (int i = 0; i < m; i++) {
@@ -213,7 +213,7 @@ public class LUDecomposition implements Serializable {
    @return     U
    */
 
-   public Matrix getU () {
+   public Matrix getU() {
       Matrix X = new Matrix(n,n);
       double[][] U = X.getArray();
       for (int i = 0; i < n; i++) {
@@ -232,7 +232,7 @@ public class LUDecomposition implements Serializable {
    @return     piv
    */
 
-   public int[] getPivot () {
+   public int[] getPivot() {
       int[] p = new int[m];
       for (int i = 0; i < m; i++) {
          p[i] = piv[i];
@@ -244,7 +244,7 @@ public class LUDecomposition implements Serializable {
    @return     (double) piv
    */
 
-   public double[] getDoublePivot () {
+   public double[] getDoublePivot() {
       double[] vals = new double[m];
       for (int i = 0; i < m; i++) {
          vals[i] = (double) piv[i];
@@ -257,7 +257,7 @@ public class LUDecomposition implements Serializable {
    @exception  IllegalArgumentException  Matrix must be square
    */
 
-   public double det () {
+   public double det() {
       if (m != n) {
          throw new IllegalArgumentException("Matrix must be square.");
       }
@@ -275,7 +275,7 @@ public class LUDecomposition implements Serializable {
    @exception  RuntimeException  Matrix is singular.
    */
 
-   public Matrix solve (Matrix B) {
+   public Matrix solve(Matrix B) {
       if (B.getRowDimension() != m) {
          throw new IllegalArgumentException("Matrix row dimensions must agree.");
       }

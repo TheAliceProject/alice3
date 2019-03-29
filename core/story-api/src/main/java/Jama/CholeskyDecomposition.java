@@ -42,7 +42,7 @@ public class CholeskyDecomposition implements Serializable {
    @param  Arg   Square, symmetric matrix.
    */
 
-   public CholeskyDecomposition (Matrix Arg) {
+   public CholeskyDecomposition(Matrix Arg) {
 
 
      // Initialize.
@@ -143,7 +143,7 @@ public class CholeskyDecomposition implements Serializable {
    @return     true if A is symmetric and positive definite.
    */
 
-   public boolean isSPD () {
+   public boolean isSPD() {
       return isspd;
    }
 
@@ -151,7 +151,7 @@ public class CholeskyDecomposition implements Serializable {
    @return     L
    */
 
-   public Matrix getL () {
+   public Matrix getL() {
       return new Matrix(L,n,n);
    }
 
@@ -162,7 +162,7 @@ public class CholeskyDecomposition implements Serializable {
    @exception  RuntimeException  Matrix is not symmetric positive definite.
    */
 
-   public Matrix solve (Matrix B) {
+   public Matrix solve(Matrix B) {
       if (B.getRowDimension() != n) {
          throw new IllegalArgumentException("Matrix row dimensions must agree.");
       }
