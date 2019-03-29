@@ -70,6 +70,6 @@ public class Orientation {
 		new Vector3(0,0,-1),
 		new Vector3(0,1,0));
 
-	final private OrthogonalMatrix3x3 orient3;
-	final private AffineMatrix4x4 inverse4;
+	private final OrthogonalMatrix3x3 orient3;
+	private final AffineMatrix4x4 inverse4;
 }

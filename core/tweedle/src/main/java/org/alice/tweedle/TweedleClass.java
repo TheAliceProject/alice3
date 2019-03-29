@@ -6,11 +6,11 @@ import org.alice.tweedle.run.TweedleObject;
 import java.util.List;
 
 public class TweedleClass extends TweedleType implements InvocableMethodHolder {
-	final private InvocableMethodHolder superclass;
+	private final InvocableMethodHolder superclass;
 
-	final private List<TweedleField> properties;
-	final private List<TweedleMethod> methods;
-	final private List<TweedleConstructor> constructors;
+	private final List<TweedleField> properties;
+	private final List<TweedleMethod> methods;
+	private final List<TweedleConstructor> constructors;
 
 	private TweedleClass( String className, TweedleTypeReference superclass, List<TweedleField> properties,
 												List<TweedleMethod> methods, List<TweedleConstructor> constructors ) {

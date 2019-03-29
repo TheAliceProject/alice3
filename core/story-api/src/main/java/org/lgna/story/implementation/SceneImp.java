@@ -162,7 +162,7 @@ public class SceneImp extends EntityImp {
 		}
 	}
 
-	private final static long TIMEOUT_DURATION = 10000; //Forces the scene to start if the wait loop exceed this time
+	private static final long TIMEOUT_DURATION = 10000; //Forces the scene to start if the wait loop exceed this time
 
 	public void activate( ProgramImp programImp ) {
 		assert deactiveCount == activeCount;

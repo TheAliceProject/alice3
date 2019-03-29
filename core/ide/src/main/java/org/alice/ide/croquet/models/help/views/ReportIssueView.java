@@ -68,7 +68,7 @@ import org.lgna.issue.IssueReportingHub;
  * @author Matt May
  */
 public class ReportIssueView extends AbstractIssueView {
-	private final static Icon headerIcon = IconUtilities.createImageIcon( HeaderPane.class.getResource( "images/logo.png" ) );
+	private static final Icon headerIcon = IconUtilities.createImageIcon( HeaderPane.class.getResource( "images/logo.png" ) );
 
 	public ReportIssueView( final ReportIssueComposite composite ) {
 		super( composite );

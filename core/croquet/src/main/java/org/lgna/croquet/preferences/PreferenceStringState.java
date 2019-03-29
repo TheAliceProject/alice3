@@ -109,7 +109,7 @@ public abstract class PreferenceStringState extends StringState {
 
 	private static List<PreferenceStringState> instances = Lists.newCopyOnWriteArrayList();
 
-	public final static void preserveAll( Preferences userPreferences ) {
+	public static final void preserveAll( Preferences userPreferences ) {
 		for( PreferenceStringState state : instances ) {
 			String key = state.getPreferenceKey();
 			String value = state.getValue();

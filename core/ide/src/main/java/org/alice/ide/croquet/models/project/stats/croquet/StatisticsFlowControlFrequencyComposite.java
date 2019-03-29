@@ -65,7 +65,7 @@ import org.lgna.story.SProgram;
 public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<StatisticsFlowControlFrequencyView> {
 	private final Map<UserMethod, List<Statement>> methodToConstructMap = Maps.newHashMap();
 	private final MutableDataSingleSelectListState<UserMethod> userMethodList = createMutableListState( "userMethodList", UserMethod.class, NodeCodec.getInstance( UserMethod.class ), -1 );
-	public final static UserMethod root = new UserMethod();
+	public static final UserMethod root = new UserMethod();
 
 	public StatisticsFlowControlFrequencyComposite() {
 		super( UUID.fromString( "b12770d1-e65e-430f-92a1-dc3159a85a7b" ), IsCloseable.FALSE );

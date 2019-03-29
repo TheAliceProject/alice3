@@ -63,7 +63,7 @@ public abstract class AbstractSeverityStatusComposite<V extends CompositeView<?,
 		String getText();
 	}
 
-	private static abstract class AbstractStatus extends AbstractInternalStringValue implements Status {
+	private abstract static class AbstractStatus extends AbstractInternalStringValue implements Status {
 		private AbstractStatus( UUID id, Key key ) {
 			super( id, key );
 		}

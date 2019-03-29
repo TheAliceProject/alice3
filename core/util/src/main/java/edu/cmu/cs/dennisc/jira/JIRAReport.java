@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.issue.IssueUtilities;
  * @author Dennis Cosgrove
  */
 public class JIRAReport extends AbstractReport {
-	private final static int SUMMARY_MAX = 254;
+	private static final int SUMMARY_MAX = 254;
 
 	private final String projectKey;
 	private final IssueType type;

@@ -60,7 +60,7 @@ public class AnimationUtilities {
 		throw new AssertionError();
 	}
 
-	private static abstract class AnimationActionListener implements ActionListener {
+	private abstract static class AnimationActionListener implements ActionListener {
 		private Timer timer;
 		private final double duration;
 		private final Component component;

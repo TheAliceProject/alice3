@@ -2,7 +2,7 @@ package org.alice.tweedle.file;
 
 import org.lgna.common.Resource;
 
-abstract public class ResourceReference {
+public abstract class ResourceReference {
 
 	public String name;
 	public String format;
@@ -10,7 +10,7 @@ abstract public class ResourceReference {
 	//Unitialized provenance is used to add additional info
 	public Manifest.Provenance provenance;
 	// Held in a variable so it is serialized
-	final public String type;
+	public final String type;
 
 	public ResourceReference() {
 		type = getContentType();
@@ -30,6 +30,6 @@ abstract public class ResourceReference {
 		type = getContentType();
 	}
 
-	abstract public String getContentType();
+	public abstract String getContentType();
 
 }

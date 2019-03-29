@@ -456,7 +456,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		}
 	}
 
-	private static abstract class NumberModel<N extends Number> {
+	private abstract static class NumberModel<N extends Number> {
 		private final String message;
 		private final Document document = new PlainDocument();
 		private final NumeralAction[] numeralActions = new NumeralAction[ 10 ];

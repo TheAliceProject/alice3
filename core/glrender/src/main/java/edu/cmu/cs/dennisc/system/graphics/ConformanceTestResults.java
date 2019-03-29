@@ -113,7 +113,7 @@ public enum ConformanceTestResults {
 		private final String[] extensions;
 	}
 
-	public static abstract class PickDetails {
+	public abstract static class PickDetails {
 		private static final long FISHY_PICK_VALUE = ( PickContext.MAX_UNSIGNED_INTEGER / 2 ) + 1;
 
 		private static long convertZValueToLong( int zValue ) {

@@ -47,7 +47,7 @@ import org.lgna.story.AddTimeListener.Detail;
 public class TimerFrequency implements
 		AddTimeListener.Detail {
 
-	public final static TimerFrequency ASAP = new TimerFrequency( Double.doubleToLongBits( 0 ) );
+	public static final TimerFrequency ASAP = new TimerFrequency( Double.doubleToLongBits( 0 ) );
 	private Double frequency;
 
 	public TimerFrequency( double frequency ) {

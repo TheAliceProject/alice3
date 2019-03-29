@@ -239,7 +239,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		this.animateApplyRotationInRadians( axis, AngleUtilities.revolutionsToRadians( angleInRevolutions ), asSeenBy, duration, style );
 	}
 
-	protected static abstract class VantagePointData {
+	protected abstract static class VantagePointData {
 		private final AbstractTransformableImp subject;
 
 		VantagePointData( AbstractTransformableImp subject ) {
@@ -354,7 +354,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		}
 	}
 
-	private static abstract class OrientationData {
+	private abstract static class OrientationData {
 		private final AbstractTransformableImp subject;
 
 		OrientationData( AbstractTransformableImp subject ) {
@@ -392,7 +392,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		}
 	}
 
-	private static abstract class PreSetOrientationData extends OrientationData {
+	private abstract static class PreSetOrientationData extends OrientationData {
 		private final OrthogonalMatrix3x3 m0;
 		private final OrthogonalMatrix3x3 m1;
 		private UnitQuaternion q0;
@@ -636,7 +636,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	private static final boolean DEFAULT_IS_SMOOTH = true;
 	private static final double DEFAULT_PLACE_ALONG_AXIS_OFFSET = 0.0;
 
-	private static abstract class SmoothAffineMatrix4x4Animation extends DurationBasedAnimation {
+	private abstract static class SmoothAffineMatrix4x4Animation extends DurationBasedAnimation {
 		final AffineMatrix4x4 m1;
 		final HermiteCubic xHermite;
 		final HermiteCubic yHermite;

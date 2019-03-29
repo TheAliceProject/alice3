@@ -146,7 +146,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Simple
 		return this.status;
 	}
 
-	private final boolean internalLogin() {
+	private boolean internalLogin() {
 		boolean rv = tryToLogin();
 		if( rv ) {
 			fireLoggedIn();
@@ -154,7 +154,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Simple
 		return rv;
 	}
 
-	private final void internalLogout() {
+	private void internalLogout() {
 		logout();
 		fireLoggedOut();
 	}

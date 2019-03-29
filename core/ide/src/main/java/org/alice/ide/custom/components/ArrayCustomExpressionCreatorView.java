@@ -91,7 +91,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorView {
-	private static abstract class ItemAtIndexCascade<T> extends CascadeWithInternalBlank<T> {
+	private abstract static class ItemAtIndexCascade<T> extends CascadeWithInternalBlank<T> {
 		private final ListData<T> data;
 		private final int index;
 

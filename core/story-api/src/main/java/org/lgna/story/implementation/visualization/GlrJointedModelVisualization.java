@@ -70,7 +70,7 @@ import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
  * @author Dennis Cosgrove
  */
 public class GlrJointedModelVisualization extends GlrLeaf<JointedModelVisualization> implements GlrRenderContributor {
-	private static abstract class GlWalkObserver<C extends Context> implements JointedModelImp.TreeWalkObserver {
+	private abstract static class GlWalkObserver<C extends Context> implements JointedModelImp.TreeWalkObserver {
 		private final C context;
 		private final ReferenceFrame asSeenBy;
 		private final double[] array = new double[ 16 ];

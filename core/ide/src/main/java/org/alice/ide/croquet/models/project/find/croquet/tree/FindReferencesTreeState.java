@@ -65,8 +65,8 @@ import org.lgna.project.ast.UserMethod;
  */
 public class FindReferencesTreeState extends CustomSingleSelectTreeState<SearchTreeNode> {
 
-	private final static SearchTreeNode root = new SearchTreeNode( null );
-	private final static ItemCodec<SearchTreeNode> SEARCH_TREE_NODE_CODEC = DefaultItemCodec.createInstance( SearchTreeNode.class );
+	private static final SearchTreeNode root = new SearchTreeNode( null );
+	private static final ItemCodec<SearchTreeNode> SEARCH_TREE_NODE_CODEC = DefaultItemCodec.createInstance( SearchTreeNode.class );
 
 	public FindReferencesTreeState() {
 		super( AbstractFindComposite.FIND_COMPOSITE_GROUP, UUID.fromString( "88fc8668-1de6-4976-9f3b-5c9688675e2b" ), root, SEARCH_TREE_NODE_CODEC );

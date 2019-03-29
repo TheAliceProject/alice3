@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.math;
  * @author Dennis Cosgrove
  */
 public final class Point3f extends Tuple3f {
-	public final static Point3f ORIGIN = Point3f.createZero();
+	public static final Point3f ORIGIN = Point3f.createZero();
 
 	public Point3f() {
 	}

@@ -53,7 +53,7 @@ import org.lgna.project.ast.InstanceCreation;
  * @author Dennis Cosgrove
  */
 public abstract class ResourceKey {
-	abstract public String getSearchText();
+	public abstract String getSearchText();
 
 	public abstract String getInternalText();
 

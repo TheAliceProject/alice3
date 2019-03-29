@@ -60,13 +60,13 @@ import javax.swing.tree.TreeCellRenderer;
 
 public class BasicTreeNodeRenderer implements TreeCellRenderer
 {
-	private final static Color SELECTED_BORDER_COLOR = Color.GREEN;
-	private final static Color NOT_SELECTED_BORDER_COLOR = Color.GRAY;
+	private static final Color SELECTED_BORDER_COLOR = Color.GREEN;
+	private static final Color NOT_SELECTED_BORDER_COLOR = Color.GRAY;
 
-	private final static Color NEUTRAL_BACKGROUND_COLOR = new Color( 240, 240, 240 );
-	private final static Color DIFFERENT_NODE_BACKGROUND_COLOR = Color.YELLOW;
-	private final static Color DIFFERENT_ATTRIBUTE_BACKGROUND_COLOR = Color.CYAN;
-	private final static Color DIFFERENT_CHILD_BACKGROUND_COLOR = Color.PINK;
+	private static final Color NEUTRAL_BACKGROUND_COLOR = new Color( 240, 240, 240 );
+	private static final Color DIFFERENT_NODE_BACKGROUND_COLOR = Color.YELLOW;
+	private static final Color DIFFERENT_ATTRIBUTE_BACKGROUND_COLOR = Color.CYAN;
+	private static final Color DIFFERENT_CHILD_BACKGROUND_COLOR = Color.PINK;
 
 	private JPanel holder;
 	private JLabel nameLabel;

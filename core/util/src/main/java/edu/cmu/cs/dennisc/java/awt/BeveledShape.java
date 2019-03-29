@@ -55,12 +55,12 @@ import java.awt.geom.GeneralPath;
  */
 public class BeveledShape {
 	//todo: base colors on fill paint
-	private final static Paint HIGHLIGHT_PAINT = Color.LIGHT_GRAY;
-	private final static Paint NEUTRAL_PAINT = Color.GRAY;
-	private final static Paint SHADOW_PAINT = Color.BLACK;
+	private static final Paint HIGHLIGHT_PAINT = Color.LIGHT_GRAY;
+	private static final Paint NEUTRAL_PAINT = Color.GRAY;
+	private static final Paint SHADOW_PAINT = Color.BLACK;
 
-	private final static int CAP = BasicStroke.CAP_ROUND;
-	private final static int JOIN = BasicStroke.JOIN_ROUND;
+	private static final int CAP = BasicStroke.CAP_ROUND;
+	private static final int JOIN = BasicStroke.JOIN_ROUND;
 
 	//todo: reduce visibility to private?
 	protected Shape m_base;

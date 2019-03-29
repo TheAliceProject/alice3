@@ -108,7 +108,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 	};
 
-	protected static abstract class Color4fInterruptibleAnimation extends Color4fAnimation {
+	protected abstract static class Color4fInterruptibleAnimation extends Color4fAnimation {
 		private boolean doEpilogue = true;
 		private boolean isActive = true;
 		private Color4f target;
@@ -147,7 +147,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 	}
 
-	protected static abstract class DoubleInterruptibleAnimation extends DoubleAnimation {
+	protected abstract static class DoubleInterruptibleAnimation extends DoubleAnimation {
 		private boolean doEpilogue = true;
 		private boolean isActive = true;
 		private double target;

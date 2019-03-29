@@ -122,7 +122,7 @@ public class IconFactoryManager {
 		return IconUtilities.createImageIcon( GalleryDragModel.class.getResource( sb.toString() ) );
 	}
 
-	private static abstract class UrlResourceDeclaration implements ResourceDeclaration {
+	private abstract static class UrlResourceDeclaration implements ResourceDeclaration {
 		protected abstract Class<? extends ModelResource> getModelResourceClass();
 
 		protected abstract String getModelResourceName();

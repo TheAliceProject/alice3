@@ -65,7 +65,7 @@ public abstract class MenuModel extends AbstractMenuModel {
 		this( individualId, null );
 	}
 
-	public final static class InternalPopupPrepModel extends PopupPrepModel {
+	public static final class InternalPopupPrepModel extends PopupPrepModel {
 		private MenuModel menuModel;
 
 		private InternalPopupPrepModel( MenuModel menuModel ) {

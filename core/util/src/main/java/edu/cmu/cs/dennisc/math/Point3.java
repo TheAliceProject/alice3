@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.math.immutable.MPoint3;
  * @author Dennis Cosgrove
  */
 public final class Point3 extends Tuple3 {
-	public final static Point3 ORIGIN = Point3.createZero();
+	public static final Point3 ORIGIN = Point3.createZero();
 
 	public Point3() {
 	}

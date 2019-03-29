@@ -101,7 +101,7 @@ public class AnchorsView extends SwingComponentView<JComponent> {
 		}
 	}
 
-	private static abstract class Chain {
+	private abstract static class Chain {
 		private final double tx;
 		private final double ty;
 		private final Node[] nodes;

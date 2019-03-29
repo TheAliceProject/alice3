@@ -352,7 +352,7 @@ public abstract class SourceCodeGenerator {
 		});
 	}
 
-	abstract public void appendCountLoop( CountLoop loop );
+	public abstract void appendCountLoop( CountLoop loop );
 
 	void appendForEach( AbstractForEachLoop loop ) {
 		appendCodeFlowStatement(loop, () -> {

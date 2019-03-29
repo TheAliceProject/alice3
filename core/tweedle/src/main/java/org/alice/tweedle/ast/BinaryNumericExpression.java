@@ -32,6 +32,6 @@ abstract class BinaryNumericExpression<T> extends BinaryExpression {
 		}
 	}
 
-	abstract protected T evaluate( double left, double right );
-	abstract protected T evaluate( int left, int right );
+	protected abstract T evaluate( double left, double right );
+	protected abstract T evaluate( int left, int right );
 }

@@ -52,7 +52,7 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public abstract class SingleComponentPanel extends Panel {
-	protected static abstract class SingleComponentLayoutManager implements LayoutManager {
+	protected abstract static class SingleComponentLayoutManager implements LayoutManager {
 		@Override
 		public void addLayoutComponent( String name, Component comp ) {
 		}

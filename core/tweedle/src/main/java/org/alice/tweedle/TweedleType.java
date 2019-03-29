@@ -4,8 +4,8 @@ package org.alice.tweedle;
  * Unifying type for enums, primitives, and classes.
  */
 public class TweedleType {
-	final private String name;
-	final private TweedleType impliedType;
+	private final String name;
+	private final TweedleType impliedType;
 
 	public TweedleType( String name) {
 		this.name = name;

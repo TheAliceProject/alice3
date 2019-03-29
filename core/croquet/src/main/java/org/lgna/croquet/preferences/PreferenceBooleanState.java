@@ -66,7 +66,7 @@ public abstract class PreferenceBooleanState extends BooleanState {
 
 	private static List<PreferenceBooleanState> instances = Lists.newCopyOnWriteArrayList();
 
-	public final static void preserveAll( Preferences userPreferences ) {
+	public static final void preserveAll( Preferences userPreferences ) {
 		for( PreferenceBooleanState state : instances ) {
 			userPreferences.putBoolean( state.preferenceKey, state.getValue() );
 		}

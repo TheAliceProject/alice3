@@ -5,8 +5,8 @@ import org.alice.tweedle.ast.TweedleExpression;
 import java.util.Map;
 
 public class TweedleEnumValue extends TweedleValue {
-	final private String name;
-	final private Map<String, TweedleExpression> constructorArgs;
+	private final String name;
+	private final Map<String, TweedleExpression> constructorArgs;
 
 	public TweedleEnumValue( TweedleEnum parent, String name , Map<String, TweedleExpression> constructorArgs ) {
 		super(parent);

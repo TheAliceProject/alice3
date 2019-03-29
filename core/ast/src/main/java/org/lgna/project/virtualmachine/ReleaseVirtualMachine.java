@@ -61,7 +61,7 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class ReleaseVirtualMachine extends VirtualMachine {
-	protected static abstract class AbstractFrame implements Frame {
+	protected abstract static class AbstractFrame implements Frame {
 		private final Frame owner;
 		private final Map<UserLocal, Object> mapLocalToValue = Maps.newHashMap();
 
@@ -188,7 +188,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 	}
 
-	protected static abstract class InvocationFrame extends AbstractFrame {
+	protected abstract static class InvocationFrame extends AbstractFrame {
 		private final Map<AbstractParameter, Object> mapParameterToValue;
 
 		public InvocationFrame( Frame owner, Map<AbstractParameter, Object> mapParameterToValue ) {
@@ -255,7 +255,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 	}
 
-	protected static abstract class AbstractMethodInvocationFrame extends InvocationFrame {
+	protected abstract static class AbstractMethodInvocationFrame extends InvocationFrame {
 		private final UserInstance instance;
 
 		public AbstractMethodInvocationFrame( Frame owner, Map<AbstractParameter, Object> mapParameterToValue, UserInstance instance ) {

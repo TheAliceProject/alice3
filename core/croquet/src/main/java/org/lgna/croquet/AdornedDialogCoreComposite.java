@@ -60,7 +60,7 @@ import java.util.UUID;
  */
 public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, DCC extends DialogContentComposite<?>> extends AbstractDialogComposite<V> {
 
-	protected static abstract class InternalDialogOperation extends Operation {
+	protected abstract static class InternalDialogOperation extends Operation {
 		private final AdornedDialogCoreComposite coreComposite;
 
 		public InternalDialogOperation( UUID id, AdornedDialogCoreComposite coreComposite ) {

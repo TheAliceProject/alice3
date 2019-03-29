@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 public class TweedleEnum extends TweedleType {
-	final private Map<String, TweedleEnumValue> values;
-	final private List<TweedleField> properties;
-	final private List<TweedleMethod> methods;
-	final private List<TweedleConstructor> constructors;
+	private final Map<String, TweedleEnumValue> values;
+	private final List<TweedleField> properties;
+	private final List<TweedleMethod> methods;
+	private final List<TweedleConstructor> constructors;
 
 	public TweedleEnum( String name, Map<String, TweedleEnumValue> values, List<TweedleField> properties, List<TweedleMethod> methods, List<TweedleConstructor> constructors ) {
 		super( name);

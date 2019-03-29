@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
 public class AcceptIfNotGenerated implements Criterion<Expression> {
 
 	private static class SingletonHolder {
-		public final static AcceptIfNotGenerated filteredInstance = new AcceptIfNotGenerated();
+		public static final AcceptIfNotGenerated filteredInstance = new AcceptIfNotGenerated();
 	}
 
 	public static AcceptIfNotGenerated getInstance() {

@@ -49,7 +49,7 @@ import java.util.HashMap;
  */
 /*package-private*/class InitializingIfAbsentHashMap<K, V> extends HashMap<K, V> implements InitializingIfAbsentMap<K, V> {
 	@Override
-	public synchronized final V getInitializingIfAbsent( K key, Initializer<K, V> initializer ) {
+	public final synchronized V getInitializingIfAbsent( K key, Initializer<K, V> initializer ) {
 		if( this.containsKey( key ) ) {
 			return this.get( key );
 		} else {

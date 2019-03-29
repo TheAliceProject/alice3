@@ -91,7 +91,7 @@ public class SpringUtilities {
 		}
 	}
 
-	private static abstract class CenterSpring extends Spring {
+	private abstract static class CenterSpring extends Spring {
 		private Container container;
 		private Component component;
 		private int offset;

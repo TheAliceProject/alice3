@@ -60,7 +60,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class NumberModel<N extends Expression> /* extends edu.cmu.cs.dennisc.croquet.StringState */{
-	@Deprecated/* package-private */final static Group NUMBER_PAD_GROUP = Group.getInstance( UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "NUMBER_PAD_GROUP" );
+	@Deprecated static final Group NUMBER_PAD_GROUP = Group.getInstance( UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "NUMBER_PAD_GROUP" );
 
 	private final PlainDocument document = new PlainDocument();
 	private final JTextField textField = new JTextField();

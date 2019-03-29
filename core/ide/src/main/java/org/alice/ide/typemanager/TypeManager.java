@@ -160,7 +160,7 @@ public class TypeManager {
 		}
 	}
 
-	private static abstract class ExtendsTypeCriterion implements Criterion<NamedUserType> {
+	private abstract static class ExtendsTypeCriterion implements Criterion<NamedUserType> {
 		private final AbstractType<?, ?, ?> superType;
 
 		public ExtendsTypeCriterion( AbstractType<?, ?, ?> superType ) {

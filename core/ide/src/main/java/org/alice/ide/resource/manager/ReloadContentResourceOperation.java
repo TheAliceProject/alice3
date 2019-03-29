@@ -60,7 +60,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 /*package-private*/final class ReloadContentResourceOperation extends SelectedResourceOperation {
-	private static abstract class Capsule<E extends Resource> {
+	private abstract static class Capsule<E extends Resource> {
 		private String originalFileName;
 		//private String name;
 		private String contentType;

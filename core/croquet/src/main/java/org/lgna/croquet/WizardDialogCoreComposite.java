@@ -65,7 +65,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreComposite<Panel, WizardDialogContentComposite> {
-	private static abstract class InternalWizardDialogOperation extends InternalDialogOperation {
+	private abstract static class InternalWizardDialogOperation extends InternalDialogOperation {
 		public InternalWizardDialogOperation( UUID id, WizardDialogCoreComposite composite ) {
 			super( id, composite );
 		}

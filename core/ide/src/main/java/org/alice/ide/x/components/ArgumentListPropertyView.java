@@ -56,7 +56,7 @@ import org.lgna.project.ast.ArgumentListProperty;
  * @author Dennis Cosgrove
  */
 public abstract class ArgumentListPropertyView<N extends AbstractArgument> extends LineAxisPanel {
-	protected final static String SEPARATOR = ",";
+	protected static final String SEPARATOR = ",";
 	private final AstI18nFactory factory;
 	private final ArgumentListProperty<N> argumentListProperty;
 	private ListPropertyListener<N> listPropertyAdapter = new SimplifiedListPropertyAdapter<N>() {

@@ -136,7 +136,7 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 		}
 	}
 
-	protected static abstract class AbstractInternalStringValue extends PlainStringValue {
+	protected abstract static class AbstractInternalStringValue extends PlainStringValue {
 		private final Key key;
 
 		public AbstractInternalStringValue( UUID id, Key key ) {
@@ -729,10 +729,8 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 	}
 
 	@Override
-	public synchronized final V getView() {
-		if( this.view != null ) {
-			//pass
-		} else {
+	public final synchronized V getView() {
+		if ( this.view == null ) {
 			this.view = this.createView();
 			assert this.view != null : this;
 			if( this.scrollPane != null ) {

@@ -4,7 +4,7 @@ import org.alice.tweedle.TweedleType;
 import org.alice.tweedle.TweedleValue;
 import org.alice.tweedle.run.Frame;
 
-abstract public class TweedleExpression {
+public abstract class TweedleExpression {
 	private TweedleType type;
 
 	protected TweedleExpression( TweedleType type ) {
@@ -19,5 +19,5 @@ abstract public class TweedleExpression {
 		return type;
 	}
 
-	abstract public TweedleValue evaluate( Frame frame );
+	public abstract TweedleValue evaluate( Frame frame );
 }
