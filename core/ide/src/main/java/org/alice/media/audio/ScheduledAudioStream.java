@@ -54,7 +54,7 @@ import javax.sound.sampled.AudioSystem;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class ScheduledAudioStream implements Comparable<ScheduledAudioStream>
 {

@@ -64,7 +64,7 @@ public abstract class MethodInvocationFillIn extends ExpressionFillInWithExpress
 	//
 	//
 	//
-	// todo: since a user method's signature can change, this should not inherit from ImmutableCascadeFillIn 
+	// todo: since a user method's signature can change, this should not inherit from ImmutableCascadeFillIn
 	// extends org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> {
 	//
 	//

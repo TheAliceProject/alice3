@@ -74,7 +74,7 @@ public class JScrollPaneCoveringLinuxPaintBug extends javax.swing.JScrollPane {
 			if( scrollPane != null ) {
 				Color scrollPaneBackground = scrollPane.getBackground();
 				return scrollPaneBackground;
-				//todo?			
+				//todo?
 				//return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( scrollPaneBackground, 1.0, 0.7, 1.1 );
 			}
 			return super.getBackground();

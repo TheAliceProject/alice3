@@ -19,7 +19,7 @@ public class TweedleObject extends TweedleValue {
 	}
 
 	public void set( TweedleField field, TweedleValue value ) {
-		
+
 	}
 
 	// TODO reconsider existence. Field initialization should be part of construction of object.

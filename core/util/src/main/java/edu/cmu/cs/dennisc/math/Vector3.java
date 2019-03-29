@@ -245,7 +245,7 @@ public class Vector3 extends Tuple3 {
 		return new MVector3( this.x, this.y, this.z );
 	}
 
-	//	
+	//
 	//	public VectorD3() {
 	//	}
 	//	public VectorD3( VectorD3 other ) {
@@ -261,8 +261,8 @@ public class Vector3 extends Tuple3 {
 	//	public static VectorD3 createFromNaN() {
 	//		return (VectorD3)setReturnValueToNaN( new VectorD3() );
 	//	}
-	//	
-	//	
+	//
+	//
 	//	public static double calculateDotProduct( VectorD3 a, VectorD3 b ) {
 	//		return a.x * b.x + a.y * b.y + a.z * b.z;
 	//	}
@@ -291,7 +291,7 @@ public class Vector3 extends Tuple3 {
 	//	public static double calculateCrossProductZ( double ax, double ay, double az, double bx, double by, double bz ) {
 	//		return ax*by - ay*bx;
 	//	}
-	//	
+	//
 	//	public static VectorD3 createFromAdd( VectorD3 rv, TupleD3 a, TupleD3 b ) {
 	//		rv.set( a.x + b.x, a.y + b.y, a.z + b.z );
 	//		return rv;
@@ -341,12 +341,12 @@ public class Vector3 extends Tuple3 {
 	//
 	//	@Deprecated
 	//	public static boolean isWithinEpsilonOfPositiveOrNegativeYAxis( VectorD3 v, double epsilon ) {
-	//		return 
-	//			edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinEpsilon( Math.abs( v.y ), 1.0, epsilon ) && 
-	//			edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinEpsilon( v.x, 0.0, epsilon ) && 
-	//			edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinEpsilon( v.z, 0.0, epsilon ); 
+	//		return
+	//			edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinEpsilon( Math.abs( v.y ), 1.0, epsilon ) &&
+	//			edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinEpsilon( v.x, 0.0, epsilon ) &&
+	//			edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinEpsilon( v.z, 0.0, epsilon );
 	//	}
-	//	
+	//
 	//	public static VectorD3 setReturnValueToNegative( VectorD3 rv, VectorD3 other ) {
 	//		rv.x = -other.x;
 	//		rv.y = -other.y;

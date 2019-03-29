@@ -59,7 +59,7 @@ import java.util.UUID;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class GetAGoodLookAtActionOperation extends ActionOperation {
 

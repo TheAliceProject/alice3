@@ -50,7 +50,7 @@ import java.awt.Font;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class TextFontPropertyAdapter extends AbstractPropertyAdapter<Font, TextModelImp> {
 

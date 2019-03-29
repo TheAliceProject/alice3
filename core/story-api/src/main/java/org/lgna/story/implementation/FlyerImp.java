@@ -49,7 +49,7 @@ import org.lgna.story.resources.JointId;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public final class FlyerImp extends JointedModelImp<SFlyer, FlyerResource> {
 	public FlyerImp( SFlyer abstraction, JointImplementationAndVisualDataFactory<FlyerResource> factory ) {

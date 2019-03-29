@@ -46,7 +46,7 @@ import org.lgna.project.annotations.ClassTemplate;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class SetFogDensity extends DurationAnimationStyleArgumentFactory {
 	@ClassTemplate( keywordFactoryCls = SetFogDensity.class )

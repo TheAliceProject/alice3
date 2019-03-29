@@ -213,7 +213,7 @@ public class NebulousPersonVisualData extends NebulousVisualData<Person> {
 	//		{
 	//			return new Dimension3(1, 2, 1);
 	//		}
-	//		
+	//
 	//	}
 
 }

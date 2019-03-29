@@ -48,7 +48,7 @@ import org.lgna.story.SCameraMarker;
 
 /**
  * @author dculyba
- * 
+ *
  */
 //todo: delete
 @Deprecated

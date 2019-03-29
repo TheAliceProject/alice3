@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTexture;
 
 /**
  * @author alice
- * 
+ *
  */
 public class NebulousTextureAdapter extends GlrTexture<NebulousTexture> {
 

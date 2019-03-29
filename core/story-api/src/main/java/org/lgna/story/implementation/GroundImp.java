@@ -665,7 +665,7 @@ public class GroundImp extends SimpleModelImp {
 		this.abstraction = abstraction;
 
 		//		edu.cmu.cs.dennisc.scenegraph.QuadArray plane = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
-		//		
+		//
 		//		double xzMin = -200.0;
 		//		double xzMax = +200.0;
 		//		double y = 0.0;
@@ -673,7 +673,7 @@ public class GroundImp extends SimpleModelImp {
 		//		float i = 0.0f;
 		//		float j = 1.0f;
 		//		float k = 0.0f;
-		//		
+		//
 		//		float uvMin = 0.0f;
 		//		float uvMax = +100.0f;
 		//

@@ -174,7 +174,7 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 						1, //gridHeight
 						1.0, //weightX
 						1.0, //weightY
-						GridBagConstraints.CENTER, //anchor 
+						GridBagConstraints.CENTER, //anchor
 						GridBagConstraints.HORIZONTAL, //fill
 						new Insets( 0, 0, 0, 0 ), //insets
 						0, //ipadX
@@ -188,7 +188,7 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 						1, //gridHeight
 						1.0, //weightX
 						1.0, //weightY
-						GridBagConstraints.CENTER, //anchor 
+						GridBagConstraints.CENTER, //anchor
 						GridBagConstraints.NONE, //fill
 						new Insets( 0, 0, 0, 0 ), //insets
 						0, //ipadX
@@ -202,7 +202,7 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 						1, //gridHeight
 						1.0, //weightX
 						1.0, //weightY
-						GridBagConstraints.CENTER, //anchor 
+						GridBagConstraints.CENTER, //anchor
 						GridBagConstraints.NONE, //fill
 						new Insets( 0, 0, 0, 0 ), //insets
 						0, //ipadX

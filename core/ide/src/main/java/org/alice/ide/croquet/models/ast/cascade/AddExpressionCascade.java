@@ -98,7 +98,7 @@ public class AddExpressionCascade extends ExpressionsCascade {
 	//	public org.lgna.project.ast.Expression getPreviousExpression() {
 	//		return null;
 	//	}
-	//	
+	//
 	//	@Override
 	//	protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
 	//		return edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP;

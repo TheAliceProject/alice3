@@ -237,14 +237,14 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 		}
 		return -1;
 	}
-	//	
+	//
 	//	public static void main( String[] args ) {
 	//		javax.swing.DefaultListModel model = new javax.swing.DefaultListModel();
 	//		model.addElement( 1 );
 	//		model.addElement( 3 );
 	//		model.addElement( 4 );
 	//		javax.swing.JList list = new javax.swing.JList( model );
-	//				
+	//
 	//		ListUI ui = new ListUI() {
 	//			@Override
 	//			protected javax.swing.AbstractButton createComponentFor( int index, Object o ) {
@@ -252,14 +252,14 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 	//			}
 	//		};
 	//		list.setUI( ui );
-	//		
+	//
 	//		model.addElement( 5 );
 	//		model.add( 0, 0 );
 	//		model.add( 2, 2 );
-	//		
+	//
 	//		model.remove( 4 );
 	//		model.remove( 0 );
-	//		
+	//
 	//		javax.swing.JFrame frame = new javax.swing.JFrame();
 	//		frame.getContentPane().add( list, java.awt.BorderLayout.CENTER );
 	//		frame.setDefaultCloseOperation( javax.swing.WindowConstants.DISPOSE_ON_CLOSE );

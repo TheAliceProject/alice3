@@ -47,7 +47,7 @@ import org.lgna.story.resources.PropResource;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class SProp extends SJointedModel {
 

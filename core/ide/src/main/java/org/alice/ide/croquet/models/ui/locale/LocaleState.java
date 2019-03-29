@@ -91,7 +91,7 @@ public class LocaleState extends PreferenceMutableDataSingleSelectListState<Loca
 				new Locale( "ja" ),
 				new Locale( "bg" )
 		//				new java.util.Locale( "zh", "TW" ),
-		//				new java.util.Locale( "ko" ) 
+		//				new java.util.Locale( "ko" )
 		);
 		this.addNewSchoolValueListener( e -> RestartRequiredOperation.getInstance().fire() );
 	}

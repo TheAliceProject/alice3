@@ -50,7 +50,7 @@ import org.lgna.story.implementation.Property.Listener;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class GroundOpacityAdapter extends AbstractPropertyAdapter<Double, GroundImp> {
 

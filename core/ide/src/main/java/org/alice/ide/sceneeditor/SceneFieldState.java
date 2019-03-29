@@ -51,7 +51,7 @@ import java.util.UUID;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class SceneFieldState extends MutableDataSingleSelectListState<UserField> {
 	public SceneFieldState() {

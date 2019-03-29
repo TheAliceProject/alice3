@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
 /**
  * @author alice
- * 
+ *
  */
 public class ModelSubResourceExporter {
 	private final String textureName;

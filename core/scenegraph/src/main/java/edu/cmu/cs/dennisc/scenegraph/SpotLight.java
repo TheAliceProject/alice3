@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.property.DoubleProperty;
  * inner beam angle; and falling off exponentially between its inner and outer
  * beam angles.<br>
  * useful in simulating a luxo lamp.<br>
- * 
+ *
  * @author Dennis Cosgrove
  */
 public class SpotLight extends PointLight {

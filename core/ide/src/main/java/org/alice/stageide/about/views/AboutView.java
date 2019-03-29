@@ -120,7 +120,7 @@ public class AboutView extends BorderPanel {
 		otherPanel.addComponent( formPanel );
 		otherPanel.addComponent( BoxUtilities.createVerticalSliver( 16 ) );
 
-		//		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel( 
+		//		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel(
 		//				org.alice.stageide.about.MainSiteBrowserOperation.getInstance().createHyperlink(),
 		//				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 24 ),
 		//				composite.getVersionLabel().createImmutableEditorPane()

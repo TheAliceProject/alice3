@@ -52,7 +52,7 @@ import java.util.UUID;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class ShowJointedModelJointAxesState extends BooleanState {
 

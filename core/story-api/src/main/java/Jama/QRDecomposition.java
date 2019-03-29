@@ -74,7 +74,7 @@ public class QRDecomposition implements Serializable {
 
             // Apply transformation to remaining columns.
             for (int j = k+1; j < n; j++) {
-               double s = 0.0; 
+               double s = 0.0;
                for (int i = k; i < m; i++) {
                   s += QR[i][k]*QR[i][j];
                }
@@ -186,7 +186,7 @@ public class QRDecomposition implements Serializable {
       if (!this.isFullRank()) {
          throw new RuntimeException("Matrix is rank deficient.");
       }
-      
+
       // Copy right hand side
       int nx = B.getColumnDimension();
       double[][] X = B.getArrayCopy();
@@ -194,7 +194,7 @@ public class QRDecomposition implements Serializable {
       // Compute Y = transpose(Q)*B
       for (int k = 0; k < n; k++) {
          for (int j = 0; j < nx; j++) {
-            double s = 0.0; 
+            double s = 0.0;
             for (int i = k; i < m; i++) {
                s += QR[i][k]*X[i][j];
             }

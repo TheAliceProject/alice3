@@ -54,7 +54,7 @@ import java.util.UUID;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class RevertFieldOperation extends ActionOperation {
 	private static Map<UserField, RevertFieldOperation> map = Maps.newHashMap();

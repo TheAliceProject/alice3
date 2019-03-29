@@ -87,7 +87,7 @@ public abstract class CascadeBlank<B> {
 		}
 
 		//remove separators at the end
-		//there should be a maximum of only 1 but we loop anyway 
+		//there should be a maximum of only 1 but we loop anyway
 		final int N = children.size();
 		for( int i = 0; i < N; i++ ) {
 			int index = N - i - 1;

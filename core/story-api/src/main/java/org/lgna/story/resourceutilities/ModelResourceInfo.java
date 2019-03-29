@@ -64,7 +64,7 @@ import edu.cmu.cs.dennisc.xml.XMLUtilities;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class ModelResourceInfo {
 	private final AxisAlignedBox boundingBox;

@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class JointRotationRingHandle extends RotationRingHandle {
 

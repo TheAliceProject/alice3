@@ -46,7 +46,7 @@ import org.lgna.story.CameraMarker;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public abstract class CameraMarkerImp extends MarkerImp {
 	protected CameraMarkerImp( CameraMarker abstraction ) {

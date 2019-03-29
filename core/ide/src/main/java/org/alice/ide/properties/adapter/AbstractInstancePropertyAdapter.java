@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractPropertyAdapter<P, O> {
 	private PropertyListener propertyListener;

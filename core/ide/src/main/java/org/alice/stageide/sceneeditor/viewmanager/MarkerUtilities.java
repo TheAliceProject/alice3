@@ -80,7 +80,7 @@ import javax.swing.JComponent;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class MarkerUtilities {
 	private static final String[] COLOR_NAME_KEYS;

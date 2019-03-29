@@ -117,7 +117,7 @@ public class NewSchoolImagesToWebmEncoder {
 		args.add( "-vcodec" );
 		args.add( "libvpx" );
 
-		// libvpx option: quality (best, good, realtime) 
+		// libvpx option: quality (best, good, realtime)
 		args.add( "-quality" );
 		args.add( "good" );
 
@@ -125,7 +125,7 @@ public class NewSchoolImagesToWebmEncoder {
 		args.add( "-cpu-used" );
 		args.add( "0" );
 
-		// libvpx option: variable bit rate 
+		// libvpx option: variable bit rate
 		args.add( "-b:v" );
 		args.add( "500k" );
 

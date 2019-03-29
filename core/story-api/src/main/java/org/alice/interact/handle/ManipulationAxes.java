@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class ManipulationAxes extends ManipulationHandle3D {
 	private static final double MIN_SIZE = .6;

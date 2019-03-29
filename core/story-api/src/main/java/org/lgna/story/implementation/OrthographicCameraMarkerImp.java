@@ -49,7 +49,7 @@ import org.lgna.story.OrthographicCameraMarker;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class OrthographicCameraMarkerImp extends CameraMarkerImp {
 	public OrthographicCameraMarkerImp( OrthographicCameraMarker abstraction ) {

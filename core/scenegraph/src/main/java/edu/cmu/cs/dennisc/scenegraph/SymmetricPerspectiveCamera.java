@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.math.property.AngleProperty;
 
 /**
  * defined by a regular pyramidal frustum
- * 
+ *
  * @author Dennis Cosgrove
  */
 public class SymmetricPerspectiveCamera extends AbstractPerspectiveCamera {

@@ -744,20 +744,20 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 		//		double m03 = a.translation.x;
 		//		double m13 = a.translation.y;
 		//		double m23 = a.translation.z;
-		//		
+		//
 		//		double determinate = a.calculateDeterminate();
-		//		rv.set( 
+		//		rv.set(
 		//				- m12 * m21 + m11 * m22,
-		//				+ m02 * m21 - m01 * m22, 
-		//				- m02 * m11 + m01 * m12, 
+		//				+ m02 * m21 - m01 * m22,
+		//				- m02 * m11 + m01 * m12,
 		//				m03 * m12 * m21 - m02 * m13 * m21 - m03 * m11 * m22 + m01 * m13 * m22 + m02 * m11 * m23 - m01 * m12 * m23,
-		//				+ m12 * m20 - m10 * m22, 
-		//				- m02 * m20 + m00 * m22, 
-		//				+ m02 * m10 - m00 * m12, 
-		//				m02 * m13 * m20 - m03 * m12 * m20 + m03 * m10 * m22 - m00 * m13 * m22 - m02 * m10 * m23 + m00 * m12 * m23, 
-		//				- m11 * m20 + m10 * m21, 
-		//				+ m01 * m20 - m00 * m21, 
-		//				- m01 * m10 + m00 * m11, 
+		//				+ m12 * m20 - m10 * m22,
+		//				- m02 * m20 + m00 * m22,
+		//				+ m02 * m10 - m00 * m12,
+		//				m02 * m13 * m20 - m03 * m12 * m20 + m03 * m10 * m22 - m00 * m13 * m22 - m02 * m10 * m23 + m00 * m12 * m23,
+		//				- m11 * m20 + m10 * m21,
+		//				+ m01 * m20 - m00 * m21,
+		//				- m01 * m10 + m00 * m11,
 		//				m03 * m11 * m20 - m01 * m13 * m20 - m03 * m10 * m21 + m00 * m13 * m21 + m01 * m10 * m23 - m00 * m11 * m23
 		//		);
 		//		rv.orientation.divide( determinate );

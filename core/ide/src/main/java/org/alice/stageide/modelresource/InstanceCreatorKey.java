@@ -57,7 +57,7 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public abstract class InstanceCreatorKey extends ResourceKey {
-	
+
 	private static Map<JavaType, JavaType> mapResourceTypeToAbstractionType;
 
 	static JavaType getAbstractionTypeForResourceType( AbstractType<?, ?, ?> assignableFromResourceType ) {

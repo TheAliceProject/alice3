@@ -49,7 +49,7 @@ import org.lgna.story.implementation.SceneImp;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class SceneFogDensityAdapter extends AbstractPropertyAdapter<Double, SceneImp> {
 	private Listener<Float> propertyListener;

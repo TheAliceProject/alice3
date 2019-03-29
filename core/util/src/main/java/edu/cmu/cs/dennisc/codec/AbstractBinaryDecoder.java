@@ -269,7 +269,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	//		String clsName = this.decodeString();
 	//		if( clsName.length() > 0 ) {
 	//			try {
-	//				java.lang.reflect.Constructor< E > cnstrctr = CodecUtilities.getPublicDecodeConstructor( clsName, EMPTY_PARAMETER_TYPES );			
+	//				java.lang.reflect.Constructor< E > cnstrctr = CodecUtilities.getPublicDecodeConstructor( clsName, EMPTY_PARAMETER_TYPES );
 	//				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
 	//			} catch( NoSuchMethodException nsme ) {
 	////				try {

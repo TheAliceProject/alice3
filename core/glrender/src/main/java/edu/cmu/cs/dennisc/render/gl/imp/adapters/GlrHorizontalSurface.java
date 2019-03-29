@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.scenegraph.HorizontalSurface;
 
 /**
  * @author alice
- * 
+ *
  */
 public class GlrHorizontalSurface<T extends HorizontalSurface> extends GlrTexturedVisual<T> {
 

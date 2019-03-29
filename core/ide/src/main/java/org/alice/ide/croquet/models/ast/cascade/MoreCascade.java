@@ -131,7 +131,7 @@ public class MoreCascade extends ImmutableCascade<Expression> {
 	//	protected org.lgna.project.ast.Statement getStatement() {
 	//		return this.expressionStatement;
 	//	}
-	//	
+	//
 	//	private org.lgna.project.ast.AbstractParameter getLastParameter() {
 	//		org.lgna.project.ast.AbstractMethod method = this.nextMethodInvocation.method.getValue();
 	//		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getParameters();
@@ -143,8 +143,8 @@ public class MoreCascade extends ImmutableCascade<Expression> {
 	//		org.lgna.project.ast.AbstractParameter lastParameter = this.getLastParameter();
 	//		return lastParameter.getName();
 	//	}
-	//	
-	//	
+	//
+	//
 	//	@Override
 	//	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
 	//		org.lgna.project.ast.AbstractParameter lastParameter = this.getLastParameter();

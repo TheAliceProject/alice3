@@ -79,7 +79,7 @@ public abstract class FocusWindowComposite extends AbstractComposite<Panel> {
 			public void windowLostFocus( WindowEvent e ) {
 				JFrame window = (JFrame)e.getComponent();
 				if( window.isUndecorated() ) {
-					//note: dialog operations or browser operations will need to be addressed 
+					//note: dialog operations or browser operations will need to be addressed
 					e.getComponent().setVisible( false );
 				}
 			}

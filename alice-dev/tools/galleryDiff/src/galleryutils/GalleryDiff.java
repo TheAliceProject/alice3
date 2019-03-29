@@ -35,50 +35,50 @@ import org.lgna.story.resources.ModelResource;
 
 /*
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class GalleryDiff {
 
@@ -136,7 +136,7 @@ public class GalleryDiff {
 	private GalleryDiffDialog diffDialog = new GalleryDiffDialog();
 
 	private static final int SCORE_THRESHOLD = 10;
-	
+
 	private static final String MIGRATION_FILE_NAME = "migrationData.txt";
 
 	private GalleryDiff(Version prevVersion,
@@ -225,7 +225,7 @@ public class GalleryDiff {
 
 		this.prevVersion = loadGalleryInfo(prevSymbols, prevDataFile);
 		this.curVersion = loadGalleryInfo(curSymbols, curDataFile);
-		
+
 		File migrationFile = new File(curDataFile.getParentFile(), MIGRATION_FILE_NAME);
 		if (migrationFile.exists()) {
 			this.loadMigrationInfo(migrationFile.getAbsoluteFile());
@@ -269,8 +269,7 @@ public class GalleryDiff {
 				if (isSourceSymbol) {
 					alreadyMatchedSymbols.add(symbol);
 					isSourceSymbol = false;
-				}
-				else {
+				} else {
 					isSourceSymbol = true;
 				}
 			}
@@ -325,8 +324,7 @@ public class GalleryDiff {
 				String s = this.conversionMap.get(i);
 				if (this.unMatchedSymbols.contains(s)) {
 					i++;
-				}
-				else {
+				} else {
 					writer.write(s + "\n");
 				}
 			}
@@ -377,7 +375,7 @@ public class GalleryDiff {
 									.println("Too many matches, marking as unmatched\n");
 							this.unMatchedSymbols.add(symbol);
 						}
-						// 
+						//
 					}
 					if (match != null) {
 						conversionMap.add(symbol);
@@ -431,7 +429,7 @@ public class GalleryDiff {
 		return "createMoreSpecificFieldPattern( \"" + enumSymbol + "\", \""
 				+ classString + "\" )";
 	}
-	
+
 	private static String getMoreSpecificCodeReplacement(String symbol) {
 		String enumSymbol = getResourceEnum(symbol);
 		if (enumSymbol == null) {
@@ -720,25 +718,25 @@ public class GalleryDiff {
 		jarDir = new File(jarDir, "ide/lib/alice");
 //		File aliceJarDir = new File("C:/Users/alice/.m2/repository/org/alice/alice-model-source/2014.07.22");
 //		File nebulousJarDir = new File("C:/Users/alice/.m2/repository/org/alice/nonfree/nebulous-model-source/2014.07.22");
-		
+
 		File aliceJarDir = new File("C:/batchOutput/mavenFilesZipped/alice/gallery/alice-model-source");
 		File nebulousJarDir = new File("C:/batchOutput/mavenFilesZipped/nonfree/nebulous-model-source");
-		
+
 		System.out.println(jarDir);
 
 //		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
 //				.listDescendants(jarDir, "jar");
-		
+
 		File[] aliceJarFiles = FileUtilities
 				.listDescendants(aliceJarDir, "jar");
 		File[] nebulousJarFiles = FileUtilities
 				.listDescendants(nebulousJarDir, "jar");
-		
+
 		File[] jarFiles = ArrayUtilities.concatArrays(File.class, aliceJarFiles, nebulousJarFiles);
-		
+
 		final String DATA_LOCATIONS = "C:\\batchOutput\\galleryVersionData\\";
 		final String FILE_NAME = "\\galleryData.txt";
-		
+
 
 		 GalleryDiff.saveGalleryInfo(ProjectVersion.getCurrentVersion(),
 		 DATA_LOCATIONS+ProjectVersion.getCurrentVersion().toString()+FILE_NAME,
@@ -755,7 +753,7 @@ public class GalleryDiff {
 				// "3.1.29.0.0",
 				// "3.1.46.0.0",
 				// "3.1.47.0.0",
-//				"3.1.70.0.0", 
+				// "3.1.70.0.0",
 				"3.1.92.0.0", "3.1.93.0.0" };
 
 		StringBuilder sb = new StringBuilder();

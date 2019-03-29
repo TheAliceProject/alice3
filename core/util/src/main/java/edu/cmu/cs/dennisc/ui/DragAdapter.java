@@ -88,7 +88,7 @@ public abstract class DragAdapter implements MouseListener, MouseMotionListener,
 	}
 
 	//	private static final java.awt.Cursor NULL_CURSOR;
-	//	
+	//
 	//	static {
 	//
 	//		java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
@@ -99,7 +99,7 @@ public abstract class DragAdapter implements MouseListener, MouseMotionListener,
 	//		java.awt.Image image = toolkit.createImage( memoryImageSource );
 	//		NULL_CURSOR = toolkit.createCustomCursor( image, new java.awt.Point( 0,0 ), "NULL_CURSOR" );
 	//	}
-	//	
+	//
 	//	private java.awt.Cursor m_prevCursor;
 	//	protected void showCursor() {
 	//		m_awtComponent.setCursor( m_prevCursor );

@@ -68,17 +68,17 @@ public class IoLoggingHandler extends java.util.logging.Handler {
 		Logger.getInstance().addHandler( ioLoggingHandler );
 		Logger.setLevel(Level.INFO);
 	}
-	
+
 	public static void uninitialize() {
 		Logger.getInstance().removeHandler( ioLoggingHandler );
 	}
-	
+
 	public static void printStackTrace( Throwable t ) {
 		for( StackTraceElement stackTraceElement : t.getStackTrace() ) {
 			io.getErr().println( stackTraceElement );
 		}
 	}
-	
+
 	public static void errln( Object object ) {
 		io.getErr().println( object );
 	}

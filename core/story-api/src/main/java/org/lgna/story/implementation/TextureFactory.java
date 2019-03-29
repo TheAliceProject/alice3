@@ -92,7 +92,7 @@ public final class TextureFactory {
 	private static void updateBufferedImageTexture( BufferedImageTexture bufferedImageTexture, BufferedImage bufferedImage ) {
 		bufferedImageTexture.setBufferedImage( bufferedImage );
 
-		//todo: handle java.awt.image.BufferedImage.BITMASK? 
+		//todo: handle java.awt.image.BufferedImage.BITMASK?
 		boolean isPotenentiallyAlphaBlended = bufferedImage.getTransparency() == BufferedImage.TRANSLUCENT;
 		bufferedImageTexture.setPotentiallyAlphaBlended( isPotenentiallyAlphaBlended );
 	}
@@ -110,7 +110,7 @@ public final class TextureFactory {
 				TextureFactory.updateBufferedImageTexture( bufferedImageTexture, bufferedImage );
 				rv = bufferedImageTexture;
 
-				//todo: address order dependency w/ ImageFactory 
+				//todo: address order dependency w/ ImageFactory
 				imageResource.addContentListener( TextureFactory.resourceContentListener );
 
 				TextureFactory.resourceToTextureMap.put( imageResource, rv );

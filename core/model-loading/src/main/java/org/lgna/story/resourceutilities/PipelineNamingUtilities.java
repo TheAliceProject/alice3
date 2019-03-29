@@ -18,8 +18,8 @@ public class PipelineNamingUtilities {
 	public static String getResourceClassName(String resourceName) {
 		return resourceName+"Resource";
 	}
-	
-	
+
+
 	public static Map<Class<?>, String[]> sJointsToSuppressByClass = new HashMap<Class<?>, String[]>();
 	static {
 		sJointsToSuppressByClass.put(SBiped.class,
@@ -57,7 +57,7 @@ public class PipelineNamingUtilities {
 //			"LEFT_EYELID",
 			"LEFT_TOES",
 			"RIGHT_TOES",
-			"LEFT_EAR_TIP", 
+			"LEFT_EAR_TIP",
 			"RIGHT_EAR_TIP",
 		});
 		sJointsToSuppressByClass.put(SFlyer.class,
@@ -99,7 +99,7 @@ public class PipelineNamingUtilities {
 				"BACK_LEFT_FIN_TIP"
 			});
 	}
-	
+
 	public static Map<String, String> sRemapJointsMap = new HashMap<String, String>();
 	static {
 		// From bipeds
@@ -118,7 +118,7 @@ public class PipelineNamingUtilities {
 		sRemapJointsMap.put("RIGHT_RING_FINGER_KNUCKLE", "RIGHT_PINKY_FINGER_KNUCKLE");
 		sRemapJointsMap.put("RIGHT_RING_FINGER_TIP", "RIGHT_PINKY_FINGER_TIP");
 	}
-	
+
 	private static Map<String, String> sMayaNameToAliceNameMap = new HashMap<String, String>();
 	static {
 		// From bipeds
@@ -149,14 +149,14 @@ public class PipelineNamingUtilities {
 		sMayaNameToAliceNameMap.put("eyeRid_R", "RIGHT_EYELID");
 		sMayaNameToAliceNameMap.put("jaw", "MOUTH");
 		sMayaNameToAliceNameMap.put("jaw1", "LOWER_LIP");
-		
+
 		sMayaNameToAliceNameMap.put("ear1_R", "RIGHT_EAR");
 		sMayaNameToAliceNameMap.put("ear1_L", "LEFT_EAR");
 		sMayaNameToAliceNameMap.put("ear2_R", "RIGHT_EAR_MIDDLE");
 		sMayaNameToAliceNameMap.put("ear2_L", "LEFT_EAR_MIDDLE");
 		sMayaNameToAliceNameMap.put("ear3_R", "RIGHT_EAR_TIP");
 		sMayaNameToAliceNameMap.put("ear3_L", "LEFT_EAR_TIP");
-		
+
 		sMayaNameToAliceNameMap.put("thumb1_L", "LEFT_THUMB");
 		sMayaNameToAliceNameMap.put("thumb2_L", "LEFT_THUMB_KNUCKLE");
 		sMayaNameToAliceNameMap.put("thumb3_L", "LEFT_THUMB_TIP");
@@ -177,7 +177,7 @@ public class PipelineNamingUtilities {
 		sMayaNameToAliceNameMap.put("pinky2_L", "LEFT_PINKY_FINGER_KNUCKLE");
 		sMayaNameToAliceNameMap.put("pinky3_L", "LEFT_PINKY_FINGER_TIP");
 		sMayaNameToAliceNameMap.put("pinky4_L", "LEFT_PINKY_FINGER_END");
-		
+
 		sMayaNameToAliceNameMap.put("thumb1_R", "RIGHT_THUMB");
 		sMayaNameToAliceNameMap.put("thumb2_R", "RIGHT_THUMB_KNUCKLE");
 		sMayaNameToAliceNameMap.put("thumb3_R", "RIGHT_THUMB_TIP");
@@ -198,9 +198,9 @@ public class PipelineNamingUtilities {
 		sMayaNameToAliceNameMap.put("pinky2_R", "RIGHT_PINKY_FINGER_KNUCKLE");
 		sMayaNameToAliceNameMap.put("pinky3_R", "RIGHT_PINKY_FINGER_TIP");
 		sMayaNameToAliceNameMap.put("pinky4_R", "RIGHT_PINKY_FINGER_END");
-		
+
 //		sMayaNameToAliceNameMap.put("tail1", "TAIL");
-		
+
 		// From swimmers
 		sMayaNameToAliceNameMap.put("finTail_left", "LEFT_TAIL_FIN");
 		sMayaNameToAliceNameMap.put("finTail_right", "RIGHT_TAIL_FIN");
@@ -213,7 +213,7 @@ public class PipelineNamingUtilities {
 		sMayaNameToAliceNameMap.put("jawTip", "LOWER_LIP");
 
 	}
-	
+
 	private static Map<String, String> sAutomaticArrayNameToCustomArrayNameMap = new HashMap<String, String>();
 	static {
 		sAutomaticArrayNameToCustomArrayNameMap.put("WHEEL", "WHEELS");
@@ -230,7 +230,7 @@ public class PipelineNamingUtilities {
 		sAutomaticArrayNameToCustomArrayNameMap.put("BACK_WHEELS", "WHEELS");
 		sAutomaticArrayNameToCustomArrayNameMap.put("TAIL", "TAIL");
 	}
-	
+
 	private static String[] sArrayNamesToSkip = {
 		"RIGHT_RING",
 		"RIGHT_THUMB",
@@ -245,13 +245,13 @@ public class PipelineNamingUtilities {
 		"DOOR",
 		"JAW"
 	};
-	
+
 	private static List<String> sDefaultArraysToExposeFirstElementOf = new ArrayList<String>();
 	static {
 		sDefaultArraysToExposeFirstElementOf.add("TAIL");
 		sDefaultArraysToExposeFirstElementOf.add("NECK");
 	}
-	
+
 	public static String getAliceEnumNameForMayaJoint( String modelJointName )
 	{
 		List<String> nameParts = new LinkedList<String>();
@@ -318,11 +318,11 @@ public class PipelineNamingUtilities {
 		}
 		return getEnumNameForNameParts(nameParts);
 	}
-	
+
 	public static String getEnumNameForNameParts(List<String> nameParts) {
 		return getEnumNameForNameParts(nameParts.toArray(new String[nameParts.size()]));
 	}
-	
+
 	public static String getEnumNameForNameParts(String[] nameParts) {
 		StringBuilder sb = new StringBuilder();
 		for (int i=0; i<nameParts.length; i++)
@@ -335,7 +335,7 @@ public class PipelineNamingUtilities {
 		}
 		return sb.toString();
 	}
-	
+
 	public static boolean shouldPreserveName(String name, List<String> namesToPreserve) {
 		for (String s : namesToPreserve) {
 			if (name.toLowerCase().contains(s.toLowerCase())){
@@ -344,7 +344,7 @@ public class PipelineNamingUtilities {
 		}
 		return false;
 	}
-	
+
 	public static String getAliceJointNameForMayaJointName(String mayaName, boolean preserveName) {
 		String aliceName = mayaName;
 		if (!preserveName) {
@@ -378,15 +378,15 @@ public class PipelineNamingUtilities {
 			return baseName + "_" + suffix;
 		}
 	}
-	
+
 	public static Map<String, String> getDefaultCustomArrayNameMap() {
 		return sAutomaticArrayNameToCustomArrayNameMap;
 	}
-	
+
 	public static List<String> getDefaultArraysToExposeFirstElementOf() {
 		return sDefaultArraysToExposeFirstElementOf;
 	}
-	
+
 	public static String[] getDefaultArrayNamesToSkip() {
 		return sArrayNamesToSkip;
 	}

@@ -463,7 +463,7 @@ public class SnapUtilities {
 	//	public static OrthogonalMatrix3x3 doRotationSnapping(AffineMatrix4x4 preRotateTransform, OrthogonalMatrix3x3 currentOrientation, DragAdapter dragAdapter, ReferenceFrame referenceFrame, AbstractCamera camera)
 	//	{
 	//		OrthogonalMatrix3x3 snapOrientation = new OrthogonalMatrix3x3(currentOrientation);
-	//		
+	//
 	//		//Try snapping to various snaps
 	//		if (dragAdapter.getSnapState().shouldSnapToRotation())
 	//		{

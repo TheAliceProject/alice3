@@ -63,7 +63,7 @@ import org.lgna.story.implementation.TransformableImp;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public abstract class CameraMoveActionOperation extends ActionOperation {
 

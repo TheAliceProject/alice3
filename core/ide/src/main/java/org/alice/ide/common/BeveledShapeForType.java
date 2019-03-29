@@ -304,7 +304,7 @@ public class BeveledShapeForType extends BeveledShape {
 			//
 			//			shadowRaisedPath.moveTo( x0, y1 );
 			//			shadowRaisedPath.lineTo( x1, y1 );
-			//			
+			//
 			//			java.awt.geom.GeneralPath highlightRaisedPath = new java.awt.geom.GeneralPath();
 			//			highlightRaisedPath.moveTo( x1, y0 );
 			//			highlightRaisedPath.lineTo( x0, y0 );

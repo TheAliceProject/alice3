@@ -1,43 +1,43 @@
 /**
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.ik.core;
@@ -123,9 +123,9 @@ public class IKCore {
 		//					for(PositionConstraint positionConstraint: constraints.activePositionConstraints) {
 		//						//should it be like this, or should constraints read them automatically?
 		//							//IK system reads joint angles automatically anyway
-		//							//but these desired position/orientations are not necessarily tied to scenegraph stuff. I should give them myself like this. 
+		//							//but these desired position/orientations are not necessarily tied to scenegraph stuff. I should give them myself like this.
 		//						positionConstraint.setEeDesiredPosition(targetTransformation.translation);
-		//						
+		//
 		//						//force bone reprint
 		//						//this should be fine even if the chain is not valid anymore.
 		//						//this would prevent me from selecting the list
@@ -135,11 +135,11 @@ public class IKCore {
 		////							}
 		////						});
 		//					}
-		//					
+		//
 		//					for(OrientationConstraint orientationConstraint: constraints.activeOrientationConstraints) {
 		//						System.out.println("orientaiton constraint!");
 		//						orientationConstraint.setEeDesiredOrientation(targetTransformation.orientation);
-		//					} 
+		//					}
 		//perhaps better ways of setting constraint values?
 
 		//this enforces the constraints immediately right now. so, there is no talk about deltatime or speed
@@ -186,10 +186,9 @@ public class IKCore {
 		double delta = .001;//arbitrary
 		while( Point3.calculateDistanceBetween( currTransformation, prevTransformation ) > delta ) {
 			prevTransformation = currTransformation;
-			//solver has the chain. can also have multiple chains. 
-			//I can tell solver, for this chain this is the linear target, etc. 
-			//it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok. 
-
+			//solver has the chain. can also have multiple chains.
+			//I can tell solver, for this chain this is the linear target, etc.
+			//it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok.
 			Map<Bone.Axis, Double> desiredSpeedForAxis = new HashMap<Bone.Axis, Double>();
 
 			//not bad concurrent programming practice
@@ -205,7 +204,7 @@ public class IKCore {
 			double deltaTime = IkConstants.DESIRED_DELTA_TIME;
 			if( enforcer.hasActiveChain() && ( isLinearEnabled || isAngularEnabled ) ) {
 				//I could make chain setter not race with this
-				//However, racing is fine, as long as the old chain is still valid. It is.  
+				//However, racing is fine, as long as the old chain is still valid. It is.
 				//				if( isLinearEnabled ) {
 				enforcer.setEeDesiredPosition( eeId, target, maxLinearSpeedForEe );
 				//				}

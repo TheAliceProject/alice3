@@ -57,7 +57,7 @@ import org.lgna.story.resources.ModelResource;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class AliceResourceClassUtilities {
 	public static final String DEFAULT_PACKAGE = "";

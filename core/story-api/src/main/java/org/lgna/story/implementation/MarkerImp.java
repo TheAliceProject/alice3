@@ -53,7 +53,7 @@ import org.lgna.story.SMarker;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public abstract class MarkerImp extends VisualScaleModelImp {
 	protected MarkerImp( SMarker abstraction ) {

@@ -56,7 +56,7 @@ import java.net.URL;
 
 /**
  * @author Dennis Cosgrove
- * 
+ *
  */
 public class IconUtilities {
 	private IconUtilities() {

@@ -1,29 +1,29 @@
 /*
-* Alice 3 End User License Agreement
- * 
+ * Alice 3 End User License Agreement
+ *
  * Copyright (c) 2006-2015, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice", nor may "Alice" appear in their name, without prior written permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software must display the following acknowledgement: "This product includes software developed by Carnegie Mellon University"
- * 
+ *
  * 5. The gallery of art assets and animations provided with this software is contributed by Electronic Arts Inc. and may be used for personal, non-commercial, and academic use only. Redistributions of any program source code that utilizes The Sims 2 Assets must also retain the copyright notice, list of conditions and the disclaimer contained in The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  */
 
 package org.lgna.story.resources.quadruped;
-
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.FieldTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.JointedModelPose;
 import org.lgna.story.SQuadruped;
 import org.lgna.story.implementation.JointIdTransformationPair;
@@ -48,43 +48,43 @@ public enum DragonResource implements QuadrupedResource {
 	TUTU_ORANGE,
 	TUTU_RED;
 
-@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public static final JointId LOWER_LIP = new JointId( MOUTH, DragonResource.class );
-@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, DragonResource.class );
-@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, DragonResource.class );
-@FieldTemplate(visibility=Visibility.PRIME_TIME)
+@FieldTemplate(visibility = Visibility.PRIME_TIME)
 	public static final JointId LEFT_WING_BASE = new JointId( FRONT_LEFT_CLAVICLE, DragonResource.class );
-@FieldTemplate(visibility=Visibility.PRIME_TIME)
+@FieldTemplate(visibility = Visibility.PRIME_TIME)
 	public static final JointId LEFT_WING_CLAVICLE = new JointId( LEFT_WING_BASE, DragonResource.class );
-@FieldTemplate(visibility=Visibility.PRIME_TIME)
+@FieldTemplate(visibility = Visibility.PRIME_TIME)
 	public static final JointId LEFT_WING_SHOULDER = new JointId( LEFT_WING_CLAVICLE, DragonResource.class );
-@FieldTemplate(visibility=Visibility.PRIME_TIME)
+@FieldTemplate(visibility = Visibility.PRIME_TIME)
 	public static final JointId LEFT_WING_ELBOW = new JointId( LEFT_WING_SHOULDER, DragonResource.class );
-@FieldTemplate(visibility=Visibility.PRIME_TIME)
+@FieldTemplate(visibility = Visibility.PRIME_TIME)
 	public static final JointId LEFT_WING_WRIST = new JointId( LEFT_WING_ELBOW, DragonResource.class );
-@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public static final JointId LEFT_WING_TIP = new JointId( LEFT_WING_WRIST, DragonResource.class );
-@FieldTemplate(visibility=Visibility.PRIME_TIME)
+@FieldTemplate(visibility = Visibility.PRIME_TIME)
 	public static final JointId RIGHT_WING_BASE = new JointId( FRONT_RIGHT_CLAVICLE, DragonResource.class );
-@FieldTemplate(visibility=Visibility.PRIME_TIME)
+@FieldTemplate(visibility = Visibility.PRIME_TIME)
 	public static final JointId RIGHT_WING_CLAVICLE = new JointId( RIGHT_WING_BASE, DragonResource.class );
-@FieldTemplate(visibility=Visibility.PRIME_TIME)
+@FieldTemplate(visibility = Visibility.PRIME_TIME)
 	public static final JointId RIGHT_WING_SHOULDER = new JointId( RIGHT_WING_CLAVICLE, DragonResource.class );
-@FieldTemplate(visibility=Visibility.PRIME_TIME)
+@FieldTemplate(visibility = Visibility.PRIME_TIME)
 	public static final JointId RIGHT_WING_ELBOW = new JointId( RIGHT_WING_SHOULDER, DragonResource.class );
-@FieldTemplate(visibility=Visibility.PRIME_TIME)
+@FieldTemplate(visibility = Visibility.PRIME_TIME)
 	public static final JointId RIGHT_WING_WRIST = new JointId( RIGHT_WING_ELBOW, DragonResource.class );
-@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public static final JointId RIGHT_WING_TIP = new JointId( RIGHT_WING_WRIST, DragonResource.class );
-@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public static final JointId TAIL_4 = new JointId( TAIL_3, DragonResource.class );
-@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public static final JointId TAIL_5 = new JointId( TAIL_4, DragonResource.class );
-@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public static final JointId TAIL_6 = new JointId( TAIL_5, DragonResource.class );
-@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public static final JointId TAIL_7 = new JointId( TAIL_6, DragonResource.class );
 
 	public static final JointedModelPose DANCING_POSE = new JointedModelPose(
@@ -114,7 +114,7 @@ public enum DragonResource implements QuadrupedResource {
 	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4, TAIL_5, TAIL_6, TAIL_7 };
 	@Override
-	public JointId[] getTailArray(){
+	public JointId[] getTailArray() {
 		return DragonResource.TAIL_ARRAY;
 	}
 
@@ -127,7 +127,7 @@ public enum DragonResource implements QuadrupedResource {
 		this.resourceType = resourceType;
 	}
 
-	public JointId[] getRootJointIds(){
+	public JointId[] getRootJointIds() {
 		return QuadrupedResource.JOINT_ID_ROOTS;
 	}
 

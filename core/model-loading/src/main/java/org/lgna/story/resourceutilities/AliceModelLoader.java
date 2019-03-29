@@ -32,9 +32,9 @@ import java.util.jar.JarOutputStream;
 import java.util.logging.Logger;
 
 public class AliceModelLoader {
-	
+
 	private static final String destAliceResourceDirPrefix = "assets/alice/aliceModelResources/";
-	
+
 	private static void printJoints( Joint j, String indent) {
 		System.out.println( indent+"Joint "+j.jointID.getValue() );
 		PrintUtilities.print( indent+"    local transform: ", j.localTransformation.getValue().translation, j.localTransformation.getValue().orientation );
@@ -50,7 +50,7 @@ public class AliceModelLoader {
 			}
 		}
 	}
-	
+
 	private static void printMesh( Mesh mesh ){
 		System.out.println( "Mesh "+mesh.getName());
 		System.out.println( "  texture id: "+mesh.textureId.getValue());
@@ -60,14 +60,14 @@ public class AliceModelLoader {
 		for (int i=0; i<vertices.length; i+=3) {
 			System.out.println( "   ("+vertices[i]+", "+vertices[i+1]+", "+vertices[i+2]+")");
 		}
-		
+
 		System.out.println( "  normals:" );
 		float[] normals = BufferUtilities.convertFloatBufferToArray( mesh.normalBuffer.getValue() );
 		for (int i=0; i<normals.length; i+=3) {
 			System.out.println( "   ("+normals[i]+", "+normals[i+1]+", "+normals[i+2]+")");
 		}
 	}
-	
+
 	private static void printWeightInfo( WeightInfo weightInfo) {
 		System.out.println( "Weight Info:" );
 		Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs = weightInfo.getMap();
@@ -88,7 +88,7 @@ public class AliceModelLoader {
 			System.out.println( "    z: "+originalTransform.orientation.backward);
 //			System.out.println( "  weights:" );
 //			System.out.print(   "   ");
-//			
+//
 //			iatwp.reset();
 //			while (!iatwp.isDone()) {
 //				System.out.print( "("+iatwp.getIndex()+", "+iatwp.getWeight()+"),");
@@ -98,7 +98,7 @@ public class AliceModelLoader {
 			System.out.println();
 		}
 	}
-	
+
 	private static void printSkeletonVisual( SkeletonVisual sv ) {
 		System.out.println( "Skeleton: ");
 		printJoints(sv.skeleton.getValue(), "");
@@ -118,7 +118,7 @@ public class AliceModelLoader {
 //			System.out.println();
 //		}
 	}
-	
+
 	public static void translateSkeletonVisual(SkeletonVisual sv,
 			Vector3 translation) {
 		if (sv.skeleton.getValue() != null) {
@@ -153,7 +153,7 @@ public class AliceModelLoader {
 		bbox.setZMinimum(bbox.getZMinimum() + translation.z);
 		sv.baseBoundingBox.setValue(bbox);
 	}
-	
+
 	public static List<Field> getJointIdFields(Class<?> resourceClass) {
 		Field[] fields = resourceClass.getDeclaredFields();
 		List<Field> jointFields = new ArrayList<Field>();
@@ -164,23 +164,23 @@ public class AliceModelLoader {
 		}
 		return jointFields;
 	}
-	
+
 	public static SkeletonVisual addMissingJoints(SkeletonVisual sv, Class<?> resourceClass) throws PipelineException{
 
 		List<Field> requiredJointFields = getJointIdFields(resourceClass);
-		
+
 		if (sv.skeleton.getValue() == null) {
 			System.err.println("NULL SKELETON!!");
-			
+
 			if (!requiredJointFields.isEmpty()) {
 				System.err.println("No skeleton found on "+sv.getName()+" where its base class requires a skeleton. Base class is "+resourceClass);
 				throw new PipelineException("No skeleton found on "+sv.getName()+" where its base class requires a skeleton. Base class is "+resourceClass);
 			}
 			return sv;
 		}
-		
+
 		System.out.println("\nCHECKING FOR MISSING JOINTS ON "+sv.getName());
-		
+
 		List<JointId> missingJoints = new LinkedList<JointId>();
 		Field[] fields = resourceClass.getDeclaredFields();
 		for (Field f : requiredJointFields) {
@@ -213,7 +213,7 @@ public class AliceModelLoader {
 					newJoint.jointID.setValue(currentJoint.toString());
 					newJoint.setParent(parentJoint);
 					missingJoints.remove(index);
-					
+
 					System.out.println("   ADDED JOINT "+currentJoint.toString());
 				} else {
 					System.out.println("   NO JOINT FOUND ON SKELETON FOR "+parentJointID.toString()+", SKIPPING IT");
@@ -226,7 +226,7 @@ public class AliceModelLoader {
 		}
 		return sv;
 	}
-	
+
 	public static String getAliceTextureName(String textureName) {
 		textureName = FileUtilities.getBaseName(textureName);
 		if (textureName.toLowerCase().endsWith("_diffuse")) {
@@ -240,13 +240,13 @@ public class AliceModelLoader {
 		}
 		return textureName;
 	}
-	
+
 	public static String getAliceResourceNameForImageFile(String modelResourceName, String textureName) {
 		textureName = getAliceTextureName(textureName);
 		return AliceResourceUtilties.getTextureResourceFileName(
 				modelResourceName, textureName);
 	}
-	
+
 	private static JPanel showVisual( SkeletonVisual sv, JPanel existingImagePanel ) {
 		BufferedImage image = AdaptiveRecenteringThumbnailMaker.getInstance(800, 600).createThumbnail(sv, false);
 		JPanel imagePanel = existingImagePanel;
@@ -263,10 +263,10 @@ public class AliceModelLoader {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible( true );
-		
+
 		return imagePanel;
 	}
-	
+
 	private static List<String> buildJointIDsList( Joint joint, List<String> jointIDs ) {
 		if (joint != null) {
 			jointIDs.add( joint.jointID.getValue() );
@@ -278,7 +278,7 @@ public class AliceModelLoader {
 		}
 		return jointIDs;
 	}
-	
+
 	private static void renameJoints( Joint joint, Map<String, String> idToNameMap ) {
 		if (joint != null) {
 			String aliceName = idToNameMap.get( joint.jointID.getValue() );
@@ -292,9 +292,9 @@ public class AliceModelLoader {
 			}
 		}
 	}
-	
+
 	public static void renameJoints( SkeletonVisual sv ) {
-		
+
 		//Iterate through the skeleton to get a list of all the joint names for easy iteration
 		List<String> jointIDs = buildJointIDsList(sv.skeleton.getValue(), new LinkedList<String>());
 		Map<String, String> idToNameMap = new HashMap<>();
@@ -302,7 +302,7 @@ public class AliceModelLoader {
 			String aliceJointName = PipelineNamingUtilities.getAliceJointNameForMayaJointName(jointID, false);
 			idToNameMap.put(jointID, aliceJointName);
 		}
-		
+
 		//Rename all the joints in the skeleton based on the new names
 		renameJoints( sv.skeleton.getValue(), idToNameMap );
 		//Replace all the references in the weighted meshes with the new joint names
@@ -317,7 +317,7 @@ public class AliceModelLoader {
 			wm.weightInfo.setValue( newWeightInfo );
 		}
 	}
-	
+
 	private static List<Tuple2<String, String>> makeJointAndParentListFromSkeleton( Joint joint, List<Tuple2<String, String>> jointAndParentList ) {
 		if (joint != null) {
 			String jointName = joint.jointID.getValue();
@@ -347,5 +347,5 @@ public class AliceModelLoader {
 		}
 		return sv;
 	}
-	
+
 }

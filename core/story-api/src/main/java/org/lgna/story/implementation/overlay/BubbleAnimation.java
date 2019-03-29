@@ -44,7 +44,7 @@ package org.lgna.story.implementation.overlay;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class BubbleAnimation extends OpenUpdateCloseOverlayGraphicAnimation {
 	public BubbleAnimation( double openingDuration, double updatingDuration, double closingDuration, BubbleImp bubbleImp ) {

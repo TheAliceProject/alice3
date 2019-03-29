@@ -47,7 +47,7 @@ import org.lgna.story.implementation.BasicJointedModelImp;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public interface BasicResource extends JointedModelResource {
 	public JointId[] getRootJointIds();

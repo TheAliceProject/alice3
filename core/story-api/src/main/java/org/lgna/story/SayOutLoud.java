@@ -46,7 +46,7 @@ import org.lgna.project.annotations.ClassTemplate;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class SayOutLoud extends DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory {
 	@ClassTemplate( keywordFactoryCls = SayOutLoud.class )

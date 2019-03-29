@@ -16,7 +16,7 @@ public class ComponentExecutor implements Runnable{
 	public void run() {
 		ProgramClosedException.invokeAndCatchProgramClosedException( this.target );
 	}
-	
+
 	public synchronized void start() {
 		executor.submit(this);
 	}

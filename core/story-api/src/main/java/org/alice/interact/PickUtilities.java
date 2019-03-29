@@ -69,7 +69,7 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class PickUtilities {
 

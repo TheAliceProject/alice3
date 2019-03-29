@@ -195,7 +195,7 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 	public Set<FileObject> instantiate() throws IOException {
 		return instantiate(null);
 	}
-	
+
 	@Override
 	public Set<FileObject> instantiate(ProgressHandle progressHandle) throws IOException {
 		if (progressHandle != null) {
@@ -240,7 +240,7 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 			} catch (VersionNotSupportedException vnse) {
 				Logger.throwable(vnse);
 			}
-			
+
 			this.cleanSlateIfAppropriate();
 			return resultSet;
 		} finally {

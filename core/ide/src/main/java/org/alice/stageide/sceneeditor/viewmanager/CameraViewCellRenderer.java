@@ -56,7 +56,7 @@ import javax.swing.border.Border;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class CameraViewCellRenderer extends ListCellRenderer<View> {
 

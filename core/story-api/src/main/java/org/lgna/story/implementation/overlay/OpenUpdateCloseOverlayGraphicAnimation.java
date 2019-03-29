@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.animation.AnimationObserver;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public abstract class OpenUpdateCloseOverlayGraphicAnimation extends AbstractAnimation {
 	protected static enum State {

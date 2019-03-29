@@ -253,9 +253,9 @@ public class PicturePlaneUtils {
 	//		return rv;
 	//	}
 	//
-	//	
-	//	
-	//	
+	//
+	//
+	//
 	//	public static edu.cmu.cs.dennisc.math.Vector4d transformFromViewportToProjection( edu.cmu.cs.dennisc.math.Vector4d rv, edu.cmu.cs.dennisc.math.Vector4d xyzw, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.Camera sgCamera ) {
 	//		synchronized( s_actualViewportBuffer ) {
 	//			renderTarget.getActualViewport( s_actualViewportBuffer, sgCamera );
@@ -318,7 +318,7 @@ public class PicturePlaneUtils {
 	//	}
 	//
 	//
-	//	
+	//
 	//	public static edu.cmu.cs.dennisc.math.Vector4d transformFromAWTToViewport_New( java.awt.Point p, double z, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.Camera sgCamera ) {
 	//		return transformFromAWTToViewport( new edu.cmu.cs.dennisc.math.Vector4d(), p, z, renderTarget, sgCamera );
 	//	}

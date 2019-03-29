@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 /**
  * @author alice
- * 
+ *
  */
 public final class NebulousTextureBinding implements ForgettableBinding {
 	public void bind( RenderContext rc, NebulousTexture texture ) {

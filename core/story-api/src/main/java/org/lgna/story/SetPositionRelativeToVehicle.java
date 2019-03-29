@@ -46,7 +46,7 @@ import org.lgna.project.annotations.ClassTemplate;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class SetPositionRelativeToVehicle extends DurationAnimationStyleArgumentFactory {
 	@ClassTemplate( keywordFactoryCls = SetPositionRelativeToVehicle.class )

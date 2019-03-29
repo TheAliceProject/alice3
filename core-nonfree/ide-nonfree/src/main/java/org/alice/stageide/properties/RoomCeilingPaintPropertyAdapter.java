@@ -49,7 +49,7 @@ import org.lgna.story.implementation.RoomImp;
 
 /**
  * @author alice
- * 
+ *
  */
 public class RoomCeilingPaintPropertyAdapter extends AbstractPropertyAdapter<Paint, RoomImp> {
 

@@ -56,7 +56,7 @@ import java.awt.Graphics2D;
 
 /**
  * @author alice
- * 
+ *
  */
 public class NebulousTexture extends Texture {
 

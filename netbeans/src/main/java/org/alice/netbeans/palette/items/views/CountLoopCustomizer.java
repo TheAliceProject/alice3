@@ -89,13 +89,13 @@ public class CountLoopCustomizer extends javax.swing.JPanel {
 
 		this.variableNameTextField.selectAll();;
 		this.variableNameTextField.requestFocusInWindow();
-		
+
         dialogOK = false;
 
         String displayName = "Counted For Loop";
         Object[] options = {okButton, cancelButton};
         descriptor = new DialogDescriptor
-                (this, 
+                (this,
                 displayName,
                 true,
                 options,
@@ -149,7 +149,7 @@ public class CountLoopCustomizer extends javax.swing.JPanel {
 	public String getVariableName() {
 		return this.variableNameTextField.getText();
 	}
-	
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

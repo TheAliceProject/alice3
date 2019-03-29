@@ -49,7 +49,7 @@ import java.util.UUID;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class IsYZScaleLinkedState extends BooleanState
 {

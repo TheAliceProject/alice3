@@ -56,7 +56,7 @@ import java.util.concurrent.CyclicBarrier;
 public class DoTogether {
 	private static int threadCountForDescription = 0;
 
-	//todo 
+	//todo
 	public static void invokeAndWait(
 			@ParameterAnnotation( isVariable = true )
 			Runnable... runnables

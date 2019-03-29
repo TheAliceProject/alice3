@@ -52,7 +52,7 @@ import org.lgna.croquet.DropSite;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public final class SceneDropSite implements DropSite {
 

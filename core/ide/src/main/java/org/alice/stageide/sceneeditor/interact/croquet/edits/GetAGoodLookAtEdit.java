@@ -52,7 +52,7 @@ import org.lgna.story.SThing;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class GetAGoodLookAtEdit extends LocalTransformationEdit {
 	private final SCamera camera;

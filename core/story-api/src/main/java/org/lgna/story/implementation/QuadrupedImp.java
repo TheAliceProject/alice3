@@ -49,7 +49,7 @@ import org.lgna.story.resources.QuadrupedResource;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public final class QuadrupedImp extends JointedModelImp<SQuadruped, QuadrupedResource> {
 	public QuadrupedImp( SQuadruped abstraction, JointImplementationAndVisualDataFactory<QuadrupedResource> factory ) {

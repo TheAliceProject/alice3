@@ -161,7 +161,7 @@ public class Sphere implements BinaryEncodableAndDecodable {
 	 * m_center.add( new edu.cmu.cs.dennisc.math.Point3d( m.right.w, m.up.w, m.backward.w ) );
 	 * }
 	 * }
-	 * 
+	 *
 	 * public void scale( edu.cmu.cs.dennisc.math.Matrix3d s ) {
 	 * if( s!=null ) {
 	 * if( m_center!=null ) {

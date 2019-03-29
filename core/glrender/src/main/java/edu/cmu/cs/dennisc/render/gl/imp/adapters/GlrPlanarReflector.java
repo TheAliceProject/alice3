@@ -77,7 +77,7 @@ public class GlrPlanarReflector extends GlrVisual<PlanarReflector> {
 			//				edu.cmu.cs.dennisc.math.VectorF3[] normals = sgMesh.normals.getValue();
 			//				assert points.length >= 2;
 			//				assert normals.length >= 1;
-			//				
+			//
 			//				point0 = points[ 0 ];
 			//				point1 = points[ 1 ];
 			//				normal = normals[ 0 ];
@@ -91,7 +91,7 @@ public class GlrPlanarReflector extends GlrVisual<PlanarReflector> {
 			//			} else {
 			//				throw new RuntimeException( "todo" );
 			//			}
-			//			
+			//
 			//
 			//			edu.cmu.cs.dennisc.math.VectorD3 forward = new edu.cmu.cs.dennisc.math.VectorD3();
 			//			edu.cmu.cs.dennisc.math.VectorD3 upGuide = new edu.cmu.cs.dennisc.math.VectorD3();
@@ -100,19 +100,19 @@ public class GlrPlanarReflector extends GlrVisual<PlanarReflector> {
 			//			forward.set( normal.x, normal.y, normal.z );
 			//			forward.normalize();
 			//			forward.negate();
-			//			
+			//
 			//			upGuide.set( point0 );
 			//			upGuide.sub( point1 );
 			//			upGuide.normalize();
-			//			
+			//
 			//			translation.set( point0 );
 			//
 			//			edu.cmu.cs.dennisc.math.MatrixD3x3 axes = LinearAlgebra.newMatrix3d( forward, upGuide );
-			//			
+			//
 			//			this.geometryTransformation.setRow( 0, axes.right.x, axes.up.x, axes.backward.x, translation.x );
 			//			this.geometryTransformation.setRow( 1, axes.right.y, axes.up.y, axes.backward.y, translation.y );
 			//			this.geometryTransformation.setRow( 2, axes.right.z, axes.up.z, axes.backward.z, translation.z );
-			//			this.geometryTransformation.setRow( 3, 0       , 0       , 0       , 1             );			
+			//			this.geometryTransformation.setRow( 3, 0       , 0       , 0       , 1             );
 		}
 	}
 

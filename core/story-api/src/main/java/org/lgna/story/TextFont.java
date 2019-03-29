@@ -44,7 +44,7 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public enum TextFont implements Say.Detail, Think.Detail {
 

@@ -1212,7 +1212,7 @@ import java.util.Map;
 	//		@Override
 	//		public int getHeight() {
 	//			return edu.cmu.cs.dennisc.image.ImageUtilities.getHeight( this.image );
-	//		}		
+	//		}
 	//		@Override
 	//		public edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy getMipMapGenerationPolicy() {
 	//			return edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy.PAINT_ONLY_HIGHEST_LEVEL_THEN_SCALE_REMAINING;

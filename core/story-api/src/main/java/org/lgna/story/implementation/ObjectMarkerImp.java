@@ -57,7 +57,7 @@ import java.util.Map;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class ObjectMarkerImp extends MarkerImp {
 	public ObjectMarkerImp( SThingMarker abstraction ) {

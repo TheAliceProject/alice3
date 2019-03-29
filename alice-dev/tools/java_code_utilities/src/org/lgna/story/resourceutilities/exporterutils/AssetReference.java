@@ -41,7 +41,7 @@ public class AssetReference
         this.name = name;
         this.assetReference = assetReference;
     }
-    
+
     public AssetReference(Element e)
     {
     	this.name = e.getAttribute("name");
@@ -57,7 +57,7 @@ public class AssetReference
     public void setName(String name) {
     	this.name = name;
     }
-    
+
     public String getReference(boolean absolute)
     {
         if (absolute)
@@ -103,7 +103,7 @@ public class AssetReference
 	protected void setAttributes(Element element) {
 		element.setAttribute("name", this.getName());
 	}
-	
+
     public Element createAbsoluteXMLElement(String elementName, Document doc)
     {
         Element element = doc.createElement(elementName);
@@ -138,7 +138,7 @@ public class AssetReference
         setAttributes(element);
         return element;
     }
-    
+
     public void setResourcePath(File resourcePath) {
     	File assetFile = new File(this.assetReference);
     	if (!assetFile.exists()) {
@@ -148,7 +148,7 @@ public class AssetReference
     		}
     	}
     }
-    
+
     public boolean referenceExists() {
     	return FileUtilities.exists(this.assetReference);
     }

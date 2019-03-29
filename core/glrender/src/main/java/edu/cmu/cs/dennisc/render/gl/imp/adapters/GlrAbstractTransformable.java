@@ -71,8 +71,8 @@ public abstract class GlrAbstractTransformable<T extends AbstractTransformable> 
 		//todo
 		return false;
 		//		edu.cmu.cs.dennisc.scenegraph.Composite parent = this.m_element.getParent();
-		//		return 
-		//				c.isScaled() 
+		//		return
+		//				c.isScaled()
 		//					&&
 		//				( this.m_element instanceof edu.cmu.cs.dennisc.scenegraph.Joint == false )
 		//					&&

@@ -500,7 +500,7 @@ public class FileUtilities {
 			boolean isSuccessful = file.delete();
 			assert isSuccessful : file;
 			//			if( isSuccessful ) {
-			//				//pass 
+			//				//pass
 			//			} else {
 			//				throw new RuntimeException( file.getAbsolutePath() );
 			//			}

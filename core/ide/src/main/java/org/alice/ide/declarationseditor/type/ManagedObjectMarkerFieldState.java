@@ -51,7 +51,7 @@ import java.util.UUID;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class ManagedObjectMarkerFieldState extends AbstractManagedFieldState {
 	private static Map<NamedUserType, ManagedObjectMarkerFieldState> map = Maps.newHashMap();

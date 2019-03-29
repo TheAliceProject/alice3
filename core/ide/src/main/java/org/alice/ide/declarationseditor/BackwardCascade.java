@@ -47,7 +47,7 @@ import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
- * 
+ *
  */
 public class BackwardCascade extends HistoryCascade {
 	private static class SingletonHolder {

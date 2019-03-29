@@ -245,7 +245,7 @@ public final class Vertex implements BinaryEncodableAndDecodable {
 		}
 	}
 
-	//todo: 
+	//todo:
 	//	@Override
 	//	public int hashCode() {
 	//	}

@@ -48,7 +48,7 @@ import org.lgna.story.SThingMarker;
 
 /**
  * @author dculyba
- * 
+ *
  */
 //todo: delete
 @Deprecated

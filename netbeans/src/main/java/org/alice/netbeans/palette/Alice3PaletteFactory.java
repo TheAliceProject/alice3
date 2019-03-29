@@ -66,8 +66,8 @@ public class Alice3PaletteFactory {
         try {
             if (null == palette) {
                 return PaletteFactory.createPalette(
-                //Folder:      
-                "AlicePalette", 
+                //Folder:
+                "AlicePalette",
                 //Palette Actions:
                 new PaletteActions() {
                     @Override public Action[] getImportActions() {return null;}
@@ -75,10 +75,10 @@ public class Alice3PaletteFactory {
                     @Override public Action[] getCustomCategoryActions(Lookup lkp) {return null;}
                     @Override public Action[] getCustomItemActions(Lookup lkp) {return null;}
                     @Override public Action getPreferredAction(Lookup lkp) {return null;}
-                }, 
-                //Palette Filter:  
-                null, 
-                //Drag and Drop Handler:  
+                },
+                //Palette Filter:
+                null,
+                //Drag and Drop Handler:
                 new DragAndDropHandler(true) {
                     @Override public void customize(ExTransferable et, Lookup lkp) {}
                 });
@@ -88,5 +88,5 @@ public class Alice3PaletteFactory {
         }
         return null;
     }
-	
+
 }

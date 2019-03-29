@@ -46,7 +46,7 @@ import org.lgna.common.LgnaIllegalKeyArgumentException;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory
 		extends DurationAnimationStyleArgumentFactory {

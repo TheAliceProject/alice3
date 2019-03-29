@@ -48,7 +48,7 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * @author dculyba
- * 
+ *
  */
 @Documented
 @Retention( RetentionPolicy.RUNTIME )

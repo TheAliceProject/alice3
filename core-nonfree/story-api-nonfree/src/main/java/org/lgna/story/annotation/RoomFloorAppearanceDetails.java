@@ -50,7 +50,7 @@ import java.lang.reflect.Field;
 
 /**
  * @author alice
- * 
+ *
  */
 public enum RoomFloorAppearanceDetails implements PublicStaticFieldValueDetails<ImagePaint> {
 	SINGLETON;

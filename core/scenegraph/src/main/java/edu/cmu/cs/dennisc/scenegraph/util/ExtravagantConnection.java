@@ -126,7 +126,7 @@ public class ExtravagantConnection extends Connection {
 
 				//todo
 				this.mBuffer.setValue( new ForwardAndUpGuide( this.vBuffer, upGuide ) );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.printlns( this.mBuffer );        
+				//edu.cmu.cs.dennisc.print.PrintUtilities.printlns( this.mBuffer );
 
 				for( int d = 0; d < DISC_COUNT; d++ ) {
 					vertices[ lcv ].position.set( this.points[ d ] );

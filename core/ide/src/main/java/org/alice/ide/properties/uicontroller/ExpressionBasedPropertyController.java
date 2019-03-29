@@ -49,7 +49,7 @@ import org.lgna.croquet.views.Panel;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class ExpressionBasedPropertyController<P> extends BorderPanel implements PropertyAdapterController<P>
 {

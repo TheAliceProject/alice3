@@ -47,7 +47,7 @@ import org.lgna.story.implementation.Property;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class DoublePropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Double, O>
 {

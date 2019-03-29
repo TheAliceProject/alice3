@@ -184,7 +184,7 @@ public class ConsistentMouseDragEventQueue extends EventQueue {
 			//note:
 			modifiers = this.lastPressOrDragModifiers;
 
-			// 1.7 
+			// 1.7
 			//= new java.awt.event.MouseWheelEvent( source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation, preciseWheelRotation );
 
 			// 1.5

@@ -236,14 +236,14 @@ public class SpringUtilities {
 	//		int r;
 	//		int c;
 	//		javax.swing.Spring xSpring = javax.swing.Spring.constant( 0 );
-	//		javax.swing.Spring xPadSpring = javax.swing.Spring.constant( xPad );	
-	//		for( c=0; c<columnCount; c++ ) { 
+	//		javax.swing.Spring xPadSpring = javax.swing.Spring.constant( xPad );
+	//		for( c=0; c<columnCount; c++ ) {
 	//			javax.swing.Spring widthSpring = javax.swing.Spring.constant( 0 );
-	//			for( r=0; r<rowCount; r++ ) { 
+	//			for( r=0; r<rowCount; r++ ) {
 	//				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRows[ r ][ c ] );
 	//				widthSpring = javax.swing.Spring.max( widthSpring, constraints.getWidth() );
 	//			}
-	//			for( r=0; r<rowCount; r++ ) { 
+	//			for( r=0; r<rowCount; r++ ) {
 	//				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRows[ r ][ c ] );
 	//				constraints.setX( xSpring );
 	//				constraints.setWidth( widthSpring );
@@ -254,14 +254,14 @@ public class SpringUtilities {
 	//			}
 	//		}
 	//		javax.swing.Spring ySpring = javax.swing.Spring.constant( 0 );
-	//		javax.swing.Spring yPadSpring = javax.swing.Spring.constant( yPad );	
-	//		for( r=0; r<rowCount; r++ ) { 
+	//		javax.swing.Spring yPadSpring = javax.swing.Spring.constant( yPad );
+	//		for( r=0; r<rowCount; r++ ) {
 	//			javax.swing.Spring heightSpring = javax.swing.Spring.constant( 0 );
-	//			for( c=0; c<columnCount; c++ ) { 
+	//			for( c=0; c<columnCount; c++ ) {
 	//				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRows[ r ][ c ] );
 	//				heightSpring = javax.swing.Spring.max( heightSpring, constraints.getHeight() );
 	//			}
-	//			for( c=0; c<columnCount; c++ ) { 
+	//			for( c=0; c<columnCount; c++ ) {
 	//				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRows[ r ][ c ] );
 	//				constraints.setY( ySpring );
 	//				constraints.setHeight( heightSpring );

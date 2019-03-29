@@ -151,16 +151,16 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				//					}
 				//				}
 
-				//			not worth while since instance creations are not normally (ever) the expression of an expression statements 				
-				//			} else if( expression instanceof org.lgna.project.ast.InstanceCreation ) { 
+				//			not worth while since instance creations are not normally (ever) the expression of an expression statements
+				//			} else if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
 				//				final org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
-				//				
+				//
 				//				if( instanceCreation.isValid() ) {
 				//					//pass
 				//				} else {
 				//					this.setBackground( java.awt.Color.RED );
 				//				}
-				//				
+				//
 				//				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 				//				//todo:
 				//				if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {

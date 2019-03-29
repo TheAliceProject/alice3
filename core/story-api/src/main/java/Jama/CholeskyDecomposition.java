@@ -62,7 +62,7 @@ public class CholeskyDecomposition implements Serializable {
             }
             Lrowj[k] = s = (A[j][k] - s)/L[k][k];
             d = d + s*s;
-            isspd = isspd & (A[k][j] == A[j][k]); 
+            isspd = isspd & (A[k][j] == A[j][k]);
          }
          d = A[j][j] - d;
          isspd = isspd & (d > 0.0);
@@ -112,7 +112,7 @@ public class CholeskyDecomposition implements Serializable {
             }
             R[k][j] = s = s/R[k][k];
             d = d + s*s;
-            isspd = isspd & (A[k][j] == A[j][k]); 
+            isspd = isspd & (A[k][j] == A[j][k]);
          }
          d = A[j][j] - d;
          isspd = isspd & (d > 0.0);
@@ -182,8 +182,8 @@ public class CholeskyDecomposition implements Serializable {
 	           }
 	           X[k][j] /= L[k][k];
 	        }
-	      }
-	
+	  }
+
 	      // Solve L'*X = Y;
 	      for (int k = n-1; k >= 0; k--) {
 	        for (int j = 0; j < nx; j++) {
@@ -193,8 +193,8 @@ public class CholeskyDecomposition implements Serializable {
 	           X[k][j] /= L[k][k];
 	        }
 	      }
-      
-      
+
+
       return new Matrix(X,n,nx);
    }
   private static final long serialVersionUID = 1;

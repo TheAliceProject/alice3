@@ -156,12 +156,12 @@ public abstract class AbstractListPropertyPane<P extends ListProperty<T>, T> ext
 			i++;
 		}
 		this.addPostfixComponents();
-		//		
-		//		
+		//
+		//
 		//		//todo: investigate on 1.5
 		//		edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( this.getAwtComponent() );
-		//		
-		//		
+		//
+		//
 		//		this.revalidateAndRepaint();
 	}
 }

@@ -56,7 +56,7 @@ import org.lgna.story.implementation.EntityImp;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class MoveAndOrientToEdit extends AbstractEdit {
 	private final SMovableTurnable toMove;

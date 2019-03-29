@@ -44,14 +44,14 @@ public class ExportGround {
 					}
 				}
 			}
-			
+
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "sharing", rv.getName(), vertices.length, "--->", sharedVertices.size() );
 			rv.vertices.setValue( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( sharedVertices, edu.cmu.cs.dennisc.scenegraph.Vertex.class ) );
 			int[] array = rv.polygonData.getValueAsArray();
 			for( int i=0; i<array.length; i++ ) {
 				array[ i ] = map.get( array[ i ] );
 			}
-			
+
 		}
 		return rv;
 	}
@@ -92,7 +92,7 @@ public class ExportGround {
 				private int b;
 				private int c;
 				private boolean isToBeIncluded;
-				
+
 				public Triangle( int a, int b, int c ) {
 					this.a = a;
 					this.b = b;
@@ -123,7 +123,7 @@ public class ExportGround {
 					} else {
 						if( o instanceof Triangle ) {
 							Triangle other = (Triangle)o;
-							return this.a == other.a && this.b == other.b && this.c == other.c; 
+							return this.a == other.a && this.b == other.b && this.c == other.c;
 						} else {
 							return false;
 						}
@@ -135,9 +135,9 @@ public class ExportGround {
 				}
 			}
 			Vertex[] vertices = rv.vertices.getValue();
-			
+
 			int[] polygonData = rv.polygonData.getValueAsArray();
-			
+
 			java.util.ArrayList< Triangle > triangles = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 			final int N_POLYGON_DATA = polygonData.length;
 			for( int i=0; i<N_POLYGON_DATA; i+=3 ) {
@@ -149,7 +149,7 @@ public class ExportGround {
 				assert c < vertices.length;
 				triangles.add( new Triangle( a, b, c ) );
 			}
-			
+
 			final int N_TRIANGLES = triangles.size();
 			for( int i=0; i<N_TRIANGLES; i++ ) {
 				Triangle triangleI = triangles.get( i );
@@ -162,7 +162,7 @@ public class ExportGround {
 					}
 				}
 			}
-			
+
 //			java.util.ListIterator< Triangle > triangleIterator = triangles.listIterator();
 //			while( triangleIterator.hasNext() ) {
 //				Triangle triangle = triangleIterator.next();
@@ -173,7 +173,7 @@ public class ExportGround {
 //					triangleIterator.remove();
 //				}
 //			}
-//			
+//
 //			int[] trimmedPolygonData = new int[ triangles.size()*3 ];
 //			int i = 0;
 //			for( Triangle triangle : triangles ) {
@@ -203,13 +203,13 @@ public class ExportGround {
 	private static IndexedTriangleArray removeUnreferencedVertices( IndexedTriangleArray rv ) {
 		Vertex[] vertices = rv.vertices.getValue();
 		final int N = vertices.length;
-		boolean[] isReferencedArray = new boolean[ N ]; 
+		boolean[] isReferencedArray = new boolean[ N ];
 		int[] polygonData = rv.polygonData.getValueAsArray();
-		
+
 		for( int i : polygonData ) {
 			isReferencedArray[ i ] = true;
 		}
-		
+
 		boolean isRequiringTrimming = false;
 		for( boolean isReferenced : isReferencedArray ) {
 			if( isReferenced ) {
@@ -219,7 +219,7 @@ public class ExportGround {
 				break;
 			}
 		}
-		
+
 		if( isRequiringTrimming ) {
 			java.util.List< Vertex > trimmedVertices = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			java.util.Map< Integer, Integer > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -229,13 +229,13 @@ public class ExportGround {
 					trimmedVertices.add( vertices[ i ] );
 				}
 			}
-			
+
 			//not necessary at the moment, but might as well create new array
 			int[] reassignedPolygonData = new int[ polygonData.length ];
 			for( int i=0; i<polygonData.length; i++ ) {
 				reassignedPolygonData[ i ] = map.get( polygonData[ i ] );
 			}
-			
+
 			rv.vertices.setValue( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( trimmedVertices, Vertex.class ) );
 			rv.polygonData.setValue( reassignedPolygonData );
 		}
@@ -247,7 +247,7 @@ public class ExportGround {
 		double[] xyzs = new double[ N*3 ];
 		float[] ijks = new float[ N*3 ];
 		float[] uvs = new float[ N*2 ];
-		
+
 		for( int i=0; i<N; i++ ) {
 			Vertex v = vertices[ i ];
 			xyzs[ i*3+0 ] = v.position.x;
@@ -259,8 +259,8 @@ public class ExportGround {
 			uvs[ i*2+0 ] = v.textureCoordinate0.u;
 			uvs[ i*2+1 ] = v.textureCoordinate0.v;
 		}
-		
-		
+
+
 		int[] polygonData = ita.polygonData.getValueAsArray();
 		final int M = polygonData.length;
 		short[] xyzTriangleIndices = new short[ M ];
@@ -275,7 +275,7 @@ public class ExportGround {
 			short c1 = xyzTriangleIndices[ i+2 ];
 			assert a1 != b1 : a1 + " " + b1;
 			assert a1 != c1 : a1 + " " + c1;
-			assert a1 < N; 
+			assert a1 < N;
 			assert b1 < N; 
 			assert c1 < N; 
 			for( int j=i+3; j<M; j+=3 ) {

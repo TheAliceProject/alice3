@@ -78,7 +78,7 @@ public abstract class TransientNameValidator extends NodeNameValidator {
 				}
 			}
 			//			if( this.block != null ) {
-			//				
+			//
 			//			}
 			IsInstanceCrawler<UserLocal> crawler = IsInstanceCrawler.createInstance( UserLocal.class );
 			( (AbstractCode)this.code ).crawl( crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );

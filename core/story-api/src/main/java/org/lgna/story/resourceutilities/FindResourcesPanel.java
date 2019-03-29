@@ -75,7 +75,7 @@ import java.io.File;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class FindResourcesPanel extends JPanel {
 

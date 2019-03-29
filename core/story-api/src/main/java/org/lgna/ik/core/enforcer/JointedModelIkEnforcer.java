@@ -34,7 +34,7 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 	Map<JointId, Map<JointId, Chain>> anchors = new HashMap<JointId, Map<JointId, Chain>>();
 	Map<JointId, Map<JointId, Chain>> chainsForEes = new HashMap<JointId, Map<JointId, Chain>>();
 
-	//this could also be by axis. actually should be... later. 
+	//this could also be by axis. actually should be... later.
 	Weights weights = new Weights();
 
 	class DesiredPositionParameters {
@@ -104,7 +104,7 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 		}
 	}
 
-	//can also set weights per chain, axis, etc. 
+	//can also set weights per chain, axis, etc.
 	public void setDefaultJointWeight( double weight ) {
 		weights.defaultJointWeight = weight;
 	}
@@ -431,7 +431,7 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 	public void addFullBodyDefaultPoseUsingCurrentPose() {
 		//normally, chains tell their bones to update their state from their implementations
 		//what we want to do is to go to the jointedmodelimp and get all the values that can later be recalled using chains by solver
-		//first implement the part where you pull defaults for chains. that will determine how I get it. 
+		//first implement the part where you pull defaults for chains. that will determine how I get it.
 		HashMap<JointImp, OrthogonalMatrix3x3> fullBodyDefaultPose = new HashMap<JointImp, OrthogonalMatrix3x3>();
 
 		Iterable<JointImp> joints = jointedModelImp.getJoints();

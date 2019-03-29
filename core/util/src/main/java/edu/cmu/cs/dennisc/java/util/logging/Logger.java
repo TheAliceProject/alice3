@@ -63,7 +63,7 @@ public class Logger {
 		for( Level customLevel : new Level[] {
 				THROWABLE,
 				TODO,
-		//TESTING 
+		//TESTING
 		} ) {
 			if( levelText.equalsIgnoreCase( customLevel.getName() ) ) {
 				level = customLevel;

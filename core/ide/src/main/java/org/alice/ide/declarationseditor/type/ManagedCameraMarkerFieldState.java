@@ -51,7 +51,7 @@ import java.util.UUID;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class ManagedCameraMarkerFieldState extends AbstractManagedFieldState {
 	private static Map<NamedUserType, ManagedCameraMarkerFieldState> map = Maps.newHashMap();

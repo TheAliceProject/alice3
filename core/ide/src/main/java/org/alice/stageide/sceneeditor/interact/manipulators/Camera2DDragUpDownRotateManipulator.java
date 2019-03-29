@@ -123,7 +123,7 @@ public class Camera2DDragUpDownRotateManipulator extends Camera2DDragManipulator
 	//		{
 	//			Angle rotationDelta = new AngleInRadians(amountToMove);
 	//			this.manipulatedTransformable.applyRotationAboutXAxis( rotationDelta, this.manipulatedTransformable );
-	//			
+	//
 	//			// Index 0 : FORWARD
 	//			// Index 1 : BACKWARD
 	//			if (amountToMove > 0.0d)

@@ -56,7 +56,7 @@ import org.lgna.project.ast.UserField;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class RevertFieldEdit extends AbstractEdit {
 	private final UserField field;

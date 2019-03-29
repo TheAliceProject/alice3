@@ -228,7 +228,7 @@ public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListState
 					//										javax.swing.border.Border border = scrollPane.getBorder();
 					//										java.awt.Insets viewInsets = border.getBorderInsets( scrollPane );
 					//										java.awt.Insets viewInsets = scrollPane.getInsets();
-					//									
+					//
 					//										if( viewInsets != null ) {
 					//											offsetY = viewInsets.top;
 					//											height = rv.height - viewInsets.top - viewInsets.bottom;

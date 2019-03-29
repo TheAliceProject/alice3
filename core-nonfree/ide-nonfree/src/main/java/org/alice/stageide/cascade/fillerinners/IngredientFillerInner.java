@@ -64,7 +64,7 @@ public abstract class IngredientFillerInner extends ExpressionFillerInner {
 
 	@Override
 	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		//		org.lookingglassandalice.storytelling.LifeStage[] lifeStages = { org.lookingglassandalice.storytelling.LifeStage.ADULT, org.lookingglassandalice.storytelling.LifeStage.CHILD }; 
+		//		org.lookingglassandalice.storytelling.LifeStage[] lifeStages = { org.lookingglassandalice.storytelling.LifeStage.ADULT, org.lookingglassandalice.storytelling.LifeStage.CHILD };
 		//		for( final org.lookingglassandalice.storytelling.LifeStage lifeStage : lifeStages ) {
 		//			for( final org.lookingglassandalice.storytelling.Gender gender : org.lookingglassandalice.storytelling.Gender.values() ) {
 		//				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( gender.name().toLowerCase( java.util.Locale.ENGLISH ) + " " + lifeStage.name().toLowerCase( java.util.Locale.ENGLISH ) ) {

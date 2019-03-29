@@ -49,7 +49,7 @@ import org.lgna.story.implementation.BillboardImp;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class BillboardBackPaintPropertyAdapter extends AbstractPropertyAdapter<Paint, BillboardImp> {
 

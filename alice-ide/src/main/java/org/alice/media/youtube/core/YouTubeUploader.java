@@ -251,14 +251,14 @@ public class YouTubeUploader {
 	//				}
 	//				return Boolean.TRUE;
 	//			}
-	//			
+	//
 	//		};
 	//		worker.execute();
 	//	}
 
 	/**
 	 * Uploads a new video to YouTube.
-	 * 
+	 *
 	 * @param videoEntry A video entry for the youtube feeds.
 	 * @throws IOException Problems reading user input.
 	 */

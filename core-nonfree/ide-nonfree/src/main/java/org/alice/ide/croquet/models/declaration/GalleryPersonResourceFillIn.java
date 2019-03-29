@@ -92,13 +92,13 @@ public class GalleryPersonResourceFillIn extends ExpressionFillInWithoutBlanks<E
 		//			org.lgna.story.resources.sims2.PersonResource personResource = subStep.getCommittedValue();
 		//			try {
 		//				org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
-		//				
+		//
 		//				org.lgna.project.ast.NamedUserType type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResource(personResource);
-		//				
-		//				org.lgna.project.ast.InstanceCreation expression = org.lgna.project.ast.AstUtilities.createInstanceCreation( 
-		//						type.getDeclaredConstructors().get(0), 
-		////						new Class<?>[] { org.lgna.story.resources.BipedResource.class }, 
-		//						argumentExpression 
+		//
+		//				org.lgna.project.ast.InstanceCreation expression = org.lgna.project.ast.AstUtilities.createInstanceCreation(
+		//						type.getDeclaredConstructors().get(0),
+		////						new Class<?>[] { org.lgna.story.resources.BipedResource.class },
+		//						argumentExpression
 		//				);
 		//				return expression;
 		//			} catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee) {

@@ -59,7 +59,7 @@ public class AddMouseClickOnObjectListener {
 	}
 
 	//
-	//	
+	//
 	//	public static EventPolicy getPolicy(Detail[] details) {
 	//		for(Detail detail: details){
 	//			if(detail instanceof MultipleEventPolicy){

@@ -46,7 +46,7 @@ import org.lgna.project.annotations.ClassTemplate;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class SetWallPaint extends DurationAnimationStyleArgumentFactory {
 	@ClassTemplate( keywordFactoryCls = SetWallPaint.class )

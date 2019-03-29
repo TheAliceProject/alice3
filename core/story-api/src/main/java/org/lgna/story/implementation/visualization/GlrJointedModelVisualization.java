@@ -230,7 +230,7 @@ public class GlrJointedModelVisualization extends GlrLeaf<JointedModelVisualizat
 
 	private void pushOffset( GL2 gl ) {
 		gl.glPushMatrix();
-		//		gl.glTranslated( 1,0,0 );		
+		//		gl.glTranslated( 1,0,0 );
 	}
 
 	private void popOffset( GL2 gl ) {

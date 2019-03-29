@@ -50,7 +50,7 @@ import org.lgna.story.resources.JointedModelResource;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class ResourcePropertyAdapter extends AbstractPropertyAdapter<JointedModelResource, JointedModelImp<? extends SJointedModel, ? extends JointedModelResource>> {
 

@@ -49,7 +49,7 @@ import org.lgna.story.implementation.Property;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class PaintPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Paint, O>
 {

@@ -218,7 +218,7 @@ public class TextureReference {
 
 	//    public void cullMissingTextures(List<PipelineData> data) {
 	//    	List<ImageReference> foundReferences = new ArrayList<ImageReference>();
-	//    	
+	//
 	//		for (PipelineData pd : data) {
 	//			String baseToKeep = FileUtilities.getBaseName(pd.resourceFile);
 	//			for (ImageReference ref : this.fileReferences)
@@ -235,7 +235,7 @@ public class TextureReference {
 	//    		this.fileReferences = foundReferences;
 	//    	}
 	//    }
-	//    
+	//
 	public boolean matches( TextureReference other ) {
 		boolean namesMatch = this.name.equalsIgnoreCase( other.name );
 		boolean idsMatch = this.id == other.id;

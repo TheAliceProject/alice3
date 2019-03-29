@@ -194,7 +194,7 @@ public class XMLUtilities {
 	}
 
 	// TODO: This removes the indent whitespace from the xml. This is a hack. We should define
-	// an xml schema for project files and validate the document. This is the right way to do this 
+	// an xml schema for project files and validate the document. This is the right way to do this
 	// anyway... not just because of whitespace.
 	@Deprecated
 	private static void removeWhitespaceNodes( Element e ) {

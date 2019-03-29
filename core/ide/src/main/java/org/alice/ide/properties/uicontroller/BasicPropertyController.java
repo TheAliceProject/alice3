@@ -96,7 +96,7 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
 				1, //gridHeight
 				1.0, //weightX
 				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
+				GridBagConstraints.WEST, //anchor
 				GridBagConstraints.HORIZONTAL, //fill
 				new Insets( 0, 0, 0, 0 ), //insets
 				0, //ipadX

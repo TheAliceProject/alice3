@@ -410,7 +410,7 @@ public class EulerAngles implements Orientation {
 	//todo
 	//	public static EulerAnglesD valueOf( String s ) {
 	//		String[] markers = { EulerAnglesD.class.getName()+"[pitch=", ",yaw=", ",roll=", ",order=", "]" };
-	//		EulerAnglesD rv = new EulerAnglesD();		
+	//		EulerAnglesD rv = new EulerAnglesD();
 	//		for( int i = 0; i < (markers.length-1); i++ ) {
 	//			int begin = s.indexOf( markers[ i ] ) + markers[ i ].length();
 	//			int end = s.indexOf( markers[ i + 1 ] );

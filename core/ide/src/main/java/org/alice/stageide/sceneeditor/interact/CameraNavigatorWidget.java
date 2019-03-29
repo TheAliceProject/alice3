@@ -88,7 +88,7 @@ public class CameraNavigatorWidget extends LineAxisPanel {
 		this.cameraDriver = new ManipulationHandle2DCameraDriver();
 		//Create the manipulator
 		Camera2DDragDriveManipulator driverManipulator = new Camera2DDragDriveManipulator( this.cameraDriver );
-		//Set the desired view so the manipulator knows which camera to control 
+		//Set the desired view so the manipulator knows which camera to control
 		driverManipulator.setDesiredCameraView( attachedView );
 		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
 		this.cameraDriver.setManipulation( driverManipulator );
@@ -108,7 +108,7 @@ public class CameraNavigatorWidget extends LineAxisPanel {
 		this.cameraControlUpDown = new ManipulationHandle2DCameraTurnUpDown();
 		//Create the manipulator
 		Camera2DDragUpDownRotateManipulator upDownManipulator = new Camera2DDragUpDownRotateManipulator( this.cameraControlUpDown );
-		//Set the desired view so the manipulator knows which camera to control 
+		//Set the desired view so the manipulator knows which camera to control
 		upDownManipulator.setDesiredCameraView( attachedView );
 		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
 		this.cameraControlUpDown.setManipulation( upDownManipulator );
@@ -128,7 +128,7 @@ public class CameraNavigatorWidget extends LineAxisPanel {
 		this.cameraControlStrafe = new ManipulationHandle2DCameraStrafe();
 		//Create the manipulator
 		Camera2DDragStrafeManipulator strafeManipulator = new Camera2DDragStrafeManipulator( this.cameraControlStrafe );
-		//Set the desired view so the manipulator knows which camera to control 
+		//Set the desired view so the manipulator knows which camera to control
 		strafeManipulator.setDesiredCameraView( attachedView );
 		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
 		this.cameraControlStrafe.setManipulation( strafeManipulator );
@@ -157,7 +157,7 @@ public class CameraNavigatorWidget extends LineAxisPanel {
 		this.orthographicCameraControlStrafe = new ManipulationHandle2DCameraStrafe();
 		//Create the manipulator
 		OrthographicCameraDragStrafeManipulator orthoStrafeManipulator = new OrthographicCameraDragStrafeManipulator( this.cameraControlStrafe );
-		//Set the desired view so the manipulator knows which camera to control 
+		//Set the desired view so the manipulator knows which camera to control
 		orthoStrafeManipulator.setDesiredCameraView( attachedView );
 		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
 		this.orthographicCameraControlStrafe.setManipulation( orthoStrafeManipulator );
@@ -177,7 +177,7 @@ public class CameraNavigatorWidget extends LineAxisPanel {
 		this.orthographicCameraControlZoom = new ManipulationHandle2DCameraZoom();
 		//Create the manipulator
 		OrthographicCameraDragZoomManipulator orthoZoomManipulator = new OrthographicCameraDragZoomManipulator( this.orthographicCameraControlZoom );
-		//Set the desired view so the manipulator knows which camera to control 
+		//Set the desired view so the manipulator knows which camera to control
 		orthoZoomManipulator.setDesiredCameraView( attachedView );
 		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
 		this.orthographicCameraControlZoom.setManipulation( orthoZoomManipulator );

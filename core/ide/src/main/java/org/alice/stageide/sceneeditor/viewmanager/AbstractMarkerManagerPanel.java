@@ -86,7 +86,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel {
 				1, //gridHeight
 				0.0, //weightX
 				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
+				GridBagConstraints.WEST, //anchor
 				GridBagConstraints.NONE, //fill
 				new Insets( 2, 2, 2, 2 ), //insets
 				0, //ipadX
@@ -102,7 +102,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel {
 				1, //gridHeight
 				0.0, //weightX
 				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
+				GridBagConstraints.WEST, //anchor
 				GridBagConstraints.NONE, //fill
 				new Insets( 0, 0, 0, 0 ), //insets
 				0, //ipadX
@@ -118,7 +118,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel {
 				1, //gridHeight
 				0.0, //weightX
 				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
+				GridBagConstraints.WEST, //anchor
 				GridBagConstraints.NONE, //fill
 				new Insets( 0, 0, 0, 0 ), //insets
 				0, //ipadX
@@ -132,7 +132,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel {
 				1, //gridHeight
 				0.0, //weightX
 				1.0, //weightY
-				GridBagConstraints.NORTHWEST, //anchor 
+				GridBagConstraints.NORTHWEST, //anchor
 				GridBagConstraints.VERTICAL, //fill
 				new Insets( 0, 0, 0, 0 ), //insets
 				0, //ipadX
@@ -145,7 +145,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel {
 				3, //gridHeight
 				1.0, //weightX
 				1.0, //weightY
-				GridBagConstraints.NORTH, //anchor 
+				GridBagConstraints.NORTH, //anchor
 				GridBagConstraints.HORIZONTAL, //fill
 				new Insets( 0, 0, 0, 0 ), //insets
 				0, //ipadX

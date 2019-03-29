@@ -139,7 +139,7 @@ public class ChangeHandler {
 			synchronized( renderingModeLock ) {
 				handleEvent( event );
 			}
-			//			fireRepaint();			
+			//			fireRepaint();
 		}
 		ChangeHandler.eventCount++;
 	}

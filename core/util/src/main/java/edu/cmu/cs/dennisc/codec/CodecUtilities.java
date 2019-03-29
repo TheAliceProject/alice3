@@ -162,7 +162,7 @@ public abstract class CodecUtilities {
 	//			throw new RuntimeException( ioe );
 	//		}
 	//	}
-	//	
+	//
 	//	public static BinaryEncodableAndDecodable decodeBinary( BinaryEncodableAndDecodable rv, String path ) {
 	//		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
 	//			return decodeZippedBinary( rv, path, DEFAULT_ZIP_ENTRY_NAME );
@@ -393,7 +393,7 @@ public abstract class CodecUtilities {
 			throw new RuntimeException( ioe );
 		}
 	}
-	//	
+	//
 	//	public static void encodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, java.io.OutputStream os ) {
 	//		BinaryEncoder binaryEncoder = new OutputStreamBinaryEncoder( os );
 	//		java.util.Map< ReferenceableBinaryEncodableAndDecodable, Integer > map = new java.util.HashMap< ReferenceableBinaryEncodableAndDecodable, Integer >();
@@ -415,7 +415,7 @@ public abstract class CodecUtilities {
 	//			throw new RuntimeException( ioe );
 	//		}
 	//	}
-	//	
+	//
 	//	public static void encodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, String path ) {
 	//		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
 	//			encodeZippedReferenceableBinary( referenceableBinaryEncodableAndDecodable, path, DEFAULT_ZIP_ENTRY_NAME );

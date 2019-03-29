@@ -37,7 +37,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 	//how about my jacobians? they should have contributions that are corrected. I believe they do, because of Bone.Axis
 	//there seems to be a contradiction between the last two statements...
 
-	//TODO should do my best to get rid of map lookups (mostly with JointAxis). make it 
+	//TODO should do my best to get rid of map lookups (mostly with JointAxis). make it
 
 	class Limit {
 
@@ -78,7 +78,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 		//how do you tell the difference between the first (1) and the second (2)?
 		//completely depends on what the elbow axis is.
 		//you can find (3) easily
-		//1st: the angle that the rotation axis makes with the initial rotation axis in the first bone's frame 
+		//1st: the angle that the rotation axis makes with the initial rotation axis in the first bone's frame
 		//2nd: the angle that the rotation axis makes with the initial rotation axis in the second bone's frame
 	}
 
@@ -123,7 +123,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 
 			Matrix pseudoInverseForMotion = v.times( sForDamped ).times( u.transpose() );
 
-			if( isTransposed ) { //TODO perhaps record the fact that matrices are transposed and act accordingly. 
+			if( isTransposed ) { //TODO perhaps record the fact that matrices are transposed and act accordingly.
 				pseudoInverseForMotion = pseudoInverseForMotion.transpose();
 			}
 
@@ -150,7 +150,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 
 			Matrix pseudoInverseForNullspace = v.times( sForRegular ).times( u.transpose() );
 
-			if( isTransposed ) { //TODO perhaps record the fact that matrices are transposed and act accordingly. 
+			if( isTransposed ) { //TODO perhaps record the fact that matrices are transposed and act accordingly.
 				pseudoInverseForNullspace = pseudoInverseForNullspace.transpose();
 			}
 
@@ -172,8 +172,8 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 	public class Jacobian {
 		//WHAT axis -> displacement
 		//really displacement or a matrix?
-		//it's got to be a matrix at some point so that I can invert it. 
-		//so it makes sense to keep it as a matrix? yeah. 
+		//it's got to be a matrix at some point so that I can invert it.
+		//so it makes sense to keep it as a matrix? yeah.
 		//only a handful of axes (ones that are in the collection of constraints)
 
 		//whenever you have axis->... kind of thing, you can use integers from indexToAxis (axisToIndex gets this number)
@@ -183,7 +183,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 
 		Matrix matrix;
 		//		int[] axisForColumn; //this is used->global
-		JacobianAxis[] columnIndexToJacobianColumn; //this is indexed by the one that I use. 
+		JacobianAxis[] columnIndexToJacobianColumn; //this is indexed by the one that I use.
 
 		//TODO go over these constructors and ensure all of them do what the caller expect
 		public Jacobian( int rowDimension, JacobianAxis[] inputColumns ) {
@@ -244,7 +244,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 					assert found;
 
 					//if the jacobian has this column, copy it from it
-					//else leave it zero 
+					//else leave it zero
 				}
 
 				resultantRowOffset += rowCount;
@@ -289,10 +289,10 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 				compactResult[ rowi ] = val;
 			}
 
-			//then stretch it to make it into a globally-indexed angledeltas 
+			//then stretch it to make it into a globally-indexed angledeltas
 			AngleDeltas result = new AngleDeltas( indexToAxis.size() );
 
-			//zero them out 
+			//zero them out
 			for( int i = 0; i < result.storage.length; ++i ) {
 				result.storage[ i ] = 0;
 			}
@@ -326,7 +326,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 			}
 		}
 
-		//TODO call this whenever you change the values of the matrix 
+		//TODO call this whenever you change the values of the matrix
 		private void matrixWasUpdated() {
 			//clean the svd stuff
 			svdInfo = null;
@@ -472,7 +472,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 		public abstract Jacobian computeJacobian();
 
 		protected void updateJacobianUsingVelocityContributions( Map<Bone, Map<Axis, Vector3>> velocityContributions ) {
-			//if jacobian is not already created, create it. otherwise update it. 
+			//if jacobian is not already created, create it. otherwise update it.
 
 			boolean isJacobianInitialized = jacobian != null;
 
@@ -569,7 +569,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 
 		@Override
 		public Displacement computeDesiredDisplacement() {
-			//know the desired position. know the ee local position. should ask for ee position and compute. 
+			//know the desired position. know the ee local position. should ask for ee position and compute.
 			Vector3 dispPoint = computeDesiredVector();
 			return new Displacement( new double[] { dispPoint.x, dispPoint.y, dispPoint.z } );
 		}
@@ -580,11 +580,11 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 
 		@Override
 		public Jacobian computeJacobian() {
-			//I have a chain, that should help. 
+			//I have a chain, that should help.
 			//chain will give me all the axes
 			//I also need the distance of the ee's tip to the position of the joint
 			//for that I need ee local position. who has it? chain?
-			//chain does have it, yes. go with it for now. I think I should have this code somewhere. I do, 
+			//chain does have it, yes. go with it for now. I think I should have this code somewhere. I do,
 
 			chain.updateStateFromJoints(); //TODO may be updating things unnecessarily when chains intersect too much
 
@@ -596,8 +596,8 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 		}
 	}
 
-	private static double MIN_ANGLE_IN_RADIANS_BEFORE_CONSTRAINT_IS_MET = Math.PI * .0001; //TODO may need to adjust if it's doing extra cycles 
-	private static double MIN_DISTANCE_BEFORE_CONSTRAINT_IS_MET = .0001; //TODO may need to adjust if it's doing extra cycles 
+	private static double MIN_ANGLE_IN_RADIANS_BEFORE_CONSTRAINT_IS_MET = Math.PI * .0001; //TODO may need to adjust if it's doing extra cycles
+	private static double MIN_DISTANCE_BEFORE_CONSTRAINT_IS_MET = .0001; //TODO may need to adjust if it's doing extra cycles
 	private static double MIN_DISTANCE_SQUARED_BEFORE_CONSTRAINT_IS_MET = MIN_DISTANCE_BEFORE_CONSTRAINT_IS_MET * MIN_DISTANCE_BEFORE_CONSTRAINT_IS_MET;
 
 	public class OrientationConstraint extends Constraint {
@@ -667,7 +667,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 		initializeListOfAxes();
 	}
 
-	//this is the mr representative of an axis in the actual model. there is one for each. it's not in jacobians. 
+	//this is the mr representative of an axis in the actual model. there is one for each. it's not in jacobians.
 	class JacobianAxis {
 		//TODO need to know and access the actual model and joint. figure out how you were doing it in the old code
 		//like in Bone.updateStateFromJoint()
@@ -677,14 +677,14 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 		//012, xyz
 		//vector to multiply?
 		//ee pos-ori
-		//chain.getEndEffectorPosition 
+		//chain.getEndEffectorPosition
 		//	org.lgna.story.implementation.JointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE).setReturnValueToTransformed(new edu.cmu.cs.dennisc.math.Point3(), endEffectorLocalPosition);
 		//I think this one below is for calculating the desired only.
 		//chain.getEndEffectorOrientation
 		//	org.lgna.story.implementation.JointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE).orientation
 		//anchor
 
-		//this does not know its global index but parent class does 
+		//this does not know its global index but parent class does
 		private final JointImp jointImp;
 		private final int axisInBoneIndex;
 		private boolean isFree = true;
@@ -709,29 +709,29 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 			//jointimp would work
 			//Do I need the Bone.Axis to continue? NO!
 			//I'm afraid I may have to deal with the reversal myself. what if there are two usages of this axis and one is reversed?
-			//bone.axis should know that. but JacobianAxis is agnostic to that... 
+			//bone.axis should know that. but JacobianAxis is agnostic to that...
 
-			//I should simply 
+			//I should simply
 			//I concluded yesterday that this should be very simple
 			//Bone.Axis is inverted appropriately. that's what I use for contributions.
-			//so, contribution is, how it moves when I turn it in the original axis direction. 
-			//therefore, the numbers I get out are directly applicable to the joints. no need to worry. 
+			//so, contribution is, how it moves when I turn it in the original axis direction.
+			//therefore, the numbers I get out are directly applicable to the joints. no need to worry.
 
-			//how about the order? I don't reverse order when I reverse the chain. so, don't worry about it. 
+			//how about the order? I don't reverse order when I reverse the chain. so, don't worry about it.
 
 			//0, 1, 2 is x, y, z
 
-			//TODO it's better to turn the joint at once rather than around three axes. rethink this call? 
+			//TODO it's better to turn the joint at once rather than around three axes. rethink this call?
 			//sounds ok on paper, however joint limits make this difficult...
-			//if it was three separate axes, I could enforce joint limits really easily. 
+			//if it was three separate axes, I could enforce joint limits really easily.
 			//if it is a ball joint with three moving axes, then you can't enforce shit...
 			//or can I? something to ponder
 
 			//good thing about locking is that you won't try that direction.
-			//jacobian can't move it that way. the angles I give can't move it that way either. 
-			//isn't this like nullspace in a way?? not really, this is less restrictive. 
-			//actually, locking /is/ like setting a nullspace entry that way. If I understood nullspace well, maybe I could. 
-			//zeroing the diagonal term makes joint unused... somehow I should be able to engineer a direction. 
+			//jacobian can't move it that way. the angles I give can't move it that way either.
+			//isn't this like nullspace in a way?? not really, this is less restrictive.
+			//actually, locking /is/ like setting a nullspace entry that way. If I understood nullspace well, maybe I could.
+			//zeroing the diagonal term makes joint unused... somehow I should be able to engineer a direction.
 
 			//TODO apply this delta to the actual joint
 			throw new RuntimeException( "Not completed method" ); // TODO Auto-generated method stub
@@ -748,7 +748,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 		}
 	}
 
-	//are these all the joints? yes. 
+	//are these all the joints? yes.
 	//TODO make sure that it's the assumption everywhere
 	List<JacobianAxis> indexToAxis;
 	Map<JointImp, List<JacobianAxis>> axesByIndexInJoint;
@@ -863,7 +863,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 
 	private void initializeListOfAxes() {
 		//in a list, I'll hold the list of axes (or angles).
-		// what type do they have? Axis? no, that's an IK thing. 
+		// what type do they have? Axis? no, that's an IK thing.
 		// joint, number pair?
 
 		indexToAxis = new ArrayList<TightPositionalIkEnforcer.JacobianAxis>();
@@ -923,13 +923,13 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 
 	//first of all, you need to know that this enforcer is for a specific character
 	//how many angles does that character have? this will be the size of my nullspace projector
-	//alternatively, I can count the angles in active chains and make the nullspace projector's size be that 
-	//to compute a jacobian, you need to 
+	//alternatively, I can count the angles in active chains and make the nullspace projector's size be that
+	//to compute a jacobian, you need to
 	//know the chain
-	//base and ee bones, axes and angles in between, position of the end effector point wrt end effector frame 
+	//base and ee bones, axes and angles in between, position of the end effector point wrt end effector frame
 	//know the current positions and directions of axes
 
-	//a chain contains one goal: either a position or an orientation goal. to enforce both, you need two chains.   
+	//a chain contains one goal: either a position or an orientation goal. to enforce both, you need two chains.
 
 	//jacobians are per-priority-level. there can be multiple chains in a priority level. you vertically concatenate their contribution vectors.
 
@@ -940,7 +940,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 		angleDeltas = new AngleDeltas( indexToAxis.size() );
 
 		while( ( numIterations < maxNumIterations ) && !areConstraintsMet() ) {
-			// compute current jacobians for all priority levels.  
+			// compute current jacobians for all priority levels.
 			// I had some reservations, maybe calculating jacobians should be inside clamping loop? it seems it's too much of an optimization because it will try one more time for convergence.
 
 			for( PriorityLevel priorityLevel : priorityLevels ) {
@@ -950,7 +950,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 
 			nullspaceProjector.initializeToIdentity();
 
-			// if I would have to do anything about locking state and joint limits, I would initialize them here. 
+			// if I would have to do anything about locking state and joint limits, I would initialize them here.
 			clampingLoop();
 			++numIterations;
 		}
@@ -974,7 +974,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 
 	private void clampingLoop() {
 		// ensure that priority levels are appropriately initialized (ui changes, whatever)
-		// 
+		//
 		boolean isComputedWithClamping = true;
 
 		while( isComputedWithClamping ) {
@@ -990,7 +990,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 
 	//this is the cumulative angledeltas. just like nullspaceprojector.
 	class AngleDeltas {
-		//WHAT globalIndex->value. 
+		//WHAT globalIndex->value.
 
 		double[] storage;
 
@@ -1007,7 +1007,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 
 		//TODO placeholder
 		//this is applied to actual angles at every clamping test and convergence test
-		// I mean, how else would you test for convergence? gets pretty hard. 
+		// I mean, how else would you test for convergence? gets pretty hard.
 
 		public double getByGlobalIndex( int coli ) {
 			return storage[ coli ];
@@ -1057,7 +1057,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 		//priorityLevel.getCurrentJacobian();
 		// current nullspace projector (P_N)
 		//nullspaceProjector
-		// 
+		//
 
 		// calculate the displacement that the current angle deltas would cause and subtract it from desired displacement
 		// delta ^x_i
@@ -1076,9 +1076,9 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 	private Displacement createRemainingDesiredDisplacement(
 			Displacement desiredDisplacement, Jacobian currentJacobian,
 			AngleDeltas currentAngleDeltas ) {
-		// multiply jacobian and currentAngleDeltas 
+		// multiply jacobian and currentAngleDeltas
 		Displacement alreadyMoved = currentJacobian.multiplyWithAngleDeltas( currentAngleDeltas );
-		// create the difference between desiredDisplacement and the multiplication above 
+		// create the difference between desiredDisplacement and the multiplication above
 		return desiredDisplacement.createThisMinusOther( alreadyMoved );
 	}
 
@@ -1097,7 +1097,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 	}
 
 	private void makeCloserToNaturalPose() {
-		// TODO use the current nullspace projector to find an additional angle delta 
+		// TODO use the current nullspace projector to find an additional angle delta
 		// that would move us closer to a natural pose
 		// TODO for now I'm ignoring this. TBD
 		//		System.out.println( "implement this at some point" );
@@ -1108,7 +1108,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 		// everything in the box that starts with clamping detected=no
 		boolean clamped = false;
 
-		//basically, just rotate the joints and that's it. 
+		//basically, just rotate the joints and that's it.
 
 		//I have axes for each joint
 		for( Entry<JointImp, List<JacobianAxis>> e : axesByIndexInJoint.entrySet() ) {
@@ -1156,7 +1156,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 					++axisIndexInJoint;
 				}
 
-				//apply 
+				//apply
 				double angleInRadians = combinedRotation.calculateMagnitude();
 				combinedRotation.divide( angleInRadians );
 				Vector3 axis = combinedRotation;
@@ -1189,17 +1189,17 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 			//I want to apply the changes for these together.
 			//if one of them is not free, don't include that (impossible when 3 and floating)
 
-			//if there are three axes, 
+			//if there are three axes,
 			//assert that all are free
 			//merge them, see if applying them would cause going over the limit. if so,
 			//move till right when the limit is reached
-			//(make sure nullspaceProjector was initialized to identity before going into this loop)  
+			//(make sure nullspaceProjector was initialized to identity before going into this loop)
 			//change nullspaceProjector so that things only move orthogonal to the limit direction
 			//if not, move all the way
 
 			//if there are less than three axes, some may be not free
 			//move the next free one
-			//if moving this would move over the limit, 
+			//if moving this would move over the limit,
 			//move so far and make this locked (not free)
 			//else, move all the way
 
@@ -1245,7 +1245,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 					++axisIndexInJoint;
 				}
 
-				//apply 
+				//apply
 				double angleInRadians = combinedRotation.calculateMagnitude();
 				combinedRotation.divide( angleInRadians );
 				Vector3 axis = combinedRotation;
@@ -1307,8 +1307,8 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 		//this happens in nullspaceprojector
 		//you need to add the violatedBallJointLimits to existing ones
 		//you need to re-lock existing ones in the projector as their axes probably have moved!
-		//here or elsewhere, but somewhere! 
-		//return true only if new axes got locked now 
+		//here or elsewhere, but somewhere!
+		//return true only if new axes got locked now
 
 		//this is how you lock in the projector:
 		//if there is only one violated, next rotations have to be perp to that
@@ -1344,16 +1344,16 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 //this was in convergeLoop()
 // need to know how many possible angles are there
 // initialize the nullspace projector to identity
-//what is this? a square matrix with angle dimensions - good. 
-//my chains have different sets of angles. 
+//what is this? a square matrix with angle dimensions - good.
+//my chains have different sets of angles.
 //CAN ENLARGE: If I compute it with a small number of axes, I can always insert a zero rowcol pair with a 1 in the diagonal
 //SHRINK: I should obviously be able to. however, should I keep things that I didn't use for further iterations? sure!
 //therefore, I'll either
 //1. keep an incremental matrix that you can submatrix depending on the angles you use
-//2. keep a huge matrix, enlarge your jacobians and do the huge matrix multiplications everytime 
+//2. keep a huge matrix, enlarge your jacobians and do the huge matrix multiplications everytime
 //keep the huge matrix, code your multiplications so that you use subparts of it in your multiplications.
-//for the jacobian, for every column, keep the index of the angle among all angles. 
-//This will help you address subparts of the nullspace projector correctly. 
-//instead of keeping indices, you can keep angle objects. you use them for addressing only. 
-//well, addressing with integers in arrays is much faster. I'm going for speed. do integer addresses. 
-//I think the first one makes sense. 
+//for the jacobian, for every column, keep the index of the angle among all angles.
+//This will help you address subparts of the nullspace projector correctly.
+//instead of keeping indices, you can keep angle objects. you use them for addressing only.
+//well, addressing with integers in arrays is much faster. I'm going for speed. do integer addresses.
+//I think the first one makes sense.

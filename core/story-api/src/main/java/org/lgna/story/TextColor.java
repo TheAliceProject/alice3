@@ -44,7 +44,7 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class TextColor implements Say.Detail, Think.Detail {
 	private final Color value;

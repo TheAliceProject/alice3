@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
 
 /**
  * the root of the scenegraph
- * 
+ *
  * @author Dennis Cosgrove
  */
 public class Scene extends Composite {

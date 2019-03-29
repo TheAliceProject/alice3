@@ -55,7 +55,7 @@ import org.lgna.story.resources.ModelResource;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class TypeDefinedGalleryTreeNode extends GalleryResourceTreeNode {
 	TypeDefinedGalleryTreeNode( NamedUserType aliceClass, Class<? extends ModelResource> resourceClass,

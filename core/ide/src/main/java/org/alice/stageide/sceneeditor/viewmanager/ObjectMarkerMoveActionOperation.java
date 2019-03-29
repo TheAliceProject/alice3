@@ -68,7 +68,7 @@ import org.lgna.story.SThingMarker;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 

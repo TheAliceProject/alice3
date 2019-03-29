@@ -44,7 +44,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public interface ModelJoint {
 

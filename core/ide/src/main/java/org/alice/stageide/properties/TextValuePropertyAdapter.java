@@ -48,7 +48,7 @@ import org.lgna.story.implementation.TextModelImp;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class TextValuePropertyAdapter extends AbstractPropertyAdapter<String, TextModelImp> {
 

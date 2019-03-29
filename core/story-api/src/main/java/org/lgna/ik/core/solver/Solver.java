@@ -1,43 +1,43 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -165,8 +165,8 @@ public class Solver {
 	/**
 	 * This is called just by itself to solve everything. Use it as an example
 	 * when you are doing adaptive.
-	 * 
-	 * @return The angle speeds
+	 *
+ * @return The angle speeds
 	 */
 	public Map<Bone, Map<Axis, Double>> solve() {
 		JacobianAndInverse jacobianAndInverse = prepareAndCalculateJacobianAndInverse();
@@ -222,7 +222,7 @@ public class Solver {
 
 			OrthogonalMatrix3x3 m = new OrthogonalMatrix3x3( currentOrientation );
 			m.invert();
-			//tried the other way around, didn't matter. FIXME but it should be desired X current's inverse according to maths 
+			//tried the other way around, didn't matter. FIXME but it should be desired X current's inverse according to maths
 			m.setToMultiplication( m, desiredOrientation );
 			OrthogonalMatrix3x3 rotation = m;
 
@@ -234,7 +234,7 @@ public class Solver {
 
 			Vector3 rotationAxis = axisRotation.axis;
 
-			//project rotation axis on the three axes. then scale with amount and add to them. 
+			//project rotation axis on the three axes. then scale with amount and add to them.
 			//I could have projected the scaled vector but it's the same thing. I guess that requires less computation so I'll do that instead.
 
 			Vector3 rotationVector = Vector3.createMultiplication( rotationAxis, amount );
@@ -253,7 +253,7 @@ public class Solver {
 			}
 		}
 
-		//we know that the rest from here work. it's what's above that messes things up. 
+		//we know that the rest from here work. it's what's above that messes things up.
 		//project the whole thing on the nullspace and then add the result to angleSpeeds.
 		Map<Bone, Map<Axis, Double>> projectedExtraThetaDot;
 		projectedExtraThetaDot = projectToNullSpace( jacobianAndInverse, additionalSpeeds );
@@ -275,7 +275,7 @@ public class Solver {
 	private Map<Bone, Map<Axis, Double>> createBoneSpeedsFromThetadot( Matrix mThetadot ) {
 		Map<Bone, Map<Axis, Double>> boneSpeeds = new HashMap<Bone, Map<Axis, Double>>();
 
-		//trusting that this will give me the same order of axes as in createJacobianMatrix(). No reason to doubt this.  
+		//trusting that this will give me the same order of axes as in createJacobianMatrix(). No reason to doubt this.
 
 		int row = 0;
 		for( Entry<Bone, Map<Axis, Vector3[]>> jce : jacobianColumns.entrySet() ) {
@@ -332,7 +332,7 @@ public class Solver {
 
 				if( desiredLinearVelocity != null ) {
 					chain.computeLinearVelocityContributions();
-					//give this to a constraint set, together with the desired velocity (chain has it). 
+					//give this to a constraint set, together with the desired velocity (chain has it).
 					constraints.add( new Constraint( chain.getLinearVelocityContributions(), new DesiredVelocity( desiredLinearVelocity, true ) ) );
 				}
 				if( desiredAngularVelocity != null ) {
@@ -347,16 +347,16 @@ public class Solver {
 	}
 
 	private void constructJacobianEntries() {
-		//need to align axes in different constraints 
+		//need to align axes in different constraints
 		//need to make it into a matrix
 		//does making a map with lists make sense?
 		//or all lists?
-		//I think it's time to get orderly. all lists. 
+		//I think it's time to get orderly. all lists.
 
 		//pass one, create arrays
 		jacobianColumns = new HashMap<Bone, Map<Axis, Vector3[]>>();
 		desiredVelocities = new DesiredVelocity[ constraints.size() ];
-		//		isDesiredVelocityLinear = new 
+		//		isDesiredVelocityLinear = new
 		for( Constraint constraint : constraints ) {
 			for( Entry<Bone, Map<Axis, Vector3>> e : constraint.contributions.entrySet() ) {
 				Bone bone = e.getKey();
@@ -441,7 +441,7 @@ public class Solver {
 		Matrix pseudoInverseForMotion = v.times( s ).times( u.transpose() );
 		Matrix pseudoInverseForNullspace = v.times( sForBasic ).times( u.transpose() );
 
-		if( transposed ) { //TODO perhaps record the fact that matrices are transposed and act accordingly. 
+		if( transposed ) { //TODO perhaps record the fact that matrices are transposed and act accordingly.
 			pseudoInverseForMotion = pseudoInverseForMotion.transpose();
 			pseudoInverseForNullspace = pseudoInverseForNullspace.transpose();
 		}

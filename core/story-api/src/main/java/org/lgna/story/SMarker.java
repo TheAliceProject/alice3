@@ -76,7 +76,7 @@ public abstract class SMarker extends SMovableTurnable implements MutableRider {
 	//	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
 	//		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	//	}
-	//	
+	//
 	//	@MethodTemplate()
 	//	@GetterTemplate(isPersistent = true)
 	//	public Paint getPaint() {

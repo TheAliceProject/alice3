@@ -193,7 +193,7 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 			if( treePath != null ) {
 				final int N = treePath.getPathCount();
 				for( int i = 0; i < N; i++ ) {
-					//todo: remove when look and feel magic is performed   
+					//todo: remove when look and feel magic is performed
 					if( i > 0 ) {
 						this.internalAddComponent( BoxUtilities.createHorizontalSliver( 4 ) );
 						this.internalAddComponent( Separator.createInstanceSeparatingLeftFromRight() );

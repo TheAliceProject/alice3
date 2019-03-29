@@ -232,7 +232,7 @@ public class GeometryUtilities {
 			//					triangleIterator.remove();
 			//				}
 			//			}
-			//			
+			//
 			//			int[] trimmedPolygonData = new int[ triangles.size()*3 ];
 			//			int i = 0;
 			//			for( Triangle triangle : triangles ) {

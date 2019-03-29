@@ -50,7 +50,7 @@ import org.lgna.story.implementation.QuadrupedImp;
 
 /**
  * @author dculyba
- * 
+ *
  */
 @ResourceTemplate( modelClass = SQuadruped.class )
 public interface QuadrupedResource extends JointedModelResource {

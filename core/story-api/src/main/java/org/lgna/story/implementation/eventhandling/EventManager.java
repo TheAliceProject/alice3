@@ -289,7 +289,7 @@ public class EventManager {
 			OnscreenRenderTarget<?> renderTarget = this.scene.getProgram().getOnscreenRenderTarget();
 			SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)scene.findFirstCamera().getSgCamera();
 			//			for( int i = 0; i < lookingGlass.getCameraCount(); i++ ) {
-			//				if( lookingGlass.getCameraAt( i ) instanceof SymmetricPerspectiveCamera ) 
+			//				if( lookingGlass.getCameraAt( i ) instanceof SymmetricPerspectiveCamera )
 			//				{
 			//					camera = (SymmetricPerspectiveCamera)lookingGlass.getCameraAt( i );
 			//					break;

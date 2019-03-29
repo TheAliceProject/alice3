@@ -55,7 +55,7 @@ public class GlrBufferedImageTexture extends GlrTexture<BufferedImageTexture> {
 	protected TextureData newTextureData( GL gl, TextureData currentTextureData ) {
 		return newTextureData( gl, owner.getBufferedImage(), owner.isMipMappingDesired() );
 	}
-	//	
+	//
 	//	@Override
 	//	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 	//		if( property == m_texture.bufferedImage ) {

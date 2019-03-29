@@ -47,7 +47,7 @@ import org.lgna.story.SProp;
 
 /**
  * @author dculyba
- * 
+ *
  */
 @ResourceTemplate( modelClass = SProp.class )
 public interface PropResource extends BasicResource {

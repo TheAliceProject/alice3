@@ -94,7 +94,7 @@ public class DissolveStatementWithBodyEdit extends BlockStatementEdit<DissolveSt
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		//todo: check 
+		//todo: check
 		BlockStatement owner = this.getBlockStatement();
 		AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
 
@@ -108,7 +108,7 @@ public class DissolveStatementWithBodyEdit extends BlockStatementEdit<DissolveSt
 
 	@Override
 	protected final void undoInternal() {
-		//todo: check 
+		//todo: check
 		BlockStatement owner = this.getBlockStatement();
 		AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
 		owner.statements.removeExclusive( this.index, this.index + this.statements.length );

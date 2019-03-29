@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 /**
  * @author alice
- * 
+ *
  */
 public interface ForgettableBinding {
 	public void forget( RenderContext rc );

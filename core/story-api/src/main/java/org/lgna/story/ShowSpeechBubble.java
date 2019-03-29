@@ -44,7 +44,7 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class ShowSpeechBubble implements SayOutLoud.Detail {
 	private final boolean value;
