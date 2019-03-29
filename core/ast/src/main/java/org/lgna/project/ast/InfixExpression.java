@@ -72,7 +72,7 @@ public abstract class InfixExpression<E extends Enum<E> & PrecedentedAppender> e
 			return InfixExpression.this.getLeftOperandType();
 		}
 	};
-	public final EnumProperty<E> operator = new EnumProperty<>(this,null );
+	public final EnumProperty<E> operator = new EnumProperty<>(this, null );
 	public final ExpressionProperty rightOperand = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {

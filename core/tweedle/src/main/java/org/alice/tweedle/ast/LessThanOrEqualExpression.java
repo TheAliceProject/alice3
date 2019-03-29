@@ -2,7 +2,7 @@ package org.alice.tweedle.ast;
 
 import org.alice.tweedle.TweedleTypes;
 
-public class LessThanOrEqualExpression extends BinaryNumericExpression<Boolean>{
+public class LessThanOrEqualExpression extends BinaryNumericExpression<Boolean> {
 
 	public LessThanOrEqualExpression( TweedleExpression lhs, TweedleExpression rhs) {
 		super( lhs, rhs, TweedleTypes.BOOLEAN );

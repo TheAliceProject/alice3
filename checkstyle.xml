@@ -36,6 +36,9 @@
 
 	<module name="TreeWalker">
 
+		<!-- Checks for whitespace                               -->
+		<!-- See http://checkstyle.sourceforge.net/config_whitespace.html -->
+		<module name="GenericWhitespace"/>
 		<!-- Checks for imports                              -->
 		<!-- See http://checkstyle.sourceforge.net/config_import.html -->
 		<module name="IllegalImport"/> <!-- defaults to sun.* packages -->

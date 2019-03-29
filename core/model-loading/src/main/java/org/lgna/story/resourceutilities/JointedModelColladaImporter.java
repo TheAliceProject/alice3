@@ -421,7 +421,7 @@ public class JointedModelColladaImporter {
 	}
 
 	public static SkeletonVisual loadAliceModel( JointedModelResource resource ) {
-		VisualData< JointedModelResource > v = ImplementationAndVisualType.ALICE.getFactory( resource ).createVisualData();
+		VisualData<JointedModelResource> v = ImplementationAndVisualType.ALICE.getFactory( resource ).createVisualData();
 		SkeletonVisual sv = (SkeletonVisual)v.getSgVisuals()[0];
 		return sv;
 	}

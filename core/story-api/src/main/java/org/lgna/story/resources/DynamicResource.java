@@ -18,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class DynamicResource<I extends JointedModelImp,T extends SThing> implements ModelStructure<I,T>{
+public abstract class DynamicResource<I extends JointedModelImp,T extends SThing> implements ModelStructure<I,T> {
 
 	private final ModelManifest modelManifest;
 	private final ModelManifest.ModelVariant modelVariant;

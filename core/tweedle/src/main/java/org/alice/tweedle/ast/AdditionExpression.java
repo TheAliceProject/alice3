@@ -2,7 +2,7 @@ package org.alice.tweedle.ast;
 
 import org.alice.tweedle.TweedleTypes;
 
-public class AdditionExpression extends BinaryNumericExpression<Number>{
+public class AdditionExpression extends BinaryNumericExpression<Number> {
 
 	public AdditionExpression( TweedleExpression lhs, TweedleExpression rhs) {
 		super( lhs, rhs, TweedleTypes.commonNumberType(lhs, rhs) );

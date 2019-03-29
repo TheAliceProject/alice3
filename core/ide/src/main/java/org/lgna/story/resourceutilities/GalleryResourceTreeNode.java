@@ -8,7 +8,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class GalleryResourceTreeNode implements javax.swing.tree.TreeNode, Iterable<GalleryResourceTreeNode>, Comparable<GalleryResourceTreeNode>{
+public abstract class GalleryResourceTreeNode implements javax.swing.tree.TreeNode, Iterable<GalleryResourceTreeNode>, Comparable<GalleryResourceTreeNode> {
 
 	protected TypeDefinedGalleryTreeNode parent;
 	protected List<GalleryResourceTreeNode> children = Lists.newLinkedList();

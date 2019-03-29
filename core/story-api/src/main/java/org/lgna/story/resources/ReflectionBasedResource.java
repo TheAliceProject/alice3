@@ -6,7 +6,7 @@ import org.lgna.story.implementation.JointedModelImp;
 
 import java.net.URI;
 
-public class ReflectionBasedResource<I extends JointedModelImp,T extends SThing> implements ModelStructure<I,T>{
+public class ReflectionBasedResource<I extends JointedModelImp,T extends SThing> implements ModelStructure<I,T> {
 
 	Class<? extends ModelResource> resourceCls;
 

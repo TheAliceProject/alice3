@@ -345,7 +345,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 		// TODO Remove this once localization is fixed
 		StringState rotateModel = createStringState( "rotateModel" );
 		BoundedDoubleState resizeModel = createBoundedDoubleState(
-			"resizeModel",new BoundedDoubleDetails().initialValue( 1.0 ).minimum( 0.01 ).maximum( 100.0 ).stepSize( 0.01 ) );
+			"resizeModel", new BoundedDoubleDetails().initialValue( 1.0 ).minimum( 0.01 ).maximum( 100.0 ).stepSize( 0.01 ) );
 
 		private ActionOperation rotateOperation(String rotateLeft, AffineMatrix4x4 rotation) {
 			return createActionOperation(rotateLeft, (userActivity, source) -> {
