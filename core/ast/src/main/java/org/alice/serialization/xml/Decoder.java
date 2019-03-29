@@ -413,7 +413,7 @@ class Decoder {
 			return;
 
 		if (node instanceof RelationalInfixExpression && propertyName.equals( "expressionType" )) {
-			RelationalInfixExpression rie = (RelationalInfixExpression ) node;
+			RelationalInfixExpression rie = (RelationalInfixExpression) node;
 			AbstractType<?, ?, ?> operand = value == JavaType.DOUBLE_OBJECT_TYPE ?
 							JavaType.getInstance( Number.class ) :
 							(AbstractType<?, ?, ?>) value;

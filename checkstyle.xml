@@ -40,6 +40,7 @@
 		<!-- See http://checkstyle.sourceforge.net/config_whitespace.html -->
 		<module name="GenericWhitespace"/>
 		<module name="MethodParamPad"/>
+		<module name="TypecastParenPad"/>
 		<module name="NoWhitespaceAfter">
 			<property name="tokens" value="AT, INC, DEC, UNARY_MINUS, UNARY_PLUS, BNOT, LNOT, DOT, ARRAY_DECLARATOR, INDEX_OP"/>
 			<!-- The tokens listed are the defaults - ARRAY_INIT-->
