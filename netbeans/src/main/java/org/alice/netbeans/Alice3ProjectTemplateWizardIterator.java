@@ -97,7 +97,7 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 
 	private WizardDescriptor.Panel[] createPanels() {
 		return new WizardDescriptor.Panel[]{
-			new Alice3ProjectTemplateWizardPanel(),};
+			new Alice3ProjectTemplateWizardPanel(), };
 	}
 
 	private String[] createSteps() {

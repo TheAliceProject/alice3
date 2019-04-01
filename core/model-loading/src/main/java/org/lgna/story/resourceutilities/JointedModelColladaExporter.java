@@ -623,7 +623,7 @@ public class JointedModelColladaExporter {
 
 		//Build the weights source.
 		String weightsSourceName = controllerName + "-Weights";
-		Source weightsSource = createFloatArraySourceFromInitializer( new FloatListInitializeList( weightArray ), weightsSourceName, 1, 1.0,false );
+		Source weightsSource = createFloatArraySourceFromInitializer( new FloatListInitializeList( weightArray ), weightsSourceName, 1, 1.0, false );
 		skin.getSourceAttribute2().add( weightsSource );
 
 		vw.getInput().add( createInputLocalOffset( "JOINT", jointSourceName, 0) );

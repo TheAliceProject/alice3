@@ -20,9 +20,9 @@ public class TweedleLibrary {
 	// Where it is on disk may be needed for resource access.
 	private File storageLocation;
 
-	private final Map<String, String> prerequisites = new HashMap<String,String>(); // name -> version
-	private final Map<String, TweedleClass> classes = new HashMap<String,TweedleClass>();
-	private final Map<String, TweedleResource> resources = new HashMap<String,TweedleResource>();
+	private final Map<String, String> prerequisites = new HashMap<String, String>(); // name -> version
+	private final Map<String, TweedleClass> classes = new HashMap<String, TweedleClass>();
+	private final Map<String, TweedleResource> resources = new HashMap<String, TweedleResource>();
 
 	public TweedleLibrary( List<TweedleType> types ) {
 		// TODO store the types

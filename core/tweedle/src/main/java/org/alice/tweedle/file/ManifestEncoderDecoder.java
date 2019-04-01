@@ -39,7 +39,7 @@ public class ManifestEncoderDecoder {
 			field.setAccessible(true);
 			if (jsonObject.has(field.getName())) {
 				try {
-					field.set(o,context.deserialize(jsonObject.get(field.getName()) , field.getGenericType()));
+					field.set( o, context.deserialize( jsonObject.get( field.getName() ), field.getGenericType() ) );
 				} catch (IllegalAccessException e) {
 					throw new JsonParseException("Error setting field '"+field.getName()+"'.", e);
 				}

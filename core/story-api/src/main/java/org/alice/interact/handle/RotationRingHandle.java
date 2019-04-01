@@ -172,29 +172,26 @@ public class RotationRingHandle extends ManipulationHandle3D {
 			Vector3 minVector = VectorUtilities.projectOntoVector( new Vector3( bbox.getMinimum() ), this.rotationAxis );
 			this.handleOffset.set( 0.0d, 0.0d, 0.0d );
 			switch( this.handlePosition ) {
-			case TOP: {
+			case TOP:
 				this.handleOffset.set( maxVector );
-				double handleSize = this.sgTorus.minorRadius.getValue();
-				Vector3 sizeOffset = new Vector3( this.rotationAxis );
-				sizeOffset.normalize();
-				sizeOffset.multiply( -handleSize );
-				this.handleOffset.add( sizeOffset );
-			}
+				double topHandleSize = this.sgTorus.minorRadius.getValue();
+				Vector3 topSizeOffset = new Vector3( this.rotationAxis );
+				topSizeOffset.normalize();
+				topSizeOffset.multiply( -topHandleSize );
+				this.handleOffset.add( topSizeOffset );
 				break;
-			case MIDDLE: {
+			case MIDDLE:
 				this.handleOffset.set( maxVector );
 				this.handleOffset.add( minVector );
 				this.handleOffset.multiply( .5d );
-			}
 				break;
-			case BOTTOM: {
+			case BOTTOM:
 				this.handleOffset.set( minVector );
 				double handleSize = this.sgTorus.minorRadius.getValue();
 				Vector3 sizeOffset = new Vector3( this.rotationAxis );
 				sizeOffset.normalize();
 				sizeOffset.multiply( handleSize );
 				this.handleOffset.add( sizeOffset );
-			}
 				break;
 			}
 			if( this.handleOffset.isNaN() ) {

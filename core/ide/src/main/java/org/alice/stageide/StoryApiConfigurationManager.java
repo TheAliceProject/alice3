@@ -535,7 +535,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 		}
 	}
 
-	private void addMethodsToType(UserType<?> userType, AbstractType<?,?,?> resourceType) {
+	private void addMethodsToType(UserType<?> userType, AbstractType<?, ?, ?> resourceType) {
 		JavaMethod getJointArrayMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", JointId[].class );
 		JavaMethod getJointArrayIdMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", JointArrayId.class );
 		JavaMethod getJointMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJoint", JointId.class );
@@ -618,8 +618,8 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 			// public Alice(AliceResource resource) { super(resource); }
 			// public Biped(BipedResource resource) { super(resource); }
 			Object firstArgument = constructor0.instantiateFirstArgumentPassedToSuperConstructor();
-			AbstractType<?,?,?> constructorParameterType = ConstructorArgumentUtilities.getParameter0Type( constructor0 );
-			AbstractType<?,?,?> inferredResourceType = constructorParameterType;
+			AbstractType<?, ?, ?> constructorParameterType = ConstructorArgumentUtilities.getParameter0Type( constructor0 );
+			AbstractType<?, ?, ?>  inferredResourceType = constructorParameterType;
 			if( inferredResourceType == null ) {
 				JavaField field = ConstructorArgumentUtilities.getArgumentField( constructor0 );
 				if( field != null ) {

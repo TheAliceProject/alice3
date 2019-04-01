@@ -50,6 +50,10 @@
 			<property name="tokens" value="AT, INC, DEC, UNARY_MINUS, UNARY_PLUS, BNOT, LNOT, DOT, ARRAY_DECLARATOR, INDEX_OP"/>
 			<!-- The tokens listed are the defaults - ARRAY_INIT-->
 		</module>
+		<module name="WhitespaceAfter">
+			<property name="tokens" value="COMMA"/>
+		</module>
+
 		<!-- Checks for imports                              -->
 		<!-- See http://checkstyle.sourceforge.net/config_import.html -->
 		<module name="IllegalImport"/> <!-- defaults to sun.* packages -->
@@ -64,6 +68,7 @@
 
 		<!-- Checks for blocks. You know, those {}'s         -->
 		<!-- See http://checkstyle.sourceforge.net/config_blocks.html -->
+		<module name="AvoidNestedBlocks"/>
 		<module name="LeftCurly"/>
 		<module name="NeedBraces"/>
 		<module name="RightCurly"/>

@@ -941,53 +941,50 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 			}
 
 			assert ( ( this.globalDragAdapter != null ) && ( this.sceneCameraImp != null ) && ( this.orthographicCameraImp != null ) );
-			{
-				this.globalDragAdapter.clearCameraViews();
-				this.globalDragAdapter.addCameraView( CameraView.MAIN, this.sceneCameraImp.getSgCamera(), null );
-				this.globalDragAdapter.makeCameraActive( this.sceneCameraImp.getSgCamera() );
+			this.globalDragAdapter.clearCameraViews();
+			this.globalDragAdapter.addCameraView( CameraView.MAIN, this.sceneCameraImp.getSgCamera(), null );
+			this.globalDragAdapter.makeCameraActive( this.sceneCameraImp.getSgCamera() );
 
-				SceneImp sceneImp = this.getActiveSceneImplementation();
-				//sceneImp.mendSceneGraphIfNecessary();
-				//Add and set up the snap grid (this needs to happen before setting the camera)
-				sceneImp.getSgComposite().addComponent( this.snapGrid );
-				this.snapGrid.setTranslationOnly( 0, 0, 0, AsSeenBy.SCENE );
-				this.snapGrid.setShowing( SnapState.getInstance().shouldShowSnapGrid() );
+			SceneImp sceneImp = this.getActiveSceneImplementation();
+			//sceneImp.mendSceneGraphIfNecessary();
+			//Add and set up the snap grid (this needs to happen before setting the camera)
+			sceneImp.getSgComposite().addComponent( this.snapGrid );
+			this.snapGrid.setTranslationOnly( 0, 0, 0, AsSeenBy.SCENE );
+			this.snapGrid.setShowing( SnapState.getInstance().shouldShowSnapGrid() );
 
-				//Initialize stuff that needs a camera
-				this.setCameras( this.sceneCameraImp.getSgCamera(), this.orthographicCameraImp.getSgCamera() );
-				MoveActiveCameraToMarkerActionOperation.getInstance().setCamera( this.sceneCameraImp );
-				MoveMarkerToActiveCameraActionOperation.getInstance().setCamera( this.sceneCameraImp );
+			//Initialize stuff that needs a camera
+			this.setCameras( this.sceneCameraImp.getSgCamera(), this.orthographicCameraImp.getSgCamera() );
+			MoveActiveCameraToMarkerActionOperation.getInstance().setCamera( this.sceneCameraImp );
+			MoveMarkerToActiveCameraActionOperation.getInstance().setCamera( this.sceneCameraImp );
 
-				//Add the orthographic camera to this scene
-				sceneImp.getSgComposite().addComponent( this.orthographicCameraImp.getSgCamera().getParent() );
-				//Add the orthographic markers
-				Component[] existingComponents = sceneImp.getSgComposite().getComponentsAsArray();
-				for( View view : this.mainCameraMarkerList ) {
-					CameraMarkerImp marker = this.mainCameraViewTracker.getCameraMarker( view );
-					boolean alreadyHasIt = false;
-					for( Component c : existingComponents ) {
-						if( c == marker.getSgComposite() ) {
-							alreadyHasIt = true;
-							break;
-						}
-					}
-					if( !alreadyHasIt ) {
-						marker.setVehicle( sceneImp );
+			//Add the orthographic camera to this scene
+			sceneImp.getSgComposite().addComponent( this.orthographicCameraImp.getSgCamera().getParent() );
+			//Add the orthographic markers
+			Component[] existingComponents = sceneImp.getSgComposite().getComponentsAsArray();
+			for( View view : this.mainCameraMarkerList ) {
+				CameraMarkerImp marker = this.mainCameraViewTracker.getCameraMarker( view );
+				boolean alreadyHasIt = false;
+				for( Component c : existingComponents ) {
+					if( c == marker.getSgComposite() ) {
+						alreadyHasIt = true;
+						break;
 					}
 				}
-
-				AffineMatrix4x4 openingViewTransform = this.sceneCameraImp.getAbsoluteTransformation();
-				this.openingSceneMarkerImp.setLocalTransformation( openingViewTransform );
-
-				AffineMatrix4x4 sceneEditorViewTransform = new AffineMatrix4x4( openingViewTransform );
-				sceneEditorViewTransform.applyTranslationAlongYAxis( 12.0 );
-				sceneEditorViewTransform.applyTranslationAlongZAxis( 10.0 );
-				sceneEditorViewTransform.applyRotationAboutXAxis( new AngleInDegrees( -40 ) );
-				this.sceneViewMarkerImp.setLocalTransformation( sceneEditorViewTransform );
-
-				this.mainCameraViewTracker.startTrackingCameraView( this.mainCameraMarkerList.getValue() );
-
+				if( !alreadyHasIt ) {
+					marker.setVehicle( sceneImp );
+				}
 			}
+
+			AffineMatrix4x4 openingViewTransform = this.sceneCameraImp.getAbsoluteTransformation();
+			this.openingSceneMarkerImp.setLocalTransformation( openingViewTransform );
+
+			AffineMatrix4x4 sceneEditorViewTransform = new AffineMatrix4x4( openingViewTransform );
+			sceneEditorViewTransform.applyTranslationAlongYAxis( 12.0 );
+			sceneEditorViewTransform.applyTranslationAlongZAxis( 10.0 );
+			sceneEditorViewTransform.applyRotationAboutXAxis( new AngleInDegrees( -40 ) );
+			this.sceneViewMarkerImp.setLocalTransformation( sceneEditorViewTransform );
+
+			this.mainCameraViewTracker.startTrackingCameraView( this.mainCameraMarkerList.getValue() );
 
 			//TODO: do we need to do anything to handle marker selection on scene change?
 			//Yes, we need to clear the selection on the markers so that no marker is selected on load and so no marker selection is carried over from the previous world

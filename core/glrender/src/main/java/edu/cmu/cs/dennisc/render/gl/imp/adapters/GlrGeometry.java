@@ -134,12 +134,10 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
 				rc.gl.glNewList( id, GL_COMPILE_AND_EXECUTE );
 				renderGeometry( rc, renderType );
 				rc.gl.glEndList();
-				{
-					int error = rc.gl.glGetError();
-					if( error != GL.GL_NO_ERROR ) {
-						Logger.severe( rc.glu.gluErrorString( error ), error, this );
-						//throw new com.jogamp.opengl.GLException( rc.glu.gluErrorString( error ) + " " + error + " " + this.toString() );
-					}
+				int error = rc.gl.glGetError();
+				if( error != GL.GL_NO_ERROR ) {
+					Logger.severe( rc.glu.gluErrorString( error ), error, this );
+					//throw new com.jogamp.opengl.GLException( rc.glu.gluErrorString( error ) + " " + error + " " + this.toString() );
 				}
 				setIsGeometryChanged( false );
 			} else {

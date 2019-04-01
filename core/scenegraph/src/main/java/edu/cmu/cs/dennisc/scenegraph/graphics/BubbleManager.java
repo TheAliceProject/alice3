@@ -120,17 +120,14 @@ public class BubbleManager {
 		double scaledXGap = X_GAP * textScale;
 		double x, y;
 		switch( bubble.getPositionPreference() ) {
-		case TOP_LEFT: {
+		case TOP_LEFT:
 			x = scaledXGap;
-		}
 			break;
-		case TOP_CENTER: {
+		case TOP_CENTER:
 			x = ( viewport.width - bubble.getBubbleRect().width ) * .5f;
-		}
 			break;
-		case TOP_RIGHT: {
+		case TOP_RIGHT:
 			x = viewport.width - bubble.getBubbleRect().width - scaledXGap;
-		}
 			break;
 		default:
 			x = scaledXGap;

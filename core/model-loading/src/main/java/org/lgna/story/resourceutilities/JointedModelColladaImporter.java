@@ -179,7 +179,7 @@ public class JointedModelColladaImporter {
 			} else if (xform instanceof Scale) {
 				Scale scale = (Scale)xform;
 				// TODO orient to Alice
-				OrthogonalMatrix3x3 scaleMatrix = new OrthogonalMatrix3x3( new Vector3(scale.getX(),0,0), new Vector3(0,scale.getY(),0), new Vector3(0,0,scale.getZ()) );
+				OrthogonalMatrix3x3 scaleMatrix = new OrthogonalMatrix3x3( new Vector3( scale.getX(), 0, 0 ), new Vector3( 0, scale.getY(), 0 ), new Vector3( 0, 0, scale.getZ() ) );
 				aliceMatrix.orientation.applyMultiplication( scaleMatrix );
 			} else if (xform instanceof Rotate) {
 				Rotate rotate = (Rotate)xform;

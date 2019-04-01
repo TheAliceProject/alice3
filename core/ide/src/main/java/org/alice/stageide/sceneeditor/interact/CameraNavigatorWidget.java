@@ -199,21 +199,19 @@ public class CameraNavigatorWidget extends LineAxisPanel {
 	public void setExpanded( boolean isExpanded ) {
 		this.isExpanded = isExpanded;
 		switch( this.cameraMode ) {
-		case PERSPECTIVE: {
+		case PERSPECTIVE:
 			this.cameraControlUpDown.setVisible( isExpanded );
 			this.cameraControlStrafe.setVisible( isExpanded );
 			this.cameraDriver.setVisible( true );
 			this.orthographicCameraControlStrafe.setVisible( false );
 			this.orthographicCameraControlZoom.setVisible( false );
-		}
 			break;
-		case ORTHOGRAPHIC: {
+		case ORTHOGRAPHIC:
 			this.cameraControlUpDown.setVisible( false );
 			this.cameraControlStrafe.setVisible( false );
 			this.cameraDriver.setVisible( false );
 			this.orthographicCameraControlStrafe.setVisible( true );
 			this.orthographicCameraControlZoom.setVisible( true );
-		}
 			break;
 		}
 

@@ -77,22 +77,18 @@ public class RoomImp extends VisualScaleModelImp {
 			for( int i = 0; i < 4; i++ ) {
 				Vector3f normal;
 				switch( i ) {
-				case 0: {
+				case 0:
 					normal = new Vector3f( 1, 0, 0 );
 					break;
-				}
-				case 1: {
+				case 1:
 					normal = new Vector3f( 0, 0, -1 );
 					break;
-				}
-				case 2: {
+				case 2:
 					normal = new Vector3f( -1, 0, 0 );
 					break;
-				}
-				case 3: {
+				case 3:
 					normal = new Vector3f( 0, 0, 1 );
 					break;
-				}
 				default:
 					normal = null;
 				}
@@ -157,25 +153,21 @@ public class RoomImp extends VisualScaleModelImp {
 			for( int i = 0; i < 4; i++ ) {
 
 				switch( i ) {
-				case 0: {
+				case 0:
 					leftVals.set( -x, BASE_FLOOR_Y, -z );
 					rightVals.set( -x, y, z );
-				}
 					break;
-				case 1: {
+				case 1:
 					leftVals.set( -x, BASE_FLOOR_Y, z );
 					rightVals.set( x, y, z );
-				}
 					break;
-				case 2: {
+				case 2:
 					leftVals.set( x, BASE_FLOOR_Y, z );
 					rightVals.set( x, y, -z );
-				}
 					break;
-				case 3: {
+				case 3:
 					leftVals.set( x, BASE_FLOOR_Y, -z );
 					rightVals.set( -x, y, -z );
-				}
 					break;
 				}
 				Vertex topLeft = sgVertices[ ( i * 4 ) + 0 ];

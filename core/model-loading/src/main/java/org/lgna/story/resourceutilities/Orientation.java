@@ -56,19 +56,19 @@ public class Orientation {
 	}
 
 	private static final OrthogonalMatrix3x3 ABOUT_FACE_AROUND_Y = new OrthogonalMatrix3x3(
-		new Vector3(-1, 0, 0),
-		new Vector3(0, 1, 0),
-		new Vector3(0, 0, -1));
+		new Vector3( -1, 0, 0 ),
+		new Vector3( 0, 1, 0 ),
+		new Vector3( 0, 0, -1 ) );
 
 	private static final OrthogonalMatrix3x3 QUARTER_TURN_AROUND_Z = new OrthogonalMatrix3x3(
-		new Vector3(0,1,0),
-		new Vector3(-1,0,0),
-		new Vector3(0,0,1));
+		new Vector3( 0, 1, 0 ),
+		new Vector3( -1, 0, 0 ),
+		new Vector3( 0, 0, 1 ) );
 
 	private static final OrthogonalMatrix3x3 QUARTER_TURN_AROUND_X = new OrthogonalMatrix3x3(
-		new Vector3(1,0,0),
-		new Vector3(0,0,-1),
-		new Vector3(0,1,0));
+		new Vector3( 1, 0, 0 ),
+		new Vector3( 0, 0, -1 ),
+		new Vector3( 0, 1, 0 ) );
 
 	private final OrthogonalMatrix3x3 orient3;
 	private final AffineMatrix4x4 inverse4;
