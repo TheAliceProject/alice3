@@ -131,12 +131,10 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 					//Actually "get a good look at" the target
 					GetAGoodLookAtActionOperation lookAtOperation = new GetAGoodLookAtActionOperation( Application.PROJECT_GROUP, storytellingCamera, toLookAtEntity );
 					lookAtOperation.fire();
-				}
-				else {
+				} else {
 					Logger.warning( "Invlalid operation: " + storytellingCamera + ".GetAGoodLookAt( " + toLookAtEntity + " )" );
 				}
-			}
-			else {
+			} else {
 				Logger.todo( "Implement GetAGoodLookAt for orthographic cameras" );
 			}
 		}

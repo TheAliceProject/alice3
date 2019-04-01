@@ -49,8 +49,7 @@ import org.alice.interact.PickHint;
  */
 public class InvertedPickCondition extends PickCondition {
 
-	public InvertedPickCondition( PickHint pickType )
-	{
+	public InvertedPickCondition( PickHint pickType ) {
 		super( pickType );
 		isNot = true;
 	}

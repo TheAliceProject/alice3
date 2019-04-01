@@ -54,8 +54,7 @@ import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
-/*package-private*/class SceneGraphTreeNode extends BasicTreeNode
-{
+/*package-private*/class SceneGraphTreeNode extends BasicTreeNode {
 	//	protected AffineMatrix4x4 localTransform;
 	public AffineMatrix4x4 absoluteTransform;
 	public StackTraceElement[] stackTrace;
@@ -70,21 +69,16 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 	public int parentHash;
 	public String parentName;
 
-	public static SceneGraphTreeNode createSceneGraphTreeStructure( Component sgComponent )
-	{
+	public static SceneGraphTreeNode createSceneGraphTreeStructure( Component sgComponent ) {
 		SceneGraphTreeNode node = new SceneGraphTreeNode( sgComponent );
-		if( sgComponent instanceof Composite )
-		{
-			for( Component c : ( (Composite)sgComponent ).getComponents() )
-			{
+		if( sgComponent instanceof Composite ) {
+			for( Component c : ( (Composite)sgComponent ).getComponents() ) {
 				node.add( createSceneGraphTreeStructure( c ) );
 			}
 		}
-		if( sgComponent instanceof Visual )
-		{
+		if( sgComponent instanceof Visual ) {
 			Visual visual = (Visual)sgComponent;
-			for( Geometry geometry : visual.geometries.getValue() )
-			{
+			for( Geometry geometry : visual.geometries.getValue() ) {
 				node.add( new SceneGraphTreeNode( geometry ) );
 			}
 		}
@@ -92,52 +86,40 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 	}
 
 	@Override
-	protected void setData( Object object )
-	{
+	protected void setData( Object object ) {
 		super.setData( object );
-		if( object instanceof Element )
-		{
+		if( object instanceof Element ) {
 			this.setElementBasedData( (Element)object );
 		}
 	}
 
-	private void setElementBasedData( Element element )
-	{
+	private void setElementBasedData( Element element ) {
 		this.virtualParentHashCode = -1;
-		if( element.containsBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY ) )
-		{
+		if( element.containsBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY ) ) {
 			Object obj = element.getBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY );
-			if( ( obj != null ) && ( obj instanceof Element ) )
-			{
+			if( ( obj != null ) && ( obj instanceof Element ) ) {
 				Element virtualParent = (Element)obj;
 				this.virtualParentHashCode = virtualParent.hashCode();
 				this.virtualParentName = virtualParent.getName();
-				if( this.virtualParentName == null )
-				{
+				if( this.virtualParentName == null ) {
 					String className = virtualParent.getClass().getName();
 					String[] splitClassName = className.split( "\\." );
-					if( splitClassName.length > 0 )
-					{
+					if( splitClassName.length > 0 ) {
 						this.virtualParentName = splitClassName[ splitClassName.length - 1 ];
 					}
 				}
 			}
 		}
 		this.stackTrace = element.getBonusDataFor( Element.DEBUG_CONSTRUCTION_STACK_TRACE_KEY );
-		if( element.getName() != null )
-		{
+		if( element.getName() != null ) {
 			this.name = element.getName() + ":" + this.hashCode;
 		}
-		if( element instanceof Component )
-		{
+		if( element instanceof Component ) {
 			Composite parent = ( (Component)element ).getParent();
-			if( parent != null )
-			{
+			if( parent != null ) {
 				this.parentHash = parent.hashCode();
 				this.parentName = parent.getName() + ":" + this.parentHash;
-			}
-			else
-			{
+			} else {
 				this.parentName = "NO PARENT";
 				this.parentHash = -1;
 			}
@@ -145,26 +127,21 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 		}
 	}
 
-	public SceneGraphTreeNode( Element element )
-	{
+	public SceneGraphTreeNode( Element element ) {
 		super( element );
 		this.absoluteTransform = null;
 		this.hasExtras = false;
 		this.color = null;
 		this.scale = null;
 		this.opacity = -1;
-		if( element instanceof Component )
-		{
+		if( element instanceof Component ) {
 			Component sgComponent = (Component)element;
-			if( ( sgComponent.getRoot() != null ) && ( sgComponent.getParent() != null ) )
-			{
+			if( ( sgComponent.getRoot() != null ) && ( sgComponent.getParent() != null ) ) {
 				this.absoluteTransform = sgComponent.getAbsoluteTransformation();
 			}
-			if( sgComponent instanceof Visual )
-			{
+			if( sgComponent instanceof Visual ) {
 				Visual visual = (Visual)sgComponent;
-				if( visual.frontFacingAppearance.getValue() instanceof TexturedAppearance )
-				{
+				if( visual.frontFacingAppearance.getValue() instanceof TexturedAppearance ) {
 					TexturedAppearance appearance = (TexturedAppearance)visual.frontFacingAppearance.getValue();
 					this.color = new Color4f( appearance.diffuseColor.getValue() );
 					this.opacity = appearance.opacity.getValue();
@@ -177,42 +154,32 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 	}
 
 	@Override
-	public boolean isDifferent( BasicTreeNode other )
-	{
+	public boolean isDifferent( BasicTreeNode other ) {
 		boolean basicDifferent = super.isDifferent( other );
-		if( !basicDifferent && ( other instanceof SceneGraphTreeNode ) )
-		{
+		if( !basicDifferent && ( other instanceof SceneGraphTreeNode ) ) {
 			return this.isSceneGraphDifferent( (SceneGraphTreeNode)other );
 		}
 		return basicDifferent;
 	}
 
-	private boolean isSceneGraphDifferent( SceneGraphTreeNode other )
-	{
-		if( ( other.absoluteTransform != null ) && ( this.absoluteTransform != null ) )
-		{
+	private boolean isSceneGraphDifferent( SceneGraphTreeNode other ) {
+		if( ( other.absoluteTransform != null ) && ( this.absoluteTransform != null ) ) {
 
-			if( !other.absoluteTransform.translation.isWithinReasonableEpsilonOf( other.absoluteTransform.translation ) )
-			{
+			if( !other.absoluteTransform.translation.isWithinReasonableEpsilonOf( other.absoluteTransform.translation ) ) {
 				return true;
 			}
-			if( !other.absoluteTransform.orientation.isWithinReasonableEpsilonOf( other.absoluteTransform.orientation ) )
-			{
+			if( !other.absoluteTransform.orientation.isWithinReasonableEpsilonOf( other.absoluteTransform.orientation ) ) {
 				return true;
 			}
 		}
-		if( this.hasExtras && other.hasExtras )
-		{
-			if( other.opacity != this.opacity )
-			{
+		if( this.hasExtras && other.hasExtras ) {
+			if( other.opacity != this.opacity ) {
 				return true;
 			}
-			if( other.isShowing != this.isShowing )
-			{
+			if( other.isShowing != this.isShowing ) {
 				return true;
 			}
-			if( ( other.color != null ) && !other.color.equals( this.color ) )
-			{
+			if( ( other.color != null ) && !other.color.equals( this.color ) ) {
 				return true;
 			}
 		}

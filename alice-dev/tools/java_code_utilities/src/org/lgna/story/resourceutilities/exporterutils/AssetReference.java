@@ -63,9 +63,7 @@ public class AssetReference
         if (absolute)
         {
             return this.getAbsoluteReference();
-        }
-        else
-        {
+        } else {
             return this.getRelativeReference();
         }
     }

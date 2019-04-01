@@ -51,8 +51,7 @@ import org.lgna.croquet.BoundedDoubleState;
 import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
 
-public class SnapState
-{
+public class SnapState {
 
 	private static class SingletonHolder {
 		private static SnapState instance = new SnapState();
@@ -62,8 +61,7 @@ public class SnapState
 		return SingletonHolder.instance;
 	}
 
-	private SnapState()
-	{
+	private SnapState() {
 	}
 
 	private static SideComposite getSideComposite() {
@@ -74,38 +72,31 @@ public class SnapState
 		return getSideComposite().getSnapDetailsToolPaletteCoreComposite();
 	}
 
-	public BooleanState getIsSnapEnabledState()
-	{
+	public BooleanState getIsSnapEnabledState() {
 		return getSideComposite().getIsSnapEnabledState();
 	}
 
-	public BooleanState getIsSnapToGroundEnabledState()
-	{
+	public BooleanState getIsSnapToGroundEnabledState() {
 		return getSnapDetailsToolPaletteCoreComposite().getIsSnapToGroundEnabledState();
 	}
 
-	public BooleanState getIsSnapToGridEnabledState()
-	{
+	public BooleanState getIsSnapToGridEnabledState() {
 		return getIsSnapEnabledState();
 	}
 
-	public BooleanState getIsRotationSnapEnabledState()
-	{
+	public BooleanState getIsRotationSnapEnabledState() {
 		return getSnapDetailsToolPaletteCoreComposite().getIsRotationState();
 	}
 
-	public BooleanState getShowSnapGridState()
-	{
+	public BooleanState getShowSnapGridState() {
 		return getSnapDetailsToolPaletteCoreComposite().getIsGridShowingState();
 	}
 
-	public BoundedDoubleState getSnapGridSpacingState()
-	{
+	public BoundedDoubleState getSnapGridSpacingState() {
 		return getSnapDetailsToolPaletteCoreComposite().getGridSpacingState();
 	}
 
-	public BoundedDoubleState getSnapAngleInDegreesState()
-	{
+	public BoundedDoubleState getSnapAngleInDegreesState() {
 		return getSnapDetailsToolPaletteCoreComposite().getAngleState();
 	}
 
@@ -114,13 +105,11 @@ public class SnapState
 	//		this.getIsSnapToGroundEnabledState().setValue(shouldSnapToGround);
 	//	}
 
-	public boolean shouldSnapToGround()
-	{
+	public boolean shouldSnapToGround() {
 		return this.getIsSnapEnabledState().getValue() && this.getIsSnapToGroundEnabledState().getValue();
 	}
 
-	public boolean isSnapToGroundEnabled()
-	{
+	public boolean isSnapToGroundEnabled() {
 		return this.getIsSnapToGroundEnabledState().getValue();
 	}
 
@@ -129,13 +118,11 @@ public class SnapState
 	//		this.getIsSnapToGridEnabledState().setValue(shouldSnapToGround);
 	//	}
 
-	public boolean shouldSnapToGrid()
-	{
+	public boolean shouldSnapToGrid() {
 		return this.getIsSnapEnabledState().getValue() && this.getIsSnapToGridEnabledState().getValue();
 	}
 
-	public boolean isSnapToGridEnabled()
-	{
+	public boolean isSnapToGridEnabled() {
 		return this.getIsSnapToGridEnabledState().getValue();
 	}
 
@@ -144,8 +131,7 @@ public class SnapState
 	//		this.getSnapGridSpacingState().setValue(gridSpacing);
 	//	}
 
-	public double getGridSpacing()
-	{
+	public double getGridSpacing() {
 		return this.getSnapGridSpacingState().getValue();
 	}
 
@@ -154,8 +140,7 @@ public class SnapState
 	//		this.getIsSnapEnabledState().setValue(snapEnabled);
 	//	}
 
-	public boolean isSnapEnabled()
-	{
+	public boolean isSnapEnabled() {
 		return this.getIsSnapEnabledState().getValue();
 	}
 
@@ -164,13 +149,11 @@ public class SnapState
 	//		this.getIsRotationSnapEnabledState().setValue(rotationSnapEnabled);
 	//	}
 
-	public boolean shouldSnapToRotation()
-	{
+	public boolean shouldSnapToRotation() {
 		return this.getIsSnapEnabledState().getValue() && this.getIsRotationSnapEnabledState().getValue();
 	}
 
-	public boolean isRotationSnapEnabled()
-	{
+	public boolean isRotationSnapEnabled() {
 		return this.getIsRotationSnapEnabledState().getValue();
 	}
 
@@ -184,18 +167,15 @@ public class SnapState
 	//		setRotationSnapAngleInDegrees(new AngleInDegrees(snapAngle).getAsDegrees());
 	//	}
 
-	public Angle getRotationSnapAngle()
-	{
+	public Angle getRotationSnapAngle() {
 		return new AngleInDegrees( this.getSnapAngleInDegreesState().getValue() );
 	}
 
-	public boolean shouldShowSnapGrid()
-	{
+	public boolean shouldShowSnapGrid() {
 		return this.getIsSnapEnabledState().getValue() && this.getShowSnapGridState().getValue();
 	}
 
-	public boolean isShowSnapGridEnabled()
-	{
+	public boolean isShowSnapGridEnabled() {
 		return this.getShowSnapGridState().getValue();
 	}
 

@@ -91,8 +91,7 @@ public class MarkerUtilities {
 	private static final HashMap<Color, ImageIcon> colorToCameraIconMap = Maps.newHashMap();
 	private static Map<CameraMarker, IconFactory> mapCameraIconFactory = Maps.newHashMap();
 
-	static
-	{
+	static {
 		String[] colorNameKeys = {
 				"red",
 				"green",
@@ -140,26 +139,20 @@ public class MarkerUtilities {
 		}
 	}
 
-	private static int getColorIndexForName( String name )
-	{
+	private static int getColorIndexForName( String name ) {
 		String lowerName = name.toLowerCase( Locale.ENGLISH );
-		for( int i = 0; i < getColorCount(); i++ )
-		{
+		for( int i = 0; i < getColorCount(); i++ ) {
 			String currentColor = getColorNameForIndex( i ).toLowerCase( Locale.ENGLISH );
-			if( lowerName.endsWith( currentColor ) )
-			{
+			if( lowerName.endsWith( currentColor ) ) {
 				return i;
 			}
 		}
 		return -1;
 	}
 
-	private static int getColorIndexForColor( Color color )
-	{
-		for( int i = 0; i < getColorCount(); i++ )
-		{
-			if( getColorForIndex( i ).equals( color ) )
-			{
+	private static int getColorIndexForColor( Color color ) {
+		for( int i = 0; i < getColorCount(); i++ ) {
+			if( getColorForIndex( i ).equals( color ) ) {
 				return i;
 			}
 		}
@@ -178,8 +171,7 @@ public class MarkerUtilities {
 		return findLocalizedText( COLOR_NAME_KEYS[ i ] );
 	}
 
-	private static String getColorFileName( Color color )
-	{
+	private static String getColorFileName( Color color ) {
 		int index = getColorIndexForColor( color );
 		if( index != -1 ) {
 			String colorName = COLOR_NAME_KEYS[ index ];
@@ -189,8 +181,7 @@ public class MarkerUtilities {
 		return "White";
 	}
 
-	private static String getIconSuffixForMarkerColor( Color color )
-	{
+	private static String getIconSuffixForMarkerColor( Color color ) {
 		String colorName = getColorFileName( color );
 		return "_" + colorName + ".png";
 	}
@@ -272,8 +263,7 @@ public class MarkerUtilities {
 		return markerIcon;
 	}
 
-	public static IconFactory getIconFactoryForObjectMarker( UserField marker )
-	{
+	public static IconFactory getIconFactoryForObjectMarker( UserField marker ) {
 		if( marker != null ) {
 			Color markerColor = getColorForMarkerField( marker );
 			return IconFactoryManager.getIconFactoryForObjectMarker( markerColor );
@@ -281,8 +271,7 @@ public class MarkerUtilities {
 		return null;
 	}
 
-	public static IconFactory getIconFactoryForCameraMarker( UserField marker )
-	{
+	public static IconFactory getIconFactoryForCameraMarker( UserField marker ) {
 		if( marker != null ) {
 			Color markerColor = getColorForMarkerField( marker );
 			return IconFactoryManager.getIconFactoryForCameraMarker( markerColor );
@@ -290,8 +279,7 @@ public class MarkerUtilities {
 		return null;
 	}
 
-	public static ImageIcon getIconForObjectMarker( UserField marker )
-	{
+	public static ImageIcon getIconForObjectMarker( UserField marker ) {
 		if( marker != null ) {
 			Color markerColor = getColorForMarkerField( marker );
 			return getObjectMarkIconForColor( markerColor );
@@ -299,8 +287,7 @@ public class MarkerUtilities {
 		return null;
 	}
 
-	public static ImageIcon getIconForCameraMarker( UserField marker )
-	{
+	public static ImageIcon getIconForCameraMarker( UserField marker ) {
 		if( marker != null ) {
 			Color markerColor = getColorForMarkerField( marker );
 			return getCameraMarkIconForColor( markerColor );
@@ -311,8 +298,7 @@ public class MarkerUtilities {
 	public static ImageIcon getCameraMarkIconForColor( Color markerColor ) {
 		if( colorToCameraIconMap.containsKey( markerColor ) ) {
 			return colorToCameraIconMap.get( markerColor );
-		}
-		else {
+		} else {
 			ImageIcon icon = loadIconForCameraMarker( markerColor );
 			colorToCameraIconMap.put( markerColor, icon );
 			return icon;
@@ -322,8 +308,7 @@ public class MarkerUtilities {
 	public static ImageIcon getObjectMarkIconForColor( Color markerColor ) {
 		if( colorToObjectIconMap.containsKey( markerColor ) ) {
 			return colorToObjectIconMap.get( markerColor );
-		}
-		else {
+		} else {
 			ImageIcon icon = loadIconForObjectMarker( markerColor );
 			colorToObjectIconMap.put( markerColor, icon );
 			return icon;
@@ -334,8 +319,7 @@ public class MarkerUtilities {
 		if( markerField != null ) {
 			if( markerField.getValueType().isAssignableTo( CameraMarker.class ) ) {
 				return getIconForCameraMarker( markerField );
-			}
-			else if( markerField.getValueType().isAssignableFrom( SThingMarker.class ) ) {
+			} else if( markerField.getValueType().isAssignableFrom( SThingMarker.class ) ) {
 				return getIconForObjectMarker( markerField );
 			}
 		}
@@ -421,37 +405,28 @@ public class MarkerUtilities {
 		return getNewMarkerColor( CameraMarker.class );
 	}
 
-	public static Color getColorForMarkerField( UserField markerField )
-	{
+	public static Color getColorForMarkerField( UserField markerField ) {
 		SMarker marker = StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( markerField, SMarker.class );
-		if( marker != null )
-		{
+		if( marker != null ) {
 			return marker.getColorId();
-		}
-		else {
+		} else {
 			return Color.WHITE;
 		}
 	}
 
-	public static Color getColorForMarkerName( String markerName )
-	{
+	public static Color getColorForMarkerName( String markerName ) {
 		int colorIndex = getColorIndexForName( markerName );
-		if( colorIndex != -1 )
-		{
+		if( colorIndex != -1 ) {
 			return getColorForIndex( colorIndex );
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
 
-	private static String makeMarkerName( String baseName, Color color, int addOnNumber )
-	{
+	private static String makeMarkerName( String baseName, Color color, int addOnNumber ) {
 		String colorName = getNameForColor( color );
 		String markerName = baseName + "_" + colorName;
-		if( addOnNumber > 0 )
-		{
+		if( addOnNumber > 0 ) {
 			markerName += "_" + Integer.toString( addOnNumber );
 		}
 		return markerName;
@@ -461,8 +436,7 @@ public class MarkerUtilities {
 		int colorIndex = getColorIndexForColor( color );
 		if( colorIndex != -1 ) {
 			return getColorNameForIndex( colorIndex );
-		}
-		else {
+		} else {
 			return "";
 		}
 	}

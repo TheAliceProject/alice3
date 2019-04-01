@@ -548,8 +548,9 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 	}
 
 	private void updateLinkState( boolean isPresent, BooleanState xy ) {
-		if (isPresent)
+		if (isPresent) {
 			xy.setValueTransactionlessly( !xy.isEnabled() );
+		}
 	}
 
 	protected void updateAdapterFromUI( ActionEvent e ) {

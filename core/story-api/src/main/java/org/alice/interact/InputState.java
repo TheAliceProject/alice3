@@ -216,14 +216,12 @@ public class InputState {
 		this.clickPickResult = pickResult;
 		AbstractTransformable picked = this.getClickPickedTransformable( true );
 		PickHint clickedObjectType = PickUtilities.getPickType( this.clickPickResult );
-		if( !clickedObjectType.intersects( PickHint.PickType.NOTHING.pickHint() ) ) {
+		if ( !clickedObjectType.intersects( PickHint.PickType.NOTHING.pickHint() ) ) {
 			this.setClickPickTransformable( picked );
-		}
-		//		else if (clickedObjectType.intersects( PickHint.HANDLES) )
+		//		} else if (clickedObjectType.intersects( PickHint.HANDLES) )
 		//		{
 		//			this.setClickPickTransformable(picked);
-		//		}
-		else {
+		} else {
 			this.setClickPickTransformable( null );
 		}
 		if( picked instanceof ManipulationHandle ) {

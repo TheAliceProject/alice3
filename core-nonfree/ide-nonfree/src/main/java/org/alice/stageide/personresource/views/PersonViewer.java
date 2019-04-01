@@ -108,11 +108,9 @@ public class PersonViewer extends ModelViewer {
 		double height;
 		if( ( lifeStage == LifeStage.ELDER ) || ( lifeStage == LifeStage.ADULT ) || ( lifeStage == LifeStage.TEEN ) || ( lifeStage == LifeStage.CHILD ) ) {
 			height = ADULT_HEIGHT;
-		}
-		else if( lifeStage == LifeStage.TODDLER ) {
+		} else if( lifeStage == LifeStage.TODDLER ) {
 			height = ADULT_HEIGHT;
-		}
-		else {
+		} else {
 			height = ADULT_HEIGHT;
 		}
 		this.positionAndOrientCamera( height, 0, 0.5 );
@@ -124,11 +122,9 @@ public class PersonViewer extends ModelViewer {
 			height = ADULT_HEIGHT;
 		} else if( lifeStage == LifeStage.TEEN ) {
 			height = TEEN_HEIGHT;
-		}
-		else if( lifeStage == LifeStage.CHILD ) {
+		} else if( lifeStage == LifeStage.CHILD ) {
 			height = CHILD_HEIGHT;
-		}
-		else {
+		} else {
 			height = TODDLER_HEIGHT;
 		}
 		this.positionAndOrientCamera( height, 1, 0.5 );

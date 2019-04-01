@@ -252,8 +252,7 @@ public class PipelineNamingUtilities {
 		sDefaultArraysToExposeFirstElementOf.add("NECK");
 	}
 
-	public static String getAliceEnumNameForMayaJoint( String modelJointName )
-	{
+	public static String getAliceEnumNameForMayaJoint( String modelJointName ) {
 		List<String> nameParts = new LinkedList<String>();
 		String[] parts = AliceResourceClassUtilities.fullStringSplit(modelJointName);
 		boolean hasRight = false;
@@ -262,58 +261,38 @@ public class PipelineNamingUtilities {
 		boolean hasFront = false;
 		boolean hasTop = false;
 		boolean hasBottom = false;
-		for (String part : parts)
-		{
-			if (part.equalsIgnoreCase("l"))
-			{
+		for (String part : parts) {
+			if (part.equalsIgnoreCase("l")) {
 				hasLeft = true;
-			}
-			else if (part.equalsIgnoreCase("r"))
-			{
+			} else if (part.equalsIgnoreCase("r")) {
 				hasRight = true;
-			}
-			else if (part.equalsIgnoreCase("f"))
-			{
+			} else if (part.equalsIgnoreCase("f")) {
 				hasFront = true;
-			}
-			else if (part.equalsIgnoreCase("b"))
-			{
+			} else if (part.equalsIgnoreCase("b")) {
 				if (hasBack || hasFront) { //Check to see if this is after a front/back prefix
 					hasBottom = true;
-				}
-				else {
+				} else {
 					hasBack = true;
 				}
-			}
-			else if (part.equalsIgnoreCase("t"))
-			{
+			} else if (part.equalsIgnoreCase("t")) {
 				hasTop = true;
-			}
-			else if (part.length() > 0)
-			{
+			} else if (part.length() > 0) {
 				nameParts.add(part);
 			}
 		}
-		if (hasRight)
-		{
+		if (hasRight) {
 			nameParts.add(0, "RIGHT");
-		}
-		else if (hasLeft)
-		{
+		} else if (hasLeft) {
 			nameParts.add(0, "LEFT");
 		}
 		if (hasTop) {
 			nameParts.add(0, "TOP");
-		}
-		else if (hasBottom) {
+		} else if (hasBottom) {
 			nameParts.add(0, "BOTTOM");
 		}
-		if (hasFront)
-		{
+		if (hasFront) {
 			nameParts.add(0, "FRONT");
-		}
-		else if (hasBack)
-		{
+		} else if (hasBack) {
 			nameParts.add(0, "BACK");
 		}
 		return getEnumNameForNameParts(nameParts);
@@ -325,10 +304,8 @@ public class PipelineNamingUtilities {
 
 	public static String getEnumNameForNameParts(String[] nameParts) {
 		StringBuilder sb = new StringBuilder();
-		for (int i=0; i<nameParts.length; i++)
-		{
-			if (i != 0)
-			{
+		for (int i=0; i<nameParts.length; i++) {
+			if (i != 0) {
 				sb.append("_");
 			}
 			sb.append(nameParts[i].toUpperCase());
@@ -356,8 +333,7 @@ public class PipelineNamingUtilities {
 				System.out.println("No alice name found for " + mayaName
 						+ ", autogen name: " + aliceName);
 			}
-		}
-		else {
+		} else {
 			String[] parts = AliceResourceClassUtilities.fullStringSplit(mayaName);
 			aliceName = getEnumNameForNameParts(parts);
 			System.out.println("Preserving name for " + mayaName
@@ -372,8 +348,7 @@ public class PipelineNamingUtilities {
 		String suffix = String.format("%0"+Integer.toString(digitCount)+"d", index);
 		if (arrayName != null) {
 			return arrayName + "_" + suffix;
-		}
-		else {
+		} else {
 			String baseName = ModelResourceExporter.getArrayNameForJoint(jointName, null, null);
 			return baseName + "_" + suffix;
 		}

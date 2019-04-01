@@ -49,8 +49,7 @@ import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
 public class SelectedInstanceAdapter extends AbstractPropertyAdapter<InstanceFactory, InstanceFactory> {
 
-	public SelectedInstanceAdapter( InstanceFactory instance, StandardExpressionState expressionState )
-	{
+	public SelectedInstanceAdapter( InstanceFactory instance, StandardExpressionState expressionState ) {
 		super( "Selected", instance, expressionState );
 	}
 

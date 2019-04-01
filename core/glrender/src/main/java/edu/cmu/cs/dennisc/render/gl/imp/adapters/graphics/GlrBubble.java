@@ -104,8 +104,7 @@ public abstract class GlrBubble<T extends Bubble> extends GlrShapeEnclosedText<T
 			float scaleFactor = 1.0f;
 			if( viewportRatio >= DEFAULT_WIDTH_TO_HEIGHT_RATIO ) {
 				scaleFactor = (float)( actualViewport.getHeight() / DEFAULT_HEIGHT );
-			}
-			else {
+			} else {
 				scaleFactor = (float)( actualViewport.getWidth() / DEFAULT_WIDTH );
 			}
 			Font scaledFont = font.deriveFont( font.getSize2D() * scaleFactor );
@@ -113,21 +112,15 @@ public abstract class GlrBubble<T extends Bubble> extends GlrShapeEnclosedText<T
 			Dimension2D size = multilineText.getDimension( g2, wrapWidth );
 			originator.calculate( originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, this.owner, renderTarget, actualViewport, camera, size );
 			OnscreenBubble bubble = BubbleManager.getInstance().getBubble( this.owner );
-			if( bubble == null )
-			{
+			if( bubble == null ) {
 				float padding;
-				if( this instanceof GlrThoughtBubble )
-				{
+				if( this instanceof GlrThoughtBubble ) {
 					padding = font.getSize2D() * 1.2f;
-				}
-				else
-				{
+				} else {
 					padding = font.getSize2D() * .4f;
 				}
 				bubble = BubbleManager.getInstance().addBubble( this.owner, originOfTail, size, padding, scaleFactor, actualViewport );
-			}
-			else
-			{
+			} else {
 				bubble.updateOriginOfTail( originOfTail, actualViewport );
 			}
 

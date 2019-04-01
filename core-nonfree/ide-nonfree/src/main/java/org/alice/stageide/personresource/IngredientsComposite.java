@@ -284,8 +284,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
 		if( nextValue == this.bodyTab ) {
 			this.lastActiveOutfitTab = this.bodyTab;
 			syncPersonImpAndMaps();
-		}
-		else if( nextValue == this.topAndBottomTab ) {
+		} else if( nextValue == this.topAndBottomTab ) {
 			this.lastActiveOutfitTab = this.topAndBottomTab;
 			syncPersonImpAndMaps();
 		}
@@ -653,14 +652,12 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
 
 		if( topPiece != null ) {
 			this.getTopPieceState().setValueTransactionlessly( topPiece );
-		}
-		else {
+		} else {
 			this.getTopPieceState().setRandomSelectedValue();
 		}
 		if( bottomPiece != null ) {
 			this.getBottomPieceState().setValueTransactionlessly( bottomPiece );
-		}
-		else {
+		} else {
 			this.getBottomPieceState().setRandomSelectedValue();
 		}
 	}
@@ -676,12 +673,9 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
 				outfit = previousPersonResource.getOutfit();
 			}
 		}
-		if( outfit instanceof FullBodyOutfit )
-		{
+		if( outfit instanceof FullBodyOutfit ) {
 			fullBodyOutfit = (FullBodyOutfit)outfit;
-		}
-		else if( outfit instanceof TopAndBottomOutfit<?, ?> )
-		{
+		} else if( outfit instanceof TopAndBottomOutfit<?, ?> ) {
 			topAndBottomOutfit = (TopAndBottomOutfit<?, ?>)outfit;
 		}
 		updateFullBodyOutfit( lifeStage, gender, fullBodyOutfit );
@@ -723,8 +717,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
 					HairHatStyleHairColorName hairHatStyleHairColorName = HairUtilities.getHairHatStyleColorNameFromHair( nextLifeStage, nextGender, nextHair );
 					if( hairHatStyleHairColorName != null ) {
 						this.updateHairHatStyleHairColorName( nextLifeStage, nextGender, hairHatStyleHairColorName );
-					}
-					else {
+					} else {
 						this.hairTab.getHairColorNameState().setRandomSelectedValue();
 					}
 				} else {
@@ -779,42 +772,33 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
 		boolean topsAndBottomsAvailable = ( this.topAndBottomTab.getBottomPieceData().getItemCount() > 0 ) && ( this.topAndBottomTab.getTopPieceData().getItemCount() > 0 );
 		if( !topsAndBottomsAvailable || ( this.lastActiveOutfitTab == this.bodyTab ) ) {
 			outfit = this.getFullBodyOutfitState().getValue();
-		}
-		else if( this.lastActiveOutfitTab == this.topAndBottomTab ) {
+		} else if( this.lastActiveOutfitTab == this.topAndBottomTab ) {
 			if( lifeStage == LifeStage.CHILD ) {
 				if( gender == Gender.MALE ) {
 					outfit = new MaleChildTopAndBottomOutfit( (MaleChildTopPiece)this.getTopPieceState().getValue(), (MaleChildBottomPiece)this.getBottomPieceState().getValue() );
-				}
-				else if( gender == Gender.FEMALE ) {
+				} else if( gender == Gender.FEMALE ) {
 					outfit = new FemaleChildTopAndBottomOutfit( (FemaleChildTopPiece)this.getTopPieceState().getValue(), (FemaleChildBottomPiece)this.getBottomPieceState().getValue() );
 				}
-			}
-			else if( lifeStage == LifeStage.TEEN ) {
+			} else if( lifeStage == LifeStage.TEEN ) {
 				if( gender == Gender.MALE ) {
 					outfit = new MaleTeenTopAndBottomOutfit( (MaleTeenTopPiece)this.getTopPieceState().getValue(), (MaleTeenBottomPiece)this.getBottomPieceState().getValue() );
-				}
-				else if( gender == Gender.FEMALE ) {
+				} else if( gender == Gender.FEMALE ) {
 					outfit = new FemaleTeenTopAndBottomOutfit( (FemaleTeenTopPiece)this.getTopPieceState().getValue(), (FemaleTeenBottomPiece)this.getBottomPieceState().getValue() );
 				}
-			}
-			else if( lifeStage == LifeStage.ADULT ) {
+			} else if( lifeStage == LifeStage.ADULT ) {
 				if( gender == Gender.MALE ) {
 					outfit = new MaleAdultTopAndBottomOutfit( (MaleAdultTopPiece)this.getTopPieceState().getValue(), (MaleAdultBottomPiece)this.getBottomPieceState().getValue() );
-				}
-				else if( gender == Gender.FEMALE ) {
+				} else if( gender == Gender.FEMALE ) {
 					outfit = new FemaleAdultTopAndBottomOutfit( (FemaleAdultTopPiece)this.getTopPieceState().getValue(), (FemaleAdultBottomPiece)this.getBottomPieceState().getValue() );
 				}
-			}
-			else if( lifeStage == LifeStage.ELDER ) {
+			} else if( lifeStage == LifeStage.ELDER ) {
 				if( gender == Gender.MALE ) {
 					outfit = new MaleElderTopAndBottomOutfit( (MaleElderTopPiece)this.getTopPieceState().getValue(), (MaleElderBottomPiece)this.getBottomPieceState().getValue() );
-				}
-				else if( gender == Gender.FEMALE ) {
+				} else if( gender == Gender.FEMALE ) {
 					outfit = new FemaleElderTopAndBottomOutfit( (FemaleElderTopPiece)this.getTopPieceState().getValue(), (FemaleElderBottomPiece)this.getBottomPieceState().getValue() );
 				}
 			}
-		}
-		else {
+		} else {
 			outfit = this.getFullBodyOutfitState().getValue();
 		}
 		HairHatStyle hairHatStyle = this.getHairHatStyleState().getValue();

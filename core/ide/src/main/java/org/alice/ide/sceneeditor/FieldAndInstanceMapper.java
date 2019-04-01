@@ -45,8 +45,7 @@ package org.alice.ide.sceneeditor;
 
 import org.lgna.project.ast.AbstractField;
 
-public interface FieldAndInstanceMapper
-{
+public interface FieldAndInstanceMapper {
 	public AbstractField getFieldForInstanceInUserVM( Object instance );
 
 	public Object getInstanceInUserVMForField( AbstractField field );

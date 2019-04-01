@@ -104,15 +104,12 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 	}
 
 	public void setShowing( boolean isShowing ) {
-		if( this.isShowing != isShowing )
-		{
+		if( this.isShowing != isShowing ) {
 			this.isShowing = isShowing;
-			if( this.getDisplayEnabled() )
-			{
+			if( this.getDisplayEnabled() ) {
 				Visual[] visuals = this.getSgVisuals();
 				if( ( visuals != null ) && ( visuals.length > 0 ) ) {
-					for( Visual v : visuals )
-					{
+					for( Visual v : visuals ) {
 						v.isShowing.setValue( this.isShowing );
 					}
 				}
@@ -120,35 +117,28 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 		}
 	}
 
-	public boolean getDisplayEnabled()
-	{
+	public boolean getDisplayEnabled() {
 		return this.displayEnabled;
 	}
 
-	public void setDisplayVisuals( boolean useDisplay )
-	{
+	public void setDisplayVisuals( boolean useDisplay ) {
 		this.displayEnabled = useDisplay;
-		if( !this.displayEnabled )
-		{
+		if( !this.displayEnabled ) {
 			Visual[] visuals = this.getSgVisuals();
 			if( ( visuals != null ) && ( visuals.length > 0 ) ) {
-				for( Visual v : visuals )
-				{
+				for( Visual v : visuals ) {
 					v.isShowing.setValue( false );
 				}
 			}
 		}
 	}
 
-	protected AxisAlignedBox calculateBoundingBox()
-	{
+	protected AxisAlignedBox calculateBoundingBox() {
 		AxisAlignedBox bbox = new AxisAlignedBox();
 		Visual[] visuals = this.getSgVisuals();
 		if( ( visuals != null ) && ( visuals.length > 0 ) ) {
-			for( Visual v : this.getSgVisuals() )
-			{
-				for( Geometry g : v.geometries.getValue() )
-				{
+			for( Visual v : this.getSgVisuals() ) {
+				for( Geometry g : v.geometries.getValue() ) {
 					bbox.union( g.getAxisAlignedMinimumBoundingBox() );
 				}
 			}
@@ -156,18 +146,15 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 		return bbox;
 	}
 
-	protected Color4f getDefaultMarkerColor()
-	{
+	protected Color4f getDefaultMarkerColor() {
 		return Color4f.CYAN;
 	}
 
-	protected float getDefaultMarkerOpacity()
-	{
+	protected float getDefaultMarkerOpacity() {
 		return 0.5f;
 	}
 
-	public Color4f getMarkerColor()
-	{
+	public Color4f getMarkerColor() {
 		SimpleAppearance[] appearances = this.getSgPaintAppearances();
 		if( ( appearances != null ) && ( appearances.length > 0 ) ) {
 			return appearances[ 0 ].diffuseColor.getValue();
@@ -175,8 +162,7 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 		return Color4f.WHITE;
 	}
 
-	public void setMarkerColor( Color4f color )
-	{
+	public void setMarkerColor( Color4f color ) {
 		SimpleAppearance[] appearances = this.getSgPaintAppearances();
 		if( ( appearances != null ) && ( appearances.length > 0 ) ) {
 			for( SimpleAppearance sgAppearance : this.getSgPaintAppearances() ) {
@@ -195,8 +181,7 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 		return 1;
 	}
 
-	protected void setMarkerOpacity( float opacity )
-	{
+	protected void setMarkerOpacity( float opacity ) {
 		SimpleAppearance[] appearances = this.getSgOpacityAppearances();
 		float scaledValue = opacity * this.getDefaultMarkerOpacity();
 		if( ( appearances != null ) && ( appearances.length > 0 ) ) {

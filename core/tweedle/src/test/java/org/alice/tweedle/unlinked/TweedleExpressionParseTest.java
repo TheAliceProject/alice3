@@ -134,8 +134,7 @@ public class TweedleExpressionParseTest {
 	}
 
   @Test
-	public void compoundMathShouldEvaluate()
-	{
+	public void compoundMathShouldEvaluate() {
 
 		TweedleExpression tested = parseExpression("(1 + 1 + 1 + 1 - 1 * 2 + 2) / 2");
 		assertEquals("The compound expression should evaluate correctly to an int.",2,
@@ -144,8 +143,7 @@ public class TweedleExpressionParseTest {
 	}
 
   @Test
-	public void compoundMathShouldSpreadType()
-	{
+	public void compoundMathShouldSpreadType() {
 		TweedleExpression tested = parseExpression("(1 + 1 + 1.0 + 1 - 1 * 2 + 2) / 2");
 		assertEquals("The compound expression should evaluate correctly to a double.",
 								 2.0,
@@ -153,8 +151,7 @@ public class TweedleExpressionParseTest {
 	}
 
   @Test
-	public void decimalAdditionExpressionShouldEvaluateToAPrimitiveValue()
-	{
+	public void decimalAdditionExpressionShouldEvaluateToAPrimitiveValue() {
 		AdditionExpression tested = (AdditionExpression)parseExpression("2.1 + 4.9");
 		assertTrue("The AdditionExpression should evaluate to a tweedle value.", tested.evaluate( null ) instanceof TweedlePrimitiveValue );
 	}

@@ -70,8 +70,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
 import edu.cmu.cs.dennisc.scenegraph.util.ModestAxes;
 
-public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragManipulator implements TargetManipulator
-{
+public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragManipulator implements TargetManipulator {
 
 	protected Transformable sgBoundingBoxTransformable = new Transformable();
 	protected Transformable sgBoundingBoxOffsetTransformable = new Transformable();

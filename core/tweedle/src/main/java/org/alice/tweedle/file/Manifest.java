@@ -52,8 +52,7 @@ public class Manifest {
 		public ProjectType type;
 	}
 
-	public enum ProjectType
-	{
+	public enum ProjectType {
 		Library, World, Model
 	}
 

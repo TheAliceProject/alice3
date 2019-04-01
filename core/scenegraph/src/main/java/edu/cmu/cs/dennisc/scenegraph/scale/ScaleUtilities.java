@@ -114,17 +114,13 @@ public class ScaleUtilities {
 		}
 	}
 
-	public static Visual getSGVisualForTransformable( Transformable object )
-	{
-		if( object == null )
-		{
+	public static Visual getSGVisualForTransformable( Transformable object ) {
+		if( object == null ) {
 			return null;
 		}
-		for( int i = 0; i < object.getComponentCount(); i++ )
-		{
+		for( int i = 0; i < object.getComponentCount(); i++ ) {
 			Component c = object.getComponentAt( i );
-			if( c instanceof Visual )
-			{
+			if( c instanceof Visual ) {
 				return (Visual)c;
 			}
 		}

@@ -67,11 +67,9 @@ import org.alice.media.youtube.core.YouTubeUploader;
 /**
  * @author David Culyba
  */
-public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListener, ActionListener
-{
+public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListener, ActionListener {
 
-	public enum UploadStatus
-	{
+	public enum UploadStatus {
 		Uploading( "Uploading..." ),
 		Cancelling( "Cancelling..." ),
 		Waiting( "Waiting..." ),
@@ -82,14 +80,12 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 
 		private String status;
 
-		private UploadStatus( String status )
-		{
+		private UploadStatus( String status ) {
 			this.status = status;
 		}
 
 		@Override
-		public String toString()
-		{
+		public String toString() {
 			return this.status;
 		}
 	}
@@ -114,8 +110,7 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 
 	private YouTubeUploader uploader;
 
-	public UploadToYouTubeStatusPane( Frame owner, YouTubeUploader uploader )
-	{
+	public UploadToYouTubeStatusPane( Frame owner, YouTubeUploader uploader ) {
 		super( owner );
 		this.uploader = uploader;
 		this.status = UploadStatus.Waiting;
@@ -211,28 +206,21 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 
 	}
 
-	private void animate()
-	{
+	private void animate() {
 		SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
 			@Override
-			public Boolean doInBackground()
-			{
+			public Boolean doInBackground() {
 				int count = 0;
-				while( UploadToYouTubeStatusPane.this.isUploading )
-				{
+				while( UploadToYouTubeStatusPane.this.isUploading ) {
 
 					UploadToYouTubeStatusPane.this.imageLabel.setIcon( UploadToYouTubeStatusPane.this.images.get( count ) );
-					try
-					{
+					try {
 						int sleepTime = 100;
-						if( ( count == 0 ) || ( count == ( UploadToYouTubeStatusPane.this.images.size() - 1 ) ) )
-						{
+						if( ( count == 0 ) || ( count == ( UploadToYouTubeStatusPane.this.images.size() - 1 ) ) ) {
 							sleepTime = 300;
 						}
 						Thread.sleep( sleepTime );
-					}
-					catch( Exception e )
-					{
+					} catch( Exception e ) {
 
 					}
 					count = ( count + 1 ) % UploadToYouTubeStatusPane.this.images.size();
@@ -244,22 +232,17 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 		worker.execute();
 	}
 
-	private void stopUpload( YouTubeEvent event )
-	{
-		if( event.getType() == YouTubeEvent.EventType.UPLOAD_FAILED )
-		{
+	private void stopUpload( YouTubeEvent event ) {
+		if( event.getType() == YouTubeEvent.EventType.UPLOAD_FAILED ) {
 			this.status = UploadStatus.Failed;
 		}
-		if( event.getType() == YouTubeEvent.EventType.UPLOAD_SUCCESS )
-		{
+		if( event.getType() == YouTubeEvent.EventType.UPLOAD_SUCCESS ) {
 			this.status = UploadStatus.Succeeded;
 		}
-		if( event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_SUCCESS )
-		{
+		if( event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_SUCCESS ) {
 			this.status = UploadStatus.Cancelled;
 		}
-		if( event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_FAILED )
-		{
+		if( event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_FAILED ) {
 			this.status = UploadStatus.FailedCancelled;
 		}
 		this.isUploading = false;
@@ -268,20 +251,16 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 		this.uploadDetails = (String)event.getMoreInfo();
 	}
 
-	public UploadStatus getStatus()
-	{
+	public UploadStatus getStatus() {
 		return this.status;
 	}
 
-	public String getDetails()
-	{
+	public String getDetails() {
 		return this.uploadDetails;
 	}
 
-	private void startUpload()
-	{
-		if( !this.isUploading )
-		{
+	private void startUpload() {
+		if( !this.isUploading ) {
 			this.isUploading = true;
 			this.status = UploadStatus.Uploading;
 			this.statusLabel.setText( this.status.toString() );
@@ -295,13 +274,10 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 		if( ( event.getType() == YouTubeEvent.EventType.UPLOAD_FAILED ) ||
 				( event.getType() == YouTubeEvent.EventType.UPLOAD_SUCCESS ) ||
 				( event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_SUCCESS ) ||
-				( event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_FAILED ) )
-		{
+				( event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_FAILED ) ) {
 
 			stopUpload( event );
-		}
-		else if( event.getType() == YouTubeEvent.EventType.UPLOAD_STARTED )
-		{
+		} else if( event.getType() == YouTubeEvent.EventType.UPLOAD_STARTED ) {
 			startUpload();
 		}
 
@@ -309,15 +285,12 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 
 	@Override
 	public void actionPerformed( ActionEvent e ) {
-		if( e.getSource() == this.cancelButton )
-		{
+		if( e.getSource() == this.cancelButton ) {
 			this.uploader.cancelUpload();
 			this.status = UploadStatus.Cancelling;
 			this.statusLabel.setText( this.status.toString() );
 			this.cancelButton.setEnabled( false );
-		}
-		else if( e.getSource() == this.doneButton )
-		{
+		} else if( e.getSource() == this.doneButton ) {
 			this.setVisible( false );
 		}
 

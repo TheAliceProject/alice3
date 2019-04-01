@@ -52,14 +52,12 @@ public enum FemaleAdultHairAcornTuck implements FemaleAdultHair, FemaleElderHair
 	STRAWBERRY;
 
 	@Override
-	public Boolean hasHair()
-	{
+	public Boolean hasHair() {
 		return true;
 	}
 
 	@Override
-	public Boolean hasHat()
-	{
+	public Boolean hasHat() {
 		return false;
 	}
 }

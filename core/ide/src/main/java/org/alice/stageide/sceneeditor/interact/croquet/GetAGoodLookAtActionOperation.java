@@ -66,15 +66,13 @@ public class GetAGoodLookAtActionOperation extends ActionOperation {
 	private final SCamera camera;
 	private final SThing toLookAt;
 
-	public GetAGoodLookAtActionOperation( Group group, SCamera camera, SThing toLookAt )
-	{
+	public GetAGoodLookAtActionOperation( Group group, SCamera camera, SThing toLookAt ) {
 		super( group, UUID.fromString( "566dedf3-e612-4eed-8025-a49763feeeb4" ) );
 		this.camera = camera;
 		this.toLookAt = toLookAt;
 	}
 
-	public static boolean IsValidOperation( SCamera camera, SThing toLookAt )
-	{
+	public static boolean IsValidOperation( SCamera camera, SThing toLookAt ) {
 		UserField cameraField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( camera );
 		UserField toLookAtField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( toLookAt );
 		if( ( cameraField == null ) || ( toLookAtField == null ) || ( cameraField == toLookAtField ) ) {

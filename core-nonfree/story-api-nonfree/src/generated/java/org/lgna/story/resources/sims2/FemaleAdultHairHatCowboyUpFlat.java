@@ -61,14 +61,12 @@ public enum FemaleAdultHairHatCowboyUpFlat implements FemaleAdultHair, FemaleEld
 	RED_STRAW_HAT;
 
 	@Override
-	public Boolean hasHair()
-	{
+	public Boolean hasHair() {
 		return true;
 	}
 
 	@Override
-	public Boolean hasHat()
-	{
+	public Boolean hasHat() {
 		return true;
 	}
 }

@@ -64,8 +64,7 @@ public class TextToSpeechResource extends AudioResource
 	private static TextToSpeechResource get( String text, String voice ) {
 		TextVoicePair tvp = new TextVoicePair( text, voice );
 		TextToSpeechResource rv = textToResourceMap.get( tvp );
-		if( rv != null )
-		{
+		if( rv != null ) {
 			//pass
 		} else {
 			rv = new TextToSpeechResource( text, voice );
@@ -78,8 +77,7 @@ public class TextToSpeechResource extends AudioResource
 		return get( text, voice );
 	}
 
-	public TextToSpeechResource( String text, String voice )
-	{
+	public TextToSpeechResource( String text, String voice ) {
 		super( java.util.UUID.randomUUID() );
 		this.isLoaded = false;
 		this.text = text;
@@ -88,28 +86,23 @@ public class TextToSpeechResource extends AudioResource
 		this.setName( this.text );
 	}
 
-	public void addLoadObserver( ResourceLoadedObserver observer )
-	{
+	public void addLoadObserver( ResourceLoadedObserver observer ) {
 		this.resourceLoadedObservers.add( observer );
 	}
 
-	public boolean isLoaded()
-	{
+	public boolean isLoaded() {
 		return this.isLoaded;
 	}
 
-	public void loadResource()
-	{
-		if( !this.isLoaded )
-		{
+	public void loadResource() {
+		if( !this.isLoaded ) {
 			TextToSpeech tts = new TextToSpeech();
 			tts.processText( this.text, this.voice );
 			byte[] data = tts.saveToByteArray();
 			this.setContent( AudioResource.getContentType( ".wav" ), data );
 			this.setDuration( tts.getDuration() );
 			this.isLoaded = true;
-			for( ResourceLoadedObserver observer : this.resourceLoadedObservers )
-			{
+			for( ResourceLoadedObserver observer : this.resourceLoadedObservers ) {
 				observer.ResourceLoaded( this );
 			}
 			this.resourceLoadedObservers.clear();

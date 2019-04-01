@@ -18,8 +18,7 @@ public class ModelManifest extends Manifest {
 	public List<ModelVariant> models =  new ArrayList<>();
 
 
-	public static class BoundingBox
-	{
+	public static class BoundingBox {
 		public List<Float> min;
 		public List<Float> max;
 	}

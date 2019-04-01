@@ -99,8 +99,7 @@ public class DoTogetherCustomizer extends javax.swing.JPanel {
 
     }
 
-    private void evaluateInput()
-    {
+    private void evaluateInput() {
         int count = ((Integer)jSpinner1.getValue()).intValue();
         doTogether.setRunnableCount(count);
 

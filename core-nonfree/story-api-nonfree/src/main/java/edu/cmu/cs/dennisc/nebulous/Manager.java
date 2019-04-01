@@ -141,8 +141,7 @@ public class Manager {
 					userPreferences.putBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, true );
 					if( SystemUtilities.isPropertyTrue( "org.alice.ide.internalDebugMode" ) ) {
 						SystemUtilities.loadLibrary( "", "jni_nebulous", LoadLibraryReportStyle.EXCEPTION );
-					}
-					else {
+					} else {
 						SystemUtilities.loadLibrary( "nebulous", "jni_nebulous", LoadLibraryReportStyle.EXCEPTION );
 					}
 					for( File directory : Manager.getPendingBundles() ) {

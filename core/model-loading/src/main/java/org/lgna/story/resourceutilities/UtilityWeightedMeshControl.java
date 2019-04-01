@@ -52,8 +52,7 @@ class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshControl {
 	AxisAlignedBox getAbsoluteBoundingBox() {
 		AxisAlignedBox box = new AxisAlignedBox();
     	this.indexBuffer.rewind();
-    	while(this.indexBuffer.hasRemaining())
-    	{
+    	while(this.indexBuffer.hasRemaining()) {
     		int index = this.indexBuffer.get()*3;
         	Point3 vertex = new Point3(this.vertexBuffer.get(index), this.vertexBuffer.get(index+1), this.vertexBuffer.get(index+2));
     		box.union(vertex);

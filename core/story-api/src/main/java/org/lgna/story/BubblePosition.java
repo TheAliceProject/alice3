@@ -48,8 +48,7 @@ import edu.cmu.cs.dennisc.scenegraph.graphics.Bubble;
  * @author user
  */
 public enum BubblePosition implements
-		Say.Detail, Think.Detail
-{
+		Say.Detail, Think.Detail {
 	AUTOMATIC( Bubble.PositionPreference.AUTOMATIC ),
 	LEFT( Bubble.PositionPreference.TOP_LEFT ),
 	CENTER( Bubble.PositionPreference.TOP_CENTER ),

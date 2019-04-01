@@ -78,22 +78,17 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
 	private HierarchyListener hierarchyListener;
 	private UserInstance sceneInstance;
 
-	public MutableRiderVehicleAdapter( MutableRider instance, StandardExpressionState expressionState, UserInstance sceneInstance )
-	{
+	public MutableRiderVehicleAdapter( MutableRider instance, StandardExpressionState expressionState, UserInstance sceneInstance ) {
 		super( "Vehicle", instance, expressionState );
 		this.sceneInstance = sceneInstance;
 		this.initializeExpressionState();
 	}
 
-	private void initializeListenersIfNecessary()
-	{
-		if( this.hierarchyListener == null )
-		{
-			this.hierarchyListener = new HierarchyListener()
-			{
+	private void initializeListenersIfNecessary() {
+		if( this.hierarchyListener == null ) {
+			this.hierarchyListener = new HierarchyListener() {
 				@Override
-				public void hierarchyChanged( HierarchyEvent hierarchyEvent )
-				{
+				public void hierarchyChanged( HierarchyEvent hierarchyEvent ) {
 					MutableRiderVehicleAdapter.this.handleHeirarchyChanged();
 				}
 			};
@@ -101,29 +96,22 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
 	}
 
 	@Override
-	protected void setExpressionValue( SThing value )
-	{
-		if( ( this.expressionState != null ) && ( this.sceneInstance != null ) )
-		{
+	protected void setExpressionValue( SThing value ) {
+		if( ( this.expressionState != null ) && ( this.sceneInstance != null ) ) {
 			Expression expressionValue;
-			if( value != null )
-			{
+			if( value != null ) {
 				if( value instanceof SJoint ) {
 					expressionValue = SetUpMethodGenerator.getGetterExpressionForJoint((SJoint) value, this.sceneInstance );
-				}
-				else {
+				} else {
 					if( value instanceof SScene ) {
 						expressionValue = new ThisExpression();
-					}
-					else {
+					} else {
 						AbstractField entityField =
 							sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(value);
 						expressionValue = new FieldAccess(entityField);
 					}
 				}
-			}
-			else
-			{
+			} else {
 				expressionValue = new NullLiteral();
 			}
 			this.expressionState.setValueTransactionlessly( expressionValue );
@@ -131,67 +119,50 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
 	}
 
 	@Override
-	protected void intermediateSetValue( Object value )
-	{
-		if( value instanceof UserInstance )
-		{
+	protected void intermediateSetValue( Object value ) {
+		if( value instanceof UserInstance ) {
 			Object instanceInJava = ( (UserInstance)value ).getJavaInstance();
-			if( instanceInJava instanceof SThing )
-			{
+			if( instanceInJava instanceof SThing ) {
 				value = instanceInJava;
 			}
 		}
-		if( value instanceof SThing )
-		{
+		if( value instanceof SThing ) {
 			this.setValue( (SThing)value );
-		}
-		else {
+		} else {
 			Logger.severe( "Trying to set vehicle expression to something other than an Entity.", value );
 		}
 	}
 
 	@Override
-	protected Object evaluateExpression( Expression expression )
-	{
+	protected Object evaluateExpression( Expression expression ) {
 		VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
 		Object[] values = vm.ENTRY_POINT_evaluate( this.sceneInstance, new Expression[] { expression } );
 		assert values.length == 1;
 		return values[ 0 ];
 	}
 
-	protected void handleHeirarchyChanged()
-	{
+	protected void handleHeirarchyChanged() {
 		this.notifyValueObservers( this.getValue() );
 	}
 
-	public static String getNameForVehicle( SThing vehicle )
-	{
-		if( vehicle != null )
-		{
+	public static String getNameForVehicle( SThing vehicle ) {
+		if( vehicle != null ) {
 			AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM( vehicle );
-			if( field != null )
-			{
+			if( field != null ) {
 				AbstractType<?, ?, ?> valueType = field.getValueType();
 				return field.getName();
-			}
-			else
-			{
+			} else {
 				return vehicle.getName() + ", " + vehicle.getClass().getSimpleName();
 			}
-		}
-		else
-		{
+		} else {
 			return "No Vehicle";
 		}
 	}
 
-	public static Icon getIconForVehicle( SThing vehicle )
-	{
-		if( vehicle != null )
-		{
+	public static Icon getIconForVehicle( SThing vehicle ) {
+		if( vehicle != null ) {
 			UserField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM( vehicle );
-			if( field != null )
-			{
+			if( field != null ) {
 				IconFactory iconFactory = IconFactoryManager.getIconFactoryForField( field );
 				return iconFactory.getIcon( new Dimension( 24, 18 ) );
 			}
@@ -200,43 +171,35 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
 	}
 
 	@Override
-	public void setValue( SThing value )
-	{
+	public void setValue( SThing value ) {
 		super.setValue( value );
-		if( this.instance != null )
-		{
+		if( this.instance != null ) {
 			this.instance.setVehicle( value );
 		}
 	}
 
 	@Override
-	public Class<SThing> getPropertyType()
-	{
+	public Class<SThing> getPropertyType() {
 		return SThing.class;
 	}
 
 	@Override
-	public SThing getValue()
-	{
-		if( this.instance != null )
-		{
+	public SThing getValue() {
+		if( this.instance != null ) {
 			return this.instance.getVehicle();
 		}
 		return null;
 	}
 
 	@Override
-	public SThing getValueCopyIfMutable()
-	{
+	public SThing getValueCopyIfMutable() {
 		return this.getValue();
 	}
 
 	@Override
-	protected void startPropertyListening()
-	{
+	protected void startPropertyListening() {
 		super.startPropertyListening();
-		if( this.instance != null )
-		{
+		if( this.instance != null ) {
 			this.initializeListenersIfNecessary();
 			EntityImp imp = EmployeesOnly.getImplementation( (SThing)this.instance );
 			imp.getSgComposite().addHierarchyListener( this.hierarchyListener );
@@ -244,11 +207,9 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
 	}
 
 	@Override
-	protected void stopPropertyListening()
-	{
+	protected void stopPropertyListening() {
 		super.stopPropertyListening();
-		if( this.instance != null )
-		{
+		if( this.instance != null ) {
 			EntityImp imp = EmployeesOnly.getImplementation( (SThing)this.instance );
 			imp.getSgComposite().removeHierarchyListener( this.hierarchyListener );
 		}

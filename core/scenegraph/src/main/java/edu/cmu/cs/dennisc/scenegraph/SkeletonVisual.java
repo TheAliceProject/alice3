@@ -72,8 +72,7 @@ public class SkeletonVisual extends Visual {
 	@Override
 	protected void actuallyRelease() {
 		super.actuallyRelease();
-		if( skeleton.getValue() != null )
-		{
+		if( skeleton.getValue() != null ) {
 			skeleton.getValue().release();
 		}
 		for( WeightedMesh mesh : weightedMeshes.getValue() ) {
@@ -88,20 +87,15 @@ public class SkeletonVisual extends Visual {
 	}
 
 	@Override
-	public int getGeometryCount()
-	{
+	public int getGeometryCount() {
 		return super.getGeometryCount() + this.weightedMeshes.getLength();
 	}
 
 	@Override
-	public Geometry getGeometryAt( int index )
-	{
-		if( index < super.getGeometryCount() )
-		{
+	public Geometry getGeometryAt( int index ) {
+		if( index < super.getGeometryCount() ) {
 			return super.getGeometryAt( index );
-		}
-		else
-		{
+		} else {
 			return this.weightedMeshes.getValue()[ index - super.getGeometryCount() ];
 		}
 	};
@@ -109,8 +103,7 @@ public class SkeletonVisual extends Visual {
 	public AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox rv, boolean ignoreJointOrientations ) {
 		if( !ignoreJointOrientations && ( this.tracker != null ) ) {
 			this.tracker.getAxisAlignedMinimumBoundingBox( rv );
-		}
-		else {
+		} else {
 			//There's a problem here.
 			//This code is used to return a bounding box for a Skeleton Visual in 2 cases:
 			//	1) When there's no bounding box tracker (the utility class which lets us access the skeleton visual adapter and get bounding box data from the actual transformed weighted mesh
@@ -126,32 +119,27 @@ public class SkeletonVisual extends Visual {
 			//		This is probably the way to go, but we'll need to look into how often we want to ignoreJointOrientations and how often we don't have a tracker
 			if( this.hasDefaultPoseWeightedMeshes.getValue() ) {
 				if( this.defaultPoseWeightedMeshes.getValue() != null ) {
-					for( WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue() )
-					{
+					for( WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue() ) {
 						AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
 						rv.union( b );
 					}
 				}
-			}
-			else {
+			} else {
 				if( this.weightedMeshes.getValue() != null ) {
-					for( WeightedMesh wm : this.weightedMeshes.getValue() )
-					{
+					for( WeightedMesh wm : this.weightedMeshes.getValue() ) {
 						AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
 						rv.union( b );
 					}
 				}
 			}
 			if( this.geometries.getValue() != null ) {
-				for( Geometry g : this.geometries.getValue() )
-				{
+				for( Geometry g : this.geometries.getValue() ) {
 					AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
 					rv.union( b );
 				}
 			}
 		}
-		if( !rv.isNaN() )
-		{
+		if( !rv.isNaN() ) {
 			rv.scale( this.scale.getValue() );
 		}
 		return rv;
@@ -161,37 +149,31 @@ public class SkeletonVisual extends Visual {
 	public AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox rv ) {
 		if( this.tracker != null ) {
 			this.tracker.getAxisAlignedMinimumBoundingBox( rv );
-		}
-		else {
+		} else {
 			//See comment above
 			if( this.hasDefaultPoseWeightedMeshes.getValue() ) {
 				if( this.defaultPoseWeightedMeshes.getValue() != null ) {
-					for( WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue() )
-					{
+					for( WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue() ) {
 						AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
 						rv.union( b );
 					}
 				}
-			}
-			else {
+			} else {
 				if( this.weightedMeshes.getValue() != null ) {
-					for( WeightedMesh wm : this.weightedMeshes.getValue() )
-					{
+					for( WeightedMesh wm : this.weightedMeshes.getValue() ) {
 						AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
 						rv.union( b );
 					}
 				}
 			}
 			if( this.geometries.getValue() != null ) {
-				for( Geometry g : this.geometries.getValue() )
-				{
+				for( Geometry g : this.geometries.getValue() ) {
 					AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
 					rv.union( b );
 				}
 			}
 		}
-		if( !rv.isNaN() )
-		{
+		if( !rv.isNaN() ) {
 			rv.scale( this.scale.getValue() );
 		}
 		return rv;
@@ -213,16 +195,14 @@ public class SkeletonVisual extends Visual {
 
 	public boolean renderBackfaces() {
 		if( this.weightedMeshes.getValue() != null ) {
-			for( WeightedMesh wm : this.weightedMeshes.getValue() )
-			{
+			for( WeightedMesh wm : this.weightedMeshes.getValue() ) {
 				if( !wm.cullBackfaces.getValue() ) {
 					return true;
 				}
 			}
 		}
 		if( this.geometries.getValue() != null ) {
-			for( Geometry g : this.geometries.getValue() )
-			{
+			for( Geometry g : this.geometries.getValue() ) {
 				if( ( g instanceof Mesh ) && !( (Mesh)g ).cullBackfaces.getValue() ) {
 					return true;
 				}
@@ -268,8 +248,7 @@ public class SkeletonVisual extends Visual {
 		AffineMatrix4x4 newTransform = new AffineMatrix4x4( j.localTransformation.getValue() );
 		newTransform.translation.multiply( scale );
 		j.localTransformation.setValue( newTransform );
-		for( int i = 0; i < j.getComponentCount(); i++ )
-		{
+		for( int i = 0; i < j.getComponentCount(); i++ ) {
 			Component comp = j.getComponentAt( i );
 			if (comp instanceof Joint) {
 				scaleJoints((Joint)comp, scale);
@@ -282,8 +261,7 @@ public class SkeletonVisual extends Visual {
 
 	private SkeletonVisualBoundingBoxTracker tracker = null;
 
-	public final CopyableArrayProperty<WeightedMesh> weightedMeshes = new CopyableArrayProperty<WeightedMesh>( this)
-	{
+	public final CopyableArrayProperty<WeightedMesh> weightedMeshes = new CopyableArrayProperty<WeightedMesh>( this) {
 		@Override
 		protected WeightedMesh[] createArray( int length ) {
 			return new WeightedMesh[ length ];
@@ -296,8 +274,7 @@ public class SkeletonVisual extends Visual {
 		}
 	};
 
-	public final CopyableArrayProperty<TexturedAppearance> textures = new CopyableArrayProperty<TexturedAppearance>( this)
-	{
+	public final CopyableArrayProperty<TexturedAppearance> textures = new CopyableArrayProperty<TexturedAppearance>( this) {
 		@Override
 		protected TexturedAppearance[] createArray( int length ) {
 			return new TexturedAppearance[ length ];
@@ -315,8 +292,7 @@ public class SkeletonVisual extends Visual {
 	//By default most models have the same bind pose and default pose so they do not have defaultPoseWeightedMeshes
 	public final BooleanProperty hasDefaultPoseWeightedMeshes = new BooleanProperty( this, false );
 
-	public final CopyableArrayProperty<WeightedMesh> defaultPoseWeightedMeshes = new CopyableArrayProperty<WeightedMesh>( this)
-	{
+	public final CopyableArrayProperty<WeightedMesh> defaultPoseWeightedMeshes = new CopyableArrayProperty<WeightedMesh>( this) {
 		@Override
 		protected WeightedMesh[] createArray( int length ) {
 			return new WeightedMesh[ length ];

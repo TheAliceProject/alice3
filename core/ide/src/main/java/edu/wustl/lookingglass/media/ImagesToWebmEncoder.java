@@ -131,8 +131,7 @@ public class ImagesToWebmEncoder {
 		}
 
 		if( this.isRunning ) {
-			for( MediaEncoderListener l : this.listeners )
-			{
+			for( MediaEncoderListener l : this.listeners ) {
 				l.encodingStarted( this.success );
 			}
 		}
@@ -149,8 +148,7 @@ public class ImagesToWebmEncoder {
 		this.frameCount++;
 		try {
 			OutputStream ffmpegStdOut = this.ffmpegProcess.getProcessOutputStream();
-			if( ffmpegStdOut == null )
-			{
+			if( ffmpegStdOut == null ) {
 				return;
 			}
 
@@ -162,8 +160,7 @@ public class ImagesToWebmEncoder {
 				ffmpegStdOut.flush();
 			}
 
-			for( MediaEncoderListener l : this.listeners )
-			{
+			for( MediaEncoderListener l : this.listeners ) {
 				l.frameUpdate( this.frameCount, frame );
 			}
 		} catch( IOException e ) {

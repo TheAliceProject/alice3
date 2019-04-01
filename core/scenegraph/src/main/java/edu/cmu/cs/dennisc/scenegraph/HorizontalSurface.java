@@ -63,16 +63,14 @@ public class HorizontalSurface extends TexturedVisual {
 	}
 
 	@Override
-	public Geometry getGeometry()
-	{
+	public Geometry getGeometry() {
 		return this.sgGeometry;
 	}
 
 	public void setTiling( float xTiling, float yTiling ) {
 		if( ( xTiling == 1 ) && ( yTiling == 1 ) ) {
 			this.getAppearance().isDiffuseColorTextureClamped.setValue( true );
-		}
-		else {
+		} else {
 			this.getAppearance().isDiffuseColorTextureClamped.setValue( false );
 		}
 		Vertex v0 = sgVertices[ this.getIndex( 0 ) ];

@@ -149,24 +149,21 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 			if( this.dragAxis.x != 0 ) {
 				if( this.dragAxis.x < 0 ) {
 					desiredHandleValues.x = boundingBox.getMinimum().x;
-				}
-				else {
+				} else {
 					desiredHandleValues.x = boundingBox.getMaximum().x;
 				}
 			}
 			if( this.dragAxis.y != 0 ) {
 				if( this.dragAxis.y < 0 ) {
 					desiredHandleValues.y = boundingBox.getMinimum().y;
-				}
-				else {
+				} else {
 					desiredHandleValues.y = boundingBox.getMaximum().y;
 				}
 			}
 			if( this.dragAxis.z != 0 ) {
 				if( this.dragAxis.z < 0 ) {
 					desiredHandleValues.z = boundingBox.getMinimum().z;
-				}
-				else {
+				} else {
 					desiredHandleValues.z = boundingBox.getMaximum().z;
 				}
 			}

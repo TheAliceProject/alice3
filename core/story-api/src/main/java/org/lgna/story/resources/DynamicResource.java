@@ -89,14 +89,13 @@ public abstract class DynamicResource<I extends JointedModelImp,T extends SThing
 		while (jointsToProcess.size() > 0) {
 			ModelManifest.Joint currentJoint = jointsToProcess.pop();
 			//If we already have a JointId for the parent or the parent is null, make a new JointId and add it to the newJoints list and the jointMap
-			if (currentJoint.parent == null || jointMap.containsKey(currentJoint.parent)) {
-				JointId parent = currentJoint.parent != null ? jointMap.get(currentJoint.parent) : null;
-				JointId newJoint = new DynamicJointId(currentJoint.name, parent, currentJoint.visibility);
-				newJoints.add(newJoint);
-				jointMap.put(newJoint.toString(), newJoint);
-			}
-			//If no parent is found, add it to the back of the queue
-			else {
+			if ( currentJoint.parent == null || jointMap.containsKey( currentJoint.parent ) ) {
+				JointId parent = currentJoint.parent != null ? jointMap.get( currentJoint.parent ) : null;
+				JointId newJoint = new DynamicJointId( currentJoint.name, parent, currentJoint.visibility );
+				newJoints.add( newJoint );
+				jointMap.put( newJoint.toString(), newJoint );
+			} else {
+				//If no parent is found, add it to the back of the queue
 				jointsToProcess.push(currentJoint);
 			}
 		}
@@ -111,8 +110,7 @@ public abstract class DynamicResource<I extends JointedModelImp,T extends SThing
 		ModelManifest.BoundingBox manifestBBox = null;
 		if (structure != null && structure.boundingBox != null) {
 			manifestBBox = structure.boundingBox;
-		}
-		else if (modelManifest.boundingBox != null){
+		} else if (modelManifest.boundingBox != null){
 			manifestBBox = modelManifest.boundingBox;
 		}
 		if (manifestBBox != null) {

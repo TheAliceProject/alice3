@@ -409,8 +409,9 @@ class Decoder {
 	}
 
 	private void handleMissingProperty( AbstractNode node, String propertyName, Object value ) {
-		if (node instanceof ConditionalInfixExpression && propertyName.equals( "expressionType" ))
+		if (node instanceof ConditionalInfixExpression && propertyName.equals( "expressionType" )) {
 			return;
+		}
 
 		if (node instanceof RelationalInfixExpression && propertyName.equals( "expressionType" )) {
 			RelationalInfixExpression rie = (RelationalInfixExpression) node;

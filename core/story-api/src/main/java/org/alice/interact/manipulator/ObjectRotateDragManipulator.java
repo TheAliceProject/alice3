@@ -316,8 +316,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	}
 
 	protected void showCursor() {
-		if( this.hidCursor )
-		{
+		if( this.hidCursor ) {
 			try {
 				Point3 pointInCamera = this.rotationHandle.getSphereLocation( this.getCamera() );
 				Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );

@@ -72,8 +72,7 @@ public class MoveToImageIcon implements Icon {
 	private Icon unknownImage;
 	private Icon disabledUnknownImage;
 
-	public MoveToImageIcon()
-	{
+	public MoveToImageIcon() {
 		super();
 		this.arrowImage = IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/moveToArrowIcon.png" ) );
 		this.disabledArrowImage = desaturate( this.arrowImage );
@@ -81,8 +80,7 @@ public class MoveToImageIcon implements Icon {
 		this.disabledUnknownImage = desaturate( this.unknownImage );
 	}
 
-	public MoveToImageIcon( Icon leftImage, Icon rightImage )
-	{
+	public MoveToImageIcon( Icon leftImage, Icon rightImage ) {
 		this();
 		this.setLeftImage( leftImage );
 		this.setRightImage( rightImage );
@@ -96,15 +94,13 @@ public class MoveToImageIcon implements Icon {
 		if( this.leftImage != null ) {
 			if( disabled ) {
 				return this.disabledLeftImage;
-			}
-			else {
+			} else {
 				return this.leftImage;
 			}
 		}
 		if( disabled ) {
 			return this.disabledUnknownImage;
-		}
-		else {
+		} else {
 			return this.unknownImage;
 		}
 	}
@@ -117,15 +113,13 @@ public class MoveToImageIcon implements Icon {
 		if( this.rightImage != null ) {
 			if( disabled ) {
 				return this.disabledRightImage;
-			}
-			else {
+			} else {
 				return this.rightImage;
 			}
 		}
 		if( disabled ) {
 			return this.disabledUnknownImage;
-		}
-		else {
+		} else {
 			return this.unknownImage;
 		}
 	}
@@ -133,8 +127,7 @@ public class MoveToImageIcon implements Icon {
 	private Icon getArrowIcon( boolean disabled ) {
 		if( disabled ) {
 			return this.disabledArrowImage;
-		}
-		else {
+		} else {
 			return this.arrowImage;
 		}
 	}
@@ -149,14 +142,12 @@ public class MoveToImageIcon implements Icon {
 		return Math.max( this.arrowImage.getIconHeight(), Math.max( this.getLeftIcon().getIconHeight(), this.getRightIcon().getIconHeight() ) );
 	}
 
-	public void setLeftImage( Icon leftImage )
-	{
+	public void setLeftImage( Icon leftImage ) {
 		this.leftImage = leftImage;
 		this.disabledLeftImage = desaturate( this.leftImage );
 	}
 
-	public void setRightImage( Icon rightImage )
-	{
+	public void setRightImage( Icon rightImage ) {
 		this.rightImage = rightImage;
 		this.disabledRightImage = desaturate( this.rightImage );
 	}
@@ -170,8 +161,7 @@ public class MoveToImageIcon implements Icon {
 
 	public static Icon desaturate( Icon source ) {
 		BufferedImage imgSrc = null;
-		if( source instanceof ImageIcon )
-		{
+		if( source instanceof ImageIcon ) {
 			Image image = ( (ImageIcon)source ).getImage();
 			if( image instanceof BufferedImage ) {
 				imgSrc = (BufferedImage)image;

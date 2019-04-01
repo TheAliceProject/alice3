@@ -48,29 +48,24 @@ import org.alice.ide.croquet.models.StandardExpressionState;
 import org.lgna.story.Color;
 import org.lgna.story.implementation.Property;
 
-public class ColorPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Color, O>
-{
-	public ColorPropertyAdapter( O instance, Property<Color> property, StandardExpressionState expressionState )
-	{
+public class ColorPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Color, O> {
+	public ColorPropertyAdapter( O instance, Property<Color> property, StandardExpressionState expressionState ) {
 		this( "Color", instance, property, expressionState );
 	}
 
-	public ColorPropertyAdapter( String repr, O instance, Property<Color> property, StandardExpressionState expressionState )
-	{
+	public ColorPropertyAdapter( String repr, O instance, Property<Color> property, StandardExpressionState expressionState ) {
 		super( repr, instance, property, expressionState );
 	}
 
 	@Override
-	public Color getValueCopyIfMutable()
-	{
+	public Color getValueCopyIfMutable() {
 		Logger.todo( "Color is immutable.  No need to copy???" );
 		//return new Color4f(this.getValue());
 		return this.getValue();
 	}
 
 	@Override
-	public String getUndoRedoDescription()
-	{
+	public String getUndoRedoDescription() {
 		return "Color";
 	}
 

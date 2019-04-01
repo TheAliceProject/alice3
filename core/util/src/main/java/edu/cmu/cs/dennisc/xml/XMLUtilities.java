@@ -203,8 +203,7 @@ public class XMLUtilities {
 			Node child = children.item( i );
 			if( ( child instanceof Text ) && ( ( (Text)child ).getData().trim().length() == 0 ) ) {
 				e.removeChild( child );
-			}
-			else if( child instanceof Element ) {
+			} else if( child instanceof Element ) {
 				removeWhitespaceNodes( (Element)child );
 			}
 		}

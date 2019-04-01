@@ -48,8 +48,7 @@ package org.lgna.story;
  */
 public class AlongAxisOffset implements
 		//MoveableTurnable
-		Place.Detail
-{
+		Place.Detail {
 	private static final double DEFAULT_VALUE = 0.0;
 	private final double value;
 

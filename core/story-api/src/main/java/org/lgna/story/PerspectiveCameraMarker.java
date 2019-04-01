@@ -48,8 +48,7 @@ import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
  * @author David Culyba
  */
 @Deprecated
-public class PerspectiveCameraMarker extends CameraMarker
-{
+public class PerspectiveCameraMarker extends CameraMarker {
 	private final PerspectiveCameraMarkerImp implementation = new PerspectiveCameraMarkerImp( this );
 
 	@Override

@@ -92,8 +92,7 @@ public class ScaleUtilities {
 		return newScaleMatrix3d( Matrix3x3.createNaN(), t );
 	}
 
-	public static Vector3 newScaleVector3( Matrix3x3 scaleMatrix )
-	{
+	public static Vector3 newScaleVector3( Matrix3x3 scaleMatrix ) {
 		return new Vector3( scaleMatrix.right.x, scaleMatrix.up.y, scaleMatrix.backward.z );
 	}
 

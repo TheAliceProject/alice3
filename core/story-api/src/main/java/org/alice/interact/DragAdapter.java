@@ -768,20 +768,15 @@ public abstract class DragAdapter {
 	}
 
 	protected void handleMouseMoved( MouseEvent e ) {
-		if( !this.currentInputState.getIsDragEvent() ) //If we haven't already handled it through dragAndDrop
-		{
+		if( !this.currentInputState.getIsDragEvent() ) { //If we haven't already handled it through dragAndDrop
 			//java.awt.Component c = e.getComponent();
 			this.currentInputState.setMouseLocation( e.getPoint() );
-			if( e.getComponent() == this.lookingGlassComponent )
-			{
+			if( e.getComponent() == this.lookingGlassComponent ) {
 				//Don't pick into the scene if a mouse button is already down
-				if( !this.currentInputState.isAnyMouseButtonDown() )
-				{
+				if( !this.currentInputState.isAnyMouseButtonDown() ) {
 					this.pickIntoSceneSuppressingErrors( e.getPoint(), currentInputState::setRolloverPickResult );
 				}
-			}
-			else
-			{
+			} else {
 				this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ) );
 			}
 			this.currentInputState.setTimeCaptured();

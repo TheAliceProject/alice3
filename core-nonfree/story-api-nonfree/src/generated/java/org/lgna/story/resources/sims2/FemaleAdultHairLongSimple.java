@@ -51,14 +51,12 @@ public enum FemaleAdultHairLongSimple implements FemaleAdultHair, FemaleElderHai
 	RED;
 
 	@Override
-	public Boolean hasHair()
-	{
+	public Boolean hasHair() {
 		return true;
 	}
 
 	@Override
-	public Boolean hasHat()
-	{
+	public Boolean hasHat() {
 		return false;
 	}
 }

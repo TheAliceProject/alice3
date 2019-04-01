@@ -59,19 +59,14 @@ public class MarkerColorValidator extends MemberNameValidator {
 		super( null, type );
 	}
 
-	private static String getColorAndNumberSuffix( String name )
-	{
+	private static String getColorAndNumberSuffix( String name ) {
 		String[] splitName = name.split( "_" );
-		if( splitName.length == 1 )
-		{
+		if( splitName.length == 1 ) {
 			return name;
 		}
-		if( splitName.length == 2 )
-		{
+		if( splitName.length == 2 ) {
 			return splitName[ 1 ];
-		}
-		else
-		{
+		} else {
 			return splitName[ splitName.length - 2 ] + "_" + splitName[ splitName.length - 1 ];
 		}
 	}
@@ -92,10 +87,8 @@ public class MarkerColorValidator extends MemberNameValidator {
 					if( suffix.equals( fieldSuffix ) ) {
 						return false;
 					}
-				} else
-				{
-					if( name.equals( field.name.getValue() ) )
-					{
+				} else {
+					if( name.equals( field.name.getValue() ) ) {
 						return false;
 					}
 

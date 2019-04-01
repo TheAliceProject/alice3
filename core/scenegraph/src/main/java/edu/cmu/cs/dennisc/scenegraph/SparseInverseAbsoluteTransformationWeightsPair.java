@@ -50,19 +50,15 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 
-public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsoluteTransformationWeightsPair
-{
+public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsoluteTransformationWeightsPair {
 	protected int[] indices;
 
 	@Override
-	public void setWeights( float[] weightsIn )
-	{
+	public void setWeights( float[] weightsIn ) {
 		List<Float> nonZeroWeights = new LinkedList<>();
 		List<Integer> nonZeroIndices = new LinkedList<>();
-		for( int i = 0; i < weightsIn.length; i++ )
-		{
-			if( weightsIn[ i ] != 0 )
-			{
+		for( int i = 0; i < weightsIn.length; i++ ) {
+			if( weightsIn[ i ] != 0 ) {
 				nonZeroWeights.add(weightsIn[i]);
 				nonZeroIndices.add(i);
 			}
@@ -73,22 +69,19 @@ public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsol
 	}
 
 	@Override
-	public void decode( BinaryDecoder binaryDecoder )
-	{
+	public void decode( BinaryDecoder binaryDecoder ) {
 		super.decode( binaryDecoder );
 		this.indices = binaryDecoder.decodeIntArray();
 	}
 
 	@Override
-	public void encode( BinaryEncoder binaryEncoder )
-	{
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.indices );
 	}
 
 	@Override
-	public int getIndex()
-	{
+	public int getIndex() {
 		return this.indices[ this.index ];
 	}
 

@@ -76,8 +76,7 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends Act
 		this.editPresentationKey = editPresentationKey;
 	}
 
-	private void setHeightOnCamera( OrthographicCamera camera, double height )
-	{
+	private void setHeightOnCamera( OrthographicCamera camera, double height ) {
 		ClippedZPlane picturePlane = PredeterminedSetOrthographicPicturePlaneActionOperation.this.orthoCamera.picturePlane.getValue();
 		picturePlane.setHeight( height );
 		PredeterminedSetOrthographicPicturePlaneActionOperation.this.orthoCamera.picturePlane.setValue( picturePlane );
@@ -96,8 +95,7 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends Act
 				}
 			}
 			this.animator.invokeLater( new ZoomAnimation(), null );
-		} else
-		{
+		} else {
 			setHeightOnCamera( orthoCamera, height );
 		}
 

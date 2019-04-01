@@ -55,20 +55,17 @@ import org.lgna.story.SThing;
 
 public class CompositePropertyController extends LabelBasedPropertyController<SThing> {
 
-	public CompositePropertyController( AbstractPropertyAdapter<SThing, ?> propertyAdapter )
-	{
+	public CompositePropertyController( AbstractPropertyAdapter<SThing, ?> propertyAdapter ) {
 		super( propertyAdapter );
 	}
 
 	@Override
-	public Class<?> getPropertyType()
-	{
+	public Class<?> getPropertyType() {
 		return SThing.class;
 	}
 
 	@Override
-	protected void initializeComponents()
-	{
+	protected void initializeComponents() {
 		super.initializeComponents();
 		this.label.setBorder( BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder( ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor(), 2 ),
@@ -78,8 +75,7 @@ public class CompositePropertyController extends LabelBasedPropertyController<ST
 	}
 
 	@Override
-	protected void setValueOnUI( SThing value )
-	{
+	protected void setValueOnUI( SThing value ) {
 		this.label.setIcon( MutableRiderVehicleAdapter.getIconForVehicle( value ) );
 		this.label.setText( MutableRiderVehicleAdapter.getNameForVehicle( value ) );
 	}

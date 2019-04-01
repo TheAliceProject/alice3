@@ -14,8 +14,7 @@ public class TweedleMethod {
 	private List<TweedleOptionalParameter> optionalParameters;
 	private List<TweedleStatement> body;
 
-	public TweedleMethod(TweedleType type, String name, List<TweedleRequiredParameter> required, List<TweedleOptionalParameter> optional, List<TweedleStatement> body)
-	{
+	public TweedleMethod(TweedleType type, String name, List<TweedleRequiredParameter> required, List<TweedleOptionalParameter> optional, List<TweedleStatement> body) {
 		this.type = type;
 		this.name = name;
 		this.requiredParameters = required;
@@ -23,8 +22,7 @@ public class TweedleMethod {
 		this.body = body;
 	}
 
-	public TweedleMethod( List<String> modifiers, TweedleType type, String name, List<TweedleRequiredParameter> required, List<TweedleOptionalParameter> optional, List<TweedleStatement> body)
-	{
+	public TweedleMethod( List<String> modifiers, TweedleType type, String name, List<TweedleRequiredParameter> required, List<TweedleOptionalParameter> optional, List<TweedleStatement> body) {
 		this(type, name, required, optional, body);
 		this.modifiers = modifiers;
 	}

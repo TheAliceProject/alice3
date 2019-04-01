@@ -46,8 +46,7 @@ package org.lgna.story;
  * @author user
  */
 public enum TextStyle implements
-		Say.Detail, Think.Detail
-{
+		Say.Detail, Think.Detail {
 	PLAIN( java.awt.Font.PLAIN ),
 	BOLD( java.awt.Font.BOLD ),
 	ITALIC( java.awt.Font.ITALIC );

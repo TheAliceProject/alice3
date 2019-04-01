@@ -48,8 +48,7 @@ import org.lgna.croquet.BooleanState;
 
 import java.util.UUID;
 
-public class IsAllScaleLinkedState extends BooleanState
-{
+public class IsAllScaleLinkedState extends BooleanState {
 	private static class SingletonHolder {
 		private static IsAllScaleLinkedState instance = new IsAllScaleLinkedState();
 	}

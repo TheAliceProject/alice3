@@ -53,8 +53,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 public class DebugSphere extends Transformable {
-	public DebugSphere()
-	{
+	public DebugSphere() {
 		SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
 		sgFrontFacingAppearance.diffuseColor.setValue( Color4f.RED );
 		sgFrontFacingAppearance.opacity.setValue( new Float( 1.0 ) );
@@ -66,8 +65,7 @@ public class DebugSphere extends Transformable {
 
 	}
 
-	public void setLocalTranslation( Tuple3 position )
-	{
+	public void setLocalTranslation( Tuple3 position ) {
 		AffineMatrix4x4 transform = this.localTransformation.getValue();
 		transform.translation.set( position );
 		this.localTransformation.setValue( transform );

@@ -210,8 +210,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 					System.out.println("   NO JOINT FOUND ON SKELETON FOR "+currentJoint.parent+", SKIPPING IT");
 					index = (index + 1) % missingJoints.size();
 				}
-			}
-			else {
+			} else {
 				System.out.println("   NO PARENT JOINT FOR "+currentJoint.toString()+", CAN'T ADD IT");
 			}
 		}
@@ -259,8 +258,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 		joint.name = sgJoint.jointID.getValue();
 		if (sgJoint.getParent() instanceof Joint) {
 			joint.parent = ((Joint)sgJoint.getParent()).jointID.getValue();
-		}
-		else {
+		} else {
 			joint.parent = null;
 		}
 		joint.visibility = null;

@@ -125,8 +125,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 
 	protected Angle getRotationBasedOnMouse( Point mouseLocation ) {
 		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y );
-		if( pickRay != null )
-		{
+		if( pickRay != null ) {
 			int xDif = mouseLocation.x - this.initialPoint.x;
 			return new AngleInRadians( xDif * MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER );
 		}

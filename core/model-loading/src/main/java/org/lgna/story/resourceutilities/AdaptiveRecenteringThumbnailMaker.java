@@ -63,8 +63,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 	public static AdaptiveRecenteringThumbnailMaker getInstance( int width, int height ) {
 		if( ( instance == null ) || ( instance.getWidth() != width ) || ( instance.getHeight() != height ) ) {
 			instance = new AdaptiveRecenteringThumbnailMaker( width, height );
-		}
-		else {
+		} else {
 			instance.clear();
 		}
 		return instance;
@@ -73,8 +72,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 	public static AdaptiveRecenteringThumbnailMaker getInstance() {
 		if( instance == null ) {
 			instance = new AdaptiveRecenteringThumbnailMaker();
-		}
-		else {
+		} else {
 			instance.clear();
 		}
 		return instance;
@@ -159,8 +157,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 			writeDebugImageIfAppropriate( "test" + limitCount + ".png", testImage );
 
 			framed = isFullyFramed( testImage );
-			if( framed )
-			{
+			if( framed ) {
 				lastGoodPosition.set( testPosition );
 			}
 			limitCount++;
@@ -172,8 +169,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 		int firstLimit = limitCount;
 		limitCount = 0;
 		//zoom in until just framed
-		while( ( limitCount < COUNT_LIMIT ) && framed && ( ( distanceToEdge - currentT ) > getSGCamera().nearClippingPlaneDistance.getValue() ) )
-		{
+		while( ( limitCount < COUNT_LIMIT ) && framed && ( ( distanceToEdge - currentT ) > getSGCamera().nearClippingPlaneDistance.getValue() ) ) {
 			cameraRay.getPointAlong( testPosition, currentT );
 			getSGCameraVehicle().setTranslationOnly( testPosition, this.getScene().getSgReferenceFrame() );
 			testImageRT.clearAndRenderOffscreen();
@@ -182,8 +178,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 			writeDebugImageIfAppropriate( "test" + ( firstLimit + limitCount ) + ".png", testImage );
 
 			framed = isFullyFramed( testImage );
-			if( framed )
-			{
+			if( framed ) {
 				lastGoodPosition.set( testPosition );
 			}
 			limitCount++;

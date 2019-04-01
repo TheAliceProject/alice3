@@ -50,30 +50,26 @@ import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.BoxUtilities;
 
-public abstract class BasicPropertyController<P> extends AbstractAdapterController<P>
-{
+public abstract class BasicPropertyController<P> extends AbstractAdapterController<P> {
 	protected static final String BLANK_STRING = "NO VALUE";
 
 	protected AwtComponentView<?> propertyComponent;
 
-	public BasicPropertyController( AbstractPropertyAdapter<P, ?> propertyAdapter )
-	{
+	public BasicPropertyController( AbstractPropertyAdapter<P, ?> propertyAdapter ) {
 		super( propertyAdapter );
 	}
 
 	protected abstract AwtComponentView<?> createPropertyComponent();
 
 	@Override
-	protected void initializeComponents()
-	{
+	protected void initializeComponents() {
 		super.initializeComponents();
 		this.propertyComponent = createPropertyComponent();
 		this.setMinimumPreferredHeight( PropertyAdapterController.MIN_ADAPTER_HEIGHT );
 	}
 
 	@Override
-	protected void updateUIFromNewAdapter()
-	{
+	protected void updateUIFromNewAdapter() {
 		this.removeAllComponents();
 		int xIndex = 0;
 		this.addComponent( this.propertyComponent, new GridBagConstraints(

@@ -91,18 +91,21 @@ public class GraphicsHelpView extends MigPanel {
 
 	private String getPickInfoKey() {
 		ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
-		if (synchronousPickDetails == null)
+		if (synchronousPickDetails == null) {
 			return "sceneClickNothing";
+		}
 
-		if( synchronousPickDetails.isPickFunctioningCorrectly() )
-			if( synchronousPickDetails.isPickActuallyHardwareAccelerated() )
+		if( synchronousPickDetails.isPickFunctioningCorrectly() ) {
+			if( synchronousPickDetails.isPickActuallyHardwareAccelerated() ) {
 				return "sceneClickHardware";
-			else
+			} else {
 				return synchronousPickDetails.isReportingPickCanBeHardwareAccelerated() ?
 								"sceneClickSoftwareAccel" :
 								"sceneClickSoftware";
-		else
+			}
+		} else {
 			return "sceneClickNoPick";
+		}
 	}
 
 	private static String getLocalizedStringByKey( String key ) {

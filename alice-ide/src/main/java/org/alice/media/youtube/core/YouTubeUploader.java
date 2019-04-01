@@ -79,46 +79,35 @@ public class YouTubeUploader {
 	private YouTubeService service = null;
 	private URL uploadURL;
 
-	public YouTubeUploader()
-	{
+	public YouTubeUploader() {
 		initializeService();
 	}
 
-	private void initializeService()
-	{
+	private void initializeService() {
 		this.service = new YouTubeService( APPLICATION_KEY, DEVELOPER_ID );
 	}
 
-	public void logIn( String username, String password ) throws AuthenticationException
-	{
+	public void logIn( String username, String password ) throws AuthenticationException {
 		this.service.setUserCredentials( username, password );
 	}
 
-	public void removeYouTubeListener( YouTubeListener listener )
-	{
+	public void removeYouTubeListener( YouTubeListener listener ) {
 		this.listeners.remove( listener );
 	}
 
-	public void addYouTubeListener( YouTubeListener listener )
-	{
-		if( !this.listeners.contains( listener ) )
-		{
+	public void addYouTubeListener( YouTubeListener listener ) {
+		if( !this.listeners.contains( listener ) ) {
 			this.listeners.add( listener );
 		}
 	}
 
-	public void cancelUpload()
-	{
-		if( this.uploadURL != null )
-		{
-			try
-			{
+	public void cancelUpload() {
+		if( this.uploadURL != null ) {
+			try {
 				this.service.delete( this.uploadURL );
-			} catch( IOException e )
-			{
+			} catch( IOException e ) {
 				e.printStackTrace();
-			} catch( ServiceException e )
-			{
+			} catch( ServiceException e ) {
 				e.printStackTrace();
 			}
 			this.uploadURL = null;
@@ -134,14 +123,12 @@ public class YouTubeUploader {
 			YtPublicationState pubState = videoEntry.getPublicationState();
 			if( pubState.getState() == YtPublicationState.State.PROCESSING ) {
 				System.out.println( "Video is still being processed." );
-			}
-			else if( pubState.getState() == YtPublicationState.State.REJECTED ) {
+			} else if( pubState.getState() == YtPublicationState.State.REJECTED ) {
 				System.out.print( "Video has been rejected because: " );
 				System.out.println( pubState.getDescription() );
 				System.out.print( "For help visit: " );
 				System.out.println( pubState.getHelpUrl() );
-			}
-			else if( pubState.getState() == YtPublicationState.State.FAILED ) {
+			} else if( pubState.getState() == YtPublicationState.State.FAILED ) {
 				System.out.print( "Video failed uploading because: " );
 				System.out.println( pubState.getDescription() );
 				System.out.print( "For help visit: " );
@@ -164,8 +151,7 @@ public class YouTubeUploader {
 					mediaGroup.getDescription().getPlainTextContent() );
 
 			MediaPlayer mediaPlayer = mediaGroup.getPlayer();
-			if( mediaPlayer != null )
-			{
+			if( mediaPlayer != null ) {
 				System.out.println( "Web Player URL: " + mediaPlayer.getUrl() );
 			}
 			MediaKeywords keywords = mediaGroup.getKeywords();
@@ -262,50 +248,36 @@ public class YouTubeUploader {
 	 * @param videoEntry A video entry for the youtube feeds.
 	 * @throws IOException Problems reading user input.
 	 */
-	public void uploadVideo( final VideoEntry videoEntry ) throws IOException
-	{
+	public void uploadVideo( final VideoEntry videoEntry ) throws IOException {
 		SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
 			@Override
-			public Boolean doInBackground()
-			{
-				for( YouTubeListener l : YouTubeUploader.this.listeners )
-				{
+			public Boolean doInBackground() {
+				for( YouTubeListener l : YouTubeUploader.this.listeners ) {
 					l.youTubeEventTriggered( new YouTubeEvent( YouTubeEvent.EventType.UPLOAD_STARTED ) );
 				}
 				String message = "";
 				boolean success = false;
 				VideoEntry uploadedVideo = null;
-				try
-				{
+				try {
 					uploadURL = new URL( "http://uploads.gdata.youtube.com/feeds/api/users/default/uploads" );
 					uploadedVideo = YouTubeUploader.this.service.insert( uploadURL, videoEntry );
 					message = UPLOAD_SUCCESS_MESSAGE;
 					success = true;
-				}
-				catch( ServiceException se )
-				{
+				} catch( ServiceException se ) {
 					System.out.println( "ServiceException" );
 					System.out.println( se.getMessage() );
 					message = se.getResponseBody();
-				}
-				catch( MalformedURLException e )
-				{
+				} catch( MalformedURLException e ) {
 					System.out.println( "malformed" );
 					message = e.getMessage();
-				}
-				catch( IOException e )
-				{
+				} catch( IOException e ) {
 					System.out.println( "ioException" );
 					message = e.getMessage();
 				}
-				for( YouTubeListener l : YouTubeUploader.this.listeners )
-				{
-					if( success )
-					{
+				for( YouTubeListener l : YouTubeUploader.this.listeners ) {
+					if( success ) {
 						l.youTubeEventTriggered( new YouTubeEvent( YouTubeEvent.EventType.UPLOAD_SUCCESS, uploadedVideo ) );
-					}
-					else
-					{
+					} else {
 						l.youTubeEventTriggered( new YouTubeEvent( YouTubeEvent.EventType.UPLOAD_FAILED, message ) );
 					}
 				}
@@ -313,8 +285,7 @@ public class YouTubeUploader {
 			}
 
 			@Override
-			public void done()
-			{
+			public void done() {
 			}
 		};
 		worker.execute();

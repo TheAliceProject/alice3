@@ -49,8 +49,7 @@ public class HandleState {
 	public HandleState() {
 	}
 
-	public HandleState( HandleState handleState )
-	{
+	public HandleState( HandleState handleState ) {
 		this.isActive = handleState.isActive;
 		this.isRollover = handleState.isRollover;
 		this.isVisible = handleState.isVisible;

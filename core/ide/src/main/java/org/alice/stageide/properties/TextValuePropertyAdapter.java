@@ -52,40 +52,33 @@ import org.lgna.story.implementation.TextModelImp;
  */
 public class TextValuePropertyAdapter extends AbstractPropertyAdapter<String, TextModelImp> {
 
-	public TextValuePropertyAdapter( TextModelImp instance, StandardExpressionState expressionState )
-	{
+	public TextValuePropertyAdapter( TextModelImp instance, StandardExpressionState expressionState ) {
 		super( "Text", instance, expressionState );
 	}
 
 	@Override
-	public void setValue( String value )
-	{
+	public void setValue( String value ) {
 		super.setValue( value );
-		if( this.instance != null )
-		{
+		if( this.instance != null ) {
 			this.instance.setValue( value );
 		}
 	}
 
 	@Override
-	public Class<String> getPropertyType()
-	{
+	public Class<String> getPropertyType() {
 		return String.class;
 	}
 
 	@Override
-	public String getValue()
-	{
-		if( this.instance != null )
-		{
+	public String getValue() {
+		if( this.instance != null ) {
 			return this.instance.getValue();
 		}
 		return null;
 	}
 
 	@Override
-	public String getValueCopyIfMutable()
-	{
+	public String getValueCopyIfMutable() {
 		return new String( this.getValue() );
 	}
 

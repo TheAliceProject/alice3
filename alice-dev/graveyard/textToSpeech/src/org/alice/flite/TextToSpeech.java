@@ -72,14 +72,12 @@ public class TextToSpeech
 		try
 		{
 			edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadLibrary( "", "jni_flite", edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle.EXCEPTION );
-		} catch( Exception e )
-		{
+		} catch( Exception e ) {
 			e.printStackTrace();
 		}
 	}
 
-	public TextToSpeech()
-	{
+	public TextToSpeech() {
 		this.type = null;
 		this.numSamples = 0;
 		this.numChannels = 0;
@@ -87,20 +85,16 @@ public class TextToSpeech
 		this.samples = null;
 	}
 
-	public void processText( String text, String voice )
-	{
+	public void processText( String text, String voice ) {
 		this.initWithTextToSpeech( text, voice );
 	}
 
-	public double getDuration()
-	{
+	public double getDuration() {
 		return ( this.numSamples / (double)this.sampleRate );
 	}
 
-	public byte[] saveToByteArray()
-	{
-		if( this.samples != null )
-		{
+	public byte[] saveToByteArray() {
+		if( this.samples != null ) {
 			ShortArrayInputStream shortStream = new ShortArrayInputStream( this.samples );
 			AudioFormat wavFormat = new AudioFormat( this.sampleRate, 16, this.numChannels, true, true );
 			AudioInputStream audioStream = new AudioInputStream( shortStream, wavFormat, this.numSamples );
@@ -108,8 +102,7 @@ public class TextToSpeech
 			try
 			{
 				AudioSystem.write( audioStream, AudioFileFormat.Type.WAVE, out );
-			} catch( Exception e )
-			{
+			} catch( Exception e ) {
 				return null;
 			}
 			return out.toByteArray();
@@ -117,8 +110,7 @@ public class TextToSpeech
 		return null;
 	}
 
-	static void doTextToSpeech( String toSaveTo, String text, String voice )
-	{
+	static void doTextToSpeech( String toSaveTo, String text, String voice ) {
 		try
 		{
 			//System.out.println("Doing text to speech on: \""+text+"\"");
@@ -151,8 +143,7 @@ public class TextToSpeech
 			System.out.print( ( endTime - startTime ) );
 			System.out.println();
 			//player.playUntilStop();
-		} catch( Exception e )
-		{
+		} catch( Exception e ) {
 			e.printStackTrace();
 		}
 	}

@@ -121,8 +121,7 @@ public class PersonImp extends SingleVisualModelImp {
 		PersonResource personResource = composite.createResourceFromStates();
 		if( personResource == null ) {
 			Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: null resource." );
-		}
-		else {
+		} else {
 
 		}
 		Gender gender = personResource.getGender();

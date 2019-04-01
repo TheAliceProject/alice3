@@ -74,8 +74,7 @@ public enum NebulousStorytellingResources {
 		File[] dirs = StorytellingResources.getDirsFromPref( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "" );
 		if( dirs != null ) {
 			return dirs;
-		}
-		else {
+		} else {
 			return getNebulousDirsFromGalleryPref();
 		}
 	}
@@ -98,8 +97,7 @@ public enum NebulousStorytellingResources {
 	private NebulousStorytellingResources() {
 	}
 
-	private void clearSimsResourceInfo()
-	{
+	private void clearSimsResourceInfo() {
 		ResourcePathManager.clearPaths( ResourcePathManager.SIMS_RESOURCE_KEY );
 		Preferences rv = Preferences.userRoot();
 		rv.put( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "" );
@@ -151,8 +149,7 @@ public enum NebulousStorytellingResources {
 			//Clear previously cached info
 			clearSimsResourceInfo();
 			File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
-			if( galleryDir == null )
-			{
+			if( galleryDir == null ) {
 				FindResourcesPanel.getInstance().show( null );
 				galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
 			}
@@ -191,9 +188,7 @@ public enum NebulousStorytellingResources {
 				File galleryFile = simsPathsLoaded.get( i );
 				if( galleryFile.isDirectory() ) {
 					galleryDirs[ i ] = galleryFile.getAbsolutePath();
-				}
-				else
-				{
+				} else {
 					galleryDirs[ i ] = galleryFile.getParentFile().getAbsolutePath();
 				}
 			}

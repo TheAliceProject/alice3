@@ -109,32 +109,23 @@ public class CountLoopCustomizer extends javax.swing.JPanel {
         return dialogOK;
     }
 
-    private void evaluateInput()
-    {
-        if (isInputValid())
-        {
+    private void evaluateInput() {
+        if (isInputValid()) {
             this.variableNameTextField.setForeground(Color.black);
             this.okButton.setEnabled(true);
-        }
-        else
-        {
+        } else {
             this.variableNameTextField.setForeground(Color.red);
             this.okButton.setEnabled(false);
         }
     }
 
-    private boolean isInputValid()
-    {
+    private boolean isInputValid() {
         String variableName = variableNameTextField.getText();
-        if (variableName != null && variableName.length() > 0)
-        {
-            if (Character.isJavaIdentifierStart(variableName.charAt(0)))
-            {
+        if (variableName != null && variableName.length() > 0) {
+            if (Character.isJavaIdentifierStart(variableName.charAt(0))) {
                 boolean isValid = true;
-                for (int i=1; i<variableName.length(); i++)
-                {
-                    if (!Character.isJavaIdentifierPart(variableName.charAt(i)))
-                    {
+                for (int i=1; i<variableName.length(); i++) {
+                    if (!Character.isJavaIdentifierPart(variableName.charAt(i))) {
                         isValid = false;
                         break;
                     }

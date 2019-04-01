@@ -52,18 +52,14 @@ import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.Point3;
 import org.lgna.story.implementation.ModelImp;
 
-public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3, ModelImp>
-{
-	public ModelSizeAdapter( ModelImp instance, StandardExpressionState expressionState )
-	{
+public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3, ModelImp> {
+	public ModelSizeAdapter( ModelImp instance, StandardExpressionState expressionState ) {
 		super( "Size", instance, null, expressionState );
 	}
 
 	@Override
-	public Dimension3 getValue()
-	{
-		if( this.instance != null )
-		{
+	public Dimension3 getValue() {
+		if( this.instance != null ) {
 			Dimension3 size = this.instance.getSize();
 			size = this.instance.getSize();
 			return size;
@@ -72,19 +68,15 @@ public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3
 	}
 
 	@Override
-	public void setValue( Dimension3 value )
-	{
+	public void setValue( Dimension3 value ) {
 		Dimension3 currentValue = getValue();
 		super.setValue( value );
 		if( this.instance != null ) {
 			double dist = Point3.calculateDistanceBetween( currentValue, value );
 			double duration = 1;
-			if( dist < .02 )
-			{
+			if( dist < .02 ) {
 				duration = 0;
-			}
-			else if( dist < .5 )
-			{
+			} else if( dist < .5 ) {
 				duration = ( dist - .02 ) / ( .5 - .02 );
 			}
 

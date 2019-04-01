@@ -51,46 +51,38 @@ import org.lgna.croquet.views.Panel;
  * @author dculyba
  *
  */
-public class ExpressionBasedPropertyController<P> extends BorderPanel implements PropertyAdapterController<P>
-{
+public class ExpressionBasedPropertyController<P> extends BorderPanel implements PropertyAdapterController<P> {
 	protected AbstractPropertyAdapter<P, ?> propertyAdapter;
 
-	public ExpressionBasedPropertyController( AbstractPropertyAdapter<P, ?> propertyAdapter )
-	{
+	public ExpressionBasedPropertyController( AbstractPropertyAdapter<P, ?> propertyAdapter ) {
 		super();
 		this.initializeComponents();
 		this.setPropertyAdapter( propertyAdapter );
 	}
 
 	@Override
-	public Class<?> getPropertyType()
-	{
+	public Class<?> getPropertyType() {
 		return this.propertyAdapter.getPropertyType();
 	}
 
-	protected void setValueOnUI( P value )
-	{
+	protected void setValueOnUI( P value ) {
 
 	}
 
-	protected void setValueOnData( P value )
-	{
+	protected void setValueOnData( P value ) {
 		this.propertyAdapter.setValue( value );
 	}
 
-	protected void initializeComponents()
-	{
+	protected void initializeComponents() {
 	}
 
 	@Override
-	public Panel getPanel()
-	{
+	public Panel getPanel() {
 		return this;
 	}
 
 	@Override
-	public AbstractPropertyAdapter<P, ?> getPropertyAdapter()
-	{
+	public AbstractPropertyAdapter<P, ?> getPropertyAdapter() {
 		return this.propertyAdapter;
 	}
 
@@ -98,15 +90,13 @@ public class ExpressionBasedPropertyController<P> extends BorderPanel implements
 	protected void internalRefresh() {
 		super.internalRefresh();
 		this.removeAllComponents();
-		if( propertyAdapter != null )
-		{
+		if( propertyAdapter != null ) {
 			this.addCenterComponent( this.propertyAdapter.getExpressionState().createEditor( ProjectEditorAstI18nFactory.getInstance() ) );
 		}
 	}
 
 	@Override
-	public void setPropertyAdapter( AbstractPropertyAdapter<P, ?> propertyAdapter )
-	{
+	public void setPropertyAdapter( AbstractPropertyAdapter<P, ?> propertyAdapter ) {
 		this.propertyAdapter = propertyAdapter;
 		this.refreshLater();
 	}

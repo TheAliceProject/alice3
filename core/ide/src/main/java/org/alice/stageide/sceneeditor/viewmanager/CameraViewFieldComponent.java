@@ -58,8 +58,7 @@ public class CameraViewFieldComponent extends GetterTemplate {
 		this.field = field;
 	}
 
-	public AbstractField getField()
-	{
+	public AbstractField getField() {
 		return field;
 	}
 

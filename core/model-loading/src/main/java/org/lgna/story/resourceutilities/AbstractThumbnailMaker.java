@@ -89,13 +89,11 @@ public abstract class AbstractThumbnailMaker {
 	private final SymmetricPerspectiveCamera sgCamera;
 	private final OffscreenRenderTarget offscreenRenderTarget;
 
-	protected AbstractThumbnailMaker( int width, int height )
-	{
+	protected AbstractThumbnailMaker( int width, int height ) {
 		this( width, height, DEFAULT_ANTI_ALIAS_FACTOR );
 	}
 
-	protected AbstractThumbnailMaker( int width, int height, int antiAliasFactor )
-	{
+	protected AbstractThumbnailMaker( int width, int height, int antiAliasFactor ) {
 		this.width = width;
 		this.height = height;
 		this.antAliasFactor = antiAliasFactor;
@@ -115,8 +113,7 @@ public abstract class AbstractThumbnailMaker {
 		setUpCamera( this.offscreenRenderTarget );
 	}
 
-	protected void removeComponent( Component sgComponent )
-	{
+	protected void removeComponent( Component sgComponent ) {
 		if( this.offscreenRenderTarget.getSgCameraCount() > 0 ) {
 			for( AbstractCamera camera : this.offscreenRenderTarget.getSgCameras() ) {
 				GlrAbstractCamera<? extends AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
@@ -129,8 +126,7 @@ public abstract class AbstractThumbnailMaker {
 		}
 	}
 
-	protected void clear()
-	{
+	protected void clear() {
 
 		this.offscreenRenderTarget.forgetAllCachedItems();
 		this.offscreenRenderTarget.clearUnusedTextures();
@@ -141,22 +137,17 @@ public abstract class AbstractThumbnailMaker {
 		return alpha == 0;
 	}
 
-	protected static int getLeftBorder( BufferedImage image )
-	{
+	protected static int getLeftBorder( BufferedImage image ) {
 		int width = image.getWidth();
 		int height = image.getHeight();
-		for( int x = 0; x < width; x++ )
-		{
-			for( int y = 0; y < height; y++ )
-			{
-				if( !isTransparent( image.getRGB( x, y ) ) )
-				{
+		for( int x = 0; x < width; x++ ) {
+			for( int y = 0; y < height; y++ ) {
+				if( !isTransparent( image.getRGB( x, y ) ) ) {
 					return x;
 				}
 			}
 		}
-		if( width >= image.getWidth() )
-		{
+		if( width >= image.getWidth() ) {
 			width = 0;
 		}
 		return width;
@@ -165,18 +156,14 @@ public abstract class AbstractThumbnailMaker {
 	protected static int getRightBorder( BufferedImage image ) {
 		int width = image.getWidth();
 		int height = image.getHeight();
-		for( int x = width - 1; x >= 0; x-- )
-		{
-			for( int y = 0; y < height; y++ )
-			{
-				if( !isTransparent( image.getRGB( x, y ) ) )
-				{
+		for( int x = width - 1; x >= 0; x-- ) {
+			for( int y = 0; y < height; y++ ) {
+				if( !isTransparent( image.getRGB( x, y ) ) ) {
 					return width - x;
 				}
 			}
 		}
-		if( width >= image.getWidth() )
-		{
+		if( width >= image.getWidth() ) {
 			width = 0;
 		}
 		return width;
@@ -185,18 +172,14 @@ public abstract class AbstractThumbnailMaker {
 	protected static int getTopBorder( BufferedImage image ) {
 		int width = image.getWidth();
 		int height = image.getHeight();
-		for( int y = 0; y < height; y++ )
-		{
-			for( int x = 0; x < width; x++ )
-			{
-				if( !isTransparent( image.getRGB( x, y ) ) )
-				{
+		for( int y = 0; y < height; y++ ) {
+			for( int x = 0; x < width; x++ ) {
+				if( !isTransparent( image.getRGB( x, y ) ) ) {
 					return y;
 				}
 			}
 		}
-		if( height >= image.getHeight() )
-		{
+		if( height >= image.getHeight() ) {
 			height = 0;
 		}
 		return height;
@@ -205,18 +188,14 @@ public abstract class AbstractThumbnailMaker {
 	protected static int getBottomBorder( BufferedImage image ) {
 		int width = image.getWidth();
 		int height = image.getHeight();
-		for( int y = height - 1; y >= 0; y-- )
-		{
-			for( int x = 0; x < width; x++ )
-			{
-				if( !isTransparent( image.getRGB( x, y ) ) )
-				{
+		for( int y = height - 1; y >= 0; y-- ) {
+			for( int x = 0; x < width; x++ ) {
+				if( !isTransparent( image.getRGB( x, y ) ) ) {
 					return height - y;
 				}
 			}
 		}
-		if( height >= image.getHeight() )
-		{
+		if( height >= image.getHeight() ) {
 			height = 0;
 		}
 		return height;
@@ -227,29 +206,23 @@ public abstract class AbstractThumbnailMaker {
 		int right = width - 1;
 		int height = image.getHeight();
 		int bottom = height - 1;
-		for( int x = 0; x < width; x++ )
-		{
+		for( int x = 0; x < width; x++ ) {
 			int topPixel = image.getRGB( x, 0 );
-			if( !isTransparent( topPixel ) )
-			{
+			if( !isTransparent( topPixel ) ) {
 				return false;
 			}
 			int bottomPixel = image.getRGB( x, bottom );
-			if( !isTransparent( bottomPixel ) )
-			{
+			if( !isTransparent( bottomPixel ) ) {
 				return false;
 			}
 		}
-		for( int y = 0; y < height; y++ )
-		{
+		for( int y = 0; y < height; y++ ) {
 			int leftPixel = image.getRGB( 0, y );
-			if( !isTransparent( leftPixel ) )
-			{
+			if( !isTransparent( leftPixel ) ) {
 				return false;
 			}
 			int rightPixel = image.getRGB( right, y );
-			if( !isTransparent( rightPixel ) )
-			{
+			if( !isTransparent( rightPixel ) ) {
 				return false;
 			}
 		}
@@ -286,12 +259,9 @@ public abstract class AbstractThumbnailMaker {
 			int newHeight = rv.getHeight() - topBorder - bottomBorder;
 			int newWidth = rv.getWidth() - leftBorder - rightBorder;
 
-			if( ( leftBorder < 0 ) || ( topBorder < 0 ) || ( newWidth < 0 ) || ( newHeight < 0 ) )
-			{
+			if( ( leftBorder < 0 ) || ( topBorder < 0 ) || ( newWidth < 0 ) || ( newHeight < 0 ) ) {
 				//pass
-			}
-			else
-			{
+			} else {
 				rv = rv.getSubimage( leftBorder, topBorder, newWidth, newHeight );
 			}
 
@@ -307,10 +277,8 @@ public abstract class AbstractThumbnailMaker {
 			WritableRaster writableData = null;
 			if( imageData instanceof WritableRaster ) {
 				writableData = (WritableRaster)imageData;
-				for( int x = 0; x < writableData.getWidth(); x++ )
-				{
-					for( int y = 0; y < writableData.getHeight(); y++ )
-					{
+				for( int x = 0; x < writableData.getWidth(); x++ ) {
+					for( int y = 0; y < writableData.getHeight(); y++ ) {
 						try {
 							int[] imagePixel = writableData.getPixel( x, y, pixelBuffer );
 							Color.RGBtoHSB( imagePixel[ 0 ], imagePixel[ 1 ], imagePixel[ 2 ], pixelHSB );
@@ -338,27 +306,20 @@ public abstract class AbstractThumbnailMaker {
 				if( actualAspectRatio > targetAspectRatio ) {
 					finalWidth = this.width;
 					finalHeight = (int)( this.width / actualAspectRatio );
-				}
-				else {
+				} else {
 					finalHeight = this.height;
 					finalWidth = (int)( this.height * actualAspectRatio );
 				}
 			}
 			returnImage = rv.getScaledInstance( finalWidth, finalHeight, Image.SCALE_SMOOTH );
-		}
-		else {
+		} else {
 			returnImage = rv;
 		}
-		if( returnImage instanceof BufferedImage )
-		{
+		if( returnImage instanceof BufferedImage ) {
 			return (BufferedImage)returnImage;
-		}
-		else if( returnImage != null )
-		{
+		} else if( returnImage != null ) {
 			return ImageUtilities.createBufferedImage( returnImage, BufferedImage.TYPE_INT_ARGB );
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
@@ -387,8 +348,7 @@ public abstract class AbstractThumbnailMaker {
 		return this.height;
 	}
 
-	protected AffineMatrix4x4 getThumbnailCameraOrientation( Point3 centerPoint, Vector3 cameraDir, double zoom )
-	{
+	protected AffineMatrix4x4 getThumbnailCameraOrientation( Point3 centerPoint, Vector3 cameraDir, double zoom ) {
 		cameraDir.normalize();
 		Vector3 negCameraDir = new Vector3( cameraDir );
 		negCameraDir.multiply( -1 );
@@ -399,8 +359,7 @@ public abstract class AbstractThumbnailMaker {
 		return rv;
 	}
 
-	protected AffineMatrix4x4 getThumbnailCameraOrientation( AxisAlignedBox bbox, Vector3 cameraDir )
-	{
+	protected AffineMatrix4x4 getThumbnailCameraOrientation( AxisAlignedBox bbox, Vector3 cameraDir ) {
 		cameraDir.normalize();
 		Ray cameraRay = new Ray( bbox.getCenter(), cameraDir );
 		double horizontalAngle = getSGCamera().horizontalViewingAngle.getValue().getAsRadians();
@@ -410,15 +369,13 @@ public abstract class AbstractThumbnailMaker {
 
 		Hexahedron hex = bbox.getHexahedron();
 		double minVal = Double.MAX_VALUE;
-		for( Point3 p : hex.getPoints() )
-		{
+		for( Point3 p : hex.getPoints() ) {
 			double t = cameraRay.getProjectedPointT( p );
 			Point3 rayPoint = cameraRay.getPointAlong( t );
 			double distanceToRay = Point3.calculateDistanceBetween( p, rayPoint );
 			double distanceProjectedPointNeedsToBeFromCamera = ( distanceToRay / Math.tan( halfCameraFOV ) );
 			double val = t - distanceProjectedPointNeedsToBeFromCamera;
-			if( val < minVal )
-			{
+			if( val < minVal ) {
 				minVal = val;
 			}
 		}
@@ -430,8 +387,7 @@ public abstract class AbstractThumbnailMaker {
 		return rv;
 	}
 
-	protected AffineMatrix4x4 getThumbnailCameraOrientation( AxisAlignedBox bbox )
-	{
+	protected AffineMatrix4x4 getThumbnailCameraOrientation( AxisAlignedBox bbox ) {
 		Vector3 cameraDir = new Vector3( -1.0, -2.0, 3.0 );
 		return getThumbnailCameraOrientation( bbox, cameraDir );
 	}
@@ -462,8 +418,7 @@ public abstract class AbstractThumbnailMaker {
 		return createThumbnail( v, v.getAxisAlignedMinimumBoundingBox(), trimWhitespace );
 	}
 
-	protected void setUpCamera( OffscreenRenderTarget renderTarget )
-	{
+	protected void setUpCamera( OffscreenRenderTarget renderTarget ) {
 		boolean isClearingAndAddingRequired;
 		if( renderTarget.getSgCameraCount() == 1 ) {
 			if( renderTarget.getSgCameraAt( 0 ) == this.sgCamera ) {

@@ -131,8 +131,7 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
 			Class<?> cls = javaType.getClassReflectionProxy().getReification();
 			if( SModel.class.isAssignableFrom( cls ) ) {
 				initialTransform = AliceResourceUtilties.getDefaultInitialTransform( AliceResourceClassUtilities.getResourceClassForModelClass( (Class<? extends SModel>)cls ) );
-			}
-			else {
+			} else {
 				initialTransform = null;
 			}
 		}

@@ -56,12 +56,9 @@ public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractProp
 	private PropertyListener propertyListener;
 	private InstanceProperty<P> property;
 
-	private void initializeListenersIfNecessary()
-	{
-		if( this.propertyListener == null )
-		{
-			this.propertyListener = new PropertyListener()
-			{
+	private void initializeListenersIfNecessary() {
+		if( this.propertyListener == null ) {
+			this.propertyListener = new PropertyListener() {
 				@Override
 				public void propertyChanging( PropertyEvent e ) {
 				}
@@ -75,22 +72,18 @@ public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractProp
 	}
 
 	@Override
-	protected void startPropertyListening()
-	{
+	protected void startPropertyListening() {
 		super.startPropertyListening();
-		if( this.instance != null )
-		{
+		if( this.instance != null ) {
 			this.initializeListenersIfNecessary();
 			this.addPropertyListener( this.propertyListener );
 		}
 	}
 
 	@Override
-	protected void stopPropertyListening()
-	{
+	protected void stopPropertyListening() {
 		super.stopPropertyListening();
-		if( this.instance != null )
-		{
+		if( this.instance != null ) {
 			this.removePropertyListener( this.propertyListener );
 		}
 	}
@@ -106,8 +99,7 @@ public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractProp
 	public P getValue() {
 		if( this.property != null ) {
 			return this.property.getValue();
-		}
-		else {
+		} else {
 			return null;
 		}
 	}

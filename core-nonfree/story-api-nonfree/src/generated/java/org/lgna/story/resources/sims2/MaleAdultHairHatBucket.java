@@ -71,14 +71,12 @@ public enum MaleAdultHairHatBucket implements MaleAdultHair, MaleElderHair {
 	RED_RED_HAT;
 
 	@Override
-	public Boolean hasHair()
-	{
+	public Boolean hasHair() {
 		return true;
 	}
 
 	@Override
-	public Boolean hasHat()
-	{
+	public Boolean hasHat() {
 		return true;
 	}
 }

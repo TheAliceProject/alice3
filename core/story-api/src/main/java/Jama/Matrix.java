@@ -968,8 +968,9 @@ public class Matrix implements Cloneable, Serializable {
          for (int j = 0; j < n; j++) {
             String s = format.format(A[i][j]); // format the number
             int padding = Math.max(1,width-s.length()); // At _least_ 1 space
-            for (int k = 0; k < padding; k++)
+            for (int k = 0; k < padding; k++) {
                output.print(' ');
+            }
             output.print(s);
          }
          output.println();
@@ -1002,18 +1003,22 @@ public class Matrix implements Cloneable, Serializable {
       tokenizer.eolIsSignificant(true);
       Vector<Double> vD = new Vector<Double>();
 
-      // Ignore initial empty lines
-      while (tokenizer.nextToken() == StreamTokenizer.TT_EOL);
-      if (tokenizer.ttype == StreamTokenizer.TT_EOF)
-	throw new IOException("Unexpected EOF on matrix read.");
+      while (tokenizer.nextToken() == StreamTokenizer.TT_EOL) {
+         // Ignore initial empty lines
+         ;
+      }
+      if (tokenizer.ttype == StreamTokenizer.TT_EOF) {
+         throw new IOException("Unexpected EOF on matrix read.");
+      }
       do {
          vD.addElement(Double.valueOf(tokenizer.sval)); // Read & store 1st row.
       } while (tokenizer.nextToken() == StreamTokenizer.TT_WORD);
 
       int n = vD.size();  // Now we've got the number of columns!
       double row[] = new double[n];
-      for (int j=0; j<n; j++)  // extract the elements of the 1st row.
+      for (int j=0; j<n; j++) { // extract the elements of the 1st row.
          row[j]=vD.elementAt(j).doubleValue();
+      }
       Vector<double[]> v = new Vector<double[]>();
       v.addElement(row);  // Start storing rows instead of columns.
       while (tokenizer.nextToken() == StreamTokenizer.TT_WORD) {
@@ -1021,10 +1026,14 @@ public class Matrix implements Cloneable, Serializable {
          v.addElement(row = new double[n]);
          int j = 0;
          do {
-            if (j >= n) throw new IOException("Row " + v.size() + " is too long.");
+            if (j >= n) {
+               throw new IOException("Row " + v.size() + " is too long.");
+            }
             row[j++] = Double.valueOf(tokenizer.sval).doubleValue();
          } while (tokenizer.nextToken() == StreamTokenizer.TT_WORD);
-         if (j < n) throw new IOException("Row " + v.size() + " is too short.");
+         if (j < n) {
+            throw new IOException("Row " + v.size() + " is too short.");
+         }
       }
       int m = v.size();  // Now we've got the number of rows.
       double[][] A = new double[m][];

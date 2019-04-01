@@ -64,17 +64,14 @@ import org.netbeans.api.java.source.WorkingCopy;
 
 public class AliceComponentPaletteUtilities {
 
-    public static void insert(final String s, final String[] imports, final JTextComponent target) throws BadLocationException
-    {
+    public static void insert(final String s, final String[] imports, final JTextComponent target) throws BadLocationException {
         JavaSource src = JavaSource.forDocument(target.getDocument());
-        Task<WorkingCopy> task = new Task<WorkingCopy>()
-        {
+        Task<WorkingCopy> task = new Task<WorkingCopy>() {
             @Override
             public void run(WorkingCopy workingCopy) throws IOException, BadLocationException {
                 workingCopy.toPhase(JavaSource.Phase.RESOLVED);
                 insertFormated(s, target, workingCopy.getDocument());
-                if (imports != null)
-                {
+                if (imports != null) {
                     addImportsAsNeeded(workingCopy, imports);
                 }
             }
@@ -148,23 +145,17 @@ public class AliceComponentPaletteUtilities {
         return start;
     }
 
-    protected static boolean isImportRedundant(String existingImport, String newImport)
-    {
-        if (existingImport.equals(newImport))
-        {
+    protected static boolean isImportRedundant(String existingImport, String newImport) {
+        if (existingImport.equals(newImport)) {
             return true;
         }
         String[] splitExisting = existingImport.split("\\.");
         String[] splitNew = newImport.split("\\.");
-        if (splitExisting.length == splitNew.length)
-        {
-            if (splitExisting[splitExisting.length-1].startsWith("*"))
-            {
+        if (splitExisting.length == splitNew.length) {
+            if (splitExisting[splitExisting.length-1].startsWith("*")) {
                 boolean matches = true;
-                for (int i=0; i<splitExisting.length-1; i++)
-                {
-                    if (!splitExisting[i].equals(splitNew[i]))
-                    {
+                for (int i=0; i<splitExisting.length-1; i++) {
+                    if (!splitExisting[i].equals(splitNew[i])) {
                         matches = false;
                         break;
                     }
@@ -175,16 +166,14 @@ public class AliceComponentPaletteUtilities {
         return false;
     }
 
-    public static void addImportsAsNeeded(WorkingCopy workingCopy, final String[] importStrings)
-    {
+    public static void addImportsAsNeeded(WorkingCopy workingCopy, final String[] importStrings) {
         TreeMaker make = workingCopy.getTreeMaker();
         CompilationUnitTree cut = workingCopy.getCompilationUnit();
         List<ImportTree> allImports = new ArrayList<ImportTree>(cut.getImports());
 
         //Make a list of ImportTree imports from the strings passed in
         List<ImportTree> newImports = new ArrayList<ImportTree>();
-        for (String importString : importStrings)
-        {
+        for (String importString : importStrings) {
             String trueImportString = importString;
             boolean isStatic = false;
             if (importString.startsWith("static")) {
@@ -196,19 +185,15 @@ public class AliceComponentPaletteUtilities {
 
         //Check the imports for duplicates in the existing import list
         List<ImportTree> importsToAdd = new ArrayList<ImportTree>();
-        for (ImportTree newImport : newImports)
-        {
+        for (ImportTree newImport : newImports) {
             boolean hasIt = false;
-            for (ImportTree oldImport : allImports)
-            {
-                if (isImportRedundant(oldImport.toString(), newImport.toString()))
-                {
+            for (ImportTree oldImport : allImports) {
+                if (isImportRedundant(oldImport.toString(), newImport.toString())) {
                     hasIt = true;
                     break;
                 }
             }
-            if (!hasIt)
-            {
+            if (!hasIt) {
                 importsToAdd.add(newImport);
             }
         }

@@ -117,9 +117,7 @@ public class HandleSet extends BitSet {
 		//		} else if( set == GROUND_TRANSLATION_VISUALIZATION ) {
 		//			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
 		//			return resourceBundle.getString( "groundTranslation" );
-		//		} else
-		{
-
+		//		} else {
 			StringBuilder sb = new StringBuilder();
 			for( HandleGroup hg : HandleGroup.class.getEnumConstants() ) {
 				if( set.get( hg.ordinal() ) ) {
@@ -127,7 +125,7 @@ public class HandleSet extends BitSet {
 				}
 			}
 			return sb.toString();
-		}
+		//		}
 	}
 
 	public HandleSet( HandleGroup... groups ) {

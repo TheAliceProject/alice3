@@ -45,8 +45,7 @@ package org.lgna.story;
 
 import org.lgna.story.implementation.ObjectMarkerImp;
 
-public class SThingMarker extends SMarker
-{
+public class SThingMarker extends SMarker {
 	private final ObjectMarkerImp implementation = new ObjectMarkerImp( this );
 
 	@Override

@@ -180,8 +180,7 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 		applyMovement( moveVector, rotateVector );
 	}
 
-	protected void applyMovement( Vector3 moveVector, Vector3 rotateVector )
-	{
+	protected void applyMovement( Vector3 moveVector, Vector3 rotateVector ) {
 		this.manipulatedTransformable.applyTranslation( moveVector, this.getMovementReferenceFrame() );
 		if( rotateVector.x != 0.0d ) {
 			this.manipulatedTransformable.applyRotationAboutXAxis( new AngleInRadians( rotateVector.x ), getRotationReferenceFrame() );

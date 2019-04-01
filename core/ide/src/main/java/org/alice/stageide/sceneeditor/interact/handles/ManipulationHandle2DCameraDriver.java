@@ -112,9 +112,8 @@ public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHand
 			return ControlState.Left;
 		} else if( this.turningRight && !this.movingForward && !this.movingBackward ) {
 			return ControlState.Right;
-		}
-		//If we're not moving in one of the directions, choose highlighted or inactive
-		else if( this.state.isRollover() ) {
+		} else if( this.state.isRollover() ) {
+			//If we're not moving in one of the directions, choose highlighted or inactive
 			return ControlState.Highlighted;
 		} else {
 			return ControlState.Inactive;

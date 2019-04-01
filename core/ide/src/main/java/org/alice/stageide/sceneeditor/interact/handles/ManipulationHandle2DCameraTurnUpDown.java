@@ -87,9 +87,8 @@ public class ManipulationHandle2DCameraTurnUpDown extends ImageBasedManipulation
 			return ControlState.TurningForward;
 		} else if( this.turningBackward ) {
 			return ControlState.TurningBackward;
-		}
-		//If we're not moving in one of the directions, choose highlighted or inactive
-		else if( this.state.isRollover() ) {
+		} else if( this.state.isRollover() ) {
+			//If we're not moving in one of the directions, choose highlighted or inactive
 			return ControlState.Highlighted;
 		} else {
 			return ControlState.Inactive;

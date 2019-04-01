@@ -139,11 +139,9 @@ public class JointedModelColladaImporter {
 		AffineMatrix4x4 srcMatrix;
 		if (doubleData.length == 12) {
 			srcMatrix = AffineMatrix4x4.createFromRowMajorArray12(doubleData );
-		}
-		else if (doubleData.length == 16) {
+		} else if (doubleData.length == 16) {
 			srcMatrix = AffineMatrix4x4.createFromRowMajorArray16(doubleData );
-		}
-		else {
+		} else {
 			throw new ModelLoadingException("Error converting collada matrix to Alice matrix. Expected array of size 12 or 16, instead got "+floatData.length);
 		}
 		return orientation.orientMatrixToAlice(srcMatrix);
@@ -174,19 +172,16 @@ public class JointedModelColladaImporter {
 			BaseXform xform = node.getXforms().get( i );
 			if (xform instanceof Matrix) {
 				aliceMatrix = colladaMatrixToAliceMatrix( (Matrix)xform );
-			}
-			else if (xform instanceof Translate){
+			} else if (xform instanceof Translate){
 				Translate translate = (Translate)xform;
 				// TODO orient to Alice
 				aliceMatrix.translation.set( translate.getX(), translate.getY(), translate.getZ() );
-			}
-			else if (xform instanceof Scale) {
+			} else if (xform instanceof Scale) {
 				Scale scale = (Scale)xform;
 				// TODO orient to Alice
 				OrthogonalMatrix3x3 scaleMatrix = new OrthogonalMatrix3x3( new Vector3(scale.getX(),0,0), new Vector3(0,scale.getY(),0), new Vector3(0,0,scale.getZ()) );
 				aliceMatrix.orientation.applyMultiplication( scaleMatrix );
-			}
-			else if (xform instanceof Rotate) {
+			} else if (xform instanceof Rotate) {
 				Rotate rotate = (Rotate)xform;
 				// TODO orient to Alice
 				Vector3 axis = new Vector3( rotate.getX(), rotate.getY(), rotate.getZ() );
@@ -323,8 +318,7 @@ public class JointedModelColladaImporter {
 				float[] weightArray;
 				if (jointWeightMap.containsKey( jointIndex )) {
 					weightArray = jointWeightMap.get( jointIndex );
-				}
-				else {
+				} else {
 					weightArray = new float[vertexWeights.getCount()];
 					jointWeightMap.put( jointIndex, weightArray );
 				}
@@ -341,8 +335,7 @@ public class JointedModelColladaImporter {
 		Mesh sgMesh;
 		if (meshController != null) {
 			sgMesh = new WeightedMesh();
-		}
-		else {
+		} else {
 			sgMesh = new Mesh();
 		}
 		sgMesh.setName(geometry.getName());
@@ -366,12 +359,10 @@ public class JointedModelColladaImporter {
 			if (p instanceof Triangles) {
 				if (tris == null) {
 					tris = (Triangles)p;
-				}
-				else {
+				} else {
 					modelLoadingLogger.log( Level.WARNING, "Converting mesh '"+geometry.getName()+"': Unsupported primitive count: Found extra triangle primitives, only processing the first.");
 				}
-			}
-			else {
+			} else {
 				modelLoadingLogger.log( Level.WARNING, "Converting mesh '"+geometry.getName()+"': Unsupported primitive type "+p.getClass()+". Skipping this geometry.");
 			}
 		}
@@ -435,8 +426,7 @@ public class JointedModelColladaImporter {
 				int type;
 				if (image.getTransparency() == BufferedImage.OPAQUE) {
 					type = BufferedImage.TYPE_3BYTE_BGR;
-				}
-				else {
+				} else {
 					type = BufferedImage.TYPE_4BYTE_ABGR;
 				}
 				tex = new BufferedImage(image.getWidth(null),
@@ -514,8 +504,7 @@ public class JointedModelColladaImporter {
 					m_sgAppearance.diffuseColorTexture.setValue( getAliceTexture(bufferedImage) );
 					m_sgAppearance.textureId.setValue(index);
 					textureAppearances.add(m_sgAppearance);
-				}
-				else {
+				} else {
 					modelLoadingLogger.log( Level.WARNING, "Loading materials: Skipping unreferenced material "+material.getId());
 				}
 			}
@@ -530,8 +519,7 @@ public class JointedModelColladaImporter {
 		//Strip URI info. This seems to be inconsistent with java.net.URI and therefore it's easier to discard it
 		if (textureFileName.startsWith( "file://" )) {
 			textureFileName = textureFileName.substring( 7 );
-		}
-		else if (textureFileName.startsWith( "file:///" )) {
+		} else if (textureFileName.startsWith( "file:///" )) {
 			textureFileName = textureFileName.substring( 8 );
 		}
 
@@ -558,16 +546,13 @@ public class JointedModelColladaImporter {
 		if (effect.getEffectMaterial() == null) {
 			modelLoadingLogger.warning("Error loading material '"+material.getId()+"': No effect material found for '"+effect.getId()+"'");
 			return null;
-		}
-		else if (effect.getEffectMaterial().getDiffuse() == null) {
+		} else if (effect.getEffectMaterial().getDiffuse() == null) {
 			modelLoadingLogger.warning("Error loading material '"+material.getId()+"': No diffuse value found for effect '"+effect.getId()+"'");
 			return null;
-		}
-		else if (effect.getEffectMaterial().getDiffuse().getTexture() == null) {
+		} else if (effect.getEffectMaterial().getDiffuse().getTexture() == null) {
 			modelLoadingLogger.warning("Error loading material '"+material.getId()+"': No diffuse texture found for effect '"+effect.getId()+"'");
 			return null;
-		}
-		else if (effect.getEffectMaterial().getDiffuse().getTexture().getTexture() == null) {
+		} else if (effect.getEffectMaterial().getDiffuse().getTexture().getTexture() == null) {
 			modelLoadingLogger.warning("Error loading material '"+material.getId()+"': No diffuse texture value found for effect '"+effect.getId()+"'");
 			return null;
 		}
@@ -579,11 +564,9 @@ public class JointedModelColladaImporter {
 				textureId = textureParam.getSurface().getInitFrom();
 				textureParam = null;
 				break;
-			}
-			else if (textureParam.getSampler2D() != null) {
+			} else if (textureParam.getSampler2D() != null) {
 				textureParam = effect.findNewParam(textureParam.getSampler2D().getSource());
-			}
-			else {
+			} else {
 				textureParam = null;
 			}
 		}
@@ -645,8 +628,7 @@ public class JointedModelColladaImporter {
 				//Link the weighted mesh to the skeleton
 				weightedMesh.skeleton.setValue( aliceSkeleton );
 				aliceWeightedMeshes.add( weightedMesh );
-			}
-			else {
+			} else {
 				aliceGeometry.add( mesh );
 			}
 		}
@@ -703,8 +685,7 @@ public class JointedModelColladaImporter {
 		AffineMatrix4x4 absoluteTransform = j.getAbsoluteTransformation();
 		PrintUtilities.print( indent+" absolute transform: ", absoluteTransform.translation, absoluteTransform.orientation );
 		System.out.println();
-		for( int i = 0; i < j.getComponentCount(); i++ )
-		{
+		for( int i = 0; i < j.getComponentCount(); i++ ) {
 			Component comp = j.getComponentAt( i );
 			if (comp instanceof Joint) {
 				printJoints((Joint)comp, indent+"  ");

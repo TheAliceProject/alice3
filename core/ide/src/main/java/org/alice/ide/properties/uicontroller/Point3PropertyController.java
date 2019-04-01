@@ -60,8 +60,7 @@ import org.lgna.croquet.views.SwingAdapter;
 
 import edu.cmu.cs.dennisc.math.Point3;
 
-public class Point3PropertyController extends AbstractAdapterController<Point3>
-{
+public class Point3PropertyController extends AbstractAdapterController<Point3> {
 
 	private ActionListener valueChangeListener;
 
@@ -76,21 +75,18 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 
 	private boolean doUpdateOnAdapter = true;
 
-	public Point3PropertyController( AbstractPropertyAdapter<Point3, ?> propertyAdapter )
-	{
+	public Point3PropertyController( AbstractPropertyAdapter<Point3, ?> propertyAdapter ) {
 		super( propertyAdapter );
 	}
 
 	@Override
-	protected void initializeComponents()
-	{
+	protected void initializeComponents() {
 		super.initializeComponents();
 
 		this.valueChangeListener = new ActionListener() {
 
 			@Override
-			public void actionPerformed( ActionEvent e )
-			{
+			public void actionPerformed( ActionEvent e ) {
 				Point3PropertyController.this.updateAdapterFromUI( e );
 
 			}
@@ -238,23 +234,18 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 	}
 
 	@Override
-	public Class<?> getPropertyType()
-	{
+	public Class<?> getPropertyType() {
 		return Point3.class;
 	}
 
 	@Override
-	protected void setValueOnUI( Point3 point3Value )
-	{
+	protected void setValueOnUI( Point3 point3Value ) {
 		this.doUpdateOnAdapter = false;
-		if( point3Value != null )
-		{
+		if( point3Value != null ) {
 			this.xField.setValue( point3Value.x );
 			this.yField.setValue( point3Value.y );
 			this.zField.setValue( point3Value.z );
-		}
-		else
-		{
+		} else {
 			this.xField.setValue( null );
 			this.yField.setValue( null );
 			this.zField.setValue( null );
@@ -262,29 +253,22 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 		this.doUpdateOnAdapter = true;
 	}
 
-	private Point3 getPointFromUI()
-	{
+	private Point3 getPointFromUI() {
 		double xVal = xField.getValue();
 		double yVal = yField.getValue();
 		double zVal = zField.getValue();
-		if( Double.isNaN( xVal ) || Double.isNaN( yVal ) || Double.isNaN( zVal ) )
-		{
+		if( Double.isNaN( xVal ) || Double.isNaN( yVal ) || Double.isNaN( zVal ) ) {
 			return null;
 		}
 		return new Point3( xVal, yVal, zVal );
 	}
 
-	protected void updateAdapterFromUI( ActionEvent e )
-	{
-		if( this.doUpdateOnAdapter )
-		{
+	protected void updateAdapterFromUI( ActionEvent e ) {
+		if( this.doUpdateOnAdapter ) {
 			Point3 newPoint = getPointFromUI();
-			if( newPoint != null )
-			{
-				if( !newPoint.equals( this.propertyAdapter.getValue() ) )
-				{
-					if( ( this.propertyAdapter.getLastSetValue() == null ) || !this.propertyAdapter.getLastSetValue().equals( newPoint ) )
-					{
+			if( newPoint != null ) {
+				if( !newPoint.equals( this.propertyAdapter.getValue() ) ) {
+					if( ( this.propertyAdapter.getLastSetValue() == null ) || !this.propertyAdapter.getLastSetValue().equals( newPoint ) ) {
 						Operation operation = new ModelPositionPropertyValueOperation( this.propertyAdapter, newPoint );
 						operation.fire( ActionEventTrigger.createUserActivity( e ) );
 					}

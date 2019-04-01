@@ -374,11 +374,10 @@ public class AliceResourceUtilties {
 		//Check the simple case (visual name is class name and texture name is resource name) and if it fails, iterate through the resource name to find a visual name that resolves to a valid url
 		//Use that as the visual name and the remaining name as the texture name
 		boolean found = false;
-		if( checkVisualAndTextureName( resourceClass, visualName, textureName ) ) {
+		if ( checkVisualAndTextureName( resourceClass, visualName, textureName ) ) {
 			found = true;
-		}
-		//Try using the resourceName as the visual name and assume no specified texture
-		else if( checkVisualAndTextureName( resourceClass, enumToCamelCase( resourceName ), "" ) ) {
+		} else if( checkVisualAndTextureName( resourceClass, enumToCamelCase( resourceName ), "" ) ) {
+			//Try using the resourceName as the visual name and assume no specified texture
 			visualName = enumToCamelCase( resourceName );
 			textureName = "";
 			found = true;
@@ -551,8 +550,7 @@ public class AliceResourceUtilties {
 		if (resource instanceof DynamicResource) {
 			try {
 				return ((DynamicResource) resource).getTextureURI().toURL();
-			}
-			catch (MalformedURLException e) {
+			} catch (MalformedURLException e) {
 				Logger.severe( "Failed to get texture URL for "+((DynamicResource) resource).getTextureURI(), e );
 				return null;
 			}
@@ -572,8 +570,7 @@ public class AliceResourceUtilties {
 		if (resource instanceof DynamicResource) {
 			try {
 				return ((DynamicResource) resource).getVisualURI().toURL();
-			}
-			catch (MalformedURLException e) {
+			} catch (MalformedURLException e) {
 				Logger.severe( "Failed to get visual URL for "+((DynamicResource) resource).getVisualURI(), e );
 				return null;
 			}
@@ -891,8 +888,7 @@ public class AliceResourceUtilties {
 	}
 
 	private static String[] getLocalizedTags( String[] tags, String localizerBundleName, Locale locale, boolean acceptNull ) {
-		//		if( Locale.ENGLISH.getLanguage().equals( locale.getLanguage() ) )
-		{
+		//		if( Locale.ENGLISH.getLanguage().equals( locale.getLanguage() ) ) {
 			List<String> localizedTags = Lists.newArrayList();
 			for( String tag : tags ) {
 				String[] splitTags = tag.split( ":" );
@@ -926,8 +922,7 @@ public class AliceResourceUtilties {
 				}
 			}
 			return localizedTags.toArray( new String[ localizedTags.size() ] );
-		}
-		//		else {
+		//		} else {
 		//			return new String[ 0 ];
 		//		}
 	}

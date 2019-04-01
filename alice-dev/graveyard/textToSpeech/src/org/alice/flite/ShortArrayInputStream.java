@@ -52,49 +52,41 @@ public class ShortArrayInputStream extends InputStream
 	private int readIndex = 0;
 	private boolean closed = false;
 
-	public ShortArrayInputStream( short[] data )
-	{
+	public ShortArrayInputStream( short[] data ) {
 		super();
 		this.data = data;
 		this.readIndex = 0;
 		this.closed = false;
 	}
 
-	private int numBytes()
-	{
-		if( this.data != null )
-		{
+	private int numBytes() {
+		if( this.data != null ) {
 			return data.length * 2;
 		}
 		return 0;
 	}
 
-	private byte getByte( int index )
-	{
+	private byte getByte( int index ) {
 		int shortIndex = ( index / 2 );
-		if( ( this.data != null ) && ( shortIndex < this.data.length ) )
-		{
+		if( ( this.data != null ) && ( shortIndex < this.data.length ) ) {
 			short shortVal = this.data[ shortIndex ];
 			int shiftAmount = ( 1 - ( index % 2 ) ) * 8;
 			byte byteVal = (byte)( shortVal >> shiftAmount );
 			return byteVal;
-		} else
-		{
+		} else {
 			return -1;
 		}
 	}
 
 	@Override
-	public boolean markSupported()
-	{
+	public boolean markSupported() {
 		return false;
 	}
 
 	@Override
 	public int available() throws IOException
 	{
-		if( this.data != null )
-		{
+		if( this.data != null ) {
 			return this.numBytes() - this.readIndex;
 		}
 		return 0;
@@ -103,15 +95,12 @@ public class ShortArrayInputStream extends InputStream
 	@Override
 	public long skip( long n ) throws IOException
 	{
-		if( n > 0 )
-		{
+		if( n > 0 ) {
 			int numLeft = this.available();
-			if( n > numLeft )
-			{
+			if( n > numLeft ) {
 				this.readIndex = this.numBytes();
 				return numLeft;
-			} else
-			{
+			} else {
 				this.readIndex += n;
 				return (int)n;
 			}
@@ -122,28 +111,22 @@ public class ShortArrayInputStream extends InputStream
 	@Override
 	public int read( byte[] b, int off, int len ) throws IOException
 	{
-		if( b == null )
-		{
+		if( b == null ) {
 			throw new NullPointerException();
 		}
-		if( b.length == 0 )
-		{
+		if( b.length == 0 ) {
 			return 0;
 		}
-		if( this.closed )
-		{
+		if( this.closed ) {
 			throw new IOException( "Try to read on a closed stream." );
 		}
 		int bytesRead = 0;
-		for( int i = off; i < ( off + len ); i++ )
-		{
-			if( ( i < b.length ) && ( this.available() > 0 ) )
-			{
+		for( int i = off; i < ( off + len ); i++ ) {
+			if( ( i < b.length ) && ( this.available() > 0 ) ) {
 				b[ i ] = this.getByte( this.readIndex );
 				this.readIndex++;
 				bytesRead++;
-			} else
-			{
+			} else {
 				break;
 			}
 		}
@@ -159,13 +142,11 @@ public class ShortArrayInputStream extends InputStream
 	@Override
 	public int read() throws IOException
 	{
-		if( this.closed )
-		{
+		if( this.closed ) {
 			throw new IOException( "Try to read on a closed stream." );
 		}
 		byte toReturn = -1;
-		if( readIndex < numBytes() )
-		{
+		if( readIndex < numBytes() ) {
 			toReturn = getByte( this.readIndex );
 			this.readIndex++;
 		}

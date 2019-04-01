@@ -47,8 +47,7 @@ import org.alice.interact.InputState;
 import org.alice.interact.ModifierMask;
 
 public abstract class MousePickBasedCondition extends ModifierSensitiveCondition {
-	public MousePickBasedCondition( int mouseButton, PickCondition pickCondition, ModifierMask modifierMask )
-	{
+	public MousePickBasedCondition( int mouseButton, PickCondition pickCondition, ModifierMask modifierMask ) {
 		super( modifierMask );
 		this.pickCondition = pickCondition;
 		this.mouseButton = mouseButton;

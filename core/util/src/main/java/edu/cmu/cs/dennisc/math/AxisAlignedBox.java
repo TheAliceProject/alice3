@@ -307,8 +307,7 @@ public final class AxisAlignedBox implements BinaryEncodableAndDecodable {
 	}
 
 	public double getDiagonal() {
-		if( isNaN() )
-		{
+		if( isNaN() ) {
 			return Double.NaN;
 		}
 		return Point3.calculateDistanceBetween( this.getMinimum(), this.getMaximum() );
@@ -317,19 +316,14 @@ public final class AxisAlignedBox implements BinaryEncodableAndDecodable {
 	public void union( Point3 p ) {
 		if( this.minimum.isNaN() ) {
 			this.minimum.set( p );
-		}
-		else
-		{
+		} else {
 			this.minimum.x = Math.min( this.minimum.x, p.x );
 			this.minimum.y = Math.min( this.minimum.y, p.y );
 			this.minimum.z = Math.min( this.minimum.z, p.z );
 		}
-		if( this.maximum.isNaN() )
-		{
+		if( this.maximum.isNaN() ) {
 			this.maximum.set( p );
-		}
-		else
-		{
+		} else {
 			this.maximum.x = Math.max( this.maximum.x, p.x );
 			this.maximum.y = Math.max( this.maximum.y, p.y );
 			this.maximum.z = Math.max( this.maximum.z, p.z );

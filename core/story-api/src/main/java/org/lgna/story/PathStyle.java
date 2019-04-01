@@ -50,8 +50,7 @@ public enum PathStyle implements
 		MoveTo.Detail,
 		MoveAndOrientTo.Detail,
 		SetPositionRelativeToVehicle.Detail,
-		Place.Detail
-{
+		Place.Detail {
 	BEE_LINE( false ),
 	SMOOTH( true );
 	private final boolean isSmooth;

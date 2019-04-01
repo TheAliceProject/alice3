@@ -37,8 +37,7 @@ public class TweedleClass extends TweedleType implements InvocableMethodHolder {
 	}
 
 	@Override public void invoke( Frame frame, TweedleObject target, TweedleMethod method, TweedleValue[] arguments ) {
-	  if (methods.contains( method ))
-		{
+	  if (methods.contains( method )) {
 			method.invoke(frame, target, arguments);
 		} else {
 	  	//TODO

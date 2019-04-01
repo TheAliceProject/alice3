@@ -185,7 +185,9 @@ public class JavaFormatter extends Formatter {
 
 	// No localization for java
 	@Override
-	protected String localizeName(String key, String name) { return name; }
+	protected String localizeName(String key, String name) {
+		return name;
+	}
 
 	@Override
 	public String getTextForNull() {

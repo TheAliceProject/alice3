@@ -61,24 +61,20 @@ public enum HandleStyle {
 	private Icon icon;
 	private String toolTipKey;
 
-	HandleStyle( String iconName, String toolTipKey )
-	{
-		if( iconName != null )
-		{
+	HandleStyle( String iconName, String toolTipKey ) {
+		if( iconName != null ) {
 			this.icon = IconUtilities.createImageIcon( HandleStyle.class.getResource( "images/" + iconName ) );
 		}
 		this.toolTipKey = toolTipKey;
 	}
 
-	public Icon getIcon()
-	{
+	public Icon getIcon() {
 		return this.icon;
 	}
 
 	private String bundleName = getClass().getPackage().getName() + ".handle";
 
-	public String getToolTipText()
-	{
+	public String getToolTipText() {
 		return ResourceBundleUtilities.getStringForKey(toolTipKey, bundleName);
 	}
 }

@@ -95,8 +95,7 @@ public abstract class Geometry extends Element {
 	}
 
 	public final AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox boundingBox ) {
-		if( this.boundingBox.isNaN() )
-		{
+		if( this.boundingBox.isNaN() ) {
 			updateBoundingBox( this.boundingBox );
 		}
 		boundingBox.set( this.boundingBox );

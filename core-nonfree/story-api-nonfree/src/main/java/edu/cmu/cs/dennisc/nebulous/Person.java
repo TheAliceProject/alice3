@@ -137,8 +137,7 @@ public class Person extends Model {
 		}
 	}
 
-	public void synchronizedSetAll( Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair )
-	{
+	public void synchronizedSetAll( Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair ) {
 		synchronizedSetAll( gender, outfit, skinTone, obesityLevel, eyeColor, hair, "" );
 	}
 

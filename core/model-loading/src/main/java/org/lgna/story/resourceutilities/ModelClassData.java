@@ -70,13 +70,11 @@ import org.lgna.story.resources.TrainResource;
 import org.lgna.story.resources.TransportResource;
 import org.lgna.story.resources.WatercraftResource;
 
-public class ModelClassData extends BaseModelClassData
-{
+public class ModelClassData extends BaseModelClassData {
 	public final Class superClass;
 	public final String packageString;
 
-	public ModelClassData( Class superClass, String packageString, BaseModelClassData baseData )
-	{
+	public ModelClassData( Class superClass, String packageString, BaseModelClassData baseData ) {
 		super( baseData );
 		this.superClass = superClass;
 		this.packageString = packageString;

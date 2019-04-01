@@ -51,21 +51,17 @@ import org.lgna.story.implementation.Property;
  * @author dculyba
  *
  */
-public class PaintPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Paint, O>
-{
-	public PaintPropertyAdapter( O instance, Property<Paint> property, StandardExpressionState expressionState )
-	{
+public class PaintPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Paint, O> {
+	public PaintPropertyAdapter( O instance, Property<Paint> property, StandardExpressionState expressionState ) {
 		this( "Paint", instance, property, expressionState );
 	}
 
-	public PaintPropertyAdapter( String repr, O instance, Property<Paint> property, StandardExpressionState expressionState )
-	{
+	public PaintPropertyAdapter( String repr, O instance, Property<Paint> property, StandardExpressionState expressionState ) {
 		super( repr, instance, property, expressionState );
 	}
 
 	@Override
-	public Paint getValueCopyIfMutable()
-	{
+	public Paint getValueCopyIfMutable() {
 		return this.getValue();
 	}
 

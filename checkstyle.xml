@@ -61,6 +61,13 @@
 		<!-- Modifier Checks                                    -->
 		<!-- See http://checkstyle.sourceforge.net/config_modifiers.html -->
 		<module name="ModifierOrder"/>
+
+		<!-- Checks for blocks. You know, those {}'s         -->
+		<!-- See http://checkstyle.sourceforge.net/config_blocks.html -->
+		<module name="LeftCurly"/>
+		<module name="NeedBraces"/>
+		<module name="RightCurly"/>
+
 	</module>
 
 </module>

@@ -159,8 +159,7 @@ public class TreeUtilities {
 	public static void updateTreeBasedOnClassHierarchy() {
 		if ( treeBasedOnClassHierarchy == null ) {
 			treeBasedOnClassHierarchy = createTreeBasedOnClassHierarchy();
-		}
-		else {
+		} else {
 			List<ManifestDefinedGalleryTreeNode> newNodes = StorytellingResourcesTreeUtils.INSTANCE.updateGalleryTree();
 			for( GalleryResourceTreeNode node : newNodes) {
 				ResourceKey childKey = node.getResourceKey();

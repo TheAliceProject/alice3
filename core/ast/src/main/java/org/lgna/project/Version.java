@@ -159,10 +159,12 @@ public final class Version implements Comparable<Version> {
 			}
 		}
 		// Version numbers match. Check prerelease. The one without is behind.
-		if (this.hasPrerelease() && !other.hasPrerelease())
+		if (this.hasPrerelease() && !other.hasPrerelease()) {
 			return -1;
-		if (!this.hasPrerelease() && other.hasPrerelease())
+		}
+		if (!this.hasPrerelease() && other.hasPrerelease()) {
 			return 1;
+		}
 		// The metadata is not considered in ordering
 		return 0;
 	}

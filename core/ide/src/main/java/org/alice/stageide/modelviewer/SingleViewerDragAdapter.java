@@ -131,8 +131,7 @@ public class SingleViewerDragAdapter extends DragAdapter {
 	}
 
 	@Override
-	public void setSGCamera( AbstractCamera camera )
-	{
+	public void setSGCamera( AbstractCamera camera ) {
 		super.setSGCamera( camera );
 		AxisAlignedBox cameraBounds = new AxisAlignedBox();
 		Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation.backward;

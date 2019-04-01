@@ -51,14 +51,12 @@ public enum MaleTeenHairHatCapUp implements MaleTeenHair {
 	GREY_HAT;
 
 	@Override
-	public Boolean hasHair()
-	{
+	public Boolean hasHair() {
 		return false;
 	}
 
 	@Override
-	public Boolean hasHat()
-	{
+	public Boolean hasHat() {
 		return true;
 	}
 }

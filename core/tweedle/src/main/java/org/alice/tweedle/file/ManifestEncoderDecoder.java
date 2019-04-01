@@ -55,8 +55,7 @@ public class ManifestEncoderDecoder {
 			String typeValue = jsonObject.get(TYPE_KEY).getAsString();
 			if (typeValue == null) {
 				throw new JsonParseException("Cannot find field named 'type'. ResourceReferences must have the 'type' field defined.");
-			}
-			else if (typeValue.isEmpty()) {
+			} else if (typeValue.isEmpty()) {
 				throw new JsonParseException("'type' value is null. ResourceReferences must have a non null 'type' value.");
 			}
 			switch (typeValue) {

@@ -304,23 +304,19 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		this.stop();
 	}
 
-	public double getVolumeLevel()
-	{
+	public double getVolumeLevel() {
 		return this.volumeLevel;
 	}
 
-	public double getStartTime()
-	{
+	public double getStartTime() {
 		return this.startTime;
 	}
 
-	public double getStopTime()
-	{
+	public double getStopTime() {
 		return this.stopTime;
 	}
 
-	public AudioResource getAudioResource()
-	{
+	public AudioResource getAudioResource() {
 		return this.audioResource;
 	}
 

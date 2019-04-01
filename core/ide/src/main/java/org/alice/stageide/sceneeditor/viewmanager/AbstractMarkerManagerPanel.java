@@ -68,14 +68,12 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel {
 
 	protected abstract FieldList createFieldList( UserType<?> type );
 
-	protected String getTitleString()
-	{
+	protected String getTitleString() {
 		ResourceBundle resourceBundle = ResourceBundle.getBundle( AbstractMarkerManagerPanel.class.getPackage().getName() + ".croquet" );
 		return resourceBundle.getString( this.getClass().getSimpleName() + ".title" );
 	}
 
-	public void setType( UserType<?> type )
-	{
+	public void setType( UserType<?> type ) {
 		this.removeAllComponents();
 		this.fieldList = this.createFieldList( type );
 		this.fieldList.setBackgroundColor( this.getBackgroundColor() );
@@ -168,8 +166,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel {
 	}
 
 	@Override
-	public void setBackgroundColor( Color color )
-	{
+	public void setBackgroundColor( Color color ) {
 		super.setBackgroundColor( color );
 		if( this.fieldList != null ) {
 			this.fieldList.setBackgroundColor( color );
@@ -177,8 +174,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel {
 		//        this.fieldList.setUnselectedBackgroundColor(color);
 	}
 
-	public void setSelectedItemBackgroundColor( Color color )
-	{
+	public void setSelectedItemBackgroundColor( Color color ) {
 		//        this.fieldList.setSelectedBackgroundColor(color);
 	}
 

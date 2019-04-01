@@ -48,16 +48,13 @@ import java.awt.Insets;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
-public class BlankPropertyController<P> extends LabelBasedPropertyController<P>
-{
-	public BlankPropertyController( AbstractPropertyAdapter<P, ?> propertyAdapter )
-	{
+public class BlankPropertyController<P> extends LabelBasedPropertyController<P> {
+	public BlankPropertyController( AbstractPropertyAdapter<P, ?> propertyAdapter ) {
 		super( propertyAdapter );
 	}
 
 	@Override
-	protected void initializeComponents()
-	{
+	protected void initializeComponents() {
 		super.initializeComponents();
 		this.label.setText( BLANK_STRING );
 		this.addComponent( this.propertyComponent, new GridBagConstraints(
@@ -76,27 +73,21 @@ public class BlankPropertyController<P> extends LabelBasedPropertyController<P>
 	}
 
 	@Override
-	public Class<?> getPropertyType()
-	{
+	public Class<?> getPropertyType() {
 		return Object.class;
 	}
 
 	@Override
-	protected void setValueOnUI( Object value )
-	{
-		if( value != null )
-		{
+	protected void setValueOnUI( Object value ) {
+		if( value != null ) {
 			this.label.setText( BLANK_STRING + value.getClass().getSimpleName() );
-		}
-		else
-		{
+		} else {
 			this.label.setText( BLANK_STRING + "NULL" );
 		}
 	}
 
 	@Override
-	protected void setValueOnData( Object value )
-	{
+	protected void setValueOnData( Object value ) {
 		//Do Nothing
 	}
 }

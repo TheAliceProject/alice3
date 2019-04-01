@@ -33,8 +33,7 @@ public class TweedleUnlinkedParser {
 		return new TweedleParser( tokens );
 	}
 
-	private class ClassBody
-	{
+	private class ClassBody {
 		public List<TweedleField> properties = new ArrayList<>();
 		public List<TweedleMethod> methods = new ArrayList<>();
 		public List<TweedleConstructor> constructors = new ArrayList<>();
@@ -45,8 +44,7 @@ public class TweedleUnlinkedParser {
 		private ClassBody body;
 		private ClassBodyDeclarationVisitor cbdVisitor;
 
-		@Override public TweedleType visitTypeDeclaration( TweedleParser.TypeDeclarationContext context)
-		{
+		@Override public TweedleType visitTypeDeclaration( TweedleParser.TypeDeclarationContext context) {
 			body = new ClassBody();
 			cbdVisitor = new ClassBodyDeclarationVisitor(body);
 			return super.visitChildren(context);
@@ -69,16 +67,14 @@ public class TweedleUnlinkedParser {
 			ctx.enumConstants().enumConstant().forEach( enumConst -> {
 				String name = enumConst.identifier().getText();
 				Map<String, TweedleExpression> arguments = null;
-				if (enumConst.arguments() != null)
-				{
+				if (enumConst.arguments() != null) {
 					 arguments = visitLabeledArguments(enumConst.arguments().labeledExpressionList());
 					//TweedleMethod method = new TweedleMethod(name, null, )
 				}
 				TweedleEnumValue value = new TweedleEnumValue( null, name, arguments );
 				values.put( name, value );
 			});
-			if (ctx.enumBodyDeclarations() != null)
-			{
+			if (ctx.enumBodyDeclarations() != null) {
 				ctx.enumBodyDeclarations().classBodyDeclaration().forEach(cbd -> cbd.accept(cbdVisitor));
 			}
 			return new TweedleEnum( ctx.identifier().getText(), values,
@@ -108,19 +104,16 @@ public class TweedleUnlinkedParser {
 		}
 	}
 
-	private class MemberDeclarationVisitor  extends TweedleParserBaseVisitor<Void>
-	{
+	private class MemberDeclarationVisitor  extends TweedleParserBaseVisitor<Void> {
 		private ClassBody body;
 		private List<String> modifiers;
 
-		MemberDeclarationVisitor( ClassBody body, List<String> modifiers )
-		{
+		MemberDeclarationVisitor( ClassBody body, List<String> modifiers ) {
 			this.body = body;
 			this.modifiers = modifiers;
 		}
 
-		@Override public Void visitFieldDeclaration( TweedleParser.FieldDeclarationContext context )
-		{
+		@Override public Void visitFieldDeclaration( TweedleParser.FieldDeclarationContext context ) {
 			TweedleType type = getType( context.typeType() );
 			final String name = context.variableDeclarator().variableDeclaratorId().IDENTIFIER().getText();
 			TweedleField property;
@@ -136,8 +129,7 @@ public class TweedleUnlinkedParser {
 			return super.visitFieldDeclaration( context );
 		}
 
-		@Override public Void visitMethodDeclaration( TweedleParser.MethodDeclarationContext context)
-		{
+		@Override public Void visitMethodDeclaration( TweedleParser.MethodDeclarationContext context) {
 			TweedleMethod method = new TweedleMethod(
 							modifiers,
 							getTypeOrVoid( context.typeTypeOrVoid() ),
@@ -149,8 +141,7 @@ public class TweedleUnlinkedParser {
 			return super.visitMethodDeclaration(context);
 		}
 
-		@Override public Void visitConstructorDeclaration( TweedleParser.ConstructorDeclarationContext context)
-		{
+		@Override public Void visitConstructorDeclaration( TweedleParser.ConstructorDeclarationContext context) {
 			TweedleConstructor constructor = new TweedleConstructor(
 							getTypeReference( context.IDENTIFIER().getText() ),
 							context.IDENTIFIER().getText(),
@@ -161,10 +152,8 @@ public class TweedleUnlinkedParser {
 			return super.visitConstructorDeclaration(context);
 		}
 
-		private List<TweedleRequiredParameter> requiredParameters(TweedleParser.FormalParametersContext context)
-		{
-			if (context.formalParameterList() == null || context.formalParameterList().requiredParameter() == null)
-			{
+		private List<TweedleRequiredParameter> requiredParameters(TweedleParser.FormalParametersContext context) {
+			if (context.formalParameterList() == null || context.formalParameterList().requiredParameter() == null) {
 				return new ArrayList<>();
 			}
 			return context.formalParameterList().requiredParameter()
@@ -173,10 +162,8 @@ public class TweedleUnlinkedParser {
 							)).collect(toList());
 		}
 
-		private List<TweedleOptionalParameter> optionalParameters(TweedleParser.FormalParametersContext context)
-		{
-			if (context.formalParameterList() == null || context.formalParameterList().optionalParameter() == null)
-			{
+		private List<TweedleOptionalParameter> optionalParameters(TweedleParser.FormalParametersContext context) {
+			if (context.formalParameterList() == null || context.formalParameterList().optionalParameter() == null) {
 				return new ArrayList<>();
 			}
 			return context.formalParameterList().optionalParameter().stream().map( field -> {
@@ -241,8 +228,7 @@ public class TweedleUnlinkedParser {
 		return null;
 	}
 
-	private class ExpressionVisitor extends TweedleParserBaseVisitor<TweedleExpression>
-	{
+	private class ExpressionVisitor extends TweedleParserBaseVisitor<TweedleExpression> {
 		private TweedleType expectedType;
 
 		ExpressionVisitor() {
@@ -302,8 +288,7 @@ public class TweedleUnlinkedParser {
 			return super.visitLiteral( context );
 		}
 
-		@Override public TweedleExpression visitExpression( TweedleParser.ExpressionContext context )
-		{
+		@Override public TweedleExpression visitExpression( TweedleParser.ExpressionContext context ) {
 			TweedleExpression expression = buildExpression( context );
 			if (expectedType != null && expression != null && expression.getType() != null
 							&& !expectedType.willAcceptValueOfType( expression.getType() )
@@ -314,15 +299,12 @@ public class TweedleUnlinkedParser {
 			return expression;
 		}
 
-		private TweedleExpression buildExpression( TweedleParser.ExpressionContext context )
-		{
+		private TweedleExpression buildExpression( TweedleParser.ExpressionContext context ) {
 			Token prefix = context.prefix;
 			Token operation = context.bop;
 
-			if (prefix != null)
-			{
-				switch (prefix.getText())
-				{
+			if (prefix != null) {
+				switch (prefix.getText()) {
 				case "+":
 					// A positive number, or at least not changing the sign. Send along child.
 					return getFirstExpression( TweedleTypes.NUMBER, context );
@@ -334,8 +316,7 @@ public class TweedleUnlinkedParser {
 				default:
 					throw new RuntimeException( "Unrecognized prefix operation: " + prefix.getText() );
 				}
-			}
-			else if (operation != null) {
+			} else if (operation != null) {
 				switch (operation.getText()) {
 				case ".":
 					return fieldOrMethodRef(context);
@@ -398,8 +379,7 @@ public class TweedleUnlinkedParser {
 			return new LambdaExpression(parameters, stmts);
 		}
 
-		private List<TweedleRequiredParameter> lambdaParameters( TweedleParser.LambdaParametersContext context)
-		{
+		private List<TweedleRequiredParameter> lambdaParameters( TweedleParser.LambdaParametersContext context) {
 			return context.requiredParameter().stream().map(
 							field -> new TweedleRequiredParameter( getType( field.typeType() ),
 																										 field.variableDeclaratorId().IDENTIFIER().getText() )
@@ -415,19 +395,15 @@ public class TweedleUnlinkedParser {
 
 		public @Override TweedleExpression visitSuperSuffix( TweedleParser.SuperSuffixContext context) {
 
-			if (context.IDENTIFIER() != null)
-			{
-				if (context.arguments() != null)
-				{
+			if (context.IDENTIFIER() != null) {
+				if (context.arguments() != null) {
 					return new MethodCallExpression( new SuperExpression(),
 																					 context.IDENTIFIER().getText(),
 																					 visitLabeledArguments(context.arguments().labeledExpressionList()));
-				} else
-				{
+				} else {
 					return new FieldAccess( new SuperExpression(), context.IDENTIFIER().getText());
 				}
-			} else if (context.arguments() != null)
-			{
+			} else if (context.arguments() != null) {
 				return new Instantiation( new SuperExpression(),
 																  visitLabeledArguments(context.arguments().labeledExpressionList()));
 			}
@@ -515,8 +491,7 @@ public class TweedleUnlinkedParser {
 
 	private class StatementVisitor extends TweedleParserBaseVisitor<TweedleStatement> {
 
-		@Override public TweedleStatement visitLocalVariableDeclaration( TweedleParser.LocalVariableDeclarationContext context)
-		{
+		@Override public TweedleStatement visitLocalVariableDeclaration( TweedleParser.LocalVariableDeclarationContext context) {
 			TweedleType type = getType( context.typeType() );
 			final String name = context.variableDeclarator().variableDeclaratorId().IDENTIFIER().getText();
 			TweedleLocalVariable decl;
@@ -531,8 +506,7 @@ public class TweedleUnlinkedParser {
 			return new LocalVariableDeclaration( context.CONSTANT() != null, decl );
 		}
 
-		@Override public TweedleStatement visitBlockStatement( TweedleParser.BlockStatementContext context)
-		{
+		@Override public TweedleStatement visitBlockStatement( TweedleParser.BlockStatementContext context) {
 			if (context.NODE_DISABLE() != null) {
 				TweedleStatement stmt = context.blockStatement().accept( this );
 				stmt.disable();
@@ -544,8 +518,7 @@ public class TweedleUnlinkedParser {
 			return super.visitBlockStatement(context);
 		}
 
-		@Override public TweedleStatement visitStatement( TweedleParser.StatementContext context)
-		{
+		@Override public TweedleStatement visitStatement( TweedleParser.StatementContext context) {
 			if (context.COUNT_UP_TO() != null) {
 				return new CountUpLoop( context.IDENTIFIER().getText(),
 																context.expression().accept( new ExpressionVisitor(TweedleTypes.WHOLE_NUMBER) ),

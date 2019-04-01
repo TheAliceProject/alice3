@@ -55,68 +55,52 @@ import java.text.NumberFormat;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 
-public class DoubleTextField extends JTextField
-{
+public class DoubleTextField extends JTextField {
 	private static final NumberFormat CENTI_FORMAT = new DecimalFormat( "0.00" );
 	protected boolean isDirty = false;
 	protected double trueValue = Double.NaN;
 
-	public DoubleTextField( int columns )
-	{
+	public DoubleTextField( int columns ) {
 		super( columns );
-		this.addActionListener( new ActionListener()
-		{
+		this.addActionListener( new ActionListener() {
 			@Override
-			public void actionPerformed( ActionEvent e )
-			{
+			public void actionPerformed( ActionEvent e ) {
 				markValueSet();
 			}
 		} );
 		this.getDocument().addDocumentListener( new SimplifiedDocumentAdapter() {
 			@Override
-			protected void updated( DocumentEvent e )
-			{
+			protected void updated( DocumentEvent e ) {
 				markValueTemporary();
 				DoubleTextField.this.isDirty = true;
 			}
 		} );
 	}
 
-	public boolean isValueValid()
-	{
+	public boolean isValueValid() {
 		String text = this.getText();
 		Double value = DoubleUtilities.parseDoubleInCurrentDefaultLocale( text );
 		return Double.isNaN( value ) == false;
 	}
 
-	public void markValueTemporary()
-	{
-		if( isValueValid() )
-		{
+	public void markValueTemporary() {
+		if( isValueValid() ) {
 			DoubleTextField.this.setForeground( Color.GRAY );
-		}
-		else
-		{
+		} else {
 			DoubleTextField.this.setForeground( Color.RED );
 		}
 	}
 
-	public void markValueSet()
-	{
-		if( isValueValid() )
-		{
+	public void markValueSet() {
+		if( isValueValid() ) {
 			DoubleTextField.this.setForeground( Color.BLACK );
-		}
-		else
-		{
+		} else {
 			DoubleTextField.this.setForeground( Color.RED );
 		}
 	}
 
-	public double getValue()
-	{
-		if( this.isDirty )
-		{
+	public double getValue() {
+		if( this.isDirty ) {
 			double value = DoubleUtilities.parseDoubleInCurrentDefaultLocale( this.getText() );
 			this.trueValue = value;
 		}
@@ -124,15 +108,11 @@ public class DoubleTextField extends JTextField
 		return this.trueValue;
 	}
 
-	public void setValue( Double value )
-	{
-		if( value != null )
-		{
+	public void setValue( Double value ) {
+		if( value != null ) {
 			this.trueValue = value;
 			this.setText( DoubleUtilities.format( this.trueValue, CENTI_FORMAT ) );
-		}
-		else
-		{
+		} else {
 			this.trueValue = Double.NaN;
 			this.setText( "None" );
 		}

@@ -84,35 +84,26 @@ public class MediaPlayerAnimation implements Animation {
 				EPIC_HACK_mediaPlayerObserver.mediaPlayerStarted( this, tCurrent );
 				this.player.start();
 				this.startTime = tCurrent;
-			}
-			else
-			{
+			} else {
 				this.player.start();
 			}
 		}
 
 		double timeRemaining = 0;
-		if( EPIC_HACK_mediaPlayerObserver != null )
-		{
-			if( this.player instanceof edu.cmu.cs.dennisc.media.jmf.Player )
-			{
+		if( EPIC_HACK_mediaPlayerObserver != null ) {
+			if( this.player instanceof edu.cmu.cs.dennisc.media.jmf.Player ) {
 				edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
 				double startTime = Double.isNaN( jmfPlayer.getStartTime() ) ? 0 : jmfPlayer.getStartTime();
 				double endTime = Double.isNaN( jmfPlayer.getStopTime() ) ? jmfPlayer.getDuration() : jmfPlayer.getStopTime();
 				double totalTime = endTime - startTime;
 				double timeElapsed = tCurrent - this.startTime;
-				if( timeElapsed >= totalTime )
-				{
+				if( timeElapsed >= totalTime ) {
 					timeRemaining = 0;
-				}
-				else
-				{
+				} else {
 					timeRemaining = totalTime - timeElapsed;
 				}
 			}
-		}
-		else
-		{
+		} else {
 			timeRemaining = this.player.getTimeRemaining();
 		}
 		//		if( timeRemaining < CLOSE_ENOUGH_TO_ZERO ) {
@@ -129,8 +120,7 @@ public class MediaPlayerAnimation implements Animation {
 		}
 	}
 
-	public Player getPlayer()
-	{
+	public Player getPlayer() {
 		return this.player;
 	}
 }

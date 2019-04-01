@@ -57,14 +57,12 @@ import org.lgna.story.implementation.MarkerImp;
 
 import java.awt.Color;
 
-public class MarkerFieldTile extends LineAxisPanel
-{
+public class MarkerFieldTile extends LineAxisPanel {
 	private UserField field;
 	private Label iconLabel = new Label();
 	private Label textLabel = new Label();
 
-	public MarkerFieldTile()
-	{
+	public MarkerFieldTile() {
 		super();
 		this.setBackgroundColor( null );
 		this.setBorder( BorderFactory.createEmptyBorder() );
@@ -74,8 +72,7 @@ public class MarkerFieldTile extends LineAxisPanel
 		this.textLabel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
 
-	public MarkerFieldTile( UserField field )
-	{
+	public MarkerFieldTile( UserField field ) {
 		this();
 		setField( field );
 	}
@@ -96,8 +93,7 @@ public class MarkerFieldTile extends LineAxisPanel
 		this.textLabel.setForegroundColor( foregroundColor );
 	}
 
-	public void setField( UserField field )
-	{
+	public void setField( UserField field ) {
 		this.removeAllComponents();
 		this.field = field;
 

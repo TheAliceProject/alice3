@@ -130,8 +130,7 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 			Expression expression = arguments.get( 0 ).expression.getValue();
 			if( expression instanceof FieldAccess ) {
 				return instantiateFieldAccess((FieldAccess) expression);
-			}
-			else if (expression instanceof InstanceCreation) {
+			} else if (expression instanceof InstanceCreation) {
 				return instantiateInstanceCreation((InstanceCreation)expression);
 			}
 		}
@@ -163,8 +162,7 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 					StringLiteral literal = (StringLiteral)argument.expression.getValue();
 					String argumentValue = literal.getValueProperty().getValue();
 					constructorArguments[index++] = argumentValue;
-				}
-				else {
+				} else {
 					canEvaluate = false;
 					break;
 				}

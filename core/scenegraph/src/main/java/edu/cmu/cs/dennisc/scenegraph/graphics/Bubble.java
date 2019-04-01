@@ -70,8 +70,7 @@ public abstract class Bubble extends ShapeEnclosedText {
 				);
 	}
 
-	public enum PositionPreference
-	{
+	public enum PositionPreference {
 		AUTOMATIC,
 		TOP_LEFT,
 		TOP_CENTER,

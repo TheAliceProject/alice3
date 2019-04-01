@@ -74,10 +74,8 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 		set( m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33 );
 	}
 
-	public Matrix4x4( double[] vals )
-	{
-		if( vals.length == 12 )
-		{
+	public Matrix4x4( double[] vals ) {
+		if( vals.length == 12 ) {
 			right.x = vals[ 0 ];
 			right.y = vals[ 1 ];
 			right.z = vals[ 2 ];
@@ -90,9 +88,7 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 			translation.x = vals[ 9 ];
 			translation.y = vals[ 10 ];
 			translation.z = vals[ 11 ];
-		}
-		else if( vals.length == 16 )
-		{
+		} else if( vals.length == 16 ) {
 			right.x = vals[ 0 ];
 			right.y = vals[ 1 ];
 			right.z = vals[ 2 ];

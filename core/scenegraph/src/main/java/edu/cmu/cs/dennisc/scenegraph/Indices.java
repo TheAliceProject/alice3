@@ -47,54 +47,44 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 
-public class Indices implements BinaryEncodableAndDecodable
-{
+public class Indices implements BinaryEncodableAndDecodable {
 	private int[] indices;
 	private boolean isInNeedOfIndexAdjustment;
 
-	public Indices()
-	{
+	public Indices() {
 		this.indices = new int[ 0 ];
 		this.isInNeedOfIndexAdjustment = true;
 	}
 
-	public int[] getIndices()
-	{
+	public int[] getIndices() {
 		return this.indices;
 	}
 
-	public int getIndexCount()
-	{
+	public int getIndexCount() {
 		return this.indices.length;
 	}
 
-	public void setIndices( int[] indices, boolean needsAdjustment )
-	{
+	public void setIndices( int[] indices, boolean needsAdjustment ) {
 		this.indices = indices;
 		this.isInNeedOfIndexAdjustment = needsAdjustment;
 		adjustIndicesIfNecessary();
 	}
 
-	public void setIndices( short[] indices, boolean needsAdjustment )
-	{
+	public void setIndices( short[] indices, boolean needsAdjustment ) {
 		this.indices = new int[ indices.length ];
-		for( int i = 0; i < indices.length; i++ )
-		{
+		for( int i = 0; i < indices.length; i++ ) {
 			this.indices[ i ] = indices[ i ];
 		}
 		this.isInNeedOfIndexAdjustment = needsAdjustment;
 		adjustIndicesIfNecessary();
 	}
 
-	public int getTriangleCount()
-	{
+	public int getTriangleCount() {
 		return this.indices.length / 9;
 	}
 
-	public void adjustIndicesIfNecessary()
-	{
-		if( this.isInNeedOfIndexAdjustment )
-		{
+	public void adjustIndicesIfNecessary() {
+		if( this.isInNeedOfIndexAdjustment ) {
 			//Adjust the indices to account for the fact that vertices are 3 floats, normals are 3 floats and UVs are 2 floats
 			for( int i = 0; i < this.indices.length; ) {
 				this.indices[ i ] = this.indices[ i ] * 2;
@@ -108,8 +98,7 @@ public class Indices implements BinaryEncodableAndDecodable
 		}
 	}
 
-	public int getTextureCoordinateIndex( int triangleIndex, int vertexIndex )
-	{
+	public int getTextureCoordinateIndex( int triangleIndex, int vertexIndex ) {
 		int nRV = this.indices[ ( triangleIndex * 9 ) + ( vertexIndex * 3 ) ];
 		if( this.isInNeedOfIndexAdjustment ) {
 			//pass
@@ -119,8 +108,7 @@ public class Indices implements BinaryEncodableAndDecodable
 		return nRV;
 	}
 
-	public int getNormalIndex( int triangleIndex, int vertexIndex )
-	{
+	public int getNormalIndex( int triangleIndex, int vertexIndex ) {
 		int nRV = this.indices[ ( triangleIndex * 9 ) + ( vertexIndex * 3 ) + 1 ];
 		if( this.isInNeedOfIndexAdjustment ) {
 			//pass
@@ -130,8 +118,7 @@ public class Indices implements BinaryEncodableAndDecodable
 		return nRV;
 	}
 
-	public int getVertexIndex( int triangleIndex, int vertexIndex )
-	{
+	public int getVertexIndex( int triangleIndex, int vertexIndex ) {
 		int nRV = this.indices[ ( triangleIndex * 9 ) + ( vertexIndex * 3 ) + 2 ];
 		if( this.isInNeedOfIndexAdjustment ) {
 			//pass
@@ -141,15 +128,13 @@ public class Indices implements BinaryEncodableAndDecodable
 		return nRV;
 	}
 
-	public void decode( BinaryDecoder binaryDecoder )
-	{
+	public void decode( BinaryDecoder binaryDecoder ) {
 		this.indices = binaryDecoder.decodeIntArray();
 		this.isInNeedOfIndexAdjustment = false;
 	}
 
 	@Override
-	public void encode( BinaryEncoder binaryEncoder )
-	{
+	public void encode( BinaryEncoder binaryEncoder ) {
 		this.adjustIndicesIfNecessary();
 		binaryEncoder.encode( this.indices );
 	}

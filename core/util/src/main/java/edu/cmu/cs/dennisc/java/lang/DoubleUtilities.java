@@ -102,8 +102,7 @@ public class DoubleUtilities {
 			BigDecimal bigDecimal = new BigDecimal( value );
 			bigDecimal = bigDecimal.round( new MathContext( decimalPlaces, RoundingMode.HALF_DOWN ) );
 			return bigDecimal.doubleValue();
-		}
-		else {
+		} else {
 			return value;
 		}
 	}

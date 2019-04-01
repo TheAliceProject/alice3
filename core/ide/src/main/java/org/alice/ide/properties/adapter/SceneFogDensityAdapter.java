@@ -55,12 +55,9 @@ public class SceneFogDensityAdapter extends AbstractPropertyAdapter<Double, Scen
 	private Listener<Float> propertyListener;
 	private Property<Float> property;
 
-	private void initializeListenersIfNecessary()
-	{
-		if( this.propertyListener == null )
-		{
-			this.propertyListener = new Listener<Float>()
-			{
+	private void initializeListenersIfNecessary() {
+		if( this.propertyListener == null ) {
+			this.propertyListener = new Listener<Float>() {
 				@Override
 				public void propertyChanged( Property<Float> property, Float prevValue, Float nextValue ) {
 					handleInternalValueChanged();
@@ -70,22 +67,18 @@ public class SceneFogDensityAdapter extends AbstractPropertyAdapter<Double, Scen
 	}
 
 	@Override
-	protected void startPropertyListening()
-	{
+	protected void startPropertyListening() {
 		super.startPropertyListening();
-		if( this.instance != null )
-		{
+		if( this.instance != null ) {
 			this.initializeListenersIfNecessary();
 			this.addPropertyListener( this.propertyListener );
 		}
 	}
 
 	@Override
-	protected void stopPropertyListening()
-	{
+	protected void stopPropertyListening() {
 		super.stopPropertyListening();
-		if( this.instance != null )
-		{
+		if( this.instance != null ) {
 			this.removePropertyListener( this.propertyListener );
 		}
 	}
@@ -101,8 +94,7 @@ public class SceneFogDensityAdapter extends AbstractPropertyAdapter<Double, Scen
 	public Double getValue() {
 		if( this.property != null ) {
 			return this.property.getValue().doubleValue();
-		}
-		else {
+		} else {
 			return null;
 		}
 	}

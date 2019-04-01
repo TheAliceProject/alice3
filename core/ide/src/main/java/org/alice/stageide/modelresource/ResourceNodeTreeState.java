@@ -87,8 +87,9 @@ public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceN
 			rv.setButtonIcon( EMPTY_BUTTON_ICON );
 			return rv;
 		}
-		if (resourceNode.isBreadcrumbButtonIconDesired())
+		if (resourceNode.isBreadcrumbButtonIconDesired()) {
 			rv.setButtonIcon( this.getIconForNode( resourceNode, BUTTON_ICON_SIZE, EMPTY_BUTTON_ICON ) );
+		}
 		return rv;
 	}
 

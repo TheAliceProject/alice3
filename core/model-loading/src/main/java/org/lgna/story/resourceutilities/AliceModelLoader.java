@@ -34,8 +34,7 @@ public class AliceModelLoader {
 		AffineMatrix4x4 absoluteTransform = j.getAbsoluteTransformation();
 		PrintUtilities.print( indent+" absolute transform: ", absoluteTransform.translation, absoluteTransform.orientation );
 		System.out.println();
-		for( int i = 0; i < j.getComponentCount(); i++ )
-		{
+		for( int i = 0; i < j.getComponentCount(); i++ ) {
 			Component comp = j.getComponentAt( i );
 			if (comp instanceof Joint) {
 				printJoints((Joint)comp, indent+"  ");
@@ -211,8 +210,7 @@ public class AliceModelLoader {
 					System.out.println("   NO JOINT FOUND ON SKELETON FOR "+parentJointID.toString()+", SKIPPING IT");
 					index = (index + 1) % missingJoints.size();
 				}
-			}
-			else {
+			} else {
 				System.out.println("   NO PARENT JOINT FOR "+currentJoint.toString()+", CAN'T ADD IT");
 			}
 		}
@@ -333,8 +331,7 @@ public class AliceModelLoader {
 			Logger modelLogger = Logger.getLogger( "org.lgna.story.resourceutilities.AliceColladaModelLoader" );
 			JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter(colladaModelFile, modelLogger);
 			sv = colladaImporter.loadSkeletonVisual();
-		}
-		catch (ModelLoadingException e) {
+		} catch (ModelLoadingException e) {
 			e.printStackTrace();
 		}
 		return sv;

@@ -62,13 +62,10 @@ public class NebulousTexture extends Texture {
 
 	static {
 		AdapterFactory.register( NebulousTexture.class, NebulousTextureAdapter.class );
-		if( SystemUtilities.getBooleanProperty( "org.alice.ide.disableDefaultNebulousLoading", false ) )
-		{
+		if( SystemUtilities.getBooleanProperty( "org.alice.ide.disableDefaultNebulousLoading", false ) ) {
 			//Don't load nebulous resources if the default loading is disabled
 			//Disabling should only happen under controlled circumstances like running the model batch process
-		}
-		else
-		{
+		} else {
 			NebulousStorytellingResources.INSTANCE.loadSimsBundles();
 		}
 	}

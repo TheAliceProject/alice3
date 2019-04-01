@@ -82,10 +82,8 @@ public class ModelResourceInfo {
 	private final String[] groupTags;
 	private final String[] themeTags;
 
-	private static AxisAlignedBox getBoundingBoxFromXML( Element bboxElement )
-	{
-		if( bboxElement != null )
-		{
+	private static AxisAlignedBox getBoundingBoxFromXML( Element bboxElement ) {
+		if( bboxElement != null ) {
 			Element min = (Element)bboxElement.getElementsByTagName( "Min" ).item( 0 );
 			Element max = (Element)bboxElement.getElementsByTagName( "Max" ).item( 0 );
 
@@ -105,10 +103,8 @@ public class ModelResourceInfo {
 		return null;
 	}
 
-	private static ModelResourceInfo getSubResourceFromXML( Element resourceElement, ModelResourceInfo parent )
-	{
-		if( resourceElement != null )
-		{
+	private static ModelResourceInfo getSubResourceFromXML( Element resourceElement, ModelResourceInfo parent ) {
+		if( resourceElement != null ) {
 			AxisAlignedBox bbox = null;
 			NodeList bboxNodeList = resourceElement.getElementsByTagName( "BoundingBox" );
 			if( bboxNodeList.getLength() > 0 ) {
@@ -220,8 +216,7 @@ public class ModelResourceInfo {
 		List<Element> bboxNodeList = getImmediateChildElementsByTagName( modelElement, "BoundingBox" );
 		if( bboxNodeList.size() > 0 ) {
 			this.boundingBox = getBoundingBoxFromXML( bboxNodeList.get( 0 ) );
-		}
-		else {
+		} else {
 			this.boundingBox = new AxisAlignedBox();
 		}
 		this.modelName = modelElement.getAttribute( "name" );
@@ -282,8 +277,7 @@ public class ModelResourceInfo {
 			ModelResourceInfo subResource = getSubResourceFromXML( subResourceElement, this );
 			if( subResource != null ) {
 				subResources.add( subResource );
-			}
-			else {
+			} else {
 				Logger.severe( "Failed to make sub resource for " + subResourceElement );
 			}
 		}

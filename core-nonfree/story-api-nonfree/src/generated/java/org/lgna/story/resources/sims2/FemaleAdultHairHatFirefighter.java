@@ -56,14 +56,12 @@ public enum FemaleAdultHairHatFirefighter implements FemaleAdultHair, FemaleElde
 	GREY_YELLOW_HELMET;
 
 	@Override
-	public Boolean hasHair()
-	{
+	public Boolean hasHair() {
 		return true;
 	}
 
 	@Override
-	public Boolean hasHat()
-	{
+	public Boolean hasHat() {
 		return true;
 	}
 }

@@ -169,11 +169,9 @@ public class SnapUtilities {
 
 	public static Visual getSGVisualForTransformable( AbstractTransformable t ) {
 		if( t != null ) {
-			for( int i = 0; i < t.getComponentCount(); i++ )
-			{
+			for( int i = 0; i < t.getComponentCount(); i++ ) {
 				Component c = t.getComponentAt( i );
-				if( c instanceof Visual )
-				{
+				if( c instanceof Visual ) {
 					return (Visual)c;
 				}
 			}
@@ -421,11 +419,9 @@ public class SnapUtilities {
 
 	private static Vector3 snapAxis( Vector3 inputAxis, Vector3 guideForwardAxis, Vector3 guideUpAxis, Angle snapDegrees ) {
 		List<Vector3> snapVectors = getSnapVectors( guideForwardAxis, guideUpAxis, snapDegrees );
-		for( Vector3 snapVector : snapVectors )
-		{
+		for( Vector3 snapVector : snapVectors ) {
 			AngleInRadians angleBetween = VectorUtilities.getAngleBetweenVectors( inputAxis, snapVector );
-			if( Math.abs( angleBetween.getAsRadians() ) <= ANGLE_SNAP_DISTANCE_IN_RADIANS )
-			{
+			if( Math.abs( angleBetween.getAsRadians() ) <= ANGLE_SNAP_DISTANCE_IN_RADIANS ) {
 				return snapVector;
 			}
 		}

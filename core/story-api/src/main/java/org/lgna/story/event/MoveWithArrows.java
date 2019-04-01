@@ -88,11 +88,9 @@ public class MoveWithArrows {
 
 			if( ( direction == MoveDirection.FORWARD ) || ( direction == MoveDirection.BACKWARD ) ) {
 				entity.move( direction, moveSpeed * timeElapsed, new Duration( 0 ), new AsSeenBy( stoodUpTemporaryMarker ) );
-			}
-			else if( direction == MoveDirection.RIGHT ) {
+			} else if( direction == MoveDirection.RIGHT ) {
 				entity.turn( TurnDirection.RIGHT, turnSpeed * timeElapsed, new Duration( 0 ), new AsSeenBy( stoodUpTemporaryMarker ) );
-			}
-			else if( direction == MoveDirection.LEFT ) {
+			} else if( direction == MoveDirection.LEFT ) {
 				entity.turn( TurnDirection.LEFT, turnSpeed * timeElapsed, new Duration( 0 ), new AsSeenBy( stoodUpTemporaryMarker ) );
 			}
 

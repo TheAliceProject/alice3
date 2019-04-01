@@ -66,14 +66,12 @@ public enum MaleTeenHairHatKilt implements MaleTeenHair {
 	BLOND_PURPLE_HAT;
 
 	@Override
-	public Boolean hasHair()
-	{
+	public Boolean hasHair() {
 		return true;
 	}
 
 	@Override
-	public Boolean hasHat()
-	{
+	public Boolean hasHat() {
 		return true;
 	}
 }

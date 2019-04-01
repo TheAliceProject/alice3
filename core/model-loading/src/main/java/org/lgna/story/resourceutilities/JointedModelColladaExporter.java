@@ -688,9 +688,13 @@ public class JointedModelColladaExporter {
 	//Image file name must be unique to the model.
 	//We don't know if models share textures, so we must construct a unique file name to avoid collisions
 	//To support sharing textures, we will need to have a way to connect the texture id (a number) to a unique filename
-	private String getExternallyUniqueImageNameForID(Integer id) { return getFullResourceName() + "_" + getImageNameForIndex(id); }
+	private String getExternallyUniqueImageNameForID(Integer id) {
+		return getFullResourceName() + "_" + getImageNameForIndex(id);
+	}
 
-	private String getImageFileNameForIndex(Integer index) { return getExternallyUniqueImageNameForID(index) + "."+IMAGE_EXTENSION; }
+	private String getImageFileNameForIndex(Integer index) {
+		return getExternallyUniqueImageNameForID(index) + "."+IMAGE_EXTENSION;
+	}
 
 	private String getImageIDForIndex(Integer index) {
 		return getImageNameForIndex(index) + "-image";
@@ -841,8 +845,7 @@ public class JointedModelColladaExporter {
 	private String getModelName() {
 		if (modelVariant != null) {
 			return modelName + "_" + modelVariant.structure;
-		}
-		else {
+		} else {
 			return modelName;
 		}
 	}
@@ -850,8 +853,7 @@ public class JointedModelColladaExporter {
 	private String getFullResourceName() {
 		if (modelVariant != null) {
 			return modelName + "_" + modelVariant.textureSet;
-		}
-		else {
+		} else {
 			return modelName;
 		}
 	}
@@ -972,8 +974,7 @@ public class JointedModelColladaExporter {
 		}
 	}
 
-	private static BufferedImage createFlippedImage(BufferedImage image)
-	{
+	private static BufferedImage createFlippedImage(BufferedImage image) {
 		AffineTransform at = new AffineTransform();
 		at.concatenate(AffineTransform.getScaleInstance(1, -1));
 		at.concatenate(AffineTransform.getTranslateInstance(0, -image.getHeight()));
@@ -998,8 +999,7 @@ public class JointedModelColladaExporter {
 		String fileName;
 		if (modelVariant != null) {
 			fileName = modelName + "_" + modelVariant.structure;
-		}
-		else {
+		} else {
 			fileName = modelName;
 		}
 
@@ -1055,7 +1055,9 @@ public class JointedModelColladaExporter {
 	public DataSource createColladaDataSource(String pathName) {
 		final String name = pathName + "/" + getColladaFileName();
 		return new DataSource() {
-			@Override public String getName() { return name; }
+			@Override public String getName() {
+				return name;
+			}
 
 			@Override public void write( OutputStream os ) throws IOException {
 				writeCollada(os);
@@ -1069,7 +1071,9 @@ public class JointedModelColladaExporter {
 			Integer textureIndex = texture.textureId.getValue();
 			final String textureName = pathName +"/"+ getImageFileNameForIndex(textureIndex);
 			DataSource dataSource = new DataSource() {
-				@Override public String getName() { return textureName; }
+				@Override public String getName() {
+					return textureName;
+				}
 
 				@Override public void write( OutputStream os ) throws IOException {
 					writeTexture(texture, os);

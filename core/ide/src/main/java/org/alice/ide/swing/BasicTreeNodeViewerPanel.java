@@ -69,8 +69,7 @@ public class BasicTreeNodeViewerPanel extends JPanel implements ActionListener {
 	private BasicTreeViewer leftTree = null;
 	private BasicTreeViewer rightTree = null;
 
-	public BasicTreeNodeViewerPanel()
-	{
+	public BasicTreeNodeViewerPanel() {
 		this.setLayout( new BorderLayout() );
 		this.buttonPanel = new JPanel();
 		this.captureButton = new JButton( "Capture SceneGraph" );
@@ -84,67 +83,52 @@ public class BasicTreeNodeViewerPanel extends JPanel implements ActionListener {
 		this.add( this.splitPane, BorderLayout.CENTER );
 	}
 
-	public void setRoot( Object sceneGraphRoot )
-	{
+	public void setRoot( Object sceneGraphRoot ) {
 		this.root = sceneGraphRoot;
 		captureTree();
 	}
 
-	private void getFlattenedTree( BasicTreeNode node, List<BasicTreeNode> flattenedTree )
-	{
+	private void getFlattenedTree( BasicTreeNode node, List<BasicTreeNode> flattenedTree ) {
 		flattenedTree.add( node );
-		for( int i = 0; i < node.getChildCount(); i++ )
-		{
+		for( int i = 0; i < node.getChildCount(); i++ ) {
 			getFlattenedTree( (BasicTreeNode)node.getChildAt( i ), flattenedTree );
 		}
 	}
 
-	private void diffTrees( BasicTreeNode treeA, BasicTreeNode treeB )
-	{
+	private void diffTrees( BasicTreeNode treeA, BasicTreeNode treeB ) {
 		LinkedList<BasicTreeNode> flatTreeA = new LinkedList<BasicTreeNode>();
 		LinkedList<BasicTreeNode> flatTreeB = new LinkedList<BasicTreeNode>();
 		getFlattenedTree( treeA, flatTreeA );
 		getFlattenedTree( treeB, flatTreeB );
-		for( BasicTreeNode nodeA : flatTreeA )
-		{
+		for( BasicTreeNode nodeA : flatTreeA ) {
 
 			nodeA.markDifferent( BasicTreeNode.Difference.NONE );
 		}
-		for( BasicTreeNode nodeB : flatTreeB )
-		{
+		for( BasicTreeNode nodeB : flatTreeB ) {
 			nodeB.markDifferent( BasicTreeNode.Difference.NONE );
 		}
-		for( BasicTreeNode nodeA : flatTreeA )
-		{
+		for( BasicTreeNode nodeA : flatTreeA ) {
 			int matchingIndex = flatTreeB.indexOf( nodeA );
-			if( matchingIndex != -1 )
-			{
+			if( matchingIndex != -1 ) {
 				BasicTreeNode nodeB = flatTreeB.get( matchingIndex );
 				boolean isDifferent = nodeA.isDifferent( nodeB );
-				if( isDifferent )
-				{
+				if( isDifferent ) {
 					nodeB.markDifferent( BasicTreeNode.Difference.ATTRIBUTES );
 				}
 				flatTreeB.remove( matchingIndex );
-			}
-			else
-			{
+			} else {
 				nodeA.markDifferent( BasicTreeNode.Difference.NEW_NODE );
 			}
 		}
-		for( BasicTreeNode nodeB : flatTreeB )
-		{
+		for( BasicTreeNode nodeB : flatTreeB ) {
 			nodeB.markDifferent( BasicTreeNode.Difference.NEW_NODE );
 		}
 	}
 
-	private void captureTree()
-	{
-		if( this.root != null )
-		{
+	private void captureTree() {
+		if( this.root != null ) {
 			BasicTreeNode newRoot = null;
-			if( this.root instanceof Component )
-			{
+			if( this.root instanceof Component ) {
 				newRoot = SceneGraphTreeNode.createSceneGraphTreeStructure( (Component)this.root );
 			}
 			//			else if (this.root instanceof CompositeAdapter<?>)
@@ -152,8 +136,7 @@ public class BasicTreeNodeViewerPanel extends JPanel implements ActionListener {
 			//				newRoot = LookingglassTreeNode.createLookingglassTreeStructure((CompositeAdapter<?>)this.root);
 			//			}
 			BasicTreeViewer oldTree = (BasicTreeViewer)this.splitPane.getBottomComponent();
-			if( oldTree != null )
-			{
+			if( oldTree != null ) {
 				BasicTreeNode oldRoot = oldTree.getRootNode();
 				diffTrees( oldRoot, newRoot );
 				oldTree.setRootNode( oldRoot );
@@ -165,42 +148,32 @@ public class BasicTreeNodeViewerPanel extends JPanel implements ActionListener {
 			BasicTreeViewer newTreeViewer = new BasicTreeViewer( newRoot, this );
 			this.rightTree = newTreeViewer;
 			this.splitPane.setBottomComponent( newTreeViewer );
-			if( this.splitPane.getTopComponent() != null )
-			{
+			if( this.splitPane.getTopComponent() != null ) {
 				this.splitPane.setDividerLocation( .5 );
 			}
 			this.invalidate();
 		}
 	}
 
-	public boolean shouldMirrorSelection()
-	{
+	public boolean shouldMirrorSelection() {
 		return this.mirrorSelectionCheckBox.isSelected();
 	}
 
-	public void setSelectionOnOtherTree( BasicTreeViewer sender, BasicTreeNode selectedNode )
-	{
-		if( sender == this.leftTree )
-		{
-			if( this.rightTree != null )
-			{
+	public void setSelectionOnOtherTree( BasicTreeViewer sender, BasicTreeNode selectedNode ) {
+		if( sender == this.leftTree ) {
+			if( this.rightTree != null ) {
 				this.rightTree.setSelectedNode( selectedNode, false );
 			}
-		}
-		else if( sender == this.rightTree )
-		{
-			if( this.leftTree != null )
-			{
+		} else if( sender == this.rightTree ) {
+			if( this.leftTree != null ) {
 				this.leftTree.setSelectedNode( selectedNode, false );
 			}
 		}
 	}
 
 	@Override
-	public void actionPerformed( ActionEvent e )
-	{
-		if( e.getSource() == this.captureButton )
-		{
+	public void actionPerformed( ActionEvent e ) {
+		if( e.getSource() == this.captureButton ) {
 			this.captureTree();
 		}
 

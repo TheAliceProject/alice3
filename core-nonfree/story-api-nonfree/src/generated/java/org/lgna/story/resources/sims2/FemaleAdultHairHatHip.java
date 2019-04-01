@@ -71,14 +71,12 @@ public enum FemaleAdultHairHatHip implements FemaleAdultHair, FemaleElderHair {
 	GREY_BLUE_HAT;
 
 	@Override
-	public Boolean hasHair()
-	{
+	public Boolean hasHair() {
 		return true;
 	}
 
 	@Override
-	public Boolean hasHat()
-	{
+	public Boolean hasHat() {
 		return true;
 	}
 }

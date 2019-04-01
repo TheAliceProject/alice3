@@ -73,8 +73,7 @@ public class Thing extends Model {
 
 	private native void unload();
 
-	public void synchronizedUnload()
-	{
+	public void synchronizedUnload() {
 		synchronized( renderLock ) {
 			unload();
 		}

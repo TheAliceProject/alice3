@@ -103,38 +103,31 @@ public class AudioLimitedBubbleAnimation extends BubbleAnimation implements org.
 	}
 
 	@Override
-	protected void prologue()
-	{
+	protected void prologue() {
 		super.prologue();
 		this.startTime = System.currentTimeMillis();
 	}
 
 	@Override
-	protected void epilogue()
-	{
+	protected void epilogue() {
 		super.epilogue();
 		this.startTime = 0;
 	}
 
-	public void setDuration( double duration )
-	{
+	public void setDuration( double duration ) {
 		double elapsedTime = 0;
-		if( this.startTime != 0 )
-		{
+		if( this.startTime != 0 ) {
 			long currentTime = System.currentTimeMillis();
 			elapsedTime = ( currentTime - this.startTime ) * 0.001;
 		}
-		if( elapsedTime > this.m_openingDuration )
-		{
+		if( elapsedTime > this.m_openingDuration ) {
 			this.m_updatingDuration = ( duration + elapsedTime ) - this.m_openingDuration;
-		} else
-		{
+		} else {
 			this.m_updatingDuration = duration;
 		}
 	}
 
-	public void ResourceLoaded( org.lgna.common.resources.TextToSpeechResource resource )
-	{
+	public void ResourceLoaded( org.lgna.common.resources.TextToSpeechResource resource ) {
 		this.m_updatingDuration = resource.getDuration();
 	}
 

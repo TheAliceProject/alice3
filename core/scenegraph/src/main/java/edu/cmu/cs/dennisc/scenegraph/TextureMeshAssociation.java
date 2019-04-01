@@ -49,41 +49,33 @@ public class TextureMeshAssociation {
 	private TexturedAppearance textureAppearance;
 	private List<WeightedMesh> meshes;
 
-	public TextureMeshAssociation( TexturedAppearance textureAppearance )
-	{
+	public TextureMeshAssociation( TexturedAppearance textureAppearance ) {
 		this.textureAppearance = textureAppearance;
 		this.meshes = new LinkedList<WeightedMesh>();
 	}
 
-	public void addMesh( WeightedMesh mesh )
-	{
+	public void addMesh( WeightedMesh mesh ) {
 		this.meshes.add( mesh );
 	}
 
-	public TexturedAppearance getAppearance()
-	{
+	public TexturedAppearance getAppearance() {
 		return this.textureAppearance;
 	}
 
-	public WeightedMesh getMesh( int index )
-	{
+	public WeightedMesh getMesh( int index ) {
 		return this.meshes.get( index );
 	}
 
-	public List<WeightedMesh> getMeshes()
-	{
+	public List<WeightedMesh> getMeshes() {
 		return this.meshes;
 	}
 
-	public int meshCount()
-	{
+	public int meshCount() {
 		return this.meshes.size();
 	}
 
-	public void release()
-	{
-		if( this.textureAppearance != null )
-		{
+	public void release() {
+		if( this.textureAppearance != null ) {
 			this.textureAppearance.release();
 		}
 		for( Mesh mesh : meshes ) {

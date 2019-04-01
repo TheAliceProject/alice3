@@ -85,9 +85,8 @@ public class ManipulationHandle2DCameraZoom extends ImageBasedManipulationHandle
 			return ControlState.ZoomingIn;
 		} else if( this.zoomingOut ) {
 			return ControlState.ZoomingOut;
-		}
-		//If we're not moving in one of the directions, choose highlighted or inactive
-		else if( this.state.isRollover() ) {
+		} else if( this.state.isRollover() ) {
+			//If we're not moving in one of the directions, choose highlighted or inactive
 			return ControlState.Highlighted;
 		} else {
 			return ControlState.Inactive;

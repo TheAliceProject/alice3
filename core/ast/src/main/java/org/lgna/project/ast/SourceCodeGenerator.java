@@ -271,13 +271,11 @@ public abstract class SourceCodeGenerator {
 		closeParen();
 	}
 
-	private void appendArgument( SimpleArgument arg )
-	{
+	private void appendArgument( SimpleArgument arg ) {
 		pushAndAppendArgument( arg );
 	}
 
-	protected void appendArgument( JavaKeyedArgument arg )
-	{
+	protected void appendArgument( JavaKeyedArgument arg ) {
 		pushAndAppendArgument( arg );
 	}
 

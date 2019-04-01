@@ -630,11 +630,9 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 			if (constructorParameterType != ConstructorArgumentUtilities.getContructor0Parameter0Type(ancestorType)) {
 				if (inferredResourceType != null) {
 					addMethodsToType(rv, inferredResourceType);
-				}
-				else if (firstArgument instanceof DynamicResource) {
+				} else if (firstArgument instanceof DynamicResource) {
 					addMethodsToType(rv, (DynamicResource)firstArgument);
-				}
-				else {
+				} else {
 					Logger.severe("Failed to augment type " +rv+". Unable to find model resource type." );
 				}
 			}

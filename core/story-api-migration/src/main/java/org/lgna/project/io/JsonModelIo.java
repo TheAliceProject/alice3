@@ -164,8 +164,7 @@ public class JsonModelIo extends DataSourceIo{
         JointedModelPose modelPose = null;
         try {
             modelPose = (JointedModelPose)poseField.get(modelResource);
-        }
-        catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             return null;
         }
         for (JointIdTransformationPair jointData : modelPose.getJointIdTransformationPairs()) {
@@ -188,8 +187,7 @@ public class JsonModelIo extends DataSourceIo{
         JointId jointId = null;
         try {
             jointId = (JointId)jointField.get(modelResource);
-        }
-        catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             return null;
         }
         JointId parent = jointId.getParent();
@@ -208,8 +206,7 @@ public class JsonModelIo extends DataSourceIo{
         JointId[] jointIds = null;
         try {
             jointIds = (JointId[])jointArrayField.get(modelResource);
-        }
-        catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             return null;
         }
         for (JointId id : jointIds) {
@@ -229,8 +226,7 @@ public class JsonModelIo extends DataSourceIo{
         JointArrayId jointArrayId = null;
         try {
             jointArrayId = (JointArrayId)jointArrayIdField.get(modelResource);
-        }
-        catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             return null;
         }
         newJointArrayId.patternId = jointArrayId.getElementNamePattern();
@@ -245,8 +241,7 @@ public class JsonModelIo extends DataSourceIo{
         JointId[] rootJointIds = null;
         try {
             rootJointIds = (JointId[])getRootJointsMethod.invoke(modelResource);
-        }
-        catch (InvocationTargetException e) {
+        } catch (InvocationTargetException e) {
             return null;
         } catch (IllegalAccessException e) {
             return null;
@@ -276,8 +271,7 @@ public class JsonModelIo extends DataSourceIo{
         try {
             Method rootJointMethod = modelResource.getClass().getMethod("getRootJointIds");
             manifest.rootJoints.addAll(createRootJoints(rootJointMethod, modelResource));
-        }
-        catch (NoSuchMethodException e) {
+        } catch (NoSuchMethodException e) {
             Logger.warning("No getRootJointIds found on model "+manifest.description.name);
         }
     }
@@ -302,8 +296,7 @@ public class JsonModelIo extends DataSourceIo{
             }
             Logger.warning("Could not find matching visual for "+modelVariant.structure+". Returning first skeleton visual in list.");
             return skeletonVisuals.get(0);
-        }
-        else if (modelResources != null){
+        } else if (modelResources != null){
             JointedModelResource modelResource = getResourceForVariant(modelVariant);
             JointedModelImp.VisualData<JointedModelResource> v = ImplementationAndVisualType.ALICE.getFactory( modelResource ).createVisualData();
             SkeletonVisual sv = (SkeletonVisual)v.getSgVisuals()[ 0 ];
@@ -434,19 +427,16 @@ public class JsonModelIo extends DataSourceIo{
             SkeletonVisual sv = getVisualForModelVariant(modelVariant);
             if (exportFormat == ExportFormat.COLLADA) {
                 addColladaDataSources(dataToWrite, sv,  modelManifest, modelVariant, resourcePath);
-            }
-            else if (exportFormat == ExportFormat.ALICE) {
+            } else if (exportFormat == ExportFormat.ALICE) {
                 addAliceDataSources(dataToWrite, sv, modelManifest, modelVariant, resourcePath);
-            }
-            else {
+            } else {
                 Logger.warning("Not exporting "+getModelName()+"--Unsupported export format: "+exportFormat);
             }
             //Add DataSources for the thumbnails
             BufferedImage thumbnailImage;
             if (this.skeletonVisuals != null) {
                 thumbnailImage = getThumbnailImageForSkeletonVisual(sv);
-            }
-            else {
+            } else {
                 thumbnailImage = getThumbnailImageForModelVariant(modelVariant);
             }
             String thumbnailName = modelVariant.name +".png";
@@ -459,8 +449,7 @@ public class JsonModelIo extends DataSourceIo{
         BufferedImage thumbnailImage;
         if (this.thumbnails != null) {
             thumbnailImage = this.thumbnails.get(0);
-        }
-        else {
+        } else {
             thumbnailImage = getThumbnailImageForModelVariant(modelManifest.models.get(0));
         }
         String classIconName = getModelName()+"_cls.png";
@@ -484,7 +473,9 @@ public class JsonModelIo extends DataSourceIo{
     private static DataSource createAliceStructureDataSource(final String fileName, final SkeletonVisual sv) {
         return new DataSource() {
             @Override
-            public String getName() { return fileName; }
+            public String getName() {
+                return fileName;
+            }
 
             @Override
             public void write(OutputStream os) throws IOException {
@@ -496,7 +487,9 @@ public class JsonModelIo extends DataSourceIo{
     private static DataSource createAliceTextureDataSource(final String fileName, final TexturedAppearance[] textures) {
         return new DataSource() {
             @Override
-            public String getName() { return fileName; }
+            public String getName() {
+                return fileName;
+            }
 
             @Override
             public void write(OutputStream os) throws IOException {
@@ -507,7 +500,9 @@ public class JsonModelIo extends DataSourceIo{
 
     private static DataSource createPNGImageDataSource(final String fileName, final BufferedImage image) {
         return new DataSource() {
-            @Override public String getName() { return fileName; }
+            @Override public String getName() {
+                return fileName;
+            }
 
             @Override public void write( OutputStream os ) throws IOException {
                 ImageIO.write(image, "png", os);

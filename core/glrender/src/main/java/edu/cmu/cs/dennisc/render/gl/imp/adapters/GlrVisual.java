@@ -195,25 +195,21 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
 	}
 
 	@Override
-	protected void handleReleased()
-	{
+	protected void handleReleased() {
 		super.handleReleased();
 		synchronized( this.glrGeometries ) {
 			for( GlrGeometry<? extends Geometry> geometryAdapter : this.glrGeometries ) {
-				if( geometryAdapter.owner != null )
-				{
+				if( geometryAdapter.owner != null ) {
 					geometryAdapter.handleReleased();
 				}
 			}
 			this.glrGeometries = null;
 		}
-		if( ( this.glrFrontFacingAppearance != null ) && ( this.glrFrontFacingAppearance.owner != null ) )
-		{
+		if( ( this.glrFrontFacingAppearance != null ) && ( this.glrFrontFacingAppearance.owner != null ) ) {
 			this.glrFrontFacingAppearance.handleReleased();
 		}
 		this.glrFrontFacingAppearance = null;
-		if( ( this.glrBackFacingAppearance != null ) && ( this.glrBackFacingAppearance.owner != null ) )
-		{
+		if( ( this.glrBackFacingAppearance != null ) && ( this.glrBackFacingAppearance.owner != null ) ) {
 			this.glrBackFacingAppearance.handleReleased();
 		}
 		this.glrBackFacingAppearance = null;
@@ -398,21 +394,16 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
 
 	protected void updateGeometryAdapters() {
 		GlrGeometry<? extends Geometry>[] newAdapters = AdapterFactory.getAdaptersFor( owner.geometries.getValue(), GlrGeometry.class );
-		if( this.glrGeometries != null )
-		{
-			for( GlrGeometry<? extends Geometry> oldAdapter : this.glrGeometries )
-			{
+		if( this.glrGeometries != null ) {
+			for( GlrGeometry<? extends Geometry> oldAdapter : this.glrGeometries ) {
 				boolean found = false;
-				for( GlrGeometry<? extends Geometry> newAdapter : newAdapters )
-				{
-					if( newAdapter == oldAdapter )
-					{
+				for( GlrGeometry<? extends Geometry> newAdapter : newAdapters ) {
+					if( newAdapter == oldAdapter ) {
 						found = true;
 						break;
 					}
 				}
-				if( !found )
-				{
+				if( !found ) {
 					oldAdapter.handleReleased();
 				}
 			}
@@ -427,10 +418,8 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
 			updateGeometryAdapters();
 		} else if( property == owner.frontFacingAppearance ) {
 			GlrAppearance<? extends Appearance> newAdapter = AdapterFactory.getAdapterFor( owner.frontFacingAppearance.getValue() );
-			if( this.glrFrontFacingAppearance != newAdapter )
-			{
-				if( this.glrFrontFacingAppearance != null )
-				{
+			if( this.glrFrontFacingAppearance != newAdapter ) {
+				if( this.glrFrontFacingAppearance != null ) {
 					this.glrFrontFacingAppearance.handleReleased();
 				}
 				this.glrFrontFacingAppearance = newAdapter;
@@ -438,10 +427,8 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
 
 		} else if( property == owner.backFacingAppearance ) {
 			GlrAppearance<? extends Appearance> newAdapter = AdapterFactory.getAdapterFor( owner.backFacingAppearance.getValue() );
-			if( this.glrBackFacingAppearance != newAdapter )
-			{
-				if( this.glrBackFacingAppearance != null )
-				{
+			if( this.glrBackFacingAppearance != newAdapter ) {
+				if( this.glrBackFacingAppearance != null ) {
 					this.glrBackFacingAppearance.handleReleased();
 				}
 				this.glrBackFacingAppearance = newAdapter;

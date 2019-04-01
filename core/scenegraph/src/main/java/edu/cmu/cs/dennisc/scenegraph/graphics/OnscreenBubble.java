@@ -48,8 +48,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
-public class OnscreenBubble
-{
+public class OnscreenBubble {
 
 	private Point2D.Float originOfTail;
 	private Point2D.Float endOfTail;
@@ -57,8 +56,7 @@ public class OnscreenBubble
 	private Rectangle2D.Double textBounds;
 	private Bubble.PositionPreference positionPreference;
 
-	public OnscreenBubble( Point2D.Float originOfTail, Point2D.Float endOfTail, RoundRectangle2D.Double bubbleRect, Rectangle2D.Double textBounds, Bubble.PositionPreference positionPreference )
-	{
+	public OnscreenBubble( Point2D.Float originOfTail, Point2D.Float endOfTail, RoundRectangle2D.Double bubbleRect, Rectangle2D.Double textBounds, Bubble.PositionPreference positionPreference ) {
 		this.originOfTail = originOfTail;
 		this.endOfTail = endOfTail;
 		this.bubbleRect = bubbleRect;
@@ -66,8 +64,7 @@ public class OnscreenBubble
 		this.positionPreference = positionPreference;
 	}
 
-	public void setPosition( double x, double y )
-	{
+	public void setPosition( double x, double y ) {
 		Point2D.Double tailEndOffset = new Point2D.Double( endOfTail.x - bubbleRect.x, endOfTail.y - bubbleRect.y );
 		Point2D.Double textOffset = new Point2D.Double( textBounds.x - bubbleRect.x, textBounds.y - bubbleRect.y );
 
@@ -78,51 +75,42 @@ public class OnscreenBubble
 		textBounds.y = bubbleRect.y + textOffset.y;
 	}
 
-	public void setPosition( Point2D.Double position )
-	{
+	public void setPosition( Point2D.Double position ) {
 		setPosition( position.x, position.y );
 	}
 
-	public Bubble.PositionPreference getPositionPreference()
-	{
+	public Bubble.PositionPreference getPositionPreference() {
 		return this.positionPreference;
 	}
 
-	public Point2D.Float getOriginOfTail()
-	{
+	public Point2D.Float getOriginOfTail() {
 		return this.originOfTail;
 	}
 
-	public Point2D.Float getEndOfTail()
-	{
+	public Point2D.Float getEndOfTail() {
 		return this.endOfTail;
 	}
 
-	public RoundRectangle2D.Double getBubbleRect()
-	{
+	public RoundRectangle2D.Double getBubbleRect() {
 		return this.bubbleRect;
 	}
 
-	public Rectangle2D.Double getTextBounds()
-	{
+	public Rectangle2D.Double getTextBounds() {
 		return this.textBounds;
 	}
 
-	public void updateOriginOfTail( Point2D.Float newOrigin, Rectangle viewport )
-	{
+	public void updateOriginOfTail( Point2D.Float newOrigin, Rectangle viewport ) {
 		this.originOfTail.x = newOrigin.x;
 		this.originOfTail.y = newOrigin.y;
 		double percentOriginAcrossScreen = originOfTail.getX() / viewport.width;
 		this.endOfTail.x = (float)( this.bubbleRect.getMinX() + this.getHorizontalPadding() + ( percentOriginAcrossScreen * this.textBounds.getWidth() ) );
 	}
 
-	public double getHorizontalPadding()
-	{
+	public double getHorizontalPadding() {
 		return ( this.bubbleRect.getWidth() - this.textBounds.getWidth() ) * .5;
 	}
 
-	public double getVerticalPadding()
-	{
+	public double getVerticalPadding() {
 		return ( this.bubbleRect.getHeight() - this.textBounds.getHeight() ) * .5;
 	}
 }

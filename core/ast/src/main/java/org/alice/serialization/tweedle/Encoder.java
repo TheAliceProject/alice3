@@ -130,8 +130,7 @@ public class Encoder extends SourceCodeGenerator {
 		super.pushStatementDisabled();
 	}
 
-	@Override protected void appendArgument( JavaKeyedArgument arg )
-	{
+	@Override protected void appendArgument( JavaKeyedArgument arg ) {
 		appendKeyedArgument(arg);
 	}
 

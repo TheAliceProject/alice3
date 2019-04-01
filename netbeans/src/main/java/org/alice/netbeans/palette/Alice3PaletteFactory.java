@@ -70,11 +70,21 @@ public class Alice3PaletteFactory {
                 "AlicePalette",
                 //Palette Actions:
                 new PaletteActions() {
-                    @Override public Action[] getImportActions() {return null;}
-                    @Override public Action[] getCustomPaletteActions() {return null;}
-                    @Override public Action[] getCustomCategoryActions(Lookup lkp) {return null;}
-                    @Override public Action[] getCustomItemActions(Lookup lkp) {return null;}
-                    @Override public Action getPreferredAction(Lookup lkp) {return null;}
+                    @Override public Action[] getImportActions() {
+                        return null;
+                    }
+                    @Override public Action[] getCustomPaletteActions() {
+                        return null;
+                    }
+                    @Override public Action[] getCustomCategoryActions(Lookup lkp) {
+                        return null;
+                    }
+                    @Override public Action[] getCustomItemActions(Lookup lkp) {
+                        return null;
+                    }
+                    @Override public Action getPreferredAction(Lookup lkp) {
+                        return null;
+                    }
                 },
                 //Palette Filter:
                 null,

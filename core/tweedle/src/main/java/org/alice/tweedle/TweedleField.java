@@ -4,8 +4,7 @@ import org.alice.tweedle.ast.TweedleExpression;
 
 import java.util.List;
 
-public class TweedleField extends TweedleValueHolderDeclaration
-{
+public class TweedleField extends TweedleValueHolderDeclaration {
 	private List<String> modifiers;
 	private TweedleExpression initializer;
 

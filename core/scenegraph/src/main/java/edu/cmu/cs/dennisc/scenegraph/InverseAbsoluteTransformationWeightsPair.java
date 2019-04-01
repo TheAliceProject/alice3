@@ -48,55 +48,46 @@ import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
-public abstract class InverseAbsoluteTransformationWeightsPair implements BinaryEncodableAndDecodable
-{
+public abstract class InverseAbsoluteTransformationWeightsPair implements BinaryEncodableAndDecodable {
 	protected AffineMatrix4x4 inverseAbsoluteTransformation;
 	protected float[] weights;
 	protected int index = 0;
 
 	public abstract void setWeights(float[] weightsIn);
 
-	public float getWeight()
-	{
+	public float getWeight() {
 		return this.weights[ this.index ];
 	}
 
 	public abstract int getIndex();
 
-	public boolean isDone()
-	{
+	public boolean isDone() {
 		return this.index == this.weights.length;
 	}
 
-	public void advance()
-	{
+	public void advance() {
 		this.index++;
 	}
 
-	public void reset()
-	{
+	public void reset() {
 		this.index = 0;
 	}
 
-	public void setInverseAbsoluteTransformation( AffineMatrix4x4 transform )
-	{
+	public void setInverseAbsoluteTransformation( AffineMatrix4x4 transform ) {
 		this.inverseAbsoluteTransformation = transform;
 	}
 
-	public AffineMatrix4x4 getInverseAbsoluteTransformation()
-	{
+	public AffineMatrix4x4 getInverseAbsoluteTransformation() {
 		return this.inverseAbsoluteTransformation;
 	}
 
-	public void decode( BinaryDecoder binaryDecoder )
-	{
+	public void decode( BinaryDecoder binaryDecoder ) {
 		this.inverseAbsoluteTransformation = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.weights = binaryDecoder.decodeFloatArray();
 	}
 
 	@Override
-	public void encode( BinaryEncoder binaryEncoder )
-	{
+	public void encode( BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.inverseAbsoluteTransformation );
 		binaryEncoder.encode( this.weights );
 	}

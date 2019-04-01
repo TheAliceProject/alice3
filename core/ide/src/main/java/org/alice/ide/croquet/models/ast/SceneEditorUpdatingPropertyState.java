@@ -97,13 +97,11 @@ public class SceneEditorUpdatingPropertyState extends PropertyState {
 		super.handleTruthAndBeautyValueChange( nextValue );
 		if( nextValue instanceof NullLiteral ) {
 			//do nothing for null literals
-		}
-		else {
+		} else {
 			Expression e;
 			if( this.field == null ) {
 				e = ThisExpression.createInstanceThatCanExistWithoutAnAncestorType( StorytellingSceneEditor.getInstance().getActiveSceneType() );
-			}
-			else {
+			} else {
 				e = new FieldAccess(field);
 			}
 			AbstractParameter parameter = this.getSetter().getRequiredParameters().get( 0 );

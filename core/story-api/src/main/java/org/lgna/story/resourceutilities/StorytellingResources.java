@@ -442,8 +442,7 @@ public enum StorytellingResources {
 					ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
 					modelManifest.setRootFile(modelFile.getParentFile());
 					this.userGalleryModelManifests.add(modelManifest);
-				}
-				catch (IOException e) {
+				} catch (IOException e) {
 					Logger.warning("Error loading model data from "+modelFile);
 				}
 			}
@@ -465,8 +464,7 @@ public enum StorytellingResources {
 						userGalleryModelManifests.add( modelManifest );
 						newModelManifests.add( modelManifest );
 					}
-				}
-				catch (IOException e) {
+				} catch (IOException e) {
 					Logger.warning("Error loading model data from "+modelFile);
 				}
 			}

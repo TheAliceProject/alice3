@@ -103,10 +103,8 @@ public class AndInputCondition extends InputCondition {
 
 	@Override
 	protected boolean testState( InputState state ) {
-		for( int i = 0; i < requiredConditions.length; i++ )
-		{
-			if( !requiredConditions[ i ].testState( state ) )
-			{
+		for( int i = 0; i < requiredConditions.length; i++ ) {
+			if( !requiredConditions[ i ].testState( state ) ) {
 				return false;
 			}
 		}

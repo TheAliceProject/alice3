@@ -704,8 +704,7 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 		setToAddition( this, b );
 	}
 
-	public void setZero()
-	{
+	public void setZero() {
 		this.orientation.right.set( 0, 0, 0 );
 		this.orientation.up.set( 0, 0, 0 );
 		this.orientation.backward.set( 0, 0, 0 );
@@ -782,8 +781,7 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 		setToInverse( this );
 	}
 
-	public boolean isZero()
-	{
+	public boolean isZero() {
 		return this.orientation.right.isZero() && this.orientation.up.isZero() && this.orientation.backward.isZero() && this.translation.isZero();
 	}
 
@@ -823,10 +821,8 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 		return new Matrix4x4( this ).setReturnValueToTransformed( rv, b );
 	}
 
-	public double[] transformVertex( double[] afRV, int offsetDest, double[] afSrc, int offsetSrc )
-	{
-		if( afRV == null )
-		{
+	public double[] transformVertex( double[] afRV, int offsetDest, double[] afSrc, int offsetSrc ) {
+		if( afRV == null ) {
 			afRV = new double[ 3 ];
 			offsetDest = 0;
 		}
@@ -837,10 +833,8 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 		return afRV;
 	}
 
-	public float[] transformVertex( float[] afRV, int offsetDest, float[] afSrc, int offsetSrc )
-	{
-		if( afRV == null )
-		{
+	public float[] transformVertex( float[] afRV, int offsetDest, float[] afSrc, int offsetSrc ) {
+		if( afRV == null ) {
 			afRV = new float[ 3 ];
 			offsetDest = 0;
 		}
@@ -851,20 +845,16 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 		return afRV;
 	}
 
-	public float[] transformNormal( float[] afRV, float[] afSrc )
-	{
+	public float[] transformNormal( float[] afRV, float[] afSrc ) {
 		return transformNormal( afRV, 0, afSrc, 0 );
 	}
 
-	public float[] transformNormal( float[] afRV, int offsetDest, float[] afSrc, int offsetSrc )
-	{
+	public float[] transformNormal( float[] afRV, int offsetDest, float[] afSrc, int offsetSrc ) {
 		return transformVector( afRV, offsetDest, afSrc, offsetSrc );
 	}
 
-	private float[] transformVector( float[] afRV, int offsetDest, float[] afSrc, int offsetSrc )
-	{
-		if( afRV == null )
-		{
+	private float[] transformVector( float[] afRV, int offsetDest, float[] afSrc, int offsetSrc ) {
+		if( afRV == null ) {
 			afRV = new float[ 3 ];
 			offsetDest = 0;
 		}

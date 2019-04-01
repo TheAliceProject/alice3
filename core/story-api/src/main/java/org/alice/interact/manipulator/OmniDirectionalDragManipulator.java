@@ -157,8 +157,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	}
 
 	private Vector3 getMouseMovementFromVector( Point mouseVector ) {
-		if( ( mouseVector.x == 0 ) && ( mouseVector.y == 0 ) )
-		{
+		if( ( mouseVector.x == 0 ) && ( mouseVector.y == 0 ) ) {
 			return new Vector3( 0, 0, 0 );
 		}
 
@@ -171,8 +170,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		double movementAmount = mouseVector.distance( 0f, 0f ) * MOVEMENT_SCALE;
 		mouseRelativeMovement.multiply( movementAmount );
 
-		if( mouseRelativeMovement.isNaN() )
-		{
+		if( mouseRelativeMovement.isNaN() ) {
 			System.out.println( "NaN!" );
 		}
 

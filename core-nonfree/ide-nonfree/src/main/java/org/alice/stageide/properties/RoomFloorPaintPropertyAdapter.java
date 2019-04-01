@@ -53,40 +53,33 @@ import org.lgna.story.implementation.RoomImp;
  */
 public class RoomFloorPaintPropertyAdapter extends AbstractPropertyAdapter<Paint, RoomImp> {
 
-	public RoomFloorPaintPropertyAdapter( RoomImp instance, StandardExpressionState expressionState )
-	{
+	public RoomFloorPaintPropertyAdapter( RoomImp instance, StandardExpressionState expressionState ) {
 		super( "Floor", instance, expressionState );
 	}
 
 	@Override
-	public void setValue( Paint value )
-	{
+	public void setValue( Paint value ) {
 		super.setValue( value );
-		if( this.instance != null )
-		{
+		if( this.instance != null ) {
 			this.instance.floorPaint.setValue( value );
 		}
 	}
 
 	@Override
-	public Class<Paint> getPropertyType()
-	{
+	public Class<Paint> getPropertyType() {
 		return Paint.class;
 	}
 
 	@Override
-	public Paint getValue()
-	{
-		if( this.instance != null )
-		{
+	public Paint getValue() {
+		if( this.instance != null ) {
 			return this.instance.floorPaint.getValue();
 		}
 		return null;
 	}
 
 	@Override
-	public Paint getValueCopyIfMutable()
-	{
+	public Paint getValueCopyIfMutable() {
 		return this.getValue();
 	}
 

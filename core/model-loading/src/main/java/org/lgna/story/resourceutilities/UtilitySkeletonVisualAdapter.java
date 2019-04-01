@@ -58,19 +58,15 @@ import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
-public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual
-{
+public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual {
 	@Override
 	protected void updateAppearanceToMeshControllersMap() {
 		synchronized( appearanceIdToMeshControllersMap ) {
 			appearanceIdToMeshControllersMap.clear();
-			for( TexturedAppearance ta : this.owner.textures.getValue() )
-			{
+			for( TexturedAppearance ta : this.owner.textures.getValue() ) {
 				List<GlrSkeletonVisual.WeightedMeshControl> controls = new LinkedList<GlrSkeletonVisual.WeightedMeshControl>();
-				for( WeightedMesh weightedMesh : this.owner.weightedMeshes.getValue() )
-				{
-					if( weightedMesh.textureId.getValue() == ta.textureId.getValue() )
-					{
+				for( WeightedMesh weightedMesh : this.owner.weightedMeshes.getValue() ) {
+					if( weightedMesh.textureId.getValue() == ta.textureId.getValue() ) {
 						GlrSkeletonVisual.WeightedMeshControl control = new UtilityWeightedMeshControl();
 						control.initialize( weightedMesh );
 						controls.add( control );
@@ -81,11 +77,9 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual
 		}
 	}
 
-		protected List<UtilityWeightedMeshControl> getUtilityWeightedMeshControls()
-		{
+		protected List<UtilityWeightedMeshControl> getUtilityWeightedMeshControls() {
 			List<UtilityWeightedMeshControl> controlList = new LinkedList<UtilityWeightedMeshControl>();
-			for (Entry<Integer, GlrSkeletonVisual.WeightedMeshControl[]> entry : this.appearanceIdToMeshControllersMap.entrySet())
-			{
+			for (Entry<Integer, GlrSkeletonVisual.WeightedMeshControl[]> entry : this.appearanceIdToMeshControllersMap.entrySet()) {
 				for (GlrSkeletonVisual.WeightedMeshControl w : entry.getValue()) {
 					if (!controlList.contains(w)) {
 						assert w instanceof UtilityWeightedMeshControl;
@@ -96,37 +90,29 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual
 			return controlList;
 		}
 
-	public AxisAlignedBox getAbsoluteBoundingBox()
-	{
+	public AxisAlignedBox getAbsoluteBoundingBox() {
 		AxisAlignedBox box = new AxisAlignedBox();
-		for (UtilityWeightedMeshControl control : this.getUtilityWeightedMeshControls())
-		{
+		for (UtilityWeightedMeshControl control : this.getUtilityWeightedMeshControls()) {
 			AxisAlignedBox subBox = control.getAbsoluteBoundingBox();
 			box.union(subBox);
 		}
 		return box;
 	}
 
-	void initializeJointBoundingBoxes()
-	{
+	void initializeJointBoundingBoxes() {
 		initializeJointBoundingBoxes(owner.skeleton.getValue(), AffineMatrix4x4.createIdentity());
 	}
 
-	private void initializeJointBoundingBoxes(Composite currentNode, AffineMatrix4x4 parentTransform)
-	{
-		if (currentNode == null)
-		{
+	private void initializeJointBoundingBoxes(Composite currentNode, AffineMatrix4x4 parentTransform) {
+		if (currentNode == null) {
 			return;
 		}
 		AffineMatrix4x4 absoluteLocalTransform = parentTransform;
-		if (currentNode instanceof Transformable)
-		{
+		if (currentNode instanceof Transformable) {
 			absoluteLocalTransform = AffineMatrix4x4.createMultiplication(parentTransform, ((Transformable)currentNode).localTransformation.getValue());
-			if (currentNode instanceof Joint)
-			{
+			if (currentNode instanceof Joint) {
 				AxisAlignedBox box = new AxisAlignedBox();
-				for (UtilityWeightedMeshControl control : this.getUtilityWeightedMeshControls())
-				{
+				for (UtilityWeightedMeshControl control : this.getUtilityWeightedMeshControls()) {
 					AxisAlignedBox subBox = control.getBoundingBoxForJoint((Joint)currentNode);
 					box.union(subBox);
 				}
@@ -154,8 +140,7 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual
 			}
 		}
 		for (Component comp : currentNode.getComponents()) {
-			if (comp instanceof Composite)
-			{
+			if (comp instanceof Composite) {
 				initializeJointBoundingBoxes((Composite)comp, absoluteLocalTransform );
 			}
 		}

@@ -57,8 +57,7 @@ public class JointArrayId {
 		this.containingClass = containingClass;
 	}
 
-	public Class<? extends JointedModelResource> getContainingClass()
-	{
+	public Class<? extends JointedModelResource> getContainingClass() {
 		return this.containingClass;
 	}
 
@@ -74,8 +73,7 @@ public class JointArrayId {
 //		return false;
 //	}
 
-	public JointId getRoot()
-	{
+	public JointId getRoot() {
 		return this.root;
 	}
 

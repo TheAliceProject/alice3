@@ -47,14 +47,12 @@ public enum ChildHairShocked implements MaleChildHair, FemaleChildHair {
 	BLACK;
 
 	@Override
-	public Boolean hasHair()
-	{
+	public Boolean hasHair() {
 		return true;
 	}
 
 	@Override
-	public Boolean hasHat()
-	{
+	public Boolean hasHat() {
 		return false;
 	}
 }

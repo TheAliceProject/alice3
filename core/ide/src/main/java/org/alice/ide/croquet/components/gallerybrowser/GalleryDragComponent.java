@@ -135,8 +135,7 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
 			this.shadowColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 0.9, 0.8 );
 			this.activeHighlightColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 2.0 );
 			this.activeShadowColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 0.9 );
-		}
-		else if( model.isInstanceCreator() ) {
+		} else if( model.isInstanceCreator() ) {
 			this.baseColor = DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
 			this.highlightColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 1.4 );
 			this.shadowColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 0.9, 0.8 );

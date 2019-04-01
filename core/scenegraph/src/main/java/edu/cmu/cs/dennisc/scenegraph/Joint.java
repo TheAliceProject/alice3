@@ -53,8 +53,7 @@ import edu.cmu.cs.dennisc.property.StringProperty;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Joint extends Transformable implements ModelJoint
-{
+public class Joint extends Transformable implements ModelJoint {
 	//	private static final java.util.Comparator<Joint> JOINT_ARRAY_COMPARATOR = new java.util.Comparator<Joint>() {
 	//		@Override
 	//		public int compare( Joint o1, Joint o2 ) {
@@ -62,28 +61,21 @@ public class Joint extends Transformable implements ModelJoint
 	//		}
 	//	};
 
-	private Joint getJoint( Composite c, String jointID )
-	{
-		if( c == null )
-		{
+	private Joint getJoint( Composite c, String jointID ) {
+		if( c == null ) {
 			return null;
 		}
-		if( c instanceof Joint )
-		{
+		if( c instanceof Joint ) {
 			Joint j = (Joint)c;
-			if( j.jointID.getValue().equals( jointID ) )
-			{
+			if( j.jointID.getValue().equals( jointID ) ) {
 				return j;
 			}
 		}
-		for( int i = 0; i < c.getComponentCount(); i++ )
-		{
+		for( int i = 0; i < c.getComponentCount(); i++ ) {
 			Component comp = c.getComponentAt( i );
-			if( comp instanceof Composite )
-			{
+			if( comp instanceof Composite ) {
 				Joint foundJoint = getJoint( (Composite)comp, jointID );
-				if( foundJoint != null )
-				{
+				if( foundJoint != null ) {
 					return foundJoint;
 				}
 			}
@@ -99,8 +91,7 @@ public class Joint extends Transformable implements ModelJoint
 		if (bb != null) {
 			bb.scale(scale);
 		}
-		for( int i = 0; i < getComponentCount(); i++ )
-		{
+		for( int i = 0; i < getComponentCount(); i++ ) {
 			Component comp = getComponentAt( i );
 			if (comp instanceof Joint) {
 				((Joint)comp).scale(scale);
@@ -108,37 +99,29 @@ public class Joint extends Transformable implements ModelJoint
 		}
 	}
 
-	public Joint getJoint( String jointID )
-	{
+	public Joint getJoint( String jointID ) {
 		return getJoint( this, jointID );
 	}
 
-	private void getJoints( Composite c, String nameKey, List<Joint> joints )
-	{
-		if( c == null )
-		{
+	private void getJoints( Composite c, String nameKey, List<Joint> joints ) {
+		if( c == null ) {
 			return;
 		}
-		if( c instanceof Joint )
-		{
+		if( c instanceof Joint ) {
 			Joint j = (Joint)c;
-			if( j.jointID.getValue().startsWith( nameKey ) )
-			{
+			if( j.jointID.getValue().startsWith( nameKey ) ) {
 				joints.add( j );
 			}
 		}
-		for( int i = 0; i < c.getComponentCount(); i++ )
-		{
+		for( int i = 0; i < c.getComponentCount(); i++ ) {
 			Component comp = c.getComponentAt( i );
-			if( comp instanceof Composite )
-			{
+			if( comp instanceof Composite ) {
 				getJoints( (Composite)comp, nameKey, joints );
 			}
 		}
 	}
 
-	public Joint[] getJoints( String nameKey )
-	{
+	public Joint[] getJoints( String nameKey ) {
 		List<Joint> joints = new ArrayList<Joint>();
 		getJoints( this, nameKey, joints );
 		return joints.toArray( new Joint[ joints.size() ] );
@@ -155,14 +138,11 @@ public class Joint extends Transformable implements ModelJoint
 		return this.parentVisual;
 	}
 
-	private AxisAlignedBox getBoundingBox( Composite c, AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative )
-	{
-		if( c == null )
-		{
+	private AxisAlignedBox getBoundingBox( Composite c, AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative ) {
+		if( c == null ) {
 			return null;
 		}
-		if( c instanceof Joint )
-		{
+		if( c instanceof Joint ) {
 			Joint j = (Joint)c;
 
 			//We scale the local bounding box based on the scale of the SkeletonVisual base object
@@ -186,11 +166,9 @@ public class Joint extends Transformable implements ModelJoint
 			}
 		}
 		if( cumulative ) {
-			for( int i = 0; i < c.getComponentCount(); i++ )
-			{
+			for( int i = 0; i < c.getComponentCount(); i++ ) {
 				Component comp = c.getComponentAt( i );
-				if( comp instanceof Composite )
-				{
+				if( comp instanceof Composite ) {
 					AffineMatrix4x4 childTransform = AffineMatrix4x4.createMultiplication( transform, ( (AbstractTransformable)comp ).accessLocalTransformation() );
 					getBoundingBox( (Composite)comp, rv, childTransform, cumulative );
 				}
@@ -199,18 +177,15 @@ public class Joint extends Transformable implements ModelJoint
 		return rv;
 	}
 
-	public AxisAlignedBox getBoundingBox( AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative )
-	{
-		if( rv == null )
-		{
+	public AxisAlignedBox getBoundingBox( AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative ) {
+		if( rv == null ) {
 			rv = new AxisAlignedBox();
 		}
 		getBoundingBox( this, rv, transform, cumulative );
 		return rv;
 	}
 
-	public AxisAlignedBox getBoundingBox( AxisAlignedBox rv, boolean cumulative )
-	{
+	public AxisAlignedBox getBoundingBox( AxisAlignedBox rv, boolean cumulative ) {
 		return getBoundingBox( rv, AffineMatrix4x4.createIdentity(), cumulative );
 	}
 

@@ -66,31 +66,25 @@ import org.lgna.croquet.views.GridBagPanel;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.SwingComponentView;
 
-public class SelectedInstancePropertyController extends BasicPropertyController<InstanceFactory>
-{
+public class SelectedInstancePropertyController extends BasicPropertyController<InstanceFactory> {
 
 	private Label label;
 
-	public SelectedInstancePropertyController( SelectedInstanceAdapter propertyAdapter )
-	{
+	public SelectedInstancePropertyController( SelectedInstanceAdapter propertyAdapter ) {
 		super( propertyAdapter );
 	}
 
 	@Override
-	protected AwtComponentView<?> createPropertyComponent()
-	{
-		this.label = new Label( "", 1.2f, TextWeight.BOLD )
-		{
+	protected AwtComponentView<?> createPropertyComponent() {
+		this.label = new Label( "", 1.2f, TextWeight.BOLD ) {
 
 			@Override
-			protected JLabel createAwtComponent()
-			{
+			protected JLabel createAwtComponent() {
 				return new JLabel() {
 					@Override
 					protected void paintComponent( Graphics g ) {
 						g.setColor( this.getBackground() );
-						if( g instanceof Graphics2D )
-						{
+						if( g instanceof Graphics2D ) {
 							( (Graphics2D)g ).setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 						}
 						g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), 12, 12 );
@@ -139,14 +133,12 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 	}
 
 	@Override
-	public Class<?> getPropertyType()
-	{
+	public Class<?> getPropertyType() {
 		return InstanceFactory.class;
 	}
 
 	@Override
-	protected void setValueOnUI( InstanceFactory value )
-	{
+	protected void setValueOnUI( InstanceFactory value ) {
 		Logger.warning( "NOT SUPPORTED", this, value );
 
 	}

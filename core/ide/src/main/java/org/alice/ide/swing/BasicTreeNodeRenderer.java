@@ -58,8 +58,7 @@ import javax.swing.border.Border;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-public class BasicTreeNodeRenderer implements TreeCellRenderer
-{
+public class BasicTreeNodeRenderer implements TreeCellRenderer {
 	private static final Color SELECTED_BORDER_COLOR = Color.GREEN;
 	private static final Color NOT_SELECTED_BORDER_COLOR = Color.GRAY;
 
@@ -73,8 +72,7 @@ public class BasicTreeNodeRenderer implements TreeCellRenderer
 	private JPanel differenceIndicator;
 	private DefaultTreeCellRenderer defaultRenderer = null;
 
-	public BasicTreeNodeRenderer()
-	{
+	public BasicTreeNodeRenderer() {
 		this.holder = new JPanel();
 		//		this.holder.setLayout(new BoxLayout(this.holder, BoxLayout.X_AXIS));
 		//		this.holder.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
@@ -119,19 +117,15 @@ public class BasicTreeNodeRenderer implements TreeCellRenderer
 		this.defaultRenderer = new DefaultTreeCellRenderer();
 	}
 
-	private Border createBorder( boolean isSelected )
-	{
+	private Border createBorder( boolean isSelected ) {
 		final int THICKNESS = 2;
 		final int MARGIN = 2;
-		if( isSelected )
-		{
+		if( isSelected ) {
 			return BorderFactory.createCompoundBorder(
 					BorderFactory.createLineBorder( SELECTED_BORDER_COLOR, THICKNESS ),
 					BorderFactory.createEmptyBorder( MARGIN, MARGIN, MARGIN, MARGIN )
 					);
-		}
-		else
-		{
+		} else {
 			return BorderFactory.createCompoundBorder(
 					BorderFactory.createLineBorder( NOT_SELECTED_BORDER_COLOR, THICKNESS ),
 					BorderFactory.createEmptyBorder( MARGIN, MARGIN, MARGIN, MARGIN )
@@ -142,47 +136,33 @@ public class BasicTreeNodeRenderer implements TreeCellRenderer
 	@Override
 	public Component getTreeCellRendererComponent( JTree tree, Object value,
 			boolean selected, boolean expanded, boolean leaf, int row,
-			boolean hasFocus )
-	{
-		if( value instanceof BasicTreeNode )
-		{
+			boolean hasFocus ) {
+		if( value instanceof BasicTreeNode ) {
 			BasicTreeNode node = (BasicTreeNode)value;
 			this.nameLabel.setText( node.toString() );
 			this.nameLabel.setBorder( createBorder( selected ) );
-			if( node.difference == BasicTreeNode.Difference.NEW_NODE )
-			{
+			if( node.difference == BasicTreeNode.Difference.NEW_NODE ) {
 				this.differenceIndicator.setOpaque( true );
 				this.differenceIndicator.setBackground( DIFFERENT_NODE_BACKGROUND_COLOR );
-			}
-			else if( node.difference == BasicTreeNode.Difference.ATTRIBUTES )
-			{
+			} else if( node.difference == BasicTreeNode.Difference.ATTRIBUTES ) {
 				this.differenceIndicator.setOpaque( true );
 				this.differenceIndicator.setBackground( DIFFERENT_ATTRIBUTE_BACKGROUND_COLOR );
-			}
-			else if( node.hasDifferentChild() )
-			{
+			} else if( node.hasDifferentChild() ) {
 				this.differenceIndicator.setOpaque( true );
 				this.differenceIndicator.setBackground( DIFFERENT_CHILD_BACKGROUND_COLOR );
-			}
-			else
-			{
+			} else {
 				this.differenceIndicator.setOpaque( false );
 				this.differenceIndicator.setBackground( NEUTRAL_BACKGROUND_COLOR );
 			}
-			if( node.hasExtras && ( node.color != null ) )
-			{
+			if( node.hasExtras && ( node.color != null ) ) {
 				this.nameLabel.setBackground( node.getAWTColor() );
-			}
-			else
-			{
+			} else {
 				this.nameLabel.setBackground( NEUTRAL_BACKGROUND_COLOR );
 			}
 			this.holder.revalidate();
 			this.holder.doLayout();
 			return this.holder;
-		}
-		else
-		{
+		} else {
 			return this.defaultRenderer.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
 		}
 	}

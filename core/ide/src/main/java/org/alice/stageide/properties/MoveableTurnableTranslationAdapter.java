@@ -56,22 +56,18 @@ import org.lgna.story.SMovableTurnable;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.AsSeenBy;
 
-public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<Point3, SMovableTurnable>
-{
+public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<Point3, SMovableTurnable> {
 	private AbsoluteTransformationListener absoluteTransformationListener;
 
 	public MoveableTurnableTranslationAdapter( SMovableTurnable instance, StandardExpressionState expressionState ) {
 		super( "Position", instance, expressionState );
 	}
 
-	private void initializeTransformationListenersIfNecessary()
-	{
-		if( this.absoluteTransformationListener == null )
-		{
+	private void initializeTransformationListenersIfNecessary() {
+		if( this.absoluteTransformationListener == null ) {
 			this.absoluteTransformationListener = new AbsoluteTransformationListener() {
 				@Override
-				public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent )
-				{
+				public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
 					MoveableTurnableTranslationAdapter.this.handleInternalValueChanged();
 				}
 			};
@@ -79,10 +75,8 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
 	}
 
 	@Override
-	public void startListening()
-	{
-		if( this.instance != null )
-		{
+	public void startListening() {
+		if( this.instance != null ) {
 			this.initializeTransformationListenersIfNecessary();
 			AbstractTransformableImp implementation = EmployeesOnly.getImplementation( this.instance );
 			implementation.getSgComposite().addAbsoluteTransformationListener( this.absoluteTransformationListener );
@@ -90,52 +84,41 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
 	}
 
 	@Override
-	public void stopListening()
-	{
-		if( this.instance != null )
-		{
+	public void stopListening() {
+		if( this.instance != null ) {
 			AbstractTransformableImp implementation = EmployeesOnly.getImplementation( this.instance );
 			implementation.getSgComposite().removeAbsoluteTransformationListener( this.absoluteTransformationListener );
 		}
 	}
 
 	@Override
-	public Class<Point3> getPropertyType()
-	{
+	public Class<Point3> getPropertyType() {
 		return Point3.class;
 	}
 
 	@Override
-	public Point3 getValueCopyIfMutable()
-	{
+	public Point3 getValueCopyIfMutable() {
 		return new Point3( this.getValue() );
 	}
 
 	@Override
-	public Point3 getValue()
-	{
-		if( this.instance != null )
-		{
+	public Point3 getValue() {
+		if( this.instance != null ) {
 			return EmployeesOnly.getImplementation( this.instance ).getAbsoluteTransformation().translation;
 		}
 		return null;
 	}
 
 	@Override
-	public void setValue( Point3 newValue )
-	{
+	public void setValue( Point3 newValue ) {
 		super.setValue( newValue );
-		if( this.instance != null )
-		{
+		if( this.instance != null ) {
 			AffineMatrix4x4 currentTrans = EmployeesOnly.getImplementation( this.instance ).getAbsoluteTransformation();
 			double dist = Point3.calculateDistanceBetween( currentTrans.translation, newValue );
 			double duration = 1;
-			if( dist < .02 )
-			{
+			if( dist < .02 ) {
 				duration = 0;
-			}
-			else if( dist < .5 )
-			{
+			} else if( dist < .5 ) {
 				duration = ( dist - .02 ) / ( .5 - .02 );
 			}
 
@@ -144,8 +127,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
 		}
 	}
 
-	protected void handleInternalValueChanged()
-	{
+	protected void handleInternalValueChanged() {
 		this.notifyValueObservers( this.getValue() );
 	}
 

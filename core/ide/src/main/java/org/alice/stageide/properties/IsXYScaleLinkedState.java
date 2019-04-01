@@ -51,8 +51,7 @@ import java.util.UUID;
  * @author dculyba
  *
  */
-public class IsXYScaleLinkedState extends BooleanState
-{
+public class IsXYScaleLinkedState extends BooleanState {
 	private static class SingletonHolder {
 		private static IsXYScaleLinkedState instance = new IsXYScaleLinkedState();
 	}

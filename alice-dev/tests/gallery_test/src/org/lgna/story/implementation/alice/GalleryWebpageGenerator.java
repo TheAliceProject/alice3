@@ -436,8 +436,7 @@ public class GalleryWebpageGenerator {
 
 	private static boolean hasLeaves( ResourceNode node ) {
 		for( ResourceNode child : node.getNodeChildren() ) {
-			if( child.getResourceKey() instanceof EnumConstantResourceKey )
-			{
+			if( child.getResourceKey() instanceof EnumConstantResourceKey ) {
 				return true;
 			}
 		}
@@ -454,12 +453,10 @@ public class GalleryWebpageGenerator {
 
 	private static List<String> getClassList( ResourceNode node ) {
 		ArrayList<String> classList = new ArrayList<String>();
-		if( node.getResourceKey() instanceof ThemeTagKey )
-		{
+		if( node.getResourceKey() instanceof ThemeTagKey ) {
 			classList.add( "THEME: " + node.getResourceKey().getDisplayText() );
 		}
-		if( node.getResourceKey() instanceof ClassResourceKey )
-		{
+		if( node.getResourceKey() instanceof ClassResourceKey ) {
 			classList.add( getClassName( node ) );
 		}
 		for( ResourceNode childNode : node.getNodeChildren() ) {
@@ -497,7 +494,7 @@ public class GalleryWebpageGenerator {
 		//			html.append("<h3>Methods</h3>\n");
 		//			html.append(getCodeHTML(node));
 		//		}
-		//		
+		//
 		Class<?> resourceClass = IdeAliceResourceUtilities.getClassFromKey( node.getResourceKey() );
 
 		if( ( resourceClass != null ) && !isLeaf( node ) ) {
@@ -628,38 +625,30 @@ public class GalleryWebpageGenerator {
 		List<String> themeNames = getClassList( themeBasedNode );
 		List<String> classNames = getClassList( classBasedNode );
 		List<String> missingNames = new ArrayList<String>();
-		for( String name : classNames )
-		{
-			if( !themeNames.contains( name ) )
-			{
+		for( String name : classNames ) {
+			if( !themeNames.contains( name ) ) {
 				missingNames.add( name );
 			}
 		}
-		for( String name : themeNames )
-		{
+		for( String name : themeNames ) {
 			System.out.println( name );
 		}
 		System.out.println( "THEME: themeless" );
-		for( String name : missingNames )
-		{
+		for( String name : missingNames ) {
 			System.out.println( name );
 		}
 
 		HashMap<String, Integer> countMap = new HashMap<String, Integer>();
-		for( String name : themeNames )
-		{
+		for( String name : themeNames ) {
 			int count = 1;
-			if( countMap.containsKey( name ) )
-			{
+			if( countMap.containsKey( name ) ) {
 				count += countMap.get( name );
 			}
 			countMap.put( name, count );
 		}
 		System.out.println( "\n\nDuplicates:" );
-		for( Entry<String, Integer> entry : countMap.entrySet() )
-		{
-			if( entry.getValue() > 1 )
-			{
+		for( Entry<String, Integer> entry : countMap.entrySet() ) {
+			if( entry.getValue() > 1 ) {
 				System.out.println( entry.getKey() + " : " + entry.getValue() );
 			}
 		}
@@ -674,8 +663,7 @@ public class GalleryWebpageGenerator {
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
 
-		if( SystemUtilities.isPropertyTrue( "org.alice.batch.galleryStatsOnly" ) )
-		{
+		if( SystemUtilities.isPropertyTrue( "org.alice.batch.galleryStatsOnly" ) ) {
 			standAlonePrintGalleryStats();
 		} else {
 			String webpageDir = "C:/batchOutput/webpage";

@@ -4,8 +4,7 @@ import org.alice.tweedle.TweedleType;
 import org.alice.tweedle.TweedleValue;
 import org.alice.tweedle.run.Frame;
 
-public class ArrayIndexExpression extends TweedleExpression
-{
+public class ArrayIndexExpression extends TweedleExpression {
 	private TweedleExpression array;
 	private TweedleExpression index;
 

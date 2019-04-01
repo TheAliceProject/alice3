@@ -47,8 +47,7 @@ package org.alice.media.youtube.core;
  */
 public class YouTubeEvent {
 
-	public enum EventType
-	{
+	public enum EventType {
 		UPLOAD_SUCCESS( "Upload Succeeded" ),
 		UPLOAD_FAILED( "Upload Failed" ),
 		UPLOAD_STARTED( "Upload Started" ),
@@ -61,14 +60,12 @@ public class YouTubeEvent {
 
 		private String description;
 
-		private EventType( String description )
-		{
+		private EventType( String description ) {
 			this.description = description;
 		}
 
 		@Override
-		public String toString()
-		{
+		public String toString() {
 			return this.description;
 		}
 	}
@@ -76,29 +73,24 @@ public class YouTubeEvent {
 	private EventType type;
 	private Object moreInfo;
 
-	public YouTubeEvent( EventType type )
-	{
+	public YouTubeEvent( EventType type ) {
 		this( type, null );
 	}
 
-	public YouTubeEvent( EventType type, Object moreInfo )
-	{
+	public YouTubeEvent( EventType type, Object moreInfo ) {
 		this.type = type;
 		this.moreInfo = moreInfo;
 	}
 
-	public EventType getType()
-	{
+	public EventType getType() {
 		return this.type;
 	}
 
-	public Object getMoreInfo()
-	{
+	public Object getMoreInfo() {
 		return this.moreInfo;
 	}
 
-	public boolean hasMoreInfo()
-	{
+	public boolean hasMoreInfo() {
 		return this.moreInfo != null;
 	}
 

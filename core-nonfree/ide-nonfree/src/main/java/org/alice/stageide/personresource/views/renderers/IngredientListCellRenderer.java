@@ -186,8 +186,7 @@ public abstract class IngredientListCellRenderer<E> extends ListCellRenderer<E> 
 				if( !hasIconForPath( path ) ) {
 					skinToneIconMap.put( clsName, false );
 					path = this.getIngredientResourceName( DEFAULT_SKIN_TONE_NAME, clsName, enumConstantName );
-				}
-				else {
+				} else {
 					skinToneIconMap.put( clsName, true );
 				}
 			}

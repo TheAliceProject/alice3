@@ -97,8 +97,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 		this.toMoveToField = toMoveTo;
 		if( this.toMoveToField != null ) {
 			this.imageIcon.setRightImage( icon );
-		}
-		else {
+		} else {
 			this.imageIcon.setRightImage( null );
 		}
 	}
@@ -107,8 +106,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 		this.toMoveField = toMove;
 		if( this.toMoveField != null ) {
 			this.imageIcon.setLeftImage( icon );
-		}
-		else {
+		} else {
 			this.imageIcon.setLeftImage( null );
 		}
 	}
@@ -118,10 +116,8 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 		return ObjectMarkerMoveActionOperation.class;
 	}
 
-	private void updateBasedOnSettings()
-	{
-		if( ( this.toMoveToField != null ) && ( this.toMoveField != null ) )
-		{
+	private void updateBasedOnSettings() {
+		if( ( this.toMoveToField != null ) && ( this.toMoveField != null ) ) {
 			String unformattedTooltipText = this.findLocalizedText( "tooltip" );
 			MessageFormat formatter = new MessageFormat( "" );
 			formatter.setLocale( JComponent.getDefaultLocale() );
@@ -129,23 +125,17 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 			String tooltipText = formatter.format( new Object[] { this.toMoveField.getName(), this.toMoveToField.getName() } );
 			this.setToolTipText( tooltipText );
 			this.setEnabled( true );
-		}
-		else
-		{
+		} else {
 			this.setToolTipText( this.findLocalizedText( "disabledTooltip" ) );
 			this.setEnabled( false );
 		}
 		this.setButtonIcon( this.imageIcon );
 	}
 
-	public void setMarkerField( UserField markerField )
-	{
-		if( ( markerField == null ) || markerField.getValueType().isAssignableTo( SThingMarker.class ) )
-		{
+	public void setMarkerField( UserField markerField ) {
+		if( ( markerField == null ) || markerField.getValueType().isAssignableTo( SThingMarker.class ) ) {
 			this.markerField = markerField;
-		}
-		else
-		{
+		} else {
 			this.markerField = null;
 		}
 		if( this.selectedField == this.markerField ) {
@@ -155,14 +145,10 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 		this.updateBasedOnSettings();
 	}
 
-	public void setSelectedField( AbstractField field )
-	{
-		if( ( field instanceof UserField ) && field.getValueType().isAssignableTo( SMovableTurnable.class ) )
-		{
+	public void setSelectedField( AbstractField field ) {
+		if( ( field instanceof UserField ) && field.getValueType().isAssignableTo( SMovableTurnable.class ) ) {
 			this.selectedField = (UserField)field;
-		}
-		else
-		{
+		} else {
 			this.selectedField = null;
 		}
 		if( this.selectedField == this.markerField ) {

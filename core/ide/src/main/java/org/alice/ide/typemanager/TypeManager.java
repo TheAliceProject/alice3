@@ -371,8 +371,7 @@ public class TypeManager {
 		Expression[] expressions;
 		if (argumentExpressions != null) {
 			expressions = argumentExpressions;
-		}
-		else {
+		} else {
 			if (argumentField != null) {
 				expressions = new Expression[]{
 						new FieldAccess(

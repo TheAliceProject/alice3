@@ -101,8 +101,7 @@ public enum TraditionalStyle implements Style {
 					return portion;
 				}
 			}
-		}
-		else {
+		} else {
 			return 1;
 		}
 	}

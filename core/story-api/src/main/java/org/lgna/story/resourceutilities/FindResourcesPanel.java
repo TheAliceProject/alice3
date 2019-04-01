@@ -401,9 +401,7 @@ public class FindResourcesPanel extends JPanel {
 			this.statusLabel.setForeground( Color.BLACK );
 			this.statusLabel.setText( "Found gallery at '" + this.galleryDir.getAbsolutePath() + "'" );
 			this.okayButton.setEnabled( true );
-		}
-		else
-		{
+		} else {
 			this.statusLabel.setForeground( Color.RED );
 			this.statusLabel.setText( "Cannot find gallery at '" + this.installDirectoryField.getText() + "'" );
 			this.okayButton.setEnabled( false );

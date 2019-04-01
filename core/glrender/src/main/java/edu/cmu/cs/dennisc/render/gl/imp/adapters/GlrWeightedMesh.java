@@ -48,8 +48,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
-public class GlrWeightedMesh<E extends WeightedMesh> extends GlrMesh<E>
-{
+public class GlrWeightedMesh<E extends WeightedMesh> extends GlrMesh<E> {
 
 	@Override
 	protected void propertyChanged( InstanceProperty<?> property ) {
@@ -58,24 +57,20 @@ public class GlrWeightedMesh<E extends WeightedMesh> extends GlrMesh<E>
 				( property == owner.textCoordBuffer ) ||
 				( property == owner.indexBuffer ) ||
 				( property == owner.weightInfo ) ||
-				( property == owner.skeleton ) )
-		{
+				( property == owner.skeleton ) ) {
 			//pass
-		}
-		else {
+		} else {
 			super.propertyChanged( property );
 		}
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType )
-	{
+	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
 		throw new UnsupportedOperationException( "WeightedMeshAdapters cannot be used to render WeightedMeshes. See SkeletonVisualAdapter." );
 	}
 
 	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired )
-	{
+	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
 		throw new UnsupportedOperationException( "WeightedMeshAdapters cannot be used to pisk WeightedMeshes. See SkeletonVisualAdapter." );
 	}
 

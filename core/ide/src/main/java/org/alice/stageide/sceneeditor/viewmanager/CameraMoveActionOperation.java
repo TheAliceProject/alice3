@@ -94,8 +94,7 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 		this.toMoveToName = toMoveToName;
 		if( this.toMoveToImp != null ) {
 			this.imageIcon.setRightImage( icon );
-		}
-		else {
+		} else {
 			this.imageIcon.setRightImage( null );
 		}
 	}
@@ -105,16 +104,13 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 		this.toMoveName = toMoveName;
 		if( this.toMoveImp != null ) {
 			this.imageIcon.setLeftImage( icon );
-		}
-		else {
+		} else {
 			this.imageIcon.setLeftImage( null );
 		}
 	}
 
-	private void updateBasedOnSettings()
-	{
-		if( ( this.toMoveImp != null ) && ( this.toMoveToImp != null ) )
-		{
+	private void updateBasedOnSettings() {
+		if( ( this.toMoveImp != null ) && ( this.toMoveToImp != null ) ) {
 			String unformattedTooltipText = this.findLocalizedText( "tooltip" );
 			MessageFormat formatter = new MessageFormat( "" );
 			formatter.setLocale( JComponent.getDefaultLocale() );
@@ -122,9 +118,7 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 			String tooltipText = formatter.format( new Object[] { this.toMoveName, this.toMoveToName } );
 			this.setToolTipText( tooltipText );
 			this.setEnabled( true );
-		}
-		else
-		{
+		} else {
 			this.setToolTipText( this.findLocalizedText( "disabledTooltip" ) );
 			this.setEnabled( false );
 		}
@@ -140,27 +134,20 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 		return this.camera;
 	}
 
-	public void setMarkerField( UserField markerField )
-	{
-		if( ( markerField == null ) || markerField.getValueType().isAssignableTo( CameraMarker.class ) )
-		{
+	public void setMarkerField( UserField markerField ) {
+		if( ( markerField == null ) || markerField.getValueType().isAssignableTo( CameraMarker.class ) ) {
 			this.markerField = markerField;
-		}
-		else
-		{
+		} else {
 			this.markerField = null;
 		}
 		updateMoveFields( this.markerField, this.cameraMarker );
 		this.updateBasedOnSettings();
 	}
 
-	public void setCameraMarker( CameraMarkerImp cameraMarker )
-	{
-		if( ( cameraMarker != null ) && ( cameraMarker instanceof PerspectiveCameraMarkerImp ) )
-		{
+	public void setCameraMarker( CameraMarkerImp cameraMarker ) {
+		if( ( cameraMarker != null ) && ( cameraMarker instanceof PerspectiveCameraMarkerImp ) ) {
 			this.cameraMarker = cameraMarker;
-		}
-		else {
+		} else {
 			this.cameraMarker = null;
 		}
 		updateMoveFields( this.markerField, this.cameraMarker );

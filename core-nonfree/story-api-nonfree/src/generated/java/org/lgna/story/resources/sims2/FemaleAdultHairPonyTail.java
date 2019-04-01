@@ -51,14 +51,12 @@ public enum FemaleAdultHairPonyTail implements FemaleAdultHair, FemaleElderHair 
 	GREY;
 
 	@Override
-	public Boolean hasHair()
-	{
+	public Boolean hasHair() {
 		return true;
 	}
 
 	@Override
-	public Boolean hasHat()
-	{
+	public Boolean hasHat() {
 		return false;
 	}
 }

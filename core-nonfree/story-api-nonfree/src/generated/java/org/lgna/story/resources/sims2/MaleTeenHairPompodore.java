@@ -50,14 +50,12 @@ public enum MaleTeenHairPompodore implements MaleTeenHair {
 	BLACK;
 
 	@Override
-	public Boolean hasHair()
-	{
+	public Boolean hasHair() {
 		return true;
 	}
 
 	@Override
-	public Boolean hasHat()
-	{
+	public Boolean hasHat() {
 		return false;
 	}
 }

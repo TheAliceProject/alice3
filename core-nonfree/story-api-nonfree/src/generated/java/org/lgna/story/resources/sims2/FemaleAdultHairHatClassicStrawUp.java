@@ -56,14 +56,12 @@ public enum FemaleAdultHairHatClassicStrawUp implements FemaleAdultHair, FemaleE
 	RED_BLACK_RIBBON;
 
 	@Override
-	public Boolean hasHair()
-	{
+	public Boolean hasHair() {
 		return true;
 	}
 
 	@Override
-	public Boolean hasHat()
-	{
+	public Boolean hasHat() {
 		return true;
 	}
 }

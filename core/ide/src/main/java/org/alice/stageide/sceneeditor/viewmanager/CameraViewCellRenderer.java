@@ -78,15 +78,12 @@ public class CameraViewCellRenderer extends ListCellRenderer<View> {
 		} else {
 			rv.setBorder( emptyBorder );
 		}
-		if( isSelected )
-		{
+		if( isSelected ) {
 			rv.setOpaque( true );
 			rv.setBackground( new Color( 57, 105, 138 ) );
 			rv.setForeground( Color.WHITE );
 			rv.setIcon( MarkerUtilities.getHighlightedIconForCameraMarkerImp( value ) );
-		}
-		else
-		{
+		} else {
 			rv.setOpaque( false );
 			rv.setForeground( Color.BLACK );
 			rv.setIcon( MarkerUtilities.getIconForCameraMarkerImp( value ) );

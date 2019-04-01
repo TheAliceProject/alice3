@@ -69,8 +69,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-public class BasicTreeViewer extends JPanel implements TreeSelectionListener
-{
+public class BasicTreeViewer extends JPanel implements TreeSelectionListener {
 	protected JPanel mainPanel;
 	protected JPanel infoPanel;
 	protected DefaultTreeModel treeModel;
@@ -109,13 +108,11 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 	protected JLabel isShowingLabel;
 	protected JLabel scaleLabel;
 
-	public BasicTreeViewer( BasicTreeNode treeRoot )
-	{
+	public BasicTreeViewer( BasicTreeNode treeRoot ) {
 		this( treeRoot, null );
 	}
 
-	public BasicTreeViewer( BasicTreeNode treeRoot, BasicTreeNodeViewerPanel parentPanel )
-	{
+	public BasicTreeViewer( BasicTreeNode treeRoot, BasicTreeNodeViewerPanel parentPanel ) {
 		super();
 		this.parentPanel = parentPanel;
 		this.timeStamp = new Date( System.currentTimeMillis() );
@@ -139,13 +136,10 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 		this.parentInfoPanel.setLayout( new BoxLayout( this.parentInfoPanel, BoxLayout.X_AXIS ) );
 		this.parentInfoPanel.setBorder( createTitledBorder( "Parent" ) );
 		this.goToParentButton = new JButton( "Go to parent" );
-		this.goToParentButton.addActionListener( new ActionListener()
-		{
+		this.goToParentButton.addActionListener( new ActionListener() {
 			@Override
-			public void actionPerformed( ActionEvent e )
-			{
-				if( parentHashCode != -1 )
-				{
+			public void actionPerformed( ActionEvent e ) {
+				if( parentHashCode != -1 ) {
 					setSelectedNode( parentHashCode, true );
 				}
 
@@ -219,13 +213,10 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 		this.virtualParentPanel.setBorder( createTitledBorder( "Virtual Parent" ) );
 		this.virtualParentNameLabel = new JLabel( "NO VIRTUAL PARENT" );
 		this.goToVirtualParentButton = new JButton( "Go to parent" );
-		this.goToVirtualParentButton.addActionListener( new ActionListener()
-		{
+		this.goToVirtualParentButton.addActionListener( new ActionListener() {
 			@Override
-			public void actionPerformed( ActionEvent e )
-			{
-				if( virtualParentHashCode != -1 )
-				{
+			public void actionPerformed( ActionEvent e ) {
+				if( virtualParentHashCode != -1 ) {
 					setSelectedNode( virtualParentHashCode, true );
 				}
 
@@ -258,21 +249,16 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 
 	}
 
-	protected void setData( BasicTreeNode node )
-	{
-		if( node.name == null )
-		{
+	protected void setData( BasicTreeNode node ) {
+		if( node.name == null ) {
 			this.nameLabel.setText( "<NO NAME>" );
-		}
-		else
-		{
+		} else {
 			this.nameLabel.setText( "'" + node.name + "'" );
 		}
 		this.classLabel.setText( node.className );
 		this.extrasPanel.removeAll();
 		this.removeAll();
-		if( node.hasExtras )
-		{
+		if( node.hasExtras ) {
 			this.infoPanel.add( this.extrasPanel, new GridBagConstraints(
 					1, // gridX
 					0, // gridY
@@ -287,22 +273,17 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 					0 ) // ipadY
 			);
 			String colorString = "NO COLOR";
-			if( node.color != null )
-			{
+			if( node.color != null ) {
 				colorString = String.format( "%.2f, %.2f, %.2f, %.2f", node.color.red, node.color.green, node.color.blue, node.color.alpha );
 				Color backgroundColor = new Color( (int)( node.color.red * 255 ), (int)( node.color.green * 255 ), (int)( node.color.blue * 255 ) );
 				this.colorLabel.setBackground( backgroundColor );
 				this.colorLabel.setOpaque( true );
-			}
-			else
-			{
+			} else {
 				this.colorLabel.setOpaque( false );
 			}
 			this.colorLabel.setText( colorString );
 			this.colorLabel.revalidate();
-		}
-		else if( this.extrasPanel.getParent() != null )
-		{
+		} else if( this.extrasPanel.getParent() != null ) {
 			this.infoPanel.remove( this.extrasPanel );
 		}
 
@@ -320,26 +301,21 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 				0 ) // ipadY
 		);
 		this.virtualParentHashCode = -1;
-		if( node instanceof SceneGraphTreeNode )
-		{
+		if( node instanceof SceneGraphTreeNode ) {
 			SceneGraphTreeNode sgNode = (SceneGraphTreeNode)node;
 			String positionString = "NO POSITION";
-			if( sgNode.absoluteTransform != null )
-			{
+			if( sgNode.absoluteTransform != null ) {
 				positionString = String.format( "[%.3f, %.3f, %.3f]", sgNode.absoluteTransform.translation.x, sgNode.absoluteTransform.translation.y, sgNode.absoluteTransform.translation.z ).toString();
 			}
 			this.transformLabel.setText( positionString );
-			if( sgNode.stackTrace != null )
-			{
+			if( sgNode.stackTrace != null ) {
 				StringBuilder sb = new StringBuilder();
-				for( StackTraceElement stack : sgNode.stackTrace )
-				{
+				for( StackTraceElement stack : sgNode.stackTrace ) {
 					sb.append( stack.toString() + "\n" );
 				}
 				this.stackTracePanel.setText( sb.toString() );
 				JScrollBar verticalScrollBar = this.stackTraceScrollPane.getVerticalScrollBar();
-				if( verticalScrollBar != null )
-				{
+				if( verticalScrollBar != null ) {
 					verticalScrollBar.setValue( verticalScrollBar.getMinimum() );
 				}
 			}
@@ -347,8 +323,7 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 			this.parentHashCode = sgNode.parentHash;
 			this.goToParentButton.setEnabled( ( this.parentHashCode != -1 ) );
 			this.virtualParentHashCode = sgNode.virtualParentHashCode;
-			if( sgNode.virtualParentHashCode != -1 )
-			{
+			if( sgNode.virtualParentHashCode != -1 ) {
 				this.virtualParentNameLabel.setText( sgNode.virtualParentName );
 				this.infoPanel.add( this.virtualParentPanel, new GridBagConstraints(
 						0, // gridX
@@ -363,20 +338,14 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 						0, // ipadX
 						0 ) // ipadY
 				);
-			}
-			else if( this.virtualParentPanel.getParent() != null )
-			{
+			} else if( this.virtualParentPanel.getParent() != null ) {
 				this.infoPanel.remove( this.virtualParentPanel );
 			}
 
-			if( sgNode.hasExtras )
-			{
-				if( sgNode.isShowing )
-				{
+			if( sgNode.hasExtras ) {
+				if( sgNode.isShowing ) {
 					this.isShowingLabel.setText( "SHOWING" );
-				}
-				else
-				{
+				} else {
 					this.isShowingLabel.setText( "NOT SHOWING" );
 				}
 				String opacityString = String.format( "%.2f", sgNode.opacity );
@@ -464,18 +433,14 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 					0, // ipadX
 					0 ) // ipadY
 			);
-		}
-		else
-		{
+		} else {
 			this.add( this.mainPanel, BorderLayout.CENTER );
-			if( this.transformLabel.getParent() != null )
-			{
+			if( this.transformLabel.getParent() != null ) {
 				this.transformLabel.getParent().remove( this.transformLabel );
 			}
 		}
 
-		if( this.virtualParentHashCode != -1 )
-		{
+		if( this.virtualParentHashCode != -1 ) {
 			this.infoPanel.add( this.virtualParentPanel, new GridBagConstraints(
 					0, // gridX
 					3, // gridY
@@ -489,51 +454,42 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 					0, // ipadX
 					0 ) // ipadY
 			);
-		}
-		else if( this.virtualParentPanel.getParent() != null )
-		{
+		} else if( this.virtualParentPanel.getParent() != null ) {
 			this.infoPanel.remove( this.virtualParentPanel );
 		}
 
 		this.revalidate();
 	}
 
-	public void setSelectedNode( int hashCode, boolean listenToSelection )
-	{
+	public void setSelectedNode( int hashCode, boolean listenToSelection ) {
 		BasicTreeNode rootNode = (BasicTreeNode)this.treeModel.getRoot();
 		BasicTreeNode foundNode = rootNode.getMatchingNode( hashCode );
-		if( foundNode != null )
-		{
+		if( foundNode != null ) {
 			this.listenToSelection = listenToSelection;
 			this.tree.setSelectionPath( new TreePath( foundNode.getPath() ) );
 			this.listenToSelection = true;
 		}
 	}
 
-	public void setSelectedNode( BasicTreeNode node, boolean listenToSelection )
-	{
+	public void setSelectedNode( BasicTreeNode node, boolean listenToSelection ) {
 		BasicTreeNode rootNode = (BasicTreeNode)this.treeModel.getRoot();
 		BasicTreeNode foundNode = rootNode.getMatchingNode( node );
-		if( foundNode != null )
-		{
+		if( foundNode != null ) {
 			this.listenToSelection = listenToSelection;
 			this.tree.setSelectionPath( new TreePath( foundNode.getPath() ) );
 			this.listenToSelection = true;
 		}
 	}
 
-	public void setRootNode( BasicTreeNode root )
-	{
+	public void setRootNode( BasicTreeNode root ) {
 		this.treeModel.setRoot( root );
 	}
 
-	public BasicTreeNode getRootNode()
-	{
+	public BasicTreeNode getRootNode() {
 		return (BasicTreeNode)this.treeModel.getRoot();
 	}
 
-	protected TitledBorder createTitledBorder( String title )
-	{
+	protected TitledBorder createTitledBorder( String title ) {
 		TitledBorder border = new TitledBorder( title );
 		border.setTitleColor( Color.DARK_GRAY );
 		border.setTitleFont( border.getTitleFont().deriveFont( Font.ITALIC, 10 ) );
@@ -541,18 +497,14 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 	}
 
 	@Override
-	public void valueChanged( TreeSelectionEvent e )
-	{
-		if( e.getNewLeadSelectionPath() != null )
-		{
+	public void valueChanged( TreeSelectionEvent e ) {
+		if( e.getNewLeadSelectionPath() != null ) {
 			Object selectedObject = e.getNewLeadSelectionPath().getLastPathComponent();
-			if( selectedObject instanceof BasicTreeNode )
-			{
+			if( selectedObject instanceof BasicTreeNode ) {
 				BasicTreeNode sgNode = (BasicTreeNode)selectedObject;
 				setData( sgNode );
 				this.tree.scrollPathToVisible( e.getNewLeadSelectionPath() );
-				if( this.listenToSelection && ( this.parentPanel != null ) && this.parentPanel.shouldMirrorSelection() )
-				{
+				if( this.listenToSelection && ( this.parentPanel != null ) && this.parentPanel.shouldMirrorSelection() ) {
 					this.parentPanel.setSelectionOnOtherTree( this, sgNode );
 				}
 			}

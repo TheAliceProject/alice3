@@ -20,9 +20,7 @@ public class EnumsToTextureResources {
 		try
 		{
 
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
     }

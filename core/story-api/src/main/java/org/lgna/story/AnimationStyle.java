@@ -78,8 +78,7 @@ public enum AnimationStyle implements
 		//Torus
 		SetInnerRadius.Detail, SetOuterRadius.Detail,
 		//Cone
-		SetBaseRadius.Detail, SetLength.Detail
-{
+		SetBaseRadius.Detail, SetLength.Detail {
 	BEGIN_AND_END_ABRUPTLY( TraditionalStyle.BEGIN_AND_END_ABRUPTLY ),
 	BEGIN_GENTLY_AND_END_ABRUPTLY( TraditionalStyle.BEGIN_GENTLY_AND_END_ABRUPTLY ),
 	BEGIN_ABRUPTLY_AND_END_GENTLY( TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ),

@@ -119,10 +119,8 @@ public class Pose {
 		return new Point3(x, y, z);
 	}
 
-	public static Pose createPoseFromXMLElement( Element poseElement )
-	{
-		if( poseElement != null )
-		{
+	public static Pose createPoseFromXMLElement( Element poseElement ) {
+		if( poseElement != null ) {
 			String name = poseElement.getAttribute("name");
 			Map<Short, AffineMatrix4x4> poseData = new HashMap<Short, AffineMatrix4x4>();
 
@@ -188,8 +186,7 @@ public class Pose {
         		poseIterator.remove();
 
         		System.out.println("REMOVING "+poseEntry.getKey());
-        	}
-        	else {
+        	} else {
         		System.out.println("SAVING "+poseEntry.getKey());
         	}
         }

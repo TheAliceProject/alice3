@@ -92,8 +92,7 @@ public class ArrayUtilities {
 				index += array.length;
 			}
 			return rv;
-		}
-		else {
+		} else {
 			return null;
 		}
 

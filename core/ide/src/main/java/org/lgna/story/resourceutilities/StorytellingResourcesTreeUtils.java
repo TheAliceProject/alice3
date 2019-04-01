@@ -103,8 +103,7 @@ public enum StorytellingResourcesTreeUtils {
 			}
 			if ( parent != null ) {
 				return parent.getResourceJavaType();
-			}
-			else {
+			} else {
 				return null;
 			}
 		} else {

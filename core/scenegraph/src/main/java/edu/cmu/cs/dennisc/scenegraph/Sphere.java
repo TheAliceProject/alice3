@@ -66,10 +66,11 @@ public class Sphere extends Shape {
 	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 0.5 ) {
 		@Override
 		public void setValue( Double value ) {
-			if (value >= 0.0)
+			if (value >= 0.0) {
 				super.setValue( value );
-			else
+			} else {
 				Logger.outln("Attempt to set sphere radius to " + value + " ignored.");
+			}
 		}
 	};
 }

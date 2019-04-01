@@ -241,8 +241,7 @@ public class IconFactoryManager {
 		public IconFactory createIconFactory() {
 			if (instance instanceof ModelStructure) {
 				return getIconFactoryForModelStructure((ModelStructure)instance);
-			}
-			else {
+			} else {
 				return NebulousIde.nonfree.createIconFactory(this.instance);
 			}
 		}

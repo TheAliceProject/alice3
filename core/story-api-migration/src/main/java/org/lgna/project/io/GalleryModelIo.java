@@ -66,8 +66,7 @@ public class GalleryModelIo extends DataSourceIo {
         SkeletonVisual sv = null;
         try {
             sv = colladaImporter.loadSkeletonVisual();
-        }
-        catch (ModelLoadingException e) {
+        } catch (ModelLoadingException e) {
             e.printStackTrace();
             System.exit(1);
         }
@@ -80,8 +79,7 @@ public class GalleryModelIo extends DataSourceIo {
         try {
             modelIo.writeModel(new File("/Users/dculyba/Alice3/MyGallery"));
 //            modelIo.writeModel(new File("C:\\Users\\dculyba\\Documents\\Alice3\\MyGallery"));
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

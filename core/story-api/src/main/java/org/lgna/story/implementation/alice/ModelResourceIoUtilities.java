@@ -60,8 +60,7 @@ public class ModelResourceIoUtilities {
 
 		if( ( RESOURCE_SUB_DIR == null ) || ( RESOURCE_SUB_DIR.length() == 0 ) ) {
 			return classDir;
-		}
-		else {
+		} else {
 			return RESOURCE_SUB_DIR + "/" + classDir;
 		}
 	}
