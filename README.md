@@ -6,27 +6,34 @@
 
 Download and install the following build tools
 * J2SE 1.8 JDK
-  * Set JAVA_HOME accordingly, and add $JAVA_HOME/bin to your PATH
-* Maven
+  * Set $JAVA_HOME accordingly, and add $JAVA_HOME/bin to your PATH
+* [Apache Maven](https://maven.apache.org/install.html)
 * git
-* Install4J 7
-  * Only required to build the installers
+* [git-lfs](https://help.github.com/en/articles/installing-git-large-file-storage)
+* [Install4J 7](https://www.ej-technologies.com/products/install4j/overview.html) (Only required to build the installers)
 
 ---
 
 Clone the Alice 3 repository into a local directory, (`${alice3}`)
 
     cd ${alice3}
-    git clone https://github.com/TheAliceProject/alice3.git
+    git clone https://github.com/TheAliceProject/alice3.git --recursive
+    
+Alice 3 uses a submodule for the Tweedle language, the internal representation of Alice code.
+If you do not use the `--recursive` flag above it can be pulled in explicitly.
 
-Compile Alice to run locally:
+    git submodule init
+    git submodule update
 
-    cd ${alice3}
-    mvn compile
+Compile and jar the Alice code. This will also build the NetBeans plugin:
 
-Launch Alice
+    mvn -Dinstall4j.skip install
 
-    cd alice/alice-ide
+## Executing, testing, and building
+
+Launch the Alice IDE
+
+    cd alice-ide
     mvn exec:java -Dentry-point
 
 Run unit tests
@@ -34,30 +41,28 @@ Run unit tests
     cd ${alice3}
     mvn test
 
-Build Alice jars, NetBeans plugin, and installers (the last rely on Install4J):
+Build the Alice installers, which  requires Install4J 7:
 
     cd ${alice3}
     mvn install
 
-The Alice installers are built using Install4J, which requires a license.
-You may skip this build step.
+## Working without the Sims*
+
+The compile, package, and install phases can all be limited to not include the Sims assets.
+To do that disable the `includeSims` maven profile.
+
+It is a good idea to `clean` if you have previously made a full build.
+This may prevent leftover Sims artifacts getting bundled in.
 
     cd ${alice3}
-    mvn -Dinstall4j.skip install
-
-## Working without the Sims
-
-The compile and install phases can all be limited to not include the Sims assets.
-To do that disable the `includeSims` maven profile. It is a good idea to apply `clean`
-if you have previously made a full build to prevent leftover Sims artifacts getting bundled in.
-
-    cd ${alice3}
-    mvn -DincludeSims=false clean compile
+    mvn -DincludeSims=false -Dinstall4j.skip clean package
 Or:
 
     cd ${alice3}
     mvn -DincludeSims=false clean install
 
+
+**This is still experimental, so there may be errors.*
 
 ## How to contribute
 
