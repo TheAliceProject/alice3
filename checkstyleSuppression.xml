@@ -8,4 +8,5 @@
             files="ProjectMigrationManager.java"/>
   <suppress files="core/story-api/src/main/java/Jama/*" checks=".*"/>
   <suppress files="external[/\\]" checks=".*"/>
+  <suppress files="target[/\\]" checks=".*"/>
 </suppressions>
