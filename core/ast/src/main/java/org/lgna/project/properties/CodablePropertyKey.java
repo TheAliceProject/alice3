@@ -53,21 +53,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CodablePropertyKey<T extends BinaryEncodableAndDecodable> extends PropertyKey<T> {
-	public static <T extends BinaryEncodableAndDecodable> CodablePropertyKey<T> createInstance( UUID id, String repr ) {
-		return new CodablePropertyKey<T>( id, repr );
-	}
+  public static <T extends BinaryEncodableAndDecodable> CodablePropertyKey<T> createInstance(UUID id, String repr) {
+    return new CodablePropertyKey<T>(id, repr);
+  }
 
-	private CodablePropertyKey( UUID id, String repr ) {
-		super( id, repr );
-	}
+  private CodablePropertyKey(UUID id, String repr) {
+    super(id, repr);
+  }
 
-	@Override
-	protected T decodeValue( BinaryDecoder binaryDecoder ) {
-		return (T)binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
+  @Override
+  protected T decodeValue(BinaryDecoder binaryDecoder) {
+    return (T) binaryDecoder.decodeBinaryEncodableAndDecodable();
+  }
 
-	@Override
-	protected void encodeValue( BinaryEncoder binaryEncoder, T value ) {
-		binaryEncoder.encode( value );
-	}
+  @Override
+  protected void encodeValue(BinaryEncoder binaryEncoder, T value) {
+    binaryEncoder.encode(value);
+  }
 }

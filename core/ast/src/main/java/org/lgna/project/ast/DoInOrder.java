@@ -49,25 +49,26 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class DoInOrder extends AbstractStatementWithBody {
-	public DoInOrder() {
-	}
+  public DoInOrder() {
+  }
 
-	public DoInOrder( BlockStatement body ) {
-		super( body );
-	}
+  public DoInOrder(BlockStatement body) {
+    super(body);
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		localizer.appendLocalizedText( DoInOrder.class, "do in order" );
-		super.appendRepr( localizer );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    localizer.appendLocalizedText(DoInOrder.class, "do in order");
+    super.appendRepr(localizer);
+  }
 
-	@Override public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendDoInOrder(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendDoInOrder(this);
+  }
 
-	@Override
-	boolean containsAReturnForEveryPath() {
-		return isEnabled.getValue() && body.getValue().containsAReturnForEveryPath();
-	}
+  @Override
+  boolean containsAReturnForEveryPath() {
+    return isEnabled.getValue() && body.getValue().containsAReturnForEveryPath();
+  }
 }

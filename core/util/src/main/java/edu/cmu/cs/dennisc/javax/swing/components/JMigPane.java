@@ -48,25 +48,25 @@ import net.miginfocom.swing.MigLayout;
  * @author Dennis Cosgrove
  */
 public class JMigPane extends JPane {
-	private static final String DEFAULT_CONSTRAINT = "";
+  private static final String DEFAULT_CONSTRAINT = "";
 
-	public JMigPane( String layoutConstraints, String columnConstraints, String rowConstraints ) {
-		MigLayout layout = new MigLayout();
-		layout.setLayoutConstraints( layoutConstraints );
-		layout.setColumnConstraints( columnConstraints );
-		layout.setRowConstraints( rowConstraints );
-		this.setLayout( layout );
-	}
+  public JMigPane(String layoutConstraints, String columnConstraints, String rowConstraints) {
+    MigLayout layout = new MigLayout();
+    layout.setLayoutConstraints(layoutConstraints);
+    layout.setColumnConstraints(columnConstraints);
+    layout.setRowConstraints(rowConstraints);
+    this.setLayout(layout);
+  }
 
-	public JMigPane( String layoutConstraints, String columnConstraints ) {
-		this( layoutConstraints, columnConstraints, DEFAULT_CONSTRAINT );
-	}
+  public JMigPane(String layoutConstraints, String columnConstraints) {
+    this(layoutConstraints, columnConstraints, DEFAULT_CONSTRAINT);
+  }
 
-	public JMigPane( String layoutConstraints ) {
-		this( layoutConstraints, DEFAULT_CONSTRAINT );
-	}
+  public JMigPane(String layoutConstraints) {
+    this(layoutConstraints, DEFAULT_CONSTRAINT);
+  }
 
-	public JMigPane() {
-		this( DEFAULT_CONSTRAINT );
-	}
+  public JMigPane() {
+    this(DEFAULT_CONSTRAINT);
+  }
 }

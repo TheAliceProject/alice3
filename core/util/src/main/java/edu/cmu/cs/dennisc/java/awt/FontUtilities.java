@@ -54,114 +54,114 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class FontUtilities {
-	private FontUtilities() {
-		throw new AssertionError();
-	}
+  private FontUtilities() {
+    throw new AssertionError();
+  }
 
-	public static Font deriveFont( Font font, java.awt.font.TextAttribute attribute, Object value ) {
-		if( font != null ) {
-			Map<java.awt.font.TextAttribute, Object> map = Maps.newHashMap();
-			map.put( attribute, value );
-			return font.deriveFont( map );
-		} else {
-			return null;
-		}
-	}
+  public static Font deriveFont(Font font, java.awt.font.TextAttribute attribute, Object value) {
+    if (font != null) {
+      Map<java.awt.font.TextAttribute, Object> map = Maps.newHashMap();
+      map.put(attribute, value);
+      return font.deriveFont(map);
+    } else {
+      return null;
+    }
+  }
 
-	public static Font deriveFont( Font font, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB ) {
-		if( font != null ) {
-			Map<java.awt.font.TextAttribute, Object> map = Maps.newHashMap();
-			map.put( attributeA, valueA );
-			map.put( attributeB, valueB );
-			return font.deriveFont( map );
-		} else {
-			return null;
-		}
-	}
+  public static Font deriveFont(Font font, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB) {
+    if (font != null) {
+      Map<java.awt.font.TextAttribute, Object> map = Maps.newHashMap();
+      map.put(attributeA, valueA);
+      map.put(attributeB, valueB);
+      return font.deriveFont(map);
+    } else {
+      return null;
+    }
+  }
 
-	public static Font deriveFont( Font font, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB, java.awt.font.TextAttribute attributeC, Object valueC ) {
-		if( font != null ) {
-			Map<java.awt.font.TextAttribute, Object> map = Maps.newHashMap();
-			map.put( attributeA, valueA );
-			map.put( attributeB, valueB );
-			map.put( attributeC, valueC );
-			return font.deriveFont( map );
-		} else {
-			return null;
-		}
-	}
+  public static Font deriveFont(Font font, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB, java.awt.font.TextAttribute attributeC, Object valueC) {
+    if (font != null) {
+      Map<java.awt.font.TextAttribute, Object> map = Maps.newHashMap();
+      map.put(attributeA, valueA);
+      map.put(attributeB, valueB);
+      map.put(attributeC, valueC);
+      return font.deriveFont(map);
+    } else {
+      return null;
+    }
+  }
 
-	public static Font deriveFont( Font font, TextAttribute<?>... textAttributes ) {
-		if( font != null ) {
-			Map<java.awt.font.TextAttribute, Object> map = new HashMap<java.awt.font.TextAttribute, Object>();
-			for( TextAttribute<?> textAttribute : textAttributes ) {
-				map.put( textAttribute.getKey(), textAttribute.getValue() );
-			}
-			return font.deriveFont( map );
-		} else {
-			return null;
-		}
-	}
+  public static Font deriveFont(Font font, TextAttribute<?>... textAttributes) {
+    if (font != null) {
+      Map<java.awt.font.TextAttribute, Object> map = new HashMap<java.awt.font.TextAttribute, Object>();
+      for (TextAttribute<?> textAttribute : textAttributes) {
+        map.put(textAttribute.getKey(), textAttribute.getValue());
+      }
+      return font.deriveFont(map);
+    } else {
+      return null;
+    }
+  }
 
-	public static Font scaleFont( Font font, float scaleFactor ) {
-		if( font != null ) {
-			if( scaleFactor != 1.0f ) {
-				return font.deriveFont( font.getSize2D() * scaleFactor );
-			} else {
-				return font;
-			}
-		} else {
-			return null;
-		}
-	}
+  public static Font scaleFont(Font font, float scaleFactor) {
+    if (font != null) {
+      if (scaleFactor != 1.0f) {
+        return font.deriveFont(font.getSize2D() * scaleFactor);
+      } else {
+        return font;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public static Font deriveFont( Component component, Map<? extends java.awt.font.TextAttribute, Object> map ) {
-		return component.getFont().deriveFont( map );
-	}
+  public static Font deriveFont(Component component, Map<? extends java.awt.font.TextAttribute, Object> map) {
+    return component.getFont().deriveFont(map);
+  }
 
-	public static Font deriveFont( Component component, java.awt.font.TextAttribute attribute, Object value ) {
-		return FontUtilities.deriveFont( component.getFont(), attribute, value );
-	}
+  public static Font deriveFont(Component component, java.awt.font.TextAttribute attribute, Object value) {
+    return FontUtilities.deriveFont(component.getFont(), attribute, value);
+  }
 
-	public static Font deriveFont( Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB ) {
-		return FontUtilities.deriveFont( component.getFont(), attributeA, valueA, attributeB, valueB );
-	}
+  public static Font deriveFont(Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB) {
+    return FontUtilities.deriveFont(component.getFont(), attributeA, valueA, attributeB, valueB);
+  }
 
-	public static Font deriveFont( Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB, java.awt.font.TextAttribute attributeC, Object valueC ) {
-		return FontUtilities.deriveFont( component.getFont(), attributeA, valueA, attributeB, valueB, attributeC, valueC );
-	}
+  public static Font deriveFont(Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB, java.awt.font.TextAttribute attributeC, Object valueC) {
+    return FontUtilities.deriveFont(component.getFont(), attributeA, valueA, attributeB, valueB, attributeC, valueC);
+  }
 
-	public static Font deriveFont( Component component, TextAttribute<?>... textAttributes ) {
-		return FontUtilities.deriveFont( component.getFont(), textAttributes );
-	}
+  public static Font deriveFont(Component component, TextAttribute<?>... textAttributes) {
+    return FontUtilities.deriveFont(component.getFont(), textAttributes);
+  }
 
-	public static Font scaleFont( Component component, float scaleFactor ) {
-		return FontUtilities.scaleFont( component.getFont(), scaleFactor );
-	}
+  public static Font scaleFont(Component component, float scaleFactor) {
+    return FontUtilities.scaleFont(component.getFont(), scaleFactor);
+  }
 
-	public static void setFontToDerivedFont( Component component, Map<? extends java.awt.font.TextAttribute, Object> map ) {
-		component.setFont( deriveFont( component, map ) );
-	}
+  public static void setFontToDerivedFont(Component component, Map<? extends java.awt.font.TextAttribute, Object> map) {
+    component.setFont(deriveFont(component, map));
+  }
 
-	public static void setFontToDerivedFont( Component component, java.awt.font.TextAttribute attribute, Object value ) {
-		component.setFont( deriveFont( component, attribute, value ) );
-	}
+  public static void setFontToDerivedFont(Component component, java.awt.font.TextAttribute attribute, Object value) {
+    component.setFont(deriveFont(component, attribute, value));
+  }
 
-	public static void setFontToDerivedFont( Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB ) {
-		component.setFont( deriveFont( component, attributeA, valueA, attributeB, valueB ) );
-	}
+  public static void setFontToDerivedFont(Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB) {
+    component.setFont(deriveFont(component, attributeA, valueA, attributeB, valueB));
+  }
 
-	public static void setFontToDerivedFont( Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB, java.awt.font.TextAttribute attributeC, Object valueC ) {
-		component.setFont( deriveFont( component, attributeA, valueA, attributeB, valueB, attributeC, valueC ) );
-	}
+  public static void setFontToDerivedFont(Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB, java.awt.font.TextAttribute attributeC, Object valueC) {
+    component.setFont(deriveFont(component, attributeA, valueA, attributeB, valueB, attributeC, valueC));
+  }
 
-	public static void setFontToDerivedFont( Component component, TextAttribute<?>... textAttributes ) {
-		component.setFont( deriveFont( component, textAttributes ) );
-	}
+  public static void setFontToDerivedFont(Component component, TextAttribute<?>... textAttributes) {
+    component.setFont(deriveFont(component, textAttributes));
+  }
 
-	public static void setFontToScaledFont( Component component, float scaleFactor ) {
-		if( scaleFactor != 1.0f ) {
-			component.setFont( scaleFont( component, scaleFactor ) );
-		}
-	}
+  public static void setFontToScaledFont(Component component, float scaleFactor) {
+    if (scaleFactor != 1.0f) {
+      component.setFont(scaleFont(component, scaleFactor));
+    }
+  }
 }

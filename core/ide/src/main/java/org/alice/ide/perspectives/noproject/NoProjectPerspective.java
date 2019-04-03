@@ -54,31 +54,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class NoProjectPerspective extends AbstractPerspective {
-	public NoProjectPerspective( ProjectDocumentFrame projectDocumentFrame ) {
-		super( UUID.fromString( "b907ab09-7537-4e93-9999-f3a55b561a0c" ) );
+  public NoProjectPerspective(ProjectDocumentFrame projectDocumentFrame) {
+    super(UUID.fromString("b907ab09-7537-4e93-9999-f3a55b561a0c"));
 
-		menuBarComposite = new org.lgna.croquet.MenuBarComposite( UUID.fromString( "fe8aa489-bee2-4f68-be47-881d5657bab7" ) );
-		menuBarComposite.addItem( new FileMenuModel( projectDocumentFrame ) );
-		menuBarComposite.addItem( IdeApp.INSTANCE.getHelpMenu() );
+    menuBarComposite = new org.lgna.croquet.MenuBarComposite(UUID.fromString("fe8aa489-bee2-4f68-be47-881d5657bab7"));
+    menuBarComposite.addItem(new FileMenuModel(projectDocumentFrame));
+    menuBarComposite.addItem(IdeApp.INSTANCE.getHelpMenu());
 
-		this.mainComposite = new MainComposite( projectDocumentFrame );
-	}
+    this.mainComposite = new MainComposite(projectDocumentFrame);
+  }
 
-	@Override
-	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
-		return this.menuBarComposite;
-	}
+  @Override
+  public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
+    return this.menuBarComposite;
+  }
 
-	@Override
-	public ToolBarComposite getToolBarComposite() {
-		return null;
-	}
+  @Override
+  public ToolBarComposite getToolBarComposite() {
+    return null;
+  }
 
-	@Override
-	public Composite<?> getMainComposite() {
-		return this.mainComposite;
-	}
+  @Override
+  public Composite<?> getMainComposite() {
+    return this.mainComposite;
+  }
 
-	private final MainComposite mainComposite;
-	private final org.lgna.croquet.MenuBarComposite menuBarComposite;
+  private final MainComposite mainComposite;
+  private final org.lgna.croquet.MenuBarComposite menuBarComposite;
 }

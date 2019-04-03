@@ -58,51 +58,51 @@ import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
  * @author Dennis Cosgrove
  */
 public class GlrPivotFigure extends GlrAdornment<PivotFigure> {
-	private static final float FULL = 1.0f;
-	private static final float ZERO = 0.0f;
+  private static final float FULL = 1.0f;
+  private static final float ZERO = 0.0f;
 
-	private static void glPivotFigure( GL2 gl, DoubleBuffer ltParent, GlrComposite<?> glrParent ) {
-		gl.glPushMatrix();
-		try {
-			gl.glMultMatrixd( ltParent );
-			Iterable<GlrComponent<?>> glrChildren = glrParent.accessChildren();
-			synchronized( glrChildren ) {
-				for( GlrComponent<?> glrChild : glrChildren ) {
-					if( glrChild instanceof GlrTransformable<?> ) {
-						GlrTransformable<?> glrTransformable = (GlrTransformable<?>)glrChild;
-						DoubleBuffer ltChild = glrTransformable.accessLocalTransformationAsBuffer();
-						gl.glBegin( GL_LINES );
-						try {
+  private static void glPivotFigure(GL2 gl, DoubleBuffer ltParent, GlrComposite<?> glrParent) {
+    gl.glPushMatrix();
+    try {
+      gl.glMultMatrixd(ltParent);
+      Iterable<GlrComponent<?>> glrChildren = glrParent.accessChildren();
+      synchronized (glrChildren) {
+        for (GlrComponent<?> glrChild : glrChildren) {
+          if (glrChild instanceof GlrTransformable<?>) {
+            GlrTransformable<?> glrTransformable = (GlrTransformable<?>) glrChild;
+            DoubleBuffer ltChild = glrTransformable.accessLocalTransformationAsBuffer();
+            gl.glBegin(GL_LINES);
+            try {
 
-							//todo: account for global brightness
+              //todo: account for global brightness
 
-							gl.glColor3f( FULL, ZERO, ZERO );
-							gl.glVertex3d( 0, 0, 0 );
-							gl.glVertex3d( 1, 0, 0 );
-							gl.glColor3f( ZERO, FULL, ZERO );
-							gl.glVertex3d( 0, 0, 0 );
-							gl.glVertex3d( 0, 1, 0 );
-							gl.glColor3f( ZERO, ZERO, FULL );
-							gl.glVertex3d( 0, 0, 0 );
-							gl.glVertex3d( 0, 0, 1 );
-							gl.glColor3f( FULL, FULL, FULL );
-							gl.glVertex3d( 0, 0, 0 );
-							gl.glVertex3d( 0, 0, -2 );
-						} finally {
-							gl.glEnd();
-						}
-						glPivotFigure( gl, ltChild, glrTransformable );
-					}
-				}
-			}
-		} finally {
-			gl.glPopMatrix();
-		}
-	}
+              gl.glColor3f(FULL, ZERO, ZERO);
+              gl.glVertex3d(0, 0, 0);
+              gl.glVertex3d(1, 0, 0);
+              gl.glColor3f(ZERO, FULL, ZERO);
+              gl.glVertex3d(0, 0, 0);
+              gl.glVertex3d(0, 1, 0);
+              gl.glColor3f(ZERO, ZERO, FULL);
+              gl.glVertex3d(0, 0, 0);
+              gl.glVertex3d(0, 0, 1);
+              gl.glColor3f(FULL, FULL, FULL);
+              gl.glVertex3d(0, 0, 0);
+              gl.glVertex3d(0, 0, -2);
+            } finally {
+              gl.glEnd();
+            }
+            glPivotFigure(gl, ltChild, glrTransformable);
+          }
+        }
+      }
+    } finally {
+      gl.glPopMatrix();
+    }
+  }
 
-	@Override
-	protected void actuallyRender( RenderContext rc, GlrComposite<?> glrAdornmentRoot ) {
-		rc.gl.glDisable( GL_LIGHTING );
-		glPivotFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), glrAdornmentRoot );
-	}
+  @Override
+  protected void actuallyRender(RenderContext rc, GlrComposite<?> glrAdornmentRoot) {
+    rc.gl.glDisable(GL_LIGHTING);
+    glPivotFigure(rc.gl, accessAbsoluteTransformationAsBuffer(), glrAdornmentRoot);
+  }
 }

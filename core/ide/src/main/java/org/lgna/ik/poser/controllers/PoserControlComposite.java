@@ -57,35 +57,34 @@ import java.util.UUID;
  */
 public class PoserControlComposite extends AbstractPoserControlComposite<PoserControlView> {
 
-	public PoserControlComposite( AbstractPoserOrAnimatorComposite parent ) {
-		super( parent,
-				UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
-	}
+  public PoserControlComposite(AbstractPoserOrAnimatorComposite parent) {
+    super(parent, UUID.fromString("67c1692b-8fca-406a-8be3-267b1796ceb8"));
+  }
 
-	@Override
-	protected PoserControlView createView() {
-		return new PoserControlView( this );
-	}
+  @Override
+  protected PoserControlView createView() {
+    return new PoserControlView(this);
+  }
 
-	public Expression createPoseExpression() throws CannotCreateExpressionException {
-		Pose<?> pose = parent.getPose();
-		return new ExpressionCreator().createExpression( pose );
-	}
+  public Expression createPoseExpression() throws CannotCreateExpressionException {
+    Pose<?> pose = parent.getPose();
+    return new ExpressionCreator().createExpression(pose);
+  }
 
-	//
-	//	public UserField createPoseField() {
-	//		try {
-	//			Pose<?> pose = parent.getPose();
-	//			Expression rhSide = new ExpressionCreator().createExpression( pose );
-	//			UserField rv = new UserField( nameState.getValue(), JavaType.getInstance( Pose.class ), rhSide );
-	//			return rv;
-	//		} catch( CannotCreateExpressionException e ) {
-	//			throw new CancelException();
-	//		}
-	//	}
+  //
+  //  public UserField createPoseField() {
+  //    try {
+  //      Pose<?> pose = parent.getPose();
+  //      Expression rhSide = new ExpressionCreator().createExpression( pose );
+  //      UserField rv = new UserField( nameState.getValue(), JavaType.getInstance( Pose.class ), rhSide );
+  //      return rv;
+  //    } catch( CannotCreateExpressionException e ) {
+  //      throw new CancelException();
+  //    }
+  //  }
 
-	public AbstractPoserOrAnimatorComposite getParent() {
-		return parent;
-	}
+  public AbstractPoserOrAnimatorComposite getParent() {
+    return parent;
+  }
 
 }

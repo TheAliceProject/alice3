@@ -48,19 +48,19 @@ import edu.cmu.cs.dennisc.java.util.Objects;
  * @author Dennis Cosgrove
  */
 public class CharSequenceProperty extends InstanceProperty<CharSequence> {
-	public CharSequenceProperty( InstancePropertyOwner owner, CharSequence value ) {
-		super( owner, value );
-	}
+  public CharSequenceProperty(InstancePropertyOwner owner, CharSequence value) {
+    super(owner, value);
+  }
 
-	protected boolean isNullAcceptable() {
-		return false;
-	}
+  protected boolean isNullAcceptable() {
+    return false;
+  }
 
-	@Override
-	public void setValue( CharSequence value ) {
-		assert ( value != null ) || this.isNullAcceptable() : this;
-		if( Objects.notEquals( value, this.getValue() ) ) {
-			super.setValue( value );
-		}
-	}
+  @Override
+  public void setValue(CharSequence value) {
+    assert (value != null) || this.isNullAcceptable() : this;
+    if (Objects.notEquals(value, this.getValue())) {
+      super.setValue(value);
+    }
+  }
 }

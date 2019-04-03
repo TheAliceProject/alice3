@@ -45,34 +45,32 @@ package org.lgna.story;
 /**
  * @author user
  */
-public enum TextStyle implements
-		Say.Detail, Think.Detail {
-	PLAIN( java.awt.Font.PLAIN ),
-	BOLD( java.awt.Font.BOLD ),
-	ITALIC( java.awt.Font.ITALIC );
+public enum TextStyle implements Say.Detail, Think.Detail {
+  PLAIN(java.awt.Font.PLAIN), BOLD(java.awt.Font.BOLD), ITALIC(java.awt.Font.ITALIC);
 
-	private static final TextStyle DEFAULT_VALUE = TextStyle.PLAIN;
-	private int internal;
+  private static final TextStyle DEFAULT_VALUE = TextStyle.PLAIN;
+  private int internal;
 
-	TextStyle( int internal ) {
-		this.internal = internal;
-	}
+  TextStyle(int internal) {
+    this.internal = internal;
+  }
 
-	/* package-private */int getInternal() {
-		return this.internal;
-	}
+  /* package-private */int getInternal() {
+    return this.internal;
+  }
 
-	private static TextStyle getValue( Object[] details, TextStyle defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof TextStyle ) {
-				TextStyle TextStyle = (TextStyle)detail;
-				return TextStyle;
-			}
-		}
-		return defaultValue;
-	}
+  private static TextStyle getValue(Object[] details, TextStyle defaultValue) {
+    for (Object detail : details) {
+      if (detail instanceof TextStyle) {
+        TextStyle TextStyle = (TextStyle) detail;
+        return TextStyle;
+      }
+    }
+    return defaultValue;
+  }
 
-	/* package-private */static TextStyle getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
-	}
+  /* package-private */
+  static TextStyle getValue(Object[] details) {
+    return getValue(details, DEFAULT_VALUE);
+  }
 }

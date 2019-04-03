@@ -50,20 +50,20 @@ import java.util.UUID;
  *
  */
 public class BackwardCascade extends HistoryCascade {
-	private static class SingletonHolder {
-		private static BackwardCascade instance = new BackwardCascade();
-	}
+  private static class SingletonHolder {
+    private static BackwardCascade instance = new BackwardCascade();
+  }
 
-	public static BackwardCascade getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static BackwardCascade getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private BackwardCascade() {
-		super( UUID.fromString( "1608ba60-4237-4998-a482-a9f4866e81f7" ) );
-	}
+  private BackwardCascade() {
+    super(UUID.fromString("1608ba60-4237-4998-a482-a9f4866e81f7"));
+  }
 
-	@Override
-	protected List<DeclarationComposite<?, ?>> getList( DeclarationCompositeHistory declarationCompositeHistory ) {
-		return declarationCompositeHistory.getBackwardList();
-	}
+  @Override
+  protected List<DeclarationComposite<?, ?>> getList(DeclarationCompositeHistory declarationCompositeHistory) {
+    return declarationCompositeHistory.getBackwardList();
+  }
 }

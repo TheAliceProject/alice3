@@ -54,138 +54,138 @@ import java.awt.event.ActionListener;
  * @author Dennis Cosgrove
  */
 public class AnimationUtilities {
-	private static final int DEFAULT_FRAME_DELAY = 5;
+  private static final int DEFAULT_FRAME_DELAY = 5;
 
-	private AnimationUtilities() {
-		throw new AssertionError();
-	}
+  private AnimationUtilities() {
+    throw new AssertionError();
+  }
 
-	private abstract static class AnimationActionListener implements ActionListener {
-		private Timer timer;
-		private final double duration;
-		private final Component component;
+  private abstract static class AnimationActionListener implements ActionListener {
+    private Timer timer;
+    private final double duration;
+    private final Component component;
 
-		private Long t0 = null;
+    private Long t0 = null;
 
-		public AnimationActionListener( double duration, Component component ) {
-			this.duration = duration;
-			this.component = component;
-		}
+    public AnimationActionListener(double duration, Component component) {
+      this.duration = duration;
+      this.component = component;
+    }
 
-		public double getDuration() {
-			return this.duration;
-		}
+    public double getDuration() {
+      return this.duration;
+    }
 
-		public Component getComponent() {
-			return this.component;
-		}
+    public Component getComponent() {
+      return this.component;
+    }
 
-		protected abstract void update( double portion );
+    protected abstract void update(double portion);
 
-		@Override
-		public final void actionPerformed( ActionEvent e ) {
-			if( t0 != null ) {
-				//pass
-			} else {
-				t0 = e.getWhen();
-			}
-			long tDelta = e.getWhen() - t0;
-			double portion = ( tDelta * 0.001 ) / this.duration;
-			portion = Math.min( portion, 1.0 );
-			this.update( portion );
-			if( portion >= 1.0 ) {
-				timer.stop();
-			}
-		}
+    @Override
+    public final void actionPerformed(ActionEvent e) {
+      if (t0 != null) {
+        //pass
+      } else {
+        t0 = e.getWhen();
+      }
+      long tDelta = e.getWhen() - t0;
+      double portion = (tDelta * 0.001) / this.duration;
+      portion = Math.min(portion, 1.0);
+      this.update(portion);
+      if (portion >= 1.0) {
+        timer.stop();
+      }
+    }
 
-		public void startTimer( double initialDelay ) {
-			this.timer = new Timer( DEFAULT_FRAME_DELAY, this );
-			timer.setInitialDelay( (int)( initialDelay * 1000 ) );
-			timer.start();
-		}
-	}
+    public void startTimer(double initialDelay) {
+      this.timer = new Timer(DEFAULT_FRAME_DELAY, this);
+      timer.setInitialDelay((int) (initialDelay * 1000));
+      timer.start();
+    }
+  }
 
-	public static void animatePosition( Component component, int x, int y, double duration, double initialDelay ) {
+  public static void animatePosition(Component component, int x, int y, double duration, double initialDelay) {
 
-		class PositionAnimationActionListener extends AnimationActionListener {
-			private final int x0;
-			private final int y0;
-			private final int x1;
-			private final int y1;
+    class PositionAnimationActionListener extends AnimationActionListener {
+      private final int x0;
+      private final int y0;
+      private final int x1;
+      private final int y1;
 
-			public PositionAnimationActionListener( double duration, Component component, int x, int y ) {
-				super( duration, component );
-				this.x0 = component.getX();
-				this.y0 = component.getY();
-				this.x1 = x;
-				this.y1 = y;
-			}
+      public PositionAnimationActionListener(double duration, Component component, int x, int y) {
+        super(duration, component);
+        this.x0 = component.getX();
+        this.y0 = component.getY();
+        this.x1 = x;
+        this.y1 = y;
+      }
 
-			@Override
-			protected void update( double portion ) {
-				int x;
-				int y;
-				if( portion == 0.0 ) {
-					x = this.x0;
-					y = this.y0;
-				} else if( portion == 1.0 ) {
-					x = this.x1;
-					y = this.y1;
-				} else {
-					x = (int)Math.round( ( x0 * ( 1 - portion ) ) + ( x1 * portion ) );
-					y = (int)Math.round( ( y0 * ( 1 - portion ) ) + ( y1 * portion ) );
-				}
-				this.getComponent().setLocation( x, y );
-			}
-		}
-		PositionAnimationActionListener animationActionListener = new PositionAnimationActionListener( duration, component, x, y );
-		animationActionListener.startTimer( initialDelay );
-	}
+      @Override
+      protected void update(double portion) {
+        int x;
+        int y;
+        if (portion == 0.0) {
+          x = this.x0;
+          y = this.y0;
+        } else if (portion == 1.0) {
+          x = this.x1;
+          y = this.y1;
+        } else {
+          x = (int) Math.round((x0 * (1 - portion)) + (x1 * portion));
+          y = (int) Math.round((y0 * (1 - portion)) + (y1 * portion));
+        }
+        this.getComponent().setLocation(x, y);
+      }
+    }
+    PositionAnimationActionListener animationActionListener = new PositionAnimationActionListener(duration, component, x, y);
+    animationActionListener.startTimer(initialDelay);
+  }
 
-	public static void animateScale( Component component, double scale0, double scale1, double duration, double initialDelay ) {
-		class ScaleAnimationActionListener extends AnimationActionListener {
-			private final double scale0;
-			private final double scale1;
+  public static void animateScale(Component component, double scale0, double scale1, double duration, double initialDelay) {
+    class ScaleAnimationActionListener extends AnimationActionListener {
+      private final double scale0;
+      private final double scale1;
 
-			public ScaleAnimationActionListener( double duration, Component component, double scale0, double scale1 ) {
-				super( duration, component );
-				this.scale0 = scale0;
-				this.scale1 = scale1;
-			}
+      public ScaleAnimationActionListener(double duration, Component component, double scale0, double scale1) {
+        super(duration, component);
+        this.scale0 = scale0;
+        this.scale1 = scale1;
+      }
 
-			@Override
-			protected void update( double portion ) {
-				double scale;
-				if( portion == 0.0 ) {
-					scale = this.scale0;
-				} else if( portion == 1.0 ) {
-					scale = this.scale1;
-				} else {
-					scale = ( scale0 * ( 1 - portion ) ) + ( scale1 * portion );
-				}
-				Component awtComponent = this.getComponent();
-				Dimension preferredSize = awtComponent.getPreferredSize();
-				int width = (int)Math.round( preferredSize.width * scale );
-				int height = (int)Math.round( preferredSize.height * scale );
-				awtComponent.setSize( width, height );
-			}
-		}
-		ScaleAnimationActionListener animationActionListener = new ScaleAnimationActionListener( duration, component, scale0, scale1 );
-		animationActionListener.startTimer( initialDelay );
-	}
+      @Override
+      protected void update(double portion) {
+        double scale;
+        if (portion == 0.0) {
+          scale = this.scale0;
+        } else if (portion == 1.0) {
+          scale = this.scale1;
+        } else {
+          scale = (scale0 * (1 - portion)) + (scale1 * portion);
+        }
+        Component awtComponent = this.getComponent();
+        Dimension preferredSize = awtComponent.getPreferredSize();
+        int width = (int) Math.round(preferredSize.width * scale);
+        int height = (int) Math.round(preferredSize.height * scale);
+        awtComponent.setSize(width, height);
+      }
+    }
+    ScaleAnimationActionListener animationActionListener = new ScaleAnimationActionListener(duration, component, scale0, scale1);
+    animationActionListener.startTimer(initialDelay);
+  }
 
-	public static void main( String[] args ) {
-		SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				JFrame frame = new JFrame();
-				frame.setLocation( 0, 0 );
-				frame.setPreferredSize( new Dimension( 400, 200 ) );
-				frame.pack();
-				frame.setVisible( true );
-				animatePosition( frame, 1000, 500, 1.0, 2.0 );
-				animateScale( frame, 1.0, 4.0, 1.0, 3.0 );
-			}
-		} );
-	}
+  public static void main(String[] args) {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        JFrame frame = new JFrame();
+        frame.setLocation(0, 0);
+        frame.setPreferredSize(new Dimension(400, 200));
+        frame.pack();
+        frame.setVisible(true);
+        animatePosition(frame, 1000, 500, 1.0, 2.0);
+        animateScale(frame, 1.0, 4.0, 1.0, 3.0);
+      }
+    });
+  }
 }

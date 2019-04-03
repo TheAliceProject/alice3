@@ -60,43 +60,43 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AddMethodMenuModel extends MenuModel {
-	public AddMethodMenuModel( UUID migrationId ) {
-		super( migrationId );
-	}
+  public AddMethodMenuModel(UUID migrationId) {
+    super(migrationId);
+  }
 
-	private NamedUserType getInstanceFactoryNamedUserType() {
-		InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
-		if( instanceFactory != null ) {
-			AbstractType<?, ?, ?> type = instanceFactory.getValueType();
-			if( type instanceof NamedUserType ) {
-				return (NamedUserType)type;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  private NamedUserType getInstanceFactoryNamedUserType() {
+    InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+    if (instanceFactory != null) {
+      AbstractType<?, ?, ?> type = instanceFactory.getValueType();
+      if (type instanceof NamedUserType) {
+        return (NamedUserType) type;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public boolean isRelevant() {
-		return this.getInstanceFactoryNamedUserType() != null;
-	}
+  public boolean isRelevant() {
+    return this.getInstanceFactoryNamedUserType() != null;
+  }
 
-	protected abstract AddMethodComposite getAddMethodComposite( NamedUserType declaringType );
+  protected abstract AddMethodComposite getAddMethodComposite(NamedUserType declaringType);
 
-	private void appendMenuItemPrepModelsForType( List<StandardMenuItemPrepModel> models, AbstractType<?, ?, ?> type ) {
-		if( type instanceof NamedUserType ) {
-			NamedUserType namedUserType = (NamedUserType)type;
-			models.add( this.getAddMethodComposite( namedUserType ).getLaunchOperation().getMenuItemPrepModel() );
-			appendMenuItemPrepModelsForType( models, namedUserType.superType.getValue() );
-		}
-	}
+  private void appendMenuItemPrepModelsForType(List<StandardMenuItemPrepModel> models, AbstractType<?, ?, ?> type) {
+    if (type instanceof NamedUserType) {
+      NamedUserType namedUserType = (NamedUserType) type;
+      models.add(this.getAddMethodComposite(namedUserType).getLaunchOperation().getMenuItemPrepModel());
+      appendMenuItemPrepModelsForType(models, namedUserType.superType.getValue());
+    }
+  }
 
-	@Override
-	public final void handlePopupMenuPrologue( PopupMenu popupMenu ) {
-		super.handlePopupMenuPrologue( popupMenu );
-		List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
-		this.appendMenuItemPrepModelsForType( models, this.getInstanceFactoryNamedUserType() );
-		MenuItemContainerUtilities.setMenuElements( popupMenu, models );
-	}
+  @Override
+  public final void handlePopupMenuPrologue(PopupMenu popupMenu) {
+    super.handlePopupMenuPrologue(popupMenu);
+    List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
+    this.appendMenuItemPrepModelsForType(models, this.getInstanceFactoryNamedUserType());
+    MenuItemContainerUtilities.setMenuElements(popupMenu, models);
+  }
 }

@@ -54,21 +54,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RenameFieldComposite extends RenameDeclarationComposite<UserField> {
-	private static Map<UserField, RenameFieldComposite> map = Maps.newHashMap();
+  private static Map<UserField, RenameFieldComposite> map = Maps.newHashMap();
 
-	public static synchronized RenameFieldComposite getInstance( UserField field ) {
-		assert field != null;
-		RenameFieldComposite rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new RenameFieldComposite( field );
-			map.put( field, rv );
-		}
-		return rv;
-	}
+  public static synchronized RenameFieldComposite getInstance(UserField field) {
+    assert field != null;
+    RenameFieldComposite rv = map.get(field);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new RenameFieldComposite(field);
+      map.put(field, rv);
+    }
+    return rv;
+  }
 
-	private RenameFieldComposite( UserField field ) {
-		super( UUID.fromString( "20163483-25a2-40b0-b1e5-330cb2d29414" ), new FieldNameValidator( field ), field );
-	}
+  private RenameFieldComposite(UserField field) {
+    super(UUID.fromString("20163483-25a2-40b0-b1e5-330cb2d29414"), new FieldNameValidator(field), field);
+  }
 }

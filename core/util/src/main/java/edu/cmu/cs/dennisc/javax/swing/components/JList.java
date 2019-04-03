@@ -56,85 +56,85 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class JList<E> extends javax.swing.JList {
-	private List<ActionListener> m_actionListeners = new LinkedList<ActionListener>();
+  private List<ActionListener> m_actionListeners = new LinkedList<ActionListener>();
 
-	public JList() {
-		initialize();
-	}
+  public JList() {
+    initialize();
+  }
 
-	public JList( ListModel model ) {
-		super( model );
-		initialize();
-	}
+  public JList(ListModel model) {
+    super(model);
+    initialize();
+  }
 
-	private void initialize() {
-		addMouseListener( new MouseListener() {
-			@Override
-			public void mousePressed( MouseEvent e ) {
-				fireActionListeners( e.getWhen(), e.getModifiers(), true );
-			}
+  private void initialize() {
+    addMouseListener(new MouseListener() {
+      @Override
+      public void mousePressed(MouseEvent e) {
+        fireActionListeners(e.getWhen(), e.getModifiers(), true);
+      }
 
-			@Override
-			public void mouseReleased( MouseEvent e ) {
-			}
+      @Override
+      public void mouseReleased(MouseEvent e) {
+      }
 
-			@Override
-			public void mouseClicked( MouseEvent e ) {
-			}
+      @Override
+      public void mouseClicked(MouseEvent e) {
+      }
 
-			@Override
-			public void mouseEntered( MouseEvent e ) {
-			}
+      @Override
+      public void mouseEntered(MouseEvent e) {
+      }
 
-			@Override
-			public void mouseExited( MouseEvent e ) {
-			}
-		} );
-		addListSelectionListener( new ListSelectionListener() {
-			@Override
-			public void valueChanged( ListSelectionEvent e ) {
-				if( e.getValueIsAdjusting() ) {
-					//pass
-				} else {
-					int modifiers = 0; //todo
-					fireActionListeners( System.currentTimeMillis(), modifiers, false );
-				}
-			}
-		} );
-	}
+      @Override
+      public void mouseExited(MouseEvent e) {
+      }
+    });
+    addListSelectionListener(new ListSelectionListener() {
+      @Override
+      public void valueChanged(ListSelectionEvent e) {
+        if (e.getValueIsAdjusting()) {
+          //pass
+        } else {
+          int modifiers = 0; //todo
+          fireActionListeners(System.currentTimeMillis(), modifiers, false);
+        }
+      }
+    });
+  }
 
-	public void addActionListener( ActionListener l ) {
-		m_actionListeners.add( l );
-	}
+  public void addActionListener(ActionListener l) {
+    m_actionListeners.add(l);
+  }
 
-	public void removeActionListener( ActionListener l ) {
-		m_actionListeners.remove( l );
-	}
+  public void removeActionListener(ActionListener l) {
+    m_actionListeners.remove(l);
+  }
 
-	private int m_selectedIndexPrev = -1;
-	private boolean m_isActionEventPrev = false;
+  private int m_selectedIndexPrev = -1;
+  private boolean m_isActionEventPrev = false;
 
-	private void fireActionListeners( long when, int modifiers, boolean isActionEvent ) {
-		int selectedIndex = getSelectedIndex();
-		if( ( selectedIndex != m_selectedIndexPrev ) || ( m_isActionEventPrev == isActionEvent ) ) {
-			String command;
-			Object value = getSelectedValue();
-			if( value != null ) {
-				command = value.toString();
-			} else {
-				command = null;
-			}
-			ActionEvent e = new ActionEvent( this, ActionEvent.ACTION_PERFORMED, command, when, modifiers );
-			for( ActionListener l : m_actionListeners ) {
-				l.actionPerformed( e );
-			}
-			m_selectedIndexPrev = selectedIndex;
-		} else {
-			m_isActionEventPrev = isActionEvent;
-		}
-	}
+  private void fireActionListeners(long when, int modifiers, boolean isActionEvent) {
+    int selectedIndex = getSelectedIndex();
+    if ((selectedIndex != m_selectedIndexPrev) || (m_isActionEventPrev == isActionEvent)) {
+      String command;
+      Object value = getSelectedValue();
+      if (value != null) {
+        command = value.toString();
+      } else {
+        command = null;
+      }
+      ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, command, when, modifiers);
+      for (ActionListener l : m_actionListeners) {
+        l.actionPerformed(e);
+      }
+      m_selectedIndexPrev = selectedIndex;
+    } else {
+      m_isActionEventPrev = isActionEvent;
+    }
+  }
 
-	public E getSelectedTypedValue() {
-		return (E)getSelectedValue();
-	}
+  public E getSelectedTypedValue() {
+    return (E) getSelectedValue();
+  }
 }

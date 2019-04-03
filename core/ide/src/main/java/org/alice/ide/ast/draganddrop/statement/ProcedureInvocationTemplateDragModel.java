@@ -61,43 +61,43 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragModel {
-	private static Map<AbstractMethod, ProcedureInvocationTemplateDragModel> map = Maps.newHashMap();
+  private static Map<AbstractMethod, ProcedureInvocationTemplateDragModel> map = Maps.newHashMap();
 
-	public static synchronized ProcedureInvocationTemplateDragModel getInstance( AbstractMethod method ) {
-		ProcedureInvocationTemplateDragModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ProcedureInvocationTemplateDragModel( method );
-			map.put( method, rv );
-		}
-		return rv;
-	}
+  public static synchronized ProcedureInvocationTemplateDragModel getInstance(AbstractMethod method) {
+    ProcedureInvocationTemplateDragModel rv = map.get(method);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ProcedureInvocationTemplateDragModel(method);
+      map.put(method, rv);
+    }
+    return rv;
+  }
 
-	private AbstractMethod method;
+  private AbstractMethod method;
 
-	private ProcedureInvocationTemplateDragModel( AbstractMethod method ) {
-		super( UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ), ExpressionStatement.class, IncompleteAstUtilities.createIncompleteMethodInvocationStatement( method ) );
-		this.method = method;
-		assert this.method.isProcedure();
-	}
+  private ProcedureInvocationTemplateDragModel(AbstractMethod method) {
+    super(UUID.fromString("3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9"), ExpressionStatement.class, IncompleteAstUtilities.createIncompleteMethodInvocationStatement(method));
+    this.method = method;
+    assert this.method.isProcedure();
+  }
 
-	@Override
-	public boolean isAddEventListenerLikeSubstance() {
-		if( this.method instanceof JavaMethod ) {
-			JavaMethod javaMethod = (JavaMethod)this.method;
-			return javaMethod.isAnnotationPresent( AddEventListenerTemplate.class );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean isAddEventListenerLikeSubstance() {
+    if (this.method instanceof JavaMethod) {
+      JavaMethod javaMethod = (JavaMethod) this.method;
+      return javaMethod.isAnnotationPresent(AddEventListenerTemplate.class);
+    } else {
+      return false;
+    }
+  }
 
-	public AbstractMethod getMethod() {
-		return this.method;
-	}
+  public AbstractMethod getMethod() {
+    return this.method;
+  }
 
-	@Override
-	public Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
-		return ProcedureInvocationInsertCascade.getInstance( blockStatementIndexPair, this.method );
-	}
+  @Override
+  public Triggerable getDropOperation(DragStep step, BlockStatementIndexPair blockStatementIndexPair) {
+    return ProcedureInvocationInsertCascade.getInstance(blockStatementIndexPair, this.method);
+  }
 }

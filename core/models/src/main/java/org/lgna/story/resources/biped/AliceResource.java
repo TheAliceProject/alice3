@@ -34,78 +34,52 @@ import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 public enum AliceResource implements BipedResource {
-	CARNEGIE_MELLON,
-	WONDERLAND;
+  CARNEGIE_MELLON, WONDERLAND;
 
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId SKIRT_BASE = new JointId( ROOT, AliceResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId SKIRT_FRONT = new JointId( SKIRT_BASE, AliceResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId SKIRT_FRONT_TIP = new JointId( SKIRT_FRONT, AliceResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId SKIRT_BACK = new JointId( SKIRT_BASE, AliceResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId SKIRT_BACK_TIP = new JointId( SKIRT_BACK, AliceResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId SKIRT_LEFT = new JointId( SKIRT_BASE, AliceResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId SKIRT_LEFT_TIP = new JointId( SKIRT_LEFT, AliceResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId SKIRT_RIGHT = new JointId( SKIRT_BASE, AliceResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId SKIRT_RIGHT_TIP = new JointId( SKIRT_RIGHT, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_THUMB_TIP = new JointId( LEFT_THUMB_KNUCKLE, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_INDEX_FINGER_TIP = new JointId( LEFT_INDEX_FINGER_KNUCKLE, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_MIDDLE_FINGER_TIP = new JointId( LEFT_MIDDLE_FINGER_KNUCKLE, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_RING_FINGER = new JointId( LEFT_HAND, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_RING_FINGER_KNUCKLE = new JointId( LEFT_RING_FINGER, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_RING_FINGER_TIP = new JointId( LEFT_RING_FINGER_KNUCKLE, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_PINKY_FINGER_TIP = new JointId( LEFT_PINKY_FINGER_KNUCKLE, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_THUMB_TIP = new JointId( RIGHT_THUMB_KNUCKLE, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId( RIGHT_INDEX_FINGER_KNUCKLE, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_MIDDLE_FINGER_TIP = new JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_RING_FINGER = new JointId( RIGHT_HAND, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_RING_FINGER_KNUCKLE = new JointId( RIGHT_RING_FINGER, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_RING_FINGER_TIP = new JointId( RIGHT_RING_FINGER_KNUCKLE, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_PINKY_FINGER_TIP = new JointId( RIGHT_PINKY_FINGER_KNUCKLE, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, AliceResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, AliceResource.class );
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId SKIRT_BASE = new JointId(ROOT, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId SKIRT_FRONT = new JointId(SKIRT_BASE, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId SKIRT_FRONT_TIP = new JointId(SKIRT_FRONT, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId SKIRT_BACK = new JointId(SKIRT_BASE, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId SKIRT_BACK_TIP = new JointId(SKIRT_BACK, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId SKIRT_LEFT = new JointId(SKIRT_BASE, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId SKIRT_LEFT_TIP = new JointId(SKIRT_LEFT, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId SKIRT_RIGHT = new JointId(SKIRT_BASE, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId SKIRT_RIGHT_TIP = new JointId(SKIRT_RIGHT, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LOWER_LIP = new JointId(MOUTH, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_THUMB_TIP = new JointId(LEFT_THUMB_KNUCKLE, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_INDEX_FINGER_TIP = new JointId(LEFT_INDEX_FINGER_KNUCKLE, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_MIDDLE_FINGER_TIP = new JointId(LEFT_MIDDLE_FINGER_KNUCKLE, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_RING_FINGER = new JointId(LEFT_HAND, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_RING_FINGER_KNUCKLE = new JointId(LEFT_RING_FINGER, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_RING_FINGER_TIP = new JointId(LEFT_RING_FINGER_KNUCKLE, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_PINKY_FINGER_TIP = new JointId(LEFT_PINKY_FINGER_KNUCKLE, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_THUMB_TIP = new JointId(RIGHT_THUMB_KNUCKLE, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId(RIGHT_INDEX_FINGER_KNUCKLE, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_MIDDLE_FINGER_TIP = new JointId(RIGHT_MIDDLE_FINGER_KNUCKLE, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_RING_FINGER = new JointId(RIGHT_HAND, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_RING_FINGER_KNUCKLE = new JointId(RIGHT_RING_FINGER, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_RING_FINGER_TIP = new JointId(RIGHT_RING_FINGER_KNUCKLE, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_PINKY_FINGER_TIP = new JointId(RIGHT_PINKY_FINGER_KNUCKLE, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_TOES = new JointId(LEFT_FOOT, AliceResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_TOES = new JointId(RIGHT_FOOT, AliceResource.class);
 
-	private final ImplementationAndVisualType resourceType;
-	AliceResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	AliceResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  AliceResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
+  AliceResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BipedImp createImplementation( SBiped abstraction ) {
-		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BipedImp createImplementation(SBiped abstraction) {
+    return new BipedImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

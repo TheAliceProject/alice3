@@ -54,19 +54,19 @@ import javax.swing.BoxLayout;
  * @author Dennis Cosgrove
  */
 public class NodePropertyView<P extends NodeProperty<N>, N extends AbstractNode> extends AbstractPropertyPane<P, N> {
-	public NodePropertyView( AstI18nFactory factory, P property ) {
-		super( factory, property, BoxLayout.LINE_AXIS );
-		this.refreshLater();
-	}
+  public NodePropertyView(AstI18nFactory factory, P property) {
+    super(factory, property, BoxLayout.LINE_AXIS);
+    this.refreshLater();
+  }
 
-	protected SwingComponentView<?> createComponent( N node ) {
-		return this.getFactory().createComponent( node );
-	}
+  protected SwingComponentView<?> createComponent(N node) {
+    return this.getFactory().createComponent(node);
+  }
 
-	@Override
-	protected final void internalRefresh() {
-		super.internalRefresh();
-		this.forgetAndRemoveAllComponents();
-		this.addComponent( this.createComponent( this.getProperty().getValue() ) );
-	}
+  @Override
+  protected final void internalRefresh() {
+    super.internalRefresh();
+    this.forgetAndRemoveAllComponents();
+    this.addComponent(this.createComponent(this.getProperty().getValue()));
+  }
 }

@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import static com.jogamp.opengl.GL.GL_TRIANGLES;
+
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray;
@@ -52,21 +53,21 @@ import edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray;
  * @author Dennis Cosgrove
  */
 public class GlrIndexedTriangleArray extends GlrIndexedPolygonArray<IndexedTriangleArray> {
-	public GlrIndexedTriangleArray() {
-		super( GL_TRIANGLES, 3 );
-	}
+  public GlrIndexedTriangleArray() {
+    super(GL_TRIANGLES, 3);
+  }
 
-	@Override
-	protected void renderPolygon( RenderContext rc, int[] polygonData, int i ) {
-		rc.renderVertex( accessVertexAt( polygonData[ i ] ) );
-		rc.renderVertex( accessVertexAt( polygonData[ i + 1 ] ) );
-		rc.renderVertex( accessVertexAt( polygonData[ i + 2 ] ) );
-	}
+  @Override
+  protected void renderPolygon(RenderContext rc, int[] polygonData, int i) {
+    rc.renderVertex(accessVertexAt(polygonData[i]));
+    rc.renderVertex(accessVertexAt(polygonData[i + 1]));
+    rc.renderVertex(accessVertexAt(polygonData[i + 2]));
+  }
 
-	@Override
-	protected void pickPolygon( PickContext pc, int[] polygonData, int i ) {
-		pc.pickVertex( accessVertexAt( polygonData[ i ] ) );
-		pc.pickVertex( accessVertexAt( polygonData[ i + 1 ] ) );
-		pc.pickVertex( accessVertexAt( polygonData[ i + 2 ] ) );
-	}
+  @Override
+  protected void pickPolygon(PickContext pc, int[] polygonData, int i) {
+    pc.pickVertex(accessVertexAt(polygonData[i]));
+    pc.pickVertex(accessVertexAt(polygonData[i + 1]));
+    pc.pickVertex(accessVertexAt(polygonData[i + 2]));
+  }
 }

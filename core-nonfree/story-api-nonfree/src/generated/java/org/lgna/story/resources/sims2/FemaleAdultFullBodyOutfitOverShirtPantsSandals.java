@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultFullBodyOutfitOverShirtPantsSandals implements FemaleAdultFullBodyOutfit {
-	BLUE,
-	GREY_BLUE,
-	MAROON,
-	PURPLE,
-	ORANGE;
+  BLUE, GREY_BLUE, MAROON, PURPLE, ORANGE
 
 }

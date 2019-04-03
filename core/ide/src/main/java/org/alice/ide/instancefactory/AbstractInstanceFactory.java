@@ -58,54 +58,54 @@ import org.lgna.project.ast.ThisExpression;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractInstanceFactory implements InstanceFactory {
-	protected static Expression createTransientThisExpression() {
-		return new CurrentThisExpression();
-	}
+  protected static Expression createTransientThisExpression() {
+    return new CurrentThisExpression();
+  }
 
-	protected static Expression createThisExpression() {
-		return new ThisExpression();
-	}
+  protected static Expression createThisExpression() {
+    return new ThisExpression();
+  }
 
-	private final InstanceProperty<?>[] mutablePropertiesOfInterest;
+  private final InstanceProperty<?>[] mutablePropertiesOfInterest;
 
-	public AbstractInstanceFactory( InstanceProperty<?>... mutablePropertiesOfInterest ) {
-		this.mutablePropertiesOfInterest = mutablePropertiesOfInterest;
-	}
+  public AbstractInstanceFactory(InstanceProperty<?>... mutablePropertiesOfInterest) {
+    this.mutablePropertiesOfInterest = mutablePropertiesOfInterest;
+  }
 
-	@Override
-	public final InstanceProperty<?>[] getMutablePropertiesOfInterest() {
-		return this.mutablePropertiesOfInterest;
-	}
+  @Override
+  public final InstanceProperty<?>[] getMutablePropertiesOfInterest() {
+    return this.mutablePropertiesOfInterest;
+  }
 
-	protected abstract boolean isValid( AbstractType<?, ?, ?> type, AbstractCode code );
+  protected abstract boolean isValid(AbstractType<?, ?, ?> type, AbstractCode code);
 
-	@Override
-	public final boolean isValid() {
-		AbstractType<?, ?, ?> type;
-		AbstractCode code;
-		AbstractDeclaration declaration = IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getValue();
-		if( declaration instanceof AbstractType<?, ?, ?> ) {
-			type = (AbstractType<?, ?, ?>)declaration;
-			code = null;
-		} else if( declaration instanceof AbstractCode ) {
-			code = (AbstractCode)declaration;
-			type = code.getDeclaringType();
-		} else {
-			code = null;
-			type = null;
-		}
-		return this.isValid( type, code );
-	}
+  @Override
+  public final boolean isValid() {
+    AbstractType<?, ?, ?> type;
+    AbstractCode code;
+    AbstractDeclaration declaration = IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getValue();
+    if (declaration instanceof AbstractType<?, ?, ?>) {
+      type = (AbstractType<?, ?, ?>) declaration;
+      code = null;
+    } else if (declaration instanceof AbstractCode) {
+      code = (AbstractCode) declaration;
+      type = code.getDeclaringType();
+    } else {
+      code = null;
+      type = null;
+    }
+    return this.isValid(type, code);
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return IconFactoryManager.getIconFactoryForType( this.getValueType() );
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return IconFactoryManager.getIconFactoryForType(this.getValueType());
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getRepr() );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getRepr());
+    return sb.toString();
+  }
 }

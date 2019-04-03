@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultFullBodyOutfitDress implements FemaleAdultFullBodyOutfit {
-	COBALT,
-	BLACKSHINY,
-	GOLD,
-	GREEN_MOM,
-	ROSE_MOM,
-	TEAL;
+  COBALT, BLACKSHINY, GOLD, GREEN_MOM, ROSE_MOM, TEAL
 
 }

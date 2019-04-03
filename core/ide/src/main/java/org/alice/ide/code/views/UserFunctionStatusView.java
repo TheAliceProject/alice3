@@ -54,11 +54,11 @@ import javax.swing.Icon;
  * @author Dennis Cosgrove
  */
 public class UserFunctionStatusView extends BorderPanel {
-	public UserFunctionStatusView( UserFunctionStatusComposite composite ) {
-		super( composite, 8, 0 );
-		Icon errorIcon = IconUtilities.getErrorIcon();
-		this.addLineStartComponent( new Label( errorIcon ) );
-		this.addCenterComponent( composite.getMetaStringValue().createLabel() );
-		this.setBorder( BorderFactory.createEmptyBorder( 8, 0, 8, 0 ) );
-	}
+  public UserFunctionStatusView(UserFunctionStatusComposite composite) {
+    super(composite, 8, 0);
+    Icon errorIcon = IconUtilities.getErrorIcon();
+    this.addLineStartComponent(new Label(errorIcon));
+    this.addCenterComponent(composite.getMetaStringValue().createLabel());
+    this.setBorder(BorderFactory.createEmptyBorder(8, 0, 8, 0));
+  }
 }

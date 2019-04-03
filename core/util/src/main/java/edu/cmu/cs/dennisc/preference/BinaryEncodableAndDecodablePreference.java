@@ -51,21 +51,21 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public abstract class BinaryEncodableAndDecodablePreference<E extends BinaryEncodableAndDecodable> extends Preference<E> {
-	public BinaryEncodableAndDecodablePreference( E defaultValue ) {
-		super( defaultValue );
-	}
+  public BinaryEncodableAndDecodablePreference(E defaultValue) {
+    super(defaultValue);
+  }
 
-	protected abstract Class<E> getValueClass();
+  protected abstract Class<E> getValueClass();
 
-	@Override
-	protected E getValue( Preferences utilPrefs, String key, E defaultValue ) {
-		byte[] defaultData = CodecUtilities.encodeBinary( defaultValue );
-		byte[] currentData = utilPrefs.getByteArray( key, defaultData );
-		return CodecUtilities.decodeBinary( currentData, this.getValueClass() );
-	}
+  @Override
+  protected E getValue(Preferences utilPrefs, String key, E defaultValue) {
+    byte[] defaultData = CodecUtilities.encodeBinary(defaultValue);
+    byte[] currentData = utilPrefs.getByteArray(key, defaultData);
+    return CodecUtilities.decodeBinary(currentData, this.getValueClass());
+  }
 
-	@Override
-	protected void setAndCommitValue( Preferences utilPrefs, String key, E nextValue ) {
-		utilPrefs.putByteArray( key, CodecUtilities.encodeBinary( nextValue ) );
-	}
+  @Override
+  protected void setAndCommitValue(Preferences utilPrefs, String key, E nextValue) {
+    utilPrefs.putByteArray(key, CodecUtilities.encodeBinary(nextValue));
+  }
 }

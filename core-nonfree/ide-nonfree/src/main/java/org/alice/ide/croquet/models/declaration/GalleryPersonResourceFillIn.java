@@ -59,58 +59,58 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class GalleryPersonResourceFillIn extends ExpressionFillInWithoutBlanks<Expression> {
-	private static Map<AbstractType<?, ?, ?>, GalleryPersonResourceFillIn> map = Maps.newHashMap();
+  private static Map<AbstractType<?, ?, ?>, GalleryPersonResourceFillIn> map = Maps.newHashMap();
 
-	public static synchronized GalleryPersonResourceFillIn getInstance( AbstractType<?, ?, ?> type ) {
-		GalleryPersonResourceFillIn rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new GalleryPersonResourceFillIn( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized GalleryPersonResourceFillIn getInstance(AbstractType<?, ?, ?> type) {
+    GalleryPersonResourceFillIn rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new GalleryPersonResourceFillIn(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private final AbstractType<?, ?, ?> type;
+  private final AbstractType<?, ?, ?> type;
 
-	private GalleryPersonResourceFillIn( AbstractType<?, ?, ?> type ) {
-		super( UUID.fromString( "4daa3e85-ee3a-4610-b9a1-2e8ba018e33b" ) );
-		this.type = type;
-	}
+  private GalleryPersonResourceFillIn(AbstractType<?, ?, ?> type) {
+    super(UUID.fromString("4daa3e85-ee3a-4610-b9a1-2e8ba018e33b"));
+    this.type = type;
+  }
 
-	@Override
-	public Icon getMenuItemIcon( ItemNode<? super Expression, Void> node ) {
-		return TypeIcon.getInstance( type );
-	}
+  @Override
+  public Icon getMenuItemIcon(ItemNode<? super Expression, Void> node) {
+    return TypeIcon.getInstance(type);
+  }
 
-	@Override
-	public Expression createValue( ItemNode<? super Expression, Void> node ) {
-		return new TypeExpression( this.type );
-		//		org.lgna.croquet.history.InputDialogOperationStep< org.lgna.story.resources.sims2.PersonResource > subStep = org.alice.stageide.croquet.models.gallerybrowser.CreatePersonResourceOperation.getInstance().fire();
-		//		if( subStep.isValueCommitted() ) {
-		//			org.lgna.story.resources.sims2.PersonResource personResource = subStep.getCommittedValue();
-		//			try {
-		//				org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
-		//
-		//				org.lgna.project.ast.NamedUserType type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResource(personResource);
-		//
-		//				org.lgna.project.ast.InstanceCreation expression = org.lgna.project.ast.AstUtilities.createInstanceCreation(
-		//						type.getDeclaredConstructors().get(0),
-		////						new Class<?>[] { org.lgna.story.resources.BipedResource.class },
-		//						argumentExpression
-		//				);
-		//				return expression;
-		//			} catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee) {
-		//				throw new RuntimeException( ccee );
-		//			}
-		//		} else {
-		//			return null;
-		//		}
-	}
+  @Override
+  public Expression createValue(ItemNode<? super Expression, Void> node) {
+    return new TypeExpression(this.type);
+    //    org.lgna.croquet.history.InputDialogOperationStep< org.lgna.story.resources.sims2.PersonResource > subStep = org.alice.stageide.croquet.models.gallerybrowser.CreatePersonResourceOperation.getInstance().fire();
+    //    if( subStep.isValueCommitted() ) {
+    //      org.lgna.story.resources.sims2.PersonResource personResource = subStep.getCommittedValue();
+    //      try {
+    //        org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
+    //
+    //        org.lgna.project.ast.NamedUserType type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResource(personResource);
+    //
+    //        org.lgna.project.ast.InstanceCreation expression = org.lgna.project.ast.AstUtilities.createInstanceCreation(
+    //            type.getDeclaredConstructors().get(0),
+    ////            new Class<?>[] { org.lgna.story.resources.BipedResource.class },
+    //            argumentExpression
+    //        );
+    //        return expression;
+    //      } catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee) {
+    //        throw new RuntimeException( ccee );
+    //      }
+    //    } else {
+    //      return null;
+    //    }
+  }
 
-	@Override
-	public Expression getTransientValue( ItemNode<? super Expression, Void> step ) {
-		return null;
-	}
+  @Override
+  public Expression getTransientValue(ItemNode<? super Expression, Void> step) {
+    return null;
+  }
 }

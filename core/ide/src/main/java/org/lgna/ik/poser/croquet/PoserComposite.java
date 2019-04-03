@@ -55,53 +55,53 @@ import org.lgna.story.SQuadruped;
  * @author Matt May
  */
 public abstract class PoserComposite<M extends SJointedModel> extends AbstractPoserOrAnimatorComposite<PoserControlComposite, M> {
-	public PoserComposite( UUID migrationID, NamedUserType valueType ) {
-		super( migrationID, valueType );
-	}
+  public PoserComposite(UUID migrationID, NamedUserType valueType) {
+    super(migrationID, valueType);
+  }
 
-	@Override
-	protected PoserControlComposite createControlComposite() {
-		PoserControlComposite rv = new PoserControlComposite( this );
-		return rv;
-	}
+  @Override
+  protected PoserControlComposite createControlComposite() {
+    PoserControlComposite rv = new PoserControlComposite(this);
+    return rv;
+  }
 
-	public boolean isEmptyPose() {
-		return getControlComposite().getParent().getUsedJoints().isEmpty();
-	}
+  public boolean isEmptyPose() {
+    return getControlComposite().getParent().getUsedJoints().isEmpty();
+  }
 
-	//	@Override
-	//	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
-	//		if( getControlComposite().getParent().getUsedJoints().isEmpty() ) {
-	//			return emptyPoseStatus;
-	//		}
-	//		if( validator != null ) {
-	//			//pass
-	//		} else {
-	//			this.validator = new FieldNameValidator( getDeclaringType() );
-	//		}
-	//		String candidate = getControlComposite().getNameState().getValue();
-	//		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-	//		if( explanation != null ) {
-	//			errorStatus.setText( explanation );
-	//			return errorStatus;
-	//		} else {
-	//			return IS_GOOD_TO_GO_STATUS;
-	//		}
-	//	}
+  //  @Override
+  //  protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+  //    if( getControlComposite().getParent().getUsedJoints().isEmpty() ) {
+  //      return emptyPoseStatus;
+  //    }
+  //    if( validator != null ) {
+  //      //pass
+  //    } else {
+  //      this.validator = new FieldNameValidator( getDeclaringType() );
+  //    }
+  //    String candidate = getControlComposite().getNameState().getValue();
+  //    String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
+  //    if( explanation != null ) {
+  //      errorStatus.setText( explanation );
+  //      return errorStatus;
+  //    } else {
+  //      return IS_GOOD_TO_GO_STATUS;
+  //    }
+  //  }
 
-	public static boolean isPoseable( NamedUserType declaringType ) {
-		return getDialogForUserType( declaringType ) != null;
-	}
+  public static boolean isPoseable(NamedUserType declaringType) {
+    return getDialogForUserType(declaringType) != null;
+  }
 
-	public static PoserComposite<?> getDialogForUserType( NamedUserType declaringType ) {
-		if( declaringType.isAssignableTo( SBiped.class ) ) {
-			return new BipedPoser( declaringType );
-		} else if( declaringType.isAssignableTo( SQuadruped.class ) ) {
-			return new QuadrupedPoser( declaringType );
-		} else if( declaringType.isAssignableTo( SFlyer.class ) ) {
-			return new FlyerPoser( declaringType );
-		} else {
-			return null;
-		}
-	}
+  public static PoserComposite<?> getDialogForUserType(NamedUserType declaringType) {
+    if (declaringType.isAssignableTo(SBiped.class)) {
+      return new BipedPoser(declaringType);
+    } else if (declaringType.isAssignableTo(SQuadruped.class)) {
+      return new QuadrupedPoser(declaringType);
+    } else if (declaringType.isAssignableTo(SFlyer.class)) {
+      return new FlyerPoser(declaringType);
+    } else {
+      return null;
+    }
+  }
 }

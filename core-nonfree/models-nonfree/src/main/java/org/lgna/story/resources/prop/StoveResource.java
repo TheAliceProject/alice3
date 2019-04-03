@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,43 +34,35 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum StoveResource implements PropResource {
-	BASIC_WHITE( ImplementationAndVisualType.SIMS2 ),
-	BASIC_BLACK( ImplementationAndVisualType.SIMS2 ),
-	FANCY( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_GREEN( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_YELLOW( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_ORANGE( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_PINK( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_WHITE( ImplementationAndVisualType.SIMS2 );
+  BASIC_WHITE(ImplementationAndVisualType.SIMS2), BASIC_BLACK(ImplementationAndVisualType.SIMS2), FANCY(ImplementationAndVisualType.SIMS2), CHEAP_GREEN(ImplementationAndVisualType.SIMS2), CHEAP_YELLOW(ImplementationAndVisualType.SIMS2), CHEAP_ORANGE(ImplementationAndVisualType.SIMS2), CHEAP_PINK(ImplementationAndVisualType.SIMS2), CHEAP_WHITE(ImplementationAndVisualType.SIMS2);
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, StoveResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId DOOR = new JointId( ROOT, StoveResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, StoveResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId DOOR = new JointId(ROOT, StoveResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	StoveResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	StoveResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  StoveResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return StoveResource.JOINT_ID_ROOTS;
-	}
+  StoveResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return StoveResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

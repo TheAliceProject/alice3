@@ -60,81 +60,81 @@ import java.awt.RenderingHints;
  * @author Dennis Cosgrove
  */
 public class HyperlinkUI extends BasicButtonUI {
-	private Color disabledColor = Color.LIGHT_GRAY;
-	private boolean isUnderlinedWhenDisabled = true;
-	private boolean isUnderlinedOnlyWhenRolledOver = true;
+  private Color disabledColor = Color.LIGHT_GRAY;
+  private boolean isUnderlinedWhenDisabled = true;
+  private boolean isUnderlinedOnlyWhenRolledOver = true;
 
-	public static ComponentUI createUI( JComponent component ) {
-		return new HyperlinkUI();
-	}
+  public static ComponentUI createUI(JComponent component) {
+    return new HyperlinkUI();
+  }
 
-	public Color getDisabledColor() {
-		return this.disabledColor;
-	}
+  public Color getDisabledColor() {
+    return this.disabledColor;
+  }
 
-	public void setDisabledColor( Color disabledColor ) {
-		this.disabledColor = disabledColor;
-	}
+  public void setDisabledColor(Color disabledColor) {
+    this.disabledColor = disabledColor;
+  }
 
-	public boolean isUnderlinedWhenDisabled() {
-		return this.isUnderlinedWhenDisabled;
-	}
+  public boolean isUnderlinedWhenDisabled() {
+    return this.isUnderlinedWhenDisabled;
+  }
 
-	public void setUnderlinedWhenDisabled( boolean isUnderlinedWhenDisabled ) {
-		this.isUnderlinedWhenDisabled = isUnderlinedWhenDisabled;
-	}
+  public void setUnderlinedWhenDisabled(boolean isUnderlinedWhenDisabled) {
+    this.isUnderlinedWhenDisabled = isUnderlinedWhenDisabled;
+  }
 
-	public boolean isUnderlinedOnlyWhenRolledOver() {
-		return this.isUnderlinedOnlyWhenRolledOver;
-	}
+  public boolean isUnderlinedOnlyWhenRolledOver() {
+    return this.isUnderlinedOnlyWhenRolledOver;
+  }
 
-	public void setUnderlinedOnlyWhenRolledOver( boolean isUnderlinedOnlyWhenRolledOver ) {
-		this.isUnderlinedOnlyWhenRolledOver = isUnderlinedOnlyWhenRolledOver;
-	}
+  public void setUnderlinedOnlyWhenRolledOver(boolean isUnderlinedOnlyWhenRolledOver) {
+    this.isUnderlinedOnlyWhenRolledOver = isUnderlinedOnlyWhenRolledOver;
+  }
 
-	@Override
-	protected void paintText( Graphics g, AbstractButton b, Rectangle textRect, String text ) {
-		ButtonModel model = b.getModel();
+  @Override
+  protected void paintText(Graphics g, AbstractButton b, Rectangle textRect, String text) {
+    ButtonModel model = b.getModel();
 
-		Color backgroundColor = b.getBackground();
-		Color foregroundColor = b.getForeground();
+    Color backgroundColor = b.getBackground();
+    Color foregroundColor = b.getForeground();
 
-		Color color;
-		if( b.isEnabled() ) {
-			//			if( model.isArmed() ) {
-			//				color = ARMED_COLOR;
-			//			} else {
-			if( model.isRollover() ) {
-				float foregroundBrightness = ColorUtilities.getBrightness( foregroundColor );
-				float backgroundBrightness = ColorUtilities.getBrightness( backgroundColor );
-				boolean isForegroundBrighter = foregroundBrightness > backgroundBrightness;
-				if( model.isPressed() ) {
-					color = isForegroundBrighter ? foregroundColor.darker().darker() : foregroundColor.brighter().brighter();
-				} else {
-					color = isForegroundBrighter ? foregroundColor.brighter().brighter() : foregroundColor.darker().darker();
-				}
-			} else {
-				color = foregroundColor;
-			}
-			//			}
-		} else {
-			color = this.disabledColor;
-		}
-		g.setColor( color );
-		FontMetrics fm = g.getFontMetrics();
-		int x = textRect.x + this.getTextShiftOffset();
-		int y = textRect.y + fm.getAscent() + this.getTextShiftOffset();
+    Color color;
+    if (b.isEnabled()) {
+      //      if( model.isArmed() ) {
+      //        color = ARMED_COLOR;
+      //      } else {
+      if (model.isRollover()) {
+        float foregroundBrightness = ColorUtilities.getBrightness(foregroundColor);
+        float backgroundBrightness = ColorUtilities.getBrightness(backgroundColor);
+        boolean isForegroundBrighter = foregroundBrightness > backgroundBrightness;
+        if (model.isPressed()) {
+          color = isForegroundBrighter ? foregroundColor.darker().darker() : foregroundColor.brighter().brighter();
+        } else {
+          color = isForegroundBrighter ? foregroundColor.brighter().brighter() : foregroundColor.darker().darker();
+        }
+      } else {
+        color = foregroundColor;
+      }
+      //      }
+    } else {
+      color = this.disabledColor;
+    }
+    g.setColor(color);
+    FontMetrics fm = g.getFontMetrics();
+    int x = textRect.x + this.getTextShiftOffset();
+    int y = textRect.y + fm.getAscent() + this.getTextShiftOffset();
 
-		Graphics2D g2 = (Graphics2D)g;
-		Object prevTextAntialiasing = g2.getRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING );
-		g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-		try {
-			g.drawString( text, x, y );
-		} finally {
-			g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
-		}
-		if( ( b.isEnabled() || this.isUnderlinedWhenDisabled ) && ( ( this.isUnderlinedOnlyWhenRolledOver == false ) || model.isRollover() ) ) {
-			g.fillRect( x, y, textRect.width, 1 );
-		}
-	}
+    Graphics2D g2 = (Graphics2D) g;
+    Object prevTextAntialiasing = g2.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
+    g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    try {
+      g.drawString(text, x, y);
+    } finally {
+      g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing);
+    }
+    if ((b.isEnabled() || this.isUnderlinedWhenDisabled) && ((this.isUnderlinedOnlyWhenRolledOver == false) || model.isRollover())) {
+      g.fillRect(x, y, textRect.width, 1);
+    }
+  }
 }

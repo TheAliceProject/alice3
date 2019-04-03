@@ -60,115 +60,115 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class RecentProjectsListData extends AbstractMutableListData<URI> {
-	private static class SingletonHolder {
-		private static RecentProjectsListData instance = new RecentProjectsListData();
-	}
+  private static class SingletonHolder {
+    private static RecentProjectsListData instance = new RecentProjectsListData();
+  }
 
-	public static RecentProjectsListData getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static RecentProjectsListData getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final List<URI> values;
+  private final List<URI> values;
 
-	private RecentProjectsListData() {
-		super( UriCodec.SINGLETON );
-		URI[] array = PreferenceManager.decodeListData( this.getPreferenceKey(), this.getItemCodec(), new URI[] {} );
+  private RecentProjectsListData() {
+    super(UriCodec.SINGLETON);
+    URI[] array = PreferenceManager.decodeListData(this.getPreferenceKey(), this.getItemCodec(), new URI[] {});
 
-		List<URI> existingFileUris = Lists.newLinkedList();
-		for( URI uri : array ) {
-			try {
-				File file = new File( uri );
-				if( file.exists() ) {
-					existingFileUris.add( uri );
-				} else {
-					Logger.errln( "file does not exist for:", uri );
-				}
-			} catch( Throwable t ) {
-				Logger.throwable( t, uri );
-				//note: do not throw
-			}
-		}
+    List<URI> existingFileUris = Lists.newLinkedList();
+    for (URI uri : array) {
+      try {
+        File file = new File(uri);
+        if (file.exists()) {
+          existingFileUris.add(uri);
+        } else {
+          Logger.errln("file does not exist for:", uri);
+        }
+      } catch (Throwable t) {
+        Logger.throwable(t, uri);
+        //note: do not throw
+      }
+    }
 
-		this.values = Lists.newCopyOnWriteArrayList( existingFileUris );
-		PreferenceManager.registerListData( this );
-	}
+    this.values = Lists.newCopyOnWriteArrayList(existingFileUris);
+    PreferenceManager.registerListData(this);
+  }
 
-	@Override
-	public boolean contains( URI item ) {
-		return this.values.contains( item );
-	}
+  @Override
+  public boolean contains(URI item) {
+    return this.values.contains(item);
+  }
 
-	@Override
-	public int getItemCount() {
-		return this.values.size();
-	}
+  @Override
+  public int getItemCount() {
+    return this.values.size();
+  }
 
-	@Override
-	public URI getItemAt( int index ) {
-		return this.values.get( index );
-	}
+  @Override
+  public URI getItemAt(int index) {
+    return this.values.get(index);
+  }
 
-	@Override
-	public Iterator<URI> iterator() {
-		return this.values.iterator();
-	}
+  @Override
+  public Iterator<URI> iterator() {
+    return this.values.iterator();
+  }
 
-	@Override
-	public void internalAddItem( int index, URI item ) {
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public void internalAddItem(int index, URI item) {
+    throw new UnsupportedOperationException();
+  }
 
-	@Override
-	public void internalRemoveItem( URI item ) {
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public void internalRemoveItem(URI item) {
+    throw new UnsupportedOperationException();
+  }
 
-	@Override
-	public void internalSetAllItems( Collection<URI> items ) {
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public void internalSetAllItems(Collection<URI> items) {
+    throw new UnsupportedOperationException();
+  }
 
-	@Override
-	public void internalSetItemAt( int index, URI item ) {
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public void internalSetItemAt(int index, URI item) {
+    throw new UnsupportedOperationException();
+  }
 
-	@Override
-	public int indexOf( URI item ) {
-		return this.values.indexOf( item );
-	}
+  @Override
+  public int indexOf(URI item) {
+    return this.values.indexOf(item);
+  }
 
-	@Override
-	public URI[] toArray( Class<URI> componentType ) {
-		return ArrayUtilities.createArray( this.values, componentType );
-	}
+  @Override
+  public URI[] toArray(Class<URI> componentType) {
+    return ArrayUtilities.createArray(this.values, componentType);
+  }
 
-	private void addFile( File file ) {
-		if( file != null ) {
-			final int N = RecentProjectCountState.getInstance().getValue();
-			if( N > 0 ) {
-				URI uri = file.toURI();
-				if( this.values.contains( uri ) ) {
-					this.values.remove( uri );
-				}
-				this.values.add( 0, uri );
-				while( this.values.size() > N ) {
-					this.values.remove( this.values.size() - 1 );
-				}
-			} else {
-				this.values.clear();
-			}
-			this.fireContentsChanged();
-		} else {
-			Logger.severe( file );
-		}
-	}
+  private void addFile(File file) {
+    if (file != null) {
+      final int N = RecentProjectCountState.getInstance().getValue();
+      if (N > 0) {
+        URI uri = file.toURI();
+        if (this.values.contains(uri)) {
+          this.values.remove(uri);
+        }
+        this.values.add(0, uri);
+        while (this.values.size() > N) {
+          this.values.remove(this.values.size() - 1);
+        }
+      } else {
+        this.values.clear();
+      }
+      this.fireContentsChanged();
+    } else {
+      Logger.severe(file);
+    }
+  }
 
-	public void handleOpen( File file ) {
-		this.addFile( file );
-	}
+  public void handleOpen(File file) {
+    this.addFile(file);
+  }
 
-	public void handleSave( File file ) {
-		this.addFile( file );
-	}
+  public void handleSave(File file) {
+    this.addFile(file);
+  }
 }

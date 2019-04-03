@@ -51,30 +51,30 @@ import java.awt.image.BufferedImage;
  * @author Dennis Cosgrove
  */
 /*package-private*/class NrImageBuffer implements ImageBuffer {
-	public NrImageBuffer( Color4f backgroundColor ) {
-		this.backgroundColor = backgroundColor;
-	}
+  public NrImageBuffer(Color4f backgroundColor) {
+    this.backgroundColor = backgroundColor;
+  }
 
-	@Override
-	public Color4f getBackgroundColor() {
-		return this.backgroundColor;
-	}
+  @Override
+  public Color4f getBackgroundColor() {
+    return this.backgroundColor;
+  }
 
-	@Override
-	public BufferedImage getImage() {
-		return null;
-	}
+  @Override
+  public BufferedImage getImage() {
+    return null;
+  }
 
-	@Override
-	public Object getImageLock() {
-		return this.imageLock;
-	}
+  @Override
+  public Object getImageLock() {
+    return this.imageLock;
+  }
 
-	@Override
-	public boolean isRightSideUp() {
-		return true;
-	}
+  @Override
+  public boolean isRightSideUp() {
+    return true;
+  }
 
-	private final Object imageLock = "imageLock";
-	private final Color4f backgroundColor;
+  private final Object imageLock = "imageLock";
+  private final Color4f backgroundColor;
 }

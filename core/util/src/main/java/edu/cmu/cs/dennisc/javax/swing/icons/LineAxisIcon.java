@@ -50,35 +50,35 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public final class LineAxisIcon implements Icon {
-	private final Icon[] icons;
+  private final Icon[] icons;
 
-	public LineAxisIcon( Icon... icons ) {
-		this.icons = icons;
-	}
+  public LineAxisIcon(Icon... icons) {
+    this.icons = icons;
+  }
 
-	@Override
-	public int getIconWidth() {
-		int rv = 0;
-		for( Icon icon : this.icons ) {
-			rv += icon.getIconWidth();
-		}
-		return rv;
-	}
+  @Override
+  public int getIconWidth() {
+    int rv = 0;
+    for (Icon icon : this.icons) {
+      rv += icon.getIconWidth();
+    }
+    return rv;
+  }
 
-	@Override
-	public int getIconHeight() {
-		int rv = 0;
-		for( Icon icon : this.icons ) {
-			rv = Math.max( rv, icon.getIconHeight() );
-		}
-		return rv;
-	}
+  @Override
+  public int getIconHeight() {
+    int rv = 0;
+    for (Icon icon : this.icons) {
+      rv = Math.max(rv, icon.getIconHeight());
+    }
+    return rv;
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		for( Icon icon : this.icons ) {
-			icon.paintIcon( c, g, x, y );
-			x += icon.getIconWidth();
-		}
-	}
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    for (Icon icon : this.icons) {
+      icon.paintIcon(c, g, x, y);
+      x += icon.getIconWidth();
+    }
+  }
 }

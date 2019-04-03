@@ -50,18 +50,18 @@ import org.lgna.croquet.triggers.Trigger;
  * @author Dennis Cosgrove
  */
 public class MenuItemSelectStep extends PrepStep<MenuItemPrepModel> {
-	static void createAndAddToActivity( UserActivity parent, MenuSelection selection, Trigger trigger ) {
-		new MenuItemSelectStep( parent, selection, trigger );
-	}
+  static void createAndAddToActivity(UserActivity parent, MenuSelection selection, Trigger trigger) {
+    new MenuItemSelectStep(parent, selection, trigger);
+  }
 
-	private final MenuSelection selection;
+  private final MenuSelection selection;
 
-	private MenuItemSelectStep( UserActivity parent, MenuSelection selection, Trigger trigger ) {
-		super( parent, selection.getLastMenuItemPrepModel(), trigger );
-		this.selection = selection;
-	}
+  private MenuItemSelectStep(UserActivity parent, MenuSelection selection, Trigger trigger) {
+    super(parent, selection.getLastMenuItemPrepModel(), trigger);
+    this.selection = selection;
+  }
 
-	MenuSelection getMenuSelection() {
-		return selection;
-	}
+  MenuSelection getMenuSelection() {
+    return selection;
+  }
 }

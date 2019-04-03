@@ -47,6 +47,6 @@ package org.lgna.ik.poser.croquet;
  */
 public interface StatusUpdateListener {
 
-	public void refreshStatus();
+  public void refreshStatus();
 
 }

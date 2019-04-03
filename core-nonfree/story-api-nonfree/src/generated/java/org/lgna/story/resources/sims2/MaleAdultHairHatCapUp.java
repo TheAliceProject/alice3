@@ -44,19 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultHairHatCapUp implements MaleAdultHair, MaleElderHair {
-	BROWN_HAT,
-	BLUE_BROWN_HAT,
-	RED_HAT,
-	BLACK_HAT,
-	GREY_HAT;
+  BROWN_HAT, BLUE_BROWN_HAT, RED_HAT, BLACK_HAT, GREY_HAT;
 
-	@Override
-	public Boolean hasHair() {
-		return false;
-	}
+  @Override
+  public Boolean hasHair() {
+    return false;
+  }
 
-	@Override
-	public Boolean hasHat() {
-		return true;
-	}
+  @Override
+  public Boolean hasHat() {
+    return true;
+  }
 }

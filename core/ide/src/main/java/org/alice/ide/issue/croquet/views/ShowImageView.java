@@ -56,12 +56,12 @@ import java.awt.Image;
  * @author Dennis Cosgrove
  */
 public class ShowImageView extends BorderPanel {
-	public ShowImageView( ShowImageComposite composite ) {
-		super( composite );
-		Image image = composite.getImage();
-		int width = ImageUtilities.getWidth( image );
-		int height = ImageUtilities.getWidth( image );
-		this.addCenterComponent( new ScrollPane( new Label( new ImageIcon( image ) ) ) );
-		this.setPreferredSize( new Dimension( width / 2, height / 2 ) );
-	}
+  public ShowImageView(ShowImageComposite composite) {
+    super(composite);
+    Image image = composite.getImage();
+    int width = ImageUtilities.getWidth(image);
+    int height = ImageUtilities.getWidth(image);
+    this.addCenterComponent(new ScrollPane(new Label(new ImageIcon(image))));
+    this.setPreferredSize(new Dimension(width / 2, height / 2));
+  }
 }

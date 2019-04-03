@@ -52,75 +52,75 @@ import java.util.Collections;
  * @author Dennis Cosgrove
  */
 public abstract class TreeDirectoryViewController<T> extends PanelViewController<SingleSelectTreeState<T>> {
-	private static class InternalPanel<T> extends MigPanel {
-		InternalPanel() {
-			super( null, "insets 0", "", "" );
-		}
+  private static class InternalPanel<T> extends MigPanel {
+    InternalPanel() {
+      super(null, "insets 0", "", "");
+    }
 
-		@Override
-		protected void internalRefresh() {
-			this.internalRemoveAllComponents();
+    @Override
+    protected void internalRefresh() {
+      this.internalRemoveAllComponents();
 
-			//todo
-			TreeDirectoryViewController<T> owner = (TreeDirectoryViewController<T>)this.getParent();
-			if( owner != null ) {
-				java.util.List<T> children = owner.getChildren();
-				if( children != null ) {
-					for( T child : children ) {
-						SwingComponentView<?> component = owner.getComponentFor( child );
-						if( component != null ) {
-							this.internalAddComponent( component );
-						}
-					}
-				}
-			}
-		}
-	}
+      //todo
+      TreeDirectoryViewController<T> owner = (TreeDirectoryViewController<T>) this.getParent();
+      if (owner != null) {
+        java.util.List<T> children = owner.getChildren();
+        if (children != null) {
+          for (T child : children) {
+            SwingComponentView<?> component = owner.getComponentFor(child);
+            if (component != null) {
+              this.internalAddComponent(component);
+            }
+          }
+        }
+      }
+    }
+  }
 
-	private final State.ValueListener<T> valueListener = new State.ValueListener<T>() {
-		@Override
-		public void changing( State<T> state, T prevValue, T nextValue ) {
-		}
+  private final State.ValueListener<T> valueListener = new State.ValueListener<T>() {
+    @Override
+    public void changing(State<T> state, T prevValue, T nextValue) {
+    }
 
-		@Override
-		public void changed( State<T> state, T prevValue, T nextValue ) {
-			TreeDirectoryViewController.this.modelUpdated();
-		}
-	};
+    @Override
+    public void changed(State<T> state, T prevValue, T nextValue) {
+      TreeDirectoryViewController.this.modelUpdated();
+    }
+  };
 
-	public TreeDirectoryViewController( SingleSelectTreeState<T> model ) {
-		super( model, new InternalPanel<T>() );
+  public TreeDirectoryViewController(SingleSelectTreeState<T> model) {
+    super(model, new InternalPanel<T>());
 
-	}
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getModel().addValueListener( this.valueListener );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.getModel().addValueListener(this.valueListener);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.getModel().removeValueListener( this.valueListener );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.getModel().removeValueListener(this.valueListener);
+    super.handleUndisplayable();
+  }
 
-	protected abstract SwingComponentView<?> getComponentFor( T value );
+  protected abstract SwingComponentView<?> getComponentFor(T value);
 
-	protected java.util.List<T> getChildren() {
-		SingleSelectTreeState<T> model = this.getModel();
-		T node = model.getSelectedNode();
-		if( node != null ) {
-			if( model.isLeaf( node ) ) {
-				node = model.getParent( node );
-			}
-			return model.getChildren( node );
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  protected java.util.List<T> getChildren() {
+    SingleSelectTreeState<T> model = this.getModel();
+    T node = model.getSelectedNode();
+    if (node != null) {
+      if (model.isLeaf(node)) {
+        node = model.getParent(node);
+      }
+      return model.getChildren(node);
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
-	public void modelUpdated() {
-		getInternalPanel().refreshLater();
-	}
+  public void modelUpdated() {
+    getInternalPanel().refreshLater();
+  }
 }

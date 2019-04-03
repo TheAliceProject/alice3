@@ -56,21 +56,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class MinMaxCascadeMenu extends ExpressionCascadeMenu<MethodInvocation> {
-	private static class SingletonHolder {
-		private static MinMaxCascadeMenu instance = new MinMaxCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static MinMaxCascadeMenu instance = new MinMaxCascadeMenu();
+  }
 
-	public static MinMaxCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static MinMaxCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private MinMaxCascadeMenu() {
-		super( UUID.fromString( "602b183c-ab38-43f7-80d1-119a3586d9c1" ) );
-	}
+  private MinMaxCascadeMenu() {
+    super(UUID.fromString("602b183c-ab38-43f7-80d1-119a3586d9c1"));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> context ) {
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "min", Double.TYPE, Double.TYPE ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "max", Double.TYPE, Double.TYPE ) );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> context) {
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "min", Double.TYPE, Double.TYPE));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "max", Double.TYPE, Double.TYPE));
+  }
 }

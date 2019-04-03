@@ -47,30 +47,30 @@ package edu.cmu.cs.dennisc.pattern;
  */
 
 public class NameEndsWithCriterion extends NameCriterion {
-	private String m_target;
-	private boolean m_isSensitiveToCase;
+  private String m_target;
+  private boolean m_isSensitiveToCase;
 
-	public NameEndsWithCriterion( String target, boolean isSensitiveToCase ) {
-		m_target = target;
-		m_isSensitiveToCase = isSensitiveToCase;
-	}
+  public NameEndsWithCriterion(String target, boolean isSensitiveToCase) {
+    m_target = target;
+    m_isSensitiveToCase = isSensitiveToCase;
+  }
 
-	@Override
-	public boolean acceptName( String name ) {
-		boolean isAccepted;
-		if( name != null ) {
-			if( m_isSensitiveToCase ) {
-				isAccepted = name.endsWith( m_target );
-			} else {
-				if( m_target != null ) {
-					isAccepted = name.toLowerCase().endsWith( m_target.toLowerCase() );
-				} else {
-					isAccepted = false;
-				}
-			}
-		} else {
-			isAccepted = m_target == null;
-		}
-		return isAccepted;
-	}
+  @Override
+  public boolean acceptName(String name) {
+    boolean isAccepted;
+    if (name != null) {
+      if (m_isSensitiveToCase) {
+        isAccepted = name.endsWith(m_target);
+      } else {
+        if (m_target != null) {
+          isAccepted = name.toLowerCase().endsWith(m_target.toLowerCase());
+        } else {
+          isAccepted = false;
+        }
+      }
+    } else {
+      isAccepted = m_target == null;
+    }
+    return isAccepted;
+  }
 }

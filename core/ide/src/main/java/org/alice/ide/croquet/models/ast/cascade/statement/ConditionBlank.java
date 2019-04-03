@@ -54,21 +54,21 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class ConditionBlank extends ExpressionBlank {
-	private static class SingletonHolder {
-		private static ConditionBlank instance = new ConditionBlank();
-	}
+  private static class SingletonHolder {
+    private static ConditionBlank instance = new ConditionBlank();
+  }
 
-	public static ConditionBlank getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ConditionBlank getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ConditionBlank() {
-		super( Boolean.class );
-	}
+  private ConditionBlank() {
+    super(Boolean.class);
+  }
 
-	@Override
-	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<Expression> blankNode ) {
-		children.add( ConditionSeparator.getInstance() );
-		super.updateChildren( children, blankNode );
-	}
+  @Override
+  protected void updateChildren(List<CascadeBlankChild> children, BlankNode<Expression> blankNode) {
+    children.add(ConditionSeparator.getInstance());
+    super.updateChildren(children, blankNode);
+  }
 }

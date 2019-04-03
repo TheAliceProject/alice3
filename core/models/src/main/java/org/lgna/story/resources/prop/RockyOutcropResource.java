@@ -32,31 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum RockyOutcropResource implements PropResource {
-	LARGE,
-	MEDIUM,
-	SMALL;
+  LARGE, MEDIUM, SMALL;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	RockyOutcropResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  RockyOutcropResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	RockyOutcropResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  RockyOutcropResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

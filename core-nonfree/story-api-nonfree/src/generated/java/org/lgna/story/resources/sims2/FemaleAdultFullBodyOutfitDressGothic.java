@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultFullBodyOutfitDressGothic implements FemaleAdultFullBodyOutfit {
-	BLOODY_RED,
-	DEADLY_BLACK;
+  BLOODY_RED, DEADLY_BLACK
 
 }

@@ -32,31 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum CoinPileResource implements PropResource {
-	SQUARE,
-	TRAPEZOID,
-	CIRCLE;
+  SQUARE, TRAPEZOID, CIRCLE;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	CoinPileResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  CoinPileResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	CoinPileResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  CoinPileResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

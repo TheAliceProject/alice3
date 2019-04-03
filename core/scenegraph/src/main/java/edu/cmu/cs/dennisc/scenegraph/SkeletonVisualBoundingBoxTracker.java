@@ -48,5 +48,5 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
  * @author Dave Culyba
  */
 public interface SkeletonVisualBoundingBoxTracker {
-	public AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox rv );
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv);
 }

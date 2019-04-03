@@ -56,27 +56,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class InstanceCreationFillInWithGalleryResourceParameter extends AbstractInstanceCreationFillIn {
-	private static Map<AbstractConstructor, InstanceCreationFillInWithGalleryResourceParameter> map = Maps.newHashMap();
+  private static Map<AbstractConstructor, InstanceCreationFillInWithGalleryResourceParameter> map = Maps.newHashMap();
 
-	public static synchronized InstanceCreationFillInWithGalleryResourceParameter getInstance( AbstractConstructor constructor ) {
-		InstanceCreationFillInWithGalleryResourceParameter rv = map.get( constructor );
-		if( rv != null ) {
-			//pass
-		} else {
-			List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
-			GalleryResourceBlank[] blanks = new GalleryResourceBlank[ parameters.size() ];
-			int i = 0;
-			for( AbstractParameter parameter : constructor.getRequiredParameters() ) {
-				blanks[ i ] = GalleryResourceBlank.getInstance( parameter.getValueType() );
-				i++;
-			}
-			rv = new InstanceCreationFillInWithGalleryResourceParameter( constructor, blanks );
-			map.put( constructor, rv );
-		}
-		return rv;
-	}
+  public static synchronized InstanceCreationFillInWithGalleryResourceParameter getInstance(AbstractConstructor constructor) {
+    InstanceCreationFillInWithGalleryResourceParameter rv = map.get(constructor);
+    if (rv != null) {
+      //pass
+    } else {
+      List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
+      GalleryResourceBlank[] blanks = new GalleryResourceBlank[parameters.size()];
+      int i = 0;
+      for (AbstractParameter parameter : constructor.getRequiredParameters()) {
+        blanks[i] = GalleryResourceBlank.getInstance(parameter.getValueType());
+        i++;
+      }
+      rv = new InstanceCreationFillInWithGalleryResourceParameter(constructor, blanks);
+      map.put(constructor, rv);
+    }
+    return rv;
+  }
 
-	private InstanceCreationFillInWithGalleryResourceParameter( AbstractConstructor constructor, GalleryResourceBlank... blanks ) {
-		super( UUID.fromString( "98dde1d1-ad25-463a-bbbf-67e96e11f87f" ), constructor, blanks );
-	}
+  private InstanceCreationFillInWithGalleryResourceParameter(AbstractConstructor constructor, GalleryResourceBlank... blanks) {
+    super(UUID.fromString("98dde1d1-ad25-463a-bbbf-67e96e11f87f"), constructor, blanks);
+  }
 }

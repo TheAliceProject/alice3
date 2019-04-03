@@ -3,21 +3,21 @@ package org.lgna.common;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ComponentExecutor implements Runnable{
-	private static ExecutorService executor = Executors.newCachedThreadPool();
+public class ComponentExecutor implements Runnable {
+  private static ExecutorService executor = Executors.newCachedThreadPool();
 
-	private final Runnable target;
+  private final Runnable target;
 
-	public ComponentExecutor( Runnable target, String description ) {
-		this.target = target;
-	}
+  public ComponentExecutor(Runnable target, String description) {
+    this.target = target;
+  }
 
-	@Override
-	public void run() {
-		ProgramClosedException.invokeAndCatchProgramClosedException( this.target );
-	}
+  @Override
+  public void run() {
+    ProgramClosedException.invokeAndCatchProgramClosedException(this.target);
+  }
 
-	public synchronized void start() {
-		executor.submit(this);
-	}
+  public synchronized void start() {
+    executor.submit(this);
+  }
 }

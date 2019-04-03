@@ -55,45 +55,45 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class RenameComposite<V extends RenamePanel> extends SimpleOperationInputDialogCoreComposite<V> {
-	private final NameValidator nameValidator;
-	private final StringState nameState = this.createStringState( "nameState" );
-	private final ErrorStatus errorStatus = this.createErrorStatus( "errorStatus" );
+  private final NameValidator nameValidator;
+  private final StringState nameState = this.createStringState("nameState");
+  private final ErrorStatus errorStatus = this.createErrorStatus("errorStatus");
 
-	public RenameComposite( UUID migrationId, NameValidator nameValidator ) {
-		super( migrationId, Application.PROJECT_GROUP );
-		this.nameValidator = nameValidator;
-	}
+  public RenameComposite(UUID migrationId, NameValidator nameValidator) {
+    super(migrationId, Application.PROJECT_GROUP);
+    this.nameValidator = nameValidator;
+  }
 
-	protected NameValidator getNameValidator() {
-		return this.nameValidator;
-	}
+  protected NameValidator getNameValidator() {
+    return this.nameValidator;
+  }
 
-	public StringState getNameState() {
-		return this.nameState;
-	}
+  public StringState getNameState() {
+    return this.nameState;
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		if( nameValidator != null ) {
-			String candidate = this.nameState.getValue();
-			String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-			if( explanation != null ) {
-				errorStatus.setText( explanation );
-				return errorStatus;
-			} else {
-				return IS_GOOD_TO_GO_STATUS;
-			}
-		} else {
-			return IS_GOOD_TO_GO_STATUS;
-		}
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    if (nameValidator != null) {
+      String candidate = this.nameState.getValue();
+      String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled(candidate);
+      if (explanation != null) {
+        errorStatus.setText(explanation);
+        return errorStatus;
+      } else {
+        return IS_GOOD_TO_GO_STATUS;
+      }
+    } else {
+      return IS_GOOD_TO_GO_STATUS;
+    }
+  }
 
-	protected abstract String getInitialValue();
+  protected abstract String getInitialValue();
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		this.nameState.setValueTransactionlessly( this.getInitialValue() );
-		this.nameState.selectAll();
-		super.handlePreShowDialog( dialog );
-	}
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    this.nameState.setValueTransactionlessly(this.getInitialValue());
+    this.nameState.selectAll();
+    super.handlePreShowDialog(dialog);
+  }
 }

@@ -51,15 +51,15 @@ import org.lgna.croquet.views.TextArea;
  * @author Dennis Cosgrove
  */
 public class WindowsSystemAssessmentToolPane extends MigPanel {
-	public WindowsSystemAssessmentToolPane( WindowsSystemAssessmentToolComposite composite ) {
-		super( composite, "fill", "[grow]", "[grow 0, shrink 0][grow 0, shrink 0][grow 100, shrink 100]" );
-		this.addComponent( composite.getHeader().createLabel(), "wrap" );
-		this.addComponent( composite.getExecuteWinsatOperation().createButton(), "wrap" );
+  public WindowsSystemAssessmentToolPane(WindowsSystemAssessmentToolComposite composite) {
+    super(composite, "fill", "[grow]", "[grow 0, shrink 0][grow 0, shrink 0][grow 100, shrink 100]");
+    this.addComponent(composite.getHeader().createLabel(), "wrap");
+    this.addComponent(composite.getExecuteWinsatOperation().createButton(), "wrap");
 
-		TextArea textArea = composite.getStardardOutAndStandardErrorState().createTextArea();
-		textArea.setEditable( false );
-		ScrollPane scrollPane = new ScrollPane( textArea );
-		scrollPane.setMinimumPreferredHeight( 300 );
-		this.addComponent( scrollPane, "grow" );
-	}
+    TextArea textArea = composite.getStardardOutAndStandardErrorState().createTextArea();
+    textArea.setEditable(false);
+    ScrollPane scrollPane = new ScrollPane(textArea);
+    scrollPane.setMinimumPreferredHeight(300);
+    this.addComponent(scrollPane, "grow");
+  }
 }

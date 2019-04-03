@@ -49,45 +49,45 @@ import edu.cmu.cs.dennisc.color.Color4f;
  */
 public abstract class ColorTargetBasedAnimation extends TargetBasedFrameObserver<Color4f> {
 
-	public ColorTargetBasedAnimation( Color4f currentValue ) {
-		super( currentValue );
-	}
+  public ColorTargetBasedAnimation(Color4f currentValue) {
+    super(currentValue);
+  }
 
-	public ColorTargetBasedAnimation( Color4f currentValue, double speed ) {
-		super( currentValue, speed );
-	}
+  public ColorTargetBasedAnimation(Color4f currentValue, double speed) {
+    super(currentValue, speed);
+  }
 
-	public ColorTargetBasedAnimation( Color4f currentValue, Color4f targetValue ) {
-		super( currentValue, targetValue );
-	}
+  public ColorTargetBasedAnimation(Color4f currentValue, Color4f targetValue) {
+    super(currentValue, targetValue);
+  }
 
-	public ColorTargetBasedAnimation( Color4f currentValue, Color4f targetValue, double speed ) {
-		super( currentValue, targetValue, speed );
-	}
+  public ColorTargetBasedAnimation(Color4f currentValue, Color4f targetValue, double speed) {
+    super(currentValue, targetValue, speed);
+  }
 
-	@Override
-	protected boolean isCloseEnoughToBeDone() {
-		double rDif = Math.abs( this.currentValue.red - this.targetValue.red );
-		double gDif = Math.abs( this.currentValue.green - this.targetValue.green );
-		double bDif = Math.abs( this.currentValue.blue - this.targetValue.blue );
-		double aDif = Math.abs( this.currentValue.alpha - this.targetValue.alpha );
+  @Override
+  protected boolean isCloseEnoughToBeDone() {
+    double rDif = Math.abs(this.currentValue.red - this.targetValue.red);
+    double gDif = Math.abs(this.currentValue.green - this.targetValue.green);
+    double bDif = Math.abs(this.currentValue.blue - this.targetValue.blue);
+    double aDif = Math.abs(this.currentValue.alpha - this.targetValue.alpha);
 
-		return ( Math.sqrt( ( rDif * rDif ) + ( gDif * gDif ) + ( bDif * bDif ) + ( aDif * aDif ) ) < MIN_DISTANCE_TO_DONE );
-	}
+    return (Math.sqrt((rDif * rDif) + (gDif * gDif) + (bDif * bDif) + (aDif * aDif)) < MIN_DISTANCE_TO_DONE);
+  }
 
-	@Override
-	protected Color4f interpolate( Color4f v0, Color4f v1, double deltaSinceLastUpdate ) {
-		return Color4f.createInterpolation( v0, v1, (float)( deltaSinceLastUpdate * this.speed ) );
-	}
+  @Override
+  protected Color4f interpolate(Color4f v0, Color4f v1, double deltaSinceLastUpdate) {
+    return Color4f.createInterpolation(v0, v1, (float) (deltaSinceLastUpdate * this.speed));
+  }
 
-	@Override
-	public boolean isDone() {
-		return this.currentValue.equals( this.targetValue );
-	}
+  @Override
+  public boolean isDone() {
+    return this.currentValue.equals(this.targetValue);
+  }
 
-	@Override
-	protected Color4f newE( Color4f other ) {
-		return new Color4f( other );
-	}
+  @Override
+  protected Color4f newE(Color4f other) {
+    return new Color4f(other);
+  }
 
 }

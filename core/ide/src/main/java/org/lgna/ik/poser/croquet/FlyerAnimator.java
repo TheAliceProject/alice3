@@ -55,18 +55,18 @@ import java.util.UUID;
  */
 public class FlyerAnimator extends AnimatorComposite<SFlyer> {
 
-	public FlyerAnimator( NamedUserType valueType, UserMethod editedMethod ) {
-		super( UUID.fromString( "4ac54b7b-1f08-4596-83e0-116122731209" ), valueType, editedMethod );
-	}
+  public FlyerAnimator(NamedUserType valueType, UserMethod editedMethod) {
+    super(UUID.fromString("4ac54b7b-1f08-4596-83e0-116122731209"), valueType, editedMethod);
+  }
 
-	@Override
-	protected AbstractPoserScene<SFlyer> initScene() {
-		return new FlyerPoserScene( this.getModel() );
-	}
+  @Override
+  protected AbstractPoserScene<SFlyer> initScene() {
+    return new FlyerPoserScene(this.getModel());
+  }
 
-	@Override
-	public Class<SFlyer> getModelClass() {
-		return SFlyer.class;
-	}
+  @Override
+  public Class<SFlyer> getModelClass() {
+    return SFlyer.class;
+  }
 
 }

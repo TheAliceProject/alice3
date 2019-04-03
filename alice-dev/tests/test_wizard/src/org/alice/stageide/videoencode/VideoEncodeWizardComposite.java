@@ -47,38 +47,43 @@ package org.alice.stageide.videoencode;
  * @author Dennis Cosgrove
  */
 public class VideoEncodeWizardComposite extends org.lgna.croquet.OperationWizardDialogCoreComposite {
-	private static class SingletonHolder {
-		private static VideoEncodeWizardComposite instance = new VideoEncodeWizardComposite();
-	}
-	public static VideoEncodeWizardComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	
-	private final RecordEventsPage recordEventsPage = new RecordEventsPage();
-	private final CaptureImagesPage captureImagesPage = new CaptureImagesPage();
-	private final UploadPage uploadPage = new UploadPage();
-	private VideoEncodeWizardComposite() {
-		super( java.util.UUID.fromString( "cc531529-314d-457c-bb30-d707dfd2b8d8" ), org.alice.ide.IDE.EXPORT_GROUP );
-		this.addPage( this.recordEventsPage );
-		this.addPage( this.captureImagesPage );
-		this.addPage( this.uploadPage );
-	}
-	@Override
-	protected boolean isAdornmentDesired() {
-		return false;
-	}
-	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return null;
-	}
-	public static void main( String[] args ) throws Exception {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-		}
-		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
-		VideoEncodeWizardComposite composite = new VideoEncodeWizardComposite();
-		composite.getOperation().fire();
-		System.exit( 0 );
-	}
+  private static class SingletonHolder {
+    private static VideoEncodeWizardComposite instance = new VideoEncodeWizardComposite();
+  }
+
+  public static VideoEncodeWizardComposite getInstance() {
+    return SingletonHolder.instance;
+  }
+
+  private final RecordEventsPage recordEventsPage = new RecordEventsPage();
+  private final CaptureImagesPage captureImagesPage = new CaptureImagesPage();
+  private final UploadPage uploadPage = new UploadPage();
+
+  private VideoEncodeWizardComposite() {
+    super(java.util.UUID.fromString("cc531529-314d-457c-bb30-d707dfd2b8d8"), org.alice.ide.IDE.EXPORT_GROUP);
+    this.addPage(this.recordEventsPage);
+    this.addPage(this.captureImagesPage);
+    this.addPage(this.uploadPage);
+  }
+
+  @Override
+  protected boolean isAdornmentDesired() {
+    return false;
+  }
+
+  @Override
+  protected org.lgna.croquet.edits.Edit createEdit(org.lgna.croquet.history.CompletionStep<?> completionStep) {
+    return null;
+  }
+
+  public static void main(String[] args) throws Exception {
+    javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed("Nimbus");
+    if (lookAndFeelInfo != null) {
+      javax.swing.UIManager.setLookAndFeel(lookAndFeelInfo.getClassName());
+    }
+    org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
+    VideoEncodeWizardComposite composite = new VideoEncodeWizardComposite();
+    composite.getOperation().fire();
+    System.exit(0);
+  }
 }

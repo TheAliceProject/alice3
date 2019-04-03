@@ -51,15 +51,15 @@ import org.lgna.project.ast.Node;
  * @author Dennis Cosgrove
  */
 public abstract class NodePropertyCrawler implements Crawler {
-	protected abstract void visitNodeProperty( Node node, InstanceProperty<?> property );
+  protected abstract void visitNodeProperty(Node node, InstanceProperty<?> property);
 
-	@Override
-	public final void visit( Crawlable crawlable ) {
-		if( crawlable instanceof Node ) {
-			Node node = (Node)crawlable;
-			for( InstanceProperty<?> property : node.getProperties() ) {
-				this.visitNodeProperty( node, property );
-			}
-		}
-	}
+  @Override
+  public final void visit(Crawlable crawlable) {
+    if (crawlable instanceof Node) {
+      Node node = (Node) crawlable;
+      for (InstanceProperty<?> property : node.getProperties()) {
+        this.visitNodeProperty(node, property);
+      }
+    }
+  }
 }

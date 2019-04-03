@@ -47,6 +47,6 @@ package org.lgna.story.resources.sims2;
  */
 public interface LocalizedResource {
 
-	public String getLocalizedDisplayText();
+  public String getLocalizedDisplayText();
 
 }

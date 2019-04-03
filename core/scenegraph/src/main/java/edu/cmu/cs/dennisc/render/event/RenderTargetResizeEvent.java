@@ -48,20 +48,20 @@ import edu.cmu.cs.dennisc.render.RenderTarget;
  * @author Dennis Cosgrove
  */
 public class RenderTargetResizeEvent extends RenderTargetEvent {
-	public RenderTargetResizeEvent( RenderTarget renderTarget, int width, int height ) {
-		super( renderTarget );
-		this.width = width;
-		this.height = height;
-	}
+  public RenderTargetResizeEvent(RenderTarget renderTarget, int width, int height) {
+    super(renderTarget);
+    this.width = width;
+    this.height = height;
+  }
 
-	public int getWidth() {
-		return this.width;
-	}
+  public int getWidth() {
+    return this.width;
+  }
 
-	public int getHeight() {
-		return this.height;
-	}
+  public int getHeight() {
+    return this.height;
+  }
 
-	private final int width;
-	private final int height;
+  private final int width;
+  private final int height;
 }

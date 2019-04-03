@@ -32,41 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum ClothingRackResource implements PropResource {
-	VALUE_CLOTHES1( ImplementationAndVisualType.SIMS2 ),
-	VALUE_CLOTHES2( ImplementationAndVisualType.SIMS2 ),
-	VALUE_CLOTHES3( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_BLUE( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_BROWN( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_RED( ImplementationAndVisualType.SIMS2 ),
-	VALUE_DRESSES_DRESSES1( ImplementationAndVisualType.SIMS2 ),
-	VALUE_DRESSES_DRESSES2( ImplementationAndVisualType.SIMS2 ),
-	VALUE_DRESSES_DRESSES3( ImplementationAndVisualType.SIMS2 ),
-	VALUE_DRESSES_DRESSES4( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_DRESSES_BLUE( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_DRESSES_GREEN( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_DRESSES_RED( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_DRESSES_GRAY( ImplementationAndVisualType.SIMS2 );
+  VALUE_CLOTHES1(ImplementationAndVisualType.SIMS2), VALUE_CLOTHES2(ImplementationAndVisualType.SIMS2), VALUE_CLOTHES3(ImplementationAndVisualType.SIMS2), EXPENSIVE_BLUE(ImplementationAndVisualType.SIMS2), EXPENSIVE_BROWN(ImplementationAndVisualType.SIMS2), EXPENSIVE_RED(ImplementationAndVisualType.SIMS2), VALUE_DRESSES_DRESSES1(ImplementationAndVisualType.SIMS2), VALUE_DRESSES_DRESSES2(ImplementationAndVisualType.SIMS2), VALUE_DRESSES_DRESSES3(ImplementationAndVisualType.SIMS2), VALUE_DRESSES_DRESSES4(ImplementationAndVisualType.SIMS2), EXPENSIVE_DRESSES_BLUE(ImplementationAndVisualType.SIMS2), EXPENSIVE_DRESSES_GREEN(ImplementationAndVisualType.SIMS2), EXPENSIVE_DRESSES_RED(ImplementationAndVisualType.SIMS2), EXPENSIVE_DRESSES_GRAY(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	ClothingRackResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	ClothingRackResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  ClothingRackResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  ClothingRackResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

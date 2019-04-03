@@ -67,105 +67,104 @@ import org.lgna.story.implementation.StandInImp;
 import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
 
 public class GetAGoodLookAtManipulator extends AbstractManipulator implements CameraInformedManipulator {
-	@Override
-	public AbstractCamera getCamera() {
-		return camera;
-	}
+  @Override
+  public AbstractCamera getCamera() {
+    return camera;
+  }
 
-	@Override
-	public CameraView getDesiredCameraView() {
-		return CameraView.PICK_CAMERA;
-	}
+  @Override
+  public CameraView getDesiredCameraView() {
+    return CameraView.PICK_CAMERA;
+  }
 
-	@Override
-	public void setCamera( AbstractCamera camera ) {
-		this.camera = camera;
-		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) ) {
-			this.setManipulatedTransformable( (AbstractTransformable)this.camera.getParent() );
-		}
-	}
+  @Override
+  public void setCamera(AbstractCamera camera) {
+    this.camera = camera;
+    if ((this.camera != null) && (this.camera.getParent() instanceof AbstractTransformable)) {
+      this.setManipulatedTransformable((AbstractTransformable) this.camera.getParent());
+    }
+  }
 
-	@Override
-	public void setDesiredCameraView( CameraView cameraView ) {
-		//this can only be PICK_CAMERA
-	}
+  @Override
+  public void setDesiredCameraView(CameraView cameraView) {
+    //this can only be PICK_CAMERA
+  }
 
-	@Override
-	public void doClickManipulator( InputState endInput, InputState previousInput ) {
-		AbstractTransformable toLookAt = endInput.getClickPickTransformable();
-		if( ( toLookAt != null ) && ( this.camera != null ) ) {
-			SThing toLookAtEntity = EntityImp.getAbstractionFromSgElement( toLookAt );
-			SThing cameraAbstraction = EntityImp.getAbstractionFromSgElement( this.camera );
+  @Override
+  public void doClickManipulator(InputState endInput, InputState previousInput) {
+    AbstractTransformable toLookAt = endInput.getClickPickTransformable();
+    if ((toLookAt != null) && (this.camera != null)) {
+      SThing toLookAtEntity = EntityImp.getAbstractionFromSgElement(toLookAt);
+      SThing cameraAbstraction = EntityImp.getAbstractionFromSgElement(this.camera);
 
-			if( ( cameraAbstraction instanceof SCamera ) && ( this.camera instanceof SymmetricPerspectiveCamera ) &&
-					( toLookAtEntity != cameraAbstraction ) ) {
-				SCamera storytellingCamera = (SCamera)cameraAbstraction;
+      if ((cameraAbstraction instanceof SCamera) && (this.camera instanceof SymmetricPerspectiveCamera) && (toLookAtEntity != cameraAbstraction)) {
+        SCamera storytellingCamera = (SCamera) cameraAbstraction;
 
-				if( GetAGoodLookAtActionOperation.IsValidOperation( storytellingCamera, toLookAtEntity ) ) {
+        if (GetAGoodLookAtActionOperation.IsValidOperation(storytellingCamera, toLookAtEntity)) {
 
-					//Check to see if the last action we did was a GetAGoodLookAt this object. If so, undo it
-					final UserActivity projectUserActivity = IDE.getActiveInstance().getProjectUserActivity();
-					int activityCount = projectUserActivity.getChildActivities().size();
-					if( activityCount > 0 ) {
-						UserActivity lastActivity = projectUserActivity.getChildActivities().get( activityCount - 1 );
-						Edit lastEdit = lastActivity.getEdit();
-						if( lastEdit instanceof GetAGoodLookAtEdit ) {
-							GetAGoodLookAtEdit edit = (GetAGoodLookAtEdit)lastEdit;
-							if( ( edit.getCamera() == storytellingCamera ) && ( edit.getTarget() == toLookAtEntity ) ) {
-								IDE.getActiveInstance().getDocumentFrame().getUndoOperation().fire();
-								return;
-							}
-						}
-					}
+          //Check to see if the last action we did was a GetAGoodLookAt this object. If so, undo it
+          final UserActivity projectUserActivity = IDE.getActiveInstance().getProjectUserActivity();
+          int activityCount = projectUserActivity.getChildActivities().size();
+          if (activityCount > 0) {
+            UserActivity lastActivity = projectUserActivity.getChildActivities().get(activityCount - 1);
+            Edit lastEdit = lastActivity.getEdit();
+            if (lastEdit instanceof GetAGoodLookAtEdit) {
+              GetAGoodLookAtEdit edit = (GetAGoodLookAtEdit) lastEdit;
+              if ((edit.getCamera() == storytellingCamera) && (edit.getTarget() == toLookAtEntity)) {
+                IDE.getActiveInstance().getDocumentFrame().getUndoOperation().fire();
+                return;
+              }
+            }
+          }
 
-					//Check to see if we're already at a "good look" position of the target. If so, don't do anything
-					SymmetricPerspectiveCameraImp cameraImp = EmployeesOnly.getImplementation( storytellingCamera );
-					StandInImp cameraGoal = cameraImp.createGoodVantagePointStandIn( EmployeesOnly.getImplementation( toLookAtEntity ) );
-					AffineMatrix4x4 currentTransform = cameraImp.getAbsoluteTransformation();
-					AffineMatrix4x4 goalTransform = cameraGoal.getAbsoluteTransformation();
-					if( currentTransform.orientation.isWithinReasonableEpsilonOf( goalTransform.orientation ) && currentTransform.translation.isWithinReasonableEpsilonOf( goalTransform.translation ) ) {
-						//Do nothing since we're already where we're supposed to be
-						return;
-					}
+          //Check to see if we're already at a "good look" position of the target. If so, don't do anything
+          SymmetricPerspectiveCameraImp cameraImp = EmployeesOnly.getImplementation(storytellingCamera);
+          StandInImp cameraGoal = cameraImp.createGoodVantagePointStandIn(EmployeesOnly.getImplementation(toLookAtEntity));
+          AffineMatrix4x4 currentTransform = cameraImp.getAbsoluteTransformation();
+          AffineMatrix4x4 goalTransform = cameraGoal.getAbsoluteTransformation();
+          if (currentTransform.orientation.isWithinReasonableEpsilonOf(goalTransform.orientation) && currentTransform.translation.isWithinReasonableEpsilonOf(goalTransform.translation)) {
+            //Do nothing since we're already where we're supposed to be
+            return;
+          }
 
-					//Actually "get a good look at" the target
-					GetAGoodLookAtActionOperation lookAtOperation = new GetAGoodLookAtActionOperation( Application.PROJECT_GROUP, storytellingCamera, toLookAtEntity );
-					lookAtOperation.fire();
-				} else {
-					Logger.warning( "Invlalid operation: " + storytellingCamera + ".GetAGoodLookAt( " + toLookAtEntity + " )" );
-				}
-			} else {
-				Logger.todo( "Implement GetAGoodLookAt for orthographic cameras" );
-			}
-		}
-	}
+          //Actually "get a good look at" the target
+          GetAGoodLookAtActionOperation lookAtOperation = new GetAGoodLookAtActionOperation(Application.PROJECT_GROUP, storytellingCamera, toLookAtEntity);
+          lookAtOperation.fire();
+        } else {
+          Logger.warning("Invlalid operation: " + storytellingCamera + ".GetAGoodLookAt( " + toLookAtEntity + " )");
+        }
+      } else {
+        Logger.todo("Implement GetAGoodLookAt for orthographic cameras");
+      }
+    }
+  }
 
-	@Override
-	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-	}
+  @Override
+  public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
+  }
 
-	@Override
-	public void doEndManipulator( InputState endInput, InputState previousInput ) {
-	}
+  @Override
+  public void doEndManipulator(InputState endInput, InputState previousInput) {
+  }
 
-	@Override
-	public boolean doStartManipulator( InputState startInput ) {
-		return this.manipulatedTransformable != null;
-	}
+  @Override
+  public boolean doStartManipulator(InputState startInput) {
+    return this.manipulatedTransformable != null;
+  }
 
-	@Override
-	public void doTimeUpdateManipulator( double dTime, InputState currentInput ) {
-	}
+  @Override
+  public void doTimeUpdateManipulator(double dTime, InputState currentInput) {
+  }
 
-	@Override
-	protected HandleSet getHandleSetToEnable() {
-		return null;
-	}
+  @Override
+  protected HandleSet getHandleSetToEnable() {
+    return null;
+  }
 
-	@Override
-	public String getUndoRedoDescription() {
-		return "Look At Object";
-	}
+  @Override
+  public String getUndoRedoDescription() {
+    return "Look At Object";
+  }
 
-	private AbstractCamera camera;
+  private AbstractCamera camera;
 }

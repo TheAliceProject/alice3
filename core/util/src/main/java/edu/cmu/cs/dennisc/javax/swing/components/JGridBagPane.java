@@ -48,7 +48,7 @@ import java.awt.GridBagLayout;
  * @author Dennis Cosgrove
  */
 public class JGridBagPane extends JPane {
-	public JGridBagPane() {
-		setLayout( new GridBagLayout() );
-	}
+  public JGridBagPane() {
+    setLayout(new GridBagLayout());
+  }
 }

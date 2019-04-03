@@ -52,27 +52,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class PreviewComposite extends SimpleComposite<PersonViewer> {
-	public PreviewComposite() {
-		super( UUID.fromString( "f9cd8c6a-5307-49ca-ae72-5cf4b629758f" ) );
-	}
+  public PreviewComposite() {
+    super(UUID.fromString("f9cd8c6a-5307-49ca-ae72-5cf4b629758f"));
+  }
 
-	@Override
-	protected PersonViewer createView() {
-		return new PersonViewer();
-	}
+  @Override
+  protected PersonViewer createView() {
+    return new PersonViewer();
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+  }
 
-	public void unloadPerson() {
-		this.getView().getPerson().unload();
-	}
+  public void unloadPerson() {
+    this.getView().getPerson().unload();
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		super.handlePostDeactivation();
-		this.unloadPerson();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    super.handlePostDeactivation();
+    this.unloadPerson();
+  }
 }

@@ -32,28 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum PalmTreeResource implements PropResource {
-	PALM_TREE( ImplementationAndVisualType.SIMS2 );
+  PALM_TREE(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	PalmTreeResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	PalmTreeResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  PalmTreeResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  PalmTreeResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

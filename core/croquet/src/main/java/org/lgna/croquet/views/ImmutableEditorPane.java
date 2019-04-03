@@ -54,24 +54,24 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class ImmutableEditorPane extends ImmutableTextComponent<JEditorPane> {
-	public ImmutableEditorPane( HtmlStringValue value, float fontScalar, TextAttribute<?>... textAttributes ) {
-		super( value, fontScalar, textAttributes );
-	}
+  public ImmutableEditorPane(HtmlStringValue value, float fontScalar, TextAttribute<?>... textAttributes) {
+    super(value, fontScalar, textAttributes);
+  }
 
-	@Override
-	protected JEditorPane createAwtComponent() {
-		JEditorPane rv = new JEditorPane( "text/html", this.getValue().getText() ) {
-			@Override
-			public Color getBackground() {
-				return getDesiredBackgroundColor( this.getParent() );
-			}
+  @Override
+  protected JEditorPane createAwtComponent() {
+    JEditorPane rv = new JEditorPane("text/html", this.getValue().getText()) {
+      @Override
+      public Color getBackground() {
+        return getDesiredBackgroundColor(this.getParent());
+      }
 
-			@Override
-			public void updateUI() {
-				this.setUI( new BasicEditorPaneUI() );
-			}
-		};
-		this.initializeJComponent( rv );
-		return rv;
-	}
+      @Override
+      public void updateUI() {
+        this.setUI(new BasicEditorPaneUI());
+      }
+    };
+    this.initializeJComponent(rv);
+    return rv;
+  }
 }

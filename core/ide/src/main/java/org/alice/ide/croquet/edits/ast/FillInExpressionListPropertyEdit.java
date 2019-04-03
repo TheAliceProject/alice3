@@ -62,53 +62,53 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FillInExpressionListPropertyEdit extends AbstractEdit<Cascade<Expression>> {
-	private Expression nextExpression;
-	private Expression prevExpression;
+  private Expression nextExpression;
+  private Expression prevExpression;
 
-	public FillInExpressionListPropertyEdit( UserActivity userActivity, Expression prevExpression, Expression nextExpression ) {
-		super( userActivity );
-		this.prevExpression = prevExpression;
-		this.nextExpression = nextExpression;
-	}
+  public FillInExpressionListPropertyEdit(UserActivity userActivity, Expression prevExpression, Expression nextExpression) {
+    super(userActivity);
+    this.prevExpression = prevExpression;
+    this.nextExpression = nextExpression;
+  }
 
-	public FillInExpressionListPropertyEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		IDE ide = IDE.getActiveInstance();
-		Project project = ide.getProject();
-		UUID prevExpressionId = binaryDecoder.decodeId();
-		this.prevExpression = ProgramTypeUtilities.lookupNode( project, prevExpressionId );
-		UUID nextExpressionId = binaryDecoder.decodeId();
-		this.nextExpression = ProgramTypeUtilities.lookupNode( project, nextExpressionId );
-	}
+  public FillInExpressionListPropertyEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    IDE ide = IDE.getActiveInstance();
+    Project project = ide.getProject();
+    UUID prevExpressionId = binaryDecoder.decodeId();
+    this.prevExpression = ProgramTypeUtilities.lookupNode(project, prevExpressionId);
+    UUID nextExpressionId = binaryDecoder.decodeId();
+    this.nextExpression = ProgramTypeUtilities.lookupNode(project, nextExpressionId);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.prevExpression.getId() );
-		binaryEncoder.encode( this.nextExpression.getId() );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    binaryEncoder.encode(this.prevExpression.getId());
+    binaryEncoder.encode(this.nextExpression.getId());
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		ExpressionListPropertyCascade model = (ExpressionListPropertyCascade)this.getModel();
-		ExpressionListProperty expressionListProperty = model.getExpressionListProperty();
-		int index = model.getIndex();
-		expressionListProperty.set( index, this.nextExpression );
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    ExpressionListPropertyCascade model = (ExpressionListPropertyCascade) this.getModel();
+    ExpressionListProperty expressionListProperty = model.getExpressionListProperty();
+    int index = model.getIndex();
+    expressionListProperty.set(index, this.nextExpression);
+  }
 
-	@Override
-	protected final void undoInternal() {
-		ExpressionListPropertyCascade model = (ExpressionListPropertyCascade)this.getModel();
-		ExpressionListProperty expressionListProperty = model.getExpressionListProperty();
-		int index = model.getIndex();
-		expressionListProperty.set( index, this.prevExpression );
-	}
+  @Override
+  protected final void undoInternal() {
+    ExpressionListPropertyCascade model = (ExpressionListPropertyCascade) this.getModel();
+    ExpressionListProperty expressionListProperty = model.getExpressionListProperty();
+    int index = model.getIndex();
+    expressionListProperty.set(index, this.prevExpression);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "set: " );
-		NodeUtilities.safeAppendRepr( rv, this.prevExpression, Application.getLocale() );
-		rv.append( " ===> " );
-		NodeUtilities.safeAppendRepr( rv, this.nextExpression, Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("set: ");
+    NodeUtilities.safeAppendRepr(rv, this.prevExpression, Application.getLocale());
+    rv.append(" ===> ");
+    NodeUtilities.safeAppendRepr(rv, this.nextExpression, Application.getLocale());
+  }
 }

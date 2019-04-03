@@ -51,48 +51,48 @@ import javax.swing.BorderFactory;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public abstract class RowsSpringPanel extends SpringPanel {
-	private java.util.List<AwtComponentView<?>[]> componentRows;
-	private int xPad;
-	private int yPad;
+@Deprecated public abstract class RowsSpringPanel extends SpringPanel {
+  private java.util.List<AwtComponentView<?>[]> componentRows;
+  private int xPad;
+  private int yPad;
 
-	protected abstract java.util.List<AwtComponentView<?>[]> updateComponentRows( java.util.List<AwtComponentView<?>[]> rv );
+  protected abstract java.util.List<AwtComponentView<?>[]> updateComponentRows(java.util.List<AwtComponentView<?>[]> rv);
 
-	public RowsSpringPanel() {
-		this( null );
-	}
+  public RowsSpringPanel() {
+    this(null);
+  }
 
-	public RowsSpringPanel( int xPad, int yPad ) {
-		this( null, xPad, yPad );
-	}
+  public RowsSpringPanel(int xPad, int yPad) {
+    this(null, xPad, yPad);
+  }
 
-	public RowsSpringPanel( Composite composite ) {
-		this( composite, 12, 12 );
-	}
+  public RowsSpringPanel(Composite composite) {
+    this(composite, 12, 12);
+  }
 
-	public RowsSpringPanel( Composite composite, int xPad, int yPad ) {
-		super( composite );
-		this.xPad = xPad;
-		this.yPad = yPad;
-		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-	}
+  public RowsSpringPanel(Composite composite, int xPad, int yPad) {
+    super(composite);
+    this.xPad = xPad;
+    this.yPad = yPad;
+    this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.componentRows != null ) {
-			//pass
-		} else {
-			this.componentRows = Lists.newLinkedList();
-			this.updateComponentRows( this.componentRows );
-			SpringUtilities.springItUpANotch( this, componentRows, this.xPad, this.yPad );
-		}
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    if (this.componentRows != null) {
+      //pass
+    } else {
+      this.componentRows = Lists.newLinkedList();
+      this.updateComponentRows(this.componentRows);
+      SpringUtilities.springItUpANotch(this, componentRows, this.xPad, this.yPad);
+    }
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		//todo?
-		super.handleUndisplayable();
-	};
+  @Override
+  protected void handleUndisplayable() {
+    //todo?
+    super.handleUndisplayable();
+  }
+
 }

@@ -64,155 +64,155 @@ import java.util.ResourceBundle;
  * @author Dennis Cosgrove
  */
 public abstract class PersonResource implements BipedResource {
-	private final Gender gender;
-	private final SkinTone skinTone;
-	private final Color skinColor;
-	private final EyeColor eyeColor;
-	private final Hair hair;
-	private final double obesityLevel;
-	private final Outfit outfit;
-	private final Face face;
+  private final Gender gender;
+  private final SkinTone skinTone;
+  private final Color skinColor;
+  private final EyeColor eyeColor;
+  private final Hair hair;
+  private final double obesityLevel;
+  private final Outfit outfit;
+  private final Face face;
 
-	private PersonResource( Gender gender, SkinTone skinTone, Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
-		this.gender = gender;
-		this.skinTone = skinTone;
-		this.skinColor = skinColor;
-		this.eyeColor = eyeColor;
-		this.hair = hair;
-		this.obesityLevel = obesityLevel.doubleValue();
-		this.outfit = outfit;
-		this.face = face;
-	}
+  private PersonResource(Gender gender, SkinTone skinTone, Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face) {
+    this.gender = gender;
+    this.skinTone = skinTone;
+    this.skinColor = skinColor;
+    this.eyeColor = eyeColor;
+    this.hair = hair;
+    this.obesityLevel = obesityLevel.doubleValue();
+    this.outfit = outfit;
+    this.face = face;
+  }
 
-	private static Color getClosestColor( SkinTone skinTone ) {
-		BaseSkinTone baseSkinTone;
-		if( skinTone instanceof BaseSkinTone ) {
-			baseSkinTone = (BaseSkinTone)skinTone;
-		} else {
-			baseSkinTone = BaseSkinTone.getRandom();
-		}
-		return EmployeesOnly.createColor( baseSkinTone.getColor() );
-	}
+  private static Color getClosestColor(SkinTone skinTone) {
+    BaseSkinTone baseSkinTone;
+    if (skinTone instanceof BaseSkinTone) {
+      baseSkinTone = (BaseSkinTone) skinTone;
+    } else {
+      baseSkinTone = BaseSkinTone.getRandom();
+    }
+    return EmployeesOnly.createColor(baseSkinTone.getColor());
+  }
 
-	protected static String getLocalizedDisplayText( String key ) {
-		Class cls = PersonResource.class;
-		String bundleName = cls.getPackage().getName() + ".PersonStrings";
-		try {
-			ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( bundleName, JComponent.getDefaultLocale() );
-			String rv = resourceBundle.getString( key );
-			return rv;
-		} catch( MissingResourceException mre ) {
-			Logger.severe( cls, key );
-			return key;
-		}
-	}
+  protected static String getLocalizedDisplayText(String key) {
+    Class cls = PersonResource.class;
+    String bundleName = cls.getPackage().getName() + ".PersonStrings";
+    try {
+      ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle(bundleName, JComponent.getDefaultLocale());
+      String rv = resourceBundle.getString(key);
+      return rv;
+    } catch (MissingResourceException mre) {
+      Logger.severe(cls, key);
+      return key;
+    }
+  }
 
-	public PersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
-		this( gender, skinTone, getClosestColor( skinTone ), eyeColor, hair, obesityLevel, outfit, face );
-	}
+  public PersonResource(Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face) {
+    this(gender, skinTone, getClosestColor(skinTone), eyeColor, hair, obesityLevel, outfit, face);
+  }
 
-	public PersonResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
-		this( gender, BaseSkinTone.getClosestToColor( EmployeesOnly.getAwtColor( skinColor ) ), skinColor, eyeColor, hair, obesityLevel, outfit, face );
-	}
+  public PersonResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face) {
+    this(gender, BaseSkinTone.getClosestToColor(EmployeesOnly.getAwtColor(skinColor)), skinColor, eyeColor, hair, obesityLevel, outfit, face);
+  }
 
-	public abstract LifeStage getLifeStage();
+  public abstract LifeStage getLifeStage();
 
-	public Gender getGender() {
-		return this.gender;
-	}
+  public Gender getGender() {
+    return this.gender;
+  }
 
-	@Deprecated
-	public SkinTone getSkinTone() {
-		return this.skinTone;
-	}
+  @Deprecated
+  public SkinTone getSkinTone() {
+    return this.skinTone;
+  }
 
-	public Color getSkinColor() {
-		return this.skinColor;
-	}
+  public Color getSkinColor() {
+    return this.skinColor;
+  }
 
-	public EyeColor getEyeColor() {
-		return this.eyeColor;
-	}
+  public EyeColor getEyeColor() {
+    return this.eyeColor;
+  }
 
-	public Hair getHair() {
-		return this.hair;
-	}
+  public Hair getHair() {
+    return this.hair;
+  }
 
-	public Double getObesityLevel() {
-		return this.obesityLevel;
-	}
+  public Double getObesityLevel() {
+    return this.obesityLevel;
+  }
 
-	public Outfit getOutfit() {
-		return this.outfit;
-	}
+  public Outfit getOutfit() {
+    return this.outfit;
+  }
 
-	public Face getFace() {
-		return this.face;
-	}
+  public Face getFace() {
+    return this.face;
+  }
 
-	public JointId[] getRootJointIds() {
-		return BipedResource.JOINT_ID_ROOTS;
-	}
+  public JointId[] getRootJointIds() {
+    return BipedResource.JOINT_ID_ROOTS;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return JointImplementationAndVisualDataFactory.getInstance( this );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return JointImplementationAndVisualDataFactory.getInstance(this);
+  }
 
-	@Override
-	public final BipedImp createImplementation( SBiped abstraction ) {
-		return new BipedImp( abstraction, JointImplementationAndVisualDataFactory.getInstance( this ) );
-	}
+  @Override
+  public final BipedImp createImplementation(SBiped abstraction) {
+    return new BipedImp(abstraction, JointImplementationAndVisualDataFactory.getInstance(this));
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( this == obj ) {
-			return true;
-		}
-		if( obj instanceof PersonResource ) {
-			PersonResource other = (PersonResource)obj;
-			if( this.getClass() == other.getClass() ) {
-				if( Objects.equals( this.gender, other.gender ) ) {
-					if( Objects.equals( this.skinTone, other.skinTone ) ) {
-						if( Objects.equals( this.eyeColor, other.eyeColor ) ) {
-							if( Objects.equals( this.hair, other.hair ) ) {
-								if( Objects.equals( this.face, other.face ) ) {
-									if( Objects.equals( this.outfit, other.outfit ) ) {
-										return this.obesityLevel == other.obesityLevel;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj instanceof PersonResource) {
+      PersonResource other = (PersonResource) obj;
+      if (this.getClass() == other.getClass()) {
+        if (Objects.equals(this.gender, other.gender)) {
+          if (Objects.equals(this.skinTone, other.skinTone)) {
+            if (Objects.equals(this.eyeColor, other.eyeColor)) {
+              if (Objects.equals(this.hair, other.hair)) {
+                if (Objects.equals(this.face, other.face)) {
+                  if (Objects.equals(this.outfit, other.outfit)) {
+                    return this.obesityLevel == other.obesityLevel;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
 
-	@Override
-	public int hashCode() {
-		int rv = 17;
-		if( this.gender != null ) {
-			rv = ( 37 * rv ) + this.gender.hashCode();
-		}
-		if( this.skinTone != null ) {
-			rv = ( 37 * rv ) + this.skinTone.hashCode();
-		}
-		if( this.eyeColor != null ) {
-			rv = ( 37 * rv ) + this.eyeColor.hashCode();
-		}
-		if( this.hair != null ) {
-			rv = ( 37 * rv ) + this.hair.hashCode();
-		}
-		if( this.outfit != null ) {
-			rv = ( 37 * rv ) + this.outfit.hashCode();
-		}
-		if( this.face != null ) {
-			rv = ( 37 * rv ) + this.face.hashCode();
-		}
-		long lng = Double.doubleToLongBits( this.obesityLevel );
-		rv = ( 37 * rv ) + (int)( lng ^ ( lng >>> 32 ) );
-		return rv;
-	}
+  @Override
+  public int hashCode() {
+    int rv = 17;
+    if (this.gender != null) {
+      rv = (37 * rv) + this.gender.hashCode();
+    }
+    if (this.skinTone != null) {
+      rv = (37 * rv) + this.skinTone.hashCode();
+    }
+    if (this.eyeColor != null) {
+      rv = (37 * rv) + this.eyeColor.hashCode();
+    }
+    if (this.hair != null) {
+      rv = (37 * rv) + this.hair.hashCode();
+    }
+    if (this.outfit != null) {
+      rv = (37 * rv) + this.outfit.hashCode();
+    }
+    if (this.face != null) {
+      rv = (37 * rv) + this.face.hashCode();
+    }
+    long lng = Double.doubleToLongBits(this.obesityLevel);
+    rv = (37 * rv) + (int) (lng ^ (lng >>> 32));
+    return rv;
+  }
 }

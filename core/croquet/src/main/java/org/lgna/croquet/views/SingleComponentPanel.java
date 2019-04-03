@@ -52,44 +52,44 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public abstract class SingleComponentPanel extends Panel {
-	protected abstract static class SingleComponentLayoutManager implements LayoutManager {
-		@Override
-		public void addLayoutComponent( String name, Component comp ) {
-		}
+  protected abstract static class SingleComponentLayoutManager implements LayoutManager {
+    @Override
+    public void addLayoutComponent(String name, Component comp) {
+    }
 
-		@Override
-		public void removeLayoutComponent( Component comp ) {
-		}
+    @Override
+    public void removeLayoutComponent(Component comp) {
+    }
 
-		private Dimension layoutSize( Container parent ) {
-			if( parent.getComponentCount() > 0 ) {
-				return parent.getComponent( 0 ).getPreferredSize();
-			} else {
-				return new Dimension();
-			}
-		}
+    private Dimension layoutSize(Container parent) {
+      if (parent.getComponentCount() > 0) {
+        return parent.getComponent(0).getPreferredSize();
+      } else {
+        return new Dimension();
+      }
+    }
 
-		@Override
-		public Dimension minimumLayoutSize( Container parent ) {
-			return this.layoutSize( parent );
-		}
+    @Override
+    public Dimension minimumLayoutSize(Container parent) {
+      return this.layoutSize(parent);
+    }
 
-		@Override
-		public Dimension preferredLayoutSize( Container parent ) {
-			return this.layoutSize( parent );
-		}
+    @Override
+    public Dimension preferredLayoutSize(Container parent) {
+      return this.layoutSize(parent);
+    }
 
-		protected abstract void layoutComponent( Container parent, Component component );
+    protected abstract void layoutComponent(Container parent, Component component);
 
-		@Override
-		public final void layoutContainer( Container parent ) {
-			if( parent.getComponentCount() > 0 ) {
-				this.layoutComponent( parent, parent.getComponent( 0 ) );
-			}
-		}
-	}
+    @Override
+    public final void layoutContainer(Container parent) {
+      if (parent.getComponentCount() > 0) {
+        this.layoutComponent(parent, parent.getComponent(0));
+      }
+    }
+  }
 
-	public SingleComponentPanel( AwtComponentView<?> component ) {
-		this.internalAddComponent( component );
-	}
+  public SingleComponentPanel(AwtComponentView<?> component) {
+    this.internalAddComponent(component);
+  }
 }

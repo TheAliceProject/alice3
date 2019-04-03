@@ -52,73 +52,73 @@ import edu.cmu.cs.dennisc.math.Point3;
  */
 public abstract class QuaternionAndTranslationTargetBasedAnimation extends TargetBasedFrameObserver<QuaternionAndTranslation> {
 
-	private static final double CUSTOM_SPEED = 5.0d;
+  private static final double CUSTOM_SPEED = 5.0d;
 
-	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue ) {
-		this( currentValue, currentValue, CUSTOM_SPEED );
-	}
+  public QuaternionAndTranslationTargetBasedAnimation(QuaternionAndTranslation currentValue) {
+    this(currentValue, currentValue, CUSTOM_SPEED);
+  }
 
-	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, double speed ) {
-		this( currentValue, currentValue, speed );
-	}
+  public QuaternionAndTranslationTargetBasedAnimation(QuaternionAndTranslation currentValue, double speed) {
+    this(currentValue, currentValue, speed);
+  }
 
-	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, QuaternionAndTranslation targetValue ) {
-		this( currentValue, targetValue, CUSTOM_SPEED );
-	}
+  public QuaternionAndTranslationTargetBasedAnimation(QuaternionAndTranslation currentValue, QuaternionAndTranslation targetValue) {
+    this(currentValue, targetValue, CUSTOM_SPEED);
+  }
 
-	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, QuaternionAndTranslation targetValue, double speed ) {
-		super( currentValue, targetValue, speed );
-		if( isCloseEnoughToBeDone() ) {
-			this.shouldAnimate = true;
-		} else {
-			this.shouldAnimate = false;
-		}
-	}
+  public QuaternionAndTranslationTargetBasedAnimation(QuaternionAndTranslation currentValue, QuaternionAndTranslation targetValue, double speed) {
+    super(currentValue, targetValue, speed);
+    if (isCloseEnoughToBeDone()) {
+      this.shouldAnimate = true;
+    } else {
+      this.shouldAnimate = false;
+    }
+  }
 
-	@Override
-	protected boolean isCloseEnoughToBeDone() {
-		UnitQuaternion currentQ = this.currentValue.getQuaternion();
-		UnitQuaternion targetQ = this.targetValue.getQuaternion();
+  @Override
+  protected boolean isCloseEnoughToBeDone() {
+    UnitQuaternion currentQ = this.currentValue.getQuaternion();
+    UnitQuaternion targetQ = this.targetValue.getQuaternion();
 
-		UnitQuaternion targetQNegative = new UnitQuaternion( targetQ );
-		targetQNegative.multiply( -1.0 );
-		boolean quaternionDone = currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon( targetQ, MIN_DISTANCE_TO_DONE ) || currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon( targetQNegative, MIN_DISTANCE_TO_DONE );
-		double translationDist = Point3.calculateDistanceBetween( this.currentValue.getTranslation(), this.targetValue.getTranslation() );
+    UnitQuaternion targetQNegative = new UnitQuaternion(targetQ);
+    targetQNegative.multiply(-1.0);
+    boolean quaternionDone = currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon(targetQ, MIN_DISTANCE_TO_DONE) || currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon(targetQNegative, MIN_DISTANCE_TO_DONE);
+    double translationDist = Point3.calculateDistanceBetween(this.currentValue.getTranslation(), this.targetValue.getTranslation());
 
-		boolean translationDone = translationDist < MIN_DISTANCE_TO_DONE;
+    boolean translationDone = translationDist < MIN_DISTANCE_TO_DONE;
 
-		return quaternionDone && translationDone;
-	}
+    return quaternionDone && translationDone;
+  }
 
-	//	@Override
-	//	public void update( double current ) {
-	//		if (this.shouldAnimate)
-	//		{
-	//			super.update( current );
-	//		}
-	//		if ()
-	//	}
+  //  @Override
+  //  public void update( double current ) {
+  //    if (this.shouldAnimate)
+  //    {
+  //      super.update( current );
+  //    }
+  //    if ()
+  //  }
 
-	@Override
-	protected QuaternionAndTranslation interpolate( QuaternionAndTranslation v0, QuaternionAndTranslation v1, double deltaSinceLastUpdate ) {
-		float portion = (float)( deltaSinceLastUpdate * this.speed );
-		portion = Math.min( portion, 1.0f );
-		portion = Math.max( -1.0f, portion );
+  @Override
+  protected QuaternionAndTranslation interpolate(QuaternionAndTranslation v0, QuaternionAndTranslation v1, double deltaSinceLastUpdate) {
+    float portion = (float) (deltaSinceLastUpdate * this.speed);
+    portion = Math.min(portion, 1.0f);
+    portion = Math.max(-1.0f, portion);
 
-		QuaternionAndTranslation rv = new QuaternionAndTranslation();
-		rv.setToInterpolation( v0, v1, portion );
-		return rv;
-	}
+    QuaternionAndTranslation rv = new QuaternionAndTranslation();
+    rv.setToInterpolation(v0, v1, portion);
+    return rv;
+  }
 
-	@Override
-	public boolean isDone() {
-		return this.isCloseEnoughToBeDone();
-	}
+  @Override
+  public boolean isDone() {
+    return this.isCloseEnoughToBeDone();
+  }
 
-	@Override
-	protected QuaternionAndTranslation newE( QuaternionAndTranslation other ) {
-		return new QuaternionAndTranslation( other );
-	}
+  @Override
+  protected QuaternionAndTranslation newE(QuaternionAndTranslation other) {
+    return new QuaternionAndTranslation(other);
+  }
 
-	private boolean shouldAnimate = false;
+  private boolean shouldAnimate = false;
 }

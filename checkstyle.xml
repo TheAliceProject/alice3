@@ -4,6 +4,7 @@
 		"https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <module name="Checker">
+	<property name="charset" value="UTF-8"/>
 
 	<property name="fileExtensions" value="java, properties, xml"/>
 
@@ -16,6 +17,12 @@
 	<module name="SuppressionFilter">
 		<property name="file" value="checkstyleSuppression.xml"/>
 		<property name="optional" value="false"/>
+	</module>
+
+	<!-- Checks for whitespace                               -->
+	<!-- See http://checkstyle.sourceforge.net/config_whitespace.html -->
+	<module name="FileTabCharacter">
+		<property name="eachLine" value="true"/>
 	</module>
 
 	<!-- Checks whether files end with a new line.                        -->
@@ -40,19 +47,43 @@
 	</module>
 
 	<module name="TreeWalker">
+		<module name="IllegalTokenText">
+			<property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>
+			<property name="format"
+			          value="\\u00(09|0(a|A)|0(c|C)|0(d|D)|22|27|5(C|c))|\\(0(10|11|12|14|15|42|47)|134)"/>
+			<property name="message"
+			          value="Consider using special escape sequence instead of octal value or Unicode escaped value."/>
+		</module>
+		<module name="AvoidEscapedUnicodeCharacters">
+			<property name="allowEscapesForControlCharacters" value="true"/>
+			<property name="allowByTailComment" value="true"/>
+			<property name="allowNonPrintableEscapes" value="true"/>
+		</module>
+
+		<module name="NoLineWrap"/>
+
+		<module name="PackageName"/>
+		<module name="TypeName"/>
 
 		<!-- Checks for whitespace                               -->
 		<!-- See http://checkstyle.sourceforge.net/config_whitespace.html -->
 		<module name="GenericWhitespace"/>
 		<module name="MethodParamPad"/>
 		<module name="TypecastParenPad"/>
-		<module name="NoWhitespaceAfter">
-			<property name="tokens" value="AT, INC, DEC, UNARY_MINUS, UNARY_PLUS, BNOT, LNOT, DOT, ARRAY_DECLARATOR, INDEX_OP"/>
-			<!-- The tokens listed are the defaults - ARRAY_INIT-->
+		<module name="NoWhitespaceAfter"/>
+		<module name="NoWhitespaceBefore"/>
+
+		<module name="OperatorWrap">
+			<property name="option" value="NL"/>
+			<property name="tokens"
+			          value="BAND, BOR, BSR, BXOR, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR,
+			           LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR, METHOD_REF "/>
 		</module>
-		<module name="WhitespaceAfter">
-			<property name="tokens" value="COMMA"/>
-		</module>
+		<module name="ParenPad"/>
+		<module name="TypecastParenPad"/>
+		<module name="WhitespaceAfter"/>
+		<module name="WhitespaceAround"/>
+
 
 		<!-- Checks for imports                              -->
 		<!-- See http://checkstyle.sourceforge.net/config_import.html -->

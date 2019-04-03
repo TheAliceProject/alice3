@@ -50,32 +50,32 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class StringLiteral extends AbstractValueLiteral<String> {
-	public StringLiteral() {
-	}
+  public StringLiteral() {
+  }
 
-	public StringLiteral( String value ) {
-		this.value.setValue( value );
-	}
+  public StringLiteral(String value) {
+    this.value.setValue(value);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.STRING_TYPE;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return JavaType.STRING_TYPE;
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		localizer.appendText( this.value.getValue() );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    localizer.appendText(this.value.getValue());
+  }
 
-	@Override
-	public InstanceProperty<String> getValueProperty() {
-		return this.value;
-	}
+  @Override
+  public InstanceProperty<String> getValueProperty() {
+    return this.value;
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendEscapedStringLiteral(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendEscapedStringLiteral(this);
+  }
 
-	public final StringProperty value = new StringProperty( this, null );
+  public final StringProperty value = new StringProperty(this, null);
 }

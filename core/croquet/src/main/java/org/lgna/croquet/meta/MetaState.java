@@ -54,40 +54,40 @@ import java.util.List;
  */
 public abstract class MetaState<T> {
 
-	public abstract T getValue();
+  public abstract T getValue();
 
-	protected void setPrevValue( T prevValue ) {
-		this.prevValue = prevValue;
-	}
+  protected void setPrevValue(T prevValue) {
+    this.prevValue = prevValue;
+  }
 
-	public void addValueListener( ValueListener<T> listener ) {
-		this.valueListeners.add( listener );
-	}
+  public void addValueListener(ValueListener<T> listener) {
+    this.valueListeners.add(listener);
+  }
 
-	public void addAndInvokeValueListener( ValueListener<T> listener ) {
-		ValueEvent<T> e = ValueEvent.createInstance( this.prevValue );
-		listener.valueChanged( e );
-		this.addValueListener( listener );
-	}
+  public void addAndInvokeValueListener(ValueListener<T> listener) {
+    ValueEvent<T> e = ValueEvent.createInstance(this.prevValue);
+    listener.valueChanged(e);
+    this.addValueListener(listener);
+  }
 
-	public void removeValueListener( ValueListener<T> listener ) {
-		this.valueListeners.add( listener );
-	}
+  public void removeValueListener(ValueListener<T> listener) {
+    this.valueListeners.add(listener);
+  }
 
-	protected void checkValueAndFireIfAppropriate() {
-		T nextValue = this.getValue();
-		if( Objects.equals( this.prevValue, nextValue ) ) {
-			//todo: pass?
-			this.prevValue = nextValue;
-		} else {
-			ValueEvent<T> e = ValueEvent.createInstance( this.prevValue, nextValue );
-			this.prevValue = nextValue;
-			for( ValueListener<T> listener : this.valueListeners ) {
-				listener.valueChanged( e );
-			}
-		}
-	}
+  protected void checkValueAndFireIfAppropriate() {
+    T nextValue = this.getValue();
+    if (Objects.equals(this.prevValue, nextValue)) {
+      //todo: pass?
+      this.prevValue = nextValue;
+    } else {
+      ValueEvent<T> e = ValueEvent.createInstance(this.prevValue, nextValue);
+      this.prevValue = nextValue;
+      for (ValueListener<T> listener : this.valueListeners) {
+        listener.valueChanged(e);
+      }
+    }
+  }
 
-	private T prevValue;
-	private final List<ValueListener<T>> valueListeners = Lists.newCopyOnWriteArrayList();
+  private T prevValue;
+  private final List<ValueListener<T>> valueListeners = Lists.newCopyOnWriteArrayList();
 }

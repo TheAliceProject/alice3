@@ -51,18 +51,18 @@ import org.lgna.story.resources.FlyerResource;
  *
  */
 public final class FlyerImp extends JointedModelImp<SFlyer, FlyerResource> {
-	public FlyerImp( SFlyer abstraction, JointImplementationAndVisualDataFactory<FlyerResource> factory ) {
-		super( abstraction, factory );
-	}
+  public FlyerImp(SFlyer abstraction, JointImplementationAndVisualDataFactory<FlyerResource> factory) {
+    super(abstraction, factory);
+  }
 
-	@Override
-	protected Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint( this.getJointImplementation( FlyerResource.HEAD ) );
-	}
+  @Override
+  protected Vector4 getThoughtBubbleOffset() {
+    return this.getTopOffsetForJoint(this.getJointImplementation(FlyerResource.HEAD));
+  }
 
-	@Override
-	protected Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint( this.getJointImplementation( FlyerResource.MOUTH ) );
-	}
+  @Override
+  protected Vector4 getSpeechBubbleOffset() {
+    return this.getFrontOffsetForJoint(this.getJointImplementation(FlyerResource.MOUTH));
+  }
 
 }

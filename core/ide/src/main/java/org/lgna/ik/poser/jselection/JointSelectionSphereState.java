@@ -59,53 +59,53 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
  */
 public class JointSelectionSphereState extends CustomItemStateWithInternalBlank<JointSelectionSphere> {
 
-	private JointSelectionSphere value;
-	private final List<JointSelectionSphere> possibleStates;
+  private JointSelectionSphere value;
+  private final List<JointSelectionSphere> possibleStates;
 
-	public JointSelectionSphereState( JointSelectionSphere initialValue, List<JointSelectionSphere> possibleStates ) {
-		super( null, UUID.fromString( "26646dcd-2003-43af-9939-c3eb61fdf560" ), initialValue, new ItemCodec<JointSelectionSphere>() {
+  public JointSelectionSphereState(JointSelectionSphere initialValue, List<JointSelectionSphere> possibleStates) {
+    super(null, UUID.fromString("26646dcd-2003-43af-9939-c3eb61fdf560"), initialValue, new ItemCodec<JointSelectionSphere>() {
 
-			@Override
-			public Class<JointSelectionSphere> getValueClass() {
-				return JointSelectionSphere.class;
-			}
+      @Override
+      public Class<JointSelectionSphere> getValueClass() {
+        return JointSelectionSphere.class;
+      }
 
-			@Override
-			public JointSelectionSphere decodeValue( BinaryDecoder binaryDecoder ) {
-				throw new RuntimeException( "todo" );
-			}
+      @Override
+      public JointSelectionSphere decodeValue(BinaryDecoder binaryDecoder) {
+        throw new RuntimeException("todo");
+      }
 
-			@Override
-			public void encodeValue( BinaryEncoder binaryEncoder, JointSelectionSphere value ) {
-				throw new RuntimeException( "todo" );
-			}
+      @Override
+      public void encodeValue(BinaryEncoder binaryEncoder, JointSelectionSphere value) {
+        throw new RuntimeException("todo");
+      }
 
-			@Override
-			public void appendRepresentation( StringBuilder sb, JointSelectionSphere value ) {
-				sb.append( value );
-			}
-		} );
-		this.possibleStates = possibleStates;
-	}
+      @Override
+      public void appendRepresentation(StringBuilder sb, JointSelectionSphere value) {
+        sb.append(value);
+      }
+    });
+    this.possibleStates = possibleStates;
+  }
 
-	@Override
-	protected JointSelectionSphere getSwingValue() {
-		return this.value;
-	}
+  @Override
+  protected JointSelectionSphere getSwingValue() {
+    return this.value;
+  }
 
-	@Override
-	protected void setSwingValue( JointSelectionSphere nextValue ) {
-		this.value = nextValue;
-	}
+  @Override
+  protected void setSwingValue(JointSelectionSphere nextValue) {
+    this.value = nextValue;
+  }
 
-	public ItemDropDown<JointSelectionSphere, JointSelectionSphereState> createItemDropDown() {
-		return new JointSelectionSphereStateDropDown( this );
-	}
+  public ItemDropDown<JointSelectionSphere, JointSelectionSphereState> createItemDropDown() {
+    return new JointSelectionSphereStateDropDown(this);
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<JointSelectionSphere> blankNode ) {
-		for( JointSelectionSphere sphere : possibleStates ) {
-			rv.add( JointSelectionSphereFillIn.getInstance( sphere ) );
-		}
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> rv, BlankNode<JointSelectionSphere> blankNode) {
+    for (JointSelectionSphere sphere : possibleStates) {
+      rv.add(JointSelectionSphereFillIn.getInstance(sphere));
+    }
+  }
 }

@@ -47,18 +47,18 @@ import org.lgna.story.SSwimmer;
 import org.lgna.story.resources.SwimmerResource;
 
 public final class SwimmerImp extends JointedModelImp<SSwimmer, SwimmerResource> {
-	public SwimmerImp( SSwimmer abstraction, JointImplementationAndVisualDataFactory<SwimmerResource> factory ) {
-		super( abstraction, factory );
+  public SwimmerImp(SSwimmer abstraction, JointImplementationAndVisualDataFactory<SwimmerResource> factory) {
+    super(abstraction, factory);
 
-	}
+  }
 
-	@Override
-	protected Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint( this.getJointImplementation( SwimmerResource.HEAD ) );
-	}
+  @Override
+  protected Vector4 getThoughtBubbleOffset() {
+    return this.getTopOffsetForJoint(this.getJointImplementation(SwimmerResource.HEAD));
+  }
 
-	@Override
-	protected Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint( this.getJointImplementation( SwimmerResource.MOUTH ) );
-	}
+  @Override
+  protected Vector4 getSpeechBubbleOffset() {
+    return this.getFrontOffsetForJoint(this.getJointImplementation(SwimmerResource.MOUTH));
+  }
 }

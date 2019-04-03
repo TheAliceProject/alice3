@@ -44,6 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitGardener implements MaleAdultFullBodyOutfit {
-	MALEOUTFIT;
+  MALEOUTFIT
 
 }

@@ -76,107 +76,105 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsRecursionAllowedPreferenceView extends BorderPanel {
-	private static final int SPACING = 16;
-	private static final int INDENT = 32;
+  private static final int SPACING = 16;
+  private static final int INDENT = 32;
 
-	private static class RecursionAccessPanel extends PageAxisPanel {
-		private final AbstractLabel label;
-		private final Button button;
-		private final CheckBox checkBox = IsRecursionAllowedState.getInstance().createCheckBox();
+  private static class RecursionAccessPanel extends PageAxisPanel {
+    private final AbstractLabel label;
+    private final Button button;
+    private final CheckBox checkBox = IsRecursionAllowedState.getInstance().createCheckBox();
 
-		public RecursionAccessPanel( IsRecursionAllowedPreferenceDialogComposite composite ) {
-			this.label = composite.getRecursiveButtonText().createLabel( TextPosture.OBLIQUE );
-			this.button = composite.getNext().createButton();
-			LineAxisPanel lineAxisPanel = new LineAxisPanel(
-					this.label, this.button
-					);
-			this.addComponent( checkBox );
-			this.addComponent( lineAxisPanel );
-			this.setBorder( BorderFactory.createEmptyBorder( 8, INDENT, 8, 8 ) );
-		}
+    public RecursionAccessPanel(IsRecursionAllowedPreferenceDialogComposite composite) {
+      this.label = composite.getRecursiveButtonText().createLabel(TextPosture.OBLIQUE);
+      this.button = composite.getNext().createButton();
+      LineAxisPanel lineAxisPanel = new LineAxisPanel(this.label, this.button);
+      this.addComponent(checkBox);
+      this.addComponent(lineAxisPanel);
+      this.setBorder(BorderFactory.createEmptyBorder(8, INDENT, 8, 8));
+    }
 
-		@Override
-		protected JPanel createJPanel() {
-			return new DefaultJPanel() {
-				@Override
-				public boolean contains( int x, int y ) {
-					if( IsAccessToRecursionPreferenceAllowedState.getInstance().getValue() ) {
-						return super.contains( x, y );
-					} else {
-						return false;
-					}
-				}
+    @Override
+    protected JPanel createJPanel() {
+      return new DefaultJPanel() {
+        @Override
+        public boolean contains(int x, int y) {
+          if (IsAccessToRecursionPreferenceAllowedState.getInstance().getValue()) {
+            return super.contains(x, y);
+          } else {
+            return false;
+          }
+        }
 
-				@Override
-				public void paint( Graphics g ) {
-					super.paint( g );
-					if( IsAccessToRecursionPreferenceAllowedState.getInstance().getValue() ) {
-						//pass
-					} else {
-						Graphics2D g2 = (Graphics2D)g;
-						Paint prevPaint = g2.getPaint();
-						try {
-							g2.setPaint( PaintUtilities.getDisabledTexturePaint() );
-							g2.fill( g2.getClipBounds() );
-						} finally {
-							g2.setPaint( prevPaint );
-						}
+        @Override
+        public void paint(Graphics g) {
+          super.paint(g);
+          if (IsAccessToRecursionPreferenceAllowedState.getInstance().getValue()) {
+            //pass
+          } else {
+            Graphics2D g2 = (Graphics2D) g;
+            Paint prevPaint = g2.getPaint();
+            try {
+              g2.setPaint(PaintUtilities.getDisabledTexturePaint());
+              g2.fill(g2.getClipBounds());
+            } finally {
+              g2.setPaint(prevPaint);
+            }
 
-					}
-				}
-			};
-		}
+          }
+        }
+      };
+    }
 
-		private ValueListener<Boolean> valueObserver = new ValueListener<Boolean>() {
-			@Override
-			public void valueChanged( ValueEvent<Boolean> e ) {
-				Boolean nextValue = e.getNextValue();
-				if( nextValue ) {
-					//pass
-				} else {
-					IsRecursionAllowedState.getInstance().setValueTransactionlessly( false );
-				}
-				label.getAwtComponent().setEnabled( nextValue );
-				button.getAwtComponent().setEnabled( nextValue );
-				checkBox.getAwtComponent().setEnabled( nextValue );
-				RecursionAccessPanel.this.repaint();
-			}
-		};
+    private ValueListener<Boolean> valueObserver = new ValueListener<Boolean>() {
+      @Override
+      public void valueChanged(ValueEvent<Boolean> e) {
+        Boolean nextValue = e.getNextValue();
+        if (nextValue) {
+          //pass
+        } else {
+          IsRecursionAllowedState.getInstance().setValueTransactionlessly(false);
+        }
+        label.getAwtComponent().setEnabled(nextValue);
+        button.getAwtComponent().setEnabled(nextValue);
+        checkBox.getAwtComponent().setEnabled(nextValue);
+        RecursionAccessPanel.this.repaint();
+      }
+    };
 
-		@Override
-		protected void handleDisplayable() {
-			super.handleDisplayable();
-			IsAccessToRecursionPreferenceAllowedState.getInstance().addAndInvokeNewSchoolValueListener( valueObserver );
-		}
+    @Override
+    protected void handleDisplayable() {
+      super.handleDisplayable();
+      IsAccessToRecursionPreferenceAllowedState.getInstance().addAndInvokeNewSchoolValueListener(valueObserver);
+    }
 
-		@Override
-		protected void handleUndisplayable() {
-			IsAccessToRecursionPreferenceAllowedState.getInstance().removeNewSchoolValueListener( valueObserver );
-			super.handleUndisplayable();
-		}
-	}
+    @Override
+    protected void handleUndisplayable() {
+      IsAccessToRecursionPreferenceAllowedState.getInstance().removeNewSchoolValueListener(valueObserver);
+      super.handleUndisplayable();
+    }
+  }
 
-	public IsRecursionAllowedPreferenceView( IsRecursionAllowedPreferenceDialogComposite composite ) {
-		super( composite );
-		//todo
-		Operation browserOperation = new ImmutableBrowserOperation( UUID.fromString( "30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d" ), HelpBrowserOperation.HELP_URL_SPEC + "recursion" );
-		Hyperlink hyperlink = browserOperation.createHyperlink();
-		hyperlink.setBorder( BorderFactory.createEmptyBorder( SPACING, INDENT, SPACING, 0 ) );
+  public IsRecursionAllowedPreferenceView(IsRecursionAllowedPreferenceDialogComposite composite) {
+    super(composite);
+    //todo
+    Operation browserOperation = new ImmutableBrowserOperation(UUID.fromString("30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d"), HelpBrowserOperation.HELP_URL_SPEC + "recursion");
+    Hyperlink hyperlink = browserOperation.createHyperlink();
+    hyperlink.setBorder(BorderFactory.createEmptyBorder(SPACING, INDENT, SPACING, 0));
 
-		CheckBox checkBox = IsAccessToRecursionPreferenceAllowedState.getInstance().createCheckBox();
+    CheckBox checkBox = IsAccessToRecursionPreferenceAllowedState.getInstance().createCheckBox();
 
-		ImmutableTextArea descriptionLabel = composite.getDescriptionText().createImmutableTextArea();
-		PageAxisPanel pageAxisPanel = new PageAxisPanel();
-		pageAxisPanel.addComponent( descriptionLabel );
-		pageAxisPanel.addComponent( hyperlink );
-		pageAxisPanel.addComponent( checkBox );
-		pageAxisPanel.addComponent( new RecursionAccessPanel( composite ) );
-		pageAxisPanel.addComponent( BoxUtilities.createVerticalGlue() );
+    ImmutableTextArea descriptionLabel = composite.getDescriptionText().createImmutableTextArea();
+    PageAxisPanel pageAxisPanel = new PageAxisPanel();
+    pageAxisPanel.addComponent(descriptionLabel);
+    pageAxisPanel.addComponent(hyperlink);
+    pageAxisPanel.addComponent(checkBox);
+    pageAxisPanel.addComponent(new RecursionAccessPanel(composite));
+    pageAxisPanel.addComponent(BoxUtilities.createVerticalGlue());
 
-		this.addLineStartComponent( new Label( IconUtilities.createImageIcon( IsRecursionAllowedPreferenceView.class.getResource( "images/AliceWithKeyAtDoor.png" ) ) ) );
-		this.addCenterComponent( pageAxisPanel );
+    this.addLineStartComponent(new Label(IconUtilities.createImageIcon(IsRecursionAllowedPreferenceView.class.getResource("images/AliceWithKeyAtDoor.png"))));
+    this.addCenterComponent(pageAxisPanel);
 
-		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-		this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-	}
+    this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+    this.setBackgroundColor(FolderTabbedPane.DEFAULT_BACKGROUND_COLOR);
+  }
 }

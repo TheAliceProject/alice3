@@ -49,57 +49,57 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCompletionModel extends AbstractModel implements CompletionModel {
-	private final Group group;
+  private final Group group;
 
-	static final class SidekickLabel extends PlainStringValue {
-		private final Class<? extends Element> localizationClass;
+  static final class SidekickLabel extends PlainStringValue {
+    private final Class<? extends Element> localizationClass;
 
-		SidekickLabel( Class<? extends Element> localizationClass ) {
-			super( UUID.fromString( "9ca020c1-1a00-44f1-8541-84b31b787e49" ) );
-			this.localizationClass = localizationClass;
-			initializeIfNecessary();
-		}
+    SidekickLabel(Class<? extends Element> localizationClass) {
+      super(UUID.fromString("9ca020c1-1a00-44f1-8541-84b31b787e49"));
+      this.localizationClass = localizationClass;
+      initializeIfNecessary();
+    }
 
-		@Override
-		protected Class<? extends Element> getClassUsedForLocalization() {
-			return localizationClass;
-		}
+    @Override
+    protected Class<? extends Element> getClassUsedForLocalization() {
+      return localizationClass;
+    }
 
-		@Override
-		protected String getSubKeyForLocalization() {
-			return "sidekickLabel";
-		}
-	}
+    @Override
+    protected String getSubKeyForLocalization() {
+      return "sidekickLabel";
+    }
+  }
 
-	private SidekickLabel sidekickLabel;
+  private SidekickLabel sidekickLabel;
 
-	AbstractCompletionModel( Group group, UUID id ) {
-		super( id );
-		this.group = group;
-	}
+  AbstractCompletionModel(Group group, UUID id) {
+    super(id);
+    this.group = group;
+  }
 
-	@Override
-	public Group getGroup() {
-		return this.group;
-	}
+  @Override
+  public Group getGroup() {
+    return this.group;
+  }
 
-	@Override
-	public synchronized PlainStringValue getSidekickLabel() {
-		if ( this.sidekickLabel == null ) {
-			this.sidekickLabel = new SidekickLabel( getClassUsedForLocalization() );
-		}
-		return this.sidekickLabel;
-	}
+  @Override
+  public synchronized PlainStringValue getSidekickLabel() {
+    if (this.sidekickLabel == null) {
+      this.sidekickLabel = new SidekickLabel(getClassUsedForLocalization());
+    }
+    return this.sidekickLabel;
+  }
 
-	@Override
-	public boolean hasSidekickLabel() {
-		return sidekickLabel != null;
-	}
+  @Override
+  public boolean hasSidekickLabel() {
+    return sidekickLabel != null;
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( "group=" );
-		sb.append( this.getGroup() );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    super.appendRepr(sb);
+    sb.append("group=");
+    sb.append(this.getGroup());
+  }
 }

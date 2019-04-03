@@ -55,60 +55,60 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class SimpleTabCompositeCodec<C extends SimpleTabComposite<?>> implements ItemCodec<C> {
-	private static Map<Class<?>, SimpleTabCompositeCodec<?>> map = Maps.newHashMap();
+  private static Map<Class<?>, SimpleTabCompositeCodec<?>> map = Maps.newHashMap();
 
-	public static synchronized <T extends SimpleTabComposite<?>> SimpleTabCompositeCodec<T> getInstance( Class<T> cls ) {
-		SimpleTabCompositeCodec<?> rv = map.get( cls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SimpleTabCompositeCodec<T>( cls );
-		}
-		return (SimpleTabCompositeCodec<T>)rv;
-	}
+  public static synchronized <T extends SimpleTabComposite<?>> SimpleTabCompositeCodec<T> getInstance(Class<T> cls) {
+    SimpleTabCompositeCodec<?> rv = map.get(cls);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new SimpleTabCompositeCodec<T>(cls);
+    }
+    return (SimpleTabCompositeCodec<T>) rv;
+  }
 
-	private Class<C> valueCls;
+  private Class<C> valueCls;
 
-	private SimpleTabCompositeCodec( Class<C> valueCls ) {
-		this.valueCls = valueCls;
-	}
+  private SimpleTabCompositeCodec(Class<C> valueCls) {
+    this.valueCls = valueCls;
+  }
 
-	@Override
-	public Class<C> getValueClass() {
-		return this.valueCls;
-	}
+  @Override
+  public Class<C> getValueClass() {
+    return this.valueCls;
+  }
 
-	@Override
-	public C decodeValue( BinaryDecoder binaryDecoder ) {
-		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
-		if( valueIsNotNull ) {
-			throw new RuntimeException( "todo" );
-			//org.lgna.croquet.resolvers.Resolver<C> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			//return resolver.getResolved();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public C decodeValue(BinaryDecoder binaryDecoder) {
+    boolean valueIsNotNull = binaryDecoder.decodeBoolean();
+    if (valueIsNotNull) {
+      throw new RuntimeException("todo");
+      //org.lgna.croquet.resolvers.Resolver<C> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+      //return resolver.getResolved();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, C value ) {
-		boolean valueIsNotNull = value != null;
-		binaryEncoder.encode( valueIsNotNull );
-		if( valueIsNotNull ) {
-			throw new RuntimeException( "todo" );
-			//binaryEncoder.encode( value.getResolver() );
-		}
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, C value) {
+    boolean valueIsNotNull = value != null;
+    binaryEncoder.encode(valueIsNotNull);
+    if (valueIsNotNull) {
+      throw new RuntimeException("todo");
+      //binaryEncoder.encode( value.getResolver() );
+    }
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, C value ) {
-		if( value != null ) {
-			value.initializeIfNecessary();
-		}
-		if( value != null ) {
-			value.appendUserRepr( sb );
-		} else {
-			sb.append( "null" );
-		}
-	}
+  @Override
+  public void appendRepresentation(StringBuilder sb, C value) {
+    if (value != null) {
+      value.initializeIfNecessary();
+    }
+    if (value != null) {
+      value.appendUserRepr(sb);
+    } else {
+      sb.append("null");
+    }
+  }
 }

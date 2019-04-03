@@ -49,22 +49,22 @@ import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
 
 public class FieldNameValidator extends MemberNameValidator {
-	public FieldNameValidator( UserField field ) {
-		super( field, field.getDeclaringType() );
-	}
+  public FieldNameValidator(UserField field) {
+    super(field, field.getDeclaringType());
+  }
 
-	public FieldNameValidator( UserType<?> type ) {
-		super( null, type );
-	}
+  public FieldNameValidator(UserType<?> type) {
+    super(null, type);
+  }
 
-	@Override
-	public boolean isNameAvailable( String name ) {
-		Node node = this.getNode();
-		if( node != null ) {
-			return StaticAnalysisUtilities.isAvailableFieldName( name, (UserField)node );
-		} else {
-			UserType<?> type = this.getType();
-			return StaticAnalysisUtilities.isAvailableFieldName( name, type );
-		}
-	}
+  @Override
+  public boolean isNameAvailable(String name) {
+    Node node = this.getNode();
+    if (node != null) {
+      return StaticAnalysisUtilities.isAvailableFieldName(name, (UserField) node);
+    } else {
+      UserType<?> type = this.getType();
+      return StaticAnalysisUtilities.isAvailableFieldName(name, type);
+    }
+  }
 }

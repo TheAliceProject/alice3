@@ -49,14 +49,14 @@ import org.lgna.ik.poser.jselection.JointSelectionSphere;
  */
 public class PoserEvent {
 
-	private JointSelectionSphere jss;
+  private JointSelectionSphere jss;
 
-	public PoserEvent( JointSelectionSphere sphere ) {
-		this.jss = sphere;
-	}
+  public PoserEvent(JointSelectionSphere sphere) {
+    this.jss = sphere;
+  }
 
-	public JointSelectionSphere getJSS() {
-		return jss;
-	}
+  public JointSelectionSphere getJSS() {
+    return jss;
+  }
 
 }

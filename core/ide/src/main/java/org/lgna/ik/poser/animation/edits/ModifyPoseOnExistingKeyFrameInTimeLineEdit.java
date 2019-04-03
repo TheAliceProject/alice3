@@ -52,29 +52,29 @@ import org.lgna.story.Pose;
  */
 public class ModifyPoseOnExistingKeyFrameInTimeLineEdit extends TimeLineEdit {
 
-	private final KeyFrameData keyFrameData;
-	private final Pose newPose;
-	private final Pose prevPose;
+  private final KeyFrameData keyFrameData;
+  private final Pose newPose;
+  private final Pose prevPose;
 
-	public ModifyPoseOnExistingKeyFrameInTimeLineEdit( UserActivity userActivity, TimeLine timeLine, KeyFrameData data, Pose newPose, Pose previousPose ) {
-		super( userActivity, timeLine );
-		this.keyFrameData = data;
-		this.newPose = newPose;
-		this.prevPose = previousPose;
-	}
+  public ModifyPoseOnExistingKeyFrameInTimeLineEdit(UserActivity userActivity, TimeLine timeLine, KeyFrameData data, Pose newPose, Pose previousPose) {
+    super(userActivity, timeLine);
+    this.keyFrameData = data;
+    this.newPose = newPose;
+    this.prevPose = previousPose;
+  }
 
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		getTimeLine().modifyExistingPose( keyFrameData, newPose );
-	}
+  @Override
+  protected void doOrRedoInternal(boolean isDo) {
+    getTimeLine().modifyExistingPose(keyFrameData, newPose);
+  }
 
-	@Override
-	protected void undoInternal() {
-		getTimeLine().modifyExistingPose( keyFrameData, prevPose );
-	}
+  @Override
+  protected void undoInternal() {
+    getTimeLine().modifyExistingPose(keyFrameData, prevPose);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+  }
 
 }

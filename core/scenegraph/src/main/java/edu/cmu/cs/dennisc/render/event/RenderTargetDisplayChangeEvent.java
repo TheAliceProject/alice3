@@ -48,20 +48,20 @@ import edu.cmu.cs.dennisc.render.RenderTarget;
  * @author Dennis Cosgrove
  */
 public class RenderTargetDisplayChangeEvent extends RenderTargetEvent {
-	public RenderTargetDisplayChangeEvent( RenderTarget renderTarget, boolean isModeChanged, boolean isDeviceChanged ) {
-		super( renderTarget );
-		this.isModeChanged = isModeChanged;
-		this.isDeviceChanged = isDeviceChanged;
-	}
+  public RenderTargetDisplayChangeEvent(RenderTarget renderTarget, boolean isModeChanged, boolean isDeviceChanged) {
+    super(renderTarget);
+    this.isModeChanged = isModeChanged;
+    this.isDeviceChanged = isDeviceChanged;
+  }
 
-	public boolean isModeChanged() {
-		return this.isModeChanged;
-	}
+  public boolean isModeChanged() {
+    return this.isModeChanged;
+  }
 
-	public boolean isDeviceChanged() {
-		return this.isDeviceChanged;
-	}
+  public boolean isDeviceChanged() {
+    return this.isDeviceChanged;
+  }
 
-	private final boolean isModeChanged;
-	private final boolean isDeviceChanged;
+  private final boolean isModeChanged;
+  private final boolean isDeviceChanged;
 }

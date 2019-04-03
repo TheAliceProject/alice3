@@ -63,93 +63,93 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class UserMethodsSubComposite extends MethodsSubComposite {
-	private final NamedUserType type;
-	private final Operation addMethodOperation;
+  private final NamedUserType type;
+  private final Operation addMethodOperation;
 
-	private final ListPropertyListener<UserMethod> methodPropertyListener = new SimplifiedListPropertyAdapter<UserMethod>() {
-		@Override
-		protected void changing( ListPropertyEvent<UserMethod> e ) {
-		}
+  private final ListPropertyListener<UserMethod> methodPropertyListener = new SimplifiedListPropertyAdapter<UserMethod>() {
+    @Override
+    protected void changing(ListPropertyEvent<UserMethod> e) {
+    }
 
-		@Override
-		protected void changed( ListPropertyEvent<UserMethod> e ) {
-			getView().refreshLater();
-		}
-	};
-	private final ListPropertyListener<UserField> fieldPropertyListener = new SimplifiedListPropertyAdapter<UserField>() {
-		@Override
-		protected void changing( ListPropertyEvent<UserField> e ) {
-		}
+    @Override
+    protected void changed(ListPropertyEvent<UserMethod> e) {
+      getView().refreshLater();
+    }
+  };
+  private final ListPropertyListener<UserField> fieldPropertyListener = new SimplifiedListPropertyAdapter<UserField>() {
+    @Override
+    protected void changing(ListPropertyEvent<UserField> e) {
+    }
 
-		@Override
-		protected void changed( ListPropertyEvent<UserField> e ) {
-			getView().refreshLater();
-		}
-	};
+    @Override
+    protected void changed(ListPropertyEvent<UserField> e) {
+      getView().refreshLater();
+    }
+  };
 
-	public UserMethodsSubComposite( UUID migrationId, NamedUserType type, Operation addMethodOperation ) {
-		super( migrationId, true );
-		this.type = type;
-		this.addMethodOperation = addMethodOperation;
-		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new TypeIcon( this.type ) );
+  public UserMethodsSubComposite(UUID migrationId, NamedUserType type, Operation addMethodOperation) {
+    super(migrationId, true);
+    this.type = type;
+    this.addMethodOperation = addMethodOperation;
+    this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse(new TypeIcon(this.type));
 
-		//todo: move to handlePreActivation/handlePostDeactivation
-		type.methods.addListPropertyListener( this.methodPropertyListener );
-		type.fields.addListPropertyListener( this.fieldPropertyListener );
-	}
+    //todo: move to handlePreActivation/handlePostDeactivation
+    type.methods.addListPropertyListener(this.methodPropertyListener);
+    type.fields.addListPropertyListener(this.fieldPropertyListener);
+  }
 
-	public final Operation getAddMethodOperation() {
-		return this.addMethodOperation;
-	}
+  public final Operation getAddMethodOperation() {
+    return this.addMethodOperation;
+  }
 
-	protected abstract boolean isAcceptable( AbstractMethod method );
+  protected abstract boolean isAcceptable(AbstractMethod method);
 
-	protected abstract List<? extends AbstractMethod> getGettersOrSetters( UserField field );
+  protected abstract List<? extends AbstractMethod> getGettersOrSetters(UserField field);
 
-	@Override
-	protected boolean isMethodCountDesired( boolean isExpanded, int methodCount ) {
-		return true;
-	}
+  @Override
+  protected boolean isMethodCountDesired(boolean isExpanded, int methodCount) {
+    return true;
+  }
 
-	@Override
-	public List<? extends AbstractMethod> getMethods() {
-		List<AbstractMethod> rv = Lists.newLinkedList();
-		for( UserMethod method : this.type.getDeclaredMethods() ) {
-			ManagementLevel managementLevel = method.managementLevel.getValue();
-			if( ( managementLevel == ManagementLevel.NONE ) || ( managementLevel == ManagementLevel.GENERATED ) ) {
-				if( this.isAcceptable( method ) ) {
-					rv.add( method );
-				}
-			}
-		}
-		for( UserField field : this.type.getDeclaredFields() ) {
-			rv.addAll( getGettersOrSetters( field ) );
-		}
-		return rv;
-	}
+  @Override
+  public List<? extends AbstractMethod> getMethods() {
+    List<AbstractMethod> rv = Lists.newLinkedList();
+    for (UserMethod method : this.type.getDeclaredMethods()) {
+      ManagementLevel managementLevel = method.managementLevel.getValue();
+      if ((managementLevel == ManagementLevel.NONE) || (managementLevel == ManagementLevel.GENERATED)) {
+        if (this.isAcceptable(method)) {
+          rv.add(method);
+        }
+      }
+    }
+    for (UserField field : this.type.getDeclaredFields()) {
+      rv.addAll(getGettersOrSetters(field));
+    }
+    return rv;
+  }
 
-	@Override
-	protected UserMethodsSubView createView() {
-		return new UserMethodsSubView( this );
-	}
+  @Override
+  protected UserMethodsSubView createView() {
+    return new UserMethodsSubView(this);
+  }
 
-	public boolean isRelevant() {
-		if( IsEmphasizingClassesState.getInstance().getValue() ) {
-			return true;
-		} else {
-			return this.getMethods().size() > 0;
-		}
-	}
+  public boolean isRelevant() {
+    if (IsEmphasizingClassesState.getInstance().getValue()) {
+      return true;
+    } else {
+      return this.getMethods().size() > 0;
+    }
+  }
 
-	//	@Override
-	//	public void handlePreActivation() {
-	//		super.handlePreActivation();
-	//		type.methods.addListPropertyListener( this.methodPropertyListener );
-	//	}
-	//
-	//	@Override
-	//	public void handlePostDeactivation() {
-	//		type.methods.removeListPropertyListener( this.methodPropertyListener );
-	//		super.handlePostDeactivation();
-	//	}
+  //  @Override
+  //  public void handlePreActivation() {
+  //    super.handlePreActivation();
+  //    type.methods.addListPropertyListener( this.methodPropertyListener );
+  //  }
+  //
+  //  @Override
+  //  public void handlePostDeactivation() {
+  //    type.methods.removeListPropertyListener( this.methodPropertyListener );
+  //    super.handlePostDeactivation();
+  //  }
 }

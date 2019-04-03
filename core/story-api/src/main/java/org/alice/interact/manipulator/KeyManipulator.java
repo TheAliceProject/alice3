@@ -49,71 +49,71 @@ import org.alice.interact.handle.HandleSet;
 
 public abstract class KeyManipulator extends AbstractManipulator {
 
-	private static final double RATE = 5.0d;
-	private static final double CLICK_TIME = .1d;
+  private static final double RATE = 5.0d;
+  private static final double CLICK_TIME = .1d;
 
-	KeyManipulator( MovementKey[] keys ) {
-		this.keys = keys;
-	}
+  KeyManipulator(MovementKey[] keys) {
+    this.keys = keys;
+  }
 
-	@Override
-	public void doClickManipulator( InputState clickInput, InputState previousInput ) {
-		//Key only. Do nothing.
-	}
+  @Override
+  public void doClickManipulator(InputState clickInput, InputState previousInput) {
+    //Key only. Do nothing.
+  }
 
-	@Override
-	protected HandleSet getHandleSetToEnable() {
-		return null;
-	}
+  @Override
+  protected HandleSet getHandleSetToEnable() {
+    return null;
+  }
 
-	@Override
-	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		//Key only. Do nothing.
-	}
+  @Override
+  public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
+    //Key only. Do nothing.
+  }
 
-	@Override
-	public boolean doStartManipulator( InputState startInput ) {
-		if( manipulatedTransformable != null ) {
-			startTime = System.currentTimeMillis() * .001d;
-			initialPoint.set( manipulatedTransformable.getAbsoluteTransformation().translation );
-			return true;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean doStartManipulator(InputState startInput) {
+    if (manipulatedTransformable != null) {
+      startTime = System.currentTimeMillis() * .001d;
+      initialPoint.set(manipulatedTransformable.getAbsoluteTransformation().translation);
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public void doTimeUpdateManipulator( double dTime, InputState currentInput ) {
-		if( manipulatedTransformable != null ) {
-			applyInput( currentInput, RATE * dTime );
-		}
-	}
+  @Override
+  public void doTimeUpdateManipulator(double dTime, InputState currentInput) {
+    if (manipulatedTransformable != null) {
+      applyInput(currentInput, RATE * dTime);
+    }
+  }
 
-	@Override
-	public void doEndManipulator( InputState endInput, InputState previousInput ) {
-		double currentTime = System.currentTimeMillis() * .001d;
-		double amountToMove = CLICK_TIME * RATE;
-		if( shouldApplyEnding( currentTime, amountToMove ) ) {
-			manipulatedTransformable.setTranslationOnly( initialPoint, manipulatedTransformable.getRoot() );
-			applyInput( previousInput, amountToMove );
-		}
-	}
+  @Override
+  public void doEndManipulator(InputState endInput, InputState previousInput) {
+    double currentTime = System.currentTimeMillis() * .001d;
+    double amountToMove = CLICK_TIME * RATE;
+    if (shouldApplyEnding(currentTime, amountToMove)) {
+      manipulatedTransformable.setTranslationOnly(initialPoint, manipulatedTransformable.getRoot());
+      applyInput(previousInput, amountToMove);
+    }
+  }
 
-	protected boolean shouldApplyEnding( double currentTime, double amountToMove ) {
-		return ( currentTime - startTime ) < CLICK_TIME;
-	}
+  protected boolean shouldApplyEnding(double currentTime, double amountToMove) {
+    return (currentTime - startTime) < CLICK_TIME;
+  }
 
-	private void applyInput( InputState input, double amountToMove ) {
-		for( MovementKey key : keys ) {
-			if( input.isKeyDown( key.keyValue ) ) {
-				manipulate( amountToMove, key );
-			}
-		}
-	}
+  private void applyInput(InputState input, double amountToMove) {
+    for (MovementKey key : keys) {
+      if (input.isKeyDown(key.keyValue)) {
+        manipulate(amountToMove, key);
+      }
+    }
+  }
 
-	protected abstract void manipulate( double amountToMove, MovementKey key );
+  protected abstract void manipulate(double amountToMove, MovementKey key);
 
-	Point3 initialPoint = new Point3();
-	private double startTime = 0.0d;
-	private MovementKey[] keys;
+  Point3 initialPoint = new Point3();
+  private double startTime = 0.0d;
+  private MovementKey[] keys;
 }

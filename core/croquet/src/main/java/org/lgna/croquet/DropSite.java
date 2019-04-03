@@ -48,5 +48,5 @@ import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
  * @author Dennis Cosgrove
  */
 public interface DropSite extends BinaryEncodableAndDecodable {
-	public DropReceptor getOwningDropReceptor();
+  public DropReceptor getOwningDropReceptor();
 }

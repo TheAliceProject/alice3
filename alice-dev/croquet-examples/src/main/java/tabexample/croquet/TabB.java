@@ -51,14 +51,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TabB extends AbstractTab {
-	public TabB() {
-		super( UUID.fromString( "c0752e2d-4f71-459b-bcf7-40c8093705c2" ) );
-	}
+  public TabB() {
+    super(UUID.fromString("c0752e2d-4f71-459b-bcf7-40c8093705c2"));
+  }
 
-	@Override
-	protected Panel createView() {
-		Panel rv = super.createView();
-		rv.setBackgroundColor( new Color( 191, 191, 255 ) );
-		return rv;
-	}
+  @Override
+  protected Panel createView() {
+    Panel rv = super.createView();
+    rv.setBackgroundColor(new Color(191, 191, 255));
+    return rv;
+  }
 }

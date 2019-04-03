@@ -65,6 +65,6 @@ import edu.cmu.cs.dennisc.property.DoubleProperty;
  * @author Dennis Cosgrove
  */
 public class ExponentialSquaredFog extends Fog {
-	//todo Double -> Float?
-	public final DoubleProperty density = new DoubleProperty( this, 1.0 );
+  //todo Double -> Float?
+  public final DoubleProperty density = new DoubleProperty(this, 1.0);
 }

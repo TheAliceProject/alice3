@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.quadruped;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SQuadruped;
@@ -33,59 +34,50 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.QuadrupedResource;
 
 public enum YakResource implements QuadrupedResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, YakResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_HORN = new JointId( HEAD, YakResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_HORN_TIP = new JointId( LEFT_HORN, YakResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_HORN = new JointId( HEAD, YakResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_HORN_TIP = new JointId( RIGHT_HORN, YakResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME, methodNameHint="getTongue")
-	public static final JointId TONGUE_0 = new JointId( HEAD, YakResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TONGUE_1 = new JointId( TONGUE_0, YakResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TONGUE_2 = new JointId( TONGUE_1, YakResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TONGUE_3 = new JointId( TONGUE_2, YakResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, YakResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, YakResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LOWER_LIP = new JointId(MOUTH, YakResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_HORN = new JointId(HEAD, YakResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_HORN_TIP = new JointId(LEFT_HORN, YakResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_HORN = new JointId(HEAD, YakResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_HORN_TIP = new JointId(RIGHT_HORN, YakResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME, methodNameHint = "getTongue") public static final JointId TONGUE_0 = new JointId(HEAD, YakResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TONGUE_1 = new JointId(TONGUE_0, YakResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TONGUE_2 = new JointId(TONGUE_1, YakResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TONGUE_3 = new JointId(TONGUE_2, YakResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_EAR_TIP = new JointId(LEFT_EAR, YakResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_EAR_TIP = new JointId(RIGHT_EAR, YakResource.class);
 
-	public static final JointId[] TONGUE_ARRAY = { TONGUE_0, TONGUE_1, TONGUE_2, TONGUE_3 };
+  public static final JointId[] TONGUE_ARRAY = {TONGUE_0, TONGUE_1, TONGUE_2, TONGUE_3};
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
-	@Override
-	public JointId[] getTailArray() {
-		return YakResource.TAIL_ARRAY;
-	}
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] TAIL_ARRAY = {TAIL_0, TAIL_1, TAIL_2, TAIL_3};
 
-	private final ImplementationAndVisualType resourceType;
-	YakResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  @Override
+  public JointId[] getTailArray() {
+    return YakResource.TAIL_ARRAY;
+  }
 
-	YakResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	public JointId[] getRootJointIds() {
-		return QuadrupedResource.JOINT_ID_ROOTS;
-	}
+  YakResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public QuadrupedImp createImplementation( SQuadruped abstraction ) {
-		return new QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  YakResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
+
+  public JointId[] getRootJointIds() {
+    return QuadrupedResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public QuadrupedImp createImplementation(SQuadruped abstraction) {
+    return new QuadrupedImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

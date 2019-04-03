@@ -48,27 +48,25 @@ import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SSwimmer;
 import org.lgna.story.implementation.SwimmerImp;
 
-@ResourceTemplate( modelClass = SSwimmer.class )
-public interface SwimmerResource extends JointedModelResource {
-	public static final JointId ROOT = new JointId( null, SwimmerResource.class );
-	public static final JointId NECK = new JointId( ROOT, SwimmerResource.class );
-	public static final JointId HEAD = new JointId( NECK, SwimmerResource.class );
-	public static final JointId MOUTH = new JointId( HEAD, SwimmerResource.class );
-	//	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, SwimmerResource.class );
-	public static final JointId LEFT_EYE = new JointId( HEAD, SwimmerResource.class );
-	public static final JointId RIGHT_EYE = new JointId( HEAD, SwimmerResource.class );
-	public static final JointId LEFT_EYELID = new JointId( HEAD, SwimmerResource.class );
-	public static final JointId RIGHT_EYELID = new JointId( HEAD, SwimmerResource.class );
-	public static final JointId FRONT_LEFT_FIN = new JointId( NECK, SwimmerResource.class );
-	//	public static final org.lgna.story.resources.JointId FRONT_LEFT_FIN_TIP = new org.lgna.story.resources.JointId( FRONT_LEFT_FIN, SwimmerResource.class );
-	public static final JointId FRONT_RIGHT_FIN = new JointId( NECK, SwimmerResource.class );
-	//	public static final org.lgna.story.resources.JointId FRONT_RIGHT_FIN_TIP = new org.lgna.story.resources.JointId( FRONT_RIGHT_FIN, SwimmerResource.class );
-	public static final JointId SPINE_BASE = new JointId( ROOT, SwimmerResource.class );
-	public static final JointId SPINE_MIDDLE = new JointId( SPINE_BASE, SwimmerResource.class );
-	public static final JointId TAIL = new JointId( SPINE_MIDDLE, SwimmerResource.class );
+@ResourceTemplate(modelClass = SSwimmer.class) public interface SwimmerResource extends JointedModelResource {
+  public static final JointId ROOT = new JointId(null, SwimmerResource.class);
+  public static final JointId NECK = new JointId(ROOT, SwimmerResource.class);
+  public static final JointId HEAD = new JointId(NECK, SwimmerResource.class);
+  public static final JointId MOUTH = new JointId(HEAD, SwimmerResource.class);
+  //  public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, SwimmerResource.class );
+  public static final JointId LEFT_EYE = new JointId(HEAD, SwimmerResource.class);
+  public static final JointId RIGHT_EYE = new JointId(HEAD, SwimmerResource.class);
+  public static final JointId LEFT_EYELID = new JointId(HEAD, SwimmerResource.class);
+  public static final JointId RIGHT_EYELID = new JointId(HEAD, SwimmerResource.class);
+  public static final JointId FRONT_LEFT_FIN = new JointId(NECK, SwimmerResource.class);
+  //  public static final org.lgna.story.resources.JointId FRONT_LEFT_FIN_TIP = new org.lgna.story.resources.JointId( FRONT_LEFT_FIN, SwimmerResource.class );
+  public static final JointId FRONT_RIGHT_FIN = new JointId(NECK, SwimmerResource.class);
+  //  public static final org.lgna.story.resources.JointId FRONT_RIGHT_FIN_TIP = new org.lgna.story.resources.JointId( FRONT_RIGHT_FIN, SwimmerResource.class );
+  public static final JointId SPINE_BASE = new JointId(ROOT, SwimmerResource.class);
+  public static final JointId SPINE_MIDDLE = new JointId(SPINE_BASE, SwimmerResource.class);
+  public static final JointId TAIL = new JointId(SPINE_MIDDLE, SwimmerResource.class);
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	public SwimmerImp createImplementation( SSwimmer abstraction );
+  public SwimmerImp createImplementation(SSwimmer abstraction);
 }

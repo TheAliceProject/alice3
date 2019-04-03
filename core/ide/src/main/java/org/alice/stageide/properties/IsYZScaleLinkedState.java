@@ -52,16 +52,16 @@ import java.util.UUID;
  *
  */
 public class IsYZScaleLinkedState extends BooleanState {
-	private static class SingletonHolder {
-		private static IsYZScaleLinkedState instance = new IsYZScaleLinkedState();
-	}
+  private static class SingletonHolder {
+    private static IsYZScaleLinkedState instance = new IsYZScaleLinkedState();
+  }
 
-	public static IsYZScaleLinkedState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsYZScaleLinkedState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsYZScaleLinkedState() {
-		super( IDE.DOCUMENT_UI_GROUP, UUID.fromString( "c24bc5c2-dcdb-4c4f-b759-79256d9921ce" ), true );
-		this.setIconForBothTrueAndFalse( LinkScaleIcon.SUB_SCALE_ICON );
-	}
+  private IsYZScaleLinkedState() {
+    super(IDE.DOCUMENT_UI_GROUP, UUID.fromString("c24bc5c2-dcdb-4c4f-b759-79256d9921ce"), true);
+    this.setIconForBothTrueAndFalse(LinkScaleIcon.SUB_SCALE_ICON);
+  }
 }

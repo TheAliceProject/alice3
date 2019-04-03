@@ -48,20 +48,20 @@ import org.lgna.story.resources.sims2.FullBodyOutfit;
  * @author Dennis Cosgrove
  */
 public class FullBodyOutfitListCellRenderer extends IngredientListCellRenderer<FullBodyOutfit> {
-	private static class SingletonHolder {
-		private static FullBodyOutfitListCellRenderer instance = new FullBodyOutfitListCellRenderer();
-	}
+  private static class SingletonHolder {
+    private static FullBodyOutfitListCellRenderer instance = new FullBodyOutfitListCellRenderer();
+  }
 
-	public static FullBodyOutfitListCellRenderer getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static FullBodyOutfitListCellRenderer getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private FullBodyOutfitListCellRenderer() {
-		super( 60, 200 );
-	}
+  private FullBodyOutfitListCellRenderer() {
+    super(60, 200);
+  }
 
-	@Override
-	protected String getSubPath() {
-		return "fullbodyoutfit_pictures";
-	}
+  @Override
+  protected String getSubPath() {
+    return "fullbodyoutfit_pictures";
+  }
 }

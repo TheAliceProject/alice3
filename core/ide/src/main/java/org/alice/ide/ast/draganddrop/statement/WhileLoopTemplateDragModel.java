@@ -56,20 +56,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class WhileLoopTemplateDragModel extends PotentiallyEnvelopingStatementTemplateDragModel {
-	private static class SingletonHolder {
-		private static WhileLoopTemplateDragModel instance = new WhileLoopTemplateDragModel();
-	}
+  private static class SingletonHolder {
+    private static WhileLoopTemplateDragModel instance = new WhileLoopTemplateDragModel();
+  }
 
-	public static WhileLoopTemplateDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static WhileLoopTemplateDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private WhileLoopTemplateDragModel() {
-		super( UUID.fromString( "fef12a3b-6ebd-4cc3-81f0-8bc0d34cada3" ), WhileLoop.class, IncompleteAstUtilities.createIncompleteWhileLoop() );
-	}
+  private WhileLoopTemplateDragModel() {
+    super(UUID.fromString("fef12a3b-6ebd-4cc3-81f0-8bc0d34cada3"), WhileLoop.class, IncompleteAstUtilities.createIncompleteWhileLoop());
+  }
 
-	@Override
-	protected Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		return WhileLoopInsertCascade.getInstance( blockStatementIndexPair, isEnveloping );
-	}
+  @Override
+  protected Triggerable getDropOperation(DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    return WhileLoopInsertCascade.getInstance(blockStatementIndexPair, isEnveloping);
+  }
 }

@@ -49,38 +49,39 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class DoTogether extends AbstractStatementWithBody {
-	public DoTogether() {
-	}
+  public DoTogether() {
+  }
 
-	public DoTogether( BlockStatement body ) {
-		super( body );
-	}
+  public DoTogether(BlockStatement body) {
+    super(body);
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		localizer.appendLocalizedText( DoTogether.class, "do together" );
-		super.appendRepr( localizer );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    localizer.appendLocalizedText(DoTogether.class, "do together");
+    super.appendRepr(localizer);
+  }
 
-	@Override public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendDoTogether(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendDoTogether(this);
+  }
 
-	@Override
-	boolean containsAReturnForEveryPath() {
-		return isEnabled.getValue() && body.getValue().containsAReturnForEveryPath();
-	}
+  @Override
+  boolean containsAReturnForEveryPath() {
+    return isEnabled.getValue() && body.getValue().containsAReturnForEveryPath();
+  }
 
-	@Override
-	boolean containsUnreachableCode() {
-		if (!isEnabled.getValue() ) {
-			return false;
-		}
-		for ( Statement statement : body.getValue().statements) {
-			if ( statement.containsUnreachableCode() ) {
-				return true;
-			}
-		}
-		return false;
-	}
+  @Override
+  boolean containsUnreachableCode() {
+    if (!isEnabled.getValue()) {
+      return false;
+    }
+    for (Statement statement : body.getValue().statements) {
+      if (statement.containsUnreachableCode()) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

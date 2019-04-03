@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.quadruped;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SQuadruped;
@@ -33,37 +34,38 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.QuadrupedResource;
 
 public enum DesertTortoiseResource implements QuadrupedResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, DesertTortoiseResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LOWER_LIP = new JointId(MOUTH, DesertTortoiseResource.class);
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
-	@Override
-	public JointId[] getTailArray() {
-		return DesertTortoiseResource.TAIL_ARRAY;
-	}
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] TAIL_ARRAY = {TAIL_0, TAIL_1, TAIL_2, TAIL_3};
 
-	private final ImplementationAndVisualType resourceType;
-	DesertTortoiseResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  @Override
+  public JointId[] getTailArray() {
+    return DesertTortoiseResource.TAIL_ARRAY;
+  }
 
-	DesertTortoiseResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	public JointId[] getRootJointIds() {
-		return QuadrupedResource.JOINT_ID_ROOTS;
-	}
+  DesertTortoiseResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public QuadrupedImp createImplementation( SQuadruped abstraction ) {
-		return new QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  DesertTortoiseResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
+
+  public JointId[] getRootJointIds() {
+    return QuadrupedResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public QuadrupedImp createImplementation(SQuadruped abstraction) {
+    return new QuadrupedImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

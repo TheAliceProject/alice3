@@ -60,56 +60,56 @@ import java.awt.geom.GeneralPath;
  * @author Dennis Cosgrove
  */
 public class TabIcon extends ShapeIcon {
-	private static final Stroke STROKE = new BasicStroke( 0.0f );
-	private final Paint fillPaint;
-	private final Paint armedFillPaint;
-	private final GeneralPath shape = new GeneralPath();
+  private static final Stroke STROKE = new BasicStroke(0.0f);
+  private final Paint fillPaint;
+  private final Paint armedFillPaint;
+  private final GeneralPath shape = new GeneralPath();
 
-	public TabIcon( Dimension size, Color fillColor ) {
-		super( size );
-		this.fillPaint = fillColor;
-		this.armedFillPaint = new GradientPaint( 0, 0, Color.WHITE, 0, size.height, fillColor );
+  public TabIcon(Dimension size, Color fillColor) {
+    super(size);
+    this.fillPaint = fillColor;
+    this.armedFillPaint = new GradientPaint(0, 0, Color.WHITE, 0, size.height, fillColor);
 
-		float a = 0.1f;
-		float b = 0.3f;
-		float d = b + a;
-		float f = d + 0.2f;
-		float g = 0.2f;
+    float a = 0.1f;
+    float b = 0.3f;
+    float d = b + a;
+    float f = d + 0.2f;
+    float g = 0.2f;
 
-		float w = size.width - ( PAD * 2 );
-		float h = size.height - ( PAD * 2 );
+    float w = size.width - (PAD * 2);
+    float h = size.height - (PAD * 2);
 
-		shape.moveTo( 0.0f, h );
-		shape.lineTo( 0.0f, a * h );
-		shape.quadTo( 0.0f, 0.0f, a * w, 0.0f );
-		shape.lineTo( b * w, 0.0f );
-		shape.quadTo( d * w, 0.0f, d * w, a * h );
-		shape.quadTo( d * w, g * h, f * w, g * h );
-		shape.lineTo( w, g * h );
-		shape.lineTo( w, h );
-		shape.closePath();
-	}
+    shape.moveTo(0.0f, h);
+    shape.lineTo(0.0f, a * h);
+    shape.quadTo(0.0f, 0.0f, a * w, 0.0f);
+    shape.lineTo(b * w, 0.0f);
+    shape.quadTo(d * w, 0.0f, d * w, a * h);
+    shape.quadTo(d * w, g * h, f * w, g * h);
+    shape.lineTo(w, g * h);
+    shape.lineTo(w, h);
+    shape.closePath();
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
-		boolean isArmed;
-		if( c instanceof AbstractButton ) {
-			AbstractButton button = (AbstractButton)c;
-			ButtonModel buttonModel = button.getModel();
-			isArmed = buttonModel.isArmed();
-		} else {
-			isArmed = false;
-		}
-		g2.setPaint( isArmed ? this.armedFillPaint : this.fillPaint );
-		g2.fill( shape );
-		if( isArmed ) {
-			//pass
-		} else {
-			Stroke prevStroke = g2.getStroke();
-			g2.setStroke( STROKE );
-			g2.setPaint( Color.DARK_GRAY );
-			g2.draw( shape );
-			g2.setStroke( prevStroke );
-		}
-	}
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    boolean isArmed;
+    if (c instanceof AbstractButton) {
+      AbstractButton button = (AbstractButton) c;
+      ButtonModel buttonModel = button.getModel();
+      isArmed = buttonModel.isArmed();
+    } else {
+      isArmed = false;
+    }
+    g2.setPaint(isArmed ? this.armedFillPaint : this.fillPaint);
+    g2.fill(shape);
+    if (isArmed) {
+      //pass
+    } else {
+      Stroke prevStroke = g2.getStroke();
+      g2.setStroke(STROKE);
+      g2.setPaint(Color.DARK_GRAY);
+      g2.draw(shape);
+      g2.setStroke(prevStroke);
+    }
+  }
 }

@@ -52,11 +52,11 @@ import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
  * @author Dennis Cosgrove
  */
 /*package-private*/class NrAsynchronousPicker implements AsynchronousPicker {
-	@Override
-	public void pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer ) {
-	}
+  @Override
+  public void pickAll(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer) {
+  }
 
-	@Override
-	public void pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer ) {
-	}
+  @Override
+  public void pickFrontMost(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer) {
+  }
 }

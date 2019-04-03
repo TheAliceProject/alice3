@@ -86,387 +86,387 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel, AbstractType> {
-	private static class SingletonHolder {
-		private static OtherTypeDialog instance = new OtherTypeDialog();
-	}
+  private static class SingletonHolder {
+    private static OtherTypeDialog instance = new OtherTypeDialog();
+  }
 
-	public static OtherTypeDialog getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static OtherTypeDialog getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private class ValueCreatorForRootFilterType extends ValueCreator<AbstractType<?, ?, ?>> {
-		public ValueCreatorForRootFilterType( JavaType rootFilterType ) {
-			super( UUID.fromString( "84922129-0658-47af-8e32-f2476f030e41" ) );
-			this.rootFilterType = rootFilterType;
-		}
+  private class ValueCreatorForRootFilterType extends ValueCreator<AbstractType<?, ?, ?>> {
+    public ValueCreatorForRootFilterType(JavaType rootFilterType) {
+      super(UUID.fromString("84922129-0658-47af-8e32-f2476f030e41"));
+      this.rootFilterType = rootFilterType;
+    }
 
-		@Override
-		protected Class<? extends Element> getClassUsedForLocalization() {
-			return OtherTypeDialog.class;
-		}
+    @Override
+    protected Class<? extends Element> getClassUsedForLocalization() {
+      return OtherTypeDialog.class;
+    }
 
-		@Override
-		protected AbstractType<?, ?, ?> createValue( UserActivity userActivity ) {
-			OtherTypeDialog.this.initializeRootFilterType( this.rootFilterType );
-			return OtherTypeDialog.this.createValue( userActivity );
-		}
+    @Override
+    protected AbstractType<?, ?, ?> createValue(UserActivity userActivity) {
+      OtherTypeDialog.this.initializeRootFilterType(this.rootFilterType);
+      return OtherTypeDialog.this.createValue(userActivity);
+    }
 
-		private final JavaType rootFilterType;
-	}
+    private final JavaType rootFilterType;
+  }
 
-	private final InitializingIfAbsentMap<JavaType, ValueCreator<AbstractType<?, ?, ?>>> mapTypeToValueCreator = Maps.newInitializingIfAbsentHashMap();
+  private final InitializingIfAbsentMap<JavaType, ValueCreator<AbstractType<?, ?, ?>>> mapTypeToValueCreator = Maps.newInitializingIfAbsentHashMap();
 
-	private final Map<AbstractType<?, ?, ?>, TypeNode> map = Maps.newHashMap();
+  private final Map<AbstractType<?, ?, ?>, TypeNode> map = Maps.newHashMap();
 
-	private final TypeTreeState typeTreeState = new TypeTreeState();
-	private final StringValue descriptionText = new HtmlStringValue( UUID.fromString( "5417d9ee-bbe5-457b-aa63-1e5d0958ae1f" ) ) {
-	};
-	private final SceneFieldListData sceneFieldListData = new SceneFieldListData();
-	private final MultipleSelectionListState<UserField> sceneFieldsState = new SceneFieldsState( sceneFieldListData );
+  private final TypeTreeState typeTreeState = new TypeTreeState();
+  private final StringValue descriptionText = new HtmlStringValue(UUID.fromString("5417d9ee-bbe5-457b-aa63-1e5d0958ae1f")) {
+  };
+  private final SceneFieldListData sceneFieldListData = new SceneFieldListData();
+  private final MultipleSelectionListState<UserField> sceneFieldsState = new SceneFieldsState(sceneFieldListData);
 
-	private final AssignableTab assignableTab = new AssignableTab( this );
-	private final ContainsTab containsTab = new ContainsTab( this );
-	private final ImmutableDataTabState<?> tabState = this.createImmutableTabState( "tabState", 0, this.assignableTab, this.containsTab );
+  private final AssignableTab assignableTab = new AssignableTab(this);
+  private final ContainsTab containsTab = new ContainsTab(this);
+  private final ImmutableDataTabState<?> tabState = this.createImmutableTabState("tabState", 0, this.assignableTab, this.containsTab);
 
-	private final ErrorStatus noSelectionError = this.createErrorStatus( "noSelectionError" );
-	private final Status notAssignableError = new Status() {
-		@Override
-		public boolean isGoodToGo() {
-			return false;
-		}
+  private final ErrorStatus noSelectionError = this.createErrorStatus("noSelectionError");
+  private final Status notAssignableError = new Status() {
+    @Override
+    public boolean isGoodToGo() {
+      return false;
+    }
 
-		@Override
-		public String getText() {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "Select class assignable to " );
-			if( rootFilterType != null ) {
-				sb.append( rootFilterType.getName() );
-			}
-			return sb.toString();
-		}
-	};
+    @Override
+    public String getText() {
+      StringBuilder sb = new StringBuilder();
+      sb.append("Select class assignable to ");
+      if (rootFilterType != null) {
+        sb.append(rootFilterType.getName());
+      }
+      return sb.toString();
+    }
+  };
 
-	private JavaType rootFilterType;
+  private JavaType rootFilterType;
 
-	private boolean isInTheMidstOfLowestCommonAncestorSetting;
-	private final ValueListener<TypeNode> typeListener = new ValueListener<TypeNode>() {
-		@Override
-		public void valueChanged( ValueEvent<TypeNode> e ) {
-			TypeNode nextValue = e.getNextValue();
-			handleTypeChange( nextValue != null ? nextValue.getType() : null );
-		}
-	};
+  private boolean isInTheMidstOfLowestCommonAncestorSetting;
+  private final ValueListener<TypeNode> typeListener = new ValueListener<TypeNode>() {
+    @Override
+    public void valueChanged(ValueEvent<TypeNode> e) {
+      TypeNode nextValue = e.getNextValue();
+      handleTypeChange(nextValue != null ? nextValue.getType() : null);
+    }
+  };
 
-	private final ValueListener<List<UserField>> sceneFieldListener = new ValueListener<List<UserField>>() {
-		@Override
-		public void valueChanged( ValueEvent<List<UserField>> e ) {
-			List<UserField> fields = e.getNextValue();
-			TypeNode sharedNode = null;
-			if( fields.size() > 0 ) {
-				for( UserField field : fields ) {
-					TypeNode typeNode = map.get( field.getValueType() );
-					if( sharedNode != null ) {
-						sharedNode = (TypeNode)sharedNode.getSharedAncestor( typeNode );
-					} else {
-						sharedNode = typeNode;
-					}
-				}
-			}
-			isInTheMidstOfLowestCommonAncestorSetting = true;
-			try {
-				typeTreeState.setValueTransactionlessly( sharedNode );
-			} finally {
-				isInTheMidstOfLowestCommonAncestorSetting = false;
-			}
-		}
-	};
+  private final ValueListener<List<UserField>> sceneFieldListener = new ValueListener<List<UserField>>() {
+    @Override
+    public void valueChanged(ValueEvent<List<UserField>> e) {
+      List<UserField> fields = e.getNextValue();
+      TypeNode sharedNode = null;
+      if (fields.size() > 0) {
+        for (UserField field : fields) {
+          TypeNode typeNode = map.get(field.getValueType());
+          if (sharedNode != null) {
+            sharedNode = (TypeNode) sharedNode.getSharedAncestor(typeNode);
+          } else {
+            sharedNode = typeNode;
+          }
+        }
+      }
+      isInTheMidstOfLowestCommonAncestorSetting = true;
+      try {
+        typeTreeState.setValueTransactionlessly(sharedNode);
+      } finally {
+        isInTheMidstOfLowestCommonAncestorSetting = false;
+      }
+    }
+  };
 
-	private OtherTypeDialog() {
-		super( UUID.fromString( "58d24fb6-a6f5-4ad9-87b0-dfb5e9e4de41" ) );
-	}
+  private OtherTypeDialog() {
+    super(UUID.fromString("58d24fb6-a6f5-4ad9-87b0-dfb5e9e4de41"));
+  }
 
-	public ValueCreator<AbstractType<?, ?, ?>> getValueCreator( JavaType rootType ) {
-		return this.mapTypeToValueCreator.getInitializingIfAbsent( rootType, new InitializingIfAbsentMap.Initializer<JavaType, ValueCreator<AbstractType<?, ?, ?>>>() {
-			@Override
-			public ValueCreator<AbstractType<?, ?, ?>> initialize( JavaType key ) {
-				return new ValueCreatorForRootFilterType( key );
-			}
-		} );
-	}
+  public ValueCreator<AbstractType<?, ?, ?>> getValueCreator(JavaType rootType) {
+    return this.mapTypeToValueCreator.getInitializingIfAbsent(rootType, new InitializingIfAbsentMap.Initializer<JavaType, ValueCreator<AbstractType<?, ?, ?>>>() {
+      @Override
+      public ValueCreator<AbstractType<?, ?, ?>> initialize(JavaType key) {
+        return new ValueCreatorForRootFilterType(key);
+      }
+    });
+  }
 
-	public ValueCreator<AbstractType<?, ?, ?>> getValueCreator( Class<? extends SThing> rootCls ) {
-		return this.getValueCreator( JavaType.getInstance( rootCls ) );
-	}
+  public ValueCreator<AbstractType<?, ?, ?>> getValueCreator(Class<? extends SThing> rootCls) {
+    return this.getValueCreator(JavaType.getInstance(rootCls));
+  }
 
-	private void initializeRootFilterType( JavaType rootFilterType ) {
-		this.rootFilterType = rootFilterType;
-	}
+  private void initializeRootFilterType(JavaType rootFilterType) {
+    this.rootFilterType = rootFilterType;
+  }
 
-	@Override
-	protected Integer getWiderGoldenRatioSizeFromHeight() {
-		return 600;
-	}
+  @Override
+  protected Integer getWiderGoldenRatioSizeFromHeight() {
+    return 600;
+  }
 
-	public TabState getTabState() {
-		return this.tabState;
-	}
+  public TabState getTabState() {
+    return this.tabState;
+  }
 
-	public MultipleSelectionListState<UserField> getSceneFieldsState() {
-		return this.sceneFieldsState;
-	}
+  public MultipleSelectionListState<UserField> getSceneFieldsState() {
+    return this.sceneFieldsState;
+  }
 
-	public SingleSelectTreeState<TypeNode> getTypeTreeState() {
-		return this.typeTreeState;
-	}
+  public SingleSelectTreeState<TypeNode> getTypeTreeState() {
+    return this.typeTreeState;
+  }
 
-	public StringValue getDescriptionText() {
-		return this.descriptionText;
-	}
+  public StringValue getDescriptionText() {
+    return this.descriptionText;
+  }
 
-	@Override
-	protected AbstractType createValue() {
-		TypeNode typeNode = this.typeTreeState.getValue();
-		if( typeNode != null ) {
-			return typeNode.getType();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected AbstractType createValue() {
+    TypeNode typeNode = this.typeTreeState.getValue();
+    if (typeNode != null) {
+      return typeNode.getType();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		TypeNode typeNode = this.typeTreeState.getValue();
-		if( typeNode != null ) {
-			AbstractType<?, ?, ?> type = typeNode.getType();
-			//todo assert this.rootFilterType != null;
-			if( ( this.rootFilterType == null ) || this.rootFilterType.isAssignableFrom( type ) ) {
-				return IS_GOOD_TO_GO_STATUS;
-			} else {
-				return this.notAssignableError;
-			}
-		} else {
-			return this.noSelectionError;
-		}
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    TypeNode typeNode = this.typeTreeState.getValue();
+    if (typeNode != null) {
+      AbstractType<?, ?, ?> type = typeNode.getType();
+      //todo assert this.rootFilterType != null;
+      if ((this.rootFilterType == null) || this.rootFilterType.isAssignableFrom(type)) {
+        return IS_GOOD_TO_GO_STATUS;
+      } else {
+        return this.notAssignableError;
+      }
+    } else {
+      return this.noSelectionError;
+    }
+  }
 
-	private static TypeNode build( AbstractType<?, ?, ?> type, Map<AbstractType<?, ?, ?>, TypeNode> map ) {
-		assert type != null;
-		TypeNode typeNode = map.get( type );
-		if( typeNode != null ) {
-			//pass
-		} else {
-			typeNode = new TypeNode( type );
-			map.put( type, typeNode );
-			AbstractType<?, ?, ?> superType = type.getSuperType();
-			TypeNode superTypeNode = map.get( superType );
-			if( superTypeNode != null ) {
-				//pass
-			} else {
-				superTypeNode = build( superType, map );
-			}
-			superTypeNode.add( typeNode );
-		}
-		return typeNode;
-	}
+  private static TypeNode build(AbstractType<?, ?, ?> type, Map<AbstractType<?, ?, ?>, TypeNode> map) {
+    assert type != null;
+    TypeNode typeNode = map.get(type);
+    if (typeNode != null) {
+      //pass
+    } else {
+      typeNode = new TypeNode(type);
+      map.put(type, typeNode);
+      AbstractType<?, ?, ?> superType = type.getSuperType();
+      TypeNode superTypeNode = map.get(superType);
+      if (superTypeNode != null) {
+        //pass
+      } else {
+        superTypeNode = build(superType, map);
+      }
+      superTypeNode.add(typeNode);
+    }
+    return typeNode;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		Project project = ProjectStack.peekProject();
-		Iterable<NamedUserType> types = project.getNamedUserTypes();
-		map.clear();
+  @Override
+  public void handlePreActivation() {
+    Project project = ProjectStack.peekProject();
+    Iterable<NamedUserType> types = project.getNamedUserTypes();
+    map.clear();
 
-		JavaType rootType = JavaType.getInstance( SThing.class );
-		TypeNode rootNode = new TypeNode( rootType );
-		map.put( rootType, rootNode );
-		for( NamedUserType type : types ) {
-			if( this.rootFilterType.isAssignableFrom( type ) ) {
-				build( type, map );
-			}
-		}
-		this.sceneFieldListData.refresh();
+    JavaType rootType = JavaType.getInstance(SThing.class);
+    TypeNode rootNode = new TypeNode(rootType);
+    map.put(rootType, rootNode);
+    for (NamedUserType type : types) {
+      if (this.rootFilterType.isAssignableFrom(type)) {
+        build(type, map);
+      }
+    }
+    this.sceneFieldListData.refresh();
 
-		// handle JavaType scene fields
-		synchronized( this.sceneFieldListData ) {
-			final int N = this.sceneFieldListData.getItemCount();
-			for( int i = 0; i < N; i++ ) {
-				UserField field = this.sceneFieldListData.getItemAt( i );
-				AbstractType<?, ?, ?> valueType = field.getValueType();
-				if( valueType instanceof JavaType ) {
-					JavaType javaValueType = (JavaType)valueType;
-					build( javaValueType, map );
-				}
-			}
-		}
+    // handle JavaType scene fields
+    synchronized (this.sceneFieldListData) {
+      final int N = this.sceneFieldListData.getItemCount();
+      for (int i = 0; i < N; i++) {
+        UserField field = this.sceneFieldListData.getItemAt(i);
+        AbstractType<?, ?, ?> valueType = field.getValueType();
+        if (valueType instanceof JavaType) {
+          JavaType javaValueType = (JavaType) valueType;
+          build(javaValueType, map);
+        }
+      }
+    }
 
-		this.typeTreeState.setRoot( rootNode );
-		this.typeTreeState.addAndInvokeNewSchoolValueListener( this.typeListener );
-		this.sceneFieldsState.addNewSchoolValueListener( this.sceneFieldListener );
+    this.typeTreeState.setRoot(rootNode);
+    this.typeTreeState.addAndInvokeNewSchoolValueListener(this.typeListener);
+    this.sceneFieldsState.addNewSchoolValueListener(this.sceneFieldListener);
 
-		this.containsTab.getMemberListData().connect( rootNode );
-		super.handlePreActivation();
-	}
+    this.containsTab.getMemberListData().connect(rootNode);
+    super.handlePreActivation();
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		this.containsTab.getMemberListData().disconnect();
-		this.sceneFieldsState.removeNewSchoolValueListener( this.sceneFieldListener );
-		this.typeTreeState.removeNewSchoolValueListener( this.typeListener );
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    this.containsTab.getMemberListData().disconnect();
+    this.sceneFieldsState.removeNewSchoolValueListener(this.sceneFieldListener);
+    this.typeTreeState.removeNewSchoolValueListener(this.typeListener);
+    super.handlePostDeactivation();
+  }
 
-	@Override
-	protected Panel createView() {
-		return new OtherTypeDialogPane( this );
-	}
+  @Override
+  protected Panel createView() {
+    return new OtherTypeDialogPane(this);
+  }
 
-	private static boolean isInclusionDesired( AbstractMember member ) {
-		if( member instanceof AbstractMethod ) {
-			AbstractMethod method = (AbstractMethod)member;
-			if( method.isStatic() ) {
-				return false;
-			}
-		} else if( member instanceof AbstractField ) {
-			AbstractField field = (AbstractField)member;
-			if( field.isStatic() ) {
-				return false;
-			}
-		}
-		if( member.isPublicAccess() || member.isUserAuthored() ) {
-			Visibility visibility = member.getVisibility();
-			return ( visibility == null ) || visibility.equals( Visibility.PRIME_TIME );
-		} else {
-			return false;
-		}
-	}
+  private static boolean isInclusionDesired(AbstractMember member) {
+    if (member instanceof AbstractMethod) {
+      AbstractMethod method = (AbstractMethod) member;
+      if (method.isStatic()) {
+        return false;
+      }
+    } else if (member instanceof AbstractField) {
+      AbstractField field = (AbstractField) member;
+      if (field.isStatic()) {
+        return false;
+      }
+    }
+    if (member.isPublicAccess() || member.isUserAuthored()) {
+      Visibility visibility = member.getVisibility();
+      return (visibility == null) || visibility.equals(Visibility.PRIME_TIME);
+    } else {
+      return false;
+    }
+  }
 
-	private static void appendMembers( StringBuilder sb, AbstractType<?, ?, ?> type, boolean isSelected ) {
-		if( isSelected ) {
-			sb.append( "<h2>" );
-		} else {
-			sb.append( "<h2>" );
-		}
-		sb.append( "class " );
-		sb.append( type.getName() );
-		if( isSelected ) {
-			sb.append( "</h2>" );
-		} else {
-			sb.append( " <em>(inherit)</em></h2>" );
-		}
+  private static void appendMembers(StringBuilder sb, AbstractType<?, ?, ?> type, boolean isSelected) {
+    if (isSelected) {
+      sb.append("<h2>");
+    } else {
+      sb.append("<h2>");
+    }
+    sb.append("class ");
+    sb.append(type.getName());
+    if (isSelected) {
+      sb.append("</h2>");
+    } else {
+      sb.append(" <em>(inherit)</em></h2>");
+    }
 
-		List<? extends AbstractMethod> methods = type.getDeclaredMethods();
+    List<? extends AbstractMethod> methods = type.getDeclaredMethods();
 
-		boolean isFirst = true;
-		for( AbstractMethod method : methods ) {
-			if( isInclusionDesired( method ) ) {
-				if( method.isProcedure() ) {
-					if( isFirst ) {
-						sb.append( "<em>procedures</em>" );
-						sb.append( "<ul>" );
-						isFirst = false;
-					}
-					sb.append( "<li>" );
-					sb.append( method.getName() );
-					sb.append( "</li>" );
-				}
-			}
-		}
-		if( isFirst ) {
-			//pass
-		} else {
-			sb.append( "</ul>" );
-		}
-		isFirst = true;
-		for( AbstractMethod method : methods ) {
-			if( isInclusionDesired( method ) ) {
-				if( method.isFunction() ) {
-					if( isFirst ) {
-						sb.append( "<em>functions</em>" );
-						sb.append( "<ul>" );
-						isFirst = false;
-					}
-					sb.append( "<li>" );
-					sb.append( method.getName() );
-					sb.append( "</li>" );
-				}
-			}
-		}
-		if( isFirst ) {
-			//pass
-		} else {
-			sb.append( "</ul>" );
-		}
+    boolean isFirst = true;
+    for (AbstractMethod method : methods) {
+      if (isInclusionDesired(method)) {
+        if (method.isProcedure()) {
+          if (isFirst) {
+            sb.append("<em>procedures</em>");
+            sb.append("<ul>");
+            isFirst = false;
+          }
+          sb.append("<li>");
+          sb.append(method.getName());
+          sb.append("</li>");
+        }
+      }
+    }
+    if (isFirst) {
+      //pass
+    } else {
+      sb.append("</ul>");
+    }
+    isFirst = true;
+    for (AbstractMethod method : methods) {
+      if (isInclusionDesired(method)) {
+        if (method.isFunction()) {
+          if (isFirst) {
+            sb.append("<em>functions</em>");
+            sb.append("<ul>");
+            isFirst = false;
+          }
+          sb.append("<li>");
+          sb.append(method.getName());
+          sb.append("</li>");
+        }
+      }
+    }
+    if (isFirst) {
+      //pass
+    } else {
+      sb.append("</ul>");
+    }
 
-		isFirst = true;
-		for( AbstractField field : type.getDeclaredFields() ) {
-			if( isInclusionDesired( field ) ) {
-				if( isFirst ) {
-					sb.append( "<em>properties</em>" );
-					sb.append( "<ul>" );
-					isFirst = false;
-				}
-				sb.append( "<li>" );
-				sb.append( field.getName() );
-				sb.append( "</li>" );
-			}
-		}
-		if( isFirst ) {
-			//pass
-		} else {
-			sb.append( "</ul>" );
-		}
+    isFirst = true;
+    for (AbstractField field : type.getDeclaredFields()) {
+      if (isInclusionDesired(field)) {
+        if (isFirst) {
+          sb.append("<em>properties</em>");
+          sb.append("<ul>");
+          isFirst = false;
+        }
+        sb.append("<li>");
+        sb.append(field.getName());
+        sb.append("</li>");
+      }
+    }
+    if (isFirst) {
+      //pass
+    } else {
+      sb.append("</ul>");
+    }
 
-		if( type.isFollowToSuperClassDesired() ) {
-			appendMembers( sb, type.getSuperType(), false );
-		}
-	}
+    if (type.isFollowToSuperClassDesired()) {
+      appendMembers(sb, type.getSuperType(), false);
+    }
+  }
 
-	private void handleTypeChange( AbstractType<?, ?, ?> type ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "<body bgcolor=\"#FFFFFF\">" );
-		if( type != null ) {
-			appendMembers( sb, type, true );
-		} else {
-			sb.append( "<em>no class selected</em>" );
-		}
-		sb.append( "</body>" );
-		sb.append( "</html>" );
-		descriptionText.setText( sb.toString() );
+  private void handleTypeChange(AbstractType<?, ?, ?> type) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("<html>");
+    sb.append("<body bgcolor=\"#FFFFFF\">");
+    if (type != null) {
+      appendMembers(sb, type, true);
+    } else {
+      sb.append("<em>no class selected</em>");
+    }
+    sb.append("</body>");
+    sb.append("</html>");
+    descriptionText.setText(sb.toString());
 
-		ListData<UserField> data = sceneFieldsState.getData();
+    ListData<UserField> data = sceneFieldsState.getData();
 
-		this.getView().repaint();
-		if( this.isInTheMidstOfLowestCommonAncestorSetting ) {
-			//
-		} else {
-			List<UserField> fields = Lists.newLinkedList();
-			if( type != null ) {
-				synchronized( data ) {
-					final int N = data.getItemCount();
-					for( int i = 0; i < N; i++ ) {
-						UserField item = data.getItemAt( i );
-						if( type.isAssignableFrom( item.getValueType() ) ) {
-							fields.add( item );
-						}
-					}
-				}
-			}
-			this.sceneFieldsState.setValue( fields );
-		}
-	}
+    this.getView().repaint();
+    if (this.isInTheMidstOfLowestCommonAncestorSetting) {
+      //
+    } else {
+      List<UserField> fields = Lists.newLinkedList();
+      if (type != null) {
+        synchronized (data) {
+          final int N = data.getItemCount();
+          for (int i = 0; i < N; i++) {
+            UserField item = data.getItemAt(i);
+            if (type.isAssignableFrom(item.getValueType())) {
+              fields.add(item);
+            }
+          }
+        }
+      }
+      this.sceneFieldsState.setValue(fields);
+    }
+  }
 
-	public TypeNode getTypeNodeFor( AbstractType<?, ?, ?> nextValue ) {
-		return nextValue != null ? map.get( nextValue ) : null;
-	}
+  public TypeNode getTypeNodeFor(AbstractType<?, ?, ?> nextValue) {
+    return nextValue != null ? map.get(nextValue) : null;
+  }
 
-	public static void main( String[] args ) throws Exception {
-		UIManagerUtilities.setLookAndFeel( "Nimbus" );
+  public static void main(String[] args) throws Exception {
+    UIManagerUtilities.setLookAndFeel("Nimbus");
 
-		new SimpleApplication();
+    new SimpleApplication();
 
-		Project project = IoUtilities.readProject( args[ 0 ] );
-		ProjectStack.pushProject( project );
-		OtherTypeDialog.getInstance().getValueCreator( SModel.class ).fire( NullTrigger.createUserActivity() );
-		System.exit( 0 );
-	}
+    Project project = IoUtilities.readProject(args[0]);
+    ProjectStack.pushProject(project);
+    OtherTypeDialog.getInstance().getValueCreator(SModel.class).fire(NullTrigger.createUserActivity());
+    System.exit(0);
+  }
 }

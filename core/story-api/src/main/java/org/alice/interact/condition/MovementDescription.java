@@ -49,29 +49,29 @@ import org.alice.interact.MovementType;
  * @author David Culyba
  */
 public class MovementDescription {
-	public MovementType type;
-	public MovementDirection direction;
+  public MovementType type;
+  public MovementDirection direction;
 
-	public MovementDescription( MovementDirection direction ) {
-		this( direction, MovementType.STOOD_UP );
-	}
+  public MovementDescription(MovementDirection direction) {
+    this(direction, MovementType.STOOD_UP);
+  }
 
-	public MovementDescription( MovementDirection direction, MovementType type ) {
-		this.type = type;
-		this.direction = direction;
-	}
+  public MovementDescription(MovementDirection direction, MovementType type) {
+    this.type = type;
+    this.direction = direction;
+  }
 
-	@Override
-	public boolean equals( Object o ) {
-		if( o instanceof MovementDescription ) {
-			return ( ( (MovementDescription)o ).direction == this.direction ) && ( ( (MovementDescription)o ).type == this.type );
-		}
-		return false;
-	}
+  @Override
+  public boolean equals(Object o) {
+    if (o instanceof MovementDescription) {
+      return (((MovementDescription) o).direction == this.direction) && (((MovementDescription) o).type == this.type);
+    }
+    return false;
+  }
 
-	@Override
-	public String toString() {
-		return "Movement Type: " + this.type + ", Direction: " + this.direction;
-	}
+  @Override
+  public String toString() {
+    return "Movement Type: " + this.type + ", Direction: " + this.direction;
+  }
 
 }

@@ -59,26 +59,21 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public class HelpView extends BorderPanel {
-	public HelpView( HelpComposite composite ) {
-		super( composite );
-		Hyperlink hyperlink = composite.getBrowserOperation().createHyperlink();
-		Label iconLabel = new Label( new ImageIcon( HelpView.class.getResource( "images/help.png" ) ) );
-		AbstractLabel textLabel = composite.getWhereToFindHelpText().createLabel();
+  public HelpView(HelpComposite composite) {
+    super(composite);
+    Hyperlink hyperlink = composite.getBrowserOperation().createHyperlink();
+    Label iconLabel = new Label(new ImageIcon(HelpView.class.getResource("images/help.png")));
+    AbstractLabel textLabel = composite.getWhereToFindHelpText().createLabel();
 
-		textLabel.scaleFont( 2.0f );
-		textLabel.changeFont( TextWeight.BOLD );
-		hyperlink.scaleFont( 2.0f );
-		hyperlink.changeFont( TextWeight.BOLD );
+    textLabel.scaleFont(2.0f);
+    textLabel.changeFont(TextWeight.BOLD);
+    hyperlink.scaleFont(2.0f);
+    hyperlink.changeFont(TextWeight.BOLD);
 
-		PageAxisPanel pageAxisPanel = new PageAxisPanel(
-				BoxUtilities.createVerticalGlue(),
-				textLabel,
-				hyperlink,
-				BoxUtilities.createVerticalGlue()
-				);
-		pageAxisPanel.setAlignmentY( Component.CENTER_ALIGNMENT );
-		this.addLineStartComponent( iconLabel );
-		this.addLineEndComponent( pageAxisPanel );
-		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-	}
+    PageAxisPanel pageAxisPanel = new PageAxisPanel(BoxUtilities.createVerticalGlue(), textLabel, hyperlink, BoxUtilities.createVerticalGlue());
+    pageAxisPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+    this.addLineStartComponent(iconLabel);
+    this.addLineEndComponent(pageAxisPanel);
+    this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+  }
 }

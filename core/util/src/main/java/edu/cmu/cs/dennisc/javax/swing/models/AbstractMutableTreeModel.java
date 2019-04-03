@@ -48,14 +48,14 @@ import javax.swing.tree.TreePath;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMutableTreeModel<E> extends AbstractTreeModel<E> implements MutableTreeModel<E> {
-	@Override
-	public void reload( E node ) {
-		TreePath treePath = this.getTreePath( node );
-		this.fireTreeStructureChanged( this, treePath.getPath(), null, null );
-	}
+  @Override
+  public void reload(E node) {
+    TreePath treePath = this.getTreePath(node);
+    this.fireTreeStructureChanged(this, treePath.getPath(), null, null);
+  }
 
-	@Override
-	public void reload() {
-		this.reload( this.getRoot() );
-	}
+  @Override
+  public void reload() {
+    this.reload(this.getRoot());
+  }
 }

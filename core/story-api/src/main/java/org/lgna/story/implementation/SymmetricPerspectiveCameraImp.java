@@ -51,38 +51,38 @@ import org.lgna.story.SCamera;
  * @author Dennis Cosgrove
  */
 public class SymmetricPerspectiveCameraImp extends CameraImp<SymmetricPerspectiveCamera> {
-	public SymmetricPerspectiveCameraImp( SCamera abstraction ) {
-		super( new SymmetricPerspectiveCamera() );
-		this.abstraction = abstraction;
-	}
+  public SymmetricPerspectiveCameraImp(SCamera abstraction) {
+    super(new SymmetricPerspectiveCamera());
+    this.abstraction = abstraction;
+  }
 
-	@Override
-	public SCamera getAbstraction() {
-		return this.abstraction;
-	}
+  @Override
+  public SCamera getAbstraction() {
+    return this.abstraction;
+  }
 
-	private static class GoodVantagePointData extends PreSetVantagePointData {
-		public GoodVantagePointData( SymmetricPerspectiveCameraImp subject, EntityImp other ) {
-			super( subject, subject.createGoodVantagePointStandIn( other ) );
-		}
-	}
+  private static class GoodVantagePointData extends PreSetVantagePointData {
+    public GoodVantagePointData(SymmetricPerspectiveCameraImp subject, EntityImp other) {
+      super(subject, subject.createGoodVantagePointStandIn(other));
+    }
+  }
 
-	public StandInImp createGoodVantagePointStandIn( EntityImp other ) {
-		StandInImp standIn = other.createStandIn();
-		standIn.getSgComposite().setTranslationOnly( 2, 4, -8, other.getSgReferenceFrame() );
-		standIn.setOrientationOnlyToPointAt( other );
-		return standIn;
-	}
+  public StandInImp createGoodVantagePointStandIn(EntityImp other) {
+    StandInImp standIn = other.createStandIn();
+    standIn.getSgComposite().setTranslationOnly(2, 4, -8, other.getSgReferenceFrame());
+    standIn.setOrientationOnlyToPointAt(other);
+    return standIn;
+  }
 
-	public void setTransformationToAGoodVantagePointOf( EntityImp other ) {
-		GoodVantagePointData data = new GoodVantagePointData( this, other );
-		data.epilogue();
-	}
+  public void setTransformationToAGoodVantagePointOf(EntityImp other) {
+    GoodVantagePointData data = new GoodVantagePointData(this, other);
+    data.epilogue();
+  }
 
-	public void animateSetTransformationToAGoodVantagePointOf( EntityImp other, double duration, Style style ) {
-		GoodVantagePointData data = new GoodVantagePointData( this, other );
-		this.animateVantagePoint( data, duration, style );
-	}
+  public void animateSetTransformationToAGoodVantagePointOf(EntityImp other, double duration, Style style) {
+    GoodVantagePointData data = new GoodVantagePointData(this, other);
+    this.animateVantagePoint(data, duration, style);
+  }
 
-	private final SCamera abstraction;
+  private final SCamera abstraction;
 }

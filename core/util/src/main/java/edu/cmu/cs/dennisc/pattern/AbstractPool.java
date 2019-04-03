@@ -48,25 +48,25 @@ import java.util.Stack;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPool<E extends Reusable> {
-	private Stack<E> available = new Stack<E>();
+  private Stack<E> available = new Stack<E>();
 
-	protected abstract E createInstance();
+  protected abstract E createInstance();
 
-	public E acquire() {
-		E rv;
-		synchronized( this.available ) {
-			if( this.available.size() > 0 ) {
-				rv = this.available.pop();
-			} else {
-				rv = this.createInstance();
-			}
-		}
-		return rv;
-	}
+  public E acquire() {
+    E rv;
+    synchronized (this.available) {
+      if (this.available.size() > 0) {
+        rv = this.available.pop();
+      } else {
+        rv = this.createInstance();
+      }
+    }
+    return rv;
+  }
 
-	public void release( E e ) {
-		synchronized( this.available ) {
-			this.available.push( e );
-		}
-	}
+  public void release(E e) {
+    synchronized (this.available) {
+      this.available.push(e);
+    }
+  }
 }

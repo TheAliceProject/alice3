@@ -121,410 +121,403 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
 public class SceneObjectPropertyManagerPanel extends GridBagPanel {
-	private InstanceFactory selectedInstance;
-	private SThing selectedEntity;
-	private EntityImp selectedImp;
+  private InstanceFactory selectedInstance;
+  private SThing selectedEntity;
+  private EntityImp selectedImp;
 
-	private UserInstance sceneInstance;
+  private UserInstance sceneInstance;
 
-	private ShowJointedModelJointAxesState showJointsState;
+  private ShowJointedModelJointAxesState showJointsState;
 
-	private State.ValueListener<Boolean> showJointsStateObserver = new State.ValueListener<Boolean>() {
-		@Override
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
-		}
+  private State.ValueListener<Boolean> showJointsStateObserver = new State.ValueListener<Boolean>() {
+    @Override
+    public void changing(State<Boolean> state, Boolean prevValue, Boolean nextValue) {
+    }
 
-		@Override
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
-			assert ( state instanceof ShowJointedModelJointAxesState );
-			SceneObjectPropertyManagerPanel.this.setShowJointsOfField( ( (ShowJointedModelJointAxesState)state ).getField(), nextValue );
-		}
-	};
+    @Override
+    public void changed(State<Boolean> state, Boolean prevValue, Boolean nextValue) {
+      assert (state instanceof ShowJointedModelJointAxesState);
+      SceneObjectPropertyManagerPanel.this.setShowJointsOfField(((ShowJointedModelJointAxesState) state).getField(), nextValue);
+    }
+  };
 
-	private class LabelValueControllerPair {
-		public Label label;
-		public PropertyAdapterController<?> controller;
+  private class LabelValueControllerPair {
+    public Label label;
+    public PropertyAdapterController<?> controller;
 
-		public LabelValueControllerPair( Label label, PropertyAdapterController<?> controller ) {
-			this.label = label;
-			this.controller = controller;
-		}
-	}
+    public LabelValueControllerPair(Label label, PropertyAdapterController<?> controller) {
+      this.label = label;
+      this.controller = controller;
+    }
+  }
 
-	private List<LabelValueControllerPair> activeControllers = new LinkedList<LabelValueControllerPair>();
-	private GridBagPanel morePropertiesPanel;
+  private List<LabelValueControllerPair> activeControllers = new LinkedList<LabelValueControllerPair>();
+  private GridBagPanel morePropertiesPanel;
 
-	public SceneObjectPropertyManagerPanel() {
-		super();
-		this.morePropertiesPanel = new GridBagPanel();
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
-		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-	}
+  public SceneObjectPropertyManagerPanel() {
+    super();
+    this.morePropertiesPanel = new GridBagPanel();
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor());
+    this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+  }
 
-	private String findLocalizedText( String key, String defaultValue ) {
-		String bundleName = SceneObjectPropertyManagerPanel.class.getPackage().getName() + ".ScenePropertyManager";
-		try {
-			ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( bundleName, JComponent.getDefaultLocale() );
-			String rv = resourceBundle.getString( key );
-			return rv;
-		} catch( MissingResourceException mre ) {
-			return defaultValue;
-		}
-	}
+  private String findLocalizedText(String key, String defaultValue) {
+    String bundleName = SceneObjectPropertyManagerPanel.class.getPackage().getName() + ".ScenePropertyManager";
+    try {
+      ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle(bundleName, JComponent.getDefaultLocale());
+      String rv = resourceBundle.getString(key);
+      return rv;
+    } catch (MissingResourceException mre) {
+      return defaultValue;
+    }
+  }
 
-	private void setShowJointsOfField( AbstractField field, boolean showJoints ) {
-		JointedModelImp<? extends SJointedModel, ? extends JointedModelResource> imp = IDE.getActiveInstance().getSceneEditor().getImplementation( field );
-		if( imp != null ) {
-			imp.setAllJointPivotsVisibile( showJoints );
-		}
-	}
+  private void setShowJointsOfField(AbstractField field, boolean showJoints) {
+    JointedModelImp<? extends SJointedModel, ? extends JointedModelResource> imp = IDE.getActiveInstance().getSceneEditor().getImplementation(field);
+    if (imp != null) {
+      imp.setAllJointPivotsVisibile(showJoints);
+    }
+  }
 
-	@Override
-	public void setBackgroundColor( Color color ) {
-		super.setBackgroundColor( color );
-		this.morePropertiesPanel.setBackgroundColor( color );
-	}
+  @Override
+  public void setBackgroundColor(Color color) {
+    super.setBackgroundColor(color);
+    this.morePropertiesPanel.setBackgroundColor(color);
+  }
 
-	public void setSceneInstance( UserInstance sceneInstance ) {
-		this.sceneInstance = sceneInstance;
-	}
+  public void setSceneInstance(UserInstance sceneInstance) {
+    this.sceneInstance = sceneInstance;
+  }
 
-	private Label createLabel( String labelText ) {
-		return new Label( labelText, 1.2f, TextWeight.BOLD );
-	}
+  private Label createLabel(String labelText) {
+    return new Label(labelText, 1.2f, TextWeight.BOLD);
+  }
 
-	private void addNameAndControllerToPanel( AwtComponentView<?> label, AwtComponentView<?> controllerPanel, GridBagPanel panel, int index ) {
-		panel.addComponent( label, new GridBagConstraints(
-				0, //gridX
-				index, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), // insets (top, left, bottom, right)
-				0, //ipadX
-				0 ) //ipadY
-		);
-		panel.addComponent( controllerPanel, new GridBagConstraints(
-				1, //gridX
-				index, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), // insets (top, left, bottom, right)
-				0, //ipadX
-				0 ) //ipadY
-		);
-		panel.addComponent( BoxUtilities.createHorizontalGlue(), new GridBagConstraints(
-				2, //gridX
-				index, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
-				0, //ipadX
-				0 ) //ipadY
-		);
-	}
+  private void addNameAndControllerToPanel(AwtComponentView<?> label, AwtComponentView<?> controllerPanel, GridBagPanel panel, int index) {
+    panel.addComponent(label, new GridBagConstraints(0, //gridX
+                                                     index, //gridY
+                                                     1, //gridWidth
+                                                     1, //gridHeight
+                                                     0.0, //weightX
+                                                     0.0, //weightY
+                                                     GridBagConstraints.EAST, //anchor
+                                                     GridBagConstraints.NONE, //fill
+                                                     new Insets(2, 2, 2, 2), // insets (top, left, bottom, right)
+                                                     0, //ipadX
+                                                     0) //ipadY
+    );
+    panel.addComponent(controllerPanel, new GridBagConstraints(1, //gridX
+                                                               index, //gridY
+                                                               1, //gridWidth
+                                                               1, //gridHeight
+                                                               0.0, //weightX
+                                                               0.0, //weightY
+                                                               GridBagConstraints.WEST, //anchor
+                                                               GridBagConstraints.NONE, //fill
+                                                               new Insets(2, 2, 2, 2), // insets (top, left, bottom, right)
+                                                               0, //ipadX
+                                                               0) //ipadY
+    );
+    panel.addComponent(BoxUtilities.createHorizontalGlue(), new GridBagConstraints(2, //gridX
+                                                                                   index, //gridY
+                                                                                   1, //gridWidth
+                                                                                   1, //gridHeight
+                                                                                   1.0, //weightX
+                                                                                   0.0, //weightY
+                                                                                   GridBagConstraints.WEST, //anchor
+                                                                                   GridBagConstraints.HORIZONTAL, //fill
+                                                                                   new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                                                                                   0, //ipadX
+                                                                                   0) //ipadY
+    );
+  }
 
-	private void addPropertyToPanel( LabelValueControllerPair propertyPair, GridBagPanel panel, int index ) {
-		this.addNameAndControllerToPanel( propertyPair.label, propertyPair.controller.getPanel(), panel, index );
-	}
+  private void addPropertyToPanel(LabelValueControllerPair propertyPair, GridBagPanel panel, int index) {
+    this.addNameAndControllerToPanel(propertyPair.label, propertyPair.controller.getPanel(), panel, index);
+  }
 
-	private AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter( JavaMethod getter, JavaType declaringType, EntityImp entityImp, UserField field ) {
-		if( entityImp != null ) {
-			JavaMethod setter = AstUtilities.getSetterForGetter( getter, declaringType );
-			StandardExpressionState state = SceneEditorUpdatingPropertyState.getInstanceForSetter( field, setter );
-			boolean isVisible = ( setter == null ) || ( setter.getVisibility() == null ) || ( setter.getVisibility() == Visibility.PRIME_TIME );
-			if( ( setter != null ) && isVisible ) {
-				if( setter.getName().equalsIgnoreCase( "setOpacity" ) ) {
-					if( entityImp instanceof ModelImp ) {
-						return new ModelOpacityAdapter( (ModelImp)entityImp, state );
-					} else if( entityImp instanceof GroundImp ) {
-						return new GroundOpacityAdapter( (GroundImp)entityImp, state );
-					}
-				} else if( setter.getName().equalsIgnoreCase( "setFogDensity" ) ) {
-					if( entityImp instanceof SceneImp ) {
-						return new SceneFogDensityAdapter( (SceneImp)entityImp, state );
-					}
-				} else if( setter.getName().equalsIgnoreCase( "setResource" ) ) {
-					if( entityImp instanceof JointedModelImp<?, ?> ) {
-						return new ResourcePropertyAdapter( (JointedModelImp<?, ?>)entityImp, state );
-					}
-				} else if( setter.getName().equalsIgnoreCase( "setPaint" ) ) {
-					if( entityImp instanceof GroundImp ) {
-						return new PaintPropertyAdapter<GroundImp>( "Paint", (GroundImp)entityImp, ( (GroundImp)entityImp ).paint, state );
-					} else if( entityImp instanceof BillboardImp ) {
-						return new BillboardFrontPaintPropertyAdapter( (BillboardImp)entityImp, state );
-					} else if( entityImp instanceof ModelImp ) {
-						return new PaintPropertyAdapter<ModelImp>( "Paint", (ModelImp)entityImp, ( (ModelImp)entityImp ).paint, state );
-					}
-				} else if( setter.getName().equalsIgnoreCase( "setVehicle" ) ) {
-					if( entityImp.getAbstraction() instanceof MutableRider ) {
-						return new MutableRiderVehicleAdapter( (MutableRider)entityImp.getAbstraction(), state, this.sceneInstance );
-					}
-				} else if( setter.getName().equalsIgnoreCase( "setFromAboveLightColor" ) ) {
-					if( entityImp instanceof SceneImp ) {
-						return new ColorPropertyAdapter<SceneImp>( "Above Light Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).fromAboveLightColor, state );
-					}
-				} else if( setter.getName().equalsIgnoreCase( "setFromBelowLightColor" ) ) {
-					if( entityImp instanceof SceneImp ) {
-						return new ColorPropertyAdapter<SceneImp>( "Below Light Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).fromBelowLightColor, state );
-					}
-				} else if( setter.getName().equalsIgnoreCase( "setAtmosphereColor" ) ) {
-					if( entityImp instanceof SceneImp ) {
-						return new ColorPropertyAdapter<SceneImp>( "Atmosphere Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).atmosphereColor, state );
-					}
-				} else if( setter.getName().equalsIgnoreCase( "setAmbientLightColor" ) ) {
-					if( entityImp instanceof SceneImp ) {
-						return new ColorPropertyAdapter<SceneImp>( "Light Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).fromAboveLightColor, state );
-					}
-				} else if( setter.getName().equalsIgnoreCase( "setBackPaint" ) ) {
-					if( entityImp instanceof BillboardImp ) {
-						return new BillboardBackPaintPropertyAdapter( (BillboardImp)entityImp, state );
-					}
-				} else if( setter.getName().equalsIgnoreCase( "setFrontPaint" ) ) {
-					if( entityImp instanceof BillboardImp ) {
-						return new BillboardFrontPaintPropertyAdapter( (BillboardImp)entityImp, state );
-					}
-				} else if( NebulousIde.nonfree.getPropertyAdapterForGetter( setter, state, entityImp ) != null ) {
-					return NebulousIde.nonfree.getPropertyAdapterForGetter( setter, state, entityImp );
-				} else if( setter.getName().equalsIgnoreCase( "setFont" ) ) {
-					if( entityImp instanceof TextModelImp ) {
-						return new TextFontPropertyAdapter( (TextModelImp)entityImp, state );
-					}
-				} else if( setter.getName().equalsIgnoreCase( "setValue" ) ) {
-					if( entityImp instanceof TextModelImp ) {
-						return new TextValuePropertyAdapter( (TextModelImp)entityImp, state );
-					}
-				} else if( setter.getName().equalsIgnoreCase( "setRadius" ) ) {
-					if( entityImp instanceof CylinderImp ) {
-						return new DoublePropertyAdapter<CylinderImp>( "Radius", (CylinderImp)entityImp, ( (CylinderImp)entityImp ).radius, state );
-					} else if( entityImp instanceof SphereImp ) {
-						return new DoublePropertyAdapter<SphereImp>( "Radius", (SphereImp)entityImp, ( (SphereImp)entityImp ).radius, state );
-					} else if( entityImp instanceof DiscImp ) {
-						return new DoublePropertyAdapter<DiscImp>( "Radius", (DiscImp)entityImp, ( (DiscImp)entityImp ).outerRadius, state );
-					}
-				} else if( setter.getName().equalsIgnoreCase( "setBaseRadius" ) ) {
-					if( entityImp instanceof ConeImp ) {
-						return new DoublePropertyAdapter<ConeImp>( "Radius", (ConeImp)entityImp, ( (ConeImp)entityImp ).baseRadius, state );
-					}
-				} else if( setter.getName().equalsIgnoreCase( "setLength" ) ) {
-					if( entityImp instanceof CylinderImp ) {
-						return new DoublePropertyAdapter<CylinderImp>( "Length", (CylinderImp)entityImp, ( (CylinderImp)entityImp ).length, state );
-					} else if( entityImp instanceof ConeImp ) {
-						return new DoublePropertyAdapter<ConeImp>( "Length", (ConeImp)entityImp, ( (ConeImp)entityImp ).length, state );
-					}
-				} else {
-					System.out.println( "Unknown setter: " + setter.getName() );
-				}
-			}
-		}
-		return null;
-	}
+  private AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter(JavaMethod getter, JavaType declaringType, EntityImp entityImp, UserField field) {
+    if (entityImp != null) {
+      JavaMethod setter = AstUtilities.getSetterForGetter(getter, declaringType);
+      StandardExpressionState state = SceneEditorUpdatingPropertyState.getInstanceForSetter(field, setter);
+      boolean isVisible = (setter == null) || (setter.getVisibility() == null) || (setter.getVisibility() == Visibility.PRIME_TIME);
+      if ((setter != null) && isVisible) {
+        if (setter.getName().equalsIgnoreCase("setOpacity")) {
+          if (entityImp instanceof ModelImp) {
+            return new ModelOpacityAdapter((ModelImp) entityImp, state);
+          } else if (entityImp instanceof GroundImp) {
+            return new GroundOpacityAdapter((GroundImp) entityImp, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setFogDensity")) {
+          if (entityImp instanceof SceneImp) {
+            return new SceneFogDensityAdapter((SceneImp) entityImp, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setResource")) {
+          if (entityImp instanceof JointedModelImp<?, ?>) {
+            return new ResourcePropertyAdapter((JointedModelImp<?, ?>) entityImp, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setPaint")) {
+          if (entityImp instanceof GroundImp) {
+            return new PaintPropertyAdapter<GroundImp>("Paint", (GroundImp) entityImp, ((GroundImp) entityImp).paint, state);
+          } else if (entityImp instanceof BillboardImp) {
+            return new BillboardFrontPaintPropertyAdapter((BillboardImp) entityImp, state);
+          } else if (entityImp instanceof ModelImp) {
+            return new PaintPropertyAdapter<ModelImp>("Paint", (ModelImp) entityImp, ((ModelImp) entityImp).paint, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setVehicle")) {
+          if (entityImp.getAbstraction() instanceof MutableRider) {
+            return new MutableRiderVehicleAdapter((MutableRider) entityImp.getAbstraction(), state, this.sceneInstance);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setFromAboveLightColor")) {
+          if (entityImp instanceof SceneImp) {
+            return new ColorPropertyAdapter<SceneImp>("Above Light Color", (SceneImp) entityImp, ((SceneImp) entityImp).fromAboveLightColor, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setFromBelowLightColor")) {
+          if (entityImp instanceof SceneImp) {
+            return new ColorPropertyAdapter<SceneImp>("Below Light Color", (SceneImp) entityImp, ((SceneImp) entityImp).fromBelowLightColor, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setAtmosphereColor")) {
+          if (entityImp instanceof SceneImp) {
+            return new ColorPropertyAdapter<SceneImp>("Atmosphere Color", (SceneImp) entityImp, ((SceneImp) entityImp).atmosphereColor, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setAmbientLightColor")) {
+          if (entityImp instanceof SceneImp) {
+            return new ColorPropertyAdapter<SceneImp>("Light Color", (SceneImp) entityImp, ((SceneImp) entityImp).fromAboveLightColor, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setBackPaint")) {
+          if (entityImp instanceof BillboardImp) {
+            return new BillboardBackPaintPropertyAdapter((BillboardImp) entityImp, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setFrontPaint")) {
+          if (entityImp instanceof BillboardImp) {
+            return new BillboardFrontPaintPropertyAdapter((BillboardImp) entityImp, state);
+          }
+        } else if (NebulousIde.nonfree.getPropertyAdapterForGetter(setter, state, entityImp) != null) {
+          return NebulousIde.nonfree.getPropertyAdapterForGetter(setter, state, entityImp);
+        } else if (setter.getName().equalsIgnoreCase("setFont")) {
+          if (entityImp instanceof TextModelImp) {
+            return new TextFontPropertyAdapter((TextModelImp) entityImp, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setValue")) {
+          if (entityImp instanceof TextModelImp) {
+            return new TextValuePropertyAdapter((TextModelImp) entityImp, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setRadius")) {
+          if (entityImp instanceof CylinderImp) {
+            return new DoublePropertyAdapter<CylinderImp>("Radius", (CylinderImp) entityImp, ((CylinderImp) entityImp).radius, state);
+          } else if (entityImp instanceof SphereImp) {
+            return new DoublePropertyAdapter<SphereImp>("Radius", (SphereImp) entityImp, ((SphereImp) entityImp).radius, state);
+          } else if (entityImp instanceof DiscImp) {
+            return new DoublePropertyAdapter<DiscImp>("Radius", (DiscImp) entityImp, ((DiscImp) entityImp).outerRadius, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setBaseRadius")) {
+          if (entityImp instanceof ConeImp) {
+            return new DoublePropertyAdapter<ConeImp>("Radius", (ConeImp) entityImp, ((ConeImp) entityImp).baseRadius, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setLength")) {
+          if (entityImp instanceof CylinderImp) {
+            return new DoublePropertyAdapter<CylinderImp>("Length", (CylinderImp) entityImp, ((CylinderImp) entityImp).length, state);
+          } else if (entityImp instanceof ConeImp) {
+            return new DoublePropertyAdapter<ConeImp>("Length", (ConeImp) entityImp, ((ConeImp) entityImp).length, state);
+          }
+        } else {
+          System.out.println("Unknown setter: " + setter.getName());
+        }
+      }
+    }
+    return null;
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
 
-		this.removeAllComponents();
-		this.morePropertiesPanel.removeAllComponents();
-		if( this.selectedInstance != null ) {
-			List<AbstractPropertyAdapter<?, ?>> propertyAdapters = new LinkedList<AbstractPropertyAdapter<?, ?>>();
+    this.removeAllComponents();
+    this.morePropertiesPanel.removeAllComponents();
+    if (this.selectedInstance != null) {
+      List<AbstractPropertyAdapter<?, ?>> propertyAdapters = new LinkedList<AbstractPropertyAdapter<?, ?>>();
 
-			AbstractType<?, ?, ?> instanceValueType = this.selectedInstance.getValueType();
-			if( instanceValueType != null ) {
-				Iterable<JavaMethod> getterMethods = AstUtilities.getPersistentPropertyGetters( instanceValueType );
-				JavaType declaringType = this.selectedInstance.getValueType().getFirstEncounteredJavaType();
-				boolean isScene = this.selectedImp instanceof SceneImp;
+      AbstractType<?, ?, ?> instanceValueType = this.selectedInstance.getValueType();
+      if (instanceValueType != null) {
+        Iterable<JavaMethod> getterMethods = AstUtilities.getPersistentPropertyGetters(instanceValueType);
+        JavaType declaringType = this.selectedInstance.getValueType().getFirstEncounteredJavaType();
+        boolean isScene = this.selectedImp instanceof SceneImp;
 
-				UserField selectedField = null;
-				if( ( this.selectedInstance instanceof ThisFieldAccessFactory ) ) {
-					ThisFieldAccessFactory fieldAccessFactory = (ThisFieldAccessFactory)this.selectedInstance;
-					selectedField = fieldAccessFactory.getField();
-				}
+        UserField selectedField = null;
+        if ((this.selectedInstance instanceof ThisFieldAccessFactory)) {
+          ThisFieldAccessFactory fieldAccessFactory = (ThisFieldAccessFactory) this.selectedInstance;
+          selectedField = fieldAccessFactory.getField();
+        }
 
-				//propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
+        //propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
 
-				//				org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State fieldInitializerState = org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State.getInstance( selectedField );
-				//				boolean isPerson = false;
-				//				if( this.selectedImp instanceof JointedModelImp<?, ?> ) {
-				//					JointedModelImp<?, ?> jointedModelImp = (JointedModelImp<?, ?>)this.selectedImp;
-				//					if( jointedModelImp.getResource() instanceof org.lgna.story.resources.sims2.PersonResource )
-				//					{
-				//						isPerson = true;
-				//					}
-				//				}
-				//				if( ( fieldInitializerState != null ) && !isPerson ) {
-				//					propertyAdapters.add( new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)this.selectedImp, fieldInitializerState ) );
-				//				}
+        //        org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State fieldInitializerState = org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State.getInstance( selectedField );
+        //        boolean isPerson = false;
+        //        if( this.selectedImp instanceof JointedModelImp<?, ?> ) {
+        //          JointedModelImp<?, ?> jointedModelImp = (JointedModelImp<?, ?>)this.selectedImp;
+        //          if( jointedModelImp.getResource() instanceof org.lgna.story.resources.sims2.PersonResource )
+        //          {
+        //            isPerson = true;
+        //          }
+        //        }
+        //        if( ( fieldInitializerState != null ) && !isPerson ) {
+        //          propertyAdapters.add( new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)this.selectedImp, fieldInitializerState ) );
+        //        }
 
-				for( JavaMethod getter : getterMethods ) {
-					AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter( getter, declaringType, this.selectedImp, selectedField );
-					if( adapter != null ) {
-						propertyAdapters.add( adapter );
-					}
-				}
+        for (JavaMethod getter : getterMethods) {
+          AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter(getter, declaringType, this.selectedImp, selectedField);
+          if (adapter != null) {
+            propertyAdapters.add(adapter);
+          }
+        }
 
-				if( this.selectedEntity instanceof SMovableTurnable ) {
-					propertyAdapters.add( new MoveableTurnableTranslationAdapter( (SMovableTurnable)this.selectedEntity, null ) );
-				}
-				if( ( this.selectedEntity instanceof SModel ) && ( this.selectedImp instanceof ModelImp ) ) {
-					propertyAdapters.add( new ModelSizeAdapter( (ModelImp)this.selectedImp, null ) );
-				}
+        if (this.selectedEntity instanceof SMovableTurnable) {
+          propertyAdapters.add(new MoveableTurnableTranslationAdapter((SMovableTurnable) this.selectedEntity, null));
+        }
+        if ((this.selectedEntity instanceof SModel) && (this.selectedImp instanceof ModelImp)) {
+          propertyAdapters.add(new ModelSizeAdapter((ModelImp) this.selectedImp, null));
+        }
 
-				LabelValueControllerPair fieldNamePair = null;
+        LabelValueControllerPair fieldNamePair = null;
 
-				if( propertyAdapters.size() != 0 ) {
-					int mainPropertyCount = 0;
-					int extraPropertyCount = 0;
-					//Add all the extra properties to the extra panel and find the name property adapter
-					for( AbstractPropertyAdapter propertyAdapter : propertyAdapters ) {
+        if (propertyAdapters.size() != 0) {
+          int mainPropertyCount = 0;
+          int extraPropertyCount = 0;
+          //Add all the extra properties to the extra panel and find the name property adapter
+          for (AbstractPropertyAdapter propertyAdapter : propertyAdapters) {
 
-						PropertyAdapterController<?> propertyController = AdapterControllerUtilities.getValuePanelForPropertyAdapter( propertyAdapter );
-						assert propertyController != null;
-						LabelValueControllerPair matchingLabelController = new LabelValueControllerPair( createLabel( propertyAdapter.getLocalizedRepr() + " = " ), propertyController );
-						assert matchingLabelController != null;
-						if( propertyAdapter instanceof SelectedInstanceAdapter ) {
-							//Don't add the fieldNameAdapter, just hold onto it so we can add it to the main panel later
-							fieldNamePair = matchingLabelController;
-							//TODO: Localize this
-							fieldNamePair.label.setText( this.findLocalizedText( "selected", "Selected:" ) );
-						} else {
-							this.addPropertyToPanel( matchingLabelController, this.morePropertiesPanel, extraPropertyCount );
-							extraPropertyCount++;
-						}
-						this.activeControllers.add( matchingLabelController );
-					}
+            PropertyAdapterController<?> propertyController = AdapterControllerUtilities.getValuePanelForPropertyAdapter(propertyAdapter);
+            assert propertyController != null;
+            LabelValueControllerPair matchingLabelController = new LabelValueControllerPair(createLabel(propertyAdapter.getLocalizedRepr() + " = "), propertyController);
+            assert matchingLabelController != null;
+            if (propertyAdapter instanceof SelectedInstanceAdapter) {
+              //Don't add the fieldNameAdapter, just hold onto it so we can add it to the main panel later
+              fieldNamePair = matchingLabelController;
+              //TODO: Localize this
+              fieldNamePair.label.setText(this.findLocalizedText("selected", "Selected:"));
+            } else {
+              this.addPropertyToPanel(matchingLabelController, this.morePropertiesPanel, extraPropertyCount);
+              extraPropertyCount++;
+            }
+            this.activeControllers.add(matchingLabelController);
+          }
 
-					AbstractType<?, ?, ?> valueType;
-					//Setup the primary properties
-					if( this.selectedInstance != null ) {
-						valueType = this.selectedInstance.getValueType();
-					} else {
-						valueType = null;
-					}
+          AbstractType<?, ?, ?> valueType;
+          //Setup the primary properties
+          if (this.selectedInstance != null) {
+            valueType = this.selectedInstance.getValueType();
+          } else {
+            valueType = null;
+          }
 
-					//Add the object's name
-					if( fieldNamePair != null ) {
-						this.addPropertyToPanel( fieldNamePair, this, mainPropertyCount++ );
-					}
+          //Add the object's name
+          if (fieldNamePair != null) {
+            this.addPropertyToPanel(fieldNamePair, this, mainPropertyCount++);
+          }
 
-					if( selectedField != null ) {
-						SwingComponentView<?> initializerComponent = new FieldDeclarationPane( SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), selectedField, false, false );
-						initializerComponent.setBorder( BorderFactory.createMatteBorder( 0, 0, 1, 0, Color.LIGHT_GRAY ) );
+          if (selectedField != null) {
+            SwingComponentView<?> initializerComponent = new FieldDeclarationPane(SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), selectedField, false, false);
+            initializerComponent.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
 
-						this.addComponent( initializerComponent, new GridBagConstraints(
-								0, //gridX
-								mainPropertyCount++, //gridY
-								2, //gridWidth
-								1, //gridHeight
-								0.0, //weightX
-								0.0, //weightY
-								GridBagConstraints.WEST, //anchor
-								GridBagConstraints.NONE, //fill
-								new Insets( 2, 2, 2, 2 ), // insets (top, left, bottom, right)
-								0, //ipadX
-								0 ) //ipadY
-						);
-					}
+            this.addComponent(initializerComponent, new GridBagConstraints(0, //gridX
+                                                                           mainPropertyCount++, //gridY
+                                                                           2, //gridWidth
+                                                                           1, //gridHeight
+                                                                           0.0, //weightX
+                                                                           0.0, //weightY
+                                                                           GridBagConstraints.WEST, //anchor
+                                                                           GridBagConstraints.NONE, //fill
+                                                                           new Insets(2, 2, 2, 2), // insets (top, left, bottom, right)
+                                                                           0, //ipadX
+                                                                           0) //ipadY
+            );
+          }
 
-					//Lastly, add the extra palette if there are any extra properties
-					if( extraPropertyCount > 0 ) {
-						this.addComponent( this.morePropertiesPanel, new GridBagConstraints(
-								0, //gridX
-								mainPropertyCount++, //gridY
-								2, //gridWidth
-								1, //gridHeight
-								1.0, //weightX
-								0.0, //weightY
-								GridBagConstraints.WEST, //anchor
-								GridBagConstraints.HORIZONTAL, //fill
-								new Insets( 4, 0, 0, 0 ), // insets (top, left, bottom, right)
-								0, //ipadX
-								0 ) //ipadY
-						);
-					}
+          //Lastly, add the extra palette if there are any extra properties
+          if (extraPropertyCount > 0) {
+            this.addComponent(this.morePropertiesPanel, new GridBagConstraints(0, //gridX
+                                                                               mainPropertyCount++, //gridY
+                                                                               2, //gridWidth
+                                                                               1, //gridHeight
+                                                                               1.0, //weightX
+                                                                               0.0, //weightY
+                                                                               GridBagConstraints.WEST, //anchor
+                                                                               GridBagConstraints.HORIZONTAL, //fill
+                                                                               new Insets(4, 0, 0, 0), // insets (top, left, bottom, right)
+                                                                               0, //ipadX
+                                                                               0) //ipadY
+            );
+          }
 
-					if( ( this.selectedImp instanceof JointedModelImp ) && ( this.selectedInstance instanceof ThisFieldAccessFactory ) ) {
-						this.addComponent( BoxUtilities.createVerticalSliver( 8 ), new GridBagConstraints(
-								0, //gridX
-								mainPropertyCount++, //gridY
-								2, //gridWidth
-								1, //gridHeight
-								0.0, //weightX
-								0.0, //weightY
-								GridBagConstraints.WEST, //anchor
-								GridBagConstraints.NONE, //fill
-								new Insets( 2, 2, 2, 2 ), // insets (top, left, bottom, right)
-								0, //ipadX
-								0 ) //ipadY
-						);
+          if ((this.selectedImp instanceof JointedModelImp) && (this.selectedInstance instanceof ThisFieldAccessFactory)) {
+            this.addComponent(BoxUtilities.createVerticalSliver(8), new GridBagConstraints(0, //gridX
+                                                                                           mainPropertyCount++, //gridY
+                                                                                           2, //gridWidth
+                                                                                           1, //gridHeight
+                                                                                           0.0, //weightX
+                                                                                           0.0, //weightY
+                                                                                           GridBagConstraints.WEST, //anchor
+                                                                                           GridBagConstraints.NONE, //fill
+                                                                                           new Insets(2, 2, 2, 2), // insets (top, left, bottom, right)
+                                                                                           0, //ipadX
+                                                                                           0) //ipadY
+            );
 
-						ThisFieldAccessFactory fieldAccessFactory = (ThisFieldAccessFactory)this.selectedInstance;
-						if( this.showJointsState != null ) {
-							this.showJointsState.removeValueListener( this.showJointsStateObserver );
-						}
+            ThisFieldAccessFactory fieldAccessFactory = (ThisFieldAccessFactory) this.selectedInstance;
+            if (this.showJointsState != null) {
+              this.showJointsState.removeValueListener(this.showJointsStateObserver);
+            }
 
-						this.showJointsState = ShowJointedModelJointAxesState.getInstance( fieldAccessFactory.getField() );
-						this.showJointsState.addValueListener( this.showJointsStateObserver );
-						this.addNameAndControllerToPanel( createLabel( this.findLocalizedText( "showJoints", "Show Joints:" ) ), this.showJointsState.createCheckBox(), this, mainPropertyCount++ );
-					}
+            this.showJointsState = ShowJointedModelJointAxesState.getInstance(fieldAccessFactory.getField());
+            this.showJointsState.addValueListener(this.showJointsStateObserver);
+            this.addNameAndControllerToPanel(createLabel(this.findLocalizedText("showJoints", "Show Joints:")), this.showJointsState.createCheckBox(), this, mainPropertyCount++);
+          }
 
-					this.addComponent( BoxUtilities.createVerticalGlue(), new GridBagConstraints(
-							0, //gridX
-							mainPropertyCount++, //gridY
-							2, //gridWidth
-							1, //gridHeight
-							1.0, //weightX
-							1.0, //weightY
-							GridBagConstraints.CENTER, //anchor
-							GridBagConstraints.VERTICAL, //fill
-							new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
-							0, //ipadX
-							0 ) //ipadY
-					);
-				}
-			}
-		}
-	}
+          this.addComponent(BoxUtilities.createVerticalGlue(), new GridBagConstraints(0, //gridX
+                                                                                      mainPropertyCount++, //gridY
+                                                                                      2, //gridWidth
+                                                                                      1, //gridHeight
+                                                                                      1.0, //weightX
+                                                                                      1.0, //weightY
+                                                                                      GridBagConstraints.CENTER, //anchor
+                                                                                      GridBagConstraints.VERTICAL, //fill
+                                                                                      new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                                                                                      0, //ipadX
+                                                                                      0) //ipadY
+          );
+        }
+      }
+    }
+  }
 
-	public void setSelectedInstance( InstanceFactory instance ) {
-		this.selectedInstance = instance;
+  public void setSelectedInstance(InstanceFactory instance) {
+    this.selectedInstance = instance;
 
-		if( instance != null ) {
-			Expression expression = this.selectedInstance.createExpression();
-			if( expression instanceof LocalAccess ) {
-				//pass
-			} else if( expression instanceof ParameterAccess ) {
-				//pass
-			} else {
-				Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( this.selectedInstance.createExpression() );
-				if( instanceInJava instanceof SThing ) {
-					this.selectedEntity = (SThing)instanceInJava;
-					this.selectedImp = EmployeesOnly.getImplementation( this.selectedEntity );
-				} else if( instanceInJava instanceof EntityImp ) {
-					this.selectedImp = (EntityImp)instanceInJava;
-					this.selectedEntity = this.selectedImp.getAbstraction();
-				}
-				for( LabelValueControllerPair activeController : this.activeControllers ) {
-					if( activeController.controller != null ) {
-						activeController.controller.getPropertyAdapter().stopListening();
-						//				activeController.controller.getPropertyAdapter().clearListeners();
-						activeController.controller.setPropertyAdapter( null );
-					}
-				}
-			}
-		}
-		this.activeControllers.clear();
-		this.refreshLater();
-	}
+    if (instance != null) {
+      Expression expression = this.selectedInstance.createExpression();
+      if (expression instanceof LocalAccess) {
+        //pass
+      } else if (expression instanceof ParameterAccess) {
+        //pass
+      } else {
+        Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression(this.selectedInstance.createExpression());
+        if (instanceInJava instanceof SThing) {
+          this.selectedEntity = (SThing) instanceInJava;
+          this.selectedImp = EmployeesOnly.getImplementation(this.selectedEntity);
+        } else if (instanceInJava instanceof EntityImp) {
+          this.selectedImp = (EntityImp) instanceInJava;
+          this.selectedEntity = this.selectedImp.getAbstraction();
+        }
+        for (LabelValueControllerPair activeController : this.activeControllers) {
+          if (activeController.controller != null) {
+            activeController.controller.getPropertyAdapter().stopListening();
+            //        activeController.controller.getPropertyAdapter().clearListeners();
+            activeController.controller.setPropertyAdapter(null);
+          }
+        }
+      }
+    }
+    this.activeControllers.clear();
+    this.refreshLater();
+  }
 }

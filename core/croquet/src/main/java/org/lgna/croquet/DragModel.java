@@ -50,15 +50,15 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public interface DragModel extends PrepModel {
-	List<? extends DropReceptor> createListOfPotentialDropReceptors();
+  List<? extends DropReceptor> createListOfPotentialDropReceptors();
 
-	void handleDragStarted( DragStep step );
+  void handleDragStarted(DragStep step);
 
-	void handleDragEnteredDropReceptor( DragStep step );
+  void handleDragEnteredDropReceptor(DragStep step);
 
-	void handleDragExitedDropReceptor( DragStep step );
+  void handleDragExitedDropReceptor(DragStep step);
 
-	void handleDragStopped( DragStep step );
+  void handleDragStopped(DragStep step);
 
-	Triggerable getDropOperation( DragStep step, DropSite dropSite );
+  Triggerable getDropOperation(DragStep step, DropSite dropSite);
 }

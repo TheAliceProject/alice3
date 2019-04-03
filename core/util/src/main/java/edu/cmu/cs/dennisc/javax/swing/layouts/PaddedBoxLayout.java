@@ -52,89 +52,89 @@ import java.awt.Point;
  * @author Dennis Cosgrove
  */
 public class PaddedBoxLayout extends BoxLayout {
-	private static int getPadCount( Container target ) {
-		return Math.max( target.getComponentCount() - 1, 0 );
-	}
+  private static int getPadCount(Container target) {
+    return Math.max(target.getComponentCount() - 1, 0);
+  }
 
-	public PaddedBoxLayout( Container target, int axis, int pad ) {
-		super( target, axis );
-		this.axis = axis;
-		this.pad = pad;
-	}
+  public PaddedBoxLayout(Container target, int axis, int pad) {
+    super(target, axis);
+    this.axis = axis;
+    this.pad = pad;
+  }
 
-	@Override
-	public Dimension minimumLayoutSize( Container target ) {
-		Dimension rv = super.minimumLayoutSize( target );
-		final int NUM_PADS = getPadCount( target );
-		switch( this.axis ) {
-		case Y_AXIS:
-		case PAGE_AXIS:
-			rv.height += NUM_PADS * this.pad;
-			break;
-		case X_AXIS:
-		case LINE_AXIS:
-			rv.width += NUM_PADS * this.pad;
-			break;
-		}
-		return rv;
-	}
+  @Override
+  public Dimension minimumLayoutSize(Container target) {
+    Dimension rv = super.minimumLayoutSize(target);
+    final int NUM_PADS = getPadCount(target);
+    switch (this.axis) {
+    case Y_AXIS:
+    case PAGE_AXIS:
+      rv.height += NUM_PADS * this.pad;
+      break;
+    case X_AXIS:
+    case LINE_AXIS:
+      rv.width += NUM_PADS * this.pad;
+      break;
+    }
+    return rv;
+  }
 
-	@Override
-	public Dimension preferredLayoutSize( Container target ) {
-		Dimension rv = super.preferredLayoutSize( target );
-		final int NUM_PADS = getPadCount( target );
-		switch( this.axis ) {
-		case Y_AXIS:
-		case PAGE_AXIS:
-			rv.height += NUM_PADS * this.pad;
-			break;
-		case X_AXIS:
-		case LINE_AXIS:
-			rv.width += NUM_PADS * this.pad;
-			break;
-		}
-		return rv;
-	}
+  @Override
+  public Dimension preferredLayoutSize(Container target) {
+    Dimension rv = super.preferredLayoutSize(target);
+    final int NUM_PADS = getPadCount(target);
+    switch (this.axis) {
+    case Y_AXIS:
+    case PAGE_AXIS:
+      rv.height += NUM_PADS * this.pad;
+      break;
+    case X_AXIS:
+    case LINE_AXIS:
+      rv.width += NUM_PADS * this.pad;
+      break;
+    }
+    return rv;
+  }
 
-	@Override
-	public Dimension maximumLayoutSize( Container target ) {
-		Dimension rv = super.maximumLayoutSize( target );
-		final int NUM_PADS = getPadCount( target );
-		switch( this.axis ) {
-		case Y_AXIS:
-		case PAGE_AXIS:
-			rv.height += NUM_PADS * this.pad;
-			break;
-		case X_AXIS:
-		case LINE_AXIS:
-			rv.width += NUM_PADS * this.pad;
-			break;
-		}
-		return rv;
-	}
+  @Override
+  public Dimension maximumLayoutSize(Container target) {
+    Dimension rv = super.maximumLayoutSize(target);
+    final int NUM_PADS = getPadCount(target);
+    switch (this.axis) {
+    case Y_AXIS:
+    case PAGE_AXIS:
+      rv.height += NUM_PADS * this.pad;
+      break;
+    case X_AXIS:
+    case LINE_AXIS:
+      rv.width += NUM_PADS * this.pad;
+      break;
+    }
+    return rv;
+  }
 
-	@Override
-	public void layoutContainer( Container target ) {
-		super.layoutContainer( target );
-		final int N = target.getComponentCount();
-		for( int i = 0; i < N; i++ ) {
-			Component componentI = target.getComponent( i );
-			Point p = componentI.getLocation();
-			//todo: handle right to left
-			switch( this.axis ) {
-			case Y_AXIS:
-			case PAGE_AXIS:
-				p.y += i * this.pad;
-				break;
-			case X_AXIS:
-			case LINE_AXIS:
-				p.x += i * this.pad;
-				break;
-			}
-			componentI.setLocation( p );
-		}
-	}
+  @Override
+  public void layoutContainer(Container target) {
+    super.layoutContainer(target);
+    final int N = target.getComponentCount();
+    for (int i = 0; i < N; i++) {
+      Component componentI = target.getComponent(i);
+      Point p = componentI.getLocation();
+      //todo: handle right to left
+      switch (this.axis) {
+      case Y_AXIS:
+      case PAGE_AXIS:
+        p.y += i * this.pad;
+        break;
+      case X_AXIS:
+      case LINE_AXIS:
+        p.x += i * this.pad;
+        break;
+      }
+      componentI.setLocation(p);
+    }
+  }
 
-	private final int pad;
-	private final int axis;
+  private final int pad;
+  private final int axis;
 }

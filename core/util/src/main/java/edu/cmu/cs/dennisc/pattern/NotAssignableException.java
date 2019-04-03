@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 public class NotAssignableException extends Exception {
-	public NotAssignableException() {
-		super();
-	}
+  public NotAssignableException() {
+    super();
+  }
 
-	public NotAssignableException( String detail ) {
-		super( detail );
-	}
+  public NotAssignableException(String detail) {
+    super(detail);
+  }
 }

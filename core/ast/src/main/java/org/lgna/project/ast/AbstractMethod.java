@@ -53,57 +53,57 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMethod extends AbstractCode implements Method {
-	public abstract boolean isStatic();
+  public abstract boolean isStatic();
 
-	public abstract boolean isAbstract();
+  public abstract boolean isAbstract();
 
-	public abstract boolean isFinal();
+  public abstract boolean isFinal();
 
-	public abstract boolean isNative();
+  public abstract boolean isNative();
 
-	public abstract boolean isSynchronized();
+  public abstract boolean isSynchronized();
 
-	public abstract boolean isStrictFloatingPoint();
+  public abstract boolean isStrictFloatingPoint();
 
-	@Override
-	public void addModifiers( Collection<Modifier> modifiers ) {
-		super.addModifiers( modifiers );
-		if( this.isFinal() ) {
-			modifiers.add( Modifier.FINAL );
-		} else if( this.isAbstract() ) {
-			modifiers.add( Modifier.ABSTRACT );
-		}
-		if( this.isStatic() ) {
-			modifiers.add( Modifier.STATIC );
-		}
-		if( this.isNative() ) {
-			modifiers.add( Modifier.NATIVE );
-		}
-		if( this.isSynchronized() ) {
-			modifiers.add( Modifier.SYNCHRONIZED );
-		}
-		if( this.isStrictFloatingPoint() ) {
-			modifiers.add( Modifier.STRICTFP );
-		}
-	}
+  @Override
+  public void addModifiers(Collection<Modifier> modifiers) {
+    super.addModifiers(modifiers);
+    if (this.isFinal()) {
+      modifiers.add(Modifier.FINAL);
+    } else if (this.isAbstract()) {
+      modifiers.add(Modifier.ABSTRACT);
+    }
+    if (this.isStatic()) {
+      modifiers.add(Modifier.STATIC);
+    }
+    if (this.isNative()) {
+      modifiers.add(Modifier.NATIVE);
+    }
+    if (this.isSynchronized()) {
+      modifiers.add(Modifier.SYNCHRONIZED);
+    }
+    if (this.isStrictFloatingPoint()) {
+      modifiers.add(Modifier.STRICTFP);
+    }
+  }
 
-	public boolean isOverride() {
-		List<? extends AbstractParameter> parameters = this.getRequiredParameters();
-		final int N = parameters.size();
-		AbstractType<?, ?, ?>[] parameterTypes = new AbstractType[ N ];
-		for( int i = 0; i < N; i++ ) {
-			parameterTypes[ i ] = parameters.get( i ).getValueType();
-		}
-		return this.getDeclaringType().getSuperType().findMethod( this.getName(), parameterTypes ) != null;
-	}
+  public boolean isOverride() {
+    List<? extends AbstractParameter> parameters = this.getRequiredParameters();
+    final int N = parameters.size();
+    AbstractType<?, ?, ?>[] parameterTypes = new AbstractType[N];
+    for (int i = 0; i < N; i++) {
+      parameterTypes[i] = parameters.get(i).getValueType();
+    }
+    return this.getDeclaringType().getSuperType().findMethod(this.getName(), parameterTypes) != null;
+  }
 
-	public boolean isFunction() {
-		return getReturnType() != JavaType.VOID_TYPE;
-	}
+  public boolean isFunction() {
+    return getReturnType() != JavaType.VOID_TYPE;
+  }
 
-	public boolean isProcedure() {
-		return isFunction() == false;
-	}
+  public boolean isProcedure() {
+    return isFunction() == false;
+  }
 
-	public abstract Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments );
+  public abstract Object invoke(VirtualMachine virtualMachine, Object target, Object[] arguments);
 }

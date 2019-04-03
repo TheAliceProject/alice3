@@ -60,303 +60,301 @@ import java.util.List;
 //this is per-chain. related to the calculation, not the structure.
 public class Bone {
 
-	public enum Direction {
-		DOWNSTREAM,
-		UPSTREAM
-	}
+  public enum Direction {
+    DOWNSTREAM, UPSTREAM
+  }
 
-	// Axis does not know whether the joint is reverse or not. it just is an axis. it knows which bone and which index in joint it is, it contains the corrected axis for this chain.
-	public static class Axis {
-		private final Vector3 axis;
+  // Axis does not know whether the joint is reverse or not. it just is an axis. it knows which bone and which index in joint it is, it contains the corrected axis for this chain.
+  public static class Axis {
+    private final Vector3 axis;
 
-		//these are not local. angular is naturally radian.
-		private final Vector3 linearContribution = Vector3.createZero();
-		private final Vector3 angularContribution = Vector3.createZero();
-		private final Bone bone;
-		private final int originalIndexInJoint;
+    //these are not local. angular is naturally radian.
+    private final Vector3 linearContribution = Vector3.createZero();
+    private final Vector3 angularContribution = Vector3.createZero();
+    private final Bone bone;
+    private final int originalIndexInJoint;
 
-		//this is the speed that will be used during simulation
-		//TODO this should not be here. someone else should take care of this.
-		private double desiredAngleSpeed;
+    //this is the speed that will be used during simulation
+    //TODO this should not be here. someone else should take care of this.
+    private double desiredAngleSpeed;
 
-		public Axis( Bone bone, int originalIndexInJoint ) {
-			this.bone = bone;
-			this.originalIndexInJoint = originalIndexInJoint;
-			this.axis = Vector3.createZero();
-		}
+    public Axis(Bone bone, int originalIndexInJoint) {
+      this.bone = bone;
+      this.originalIndexInJoint = originalIndexInJoint;
+      this.axis = Vector3.createZero();
+    }
 
-		public Vector3 getLinearContribution() {
-			return linearContribution;
-		}
+    public Vector3 getLinearContribution() {
+      return linearContribution;
+    }
 
-		public Vector3 getAngularContribution() {
-			return angularContribution;
-		}
+    public Vector3 getAngularContribution() {
+      return angularContribution;
+    }
 
-		public void updateLinearContributions( Vector3 jointEeVector ) {
-			Vector3.setReturnValueToCrossProduct( this.linearContribution, this.axis, jointEeVector );
-		}
+    public void updateLinearContributions(Vector3 jointEeVector) {
+      Vector3.setReturnValueToCrossProduct(this.linearContribution, this.axis, jointEeVector);
+    }
 
-		public void updateAngularContributions() {
-			this.angularContribution.set( this.axis );
-		}
+    public void updateAngularContributions() {
+      this.angularContribution.set(this.axis);
+    }
 
-		public Vector3 getCurrentValue() {
-			return axis;
-		}
+    public Vector3 getCurrentValue() {
+      return axis;
+    }
 
-		public void setCurrentValue( Vector3 axis ) {
-			this.axis.set( axis );
-		}
+    public void setCurrentValue(Vector3 axis) {
+      this.axis.set(axis);
+    }
 
-		public void invertDirection() {
-			this.axis.multiply( -1 );
-		}
+    public void invertDirection() {
+      this.axis.multiply(-1);
+    }
 
-		public Bone getBone() {
-			return bone;
-		}
+    public Bone getBone() {
+      return bone;
+    }
 
-		public int getOriginalIndexInJoint() {
-			return originalIndexInJoint;
-		}
+    public int getOriginalIndexInJoint() {
+      return originalIndexInJoint;
+    }
 
-		//so that I can use this in maps and the axes with the same joint and index are equal
-		@Override
-		public int hashCode() {
-			return ( originalIndexInJoint * 19 ) + bone.getA().hashCode();
-		}
+    //so that I can use this in maps and the axes with the same joint and index are equal
+    @Override
+    public int hashCode() {
+      return (originalIndexInJoint * 19) + bone.getA().hashCode();
+    }
 
-		@Override
-		public boolean equals( Object o ) {
-			if( o == this ) {
-				return true;
-			}
-			if( o instanceof Axis ) {
-				Axis ua = (Axis)o;
-				return ( this.originalIndexInJoint == ua.originalIndexInJoint ) &&
-						Objects.equals( this.bone.getA(), ua.bone.getA() );
-			} else {
-				return false;
-			}
-		}
+    @Override
+    public boolean equals(Object o) {
+      if (o == this) {
+        return true;
+      }
+      if (o instanceof Axis) {
+        Axis ua = (Axis) o;
+        return (this.originalIndexInJoint == ua.originalIndexInJoint) && Objects.equals(this.bone.getA(), ua.bone.getA());
+      } else {
+        return false;
+      }
+    }
 
-		public void applyRotation( double angleInRadians ) {
-			//it's nicer to rotate around one axis once using Bone.applyLocalRotation(angle, axis)
-			//get the original axis
-			Vector3 originalAxis = getLocalAxis();
-			//turn the joint around the original local vector
-			bone.getA().applyRotationInRadians( originalAxis, angleInRadians );
-		}
+    public void applyRotation(double angleInRadians) {
+      //it's nicer to rotate around one axis once using Bone.applyLocalRotation(angle, axis)
+      //get the original axis
+      Vector3 originalAxis = getLocalAxis();
+      //turn the joint around the original local vector
+      bone.getA().applyRotationInRadians(originalAxis, angleInRadians);
+    }
 
-		public Vector3 getLocalAxis() {
-			return indexToLocalVector( originalIndexInJoint );
-		}
+    public Vector3 getLocalAxis() {
+      return indexToLocalVector(originalIndexInJoint);
+    }
 
-		//TODO can never have a 2dof joint that rotates an axis? maybe I can? I just always need to apply rotations in order and I'll be fine?
-		//I was using axes to be global x, y, z. ooh, that's right.
-		//maybe the axis class should be keeping the original, which is inverted of current?
-		private Vector3 indexToLocalVector( int originalIndexInJoint ) {
-			switch( originalIndexInJoint ) {
-			case 0:
-				return Vector3.accessPositiveXAxis();
-			case 1:
-				return Vector3.accessPositiveYAxis();
-			case 2:
-				return Vector3.accessPositiveZAxis();
-			}
-			//			if(bone.isABallJoint()) {
-			//				//return global x, y, z
-			//			} else {
-			//				//return current
-			//				OrthogonalMatrix3x3 orientation = bone.getA().getTransformation(AsSeenBy.SCENE).orientation;
-			//				switch (originalIndexInJoint) {
-			//				case 0:
-			//					return orientation.right;
-			//				case 1:
-			//					return orientation.up;
-			//				case 2:
-			//					return orientation.backward;
-			//				}
-			//			}
-			throw new RuntimeException( "Axis index > 2?" );
-		}
+    //TODO can never have a 2dof joint that rotates an axis? maybe I can? I just always need to apply rotations in order and I'll be fine?
+    //I was using axes to be global x, y, z. ooh, that's right.
+    //maybe the axis class should be keeping the original, which is inverted of current?
+    private Vector3 indexToLocalVector(int originalIndexInJoint) {
+      switch (originalIndexInJoint) {
+      case 0:
+        return Vector3.accessPositiveXAxis();
+      case 1:
+        return Vector3.accessPositiveYAxis();
+      case 2:
+        return Vector3.accessPositiveZAxis();
+      }
+      //      if(bone.isABallJoint()) {
+      //        //return global x, y, z
+      //      } else {
+      //        //return current
+      //        OrthogonalMatrix3x3 orientation = bone.getA().getTransformation(AsSeenBy.SCENE).orientation;
+      //        switch (originalIndexInJoint) {
+      //        case 0:
+      //          return orientation.right;
+      //        case 1:
+      //          return orientation.up;
+      //        case 2:
+      //          return orientation.backward;
+      //        }
+      //      }
+      throw new RuntimeException("Axis index > 2?");
+    }
 
-	}
+  }
 
-	private final Chain chain;
-	private final int index;
-	private final Axis[] axesByIndex = new Axis[ 3 ];
-	private final List<Axis> axesList = new ArrayList<Axis>();
+  private final Chain chain;
+  private final int index;
+  private final Axis[] axesByIndex = new Axis[3];
+  private final List<Axis> axesList = new ArrayList<Axis>();
 
-	private final Point3 anchor = Point3.createZero();
+  private final Point3 anchor = Point3.createZero();
 
-	public Bone( Chain chain, int index ) {
-		this.chain = chain;
-		this.index = index;
+  public Bone(Chain chain, int index) {
+    this.chain = chain;
+    this.index = index;
 
-		JointImp a = this.getA();
+    JointImp a = this.getA();
 
-		if( a.isFreeInX() ) {
-			Axis newAxis = new Axis( this, 0 );
-			this.axesByIndex[ 0 ] = newAxis;
-			axesList.add( newAxis );
-		}
-		if( a.isFreeInY() ) {
-			Axis newAxis = new Axis( this, 1 );
-			this.axesByIndex[ 1 ] = newAxis;
-			axesList.add( newAxis );
-		}
-		if( a.isFreeInZ() ) {
-			Axis newAxis = new Axis( this, 2 );
-			this.axesByIndex[ 2 ] = newAxis;
-			axesList.add( newAxis );
-		}
+    if (a.isFreeInX()) {
+      Axis newAxis = new Axis(this, 0);
+      this.axesByIndex[0] = newAxis;
+      axesList.add(newAxis);
+    }
+    if (a.isFreeInY()) {
+      Axis newAxis = new Axis(this, 1);
+      this.axesByIndex[1] = newAxis;
+      axesList.add(newAxis);
+    }
+    if (a.isFreeInZ()) {
+      Axis newAxis = new Axis(this, 2);
+      this.axesByIndex[2] = newAxis;
+      axesList.add(newAxis);
+    }
 
-		//		if(isABallJoint()) {
-		//			if(isStraight()) {
-		//				this.axesByIndex[ 0 ].setCurrentValue(Vector3.accessPositiveXAxis());
-		//				this.axesByIndex[ 1 ].setCurrentValue(Vector3.accessPositiveYAxis());
-		//				this.axesByIndex[ 2 ].setCurrentValue(Vector3.accessPositiveZAxis());
-		//			} else {
-		//				this.axesByIndex[ 0 ].setCurrentValue(Vector3.accessNegativeXAxis());
-		//				this.axesByIndex[ 1 ].setCurrentValue(Vector3.accessNegativeYAxis());
-		//				this.axesByIndex[ 2 ].setCurrentValue(Vector3.accessNegativeZAxis());
-		//			}
-		//		}
+    //    if(isABallJoint()) {
+    //      if(isStraight()) {
+    //        this.axesByIndex[ 0 ].setCurrentValue(Vector3.accessPositiveXAxis());
+    //        this.axesByIndex[ 1 ].setCurrentValue(Vector3.accessPositiveYAxis());
+    //        this.axesByIndex[ 2 ].setCurrentValue(Vector3.accessPositiveZAxis());
+    //      } else {
+    //        this.axesByIndex[ 0 ].setCurrentValue(Vector3.accessNegativeXAxis());
+    //        this.axesByIndex[ 1 ].setCurrentValue(Vector3.accessNegativeYAxis());
+    //        this.axesByIndex[ 2 ].setCurrentValue(Vector3.accessNegativeZAxis());
+    //      }
+    //    }
 
-		//probably unnecessary but wouldn't hurt:
-		updateStateFromJoint();
-	}
+    //probably unnecessary but wouldn't hurt:
+    updateStateFromJoint();
+  }
 
-	public JointImp getA() {
-		return this.chain.getJointImpAt( this.index );
-	}
+  public JointImp getA() {
+    return this.chain.getJointImpAt(this.index);
+  }
 
-	public List<Axis> getAxes() {
-		return axesList;
-	}
+  public List<Axis> getAxes() {
+    return axesList;
+  }
 
-	//	public org.lgna.story.implementation.JointImp getB() {
-	//		return this.chain.getJointImpAt( this.index+1 );
-	//	}
-	private boolean isStraight() {
-		return getDirection() == Direction.DOWNSTREAM;
-	}
+  //  public org.lgna.story.implementation.JointImp getB() {
+  //    return this.chain.getJointImpAt( this.index+1 );
+  //  }
+  private boolean isStraight() {
+    return getDirection() == Direction.DOWNSTREAM;
+  }
 
-	public Direction getDirection() {
-		return this.chain.getDirectionAt( this.index );
-	}
+  public Direction getDirection() {
+    return this.chain.getDirectionAt(this.index);
+  }
 
-	public int getDegreesOfFreedom() {
-		int rv = 0;
-		for( Axis axis : axesByIndex ) {
-			if( axis != null ) {
-				rv++;
-			}
-		}
-		return rv;
-	}
+  public int getDegreesOfFreedom() {
+    int rv = 0;
+    for (Axis axis : axesByIndex) {
+      if (axis != null) {
+        rv++;
+      }
+    }
+    return rv;
+  }
 
-	public void updateLinearContributions( Vector3 jointEeVector ) {
-		for( Axis axis : axesByIndex ) {
-			if( axis != null ) {
-				axis.updateLinearContributions( jointEeVector );
-			}
-		}
-	}
+  public void updateLinearContributions(Vector3 jointEeVector) {
+    for (Axis axis : axesByIndex) {
+      if (axis != null) {
+        axis.updateLinearContributions(jointEeVector);
+      }
+    }
+  }
 
-	public void updateAngularContributions() {
-		for( Axis axis : axesByIndex ) {
-			if( axis != null ) {
-				axis.updateAngularContributions();
-			}
-		}
-	}
+  public void updateAngularContributions() {
+    for (Axis axis : axesByIndex) {
+      if (axis != null) {
+        axis.updateAngularContributions();
+      }
+    }
+  }
 
-	@Override
-	public String toString() {
-		JointImp a = this.getA();
-		//		org.lgna.story.implementation.JointImp b = this.getB();
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Bone[" );
-		sb.append( a.getJointId() );
-		//		sb.append( "->" );
-		//		sb.append( b.getJointId() );
-		sb.append( ", " );
-		sb.append( getDirection() );
-		sb.append( "]" );
-		sb.append( " (" );
+  @Override
+  public String toString() {
+    JointImp a = this.getA();
+    //    org.lgna.story.implementation.JointImp b = this.getB();
+    StringBuilder sb = new StringBuilder();
+    sb.append("Bone[");
+    sb.append(a.getJointId());
+    //    sb.append( "->" );
+    //    sb.append( b.getJointId() );
+    sb.append(", ");
+    sb.append(getDirection());
+    sb.append("]");
+    sb.append(" (");
 
-		int count = 0;
-		for( Axis axis : axesList ) {
-			sb.append( axis.originalIndexInJoint );
-			sb.append( ": " );
-			sb.append( String.format( "%.2f", axis.desiredAngleSpeed ) );
-			if( count < ( axesList.size() - 1 ) ) {
-				sb.append( ", " );
-			}
-			++count;
-		}
-		sb.append( ")" );
+    int count = 0;
+    for (Axis axis : axesList) {
+      sb.append(axis.originalIndexInJoint);
+      sb.append(": ");
+      sb.append(String.format("%.2f", axis.desiredAngleSpeed));
+      if (count < (axesList.size() - 1)) {
+        sb.append(", ");
+      }
+      ++count;
+    }
+    sb.append(")");
 
-		return sb.toString();
-	}
+    return sb.toString();
+  }
 
-	public Point3 getAnchorPosition() {
-		// this returns the curren anchor position that was just fed to this from the world
-		return anchor;
-	}
+  public Point3 getAnchorPosition() {
+    // this returns the curren anchor position that was just fed to this from the world
+    return anchor;
+  }
 
-	public OrthogonalMatrix3x3 getCurrentOrientationFromJoint() {
-		return getA().getLocalOrientation();
-	}
+  public OrthogonalMatrix3x3 getCurrentOrientationFromJoint() {
+    return getA().getLocalOrientation();
+  }
 
-	public void updateStateFromJoint() {
-		//get anchor
-		anchor.set( getA().getTransformation( AsSeenBy.SCENE ).translation );
+  public void updateStateFromJoint() {
+    //get anchor
+    anchor.set(getA().getTransformation(AsSeenBy.SCENE).translation);
 
-		//get axes
-		//		if( !isABallJoint() ) {
-		JointImp a = getA();
-		AffineMatrix4x4 atrans = a.getTransformation( AsSeenBy.SCENE );
-		//invert if reverse
-		if( a.isFreeInX() ) {
-			this.axesByIndex[ 0 ].setCurrentValue( atrans.orientation.right );
-			if( !isStraight() ) {
-				this.axesByIndex[ 0 ].invertDirection();
-			}
-		}
-		if( a.isFreeInY() ) {
-			this.axesByIndex[ 1 ].setCurrentValue( atrans.orientation.up );
-			if( !isStraight() ) {
-				this.axesByIndex[ 1 ].invertDirection();
-			}
-		}
-		if( a.isFreeInZ() ) {
-			this.axesByIndex[ 2 ].setCurrentValue( atrans.orientation.backward );
-			if( !isStraight() ) {
-				this.axesByIndex[ 2 ].invertDirection();
-			}
-		}
-		//		}
+    //get axes
+    //    if( !isABallJoint() ) {
+    JointImp a = getA();
+    AffineMatrix4x4 atrans = a.getTransformation(AsSeenBy.SCENE);
+    //invert if reverse
+    if (a.isFreeInX()) {
+      this.axesByIndex[0].setCurrentValue(atrans.orientation.right);
+      if (!isStraight()) {
+        this.axesByIndex[0].invertDirection();
+      }
+    }
+    if (a.isFreeInY()) {
+      this.axesByIndex[1].setCurrentValue(atrans.orientation.up);
+      if (!isStraight()) {
+        this.axesByIndex[1].invertDirection();
+      }
+    }
+    if (a.isFreeInZ()) {
+      this.axesByIndex[2].setCurrentValue(atrans.orientation.backward);
+      if (!isStraight()) {
+        this.axesByIndex[2].invertDirection();
+      }
+    }
+    //    }
 
-		//the comments below are done above. leaving in for reference.
+    //the comments below are done above. leaving in for reference.
 
-		//get position and axes from joint
-		//get position
-		//get axes
-		//if joint is ball, then get three orthogonal axes (prolly parallel to world axes)
-		//if the chain is using the joint reverse, flip the axis
-		//do I need to do this for ball? not sure. possibly. think hard pls.
-		//YES! because the same rotation affects two ends of the joint differently!
+    //get position and axes from joint
+    //get position
+    //get axes
+    //if joint is ball, then get three orthogonal axes (prolly parallel to world axes)
+    //if the chain is using the joint reverse, flip the axis
+    //do I need to do this for ball? not sure. possibly. think hard pls.
+    //YES! because the same rotation affects two ends of the joint differently!
 
-		//these axes HAVE TO BE INVERTED if joint is not in the right direction (not downstream)
-		//		throw new RuntimeException("todo invert axes if chain is reverse");
-	}
+    //these axes HAVE TO BE INVERTED if joint is not in the right direction (not downstream)
+    //    throw new RuntimeException("todo invert axes if chain is reverse");
+  }
 
-	public void applyLocalRotation( Vector3 axis, double angle ) {
-		getA().applyRotationInRadians( axis, angle );
-	}
+  public void applyLocalRotation(Vector3 axis, double angle) {
+    getA().applyRotationInRadians(axis, angle);
+  }
 
 }

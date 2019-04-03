@@ -59,20 +59,20 @@ import javax.swing.UIManager;
  * @author Dennis Cosgrove
  */
 public class LgnaExceptionView extends MigPanel {
-	private static final Icon ICON = IconUtilities.createImageIcon( GlExceptionView.class.getResource( "images/alice.png" ) );
+  private static final Icon ICON = IconUtilities.createImageIcon(GlExceptionView.class.getResource("images/alice.png"));
 
-	public LgnaExceptionView( LgnaExceptionComposite composite ) {
-		super( composite, "", "", "[top][top]" );
+  public LgnaExceptionView(LgnaExceptionComposite composite) {
+    super(composite, "", "", "[top][top]");
 
-		LgnaRuntimeException lgnaRuntimeException = composite.getLgnaRuntimeException();
-		Label label = new Label( lgnaRuntimeException.getFormattedString(), UIManager.getIcon( "OptionPane.errorIcon" ) );
-		label.setVerticalAlignment( VerticalAlignment.TOP );
-		label.setVerticalTextPosition( VerticalTextPosition.TOP );
+    LgnaRuntimeException lgnaRuntimeException = composite.getLgnaRuntimeException();
+    Label label = new Label(lgnaRuntimeException.getFormattedString(), UIManager.getIcon("OptionPane.errorIcon"));
+    label.setVerticalAlignment(VerticalAlignment.TOP);
+    label.setVerticalTextPosition(VerticalTextPosition.TOP);
 
-		this.addComponent( new Label( ICON ), "span 1 2" );
-		this.addComponent( new Label( "Alice has encountered a problem in your program", UIManager.getIcon( "OptionPane.errorIcon" ), 2.0f, TextWeight.BOLD ), "wrap" );
-		this.addComponent( new Label( lgnaRuntimeException.getFormattedString() ) );
+    this.addComponent(new Label(ICON), "span 1 2");
+    this.addComponent(new Label("Alice has encountered a problem in your program", UIManager.getIcon("OptionPane.errorIcon"), 2.0f, TextWeight.BOLD), "wrap");
+    this.addComponent(new Label(lgnaRuntimeException.getFormattedString()));
 
-		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-	}
+    this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+  }
 }

@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.render;
  * @author Dennis Cosgrove
  */
 public interface Observer<T> {
-	public void done( T result );
+  public void done(T result);
 }

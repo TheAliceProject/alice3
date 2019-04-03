@@ -48,46 +48,48 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Batch {
-	protected abstract void handle( File inFile, File outFile );
-	protected abstract boolean isSkipExistingOutFilesDesirable();
-	public void process( String inRootPath, String outRootPath, String inExt, String outExt ) {
-		boolean isSkipExistingOutFilesDesirable = this.isSkipExistingOutFilesDesirable();
-		
-		File inRoot = new File(inRootPath);
-		File outRoot = new File(outRootPath);
-		System.out.print( "FileUtilities.listDescendants... " );
-		File[] inFiles = FileUtilities.listDescendants( inRoot, inExt );
-		System.out.println( "Done.  ( " + inFiles.length + " files )" );
+  protected abstract void handle(File inFile, File outFile);
 
-		Set< File > unhandledFiles = new HashSet< File >();
-		//Runtime.getRuntime().gc();
-		//long freeMemory0 = Runtime.getRuntime().freeMemory();
-		for( File inFile : inFiles ) {
-			File outFile = FileUtilities.getAnalogousFile(inFile, inRoot, outRoot, inExt, outExt );
-			if( isSkipExistingOutFilesDesirable && FileUtilities.existsAndHasLengthGreaterThanZero( outFile ) ) {
-				//System.out.println( "SKIPPING: " + outFile + " exists." );
-			} else {
-				if( inFile.exists() ) {
-					//todo:
-					if( inFile.length() < 100L * 1024L * 1024L ) {
-						try {
-							handle( inFile, outFile );
-						} catch( RuntimeException re ) {
-							re.printStackTrace();
-							unhandledFiles.add( inFile );
-						}
-					} else {
-						unhandledFiles.add( inFile );
-					}
-				}
-			}
-			//Runtime.getRuntime().gc();
-			//long freeMemoryI = Runtime.getRuntime().freeMemory();
-			//System.err.println( freeMemoryI + " " + (freeMemoryI-freeMemory0) );
-		}
-		System.out.flush();
-		for( File unhandledFile : unhandledFiles ) {
-			System.err.println( "UNHANDLED FILE: " + unhandledFile );
-		}
-	}
+  protected abstract boolean isSkipExistingOutFilesDesirable();
+
+  public void process(String inRootPath, String outRootPath, String inExt, String outExt) {
+    boolean isSkipExistingOutFilesDesirable = this.isSkipExistingOutFilesDesirable();
+
+    File inRoot = new File(inRootPath);
+    File outRoot = new File(outRootPath);
+    System.out.print("FileUtilities.listDescendants... ");
+    File[] inFiles = FileUtilities.listDescendants(inRoot, inExt);
+    System.out.println("Done.  ( " + inFiles.length + " files )");
+
+    Set<File> unhandledFiles = new HashSet<File>();
+    //Runtime.getRuntime().gc();
+    //long freeMemory0 = Runtime.getRuntime().freeMemory();
+    for (File inFile : inFiles) {
+      File outFile = FileUtilities.getAnalogousFile(inFile, inRoot, outRoot, inExt, outExt);
+      if (isSkipExistingOutFilesDesirable && FileUtilities.existsAndHasLengthGreaterThanZero(outFile)) {
+        //System.out.println( "SKIPPING: " + outFile + " exists." );
+      } else {
+        if (inFile.exists()) {
+          //todo:
+          if (inFile.length() < 100L * 1024L * 1024L) {
+            try {
+              handle(inFile, outFile);
+            } catch (RuntimeException re) {
+              re.printStackTrace();
+              unhandledFiles.add(inFile);
+            }
+          } else {
+            unhandledFiles.add(inFile);
+          }
+        }
+      }
+      //Runtime.getRuntime().gc();
+      //long freeMemoryI = Runtime.getRuntime().freeMemory();
+      //System.err.println( freeMemoryI + " " + (freeMemoryI-freeMemory0) );
+    }
+    System.out.flush();
+    for (File unhandledFile : unhandledFiles) {
+      System.err.println("UNHANDLED FILE: " + unhandledFile);
+    }
+  }
 }

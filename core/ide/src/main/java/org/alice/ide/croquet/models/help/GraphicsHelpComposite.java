@@ -51,12 +51,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class GraphicsHelpComposite extends LazyOperationUnadornedDialogCoreComposite<GraphicsHelpView> {
-	public GraphicsHelpComposite() {
-		super( UUID.fromString( "cb7742ba-7de4-4083-aadd-41d640510cab" ) );
-	}
+  public GraphicsHelpComposite() {
+    super(UUID.fromString("cb7742ba-7de4-4083-aadd-41d640510cab"));
+  }
 
-	@Override
-	protected GraphicsHelpView createView() {
-		return new GraphicsHelpView();
-	}
+  @Override
+  protected GraphicsHelpView createView() {
+    return new GraphicsHelpView();
+  }
 }

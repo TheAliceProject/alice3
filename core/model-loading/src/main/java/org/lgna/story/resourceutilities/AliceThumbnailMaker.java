@@ -53,35 +53,35 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dave Culyba
  */
 public class AliceThumbnailMaker extends AbstractThumbnailMaker {
-	private static Map<String, AliceThumbnailMaker> instanceMap = new HashMap<String, AliceThumbnailMaker>();
+  private static Map<String, AliceThumbnailMaker> instanceMap = new HashMap<String, AliceThumbnailMaker>();
 
-	public static AliceThumbnailMaker getInstance() {
-		return getInstance( AbstractThumbnailMaker.DEFAULT_THUMBNAIL_WIDTH, AbstractThumbnailMaker.DEFAULT_THUMBNAIL_HEIGHT );
-	}
+  public static AliceThumbnailMaker getInstance() {
+    return getInstance(AbstractThumbnailMaker.DEFAULT_THUMBNAIL_WIDTH, AbstractThumbnailMaker.DEFAULT_THUMBNAIL_HEIGHT);
+  }
 
-	public static AliceThumbnailMaker getInstance( int width, int height ) {
-		String key = Integer.toString( width ) + "x" + Integer.toString( height );
-		if( instanceMap.containsKey( key ) ) {
-			AliceThumbnailMaker instance = instanceMap.get( key );
-			instance.clear();
-			return instance;
-		} else {
-			AliceThumbnailMaker instance = new AliceThumbnailMaker( width, height );
-			instanceMap.put( key, instance );
-			return instance;
-		}
-	}
+  public static AliceThumbnailMaker getInstance(int width, int height) {
+    String key = Integer.toString(width) + "x" + Integer.toString(height);
+    if (instanceMap.containsKey(key)) {
+      AliceThumbnailMaker instance = instanceMap.get(key);
+      instance.clear();
+      return instance;
+    } else {
+      AliceThumbnailMaker instance = new AliceThumbnailMaker(width, height);
+      instanceMap.put(key, instance);
+      return instance;
+    }
+  }
 
-	protected AliceThumbnailMaker( int width, int height ) {
-		super( width, height );
-	}
+  protected AliceThumbnailMaker(int width, int height) {
+    super(width, height);
+  }
 
-	protected AliceThumbnailMaker() {
-		super( AbstractThumbnailMaker.DEFAULT_THUMBNAIL_WIDTH, AbstractThumbnailMaker.DEFAULT_THUMBNAIL_HEIGHT, AbstractThumbnailMaker.DEFAULT_ANTI_ALIAS_FACTOR );
-	}
+  protected AliceThumbnailMaker() {
+    super(AbstractThumbnailMaker.DEFAULT_THUMBNAIL_WIDTH, AbstractThumbnailMaker.DEFAULT_THUMBNAIL_HEIGHT, AbstractThumbnailMaker.DEFAULT_ANTI_ALIAS_FACTOR);
+  }
 
-	@Override
-	protected AffineMatrix4x4 getThumbnailTransform( Visual v, AxisAlignedBox bbox ) {
-		return getThumbnailCameraOrientation( bbox );
-	}
+  @Override
+  protected AffineMatrix4x4 getThumbnailTransform(Visual v, AxisAlignedBox bbox) {
+    return getThumbnailCameraOrientation(bbox);
+  }
 }

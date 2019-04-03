@@ -59,29 +59,29 @@ import java.awt.geom.Rectangle2D;
  * @author Dennis Cosgrove
  */
 class SuggestiveTextUtilities {
-	public static void drawBlankTextIfNecessary( JTextComponent textComponent, Graphics g, String textForBlankCondition ) {
-		if( textComponent.isEditable() && textComponent.isEnabled() ) {
-			String text = textComponent.getText();
-			if( ( text.length() > 0 ) || ( textForBlankCondition == null ) || ( textForBlankCondition.length() == 0 ) ) {
-				//pass
-			} else {
-				Font font = FontUtilities.deriveFont( textComponent.getFont(), TextWeight.LIGHT, TextPosture.OBLIQUE );
-				g.setFont( font );
-				g.setColor( ColorUtilities.createGray( 191 ) );
-				FontMetrics fm = g.getFontMetrics();
-				Insets insets = textComponent.getInsets();
-				ComponentOrientation componentOrientation = textComponent.getComponentOrientation();
-				int x;
-				if( componentOrientation.isLeftToRight() ) {
-					x = insets.left;
-				} else {
-					x = textComponent.getWidth() - insets.right;
-					Rectangle2D bounds = fm.getStringBounds( textForBlankCondition, g );
-					x -= (int)( Math.ceil( bounds.getWidth() ) );
-				}
-				int y = insets.top + fm.getAscent();
-				g.drawString( textForBlankCondition, x, y );
-			}
-		}
-	}
+  public static void drawBlankTextIfNecessary(JTextComponent textComponent, Graphics g, String textForBlankCondition) {
+    if (textComponent.isEditable() && textComponent.isEnabled()) {
+      String text = textComponent.getText();
+      if ((text.length() > 0) || (textForBlankCondition == null) || (textForBlankCondition.length() == 0)) {
+        //pass
+      } else {
+        Font font = FontUtilities.deriveFont(textComponent.getFont(), TextWeight.LIGHT, TextPosture.OBLIQUE);
+        g.setFont(font);
+        g.setColor(ColorUtilities.createGray(191));
+        FontMetrics fm = g.getFontMetrics();
+        Insets insets = textComponent.getInsets();
+        ComponentOrientation componentOrientation = textComponent.getComponentOrientation();
+        int x;
+        if (componentOrientation.isLeftToRight()) {
+          x = insets.left;
+        } else {
+          x = textComponent.getWidth() - insets.right;
+          Rectangle2D bounds = fm.getStringBounds(textForBlankCondition, g);
+          x -= (int) (Math.ceil(bounds.getWidth()));
+        }
+        int y = insets.top + fm.getAscent();
+        g.drawString(textForBlankCondition, x, y);
+      }
+    }
+  }
 }

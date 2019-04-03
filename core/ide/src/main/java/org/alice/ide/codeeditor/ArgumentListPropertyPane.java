@@ -63,50 +63,50 @@ import org.lgna.project.ast.SimpleArgumentListProperty;
  * @author Dennis Cosgrove
  */
 public class ArgumentListPropertyPane extends AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( AstI18nFactory factory, SimpleArgumentListProperty property ) {
-		super( factory, property );
-	}
+  public ArgumentListPropertyPane(AstI18nFactory factory, SimpleArgumentListProperty property) {
+    super(factory, property);
+  }
 
-	protected boolean isNameDesired( AbstractParameter parameter ) {
-		boolean rv;
-		if( parameter.getName() != null ) {
-			if( parameter instanceof JavaMethodParameter ) {
-				JavaMethodParameter javaMethodParameter = (JavaMethodParameter)parameter;
-				JavaMethod javaMethod = javaMethodParameter.getCode();
-				rv = javaMethod.isParameterInShortestChainedMethod( javaMethodParameter ) == false;
-			} else if( parameter instanceof JavaConstructorParameter ) {
-				//todo
+  protected boolean isNameDesired(AbstractParameter parameter) {
+    boolean rv;
+    if (parameter.getName() != null) {
+      if (parameter instanceof JavaMethodParameter) {
+        JavaMethodParameter javaMethodParameter = (JavaMethodParameter) parameter;
+        JavaMethod javaMethod = javaMethodParameter.getCode();
+        rv = javaMethod.isParameterInShortestChainedMethod(javaMethodParameter) == false;
+      } else if (parameter instanceof JavaConstructorParameter) {
+        //todo
 
-				//				org.lgna.project.ast.ParameterDeclaredInJavaConstructor parameterDeclaredInJavaConstructor = (org.lgna.project.ast.ParameterDeclaredInJavaConstructor)parameter;
-				//				org.lgna.project.ast.ConstructorDeclaredInJava constructorDeclaredInJava = parameterDeclaredInJavaConstructor.getConstructor();
-				//				rv = constructorDeclaredInJava.isParameterInShortestChainedConstructor( parameterDeclaredInJavaConstructor ) == false;
+        //        org.lgna.project.ast.ParameterDeclaredInJavaConstructor parameterDeclaredInJavaConstructor = (org.lgna.project.ast.ParameterDeclaredInJavaConstructor)parameter;
+        //        org.lgna.project.ast.ConstructorDeclaredInJava constructorDeclaredInJava = parameterDeclaredInJavaConstructor.getConstructor();
+        //        rv = constructorDeclaredInJava.isParameterInShortestChainedConstructor( parameterDeclaredInJavaConstructor ) == false;
 
-				rv = true;
-			} else {
-				rv = true;
-			}
-		} else {
-			rv = false;
-		}
-		return rv;
-	}
+        rv = true;
+      } else {
+        rv = true;
+      }
+    } else {
+      rv = false;
+    }
+    return rv;
+  }
 
-	@Override
-	protected AwtComponentView<?> createComponent( SimpleArgument argument ) {
-		SwingComponentView<?> prefixPane;
-		if( FormatterState.isJava() ) {
-			prefixPane = null;
-		} else {
-			AbstractParameter parameter = argument.parameter.getValue();
-			boolean isNameDesired = this.isNameDesired( parameter );
-			if( isNameDesired ) {
-				DeclarationNameLabel label = new DeclarationNameLabel( argument.parameter.getValue() );
-				label.changeFont( TextPosture.OBLIQUE );
-				prefixPane = new LineAxisPanel( BoxUtilities.createHorizontalSliver( 4 ), label, new Label( ": ", TextPosture.OBLIQUE ) );
-			} else {
-				prefixPane = null;
-			}
-		}
-		return this.getFactory().createArgumentPane( argument, prefixPane );
-	}
+  @Override
+  protected AwtComponentView<?> createComponent(SimpleArgument argument) {
+    SwingComponentView<?> prefixPane;
+    if (FormatterState.isJava()) {
+      prefixPane = null;
+    } else {
+      AbstractParameter parameter = argument.parameter.getValue();
+      boolean isNameDesired = this.isNameDesired(parameter);
+      if (isNameDesired) {
+        DeclarationNameLabel label = new DeclarationNameLabel(argument.parameter.getValue());
+        label.changeFont(TextPosture.OBLIQUE);
+        prefixPane = new LineAxisPanel(BoxUtilities.createHorizontalSliver(4), label, new Label(": ", TextPosture.OBLIQUE));
+      } else {
+        prefixPane = null;
+      }
+    }
+    return this.getFactory().createArgumentPane(argument, prefixPane);
+  }
 }

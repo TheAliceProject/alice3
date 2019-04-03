@@ -52,29 +52,29 @@ import org.lgna.project.ast.UserMethod;
  */
 public class ChangeMethodBodyEdit extends AbstractEdit {
 
-	private final UserMethod method;
-	private final BlockStatement prevBody;
-	private final BlockStatement newBody;
+  private final UserMethod method;
+  private final BlockStatement prevBody;
+  private final BlockStatement newBody;
 
-	public ChangeMethodBodyEdit( UserActivity userActivity, UserMethod method, BlockStatement body ) {
-		super( userActivity );
-		this.method = method;
-		this.prevBody = method.body.getValue();
-		this.newBody = body;
-	}
+  public ChangeMethodBodyEdit(UserActivity userActivity, UserMethod method, BlockStatement body) {
+    super(userActivity);
+    this.method = method;
+    this.prevBody = method.body.getValue();
+    this.newBody = body;
+  }
 
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		method.body.setValue( newBody );
-	}
+  @Override
+  protected void doOrRedoInternal(boolean isDo) {
+    method.body.setValue(newBody);
+  }
 
-	@Override
-	protected void undoInternal() {
-		method.body.setValue( prevBody );
-	}
+  @Override
+  protected void undoInternal() {
+    method.body.setValue(prevBody);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+  }
 
 }

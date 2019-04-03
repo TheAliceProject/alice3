@@ -50,12 +50,12 @@ import org.lgna.story.event.ViewEnterListener;
 
 public class ComesIntoViewEventAdapter extends AbstractAdapter implements ViewEnterListener {
 
-	public ComesIntoViewEventAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public ComesIntoViewEventAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void viewEntered( EnterViewEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void viewEntered(EnterViewEvent e) {
+    invokeEntryPoint(e);
+  }
 }

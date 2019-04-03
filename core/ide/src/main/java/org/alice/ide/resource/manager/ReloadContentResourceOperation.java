@@ -60,118 +60,118 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 /*package-private*/final class ReloadContentResourceOperation extends SelectedResourceOperation {
-	private abstract static class Capsule<E extends Resource> {
-		private String originalFileName;
-		//private String name;
-		private String contentType;
-		private byte[] data;
+  private abstract static class Capsule<E extends Resource> {
+    private String originalFileName;
+    //private String name;
+    private String contentType;
+    private byte[] data;
 
-		public Capsule( E resource ) {
-			this.originalFileName = resource.getOriginalFileName();
-			//this.name = resource.getName();
-			this.contentType = resource.getContentType();
-			this.data = resource.getData();
-		}
+    public Capsule(E resource) {
+      this.originalFileName = resource.getOriginalFileName();
+      //this.name = resource.getName();
+      this.contentType = resource.getContentType();
+      this.data = resource.getData();
+    }
 
-		public E update( E rv ) {
-			rv.setOriginalFileName( this.originalFileName );
-			//rv.setName( this.name );
-			rv.setContent( this.contentType, this.data );
-			return rv;
-		}
-	}
+    public E update(E rv) {
+      rv.setOriginalFileName(this.originalFileName);
+      //rv.setName( this.name );
+      rv.setContent(this.contentType, this.data);
+      return rv;
+    }
+  }
 
-	private static class ImageCapsule extends Capsule<ImageResource> {
-		private int width;
-		private int height;
+  private static class ImageCapsule extends Capsule<ImageResource> {
+    private int width;
+    private int height;
 
-		public ImageCapsule( ImageResource imageResource ) {
-			super( imageResource );
-			this.width = imageResource.getWidth();
-			this.height = imageResource.getHeight();
-		}
+    public ImageCapsule(ImageResource imageResource) {
+      super(imageResource);
+      this.width = imageResource.getWidth();
+      this.height = imageResource.getHeight();
+    }
 
-		@Override
-		public ImageResource update( ImageResource rv ) {
-			rv = super.update( rv );
-			rv.setWidth( this.width );
-			rv.setHeight( this.height );
-			return rv;
-		}
-	}
+    @Override
+    public ImageResource update(ImageResource rv) {
+      rv = super.update(rv);
+      rv.setWidth(this.width);
+      rv.setHeight(this.height);
+      return rv;
+    }
+  }
 
-	private static class AudioCapsule extends Capsule<AudioResource> {
-		private double duration;
+  private static class AudioCapsule extends Capsule<AudioResource> {
+    private double duration;
 
-		public AudioCapsule( AudioResource audioResource ) {
-			super( audioResource );
-			this.duration = audioResource.getDuration();
-		}
+    public AudioCapsule(AudioResource audioResource) {
+      super(audioResource);
+      this.duration = audioResource.getDuration();
+    }
 
-		@Override
-		public AudioResource update( AudioResource rv ) {
-			rv = super.update( rv );
-			rv.setDuration( this.duration );
-			return rv;
-		}
-	}
+    @Override
+    public AudioResource update(AudioResource rv) {
+      rv = super.update(rv);
+      rv.setDuration(this.duration);
+      return rv;
+    }
+  }
 
-	public ReloadContentResourceOperation( ItemState<Resource> resourceState ) {
-		super( UUID.fromString( "05f5ede7-194a-45b2-bb97-c3d23aedf5b9" ), resourceState );
-	}
+  public ReloadContentResourceOperation(ItemState<Resource> resourceState) {
+    super(UUID.fromString("05f5ede7-194a-45b2-bb97-c3d23aedf5b9"), resourceState);
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity, final Resource resource ) {
-		if( resource != null ) {
-			final Capsule prevCapsule;
-			final Capsule nextCapsule;
-			Frame frame = Application.getActiveInstance().getDocumentFrame().getFrame();
-			if( resource instanceof ImageResource ) {
-				ImageResource prevImageResource = (ImageResource)resource;
-				ImageResource nextImageResource = ImageResourceImporter.getInstance().createValue( "Replace Image" );
-				if( nextImageResource != null ) {
-					prevCapsule = new ImageCapsule( prevImageResource );
-					nextCapsule = new ImageCapsule( nextImageResource );
-				} else {
-					prevCapsule = null;
-					nextCapsule = null;
-				}
-			} else if( resource instanceof AudioResource ) {
-				AudioResource prevAudioResource = (AudioResource)resource;
-				AudioResource nextAudioResource = AudioResourceImporter.getInstance().createValue( "Replace Audio" );
-				if( nextAudioResource != null ) {
-					prevCapsule = new AudioCapsule( prevAudioResource );
-					nextCapsule = new AudioCapsule( nextAudioResource );
-				} else {
-					prevCapsule = null;
-					nextCapsule = null;
-				}
-			} else {
-				prevCapsule = null;
-				nextCapsule = null;
-			}
-			if( ( prevCapsule != null ) && ( nextCapsule != null ) ) {
-				return new AbstractEdit( userActivity ) {
-					@Override
-					protected final void doOrRedoInternal( boolean isDo ) {
-						nextCapsule.update( resource );
-					}
+  @Override
+  protected Edit createEdit(UserActivity userActivity, final Resource resource) {
+    if (resource != null) {
+      final Capsule prevCapsule;
+      final Capsule nextCapsule;
+      Frame frame = Application.getActiveInstance().getDocumentFrame().getFrame();
+      if (resource instanceof ImageResource) {
+        ImageResource prevImageResource = (ImageResource) resource;
+        ImageResource nextImageResource = ImageResourceImporter.getInstance().createValue("Replace Image");
+        if (nextImageResource != null) {
+          prevCapsule = new ImageCapsule(prevImageResource);
+          nextCapsule = new ImageCapsule(nextImageResource);
+        } else {
+          prevCapsule = null;
+          nextCapsule = null;
+        }
+      } else if (resource instanceof AudioResource) {
+        AudioResource prevAudioResource = (AudioResource) resource;
+        AudioResource nextAudioResource = AudioResourceImporter.getInstance().createValue("Replace Audio");
+        if (nextAudioResource != null) {
+          prevCapsule = new AudioCapsule(prevAudioResource);
+          nextCapsule = new AudioCapsule(nextAudioResource);
+        } else {
+          prevCapsule = null;
+          nextCapsule = null;
+        }
+      } else {
+        prevCapsule = null;
+        nextCapsule = null;
+      }
+      if ((prevCapsule != null) && (nextCapsule != null)) {
+        return new AbstractEdit(userActivity) {
+          @Override
+          protected final void doOrRedoInternal(boolean isDo) {
+            nextCapsule.update(resource);
+          }
 
-					@Override
-					protected final void undoInternal() {
-						prevCapsule.update( resource );
-					}
+          @Override
+          protected final void undoInternal() {
+            prevCapsule.update(resource);
+          }
 
-					@Override
-					protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-						rv.append( "reload content" );
-					}
-				};
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+          @Override
+          protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+            rv.append("reload content");
+          }
+        };
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 }

@@ -53,20 +53,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FunctionsComposite extends MethodsComposite {
-	private static Map<NamedUserType, FunctionsComposite> map = Maps.newHashMap();
+  private static Map<NamedUserType, FunctionsComposite> map = Maps.newHashMap();
 
-	public static synchronized FunctionsComposite getInstance( NamedUserType type ) {
-		FunctionsComposite rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FunctionsComposite( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized FunctionsComposite getInstance(NamedUserType type) {
+    FunctionsComposite rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new FunctionsComposite(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private FunctionsComposite( NamedUserType type ) {
-		super( UUID.fromString( "0d20c5c3-3c91-4881-94a0-1e41d351b8d7" ), new FunctionData( type ) );
-	}
+  private FunctionsComposite(NamedUserType type) {
+    super(UUID.fromString("0d20c5c3-3c91-4881-94a0-1e41d351b8d7"), new FunctionData(type));
+  }
 }

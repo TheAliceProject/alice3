@@ -54,55 +54,52 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  */
 public class ManipulationEvent {
 
-	public static enum EventType {
-		Translate,
-		Scale,
-		Rotate,
-		Zoom,
-	}
+  public static enum EventType {
+    Translate, Scale, Rotate, Zoom,
+  }
 
-	public ManipulationEvent( EventType type, MovementDescription movementDescription, AbstractTransformable target ) {
-		this.type = type;
-		this.movementDescription = movementDescription;
-		this.target = target;
-		this.inputState = null;
-	}
+  public ManipulationEvent(EventType type, MovementDescription movementDescription, AbstractTransformable target) {
+    this.type = type;
+    this.movementDescription = movementDescription;
+    this.target = target;
+    this.inputState = null;
+  }
 
-	public AbstractTransformable getTarget() {
-		return target;
-	}
+  public AbstractTransformable getTarget() {
+    return target;
+  }
 
-	public PickHint getTargetPickHint() {
-		if( this.getTarget() != null ) {
-			return PickUtilities.getPickType( this.getTarget() );
-		} else {
-			return PickHint.PickType.NOTHING.pickHint();
-		}
-	}
+  public PickHint getTargetPickHint() {
+    if (this.getTarget() != null) {
+      return PickUtilities.getPickType(this.getTarget());
+    } else {
+      return PickHint.PickType.NOTHING.pickHint();
+    }
+  }
 
-	public EventType getType() {
-		return type;
-	}
+  public EventType getType() {
+    return type;
+  }
 
-	public MovementDescription getMovementDescription() {
-		return movementDescription;
-	}
+  public MovementDescription getMovementDescription() {
+    return movementDescription;
+  }
 
-	public InputState getInputState() {
-		return inputState;
-	}
+  public InputState getInputState() {
+    return inputState;
+  }
 
-	public void setInputState( InputState inputState ) {
-		this.inputState = inputState;
-	}
+  public void setInputState(InputState inputState) {
+    this.inputState = inputState;
+  }
 
-	@Override
-	public String toString() {
-		return this.type + ":[" + this.movementDescription.toString() + "(" + this.target + ")]";
-	}
+  @Override
+  public String toString() {
+    return this.type + ":[" + this.movementDescription.toString() + "(" + this.target + ")]";
+  }
 
-	private final EventType type;
-	private final MovementDescription movementDescription;
-	private final AbstractTransformable target;
-	private InputState inputState;
+  private final EventType type;
+  private final MovementDescription movementDescription;
+  private final AbstractTransformable target;
+  private InputState inputState;
 }

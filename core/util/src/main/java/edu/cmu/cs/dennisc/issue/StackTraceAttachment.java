@@ -48,24 +48,24 @@ import edu.cmu.cs.dennisc.java.lang.ThrowableUtilities;
  * @author Dennis Cosgrove
  */
 public class StackTraceAttachment implements Attachment {
-	private Throwable throwable;
+  private Throwable throwable;
 
-	public StackTraceAttachment( Throwable throwable ) {
-		this.throwable = throwable;
-	}
+  public StackTraceAttachment(Throwable throwable) {
+    this.throwable = throwable;
+  }
 
-	@Override
-	public byte[] getBytes() {
-		return ThrowableUtilities.getStackTraceAsByteArray( this.throwable );
-	}
+  @Override
+  public byte[] getBytes() {
+    return ThrowableUtilities.getStackTraceAsByteArray(this.throwable);
+  }
 
-	@Override
-	public String getMIMEType() {
-		return "text/plain";
-	}
+  @Override
+  public String getMIMEType() {
+    return "text/plain";
+  }
 
-	@Override
-	public String getFileName() {
-		return "stacktrace.txt";
-	}
+  @Override
+  public String getFileName() {
+    return "stacktrace.txt";
+  }
 }

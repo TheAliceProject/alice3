@@ -50,12 +50,12 @@ import org.lgna.project.ast.NamedUserConstructor;
  * @author Dennis Cosgrove
  */
 public class ConstructorsView extends MembersView<NamedUserConstructor> {
-	public ConstructorsView( ConstructorsComposite composite ) {
-		super( composite );
-	}
+  public ConstructorsView(ConstructorsComposite composite) {
+    super(composite);
+  }
 
-	@Override
-	protected SwingComponentView<?> createComponentForItem( NamedUserConstructor constructor ) {
-		return new ConstructorView( constructor );
-	}
+  @Override
+  protected SwingComponentView<?> createComponentForItem(NamedUserConstructor constructor) {
+    return new ConstructorView(constructor);
+  }
 }

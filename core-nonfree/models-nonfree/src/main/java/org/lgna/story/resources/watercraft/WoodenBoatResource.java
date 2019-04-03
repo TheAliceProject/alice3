@@ -32,28 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.WatercraftResource;
 
 public enum WoodenBoatResource implements WatercraftResource {
-	WOODEN_BOAT( ImplementationAndVisualType.SIMS2 );
+  WOODEN_BOAT(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	WoodenBoatResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	WoodenBoatResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  WoodenBoatResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  WoodenBoatResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public TransportImp createImplementation( STransport abstraction ) {
-		return new TransportImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public TransportImp createImplementation(STransport abstraction) {
+    return new TransportImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

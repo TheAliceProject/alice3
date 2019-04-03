@@ -59,100 +59,101 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class DeclarationMeta {
-	private DeclarationMeta() {
-		throw new AssertionError();
-	}
+  private DeclarationMeta() {
+    throw new AssertionError();
+  }
 
-	private static final ValueListener<ProjectPerspective> perspectiveListener = new ValueListener<ProjectPerspective>() {
-		@Override
-		public void valueChanged( ValueEvent<ProjectPerspective> e ) {
-			handlePrespectiveChanged();
-		}
-	};
-	private static final ValueListener<DeclarationComposite<?, ?>> declarationTabListener = new ValueListener<DeclarationComposite<?, ?>>() {
-		@Override
-		public void valueChanged( ValueEvent<DeclarationComposite<?, ?>> e ) {
-			handleDeclarationTabChanged();
-		}
-	};
+  private static final ValueListener<ProjectPerspective> perspectiveListener = new ValueListener<ProjectPerspective>() {
+    @Override
+    public void valueChanged(ValueEvent<ProjectPerspective> e) {
+      handlePrespectiveChanged();
+    }
+  };
+  private static final ValueListener<DeclarationComposite<?, ?>> declarationTabListener = new ValueListener<DeclarationComposite<?, ?>>() {
+    @Override
+    public void valueChanged(ValueEvent<DeclarationComposite<?, ?>> e) {
+      handleDeclarationTabChanged();
+    }
+  };
 
-	private static final List<ValueListener<AbstractDeclaration>> declarationListeners = Lists.newCopyOnWriteArrayList();
-	private static final List<ValueListener<AbstractType<?, ?, ?>>> typeListeners = Lists.newCopyOnWriteArrayList();
+  private static final List<ValueListener<AbstractDeclaration>> declarationListeners = Lists.newCopyOnWriteArrayList();
+  private static final List<ValueListener<AbstractType<?, ?, ?>>> typeListeners = Lists.newCopyOnWriteArrayList();
 
-	private static AbstractDeclaration prevDeclaration;
-	static {
-		ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
-		projectDocumentFrame.getPerspectiveState().addNewSchoolValueListener( perspectiveListener );
-		projectDocumentFrame.getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( declarationTabListener );
-		prevDeclaration = getDeclaration();
-	}
+  private static AbstractDeclaration prevDeclaration;
 
-	public static void addTypeMetaStateValueListener( ValueListener<AbstractType<?, ?, ?>> typeListener ) {
-		typeListeners.add( typeListener );
-	}
+  static {
+    ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
+    projectDocumentFrame.getPerspectiveState().addNewSchoolValueListener(perspectiveListener);
+    projectDocumentFrame.getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener(declarationTabListener);
+    prevDeclaration = getDeclaration();
+  }
 
-	public static void removeTypeMetaStateValueListener( ValueListener<AbstractType<?, ?, ?>> typeListener ) {
-		typeListeners.remove( typeListener );
-	}
+  public static void addTypeMetaStateValueListener(ValueListener<AbstractType<?, ?, ?>> typeListener) {
+    typeListeners.add(typeListener);
+  }
 
-	public static void addDeclarationMetaStateValueListener( ValueListener<AbstractDeclaration> declarationListener ) {
-		declarationListeners.add( declarationListener );
-	}
+  public static void removeTypeMetaStateValueListener(ValueListener<AbstractType<?, ?, ?>> typeListener) {
+    typeListeners.remove(typeListener);
+  }
 
-	public static void removeDeclarationMetaStateValueListener( ValueListener<AbstractDeclaration> declarationListener ) {
-		declarationListeners.remove( declarationListener );
-	}
+  public static void addDeclarationMetaStateValueListener(ValueListener<AbstractDeclaration> declarationListener) {
+    declarationListeners.add(declarationListener);
+  }
 
-	public static AbstractDeclaration getDeclaration() {
-		IDE ide = IDE.getActiveInstance();
-		if( ide.getDocumentFrame().isInSetupScenePerspective() ) {
-			return ide != null ? ide.getPerformEditorGeneratedSetUpMethod() : null;
-		} else {
-			DeclarationComposite declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-			return declarationComposite != null ? declarationComposite.getDeclaration() : null;
-		}
-	}
+  public static void removeDeclarationMetaStateValueListener(ValueListener<AbstractDeclaration> declarationListener) {
+    declarationListeners.remove(declarationListener);
+  }
 
-	private static AbstractType<?, ?, ?> getType( AbstractDeclaration declaration ) {
-		if( declaration instanceof Code ) {
-			Code code = (Code)declaration;
-			return code.getDeclaringType();
-		} else if( declaration instanceof AbstractType<?, ?, ?> ) {
-			AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>)declaration;
-			return type;
-		} else {
-			return null;
-		}
-	}
+  public static AbstractDeclaration getDeclaration() {
+    IDE ide = IDE.getActiveInstance();
+    if (ide.getDocumentFrame().isInSetupScenePerspective()) {
+      return ide != null ? ide.getPerformEditorGeneratedSetUpMethod() : null;
+    } else {
+      DeclarationComposite declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+      return declarationComposite != null ? declarationComposite.getDeclaration() : null;
+    }
+  }
 
-	public static AbstractType<?, ?, ?> getType() {
-		return getType( getDeclaration() );
-	}
+  private static AbstractType<?, ?, ?> getType(AbstractDeclaration declaration) {
+    if (declaration instanceof Code) {
+      Code code = (Code) declaration;
+      return code.getDeclaringType();
+    } else if (declaration instanceof AbstractType<?, ?, ?>) {
+      AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>) declaration;
+      return type;
+    } else {
+      return null;
+    }
+  }
 
-	private static void fireChanged() {
-		AbstractDeclaration nextDeclaration = getDeclaration();
-		if( prevDeclaration != nextDeclaration ) {
-			AbstractType<?, ?, ?> prevType = getType( prevDeclaration );
-			AbstractType<?, ?, ?> nextType = getType( nextDeclaration );
-			if( prevType != nextType ) {
-				ValueEvent<AbstractType<?, ?, ?>> e = ValueEvent.createInstance( prevType, nextType );
-				for( ValueListener<AbstractType<?, ?, ?>> typeListener : typeListeners ) {
-					typeListener.valueChanged( e );
-				}
-			}
-			ValueEvent<AbstractDeclaration> e = ValueEvent.createInstance( prevDeclaration, nextDeclaration );
-			for( ValueListener<AbstractDeclaration> declarationListener : declarationListeners ) {
-				declarationListener.valueChanged( e );
-			}
-			prevDeclaration = nextDeclaration;
-		}
-	}
+  public static AbstractType<?, ?, ?> getType() {
+    return getType(getDeclaration());
+  }
 
-	private static void handlePrespectiveChanged() {
-		fireChanged();
-	}
+  private static void fireChanged() {
+    AbstractDeclaration nextDeclaration = getDeclaration();
+    if (prevDeclaration != nextDeclaration) {
+      AbstractType<?, ?, ?> prevType = getType(prevDeclaration);
+      AbstractType<?, ?, ?> nextType = getType(nextDeclaration);
+      if (prevType != nextType) {
+        ValueEvent<AbstractType<?, ?, ?>> e = ValueEvent.createInstance(prevType, nextType);
+        for (ValueListener<AbstractType<?, ?, ?>> typeListener : typeListeners) {
+          typeListener.valueChanged(e);
+        }
+      }
+      ValueEvent<AbstractDeclaration> e = ValueEvent.createInstance(prevDeclaration, nextDeclaration);
+      for (ValueListener<AbstractDeclaration> declarationListener : declarationListeners) {
+        declarationListener.valueChanged(e);
+      }
+      prevDeclaration = nextDeclaration;
+    }
+  }
 
-	private static void handleDeclarationTabChanged() {
-		fireChanged();
-	}
+  private static void handlePrespectiveChanged() {
+    fireChanged();
+  }
+
+  private static void handleDeclarationTabChanged() {
+    fireChanged();
+  }
 }

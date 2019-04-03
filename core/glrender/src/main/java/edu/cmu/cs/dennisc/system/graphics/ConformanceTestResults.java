@@ -70,238 +70,238 @@ import java.nio.IntBuffer;
  * @author Dennis Cosgrove
  */
 public enum ConformanceTestResults {
-	SINGLETON;
+  SINGLETON;
 
-	public static class SharedDetails {
-		private SharedDetails( GL gl ) {
-			this.version = gl.glGetString( GL_VERSION );
-			this.vendor = gl.glGetString( GL_VENDOR );
-			this.renderer = gl.glGetString( GL_RENDERER );
+  public static class SharedDetails {
+    private SharedDetails(GL gl) {
+      this.version = gl.glGetString(GL_VERSION);
+      this.vendor = gl.glGetString(GL_VENDOR);
+      this.renderer = gl.glGetString(GL_RENDERER);
 
-			String extensionsText = gl.glGetString( GL_EXTENSIONS );
-			if( extensionsText != null ) {
-				this.extensions = extensionsText.split( " " );
-			} else {
-				this.extensions = new String[] {};
-			}
-			final boolean IS_COLOR_FORMAT_AND_TYPE_TRACKED = false;
-			if( IS_COLOR_FORMAT_AND_TYPE_TRACKED ) {
-				int format = GetUtilities.getInteger( gl, GL.GL_IMPLEMENTATION_COLOR_READ_FORMAT );
-				int type = GetUtilities.getInteger( gl, GL.GL_IMPLEMENTATION_COLOR_READ_TYPE );
-			}
-		}
+      String extensionsText = gl.glGetString(GL_EXTENSIONS);
+      if (extensionsText != null) {
+        this.extensions = extensionsText.split(" ");
+      } else {
+        this.extensions = new String[] {};
+      }
+      final boolean IS_COLOR_FORMAT_AND_TYPE_TRACKED = false;
+      if (IS_COLOR_FORMAT_AND_TYPE_TRACKED) {
+        int format = GetUtilities.getInteger(gl, GL.GL_IMPLEMENTATION_COLOR_READ_FORMAT);
+        int type = GetUtilities.getInteger(gl, GL.GL_IMPLEMENTATION_COLOR_READ_TYPE);
+      }
+    }
 
-		public String getVersion() {
-			return this.version;
-		}
+    public String getVersion() {
+      return this.version;
+    }
 
-		public String getVendor() {
-			return this.vendor;
-		}
+    public String getVendor() {
+      return this.vendor;
+    }
 
-		public String getRenderer() {
-			return this.renderer;
-		}
+    public String getRenderer() {
+      return this.renderer;
+    }
 
-		public String[] getExtensions() {
-			return this.extensions;
-		}
+    public String[] getExtensions() {
+      return this.extensions;
+    }
 
-		private final String version;
-		private final String vendor;
-		private final String renderer;
-		private final String[] extensions;
-	}
+    private final String version;
+    private final String vendor;
+    private final String renderer;
+    private final String[] extensions;
+  }
 
-	public abstract static class PickDetails {
-		private static final long FISHY_PICK_VALUE = ( PickContext.MAX_UNSIGNED_INTEGER / 2 ) + 1;
+  public abstract static class PickDetails {
+    private static final long FISHY_PICK_VALUE = (PickContext.MAX_UNSIGNED_INTEGER / 2) + 1;
 
-		private static long convertZValueToLong( int zValue ) {
-			long rv = zValue;
-			rv &= PickContext.MAX_UNSIGNED_INTEGER;
-			return rv;
-		}
+    private static long convertZValueToLong(int zValue) {
+      long rv = zValue;
+      rv &= PickContext.MAX_UNSIGNED_INTEGER;
+      return rv;
+    }
 
-		private static float convertZValueToFloat( long zValue ) {
-			float zFront = (float)zValue;
-			zFront /= (float)PickContext.MAX_UNSIGNED_INTEGER;
-			return zFront;
-		}
+    private static float convertZValueToFloat(long zValue) {
+      float zFront = (float) zValue;
+      zFront /= (float) PickContext.MAX_UNSIGNED_INTEGER;
+      return zFront;
+    }
 
-		private final boolean isPickFunctioningCorrectly;
+    private final boolean isPickFunctioningCorrectly;
 
-		private PickDetails( GL2 gl ) {
-			//int n = GetUtilities.getInteger(gl, GL_NUM_EXTENSIONS);
+    private PickDetails(GL2 gl) {
+      //int n = GetUtilities.getInteger(gl, GL_NUM_EXTENSIONS);
 
-			final int SELECTION_CAPACITY = 256;
-			final int SIZEOF_INT = 4;
-			ByteBuffer byteBuffer = ByteBuffer.allocateDirect( SIZEOF_INT * SELECTION_CAPACITY );
-			byteBuffer.order( ByteOrder.nativeOrder() );
-			IntBuffer selectionAsIntBuffer = byteBuffer.asIntBuffer();
+      final int SELECTION_CAPACITY = 256;
+      final int SIZEOF_INT = 4;
+      ByteBuffer byteBuffer = ByteBuffer.allocateDirect(SIZEOF_INT * SELECTION_CAPACITY);
+      byteBuffer.order(ByteOrder.nativeOrder());
+      IntBuffer selectionAsIntBuffer = byteBuffer.asIntBuffer();
 
-			final float XY = 2.0f;
-			final float Z = 0.5f;
-			final int KEY = 11235;
+      final float XY = 2.0f;
+      final float Z = 0.5f;
+      final int KEY = 11235;
 
-			gl.glSelectBuffer( SELECTION_CAPACITY, selectionAsIntBuffer );
-			gl.glRenderMode( GL_SELECT );
+      gl.glSelectBuffer(SELECTION_CAPACITY, selectionAsIntBuffer);
+      gl.glRenderMode(GL_SELECT);
 
-			gl.glClearDepth( 1.0f );
-			gl.glDepthFunc( GL_LEQUAL );
-			gl.glEnable( GL_DEPTH_TEST );
+      gl.glClearDepth(1.0f);
+      gl.glDepthFunc(GL_LEQUAL);
+      gl.glEnable(GL_DEPTH_TEST);
 
-			gl.glDisable( GL_CULL_FACE );
+      gl.glDisable(GL_CULL_FACE);
 
-			gl.glClear( GL_DEPTH_BUFFER_BIT );
-			gl.glInitNames();
+      gl.glClear(GL_DEPTH_BUFFER_BIT);
+      gl.glInitNames();
 
-			gl.glMatrixMode( GL_PROJECTION );
-			gl.glLoadIdentity();
-			gl.glOrtho( -1, +1, -1, +1, -1, +1 );
-			gl.glViewport( 0, 0, 1, 1 );
+      gl.glMatrixMode(GL_PROJECTION);
+      gl.glLoadIdentity();
+      gl.glOrtho(-1, +1, -1, +1, -1, +1);
+      gl.glViewport(0, 0, 1, 1);
 
-			gl.glLoadIdentity();
-			gl.glMatrixMode( GL_MODELVIEW );
-			gl.glLoadIdentity();
+      gl.glLoadIdentity();
+      gl.glMatrixMode(GL_MODELVIEW);
+      gl.glLoadIdentity();
 
-			gl.glPushName( KEY );
+      gl.glPushName(KEY);
 
-			gl.glBegin( GL_QUAD_STRIP );
-			gl.glVertex3f( -XY, -XY, Z );
-			gl.glVertex3f( +XY, -XY, Z );
-			gl.glVertex3f( +XY, +XY, Z );
-			gl.glVertex3f( -XY, +XY, Z );
-			gl.glEnd();
+      gl.glBegin(GL_QUAD_STRIP);
+      gl.glVertex3f(-XY, -XY, Z);
+      gl.glVertex3f(+XY, -XY, Z);
+      gl.glVertex3f(+XY, +XY, Z);
+      gl.glVertex3f(-XY, +XY, Z);
+      gl.glEnd();
 
-			gl.glFlush();
+      gl.glFlush();
 
-			gl.glPopName();
+      gl.glPopName();
 
-			selectionAsIntBuffer.rewind();
-			int length = gl.glRenderMode( GL_RENDER );
+      selectionAsIntBuffer.rewind();
+      int length = gl.glRenderMode(GL_RENDER);
 
-			boolean isFunctioning = false;
-			if( length == 1 ) {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println("length", length);
-				int nameCount = selectionAsIntBuffer.get( 0 );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println("nameCount", nameCount);
+      boolean isFunctioning = false;
+      if (length == 1) {
+        //edu.cmu.cs.dennisc.print.PrintUtilities.println("length", length);
+        int nameCount = selectionAsIntBuffer.get(0);
+        //edu.cmu.cs.dennisc.print.PrintUtilities.println("nameCount", nameCount);
 
-				int zFrontAsInt = selectionAsIntBuffer.get( 1 );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFrontAsInt", "0x"+Integer.toHexString(zFrontAsInt));
-				long zFrontAsLong = convertZValueToLong( zFrontAsInt );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFrontAsLong", "0x"+Long.toHexString(zFrontAsLong));
+        int zFrontAsInt = selectionAsIntBuffer.get(1);
+        //edu.cmu.cs.dennisc.print.PrintUtilities.println("zFrontAsInt", "0x"+Integer.toHexString(zFrontAsInt));
+        long zFrontAsLong = convertZValueToLong(zFrontAsInt);
+        //edu.cmu.cs.dennisc.print.PrintUtilities.println("zFrontAsLong", "0x"+Long.toHexString(zFrontAsLong));
 
-				if( ( zFrontAsLong != FISHY_PICK_VALUE ) && ( zFrontAsLong != PickContext.MAX_UNSIGNED_INTEGER ) && ( zFrontAsLong != 0 ) ) {
-					//float zFront = convertZValueToFloat( zFrontAsLong );;
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFront", zFront);
+        if ((zFrontAsLong != FISHY_PICK_VALUE) && (zFrontAsLong != PickContext.MAX_UNSIGNED_INTEGER) && (zFrontAsLong != 0)) {
+          //float zFront = convertZValueToFloat( zFrontAsLong );;
+          //edu.cmu.cs.dennisc.print.PrintUtilities.println("zFront", zFront);
 
-					boolean IS_BACK_VALUE_OF_CONCERN = false;
-					if( IS_BACK_VALUE_OF_CONCERN ) {
-						int zBackAsInt = selectionAsIntBuffer.get( 2 );
-						//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsInt", "0x"+Integer.toHexString(zBackAsInt));
-						long zBackAsLong = convertZValueToLong( zBackAsInt );
-						//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsLong", "0x"+Long.toHexString(zBackAsLong));
-						float zBack = convertZValueToFloat( zBackAsLong );
-						//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBack", zBack);
-					}
+          boolean IS_BACK_VALUE_OF_CONCERN = false;
+          if (IS_BACK_VALUE_OF_CONCERN) {
+            int zBackAsInt = selectionAsIntBuffer.get(2);
+            //edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsInt", "0x"+Integer.toHexString(zBackAsInt));
+            long zBackAsLong = convertZValueToLong(zBackAsInt);
+            //edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsLong", "0x"+Long.toHexString(zBackAsLong));
+            float zBack = convertZValueToFloat(zBackAsLong);
+            //edu.cmu.cs.dennisc.print.PrintUtilities.println("zBack", zBack);
+          }
 
-					if( nameCount == 1 ) {
-						int key = selectionAsIntBuffer.get( 3 );
-						if( key == KEY ) {
-							isFunctioning = true;
-							//						edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: remove setting isPickFunctioningCorrectly = false");
-							//						this.isPickFunctioningCorrectly = false;
-						}
-					}
-				}
-			}
-			this.isPickFunctioningCorrectly = isFunctioning;
+          if (nameCount == 1) {
+            int key = selectionAsIntBuffer.get(3);
+            if (key == KEY) {
+              isFunctioning = true;
+              //            edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: remove setting isPickFunctioningCorrectly = false");
+              //            this.isPickFunctioningCorrectly = false;
+            }
+          }
+        }
+      }
+      this.isPickFunctioningCorrectly = isFunctioning;
 
-			//			if( this.isPickFunctioningCorrectly ) {
-			//				//pass
-			//			} else {
-			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl isHardwareAccelerated:", conformanceTestResults.isPickFunctioningCorrectly() );
-			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl isPickFunctioningCorrectly:", conformanceTestResults.isPickFunctioningCorrectly() );
-			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl version:", conformanceTestResults.getVersion() );
-			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl vendor:", conformanceTestResults.getVendor() );
-			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl renderer:", conformanceTestResults.getRenderer() );
-			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl extensions:", conformanceTestResults.getExtensions() );
-			//			}
-		}
+      //      if( this.isPickFunctioningCorrectly ) {
+      //        //pass
+      //      } else {
+      //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl isHardwareAccelerated:", conformanceTestResults.isPickFunctioningCorrectly() );
+      //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl isPickFunctioningCorrectly:", conformanceTestResults.isPickFunctioningCorrectly() );
+      //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl version:", conformanceTestResults.getVersion() );
+      //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl vendor:", conformanceTestResults.getVendor() );
+      //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl renderer:", conformanceTestResults.getRenderer() );
+      //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl extensions:", conformanceTestResults.getExtensions() );
+      //      }
+    }
 
-		public boolean isPickFunctioningCorrectly() {
-			return this.isPickFunctioningCorrectly;
-		}
-	}
+    public boolean isPickFunctioningCorrectly() {
+      return this.isPickFunctioningCorrectly;
+    }
+  }
 
-	public static final class SynchronousPickDetails extends PickDetails {
-		private final boolean isReportingPickCanBeHardwareAccelerated;
-		private final boolean isPickActuallyHardwareAccelerated;
+  public static final class SynchronousPickDetails extends PickDetails {
+    private final boolean isReportingPickCanBeHardwareAccelerated;
+    private final boolean isPickActuallyHardwareAccelerated;
 
-		private SynchronousPickDetails( GL2 gl, boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated ) {
-			super( gl );
-			this.isReportingPickCanBeHardwareAccelerated = isReportingPickCanBeHardwareAccelerated;
-			this.isPickActuallyHardwareAccelerated = isPickActuallyHardwareAccelerated;
-		}
+    private SynchronousPickDetails(GL2 gl, boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated) {
+      super(gl);
+      this.isReportingPickCanBeHardwareAccelerated = isReportingPickCanBeHardwareAccelerated;
+      this.isPickActuallyHardwareAccelerated = isPickActuallyHardwareAccelerated;
+    }
 
-		public boolean isReportingPickCanBeHardwareAccelerated() {
-			return this.isReportingPickCanBeHardwareAccelerated;
-		}
+    public boolean isReportingPickCanBeHardwareAccelerated() {
+      return this.isReportingPickCanBeHardwareAccelerated;
+    }
 
-		public boolean isPickActuallyHardwareAccelerated() {
-			return this.isPickActuallyHardwareAccelerated;
-		}
-	}
+    public boolean isPickActuallyHardwareAccelerated() {
+      return this.isPickActuallyHardwareAccelerated;
+    }
+  }
 
-	public static final class AsynchronousPickDetails extends PickDetails {
-		public AsynchronousPickDetails( GL2 gl ) {
-			super( gl );
-		}
-	}
+  public static final class AsynchronousPickDetails extends PickDetails {
+    public AsynchronousPickDetails(GL2 gl) {
+      super(gl);
+    }
+  }
 
-	private SharedDetails sharedDetails;
-	private SynchronousPickDetails synchronousPickDetails;
-	private AsynchronousPickDetails asynchronousPickDetails;
+  private SharedDetails sharedDetails;
+  private SynchronousPickDetails synchronousPickDetails;
+  private AsynchronousPickDetails asynchronousPickDetails;
 
-	private void updateSharedDetailsfNecessary( GL gl ) {
-		if( this.sharedDetails != null ) {
-			//pass
-		} else {
-			this.sharedDetails = new SharedDetails( gl );
-		}
-	}
+  private void updateSharedDetailsfNecessary(GL gl) {
+    if (this.sharedDetails != null) {
+      //pass
+    } else {
+      this.sharedDetails = new SharedDetails(gl);
+    }
+  }
 
-	public void updateRenderInformationIfNecessary( GL gl ) {
-		this.updateSharedDetailsfNecessary( gl );
-	}
+  public void updateRenderInformationIfNecessary(GL gl) {
+    this.updateSharedDetailsfNecessary(gl);
+  }
 
-	public void updateSynchronousPickInformationIfNecessary( GL2 gl, boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated ) {
-		this.updateSharedDetailsfNecessary( gl );
-		if( this.synchronousPickDetails != null ) {
-			//pass
-		} else {
-			this.synchronousPickDetails = new SynchronousPickDetails( gl, isReportingPickCanBeHardwareAccelerated, isPickActuallyHardwareAccelerated );
-		}
-	}
+  public void updateSynchronousPickInformationIfNecessary(GL2 gl, boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated) {
+    this.updateSharedDetailsfNecessary(gl);
+    if (this.synchronousPickDetails != null) {
+      //pass
+    } else {
+      this.synchronousPickDetails = new SynchronousPickDetails(gl, isReportingPickCanBeHardwareAccelerated, isPickActuallyHardwareAccelerated);
+    }
+  }
 
-	public void updateAsynchronousPickInformationIfNecessary( GL2 gl ) {
-		this.updateSharedDetailsfNecessary( gl );
-		if( this.asynchronousPickDetails != null ) {
-			//pass
-		} else {
-			this.asynchronousPickDetails = new AsynchronousPickDetails( gl );
-		}
-	}
+  public void updateAsynchronousPickInformationIfNecessary(GL2 gl) {
+    this.updateSharedDetailsfNecessary(gl);
+    if (this.asynchronousPickDetails != null) {
+      //pass
+    } else {
+      this.asynchronousPickDetails = new AsynchronousPickDetails(gl);
+    }
+  }
 
-	public SharedDetails getSharedDetails() {
-		return this.sharedDetails;
-	}
+  public SharedDetails getSharedDetails() {
+    return this.sharedDetails;
+  }
 
-	public SynchronousPickDetails getSynchronousPickDetails() {
-		return this.synchronousPickDetails;
-	}
+  public SynchronousPickDetails getSynchronousPickDetails() {
+    return this.synchronousPickDetails;
+  }
 
-	public AsynchronousPickDetails getAsynchronousPickDetails() {
-		return this.asynchronousPickDetails;
-	}
+  public AsynchronousPickDetails getAsynchronousPickDetails() {
+    return this.asynchronousPickDetails;
+  }
 }

@@ -53,12 +53,12 @@ import org.lgna.project.ast.UserLocal;
  * @author Dennis Cosgrove
  */
 public class LocalPane extends TransientPane {
-	public LocalPane( UserLocal local, boolean isLocalDraggableAndMutable ) {
-		super( isLocalDraggableAndMutable ? LocalAccessDragModel.getInstance( local ) : null );
-		if( isLocalDraggableAndMutable ) {
-			this.setPopupPrepModel( LocalMenuModel.getInstance( local ).getPopupPrepModel() );
-		}
-		this.addComponent( new LocalValidNameLabel( local ) );
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getColorFor( LocalAccess.class ) );
-	}
+  public LocalPane(UserLocal local, boolean isLocalDraggableAndMutable) {
+    super(isLocalDraggableAndMutable ? LocalAccessDragModel.getInstance(local) : null);
+    if (isLocalDraggableAndMutable) {
+      this.setPopupPrepModel(LocalMenuModel.getInstance(local).getPopupPrepModel());
+    }
+    this.addComponent(new LocalValidNameLabel(local));
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getColorFor(LocalAccess.class));
+  }
 }

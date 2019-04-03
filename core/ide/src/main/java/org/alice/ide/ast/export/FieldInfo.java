@@ -48,7 +48,7 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 public class FieldInfo extends MemberInfo<UserField> {
-	public FieldInfo( ProjectInfo projectInfo, UserField field ) {
-		super( projectInfo, field );
-	}
+  public FieldInfo(ProjectInfo projectInfo, UserField field) {
+    super(projectInfo, field);
+  }
 }

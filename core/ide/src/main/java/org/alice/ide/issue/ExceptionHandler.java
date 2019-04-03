@@ -50,35 +50,35 @@ import java.lang.reflect.InvocationTargetException;
  * @author Dennis Cosgrove
  */
 public abstract class ExceptionHandler implements Thread.UncaughtExceptionHandler {
-	protected abstract boolean handleLgnaRuntimeException( Thread thread, LgnaRuntimeException lgnare );
+  protected abstract boolean handleLgnaRuntimeException(Thread thread, LgnaRuntimeException lgnare);
 
-	protected abstract void handleThrowable( Thread thread, Throwable throwable );
+  protected abstract void handleThrowable(Thread thread, Throwable throwable);
 
-	@Override
-	public final void uncaughtException( Thread thread, Throwable throwable ) {
-		throwable.printStackTrace();
-		if( throwable instanceof RuntimeException ) {
-			RuntimeException runtimeException = (RuntimeException)throwable;
-			Throwable cause = runtimeException.getCause();
-			if( cause instanceof InvocationTargetException ) {
-				InvocationTargetException invocationTargetException = (InvocationTargetException)cause;
-				Throwable targetException = invocationTargetException.getTargetException();
-				if( targetException instanceof LgnaRuntimeException ) {
-					throwable = targetException;
-				}
-			}
-		}
-		boolean isHandled;
-		if( throwable instanceof LgnaRuntimeException ) {
-			LgnaRuntimeException lgnare = (LgnaRuntimeException)throwable;
-			isHandled = this.handleLgnaRuntimeException( thread, lgnare );
-		} else {
-			isHandled = false;
-		}
-		if( isHandled ) {
-			//pass
-		} else {
-			this.handleThrowable( thread, throwable );
-		}
-	}
+  @Override
+  public final void uncaughtException(Thread thread, Throwable throwable) {
+    throwable.printStackTrace();
+    if (throwable instanceof RuntimeException) {
+      RuntimeException runtimeException = (RuntimeException) throwable;
+      Throwable cause = runtimeException.getCause();
+      if (cause instanceof InvocationTargetException) {
+        InvocationTargetException invocationTargetException = (InvocationTargetException) cause;
+        Throwable targetException = invocationTargetException.getTargetException();
+        if (targetException instanceof LgnaRuntimeException) {
+          throwable = targetException;
+        }
+      }
+    }
+    boolean isHandled;
+    if (throwable instanceof LgnaRuntimeException) {
+      LgnaRuntimeException lgnare = (LgnaRuntimeException) throwable;
+      isHandled = this.handleLgnaRuntimeException(thread, lgnare);
+    } else {
+      isHandled = false;
+    }
+    if (isHandled) {
+      //pass
+    } else {
+      this.handleThrowable(thread, throwable);
+    }
+  }
 }

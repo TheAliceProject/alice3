@@ -54,28 +54,28 @@ import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
  * @author Dennis Cosgrove
  */
 public abstract class CameraImp<S extends AbstractCamera> extends TransformableImp {
-	private final S sgCamera;
+  private final S sgCamera;
 
-	public CameraImp( S sgCamera ) {
-		this.sgCamera = sgCamera;
-		this.sgCamera.setParent( this.getSgComposite() );
-		this.putInstance( this.sgCamera );
-	}
+  public CameraImp(S sgCamera) {
+    this.sgCamera = sgCamera;
+    this.sgCamera.setParent(this.getSgComposite());
+    this.putInstance(this.sgCamera);
+  }
 
-	public final S getSgCamera() {
-		return this.sgCamera;
-	}
+  public final S getSgCamera() {
+    return this.sgCamera;
+  }
 
-	@Override
-	protected CumulativeBound updateCumulativeBound( CumulativeBound rv, AffineMatrix4x4 trans ) {
-		rv.addBoundingBox( new AxisAlignedBox( Point3.ORIGIN, Point3.ORIGIN), trans );
-		return rv;
-	}
+  @Override
+  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+    rv.addBoundingBox(new AxisAlignedBox(Point3.ORIGIN, Point3.ORIGIN), trans);
+    return rv;
+  }
 
-	public Layer getPostRenderLayer() {
-		if( sgCamera.postRenderLayers.getLength() == 0 ) {
-			sgCamera.postRenderLayers.setValue( new Layer[] { new Layer() } );
-		}
-		return sgCamera.postRenderLayers.getValue()[ 0 ];
-	}
+  public Layer getPostRenderLayer() {
+    if (sgCamera.postRenderLayers.getLength() == 0) {
+      sgCamera.postRenderLayers.setValue(new Layer[] {new Layer()});
+    }
+    return sgCamera.postRenderLayers.getValue()[0];
+  }
 }

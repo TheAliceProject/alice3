@@ -52,70 +52,69 @@ import java.util.Arrays;
  * @author Dennis Cosgrove
  */
 public class MenuItemContainerUtilities {
-	private MenuItemContainerUtilities() {
-		throw new AssertionError();
-	}
+  private MenuItemContainerUtilities() {
+    throw new AssertionError();
+  }
 
-	//	public static java.util.List< Model > getMenuPath( MenuItem menuItem ) {
-	//		java.util.List< Model > rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	//		rv.add( menuItem.getModel() );
-	//
-	//		Container< ? > parent = menuItem.getParent();
-	//		while( parent != null ) {
-	//			if( parent instanceof MenuItemContainer ) {
-	//				MenuItemContainer menuItemContainer = (MenuItemContainer)parent;
-	//				rv.add( menuItemContainer.getViewController().getModel() );
-	//			} else {
-	//				break;
-	//			}
-	//			parent = parent.getParent();
-	//		}
-	//		return rv;
-	//	}
+  //  public static java.util.List< Model > getMenuPath( MenuItem menuItem ) {
+  //  java.util.List< Model > rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+  //  rv.add( menuItem.getModel() );
+  //
+  //  Container< ? > parent = menuItem.getParent();
+  //  while( parent != null ) {
+  //    if( parent instanceof MenuItemContainer ) {
+  //      MenuItemContainer menuItemContainer = (MenuItemContainer)parent;
+  //      rv.add( menuItemContainer.getViewController().getModel() );
+  //    } else {
+  //      break;
+  //    }
+  //    parent = parent.getParent();
+  //  }
+  //  return rv;
+  //  }
 
-	public static interface MenuElementObserver {
-		public void update( MenuItemContainer menuItemContainer, StandardMenuItemPrepModel model, ViewController<?, ?> menuElement );
-	}
+  public static interface MenuElementObserver {
+    public void update(MenuItemContainer menuItemContainer, StandardMenuItemPrepModel model, ViewController<?, ?> menuElement);
+  }
 
-	private static MenuItemContainer addMenuElement( MenuItemContainer menuItemContainer, StandardMenuItemPrepModel model, MenuElementObserver observer ) {
-		ViewController<?, ?> menuElement;
-		if( model != null ) {
-			menuElement = model.createMenuItemAndAddTo( menuItemContainer );
-		} else {
-			menuItemContainer.addSeparator();
-			menuElement = null;
-		}
+  private static MenuItemContainer addMenuElement(MenuItemContainer menuItemContainer, StandardMenuItemPrepModel model, MenuElementObserver observer) {
+    ViewController<?, ?> menuElement;
+    if (model != null) {
+      menuElement = model.createMenuItemAndAddTo(menuItemContainer);
+    } else {
+      menuItemContainer.addSeparator();
+      menuElement = null;
+    }
 
-		if( observer != null ) {
-			observer.update( menuItemContainer, model, menuElement );
-		}
-		return menuItemContainer;
-	}
+    if (observer != null) {
+      observer.update(menuItemContainer, model, menuElement);
+    }
+    return menuItemContainer;
+  }
 
-	public static void setMenuElements( MenuItemContainer menuItemContainer, java.util.List<StandardMenuItemPrepModel> models, MenuElementObserver observer ) {
-		final boolean IS_REUSE_READY_FOR_PRIME_TIME = false;
-		if( IS_REUSE_READY_FOR_PRIME_TIME ) {
-			for( AwtComponentView<?> component : menuItemContainer.getMenuComponents() ) {
-				Logger.outln( component );
-			}
-		} else {
-			menuItemContainer.forgetAndRemoveAllMenuItems();
-			for( StandardMenuItemPrepModel model : models ) {
-				addMenuElement( menuItemContainer, model, observer );
-			}
-		}
-	}
+  public static void setMenuElements(MenuItemContainer menuItemContainer, java.util.List<StandardMenuItemPrepModel> models, MenuElementObserver observer) {
+    final boolean IS_REUSE_READY_FOR_PRIME_TIME = false;
+    if (IS_REUSE_READY_FOR_PRIME_TIME) {
+      for (AwtComponentView<?> component : menuItemContainer.getMenuComponents()) {
+        Logger.outln(component);
+      }
+    } else {
+      menuItemContainer.forgetAndRemoveAllMenuItems();
+      for (StandardMenuItemPrepModel model : models) {
+        addMenuElement(menuItemContainer, model, observer);
+      }
+    }
+  }
 
-	private static void setMenuElements( MenuItemContainer menuItemContainer, StandardMenuItemPrepModel[] models,
-																			 MenuElementObserver observer ) {
-		setMenuElements( menuItemContainer, Arrays.asList( models ), observer );
-	}
+  private static void setMenuElements(MenuItemContainer menuItemContainer, StandardMenuItemPrepModel[] models, MenuElementObserver observer) {
+    setMenuElements(menuItemContainer, Arrays.asList(models), observer);
+  }
 
-	public static void setMenuElements( MenuItemContainer menuItemContainer, java.util.List<StandardMenuItemPrepModel> models ) {
-		setMenuElements( menuItemContainer, models, null );
-	}
+  public static void setMenuElements(MenuItemContainer menuItemContainer, java.util.List<StandardMenuItemPrepModel> models) {
+    setMenuElements(menuItemContainer, models, null);
+  }
 
-	public static void setMenuElements( MenuItemContainer menuItemContainer, StandardMenuItemPrepModel[] models ) {
-		setMenuElements( menuItemContainer, models, null );
-	}
+  public static void setMenuElements(MenuItemContainer menuItemContainer, StandardMenuItemPrepModel[] models) {
+    setMenuElements(menuItemContainer, models, null);
+  }
 }

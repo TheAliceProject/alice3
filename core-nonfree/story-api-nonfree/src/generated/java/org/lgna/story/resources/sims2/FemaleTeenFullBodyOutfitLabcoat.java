@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitLabcoat implements FemaleTeenFullBodyOutfit {
-	POLO_TENNIES,
-	POLO_ROSE;
+  POLO_TENNIES, POLO_ROSE
 
 }

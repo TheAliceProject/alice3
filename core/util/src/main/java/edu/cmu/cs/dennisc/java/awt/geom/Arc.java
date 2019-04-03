@@ -50,19 +50,19 @@ import java.awt.geom.Arc2D;
  * @author Dennis Cosgrove
  */
 public class Arc extends Shape {
-	private Arc2D m_arc;
+  private Arc2D m_arc;
 
-	public Arc( double xHalfLength, double yHalfLength, Angle angleStart, Angle angleExtent ) {
-		m_arc = new Arc2D.Double( -xHalfLength, -yHalfLength, xHalfLength * 2, yHalfLength * 2, angleStart.getAsDegrees(), angleExtent.getAsDegrees(), Arc2D.OPEN );
-	}
+  public Arc(double xHalfLength, double yHalfLength, Angle angleStart, Angle angleExtent) {
+    m_arc = new Arc2D.Double(-xHalfLength, -yHalfLength, xHalfLength * 2, yHalfLength * 2, angleStart.getAsDegrees(), angleExtent.getAsDegrees(), Arc2D.OPEN);
+  }
 
-	@Override
-	protected java.awt.Shape getDrawShape() {
-		return m_arc;
-	}
+  @Override
+  protected java.awt.Shape getDrawShape() {
+    return m_arc;
+  }
 
-	@Override
-	protected java.awt.Shape getFillShape() {
-		return m_arc;
-	}
+  @Override
+  protected java.awt.Shape getFillShape() {
+    return m_arc;
+  }
 }

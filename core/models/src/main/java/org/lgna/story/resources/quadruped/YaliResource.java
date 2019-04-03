@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.quadruped;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SQuadruped;
@@ -33,58 +34,49 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.QuadrupedResource;
 
 public enum YaliResource implements QuadrupedResource {
-	DEFAULT,
-	STONE;
+  DEFAULT, STONE;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, YaliResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, YaliResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME, methodNameHint="getTrunk")
-	public static final JointId TRUNK_0 = new JointId( HEAD, YaliResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TRUNK_1 = new JointId( TRUNK_0, YaliResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TRUNK_2 = new JointId( TRUNK_1, YaliResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TRUNK_3 = new JointId( TRUNK_2, YaliResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TRUNK_4 = new JointId( TRUNK_3, YaliResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TRUNK_5 = new JointId( TRUNK_4, YaliResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, YaliResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_4 = new JointId( TAIL_3, YaliResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LOWER_LIP = new JointId(MOUTH, YaliResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_EAR_TIP = new JointId(LEFT_EAR, YaliResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME, methodNameHint = "getTrunk") public static final JointId TRUNK_0 = new JointId(HEAD, YaliResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TRUNK_1 = new JointId(TRUNK_0, YaliResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TRUNK_2 = new JointId(TRUNK_1, YaliResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TRUNK_3 = new JointId(TRUNK_2, YaliResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TRUNK_4 = new JointId(TRUNK_3, YaliResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TRUNK_5 = new JointId(TRUNK_4, YaliResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_EAR_TIP = new JointId(RIGHT_EAR, YaliResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_4 = new JointId(TAIL_3, YaliResource.class);
 
-	public static final JointId[] TRUNK_ARRAY = { TRUNK_0, TRUNK_1, TRUNK_2, TRUNK_3, TRUNK_4, TRUNK_5 };
+  public static final JointId[] TRUNK_ARRAY = {TRUNK_0, TRUNK_1, TRUNK_2, TRUNK_3, TRUNK_4, TRUNK_5};
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4 };
-	@Override
-	public JointId[] getTailArray() {
-		return YaliResource.TAIL_ARRAY;
-	}
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] TAIL_ARRAY = {TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4};
 
-	private final ImplementationAndVisualType resourceType;
-	YaliResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  @Override
+  public JointId[] getTailArray() {
+    return YaliResource.TAIL_ARRAY;
+  }
 
-	YaliResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	public JointId[] getRootJointIds() {
-		return QuadrupedResource.JOINT_ID_ROOTS;
-	}
+  YaliResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public QuadrupedImp createImplementation( SQuadruped abstraction ) {
-		return new QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  YaliResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
+
+  public JointId[] getRootJointIds() {
+    return QuadrupedResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public QuadrupedImp createImplementation(SQuadruped abstraction) {
+    return new QuadrupedImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

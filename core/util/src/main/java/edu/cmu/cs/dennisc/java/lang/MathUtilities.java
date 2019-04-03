@@ -46,83 +46,83 @@ package edu.cmu.cs.dennisc.java.lang;
  * @author Dennis Cosgrove
  */
 public class MathUtilities {
-	public static short minShort( short a, short... others ) {
-		short rv = a;
-		for( short v : others ) {
-			rv = (short)Math.min( rv, v );
-		}
-		return rv;
-	}
+  public static short minShort(short a, short... others) {
+    short rv = a;
+    for (short v : others) {
+      rv = (short) Math.min(rv, v);
+    }
+    return rv;
+  }
 
-	public static short maxShort( short a, short... others ) {
-		short rv = a;
-		for( short v : others ) {
-			rv = (short)Math.max( rv, v );
-		}
-		return rv;
-	}
+  public static short maxShort(short a, short... others) {
+    short rv = a;
+    for (short v : others) {
+      rv = (short) Math.max(rv, v);
+    }
+    return rv;
+  }
 
-	public static int minInt( int a, int... others ) {
-		int rv = a;
-		for( int v : others ) {
-			rv = Math.min( rv, v );
-		}
-		return rv;
-	}
+  public static int minInt(int a, int... others) {
+    int rv = a;
+    for (int v : others) {
+      rv = Math.min(rv, v);
+    }
+    return rv;
+  }
 
-	public static int maxInt( int a, int... others ) {
-		int rv = a;
-		for( int v : others ) {
-			rv = Math.max( rv, v );
-		}
-		return rv;
-	}
+  public static int maxInt(int a, int... others) {
+    int rv = a;
+    for (int v : others) {
+      rv = Math.max(rv, v);
+    }
+    return rv;
+  }
 
-	public static long minLong( long a, long... others ) {
-		long rv = a;
-		for( long v : others ) {
-			rv = Math.min( rv, v );
-		}
-		return rv;
-	}
+  public static long minLong(long a, long... others) {
+    long rv = a;
+    for (long v : others) {
+      rv = Math.min(rv, v);
+    }
+    return rv;
+  }
 
-	public static long maxLong( long a, long... others ) {
-		long rv = a;
-		for( long v : others ) {
-			rv = Math.max( rv, v );
-		}
-		return rv;
-	}
+  public static long maxLong(long a, long... others) {
+    long rv = a;
+    for (long v : others) {
+      rv = Math.max(rv, v);
+    }
+    return rv;
+  }
 
-	public static float minFloat( float a, float... others ) {
-		float rv = a;
-		for( float v : others ) {
-			rv = Math.min( rv, v );
-		}
-		return rv;
-	}
+  public static float minFloat(float a, float... others) {
+    float rv = a;
+    for (float v : others) {
+      rv = Math.min(rv, v);
+    }
+    return rv;
+  }
 
-	public static float maxFloat( float a, float... others ) {
-		float rv = a;
-		for( float v : others ) {
-			rv = Math.max( rv, v );
-		}
-		return rv;
-	}
+  public static float maxFloat(float a, float... others) {
+    float rv = a;
+    for (float v : others) {
+      rv = Math.max(rv, v);
+    }
+    return rv;
+  }
 
-	public static double minDouble( double a, double... others ) {
-		double rv = a;
-		for( double v : others ) {
-			rv = Math.min( rv, v );
-		}
-		return rv;
-	}
+  public static double minDouble(double a, double... others) {
+    double rv = a;
+    for (double v : others) {
+      rv = Math.min(rv, v);
+    }
+    return rv;
+  }
 
-	public static double maxDouble( double a, double... others ) {
-		double rv = a;
-		for( double v : others ) {
-			rv = Math.max( rv, v );
-		}
-		return rv;
-	}
+  public static double maxDouble(double a, double... others) {
+    double rv = a;
+    for (double v : others) {
+      rv = Math.max(rv, v);
+    }
+    return rv;
+  }
 }

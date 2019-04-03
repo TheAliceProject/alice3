@@ -61,29 +61,29 @@ import javax.swing.BorderFactory;
  * @author Dennis Cosgrove
  */
 public class AbstractIssueView extends BorderPanel {
-	protected static SwingComponentView<?> createScrollPaneTextArea( StringState stringState ) {
-		TextArea textArea = stringState.createTextArea();
-		textArea.getAwtComponent().setLineWrap( true );
-		textArea.getAwtComponent().setWrapStyleWord( true );
-		ScrollPane rv = new ScrollPane( textArea );
-		rv.setMinimumPreferredHeight( 128 );
-		return rv;
-	}
+  protected static SwingComponentView<?> createScrollPaneTextArea(StringState stringState) {
+    TextArea textArea = stringState.createTextArea();
+    textArea.getAwtComponent().setLineWrap(true);
+    textArea.getAwtComponent().setWrapStyleWord(true);
+    ScrollPane rv = new ScrollPane(textArea);
+    rv.setMinimumPreferredHeight(128);
+    return rv;
+  }
 
-	public AbstractIssueView( AbstractIssueComposite<?> composite ) {
-		super( composite );
+  public AbstractIssueView(AbstractIssueComposite<?> composite) {
+    super(composite);
 
-		Button submitButton = composite.getSubmitBugOperation().createButton();
-		submitButton.scaleFont( 1.6f );
-		submitButton.changeFont( TextWeight.BOLD );
+    Button submitButton = composite.getSubmitBugOperation().createButton();
+    submitButton.scaleFont(1.6f);
+    submitButton.changeFont(TextWeight.BOLD);
 
-		FlowPanel submitPanel = new FlowPanel( FlowPanel.Alignment.CENTER );
-		submitPanel.addComponent( submitButton );
+    FlowPanel submitPanel = new FlowPanel(FlowPanel.Alignment.CENTER);
+    submitPanel.addComponent(submitButton);
 
-		PageAxisPanel pageEndPanel = new PageAxisPanel( Separator.createInstanceSeparatingTopFromBottom(), BoxUtilities.createVerticalSliver( 8 ), submitPanel );
-		pageEndPanel.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+    PageAxisPanel pageEndPanel = new PageAxisPanel(Separator.createInstanceSeparatingTopFromBottom(), BoxUtilities.createVerticalSliver(8), submitPanel);
+    pageEndPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-		this.addPageEndComponent( pageEndPanel );
-	}
+    this.addPageEndComponent(pageEndPanel);
+  }
 
 }

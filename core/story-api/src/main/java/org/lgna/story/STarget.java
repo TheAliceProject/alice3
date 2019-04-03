@@ -49,10 +49,10 @@ import org.lgna.story.implementation.TargetImp;
  * @author Dennis Cosgrove
  */
 public class STarget extends SMovableTurnable {
-	private final TargetImp implementation = new TargetImp( this );
+  private final TargetImp implementation = new TargetImp(this);
 
-	@Override
-	/* package-private */TargetImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */TargetImp getImplementation() {
+    return this.implementation;
+  }
 }

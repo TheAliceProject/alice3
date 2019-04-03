@@ -46,9 +46,9 @@ package edu.cmu.cs.dennisc.clock;
  * @author Dennis Cosgrove
  */
 public abstract class Clock {
-	private static long s_t0 = System.currentTimeMillis();
+  private static long s_t0 = System.currentTimeMillis();
 
-	public static double getCurrentTime() {
-		return ( System.currentTimeMillis() - s_t0 ) * 0.001;
-	}
+  public static double getCurrentTime() {
+    return (System.currentTimeMillis() - s_t0) * 0.001;
+  }
 }

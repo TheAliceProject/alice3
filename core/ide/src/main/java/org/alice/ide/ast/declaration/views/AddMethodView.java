@@ -52,13 +52,13 @@ import org.lgna.project.ast.UserMethod;
  * @author Dennis Cosgrove
  */
 public abstract class AddMethodView extends DeclarationView<UserMethod> {
-	public AddMethodView( AddMethodComposite composite ) {
-		super( composite );
-	}
+  public AddMethodView(AddMethodComposite composite) {
+    super(composite);
+  }
 
-	@Override
-	public SwingComponentView<?> createPreviewSubComponent() {
-		AddMethodComposite composite = (AddMethodComposite)this.getComposite();
-		return new MethodHeaderPane( PreviewAstI18nFactory.getInstance(), composite.getPreviewValue(), true );
-	}
+  @Override
+  public SwingComponentView<?> createPreviewSubComponent() {
+    AddMethodComposite composite = (AddMethodComposite) this.getComposite();
+    return new MethodHeaderPane(PreviewAstI18nFactory.getInstance(), composite.getPreviewValue(), true);
+  }
 }

@@ -49,10 +49,10 @@ import org.lgna.project.annotations.Visibility;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMember extends AbstractAccessibleDeclaration implements Member {
-	public abstract Visibility getVisibility();
+  public abstract Visibility getVisibility();
 
-	@Override
-	public AbstractType<?, ?, ?> getDeclaringType() {
-		return this.getFirstAncestorAssignableTo( AbstractType.class );
-	}
+  @Override
+  public AbstractType<?, ?, ?> getDeclaringType() {
+    return this.getFirstAncestorAssignableTo(AbstractType.class);
+  }
 }

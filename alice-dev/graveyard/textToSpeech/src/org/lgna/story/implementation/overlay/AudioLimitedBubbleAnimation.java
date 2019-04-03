@@ -42,45 +42,44 @@
  */
 package org.lgna.story.implementation.overlay;
 
-
 // from ModelImp
-//	public void sayText( String textToSay, org.alice.flite.VoiceType voice, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble ) {
-//		final boolean showSpeechBubble = bubble != null;
-//		final org.lgna.common.resources.TextToSpeechResource tts = org.lgna.common.resources.TextToSpeechResource.valueOf( textToSay, voice.getVoiceString() );
-//		final org.lgna.story.implementation.overlay.AudioLimitedBubbleAnimation bubbleAnimation = ( showSpeechBubble ) ? new org.lgna.story.implementation.overlay.AudioLimitedBubbleAnimation( this, .3, .3, bubble ) : null;
+//  public void sayText( String textToSay, org.alice.flite.VoiceType voice, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble ) {
+//    final boolean showSpeechBubble = bubble != null;
+//    final org.lgna.common.resources.TextToSpeechResource tts = org.lgna.common.resources.TextToSpeechResource.valueOf( textToSay, voice.getVoiceString() );
+//    final org.lgna.story.implementation.overlay.AudioLimitedBubbleAnimation bubbleAnimation = ( showSpeechBubble ) ? new org.lgna.story.implementation.overlay.AudioLimitedBubbleAnimation( this, .3, .3, bubble ) : null;
 //
-//		Runnable textToSpeech = new Runnable() {
-//			public void run() {
-//				if( !tts.isLoaded() )
-//				{
-//					tts.loadResource();
-//				}
-//				edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
-//				edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( tts, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_VOLUME, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_START_TIME, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_STOP_TIME );
-//				if( showSpeechBubble )
-//				{
-//					bubbleAnimation.setDuration( tts.getDuration() + .2 );
-//				}
-//				perform( new edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation( player ) );
-//			}
-//		};
-//		if( showSpeechBubble )
-//		{
-//			Runnable[] runnables = new Runnable[ 2 ];
-//			runnables[ 0 ] = new Runnable() {
-//				public void run() {
-//					perform( bubbleAnimation );
-//				}
-//			};
-//			runnables[ 1 ] = textToSpeech;
-//			org.lgna.common.ThreadUtilities.doTogether( runnables );
-//		}
-//		else
-//		{
-//			textToSpeech.run();
-//		}
+//    Runnable textToSpeech = new Runnable() {
+//      public void run() {
+//        if( !tts.isLoaded() )
+//        {
+//          tts.loadResource();
+//        }
+//        edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
+//        edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( tts, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_VOLUME, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_START_TIME, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_STOP_TIME );
+//        if( showSpeechBubble )
+//        {
+//          bubbleAnimation.setDuration( tts.getDuration() + .2 );
+//        }
+//        perform( new edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation( player ) );
+//      }
+//    };
+//    if( showSpeechBubble )
+//    {
+//      Runnable[] runnables = new Runnable[ 2 ];
+//      runnables[ 0 ] = new Runnable() {
+//        public void run() {
+//          perform( bubbleAnimation );
+//        }
+//      };
+//      runnables[ 1 ] = textToSpeech;
+//      org.lgna.common.ThreadUtilities.doTogether( runnables );
+//    }
+//    else
+//    {
+//      textToSpeech.run();
+//    }
 //
-//	}
+//  }
 
 /**
  * @author dculyba
@@ -88,47 +87,47 @@ package org.lgna.story.implementation.overlay;
  */
 public class AudioLimitedBubbleAnimation extends BubbleAnimation implements org.lgna.common.resources.TextToSpeechResource.ResourceLoadedObserver {
 
-	private long startTime;
+  private long startTime;
 
-	/**
-	 * @param entity
-	 * @param openingDuration
-	 * @param updatingDuration
-	 * @param closingDuration
-	 * @param bubble
-	 */
-	public AudioLimitedBubbleAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double closingDuration, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble ) {
-		super( entityImp, openingDuration, 100.0, closingDuration, bubble );
-		this.startTime = 0;
-	}
+  /**
+   * @param entity
+   * @param openingDuration
+   * @param updatingDuration
+   * @param closingDuration
+   * @param bubble
+   */
+  public AudioLimitedBubbleAnimation(org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double closingDuration, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble) {
+    super(entityImp, openingDuration, 100.0, closingDuration, bubble);
+    this.startTime = 0;
+  }
 
-	@Override
-	protected void prologue() {
-		super.prologue();
-		this.startTime = System.currentTimeMillis();
-	}
+  @Override
+  protected void prologue() {
+    super.prologue();
+    this.startTime = System.currentTimeMillis();
+  }
 
-	@Override
-	protected void epilogue() {
-		super.epilogue();
-		this.startTime = 0;
-	}
+  @Override
+  protected void epilogue() {
+    super.epilogue();
+    this.startTime = 0;
+  }
 
-	public void setDuration( double duration ) {
-		double elapsedTime = 0;
-		if( this.startTime != 0 ) {
-			long currentTime = System.currentTimeMillis();
-			elapsedTime = ( currentTime - this.startTime ) * 0.001;
-		}
-		if( elapsedTime > this.m_openingDuration ) {
-			this.m_updatingDuration = ( duration + elapsedTime ) - this.m_openingDuration;
-		} else {
-			this.m_updatingDuration = duration;
-		}
-	}
+  public void setDuration(double duration) {
+    double elapsedTime = 0;
+    if (this.startTime != 0) {
+      long currentTime = System.currentTimeMillis();
+      elapsedTime = (currentTime - this.startTime) * 0.001;
+    }
+    if (elapsedTime > this.m_openingDuration) {
+      this.m_updatingDuration = (duration + elapsedTime) - this.m_openingDuration;
+    } else {
+      this.m_updatingDuration = duration;
+    }
+  }
 
-	public void ResourceLoaded( org.lgna.common.resources.TextToSpeechResource resource ) {
-		this.m_updatingDuration = resource.getDuration();
-	}
+  public void ResourceLoaded(org.lgna.common.resources.TextToSpeechResource resource) {
+    this.m_updatingDuration = resource.getDuration();
+  }
 
 }

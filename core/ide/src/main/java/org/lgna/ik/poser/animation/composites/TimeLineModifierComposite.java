@@ -67,127 +67,126 @@ import java.util.UUID;
  */
 public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierView> {
 
-	private TimeLineComposite composite;
-	private KeyFrameData selectedKeyFrame;
-	private final BoundedDoubleState currentTime;
-	private final SingleSelectListState<KeyFrameStyles, ?> styleSelectionState = this.createImmutableListStateForEnum( "styleState", KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY );
+  private TimeLineComposite composite;
+  private KeyFrameData selectedKeyFrame;
+  private final BoundedDoubleState currentTime;
+  private final SingleSelectListState<KeyFrameStyles, ?> styleSelectionState = this.createImmutableListStateForEnum("styleState", KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY);
 
-	public TimeLineModifierComposite( TimeLineComposite composite ) {
-		super( UUID.fromString( "b2c9fe7b-4566-4368-a5cc-2458b24a2375" ) );
-		this.composite = composite;
-		currentTime = createBoundedDoubleState( "currentTime",
-				new BoundedDoubleDetails().initialValue( 0 ).minimum( 0 ).maximum( composite.getTimeLine().getEndTime() ).stepSize( .1 ) );
+  public TimeLineModifierComposite(TimeLineComposite composite) {
+    super(UUID.fromString("b2c9fe7b-4566-4368-a5cc-2458b24a2375"));
+    this.composite = composite;
+    currentTime = createBoundedDoubleState("currentTime", new BoundedDoubleDetails().initialValue(0).minimum(0).maximum(composite.getTimeLine().getEndTime()).stepSize(.1));
 
-		currentTime.addValueListener( timeListener );
-		composite.getTimeLine().addListener( listener );
-		styleSelectionState.addValueListener( styleListener );
-		updateSelectedEvent( null );
-	}
+    currentTime.addValueListener(timeListener);
+    composite.getTimeLine().addListener(listener);
+    styleSelectionState.addValueListener(styleListener);
+    updateSelectedEvent(null);
+  }
 
-	private final TimeLineListener listener = new TimeLineListener() {
+  private final TimeLineListener listener = new TimeLineListener() {
 
-		@Override
-		public void currentTimeChanged( double currentTime, Pose pose ) {
-			//			TimeLineModifierComposite.this.currentTime.setValueTransactionlessly( new Double( currentTime ) );
-		}
+    @Override
+    public void currentTimeChanged(double currentTime, Pose pose) {
+      //      TimeLineModifierComposite.this.currentTime.setValueTransactionlessly( new Double( currentTime ) );
+    }
 
-		@Override
-		public void keyFrameAdded( KeyFrameData event ) {
-			//do nothing don't care here
-		}
+    @Override
+    public void keyFrameAdded(KeyFrameData event) {
+      //do nothing don't care here
+    }
 
-		@Override
-		public void selectedKeyFrameChanged( KeyFrameData event ) {
-			TimeLineModifierComposite.this.updateSelectedEvent( event );
-		}
+    @Override
+    public void selectedKeyFrameChanged(KeyFrameData event) {
+      TimeLineModifierComposite.this.updateSelectedEvent(event);
+    }
 
-		@Override
-		public void keyFrameDeleted( KeyFrameData event ) {
-			if( event.equals( selectedKeyFrame ) ) {
-				selectedKeyFrame = null;
-				TimeLineModifierComposite.this.updateSelectedEvent( null );
-			}
-		}
+    @Override
+    public void keyFrameDeleted(KeyFrameData event) {
+      if (event.equals(selectedKeyFrame)) {
+        selectedKeyFrame = null;
+        TimeLineModifierComposite.this.updateSelectedEvent(null);
+      }
+    }
 
-		@Override
-		public void keyFrameModified( KeyFrameData event ) {
-			if( event == selectedKeyFrame ) {
-				TimeLineModifierComposite.this.updateSelectedEvent( event );
-			}
-		}
+    @Override
+    public void keyFrameModified(KeyFrameData event) {
+      if (event == selectedKeyFrame) {
+        TimeLineModifierComposite.this.updateSelectedEvent(event);
+      }
+    }
 
-		@Override
-		public void endTimeChanged( double endTime ) {
-		}
+    @Override
+    public void endTimeChanged(double endTime) {
+    }
 
-	};
-	private final ValueListener<KeyFrameStyles> styleListener = new ValueListener<KeyFrameStyles>() {
+  };
+  private final ValueListener<KeyFrameStyles> styleListener = new ValueListener<KeyFrameStyles>() {
 
-		@Override
-		public void changing( State<KeyFrameStyles> state, KeyFrameStyles prevValue, KeyFrameStyles nextValue ) {
-		}
+    @Override
+    public void changing(State<KeyFrameStyles> state, KeyFrameStyles prevValue, KeyFrameStyles nextValue) {
+    }
 
-		@Override
-		public void changed( State<KeyFrameStyles> state, KeyFrameStyles prevValue, KeyFrameStyles nextValue ) {
-			selectedKeyFrame.setStyle( nextValue );
-		}
-	};
+    @Override
+    public void changed(State<KeyFrameStyles> state, KeyFrameStyles prevValue, KeyFrameStyles nextValue) {
+      selectedKeyFrame.setStyle(nextValue);
+    }
+  };
 
-	private final ValueListener<Double> timeListener = new ValueListener<Double>() {
+  private final ValueListener<Double> timeListener = new ValueListener<Double>() {
 
-		@Override
-		public void changing( State<Double> state, Double prevValue, Double nextValue ) {
-		}
+    @Override
+    public void changing(State<Double> state, Double prevValue, Double nextValue) {
+    }
 
-		@Override
-		public void changed( State<Double> state, Double prevValue, Double nextValue ) {
-			//			assert isAdjusting == ( prevValue == nextValue );
-			//			if( isAdjusting ) {
-			//			System.out.println( "time changed" );
-			if( ( selectedKeyFrame != null ) ) {
-				// TODO not use Application.getActiveInstance().acquireOpenActivity()
-				UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
-				userActivity.commitAndInvokeDo( new ModifyTimeOfExistingKeyFrameInTimeLineEdit( userActivity, composite.getTimeLine(), selectedKeyFrame, nextValue, prevValue ) );
-			}
-		}
-	};
+    @Override
+    public void changed(State<Double> state, Double prevValue, Double nextValue) {
+      //      assert isAdjusting == ( prevValue == nextValue );
+      //      if( isAdjusting ) {
+      //      System.out.println( "time changed" );
+      if ((selectedKeyFrame != null)) {
+        // TODO not use Application.getActiveInstance().acquireOpenActivity()
+        UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
+        userActivity.commitAndInvokeDo(new ModifyTimeOfExistingKeyFrameInTimeLineEdit(userActivity, composite.getTimeLine(), selectedKeyFrame, nextValue, prevValue));
+      }
+    }
+  };
 
-	protected void updateSelectedEvent( KeyFrameData event ) {
-		this.selectedKeyFrame = event;
-		boolean activate = event != null;
-		deletePoseOperation.setEnabled( activate );
-		currentTime.setEnabled( activate );
-		getView().enableOperations( activate );
-		if( activate ) {
-			currentTime.setValueTransactionlessly( event.getEventTime() );
-			styleSelectionState.setValueTransactionlessly( event.getEventStyle() );
-		}
-	}
+  protected void updateSelectedEvent(KeyFrameData event) {
+    this.selectedKeyFrame = event;
+    boolean activate = event != null;
+    deletePoseOperation.setEnabled(activate);
+    currentTime.setEnabled(activate);
+    getView().enableOperations(activate);
+    if (activate) {
+      currentTime.setValueTransactionlessly(event.getEventTime());
+      styleSelectionState.setValueTransactionlessly(event.getEventStyle());
+    }
+  }
 
-	@Override
-	protected TimeLineModifierView createView() {
-		return new TimeLineModifierView( this );
-	}
+  @Override
+  protected TimeLineModifierView createView() {
+    return new TimeLineModifierView(this);
+  }
 
-	private ActionOperation deletePoseOperation = createActionOperation( "deletePose", new Action() {
+  private ActionOperation deletePoseOperation = createActionOperation("deletePose", new Action() {
 
-		@Override
-		public AbstractEdit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			//			composite.getTimeLine().removeKeyFrameData( selectedKeyFrame );
-			new DeleteKeyFrameFromTimeLineEdit( userActivity, composite.getTimeLine(), selectedKeyFrame ).doOrRedo( true );
-			return null;
-		}
-	} );
+    @Override
+    public AbstractEdit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      //      composite.getTimeLine().removeKeyFrameData( selectedKeyFrame );
+      new DeleteKeyFrameFromTimeLineEdit(userActivity, composite.getTimeLine(), selectedKeyFrame).doOrRedo(true);
+      return null;
+    }
+  });
 
-	public ActionOperation getDeletePoseOperation() {
-		return this.deletePoseOperation;
-	}
+  public ActionOperation getDeletePoseOperation() {
+    return this.deletePoseOperation;
+  }
 
-	public SingleSelectListState<KeyFrameStyles, ?> getStyleSelectionState() {
-		return this.styleSelectionState;
-	}
+  public SingleSelectListState<KeyFrameStyles, ?> getStyleSelectionState() {
+    return this.styleSelectionState;
+  }
 
-	public BoundedDoubleState getCurrentTime() {
-		return this.currentTime;
-	}
+  public BoundedDoubleState getCurrentTime() {
+    return this.currentTime;
+  }
 }

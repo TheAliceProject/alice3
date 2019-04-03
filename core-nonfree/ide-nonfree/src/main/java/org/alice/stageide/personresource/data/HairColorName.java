@@ -53,53 +53,29 @@ import java.awt.GradientPaint;
  * @author Dennis Cosgrove
  */
 public enum HairColorName {
-	BLACK( 0x282625 ),
-	BROWN( 0x4f2c22 ),
-	BLOND( 0xebd088 ),
-	RED( 0xd36d41 ),
-	GREY( 0xd5d5d5 ),
+  BLACK(0x282625), BROWN(0x4f2c22), BLOND(0xebd088), RED(0xd36d41), GREY(0xd5d5d5),
 
-	NULL( null ),
-	BARE( null ),
+  NULL(null), BARE(null),
 
-	BELLA( 0xe3d395 ),
-	BLOOD_RED( 0xb50034 ),
-	BLUE( 0x117998 ),
-	GREEN( 0x2b8122 ),
-	KINKY( null ),
-	PINK( 0xab008b ),
-	PLATINUM( 0xe3d395 ),
-	PURPLE( 0xac49a5 ),
-	STRAWBERRY( 0xbe2376 ),
-	VIOLET( 0x6f2fba ),
+  BELLA(0xe3d395), BLOOD_RED(0xb50034), BLUE(0x117998), GREEN(0x2b8122), KINKY(null), PINK(0xab008b), PLATINUM(0xe3d395), PURPLE(0xac49a5), STRAWBERRY(0xbe2376), VIOLET(0x6f2fba),
 
-	BLEND( null ),
-	BLEND_BLOND( 0xd7af5b, 0x72292b ),
-	BLOND_STREAK( 0xebd088, 0x4f2c22 ),
-	FLAME( 0xeaad5c, 0x9d391d ),
-	FREAKED( 0xebd088, 0x944e66 ),
-	FROSTY_BLOND( 0xc19f52, 0x72512f ),
-	FROSTY_PURPLE( 0xa346a1, 0x32163c ),
-	PINK_ON_BLACK( 0xa62949, 0x000000 ),
-	RAINBOW( 0xcc6999, 0x265661 ),
-	RED_STREAK( 0xc13e49, 0x000000 ),
-	STREAKED( 0x603879, 0xc13e49 );
+  BLEND(null), BLEND_BLOND(0xd7af5b, 0x72292b), BLOND_STREAK(0xebd088, 0x4f2c22), FLAME(0xeaad5c, 0x9d391d), FREAKED(0xebd088, 0x944e66), FROSTY_BLOND(0xc19f52, 0x72512f), FROSTY_PURPLE(0xa346a1, 0x32163c), PINK_ON_BLACK(0xa62949, 0x000000), RAINBOW(0xcc6999, 0x265661), RED_STREAK(0xc13e49, 0x000000), STREAKED(0x603879, 0xc13e49);
 
-	private final Icon icon;
+  private final Icon icon;
 
-	private HairColorName( Icon icon ) {
-		this.icon = icon;
-	}
+  private HairColorName(Icon icon) {
+    this.icon = icon;
+  }
 
-	private HairColorName( int rgb ) {
-		this( new PaintIcon( new Color( rgb ) ) );
-	}
+  private HairColorName(int rgb) {
+    this(new PaintIcon(new Color(rgb)));
+  }
 
-	private HairColorName( int rgbTop, int rgbBottom ) {
-		this( new PaintIcon( new GradientPaint( 0, 0, new Color( rgbTop ), 0, ColorIcon.DEFAULT_SIZE, new Color( rgbBottom ) ) ) );
-	}
+  private HairColorName(int rgbTop, int rgbBottom) {
+    this(new PaintIcon(new GradientPaint(0, 0, new Color(rgbTop), 0, ColorIcon.DEFAULT_SIZE, new Color(rgbBottom))));
+  }
 
-	public Icon getIcon() {
-		return this.icon;
-	}
+  public Icon getIcon() {
+    return this.icon;
+  }
 }

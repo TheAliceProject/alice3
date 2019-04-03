@@ -49,23 +49,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class DefaultCustomItemState<T> extends CustomItemStateWithInternalBlank<T> {
-	private T swingValue;
+  private T swingValue;
 
-	public DefaultCustomItemState( Group group, UUID id, ItemCodec<T> itemCodec, T initialValue ) {
-		super( group, id, initialValue, itemCodec );
-	}
+  public DefaultCustomItemState(Group group, UUID id, ItemCodec<T> itemCodec, T initialValue) {
+    super(group, id, initialValue, itemCodec);
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	@Override
-	protected T getSwingValue() {
-		return this.swingValue;
-	}
+  @Override
+  protected T getSwingValue() {
+    return this.swingValue;
+  }
 
-	@Override
-	protected void setSwingValue( T swingValue ) {
-		this.swingValue = swingValue;
-	}
+  @Override
+  protected void setSwingValue(T swingValue) {
+    this.swingValue = swingValue;
+  }
 }

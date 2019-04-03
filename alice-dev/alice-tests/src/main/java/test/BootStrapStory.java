@@ -51,55 +51,55 @@ import org.lgna.story.SSun;
 import org.lgna.story.TurnDirection;
 
 class MyScene extends SScene {
-	private final SCamera camera = new SCamera();
-	private final SSun sun = new SSun();
-	private final SGround snow = new SGround();
+  private final SCamera camera = new SCamera();
+  private final SSun sun = new SSun();
+  private final SGround snow = new SGround();
 
-	private void performGeneratedSetup() {
-		// this code is automatically generated
-		// edit performCustomSetup instead
-		this.snow.setVehicle( this );
-		this.sun.setVehicle( this );
-		this.camera.setVehicle( this );
-		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
-	}
+  private void performGeneratedSetup() {
+    // this code is automatically generated
+    // edit performCustomSetup instead
+    this.snow.setVehicle(this);
+    this.sun.setVehicle(this);
+    this.camera.setVehicle(this);
+    this.snow.setPaint(SGround.SurfaceAppearance.SNOW);
+  }
 
-	private void performCustomSetup() {
-	}
+  private void performCustomSetup() {
+  }
 
-	@Override
-	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
-		if( isActive ) {
-			if( activeCount == 1 ) {
-				this.performGeneratedSetup();
-				this.performCustomSetup();
-			} else {
-				this.restoreStateAndEventListeners();
-			}
-		} else {
-			this.preserveStateAndEventListeners();
-		}
-	}
+  @Override
+  protected void handleActiveChanged(Boolean isActive, Integer activeCount) {
+    if (isActive) {
+      if (activeCount == 1) {
+        this.performGeneratedSetup();
+        this.performCustomSetup();
+      } else {
+        this.restoreStateAndEventListeners();
+      }
+    } else {
+      this.preserveStateAndEventListeners();
+    }
+  }
 
-	public void act1() {
-		this.camera.turn( TurnDirection.LEFT, 0.25 );
-	}
+  public void act1() {
+    this.camera.turn(TurnDirection.LEFT, 0.25);
+  }
 }
 
 /**
  * @author Dennis Cosgrove
  */
 public class BootStrapStory extends SProgram {
-	private final MyScene myScene = new MyScene();
+  private final MyScene myScene = new MyScene();
 
-	public void playOutStory() {
-		this.setActiveScene( this.myScene );
-		this.myScene.act1();
-	}
+  public void playOutStory() {
+    this.setActiveScene(this.myScene);
+    this.myScene.act1();
+  }
 
-	public static void main( String[] args ) {
-		BootStrapStory story = new BootStrapStory();
-		story.initializeInFrame( args );
-		story.playOutStory();
-	}
+  public static void main(String[] args) {
+    BootStrapStory story = new BootStrapStory();
+    story.initializeInFrame(args);
+    story.playOutStory();
+  }
 }

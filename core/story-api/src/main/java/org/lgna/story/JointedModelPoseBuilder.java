@@ -50,18 +50,18 @@ import org.lgna.story.resources.JointId;
  */
 public class JointedModelPoseBuilder extends PoseBuilder<SJointedModel, JointedModelPose> {
 
-	public JointedModelPoseBuilder joint( JointId jointId, Orientation orientation ) {
-		this.addJointIdQuaternionPair( jointId, orientation );
-		return this;
-	}
+  public JointedModelPoseBuilder joint(JointId jointId, Orientation orientation) {
+    this.addJointIdQuaternionPair(jointId, orientation);
+    return this;
+  }
 
-	public JointedModelPoseBuilder joint( JointId jointId, Number x, Number y, Number z, Number w ) {
-		this.addJointIdQuaternionPair( jointId, new Orientation( x, y, z, w ) );
-		return this;
-	}
+  public JointedModelPoseBuilder joint(JointId jointId, Number x, Number y, Number z, Number w) {
+    this.addJointIdQuaternionPair(jointId, new Orientation(x, y, z, w));
+    return this;
+  }
 
-	@Override
-	protected JointedModelPose build( JointIdTransformationPair[] buffer ) {
-		return new JointedModelPose( buffer );
-	}
+  @Override
+  protected JointedModelPose build(JointIdTransformationPair[] buffer) {
+    return new JointedModelPose(buffer);
+  }
 }

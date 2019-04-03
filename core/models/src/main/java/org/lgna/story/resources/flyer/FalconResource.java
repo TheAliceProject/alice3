@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.flyer;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.JointedModelPose;
@@ -37,76 +38,64 @@ import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 public enum FalconResource implements FlyerResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_TOE = new JointId( LEFT_FOOT, FalconResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_TOE = new JointId( RIGHT_FOOT, FalconResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_TOE = new JointId(LEFT_FOOT, FalconResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_TOE = new JointId(RIGHT_FOOT, FalconResource.class);
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointedModelPose SPREAD_WINGS_POSE = new JointedModelPose(
-		new JointIdTransformationPair( LEFT_WING_WRIST, new Orientation(0.00543370154583049, 0.3975249786868126, 0.062645381568644, 0.9154342807518621), new Position(-1.498800977364843E-17, -2.1316281596346973E-16, -0.10720979422330856) ),
-		new JointIdTransformationPair( RIGHT_WING_SHOULDER, new Orientation(-0.30766538268834626, -0.7817136119864743, 0.3927353655500894, 0.3741988425643927), new Position(0.06113654002547264, -4.1078979847952724E-4, 0.005746513605117798) ),
-		new JointIdTransformationPair( RIGHT_WING_ELBOW, new Orientation(0.02648678367622417, 0.4202450579602583, 0.08223770000251708, 0.9032881612468769), new Position(-5.329070399086743E-17, 1.4210854397564648E-16, -0.10817328840494156) ),
-		new JointIdTransformationPair( LEFT_WING_ELBOW, new Orientation(0.027212189112170295, -0.4232997037887957, -0.08246482542997977, 0.9018183908652807), new Position(1.0658140798173486E-16, 0.0, -0.1081729531288147) ),
-		new JointIdTransformationPair( RIGHT_WING_WRIST, new Orientation(0.00548861485111523, -0.3972139218596212, -0.06326229957708794, 0.915526546223611), new Position(-6.106226767787259E-17, -2.1316281596346973E-16, -0.1066131666302681) ),
-		new JointIdTransformationPair( LEFT_WING_SHOULDER, new Orientation(-0.30766675402547755, 0.7817152746368591, -0.39273228135697846, 0.37419747867535064), new Position(-0.05910273268818855, -4.104471590835601E-4, 0.005746267735958099) )
-	);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointedModelPose SPREAD_WINGS_POSE = new JointedModelPose(new JointIdTransformationPair(LEFT_WING_WRIST, new Orientation(0.00543370154583049, 0.3975249786868126, 0.062645381568644, 0.9154342807518621), new Position(-1.498800977364843E-17, -2.1316281596346973E-16, -0.10720979422330856)), new JointIdTransformationPair(RIGHT_WING_SHOULDER, new Orientation(-0.30766538268834626, -0.7817136119864743, 0.3927353655500894, 0.3741988425643927), new Position(0.06113654002547264, -4.1078979847952724E-4, 0.005746513605117798)),
+                                                                                                                                          new JointIdTransformationPair(RIGHT_WING_ELBOW, new Orientation(0.02648678367622417, 0.4202450579602583, 0.08223770000251708, 0.9032881612468769), new Position(-5.329070399086743E-17, 1.4210854397564648E-16, -0.10817328840494156)), new JointIdTransformationPair(LEFT_WING_ELBOW, new Orientation(0.027212189112170295, -0.4232997037887957, -0.08246482542997977, 0.9018183908652807), new Position(1.0658140798173486E-16, 0.0, -0.1081729531288147)),
+                                                                                                                                          new JointIdTransformationPair(RIGHT_WING_WRIST, new Orientation(0.00548861485111523, -0.3972139218596212, -0.06326229957708794, 0.915526546223611), new Position(-6.106226767787259E-17, -2.1316281596346973E-16, -0.1066131666302681)), new JointIdTransformationPair(LEFT_WING_SHOULDER, new Orientation(-0.30766675402547755, 0.7817152746368591, -0.39273228135697846, 0.37419747867535064), new Position(-0.05910273268818855, -4.104471590835601E-4, 0.005746267735958099)));
 
-	@Override
-	public JointedModelPose getSpreadWingsPose() {
-return FalconResource.SPREAD_WINGS_POSE;
-	}
+  @Override
+  public JointedModelPose getSpreadWingsPose() {
+    return FalconResource.SPREAD_WINGS_POSE;
+  }
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointedModelPose FOLD_WINGS_POSE = new JointedModelPose(
-		new JointIdTransformationPair( LEFT_WING_WRIST, new Orientation(-0.05876085841816866, 0.9467619962557903, -0.05630580838743837, 0.31147799265044085), new Position(-1.498800977364843E-17, -2.1316281596346973E-16, -0.10720979422330856) ),
-		new JointIdTransformationPair( RIGHT_WING_SHOULDER, new Orientation(0.5994733585431814, 0.7247523607079441, -0.32825376303561177, 0.0872649706249922), new Position(0.06113654002547264, -4.1078979847952724E-4, 0.005746513605117798) ),
-		new JointIdTransformationPair( RIGHT_WING_ELBOW, new Orientation(0.014205316654529437, 0.9846026687061756, 0.03104880289060068, 0.17144026829914374), new Position(-5.329070399086743E-17, 1.4210854397564648E-16, -0.10817328840494156) ),
-		new JointIdTransformationPair( LEFT_WING_ELBOW, new Orientation(0.06621820246726075, -0.9813911626129387, -0.020600065959114535, 0.17905913238287927), new Position(1.0658140798173486E-16, 0.0, -0.1081729531288147) ),
-		new JointIdTransformationPair( RIGHT_WING_WRIST, new Orientation(-0.11357044678593456, -0.9329260696610783, 0.010615902399726604, 0.3415230662485562), new Position(-6.106226767787259E-17, -2.1316281596346973E-16, -0.1066131666302681) ),
-		new JointIdTransformationPair( LEFT_WING_SHOULDER, new Orientation(0.6885578248728461, -0.6478113024171651, 0.2988074306630727, 0.13016434860392673), new Position(-0.05910273268818855, -4.104471590835601E-4, 0.005746267735958099) )
-	);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointedModelPose FOLD_WINGS_POSE = new JointedModelPose(new JointIdTransformationPair(LEFT_WING_WRIST, new Orientation(-0.05876085841816866, 0.9467619962557903, -0.05630580838743837, 0.31147799265044085), new Position(-1.498800977364843E-17, -2.1316281596346973E-16, -0.10720979422330856)), new JointIdTransformationPair(RIGHT_WING_SHOULDER, new Orientation(0.5994733585431814, 0.7247523607079441, -0.32825376303561177, 0.0872649706249922), new Position(0.06113654002547264, -4.1078979847952724E-4, 0.005746513605117798)),
+                                                                                                                                        new JointIdTransformationPair(RIGHT_WING_ELBOW, new Orientation(0.014205316654529437, 0.9846026687061756, 0.03104880289060068, 0.17144026829914374), new Position(-5.329070399086743E-17, 1.4210854397564648E-16, -0.10817328840494156)), new JointIdTransformationPair(LEFT_WING_ELBOW, new Orientation(0.06621820246726075, -0.9813911626129387, -0.020600065959114535, 0.17905913238287927), new Position(1.0658140798173486E-16, 0.0, -0.1081729531288147)),
+                                                                                                                                        new JointIdTransformationPair(RIGHT_WING_WRIST, new Orientation(-0.11357044678593456, -0.9329260696610783, 0.010615902399726604, 0.3415230662485562), new Position(-6.106226767787259E-17, -2.1316281596346973E-16, -0.1066131666302681)), new JointIdTransformationPair(LEFT_WING_SHOULDER, new Orientation(0.6885578248728461, -0.6478113024171651, 0.2988074306630727, 0.13016434860392673), new Position(-0.05910273268818855, -4.104471590835601E-4, 0.005746267735958099)));
 
-	@Override
-	public JointedModelPose getFoldWingsPose() {
-return FalconResource.FOLD_WINGS_POSE;
-	}
+  @Override
+  public JointedModelPose getFoldWingsPose() {
+    return FalconResource.FOLD_WINGS_POSE;
+  }
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] NECK_ARRAY = { NECK_0, NECK_1 };
-	@Override
-	public JointId[] getNeckArray() {
-return FalconResource.NECK_ARRAY;
-	}
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] NECK_ARRAY = {NECK_0, NECK_1};
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2 };
-	@Override
-	public JointId[] getTailArray() {
-		return FalconResource.TAIL_ARRAY;
-	}
+  @Override
+  public JointId[] getNeckArray() {
+    return FalconResource.NECK_ARRAY;
+  }
 
-	private final ImplementationAndVisualType resourceType;
-	FalconResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] TAIL_ARRAY = {TAIL_0, TAIL_1, TAIL_2};
 
-	FalconResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  @Override
+  public JointId[] getTailArray() {
+    return FalconResource.TAIL_ARRAY;
+  }
 
-	public JointId[] getRootJointIds() {
-		return FlyerResource.JOINT_ID_ROOTS;
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public FlyerImp createImplementation( SFlyer abstraction ) {
-		return new FlyerImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  FalconResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
+
+  FalconResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
+
+  public JointId[] getRootJointIds() {
+    return FlyerResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public FlyerImp createImplementation(SFlyer abstraction) {
+    return new FlyerImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

@@ -52,18 +52,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RedoOperation extends HistoryOperation {
-	public RedoOperation( DocumentFrame documentFrame ) {
-		super( UUID.fromString( "6391ae51-0ae5-4592-8fd9-441a72bb814a" ), documentFrame );
-		this.setButtonIcon( IconUtilities.createImageIcon( RedoOperation.class.getResource( "images/redo.png" ) ) );
-	}
+  public RedoOperation(DocumentFrame documentFrame) {
+    super(UUID.fromString("6391ae51-0ae5-4592-8fd9-441a72bb814a"), documentFrame);
+    this.setButtonIcon(IconUtilities.createImageIcon(RedoOperation.class.getResource("images/redo.png")));
+  }
 
-	@Override
-	protected void performInternal( UndoHistory historyManager ) {
-		historyManager.performRedo();
-	}
+  @Override
+  protected void performInternal(UndoHistory historyManager) {
+    historyManager.performRedo();
+  }
 
-	@Override
-	public boolean isToolBarTextClobbered() {
-		return true;
-	}
+  @Override
+  public boolean isToolBarTextClobbered() {
+    return true;
+  }
 }

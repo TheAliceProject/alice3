@@ -54,92 +54,83 @@ import javax.swing.ImageIcon;
  */
 public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHandle2D {
 
-	private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
-		Inactive( "images/drive.png" ),
-		Highlighted( "images/driveHighlight.png" ),
-		Back( "images/driveBack.png" ),
-		BackLeft( "images/driveBackLeft.png" ),
-		BackRight( "images/driveBackRight.png" ),
-		Forward( "images/driveForward.png" ),
-		ForwardLeft( "images/driveForwardLeft.png" ),
-		ForwardRight( "images/driveForwardRight.png" ),
-		Left( "images/driveLeft.png" ),
-		Right( "images/driveRight.png" );
+  private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
+    Inactive("images/drive.png"), Highlighted("images/driveHighlight.png"), Back("images/driveBack.png"), BackLeft("images/driveBackLeft.png"), BackRight("images/driveBackRight.png"), Forward("images/driveForward.png"), ForwardLeft("images/driveForwardLeft.png"), ForwardRight("images/driveForwardRight.png"), Left("images/driveLeft.png"), Right("images/driveRight.png");
 
-		private ControlState( String resourceString ) {
-			Icon icon;
-			try {
-				icon = new ImageIcon( this.getClass().getResource( resourceString ) );
-			} catch( Exception e ) {
-				Logger.errln( "cannot load", resourceString, this );
-				icon = null;
-			}
-			this.icon = icon;
-		}
+    private ControlState(String resourceString) {
+      Icon icon;
+      try {
+        icon = new ImageIcon(this.getClass().getResource(resourceString));
+      } catch (Exception e) {
+        Logger.errln("cannot load", resourceString, this);
+        icon = null;
+      }
+      this.icon = icon;
+    }
 
-		@Override
-		public Icon getIcon() {
-			return this.icon;
-		}
+    @Override
+    public Icon getIcon() {
+      return this.icon;
+    }
 
-		private final Icon icon;
-	}
+    private final Icon icon;
+  }
 
-	public ManipulationHandle2DCameraDriver() {
-		super( "images/driveMask.png" );
-	}
+  public ManipulationHandle2DCameraDriver() {
+    super("images/driveMask.png");
+  }
 
-	@Override
-	public PickHint getPickHint() {
-		return PickHint.PickType.TWO_D_HANDLE.pickHint();
-	}
+  @Override
+  public PickHint getPickHint() {
+    return PickHint.PickType.TWO_D_HANDLE.pickHint();
+  }
 
-	@Override
-	protected ImageState getStateForManipulationStatus() {
-		if( this.movingBackward && !this.turningLeft && !this.turningRight ) {
-			return ControlState.Back;
-		} else if( this.movingBackward && this.turningLeft ) {
-			return ControlState.BackLeft;
-		} else if( this.movingBackward && this.turningRight ) {
-			return ControlState.BackRight;
-		} else if( this.movingForward && !this.turningLeft && !this.turningRight ) {
-			return ControlState.Forward;
-		} else if( this.movingForward && this.turningLeft ) {
-			return ControlState.ForwardLeft;
-		} else if( this.movingForward && this.turningRight ) {
-			return ControlState.ForwardRight;
-		} else if( this.turningLeft && !this.movingForward && !this.movingBackward ) {
-			return ControlState.Left;
-		} else if( this.turningRight && !this.movingForward && !this.movingBackward ) {
-			return ControlState.Right;
-		} else if( this.state.isRollover() ) {
-			//If we're not moving in one of the directions, choose highlighted or inactive
-			return ControlState.Highlighted;
-		} else {
-			return ControlState.Inactive;
-		}
-	}
+  @Override
+  protected ImageState getStateForManipulationStatus() {
+    if (this.movingBackward && !this.turningLeft && !this.turningRight) {
+      return ControlState.Back;
+    } else if (this.movingBackward && this.turningLeft) {
+      return ControlState.BackLeft;
+    } else if (this.movingBackward && this.turningRight) {
+      return ControlState.BackRight;
+    } else if (this.movingForward && !this.turningLeft && !this.turningRight) {
+      return ControlState.Forward;
+    } else if (this.movingForward && this.turningLeft) {
+      return ControlState.ForwardLeft;
+    } else if (this.movingForward && this.turningRight) {
+      return ControlState.ForwardRight;
+    } else if (this.turningLeft && !this.movingForward && !this.movingBackward) {
+      return ControlState.Left;
+    } else if (this.turningRight && !this.movingForward && !this.movingBackward) {
+      return ControlState.Right;
+    } else if (this.state.isRollover()) {
+      //If we're not moving in one of the directions, choose highlighted or inactive
+      return ControlState.Highlighted;
+    } else {
+      return ControlState.Inactive;
+    }
+  }
 
-	@Override
-	protected void setManipulationState( ManipulationEvent event, boolean isActive ) {
-		switch( event.getMovementDescription().direction ) {
-		case BACKWARD:
-			this.movingBackward = isActive;
-			break;
-		case FORWARD:
-			this.movingForward = isActive;
-			break;
-		case UP:
-			this.turningLeft = isActive;
-			break;
-		case DOWN:
-			this.turningRight = isActive;
-			break;
-		}
-	}
+  @Override
+  protected void setManipulationState(ManipulationEvent event, boolean isActive) {
+    switch (event.getMovementDescription().direction) {
+    case BACKWARD:
+      this.movingBackward = isActive;
+      break;
+    case FORWARD:
+      this.movingForward = isActive;
+      break;
+    case UP:
+      this.turningLeft = isActive;
+      break;
+    case DOWN:
+      this.turningRight = isActive;
+      break;
+    }
+  }
 
-	private boolean turningLeft = false;
-	private boolean turningRight = false;
-	private boolean movingForward = false;
-	private boolean movingBackward = false;
+  private boolean turningLeft = false;
+  private boolean turningRight = false;
+  private boolean movingForward = false;
+  private boolean movingBackward = false;
 }

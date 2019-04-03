@@ -49,7 +49,7 @@ import org.lgna.project.ast.Expression;
  * @author Dennis Cosgrove
  */
 public interface ExpressionCascadeContext {
-	public Expression getPreviousExpression();
+  public Expression getPreviousExpression();
 
-	public BlockStatementIndexPair getBlockStatementIndexPair();
+  public BlockStatementIndexPair getBlockStatementIndexPair();
 }

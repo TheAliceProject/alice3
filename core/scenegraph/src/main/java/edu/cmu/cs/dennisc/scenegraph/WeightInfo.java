@@ -54,57 +54,57 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Vector3;
 
 public class WeightInfo implements BinaryEncodableAndDecodable {
-	private Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs;
+  private Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs;
 
-	public WeightInfo() {
-		this.mapReferencesToInverseAbsoluteTransformationWeightsPairs = new HashMap<String, InverseAbsoluteTransformationWeightsPair>();
-	}
+  public WeightInfo() {
+    this.mapReferencesToInverseAbsoluteTransformationWeightsPairs = new HashMap<String, InverseAbsoluteTransformationWeightsPair>();
+  }
 
-	public void addReference( String reference, InverseAbsoluteTransformationWeightsPair poInverseAbsoluteTransformationWeightsPair ) {
-		this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.put( reference, poInverseAbsoluteTransformationWeightsPair );
-	}
+  public void addReference(String reference, InverseAbsoluteTransformationWeightsPair poInverseAbsoluteTransformationWeightsPair) {
+    this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.put(reference, poInverseAbsoluteTransformationWeightsPair);
+  }
 
-	public InverseAbsoluteTransformationWeightsPair getWeightInfoForJoint( Joint joint ) {
-		return this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.get( joint.jointID.getValue() );
-	}
+  public InverseAbsoluteTransformationWeightsPair getWeightInfoForJoint(Joint joint) {
+    return this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.get(joint.jointID.getValue());
+  }
 
-	public Map<String, InverseAbsoluteTransformationWeightsPair> getMap() {
-		return this.mapReferencesToInverseAbsoluteTransformationWeightsPairs;
-	}
+  public Map<String, InverseAbsoluteTransformationWeightsPair> getMap() {
+    return this.mapReferencesToInverseAbsoluteTransformationWeightsPairs;
+  }
 
-	public void scale( Vector3 scale ) {
-		Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs = getMap();
-		for (Entry<String, InverseAbsoluteTransformationWeightsPair> pair : mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
-			InverseAbsoluteTransformationWeightsPair iatwp = pair.getValue();
-			AffineMatrix4x4 originalInverseTransform = iatwp.getInverseAbsoluteTransformation();
-			AffineMatrix4x4 newTransform = AffineMatrix4x4.createInverse( originalInverseTransform );
-			//These need to have the scale removed just from the translation
-			newTransform.translation.multiply( scale );
-			newTransform.invert();
-			iatwp.setInverseAbsoluteTransformation( newTransform );
-		}
-	}
+  public void scale(Vector3 scale) {
+    Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs = getMap();
+    for (Entry<String, InverseAbsoluteTransformationWeightsPair> pair : mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
+      InverseAbsoluteTransformationWeightsPair iatwp = pair.getValue();
+      AffineMatrix4x4 originalInverseTransform = iatwp.getInverseAbsoluteTransformation();
+      AffineMatrix4x4 newTransform = AffineMatrix4x4.createInverse(originalInverseTransform);
+      //These need to have the scale removed just from the translation
+      newTransform.translation.multiply(scale);
+      newTransform.invert();
+      iatwp.setInverseAbsoluteTransformation(newTransform);
+    }
+  }
 
-	public void decode( BinaryDecoder binaryDecoder ) {
-		int count = binaryDecoder.decodeInt();
-		this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.clear();
-		for( int i = 0; i < count; i++ ) {
-			String reference = binaryDecoder.decodeString();
-			InverseAbsoluteTransformationWeightsPair inverseAbsoluteTransformationWeightsPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.put( reference, inverseAbsoluteTransformationWeightsPair );
-			//            Object o = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			//            assert o instanceof InverseAbsoluteTransformationWeightsPair;
-			//            this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.put(reference, (InverseAbsoluteTransformationWeightsPair)o);
-		}
-	}
+  public void decode(BinaryDecoder binaryDecoder) {
+    int count = binaryDecoder.decodeInt();
+    this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.clear();
+    for (int i = 0; i < count; i++) {
+      String reference = binaryDecoder.decodeString();
+      InverseAbsoluteTransformationWeightsPair inverseAbsoluteTransformationWeightsPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
+      this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.put(reference, inverseAbsoluteTransformationWeightsPair);
+      //            Object o = binaryDecoder.decodeBinaryEncodableAndDecodable();
+      //            assert o instanceof InverseAbsoluteTransformationWeightsPair;
+      //            this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.put(reference, (InverseAbsoluteTransformationWeightsPair)o);
+    }
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.size() );
-		for( Entry<String, InverseAbsoluteTransformationWeightsPair> entry : this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet() ) {
-			binaryEncoder.encode( entry.getKey() );
-			binaryEncoder.encode( entry.getValue() );
-		}
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    binaryEncoder.encode(this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.size());
+    for (Entry<String, InverseAbsoluteTransformationWeightsPair> entry : this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
+      binaryEncoder.encode(entry.getKey());
+      binaryEncoder.encode(entry.getValue());
+    }
+  }
 
 }

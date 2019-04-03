@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.automobile;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.STransport;
@@ -33,36 +34,34 @@ import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 public enum BusResource implements AutomobileResource {
-	TEAM( ImplementationAndVisualType.SIMS2 ),
-	SCHOOL( ImplementationAndVisualType.SIMS2 );
+  TEAM(ImplementationAndVisualType.SIMS2), SCHOOL(ImplementationAndVisualType.SIMS2);
 
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId DOOR_1 = new JointId( ROOT, BusResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId DOOR_2 = new JointId( DOOR_1, BusResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId DOOR_HANDLE = new JointId( ROOT, BusResource.class );
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId DOOR_1 = new JointId(ROOT, BusResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId DOOR_2 = new JointId(DOOR_1, BusResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId DOOR_HANDLE = new JointId(ROOT, BusResource.class);
 
-	private final ImplementationAndVisualType resourceType;
-	BusResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	BusResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  BusResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return AutomobileResource.JOINT_ID_ROOTS;
-	}
+  BusResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public TransportImp createImplementation( STransport abstraction ) {
-		return new TransportImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return AutomobileResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public TransportImp createImplementation(STransport abstraction) {
+    return new TransportImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

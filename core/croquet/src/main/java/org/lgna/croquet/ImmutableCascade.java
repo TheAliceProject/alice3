@@ -52,15 +52,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ImmutableCascade<T> extends Cascade<T> {
-	private final List<CascadeBlank<T>> blanks;
+  private final List<CascadeBlank<T>> blanks;
 
-	public ImmutableCascade( Group group, UUID id, Class<T> componentType, CascadeBlank<T>... blanks ) {
-		super( group, id, componentType );
-		this.blanks = Collections.unmodifiableList( Lists.newArrayList( blanks ) );
-	}
+  public ImmutableCascade(Group group, UUID id, Class<T> componentType, CascadeBlank<T>... blanks) {
+    super(group, id, componentType);
+    this.blanks = Collections.unmodifiableList(Lists.newArrayList(blanks));
+  }
 
-	@Override
-	protected List<? extends CascadeBlank<T>> getBlanks() {
-		return this.blanks;
-	}
+  @Override
+  protected List<? extends CascadeBlank<T>> getBlanks() {
+    return this.blanks;
+  }
 }

@@ -52,19 +52,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ProjectMenuModel extends StaticMenuModel {
-	public ProjectMenuModel( ProjectDocumentFrame projectDocumentFrame ) {
-		super( UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ) );
-		this.projectDocumentFrame = projectDocumentFrame;
-	}
+  public ProjectMenuModel(ProjectDocumentFrame projectDocumentFrame) {
+    super(UUID.fromString("f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4"));
+    this.projectDocumentFrame = projectDocumentFrame;
+  }
 
-	@Override
-	protected StandardMenuItemPrepModel[] createModels() {
-		return new StandardMenuItemPrepModel[] {
-				this.projectDocumentFrame.getResourcesDialogLaunchOperation().getMenuItemPrepModel(),
-				this.projectDocumentFrame.getFindComposite().getIsFrameShowingState().getMenuItemPrepModel(),
-				this.projectDocumentFrame.getStasticsFrameIsShowingState().getMenuItemPrepModel()
-		};
-	}
+  @Override
+  protected StandardMenuItemPrepModel[] createModels() {
+    return new StandardMenuItemPrepModel[] {this.projectDocumentFrame.getResourcesDialogLaunchOperation().getMenuItemPrepModel(), this.projectDocumentFrame.getFindComposite().getIsFrameShowingState().getMenuItemPrepModel(), this.projectDocumentFrame.getStasticsFrameIsShowingState().getMenuItemPrepModel()};
+  }
 
-	private final ProjectDocumentFrame projectDocumentFrame;
+  private final ProjectDocumentFrame projectDocumentFrame;
 }

@@ -55,40 +55,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends PreviousExpressionBasedFillInWithoutBlanks<ArithmeticInfixExpression> {
-	private static Map<ArithmeticInfixExpression.Operator, ReplaceOperatorInPreviousArithmeticExpressionFillIn> map = Maps.newHashMap();
+  private static Map<ArithmeticInfixExpression.Operator, ReplaceOperatorInPreviousArithmeticExpressionFillIn> map = Maps.newHashMap();
 
-	public static ReplaceOperatorInPreviousArithmeticExpressionFillIn getInstance( ArithmeticInfixExpression.Operator operator ) {
-		synchronized( map ) {
-			ReplaceOperatorInPreviousArithmeticExpressionFillIn rv = map.get( operator );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ReplaceOperatorInPreviousArithmeticExpressionFillIn( operator );
-				map.put( operator, rv );
-			}
-			return rv;
-		}
-	}
+  public static ReplaceOperatorInPreviousArithmeticExpressionFillIn getInstance(ArithmeticInfixExpression.Operator operator) {
+    synchronized (map) {
+      ReplaceOperatorInPreviousArithmeticExpressionFillIn rv = map.get(operator);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ReplaceOperatorInPreviousArithmeticExpressionFillIn(operator);
+        map.put(operator, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final ArithmeticInfixExpression.Operator operator;
+  private final ArithmeticInfixExpression.Operator operator;
 
-	private ReplaceOperatorInPreviousArithmeticExpressionFillIn( ArithmeticInfixExpression.Operator operator ) {
-		super( UUID.fromString( "7699fe5b-b1bc-4bc2-9632-eace7166bdb6" ) );
-		this.operator = operator;
-	}
+  private ReplaceOperatorInPreviousArithmeticExpressionFillIn(ArithmeticInfixExpression.Operator operator) {
+    super(UUID.fromString("7699fe5b-b1bc-4bc2-9632-eace7166bdb6"));
+    this.operator = operator;
+  }
 
-	//	@Override
-	//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.ArithmeticInfixExpression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
-	//		return previousExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression;
-	//	}
-	@Override
-	protected ArithmeticInfixExpression createValue( Expression previousExpression ) {
-		assert previousExpression instanceof ArithmeticInfixExpression;
-		ArithmeticInfixExpression previousArithmetic = (ArithmeticInfixExpression)previousExpression;
-		return new ArithmeticInfixExpression(
-				previousArithmetic.leftOperand.getValue(),
-				this.operator,
-				previousArithmetic.rightOperand.getValue(),
-				previousArithmetic.expressionType.getValue() );
-	}
+  //  @Override
+  //  protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.ArithmeticInfixExpression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
+  //    return previousExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression;
+  //  }
+  @Override
+  protected ArithmeticInfixExpression createValue(Expression previousExpression) {
+    assert previousExpression instanceof ArithmeticInfixExpression;
+    ArithmeticInfixExpression previousArithmetic = (ArithmeticInfixExpression) previousExpression;
+    return new ArithmeticInfixExpression(previousArithmetic.leftOperand.getValue(), this.operator, previousArithmetic.rightOperand.getValue(), previousArithmetic.expressionType.getValue());
+  }
 }

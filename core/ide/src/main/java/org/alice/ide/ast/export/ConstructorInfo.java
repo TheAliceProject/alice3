@@ -48,7 +48,7 @@ import org.lgna.project.ast.UserConstructor;
  * @author Dennis Cosgrove
  */
 public class ConstructorInfo extends MemberInfo<UserConstructor> {
-	public ConstructorInfo( ProjectInfo projectInfo, UserConstructor constructor ) {
-		super( projectInfo, constructor );
-	}
+  public ConstructorInfo(ProjectInfo projectInfo, UserConstructor constructor) {
+    super(projectInfo, constructor);
+  }
 }

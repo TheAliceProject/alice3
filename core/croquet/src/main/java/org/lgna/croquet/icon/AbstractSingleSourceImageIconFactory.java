@@ -48,19 +48,19 @@ import javax.swing.ImageIcon;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSingleSourceImageIconFactory extends AbstractIconFactory {
-	private final ImageIcon sourceImageIcon;
+  private final ImageIcon sourceImageIcon;
 
-	public AbstractSingleSourceImageIconFactory( ImageIcon imageIcon ) {
-		super( IsCachingDesired.FALSE );
-		this.sourceImageIcon = imageIcon;
-	}
+  public AbstractSingleSourceImageIconFactory(ImageIcon imageIcon) {
+    super(IsCachingDesired.FALSE);
+    this.sourceImageIcon = imageIcon;
+  }
 
-	public ImageIcon getSourceImageIcon() {
-		return this.sourceImageIcon;
-	}
+  public ImageIcon getSourceImageIcon() {
+    return this.sourceImageIcon;
+  }
 
-	@Override
-	protected double getTrimmedWidthToHeightAspectRatio() {
-		return this.sourceImageIcon.getIconWidth() / (double)this.sourceImageIcon.getIconHeight();
-	}
+  @Override
+  protected double getTrimmedWidthToHeightAspectRatio() {
+    return this.sourceImageIcon.getIconWidth() / (double) this.sourceImageIcon.getIconHeight();
+  }
 }

@@ -46,38 +46,37 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public enum SetDimensionPolicy implements SetWidth.Detail, SetHeight.Detail, SetDepth.Detail {
-	PRESERVE_VOLUME( true, false ),
-	PRESERVE_ASPECT_RATIO( false, true ),
-	PRESERVE_NOTHING( false, false );
-	private final boolean isVolumePreserved;
-	private final boolean isAspectRatioPreserved;
+  PRESERVE_VOLUME(true, false), PRESERVE_ASPECT_RATIO(false, true), PRESERVE_NOTHING(false, false);
+  private final boolean isVolumePreserved;
+  private final boolean isAspectRatioPreserved;
 
-	SetDimensionPolicy( boolean isVolumePreserved, boolean isAspectRatioPreserved ) {
-		this.isVolumePreserved = isVolumePreserved;
-		this.isAspectRatioPreserved = isAspectRatioPreserved;
-	}
+  SetDimensionPolicy(boolean isVolumePreserved, boolean isAspectRatioPreserved) {
+    this.isVolumePreserved = isVolumePreserved;
+    this.isAspectRatioPreserved = isAspectRatioPreserved;
+  }
 
-	/* package-private */boolean isVolumePreserved() {
-		return this.isVolumePreserved;
-	}
+  /* package-private */boolean isVolumePreserved() {
+    return this.isVolumePreserved;
+  }
 
-	/* package-private */boolean isAspectRatioPreserved() {
-		return this.isAspectRatioPreserved;
-	}
+  /* package-private */boolean isAspectRatioPreserved() {
+    return this.isAspectRatioPreserved;
+  }
 
-	private static final SetDimensionPolicy DEFAULT_VALUE = SetDimensionPolicy.PRESERVE_ASPECT_RATIO;
+  private static final SetDimensionPolicy DEFAULT_VALUE = SetDimensionPolicy.PRESERVE_ASPECT_RATIO;
 
-	private static SetDimensionPolicy getValue( Object[] details, SetDimensionPolicy defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof SetDimensionPolicy ) {
-				SetDimensionPolicy policy = (SetDimensionPolicy)detail;
-				return policy;
-			}
-		}
-		return defaultValue;
-	}
+  private static SetDimensionPolicy getValue(Object[] details, SetDimensionPolicy defaultValue) {
+    for (Object detail : details) {
+      if (detail instanceof SetDimensionPolicy) {
+        SetDimensionPolicy policy = (SetDimensionPolicy) detail;
+        return policy;
+      }
+    }
+    return defaultValue;
+  }
 
-	/* package-private */static SetDimensionPolicy getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
-	}
+  /* package-private */
+  static SetDimensionPolicy getValue(Object[] details) {
+    return getValue(details, DEFAULT_VALUE);
+  }
 }

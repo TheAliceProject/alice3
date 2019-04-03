@@ -47,9 +47,9 @@ package org.alice.ide.croquet.models;
  * @author Dennis Cosgrove
  */
 public interface ResponsibleModel {
-	public void doOrRedoInternal( boolean isDo );
+  public void doOrRedoInternal(boolean isDo);
 
-	public void undoInternal();
+  public void undoInternal();
 
-	public void appendDescription( StringBuilder rv, boolean isDetailed );
+  public void appendDescription(StringBuilder rv, boolean isDetailed);
 }

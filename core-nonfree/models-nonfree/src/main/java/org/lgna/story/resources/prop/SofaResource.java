@@ -32,75 +32,77 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum SofaResource implements PropResource {
-	VALUE1_BLUE_SQUARES( ImplementationAndVisualType.SIMS2 ),
-	VALUE1_BLUE_STRIPES( ImplementationAndVisualType.SIMS2 ),
-	VALUE1_FLOWERS( ImplementationAndVisualType.SIMS2 ),
-	VALUE1_RED_SQUARES( ImplementationAndVisualType.SIMS2 ),
-	VALUE2_BLUE( ImplementationAndVisualType.SIMS2 ),
-	VALUE2_GREEN_FLOWERS( ImplementationAndVisualType.SIMS2 ),
-	VALUE2_BROWN_FLOWERS( ImplementationAndVisualType.SIMS2 ),
-	VALUE2_RED_SQUARES( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL1_BROWN( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL1_DIAMONDS( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL1_FRUITS( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL1_CURVES( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL1_RED_SQUARES( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL1_GRAY( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL2_BLUE_PATTERN( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL2_GOLD( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL2_GREEN( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL2_ORANGE( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL2_BLUE( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL2_RED( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL2_GRAY( ImplementationAndVisualType.SIMS2 ),
-	STEEL_FRAME_BLACK_LEATHER( ImplementationAndVisualType.SIMS2 ),
-	STEEL_FRAME_RED( ImplementationAndVisualType.SIMS2 ),
-	STEEL_FRAME_ALLIGATOR( ImplementationAndVisualType.SIMS2 ),
-	STEEL_FRAME_BRWON_LEATHER( ImplementationAndVisualType.SIMS2 ),
-	STEEL_FRAME_WHITE( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_TAN( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_LIGHT_BLUE( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_GREEN( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_RED( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_TAN( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_BLUE( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_GREEN( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_PINK( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_WHITE( ImplementationAndVisualType.SIMS2 ),
-	MODERN_CUTOUT_BLACK( ImplementationAndVisualType.SIMS2 ),
-	MODERN_CUTOUT_BLUE( ImplementationAndVisualType.SIMS2 ),
-	MODERN_CUTOUT_GREEN( ImplementationAndVisualType.SIMS2 ),
-	MODERN_CUTOUT_LEOPARD( ImplementationAndVisualType.SIMS2 ),
-	MODERN_CUTOUT_RED( ImplementationAndVisualType.SIMS2 ),
-	MODERN_CUTOUT_PURPLE( ImplementationAndVisualType.SIMS2 ),
-	MODERN_CUTOUT_ZEBRA( ImplementationAndVisualType.SIMS2 ),
-	MODERN_DIAMOND_TURQUOISE( ImplementationAndVisualType.SIMS2 ),
-	MODERN_DIAMOND_BLACK_AND_WHITE( ImplementationAndVisualType.SIMS2 ),
-	MODERN_DIAMOND_BLUE( ImplementationAndVisualType.SIMS2 ),
-	MODERN_DIAMOND_PURPLE_AND_GREEN( ImplementationAndVisualType.SIMS2 ),
-	MODERN_DIAMOND_RED_AND_PURPLE( ImplementationAndVisualType.SIMS2 ),
-	MODERN_DIAMOND_GREEN( ImplementationAndVisualType.SIMS2 );
+  VALUE1_BLUE_SQUARES(ImplementationAndVisualType.SIMS2),
+  VALUE1_BLUE_STRIPES(ImplementationAndVisualType.SIMS2),
+  VALUE1_FLOWERS(ImplementationAndVisualType.SIMS2),
+  VALUE1_RED_SQUARES(ImplementationAndVisualType.SIMS2),
+  VALUE2_BLUE(ImplementationAndVisualType.SIMS2),
+  VALUE2_GREEN_FLOWERS(ImplementationAndVisualType.SIMS2),
+  VALUE2_BROWN_FLOWERS(ImplementationAndVisualType.SIMS2),
+  VALUE2_RED_SQUARES(ImplementationAndVisualType.SIMS2),
+  COLONIAL1_BROWN(ImplementationAndVisualType.SIMS2),
+  COLONIAL1_DIAMONDS(ImplementationAndVisualType.SIMS2),
+  COLONIAL1_FRUITS(ImplementationAndVisualType.SIMS2),
+  COLONIAL1_CURVES(ImplementationAndVisualType.SIMS2),
+  COLONIAL1_RED_SQUARES(ImplementationAndVisualType.SIMS2),
+  COLONIAL1_GRAY(ImplementationAndVisualType.SIMS2),
+  COLONIAL2_BLUE_PATTERN(ImplementationAndVisualType.SIMS2),
+  COLONIAL2_GOLD(ImplementationAndVisualType.SIMS2),
+  COLONIAL2_GREEN(ImplementationAndVisualType.SIMS2),
+  COLONIAL2_ORANGE(ImplementationAndVisualType.SIMS2),
+  COLONIAL2_BLUE(ImplementationAndVisualType.SIMS2),
+  COLONIAL2_RED(ImplementationAndVisualType.SIMS2),
+  COLONIAL2_GRAY(ImplementationAndVisualType.SIMS2),
+  STEEL_FRAME_BLACK_LEATHER(ImplementationAndVisualType.SIMS2),
+  STEEL_FRAME_RED(ImplementationAndVisualType.SIMS2),
+  STEEL_FRAME_ALLIGATOR(ImplementationAndVisualType.SIMS2),
+  STEEL_FRAME_BRWON_LEATHER(ImplementationAndVisualType.SIMS2),
+  STEEL_FRAME_WHITE(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_TAN(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_LIGHT_BLUE(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_GREEN(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_RED(ImplementationAndVisualType.SIMS2),
+  QUAINT_TAN(ImplementationAndVisualType.SIMS2),
+  QUAINT_BLUE(ImplementationAndVisualType.SIMS2),
+  QUAINT_GREEN(ImplementationAndVisualType.SIMS2),
+  QUAINT_PINK(ImplementationAndVisualType.SIMS2),
+  QUAINT_WHITE(ImplementationAndVisualType.SIMS2),
+  MODERN_CUTOUT_BLACK(ImplementationAndVisualType.SIMS2),
+  MODERN_CUTOUT_BLUE(ImplementationAndVisualType.SIMS2),
+  MODERN_CUTOUT_GREEN(ImplementationAndVisualType.SIMS2),
+  MODERN_CUTOUT_LEOPARD(ImplementationAndVisualType.SIMS2),
+  MODERN_CUTOUT_RED(ImplementationAndVisualType.SIMS2),
+  MODERN_CUTOUT_PURPLE(ImplementationAndVisualType.SIMS2),
+  MODERN_CUTOUT_ZEBRA(ImplementationAndVisualType.SIMS2),
+  MODERN_DIAMOND_TURQUOISE(ImplementationAndVisualType.SIMS2),
+  MODERN_DIAMOND_BLACK_AND_WHITE(ImplementationAndVisualType.SIMS2),
+  MODERN_DIAMOND_BLUE(ImplementationAndVisualType.SIMS2),
+  MODERN_DIAMOND_PURPLE_AND_GREEN(ImplementationAndVisualType.SIMS2),
+  MODERN_DIAMOND_RED_AND_PURPLE(ImplementationAndVisualType.SIMS2),
+  MODERN_DIAMOND_GREEN(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	SofaResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	SofaResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  SofaResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  SofaResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

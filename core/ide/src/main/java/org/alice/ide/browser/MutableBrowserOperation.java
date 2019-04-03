@@ -50,26 +50,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class MutableBrowserOperation extends BrowserOperation {
-	private URL url;
+  private URL url;
 
-	public MutableBrowserOperation( UUID id ) {
-		super( id );
-	}
+  public MutableBrowserOperation(UUID id) {
+    super(id);
+  }
 
-	@Override
-	protected URL getUrl() {
-		return this.url;
-	}
+  @Override
+  protected URL getUrl() {
+    return this.url;
+  }
 
-	public void setUrl( URL url ) {
-		this.url = url;
-	}
+  public void setUrl(URL url) {
+    this.url = url;
+  }
 
-	public void setUrl( String spec ) {
-		try {
-			this.setUrl( new URL( spec ) );
-		} catch( MalformedURLException murle ) {
-			throw new RuntimeException( spec, murle );
-		}
-	}
+  public void setUrl(String spec) {
+    try {
+      this.setUrl(new URL(spec));
+    } catch (MalformedURLException murle) {
+      throw new RuntimeException(spec, murle);
+    }
+  }
 }

@@ -49,25 +49,25 @@ import org.lgna.project.code.CodeAppender;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Statement extends AbstractNode implements CodeAppender{
-	@Override
-	public abstract void appendCode( SourceCodeGenerator generator );
+public abstract class Statement extends AbstractNode implements CodeAppender {
+  @Override
+  public abstract void appendCode(SourceCodeGenerator generator);
 
-	public final BooleanProperty isEnabled = new BooleanProperty( this, Boolean.TRUE );
+  public final BooleanProperty isEnabled = new BooleanProperty(this, Boolean.TRUE);
 
-	boolean containsAtLeastOneEnabledReturnStatement() {
-		return false;
-	}
+  boolean containsAtLeastOneEnabledReturnStatement() {
+    return false;
+  }
 
-	boolean containsAReturnForEveryPath() {
-		return false;
-	}
+  boolean containsAReturnForEveryPath() {
+    return false;
+  }
 
-	boolean containsUnreachableCode() {
-		return false;
-	}
+  boolean containsUnreachableCode() {
+    return false;
+  }
 
-	boolean isEnabledNonCommment() {
-		return isEnabled.getValue();
-	}
+  boolean isEnabledNonCommment() {
+    return isEnabled.getValue();
+  }
 }

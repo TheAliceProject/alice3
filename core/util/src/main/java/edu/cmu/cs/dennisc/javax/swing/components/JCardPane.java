@@ -48,11 +48,11 @@ import java.awt.CardLayout;
  * @author Dennis Cosgrove
  */
 public class JCardPane extends JPane {
-	public JCardPane() {
-		setLayout( new CardLayout() );
-	}
+  public JCardPane() {
+    setLayout(new CardLayout());
+  }
 
-	public void show( String key ) {
-		( (CardLayout)this.getLayout() ).show( this, key );
-	}
+  public void show(String key) {
+    ((CardLayout) this.getLayout()).show(this, key);
+  }
 }

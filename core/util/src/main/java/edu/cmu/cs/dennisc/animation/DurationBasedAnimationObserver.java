@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.animation;
  * @author Dennis Cosgrove
  */
 public interface DurationBasedAnimationObserver extends AnimationObserver {
-	public void updated( DurationBasedAnimation durationBasedAnimation, double portion ) throws BreakException;
+  public void updated(DurationBasedAnimation durationBasedAnimation, double portion) throws BreakException;
 }

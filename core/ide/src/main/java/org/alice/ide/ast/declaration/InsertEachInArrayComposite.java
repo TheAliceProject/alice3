@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class InsertEachInArrayComposite<S extends Statement> extends InsertEachInComposite<S> {
-	public InsertEachInArrayComposite( UUID migrationId, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( migrationId, blockStatementIndexPair, isEnveloping );
-	}
+  public InsertEachInArrayComposite(UUID migrationId, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    super(migrationId, blockStatementIndexPair, isEnveloping);
+  }
 }

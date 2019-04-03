@@ -60,60 +60,60 @@ import javax.swing.Icon;
  * @author Dennis Cosgrove
  */
 public class IsPlayingIcon implements Icon {
-	private static final int SIZE = 20;
-	private static final Color PLAY_BASE_COLOR = new Color( 63, 191, 63 );
-	private static final Color PLAY_HIGHLIGHT_COLOR = ColorUtilities.scaleHSB( PLAY_BASE_COLOR, 1.0, 1.0, 1.5 );
-	private static final Color PLAY_SHADOW_COLOR = ColorUtilities.scaleHSB( PLAY_BASE_COLOR, 1.0, 1.0, 0.5 );
-	private static final Color PAUSE_COLOR = Color.BLACK;
+  private static final int SIZE = 20;
+  private static final Color PLAY_BASE_COLOR = new Color(63, 191, 63);
+  private static final Color PLAY_HIGHLIGHT_COLOR = ColorUtilities.scaleHSB(PLAY_BASE_COLOR, 1.0, 1.0, 1.5);
+  private static final Color PLAY_SHADOW_COLOR = ColorUtilities.scaleHSB(PLAY_BASE_COLOR, 1.0, 1.0, 0.5);
+  private static final Color PAUSE_COLOR = Color.BLACK;
 
-	@Override
-	public int getIconHeight() {
-		return SIZE;
-	}
+  @Override
+  public int getIconHeight() {
+    return SIZE;
+  }
 
-	@Override
-	public int getIconWidth() {
-		return SIZE;
-	}
+  @Override
+  public int getIconWidth() {
+    return SIZE;
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		if( c instanceof AbstractButton ) {
-			GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g );
-			gc.pushAndSetAntialiasing( true );
-			gc.pushPaint();
-			try {
-				AbstractButton button = (AbstractButton)c;
-				ButtonModel buttonModel = button.getModel();
-				if( buttonModel.isSelected() ) {
-					g.setColor( PAUSE_COLOR );
-					int width = 4;
-					int height = SIZE - 4;
-					int x0 = x + 2;
-					int x1 = ( x + SIZE ) - width - 4;
-					int y0 = y + 2;
-					g.fillRect( x0, y0, width, height );
-					g.fillRect( x1, y0, width, height );
-				} else {
-					double x0 = x + 2;
-					double x1 = ( x + SIZE ) - 4;
-					double y0 = y + 2;
-					double y1 = ( y0 + SIZE ) - 4;
-					double yC = ( y0 + y1 ) * 0.5;
-					GeneralPath path = new GeneralPath();
-					path.moveTo( x0, y0 );
-					path.lineTo( x0, y1 );
-					path.lineTo( x1, yC );
-					path.closePath();
-					Graphics2D g2 = (Graphics2D)g;
-					g2.setPaint( new GradientPaint( x, y, PLAY_HIGHLIGHT_COLOR, x + SIZE, y + SIZE, PLAY_SHADOW_COLOR ) );
-					g2.fill( path );
-					g.setColor( Color.BLACK );
-					g2.draw( path );
-				}
-			} finally {
-				gc.popAll();
-			}
-		}
-	}
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    if (c instanceof AbstractButton) {
+      GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics(g);
+      gc.pushAndSetAntialiasing(true);
+      gc.pushPaint();
+      try {
+        AbstractButton button = (AbstractButton) c;
+        ButtonModel buttonModel = button.getModel();
+        if (buttonModel.isSelected()) {
+          g.setColor(PAUSE_COLOR);
+          int width = 4;
+          int height = SIZE - 4;
+          int x0 = x + 2;
+          int x1 = (x + SIZE) - width - 4;
+          int y0 = y + 2;
+          g.fillRect(x0, y0, width, height);
+          g.fillRect(x1, y0, width, height);
+        } else {
+          double x0 = x + 2;
+          double x1 = (x + SIZE) - 4;
+          double y0 = y + 2;
+          double y1 = (y0 + SIZE) - 4;
+          double yC = (y0 + y1) * 0.5;
+          GeneralPath path = new GeneralPath();
+          path.moveTo(x0, y0);
+          path.lineTo(x0, y1);
+          path.lineTo(x1, yC);
+          path.closePath();
+          Graphics2D g2 = (Graphics2D) g;
+          g2.setPaint(new GradientPaint(x, y, PLAY_HIGHLIGHT_COLOR, x + SIZE, y + SIZE, PLAY_SHADOW_COLOR));
+          g2.fill(path);
+          g.setColor(Color.BLACK);
+          g2.draw(path);
+        }
+      } finally {
+        gc.popAll();
+      }
+    }
+  }
 }

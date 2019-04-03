@@ -52,13 +52,13 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class UndoOperation extends HistoryOperation {
-	public UndoOperation( DocumentFrame documentFrame ) {
-		super( UUID.fromString( "8580fdfd-6862-4aef-bf86-c7dad41e9ccb" ), documentFrame );
-		this.setButtonIcon( IconUtilities.createImageIcon( UndoOperation.class.getResource( "images/undo.png" ) ) );
-	}
+  public UndoOperation(DocumentFrame documentFrame) {
+    super(UUID.fromString("8580fdfd-6862-4aef-bf86-c7dad41e9ccb"), documentFrame);
+    this.setButtonIcon(IconUtilities.createImageIcon(UndoOperation.class.getResource("images/undo.png")));
+  }
 
-	@Override
-	protected void performInternal( UndoHistory historyManager ) {
-		historyManager.performUndo();
-	}
+  @Override
+  protected void performInternal(UndoHistory historyManager) {
+    historyManager.performUndo();
+  }
 }

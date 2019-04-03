@@ -63,71 +63,71 @@ import javax.swing.BoxLayout;
  * @author Dennis Cosgrove
  */
 public class ParametersPane extends AbstractListPropertyPane<NodeListProperty<UserParameter>, UserParameter> {
-	public ParametersPane( AstI18nFactory factory, UserCode code ) {
-		super( factory, code.getRequiredParamtersProperty(), BoxLayout.LINE_AXIS );
-	}
+  public ParametersPane(AstI18nFactory factory, UserCode code) {
+    super(factory, code.getRequiredParamtersProperty(), BoxLayout.LINE_AXIS);
+  }
 
-	protected IDE getIDE() {
-		return IDE.getActiveInstance();
-	}
+  protected IDE getIDE() {
+    return IDE.getActiveInstance();
+  }
 
-	private UserCode getCode() {
-		return (UserCode)getProperty().getOwner();
-	}
+  private UserCode getCode() {
+    return (UserCode) getProperty().getOwner();
+  }
 
-	@Override
-	protected AwtComponentView<?> createComponent( UserParameter parameter ) {
-		return new TypedParameterPane( getProperty(), parameter );
-	}
+  @Override
+  protected AwtComponentView<?> createComponent(UserParameter parameter) {
+    return new TypedParameterPane(getProperty(), parameter);
+  }
 
-	@Override
-	protected void addPrefixComponents() {
-		//super.addPrefixComponents();
-		if( FormatterState.isJava() ) {
-			this.addComponent( new Label( "( " ) );
-		} else {
-			int n = this.getProperty().size();
-			String text;
-			switch( n ) {
-			case 0:
-				text = null;
-				break;
-			case 1:
-				text = " " + localize("withParameter" ) + ": ";
-				break;
-			default:
-				text = " " + localize("withParameters" ) + ": ";
-			}
-			if( text != null ) {
-				this.addComponent( new Label( text, TextPosture.OBLIQUE, TextWeight.LIGHT ) );
-			}
-		}
-	}
+  @Override
+  protected void addPrefixComponents() {
+    //super.addPrefixComponents();
+    if (FormatterState.isJava()) {
+      this.addComponent(new Label("( "));
+    } else {
+      int n = this.getProperty().size();
+      String text;
+      switch (n) {
+      case 0:
+        text = null;
+        break;
+      case 1:
+        text = " " + localize("withParameter") + ": ";
+        break;
+      default:
+        text = " " + localize("withParameters") + ": ";
+      }
+      if (text != null) {
+        this.addComponent(new Label(text, TextPosture.OBLIQUE, TextWeight.LIGHT));
+      }
+    }
+  }
 
-	private String localize( String key ) {
-		return ResourceBundleUtilities.getStringForKey(key, "org.alice.ide.codeeditor.CodeEditor");
-	}
+  private String localize(String key) {
+    return ResourceBundleUtilities.getStringForKey(key, "org.alice.ide.codeeditor.CodeEditor");
+  }
 
-	@Override
-	protected AwtComponentView<?> createInterstitial( int i, int N ) {
-		if( i < ( N - 1 ) ) {
-			return new Label( ", " );
-		} else {
-			return BoxUtilities.createHorizontalSliver( 4 );
-		}
-	}
+  @Override
+  protected AwtComponentView<?> createInterstitial(int i, int N) {
+    if (i < (N - 1)) {
+      return new Label(", ");
+    } else {
+      return BoxUtilities.createHorizontalSliver(4);
+    }
+  }
 
-	@Override
-	protected void addPostfixComponents() {
-		super.addPostfixComponents();
-		AstI18nFactory factory = this.getFactory();
-		if( factory.isSignatureLocked( this.getCode() ) ) {
-			//pass
-		} else {
-			this.addComponent( AddParameterComposite.getInstance( this.getCode() ).getLaunchOperation().createButton() );
-		}
-		if( FormatterState.isJava() ) {
-			this.addComponent( new Label( " )" ) );
-		}
-	}
+  @Override
+  protected void addPostfixComponents() {
+    super.addPostfixComponents();
+    AstI18nFactory factory = this.getFactory();
+    if (factory.isSignatureLocked(this.getCode())) {
+      //pass
+    } else {
+      this.addComponent(AddParameterComposite.getInstance(this.getCode()).getLaunchOperation().createButton());
+    }
+    if (FormatterState.isJava()) {
+      this.addComponent(new Label(" )"));
+    }
+  }
 }

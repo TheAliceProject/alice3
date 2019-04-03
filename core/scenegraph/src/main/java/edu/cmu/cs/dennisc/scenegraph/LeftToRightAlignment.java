@@ -47,7 +47,5 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public enum LeftToRightAlignment {
-	ALIGN_LEFT,
-	ALIGN_CENTER_OF_LEFT_AND_RIGHT,
-	ALIGN_RIGHT
+  ALIGN_LEFT, ALIGN_CENTER_OF_LEFT_AND_RIGHT, ALIGN_RIGHT
 }

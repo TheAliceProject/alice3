@@ -61,35 +61,35 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SceneEditorUpdatingArgumentCascade extends AbstractArgumentCascade {
-	private static Map<SimpleArgument, SceneEditorUpdatingArgumentCascade> map = Maps.newHashMap();
+  private static Map<SimpleArgument, SceneEditorUpdatingArgumentCascade> map = Maps.newHashMap();
 
-	public static synchronized SceneEditorUpdatingArgumentCascade getInstance( SimpleArgument argument ) {
-		SceneEditorUpdatingArgumentCascade rv = map.get( argument );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SceneEditorUpdatingArgumentCascade( argument );
-			map.put( argument, rv );
-		}
-		return rv;
-	}
+  public static synchronized SceneEditorUpdatingArgumentCascade getInstance(SimpleArgument argument) {
+    SceneEditorUpdatingArgumentCascade rv = map.get(argument);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new SceneEditorUpdatingArgumentCascade(argument);
+      map.put(argument, rv);
+    }
+    return rv;
+  }
 
-	private SceneEditorUpdatingArgumentCascade( SimpleArgument argument ) {
-		super( UUID.fromString( "1d04d5c7-8183-48d5-91b7-8acc5f0ce90d" ), argument );
-	}
+  private SceneEditorUpdatingArgumentCascade(SimpleArgument argument) {
+    super(UUID.fromString("1d04d5c7-8183-48d5-91b7-8acc5f0ce90d"), argument);
+  }
 
-	@Override
-	protected ExpressionPropertyEdit createExpressionPropertyEdit( UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression ) {
-		SimpleArgument simpleArgument = this.getArgument();
-		InstanceCreation instanceCreation = simpleArgument.getFirstAncestorAssignableTo( InstanceCreation.class );
-		if( instanceCreation != null ) {
-			UserField field = instanceCreation.getFirstAncestorAssignableTo( UserField.class );
-			if( field != null ) {
-				if( simpleArgument.parameter.getValue().getValueType().isAssignableTo( ModelResource.class ) ) {
-					return new SceneEditorUpdatingExpressionPropertyEdit( userActivity, expressionProperty, prevExpression, nextExpression, field );
-				}
-			}
-		}
-		return super.createExpressionPropertyEdit( userActivity, expressionProperty, prevExpression, nextExpression );
-	}
+  @Override
+  protected ExpressionPropertyEdit createExpressionPropertyEdit(UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression) {
+    SimpleArgument simpleArgument = this.getArgument();
+    InstanceCreation instanceCreation = simpleArgument.getFirstAncestorAssignableTo(InstanceCreation.class);
+    if (instanceCreation != null) {
+      UserField field = instanceCreation.getFirstAncestorAssignableTo(UserField.class);
+      if (field != null) {
+        if (simpleArgument.parameter.getValue().getValueType().isAssignableTo(ModelResource.class)) {
+          return new SceneEditorUpdatingExpressionPropertyEdit(userActivity, expressionProperty, prevExpression, nextExpression, field);
+        }
+      }
+    }
+    return super.createExpressionPropertyEdit(userActivity, expressionProperty, prevExpression, nextExpression);
+  }
 }

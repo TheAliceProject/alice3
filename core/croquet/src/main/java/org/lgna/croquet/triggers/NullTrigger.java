@@ -53,18 +53,17 @@ import java.awt.Point;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class NullTrigger extends Trigger {
-	public static UserActivity createUserActivity() {
-		return new NullTrigger().getUserActivity();
-	}
+@Deprecated public class NullTrigger extends Trigger {
+  public static UserActivity createUserActivity() {
+    return new NullTrigger().getUserActivity();
+  }
 
-	private NullTrigger() {
-		super(Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel());
-	}
+  private NullTrigger() {
+    super(Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel());
+  }
 
-	@Override
-	public void showPopupMenu( PopupMenu popupMenu ) {
-		PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new Point() );
-	}
+  @Override
+  public void showPopupMenu(PopupMenu popupMenu) {
+    PopupMenuUtilities.showModal(popupMenu.getAwtComponent(), null, new Point());
+  }
 }

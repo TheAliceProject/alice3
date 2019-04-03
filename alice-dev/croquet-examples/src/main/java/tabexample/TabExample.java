@@ -54,23 +54,23 @@ import javax.swing.SwingUtilities;
  * @author Dennis Cosgrove
  */
 public class TabExample {
-	public static void main( String[] args ) {
-		SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				UIManagerUtilities.setLookAndFeel( "Nimbus" );
-				SimpleApplication app = new SimpleApplication();
+  public static void main(String[] args) {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        UIManagerUtilities.setLookAndFeel("Nimbus");
+        SimpleApplication app = new SimpleApplication();
 
-				TabExampleComposite tabExampleComposite = new TabExampleComposite();
+        TabExampleComposite tabExampleComposite = new TabExampleComposite();
 
-				DocumentFrame documentFrame = app.getDocumentFrame();
-				Frame frame = documentFrame.getFrame();
-				frame.setTitle( "Tab Example" );
-				frame.setMainComposite( tabExampleComposite );
-				frame.setDefaultCloseOperation( Frame.DefaultCloseOperation.EXIT );
-				frame.pack();
-				frame.setVisible( true );
-			}
-		} );
-	}
+        DocumentFrame documentFrame = app.getDocumentFrame();
+        Frame frame = documentFrame.getFrame();
+        frame.setTitle("Tab Example");
+        frame.setMainComposite(tabExampleComposite);
+        frame.setDefaultCloseOperation(Frame.DefaultCloseOperation.EXIT);
+        frame.pack();
+        frame.setVisible(true);
+      }
+    });
+  }
 }

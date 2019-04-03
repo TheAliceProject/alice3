@@ -54,44 +54,44 @@ import java.awt.geom.Ellipse2D;
  * @author Dennis Cosgrove
  */
 public class TorusIcon extends ShapeIcon {
-	public TorusIcon( Dimension size ) {
-		super( size );
-	}
+  public TorusIcon(Dimension size) {
+    super(size);
+  }
 
-	private static Ellipse2D.Float createEllipse( float portion, int width, int height ) {
-		float diameter = Math.min( width, height ) * portion;
-		float x = ( width - diameter ) / 2;
-		float y = ( height - diameter ) / 2;
-		return new Ellipse2D.Float( x, y, diameter, diameter );
-	}
+  private static Ellipse2D.Float createEllipse(float portion, int width, int height) {
+    float diameter = Math.min(width, height) * portion;
+    float x = (width - diameter) / 2;
+    float y = (height - diameter) / 2;
+    return new Ellipse2D.Float(x, y, diameter, diameter);
+  }
 
-	private static void paint( Graphics2D g2, float outerPortion, float innerPortion, int width, int height, Paint fillPaint, Paint outerDrawPaint, Paint innerDrawPaint ) {
-		Ellipse2D outer = createEllipse( outerPortion, width, height );
-		Ellipse2D inner = createEllipse( innerPortion, width, height );
-		Area area = new Area( outer );
-		area.subtract( new Area( inner ) );
-		if( fillPaint != null ) {
-			g2.setPaint( fillPaint );
-			g2.fill( area );
-		}
-		if( outerDrawPaint != null ) {
-			g2.setPaint( outerDrawPaint );
-			g2.draw( outer );
-		}
-		if( innerDrawPaint != null ) {
-			g2.setPaint( innerDrawPaint );
-			g2.draw( inner );
-		}
-	}
+  private static void paint(Graphics2D g2, float outerPortion, float innerPortion, int width, int height, Paint fillPaint, Paint outerDrawPaint, Paint innerDrawPaint) {
+    Ellipse2D outer = createEllipse(outerPortion, width, height);
+    Ellipse2D inner = createEllipse(innerPortion, width, height);
+    Area area = new Area(outer);
+    area.subtract(new Area(inner));
+    if (fillPaint != null) {
+      g2.setPaint(fillPaint);
+      g2.fill(area);
+    }
+    if (outerDrawPaint != null) {
+      g2.setPaint(outerDrawPaint);
+      g2.draw(outer);
+    }
+    if (innerDrawPaint != null) {
+      g2.setPaint(innerDrawPaint);
+      g2.draw(inner);
+    }
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
-		paint( g2, 1.0f, 0.5f, width, height, fillPaint, drawPaint, Color.GRAY );
-		if( height > 64 ) {
-			paint( g2, 0.825f, 0.675f, width, height, new Color( 255, 255, 255, 63 ), null, null );
-			paint( g2, 0.9f, 0.6f, width, height, new Color( 255, 255, 255, 63 ), null, null );
-		} else {
-			paint( g2, 0.825f, 0.675f, width, height, new Color( 255, 255, 255, 127 ), null, null );
-		}
-	}
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    paint(g2, 1.0f, 0.5f, width, height, fillPaint, drawPaint, Color.GRAY);
+    if (height > 64) {
+      paint(g2, 0.825f, 0.675f, width, height, new Color(255, 255, 255, 63), null, null);
+      paint(g2, 0.9f, 0.6f, width, height, new Color(255, 255, 255, 63), null, null);
+    } else {
+      paint(g2, 0.825f, 0.675f, width, height, new Color(255, 255, 255, 127), null, null);
+    }
+  }
 }

@@ -58,28 +58,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FunctionInvocationCascade extends ProjectExpressionPropertyCascade {
-	private static MapToMap<AbstractMethod, ExpressionProperty, FunctionInvocationCascade> mapToMap = MapToMap.newInstance();
+  private static MapToMap<AbstractMethod, ExpressionProperty, FunctionInvocationCascade> mapToMap = MapToMap.newInstance();
 
-	public static FunctionInvocationCascade getInstance( AbstractMethod method, ExpressionProperty expressionProperty ) {
-		assert method != null;
-		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( method, expressionProperty, new MapToMap.Initializer<AbstractMethod, ExpressionProperty, FunctionInvocationCascade>() {
-			@Override
-			public FunctionInvocationCascade initialize( AbstractMethod method, ExpressionProperty expressionProperty ) {
-				return new FunctionInvocationCascade( method, expressionProperty );
-			}
-		} );
-	}
+  public static FunctionInvocationCascade getInstance(AbstractMethod method, ExpressionProperty expressionProperty) {
+    assert method != null;
+    assert expressionProperty != null;
+    return mapToMap.getInitializingIfAbsent(method, expressionProperty, new MapToMap.Initializer<AbstractMethod, ExpressionProperty, FunctionInvocationCascade>() {
+      @Override
+      public FunctionInvocationCascade initialize(AbstractMethod method, ExpressionProperty expressionProperty) {
+        return new FunctionInvocationCascade(method, expressionProperty);
+      }
+    });
+  }
 
-	private final AbstractMethod method;
+  private final AbstractMethod method;
 
-	private FunctionInvocationCascade( AbstractMethod method, ExpressionProperty expressionProperty ) {
-		super( UUID.fromString( "a205ee93-2f1a-4dc0-8aaf-60f1f3310643" ), expressionProperty, MethodUtilities.createParameterBlanks( method ) );
-		this.method = method;
-	}
+  private FunctionInvocationCascade(AbstractMethod method, ExpressionProperty expressionProperty) {
+    super(UUID.fromString("a205ee93-2f1a-4dc0-8aaf-60f1f3310643"), expressionProperty, MethodUtilities.createParameterBlanks(method));
+    this.method = method;
+  }
 
-	@Override
-	protected Expression createExpression( Expression[] expressions ) {
-		return AstUtilities.createMethodInvocation( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(), this.method, expressions );
-	}
+  @Override
+  protected Expression createExpression(Expression[] expressions) {
+    return AstUtilities.createMethodInvocation(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(), this.method, expressions);
+  }
 }

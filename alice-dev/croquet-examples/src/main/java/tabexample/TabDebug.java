@@ -59,30 +59,30 @@ import javax.swing.SwingUtilities;
  * @author Dennis Cosgrove
  */
 public class TabDebug {
-	public static void main( String[] args ) {
-		SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				UIManagerUtilities.setLookAndFeel( "Nimbus" );
-				SimpleApplication app = new SimpleApplication();
+  public static void main(String[] args) {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        UIManagerUtilities.setLookAndFeel("Nimbus");
+        SimpleApplication app = new SimpleApplication();
 
-				TabExampleComposite tabExampleComposite = new TabExampleComposite();
+        TabExampleComposite tabExampleComposite = new TabExampleComposite();
 
-				ImmutableDataTabState<AbstractTab> tabState = tabExampleComposite.getTabState();
-				tabState.addAndInvokeNewSchoolValueListener( new ValueListener<AbstractTab>() {
-					@Override
-					public void valueChanged( ValueEvent<AbstractTab> e ) {
-						Logger.outln( e );
-					}
-				} );
+        ImmutableDataTabState<AbstractTab> tabState = tabExampleComposite.getTabState();
+        tabState.addAndInvokeNewSchoolValueListener(new ValueListener<AbstractTab>() {
+          @Override
+          public void valueChanged(ValueEvent<AbstractTab> e) {
+            Logger.outln(e);
+          }
+        });
 
-				DocumentFrame documentFrame = app.getDocumentFrame();
-				Frame frame = documentFrame.getFrame();
-				frame.setTitle( "Tab Example" );
-				frame.setMainComposite( tabExampleComposite );
-				frame.pack();
-				frame.setVisible( true );
-			}
-		} );
-	}
+        DocumentFrame documentFrame = app.getDocumentFrame();
+        Frame frame = documentFrame.getFrame();
+        frame.setTitle("Tab Example");
+        frame.setMainComposite(tabExampleComposite);
+        frame.pack();
+        frame.setVisible(true);
+      }
+    });
+  }
 }

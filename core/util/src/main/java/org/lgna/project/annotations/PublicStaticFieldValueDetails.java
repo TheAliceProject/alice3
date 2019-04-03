@@ -49,5 +49,5 @@ import java.lang.reflect.Field;
  * @author Dennis Cosgrove
  */
 public interface PublicStaticFieldValueDetails<T> extends ValueDetails<T> {
-	public Field[] getFlds();
+  public Field[] getFlds();
 }

@@ -56,20 +56,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DoTogetherTemplateDragModel extends PotentiallyEnvelopingStatementTemplateDragModel {
-	private static class SingletonHolder {
-		private static DoTogetherTemplateDragModel instance = new DoTogetherTemplateDragModel();
-	}
+  private static class SingletonHolder {
+    private static DoTogetherTemplateDragModel instance = new DoTogetherTemplateDragModel();
+  }
 
-	public static DoTogetherTemplateDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static DoTogetherTemplateDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private DoTogetherTemplateDragModel() {
-		super( UUID.fromString( "7d494762-cb12-4fd1-92d4-869a1b3e244a" ), DoTogether.class, AstUtilities.createDoTogether() );
-	}
+  private DoTogetherTemplateDragModel() {
+    super(UUID.fromString("7d494762-cb12-4fd1-92d4-869a1b3e244a"), DoTogether.class, AstUtilities.createDoTogether());
+  }
 
-	@Override
-	protected Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		return DoTogetherInsertOperation.getInstance( blockStatementIndexPair, isEnveloping );
-	}
+  @Override
+  protected Triggerable getDropOperation(DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    return DoTogetherInsertOperation.getInstance(blockStatementIndexPair, isEnveloping);
+  }
 }

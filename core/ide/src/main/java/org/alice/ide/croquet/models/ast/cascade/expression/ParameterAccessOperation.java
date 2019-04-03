@@ -56,28 +56,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessOperation extends ProjectExpressionPropertyOperation {
-	private static MapToMap<UserParameter, ExpressionProperty, ParameterAccessOperation> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserParameter, ExpressionProperty, ParameterAccessOperation> mapToMap = MapToMap.newInstance();
 
-	public static ParameterAccessOperation getInstance( UserParameter parameter, ExpressionProperty expressionProperty ) {
-		assert parameter != null;
-		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( parameter, expressionProperty, new MapToMap.Initializer<UserParameter, ExpressionProperty, ParameterAccessOperation>() {
-			@Override
-			public ParameterAccessOperation initialize( UserParameter parameter, ExpressionProperty expressionProperty ) {
-				return new ParameterAccessOperation( parameter, expressionProperty );
-			}
-		} );
-	}
+  public static ParameterAccessOperation getInstance(UserParameter parameter, ExpressionProperty expressionProperty) {
+    assert parameter != null;
+    assert expressionProperty != null;
+    return mapToMap.getInitializingIfAbsent(parameter, expressionProperty, new MapToMap.Initializer<UserParameter, ExpressionProperty, ParameterAccessOperation>() {
+      @Override
+      public ParameterAccessOperation initialize(UserParameter parameter, ExpressionProperty expressionProperty) {
+        return new ParameterAccessOperation(parameter, expressionProperty);
+      }
+    });
+  }
 
-	private final UserParameter parameter;
+  private final UserParameter parameter;
 
-	private ParameterAccessOperation( UserParameter parameter, ExpressionProperty expressionProperty ) {
-		super( UUID.fromString( "30f93afc-3c73-4295-8b93-d1dac94b6c8c" ), expressionProperty );
-		this.parameter = parameter;
-	}
+  private ParameterAccessOperation(UserParameter parameter, ExpressionProperty expressionProperty) {
+    super(UUID.fromString("30f93afc-3c73-4295-8b93-d1dac94b6c8c"), expressionProperty);
+    this.parameter = parameter;
+  }
 
-	@Override
-	protected Expression createExpression() {
-		return new ParameterAccess( this.parameter );
-	}
+  @Override
+  protected Expression createExpression() {
+    return new ParameterAccess(this.parameter);
+  }
 }

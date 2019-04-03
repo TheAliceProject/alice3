@@ -50,7 +50,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SetupSceneStencilModel extends ChangePerspectiveStencilModel {
-	public SetupSceneStencilModel() {
-		super( UUID.fromString( "3e558dd6-974d-4a70-87c8-93f44c72618b" ), IDE.getActiveInstance().getDocumentFrame().getSetupScenePerspective() );
-	}
+  public SetupSceneStencilModel() {
+    super(UUID.fromString("3e558dd6-974d-4a70-87c8-93f44c72618b"), IDE.getActiveInstance().getDocumentFrame().getSetupScenePerspective());
+  }
 }

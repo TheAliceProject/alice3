@@ -55,27 +55,27 @@ import java.util.UUID;
  * @author Matt May
  */
 public class ChangeAnimationProcedureDialog extends AnimationProcedureDialog {
-	private static InitializingIfAbsentMap<UserMethod, ChangeAnimationProcedureDialog> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<UserMethod, ChangeAnimationProcedureDialog> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static ChangeAnimationProcedureDialog getInstance( UserMethod method ) {
-		if( AnimatorComposite.isStrictlyAnimation( method ) ) {
-			return map.getInitializingIfAbsent( method, new InitializingIfAbsentMap.Initializer<UserMethod, ChangeAnimationProcedureDialog>() {
-				@Override
-				public ChangeAnimationProcedureDialog initialize( UserMethod method ) {
-					return new ChangeAnimationProcedureDialog( method );
-				}
-			} );
-		} else {
-			return null;
-		}
-	}
+  public static ChangeAnimationProcedureDialog getInstance(UserMethod method) {
+    if (AnimatorComposite.isStrictlyAnimation(method)) {
+      return map.getInitializingIfAbsent(method, new InitializingIfAbsentMap.Initializer<UserMethod, ChangeAnimationProcedureDialog>() {
+        @Override
+        public ChangeAnimationProcedureDialog initialize(UserMethod method) {
+          return new ChangeAnimationProcedureDialog(method);
+        }
+      });
+    } else {
+      return null;
+    }
+  }
 
-	private ChangeAnimationProcedureDialog( UserMethod method ) {
-		super( UUID.fromString( "ec6e475b-bff3-4573-a444-37930e5fbe49" ), AnimatorComposite.getDialogForUserMethod( method ) );
-	}
+  private ChangeAnimationProcedureDialog(UserMethod method) {
+    super(UUID.fromString("ec6e475b-bff3-4573-a444-37930e5fbe49"), AnimatorComposite.getDialogForUserMethod(method));
+  }
 
-	@Override
-	protected AbstractEdit createEdit( UserActivity userActivity ) {
-		return new ChangeMethodBodyEdit( userActivity, getAnimatorComposite().getMethod(), getAnimatorComposite().getControlComposite().createMethodBody() );
-	}
+  @Override
+  protected AbstractEdit createEdit(UserActivity userActivity) {
+    return new ChangeMethodBodyEdit(userActivity, getAnimatorComposite().getMethod(), getAnimatorComposite().getControlComposite().createMethodBody());
+  }
 }

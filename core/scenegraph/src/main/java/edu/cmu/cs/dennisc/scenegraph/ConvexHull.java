@@ -56,45 +56,45 @@ import java.nio.DoubleBuffer;
  * @author Dennis Cosgrove
  */
 public class ConvexHull extends Geometry {
-	@Override
-	public void transform( AbstractMatrix4x4 trans ) {
-		DoubleBuffer doubleBuffer = this.points.getValue();
-		double[] xyzs = doubleBuffer.array();
+  @Override
+  public void transform(AbstractMatrix4x4 trans) {
+    DoubleBuffer doubleBuffer = this.points.getValue();
+    double[] xyzs = doubleBuffer.array();
 
-		Point3 p = Point3.createNaN();
+    Point3 p = Point3.createNaN();
 
-		for( int i = 0; i < xyzs.length; i += 3 ) {
-			p.set( xyzs[ i ], xyzs[ i ], xyzs[ i ] );
-			trans.transform( p );
-			xyzs[ i ] = p.x;
-			xyzs[ i + 1 ] = p.y;
-			xyzs[ i + 2 ] = p.z;
-		}
-	}
+    for (int i = 0; i < xyzs.length; i += 3) {
+      p.set(xyzs[i], xyzs[i], xyzs[i]);
+      trans.transform(p);
+      xyzs[i] = p.x;
+      xyzs[i + 1] = p.y;
+      xyzs[i + 2] = p.z;
+    }
+  }
 
-	@Override
-	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
-		DoubleBuffer doubleBuffer = this.points.getValue();
-		double[] xyzs = doubleBuffer.array();
-		BoundUtilities.getBoundingBox( boundingBox, xyzs );
-	}
+  @Override
+  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+    DoubleBuffer doubleBuffer = this.points.getValue();
+    double[] xyzs = doubleBuffer.array();
+    BoundUtilities.getBoundingBox(boundingBox, xyzs);
+  }
 
-	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		DoubleBuffer doubleBuffer = this.points.getValue();
-		double[] xyzs = doubleBuffer.array();
-		BoundUtilities.getBoundingSphere( boundingSphere, xyzs );
-	}
+  @Override
+  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
+    DoubleBuffer doubleBuffer = this.points.getValue();
+    double[] xyzs = doubleBuffer.array();
+    BoundUtilities.getBoundingSphere(boundingSphere, xyzs);
+  }
 
-	@Override
-	protected void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation ) {
-		DoubleBuffer doubleBuffer = this.points.getValue();
-		double[] xyzs = doubleBuffer.array();
-		translation.x = xyzs[ 0 ];
-		translation.y = xyzs[ 1 ];
-		translation.z = xyzs[ 2 ];
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
+    DoubleBuffer doubleBuffer = this.points.getValue();
+    double[] xyzs = doubleBuffer.array();
+    translation.x = xyzs[0];
+    translation.y = xyzs[1];
+    translation.z = xyzs[2];
+    throw new RuntimeException("todo");
+  }
 
-	public final DoubleBufferProperty points = new DoubleBufferProperty( this, new double[] {} );
+  public final DoubleBufferProperty points = new DoubleBufferProperty(this, new double[] {});
 }

@@ -50,11 +50,11 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ImmutableDataSingleSelectListState<T> extends SingleSelectListState<T, ImmutableListData<T>> {
-	public ImmutableDataSingleSelectListState( Group group, UUID migrationId, int selectionIndex, ImmutableListData<T> data ) {
-		super( group, migrationId, selectionIndex, data );
-	}
+  public ImmutableDataSingleSelectListState(Group group, UUID migrationId, int selectionIndex, ImmutableListData<T> data) {
+    super(group, migrationId, selectionIndex, data);
+  }
 
-	public ImmutableDataSingleSelectListState( Group group, UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, T... values ) {
-		this( group, migrationId, selectionIndex, new ImmutableListData<T>( itemCodec, values ) );
-	}
+  public ImmutableDataSingleSelectListState(Group group, UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, T... values) {
+    this(group, migrationId, selectionIndex, new ImmutableListData<T>(itemCodec, values));
+  }
 }

@@ -49,37 +49,38 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractForEachLoop extends AbstractLoop implements EachInStatement {
-	public AbstractForEachLoop() {
-	}
+  public AbstractForEachLoop() {
+  }
 
-	public AbstractForEachLoop( UserLocal item, BlockStatement body ) {
-		super( body );
-		assert item.isFinal.getValue();
-		this.item.setValue( item );
-	}
+  public AbstractForEachLoop(UserLocal item, BlockStatement body) {
+    super(body);
+    assert item.isFinal.getValue();
+    this.item.setValue(item);
+  }
 
-	@Override
-	public DeclarationProperty<UserLocal> getItemProperty() {
-		return this.item;
-	}
+  @Override
+  public DeclarationProperty<UserLocal> getItemProperty() {
+    return this.item;
+  }
 
-	protected abstract ExpressionProperty getArrayOrIterableProperty();
+  protected abstract ExpressionProperty getArrayOrIterableProperty();
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		localizer.appendLocalizedText( AbstractForEachLoop.class, "for each in " );
-		safeAppendRepr( localizer, this.getArrayOrIterableProperty().getValue() );
-		super.appendRepr( localizer );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    localizer.appendLocalizedText(AbstractForEachLoop.class, "for each in ");
+    safeAppendRepr(localizer, this.getArrayOrIterableProperty().getValue());
+    super.appendRepr(localizer);
+  }
 
-	@Override public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendForEach(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendForEach(this);
+  }
 
-	public final DeclarationProperty<UserLocal> item = new DeclarationProperty<UserLocal>( this ) {
-		@Override
-		public boolean isReference() {
-			return false;
-		}
-	};
+  public final DeclarationProperty<UserLocal> item = new DeclarationProperty<UserLocal>(this) {
+    @Override
+    public boolean isReference() {
+      return false;
+    }
+  };
 }

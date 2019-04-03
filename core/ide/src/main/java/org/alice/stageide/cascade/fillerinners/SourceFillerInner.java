@@ -61,38 +61,38 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public abstract class SourceFillerInner<R extends Resource> extends ExpressionFillerInner {
-	private final Class<R> resourceCls;
+  private final Class<R> resourceCls;
 
-	public SourceFillerInner( Class<?> cls, Class<R> resourceCls ) {
-		super( cls );
-		this.resourceCls = resourceCls;
-	}
+  public SourceFillerInner(Class<?> cls, Class<R> resourceCls) {
+    super(cls);
+    this.resourceCls = resourceCls;
+  }
 
-	protected abstract CascadeFillIn<InstanceCreation, ?> getResourceFillIn( R resource );
+  protected abstract CascadeFillIn<InstanceCreation, ?> getResourceFillIn(R resource);
 
-	protected abstract CascadeFillIn<InstanceCreation, ?> getImportFillIn();
+  protected abstract CascadeFillIn<InstanceCreation, ?> getImportFillIn();
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		IDE ide = IDE.getActiveInstance();
-		Project project = ide.getProject();
-		if( project != null ) {
-			Set<Resource> resources = project.getResources();
-			if( ( resources != null ) && ( resources.isEmpty() == false ) ) {
-				int prevRvSize = items.size();
-				synchronized( resources ) {
-					for( Resource resource : resources ) {
-						if( this.resourceCls.isAssignableFrom( resource.getClass() ) ) {
-							R r = (R)resource;
-							items.add( this.getResourceFillIn( r ) );
-						}
-					}
-				}
-				if( prevRvSize < items.size() ) {
-					items.add( CascadeLineSeparator.getInstance() );
-				}
-			}
-		}
-		items.add( this.getImportFillIn() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    IDE ide = IDE.getActiveInstance();
+    Project project = ide.getProject();
+    if (project != null) {
+      Set<Resource> resources = project.getResources();
+      if ((resources != null) && (resources.isEmpty() == false)) {
+        int prevRvSize = items.size();
+        synchronized (resources) {
+          for (Resource resource : resources) {
+            if (this.resourceCls.isAssignableFrom(resource.getClass())) {
+              R r = (R) resource;
+              items.add(this.getResourceFillIn(r));
+            }
+          }
+        }
+        if (prevRvSize < items.size()) {
+          items.add(CascadeLineSeparator.getInstance());
+        }
+      }
+    }
+    items.add(this.getImportFillIn());
+  }
 }

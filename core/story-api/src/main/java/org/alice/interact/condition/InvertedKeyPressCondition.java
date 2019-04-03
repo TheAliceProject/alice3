@@ -51,21 +51,21 @@ import org.alice.interact.ModifierMask;
  * @author David Culyba
  */
 public class InvertedKeyPressCondition extends KeyPressCondition {
-	public InvertedKeyPressCondition( int keyValue ) {
-		this( keyValue, null );
-	}
+  public InvertedKeyPressCondition(int keyValue) {
+    this(keyValue, null);
+  }
 
-	public InvertedKeyPressCondition( int keyValue, ModifierMask modifierMask ) {
-		super( keyValue, modifierMask );
-	}
+  public InvertedKeyPressCondition(int keyValue, ModifierMask modifierMask) {
+    super(keyValue, modifierMask);
+  }
 
-	@Override
-	protected boolean testState( InputState state ) {
-		return ( super.testState( state ) && !state.isKeyDown( this.getKeyValue() ) );
-	}
+  @Override
+  protected boolean testState(InputState state) {
+    return (super.testState(state) && !state.isKeyDown(this.getKeyValue()));
+  }
 
-	@Override
-	public String toString() {
-		return "!" + KeyEvent.getKeyText( this.getKeyValue() );
-	}
+  @Override
+  public String toString() {
+    return "!" + KeyEvent.getKeyText(this.getKeyValue());
+  }
 }

@@ -80,176 +80,176 @@ import java.awt.geom.Rectangle2D;
  */
 //TODO: provide custom java.awt.FocusTraversalPolicy to skip JSubtleTextFields?
 public class JSubdudeTextField extends JSuggestiveTextField {
-	public JSubdudeTextField() {
-		InputMap inputMap = this.getInputMap();
-		inputMap.put( KeyStroke.getKeyStroke( KeyEvent.VK_ESCAPE, 0 ), this.transferFocusAction );
-		inputMap.put( KeyStroke.getKeyStroke( KeyEvent.VK_ENTER, 0 ), this.transferFocusAction );
-	}
+  public JSubdudeTextField() {
+    InputMap inputMap = this.getInputMap();
+    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), this.transferFocusAction);
+    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), this.transferFocusAction);
+  }
 
-	@Override
-	public Dimension getPreferredSize() {
-		Insets insets = this.getInsets();
-		return DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 24 + insets.left + insets.right );
-	}
+  @Override
+  public Dimension getPreferredSize() {
+    Insets insets = this.getInsets();
+    return DimensionUtilities.constrainToMinimumWidth(super.getPreferredSize(), 24 + insets.left + insets.right);
+  }
 
-	@Override
-	public Dimension getMaximumSize() {
-		return this.getPreferredSize();
-	}
+  @Override
+  public Dimension getMaximumSize() {
+    return this.getPreferredSize();
+  }
 
-	private void installListeners() {
-		if( Arrays.contains( this.getMouseListeners(), this.mouseListener ) ) {
-			//pass
-		} else {
-			this.addMouseListener( this.mouseListener );
-			this.addFocusListener( this.focusListener );
-			this.getDocument().addDocumentListener( this.documentListener );
-		}
-	}
+  private void installListeners() {
+    if (Arrays.contains(this.getMouseListeners(), this.mouseListener)) {
+      //pass
+    } else {
+      this.addMouseListener(this.mouseListener);
+      this.addFocusListener(this.focusListener);
+      this.getDocument().addDocumentListener(this.documentListener);
+    }
+  }
 
-	private void uninstallListeners() {
-		if( Arrays.contains( this.getMouseListeners(), this.mouseListener ) ) {
-			this.getDocument().removeDocumentListener( this.documentListener );
-			this.removeFocusListener( this.focusListener );
-			this.removeMouseListener( this.mouseListener );
-		} else {
-			//pass
-		}
-	}
+  private void uninstallListeners() {
+    if (Arrays.contains(this.getMouseListeners(), this.mouseListener)) {
+      this.getDocument().removeDocumentListener(this.documentListener);
+      this.removeFocusListener(this.focusListener);
+      this.removeMouseListener(this.mouseListener);
+    } else {
+      //pass
+    }
+  }
 
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		this.installListeners();
-	}
+  @Override
+  public void addNotify() {
+    super.addNotify();
+    this.installListeners();
+  }
 
-	@Override
-	public void removeNotify() {
-		this.uninstallListeners();
-		super.removeNotify();
-	}
+  @Override
+  public void removeNotify() {
+    this.uninstallListeners();
+    super.removeNotify();
+  }
 
-	@Override
-	public void paint( Graphics g ) {
-		if( this.hasFocus() ) {
-			super.paint( g );
-		} else {
-			GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g );
-			gc.pushAndSetTextAntialiasing( true );
-			gc.pushFont();
-			gc.pushPaint();
-			Color backgroundColor = this.getParent().getBackground();
-			if( this.buttonModel.isRollover() ) {
-				backgroundColor = ColorUtilities.scaleHSB( backgroundColor, 1.0, 0.9, 0.9 );
-			}
-			g.setColor( backgroundColor );
-			g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
-			g.setColor( this.getForeground() );
-			g.setFont( this.getFont() );
-			FontMetrics fm = g.getFontMetrics();
-			Insets insets = this.getInsets();
-			ComponentOrientation componentOrientation = this.getComponentOrientation();
-			String text = this.getText();
-			int x;
-			if( componentOrientation.isLeftToRight() ) {
-				x = insets.left;
-			} else {
-				x = this.getWidth() - insets.right;
-				Rectangle2D bounds = fm.getStringBounds( text, g );
-				x -= (int)( Math.ceil( bounds.getWidth() ) );
-			}
-			int y = insets.top + fm.getAscent();
+  @Override
+  public void paint(Graphics g) {
+    if (this.hasFocus()) {
+      super.paint(g);
+    } else {
+      GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics(g);
+      gc.pushAndSetTextAntialiasing(true);
+      gc.pushFont();
+      gc.pushPaint();
+      Color backgroundColor = this.getParent().getBackground();
+      if (this.buttonModel.isRollover()) {
+        backgroundColor = ColorUtilities.scaleHSB(backgroundColor, 1.0, 0.9, 0.9);
+      }
+      g.setColor(backgroundColor);
+      g.fillRect(0, 0, this.getWidth(), this.getHeight());
+      g.setColor(this.getForeground());
+      g.setFont(this.getFont());
+      FontMetrics fm = g.getFontMetrics();
+      Insets insets = this.getInsets();
+      ComponentOrientation componentOrientation = this.getComponentOrientation();
+      String text = this.getText();
+      int x;
+      if (componentOrientation.isLeftToRight()) {
+        x = insets.left;
+      } else {
+        x = this.getWidth() - insets.right;
+        Rectangle2D bounds = fm.getStringBounds(text, g);
+        x -= (int) (Math.ceil(bounds.getWidth()));
+      }
+      int y = insets.top + fm.getAscent();
 
-			g.drawString( text, x, y );
-			gc.popAll();
-		}
-	}
+      g.drawString(text, x, y);
+      gc.popAll();
+    }
+  }
 
-	private final AWTEventListener globalListener = new AWTEventListener() {
-		@Override
-		public void eventDispatched( AWTEvent e ) {
-			if( e instanceof MouseEvent ) {
-				MouseEvent mouseEvent = (MouseEvent)e;
-				if( mouseEvent.getID() == MouseEvent.MOUSE_PRESSED ) {
-					if( mouseEvent.getComponent() == JSubdudeTextField.this ) {
-						//pass
-						Logger.outln( mouseEvent );
-					} else {
-						transferFocus();
-					}
-				}
-			}
-		}
-	};
+  private final AWTEventListener globalListener = new AWTEventListener() {
+    @Override
+    public void eventDispatched(AWTEvent e) {
+      if (e instanceof MouseEvent) {
+        MouseEvent mouseEvent = (MouseEvent) e;
+        if (mouseEvent.getID() == MouseEvent.MOUSE_PRESSED) {
+          if (mouseEvent.getComponent() == JSubdudeTextField.this) {
+            //pass
+            Logger.outln(mouseEvent);
+          } else {
+            transferFocus();
+          }
+        }
+      }
+    }
+  };
 
-	private final FocusListener focusListener = new FocusListener() {
-		@Override
-		public void focusGained( FocusEvent e ) {
-			Toolkit.getDefaultToolkit().addAWTEventListener( globalListener, AWTEvent.MOUSE_EVENT_MASK );
-		}
+  private final FocusListener focusListener = new FocusListener() {
+    @Override
+    public void focusGained(FocusEvent e) {
+      Toolkit.getDefaultToolkit().addAWTEventListener(globalListener, AWTEvent.MOUSE_EVENT_MASK);
+    }
 
-		@Override
-		public void focusLost( FocusEvent e ) {
-			Toolkit.getDefaultToolkit().removeAWTEventListener( globalListener );
-		}
-	};
+    @Override
+    public void focusLost(FocusEvent e) {
+      Toolkit.getDefaultToolkit().removeAWTEventListener(globalListener);
+    }
+  };
 
-	private final MouseListener mouseListener = new MouseListener() {
-		@Override
-		public void mouseEntered( MouseEvent e ) {
-			buttonModel.setRollover( true );
-			repaint();
-		}
+  private final MouseListener mouseListener = new MouseListener() {
+    @Override
+    public void mouseEntered(MouseEvent e) {
+      buttonModel.setRollover(true);
+      repaint();
+    }
 
-		@Override
-		public void mouseExited( MouseEvent e ) {
-			buttonModel.setRollover( false );
-			repaint();
-		}
+    @Override
+    public void mouseExited(MouseEvent e) {
+      buttonModel.setRollover(false);
+      repaint();
+    }
 
-		@Override
-		public void mousePressed( MouseEvent e ) {
-		}
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseReleased( MouseEvent e ) {
-		}
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseClicked( MouseEvent e ) {
-		}
-	};
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+  };
 
-	private final Action transferFocusAction = new AbstractAction() {
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			transferFocus();
-		}
-	};
+  private final Action transferFocusAction = new AbstractAction() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      transferFocus();
+    }
+  };
 
-	private final DocumentListener documentListener = new DocumentListener() {
-		private void update() {
-			Container parent = getParent();
-			if( parent instanceof JComponent ) {
-				( (JComponent)parent ).revalidate();
-				parent.repaint();
-			}
-		}
+  private final DocumentListener documentListener = new DocumentListener() {
+    private void update() {
+      Container parent = getParent();
+      if (parent instanceof JComponent) {
+        ((JComponent) parent).revalidate();
+        parent.repaint();
+      }
+    }
 
-		@Override
-		public void changedUpdate( DocumentEvent e ) {
-			this.update();
-		}
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+      this.update();
+    }
 
-		@Override
-		public void insertUpdate( DocumentEvent e ) {
-			this.update();
-		}
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+      this.update();
+    }
 
-		@Override
-		public void removeUpdate( DocumentEvent e ) {
-			this.update();
-		}
-	};
-	private final ButtonModel buttonModel = new DefaultButtonModel();
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+      this.update();
+    }
+  };
+  private final ButtonModel buttonModel = new DefaultButtonModel();
 }

@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitPunk implements MaleAdultFullBodyOutfit {
-	RED,
-	PLAIN,
-	GREEN,
-	DENIM;
+  RED, PLAIN, GREEN, DENIM
 
 }

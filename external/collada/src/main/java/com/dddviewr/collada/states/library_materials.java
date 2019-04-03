@@ -8,15 +8,15 @@ import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.materials.LibraryMaterials;
 
 public class library_materials extends State {
-	protected LibraryMaterials library = new LibraryMaterials();
+  protected LibraryMaterials library = new LibraryMaterials();
 
-	public void init(String name, Attributes attrs, StateManager mngr) {
-		super.init(name, attrs, mngr);
-		Collada collada = ((COLLADA) getParent()).getCollada();
-		collada.setLibraryMaterials(this.library);
-	}
+  public void init(String name, Attributes attrs, StateManager mngr) {
+    super.init(name, attrs, mngr);
+    Collada collada = ((COLLADA) getParent()).getCollada();
+    collada.setLibraryMaterials(this.library);
+  }
 
-	public LibraryMaterials getLibrary() {
-		return this.library;
-	}
+  public LibraryMaterials getLibrary() {
+    return this.library;
+  }
 }

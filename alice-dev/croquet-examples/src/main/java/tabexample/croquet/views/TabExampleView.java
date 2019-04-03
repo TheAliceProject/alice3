@@ -49,8 +49,8 @@ import tabexample.croquet.TabExampleComposite;
  * @author Dennis Cosgrove
  */
 public class TabExampleView extends BorderPanel {
-	public TabExampleView( TabExampleComposite composite ) {
-		super( composite );
-		this.addCenterComponent( composite.getTabState().createFolderTabbedPane() );
-	}
+  public TabExampleView(TabExampleComposite composite) {
+    super(composite);
+    this.addCenterComponent(composite.getTabState().createFolderTabbedPane());
+  }
 }

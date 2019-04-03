@@ -67,436 +67,434 @@ import edu.cmu.cs.dennisc.xml.XMLUtilities;
  *
  */
 public class ModelResourceInfo {
-	private final AxisAlignedBox boundingBox;
-	private final int creationYear;
-	private final String creator;
-	private final String resourceName;
-	private final String modelName;
-	private final String textureName;
-	private final boolean isDeprecated;
-	private final boolean placeOnGround;
-	private ModelResourceInfo parentInfo = null;
-	private final List<ModelResourceInfo> subResources = new LinkedList<ModelResourceInfo>();
+  private final AxisAlignedBox boundingBox;
+  private final int creationYear;
+  private final String creator;
+  private final String resourceName;
+  private final String modelName;
+  private final String textureName;
+  private final boolean isDeprecated;
+  private final boolean placeOnGround;
+  private ModelResourceInfo parentInfo = null;
+  private final List<ModelResourceInfo> subResources = new LinkedList<ModelResourceInfo>();
 
-	private final String[] tags;
-	private final String[] groupTags;
-	private final String[] themeTags;
+  private final String[] tags;
+  private final String[] groupTags;
+  private final String[] themeTags;
 
-	private static AxisAlignedBox getBoundingBoxFromXML( Element bboxElement ) {
-		if( bboxElement != null ) {
-			Element min = (Element)bboxElement.getElementsByTagName( "Min" ).item( 0 );
-			Element max = (Element)bboxElement.getElementsByTagName( "Max" ).item( 0 );
+  private static AxisAlignedBox getBoundingBoxFromXML(Element bboxElement) {
+    if (bboxElement != null) {
+      Element min = (Element) bboxElement.getElementsByTagName("Min").item(0);
+      Element max = (Element) bboxElement.getElementsByTagName("Max").item(0);
 
-			double minX = Double.parseDouble( min.getAttribute( "x" ) );
-			double minY = Double.parseDouble( min.getAttribute( "y" ) );
-			double minZ = Double.parseDouble( min.getAttribute( "z" ) );
+      double minX = Double.parseDouble(min.getAttribute("x"));
+      double minY = Double.parseDouble(min.getAttribute("y"));
+      double minZ = Double.parseDouble(min.getAttribute("z"));
 
-			double maxX = Double.parseDouble( max.getAttribute( "x" ) );
-			double maxY = Double.parseDouble( max.getAttribute( "y" ) );
-			double maxZ = Double.parseDouble( max.getAttribute( "z" ) );
+      double maxX = Double.parseDouble(max.getAttribute("x"));
+      double maxY = Double.parseDouble(max.getAttribute("y"));
+      double maxZ = Double.parseDouble(max.getAttribute("z"));
 
-			AxisAlignedBox bbox = new AxisAlignedBox( minX, minY, minZ, maxX, maxY, maxZ );
+      AxisAlignedBox bbox = new AxisAlignedBox(minX, minY, minZ, maxX, maxY, maxZ);
 
-			return bbox;
-		}
+      return bbox;
+    }
 
-		return null;
-	}
+    return null;
+  }
 
-	private static ModelResourceInfo getSubResourceFromXML( Element resourceElement, ModelResourceInfo parent ) {
-		if( resourceElement != null ) {
-			AxisAlignedBox bbox = null;
-			NodeList bboxNodeList = resourceElement.getElementsByTagName( "BoundingBox" );
-			if( bboxNodeList.getLength() > 0 ) {
-				bbox = getBoundingBoxFromXML( (Element)bboxNodeList.item( 0 ) );
-			}
-			String modelName = null;
-			if( resourceElement.hasAttribute( "modelName" ) ) {
-				modelName = resourceElement.getAttribute( "modelName" );
-			}
-			String textureName = null;
-			if( resourceElement.hasAttribute( "textureName" ) ) {
-				textureName = resourceElement.getAttribute( "textureName" );
-			}
-			String resourceName = null;
-			if( resourceElement.hasAttribute( "resourceName" ) ) {
-				resourceName = resourceElement.getAttribute( "resourceName" );
-			}
-			String creatorName = null;
-			if( resourceElement.hasAttribute( "creator" ) ) {
-				creatorName = resourceElement.getAttribute( "creator" );
-			}
-			int creationYearTemp = -1;
-			if( resourceElement.hasAttribute( "creationYear" ) ) {
-				try {
-					creationYearTemp = Integer.parseInt( resourceElement.getAttribute( "creationYear" ) );
-				} catch( Exception e ) {
-				}
-			}
-			boolean isDeprecated = false;
-			if( resourceElement.hasAttribute( "deprecated" ) ) {
-				try {
-					isDeprecated = Boolean.parseBoolean( resourceElement.getAttribute( "deprecated" ) );
-				} catch( Exception e ) {
-				}
-			}
-			boolean placeOnGround = false;
-			if( resourceElement.hasAttribute( "placeOnGround" ) ) {
-				try {
-					placeOnGround = Boolean.parseBoolean( resourceElement.getAttribute( "placeOnGround" ) );
-				} catch( Exception e ) {
-				}
-			}
-			int creationYear = creationYearTemp;
-			LinkedList<String> tagList = new LinkedList<String>();
-			NodeList tagNodeList = resourceElement.getElementsByTagName( "Tag" );
-			for( int i = 0; i < tagNodeList.getLength(); i++ ) {
-				tagList.add( tagNodeList.item( i ).getTextContent() );
-			}
-			String[] tags = tagList.toArray( new String[ tagList.size() ] );
+  private static ModelResourceInfo getSubResourceFromXML(Element resourceElement, ModelResourceInfo parent) {
+    if (resourceElement != null) {
+      AxisAlignedBox bbox = null;
+      NodeList bboxNodeList = resourceElement.getElementsByTagName("BoundingBox");
+      if (bboxNodeList.getLength() > 0) {
+        bbox = getBoundingBoxFromXML((Element) bboxNodeList.item(0));
+      }
+      String modelName = null;
+      if (resourceElement.hasAttribute("modelName")) {
+        modelName = resourceElement.getAttribute("modelName");
+      }
+      String textureName = null;
+      if (resourceElement.hasAttribute("textureName")) {
+        textureName = resourceElement.getAttribute("textureName");
+      }
+      String resourceName = null;
+      if (resourceElement.hasAttribute("resourceName")) {
+        resourceName = resourceElement.getAttribute("resourceName");
+      }
+      String creatorName = null;
+      if (resourceElement.hasAttribute("creator")) {
+        creatorName = resourceElement.getAttribute("creator");
+      }
+      int creationYearTemp = -1;
+      if (resourceElement.hasAttribute("creationYear")) {
+        try {
+          creationYearTemp = Integer.parseInt(resourceElement.getAttribute("creationYear"));
+        } catch (Exception e) {
+        }
+      }
+      boolean isDeprecated = false;
+      if (resourceElement.hasAttribute("deprecated")) {
+        try {
+          isDeprecated = Boolean.parseBoolean(resourceElement.getAttribute("deprecated"));
+        } catch (Exception e) {
+        }
+      }
+      boolean placeOnGround = false;
+      if (resourceElement.hasAttribute("placeOnGround")) {
+        try {
+          placeOnGround = Boolean.parseBoolean(resourceElement.getAttribute("placeOnGround"));
+        } catch (Exception e) {
+        }
+      }
+      int creationYear = creationYearTemp;
+      LinkedList<String> tagList = new LinkedList<String>();
+      NodeList tagNodeList = resourceElement.getElementsByTagName("Tag");
+      for (int i = 0; i < tagNodeList.getLength(); i++) {
+        tagList.add(tagNodeList.item(i).getTextContent());
+      }
+      String[] tags = tagList.toArray(new String[tagList.size()]);
 
-			LinkedList<String> groupTagList = new LinkedList<String>();
-			NodeList groupTagNodeList = resourceElement.getElementsByTagName( "GroupTag" );
-			for( int i = 0; i < groupTagNodeList.getLength(); i++ ) {
-				groupTagList.add( groupTagNodeList.item( i ).getTextContent() );
-			}
-			String[] groupTags = groupTagList.toArray( new String[ groupTagList.size() ] );
+      LinkedList<String> groupTagList = new LinkedList<String>();
+      NodeList groupTagNodeList = resourceElement.getElementsByTagName("GroupTag");
+      for (int i = 0; i < groupTagNodeList.getLength(); i++) {
+        groupTagList.add(groupTagNodeList.item(i).getTextContent());
+      }
+      String[] groupTags = groupTagList.toArray(new String[groupTagList.size()]);
 
-			LinkedList<String> themeTagList = new LinkedList<String>();
-			NodeList themeTagNodeList = resourceElement.getElementsByTagName( "ThemeTag" );
-			for( int i = 0; i < themeTagNodeList.getLength(); i++ ) {
-				themeTagList.add( themeTagNodeList.item( i ).getTextContent() );
-			}
-			String[] themeTags = themeTagList.toArray( new String[ themeTagList.size() ] );
+      LinkedList<String> themeTagList = new LinkedList<String>();
+      NodeList themeTagNodeList = resourceElement.getElementsByTagName("ThemeTag");
+      for (int i = 0; i < themeTagNodeList.getLength(); i++) {
+        themeTagList.add(themeTagNodeList.item(i).getTextContent());
+      }
+      String[] themeTags = themeTagList.toArray(new String[themeTagList.size()]);
 
-			ModelResourceInfo resource = new ModelResourceInfo( parent, resourceName, creatorName, creationYear, bbox, tags, groupTags, themeTags, modelName, textureName, isDeprecated, placeOnGround );
-			return resource;
-		}
+      ModelResourceInfo resource = new ModelResourceInfo(parent, resourceName, creatorName, creationYear, bbox, tags, groupTags, themeTags, modelName, textureName, isDeprecated, placeOnGround);
+      return resource;
+    }
 
-		return null;
-	}
+    return null;
+  }
 
-	public ModelResourceInfo( ModelResourceInfo parent, String resourceName, String creator, int creationYear, AxisAlignedBox boundingBox, String[] tags, String[] groupTags, String[] themeTags, String modelName, String textureName, boolean isDeprecated, boolean placeOnGround ) {
-		this.parentInfo = parent;
-		this.resourceName = resourceName;
-		this.creator = creator;
-		this.creationYear = creationYear;
-		this.boundingBox = boundingBox;
-		this.tags = tags;
-		this.textureName = textureName;
-		this.modelName = modelName;
-		this.groupTags = groupTags;
-		this.themeTags = themeTags;
-		this.isDeprecated = isDeprecated;
-		this.placeOnGround = placeOnGround;
-	}
+  public ModelResourceInfo(ModelResourceInfo parent, String resourceName, String creator, int creationYear, AxisAlignedBox boundingBox, String[] tags, String[] groupTags, String[] themeTags, String modelName, String textureName, boolean isDeprecated, boolean placeOnGround) {
+    this.parentInfo = parent;
+    this.resourceName = resourceName;
+    this.creator = creator;
+    this.creationYear = creationYear;
+    this.boundingBox = boundingBox;
+    this.tags = tags;
+    this.textureName = textureName;
+    this.modelName = modelName;
+    this.groupTags = groupTags;
+    this.themeTags = themeTags;
+    this.isDeprecated = isDeprecated;
+    this.placeOnGround = placeOnGround;
+  }
 
-	public ModelResourceInfo createShallowCopy() {
-		return new ModelResourceInfo( null, resourceName, creator, creationYear, boundingBox, tags, groupTags, themeTags, modelName, textureName, isDeprecated, placeOnGround );
-	}
+  public ModelResourceInfo createShallowCopy() {
+    return new ModelResourceInfo(null, resourceName, creator, creationYear, boundingBox, tags, groupTags, themeTags, modelName, textureName, isDeprecated, placeOnGround);
+  }
 
-	private static List<Element> getImmediateChildElementsByTagName( Element node, String tagName ) {
-		List<Element> elements = new LinkedList<Element>();
-		NodeList children = node.getChildNodes();
-		for( int i = 0; i < children.getLength(); i++ ) {
-			Node child = children.item( i );
-			if( ( child instanceof Element ) && child.getNodeName().equals( tagName ) ) {
-				elements.add( (Element)child );
-			}
-		}
-		return elements;
-	}
+  private static List<Element> getImmediateChildElementsByTagName(Element node, String tagName) {
+    List<Element> elements = new LinkedList<Element>();
+    NodeList children = node.getChildNodes();
+    for (int i = 0; i < children.getLength(); i++) {
+      Node child = children.item(i);
+      if ((child instanceof Element) && child.getNodeName().equals(tagName)) {
+        elements.add((Element) child);
+      }
+    }
+    return elements;
+  }
 
-	public ModelResourceInfo( Document xmlDoc ) {
-		Element modelElement = xmlDoc.getDocumentElement();
-		if( !modelElement.getNodeName().equals( "AliceModel" ) ) {
-			modelElement = XMLUtilities.getSingleChildElementByTagName( xmlDoc.getDocumentElement(), "AliceModel" );
-		}
-		assert modelElement != null;
-		List<Element> bboxNodeList = getImmediateChildElementsByTagName( modelElement, "BoundingBox" );
-		if( bboxNodeList.size() > 0 ) {
-			this.boundingBox = getBoundingBoxFromXML( bboxNodeList.get( 0 ) );
-		} else {
-			this.boundingBox = new AxisAlignedBox();
-		}
-		this.modelName = modelElement.getAttribute( "name" );
-		this.creator = modelElement.getAttribute( "creator" );
-		int creationYearTemp = -1;
-		try {
-			creationYearTemp = Integer.parseInt( modelElement.getAttribute( "creationYear" ) );
-		} catch( Exception e ) {
-		}
-		this.creationYear = creationYearTemp;
+  public ModelResourceInfo(Document xmlDoc) {
+    Element modelElement = xmlDoc.getDocumentElement();
+    if (!modelElement.getNodeName().equals("AliceModel")) {
+      modelElement = XMLUtilities.getSingleChildElementByTagName(xmlDoc.getDocumentElement(), "AliceModel");
+    }
+    assert modelElement != null;
+    List<Element> bboxNodeList = getImmediateChildElementsByTagName(modelElement, "BoundingBox");
+    if (bboxNodeList.size() > 0) {
+      this.boundingBox = getBoundingBoxFromXML(bboxNodeList.get(0));
+    } else {
+      this.boundingBox = new AxisAlignedBox();
+    }
+    this.modelName = modelElement.getAttribute("name");
+    this.creator = modelElement.getAttribute("creator");
+    int creationYearTemp = -1;
+    try {
+      creationYearTemp = Integer.parseInt(modelElement.getAttribute("creationYear"));
+    } catch (Exception e) {
+    }
+    this.creationYear = creationYearTemp;
 
-		boolean isDeprecatedTemp = false;
-		try {
-			isDeprecatedTemp = Boolean.parseBoolean( modelElement.getAttribute( "deprecated" ) );
-		} catch( Exception e ) {
-		}
-		this.isDeprecated = isDeprecatedTemp;
+    boolean isDeprecatedTemp = false;
+    try {
+      isDeprecatedTemp = Boolean.parseBoolean(modelElement.getAttribute("deprecated"));
+    } catch (Exception e) {
+    }
+    this.isDeprecated = isDeprecatedTemp;
 
-		boolean placeOnGroundTemp = false;
-		try {
-			placeOnGroundTemp = Boolean.parseBoolean( modelElement.getAttribute( "placeOnGround" ) );
-		} catch( Exception e ) {
-		}
-		this.placeOnGround = placeOnGroundTemp;
+    boolean placeOnGroundTemp = false;
+    try {
+      placeOnGroundTemp = Boolean.parseBoolean(modelElement.getAttribute("placeOnGround"));
+    } catch (Exception e) {
+    }
+    this.placeOnGround = placeOnGroundTemp;
 
-		LinkedList<String> tagList = new LinkedList<String>();
-		List<Element> tagsElementList = getImmediateChildElementsByTagName( modelElement, "Tags" );
-		for( Element tagsElement : tagsElementList ) {
-			List<Element> tagElementList = getImmediateChildElementsByTagName( tagsElement, "Tag" );
-			for( Element tagElement : tagElementList ) {
-				tagList.add( tagElement.getTextContent() );
-			}
-		}
-		this.tags = tagList.toArray( new String[ tagList.size() ] );
+    LinkedList<String> tagList = new LinkedList<String>();
+    List<Element> tagsElementList = getImmediateChildElementsByTagName(modelElement, "Tags");
+    for (Element tagsElement : tagsElementList) {
+      List<Element> tagElementList = getImmediateChildElementsByTagName(tagsElement, "Tag");
+      for (Element tagElement : tagElementList) {
+        tagList.add(tagElement.getTextContent());
+      }
+    }
+    this.tags = tagList.toArray(new String[tagList.size()]);
 
-		LinkedList<String> groupTagList = new LinkedList<String>();
-		List<Element> groupTagsElementList = getImmediateChildElementsByTagName( modelElement, "GroupTags" );
-		for( Element groupTagsElement : groupTagsElementList ) {
-			List<Element> groupTagElementList = getImmediateChildElementsByTagName( groupTagsElement, "GroupTag" );
-			for( Element grouptagElement : groupTagElementList ) {
-				groupTagList.add( grouptagElement.getTextContent() );
-			}
-		}
-		this.groupTags = groupTagList.toArray( new String[ groupTagList.size() ] );
+    LinkedList<String> groupTagList = new LinkedList<String>();
+    List<Element> groupTagsElementList = getImmediateChildElementsByTagName(modelElement, "GroupTags");
+    for (Element groupTagsElement : groupTagsElementList) {
+      List<Element> groupTagElementList = getImmediateChildElementsByTagName(groupTagsElement, "GroupTag");
+      for (Element grouptagElement : groupTagElementList) {
+        groupTagList.add(grouptagElement.getTextContent());
+      }
+    }
+    this.groupTags = groupTagList.toArray(new String[groupTagList.size()]);
 
-		LinkedList<String> themeTagList = new LinkedList<String>();
-		List<Element> themeTagsElementList = getImmediateChildElementsByTagName( modelElement, "ThemeTags" );
-		for( Element themeTagsElement : themeTagsElementList ) {
-			List<Element> themeTagElementList = getImmediateChildElementsByTagName( themeTagsElement, "ThemeTag" );
-			for( Element themeTagElement : themeTagElementList ) {
-				themeTagList.add( themeTagElement.getTextContent() );
-			}
-		}
-		this.themeTags = themeTagList.toArray( new String[ themeTagList.size() ] );
+    LinkedList<String> themeTagList = new LinkedList<String>();
+    List<Element> themeTagsElementList = getImmediateChildElementsByTagName(modelElement, "ThemeTags");
+    for (Element themeTagsElement : themeTagsElementList) {
+      List<Element> themeTagElementList = getImmediateChildElementsByTagName(themeTagsElement, "ThemeTag");
+      for (Element themeTagElement : themeTagElementList) {
+        themeTagList.add(themeTagElement.getTextContent());
+      }
+    }
+    this.themeTags = themeTagList.toArray(new String[themeTagList.size()]);
 
-		List<Element> subResourcesList = getImmediateChildElementsByTagName( modelElement, "Resource" );
-		for( Element subResourceElement : subResourcesList ) {
-			ModelResourceInfo subResource = getSubResourceFromXML( subResourceElement, this );
-			if( subResource != null ) {
-				subResources.add( subResource );
-			} else {
-				Logger.severe( "Failed to make sub resource for " + subResourceElement );
-			}
-		}
-		this.textureName = null;
-		this.resourceName = null;
-		this.parentInfo = null;
-	}
+    List<Element> subResourcesList = getImmediateChildElementsByTagName(modelElement, "Resource");
+    for (Element subResourceElement : subResourcesList) {
+      ModelResourceInfo subResource = getSubResourceFromXML(subResourceElement, this);
+      if (subResource != null) {
+        subResources.add(subResource);
+      } else {
+        Logger.severe("Failed to make sub resource for " + subResourceElement);
+      }
+    }
+    this.textureName = null;
+    this.resourceName = null;
+    this.parentInfo = null;
+  }
 
-	public void addSubResource( ModelResourceInfo subResource ) {
-		subResources.add(subResource);
-		subResource.parentInfo = this;
-	}
+  public void addSubResource(ModelResourceInfo subResource) {
+    subResources.add(subResource);
+    subResource.parentInfo = this;
+  }
 
-	public AxisAlignedBox getBoundingBox() {
-		if( ( this.boundingBox == null ) && ( parentInfo != null ) ) {
-			return this.parentInfo.boundingBox;
-		}
-		return boundingBox;
-	}
+  public AxisAlignedBox getBoundingBox() {
+    if ((this.boundingBox == null) && (parentInfo != null)) {
+      return this.parentInfo.boundingBox;
+    }
+    return boundingBox;
+  }
 
-	public int getCreationYear() {
-		if( ( this.creationYear == -1 ) && ( parentInfo != null ) ) {
-			return this.parentInfo.creationYear;
-		}
-		return creationYear;
-	}
+  public int getCreationYear() {
+    if ((this.creationYear == -1) && (parentInfo != null)) {
+      return this.parentInfo.creationYear;
+    }
+    return creationYear;
+  }
 
-	public String getCreator() {
-		if( ( this.creator == null ) && ( parentInfo != null ) ) {
-			return this.parentInfo.creator;
-		}
-		return creator;
-	}
+  public String getCreator() {
+    if ((this.creator == null) && (parentInfo != null)) {
+      return this.parentInfo.creator;
+    }
+    return creator;
+  }
 
-	public String getResourceName() {
-		if( ( this.resourceName == null ) && ( parentInfo != null ) ) {
-			return this.parentInfo.resourceName;
-		}
-		return resourceName;
-	}
+  public String getResourceName() {
+    if ((this.resourceName == null) && (parentInfo != null)) {
+      return this.parentInfo.resourceName;
+    }
+    return resourceName;
+  }
 
-	public String getModelName() {
-		if( ( this.modelName == null ) && ( parentInfo != null ) ) {
-			return this.parentInfo.modelName;
-		}
-		return modelName;
-	}
+  public String getModelName() {
+    if ((this.modelName == null) && (parentInfo != null)) {
+      return this.parentInfo.modelName;
+    }
+    return modelName;
+  }
 
-	public String getTextureName() {
-		if( ( this.textureName == null ) && ( parentInfo != null ) ) {
-			return this.parentInfo.textureName;
-		}
-		return textureName;
-	}
+  public String getTextureName() {
+    if ((this.textureName == null) && (parentInfo != null)) {
+      return this.parentInfo.textureName;
+    }
+    return textureName;
+  }
 
-	public boolean getPlaceOnGround() {
-		if( ( this.placeOnGround == false ) && ( parentInfo != null ) ) {
-			return this.parentInfo.placeOnGround;
-		}
-		return this.placeOnGround;
-	}
+  public boolean getPlaceOnGround() {
+    if ((this.placeOnGround == false) && (parentInfo != null)) {
+      return this.parentInfo.placeOnGround;
+    }
+    return this.placeOnGround;
+  }
 
-	public String[] getTags() {
-		if( this.parentInfo != null ) {
-			String[] allTags = new String[ this.tags.length + this.parentInfo.tags.length ];
-			if( this.parentInfo.tags.length > 0 ) {
-				System.arraycopy( this.parentInfo.tags, 0, allTags, 0, this.parentInfo.tags.length );
-			}
-			if( this.tags.length > 0 ) {
-				System.arraycopy( this.tags, 0, allTags, this.parentInfo.tags.length, this.tags.length );
-			}
-			return allTags;
-		}
-		return tags;
-	}
+  public String[] getTags() {
+    if (this.parentInfo != null) {
+      String[] allTags = new String[this.tags.length + this.parentInfo.tags.length];
+      if (this.parentInfo.tags.length > 0) {
+        System.arraycopy(this.parentInfo.tags, 0, allTags, 0, this.parentInfo.tags.length);
+      }
+      if (this.tags.length > 0) {
+        System.arraycopy(this.tags, 0, allTags, this.parentInfo.tags.length, this.tags.length);
+      }
+      return allTags;
+    }
+    return tags;
+  }
 
-	public String[] getGroupTags() {
-		if( this.parentInfo != null ) {
-			String[] allTags = new String[ this.groupTags.length + this.parentInfo.groupTags.length ];
-			if( this.parentInfo.groupTags.length > 0 ) {
-				System.arraycopy( this.parentInfo.groupTags, 0, allTags, 0, this.parentInfo.groupTags.length );
-			}
-			if( this.groupTags.length > 0 ) {
-				System.arraycopy( this.groupTags, 0, allTags, this.parentInfo.groupTags.length, this.groupTags.length );
-			}
-			return allTags;
-		}
-		return groupTags;
-	}
+  public String[] getGroupTags() {
+    if (this.parentInfo != null) {
+      String[] allTags = new String[this.groupTags.length + this.parentInfo.groupTags.length];
+      if (this.parentInfo.groupTags.length > 0) {
+        System.arraycopy(this.parentInfo.groupTags, 0, allTags, 0, this.parentInfo.groupTags.length);
+      }
+      if (this.groupTags.length > 0) {
+        System.arraycopy(this.groupTags, 0, allTags, this.parentInfo.groupTags.length, this.groupTags.length);
+      }
+      return allTags;
+    }
+    return groupTags;
+  }
 
-	public String[] getThemeTags() {
-		if( this.parentInfo != null ) {
-			String[] allTags = new String[ this.themeTags.length + this.parentInfo.themeTags.length ];
-			if( this.parentInfo.themeTags.length > 0 ) {
-				System.arraycopy( this.parentInfo.themeTags, 0, allTags, 0, this.parentInfo.themeTags.length );
-			}
-			if( this.themeTags.length > 0 ) {
-				System.arraycopy( this.themeTags, 0, allTags, this.parentInfo.themeTags.length, this.themeTags.length );
-			}
-			return allTags;
-		}
-		return themeTags;
-	}
+  public String[] getThemeTags() {
+    if (this.parentInfo != null) {
+      String[] allTags = new String[this.themeTags.length + this.parentInfo.themeTags.length];
+      if (this.parentInfo.themeTags.length > 0) {
+        System.arraycopy(this.parentInfo.themeTags, 0, allTags, 0, this.parentInfo.themeTags.length);
+      }
+      if (this.themeTags.length > 0) {
+        System.arraycopy(this.themeTags, 0, allTags, this.parentInfo.themeTags.length, this.themeTags.length);
+      }
+      return allTags;
+    }
+    return themeTags;
+  }
 
-	public List<ModelResourceInfo> getSubResources() {
-		return subResources;
-	}
+  public List<ModelResourceInfo> getSubResources() {
+    return subResources;
+  }
 
-	public boolean matchesModelAndTexture(String modelName, String textureName) {
-		String thisModel = getModelName();
-		String thisTexture = getTextureName();
-		return ( ( thisModel != null ) && thisModel.equalsIgnoreCase( modelName ) &&
-				( thisTexture != null ) && thisTexture.equalsIgnoreCase( textureName ) );
-	}
+  public boolean matchesModelAndTexture(String modelName, String textureName) {
+    String thisModel = getModelName();
+    String thisTexture = getTextureName();
+    return ((thisModel != null) && thisModel.equalsIgnoreCase(modelName) && (thisTexture != null) && thisTexture.equalsIgnoreCase(textureName));
+  }
 
-	public boolean matchesResource(String resourceName) {
-		String resource = getResourceName();
-		return ( resource != null ) && resource.equalsIgnoreCase( resourceName );
-	}
+  public boolean matchesResource(String resourceName) {
+    String resource = getResourceName();
+    return (resource != null) && resource.equalsIgnoreCase(resourceName);
+  }
 
-	public ModelResourceInfo getSubResource( String modelName, String textureName ) {
-		for( ModelResourceInfo mri : this.subResources ) {
-			if( mri.matchesModelAndTexture(modelName, textureName)) {
-				return mri;
-			}
-		}
-		return null;
-	}
+  public ModelResourceInfo getSubResource(String modelName, String textureName) {
+    for (ModelResourceInfo mri : this.subResources) {
+      if (mri.matchesModelAndTexture(modelName, textureName)) {
+        return mri;
+      }
+    }
+    return null;
+  }
 
-	public ModelResourceInfo getSubResource( String resourceName ) {
-		for( ModelResourceInfo mri : this.subResources ) {
-			if( mri.matchesResource(resourceName) ) {
-				return mri;
-			}
-		}
-		return null;
-	}
+  public ModelResourceInfo getSubResource(String resourceName) {
+    for (ModelResourceInfo mri : this.subResources) {
+      if (mri.matchesResource(resourceName)) {
+        return mri;
+      }
+    }
+    return null;
+  }
 
-	public ModelResourceInfo getParent() {
-		return parentInfo;
-	}
+  public ModelResourceInfo getParent() {
+    return parentInfo;
+  }
 
-	public ModelManifest createModelManifest() {
-		ModelManifest manifest = new ModelManifest();
+  public ModelManifest createModelManifest() {
+    ModelManifest manifest = new ModelManifest();
 
-		manifest.description.name = getModelName();
-		manifest.description.icon = getModelName()+".png";
-		manifest.description.tags.addAll(Arrays.asList(getTags()));
-		manifest.description.themeTags.addAll(Arrays.asList(getThemeTags()));
-		manifest.description.groupTags.addAll(Arrays.asList(getGroupTags()));
+    manifest.description.name = getModelName();
+    manifest.description.icon = getModelName() + ".png";
+    manifest.description.tags.addAll(Arrays.asList(getTags()));
+    manifest.description.themeTags.addAll(Arrays.asList(getThemeTags()));
+    manifest.description.groupTags.addAll(Arrays.asList(getGroupTags()));
 
-		manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
-		manifest.provenance.created = getCreationYear() < 0 ? ZonedDateTime.now() : Year.of( getCreationYear() );
-		manifest.provenance.creator = getCreator();
+    manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
+    manifest.provenance.created = getCreationYear() < 0 ? ZonedDateTime.now() : Year.of(getCreationYear());
+    manifest.provenance.creator = getCreator();
 
-		manifest.metadata.identifier.id = getResourceName();
-		manifest.metadata.identifier.type = Manifest.ProjectType.Model;
-		manifest.metadata.formatVersion = "0.1+alpha";
+    manifest.metadata.identifier.id = getResourceName();
+    manifest.metadata.identifier.type = Manifest.ProjectType.Model;
+    manifest.metadata.formatVersion = "0.1+alpha";
 
-		manifest.placeOnGround = getPlaceOnGround();
-		manifest.boundingBox = createManifestBoundingBox();
+    manifest.placeOnGround = getPlaceOnGround();
+    manifest.boundingBox = createManifestBoundingBox();
 
-		//Add the structures, textures, and model variants
-		for (ModelResourceInfo subResource : getSubResources()) {
-			subResource.addModelVariantInfo(manifest);
-		}
+    //Add the structures, textures, and model variants
+    for (ModelResourceInfo subResource : getSubResources()) {
+      subResource.addModelVariantInfo(manifest);
+    }
 
-		return manifest;
-	}
+    return manifest;
+  }
 
-	private  ModelManifest.BoundingBox createManifestBoundingBox() {
-		ModelManifest.BoundingBox boundingBox = new ModelManifest.BoundingBox();
-		boundingBox.max = getBoundingBox().getMaximum().getAsFloatList();
-		boundingBox.min = getBoundingBox().getMinimum().getAsFloatList();
-		return boundingBox;
-	}
+  private ModelManifest.BoundingBox createManifestBoundingBox() {
+    ModelManifest.BoundingBox boundingBox = new ModelManifest.BoundingBox();
+    boundingBox.max = getBoundingBox().getMaximum().getAsFloatList();
+    boundingBox.min = getBoundingBox().getMinimum().getAsFloatList();
+    return boundingBox;
+  }
 
-	private  void addModelVariantInfo(ModelManifest manifest) {
-		StructureReference structure = createStructureReference();
-		ModelManifest.TextureSet textureSet = createTextureSet();
-		//Only add the structures and textures if they aren't already in the manifest
-		//Multiple resources may reference the same structure or texture so repeats are likely
-		if (manifest.getStructure(structure.name) == null) {
-			manifest.resources.add(structure);
-		}
-		if (manifest.getTextureSet(textureSet.name) == null) {
-			manifest.textureSets.add(textureSet);
-		}
-		//Add the model variant. Model variants are all unique.
-		ModelManifest.ModelVariant modelVariant = createModelVariant(structure, textureSet);
-		manifest.models.add(modelVariant);
-	}
+  private void addModelVariantInfo(ModelManifest manifest) {
+    StructureReference structure = createStructureReference();
+    ModelManifest.TextureSet textureSet = createTextureSet();
+    //Only add the structures and textures if they aren't already in the manifest
+    //Multiple resources may reference the same structure or texture so repeats are likely
+    if (manifest.getStructure(structure.name) == null) {
+      manifest.resources.add(structure);
+    }
+    if (manifest.getTextureSet(textureSet.name) == null) {
+      manifest.textureSets.add(textureSet);
+    }
+    //Add the model variant. Model variants are all unique.
+    ModelManifest.ModelVariant modelVariant = createModelVariant(structure, textureSet);
+    manifest.models.add(modelVariant);
+  }
 
-	private ModelManifest.ModelVariant createModelVariant(StructureReference structure, ModelManifest.TextureSet texture) {
-		ModelManifest.ModelVariant modelVariant = new ModelManifest.ModelVariant();
-		modelVariant.name = getResourceName();
-		modelVariant.structure = structure.name;
-		modelVariant.textureSet = texture.name;
-		modelVariant.icon = getResourceName() + ".png";
-		return modelVariant;
-	}
+  private ModelManifest.ModelVariant createModelVariant(StructureReference structure, ModelManifest.TextureSet texture) {
+    ModelManifest.ModelVariant modelVariant = new ModelManifest.ModelVariant();
+    modelVariant.name = getResourceName();
+    modelVariant.structure = structure.name;
+    modelVariant.textureSet = texture.name;
+    modelVariant.icon = getResourceName() + ".png";
+    return modelVariant;
+  }
 
-	private ModelManifest.TextureSet createTextureSet() {
-		ModelManifest.TextureSet textureReference = new ModelManifest.TextureSet();
-		textureReference.name = getTextureReferenceId();
-		return textureReference;
-	}
+  private ModelManifest.TextureSet createTextureSet() {
+    ModelManifest.TextureSet textureReference = new ModelManifest.TextureSet();
+    textureReference.name = getTextureReferenceId();
+    return textureReference;
+  }
 
-	private StructureReference createStructureReference() {
-		StructureReference structureReference = new StructureReference();
-		structureReference.boundingBox = createManifestBoundingBox();
-		structureReference.name = getModelName();
-		return structureReference;
-	}
+  private StructureReference createStructureReference() {
+    StructureReference structureReference = new StructureReference();
+    structureReference.boundingBox = createManifestBoundingBox();
+    structureReference.name = getModelName();
+    return structureReference;
+  }
 
-	private String getTextureReferenceId() {
-		//Textures sets are model specific, so must prepend the model name to the id
-		return getModelName() + "_"+ getTextureName();
-	}
-
+  private String getTextureReferenceId() {
+    //Textures sets are model specific, so must prepend the model name to the id
+    return getModelName() + "_" + getTextureName();
+  }
 
 }

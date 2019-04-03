@@ -32,44 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum PotionResource implements PropResource {
-	EYEBALLS,
-	YELLOW,
-	GREEN,
-	PUCE,
-	JADE,
-	ORANGE,
-	RED,
-	RUBY,
-	SPRING_GREEN,
-	SMALL_PUCE,
-	PINK,
-	BLUE,
-	CRIMSON,
-	FUCHSIA,
-	SAPPHIRE,
-	PINE_GREEN;
+  EYEBALLS, YELLOW, GREEN, PUCE, JADE, ORANGE, RED, RUBY, SPRING_GREEN, SMALL_PUCE, PINK, BLUE, CRIMSON, FUCHSIA, SAPPHIRE, PINE_GREEN;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	PotionResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  PotionResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	PotionResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  PotionResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

@@ -49,38 +49,38 @@ import org.lgna.story.SCone;
  * @author Dennis Cosgrove
  */
 public class ConeImp extends AbstractCylinderImp {
-	public ConeImp( SCone abstraction ) {
-		this.abstraction = abstraction;
-		this.getSgCylinder().bottomRadius.setValue( 0.5 );
-		this.getSgCylinder().topRadius.setValue( 0.0 );
-		this.getSgCylinder().hasTopCap.setValue( false );
-	}
+  public ConeImp(SCone abstraction) {
+    this.abstraction = abstraction;
+    this.getSgCylinder().bottomRadius.setValue(0.5);
+    this.getSgCylinder().topRadius.setValue(0.0);
+    this.getSgCylinder().hasTopCap.setValue(false);
+  }
 
-	@Override
-	public SCone getAbstraction() {
-		return this.abstraction;
-	}
+  @Override
+  public SCone getAbstraction() {
+    return this.abstraction;
+  }
 
-	@Override
-	protected void setXZ( double xz ) {
-		this.baseRadius.setValue( xz );
-	}
+  @Override
+  protected void setXZ(double xz) {
+    this.baseRadius.setValue(xz);
+  }
 
-	@Override
-	protected double getXZ() {
-		return this.baseRadius.getValue();
-	}
+  @Override
+  protected double getXZ() {
+    return this.baseRadius.getValue();
+  }
 
-	private final SCone abstraction;
-	public final DoubleProperty baseRadius = new DoubleProperty( ConeImp.this ) {
-		@Override
-		public Double getValue() {
-			return ConeImp.this.getSgCylinder().bottomRadius.getValue();
-		}
+  private final SCone abstraction;
+  public final DoubleProperty baseRadius = new DoubleProperty(ConeImp.this) {
+    @Override
+    public Double getValue() {
+      return ConeImp.this.getSgCylinder().bottomRadius.getValue();
+    }
 
-		@Override
-		protected void handleSetValue( Double value ) {
-			ConeImp.this.getSgCylinder().bottomRadius.setValue( value );
-		}
-	};
+    @Override
+    protected void handleSetValue(Double value) {
+      ConeImp.this.getSgCylinder().bottomRadius.setValue(value);
+    }
+  };
 }

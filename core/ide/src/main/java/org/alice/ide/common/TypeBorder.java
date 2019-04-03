@@ -63,119 +63,119 @@ import java.awt.geom.GeneralPath;
  * @author Dennis Cosgrove
  */
 public class TypeBorder implements Border {
-	private static final int X_INSET = 8;
-	private static final int Y_INSET = 2;
-	private static Insets insets = new Insets( Y_INSET, X_INSET, Y_INSET, X_INSET );
-	private static Color FILL_COLOR = ThemeUtilities.getActiveTheme().getColorFor( TypeExpression.class );
-	private static Color FILL_BRIGHTER_COLOR = ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 0.5, 1.4 );
-	private static Color FILL_DARKER_COLOR = ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 1.0, 0.8 );
+  private static final int X_INSET = 8;
+  private static final int Y_INSET = 2;
+  private static Insets insets = new Insets(Y_INSET, X_INSET, Y_INSET, X_INSET);
+  private static Color FILL_COLOR = ThemeUtilities.getActiveTheme().getColorFor(TypeExpression.class);
+  private static Color FILL_BRIGHTER_COLOR = ColorUtilities.scaleHSB(FILL_COLOR, 1.0, 0.5, 1.4);
+  private static Color FILL_DARKER_COLOR = ColorUtilities.scaleHSB(FILL_COLOR, 1.0, 1.0, 0.8);
 
-	//private static java.awt.Color NULL_COLOR = java.awt.Color.RED.darker();
-	//private static java.awt.Color NULL_DARKER_COLOR = NULL_COLOR.darker();
+  //private static java.awt.Color NULL_COLOR = java.awt.Color.RED.darker();
+  //private static java.awt.Color NULL_DARKER_COLOR = NULL_COLOR.darker();
 
-	private static Color OUTLINE_COLOR = Color.GRAY;
-	private static TypeBorder singletonForUser = new TypeBorder( true );
-	private static TypeBorder singletonForJava = new TypeBorder( false );
-	private static TypeBorder singletonForNull = new TypeBorder( null );
+  private static Color OUTLINE_COLOR = Color.GRAY;
+  private static TypeBorder singletonForUser = new TypeBorder(true);
+  private static TypeBorder singletonForJava = new TypeBorder(false);
+  private static TypeBorder singletonForNull = new TypeBorder(null);
 
-	public static TypeBorder getSingletonFor( AbstractType<?, ?, ?> type ) {
-		if( type != null ) {
-			if( type instanceof NamedUserType ) {
-				return TypeBorder.singletonForUser;
-			} else {
-				return TypeBorder.singletonForJava;
-			}
-		} else {
-			return TypeBorder.singletonForNull;
-		}
-	}
+  public static TypeBorder getSingletonFor(AbstractType<?, ?, ?> type) {
+    if (type != null) {
+      if (type instanceof NamedUserType) {
+        return TypeBorder.singletonForUser;
+      } else {
+        return TypeBorder.singletonForJava;
+      }
+    } else {
+      return TypeBorder.singletonForNull;
+    }
+  }
 
-	public static TypeBorder getSingletonForUserType() {
-		return singletonForUser;
-	}
+  public static TypeBorder getSingletonForUserType() {
+    return singletonForUser;
+  }
 
-	public static TypeBorder getSingletonForJavaType() {
-		return singletonForJava;
-	}
+  public static TypeBorder getSingletonForJavaType() {
+    return singletonForJava;
+  }
 
-	public static TypeBorder getSingletonForNull() {
-		return singletonForNull;
-	}
+  public static TypeBorder getSingletonForNull() {
+    return singletonForNull;
+  }
 
-	private Boolean isDeclaredByUser;
+  private Boolean isDeclaredByUser;
 
-	private TypeBorder( Boolean isDeclaredByUser ) {
-		this.isDeclaredByUser = isDeclaredByUser;
-	}
+  private TypeBorder(Boolean isDeclaredByUser) {
+    this.isDeclaredByUser = isDeclaredByUser;
+  }
 
-	private int yPrevious = -1;
-	private int heightPrevious = -1;
-	private Paint paintPrevious = null;
+  private int yPrevious = -1;
+  private int heightPrevious = -1;
+  private Paint paintPrevious = null;
 
-	private Paint getFillPaint( Component c, int x, int y, int width, int height ) {
-		if( c.isEnabled() ) {
-			if( ( y == this.yPrevious ) && ( height == this.heightPrevious ) ) {
-				//pass
-			} else {
-				this.yPrevious = y;
-				this.heightPrevious = height;
-				if( isDeclaredByUser != null ) {
-					if( isDeclaredByUser ) {
-						this.paintPrevious = new GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_BRIGHTER_COLOR );
-					} else {
-						this.paintPrevious = new GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_DARKER_COLOR );
-					}
-				} else {
-					//this.paintPrevious = new java.awt.GradientPaint( 0, y, NULL_COLOR, 0, y + height, NULL_DARKER_COLOR );;
-					//this.paintPrevious = java.awt.Color.GRAY;
-					//this.paintPrevious = java.awt.Color.RED.darker();
-					this.paintPrevious = Color.RED;
-				}
-			}
-			return this.paintPrevious;
-		} else {
-			return Color.RED;
-		}
-	}
+  private Paint getFillPaint(Component c, int x, int y, int width, int height) {
+    if (c.isEnabled()) {
+      if ((y == this.yPrevious) && (height == this.heightPrevious)) {
+        //pass
+      } else {
+        this.yPrevious = y;
+        this.heightPrevious = height;
+        if (isDeclaredByUser != null) {
+          if (isDeclaredByUser) {
+            this.paintPrevious = new GradientPaint(0, y, FILL_COLOR, 0, y + height, FILL_BRIGHTER_COLOR);
+          } else {
+            this.paintPrevious = new GradientPaint(0, y, FILL_COLOR, 0, y + height, FILL_DARKER_COLOR);
+          }
+        } else {
+          //this.paintPrevious = new java.awt.GradientPaint( 0, y, NULL_COLOR, 0, y + height, NULL_DARKER_COLOR );;
+          //this.paintPrevious = java.awt.Color.GRAY;
+          //this.paintPrevious = java.awt.Color.RED.darker();
+          this.paintPrevious = Color.RED;
+        }
+      }
+      return this.paintPrevious;
+    } else {
+      return Color.RED;
+    }
+  }
 
-	@Override
-	public Insets getBorderInsets( Component c ) {
-		return TypeBorder.insets;
-	}
+  @Override
+  public Insets getBorderInsets(Component c) {
+    return TypeBorder.insets;
+  }
 
-	@Override
-	public boolean isBorderOpaque() {
-		return false;
-	}
+  @Override
+  public boolean isBorderOpaque() {
+    return false;
+  }
 
-	private static Shape createShape( int x, int y, int width, int height ) {
-		GeneralPath rv = new GeneralPath();
-		int x0 = x + 0;
-		int x1 = ( x0 + width ) - 1;
-		int xA = x0 + ( X_INSET / 2 );
-		int xB = x1 - ( X_INSET / 2 );
+  private static Shape createShape(int x, int y, int width, int height) {
+    GeneralPath rv = new GeneralPath();
+    int x0 = x + 0;
+    int x1 = (x0 + width) - 1;
+    int xA = x0 + (X_INSET / 2);
+    int xB = x1 - (X_INSET / 2);
 
-		int y0 = y + 0;
-		int y1 = ( y0 + height ) - 1;
-		int yC = ( y0 + y1 ) / 2;
+    int y0 = y + 0;
+    int y1 = (y0 + height) - 1;
+    int yC = (y0 + y1) / 2;
 
-		rv.moveTo( xA, y0 );
-		rv.lineTo( xB, y0 );
-		rv.lineTo( x1, yC );
-		rv.lineTo( xB, y1 );
-		rv.lineTo( xA, y1 );
-		rv.lineTo( x0, yC );
-		rv.lineTo( xA, y0 );
-		return rv;
-	}
+    rv.moveTo(xA, y0);
+    rv.lineTo(xB, y0);
+    rv.lineTo(x1, yC);
+    rv.lineTo(xB, y1);
+    rv.lineTo(xA, y1);
+    rv.lineTo(x0, yC);
+    rv.lineTo(xA, y0);
+    return rv;
+  }
 
-	@Override
-	public void paintBorder( Component c, Graphics g, int x, int y, int width, int height ) {
-		Shape shape = TypeBorder.createShape( x, y, width, height );
-		Graphics2D g2 = (Graphics2D)g;
-		g2.setPaint( getFillPaint( c, x, y, width, height ) );
-		g2.fill( shape );
-		g2.setPaint( OUTLINE_COLOR );
-		g2.draw( shape );
-	}
+  @Override
+  public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+    Shape shape = TypeBorder.createShape(x, y, width, height);
+    Graphics2D g2 = (Graphics2D) g;
+    g2.setPaint(getFillPaint(c, x, y, width, height));
+    g2.fill(shape);
+    g2.setPaint(OUTLINE_COLOR);
+    g2.draw(shape);
+  }
 }

@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenBottomPieceBoxers implements MaleTeenBottomPiece {
-	WHITE,
-	SMILEY,
-	SWIMMING_BLUE,
-	SWIMMING_GREEN,
-	SWIMMING_RED;
+  WHITE, SMILEY, SWIMMING_BLUE, SWIMMING_GREEN, SWIMMING_RED
 
 }

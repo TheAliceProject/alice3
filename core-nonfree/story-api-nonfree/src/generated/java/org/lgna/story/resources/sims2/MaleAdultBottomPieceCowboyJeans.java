@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultBottomPieceCowboyJeans implements MaleAdultBottomPiece {
-	BLUE,
-	CREAM,
-	BLACK,
-	BROWN,
-	LIGHT_BLUE;
+  BLUE, CREAM, BLACK, BROWN, LIGHT_BLUE
 
 }

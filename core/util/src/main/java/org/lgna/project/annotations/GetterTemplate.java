@@ -50,8 +50,6 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * @author Dennis Cosgrove
  */
-@Documented
-@Retention( RetentionPolicy.RUNTIME )
-public @interface GetterTemplate {
-	boolean isPersistent();
+@Documented @Retention(RetentionPolicy.RUNTIME) public @interface GetterTemplate {
+  boolean isPersistent();
 }

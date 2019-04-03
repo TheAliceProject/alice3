@@ -54,137 +54,137 @@ import java.awt.geom.GeneralPath;
  * @author Dennis Cosgrove
  */
 public class BeveledShape {
-	//todo: base colors on fill paint
-	private static final Paint HIGHLIGHT_PAINT = Color.LIGHT_GRAY;
-	private static final Paint NEUTRAL_PAINT = Color.GRAY;
-	private static final Paint SHADOW_PAINT = Color.BLACK;
+  //todo: base colors on fill paint
+  private static final Paint HIGHLIGHT_PAINT = Color.LIGHT_GRAY;
+  private static final Paint NEUTRAL_PAINT = Color.GRAY;
+  private static final Paint SHADOW_PAINT = Color.BLACK;
 
-	private static final int CAP = BasicStroke.CAP_ROUND;
-	private static final int JOIN = BasicStroke.JOIN_ROUND;
+  private static final int CAP = BasicStroke.CAP_ROUND;
+  private static final int JOIN = BasicStroke.JOIN_ROUND;
 
-	//todo: reduce visibility to private?
-	protected Shape m_base;
-	protected GeneralPath m_highlightForRaised;
-	protected GeneralPath m_neutralForRaised;
-	protected GeneralPath m_shadowForRaised;
-	protected GeneralPath m_highlightForSunken;
-	protected GeneralPath m_neutralForSunken;
-	protected GeneralPath m_shadowForSunken;
+  //todo: reduce visibility to private?
+  protected Shape m_base;
+  protected GeneralPath m_highlightForRaised;
+  protected GeneralPath m_neutralForRaised;
+  protected GeneralPath m_shadowForRaised;
+  protected GeneralPath m_highlightForSunken;
+  protected GeneralPath m_neutralForSunken;
+  protected GeneralPath m_shadowForSunken;
 
-	public BeveledShape() {
-	}
+  public BeveledShape() {
+  }
 
-	public BeveledShape( Shape base, GeneralPath highlightForRaised, GeneralPath neutralForRaised, GeneralPath shadowForRaised, GeneralPath highlightForSunken, GeneralPath neutralForSunken, GeneralPath shadowForSunken ) {
-		initialize( base, highlightForRaised, neutralForRaised, shadowForRaised, highlightForSunken, neutralForSunken, shadowForSunken );
-	}
+  public BeveledShape(Shape base, GeneralPath highlightForRaised, GeneralPath neutralForRaised, GeneralPath shadowForRaised, GeneralPath highlightForSunken, GeneralPath neutralForSunken, GeneralPath shadowForSunken) {
+    initialize(base, highlightForRaised, neutralForRaised, shadowForRaised, highlightForSunken, neutralForSunken, shadowForSunken);
+  }
 
-	public BeveledShape( Shape base, GeneralPath highlightForRaised, GeneralPath neutralForRaised, GeneralPath shadowForRaised ) {
-		initialize( base, highlightForRaised, neutralForRaised, shadowForRaised );
-	}
+  public BeveledShape(Shape base, GeneralPath highlightForRaised, GeneralPath neutralForRaised, GeneralPath shadowForRaised) {
+    initialize(base, highlightForRaised, neutralForRaised, shadowForRaised);
+  }
 
-	public Shape getBaseShape() {
-		return m_base;
-	}
+  public Shape getBaseShape() {
+    return m_base;
+  }
 
-	protected GeneralPath getPathForRaisedHighlight() {
-		return m_highlightForRaised;
-	}
+  protected GeneralPath getPathForRaisedHighlight() {
+    return m_highlightForRaised;
+  }
 
-	protected GeneralPath getPathForRaisedNeutral() {
-		return m_neutralForRaised;
-	}
+  protected GeneralPath getPathForRaisedNeutral() {
+    return m_neutralForRaised;
+  }
 
-	protected GeneralPath getPathForRaisedShadow() {
-		return m_shadowForRaised;
-	}
+  protected GeneralPath getPathForRaisedShadow() {
+    return m_shadowForRaised;
+  }
 
-	protected GeneralPath getPathForSunkenHighlight() {
-		return m_highlightForSunken;
-	}
+  protected GeneralPath getPathForSunkenHighlight() {
+    return m_highlightForSunken;
+  }
 
-	protected GeneralPath getPathForSunkenNeutral() {
-		return m_neutralForSunken;
-	}
+  protected GeneralPath getPathForSunkenNeutral() {
+    return m_neutralForSunken;
+  }
 
-	protected GeneralPath getPathForSunkenShadow() {
-		return m_shadowForSunken;
-	}
+  protected GeneralPath getPathForSunkenShadow() {
+    return m_shadowForSunken;
+  }
 
-	protected void initialize( Shape base, GeneralPath highlightForRaised, GeneralPath neutralForRaised, GeneralPath shadowForRaised, GeneralPath highlightForSunken, GeneralPath neutralForSunken, GeneralPath shadowForSunken ) {
-		m_base = base;
-		m_highlightForRaised = highlightForRaised;
-		m_neutralForRaised = neutralForRaised;
-		m_shadowForRaised = shadowForRaised;
-		m_highlightForSunken = highlightForSunken;
-		m_neutralForSunken = neutralForSunken;
-		m_shadowForSunken = shadowForSunken;
-	}
+  protected void initialize(Shape base, GeneralPath highlightForRaised, GeneralPath neutralForRaised, GeneralPath shadowForRaised, GeneralPath highlightForSunken, GeneralPath neutralForSunken, GeneralPath shadowForSunken) {
+    m_base = base;
+    m_highlightForRaised = highlightForRaised;
+    m_neutralForRaised = neutralForRaised;
+    m_shadowForRaised = shadowForRaised;
+    m_highlightForSunken = highlightForSunken;
+    m_neutralForSunken = neutralForSunken;
+    m_shadowForSunken = shadowForSunken;
+  }
 
-	protected void initialize( Shape base, GeneralPath highlightForRaised, GeneralPath neutralForRaised, GeneralPath shadowForRaised ) {
-		initialize( base, highlightForRaised, neutralForRaised, shadowForRaised, shadowForRaised, neutralForRaised, highlightForRaised );
-	}
+  protected void initialize(Shape base, GeneralPath highlightForRaised, GeneralPath neutralForRaised, GeneralPath shadowForRaised) {
+    initialize(base, highlightForRaised, neutralForRaised, shadowForRaised, shadowForRaised, neutralForRaised, highlightForRaised);
+  }
 
-	public void draw( Graphics2D g2, BevelState bevelState, float raisedStrokeWidth, float flushStrokeWidth, float sunkenStrokeWidth ) {
-		GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g2 );
-		try {
-			gc.pushStroke();
-			gc.pushPaint();
-			if( bevelState == BevelState.FLUSH ) {
-				g2.setStroke( new BasicStroke( flushStrokeWidth, CAP, JOIN ) );
-				g2.setPaint( NEUTRAL_PAINT );
-				g2.draw( m_base );
-				//				if( m_shadowForRaised != null ) {
-				//					g2.draw( m_shadowForRaised );
-				//				}
-				//				if( m_neutralForRaised != null ) {
-				//					g2.draw( m_neutralForRaised );
-				//				}
-				//				if( m_highlightForRaised != null ) {
-				//					g2.draw( m_highlightForRaised );
-				//				}
-			} else {
-				Shape highlight;
-				Shape neutral;
-				Shape shadow;
-				Stroke currStroke;
-				if( bevelState == BevelState.RAISED ) {
-					currStroke = new BasicStroke( raisedStrokeWidth, CAP, JOIN );
-					highlight = m_highlightForRaised;
-					neutral = m_neutralForRaised;
-					shadow = m_shadowForRaised;
-				} else if( bevelState == BevelState.SUNKEN ) {
-					currStroke = new BasicStroke( sunkenStrokeWidth, CAP, JOIN );
-					highlight = m_highlightForSunken;
-					neutral = m_neutralForSunken;
-					shadow = m_shadowForSunken;
-				} else {
-					throw new RuntimeException();
-				}
-				g2.setStroke( currStroke );
-				if( shadow != null ) {
-					g2.setPaint( SHADOW_PAINT );
-					g2.draw( shadow );
-				}
-				if( neutral != null ) {
-					g2.setPaint( NEUTRAL_PAINT );
-					g2.draw( neutral );
-				}
-				if( highlight != null ) {
-					g2.setPaint( HIGHLIGHT_PAINT );
-					g2.draw( highlight );
-				}
-			}
-		} finally {
-			gc.popAll();
-		}
-	}
+  public void draw(Graphics2D g2, BevelState bevelState, float raisedStrokeWidth, float flushStrokeWidth, float sunkenStrokeWidth) {
+    GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics(g2);
+    try {
+      gc.pushStroke();
+      gc.pushPaint();
+      if (bevelState == BevelState.FLUSH) {
+        g2.setStroke(new BasicStroke(flushStrokeWidth, CAP, JOIN));
+        g2.setPaint(NEUTRAL_PAINT);
+        g2.draw(m_base);
+        //        if( m_shadowForRaised != null ) {
+        //          g2.draw( m_shadowForRaised );
+        //        }
+        //        if( m_neutralForRaised != null ) {
+        //          g2.draw( m_neutralForRaised );
+        //        }
+        //        if( m_highlightForRaised != null ) {
+        //          g2.draw( m_highlightForRaised );
+        //        }
+      } else {
+        Shape highlight;
+        Shape neutral;
+        Shape shadow;
+        Stroke currStroke;
+        if (bevelState == BevelState.RAISED) {
+          currStroke = new BasicStroke(raisedStrokeWidth, CAP, JOIN);
+          highlight = m_highlightForRaised;
+          neutral = m_neutralForRaised;
+          shadow = m_shadowForRaised;
+        } else if (bevelState == BevelState.SUNKEN) {
+          currStroke = new BasicStroke(sunkenStrokeWidth, CAP, JOIN);
+          highlight = m_highlightForSunken;
+          neutral = m_neutralForSunken;
+          shadow = m_shadowForSunken;
+        } else {
+          throw new RuntimeException();
+        }
+        g2.setStroke(currStroke);
+        if (shadow != null) {
+          g2.setPaint(SHADOW_PAINT);
+          g2.draw(shadow);
+        }
+        if (neutral != null) {
+          g2.setPaint(NEUTRAL_PAINT);
+          g2.draw(neutral);
+        }
+        if (highlight != null) {
+          g2.setPaint(HIGHLIGHT_PAINT);
+          g2.draw(highlight);
+        }
+      }
+    } finally {
+      gc.popAll();
+    }
+  }
 
-	public void fill( Graphics2D g2 ) {
-		g2.fill( m_base );
-	}
+  public void fill(Graphics2D g2) {
+    g2.fill(m_base);
+  }
 
-	public void paint( Graphics2D g2, BevelState bevelState, float raisedStrokeWidth, float flushStrokeWidth, float sunkenStrokeWidth ) {
-		this.fill( g2 );
-		this.draw( g2, bevelState, raisedStrokeWidth, flushStrokeWidth, sunkenStrokeWidth );
-	}
+  public void paint(Graphics2D g2, BevelState bevelState, float raisedStrokeWidth, float flushStrokeWidth, float sunkenStrokeWidth) {
+    this.fill(g2);
+    this.draw(g2, bevelState, raisedStrokeWidth, flushStrokeWidth, sunkenStrokeWidth);
+  }
 }

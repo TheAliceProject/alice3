@@ -44,6 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitFastFood implements FemaleTeenFullBodyOutfit {
-	UNIFORM;
+  UNIFORM
 
 }

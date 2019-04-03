@@ -58,27 +58,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CopyFromClipboardOperation extends FromClipboardOperation {
-	private static Map<BlockStatementIndexPair, CopyFromClipboardOperation> map = Maps.newHashMap();
+  private static Map<BlockStatementIndexPair, CopyFromClipboardOperation> map = Maps.newHashMap();
 
-	public static synchronized CopyFromClipboardOperation getInstance( BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		CopyFromClipboardOperation rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new CopyFromClipboardOperation( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
-	}
+  public static synchronized CopyFromClipboardOperation getInstance(BlockStatementIndexPair blockStatementIndexPair) {
+    assert blockStatementIndexPair != null;
+    CopyFromClipboardOperation rv = map.get(blockStatementIndexPair);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new CopyFromClipboardOperation(blockStatementIndexPair);
+      map.put(blockStatementIndexPair, rv);
+    }
+    return rv;
+  }
 
-	private CopyFromClipboardOperation( BlockStatementIndexPair blockStatementIndexPair ) {
-		super( UUID.fromString( "fc162a45-2175-4ccf-a5f2-d3de969692c3" ), blockStatementIndexPair );
-	}
+  private CopyFromClipboardOperation(BlockStatementIndexPair blockStatementIndexPair) {
+    super(UUID.fromString("fc162a45-2175-4ccf-a5f2-d3de969692c3"), blockStatementIndexPair);
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity, Statement statement ) {
-		Statement copy = IDE.getActiveInstance().createCopy( statement );
-		return new InsertStatementEdit<CopyFromClipboardOperation>( userActivity, this.getBlockStatementIndexPair(), copy );
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity, Statement statement) {
+    Statement copy = IDE.getActiveInstance().createCopy(statement);
+    return new InsertStatementEdit<CopyFromClipboardOperation>(userActivity, this.getBlockStatementIndexPair(), copy);
+  }
 }

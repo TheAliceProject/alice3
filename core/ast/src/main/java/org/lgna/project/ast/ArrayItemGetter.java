@@ -49,46 +49,45 @@ import java.util.Collections;
 import java.util.List;
 
 public class ArrayItemGetter extends Getter {
-	ArrayItemGetter( UserField field ) {
-		super( field );
-	}
+  ArrayItemGetter(UserField field) {
+    super(field);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getReturnType() {
-		UserField field = this.getField();
-		return field.getValueType().getComponentType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getReturnType() {
+    UserField field = this.getField();
+    return field.getValueType().getComponentType();
+  }
 
-	@Override
-	public List<AbstractParameter> getRequiredParameters() {
-		return requiredParameters;
-	}
+  @Override
+  public List<AbstractParameter> getRequiredParameters() {
+    return requiredParameters;
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendIndexedGetter(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendIndexedGetter(this);
+  }
 
-	@Override
-	public String getName() {
-		UserField field = this.getField();
-		String fieldName = field.getName();
-		StringBuilder sb = new StringBuilder();
-		sb.append( "get" );
-		if( fieldName.length() > 0 ) {
-			sb.append( Character.toUpperCase( fieldName.charAt( 0 ) ) );
-			sb.append( fieldName.substring( 1 ) );
-		}
-		return sb.toString();
-	}
+  @Override
+  public String getName() {
+    UserField field = this.getField();
+    String fieldName = field.getName();
+    StringBuilder sb = new StringBuilder();
+    sb.append("get");
+    if (fieldName.length() > 0) {
+      sb.append(Character.toUpperCase(fieldName.charAt(0)));
+      sb.append(fieldName.substring(1));
+    }
+    return sb.toString();
+  }
 
-	@Override
-	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
-		Object array = virtualMachine.get( getField(), target);
-		final Integer index = (Integer) arguments[0];
-		return virtualMachine.getItemAtIndex( getField().getValueType(), array, index );
-	}
+  @Override
+  public Object invoke(VirtualMachine virtualMachine, Object target, Object[] arguments) {
+    Object array = virtualMachine.get(getField(), target);
+    final Integer index = (Integer) arguments[0];
+    return virtualMachine.getItemAtIndex(getField().getValueType(), array, index);
+  }
 
-	private final List<AbstractParameter> requiredParameters =
-		Collections.unmodifiableList( Lists.newArrayList( new UserParameter( "index", Integer.class ) ) );
+  private final List<AbstractParameter> requiredParameters = Collections.unmodifiableList(Lists.newArrayList(new UserParameter("index", Integer.class)));
 }

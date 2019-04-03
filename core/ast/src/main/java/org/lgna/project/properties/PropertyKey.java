@@ -59,57 +59,57 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PropertyKey<T> {
-	private static Map<UUID, PropertyKey> map = Maps.newHashMap();
+  private static Map<UUID, PropertyKey> map = Maps.newHashMap();
 
-	public static <T> PropertyKey<T> lookupInstance( UUID id ) {
-		return map.get( id );
-	}
+  public static <T> PropertyKey<T> lookupInstance(UUID id) {
+    return map.get(id);
+  }
 
-	public static void decodeIdAndValueAndPut( Project project, BinaryDecoder decoder, String version ) {
-		UUID id = decoder.decodeId();
-		byte[] buffer = decoder.decodeByteArray();
-		PropertyKey<Object> propertyKey = PropertyKey.lookupInstance( id );
-		if( propertyKey != null ) {
-			ByteArrayInputStream bisProperty = new ByteArrayInputStream( buffer );
-			BinaryDecoder bdProperty = new InputStreamBinaryDecoder( bisProperty );
-			Object value = propertyKey.decodeValue( bdProperty );
-			project.putValueFor( propertyKey, value );
-		} else {
-			Logger.todo( id, buffer );
-		}
-	}
+  public static void decodeIdAndValueAndPut(Project project, BinaryDecoder decoder, String version) {
+    UUID id = decoder.decodeId();
+    byte[] buffer = decoder.decodeByteArray();
+    PropertyKey<Object> propertyKey = PropertyKey.lookupInstance(id);
+    if (propertyKey != null) {
+      ByteArrayInputStream bisProperty = new ByteArrayInputStream(buffer);
+      BinaryDecoder bdProperty = new InputStreamBinaryDecoder(bisProperty);
+      Object value = propertyKey.decodeValue(bdProperty);
+      project.putValueFor(propertyKey, value);
+    } else {
+      Logger.todo(id, buffer);
+    }
+  }
 
-	private final UUID id;
-	private final String repr;
+  private final UUID id;
+  private final String repr;
 
-	public PropertyKey( UUID id, String repr ) {
-		this.id = id;
-		this.repr = repr;
-		map.put( id, this );
-	}
+  public PropertyKey(UUID id, String repr) {
+    this.id = id;
+    this.repr = repr;
+    map.put(id, this);
+  }
 
-	public UUID getId() {
-		return this.id;
-	}
+  public UUID getId() {
+    return this.id;
+  }
 
-	protected abstract T decodeValue( BinaryDecoder binaryDecoder );
+  protected abstract T decodeValue(BinaryDecoder binaryDecoder);
 
-	protected abstract void encodeValue( BinaryEncoder binaryEncoder, T value );
+  protected abstract void encodeValue(BinaryEncoder binaryEncoder, T value);
 
-	public void encodeIdAndValue( Project project, BinaryEncoder encoder ) {
-		T value = project.getValueFor( this );
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		BinaryEncoder internalEncoder = new OutputStreamBinaryEncoder( bos );
-		this.encodeValue( internalEncoder, value );
-		internalEncoder.flush();
-		byte[] buffer = bos.toByteArray();
-		encoder.encode( this.getId() );
-		encoder.encode( buffer );
-		encoder.flush();
-	}
+  public void encodeIdAndValue(Project project, BinaryEncoder encoder) {
+    T value = project.getValueFor(this);
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    BinaryEncoder internalEncoder = new OutputStreamBinaryEncoder(bos);
+    this.encodeValue(internalEncoder, value);
+    internalEncoder.flush();
+    byte[] buffer = bos.toByteArray();
+    encoder.encode(this.getId());
+    encoder.encode(buffer);
+    encoder.flush();
+  }
 
-	@Override
-	public String toString() {
-		return this.repr;
-	}
+  @Override
+  public String toString() {
+    return this.repr;
+  }
 }

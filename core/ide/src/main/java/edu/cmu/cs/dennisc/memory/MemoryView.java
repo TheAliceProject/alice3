@@ -55,84 +55,84 @@ import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
 
 public class MemoryView extends JComponent {
-	private static final long K = 1024;
-	//private static final long M = K*K;
-	private MouseListener mouseAdapter = new MouseListener() {
-		@Override
-		public void mouseEntered( MouseEvent e ) {
-		}
+  private static final long K = 1024;
+  //private static final long M = K*K;
+  private MouseListener mouseAdapter = new MouseListener() {
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseExited( MouseEvent e ) {
-		}
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 
-		@Override
-		public void mousePressed( MouseEvent e ) {
-			MemoryView.this.repaint();
-		}
+    @Override
+    public void mousePressed(MouseEvent e) {
+      MemoryView.this.repaint();
+    }
 
-		@Override
-		public void mouseReleased( MouseEvent e ) {
-		}
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseClicked( MouseEvent e ) {
-		}
-	};
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+  };
 
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		this.addMouseListener( this.mouseAdapter );
-	}
+  @Override
+  public void addNotify() {
+    super.addNotify();
+    this.addMouseListener(this.mouseAdapter);
+  }
 
-	@Override
-	public void removeNotify() {
-		this.removeMouseListener( this.mouseAdapter );
-		super.removeNotify();
-	}
+  @Override
+  public void removeNotify() {
+    this.removeMouseListener(this.mouseAdapter);
+    super.removeNotify();
+  }
 
-	@Override
-	protected void paintComponent( Graphics g ) {
-		//super.paintComponent(g);
-		MemoryMXBean memory = ManagementFactory.getMemoryMXBean();
-		MemoryUsage heapUsage = memory.getHeapMemoryUsage();
-		//java.lang.management.MemoryUsage nonHeapUsage = memory.getNonHeapMemoryUsage();
-		long maxKB = heapUsage.getMax() / K;
-		long usedKB = heapUsage.getUsed() / K;
-		double portion = usedKB / (double)maxKB;
+  @Override
+  protected void paintComponent(Graphics g) {
+    //super.paintComponent(g);
+    MemoryMXBean memory = ManagementFactory.getMemoryMXBean();
+    MemoryUsage heapUsage = memory.getHeapMemoryUsage();
+    //java.lang.management.MemoryUsage nonHeapUsage = memory.getNonHeapMemoryUsage();
+    long maxKB = heapUsage.getMax() / K;
+    long usedKB = heapUsage.getUsed() / K;
+    double portion = usedKB / (double) maxKB;
 
-		//portion = 0.1;
+    //portion = 0.1;
 
-		int w = this.getWidth();
-		int h = this.getHeight();
+    int w = this.getWidth();
+    int h = this.getHeight();
 
-		int xValue = (int)( w * portion );
-		int xWarning = ( 2 * w ) / 5;
-		int xDanger = ( 4 * w ) / 5;
+    int xValue = (int) (w * portion);
+    int xWarning = (2 * w) / 5;
+    int xDanger = (4 * w) / 5;
 
-		Color fineColor = new Color( 0, 191, 0 );
-		Color warningColor = new Color( 255, 255, 0 );
-		Color dangerColor = new Color( 255, 0, 0 );
-		Graphics2D g2 = (Graphics2D)g;
-		g2.setPaint( fineColor );
-		g2.fillRect( 0, 0, xValue, h );
-		if( xValue > xWarning ) {
-			g2.setPaint( new GradientPaint( xWarning, 0, fineColor, xDanger, 0, warningColor ) );
-			g2.fillRect( xWarning, 0, xValue - xWarning, h );
-			if( xValue > xDanger ) {
-				g2.setPaint( new GradientPaint( xDanger, 0, warningColor, w, 0, dangerColor ) );
-				g2.fillRect( xDanger, 0, xValue - xDanger, h );
-			}
-		}
-		g2.setPaint( Color.DARK_GRAY );
-		g2.fillRect( xValue, 0, w - xValue, h );
+    Color fineColor = new Color(0, 191, 0);
+    Color warningColor = new Color(255, 255, 0);
+    Color dangerColor = new Color(255, 0, 0);
+    Graphics2D g2 = (Graphics2D) g;
+    g2.setPaint(fineColor);
+    g2.fillRect(0, 0, xValue, h);
+    if (xValue > xWarning) {
+      g2.setPaint(new GradientPaint(xWarning, 0, fineColor, xDanger, 0, warningColor));
+      g2.fillRect(xWarning, 0, xValue - xWarning, h);
+      if (xValue > xDanger) {
+        g2.setPaint(new GradientPaint(xDanger, 0, warningColor, w, 0, dangerColor));
+        g2.fillRect(xDanger, 0, xValue - xDanger, h);
+      }
+    }
+    g2.setPaint(Color.DARK_GRAY);
+    g2.fillRect(xValue, 0, w - xValue, h);
 
-		int percent = (int)( portion * 100 );
-		String text = "in use: " + percent + "%";
-		Rectangle2D bounds = g2.getFontMetrics().getStringBounds( text, g2 );
-		if( bounds.getWidth() < xValue ) {
-			g.drawString( text, xValue - (int)bounds.getWidth() - 4, h - ( (int)bounds.getHeight() / 2 ) );
-		}
-	}
+    int percent = (int) (portion * 100);
+    String text = "in use: " + percent + "%";
+    Rectangle2D bounds = g2.getFontMetrics().getStringBounds(text, g2);
+    if (bounds.getWidth() < xValue) {
+      g.drawString(text, xValue - (int) bounds.getWidth() - 4, h - ((int) bounds.getHeight() / 2));
+    }
+  }
 }

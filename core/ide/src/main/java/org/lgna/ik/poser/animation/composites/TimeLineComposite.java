@@ -55,47 +55,47 @@ import java.util.UUID;
  */
 public class TimeLineComposite extends SimpleComposite<TimeLineView> {
 
-	private boolean isTimeMutable = true;
-	private final TimeLine timeLine = new TimeLine();
+  private boolean isTimeMutable = true;
+  private final TimeLine timeLine = new TimeLine();
 
-	public TimeLineComposite() {
-		super( UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
-	}
+  public TimeLineComposite() {
+    super(UUID.fromString("45b24458-c06e-4480-873a-f1698bf03edb"));
+  }
 
-	public void selectKeyFrame( KeyFrameData keyFrameData ) {
-		KeyFrameData selected = timeLine.getSelectedKeyFrame();
-		if( selected != null ) {
-			getView().deselect( selected );
-		}
-		timeLine.setSelectedKeyFrame( keyFrameData );
-	}
+  public void selectKeyFrame(KeyFrameData keyFrameData) {
+    KeyFrameData selected = timeLine.getSelectedKeyFrame();
+    if (selected != null) {
+      getView().deselect(selected);
+    }
+    timeLine.setSelectedKeyFrame(keyFrameData);
+  }
 
-	public double getDurationForKeyFrame( KeyFrameData pose ) {
-		return timeLine.getDurationForKeyFrame( pose );
-	}
+  public double getDurationForKeyFrame(KeyFrameData pose) {
+    return timeLine.getDurationForKeyFrame(pose);
+  }
 
-	@Override
-	public TimeLineView createView() {
-		return new TimeLineView( this );
-	}
+  @Override
+  public TimeLineView createView() {
+    return new TimeLineView(this);
+  }
 
-	public void setEditEnabled( boolean b ) {
-		isTimeMutable = !b;
-	}
+  public void setEditEnabled(boolean b) {
+    isTimeMutable = !b;
+  }
 
-	public boolean getIsTimeMutable() {
-		return isTimeMutable;
-	}
+  public boolean getIsTimeMutable() {
+    return isTimeMutable;
+  }
 
-	public TimeLine getTimeLine() {
-		return timeLine;
-	}
+  public TimeLine getTimeLine() {
+    return timeLine;
+  }
 
-	public void setInitialPose( Pose<?> pose ) {
-		this.timeLine.setInitialPose( pose );
-	}
+  public void setInitialPose(Pose<?> pose) {
+    this.timeLine.setInitialPose(pose);
+  }
 
-	public KeyFrameData getSelectedKeyFrame() {
-		return timeLine.getSelectedKeyFrame();
-	}
+  public KeyFrameData getSelectedKeyFrame() {
+    return timeLine.getSelectedKeyFrame();
+  }
 }

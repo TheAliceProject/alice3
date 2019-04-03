@@ -46,68 +46,68 @@ package test.render;
  * @author Dennis Cosgrove
  */
 public class RenderTestProgramImp extends org.lgna.story.implementation.ProgramImp {
-	private final edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
+  private final edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 
-	public RenderTestProgramImp( org.lgna.story.SProgram abstraction ) {
-		super( abstraction, edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createHeavyweightOnscreenRenderTarget( new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().build() ) );
-		java.awt.Component awtComponent = this.getOnscreenRenderTarget().getAwtComponent();
-		awtComponent.addMouseListener( new java.awt.event.MouseListener() {
+  public RenderTestProgramImp(org.lgna.story.SProgram abstraction) {
+    super(abstraction, edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createHeavyweightOnscreenRenderTarget(new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().build()));
+    java.awt.Component awtComponent = this.getOnscreenRenderTarget().getAwtComponent();
+    awtComponent.addMouseListener(new java.awt.event.MouseListener() {
 
-			@Override
-			public void mouseClicked( java.awt.event.MouseEvent e ) {
-			}
+      @Override
+      public void mouseClicked(java.awt.event.MouseEvent e) {
+      }
 
-			@Override
-			public void mousePressed( java.awt.event.MouseEvent e ) {
-				handleMousePressed( e );
-			}
+      @Override
+      public void mousePressed(java.awt.event.MouseEvent e) {
+        handleMousePressed(e);
+      }
 
-			@Override
-			public void mouseReleased( java.awt.event.MouseEvent e ) {
-			}
+      @Override
+      public void mouseReleased(java.awt.event.MouseEvent e) {
+      }
 
-			@Override
-			public void mouseEntered( java.awt.event.MouseEvent e ) {
-			}
+      @Override
+      public void mouseEntered(java.awt.event.MouseEvent e) {
+      }
 
-			@Override
-			public void mouseExited( java.awt.event.MouseEvent e ) {
-			}
+      @Override
+      public void mouseExited(java.awt.event.MouseEvent e) {
+      }
 
-		} );
-	}
+    });
+  }
 
-	@Override
-	public edu.cmu.cs.dennisc.animation.ClockBasedAnimator getAnimator() {
-		return this.animator;
-	}
+  @Override
+  public edu.cmu.cs.dennisc.animation.ClockBasedAnimator getAnimator() {
+    return this.animator;
+  }
 
-	@Override
-	public boolean isControlPanelDesired() {
-		return false;
-	}
+  @Override
+  public boolean isControlPanelDesired() {
+    return false;
+  }
 
-	private void handleMousePressed( java.awt.event.MouseEvent e ) {
-		java.awt.Component awtComponent = e.getComponent();
-		try {
-			edu.cmu.cs.dennisc.render.PickResult pickResult = this.getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
-			edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
-			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite;
-			if( sgVisual != null ) {
-				sgComposite = sgVisual.getParent();
-			} else {
-				sgComposite = null;
-			}
-			org.lgna.story.SThing thing = org.lgna.story.implementation.EntityImp.getAbstractionFromSgElement( sgComposite );
-			if( thing != null ) {
-				javax.swing.JOptionPane.showMessageDialog( awtComponent, "success" );
-			} else {
-				javax.swing.JOptionPane.showMessageDialog( awtComponent, "did you click on the sphere?" );
-			}
-		} catch( com.jogamp.opengl.GLException gle ) {
-			javax.swing.JOptionPane.showMessageDialog( awtComponent, gle );
-		} catch( Throwable t ) {
-			javax.swing.JOptionPane.showMessageDialog( awtComponent, t );
-		}
-	}
+  private void handleMousePressed(java.awt.event.MouseEvent e) {
+    java.awt.Component awtComponent = e.getComponent();
+    try {
+      edu.cmu.cs.dennisc.render.PickResult pickResult = this.getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost(e.getX(), e.getY(), edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED);
+      edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
+      edu.cmu.cs.dennisc.scenegraph.Composite sgComposite;
+      if (sgVisual != null) {
+        sgComposite = sgVisual.getParent();
+      } else {
+        sgComposite = null;
+      }
+      org.lgna.story.SThing thing = org.lgna.story.implementation.EntityImp.getAbstractionFromSgElement(sgComposite);
+      if (thing != null) {
+        javax.swing.JOptionPane.showMessageDialog(awtComponent, "success");
+      } else {
+        javax.swing.JOptionPane.showMessageDialog(awtComponent, "did you click on the sphere?");
+      }
+    } catch (com.jogamp.opengl.GLException gle) {
+      javax.swing.JOptionPane.showMessageDialog(awtComponent, gle);
+    } catch (Throwable t) {
+      javax.swing.JOptionPane.showMessageDialog(awtComponent, t);
+    }
+  }
 }

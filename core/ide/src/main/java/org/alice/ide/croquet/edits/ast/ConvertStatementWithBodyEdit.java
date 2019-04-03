@@ -59,65 +59,65 @@ import org.lgna.project.ast.StatementListProperty;
  * @author Dennis Cosgrove
  */
 public class ConvertStatementWithBodyEdit extends BlockStatementEdit<ConvertStatementWithBodyOperation> {
-	//todo:
-	private static ConvertStatementWithBodyOperation getModel( UserActivity activity ) {
-		return (ConvertStatementWithBodyOperation) activity.getCompletionModel();
-	}
+  //todo:
+  private static ConvertStatementWithBodyOperation getModel(UserActivity activity) {
+    return (ConvertStatementWithBodyOperation) activity.getCompletionModel();
+  }
 
-	private final AbstractStatementWithBody replacement;
+  private final AbstractStatementWithBody replacement;
 
-	public ConvertStatementWithBodyEdit( UserActivity userActivity, AbstractStatementWithBody replacement ) {
-		super( userActivity, (BlockStatement)( getModel( userActivity ).getOriginal().getParent() ) );
-		this.replacement = replacement;
-	}
+  public ConvertStatementWithBodyEdit(UserActivity userActivity, AbstractStatementWithBody replacement) {
+    super(userActivity, (BlockStatement) (getModel(userActivity).getOriginal().getParent()));
+    this.replacement = replacement;
+  }
 
-	public ConvertStatementWithBodyEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.replacement = NodeCodec.getInstance( AbstractStatementWithBody.class ).decodeValue( binaryDecoder );
-	}
+  public ConvertStatementWithBodyEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.replacement = NodeCodec.getInstance(AbstractStatementWithBody.class).decodeValue(binaryDecoder);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		NodeCodec.getInstance( AbstractStatementWithBody.class ).encodeValue( binaryEncoder, this.replacement );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    NodeCodec.getInstance(AbstractStatementWithBody.class).encodeValue(binaryEncoder, this.replacement);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		StatementListProperty property = this.getBlockStatement().statements;
-		AbstractStatementWithBody original = this.getModel().getOriginal();
-		BlockStatement body = original.body.getValue();
-		int index = property.indexOf( original );
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    StatementListProperty property = this.getBlockStatement().statements;
+    AbstractStatementWithBody original = this.getModel().getOriginal();
+    BlockStatement body = original.body.getValue();
+    int index = property.indexOf(original);
 
-		property.remove( index );
-		original.body.setValue( null );
-		replacement.body.setValue( body );
-		property.add( index, replacement );
-		//todo: remove
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-	}
+    property.remove(index);
+    original.body.setValue(null);
+    replacement.body.setValue(body);
+    property.add(index, replacement);
+    //todo: remove
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+  }
 
-	@Override
-	protected final void undoInternal() {
-		StatementListProperty property = this.getBlockStatement().statements;
-		AbstractStatementWithBody original = this.getModel().getOriginal();
-		BlockStatement body = this.replacement.body.getValue();
-		int index = property.indexOf( replacement );
+  @Override
+  protected final void undoInternal() {
+    StatementListProperty property = this.getBlockStatement().statements;
+    AbstractStatementWithBody original = this.getModel().getOriginal();
+    BlockStatement body = this.replacement.body.getValue();
+    int index = property.indexOf(replacement);
 
-		property.remove( index );
-		replacement.body.setValue( null );
-		original.body.setValue( body );
-		property.add( index, original );
-		//todo: remove
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-	}
+    property.remove(index);
+    replacement.body.setValue(null);
+    original.body.setValue(body);
+    property.add(index, original);
+    //todo: remove
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		AbstractStatementWithBody original = this.getModel().getOriginal();
-		rv.append( "convert:" );
-		NodeUtilities.safeAppendRepr( rv, original, Application.getLocale() );
-		rv.append( " --> " );
-		NodeUtilities.safeAppendRepr( rv, replacement, Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    AbstractStatementWithBody original = this.getModel().getOriginal();
+    rv.append("convert:");
+    NodeUtilities.safeAppendRepr(rv, original, Application.getLocale());
+    rv.append(" --> ");
+    NodeUtilities.safeAppendRepr(rv, replacement, Application.getLocale());
+  }
 }

@@ -52,20 +52,20 @@ import javax.swing.event.DocumentEvent;
  * @author Dennis Cosgrove
  */
 public class DocumentEventTrigger extends Trigger {
-	public static DocumentEventTrigger createUserInstance( DocumentEvent documentEvent ) {
-		return new DocumentEventTrigger( documentEvent );
-	}
+  public static DocumentEventTrigger createUserInstance(DocumentEvent documentEvent) {
+    return new DocumentEventTrigger(documentEvent);
+  }
 
-	private final transient DocumentEvent documentEvent;
+  private final transient DocumentEvent documentEvent;
 
-	private DocumentEventTrigger( DocumentEvent documentEvent ) {
-		// Each document event gets its own activity
-		super(Application.getActiveInstance().acquireOpenActivity().newChildActivity());
-		this.documentEvent = documentEvent;
-	}
+  private DocumentEventTrigger(DocumentEvent documentEvent) {
+    // Each document event gets its own activity
+    super(Application.getActiveInstance().acquireOpenActivity().newChildActivity());
+    this.documentEvent = documentEvent;
+  }
 
-	@Override
-	public void showPopupMenu( PopupMenu popupMenu ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public void showPopupMenu(PopupMenu popupMenu) {
+    throw new RuntimeException("todo");
+  }
 }

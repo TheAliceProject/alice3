@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
  * @author Dennis Cosgrove
  */
 public class AbsoluteTransformationEvent extends Event<Component> {
-	public AbsoluteTransformationEvent( Component source ) {
-		super( source );
-	}
+  public AbsoluteTransformationEvent(Component source) {
+    super(source);
+  }
 }

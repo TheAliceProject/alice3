@@ -1,4 +1,4 @@
-package org.lgna.story.resourceutilities;/*
+/*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,6 +41,8 @@ package org.lgna.story.resourceutilities;/*
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.lgna.story.resourceutilities;
+
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -49,38 +51,38 @@ import edu.cmu.cs.dennisc.scenegraph.InverseAbsoluteTransformationWeightsPair;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 
 class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshControl {
-	AxisAlignedBox getAbsoluteBoundingBox() {
-		AxisAlignedBox box = new AxisAlignedBox();
-    	this.indexBuffer.rewind();
-    	while(this.indexBuffer.hasRemaining()) {
-    		int index = this.indexBuffer.get()*3;
-        	Point3 vertex = new Point3(this.vertexBuffer.get(index), this.vertexBuffer.get(index+1), this.vertexBuffer.get(index+2));
-    		box.union(vertex);
-    	}
-    	return box;
+  AxisAlignedBox getAbsoluteBoundingBox() {
+    AxisAlignedBox box = new AxisAlignedBox();
+    this.indexBuffer.rewind();
+    while (this.indexBuffer.hasRemaining()) {
+      int index = this.indexBuffer.get() * 3;
+      Point3 vertex = new Point3(this.vertexBuffer.get(index), this.vertexBuffer.get(index + 1), this.vertexBuffer.get(index + 2));
+      box.union(vertex);
     }
+    return box;
+  }
 
-	private static final float WEIGHT_THRESHOLD = .2f;
+  private static final float WEIGHT_THRESHOLD = .2f;
 
-	AxisAlignedBox getBoundingBoxForJoint( Joint joint ) {
-		InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get(joint.jointID.getValue());
-		AxisAlignedBox box = new AxisAlignedBox();
-		if (iatwp != null) {
-			iatwp.reset();
-			AffineMatrix4x4 inverseJoint = iatwp.getInverseAbsoluteTransformation();
-			AffineMatrix4x4 projectedJoint = joint.getAbsoluteTransformation();
-			while (!iatwp.isDone()) {
-				int vertexIndex = iatwp.getIndex()*3;
-				Point3 vertex = new Point3(this.vertexBuffer.get(vertexIndex), this.vertexBuffer.get(vertexIndex+1), this.vertexBuffer.get(vertexIndex+2));
-				Point3 localVertex = inverseJoint.createTransformed(vertex);
-				final float weight = iatwp.getWeight();
-				if (weight > WEIGHT_THRESHOLD) {
-					box.union(localVertex);
-				}
-				iatwp.advance();
-			}
-			box.scale(projectedJoint.orientation);
-		}
-		return box;
-	}
+  AxisAlignedBox getBoundingBoxForJoint(Joint joint) {
+    InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get(joint.jointID.getValue());
+    AxisAlignedBox box = new AxisAlignedBox();
+    if (iatwp != null) {
+      iatwp.reset();
+      AffineMatrix4x4 inverseJoint = iatwp.getInverseAbsoluteTransformation();
+      AffineMatrix4x4 projectedJoint = joint.getAbsoluteTransformation();
+      while (!iatwp.isDone()) {
+        int vertexIndex = iatwp.getIndex() * 3;
+        Point3 vertex = new Point3(this.vertexBuffer.get(vertexIndex), this.vertexBuffer.get(vertexIndex + 1), this.vertexBuffer.get(vertexIndex + 2));
+        Point3 localVertex = inverseJoint.createTransformed(vertex);
+        final float weight = iatwp.getWeight();
+        if (weight > WEIGHT_THRESHOLD) {
+          box.union(localVertex);
+        }
+        iatwp.advance();
+      }
+      box.scale(projectedJoint.orientation);
+    }
+    return box;
+  }
 }

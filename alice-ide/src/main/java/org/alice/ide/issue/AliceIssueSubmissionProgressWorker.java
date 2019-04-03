@@ -50,21 +50,21 @@ import org.lgna.issue.swing.JSubmitPane;
  * @author Dennis Cosgrove
  */
 public class AliceIssueSubmissionProgressWorker extends IssueSubmissionProgressWorker {
-	private final boolean isProjectAttachmentDesired;
+  private final boolean isProjectAttachmentDesired;
 
-	public AliceIssueSubmissionProgressWorker( JSubmitPane owner, boolean isProjectAttachmentDesired ) {
-		super( owner );
-		this.isProjectAttachmentDesired = isProjectAttachmentDesired;
-	}
+  public AliceIssueSubmissionProgressWorker(JSubmitPane owner, boolean isProjectAttachmentDesired) {
+    super(owner);
+    this.isProjectAttachmentDesired = isProjectAttachmentDesired;
+  }
 
-	@Override
-	protected Boolean doInternal_onBackgroundThread( Issue.Builder issueBuilder ) throws Exception {
-		this.publish( "issueBuilder: " + issueBuilder );
-		this.publish( "attach project: " + this.isProjectAttachmentDesired );
-		for( int i = 0; i < 20; i++ ) {
-			this.publish( Integer.toString( i ) );
-			Thread.sleep( 200 );
-		}
-		return true;
-	}
+  @Override
+  protected Boolean doInternal_onBackgroundThread(Issue.Builder issueBuilder) throws Exception {
+    this.publish("issueBuilder: " + issueBuilder);
+    this.publish("attach project: " + this.isProjectAttachmentDesired);
+    for (int i = 0; i < 20; i++) {
+      this.publish(Integer.toString(i));
+      Thread.sleep(200);
+    }
+    return true;
+  }
 }

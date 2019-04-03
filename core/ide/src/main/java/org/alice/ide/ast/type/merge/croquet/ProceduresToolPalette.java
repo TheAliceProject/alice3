@@ -53,12 +53,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ProceduresToolPalette extends MethodsToolPalette<ProceduresView> {
-	public ProceduresToolPalette( URI uriForDescriptionPurposesOnly, List<UserMethod> projectProcedures ) {
-		super( UUID.fromString( "ee913a3b-2bc4-4948-8c97-bfa57569a57e" ), uriForDescriptionPurposesOnly, projectProcedures );
-	}
+  public ProceduresToolPalette(URI uriForDescriptionPurposesOnly, List<UserMethod> projectProcedures) {
+    super(UUID.fromString("ee913a3b-2bc4-4948-8c97-bfa57569a57e"), uriForDescriptionPurposesOnly, projectProcedures);
+  }
 
-	@Override
-	protected ProceduresView createView() {
-		return new ProceduresView( this );
-	}
+  @Override
+  protected ProceduresView createView() {
+    return new ProceduresView(this);
+  }
 }

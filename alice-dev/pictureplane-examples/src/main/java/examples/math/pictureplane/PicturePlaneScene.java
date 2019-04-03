@@ -53,54 +53,54 @@ import org.lgna.story.SSphere;
  * @author Dennis Cosgrove
  */
 class PicturePlaneScene extends SScene {
-	private final SGround snow = new SGround();
-	private final SCamera camera = new SCamera();
-	private final SSphere sphere = new SSphere();
+  private final SGround snow = new SGround();
+  private final SCamera camera = new SCamera();
+  private final SSphere sphere = new SSphere();
 
-	public SGround getSnow() {
-		return this.snow;
-	}
+  public SGround getSnow() {
+    return this.snow;
+  }
 
-	public SCamera getCamera() {
-		return this.camera;
-	}
+  public SCamera getCamera() {
+    return this.camera;
+  }
 
-	public SSphere getSphere() {
-		return this.sphere;
-	}
+  public SSphere getSphere() {
+    return this.sphere;
+  }
 
-	private void initializeEventListeners() {
+  private void initializeEventListeners() {
 
-	}
+  }
 
-	private void performGeneratedSetUp() {
-		this.camera.setVehicle( this );
-		this.sphere.setVehicle( this );
-		this.snow.setVehicle( this );
-		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
+  private void performGeneratedSetUp() {
+    this.camera.setVehicle(this);
+    this.sphere.setVehicle(this);
+    this.snow.setVehicle(this);
+    this.snow.setPaint(SGround.SurfaceAppearance.SNOW);
 
-		this.sphere.setPaint( Color.RED );
-		this.sphere.setRadius( 0.1 );
-		this.sphere.move( MoveDirection.UP, 2.0 );
-		this.camera.move( MoveDirection.UP, 2.0 );
-		this.camera.move( MoveDirection.BACKWARD, 4.0 );
-	}
+    this.sphere.setPaint(Color.RED);
+    this.sphere.setRadius(0.1);
+    this.sphere.move(MoveDirection.UP, 2.0);
+    this.camera.move(MoveDirection.UP, 2.0);
+    this.camera.move(MoveDirection.BACKWARD, 4.0);
+  }
 
-	private void performCustomSetup() {
-	}
+  private void performCustomSetup() {
+  }
 
-	@Override
-	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
-		if( isActive ) {
-			if( activeCount == 1 ) {
-				this.performGeneratedSetUp();
-				this.performCustomSetup();
-				this.initializeEventListeners();
-			} else {
-				this.restoreStateAndEventListeners();
-			}
-		} else {
-			this.preserveStateAndEventListeners();
-		}
-	}
+  @Override
+  protected void handleActiveChanged(Boolean isActive, Integer activeCount) {
+    if (isActive) {
+      if (activeCount == 1) {
+        this.performGeneratedSetUp();
+        this.performCustomSetup();
+        this.initializeEventListeners();
+      } else {
+        this.restoreStateAndEventListeners();
+      }
+    } else {
+      this.preserveStateAndEventListeners();
+    }
+  }
 }

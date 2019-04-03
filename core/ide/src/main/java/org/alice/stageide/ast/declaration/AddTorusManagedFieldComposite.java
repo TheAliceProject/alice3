@@ -56,30 +56,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AddTorusManagedFieldComposite extends AddModelManagedFieldComposite {
-	private static class SingletonHolder {
-		private static AddTorusManagedFieldComposite instance = new AddTorusManagedFieldComposite();
-	}
+  private static class SingletonHolder {
+    private static AddTorusManagedFieldComposite instance = new AddTorusManagedFieldComposite();
+  }
 
-	public static AddTorusManagedFieldComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddTorusManagedFieldComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final CustomItemState<Expression> innerRadiusState = this.createInitialPropertyValueExpressionState( "innerRadiusState", 0.25, STorus.class, "setInnerRadius", Number.class, SetInnerRadius.Detail[].class );
-	private final CustomItemState<Expression> outerRadiusState = this.createInitialPropertyValueExpressionState( "outerRadiusState", 0.5, STorus.class, "setOuterRadius", Number.class, SetOuterRadius.Detail[].class );
+  private final CustomItemState<Expression> innerRadiusState = this.createInitialPropertyValueExpressionState("innerRadiusState", 0.25, STorus.class, "setInnerRadius", Number.class, SetInnerRadius.Detail[].class);
+  private final CustomItemState<Expression> outerRadiusState = this.createInitialPropertyValueExpressionState("outerRadiusState", 0.5, STorus.class, "setOuterRadius", Number.class, SetOuterRadius.Detail[].class);
 
-	private AddTorusManagedFieldComposite() {
-		super( UUID.fromString( "c840fcdc-3a3e-4fd1-b0ad-a66c7e8fb2a8" ), STorus.class );
-	}
+  private AddTorusManagedFieldComposite() {
+    super(UUID.fromString("c840fcdc-3a3e-4fd1-b0ad-a66c7e8fb2a8"), STorus.class);
+  }
 
-	@Override protected ShapeDragModel getDragModel() {
-		return TorusDragModel.getInstance();
-	}
+  @Override
+  protected ShapeDragModel getDragModel() {
+    return TorusDragModel.getInstance();
+  }
 
-	public CustomItemState<Expression> getInnerRadiusState() {
-		return this.innerRadiusState;
-	}
+  public CustomItemState<Expression> getInnerRadiusState() {
+    return this.innerRadiusState;
+  }
 
-	public CustomItemState<Expression> getOuterRadiusState() {
-		return this.outerRadiusState;
-	}
+  public CustomItemState<Expression> getOuterRadiusState() {
+    return this.outerRadiusState;
+  }
 }

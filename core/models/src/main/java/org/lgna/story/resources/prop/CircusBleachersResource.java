@@ -32,32 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum CircusBleachersResource implements PropResource {
-	DEFAULT_BLEACHERS,
-	DEFAULT_BLEACHERS_OLD,
-	SMALL_BLEACHERS,
-	SMALL_BLEACHERS_OLD;
+  DEFAULT_BLEACHERS, DEFAULT_BLEACHERS_OLD, SMALL_BLEACHERS, SMALL_BLEACHERS_OLD;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	CircusBleachersResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  CircusBleachersResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	CircusBleachersResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  CircusBleachersResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

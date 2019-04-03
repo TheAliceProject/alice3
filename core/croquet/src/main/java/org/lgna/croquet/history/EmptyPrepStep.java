@@ -47,22 +47,22 @@ import org.lgna.croquet.PrepModel;
 import org.lgna.croquet.triggers.Trigger;
 
 public class EmptyPrepStep extends PrepStep<PrepModel> {
-	private final String label;
+  private final String label;
 
-	public EmptyPrepStep( Trigger trigger, String label) {
-		super( trigger.getUserActivity(), null, trigger );
-		this.label = label;
-	}
+  public EmptyPrepStep(Trigger trigger, String label) {
+    super(trigger.getUserActivity(), null, trigger);
+    this.label = label;
+  }
 
-	@Override
-	protected void updateRepr( StringBuilder builder ) {
-		builder.append( "trigger = " );
-		Trigger trigger = this.getTrigger();
-		if( trigger != null ) {
-			trigger.appendRepr( builder );
-		}
-		builder.append( " ; text = " );
-		builder.append( label );
-		builder.append( " " );
-	}
+  @Override
+  protected void updateRepr(StringBuilder builder) {
+    builder.append("trigger = ");
+    Trigger trigger = this.getTrigger();
+    if (trigger != null) {
+      trigger.appendRepr(builder);
+    }
+    builder.append(" ; text = ");
+    builder.append(label);
+    builder.append(" ");
+  }
 }

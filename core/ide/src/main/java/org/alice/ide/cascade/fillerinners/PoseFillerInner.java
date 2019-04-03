@@ -59,24 +59,24 @@ import org.lgna.story.Pose;
  */
 public class PoseFillerInner extends ExpressionFillerInner {
 
-	public PoseFillerInner() {
-		super( Pose.class );
-	}
+  public PoseFillerInner() {
+    super(Pose.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		NamedUserType declaringType;
-		if( prevExpression == null ) {
-			InstanceFactory value = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
-			declaringType = (NamedUserType)value.getValueType();
-		} else {
-			MethodInvocation methodInv = prevExpression.getFirstAncestorAssignableTo( MethodInvocation.class );
-			declaringType = (NamedUserType)methodInv.expression.getValue().getType();
-		}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    NamedUserType declaringType;
+    if (prevExpression == null) {
+      InstanceFactory value = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+      declaringType = (NamedUserType) value.getValueType();
+    } else {
+      MethodInvocation methodInv = prevExpression.getFirstAncestorAssignableTo(MethodInvocation.class);
+      declaringType = (NamedUserType) methodInv.expression.getValue().getType();
+    }
 
-		PoseExpressionCreatorComposite poseExpressionCreatorComposite = PoseExpressionCreatorComposite.getInstance( declaringType );
-		if( poseExpressionCreatorComposite != null ) {
-			items.add( poseExpressionCreatorComposite.getValueCreator().getFillIn() );
-		}
-	}
+    PoseExpressionCreatorComposite poseExpressionCreatorComposite = PoseExpressionCreatorComposite.getInstance(declaringType);
+    if (poseExpressionCreatorComposite != null) {
+      items.add(poseExpressionCreatorComposite.getValueCreator().getFillIn());
+    }
+  }
 }

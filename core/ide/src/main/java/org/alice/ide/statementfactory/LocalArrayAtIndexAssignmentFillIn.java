@@ -63,42 +63,40 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocalArrayAtIndexAssignmentFillIn extends ExpressionFillInWithExpressionBlanks<AssignmentExpression> {
-	private static Map<UserLocal, LocalArrayAtIndexAssignmentFillIn> map = Maps.newHashMap();
+  private static Map<UserLocal, LocalArrayAtIndexAssignmentFillIn> map = Maps.newHashMap();
 
-	public static synchronized LocalArrayAtIndexAssignmentFillIn getInstance( UserLocal local ) {
-		LocalArrayAtIndexAssignmentFillIn rv = map.get( local );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalArrayAtIndexAssignmentFillIn( local );
-			map.put( local, rv );
-		}
-		return rv;
-	}
+  public static synchronized LocalArrayAtIndexAssignmentFillIn getInstance(UserLocal local) {
+    LocalArrayAtIndexAssignmentFillIn rv = map.get(local);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new LocalArrayAtIndexAssignmentFillIn(local);
+      map.put(local, rv);
+    }
+    return rv;
+  }
 
-	private final AssignmentExpression transientValue;
+  private final AssignmentExpression transientValue;
 
-	private LocalArrayAtIndexAssignmentFillIn( UserLocal local ) {
-		super( UUID.fromString( "dbb38402-a01a-43ff-a2eb-e946f81b5e2b" ),
-				ExpressionBlank.getBlankForType( Integer.class, ArrayIndexDetails.SINGLETON ),
-				ExpressionBlank.getBlankForType( local.valueType.getValue().getComponentType() ) );
+  private LocalArrayAtIndexAssignmentFillIn(UserLocal local) {
+    super(UUID.fromString("dbb38402-a01a-43ff-a2eb-e946f81b5e2b"), ExpressionBlank.getBlankForType(Integer.class, ArrayIndexDetails.SINGLETON), ExpressionBlank.getBlankForType(local.valueType.getValue().getComponentType()));
 
-		this.transientValue = IncompleteAstUtilities.createIncompleteLocalArrayAssignment( local );
-	}
+    this.transientValue = IncompleteAstUtilities.createIncompleteLocalArrayAssignment(local);
+  }
 
-	private UserLocal getLocal() {
-		ArrayAccess arrayAccess = (ArrayAccess)this.transientValue.leftHandSide.getValue();
-		LocalAccess localAccess = (LocalAccess)arrayAccess.array.getValue();
-		return localAccess.local.getValue();
-	}
+  private UserLocal getLocal() {
+    ArrayAccess arrayAccess = (ArrayAccess) this.transientValue.leftHandSide.getValue();
+    LocalAccess localAccess = (LocalAccess) arrayAccess.array.getValue();
+    return localAccess.local.getValue();
+  }
 
-	@Override
-	protected AssignmentExpression createValue( Expression[] expressions ) {
-		return AstUtilities.createLocalArrayAssignment( this.getLocal(), expressions[ 0 ], expressions[ 1 ] );
-	}
+  @Override
+  protected AssignmentExpression createValue(Expression[] expressions) {
+    return AstUtilities.createLocalArrayAssignment(this.getLocal(), expressions[0], expressions[1]);
+  }
 
-	@Override
-	public AssignmentExpression getTransientValue( ItemNode<? super AssignmentExpression, Expression> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public AssignmentExpression getTransientValue(ItemNode<? super AssignmentExpression, Expression> node) {
+    return this.transientValue;
+  }
 }

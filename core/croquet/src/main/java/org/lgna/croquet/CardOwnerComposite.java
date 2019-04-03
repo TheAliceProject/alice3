@@ -55,133 +55,133 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CardOwnerComposite extends AbstractComposite<CardPanel> {
-	private final List<Composite<?>> cards;
-	private Composite<?> showingCard;
+  private final List<Composite<?>> cards;
+  private Composite<?> showingCard;
 
-	public CardOwnerComposite( UUID id, Composite<?>... cards ) {
-		super( id );
-		this.cards = Lists.newCopyOnWriteArrayList( cards );
-	}
+  public CardOwnerComposite(UUID id, Composite<?>... cards) {
+    super(id);
+    this.cards = Lists.newCopyOnWriteArrayList(cards);
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	public boolean isCardAccountedForInPreferredSizeCalculation( Composite<?> card ) {
-		return true;
-	}
+  public boolean isCardAccountedForInPreferredSizeCalculation(Composite<?> card) {
+    return true;
+  }
 
-	public void addCard( Composite<?> card ) {
-		assert card != null : this;
-		if( this.cards.contains( card ) ) {
-			//pass
-		} else {
-			this.cards.add( card );
-			CardPanel view = this.peekView();
-			if( view != null ) {
-				view.addComposite( card );
-			}
-			if( this.cards.size() == 1 ) {
-				this.showingCard = card;
-			}
-		}
-	}
+  public void addCard(Composite<?> card) {
+    assert card != null : this;
+    if (this.cards.contains(card)) {
+      //pass
+    } else {
+      this.cards.add(card);
+      CardPanel view = this.peekView();
+      if (view != null) {
+        view.addComposite(card);
+      }
+      if (this.cards.size() == 1) {
+        this.showingCard = card;
+      }
+    }
+  }
 
-	public void removeCard( Composite<?> card ) {
-		assert card != null : this;
-		this.cards.remove( card );
-	}
+  public void removeCard(Composite<?> card) {
+    assert card != null : this;
+    this.cards.remove(card);
+  }
 
-	public Composite<?> getShowingCard() {
-		return this.showingCard;
-	}
+  public Composite<?> getShowingCard() {
+    return this.showingCard;
+  }
 
-	@Override
-	public final boolean contains( Model model ) {
-		if( super.contains( model ) ) {
-			return true;
-		} else {
-			for( Composite<?> card : this.cards ) {
-				//todo
-				if( card.contains( model ) ) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
+  @Override
+  public final boolean contains(Model model) {
+    if (super.contains(model)) {
+      return true;
+    } else {
+      for (Composite<?> card : this.cards) {
+        //todo
+        if (card.contains(model)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
 
-	public List<Composite<?>> getCards() {
-		return this.cards;
-	}
+  public List<Composite<?>> getCards() {
+    return this.cards;
+  }
 
-	@Override
-	protected CardPanel createView() {
-		return new CardPanel( this );
-	}
+  @Override
+  protected CardPanel createView() {
+    return new CardPanel(this);
+  }
 
-	@Override
-	public void releaseView() {
-		for( Composite<?> card : this.cards ) {
-			card.releaseView();
-		}
-		super.releaseView();
-	}
+  @Override
+  public void releaseView() {
+    for (Composite<?> card : this.cards) {
+      card.releaseView();
+    }
+    super.releaseView();
+  }
 
-	private synchronized void showCard( Composite<?> card, boolean isActivationDesired ) {
-		Composite<?> prevCard = this.getShowingCard();
-		if( prevCard != card ) {
-			if( isActivationDesired ) {
-				if( this.showingCard != null ) {
-					this.showingCard.handlePostDeactivation();
-				}
-			}
-			this.showingCard = card;
-		}
+  private synchronized void showCard(Composite<?> card, boolean isActivationDesired) {
+    Composite<?> prevCard = this.getShowingCard();
+    if (prevCard != card) {
+      if (isActivationDesired) {
+        if (this.showingCard != null) {
+          this.showingCard.handlePostDeactivation();
+        }
+      }
+      this.showingCard = card;
+    }
 
-		if( this.showingCard != null ) {
-			if( this.cards.contains( this.showingCard ) ) {
-				//pass
-			} else {
-				Logger.severe( "note: problems may result from showing a card that has not been added:", this.showingCard );
-			}
-		}
+    if (this.showingCard != null) {
+      if (this.cards.contains(this.showingCard)) {
+        //pass
+      } else {
+        Logger.severe("note: problems may result from showing a card that has not been added:", this.showingCard);
+      }
+    }
 
-		synchronized( this.getView().getTreeLock() ) {
-			this.getView().showComposite( this.showingCard );
-		}
-		if( prevCard != card ) {
-			if( isActivationDesired ) {
-				if( this.showingCard != null ) {
-					this.showingCard.handlePreActivation();
-				}
-			}
-		}
-	}
+    synchronized (this.getView().getTreeLock()) {
+      this.getView().showComposite(this.showingCard);
+    }
+    if (prevCard != card) {
+      if (isActivationDesired) {
+        if (this.showingCard != null) {
+          this.showingCard.handlePreActivation();
+        }
+      }
+    }
+  }
 
-	public void showCard( Composite<?> card ) {
-		this.showCard( card, true );
-	}
+  public void showCard(Composite<?> card) {
+    this.showCard(card, true);
+  }
 
-	public void showCardRefrainingFromActivation( Composite<?> card ) {
-		this.showCard( card, false );
-	}
+  public void showCardRefrainingFromActivation(Composite<?> card) {
+    this.showCard(card, false);
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		if( this.showingCard != null ) {
-			this.showingCard.handlePreActivation();
-		}
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    if (this.showingCard != null) {
+      this.showingCard.handlePreActivation();
+    }
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		Logger.outln( this, this.showingCard );
-		if( this.showingCard != null ) {
-			this.showingCard.handlePostDeactivation();
-		}
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    Logger.outln(this, this.showingCard);
+    if (this.showingCard != null) {
+      this.showingCard.handlePostDeactivation();
+    }
+    super.handlePostDeactivation();
+  }
 }

@@ -57,155 +57,155 @@ import java.util.ListIterator;
  * @author Dennis Cosgrove
  */
 public class DeclarationCompositeHistory {
-	private static class SingletonHolder {
-		private static DeclarationCompositeHistory instance = new DeclarationCompositeHistory();
-	}
+  private static class SingletonHolder {
+    private static DeclarationCompositeHistory instance = new DeclarationCompositeHistory();
+  }
 
-	public static DeclarationCompositeHistory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static DeclarationCompositeHistory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private List<DeclarationComposite<?, ?>> history = Lists.newLinkedList();
-	private int index = -1;
-	private final ValueListener<DeclarationComposite<?, ?>> declarationListener = new ValueListener<DeclarationComposite<?, ?>>() {
-		@Override
-		public void valueChanged( ValueEvent<DeclarationComposite<?, ?>> e ) {
-			DeclarationCompositeHistory.this.appendIfAppropriate( e.getNextValue() );
-		}
-	};
-	private final ValueListener<ProjectDocument> projectListener = new ValueListener<ProjectDocument>() {
-		@Override
-		public void valueChanged( ValueEvent<ProjectDocument> e ) {
-			DeclarationCompositeHistory.this.resetStack();
-		}
-	};
+  private List<DeclarationComposite<?, ?>> history = Lists.newLinkedList();
+  private int index = -1;
+  private final ValueListener<DeclarationComposite<?, ?>> declarationListener = new ValueListener<DeclarationComposite<?, ?>>() {
+    @Override
+    public void valueChanged(ValueEvent<DeclarationComposite<?, ?>> e) {
+      DeclarationCompositeHistory.this.appendIfAppropriate(e.getNextValue());
+    }
+  };
+  private final ValueListener<ProjectDocument> projectListener = new ValueListener<ProjectDocument>() {
+    @Override
+    public void valueChanged(ValueEvent<ProjectDocument> e) {
+      DeclarationCompositeHistory.this.resetStack();
+    }
+  };
 
-	private int ignoreCount = 0;
+  private int ignoreCount = 0;
 
-	private DeclarationCompositeHistory() {
-		ProjectDocumentState.getInstance().addNewSchoolValueListener( this.projectListener );
-		IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( this.declarationListener );
-		this.resetStack();
-	}
+  private DeclarationCompositeHistory() {
+    ProjectDocumentState.getInstance().addNewSchoolValueListener(this.projectListener);
+    IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener(this.declarationListener);
+    this.resetStack();
+  }
 
-	private void pushIgnore() {
-		this.ignoreCount++;
-	}
+  private void pushIgnore() {
+    this.ignoreCount++;
+  }
 
-	private void popIgnore() {
-		this.ignoreCount--;
-	}
+  private void popIgnore() {
+    this.ignoreCount--;
+  }
 
-	private void appendIfAppropriate( DeclarationComposite<?, ?> declarationComposite ) {
-		if( this.ignoreCount == 0 ) {
-			if( declarationComposite != null ) {
-				if( this.index > 0 ) {
-					this.history = this.history.subList( this.index, this.history.size() );
-				}
-				ListIterator<DeclarationComposite<?, ?>> listIterator = this.history.listIterator();
-				while( listIterator.hasNext() ) {
-					DeclarationComposite current = listIterator.next();
-					if( current == declarationComposite ) {
-						listIterator.remove();
-					}
-				}
-				this.index = 0;
-				this.history.add( 0, declarationComposite );
-				this.update();
-			}
-		}
-	}
+  private void appendIfAppropriate(DeclarationComposite<?, ?> declarationComposite) {
+    if (this.ignoreCount == 0) {
+      if (declarationComposite != null) {
+        if (this.index > 0) {
+          this.history = this.history.subList(this.index, this.history.size());
+        }
+        ListIterator<DeclarationComposite<?, ?>> listIterator = this.history.listIterator();
+        while (listIterator.hasNext()) {
+          DeclarationComposite current = listIterator.next();
+          if (current == declarationComposite) {
+            listIterator.remove();
+          }
+        }
+        this.index = 0;
+        this.history.add(0, declarationComposite);
+        this.update();
+      }
+    }
+  }
 
-	private void updateBackEnabled() {
-		boolean isEnabled = ( this.index + 1 ) < this.history.size();
-		BackwardOperation.getInstance().setEnabled( isEnabled );
-		BackwardCascade.getInstance().getRoot().getPopupPrepModel().setEnabled( isEnabled );
-	}
+  private void updateBackEnabled() {
+    boolean isEnabled = (this.index + 1) < this.history.size();
+    BackwardOperation.getInstance().setEnabled(isEnabled);
+    BackwardCascade.getInstance().getRoot().getPopupPrepModel().setEnabled(isEnabled);
+  }
 
-	private void updateFrontEnabled() {
-		boolean isEnabled = 0 < this.index;
-		ForwardOperation.getInstance().setEnabled( isEnabled );
-		ForwardCascade.getInstance().getRoot().getPopupPrepModel().setEnabled( isEnabled );
-	}
+  private void updateFrontEnabled() {
+    boolean isEnabled = 0 < this.index;
+    ForwardOperation.getInstance().setEnabled(isEnabled);
+    ForwardCascade.getInstance().getRoot().getPopupPrepModel().setEnabled(isEnabled);
+  }
 
-	private void update() {
-		DeclarationComposite<?, ?> original;
-		if( this.index != -1 ) {
-			original = this.history.get( this.index );
-		} else {
-			original = null;
-		}
-		boolean isIndexUpdateRequired = false;
-		ListIterator<DeclarationComposite<?, ?>> iterator = this.history.listIterator();
-		while( iterator.hasNext() ) {
-			DeclarationComposite<?, ?> composite = iterator.next();
-			if( composite.isValid() ) {
-				//pass
-			} else {
-				iterator.remove();
-				isIndexUpdateRequired = true;
-			}
-		}
+  private void update() {
+    DeclarationComposite<?, ?> original;
+    if (this.index != -1) {
+      original = this.history.get(this.index);
+    } else {
+      original = null;
+    }
+    boolean isIndexUpdateRequired = false;
+    ListIterator<DeclarationComposite<?, ?>> iterator = this.history.listIterator();
+    while (iterator.hasNext()) {
+      DeclarationComposite<?, ?> composite = iterator.next();
+      if (composite.isValid()) {
+        //pass
+      } else {
+        iterator.remove();
+        isIndexUpdateRequired = true;
+      }
+    }
 
-		if( isIndexUpdateRequired ) {
-			this.index = this.history.indexOf( original );
-		}
-		this.updateBackEnabled();
-		this.updateFrontEnabled();
-	}
+    if (isIndexUpdateRequired) {
+      this.index = this.history.indexOf(original);
+    }
+    this.updateBackEnabled();
+    this.updateFrontEnabled();
+  }
 
-	private void resetStack() {
-		this.history.clear();
-		this.index = -1;
-		this.appendIfAppropriate( IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue() );
-		this.update();
-	}
+  private void resetStack() {
+    this.history.clear();
+    this.index = -1;
+    this.appendIfAppropriate(IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue());
+    this.update();
+  }
 
-	private void setIndex( int index ) {
-		this.pushIgnore();
-		try {
-			this.index = index;
-			this.update();
-			IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite( this.history.get( this.index ) );
-			//			DeclarationTabState.getInstance().setValue( this.history.get( this.index ) );
-		} finally {
-			this.popIgnore();
-		}
-	}
+  private void setIndex(int index) {
+    this.pushIgnore();
+    try {
+      this.index = index;
+      this.update();
+      IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite(this.history.get(this.index));
+      //      DeclarationTabState.getInstance().setValue( this.history.get( this.index ) );
+    } finally {
+      this.popIgnore();
+    }
+  }
 
-	public void goBackward() {
-		this.setIndex( Math.min( this.index + 1, this.history.size() - 1 ) );
-	}
+  public void goBackward() {
+    this.setIndex(Math.min(this.index + 1, this.history.size() - 1));
+  }
 
-	public void goForward() {
-		this.setIndex( Math.max( this.index - 1, 0 ) );
-	}
+  public void goForward() {
+    this.setIndex(Math.max(this.index - 1, 0));
+  }
 
-	public void setDeclarationComposite( DeclarationComposite<?, ?> declarationComposite ) {
-		this.setIndex( this.history.indexOf( declarationComposite ) );
-	}
+  public void setDeclarationComposite(DeclarationComposite<?, ?> declarationComposite) {
+    this.setIndex(this.history.indexOf(declarationComposite));
+  }
 
-	public List<DeclarationComposite<?, ?>> getBackwardList() {
-		this.update();
-		int minInclusive = this.index + 1;
-		int maxExclusive = this.history.size();
-		if( minInclusive < maxExclusive ) {
-			return this.history.subList( minInclusive, maxExclusive );
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  public List<DeclarationComposite<?, ?>> getBackwardList() {
+    this.update();
+    int minInclusive = this.index + 1;
+    int maxExclusive = this.history.size();
+    if (minInclusive < maxExclusive) {
+      return this.history.subList(minInclusive, maxExclusive);
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
-	public List<DeclarationComposite<?, ?>> getForwardList() {
-		this.update();
-		int minInclusive = 0;
-		int maxExclusive = this.index;
-		if( minInclusive < maxExclusive ) {
-			List<DeclarationComposite<?, ?>> rv = this.history.subList( minInclusive, maxExclusive );
-			Collections.reverse( rv );
-			return rv;
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  public List<DeclarationComposite<?, ?>> getForwardList() {
+    this.update();
+    int minInclusive = 0;
+    int maxExclusive = this.index;
+    if (minInclusive < maxExclusive) {
+      List<DeclarationComposite<?, ?>> rv = this.history.subList(minInclusive, maxExclusive);
+      Collections.reverse(rv);
+      return rv;
+    } else {
+      return Collections.emptyList();
+    }
+  }
 }

@@ -51,42 +51,42 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class Getter extends AbstractMethodContainedByUserField {
-	Getter( UserField field ) {
-		super( field );
-	}
+  Getter(UserField field) {
+    super(field);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getReturnType() {
-		UserField field = this.getField();
-		return field.getValueType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getReturnType() {
+    UserField field = this.getField();
+    return field.getValueType();
+  }
 
-	@Override
-	public List<AbstractParameter> getRequiredParameters() {
-		return Collections.emptyList();
-	}
+  @Override
+  public List<AbstractParameter> getRequiredParameters() {
+    return Collections.emptyList();
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendGetter(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendGetter(this);
+  }
 
-	@Override
-	public String getName() {
-		UserField field = this.getField();
-		//todo: handle boolean and is
-		String fieldName = field.getName();
-		StringBuilder sb = new StringBuilder();
-		sb.append( "get" );
-		if( fieldName.length() > 0 ) {
-			sb.append( Character.toUpperCase( fieldName.charAt( 0 ) ) );
-			sb.append( fieldName.substring( 1 ) );
-		}
-		return sb.toString();
-	}
+  @Override
+  public String getName() {
+    UserField field = this.getField();
+    //todo: handle boolean and is
+    String fieldName = field.getName();
+    StringBuilder sb = new StringBuilder();
+    sb.append("get");
+    if (fieldName.length() > 0) {
+      sb.append(Character.toUpperCase(fieldName.charAt(0)));
+      sb.append(fieldName.substring(1));
+    }
+    return sb.toString();
+  }
 
-	@Override
-	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
-		return virtualMachine.get( getField(), target);
-	}
+  @Override
+  public Object invoke(VirtualMachine virtualMachine, Object target, Object[] arguments) {
+    return virtualMachine.get(getField(), target);
+  }
 }

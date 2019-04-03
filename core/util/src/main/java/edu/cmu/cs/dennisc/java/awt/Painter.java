@@ -49,5 +49,5 @@ import java.awt.Graphics2D;
  * @author Dennis Cosgrove
  */
 public interface Painter<T> {
-	public void paint( Graphics2D g2, T value, int width, int height );
+  public void paint(Graphics2D g2, T value, int width, int height);
 }

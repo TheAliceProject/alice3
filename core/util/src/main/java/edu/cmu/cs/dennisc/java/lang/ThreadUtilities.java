@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.java.lang;
  * @author Dennis Cosgrove
  */
 public class ThreadUtilities {
-	public static void sleep( long msec ) {
-		try {
-			Thread.sleep( msec );
-		} catch( InterruptedException ie ) {
-			throw new RuntimeException( ie );
-		}
-	}
+  public static void sleep(long msec) {
+    try {
+      Thread.sleep(msec);
+    } catch (InterruptedException ie) {
+      throw new RuntimeException(ie);
+    }
+  }
 }

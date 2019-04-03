@@ -56,7 +56,7 @@ import edu.cmu.cs.dennisc.property.DoubleProperty;
  * @author Dennis Cosgrove
  */
 public class SpotLight extends PointLight {
-	public final AngleProperty innerBeamAngle = new AngleProperty( this, new AngleInRadians( 0.4 ) );
-	public final AngleProperty outerBeamAngle = new AngleProperty( this, new AngleInRadians( 0.5 ) );
-	public final DoubleProperty falloff = new DoubleProperty( this, 1.0 );
+  public final AngleProperty innerBeamAngle = new AngleProperty(this, new AngleInRadians(0.4));
+  public final AngleProperty outerBeamAngle = new AngleProperty(this, new AngleInRadians(0.5));
+  public final DoubleProperty falloff = new DoubleProperty(this, 1.0);
 }

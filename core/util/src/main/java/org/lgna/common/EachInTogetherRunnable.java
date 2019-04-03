@@ -46,5 +46,5 @@ package org.lgna.common;
  * @author Dennis Cosgrove
  */
 public interface EachInTogetherRunnable<T> {
-	public void run( T item );
+  public void run(T item);
 }

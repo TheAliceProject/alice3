@@ -58,38 +58,38 @@ import java.awt.event.MouseMotionListener;
  * @author Dennis Cosgrove
  */
 public class PressAndDragMouseButtonThenScrollMouseWheel {
-	public static void main( String[] args ) {
-		JFrame frame = new JFrame();
-		final boolean IS_ATTEMPTING_TO_FIX = true;
-		if( IS_ATTEMPTING_TO_FIX ) {
-			ConsistentMouseDragEventQueue.pushIfAppropriate();
-		}
-		Container contentPane = frame.getContentPane();
+  public static void main(String[] args) {
+    JFrame frame = new JFrame();
+    final boolean IS_ATTEMPTING_TO_FIX = true;
+    if (IS_ATTEMPTING_TO_FIX) {
+      ConsistentMouseDragEventQueue.pushIfAppropriate();
+    }
+    Container contentPane = frame.getContentPane();
 
-		JPanel panel = new JPanel();
-		panel.setLayout( new BoxLayout( panel, BoxLayout.PAGE_AXIS ) );
+    JPanel panel = new JPanel();
+    panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-		JLabel pressAndDragLabel = new JLabel( "press and drag then use mouse wheel" );
-		pressAndDragLabel.addMouseMotionListener( new MouseMotionListener() {
-			@Override
-			public void mouseDragged( MouseEvent e ) {
-				System.out.println( "drag: when=" + e.getWhen() );
-			}
+    JLabel pressAndDragLabel = new JLabel("press and drag then use mouse wheel");
+    pressAndDragLabel.addMouseMotionListener(new MouseMotionListener() {
+      @Override
+      public void mouseDragged(MouseEvent e) {
+        System.out.println("drag: when=" + e.getWhen());
+      }
 
-			@Override
-			public void mouseMoved( MouseEvent e ) {
-			}
-		} );
-		panel.add( pressAndDragLabel );
+      @Override
+      public void mouseMoved(MouseEvent e) {
+      }
+    });
+    panel.add(pressAndDragLabel);
 
-		for( int i = 0; i < 24; i++ ) {
-			panel.add( new JLabel( "filler to force scroll pane: " + i ) );
-		}
-		JScrollPane scrollPane = new JScrollPane( panel );
-		contentPane.add( scrollPane, BorderLayout.CENTER );
-		frame.setSize( 400, 300 );
-		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-		frame.setVisible( true );
+    for (int i = 0; i < 24; i++) {
+      panel.add(new JLabel("filler to force scroll pane: " + i));
+    }
+    JScrollPane scrollPane = new JScrollPane(panel);
+    contentPane.add(scrollPane, BorderLayout.CENTER);
+    frame.setSize(400, 300);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setVisible(true);
 
-	}
+  }
 }

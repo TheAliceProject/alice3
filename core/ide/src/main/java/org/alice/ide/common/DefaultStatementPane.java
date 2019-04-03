@@ -64,53 +64,53 @@ import java.awt.Point;
  * @author Dennis Cosgrove
  */
 public class DefaultStatementPane extends AbstractStatementPane {
-	private int maxYForIfBlock = -1;
+  private int maxYForIfBlock = -1;
 
-	public DefaultStatementPane( DragModel model, AstI18nFactory factory, Statement statement, StatementListProperty owner ) {
-		super( model, factory, statement, owner );
-		this.addComponent( factory.createComponent( statement ) );
-	}
+  public DefaultStatementPane(DragModel model, AstI18nFactory factory, Statement statement, StatementListProperty owner) {
+    super(model, factory, statement, owner);
+    this.addComponent(factory.createComponent(statement));
+  }
 
-	public int getMaxYForIfBlock() {
-		return this.maxYForIfBlock;
-	}
+  public int getMaxYForIfBlock() {
+    return this.maxYForIfBlock;
+  }
 
-	public void setMaxYForIfBlock( int maxYForIfBlock ) {
-		this.maxYForIfBlock = maxYForIfBlock;
-	}
+  public void setMaxYForIfBlock(int maxYForIfBlock) {
+    this.maxYForIfBlock = maxYForIfBlock;
+  }
 
-	@Override
-	protected void paintEpilogue( Graphics2D g2, int x, int y, int width, int height ) {
-		super.paintEpilogue( g2, x, y, width, height );
-		if( FormatterState.isJava() ) {
-			Statement statement = this.getStatement();
-			if( statement instanceof DoTogether ) {
-				JDragView jDragView = this.getAwtComponent();
-				StatementListPropertyView.FeedbackJPanel feedbackJPanel = ComponentUtilities.findFirstMatch( jDragView, StatementListPropertyView.FeedbackJPanel.class );
-				if( feedbackJPanel != null ) {
-					Insets insets = this.getInsets();
-					GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g2 );
-					gc.pushAndSetTextAntialiasing( true );
-					gc.pushPaint();
-					g2.setColor( Color.BLACK );
-					try {
-						final int N = feedbackJPanel.getComponentCount();
-						for( int i = 1; i < N; i++ ) {
-							Component componentI = feedbackJPanel.getComponent( i );
-							Point p = new Point( 0, 0 );
-							Point pThis = SwingUtilities.convertPoint( componentI, p, jDragView );
-							g2.drawString( "}, () -> {", insets.left + x, pThis.y - 6 );
-						}
-					} finally {
-						gc.popAll();
-					}
-					//				for( org.lgna.croquet.views.AwtComponentView<?> awtComponentView : ( (org.lgna.croquet.views.AwtContainerView<?>)( (org.lgna.croquet.views.AwtContainerView<?>)this.getComponent( 0 ) ).getComponent( 1 ) ).getComponents() ) {
-					//					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( awtComponentView );
-					//					if( awtComponentView instanceof org.alice.ide.x.components.StatementListPropertyView ) {
-					//						org.alice.ide.x.components.StatementListPropertyView statementListPropertyView = (org.alice.ide.x.components.StatementListPropertyView)awtComponentView;
-					//					}
-				}
-			}
-		}
-	}
+  @Override
+  protected void paintEpilogue(Graphics2D g2, int x, int y, int width, int height) {
+    super.paintEpilogue(g2, x, y, width, height);
+    if (FormatterState.isJava()) {
+      Statement statement = this.getStatement();
+      if (statement instanceof DoTogether) {
+        JDragView jDragView = this.getAwtComponent();
+        StatementListPropertyView.FeedbackJPanel feedbackJPanel = ComponentUtilities.findFirstMatch(jDragView, StatementListPropertyView.FeedbackJPanel.class);
+        if (feedbackJPanel != null) {
+          Insets insets = this.getInsets();
+          GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics(g2);
+          gc.pushAndSetTextAntialiasing(true);
+          gc.pushPaint();
+          g2.setColor(Color.BLACK);
+          try {
+            final int N = feedbackJPanel.getComponentCount();
+            for (int i = 1; i < N; i++) {
+              Component componentI = feedbackJPanel.getComponent(i);
+              Point p = new Point(0, 0);
+              Point pThis = SwingUtilities.convertPoint(componentI, p, jDragView);
+              g2.drawString("}, () -> {", insets.left + x, pThis.y - 6);
+            }
+          } finally {
+            gc.popAll();
+          }
+          //        for( org.lgna.croquet.views.AwtComponentView<?> awtComponentView : ( (org.lgna.croquet.views.AwtContainerView<?>)( (org.lgna.croquet.views.AwtContainerView<?>)this.getComponent( 0 ) ).getComponent( 1 ) ).getComponents() ) {
+          //          edu.cmu.cs.dennisc.java.util.logging.Logger.outln( awtComponentView );
+          //          if( awtComponentView instanceof org.alice.ide.x.components.StatementListPropertyView ) {
+          //            org.alice.ide.x.components.StatementListPropertyView statementListPropertyView = (org.alice.ide.x.components.StatementListPropertyView)awtComponentView;
+          //          }
+        }
+      }
+    }
+  }
 }

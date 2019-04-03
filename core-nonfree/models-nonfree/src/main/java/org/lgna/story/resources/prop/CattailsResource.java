@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,36 +34,34 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum CattailsResource implements PropResource {
-	CLUSTER1( ImplementationAndVisualType.SIMS2 ),
-	CLUSTER2( ImplementationAndVisualType.SIMS2 ),
-	CLUSTER3( ImplementationAndVisualType.SIMS2 );
+  CLUSTER1(ImplementationAndVisualType.SIMS2), CLUSTER2(ImplementationAndVisualType.SIMS2), CLUSTER3(ImplementationAndVisualType.SIMS2);
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, CattailsResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, CattailsResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	CattailsResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	CattailsResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  CattailsResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return CattailsResource.JOINT_ID_ROOTS;
-	}
+  CattailsResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return CattailsResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

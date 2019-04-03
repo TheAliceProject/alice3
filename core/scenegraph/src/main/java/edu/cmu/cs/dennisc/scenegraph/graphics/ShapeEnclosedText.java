@@ -52,12 +52,12 @@ import java.awt.Font;
  * @author Dennis Cosgrove
  */
 public abstract class ShapeEnclosedText extends Text {
-	public ShapeEnclosedText( Color4f textColor, Font font, Color4f fillColor, Color4f outlineColor ) {
-		super( textColor, font );
-		this.fillColor = new Color4fProperty( this, fillColor, true );
-		this.outlineColor = new Color4fProperty( this, outlineColor, true );
-	}
+  public ShapeEnclosedText(Color4f textColor, Font font, Color4f fillColor, Color4f outlineColor) {
+    super(textColor, font);
+    this.fillColor = new Color4fProperty(this, fillColor, true);
+    this.outlineColor = new Color4fProperty(this, outlineColor, true);
+  }
 
-	public final Color4fProperty fillColor;
-	public final Color4fProperty outlineColor;
+  public final Color4fProperty fillColor;
+  public final Color4fProperty outlineColor;
 }

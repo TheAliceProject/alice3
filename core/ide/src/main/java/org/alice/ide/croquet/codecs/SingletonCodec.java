@@ -54,58 +54,58 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class SingletonCodec<T> implements ItemCodec<T> {
-	private static Map<Class<?>, SingletonCodec<?>> map = Maps.newHashMap();
+  private static Map<Class<?>, SingletonCodec<?>> map = Maps.newHashMap();
 
-	public static synchronized <T> SingletonCodec<T> getInstance( Class<T> cls ) {
-		SingletonCodec<?> rv = map.get( cls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SingletonCodec<T>( cls );
-		}
-		return (SingletonCodec<T>)rv;
-	}
+  public static synchronized <T> SingletonCodec<T> getInstance(Class<T> cls) {
+    SingletonCodec<?> rv = map.get(cls);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new SingletonCodec<T>(cls);
+    }
+    return (SingletonCodec<T>) rv;
+  }
 
-	private Class<T> valueCls;
+  private Class<T> valueCls;
 
-	private SingletonCodec( Class<T> valueCls ) {
-		this.valueCls = valueCls;
-	}
+  private SingletonCodec(Class<T> valueCls) {
+    this.valueCls = valueCls;
+  }
 
-	@Override
-	public Class<T> getValueClass() {
-		return this.valueCls;
-	}
+  @Override
+  public Class<T> getValueClass() {
+    return this.valueCls;
+  }
 
-	@Override
-	public T decodeValue( BinaryDecoder binaryDecoder ) {
-		boolean isNotNull = binaryDecoder.decodeBoolean();
-		if( isNotNull ) {
-			String clsName = binaryDecoder.decodeString();
-			try {
-				Class<?> cls = Class.forName( clsName );
-				Method mthd = cls.getDeclaredMethod( "getInstance" );
-				return (T)mthd.invoke( null );
-			} catch( Exception e ) {
-				throw new RuntimeException( e );
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public T decodeValue(BinaryDecoder binaryDecoder) {
+    boolean isNotNull = binaryDecoder.decodeBoolean();
+    if (isNotNull) {
+      String clsName = binaryDecoder.decodeString();
+      try {
+        Class<?> cls = Class.forName(clsName);
+        Method mthd = cls.getDeclaredMethod("getInstance");
+        return (T) mthd.invoke(null);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, T value ) {
-		if( value != null ) {
-			binaryEncoder.encode( true );
-			binaryEncoder.encode( value.getClass().getName() );
-		} else {
-			binaryEncoder.encode( false );
-		}
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, T value) {
+    if (value != null) {
+      binaryEncoder.encode(true);
+      binaryEncoder.encode(value.getClass().getName());
+    } else {
+      binaryEncoder.encode(false);
+    }
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, T value ) {
-		sb.append( value );
-	}
+  @Override
+  public void appendRepresentation(StringBuilder sb, T value) {
+    sb.append(value);
+  }
 }

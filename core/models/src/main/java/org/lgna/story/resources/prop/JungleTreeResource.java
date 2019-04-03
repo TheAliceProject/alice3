@@ -32,32 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum JungleTreeResource implements PropResource {
-	TREE1,
-	TREE2,
-	TREE3,
-	TREE4;
+  TREE1, TREE2, TREE3, TREE4;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	JungleTreeResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  JungleTreeResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	JungleTreeResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  JungleTreeResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

@@ -48,60 +48,60 @@ import java.io.OutputStream;
  * @author Dennis Cosgrove
  */
 public class DebugOutputStreamBinaryEncoder extends OutputStreamBinaryEncoder {
-	public DebugOutputStreamBinaryEncoder( OutputStream os ) {
-		super( os );
-	}
+  public DebugOutputStreamBinaryEncoder(OutputStream os) {
+    super(os);
+  }
 
-	private void writeByte( char c ) {
-		super.encode( (byte)c );
-	}
+  private void writeByte(char c) {
+    super.encode((byte) c);
+  }
 
-	@Override
-	public void encode( boolean value ) {
-		this.writeByte( 'B' );
-		super.encode( value );
-		this.writeByte( 'b' );
-	}
+  @Override
+  public void encode(boolean value) {
+    this.writeByte('B');
+    super.encode(value);
+    this.writeByte('b');
+  }
 
-	@Override
-	public void encode( char value ) {
-		this.writeByte( 'C' );
-		super.encode( value );
-		this.writeByte( 'c' );
-	}
+  @Override
+  public void encode(char value) {
+    this.writeByte('C');
+    super.encode(value);
+    this.writeByte('c');
+  }
 
-	@Override
-	public void encode( double value ) {
-		this.writeByte( 'D' );
-		super.encode( value );
-		this.writeByte( 'd' );
-	}
+  @Override
+  public void encode(double value) {
+    this.writeByte('D');
+    super.encode(value);
+    this.writeByte('d');
+  }
 
-	@Override
-	public void encode( int value ) {
-		this.writeByte( 'I' );
-		super.encode( value );
-		this.writeByte( 'i' );
-	}
+  @Override
+  public void encode(int value) {
+    this.writeByte('I');
+    super.encode(value);
+    this.writeByte('i');
+  }
 
-	@Override
-	public void encode( long value ) {
-		this.writeByte( 'L' );
-		super.encode( value );
-		this.writeByte( 'l' );
-	}
+  @Override
+  public void encode(long value) {
+    this.writeByte('L');
+    super.encode(value);
+    this.writeByte('l');
+  }
 
-	@Override
-	public void encode( short value ) {
-		this.writeByte( 'S' );
-		super.encode( value );
-		this.writeByte( 's' );
-	}
+  @Override
+  public void encode(short value) {
+    this.writeByte('S');
+    super.encode(value);
+    this.writeByte('s');
+  }
 
-	@Override
-	public void encode( String value ) {
-		this.writeByte( 'X' );
-		super.encode( value );
-		this.writeByte( 'x' );
-	}
+  @Override
+  public void encode(String value) {
+    this.writeByte('X');
+    super.encode(value);
+    this.writeByte('x');
+  }
 }

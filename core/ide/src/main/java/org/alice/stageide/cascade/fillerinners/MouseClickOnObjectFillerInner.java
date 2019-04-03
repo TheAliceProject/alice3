@@ -51,12 +51,12 @@ import org.lgna.story.event.MouseClickOnObjectListener;
 import java.util.List;
 
 public class MouseClickOnObjectFillerInner extends ExpressionFillerInner {
-	public MouseClickOnObjectFillerInner() {
-		super( MouseClickOnObjectListener.class );
-	}
+  public MouseClickOnObjectFillerInner() {
+    super(MouseClickOnObjectListener.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		items.add( org.alice.stageide.croquet.models.cascade.adapters.MouseClickOnObjectFillerInner.getInstance() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    items.add(org.alice.stageide.croquet.models.cascade.adapters.MouseClickOnObjectFillerInner.getInstance());
+  }
 }

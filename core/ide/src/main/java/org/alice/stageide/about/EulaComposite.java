@@ -52,19 +52,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class EulaComposite extends LazyOperationUnadornedDialogCoreComposite<EulaView> {
-	private final String eulaText;
+  private final String eulaText;
 
-	public EulaComposite( UUID migrationId, String text ) {
-		super( migrationId );
-		this.eulaText = text;
-	}
+  public EulaComposite(UUID migrationId, String text) {
+    super(migrationId);
+    this.eulaText = text;
+  }
 
-	public String getEulaText() {
-		return this.eulaText;
-	}
+  public String getEulaText() {
+    return this.eulaText;
+  }
 
-	@Override
-	protected EulaView createView() {
-		return new EulaView( this );
-	}
+  @Override
+  protected EulaView createView() {
+    return new EulaView(this);
+  }
 }

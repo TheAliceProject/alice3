@@ -57,17 +57,17 @@ import org.lgna.croquet.views.BorderPanel;
  * @author Matt May
  */
 public class ReferencesToFieldPreventingDeletionPane extends BorderPanel {
-	public ReferencesToFieldPreventingDeletionPane( ReferencesToFieldPreventingDeletionDialog composite ) {
-		IconFactory iconFactory = IconFactoryManager.getIconFactoryForField( composite.getField() );
-		Icon icon = iconFactory.getIcon( Theme.DEFAULT_LARGE_ICON_SIZE );
-		if( icon instanceof TrimmedIcon ) {
-			TrimmedIcon trimmedIcon = (TrimmedIcon)icon;
-			icon = trimmedIcon.getImageIcon();
-		}
-		AbstractLabel descriptionLabel = composite.getAppropriateDescriptionText().createLabel();
-		descriptionLabel.setIcon( icon );
-		descriptionLabel.getAwtComponent().setIconTextGap( 16 );
-		this.addPageStartComponent( descriptionLabel );
-		this.setBorder( BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
-	}
+  public ReferencesToFieldPreventingDeletionPane(ReferencesToFieldPreventingDeletionDialog composite) {
+    IconFactory iconFactory = IconFactoryManager.getIconFactoryForField(composite.getField());
+    Icon icon = iconFactory.getIcon(Theme.DEFAULT_LARGE_ICON_SIZE);
+    if (icon instanceof TrimmedIcon) {
+      TrimmedIcon trimmedIcon = (TrimmedIcon) icon;
+      icon = trimmedIcon.getImageIcon();
+    }
+    AbstractLabel descriptionLabel = composite.getAppropriateDescriptionText().createLabel();
+    descriptionLabel.setIcon(icon);
+    descriptionLabel.getAwtComponent().setIconTextGap(16);
+    this.addPageStartComponent(descriptionLabel);
+    this.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
+  }
 }

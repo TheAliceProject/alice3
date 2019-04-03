@@ -62,122 +62,122 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements CascadeBlankChild<F> {
-	private transient boolean isDirty = true;
-	private transient JComponent menuProxy = null;
-	private transient Icon icon = null;
+  private transient boolean isDirty = true;
+  private transient JComponent menuProxy = null;
+  private transient Icon icon = null;
 
-	public CascadeItem( UUID id ) {
-		super( id );
-	}
+  public CascadeItem(UUID id) {
+    super(id);
+  }
 
-	@Override
-	public int getItemCount() {
-		return 1;
-	}
+  @Override
+  public int getItemCount() {
+    return 1;
+  }
 
-	@Override
-	public CascadeItem<F, B> getItemAt( int index ) {
-		assert index == 0;
-		return this;
-	}
+  @Override
+  public CascadeItem<F, B> getItemAt(int index) {
+    assert index == 0;
+    return this;
+  }
 
-	public abstract F getTransientValue( ItemNode<? super F, B> node );
+  public abstract F getTransientValue(ItemNode<? super F, B> node);
 
-	public abstract F createValue( ItemNode<? super F, B> node );
+  public abstract F createValue(ItemNode<? super F, B> node);
 
-	protected abstract JComponent createMenuItemIconProxy( ItemNode<? super F, B> node );
+  protected abstract JComponent createMenuItemIconProxy(ItemNode<? super F, B> node);
 
-	@Override
-	protected void localize() {
-		this.isDirty = true;
-	}
+  @Override
+  protected void localize() {
+    this.isDirty = true;
+  }
 
-	protected boolean isDirty() {
-		return this.isDirty;
-	}
+  protected boolean isDirty() {
+    return this.isDirty;
+  }
 
-	protected void markClean() {
-		this.isDirty = false;
-	}
+  protected void markClean() {
+    this.isDirty = false;
+  }
 
-	public void markDirty() {
-		this.isDirty = true;
-	}
+  public void markDirty() {
+    this.isDirty = true;
+  }
 
-	protected JComponent getMenuProxy( ItemNode<? super F, B> node ) {
-		if( this.menuProxy != null ) {
-			//pass
-		} else {
-			this.menuProxy = this.createMenuItemIconProxy( node );
-		}
-		return this.menuProxy;
-	}
+  protected JComponent getMenuProxy(ItemNode<? super F, B> node) {
+    if (this.menuProxy != null) {
+      //pass
+    } else {
+      this.menuProxy = this.createMenuItemIconProxy(node);
+    }
+    return this.menuProxy;
+  }
 
-	//todo:
-	private static void setBoxLayoutComponentOrientationTree( Component c, ComponentOrientation componentOrientation ) {
-		if( c instanceof JPanel ) {
-			JPanel jPanel = (JPanel)c;
-			LayoutManager layoutManager = jPanel.getLayout();
-			if( layoutManager instanceof BoxLayout ) {
-				//javax.swing.BoxLayout boxLayout = (javax.swing.BoxLayout)layoutManager;
-				c.setComponentOrientation( componentOrientation );
-			}
-		}
-		if( c instanceof Container ) {
-			Container container = (Container)c;
-			for( Component component : container.getComponents() ) {
-				setBoxLayoutComponentOrientationTree( component, componentOrientation );
-			}
-		}
-	}
+  //todo:
+  private static void setBoxLayoutComponentOrientationTree(Component c, ComponentOrientation componentOrientation) {
+    if (c instanceof JPanel) {
+      JPanel jPanel = (JPanel) c;
+      LayoutManager layoutManager = jPanel.getLayout();
+      if (layoutManager instanceof BoxLayout) {
+        //javax.swing.BoxLayout boxLayout = (javax.swing.BoxLayout)layoutManager;
+        c.setComponentOrientation(componentOrientation);
+      }
+    }
+    if (c instanceof Container) {
+      Container container = (Container) c;
+      for (Component component : container.getComponents()) {
+        setBoxLayoutComponentOrientationTree(component, componentOrientation);
+      }
+    }
+  }
 
-	public Icon getMenuItemIcon( ItemNode<? super F, B> node ) {
-		if( this.isDirty() ) {
-			this.icon = null;
-			this.menuProxy = null;
-		}
-		if( this.icon != null ) {
-			//pass
-		} else {
-			JComponent component = this.getMenuProxy( node );
-			if( component != null ) {
-				final boolean IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK = true;
-				ComponentOrientation componentOrientation = component.getComponentOrientation();
-				if( componentOrientation.isLeftToRight() ) {
-					//pass
-				} else {
-					if( IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK ) {
-						setBoxLayoutComponentOrientationTree( component, ComponentOrientation.LEFT_TO_RIGHT );
-					}
-				}
+  public Icon getMenuItemIcon(ItemNode<? super F, B> node) {
+    if (this.isDirty()) {
+      this.icon = null;
+      this.menuProxy = null;
+    }
+    if (this.icon != null) {
+      //pass
+    } else {
+      JComponent component = this.getMenuProxy(node);
+      if (component != null) {
+        final boolean IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK = true;
+        ComponentOrientation componentOrientation = component.getComponentOrientation();
+        if (componentOrientation.isLeftToRight()) {
+          //pass
+        } else {
+          if (IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK) {
+            setBoxLayoutComponentOrientationTree(component, ComponentOrientation.LEFT_TO_RIGHT);
+          }
+        }
 
-				ComponentUtilities.invalidateTree( component );
-				ComponentUtilities.doLayoutTree( component );
-				ComponentUtilities.setSizeToPreferredSizeTree( component );
+        ComponentUtilities.invalidateTree(component);
+        ComponentUtilities.doLayoutTree(component);
+        ComponentUtilities.setSizeToPreferredSizeTree(component);
 
-				if( componentOrientation.isLeftToRight() ) {
-					//pass
-				} else {
-					if( IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK ) {
-						setBoxLayoutComponentOrientationTree( component, componentOrientation );
-					}
-				}
+        if (componentOrientation.isLeftToRight()) {
+          //pass
+        } else {
+          if (IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK) {
+            setBoxLayoutComponentOrientationTree(component, componentOrientation);
+          }
+        }
 
-				Dimension size = component.getPreferredSize();
-				if( ( size.width > 0 ) && ( size.height > 0 ) ) {
-					this.icon = IconUtilities.createIcon( component );
-				} else {
-					this.icon = null;
-				}
-			} else {
-				this.icon = null;
-			}
-			this.markClean();
-		}
-		return this.icon;
-	}
+        Dimension size = component.getPreferredSize();
+        if ((size.width > 0) && (size.height > 0)) {
+          this.icon = IconUtilities.createIcon(component);
+        } else {
+          this.icon = null;
+        }
+      } else {
+        this.icon = null;
+      }
+      this.markClean();
+    }
+    return this.icon;
+  }
 
-	public String getMenuItemText() {
-		return null;
-	}
+  public String getMenuItemText() {
+    return null;
+  }
 }

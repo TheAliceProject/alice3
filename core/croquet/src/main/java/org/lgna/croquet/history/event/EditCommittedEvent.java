@@ -49,13 +49,13 @@ import org.lgna.croquet.edits.Edit;
  * @author Dennis Cosgrove
  */
 public class EditCommittedEvent implements ActivityEvent {
-	private final Edit edit;
+  private final Edit edit;
 
-	public EditCommittedEvent( Edit edit ) {
-		this.edit = edit;
-	}
+  public EditCommittedEvent(Edit edit) {
+    this.edit = edit;
+  }
 
-	public Edit getEdit() {
-		return this.edit;
-	}
+  public Edit getEdit() {
+    return this.edit;
+  }
 }

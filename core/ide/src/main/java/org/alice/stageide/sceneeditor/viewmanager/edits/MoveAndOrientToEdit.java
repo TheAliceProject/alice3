@@ -59,55 +59,55 @@ import org.lgna.story.implementation.EntityImp;
  *
  */
 public class MoveAndOrientToEdit extends AbstractEdit {
-	private final SMovableTurnable toMove;
-	private final SThing target;
-	private transient AbstractTransformableImp transformable;
-	private transient AffineMatrix4x4 m;
+  private final SMovableTurnable toMove;
+  private final SThing target;
+  private transient AbstractTransformableImp transformable;
+  private transient AffineMatrix4x4 m;
 
-	public MoveAndOrientToEdit( UserActivity userActivity, SMovableTurnable toMove, SThing target ) {
-		super( userActivity );
-		this.toMove = toMove;
-		this.target = target;
-	}
+  public MoveAndOrientToEdit(UserActivity userActivity, SMovableTurnable toMove, SThing target) {
+    super(userActivity);
+    this.toMove = toMove;
+    this.target = target;
+  }
 
-	public MoveAndOrientToEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.toMove = null;
-		this.target = null;
+  public MoveAndOrientToEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.toMove = null;
+    this.target = null;
 
-	}
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		assert false : "Not implemented yet";
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    assert false : "Not implemented yet";
+  }
 
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		if( ( this.toMove != null ) && ( this.target != null ) ) {
-			this.transformable = EmployeesOnly.getImplementation( this.toMove );
-			this.m = this.transformable.getAbsoluteTransformation();
-			EntityImp targetImp = EmployeesOnly.getImplementation( this.target );
-			AffineMatrix4x4 targetTransform = targetImp.getAbsoluteTransformation();
-			this.transformable.animateTransformation( AsSeenBy.SCENE, targetTransform );
-		} else {
-			this.transformable = null;
-			this.m = null;
-		}
-	}
+  @Override
+  protected void doOrRedoInternal(boolean isDo) {
+    if ((this.toMove != null) && (this.target != null)) {
+      this.transformable = EmployeesOnly.getImplementation(this.toMove);
+      this.m = this.transformable.getAbsoluteTransformation();
+      EntityImp targetImp = EmployeesOnly.getImplementation(this.target);
+      AffineMatrix4x4 targetTransform = targetImp.getAbsoluteTransformation();
+      this.transformable.animateTransformation(AsSeenBy.SCENE, targetTransform);
+    } else {
+      this.transformable = null;
+      this.m = null;
+    }
+  }
 
-	@Override
-	protected void undoInternal() {
-		if( ( this.transformable != null ) && ( this.m != null ) ) {
-			this.transformable.animateTransformation( AsSeenBy.SCENE, this.m );
-		}
-	}
+  @Override
+  protected void undoInternal() {
+    if ((this.transformable != null) && (this.m != null)) {
+      this.transformable.animateTransformation(AsSeenBy.SCENE, this.m);
+    }
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "move and orient to:" );
-		//todo
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("move and orient to:");
+    //todo
+  }
 
 }

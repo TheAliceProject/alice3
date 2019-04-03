@@ -57,69 +57,69 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public abstract class ListPreference<E> extends Preference<List<E>> {
-	private static final int LIST_VERSION = 1;
-	private static final String LIST_VERSION_SUFFIX = ".list_version";
-	private static final String ITEM_VERSION_SUFFIX = ".item_version";
-	private static final String DATA_SUFFIX = ".data";
+  private static final int LIST_VERSION = 1;
+  private static final String LIST_VERSION_SUFFIX = ".list_version";
+  private static final String ITEM_VERSION_SUFFIX = ".item_version";
+  private static final String DATA_SUFFIX = ".data";
 
-	public ListPreference( List<E> defaultValue ) {
-		super( defaultValue );
-	}
+  public ListPreference(List<E> defaultValue) {
+    super(defaultValue);
+  }
 
-	protected abstract int getItemVersion();
+  protected abstract int getItemVersion();
 
-	protected abstract void encode( BinaryEncoder binaryEncoder, E item );
+  protected abstract void encode(BinaryEncoder binaryEncoder, E item);
 
-	private byte[] encode( List<E> value ) {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		BinaryEncoder binaryEncoder = new OutputStreamBinaryEncoder( baos );
-		binaryEncoder.encode( value.size() );
-		for( E item : value ) {
-			this.encode( binaryEncoder, item );
-		}
-		binaryEncoder.flush();
-		return baos.toByteArray();
-	}
+  private byte[] encode(List<E> value) {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    BinaryEncoder binaryEncoder = new OutputStreamBinaryEncoder(baos);
+    binaryEncoder.encode(value.size());
+    for (E item : value) {
+      this.encode(binaryEncoder, item);
+    }
+    binaryEncoder.flush();
+    return baos.toByteArray();
+  }
 
-	protected abstract E decode( int itemVersion, BinaryDecoder binaryDecoder );
+  protected abstract E decode(int itemVersion, BinaryDecoder binaryDecoder);
 
-	private List<E> decode( int version, byte[] value ) {
-		if( value != null ) {
-			List<E> rv = new LinkedList<E>();
-			ByteArrayInputStream bais = new ByteArrayInputStream( value );
-			BinaryDecoder binaryDecoder = new InputStreamBinaryDecoder( bais );
-			final int N = binaryDecoder.decodeInt();
-			for( int i = 0; i < N; i++ ) {
-				E item = this.decode( version, binaryDecoder );
-				rv.add( item );
-			}
-			return rv;
-		} else {
-			return null;
-		}
-	}
+  private List<E> decode(int version, byte[] value) {
+    if (value != null) {
+      List<E> rv = new LinkedList<E>();
+      ByteArrayInputStream bais = new ByteArrayInputStream(value);
+      BinaryDecoder binaryDecoder = new InputStreamBinaryDecoder(bais);
+      final int N = binaryDecoder.decodeInt();
+      for (int i = 0; i < N; i++) {
+        E item = this.decode(version, binaryDecoder);
+        rv.add(item);
+      }
+      return rv;
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected List<E> getValue( Preferences utilPrefs, String key, List<E> defaultValue ) {
-		int listVersion = utilPrefs.getInt( key + LIST_VERSION_SUFFIX, 0 );
-		if( listVersion == 1 ) {
-			int itemVersion = utilPrefs.getInt( key + ITEM_VERSION_SUFFIX, 0 );
-			byte[] defaultData = this.encode( defaultValue );
-			byte[] currentData = utilPrefs.getByteArray( key + DATA_SUFFIX, defaultData );
-			return this.decode( itemVersion, currentData );
-		} else {
-			return defaultValue;
-		}
-	}
+  @Override
+  protected List<E> getValue(Preferences utilPrefs, String key, List<E> defaultValue) {
+    int listVersion = utilPrefs.getInt(key + LIST_VERSION_SUFFIX, 0);
+    if (listVersion == 1) {
+      int itemVersion = utilPrefs.getInt(key + ITEM_VERSION_SUFFIX, 0);
+      byte[] defaultData = this.encode(defaultValue);
+      byte[] currentData = utilPrefs.getByteArray(key + DATA_SUFFIX, defaultData);
+      return this.decode(itemVersion, currentData);
+    } else {
+      return defaultValue;
+    }
+  }
 
-	@Override
-	protected void setAndCommitValue( Preferences utilPrefs, String key, List<E> nextValue ) {
-		utilPrefs.putInt( key + LIST_VERSION_SUFFIX, LIST_VERSION );
-		utilPrefs.putInt( key + ITEM_VERSION_SUFFIX, this.getItemVersion() );
-		if( nextValue != null ) {
-			utilPrefs.putByteArray( key + DATA_SUFFIX, this.encode( nextValue ) );
-		} else {
-			utilPrefs.putByteArray( key + DATA_SUFFIX, null );
-		}
-	}
+  @Override
+  protected void setAndCommitValue(Preferences utilPrefs, String key, List<E> nextValue) {
+    utilPrefs.putInt(key + LIST_VERSION_SUFFIX, LIST_VERSION);
+    utilPrefs.putInt(key + ITEM_VERSION_SUFFIX, this.getItemVersion());
+    if (nextValue != null) {
+      utilPrefs.putByteArray(key + DATA_SUFFIX, this.encode(nextValue));
+    } else {
+      utilPrefs.putByteArray(key + DATA_SUFFIX, null);
+    }
+  }
 }

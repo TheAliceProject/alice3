@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleChildBottomPieceShorts implements MaleChildBottomPiece {
-	WHITE,
-	BLUE,
-	GREY,
-	RED;
+  WHITE, BLUE, GREY, RED
 
 }

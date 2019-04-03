@@ -81,105 +81,105 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class StatementContextMenu extends MenuModel {
-	private static Map<Statement, StatementContextMenu> map = Maps.newHashMap();
+  private static Map<Statement, StatementContextMenu> map = Maps.newHashMap();
 
-	public static synchronized StatementContextMenu getInstance( Statement statement ) {
-		StatementContextMenu rv = map.get( statement );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new StatementContextMenu( statement );
-			map.put( statement, rv );
-		}
-		return rv;
-	}
+  public static synchronized StatementContextMenu getInstance(Statement statement) {
+    StatementContextMenu rv = map.get(statement);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new StatementContextMenu(statement);
+      map.put(statement, rv);
+    }
+    return rv;
+  }
 
-	private Statement statement;
+  private Statement statement;
 
-	private StatementContextMenu( Statement statement ) {
-		super( UUID.fromString( "6d152827-60e1-4d1c-b589-843ec554957c" ) );
-		this.statement = statement;
-	}
+  private StatementContextMenu(Statement statement) {
+    super(UUID.fromString("6d152827-60e1-4d1c-b589-843ec554957c"));
+    this.statement = statement;
+  }
 
-	public Statement getStatement() {
-		return this.statement;
-	}
+  public Statement getStatement() {
+    return this.statement;
+  }
 
-	private List<StandardMenuItemPrepModel> updatePopupOperations( List<StandardMenuItemPrepModel> rv, final Statement statement ) {
-		if( statement instanceof Comment ) {
-			//pass
-		} else {
-			rv.add( new FastForwardToStatementOperation( statement ).getMenuItemPrepModel() );
-			rv.add( MenuModel.SEPARATOR );
-			rv.add( IsStatementEnabledState.getInstance( statement ).getMenuItemPrepModel() );
-		}
-		if( statement instanceof ExpressionStatement ) {
-			ExpressionStatement expressionStatement = (ExpressionStatement)statement;
-			Expression expression = expressionStatement.expression.getValue();
-			if( expression instanceof MethodInvocation ) {
-				MethodInvocation methodInvocation = (MethodInvocation)expression;
-				AbstractMethod method = methodInvocation.method.getValue();
-				if( method instanceof UserMethod ) {
-					rv.add( IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod( method ).getMenuItemPrepModel() );
-				}
-			}
-		}
-		rv.add( MenuModel.SEPARATOR );
-		rv.add( CopyToClipboardOperation.getInstance( statement ).getMenuItemPrepModel() );
-		rv.add( MenuModel.SEPARATOR );
+  private List<StandardMenuItemPrepModel> updatePopupOperations(List<StandardMenuItemPrepModel> rv, final Statement statement) {
+    if (statement instanceof Comment) {
+      //pass
+    } else {
+      rv.add(new FastForwardToStatementOperation(statement).getMenuItemPrepModel());
+      rv.add(MenuModel.SEPARATOR);
+      rv.add(IsStatementEnabledState.getInstance(statement).getMenuItemPrepModel());
+    }
+    if (statement instanceof ExpressionStatement) {
+      ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+      Expression expression = expressionStatement.expression.getValue();
+      if (expression instanceof MethodInvocation) {
+        MethodInvocation methodInvocation = (MethodInvocation) expression;
+        AbstractMethod method = methodInvocation.method.getValue();
+        if (method instanceof UserMethod) {
+          rv.add(IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod(method).getMenuItemPrepModel());
+        }
+      }
+    }
+    rv.add(MenuModel.SEPARATOR);
+    rv.add(CopyToClipboardOperation.getInstance(statement).getMenuItemPrepModel());
+    rv.add(MenuModel.SEPARATOR);
 
-		BlockStatement blockStatement = (BlockStatement)statement.getParent();
-		if( blockStatement != null ) {
-			rv.add( new DeleteStatementOperation( statement ).getMenuItemPrepModel() );
-		} else {
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					StringBuilder sb = new StringBuilder();
-					try {
-						NodeUtilities.safeAppendRepr( sb, statement );
-					} catch( Throwable t ) {
-						sb.append( statement );
-					}
-					sb.append( ";" );
-					sb.append( statement.getId() );
-					AnomalousSituationComposite.createInstance( "Oh no!  A popup menu has been requested for a statement without a parent.", sb.toString() ).getLaunchOperation().fire();
-				}
-			} );
-			//throw new org.lgna.croquet.CancelException();
-		}
-		if( statement instanceof AbstractStatementWithBody ) {
-			AbstractStatementWithBody statementWithBody = (AbstractStatementWithBody)statement;
-			rv.add( DissolveStatementWithBodyOperation.getInstance( statementWithBody ).getMenuItemPrepModel() );
-			if( statementWithBody instanceof DoInOrder ) {
-				DoInOrder doInOrder = (DoInOrder)statementWithBody;
-				rv.add( ConvertDoInOrderToDoTogetherOperation.getInstance( doInOrder ).getMenuItemPrepModel() );
-			} else if( statementWithBody instanceof DoTogether ) {
-				DoTogether doTogether = (DoTogether)statementWithBody;
-				rv.add( ConvertDoTogetherToDoInOrderOperation.getInstance( doTogether ).getMenuItemPrepModel() );
-			}
-		} else if( statement instanceof ConditionalStatement ) {
-			ConditionalStatement conditionalStatement = (ConditionalStatement)statement;
-			//todo: dissolve to if, dissolve to else
-		} else if( statement instanceof ExpressionStatement ) {
-			ExpressionStatement expressionStatement = (ExpressionStatement)statement;
-			Expression expression = expressionStatement.expression.getValue();
-			if( expression instanceof ArgumentOwner ) {
-				ArgumentOwner argumentOwner = (ArgumentOwner)expression;
-				KeyedArgumentListProperty argumentListProperty = argumentOwner.getKeyedArgumentsProperty();
-				for( JavaKeyedArgument argument : argumentListProperty ) {
-					rv.add( RemoveKeyedArgumentOperation.getInstance( argumentListProperty, argument ).getMenuItemPrepModel() );
-				}
-			}
-		}
-		return rv;
-	}
+    BlockStatement blockStatement = (BlockStatement) statement.getParent();
+    if (blockStatement != null) {
+      rv.add(new DeleteStatementOperation(statement).getMenuItemPrepModel());
+    } else {
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          StringBuilder sb = new StringBuilder();
+          try {
+            NodeUtilities.safeAppendRepr(sb, statement);
+          } catch (Throwable t) {
+            sb.append(statement);
+          }
+          sb.append(";");
+          sb.append(statement.getId());
+          AnomalousSituationComposite.createInstance("Oh no!  A popup menu has been requested for a statement without a parent.", sb.toString()).getLaunchOperation().fire();
+        }
+      });
+      //throw new org.lgna.croquet.CancelException();
+    }
+    if (statement instanceof AbstractStatementWithBody) {
+      AbstractStatementWithBody statementWithBody = (AbstractStatementWithBody) statement;
+      rv.add(DissolveStatementWithBodyOperation.getInstance(statementWithBody).getMenuItemPrepModel());
+      if (statementWithBody instanceof DoInOrder) {
+        DoInOrder doInOrder = (DoInOrder) statementWithBody;
+        rv.add(ConvertDoInOrderToDoTogetherOperation.getInstance(doInOrder).getMenuItemPrepModel());
+      } else if (statementWithBody instanceof DoTogether) {
+        DoTogether doTogether = (DoTogether) statementWithBody;
+        rv.add(ConvertDoTogetherToDoInOrderOperation.getInstance(doTogether).getMenuItemPrepModel());
+      }
+    } else if (statement instanceof ConditionalStatement) {
+      ConditionalStatement conditionalStatement = (ConditionalStatement) statement;
+      //todo: dissolve to if, dissolve to else
+    } else if (statement instanceof ExpressionStatement) {
+      ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+      Expression expression = expressionStatement.expression.getValue();
+      if (expression instanceof ArgumentOwner) {
+        ArgumentOwner argumentOwner = (ArgumentOwner) expression;
+        KeyedArgumentListProperty argumentListProperty = argumentOwner.getKeyedArgumentsProperty();
+        for (JavaKeyedArgument argument : argumentListProperty) {
+          rv.add(RemoveKeyedArgumentOperation.getInstance(argumentListProperty, argument).getMenuItemPrepModel());
+        }
+      }
+    }
+    return rv;
+  }
 
-	@Override
-	public void handlePopupMenuPrologue( PopupMenu popupMenu ) {
-		super.handlePopupMenuPrologue( popupMenu );
-		List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
-		this.updatePopupOperations( models, this.statement );
-		MenuItemContainerUtilities.setMenuElements( popupMenu, models );
-	}
+  @Override
+  public void handlePopupMenuPrologue(PopupMenu popupMenu) {
+    super.handlePopupMenuPrologue(popupMenu);
+    List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
+    this.updatePopupOperations(models, this.statement);
+    MenuItemContainerUtilities.setMenuElements(popupMenu, models);
+  }
 }

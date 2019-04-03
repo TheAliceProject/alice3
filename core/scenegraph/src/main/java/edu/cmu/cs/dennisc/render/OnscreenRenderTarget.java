@@ -48,7 +48,7 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public interface OnscreenRenderTarget<C extends Component> extends RenderTarget {
-	public C getAwtComponent();
+  public C getAwtComponent();
 
-	public void repaint();
+  public void repaint();
 }

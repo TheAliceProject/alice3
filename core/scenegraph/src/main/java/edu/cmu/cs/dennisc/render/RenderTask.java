@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.render;
  * @author Dennis Cosgrove
  */
 public interface RenderTask {
-	void render( Object context );
+  void render(Object context);
 }

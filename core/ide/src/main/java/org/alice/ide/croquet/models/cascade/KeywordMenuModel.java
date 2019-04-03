@@ -64,42 +64,42 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class KeywordMenuModel extends CascadeMenuModel<Expression> {
-	private static Map<AbstractMethod, KeywordMenuModel> map = Maps.newHashMap();
+  private static Map<AbstractMethod, KeywordMenuModel> map = Maps.newHashMap();
 
-	public static KeywordMenuModel getInstance( AbstractMethod value ) {
-		synchronized( map ) {
-			KeywordMenuModel rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new KeywordMenuModel( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
+  public static KeywordMenuModel getInstance(AbstractMethod value) {
+    synchronized (map) {
+      KeywordMenuModel rv = map.get(value);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new KeywordMenuModel(value);
+        map.put(value, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final AbstractMethod method;
+  private final AbstractMethod method;
 
-	private KeywordMenuModel( AbstractMethod method ) {
-		super( UUID.fromString( "86b5a4aa-57cf-4f0c-9247-7a63083e1b37" ) );
-		this.method = method;
-	}
+  private KeywordMenuModel(AbstractMethod method) {
+    super(UUID.fromString("86b5a4aa-57cf-4f0c-9247-7a63083e1b37"));
+    this.method = method;
+  }
 
-	@Override
-	public String getMenuItemText() {
-		Formatter formatter = FormatterState.getInstance().getValue();
-		return formatter.getNameForDeclaration( this.method );
-	}
+  @Override
+  public String getMenuItemText() {
+    Formatter formatter = FormatterState.getInstance().getValue();
+    return formatter.getNameForDeclaration(this.method);
+  }
 
-	@Override
-	public Icon getMenuItemIcon( ItemNode<? super Expression, Expression> step ) {
-		return null;
-	}
+  @Override
+  public Icon getMenuItemIcon(ItemNode<? super Expression, Expression> step) {
+    return null;
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
-		AbstractParameter parameter = this.method.getRequiredParameters().get( 0 );
-		IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, parameter.getValueType(), parameter.getDetails() );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
+    AbstractParameter parameter = this.method.getRequiredParameters().get(0);
+    IDE.getActiveInstance().getExpressionCascadeManager().appendItems(blankChildren, blankNode, parameter.getValueType(), parameter.getDetails());
+  }
 }

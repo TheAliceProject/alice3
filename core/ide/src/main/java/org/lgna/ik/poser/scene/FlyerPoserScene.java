@@ -57,34 +57,34 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  * @author Matt May
  */
 public class FlyerPoserScene extends AbstractPoserScene<SFlyer> {
-	public FlyerPoserScene( SFlyer model ) {
-		super( model );
-	}
+  public FlyerPoserScene(SFlyer model) {
+    super(model);
+  }
 
-	@Override
-	protected Map<Limb, List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs( SFlyer model ) {
-		Map<Limb, List<JointSelectionSphere>> rv = Maps.newHashMap();
-		JointSelectionSphere a = createJSS( model.getRightHip(), null );
-		JointSelectionSphere b = createJSS( model.getRightKnee(), a );
-		JointSelectionSphere c = createJSS( model.getRightAnkle(), b );
-		rv.put( Limb.RIGHT_LEG, Lists.newArrayList( a, b, c ) );
-		JointSelectionSphere d = createJSS( model.getRightWingShoulder(), null );
-		JointSelectionSphere e = createJSS( model.getRightWingElbow(), d );
-		JointSelectionSphere f = createJSS( model.getRightWingWrist(), e );
-		rv.put( Limb.RIGHT_ARM, Lists.newArrayList( d, e, f ) );
-		JointSelectionSphere g = createJSS( model.getLeftHip(), null );
-		JointSelectionSphere h = createJSS( model.getLeftKnee(), g );
-		JointSelectionSphere i = createJSS( model.getLeftAnkle(), h );
-		rv.put( Limb.LEFT_LEG, Lists.newArrayList( g, h, i ) );
-		JointSelectionSphere j = createJSS( model.getLeftWingShoulder(), null );
-		JointSelectionSphere k = createJSS( model.getLeftWingElbow(), j );
-		JointSelectionSphere l = createJSS( model.getLeftWingWrist(), k );
-		rv.put( Limb.LEFT_ARM, Lists.newArrayList( j, k, l ) );
-		return rv;
-	}
+  @Override
+  protected Map<Limb, List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs(SFlyer model) {
+    Map<Limb, List<JointSelectionSphere>> rv = Maps.newHashMap();
+    JointSelectionSphere a = createJSS(model.getRightHip(), null);
+    JointSelectionSphere b = createJSS(model.getRightKnee(), a);
+    JointSelectionSphere c = createJSS(model.getRightAnkle(), b);
+    rv.put(Limb.RIGHT_LEG, Lists.newArrayList(a, b, c));
+    JointSelectionSphere d = createJSS(model.getRightWingShoulder(), null);
+    JointSelectionSphere e = createJSS(model.getRightWingElbow(), d);
+    JointSelectionSphere f = createJSS(model.getRightWingWrist(), e);
+    rv.put(Limb.RIGHT_ARM, Lists.newArrayList(d, e, f));
+    JointSelectionSphere g = createJSS(model.getLeftHip(), null);
+    JointSelectionSphere h = createJSS(model.getLeftKnee(), g);
+    JointSelectionSphere i = createJSS(model.getLeftAnkle(), h);
+    rv.put(Limb.LEFT_LEG, Lists.newArrayList(g, h, i));
+    JointSelectionSphere j = createJSS(model.getLeftWingShoulder(), null);
+    JointSelectionSphere k = createJSS(model.getLeftWingElbow(), j);
+    JointSelectionSphere l = createJSS(model.getLeftWingWrist(), k);
+    rv.put(Limb.LEFT_ARM, Lists.newArrayList(j, k, l));
+    return rv;
+  }
 
-	@Override
-	protected int getLimbIndex( IKCore.Limb key ) {
-		return 0;
-	}
+  @Override
+  protected int getLimbIndex(IKCore.Limb key) {
+    return 0;
+  }
 }

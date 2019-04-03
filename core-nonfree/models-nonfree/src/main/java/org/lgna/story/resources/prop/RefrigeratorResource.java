@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,51 +34,36 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum RefrigeratorResource implements PropResource {
-	BASIC_WHITE( ImplementationAndVisualType.SIMS2 ),
-	BASIC_GREEN( ImplementationAndVisualType.SIMS2 ),
-	BASIC_CREAM( ImplementationAndVisualType.SIMS2 ),
-	BASIC_YELLOW( ImplementationAndVisualType.SIMS2 ),
-	BASIC_PINK( ImplementationAndVisualType.SIMS2 ),
-	BASIC_ORANGE( ImplementationAndVisualType.SIMS2 ),
-	STAINLESS_STEEL_BLACK( ImplementationAndVisualType.SIMS2 ),
-	STAINLESS_STEEL_DARK_OAK( ImplementationAndVisualType.SIMS2 ),
-	STAINLESS_STEEL_LIGHT_OAK( ImplementationAndVisualType.SIMS2 ),
-	STAINLESS_STEEL_SILVER( ImplementationAndVisualType.SIMS2 ),
-	STAINLESS_STEEL_OAK( ImplementationAndVisualType.SIMS2 ),
-	STAINLESS_STEEL_MAHOGANY( ImplementationAndVisualType.SIMS2 ),
-	STAINLESS_STEEL_RED_OAK( ImplementationAndVisualType.SIMS2 ),
-	STAINLESS_STEEL_WHITE( ImplementationAndVisualType.SIMS2 );
+  BASIC_WHITE(ImplementationAndVisualType.SIMS2), BASIC_GREEN(ImplementationAndVisualType.SIMS2), BASIC_CREAM(ImplementationAndVisualType.SIMS2), BASIC_YELLOW(ImplementationAndVisualType.SIMS2), BASIC_PINK(ImplementationAndVisualType.SIMS2), BASIC_ORANGE(ImplementationAndVisualType.SIMS2), STAINLESS_STEEL_BLACK(ImplementationAndVisualType.SIMS2), STAINLESS_STEEL_DARK_OAK(ImplementationAndVisualType.SIMS2), STAINLESS_STEEL_LIGHT_OAK(ImplementationAndVisualType.SIMS2), STAINLESS_STEEL_SILVER(ImplementationAndVisualType.SIMS2), STAINLESS_STEEL_OAK(ImplementationAndVisualType.SIMS2), STAINLESS_STEEL_MAHOGANY(ImplementationAndVisualType.SIMS2), STAINLESS_STEEL_RED_OAK(ImplementationAndVisualType.SIMS2), STAINLESS_STEEL_WHITE(ImplementationAndVisualType.SIMS2);
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, RefrigeratorResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_DOOR = new JointId( ROOT, RefrigeratorResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_DOOR = new JointId( ROOT, RefrigeratorResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, RefrigeratorResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_DOOR = new JointId(ROOT, RefrigeratorResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_DOOR = new JointId(ROOT, RefrigeratorResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	RefrigeratorResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	RefrigeratorResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  RefrigeratorResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return RefrigeratorResource.JOINT_ID_ROOTS;
-	}
+  RefrigeratorResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return RefrigeratorResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

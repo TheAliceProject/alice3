@@ -57,52 +57,52 @@ import java.awt.geom.GeneralPath;
  * @author Dennis Cosgrove
  */
 public class DropDownArrowIcon extends AbstractArrowIcon {
-	private final Paint selectedFillPaint;
+  private final Paint selectedFillPaint;
 
-	public DropDownArrowIcon( int size, Paint selectedFillPaint ) {
-		super( size );
-		this.selectedFillPaint = selectedFillPaint;
-	}
+  public DropDownArrowIcon(int size, Paint selectedFillPaint) {
+    super(size);
+    this.selectedFillPaint = selectedFillPaint;
+  }
 
-	protected ButtonModel getButtonModel( Component c ) {
-		AbstractButton button = (AbstractButton)c;
-		return button.getModel();
-	}
+  protected ButtonModel getButtonModel(Component c) {
+    AbstractButton button = (AbstractButton) c;
+    return button.getModel();
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		ButtonModel buttonModel = this.getButtonModel( c );
-		GeneralPath path = this.createPath( x, y, Heading.SOUTH );
-		Graphics2D g2 = (Graphics2D)g;
-		Object prevAntialiasing = g2.getRenderingHint( RenderingHints.KEY_ANTIALIASING );
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    ButtonModel buttonModel = this.getButtonModel(c);
+    GeneralPath path = this.createPath(x, y, Heading.SOUTH);
+    Graphics2D g2 = (Graphics2D) g;
+    Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		Paint fillPaint;
-		Paint drawPaint;
-		if( buttonModel.isEnabled() ) {
-			if( buttonModel.isPressed() || buttonModel.isSelected() ) {
-				fillPaint = selectedFillPaint;
-				drawPaint = null;
-			} else {
-				if( buttonModel.isRollover() || buttonModel.isArmed() ) {
-					fillPaint = Color.DARK_GRAY;
-				} else {
-					fillPaint = Color.BLACK;
-				}
-				drawPaint = null;
-			}
-		} else {
-			fillPaint = Color.LIGHT_GRAY;
-			drawPaint = null;
-		}
-		if( fillPaint != null ) {
-			g2.setPaint( fillPaint );
-			g2.fill( path );
-		}
-		if( drawPaint != null ) {
-			g2.setPaint( drawPaint );
-			g2.draw( path );
-		}
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-	}
+    Paint fillPaint;
+    Paint drawPaint;
+    if (buttonModel.isEnabled()) {
+      if (buttonModel.isPressed() || buttonModel.isSelected()) {
+        fillPaint = selectedFillPaint;
+        drawPaint = null;
+      } else {
+        if (buttonModel.isRollover() || buttonModel.isArmed()) {
+          fillPaint = Color.DARK_GRAY;
+        } else {
+          fillPaint = Color.BLACK;
+        }
+        drawPaint = null;
+      }
+    } else {
+      fillPaint = Color.LIGHT_GRAY;
+      drawPaint = null;
+    }
+    if (fillPaint != null) {
+      g2.setPaint(fillPaint);
+      g2.fill(path);
+    }
+    if (drawPaint != null) {
+      g2.setPaint(drawPaint);
+      g2.draw(path);
+    }
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing);
+  }
 }

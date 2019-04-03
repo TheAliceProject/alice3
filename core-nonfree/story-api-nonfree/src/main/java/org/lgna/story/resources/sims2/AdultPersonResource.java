@@ -49,27 +49,27 @@ import org.lgna.story.Color;
  * @author Dennis Cosgrove
  */
 public final class AdultPersonResource extends PersonResource {
-	public AdultPersonResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
-		super( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
-	}
+  public AdultPersonResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
+    super(gender, skinColor, eyeColor, hair, obseityLevel, outfit, face);
+  }
 
-	@Deprecated
-	public AdultPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
-		super( gender, skinTone, eyeColor, hair, obseityLevel, outfit, face );
-	}
+  @Deprecated
+  public AdultPersonResource(Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
+    super(gender, skinTone, eyeColor, hair, obseityLevel, outfit, face);
+  }
 
-	@Deprecated
-	public AdultPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
-		this( gender, skinTone, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00 );
-	}
+  @Deprecated
+  public AdultPersonResource(Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit) {
+    this(gender, skinTone, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00);
+  }
 
-	@Deprecated
-	public AdultPersonResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
-		super( gender, skinColor, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00 );
-	}
+  @Deprecated
+  public AdultPersonResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit) {
+    super(gender, skinColor, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00);
+  }
 
-	@Override
-	public LifeStage getLifeStage() {
-		return LifeStage.ADULT;
-	}
+  @Override
+  public LifeStage getLifeStage() {
+    return LifeStage.ADULT;
+  }
 }

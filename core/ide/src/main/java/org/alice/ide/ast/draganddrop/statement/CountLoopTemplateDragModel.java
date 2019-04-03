@@ -56,20 +56,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CountLoopTemplateDragModel extends PotentiallyEnvelopingStatementTemplateDragModel {
-	private static class SingletonHolder {
-		private static CountLoopTemplateDragModel instance = new CountLoopTemplateDragModel();
-	}
+  private static class SingletonHolder {
+    private static CountLoopTemplateDragModel instance = new CountLoopTemplateDragModel();
+  }
 
-	public static CountLoopTemplateDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static CountLoopTemplateDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private CountLoopTemplateDragModel() {
-		super( UUID.fromString( "61ad4ccc-a384-42fa-8a18-7964cd513f8e" ), CountLoop.class, IncompleteAstUtilities.createIncompleteCountLoop() );
-	}
+  private CountLoopTemplateDragModel() {
+    super(UUID.fromString("61ad4ccc-a384-42fa-8a18-7964cd513f8e"), CountLoop.class, IncompleteAstUtilities.createIncompleteCountLoop());
+  }
 
-	@Override
-	protected Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		return CountLoopInsertCascade.getInstance( blockStatementIndexPair, isEnveloping );
-	}
+  @Override
+  protected Triggerable getDropOperation(DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    return CountLoopInsertCascade.getInstance(blockStatementIndexPair, isEnveloping);
+  }
 }

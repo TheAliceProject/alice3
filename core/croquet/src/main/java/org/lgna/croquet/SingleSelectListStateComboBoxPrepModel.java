@@ -52,39 +52,39 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class SingleSelectListStateComboBoxPrepModel<T, D extends ListData<T>> extends AbstractModel implements PrepModel {
-	/*package-private*/SingleSelectListStateComboBoxPrepModel( SingleSelectListState<T, D> listSelectionState ) {
-		super( UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );
-		assert listSelectionState != null;
-		this.listSelectionState = listSelectionState;
-	}
+  /*package-private*/SingleSelectListStateComboBoxPrepModel(SingleSelectListState<T, D> listSelectionState) {
+    super(UUID.fromString("c4b634e1-cd4f-465d-b0af-ab8d76cc7842"));
+    assert listSelectionState != null;
+    this.listSelectionState = listSelectionState;
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	public SingleSelectListState<T, D> getListSelectionState() {
-		return this.listSelectionState;
-	}
+  public SingleSelectListState<T, D> getListSelectionState() {
+    return this.listSelectionState;
+  }
 
-	@Override
-	public boolean isEnabled() {
-		return this.listSelectionState.isEnabled();
-	}
+  @Override
+  public boolean isEnabled() {
+    return this.listSelectionState.isEnabled();
+  }
 
-	@Override
-	public void setEnabled( boolean isEnabled ) {
-		this.listSelectionState.setEnabled( isEnabled );
-	}
+  @Override
+  public void setEnabled(boolean isEnabled) {
+    this.listSelectionState.setEnabled(isEnabled);
+  }
 
-	public ComboBox<T> createComboBox() {
-		return new ComboBox<T>( this );
-	}
+  public ComboBox<T> createComboBox() {
+    return new ComboBox<T>(this);
+  }
 
-	public ComboBox<T> createComboBoxWithItemCodecListCellRenderer() {
-		ComboBox<T> rv = this.createComboBox();
-		rv.setRenderer( new ItemCodecListCellRenderer<T>( this.listSelectionState.getItemCodec() ) );
-		return rv;
-	}
+  public ComboBox<T> createComboBoxWithItemCodecListCellRenderer() {
+    ComboBox<T> rv = this.createComboBox();
+    rv.setRenderer(new ItemCodecListCellRenderer<T>(this.listSelectionState.getItemCodec()));
+    return rv;
+  }
 
-	private final SingleSelectListState<T, D> listSelectionState;
+  private final SingleSelectListState<T, D> listSelectionState;
 }

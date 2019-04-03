@@ -55,78 +55,78 @@ import java.util.regex.Pattern;
  * @author Dennis Cosgrove
  */
 public final class Item {
-	private static final String ZANATA_PROJECT_NAME = "alice";
-	private static final String ZANATA_DOC_NAME = "org.alice";
+  private static final String ZANATA_PROJECT_NAME = "alice";
+  private static final String ZANATA_DOC_NAME = "org.alice";
 
-	public Item( String projectName, String bundleName, String key, String defaultValue ) {
-		this.projectName = projectName;
-		this.bundleName = bundleName;
-		this.key = key;
-		this.defaultValue = defaultValue;
-	}
+  public Item(String projectName, String bundleName, String key, String defaultValue) {
+    this.projectName = projectName;
+    this.bundleName = bundleName;
+    this.key = key;
+    this.defaultValue = defaultValue;
+  }
 
-	public URI createUri( String localeTag ) {
-		StringBuilder sb = new StringBuilder();
+  public URI createUri(String localeTag) {
+    StringBuilder sb = new StringBuilder();
 
-		sb.append( "https://translate.zanata.org/zanata/webtrans/Application.seam?project=" );
-		sb.append( ZANATA_PROJECT_NAME );
-		sb.append( "&iteration=master" );
+    sb.append("https://translate.zanata.org/zanata/webtrans/Application.seam?project=");
+    sb.append(ZANATA_PROJECT_NAME);
+    sb.append("&iteration=master");
 
-		sb.append( "&localeId=" );
-		sb.append( localeTag );
+    sb.append("&localeId=");
+    sb.append(localeTag);
 
-		sb.append( "#view:doc;doc:" );
-		sb.append( ZANATA_DOC_NAME );
-		sb.append( "/" );
-		sb.append( this.projectName );
-		sb.append( "/java/" );
-		sb.append( bundleName );
+    sb.append("#view:doc;doc:");
+    sb.append(ZANATA_DOC_NAME);
+    sb.append("/");
+    sb.append(this.projectName);
+    sb.append("/java/");
+    sb.append(bundleName);
 
-		try {
-			return new URI( sb.toString() );
-		} catch( URISyntaxException urise ) {
-			throw new RuntimeException( sb.toString(), urise );
-		}
-	}
+    try {
+      return new URI(sb.toString());
+    } catch (URISyntaxException urise) {
+      throw new RuntimeException(sb.toString(), urise);
+    }
+  }
 
-	public String getProjectName() {
-		return this.projectName;
-	}
+  public String getProjectName() {
+    return this.projectName;
+  }
 
-	public String getBundleName() {
-		return this.bundleName;
-	}
+  public String getBundleName() {
+    return this.bundleName;
+  }
 
-	public String getKey() {
-		return this.key;
-	}
+  public String getKey() {
+    return this.key;
+  }
 
-	public String getDefaultValue() {
-		return this.defaultValue;
-	}
+  public String getDefaultValue() {
+    return this.defaultValue;
+  }
 
-	public String getLocalizedValue() {
-		return this.localizedValue;
-	}
+  public String getLocalizedValue() {
+    return this.localizedValue;
+  }
 
-	public void setLocalizedValue( String localizedValue ) {
-		this.localizedValue = localizedValue;
-	}
+  public void setLocalizedValue(String localizedValue) {
+    this.localizedValue = localizedValue;
+  }
 
-	public List<String> getDefaultValueTags() {
-		Pattern pattern = Pattern.compile( "</.*/>" );
-		Matcher matcher = pattern.matcher( this.defaultValue );
+  public List<String> getDefaultValueTags() {
+    Pattern pattern = Pattern.compile("</.*/>");
+    Matcher matcher = pattern.matcher(this.defaultValue);
 
-		List<String> tags = Lists.newLinkedList();
-		while( matcher.find() ) {
-			tags.add( matcher.group( 0 ) );
-		}
-		return Collections.unmodifiableList( tags );
-	}
+    List<String> tags = Lists.newLinkedList();
+    while (matcher.find()) {
+      tags.add(matcher.group(0));
+    }
+    return Collections.unmodifiableList(tags);
+  }
 
-	private final String projectName;
-	private final String bundleName;
-	private final String key;
-	private final String defaultValue;
-	private String localizedValue;
+  private final String projectName;
+  private final String bundleName;
+  private final String key;
+  private final String defaultValue;
+  private String localizedValue;
 }

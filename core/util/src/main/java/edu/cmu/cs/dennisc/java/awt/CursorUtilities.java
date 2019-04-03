@@ -56,47 +56,48 @@ import java.util.Stack;
  * @author Dennis Cosgrove
  */
 public class CursorUtilities {
-	private static final Map<Component, Stack<Cursor>> mapComponentToStack = new HashMap<Component, Stack<Cursor>>();
-	public static final Cursor NULL_CURSOR;
-	static {
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		MemoryImageSource source = new MemoryImageSource( 1, 1, new int[] { 0 }, 0, 1 );
-		Image nullImage = toolkit.createImage( source );
-		NULL_CURSOR = toolkit.createCustomCursor( nullImage, new Point( 0, 0 ), "NULL_CURSOR" );
-	}
+  private static final Map<Component, Stack<Cursor>> mapComponentToStack = new HashMap<Component, Stack<Cursor>>();
+  public static final Cursor NULL_CURSOR;
 
-	private static Stack<Cursor> getStack( Component component ) {
-		Stack<Cursor> rv = CursorUtilities.mapComponentToStack.get( component );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new Stack<Cursor>();
-			CursorUtilities.mapComponentToStack.put( component, rv );
-		}
-		return rv;
-	}
+  static {
+    Toolkit toolkit = Toolkit.getDefaultToolkit();
+    MemoryImageSource source = new MemoryImageSource(1, 1, new int[] {0}, 0, 1);
+    Image nullImage = toolkit.createImage(source);
+    NULL_CURSOR = toolkit.createCustomCursor(nullImage, new Point(0, 0), "NULL_CURSOR");
+  }
 
-	public static void pushAndSet( Component component, Cursor nextCursor ) {
-		if( nextCursor != null ) {
-			//pass
-		} else {
-			nextCursor = NULL_CURSOR;
-		}
-		Stack<Cursor> stack = CursorUtilities.getStack( component );
-		Cursor prevCursor = component.getCursor();
-		stack.push( prevCursor );
-		component.setCursor( nextCursor );
-	}
+  private static Stack<Cursor> getStack(Component component) {
+    Stack<Cursor> rv = CursorUtilities.mapComponentToStack.get(component);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new Stack<Cursor>();
+      CursorUtilities.mapComponentToStack.put(component, rv);
+    }
+    return rv;
+  }
 
-	public static void pushAndSetPredefinedCursor( Component component, int nextCursorType ) {
-		pushAndSet( component, Cursor.getPredefinedCursor( nextCursorType ) );
+  public static void pushAndSet(Component component, Cursor nextCursor) {
+    if (nextCursor != null) {
+      //pass
+    } else {
+      nextCursor = NULL_CURSOR;
+    }
+    Stack<Cursor> stack = CursorUtilities.getStack(component);
+    Cursor prevCursor = component.getCursor();
+    stack.push(prevCursor);
+    component.setCursor(nextCursor);
+  }
 
-	}
+  public static void pushAndSetPredefinedCursor(Component component, int nextCursorType) {
+    pushAndSet(component, Cursor.getPredefinedCursor(nextCursorType));
 
-	public static Cursor popAndSet( Component component ) {
-		Stack<Cursor> stack = CursorUtilities.getStack( component );
-		Cursor prevCursor = stack.pop();
-		component.setCursor( prevCursor );
-		return prevCursor;
-	}
+  }
+
+  public static Cursor popAndSet(Component component) {
+    Stack<Cursor> stack = CursorUtilities.getStack(component);
+    Cursor prevCursor = stack.pop();
+    component.setCursor(prevCursor);
+    return prevCursor;
+  }
 }

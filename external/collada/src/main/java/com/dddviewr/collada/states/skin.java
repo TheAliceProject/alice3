@@ -9,20 +9,20 @@ import com.dddviewr.collada.controller.Controller;
 import com.dddviewr.collada.controller.Skin;
 
 public class skin extends State {
-	protected Skin theSkin;
+  protected Skin theSkin;
 
-	public void init(String name, Attributes attrs, StateManager mngr) {
-		super.init(name, attrs, mngr);
-		this.theSkin = new Skin(attrs.getValue("source"));
-		Controller ctrl = ((controller) getParent()).getController();
-		ctrl.setSkin(this.theSkin);
-	}
+  public void init(String name, Attributes attrs, StateManager mngr) {
+    super.init(name, attrs, mngr);
+    this.theSkin = new Skin(attrs.getValue("source"));
+    Controller ctrl = ((controller) getParent()).getController();
+    ctrl.setSkin(this.theSkin);
+  }
 
-	public Skin getSkin() {
-		return this.theSkin;
-	}
+  public Skin getSkin() {
+    return this.theSkin;
+  }
 
-	public void addSource(Source src) {
-		this.theSkin.addSource(src);
-	}
+  public void addSource(Source src) {
+    this.theSkin.addSource(src);
+  }
 }

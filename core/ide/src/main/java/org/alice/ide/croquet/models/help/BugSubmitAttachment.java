@@ -46,6 +46,5 @@ package org.alice.ide.croquet.models.help;
  * @author Matt May
  */
 public enum BugSubmitAttachment {
-	YES,
-	NO
+  YES, NO
 }

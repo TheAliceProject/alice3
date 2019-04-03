@@ -65,279 +65,279 @@ import java.util.List;
 import java.util.UUID;
 
 class TreeNodeUtilities {
-	private TreeNodeUtilities() {
-		throw new AssertionError();
-	}
+  private TreeNodeUtilities() {
+    throw new AssertionError();
+  }
 
-	public static <T> void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<T> blankNode, SingleSelectTreeState<T> model, T node ) {
-		for( T childNode : model.getChildren( node ) ) {
-			CascadeBlankChild<T> child = model.getBlankChildFor( childNode );
-			if( child != null ) {
-				blankChildren.add( child );
-			}
-		}
-	}
+  public static <T> void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<T> blankNode, SingleSelectTreeState<T> model, T node) {
+    for (T childNode : model.getChildren(node)) {
+      CascadeBlankChild<T> child = model.getBlankChildFor(childNode);
+      if (child != null) {
+        blankChildren.add(child);
+      }
+    }
+  }
 
 }
 
 class TreeNodeFillIn<T> extends ImmutableCascadeFillIn<T, Void> {
-	private static MapToMap<SingleSelectTreeState, Object, TreeNodeFillIn> mapToMap = MapToMap.newInstance();
+  private static MapToMap<SingleSelectTreeState, Object, TreeNodeFillIn> mapToMap = MapToMap.newInstance();
 
-	public static synchronized <T> TreeNodeFillIn<T> getInstance( SingleSelectTreeState<T> model, T node ) {
-		return mapToMap.getInitializingIfAbsent( model, node, new MapToMap.Initializer<SingleSelectTreeState, Object, TreeNodeFillIn>() {
-			@Override
-			public TreeNodeFillIn<T> initialize( SingleSelectTreeState model, Object node ) {
-				return new TreeNodeFillIn<T>( model, (T)node );
-			}
-		} );
-	}
+  public static synchronized <T> TreeNodeFillIn<T> getInstance(SingleSelectTreeState<T> model, T node) {
+    return mapToMap.getInitializingIfAbsent(model, node, new MapToMap.Initializer<SingleSelectTreeState, Object, TreeNodeFillIn>() {
+      @Override
+      public TreeNodeFillIn<T> initialize(SingleSelectTreeState model, Object node) {
+        return new TreeNodeFillIn<T>(model, (T) node);
+      }
+    });
+  }
 
-	private final SingleSelectTreeState<T> model;
-	private final T node;
+  private final SingleSelectTreeState<T> model;
+  private final T node;
 
-	private TreeNodeFillIn( SingleSelectTreeState<T> model, T node ) {
-		super( UUID.fromString( "db052fcb-b0e3-482a-aad9-13b9a2efc370" ) );
-		this.model = model;
-		this.node = node;
-	}
+  private TreeNodeFillIn(SingleSelectTreeState<T> model, T node) {
+    super(UUID.fromString("db052fcb-b0e3-482a-aad9-13b9a2efc370"));
+    this.model = model;
+    this.node = node;
+  }
 
-	@Override
-	public T getTransientValue( ItemNode<? super T, Void> node ) {
-		return this.node;
-	}
+  @Override
+  public T getTransientValue(ItemNode<? super T, Void> node) {
+    return this.node;
+  }
 
-	@Override
-	public T createValue( ItemNode<? super T, Void> node ) {
-		return this.node;
-	}
+  @Override
+  public T createValue(ItemNode<? super T, Void> node) {
+    return this.node;
+  }
 
-	@Override
-	public String getMenuItemText() {
-		return this.model.getTextForNode( this.node );
-	}
+  @Override
+  public String getMenuItemText() {
+    return this.model.getTextForNode(this.node);
+  }
 
-	@Override
-	public Icon getMenuItemIcon( ItemNode<? super T, Void> node ) {
-		return this.model.getIconForNode( this.node );
-	}
+  @Override
+  public Icon getMenuItemIcon(ItemNode<? super T, Void> node) {
+    return this.model.getIconForNode(this.node);
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super T, Void> node ) {
-		throw new AssertionError();
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super T, Void> node) {
+    throw new AssertionError();
+  }
 }
 
 class TreeNodeMenu<T> extends CascadeMenuModel<T> {
-	private static MapToMap<SingleSelectTreeState, Object, TreeNodeMenu> mapToMap = MapToMap.newInstance();
+  private static MapToMap<SingleSelectTreeState, Object, TreeNodeMenu> mapToMap = MapToMap.newInstance();
 
-	public static synchronized <T> TreeNodeMenu<T> getInstance( SingleSelectTreeState<T> model, T node ) {
-		return mapToMap.getInitializingIfAbsent( model, node, new MapToMap.Initializer<SingleSelectTreeState, Object, TreeNodeMenu>() {
-			@Override
-			public TreeNodeMenu<T> initialize( SingleSelectTreeState model, Object node ) {
-				return new TreeNodeMenu<T>( model, (T)node );
-			}
-		} );
-	}
+  public static synchronized <T> TreeNodeMenu<T> getInstance(SingleSelectTreeState<T> model, T node) {
+    return mapToMap.getInitializingIfAbsent(model, node, new MapToMap.Initializer<SingleSelectTreeState, Object, TreeNodeMenu>() {
+      @Override
+      public TreeNodeMenu<T> initialize(SingleSelectTreeState model, Object node) {
+        return new TreeNodeMenu<T>(model, (T) node);
+      }
+    });
+  }
 
-	private final SingleSelectTreeState<T> model;
-	private final T node;
+  private final SingleSelectTreeState<T> model;
+  private final T node;
 
-	private TreeNodeMenu( SingleSelectTreeState<T> model, T node ) {
-		super( UUID.fromString( "3836e893-73c9-4490-9a2a-1cb8a50311e0" ) );
-		this.model = model;
-		this.node = node;
-	}
+  private TreeNodeMenu(SingleSelectTreeState<T> model, T node) {
+    super(UUID.fromString("3836e893-73c9-4490-9a2a-1cb8a50311e0"));
+    this.model = model;
+    this.node = node;
+  }
 
-	@Override
-	protected String findDefaultLocalizedText() {
-		return null;
-	}
+  @Override
+  protected String findDefaultLocalizedText() {
+    return null;
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<T> blankNode ) {
-		TreeNodeUtilities.updateBlankChildren( blankChildren, blankNode, this.model, this.node );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<T> blankNode) {
+    TreeNodeUtilities.updateBlankChildren(blankChildren, blankNode, this.model, this.node);
+  }
 
 }
 
 class TreeBlank<T> extends CascadeBlank<T> {
-	private final SingleSelectTreeState<T> model;
-	private final T node;
+  private final SingleSelectTreeState<T> model;
+  private final T node;
 
-	public TreeBlank( SingleSelectTreeState<T> model, T node ) {
-		this.model = model;
-		this.node = node;
-	}
+  public TreeBlank(SingleSelectTreeState<T> model, T node) {
+    this.model = model;
+    this.node = node;
+  }
 
-	@Override
-	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<T> blankNode ) {
-		TreeNodeUtilities.updateBlankChildren( children, blankNode, this.model, this.node );
-	}
+  @Override
+  protected void updateChildren(List<CascadeBlankChild> children, BlankNode<T> blankNode) {
+    TreeNodeUtilities.updateBlankChildren(children, blankNode, this.model, this.node);
+  }
 }
 
 class TreeNodeCascade<T> extends ImmutableCascade<T> {
-	private static MapToMap<SingleSelectTreeState, Object, TreeNodeCascade> mapToMap = MapToMap.newInstance();
+  private static MapToMap<SingleSelectTreeState, Object, TreeNodeCascade> mapToMap = MapToMap.newInstance();
 
-	public static <T> TreeNodeCascade<T> getInstance( SingleSelectTreeState<T> model, T node ) {
-		return mapToMap.getInitializingIfAbsent( model, node, new MapToMap.Initializer<SingleSelectTreeState, Object, TreeNodeCascade>() {
-			@Override
-			public TreeNodeCascade<T> initialize( SingleSelectTreeState model, Object node ) {
-				return new TreeNodeCascade<T>( model, (T)node );
-			}
-		} );
-	}
+  public static <T> TreeNodeCascade<T> getInstance(SingleSelectTreeState<T> model, T node) {
+    return mapToMap.getInitializingIfAbsent(model, node, new MapToMap.Initializer<SingleSelectTreeState, Object, TreeNodeCascade>() {
+      @Override
+      public TreeNodeCascade<T> initialize(SingleSelectTreeState model, Object node) {
+        return new TreeNodeCascade<T>(model, (T) node);
+      }
+    });
+  }
 
-	private final SingleSelectTreeState<T> model;
-	private final T node;
+  private final SingleSelectTreeState<T> model;
+  private final T node;
 
-	public TreeNodeCascade( SingleSelectTreeState<T> model, T node ) {
-		super( model.getGroup(), UUID.fromString( "dcbf42f7-cd25-4061-a8f6-abcb1b47fe41" ), model.getItemCodec().getValueClass(), new TreeBlank<T>( model, node ) );
-		this.model = model;
-		this.node = node;
-	}
+  public TreeNodeCascade(SingleSelectTreeState<T> model, T node) {
+    super(model.getGroup(), UUID.fromString("dcbf42f7-cd25-4061-a8f6-abcb1b47fe41"), model.getItemCodec().getValueClass(), new TreeBlank<T>(model, node));
+    this.model = model;
+    this.node = node;
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity, T[] values ) {
-		assert values.length == 1;
-		this.model.changeValueFromIndirectModel( values[ 0 ], userActivity);
-		return null;
-		//return new org.lgna.croquet.edits.TreeSelectionStateEdit< T >( completionStep, this.model, this.model.getSelectedNode(), values[ 0 ] );
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity, T[] values) {
+    assert values.length == 1;
+    this.model.changeValueFromIndirectModel(values[0], userActivity);
+    return null;
+    //return new org.lgna.croquet.edits.TreeSelectionStateEdit< T >( completionStep, this.model, this.model.getSelectedNode(), values[ 0 ] );
+  }
 }
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SingleSelectTreeState<T> extends ItemState<T> {
-	private class SingleTreeSelectionModel extends DefaultTreeSelectionModel {
-		public SingleTreeSelectionModel() {
-			this.setSelectionMode( TreeSelectionModel.SINGLE_TREE_SELECTION );
-		}
-	}
+  private class SingleTreeSelectionModel extends DefaultTreeSelectionModel {
+    public SingleTreeSelectionModel() {
+      this.setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+    }
+  }
 
-	public class SwingModel {
-		private final SingleTreeSelectionModel treeSelectionModel = new SingleTreeSelectionModel();
+  public class SwingModel {
+    private final SingleTreeSelectionModel treeSelectionModel = new SingleTreeSelectionModel();
 
-		private SwingModel() {
-		}
+    private SwingModel() {
+    }
 
-		public TreeSelectionModel getTreeSelectionModel() {
-			return this.treeSelectionModel;
-		}
-	}
+    public TreeSelectionModel getTreeSelectionModel() {
+      return this.treeSelectionModel;
+    }
+  }
 
-	private final SwingModel swingModel = new SwingModel();
-	private final TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
-		@Override
-		public void valueChanged( TreeSelectionEvent e ) {
-			T nextValue = getSelectedNode();
-			final UserActivity activity = TreeSelectionEventTrigger.createUserActivity( e );
-			SingleSelectTreeState.this.changeValueFromSwing( nextValue, activity );
-			activity.setCompletionModel( SingleSelectTreeState.this );
-			activity.finish();
-		}
-	};
+  private final SwingModel swingModel = new SwingModel();
+  private final TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
+    @Override
+    public void valueChanged(TreeSelectionEvent e) {
+      T nextValue = getSelectedNode();
+      final UserActivity activity = TreeSelectionEventTrigger.createUserActivity(e);
+      SingleSelectTreeState.this.changeValueFromSwing(nextValue, activity);
+      activity.setCompletionModel(SingleSelectTreeState.this);
+      activity.finish();
+    }
+  };
 
-	public SingleSelectTreeState( Group group, UUID id, T initialValue, ItemCodec<T> itemCodec ) {
-		super( group, id, initialValue, itemCodec );
-		this.swingModel.treeSelectionModel.addTreeSelectionListener( this.treeSelectionListener );
-	}
+  public SingleSelectTreeState(Group group, UUID id, T initialValue, ItemCodec<T> itemCodec) {
+    super(group, id, initialValue, itemCodec);
+    this.swingModel.treeSelectionModel.addTreeSelectionListener(this.treeSelectionListener);
+  }
 
-	@Override
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		return Collections.emptyList();
-	}
+  @Override
+  public List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    return Collections.emptyList();
+  }
 
-	public SwingModel getSwingModel() {
-		return this.swingModel;
-	}
+  public SwingModel getSwingModel() {
+    return this.swingModel;
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	protected abstract String getTextForNode( T node );
+  protected abstract String getTextForNode(T node);
 
-	protected abstract Icon getIconForNode( T node );
+  protected abstract Icon getIconForNode(T node);
 
-	public abstract TreeModel<T> getTreeModel();
+  public abstract TreeModel<T> getTreeModel();
 
-	public abstract void refresh( T node );
+  public abstract void refresh(T node);
 
-	public final void refreshAll() {
-		this.refresh( this.getTreeModel().getRoot() );
-	}
+  public final void refreshAll() {
+    this.refresh(this.getTreeModel().getRoot());
+  }
 
-	public T getSelectedNode() {
-		TreePath path = this.swingModel.treeSelectionModel.getSelectionPath();
-		if( path != null ) {
-			return (T)path.getLastPathComponent();
-		} else {
-			return null;
-		}
-	}
+  public T getSelectedNode() {
+    TreePath path = this.swingModel.treeSelectionModel.getSelectionPath();
+    if (path != null) {
+      return (T) path.getLastPathComponent();
+    } else {
+      return null;
+    }
+  }
 
-	private void setSelectedNode( T e ) {
-		TreePath currTreePath = this.swingModel.treeSelectionModel.getSelectionPath();
-		TreePath nextTreePath = this.getTreeModel().getTreePath( e );
-		if( Objects.equals( currTreePath, nextTreePath ) ) {
-			//pass
-		} else {
-			this.swingModel.treeSelectionModel.setSelectionPath( nextTreePath );
-		}
-	}
+  private void setSelectedNode(T e) {
+    TreePath currTreePath = this.swingModel.treeSelectionModel.getSelectionPath();
+    TreePath nextTreePath = this.getTreeModel().getTreePath(e);
+    if (Objects.equals(currTreePath, nextTreePath)) {
+      //pass
+    } else {
+      this.swingModel.treeSelectionModel.setSelectionPath(nextTreePath);
+    }
+  }
 
-	@Override
-	protected T getSwingValue() {
-		return this.getSelectedNode();
-	}
+  @Override
+  protected T getSwingValue() {
+    return this.getSelectedNode();
+  }
 
-	@Override
-	protected void setSwingValue( T nextValue ) {
-		this.setSelectedNode( nextValue );
-	}
+  @Override
+  protected void setSwingValue(T nextValue) {
+    this.setSelectedNode(nextValue);
+  }
 
-	public List<T> getChildren( T node ) {
-		TreeModel<T> treeModel = this.getTreeModel();
-		final int N = treeModel.getChildCount( node );
-		List<T> rv = Lists.newArrayListWithInitialCapacity( N );
-		for( int i = 0; i < N; i++ ) {
-			rv.add( treeModel.getChild( node, i ) );
-		}
-		return rv;
-	}
+  public List<T> getChildren(T node) {
+    TreeModel<T> treeModel = this.getTreeModel();
+    final int N = treeModel.getChildCount(node);
+    List<T> rv = Lists.newArrayListWithInitialCapacity(N);
+    for (int i = 0; i < N; i++) {
+      rv.add(treeModel.getChild(node, i));
+    }
+    return rv;
+  }
 
-	public boolean isLeaf( T node ) {
-		TreeModel<T> treeModel = this.getTreeModel();
-		return treeModel.isLeaf( node );
-	}
+  public boolean isLeaf(T node) {
+    TreeModel<T> treeModel = this.getTreeModel();
+    return treeModel.isLeaf(node);
+  }
 
-	public T getParent( T node ) {
-		TreeModel<T> treeModel = this.getTreeModel();
-		TreePath treePath = treeModel.getTreePath( node );
-		return (T)treePath.getParentPath().getLastPathComponent();
-	}
+  public T getParent(T node) {
+    TreeModel<T> treeModel = this.getTreeModel();
+    TreePath treePath = treeModel.getTreePath(node);
+    return (T) treePath.getParentPath().getLastPathComponent();
+  }
 
-	protected boolean isComboDesired( T childNode ) {
-		return this.isLeaf( childNode ) == false;
-	}
+  protected boolean isComboDesired(T childNode) {
+    return this.isLeaf(childNode) == false;
+  }
 
-	protected CascadeBlankChild<T> getBlankChildFor( T childNode ) {
-		CascadeBlankChild<T> blankChild;
-		TreeNodeFillIn<T> fillIn = TreeNodeFillIn.getInstance( this, childNode );
-		if( this.isComboDesired( childNode ) ) {
-			blankChild = new CascadeItemMenuCombo<T>( fillIn, TreeNodeMenu.getInstance( this, childNode ) );
-		} else {
-			blankChild = fillIn;
-		}
-		return blankChild;
-	}
+  protected CascadeBlankChild<T> getBlankChildFor(T childNode) {
+    CascadeBlankChild<T> blankChild;
+    TreeNodeFillIn<T> fillIn = TreeNodeFillIn.getInstance(this, childNode);
+    if (this.isComboDesired(childNode)) {
+      blankChild = new CascadeItemMenuCombo<T>(fillIn, TreeNodeMenu.getInstance(this, childNode));
+    } else {
+      blankChild = fillIn;
+    }
+    return blankChild;
+  }
 
-	public Cascade<T> getCascadeFor( T node ) {
-		return TreeNodeCascade.getInstance( this, node );
-	}
+  public Cascade<T> getCascadeFor(T node) {
+    return TreeNodeCascade.getInstance(this, node);
+  }
 
-	public Tree<T> createTree() {
-		return new Tree<T>( this );
-	}
+  public Tree<T> createTree() {
+    return new Tree<T>(this);
+  }
 }

@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,38 +34,36 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum BowResource implements PropResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, BowResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId HANDLE = new JointId( ROOT, BowResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId BOW_STRING = new JointId( ROOT, BowResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, BowResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId HANDLE = new JointId(ROOT, BowResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId BOW_STRING = new JointId(ROOT, BowResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	BowResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	BowResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  BowResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return BowResource.JOINT_ID_ROOTS;
-	}
+  BowResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return BowResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

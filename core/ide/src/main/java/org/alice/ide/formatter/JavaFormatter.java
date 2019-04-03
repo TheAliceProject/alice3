@@ -76,144 +76,147 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class JavaFormatter extends Formatter {
-	private static final Map<Class<?>, String> templateMap;
-	private static final Map<ArithmeticInfixExpression.Operator, String> arithmeticOperatorMap;
-	private static final Map<ConditionalInfixExpression.Operator, String> conditionalOperatorMap;
-	private static final Map<RelationalInfixExpression.Operator, String> relationalOperatorMap;
-	static {
-		Map<Class<?>, String> tempTemplateMap = Maps.newHashMap();
-		tempTemplateMap.put( ExpressionStatement.class, "</expression/>;" );
-		tempTemplateMap.put( WhileLoop.class, "while( </conditional/> ) {\n\t</body/>\n}" );
-		tempTemplateMap.put( CountLoop.class, "for( </__variable__/> = 0; </_variable_/> < </count/>; </_variable_/>++ ) {\n\t</body/>\n}" );
-		tempTemplateMap.put( BooleanExpressionBodyPair.class, "if( </expression/> ) {\n\t</body/>" );
-		tempTemplateMap.put( ConditionalStatement.class, "</booleanExpressionBodyPairs/>\n} else {\n\t</elseBody/>\n}" );
-		tempTemplateMap.put( MethodInvocation.class, "</expression/></method/>(</requiredArguments/></variableArguments/></keyedArguments/>)" );
-		tempTemplateMap.put( FieldAccess.class, "</expression/>.</field/>" );
-		tempTemplateMap.put( LocalDeclarationStatement.class, "</__local__/> = </initializer/> ;" );
-		tempTemplateMap.put( DoInOrder.class, "/*do in order*/ {\n\t</body/>\n}" );
-		tempTemplateMap.put( DoTogether.class, "ThreadUtilities.doTogether( ()-> {\n\t</body/>\n} );" );
-		tempTemplateMap.put( ForEachInArrayLoop.class, "for( </__item__/> : </array/> ) {\n\t</body/>\n}" );
-		tempTemplateMap.put( TypeExpression.class, "</value/>" );
-		tempTemplateMap.put( InstanceCreation.class, "new </constructor/>( </requiredArguments/></variableArguments/></keyedArguments/> )" );
-		tempTemplateMap.put( LogicalComplement.class, "!</operand/>" );
-		tempTemplateMap.put( NullLiteral.class, "null" );
-		tempTemplateMap.put( LambdaExpression.class, "{# </value/> }" );
-		tempTemplateMap.put( EachInArrayTogether.class, "ThreadUtilities.eachInTogether( ( </__item__/> ) -> {\n\t</body/>\n}, </array/> );" );
-		templateMap = Collections.unmodifiableMap( tempTemplateMap );
+  private static final Map<Class<?>, String> templateMap;
+  private static final Map<ArithmeticInfixExpression.Operator, String> arithmeticOperatorMap;
+  private static final Map<ConditionalInfixExpression.Operator, String> conditionalOperatorMap;
+  private static final Map<RelationalInfixExpression.Operator, String> relationalOperatorMap;
 
-		Map<ArithmeticInfixExpression.Operator, String> tempArithmeticOperatorMap = Maps.newHashMap();
-		tempArithmeticOperatorMap.put( ArithmeticInfixExpression.Operator.INTEGER_DIVIDE, "</leftOperand/> / </rightOperand/>" );
-		tempArithmeticOperatorMap.put( ArithmeticInfixExpression.Operator.REAL_REMAINDER, "Math.IEEEremainder( </leftOperand/>, </rightOperand/> )" );
-		tempArithmeticOperatorMap.put( ArithmeticInfixExpression.Operator.INTEGER_REMAINDER, "</leftOperand/> % </rightOperand/>" );
-		arithmeticOperatorMap = Collections.unmodifiableMap( tempArithmeticOperatorMap );
+  static {
+    Map<Class<?>, String> tempTemplateMap = Maps.newHashMap();
+    tempTemplateMap.put(ExpressionStatement.class, "</expression/>;");
+    tempTemplateMap.put(WhileLoop.class, "while( </conditional/> ) {\n\t</body/>\n}");
+    tempTemplateMap.put(CountLoop.class, "for( </__variable__/> = 0; </_variable_/> < </count/>; </_variable_/>++ ) {\n\t</body/>\n}");
+    tempTemplateMap.put(BooleanExpressionBodyPair.class, "if( </expression/> ) {\n\t</body/>");
+    tempTemplateMap.put(ConditionalStatement.class, "</booleanExpressionBodyPairs/>\n} else {\n\t</elseBody/>\n}");
+    tempTemplateMap.put(MethodInvocation.class, "</expression/></method/>(</requiredArguments/></variableArguments/></keyedArguments/>)");
+    tempTemplateMap.put(FieldAccess.class, "</expression/>.</field/>");
+    tempTemplateMap.put(LocalDeclarationStatement.class, "</__local__/> = </initializer/> ;");
+    tempTemplateMap.put(DoInOrder.class, "/*do in order*/ {\n\t</body/>\n}");
+    tempTemplateMap.put(DoTogether.class, "ThreadUtilities.doTogether( ()-> {\n\t</body/>\n} );");
+    tempTemplateMap.put(ForEachInArrayLoop.class, "for( </__item__/> : </array/> ) {\n\t</body/>\n}");
+    tempTemplateMap.put(TypeExpression.class, "</value/>");
+    tempTemplateMap.put(InstanceCreation.class, "new </constructor/>( </requiredArguments/></variableArguments/></keyedArguments/> )");
+    tempTemplateMap.put(LogicalComplement.class, "!</operand/>");
+    tempTemplateMap.put(NullLiteral.class, "null");
+    tempTemplateMap.put(LambdaExpression.class, "{# </value/> }");
+    tempTemplateMap.put(EachInArrayTogether.class, "ThreadUtilities.eachInTogether( ( </__item__/> ) -> {\n\t</body/>\n}, </array/> );");
+    templateMap = Collections.unmodifiableMap(tempTemplateMap);
 
-		Map<ConditionalInfixExpression.Operator, String> tempConditionalOperatorMap = Maps.newHashMap();
-		tempConditionalOperatorMap.put( ConditionalInfixExpression.Operator.AND, "</leftOperand/> && </rightOperand/>" );
-		tempConditionalOperatorMap.put( ConditionalInfixExpression.Operator.OR, "</leftOperand/> || </rightOperand/>" );
-		conditionalOperatorMap = Collections.unmodifiableMap( tempConditionalOperatorMap );
+    Map<ArithmeticInfixExpression.Operator, String> tempArithmeticOperatorMap = Maps.newHashMap();
+    tempArithmeticOperatorMap.put(ArithmeticInfixExpression.Operator.INTEGER_DIVIDE, "</leftOperand/> / </rightOperand/>");
+    tempArithmeticOperatorMap.put(ArithmeticInfixExpression.Operator.REAL_REMAINDER, "Math.IEEEremainder( </leftOperand/>, </rightOperand/> )");
+    tempArithmeticOperatorMap.put(ArithmeticInfixExpression.Operator.INTEGER_REMAINDER, "</leftOperand/> % </rightOperand/>");
+    arithmeticOperatorMap = Collections.unmodifiableMap(tempArithmeticOperatorMap);
 
-		Map<RelationalInfixExpression.Operator, String> tempRelationalOperatorMap = Maps.newHashMap();
-		tempRelationalOperatorMap.put( RelationalInfixExpression.Operator.LESS_EQUALS, "</leftOperand/> <= </rightOperand/>" );
-		tempRelationalOperatorMap.put( RelationalInfixExpression.Operator.GREATER_EQUALS, "</leftOperand/> >= </rightOperand/>" );
-		tempRelationalOperatorMap.put( RelationalInfixExpression.Operator.EQUALS, "</leftOperand/> == </rightOperand/>" );
-		tempRelationalOperatorMap.put( RelationalInfixExpression.Operator.NOT_EQUALS, "</leftOperand/> != </rightOperand/>" );
-		relationalOperatorMap = Collections.unmodifiableMap( tempRelationalOperatorMap );
-	}
+    Map<ConditionalInfixExpression.Operator, String> tempConditionalOperatorMap = Maps.newHashMap();
+    tempConditionalOperatorMap.put(ConditionalInfixExpression.Operator.AND, "</leftOperand/> && </rightOperand/>");
+    tempConditionalOperatorMap.put(ConditionalInfixExpression.Operator.OR, "</leftOperand/> || </rightOperand/>");
+    conditionalOperatorMap = Collections.unmodifiableMap(tempConditionalOperatorMap);
 
-	private static class SingletonHolder {
-		private static JavaFormatter instance = new JavaFormatter();
-	}
+    Map<RelationalInfixExpression.Operator, String> tempRelationalOperatorMap = Maps.newHashMap();
+    tempRelationalOperatorMap.put(RelationalInfixExpression.Operator.LESS_EQUALS, "</leftOperand/> <= </rightOperand/>");
+    tempRelationalOperatorMap.put(RelationalInfixExpression.Operator.GREATER_EQUALS, "</leftOperand/> >= </rightOperand/>");
+    tempRelationalOperatorMap.put(RelationalInfixExpression.Operator.EQUALS, "</leftOperand/> == </rightOperand/>");
+    tempRelationalOperatorMap.put(RelationalInfixExpression.Operator.NOT_EQUALS, "</leftOperand/> != </rightOperand/>");
+    relationalOperatorMap = Collections.unmodifiableMap(tempRelationalOperatorMap);
+  }
 
-	public static JavaFormatter getInstance() {
-		return SingletonHolder.instance;
-	}
+  private static class SingletonHolder {
+    private static JavaFormatter instance = new JavaFormatter();
+  }
 
-	private JavaFormatter() {
-		super( "Java" );
-	}
+  public static JavaFormatter getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	@Override
-	public String getHeaderTextForCode( UserCode code ) {
-		StringBuilder sb = new StringBuilder();
-		if( code instanceof UserMethod ) {
-			sb.append( "</getReturnType()/> </getName()/>" );
-		} else {
-			sb.append( "</getDeclaringType()/>" );
-		}
-		sb.append( " ( </getParameters()/> ) {" );
-		return sb.toString();
-	}
+  private JavaFormatter() {
+    super("Java");
+  }
 
-	@Override
-	public String getTrailerTextForCode( UserCode code ) {
-		return "}";
-	}
+  @Override
+  public String getHeaderTextForCode(UserCode code) {
+    StringBuilder sb = new StringBuilder();
+    if (code instanceof UserMethod) {
+      sb.append("</getReturnType()/> </getName()/>");
+    } else {
+      sb.append("</getDeclaringType()/>");
+    }
+    sb.append(" ( </getParameters()/> ) {");
+    return sb.toString();
+  }
 
-	@Override
-	public String getTemplateText( Class<?> cls ) {
-		String rv = templateMap.get( cls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = super.getTemplateText( cls );
-		}
-		return rv;
-	}
+  @Override
+  public String getTrailerTextForCode(UserCode code) {
+    return "}";
+  }
 
-	@Override
-	public String getInfixExpressionText( InfixExpression<?> infixExpression ) {
-		String rv;
-		if( infixExpression instanceof ArithmeticInfixExpression ) {
-			ArithmeticInfixExpression arithmeticInfixExpression = (ArithmeticInfixExpression)infixExpression;
-			rv = arithmeticOperatorMap.get( arithmeticInfixExpression.operator.getValue() );
-		} else if( infixExpression instanceof ConditionalInfixExpression ) {
-			ConditionalInfixExpression conditionalInfixExpression = (ConditionalInfixExpression)infixExpression;
-			rv = conditionalOperatorMap.get( conditionalInfixExpression.operator.getValue() );
-		} else if( infixExpression instanceof RelationalInfixExpression ) {
-			RelationalInfixExpression relationalInfixExpression = (RelationalInfixExpression)infixExpression;
-			rv = relationalOperatorMap.get( relationalInfixExpression.operator.getValue() );
-		} else {
-			rv = null;
-		}
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = super.getInfixExpressionText( infixExpression );
-		}
-		return rv;
-	}
+  @Override
+  public String getTemplateText(Class<?> cls) {
+    String rv = templateMap.get(cls);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = super.getTemplateText(cls);
+    }
+    return rv;
+  }
 
-	// No localization for java
-	@Override
-	protected String localizeName(String key, String name) {
-		return name;
-	}
+  @Override
+  public String getInfixExpressionText(InfixExpression<?> infixExpression) {
+    String rv;
+    if (infixExpression instanceof ArithmeticInfixExpression) {
+      ArithmeticInfixExpression arithmeticInfixExpression = (ArithmeticInfixExpression) infixExpression;
+      rv = arithmeticOperatorMap.get(arithmeticInfixExpression.operator.getValue());
+    } else if (infixExpression instanceof ConditionalInfixExpression) {
+      ConditionalInfixExpression conditionalInfixExpression = (ConditionalInfixExpression) infixExpression;
+      rv = conditionalOperatorMap.get(conditionalInfixExpression.operator.getValue());
+    } else if (infixExpression instanceof RelationalInfixExpression) {
+      RelationalInfixExpression relationalInfixExpression = (RelationalInfixExpression) infixExpression;
+      rv = relationalOperatorMap.get(relationalInfixExpression.operator.getValue());
+    } else {
+      rv = null;
+    }
+    if (rv != null) {
+      //pass
+    } else {
+      rv = super.getInfixExpressionText(infixExpression);
+    }
+    return rv;
+  }
 
-	@Override
-	public String getTextForNull() {
-		return "null";
-	}
+  // No localization for java
+  @Override
+  protected String localizeName(String key, String name) {
+    return name;
+  }
 
-	@Override
-	public String getTextForThis() {
-		return "this";
-	}
+  @Override
+  public String getTextForNull() {
+    return "null";
+  }
 
-	@Override
-	public boolean isTypeExpressionDesired() {
-		return true;
-	}
+  @Override
+  public String getTextForThis() {
+    return "this";
+  }
 
-	@Override
-	public String getFinalText() {
-		return "final";
-	}
+  @Override
+  public boolean isTypeExpressionDesired() {
+    return true;
+  }
 
-	@Override protected String getClassesFormat() {
-		return "%s classes";
-	}
+  @Override
+  public String getFinalText() {
+    return "final";
+  }
 
-	@Override public String getNewFormat() {
-		return "new %s( %s )";
-	}
+  @Override
+  protected String getClassesFormat() {
+    return "%s classes";
+  }
+
+  @Override
+  public String getNewFormat() {
+    return "new %s( %s )";
+  }
 }

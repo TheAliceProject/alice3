@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class MethodDifferentImplementationHelpComposite extends DifferentImplementationHelpComposite<UserMethod> {
-	public MethodDifferentImplementationHelpComposite( DifferentImplementation<UserMethod> differentImplementation ) {
-		super( UUID.fromString( "e5b526e5-d1ad-403c-8882-ba6835422f0d" ), differentImplementation, "an identical signature", "implementations" );
-	}
+  public MethodDifferentImplementationHelpComposite(DifferentImplementation<UserMethod> differentImplementation) {
+    super(UUID.fromString("e5b526e5-d1ad-403c-8882-ba6835422f0d"), differentImplementation, "an identical signature", "implementations");
+  }
 }

@@ -63,44 +63,44 @@ import java.awt.Component;
 import java.util.List;
 
 public class WarningView extends PageAxisPanel {
-	public WarningView( WarningDialogComposite composite ) {
-		super( composite );
-		this.addComponent( new Label( IconUtilities.createImageIcon( WarningView.class.getResource( "images/toxic.png" ) ) ) );
-		this.addComponent( BoxUtilities.createVerticalSliver( 8 ) );
+  public WarningView(WarningDialogComposite composite) {
+    super(composite);
+    this.addComponent(new Label(IconUtilities.createImageIcon(WarningView.class.getResource("images/toxic.png"))));
+    this.addComponent(BoxUtilities.createVerticalSliver(8));
 
-		PlainMultiLineLabel descriptionLabel = new PlainMultiLineLabel( getLocalizedStringByKey( "content" ) );
-		descriptionLabel.scaleFont( 1.4f );
-		descriptionLabel.changeFont( TextWeight.BOLD );
-		this.addComponent( descriptionLabel );
-		this.addComponent( BoxUtilities.createVerticalSliver( 8 ) );
-		class FurtherInfoPane extends JRowsSpringPane {
-			public FurtherInfoPane() {
-				super( 8, 4 );
-				this.setBorder( BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
-			}
+    PlainMultiLineLabel descriptionLabel = new PlainMultiLineLabel(getLocalizedStringByKey("content"));
+    descriptionLabel.scaleFont(1.4f);
+    descriptionLabel.changeFont(TextWeight.BOLD);
+    this.addComponent(descriptionLabel);
+    this.addComponent(BoxUtilities.createVerticalSliver(8));
+    class FurtherInfoPane extends JRowsSpringPane {
+      public FurtherInfoPane() {
+        super(8, 4);
+        this.setBorder(BorderFactory.createEmptyBorder(0, 16, 0, 0));
+      }
 
-			private Component createLabel( String key ) {
-				JLabel rv = new JLabel( getLocalizedStringByKey( key ) );
-				rv.setHorizontalAlignment( SwingConstants.TRAILING );
-				return rv;
-			}
+      private Component createLabel(String key) {
+        JLabel rv = new JLabel(getLocalizedStringByKey(key));
+        rv.setHorizontalAlignment(SwingConstants.TRAILING);
+        return rv;
+      }
 
-			@Override
-			protected List<Component[]> addComponentRows( List<Component[]> rv ) {
-				rv.add( SpringUtilities.createRow( createLabel( "updates" ), new JBrowserHyperlink( "http://www.alice.org/get-alice/alice-3" ) ) );
-				rv.add( SpringUtilities.createRow( createLabel( "blog" ), new JBrowserHyperlink( "https://www.alice.org/news/" ) ) );
-				rv.add( SpringUtilities.createRow( createLabel( "community" ), new JBrowserHyperlink( "http://www.alice.org/community/" ) ) );
-				rv.add( SpringUtilities.createRow( createLabel( "bugReports" ), new JBrowserHyperlink( ReportSubmissionConfiguration.JIRA_URL ) ) );
-				return rv;
-			}
-		}
-		this.getAwtComponent().add( new FurtherInfoPane() );
+      @Override
+      protected List<Component[]> addComponentRows(List<Component[]> rv) {
+        rv.add(SpringUtilities.createRow(createLabel("updates"), new JBrowserHyperlink("http://www.alice.org/get-alice/alice-3")));
+        rv.add(SpringUtilities.createRow(createLabel("blog"), new JBrowserHyperlink("https://www.alice.org/news/")));
+        rv.add(SpringUtilities.createRow(createLabel("community"), new JBrowserHyperlink("http://www.alice.org/community/")));
+        rv.add(SpringUtilities.createRow(createLabel("bugReports"), new JBrowserHyperlink(ReportSubmissionConfiguration.JIRA_URL)));
+        return rv;
+      }
+    }
+    this.getAwtComponent().add(new FurtherInfoPane());
 
-		this.setBorder( BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
-		this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-	}
+    this.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
+    this.setBackgroundColor(FolderTabbedPane.DEFAULT_BACKGROUND_COLOR);
+  }
 
-	private String getLocalizedStringByKey( String key ) {
-		return ResourceBundleUtilities.getStringForKey( key, WarningDialogComposite.class );
-	}
+  private String getLocalizedStringByKey(String key) {
+    return ResourceBundleUtilities.getStringForKey(key, WarningDialogComposite.class);
+  }
 }

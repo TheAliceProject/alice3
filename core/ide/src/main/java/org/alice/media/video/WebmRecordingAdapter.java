@@ -61,86 +61,86 @@ import edu.wustl.lookingglass.media.ImagesToWebmEncoder;
  */
 public class WebmRecordingAdapter implements MediaPlayerObserver {
 
-	private Integer frameRate;
-	private Dimension dimension;
+  private Integer frameRate;
+  private Dimension dimension;
 
-	private AudioMuxer audioMuxer;
-	private ImagesToWebmEncoder encoder;
+  private AudioMuxer audioMuxer;
+  private ImagesToWebmEncoder encoder;
 
-	private List<MediaPlayerAnimation> playingAnimations = new ArrayList<MediaPlayerAnimation>();
+  private List<MediaPlayerAnimation> playingAnimations = new ArrayList<MediaPlayerAnimation>();
 
-	public WebmRecordingAdapter() {
-	}
+  public WebmRecordingAdapter() {
+  }
 
-	public void setFrameRate( Integer value ) {
-		frameRate = value;
-	}
+  public void setFrameRate(Integer value) {
+    frameRate = value;
+  }
 
-	public void setDimension( Dimension dimension ) {
-		this.dimension = dimension;
-	}
+  public void setDimension(Dimension dimension) {
+    this.dimension = dimension;
+  }
 
-	public File getEncodedVideoFile() {
-		return this.encoder != null ? this.encoder.getEncodedVideoFile() : null;
-	}
+  public File getEncodedVideoFile() {
+    return this.encoder != null ? this.encoder.getEncodedVideoFile() : null;
+  }
 
-	public void initializeAudioRecording() {
-		this.audioMuxer = new AudioMuxer();
-	}
+  public void initializeAudioRecording() {
+    this.audioMuxer = new AudioMuxer();
+  }
 
-	@Override
-	public void mediaPlayerStarted( MediaPlayerAnimation playerAnimation, double playTime ) {
-		assert this.audioMuxer != null;
-		edu.cmu.cs.dennisc.media.Player player = playerAnimation.getPlayer();
-		//Add the animation to the list of playing animations so we can stop any unfinished ones later
-		//	this.playingAnimations.add( playerAnimation );
-		if( player instanceof Player ) {
-			Player jmfPlayer = (Player)player;
-			ScheduledAudioStream audioStream = new ScheduledAudioStream( jmfPlayer.getAudioResource(), playTime, jmfPlayer.getStartTime(), jmfPlayer.getStopTime(), jmfPlayer.getVolumeLevel() );
-			this.audioMuxer.addAudioStream( audioStream );
-		}
-	}
+  @Override
+  public void mediaPlayerStarted(MediaPlayerAnimation playerAnimation, double playTime) {
+    assert this.audioMuxer != null;
+    edu.cmu.cs.dennisc.media.Player player = playerAnimation.getPlayer();
+    //Add the animation to the list of playing animations so we can stop any unfinished ones later
+    //  this.playingAnimations.add( playerAnimation );
+    if (player instanceof Player) {
+      Player jmfPlayer = (Player) player;
+      ScheduledAudioStream audioStream = new ScheduledAudioStream(jmfPlayer.getAudioResource(), playTime, jmfPlayer.getStartTime(), jmfPlayer.getStopTime(), jmfPlayer.getVolumeLevel());
+      this.audioMuxer.addAudioStream(audioStream);
+    }
+  }
 
-	public void stopAnimationsAndClear() {
-		for( MediaPlayerAnimation mpa : this.playingAnimations ) {
-			if( mpa.getPlayer() != null ) {
-				mpa.getPlayer().stop();
-			}
-		}
-		this.playingAnimations.clear();
-	}
+  public void stopAnimationsAndClear() {
+    for (MediaPlayerAnimation mpa : this.playingAnimations) {
+      if (mpa.getPlayer() != null) {
+        mpa.getPlayer().stop();
+      }
+    }
+    this.playingAnimations.clear();
+  }
 
-	public void startVideoEncoding() {
-		assert ( this.encoder == null ) || ( this.encoder.isRunning() == false );
-		assert frameRate != null;
-		assert dimension != null;
+  public void startVideoEncoding() {
+    assert (this.encoder == null) || (this.encoder.isRunning() == false);
+    assert frameRate != null;
+    assert dimension != null;
 
-		this.encoder = new ImagesToWebmEncoder( frameRate, dimension );
-		synchronized( this.encoder ) {
-			this.encoder.start( this.audioMuxer );
-		}
-	}
+    this.encoder = new ImagesToWebmEncoder(frameRate, dimension);
+    synchronized (this.encoder) {
+      this.encoder.start(this.audioMuxer);
+    }
+  }
 
-	public void stopVideoEncoding() {
-		if( this.encoder != null ) {
-			synchronized( this.encoder ) {
-				if( this.encoder.isRunning() ) {
-					this.encoder.stop();
-				}
-			}
+  public void stopVideoEncoding() {
+    if (this.encoder != null) {
+      synchronized (this.encoder) {
+        if (this.encoder.isRunning()) {
+          this.encoder.stop();
+        }
+      }
 
-			// Reset the audio compiler, just in case. We want to make sure someone restarts it.
-			this.audioMuxer = null;
-		}
-	}
+      // Reset the audio compiler, just in case. We want to make sure someone restarts it.
+      this.audioMuxer = null;
+    }
+  }
 
-	public void addBufferedImage( BufferedImage image, boolean isUpsideDown ) {
-		if( this.encoder != null ) {
-			synchronized( this.encoder ) {
-				if( this.encoder.isRunning() ) {
-					this.encoder.addBufferedImage( image, isUpsideDown );
-				}
-			}
-		}
-	}
+  public void addBufferedImage(BufferedImage image, boolean isUpsideDown) {
+    if (this.encoder != null) {
+      synchronized (this.encoder) {
+        if (this.encoder.isRunning()) {
+          this.encoder.addBufferedImage(image, isUpsideDown);
+        }
+      }
+    }
+  }
 }

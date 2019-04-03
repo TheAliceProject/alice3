@@ -70,192 +70,194 @@ import org.lgna.story.resources.sims2.ToddlerPersonResource;
  * @author Dennis Cosgrove
  */
 public class PersonResourceKey extends InstanceCreatorKey {
-	private static IconFactory createIconFactory( String subPath ) {
-		return new TrimmedImageIconFactory( PersonResourceKey.class.getResource( "images/" + subPath + ".png" ), 160, 120 );
-	}
+  private static IconFactory createIconFactory(String subPath) {
+    return new TrimmedImageIconFactory(PersonResourceKey.class.getResource("images/" + subPath + ".png"), 160, 120);
+  }
 
-	private static final IconFactory ELDER_ICON_FACTORY = createIconFactory( "elder" );
-	private static final IconFactory ADULT_ICON_FACTORY = createIconFactory( "adult" );
-	private static final IconFactory TEEN_ICON_FACTORY = createIconFactory( "teen" );
-	private static final IconFactory CHILD_ICON_FACTORY = createIconFactory( "child" );
-	private static final IconFactory TODDLER_ICON_FACTORY = createIconFactory( "toddler" );
-	private static final IconFactory PERSON_ICON_FACTORY = new PersonResourceIconFactory();
+  private static final IconFactory ELDER_ICON_FACTORY = createIconFactory("elder");
+  private static final IconFactory ADULT_ICON_FACTORY = createIconFactory("adult");
+  private static final IconFactory TEEN_ICON_FACTORY = createIconFactory("teen");
+  private static final IconFactory CHILD_ICON_FACTORY = createIconFactory("child");
+  private static final IconFactory TODDLER_ICON_FACTORY = createIconFactory("toddler");
+  private static final IconFactory PERSON_ICON_FACTORY = new PersonResourceIconFactory();
 
-	private static class SingletonHolder {
-		private static PersonResourceKey elderInstance = new PersonResourceKey( LifeStage.ELDER );
-		private static PersonResourceKey adultInstance = new PersonResourceKey( LifeStage.ADULT );
-		private static PersonResourceKey teenInstance = new PersonResourceKey( LifeStage.TEEN );
-		private static PersonResourceKey childInstance = new PersonResourceKey( LifeStage.CHILD );
-		private static PersonResourceKey toddlerInstance = new PersonResourceKey( LifeStage.TODDLER );
-		private static PersonResourceKey personInstance = new PersonResourceKey( null );
-	}
+  private static class SingletonHolder {
+    private static PersonResourceKey elderInstance = new PersonResourceKey(LifeStage.ELDER);
+    private static PersonResourceKey adultInstance = new PersonResourceKey(LifeStage.ADULT);
+    private static PersonResourceKey teenInstance = new PersonResourceKey(LifeStage.TEEN);
+    private static PersonResourceKey childInstance = new PersonResourceKey(LifeStage.CHILD);
+    private static PersonResourceKey toddlerInstance = new PersonResourceKey(LifeStage.TODDLER);
+    private static PersonResourceKey personInstance = new PersonResourceKey(null);
+  }
 
-	public static PersonResourceKey getElderInstance() {
-		return SingletonHolder.elderInstance;
-	}
+  public static PersonResourceKey getElderInstance() {
+    return SingletonHolder.elderInstance;
+  }
 
-	public static PersonResourceKey getAdultInstance() {
-		return SingletonHolder.adultInstance;
-	}
+  public static PersonResourceKey getAdultInstance() {
+    return SingletonHolder.adultInstance;
+  }
 
-	public static PersonResourceKey getTeenInstance() {
-		return SingletonHolder.teenInstance;
-	}
+  public static PersonResourceKey getTeenInstance() {
+    return SingletonHolder.teenInstance;
+  }
 
-	public static PersonResourceKey getChildInstance() {
-		return SingletonHolder.childInstance;
-	}
+  public static PersonResourceKey getChildInstance() {
+    return SingletonHolder.childInstance;
+  }
 
-	public static PersonResourceKey getToddlerInstance() {
-		return SingletonHolder.toddlerInstance;
-	}
+  public static PersonResourceKey getToddlerInstance() {
+    return SingletonHolder.toddlerInstance;
+  }
 
-	private static PersonResourceKey getPersonInstance() {
-		return SingletonHolder.personInstance;
-	}
+  private static PersonResourceKey getPersonInstance() {
+    return SingletonHolder.personInstance;
+  }
 
-	public static PersonResourceKey getInstanceForResourceClass( Class<?> cls ) {
-		if( cls == ElderPersonResource.class ) {
-			return getElderInstance();
-		} else if( cls == AdultPersonResource.class ) {
-			return getAdultInstance();
-		} else if( cls == TeenPersonResource.class ) {
-			return getTeenInstance();
-		} else if( cls == ChildPersonResource.class ) {
-			return getChildInstance();
-		} else if( cls == ToddlerPersonResource.class ) {
-			return getToddlerInstance();
-		} else {
-			return getPersonInstance();
-		}
-	}
+  public static PersonResourceKey getInstanceForResourceClass(Class<?> cls) {
+    if (cls == ElderPersonResource.class) {
+      return getElderInstance();
+    } else if (cls == AdultPersonResource.class) {
+      return getAdultInstance();
+    } else if (cls == TeenPersonResource.class) {
+      return getTeenInstance();
+    } else if (cls == ChildPersonResource.class) {
+      return getChildInstance();
+    } else if (cls == ToddlerPersonResource.class) {
+      return getToddlerInstance();
+    } else {
+      return getPersonInstance();
+    }
+  }
 
-	private final LifeStage lifeStage;
+  private final LifeStage lifeStage;
 
-	private PersonResourceKey( LifeStage lifeStage ) {
-		this.lifeStage = lifeStage;
-	}
+  private PersonResourceKey(LifeStage lifeStage) {
+    this.lifeStage = lifeStage;
+  }
 
-	public LifeStage getLifeStage() {
-		return this.lifeStage;
-	}
+  public LifeStage getLifeStage() {
+    return this.lifeStage;
+  }
 
-	@Override
-	public Class<? extends ModelResource> getModelResourceCls() {
-		if( this.lifeStage == LifeStage.ELDER ) {
-			return ElderPersonResource.class;
-		} else if( this.lifeStage == LifeStage.ADULT ) {
-			return AdultPersonResource.class;
-		} else if( this.lifeStage == LifeStage.TEEN ) {
-			return TeenPersonResource.class;
-		} else if( this.lifeStage == LifeStage.CHILD ) {
-			return ChildPersonResource.class;
-		} else if( this.lifeStage == LifeStage.TODDLER ) {
-			return ToddlerPersonResource.class;
-		} else {
-			return PersonResource.class;
-		}
-	}
+  @Override
+  public Class<? extends ModelResource> getModelResourceCls() {
+    if (this.lifeStage == LifeStage.ELDER) {
+      return ElderPersonResource.class;
+    } else if (this.lifeStage == LifeStage.ADULT) {
+      return AdultPersonResource.class;
+    } else if (this.lifeStage == LifeStage.TEEN) {
+      return TeenPersonResource.class;
+    } else if (this.lifeStage == LifeStage.CHILD) {
+      return ChildPersonResource.class;
+    } else if (this.lifeStage == LifeStage.TODDLER) {
+      return ToddlerPersonResource.class;
+    } else {
+      return PersonResource.class;
+    }
+  }
 
-	private ValueConverter<PersonResource, InstanceCreation> getPersonResourceValueCreator() {
-		return PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage );
-	}
+  private ValueConverter<PersonResource, InstanceCreation> getPersonResourceValueCreator() {
+    return PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter(this.lifeStage);
+  }
 
-	@Override
-	public String getInternalText() {
-		StringBuilder sb = new StringBuilder();
-		if( this.lifeStage != null ) {
-			sb.append( this.lifeStage.getDisplayText() );
-		} else {
-			sb.append( "Person" );
-		}
+  @Override
+  public String getInternalText() {
+    StringBuilder sb = new StringBuilder();
+    if (this.lifeStage != null) {
+      sb.append(this.lifeStage.getDisplayText());
+    } else {
+      sb.append("Person");
+    }
 
-		return sb.toString();
-	}
+    return sb.toString();
+  }
 
-	@Override
-	public String getSearchText() {
-		return getInternalText();
-	}
+  @Override
+  public String getSearchText() {
+    return getInternalText();
+  }
 
-	@Override
-	public String getLocalizedDisplayText() {
-		Formatter formatter = FormatterState.getInstance().getValue();
-		String className = (lifeStage == null) ? "Person" : lifeStage.getLocalizedDisplayText();
+  @Override
+  public String getLocalizedDisplayText() {
+    Formatter formatter = FormatterState.getInstance().getValue();
+    String className = (lifeStage == null) ? "Person" : lifeStage.getLocalizedDisplayText();
 
-		return String.format(formatter.getNewFormat(), className, "…");
-	}
+    return String.format(formatter.getNewFormat(), className, "…");
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		if( this.lifeStage == LifeStage.ELDER ) {
-			return ELDER_ICON_FACTORY;
-		} else if( this.lifeStage == LifeStage.ADULT ) {
-			return ADULT_ICON_FACTORY;
-		} else if( this.lifeStage == LifeStage.TEEN ) {
-			return TEEN_ICON_FACTORY;
-		} else if( this.lifeStage == LifeStage.CHILD ) {
-			return CHILD_ICON_FACTORY;
-		} else if( this.lifeStage == LifeStage.TODDLER ) {
-			return TODDLER_ICON_FACTORY;
-		} else {
-			return PERSON_ICON_FACTORY;
-		}
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    if (this.lifeStage == LifeStage.ELDER) {
+      return ELDER_ICON_FACTORY;
+    } else if (this.lifeStage == LifeStage.ADULT) {
+      return ADULT_ICON_FACTORY;
+    } else if (this.lifeStage == LifeStage.TEEN) {
+      return TEEN_ICON_FACTORY;
+    } else if (this.lifeStage == LifeStage.CHILD) {
+      return CHILD_ICON_FACTORY;
+    } else if (this.lifeStage == LifeStage.TODDLER) {
+      return TODDLER_ICON_FACTORY;
+    } else {
+      return PERSON_ICON_FACTORY;
+    }
+  }
 
-	@Override
-	public InstanceCreation createInstanceCreation() {
-		return this.getPersonResourceValueCreator().fireAndGetValue();
-	}
+  @Override
+  public InstanceCreation createInstanceCreation() {
+    return this.getPersonResourceValueCreator().fireAndGetValue();
+  }
 
-	@Override
-	public String[] getTags() {
-		return null;
-	}
+  @Override
+  public String[] getTags() {
+    return null;
+  }
 
-	@Override
-	public String[] getGroupTags() {
-		return null;
-	}
+  @Override
+  public String[] getGroupTags() {
+    return null;
+  }
 
-	@Override
-	public String[] getThemeTags() {
-		return null;
-	}
+  @Override
+  public String[] getThemeTags() {
+    return null;
+  }
 
-	@Override
-	public Triggerable getLeftClickOperation( ResourceNode node, SingleSelectTreeState<ResourceNode> controller ) {
-		if( NebulousIde.nonfree.isNonFreeEnabled() ) {
-			return node.getDropOperation( null, null );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Triggerable getLeftClickOperation(ResourceNode node, SingleSelectTreeState<ResourceNode> controller) {
+    if (NebulousIde.nonfree.isNonFreeEnabled()) {
+      return node.getDropOperation(null, null);
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite ) {
-		if( NebulousIde.nonfree.isNonFreeEnabled() ) {
-			return NebulousIde.nonfree.getPersonResourceDropOperation( this );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Triggerable getDropOperation(ResourceNode node, DragStep step, DropSite dropSite) {
+    if (NebulousIde.nonfree.isNonFreeEnabled()) {
+      return NebulousIde.nonfree.getPersonResourceDropOperation(this);
+    } else {
+      return null;
+    }
+  }
 
-	@Override public AxisAlignedBox getBoundingBox() {
-		return AliceResourceUtilties.getBoundingBox( getModelResourceCls() );
-	}
+  @Override
+  public AxisAlignedBox getBoundingBox() {
+    return AliceResourceUtilties.getBoundingBox(getModelResourceCls());
+  }
 
-	@Override public boolean getPlaceOnGround() {
-		return true;
-	}
+  @Override
+  public boolean getPlaceOnGround() {
+    return true;
+  }
 
-	@Override
-	public boolean isLeaf() {
-		return true;
-	}
+  @Override
+  public boolean isLeaf() {
+    return true;
+  }
 
-	@Override
-	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.getLocalizedDisplayText() );
-	}
+  @Override
+  protected void appendRep(StringBuilder sb) {
+    sb.append(this.getLocalizedDisplayText());
+  }
 }

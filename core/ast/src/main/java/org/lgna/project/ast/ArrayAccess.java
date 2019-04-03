@@ -49,64 +49,65 @@ import org.lgna.project.code.PrecedentedAppender;
  * @author Dennis Cosgrove
  */
 public final class ArrayAccess extends Expression implements PrecedentedAppender {
-	public ArrayAccess() {
-	}
+  public ArrayAccess() {
+  }
 
-	public ArrayAccess( AbstractType<?, ?, ?> arrayType, Expression array, Expression index ) {
-		assert arrayType.isArray();
-		this.arrayType.setValue( arrayType );
-		this.array.setValue( array );
-		this.index.setValue( index );
-	}
+  public ArrayAccess(AbstractType<?, ?, ?> arrayType, Expression array, Expression index) {
+    assert arrayType.isArray();
+    this.arrayType.setValue(arrayType);
+    this.array.setValue(array);
+    this.index.setValue(index);
+  }
 
-	public ArrayAccess( Class<?> arrayCls, Expression array, Expression index ) {
-		this( JavaType.getInstance( arrayCls ), array, index );
-	}
+  public ArrayAccess(Class<?> arrayCls, Expression array, Expression index) {
+    this(JavaType.getInstance(arrayCls), array, index);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		AbstractType<?, ?, ?> arrayType = this.arrayType.getValue();
-		assert arrayType != null;
-		return arrayType.getComponentType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    AbstractType<?, ?, ?> arrayType = this.arrayType.getValue();
+    assert arrayType != null;
+    return arrayType.getComponentType();
+  }
 
-	@Override
-	public boolean isValid() {
-		Expression arrayExpression = this.array.getValue();
-		if( arrayExpression != null ) {
-			AbstractType<?, ?, ?> type = arrayExpression.getType();
-			if( type != null ) {
-				return type.isArray();
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean isValid() {
+    Expression arrayExpression = this.array.getValue();
+    if (arrayExpression != null) {
+      AbstractType<?, ?, ?> type = arrayExpression.getType();
+      if (type != null) {
+        return type.isArray();
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendArrayAccess(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendArrayAccess(this);
+  }
 
-	@Override public int getLevelOfPrecedence() {
-		return 16;
-	}
+  @Override
+  public int getLevelOfPrecedence() {
+    return 16;
+  }
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = DeclarationProperty.createReferenceInstance( this );;
-	public final ExpressionProperty array = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			AbstractType<?, ?, ?> arrayType = ArrayAccess.this.arrayType.getValue();
-			assert arrayType != null;
-			return arrayType;
-		}
-	};
-	public final ExpressionProperty index = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return JavaType.getInstance( Integer.class );
-		}
-	};
+  public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = DeclarationProperty.createReferenceInstance(this);
+  public final ExpressionProperty array = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      AbstractType<?, ?, ?> arrayType = ArrayAccess.this.arrayType.getValue();
+      assert arrayType != null;
+      return arrayType;
+    }
+  };
+  public final ExpressionProperty index = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      return JavaType.getInstance(Integer.class);
+    }
+  };
 }

@@ -51,25 +51,25 @@ import org.lgna.ik.poser.animation.TimeLine;
  */
 public class DeleteKeyFrameFromTimeLineEdit extends TimeLineEdit {
 
-	private final KeyFrameData keyFrameData;
+  private final KeyFrameData keyFrameData;
 
-	public DeleteKeyFrameFromTimeLineEdit( UserActivity userActivity, TimeLine timeLine, KeyFrameData data ) {
-		super( userActivity, timeLine );
-		this.keyFrameData = data;
-	}
+  public DeleteKeyFrameFromTimeLineEdit(UserActivity userActivity, TimeLine timeLine, KeyFrameData data) {
+    super(userActivity, timeLine);
+    this.keyFrameData = data;
+  }
 
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		getTimeLine().removeKeyFrameData( keyFrameData );
-	}
+  @Override
+  protected void doOrRedoInternal(boolean isDo) {
+    getTimeLine().removeKeyFrameData(keyFrameData);
+  }
 
-	@Override
-	protected void undoInternal() {
-		getTimeLine().addKeyFrameData( keyFrameData );
-	}
+  @Override
+  protected void undoInternal() {
+    getTimeLine().addKeyFrameData(keyFrameData);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+  }
 
 }

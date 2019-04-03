@@ -54,21 +54,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RenameLocalComposite extends RenameDeclarationComposite<UserLocal> {
-	private static Map<UserLocal, RenameLocalComposite> map = Maps.newHashMap();
+  private static Map<UserLocal, RenameLocalComposite> map = Maps.newHashMap();
 
-	public static synchronized RenameLocalComposite getInstance( UserLocal local ) {
-		assert local != null;
-		RenameLocalComposite rv = map.get( local );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new RenameLocalComposite( local );
-			map.put( local, rv );
-		}
-		return rv;
-	}
+  public static synchronized RenameLocalComposite getInstance(UserLocal local) {
+    assert local != null;
+    RenameLocalComposite rv = map.get(local);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new RenameLocalComposite(local);
+      map.put(local, rv);
+    }
+    return rv;
+  }
 
-	private RenameLocalComposite( UserLocal local ) {
-		super( UUID.fromString( "51ce6258-a1ac-4606-b4f8-faea8e732550" ), new LocalNameValidator( local ), local );
-	}
+  private RenameLocalComposite(UserLocal local) {
+    super(UUID.fromString("51ce6258-a1ac-4606-b4f8-faea8e732550"), new LocalNameValidator(local), local);
+  }
 }

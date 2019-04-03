@@ -52,12 +52,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MethodsComposite extends MembersComposite<UserMethod> {
-	public MethodsComposite( UUID id, MethodData data ) {
-		super( id, data );
-	}
+  public MethodsComposite(UUID id, MethodData data) {
+    super(id, data);
+  }
 
-	@Override
-	protected MethodsView createView() {
-		return new MethodsView( this );
-	}
+  @Override
+  protected MethodsView createView() {
+    return new MethodsView(this);
+  }
 }

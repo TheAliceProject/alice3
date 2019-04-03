@@ -49,8 +49,8 @@ import org.lgna.story.resources.BasicResource;
  * @author dculyba
  */
 public class BasicJointedModelImp extends JointedModelImp<SJointedModel, BasicResource> {
-	public BasicJointedModelImp( SJointedModel abstraction, JointImplementationAndVisualDataFactory<BasicResource> factory ) {
-		super( abstraction, factory );
-	}
+  public BasicJointedModelImp(SJointedModel abstraction, JointImplementationAndVisualDataFactory<BasicResource> factory) {
+    super(abstraction, factory);
+  }
 
 }

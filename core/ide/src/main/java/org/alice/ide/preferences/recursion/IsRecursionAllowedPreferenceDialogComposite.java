@@ -56,42 +56,40 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class IsRecursionAllowedPreferenceDialogComposite extends LazyOperationUnadornedDialogCoreComposite<IsRecursionAllowedPreferenceView> {
-	private IsRecursionAllowedPreferenceDialogComposite( int index ) {
-		super( UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ) );
-		this.depth = index;
-		this.next = LazySimpleLaunchOperationFactory.createInstance(
-				IsRecursionAllowedPreferenceDialogComposite.class,
-				new Lazy<IsRecursionAllowedPreferenceDialogComposite>() {
-					@Override
-					protected IsRecursionAllowedPreferenceDialogComposite create() {
-						return new IsRecursionAllowedPreferenceDialogComposite( depth + 1 );
-					}
-				}, Application.APPLICATION_UI_GROUP ).getLaunchOperation();
-	}
+  private IsRecursionAllowedPreferenceDialogComposite(int index) {
+    super(UUID.fromString("877a3f9a-40c0-4100-90a3-6fb736ed5305"));
+    this.depth = index;
+    this.next = LazySimpleLaunchOperationFactory.createInstance(IsRecursionAllowedPreferenceDialogComposite.class, new Lazy<IsRecursionAllowedPreferenceDialogComposite>() {
+      @Override
+      protected IsRecursionAllowedPreferenceDialogComposite create() {
+        return new IsRecursionAllowedPreferenceDialogComposite(depth + 1);
+      }
+    }, Application.APPLICATION_UI_GROUP).getLaunchOperation();
+  }
 
-	public IsRecursionAllowedPreferenceDialogComposite() {
-		this( 0 );
-	}
+  public IsRecursionAllowedPreferenceDialogComposite() {
+    this(0);
+  }
 
-	@Override
-	protected IsRecursionAllowedPreferenceView createView() {
-		return new IsRecursionAllowedPreferenceView( this );
-	}
+  @Override
+  protected IsRecursionAllowedPreferenceView createView() {
+    return new IsRecursionAllowedPreferenceView(this);
+  }
 
-	public PlainStringValue getDescriptionText() {
-		return this.descriptionText;
-	}
+  public PlainStringValue getDescriptionText() {
+    return this.descriptionText;
+  }
 
-	public PlainStringValue getRecursiveButtonText() {
-		return this.recursiveButtonText;
-	}
+  public PlainStringValue getRecursiveButtonText() {
+    return this.recursiveButtonText;
+  }
 
-	public Operation getNext() {
-		return this.next;
-	}
+  public Operation getNext() {
+    return this.next;
+  }
 
-	private final PlainStringValue descriptionText = this.createStringValue( "descriptionText" );
-	private final PlainStringValue recursiveButtonText = this.createStringValue( "recursiveButtonText" );
-	private final int depth;
-	private final Operation next;
+  private final PlainStringValue descriptionText = this.createStringValue("descriptionText");
+  private final PlainStringValue recursiveButtonText = this.createStringValue("recursiveButtonText");
+  private final int depth;
+  private final Operation next;
 }

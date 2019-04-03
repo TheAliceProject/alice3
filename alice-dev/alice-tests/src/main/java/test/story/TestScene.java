@@ -51,50 +51,50 @@ import org.lgna.story.SScene;
  * @author Dennis Cosgrove
  */
 public class TestScene extends SScene {
-	private final SGround ground = new SGround();
-	private final SCamera camera = new SCamera();
-	private final SModel[] models;
+  private final SGround ground = new SGround();
+  private final SCamera camera = new SCamera();
+  private final SModel[] models;
 
-	public TestScene( SModel... models ) {
-		this.models = models;
-	}
+  public TestScene(SModel... models) {
+    this.models = models;
+  }
 
-	private void performGeneratedSetup() {
-		this.camera.setVehicle( this );
-		this.ground.setVehicle( this );
-		for( SModel model : this.models ) {
-			model.setVehicle( this );
-		}
-		this.ground.setPaint( SGround.SurfaceAppearance.GRASS );
-		this.camera.moveAndOrientToAGoodVantagePointOf( this.models[ 0 ] );
-	}
+  private void performGeneratedSetup() {
+    this.camera.setVehicle(this);
+    this.ground.setVehicle(this);
+    for (SModel model : this.models) {
+      model.setVehicle(this);
+    }
+    this.ground.setPaint(SGround.SurfaceAppearance.GRASS);
+    this.camera.moveAndOrientToAGoodVantagePointOf(this.models[0]);
+  }
 
-	public SGround getGround() {
-		return this.ground;
-	}
+  public SGround getGround() {
+    return this.ground;
+  }
 
-	public SCamera getCamera() {
-		return this.camera;
-	}
+  public SCamera getCamera() {
+    return this.camera;
+  }
 
-	public SModel[] getModels() {
-		return this.models;
-	}
+  public SModel[] getModels() {
+    return this.models;
+  }
 
-	private void performCustomSetup() {
-	}
+  private void performCustomSetup() {
+  }
 
-	@Override
-	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
-		if( isActive ) {
-			if( activeCount == 1 ) {
-				this.performGeneratedSetup();
-				this.performCustomSetup();
-			} else {
-				this.restoreStateAndEventListeners();
-			}
-		} else {
-			this.preserveStateAndEventListeners();
-		}
-	}
+  @Override
+  protected void handleActiveChanged(Boolean isActive, Integer activeCount) {
+    if (isActive) {
+      if (activeCount == 1) {
+        this.performGeneratedSetup();
+        this.performCustomSetup();
+      } else {
+        this.restoreStateAndEventListeners();
+      }
+    } else {
+      this.preserveStateAndEventListeners();
+    }
+  }
 }

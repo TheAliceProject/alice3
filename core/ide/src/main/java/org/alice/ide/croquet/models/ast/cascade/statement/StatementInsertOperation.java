@@ -56,21 +56,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class StatementInsertOperation extends ActionOperation implements InsertStatementCompletionModel {
-	private final BlockStatementIndexPair blockStatementIndexPair;
+  private final BlockStatementIndexPair blockStatementIndexPair;
 
-	public StatementInsertOperation( UUID id, BlockStatementIndexPair blockStatementIndexPair ) {
-		super( Application.PROJECT_GROUP, id );
-		this.blockStatementIndexPair = blockStatementIndexPair;
-	}
+  public StatementInsertOperation(UUID id, BlockStatementIndexPair blockStatementIndexPair) {
+    super(Application.PROJECT_GROUP, id);
+    this.blockStatementIndexPair = blockStatementIndexPair;
+  }
 
-	public BlockStatementIndexPair getBlockStatementIndexPair() {
-		return this.blockStatementIndexPair;
-	}
+  public BlockStatementIndexPair getBlockStatementIndexPair() {
+    return this.blockStatementIndexPair;
+  }
 
-	protected abstract Edit createEdit( UserActivity userActivity );
+  protected abstract Edit createEdit(UserActivity userActivity);
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		activity.commitAndInvokeDo( this.createEdit( activity ) );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    activity.commitAndInvokeDo(this.createEdit(activity));
+  }
 }

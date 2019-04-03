@@ -32,36 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum FirTreeTrunkResource implements PropResource {
-	DEFAULT,
-	MIRROR,
-	TALL,
-	TALL_MIRROR,
-	SNOW,
-	SNOW_MIRROR,
-	SNOW_TALL,
-	SNOW_TALL_MIRROR;
+  DEFAULT, MIRROR, TALL, TALL_MIRROR, SNOW, SNOW_MIRROR, SNOW_TALL, SNOW_TALL_MIRROR;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	FirTreeTrunkResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  FirTreeTrunkResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	FirTreeTrunkResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  FirTreeTrunkResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

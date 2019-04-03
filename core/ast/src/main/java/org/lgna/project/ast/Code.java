@@ -49,13 +49,13 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public interface Code extends Member {
-	public AbstractParameter[] getAllParameters();
+  public AbstractParameter[] getAllParameters();
 
-	public List<? extends AbstractParameter> getRequiredParameters();
+  public List<? extends AbstractParameter> getRequiredParameters();
 
-	public AbstractParameter getVariableLengthParameter();
+  public AbstractParameter getVariableLengthParameter();
 
-	public AbstractParameter getKeyedParameter();
+  public AbstractParameter getKeyedParameter();
 
-	public boolean isSignatureLocked();
+  public boolean isSignatureLocked();
 }

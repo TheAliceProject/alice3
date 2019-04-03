@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultFullBodyOutfitSundress implements FemaleAdultFullBodyOutfit {
-	BLUE_FLORAL,
-	CELADON_VASE,
-	NAVY_PIPING,
-	PINK_SUNNY,
-	RED_ISLANDS;
+  BLUE_FLORAL, CELADON_VASE, NAVY_PIPING, PINK_SUNNY, RED_ISLANDS
 
 }

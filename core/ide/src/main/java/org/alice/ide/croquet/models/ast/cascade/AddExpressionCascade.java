@@ -58,99 +58,99 @@ import java.util.List;
 import java.util.UUID;
 
 class AddExpressionBlank extends CascadeBlank<Expression> {
-	private final DeclarationProperty<AbstractType<?, ?, ?>> componentTypeProperty;
+  private final DeclarationProperty<AbstractType<?, ?, ?>> componentTypeProperty;
 
-	AddExpressionBlank( DeclarationProperty<AbstractType<?, ?, ?>> componentTypeProperty ) {
-		this.componentTypeProperty = componentTypeProperty;
-	}
+  AddExpressionBlank(DeclarationProperty<AbstractType<?, ?, ?>> componentTypeProperty) {
+    this.componentTypeProperty = componentTypeProperty;
+  }
 
-	@Override
-	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<Expression> blankNode ) {
-		IDE ide = IDE.getActiveInstance();
-		ide.getExpressionCascadeManager().appendItems( children, blankNode, this.componentTypeProperty.getValue(), null );
-	}
+  @Override
+  protected void updateChildren(List<CascadeBlankChild> children, BlankNode<Expression> blankNode) {
+    IDE ide = IDE.getActiveInstance();
+    ide.getExpressionCascadeManager().appendItems(children, blankNode, this.componentTypeProperty.getValue(), null);
+  }
 }
 
 /**
  * @author Dennis Cosgrove
  */
 public class AddExpressionCascade extends ExpressionsCascade {
-	private final ExpressionListProperty expressionListProperty;
+  private final ExpressionListProperty expressionListProperty;
 
-	public AddExpressionCascade( DeclarationProperty<AbstractType<?, ?, ?>> componentTypeProperty, ExpressionListProperty expressionListProperty ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "4f3ccba2-c44f-49b3-b20e-c9e847e90db2" ), new AddExpressionBlank( componentTypeProperty ) );
-		this.expressionListProperty = expressionListProperty;
-	}
+  public AddExpressionCascade(DeclarationProperty<AbstractType<?, ?, ?>> componentTypeProperty, ExpressionListProperty expressionListProperty) {
+    super(Application.PROJECT_GROUP, UUID.fromString("4f3ccba2-c44f-49b3-b20e-c9e847e90db2"), new AddExpressionBlank(componentTypeProperty));
+    this.expressionListProperty = expressionListProperty;
+  }
 
-	@Override
-	protected AddExpressionEdit createEdit( UserActivity userActivity, Expression[] values ) {
-		return new AddExpressionEdit( userActivity, this.expressionListProperty, values[ 0 ] );
-	}
+  @Override
+  protected AddExpressionEdit createEdit(UserActivity userActivity, Expression[] values) {
+    return new AddExpressionEdit(userActivity, this.expressionListProperty, values[0]);
+  }
 
-	//	public org.lgna.project.ast.ExpressionListProperty getExpressionListProperty() {
-	//		return this.expressionListProperty;
-	//	}
-	//	@Override
-	//	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
-	//		return componentTypeProperty.getValue();
-	//	}
-	//	@Override
-	//	public org.lgna.project.ast.Expression getPreviousExpression() {
-	//		return null;
-	//	}
-	//
-	//	@Override
-	//	protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
-	//		return edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP;
-	//	}
-	//
-	//	@Override
-	//	protected String getTitle() {
-	//		return null;
-	//	}
-	////	@Override
-	////	protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-	////		class AddExpressionEdit extends org.alice.ide.ToDoEdit {
-	////			private org.lgna.project.ast.Expression expression;
-	////			private int index;
-	////			@Override
-	////			protected final void doOrRedoInternal( boolean isDo ) {
-	////				this.index = expressionListProperty.size();
-	////				expressionListProperty.add( this.expression );
-	////			}
-	////			@Override
-	////			protected final void undoInternal() {
-	////				//expressionListProperty.indexOf( this.expression )
-	////				expressionListProperty.remove( this.index );
-	////			}
-	////			@Override
-	////			protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-	////				rv.append( "add: " );
-	////				org.lgna.project.ast.Node.safeAppendRepr(rv, this.expression, locale);
-	////				return rv;
-	////			}
-	////		}
-	////		final edu.cmu.cs.dennisc.croquet.ViewController<?, ?> viewController = context.getViewController();
-	////		final java.awt.Point p = context.getPoint();
-	////		context.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< AddExpressionEdit, org.lgna.project.ast.Expression >() {
-	////			public AddExpressionEdit createEdit() {
-	////				return new AddExpressionEdit();
-	////			}
-	////			public AddExpressionEdit initialize(AddExpressionEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<org.lgna.project.ast.Expression> taskObserver) {
-	////				org.lgna.project.ast.AbstractType<?,?,?> type = componentTypeProperty.getValue();
-	////				org.alice.ide.IDE.getActiveInstance().getCascadeManager().promptUserForExpression( type, rv.expression, viewController, p, taskObserver );
-	////				return rv;
-	////			}
-	////			public AddExpressionEdit handleCompletion( AddExpressionEdit rv, org.lgna.project.ast.Expression expression ) {
-	////				//todo: remove?
-	////				org.alice.ide.IDE.getActiveInstance().getCascadeManager().unsetPreviousExpressionAndDropStatement();
-	////				rv.expression = expression;
-	////				return rv;
-	////			}
-	////			public void handleCancelation() {
-	////				//todo: remove?
-	////				org.alice.ide.IDE.getActiveInstance().getCascadeManager().unsetPreviousExpressionAndDropStatement();
-	////			}
-	////		} );
-	////	}
+  //  public org.lgna.project.ast.ExpressionListProperty getExpressionListProperty() {
+  //    return this.expressionListProperty;
+  //  }
+  //  @Override
+  //  protected org.lgna.project.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
+  //    return componentTypeProperty.getValue();
+  //  }
+  //  @Override
+  //  public org.lgna.project.ast.Expression getPreviousExpression() {
+  //    return null;
+  //  }
+  //
+  //  @Override
+  //  protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
+  //    return edu.cmu.cs.dennisc.croquet.Application.INHERIT_GROUP;
+  //  }
+  //
+  //  @Override
+  //  protected String getTitle() {
+  //    return null;
+  //  }
+  ////  @Override
+  ////  protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+  ////    class AddExpressionEdit extends org.alice.ide.ToDoEdit {
+  ////      private org.lgna.project.ast.Expression expression;
+  ////      private int index;
+  ////      @Override
+  ////      protected final void doOrRedoInternal( boolean isDo ) {
+  ////        this.index = expressionListProperty.size();
+  ////        expressionListProperty.add( this.expression );
+  ////      }
+  ////      @Override
+  ////      protected final void undoInternal() {
+  ////        //expressionListProperty.indexOf( this.expression )
+  ////        expressionListProperty.remove( this.index );
+  ////      }
+  ////      @Override
+  ////      protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+  ////        rv.append( "add: " );
+  ////        org.lgna.project.ast.Node.safeAppendRepr(rv, this.expression, locale);
+  ////        return rv;
+  ////      }
+  ////    }
+  ////    final edu.cmu.cs.dennisc.croquet.ViewController<?, ?> viewController = context.getViewController();
+  ////    final java.awt.Point p = context.getPoint();
+  ////    context.pend( new edu.cmu.cs.dennisc.croquet.PendResolver< AddExpressionEdit, org.lgna.project.ast.Expression >() {
+  ////      public AddExpressionEdit createEdit() {
+  ////        return new AddExpressionEdit();
+  ////      }
+  ////      public AddExpressionEdit initialize(AddExpressionEdit rv, edu.cmu.cs.dennisc.croquet.ModelContext context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<org.lgna.project.ast.Expression> taskObserver) {
+  ////        org.lgna.project.ast.AbstractType<?,?,?> type = componentTypeProperty.getValue();
+  ////        org.alice.ide.IDE.getActiveInstance().getCascadeManager().promptUserForExpression( type, rv.expression, viewController, p, taskObserver );
+  ////        return rv;
+  ////      }
+  ////      public AddExpressionEdit handleCompletion( AddExpressionEdit rv, org.lgna.project.ast.Expression expression ) {
+  ////        //todo: remove?
+  ////        org.alice.ide.IDE.getActiveInstance().getCascadeManager().unsetPreviousExpressionAndDropStatement();
+  ////        rv.expression = expression;
+  ////        return rv;
+  ////      }
+  ////      public void handleCancelation() {
+  ////        //todo: remove?
+  ////        org.alice.ide.IDE.getActiveInstance().getCascadeManager().unsetPreviousExpressionAndDropStatement();
+  ////      }
+  ////    } );
+  ////  }
 }

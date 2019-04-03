@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class SetLength extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = SetLength.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = SetLength.class) public static interface Detail {
+  }
 
-	private SetLength() {
-		super();
-	}
+  private SetLength() {
+    super();
+  }
 }

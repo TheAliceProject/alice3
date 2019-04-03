@@ -71,103 +71,103 @@ import java.util.Map;
  */
 public class ProjectHistoryManager {
 
-	private Listener listener;
-	private Map<Group, UndoHistory> map;
+  private Listener listener;
+  private Map<Group, UndoHistory> map;
 
-	public ProjectHistoryManager( ProjectDocument projectDocument ) {
-		this.listener = new Listener() {
-			@Override
-			public void changed( ActivityEvent e ) {
-				if( e instanceof EditCommittedEvent ) {
-					EditCommittedEvent editCommittedEvent = (EditCommittedEvent)e;
-					ProjectHistoryManager.this.handleEditCommitted( editCommittedEvent.getEdit() );
-				}
-			}
-		};
-		projectDocument.getUserActivity().addListener( this.listener );
-		this.map = Maps.newHashMap();
-	}
+  public ProjectHistoryManager(ProjectDocument projectDocument) {
+    this.listener = new Listener() {
+      @Override
+      public void changed(ActivityEvent e) {
+        if (e instanceof EditCommittedEvent) {
+          EditCommittedEvent editCommittedEvent = (EditCommittedEvent) e;
+          ProjectHistoryManager.this.handleEditCommitted(editCommittedEvent.getEdit());
+        }
+      }
+    };
+    projectDocument.getUserActivity().addListener(this.listener);
+    this.map = Maps.newHashMap();
+  }
 
-	public UndoHistory getGroupHistory( Group group ) {
-		UndoHistory rv;
-		if( group != null ) {
-			rv = this.map.get( group );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new UndoHistory( group );
-				this.map.put( group, rv );
-			}
-		} else {
-			Logger.warning( "group==null" );
-			rv = null;
-		}
-		return rv;
-	}
+  public UndoHistory getGroupHistory(Group group) {
+    UndoHistory rv;
+    if (group != null) {
+      rv = this.map.get(group);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new UndoHistory(group);
+        this.map.put(group, rv);
+      }
+    } else {
+      Logger.warning("group==null");
+      rv = null;
+    }
+    return rv;
+  }
 
-	private static int IS_POSSIBLY_OPENING_SCENE = 0x1;
-	private static int IS_ANIMATED = 0x2;
-	private static int IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED = IS_POSSIBLY_OPENING_SCENE | IS_ANIMATED;
+  private static int IS_POSSIBLY_OPENING_SCENE = 0x1;
+  private static int IS_ANIMATED = 0x2;
+  private static int IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED = IS_POSSIBLY_OPENING_SCENE | IS_ANIMATED;
 
-	private int isPossiblyOpeningSceneEdit( Edit edit ) {
-		if( edit instanceof PropertyValueEdit ) {
-			return IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED;
-		}
+  private int isPossiblyOpeningSceneEdit(Edit edit) {
+    if (edit instanceof PropertyValueEdit) {
+      return IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED;
+    }
 
-		if( edit instanceof StateEdit<?> ) {
-			StateEdit<?> stateEdit = (StateEdit<?>)edit;
-			if( stateEdit.getGroup() == IDE.PROJECT_GROUP ) {
-				return IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED;
-			}
-		}
+    if (edit instanceof StateEdit<?>) {
+      StateEdit<?> stateEdit = (StateEdit<?>) edit;
+      if (stateEdit.getGroup() == IDE.PROJECT_GROUP) {
+        return IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED;
+      }
+    }
 
-		CompletionModel completionModel = ( (AbstractEdit<?>)edit ).getModel();
-		if( completionModel instanceof AbstractFieldBasedManipulationActionOperation ) {
-			return IS_POSSIBLY_OPENING_SCENE;
-		}
+    CompletionModel completionModel = ((AbstractEdit<?>) edit).getModel();
+    if (completionModel instanceof AbstractFieldBasedManipulationActionOperation) {
+      return IS_POSSIBLY_OPENING_SCENE;
+    }
 
-		return 0;
-	}
+    return 0;
+  }
 
-	private void markDirty( ProjectDocumentFrame projectDocumentFrame, ThisFieldAccessFactory thisFieldAccessFactory ) {
-		UserField userField = thisFieldAccessFactory.getField();
-		projectDocumentFrame.getIconFactoryManager().markIconFactoryForFieldDirty( userField );
-		InstanceFactoryFillIn.getInstance( thisFieldAccessFactory ).markDirty();
-		for( SwingComponentView<?> component : ComponentManager.getComponents( projectDocumentFrame.getInstanceFactoryState().getCascadeRoot().getPopupPrepModel() ) ) {
-			//note: rendering artifact for faux combo boxes when only invoking repaint.
-			//component.repaint();
-			component.revalidateAndRepaint();
-		}
-	}
+  private void markDirty(ProjectDocumentFrame projectDocumentFrame, ThisFieldAccessFactory thisFieldAccessFactory) {
+    UserField userField = thisFieldAccessFactory.getField();
+    projectDocumentFrame.getIconFactoryManager().markIconFactoryForFieldDirty(userField);
+    InstanceFactoryFillIn.getInstance(thisFieldAccessFactory).markDirty();
+    for (SwingComponentView<?> component : ComponentManager.getComponents(projectDocumentFrame.getInstanceFactoryState().getCascadeRoot().getPopupPrepModel())) {
+      //note: rendering artifact for faux combo boxes when only invoking repaint.
+      //component.repaint();
+      component.revalidateAndRepaint();
+    }
+  }
 
-	private void handleEditCommitted( Edit edit ) {
-		assert edit != null;
-		UndoHistory projectHistory = this.getGroupHistory( edit.getGroup() );
-		if( projectHistory != null ) {
-			projectHistory.push( edit );
-		}
+  private void handleEditCommitted(Edit edit) {
+    assert edit != null;
+    UndoHistory projectHistory = this.getGroupHistory(edit.getGroup());
+    if (projectHistory != null) {
+      projectHistory.push(edit);
+    }
 
-		int value = this.isPossiblyOpeningSceneEdit( edit );
-		if( ( value & IS_POSSIBLY_OPENING_SCENE ) != 0 ) {
-			final ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
-			if( projectDocumentFrame != null ) {
-				final InstanceFactoryState instanceFactoryState = projectDocumentFrame.getInstanceFactoryState();
-				InstanceFactory instanceFactory = instanceFactoryState.getValue();
-				if( instanceFactory instanceof ThisFieldAccessFactory ) {
-					final ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory)instanceFactory;
-					if( ( value & IS_ANIMATED ) != 0 ) {
-						new Thread() {
-							@Override
-							public void run() {
-								ThreadUtilities.sleep( 1100 );
-								markDirty( projectDocumentFrame, thisFieldAccessFactory );
-							}
-						}.start();
-					} else {
-						this.markDirty( projectDocumentFrame, thisFieldAccessFactory );
-					}
-				}
-			}
-		}
-	}
+    int value = this.isPossiblyOpeningSceneEdit(edit);
+    if ((value & IS_POSSIBLY_OPENING_SCENE) != 0) {
+      final ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
+      if (projectDocumentFrame != null) {
+        final InstanceFactoryState instanceFactoryState = projectDocumentFrame.getInstanceFactoryState();
+        InstanceFactory instanceFactory = instanceFactoryState.getValue();
+        if (instanceFactory instanceof ThisFieldAccessFactory) {
+          final ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory) instanceFactory;
+          if ((value & IS_ANIMATED) != 0) {
+            new Thread() {
+              @Override
+              public void run() {
+                ThreadUtilities.sleep(1100);
+                markDirty(projectDocumentFrame, thisFieldAccessFactory);
+              }
+            }.start();
+          } else {
+            this.markDirty(projectDocumentFrame, thisFieldAccessFactory);
+          }
+        }
+      }
+    }
+  }
 }

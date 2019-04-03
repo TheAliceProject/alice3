@@ -52,15 +52,15 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class FilenameListCellRenderer extends ListCellRenderer<String> {
-	@Override
-	protected JLabel getListCellRendererComponent( JLabel rv, JList list, String value, int index, boolean isSelected, boolean cellHasFocus ) {
-		if( value != null ) {
-			//pass
-		} else {
-			rv.setText( "working" );
-			rv.setBackground( Color.WHITE );
-			rv.setForeground( Color.GRAY );
-		}
-		return rv;
-	}
-};
+  @Override
+  protected JLabel getListCellRendererComponent(JLabel rv, JList list, String value, int index, boolean isSelected, boolean cellHasFocus) {
+    if (value != null) {
+      //pass
+    } else {
+      rv.setText("working");
+      rv.setBackground(Color.WHITE);
+      rv.setForeground(Color.GRAY);
+    }
+    return rv;
+  }
+}

@@ -61,75 +61,75 @@ import java.util.Set;
  */
 public class GenerateI18nSeed {
 
-	private static void appendGalleryNames( StringBuilder sbNames, ResourceNode node ) throws IllegalAccessException, IOException {
-		final String RESOURCE_SUFFIX = "Resource";
-		ResourceKey resourceKey = node.getResourceKey();
-		if( resourceKey instanceof ClassResourceKey ) {
-			ClassResourceKey classResourceKey = (ClassResourceKey)resourceKey;
-			Class<?> cls = classResourceKey.getModelResourceCls();
-			String clsFullName = cls.getName();
-			if( clsFullName.endsWith( RESOURCE_SUFFIX ) ) {
-				sbNames.append( clsFullName.substring( 0, clsFullName.length() - RESOURCE_SUFFIX.length() ) );
-				sbNames.append( " = " );
-				String clsSimpleName = cls.getSimpleName();
-				sbNames.append( clsSimpleName.substring( 0, clsSimpleName.length() - RESOURCE_SUFFIX.length() ) );
-				sbNames.append( "\n" );
-			}
-		}
-		for( ResourceNode child : node.getNodeChildren() ) {
-			appendGalleryNames( sbNames, child );
-		}
-	}
+  private static void appendGalleryNames(StringBuilder sbNames, ResourceNode node) throws IllegalAccessException, IOException {
+    final String RESOURCE_SUFFIX = "Resource";
+    ResourceKey resourceKey = node.getResourceKey();
+    if (resourceKey instanceof ClassResourceKey) {
+      ClassResourceKey classResourceKey = (ClassResourceKey) resourceKey;
+      Class<?> cls = classResourceKey.getModelResourceCls();
+      String clsFullName = cls.getName();
+      if (clsFullName.endsWith(RESOURCE_SUFFIX)) {
+        sbNames.append(clsFullName.substring(0, clsFullName.length() - RESOURCE_SUFFIX.length()));
+        sbNames.append(" = ");
+        String clsSimpleName = cls.getSimpleName();
+        sbNames.append(clsSimpleName.substring(0, clsSimpleName.length() - RESOURCE_SUFFIX.length()));
+        sbNames.append("\n");
+      }
+    }
+    for (ResourceNode child : node.getNodeChildren()) {
+      appendGalleryNames(sbNames, child);
+    }
+  }
 
-	private static void appendGalleryTags( Set<String> tags, ResourceNode node ) throws IllegalAccessException, IOException {
-		ResourceKey resourceKey = node.getResourceKey();
-		if( resourceKey != null ) {
-			for( String[] tagArray : new String[][] { resourceKey.getTags(), resourceKey.getGroupTags(), resourceKey.getThemeTags() } ) {
-				if( tagArray != null ) {
-					for( String tag : tagArray ) {
-						//						if( tag.contains( "fishing" ) ) {
-						//							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( tag );
-						//						}
-						if( tag.startsWith( "*" ) ) {
-							tag = tag.substring( 1 );
-						}
-						Collections.addAll( tags, tag.split( ":" ) );
-					}
-				}
-			}
-		}
-		for( ResourceNode child : node.getNodeChildren() ) {
-			appendGalleryTags( tags, child );
-		}
-	}
+  private static void appendGalleryTags(Set<String> tags, ResourceNode node) throws IllegalAccessException, IOException {
+    ResourceKey resourceKey = node.getResourceKey();
+    if (resourceKey != null) {
+      for (String[] tagArray : new String[][] {resourceKey.getTags(), resourceKey.getGroupTags(), resourceKey.getThemeTags()}) {
+        if (tagArray != null) {
+          for (String tag : tagArray) {
+            //            if( tag.contains( "fishing" ) ) {
+            //              edu.cmu.cs.dennisc.java.util.logging.Logger.outln( tag );
+            //            }
+            if (tag.startsWith("*")) {
+              tag = tag.substring(1);
+            }
+            Collections.addAll(tags, tag.split(":"));
+          }
+        }
+      }
+    }
+    for (ResourceNode child : node.getNodeChildren()) {
+      appendGalleryTags(tags, child);
+    }
+  }
 
-	public static void main( String[] args ) throws Exception {
-		Object usedOnlyForSideEffect = new AliceIde( null );
-		StringBuilder sbNames = new StringBuilder();
-		ResourceNode rootGalleryNode = TreeUtilities.getTreeBasedOnClassHierarchy();
-		appendGalleryNames( sbNames, rootGalleryNode );
-		Set<String> tags = Sets.newHashSet();
-		appendGalleryTags( tags, rootGalleryNode );
-		List<String> list = Lists.newArrayList( tags );
-		Collections.sort( list );
-		StringBuilder sbTags = new StringBuilder();
-		for( String tag : list ) {
-			sbTags.append( tag.replaceAll( " ", "_" ) );
-			sbTags.append( " = " );
-			sbTags.append( tag );
-			sbTags.append( "\n" );
-		}
+  public static void main(String[] args) throws Exception {
+    Object usedOnlyForSideEffect = new AliceIde(null);
+    StringBuilder sbNames = new StringBuilder();
+    ResourceNode rootGalleryNode = TreeUtilities.getTreeBasedOnClassHierarchy();
+    appendGalleryNames(sbNames, rootGalleryNode);
+    Set<String> tags = Sets.newHashSet();
+    appendGalleryTags(tags, rootGalleryNode);
+    List<String> list = Lists.newArrayList(tags);
+    Collections.sort(list);
+    StringBuilder sbTags = new StringBuilder();
+    for (String tag : list) {
+      sbTags.append(tag.replaceAll(" ", "_"));
+      sbTags.append(" = ");
+      sbTags.append(tag);
+      sbTags.append("\n");
+    }
 
-		File repoRoot = new File( System.getProperty( "user.dir" ), "../../../" );
-		File srcRoot = new File( repoRoot, "core/i18n/src/main/resources" );//"core/ide/src/main/java/" );
-		File packageDirectory = new File( srcRoot, "org/lgna/story/resources" );
-		File namesFile = new File( packageDirectory, "GalleryNames.properties" );
-		TextFileUtilities.write( namesFile, sbNames.toString() );
+    File repoRoot = new File(System.getProperty("user.dir"), "../../../");
+    File srcRoot = new File(repoRoot, "core/i18n/src/main/resources"); //"core/ide/src/main/java/" );
+    File packageDirectory = new File(srcRoot, "org/lgna/story/resources");
+    File namesFile = new File(packageDirectory, "GalleryNames.properties");
+    TextFileUtilities.write(namesFile, sbNames.toString());
 
-		File tagsFile = new File( packageDirectory, "GalleryTags.properties" );
-		TextFileUtilities.write( tagsFile, sbTags.toString() );
-		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( file, file.exists() );
-		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sbNames );
-		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sbTags );
-	}
+    File tagsFile = new File(packageDirectory, "GalleryTags.properties");
+    TextFileUtilities.write(tagsFile, sbTags.toString());
+    //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( file, file.exists() );
+    //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sbNames );
+    //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sbTags );
+  }
 }

@@ -59,30 +59,30 @@ import edu.cmu.cs.dennisc.java.util.Maps;
  */
 public class JointSelectionSphereFillIn extends ImmutableCascadeFillIn<JointSelectionSphere, Void> {
 
-	private static Map<JointSelectionSphere, JointSelectionSphereFillIn> map = Maps.newHashMap();
-	private final JointSelectionSphere sphere;
+  private static Map<JointSelectionSphere, JointSelectionSphereFillIn> map = Maps.newHashMap();
+  private final JointSelectionSphere sphere;
 
-	public JointSelectionSphereFillIn( JointSelectionSphere sphere ) {
-		super( UUID.fromString( "097b8967-97ba-4a41-bf47-7e428fde95dc" ) );
-		this.sphere = sphere;
-	}
+  public JointSelectionSphereFillIn(JointSelectionSphere sphere) {
+    super(UUID.fromString("097b8967-97ba-4a41-bf47-7e428fde95dc"));
+    this.sphere = sphere;
+  }
 
-	@Override
-	public JointSelectionSphere getTransientValue( ItemNode<? super JointSelectionSphere, Void> node ) {
-		return sphere;
-	}
+  @Override
+  public JointSelectionSphere getTransientValue(ItemNode<? super JointSelectionSphere, Void> node) {
+    return sphere;
+  }
 
-	@Override
-	public JointSelectionSphere createValue( ItemNode<? super JointSelectionSphere, Void> node ) {
-		return sphere;
-	}
+  @Override
+  public JointSelectionSphere createValue(ItemNode<? super JointSelectionSphere, Void> node) {
+    return sphere;
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super JointSelectionSphere, Void> node ) {
-		return new JLabel( sphere.getName() );
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super JointSelectionSphere, Void> node) {
+    return new JLabel(sphere.getName());
+  }
 
-	public static CascadeBlankChild getInstance( JointSelectionSphere sphere ) {
-		return map.get( sphere ) != null ? map.get( sphere ) : new JointSelectionSphereFillIn( sphere );
-	}
+  public static CascadeBlankChild getInstance(JointSelectionSphere sphere) {
+    return map.get(sphere) != null ? map.get(sphere) : new JointSelectionSphereFillIn(sphere);
+  }
 }

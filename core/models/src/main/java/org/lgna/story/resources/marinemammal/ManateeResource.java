@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.marinemammal;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SSwimmer;
@@ -33,34 +34,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.MarineMammalResource;
 
 public enum ManateeResource implements MarineMammalResource {
-	DEFAULT,
-	MOSSY;
+  DEFAULT, MOSSY;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, ManateeResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FRONT_LEFT_FIN_TIP = new JointId( FRONT_LEFT_FIN, ManateeResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FRONT_RIGHT_FIN_TIP = new JointId( FRONT_RIGHT_FIN, ManateeResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId FIN_TIP = new JointId( TAIL, ManateeResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LOWER_LIP = new JointId(MOUTH, ManateeResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FRONT_LEFT_FIN_TIP = new JointId(FRONT_LEFT_FIN, ManateeResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FRONT_RIGHT_FIN_TIP = new JointId(FRONT_RIGHT_FIN, ManateeResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId FIN_TIP = new JointId(TAIL, ManateeResource.class);
 
-	private final ImplementationAndVisualType resourceType;
-	ManateeResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	ManateeResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  ManateeResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
+  ManateeResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public SwimmerImp createImplementation( SSwimmer abstraction ) {
-		return new SwimmerImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public SwimmerImp createImplementation(SSwimmer abstraction) {
+    return new SwimmerImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

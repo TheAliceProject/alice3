@@ -63,87 +63,88 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class Geometry extends Element {
-	protected abstract void updateBoundingBox( AxisAlignedBox boundingBox );
+  protected abstract void updateBoundingBox(AxisAlignedBox boundingBox);
 
-	protected abstract void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere );
+  protected abstract void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere);
 
-	protected abstract void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation );
+  protected abstract void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation);
 
-	public AffineMatrix4x4 getPlane( AffineMatrix4x4 rv ) {
-		Vector3 forward = new Vector3();
-		Vector3 upGuide = new Vector3();
-		updatePlane( forward, upGuide, rv.translation );
-		rv.orientation.setValue( new ForwardAndUpGuide( forward, upGuide ) );
-		return rv;
-	}
+  public AffineMatrix4x4 getPlane(AffineMatrix4x4 rv) {
+    Vector3 forward = new Vector3();
+    Vector3 upGuide = new Vector3();
+    updatePlane(forward, upGuide, rv.translation);
+    rv.orientation.setValue(new ForwardAndUpGuide(forward, upGuide));
+    return rv;
+  }
 
-	public abstract void transform( AbstractMatrix4x4 trans );
+  public abstract void transform(AbstractMatrix4x4 trans);
 
-	//todo: better name
-	public class BoundDoubleProperty extends DoubleProperty {
-		public BoundDoubleProperty( InstancePropertyOwner owner, Double value ) {
-			super( owner, value );
-		}
+  //todo: better name
+  public class BoundDoubleProperty extends DoubleProperty {
+    public BoundDoubleProperty(InstancePropertyOwner owner, Double value) {
+      super(owner, value);
+    }
 
-		@Override
-		public void setValue( Double value ) {
-			//todo: check isEqual
-			Geometry.this.markBoundsDirty();
-			super.setValue( value );
-			Geometry.this.fireBoundChanged();
-		};
-	}
+    @Override
+    public void setValue(Double value) {
+      //todo: check isEqual
+      Geometry.this.markBoundsDirty();
+      super.setValue(value);
+      Geometry.this.fireBoundChanged();
+    }
 
-	public final AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox boundingBox ) {
-		if( this.boundingBox.isNaN() ) {
-			updateBoundingBox( this.boundingBox );
-		}
-		boundingBox.set( this.boundingBox );
-		return boundingBox;
-	}
+  }
 
-	public final AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
-		return getAxisAlignedMinimumBoundingBox( new AxisAlignedBox() );
-	}
+  public final AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox boundingBox) {
+    if (this.boundingBox.isNaN()) {
+      updateBoundingBox(this.boundingBox);
+    }
+    boundingBox.set(this.boundingBox);
+    return boundingBox;
+  }
 
-	public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		if( this.boundingSphere.isNaN() ) {
-			updateBoundingSphere( this.boundingSphere );
-		}
-		boundingSphere.set( this.boundingSphere );
-		return boundingSphere;
-	}
+  public final AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+    return getAxisAlignedMinimumBoundingBox(new AxisAlignedBox());
+  }
 
-	public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere() {
-		return getBoundingSphere( new edu.cmu.cs.dennisc.math.Sphere() );
-	}
+  public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
+    if (this.boundingSphere.isNaN()) {
+      updateBoundingSphere(this.boundingSphere);
+    }
+    boundingSphere.set(this.boundingSphere);
+    return boundingSphere;
+  }
 
-	public void addBoundListener( BoundListener boundListener ) {
-		this.boundListeners.add( boundListener );
-	}
+  public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere() {
+    return getBoundingSphere(new edu.cmu.cs.dennisc.math.Sphere());
+  }
 
-	public void removeBoundListener( BoundListener boundListener ) {
-		this.boundListeners.remove( boundListener );
-	}
+  public void addBoundListener(BoundListener boundListener) {
+    this.boundListeners.add(boundListener);
+  }
 
-	public Collection<BoundListener> getBoundListeners() {
-		return Collections.unmodifiableCollection( this.boundListeners );
-	}
+  public void removeBoundListener(BoundListener boundListener) {
+    this.boundListeners.remove(boundListener);
+  }
 
-	protected void markBoundsDirty() {
-		this.boundingBox.setNaN();
-		this.boundingSphere.setNaN();
-	}
+  public Collection<BoundListener> getBoundListeners() {
+    return Collections.unmodifiableCollection(this.boundListeners);
+  }
 
-	protected void fireBoundChanged() {
-		BoundEvent e = new BoundEvent( this );
-		for( BoundListener boundListener : this.boundListeners ) {
-			boundListener.boundChanged( e );
-		}
-	}
+  protected void markBoundsDirty() {
+    this.boundingBox.setNaN();
+    this.boundingSphere.setNaN();
+  }
 
-	private final List<BoundListener> boundListeners = Lists.newCopyOnWriteArrayList();
-	private final AxisAlignedBox boundingBox = new AxisAlignedBox();
-	private final edu.cmu.cs.dennisc.math.Sphere boundingSphere = new edu.cmu.cs.dennisc.math.Sphere();
+  protected void fireBoundChanged() {
+    BoundEvent e = new BoundEvent(this);
+    for (BoundListener boundListener : this.boundListeners) {
+      boundListener.boundChanged(e);
+    }
+  }
+
+  private final List<BoundListener> boundListeners = Lists.newCopyOnWriteArrayList();
+  private final AxisAlignedBox boundingBox = new AxisAlignedBox();
+  private final edu.cmu.cs.dennisc.math.Sphere boundingSphere = new edu.cmu.cs.dennisc.math.Sphere();
 
 }

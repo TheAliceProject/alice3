@@ -50,15 +50,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ManagedFieldsSeparator extends LabelMenuSeparatorModel {
-	private static class SingletonHolder {
-		private static ManagedFieldsSeparator instance = new ManagedFieldsSeparator();
-	}
+  private static class SingletonHolder {
+    private static ManagedFieldsSeparator instance = new ManagedFieldsSeparator();
+  }
 
-	public static ManagedFieldsSeparator getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ManagedFieldsSeparator getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ManagedFieldsSeparator() {
-		super( UUID.fromString( "caf3cea7-4ddc-4951-9657-f165ebdbdeab" ) );
-	}
+  private ManagedFieldsSeparator() {
+    super(UUID.fromString("caf3cea7-4ddc-4951-9657-f165ebdbdeab"));
+  }
 }

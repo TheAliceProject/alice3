@@ -56,31 +56,31 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  * @author Matt May
  */
 public class QuadrupedPoserScene extends AbstractPoserScene<SQuadruped> {
-	public QuadrupedPoserScene( SQuadruped model ) {
-		super( model );
-	}
+  public QuadrupedPoserScene(SQuadruped model) {
+    super(model);
+  }
 
-	@Override
-	protected Map<Limb, List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs( SQuadruped model ) {
-		Map<Limb, List<JointSelectionSphere>> rv = Maps.newHashMap();
-		JointSelectionSphere a = createJSS( model.getBackRightHip(), null );
-		JointSelectionSphere b = createJSS( model.getBackRightKnee(), a );
-		JointSelectionSphere c = createJSS( model.getBackRightAnkle(), b );
-		rv.put( Limb.RIGHT_LEG, Lists.newArrayList( a, b, c ) );
-		JointSelectionSphere d = createJSS( model.getFrontRightClavicle(), null );
-		JointSelectionSphere e = createJSS( model.getFrontRightShoulder(), d );
-		JointSelectionSphere f = createJSS( model.getFrontRightKnee(), e );
-		JointSelectionSphere g = createJSS( model.getFrontRightAnkle(), f );
-		rv.put( Limb.RIGHT_ARM, Lists.newArrayList( d, e, f, g ) );
-		JointSelectionSphere h = createJSS( model.getBackLeftHip(), null );
-		JointSelectionSphere i = createJSS( model.getBackLeftKnee(), h );
-		JointSelectionSphere j = createJSS( model.getBackLeftAnkle(), i );
-		rv.put( Limb.LEFT_LEG, Lists.newArrayList( h, i, j ) );
-		JointSelectionSphere k = createJSS( model.getFrontLeftClavicle(), null );
-		JointSelectionSphere l = createJSS( model.getFrontLeftShoulder(), k );
-		JointSelectionSphere m = createJSS( model.getFrontLeftKnee(), l );
-		JointSelectionSphere n = createJSS( model.getFrontLeftAnkle(), m );
-		rv.put( Limb.LEFT_ARM, Lists.newArrayList( k, l, m, n ) );
-		return rv;
-	}
+  @Override
+  protected Map<Limb, List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs(SQuadruped model) {
+    Map<Limb, List<JointSelectionSphere>> rv = Maps.newHashMap();
+    JointSelectionSphere a = createJSS(model.getBackRightHip(), null);
+    JointSelectionSphere b = createJSS(model.getBackRightKnee(), a);
+    JointSelectionSphere c = createJSS(model.getBackRightAnkle(), b);
+    rv.put(Limb.RIGHT_LEG, Lists.newArrayList(a, b, c));
+    JointSelectionSphere d = createJSS(model.getFrontRightClavicle(), null);
+    JointSelectionSphere e = createJSS(model.getFrontRightShoulder(), d);
+    JointSelectionSphere f = createJSS(model.getFrontRightKnee(), e);
+    JointSelectionSphere g = createJSS(model.getFrontRightAnkle(), f);
+    rv.put(Limb.RIGHT_ARM, Lists.newArrayList(d, e, f, g));
+    JointSelectionSphere h = createJSS(model.getBackLeftHip(), null);
+    JointSelectionSphere i = createJSS(model.getBackLeftKnee(), h);
+    JointSelectionSphere j = createJSS(model.getBackLeftAnkle(), i);
+    rv.put(Limb.LEFT_LEG, Lists.newArrayList(h, i, j));
+    JointSelectionSphere k = createJSS(model.getFrontLeftClavicle(), null);
+    JointSelectionSphere l = createJSS(model.getFrontLeftShoulder(), k);
+    JointSelectionSphere m = createJSS(model.getFrontLeftKnee(), l);
+    JointSelectionSphere n = createJSS(model.getFrontLeftAnkle(), m);
+    rv.put(Limb.LEFT_ARM, Lists.newArrayList(k, l, m, n));
+    return rv;
+  }
 }

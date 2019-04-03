@@ -56,40 +56,40 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public class TypeCellRenderer extends TreeCellRenderer<TypeNode> {
-	//private java.awt.Color isAssignableFromColor = new java.awt.Color( 160, 160, 220 );
-	private boolean isAssignableFrom;
+  //private java.awt.Color isAssignableFromColor = new java.awt.Color( 160, 160, 220 );
+  private boolean isAssignableFrom;
 
-	@Override
-	protected JLabel updateListCellRendererComponent( JLabel rv, JTree tree, TypeNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		if( value != null ) {
-			rv.setText( " " );
-			rv.setIconTextGap( 8 );
-			rv.setIcon( TypeIcon.getInstance( value.getType() ) );
-			this.isAssignableFrom = false;
-			if( sel ) {
-				//pass
-			} else {
-				TreePath path = tree.getSelectionPath();
-				if( path != null ) {
-					Object lastPathComponent = path.getLastPathComponent();
-					if( lastPathComponent instanceof TypeNode ) {
-						TypeNode selectedTypeNode = (TypeNode)lastPathComponent;
-						if( value.getType().isAssignableFrom( selectedTypeNode.getType() ) ) {
-							this.isAssignableFrom = true;
-						}
-					}
-				}
-			}
-		}
-		return rv;
-	}
+  @Override
+  protected JLabel updateListCellRendererComponent(JLabel rv, JTree tree, TypeNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    if (value != null) {
+      rv.setText(" ");
+      rv.setIconTextGap(8);
+      rv.setIcon(TypeIcon.getInstance(value.getType()));
+      this.isAssignableFrom = false;
+      if (sel) {
+        //pass
+      } else {
+        TreePath path = tree.getSelectionPath();
+        if (path != null) {
+          Object lastPathComponent = path.getLastPathComponent();
+          if (lastPathComponent instanceof TypeNode) {
+            TypeNode selectedTypeNode = (TypeNode) lastPathComponent;
+            if (value.getType().isAssignableFrom(selectedTypeNode.getType())) {
+              this.isAssignableFrom = true;
+            }
+          }
+        }
+      }
+    }
+    return rv;
+  }
 
-	@Override
-	public void paint( Graphics g ) {
-		if( this.isAssignableFrom ) {
-			g.setColor( ColorUtilities.scaleHSB( this.getBackgroundSelectionColor(), 1.0, 1.0, 1.2 ) );
-			g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
-		}
-		super.paint( g );
-	}
+  @Override
+  public void paint(Graphics g) {
+    if (this.isAssignableFrom) {
+      g.setColor(ColorUtilities.scaleHSB(this.getBackgroundSelectionColor(), 1.0, 1.0, 1.2));
+      g.fillRect(0, 0, this.getWidth(), this.getHeight());
+    }
+    super.paint(g);
+  }
 }

@@ -58,39 +58,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class GalleryResourceFieldFillIn extends ExpressionFillInWithoutBlanks<Expression> {
-	private static Map<AbstractField, GalleryResourceFieldFillIn> map = Maps.newHashMap();
+  private static Map<AbstractField, GalleryResourceFieldFillIn> map = Maps.newHashMap();
 
-	public static synchronized GalleryResourceFieldFillIn getInstance( AbstractField field ) {
-		GalleryResourceFieldFillIn rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new GalleryResourceFieldFillIn( field );
-			map.put( field, rv );
-		}
-		return rv;
-	}
+  public static synchronized GalleryResourceFieldFillIn getInstance(AbstractField field) {
+    GalleryResourceFieldFillIn rv = map.get(field);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new GalleryResourceFieldFillIn(field);
+      map.put(field, rv);
+    }
+    return rv;
+  }
 
-	private final FieldAccess transientValue;
+  private final FieldAccess transientValue;
 
-	private GalleryResourceFieldFillIn( AbstractField field ) {
-		super( UUID.fromString( "a45b7262-4553-4b3f-ad1f-7be7871a1d86" ) );
-		this.transientValue = createValue( field );
-	}
+  private GalleryResourceFieldFillIn(AbstractField field) {
+    super(UUID.fromString("a45b7262-4553-4b3f-ad1f-7be7871a1d86"));
+    this.transientValue = createValue(field);
+  }
 
-	private static FieldAccess createValue( AbstractField field ) {
-		return new FieldAccess(
-				new TypeExpression( field.getDeclaringType() ),
-				field );
-	}
+  private static FieldAccess createValue(AbstractField field) {
+    return new FieldAccess(new TypeExpression(field.getDeclaringType()), field);
+  }
 
-	@Override
-	public Expression createValue( ItemNode<? super Expression, Void> node ) {
-		return createValue( this.transientValue.field.getValue() );
-	}
+  @Override
+  public Expression createValue(ItemNode<? super Expression, Void> node) {
+    return createValue(this.transientValue.field.getValue());
+  }
 
-	@Override
-	public Expression getTransientValue( ItemNode<? super Expression, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public Expression getTransientValue(ItemNode<? super Expression, Void> node) {
+    return this.transientValue;
+  }
 }

@@ -50,11 +50,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author Dennis Cosgrove
  */
 public abstract class DefaultMutableTreeNodeTreeCellRenderer<E> extends TreeCellRenderer<DefaultMutableTreeNode> {
-	protected abstract JLabel getListCellRendererComponentForUserObject( JLabel rv, JTree tree, E value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus );
+  protected abstract JLabel getListCellRendererComponentForUserObject(JLabel rv, JTree tree, E value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus);
 
-	@Override
-	protected final JLabel updateListCellRendererComponent( JLabel rv, JTree tree, DefaultMutableTreeNode node, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		return this.getListCellRendererComponentForUserObject( rv, tree, (E)node.getUserObject(), sel, expanded, leaf, row, hasFocus );
+  @Override
+  protected final JLabel updateListCellRendererComponent(JLabel rv, JTree tree, DefaultMutableTreeNode node, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    return this.getListCellRendererComponentForUserObject(rv, tree, (E) node.getUserObject(), sel, expanded, leaf, row, hasFocus);
 
-	}
+  }
 }

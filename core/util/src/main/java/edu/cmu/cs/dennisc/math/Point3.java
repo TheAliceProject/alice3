@@ -48,89 +48,89 @@ import edu.cmu.cs.dennisc.math.immutable.MPoint3;
  * @author Dennis Cosgrove
  */
 public final class Point3 extends Tuple3 {
-	public static final Point3 ORIGIN = Point3.createZero();
+  public static final Point3 ORIGIN = Point3.createZero();
 
-	public Point3() {
-	}
+  public Point3() {
+  }
 
-	public Point3( Tuple3 other ) {
-		super( other );
-	}
+  public Point3(Tuple3 other) {
+    super(other);
+  }
 
-	public Point3( double x, double y, double z ) {
-		super( x, y, z );
-	}
+  public Point3(double x, double y, double z) {
+    super(x, y, z);
+  }
 
-	public Point3( MPoint3 other ) {
-		this( other.x, other.y, other.z );
-	}
+  public Point3(MPoint3 other) {
+    this(other.x, other.y, other.z);
+  }
 
-	public static Point3 createZero() {
-		return (Point3)setReturnValueToZero( new Point3() );
-	}
+  public static Point3 createZero() {
+    return (Point3) setReturnValueToZero(new Point3());
+  }
 
-	public static Point3 createNaN() {
-		return (Point3)setReturnValueToNaN( new Point3() );
-	}
+  public static Point3 createNaN() {
+    return (Point3) setReturnValueToNaN(new Point3());
+  }
 
-	public static Point3 createAddition( Tuple3 a, Tuple3 b ) {
-		return (Point3)setReturnValueToAddition( new Point3(), a, b );
-	}
+  public static Point3 createAddition(Tuple3 a, Tuple3 b) {
+    return (Point3) setReturnValueToAddition(new Point3(), a, b);
+  }
 
-	public static Point3 createSubtraction( Tuple3 a, Tuple3 b ) {
-		return (Point3)setReturnValueToSubtraction( new Point3(), a, b );
-	}
+  public static Point3 createSubtraction(Tuple3 a, Tuple3 b) {
+    return (Point3) setReturnValueToSubtraction(new Point3(), a, b);
+  }
 
-	public static Point3 createNegation( Tuple3 a ) {
-		return (Point3)setReturnValueToNegation( new Point3(), a );
-	}
+  public static Point3 createNegation(Tuple3 a) {
+    return (Point3) setReturnValueToNegation(new Point3(), a);
+  }
 
-	public static Point3 createMultiplication( Tuple3 a, Tuple3 b ) {
-		return (Point3)setReturnValueToMultiplication( new Point3(), a, b );
-	}
+  public static Point3 createMultiplication(Tuple3 a, Tuple3 b) {
+    return (Point3) setReturnValueToMultiplication(new Point3(), a, b);
+  }
 
-	public static Point3 createMultiplication( Tuple3 a, double b ) {
-		return (Point3)setReturnValueToMultiplication( new Point3(), a, b );
-	}
+  public static Point3 createMultiplication(Tuple3 a, double b) {
+    return (Point3) setReturnValueToMultiplication(new Point3(), a, b);
+  }
 
-	public static Point3 createDivision( Tuple3 a, Tuple3 b ) {
-		return (Point3)setReturnValueToDivision( new Point3(), a, b );
-	}
+  public static Point3 createDivision(Tuple3 a, Tuple3 b) {
+    return (Point3) setReturnValueToDivision(new Point3(), a, b);
+  }
 
-	public static Point3 createDivision( Tuple3 a, double b ) {
-		return (Point3)setReturnValueToDivision( new Point3(), a, b );
-	}
+  public static Point3 createDivision(Tuple3 a, double b) {
+    return (Point3) setReturnValueToDivision(new Point3(), a, b);
+  }
 
-	public static Point3 createInterpolation( Tuple3 a, Tuple3 b, double portion ) {
-		return (Point3)setReturnValueToInterpolation( new Point3(), a, b, portion );
-	}
+  public static Point3 createInterpolation(Tuple3 a, Tuple3 b, double portion) {
+    return (Point3) setReturnValueToInterpolation(new Point3(), a, b, portion);
+  }
 
-	public static Point3 createNormalized( Tuple3 a ) {
-		return (Point3)setReturnValueToNormalized( new Point3(), a );
-	}
+  public static Point3 createNormalized(Tuple3 a) {
+    return (Point3) setReturnValueToNormalized(new Point3(), a);
+  }
 
-	public static Point3 createFromXYZW( Vector4 xyzw ) {
-		return new Point3( xyzw.x / xyzw.w, xyzw.y / xyzw.w, xyzw.z / xyzw.w );
-	}
+  public static Point3 createFromXYZW(Vector4 xyzw) {
+    return new Point3(xyzw.x / xyzw.w, xyzw.y / xyzw.w, xyzw.z / xyzw.w);
+  }
 
-	public void setToTranslationComponentOf( Matrix4x4 m ) {
-		x = m.translation.x;
-		y = m.translation.y;
-		z = m.translation.z;
-	}
+  public void setToTranslationComponentOf(Matrix4x4 m) {
+    x = m.translation.x;
+    y = m.translation.y;
+    z = m.translation.z;
+  }
 
-	public static double calculateDistanceSquaredBetween( Tuple3 a, Tuple3 b ) {
-		double xDelta = b.x - a.x;
-		double yDelta = b.y - a.y;
-		double zDelta = b.z - a.z;
-		return ( xDelta * xDelta ) + ( yDelta * yDelta ) + ( zDelta * zDelta );
-	}
+  public static double calculateDistanceSquaredBetween(Tuple3 a, Tuple3 b) {
+    double xDelta = b.x - a.x;
+    double yDelta = b.y - a.y;
+    double zDelta = b.z - a.z;
+    return (xDelta * xDelta) + (yDelta * yDelta) + (zDelta * zDelta);
+  }
 
-	public static double calculateDistanceBetween( Tuple3 a, Tuple3 b ) {
-		return Math.sqrt( calculateDistanceSquaredBetween( a, b ) );
-	}
+  public static double calculateDistanceBetween(Tuple3 a, Tuple3 b) {
+    return Math.sqrt(calculateDistanceSquaredBetween(a, b));
+  }
 
-	public MPoint3 createImmutable() {
-		return new MPoint3( this.x, this.y, this.z );
-	}
+  public MPoint3 createImmutable() {
+    return new MPoint3(this.x, this.y, this.z);
+  }
 }

@@ -60,184 +60,184 @@ import java.util.UUID;
  */
 public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, DCC extends DialogContentComposite<?>> extends AbstractDialogComposite<V> {
 
-	protected abstract static class InternalDialogOperation extends Operation {
-		private final AdornedDialogCoreComposite coreComposite;
+  protected abstract static class InternalDialogOperation extends Operation {
+    private final AdornedDialogCoreComposite coreComposite;
 
-		public InternalDialogOperation( UUID id, AdornedDialogCoreComposite coreComposite ) {
-			super( DIALOG_IMPLEMENTATION_GROUP, id );
-			this.coreComposite = coreComposite;
-		}
+    public InternalDialogOperation(UUID id, AdornedDialogCoreComposite coreComposite) {
+      super(DIALOG_IMPLEMENTATION_GROUP, id);
+      this.coreComposite = coreComposite;
+    }
 
-		public AdornedDialogCoreComposite getDialogCoreComposite() {
-			return this.coreComposite;
-		}
+    public AdornedDialogCoreComposite getDialogCoreComposite() {
+      return this.coreComposite;
+    }
 
-		@Override
-		protected Class<? extends Element> getClassUsedForLocalization() {
-			return this.coreComposite.getClassUsedForLocalization();
-		}
-	}
+    @Override
+    protected Class<? extends Element> getClassUsedForLocalization() {
+      return this.coreComposite.getClassUsedForLocalization();
+    }
+  }
 
-	private final class InternalCommitOperation extends InternalDialogOperation {
-		private InternalCommitOperation( AdornedDialogCoreComposite coreComposite ) {
-			super( UUID.fromString( "8618f47b-8a2b-45e1-ad03-0ff76e2b7e35" ), coreComposite );
-		}
+  private final class InternalCommitOperation extends InternalDialogOperation {
+    private InternalCommitOperation(AdornedDialogCoreComposite coreComposite) {
+      super(UUID.fromString("8618f47b-8a2b-45e1-ad03-0ff76e2b7e35"), coreComposite);
+    }
 
-		@Override
-		protected final void performInActivity( UserActivity userActivity ) {
-			if( getDialogCoreComposite().isClearedForCommit() ) {
-				userActivity.setCompletionModel( this );
-				isCommitted = true;
-				dialog.setVisible( false );
-				userActivity.finish();
-			} else {
-				Logger.outln( this );
-			}
-		}
+    @Override
+    protected final void performInActivity(UserActivity userActivity) {
+      if (getDialogCoreComposite().isClearedForCommit()) {
+        userActivity.setCompletionModel(this);
+        isCommitted = true;
+        dialog.setVisible(false);
+        userActivity.finish();
+      } else {
+        Logger.outln(this);
+      }
+    }
 
-		@Override
-		protected String getSubKeyForLocalization() {
-			return "commit";
-		}
+    @Override
+    protected String getSubKeyForLocalization() {
+      return "commit";
+    }
 
-		@Override
-		protected String findDefaultLocalizedText() {
-			String rv = super.findDefaultLocalizedText();
-			if ( rv == null ) {
-				Locale locale = JComboBox.getDefaultLocale();
-				String commitUiKey = this.getDialogCoreComposite().getCommitUiKey();
-				if( commitUiKey != null ) {
-					rv = UIManager.getString( commitUiKey, locale );
-				}
-				if ( rv == null ) {
-					rv = this.getDialogCoreComposite().getDefaultCommitText();
-				}
-			}
-			return rv;
-		}
-	}
+    @Override
+    protected String findDefaultLocalizedText() {
+      String rv = super.findDefaultLocalizedText();
+      if (rv == null) {
+        Locale locale = JComboBox.getDefaultLocale();
+        String commitUiKey = this.getDialogCoreComposite().getCommitUiKey();
+        if (commitUiKey != null) {
+          rv = UIManager.getString(commitUiKey, locale);
+        }
+        if (rv == null) {
+          rv = this.getDialogCoreComposite().getDefaultCommitText();
+        }
+      }
+      return rv;
+    }
+  }
 
-	private final class InternalCancelOperation extends InternalDialogOperation {
-		private InternalCancelOperation( AdornedDialogCoreComposite coreComposite ) {
-			super( UUID.fromString( "c467630e-39ee-49c9-ad07-d20c7a29db68" ), coreComposite );
-		}
+  private final class InternalCancelOperation extends InternalDialogOperation {
+    private InternalCancelOperation(AdornedDialogCoreComposite coreComposite) {
+      super(UUID.fromString("c467630e-39ee-49c9-ad07-d20c7a29db68"), coreComposite);
+    }
 
-		@Override
-		protected final void performInActivity( UserActivity userActivity ) {
-			userActivity.setCompletionModel( this );
-			isCommitted = false;
-			dialog.setVisible( false );
-			userActivity.finish();
-		}
+    @Override
+    protected final void performInActivity(UserActivity userActivity) {
+      userActivity.setCompletionModel(this);
+      isCommitted = false;
+      dialog.setVisible(false);
+      userActivity.finish();
+    }
 
-		@Override
-		protected String getSubKeyForLocalization() {
-			return "cancel";
-		}
+    @Override
+    protected String getSubKeyForLocalization() {
+      return "cancel";
+    }
 
-		@Override
-		protected String findDefaultLocalizedText() {
-			String rv = super.findDefaultLocalizedText();
-			if ( rv == null ) {
-				Locale locale = JComboBox.getDefaultLocale();
-				rv = UIManager.getString( "OptionPane.cancelButtonText", locale );
-				if ( rv == null ) {
-					rv = "Cancel";
-				}
-			}
-			return rv;
-		}
-	}
+    @Override
+    protected String findDefaultLocalizedText() {
+      String rv = super.findDefaultLocalizedText();
+      if (rv == null) {
+        Locale locale = JComboBox.getDefaultLocale();
+        rv = UIManager.getString("OptionPane.cancelButtonText", locale);
+        if (rv == null) {
+          rv = "Cancel";
+        }
+      }
+      return rv;
+    }
+  }
 
-	private final InternalCommitOperation commitOperation = new InternalCommitOperation( this );
-	private final InternalCancelOperation cancelOperation = new InternalCancelOperation( this );
+  private final InternalCommitOperation commitOperation = new InternalCommitOperation(this);
+  private final InternalCancelOperation cancelOperation = new InternalCancelOperation(this);
 
-	public AdornedDialogCoreComposite( UUID migrationId ) {
-		super( migrationId, IsModal.TRUE );
-	}
+  public AdornedDialogCoreComposite(UUID migrationId) {
+    super(migrationId, IsModal.TRUE);
+  }
 
-	protected abstract DCC getDialogContentComposite();
+  protected abstract DCC getDialogContentComposite();
 
-	public final Operation getCommitOperation() {
-		return this.commitOperation;
-	}
+  public final Operation getCommitOperation() {
+    return this.commitOperation;
+  }
 
-	public final Operation getCancelOperation() {
-		return this.cancelOperation;
-	}
+  public final Operation getCancelOperation() {
+    return this.cancelOperation;
+  }
 
-	protected abstract String getDefaultCommitText();
+  protected abstract String getDefaultCommitText();
 
-	protected abstract String getCommitUiKey();
+  protected abstract String getCommitUiKey();
 
-	protected String getCancelUiKey() {
-		return "OptionPane.cancelButtonText";
-	}
+  protected String getCancelUiKey() {
+    return "OptionPane.cancelButtonText";
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		String commitText = this.findLocalizedText( "commit" );
-		if( commitText != null ) {
-			//pass
-		} else {
-			Locale locale = JComboBox.getDefaultLocale();
-			String commitUiKey = this.getCommitUiKey();
-			if( commitUiKey != null ) {
-				commitText = UIManager.getString( commitUiKey, locale );
-			}
-			if( commitText != null ) {
-				//pass
-			} else {
-				commitText = this.getDefaultCommitText();
-			}
-		}
-		this.getCommitOperation().setName( commitText );
-		String cancelText = this.findLocalizedText( "cancel" );
-		if( cancelText != null ) {
-			//pass
-		} else {
-			Locale locale = JComboBox.getDefaultLocale();
-			cancelText = UIManager.getString( "OptionPane.cancelButtonText", locale );
-			if( cancelText != null ) {
-				//pass
-			} else {
-				cancelText = "Cancel";
-			}
-		}
-		this.getCancelOperation().setName( cancelText );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    String commitText = this.findLocalizedText("commit");
+    if (commitText != null) {
+      //pass
+    } else {
+      Locale locale = JComboBox.getDefaultLocale();
+      String commitUiKey = this.getCommitUiKey();
+      if (commitUiKey != null) {
+        commitText = UIManager.getString(commitUiKey, locale);
+      }
+      if (commitText != null) {
+        //pass
+      } else {
+        commitText = this.getDefaultCommitText();
+      }
+    }
+    this.getCommitOperation().setName(commitText);
+    String cancelText = this.findLocalizedText("cancel");
+    if (cancelText != null) {
+      //pass
+    } else {
+      Locale locale = JComboBox.getDefaultLocale();
+      cancelText = UIManager.getString("OptionPane.cancelButtonText", locale);
+      if (cancelText != null) {
+        //pass
+      } else {
+        cancelText = "Cancel";
+      }
+    }
+    this.getCancelOperation().setName(cancelText);
+  }
 
-	@Override
-	protected CompositeView<?, ?> allocateView() {
-		//todo
-		return this.getDialogContentComposite().getView();
-	}
+  @Override
+  protected CompositeView<?, ?> allocateView() {
+    //todo
+    return this.getDialogContentComposite().getView();
+  }
 
-	@Override
-	protected void releaseView( CompositeView<?, ?> view ) {
-		//todo
-	}
+  @Override
+  protected void releaseView(CompositeView<?, ?> view) {
+    //todo
+  }
 
-	protected boolean isClearedForCommit() {
-		return true;
-	}
+  protected boolean isClearedForCommit() {
+    return true;
+  }
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		this.getDialogContentComposite().handlePreActivation();
-		if( this.isDefaultButtonDesired() ) {
-			Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
-			if( commitButton != null ) {
-				dialog.setDefaultButton( commitButton );
-			}
-		}
-	}
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    this.getDialogContentComposite().handlePreActivation();
+    if (this.isDefaultButtonDesired()) {
+      Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
+      if (commitButton != null) {
+        dialog.setDefaultButton(commitButton);
+      }
+    }
+  }
 
-	@Override
-	protected void handlePostHideDialog() {
-		this.getDialogContentComposite().handlePostDeactivation();
-	}
+  @Override
+  protected void handlePostHideDialog() {
+    this.getDialogContentComposite().handlePostDeactivation();
+  }
 
-	protected boolean isCommitted = false;
+  protected boolean isCommitted = false;
 }

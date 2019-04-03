@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,76 +34,57 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum PrayerFlagsResource implements PropResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId TOP = new JointId( ROOT, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STRING_1 = new JointId( TOP, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_05 = new JointId( STRING_1, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_06 = new JointId( STRING_1, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_07 = new JointId( STRING_1, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_08 = new JointId( STRING_1, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_09 = new JointId( STRING_1, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STRING_0 = new JointId( TOP, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_00 = new JointId( STRING_0, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_01 = new JointId( STRING_0, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_02 = new JointId( STRING_0, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_03 = new JointId( STRING_0, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_04 = new JointId( STRING_0, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STRING_2 = new JointId( TOP, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_10 = new JointId( STRING_2, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_11 = new JointId( STRING_2, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_12 = new JointId( STRING_2, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_13 = new JointId( STRING_2, PrayerFlagsResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FLAG_14 = new JointId( STRING_2, PrayerFlagsResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId TOP = new JointId(ROOT, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STRING_1 = new JointId(TOP, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_05 = new JointId(STRING_1, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_06 = new JointId(STRING_1, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_07 = new JointId(STRING_1, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_08 = new JointId(STRING_1, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_09 = new JointId(STRING_1, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STRING_0 = new JointId(TOP, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_00 = new JointId(STRING_0, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_01 = new JointId(STRING_0, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_02 = new JointId(STRING_0, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_03 = new JointId(STRING_0, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_04 = new JointId(STRING_0, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STRING_2 = new JointId(TOP, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_10 = new JointId(STRING_2, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_11 = new JointId(STRING_2, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_12 = new JointId(STRING_2, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_13 = new JointId(STRING_2, PrayerFlagsResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FLAG_14 = new JointId(STRING_2, PrayerFlagsResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	public static final JointId[] FLAG_ARRAY = { FLAG_00, FLAG_01, FLAG_02, FLAG_03, FLAG_04, FLAG_05, FLAG_06, FLAG_07, FLAG_08, FLAG_09, FLAG_10, FLAG_11, FLAG_12, FLAG_13, FLAG_14 };
+  public static final JointId[] FLAG_ARRAY = {FLAG_00, FLAG_01, FLAG_02, FLAG_03, FLAG_04, FLAG_05, FLAG_06, FLAG_07, FLAG_08, FLAG_09, FLAG_10, FLAG_11, FLAG_12, FLAG_13, FLAG_14};
 
-	public static final JointId[] STRING_ARRAY = { STRING_0, STRING_1, STRING_2 };
+  public static final JointId[] STRING_ARRAY = {STRING_0, STRING_1, STRING_2};
 
-	private final ImplementationAndVisualType resourceType;
-	PrayerFlagsResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	PrayerFlagsResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  PrayerFlagsResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return PrayerFlagsResource.JOINT_ID_ROOTS;
-	}
+  PrayerFlagsResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return PrayerFlagsResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

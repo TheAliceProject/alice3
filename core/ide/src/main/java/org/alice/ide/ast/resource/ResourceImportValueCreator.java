@@ -54,15 +54,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ResourceImportValueCreator<R extends Resource> extends ImportValueCreator<ResourceExpression, R> {
-	private final Class<R> resourceCls;
+  private final Class<R> resourceCls;
 
-	public ResourceImportValueCreator( UUID migrationId, Importer<R> importer, Class<R> resourceCls ) {
-		super( migrationId, importer );
-		this.resourceCls = resourceCls;
-	}
+  public ResourceImportValueCreator(UUID migrationId, Importer<R> importer, Class<R> resourceCls) {
+    super(migrationId, importer);
+    this.resourceCls = resourceCls;
+  }
 
-	@Override
-	protected ResourceExpression createValueFromImportedValue( R importedValue ) {
-		return new ResourceExpression( this.resourceCls, importedValue );
-	}
+  @Override
+  protected ResourceExpression createValueFromImportedValue(R importedValue) {
+    return new ResourceExpression(this.resourceCls, importedValue);
+  }
 }

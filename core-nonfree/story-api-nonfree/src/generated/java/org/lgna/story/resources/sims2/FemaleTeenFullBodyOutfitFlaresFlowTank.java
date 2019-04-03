@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitFlaresFlowTank implements FemaleTeenFullBodyOutfit {
-	PINK_FLORAL,
-	GREY_ICE,
-	PURPLE_CLOUDS,
-	RED_LEOPARD;
+  PINK_FLORAL, GREY_ICE, PURPLE_CLOUDS, RED_LEOPARD
 
 }

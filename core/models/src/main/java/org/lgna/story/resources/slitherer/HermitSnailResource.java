@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.slitherer;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SSlitherer;
@@ -33,67 +34,56 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.SlithererResource;
 
 public enum HermitSnailResource implements SlithererResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_1 = new JointId( TAIL_0, HermitSnailResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_2 = new JointId( TAIL_1, HermitSnailResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_3 = new JointId( TAIL_2, HermitSnailResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_4 = new JointId( TAIL_3, HermitSnailResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId SHELL_0 = new JointId( TAIL_0, HermitSnailResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId SHELL_1 = new JointId( SHELL_0, HermitSnailResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, HermitSnailResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_TENTACLE_0 = new JointId( HEAD, HermitSnailResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_TENTACLE_1 = new JointId( LEFT_TENTACLE_0, HermitSnailResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_TENTACLE_2 = new JointId( LEFT_TENTACLE_1, HermitSnailResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_TENTACLE_0 = new JointId( HEAD, HermitSnailResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_TENTACLE_1 = new JointId( RIGHT_TENTACLE_0, HermitSnailResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_TENTACLE_2 = new JointId( RIGHT_TENTACLE_1, HermitSnailResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_1 = new JointId(TAIL_0, HermitSnailResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_2 = new JointId(TAIL_1, HermitSnailResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_3 = new JointId(TAIL_2, HermitSnailResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_4 = new JointId(TAIL_3, HermitSnailResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId SHELL_0 = new JointId(TAIL_0, HermitSnailResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId SHELL_1 = new JointId(SHELL_0, HermitSnailResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LOWER_LIP = new JointId(MOUTH, HermitSnailResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_TENTACLE_0 = new JointId(HEAD, HermitSnailResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_TENTACLE_1 = new JointId(LEFT_TENTACLE_0, HermitSnailResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_TENTACLE_2 = new JointId(LEFT_TENTACLE_1, HermitSnailResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_TENTACLE_0 = new JointId(HEAD, HermitSnailResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_TENTACLE_1 = new JointId(RIGHT_TENTACLE_0, HermitSnailResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_TENTACLE_2 = new JointId(RIGHT_TENTACLE_1, HermitSnailResource.class);
 
-	public static final JointId[] SHELL_ARRAY = { SHELL_0, SHELL_1 };
+  public static final JointId[] SHELL_ARRAY = {SHELL_0, SHELL_1};
 
-	public static final JointId[] LEFT_TENTACLE_ARRAY = { LEFT_TENTACLE_0, LEFT_TENTACLE_1, LEFT_TENTACLE_2 };
+  public static final JointId[] LEFT_TENTACLE_ARRAY = {LEFT_TENTACLE_0, LEFT_TENTACLE_1, LEFT_TENTACLE_2};
 
-	public static final JointId[] RIGHT_TENTACLE_ARRAY = { RIGHT_TENTACLE_0, RIGHT_TENTACLE_1, RIGHT_TENTACLE_2 };
+  public static final JointId[] RIGHT_TENTACLE_ARRAY = {RIGHT_TENTACLE_0, RIGHT_TENTACLE_1, RIGHT_TENTACLE_2};
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4 };
-	@Override
-	public JointId[] getTailArray() {
-		return HermitSnailResource.TAIL_ARRAY;
-	}
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] TAIL_ARRAY = {TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4};
 
-	private final ImplementationAndVisualType resourceType;
-	HermitSnailResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  @Override
+  public JointId[] getTailArray() {
+    return HermitSnailResource.TAIL_ARRAY;
+  }
 
-	HermitSnailResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	public JointId[] getRootJointIds() {
-		return SlithererResource.JOINT_ID_ROOTS;
-	}
+  HermitSnailResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public SlithererImp createImplementation( SSlitherer abstraction ) {
-		return new SlithererImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  HermitSnailResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
+
+  public JointId[] getRootJointIds() {
+    return SlithererResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public SlithererImp createImplementation(SSlitherer abstraction) {
+    return new SlithererImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

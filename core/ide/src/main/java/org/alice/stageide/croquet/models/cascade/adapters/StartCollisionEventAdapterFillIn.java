@@ -48,15 +48,15 @@ import java.util.UUID;
 
 public class StartCollisionEventAdapterFillIn extends LambdaExpressionFillIn {
 
-	private static class SingletonHolder {
-		private static StartCollisionEventAdapterFillIn instance = new StartCollisionEventAdapterFillIn();
-	}
+  private static class SingletonHolder {
+    private static StartCollisionEventAdapterFillIn instance = new StartCollisionEventAdapterFillIn();
+  }
 
-	public static StartCollisionEventAdapterFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static StartCollisionEventAdapterFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	public StartCollisionEventAdapterFillIn() {
-		super( UUID.fromString( "4888e172-636c-4d03-9b6a-0873017e00e9" ), CollisionStartListener.class );
-	}
+  public StartCollisionEventAdapterFillIn() {
+    super(UUID.fromString("4888e172-636c-4d03-9b6a-0873017e00e9"), CollisionStartListener.class);
+  }
 }

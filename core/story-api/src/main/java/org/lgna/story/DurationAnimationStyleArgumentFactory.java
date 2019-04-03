@@ -49,19 +49,19 @@ import org.lgna.common.LgnaIllegalKeyArgumentException;
  * @author Dennis Cosgrove
  */
 public class DurationAnimationStyleArgumentFactory {
-	protected DurationAnimationStyleArgumentFactory() {
-		throw new AssertionError();
-	}
+  protected DurationAnimationStyleArgumentFactory() {
+    throw new AssertionError();
+  }
 
-	public static Duration duration( Number duration ) {
-		LgnaIllegalKeyArgumentException.checkArgumentIsPositiveOrZero( duration, "duration" );
-		return new Duration( duration );
-	}
+  public static Duration duration(Number duration) {
+    LgnaIllegalKeyArgumentException.checkArgumentIsPositiveOrZero(duration, "duration");
+    return new Duration(duration);
+  }
 
-	//	public static AnimationStyle animationStyle( Boolean isBegunGently, Boolean isEndedGently ) {
-	//		return new AnimationStyle( isBegunGently, isEndedGently );
-	//	}
-	public static AnimationStyle animationStyle( AnimationStyle animationStyle ) {
-		return animationStyle;
-	}
+  //  public static AnimationStyle animationStyle( Boolean isBegunGently, Boolean isEndedGently ) {
+  //    return new AnimationStyle( isBegunGently, isEndedGently );
+  //  }
+  public static AnimationStyle animationStyle(AnimationStyle animationStyle) {
+    return animationStyle;
+  }
 }

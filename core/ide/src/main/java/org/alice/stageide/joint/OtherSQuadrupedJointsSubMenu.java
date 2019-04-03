@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class OtherSQuadrupedJointsSubMenu<FB> extends JointsSubMenu<FB> {
-	public OtherSQuadrupedJointsSubMenu() {
-		super( UUID.fromString( "7a8acd6d-46bb-40c6-9cb7-1099cbd28961" ), SQuadruped.class, "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getTail4", "getFrontLeftFoot", "getFrontLeftToe", "getFrontRightFoot", "getFrontRightToe", "getBackLeftHock", "getBackLeftFoot", "getBackLeftToe", "getBackRightHock", "getBackRightFoot", "getBackRightToe" );
-	}
+  public OtherSQuadrupedJointsSubMenu() {
+    super(UUID.fromString("7a8acd6d-46bb-40c6-9cb7-1099cbd28961"), SQuadruped.class, "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getTail4", "getFrontLeftFoot", "getFrontLeftToe", "getFrontRightFoot", "getFrontRightToe", "getBackLeftHock", "getBackLeftFoot", "getBackLeftToe", "getBackRightHock", "getBackRightFoot", "getBackRightToe");
+  }
 }

@@ -54,42 +54,42 @@ import org.lgna.ik.poser.animation.composites.TimeLineModifierComposite;
  */
 public class TimeLineModifierView extends MigPanel {
 
-	private final ComboBox<KeyFrameStyles> comboBox;
+  private final ComboBox<KeyFrameStyles> comboBox;
 
-	public TimeLineModifierView( TimeLineModifierComposite composite ) {
-		super( composite );
-		//		GridPanel gPanel = GridPanel.createGridPane( 2, 2 );
+  public TimeLineModifierView(TimeLineModifierComposite composite) {
+    super(composite);
+    //    GridPanel gPanel = GridPanel.createGridPane( 2, 2 );
 
-		//		//row 1
-		comboBox = composite.getStyleSelectionState().getPrepModel().createComboBox();
-		//		gPanel.addComponent( composite.getStyleSelectionState().getSidekickLabel().createImmutableTextArea() );
-		//		gPanel.addComponent( comboBox );
-		//
-		//		//row 2
-		BoundedDoubleState currentTime = composite.getCurrentTime();
-		//		gPanel.addComponent( currentTime.getSidekickLabel().createImmutableTextArea() );
-		//		gPanel.addComponent( currentTime.createSpinner() );
-		//
-		//		this.addCenterComponent( gPanel );
-		//		this.addPageEndComponent( composite.getDeletePoseOperation().createButton() );
-		addComponent( composite.getStyleSelectionState().getSidekickLabel().createImmutableTextField() );
-		addComponent( comboBox, "wrap" );
+    //    //row 1
+    comboBox = composite.getStyleSelectionState().getPrepModel().createComboBox();
+    //    gPanel.addComponent( composite.getStyleSelectionState().getSidekickLabel().createImmutableTextArea() );
+    //    gPanel.addComponent( comboBox );
+    //
+    //    //row 2
+    BoundedDoubleState currentTime = composite.getCurrentTime();
+    //    gPanel.addComponent( currentTime.getSidekickLabel().createImmutableTextArea() );
+    //    gPanel.addComponent( currentTime.createSpinner() );
+    //
+    //    this.addCenterComponent( gPanel );
+    //    this.addPageEndComponent( composite.getDeletePoseOperation().createButton() );
+    addComponent(composite.getStyleSelectionState().getSidekickLabel().createImmutableTextField());
+    addComponent(comboBox, "wrap");
 
-		addComponent( currentTime.getSidekickLabel().createImmutableTextField() );
-		Spinner createSpinner = currentTime.createSpinner();
-		createSpinner.getAwtComponent().setEnabled( false ); // why do I have to do this to get it to be disabled on start?
-		addComponent( createSpinner, "grow, wrap" );
-		addComponent( composite.getDeletePoseOperation().createButton(), "growx, span2" );
-		//		this.setMinimumPreferredWidth( 0 );
-		//		this.setMaximumPreferredWidth( 100 );
-	}
+    addComponent(currentTime.getSidekickLabel().createImmutableTextField());
+    Spinner createSpinner = currentTime.createSpinner();
+    createSpinner.getAwtComponent().setEnabled(false); // why do I have to do this to get it to be disabled on start?
+    addComponent(createSpinner, "grow, wrap");
+    addComponent(composite.getDeletePoseOperation().createButton(), "growx, span2");
+    //    this.setMinimumPreferredWidth( 0 );
+    //    this.setMaximumPreferredWidth( 100 );
+  }
 
-	public void enableOperations( boolean activate ) {
-		comboBox.getAwtComponent().setEnabled( activate );
-	}
+  public void enableOperations(boolean activate) {
+    comboBox.getAwtComponent().setEnabled(activate);
+  }
 
-	//	public void addComponent( MigPanel panel) {
-	//		TimeLineModifierComposite composite = this.getComposite();
-	//		panel.addComponent(  )
-	//	}
+  //  public void addComponent( MigPanel panel) {
+  //    TimeLineModifierComposite composite = this.getComposite();
+  //    panel.addComponent(  )
+  //  }
 }

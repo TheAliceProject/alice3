@@ -49,30 +49,30 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class MapToMapToMap<A, B, C, E> {
-	private MapToMap<A, B, Map<C, E>> m_outerMapToMap = new MapToMap<A, B, Map<C, E>>();
+  private MapToMap<A, B, Map<C, E>> m_outerMapToMap = new MapToMap<A, B, Map<C, E>>();
 
-	public static <A, B, C, E> MapToMapToMap<A, B, C, E> newInstance() {
-		return new MapToMapToMap<A, B, C, E>();
-	}
+  public static <A, B, C, E> MapToMapToMap<A, B, C, E> newInstance() {
+    return new MapToMapToMap<A, B, C, E>();
+  }
 
-	//todo: add addtional map methods
-	public E get( A a, B b, C c ) {
-		Map<C, E> innerMap = m_outerMapToMap.get( a, b );
-		if( innerMap != null ) {
-			return innerMap.get( c );
-		} else {
-			return null;
-		}
-	}
+  //todo: add addtional map methods
+  public E get(A a, B b, C c) {
+    Map<C, E> innerMap = m_outerMapToMap.get(a, b);
+    if (innerMap != null) {
+      return innerMap.get(c);
+    } else {
+      return null;
+    }
+  }
 
-	public void put( A a, B b, C c, E value ) {
-		Map<C, E> innerMap = m_outerMapToMap.get( a, b );
-		if( innerMap != null ) {
-			//pass
-		} else {
-			innerMap = new HashMap<C, E>();
-			m_outerMapToMap.put( a, b, innerMap );
-		}
-		innerMap.put( c, value );
-	}
+  public void put(A a, B b, C c, E value) {
+    Map<C, E> innerMap = m_outerMapToMap.get(a, b);
+    if (innerMap != null) {
+      //pass
+    } else {
+      innerMap = new HashMap<C, E>();
+      m_outerMapToMap.put(a, b, innerMap);
+    }
+    innerMap.put(c, value);
+  }
 }

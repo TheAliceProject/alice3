@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class GatedCommitDialogContentComposite<V extends GatedCommitDialogContentPane> extends DialogContentComposite<V> {
-	public GatedCommitDialogContentComposite( UUID migrationId, GatedCommitDialogCoreComposite<?, ?> coreComposite ) {
-		super( migrationId, coreComposite );
-	}
+  public GatedCommitDialogContentComposite(UUID migrationId, GatedCommitDialogCoreComposite<?, ?> coreComposite) {
+    super(migrationId, coreComposite);
+  }
 }

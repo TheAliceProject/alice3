@@ -48,11 +48,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Matt May
  */
 public class StrikePose extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = StrikePose.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = StrikePose.class) public static interface Detail {
+  }
 
-	private StrikePose() {
-		super();
-	}
+  private StrikePose() {
+    super();
+  }
 }

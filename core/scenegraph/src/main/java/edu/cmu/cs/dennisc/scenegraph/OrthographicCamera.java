@@ -50,5 +50,5 @@ import edu.cmu.cs.dennisc.math.property.ClippedZPlaneProperty;
  * @author Dennis Cosgrove
  */
 public class OrthographicCamera extends AbstractNearPlaneAndFarPlaneCamera {
-	public final ClippedZPlaneProperty picturePlane = new ClippedZPlaneProperty( this, new ClippedZPlane() );
+  public final ClippedZPlaneProperty picturePlane = new ClippedZPlaneProperty(this, new ClippedZPlane());
 }

@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ModelSizePropertyValueOperation extends PropertyValueOperation<Dimension3> {
-	public ModelSizePropertyValueOperation( AbstractPropertyAdapter<Dimension3, ?> propertyAdapter, Dimension3 nextValue ) {
-		super( UUID.fromString( "c742ea2e-cafe-41a0-9b76-38cb51921823" ), propertyAdapter, nextValue );
-	}
+  public ModelSizePropertyValueOperation(AbstractPropertyAdapter<Dimension3, ?> propertyAdapter, Dimension3 nextValue) {
+    super(UUID.fromString("c742ea2e-cafe-41a0-9b76-38cb51921823"), propertyAdapter, nextValue);
+  }
 }

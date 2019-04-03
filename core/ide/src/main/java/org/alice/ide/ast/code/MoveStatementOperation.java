@@ -56,23 +56,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class MoveStatementOperation extends ActionOperation {
-	private final BlockStatementIndexPair fromLocation;
-	private final Statement statement;
-	private final BlockStatementIndexPair toLocation;
-	private final boolean isMultiple;
+  private final BlockStatementIndexPair fromLocation;
+  private final Statement statement;
+  private final BlockStatementIndexPair toLocation;
+  private final boolean isMultiple;
 
-	public MoveStatementOperation( BlockStatementIndexPair fromLocation, Statement statement,
-																 BlockStatementIndexPair toLocation, boolean isMultiple ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "3fede3ef-ba7f-4286-842f-016da7dbacf7" ) );
-		this.fromLocation = fromLocation;
-		this.statement = statement;
-		this.toLocation = toLocation;
-		this.isMultiple = isMultiple;
-	}
+  public MoveStatementOperation(BlockStatementIndexPair fromLocation, Statement statement, BlockStatementIndexPair toLocation, boolean isMultiple) {
+    super(Application.PROJECT_GROUP, UUID.fromString("3fede3ef-ba7f-4286-842f-016da7dbacf7"));
+    this.fromLocation = fromLocation;
+    this.statement = statement;
+    this.toLocation = toLocation;
+    this.isMultiple = isMultiple;
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		activity
-				.commitAndInvokeDo( new MoveStatementEdit( activity, this.fromLocation, this.statement, this.toLocation, this.isMultiple ) );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    activity.commitAndInvokeDo(new MoveStatementEdit(activity, this.fromLocation, this.statement, this.toLocation, this.isMultiple));
+  }
 }

@@ -47,9 +47,9 @@ package org.alice.serialization.xml;
  * @author Dennis Cosgrove
  */
 interface CodecConstants {
-	String UNIQUE_KEY_ATTRIBUTE = "key";
-	String TYPE_ATTRIBUTE = "type";
-	String ID_ATTRIBUTE = "uuid";
-	double CURRENT_VERSION = 3.10062;
-	double MINIMUM_ACCEPTABLE_VERSION = 3.1;
+  String UNIQUE_KEY_ATTRIBUTE = "key";
+  String TYPE_ATTRIBUTE = "type";
+  String ID_ATTRIBUTE = "uuid";
+  double CURRENT_VERSION = 3.10062;
+  double MINIMUM_ACCEPTABLE_VERSION = 3.1;
 }

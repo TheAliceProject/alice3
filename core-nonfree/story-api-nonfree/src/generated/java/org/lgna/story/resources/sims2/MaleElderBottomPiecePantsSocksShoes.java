@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleElderBottomPiecePantsSocksShoes implements MaleElderBottomPiece {
-	BLUE_PANTS,
-	BROWN_PANTS,
-	GOLFER_PANTS,
-	GREY_PANTS,
-	OLIVE_PANTS,
-	TAN_PANTS;
+  BLUE_PANTS, BROWN_PANTS, GOLFER_PANTS, GREY_PANTS, OLIVE_PANTS, TAN_PANTS
 
 }

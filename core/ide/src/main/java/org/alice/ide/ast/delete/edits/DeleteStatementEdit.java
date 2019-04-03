@@ -59,51 +59,51 @@ import org.lgna.project.ast.Statement;
  * @author Dennis Cosgrove
  */
 public class DeleteStatementEdit extends StatementEdit<DeleteStatementOperation> {
-	private final BlockStatement blockStatement;
-	private final int index;
+  private final BlockStatement blockStatement;
+  private final int index;
 
-	public DeleteStatementEdit( UserActivity userActivity, Statement statement ) {
-		super( userActivity, statement );
-		this.blockStatement = (BlockStatement)statement.getParent();
-		assert this.blockStatement != null : statement;
-		this.index = this.blockStatement.statements.indexOf( statement );
-		assert this.index != -1 : statement;
-	}
+  public DeleteStatementEdit(UserActivity userActivity, Statement statement) {
+    super(userActivity, statement);
+    this.blockStatement = (BlockStatement) statement.getParent();
+    assert this.blockStatement != null : statement;
+    this.index = this.blockStatement.statements.indexOf(statement);
+    assert this.index != -1 : statement;
+  }
 
-	public DeleteStatementEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.blockStatement = NodeCodec.getInstance( BlockStatement.class ).decodeValue( binaryDecoder );
-		this.index = binaryDecoder.decodeInt();
-	}
+  public DeleteStatementEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.blockStatement = NodeCodec.getInstance(BlockStatement.class).decodeValue(binaryDecoder);
+    this.index = binaryDecoder.decodeInt();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		NodeCodec.getInstance( BlockStatement.class ).encodeValue( binaryEncoder, this.blockStatement );
-		binaryEncoder.encode( this.index );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    NodeCodec.getInstance(BlockStatement.class).encodeValue(binaryEncoder, this.blockStatement);
+    binaryEncoder.encode(this.index);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		Statement statement = this.getStatement();
-		assert blockStatement.statements.indexOf( statement ) == this.index;
-		blockStatement.statements.remove( index );
-		//todo: remove
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    Statement statement = this.getStatement();
+    assert blockStatement.statements.indexOf(statement) == this.index;
+    blockStatement.statements.remove(index);
+    //todo: remove
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+  }
 
-	@Override
-	protected final void undoInternal() {
-		Statement statement = this.getStatement();
-		blockStatement.statements.add( index, statement );
-		//todo: remove
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-	}
+  @Override
+  protected final void undoInternal() {
+    Statement statement = this.getStatement();
+    blockStatement.statements.add(index, statement);
+    //todo: remove
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		Statement statement = this.getStatement();
-		rv.append( "delete:" );
-		NodeUtilities.safeAppendRepr( rv, statement, Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    Statement statement = this.getStatement();
+    rv.append("delete:");
+    NodeUtilities.safeAppendRepr(rv, statement, Application.getLocale());
+  }
 }

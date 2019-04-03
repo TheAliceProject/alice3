@@ -49,7 +49,7 @@ import org.lgna.issue.IssueReportingHub;
  * @author Dennis Cosgrove
  */
 public interface IdeConfiguration {
-	Operation[] createUploadOperations( ProjectDocumentFrame projectDocumentFrame );
+  Operation[] createUploadOperations(ProjectDocumentFrame projectDocumentFrame);
 
-	IssueReportingHub getIssueReportingHub();
+  IssueReportingHub getIssueReportingHub();
 }

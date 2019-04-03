@@ -57,23 +57,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractExpressionDragModel extends CodeDragModel {
-	public AbstractExpressionDragModel( UUID id ) {
-		super( id );
-	}
+  public AbstractExpressionDragModel(UUID id) {
+    super(id);
+  }
 
-	public abstract boolean isPotentialStatementCreator();
+  public abstract boolean isPotentialStatementCreator();
 
-	protected abstract Triggerable getDropOperation( ExpressionProperty expressionProperty );
+  protected abstract Triggerable getDropOperation(ExpressionProperty expressionProperty);
 
-	@Override
-	public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
-		if( dropSite instanceof ExpressionPropertyDropSite ) {
-			ExpressionPropertyDropSite expressionPropertyDropSite = (ExpressionPropertyDropSite)dropSite;
-			return this.getDropOperation( expressionPropertyDropSite.getExpressionProperty() );
-		} else if( dropSite instanceof BlockStatementIndexPair ) {
-			throw new AssertionError();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Triggerable getDropOperation(DragStep step, DropSite dropSite) {
+    if (dropSite instanceof ExpressionPropertyDropSite) {
+      ExpressionPropertyDropSite expressionPropertyDropSite = (ExpressionPropertyDropSite) dropSite;
+      return this.getDropOperation(expressionPropertyDropSite.getExpressionProperty());
+    } else if (dropSite instanceof BlockStatementIndexPair) {
+      throw new AssertionError();
+    } else {
+      return null;
+    }
+  }
 }

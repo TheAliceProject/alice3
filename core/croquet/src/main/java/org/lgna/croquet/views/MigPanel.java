@@ -52,48 +52,48 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public class MigPanel extends Panel {
-	private static final String DEFAULT_CONSTRAINT = "";
-	private final String layoutConstraints;
-	private final String columnConstraints;
-	private final String rowConstraints;
+  private static final String DEFAULT_CONSTRAINT = "";
+  private final String layoutConstraints;
+  private final String columnConstraints;
+  private final String rowConstraints;
 
-	public MigPanel( Composite<?> composite, String layoutConstraints, String columnConstraints, String rowConstraints ) {
-		super( composite );
-		this.layoutConstraints = layoutConstraints;
-		this.columnConstraints = columnConstraints;
-		this.rowConstraints = rowConstraints;
-	}
+  public MigPanel(Composite<?> composite, String layoutConstraints, String columnConstraints, String rowConstraints) {
+    super(composite);
+    this.layoutConstraints = layoutConstraints;
+    this.columnConstraints = columnConstraints;
+    this.rowConstraints = rowConstraints;
+  }
 
-	public MigPanel( Composite<?> composite, String layoutConstraints, String columnConstraints ) {
-		this( composite, layoutConstraints, columnConstraints, DEFAULT_CONSTRAINT );
-	}
+  public MigPanel(Composite<?> composite, String layoutConstraints, String columnConstraints) {
+    this(composite, layoutConstraints, columnConstraints, DEFAULT_CONSTRAINT);
+  }
 
-	public MigPanel( Composite<?> composite, String layoutConstraints ) {
-		this( composite, layoutConstraints, DEFAULT_CONSTRAINT );
-	}
+  public MigPanel(Composite<?> composite, String layoutConstraints) {
+    this(composite, layoutConstraints, DEFAULT_CONSTRAINT);
+  }
 
-	public MigPanel( Composite<?> composite ) {
-		this( composite, DEFAULT_CONSTRAINT );
-	}
+  public MigPanel(Composite<?> composite) {
+    this(composite, DEFAULT_CONSTRAINT);
+  }
 
-	public MigPanel() {
-		this( null );
-	}
+  public MigPanel() {
+    this(null);
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		MigLayout rv = new MigLayout();
-		rv.setLayoutConstraints( this.layoutConstraints );
-		rv.setColumnConstraints( this.columnConstraints );
-		rv.setRowConstraints( this.rowConstraints );
-		return rv;
-	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    MigLayout rv = new MigLayout();
+    rv.setLayoutConstraints(this.layoutConstraints);
+    rv.setColumnConstraints(this.columnConstraints);
+    rv.setRowConstraints(this.rowConstraints);
+    return rv;
+  }
 
-	public void addComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component );
-	}
+  public void addComponent(AwtComponentView<?> component) {
+    this.internalAddComponent(component);
+  }
 
-	public void addComponent( AwtComponentView<?> component, String constraint ) {
-		this.internalAddComponent( component, constraint );
-	}
+  public void addComponent(AwtComponentView<?> component, String constraint) {
+    this.internalAddComponent(component, constraint);
+  }
 }

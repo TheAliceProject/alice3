@@ -53,43 +53,43 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 /*package-private*/class OperationMenuItemPrepModel extends StandardMenuItemPrepModel {
-	public OperationMenuItemPrepModel( Operation operation ) {
-		super( UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
-		assert operation != null;
-		this.operation = operation;
-	}
+  public OperationMenuItemPrepModel(Operation operation) {
+    super(UUID.fromString("652a76ce-4c05-4c31-901c-ff14548e50aa"));
+    assert operation != null;
+    this.operation = operation;
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	public Operation getOperation() {
-		return this.operation;
-	}
+  public Operation getOperation() {
+    return this.operation;
+  }
 
-	@Override
-	public boolean isEnabled() {
-		return this.operation.isEnabled();
-	}
+  @Override
+  public boolean isEnabled() {
+    return this.operation.isEnabled();
+  }
 
-	@Override
-	public void setEnabled( boolean isEnabled ) {
-		this.operation.setEnabled( isEnabled );
-	}
+  @Override
+  public void setEnabled(boolean isEnabled) {
+    this.operation.setEnabled(isEnabled);
+  }
 
-	@Override
-	public MenuItem createMenuItemAndAddTo( MenuItemContainer menuItemContainer ) {
-		MenuItem menuItem = new MenuItem( this.getOperation() );
-		menuItemContainer.addMenuItem( menuItem );
-		return menuItem;
-	}
+  @Override
+  public MenuItem createMenuItemAndAddTo(MenuItemContainer menuItemContainer) {
+    MenuItem menuItem = new MenuItem(this.getOperation());
+    menuItemContainer.addMenuItem(menuItem);
+    return menuItem;
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( "operation=" );
-		sb.append( this.getOperation() );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    super.appendRepr(sb);
+    sb.append("operation=");
+    sb.append(this.getOperation());
+  }
 
-	private final Operation operation;
+  private final Operation operation;
 }

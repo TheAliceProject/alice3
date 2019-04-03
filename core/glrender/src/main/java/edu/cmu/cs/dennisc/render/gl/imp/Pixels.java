@@ -63,99 +63,92 @@ import java.nio.ByteBuffer;
  * @author Dennis Cosgrove
  */
 class Pixels implements TextureListener {
-	private static final ComponentColorModel RGBA_COLOR_MODEL = new ComponentColorModel(
-			ColorSpace.getInstance( ColorSpace.CS_sRGB ),
-			new int[] { 8, 8, 8, 8 },
-			true,
-			false,
-			ComponentColorModel.TRANSLUCENT,
-			DataBuffer.TYPE_BYTE
-			);
+  private static final ComponentColorModel RGBA_COLOR_MODEL = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB), new int[] {8, 8, 8, 8}, true, false, ComponentColorModel.TRANSLUCENT, DataBuffer.TYPE_BYTE);
 
-	private Texture m_texture;
+  private Texture m_texture;
 
-	private WritableRaster m_writableRaster = null;
-	private BufferedImage m_bufferedImage = null;
-	private ByteBuffer m_data = null;
+  private WritableRaster m_writableRaster = null;
+  private BufferedImage m_bufferedImage = null;
+  private ByteBuffer m_data = null;
 
-	public Pixels( Texture texture ) {
-		m_texture = texture;
-		m_texture.addTextureListener( this );
-	}
+  public Pixels(Texture texture) {
+    m_texture = texture;
+    m_texture.addTextureListener(this);
+  }
 
-	@Override
-	public void textureChanged( TextureEvent textureEvent ) {
-		if( ( m_texture != null ) && ( m_writableRaster != null ) && ( m_bufferedImage != null ) ) {
-			if( ( m_texture.getWidth() != m_bufferedImage.getWidth() ) || ( m_texture.getHeight() != m_bufferedImage.getHeight() ) ) {
-				touchImage();
-			}
-		}
-	}
+  @Override
+  public void textureChanged(TextureEvent textureEvent) {
+    if ((m_texture != null) && (m_writableRaster != null) && (m_bufferedImage != null)) {
+      if ((m_texture.getWidth() != m_bufferedImage.getWidth()) || (m_texture.getHeight() != m_bufferedImage.getHeight())) {
+        touchImage();
+      }
+    }
+  }
 
-	public void touchImage() {
-		m_data = null;
-		if( m_writableRaster != null ) {
-			if( ( m_texture.getWidth() != m_writableRaster.getWidth() ) || ( m_texture.getHeight() != m_writableRaster.getHeight() ) ) {
-				m_writableRaster = null;
-				m_bufferedImage = null;
-			}
-		}
-	}
+  public void touchImage() {
+    m_data = null;
+    if (m_writableRaster != null) {
+      if ((m_texture.getWidth() != m_writableRaster.getWidth()) || (m_texture.getHeight() != m_writableRaster.getHeight())) {
+        m_writableRaster = null;
+        m_bufferedImage = null;
+      }
+    }
+  }
 
-	public void release() {
-		if( m_texture != null ) {
-			m_texture.removeTextureListener( this );
-			m_writableRaster = null;
-			m_bufferedImage = null;
-			m_data = null;
-			m_texture = null;
-		}
-	}
+  public void release() {
+    if (m_texture != null) {
+      m_texture.removeTextureListener(this);
+      m_writableRaster = null;
+      m_bufferedImage = null;
+      m_data = null;
+      m_texture = null;
+    }
+  }
 
-	public int getWidth() {
-		return m_texture.getWidth();
-	}
+  public int getWidth() {
+    return m_texture.getWidth();
+  }
 
-	public int getHeight() {
-		return m_texture.getHeight();
-	}
+  public int getHeight() {
+    return m_texture.getHeight();
+  }
 
-	private BufferedImage getBufferedImage() {
-		if( m_bufferedImage != null ) {
-			//pass
-		} else {
-			m_writableRaster = Raster.createInterleavedRaster( DataBuffer.TYPE_BYTE, getWidth(), getHeight(), 4, null );
-			m_bufferedImage = new BufferedImage( RGBA_COLOR_MODEL, m_writableRaster, false, null );
-		}
-		return m_bufferedImage;
-	}
+  private BufferedImage getBufferedImage() {
+    if (m_bufferedImage != null) {
+      //pass
+    } else {
+      m_writableRaster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, getWidth(), getHeight(), 4, null);
+      m_bufferedImage = new BufferedImage(RGBA_COLOR_MODEL, m_writableRaster, false, null);
+    }
+    return m_bufferedImage;
+  }
 
-	public ByteBuffer getRGBA() {
-		if( m_data != null ) {
-			//pass
-		} else {
-			BufferedImage bufferedImage = getBufferedImage();
-			if( bufferedImage != null ) {
-				java.awt.Graphics2D g = bufferedImage.createGraphics();
-				AffineTransform gt = new AffineTransform();
-				gt.translate( 0, bufferedImage.getHeight() );
-				gt.scale( 1.0, -1.0 );
-				g.transform( gt );
-				if( m_texture instanceof BufferedImageTexture ) {
-					BufferedImageTexture bufferedImageTexture = (BufferedImageTexture)m_texture;
-					g.drawImage( bufferedImageTexture.getBufferedImage(), null, null );
-				} else if( m_texture instanceof CustomTexture ) {
-					CustomTexture customTexture = (CustomTexture)m_texture;
-					customTexture.paint( g, bufferedImage.getWidth(), bufferedImage.getHeight() );
-				}
-				g.dispose();
-				DataBufferByte dataBufferByte = (DataBufferByte)m_writableRaster.getDataBuffer();
-				byte[] data = dataBufferByte.getData();
-				m_data = ByteBuffer.wrap( data );
-			} else {
-				m_data = null;
-			}
-		}
-		return m_data;
-	}
+  public ByteBuffer getRGBA() {
+    if (m_data != null) {
+      //pass
+    } else {
+      BufferedImage bufferedImage = getBufferedImage();
+      if (bufferedImage != null) {
+        java.awt.Graphics2D g = bufferedImage.createGraphics();
+        AffineTransform gt = new AffineTransform();
+        gt.translate(0, bufferedImage.getHeight());
+        gt.scale(1.0, -1.0);
+        g.transform(gt);
+        if (m_texture instanceof BufferedImageTexture) {
+          BufferedImageTexture bufferedImageTexture = (BufferedImageTexture) m_texture;
+          g.drawImage(bufferedImageTexture.getBufferedImage(), null, null);
+        } else if (m_texture instanceof CustomTexture) {
+          CustomTexture customTexture = (CustomTexture) m_texture;
+          customTexture.paint(g, bufferedImage.getWidth(), bufferedImage.getHeight());
+        }
+        g.dispose();
+        DataBufferByte dataBufferByte = (DataBufferByte) m_writableRaster.getDataBuffer();
+        byte[] data = dataBufferByte.getData();
+        m_data = ByteBuffer.wrap(data);
+      } else {
+        m_data = null;
+      }
+    }
+    return m_data;
+  }
 }

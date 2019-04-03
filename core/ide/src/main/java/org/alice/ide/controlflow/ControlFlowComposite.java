@@ -74,74 +74,58 @@ import java.util.UUID;
  */
 public class ControlFlowComposite extends SimpleComposite<ControlFlowPanel> {
 
-	private static Map<AbstractCode, ControlFlowComposite> map = Maps.newHashMap();
+  private static Map<AbstractCode, ControlFlowComposite> map = Maps.newHashMap();
 
-	public static synchronized ControlFlowComposite getInstance( AbstractCode code ) {
-		ControlFlowComposite rv = map.get( code );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ControlFlowComposite( code );
-			map.put( code, rv );
-		}
-		return rv;
-	}
+  public static synchronized ControlFlowComposite getInstance(AbstractCode code) {
+    ControlFlowComposite rv = map.get(code);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ControlFlowComposite(code);
+      map.put(code, rv);
+    }
+    return rv;
+  }
 
-	private final List<StatementTemplateDragModel> models = Lists.newLinkedList();
-	private final AbstractCode code;
+  private final List<StatementTemplateDragModel> models = Lists.newLinkedList();
+  private final AbstractCode code;
 
-	private ControlFlowComposite( AbstractCode code ) {
-		super( UUID.fromString( "27ff6dfc-2519-4378-bb4f-d8c2c2fb19e9" ) );
-		this.code = code;
-	}
+  private ControlFlowComposite(AbstractCode code) {
+    super(UUID.fromString("27ff6dfc-2519-4378-bb4f-d8c2c2fb19e9"));
+    this.code = code;
+  }
 
-	@Override
-	public boolean contains( Model model ) {
-		if( super.contains( model ) ) {
-			return true;
-		} else {
-			return this.models.contains( model );
-		}
-	}
+  @Override
+  public boolean contains(Model model) {
+    if (super.contains(model)) {
+      return true;
+    } else {
+      return this.models.contains(model);
+    }
+  }
 
-	public List<StatementTemplateDragModel> getModels() {
-		return this.models;
-	}
+  public List<StatementTemplateDragModel> getModels() {
+    return this.models;
+  }
 
-	@Override
-	protected ControlFlowPanel createView() {
-		return new ControlFlowPanel( this );
-	}
+  @Override
+  protected ControlFlowPanel createView() {
+    return new ControlFlowPanel(this);
+  }
 
-	@Override
-	protected void initialize() {
-		super.initialize();
+  @Override
+  protected void initialize() {
+    super.initialize();
 
-		Collections.addAll( this.models,
-				DoInOrderTemplateDragModel.getInstance(),
-				null,
-				CountLoopTemplateDragModel.getInstance(),
-				WhileLoopTemplateDragModel.getInstance(),
-				ForEachInArrayLoopTemplateDragModel.getInstance(),
-				null,
-				ConditionalStatementTemplateDragModel.getInstance(),
-				null,
-				DoTogetherTemplateDragModel.getInstance(),
-				EachInArrayTogetherTemplateDragModel.getInstance(),
-				null,
-				DeclareLocalDragModel.getInstance(),
-				AssignmentTemplateDragModel.getInstance(),
-				null,
-				CommentTemplateDragModel.getInstance()
-				);
-		if( code instanceof UserMethod ) {
-			UserMethod method = (UserMethod)code;
-			if( method.getReturnType() == JavaType.VOID_TYPE ) {
-				//pass
-			} else {
-				this.models.add( null );
-				this.models.add( ReturnStatementTemplateDragModel.getInstance( method ) );
-			}
-		}
-	}
+    Collections.addAll(this.models, DoInOrderTemplateDragModel.getInstance(), null, CountLoopTemplateDragModel.getInstance(), WhileLoopTemplateDragModel.getInstance(), ForEachInArrayLoopTemplateDragModel.getInstance(), null, ConditionalStatementTemplateDragModel.getInstance(), null, DoTogetherTemplateDragModel.getInstance(), EachInArrayTogetherTemplateDragModel.getInstance(), null, DeclareLocalDragModel.getInstance(), AssignmentTemplateDragModel.getInstance(), null, CommentTemplateDragModel.getInstance());
+    if (code instanceof UserMethod) {
+      UserMethod method = (UserMethod) code;
+      if (method.getReturnType() == JavaType.VOID_TYPE) {
+        //pass
+      } else {
+        this.models.add(null);
+        this.models.add(ReturnStatementTemplateDragModel.getInstance(method));
+      }
+    }
+  }
 }

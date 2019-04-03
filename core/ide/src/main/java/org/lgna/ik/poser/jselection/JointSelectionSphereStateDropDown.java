@@ -50,17 +50,17 @@ import org.lgna.croquet.views.Label;
  * @author Matt May
  */
 public class JointSelectionSphereStateDropDown extends ItemDropDown<JointSelectionSphere, JointSelectionSphereState> {
-	private final Label mainComponent = new Label();
+  private final Label mainComponent = new Label();
 
-	public JointSelectionSphereStateDropDown( JointSelectionSphereState model ) {
-		super( model );
-		this.setMainComponent( this.mainComponent );
-	}
+  public JointSelectionSphereStateDropDown(JointSelectionSphereState model) {
+    super(model);
+    this.setMainComponent(this.mainComponent);
+  }
 
-	@Override
-	protected void handleChanged( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
-		this.mainComponent.setText( nextValue != null ? nextValue.toString() : "null" );
-		this.revalidateAndRepaint();
-	}
+  @Override
+  protected void handleChanged(State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue) {
+    this.mainComponent.setText(nextValue != null ? nextValue.toString() : "null");
+    this.revalidateAndRepaint();
+  }
 
 }

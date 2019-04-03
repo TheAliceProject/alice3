@@ -46,7 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public interface Element {
-	void initializeIfNecessary();
+  void initializeIfNecessary();
 
-	void appendUserRepr( StringBuilder sb );
+  void appendUserRepr(StringBuilder sb);
 }

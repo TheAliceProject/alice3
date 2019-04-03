@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleChildFullBodyOutfitDressShortBell implements FemaleChildFullBodyOutfit {
-	BAND_W_STRIPE_GOTH,
-	BURGANDY_WHITE,
-	BAND_W_STRIPE_GOTH_BOOTS,
-	PINK_PINK_BOOTS,
-	RED_WHITE;
+  BAND_W_STRIPE_GOTH, BURGANDY_WHITE, BAND_W_STRIPE_GOTH_BOOTS, PINK_PINK_BOOTS, RED_WHITE
 
 }

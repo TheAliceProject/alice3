@@ -51,26 +51,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TreeOwningGalleryTab extends GalleryTab {
-	private final ResourceNodeTreeState resourceNodeTreeSelectionState;
-	private final String localizationSubKey;
+  private final ResourceNodeTreeState resourceNodeTreeSelectionState;
+  private final String localizationSubKey;
 
-	TreeOwningGalleryTab( ResourceNodeTreeState treeState, String localizationSubKey ) {
-		super( UUID.fromString( "569f0663-bef4-4d07-a96a-65cd75048a2e" ) );
-		resourceNodeTreeSelectionState = treeState;
-		this.localizationSubKey = localizationSubKey;
-	}
+  TreeOwningGalleryTab(ResourceNodeTreeState treeState, String localizationSubKey) {
+    super(UUID.fromString("569f0663-bef4-4d07-a96a-65cd75048a2e"));
+    resourceNodeTreeSelectionState = treeState;
+    this.localizationSubKey = localizationSubKey;
+  }
 
-	public ResourceNodeTreeState getResourceNodeTreeSelectionState() {
-		return resourceNodeTreeSelectionState;
-	}
+  public ResourceNodeTreeState getResourceNodeTreeSelectionState() {
+    return resourceNodeTreeSelectionState;
+  }
 
-	@Override
-	public String getSubKeyForLocalization() {
-		return localizationSubKey;
-	}
+  @Override
+  public String getSubKeyForLocalization() {
+    return localizationSubKey;
+  }
 
-	@Override
-	protected final TreeOwningGalleryTabView createView() {
-		return new TreeOwningGalleryTabView( this );
-	}
+  @Override
+  protected final TreeOwningGalleryTabView createView() {
+    return new TreeOwningGalleryTabView(this);
+  }
 }

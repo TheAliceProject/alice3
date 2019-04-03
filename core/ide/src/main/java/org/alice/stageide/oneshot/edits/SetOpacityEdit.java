@@ -55,30 +55,30 @@ import org.lgna.story.implementation.ModelImp;
  * @author Dennis Cosgrove
  */
 public class SetOpacityEdit extends MethodInvocationEdit {
-	private transient ModelImp modelImp;
-	private transient Float value;
+  private transient ModelImp modelImp;
+  private transient Float value;
 
-	public SetOpacityEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		super( userActivity, instanceFactory, method, argumentExpressions );
-	}
+  public SetOpacityEdit(UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions) {
+    super(userActivity, instanceFactory, method, argumentExpressions);
+  }
 
-	@Override
-	protected void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof SThing ) {
-			SThing thing = (SThing)instance;
-			this.modelImp = EmployeesOnly.getImplementation( thing );
-			this.value = this.modelImp.opacity.getValue();
-		} else {
-			Logger.severe( instance );
-			this.modelImp = null;
-			this.value = null;
-		}
-	}
+  @Override
+  protected void preserveUndoInfo(Object instance, boolean isDo) {
+    if (instance instanceof SThing) {
+      SThing thing = (SThing) instance;
+      this.modelImp = EmployeesOnly.getImplementation(thing);
+      this.value = this.modelImp.opacity.getValue();
+    } else {
+      Logger.severe(instance);
+      this.modelImp = null;
+      this.value = null;
+    }
+  }
 
-	@Override
-	protected void undoInternal() {
-		if( ( this.modelImp != null ) && ( this.value != null ) ) {
-			this.modelImp.opacity.animateValue( this.value );
-		}
-	}
+  @Override
+  protected void undoInternal() {
+    if ((this.modelImp != null) && (this.value != null)) {
+      this.modelImp.opacity.animateValue(this.value);
+    }
+  }
 }

@@ -56,36 +56,36 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class ListProjectResources {
-	protected void handle( File inFile ) {
-		try {
-			Project project = IoUtilities.readProject( inFile );
-			Set<Resource> resources = project.getResources();
-			if( resources.size() > 0 ) {
-				Logger.outln( inFile );
-				for( Resource resource : resources ) {
-					Logger.outln( "\t", resource.getData().length, resource );
-				}
-			}
-		} catch( VersionNotSupportedException vnse ) {
-			throw new RuntimeException( inFile.toString(), vnse );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( inFile.toString(), ioe );
-		}
-	}
+  protected void handle(File inFile) {
+    try {
+      Project project = IoUtilities.readProject(inFile);
+      Set<Resource> resources = project.getResources();
+      if (resources.size() > 0) {
+        Logger.outln(inFile);
+        for (Resource resource : resources) {
+          Logger.outln("\t", resource.getData().length, resource);
+        }
+      }
+    } catch (VersionNotSupportedException vnse) {
+      throw new RuntimeException(inFile.toString(), vnse);
+    } catch (IOException ioe) {
+      throw new RuntimeException(inFile.toString(), ioe);
+    }
+  }
 
-	public void process( String inRootPath, String inExt, String outExt ) {
-		File inRoot = new File( inRootPath );
-		File[] inFiles = FileUtilities.listDescendants( inRoot, inExt );
-		for( File inFile : inFiles ) {
-			handle( inFile );
-		}
-	}
+  public void process(String inRootPath, String inExt, String outExt) {
+    File inRoot = new File(inRootPath);
+    File[] inFiles = FileUtilities.listDescendants(inRoot, inExt);
+    for (File inFile : inFiles) {
+      handle(inFile);
+    }
+  }
 
-	public static void main( String[] args ) {
-		String inRootPath = args[ 0 ];
-		String ext = "a3p";
-		ListProjectResources migrateProjects = new ListProjectResources();
-		migrateProjects.process( inRootPath, ext, ext );
-		System.exit( 0 );
-	}
+  public static void main(String[] args) {
+    String inRootPath = args[0];
+    String ext = "a3p";
+    ListProjectResources migrateProjects = new ListProjectResources();
+    migrateProjects.process(inRootPath, ext, ext);
+    System.exit(0);
+  }
 }

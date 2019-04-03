@@ -57,57 +57,57 @@ import java.awt.event.ComponentListener;
  * @author Dennis Cosgrove
  */
 class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<Component> implements HeavyweightOnscreenRenderTarget {
-	private GLCanvas m_glCanvas;
+  private GLCanvas m_glCanvas;
 
-	/* package-private */ GlrHeavyweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, RenderCapabilities requestedCapabilities ) {
-		super( lookingGlassFactory, requestedCapabilities );
-		m_glCanvas = GlDrawableUtils.createGLCanvas( requestedCapabilities );
-		//m_glCanvas.getChosenGLCapabilities().getDepthBits();
-		//m_glCanvas.setAutoSwapBufferMode( false );
-		m_glCanvas.addComponentListener( new ComponentListener() {
-			@Override
-			public void componentShown( ComponentEvent e ) {
-			}
+  /* package-private */ GlrHeavyweightOnscreenRenderTarget(GlrRenderFactory lookingGlassFactory, RenderCapabilities requestedCapabilities) {
+    super(lookingGlassFactory, requestedCapabilities);
+    m_glCanvas = GlDrawableUtils.createGLCanvas(requestedCapabilities);
+    //m_glCanvas.getChosenGLCapabilities().getDepthBits();
+    //m_glCanvas.setAutoSwapBufferMode( false );
+    m_glCanvas.addComponentListener(new ComponentListener() {
+      @Override
+      public void componentShown(ComponentEvent e) {
+      }
 
-			@Override
-			public void componentHidden( ComponentEvent e ) {
-			}
+      @Override
+      public void componentHidden(ComponentEvent e) {
+      }
 
-			@Override
-			public void componentMoved( ComponentEvent e ) {
-			}
+      @Override
+      public void componentMoved(ComponentEvent e) {
+      }
 
-			@Override
-			public void componentResized( ComponentEvent e ) {
-				m_glCanvas.setMinimumSize( new Dimension( 0, 0 ) );
-				m_glCanvas.repaint();
-			}
-		} );
-	}
+      @Override
+      public void componentResized(ComponentEvent e) {
+        m_glCanvas.setMinimumSize(new Dimension(0, 0));
+        m_glCanvas.repaint();
+      }
+    });
+  }
 
-	@Override
-	public void repaint() {
-		getAwtComponent().repaint();
-	}
+  @Override
+  public void repaint() {
+    getAwtComponent().repaint();
+  }
 
-	@Override
-	public Component getAwtComponent() {
-		return m_glCanvas;
-	}
+  @Override
+  public Component getAwtComponent() {
+    return m_glCanvas;
+  }
 
-	@Override
-	protected Dimension getSurfaceSize( Dimension rv ) {
-		return m_glCanvas.getSize( rv );
-	}
+  @Override
+  protected Dimension getSurfaceSize(Dimension rv) {
+    return m_glCanvas.getSize(rv);
+  }
 
-	@Override
-	protected Dimension getDrawableSize( Dimension rv ) {
-		rv.setSize( m_glCanvas.getDelegatedDrawable().getSurfaceWidth(), m_glCanvas.getDelegatedDrawable().getSurfaceHeight() );
-		return rv;
-	}
+  @Override
+  protected Dimension getDrawableSize(Dimension rv) {
+    rv.setSize(m_glCanvas.getDelegatedDrawable().getSurfaceWidth(), m_glCanvas.getDelegatedDrawable().getSurfaceHeight());
+    return rv;
+  }
 
-	@Override
-	public GLAutoDrawable getGLAutoDrawable() {
-		return m_glCanvas;
-	}
+  @Override
+  public GLAutoDrawable getGLAutoDrawable() {
+    return m_glCanvas;
+  }
 }

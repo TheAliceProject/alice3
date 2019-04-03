@@ -48,44 +48,44 @@ import org.lgna.story.CameraMarker;
 import org.lgna.story.OrthographicCameraMarker;
 
 public class CameraFieldAndMarker {
-	public AbstractField field;
-	public CameraMarker marker;
+  public AbstractField field;
+  public CameraMarker marker;
 
-	public CameraFieldAndMarker( AbstractField field, CameraMarker marker ) {
-		this.field = field;
-		this.marker = marker;
-	}
+  public CameraFieldAndMarker(AbstractField field, CameraMarker marker) {
+    this.field = field;
+    this.marker = marker;
+  }
 
-	public boolean isOrthographic() {
-		if( marker != null ) {
-			return ( marker instanceof OrthographicCameraMarker );
-		}
-		return false;
-	}
+  public boolean isOrthographic() {
+    if (marker != null) {
+      return (marker instanceof OrthographicCameraMarker);
+    }
+    return false;
+  }
 
-	public boolean isPerspective() {
-		return !isOrthographic();
-	}
+  public boolean isPerspective() {
+    return !isOrthographic();
+  }
 
-	@Override
-	public String toString() {
-		if( field != null ) {
-			return field.getName();
-		} else if( marker != null ) {
-			return marker.getName();
-		}
-		return "NO_NAME";
-	}
+  @Override
+  public String toString() {
+    if (field != null) {
+      return field.getName();
+    } else if (marker != null) {
+      return marker.getName();
+    }
+    return "NO_NAME";
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( obj instanceof CameraFieldAndMarker ) {
-			CameraFieldAndMarker other = (CameraFieldAndMarker)obj;
-			if( other.field == this.field ) {
-				return true;
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof CameraFieldAndMarker) {
+      CameraFieldAndMarker other = (CameraFieldAndMarker) obj;
+      if (other.field == this.field) {
+        return true;
+      }
+    }
+    return false;
+  }
 
 }

@@ -61,84 +61,84 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ColorChooserDialogCoreComposite extends SimpleOperationInputDialogCoreComposite<ColorChooserDialogCoreView> {
-	private final ColorState colorState;
+  private final ColorState colorState;
 
-	/* package-private */ColorChooserDialogCoreComposite( ColorState colorState ) {
-		super( UUID.fromString( "0a29c940-b819-41a2-8ed9-683f80b0ba69" ), Application.INHERIT_GROUP );
-		this.colorState = colorState;
-	}
+  /* package-private */ColorChooserDialogCoreComposite(ColorState colorState) {
+    super(UUID.fromString("0a29c940-b819-41a2-8ed9-683f80b0ba69"), Application.INHERIT_GROUP);
+    this.colorState = colorState;
+  }
 
-	@Override
-	protected Class<? extends Element> getClassUsedForLocalization() {
-		return this.colorState.getClass();
-	}
+  @Override
+  protected Class<? extends Element> getClassUsedForLocalization() {
+    return this.colorState.getClass();
+  }
 
-	@Override
-	protected String getSubKeyForLocalization() {
-		return "chooserDialogCoreComposite";
-	}
+  @Override
+  protected String getSubKeyForLocalization() {
+    return "chooserDialogCoreComposite";
+  }
 
-	@Override
-	protected ColorChooserDialogCoreView createView() {
-		return new ColorChooserDialogCoreView( this );
-	}
+  @Override
+  protected ColorChooserDialogCoreView createView() {
+    return new ColorChooserDialogCoreView(this);
+  }
 
-	@Override
-	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
-		return IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
+    return IS_GOOD_TO_GO_STATUS;
+  }
 
-	private Color preColor;
+  private Color preColor;
 
-	private final ChangeListener changeListener = new ChangeListener() {
-		@Override
-		public void stateChanged( ChangeEvent e ) {
-			handleStateChanged();
-		}
-	};
+  private final ChangeListener changeListener = new ChangeListener() {
+    @Override
+    public void stateChanged(ChangeEvent e) {
+      handleStateChanged();
+    }
+  };
 
-	private void handleStateChanged() {
-		JColorChooser jColorChooser = this.getView().getAwtComponent();
-		Color awtColor = jColorChooser.getSelectionModel().getSelectedColor();
-		//todo
-		this.colorState.setValueTransactionlessly( awtColor );
-	}
+  private void handleStateChanged() {
+    JColorChooser jColorChooser = this.getView().getAwtComponent();
+    Color awtColor = jColorChooser.getSelectionModel().getSelectedColor();
+    //todo
+    this.colorState.setValueTransactionlessly(awtColor);
+  }
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		this.preColor = this.colorState.getValue();
-		this.getView().setSelectedColor( preColor );
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    this.preColor = this.colorState.getValue();
+    this.getView().setSelectedColor(preColor);
 
-		JColorChooser jColorChooser = this.getView().getAwtComponent();
-		jColorChooser.getSelectionModel().addChangeListener( this.changeListener );
-		super.handlePreShowDialog( dialog );
-	}
+    JColorChooser jColorChooser = this.getView().getAwtComponent();
+    jColorChooser.getSelectionModel().addChangeListener(this.changeListener);
+    super.handlePreShowDialog(dialog);
+  }
 
-	@Override
-	protected void handleFinally( Dialog dialog ) {
-		JColorChooser jColorChooser = this.getView().getAwtComponent();
-		jColorChooser.getSelectionModel().removeChangeListener( this.changeListener );
-		if( openingActivity.isCanceled() ) {
-			this.colorState.setValueTransactionlessly( this.preColor );
-		}
-		super.handleFinally( dialog );
-	}
+  @Override
+  protected void handleFinally(Dialog dialog) {
+    JColorChooser jColorChooser = this.getView().getAwtComponent();
+    jColorChooser.getSelectionModel().removeChangeListener(this.changeListener);
+    if (openingActivity.isCanceled()) {
+      this.colorState.setValueTransactionlessly(this.preColor);
+    }
+    super.handleFinally(dialog);
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		Color color = this.getView().getSelectedColor();
-		if( color != null ) {
-			this.colorState.setValueTransactionlessly( color );
-		}
-		return null;
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity) {
+    Color color = this.getView().getSelectedColor();
+    if (color != null) {
+      this.colorState.setValueTransactionlessly(color);
+    }
+    return null;
+  }
 
-	public void addSubComposite( ColorChooserTabComposite<?> composite ) {
-		composite.initializeIfNecessary();
-		this.getView().addColorChooserTabView( composite.getView() );
-	}
+  public void addSubComposite(ColorChooserTabComposite<?> composite) {
+    composite.initializeIfNecessary();
+    this.getView().addColorChooserTabView(composite.getView());
+  }
 
-	public void removeSubComposite( ColorChooserTabComposite<?> composite ) {
-		this.getView().removeColorChooserTabView( composite.getView() );
-	}
+  public void removeSubComposite(ColorChooserTabComposite<?> composite) {
+    this.getView().removeColorChooserTabView(composite.getView());
+  }
 }

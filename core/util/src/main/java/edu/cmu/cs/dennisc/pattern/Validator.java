@@ -45,7 +45,6 @@ package edu.cmu.cs.dennisc.pattern;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public interface Validator {
-	public boolean isValid();
+@Deprecated public interface Validator {
+  public boolean isValid();
 }

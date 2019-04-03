@@ -53,46 +53,46 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class IssueUtilities {
-	private static final List<String> systemPropertiesForEnvironmentField = Collections.unmodifiableList( Lists.newArrayList( "java.version", "os.name", "os.arch" ) );
+  private static final List<String> systemPropertiesForEnvironmentField = Collections.unmodifiableList(Lists.newArrayList("java.version", "os.name", "os.arch"));
 
-	public static List<String> getSystemPropertiesForEnvironmentField() {
-		return systemPropertiesForEnvironmentField;
-	}
+  public static List<String> getSystemPropertiesForEnvironmentField() {
+    return systemPropertiesForEnvironmentField;
+  }
 
-	public static final String getEnvironmentLongDescription() {
-		StringBuilder sb = new StringBuilder();
-		String intersticial = "";
-		for( String propertyName : systemPropertiesForEnvironmentField) {
-			sb.append( intersticial );
-			sb.append( propertyName );
-			sb.append( ": " );
-			sb.append( System.getProperty( propertyName ) );
-			intersticial = "\n";
-		}
-		return sb.toString();
-	}
+  public static final String getEnvironmentLongDescription() {
+    StringBuilder sb = new StringBuilder();
+    String intersticial = "";
+    for (String propertyName : systemPropertiesForEnvironmentField) {
+      sb.append(intersticial);
+      sb.append(propertyName);
+      sb.append(": ");
+      sb.append(System.getProperty(propertyName));
+      intersticial = "\n";
+    }
+    return sb.toString();
+  }
 
-	public static final String getEnvironmentShortDescription() {
-		StringBuilder sb = new StringBuilder();
-		String intersticial = "";
-		for( String propertyName : systemPropertiesForEnvironmentField) {
-			sb.append( intersticial );
-			sb.append( System.getProperty( propertyName ) );
-			intersticial = ";";
-		}
-		if( SystemUtilities.isMac() ) {
-			sb.append( ";" );
-			sb.append( System.getProperty( "os.version" ) );
-		}
-		return sb.toString();
-	}
+  public static final String getEnvironmentShortDescription() {
+    StringBuilder sb = new StringBuilder();
+    String intersticial = "";
+    for (String propertyName : systemPropertiesForEnvironmentField) {
+      sb.append(intersticial);
+      sb.append(System.getProperty(propertyName));
+      intersticial = ";";
+    }
+    if (SystemUtilities.isMac()) {
+      sb.append(";");
+      sb.append(System.getProperty("os.version"));
+    }
+    return sb.toString();
+  }
 
-	public static final String getThrowableText( Throwable throwable ) {
-		if( throwable != null ) {
-			return ThrowableUtilities.getStackTraceAsString( throwable );
-		} else {
-			return "";
-		}
-	}
+  public static final String getThrowableText(Throwable throwable) {
+    if (throwable != null) {
+      return ThrowableUtilities.getStackTraceAsString(throwable);
+    } else {
+      return "";
+    }
+  }
 
 }

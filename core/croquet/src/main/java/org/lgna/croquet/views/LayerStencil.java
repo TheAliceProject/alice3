@@ -56,88 +56,88 @@ import java.awt.RenderingHints;
  * @author Dennis Cosgrove
  */
 public abstract class LayerStencil extends Panel {
-	private final AbstractWindow<?> window;
-	private final Layer layer;
+  private final AbstractWindow<?> window;
+  private final Layer layer;
 
-	public LayerStencil( AbstractWindow<?> window, Integer layerId ) {
-		this.window = window;
-		this.layer = this.window.getRootPane().getLayeredPane().getLayer( layerId );
-	}
+  public LayerStencil(AbstractWindow<?> window, Integer layerId) {
+    this.window = window;
+    this.layer = this.window.getRootPane().getLayeredPane().getLayer(layerId);
+  }
 
-	public AbstractWindow<?> getWindow() {
-		return this.window;
-	}
+  public AbstractWindow<?> getWindow() {
+    return this.window;
+  }
 
-	public Layer getLayer() {
-		return this.layer;
-	}
+  public Layer getLayer() {
+    return this.layer;
+  }
 
-	protected abstract void paintComponentPrologue( Graphics2D g2 );
+  protected abstract void paintComponentPrologue(Graphics2D g2);
 
-	protected abstract void paintComponentEpilogue( Graphics2D g2 );
+  protected abstract void paintComponentEpilogue(Graphics2D g2);
 
-	protected abstract void paintEpilogue( Graphics2D g2 );
+  protected abstract void paintEpilogue(Graphics2D g2);
 
-	protected abstract boolean contains( int x, int y, boolean superContains );
+  protected abstract boolean contains(int x, int y, boolean superContains);
 
-	@Override
-	protected JPanel createJPanel() {
-		class JStencil extends JPanel {
-			public JStencil() {
-				this.enableEvents( AWTEvent.MOUSE_EVENT_MASK );
-			}
+  @Override
+  protected JPanel createJPanel() {
+    class JStencil extends JPanel {
+      public JStencil() {
+        this.enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+      }
 
-			@Override
-			protected void paintComponent( Graphics g ) {
-				Graphics2D g2 = (Graphics2D)g;
-				Paint prevPaint = g2.getPaint();
-				Object prevAntialiasing = g2.getRenderingHint( RenderingHints.KEY_ANTIALIASING );
-				g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-				try {
-					LayerStencil.this.paintComponentPrologue( g2 );
-					super.paintComponent( g2 );
-					LayerStencil.this.paintComponentEpilogue( g2 );
-				} finally {
-					g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-					g2.setPaint( prevPaint );
-				}
-			}
+      @Override
+      protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        Paint prevPaint = g2.getPaint();
+        Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        try {
+          LayerStencil.this.paintComponentPrologue(g2);
+          super.paintComponent(g2);
+          LayerStencil.this.paintComponentEpilogue(g2);
+        } finally {
+          g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing);
+          g2.setPaint(prevPaint);
+        }
+      }
 
-			@Override
-			public void paint( Graphics g ) {
-				super.paint( g );
-				Graphics2D g2 = (Graphics2D)g;
-				LayerStencil.this.paintEpilogue( g2 );
-			}
+      @Override
+      public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D g2 = (Graphics2D) g;
+        LayerStencil.this.paintEpilogue(g2);
+      }
 
-			@Override
-			public boolean contains( int x, int y ) {
-				return LayerStencil.this.contains( x, y, super.contains( x, y ) );
-			}
-		}
-		JStencil rv = new JStencil();
-		rv.setOpaque( false );
-		return rv;
-	}
+      @Override
+      public boolean contains(int x, int y) {
+        return LayerStencil.this.contains(x, y, super.contains(x, y));
+      }
+    }
+    JStencil rv = new JStencil();
+    rv.setOpaque(false);
+    return rv;
+  }
 
-	public boolean isStencilShowing() {
-		return this.layer.getComponent() == this;
-	}
+  public boolean isStencilShowing() {
+    return this.layer.getComponent() == this;
+  }
 
-	public void setStencilShowing( boolean isShowing ) {
-		this.layer.setComponent( isShowing ? this : null );
-		this.repaint();
-	}
+  public void setStencilShowing(boolean isShowing) {
+    this.layer.setComponent(isShowing ? this : null);
+    this.repaint();
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    RepaintManagerUtilities.pushStencil(this.getAwtComponent());
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		RepaintManagerUtilities.popStencil();
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    RepaintManagerUtilities.popStencil();
+    super.handleUndisplayable();
+  }
 }

@@ -62,200 +62,200 @@ import javax.swing.JLabel;
  * @author David Culyba
  */
 public abstract class ManipulationHandle2D extends JLabel implements ManipulationHandle, ManipulationListener {
-	public ManipulationHandle2D() {
-		super();
-	}
+  public ManipulationHandle2D() {
+    super();
+  }
 
-	@Override
-	public void setVisible( boolean flag ) {
-		boolean wasVisible = this.isVisible();
-		super.setVisible( flag );
-		if( ( wasVisible != flag ) && ( this.dragAdapter != null ) ) {
-			if( this.isVisible() ) {
-				this.dragAdapter.addListeners( this );
-				this.dragAdapter.addManipulationListener( this );
-			} else {
-				this.dragAdapter.removeListeners( this );
-				this.dragAdapter.removeManipulationListener( this );
-			}
-		}
-	}
+  @Override
+  public void setVisible(boolean flag) {
+    boolean wasVisible = this.isVisible();
+    super.setVisible(flag);
+    if ((wasVisible != flag) && (this.dragAdapter != null)) {
+      if (this.isVisible()) {
+        this.dragAdapter.addListeners(this);
+        this.dragAdapter.addManipulationListener(this);
+      } else {
+        this.dragAdapter.removeListeners(this);
+        this.dragAdapter.removeManipulationListener(this);
+      }
+    }
+  }
 
-	@Override
-	public void clear() {
-		this.setManipulatedObject( null );
-	}
+  @Override
+  public void clear() {
+    this.setManipulatedObject(null);
+  }
 
-	@Override
-	public void setVisualsShowing( boolean showing ) {
-		//Do nothing
-	}
+  @Override
+  public void setVisualsShowing(boolean showing) {
+    //Do nothing
+  }
 
-	@Override
-	public void setDragAdapter( DragAdapter dragAdapter ) {
-		this.dragAdapter = dragAdapter;
-	}
+  @Override
+  public void setDragAdapter(DragAdapter dragAdapter) {
+    this.dragAdapter = dragAdapter;
+  }
 
-	@Override
-	public void setDragAdapterAndAddHandle( DragAdapter dragAdapter ) {
-		this.setDragAdapter( dragAdapter );
-		if( this.dragAdapter != null ) {
-			this.dragAdapter.addHandle( this );
-			this.dragAdapter.addListeners( this );
-		}
-	}
+  @Override
+  public void setDragAdapterAndAddHandle(DragAdapter dragAdapter) {
+    this.setDragAdapter(dragAdapter);
+    if (this.dragAdapter != null) {
+      this.dragAdapter.addHandle(this);
+      this.dragAdapter.addListeners(this);
+    }
+  }
 
-	@Override
-	public void addToSet( HandleSet set ) {
-		this.handleSet.addSet( set );
-	}
+  @Override
+  public void addToSet(HandleSet set) {
+    this.handleSet.addSet(set);
+  }
 
-	@Override
-	public HandleSet getHandleSet() {
-		return this.handleSet;
-	}
+  @Override
+  public HandleSet getHandleSet() {
+    return this.handleSet;
+  }
 
-	@Override
-	public boolean isAlwaysVisible() {
-		return true;
-	}
+  @Override
+  public boolean isAlwaysVisible() {
+    return true;
+  }
 
-	@Override
-	public void addToGroup( HandleSet.HandleGroup group ) {
-		this.handleSet.addGroup( group );
-	}
+  @Override
+  public void addToGroup(HandleSet.HandleGroup group) {
+    this.handleSet.addGroup(group);
+  }
 
-	@Override
-	public void addToGroups( HandleSet.HandleGroup... groups ) {
-		this.handleSet.addGroups( groups );
-	}
+  @Override
+  public void addToGroups(HandleSet.HandleGroup... groups) {
+    this.handleSet.addGroups(groups);
+  }
 
-	@Override
-	public boolean isMemberOf( HandleSet set ) {
-		return this.handleSet.intersects( set ) || set.intersects( this.handleSet );
-	}
+  @Override
+  public boolean isMemberOf(HandleSet set) {
+    return this.handleSet.intersects(set) || set.intersects(this.handleSet);
+  }
 
-	@Override
-	public boolean isPickable() {
-		return true;
-	}
+  @Override
+  public boolean isPickable() {
+    return true;
+  }
 
-	@Override
-	public boolean isMemberOf( HandleSet.HandleGroup group ) {
-		return this.handleSet.get( group.ordinal() );
-	}
+  @Override
+  public boolean isMemberOf(HandleSet.HandleGroup group) {
+    return this.handleSet.get(group.ordinal());
+  }
 
-	@Override
-	public AbstractTransformable getManipulatedObject() {
-		return null;
-	}
+  @Override
+  public AbstractTransformable getManipulatedObject() {
+    return null;
+  }
 
-	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
-	}
+  public void setManipulatedObject(AbstractTransformable manipulatedObject) {
+  }
 
-	@Override
-	public PickHint getPickHint() {
-		return PickHint.PickType.TWO_D_HANDLE.pickHint();
-	}
+  @Override
+  public PickHint getPickHint() {
+    return PickHint.PickType.TWO_D_HANDLE.pickHint();
+  }
 
-	@Override
-	public void setManipulation( AbstractManipulator manipulation ) {
-		this.manipulation = manipulation;
-	}
+  @Override
+  public void setManipulation(AbstractManipulator manipulation) {
+    this.manipulation = manipulation;
+  }
 
-	@Override
-	public AbstractManipulator getManipulation( InputState input ) {
-		return this.manipulation;
-	}
+  @Override
+  public AbstractManipulator getManipulation(InputState input) {
+    return this.manipulation;
+  }
 
-	@Override
-	public void setHandleManager( HandleManager handleManager ) {
-		this.handleManager = handleManager;
-	}
+  @Override
+  public void setHandleManager(HandleManager handleManager) {
+    this.handleManager = handleManager;
+  }
 
-	@Override
-	public HandleManager getHandleManager() {
-		return this.handleManager;
-	}
+  @Override
+  public HandleManager getHandleManager() {
+    return this.handleManager;
+  }
 
-	@Override
-	public HandleState getHandleStateCopy() {
-		return new HandleState( this.state );
-	}
+  @Override
+  public HandleState getHandleStateCopy() {
+    return new HandleState(this.state);
+  }
 
-	@Override
-	public boolean isRenderable() {
-		if( this.isAlwaysVisible() ) {
-			return true;
-		} else {
-			return this.state.shouldRender();
-		}
-	}
+  @Override
+  public boolean isRenderable() {
+    if (this.isAlwaysVisible()) {
+      return true;
+    } else {
+      return this.state.shouldRender();
+    }
+  }
 
-	protected void updateVisibleState( HandleRenderState renderState ) {
-	}
+  protected void updateVisibleState(HandleRenderState renderState) {
+  }
 
-	@Override
-	public void activate( ManipulationEvent event ) {
-		this.setHandleActive( true );
-	}
+  @Override
+  public void activate(ManipulationEvent event) {
+    this.setHandleActive(true);
+  }
 
-	@Override
-	public void deactivate( ManipulationEvent event ) {
-		this.setHandleActive( false );
-	}
+  @Override
+  public void deactivate(ManipulationEvent event) {
+    this.setHandleActive(false);
+  }
 
-	@Override
-	public void setHandleRollover( boolean rollover ) {
-		this.state.setRollover( rollover );
-		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
-	}
+  @Override
+  public void setHandleRollover(boolean rollover) {
+    this.state.setRollover(rollover);
+    this.updateVisibleState(HandleRenderState.getStateForHandle(this));
+  }
 
-	@Override
-	public boolean isHandleVisible() {
-		return this.state.isVisible() || this.isAlwaysVisible();
-	}
+  @Override
+  public boolean isHandleVisible() {
+    return this.state.isVisible() || this.isAlwaysVisible();
+  }
 
-	@Override
-	public void setHandleVisible( boolean visible ) {
-		this.state.setVisible( visible );
-		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
-	}
+  @Override
+  public void setHandleVisible(boolean visible) {
+    this.state.setVisible(visible);
+    this.updateVisibleState(HandleRenderState.getStateForHandle(this));
+  }
 
-	@Override
-	public void setHandleActive( boolean active ) {
-		this.state.setActive( active );
-		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
-	}
+  @Override
+  public void setHandleActive(boolean active) {
+    this.state.setActive(active);
+    this.updateVisibleState(HandleRenderState.getStateForHandle(this));
+  }
 
-	@Override
-	public void setSelectedObject( AbstractTransformable manipulatedObject ) {
-	}
+  @Override
+  public void setSelectedObject(AbstractTransformable manipulatedObject) {
+  }
 
-	@Override
-	public boolean matches( ManipulationEvent event ) {
-		return this.criteriaManager.matches( event );
-	}
+  @Override
+  public boolean matches(ManipulationEvent event) {
+    return this.criteriaManager.matches(event);
+  }
 
-	@Override
-	public void addCondition( ManipulationEventCriteria condition ) {
-		this.criteriaManager.addCondition( condition );
-	}
+  @Override
+  public void addCondition(ManipulationEventCriteria condition) {
+    this.criteriaManager.addCondition(condition);
+  }
 
-	@Override
-	public void removeCondition( ManipulationEventCriteria condition ) {
-		this.criteriaManager.removeCondition( condition );
-	}
+  @Override
+  public void removeCondition(ManipulationEventCriteria condition) {
+    this.criteriaManager.removeCondition(condition);
+  }
 
-	@Override
-	public void setCameraPosition( Point3 cameraPosition ) {
-		//Do Nothing
-	}
+  @Override
+  public void setCameraPosition(Point3 cameraPosition) {
+    //Do Nothing
+  }
 
-	private final EventCriteriaManager criteriaManager = new EventCriteriaManager();
-	protected final HandleState state = new HandleState();
-	private HandleManager handleManager = null;
-	private final HandleSet handleSet = new HandleSet();
-	private AbstractManipulator manipulation = null;
-	private DragAdapter dragAdapter = null;
+  private final EventCriteriaManager criteriaManager = new EventCriteriaManager();
+  protected final HandleState state = new HandleState();
+  private HandleManager handleManager = null;
+  private final HandleSet handleSet = new HandleSet();
+  private AbstractManipulator manipulation = null;
+  private DragAdapter dragAdapter = null;
 }

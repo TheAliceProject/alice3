@@ -43,72 +43,72 @@
 
 package org.lgna.project.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class BlockStatement extends Statement {
-	public BlockStatement() {
-	}
+  public BlockStatement() {
+  }
 
-	public BlockStatement( Statement... statements ) {
-		this.statements.add( statements );
-	}
+  public BlockStatement(Statement... statements) {
+    this.statements.add(statements);
+  }
 
-	@Override public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendBlock(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendBlock(this);
+  }
 
-	@Override
-	public boolean containsAtLeastOneEnabledReturnStatement() {
-		if (!isEnabled.getValue() ) {
-			return false;
-		}
-		for ( Statement statement: statements ) {
-			if (statement.containsAtLeastOneEnabledReturnStatement()) {
-				return true;
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean containsAtLeastOneEnabledReturnStatement() {
+    if (!isEnabled.getValue()) {
+      return false;
+    }
+    for (Statement statement : statements) {
+      if (statement.containsAtLeastOneEnabledReturnStatement()) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-	@Override
-	public boolean containsAReturnForEveryPath() {
-		if (!isEnabled.getValue() ) {
-			return false;
-		}
-		// Whether the block is executed sequentially or in a parallel, a single
-		// step that returns will be enough.
-		for ( Statement statement: statements ) {
-			if (statement.containsAReturnForEveryPath()) {
-				return true;
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean containsAReturnForEveryPath() {
+    if (!isEnabled.getValue()) {
+      return false;
+    }
+    // Whether the block is executed sequentially or in a parallel, a single
+    // step that returns will be enough.
+    for (Statement statement : statements) {
+      if (statement.containsAReturnForEveryPath()) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-	@Override
-	public boolean containsUnreachableCode() {
-		if (!isEnabled.getValue() ) {
-			return false;
-		}
-		final int N = statements.size();
-		boolean foundEnabledCodeAtEnd = false;
-		for( int i = N - 1; i >= 0; i-- ) {
-			Statement statement = statements.get( i );
-			if (statement.containsUnreachableCode()) {
-				return true;
-			}
-			if ( foundEnabledCodeAtEnd ) {
-				if( statement.containsAReturnForEveryPath() ) {
-					return true;
-				}
-			} else {
-				foundEnabledCodeAtEnd = statement.isEnabledNonCommment();
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean containsUnreachableCode() {
+    if (!isEnabled.getValue()) {
+      return false;
+    }
+    final int N = statements.size();
+    boolean foundEnabledCodeAtEnd = false;
+    for (int i = N - 1; i >= 0; i--) {
+      Statement statement = statements.get(i);
+      if (statement.containsUnreachableCode()) {
+        return true;
+      }
+      if (foundEnabledCodeAtEnd) {
+        if (statement.containsAReturnForEveryPath()) {
+          return true;
+        }
+      } else {
+        foundEnabledCodeAtEnd = statement.isEnabledNonCommment();
+      }
+    }
+    return false;
+  }
 
-	public final StatementListProperty statements = new StatementListProperty( this );
+  public final StatementListProperty statements = new StatementListProperty(this);
 }

@@ -53,21 +53,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AudioResourceExpressionFillIn extends ResourceExpressionFillIn<AudioResource> {
-	private static Map<AudioResource, AudioResourceExpressionFillIn> map = Maps.newHashMap();
+  private static Map<AudioResource, AudioResourceExpressionFillIn> map = Maps.newHashMap();
 
-	public static synchronized AudioResourceExpressionFillIn getInstance( AudioResource resource ) {
-		assert resource != null;
-		AudioResourceExpressionFillIn rv = map.get( resource );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new AudioResourceExpressionFillIn( resource );
-			map.put( resource, rv );
-		}
-		return rv;
-	}
+  public static synchronized AudioResourceExpressionFillIn getInstance(AudioResource resource) {
+    assert resource != null;
+    AudioResourceExpressionFillIn rv = map.get(resource);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new AudioResourceExpressionFillIn(resource);
+      map.put(resource, rv);
+    }
+    return rv;
+  }
 
-	private AudioResourceExpressionFillIn( AudioResource resource ) {
-		super( UUID.fromString( "c232e5f0-d45b-48c4-a4d5-69102d40b0f5" ), AudioResource.class, resource );
-	}
+  private AudioResourceExpressionFillIn(AudioResource resource) {
+    super(UUID.fromString("c232e5f0-d45b-48c4-a4d5-69102d40b0f5"), AudioResource.class, resource);
+  }
 }

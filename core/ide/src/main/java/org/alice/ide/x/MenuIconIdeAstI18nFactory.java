@@ -50,27 +50,27 @@ import org.lgna.project.ast.AbstractType;
  * @author Dennis Cosgrove
  */
 public class MenuIconIdeAstI18nFactory extends ImmutableAstI18nFactory {
-	private static class SingletonHolder {
-		private static MenuIconIdeAstI18nFactory instance = new MenuIconIdeAstI18nFactory();
-	}
+  private static class SingletonHolder {
+    private static MenuIconIdeAstI18nFactory instance = new MenuIconIdeAstI18nFactory();
+  }
 
-	public static MenuIconIdeAstI18nFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static MenuIconIdeAstI18nFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private MenuIconIdeAstI18nFactory() {
-	}
+  private MenuIconIdeAstI18nFactory() {
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
-		return null;
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
+    return null;
+  }
 
-	// todo: investigate
-	// this epic hack was inserted to account for menu item icons returning a size of 0,0
-	// dennisc
-	@Override
-	protected SwingComponentView<?> EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( SwingComponentView<?> component ) {
-		return new LineAxisPanel( component );
-	}
+  // todo: investigate
+  // this epic hack was inserted to account for menu item icons returning a size of 0,0
+  // dennisc
+  @Override
+  protected SwingComponentView<?> EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent(SwingComponentView<?> component) {
+    return new LineAxisPanel(component);
+  }
 }

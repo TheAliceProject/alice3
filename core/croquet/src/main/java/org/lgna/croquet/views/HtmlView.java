@@ -53,47 +53,47 @@ import java.net.URL;
  * @author Dennis Cosgrove
  */
 public class HtmlView extends SwingComponentView<JBrowserHtmlView> {
-	public HTMLDocument getHtmlDocument() {
-		return this.getAwtComponent().getHtmlDocument();
-	}
+  public HTMLDocument getHtmlDocument() {
+    return this.getAwtComponent().getHtmlDocument();
+  }
 
-	public String getText() {
-		return this.getAwtComponent().getText();
-	}
+  public String getText() {
+    return this.getAwtComponent().getText();
+  }
 
-	public void setText( String text ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setText( text );
-	}
+  public void setText(String text) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setText(text);
+  }
 
-	public Caret getCaret() {
-		return this.getAwtComponent().getCaret();
-	}
+  public Caret getCaret() {
+    return this.getAwtComponent().getCaret();
+  }
 
-	public void setCaret( Caret caret ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setCaret( caret );
-	}
+  public void setCaret(Caret caret) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setCaret(caret);
+  }
 
-	public void setTextFromUrlLater( URL url ) {
-		this.getAwtComponent().setTextFromUrlLater( url );
-	}
+  public void setTextFromUrlLater(URL url) {
+    this.getAwtComponent().setTextFromUrlLater(url);
+  }
 
-	public void addImageToCache( URL url, Image image ) {
-		this.getAwtComponent().addImageToCache( url, image );
-	}
+  public void addImageToCache(URL url, Image image) {
+    this.getAwtComponent().addImageToCache(url, image);
+  }
 
-	protected boolean isRightToLeftComponentOrientationAllowed( boolean defaultValue ) {
-		return defaultValue;
-	}
+  protected boolean isRightToLeftComponentOrientationAllowed(boolean defaultValue) {
+    return defaultValue;
+  }
 
-	@Override
-	protected JBrowserHtmlView createAwtComponent() {
-		return new JBrowserHtmlView() {
-			@Override
-			protected boolean isRightToLeftComponentOrientationAllowed() {
-				return HtmlView.this.isRightToLeftComponentOrientationAllowed( super.isRightToLeftComponentOrientationAllowed() );
-			}
-		};
-	}
+  @Override
+  protected JBrowserHtmlView createAwtComponent() {
+    return new JBrowserHtmlView() {
+      @Override
+      protected boolean isRightToLeftComponentOrientationAllowed() {
+        return HtmlView.this.isRightToLeftComponentOrientationAllowed(super.isRightToLeftComponentOrientationAllowed());
+      }
+    };
+  }
 }

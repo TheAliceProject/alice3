@@ -69,117 +69,117 @@ import edu.cmu.cs.dennisc.java.util.Maps;
  */
 public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 
-	private final Map<Key, CopyOnWriteArrayList<Object>> keySpecificListeners = new ConcurrentHashMap<>();
-	private final CopyOnWriteArrayList<Object> genericKeyListeners = new CopyOnWriteArrayList<>();
-	private final Map<Object, HeldKeyPolicy> listenerKeyPolicies = Maps.newConcurrentHashMap();
-	private final Set<Key> pressedKeys = new HashSet<>();
-	private long sleepTime = 33;
+  private final Map<Key, CopyOnWriteArrayList<Object>> keySpecificListeners = new ConcurrentHashMap<>();
+  private final CopyOnWriteArrayList<Object> genericKeyListeners = new CopyOnWriteArrayList<>();
+  private final Map<Object, HeldKeyPolicy> listenerKeyPolicies = Maps.newConcurrentHashMap();
+  private final Set<Key> pressedKeys = new HashSet<>();
+  private long sleepTime = 33;
 
-	KeyPressedHandler() {
-	}
+  KeyPressedHandler() {
+  }
 
-	private void internalAddListener( Object listener, MultipleEventPolicy policy, List<Key> validKeys, HeldKeyPolicy heldKeyPolicy ) {
-		listenerKeyPolicies.put(listener, heldKeyPolicy);
-		if( validKeys == null ) {
-			genericKeyListeners.add(listener);
-		} else {
-			for( Key k : validKeys ) {
-				if( keySpecificListeners.get(k) == null ) {
-					keySpecificListeners.put(k, new CopyOnWriteArrayList<>());
-				}
-				keySpecificListeners.get(k).add(listener);
-			}
-		}
-		registerIsFiringMap( listener );
-		registerPolicyMap( listener, policy );
-	}
+  private void internalAddListener(Object listener, MultipleEventPolicy policy, List<Key> validKeys, HeldKeyPolicy heldKeyPolicy) {
+    listenerKeyPolicies.put(listener, heldKeyPolicy);
+    if (validKeys == null) {
+      genericKeyListeners.add(listener);
+    } else {
+      for (Key k : validKeys) {
+        if (keySpecificListeners.get(k) == null) {
+          keySpecificListeners.put(k, new CopyOnWriteArrayList<>());
+        }
+        keySpecificListeners.get(k).add(listener);
+      }
+    }
+    registerIsFiringMap(listener);
+    registerPolicyMap(listener, policy);
+  }
 
-	public void addListener(KeyPressListener listener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy) {
-		internalAddListener( listener, policy, null, heldKeyPolicy );
-	}
+  public void addListener(KeyPressListener listener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy) {
+    internalAddListener(listener, policy, null, heldKeyPolicy);
+  }
 
-	public void addListener(ArrowKeyPressListener listener, MultipleEventPolicy policy, List<Key> validKeys, HeldKeyPolicy heldKeyPolicy) {
-		internalAddListener( listener, policy, validKeys, heldKeyPolicy );
-	}
+  public void addListener(ArrowKeyPressListener listener, MultipleEventPolicy policy, List<Key> validKeys, HeldKeyPolicy heldKeyPolicy) {
+    internalAddListener(listener, policy, validKeys, heldKeyPolicy);
+  }
 
-	public void addListener(NumberKeyPressListener listener, MultipleEventPolicy policy, List<Key> validKeys, HeldKeyPolicy heldKeyPolicy) {
-		internalAddListener( listener, policy, validKeys, heldKeyPolicy );
-	}
+  public void addListener(NumberKeyPressListener listener, MultipleEventPolicy policy, List<Key> validKeys, HeldKeyPolicy heldKeyPolicy) {
+    internalAddListener(listener, policy, validKeys, heldKeyPolicy);
+  }
 
-	@Override
-	protected void fire( Object listener, KeyEvent event ) {
-		if( listener instanceof ArrowKeyPressListener ) {
-			ArrowKeyPressListener arrowListener = (ArrowKeyPressListener)listener;
-			arrowListener.arrowKeyPressed( new ArrowKeyEvent( event ) );
-		} else if( listener instanceof NumberKeyPressListener ) {
-			NumberKeyPressListener numberListener = (NumberKeyPressListener)listener;
-			numberListener.numberKeyPressed( new NumberKeyEvent( event ) );
-		} else if( listener instanceof KeyPressListener ) {
-			KeyPressListener keyListener = (KeyPressListener)listener;
-			keyListener.keyPressed( event );
-		}
-	}
+  @Override
+  protected void fire(Object listener, KeyEvent event) {
+    if (listener instanceof ArrowKeyPressListener) {
+      ArrowKeyPressListener arrowListener = (ArrowKeyPressListener) listener;
+      arrowListener.arrowKeyPressed(new ArrowKeyEvent(event));
+    } else if (listener instanceof NumberKeyPressListener) {
+      NumberKeyPressListener numberListener = (NumberKeyPressListener) listener;
+      numberListener.numberKeyPressed(new NumberKeyEvent(event));
+    } else if (listener instanceof KeyPressListener) {
+      KeyPressListener keyListener = (KeyPressListener) listener;
+      keyListener.keyPressed(event);
+    }
+  }
 
-	void handleKeyPress(final KeyEvent event) {
-		if( shouldFire ) {
-			final Key key = event.getKey();
-			if (!pressedKeys.contains(key)) {
-				pressedKeys.add(key);
-				notifyListeners(event, this::fireFirstPressEvent);
-			}
-		}
-	}
+  void handleKeyPress(final KeyEvent event) {
+    if (shouldFire) {
+      final Key key = event.getKey();
+      if (!pressedKeys.contains(key)) {
+        pressedKeys.add(key);
+        notifyListeners(event, this::fireFirstPressEvent);
+      }
+    }
+  }
 
-	void handleKeyRelease(KeyEvent event) {
-		if( shouldFire ) {
-			notifyListeners(event, this::fireReleaseEvent);
-		}
-	}
+  void handleKeyRelease(KeyEvent event) {
+    if (shouldFire) {
+      notifyListeners(event, this::fireReleaseEvent);
+    }
+  }
 
-	private void notifyListeners(KeyEvent event, BiConsumer<KeyEvent, Object> notification) {
-		CopyOnWriteArrayList<Object> keySpecificListeners = this.keySpecificListeners.get(event.getKey());
-		if (keySpecificListeners != null) {
-			for (Object listener : keySpecificListeners) {
-				notification.accept(event, listener);
-			}
-		}
-		for (Object listener : genericKeyListeners) {
-			notification.accept(event, listener);
-		}
-	}
+  private void notifyListeners(KeyEvent event, BiConsumer<KeyEvent, Object> notification) {
+    CopyOnWriteArrayList<Object> keySpecificListeners = this.keySpecificListeners.get(event.getKey());
+    if (keySpecificListeners != null) {
+      for (Object listener : keySpecificListeners) {
+        notification.accept(event, listener);
+      }
+    }
+    for (Object listener : genericKeyListeners) {
+      notification.accept(event, listener);
+    }
+  }
 
-	private void fireFirstPressEvent(KeyEvent event, Object listener) {
-		switch (listenerKeyPolicies.get(listener)) {
-		case FIRE_ONCE_ON_PRESS:
-			fireEvent(listener, event);
-			break;
-		case FIRE_MULTIPLE:
-			final ComponentExecutor thread = new ComponentExecutor(() -> {
-				Key key = event.getKey();
-				while (pressedKeys.contains(key)) {
-					fireEvent(listener, event);
-					try {
-						Thread.sleep(sleepTime);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}, "keyPressedThread");
-			thread.start();
-			break;
-		case FIRE_ONCE_ON_RELEASE:
-			break;
-		}
-	}
+  private void fireFirstPressEvent(KeyEvent event, Object listener) {
+    switch (listenerKeyPolicies.get(listener)) {
+    case FIRE_ONCE_ON_PRESS:
+      fireEvent(listener, event);
+      break;
+    case FIRE_MULTIPLE:
+      final ComponentExecutor thread = new ComponentExecutor(() -> {
+        Key key = event.getKey();
+        while (pressedKeys.contains(key)) {
+          fireEvent(listener, event);
+          try {
+            Thread.sleep(sleepTime);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+      }, "keyPressedThread");
+      thread.start();
+      break;
+    case FIRE_ONCE_ON_RELEASE:
+      break;
+    }
+  }
 
-	private void fireReleaseEvent(KeyEvent event, Object listener) {
-		if( listenerKeyPolicies.get(listener) == HeldKeyPolicy.FIRE_ONCE_ON_RELEASE ) {
-			fireEvent( listener, event );
-		}
-		pressedKeys.remove(event.getKey());
-	}
+  private void fireReleaseEvent(KeyEvent event, Object listener) {
+    if (listenerKeyPolicies.get(listener) == HeldKeyPolicy.FIRE_ONCE_ON_RELEASE) {
+      fireEvent(listener, event);
+    }
+    pressedKeys.remove(event.getKey());
+  }
 
-	void releaseAllKeys() {
-		pressedKeys.clear();
-	}
+  void releaseAllKeys() {
+    pressedKeys.clear();
+  }
 }

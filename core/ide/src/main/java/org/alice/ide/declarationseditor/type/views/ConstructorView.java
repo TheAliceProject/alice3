@@ -53,13 +53,13 @@ import org.lgna.project.ast.NamedUserConstructor;
  * @author Dennis Cosgrove
  */
 public class ConstructorView extends MemberView {
-	public ConstructorView( NamedUserConstructor constructor ) {
-		super( ConstructorMenuModel.getInstance( constructor ) );
-		DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-		Operation operation = tabState.getItemSelectionOperationForConstructor( constructor );
-		Hyperlink hyperlink = operation.createHyperlink();
-		hyperlink.scaleFont( MembersView.NAME_FONT_SCALE );
-		//hyperlink.setClobberText( "constructor" );
-		this.addComponent( hyperlink );
-	}
+  public ConstructorView(NamedUserConstructor constructor) {
+    super(ConstructorMenuModel.getInstance(constructor));
+    DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+    Operation operation = tabState.getItemSelectionOperationForConstructor(constructor);
+    Hyperlink hyperlink = operation.createHyperlink();
+    hyperlink.scaleFont(MembersView.NAME_FONT_SCALE);
+    //hyperlink.setClobberText( "constructor" );
+    this.addComponent(hyperlink);
+  }
 }

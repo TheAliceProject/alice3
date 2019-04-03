@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,53 +34,44 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum NavajoBlanketResource implements PropResource {
-	FLAT_ZIG_ZAGS,
-	FLAT_BORDERED,
-	ROLLED_ZIG_ZAGS,
-	ROLLED_BORDERED;
+  FLAT_ZIG_ZAGS, FLAT_BORDERED, ROLLED_ZIG_ZAGS, ROLLED_BORDERED;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, NavajoBlanketResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME, methodNameHint="getLeft")
-	public static final JointId LEFT_0 = new JointId( ROOT, NavajoBlanketResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_1 = new JointId( LEFT_0, NavajoBlanketResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_2 = new JointId( LEFT_1, NavajoBlanketResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME, methodNameHint="getRight")
-	public static final JointId RIGHT_0 = new JointId( ROOT, NavajoBlanketResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_1 = new JointId( RIGHT_0, NavajoBlanketResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_2 = new JointId( RIGHT_1, NavajoBlanketResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, NavajoBlanketResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME, methodNameHint = "getLeft") public static final JointId LEFT_0 = new JointId(ROOT, NavajoBlanketResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_1 = new JointId(LEFT_0, NavajoBlanketResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_2 = new JointId(LEFT_1, NavajoBlanketResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME, methodNameHint = "getRight") public static final JointId RIGHT_0 = new JointId(ROOT, NavajoBlanketResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_1 = new JointId(RIGHT_0, NavajoBlanketResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_2 = new JointId(RIGHT_1, NavajoBlanketResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	public static final JointId[] RIGHT_ARRAY = { RIGHT_0, RIGHT_1, RIGHT_2 };
+  public static final JointId[] RIGHT_ARRAY = {RIGHT_0, RIGHT_1, RIGHT_2};
 
-	public static final JointId[] LEFT_ARRAY = { LEFT_0, LEFT_1, LEFT_2 };
+  public static final JointId[] LEFT_ARRAY = {LEFT_0, LEFT_1, LEFT_2};
 
-	private final ImplementationAndVisualType resourceType;
-	NavajoBlanketResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	NavajoBlanketResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  NavajoBlanketResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return NavajoBlanketResource.JOINT_ID_ROOTS;
-	}
+  NavajoBlanketResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return NavajoBlanketResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

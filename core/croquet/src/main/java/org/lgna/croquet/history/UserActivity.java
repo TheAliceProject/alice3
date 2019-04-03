@@ -62,230 +62,222 @@ import java.util.ListIterator;
 
 public class UserActivity extends ActivityNode<CompletionModel> {
 
-	enum ActivityStatus {
-		PENDING,
-		CANCELED,
-		ERROR,
-		FINISHED
-	}
-	private final List<PrepStep<?>> prepSteps;
-	private final List<UserActivity> childActivities;
-	private Edit edit;
+  enum ActivityStatus {
+    PENDING, CANCELED, ERROR, FINISHED
+  }
 
-	private Object producedValue;
-	private ActivityStatus status = ActivityStatus.PENDING;
+  private final List<PrepStep<?>> prepSteps;
+  private final List<UserActivity> childActivities;
+  private Edit edit;
 
-	public UserActivity() {
-		this(null);
-	}
+  private Object producedValue;
+  private ActivityStatus status = ActivityStatus.PENDING;
 
-	private UserActivity( UserActivity parent) {
-		super( parent );
-		this.prepSteps = Lists.newLinkedList();
-		this.childActivities = Lists.newCopyOnWriteArrayList();
-	}
+  public UserActivity() {
+    this(null);
+  }
 
-	public UserActivity newChildActivity() {
-		UserActivity child = new UserActivity( this );
-		childActivities.add( child );
-		child.fireChanged( new ChangeEvent<>( child ) );
-		return child;
-	}
+  private UserActivity(UserActivity parent) {
+    super(parent);
+    this.prepSteps = Lists.newLinkedList();
+    this.childActivities = Lists.newCopyOnWriteArrayList();
+  }
 
-	public UserActivity getActivityWithoutTrigger() {
-		return getTrigger() != null ? newChildActivity() : this;
-	}
+  public UserActivity newChildActivity() {
+    UserActivity child = new UserActivity(this);
+    childActivities.add(child);
+    child.fireChanged(new ChangeEvent<>(child));
+    return child;
+  }
 
-	public UserActivity getActivityWithoutModel() {
-		return getModel() != null ? newChildActivity() : this;
-	}
+  public UserActivity getActivityWithoutTrigger() {
+    return getTrigger() != null ? newChildActivity() : this;
+  }
 
-	public void setTrigger(Trigger trigger) {
-		this.trigger = trigger;
-	}
+  public UserActivity getActivityWithoutModel() {
+    return getModel() != null ? newChildActivity() : this;
+  }
 
-	public List<UserActivity> getChildActivities() {
-		return childActivities;
-	}
+  public void setTrigger(Trigger trigger) {
+    this.trigger = trigger;
+  }
 
-	public int getIndexOfTransaction( UserActivity childActivity ) {
-		return getPrepStepCount() + childActivities.indexOf( childActivity );
-	}
+  public List<UserActivity> getChildActivities() {
+    return childActivities;
+  }
 
-	public UserActivity getLatestActivity() {
-			final int n = childActivities.size();
-			return n > 0 && childActivities.get( n - 1 ).isPending()
-					? childActivities.get( n - 1 ).getLatestActivity()
-					: this;
-	}
+  public int getIndexOfTransaction(UserActivity childActivity) {
+    return getPrepStepCount() + childActivities.indexOf(childActivity);
+  }
 
-	private Trigger findAcceptableTrigger( Criterion<Trigger> criterion ) {
-		if( criterion.accept( trigger ) ) {
-			return trigger;
-		}
-		final int N = getPrepStepCount();
-		for( int i = 0; i < N; i++ ) {
-			PrepStep<?> prepStep = this.prepSteps.get( N - 1 - i );
-			if( criterion.accept( prepStep.trigger ) ) {
-				return prepStep.trigger;
-			}
-		}
-		return getOwner() == null ? null: getOwner().findAcceptableTrigger(criterion);
-	}
+  public UserActivity getLatestActivity() {
+    final int n = childActivities.size();
+    return n > 0 && childActivities.get(n - 1).isPending() ? childActivities.get(n - 1).getLatestActivity() : this;
+  }
 
-	public DropSite findDropSite() {
-		DropTrigger dropTrigger = (DropTrigger) findAcceptableTrigger( trig -> trig instanceof DropTrigger );
-		return dropTrigger != null ? dropTrigger.getDropSite() : null;
-	}
+  private Trigger findAcceptableTrigger(Criterion<Trigger> criterion) {
+    if (criterion.accept(trigger)) {
+      return trigger;
+    }
+    final int N = getPrepStepCount();
+    for (int i = 0; i < N; i++) {
+      PrepStep<?> prepStep = this.prepSteps.get(N - 1 - i);
+      if (criterion.accept(prepStep.trigger)) {
+        return prepStep.trigger;
+      }
+    }
+    return getOwner() == null ? null : getOwner().findAcceptableTrigger(criterion);
+  }
 
-	public MenuItemSelectStep findFirstMenuSelectStep() {
-		for ( PrepStep step : prepSteps) {
-			if (step instanceof MenuItemSelectStep) {
-				return (MenuItemSelectStep) step;
-			}
-		}
-		return null;
-	}
+  public DropSite findDropSite() {
+    DropTrigger dropTrigger = (DropTrigger) findAcceptableTrigger(trig -> trig instanceof DropTrigger);
+    return dropTrigger != null ? dropTrigger.getDropSite() : null;
+  }
 
-	public void addMenuSelection( MenuSelection menuSelection ) {
-		ListIterator<PrepStep<?>> iterator = this.prepSteps.listIterator( this.prepSteps.size() );
-		while( iterator.hasPrevious() ) {
-			PrepStep<?> prepStep = iterator.previous();
-			if( prepStep instanceof MenuItemSelectStep ) {
-				MenuItemSelectStep prevMenuItemSelectStep = (MenuItemSelectStep)prepStep;
-				if( menuSelection.isPrevious( prevMenuItemSelectStep.getMenuSelection() ) ) {
-					break;
-				} else {
-					iterator.remove();
-				}
-			} else {
-				break;
-			}
-		}
-		MenuItemSelectStep.createAndAddToActivity( this, menuSelection, trigger );
-	}
+  public MenuItemSelectStep findFirstMenuSelectStep() {
+    for (PrepStep step : prepSteps) {
+      if (step instanceof MenuItemSelectStep) {
+        return (MenuItemSelectStep) step;
+      }
+    }
+    return null;
+  }
 
-	public <M extends DragModel> DragStep addDragStep( DragModel model, DragTrigger trigger ) {
-		return new DragStep( this, model, trigger );
-	}
+  public void addMenuSelection(MenuSelection menuSelection) {
+    ListIterator<PrepStep<?>> iterator = this.prepSteps.listIterator(this.prepSteps.size());
+    while (iterator.hasPrevious()) {
+      PrepStep<?> prepStep = iterator.previous();
+      if (prepStep instanceof MenuItemSelectStep) {
+        MenuItemSelectStep prevMenuItemSelectStep = (MenuItemSelectStep) prepStep;
+        if (menuSelection.isPrevious(prevMenuItemSelectStep.getMenuSelection())) {
+          break;
+        } else {
+          iterator.remove();
+        }
+      } else {
+        break;
+      }
+    }
+    MenuItemSelectStep.createAndAddToActivity(this, menuSelection, trigger);
+  }
 
-	public Edit getEdit() {
-		return edit;
-	}
+  public <M extends DragModel> DragStep addDragStep(DragModel model, DragTrigger trigger) {
+    return new DragStep(this, model, trigger);
+  }
 
-	public int getChildStepCount() {
-		return getPrepStepCount() + childActivities.size();
-	}
+  public Edit getEdit() {
+    return edit;
+  }
 
-	public ActivityNode getChildAt( int index ) {
-		if( index >= getPrepStepCount() ) {
-			return childActivities.get( index - getPrepStepCount() );
-		} else {
-			return prepSteps.get( index );
-		}
-	}
+  public int getChildStepCount() {
+    return getPrepStepCount() + childActivities.size();
+  }
 
-	public int getIndexOfPrepStep( PrepStep<?> prepStep ) {
-		return prepSteps.indexOf( prepStep );
-	}
+  public ActivityNode getChildAt(int index) {
+    if (index >= getPrepStepCount()) {
+      return childActivities.get(index - getPrepStepCount());
+    } else {
+      return prepSteps.get(index);
+    }
+  }
 
-	private int getPrepStepCount() {
-		return prepSteps.size();
-	}
+  public int getIndexOfPrepStep(PrepStep<?> prepStep) {
+    return prepSteps.indexOf(prepStep);
+  }
 
-	void addPrepStep( PrepStep<?> step ) {
-		prepSteps.add( step );
-		step.fireChanged( new ChangeEvent<PrepStep>( step ) );
-	}
+  private int getPrepStepCount() {
+    return prepSteps.size();
+  }
 
-	public void setCompletionModel( CompletionModel model) {
-		this.model = model;
-		fireChanged( new ChangeEvent<UserActivity>( this ) );
-	}
+  void addPrepStep(PrepStep<?> step) {
+    prepSteps.add(step);
+    step.fireChanged(new ChangeEvent<PrepStep>(step));
+  }
 
-	public CompletionModel getCompletionModel() {
-		return getModel();
-	}
+  public void setCompletionModel(CompletionModel model) {
+    this.model = model;
+    fireChanged(new ChangeEvent<UserActivity>(this));
+  }
 
-	public boolean isPending() {
-		return ActivityStatus.PENDING == status;
-	}
+  public CompletionModel getCompletionModel() {
+    return getModel();
+  }
 
-	public boolean isSuccessfullyCompleted() {
-		return ActivityStatus.FINISHED == status;
-	}
+  public boolean isPending() {
+    return ActivityStatus.PENDING == status;
+  }
 
-	public boolean isCanceled() {
-		return ActivityStatus.CANCELED == status || ActivityStatus.ERROR == status;
-	}
+  public boolean isSuccessfullyCompleted() {
+    return ActivityStatus.FINISHED == status;
+  }
 
-	public boolean isCanceledByError() {
-		return ActivityStatus.ERROR == status;
-	}
+  public boolean isCanceled() {
+    return ActivityStatus.CANCELED == status || ActivityStatus.ERROR == status;
+  }
 
-	public void commitAndInvokeDo( Edit edit ) {
-		status = ActivityStatus.FINISHED;
-		this.edit = edit;
-		edit.doOrRedo( true );
-		fireChanged( new EditCommittedEvent( edit ) );
-	}
+  public boolean isCanceledByError() {
+    return ActivityStatus.ERROR == status;
+  }
 
-	public void finish() {
-		status = ActivityStatus.FINISHED;
-		removeFromOwnerIfEmpty();
-		fireChanged( new FinishedEvent() );
-	}
+  public void commitAndInvokeDo(Edit edit) {
+    status = ActivityStatus.FINISHED;
+    this.edit = edit;
+    edit.doOrRedo(true);
+    fireChanged(new EditCommittedEvent(edit));
+  }
 
-	public void cancel() {
-		removeFromOwnerIfEmpty();
-		status = ActivityStatus.CANCELED;
-		fireChanged( new CancelEvent() );
-	}
+  public void finish() {
+    status = ActivityStatus.FINISHED;
+    removeFromOwnerIfEmpty();
+    fireChanged(new FinishedEvent());
+  }
 
-	public void cancel( CancelException ce ) {
-		removeFromOwnerIfEmpty();
-		if ( ce != null && ce.getCause() != ce ) {
-			status = ActivityStatus.ERROR;
-		} else {
-			status = ActivityStatus.CANCELED;
-		}
-		fireChanged( new CancelEvent() );
-	}
+  public void cancel() {
+    removeFromOwnerIfEmpty();
+    status = ActivityStatus.CANCELED;
+    fireChanged(new CancelEvent());
+  }
 
-	private void removeFromOwnerIfEmpty() {
-		if ( getOwner() != null && childActivities.isEmpty() && prepSteps.isEmpty() && model == null && edit == null ) {
-			getOwner().childActivities.remove( this );
-			getOwner().fireChanged( new ChangeEvent<UserActivity>( getOwner() ) );
-		}
-	}
+  public void cancel(CancelException ce) {
+    removeFromOwnerIfEmpty();
+    if (ce != null && ce.getCause() != ce) {
+      status = ActivityStatus.ERROR;
+    } else {
+      status = ActivityStatus.CANCELED;
+    }
+    fireChanged(new CancelEvent());
+  }
 
-	public Object getProducedValue() {
-		return producedValue;
-	}
+  private void removeFromOwnerIfEmpty() {
+    if (getOwner() != null && childActivities.isEmpty() && prepSteps.isEmpty() && model == null && edit == null) {
+      getOwner().childActivities.remove(this);
+      getOwner().fireChanged(new ChangeEvent<UserActivity>(getOwner()));
+    }
+  }
 
-	public void setProducedValue( Object value ) {
-		producedValue = value;
-	}
+  public Object getProducedValue() {
+    return producedValue;
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( getClass().getSimpleName() )
-			.append( ' ' )
-			.append( status )
-			.append( "[" );
-		for( PrepStep prepStep : prepSteps ) {
-			sb.append( prepStep );
-			sb.append( "," );
-		}
-		if (childActivities.size() == 1) {
-			sb.append( "1 child" );
-		}
-		if (childActivities.size() > 1) {
-			sb.append( childActivities.size())
-				.append( " children" );
-		}
-		sb.append( "]" );
-		return sb.toString();
-	}
+  public void setProducedValue(Object value) {
+    producedValue = value;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(getClass().getSimpleName()).append(' ').append(status).append("[");
+    for (PrepStep prepStep : prepSteps) {
+      sb.append(prepStep);
+      sb.append(",");
+    }
+    if (childActivities.size() == 1) {
+      sb.append("1 child");
+    }
+    if (childActivities.size() > 1) {
+      sb.append(childActivities.size()).append(" children");
+    }
+    sb.append("]");
+    return sb.toString();
+  }
 }

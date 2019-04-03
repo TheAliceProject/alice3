@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.aircraft;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.STransport;
@@ -33,39 +34,36 @@ import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 public enum HelicopterResource implements AircraftResource {
-	EXECUTIVE( ImplementationAndVisualType.SIMS2 ),
-	MILITARY( ImplementationAndVisualType.SIMS2 );
+  EXECUTIVE(ImplementationAndVisualType.SIMS2), MILITARY(ImplementationAndVisualType.SIMS2);
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, HelicopterResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId COLLECTIVE = new JointId( ROOT, HelicopterResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId BLADES = new JointId( COLLECTIVE, HelicopterResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, HelicopterResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId COLLECTIVE = new JointId(ROOT, HelicopterResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId BLADES = new JointId(COLLECTIVE, HelicopterResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	HelicopterResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	HelicopterResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  HelicopterResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return HelicopterResource.JOINT_ID_ROOTS;
-	}
+  HelicopterResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public TransportImp createImplementation( STransport abstraction ) {
-		return new TransportImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return HelicopterResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public TransportImp createImplementation(STransport abstraction) {
+    return new TransportImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

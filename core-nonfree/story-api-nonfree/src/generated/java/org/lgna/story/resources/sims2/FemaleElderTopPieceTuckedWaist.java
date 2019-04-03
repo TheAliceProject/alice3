@@ -44,12 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderTopPieceTuckedWaist implements FemaleElderTopPiece {
-	BLACK_GOTH,
-	EARTH_SOLID,
-	OLIVE_SOLID,
-	SLATE_SOLID,
-	SHEER_BLOOD,
-	SHEER_MOLD,
-	SHEER_TOXIC;
+  BLACK_GOTH, EARTH_SOLID, OLIVE_SOLID, SLATE_SOLID, SHEER_BLOOD, SHEER_MOLD, SHEER_TOXIC
 
 }

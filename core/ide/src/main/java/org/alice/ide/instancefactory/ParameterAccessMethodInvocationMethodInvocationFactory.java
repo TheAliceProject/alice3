@@ -55,71 +55,67 @@ import org.lgna.project.ast.UserParameter;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessMethodInvocationMethodInvocationFactory extends MethodInvocationFactory {
-	private static MapToMapToMap<UserParameter, AbstractMethod, AbstractMethod, ParameterAccessMethodInvocationMethodInvocationFactory> mapToMapToMap = MapToMapToMap.newInstance();
+  private static MapToMapToMap<UserParameter, AbstractMethod, AbstractMethod, ParameterAccessMethodInvocationMethodInvocationFactory> mapToMapToMap = MapToMapToMap.newInstance();
 
-	public static synchronized ParameterAccessMethodInvocationMethodInvocationFactory getInstance( UserParameter parameter, AbstractMethod innerMethod, AbstractMethod outerMethod ) {
-		assert parameter != null;
-		ParameterAccessMethodInvocationMethodInvocationFactory rv = mapToMapToMap.get( parameter, innerMethod, outerMethod );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ParameterAccessMethodInvocationMethodInvocationFactory( parameter, innerMethod, outerMethod );
-			mapToMapToMap.put( parameter, innerMethod, outerMethod, rv );
-		}
-		return rv;
-	}
+  public static synchronized ParameterAccessMethodInvocationMethodInvocationFactory getInstance(UserParameter parameter, AbstractMethod innerMethod, AbstractMethod outerMethod) {
+    assert parameter != null;
+    ParameterAccessMethodInvocationMethodInvocationFactory rv = mapToMapToMap.get(parameter, innerMethod, outerMethod);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ParameterAccessMethodInvocationMethodInvocationFactory(parameter, innerMethod, outerMethod);
+      mapToMapToMap.put(parameter, innerMethod, outerMethod, rv);
+    }
+    return rv;
+  }
 
-	private ParameterAccessMethodInvocationMethodInvocationFactory( UserParameter parameter, AbstractMethod innerMethod, AbstractMethod outerMethod ) {
-		super( outerMethod, parameter.name );
-		this.parameter = parameter;
-		this.innerMethod = innerMethod;
-	}
+  private ParameterAccessMethodInvocationMethodInvocationFactory(UserParameter parameter, AbstractMethod innerMethod, AbstractMethod outerMethod) {
+    super(outerMethod, parameter.name);
+    this.parameter = parameter;
+    this.innerMethod = innerMethod;
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getValidInstanceType( AbstractType<?, ?, ?> type, AbstractCode code ) {
-		if( code != null ) {
-			if( this.parameter.getFirstAncestorAssignableTo( AbstractCode.class ) == code ) {
-				return this.parameter.getValueType();
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getValidInstanceType(AbstractType<?, ?, ?> type, AbstractCode code) {
+    if (code != null) {
+      if (this.parameter.getFirstAncestorAssignableTo(AbstractCode.class) == code) {
+        return this.parameter.getValueType();
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public UserParameter getParameter() {
-		return this.parameter;
-	}
+  public UserParameter getParameter() {
+    return this.parameter;
+  }
 
-	public AbstractMethod getInnerMethod() {
-		return this.innerMethod;
-	}
+  public AbstractMethod getInnerMethod() {
+    return this.innerMethod;
+  }
 
-	@Override
-	protected Expression createTransientExpressionForMethodInvocation() {
-		//todo?
-		return new MethodInvocation(
-				new ParameterAccess( this.parameter ),
-				this.innerMethod );
-	}
+  @Override
+  protected Expression createTransientExpressionForMethodInvocation() {
+    //todo?
+    return new MethodInvocation(new ParameterAccess(this.parameter), this.innerMethod);
+  }
 
-	@Override
-	protected Expression createExpressionForMethodInvocation() {
-		return new MethodInvocation(
-				new ParameterAccess( this.parameter ),
-				this.innerMethod );
-	}
+  @Override
+  protected Expression createExpressionForMethodInvocation() {
+    return new MethodInvocation(new ParameterAccess(this.parameter), this.innerMethod);
+  }
 
-	@Override
-	protected StringBuilder addAccessRepr( StringBuilder rv ) {
-		rv.append( this.parameter.getName() );
-		rv.append( "." );
-		rv.append( this.innerMethod.getName() );
-		rv.append( "()" );
-		return rv;
-	}
+  @Override
+  protected StringBuilder addAccessRepr(StringBuilder rv) {
+    rv.append(this.parameter.getName());
+    rv.append(".");
+    rv.append(this.innerMethod.getName());
+    rv.append("()");
+    return rv;
+  }
 
-	private final UserParameter parameter;
-	private final AbstractMethod innerMethod;
+  private final UserParameter parameter;
+  private final AbstractMethod innerMethod;
 }

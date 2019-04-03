@@ -46,16 +46,15 @@ import org.lgna.project.annotations.ClassTemplate;
 
 public class AddKeyPressListener {
 
-	@ClassTemplate( keywordFactoryCls = AddKeyPressListener.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = AddKeyPressListener.class) public static interface Detail {
+  }
 
-	public static MultipleEventPolicy multipleEventPolicy( MultipleEventPolicy multipleEventPolicy ) {
-		return multipleEventPolicy;
-	}
+  public static MultipleEventPolicy multipleEventPolicy(MultipleEventPolicy multipleEventPolicy) {
+    return multipleEventPolicy;
+  }
 
-	public static HeldKeyPolicy heldKeyPolicy( HeldKeyPolicy heldKeyPolicy ) {
-		return heldKeyPolicy;
-	}
+  public static HeldKeyPolicy heldKeyPolicy(HeldKeyPolicy heldKeyPolicy) {
+    return heldKeyPolicy;
+  }
 
 }

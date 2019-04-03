@@ -68,75 +68,73 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TemplateAssignmentInsertCascade extends CascadeWithInternalBlank<Expression> {
-	public static TemplateAssignmentInsertCascade createInstance( BlockStatementIndexPair blockStatementIndexPair ) {
-		return new TemplateAssignmentInsertCascade( blockStatementIndexPair );
-	}
+  public static TemplateAssignmentInsertCascade createInstance(BlockStatementIndexPair blockStatementIndexPair) {
+    return new TemplateAssignmentInsertCascade(blockStatementIndexPair);
+  }
 
-	private final BlockStatementIndexPair blockStatementIndexPair;
+  private final BlockStatementIndexPair blockStatementIndexPair;
 
-	private TemplateAssignmentInsertCascade( BlockStatementIndexPair blockStatementIndexPair ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "4bdde6fa-166e-42a0-9843-3696955f5ed6" ), Expression.class );
-		this.blockStatementIndexPair = blockStatementIndexPair;
-	}
+  private TemplateAssignmentInsertCascade(BlockStatementIndexPair blockStatementIndexPair) {
+    super(Application.PROJECT_GROUP, UUID.fromString("4bdde6fa-166e-42a0-9843-3696955f5ed6"), Expression.class);
+    this.blockStatementIndexPair = blockStatementIndexPair;
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity, Expression[] values ) {
-		return new InsertStatementEdit( userActivity,
-				this.blockStatementIndexPair,
-				new ExpressionStatement( values[ 0 ] ) );
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity, Expression[] values) {
+    return new InsertStatementEdit(userActivity, this.blockStatementIndexPair, new ExpressionStatement(values[0]));
+  }
 
-	@Override
-	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<Expression> blankNode ) {
-		AbstractType<?, ?, ?> selectedType = IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
-		if( selectedType != null ) {
-			List<UserField> nonFinalUserFields = Lists.newLinkedList();
-			for( AbstractField field : selectedType.getDeclaredFields() ) {
-				if( field instanceof UserField ) {
-					UserField userField = (UserField)field;
-					if( userField.isFinal() ) {
-						//pass
-					} else {
-						nonFinalUserFields.add( userField );
-					}
-				}
-			}
-			if( nonFinalUserFields.size() > 0 ) {
-				rv.add( FieldsSeparatorModel.getInstance() );
-				for( UserField field : nonFinalUserFields ) {
-					rv.add( FieldAssignmentFillIn.getInstance( field ) );
-					if( field.getValueType().isArray() ) {
-						rv.add( FieldArrayAtIndexAssignmentFillIn.getInstance( field ) );
-					}
-				}
-			}
-		}
+  @Override
+  protected List<CascadeBlankChild> updateBlankChildren(List<CascadeBlankChild> rv, BlankNode<Expression> blankNode) {
+    AbstractType<?, ?, ?> selectedType = IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
+    if (selectedType != null) {
+      List<UserField> nonFinalUserFields = Lists.newLinkedList();
+      for (AbstractField field : selectedType.getDeclaredFields()) {
+        if (field instanceof UserField) {
+          UserField userField = (UserField) field;
+          if (userField.isFinal()) {
+            //pass
+          } else {
+            nonFinalUserFields.add(userField);
+          }
+        }
+      }
+      if (nonFinalUserFields.size() > 0) {
+        rv.add(FieldsSeparatorModel.getInstance());
+        for (UserField field : nonFinalUserFields) {
+          rv.add(FieldAssignmentFillIn.getInstance(field));
+          if (field.getValueType().isArray()) {
+            rv.add(FieldArrayAtIndexAssignmentFillIn.getInstance(field));
+          }
+        }
+      }
+    }
 
-		List<UserLocal> nonFinalLocals = Lists.newLinkedList();
-		for( UserLocal local : IDE.getActiveInstance().getExpressionCascadeManager().getAccessibleLocals( this.blockStatementIndexPair ) ) {
-			if( local.isFinal.getValue() ) {
-				//pass
-			} else {
-				nonFinalLocals.add( local );
-			}
-		}
+    List<UserLocal> nonFinalLocals = Lists.newLinkedList();
+    for (UserLocal local : IDE.getActiveInstance().getExpressionCascadeManager().getAccessibleLocals(this.blockStatementIndexPair)) {
+      if (local.isFinal.getValue()) {
+        //pass
+      } else {
+        nonFinalLocals.add(local);
+      }
+    }
 
-		if( nonFinalLocals.size() > 0 ) {
-			rv.add( VariablesSeparatorModel.getInstance() );
-			for( UserLocal local : nonFinalLocals ) {
-				rv.add( LocalAssignmentFillIn.getInstance( local ) );
-				AbstractType<?, ?, ?> type = local.getValueType();
-				if( type.isArray() ) {
-					rv.add( LocalArrayAtIndexAssignmentFillIn.getInstance( local ) );
-				}
-			}
-		}
+    if (nonFinalLocals.size() > 0) {
+      rv.add(VariablesSeparatorModel.getInstance());
+      for (UserLocal local : nonFinalLocals) {
+        rv.add(LocalAssignmentFillIn.getInstance(local));
+        AbstractType<?, ?, ?> type = local.getValueType();
+        if (type.isArray()) {
+          rv.add(LocalArrayAtIndexAssignmentFillIn.getInstance(local));
+        }
+      }
+    }
 
-		//todo: check nonFinalUserFields and nonFinalLocals instead?
-		if( rv.size() == 0 ) {
-			rv.add( NoVariablesOrFieldsAccessibleCancelFillIn.getInstance() );
-		}
+    //todo: check nonFinalUserFields and nonFinalLocals instead?
+    if (rv.size() == 0) {
+      rv.add(NoVariablesOrFieldsAccessibleCancelFillIn.getInstance());
+    }
 
-		return rv;
-	}
+    return rv;
+  }
 }

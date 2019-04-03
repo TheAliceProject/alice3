@@ -51,69 +51,59 @@ import org.lgna.project.code.PrecedentedAppender;
  */
 public final class AssignmentExpression extends Expression implements PrecedentedAppender {
 
-	public enum Operator implements CodeAppender {
-		ASSIGN( "=" ),
-		PLUS_ASSIGN( "+=" ),
-		MINUS_ASSIGN( "-=" ),
-		TIMES_ASSIGN( "*=" ),
-		DIVIDE_ASSIGN( "/=" ),
-		BIT_AND_ASSIGN( "&=" ),
-		BIT_OR_ASSIGN( "|=" ),
-		BIT_XOR_ASSIGN( "^=" ),
-		REMAINDER_ASSIGN( "%=" ),
-		LEFT_SHIFT_ASSIGN( "<<=" ),
-		RIGHT_SHIFT_SIGNED_ASSIGN( ">>=" ),
-		RIGHT_SHIFT_UNSIGNED_ASSIGN( ">>>=" );
-		private final String text;
+  public enum Operator implements CodeAppender {
+    ASSIGN("="), PLUS_ASSIGN("+="), MINUS_ASSIGN("-="), TIMES_ASSIGN("*="), DIVIDE_ASSIGN("/="), BIT_AND_ASSIGN("&="), BIT_OR_ASSIGN("|="), BIT_XOR_ASSIGN("^="), REMAINDER_ASSIGN("%="), LEFT_SHIFT_ASSIGN("<<="), RIGHT_SHIFT_SIGNED_ASSIGN(">>="), RIGHT_SHIFT_UNSIGNED_ASSIGN(">>>=");
+    private final String text;
 
-		Operator( String text ) {
-			this.text = text;
-		}
+    Operator(String text) {
+      this.text = text;
+    }
 
-		@Override
-		public void appendCode( SourceCodeGenerator generator ) {
-			generator.appendString( this.text );
-		}
-	}
+    @Override
+    public void appendCode(SourceCodeGenerator generator) {
+      generator.appendString(this.text);
+    }
+  }
 
-	public AssignmentExpression() {
-	}
+  public AssignmentExpression() {
+  }
 
-	public AssignmentExpression( AbstractType<?, ?, ?> expressionType, Expression leftHandSide, Operator operator, Expression rightHandSide ) {
-		this.expressionType.setValue( expressionType );
-		this.leftHandSide.setValue( leftHandSide );
-		this.operator.setValue( operator );
-		this.rightHandSide.setValue( rightHandSide );
-	}
+  public AssignmentExpression(AbstractType<?, ?, ?> expressionType, Expression leftHandSide, Operator operator, Expression rightHandSide) {
+    this.expressionType.setValue(expressionType);
+    this.leftHandSide.setValue(leftHandSide);
+    this.operator.setValue(operator);
+    this.rightHandSide.setValue(rightHandSide);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.VOID_TYPE;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return JavaType.VOID_TYPE;
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendAssignmentExpression(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendAssignmentExpression(this);
+  }
 
-	@Override public int getLevelOfPrecedence() {
-		return 1;
-	}
+  @Override
+  public int getLevelOfPrecedence() {
+    return 1;
+  }
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );
-	public final ExpressionProperty leftHandSide = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return AssignmentExpression.this.expressionType.getValue();
-		}
-	};
+  public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance(this);
+  public final ExpressionProperty leftHandSide = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      return AssignmentExpression.this.expressionType.getValue();
+    }
+  };
 
-	public final InstanceProperty<Operator> operator = new InstanceProperty<>( this, null );
-	//todo: new name
-	public final ExpressionProperty rightHandSide = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return AssignmentExpression.this.expressionType.getValue();
-		}
-	};
+  public final InstanceProperty<Operator> operator = new InstanceProperty<>(this, null);
+  //todo: new name
+  public final ExpressionProperty rightHandSide = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      return AssignmentExpression.this.expressionType.getValue();
+    }
+  };
 }

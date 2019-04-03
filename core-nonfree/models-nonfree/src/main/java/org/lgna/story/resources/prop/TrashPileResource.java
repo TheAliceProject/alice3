@@ -32,38 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum TrashPileResource implements PropResource {
-	LARGE( ImplementationAndVisualType.SIMS2 ),
-	MEDIUM( ImplementationAndVisualType.SIMS2 ),
-	SMALL( ImplementationAndVisualType.SIMS2 ),
-	LARGE_ELECTRONICS( ImplementationAndVisualType.SIMS2 ),
-	MEDIUM_ELECTRONICS( ImplementationAndVisualType.SIMS2 ),
-	SMALL_ELECTRONICS( ImplementationAndVisualType.SIMS2 ),
-	LARGE_FURNITURE( ImplementationAndVisualType.SIMS2 ),
-	MEDIUM_FURNITURE( ImplementationAndVisualType.SIMS2 ),
-	SMALL_FURNITURE( ImplementationAndVisualType.SIMS2 ),
-	SMALL_ASH( ImplementationAndVisualType.SIMS2 ),
-	LARGE_ASH( ImplementationAndVisualType.SIMS2 );
+  LARGE(ImplementationAndVisualType.SIMS2), MEDIUM(ImplementationAndVisualType.SIMS2), SMALL(ImplementationAndVisualType.SIMS2), LARGE_ELECTRONICS(ImplementationAndVisualType.SIMS2), MEDIUM_ELECTRONICS(ImplementationAndVisualType.SIMS2), SMALL_ELECTRONICS(ImplementationAndVisualType.SIMS2), LARGE_FURNITURE(ImplementationAndVisualType.SIMS2), MEDIUM_FURNITURE(ImplementationAndVisualType.SIMS2), SMALL_FURNITURE(ImplementationAndVisualType.SIMS2), SMALL_ASH(ImplementationAndVisualType.SIMS2), LARGE_ASH(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	TrashPileResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	TrashPileResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  TrashPileResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  TrashPileResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

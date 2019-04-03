@@ -60,27 +60,27 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class AudioSourceFillerInner extends SourceFillerInner<AudioResource> {
-	public AudioSourceFillerInner() {
-		super( AudioSource.class, AudioResource.class );
-	}
+  public AudioSourceFillerInner() {
+    super(AudioSource.class, AudioResource.class);
+  }
 
-	@Override
-	protected CascadeFillIn<InstanceCreation, ?> getImportFillIn() {
-		return AudioSourceImportValueCreator.getInstance().getFillIn();
-	}
+  @Override
+  protected CascadeFillIn<InstanceCreation, ?> getImportFillIn() {
+    return AudioSourceImportValueCreator.getInstance().getFillIn();
+  }
 
-	@Override
-	protected CascadeFillIn<InstanceCreation, ?> getResourceFillIn( AudioResource resource ) {
-		return new AudioSourceFillIn( resource );
-	}
+  @Override
+  protected CascadeFillIn<InstanceCreation, ?> getResourceFillIn(AudioResource resource) {
+    return new AudioSourceFillIn(resource);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		super.appendItems( items, details, isTop, prevExpression );
-		if( prevExpression != null ) {
-			items.add( CascadeLineSeparator.getInstance() );
-			//			rv.add( org.alice.stageide.croquet.models.custom.CustomAudioSourceInputDialogOperation.getInstance().getFillIn() );
-			items.add( AudioSourceCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		}
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    super.appendItems(items, details, isTop, prevExpression);
+    if (prevExpression != null) {
+      items.add(CascadeLineSeparator.getInstance());
+      //      rv.add( org.alice.stageide.croquet.models.custom.CustomAudioSourceInputDialogOperation.getInstance().getFillIn() );
+      items.add(AudioSourceCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
+    }
+  }
 }

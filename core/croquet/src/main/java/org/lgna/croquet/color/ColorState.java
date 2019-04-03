@@ -65,96 +65,96 @@ import java.util.UUID;
  */
 public abstract class ColorState extends ItemState<Color> {
 
-	public class SwingModel {
-		private Color value;
+  public class SwingModel {
+    private Color value;
 
-		private final List<ChangeListener> changeListeners = Lists.newCopyOnWriteArrayList();
+    private final List<ChangeListener> changeListeners = Lists.newCopyOnWriteArrayList();
 
-		public SwingModel( Color initialValue ) {
-			this.value = initialValue;
-		}
+    public SwingModel(Color initialValue) {
+      this.value = initialValue;
+    }
 
-		public Color getValue() {
-			return this.value;
-		}
+    public Color getValue() {
+      return this.value;
+    }
 
-		public void setValue( Color nextValue, MouseEvent e ) {
-			if ( !this.value.equals( nextValue ) ) {
-				this.value = nextValue;
+    public void setValue(Color nextValue, MouseEvent e) {
+      if (!this.value.equals(nextValue)) {
+        this.value = nextValue;
 
-				UserActivity activity;
-				if( e != null ) {
-					activity = MouseEventTrigger.createUserActivity( e );
-				} else {
-					activity = NullTrigger.createUserActivity();
-				}
-				changeValueFromSwing( value, activity );
-				if( this.changeListeners.size() > 0 ) {
-					Object source = e != null ? e.getSource() : this;
-					ChangeEvent changeEvent = new ChangeEvent( source );
-					for( ChangeListener changeListener : this.changeListeners ) {
-						changeListener.stateChanged( changeEvent );
-					}
-				}
-			}
-		}
+        UserActivity activity;
+        if (e != null) {
+          activity = MouseEventTrigger.createUserActivity(e);
+        } else {
+          activity = NullTrigger.createUserActivity();
+        }
+        changeValueFromSwing(value, activity);
+        if (this.changeListeners.size() > 0) {
+          Object source = e != null ? e.getSource() : this;
+          ChangeEvent changeEvent = new ChangeEvent(source);
+          for (ChangeListener changeListener : this.changeListeners) {
+            changeListener.stateChanged(changeEvent);
+          }
+        }
+      }
+    }
 
-		public void addChangeListener( ChangeListener changeListener ) {
-			this.changeListeners.add( changeListener );
-		}
+    public void addChangeListener(ChangeListener changeListener) {
+      this.changeListeners.add(changeListener);
+    }
 
-		public void removeChangeListener( ChangeListener changeListener ) {
-			this.changeListeners.remove( changeListener );
-		}
-	}
+    public void removeChangeListener(ChangeListener changeListener) {
+      this.changeListeners.remove(changeListener);
+    }
+  }
 
-	private final SwingModel swingModel;
+  private final SwingModel swingModel;
 
-	private final ColorChooserDialogCoreComposite chooserDialogCoreComposite;
+  private final ColorChooserDialogCoreComposite chooserDialogCoreComposite;
 
-	public ColorState( Group group, UUID id, Color initialValue ) {
-		super( group, id, initialValue, ColorCodec.SINGLETON );
-		this.swingModel = new SwingModel( initialValue );
-		this.chooserDialogCoreComposite = new ColorChooserDialogCoreComposite( this );
-	}
+  public ColorState(Group group, UUID id, Color initialValue) {
+    super(group, id, initialValue, ColorCodec.SINGLETON);
+    this.swingModel = new SwingModel(initialValue);
+    this.chooserDialogCoreComposite = new ColorChooserDialogCoreComposite(this);
+  }
 
-	public SwingModel getSwingModel() {
-		return this.swingModel;
-	}
+  public SwingModel getSwingModel() {
+    return this.swingModel;
+  }
 
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.chooserDialogCoreComposite.initializeIfNecessary();
-	}
+  @Override
+  protected void initialize() {
+    super.initialize();
+    this.chooserDialogCoreComposite.initializeIfNecessary();
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	@Override
-	protected Color getSwingValue() {
-		return this.swingModel.value;
-	}
+  @Override
+  protected Color getSwingValue() {
+    return this.swingModel.value;
+  }
 
-	@Override
-	protected void setSwingValue( Color nextValue ) {
-		this.swingModel.value = nextValue;
-		if( this.swingModel.changeListeners.size() > 0 ) {
-			Object source = this;
-			ChangeEvent changeEvent = new ChangeEvent( source );
-			for( ChangeListener changeListener : this.swingModel.changeListeners ) {
-				changeListener.stateChanged( changeEvent );
-			}
-		}
-	}
+  @Override
+  protected void setSwingValue(Color nextValue) {
+    this.swingModel.value = nextValue;
+    if (this.swingModel.changeListeners.size() > 0) {
+      Object source = this;
+      ChangeEvent changeEvent = new ChangeEvent(source);
+      for (ChangeListener changeListener : this.swingModel.changeListeners) {
+        changeListener.stateChanged(changeEvent);
+      }
+    }
+  }
 
-	@Override
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		return Collections.emptyList();
-	}
+  @Override
+  public List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    return Collections.emptyList();
+  }
 
-	public ColorChooserDialogCoreComposite getChooserDialogCoreComposite() {
-		return this.chooserDialogCoreComposite;
-	}
+  public ColorChooserDialogCoreComposite getChooserDialogCoreComposite() {
+    return this.chooserDialogCoreComposite;
+  }
 }

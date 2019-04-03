@@ -55,37 +55,37 @@ import java.awt.event.KeyEvent;
  * @author Dennis Cosgrove
  */
 public class EventScriptEventCodec implements ItemCodec<EventScriptEvent> {
-	private final ExportToYouTubeWizardDialogComposite wizard;
+  private final ExportToYouTubeWizardDialogComposite wizard;
 
-	public EventScriptEventCodec( ExportToYouTubeWizardDialogComposite wizard ) {
-		this.wizard = wizard;
-	}
+  public EventScriptEventCodec(ExportToYouTubeWizardDialogComposite wizard) {
+    this.wizard = wizard;
+  }
 
-	@Override
-	public Class<EventScriptEvent> getValueClass() {
-		return EventScriptEvent.class;
-	}
+  @Override
+  public Class<EventScriptEvent> getValueClass() {
+    return EventScriptEvent.class;
+  }
 
-	@Override
-	public EventScriptEvent decodeValue( BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public EventScriptEvent decodeValue(BinaryDecoder binaryDecoder) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, EventScriptEvent value ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, EventScriptEvent value) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, EventScriptEvent value ) {
-		String eventType = "";
-		if( value.getEvent() instanceof MouseEventWrapper ) {
-			eventType = this.wizard.getMouseEventName().getText();
-		} else if( value.getEvent() instanceof KeyEvent ) {
-			eventType = this.wizard.getKeyBoardEventName().getText();
-		} else {
-			eventType = "UNKNOWN EVENT TYPE: " + value.getEvent().getClass().getSimpleName();
-		}
-		sb.append( value.getReportForEventType( eventType ) );
-	}
+  @Override
+  public void appendRepresentation(StringBuilder sb, EventScriptEvent value) {
+    String eventType = "";
+    if (value.getEvent() instanceof MouseEventWrapper) {
+      eventType = this.wizard.getMouseEventName().getText();
+    } else if (value.getEvent() instanceof KeyEvent) {
+      eventType = this.wizard.getKeyBoardEventName().getText();
+    } else {
+      eventType = "UNKNOWN EVENT TYPE: " + value.getEvent().getClass().getSimpleName();
+    }
+    sb.append(value.getReportForEventType(eventType));
+  }
 }

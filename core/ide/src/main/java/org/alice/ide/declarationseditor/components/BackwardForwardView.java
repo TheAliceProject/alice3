@@ -59,51 +59,45 @@ import org.lgna.croquet.views.PopupButton;
  * @author Dennis Cosgrove
  */
 public class BackwardForwardView extends MigPanel {
-	public BackwardForwardView( BackwardForwardComposite composite ) {
-		super( composite, "insets 0", "[]0[]", "" );
-		// note:
-		// trigger side effect to initialize isEnabled
-		DeclarationCompositeHistory.getInstance();
+  public BackwardForwardView(BackwardForwardComposite composite) {
+    super(composite, "insets 0", "[]0[]", "");
+    // note:
+    // trigger side effect to initialize isEnabled
+    DeclarationCompositeHistory.getInstance();
 
-		final boolean ARE_BACKWARD_AND_FORWARD_BUTTONS_DESIRED = false;
-		if( ARE_BACKWARD_AND_FORWARD_BUTTONS_DESIRED ) {
-			Button backwardButton = BackwardOperation.getInstance().createButtonWithRightClickCascade( BackwardCascade.getInstance() );
-			Button forwardButton = ForwardOperation.getInstance().createButtonWithRightClickCascade( ForwardCascade.getInstance() );
+    final boolean ARE_BACKWARD_AND_FORWARD_BUTTONS_DESIRED = false;
+    if (ARE_BACKWARD_AND_FORWARD_BUTTONS_DESIRED) {
+      Button backwardButton = BackwardOperation.getInstance().createButtonWithRightClickCascade(BackwardCascade.getInstance());
+      Button forwardButton = ForwardOperation.getInstance().createButtonWithRightClickCascade(ForwardCascade.getInstance());
 
-			backwardButton.tightenUpMargin();
-			forwardButton.tightenUpMargin();
+      backwardButton.tightenUpMargin();
+      forwardButton.tightenUpMargin();
 
-			final boolean ARE_CASCADE_BUTTONS_DESIRED = false;
-			if( ARE_CASCADE_BUTTONS_DESIRED ) {
-				PopupButton backwardPopupButton = BackwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
-				PopupButton forwardPopupButton = ForwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
+      final boolean ARE_CASCADE_BUTTONS_DESIRED = false;
+      if (ARE_CASCADE_BUTTONS_DESIRED) {
+        PopupButton backwardPopupButton = BackwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
+        PopupButton forwardPopupButton = ForwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 
-				backwardPopupButton.tightenUpMargin();
-				forwardPopupButton.tightenUpMargin();
+        backwardPopupButton.tightenUpMargin();
+        forwardPopupButton.tightenUpMargin();
 
-				BorderPanel backwardPanel = new BorderPanel.Builder()
-						.center( backwardButton )
-						.lineEnd( backwardPopupButton )
-						.build();
-				BorderPanel forwardPanel = new BorderPanel.Builder()
-						.center( forwardButton )
-						.lineEnd( forwardPopupButton )
-						.build();
+        BorderPanel backwardPanel = new BorderPanel.Builder().center(backwardButton).lineEnd(backwardPopupButton).build();
+        BorderPanel forwardPanel = new BorderPanel.Builder().center(forwardButton).lineEnd(forwardPopupButton).build();
 
-				this.addComponent( backwardPanel );
-				this.addComponent( forwardPanel, "growy" );
-			} else {
-				this.addComponent( backwardButton );
-				this.addComponent( forwardButton, "growy" );
-			}
-		}
+        this.addComponent(backwardPanel);
+        this.addComponent(forwardPanel, "growy");
+      } else {
+        this.addComponent(backwardButton);
+        this.addComponent(forwardButton, "growy");
+      }
+    }
 
-		if( IsToolBarShowing.getValue() ) {
-			//pass
-		} else {
-			this.addComponent( Clipboard.SINGLETON.getDragComponent(), "gap 8" );
-		}
+    if (IsToolBarShowing.getValue()) {
+      //pass
+    } else {
+      this.addComponent(Clipboard.SINGLETON.getDragComponent(), "gap 8");
+    }
 
-		this.setMaximumSizeClampedToPreferredSize( true );
-	}
+    this.setMaximumSizeClampedToPreferredSize(true);
+  }
 }

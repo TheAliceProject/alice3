@@ -57,49 +57,49 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class LazyIsFrameShowingState<C extends FrameComposite<?>> extends AbstractIsFrameShowingState {
-	public static <C extends FrameComposite<?>> BooleanState createInstance( Group group, Class<C> cls, Lazy<C> lazy ) {
-		return new LazyIsFrameShowingState<C>( group, cls, lazy );
-	}
+  public static <C extends FrameComposite<?>> BooleanState createInstance(Group group, Class<C> cls, Lazy<C> lazy) {
+    return new LazyIsFrameShowingState<C>(group, cls, lazy);
+  }
 
-	public static <C extends FrameComposite<?>> BooleanState createNoArgumentConstructorInstance( Group group, Class<C> cls ) {
-		try {
-			final Constructor<C> jConstructor = cls.getConstructor();
-			assert Modifier.isPublic( jConstructor.getModifiers() ) : jConstructor;
-			return createInstance( group, cls, new Lazy<C>() {
-				@Override
-				protected C create() {
-					try {
-						return jConstructor.newInstance();
-					} catch( InvocationTargetException ite ) {
-						throw new RuntimeException( jConstructor.toString(), ite );
-					} catch( IllegalAccessException iae ) {
-						throw new RuntimeException( jConstructor.toString(), iae );
-					} catch( InstantiationException ie ) {
-						throw new RuntimeException( jConstructor.toString(), ie );
-					}
-				}
-			} );
-		} catch( NoSuchMethodException nsme ) {
-			throw new RuntimeException( nsme );
-		}
-	}
+  public static <C extends FrameComposite<?>> BooleanState createNoArgumentConstructorInstance(Group group, Class<C> cls) {
+    try {
+      final Constructor<C> jConstructor = cls.getConstructor();
+      assert Modifier.isPublic(jConstructor.getModifiers()) : jConstructor;
+      return createInstance(group, cls, new Lazy<C>() {
+        @Override
+        protected C create() {
+          try {
+            return jConstructor.newInstance();
+          } catch (InvocationTargetException ite) {
+            throw new RuntimeException(jConstructor.toString(), ite);
+          } catch (IllegalAccessException iae) {
+            throw new RuntimeException(jConstructor.toString(), iae);
+          } catch (InstantiationException ie) {
+            throw new RuntimeException(jConstructor.toString(), ie);
+          }
+        }
+      });
+    } catch (NoSuchMethodException nsme) {
+      throw new RuntimeException(nsme);
+    }
+  }
 
-	private LazyIsFrameShowingState( Group group, Class<C> cls, Lazy<C> lazy ) {
-		super( group, UUID.fromString( "e6efce56-7da5-4798-9ec3-6fcaab3962b5" ) );
-		this.cls = cls;
-		this.lazy = lazy;
-	}
+  private LazyIsFrameShowingState(Group group, Class<C> cls, Lazy<C> lazy) {
+    super(group, UUID.fromString("e6efce56-7da5-4798-9ec3-6fcaab3962b5"));
+    this.cls = cls;
+    this.lazy = lazy;
+  }
 
-	@Override
-	protected Class<? extends Element> getClassUsedForLocalization() {
-		return this.cls;
-	}
+  @Override
+  protected Class<? extends Element> getClassUsedForLocalization() {
+    return this.cls;
+  }
 
-	@Override
-	public C getFrameComposite() {
-		return this.lazy.get();
-	}
+  @Override
+  public C getFrameComposite() {
+    return this.lazy.get();
+  }
 
-	private final Class<C> cls;
-	private final Lazy<C> lazy;
+  private final Class<C> cls;
+  private final Lazy<C> lazy;
 }

@@ -51,15 +51,15 @@ import stringexample.croquet.StringExampleComposite;
  * @author Dennis Cosgrove
  */
 public class StringExampleView extends BorderPanel {
-	public StringExampleView( StringExampleComposite composite ) {
-		super( composite );
-		this.addLineStartComponent( composite.getNameState().getSidekickLabel().createLabel() );
+  public StringExampleView(StringExampleComposite composite) {
+    super(composite);
+    this.addLineStartComponent(composite.getNameState().getSidekickLabel().createLabel());
 
-		TextField textField = composite.getNameState().createTextField();
-		textField.setMinimumPreferredWidth( 200 );
-		this.addCenterComponent( textField );
+    TextField textField = composite.getNameState().createTextField();
+    textField.setMinimumPreferredWidth(200);
+    this.addCenterComponent(textField);
 
-		SubduedTextField subtleTextField = composite.getNameState().createSubduedTextField();
-		this.addPageEndComponent( subtleTextField );
-	}
+    SubduedTextField subtleTextField = composite.getNameState().createSubduedTextField();
+    this.addPageEndComponent(subtleTextField);
+  }
 }

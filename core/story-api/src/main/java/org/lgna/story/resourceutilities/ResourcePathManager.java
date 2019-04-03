@@ -53,90 +53,90 @@ import java.util.Map;
 
 public class ResourcePathManager {
 
-	public static final String AUDIO_RESOURCE_KEY = "org.alice.ide.audioResourcePath";
-	public static final String IMAGE_RESOURCE_KEY = "org.alice.ide.imageResourcePath";
-	public static final String MODEL_RESOURCE_KEY = "org.alice.ide.modelResourcePath";
-	public static final String SIMS_RESOURCE_KEY = "org.alice.ide.simsResourcePath";
+  public static final String AUDIO_RESOURCE_KEY = "org.alice.ide.audioResourcePath";
+  public static final String IMAGE_RESOURCE_KEY = "org.alice.ide.imageResourcePath";
+  public static final String MODEL_RESOURCE_KEY = "org.alice.ide.modelResourcePath";
+  public static final String SIMS_RESOURCE_KEY = "org.alice.ide.simsResourcePath";
 
-//	public static final String MY_GALLERY_MODEL_RESOURCE_KEY = "org.alice.ide.myGalleryResourcePath";
+  //  public static final String MY_GALLERY_MODEL_RESOURCE_KEY = "org.alice.ide.myGalleryResourcePath";
 
-	private static final Map<String, List<File>> resourcePathMap = Maps.newHashMap();
+  private static final Map<String, List<File>> resourcePathMap = Maps.newHashMap();
 
-	static {
-		ResourcePathManager.initializePath( AUDIO_RESOURCE_KEY );
-		ResourcePathManager.initializePath( IMAGE_RESOURCE_KEY );
-		ResourcePathManager.initializePath( MODEL_RESOURCE_KEY );
-		ResourcePathManager.initializePath( SIMS_RESOURCE_KEY );
-//		ResourcePathManager.initializePath( MY_GALLERY_MODEL_RESOURCE_KEY );
-	}
+  static {
+    ResourcePathManager.initializePath(AUDIO_RESOURCE_KEY);
+    ResourcePathManager.initializePath(IMAGE_RESOURCE_KEY);
+    ResourcePathManager.initializePath(MODEL_RESOURCE_KEY);
+    ResourcePathManager.initializePath(SIMS_RESOURCE_KEY);
+    //    ResourcePathManager.initializePath( MY_GALLERY_MODEL_RESOURCE_KEY );
+  }
 
-	private ResourcePathManager() {
-		throw new AssertionError();
-	}
+  private ResourcePathManager() {
+    throw new AssertionError();
+  }
 
-	private static File getValidPath( String path ) {
-		try {
-			File f = new File( path );
-			if( f.exists() && f.isDirectory() ) {
-				return f;
-			}
-		} catch( Exception e ) {
-			//todo?
-			//e.printStackTrace();
-		}
-		return null;
-	}
+  private static File getValidPath(String path) {
+    try {
+      File f = new File(path);
+      if (f.exists() && f.isDirectory()) {
+        return f;
+      }
+    } catch (Exception e) {
+      //todo?
+      //e.printStackTrace();
+    }
+    return null;
+  }
 
-	private static void initializePath( String pathKey ) {
-		List<File> validPaths = Lists.newLinkedList();
-		String pathValue = System.getProperty( pathKey );
-		if( ( pathValue != null ) && ( pathValue.length() > 0 ) ) {
-			String[] paths = pathValue.split( File.pathSeparator );
-			if( paths.length > 0 ) {
-				for( String path : paths ) {
-					File resourcePath = getValidPath( path );
-					if( resourcePath != null ) {
-						validPaths.add( resourcePath );
-					} else {
-						Logger.severe( "Failed to add path to", pathKey + ":", path );
-					}
-				}
-			} else {
-				File resourcePath = getValidPath( pathValue );
-				if( resourcePath != null ) {
-					validPaths.add( resourcePath );
-				} else {
-					Logger.severe( "Failed to add path to", pathKey + ":", pathValue );
-				}
-			}
-		}
-		resourcePathMap.put( pathKey, validPaths );
-	}
+  private static void initializePath(String pathKey) {
+    List<File> validPaths = Lists.newLinkedList();
+    String pathValue = System.getProperty(pathKey);
+    if ((pathValue != null) && (pathValue.length() > 0)) {
+      String[] paths = pathValue.split(File.pathSeparator);
+      if (paths.length > 0) {
+        for (String path : paths) {
+          File resourcePath = getValidPath(path);
+          if (resourcePath != null) {
+            validPaths.add(resourcePath);
+          } else {
+            Logger.severe("Failed to add path to", pathKey + ":", path);
+          }
+        }
+      } else {
+        File resourcePath = getValidPath(pathValue);
+        if (resourcePath != null) {
+          validPaths.add(resourcePath);
+        } else {
+          Logger.severe("Failed to add path to", pathKey + ":", pathValue);
+        }
+      }
+    }
+    resourcePathMap.put(pathKey, validPaths);
+  }
 
-	public static boolean addPath( String key, File path ) {
-		if( !resourcePathMap.containsKey( key ) ) {
-			return false;
-		}
-		File validPath = getValidPath( path.getAbsolutePath() );
-		if( validPath != null ) {
-			List<File> existingPaths = resourcePathMap.get( key );
-			if( !existingPaths.contains( validPath ) ) {
-				existingPaths.add( validPath );
-				return true;
-			}
-		}
-		return false;
-	}
+  public static boolean addPath(String key, File path) {
+    if (!resourcePathMap.containsKey(key)) {
+      return false;
+    }
+    File validPath = getValidPath(path.getAbsolutePath());
+    if (validPath != null) {
+      List<File> existingPaths = resourcePathMap.get(key);
+      if (!existingPaths.contains(validPath)) {
+        existingPaths.add(validPath);
+        return true;
+      }
+    }
+    return false;
+  }
 
-	public static void clearPaths( String key ) {
-		resourcePathMap.remove( key );
-	}
+  public static void clearPaths(String key) {
+    resourcePathMap.remove(key);
+  }
 
-	public static List<File> getPaths( String key ) {
-		if( resourcePathMap.containsKey( key ) ) {
-			return resourcePathMap.get( key );
-		} else {
-			return new LinkedList<File>();
-		}
-	}
+  public static List<File> getPaths(String key) {
+    if (resourcePathMap.containsKey(key)) {
+      return resourcePathMap.get(key);
+    } else {
+      return new LinkedList<File>();
+    }
+  }
 }

@@ -57,118 +57,118 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MenuModel extends AbstractMenuModel {
-	public MenuModel( UUID individualId, Class<? extends AbstractElement> clsForI18N ) {
-		super( individualId, clsForI18N );
-	}
+  public MenuModel(UUID individualId, Class<? extends AbstractElement> clsForI18N) {
+    super(individualId, clsForI18N);
+  }
 
-	public MenuModel( UUID individualId ) {
-		this( individualId, null );
-	}
+  public MenuModel(UUID individualId) {
+    this(individualId, null);
+  }
 
-	public static final class InternalPopupPrepModel extends PopupPrepModel {
-		private MenuModel menuModel;
+  public static final class InternalPopupPrepModel extends PopupPrepModel {
+    private MenuModel menuModel;
 
-		private InternalPopupPrepModel( MenuModel menuModel ) {
-			super( UUID.fromString( "34efc403-9eff-4151-b1c6-53dd1249a325" ) );
-			this.menuModel = menuModel;
-		}
+    private InternalPopupPrepModel(MenuModel menuModel) {
+      super(UUID.fromString("34efc403-9eff-4151-b1c6-53dd1249a325"));
+      this.menuModel = menuModel;
+    }
 
-		@Override
-		protected Class<? extends Element> getClassUsedForLocalization() {
-			return this.menuModel.getClassUsedForLocalization();
-		}
+    @Override
+    protected Class<? extends Element> getClassUsedForLocalization() {
+      return this.menuModel.getClassUsedForLocalization();
+    }
 
-		public MenuModel getMenuModel() {
-			return this.menuModel;
-		}
+    public MenuModel getMenuModel() {
+      return this.menuModel;
+    }
 
-		@Override
-		protected void perform( final UserActivity activity ) {
-			final PopupPrepStep step = PopupPrepStep.createAndAddToActivity( this, activity );
+    @Override
+    protected void perform(final UserActivity activity) {
+      final PopupPrepStep step = PopupPrepStep.createAndAddToActivity(this, activity);
 
-			final PopupMenu popupMenu = new PopupMenu( this, activity ) {
-				@Override
-				protected void handleDisplayable() {
-					prologue( activity.getTrigger() );
-					//todo: investigate
-					super.handleDisplayable();
-					//PopupMenuOperation.this.menuModel.addPopupMenuListener( this );
-					ComponentManager.addComponent( InternalPopupPrepModel.this, this );
-				}
+      final PopupMenu popupMenu = new PopupMenu(this, activity) {
+        @Override
+        protected void handleDisplayable() {
+          prologue(activity.getTrigger());
+          //todo: investigate
+          super.handleDisplayable();
+          //PopupMenuOperation.this.menuModel.addPopupMenuListener( this );
+          ComponentManager.addComponent(InternalPopupPrepModel.this, this);
+        }
 
-				@Override
-				protected void handleUndisplayable() {
-					ComponentManager.removeComponent( InternalPopupPrepModel.this, this );
-					InternalPopupPrepModel.this.menuModel.removePopupMenuListener( this );
-					super.handleUndisplayable();
-					epilogue();
-				}
-			};
-			//todo: investigate
-			this.menuModel.addPopupMenuListener( popupMenu );
+        @Override
+        protected void handleUndisplayable() {
+          ComponentManager.removeComponent(InternalPopupPrepModel.this, this);
+          InternalPopupPrepModel.this.menuModel.removePopupMenuListener(this);
+          super.handleUndisplayable();
+          epilogue();
+        }
+      };
+      //todo: investigate
+      this.menuModel.addPopupMenuListener(popupMenu);
 
-			popupMenu.addPopupMenuListener( new PopupMenuListener() {
-				private PopupMenuEvent cancelEvent = null;
+      popupMenu.addPopupMenuListener(new PopupMenuListener() {
+        private PopupMenuEvent cancelEvent = null;
 
-				@Override
-				public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {
-					this.cancelEvent = null;
-				}
+        @Override
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+          this.cancelEvent = null;
+        }
 
-				@Override
-				public void popupMenuWillBecomeInvisible( PopupMenuEvent e ) {
-					if( this.cancelEvent != null ) {
-						step.getUserActivity().cancel();
-						this.cancelEvent = null;
-					}
-				}
+        @Override
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+          if (this.cancelEvent != null) {
+            step.getUserActivity().cancel();
+            this.cancelEvent = null;
+          }
+        }
 
-				@Override
-				public void popupMenuCanceled( PopupMenuEvent e ) {
-					this.cancelEvent = e;
-				}
-			} );
+        @Override
+        public void popupMenuCanceled(PopupMenuEvent e) {
+          this.cancelEvent = e;
+        }
+      });
 
-			popupMenu.addComponentListener( new ComponentListener() {
-				@Override
-				public void componentShown( ComponentEvent e ) {
-					//					java.awt.Component awtComponent = e.getComponent();
-					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentShown", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
-				}
+      popupMenu.addComponentListener(new ComponentListener() {
+        @Override
+        public void componentShown(ComponentEvent e) {
+          //        java.awt.Component awtComponent = e.getComponent();
+          //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentShown", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+        }
 
-				@Override
-				public void componentMoved( ComponentEvent e ) {
-					//					java.awt.Component awtComponent = e.getComponent();
-					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentMoved", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
-				}
+        @Override
+        public void componentMoved(ComponentEvent e) {
+          //        java.awt.Component awtComponent = e.getComponent();
+          //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentMoved", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+        }
 
-				@Override
-				public void componentResized( ComponentEvent e ) {
-					//					java.awt.Component awtComponent = e.getComponent();
-					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
-				}
+        @Override
+        public void componentResized(ComponentEvent e) {
+          //        java.awt.Component awtComponent = e.getComponent();
+          //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+        }
 
-				@Override
-				public void componentHidden( ComponentEvent e ) {
-					//					java.awt.Component awtComponent = e.getComponent();
-					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentHidden", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
-				}
-			} );
+        @Override
+        public void componentHidden(ComponentEvent e) {
+          //        java.awt.Component awtComponent = e.getComponent();
+          //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentHidden", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+        }
+      });
 
-			this.menuModel.handlePopupMenuPrologue( popupMenu );
+      this.menuModel.handlePopupMenuPrologue(popupMenu);
 
-			step.showPopupMenu( popupMenu );
-		}
-	}
+      step.showPopupMenu(popupMenu);
+    }
+  }
 
-	private InternalPopupPrepModel popupPrepModel;
+  private InternalPopupPrepModel popupPrepModel;
 
-	public synchronized InternalPopupPrepModel getPopupPrepModel() {
-		if( this.popupPrepModel != null ) {
-			//pass
-		} else {
-			this.popupPrepModel = new InternalPopupPrepModel( this );
-		}
-		return this.popupPrepModel;
-	}
+  public synchronized InternalPopupPrepModel getPopupPrepModel() {
+    if (this.popupPrepModel != null) {
+      //pass
+    } else {
+      this.popupPrepModel = new InternalPopupPrepModel(this);
+    }
+    return this.popupPrepModel;
+  }
 }

@@ -51,25 +51,25 @@ import javax.swing.Icon;
  * @author Dennis Cosgrove
  */
 public abstract class MemberHub<M extends Member> extends BareBonesMemberHub<M> {
-	private final MemberPopupCoreComposite popup = new MemberPopupCoreComposite( this );
-	private final Icon icon = new ActionStatusIcon( this );
+  private final MemberPopupCoreComposite popup = new MemberPopupCoreComposite(this);
+  private final Icon icon = new ActionStatusIcon(this);
 
-	public MemberHub( M member, boolean initialValue ) {
-		super( member, initialValue );
-	}
+  public MemberHub(M member, boolean initialValue) {
+    super(member, initialValue);
+  }
 
-	public Icon getIcon() {
-		return this.icon;
-	}
+  public Icon getIcon() {
+    return this.icon;
+  }
 
-	public MemberPopupCoreComposite getPopup() {
-		return this.popup;
-	}
+  public MemberPopupCoreComposite getPopup() {
+    return this.popup;
+  }
 
-	public abstract ActionStatus getActionStatus();
+  public abstract ActionStatus getActionStatus();
 
-	public String getDescriptionText() {
-		ActionStatus actionStatus = this.getActionStatus();
-		return actionStatus.getDescriptionText( this.getMember() );
-	}
+  public String getDescriptionText() {
+    ActionStatus actionStatus = this.getActionStatus();
+    return actionStatus.getDescriptionText(this.getMember());
+  }
 }

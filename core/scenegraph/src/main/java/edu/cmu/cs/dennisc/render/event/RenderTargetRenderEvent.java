@@ -50,14 +50,14 @@ import edu.cmu.cs.dennisc.render.RenderTarget;
  */
 public class RenderTargetRenderEvent extends RenderTargetEvent {
 
-	public RenderTargetRenderEvent( RenderTarget renderTarget, Graphics2D g ) {
-		super( renderTarget );
-		this.g = g;
-	}
+  public RenderTargetRenderEvent(RenderTarget renderTarget, Graphics2D g) {
+    super(renderTarget);
+    this.g = g;
+  }
 
-	public Graphics2D getGraphics2D() {
-		return this.g;
-	}
+  public Graphics2D getGraphics2D() {
+    return this.g;
+  }
 
-	private final Graphics2D g;
+  private final Graphics2D g;
 }

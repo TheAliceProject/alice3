@@ -62,79 +62,79 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PredeterminedScaleActionOperation extends AbstractFieldBasedManipulationActionOperation {
-	private Resizer resizer;
-	private double redoScale;
-	private double undoScale;
-	private Criterion<Component> criterion;
+  private Resizer resizer;
+  private double redoScale;
+  private double undoScale;
+  private Criterion<Component> criterion;
 
-	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, Animator animator, UserField scalableField, Resizer resizer, double previousScale, double currentScale, Criterion<Component> criterion, String editPresentationKey ) {
-		super( group, UUID.fromString( "455cae50-c329-44e3-ba7c-9ef10f69d965" ), isDoRequired, animator, scalableField, editPresentationKey );
-		this.resizer = resizer;
+  public PredeterminedScaleActionOperation(Group group, boolean isDoRequired, Animator animator, UserField scalableField, Resizer resizer, double previousScale, double currentScale, Criterion<Component> criterion, String editPresentationKey) {
+    super(group, UUID.fromString("455cae50-c329-44e3-ba7c-9ef10f69d965"), isDoRequired, animator, scalableField, editPresentationKey);
+    this.resizer = resizer;
 
-		this.redoScale = currentScale;
-		this.undoScale = previousScale;
+    this.redoScale = currentScale;
+    this.undoScale = previousScale;
 
-		assert redoScale != 0.0;
-		assert undoScale != 0.0;
+    assert redoScale != 0.0;
+    assert undoScale != 0.0;
 
-		this.criterion = criterion;
-	}
+    this.criterion = criterion;
+  }
 
-	private Scalable getScalable() {
-		ModelImp modelImp = (ModelImp)getEntityImp();
-		return modelImp;
-	}
+  private Scalable getScalable() {
+    ModelImp modelImp = (ModelImp) getEntityImp();
+    return modelImp;
+  }
 
-	private Resizer getResizer() {
-		return this.resizer;
-	}
+  private Resizer getResizer() {
+    return this.resizer;
+  }
 
-	private void scale( final double startScale, final double endScale ) {
-		if( this.getAnimator() != null ) {
-			class ScaleAnimation extends DoubleAnimation {
-				public ScaleAnimation() {
-					super( 0.5, TraditionalStyle.BEGIN_AND_END_GENTLY, startScale, endScale );
-				}
+  private void scale(final double startScale, final double endScale) {
+    if (this.getAnimator() != null) {
+      class ScaleAnimation extends DoubleAnimation {
+        public ScaleAnimation() {
+          super(0.5, TraditionalStyle.BEGIN_AND_END_GENTLY, startScale, endScale);
+        }
 
-				@Override
-				protected void updateValue( Double v ) {
-					Scalable scalable = getScalable();
-					if( scalable != null ) {
-						scalable.setValueForResizer( getResizer(), v );
-					}
-				}
-			}
-			this.getAnimator().invokeLater( new ScaleAnimation(), null );
-		} else {
-			Scalable scalable = getScalable();
-			if( scalable != null ) {
-				scalable.setValueForResizer( getResizer(), endScale );
-			}
-		}
+        @Override
+        protected void updateValue(Double v) {
+          Scalable scalable = getScalable();
+          if (scalable != null) {
+            scalable.setValueForResizer(getResizer(), v);
+          }
+        }
+      }
+      this.getAnimator().invokeLater(new ScaleAnimation(), null);
+    } else {
+      Scalable scalable = getScalable();
+      if (scalable != null) {
+        scalable.setValueForResizer(getResizer(), endScale);
+      }
+    }
 
-	}
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		activity.commitAndInvokeDo( new AbstractEdit( activity ) {
-			@Override
-			protected final void doOrRedoInternal( boolean isDo ) {
-				if( isDo && ( isDoRequired() == false ) ) {
-					//pass
-				} else {
-					scale( undoScale, redoScale );
-				}
-			}
+  @Override
+  protected void perform(UserActivity activity) {
+    activity.commitAndInvokeDo(new AbstractEdit(activity) {
+      @Override
+      protected final void doOrRedoInternal(boolean isDo) {
+        if (isDo && (isDoRequired() == false)) {
+          //pass
+        } else {
+          scale(undoScale, redoScale);
+        }
+      }
 
-			@Override
-			protected final void undoInternal() {
-				scale( redoScale, undoScale );
-			}
+      @Override
+      protected final void undoInternal() {
+        scale(redoScale, undoScale);
+      }
 
-			@Override
-			protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-				rv.append( getEditPresentationKey() );
-			}
-		} );
-	}
+      @Override
+      protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+        rv.append(getEditPresentationKey());
+      }
+    });
+  }
 }

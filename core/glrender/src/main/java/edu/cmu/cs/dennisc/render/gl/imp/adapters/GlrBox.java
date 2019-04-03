@@ -59,261 +59,261 @@ import edu.cmu.cs.dennisc.scenegraph.Box;
  * @author Dennis Cosgrove
  */
 public class GlrBox extends GlrShape<Box> {
-	private void glBox( Context c, boolean isLightingEnabled, boolean isSubElementRequired, boolean isTexturingEnabled ) {
-		//todo: revist vertex ordering
-		//xMin face
-		//c.gl.glColor3d( 1,1,1 );
-		int id = 0;
+  private void glBox(Context c, boolean isLightingEnabled, boolean isSubElementRequired, boolean isTexturingEnabled) {
+    //todo: revist vertex ordering
+    //xMin face
+    //c.gl.glColor3d( 1,1,1 );
+    int id = 0;
 
-		c.gl.glBegin( GL_QUADS );
-		if( isSubElementRequired ) {
-			c.gl.glLoadName( id++ );
-		}
-		if( isLightingEnabled ) {
-			c.gl.glNormal3d( -1, 0, 0 );
-		}
+    c.gl.glBegin(GL_QUADS);
+    if (isSubElementRequired) {
+      c.gl.glLoadName(id++);
+    }
+    if (isLightingEnabled) {
+      c.gl.glNormal3d(-1, 0, 0);
+    }
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( .25f, .66f );
-		}
-		c.gl.glVertex3d( this.xMin, this.yMin, this.zMax );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(.25f, .66f);
+    }
+    c.gl.glVertex3d(this.xMin, this.yMin, this.zMax);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( .25f, .33f );
-		}
-		c.gl.glVertex3d( this.xMin, this.yMax, this.zMax );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(.25f, .33f);
+    }
+    c.gl.glVertex3d(this.xMin, this.yMax, this.zMax);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.0f, .33f );
-		}
-		c.gl.glVertex3d( this.xMin, this.yMax, this.zMin );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.0f, .33f);
+    }
+    c.gl.glVertex3d(this.xMin, this.yMax, this.zMin);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.0f, .66f );
-		}
-		c.gl.glVertex3d( this.xMin, this.yMin, this.zMin );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.0f, .66f);
+    }
+    c.gl.glVertex3d(this.xMin, this.yMin, this.zMin);
 
-		//xMax face
-		//c.gl.glColor3d( 1,0,0 );
-		if( isSubElementRequired ) {
-			c.gl.glLoadName( id++ );
-		}
-		if( isLightingEnabled ) {
-			c.gl.glNormal3d( 1, 0, 0 );
-		}
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.75f, .66f );
-		}
-		c.gl.glVertex3d( this.xMax, this.yMin, this.zMin );
+    //xMax face
+    //c.gl.glColor3d( 1,0,0 );
+    if (isSubElementRequired) {
+      c.gl.glLoadName(id++);
+    }
+    if (isLightingEnabled) {
+      c.gl.glNormal3d(1, 0, 0);
+    }
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.75f, .66f);
+    }
+    c.gl.glVertex3d(this.xMax, this.yMin, this.zMin);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.75f, .33f );
-		}
-		c.gl.glVertex3d( this.xMax, this.yMax, this.zMin );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.75f, .33f);
+    }
+    c.gl.glVertex3d(this.xMax, this.yMax, this.zMin);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.5f, .33f );
-		}
-		c.gl.glVertex3d( this.xMax, this.yMax, this.zMax );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.5f, .33f);
+    }
+    c.gl.glVertex3d(this.xMax, this.yMax, this.zMax);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.5f, .66f );
-		}
-		c.gl.glVertex3d( this.xMax, this.yMin, this.zMax );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.5f, .66f);
+    }
+    c.gl.glVertex3d(this.xMax, this.yMin, this.zMax);
 
-		//yMin face
-		//c.gl.glColor3d( 1,1,1 );
-		if( isSubElementRequired ) {
-			c.gl.glLoadName( id++ );
-		}
-		if( isLightingEnabled ) {
-			c.gl.glNormal3d( 0, -1, 0 );
-		}
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.25f, 0.33f );
-		}
-		c.gl.glVertex3d( this.xMin, this.yMin, this.zMin );
+    //yMin face
+    //c.gl.glColor3d( 1,1,1 );
+    if (isSubElementRequired) {
+      c.gl.glLoadName(id++);
+    }
+    if (isLightingEnabled) {
+      c.gl.glNormal3d(0, -1, 0);
+    }
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.25f, 0.33f);
+    }
+    c.gl.glVertex3d(this.xMin, this.yMin, this.zMin);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.5f, 0.33f );
-		}
-		c.gl.glVertex3d( this.xMax, this.yMin, this.zMin );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.5f, 0.33f);
+    }
+    c.gl.glVertex3d(this.xMax, this.yMin, this.zMin);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.5f, 0.0f );
-		}
-		c.gl.glVertex3d( this.xMax, this.yMin, this.zMax );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.5f, 0.0f);
+    }
+    c.gl.glVertex3d(this.xMax, this.yMin, this.zMax);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.25f, 0.0f );
-		}
-		c.gl.glVertex3d( this.xMin, this.yMin, this.zMax );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.25f, 0.0f);
+    }
+    c.gl.glVertex3d(this.xMin, this.yMin, this.zMax);
 
-		//yMax face
-		//c.gl.glColor3d( 0,1,0 );
-		if( isSubElementRequired ) {
-			c.gl.glLoadName( id++ );
-		}
-		if( isLightingEnabled ) {
-			c.gl.glNormal3d( 0, 1, 0 );
-		}
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.5f, .66f );
-		}
-		c.gl.glVertex3d( this.xMin, this.yMax, this.zMax );
+    //yMax face
+    //c.gl.glColor3d( 0,1,0 );
+    if (isSubElementRequired) {
+      c.gl.glLoadName(id++);
+    }
+    if (isLightingEnabled) {
+      c.gl.glNormal3d(0, 1, 0);
+    }
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.5f, .66f);
+    }
+    c.gl.glVertex3d(this.xMin, this.yMax, this.zMax);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.25f, .66f );
-		}
-		c.gl.glVertex3d( this.xMax, this.yMax, this.zMax );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.25f, .66f);
+    }
+    c.gl.glVertex3d(this.xMax, this.yMax, this.zMax);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.25f, 1.0f );
-		}
-		c.gl.glVertex3d( this.xMax, this.yMax, this.zMin );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.25f, 1.0f);
+    }
+    c.gl.glVertex3d(this.xMax, this.yMax, this.zMin);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.5f, 1.0f );
-		}
-		c.gl.glVertex3d( this.xMin, this.yMax, this.zMin );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.5f, 1.0f);
+    }
+    c.gl.glVertex3d(this.xMin, this.yMax, this.zMin);
 
-		//zMin face
-		//c.gl.glColor3d( 1,1,1 );
-		if( isSubElementRequired ) {
-			c.gl.glLoadName( id++ );
-		}
-		if( isLightingEnabled ) {
-			c.gl.glNormal3d( 0, 0, -1 );
-		}
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 1.0f, .33f );
-		}
-		c.gl.glVertex3d( this.xMin, this.yMax, this.zMin );
+    //zMin face
+    //c.gl.glColor3d( 1,1,1 );
+    if (isSubElementRequired) {
+      c.gl.glLoadName(id++);
+    }
+    if (isLightingEnabled) {
+      c.gl.glNormal3d(0, 0, -1);
+    }
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(1.0f, .33f);
+    }
+    c.gl.glVertex3d(this.xMin, this.yMax, this.zMin);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.75f, .33f );
-		}
-		c.gl.glVertex3d( this.xMax, this.yMax, this.zMin );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.75f, .33f);
+    }
+    c.gl.glVertex3d(this.xMax, this.yMax, this.zMin);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 0.75f, .66f );
-		}
-		c.gl.glVertex3d( this.xMax, this.yMin, this.zMin );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.75f, .66f);
+    }
+    c.gl.glVertex3d(this.xMax, this.yMin, this.zMin);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( 1.0f, .66f );
-		}
-		c.gl.glVertex3d( this.xMin, this.yMin, this.zMin );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(1.0f, .66f);
+    }
+    c.gl.glVertex3d(this.xMin, this.yMin, this.zMin);
 
-		//zMax face
-		//c.gl.glColor3d( 0,0,1 );
-		if( isSubElementRequired ) {
-			c.gl.glLoadName( id++ );
-		}
-		if( isLightingEnabled ) {
-			c.gl.glNormal3d( 0, 0, 1 );
-		}
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( .25f, .66f );
-		}
-		c.gl.glVertex3d( this.xMin, this.yMin, this.zMax );
+    //zMax face
+    //c.gl.glColor3d( 0,0,1 );
+    if (isSubElementRequired) {
+      c.gl.glLoadName(id++);
+    }
+    if (isLightingEnabled) {
+      c.gl.glNormal3d(0, 0, 1);
+    }
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(.25f, .66f);
+    }
+    c.gl.glVertex3d(this.xMin, this.yMin, this.zMax);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( .5f, .66f );
-		}
-		c.gl.glVertex3d( this.xMax, this.yMin, this.zMax );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(.5f, .66f);
+    }
+    c.gl.glVertex3d(this.xMax, this.yMin, this.zMax);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( .5f, .33f );
-		}
-		c.gl.glVertex3d( this.xMax, this.yMax, this.zMax );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(.5f, .33f);
+    }
+    c.gl.glVertex3d(this.xMax, this.yMax, this.zMax);
 
-		if( isTexturingEnabled ) {
-			c.gl.glTexCoord2f( .25f, .33f );
-		}
-		c.gl.glVertex3d( this.xMin, this.yMax, this.zMax );
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(.25f, .33f);
+    }
+    c.gl.glVertex3d(this.xMin, this.yMax, this.zMax);
 
-		c.gl.glEnd();
-	}
+    c.gl.glEnd();
+  }
 
-	@Override
-	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
-		glBox( rc, true, false, rc.isTextureEnabled() );
-	}
+  @Override
+  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
+    glBox(rc, true, false, rc.isTextureEnabled());
+  }
 
-	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		pc.gl.glPushName( -1 );
-		glBox( pc, false, isSubElementRequired, false );
-		pc.gl.glPopName();
-	}
+  @Override
+  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
+    pc.gl.glPushName(-1);
+    glBox(pc, false, isSubElementRequired, false);
+    pc.gl.glPopName();
+  }
 
-	@Override
-	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
-		Point3 origin = new Point3( 0, 0, 0 );
-		Vector3 direction = new Vector3( 0, 0, 0 );
-		switch( subElement ) {
-		case 0:
-			origin.x = this.xMin;
-			direction.x = -1;
-			break;
-		case 1:
-			origin.x = this.xMax;
-			direction.x = 1;
-			break;
-		case 2:
-			origin.y = this.yMin;
-			direction.y = -1;
-			break;
-		case 3:
-			origin.y = this.yMax;
-			direction.y = 1;
-			break;
-		case 4:
-			origin.z = this.zMin;
-			direction.z = -1;
-			break;
-		case 5:
-			origin.z = this.zMax;
-			direction.z = 1;
-			break;
-		default:
-			rv.setNaN();
-			return rv;
-		}
-		GlrGeometry.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, origin.x, origin.y, origin.z, direction.x, direction.y, direction.z );
-		return rv;
-	}
+  @Override
+  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+    Point3 origin = new Point3(0, 0, 0);
+    Vector3 direction = new Vector3(0, 0, 0);
+    switch (subElement) {
+    case 0:
+      origin.x = this.xMin;
+      direction.x = -1;
+      break;
+    case 1:
+      origin.x = this.xMax;
+      direction.x = 1;
+      break;
+    case 2:
+      origin.y = this.yMin;
+      direction.y = -1;
+      break;
+    case 3:
+      origin.y = this.yMax;
+      direction.y = 1;
+      break;
+    case 4:
+      origin.z = this.zMin;
+      direction.z = -1;
+      break;
+    case 5:
+      origin.z = this.zMax;
+      direction.z = 1;
+      break;
+    default:
+      rv.setNaN();
+      return rv;
+    }
+    GlrGeometry.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, origin.x, origin.y, origin.z, direction.x, direction.y, direction.z);
+    return rv;
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.xMinimum ) {
-			this.xMin = owner.xMinimum.getValue();
-			setIsGeometryChanged( true );
-		} else if( property == owner.xMaximum ) {
-			this.xMax = owner.xMaximum.getValue();
-			setIsGeometryChanged( true );
-		} else if( property == owner.yMinimum ) {
-			this.yMin = owner.yMinimum.getValue();
-			setIsGeometryChanged( true );
-		} else if( property == owner.yMaximum ) {
-			this.yMax = owner.yMaximum.getValue();
-			setIsGeometryChanged( true );
-		} else if( property == owner.zMinimum ) {
-			this.zMin = owner.zMinimum.getValue();
-			setIsGeometryChanged( true );
-		} else if( property == owner.zMaximum ) {
-			this.zMax = owner.zMaximum.getValue();
-			setIsGeometryChanged( true );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.xMinimum) {
+      this.xMin = owner.xMinimum.getValue();
+      setIsGeometryChanged(true);
+    } else if (property == owner.xMaximum) {
+      this.xMax = owner.xMaximum.getValue();
+      setIsGeometryChanged(true);
+    } else if (property == owner.yMinimum) {
+      this.yMin = owner.yMinimum.getValue();
+      setIsGeometryChanged(true);
+    } else if (property == owner.yMaximum) {
+      this.yMax = owner.yMaximum.getValue();
+      setIsGeometryChanged(true);
+    } else if (property == owner.zMinimum) {
+      this.zMin = owner.zMinimum.getValue();
+      setIsGeometryChanged(true);
+    } else if (property == owner.zMaximum) {
+      this.zMax = owner.zMaximum.getValue();
+      setIsGeometryChanged(true);
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private double xMin;
-	private double xMax;
-	private double yMin;
-	private double yMax;
-	private double zMin;
-	private double zMax;
+  private double xMin;
+  private double xMax;
+  private double yMin;
+  private double yMax;
+  private double zMin;
+  private double zMax;
 }

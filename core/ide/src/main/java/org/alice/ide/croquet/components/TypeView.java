@@ -56,41 +56,41 @@ import javax.swing.JLabel;
  * @author Dennis Cosgrove
  */
 public class TypeView<T extends AbstractType<?, ?, ?>> extends ViewController<JLabel, ItemState<T>> {
-	private final ValueListener<T> valueObserver = new ValueListener<T>() {
-		@Override
-		public void valueChanged( ValueEvent<T> e ) {
-			T nextValue = e.getNextValue();
-			AbstractType<?, ?, ?> type;
-			if( isArray ) {
-				type = nextValue.getArrayType();
-			} else {
-				type = nextValue;
-			}
-			TypeView.this.getAwtComponent().setIcon( TypeIcon.getInstance( type ) );
-		}
-	};
-	private final boolean isArray;
+  private final ValueListener<T> valueObserver = new ValueListener<T>() {
+    @Override
+    public void valueChanged(ValueEvent<T> e) {
+      T nextValue = e.getNextValue();
+      AbstractType<?, ?, ?> type;
+      if (isArray) {
+        type = nextValue.getArrayType();
+      } else {
+        type = nextValue;
+      }
+      TypeView.this.getAwtComponent().setIcon(TypeIcon.getInstance(type));
+    }
+  };
+  private final boolean isArray;
 
-	public TypeView( ItemState<T> model, boolean isArray ) {
-		super( model );
-		this.isArray = isArray;
-	}
+  public TypeView(ItemState<T> model, boolean isArray) {
+    super(model);
+    this.isArray = isArray;
+  }
 
-	@Override
-	protected JLabel createAwtComponent() {
-		JLabel rv = new JLabel();
-		return rv;
-	}
+  @Override
+  protected JLabel createAwtComponent() {
+    JLabel rv = new JLabel();
+    return rv;
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getModel().addAndInvokeNewSchoolValueListener( valueObserver );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.getModel().addAndInvokeNewSchoolValueListener(valueObserver);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.getModel().removeNewSchoolValueListener( valueObserver );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.getModel().removeNewSchoolValueListener(valueObserver);
+    super.handleUndisplayable();
+  }
 }

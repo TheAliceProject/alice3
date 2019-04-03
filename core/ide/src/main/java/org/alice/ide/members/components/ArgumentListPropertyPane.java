@@ -62,22 +62,22 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class ArgumentListPropertyPane extends AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( AstI18nFactory factory, SimpleArgumentListProperty property ) {
-		super( factory, property );
-	}
+  public ArgumentListPropertyPane(AstI18nFactory factory, SimpleArgumentListProperty property) {
+    super(factory, property);
+  }
 
-	@Override
-	protected AwtComponentView<?> createComponent( SimpleArgument argument ) {
-		LineAxisPanel rv = new LineAxisPanel();
-		rv.setBackgroundColor( new Color( 255, 255, 255, 127 ) );
-		rv.setBorder( new OutlinedBorder( 1, 4, 1, 4, Color.LIGHT_GRAY ) );
+  @Override
+  protected AwtComponentView<?> createComponent(SimpleArgument argument) {
+    LineAxisPanel rv = new LineAxisPanel();
+    rv.setBackgroundColor(new Color(255, 255, 255, 127));
+    rv.setBorder(new OutlinedBorder(1, 4, 1, 4, Color.LIGHT_GRAY));
 
-		String parameterName = FormatterState.getInstance().getValue().getNameForDeclaration( argument.parameter.getValue() );
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );
-		if( ( parameterName != null ) && ( parameterName.length() > 0 ) ) {
-			rv.addComponent( new Label( parameterName + ": ", TextPosture.OBLIQUE, TextWeight.LIGHT ) );
-		}
-		rv.addComponent( new EmptyExpressionPane( (EmptyExpression)argument.expression.getValue() ) );
-		return rv;
-	}
+    String parameterName = FormatterState.getInstance().getValue().getNameForDeclaration(argument.parameter.getValue());
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );
+    if ((parameterName != null) && (parameterName.length() > 0)) {
+      rv.addComponent(new Label(parameterName + ": ", TextPosture.OBLIQUE, TextWeight.LIGHT));
+    }
+    rv.addComponent(new EmptyExpressionPane((EmptyExpression) argument.expression.getValue()));
+    return rv;
+  }
 }

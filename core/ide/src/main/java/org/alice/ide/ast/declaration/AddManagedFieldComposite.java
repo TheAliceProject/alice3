@@ -96,190 +96,190 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AddManagedFieldComposite extends AddFieldComposite {
-	private final InitialPropertyValuesToolPaletteCoreComposite initialPropertyValuesToolPaletteCoreComposite = new InitialPropertyValuesToolPaletteCoreComposite();
+  private final InitialPropertyValuesToolPaletteCoreComposite initialPropertyValuesToolPaletteCoreComposite = new InitialPropertyValuesToolPaletteCoreComposite();
 
-	public AddManagedFieldComposite( UUID migrationId, Details details ) {
-		super( migrationId, details );
-	}
+  public AddManagedFieldComposite(UUID migrationId, Details details) {
+    super(migrationId, details);
+  }
 
-	public InitialPropertyValuesToolPaletteCoreComposite getInitialPropertyValuesToolPaletteCoreComposite() {
-		return this.initialPropertyValuesToolPaletteCoreComposite;
-	}
+  public InitialPropertyValuesToolPaletteCoreComposite getInitialPropertyValuesToolPaletteCoreComposite() {
+    return this.initialPropertyValuesToolPaletteCoreComposite;
+  }
 
-	@Override
-	protected boolean isFieldFinal() {
-		return true;
-	}
+  @Override
+  protected boolean isFieldFinal() {
+    return true;
+  }
 
-	@Override
-	protected ManagementLevel getManagementLevel() {
-		return ManagementLevel.MANAGED;
-	}
+  @Override
+  protected ManagementLevel getManagementLevel() {
+    return ManagementLevel.MANAGED;
+  }
 
-	@Override
-	public UserType<?> getDeclaringType() {
-		StageIDE ide = StageIDE.getActiveInstance();
-		if( ide != null ) {
-			return ide.getSceneType();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public UserType<?> getDeclaringType() {
+    StageIDE ide = StageIDE.getActiveInstance();
+    if (ide != null) {
+      return ide.getSceneType();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public boolean isValueComponentTypeDisplayed() {
-		return super.isValueComponentTypeDisplayed() && IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
-	}
+  @Override
+  public boolean isValueComponentTypeDisplayed() {
+    return super.isValueComponentTypeDisplayed() && IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
+  }
 
-	@Override
-	public boolean isInitializerDisplayed() {
-		return super.isInitializerDisplayed() && IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
-	}
+  @Override
+  public boolean isInitializerDisplayed() {
+    return super.isInitializerDisplayed() && IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
+  }
 
-	protected static class EditCustomization {
-		private final List<Statement> doStatements = Lists.newLinkedList();
-		private final List<Statement> undoStatements = Lists.newLinkedList();
-		private final List<Resource> resources = Lists.newLinkedList();
+  protected static class EditCustomization {
+    private final List<Statement> doStatements = Lists.newLinkedList();
+    private final List<Statement> undoStatements = Lists.newLinkedList();
+    private final List<Resource> resources = Lists.newLinkedList();
 
-		public void addDoStatement( Statement statement ) {
-			this.doStatements.add( statement );
-		}
+    public void addDoStatement(Statement statement) {
+      this.doStatements.add(statement);
+    }
 
-		public Statement[] getDoStatements() {
-			return ArrayUtilities.createArray( this.doStatements, Statement.class );
-		}
+    public Statement[] getDoStatements() {
+      return ArrayUtilities.createArray(this.doStatements, Statement.class);
+    }
 
-		public void addUndoStatement( Statement statement ) {
-			this.undoStatements.add( statement );
-		}
+    public void addUndoStatement(Statement statement) {
+      this.undoStatements.add(statement);
+    }
 
-		public Statement[] getUndoStatements() {
-			return ArrayUtilities.createArray( this.undoStatements, Statement.class );
-		}
+    public Statement[] getUndoStatements() {
+      return ArrayUtilities.createArray(this.undoStatements, Statement.class);
+    }
 
-		public void addResource( Resource resource ) {
-			this.resources.add( resource );
-		}
+    public void addResource(Resource resource) {
+      this.resources.add(resource);
+    }
 
-		public Resource[] getResources() {
-			return ArrayUtilities.createArray( this.resources, Resource.class );
-		}
-	}
+    public Resource[] getResources() {
+      return ArrayUtilities.createArray(this.resources, Resource.class);
+    }
+  }
 
-	private static class InitialPropertyValueExpressionCustomizer implements ItemStateCustomizer<Expression> {
-		private final JavaMethod setter;
-		private static final Collection<JavaMethod> setDimensionPolicyMethods = Sets.newHashSet();
+  private static class InitialPropertyValueExpressionCustomizer implements ItemStateCustomizer<Expression> {
+    private final JavaMethod setter;
+    private static final Collection<JavaMethod> setDimensionPolicyMethods = Sets.newHashSet();
 
-		public InitialPropertyValueExpressionCustomizer( JavaMethod setter ) {
-			this.setter = setter;
-		}
+    public InitialPropertyValueExpressionCustomizer(JavaMethod setter) {
+      this.setter = setter;
+    }
 
-		@Override
-		public void prologue() {
-		}
+    @Override
+    public void prologue() {
+    }
 
-		@Override
-		public void epilogue() {
-		}
+    @Override
+    public void epilogue() {
+    }
 
-		@Override
-		public CascadeFillIn getFillInFor( Expression value ) {
-			//todo
-			return null;
-		}
+    @Override
+    public CascadeFillIn getFillInFor(Expression value) {
+      //todo
+      return null;
+    }
 
-		@Override
-		public void appendBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
-			AbstractParameter parameter = this.setter.getRequiredParameters().get( 0 );
-			AbstractType<?, ?, ?> valueType = parameter.getValueType();
-			ValueDetails<?> valueDetails = parameter.getDetails();
+    @Override
+    public void appendBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
+      AbstractParameter parameter = this.setter.getRequiredParameters().get(0);
+      AbstractType<?, ?, ?> valueType = parameter.getValueType();
+      ValueDetails<?> valueDetails = parameter.getDetails();
 
-			IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, valueType, valueDetails );
-		}
+      IDE.getActiveInstance().getExpressionCascadeManager().appendItems(blankChildren, blankNode, valueType, valueDetails);
+    }
 
-		public void appendDoStatements( EditCustomization editCustomization, UserField field, Expression expression ) {
-			MethodInvocation setterInvocation = SetUpMethodGenerator.createSetterInvocation( false, field, setter, expression );
-			if( setDimensionPolicyMethods.size() == 0 ) {
-				setDimensionPolicyMethods.add( JavaMethod.getInstance( SModel.class, "setWidth", Number.class, SetWidth.Detail[].class ) );
-				setDimensionPolicyMethods.add( JavaMethod.getInstance( SModel.class, "setHeight", Number.class, SetHeight.Detail[].class ) );
-				setDimensionPolicyMethods.add( JavaMethod.getInstance( SModel.class, "setDepth", Number.class, SetDepth.Detail[].class ) );
-			}
-			if( setDimensionPolicyMethods.contains( this.setter ) ) {
-				ExpressionCreator expressionCreator = IDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
-				JavaMethod policyKeyMethod = JavaMethod.getInstance( DurationAnimationStyleSetDimensionPolicyArgumentFactory.class, "policy", SetDimensionPolicy.class );
-				Expression preserveNothingExpression = expressionCreator.createEnumExpression( SetDimensionPolicy.PRESERVE_NOTHING );
-				setterInvocation.keyedArguments.add( new JavaKeyedArgument( setterInvocation.method.getValue().getKeyedParameter(), policyKeyMethod, preserveNothingExpression ) );
-			}
-			editCustomization.addDoStatement( new ExpressionStatement( setterInvocation ) );
-		}
-	}
+    public void appendDoStatements(EditCustomization editCustomization, UserField field, Expression expression) {
+      MethodInvocation setterInvocation = SetUpMethodGenerator.createSetterInvocation(false, field, setter, expression);
+      if (setDimensionPolicyMethods.size() == 0) {
+        setDimensionPolicyMethods.add(JavaMethod.getInstance(SModel.class, "setWidth", Number.class, SetWidth.Detail[].class));
+        setDimensionPolicyMethods.add(JavaMethod.getInstance(SModel.class, "setHeight", Number.class, SetHeight.Detail[].class));
+        setDimensionPolicyMethods.add(JavaMethod.getInstance(SModel.class, "setDepth", Number.class, SetDepth.Detail[].class));
+      }
+      if (setDimensionPolicyMethods.contains(this.setter)) {
+        ExpressionCreator expressionCreator = IDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
+        JavaMethod policyKeyMethod = JavaMethod.getInstance(DurationAnimationStyleSetDimensionPolicyArgumentFactory.class, "policy", SetDimensionPolicy.class);
+        Expression preserveNothingExpression = expressionCreator.createEnumExpression(SetDimensionPolicy.PRESERVE_NOTHING);
+        setterInvocation.keyedArguments.add(new JavaKeyedArgument(setterInvocation.method.getValue().getKeyedParameter(), policyKeyMethod, preserveNothingExpression));
+      }
+      editCustomization.addDoStatement(new ExpressionStatement(setterInvocation));
+    }
+  }
 
-	protected AffineMatrix4x4 updateInitialTransformIfNecessary( AffineMatrix4x4 initialTransform ) {
-		return initialTransform;
-	}
+  protected AffineMatrix4x4 updateInitialTransformIfNecessary(AffineMatrix4x4 initialTransform) {
+    return initialTransform;
+  }
 
-	protected EditCustomization customize( UserActivity userActivity, UserType<?> declaringType, UserField field, EditCustomization rv ) {
-		AffineMatrix4x4 initialTransform = null;
-		DropSite dropSite = userActivity.findDropSite();
-		if( dropSite instanceof SceneDropSite ) {
-			SceneDropSite sceneDropSite = (SceneDropSite)dropSite;
-			initialTransform = sceneDropSite.getTransform();
-		} else {
-			AbstractType<?, ?, ?> type = field.getValueType();
-			JavaType javaType = type.getFirstEncounteredJavaType();
-			Class<?> cls = javaType.getClassReflectionProxy().getReification();
-			if( SModel.class.isAssignableFrom( cls ) ) {
-				initialTransform = AliceResourceUtilties.getDefaultInitialTransform( AliceResourceClassUtilities.getResourceClassForModelClass( (Class<? extends SModel>)cls ) );
-			} else {
-				initialTransform = null;
-			}
-		}
-		initialTransform = this.updateInitialTransformIfNecessary( initialTransform );
-		AbstractSceneEditor sceneEditor = IDE.getActiveInstance().getSceneEditor();
-		Statement[] doStatements = sceneEditor.getDoStatementsForAddField( field, initialTransform );
-		for( Statement s : doStatements ) {
-			rv.addDoStatement( s );
-		}
-		Statement[] undoStatements = sceneEditor.getUndoStatementsForAddField( field );
-		for( Statement s : undoStatements ) {
-			rv.addUndoStatement( s );
-		}
-		for( CustomItemState<Expression> initialPropertyValueExpressionState : this.initialPropertyValuesToolPaletteCoreComposite.getInitialPropertyValueExpressionStates() ) {
-			InitialPropertyValueExpressionCustomizer customizer = (InitialPropertyValueExpressionCustomizer)( (InternalCustomItemState<Expression>)initialPropertyValueExpressionState ).getCustomizer();
-			customizer.appendDoStatements( rv, field, initialPropertyValueExpressionState.getValue() );
-		}
-		return rv;
-	}
+  protected EditCustomization customize(UserActivity userActivity, UserType<?> declaringType, UserField field, EditCustomization rv) {
+    AffineMatrix4x4 initialTransform = null;
+    DropSite dropSite = userActivity.findDropSite();
+    if (dropSite instanceof SceneDropSite) {
+      SceneDropSite sceneDropSite = (SceneDropSite) dropSite;
+      initialTransform = sceneDropSite.getTransform();
+    } else {
+      AbstractType<?, ?, ?> type = field.getValueType();
+      JavaType javaType = type.getFirstEncounteredJavaType();
+      Class<?> cls = javaType.getClassReflectionProxy().getReification();
+      if (SModel.class.isAssignableFrom(cls)) {
+        initialTransform = AliceResourceUtilties.getDefaultInitialTransform(AliceResourceClassUtilities.getResourceClassForModelClass((Class<? extends SModel>) cls));
+      } else {
+        initialTransform = null;
+      }
+    }
+    initialTransform = this.updateInitialTransformIfNecessary(initialTransform);
+    AbstractSceneEditor sceneEditor = IDE.getActiveInstance().getSceneEditor();
+    Statement[] doStatements = sceneEditor.getDoStatementsForAddField(field, initialTransform);
+    for (Statement s : doStatements) {
+      rv.addDoStatement(s);
+    }
+    Statement[] undoStatements = sceneEditor.getUndoStatementsForAddField(field);
+    for (Statement s : undoStatements) {
+      rv.addUndoStatement(s);
+    }
+    for (CustomItemState<Expression> initialPropertyValueExpressionState : this.initialPropertyValuesToolPaletteCoreComposite.getInitialPropertyValueExpressionStates()) {
+      InitialPropertyValueExpressionCustomizer customizer = (InitialPropertyValueExpressionCustomizer) ((InternalCustomItemState<Expression>) initialPropertyValueExpressionState).getCustomizer();
+      customizer.appendDoStatements(rv, field, initialPropertyValueExpressionState.getValue());
+    }
+    return rv;
+  }
 
-	@Override
-	protected DeclareFieldEdit createEdit( UserActivity userActivity, UserType<?> declaringType, UserField field ) {
-		EditCustomization customization = new EditCustomization();
-		this.customize( userActivity, declaringType, field, customization );
-		AbstractSceneEditor sceneEditor = IDE.getActiveInstance().getSceneEditor();
-		return new DeclareGalleryFieldEdit( userActivity, sceneEditor, this.getDeclaringType(), field, customization.getDoStatements(), customization.getUndoStatements() );
-	}
+  @Override
+  protected DeclareFieldEdit createEdit(UserActivity userActivity, UserType<?> declaringType, UserField field) {
+    EditCustomization customization = new EditCustomization();
+    this.customize(userActivity, declaringType, field, customization);
+    AbstractSceneEditor sceneEditor = IDE.getActiveInstance().getSceneEditor();
+    return new DeclareGalleryFieldEdit(userActivity, sceneEditor, this.getDeclaringType(), field, customization.getDoStatements(), customization.getUndoStatements());
+  }
 
-	protected <T> CustomItemState<Expression> createInitialPropertyValueExpressionState( String keyText, T initialValue, Class<?> declaringCls, String setterName, Class<T> valueCls, Class<?> variableLengthCls ) {
-		Method mthd;
-		if( variableLengthCls != null ) {
-			mthd = ReflectionUtilities.getMethod( declaringCls, setterName, valueCls, variableLengthCls );
-		} else {
-			mthd = ReflectionUtilities.getMethod( declaringCls, setterName, valueCls );
-		}
-		JavaMethod method = JavaMethod.getInstance( mthd );
-		ExpressionCreator expressionCreator = IDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
-		try {
-			Expression expression = expressionCreator.createExpression( initialValue );
-			CustomItemState<Expression> rv = this.createCustomItemState( keyText, NodeCodec.getInstance( Expression.class ), expression, new InitialPropertyValueExpressionCustomizer( method ) );
-			this.initialPropertyValuesToolPaletteCoreComposite.addInitialPropertyValueExpressionState( rv );
-			return rv;
-		} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
-			throw new RuntimeException( ccee );
-		}
-	}
+  protected <T> CustomItemState<Expression> createInitialPropertyValueExpressionState(String keyText, T initialValue, Class<?> declaringCls, String setterName, Class<T> valueCls, Class<?> variableLengthCls) {
+    Method mthd;
+    if (variableLengthCls != null) {
+      mthd = ReflectionUtilities.getMethod(declaringCls, setterName, valueCls, variableLengthCls);
+    } else {
+      mthd = ReflectionUtilities.getMethod(declaringCls, setterName, valueCls);
+    }
+    JavaMethod method = JavaMethod.getInstance(mthd);
+    ExpressionCreator expressionCreator = IDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
+    try {
+      Expression expression = expressionCreator.createExpression(initialValue);
+      CustomItemState<Expression> rv = this.createCustomItemState(keyText, NodeCodec.getInstance(Expression.class), expression, new InitialPropertyValueExpressionCustomizer(method));
+      this.initialPropertyValuesToolPaletteCoreComposite.addInitialPropertyValueExpressionState(rv);
+      return rv;
+    } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+      throw new RuntimeException(ccee);
+    }
+  }
 
-	@Override
-	protected AddManagedFieldView createView() {
-		return new AddManagedFieldView( this );
-	}
+  @Override
+  protected AddManagedFieldView createView() {
+    return new AddManagedFieldView(this);
+  }
 }

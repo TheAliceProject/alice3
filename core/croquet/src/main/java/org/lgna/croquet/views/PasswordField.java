@@ -52,50 +52,50 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class PasswordField extends AbstractTextField<JSuggestivePasswordField> {
-	public PasswordField( StringState model, Operation operation ) {
-		super( model, operation );
-	}
+  public PasswordField(StringState model, Operation operation) {
+    super(model, operation);
+  }
 
-	public PasswordField( StringState model ) {
-		this( model, null );
-	}
+  public PasswordField(StringState model) {
+    this(model, null);
+  }
 
-	@Override
-	public void updateTextForBlankCondition( String textForBlankCondition ) {
-		this.getAwtComponent().setTextForBlankCondition( textForBlankCondition );
-	}
+  @Override
+  public void updateTextForBlankCondition(String textForBlankCondition) {
+    this.getAwtComponent().setTextForBlankCondition(textForBlankCondition);
+  }
 
-	@Override
-	protected JSuggestivePasswordField createAwtComponent() {
-		JSuggestivePasswordField rv = new JSuggestivePasswordField() {
-			@Override
-			public Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			}
+  @Override
+  protected JSuggestivePasswordField createAwtComponent() {
+    JSuggestivePasswordField rv = new JSuggestivePasswordField() {
+      @Override
+      public Dimension getPreferredSize() {
+        return constrainPreferredSizeIfNecessary(super.getPreferredSize());
+      }
 
-			@Override
-			public Dimension getMaximumSize() {
-				if( PasswordField.this.isMaximumSizeClampedToPreferredSize() ) {
-					return this.getPreferredSize();
-				} else {
-					return super.getMaximumSize();
-				}
-			}
-		};
-		rv.setTextForBlankCondition( this.getModel().getTextForBlankCondition() );
-		return rv;
-	}
+      @Override
+      public Dimension getMaximumSize() {
+        if (PasswordField.this.isMaximumSizeClampedToPreferredSize()) {
+          return this.getPreferredSize();
+        } else {
+          return super.getMaximumSize();
+        }
+      }
+    };
+    rv.setTextForBlankCondition(this.getModel().getTextForBlankCondition());
+    return rv;
+  }
 
-	private static final char EXPOSE_CHAR = 0;
+  private static final char EXPOSE_CHAR = 0;
 
-	public boolean isExposed() {
-		return this.getAwtComponent().getEchoChar() != EXPOSE_CHAR;
-	}
+  public boolean isExposed() {
+    return this.getAwtComponent().getEchoChar() != EXPOSE_CHAR;
+  }
 
-	public void setExposed( boolean isExposed ) {
-		this.checkEventDispatchThread();
-		char c = isExposed ? EXPOSE_CHAR : '*';
-		this.getAwtComponent().setEchoChar( c );
-	}
+  public void setExposed(boolean isExposed) {
+    this.checkEventDispatchThread();
+    char c = isExposed ? EXPOSE_CHAR : '*';
+    this.getAwtComponent().setEchoChar(c);
+  }
 
 }

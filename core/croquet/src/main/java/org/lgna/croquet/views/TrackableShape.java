@@ -52,19 +52,19 @@ import java.awt.event.HierarchyBoundsListener;
  * @author Dennis Cosgrove
  */
 public interface TrackableShape {
-	public boolean isInView();
+  public boolean isInView();
 
-	public ScrollPane getScrollPaneAncestor();
+  public ScrollPane getScrollPaneAncestor();
 
-	public Shape getShape( ScreenElement asSeenBy, Insets insets );
+  public Shape getShape(ScreenElement asSeenBy, Insets insets);
 
-	public Shape getVisibleShape( ScreenElement asSeenBy, Insets insets );
+  public Shape getVisibleShape(ScreenElement asSeenBy, Insets insets);
 
-	public void addComponentListener( ComponentListener listener );
+  public void addComponentListener(ComponentListener listener);
 
-	public void removeComponentListener( ComponentListener listener );
+  public void removeComponentListener(ComponentListener listener);
 
-	public void addHierarchyBoundsListener( HierarchyBoundsListener listener );
+  public void addHierarchyBoundsListener(HierarchyBoundsListener listener);
 
-	public void removeHierarchyBoundsListener( HierarchyBoundsListener listener );
+  public void removeHierarchyBoundsListener(HierarchyBoundsListener listener);
 }

@@ -58,89 +58,89 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class DifferentSignatureHelpComposite<M extends Member> extends PotentialNameChangerHelpComposite<DifferentSignatureHelpView, M, DifferentSignature<M>> {
-	private final ImmutableDataSingleSelectListState<DifferentSignatureChoice> choiceState = this.createImmutableListStateForEnum( "choiceState", DifferentSignatureChoice.class, null );
+  private final ImmutableDataSingleSelectListState<DifferentSignatureChoice> choiceState = this.createImmutableListStateForEnum("choiceState", DifferentSignatureChoice.class, null);
 
-	private final ValueListener<DifferentSignatureChoice> topLevelListener = new ValueListener<DifferentSignatureChoice>() {
-		@Override
-		public void valueChanged( ValueEvent<DifferentSignatureChoice> e ) {
-			handleChanged();
-		}
-	};
+  private final ValueListener<DifferentSignatureChoice> topLevelListener = new ValueListener<DifferentSignatureChoice>() {
+    @Override
+    public void valueChanged(ValueEvent<DifferentSignatureChoice> e) {
+      handleChanged();
+    }
+  };
 
-	public DifferentSignatureHelpComposite( UUID migrationId, DifferentSignature<M> differentSignature, String signatureText ) {
-		super( migrationId, differentSignature );
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "Class file </filename/> contains a </kindOfMember/> <strong>\"</memberName/>\"</strong> which has a " );
-		sb.append( signatureText );
-		sb.append( " different to that of a </kindOfMember/> already in your project.<p><p>" );
-		sb.append( "You have two options:" );
-		sb.append( "<ol>" );
-		sb.append( "<li><strong>add and retain both</strong> versions (note: renaming at least one will be required)" );
-		sb.append( "<li>only <strong>retain</strong> the version already in your project" );
-		sb.append( "</ol>" );
-		sb.append( "</html>" );
+  public DifferentSignatureHelpComposite(UUID migrationId, DifferentSignature<M> differentSignature, String signatureText) {
+    super(migrationId, differentSignature);
+    StringBuilder sb = new StringBuilder();
+    sb.append("<html>");
+    sb.append("Class file </filename/> contains a </kindOfMember/> <strong>\"</memberName/>\"</strong> which has a ");
+    sb.append(signatureText);
+    sb.append(" different to that of a </kindOfMember/> already in your project.<p><p>");
+    sb.append("You have two options:");
+    sb.append("<ol>");
+    sb.append("<li><strong>add and retain both</strong> versions (note: renaming at least one will be required)");
+    sb.append("<li>only <strong>retain</strong> the version already in your project");
+    sb.append("</ol>");
+    sb.append("</html>");
 
-		String kindOfMemberText;
-		M member = differentSignature.getImportHub().getMember();
-		if( member instanceof UserMethod ) {
-			UserMethod method = (UserMethod)member;
-			kindOfMemberText = method.isProcedure() ? "procedure" : "function";
-		} else {
-			kindOfMemberText = "property";
-		}
-		String text = sb.toString();
-		text = AddMembersPage.modifyFilenameLocalizedText( text, differentSignature.getUriForDescriptionPurposesOnly() );
-		text = text.replaceAll( "</kindOfMember/>", kindOfMemberText );
-		text = text.replaceAll( "</memberName/>", member.getName() );
-		this.getHeader().setText( text );
-	}
+    String kindOfMemberText;
+    M member = differentSignature.getImportHub().getMember();
+    if (member instanceof UserMethod) {
+      UserMethod method = (UserMethod) member;
+      kindOfMemberText = method.isProcedure() ? "procedure" : "function";
+    } else {
+      kindOfMemberText = "property";
+    }
+    String text = sb.toString();
+    text = AddMembersPage.modifyFilenameLocalizedText(text, differentSignature.getUriForDescriptionPurposesOnly());
+    text = text.replaceAll("</kindOfMember/>", kindOfMemberText);
+    text = text.replaceAll("</memberName/>", member.getName());
+    this.getHeader().setText(text);
+  }
 
-	public ImmutableDataSingleSelectListState<DifferentSignatureChoice> getChoiceState() {
-		return this.choiceState;
-	}
+  public ImmutableDataSingleSelectListState<DifferentSignatureChoice> getChoiceState() {
+    return this.choiceState;
+  }
 
-	@Override
-	protected boolean isRetainBothSelected() {
-		return this.choiceState.getValue() == DifferentSignatureChoice.ADD_AND_RETAIN_BOTH;
-	}
+  @Override
+  protected boolean isRetainBothSelected() {
+    return this.choiceState.getValue() == DifferentSignatureChoice.ADD_AND_RETAIN_BOTH;
+  }
 
-	@Override
-	protected DifferentSignatureHelpView createView() {
-		return new DifferentSignatureHelpView( this );
-	}
+  @Override
+  protected DifferentSignatureHelpView createView() {
+    return new DifferentSignatureHelpView(this);
+  }
 
-	@Override
-	public void handlePreActivation() {
-		boolean isImport = this.getPotentialNameChanger().getImportHub().getIsDesiredState().getValue();
-		DifferentSignatureChoice topLevelChoice;
-		if( isImport ) {
-			topLevelChoice = DifferentSignatureChoice.ADD_AND_RETAIN_BOTH;
-		} else {
-			topLevelChoice = DifferentSignatureChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT;
-		}
-		this.choiceState.setValueTransactionlessly( topLevelChoice );
-		this.choiceState.addNewSchoolValueListener( this.topLevelListener );
-		super.handlePreActivation();
-	}
+  @Override
+  public void handlePreActivation() {
+    boolean isImport = this.getPotentialNameChanger().getImportHub().getIsDesiredState().getValue();
+    DifferentSignatureChoice topLevelChoice;
+    if (isImport) {
+      topLevelChoice = DifferentSignatureChoice.ADD_AND_RETAIN_BOTH;
+    } else {
+      topLevelChoice = DifferentSignatureChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT;
+    }
+    this.choiceState.setValueTransactionlessly(topLevelChoice);
+    this.choiceState.addNewSchoolValueListener(this.topLevelListener);
+    super.handlePreActivation();
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		super.handlePostDeactivation();
-		this.choiceState.removeNewSchoolValueListener( this.topLevelListener );
-	}
+  @Override
+  public void handlePostDeactivation() {
+    super.handlePostDeactivation();
+    this.choiceState.removeNewSchoolValueListener(this.topLevelListener);
+  }
 
-	private void handleChanged() {
-		DifferentSignatureChoice choice = this.choiceState.getValue();
-		boolean isImport;
-		if( choice == DifferentSignatureChoice.ADD_AND_RETAIN_BOTH ) {
-			isImport = true;
-		} else if( choice == DifferentSignatureChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT ) {
-			isImport = false;
-		} else {
-			//should never happen
-			isImport = false;
-		}
-		this.getPotentialNameChanger().getImportHub().getIsDesiredState().setValueTransactionlessly( isImport );
-	}
+  private void handleChanged() {
+    DifferentSignatureChoice choice = this.choiceState.getValue();
+    boolean isImport;
+    if (choice == DifferentSignatureChoice.ADD_AND_RETAIN_BOTH) {
+      isImport = true;
+    } else if (choice == DifferentSignatureChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT) {
+      isImport = false;
+    } else {
+      //should never happen
+      isImport = false;
+    }
+    this.getPotentialNameChanger().getImportHub().getIsDesiredState().setValueTransactionlessly(isImport);
+  }
 }

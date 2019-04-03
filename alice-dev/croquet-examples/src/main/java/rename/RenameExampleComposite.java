@@ -56,44 +56,44 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RenameExampleComposite extends SimpleOperationInputDialogCoreComposite<RenameExampleView> {
-	private static final String INITIAL_VALUE = "fred";
+  private static final String INITIAL_VALUE = "fred";
 
-	private final StringState nameState = this.createStringState( "nameState", INITIAL_VALUE );
+  private final StringState nameState = this.createStringState("nameState", INITIAL_VALUE);
 
-	public RenameExampleComposite() {
-		super( UUID.fromString( "73adadcf-e434-4dfc-a8fd-507b741f5d58" ), Application.DOCUMENT_UI_GROUP );
-	}
+  public RenameExampleComposite() {
+    super(UUID.fromString("73adadcf-e434-4dfc-a8fd-507b741f5d58"), Application.DOCUMENT_UI_GROUP);
+  }
 
-	public StringState getNameState() {
-		return this.nameState;
-	}
+  public StringState getNameState() {
+    return this.nameState;
+  }
 
-	@Override
-	protected RenameExampleView createView() {
-		return new RenameExampleView( this );
-	}
+  @Override
+  protected RenameExampleView createView() {
+    return new RenameExampleView(this);
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		return IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    return IS_GOOD_TO_GO_STATUS;
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		return null;
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity) {
+    return null;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.nameState.setValueTransactionlessly( INITIAL_VALUE );
-		this.nameState.selectAll();
-		this.nameState.requestFocus();
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    this.nameState.setValueTransactionlessly(INITIAL_VALUE);
+    this.nameState.selectAll();
+    this.nameState.requestFocus();
+  }
 
-	public static void main( String[] args ) {
-		SimpleApplication app = new SimpleApplication();
-		new RenameExampleComposite().getLaunchOperation().fire();
-		System.exit( 0 );
-	}
+  public static void main(String[] args) {
+    SimpleApplication app = new SimpleApplication();
+    new RenameExampleComposite().getLaunchOperation().fire();
+    System.exit(0);
+  }
 }

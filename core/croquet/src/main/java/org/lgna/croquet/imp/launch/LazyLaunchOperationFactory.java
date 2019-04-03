@@ -53,23 +53,23 @@ import org.lgna.croquet.OperationOwningComposite;
  * @author Dennis Cosgrove
  */
 public abstract class LazyLaunchOperationFactory<C extends OperationOwningComposite<?>> {
-	public LazyLaunchOperationFactory( Class<C> cls, Lazy<C> lazy ) {
-		this.cls = cls;
-		this.lazy = lazy;
-	}
+  public LazyLaunchOperationFactory(Class<C> cls, Lazy<C> lazy) {
+    this.cls = cls;
+    this.lazy = lazy;
+  }
 
-	public Lazy<C> getLazy() {
-		return this.lazy;
-	}
+  public Lazy<C> getLazy() {
+    return this.lazy;
+  }
 
-	/*package-private*/Class<? extends Element> getClassUsedForLocalization() {
-		return this.cls;
-	}
+  /*package-private*/Class<? extends Element> getClassUsedForLocalization() {
+    return this.cls;
+  }
 
-	protected Operation createLaunchOperation( Group group, String subKeyText, Initializer<C> initializer ) {
-		return new LazyLaunchOperation<C>( this, group, subKeyText, initializer );
-	}
+  protected Operation createLaunchOperation(Group group, String subKeyText, Initializer<C> initializer) {
+    return new LazyLaunchOperation<C>(this, group, subKeyText, initializer);
+  }
 
-	private final Class<C> cls;
-	private final Lazy<C> lazy;
+  private final Class<C> cls;
+  private final Lazy<C> lazy;
 }

@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.biped;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SBiped;
@@ -33,39 +34,33 @@ import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 public enum SnowWomanResource implements BipedResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, SnowWomanResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_INDEX_FINGER_TIP = new JointId( LEFT_INDEX_FINGER_KNUCKLE, SnowWomanResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_THUMB_TIP = new JointId( LEFT_THUMB_KNUCKLE, SnowWomanResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId( RIGHT_INDEX_FINGER_KNUCKLE, SnowWomanResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_THUMB_TIP = new JointId( RIGHT_THUMB_KNUCKLE, SnowWomanResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, SnowWomanResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, SnowWomanResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LOWER_LIP = new JointId(MOUTH, SnowWomanResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_INDEX_FINGER_TIP = new JointId(LEFT_INDEX_FINGER_KNUCKLE, SnowWomanResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_THUMB_TIP = new JointId(LEFT_THUMB_KNUCKLE, SnowWomanResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId(RIGHT_INDEX_FINGER_KNUCKLE, SnowWomanResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_THUMB_TIP = new JointId(RIGHT_THUMB_KNUCKLE, SnowWomanResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_TOES = new JointId(LEFT_FOOT, SnowWomanResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_TOES = new JointId(RIGHT_FOOT, SnowWomanResource.class);
 
-	private final ImplementationAndVisualType resourceType;
-	SnowWomanResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	SnowWomanResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  SnowWomanResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
+  SnowWomanResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BipedImp createImplementation( SBiped abstraction ) {
-		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BipedImp createImplementation(SBiped abstraction) {
+    return new BipedImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

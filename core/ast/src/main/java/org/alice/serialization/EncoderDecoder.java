@@ -51,11 +51,11 @@ import org.lgna.project.code.CodeAppender;
 import java.util.Set;
 
 public interface EncoderDecoder<DOC> {
-	<N extends AbstractNode & CodeAppender> DOC encode( N node );
+  <N extends AbstractNode & CodeAppender> DOC encode(N node);
 
-	<N extends AbstractNode & CodeAppender> DOC encode( N node, Set<AbstractDeclaration> terminals );
+  <N extends AbstractNode & CodeAppender> DOC encode(N node, Set<AbstractDeclaration> terminals);
 
-	AbstractNode decode( DOC document ) throws VersionNotSupportedException;
+  AbstractNode decode(DOC document) throws VersionNotSupportedException;
 
-	AbstractNode copy( DOC document, Set<AbstractDeclaration> terminals ) throws VersionNotSupportedException;
+  AbstractNode copy(DOC document, Set<AbstractDeclaration> terminals) throws VersionNotSupportedException;
 }

@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultFullBodyOutfitPirate implements FemaleAdultFullBodyOutfit {
-	BLUE,
-	RED,
-	BLACK;
+  BLUE, RED, BLACK
 
 }

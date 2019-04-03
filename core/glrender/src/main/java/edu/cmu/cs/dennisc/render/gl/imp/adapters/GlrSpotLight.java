@@ -52,35 +52,35 @@ import java.nio.DoubleBuffer;
  * @author Dennis Cosgrove
  */
 public class GlrSpotLight extends GlrPointLight<SpotLight> {
-	@Override
-	protected float[] getSpotDirection( float[] rv ) {
-		DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
-		rv[ 0 ] = (float)db.get( 8 );
-		rv[ 1 ] = (float)db.get( 9 );
-		rv[ 2 ] = (float)db.get( 10 );
-		return rv;
-	}
+  @Override
+  protected float[] getSpotDirection(float[] rv) {
+    DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
+    rv[0] = (float) db.get(8);
+    rv[1] = (float) db.get(9);
+    rv[2] = (float) db.get(10);
+    return rv;
+  }
 
-	//todo?
-	//protected float getSpotExponent() {
-	//    return ???;
-	//}
-	@Override
-	protected float getSpotCutoff() {
-		return this.outerBeamInDegrees;
-	}
+  //todo?
+  //protected float getSpotExponent() {
+  //    return ???;
+  //}
+  @Override
+  protected float getSpotCutoff() {
+    return this.outerBeamInDegrees;
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.innerBeamAngle ) {
-		} else if( property == owner.outerBeamAngle ) {
-			this.outerBeamInDegrees = (float)owner.outerBeamAngle.getValue().getAsDegrees();
-		} else if( property == owner.falloff ) {
-			//pass
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.innerBeamAngle) {
+    } else if (property == owner.outerBeamAngle) {
+      this.outerBeamInDegrees = (float) owner.outerBeamAngle.getValue().getAsDegrees();
+    } else if (property == owner.falloff) {
+      //pass
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private float outerBeamInDegrees;
+  private float outerBeamInDegrees;
 }

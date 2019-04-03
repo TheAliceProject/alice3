@@ -32,33 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum PricklyPearCactusResource implements PropResource {
-	SMALL,
-	MEDIUM,
-	MEDIUM_WITH_FRUIT,
-	LARGE,
-	LARGE_WITH_FRUIT;
+  SMALL, MEDIUM, MEDIUM_WITH_FRUIT, LARGE, LARGE_WITH_FRUIT;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	PricklyPearCactusResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  PricklyPearCactusResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	PricklyPearCactusResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  PricklyPearCactusResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

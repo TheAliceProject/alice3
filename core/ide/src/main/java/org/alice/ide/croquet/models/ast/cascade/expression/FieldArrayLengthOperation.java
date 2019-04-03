@@ -56,30 +56,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FieldArrayLengthOperation extends ArrayLengthOperation {
-	private static MapToMap<AbstractField, ExpressionProperty, FieldArrayLengthOperation> mapToMap = MapToMap.newInstance();
+  private static MapToMap<AbstractField, ExpressionProperty, FieldArrayLengthOperation> mapToMap = MapToMap.newInstance();
 
-	public static FieldArrayLengthOperation getInstance( AbstractField field, ExpressionProperty expressionProperty ) {
-		assert field != null;
-		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( field, expressionProperty, new MapToMap.Initializer<AbstractField, ExpressionProperty, FieldArrayLengthOperation>() {
-			@Override
-			public FieldArrayLengthOperation initialize( AbstractField field, ExpressionProperty expressionProperty ) {
-				return new FieldArrayLengthOperation( field, expressionProperty );
-			}
-		} );
-	}
+  public static FieldArrayLengthOperation getInstance(AbstractField field, ExpressionProperty expressionProperty) {
+    assert field != null;
+    assert expressionProperty != null;
+    return mapToMap.getInitializingIfAbsent(field, expressionProperty, new MapToMap.Initializer<AbstractField, ExpressionProperty, FieldArrayLengthOperation>() {
+      @Override
+      public FieldArrayLengthOperation initialize(AbstractField field, ExpressionProperty expressionProperty) {
+        return new FieldArrayLengthOperation(field, expressionProperty);
+      }
+    });
+  }
 
-	private final AbstractField field;
+  private final AbstractField field;
 
-	private FieldArrayLengthOperation( AbstractField field, ExpressionProperty expressionProperty ) {
-		super( UUID.fromString( "52ff6677-3ebe-44ba-8869-b1b2761ead6f" ), expressionProperty );
-		this.field = field;
-	}
+  private FieldArrayLengthOperation(AbstractField field, ExpressionProperty expressionProperty) {
+    super(UUID.fromString("52ff6677-3ebe-44ba-8869-b1b2761ead6f"), expressionProperty);
+    this.field = field;
+  }
 
-	@Override
-	protected Expression createAccessExpression() {
-		return new FieldAccess(
-			IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(),
-			field);
-	}
+  @Override
+  protected Expression createAccessExpression() {
+    return new FieldAccess(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(), field);
+  }
 }

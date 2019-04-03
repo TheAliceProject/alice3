@@ -46,5 +46,5 @@ package org.alice.ide.project.events;
  * @author Dennis Cosgrove
  */
 public interface ProjectChangeOfInterestListener {
-	public void projectChanged();
+  public void projectChanged();
 }

@@ -50,46 +50,46 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public class JSuggestivePasswordField extends JPasswordField {
-	private String textForBlankCondition;
+  private String textForBlankCondition;
 
-	public JSuggestivePasswordField( String text, String textForBlankCondition ) {
-		//		this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
-		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
-		if( text != null ) {
-			this.setText( text );
-		}
-		if( textForBlankCondition != null ) {
-			this.setTextForBlankCondition( textForBlankCondition );
-		}
-	}
+  public JSuggestivePasswordField(String text, String textForBlankCondition) {
+    //    this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
+    this.addFocusListener(new SuggestiveTextFocusAdapter(this));
+    if (text != null) {
+      this.setText(text);
+    }
+    if (textForBlankCondition != null) {
+      this.setTextForBlankCondition(textForBlankCondition);
+    }
+  }
 
-	public JSuggestivePasswordField( String text ) {
-		this( text, null );
-	}
+  public JSuggestivePasswordField(String text) {
+    this(text, null);
+  }
 
-	public JSuggestivePasswordField() {
-		this( null, null );
-	}
+  public JSuggestivePasswordField() {
+    this(null, null);
+  }
 
-	public String getTextForBlankCondition() {
-		return this.textForBlankCondition;
-	}
+  public String getTextForBlankCondition() {
+    return this.textForBlankCondition;
+  }
 
-	public void setTextForBlankCondition( String textForBlankCondition ) {
-		this.textForBlankCondition = textForBlankCondition;
-	}
+  public void setTextForBlankCondition(String textForBlankCondition) {
+    this.textForBlankCondition = textForBlankCondition;
+  }
 
-	@Override
-	public Dimension getMaximumSize() {
-		Dimension rv = super.getMaximumSize();
-		Dimension preferred = getPreferredSize();
-		rv.height = preferred.height;
-		return rv;
-	}
+  @Override
+  public Dimension getMaximumSize() {
+    Dimension rv = super.getMaximumSize();
+    Dimension preferred = getPreferredSize();
+    rv.height = preferred.height;
+    return rv;
+  }
 
-	@Override
-	protected void paintComponent( Graphics g ) {
-		super.paintComponent( g );
-		SuggestiveTextUtilities.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
-	}
+  @Override
+  protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    SuggestiveTextUtilities.drawBlankTextIfNecessary(this, g, this.textForBlankCondition);
+  }
 }

@@ -60,187 +60,187 @@ import java.io.OutputStream;
  * @author Dennis Cosgrove
  */
 public class BIN {
-	public static Vertex[] loadVertices( InputStream is ) throws IOException {
-		Vertex[] vertices = null;
-		BufferedInputStream bis = new BufferedInputStream( is );
-		DataInputStream dis = new DataInputStream( bis );
-		int version = dis.readInt();
-		if( version == 1 ) {
-			int vertexCount = dis.readInt();
-			vertices = new Vertex[ vertexCount ];
-			for( int index = 0; index < vertices.length; index++ ) {
-				double x = dis.readDouble();
-				double y = dis.readDouble();
-				double z = dis.readDouble();
-				float i = (float)dis.readDouble();
-				float j = (float)dis.readDouble();
-				float k = (float)dis.readDouble();
-				float u = (float)dis.readDouble();
-				float v = (float)dis.readDouble();
-				vertices[ index ] = Vertex.createXYZIJKUV( x, y, z, i, j, k, u, v );
-			}
-		} else if( version == 2 ) {
-			int vertexCount = dis.readInt();
-			vertices = new Vertex[ vertexCount ];
-			for( int index = 0; index < vertices.length; index++ ) {
-				int format = dis.readInt();
-				final Point3 position = Point3.createNaN();
-				if( ( format & Vertex.FORMAT_POSITION ) != 0 ) {
-					position.x = dis.readDouble();
-					position.y = dis.readDouble();
-					position.z = dis.readDouble();
-				}
-				final Vector3f normal = Vector3f.createNaN();
-				if( ( format & Vertex.FORMAT_NORMAL ) != 0 ) {
-					normal.x = (float)dis.readDouble();
-					normal.y = (float)dis.readDouble();
-					normal.z = (float)dis.readDouble();
-				}
-				final Color4f diffuseColor;
-				if( ( format & Vertex.FORMAT_DIFFUSE_COLOR ) != 0 ) {
-					float red = (float)dis.readDouble();
-					float green = (float)dis.readDouble();
-					float blue = (float)dis.readDouble();
-					float alpha = (float)dis.readDouble();
-					diffuseColor = new Color4f( red, green, blue, alpha );
-				} else {
-					diffuseColor = null;
-				}
-				if( ( format & Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR ) != 0 ) {
-				}
-				final TextureCoordinate2f textureCoordinate0;
-				if( ( format & Vertex.FORMAT_TEXTURE_COORDINATE_0 ) != 0 ) {
-					float u = (float)dis.readDouble();
-					float v = (float)dis.readDouble();
-					textureCoordinate0 = new TextureCoordinate2f( u, v );
-				} else {
-					textureCoordinate0 = null;
-				}
-				vertices[ index ] = new Vertex( position, normal, diffuseColor, null, textureCoordinate0 );
-			}
-		} else if( version == 3 ) {
-			int vertexCount = dis.readInt();
-			vertices = new Vertex[ vertexCount ];
-			for( int index = 0; index < vertices.length; index++ ) {
-				int format = dis.readInt();
-				final Point3 position = Point3.createNaN();
-				if( ( format & Vertex.FORMAT_POSITION ) != 0 ) {
-					position.x = dis.readDouble();
-					position.y = dis.readDouble();
-					position.z = dis.readDouble();
-				}
-				final Vector3f normal = Vector3f.createNaN();
-				if( ( format & Vertex.FORMAT_NORMAL ) != 0 ) {
-					normal.x = (float)dis.readDouble();
-					normal.y = (float)dis.readDouble();
-					normal.z = (float)dis.readDouble();
-				}
-				final Color4f diffuseColor;
-				if( ( format & Vertex.FORMAT_DIFFUSE_COLOR ) != 0 ) {
-					float red = dis.readFloat();
-					float green = dis.readFloat();
-					float blue = dis.readFloat();
-					float alpha = dis.readFloat();
-					diffuseColor = new Color4f( red, green, blue, alpha );
-				} else {
-					diffuseColor = null;
-				}
-				final Color4f specularHighlightColor;
-				if( ( format & Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR ) != 0 ) {
-					float red = dis.readFloat();
-					float green = dis.readFloat();
-					float blue = dis.readFloat();
-					float alpha = dis.readFloat();
-					specularHighlightColor = new Color4f( red, green, blue, alpha );
-				} else {
-					specularHighlightColor = null;
-				}
-				final TextureCoordinate2f textureCoordinate0;
-				if( ( format & Vertex.FORMAT_TEXTURE_COORDINATE_0 ) != 0 ) {
-					float u = dis.readFloat();
-					float v = dis.readFloat();
-					textureCoordinate0 = new TextureCoordinate2f( u, v );
-				} else {
-					textureCoordinate0 = null;
-				}
-				vertices[ index ] = new Vertex( position, normal, diffuseColor, specularHighlightColor, textureCoordinate0 );
-			}
-		} else {
-			throw new RuntimeException( "invalid file version: " + version );
-		}
-		return vertices;
-	}
+  public static Vertex[] loadVertices(InputStream is) throws IOException {
+    Vertex[] vertices = null;
+    BufferedInputStream bis = new BufferedInputStream(is);
+    DataInputStream dis = new DataInputStream(bis);
+    int version = dis.readInt();
+    if (version == 1) {
+      int vertexCount = dis.readInt();
+      vertices = new Vertex[vertexCount];
+      for (int index = 0; index < vertices.length; index++) {
+        double x = dis.readDouble();
+        double y = dis.readDouble();
+        double z = dis.readDouble();
+        float i = (float) dis.readDouble();
+        float j = (float) dis.readDouble();
+        float k = (float) dis.readDouble();
+        float u = (float) dis.readDouble();
+        float v = (float) dis.readDouble();
+        vertices[index] = Vertex.createXYZIJKUV(x, y, z, i, j, k, u, v);
+      }
+    } else if (version == 2) {
+      int vertexCount = dis.readInt();
+      vertices = new Vertex[vertexCount];
+      for (int index = 0; index < vertices.length; index++) {
+        int format = dis.readInt();
+        final Point3 position = Point3.createNaN();
+        if ((format & Vertex.FORMAT_POSITION) != 0) {
+          position.x = dis.readDouble();
+          position.y = dis.readDouble();
+          position.z = dis.readDouble();
+        }
+        final Vector3f normal = Vector3f.createNaN();
+        if ((format & Vertex.FORMAT_NORMAL) != 0) {
+          normal.x = (float) dis.readDouble();
+          normal.y = (float) dis.readDouble();
+          normal.z = (float) dis.readDouble();
+        }
+        final Color4f diffuseColor;
+        if ((format & Vertex.FORMAT_DIFFUSE_COLOR) != 0) {
+          float red = (float) dis.readDouble();
+          float green = (float) dis.readDouble();
+          float blue = (float) dis.readDouble();
+          float alpha = (float) dis.readDouble();
+          diffuseColor = new Color4f(red, green, blue, alpha);
+        } else {
+          diffuseColor = null;
+        }
+        if ((format & Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR) != 0) {
+        }
+        final TextureCoordinate2f textureCoordinate0;
+        if ((format & Vertex.FORMAT_TEXTURE_COORDINATE_0) != 0) {
+          float u = (float) dis.readDouble();
+          float v = (float) dis.readDouble();
+          textureCoordinate0 = new TextureCoordinate2f(u, v);
+        } else {
+          textureCoordinate0 = null;
+        }
+        vertices[index] = new Vertex(position, normal, diffuseColor, null, textureCoordinate0);
+      }
+    } else if (version == 3) {
+      int vertexCount = dis.readInt();
+      vertices = new Vertex[vertexCount];
+      for (int index = 0; index < vertices.length; index++) {
+        int format = dis.readInt();
+        final Point3 position = Point3.createNaN();
+        if ((format & Vertex.FORMAT_POSITION) != 0) {
+          position.x = dis.readDouble();
+          position.y = dis.readDouble();
+          position.z = dis.readDouble();
+        }
+        final Vector3f normal = Vector3f.createNaN();
+        if ((format & Vertex.FORMAT_NORMAL) != 0) {
+          normal.x = (float) dis.readDouble();
+          normal.y = (float) dis.readDouble();
+          normal.z = (float) dis.readDouble();
+        }
+        final Color4f diffuseColor;
+        if ((format & Vertex.FORMAT_DIFFUSE_COLOR) != 0) {
+          float red = dis.readFloat();
+          float green = dis.readFloat();
+          float blue = dis.readFloat();
+          float alpha = dis.readFloat();
+          diffuseColor = new Color4f(red, green, blue, alpha);
+        } else {
+          diffuseColor = null;
+        }
+        final Color4f specularHighlightColor;
+        if ((format & Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR) != 0) {
+          float red = dis.readFloat();
+          float green = dis.readFloat();
+          float blue = dis.readFloat();
+          float alpha = dis.readFloat();
+          specularHighlightColor = new Color4f(red, green, blue, alpha);
+        } else {
+          specularHighlightColor = null;
+        }
+        final TextureCoordinate2f textureCoordinate0;
+        if ((format & Vertex.FORMAT_TEXTURE_COORDINATE_0) != 0) {
+          float u = dis.readFloat();
+          float v = dis.readFloat();
+          textureCoordinate0 = new TextureCoordinate2f(u, v);
+        } else {
+          textureCoordinate0 = null;
+        }
+        vertices[index] = new Vertex(position, normal, diffuseColor, specularHighlightColor, textureCoordinate0);
+      }
+    } else {
+      throw new RuntimeException("invalid file version: " + version);
+    }
+    return vertices;
+  }
 
-	public static void storeVertices( Vertex[] vertices, OutputStream os ) throws IOException {
-		BufferedOutputStream bos = new BufferedOutputStream( os );
-		DataOutputStream dos = new DataOutputStream( bos );
-		dos.writeInt( 3 );
-		dos.writeInt( vertices.length );
-		for( Vertex vertice : vertices ) {
-			int format = vertice.getFormat();
-			dos.writeInt( format );
-			if( ( format & Vertex.FORMAT_POSITION ) != 0 ) {
-				dos.writeDouble( vertice.position.x );
-				dos.writeDouble( vertice.position.y );
-				dos.writeDouble( vertice.position.z );
-			}
-			if( ( format & Vertex.FORMAT_NORMAL ) != 0 ) {
-				dos.writeDouble( vertice.normal.x );
-				dos.writeDouble( vertice.normal.y );
-				dos.writeDouble( vertice.normal.z );
-			}
-			if( ( format & Vertex.FORMAT_DIFFUSE_COLOR ) != 0 ) {
-				dos.writeFloat( vertice.diffuseColor.red );
-				dos.writeFloat( vertice.diffuseColor.green );
-				dos.writeFloat( vertice.diffuseColor.blue );
-				dos.writeFloat( vertice.diffuseColor.alpha );
-			}
-			if( ( format & Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR ) != 0 ) {
-				dos.writeFloat( vertice.specularHighlightColor.red );
-				dos.writeFloat( vertice.specularHighlightColor.green );
-				dos.writeFloat( vertice.specularHighlightColor.blue );
-				dos.writeFloat( vertice.specularHighlightColor.alpha );
-			}
-			if( ( format & Vertex.FORMAT_TEXTURE_COORDINATE_0 ) != 0 ) {
-				dos.writeFloat( vertice.textureCoordinate0.u );
-				dos.writeFloat( vertice.textureCoordinate0.v );
-			}
-		}
-		dos.flush();
-	}
+  public static void storeVertices(Vertex[] vertices, OutputStream os) throws IOException {
+    BufferedOutputStream bos = new BufferedOutputStream(os);
+    DataOutputStream dos = new DataOutputStream(bos);
+    dos.writeInt(3);
+    dos.writeInt(vertices.length);
+    for (Vertex vertice : vertices) {
+      int format = vertice.getFormat();
+      dos.writeInt(format);
+      if ((format & Vertex.FORMAT_POSITION) != 0) {
+        dos.writeDouble(vertice.position.x);
+        dos.writeDouble(vertice.position.y);
+        dos.writeDouble(vertice.position.z);
+      }
+      if ((format & Vertex.FORMAT_NORMAL) != 0) {
+        dos.writeDouble(vertice.normal.x);
+        dos.writeDouble(vertice.normal.y);
+        dos.writeDouble(vertice.normal.z);
+      }
+      if ((format & Vertex.FORMAT_DIFFUSE_COLOR) != 0) {
+        dos.writeFloat(vertice.diffuseColor.red);
+        dos.writeFloat(vertice.diffuseColor.green);
+        dos.writeFloat(vertice.diffuseColor.blue);
+        dos.writeFloat(vertice.diffuseColor.alpha);
+      }
+      if ((format & Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR) != 0) {
+        dos.writeFloat(vertice.specularHighlightColor.red);
+        dos.writeFloat(vertice.specularHighlightColor.green);
+        dos.writeFloat(vertice.specularHighlightColor.blue);
+        dos.writeFloat(vertice.specularHighlightColor.alpha);
+      }
+      if ((format & Vertex.FORMAT_TEXTURE_COORDINATE_0) != 0) {
+        dos.writeFloat(vertice.textureCoordinate0.u);
+        dos.writeFloat(vertice.textureCoordinate0.v);
+      }
+    }
+    dos.flush();
+  }
 
-	public static int[] loadTriangleData( InputStream is ) throws IOException {
-		int[] indices = null;
-		BufferedInputStream bis = new BufferedInputStream( is );
-		DataInputStream dis = new DataInputStream( bis );
-		int version = dis.readInt();
-		if( version == 1 ) {
-			int faceCount = dis.readInt();
-			int verticesPerFace = dis.readInt();
-			indices = new int[ faceCount * verticesPerFace ];
-			for( int i = 0; i < indices.length; i++ ) {
-				indices[ i ] = dis.readInt();
-			}
-		} else if( version == 2 ) {
-			int indicesCount = dis.readInt();
-			indices = new int[ indicesCount ];
-			for( int i = 0; i < indices.length; i++ ) {
-				indices[ i ] = dis.readInt();
-			}
-		} else {
-			throw new RuntimeException( "invalid file version: " + version );
-		}
-		return indices;
-	}
+  public static int[] loadTriangleData(InputStream is) throws IOException {
+    int[] indices = null;
+    BufferedInputStream bis = new BufferedInputStream(is);
+    DataInputStream dis = new DataInputStream(bis);
+    int version = dis.readInt();
+    if (version == 1) {
+      int faceCount = dis.readInt();
+      int verticesPerFace = dis.readInt();
+      indices = new int[faceCount * verticesPerFace];
+      for (int i = 0; i < indices.length; i++) {
+        indices[i] = dis.readInt();
+      }
+    } else if (version == 2) {
+      int indicesCount = dis.readInt();
+      indices = new int[indicesCount];
+      for (int i = 0; i < indices.length; i++) {
+        indices[i] = dis.readInt();
+      }
+    } else {
+      throw new RuntimeException("invalid file version: " + version);
+    }
+    return indices;
+  }
 
-	public static void storeTriangleData( int[] indices, OutputStream os ) throws IOException {
-		BufferedOutputStream bos = new BufferedOutputStream( os );
-		DataOutputStream dos = new DataOutputStream( bos );
-		dos.writeInt( 2 );
-		dos.writeInt( indices.length );
-		for( int indice : indices ) {
-			dos.writeInt( indice );
-		}
-		dos.flush();
-	}
+  public static void storeTriangleData(int[] indices, OutputStream os) throws IOException {
+    BufferedOutputStream bos = new BufferedOutputStream(os);
+    DataOutputStream dos = new DataOutputStream(bos);
+    dos.writeInt(2);
+    dos.writeInt(indices.length);
+    for (int indice : indices) {
+      dos.writeInt(indice);
+    }
+    dos.flush();
+  }
 }

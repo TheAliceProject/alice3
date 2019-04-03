@@ -51,56 +51,56 @@ import org.lgna.croquet.views.MigPanel;
  * @author Matt May
  */
 public class ImageRecordView extends MigPanel {
-	private final BorderPanel lookingGlassRemoveableContainer = new BorderPanel();
-	private final BorderPanel lookingGlassPermanentContainer = new BorderPanel();
-	private final TimeLabel timeLabel;
+  private final BorderPanel lookingGlassRemoveableContainer = new BorderPanel();
+  private final BorderPanel lookingGlassPermanentContainer = new BorderPanel();
+  private final TimeLabel timeLabel;
 
-	private final AwtComponentView<?> listPane;
+  private final AwtComponentView<?> listPane;
 
-	public ImageRecordView( ImageRecordComposite recordComposite ) {
-		super( recordComposite, "fill, insets 0", "[grow 0,shrink]16[grow,shrink]" );
+  public ImageRecordView(ImageRecordComposite recordComposite) {
+    super(recordComposite, "fill, insets 0", "[grow 0,shrink]16[grow,shrink]");
 
-		this.listPane = new EventScriptPane( recordComposite.getEventList() );
+    this.listPane = new EventScriptPane(recordComposite.getEventList());
 
-		this.timeLabel = new TimeLabel();
-		this.updateTime( 0 );
+    this.timeLabel = new TimeLabel();
+    this.updateTime(0);
 
-		this.addComponent( recordComposite.getRestartOperation().createButton(), "align right" );
-		this.addComponent( listPane, "grow, aligny top, spany 3, wrap" );
-		this.addComponent( this.lookingGlassPermanentContainer, "w 640, h 360, wrap" );
-		this.lookingGlassPermanentContainer.addCenterComponent( this.lookingGlassRemoveableContainer );
+    this.addComponent(recordComposite.getRestartOperation().createButton(), "align right");
+    this.addComponent(listPane, "grow, aligny top, spany 3, wrap");
+    this.addComponent(this.lookingGlassPermanentContainer, "w 640, h 360, wrap");
+    this.lookingGlassPermanentContainer.addCenterComponent(this.lookingGlassRemoveableContainer);
 
-		this.addComponent( recordComposite.getIsRecordingState().createToggleButton(), "push, aligny top, split 2" );
-		this.addComponent( this.timeLabel, "growx, align right, aligny top" );
-	}
+    this.addComponent(recordComposite.getIsRecordingState().createToggleButton(), "push, aligny top, split 2");
+    this.addComponent(this.timeLabel, "growx, align right, aligny top");
+  }
 
-	public BorderPanel getLookingGlassContainer() {
-		return this.lookingGlassRemoveableContainer;
-	}
+  public BorderPanel getLookingGlassContainer() {
+    return this.lookingGlassRemoveableContainer;
+  }
 
-	//When running on macs, the render window will draw over the other cards in the wizard layout
-	// if the looking glass container is still in the hierarchy/
-	// This takes the panel out of the container so that it stops rendering
-	public void disableLookingGlassContainer() {
-		this.lookingGlassPermanentContainer.removeComponent( this.lookingGlassRemoveableContainer );
-	}
+  //When running on macs, the render window will draw over the other cards in the wizard layout
+  // if the looking glass container is still in the hierarchy/
+  // This takes the panel out of the container so that it stops rendering
+  public void disableLookingGlassContainer() {
+    this.lookingGlassPermanentContainer.removeComponent(this.lookingGlassRemoveableContainer);
+  }
 
-	//Put the panel back in the container so it will render
-	public void enableLookingGlassContainer() {
-		this.lookingGlassPermanentContainer.addCenterComponent( this.lookingGlassRemoveableContainer );
-	}
+  //Put the panel back in the container so it will render
+  public void enableLookingGlassContainer() {
+    this.lookingGlassPermanentContainer.addCenterComponent(this.lookingGlassRemoveableContainer);
+  }
 
-	public void updateTime( double currTime ) {
-		this.timeLabel.setTimeInSeconds( currTime );
-	}
+  public void updateTime(double currTime) {
+    this.timeLabel.setTimeInSeconds(currTime);
+  }
 
-	public boolean isEventListPaneVisible() {
-		return this.listPane.isVisible();
-	}
+  public boolean isEventListPaneVisible() {
+    return this.listPane.isVisible();
+  }
 
-	public void setEventListPaneVisible( boolean isEventListPaneVisible ) {
-		synchronized( this.listPane.getTreeLock() ) {
-			this.listPane.setVisible( isEventListPaneVisible );
-		}
-	}
+  public void setEventListPaneVisible(boolean isEventListPaneVisible) {
+    synchronized (this.listPane.getTreeLock()) {
+      this.listPane.setVisible(isEventListPaneVisible);
+    }
+  }
 }

@@ -72,106 +72,106 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<ArrayCustomExpressionCreatorView> {
-	private static Map<AbstractType<?, ?, ?>, ArrayCustomExpressionCreatorComposite> map = Maps.newHashMap();
+  private static Map<AbstractType<?, ?, ?>, ArrayCustomExpressionCreatorComposite> map = Maps.newHashMap();
 
-	public static ArrayCustomExpressionCreatorComposite getInstance( AbstractType<?, ?, ?> arrayType ) {
-		synchronized( map ) {
-			ArrayCustomExpressionCreatorComposite rv = map.get( arrayType );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ArrayCustomExpressionCreatorComposite( arrayType );
-				map.put( arrayType, rv );
-			}
-			return rv;
-		}
-	}
+  public static ArrayCustomExpressionCreatorComposite getInstance(AbstractType<?, ?, ?> arrayType) {
+    synchronized (map) {
+      ArrayCustomExpressionCreatorComposite rv = map.get(arrayType);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ArrayCustomExpressionCreatorComposite(arrayType);
+        map.put(arrayType, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final PlainStringValue arrayTypeLabel = this.createStringValue( "arrayTypeLabel" );
-	private final AbstractType<?, ?, ?> arrayType;
+  private final PlainStringValue arrayTypeLabel = this.createStringValue("arrayTypeLabel");
+  private final AbstractType<?, ?, ?> arrayType;
 
-	private final MutableListData<Expression> data = new MutableListData<Expression>( NodeCodec.getInstance( Expression.class ) );
+  private final MutableListData<Expression> data = new MutableListData<Expression>(NodeCodec.getInstance(Expression.class));
 
-	private final Cascade<Expression> addItemCascade = this.createCascadeWithInternalBlank( "addItemCascade", Expression.class, new CascadeCustomizer<Expression>() {
-		@Override
-		public void appendBlankChildren( List<CascadeBlankChild> rv, BlankNode<Expression> blankNode ) {
-			IDE ide = IDE.getActiveInstance();
-			ide.getExpressionCascadeManager().appendItems( rv, blankNode, arrayType.getComponentType(), null );
-		}
+  private final Cascade<Expression> addItemCascade = this.createCascadeWithInternalBlank("addItemCascade", Expression.class, new CascadeCustomizer<Expression>() {
+    @Override
+    public void appendBlankChildren(List<CascadeBlankChild> rv, BlankNode<Expression> blankNode) {
+      IDE ide = IDE.getActiveInstance();
+      ide.getExpressionCascadeManager().appendItems(rv, blankNode, arrayType.getComponentType(), null);
+    }
 
-		@Override
-		public Edit createEdit( Expression[] values ) {
-			assert values.length == 1;
-			data.internalAddItem( values[ 0 ] );
-			getView().updatePreview();
-			return null;
-		}
-	} );
+    @Override
+    public Edit createEdit(Expression[] values) {
+      assert values.length == 1;
+      data.internalAddItem(values[0]);
+      getView().updatePreview();
+      return null;
+    }
+  });
 
-	private ArrayCustomExpressionCreatorComposite( AbstractType<?, ?, ?> arrayType ) {
-		super( UUID.fromString( "187d56c4-cc05-4157-a5fc-55943ca5b099" ) );
-		assert arrayType.isArray() : arrayType;
-		this.arrayType = arrayType;
-	}
+  private ArrayCustomExpressionCreatorComposite(AbstractType<?, ?, ?> arrayType) {
+    super(UUID.fromString("187d56c4-cc05-4157-a5fc-55943ca5b099"));
+    assert arrayType.isArray() : arrayType;
+    this.arrayType = arrayType;
+  }
 
-	public AbstractType<?, ?, ?> getArrayType() {
-		return this.arrayType;
-	}
+  public AbstractType<?, ?, ?> getArrayType() {
+    return this.arrayType;
+  }
 
-	public PlainStringValue getArrayTypeLabel() {
-		return this.arrayTypeLabel;
-	}
+  public PlainStringValue getArrayTypeLabel() {
+    return this.arrayTypeLabel;
+  }
 
-	public MutableListData<Expression> getData() {
-		return this.data;
-	}
+  public MutableListData<Expression> getData() {
+    return this.data;
+  }
 
-	public Cascade<Expression> getAddItemCascade() {
-		return this.addItemCascade;
-	}
+  public Cascade<Expression> getAddItemCascade() {
+    return this.addItemCascade;
+  }
 
-	@Override
-	protected ArrayCustomExpressionCreatorView createView() {
-		return new ArrayCustomExpressionCreatorView( this );
-	}
+  @Override
+  protected ArrayCustomExpressionCreatorView createView() {
+    return new ArrayCustomExpressionCreatorView(this);
+  }
 
-	@Override
-	protected Expression createValue() {
-		return AstUtilities.createArrayInstanceCreation( this.arrayType, this.data.toArray() );
-	}
+  @Override
+  protected Expression createValue() {
+    return AstUtilities.createArrayInstanceCreation(this.arrayType, this.data.toArray());
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		return IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    return IS_GOOD_TO_GO_STATUS;
+  }
 
-	@Override
-	protected void initializeToPreviousExpression( Expression expression ) {
-		List<Expression> items = Lists.newLinkedList();
-		if( expression instanceof ArrayInstanceCreation ) {
-			ArrayInstanceCreation arrayInstanceCreation = (ArrayInstanceCreation)expression;
-			if( this.arrayType.isAssignableFrom( arrayInstanceCreation.getType() ) ) {
-				for( Expression itemExpression : arrayInstanceCreation.expressions ) {
-					items.add( IDE.getActiveInstance().createCopy( itemExpression ) );
-				}
-			}
-		}
-		this.data.internalSetAllItems( items );
-	}
+  @Override
+  protected void initializeToPreviousExpression(Expression expression) {
+    List<Expression> items = Lists.newLinkedList();
+    if (expression instanceof ArrayInstanceCreation) {
+      ArrayInstanceCreation arrayInstanceCreation = (ArrayInstanceCreation) expression;
+      if (this.arrayType.isAssignableFrom(arrayInstanceCreation.getType())) {
+        for (Expression itemExpression : arrayInstanceCreation.expressions) {
+          items.add(IDE.getActiveInstance().createCopy(itemExpression));
+        }
+      }
+    }
+    this.data.internalSetAllItems(items);
+  }
 
-	@Override
-	protected Dimension calculateWindowSize( AbstractWindow<?> window ) {
-		return new Dimension( 400, 500 );
-	}
+  @Override
+  protected Dimension calculateWindowSize(AbstractWindow<?> window) {
+    return new Dimension(400, 500);
+  }
 
-	public static void main( String[] args ) throws Exception {
-		UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		//new org.alice.stageide.StageIDE();
-		try {
-			ArrayCustomExpressionCreatorComposite.getInstance( JavaType.getInstance( String[].class ) ).getValueCreator().fire( NullTrigger.createUserActivity() );
-		} catch( CancelException ce ) {
-			//pass
-		}
-		System.exit( 0 );
-	}
+  public static void main(String[] args) throws Exception {
+    UIManagerUtilities.setLookAndFeel("Nimbus");
+    //new org.alice.stageide.StageIDE();
+    try {
+      ArrayCustomExpressionCreatorComposite.getInstance(JavaType.getInstance(String[].class)).getValueCreator().fire(NullTrigger.createUserActivity());
+    } catch (CancelException ce) {
+      //pass
+    }
+    System.exit(0);
+  }
 }

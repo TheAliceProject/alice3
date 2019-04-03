@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,62 +34,49 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum StaircaseDownResource implements PropResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, StaircaseDownResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MARKER_TOP_OF_STAIRS = new JointId( ROOT, StaircaseDownResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MARKER_BASE_OF_STAIRS = new JointId( ROOT, StaircaseDownResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_00 = new JointId( ROOT, StaircaseDownResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_01 = new JointId( STAIRS_00, StaircaseDownResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_02 = new JointId( STAIRS_01, StaircaseDownResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_03 = new JointId( STAIRS_02, StaircaseDownResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_04 = new JointId( STAIRS_03, StaircaseDownResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_05 = new JointId( STAIRS_04, StaircaseDownResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_06 = new JointId( STAIRS_05, StaircaseDownResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_07 = new JointId( STAIRS_06, StaircaseDownResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_08 = new JointId( STAIRS_07, StaircaseDownResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_09 = new JointId( STAIRS_08, StaircaseDownResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_10 = new JointId( STAIRS_09, StaircaseDownResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, StaircaseDownResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MARKER_TOP_OF_STAIRS = new JointId(ROOT, StaircaseDownResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MARKER_BASE_OF_STAIRS = new JointId(ROOT, StaircaseDownResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_00 = new JointId(ROOT, StaircaseDownResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_01 = new JointId(STAIRS_00, StaircaseDownResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_02 = new JointId(STAIRS_01, StaircaseDownResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_03 = new JointId(STAIRS_02, StaircaseDownResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_04 = new JointId(STAIRS_03, StaircaseDownResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_05 = new JointId(STAIRS_04, StaircaseDownResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_06 = new JointId(STAIRS_05, StaircaseDownResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_07 = new JointId(STAIRS_06, StaircaseDownResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_08 = new JointId(STAIRS_07, StaircaseDownResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_09 = new JointId(STAIRS_08, StaircaseDownResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_10 = new JointId(STAIRS_09, StaircaseDownResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	public static final JointId[] STAIRS_ARRAY = { STAIRS_00, STAIRS_01, STAIRS_02, STAIRS_03, STAIRS_04, STAIRS_05, STAIRS_06, STAIRS_07, STAIRS_08, STAIRS_09, STAIRS_10 };
+  public static final JointId[] STAIRS_ARRAY = {STAIRS_00, STAIRS_01, STAIRS_02, STAIRS_03, STAIRS_04, STAIRS_05, STAIRS_06, STAIRS_07, STAIRS_08, STAIRS_09, STAIRS_10};
 
-	private final ImplementationAndVisualType resourceType;
-	StaircaseDownResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	StaircaseDownResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  StaircaseDownResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return StaircaseDownResource.JOINT_ID_ROOTS;
-	}
+  StaircaseDownResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return StaircaseDownResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

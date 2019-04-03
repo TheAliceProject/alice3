@@ -56,20 +56,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractInstanceCreationFillIn extends ExpressionFillInWithExpressionBlanks<InstanceCreation> {
-	private final InstanceCreation transientValue;
+  private final InstanceCreation transientValue;
 
-	public AbstractInstanceCreationFillIn( UUID migrationId, AbstractConstructor constructor, CascadeBlank<Expression>... blanks ) {
-		super( migrationId, blanks );
-		this.transientValue = IncompleteAstUtilities.createIncompleteInstanceCreation( constructor );
-	}
+  public AbstractInstanceCreationFillIn(UUID migrationId, AbstractConstructor constructor, CascadeBlank<Expression>... blanks) {
+    super(migrationId, blanks);
+    this.transientValue = IncompleteAstUtilities.createIncompleteInstanceCreation(constructor);
+  }
 
-	@Override
-	protected InstanceCreation createValue( Expression[] expressions ) {
-		return AstUtilities.createInstanceCreation( this.transientValue.constructor.getValue(), expressions );
-	}
+  @Override
+  protected InstanceCreation createValue(Expression[] expressions) {
+    return AstUtilities.createInstanceCreation(this.transientValue.constructor.getValue(), expressions);
+  }
 
-	@Override
-	public InstanceCreation getTransientValue( ItemNode<? super InstanceCreation, Expression> step ) {
-		return this.transientValue;
-	}
+  @Override
+  public InstanceCreation getTransientValue(ItemNode<? super InstanceCreation, Expression> step) {
+    return this.transientValue;
+  }
 }

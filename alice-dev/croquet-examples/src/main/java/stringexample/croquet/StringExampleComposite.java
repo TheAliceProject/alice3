@@ -52,19 +52,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class StringExampleComposite extends SimpleComposite<StringExampleView> {
-	public StringExampleComposite() {
-		super( UUID.fromString( "eacc4043-77b9-4cdc-aa2c-d91c16eee7a7" ) );
-		this.nameState.setValueTransactionlessly( "myFirstProcedure" );
-	}
+  public StringExampleComposite() {
+    super(UUID.fromString("eacc4043-77b9-4cdc-aa2c-d91c16eee7a7"));
+    this.nameState.setValueTransactionlessly("myFirstProcedure");
+  }
 
-	public StringState getNameState() {
-		return this.nameState;
-	}
+  public StringState getNameState() {
+    return this.nameState;
+  }
 
-	@Override
-	protected StringExampleView createView() {
-		return new StringExampleView( this );
-	}
+  @Override
+  protected StringExampleView createView() {
+    return new StringExampleView(this);
+  }
 
-	private final StringState nameState = this.createStringState( "nameState", "" );
+  private final StringState nameState = this.createStringState("nameState", "");
 }

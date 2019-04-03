@@ -80,180 +80,180 @@ import edu.cmu.cs.dennisc.math.UnitQuaternion;
  */
 public class PoseUtilities {
 
-	public static <M extends SJointedModel, P extends Pose<M>, B extends PoseBuilder<M, P>> B createBuilderForPoseClass( Class<P> cls ) {
-		Class<B> poseBuilderCls = getBuilderClassForPoseClass( cls );
-		return ReflectionUtilities.newInstance( poseBuilderCls );
-	}
+  public static <M extends SJointedModel, P extends Pose<M>, B extends PoseBuilder<M, P>> B createBuilderForPoseClass(Class<P> cls) {
+    Class<B> poseBuilderCls = getBuilderClassForPoseClass(cls);
+    return ReflectionUtilities.newInstance(poseBuilderCls);
+  }
 
-	public static <M extends SJointedModel, P extends Pose<M>> Class<P> getPoseClassForModelClass( Class<M> cls ) {
-		if( SBiped.class.isAssignableFrom( cls ) ) {
-			return (Class<P>)BipedPose.class;
-		} else if( SQuadruped.class.isAssignableFrom( cls ) ) {
-			return (Class<P>)QuadrupedPose.class;
-		} else if( SFlyer.class.isAssignableFrom( cls ) ) {
-			return (Class<P>)FlyerPose.class;
-		} else {
-			throw new RuntimeException( "Unhandled Model Type: " + cls );
-		}
-	}
+  public static <M extends SJointedModel, P extends Pose<M>> Class<P> getPoseClassForModelClass(Class<M> cls) {
+    if (SBiped.class.isAssignableFrom(cls)) {
+      return (Class<P>) BipedPose.class;
+    } else if (SQuadruped.class.isAssignableFrom(cls)) {
+      return (Class<P>) QuadrupedPose.class;
+    } else if (SFlyer.class.isAssignableFrom(cls)) {
+      return (Class<P>) FlyerPose.class;
+    } else {
+      throw new RuntimeException("Unhandled Model Type: " + cls);
+    }
+  }
 
-	public static <M extends SJointedModel> Class<? extends PoseBuilder<?, ?>> getBuilderClassForModelClass( Class<M> cls ) {
-		if( SBiped.class.isAssignableFrom( cls ) ) {
-			return BipedPoseBuilder.class;
-		} else if( SQuadruped.class.isAssignableFrom( cls ) ) {
-			return QuadrupedPoseBuilder.class;
-		} else if( SFlyer.class.isAssignableFrom( cls ) ) {
-			return FlyerPoseBuilder.class;
-		} else {
-			throw new RuntimeException( "Unhandled Model Type: " + cls );
-		}
-	}
+  public static <M extends SJointedModel> Class<? extends PoseBuilder<?, ?>> getBuilderClassForModelClass(Class<M> cls) {
+    if (SBiped.class.isAssignableFrom(cls)) {
+      return BipedPoseBuilder.class;
+    } else if (SQuadruped.class.isAssignableFrom(cls)) {
+      return QuadrupedPoseBuilder.class;
+    } else if (SFlyer.class.isAssignableFrom(cls)) {
+      return FlyerPoseBuilder.class;
+    } else {
+      throw new RuntimeException("Unhandled Model Type: " + cls);
+    }
+  }
 
-	public static <M extends SJointedModel, P extends Pose<M>, B extends PoseBuilder<M, P>> Class<B> getBuilderClassForPoseClass( Class<P> cls ) {
-		if( BipedPose.class.isAssignableFrom( cls ) ) {
-			return (Class<B>)BipedPoseBuilder.class;
-		} else if( QuadrupedPose.class.isAssignableFrom( cls ) ) {
-			return (Class<B>)QuadrupedPoseBuilder.class;
-		} else if( FlyerPose.class.isAssignableFrom( cls ) ) {
-			return (Class<B>)FlyerPoseBuilder.class;
-		} else {
-			throw new RuntimeException( "Unhandled Pose Type: " + cls );
-		}
-	}
+  public static <M extends SJointedModel, P extends Pose<M>, B extends PoseBuilder<M, P>> Class<B> getBuilderClassForPoseClass(Class<P> cls) {
+    if (BipedPose.class.isAssignableFrom(cls)) {
+      return (Class<B>) BipedPoseBuilder.class;
+    } else if (QuadrupedPose.class.isAssignableFrom(cls)) {
+      return (Class<B>) QuadrupedPoseBuilder.class;
+    } else if (FlyerPose.class.isAssignableFrom(cls)) {
+      return (Class<B>) FlyerPoseBuilder.class;
+    } else {
+      throw new RuntimeException("Unhandled Pose Type: " + cls);
+    }
+  }
 
-	public static <M extends SJointedModel> void applyToJointedModel( Pose<M> pose, M model ) {
-		for( JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs( pose ) ) {
-			if( jtPair.orientationOnly() ) {
-				setOrientationOnly( model.getJoint( jtPair.getJointId() ), jtPair.getTransformation().orientation );
-			} else {
-				setTransformationOnJoint( model.getJoint( jtPair.getJointId() ), jtPair.getTransformation() );
-			}
-		}
-	}
+  public static <M extends SJointedModel> void applyToJointedModel(Pose<M> pose, M model) {
+    for (JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs(pose)) {
+      if (jtPair.orientationOnly()) {
+        setOrientationOnly(model.getJoint(jtPair.getJointId()), jtPair.getTransformation().orientation);
+      } else {
+        setTransformationOnJoint(model.getJoint(jtPair.getJointId()), jtPair.getTransformation());
+      }
+    }
+  }
 
-	public static void setTransformationOnJoint( SJoint sJoint, AffineMatrix4x4 transformation ) {
-		( (JointImp)EmployeesOnly.getImplementation( sJoint ) ).setLocalTransformation( transformation );
-	}
+  public static void setTransformationOnJoint(SJoint sJoint, AffineMatrix4x4 transformation) {
+    ((JointImp) EmployeesOnly.getImplementation(sJoint)).setLocalTransformation(transformation);
+  }
 
-	public static void setOrientationOnly( SJoint sJoint, UnitQuaternion unitQuaternion ) {
-		setOrientationOnly( sJoint, new OrthogonalMatrix3x3( unitQuaternion ) );
-	}
+  public static void setOrientationOnly(SJoint sJoint, UnitQuaternion unitQuaternion) {
+    setOrientationOnly(sJoint, new OrthogonalMatrix3x3(unitQuaternion));
+  }
 
-	public static void setOrientationOnly( SJoint sJoint, OrthogonalMatrix3x3 orientation ) {
-		( (JointImp)EmployeesOnly.getImplementation( sJoint ) ).setLocalOrientation( orientation );
-	}
+  public static void setOrientationOnly(SJoint sJoint, OrthogonalMatrix3x3 orientation) {
+    ((JointImp) EmployeesOnly.getImplementation(sJoint)).setLocalOrientation(orientation);
+  }
 
-	public static <R extends JointedModelResource> Class<R> getResourceClassFromModelClass( Class<? extends SJointedModel> modelCls ) {
-		if( SBiped.class.isAssignableFrom( modelCls ) ) {
-			return (Class<R>)BipedResource.class;
-		} else if( SQuadruped.class.isAssignableFrom( modelCls ) ) {
-			return (Class<R>)QuadrupedResource.class;
-		} else if( SFlyer.class.isAssignableFrom( modelCls ) ) {
-			return (Class<R>)FlyerResource.class;
-		} else {
-			throw new RuntimeException( "Unhandled Model Type: " + modelCls );
-		}
-	}
+  public static <R extends JointedModelResource> Class<R> getResourceClassFromModelClass(Class<? extends SJointedModel> modelCls) {
+    if (SBiped.class.isAssignableFrom(modelCls)) {
+      return (Class<R>) BipedResource.class;
+    } else if (SQuadruped.class.isAssignableFrom(modelCls)) {
+      return (Class<R>) QuadrupedResource.class;
+    } else if (SFlyer.class.isAssignableFrom(modelCls)) {
+      return (Class<R>) FlyerResource.class;
+    } else {
+      throw new RuntimeException("Unhandled Model Type: " + modelCls);
+    }
+  }
 
-	public static <T extends SJointedModel> Pose<T> createPoseFromT( T model ) {
-		return createPoseFromT( model, getDefaultJoints( getResourceClassFromModelClass( model.getClass() ) ) );
-	}
+  public static <T extends SJointedModel> Pose<T> createPoseFromT(T model) {
+    return createPoseFromT(model, getDefaultJoints(getResourceClassFromModelClass(model.getClass())));
+  }
 
-	public static <T extends SJointedModel> Pose<T> createPoseFromT( T model, JointId[] arr ) {
+  public static <T extends SJointedModel> Pose<T> createPoseFromT(T model, JointId[] arr) {
 
-		PoseBuilder<?, ?> builder;
-		if( model instanceof SBiped ) {
-			builder = new BipedPoseBuilder();
-		} else if( model instanceof SQuadruped ) {
-			builder = new QuadrupedPoseBuilder();
-		} else if( model instanceof SFlyer ) {
-			builder = new FlyerPoseBuilder();
-		} else {
-			return null;
-		}
-		List<JointIdTransformationPair> list = Lists.newArrayList();
-		for( JointId id : arr ) {
-			JointImp implementation = EmployeesOnly.getImplementation( model.getJoint( id ) );
-			list.add( new JointIdTransformationPair( id, implementation.getLocalOrientation().createUnitQuaternion() ) );
-		}
-		for( JointIdTransformationPair key : list ) {
-			EmployeesOnly.addJointIdTransformationPair( builder, key );
-		}
-		return (Pose<T>)builder.build();
-	}
+    PoseBuilder<?, ?> builder;
+    if (model instanceof SBiped) {
+      builder = new BipedPoseBuilder();
+    } else if (model instanceof SQuadruped) {
+      builder = new QuadrupedPoseBuilder();
+    } else if (model instanceof SFlyer) {
+      builder = new FlyerPoseBuilder();
+    } else {
+      return null;
+    }
+    List<JointIdTransformationPair> list = Lists.newArrayList();
+    for (JointId id : arr) {
+      JointImp implementation = EmployeesOnly.getImplementation(model.getJoint(id));
+      list.add(new JointIdTransformationPair(id, implementation.getLocalOrientation().createUnitQuaternion()));
+    }
+    for (JointIdTransformationPair key : list) {
+      EmployeesOnly.addJointIdTransformationPair(builder, key);
+    }
+    return (Pose<T>) builder.build();
+  }
 
-	public static JointId[] getDefaultJoints( Class<? extends JointedModelResource> resourceClass ) {
-		ArrayList<JointId> rv = Lists.newArrayList();
-		JointId[] roots = getJointIdRoots( resourceClass );
-		for( JointId id : roots ) {
-			rv.addAll( tunnel( id, resourceClass ) );
-		}
-		return rv.toArray( new JointId[ 0 ] );
-	}
+  public static JointId[] getDefaultJoints(Class<? extends JointedModelResource> resourceClass) {
+    ArrayList<JointId> rv = Lists.newArrayList();
+    JointId[] roots = getJointIdRoots(resourceClass);
+    for (JointId id : roots) {
+      rv.addAll(tunnel(id, resourceClass));
+    }
+    return rv.toArray(new JointId[0]);
+  }
 
-	protected static JointId[] getJointIdRoots( Class<? extends JointedModelResource> resourceClass ) {
-		if( BipedResource.class.isAssignableFrom( resourceClass ) ) {
-			return BipedResource.JOINT_ID_ROOTS;
-		} else if( QuadrupedResource.class.isAssignableFrom( resourceClass ) ) {
-			return QuadrupedResource.JOINT_ID_ROOTS;
-		} else if( FlyerResource.class.isAssignableFrom( resourceClass ) ) {
-			return FlyerResource.JOINT_ID_ROOTS;
-		} else {
-			throw new RuntimeException( "Unhandled Resoruce Type: " + resourceClass );
-		}
-	}
+  protected static JointId[] getJointIdRoots(Class<? extends JointedModelResource> resourceClass) {
+    if (BipedResource.class.isAssignableFrom(resourceClass)) {
+      return BipedResource.JOINT_ID_ROOTS;
+    } else if (QuadrupedResource.class.isAssignableFrom(resourceClass)) {
+      return QuadrupedResource.JOINT_ID_ROOTS;
+    } else if (FlyerResource.class.isAssignableFrom(resourceClass)) {
+      return FlyerResource.JOINT_ID_ROOTS;
+    } else {
+      throw new RuntimeException("Unhandled Resoruce Type: " + resourceClass);
+    }
+  }
 
-	protected static ArrayList<JointId> tunnel( JointId id, Class<? extends JointedModelResource> resource ) {
-		ArrayList<JointId> rv = Lists.newArrayList( id );
-		//TODO: Removed getChildren functionality from joints. Need to adapt this code
-//		for( JointId child : id.getChildren( resource ) ) {
-//			rv.addAll( tunnel( child, resource ) );
-//		}
-		return rv;
-	}
+  protected static ArrayList<JointId> tunnel(JointId id, Class<? extends JointedModelResource> resource) {
+    ArrayList<JointId> rv = Lists.newArrayList(id);
+    //TODO: Removed getChildren functionality from joints. Need to adapt this code
+    //    for( JointId child : id.getChildren( resource ) ) {
+    //      rv.addAll( tunnel( child, resource ) );
+    //    }
+    return rv;
+  }
 
-	public static Class<? extends PoseBuilder> getBuilderClassForModelResourceClass( Class<? extends JointedModelResource> resourceCls ) {
-		if( BipedResource.class.isAssignableFrom( resourceCls ) ) {
-			return BipedPoseBuilder.class;
-		} else if( QuadrupedResource.class.isAssignableFrom( resourceCls ) ) {
-			return QuadrupedPoseBuilder.class;
-		} else if( FlyerResource.class.isAssignableFrom( resourceCls ) ) {
-			return FlyerPoseBuilder.class;
-		} else {
-			return null;
-		}
-	}
+  public static Class<? extends PoseBuilder> getBuilderClassForModelResourceClass(Class<? extends JointedModelResource> resourceCls) {
+    if (BipedResource.class.isAssignableFrom(resourceCls)) {
+      return BipedPoseBuilder.class;
+    } else if (QuadrupedResource.class.isAssignableFrom(resourceCls)) {
+      return QuadrupedPoseBuilder.class;
+    } else if (FlyerResource.class.isAssignableFrom(resourceCls)) {
+      return FlyerPoseBuilder.class;
+    } else {
+      return null;
+    }
+  }
 
-	public static Method getSpecificPoseBuilderMethod( Class<? extends PoseBuilder> poseBuilderCls, JointId jointId ) {
-		Field jField = jointId.getPublicStaticFinalFld();
-		if( jField != null ) {
-			String fieldName = jField.getName();
-			String camelCaseName = AliceResourceUtilties.enumToCamelCase( fieldName, true );
-			try {
-				return poseBuilderCls.getMethod( camelCaseName, Orientation.class );
-			} catch( NoSuchMethodException nsme ) {
-				//not a problem
-			}
-		}
-		return null;
-	}
+  public static Method getSpecificPoseBuilderMethod(Class<? extends PoseBuilder> poseBuilderCls, JointId jointId) {
+    Field jField = jointId.getPublicStaticFinalFld();
+    if (jField != null) {
+      String fieldName = jField.getName();
+      String camelCaseName = AliceResourceUtilties.enumToCamelCase(fieldName, true);
+      try {
+        return poseBuilderCls.getMethod(camelCaseName, Orientation.class);
+      } catch (NoSuchMethodException nsme) {
+        //not a problem
+      }
+    }
+    return null;
+  }
 
-	public static Method getCatchAllPoseBuilderMethod( Class<? extends PoseBuilder> poseBuilderCls ) {
-		Method rv = null;
-		for( Method jMethod : poseBuilderCls.getMethods() ) {
-			if( jMethod.getReturnType().equals( poseBuilderCls ) ) {
-				Class<?>[] jParameterTypes = jMethod.getParameterTypes();
-				if( jParameterTypes.length == 2 ) {
-					if( jParameterTypes[ 0 ].equals( JointId.class ) && jParameterTypes[ 1 ].equals( Orientation.class ) ) {
-						if( rv != null ) {
-							throw new RuntimeException( "unexpected methods found when only one should have catch all signature: " + rv.getName() + " " + jMethod.getName() );
-						} else {
-							rv = jMethod;
-						}
-					}
-				}
-			}
-		}
-		return rv;
-	}
+  public static Method getCatchAllPoseBuilderMethod(Class<? extends PoseBuilder> poseBuilderCls) {
+    Method rv = null;
+    for (Method jMethod : poseBuilderCls.getMethods()) {
+      if (jMethod.getReturnType().equals(poseBuilderCls)) {
+        Class<?>[] jParameterTypes = jMethod.getParameterTypes();
+        if (jParameterTypes.length == 2) {
+          if (jParameterTypes[0].equals(JointId.class) && jParameterTypes[1].equals(Orientation.class)) {
+            if (rv != null) {
+              throw new RuntimeException("unexpected methods found when only one should have catch all signature: " + rv.getName() + " " + jMethod.getName());
+            } else {
+              rv = jMethod;
+            }
+          }
+        }
+      }
+    }
+    return rv;
+  }
 }

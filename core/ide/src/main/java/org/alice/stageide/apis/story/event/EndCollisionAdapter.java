@@ -50,12 +50,12 @@ import org.lgna.story.event.EndCollisionEvent;
 
 public class EndCollisionAdapter extends AbstractAdapter implements CollisionEndListener {
 
-	public EndCollisionAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public EndCollisionAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void collisionEnded( EndCollisionEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void collisionEnded(EndCollisionEvent e) {
+    invokeEntryPoint(e);
+  }
 }

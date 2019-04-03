@@ -49,19 +49,18 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class Place extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = Place.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = Place.class) public static interface Detail {
+  }
 
-	private Place() {
-		super();
-	}
+  private Place() {
+    super();
+  }
 
-	public static PathStyle pathStyle( PathStyle pathStyle ) {
-		return pathStyle;
-	}
+  public static PathStyle pathStyle(PathStyle pathStyle) {
+    return pathStyle;
+  }
 
-	public static AlongAxisOffset alongAxisOffset( Number value ) {
-		return new AlongAxisOffset( value );
-	}
+  public static AlongAxisOffset alongAxisOffset(Number value) {
+    return new AlongAxisOffset(value);
+  }
 }

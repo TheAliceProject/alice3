@@ -53,25 +53,25 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressionCreatorView {
-	public RowBasedCustomExpressionCreatorView( CustomExpressionCreatorComposite<?> composite ) {
-		super( composite );
-	}
+  public RowBasedCustomExpressionCreatorView(CustomExpressionCreatorComposite<?> composite) {
+    super(composite);
+  }
 
-	@Override
-	public CustomExpressionCreatorComposite<?> getComposite() {
-		return (CustomExpressionCreatorComposite<?>)super.getComposite();
-	}
+  @Override
+  public CustomExpressionCreatorComposite<?> getComposite() {
+    return (CustomExpressionCreatorComposite<?>) super.getComposite();
+  }
 
-	protected abstract void appendRows( List<LabeledFormRow> rows );
+  protected abstract void appendRows(List<LabeledFormRow> rows);
 
-	@Override
-	public FormPanel createMainComponent() {
-		FormPanel rowsSpringPanel = new FormPanel() {
-			@Override
-			protected void appendRows( List<LabeledFormRow> rows ) {
-				RowBasedCustomExpressionCreatorView.this.appendRows( rows );
-			}
-		};
-		return rowsSpringPanel;
-	}
+  @Override
+  public FormPanel createMainComponent() {
+    FormPanel rowsSpringPanel = new FormPanel() {
+      @Override
+      protected void appendRows(List<LabeledFormRow> rows) {
+        RowBasedCustomExpressionCreatorView.this.appendRows(rows);
+      }
+    };
+    return rowsSpringPanel;
+  }
 }

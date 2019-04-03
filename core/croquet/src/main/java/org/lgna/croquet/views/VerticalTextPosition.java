@@ -49,16 +49,14 @@ import javax.swing.SwingConstants;
  * @author Dennis Cosgrove
  */
 public enum VerticalTextPosition {
-	TOP( SwingConstants.TOP ),
-	CENTER( SwingConstants.CENTER ),
-	BOTTOM( SwingConstants.BOTTOM );
-	private int internal;
+  TOP(SwingConstants.TOP), CENTER(SwingConstants.CENTER), BOTTOM(SwingConstants.BOTTOM);
+  private int internal;
 
-	private VerticalTextPosition( int internal ) {
-		this.internal = internal;
-	}
+  private VerticalTextPosition(int internal) {
+    this.internal = internal;
+  }
 
-	/* package-private */int getInternal() {
-		return this.internal;
-	}
+  /* package-private */int getInternal() {
+    return this.internal;
+  }
 }

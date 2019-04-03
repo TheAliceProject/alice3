@@ -50,31 +50,31 @@ import org.lgna.croquet.history.UserActivity;
  * @author Dennis Cosgrove
  */
 public class PropertyValueEdit<P> extends AbstractEdit {
-	private final AbstractPropertyAdapter<P, ?> propertyAdapter;
-	private final P nextValue;
-	private P originalValue;
+  private final AbstractPropertyAdapter<P, ?> propertyAdapter;
+  private final P nextValue;
+  private P originalValue;
 
-	public PropertyValueEdit( UserActivity userActivity, AbstractPropertyAdapter<P, ?> propertyAdapter, P nextValue ) {
-		super( userActivity );
-		this.propertyAdapter = propertyAdapter;
-		this.nextValue = nextValue;
-	}
+  public PropertyValueEdit(UserActivity userActivity, AbstractPropertyAdapter<P, ?> propertyAdapter, P nextValue) {
+    super(userActivity);
+    this.propertyAdapter = propertyAdapter;
+    this.nextValue = nextValue;
+  }
 
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		if( isDo ) {
-			this.originalValue = this.propertyAdapter.getValueCopyIfMutable();
-		}
-		this.propertyAdapter.setValue( this.nextValue );
-	}
+  @Override
+  protected void doOrRedoInternal(boolean isDo) {
+    if (isDo) {
+      this.originalValue = this.propertyAdapter.getValueCopyIfMutable();
+    }
+    this.propertyAdapter.setValue(this.nextValue);
+  }
 
-	@Override
-	protected void undoInternal() {
-		this.propertyAdapter.setValue( this.originalValue );
-	}
+  @Override
+  protected void undoInternal() {
+    this.propertyAdapter.setValue(this.originalValue);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder description, DescriptionStyle descriptionStyle ) {
-		description.append( this.propertyAdapter.getUndoRedoDescription() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder description, DescriptionStyle descriptionStyle) {
+    description.append(this.propertyAdapter.getUndoRedoDescription());
+  }
 }

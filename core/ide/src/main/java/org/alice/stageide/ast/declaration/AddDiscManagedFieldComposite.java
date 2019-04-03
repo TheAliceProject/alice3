@@ -56,36 +56,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AddDiscManagedFieldComposite extends AddModelManagedFieldComposite {
-	private static class SingletonHolder {
-		private static AddDiscManagedFieldComposite instance = new AddDiscManagedFieldComposite();
-	}
+  private static class SingletonHolder {
+    private static AddDiscManagedFieldComposite instance = new AddDiscManagedFieldComposite();
+  }
 
-	public static AddDiscManagedFieldComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddDiscManagedFieldComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final CustomItemState<Expression> radiusState = this.createInitialPropertyValueExpressionState( "radiusState", 0.5, SDisc.class, "setRadius", Number.class, SetRadius.Detail[].class );
+  private final CustomItemState<Expression> radiusState = this.createInitialPropertyValueExpressionState("radiusState", 0.5, SDisc.class, "setRadius", Number.class, SetRadius.Detail[].class);
 
-	private AddDiscManagedFieldComposite() {
-		super( UUID.fromString( "cd6bf4c0-329b-4bfb-b5ff-1c6e858095f1" ), SDisc.class );
-	}
+  private AddDiscManagedFieldComposite() {
+    super(UUID.fromString("cd6bf4c0-329b-4bfb-b5ff-1c6e858095f1"), SDisc.class);
+  }
 
-	@Override protected ShapeDragModel getDragModel() {
-		return DiscDragModel.getInstance();
-	}
+  @Override
+  protected ShapeDragModel getDragModel() {
+    return DiscDragModel.getInstance();
+  }
 
-	public CustomItemState<Expression> getRadiusState() {
-		return this.radiusState;
-	}
+  public CustomItemState<Expression> getRadiusState() {
+    return this.radiusState;
+  }
 
-	@Override
-	protected AffineMatrix4x4 updateInitialTransformIfNecessary( AffineMatrix4x4 initialTransform ) {
-		if( initialTransform != null ) {
-			//pass
-		} else {
-			initialTransform = new AffineMatrix4x4();
-		}
-		initialTransform.translation.y += 0.01;
-		return initialTransform;
-	}
+  @Override
+  protected AffineMatrix4x4 updateInitialTransformIfNecessary(AffineMatrix4x4 initialTransform) {
+    if (initialTransform != null) {
+      //pass
+    } else {
+      initialTransform = new AffineMatrix4x4();
+    }
+    initialTransform.translation.y += 0.01;
+    return initialTransform;
+  }
 }

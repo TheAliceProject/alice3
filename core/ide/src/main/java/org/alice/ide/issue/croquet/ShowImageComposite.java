@@ -53,14 +53,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ShowImageComposite extends SimpleOperationUnadornedDialogCoreComposite<ShowImageView> {
-	public ShowImageComposite( UUID migrationId ) {
-		super( migrationId, Application.INFORMATION_GROUP );
-	}
+  public ShowImageComposite(UUID migrationId) {
+    super(migrationId, Application.INFORMATION_GROUP);
+  }
 
-	public abstract Image getImage();
+  public abstract Image getImage();
 
-	@Override
-	protected ShowImageView createView() {
-		return new ShowImageView( this );
-	}
+  @Override
+  protected ShowImageView createView() {
+    return new ShowImageView(this);
+  }
 }

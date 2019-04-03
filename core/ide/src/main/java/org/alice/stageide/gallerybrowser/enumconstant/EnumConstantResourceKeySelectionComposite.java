@@ -55,54 +55,54 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class EnumConstantResourceKeySelectionComposite extends SingleValueCreatorInputDialogCoreComposite<EnumConstantResourceKeySelectionView, EnumConstantResourceKey> {
-	private static class SingletonHolder {
-		private static EnumConstantResourceKeySelectionComposite instance = new EnumConstantResourceKeySelectionComposite();
-	}
+  private static class SingletonHolder {
+    private static EnumConstantResourceKeySelectionComposite instance = new EnumConstantResourceKeySelectionComposite();
+  }
 
-	public static EnumConstantResourceKeySelectionComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static EnumConstantResourceKeySelectionComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final EnumConstantResourceKeyListData listData = new EnumConstantResourceKeyListData();
-	private final RefreshableDataSingleSelectListState<EnumConstantResourceKey> enumConstantResourceKeyState = this.createRefreshableListState( "enumConstantResourceKeyState", this.listData, -1 );
+  private final EnumConstantResourceKeyListData listData = new EnumConstantResourceKeyListData();
+  private final RefreshableDataSingleSelectListState<EnumConstantResourceKey> enumConstantResourceKeyState = this.createRefreshableListState("enumConstantResourceKeyState", this.listData, -1);
 
-	private final ErrorStatus noSelectionErrorStatus = this.createErrorStatus( "noSelectionErrorStatus" );
+  private final ErrorStatus noSelectionErrorStatus = this.createErrorStatus("noSelectionErrorStatus");
 
-	private EnumConstantResourceKeySelectionComposite() {
-		super( UUID.fromString( "2a052ea8-1e92-4408-8ce1-8daec5b3e6ec" ) );
-	}
+  private EnumConstantResourceKeySelectionComposite() {
+    super(UUID.fromString("2a052ea8-1e92-4408-8ce1-8daec5b3e6ec"));
+  }
 
-	public RefreshableDataSingleSelectListState<EnumConstantResourceKey> getEnumConstantResourceKeyState() {
-		return this.enumConstantResourceKeyState;
-	}
+  public RefreshableDataSingleSelectListState<EnumConstantResourceKey> getEnumConstantResourceKeyState() {
+    return this.enumConstantResourceKeyState;
+  }
 
-	@Override
-	protected EnumConstantResourceKeySelectionView createView() {
-		return new EnumConstantResourceKeySelectionView( this );
-	}
+  @Override
+  protected EnumConstantResourceKeySelectionView createView() {
+    return new EnumConstantResourceKeySelectionView(this);
+  }
 
-	@Override
-	protected EnumConstantResourceKey createValue() {
-		return this.enumConstantResourceKeyState.getValue();
-	}
+  @Override
+  protected EnumConstantResourceKey createValue() {
+    return this.enumConstantResourceKeyState.getValue();
+  }
 
-	@Override
-	protected Integer getWiderGoldenRatioSizeFromWidth() {
-		return 1000;
-	}
+  @Override
+  protected Integer getWiderGoldenRatioSizeFromWidth() {
+    return 1000;
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		if( this.enumConstantResourceKeyState.getValue() != null ) {
-			return IS_GOOD_TO_GO_STATUS;
-		} else {
-			return this.noSelectionErrorStatus;
-		}
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    if (this.enumConstantResourceKeyState.getValue() != null) {
+      return IS_GOOD_TO_GO_STATUS;
+    } else {
+      return this.noSelectionErrorStatus;
+    }
+  }
 
-	public void setClassResourceKey( ClassResourceKey classResourceKey ) {
-		this.enumConstantResourceKeyState.clearSelection();
-		this.listData.setClassResourceKey( classResourceKey );
-	}
+  public void setClassResourceKey(ClassResourceKey classResourceKey) {
+    this.enumConstantResourceKeyState.clearSelection();
+    this.listData.setClassResourceKey(classResourceKey);
+  }
 
 }

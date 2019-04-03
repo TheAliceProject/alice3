@@ -71,183 +71,178 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AddFieldComposite extends FieldComposite {
-	public static class FieldDetailsBuilder {
-		private ApplicabilityStatus isFinalStatus = ApplicabilityStatus.NOT_APPLICABLE;
-		private boolean inFinalInitialValue;
-		private ApplicabilityStatus valueComponentTypeStatus;
-		private AbstractType<?, ?, ?> valueComponentTypeInitialValue;
-		private ApplicabilityStatus valueIsArrayTypeStatus;
-		private boolean valueIsArrayTypeInitialValue;
-		private ApplicabilityStatus initializerStatus;
-		private Expression initializerInitialValue;
+  public static class FieldDetailsBuilder {
+    private ApplicabilityStatus isFinalStatus = ApplicabilityStatus.NOT_APPLICABLE;
+    private boolean inFinalInitialValue;
+    private ApplicabilityStatus valueComponentTypeStatus;
+    private AbstractType<?, ?, ?> valueComponentTypeInitialValue;
+    private ApplicabilityStatus valueIsArrayTypeStatus;
+    private boolean valueIsArrayTypeInitialValue;
+    private ApplicabilityStatus initializerStatus;
+    private Expression initializerInitialValue;
 
-		public FieldDetailsBuilder isFinal( ApplicabilityStatus status, boolean initialValue ) {
-			this.isFinalStatus = status;
-			this.inFinalInitialValue = initialValue;
-			return this;
-		}
+    public FieldDetailsBuilder isFinal(ApplicabilityStatus status, boolean initialValue) {
+      this.isFinalStatus = status;
+      this.inFinalInitialValue = initialValue;
+      return this;
+    }
 
-		public FieldDetailsBuilder valueComponentType( ApplicabilityStatus status, AbstractType<?, ?, ?> initialValue ) {
-			this.valueComponentTypeStatus = status;
-			this.valueComponentTypeInitialValue = initialValue;
-			return this;
-		}
+    public FieldDetailsBuilder valueComponentType(ApplicabilityStatus status, AbstractType<?, ?, ?> initialValue) {
+      this.valueComponentTypeStatus = status;
+      this.valueComponentTypeInitialValue = initialValue;
+      return this;
+    }
 
-		public FieldDetailsBuilder valueIsArrayType( ApplicabilityStatus status, boolean initialValue ) {
-			this.valueIsArrayTypeStatus = status;
-			this.valueIsArrayTypeInitialValue = initialValue;
-			return this;
-		}
+    public FieldDetailsBuilder valueIsArrayType(ApplicabilityStatus status, boolean initialValue) {
+      this.valueIsArrayTypeStatus = status;
+      this.valueIsArrayTypeInitialValue = initialValue;
+      return this;
+    }
 
-		public FieldDetailsBuilder initializer( ApplicabilityStatus status, Expression initialValue ) {
-			this.initializerStatus = status;
-			this.initializerInitialValue = initialValue;
-			return this;
-		}
+    public FieldDetailsBuilder initializer(ApplicabilityStatus status, Expression initialValue) {
+      this.initializerStatus = status;
+      this.initializerInitialValue = initialValue;
+      return this;
+    }
 
-		public Details build() {
-			assert this.valueComponentTypeStatus != null : this;
-			assert this.valueIsArrayTypeStatus != null : this;
-			assert this.initializerStatus != null : this;
-			return new Details()
-					.isFinal( this.isFinalStatus, this.inFinalInitialValue )
-					.valueComponentType( this.valueComponentTypeStatus, this.valueComponentTypeInitialValue )
-					.valueIsArrayType( this.valueIsArrayTypeStatus, this.valueIsArrayTypeInitialValue )
-					.name( ApplicabilityStatus.EDITABLE )
-					.initializer( this.initializerStatus, this.initializerInitialValue );
-		}
-	}
+    public Details build() {
+      assert this.valueComponentTypeStatus != null : this;
+      assert this.valueIsArrayTypeStatus != null : this;
+      assert this.initializerStatus != null : this;
+      return new Details().isFinal(this.isFinalStatus, this.inFinalInitialValue).valueComponentType(this.valueComponentTypeStatus, this.valueComponentTypeInitialValue).valueIsArrayType(this.valueIsArrayTypeStatus, this.valueIsArrayTypeInitialValue).name(ApplicabilityStatus.EDITABLE).initializer(this.initializerStatus, this.initializerInitialValue);
+    }
+  }
 
-	public AddFieldComposite( UUID migrationId, Details details ) {
-		super( migrationId, details );
-	}
+  public AddFieldComposite(UUID migrationId, Details details) {
+    super(migrationId, details);
+  }
 
-	protected abstract ManagementLevel getManagementLevel();
+  protected abstract ManagementLevel getManagementLevel();
 
-	protected abstract boolean isFieldFinal();
+  protected abstract boolean isFieldFinal();
 
-	private UserField createField() {
-		UserField field = new UserField();
-		if( this.isFieldFinal() ) {
-			field.finalVolatileOrNeither.setValue( FieldModifierFinalVolatileOrNeither.FINAL );
-		}
-		field.accessLevel.setValue( AccessLevel.PRIVATE );
-		field.managementLevel.setValue( this.getManagementLevel() );
-		field.valueType.setValue( this.getValueType() );
-		field.name.setValue( this.getDeclarationLikeSubstanceName() );
-		field.initializer.setValue( this.getInitializer() );
-		return field;
-	}
+  private UserField createField() {
+    UserField field = new UserField();
+    if (this.isFieldFinal()) {
+      field.finalVolatileOrNeither.setValue(FieldModifierFinalVolatileOrNeither.FINAL);
+    }
+    field.accessLevel.setValue(AccessLevel.PRIVATE);
+    field.managementLevel.setValue(this.getManagementLevel());
+    field.valueType.setValue(this.getValueType());
+    field.name.setValue(this.getDeclarationLikeSubstanceName());
+    field.initializer.setValue(this.getInitializer());
+    return field;
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		int size = UIManagerUtilities.getDefaultFontSize() + 4;
-		this.getLaunchOperation().setSmallIcon( PlusIconFactory.getInstance().getIcon( new Dimension( size, size ) ) );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    int size = UIManagerUtilities.getDefaultFontSize() + 4;
+    this.getLaunchOperation().setSmallIcon(PlusIconFactory.getInstance().getIcon(new Dimension(size, size)));
+  }
 
-	@Override
-	public String modifyNameIfNecessary( String text ) {
-		text = super.modifyNameIfNecessary( text );
-		if( text != null ) {
-			String declaringTypeName;
-			if( this.getDeclaringType() != null ) {
-				declaringTypeName = this.getDeclaringType().getName();
-			} else {
-				declaringTypeName = "";
-			}
-			text = text.replace( "</declaringType/>", declaringTypeName );
-		}
-		return text;
-	}
+  @Override
+  public String modifyNameIfNecessary(String text) {
+    text = super.modifyNameIfNecessary(text);
+    if (text != null) {
+      String declaringTypeName;
+      if (this.getDeclaringType() != null) {
+        declaringTypeName = this.getDeclaringType().getName();
+      } else {
+        declaringTypeName = "";
+      }
+      text = text.replace("</declaringType/>", declaringTypeName);
+    }
+    return text;
+  }
 
-	@Override
-	public UserField getPreviewValue() {
-		return this.createField();
-	}
+  @Override
+  public UserField getPreviewValue() {
+    return this.createField();
+  }
 
-	protected abstract DeclareFieldEdit createEdit( UserActivity userActivity, UserType<?> declaringType, UserField field );
+  protected abstract DeclareFieldEdit createEdit(UserActivity userActivity, UserType<?> declaringType, UserField field);
 
-	@Override
-	protected final Edit createEdit( UserActivity userActivity ) {
-		return this.createEdit( userActivity, this.getDeclaringType(), this.createField() );
-	}
+  @Override
+  protected final Edit createEdit(UserActivity userActivity) {
+    return this.createEdit(userActivity, this.getDeclaringType(), this.createField());
+  }
 
-	@Override
-	protected boolean isNameAvailable( String name ) {
-		return StaticAnalysisUtilities.isAvailableFieldName( name, this.getDeclaringType() );
-	}
+  @Override
+  protected boolean isNameAvailable(String name) {
+    return StaticAnalysisUtilities.isAvailableFieldName(name, this.getDeclaringType());
+  }
 
-	protected InstanceCreation getInstanceCreationFromInitializer() {
-		CustomItemState<Expression> initializerState = this.getInitializerState();
-		if( initializerState != null ) {
-			Expression expression = initializerState.getValue();
-			if( expression instanceof InstanceCreation ) {
-				return (InstanceCreation)expression;
-			}
-		}
-		return null;
-	}
+  protected InstanceCreation getInstanceCreationFromInitializer() {
+    CustomItemState<Expression> initializerState = this.getInitializerState();
+    if (initializerState != null) {
+      Expression expression = initializerState.getValue();
+      if (expression instanceof InstanceCreation) {
+        return (InstanceCreation) expression;
+      }
+    }
+    return null;
+  }
 
-	protected Field getFldFromInstanceCreationInitializer( InstanceCreation instanceCreation ) {
-		if( instanceCreation != null ) {
-			JavaField argumentField = ConstructorArgumentUtilities.getArgumentField( instanceCreation );
-			if( argumentField != null ) {
-				Field fld = argumentField.getFieldReflectionProxy().getReification();
-				return fld;
-			}
-		}
-		return null;
-	}
+  protected Field getFldFromInstanceCreationInitializer(InstanceCreation instanceCreation) {
+    if (instanceCreation != null) {
+      JavaField argumentField = ConstructorArgumentUtilities.getArgumentField(instanceCreation);
+      if (argumentField != null) {
+        Field fld = argumentField.getFieldReflectionProxy().getReification();
+        return fld;
+      }
+    }
+    return null;
+  }
 
-	protected String generateName() {
-		InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
-		return IdentifierNameGenerator.SINGLETON.createIdentifierNameFromInstanceCreation( instanceCreation );
-	}
+  protected String generateName() {
+    InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
+    return IdentifierNameGenerator.SINGLETON.createIdentifierNameFromInstanceCreation(instanceCreation);
+  }
 
-	protected boolean isNumberAppendedToNameOfFirstField() {
-		return false;
-	}
+  protected boolean isNumberAppendedToNameOfFirstField() {
+    return false;
+  }
 
-	protected boolean isNameGenerationDesired() {
-		return IsPromptProvidingInitialFieldNamesState.getInstance().getValue();
-	}
+  protected boolean isNameGenerationDesired() {
+    return IsPromptProvidingInitialFieldNamesState.getInstance().getValue();
+  }
 
-	@Override
-	protected String getNameInitialValue() {
-		if( this.isNameGenerationDesired() ) {
-			String baseName = generateName();
-			boolean isNumberAppendedToNameOfFirstField = this.isNumberAppendedToNameOfFirstField();
-			final boolean IS_GENERATING_AVAILABLE_NAME_ENABLED = true;
-			if( IS_GENERATING_AVAILABLE_NAME_ENABLED ) {
-				boolean isSearchFrom2Desired;
-				if( isNumberAppendedToNameOfFirstField || this.isNameAvailable( baseName ) ) {
-					if( this.isNameAvailable( baseName + 1 ) ) {
-						isSearchFrom2Desired = false;
-					} else {
-						isSearchFrom2Desired = true;
-					}
-				} else {
-					isSearchFrom2Desired = true;
-				}
-				if( isSearchFrom2Desired ) {
-					int i = 2;
-					while( true ) {
-						if( this.isNameAvailable( baseName + i ) ) {
-							break;
-						}
-						i++;
-					}
-					return baseName + i;
-				}
-			}
-			if( isNumberAppendedToNameOfFirstField ) {
-				return baseName + 1;
-			} else {
-				return baseName;
-			}
-		} else {
-			return super.getNameInitialValue();
-		}
-	}
+  @Override
+  protected String getNameInitialValue() {
+    if (this.isNameGenerationDesired()) {
+      String baseName = generateName();
+      boolean isNumberAppendedToNameOfFirstField = this.isNumberAppendedToNameOfFirstField();
+      final boolean IS_GENERATING_AVAILABLE_NAME_ENABLED = true;
+      if (IS_GENERATING_AVAILABLE_NAME_ENABLED) {
+        boolean isSearchFrom2Desired;
+        if (isNumberAppendedToNameOfFirstField || this.isNameAvailable(baseName)) {
+          if (this.isNameAvailable(baseName + 1)) {
+            isSearchFrom2Desired = false;
+          } else {
+            isSearchFrom2Desired = true;
+          }
+        } else {
+          isSearchFrom2Desired = true;
+        }
+        if (isSearchFrom2Desired) {
+          int i = 2;
+          while (true) {
+            if (this.isNameAvailable(baseName + i)) {
+              break;
+            }
+            i++;
+          }
+          return baseName + i;
+        }
+      }
+      if (isNumberAppendedToNameOfFirstField) {
+        return baseName + 1;
+      } else {
+        return baseName;
+      }
+    } else {
+      return super.getNameInitialValue();
+    }
+  }
 }

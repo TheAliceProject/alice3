@@ -57,150 +57,148 @@ import javax.swing.undo.CannotRedoException;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractEdit<M extends CompletionModel> implements Edit, BinaryEncodableAndDecodable {
-	public static <E extends AbstractEdit<?>> E createCopy( E original, UserActivity activity ) {
-		assert activity != null : original;
-		original.preCopy();
-		ByteArrayBinaryEncoder encoder = new ByteArrayBinaryEncoder();
-		encoder.encode( original );
-		BinaryDecoder decoder = encoder.createDecoder();
-		E rv = decoder.decodeBinaryEncodableAndDecodable( activity );
-		original.postCopy( rv );
-		return rv;
-	}
+  public static <E extends AbstractEdit<?>> E createCopy(E original, UserActivity activity) {
+    assert activity != null : original;
+    original.preCopy();
+    ByteArrayBinaryEncoder encoder = new ByteArrayBinaryEncoder();
+    encoder.encode(original);
+    BinaryDecoder decoder = encoder.createDecoder();
+    E rv = decoder.decodeBinaryEncodableAndDecodable(activity);
+    original.postCopy(rv);
+    return rv;
+  }
 
-	private transient UserActivity userActivity;
+  private transient UserActivity userActivity;
 
-	public AbstractEdit( UserActivity userActivity ) {
-		this.userActivity = userActivity;
-	}
+  public AbstractEdit(UserActivity userActivity) {
+    this.userActivity = userActivity;
+  }
 
-	public AbstractEdit( BinaryDecoder binaryDecoder, Object step ) {
-		this.userActivity = (UserActivity) step;
-	}
+  public AbstractEdit(BinaryDecoder binaryDecoder, Object step) {
+    this.userActivity = (UserActivity) step;
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+  }
 
-	protected void preCopy() {
-	}
+  protected void preCopy() {
+  }
 
-	protected void postCopy( AbstractEdit<?> result ) {
-	}
+  protected void postCopy(AbstractEdit<?> result) {
+  }
 
-	public M getModel() {
-		return userActivity != null ? (M) userActivity.getCompletionModel() : null;
-	}
+  public M getModel() {
+    return userActivity != null ? (M) userActivity.getCompletionModel() : null;
+  }
 
-	@Override
-	public Group getGroup() {
-		M model = this.getModel();
-		if( model != null ) {
-			return model.getGroup();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Group getGroup() {
+    M model = this.getModel();
+    if (model != null) {
+      return model.getGroup();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public boolean canUndo() {
-		return true;
-	}
+  @Override
+  public boolean canUndo() {
+    return true;
+  }
 
-	@Override
-	public boolean canRedo() {
-		return true;
-	}
+  @Override
+  public boolean canRedo() {
+    return true;
+  }
 
-	protected abstract void doOrRedoInternal( boolean isDo );
+  protected abstract void doOrRedoInternal(boolean isDo);
 
-	protected abstract void undoInternal();
+  protected abstract void undoInternal();
 
-	@Override
-	public final void doOrRedo( boolean isDo ) {
-		if ( !isDo && !canRedo() ) {
-			throw new CannotRedoException();
-		}
-		this.doOrRedoInternal( isDo );
-	}
+  @Override
+  public final void doOrRedo(boolean isDo) {
+    if (!isDo && !canRedo()) {
+      throw new CannotRedoException();
+    }
+    this.doOrRedoInternal(isDo);
+  }
 
-	@Override
-	public final void undo() {
-		if ( !canUndo() ) {
-			throw new CannotRedoException();
-		}
-		this.undoInternal();
-	}
+  @Override
+  public final void undo() {
+    if (!canUndo()) {
+      throw new CannotRedoException();
+    }
+    this.undoInternal();
+  }
 
-	protected static enum DescriptionStyle {
-		TERSE( false, false ),
-		DETAILED( true, false ),
-		LOG( true, true );
-		private final boolean isDetailed;
-		private final boolean isLog;
+  protected static enum DescriptionStyle {
+    TERSE(false, false), DETAILED(true, false), LOG(true, true);
+    private final boolean isDetailed;
+    private final boolean isLog;
 
-		private DescriptionStyle( boolean isDetailed, boolean isLog ) {
-			this.isDetailed = isDetailed;
-			this.isLog = isLog;
-		}
+    private DescriptionStyle(boolean isDetailed, boolean isLog) {
+      this.isDetailed = isDetailed;
+      this.isLog = isLog;
+    }
 
-		public boolean isDetailed() {
-			return this.isDetailed;
-		}
+    public boolean isDetailed() {
+      return this.isDetailed;
+    }
 
-		public boolean isLog() {
-			return this.isLog;
-		}
-	}
+    public boolean isLog() {
+      return this.isLog;
+    }
+  }
 
-	protected abstract void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle );
+  protected abstract void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle);
 
-	@Override
-	public String getRedoPresentation() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Redo:" );
-		this.appendDescription( sb, DescriptionStyle.TERSE );
-		return sb.toString();
-	}
+  @Override
+  public String getRedoPresentation() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Redo:");
+    this.appendDescription(sb, DescriptionStyle.TERSE);
+    return sb.toString();
+  }
 
-	@Override
-	public String getUndoPresentation() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Undo:" );
-		this.appendDescription( sb, DescriptionStyle.TERSE );
-		return sb.toString();
-	}
+  @Override
+  public String getUndoPresentation() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Undo:");
+    this.appendDescription(sb, DescriptionStyle.TERSE);
+    return sb.toString();
+  }
 
-	@Override
-	public final String getTerseDescription() {
-		StringBuilder sb = new StringBuilder();
-		this.appendDescription( sb, DescriptionStyle.TERSE );
-		if( sb.length() == 0 ) {
-			sb.append( ClassUtilities.getTrimmedClassName( this.getClass() ) );
-		}
-		return sb.toString();
-	}
+  @Override
+  public final String getTerseDescription() {
+    StringBuilder sb = new StringBuilder();
+    this.appendDescription(sb, DescriptionStyle.TERSE);
+    if (sb.length() == 0) {
+      sb.append(ClassUtilities.getTrimmedClassName(this.getClass()));
+    }
+    return sb.toString();
+  }
 
-	@Override
-	public final String getDetailedDescription() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( ": " );
-		this.appendDescription( sb, DescriptionStyle.DETAILED );
-		return sb.toString();
-	}
+  @Override
+  public final String getDetailedDescription() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getName());
+    sb.append(": ");
+    this.appendDescription(sb, DescriptionStyle.DETAILED);
+    return sb.toString();
+  }
 
-	@Override
-	public final String getLogDescription() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( ": " );
-		this.appendDescription( sb, DescriptionStyle.LOG );
-		return sb.toString();
-	}
+  @Override
+  public final String getLogDescription() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getName());
+    sb.append(": ");
+    this.appendDescription(sb, DescriptionStyle.LOG);
+    return sb.toString();
+  }
 
-	@Override
-	public String toString() {
-		return this.getDetailedDescription();
-	}
+  @Override
+  public String toString() {
+    return this.getDetailedDescription();
+  }
 }

@@ -55,77 +55,77 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class AnonymousUserConstructor extends UserConstructor {
-	private static Map<AnonymousUserType, AnonymousUserConstructor> s_map;
+  private static Map<AnonymousUserType, AnonymousUserConstructor> s_map;
 
-	public static AnonymousUserConstructor get( AnonymousUserType type ) {
-		if( type != null ) {
-			if( s_map != null ) {
-				//pass
-			} else {
-				s_map = new HashMap<AnonymousUserType, AnonymousUserConstructor>();
-			}
-			AnonymousUserConstructor rv = s_map.get( type );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new AnonymousUserConstructor( type );
-			}
-			return rv;
-		} else {
-			return null;
-		}
-	}
+  public static AnonymousUserConstructor get(AnonymousUserType type) {
+    if (type != null) {
+      if (s_map != null) {
+        //pass
+      } else {
+        s_map = new HashMap<AnonymousUserType, AnonymousUserConstructor>();
+      }
+      AnonymousUserConstructor rv = s_map.get(type);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new AnonymousUserConstructor(type);
+      }
+      return rv;
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public Object evaluate( VirtualMachine vm, AbstractType fallbackType, Object[] arguments ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public Object evaluate(VirtualMachine vm, AbstractType fallbackType, Object[] arguments) {
+    throw new RuntimeException("todo");
+  }
 
-	private ArrayList<AbstractParameter> parameters = new ArrayList<AbstractParameter>();
+  private ArrayList<AbstractParameter> parameters = new ArrayList<AbstractParameter>();
 
-	private AnonymousUserConstructor( AnonymousUserType type ) {
-		this.type = type;
-	}
+  private AnonymousUserConstructor(AnonymousUserType type) {
+    this.type = type;
+  }
 
-	@Override
-	public boolean isSignatureLocked() {
-		return true;
-	}
+  @Override
+  public boolean isSignatureLocked() {
+    return true;
+  }
 
-	@Override
-	public AccessLevel getAccessLevel() {
-		return null;
-	}
+  @Override
+  public AccessLevel getAccessLevel() {
+    return null;
+  }
 
-	@Override
-	public AnonymousUserType getDeclaringType() {
-		return this.type;
-	}
+  @Override
+  public AnonymousUserType getDeclaringType() {
+    return this.type;
+  }
 
-	@Override
-	public AbstractCode getNextLongerInChain() {
-		return null;
-	}
+  @Override
+  public AbstractCode getNextLongerInChain() {
+    return null;
+  }
 
-	@Override
-	public AbstractCode getNextShorterInChain() {
-		return null;
-	}
+  @Override
+  public AbstractCode getNextShorterInChain() {
+    return null;
+  }
 
-	@Override
-	public List<AbstractParameter> getRequiredParameters() {
-		return this.parameters;
-	}
+  @Override
+  public List<AbstractParameter> getRequiredParameters() {
+    return this.parameters;
+  }
 
-	@Override
-	public Visibility getVisibility() {
-		return null;
-	}
+  @Override
+  public Visibility getVisibility() {
+    return null;
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		//todo?
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    //todo?
+  }
 
-	private final AnonymousUserType type;
+  private final AnonymousUserType type;
 }

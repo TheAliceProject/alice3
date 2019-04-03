@@ -52,21 +52,21 @@ import java.util.UUID;
 
 public class OpenProjectFromOsOperation extends UriPotentialClearanceIteratingOperation {
 
-	public OpenProjectFromOsOperation( File file) {
-		super( UUID.fromString( "f51873eb-06da-4974-9890-7345adff3ac4" ), null );
-		this.file = file;
-	}
+  public OpenProjectFromOsOperation(File file) {
+    super(UUID.fromString("f51873eb-06da-4974-9890-7345adff3ac4"), null);
+    this.file = file;
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( file.getAbsolutePath() );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setName(file.getAbsolutePath());
+  }
 
-	@Override
-	protected UriProjectLoader getUriProjectLoader( List<UserActivity> subSteps ) {
-		return new FileProjectLoader( file );
-	}
+  @Override
+  protected UriProjectLoader getUriProjectLoader(List<UserActivity> subSteps) {
+    return new FileProjectLoader(file);
+  }
 
-	private final File file;
+  private final File file;
 }

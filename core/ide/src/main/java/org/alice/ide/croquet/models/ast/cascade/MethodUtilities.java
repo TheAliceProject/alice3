@@ -53,16 +53,16 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class MethodUtilities {
-	private MethodUtilities() {
-		throw new AssertionError();
-	}
+  private MethodUtilities() {
+    throw new AssertionError();
+  }
 
-	public static ParameterBlank[] createParameterBlanks( AbstractMethod method ) {
-		List<? extends AbstractParameter> parameters = method.getRequiredParameters();
-		ParameterBlank[] rv = new ParameterBlank[ parameters.size() ];
-		for( int i = 0; i < rv.length; i++ ) {
-			rv[ i ] = ParameterBlank.getInstance( parameters.get( i ) );
-		}
-		return rv;
-	}
+  public static ParameterBlank[] createParameterBlanks(AbstractMethod method) {
+    List<? extends AbstractParameter> parameters = method.getRequiredParameters();
+    ParameterBlank[] rv = new ParameterBlank[parameters.size()];
+    for (int i = 0; i < rv.length; i++) {
+      rv[i] = ParameterBlank.getInstance(parameters.get(i));
+    }
+    return rv;
+  }
 }

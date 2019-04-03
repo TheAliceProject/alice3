@@ -47,7 +47,7 @@ package org.lgna.ik.poser;
  */
 public class PoserGenerationException extends RuntimeException {
 
-	public PoserGenerationException( String str ) {
-		super( str );
-	}
+  public PoserGenerationException(String str) {
+    super(str);
+  }
 }

@@ -108,387 +108,347 @@ import java.util.List;
  */
 public class SetUpMethodGenerator {
 
-	private static org.alice.stageide.ast.ExpressionCreator expressionCreator = null;
+  private static org.alice.stageide.ast.ExpressionCreator expressionCreator = null;
 
-	protected static ExpressionCreator getExpressionCreator() {
-		if( ( StageIDE.getActiveInstance() != null )
-				&& ( StageIDE.getActiveInstance().getApiConfigurationManager() != null )
-				&& ( StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator() != null ) ) {
-			return StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
-		} else {
-			if( expressionCreator == null ) {
-				expressionCreator = NebulousIde.nonfree.newExpressionCreator();
-			}
-			return expressionCreator;
-		}
-	}
+  protected static ExpressionCreator getExpressionCreator() {
+    if ((StageIDE.getActiveInstance() != null) && (StageIDE.getActiveInstance().getApiConfigurationManager() != null) && (StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator() != null)) {
+      return StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
+    } else {
+      if (expressionCreator == null) {
+        expressionCreator = NebulousIde.nonfree.newExpressionCreator();
+      }
+      return expressionCreator;
+    }
+  }
 
-	private static Expression createInstanceExpression( boolean isThis, AbstractField field ) {
-		return isThis ? new ThisExpression() : new FieldAccess(field);
-	}
+  private static Expression createInstanceExpression(boolean isThis, AbstractField field) {
+    return isThis ? new ThisExpression() : new FieldAccess(field);
+  }
 
-	private static ExpressionStatement createStatement( Class<?> declarationCls, String methodName, Class<?>[] parameterClses, Expression instanceExpression,
-			Expression... argumentExpressions ) {
-		AbstractMethod method = AstUtilities.lookupMethod( declarationCls, methodName, parameterClses );
-		return AstUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
-	}
+  private static ExpressionStatement createStatement(Class<?> declarationCls, String methodName, Class<?>[] parameterClses, Expression instanceExpression, Expression... argumentExpressions) {
+    AbstractMethod method = AstUtilities.lookupMethod(declarationCls, methodName, parameterClses);
+    return AstUtilities.createMethodInvocationStatement(instanceExpression, method, argumentExpressions);
+  }
 
-	static ExpressionStatement createSetVehicleStatement(AbstractField field, AbstractField vehicleField,
-														 boolean isVehicleScene) {
-		AbstractMethod setVehicleMethod = AstUtilities.lookupMethod(MutableRider.class, "setVehicle", (Class<?>) SThing.class);
-		Expression vehicle;
-		if( ( vehicleField != null ) || isVehicleScene ) {
-			vehicle = SetUpMethodGenerator.createInstanceExpression(isVehicleScene, vehicleField);
-		} else {
-			vehicle = new NullLiteral();
-		}
-		return AstUtilities.createMethodInvocationStatement(new FieldAccess(field), setVehicleMethod, vehicle);
-	}
+  static ExpressionStatement createSetVehicleStatement(AbstractField field, AbstractField vehicleField, boolean isVehicleScene) {
+    AbstractMethod setVehicleMethod = AstUtilities.lookupMethod(MutableRider.class, "setVehicle", (Class<?>) SThing.class);
+    Expression vehicle;
+    if ((vehicleField != null) || isVehicleScene) {
+      vehicle = SetUpMethodGenerator.createInstanceExpression(isVehicleScene, vehicleField);
+    } else {
+      vehicle = new NullLiteral();
+    }
+    return AstUtilities.createMethodInvocationStatement(new FieldAccess(field), setVehicleMethod, vehicle);
+  }
 
-	public static ExpressionStatement createSetPaintStatement( AbstractField field, Paint paint ) {
-		if( paint != null ) {
-			Expression paintExpression = null;
-			try {
-				paintExpression = getExpressionCreator().createExpression( paint );
-			} catch( Exception e ) {
-				paintExpression = null;
-			}
-			if( paintExpression != null ) {
-				if( field.getValueType().isAssignableFrom( SModel.class ) ) {
-					return createStatement( SModel.class, "setPaint", new Class<?>[] { Paint.class, SetPaint.Detail[].class }, new FieldAccess( field ), paintExpression );
-				}
-			}
-		}
-		return null;
-	}
+  public static ExpressionStatement createSetPaintStatement(AbstractField field, Paint paint) {
+    if (paint != null) {
+      Expression paintExpression = null;
+      try {
+        paintExpression = getExpressionCreator().createExpression(paint);
+      } catch (Exception e) {
+        paintExpression = null;
+      }
+      if (paintExpression != null) {
+        if (field.getValueType().isAssignableFrom(SModel.class)) {
+          return createStatement(SModel.class, "setPaint", new Class<?>[] {Paint.class, SetPaint.Detail[].class}, new FieldAccess(field), paintExpression);
+        }
+      }
+    }
+    return null;
+  }
 
-	public static ExpressionStatement createSetColorIdStatement( AbstractField field, Color colorId ) {
-		if( colorId != null ) {
-			Expression colorIdExpression = null;
-			try {
-				colorIdExpression = getExpressionCreator().createExpression( colorId );
-			} catch( Exception e ) {
-				colorIdExpression = null;
-			}
-			if( colorIdExpression != null ) {
-				if( field.getValueType().isAssignableTo( SMarker.class ) ) {
-					return createStatement( SMarker.class, "setColorId", new Class<?>[] { Color.class }, new FieldAccess( field ), colorIdExpression );
-				}
-			}
-		}
-		return null;
-	}
+  public static ExpressionStatement createSetColorIdStatement(AbstractField field, Color colorId) {
+    if (colorId != null) {
+      Expression colorIdExpression = null;
+      try {
+        colorIdExpression = getExpressionCreator().createExpression(colorId);
+      } catch (Exception e) {
+        colorIdExpression = null;
+      }
+      if (colorIdExpression != null) {
+        if (field.getValueType().isAssignableTo(SMarker.class)) {
+          return createStatement(SMarker.class, "setColorId", new Class<?>[] {Color.class}, new FieldAccess(field), colorIdExpression);
+        }
+      }
+    }
+    return null;
+  }
 
-	public static Statement createOrientationStatement( boolean isThis, AbstractField field, Orientation orientation ) throws ExpressionCreator.CannotCreateExpressionException {
-		return createOrientationStatement( isThis, field, orientation, -1 );
-	}
+  public static Statement createOrientationStatement(boolean isThis, AbstractField field, Orientation orientation) throws ExpressionCreator.CannotCreateExpressionException {
+    return createOrientationStatement(isThis, field, orientation, -1);
+  }
 
-	public static Statement createOrientationStatement( boolean isThis, AbstractField field, Orientation orientation, double duration )
-			throws ExpressionCreator.CannotCreateExpressionException {
-		ExpressionStatement orientationStatement = createStatement(
-				STurnable.class, "setOrientationRelativeToVehicle", new Class<?>[] { Orientation.class, SetOrientationRelativeToVehicle.Detail[].class },
-				SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( orientation ) );
-		if( duration != -1 ) {
-			MethodInvocation methodInvocation = (MethodInvocation)orientationStatement.expression.getValue();
-			JavaMethod durationKeyMethod = JavaMethod.getInstance( DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
-			methodInvocation.keyedArguments.add( new JavaKeyedArgument( methodInvocation.method.getValue().getKeyedParameter(), durationKeyMethod, new DoubleLiteral( duration ) ) );
-		}
-		return orientationStatement;
-	}
+  public static Statement createOrientationStatement(boolean isThis, AbstractField field, Orientation orientation, double duration) throws ExpressionCreator.CannotCreateExpressionException {
+    ExpressionStatement orientationStatement = createStatement(STurnable.class, "setOrientationRelativeToVehicle", new Class<?>[] {Orientation.class, SetOrientationRelativeToVehicle.Detail[].class}, SetUpMethodGenerator.createInstanceExpression(isThis, field), getExpressionCreator().createExpression(orientation));
+    if (duration != -1) {
+      MethodInvocation methodInvocation = (MethodInvocation) orientationStatement.expression.getValue();
+      JavaMethod durationKeyMethod = JavaMethod.getInstance(DurationAnimationStyleArgumentFactory.class, "duration", Number.class);
+      methodInvocation.keyedArguments.add(new JavaKeyedArgument(methodInvocation.method.getValue().getKeyedParameter(), durationKeyMethod, new DoubleLiteral(duration)));
+    }
+    return orientationStatement;
+  }
 
-	public static Statement createPositionStatement( boolean isThis, AbstractField field, Position position ) throws ExpressionCreator.CannotCreateExpressionException {
-		return createPositionStatement( isThis, field, position, -1 );
-	}
+  public static Statement createPositionStatement(boolean isThis, AbstractField field, Position position) throws ExpressionCreator.CannotCreateExpressionException {
+    return createPositionStatement(isThis, field, position, -1);
+  }
 
-	public static Statement createPositionStatement( boolean isThis, AbstractField field, Position position, double duration )
-			throws ExpressionCreator.CannotCreateExpressionException {
-		ExpressionStatement positionStatement = createStatement(
-				SMovableTurnable.class, "setPositionRelativeToVehicle", new Class<?>[] { Position.class, SetPositionRelativeToVehicle.Detail[].class },
-				SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( position ) );
-		if( duration != -1 ) {
-			MethodInvocation methodInvocation = (MethodInvocation)positionStatement.expression.getValue();
-			JavaMethod durationKeyMethod = JavaMethod.getInstance( DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
-			methodInvocation.keyedArguments.add( new JavaKeyedArgument( methodInvocation.method.getValue().getKeyedParameter(), durationKeyMethod, new DoubleLiteral( duration ) ) );
-		}
-		return positionStatement;
-	}
+  public static Statement createPositionStatement(boolean isThis, AbstractField field, Position position, double duration) throws ExpressionCreator.CannotCreateExpressionException {
+    ExpressionStatement positionStatement = createStatement(SMovableTurnable.class, "setPositionRelativeToVehicle", new Class<?>[] {Position.class, SetPositionRelativeToVehicle.Detail[].class}, SetUpMethodGenerator.createInstanceExpression(isThis, field), getExpressionCreator().createExpression(position));
+    if (duration != -1) {
+      MethodInvocation methodInvocation = (MethodInvocation) positionStatement.expression.getValue();
+      JavaMethod durationKeyMethod = JavaMethod.getInstance(DurationAnimationStyleArgumentFactory.class, "duration", Number.class);
+      methodInvocation.keyedArguments.add(new JavaKeyedArgument(methodInvocation.method.getValue().getKeyedParameter(), durationKeyMethod, new DoubleLiteral(duration)));
+    }
+    return positionStatement;
+  }
 
-	public static MethodInvocation createSetterInvocation( boolean isThis, AbstractField field, AbstractMethod setter, Expression expression ) {
-		return AstUtilities.createMethodInvocation(
-				SetUpMethodGenerator.createInstanceExpression( isThis, field ),
-				setter,
-				expression );
-	}
+  public static MethodInvocation createSetterInvocation(boolean isThis, AbstractField field, AbstractMethod setter, Expression expression) {
+    return AstUtilities.createMethodInvocation(SetUpMethodGenerator.createInstanceExpression(isThis, field), setter, expression);
+  }
 
-	public static ExpressionStatement createSetterStatement( boolean isThis, AbstractField field, AbstractMethod setter, Expression expression ) {
-		return new ExpressionStatement( createSetterInvocation( isThis, field, setter, expression ) );
-	}
+  public static ExpressionStatement createSetterStatement(boolean isThis, AbstractField field, AbstractMethod setter, Expression expression) {
+    return new ExpressionStatement(createSetterInvocation(isThis, field, setter, expression));
+  }
 
-	private static boolean shouldPlaceModelAboveGround( AbstractType<?, ?, ?> type ) {
-		return false;
-	}
+  private static boolean shouldPlaceModelAboveGround(AbstractType<?, ?, ?> type) {
+    return false;
+  }
 
-	public static Statement[] getSetupStatementsForField( boolean isThis, AbstractField field, UserInstance sceneInstance, AbstractField initialVehicle,
-			AffineMatrix4x4 initialTransform ) {
-		List<Statement> statements = Lists.newLinkedList();
+  public static Statement[] getSetupStatementsForField(boolean isThis, AbstractField field, UserInstance sceneInstance, AbstractField initialVehicle, AffineMatrix4x4 initialTransform) {
+    List<Statement> statements = Lists.newLinkedList();
 
-		AbstractType<?, ?, ?> abstractType = field.getValueType();
-		JavaType javaType = abstractType.getFirstEncounteredJavaType();
-		if( javaType.isAssignableTo( MutableRider.class ) ) {
-			statements.add( createSetVehicleStatement( field, initialVehicle, ( initialVehicle == null ) ) );
-		}
-		if( initialTransform != null ) {
-			if( javaType.isAssignableTo( STurnable.class ) ) {
-				try {
-					statements.add( createOrientationStatement( isThis, field, EmployeesOnly.createOrientation( initialTransform.orientation ), 0 ) );
-				} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
-					throw new RuntimeException( ccee );
-				}
-			}
-			if( javaType.isAssignableTo( SMovableTurnable.class ) ) {
-				try {
-					statements.add( createPositionStatement( isThis, field, EmployeesOnly.createPosition( initialTransform.translation ), 0 ) );
+    AbstractType<?, ?, ?> abstractType = field.getValueType();
+    JavaType javaType = abstractType.getFirstEncounteredJavaType();
+    if (javaType.isAssignableTo(MutableRider.class)) {
+      statements.add(createSetVehicleStatement(field, initialVehicle, (initialVehicle == null)));
+    }
+    if (initialTransform != null) {
+      if (javaType.isAssignableTo(STurnable.class)) {
+        try {
+          statements.add(createOrientationStatement(isThis, field, EmployeesOnly.createOrientation(initialTransform.orientation), 0));
+        } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+          throw new RuntimeException(ccee);
+        }
+      }
+      if (javaType.isAssignableTo(SMovableTurnable.class)) {
+        try {
+          statements.add(createPositionStatement(isThis, field, EmployeesOnly.createPosition(initialTransform.translation), 0));
 
-					//todo
-					if( ( initialTransform.translation.y == 0.0 ) && shouldPlaceModelAboveGround( abstractType ) ) {
-						//place above ground
-						Expression targetExpression = new NullLiteral();
-						ExpressionStatement placeStatement = createStatement(
-								SMovableTurnable.class,
-								"place",
-								new Class[] { SpatialRelation.class, SThing.class, Place.Detail[].class },
-								SetUpMethodGenerator.createInstanceExpression( isThis, field ),
-								getExpressionCreator().createExpression( SpatialRelation.ABOVE ), targetExpression );
-						MethodInvocation methodInvocation = (MethodInvocation)placeStatement.expression.getValue();
-						JavaMethod durationKeyMethod = JavaMethod.getInstance( DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
-						methodInvocation.keyedArguments.add( new JavaKeyedArgument( methodInvocation.method.getValue().getKeyedParameter(), durationKeyMethod, new DoubleLiteral( 0.0 ) ) );
-						statements.add( placeStatement );
-					}
+          //todo
+          if ((initialTransform.translation.y == 0.0) && shouldPlaceModelAboveGround(abstractType)) {
+            //place above ground
+            Expression targetExpression = new NullLiteral();
+            ExpressionStatement placeStatement = createStatement(SMovableTurnable.class, "place", new Class[] {SpatialRelation.class, SThing.class, Place.Detail[].class}, SetUpMethodGenerator.createInstanceExpression(isThis, field), getExpressionCreator().createExpression(SpatialRelation.ABOVE), targetExpression);
+            MethodInvocation methodInvocation = (MethodInvocation) placeStatement.expression.getValue();
+            JavaMethod durationKeyMethod = JavaMethod.getInstance(DurationAnimationStyleArgumentFactory.class, "duration", Number.class);
+            methodInvocation.keyedArguments.add(new JavaKeyedArgument(methodInvocation.method.getValue().getKeyedParameter(), durationKeyMethod, new DoubleLiteral(0.0)));
+            statements.add(placeStatement);
+          }
 
-				} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
-					throw new RuntimeException( ccee );
-				}
-			}
-		}
-		return ArrayUtilities.createArray( statements, Statement.class );
-	}
+        } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+          throw new RuntimeException(ccee);
+        }
+      }
+    }
+    return ArrayUtilities.createArray(statements, Statement.class);
+  }
 
-	private static SJointedModel getJointedModelForJointImp( JointImp jointImp ) {
-		if( jointImp.getVehicle() instanceof JointedModelImp<?, ?> ) {
-			JointedModelImp<?, ?> parent = (JointedModelImp<?, ?>)jointImp.getVehicle();
-			return parent.getAbstraction();
-		} else if( jointImp.getVehicle() instanceof JointImp ) {
-			return getJointedModelForJointImp( (JointImp)jointImp.getVehicle() );
-		}
-		return null;
-	}
+  private static SJointedModel getJointedModelForJointImp(JointImp jointImp) {
+    if (jointImp.getVehicle() instanceof JointedModelImp<?, ?>) {
+      JointedModelImp<?, ?> parent = (JointedModelImp<?, ?>) jointImp.getVehicle();
+      return parent.getAbstraction();
+    } else if (jointImp.getVehicle() instanceof JointImp) {
+      return getJointedModelForJointImp((JointImp) jointImp.getVehicle());
+    }
+    return null;
+  }
 
-	public static Expression getGetterExpressionForJoint( SJoint joint, UserInstance sceneInstance ) {
-		AbstractMethod getJointMethod = getJointGetterForJoint( joint, sceneInstance );
-		JointImp jointImp = EmployeesOnly.getImplementation( joint );
-		SJointedModel jointedModel = getJointedModelForJointImp( jointImp );
-		AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( jointedModel );
-		assert getJointMethod != null;
-		return new MethodInvocation( new FieldAccess(entityField), getJointMethod );
-	}
+  public static Expression getGetterExpressionForJoint(SJoint joint, UserInstance sceneInstance) {
+    AbstractMethod getJointMethod = getJointGetterForJoint(joint, sceneInstance);
+    JointImp jointImp = EmployeesOnly.getImplementation(joint);
+    SJointedModel jointedModel = getJointedModelForJointImp(jointImp);
+    AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(jointedModel);
+    assert getJointMethod != null;
+    return new MethodInvocation(new FieldAccess(entityField), getJointMethod);
+  }
 
-	private static AbstractMethod getJointGetterForJoint( SJoint joint, UserInstance sceneInstance ) {
-		JointImp jointImp = EmployeesOnly.getImplementation( joint );
-		SJointedModel jointedModel = getJointedModelForJointImp( jointImp );
-		AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( jointedModel );
-		AbstractMethod getJointMethod = null;
-		AbstractType<?, ?, ?> fieldType = entityField.getValueType();
-		List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances( fieldType );
-		//Loop through all the get<joint>() methods and find the one that resolves to the joint we're seeing
-		for( JointedTypeInfo jti : jointedTypeInfos ) {
-			for( AbstractMethod jointGetter : jti.getJointGetters() ) {
-				Object[] values = sceneInstance.getVM().ENTRY_POINT_evaluate(
-						sceneInstance,
-						new Expression[] { new MethodInvocation( new FieldAccess(entityField), jointGetter ) } );
-				for( Object o : values ) {
-					if( o instanceof SJoint ) {
-						JointImp gottenJoint = EmployeesOnly.getImplementation( (SJoint)o );
-						if( gottenJoint.getJointId() == jointImp.getJointId() ) {
-							getJointMethod = jointGetter;
-							break;
-						}
-					}
-				}
-			}
-			if( getJointMethod != null ) {
-				break;
-			}
-		}
-		assert getJointMethod != null;
-		return getJointMethod;
-	}
+  private static AbstractMethod getJointGetterForJoint(SJoint joint, UserInstance sceneInstance) {
+    JointImp jointImp = EmployeesOnly.getImplementation(joint);
+    SJointedModel jointedModel = getJointedModelForJointImp(jointImp);
+    AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(jointedModel);
+    AbstractMethod getJointMethod = null;
+    AbstractType<?, ?, ?> fieldType = entityField.getValueType();
+    List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances(fieldType);
+    //Loop through all the get<joint>() methods and find the one that resolves to the joint we're seeing
+    for (JointedTypeInfo jti : jointedTypeInfos) {
+      for (AbstractMethod jointGetter : jti.getJointGetters()) {
+        Object[] values = sceneInstance.getVM().ENTRY_POINT_evaluate(sceneInstance, new Expression[] {new MethodInvocation(new FieldAccess(entityField), jointGetter)});
+        for (Object o : values) {
+          if (o instanceof SJoint) {
+            JointImp gottenJoint = EmployeesOnly.getImplementation((SJoint) o);
+            if (gottenJoint.getJointId() == jointImp.getJointId()) {
+              getJointMethod = jointGetter;
+              break;
+            }
+          }
+        }
+      }
+      if (getJointMethod != null) {
+        break;
+      }
+    }
+    assert getJointMethod != null;
+    return getJointMethod;
+  }
 
-	public static Statement[] getSetupStatementsForInstance( boolean isThis, Object instance, UserInstance sceneInstance, boolean captureFullState ) {
-		List<Statement> statements = Lists.newLinkedList();
+  public static Statement[] getSetupStatementsForInstance(boolean isThis, Object instance, UserInstance sceneInstance, boolean captureFullState) {
+    List<Statement> statements = Lists.newLinkedList();
 
-		if( instance != null ) {
-			AbstractField field = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( instance );
-			if( ( field != null ) || isThis ) {
-				JavaType javaType = JavaType.getInstance( instance.getClass() );
-				for( JavaMethod getter : AstUtilities.getPersistentPropertyGetters( javaType ) ) {
-					Method gttr = getter.getMethodReflectionProxy().getReification();
-					Object value = ReflectionUtilities.invoke( instance, gttr );
-					JavaMethod setter = AstUtilities.getSetterForGetter( getter, javaType );
-					if( setter != null ) {
-						try {
-							Expression expression;
-							if( value instanceof SThing ) {
-								SThing entity = (SThing)value;
-								if( entity instanceof SJoint ) {
-									SJoint joint = (SJoint)entity;
-									expression = getGetterExpressionForJoint( joint, sceneInstance );
-								} else {
-									boolean isEntityScene = ( entity instanceof SScene );
-									AbstractField sceneField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( entity );
-									expression = SetUpMethodGenerator.createInstanceExpression( isEntityScene, sceneField );
-								}
-							} else {
-								expression = getExpressionCreator().createExpression( value );
-							}
-							statements.add(
-									AstUtilities.createMethodInvocationStatement(
-											SetUpMethodGenerator.createInstanceExpression( isThis, field ),
-											setter,
-											expression ) );
-						} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
-							Logger.severe( "cannot create expression for: " + value );
-						}
-					} else {
-						Logger.warning( "setter is null for: " + getter );
-					}
-				}
-				if( instance instanceof STurnable ) {
-					STurnable turnable = (STurnable)instance;
-					Orientation orientation = turnable.getOrientationRelativeToVehicle();
-					try {
-						statements.add(
-								createOrientationStatement( isThis, field, orientation ) );
-					} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
-						throw new RuntimeException( ccee );
-					}
-					if( turnable instanceof SMovableTurnable ) {
-						SMovableTurnable movableTurnable = (SMovableTurnable)turnable;
-						Position position = movableTurnable.getPositionRelativeToVehicle();
-						try {
-							statements.add(
-									createPositionStatement( isThis, field, position ) );
-						} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
-							throw new RuntimeException( ccee );
-						}
-					}
-				}
-				if( instance instanceof Resizable ) {
-					Resizable resizable = (Resizable)instance;
-					if (instance instanceof SBox) {
-						try {
-							statements.add(createStatement(Resizable.class, "setSize",
-											new Class<?>[] { Size.class, SetSize.Detail[].class },
-											createInstanceExpression(isThis, field),
-											getExpressionCreator().createExpression(resizable.getSize())));
-						} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
-							throw new RuntimeException( ccee );
-						}
-					} else {
-						Scale scale = resizable.getScale();
-						if (!Scale.IDENTITY.equals(scale)) {
-							try {
-								statements.add(createStatement(Resizable.class, "setScale",
-												new Class<?>[] { Scale.class, SetScale.Detail[].class },
-												createInstanceExpression(isThis, field),
-												getExpressionCreator().createExpression(scale)));
-							} catch (ExpressionCreator.CannotCreateExpressionException ccee) {
-								throw new RuntimeException(ccee);
-							}
-						}
-					}
-				}
-				if( instance instanceof SJointedModel ) {
-					JointedModelImp<?, ?> jointedModelImp = EmployeesOnly.getImplementation( (SJointedModel)instance );
-					List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances( field.getValueType() );
-					for( JointedTypeInfo jointInfo : jointedTypeInfos ) {
-						List<Expression> jointAccessExpressions = Lists.newLinkedList();
-						for( AbstractMethod jointGetter : jointInfo.getJointGetters() ) {
-							Expression getJointExpression = new MethodInvocation( new FieldAccess(field), jointGetter );
-							jointAccessExpressions.add( getJointExpression );
-						}
-						for( JointMethodArrayAccessInfo jointArrayGetter : jointInfo.getJointArrayAccessGetters() ) {
-							Expression getJointExpression = new MethodInvocation( new FieldAccess(field), jointArrayGetter.getMethod() );
-							Expression arrayAccessExpression = new ArrayAccess( jointArrayGetter.getMethod().getReturnType(), getJointExpression, new IntegerLiteral( jointArrayGetter.getIndex() ) );
-							jointAccessExpressions.add( arrayAccessExpression );
-						}
-						for( Expression getJointExpression : jointAccessExpressions ) {
-							Object[] values;
-							try {
-								values = sceneInstance.getVM().ENTRY_POINT_evaluate(
-										sceneInstance,
-										new Expression[] { getJointExpression } );
-							} catch( Throwable t ) {
-								Logger.errln( "set up method generator failed:", getJointExpression );
-								values = new Object[ 0 ];
-							}
-							for( Object o : values ) {
-								if( o instanceof SJoint ) {
-									SJoint jointEntity = (SJoint)o;
-									JointImp gottenJoint = EmployeesOnly.getImplementation( jointEntity );
-									AffineMatrix4x4 currentTransform = gottenJoint.getLocalTransformation();
-									AffineMatrix4x4 originalTransform = gottenJoint.getOriginalTransformation();
-									if( captureFullState || !currentTransform.orientation.isWithinReasonableEpsilonOf( originalTransform.orientation ) ) {
-										try {
-											Orientation orientation = jointEntity.getOrientationRelativeToVehicle();
-											ExpressionStatement orientationStatement = createStatement(
-													STurnable.class, "setOrientationRelativeToVehicle", new Class<?>[] { Orientation.class, SetOrientationRelativeToVehicle.Detail[].class },
-													getJointExpression, getExpressionCreator().createExpression( orientation ) );
-											statements.add( orientationStatement );
-										} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
-											throw new RuntimeException( ccee );
-										}
-									}
-									if( captureFullState || !currentTransform.translation.isWithinReasonableEpsilonOf( originalTransform.translation ) ) {
-										try {
-											Position position = jointEntity.getPositionRelativeToVehicle();
-											ExpressionStatement positionStatement = createStatement(
-													SMovableTurnable.class, "setPositionRelativeToVehicle", new Class<?>[] { Position.class, SetPositionRelativeToVehicle.Detail[].class },
-													getJointExpression, getExpressionCreator().createExpression( position ) );
-											statements.add( positionStatement );
-										} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
-											throw new RuntimeException( ccee );
-										}
-									}
+    if (instance != null) {
+      AbstractField field = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(instance);
+      if ((field != null) || isThis) {
+        JavaType javaType = JavaType.getInstance(instance.getClass());
+        for (JavaMethod getter : AstUtilities.getPersistentPropertyGetters(javaType)) {
+          Method gttr = getter.getMethodReflectionProxy().getReification();
+          Object value = ReflectionUtilities.invoke(instance, gttr);
+          JavaMethod setter = AstUtilities.getSetterForGetter(getter, javaType);
+          if (setter != null) {
+            try {
+              Expression expression;
+              if (value instanceof SThing) {
+                SThing entity = (SThing) value;
+                if (entity instanceof SJoint) {
+                  SJoint joint = (SJoint) entity;
+                  expression = getGetterExpressionForJoint(joint, sceneInstance);
+                } else {
+                  boolean isEntityScene = (entity instanceof SScene);
+                  AbstractField sceneField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(entity);
+                  expression = SetUpMethodGenerator.createInstanceExpression(isEntityScene, sceneField);
+                }
+              } else {
+                expression = getExpressionCreator().createExpression(value);
+              }
+              statements.add(AstUtilities.createMethodInvocationStatement(SetUpMethodGenerator.createInstanceExpression(isThis, field), setter, expression));
+            } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+              Logger.severe("cannot create expression for: " + value);
+            }
+          } else {
+            Logger.warning("setter is null for: " + getter);
+          }
+        }
+        if (instance instanceof STurnable) {
+          STurnable turnable = (STurnable) instance;
+          Orientation orientation = turnable.getOrientationRelativeToVehicle();
+          try {
+            statements.add(createOrientationStatement(isThis, field, orientation));
+          } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+            throw new RuntimeException(ccee);
+          }
+          if (turnable instanceof SMovableTurnable) {
+            SMovableTurnable movableTurnable = (SMovableTurnable) turnable;
+            Position position = movableTurnable.getPositionRelativeToVehicle();
+            try {
+              statements.add(createPositionStatement(isThis, field, position));
+            } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+              throw new RuntimeException(ccee);
+            }
+          }
+        }
+        if (instance instanceof Resizable) {
+          Resizable resizable = (Resizable) instance;
+          if (instance instanceof SBox) {
+            try {
+              statements.add(createStatement(Resizable.class, "setSize", new Class<?>[] {Size.class, SetSize.Detail[].class}, createInstanceExpression(isThis, field), getExpressionCreator().createExpression(resizable.getSize())));
+            } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+              throw new RuntimeException(ccee);
+            }
+          } else {
+            Scale scale = resizable.getScale();
+            if (!Scale.IDENTITY.equals(scale)) {
+              try {
+                statements.add(createStatement(Resizable.class, "setScale", new Class<?>[] {Scale.class, SetScale.Detail[].class}, createInstanceExpression(isThis, field), getExpressionCreator().createExpression(scale)));
+              } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+                throw new RuntimeException(ccee);
+              }
+            }
+          }
+        }
+        if (instance instanceof SJointedModel) {
+          JointedModelImp<?, ?> jointedModelImp = EmployeesOnly.getImplementation((SJointedModel) instance);
+          List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances(field.getValueType());
+          for (JointedTypeInfo jointInfo : jointedTypeInfos) {
+            List<Expression> jointAccessExpressions = Lists.newLinkedList();
+            for (AbstractMethod jointGetter : jointInfo.getJointGetters()) {
+              Expression getJointExpression = new MethodInvocation(new FieldAccess(field), jointGetter);
+              jointAccessExpressions.add(getJointExpression);
+            }
+            for (JointMethodArrayAccessInfo jointArrayGetter : jointInfo.getJointArrayAccessGetters()) {
+              Expression getJointExpression = new MethodInvocation(new FieldAccess(field), jointArrayGetter.getMethod());
+              Expression arrayAccessExpression = new ArrayAccess(jointArrayGetter.getMethod().getReturnType(), getJointExpression, new IntegerLiteral(jointArrayGetter.getIndex()));
+              jointAccessExpressions.add(arrayAccessExpression);
+            }
+            for (Expression getJointExpression : jointAccessExpressions) {
+              Object[] values;
+              try {
+                values = sceneInstance.getVM().ENTRY_POINT_evaluate(sceneInstance, new Expression[] {getJointExpression});
+              } catch (Throwable t) {
+                Logger.errln("set up method generator failed:", getJointExpression);
+                values = new Object[0];
+              }
+              for (Object o : values) {
+                if (o instanceof SJoint) {
+                  SJoint jointEntity = (SJoint) o;
+                  JointImp gottenJoint = EmployeesOnly.getImplementation(jointEntity);
+                  AffineMatrix4x4 currentTransform = gottenJoint.getLocalTransformation();
+                  AffineMatrix4x4 originalTransform = gottenJoint.getOriginalTransformation();
+                  if (captureFullState || !currentTransform.orientation.isWithinReasonableEpsilonOf(originalTransform.orientation)) {
+                    try {
+                      Orientation orientation = jointEntity.getOrientationRelativeToVehicle();
+                      ExpressionStatement orientationStatement = createStatement(STurnable.class, "setOrientationRelativeToVehicle", new Class<?>[] {Orientation.class, SetOrientationRelativeToVehicle.Detail[].class}, getJointExpression, getExpressionCreator().createExpression(orientation));
+                      statements.add(orientationStatement);
+                    } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+                      throw new RuntimeException(ccee);
+                    }
+                  }
+                  if (captureFullState || !currentTransform.translation.isWithinReasonableEpsilonOf(originalTransform.translation)) {
+                    try {
+                      Position position = jointEntity.getPositionRelativeToVehicle();
+                      ExpressionStatement positionStatement = createStatement(SMovableTurnable.class, "setPositionRelativeToVehicle", new Class<?>[] {Position.class, SetPositionRelativeToVehicle.Detail[].class}, getJointExpression, getExpressionCreator().createExpression(position));
+                      statements.add(positionStatement);
+                    } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+                      throw new RuntimeException(ccee);
+                    }
+                  }
 
-								}
-							}
-						}
-					}
-				}
+                }
+              }
+            }
+          }
+        }
 
-				if( instance instanceof SMarker ) {
-					SMarker marker = (SMarker)instance;
-					Statement colorIdStatement = createSetColorIdStatement( field, marker.getColorId() );
-					if( colorIdStatement != null ) {
-						statements.add( colorIdStatement );
-					}
-				}
-			}
-		}
+        if (instance instanceof SMarker) {
+          SMarker marker = (SMarker) instance;
+          Statement colorIdStatement = createSetColorIdStatement(field, marker.getColorId());
+          if (colorIdStatement != null) {
+            statements.add(colorIdStatement);
+          }
+        }
+      }
+    }
 
-		return ArrayUtilities.createArray( statements, Statement.class );
-	}
+    return ArrayUtilities.createArray(statements, Statement.class);
+  }
 
-	public static void fillInAutomaticSetUpMethod( StatementListProperty bodyStatementsProperty, boolean isThis, AbstractField field, Object instance, UserInstance sceneInstance,
-			boolean getFullState ) {
-		if( instance != null ) {
-			if( instance instanceof SThing ) {
-				SThing entity = (SThing)instance;
-				entity.setName( field.getName() );
-			}
+  public static void fillInAutomaticSetUpMethod(StatementListProperty bodyStatementsProperty, boolean isThis, AbstractField field, Object instance, UserInstance sceneInstance, boolean getFullState) {
+    if (instance != null) {
+      if (instance instanceof SThing) {
+        SThing entity = (SThing) instance;
+        entity.setName(field.getName());
+      }
 
-			Statement[] setupStatements = getSetupStatementsForInstance( isThis, instance, sceneInstance, getFullState );
-			bodyStatementsProperty.add( setupStatements );
-		}
-	}
+      Statement[] setupStatements = getSetupStatementsForInstance(isThis, instance, sceneInstance, getFullState);
+      bodyStatementsProperty.add(setupStatements);
+    }
+  }
 }

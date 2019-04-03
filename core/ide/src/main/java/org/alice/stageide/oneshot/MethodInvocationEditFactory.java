@@ -50,5 +50,5 @@ import org.lgna.croquet.history.UserActivity;
  * @author Dennis Cosgrove
  */
 public interface MethodInvocationEditFactory {
-	Edit createEdit( UserActivity userActivity );
+  Edit createEdit(UserActivity userActivity);
 }

@@ -56,28 +56,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class WhileLoopInsertCascade extends PotentiallyEnvelopingStatementInsertCascade {
-	private static Map<BlockStatementIndexPair, WhileLoopInsertCascade> mapEnveloping = Maps.newHashMap();
-	private static Map<BlockStatementIndexPair, WhileLoopInsertCascade> mapInsert = Maps.newHashMap();
+  private static Map<BlockStatementIndexPair, WhileLoopInsertCascade> mapEnveloping = Maps.newHashMap();
+  private static Map<BlockStatementIndexPair, WhileLoopInsertCascade> mapInsert = Maps.newHashMap();
 
-	public static synchronized WhileLoopInsertCascade getInstance( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		Map<BlockStatementIndexPair, WhileLoopInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
-		assert blockStatementIndexPair != null;
-		WhileLoopInsertCascade rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new WhileLoopInsertCascade( blockStatementIndexPair, isEnveloping );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
-	}
+  public static synchronized WhileLoopInsertCascade getInstance(BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    Map<BlockStatementIndexPair, WhileLoopInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
+    assert blockStatementIndexPair != null;
+    WhileLoopInsertCascade rv = map.get(blockStatementIndexPair);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new WhileLoopInsertCascade(blockStatementIndexPair, isEnveloping);
+      map.put(blockStatementIndexPair, rv);
+    }
+    return rv;
+  }
 
-	private WhileLoopInsertCascade( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( UUID.fromString( "e23920c4-97fa-47e8-9307-24153e3d56a6" ), blockStatementIndexPair, isEnveloping, ConditionBlank.getInstance() );
-	}
+  private WhileLoopInsertCascade(BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    super(UUID.fromString("e23920c4-97fa-47e8-9307-24153e3d56a6"), blockStatementIndexPair, isEnveloping, ConditionBlank.getInstance());
+  }
 
-	@Override
-	protected final Statement createStatement( Expression... expressions ) {
-		return AstUtilities.createWhileLoop( expressions[ 0 ] );
-	}
+  @Override
+  protected final Statement createStatement(Expression... expressions) {
+    return AstUtilities.createWhileLoop(expressions[0]);
+  }
 }

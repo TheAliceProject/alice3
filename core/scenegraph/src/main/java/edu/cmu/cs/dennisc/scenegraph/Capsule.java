@@ -51,59 +51,58 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
  * @author Dennis Cosgrove
  */
 public class Capsule extends Shape {
-	public static enum Axis {
-		X,
-		Y,
-		Z
-	}
+  public static enum Axis {
+    X, Y, Z
+  }
 
-	@Override
-	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
-		double major = ( this.distanceBetweenSphereCenters.getValue() / 2 ) + this.radius.getValue();
-		double minor = this.radius.getValue();
-		Axis axis = this.axis.getValue();
-		if( axis == Axis.X ) {
-			boundingBox.setMinimum( -major, -minor, -minor );
-			boundingBox.setMinimum( +major, +minor, +minor );
-		} else if( axis == Axis.Y ) {
-			boundingBox.setMinimum( -minor, -major, -minor );
-			boundingBox.setMinimum( +minor, +major, +minor );
-		} else if( axis == Axis.Z ) {
-			boundingBox.setMinimum( -minor, -minor, -major );
-			boundingBox.setMinimum( +minor, +minor, +major );
-		} else {
-			boundingBox.setNaN();
-		}
-	}
+  @Override
+  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+    double major = (this.distanceBetweenSphereCenters.getValue() / 2) + this.radius.getValue();
+    double minor = this.radius.getValue();
+    Axis axis = this.axis.getValue();
+    if (axis == Axis.X) {
+      boundingBox.setMinimum(-major, -minor, -minor);
+      boundingBox.setMinimum(+major, +minor, +minor);
+    } else if (axis == Axis.Y) {
+      boundingBox.setMinimum(-minor, -major, -minor);
+      boundingBox.setMinimum(+minor, +major, +minor);
+    } else if (axis == Axis.Z) {
+      boundingBox.setMinimum(-minor, -minor, -major);
+      boundingBox.setMinimum(+minor, +minor, +major);
+    } else {
+      boundingBox.setNaN();
+    }
+  }
 
-	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		boundingSphere.center.set( 0, 0, 0 );
-		boundingSphere.radius = this.distanceBetweenSphereCenters.getValue() + ( this.radius.getValue() * 2 );
-	}
+  @Override
+  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
+    boundingSphere.center.set(0, 0, 0);
+    boundingSphere.radius = this.distanceBetweenSphereCenters.getValue() + (this.radius.getValue() * 2);
+  }
 
-	public final BoundDoubleProperty distanceBetweenSphereCenters = new BoundDoubleProperty( this, 1.0 ) {
-		@Override
-		public void setValue( Double value ) {
-			assert value >= 0.0;
-			super.setValue( value );
-		}
-	};
-	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 1.0 ) {
-		@Override
-		public void setValue( Double value ) {
-			assert value >= 0.0;
-			super.setValue( value );
-		}
-	};
-	public final InstanceProperty<Axis> axis = new InstanceProperty<Axis>( this, Axis.Y ) {
-		@Override
-		public void setValue( Axis value ) {
-			if( Objects.notEquals( value, this.getValue() ) ) {
-				Capsule.this.markBoundsDirty();
-				super.setValue( value );
-				Capsule.this.fireBoundChanged();
-			}
-		};
-	};
+  public final BoundDoubleProperty distanceBetweenSphereCenters = new BoundDoubleProperty(this, 1.0) {
+    @Override
+    public void setValue(Double value) {
+      assert value >= 0.0;
+      super.setValue(value);
+    }
+  };
+  public final BoundDoubleProperty radius = new BoundDoubleProperty(this, 1.0) {
+    @Override
+    public void setValue(Double value) {
+      assert value >= 0.0;
+      super.setValue(value);
+    }
+  };
+  public final InstanceProperty<Axis> axis = new InstanceProperty<Axis>(this, Axis.Y) {
+    @Override
+    public void setValue(Axis value) {
+      if (Objects.notEquals(value, this.getValue())) {
+        Capsule.this.markBoundsDirty();
+        super.setValue(value);
+        Capsule.this.fireBoundChanged();
+      }
+    }
+
+  };
 }

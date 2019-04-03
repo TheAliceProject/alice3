@@ -55,39 +55,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ReplaceOperatorInPreviousConditionalExpressionFillIn extends PreviousExpressionBasedFillInWithoutBlanks<ConditionalInfixExpression> {
-	private static Map<ConditionalInfixExpression.Operator, ReplaceOperatorInPreviousConditionalExpressionFillIn> map = Maps.newHashMap();
+  private static Map<ConditionalInfixExpression.Operator, ReplaceOperatorInPreviousConditionalExpressionFillIn> map = Maps.newHashMap();
 
-	public static ReplaceOperatorInPreviousConditionalExpressionFillIn getInstance( ConditionalInfixExpression.Operator operator ) {
-		synchronized( map ) {
-			ReplaceOperatorInPreviousConditionalExpressionFillIn rv = map.get( operator );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ReplaceOperatorInPreviousConditionalExpressionFillIn( operator );
-				map.put( operator, rv );
-			}
-			return rv;
-		}
-	}
+  public static ReplaceOperatorInPreviousConditionalExpressionFillIn getInstance(ConditionalInfixExpression.Operator operator) {
+    synchronized (map) {
+      ReplaceOperatorInPreviousConditionalExpressionFillIn rv = map.get(operator);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ReplaceOperatorInPreviousConditionalExpressionFillIn(operator);
+        map.put(operator, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final ConditionalInfixExpression.Operator operator;
+  private final ConditionalInfixExpression.Operator operator;
 
-	private ReplaceOperatorInPreviousConditionalExpressionFillIn( ConditionalInfixExpression.Operator operator ) {
-		super( UUID.fromString( "92c952b4-cb89-4cb5-9e6e-ff185c1dda41" ) );
-		this.operator = operator;
-	}
+  private ReplaceOperatorInPreviousConditionalExpressionFillIn(ConditionalInfixExpression.Operator operator) {
+    super(UUID.fromString("92c952b4-cb89-4cb5-9e6e-ff185c1dda41"));
+    this.operator = operator;
+  }
 
-	//	@Override
-	//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.ConditionalInfixExpression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
-	//		return previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
-	//	}
-	@Override
-	protected ConditionalInfixExpression createValue( Expression previousExpression ) {
-		assert previousExpression instanceof ConditionalInfixExpression;
-		ConditionalInfixExpression previousConditional = (ConditionalInfixExpression)previousExpression;
-		return new ConditionalInfixExpression(
-				previousConditional.leftOperand.getValue(),
-				this.operator,
-				previousConditional.rightOperand.getValue() );
-	}
+  //  @Override
+  //  protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.ConditionalInfixExpression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
+  //    return previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
+  //  }
+  @Override
+  protected ConditionalInfixExpression createValue(Expression previousExpression) {
+    assert previousExpression instanceof ConditionalInfixExpression;
+    ConditionalInfixExpression previousConditional = (ConditionalInfixExpression) previousExpression;
+    return new ConditionalInfixExpression(previousConditional.leftOperand.getValue(), this.operator, previousConditional.rightOperand.getValue());
+  }
 }

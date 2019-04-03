@@ -61,43 +61,43 @@ import java.util.TreeSet;
  * @author Dennis Cosgrove
  */
 public class ShowAllSystemPropertiesView extends BorderPanel {
-	public ShowAllSystemPropertiesView( ShowAllSystemPropertiesComposite composite ) {
-		super( composite );
-		Properties properties = System.getProperties();
-		Enumeration<String> nameEnum = (Enumeration<String>)properties.propertyNames();
-		SortedSet<String> names = new TreeSet<String>();
-		int max = 0;
-		while( nameEnum.hasMoreElements() ) {
-			String name = nameEnum.nextElement();
-			names.add( name );
-			max = Math.max( max, name.length() );
-		}
-		String formatString = "%-" + ( max + 1 ) + "s";
-		StringBuffer sb = new StringBuffer();
-		for( String name : names ) {
-			sb.append( String.format( formatString, name ) );
-			sb.append( ": " );
-			sb.append( System.getProperty( name ) );
-			sb.append( "\n" );
-		}
+  public ShowAllSystemPropertiesView(ShowAllSystemPropertiesComposite composite) {
+    super(composite);
+    Properties properties = System.getProperties();
+    Enumeration<String> nameEnum = (Enumeration<String>) properties.propertyNames();
+    SortedSet<String> names = new TreeSet<String>();
+    int max = 0;
+    while (nameEnum.hasMoreElements()) {
+      String name = nameEnum.nextElement();
+      names.add(name);
+      max = Math.max(max, name.length());
+    }
+    String formatString = "%-" + (max + 1) + "s";
+    StringBuffer sb = new StringBuffer();
+    for (String name : names) {
+      sb.append(String.format(formatString, name));
+      sb.append(": ");
+      sb.append(System.getProperty(name));
+      sb.append("\n");
+    }
 
-		JTextArea textArea = new JTextArea( sb.toString() );
-		textArea.setEditable( false );
+    JTextArea textArea = new JTextArea(sb.toString());
+    textArea.setEditable(false);
 
-		final boolean IS_SET_FONT_TO_DERIVED_FONT_WORKING = false;
-		if( IS_SET_FONT_TO_DERIVED_FONT_WORKING ) {
-			FontUtilities.setFontToDerivedFont( textArea, TextFamily.MONOSPACED );
-		} else {
-			Font font = textArea.getFont();
-			textArea.setFont( new Font( "Monospaced", font.getStyle(), font.getSize() ) );
-		}
+    final boolean IS_SET_FONT_TO_DERIVED_FONT_WORKING = false;
+    if (IS_SET_FONT_TO_DERIVED_FONT_WORKING) {
+      FontUtilities.setFontToDerivedFont(textArea, TextFamily.MONOSPACED);
+    } else {
+      Font font = textArea.getFont();
+      textArea.setFont(new Font("Monospaced", font.getStyle(), font.getSize()));
+    }
 
-		JScrollPane scrollPane = new JScrollPane( textArea );
+    JScrollPane scrollPane = new JScrollPane(textArea);
 
-		this.getAwtComponent().add( scrollPane );
+    this.getAwtComponent().add(scrollPane);
 
-		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+    this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-		this.setPreferredSize( DimensionUtilities.createWiderGoldenRatioSizeFromWidth( 640 ) );
-	}
+    this.setPreferredSize(DimensionUtilities.createWiderGoldenRatioSizeFromWidth(640));
+  }
 }

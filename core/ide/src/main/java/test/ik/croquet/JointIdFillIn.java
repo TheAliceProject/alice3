@@ -57,52 +57,52 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class JointIdFillIn extends ImmutableCascadeFillIn<JointId, Void> {
-	private static final Map<JointId, JointIdFillIn> map = Maps.newHashMap();
+  private static final Map<JointId, JointIdFillIn> map = Maps.newHashMap();
 
-	public static synchronized JointIdFillIn getInstance( JointId jointId ) {
-		JointIdFillIn rv = map.get( jointId );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new JointIdFillIn( jointId );
-			map.put( jointId, rv );
-		}
-		return rv;
-	}
+  public static synchronized JointIdFillIn getInstance(JointId jointId) {
+    JointIdFillIn rv = map.get(jointId);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new JointIdFillIn(jointId);
+      map.put(jointId, rv);
+    }
+    return rv;
+  }
 
-	private final JointId jointId;
+  private final JointId jointId;
 
-	private JointIdFillIn( JointId jointId ) {
-		super( UUID.fromString( "1250c3c2-3545-442c-9f5a-d4191d5642ee" ) );
-		this.jointId = jointId;
-	}
+  private JointIdFillIn(JointId jointId) {
+    super(UUID.fromString("1250c3c2-3545-442c-9f5a-d4191d5642ee"));
+    this.jointId = jointId;
+  }
 
-	private static int getDepth( JointId jointId ) {
-		if( jointId != null ) {
-			return getDepth( jointId.getParent() ) + 1;
-		} else {
-			return -1;
-		}
-	}
+  private static int getDepth(JointId jointId) {
+    if (jointId != null) {
+      return getDepth(jointId.getParent()) + 1;
+    } else {
+      return -1;
+    }
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super JointId, Void> node ) {
-		StringBuilder sb = new StringBuilder();
-		final int N = getDepth( jointId );
-		for( int i = 0; i < N; i++ ) {
-			sb.append( "- " );
-		}
-		sb.append( jointId );
-		return new JLabel( sb.toString() );
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super JointId, Void> node) {
+    StringBuilder sb = new StringBuilder();
+    final int N = getDepth(jointId);
+    for (int i = 0; i < N; i++) {
+      sb.append("- ");
+    }
+    sb.append(jointId);
+    return new JLabel(sb.toString());
+  }
 
-	@Override
-	public JointId createValue( ItemNode<? super JointId, Void> node ) {
-		return this.jointId;
-	}
+  @Override
+  public JointId createValue(ItemNode<? super JointId, Void> node) {
+    return this.jointId;
+  }
 
-	@Override
-	public JointId getTransientValue( ItemNode<? super JointId, Void> node ) {
-		return this.jointId;
-	}
+  @Override
+  public JointId getTransientValue(ItemNode<? super JointId, Void> node) {
+    return this.jointId;
+  }
 }

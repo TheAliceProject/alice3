@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultBottomPieceSlinkySkirtBoots implements FemaleAdultBottomPiece {
-	BLACK_GOTH,
-	CHARCOAL_RIPPLE,
-	PURPLE_RIPPLE,
-	TAN_SOLID;
+  BLACK_GOTH, CHARCOAL_RIPPLE, PURPLE_RIPPLE, TAN_SOLID
 
 }

@@ -56,58 +56,58 @@ import org.lgna.project.ast.ArgumentListProperty;
  * @author Dennis Cosgrove
  */
 public abstract class ArgumentListPropertyView<N extends AbstractArgument> extends LineAxisPanel {
-	protected static final String SEPARATOR = ",";
-	private final AstI18nFactory factory;
-	private final ArgumentListProperty<N> argumentListProperty;
-	private ListPropertyListener<N> listPropertyAdapter = new SimplifiedListPropertyAdapter<N>() {
-		@Override
-		protected void changing( ListPropertyEvent<N> e ) {
-		}
+  protected static final String SEPARATOR = ",";
+  private final AstI18nFactory factory;
+  private final ArgumentListProperty<N> argumentListProperty;
+  private ListPropertyListener<N> listPropertyAdapter = new SimplifiedListPropertyAdapter<N>() {
+    @Override
+    protected void changing(ListPropertyEvent<N> e) {
+    }
 
-		@Override
-		protected void changed( ListPropertyEvent<N> e ) {
-			ArgumentListPropertyView.this.refreshLater();
-		}
-	};
+    @Override
+    protected void changed(ListPropertyEvent<N> e) {
+      ArgumentListPropertyView.this.refreshLater();
+    }
+  };
 
-	public ArgumentListPropertyView( AstI18nFactory factory, ArgumentListProperty<N> argumentListProperty ) {
-		this.factory = factory;
-		this.argumentListProperty = argumentListProperty;
-		this.refreshLater();
-	}
+  public ArgumentListPropertyView(AstI18nFactory factory, ArgumentListProperty<N> argumentListProperty) {
+    this.factory = factory;
+    this.argumentListProperty = argumentListProperty;
+    this.refreshLater();
+  }
 
-	public AstI18nFactory getFactory() {
-		return this.factory;
-	}
+  public AstI18nFactory getFactory() {
+    return this.factory;
+  }
 
-	public ArgumentListProperty<N> getArgumentListProperty() {
-		return this.argumentListProperty;
-	}
+  public ArgumentListProperty<N> getArgumentListProperty() {
+    return this.argumentListProperty;
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.argumentListProperty.addListPropertyListener( this.listPropertyAdapter );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.argumentListProperty.addListPropertyListener(this.listPropertyAdapter);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.argumentListProperty.removeListPropertyListener( this.listPropertyAdapter );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.argumentListProperty.removeListPropertyListener(this.listPropertyAdapter);
+    super.handleUndisplayable();
+  }
 
-	protected abstract String getInitialPrefix();
+  protected abstract String getInitialPrefix();
 
-	@Override
-	protected void internalRefresh() {
-		this.forgetAndRemoveAllComponents();
-		String prefix = this.getInitialPrefix();
-		for( N argument : this.argumentListProperty ) {
-			if( prefix != null ) {
-				this.addComponent( new Label( prefix ) );
-			}
-			this.addComponent( this.factory.createArgumentPane( argument, null ) );
-			prefix = SEPARATOR;
-		}
-	}
+  @Override
+  protected void internalRefresh() {
+    this.forgetAndRemoveAllComponents();
+    String prefix = this.getInitialPrefix();
+    for (N argument : this.argumentListProperty) {
+      if (prefix != null) {
+        this.addComponent(new Label(prefix));
+      }
+      this.addComponent(this.factory.createArgumentPane(argument, null));
+      prefix = SEPARATOR;
+    }
+  }
 }

@@ -52,25 +52,25 @@ import org.lgna.story.resources.JointId;
  * @author Dennis Cosgrove
  */
 public enum JointIdCodec implements ItemCodec<JointId> {
-	SINGLETON;
+  SINGLETON;
 
-	@Override
-	public JointId decodeValue( BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException();
-	}
+  @Override
+  public JointId decodeValue(BinaryDecoder binaryDecoder) {
+    throw new RuntimeException();
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, JointId value ) {
-		throw new RuntimeException();
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, JointId value) {
+    throw new RuntimeException();
+  }
 
-	@Override
-	public Class<JointId> getValueClass() {
-		return JointId.class;
-	}
+  @Override
+  public Class<JointId> getValueClass() {
+    return JointId.class;
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, JointId value ) {
-		sb.append( value );
-	}
+  @Override
+  public void appendRepresentation(StringBuilder sb, JointId value) {
+    sb.append(value);
+  }
 }

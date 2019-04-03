@@ -56,19 +56,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SetupSceneToolBarComposite extends IdeToolBar {
-	public SetupSceneToolBarComposite( ProjectDocumentFrame projectDocumentFrame ) {
-		super( UUID.fromString( "c8f85598-a2dc-4b49-bf68-ef374763596f" ) );
-		List<Element> list = Lists.newLinkedList();
-		ToolBarUtilities.appendDocumentSubElements( projectDocumentFrame, list );
-		ToolBarUtilities.appendUndoRedoSubElements( projectDocumentFrame, list );
-		ToolBarUtilities.appendRunSubElements( projectDocumentFrame, list );
-		this.subElements = Collections.unmodifiableList( list );
-	}
+  public SetupSceneToolBarComposite(ProjectDocumentFrame projectDocumentFrame) {
+    super(UUID.fromString("c8f85598-a2dc-4b49-bf68-ef374763596f"));
+    List<Element> list = Lists.newLinkedList();
+    ToolBarUtilities.appendDocumentSubElements(projectDocumentFrame, list);
+    ToolBarUtilities.appendUndoRedoSubElements(projectDocumentFrame, list);
+    ToolBarUtilities.appendRunSubElements(projectDocumentFrame, list);
+    this.subElements = Collections.unmodifiableList(list);
+  }
 
-	@Override
-	public Iterable<? extends Element> getSubElements() {
-		return this.subElements;
-	}
+  @Override
+  public Iterable<? extends Element> getSubElements() {
+    return this.subElements;
+  }
 
-	private final List<? extends Element> subElements;
+  private final List<? extends Element> subElements;
 }

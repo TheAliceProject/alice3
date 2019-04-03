@@ -61,46 +61,46 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ProjectPerspective extends AbstractPerspective {
-	public ProjectPerspective( UUID id, ProjectDocumentFrame projectDocumentFrame, MenuBarComposite menuBar ) {
-		super( id );
-		this.projectDocumentFrame = projectDocumentFrame;
-		this.menuBar = menuBar;
-	}
+  public ProjectPerspective(UUID id, ProjectDocumentFrame projectDocumentFrame, MenuBarComposite menuBar) {
+    super(id);
+    this.projectDocumentFrame = projectDocumentFrame;
+    this.menuBar = menuBar;
+  }
 
-	public ProjectDocumentFrame getProjectDocumentFrame() {
-		return this.projectDocumentFrame;
-	}
+  public ProjectDocumentFrame getProjectDocumentFrame() {
+    return this.projectDocumentFrame;
+  }
 
-	@Override
-	public MenuBarComposite getMenuBarComposite() {
-		return this.menuBar;
-	}
+  @Override
+  public MenuBarComposite getMenuBarComposite() {
+    return this.menuBar;
+  }
 
-	public abstract TrackableShape getRenderWindow();
+  public abstract TrackableShape getRenderWindow();
 
-	public abstract CodePanelWithDropReceptor getCodeDropReceptorInFocus();
+  public abstract CodePanelWithDropReceptor getCodeDropReceptorInFocus();
 
-	protected abstract void addPotentialDropReceptors( List<DropReceptor> out, IdeDragModel dragModel );
+  protected abstract void addPotentialDropReceptors(List<DropReceptor> out, IdeDragModel dragModel);
 
-	public final List<DropReceptor> createListOfPotentialDropReceptors( IdeDragModel dragModel ) {
-		List<DropReceptor> rv = Lists.newLinkedList();
-		this.addPotentialDropReceptors( rv, dragModel );
-		DropReceptor recycleBinDropReceptor = RecycleBin.SINGLETON.getDropReceptor();
-		if( recycleBinDropReceptor.isPotentiallyAcceptingOf( dragModel ) ) {
-			rv.add( recycleBinDropReceptor );
-		}
-		DropReceptor clipboardDropReceptor = Clipboard.SINGLETON.getDropReceptor();
-		if( clipboardDropReceptor.isPotentiallyAcceptingOf( dragModel ) ) {
-			rv.add( clipboardDropReceptor );
-		}
-		return rv;
-	}
+  public final List<DropReceptor> createListOfPotentialDropReceptors(IdeDragModel dragModel) {
+    List<DropReceptor> rv = Lists.newLinkedList();
+    this.addPotentialDropReceptors(rv, dragModel);
+    DropReceptor recycleBinDropReceptor = RecycleBin.SINGLETON.getDropReceptor();
+    if (recycleBinDropReceptor.isPotentiallyAcceptingOf(dragModel)) {
+      rv.add(recycleBinDropReceptor);
+    }
+    DropReceptor clipboardDropReceptor = Clipboard.SINGLETON.getDropReceptor();
+    if (clipboardDropReceptor.isPotentiallyAcceptingOf(dragModel)) {
+      rv.add(clipboardDropReceptor);
+    }
+    return rv;
+  }
 
-	@Override
-	protected String createRepr() {
-		return this.getName();
-	}
+  @Override
+  protected String createRepr() {
+    return this.getName();
+  }
 
-	private final ProjectDocumentFrame projectDocumentFrame;
-	private final MenuBarComposite menuBar;
+  private final ProjectDocumentFrame projectDocumentFrame;
+  private final MenuBarComposite menuBar;
 }

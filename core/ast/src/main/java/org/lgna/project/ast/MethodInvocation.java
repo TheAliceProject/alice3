@@ -49,121 +49,121 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public class MethodInvocation extends Expression implements ArgumentOwner {
-	public MethodInvocation() {
-	}
+  public MethodInvocation() {
+  }
 
-	public MethodInvocation( Expression expression, AbstractMethod method, SimpleArgument... requiredArguments ) {
-		this( expression, method, requiredArguments, null, null );
-	}
+  public MethodInvocation(Expression expression, AbstractMethod method, SimpleArgument... requiredArguments) {
+    this(expression, method, requiredArguments, null, null);
+  }
 
-	public MethodInvocation( Expression expression, AbstractMethod method, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
-		if( expression instanceof NullLiteral ) {
-			//pass
-		} else {
-			AbstractType<?, ?, ?> expressionType = expression.getType();
-			if( expressionType != null ) {
-				AbstractType<?, ?, ?> declaringType = method.getDeclaringType();
-				if( declaringType != null ) {
-					//todo
-					//assert declaringType.isAssignableFrom( expressionType );
-				}
-			}
-		}
-		this.expression.setValue( expression );
-		this.method.setValue( method );
-		this.requiredArguments.add( requiredArguments );
-		if( variableArguments != null ) {
-			this.variableArguments.add( variableArguments );
-		}
-		if( keyedArguments != null ) {
-			this.keyedArguments.add( keyedArguments );
-		}
-	}
+  public MethodInvocation(Expression expression, AbstractMethod method, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments) {
+    if (expression instanceof NullLiteral) {
+      //pass
+    } else {
+      AbstractType<?, ?, ?> expressionType = expression.getType();
+      if (expressionType != null) {
+        AbstractType<?, ?, ?> declaringType = method.getDeclaringType();
+        if (declaringType != null) {
+          //todo
+          //assert declaringType.isAssignableFrom( expressionType );
+        }
+      }
+    }
+    this.expression.setValue(expression);
+    this.method.setValue(method);
+    this.requiredArguments.add(requiredArguments);
+    if (variableArguments != null) {
+      this.variableArguments.add(variableArguments);
+    }
+    if (keyedArguments != null) {
+      this.keyedArguments.add(keyedArguments);
+    }
+  }
 
-	@Override
-	public DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
-		return this.method;
-	}
+  @Override
+  public DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
+    return this.method;
+  }
 
-	@Override
-	public SimpleArgumentListProperty getRequiredArgumentsProperty() {
-		return this.requiredArguments;
-	}
+  @Override
+  public SimpleArgumentListProperty getRequiredArgumentsProperty() {
+    return this.requiredArguments;
+  }
 
-	@Override
-	public SimpleArgumentListProperty getVariableArgumentsProperty() {
-		return this.variableArguments;
-	}
+  @Override
+  public SimpleArgumentListProperty getVariableArgumentsProperty() {
+    return this.variableArguments;
+  }
 
-	@Override
-	public KeyedArgumentListProperty getKeyedArgumentsProperty() {
-		return this.keyedArguments;
-	}
+  @Override
+  public KeyedArgumentListProperty getKeyedArgumentsProperty() {
+    return this.keyedArguments;
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return this.method.getValue().getReturnType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return this.method.getValue().getReturnType();
+  }
 
-	@Override
-	public boolean isValid() {
-		boolean rv;
-		Expression e = expression.getValue();
-		AbstractMethod m = method.getValue();
-		if( ( e != null ) && ( m != null ) ) {
-			if( m.isValid() ) {
-				if( m.isStatic() ) {
-					//todo
-					rv = true;
-				} else {
-					AbstractType<?, ?, ?> declaringType = m.getDeclaringType();
-					AbstractType<?, ?, ?> expressionType = e.getType();
-					if( expressionType instanceof AnonymousUserType ) {
-						//todo
-						rv = true;
-					} else {
-						if( ( declaringType != null ) && ( expressionType != null ) ) {
-							rv = declaringType.isAssignableFrom( expressionType );
-						} else {
-							rv = false;
-						}
-					}
-				}
-			} else {
-				rv = false;
-			}
-		} else {
-			rv = false;
-		}
-		return rv;
-	}
+  @Override
+  public boolean isValid() {
+    boolean rv;
+    Expression e = expression.getValue();
+    AbstractMethod m = method.getValue();
+    if ((e != null) && (m != null)) {
+      if (m.isValid()) {
+        if (m.isStatic()) {
+          //todo
+          rv = true;
+        } else {
+          AbstractType<?, ?, ?> declaringType = m.getDeclaringType();
+          AbstractType<?, ?, ?> expressionType = e.getType();
+          if (expressionType instanceof AnonymousUserType) {
+            //todo
+            rv = true;
+          } else {
+            if ((declaringType != null) && (expressionType != null)) {
+              rv = declaringType.isAssignableFrom(expressionType);
+            } else {
+              rv = false;
+            }
+          }
+        }
+      } else {
+        rv = false;
+      }
+    } else {
+      rv = false;
+    }
+    return rv;
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		safeAppendRepr( localizer, this.method.getValue() );
-		localizer.appendText( "(" );
-		String separator = "";
-		for( AbstractArgument argument : this.requiredArguments ) {
-			localizer.appendText( separator );
-			safeAppendRepr( localizer, argument );
-			separator = ", ";
-		}
-		localizer.appendText( ")" );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    safeAppendRepr(localizer, this.method.getValue());
+    localizer.appendText("(");
+    String separator = "";
+    for (AbstractArgument argument : this.requiredArguments) {
+      localizer.appendText(separator);
+      safeAppendRepr(localizer, argument);
+      separator = ", ";
+    }
+    localizer.appendText(")");
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendMethodCall(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendMethodCall(this);
+  }
 
-	public final ExpressionProperty expression = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return method.getValue().getDeclaringType();
-		}
-	};
-	public final DeclarationProperty<AbstractMethod> method = DeclarationProperty.createReferenceInstance( this );
-	public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
-	public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
-	public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
+  public final ExpressionProperty expression = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      return method.getValue().getDeclaringType();
+    }
+  };
+  public final DeclarationProperty<AbstractMethod> method = DeclarationProperty.createReferenceInstance(this);
+  public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty(this);
+  public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty(this);
+  public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty(this);
 }

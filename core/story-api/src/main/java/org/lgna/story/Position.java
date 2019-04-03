@@ -48,52 +48,54 @@ import edu.cmu.cs.dennisc.math.Point3;
  * @author Dennis Cosgrove
  */
 public final class Position {
-	private final Point3 internal;
+  private final Point3 internal;
 
-	private Position( Point3 internal ) {
-		this.internal = internal;
-	}
+  private Position(Point3 internal) {
+    this.internal = internal;
+  }
 
-	public Position( Number right, Number up, Number backward ) {
-		this( new Point3( right.doubleValue(), up.doubleValue(), backward.doubleValue() ) );
-	}
+  public Position(Number right, Number up, Number backward) {
+    this(new Point3(right.doubleValue(), up.doubleValue(), backward.doubleValue()));
+  }
 
-	/* package-private */static Position createInstance( Point3 internal ) {
-		return internal != null ? new Position( internal ) : null;
-	}
+  /* package-private */
+  static Position createInstance(Point3 internal) {
+    return internal != null ? new Position(internal) : null;
+  }
 
-	/* package-private */Point3 getInternal() {
-		return this.internal;
-	}
+  /* package-private */Point3 getInternal() {
+    return this.internal;
+  }
 
-	/* package-private */static Point3 getInternal( Position vantagePoint ) {
-		return vantagePoint != null ? vantagePoint.internal : null;
-	}
+  /* package-private */
+  static Point3 getInternal(Position vantagePoint) {
+    return vantagePoint != null ? vantagePoint.internal : null;
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( obj instanceof Position ) {
-			Position other = (Position)obj;
-			return this.internal.equals( other.internal );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Position) {
+      Position other = (Position) obj;
+      return this.internal.equals(other.internal);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public int hashCode() {
-		return this.internal.hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return this.internal.hashCode();
+  }
 
-	public Double getRight() {
-		return (double)this.internal.x;
-	}
+  public Double getRight() {
+    return (double) this.internal.x;
+  }
 
-	public Double getUp() {
-		return (double)this.internal.y;
-	}
+  public Double getUp() {
+    return (double) this.internal.y;
+  }
 
-	public Double getBackward() {
-		return (double)this.internal.z;
-	}
+  public Double getBackward() {
+    return (double) this.internal.z;
+  }
 }

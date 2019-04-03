@@ -49,25 +49,25 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
  * @author Dennis Cosgrove
  */
 public class StandIn extends AbstractTransformable {
-	@Override
-	public Composite getVehicle() {
-		return this.vehicle;
-	}
+  @Override
+  public Composite getVehicle() {
+    return this.vehicle;
+  }
 
-	public void setVehicle( Composite vehicle ) {
-		this.vehicle = vehicle;
-	}
+  public void setVehicle(Composite vehicle) {
+    this.vehicle = vehicle;
+  }
 
-	@Override
-	protected AffineMatrix4x4 accessLocalTransformation() {
-		return this.localTransformation;
-	}
+  @Override
+  protected AffineMatrix4x4 accessLocalTransformation() {
+    return this.localTransformation;
+  }
 
-	@Override
-	protected void touchLocalTransformation( AffineMatrix4x4 m ) {
-		this.localTransformation = m;
-	}
+  @Override
+  protected void touchLocalTransformation(AffineMatrix4x4 m) {
+    this.localTransformation = m;
+  }
 
-	private AffineMatrix4x4 localTransformation = AffineMatrix4x4.createIdentity();
-	private Composite vehicle = null;
+  private AffineMatrix4x4 localTransformation = AffineMatrix4x4.createIdentity();
+  private Composite vehicle = null;
 }

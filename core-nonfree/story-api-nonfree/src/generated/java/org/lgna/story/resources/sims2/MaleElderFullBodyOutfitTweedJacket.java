@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleElderFullBodyOutfitTweedJacket implements MaleElderFullBodyOutfit {
-	BROWN,
-	BLUE;
+  BROWN, BLUE
 
 }

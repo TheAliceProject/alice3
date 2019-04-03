@@ -51,19 +51,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PredeterminedMenuModel extends StaticMenuModel {
-	private final StandardMenuItemPrepModel[] models;
+  private final StandardMenuItemPrepModel[] models;
 
-	public PredeterminedMenuModel( UUID individualId, StandardMenuItemPrepModel... models ) {
-		super( individualId );
-		this.models = models;
-	}
+  public PredeterminedMenuModel(UUID individualId, StandardMenuItemPrepModel... models) {
+    super(individualId);
+    this.models = models;
+  }
 
-	public PredeterminedMenuModel( UUID individualId, List<StandardMenuItemPrepModel> models ) {
-		this( individualId, ArrayUtilities.createArray( models, StandardMenuItemPrepModel.class ) );
-	}
+  public PredeterminedMenuModel(UUID individualId, List<StandardMenuItemPrepModel> models) {
+    this(individualId, ArrayUtilities.createArray(models, StandardMenuItemPrepModel.class));
+  }
 
-	@Override
-	protected StandardMenuItemPrepModel[] createModels() {
-		return this.models;
-	}
+  @Override
+  protected StandardMenuItemPrepModel[] createModels() {
+    return this.models;
+  }
 }

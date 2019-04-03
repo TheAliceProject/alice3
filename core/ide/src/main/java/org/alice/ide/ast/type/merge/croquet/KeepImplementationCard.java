@@ -54,18 +54,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class KeepImplementationCard extends SimpleComposite<Panel> {
-	private final DifferentImplementation<?> differentImplementation;
+  private final DifferentImplementation<?> differentImplementation;
 
-	public KeepImplementationCard( DifferentImplementation<?> differentImplementation ) {
-		super( UUID.fromString( "2098ebdf-4d46-4f6e-b25b-0cca95f290d3" ) );
-		this.differentImplementation = differentImplementation;
-	}
+  public KeepImplementationCard(DifferentImplementation<?> differentImplementation) {
+    super(UUID.fromString("2098ebdf-4d46-4f6e-b25b-0cca95f290d3"));
+    this.differentImplementation = differentImplementation;
+  }
 
-	@Override
-	protected Panel createView() {
-		Member member = this.differentImplementation.getProjectHub().getMember();
-		MigPanel rv = new MigPanel( this, "insets 0, fill" );
-		rv.addComponent( MemberViewUtilities.createKeepInsteadOfReplaceMemberLabel( member ) );
-		return rv;
-	}
+  @Override
+  protected Panel createView() {
+    Member member = this.differentImplementation.getProjectHub().getMember();
+    MigPanel rv = new MigPanel(this, "insets 0, fill");
+    rv.addComponent(MemberViewUtilities.createKeepInsteadOfReplaceMemberLabel(member));
+    return rv;
+  }
 }

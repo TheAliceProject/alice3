@@ -52,21 +52,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TemplatesTab extends ListUriTab {
-	public TemplatesTab() {
-		super( UUID.fromString( "e658dbd1-c58b-42ec-9338-49f186aecc71" ) );
-	}
+  public TemplatesTab() {
+    super(UUID.fromString("e658dbd1-c58b-42ec-9338-49f186aecc71"));
+  }
 
-	@Override
-	protected void refresh() {
-	}
+  @Override
+  protected void refresh() {
+  }
 
-	@Override
-	public TemplateUriState getListSelectionState() {
-		return TemplateUriState.getInstance();
-	}
+  @Override
+  public TemplateUriState getListSelectionState() {
+    return TemplateUriState.getInstance();
+  }
 
-	@Override
-	protected TemplatesTabContentPane createView() {
-		return new TemplatesTabContentPane( this );
-	}
+  @Override
+  protected TemplatesTabContentPane createView() {
+    return new TemplatesTabContentPane(this);
+  }
 }

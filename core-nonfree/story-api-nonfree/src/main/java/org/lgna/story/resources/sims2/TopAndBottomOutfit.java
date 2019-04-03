@@ -46,19 +46,19 @@ package org.lgna.story.resources.sims2;
  * @author Dennis Cosgrove
  */
 public abstract class TopAndBottomOutfit<T extends TopPiece, B extends BottomPiece> implements Outfit {
-	private final T topPiece;
-	private final B bottomPiece;
+  private final T topPiece;
+  private final B bottomPiece;
 
-	public TopAndBottomOutfit( T topPiece, B bottomPiece ) {
-		this.topPiece = topPiece;
-		this.bottomPiece = bottomPiece;
-	}
+  public TopAndBottomOutfit(T topPiece, B bottomPiece) {
+    this.topPiece = topPiece;
+    this.bottomPiece = bottomPiece;
+  }
 
-	public T getTopPiece() {
-		return this.topPiece;
-	}
+  public T getTopPiece() {
+    return this.topPiece;
+  }
 
-	public B getBottomPiece() {
-		return this.bottomPiece;
-	}
+  public B getBottomPiece() {
+    return this.bottomPiece;
+  }
 }

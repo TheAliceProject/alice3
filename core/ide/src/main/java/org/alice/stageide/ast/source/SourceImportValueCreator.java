@@ -58,21 +58,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class SourceImportValueCreator<S, R extends Resource> extends ImportValueCreator<InstanceCreation, R> {
-	private final Class<S> sourceCls;
-	private final Class<R> resourceCls;
+  private final Class<S> sourceCls;
+  private final Class<R> resourceCls;
 
-	public SourceImportValueCreator( UUID migrationId, Importer<R> importer, Class<S> sourceCls, Class<R> resourceCls ) {
-		super( migrationId, importer );
-		this.sourceCls = sourceCls;
-		this.resourceCls = resourceCls;
-	}
+  public SourceImportValueCreator(UUID migrationId, Importer<R> importer, Class<S> sourceCls, Class<R> resourceCls) {
+    super(migrationId, importer);
+    this.sourceCls = sourceCls;
+    this.resourceCls = resourceCls;
+  }
 
-	@Override
-	protected InstanceCreation createValueFromImportedValue( R importedValue ) {
-		ResourceExpression resourceExpression = new ResourceExpression( this.resourceCls, importedValue );
-		JavaConstructor constructor = JavaConstructor.getInstance( this.sourceCls, this.resourceCls );
-		AbstractParameter parameter0 = constructor.getRequiredParameters().get( 0 );
-		SimpleArgument argument0 = new SimpleArgument( parameter0, resourceExpression );
-		return new InstanceCreation( constructor, argument0 );
-	}
+  @Override
+  protected InstanceCreation createValueFromImportedValue(R importedValue) {
+    ResourceExpression resourceExpression = new ResourceExpression(this.resourceCls, importedValue);
+    JavaConstructor constructor = JavaConstructor.getInstance(this.sourceCls, this.resourceCls);
+    AbstractParameter parameter0 = constructor.getRequiredParameters().get(0);
+    SimpleArgument argument0 = new SimpleArgument(parameter0, resourceExpression);
+    return new InstanceCreation(constructor, argument0);
+  }
 }

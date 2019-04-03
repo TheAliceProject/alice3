@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  *
  */
 public class SetFloorPaint extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = SetFloorPaint.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = SetFloorPaint.class) public static interface Detail {
+  }
 
-	private SetFloorPaint() {
-		super();
-	}
+  private SetFloorPaint() {
+    super();
+  }
 }

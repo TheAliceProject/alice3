@@ -47,18 +47,19 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class SuperConstructorInvocationStatement extends ConstructorInvocationStatement {
-	public SuperConstructorInvocationStatement() {
-	}
+  public SuperConstructorInvocationStatement() {
+  }
 
-	public SuperConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument... arguments ) {
-		super( constructor, arguments );
-	}
+  public SuperConstructorInvocationStatement(AbstractConstructor constructor, SimpleArgument... arguments) {
+    super(constructor, arguments);
+  }
 
-	public SuperConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
-		super( constructor, requiredArguments, variableArguments, keyedArguments );
-	}
+  public SuperConstructorInvocationStatement(AbstractConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments) {
+    super(constructor, requiredArguments, variableArguments, keyedArguments);
+  }
 
-	@Override public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendSuperConstructor( this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendSuperConstructor(this);
+  }
 }

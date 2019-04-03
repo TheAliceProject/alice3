@@ -54,38 +54,38 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class ColorChooserDialogCoreView extends CompositeView<JColorChooser, ColorChooserDialogCoreComposite> {
-	public ColorChooserDialogCoreView( ColorChooserDialogCoreComposite composite ) {
-		super( composite );
-		//		javax.swing.colorchooser.AbstractColorChooserPanel[] colorChooserPanels = this.getAwtComponent().getChooserPanels();
-		//		for( javax.swing.colorchooser.AbstractColorChooserPanel colorChooserPanel : colorChooserPanels ) {
-		//			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( colorChooserPanel.getDisplayName() );
-		//		}
-		//this.jColorChooser.setSelectionModel( c )
-	}
+  public ColorChooserDialogCoreView(ColorChooserDialogCoreComposite composite) {
+    super(composite);
+    //  javax.swing.colorchooser.AbstractColorChooserPanel[] colorChooserPanels = this.getAwtComponent().getChooserPanels();
+    //  for( javax.swing.colorchooser.AbstractColorChooserPanel colorChooserPanel : colorChooserPanels ) {
+    //    edu.cmu.cs.dennisc.java.util.logging.Logger.outln( colorChooserPanel.getDisplayName() );
+    //  }
+    //this.jColorChooser.setSelectionModel( c )
+  }
 
-	@Override
-	protected JColorChooser createAwtComponent() {
-		return new JColorChooser();
-	}
+  @Override
+  protected JColorChooser createAwtComponent() {
+    return new JColorChooser();
+  }
 
-	public Color getSelectedColor() {
-		return this.getAwtComponent().getColor();
-	}
+  public Color getSelectedColor() {
+    return this.getAwtComponent().getColor();
+  }
 
-	public void setSelectedColor( Color selectedColor ) {
-		this.getAwtComponent().setColor( selectedColor );
-	}
+  public void setSelectedColor(Color selectedColor) {
+    this.getAwtComponent().setColor(selectedColor);
+  }
 
-	public void addColorChooserTabView( ColorChooserTabView view ) {
-		final boolean IS_PREPEND_DESIRED = true; //todo
-		if( IS_PREPEND_DESIRED ) {
-			this.getAwtComponent().setChooserPanels( ArrayUtilities.concat( AbstractColorChooserPanel.class, view.getAwtComponent(), this.getAwtComponent().getChooserPanels() ) );
-		} else {
-			this.getAwtComponent().addChooserPanel( view.getAwtComponent() );
-		}
-	}
+  public void addColorChooserTabView(ColorChooserTabView view) {
+    final boolean IS_PREPEND_DESIRED = true; //todo
+    if (IS_PREPEND_DESIRED) {
+      this.getAwtComponent().setChooserPanels(ArrayUtilities.concat(AbstractColorChooserPanel.class, view.getAwtComponent(), this.getAwtComponent().getChooserPanels()));
+    } else {
+      this.getAwtComponent().addChooserPanel(view.getAwtComponent());
+    }
+  }
 
-	public void removeColorChooserTabView( ColorChooserTabView view ) {
-		this.getAwtComponent().removeChooserPanel( view.getAwtComponent() );
-	}
+  public void removeColorChooserTabView(ColorChooserTabView view) {
+    this.getAwtComponent().removeChooserPanel(view.getAwtComponent());
+  }
 }

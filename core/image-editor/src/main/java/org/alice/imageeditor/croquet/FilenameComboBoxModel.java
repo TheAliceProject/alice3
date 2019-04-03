@@ -55,75 +55,75 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 /* package-private */class FilenameComboBoxModel implements ComboBoxModel {
-	private boolean isWorking;
-	private List<File> data;
+  private boolean isWorking;
+  private List<File> data;
 
-	private Object selectedItem;
+  private Object selectedItem;
 
-	private final List<ListDataListener> listDataListeners = Lists.newCopyOnWriteArrayList();
+  private final List<ListDataListener> listDataListeners = Lists.newCopyOnWriteArrayList();
 
-	@Override
-	public int getSize() {
-		int isWorkingDelta = this.isWorking ? 1 : 0;
-		return this.data != null ? this.data.size() + isWorkingDelta : 0;
-	}
+  @Override
+  public int getSize() {
+    int isWorkingDelta = this.isWorking ? 1 : 0;
+    return this.data != null ? this.data.size() + isWorkingDelta : 0;
+  }
 
-	@Override
-	public Object getElementAt( int index ) {
-		File file = ( index < this.data.size() ) ? this.data.get( index ) : null;
-		return file != null ? file.getAbsolutePath() : null;
-	}
+  @Override
+  public Object getElementAt(int index) {
+    File file = (index < this.data.size()) ? this.data.get(index) : null;
+    return file != null ? file.getAbsolutePath() : null;
+  }
 
-	@Override
-	public Object getSelectedItem() {
-		return this.selectedItem;
-	}
+  @Override
+  public Object getSelectedItem() {
+    return this.selectedItem;
+  }
 
-	@Override
-	public void setSelectedItem( Object selectedItem ) {
-		if( Objects.equals( this.selectedItem, selectedItem ) ) {
-			//pass
-		} else {
-			if( ( this.selectedItem != null ) && ( selectedItem != null ) && this.selectedItem.toString().contentEquals( selectedItem.toString() ) ) {
-				//pass
-			} else {
-				this.selectedItem = selectedItem;
-				this.fireContentsChanged( -1, -1 );
-			}
-		}
-	}
+  @Override
+  public void setSelectedItem(Object selectedItem) {
+    if (Objects.equals(this.selectedItem, selectedItem)) {
+      //pass
+    } else {
+      if ((this.selectedItem != null) && (selectedItem != null) && this.selectedItem.toString().contentEquals(selectedItem.toString())) {
+        //pass
+      } else {
+        this.selectedItem = selectedItem;
+        this.fireContentsChanged(-1, -1);
+      }
+    }
+  }
 
-	@Override
-	public void addListDataListener( ListDataListener listener ) {
-		this.listDataListeners.add( listener );
-	}
+  @Override
+  public void addListDataListener(ListDataListener listener) {
+    this.listDataListeners.add(listener);
+  }
 
-	@Override
-	public void removeListDataListener( ListDataListener listener ) {
-		this.listDataListeners.remove( listener );
-	}
+  @Override
+  public void removeListDataListener(ListDataListener listener) {
+    this.listDataListeners.remove(listener);
+  }
 
-	public void prologue() {
-		this.isWorking = true;
-		this.data = Lists.newArrayList();
-		this.fireContentsChanged( 0, 0 );
-	}
+  public void prologue() {
+    this.isWorking = true;
+    this.data = Lists.newArrayList();
+    this.fireContentsChanged(0, 0);
+  }
 
-	public void addAll( List<File> files ) {
-		int indexA = this.data.size();
-		this.data.addAll( files );
-		this.fireContentsChanged( indexA, this.data.size() - 1 );
-	}
+  public void addAll(List<File> files) {
+    int indexA = this.data.size();
+    this.data.addAll(files);
+    this.fireContentsChanged(indexA, this.data.size() - 1);
+  }
 
-	public void done( File[] data ) {
-		//todo: check
-		this.isWorking = false;
-	}
+  public void done(File[] data) {
+    //todo: check
+    this.isWorking = false;
+  }
 
-	private void fireContentsChanged( int indexA, int indexB ) {
-		ListDataEvent e = new ListDataEvent( this, ListDataEvent.CONTENTS_CHANGED, indexA, indexB );
-		for( ListDataListener listDataListener : listDataListeners ) {
-			listDataListener.contentsChanged( e );
-		}
-	}
+  private void fireContentsChanged(int indexA, int indexB) {
+    ListDataEvent e = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, indexA, indexB);
+    for (ListDataListener listDataListener : listDataListeners) {
+      listDataListener.contentsChanged(e);
+    }
+  }
 }

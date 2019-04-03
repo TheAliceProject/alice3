@@ -61,56 +61,50 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class GenerateJointI18nSeed {
-	private static String fixName( String methodName ) {
-		StringBuilder sb = new StringBuilder();
-		for( char ch : methodName.substring( 3 ).toCharArray() ) {
-			if( Character.isUpperCase( ch ) || Character.isDigit( ch ) ) {
-				sb.append( ' ' );
-			}
-			sb.append( Character.toLowerCase( ch ) );
-		}
-		return sb.toString().trim();
-	}
+  private static String fixName(String methodName) {
+    StringBuilder sb = new StringBuilder();
+    for (char ch : methodName.substring(3).toCharArray()) {
+      if (Character.isUpperCase(ch) || Character.isDigit(ch)) {
+        sb.append(' ');
+      }
+      sb.append(Character.toLowerCase(ch));
+    }
+    return sb.toString().trim();
+  }
 
-	public static void main( String[] args ) throws Exception {
-		Class<?>[] clses = {
-				SBiped.class,
-				SQuadruped.class,
-				SFlyer.class,
-				SSwimmer.class,
-				STransport.class
-		};
-		Set<String> methodNames = Sets.newHashSet();
-		for( Class<?> cls : clses ) {
-			for( Method method : cls.getDeclaredMethods() ) {
-				if( SJoint.class.isAssignableFrom( method.getReturnType() ) ) {
-					if( method.getParameterTypes().length == 0 ) {
-						if( Modifier.isPublic( method.getModifiers() ) ) {
-							String methodName = method.getName();
-							if( methodName.startsWith( "get" ) ) {
-								methodNames.add( method.getName() );
-							}
-						}
-					}
-				}
-			}
-		}
-		List<String> list = Lists.newArrayList( methodNames );
-		Collections.sort( list );
-		StringBuilder sb = new StringBuilder();
-		for( String methodName : list ) {
-			sb.append( methodName );
-			sb.append( " = </expression/>'s " );
-			sb.append( fixName( methodName ) );
-			sb.append( "\n" );
-		}
+  public static void main(String[] args) throws Exception {
+    Class<?>[] clses = {SBiped.class, SQuadruped.class, SFlyer.class, SSwimmer.class, STransport.class};
+    Set<String> methodNames = Sets.newHashSet();
+    for (Class<?> cls : clses) {
+      for (Method method : cls.getDeclaredMethods()) {
+        if (SJoint.class.isAssignableFrom(method.getReturnType())) {
+          if (method.getParameterTypes().length == 0) {
+            if (Modifier.isPublic(method.getModifiers())) {
+              String methodName = method.getName();
+              if (methodName.startsWith("get")) {
+                methodNames.add(method.getName());
+              }
+            }
+          }
+        }
+      }
+    }
+    List<String> list = Lists.newArrayList(methodNames);
+    Collections.sort(list);
+    StringBuilder sb = new StringBuilder();
+    for (String methodName : list) {
+      sb.append(methodName);
+      sb.append(" = </expression/>'s ");
+      sb.append(fixName(methodName));
+      sb.append("\n");
+    }
 
-		Logger.outln( sb );
+    Logger.outln(sb);
 
-		//		java.io.File repoRoot = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "/gits/alice/" );
-		//		java.io.File srcRoot = new java.io.File( repoRoot, "core/i18n/src/main/resources" );//"core/ide/src/main/java/" );
-		//		java.io.File packageDirectory = new java.io.File( srcRoot, "org/lgna/story/resources" );
-		//		java.io.File namesFile = new java.io.File( packageDirectory, "GalleryNames.properties" );
-		//		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( namesFile, sbNames.toString() );
-	}
+    //    java.io.File repoRoot = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "/gits/alice/" );
+    //    java.io.File srcRoot = new java.io.File( repoRoot, "core/i18n/src/main/resources" ); //"core/ide/src/main/java/" );
+    //    java.io.File packageDirectory = new java.io.File( srcRoot, "org/lgna/story/resources" );
+    //    java.io.File namesFile = new java.io.File( packageDirectory, "GalleryNames.properties" );
+    //    edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( namesFile, sbNames.toString() );
+  }
 }

@@ -61,389 +61,382 @@ import java.util.Stack;
  * @author Dennis Cosgrove
  */
 public abstract class PrintUtilities {
-	private static boolean s_isDumpStackDesired;
+  private static boolean s_isDumpStackDesired;
 
-	private static Stack<PrintStream> s_printStreamStack = new Stack<PrintStream>();
-	private static PrintStream s_printStream = System.out;
-	private static Stack<DecimalFormat> s_decimalFormatStack = new Stack<DecimalFormat>();
-	private static DecimalFormat s_decimalFormat;
-	private static Stack<String> s_indentTextStack = new Stack<String>();
-	private static String s_indentText;
-	private static Stack<String> s_separatorTextStack = new Stack<String>();
-	private static String s_separatorText;
+  private static Stack<PrintStream> s_printStreamStack = new Stack<PrintStream>();
+  private static PrintStream s_printStream = System.out;
+  private static Stack<DecimalFormat> s_decimalFormatStack = new Stack<DecimalFormat>();
+  private static DecimalFormat s_decimalFormat;
+  private static Stack<String> s_indentTextStack = new Stack<String>();
+  private static String s_indentText;
+  private static Stack<String> s_separatorTextStack = new Stack<String>();
+  private static String s_separatorText;
 
-	private static Map<Class<?>, Method> s_classToAppendMethod;
-	private static Map<Class<?>, Method> s_classToAppendLinesMethod;
+  private static Map<Class<?>, Method> s_classToAppendMethod;
+  private static Map<Class<?>, Method> s_classToAppendLinesMethod;
 
-	private static Method getMethod( String name, Class<?> cls ) {
-		return ReflectionUtilities.getMethod( PrintUtilities.class, name, new Class[] { StringBuilder.class, cls } );
-	}
+  private static Method getMethod(String name, Class<?> cls) {
+    return ReflectionUtilities.getMethod(PrintUtilities.class, name, new Class[] {StringBuilder.class, cls});
+  }
 
-	static {
-		s_isDumpStackDesired = SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.print.PrintUtilities.isDumpStackDesired" );
-		//s_isDumpStackDesired = true;
+  static {
+    s_isDumpStackDesired = SystemUtilities.isPropertyTrue("edu.cmu.cs.dennisc.print.PrintUtilities.isDumpStackDesired");
+    //s_isDumpStackDesired = true;
 
-		s_classToAppendMethod = new HashMap<Class<?>, Method>();
-		s_classToAppendLinesMethod = new HashMap<Class<?>, Method>();
+    s_classToAppendMethod = new HashMap<Class<?>, Method>();
+    s_classToAppendLinesMethod = new HashMap<Class<?>, Method>();
 
-		s_classToAppendMethod.put( Float.class, getMethod( "append", Float.class ) );
-		s_classToAppendMethod.put( Double.class, getMethod( "append", Double.class ) );
-		Class<?>[] classes = {
-				int[].class,
-				float[].class,
-				double[].class,
-				IntBuffer.class,
-				FloatBuffer.class,
-				DoubleBuffer.class
-		};
-		for( Class<?> cls : classes ) {
-			s_classToAppendMethod.put( cls, getMethod( "append", cls ) );
-			s_classToAppendLinesMethod.put( cls, getMethod( "appendLines", cls ) );
-		}
-		s_decimalFormat = new DecimalFormat( "0.0000" );
-		s_decimalFormat.setPositivePrefix( "+" );
-		s_indentText = "    ";
-		s_separatorText = " ";
-	}
+    s_classToAppendMethod.put(Float.class, getMethod("append", Float.class));
+    s_classToAppendMethod.put(Double.class, getMethod("append", Double.class));
+    Class<?>[] classes = {int[].class, float[].class, double[].class, IntBuffer.class, FloatBuffer.class, DoubleBuffer.class};
+    for (Class<?> cls : classes) {
+      s_classToAppendMethod.put(cls, getMethod("append", cls));
+      s_classToAppendLinesMethod.put(cls, getMethod("appendLines", cls));
+    }
+    s_decimalFormat = new DecimalFormat("0.0000");
+    s_decimalFormat.setPositivePrefix("+");
+    s_indentText = "    ";
+    s_separatorText = " ";
+  }
 
-	private PrintUtilities() {
-		throw new AssertionError();
-	}
+  private PrintUtilities() {
+    throw new AssertionError();
+  }
 
-	public static void pushPrintStream() {
-		s_printStreamStack.push( s_printStream );
-	}
+  public static void pushPrintStream() {
+    s_printStreamStack.push(s_printStream);
+  }
 
-	public static PrintStream accessPrintStream() {
-		return s_printStream;
-	}
+  public static PrintStream accessPrintStream() {
+    return s_printStream;
+  }
 
-	//todo: add getDecimalFormat
-	public static void setPrintStream( PrintStream printStream ) {
-		s_printStream = printStream;
-	}
+  //todo: add getDecimalFormat
+  public static void setPrintStream(PrintStream printStream) {
+    s_printStream = printStream;
+  }
 
-	public static void popPrintStream() {
-		s_printStream = s_printStreamStack.pop();
-	}
+  public static void popPrintStream() {
+    s_printStream = s_printStreamStack.pop();
+  }
 
-	public static void pushDecimalFormat() {
-		s_decimalFormatStack.push( s_decimalFormat );
-	}
+  public static void pushDecimalFormat() {
+    s_decimalFormatStack.push(s_decimalFormat);
+  }
 
-	public static DecimalFormat accessDecimalFormat() {
-		return s_decimalFormat;
-	}
+  public static DecimalFormat accessDecimalFormat() {
+    return s_decimalFormat;
+  }
 
-	//todo: add getDecimalFormat
-	public static void setDecimalFormat( DecimalFormat decimalFormat ) {
-		s_decimalFormat = decimalFormat;
-	}
+  //todo: add getDecimalFormat
+  public static void setDecimalFormat(DecimalFormat decimalFormat) {
+    s_decimalFormat = decimalFormat;
+  }
 
-	public static void popDecimalFormat() {
-		s_decimalFormat = s_decimalFormatStack.pop();
-	}
+  public static void popDecimalFormat() {
+    s_decimalFormat = s_decimalFormatStack.pop();
+  }
 
-	public static void pushIndentText() {
-		s_indentTextStack.push( s_indentText );
-	}
+  public static void pushIndentText() {
+    s_indentTextStack.push(s_indentText);
+  }
 
-	public static String getIndentText() {
-		return s_indentText;
-	}
+  public static String getIndentText() {
+    return s_indentText;
+  }
 
-	public static void setIndentText( String indentText ) {
-		s_indentText = indentText;
-	}
+  public static void setIndentText(String indentText) {
+    s_indentText = indentText;
+  }
 
-	public static void popIndentText() {
-		s_indentText = s_indentTextStack.pop();
-	}
+  public static void popIndentText() {
+    s_indentText = s_indentTextStack.pop();
+  }
 
-	public static void pushSeparatorText() {
-		s_separatorTextStack.push( s_separatorText );
-	}
+  public static void pushSeparatorText() {
+    s_separatorTextStack.push(s_separatorText);
+  }
 
-	public static String getSeparatorText() {
-		return s_separatorText;
-	}
+  public static String getSeparatorText() {
+    return s_separatorText;
+  }
 
-	public static void setSeparatorText( String separatorText ) {
-		s_separatorText = separatorText;
-	}
+  public static void setSeparatorText(String separatorText) {
+    s_separatorText = separatorText;
+  }
 
-	public static void popSeparatorText() {
-		s_separatorText = s_separatorTextStack.pop();
-	}
+  public static void popSeparatorText() {
+    s_separatorText = s_separatorTextStack.pop();
+  }
 
-	public static final void printlns( PrintStream ps, int count ) {
-		for( int i = 0; i < count; i++ ) {
-			ps.println();
-		}
-	}
+  public static final void printlns(PrintStream ps, int count) {
+    for (int i = 0; i < count; i++) {
+      ps.println();
+    }
+  }
 
-	public static final void println( PrintStream ps ) {
-		printlns( ps, 1 );
-	}
+  public static final void println(PrintStream ps) {
+    printlns(ps, 1);
+  }
 
-	public static final void printlns( int count ) {
-		printlns( s_printStream, count );
-	}
+  public static final void printlns(int count) {
+    printlns(s_printStream, count);
+  }
 
-	public static final void println() {
-		printlns( 1 );
-	}
+  public static final void println() {
+    printlns(1);
+  }
 
-	//Object...
-	private static StringBuilder append( StringBuilder rv, Object[] values, boolean isSingleLine ) {
-		if( s_isDumpStackDesired ) {
-			Thread.dumpStack();
-		}
-		for( Object value : values ) {
-			if( value != null ) {
-				if( value instanceof Printable ) {
-					Printable printable = (Printable)value;
-					try {
-						printable.append( rv, s_decimalFormat, isSingleLine == false );
-					} catch( IOException ioe ) {
-						throw new RuntimeException( ioe );
-					}
-				} else {
-					Map<Class<?>, Method> map;
-					if( isSingleLine ) {
-						map = s_classToAppendMethod;
-					} else {
-						map = s_classToAppendLinesMethod;
-					}
-					Class<?> cls = value.getClass();
-					Method method = map.get( cls );
-					if( method != null ) {
-						Object[] args = { rv, value };
-						ReflectionUtilities.invoke( null, method, args );
-					} else {
-						if( value instanceof Object[] ) {
-							Object[] array = (Object[])value;
-							rv.append( array.getClass().getComponentType().getName() );
-							rv.append( "[]: " );
-							rv.append( "length=" );
-							rv.append( array.length );
-							rv.append( "; values=[ " );
-							for( Object element : array ) {
-								if( isSingleLine ) {
-									append( rv, element );
-									rv.append( " " );
-								} else {
-									appendLines( rv, element );
-									rv.append( "\n" );
-								}
-							}
-							rv.append( "]" );
-						} else {
-							rv.append( value );
-						}
-					}
-				}
-			} else {
-				rv.append( "null" );
-			}
-			rv.append( s_separatorText );
-		}
-		return rv;
-	}
+  //Object...
+  private static StringBuilder append(StringBuilder rv, Object[] values, boolean isSingleLine) {
+    if (s_isDumpStackDesired) {
+      Thread.dumpStack();
+    }
+    for (Object value : values) {
+      if (value != null) {
+        if (value instanceof Printable) {
+          Printable printable = (Printable) value;
+          try {
+            printable.append(rv, s_decimalFormat, isSingleLine == false);
+          } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+          }
+        } else {
+          Map<Class<?>, Method> map;
+          if (isSingleLine) {
+            map = s_classToAppendMethod;
+          } else {
+            map = s_classToAppendLinesMethod;
+          }
+          Class<?> cls = value.getClass();
+          Method method = map.get(cls);
+          if (method != null) {
+            Object[] args = {rv, value};
+            ReflectionUtilities.invoke(null, method, args);
+          } else {
+            if (value instanceof Object[]) {
+              Object[] array = (Object[]) value;
+              rv.append(array.getClass().getComponentType().getName());
+              rv.append("[]: ");
+              rv.append("length=");
+              rv.append(array.length);
+              rv.append("; values=[ ");
+              for (Object element : array) {
+                if (isSingleLine) {
+                  append(rv, element);
+                  rv.append(" ");
+                } else {
+                  appendLines(rv, element);
+                  rv.append("\n");
+                }
+              }
+              rv.append("]");
+            } else {
+              rv.append(value);
+            }
+          }
+        }
+      } else {
+        rv.append("null");
+      }
+      rv.append(s_separatorText);
+    }
+    return rv;
+  }
 
-	public static StringBuilder append( StringBuilder rv, Object... values ) {
-		return append( rv, values, true );
-	}
+  public static StringBuilder append(StringBuilder rv, Object... values) {
+    return append(rv, values, true);
+  }
 
-	public static StringBuilder appendLines( StringBuilder rv, Object... values ) {
-		return append( rv, values, false );
-	}
+  public static StringBuilder appendLines(StringBuilder rv, Object... values) {
+    return append(rv, values, false);
+  }
 
-	public static String toString( Object... value ) {
-		return append( new StringBuilder(), value ).toString();
-	}
+  public static String toString(Object... value) {
+    return append(new StringBuilder(), value).toString();
+  }
 
-	public static String toStringLines( Object... value ) {
-		return appendLines( new StringBuilder(), value ).toString();
-	}
+  public static String toStringLines(Object... value) {
+    return appendLines(new StringBuilder(), value).toString();
+  }
 
-	public static void print( PrintStream ps, Object... value ) {
-		ps.print( toString( value ) );
-	}
+  public static void print(PrintStream ps, Object... value) {
+    ps.print(toString(value));
+  }
 
-	public static void println( PrintStream ps, Object... value ) {
-		ps.println( toString( value ) );
-	}
+  public static void println(PrintStream ps, Object... value) {
+    ps.println(toString(value));
+  }
 
-	public static void printlns( PrintStream ps, Object... value ) {
-		ps.println( toStringLines( value ) );
-	}
+  public static void printlns(PrintStream ps, Object... value) {
+    ps.println(toStringLines(value));
+  }
 
-	public static void print( Object... value ) {
-		print( s_printStream, value );
-	}
+  public static void print(Object... value) {
+    print(s_printStream, value);
+  }
 
-	public static void println( Object... value ) {
-		println( s_printStream, value );
-	}
+  public static void println(Object... value) {
+    println(s_printStream, value);
+  }
 
-	public static void printlns( Object... value ) {
-		printlns( s_printStream, value );
-	}
+  public static void printlns(Object... value) {
+    printlns(s_printStream, value);
+  }
 
-	//todo: handle null
+  //todo: handle null
 
-	//Float
+  //Float
 
-	public static StringBuilder append( StringBuilder rv, Float value ) {
-		return rv.append( s_decimalFormat.format( value ) );
-	}
+  public static StringBuilder append(StringBuilder rv, Float value) {
+    return rv.append(s_decimalFormat.format(value));
+  }
 
-	//Double
+  //Double
 
-	public static StringBuilder append( StringBuilder rv, Double value ) {
-		return rv.append( s_decimalFormat.format( value ) );
-	}
+  public static StringBuilder append(StringBuilder rv, Double value) {
+    return rv.append(s_decimalFormat.format(value));
+  }
 
-	//java.nio.IntBuffer
+  //java.nio.IntBuffer
 
-	public static StringBuilder append( StringBuilder rv, IntBuffer value ) {
-		rv.append( value );
-		rv.append( ' ' );
-		while( value.position() < value.limit() ) {
-			rv.append( value.get() );
-			rv.append( ' ' );
-		}
-		value.rewind();
-		return rv;
-	}
+  public static StringBuilder append(StringBuilder rv, IntBuffer value) {
+    rv.append(value);
+    rv.append(' ');
+    while (value.position() < value.limit()) {
+      rv.append(value.get());
+      rv.append(' ');
+    }
+    value.rewind();
+    return rv;
+  }
 
-	public static StringBuilder appendLines( StringBuilder rv, IntBuffer value ) {
-		//todo:
-		return append( rv, value );
-	}
+  public static StringBuilder appendLines(StringBuilder rv, IntBuffer value) {
+    //todo:
+    return append(rv, value);
+  }
 
-	//java.nio.FloatBuffer
+  //java.nio.FloatBuffer
 
-	public static StringBuilder append( StringBuilder rv, FloatBuffer value ) {
-		rv.append( value );
-		rv.append( ' ' );
-		while( value.position() < value.limit() ) {
-			append( rv, value.get() );
-			rv.append( ' ' );
-		}
-		value.rewind();
-		return rv;
-	}
+  public static StringBuilder append(StringBuilder rv, FloatBuffer value) {
+    rv.append(value);
+    rv.append(' ');
+    while (value.position() < value.limit()) {
+      append(rv, value.get());
+      rv.append(' ');
+    }
+    value.rewind();
+    return rv;
+  }
 
-	public static StringBuilder appendLines( StringBuilder rv, FloatBuffer value ) {
-		//todo:
-		return append( rv, value );
-	}
+  public static StringBuilder appendLines(StringBuilder rv, FloatBuffer value) {
+    //todo:
+    return append(rv, value);
+  }
 
-	//java.nio.DoubleBuffer
+  //java.nio.DoubleBuffer
 
-	public static StringBuilder append( StringBuilder rv, DoubleBuffer value ) {
-		rv.append( value );
-		rv.append( ' ' );
-		while( value.position() < value.limit() ) {
-			append( rv, value.get() );
-			rv.append( ' ' );
-		}
-		value.rewind();
-		return rv;
-	}
+  public static StringBuilder append(StringBuilder rv, DoubleBuffer value) {
+    rv.append(value);
+    rv.append(' ');
+    while (value.position() < value.limit()) {
+      append(rv, value.get());
+      rv.append(' ');
+    }
+    value.rewind();
+    return rv;
+  }
 
-	public static StringBuilder appendLines( StringBuilder rv, DoubleBuffer value ) {
-		//todo:
-		return append( rv, value );
-	}
+  public static StringBuilder appendLines(StringBuilder rv, DoubleBuffer value) {
+    //todo:
+    return append(rv, value);
+  }
 
-	//int[]
+  //int[]
 
-	public static StringBuilder append( StringBuilder rv, int[] value ) {
-		rv.append( "int[]: " );
-		if( value != null ) {
-			rv.append( "length=" );
-			rv.append( value.length );
-			rv.append( "; values=[ " );
-			for( int element : value ) {
-				rv.append( element );
-				rv.append( " " );
-			}
-			rv.append( "]" );
-		} else {
-			rv.append( "null" );
-		}
-		return rv;
-	}
+  public static StringBuilder append(StringBuilder rv, int[] value) {
+    rv.append("int[]: ");
+    if (value != null) {
+      rv.append("length=");
+      rv.append(value.length);
+      rv.append("; values=[ ");
+      for (int element : value) {
+        rv.append(element);
+        rv.append(" ");
+      }
+      rv.append("]");
+    } else {
+      rv.append("null");
+    }
+    return rv;
+  }
 
-	public static StringBuilder appendLines( StringBuilder rv, int[] value ) {
-		//todo:
-		return append( rv, value );
-	}
+  public static StringBuilder appendLines(StringBuilder rv, int[] value) {
+    //todo:
+    return append(rv, value);
+  }
 
-	//float[]
+  //float[]
 
-	public static StringBuilder append( StringBuilder rv, float[] value ) {
-		rv.append( "float[]: " );
-		if( value != null ) {
-			rv.append( "length=" );
-			rv.append( value.length );
-			rv.append( "; values=[ " );
-			for( float element : value ) {
-				append( rv, element );
-				rv.append( " " );
-			}
-			rv.append( "]" );
-		} else {
-			rv.append( "null" );
-		}
-		return rv;
-	}
+  public static StringBuilder append(StringBuilder rv, float[] value) {
+    rv.append("float[]: ");
+    if (value != null) {
+      rv.append("length=");
+      rv.append(value.length);
+      rv.append("; values=[ ");
+      for (float element : value) {
+        append(rv, element);
+        rv.append(" ");
+      }
+      rv.append("]");
+    } else {
+      rv.append("null");
+    }
+    return rv;
+  }
 
-	public static StringBuilder appendLines( StringBuilder rv, float[] value ) {
-		//todo:
-		return append( rv, value );
-	}
+  public static StringBuilder appendLines(StringBuilder rv, float[] value) {
+    //todo:
+    return append(rv, value);
+  }
 
-	//double[]
+  //double[]
 
-	public static StringBuilder append( StringBuilder rv, double[] value ) {
-		rv.append( "double[]: " );
-		if( value != null ) {
-			rv.append( "length=" );
-			rv.append( value.length );
-			rv.append( "; values=[ " );
-			for( double element : value ) {
-				append( rv, element );
-				rv.append( " " );
-			}
-			rv.append( "]" );
-		} else {
-			rv.append( "null" );
-		}
-		return rv;
-	}
+  public static StringBuilder append(StringBuilder rv, double[] value) {
+    rv.append("double[]: ");
+    if (value != null) {
+      rv.append("length=");
+      rv.append(value.length);
+      rv.append("; values=[ ");
+      for (double element : value) {
+        append(rv, element);
+        rv.append(" ");
+      }
+      rv.append("]");
+    } else {
+      rv.append("null");
+    }
+    return rv;
+  }
 
-	public static StringBuilder appendLines( StringBuilder rv, double[] value ) {
-		//todo:
-		return append( rv, value );
-	}
+  public static StringBuilder appendLines(StringBuilder rv, double[] value) {
+    //todo:
+    return append(rv, value);
+  }
 
-	public static Appendable append( Appendable rv, Printable value ) {
-		try {
-			return value.append( rv, s_decimalFormat, false );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  public static Appendable append(Appendable rv, Printable value) {
+    try {
+      return value.append(rv, s_decimalFormat, false);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	public static Appendable appendLines( Appendable rv, Printable value ) {
-		try {
-			return value.append( rv, s_decimalFormat, true );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  public static Appendable appendLines(Appendable rv, Printable value) {
+    try {
+      return value.append(rv, s_decimalFormat, true);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 }

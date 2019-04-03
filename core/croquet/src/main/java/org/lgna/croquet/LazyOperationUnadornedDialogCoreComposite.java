@@ -50,20 +50,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class LazyOperationUnadornedDialogCoreComposite<V extends CompositeView<?, ?>> extends OperationUnadornedDialogCoreComposite<V> {
-	public LazyOperationUnadornedDialogCoreComposite( UUID migrationId ) {
-		super( migrationId, IsModal.TRUE );
-	}
+  public LazyOperationUnadornedDialogCoreComposite(UUID migrationId) {
+    super(migrationId, IsModal.TRUE);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.defaultTitleText = this.findDefaultLocalizedText();
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.defaultTitleText = this.findDefaultLocalizedText();
+  }
 
-	@Override
-	protected String getDefaultTitleText() {
-		return this.defaultTitleText;
-	}
+  @Override
+  protected String getDefaultTitleText() {
+    return this.defaultTitleText;
+  }
 
-	private String defaultTitleText;
+  private String defaultTitleText;
 }

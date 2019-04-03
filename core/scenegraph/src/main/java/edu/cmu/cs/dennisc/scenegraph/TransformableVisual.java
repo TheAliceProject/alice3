@@ -50,56 +50,56 @@ import edu.cmu.cs.dennisc.math.Point3;
  */
 public class TransformableVisual extends Visual {
 
-	public TransformableVisual() {
-		super();
-		super.setParent( this.sgTransformable );
-	}
+  public TransformableVisual() {
+    super();
+    super.setParent(this.sgTransformable);
+  }
 
-	@Override
-	public void setParent( Composite parent ) {
-		this.sgTransformable.setParent( parent );
-	}
+  @Override
+  public void setParent(Composite parent) {
+    this.sgTransformable.setParent(parent);
+  }
 
-	@Override
-	public Composite getParent() {
-		return this.sgTransformable.getParent();
-	}
+  @Override
+  public Composite getParent() {
+    return this.sgTransformable.getParent();
+  }
 
-	public void setTransform( Transformable transform ) {
-		this.sgTransformable.setLocalTransformation( transform.accessLocalTransformation() );
-	}
+  public void setTransform(Transformable transform) {
+    this.sgTransformable.setLocalTransformation(transform.accessLocalTransformation());
+  }
 
-	public Transformable getTransformable() {
-		return this.sgTransformable;
-	}
+  public Transformable getTransformable() {
+    return this.sgTransformable;
+  }
 
-	@Override
-	public AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox rv ) {
-		AxisAlignedBox transformedRV = super.getAxisAlignedMinimumBoundingBox( rv );
+  @Override
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv) {
+    AxisAlignedBox transformedRV = super.getAxisAlignedMinimumBoundingBox(rv);
 
-		if( !transformedRV.isNaN() ) {
-			Point3 maximum = transformedRV.getMaximum();
-			this.sgTransformable.accessLocalTransformation().transform( maximum );
-			transformedRV.setMaximum( maximum );
+    if (!transformedRV.isNaN()) {
+      Point3 maximum = transformedRV.getMaximum();
+      this.sgTransformable.accessLocalTransformation().transform(maximum);
+      transformedRV.setMaximum(maximum);
 
-			Point3 minimum = transformedRV.getMinimum();
-			this.sgTransformable.accessLocalTransformation().transform( minimum );
-			transformedRV.setMinimum( minimum );
-		}
+      Point3 minimum = transformedRV.getMinimum();
+      this.sgTransformable.accessLocalTransformation().transform(minimum);
+      transformedRV.setMinimum(minimum);
+    }
 
-		return transformedRV;
-	}
+    return transformedRV;
+  }
 
-	@Override
-	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere rv ) {
-		edu.cmu.cs.dennisc.math.Sphere transformedRV = super.getBoundingSphere( rv );
+  @Override
+  public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere(edu.cmu.cs.dennisc.math.Sphere rv) {
+    edu.cmu.cs.dennisc.math.Sphere transformedRV = super.getBoundingSphere(rv);
 
-		if( !transformedRV.isNaN() ) {
-			this.sgTransformable.accessLocalTransformation().transform( transformedRV.center );
-		}
+    if (!transformedRV.isNaN()) {
+      this.sgTransformable.accessLocalTransformation().transform(transformedRV.center);
+    }
 
-		return rv;
-	}
+    return rv;
+  }
 
-	private final Transformable sgTransformable = new Transformable();
+  private final Transformable sgTransformable = new Transformable();
 }

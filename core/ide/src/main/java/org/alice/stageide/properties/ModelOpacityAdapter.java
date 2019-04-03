@@ -51,91 +51,91 @@ import org.lgna.story.implementation.Property.Listener;
 
 public class ModelOpacityAdapter extends AbstractPropertyAdapter<Double, ModelImp> {
 
-	private Listener<Float> propertyListener;
-	private Property<Float> property;
+  private Listener<Float> propertyListener;
+  private Property<Float> property;
 
-	private void initializeListenersIfNecessary() {
-		if( this.propertyListener == null ) {
-			this.propertyListener = new Listener<Float>() {
-				@Override
-				public void propertyChanged( Property<Float> property, Float prevValue, Float nextValue ) {
-					handleInternalValueChanged();
-				}
-			};
-		}
-	}
+  private void initializeListenersIfNecessary() {
+    if (this.propertyListener == null) {
+      this.propertyListener = new Listener<Float>() {
+        @Override
+        public void propertyChanged(Property<Float> property, Float prevValue, Float nextValue) {
+          handleInternalValueChanged();
+        }
+      };
+    }
+  }
 
-	@Override
-	protected void startPropertyListening() {
-		super.startPropertyListening();
-		if( this.instance != null ) {
-			this.initializeListenersIfNecessary();
-			this.addPropertyListener( this.propertyListener );
-		}
-	}
+  @Override
+  protected void startPropertyListening() {
+    super.startPropertyListening();
+    if (this.instance != null) {
+      this.initializeListenersIfNecessary();
+      this.addPropertyListener(this.propertyListener);
+    }
+  }
 
-	@Override
-	protected void stopPropertyListening() {
-		super.stopPropertyListening();
-		if( this.instance != null ) {
-			this.removePropertyListener( this.propertyListener );
-		}
-	}
+  @Override
+  protected void stopPropertyListening() {
+    super.stopPropertyListening();
+    if (this.instance != null) {
+      this.removePropertyListener(this.propertyListener);
+    }
+  }
 
-	public ModelOpacityAdapter( ModelImp instance, StandardExpressionState expressionState ) {
-		super( "Opacity", instance, expressionState );
-		this.property = instance.opacity;
-		this.startPropertyListening();
-		this.initializeExpressionState();
-	}
+  public ModelOpacityAdapter(ModelImp instance, StandardExpressionState expressionState) {
+    super("Opacity", instance, expressionState);
+    this.property = instance.opacity;
+    this.startPropertyListening();
+    this.initializeExpressionState();
+  }
 
-	@Override
-	public Double getValue() {
-		if( this.property != null ) {
-			return this.property.getValue().doubleValue();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Double getValue() {
+    if (this.property != null) {
+      return this.property.getValue().doubleValue();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public Class<Double> getPropertyType() {
-		return Double.class;
-	}
+  @Override
+  public Class<Double> getPropertyType() {
+    return Double.class;
+  }
 
-	@Override
-	public void setValue( final Double value ) {
-		super.setValue( value );
-		if( this.property != null ) {
-			new Thread() {
-				@Override
-				public void run() {
-					ModelOpacityAdapter.this.property.setValue( value.floatValue() );
-				}
-			}.start();
-		}
-	}
+  @Override
+  public void setValue(final Double value) {
+    super.setValue(value);
+    if (this.property != null) {
+      new Thread() {
+        @Override
+        public void run() {
+          ModelOpacityAdapter.this.property.setValue(value.floatValue());
+        }
+      }.start();
+    }
+  }
 
-	protected void addPropertyListener( Listener<Float> propertyListener ) {
-		if( this.property != null ) {
-			property.addPropertyListener( propertyListener );
-		}
-	}
+  protected void addPropertyListener(Listener<Float> propertyListener) {
+    if (this.property != null) {
+      property.addPropertyListener(propertyListener);
+    }
+  }
 
-	protected void removePropertyListener( Listener<Float> propertyListener ) {
-		if( this.property != null ) {
-			property.removePropertyListener( propertyListener );
-		}
-	}
+  protected void removePropertyListener(Listener<Float> propertyListener) {
+    if (this.property != null) {
+      property.removePropertyListener(propertyListener);
+    }
+  }
 
-	protected void handleInternalValueChanged() {
-		Double newValue = this.getValue();
-		this.notifyValueObservers( newValue );
-	}
+  protected void handleInternalValueChanged() {
+    Double newValue = this.getValue();
+    this.notifyValueObservers(newValue);
+  }
 
-	@Override
-	public Double getValueCopyIfMutable() {
-		return new Double( this.getValue() );
-	}
+  @Override
+  public Double getValueCopyIfMutable() {
+    return new Double(this.getValue());
+  }
 
 }

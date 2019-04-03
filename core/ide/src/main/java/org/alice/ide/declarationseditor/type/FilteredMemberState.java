@@ -54,7 +54,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class FilteredMemberState<T extends UserMember> extends FilteredListPropertySingleSelectListState<T> {
-	public FilteredMemberState( Group group, UUID id, FilteredMemberData<T> data ) {
-		super( group, id, -1, data );
-	}
+  public FilteredMemberState(Group group, UUID id, FilteredMemberData<T> data) {
+    super(group, id, -1, data);
+  }
 }

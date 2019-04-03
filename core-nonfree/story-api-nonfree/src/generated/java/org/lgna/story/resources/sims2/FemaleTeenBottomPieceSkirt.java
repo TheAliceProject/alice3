@@ -44,12 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenBottomPieceSkirt implements FemaleTeenBottomPiece {
-	DENIM_BOOTS,
-	DENIM_PINK,
-	DENIM_PURPLE,
-	RED,
-	DENIM_TAN,
-	PATTERN_HELL,
-	PLAID_GREEN;
+  DENIM_BOOTS, DENIM_PINK, DENIM_PURPLE, RED, DENIM_TAN, PATTERN_HELL, PLAID_GREEN
 
 }

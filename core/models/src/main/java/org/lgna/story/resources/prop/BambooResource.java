@@ -32,38 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum BambooResource implements PropResource {
-	SHOOT1,
-	SHOOT2,
-	SHOOT3,
-	SHOOT4,
-	CLUSTER1,
-	CLUSTER2,
-	CLUSTER3,
-	CLUSTER4,
-	THICKET_DARK_GREEN( ImplementationAndVisualType.SIMS2 ),
-	THICKET_LIGHT_GREEN( ImplementationAndVisualType.SIMS2 );
+  SHOOT1, SHOOT2, SHOOT3, SHOOT4, CLUSTER1, CLUSTER2, CLUSTER3, CLUSTER4, THICKET_DARK_GREEN(ImplementationAndVisualType.SIMS2), THICKET_LIGHT_GREEN(ImplementationAndVisualType.SIMS2);
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	BambooResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  BambooResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	BambooResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  BambooResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

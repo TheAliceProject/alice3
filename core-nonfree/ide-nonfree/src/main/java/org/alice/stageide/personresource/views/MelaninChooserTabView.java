@@ -56,42 +56,42 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class MelaninChooserTabView extends ColorChooserTabView {
-	public MelaninChooserTabView( MelaninChooserTabComposite composite ) {
-		super( composite );
-	}
+  public MelaninChooserTabView(MelaninChooserTabComposite composite) {
+    super(composite);
+  }
 
-	private class JMelaninChooserPanel extends JColorChooserPanel {
-		@Override
-		protected void buildChooser() {
-			MelaninChooserTabComposite composite = (MelaninChooserTabComposite)MelaninChooserTabView.this.getComposite();
-			Color[] colors = composite.getMelaninSliderShades();
-			JColorSlider jMelaninSlider = new JColorSlider( colors ) {
-				@Override
-				protected void handleNextColor( Color nextColor ) {
-					MelaninChooserTabView.this.getAwtComponent().getColorSelectionModel().setSelectedColor( nextColor );
-				}
-			};
-			this.setBorder( BorderFactory.createMatteBorder( 1, 1, 1, 1, Color.LIGHT_GRAY ) );
-			jMelaninSlider.setBorder( BorderFactory.createEmptyBorder( 3, 3, 3, 3 ) );
-			this.setLayout( new MigLayout( "fill, insets 0" ) );
-			this.add( jMelaninSlider, "growx" );
-		}
+  private class JMelaninChooserPanel extends JColorChooserPanel {
+    @Override
+    protected void buildChooser() {
+      MelaninChooserTabComposite composite = (MelaninChooserTabComposite) MelaninChooserTabView.this.getComposite();
+      Color[] colors = composite.getMelaninSliderShades();
+      JColorSlider jMelaninSlider = new JColorSlider(colors) {
+        @Override
+        protected void handleNextColor(Color nextColor) {
+          MelaninChooserTabView.this.getAwtComponent().getColorSelectionModel().setSelectedColor(nextColor);
+        }
+      };
+      this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
+      jMelaninSlider.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+      this.setLayout(new MigLayout("fill, insets 0"));
+      this.add(jMelaninSlider, "growx");
+    }
 
-		@Override
-		public void updateChooser() {
-			Color color = this.getColorFromModel();
-			//todo
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( color );
-		}
+    @Override
+    public void updateChooser() {
+      Color color = this.getColorFromModel();
+      //todo
+      //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( color );
+    }
 
-		@Override
-		public Dimension getPreferredSize() {
-			return DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 256 );
-		}
-	}
+    @Override
+    public Dimension getPreferredSize() {
+      return DimensionUtilities.constrainToMinimumWidth(super.getPreferredSize(), 256);
+    }
+  }
 
-	@Override
-	protected AbstractColorChooserPanel createAwtComponent() {
-		return new JMelaninChooserPanel();
-	}
+  @Override
+  protected AbstractColorChooserPanel createAwtComponent() {
+    return new JMelaninChooserPanel();
+  }
 }

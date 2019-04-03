@@ -51,15 +51,15 @@ import org.lgna.story.resources.PropResource;
  */
 public class SProp extends SJointedModel {
 
-	private final JointedModelImp implementation;
+  private final JointedModelImp implementation;
 
-	public SProp( PropResource resource ) {
-		this.implementation = resource.createImplementation( this );
-	}
+  public SProp(PropResource resource) {
+    this.implementation = resource.createImplementation(this);
+  }
 
-	@Override
-	JointedModelImp getImplementation() {
-		return implementation;
-	}
+  @Override
+  JointedModelImp getImplementation() {
+    return implementation;
+  }
 
 }

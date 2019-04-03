@@ -58,74 +58,74 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class KeyCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<KeyCustomExpressionCreatorView> {
-	private static class SingletonHolder {
-		private static KeyCustomExpressionCreatorComposite instance = new KeyCustomExpressionCreatorComposite();
-	}
+  private static class SingletonHolder {
+    private static KeyCustomExpressionCreatorComposite instance = new KeyCustomExpressionCreatorComposite();
+  }
 
-	public static KeyCustomExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static KeyCustomExpressionCreatorComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final PlainStringValue pressAnyKeyLabel = this.createStringValue( "pressAnyKeyLabel" );
-	private final ErrorStatus keyRequiredError = this.createErrorStatus( "keyRequiredError" );
+  private final PlainStringValue pressAnyKeyLabel = this.createStringValue("pressAnyKeyLabel");
+  private final ErrorStatus keyRequiredError = this.createErrorStatus("keyRequiredError");
 
-	private KeyCustomExpressionCreatorComposite() {
-		super( UUID.fromString( "908ee2c1-97a9-4fb4-9716-7846cb206549" ) );
-	}
+  private KeyCustomExpressionCreatorComposite() {
+    super(UUID.fromString("908ee2c1-97a9-4fb4-9716-7846cb206549"));
+  }
 
-	@Override
-	protected KeyCustomExpressionCreatorView createView() {
-		return new KeyCustomExpressionCreatorView( this );
-	}
+  @Override
+  protected KeyCustomExpressionCreatorView createView() {
+    return new KeyCustomExpressionCreatorView(this);
+  }
 
-	public PlainStringValue getPressAnyKeyLabel() {
-		return this.pressAnyKeyLabel;
-	}
+  public PlainStringValue getPressAnyKeyLabel() {
+    return this.pressAnyKeyLabel;
+  }
 
-	public KeyState getValueState() {
-		return KeyState.getInstance();
-	}
+  public KeyState getValueState() {
+    return KeyState.getInstance();
+  }
 
-	@Override
-	protected Expression createValue() {
-		org.lgna.story.Key key = this.getValueState().getValue();
-		if( key != null ) {
-			AbstractType<?, ?, ?> type = JavaType.getInstance( org.lgna.story.Key.class );
-			AbstractField field = type.getDeclaredField( type, key.name() );
-			assert field.isPublicAccess() && field.isStatic() && field.isFinal();
-			return new FieldAccess( new TypeExpression( type ), field );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected Expression createValue() {
+    org.lgna.story.Key key = this.getValueState().getValue();
+    if (key != null) {
+      AbstractType<?, ?, ?> type = JavaType.getInstance(org.lgna.story.Key.class);
+      AbstractField field = type.getDeclaredField(type, key.name());
+      assert field.isPublicAccess() && field.isStatic() && field.isFinal();
+      return new FieldAccess(new TypeExpression(type), field);
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		if( this.getValueState().getValue() != null ) {
-			return IS_GOOD_TO_GO_STATUS;
-		} else {
-			return this.keyRequiredError;
-		}
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    if (this.getValueState().getValue() != null) {
+      return IS_GOOD_TO_GO_STATUS;
+    } else {
+      return this.keyRequiredError;
+    }
+  }
 
-	@Override
-	protected boolean isDefaultButtonDesired() {
-		return false;
-	}
+  @Override
+  protected boolean isDefaultButtonDesired() {
+    return false;
+  }
 
-	@Override
-	protected void initializeToPreviousExpression( Expression expression ) {
-		org.lgna.story.Key key = null;
-		if( expression instanceof FieldAccess ) {
-			FieldAccess fieldAccess = (FieldAccess)expression;
-			AbstractType<?, ?, ?> type = fieldAccess.getType();
-			if( type == JavaType.getInstance( org.lgna.story.Key.class ) ) {
-				AbstractField field = fieldAccess.field.getValue();
-				if( field != null ) {
-					key = Enum.valueOf( org.lgna.story.Key.class, field.getName() );
-				}
-			}
-		}
-		this.getValueState().setValueTransactionlessly( key );
-	}
+  @Override
+  protected void initializeToPreviousExpression(Expression expression) {
+    org.lgna.story.Key key = null;
+    if (expression instanceof FieldAccess) {
+      FieldAccess fieldAccess = (FieldAccess) expression;
+      AbstractType<?, ?, ?> type = fieldAccess.getType();
+      if (type == JavaType.getInstance(org.lgna.story.Key.class)) {
+        AbstractField field = fieldAccess.field.getValue();
+        if (field != null) {
+          key = Enum.valueOf(org.lgna.story.Key.class, field.getName());
+        }
+      }
+    }
+    this.getValueState().setValueTransactionlessly(key);
+  }
 }

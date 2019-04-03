@@ -54,28 +54,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ExampleFocusWindowComposite extends FocusWindowComposite {
-	private final PlainStringValue headerText = this.createStringValue( "headerText" );
-	private final PlainStringValue infoText = this.createStringValue( "infoText" );
+  private final PlainStringValue headerText = this.createStringValue("headerText");
+  private final PlainStringValue infoText = this.createStringValue("infoText");
 
-	public ExampleFocusWindowComposite() {
-		super( UUID.fromString( "dcc99461-66aa-4bdf-a3c7-9cd90ca45d04" ) );
-	}
+  public ExampleFocusWindowComposite() {
+    super(UUID.fromString("dcc99461-66aa-4bdf-a3c7-9cd90ca45d04"));
+  }
 
-	public PlainStringValue getHeaderText() {
-		return this.headerText;
-	}
+  public PlainStringValue getHeaderText() {
+    return this.headerText;
+  }
 
-	public PlainStringValue getInfoText() {
-		return this.infoText;
-	}
+  public PlainStringValue getInfoText() {
+    return this.infoText;
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	@Override
-	protected Panel createView() {
-		return new ExampleFocusWindowPane( this );
-	}
+  @Override
+  protected Panel createView() {
+    return new ExampleFocusWindowPane(this);
+  }
 }

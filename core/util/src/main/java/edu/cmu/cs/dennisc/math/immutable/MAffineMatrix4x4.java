@@ -48,20 +48,20 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
  * @author Dennis Cosgrove
  */
 public final class MAffineMatrix4x4 {
-	public MAffineMatrix4x4( MOrthogonalMatrix3x3 orientation, MPoint3 translation ) {
-		this.orientation = orientation;
-		this.translation = translation;
-	}
+  public MAffineMatrix4x4(MOrthogonalMatrix3x3 orientation, MPoint3 translation) {
+    this.orientation = orientation;
+    this.translation = translation;
+  }
 
-	public boolean isNaN() {
-		return this.orientation.isNaN() || this.translation.isNaN();
-	}
+  public boolean isNaN() {
+    return this.orientation.isNaN() || this.translation.isNaN();
+  }
 
-	public MAffineMatrix4x4 createInverse() {
-		//todo
-		return AffineMatrix4x4.createInverse( new AffineMatrix4x4( this ) ).createImmutable();
-	}
+  public MAffineMatrix4x4 createInverse() {
+    //todo
+    return AffineMatrix4x4.createInverse(new AffineMatrix4x4(this)).createImmutable();
+  }
 
-	public final MOrthogonalMatrix3x3 orientation;
-	public final MPoint3 translation;
+  public final MOrthogonalMatrix3x3 orientation;
+  public final MPoint3 translation;
 }

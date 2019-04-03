@@ -6,21 +6,21 @@ import org.lgna.story.implementation.SwimmerImp;
 
 public class DynamicFishResource extends DynamicResource<SwimmerImp, SSwimmer> implements FishResource {
 
-	public DynamicFishResource(String modelName, String resourceName) {
-		super(modelName, resourceName);
-	}
+  public DynamicFishResource(String modelName, String resourceName) {
+    super(modelName, resourceName);
+  }
 
-	public DynamicFishResource(ModelManifest modelManifest, ModelManifest.ModelVariant modelVariant) {
-		super(modelManifest, modelVariant);
-	}
+  public DynamicFishResource(ModelManifest modelManifest, ModelManifest.ModelVariant modelVariant) {
+    super(modelManifest, modelVariant);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return SwimmerResource.JOINT_ID_ROOTS;
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return SwimmerResource.JOINT_ID_ROOTS;
+  }
 
-	@Override
-	public SwimmerImp createImplementation(SSwimmer abstraction) {
-		return new SwimmerImp(abstraction, this.getImplementationAndVisualFactory());
-	}
+  @Override
+  public SwimmerImp createImplementation(SSwimmer abstraction) {
+    return new SwimmerImp(abstraction, this.getImplementationAndVisualFactory());
+  }
 }

@@ -61,59 +61,59 @@ import java.net.URL;
  * @author Dennis Cosgrove
  */
 public class HtmlViewExample {
-	public static void main( String[] args ) {
-		SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				HtmlView topView = new HtmlView();
-				String imageUrlSpec = "http://circleImage";
+  public static void main(String[] args) {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        HtmlView topView = new HtmlView();
+        String imageUrlSpec = "http://circleImage";
 
-				URL imageFromResourceUrl = HtmlViewExample.class.getResource( "images/yashAndYak.png" );
-				ImageIcon imageIconFromResource = new ImageIcon( imageFromResourceUrl );
+        URL imageFromResourceUrl = HtmlViewExample.class.getResource("images/yashAndYak.png");
+        ImageIcon imageIconFromResource = new ImageIcon(imageFromResourceUrl);
 
-				Color backgroundColor = Color.BLUE;
-				Color textColor = Color.YELLOW;
-				StringBuilder sb = new StringBuilder();
-				sb.append( "<html>" );
-				sb.append( "<body bgcolor=\"" );
-				sb.append( ColorUtilities.toHashText( backgroundColor ) );
-				sb.append( "\" text=\"" );
-				sb.append( ColorUtilities.toHashText( textColor ) );
-				sb.append( "\">" );
-				sb.append( "<h2>drawn image</h2>" );
-				sb.append( "<img src=\"" );
-				sb.append( imageUrlSpec );
-				sb.append( "\">" );
-				sb.append( "<h2>local resource image</h2>" );
-				sb.append( "<img src=\"" );
-				sb.append( imageFromResourceUrl );
-				sb.append( "\">" );
-				sb.append( "<p>text" );
-				sb.append( "</body>" );
-				sb.append( "</html>" );
+        Color backgroundColor = Color.BLUE;
+        Color textColor = Color.YELLOW;
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append("<body bgcolor=\"");
+        sb.append(ColorUtilities.toHashText(backgroundColor));
+        sb.append("\" text=\"");
+        sb.append(ColorUtilities.toHashText(textColor));
+        sb.append("\">");
+        sb.append("<h2>drawn image</h2>");
+        sb.append("<img src=\"");
+        sb.append(imageUrlSpec);
+        sb.append("\">");
+        sb.append("<h2>local resource image</h2>");
+        sb.append("<img src=\"");
+        sb.append(imageFromResourceUrl);
+        sb.append("\">");
+        sb.append("<p>text");
+        sb.append("</body>");
+        sb.append("</html>");
 
-				Image circleImage = new BufferedImage( 64, 64, BufferedImage.TYPE_3BYTE_BGR );
-				Graphics g = circleImage.getGraphics();
-				g.setColor( Color.RED );
-				g.fillOval( 8, 8, 48, 48 );
-				g.dispose();
+        Image circleImage = new BufferedImage(64, 64, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics g = circleImage.getGraphics();
+        g.setColor(Color.RED);
+        g.fillOval(8, 8, 48, 48);
+        g.dispose();
 
-				topView.addImageToCache( imageFromResourceUrl, imageIconFromResource.getImage() );
-				topView.addImageToCache( UrlUtilities.createUrl( imageUrlSpec ), circleImage );
-				topView.setText( sb.toString() );
+        topView.addImageToCache(imageFromResourceUrl, imageIconFromResource.getImage());
+        topView.addImageToCache(UrlUtilities.createUrl(imageUrlSpec), circleImage);
+        topView.setText(sb.toString());
 
-				HtmlView bottomView = new HtmlView();
-				bottomView.setTextFromUrlLater( UrlUtilities.createUrl( "http://www.cs.cmu.edu/~dennisc" ) );
-				bottomView.getHtmlDocument().getStyleSheet().addRule( "A {color:" + ColorUtilities.toHashText( Color.GREEN.darker() ) + "}" );
+        HtmlView bottomView = new HtmlView();
+        bottomView.setTextFromUrlLater(UrlUtilities.createUrl("http://www.cs.cmu.edu/~dennisc"));
+        bottomView.getHtmlDocument().getStyleSheet().addRule("A {color:" + ColorUtilities.toHashText(Color.GREEN.darker()) + "}");
 
-				SimpleApplication app = new SimpleApplication();
-				DocumentFrame documentFrame = app.getDocumentFrame();
-				Frame frame = documentFrame.getFrame();
-				frame.getContentPane().addPageStartComponent( topView );
-				frame.getContentPane().addPageEndComponent( bottomView );
-				frame.setSize( 1000, 800 );
-				frame.setVisible( true );
-			}
-		} );
-	}
+        SimpleApplication app = new SimpleApplication();
+        DocumentFrame documentFrame = app.getDocumentFrame();
+        Frame frame = documentFrame.getFrame();
+        frame.getContentPane().addPageStartComponent(topView);
+        frame.getContentPane().addPageEndComponent(bottomView);
+        frame.setSize(1000, 800);
+        frame.setVisible(true);
+      }
+    });
+  }
 }

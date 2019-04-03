@@ -60,95 +60,95 @@ import java.util.Map;
  *
  */
 public class ObjectMarkerImp extends MarkerImp {
-	public ObjectMarkerImp( SThingMarker abstraction ) {
-		super( abstraction );
-	}
+  public ObjectMarkerImp(SThingMarker abstraction) {
+    super(abstraction);
+  }
 
-	private Arrow createArrow( double unit, double lengthFactor, Cylinder.BottomToTopAxis bottomToTopAxis ) {
-		double lengthCylinder = unit * lengthFactor * 0.8;
-		double radiusCylinder = unit * 0.05;
-		double lengthCone = unit * lengthFactor * 0.3;
-		double radiusCone = radiusCylinder * 3.0;
-		return new Arrow( lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, this.getSgPaintAppearances()[ 0 ], axisToSGAppearanceMap.get( bottomToTopAxis ), false );
-	}
+  private Arrow createArrow(double unit, double lengthFactor, Cylinder.BottomToTopAxis bottomToTopAxis) {
+    double lengthCylinder = unit * lengthFactor * 0.8;
+    double radiusCylinder = unit * 0.05;
+    double lengthCone = unit * lengthFactor * 0.3;
+    double radiusCone = radiusCylinder * 3.0;
+    return new Arrow(lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, this.getSgPaintAppearances()[0], axisToSGAppearanceMap.get(bottomToTopAxis), false);
+  }
 
-	@Override
-	protected void initializeData() {
-		this.axisToSGAppearanceMap = Maps.newHashMap();
-	}
+  @Override
+  protected void initializeData() {
+    this.axisToSGAppearanceMap = Maps.newHashMap();
+  }
 
-	@Override
-	protected void createVisuals() {
-		final double scale = 0.3;
+  @Override
+  protected void createVisuals() {
+    final double scale = 0.3;
 
-		this.axisToSGAppearanceMap.clear();
-		createAxes( 2.0 * scale, scale );
-	}
+    this.axisToSGAppearanceMap.clear();
+    createAxes(2.0 * scale, scale);
+  }
 
-	private void createAxes( double unitLength, double forwardFactor ) {
-		this.sgAppearance = new SimpleAppearance();
-		this.sgAppearances = new SimpleAppearance[] { sgAppearance };
-		this.sgRedAppearance = new SimpleAppearance();
-		this.sgGreenAppearance = new SimpleAppearance();
-		this.sgBlueAppearance = new SimpleAppearance();
-		this.sgWhiteAppearance = new SimpleAppearance();
-		this.opacityAppearances = new SimpleAppearance[] { sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
+  private void createAxes(double unitLength, double forwardFactor) {
+    this.sgAppearance = new SimpleAppearance();
+    this.sgAppearances = new SimpleAppearance[] {sgAppearance};
+    this.sgRedAppearance = new SimpleAppearance();
+    this.sgGreenAppearance = new SimpleAppearance();
+    this.sgBlueAppearance = new SimpleAppearance();
+    this.sgWhiteAppearance = new SimpleAppearance();
+    this.opacityAppearances = new SimpleAppearance[] {sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance};
 
-		sgRedAppearance.setDiffuseColor( Color4f.RED );
-		sgGreenAppearance.setDiffuseColor( Color4f.GREEN );
-		sgBlueAppearance.setDiffuseColor( Color4f.BLUE );
-		sgWhiteAppearance.setDiffuseColor( Color4f.WHITE );
+    sgRedAppearance.setDiffuseColor(Color4f.RED);
+    sgGreenAppearance.setDiffuseColor(Color4f.GREEN);
+    sgBlueAppearance.setDiffuseColor(Color4f.BLUE);
+    sgWhiteAppearance.setDiffuseColor(Color4f.WHITE);
 
-		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.POSITIVE_X, sgRedAppearance );
-		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.POSITIVE_Y, sgGreenAppearance );
-		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.POSITIVE_Z, sgBlueAppearance );
-		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.NEGATIVE_Z, sgWhiteAppearance );
+    axisToSGAppearanceMap.put(Cylinder.BottomToTopAxis.POSITIVE_X, sgRedAppearance);
+    axisToSGAppearanceMap.put(Cylinder.BottomToTopAxis.POSITIVE_Y, sgGreenAppearance);
+    axisToSGAppearanceMap.put(Cylinder.BottomToTopAxis.POSITIVE_Z, sgBlueAppearance);
+    axisToSGAppearanceMap.put(Cylinder.BottomToTopAxis.NEGATIVE_Z, sgWhiteAppearance);
 
-		Arrow sgXAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_X );
-		Arrow sgYAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Y );
-		Arrow sgZAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Z );
-		Arrow sgFAxis = createArrow( unitLength, 2.0, Cylinder.BottomToTopAxis.NEGATIVE_Z );
+    Arrow sgXAxis = createArrow(unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_X);
+    Arrow sgYAxis = createArrow(unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Y);
+    Arrow sgZAxis = createArrow(unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Z);
+    Arrow sgFAxis = createArrow(unitLength, 2.0, Cylinder.BottomToTopAxis.NEGATIVE_Z);
 
-		sgXAxis.setParent( this.getSgComposite() );
-		sgYAxis.setParent( this.getSgComposite() );
-		sgZAxis.setParent( this.getSgComposite() );
-		sgFAxis.setParent( this.getSgComposite() );
+    sgXAxis.setParent(this.getSgComposite());
+    sgYAxis.setParent(this.getSgComposite());
+    sgZAxis.setParent(this.getSgComposite());
+    sgFAxis.setParent(this.getSgComposite());
 
-		List<Visual> axisVisuals = Lists.newLinkedList();
+    List<Visual> axisVisuals = Lists.newLinkedList();
 
-		Collections.addAll( axisVisuals, sgXAxis.getVisuals() );
-		Collections.addAll( axisVisuals, sgYAxis.getVisuals() );
-		Collections.addAll( axisVisuals, sgZAxis.getVisuals() );
-		Collections.addAll( axisVisuals, sgFAxis.getVisuals() );
+    Collections.addAll(axisVisuals, sgXAxis.getVisuals());
+    Collections.addAll(axisVisuals, sgYAxis.getVisuals());
+    Collections.addAll(axisVisuals, sgZAxis.getVisuals());
+    Collections.addAll(axisVisuals, sgFAxis.getVisuals());
 
-		this.sgVisuals = axisVisuals.toArray( new Visual[ axisVisuals.size() ] );
+    this.sgVisuals = axisVisuals.toArray(new Visual[axisVisuals.size()]);
 
-	}
+  }
 
-	@Override
-	protected final SimpleAppearance[] getSgPaintAppearances() {
-		return this.sgAppearances;
-	}
+  @Override
+  protected final SimpleAppearance[] getSgPaintAppearances() {
+    return this.sgAppearances;
+  }
 
-	@Override
-	protected final SimpleAppearance[] getSgOpacityAppearances() {
-		return this.opacityAppearances;
-	}
+  @Override
+  protected final SimpleAppearance[] getSgOpacityAppearances() {
+    return this.opacityAppearances;
+  }
 
-	@Override
-	public Visual[] getSgVisuals() {
-		return this.sgVisuals;
-	}
+  @Override
+  public Visual[] getSgVisuals() {
+    return this.sgVisuals;
+  }
 
-	private Map<Cylinder.BottomToTopAxis, SimpleAppearance> axisToSGAppearanceMap;
+  private Map<Cylinder.BottomToTopAxis, SimpleAppearance> axisToSGAppearanceMap;
 
-	private Visual[] sgVisuals;
-	private SimpleAppearance sgAppearance;
-	private SimpleAppearance[] sgAppearances;
-	private SimpleAppearance sgRedAppearance;
-	private SimpleAppearance sgGreenAppearance;
-	private SimpleAppearance sgBlueAppearance;
-	private SimpleAppearance sgWhiteAppearance;
+  private Visual[] sgVisuals;
+  private SimpleAppearance sgAppearance;
+  private SimpleAppearance[] sgAppearances;
+  private SimpleAppearance sgRedAppearance;
+  private SimpleAppearance sgGreenAppearance;
+  private SimpleAppearance sgBlueAppearance;
+  private SimpleAppearance sgWhiteAppearance;
 
-	private SimpleAppearance[] opacityAppearances;
+  private SimpleAppearance[] opacityAppearances;
 }

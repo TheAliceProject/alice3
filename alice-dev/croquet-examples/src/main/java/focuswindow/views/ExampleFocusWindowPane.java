@@ -54,12 +54,12 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class ExampleFocusWindowPane extends MigPanel {
-	public ExampleFocusWindowPane( ExampleFocusWindowComposite composite ) {
-		super( composite );
-		this.addComponent( composite.getHeaderText().createLabel( 1.4f, TextWeight.BOLD ), "wrap" );
-		this.addComponent( Separator.createInstanceSeparatingTopFromBottom(), "growx, wrap" );
-		this.addComponent( composite.getInfoText().createLabel() );
-		this.setBackgroundColor( new Color( 221, 221, 191 ) );
-		this.setBorder( BorderFactory.createMatteBorder( 1, 1, 1, 1, Color.BLACK ) );
-	}
+  public ExampleFocusWindowPane(ExampleFocusWindowComposite composite) {
+    super(composite);
+    this.addComponent(composite.getHeaderText().createLabel(1.4f, TextWeight.BOLD), "wrap");
+    this.addComponent(Separator.createInstanceSeparatingTopFromBottom(), "growx, wrap");
+    this.addComponent(composite.getInfoText().createLabel());
+    this.setBackgroundColor(new Color(221, 221, 191));
+    this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
+  }
 }

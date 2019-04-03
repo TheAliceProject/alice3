@@ -47,9 +47,9 @@ package org.lgna.project.annotations;
  * @author Dennis Cosgrove
  */
 public interface IntegerValueDetails extends ValueDetails<Integer> {
-	public Integer getMinimumValue();
+  public Integer getMinimumValue();
 
-	public Integer getMaximumValue();
+  public Integer getMaximumValue();
 
-	public int[] getLiterals();
+  public int[] getLiterals();
 }

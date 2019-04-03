@@ -48,19 +48,19 @@ import java.awt.geom.Ellipse2D;
  * @author Dennis Cosgrove
  */
 public class Ellipse extends Shape {
-	private Ellipse2D m_ellipse;
+  private Ellipse2D m_ellipse;
 
-	public Ellipse( double xHalfLength, double yHalfLength ) {
-		m_ellipse = new Ellipse2D.Double( -xHalfLength, -yHalfLength, xHalfLength + xHalfLength, yHalfLength + yHalfLength );
-	}
+  public Ellipse(double xHalfLength, double yHalfLength) {
+    m_ellipse = new Ellipse2D.Double(-xHalfLength, -yHalfLength, xHalfLength + xHalfLength, yHalfLength + yHalfLength);
+  }
 
-	@Override
-	protected java.awt.Shape getDrawShape() {
-		return m_ellipse;
-	}
+  @Override
+  protected java.awt.Shape getDrawShape() {
+    return m_ellipse;
+  }
 
-	@Override
-	protected java.awt.Shape getFillShape() {
-		return m_ellipse;
-	}
+  @Override
+  protected java.awt.Shape getFillShape() {
+    return m_ellipse;
+  }
 }

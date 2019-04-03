@@ -48,39 +48,38 @@ import org.lgna.common.LgnaIllegalKeyArgumentException;
  * @author dculyba
  *
  */
-public class DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory
-		extends DurationAnimationStyleArgumentFactory {
+public class DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory extends DurationAnimationStyleArgumentFactory {
 
-	protected DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory() {
-		super();
-	}
+  protected DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory() {
+    super();
+  }
 
-	public static TextColor fontColor( Color color ) {
-		return new TextColor( color );
-	}
+  public static TextColor fontColor(Color color) {
+    return new TextColor(color);
+  }
 
-	public static BubbleFillColor bubbleFillColor( Color color ) {
-		return new BubbleFillColor( color );
-	}
+  public static BubbleFillColor bubbleFillColor(Color color) {
+    return new BubbleFillColor(color);
+  }
 
-	public static BubbleOutlineColor bubbleOutlineColor( Color color ) {
-		return new BubbleOutlineColor( color );
-	}
+  public static BubbleOutlineColor bubbleOutlineColor(Color color) {
+    return new BubbleOutlineColor(color);
+  }
 
-	public static TextFont fontType( TextFont fontType ) {
-		return fontType;
-	}
+  public static TextFont fontType(TextFont fontType) {
+    return fontType;
+  }
 
-	public static TextStyle textStyle( TextStyle textStyle ) {
-		return textStyle;
-	}
+  public static TextStyle textStyle(TextStyle textStyle) {
+    return textStyle;
+  }
 
-	public static BubblePosition bubblePosition( BubblePosition bubblePosition ) {
-		return bubblePosition;
-	}
+  public static BubblePosition bubblePosition(BubblePosition bubblePosition) {
+    return bubblePosition;
+  }
 
-	public static TextScale textScale( Number textScale ) {
-		LgnaIllegalKeyArgumentException.checkArgumentIsPositive( textScale, "textScale" );
-		return new TextScale( textScale );
-	}
+  public static TextScale textScale(Number textScale) {
+    LgnaIllegalKeyArgumentException.checkArgumentIsPositive(textScale, "textScale");
+    return new TextScale(textScale);
+  }
 }

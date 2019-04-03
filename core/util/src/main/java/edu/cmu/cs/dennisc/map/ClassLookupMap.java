@@ -49,34 +49,34 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class ClassLookupMap<E> {
-	private Map<Class<?>, E> m_map = new HashMap<Class<?>, E>();
+  private Map<Class<?>, E> m_map = new HashMap<Class<?>, E>();
 
-	public E get( Class<?> key ) {
-		Class<?> k;
-		k = key;
-		while( k != null ) {
-			E value = m_map.get( k );
-			if( value != null ) {
-				return value;
-			}
-			key = key.getSuperclass();
-		}
+  public E get(Class<?> key) {
+    Class<?> k;
+    k = key;
+    while (k != null) {
+      E value = m_map.get(k);
+      if (value != null) {
+        return value;
+      }
+      key = key.getSuperclass();
+    }
 
-		k = key;
-		while( k != null ) {
-			for( Class<?> i : k.getInterfaces() ) {
-				E value = m_map.get( i );
-				if( value != null ) {
-					return value;
-				}
-			}
-			key = key.getSuperclass();
-		}
+    k = key;
+    while (k != null) {
+      for (Class<?> i : k.getInterfaces()) {
+        E value = m_map.get(i);
+        if (value != null) {
+          return value;
+        }
+      }
+      key = key.getSuperclass();
+    }
 
-		return null;
-	}
+    return null;
+  }
 
-	public void put( Class<?> key, E value ) {
-		m_map.put( key, value );
-	}
+  public void put(Class<?> key, E value) {
+    m_map.put(key, value);
+  }
 }

@@ -48,66 +48,66 @@ import org.lgna.story.resources.sims2.Hair;
  * @author Dennis Cosgrove
  */
 public final class HairClsHatNameCombo {
-	private final Class<? extends Hair> hairCls;
-	private final String hatName;
+  private final Class<? extends Hair> hairCls;
+  private final String hatName;
 
-	public HairClsHatNameCombo( Class<? extends Hair> hairCls, String hatName ) {
-		assert hairCls != null;
-		this.hairCls = hairCls;
-		this.hatName = hatName;
-	}
+  public HairClsHatNameCombo(Class<? extends Hair> hairCls, String hatName) {
+    assert hairCls != null;
+    this.hairCls = hairCls;
+    this.hatName = hatName;
+  }
 
-	public Class<? extends Hair> getHairCls() {
-		return this.hairCls;
-	}
+  public Class<? extends Hair> getHairCls() {
+    return this.hairCls;
+  }
 
-	public String getHatName() {
-		return this.hatName;
-	}
+  public String getHatName() {
+    return this.hatName;
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( this == obj ) {
-			return true;
-		}
-		if( obj instanceof HairClsHatNameCombo ) {
-			HairClsHatNameCombo other = (HairClsHatNameCombo)obj;
-			if( this.hairCls.equals( other.hairCls ) ) {
-				if( this.hatName != null ) {
-					if( other.hatName != null ) {
-						return this.hatName.contentEquals( other.hatName );
-					} else {
-						return false;
-					}
-				} else {
-					if( other.hatName != null ) {
-						return false;
-					} else {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj instanceof HairClsHatNameCombo) {
+      HairClsHatNameCombo other = (HairClsHatNameCombo) obj;
+      if (this.hairCls.equals(other.hairCls)) {
+        if (this.hatName != null) {
+          if (other.hatName != null) {
+            return this.hatName.contentEquals(other.hatName);
+          } else {
+            return false;
+          }
+        } else {
+          if (other.hatName != null) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
 
-	@Override
-	public int hashCode() {
-		int rv = 17;
-		rv = ( 37 * rv ) + this.hairCls.hashCode();
-		rv = ( 37 * rv ) + ( this.hatName != null ? this.hatName.hashCode() : 0 );
-		return rv;
-	}
+  @Override
+  public int hashCode() {
+    int rv = 17;
+    rv = (37 * rv) + this.hairCls.hashCode();
+    rv = (37 * rv) + (this.hatName != null ? this.hatName.hashCode() : 0);
+    return rv;
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( "[" );
-		sb.append( this.hairCls.getName() );
-		sb.append( ";" );
-		sb.append( this.hatName );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getName());
+    sb.append("[");
+    sb.append(this.hairCls.getName());
+    sb.append(";");
+    sb.append(this.hatName);
+    sb.append("]");
+    return sb.toString();
+  }
 }

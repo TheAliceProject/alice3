@@ -57,26 +57,26 @@ import java.util.UUID;
  * @author dculyba
  */
 public class AddGroundManagedFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
-	private final CustomItemState<Expression> paintState = this.createInitialPropertyValueExpressionState( "paintState", SGround.SurfaceAppearance.GRASS, SGround.class, "setPaint", Paint.class, SetPaint.Detail[].class );
+  private final CustomItemState<Expression> paintState = this.createInitialPropertyValueExpressionState("paintState", SGround.SurfaceAppearance.GRASS, SGround.class, "setPaint", Paint.class, SetPaint.Detail[].class);
 
-	public CustomItemState<Expression> getPaintState() {
-		return this.paintState;
-	}
+  public CustomItemState<Expression> getPaintState() {
+    return this.paintState;
+  }
 
-	private static class SingletonHolder {
-		private static AddGroundManagedFieldComposite instance = new AddGroundManagedFieldComposite();
-	}
+  private static class SingletonHolder {
+    private static AddGroundManagedFieldComposite instance = new AddGroundManagedFieldComposite();
+  }
 
-	public static AddGroundManagedFieldComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddGroundManagedFieldComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	@Override
-	protected String generateName() {
-		return AliceResourceUtilties.getLocalizedTag("ground", JComponent.getDefaultLocale());
-	}
+  @Override
+  protected String generateName() {
+    return AliceResourceUtilties.getLocalizedTag("ground", JComponent.getDefaultLocale());
+  }
 
-	private AddGroundManagedFieldComposite() {
-		super( UUID.fromString( "50e6e2a7-9857-4ea3-9d98-f1fa16d628f1" ), SGround.class );
-	}
+  private AddGroundManagedFieldComposite() {
+    super(UUID.fromString("50e6e2a7-9857-4ea3-9d98-f1fa16d628f1"), SGround.class);
+  }
 }

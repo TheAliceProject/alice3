@@ -53,12 +53,12 @@ import javax.swing.JList;
  * @author Dennis Cosgrove
  */
 public class HairColorNameListCellRenderer extends ListCellRenderer<HairColorName> {
-	@Override
-	protected JLabel getListCellRendererComponent( JLabel rv, JList list, HairColorName value, int index, boolean isSelected, boolean cellHasFocus ) {
-		Icon icon = value.getIcon();
-		rv.setIcon( icon );
-		String text = icon != null ? null : value.name();
-		rv.setText( text );
-		return rv;
-	}
+  @Override
+  protected JLabel getListCellRendererComponent(JLabel rv, JList list, HairColorName value, int index, boolean isSelected, boolean cellHasFocus) {
+    Icon icon = value.getIcon();
+    rv.setIcon(icon);
+    String text = icon != null ? null : value.name();
+    rv.setText(text);
+    return rv;
+  }
 }

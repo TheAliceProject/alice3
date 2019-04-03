@@ -79,491 +79,476 @@ import javax.swing.AbstractButton;
 
 public class ModelSizePropertyController extends AbstractAdapterController<Dimension3> {
 
-	private State.ValueListener<Boolean> linkStateValueObserver = new State.ValueListener<Boolean>() {
-		@Override
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
-		}
+  private State.ValueListener<Boolean> linkStateValueObserver = new State.ValueListener<Boolean>() {
+    @Override
+    public void changing(State<Boolean> state, Boolean prevValue, Boolean nextValue) {
+    }
 
-		@Override
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
-			ModelSizePropertyController.this.updateUIFromLinkState( state, prevValue, nextValue );
-		}
-	};
+    @Override
+    public void changed(State<Boolean> state, Boolean prevValue, Boolean nextValue) {
+      ModelSizePropertyController.this.updateUIFromLinkState(state, prevValue, nextValue);
+    }
+  };
 
-	private ActionListener valueChangeListener;
+  private ActionListener valueChangeListener;
 
-	private DoubleTextField widthField;
-	private DoubleTextField heightField;
-	private DoubleTextField depthField;
+  private DoubleTextField widthField;
+  private DoubleTextField heightField;
+  private DoubleTextField depthField;
 
-	private Label widthLabel;
-	private Label heightLabel;
-	private Label depthLabel;
+  private Label widthLabel;
+  private Label heightLabel;
+  private Label depthLabel;
 
-	private Button resetButton;
+  private Button resetButton;
 
-	private BooleanStateButton<AbstractButton> linkAllButton;
-	private BooleanStateButton<AbstractButton> linkXYButton;
-	private BooleanStateButton<AbstractButton> linkXZButton;
-	private BooleanStateButton<AbstractButton> linkYZButton;
+  private BooleanStateButton<AbstractButton> linkAllButton;
+  private BooleanStateButton<AbstractButton> linkXYButton;
+  private BooleanStateButton<AbstractButton> linkXZButton;
+  private BooleanStateButton<AbstractButton> linkYZButton;
 
-	private boolean hasLinkAll = false;
-	private boolean hasLinkXY = false;
-	private boolean hasLinkXZ = false;
-	private boolean hasLinkYZ = false;
+  private boolean hasLinkAll = false;
+  private boolean hasLinkXY = false;
+  private boolean hasLinkXZ = false;
+  private boolean hasLinkYZ = false;
 
-	private boolean isUpdatingState = false;
-	private boolean doUpdateOnAdapter = true;
+  private boolean isUpdatingState = false;
+  private boolean doUpdateOnAdapter = true;
 
-	private final int GLUE_X_POS = 8;
-	private final int RESET_X_POS = 7;
-	private final int SCALE_ALL_X_POS = 6;
-	private final int SCALE_XZ_X_POS = 5;
-	private final int SCALE_YZ_X_POS = 4;
-	private final int SCALE_XY_X_POS = 3;
+  private final int GLUE_X_POS = 8;
+  private final int RESET_X_POS = 7;
+  private final int SCALE_ALL_X_POS = 6;
+  private final int SCALE_XZ_X_POS = 5;
+  private final int SCALE_YZ_X_POS = 4;
+  private final int SCALE_XY_X_POS = 3;
 
-	public ModelSizePropertyController( ModelSizeAdapter propertyAdapter ) {
-		super( propertyAdapter );
-		IsAllScaleLinkedState.getInstance().addValueListener( linkStateValueObserver );
-		IsXYScaleLinkedState.getInstance().addValueListener( linkStateValueObserver );
-		IsXZScaleLinkedState.getInstance().addValueListener( linkStateValueObserver );
-		IsYZScaleLinkedState.getInstance().addValueListener( linkStateValueObserver );
-	}
+  public ModelSizePropertyController(ModelSizeAdapter propertyAdapter) {
+    super(propertyAdapter);
+    IsAllScaleLinkedState.getInstance().addValueListener(linkStateValueObserver);
+    IsXYScaleLinkedState.getInstance().addValueListener(linkStateValueObserver);
+    IsXZScaleLinkedState.getInstance().addValueListener(linkStateValueObserver);
+    IsYZScaleLinkedState.getInstance().addValueListener(linkStateValueObserver);
+  }
 
-	@Override
-	public Class<?> getPropertyType() {
-		return SModel.class;
-	}
+  @Override
+  public Class<?> getPropertyType() {
+    return SModel.class;
+  }
 
-	@Override
-	protected void initializeComponents() {
-		super.initializeComponents();
-		this.valueChangeListener = new ActionListener() {
+  @Override
+  protected void initializeComponents() {
+    super.initializeComponents();
+    this.valueChangeListener = new ActionListener() {
 
-			@Override
-			public void actionPerformed( ActionEvent e ) {
-				ModelSizePropertyController.this.updateAdapterFromUI( e );
-			}
-		};
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        ModelSizePropertyController.this.updateAdapterFromUI(e);
+      }
+    };
 
-		String widthString = AbstractPropertyAdapter.getLocalizedString( "Width" );
-		String heightString = AbstractPropertyAdapter.getLocalizedString( "Height" );
-		String depthString = AbstractPropertyAdapter.getLocalizedString( "Depth" );
-		this.widthLabel = new Label( widthString + ":" );
-		this.heightLabel = new Label( heightString + ":" );
-		this.depthLabel = new Label( depthString + ":" );
+    String widthString = AbstractPropertyAdapter.getLocalizedString("Width");
+    String heightString = AbstractPropertyAdapter.getLocalizedString("Height");
+    String depthString = AbstractPropertyAdapter.getLocalizedString("Depth");
+    this.widthLabel = new Label(widthString + ":");
+    this.heightLabel = new Label(heightString + ":");
+    this.depthLabel = new Label(depthString + ":");
 
-		this.widthField = new DoubleTextField( 3 );
-		this.widthField.addActionListener( this.valueChangeListener );
+    this.widthField = new DoubleTextField(3);
+    this.widthField.addActionListener(this.valueChangeListener);
 
-		this.heightField = new DoubleTextField( 3 );
-		this.heightField.addActionListener( this.valueChangeListener );
+    this.heightField = new DoubleTextField(3);
+    this.heightField.addActionListener(this.valueChangeListener);
 
-		this.depthField = new DoubleTextField( 3 );
-		this.depthField.addActionListener( this.valueChangeListener );
+    this.depthField = new DoubleTextField(3);
+    this.depthField.addActionListener(this.valueChangeListener);
 
-		//		this.linkXYButton = new LinkScaleButton( IsXYScaleLinkedState.getInstance(), IsXYScaleLinkedState.class.getResource( "images/subScaleLinked.png" ), IsXYScaleLinkedState.class.getResource( "images/subScaleUnlinked.png" ) );
-		//		this.linkXZButton = new LinkScaleButton( IsXZScaleLinkedState.getInstance(), IsXZScaleLinkedState.class.getResource( "images/subScaleLinked_long.png" ), IsXZScaleLinkedState.class.getResource( "images/subScaleUnlinked_long.png" ) );
-		//		this.linkYZButton = new LinkScaleButton( IsYZScaleLinkedState.getInstance(), IsYZScaleLinkedState.class.getResource( "images/subScaleLinked.png" ), IsYZScaleLinkedState.class.getResource( "images/subScaleUnlinked.png" ) );
-		//		this.linkAllButton = new LinkScaleButton( IsAllScaleLinkedState.getInstance() );
-		this.linkXYButton = new LinkScaleButton( IsXYScaleLinkedState.getInstance() );
-		this.linkXZButton = new LinkScaleButton( IsXZScaleLinkedState.getInstance() );
-		this.linkYZButton = new LinkScaleButton( IsYZScaleLinkedState.getInstance() );
-		this.linkAllButton = new LinkScaleButton( IsAllScaleLinkedState.getInstance() );
+    //    this.linkXYButton = new LinkScaleButton( IsXYScaleLinkedState.getInstance(), IsXYScaleLinkedState.class.getResource( "images/subScaleLinked.png" ), IsXYScaleLinkedState.class.getResource( "images/subScaleUnlinked.png" ) );
+    //    this.linkXZButton = new LinkScaleButton( IsXZScaleLinkedState.getInstance(), IsXZScaleLinkedState.class.getResource( "images/subScaleLinked_long.png" ), IsXZScaleLinkedState.class.getResource( "images/subScaleUnlinked_long.png" ) );
+    //    this.linkYZButton = new LinkScaleButton( IsYZScaleLinkedState.getInstance(), IsYZScaleLinkedState.class.getResource( "images/subScaleLinked.png" ), IsYZScaleLinkedState.class.getResource( "images/subScaleUnlinked.png" ) );
+    //    this.linkAllButton = new LinkScaleButton( IsAllScaleLinkedState.getInstance() );
+    this.linkXYButton = new LinkScaleButton(IsXYScaleLinkedState.getInstance());
+    this.linkXZButton = new LinkScaleButton(IsXZScaleLinkedState.getInstance());
+    this.linkYZButton = new LinkScaleButton(IsYZScaleLinkedState.getInstance());
+    this.linkAllButton = new LinkScaleButton(IsAllScaleLinkedState.getInstance());
 
-		this.addComponent( this.widthLabel, new GridBagConstraints(
-				0, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.addComponent( new SwingAdapter( this.widthField ), new GridBagConstraints(
-				1, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.addComponent( this.heightLabel, new GridBagConstraints(
-				0, //gridX
-				1, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.addComponent( new SwingAdapter( this.heightField ), new GridBagConstraints(
-				1, //gridX
-				1, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.addComponent( this.depthLabel, new GridBagConstraints(
-				0, //gridX
-				2, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.addComponent( new SwingAdapter( this.depthField ), new GridBagConstraints(
-				1, //gridX
-				2, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.addComponent( BoxUtilities.createHorizontalGlue(), new GridBagConstraints(
-				GLUE_X_POS, //gridX
-				0, //gridY
-				1, //gridWidth
-				3, //gridHeight
-				1.0, //weightX
-				1.0, //weightY
-				GridBagConstraints.CENTER, //anchor
-				GridBagConstraints.BOTH, //fill
-				new Insets( 0, 0, 0, 0 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
+    this.addComponent(this.widthLabel, new GridBagConstraints(0, //gridX
+                                                              0, //gridY
+                                                              1, //gridWidth
+                                                              1, //gridHeight
+                                                              0.0, //weightX
+                                                              0.0, //weightY
+                                                              GridBagConstraints.EAST, //anchor
+                                                              GridBagConstraints.NONE, //fill
+                                                              new Insets(2, 2, 2, 2), //insets
+                                                              0, //ipadX
+                                                              0) //ipadY
+    );
+    this.addComponent(new SwingAdapter(this.widthField), new GridBagConstraints(1, //gridX
+                                                                                0, //gridY
+                                                                                1, //gridWidth
+                                                                                1, //gridHeight
+                                                                                0.0, //weightX
+                                                                                0.0, //weightY
+                                                                                GridBagConstraints.WEST, //anchor
+                                                                                GridBagConstraints.NONE, //fill
+                                                                                new Insets(2, 2, 2, 2), //insets
+                                                                                0, //ipadX
+                                                                                0) //ipadY
+    );
+    this.addComponent(this.heightLabel, new GridBagConstraints(0, //gridX
+                                                               1, //gridY
+                                                               1, //gridWidth
+                                                               1, //gridHeight
+                                                               0.0, //weightX
+                                                               0.0, //weightY
+                                                               GridBagConstraints.EAST, //anchor
+                                                               GridBagConstraints.NONE, //fill
+                                                               new Insets(2, 2, 2, 2), //insets
+                                                               0, //ipadX
+                                                               0) //ipadY
+    );
+    this.addComponent(new SwingAdapter(this.heightField), new GridBagConstraints(1, //gridX
+                                                                                 1, //gridY
+                                                                                 1, //gridWidth
+                                                                                 1, //gridHeight
+                                                                                 0.0, //weightX
+                                                                                 0.0, //weightY
+                                                                                 GridBagConstraints.WEST, //anchor
+                                                                                 GridBagConstraints.NONE, //fill
+                                                                                 new Insets(2, 2, 2, 2), //insets
+                                                                                 0, //ipadX
+                                                                                 0) //ipadY
+    );
+    this.addComponent(this.depthLabel, new GridBagConstraints(0, //gridX
+                                                              2, //gridY
+                                                              1, //gridWidth
+                                                              1, //gridHeight
+                                                              0.0, //weightX
+                                                              0.0, //weightY
+                                                              GridBagConstraints.EAST, //anchor
+                                                              GridBagConstraints.NONE, //fill
+                                                              new Insets(2, 2, 2, 2), //insets
+                                                              0, //ipadX
+                                                              0) //ipadY
+    );
+    this.addComponent(new SwingAdapter(this.depthField), new GridBagConstraints(1, //gridX
+                                                                                2, //gridY
+                                                                                1, //gridWidth
+                                                                                1, //gridHeight
+                                                                                0.0, //weightX
+                                                                                0.0, //weightY
+                                                                                GridBagConstraints.WEST, //anchor
+                                                                                GridBagConstraints.NONE, //fill
+                                                                                new Insets(2, 2, 2, 2), //insets
+                                                                                0, //ipadX
+                                                                                0) //ipadY
+    );
+    this.addComponent(BoxUtilities.createHorizontalGlue(), new GridBagConstraints(GLUE_X_POS, //gridX
+                                                                                  0, //gridY
+                                                                                  1, //gridWidth
+                                                                                  3, //gridHeight
+                                                                                  1.0, //weightX
+                                                                                  1.0, //weightY
+                                                                                  GridBagConstraints.CENTER, //anchor
+                                                                                  GridBagConstraints.BOTH, //fill
+                                                                                  new Insets(0, 0, 0, 0), //insets
+                                                                                  0, //ipadX
+                                                                                  0) //ipadY
+    );
 
-	}
+  }
 
-	@Override
-	protected void updateUIFromNewAdapter() {
-		super.updateUIFromNewAdapter();
+  @Override
+  protected void updateUIFromNewAdapter() {
+    super.updateUIFromNewAdapter();
 
-		this.removeComponent( this.linkAllButton );
-		this.removeComponent( this.linkXYButton );
-		this.removeComponent( this.linkXZButton );
-		this.removeComponent( this.linkYZButton );
+    this.removeComponent(this.linkAllButton);
+    this.removeComponent(this.linkXYButton);
+    this.removeComponent(this.linkXZButton);
+    this.removeComponent(this.linkYZButton);
 
-		hasLinkAll = false;
-		hasLinkXY = false;
-		hasLinkXZ = false;
-		hasLinkYZ = false;
-		boolean hasX = false;
-		boolean hasY = false;
-		boolean hasZ = false;
-		boolean hasIndependentX = false;
-		boolean hasIndependentY = false;
-		boolean hasIndependentZ = false;
+    hasLinkAll = false;
+    hasLinkXY = false;
+    hasLinkXZ = false;
+    hasLinkYZ = false;
+    boolean hasX = false;
+    boolean hasY = false;
+    boolean hasZ = false;
+    boolean hasIndependentX = false;
+    boolean hasIndependentY = false;
+    boolean hasIndependentZ = false;
 
-		if( ( this.propertyAdapter != null ) && ( this.propertyAdapter.getInstance() != null ) ) {
-			ModelImp baseModel = (ModelImp)this.propertyAdapter.getInstance();
-			for( Resizer r : baseModel.getResizers() ) {
-				if( r == Resizer.UNIFORM ) {
-					hasLinkAll = true;
-					hasX = true;
-					hasY = true;
-					hasZ = true;
-				} else if( r == Resizer.XY_PLANE ) {
-					hasLinkXY = true;
-					hasX = true;
-					hasY = true;
-				} else if( r == Resizer.XZ_PLANE ) {
-					hasLinkXZ = true;
-					hasX = true;
-					hasZ = true;
-				} else if( r == Resizer.YZ_PLANE ) {
-					hasLinkYZ = true;
-					hasY = true;
-					hasZ = true;
-				} else if( r == Resizer.X_AXIS ) {
-					hasX = true;
-					hasIndependentX = true;
-				} else if( r == Resizer.Y_AXIS ) {
-					hasY = true;
-					hasIndependentY = true;
-				} else if( r == Resizer.Z_AXIS ) {
-					hasZ = true;
-					hasIndependentZ = true;
-				}
-			}
-		}
+    if ((this.propertyAdapter != null) && (this.propertyAdapter.getInstance() != null)) {
+      ModelImp baseModel = (ModelImp) this.propertyAdapter.getInstance();
+      for (Resizer r : baseModel.getResizers()) {
+        if (r == Resizer.UNIFORM) {
+          hasLinkAll = true;
+          hasX = true;
+          hasY = true;
+          hasZ = true;
+        } else if (r == Resizer.XY_PLANE) {
+          hasLinkXY = true;
+          hasX = true;
+          hasY = true;
+        } else if (r == Resizer.XZ_PLANE) {
+          hasLinkXZ = true;
+          hasX = true;
+          hasZ = true;
+        } else if (r == Resizer.YZ_PLANE) {
+          hasLinkYZ = true;
+          hasY = true;
+          hasZ = true;
+        } else if (r == Resizer.X_AXIS) {
+          hasX = true;
+          hasIndependentX = true;
+        } else if (r == Resizer.Y_AXIS) {
+          hasY = true;
+          hasIndependentY = true;
+        } else if (r == Resizer.Z_AXIS) {
+          hasZ = true;
+          hasIndependentZ = true;
+        }
+      }
+    }
 
-		if( hasLinkAll ) {
-			this.addComponent( this.linkAllButton, new GridBagConstraints(
-					SCALE_ALL_X_POS, //gridX
-					0, //gridY
-					1, //gridWidth
-					3, //gridHeight
-					0.0, //weightX
-					0.0, //weightY
-					GridBagConstraints.WEST, //anchor
-					GridBagConstraints.NONE, //fill
-					new Insets( 2, 2, 2, 2 ), //insets
-					0, //ipadX
-					0 ) //ipadY
-			);
-		}
-		if( hasLinkXY ) {
-			this.addComponent( this.linkXYButton, new GridBagConstraints(
-					SCALE_XY_X_POS, //gridX
-					0, //gridY
-					1, //gridWidth
-					3, //gridHeight
-					0.0, //weightX
-					0.0, //weightY
-					GridBagConstraints.NORTHWEST, //anchor
-					GridBagConstraints.NONE, //fill
-					new Insets( 16, 2, 2, 2 ), //insets //16
-					0, //ipadX
-					0 ) //ipadY
-			);
-		}
-		if( hasLinkXZ ) {
-			this.addComponent( this.linkXZButton, new GridBagConstraints(
-					SCALE_XZ_X_POS, //gridX
-					0, //gridY
-					1, //gridWidth
-					3, //gridHeight
-					0.0, //weightX
-					0.0, //weightY
-					GridBagConstraints.WEST, //anchor
-					GridBagConstraints.NONE, //fill
-					new Insets( 2, 2, 2, 2 ), //insets
-					0, //ipadX
-					0 ) //ipadY
-			);
-		}
-		if( hasLinkYZ ) {
-			this.addComponent( this.linkYZButton, new GridBagConstraints(
-					SCALE_YZ_X_POS, //gridX
-					0, //gridY
-					1, //gridWidth
-					3, //gridHeight
-					0.0, //weightX
-					0.0, //weightY
-					GridBagConstraints.NORTHWEST, //anchor
-					GridBagConstraints.NONE, //fill
-					new Insets( 48, 2, 2, 2 ), //insets
-					0, //ipadX
-					0 ) //ipadY
-			);
-		}
-		isUpdatingState = true;
+    if (hasLinkAll) {
+      this.addComponent(this.linkAllButton, new GridBagConstraints(SCALE_ALL_X_POS, //gridX
+                                                                   0, //gridY
+                                                                   1, //gridWidth
+                                                                   3, //gridHeight
+                                                                   0.0, //weightX
+                                                                   0.0, //weightY
+                                                                   GridBagConstraints.WEST, //anchor
+                                                                   GridBagConstraints.NONE, //fill
+                                                                   new Insets(2, 2, 2, 2), //insets
+                                                                   0, //ipadX
+                                                                   0) //ipadY
+      );
+    }
+    if (hasLinkXY) {
+      this.addComponent(this.linkXYButton, new GridBagConstraints(SCALE_XY_X_POS, //gridX
+                                                                  0, //gridY
+                                                                  1, //gridWidth
+                                                                  3, //gridHeight
+                                                                  0.0, //weightX
+                                                                  0.0, //weightY
+                                                                  GridBagConstraints.NORTHWEST, //anchor
+                                                                  GridBagConstraints.NONE, //fill
+                                                                  new Insets(16, 2, 2, 2), //insets //16
+                                                                  0, //ipadX
+                                                                  0) //ipadY
+      );
+    }
+    if (hasLinkXZ) {
+      this.addComponent(this.linkXZButton, new GridBagConstraints(SCALE_XZ_X_POS, //gridX
+                                                                  0, //gridY
+                                                                  1, //gridWidth
+                                                                  3, //gridHeight
+                                                                  0.0, //weightX
+                                                                  0.0, //weightY
+                                                                  GridBagConstraints.WEST, //anchor
+                                                                  GridBagConstraints.NONE, //fill
+                                                                  new Insets(2, 2, 2, 2), //insets
+                                                                  0, //ipadX
+                                                                  0) //ipadY
+      );
+    }
+    if (hasLinkYZ) {
+      this.addComponent(this.linkYZButton, new GridBagConstraints(SCALE_YZ_X_POS, //gridX
+                                                                  0, //gridY
+                                                                  1, //gridWidth
+                                                                  3, //gridHeight
+                                                                  0.0, //weightX
+                                                                  0.0, //weightY
+                                                                  GridBagConstraints.NORTHWEST, //anchor
+                                                                  GridBagConstraints.NONE, //fill
+                                                                  new Insets(48, 2, 2, 2), //insets
+                                                                  0, //ipadX
+                                                                  0) //ipadY
+      );
+    }
+    isUpdatingState = true;
 
-		widthField.setEnabled( hasX );
-		widthField.setEditable( hasX );
-		heightField.setEnabled( hasY );
-		heightField.setEditable( hasY );
-		depthField.setEnabled( hasZ );
-		depthField.setEditable( hasZ );
+    widthField.setEnabled(hasX);
+    widthField.setEditable(hasX);
+    heightField.setEnabled(hasY);
+    heightField.setEditable(hasY);
+    depthField.setEnabled(hasZ);
+    depthField.setEditable(hasZ);
 
-		IsAllScaleLinkedState.getInstance().setValueTransactionlessly( hasLinkAll );
-		boolean enableLinkAll = ( hasIndependentX && hasLinkYZ ) ||
-				( hasIndependentY && hasLinkXZ ) ||
-				( hasIndependentZ && hasLinkXY ) ||
-				( hasIndependentX && hasIndependentY && hasIndependentZ );
-		IsAllScaleLinkedState.getInstance().setEnabled( enableLinkAll );
+    IsAllScaleLinkedState.getInstance().setValueTransactionlessly(hasLinkAll);
+    boolean enableLinkAll = (hasIndependentX && hasLinkYZ) || (hasIndependentY && hasLinkXZ) || (hasIndependentZ && hasLinkXY) || (hasIndependentX && hasIndependentY && hasIndependentZ);
+    IsAllScaleLinkedState.getInstance().setEnabled(enableLinkAll);
 
-		boolean enableXYLink = hasIndependentX && hasIndependentY;
-		IsXYScaleLinkedState.getInstance().setEnabled( enableXYLink );
-		IsXYScaleLinkedState.getInstance().setValueTransactionlessly( hasLinkXY && ( !hasLinkAll || !enableXYLink ) );
+    boolean enableXYLink = hasIndependentX && hasIndependentY;
+    IsXYScaleLinkedState.getInstance().setEnabled(enableXYLink);
+    IsXYScaleLinkedState.getInstance().setValueTransactionlessly(hasLinkXY && (!hasLinkAll || !enableXYLink));
 
-		boolean enableXZLink = hasIndependentX && hasIndependentZ;
-		IsXZScaleLinkedState.getInstance().setEnabled( enableXZLink );
-		IsXZScaleLinkedState.getInstance().setValueTransactionlessly( hasLinkXZ && ( !hasLinkAll || !enableXZLink ) );
+    boolean enableXZLink = hasIndependentX && hasIndependentZ;
+    IsXZScaleLinkedState.getInstance().setEnabled(enableXZLink);
+    IsXZScaleLinkedState.getInstance().setValueTransactionlessly(hasLinkXZ && (!hasLinkAll || !enableXZLink));
 
-		boolean enableYZLink = hasIndependentY && hasIndependentZ;
-		IsYZScaleLinkedState.getInstance().setEnabled( enableYZLink );
-		IsYZScaleLinkedState.getInstance().setValueTransactionlessly( hasLinkYZ && ( !hasLinkAll || !enableYZLink ) );
+    boolean enableYZLink = hasIndependentY && hasIndependentZ;
+    IsYZScaleLinkedState.getInstance().setEnabled(enableYZLink);
+    IsYZScaleLinkedState.getInstance().setValueTransactionlessly(hasLinkYZ && (!hasLinkAll || !enableYZLink));
 
-		isUpdatingState = false;
-		setResetButton();
-	}
+    isUpdatingState = false;
+    setResetButton();
+  }
 
-	private void setResetButton() {
-		if( ( this.resetButton != null ) && ( this.resetButton.getAwtComponent().getParent() != null ) ) {
-			this.removeComponent( this.resetButton );
-		}
-		if( this.propertyAdapter != null ) {
+  private void setResetButton() {
+    if ((this.resetButton != null) && (this.resetButton.getAwtComponent().getParent() != null)) {
+      this.removeComponent(this.resetButton);
+    }
+    if (this.propertyAdapter != null) {
 
-			Operation operation = new ModelSizePropertyValueOperation( this.propertyAdapter, getOriginalSize() );
-			operation.setName( AbstractPropertyAdapter.getLocalizedString( "Reset" ) );
-			this.resetButton = operation.createButton();
+      Operation operation = new ModelSizePropertyValueOperation(this.propertyAdapter, getOriginalSize());
+      operation.setName(AbstractPropertyAdapter.getLocalizedString("Reset"));
+      this.resetButton = operation.createButton();
 
-		}
-		boolean usesReset = false;
-		if( ( this.propertyAdapter != null ) && ( this.propertyAdapter.getInstance() != null ) ) {
-			ModelImp baseModel = (ModelImp)this.propertyAdapter.getInstance();
-			if( ( baseModel instanceof JointedModelImp ) || ( baseModel instanceof BillboardImp ) ) {
-				usesReset = true;
-			}
-		}
-		if( ( this.resetButton != null ) && usesReset ) {
-			this.addComponent( this.resetButton, new GridBagConstraints(
-					RESET_X_POS, //gridX
-					0, //gridY
-					1, //gridWidth
-					3, //gridHeight
-					0.0, //weightX
-					0.0, //weightY
-					GridBagConstraints.WEST, //anchor
-					GridBagConstraints.NONE, //fill
-					new Insets( 2, 2, 2, 2 ), //insets
-					0, //ipadX
-					0 ) //ipadY
-			);
-		}
-	}
+    }
+    boolean usesReset = false;
+    if ((this.propertyAdapter != null) && (this.propertyAdapter.getInstance() != null)) {
+      ModelImp baseModel = (ModelImp) this.propertyAdapter.getInstance();
+      if ((baseModel instanceof JointedModelImp) || (baseModel instanceof BillboardImp)) {
+        usesReset = true;
+      }
+    }
+    if ((this.resetButton != null) && usesReset) {
+      this.addComponent(this.resetButton, new GridBagConstraints(RESET_X_POS, //gridX
+                                                                 0, //gridY
+                                                                 1, //gridWidth
+                                                                 3, //gridHeight
+                                                                 0.0, //weightX
+                                                                 0.0, //weightY
+                                                                 GridBagConstraints.WEST, //anchor
+                                                                 GridBagConstraints.NONE, //fill
+                                                                 new Insets(2, 2, 2, 2), //insets
+                                                                 0, //ipadX
+                                                                 0) //ipadY
+      );
+    }
+  }
 
-	private Dimension3 getOriginalSize() {
-		ModelImp baseModel = (ModelImp)this.propertyAdapter.getInstance();
-		Dimension3 scale = baseModel.getScale();
-		Dimension3 size = baseModel.getSize();
-		return new Dimension3( size.x / scale.x, size.y / scale.y, size.z / scale.z );
-	}
+  private Dimension3 getOriginalSize() {
+    ModelImp baseModel = (ModelImp) this.propertyAdapter.getInstance();
+    Dimension3 scale = baseModel.getScale();
+    Dimension3 size = baseModel.getSize();
+    return new Dimension3(size.x / scale.x, size.y / scale.y, size.z / scale.z);
+  }
 
-	private Dimension3 getModelSize() {
-		ModelImp baseModel = (ModelImp)this.propertyAdapter.getInstance();
-		return baseModel.getSize();
-	}
+  private Dimension3 getModelSize() {
+    ModelImp baseModel = (ModelImp) this.propertyAdapter.getInstance();
+    return baseModel.getSize();
+  }
 
-	@Override
-	protected void setValueOnUI( Dimension3 value ) {
-		if( value != null ) {
-			this.doUpdateOnAdapter = false;
-			this.widthField.setValue( value.x );
-			this.heightField.setValue( value.y );
-			this.depthField.setValue( value.z );
-			this.doUpdateOnAdapter = true;
-			return;
-		}
-		//If we haven't set the scale value, set it to null
-		this.widthField.setValue( null );
-		this.heightField.setValue( null );
-		this.depthField.setValue( null );
-	}
+  @Override
+  protected void setValueOnUI(Dimension3 value) {
+    if (value != null) {
+      this.doUpdateOnAdapter = false;
+      this.widthField.setValue(value.x);
+      this.heightField.setValue(value.y);
+      this.depthField.setValue(value.z);
+      this.doUpdateOnAdapter = true;
+      return;
+    }
+    //If we haven't set the scale value, set it to null
+    this.widthField.setValue(null);
+    this.heightField.setValue(null);
+    this.depthField.setValue(null);
+  }
 
-	private Dimension3 getSizeFromUI( Object source ) {
-		double desiredWidth = widthField.getValue();
-		double desiredHeight = heightField.getValue();
-		double desiredDepth = depthField.getValue();
-		if( Double.isNaN( desiredWidth ) || Double.isNaN( desiredHeight ) || Double.isNaN( desiredDepth ) ) {
-			return null;
-		}
-		double width = desiredWidth;
-		double height = desiredHeight;
-		double depth = desiredDepth;
-		if( source != null ) {
-			Dimension3 size = this.getModelSize();
-			if( source == widthField ) {
-				double relativeXScale = width / size.x;
-				if( IsAllScaleLinkedState.getInstance().getValue() ) {
-					height = relativeXScale * size.y;
-					depth = relativeXScale * size.z;
-				} else if( IsXYScaleLinkedState.getInstance().getValue() ) {
-					height = relativeXScale * size.y;
-				} else if( IsXZScaleLinkedState.getInstance().getValue() ) {
-					depth = relativeXScale * size.z;
-				}
-			} else if( source == heightField ) {
-				double relativeYScale = height / size.y;
-				if( IsAllScaleLinkedState.getInstance().getValue() ) {
-					width = relativeYScale * size.x;
-					depth = relativeYScale * size.z;
-				} else if( IsXYScaleLinkedState.getInstance().getValue() ) {
-					width = relativeYScale * size.x;
-				} else if( IsYZScaleLinkedState.getInstance().getValue() ) {
-					depth = relativeYScale * size.z;
-				}
-			} else if( source == depthField ) {
-				double relativeZScale = depth / size.z;
-				if( IsAllScaleLinkedState.getInstance().getValue() ) {
-					width = relativeZScale * size.x;
-					height = relativeZScale * size.y;
-				} else if( IsXZScaleLinkedState.getInstance().getValue() ) {
-					width = relativeZScale * size.x;
-				} else if( IsYZScaleLinkedState.getInstance().getValue() ) {
-					height = relativeZScale * size.y;
-				}
-			}
-		}
-		Dimension3 newSize = new Dimension3( width, height, depth );
-		return newSize;
-	}
+  private Dimension3 getSizeFromUI(Object source) {
+    double desiredWidth = widthField.getValue();
+    double desiredHeight = heightField.getValue();
+    double desiredDepth = depthField.getValue();
+    if (Double.isNaN(desiredWidth) || Double.isNaN(desiredHeight) || Double.isNaN(desiredDepth)) {
+      return null;
+    }
+    double width = desiredWidth;
+    double height = desiredHeight;
+    double depth = desiredDepth;
+    if (source != null) {
+      Dimension3 size = this.getModelSize();
+      if (source == widthField) {
+        double relativeXScale = width / size.x;
+        if (IsAllScaleLinkedState.getInstance().getValue()) {
+          height = relativeXScale * size.y;
+          depth = relativeXScale * size.z;
+        } else if (IsXYScaleLinkedState.getInstance().getValue()) {
+          height = relativeXScale * size.y;
+        } else if (IsXZScaleLinkedState.getInstance().getValue()) {
+          depth = relativeXScale * size.z;
+        }
+      } else if (source == heightField) {
+        double relativeYScale = height / size.y;
+        if (IsAllScaleLinkedState.getInstance().getValue()) {
+          width = relativeYScale * size.x;
+          depth = relativeYScale * size.z;
+        } else if (IsXYScaleLinkedState.getInstance().getValue()) {
+          width = relativeYScale * size.x;
+        } else if (IsYZScaleLinkedState.getInstance().getValue()) {
+          depth = relativeYScale * size.z;
+        }
+      } else if (source == depthField) {
+        double relativeZScale = depth / size.z;
+        if (IsAllScaleLinkedState.getInstance().getValue()) {
+          width = relativeZScale * size.x;
+          height = relativeZScale * size.y;
+        } else if (IsXZScaleLinkedState.getInstance().getValue()) {
+          width = relativeZScale * size.x;
+        } else if (IsYZScaleLinkedState.getInstance().getValue()) {
+          height = relativeZScale * size.y;
+        }
+      }
+    }
+    Dimension3 newSize = new Dimension3(width, height, depth);
+    return newSize;
+  }
 
-	private void updateUIFromLinkState( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
-		if( !isUpdatingState && ( nextValue != prevValue ) ) {
-			isUpdatingState = true;
-			if( nextValue ) {
-				if( state == IsAllScaleLinkedState.getInstance() ) {
-					updateLinkState( hasLinkXY, IsXYScaleLinkedState.getInstance() );
-					updateLinkState( hasLinkXZ, IsXZScaleLinkedState.getInstance() );
-					updateLinkState( hasLinkYZ, IsYZScaleLinkedState.getInstance() );
-				} else if( state == IsXYScaleLinkedState.getInstance() ) {
-					updateLinkState( hasLinkAll, IsAllScaleLinkedState.getInstance() );
-					updateLinkState( hasLinkXZ, IsXZScaleLinkedState.getInstance() );
-					updateLinkState( hasLinkYZ, IsYZScaleLinkedState.getInstance() );
-				} else if( state == IsXZScaleLinkedState.getInstance() ) {
-					updateLinkState( hasLinkAll, IsAllScaleLinkedState.getInstance() );
-					updateLinkState( hasLinkXY, IsXYScaleLinkedState.getInstance() );
-					updateLinkState( hasLinkYZ, IsYZScaleLinkedState.getInstance() );
-				} else if( state == IsYZScaleLinkedState.getInstance() ) {
-					updateLinkState( hasLinkAll, IsAllScaleLinkedState.getInstance() );
-					updateLinkState( hasLinkXZ, IsXZScaleLinkedState.getInstance() );
-					updateLinkState( hasLinkXY, IsXYScaleLinkedState.getInstance() );
-				}
-			}
-			isUpdatingState = false;
-		}
-	}
+  private void updateUIFromLinkState(State<Boolean> state, Boolean prevValue, Boolean nextValue) {
+    if (!isUpdatingState && (nextValue != prevValue)) {
+      isUpdatingState = true;
+      if (nextValue) {
+        if (state == IsAllScaleLinkedState.getInstance()) {
+          updateLinkState(hasLinkXY, IsXYScaleLinkedState.getInstance());
+          updateLinkState(hasLinkXZ, IsXZScaleLinkedState.getInstance());
+          updateLinkState(hasLinkYZ, IsYZScaleLinkedState.getInstance());
+        } else if (state == IsXYScaleLinkedState.getInstance()) {
+          updateLinkState(hasLinkAll, IsAllScaleLinkedState.getInstance());
+          updateLinkState(hasLinkXZ, IsXZScaleLinkedState.getInstance());
+          updateLinkState(hasLinkYZ, IsYZScaleLinkedState.getInstance());
+        } else if (state == IsXZScaleLinkedState.getInstance()) {
+          updateLinkState(hasLinkAll, IsAllScaleLinkedState.getInstance());
+          updateLinkState(hasLinkXY, IsXYScaleLinkedState.getInstance());
+          updateLinkState(hasLinkYZ, IsYZScaleLinkedState.getInstance());
+        } else if (state == IsYZScaleLinkedState.getInstance()) {
+          updateLinkState(hasLinkAll, IsAllScaleLinkedState.getInstance());
+          updateLinkState(hasLinkXZ, IsXZScaleLinkedState.getInstance());
+          updateLinkState(hasLinkXY, IsXYScaleLinkedState.getInstance());
+        }
+      }
+      isUpdatingState = false;
+    }
+  }
 
-	private void updateLinkState( boolean isPresent, BooleanState xy ) {
-		if (isPresent) {
-			xy.setValueTransactionlessly( !xy.isEnabled() );
-		}
-	}
+  private void updateLinkState(boolean isPresent, BooleanState xy) {
+    if (isPresent) {
+      xy.setValueTransactionlessly(!xy.isEnabled());
+    }
+  }
 
-	protected void updateAdapterFromUI( ActionEvent e ) {
-		if( this.doUpdateOnAdapter ) {
-			Dimension3 newScale = getSizeFromUI( e.getSource() );
-			if( newScale != null ) {
-				if( !newScale.equals( this.propertyAdapter.getValue() ) ) {
-					if( ( this.propertyAdapter.getLastSetValue() == null ) || !this.propertyAdapter.getLastSetValue().equals( newScale ) ) {
-						Operation operation = new ModelSizePropertyValueOperation( this.propertyAdapter, newScale );
-						operation.fire( ActionEventTrigger.createUserActivity( e ) );
-					}
-				}
-			}
-		}
-	}
+  protected void updateAdapterFromUI(ActionEvent e) {
+    if (this.doUpdateOnAdapter) {
+      Dimension3 newScale = getSizeFromUI(e.getSource());
+      if (newScale != null) {
+        if (!newScale.equals(this.propertyAdapter.getValue())) {
+          if ((this.propertyAdapter.getLastSetValue() == null) || !this.propertyAdapter.getLastSetValue().equals(newScale)) {
+            Operation operation = new ModelSizePropertyValueOperation(this.propertyAdapter, newScale);
+            operation.fire(ActionEventTrigger.createUserActivity(e));
+          }
+        }
+      }
+    }
+  }
 }

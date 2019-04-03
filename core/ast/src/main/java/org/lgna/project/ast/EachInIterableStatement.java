@@ -47,5 +47,5 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public interface EachInIterableStatement extends EachInStatement {
-	public ExpressionProperty getIterableProperty();
+  public ExpressionProperty getIterableProperty();
 }

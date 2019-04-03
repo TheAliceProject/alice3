@@ -56,75 +56,75 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dennis Cosgrove
  */
 public class ScaleUtilities {
-	private static void applyScale( Component sgRoot, Component sgComponent, Vector3 axis, Criterion<Component> inclusionCriterion ) {
-		if( ( inclusionCriterion == null ) || inclusionCriterion.accept( sgComponent ) /* && !(sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Joint) */) {
-			if( sgComponent instanceof Composite ) {
-				Composite sgComposite = (Composite)sgComponent;
-				if( sgComposite instanceof Transformable ) {
-					Transformable sgTransformable = (Transformable)sgComposite;
-					if( sgRoot == sgTransformable ) {
-						//pass
-					} else {
-						AffineMatrix4x4 m = sgTransformable.localTransformation.getValue();
-						m.translation.multiply( axis );
-						sgTransformable.localTransformation.setValue( m );
-					}
-				}
-				final int N = sgComposite.getComponentCount();
-				for( int i = 0; i < N; i++ ) {
-					applyScale( sgRoot, sgComposite.getComponentAt( i ), axis, inclusionCriterion );
-				}
-			} else if( sgComponent instanceof Visual ) {
-				Visual sgVisual = (Visual)sgComponent;
-				Matrix3x3 scale = sgVisual.scale.getValue();
-				edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
-				sgVisual.scale.setValue( scale );
-			}
-		}
-	}
+  private static void applyScale(Component sgRoot, Component sgComponent, Vector3 axis, Criterion<Component> inclusionCriterion) {
+    if ((inclusionCriterion == null) || inclusionCriterion.accept(sgComponent) /* && !(sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Joint) */) {
+      if (sgComponent instanceof Composite) {
+        Composite sgComposite = (Composite) sgComponent;
+        if (sgComposite instanceof Transformable) {
+          Transformable sgTransformable = (Transformable) sgComposite;
+          if (sgRoot == sgTransformable) {
+            //pass
+          } else {
+            AffineMatrix4x4 m = sgTransformable.localTransformation.getValue();
+            m.translation.multiply(axis);
+            sgTransformable.localTransformation.setValue(m);
+          }
+        }
+        final int N = sgComposite.getComponentCount();
+        for (int i = 0; i < N; i++) {
+          applyScale(sgRoot, sgComposite.getComponentAt(i), axis, inclusionCriterion);
+        }
+      } else if (sgComponent instanceof Visual) {
+        Visual sgVisual = (Visual) sgComponent;
+        Matrix3x3 scale = sgVisual.scale.getValue();
+        edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale(scale, axis);
+        sgVisual.scale.setValue(scale);
+      }
+    }
+  }
 
-	public static void applyScale( Component sgComponent, Vector3 axis, Criterion<Component> inclusionCriterion ) {
-		applyScale( sgComponent, sgComponent, axis, inclusionCriterion );
-	}
+  public static void applyScale(Component sgComponent, Vector3 axis, Criterion<Component> inclusionCriterion) {
+    applyScale(sgComponent, sgComponent, axis, inclusionCriterion);
+  }
 
-	public static void exorciseTheDemonsOfScaledSpace( Transformable sgTransformable ) {
-		AffineMatrix4x4 m = sgTransformable.localTransformation.getValue();
-		if( m.orientation.isWithinReasonableEpsilonOfUnitLengthSquared() ) {
-			//pass
-		} else {
-			double xScale = m.orientation.right.calculateMagnitude();
-			double yScale = m.orientation.up.calculateMagnitude();
-			double zScale = m.orientation.backward.calculateMagnitude();
+  public static void exorciseTheDemonsOfScaledSpace(Transformable sgTransformable) {
+    AffineMatrix4x4 m = sgTransformable.localTransformation.getValue();
+    if (m.orientation.isWithinReasonableEpsilonOfUnitLengthSquared()) {
+      //pass
+    } else {
+      double xScale = m.orientation.right.calculateMagnitude();
+      double yScale = m.orientation.up.calculateMagnitude();
+      double zScale = m.orientation.backward.calculateMagnitude();
 
-			applyScale( sgTransformable, new Vector3( xScale, yScale, zScale ), null );
+      applyScale(sgTransformable, new Vector3(xScale, yScale, zScale), null);
 
-			OrthogonalMatrix3x3 inverseScale = OrthogonalMatrix3x3.createIdentity();
-			inverseScale.right.x = 1 / xScale;
-			inverseScale.up.y = 1 / yScale;
-			inverseScale.backward.z = 1 / zScale;
-			m.orientation.applyMultiplication( inverseScale );
+      OrthogonalMatrix3x3 inverseScale = OrthogonalMatrix3x3.createIdentity();
+      inverseScale.right.x = 1 / xScale;
+      inverseScale.up.y = 1 / yScale;
+      inverseScale.backward.z = 1 / zScale;
+      m.orientation.applyMultiplication(inverseScale);
 
-			assert m.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
-		}
-		for( Component sgChild : sgTransformable.getComponents() ) {
-			if( sgChild instanceof Transformable ) {
-				Transformable sgChildTransformable = (Transformable)sgChild;
-				exorciseTheDemonsOfScaledSpace( sgChildTransformable );
-			}
-		}
-	}
+      assert m.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
+    }
+    for (Component sgChild : sgTransformable.getComponents()) {
+      if (sgChild instanceof Transformable) {
+        Transformable sgChildTransformable = (Transformable) sgChild;
+        exorciseTheDemonsOfScaledSpace(sgChildTransformable);
+      }
+    }
+  }
 
-	public static Visual getSGVisualForTransformable( Transformable object ) {
-		if( object == null ) {
-			return null;
-		}
-		for( int i = 0; i < object.getComponentCount(); i++ ) {
-			Component c = object.getComponentAt( i );
-			if( c instanceof Visual ) {
-				return (Visual)c;
-			}
-		}
-		return null;
-	}
+  public static Visual getSGVisualForTransformable(Transformable object) {
+    if (object == null) {
+      return null;
+    }
+    for (int i = 0; i < object.getComponentCount(); i++) {
+      Component c = object.getComponentAt(i);
+      if (c instanceof Visual) {
+        return (Visual) c;
+      }
+    }
+    return null;
+  }
 
 }

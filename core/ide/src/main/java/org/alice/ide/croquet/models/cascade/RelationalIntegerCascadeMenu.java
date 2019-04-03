@@ -49,15 +49,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RelationalIntegerCascadeMenu extends AbstractRelationalCascadeMenu {
-	private static class SingletonHolder {
-		private static RelationalIntegerCascadeMenu instance = new RelationalIntegerCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static RelationalIntegerCascadeMenu instance = new RelationalIntegerCascadeMenu();
+  }
 
-	public static RelationalIntegerCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static RelationalIntegerCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private RelationalIntegerCascadeMenu() {
-		super( UUID.fromString( "d527e85d-de5c-4a0a-a1e6-e51253893779" ), Integer.class );
-	}
+  private RelationalIntegerCascadeMenu() {
+    super(UUID.fromString("d527e85d-de5c-4a0a-a1e6-e51253893779"), Integer.class);
+  }
 }

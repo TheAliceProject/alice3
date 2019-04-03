@@ -55,46 +55,46 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class ThisMethodInvocationFactory extends MethodInvocationFactory {
-	private static Map<AbstractMethod, ThisMethodInvocationFactory> map = Maps.newHashMap();
+  private static Map<AbstractMethod, ThisMethodInvocationFactory> map = Maps.newHashMap();
 
-	public static synchronized ThisMethodInvocationFactory getInstance( AbstractMethod method ) {
-		assert method != null;
-		if( method.getRequiredParameters().size() == 0 ) {
-			ThisMethodInvocationFactory rv = map.get( method );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisMethodInvocationFactory( method );
-				map.put( method, rv );
-			}
-			return rv;
-		} else {
-			return null;
-		}
-	}
+  public static synchronized ThisMethodInvocationFactory getInstance(AbstractMethod method) {
+    assert method != null;
+    if (method.getRequiredParameters().size() == 0) {
+      ThisMethodInvocationFactory rv = map.get(method);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ThisMethodInvocationFactory(method);
+        map.put(method, rv);
+      }
+      return rv;
+    } else {
+      return null;
+    }
+  }
 
-	private ThisMethodInvocationFactory( AbstractMethod method ) {
-		super( method );
-	}
+  private ThisMethodInvocationFactory(AbstractMethod method) {
+    super(method);
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getValidInstanceType( AbstractType<?, ?, ?> type, AbstractCode code ) {
-		return type;
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getValidInstanceType(AbstractType<?, ?, ?> type, AbstractCode code) {
+    return type;
+  }
 
-	@Override
-	protected Expression createTransientExpressionForMethodInvocation() {
-		return createTransientThisExpression();
-	}
+  @Override
+  protected Expression createTransientExpressionForMethodInvocation() {
+    return createTransientThisExpression();
+  }
 
-	@Override
-	protected Expression createExpressionForMethodInvocation() {
-		return createThisExpression();
-	}
+  @Override
+  protected Expression createExpressionForMethodInvocation() {
+    return createThisExpression();
+  }
 
-	@Override
-	protected StringBuilder addAccessRepr( StringBuilder rv ) {
-		rv.append( "this" );
-		return rv;
-	}
+  @Override
+  protected StringBuilder addAccessRepr(StringBuilder rv) {
+    rv.append("this");
+    return rv;
+  }
 }

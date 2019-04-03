@@ -51,18 +51,18 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author David Culyba
  */
 public class SnapLine extends Transformable {
-	public SnapLine( Vector3 line ) {
-		sgAxis = new InfiniteLineVisualization( line );
-		sgAxis.setParent( this );
-	}
+  public SnapLine(Vector3 line) {
+    sgAxis = new InfiniteLineVisualization(line);
+    sgAxis.setParent(this);
+  }
 
-	public void setLine( Vector3 line ) {
-		sgAxis.setLine( line );
-	}
+  public void setLine(Vector3 line) {
+    sgAxis.setLine(line);
+  }
 
-	public void setColor( Color4f color ) {
-		sgAxis.setColor( color );
-	}
+  public void setColor(Color4f color) {
+    sgAxis.setColor(color);
+  }
 
-	private final InfiniteLineVisualization sgAxis;
+  private final InfiniteLineVisualization sgAxis;
 }

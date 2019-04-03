@@ -32,60 +32,62 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum BedSingleResource implements PropResource {
-	MODERATE_BLUE_STRIPES_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_LIGHT_BLUE_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_STRIPES_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_BLUE_SQUARES_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_PINK_KIDS_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_BLUE_KIDS_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_WHITE_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_PINK_FLOWERS_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_YELLOW_FLOWERS_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_STRIPES_BLUE_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_STRIPES_RED_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_STRIPES_GREEN_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_STRIPES_YELLOW_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_WHITE_BLUE_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_WHITE_RED_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_WHITE_GREEN_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_WHITE_YELLOW_FRAME( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_BLUE_STRIPES_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_LIGHT_BLUE_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_BLUE_SQUARES_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_PINK_KIDS_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_BLUE_KIDS_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_WHITE_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_PINK_FLOWERS_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_YELLOW_FLOWERS_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_BROWN_CIRCLES_CHERRY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_BROWN_CIRCLES_MAHOGANY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_LEOPARD_CHERRY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_LEOPARD_MAHOGANY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_PURPLE_CIRCLES_CHERRY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_PURPLE_CIRCLES_MAHOGANY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_OFF_WHITE_CHERRY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_OFF_WHITE_MAHOGANY_FRAME( ImplementationAndVisualType.SIMS2 );
+  MODERATE_BLUE_STRIPES_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERATE_LIGHT_BLUE_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERATE_STRIPES_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERATE_BLUE_SQUARES_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERATE_PINK_KIDS_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERATE_BLUE_KIDS_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERATE_WHITE_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERATE_PINK_FLOWERS_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERATE_YELLOW_FLOWERS_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_STRIPES_BLUE_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_STRIPES_RED_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_STRIPES_GREEN_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_STRIPES_YELLOW_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_WHITE_BLUE_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_WHITE_RED_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_WHITE_GREEN_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_WHITE_YELLOW_FRAME(ImplementationAndVisualType.SIMS2),
+  CHEAP_BLUE_STRIPES_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  CHEAP_LIGHT_BLUE_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  CHEAP_BLUE_SQUARES_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  CHEAP_PINK_KIDS_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  CHEAP_BLUE_KIDS_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  CHEAP_WHITE_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  CHEAP_PINK_FLOWERS_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  CHEAP_YELLOW_FLOWERS_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  EXPENSIVE_BROWN_CIRCLES_CHERRY_FRAME(ImplementationAndVisualType.SIMS2),
+  EXPENSIVE_BROWN_CIRCLES_MAHOGANY_FRAME(ImplementationAndVisualType.SIMS2),
+  EXPENSIVE_LEOPARD_CHERRY_FRAME(ImplementationAndVisualType.SIMS2),
+  EXPENSIVE_LEOPARD_MAHOGANY_FRAME(ImplementationAndVisualType.SIMS2),
+  EXPENSIVE_PURPLE_CIRCLES_CHERRY_FRAME(ImplementationAndVisualType.SIMS2),
+  EXPENSIVE_PURPLE_CIRCLES_MAHOGANY_FRAME(ImplementationAndVisualType.SIMS2),
+  EXPENSIVE_OFF_WHITE_CHERRY_FRAME(ImplementationAndVisualType.SIMS2),
+  EXPENSIVE_OFF_WHITE_MAHOGANY_FRAME(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	BedSingleResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	BedSingleResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  BedSingleResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  BedSingleResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

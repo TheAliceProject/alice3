@@ -52,15 +52,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ImageResourceImportValueCreator extends ResourceImportValueCreator<ImageResource> {
-	private static class SingletonHolder {
-		private static ImageResourceImportValueCreator instance = new ImageResourceImportValueCreator();
-	}
+  private static class SingletonHolder {
+    private static ImageResourceImportValueCreator instance = new ImageResourceImportValueCreator();
+  }
 
-	public static ImageResourceImportValueCreator getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ImageResourceImportValueCreator getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ImageResourceImportValueCreator() {
-		super( UUID.fromString( "644eb790-404f-40a0-b581-f05690b15f17" ), ImageResourceImporter.getInstance(), ImageResource.class );
-	}
+  private ImageResourceImportValueCreator() {
+    super(UUID.fromString("644eb790-404f-40a0-b581-f05690b15f17"), ImageResourceImporter.getInstance(), ImageResource.class);
+  }
 }

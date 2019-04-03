@@ -46,32 +46,32 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class TypeExpression extends Expression {
-	public TypeExpression() {
-	}
+  public TypeExpression() {
+  }
 
-	public TypeExpression( AbstractType<?, ?, ?> value ) {
-		this.value.setValue( value );
-	}
+  public TypeExpression(AbstractType<?, ?, ?> value) {
+    this.value.setValue(value);
+  }
 
-	public TypeExpression( Class<?> cls ) {
-		this( JavaType.getInstance( cls ) );
-	}
+  public TypeExpression(Class<?> cls) {
+    this(JavaType.getInstance(cls));
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		//todo
-		return JavaType.getInstance( Class.class );
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    //todo
+    return JavaType.getInstance(Class.class);
+  }
 
-	@Override
-	public boolean isValid() {
-		return this.value.getValue() != null;
-	}
+  @Override
+  public boolean isValid() {
+    return this.value.getValue() != null;
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendTypeName( this.value.getValue() );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendTypeName(this.value.getValue());
+  }
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> value = DeclarationProperty.createReferenceInstance( this );
+  public final DeclarationProperty<AbstractType<?, ?, ?>> value = DeclarationProperty.createReferenceInstance(this);
 }

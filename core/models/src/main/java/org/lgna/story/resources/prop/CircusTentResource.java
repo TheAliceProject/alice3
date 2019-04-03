@@ -32,43 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum CircusTentResource implements PropResource {
-	CIRCUS_TENT_PRENDERGHAST_PRENDERGHAST,
-	CIRCUS_TENT_PRENDERGHAST_BLANK,
-	CIRCUS_TENT_PRENDERGHAST_PURPLE,
-	CIRCUS_TENT_PRENDERGHAST_BACK_PRENDERGHAST,
-	CIRCUS_TENT_PRENDERGHAST_BACK_BLANK,
-	CIRCUS_TENT_PRENDERGHAST_BACK_PURPLE,
-	CIRCUS_TENT_PRENDER_GHAST_FRONT_PRENDERGHAST,
-	CIRCUS_TENT_PRENDER_GHAST_FRONT_BLANK,
-	CIRCUS_TENT_PRENDER_GHAST_FRONT_PURPLE,
-	CIRCUS_TENT_PRENDER_GHAST_LEFT_PRENDERGHAST,
-	CIRCUS_TENT_PRENDER_GHAST_LEFT_BLANK,
-	CIRCUS_TENT_PRENDER_GHAST_LEFT_PURPLE,
-	CIRCUS_TENT_PRENDER_GHAST_RIGHT_PRENDERGHAST,
-	CIRCUS_TENT_PRENDER_GHAST_RIGHT_BLANK,
-	CIRCUS_TENT_PRENDER_GHAST_RIGHT_PURPLE;
+  CIRCUS_TENT_PRENDERGHAST_PRENDERGHAST, CIRCUS_TENT_PRENDERGHAST_BLANK, CIRCUS_TENT_PRENDERGHAST_PURPLE, CIRCUS_TENT_PRENDERGHAST_BACK_PRENDERGHAST, CIRCUS_TENT_PRENDERGHAST_BACK_BLANK, CIRCUS_TENT_PRENDERGHAST_BACK_PURPLE, CIRCUS_TENT_PRENDER_GHAST_FRONT_PRENDERGHAST, CIRCUS_TENT_PRENDER_GHAST_FRONT_BLANK, CIRCUS_TENT_PRENDER_GHAST_FRONT_PURPLE, CIRCUS_TENT_PRENDER_GHAST_LEFT_PRENDERGHAST, CIRCUS_TENT_PRENDER_GHAST_LEFT_BLANK, CIRCUS_TENT_PRENDER_GHAST_LEFT_PURPLE, CIRCUS_TENT_PRENDER_GHAST_RIGHT_PRENDERGHAST, CIRCUS_TENT_PRENDER_GHAST_RIGHT_BLANK, CIRCUS_TENT_PRENDER_GHAST_RIGHT_PURPLE;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	CircusTentResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  CircusTentResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	CircusTentResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  CircusTentResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

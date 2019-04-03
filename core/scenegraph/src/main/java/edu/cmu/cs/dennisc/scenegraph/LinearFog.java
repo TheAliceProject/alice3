@@ -61,8 +61,8 @@ import edu.cmu.cs.dennisc.property.DoubleProperty;
  * @author Dennis Cosgrove
  */
 public class LinearFog extends Fog {
-	//todo Double -> Float?
-	public final DoubleProperty nearDistance = new DoubleProperty( this, 1.0 );
-	//todo Double -> Float?
-	public final DoubleProperty farDistance = new DoubleProperty( this, 256.0 );
+  //todo Double -> Float?
+  public final DoubleProperty nearDistance = new DoubleProperty(this, 1.0);
+  //todo Double -> Float?
+  public final DoubleProperty farDistance = new DoubleProperty(this, 256.0);
 }

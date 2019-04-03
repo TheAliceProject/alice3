@@ -75,108 +75,108 @@ import java.awt.event.ActionEvent;
  * @author Dennis Cosgrove
  */
 public final class JSubmitPane extends JPanel {
-	private static final String CONTRACTED_TEXT = "Provide details";
-	private static final String EXPANDED_TEXT = "Please describe the problem and what steps you took that lead you to this bug:";
+  private static final String CONTRACTED_TEXT = "Provide details";
+  private static final String EXPANDED_TEXT = "Please describe the problem and what steps you took that lead you to this bug:";
 
-	public JSubmitPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget, ApplicationIssueConfiguration config ) {
-		this.config = config;
-		this.insightPane = new JInsightPane( thread, originalThrowable, originalThrowableOrTarget );
-		this.toggleButton.setMargin( new Insets( 0, 0, 0, 0 ) );
-		Action submitAction = new AbstractAction( config.getSubmitActionName() ) {
-			@Override
-			public void actionPerformed( ActionEvent e ) {
-				getConfig().submit( JSubmitPane.this );
-			}
-		};
-		this.submitButton = new JButton( submitAction );
+  public JSubmitPane(Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget, ApplicationIssueConfiguration config) {
+    this.config = config;
+    this.insightPane = new JInsightPane(thread, originalThrowable, originalThrowableOrTarget);
+    this.toggleButton.setMargin(new Insets(0, 0, 0, 0));
+    Action submitAction = new AbstractAction(config.getSubmitActionName()) {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        getConfig().submit(JSubmitPane.this);
+      }
+    };
+    this.submitButton = new JButton(submitAction);
 
-		JPanel headerPane = config.createHeaderPane( thread, originalThrowable, originalThrowableOrTarget );
+    JPanel headerPane = config.createHeaderPane(thread, originalThrowable, originalThrowableOrTarget);
 
-		JPanel insightHeaderPanel = new JPanel();
-		insightHeaderPanel.setLayout( new BorderLayout() );
-		insightHeaderPanel.add( toggleButton, BorderLayout.LINE_START );
+    JPanel insightHeaderPanel = new JPanel();
+    insightHeaderPanel.setLayout(new BorderLayout());
+    insightHeaderPanel.add(toggleButton, BorderLayout.LINE_START);
 
-		JPanel mainPanel = new JPanel();
-		mainPanel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		mainPanel.setLayout( new BorderLayout() );
-		mainPanel.add( insightHeaderPanel, BorderLayout.PAGE_START );
-		mainPanel.add( insightPane, BorderLayout.CENTER );
+    JPanel mainPanel = new JPanel();
+    mainPanel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+    mainPanel.setLayout(new BorderLayout());
+    mainPanel.add(insightHeaderPanel, BorderLayout.PAGE_START);
+    mainPanel.add(insightPane, BorderLayout.CENTER);
 
-		JPanel submitPanel = new JPanel();
-		submitPanel.setLayout( new FlowLayout() );
-		submitPanel.add( submitButton );
+    JPanel submitPanel = new JPanel();
+    submitPanel.setLayout(new FlowLayout());
+    submitPanel.add(submitButton);
 
-		this.setLayout( new BorderLayout() );
-		this.add( headerPane, BorderLayout.PAGE_START );
-		this.add( mainPanel, BorderLayout.CENTER );
-		this.add( submitPanel, BorderLayout.PAGE_END );
+    this.setLayout(new BorderLayout());
+    this.add(headerPane, BorderLayout.PAGE_START);
+    this.add(mainPanel, BorderLayout.CENTER);
+    this.add(submitPanel, BorderLayout.PAGE_END);
 
-		this.toggleButton.addChangeListener( this.changeListener );
+    this.toggleButton.addChangeListener(this.changeListener);
 
-		FontUtilities.setFontToDerivedFont( submitButton, TextWeight.BOLD );
-		FontUtilities.setFontToScaledFont( submitButton, 1.6f );
+    FontUtilities.setFontToDerivedFont(submitButton, TextWeight.BOLD);
+    FontUtilities.setFontToScaledFont(submitButton, 1.6f);
 
-		this.toggleButton.setIcon( new AbstractArrowIcon( 12 ) {
-			@Override
-			public void paintIcon( Component c, Graphics g, int x, int y ) {
-				Graphics2D g2 = (Graphics2D)g;
-				AbstractButton button = (AbstractButton)c;
-				ButtonModel buttonModel = button.getModel();
-				Heading heading = buttonModel.isSelected() ? Heading.SOUTH : Heading.EAST;
-				Shape shape = this.createPath( x, y, heading );
-				g2.setPaint( Color.DARK_GRAY );
-				g2.fill( shape );
-			}
-		} );
-		this.toggleButton.setIconTextGap( 12 );
-		this.toggleButton.setHorizontalTextPosition( SwingConstants.LEADING );
-		this.toggleButton.setFocusable( false );
-		final boolean IS_INSIGHT_EXPANDED_BY_DEFAULT = false;
-		if( IS_INSIGHT_EXPANDED_BY_DEFAULT ) {
-			this.toggleButton.setSelected( IS_INSIGHT_EXPANDED_BY_DEFAULT );
-		}
-	}
+    this.toggleButton.setIcon(new AbstractArrowIcon(12) {
+      @Override
+      public void paintIcon(Component c, Graphics g, int x, int y) {
+        Graphics2D g2 = (Graphics2D) g;
+        AbstractButton button = (AbstractButton) c;
+        ButtonModel buttonModel = button.getModel();
+        Heading heading = buttonModel.isSelected() ? Heading.SOUTH : Heading.EAST;
+        Shape shape = this.createPath(x, y, heading);
+        g2.setPaint(Color.DARK_GRAY);
+        g2.fill(shape);
+      }
+    });
+    this.toggleButton.setIconTextGap(12);
+    this.toggleButton.setHorizontalTextPosition(SwingConstants.LEADING);
+    this.toggleButton.setFocusable(false);
+    final boolean IS_INSIGHT_EXPANDED_BY_DEFAULT = false;
+    if (IS_INSIGHT_EXPANDED_BY_DEFAULT) {
+      this.toggleButton.setSelected(IS_INSIGHT_EXPANDED_BY_DEFAULT);
+    }
+  }
 
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		this.getRootPane().setDefaultButton( this.submitButton );
-	}
+  @Override
+  public void addNotify() {
+    super.addNotify();
+    this.getRootPane().setDefaultButton(this.submitButton);
+  }
 
-	public ApplicationIssueConfiguration getConfig() {
-		return this.config;
-	}
+  public ApplicationIssueConfiguration getConfig() {
+    return this.config;
+  }
 
-	public Issue.Builder createIssueBuilder() {
-		return this.insightPane.createIssueBuilder();
-	}
+  public Issue.Builder createIssueBuilder() {
+    return this.insightPane.createIssueBuilder();
+  }
 
-	public boolean isSubmitAttempted() {
-		return this.isSubmitAttempted;
-	}
+  public boolean isSubmitAttempted() {
+    return this.isSubmitAttempted;
+  }
 
-	public void setSubmitAttempted( boolean isSubmitAttempted ) {
-		this.isSubmitAttempted = isSubmitAttempted;
-	}
+  public void setSubmitAttempted(boolean isSubmitAttempted) {
+    this.isSubmitAttempted = isSubmitAttempted;
+  }
 
-	private final JInsightPane insightPane;
+  private final JInsightPane insightPane;
 
-	private final ChangeListener changeListener = new ChangeListener() {
-		@Override
-		public void stateChanged( ChangeEvent e ) {
-			Object src = e.getSource();
-			if( src instanceof JToggleButton ) {
-				JToggleButton button = (JToggleButton)src;
-				insightPane.setExpanded( button.isSelected() );
-				toggleButton.setText( button.isSelected() ? EXPANDED_TEXT : CONTRACTED_TEXT );
-				( (Window)SwingUtilities.getRoot( button ) ).pack();
-			}
-		}
-	};
-	private final JToggleButton toggleButton = new JToggleButton( CONTRACTED_TEXT );
-	private final JButton submitButton;
+  private final ChangeListener changeListener = new ChangeListener() {
+    @Override
+    public void stateChanged(ChangeEvent e) {
+      Object src = e.getSource();
+      if (src instanceof JToggleButton) {
+        JToggleButton button = (JToggleButton) src;
+        insightPane.setExpanded(button.isSelected());
+        toggleButton.setText(button.isSelected() ? EXPANDED_TEXT : CONTRACTED_TEXT);
+        ((Window) SwingUtilities.getRoot(button)).pack();
+      }
+    }
+  };
+  private final JToggleButton toggleButton = new JToggleButton(CONTRACTED_TEXT);
+  private final JButton submitButton;
 
-	private final ApplicationIssueConfiguration config;
+  private final ApplicationIssueConfiguration config;
 
-	private boolean isSubmitAttempted;
+  private boolean isSubmitAttempted;
 }

@@ -44,16 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleElderFullBodyOutfitPajamas implements MaleElderFullBodyOutfit {
-	BLACK,
-	BLUE,
-	BLUE_PLAID,
-	BROWN,
-	DK_GREEN,
-	GREY,
-	PURPLE,
-	RED,
-	RED_PLAID,
-	LT_BLUE,
-	AQUA;
+  BLACK, BLUE, BLUE_PLAID, BROWN, DK_GREEN, GREY, PURPLE, RED, RED_PLAID, LT_BLUE, AQUA
 
 }

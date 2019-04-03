@@ -32,34 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum PlateauResource implements PropResource {
-	TALL_GRAY,
-	TALL_RED,
-	TALL_BROWN,
-	SHORT_GRAY,
-	SHORT_RED,
-	SHORT_BROWN;
+  TALL_GRAY, TALL_RED, TALL_BROWN, SHORT_GRAY, SHORT_RED, SHORT_BROWN;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	PlateauResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  PlateauResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	PlateauResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  PlateauResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

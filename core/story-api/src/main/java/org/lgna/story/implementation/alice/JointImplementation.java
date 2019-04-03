@@ -55,46 +55,46 @@ import org.lgna.story.resources.JointId;
  * @author Dennis Cosgrove
  */
 public class JointImplementation extends JointImp {
-	private Joint sgJoint;
-	private final JointId jointId;
+  private Joint sgJoint;
+  private final JointId jointId;
 
-	public JointImplementation( JointedModelImp<?, ?> jointedModelImplementation, JointId jointId, Joint sgJoint ) {
-		super( jointedModelImplementation );
-		assert sgJoint != null;
-		this.jointId = jointId;
-		this.sgJoint = sgJoint;
-		putInstance( this.sgJoint );
-	}
+  public JointImplementation(JointedModelImp<?, ?> jointedModelImplementation, JointId jointId, Joint sgJoint) {
+    super(jointedModelImplementation);
+    assert sgJoint != null;
+    this.jointId = jointId;
+    this.sgJoint = sgJoint;
+    putInstance(this.sgJoint);
+  }
 
-	@Override
-	public JointId getJointId() {
-		return this.jointId;
-	}
+  @Override
+  public JointId getJointId() {
+    return this.jointId;
+  }
 
-	@Override
-	public Joint getSgComposite() {
-		return this.sgJoint;
-	}
+  @Override
+  public Joint getSgComposite() {
+    return this.sgJoint;
+  }
 
-	@Override
-	public boolean isFreeInX() {
-		return this.sgJoint.isFreeInX.getValue();
-	}
+  @Override
+  public boolean isFreeInX() {
+    return this.sgJoint.isFreeInX.getValue();
+  }
 
-	@Override
-	public boolean isFreeInY() {
-		return this.sgJoint.isFreeInY.getValue();
-	}
+  @Override
+  public boolean isFreeInY() {
+    return this.sgJoint.isFreeInY.getValue();
+  }
 
-	@Override
-	public boolean isFreeInZ() {
-		return this.sgJoint.isFreeInZ.getValue();
-	}
+  @Override
+  public boolean isFreeInZ() {
+    return this.sgJoint.isFreeInZ.getValue();
+  }
 
-	@Override
-	protected CumulativeBound updateCumulativeBound( CumulativeBound rv, AffineMatrix4x4 trans ) {
-		AxisAlignedBox jointBBox = this.sgJoint.getBoundingBox( null, false );
-		rv.addBoundingBox( jointBBox, trans );
-		return rv;
-	}
+  @Override
+  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+    AxisAlignedBox jointBBox = this.sgJoint.getBoundingBox(null, false);
+    rv.addBoundingBox(jointBBox, trans);
+    return rv;
+  }
 }

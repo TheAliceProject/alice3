@@ -56,49 +56,39 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 
 public abstract class GlrTitle<T extends Title> extends GlrShapeEnclosedText<T> {
-	protected static final float VERTICAL_MARGIN_TIMES_2 = 20.0f;
-	private Rectangle2D.Float backgroundBounds = new Rectangle2D.Float();
+  protected static final float VERTICAL_MARGIN_TIMES_2 = 20.0f;
+  private Rectangle2D.Float backgroundBounds = new Rectangle2D.Float();
 
-	@Override
-	protected float getWrapWidth( Rectangle actualViewport ) {
-		return (float)( actualViewport.getWidth() * 0.9 );
-	}
+  @Override
+  protected float getWrapWidth(Rectangle actualViewport) {
+    return (float) (actualViewport.getWidth() * 0.9);
+  }
 
-	protected abstract Rectangle2D.Float getFillBounds( Rectangle2D.Float rv, Rectangle actualViewport, Dimension2D multilineTextSize );
+  protected abstract Rectangle2D.Float getFillBounds(Rectangle2D.Float rv, Rectangle actualViewport, Dimension2D multilineTextSize);
 
-	@Override
-	protected void render(
-			Graphics2D g2,
-			RenderTarget renderTarget,
-			Rectangle actualViewport,
-			AbstractCamera camera,
-			MultilineText multilineText,
-			Font font,
-			Color textColor,
-			float wrapWidth,
-			Color fillColor,
-			Color outlineColor ) {
-		synchronized( this.backgroundBounds ) {
-			g2.setFont( font );
-			Dimension2D size = multilineText.getDimension( g2, wrapWidth );
-			this.getFillBounds( this.backgroundBounds, actualViewport, size );
-			if( fillColor != null ) {
-				g2.setColor( fillColor );
-				g2.fill( this.backgroundBounds );
-			}
-			if( outlineColor != null ) {
-				g2.setColor( outlineColor );
-				g2.draw( this.backgroundBounds );
-			}
-			if( textColor != null ) {
-				g2.setColor( textColor );
-				g2.setFont( font );
-				multilineText.paint( g2, wrapWidth, TextAlignment.CENTER, this.backgroundBounds );
-				//				float x = this.backgroundBounds.x - (float)textBounds.getX() + this.backgroundBounds.width * 0.5f - (float)textBounds.getWidth() * 0.5f;
-				//				float y = this.backgroundBounds.y - (float)textBounds.getY() + this.backgroundBounds.height * 0.5f - (float)textBounds.getHeight() * 0.5f;
-				//				g2.setFont( font );
-				//				g2.drawString( text, x, y );
-			}
-		}
-	}
+  @Override
+  protected void render(Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera, MultilineText multilineText, Font font, Color textColor, float wrapWidth, Color fillColor, Color outlineColor) {
+    synchronized (this.backgroundBounds) {
+      g2.setFont(font);
+      Dimension2D size = multilineText.getDimension(g2, wrapWidth);
+      this.getFillBounds(this.backgroundBounds, actualViewport, size);
+      if (fillColor != null) {
+        g2.setColor(fillColor);
+        g2.fill(this.backgroundBounds);
+      }
+      if (outlineColor != null) {
+        g2.setColor(outlineColor);
+        g2.draw(this.backgroundBounds);
+      }
+      if (textColor != null) {
+        g2.setColor(textColor);
+        g2.setFont(font);
+        multilineText.paint(g2, wrapWidth, TextAlignment.CENTER, this.backgroundBounds);
+        //        float x = this.backgroundBounds.x - (float)textBounds.getX() + this.backgroundBounds.width * 0.5f - (float)textBounds.getWidth() * 0.5f;
+        //        float y = this.backgroundBounds.y - (float)textBounds.getY() + this.backgroundBounds.height * 0.5f - (float)textBounds.getHeight() * 0.5f;
+        //        g2.setFont( font );
+        //        g2.drawString( text, x, y );
+      }
+    }
+  }
 }

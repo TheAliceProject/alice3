@@ -58,67 +58,67 @@ import java.util.Hashtable;
  * @author Dennis Cosgrove
  */
 public abstract class JHtmlView extends JEditorPane {
-	public JHtmlView( String text ) {
-		super( "text/html", text );
-		assert this.getDocument() instanceof HTMLDocument : this.getDocument();
-		this.setEditable( false );
-	}
+  public JHtmlView(String text) {
+    super("text/html", text);
+    assert this.getDocument() instanceof HTMLDocument : this.getDocument();
+    this.setEditable(false);
+  }
 
-	public JHtmlView() {
-		this( "" );
-	}
+  public JHtmlView() {
+    this("");
+  }
 
-	private Dictionary<URL, Image> getImageCache() {
-		final String IMAGE_CACHE_PROPERTY_NAME = "imageCache";
-		Document document = this.getDocument();
-		Dictionary<URL, Image> imageCache = (Dictionary<URL, Image>)document.getProperty( IMAGE_CACHE_PROPERTY_NAME );
-		if( imageCache != null ) {
-			//pass
-		} else {
-			imageCache = new Hashtable<URL, Image>();
-			document.putProperty( IMAGE_CACHE_PROPERTY_NAME, imageCache );
-		}
-		return imageCache;
-	}
+  private Dictionary<URL, Image> getImageCache() {
+    final String IMAGE_CACHE_PROPERTY_NAME = "imageCache";
+    Document document = this.getDocument();
+    Dictionary<URL, Image> imageCache = (Dictionary<URL, Image>) document.getProperty(IMAGE_CACHE_PROPERTY_NAME);
+    if (imageCache != null) {
+      //pass
+    } else {
+      imageCache = new Hashtable<URL, Image>();
+      document.putProperty(IMAGE_CACHE_PROPERTY_NAME, imageCache);
+    }
+    return imageCache;
+  }
 
-	public void addImageToCache( URL url, Image image ) {
-		Dictionary<URL, Image> imageCache = this.getImageCache();
-		imageCache.put( url, image );
-	}
+  public void addImageToCache(URL url, Image image) {
+    Dictionary<URL, Image> imageCache = this.getImageCache();
+    imageCache.put(url, image);
+  }
 
-	public HTMLDocument getHtmlDocument() {
-		Document document = this.getDocument();
-		return (HTMLDocument)document;
-	}
+  public HTMLDocument getHtmlDocument() {
+    Document document = this.getDocument();
+    return (HTMLDocument) document;
+  }
 
-	public void setTextFromUrlLater( URL url ) {
-		TextUrlWorker worker = new TextUrlWorker( url ) {
-			@Override
-			protected void handleDone_onEventDispatchThread( String value ) {
-				setText( value );
-			}
-		};
-		worker.execute();
-	}
+  public void setTextFromUrlLater(URL url) {
+    TextUrlWorker worker = new TextUrlWorker(url) {
+      @Override
+      protected void handleDone_onEventDispatchThread(String value) {
+        setText(value);
+      }
+    };
+    worker.execute();
+  }
 
-	protected abstract void handleHyperlinkUpdate( HyperlinkEvent e );
+  protected abstract void handleHyperlinkUpdate(HyperlinkEvent e);
 
-	@Override
-	public void addNotify() {
-		this.addHyperlinkListener( this.hyperlinkListener );
-		super.addNotify();
-	}
+  @Override
+  public void addNotify() {
+    this.addHyperlinkListener(this.hyperlinkListener);
+    super.addNotify();
+  }
 
-	@Override
-	public void removeNotify() {
-		super.removeNotify();
-		this.removeHyperlinkListener( this.hyperlinkListener );
-	}
+  @Override
+  public void removeNotify() {
+    super.removeNotify();
+    this.removeHyperlinkListener(this.hyperlinkListener);
+  }
 
-	private final HyperlinkListener hyperlinkListener = new HyperlinkListener() {
-		@Override
-		public void hyperlinkUpdate( HyperlinkEvent e ) {
-			handleHyperlinkUpdate( e );
-		}
-	};
+  private final HyperlinkListener hyperlinkListener = new HyperlinkListener() {
+    @Override
+    public void hyperlinkUpdate(HyperlinkEvent e) {
+      handleHyperlinkUpdate(e);
+    }
+  };
 }

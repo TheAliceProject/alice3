@@ -55,37 +55,37 @@ import org.lgna.project.ast.Expression;
  * @author Dennis Cosgrove
  */
 public class SelectedInstanceFactoryExpressionPanel extends LineAxisPanel {
-	private final ValueListener<InstanceFactory> instanceFactoryListener = new ValueListener<InstanceFactory>() {
-		@Override
-		public void valueChanged( ValueEvent<InstanceFactory> e ) {
-			SelectedInstanceFactoryExpressionPanel.this.refreshLater();
-		}
-	};
-	private final AstI18nFactory factory;
+  private final ValueListener<InstanceFactory> instanceFactoryListener = new ValueListener<InstanceFactory>() {
+    @Override
+    public void valueChanged(ValueEvent<InstanceFactory> e) {
+      SelectedInstanceFactoryExpressionPanel.this.refreshLater();
+    }
+  };
+  private final AstI18nFactory factory;
 
-	public SelectedInstanceFactoryExpressionPanel( AstI18nFactory factory ) {
-		this.factory = factory;
-		this.refreshLater();
-	}
+  public SelectedInstanceFactoryExpressionPanel(AstI18nFactory factory) {
+    this.factory = factory;
+    this.refreshLater();
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
-		Expression expression = instanceFactory != null ? instanceFactory.createTransientExpression() : null;
-		this.forgetAndRemoveAllComponents();
-		this.internalAddComponent( this.factory.createExpressionPane( expression ) );
-	}
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+    Expression expression = instanceFactory != null ? instanceFactory.createTransientExpression() : null;
+    this.forgetAndRemoveAllComponents();
+    this.internalAddComponent(this.factory.createExpressionPane(expression));
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactoryListener );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener(this.instanceFactoryListener);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().removeNewSchoolValueListener( this.instanceFactoryListener );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().removeNewSchoolValueListener(this.instanceFactoryListener);
+    super.handleUndisplayable();
+  }
 }

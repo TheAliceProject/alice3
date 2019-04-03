@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,40 +34,38 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum CircusTrapezeResource implements PropResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, CircusTrapezeResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId TRAPEZE_PIVOT = new JointId( ROOT, CircusTrapezeResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TRAPEZE_PIVOT_0 = new JointId( TRAPEZE_PIVOT, CircusTrapezeResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, CircusTrapezeResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId TRAPEZE_PIVOT = new JointId(ROOT, CircusTrapezeResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TRAPEZE_PIVOT_0 = new JointId(TRAPEZE_PIVOT, CircusTrapezeResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	public static final JointId[] TRAPEZE_PIVOT_ARRAY = { TRAPEZE_PIVOT_0 };
+  public static final JointId[] TRAPEZE_PIVOT_ARRAY = {TRAPEZE_PIVOT_0};
 
-	private final ImplementationAndVisualType resourceType;
-	CircusTrapezeResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	CircusTrapezeResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  CircusTrapezeResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return CircusTrapezeResource.JOINT_ID_ROOTS;
-	}
+  CircusTrapezeResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return CircusTrapezeResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

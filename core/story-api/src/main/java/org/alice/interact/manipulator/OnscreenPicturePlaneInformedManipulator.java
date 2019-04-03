@@ -49,8 +49,8 @@ import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
  */
 public interface OnscreenPicturePlaneInformedManipulator {
 
-	public OnscreenRenderTarget getOnscreenRenderTarget();
+  public OnscreenRenderTarget getOnscreenRenderTarget();
 
-	public void setOnscreenRenderTarget( OnscreenRenderTarget onscreenRenderTarget );
+  public void setOnscreenRenderTarget(OnscreenRenderTarget onscreenRenderTarget);
 
 }

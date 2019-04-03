@@ -59,32 +59,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PreferencesMenuModel extends PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static PreferencesMenuModel instance = new PreferencesMenuModel();
-	}
+  private static class SingletonHolder {
+    private static PreferencesMenuModel instance = new PreferencesMenuModel();
+  }
 
-	public static PreferencesMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static PreferencesMenuModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private PreferencesMenuModel() {
-		super( UUID.fromString( "e8f8a5b3-83be-4519-8956-3ef2b9546e23" ),
-				FormatterState.getInstance().getMenuModel(),
-				LocaleState.getInstance().getMenuModel(),
-				MenuModel.SEPARATOR,
-				IsJavaCodeOnTheSideState.getInstance().getMenuItemPrepModel(),
-				MenuModel.SEPARATOR,
-				IsIncludingThisForFieldAccessesState.getInstance().getMenuModel(),
-				//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getMenuItemPrepModel(),
-				//org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getMenuItemPrepModel(),
-				MenuModel.SEPARATOR,
-				IdeApp.INSTANCE.getIsRecursionAllowedPreferenceDialogLaunchOperation().getMenuItemPrepModel(),
-				IsExposingReassignableStatusState.getInstance().getMenuItemPrepModel(),
-				IsIncludingProgramType.getInstance().getMenuItemPrepModel(),
-				IsIncludingConstructors.getInstance().getMenuItemPrepModel(),
-				MenuModel.SEPARATOR,
-				AllowNullMenuModel.getInstance(),
-				MenuModel.SEPARATOR,
-				GalleryMenuModel.getInstance() );
-	}
+  private PreferencesMenuModel() {
+    super(UUID.fromString("e8f8a5b3-83be-4519-8956-3ef2b9546e23"), FormatterState.getInstance().getMenuModel(), LocaleState.getInstance().getMenuModel(), MenuModel.SEPARATOR, IsJavaCodeOnTheSideState.getInstance().getMenuItemPrepModel(), MenuModel.SEPARATOR, IsIncludingThisForFieldAccessesState.getInstance().getMenuModel(),
+          //org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getMenuItemPrepModel(),
+          //org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getMenuItemPrepModel(),
+          MenuModel.SEPARATOR, IdeApp.INSTANCE.getIsRecursionAllowedPreferenceDialogLaunchOperation().getMenuItemPrepModel(), IsExposingReassignableStatusState.getInstance().getMenuItemPrepModel(), IsIncludingProgramType.getInstance().getMenuItemPrepModel(), IsIncludingConstructors.getInstance().getMenuItemPrepModel(), MenuModel.SEPARATOR, AllowNullMenuModel.getInstance(), MenuModel.SEPARATOR, GalleryMenuModel.getInstance());
+  }
 }

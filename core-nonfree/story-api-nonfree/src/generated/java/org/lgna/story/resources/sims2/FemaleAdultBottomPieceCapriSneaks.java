@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultBottomPieceCapriSneaks implements FemaleAdultBottomPiece {
-	BLACK,
-	GREY,
-	PINK,
-	RED;
+  BLACK, GREY, PINK, RED
 
 }

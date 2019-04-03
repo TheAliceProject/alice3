@@ -47,74 +47,74 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class ReflectionProxy<E> {
-	private boolean isReificationNecessary;
-	private E reification;
+  private boolean isReificationNecessary;
+  private E reification;
 
-	public ReflectionProxy() {
-		isReificationNecessary = true;
-	}
+  public ReflectionProxy() {
+    isReificationNecessary = true;
+  }
 
-	public ReflectionProxy( E reification ) {
-		this.reification = reification;
-		isReificationNecessary = false;
-	}
+  public ReflectionProxy(E reification) {
+    this.reification = reification;
+    isReificationNecessary = false;
+  }
 
-	protected abstract E reify();
+  protected abstract E reify();
 
-	public E getReification() {
-		if( isReificationNecessary ) {
-			this.reification = this.reify();
-			isReificationNecessary = false;
-		}
-		return this.reification;
-	}
+  public E getReification() {
+    if (isReificationNecessary) {
+      this.reification = this.reify();
+      isReificationNecessary = false;
+    }
+    return this.reification;
+  }
 
-	protected abstract int hashCodeNonReifiable();
+  protected abstract int hashCodeNonReifiable();
 
-	protected abstract boolean equalsInstanceOfSameClassButNonReifiable( ReflectionProxy<?> o );
+  protected abstract boolean equalsInstanceOfSameClassButNonReifiable(ReflectionProxy<?> o);
 
-	@Override
-	public final int hashCode() {
-		E e = this.getReification();
-		if( e != null ) {
-			return e.hashCode();
-		} else {
-			return this.hashCodeNonReifiable();
-		}
-	}
+  @Override
+  public final int hashCode() {
+    E e = this.getReification();
+    if (e != null) {
+      return e.hashCode();
+    } else {
+      return this.hashCodeNonReifiable();
+    }
+  }
 
-	@Override
-	public final boolean equals( Object o ) {
-		if( this == o ) {
-			return true;
-		} else {
-			if( o instanceof ReflectionProxy<?> ) {
-				ReflectionProxy<?> other = (ReflectionProxy<?>)o;
-				E e = this.getReification();
-				if( e != null ) {
-					return e.equals( other.getReification() );
-				} else {
-					if( this.getClass().equals( other.getClass() ) ) {
-						return this.equalsInstanceOfSameClassButNonReifiable( other );
-					} else {
-						return false;
-					}
-				}
-			} else {
-				return false;
-			}
-		}
-	}
+  @Override
+  public final boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    } else {
+      if (o instanceof ReflectionProxy<?>) {
+        ReflectionProxy<?> other = (ReflectionProxy<?>) o;
+        E e = this.getReification();
+        if (e != null) {
+          return e.equals(other.getReification());
+        } else {
+          if (this.getClass().equals(other.getClass())) {
+            return this.equalsInstanceOfSameClassButNonReifiable(other);
+          } else {
+            return false;
+          }
+        }
+      } else {
+        return false;
+      }
+    }
+  }
 
-	protected abstract void appendRepr( StringBuilder sb );
+  protected abstract void appendRepr(StringBuilder sb);
 
-	@Override
-	public final String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		this.appendRepr( sb );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public final String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getSimpleName());
+    sb.append("[");
+    this.appendRepr(sb);
+    sb.append("]");
+    return sb.toString();
+  }
 }

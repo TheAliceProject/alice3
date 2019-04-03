@@ -54,109 +54,108 @@ import java.util.Dictionary;
  * @author Dennis Cosgrove
  */
 public class Slider extends ViewController<JSlider, BoundedNumberState<?>> {
-	public static enum Orientation {
-		HORIZONTAL( SwingConstants.HORIZONTAL ),
-		VERTICAL( SwingConstants.VERTICAL );
-		private int internal;
+  public static enum Orientation {
+    HORIZONTAL(SwingConstants.HORIZONTAL), VERTICAL(SwingConstants.VERTICAL);
+    private int internal;
 
-		private Orientation( int internal ) {
-			this.internal = internal;
-		}
+    private Orientation(int internal) {
+      this.internal = internal;
+    }
 
-		private int getInternal() {
-			return this.internal;
-		}
+    private int getInternal() {
+      return this.internal;
+    }
 
-		public static Orientation valueOf( int swingConstant ) {
-			switch( swingConstant ) {
-			case SwingConstants.HORIZONTAL:
-				return HORIZONTAL;
-			case SwingConstants.VERTICAL:
-				return VERTICAL;
-			default:
-				return null;
-			}
-		}
-	};
+    public static Orientation valueOf(int swingConstant) {
+      switch (swingConstant) {
+      case SwingConstants.HORIZONTAL:
+        return HORIZONTAL;
+      case SwingConstants.VERTICAL:
+        return VERTICAL;
+      default:
+        return null;
+      }
+    }
+  }
 
-	public Slider( BoundedNumberState<?> model ) {
-		super( model );
-	}
+  public Slider(BoundedNumberState<?> model) {
+    super(model);
+  }
 
-	@Override
-	protected JSlider createAwtComponent() {
-		return new JSlider( this.getModel().getSwingModel().getBoundedRangeModel() );
-	}
+  @Override
+  protected JSlider createAwtComponent() {
+    return new JSlider(this.getModel().getSwingModel().getBoundedRangeModel());
+  }
 
-	public Orientation getOrientation() {
-		return Orientation.valueOf( this.getAwtComponent().getOrientation() );
-	}
+  public Orientation getOrientation() {
+    return Orientation.valueOf(this.getAwtComponent().getOrientation());
+  }
 
-	public void setOrientation( Orientation orientation ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setOrientation( orientation.getInternal() );
-	}
+  public void setOrientation(Orientation orientation) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setOrientation(orientation.getInternal());
+  }
 
-	public boolean getInverted() {
-		return this.getAwtComponent().getInverted();
-	}
+  public boolean getInverted() {
+    return this.getAwtComponent().getInverted();
+  }
 
-	public void setInverted( boolean inverted ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setInverted( inverted );
-	}
+  public void setInverted(boolean inverted) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setInverted(inverted);
+  }
 
-	public int getMinorTickSpacing() {
-		return this.getAwtComponent().getMinorTickSpacing();
-	}
+  public int getMinorTickSpacing() {
+    return this.getAwtComponent().getMinorTickSpacing();
+  }
 
-	public void setMinorTickSpacing( int minorTickSpacing ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setMinorTickSpacing( minorTickSpacing );
-	}
+  public void setMinorTickSpacing(int minorTickSpacing) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setMinorTickSpacing(minorTickSpacing);
+  }
 
-	public int getMajorTickSpacing() {
-		return this.getAwtComponent().getMajorTickSpacing();
-	}
+  public int getMajorTickSpacing() {
+    return this.getAwtComponent().getMajorTickSpacing();
+  }
 
-	public void setMajorTickSpacing( int majorTickSpacing ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setMajorTickSpacing( majorTickSpacing );
-	}
+  public void setMajorTickSpacing(int majorTickSpacing) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setMajorTickSpacing(majorTickSpacing);
+  }
 
-	public boolean getSnapToTicks() {
-		return this.getAwtComponent().getSnapToTicks();
-	}
+  public boolean getSnapToTicks() {
+    return this.getAwtComponent().getSnapToTicks();
+  }
 
-	public void setSnapToTicks( boolean snapToTicks ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setSnapToTicks( snapToTicks );
-	}
+  public void setSnapToTicks(boolean snapToTicks) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setSnapToTicks(snapToTicks);
+  }
 
-	public boolean getPaintTicks() {
-		return this.getAwtComponent().getPaintTicks();
-	}
+  public boolean getPaintTicks() {
+    return this.getAwtComponent().getPaintTicks();
+  }
 
-	public void setPaintTicks( boolean paintTicks ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setPaintTicks( paintTicks );
-	}
+  public void setPaintTicks(boolean paintTicks) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setPaintTicks(paintTicks);
+  }
 
-	public boolean getPaintLabels() {
-		return this.getAwtComponent().getPaintLabels();
-	}
+  public boolean getPaintLabels() {
+    return this.getAwtComponent().getPaintLabels();
+  }
 
-	public void setPaintLabels( boolean paintLabels ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setPaintLabels( paintLabels );
-	}
+  public void setPaintLabels(boolean paintLabels) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setPaintLabels(paintLabels);
+  }
 
-	public Dictionary<Integer, JComponent> getLabelTable() {
-		return this.getAwtComponent().getLabelTable();
-	}
+  public Dictionary<Integer, JComponent> getLabelTable() {
+    return this.getAwtComponent().getLabelTable();
+  }
 
-	public void setLabelTable( Dictionary<Integer, JComponent> labelTable ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setLabelTable( labelTable );
-	}
+  public void setLabelTable(Dictionary<Integer, JComponent> labelTable) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setLabelTable(labelTable);
+  }
 }

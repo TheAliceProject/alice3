@@ -54,43 +54,43 @@ import org.lgna.croquet.views.ViewController;
  * @author Dennis Cosgrove
  */
 public abstract class Trigger implements BinaryEncodableAndDecodable {
-	private UserActivity userActivity;
+  private UserActivity userActivity;
 
-	public Trigger() {
-		// TODO Remove access to activity this way
-		userActivity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
-		userActivity.setTrigger( this );
-	}
+  public Trigger() {
+    // TODO Remove access to activity this way
+    userActivity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
+    userActivity.setTrigger(this);
+  }
 
-	public Trigger( UserActivity userActivity ) {
-		this.userActivity = userActivity;
-		if (userActivity != null) {
-			userActivity.setTrigger( this );
-		}
-	}
+  public Trigger(UserActivity userActivity) {
+    this.userActivity = userActivity;
+    if (userActivity != null) {
+      userActivity.setTrigger(this);
+    }
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+  }
 
-	public ViewController<?, ?> getViewController() {
-		return null;
-	}
+  public ViewController<?, ?> getViewController() {
+    return null;
+  }
 
-	// Only invoked from PopupPrepStep
-	public abstract void showPopupMenu( PopupMenu popupMenu );
+  // Only invoked from PopupPrepStep
+  public abstract void showPopupMenu(PopupMenu popupMenu);
 
-	protected void appendReprInternal( StringBuilder repr ) {
-	}
+  protected void appendReprInternal(StringBuilder repr) {
+  }
 
-	public void appendRepr( StringBuilder repr ) {
-		repr.append( this.getClass().getSimpleName() );
-		repr.append( "[" );
-		this.appendReprInternal( repr );
-		repr.append( "]" );
-	}
+  public void appendRepr(StringBuilder repr) {
+    repr.append(this.getClass().getSimpleName());
+    repr.append("[");
+    this.appendReprInternal(repr);
+    repr.append("]");
+  }
 
-	public UserActivity getUserActivity() {
-		return userActivity;
-	}
+  public UserActivity getUserActivity() {
+    return userActivity;
+  }
 }

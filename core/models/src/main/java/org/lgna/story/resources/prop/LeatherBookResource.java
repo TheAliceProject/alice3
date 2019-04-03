@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.JointedModelPose;
@@ -37,81 +38,38 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum LeatherBookResource implements PropResource {
-	BLANK,
-	GREEN,
-	AQUA,
-	LIME,
-	YELLOW,
-	RUST,
-	VIOLET,
-	BLUE,
-	PERIWINKLE,
-	MOSS,
-	BROWN,
-	TRIG,
-	CALCULUS,
-	GEOMETRY,
-	LINEAR_ALGEBRA,
-	ALGEBRA,
-	PROBABILITY,
-	STATISTICS,
-	CALCULUS3_D,
-	LEATHER_BOOK_TALL_BLANK,
-	LEATHER_BOOK_TALL_GREEN,
-	LEATHER_BOOK_TALL_AQUA,
-	LEATHER_BOOK_TALL_LIME,
-	LEATHER_BOOK_TALL_YELLOW,
-	LEATHER_BOOK_TALL_RUST,
-	LEATHER_BOOK_TALL_VIOLET,
-	LEATHER_BOOK_TALL_BLUE,
-	LEATHER_BOOK_TALL_PERIWINKLE,
-	LEATHER_BOOK_TALL_MOSS,
-	LEATHER_BOOK_TALL_BROWN,
-	LEATHER_BOOK_TALL_TRIG,
-	LEATHER_BOOK_TALL_CALCULUS,
-	LEATHER_BOOK_TALL_GEOMETRY,
-	LEATHER_BOOK_TALL_LINEAR_ALGEBRA,
-	LEATHER_BOOK_TALL_ALGEBRA,
-	LEATHER_BOOK_TALL_PROBABILITY,
-	LEATHER_BOOK_TALL_STATISTICS,
-	LEATHER_BOOK_TALL_CALCULUS3_D;
+  BLANK, GREEN, AQUA, LIME, YELLOW, RUST, VIOLET, BLUE, PERIWINKLE, MOSS, BROWN, TRIG, CALCULUS, GEOMETRY, LINEAR_ALGEBRA, ALGEBRA, PROBABILITY, STATISTICS, CALCULUS3_D, LEATHER_BOOK_TALL_BLANK, LEATHER_BOOK_TALL_GREEN, LEATHER_BOOK_TALL_AQUA, LEATHER_BOOK_TALL_LIME, LEATHER_BOOK_TALL_YELLOW, LEATHER_BOOK_TALL_RUST, LEATHER_BOOK_TALL_VIOLET, LEATHER_BOOK_TALL_BLUE, LEATHER_BOOK_TALL_PERIWINKLE, LEATHER_BOOK_TALL_MOSS, LEATHER_BOOK_TALL_BROWN, LEATHER_BOOK_TALL_TRIG, LEATHER_BOOK_TALL_CALCULUS, LEATHER_BOOK_TALL_GEOMETRY, LEATHER_BOOK_TALL_LINEAR_ALGEBRA, LEATHER_BOOK_TALL_ALGEBRA, LEATHER_BOOK_TALL_PROBABILITY, LEATHER_BOOK_TALL_STATISTICS, LEATHER_BOOK_TALL_CALCULUS3_D;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, LeatherBookResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId BACK_COVER = new JointId( ROOT, LeatherBookResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId FRONT_COVER = new JointId( ROOT, LeatherBookResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, LeatherBookResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId BACK_COVER = new JointId(ROOT, LeatherBookResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId FRONT_COVER = new JointId(ROOT, LeatherBookResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	public static final JointedModelPose OPEN_POSE = new JointedModelPose(
-		new JointIdTransformationPair( FRONT_COVER, new Orientation(0.0, -0.717083913125823, 0.0, 0.6969868445933232), new Position(-0.022763729095458984, -1.0658140798173486E-16, -0.04561522603034973) ),
-		new JointIdTransformationPair( BACK_COVER, new Orientation(0.0, 0.7234047982217257, 0.0, 0.6904241434870194), new Position(-0.023308169096708298, -1.776356733521132E-16, 0.04543914273381233) )
-	);
+  public static final JointedModelPose OPEN_POSE = new JointedModelPose(new JointIdTransformationPair(FRONT_COVER, new Orientation(0.0, -0.717083913125823, 0.0, 0.6969868445933232), new Position(-0.022763729095458984, -1.0658140798173486E-16, -0.04561522603034973)), new JointIdTransformationPair(BACK_COVER, new Orientation(0.0, 0.7234047982217257, 0.0, 0.6904241434870194), new Position(-0.023308169096708298, -1.776356733521132E-16, 0.04543914273381233)));
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	LeatherBookResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  LeatherBookResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	LeatherBookResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  LeatherBookResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return LeatherBookResource.JOINT_ID_ROOTS;
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return LeatherBookResource.JOINT_ID_ROOTS;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

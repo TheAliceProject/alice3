@@ -55,25 +55,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AddTextModelManagedFieldOperationComposite extends AddModelManagedFieldComposite {
-	private static class SingletonHolder {
-		private static AddTextModelManagedFieldOperationComposite instance = new AddTextModelManagedFieldOperationComposite();
-	}
+  private static class SingletonHolder {
+    private static AddTextModelManagedFieldOperationComposite instance = new AddTextModelManagedFieldOperationComposite();
+  }
 
-	public static AddTextModelManagedFieldOperationComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddTextModelManagedFieldOperationComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final CustomItemState<Expression> valueState = this.createInitialPropertyValueExpressionState( "valueState", "hello", STextModel.class, "setValue", String.class, null );
+  private final CustomItemState<Expression> valueState = this.createInitialPropertyValueExpressionState("valueState", "hello", STextModel.class, "setValue", String.class, null);
 
-	private AddTextModelManagedFieldOperationComposite() {
-		super( UUID.fromString( "d82699ca-eb75-4db2-ab9e-b2c18d957f25" ), STextModel.class );
-	}
+  private AddTextModelManagedFieldOperationComposite() {
+    super(UUID.fromString("d82699ca-eb75-4db2-ab9e-b2c18d957f25"), STextModel.class);
+  }
 
-	@Override protected ShapeDragModel getDragModel() {
-		return TextModelDragModel.getInstance();
-	}
+  @Override
+  protected ShapeDragModel getDragModel() {
+    return TextModelDragModel.getInstance();
+  }
 
-	public CustomItemState<Expression> getValueState() {
-		return this.valueState;
-	}
+  public CustomItemState<Expression> getValueState() {
+    return this.valueState;
+  }
 }

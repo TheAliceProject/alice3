@@ -46,23 +46,20 @@ package edu.cmu.cs.dennisc.ui;
  * @author Dennis Cosgrove
  */
 public enum DragStyle {
-	NORMAL( false, false ),
-	CONTROL( true, false ),
-	SHIFT( false, true ),
-	CONTROL_SHIFT( true, true );
-	private boolean m_isControlDown;
-	private boolean m_isShiftDown;
+  NORMAL(false, false), CONTROL(true, false), SHIFT(false, true), CONTROL_SHIFT(true, true);
+  private boolean m_isControlDown;
+  private boolean m_isShiftDown;
 
-	DragStyle( boolean isControlDown, boolean isShiftDown ) {
-		m_isControlDown = isControlDown;
-		m_isShiftDown = isShiftDown;
-	}
+  DragStyle(boolean isControlDown, boolean isShiftDown) {
+    m_isControlDown = isControlDown;
+    m_isShiftDown = isShiftDown;
+  }
 
-	public boolean isControlDown() {
-		return m_isControlDown;
-	}
+  public boolean isControlDown() {
+    return m_isControlDown;
+  }
 
-	public boolean isShiftDown() {
-		return m_isShiftDown;
-	}
+  public boolean isShiftDown() {
+    return m_isShiftDown;
+  }
 }

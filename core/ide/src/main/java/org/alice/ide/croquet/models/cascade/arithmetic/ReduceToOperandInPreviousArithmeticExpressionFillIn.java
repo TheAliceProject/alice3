@@ -53,20 +53,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ReduceToOperandInPreviousArithmeticExpressionFillIn extends PreviousExpressionBasedFillInWithoutBlanks<Expression> {
-	public ReduceToOperandInPreviousArithmeticExpressionFillIn( UUID id ) {
-		super( id );
-	}
+  public ReduceToOperandInPreviousArithmeticExpressionFillIn(UUID id) {
+    super(id);
+  }
 
-	//	@Override
-	//	protected final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.Expression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
-	//		return previousExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression;
-	//	}
-	protected abstract Expression getOperand( ArithmeticInfixExpression previousArithmetic );
+  //  @Override
+  //  protected final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.Expression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
+  //    return previousExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression;
+  //  }
+  protected abstract Expression getOperand(ArithmeticInfixExpression previousArithmetic);
 
-	@Override
-	protected final Expression createValue( Expression previousExpression ) {
-		assert previousExpression instanceof ArithmeticInfixExpression;
-		ArithmeticInfixExpression previousArithmetic = (ArithmeticInfixExpression)previousExpression;
-		return this.getOperand( previousArithmetic );
-	}
+  @Override
+  protected final Expression createValue(Expression previousExpression) {
+    assert previousExpression instanceof ArithmeticInfixExpression;
+    ArithmeticInfixExpression previousArithmetic = (ArithmeticInfixExpression) previousExpression;
+    return this.getOperand(previousArithmetic);
+  }
 }

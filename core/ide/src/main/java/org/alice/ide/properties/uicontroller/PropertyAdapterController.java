@@ -47,14 +47,14 @@ import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.croquet.views.Panel;
 
 public interface PropertyAdapterController<P> {
-	int MIN_ADAPTER_HEIGHT = 28;
+  int MIN_ADAPTER_HEIGHT = 28;
 
-	void setPropertyAdapter( AbstractPropertyAdapter<P, ?> propertyAdapter );
+  void setPropertyAdapter(AbstractPropertyAdapter<P, ?> propertyAdapter);
 
-	Class<?> getPropertyType();
+  Class<?> getPropertyType();
 
-	AbstractPropertyAdapter<P, ?> getPropertyAdapter();
+  AbstractPropertyAdapter<P, ?> getPropertyAdapter();
 
-	Panel getPanel();
+  Panel getPanel();
 
 }

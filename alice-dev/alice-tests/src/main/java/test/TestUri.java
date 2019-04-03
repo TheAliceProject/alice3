@@ -47,25 +47,25 @@ package test;
  * @author Dennis Cosgrove
  */
 public class TestUri {
-	public static void main( String[] args ) throws Exception {
-		java.io.File file = new java.io.File( "C:\\Program Files (x86)\\Git\\Git Bash" );
-		System.out.println( file );
-		java.net.URI uri = file.toURI();
-		System.out.println( uri );
-		System.out.println( uri.toString() );
-		System.out.println( uri.toASCIIString() );
-		System.out.println( new java.io.File( uri ) );
-		System.out.println( new java.io.File( new java.net.URI( uri.toString() ) ) );
-		System.out.println( new java.io.File( new java.net.URI( uri.toASCIIString() ) ) );
+  public static void main(String[] args) throws Exception {
+    java.io.File file = new java.io.File("C:\\Program Files (x86)\\Git\\Git Bash");
+    System.out.println(file);
+    java.net.URI uri = file.toURI();
+    System.out.println(uri);
+    System.out.println(uri.toString());
+    System.out.println(uri.toASCIIString());
+    System.out.println(new java.io.File(uri));
+    System.out.println(new java.io.File(new java.net.URI(uri.toString())));
+    System.out.println(new java.io.File(new java.net.URI(uri.toASCIIString())));
 
-		//java.net.URLEncoder.encode converts everything which is not what we want
-		//		System.out.println( "encoded: " + java.net.URLEncoder.encode( uri.toString(), "utf-8" ) );
-		//		System.out.println( "encoded: " + java.net.URLEncoder.encode( uri.toASCIIString(), "utf-8" ) );
-		//		
-		//		java.net.URI uri2 = edu.cmu.cs.dennisc.java.net.UriUtilities.getUri( uri.toString() );
-		//		System.out.println( "uri2: " + uri2 );
-		//		System.out.flush();
-		//		//java.net.URI uri = edu.cmu.cs.dennisc.java.net.UriUtilities.getUri( "file:///C:\\Program Files (x86)\\Git\\Git Bash" );
-		//		System.out.println( new java.io.File( uri2 ) );
-	}
+    //java.net.URLEncoder.encode converts everything which is not what we want
+    //    System.out.println( "encoded: " + java.net.URLEncoder.encode( uri.toString(), "utf-8" ) );
+    //    System.out.println( "encoded: " + java.net.URLEncoder.encode( uri.toASCIIString(), "utf-8" ) );
+    //
+    //    java.net.URI uri2 = edu.cmu.cs.dennisc.java.net.UriUtilities.getUri( uri.toString() );
+    //    System.out.println( "uri2: " + uri2 );
+    //    System.out.flush();
+    //    //java.net.URI uri = edu.cmu.cs.dennisc.java.net.UriUtilities.getUri( "file:///C:\\Program Files (x86)\\Git\\Git Bash" );
+    //    System.out.println( new java.io.File( uri2 ) );
+  }
 }

@@ -48,15 +48,15 @@ import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
  * @author Dennis Cosgrove
  */
 public abstract class PerspectiveApplication<D extends PerspectiveDocumentFrame> extends Application<D> {
-	public static PerspectiveApplication<?> getActiveInstance() {
-		return ClassUtilities.getInstance( Application.getActiveInstance(), PerspectiveApplication.class );
-	}
+  public static PerspectiveApplication<?> getActiveInstance() {
+    return ClassUtilities.getInstance(Application.getActiveInstance(), PerspectiveApplication.class);
+  }
 
-	public Perspective getPerspective() {
-		return this.getDocumentFrame().getPerspective();
-	}
+  public Perspective getPerspective() {
+    return this.getDocumentFrame().getPerspective();
+  }
 
-	public void setPerspective( Perspective perspective ) {
-		this.getDocumentFrame().setPerspective( perspective );
-	}
+  public void setPerspective(Perspective perspective) {
+    this.getDocumentFrame().setPerspective(perspective);
+  }
 }

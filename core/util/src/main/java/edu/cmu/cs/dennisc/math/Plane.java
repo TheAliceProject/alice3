@@ -49,163 +49,163 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
  * @author Dennis Cosgrove
  */
 public final class Plane {
-	public static final Plane NaN = new Plane( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
-	public static final Plane XZ_PLANE = new Plane( 0, 1, 0, 0 );
+  public static final Plane NaN = new Plane(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
+  public static final Plane XZ_PLANE = new Plane(0, 1, 0, 0);
 
-	private final double a;
-	private final double b;
-	private final double c;
-	private final double d;
+  private final double a;
+  private final double b;
+  private final double c;
+  private final double d;
 
-	private Plane( double a, double b, double c, double d ) {
-		this.a = a;
-		this.b = b;
-		this.c = c;
-		this.d = d;
-	}
+  private Plane(double a, double b, double c, double d) {
+    this.a = a;
+    this.b = b;
+    this.c = c;
+    this.d = d;
+  }
 
-	public static Plane createInstance( double a, double b, double c, double d ) {
-		return new Plane( a, b, c, d );
-	}
+  public static Plane createInstance(double a, double b, double c, double d) {
+    return new Plane(a, b, c, d);
+  }
 
-	public static Plane createInstance( double[] array ) {
-		return createInstance( array[ 0 ], array[ 1 ], array[ 2 ], array[ 3 ] );
-	}
+  public static Plane createInstance(double[] array) {
+    return createInstance(array[0], array[1], array[2], array[3]);
+  }
 
-	//Kept private to avoid confusion on order
-	private static Plane createInstance( double xPosition, double yPosition, double zPosition, double xNormal, double yNormal, double zNormal ) {
-		final double EPSILON = 0.01;
-		double magnitudeSquared = Tuple3.calculateMagnitudeSquared( xNormal, yNormal, zNormal );
-		if( EpsilonUtilities.isWithinEpsilonOf1InSquaredSpace( magnitudeSquared, EPSILON ) ) {
-			//pass
-		} else {
-			double magnitude = Math.sqrt( magnitudeSquared );
-			Logger.severe( magnitude, xNormal, yNormal, zNormal );
-			xNormal /= magnitude;
-			yNormal /= magnitude;
-			zNormal /= magnitude;
-		}
-		return createInstance( xNormal, yNormal, zNormal, -( ( xNormal * xPosition ) + ( yNormal * yPosition ) + ( zNormal * zPosition ) ) );
-	}
+  //Kept private to avoid confusion on order
+  private static Plane createInstance(double xPosition, double yPosition, double zPosition, double xNormal, double yNormal, double zNormal) {
+    final double EPSILON = 0.01;
+    double magnitudeSquared = Tuple3.calculateMagnitudeSquared(xNormal, yNormal, zNormal);
+    if (EpsilonUtilities.isWithinEpsilonOf1InSquaredSpace(magnitudeSquared, EPSILON)) {
+      //pass
+    } else {
+      double magnitude = Math.sqrt(magnitudeSquared);
+      Logger.severe(magnitude, xNormal, yNormal, zNormal);
+      xNormal /= magnitude;
+      yNormal /= magnitude;
+      zNormal /= magnitude;
+    }
+    return createInstance(xNormal, yNormal, zNormal, -((xNormal * xPosition) + (yNormal * yPosition) + (zNormal * zPosition)));
+  }
 
-	public static Plane createInstance( Point3 position, Vector3 normal ) {
-		assert position.isNaN() == false;
-		assert normal.isNaN() == false;
-		return createInstance( position.x, position.y, position.z, normal.x, normal.y, normal.z );
-	}
+  public static Plane createInstance(Point3 position, Vector3 normal) {
+    assert position.isNaN() == false;
+    assert normal.isNaN() == false;
+    return createInstance(position.x, position.y, position.z, normal.x, normal.y, normal.z);
+  }
 
-	public static Plane createInstance( AffineMatrix4x4 m ) {
-		assert m.isNaN() == false;
-		return createInstance( m.translation.x, m.translation.y, m.translation.z, -m.orientation.backward.x, -m.orientation.backward.y, -m.orientation.backward.z );
-	}
+  public static Plane createInstance(AffineMatrix4x4 m) {
+    assert m.isNaN() == false;
+    return createInstance(m.translation.x, m.translation.y, m.translation.z, -m.orientation.backward.x, -m.orientation.backward.y, -m.orientation.backward.z);
+  }
 
-	public static Plane createInstance( Point3 a, Point3 b, Point3 c ) {
-		assert a.isNaN() == false;
-		assert b.isNaN() == false;
-		assert c.isNaN() == false;
-		Vector3 ac = Vector3.createSubtraction( c, a );
-		Vector3 ab = Vector3.createSubtraction( b, a );
-		ac.normalize();
-		ab.normalize();
-		Vector3 normal = Vector3.createCrossProduct( ac, ab );
-		return createInstance( a, normal );
-	}
+  public static Plane createInstance(Point3 a, Point3 b, Point3 c) {
+    assert a.isNaN() == false;
+    assert b.isNaN() == false;
+    assert c.isNaN() == false;
+    Vector3 ac = Vector3.createSubtraction(c, a);
+    Vector3 ab = Vector3.createSubtraction(b, a);
+    ac.normalize();
+    ab.normalize();
+    Vector3 normal = Vector3.createCrossProduct(ac, ab);
+    return createInstance(a, normal);
+  }
 
-	@Override
-	public boolean equals( Object o ) {
-		if( o == this ) {
-			return true;
-		}
-		if( ( o != null ) && ( o instanceof Plane ) ) {
-			Plane plane = (Plane)o;
-			return ( this.a == plane.a ) && ( this.b == plane.b ) && ( this.c == plane.c ) && ( this.d == plane.d );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object o) {
+    if (o == this) {
+      return true;
+    }
+    if ((o != null) && (o instanceof Plane)) {
+      Plane plane = (Plane) o;
+      return (this.a == plane.a) && (this.b == plane.b) && (this.c == plane.c) && (this.d == plane.d);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public final int hashCode() {
-		int rv = 17;
-		long lng;
+  @Override
+  public final int hashCode() {
+    int rv = 17;
+    long lng;
 
-		lng = Double.doubleToLongBits( this.a );
-		rv = ( 37 * rv ) + (int)( lng ^ ( lng >>> 32 ) );
+    lng = Double.doubleToLongBits(this.a);
+    rv = (37 * rv) + (int) (lng ^ (lng >>> 32));
 
-		lng = Double.doubleToLongBits( this.b );
-		rv = ( 37 * rv ) + (int)( lng ^ ( lng >>> 32 ) );
+    lng = Double.doubleToLongBits(this.b);
+    rv = (37 * rv) + (int) (lng ^ (lng >>> 32));
 
-		lng = Double.doubleToLongBits( this.c );
-		rv = ( 37 * rv ) + (int)( lng ^ ( lng >>> 32 ) );
+    lng = Double.doubleToLongBits(this.c);
+    rv = (37 * rv) + (int) (lng ^ (lng >>> 32));
 
-		lng = Double.doubleToLongBits( this.d );
-		rv = ( 37 * rv ) + (int)( lng ^ ( lng >>> 32 ) );
+    lng = Double.doubleToLongBits(this.d);
+    rv = (37 * rv) + (int) (lng ^ (lng >>> 32));
 
-		return rv;
-	}
+    return rv;
+  }
 
-	public boolean isNaN() {
-		return Double.isNaN( this.a ) || Double.isNaN( this.b ) || Double.isNaN( this.c ) || Double.isNaN( this.d );
-	}
+  public boolean isNaN() {
+    return Double.isNaN(this.a) || Double.isNaN(this.b) || Double.isNaN(this.c) || Double.isNaN(this.d);
+  }
 
-	public double[] getEquation( double[] rv ) {
-		rv[ 0 ] = this.a;
-		rv[ 1 ] = this.b;
-		rv[ 2 ] = this.c;
-		rv[ 3 ] = this.d;
-		return rv;
-	}
+  public double[] getEquation(double[] rv) {
+    rv[0] = this.a;
+    rv[1] = this.b;
+    rv[2] = this.c;
+    rv[3] = this.d;
+    return rv;
+  }
 
-	public double[] getEquation() {
-		return getEquation( new double[ 4 ] );
-	}
+  public double[] getEquation() {
+    return getEquation(new double[4]);
+  }
 
-	public double intersect( Ray ray ) {
-		Point3 p = ray.getOrigin();
-		Vector3 d = ray.getDirection();
-		double denom = ( this.a * d.x ) + ( this.b * d.y ) + ( this.c * d.z );
-		if( denom == 0 ) {
-			return Double.NaN;
-		} else {
-			double numer = ( this.a * p.x ) + ( this.b * p.y ) + ( this.c * p.z ) + this.d;
-			return -numer / denom;
-		}
-	}
+  public double intersect(Ray ray) {
+    Point3 p = ray.getOrigin();
+    Vector3 d = ray.getDirection();
+    double denom = (this.a * d.x) + (this.b * d.y) + (this.c * d.z);
+    if (denom == 0) {
+      return Double.NaN;
+    } else {
+      double numer = (this.a * p.x) + (this.b * p.y) + (this.c * p.z) + this.d;
+      return -numer / denom;
+    }
+  }
 
-	public double evaluate( Point3 p ) {
-		return ( this.a * p.x ) + ( this.b * p.y ) + ( this.c * p.z ) + this.d;
-	}
+  public double evaluate(Point3 p) {
+    return (this.a * p.x) + (this.b * p.y) + (this.c * p.z) + this.d;
+  }
 
-	//	public LineD intersect( LineD rv, PlaneD other ) {
-	//		throw new RuntimException( "todo" );
-	//	}
-	//	public LineD intersect( PlaneD other ) {
-	//		return intersect( new LineD(), other );
-	//	}
+  //  public LineD intersect( LineD rv, PlaneD other ) {
+  //    throw new RuntimException( "todo" );
+  //  }
+  //  public LineD intersect( PlaneD other ) {
+  //    return intersect( new LineD(), other );
+  //  }
 
-	//	public edu.cmu.cs.dennisc.math.Matrix4d getReflection( edu.cmu.cs.dennisc.math.Matrix4d rv ) {
-	//		rv.setRow( 0, -2 * this.a * this.a + 1,   -2 * this.b * this.a,       -2 * this.c * this.a,       0.0 );
-	//		rv.setRow( 1, -2 * this.a * this.b,       -2 * this.b * this.b + 1,   -2 * this.c * this.b,       0.0 );
-	//		rv.setRow( 2, -2 * this.a * this.c,       -2 * this.b * this.c,       -2 * this.c * this.c + 1,   0.0 );
-	//		rv.setRow( 3, -2 * this.a * this.d,       -2 * this.b * this.d,       -2 * this.c * this.d,       1.0 );
-	//		return rv;
-	//	}
-	//	public edu.cmu.cs.dennisc.math.Matrix4d getReflection() {
-	//		return getReflection( new edu.cmu.cs.dennisc.math.Matrix4d() );
-	//	}
-	@Override
-	public String toString() {
-		return "edu.cmu.cs.dennisc.math.Plane[a=" + this.a + ",b=" + this.b + ",c=" + this.c + ",d=" + this.d + "]";
-	}
+  //  public edu.cmu.cs.dennisc.math.Matrix4d getReflection( edu.cmu.cs.dennisc.math.Matrix4d rv ) {
+  //    rv.setRow( 0, -2 * this.a * this.a + 1,   -2 * this.b * this.a,       -2 * this.c * this.a,       0.0 );
+  //    rv.setRow( 1, -2 * this.a * this.b,       -2 * this.b * this.b + 1,   -2 * this.c * this.b,       0.0 );
+  //    rv.setRow( 2, -2 * this.a * this.c,       -2 * this.b * this.c,       -2 * this.c * this.c + 1,   0.0 );
+  //    rv.setRow( 3, -2 * this.a * this.d,       -2 * this.b * this.d,       -2 * this.c * this.d,       1.0 );
+  //    return rv;
+  //  }
+  //  public edu.cmu.cs.dennisc.math.Matrix4d getReflection() {
+  //    return getReflection( new edu.cmu.cs.dennisc.math.Matrix4d() );
+  //  }
+  @Override
+  public String toString() {
+    return "edu.cmu.cs.dennisc.math.Plane[a=" + this.a + ",b=" + this.b + ",c=" + this.c + ",d=" + this.d + "]";
+  }
 
-	public static Plane valueOf( String s ) {
-		String[] markers = { "edu.cmu.cs.dennisc.math.Plane[a=", ",b=", ",c=", ",d=", "]" };
-		double[] values = new double[ markers.length - 1 ];
-		for( int i = 0; i < values.length; i++ ) {
-			int begin = s.indexOf( markers[ i ] ) + markers[ i ].length();
-			int end = s.indexOf( markers[ i + 1 ] );
-			values[ i ] = Double.valueOf( s.substring( begin, end ) ).doubleValue();
-		}
-		return createInstance( values );
-	}
+  public static Plane valueOf(String s) {
+    String[] markers = {"edu.cmu.cs.dennisc.math.Plane[a=", ",b=", ",c=", ",d=", "]"};
+    double[] values = new double[markers.length - 1];
+    for (int i = 0; i < values.length; i++) {
+      int begin = s.indexOf(markers[i]) + markers[i].length();
+      int end = s.indexOf(markers[i + 1]);
+      values[i] = Double.valueOf(s.substring(begin, end)).doubleValue();
+    }
+    return createInstance(values);
+  }
 }

@@ -78,242 +78,236 @@ import org.lgna.common.resources.AudioResource;
  */
 public class AudioResourceConverter implements ControllerListener, DataSinkListener {
 
-	private AudioResource audioResource;
-	private Processor processor = null;
-	private DataSink dataSink = null;
-	private boolean boolSaving = false;
+  private AudioResource audioResource;
+  private Processor processor = null;
+  private DataSink dataSink = null;
+  private boolean boolSaving = false;
 
-	boolean stateFailed = false;
-	boolean isWaiting = false;
-	Object stateLock = new Object();
-	Object waitLock = new Object();
+  boolean stateFailed = false;
+  boolean isWaiting = false;
+  Object stateLock = new Object();
+  Object waitLock = new Object();
 
-	class StateListener implements ControllerListener {
-		@Override
-		public void controllerUpdate( ControllerEvent ce ) {
-			if( ce instanceof ControllerClosedEvent ) {
-				stateFailed = true;
-			}
-			synchronized( stateLock ) {
-				stateLock.notifyAll();
-			}
-		}
-	}
+  class StateListener implements ControllerListener {
+    @Override
+    public void controllerUpdate(ControllerEvent ce) {
+      if (ce instanceof ControllerClosedEvent) {
+        stateFailed = true;
+      }
+      synchronized (stateLock) {
+        stateLock.notifyAll();
+      }
+    }
+  }
 
-	public AudioResourceConverter( AudioResource audioResource ) {
-		this.audioResource = audioResource;
-	}
+  public AudioResourceConverter(AudioResource audioResource) {
+    this.audioResource = audioResource;
+  }
 
-	private static File createTempFile() throws IOException {
-		final File temp;
+  private static File createTempFile() throws IOException {
+    final File temp;
 
-		temp = File.createTempFile( Long.toString( System.nanoTime() ), ".wav" );
-		temp.deleteOnExit();
+    temp = File.createTempFile(Long.toString(System.nanoTime()), ".wav");
+    temp.deleteOnExit();
 
-		if( !( temp.delete() ) ) {
-			throw new IOException( "Could not delete temp file: "
-					+ temp.getAbsolutePath() );
-		}
+    if (!(temp.delete())) {
+      throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
+    }
 
-		if( !( temp.mkdir() ) ) {
-			throw new IOException( "Could not create temp directory: "
-					+ temp.getAbsolutePath() );
-		}
+    if (!(temp.mkdir())) {
+      throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
+    }
 
-		return ( temp );
-	}
+    return (temp);
+  }
 
-	private synchronized boolean waitForState( Processor p, int state ) {
-		p.addControllerListener( new StateListener() );
-		stateFailed = false;
-		if( state == Processor.Configured ) {
-			p.configure();
-		} else if( state == Processor.Realized ) {
-			p.realize();
-		}
-		while( ( p.getState() < state ) && !stateFailed ) {
-			synchronized( stateLock ) {
-				try {
-					stateLock.wait();
-				} catch( InterruptedException ie ) {
-					return false;
-				}
-			}
-		}
-		return ( !stateFailed );
-	}
+  private synchronized boolean waitForState(Processor p, int state) {
+    p.addControllerListener(new StateListener());
+    stateFailed = false;
+    if (state == Processor.Configured) {
+      p.configure();
+    } else if (state == Processor.Realized) {
+      p.realize();
+    }
+    while ((p.getState() < state) && !stateFailed) {
+      synchronized (stateLock) {
+        try {
+          stateLock.wait();
+        } catch (InterruptedException ie) {
+          return false;
+        }
+      }
+    }
+    return (!stateFailed);
+  }
 
-	@Override
-	public void dataSinkUpdate( DataSinkEvent event ) {
-		if( event instanceof EndOfStreamEvent ) {
-			closeDataSink();
-		} else if( event instanceof DataSinkErrorEvent ) {
-			stopSaving();
-		}
-	}
+  @Override
+  public void dataSinkUpdate(DataSinkEvent event) {
+    if (event instanceof EndOfStreamEvent) {
+      closeDataSink();
+    } else if (event instanceof DataSinkErrorEvent) {
+      stopSaving();
+    }
+  }
 
-	/**
-	 * This method cleans up after the completion of the file save procedure.
-	 */
-	private void stopSaving() {
-		boolSaving = false;
-		if( processor != null ) {
-			processor.stop();
-			processor.close();
-			processor = null;
-			if( dataSink == null ) {
-				onDone();
-			}
-		}
-	}
+  /**
+   * This method cleans up after the completion of the file save procedure.
+   */
+  private void stopSaving() {
+    boolSaving = false;
+    if (processor != null) {
+      processor.stop();
+      processor.close();
+      processor = null;
+      if (dataSink == null) {
+        onDone();
+      }
+    }
+  }
 
-	private void closeDataSink() {
-		synchronized( this ) {
-			if( dataSink != null ) {
-				dataSink.close();
-			}
-			dataSink = null;
-			if( processor == null ) {
-				onDone();
-			}
-		}
-	}
+  private void closeDataSink() {
+    synchronized (this) {
+      if (dataSink != null) {
+        dataSink.close();
+      }
+      dataSink = null;
+      if (processor == null) {
+        onDone();
+      }
+    }
+  }
 
-	@Override
-	public void controllerUpdate( ControllerEvent event ) {
-		if( event instanceof ControllerErrorEvent ) {
-			if( boolSaving == true ) {
-				stopSaving();
-			}
-		} else if( event instanceof EndOfMediaEvent ) {
-			if( boolSaving == true ) {
-				stopSaving();
-			}
-		}
-	}
+  @Override
+  public void controllerUpdate(ControllerEvent event) {
+    if (event instanceof ControllerErrorEvent) {
+      if (boolSaving == true) {
+        stopSaving();
+      }
+    } else if (event instanceof EndOfMediaEvent) {
+      if (boolSaving == true) {
+        stopSaving();
+      }
+    }
+  }
 
-	private void onDone() {
-		long endTime = System.currentTimeMillis();
-		long dif = endTime - startTime;
-		System.out.println( "Took: " + ( dif * .001 ) + " seconds" );
-		synchronized( waitLock ) {
-			isWaiting = false;
-		}
+  private void onDone() {
+    long endTime = System.currentTimeMillis();
+    long dif = endTime - startTime;
+    System.out.println("Took: " + (dif * .001) + " seconds");
+    synchronized (waitLock) {
+      isWaiting = false;
+    }
 
-	}
+  }
 
-	private boolean waitForFileDone() {
-		synchronized( waitLock ) {
-			try {
-				while( isWaiting ) {
-					waitLock.wait( 100 );
-				}
-			} catch( Exception e ) {
-				return false;
-			}
-		}
-		return true;
-	}
+  private boolean waitForFileDone() {
+    synchronized (waitLock) {
+      try {
+        while (isWaiting) {
+          waitLock.wait(100);
+        }
+      } catch (Exception e) {
+        return false;
+      }
+    }
+    return true;
+  }
 
-	private long startTime;
+  private long startTime;
 
-	public AudioResource convertTo( AudioFormat destFormat ) {
-		javax.media.format.AudioFormat convertToFormat = JavaSoundOutput.convertFormat( destFormat );
-		return convertTo( convertToFormat );
-	}
+  public AudioResource convertTo(AudioFormat destFormat) {
+    javax.media.format.AudioFormat convertToFormat = JavaSoundOutput.convertFormat(destFormat);
+    return convertTo(convertToFormat);
+  }
 
-	public AudioResource convertTo( javax.media.format.AudioFormat destFormat ) {
-		//		System.out.println( "Converting " + this.audioResource.getOriginalFileName() );
+  public AudioResource convertTo(javax.media.format.AudioFormat destFormat) {
+    //    System.out.println( "Converting " + this.audioResource.getOriginalFileName() );
 
-		startTime = System.currentTimeMillis();
-		try {
-			DataSource dataSource = new ByteArrayDataSource(
-					this.audioResource.getData(),
-					this.audioResource.getContentType() );
-			this.processor = Manager.createProcessor( dataSource );
+    startTime = System.currentTimeMillis();
+    try {
+      DataSource dataSource = new ByteArrayDataSource(this.audioResource.getData(), this.audioResource.getContentType());
+      this.processor = Manager.createProcessor(dataSource);
 
-			processor.addControllerListener( this );
+      processor.addControllerListener(this);
 
-			if( !waitForState( processor, Processor.Configured ) ) {
-				return null;
-			}
+      if (!waitForState(processor, Processor.Configured)) {
+        return null;
+      }
 
-			TrackControl[] trackControls = processor.getTrackControls();
-			assert trackControls.length == 1;
-			TrackControl control = trackControls[ 0 ];
+      TrackControl[] trackControls = processor.getTrackControls();
+      assert trackControls.length == 1;
+      TrackControl control = trackControls[0];
 
-			processor.setContentDescriptor( new FileTypeDescriptor(
-					FileTypeDescriptor.WAVE ) );
+      processor.setContentDescriptor(new FileTypeDescriptor(FileTypeDescriptor.WAVE));
 
-			control.setEnabled( true );
-			control.setFormat( destFormat );
+      control.setEnabled(true);
+      control.setFormat(destFormat);
 
-			if( !waitForState( processor, Processor.Realized ) ) {
-				return null;
-			}
-			boolSaving = true;
+      if (!waitForState(processor, Processor.Realized)) {
+        return null;
+      }
+      boolSaving = true;
 
-			dataSource = processor.getDataOutput();
+      dataSource = processor.getDataOutput();
 
-			File tempFile = createTempFile();
+      File tempFile = createTempFile();
 
-			MediaLocator mediaDest = new MediaLocator( "file:"
-					+ tempFile.getAbsolutePath() );
+      MediaLocator mediaDest = new MediaLocator("file:" + tempFile.getAbsolutePath());
 
-			this.dataSink = Manager.createDataSink( dataSource, mediaDest );
-			dataSink.addDataSinkListener( this );
-			dataSink.open();
-			dataSink.start();
-			processor.start();
-			isWaiting = true;
-			boolean success = waitForFileDone();
+      this.dataSink = Manager.createDataSink(dataSource, mediaDest);
+      dataSink.addDataSinkListener(this);
+      dataSink.open();
+      dataSink.start();
+      processor.start();
+      isWaiting = true;
+      boolean success = waitForFileDone();
 
-			AudioResource ar = MediaFactory.getSingleton().createAudioResource( tempFile );
-			tempFile.delete();
+      AudioResource ar = MediaFactory.getSingleton().createAudioResource(tempFile);
+      tempFile.delete();
 
-			return ar;
-		} catch( Exception e ) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+      return ar;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 
-	public static AudioResource convert( AudioResource resource, javax.media.format.AudioFormat destFormat ) {
-		AudioResourceConverter converter = new AudioResourceConverter( resource );
-		return converter.convertTo( destFormat );
-	}
+  public static AudioResource convert(AudioResource resource, javax.media.format.AudioFormat destFormat) {
+    AudioResourceConverter converter = new AudioResourceConverter(resource);
+    return converter.convertTo(destFormat);
+  }
 
-	public static AudioResource convert( AudioResource resource, AudioFormat destFormat ) {
-		AudioResourceConverter converter = new AudioResourceConverter( resource );
-		return converter.convertTo( destFormat );
-	}
+  public static AudioResource convert(AudioResource resource, AudioFormat destFormat) {
+    AudioResourceConverter converter = new AudioResourceConverter(resource);
+    return converter.convertTo(destFormat);
+  }
 
-	public static boolean needsConverting( AudioResource resource, AudioFormat destFormat ) {
-		if( resource.getContentType().equals( "audio.mpeg" ) ) {
-			return true;
-		}
-		AudioInputStream audioStream = null;
-		ByteArrayInputStream dataStream = new ByteArrayInputStream( resource.getData() );
+  public static boolean needsConverting(AudioResource resource, AudioFormat destFormat) {
+    if (resource.getContentType().equals("audio.mpeg")) {
+      return true;
+    }
+    AudioInputStream audioStream = null;
+    ByteArrayInputStream dataStream = new ByteArrayInputStream(resource.getData());
 
-		try {
-			audioStream = AudioSystem.getAudioInputStream( dataStream );
-		} catch( Exception e ) {
-			e.printStackTrace();
-			return false;
-		}
-		AudioFormat currentFormat = audioStream.getFormat();
+    try {
+      audioStream = AudioSystem.getAudioInputStream(dataStream);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+    AudioFormat currentFormat = audioStream.getFormat();
 
-		return needsConverting( currentFormat, destFormat );
-	}
+    return needsConverting(currentFormat, destFormat);
+  }
 
-	public static boolean needsConverting( AudioFormat currentFormat, AudioFormat destFormat ) {
-		if( currentFormat.getSampleRate() != destFormat.getSampleRate() ) {
-			return true;
-		}
-		if( currentFormat.getEncoding() != destFormat.getEncoding() ) {
-			return true;
-		}
-		return false;
-	}
+  public static boolean needsConverting(AudioFormat currentFormat, AudioFormat destFormat) {
+    if (currentFormat.getSampleRate() != destFormat.getSampleRate()) {
+      return true;
+    }
+    if (currentFormat.getEncoding() != destFormat.getEncoding()) {
+      return true;
+    }
+    return false;
+  }
 
 }

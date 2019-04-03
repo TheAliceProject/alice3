@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.biped;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SBiped;
@@ -33,52 +34,40 @@ import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 public enum CheshireCatResource implements BipedResource {
-	DEFAULT,
-	CHESHIRE_CAT_GRIN;
+  DEFAULT, CHESHIRE_CAT_GRIN;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, CheshireCatResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_EAR = new JointId( HEAD, CheshireCatResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, CheshireCatResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_EAR = new JointId( HEAD, CheshireCatResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, CheshireCatResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, CheshireCatResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME, methodNameHint="getTail")
-	public static final JointId TAIL_0 = new JointId( PELVIS_LOWER_BODY, CheshireCatResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_1 = new JointId( TAIL_0, CheshireCatResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_2 = new JointId( TAIL_1, CheshireCatResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_3 = new JointId( TAIL_2, CheshireCatResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_4 = new JointId( TAIL_3, CheshireCatResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, CheshireCatResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LOWER_LIP = new JointId(MOUTH, CheshireCatResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_EAR = new JointId(HEAD, CheshireCatResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_EAR_TIP = new JointId(LEFT_EAR, CheshireCatResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_EAR = new JointId(HEAD, CheshireCatResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_EAR_TIP = new JointId(RIGHT_EAR, CheshireCatResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_TOES = new JointId(LEFT_FOOT, CheshireCatResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME, methodNameHint = "getTail") public static final JointId TAIL_0 = new JointId(PELVIS_LOWER_BODY, CheshireCatResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_1 = new JointId(TAIL_0, CheshireCatResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_2 = new JointId(TAIL_1, CheshireCatResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_3 = new JointId(TAIL_2, CheshireCatResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_4 = new JointId(TAIL_3, CheshireCatResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_TOES = new JointId(RIGHT_FOOT, CheshireCatResource.class);
 
-	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4 };
+  public static final JointId[] TAIL_ARRAY = {TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4};
 
-	private final ImplementationAndVisualType resourceType;
-	CheshireCatResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	CheshireCatResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  CheshireCatResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
+  CheshireCatResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BipedImp createImplementation( SBiped abstraction ) {
-		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BipedImp createImplementation(SBiped abstraction) {
+    return new BipedImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

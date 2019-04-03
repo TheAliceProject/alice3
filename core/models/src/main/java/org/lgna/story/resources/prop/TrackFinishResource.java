@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,42 +34,38 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum TrackFinishResource implements PropResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, TrackFinishResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId FLAG_1 = new JointId( ROOT, TrackFinishResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId FLAG_2 = new JointId( ROOT, TrackFinishResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId FLAG_3 = new JointId( ROOT, TrackFinishResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId FLAG_4 = new JointId( ROOT, TrackFinishResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, TrackFinishResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId FLAG_1 = new JointId(ROOT, TrackFinishResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId FLAG_2 = new JointId(ROOT, TrackFinishResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId FLAG_3 = new JointId(ROOT, TrackFinishResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId FLAG_4 = new JointId(ROOT, TrackFinishResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	TrackFinishResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	TrackFinishResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  TrackFinishResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return TrackFinishResource.JOINT_ID_ROOTS;
-	}
+  TrackFinishResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return TrackFinishResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

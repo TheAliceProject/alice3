@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitJumpSuitBoots implements FemaleTeenFullBodyOutfit {
-	DENIM_BEIGE_LACES,
-	BLACK_RED_BOOTS,
-	GREEN_YELLOW_LACES,
-	LEOPARD_CAMEL_BOOTS,
-	PINK_WHITE_LACES;
+  DENIM_BEIGE_LACES, BLACK_RED_BOOTS, GREEN_YELLOW_LACES, LEOPARD_CAMEL_BOOTS, PINK_WHITE_LACES
 
 }

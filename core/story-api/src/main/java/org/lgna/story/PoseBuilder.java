@@ -54,22 +54,22 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  * @author Matt May
  */
 public abstract class PoseBuilder<M extends SJointedModel, P extends Pose<M>> {
-	/*package-private*/void addJointIdQuaternionPair( JointIdTransformationPair jointIdTransformationPair ) {
-		this.pairs.add( jointIdTransformationPair );
-	}
+  /*package-private*/void addJointIdQuaternionPair(JointIdTransformationPair jointIdTransformationPair) {
+    this.pairs.add(jointIdTransformationPair);
+  }
 
-	protected void addJointIdQuaternionPair( JointId jointId, Orientation orientation ) {
-		UnitQuaternion quaternion = EmployeesOnly.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion();
-		this.addJointIdQuaternionPair( new JointIdTransformationPair( jointId, quaternion ) );
-	}
+  protected void addJointIdQuaternionPair(JointId jointId, Orientation orientation) {
+    UnitQuaternion quaternion = EmployeesOnly.getOrthogonalMatrix3x3(orientation).createUnitQuaternion();
+    this.addJointIdQuaternionPair(new JointIdTransformationPair(jointId, quaternion));
+  }
 
-	protected abstract P build( JointIdTransformationPair[] buffer );
+  protected abstract P build(JointIdTransformationPair[] buffer);
 
-	public final P build() {
-		JointIdTransformationPair[] buffer = new JointIdTransformationPair[ this.pairs.size() ];
-		this.pairs.toArray( buffer );
-		return this.build( buffer );
-	}
+  public final P build() {
+    JointIdTransformationPair[] buffer = new JointIdTransformationPair[this.pairs.size()];
+    this.pairs.toArray(buffer);
+    return this.build(buffer);
+  }
 
-	private final List<JointIdTransformationPair> pairs = Lists.newLinkedList();
+  private final List<JointIdTransformationPair> pairs = Lists.newLinkedList();
 }

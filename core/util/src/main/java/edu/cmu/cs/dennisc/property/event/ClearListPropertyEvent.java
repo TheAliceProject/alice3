@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.property.ListProperty;
  * @author Dennis Cosgrove
  */
 public class ClearListPropertyEvent<E> extends ListPropertyEvent<E> {
-	public ClearListPropertyEvent( ListProperty<E> source ) {
-		super( source );
-	}
+  public ClearListPropertyEvent(ListProperty<E> source) {
+    super(source);
+  }
 }

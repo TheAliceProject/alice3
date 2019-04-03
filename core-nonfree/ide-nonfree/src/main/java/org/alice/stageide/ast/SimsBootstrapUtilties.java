@@ -69,68 +69,68 @@ import java.util.ArrayList;
  * @author Dennis Cosgrove
  */
 public class SimsBootstrapUtilties extends BootstrapUtilties {
-	//groundAppearance is optional and will cause the program to generate a ground in addition to a room
-	public static NamedUserType createProgramType( SGround.SurfaceAppearance groundAppearance, Paint floorAppearance, Paint wallAppearance, Paint ceilingAppearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, double groundOpacity ) {
+  //groundAppearance is optional and will cause the program to generate a ground in addition to a room
+  public static NamedUserType createProgramType(SGround.SurfaceAppearance groundAppearance, Paint floorAppearance, Paint wallAppearance, Paint ceilingAppearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, double groundOpacity) {
 
-		UserField roomField = createPrivateFinalField( SRoom.class, "room" );
-		roomField.managementLevel.setValue( ManagementLevel.MANAGED );
+    UserField roomField = createPrivateFinalField(SRoom.class, "room");
+    roomField.managementLevel.setValue(ManagementLevel.MANAGED);
 
-		UserField groundField = groundAppearance != null ? createPrivateFinalField( SGround.class, "ground" ) : null;
-		if( groundField != null ) {
-			groundField.managementLevel.setValue( ManagementLevel.MANAGED );
-		}
+    UserField groundField = groundAppearance != null ? createPrivateFinalField(SGround.class, "ground") : null;
+    if (groundField != null) {
+      groundField.managementLevel.setValue(ManagementLevel.MANAGED);
+    }
 
-		UserField[] modelFields;
-		if( groundField != null ) {
-			modelFields = new UserField[] { roomField, groundField };
-		} else {
-			modelFields = new UserField[] { roomField };
-		}
+    UserField[] modelFields;
+    if (groundField != null) {
+      modelFields = new UserField[] {roomField, groundField};
+    } else {
+      modelFields = new UserField[] {roomField};
+    }
 
-		ArrayList<ExpressionStatement> setupStatements = new ArrayList<ExpressionStatement>();
+    ArrayList<ExpressionStatement> setupStatements = new ArrayList<ExpressionStatement>();
 
-		JavaMethod setFloorPaintMethod = JavaMethod.getInstance( SRoom.class, "setFloorPaint", Paint.class, SetFloorPaint.Detail[].class );
-		Expression floorPaintExpression = null;
-		Expression wallPaintExpression = null;
-		Expression ceilingPaintExpression = null;
+    JavaMethod setFloorPaintMethod = JavaMethod.getInstance(SRoom.class, "setFloorPaint", Paint.class, SetFloorPaint.Detail[].class);
+    Expression floorPaintExpression = null;
+    Expression wallPaintExpression = null;
+    Expression ceilingPaintExpression = null;
 
-		try {
-			if( floorAppearance instanceof SRoom.FloorAppearance ) {
-				floorPaintExpression = createFieldAccess( (SRoom.FloorAppearance)floorAppearance );
-			} else {
-				floorPaintExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression( floorAppearance );
-			}
+    try {
+      if (floorAppearance instanceof SRoom.FloorAppearance) {
+        floorPaintExpression = createFieldAccess((SRoom.FloorAppearance) floorAppearance);
+      } else {
+        floorPaintExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(floorAppearance);
+      }
 
-			if( wallAppearance instanceof SRoom.WallAppearance ) {
-				wallPaintExpression = createFieldAccess( (SRoom.WallAppearance)wallAppearance );
-			} else {
-				wallPaintExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression( wallAppearance );
-			}
+      if (wallAppearance instanceof SRoom.WallAppearance) {
+        wallPaintExpression = createFieldAccess((SRoom.WallAppearance) wallAppearance);
+      } else {
+        wallPaintExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(wallAppearance);
+      }
 
-			if( ceilingAppearance instanceof SRoom.CeilingAppearance ) {
-				ceilingPaintExpression = createFieldAccess( (SRoom.CeilingAppearance)ceilingAppearance );
-			} else {
-				ceilingPaintExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression( ceilingAppearance );
-			}
-		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e ) {
-			Logger.errln( "cannot create expression", e );
-		}
+      if (ceilingAppearance instanceof SRoom.CeilingAppearance) {
+        ceilingPaintExpression = createFieldAccess((SRoom.CeilingAppearance) ceilingAppearance);
+      } else {
+        ceilingPaintExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(ceilingAppearance);
+      }
+    } catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) {
+      Logger.errln("cannot create expression", e);
+    }
 
-		setupStatements.add( createMethodInvocationStatement(new FieldAccess(roomField), setFloorPaintMethod, floorPaintExpression ) );
-		JavaMethod setWallPaintMethod = JavaMethod.getInstance( SRoom.class, "setWallPaint", Paint.class, SetWallPaint.Detail[].class );
-		setupStatements.add( createMethodInvocationStatement(new FieldAccess(roomField), setWallPaintMethod, wallPaintExpression ) );
-		JavaMethod setCeilingPaintMethod = JavaMethod.getInstance( SRoom.class, "setCeilingPaint", Paint.class, SetCeilingPaint.Detail[].class );
-		setupStatements.add( createMethodInvocationStatement(new FieldAccess(roomField), setCeilingPaintMethod, ceilingPaintExpression ) );
+    setupStatements.add(createMethodInvocationStatement(new FieldAccess(roomField), setFloorPaintMethod, floorPaintExpression));
+    JavaMethod setWallPaintMethod = JavaMethod.getInstance(SRoom.class, "setWallPaint", Paint.class, SetWallPaint.Detail[].class);
+    setupStatements.add(createMethodInvocationStatement(new FieldAccess(roomField), setWallPaintMethod, wallPaintExpression));
+    JavaMethod setCeilingPaintMethod = JavaMethod.getInstance(SRoom.class, "setCeilingPaint", Paint.class, SetCeilingPaint.Detail[].class);
+    setupStatements.add(createMethodInvocationStatement(new FieldAccess(roomField), setCeilingPaintMethod, ceilingPaintExpression));
 
-		if( groundAppearance != null ) {
-			JavaMethod setGroundPaintMethod = JavaMethod.getInstance( SGround.class, "setPaint", Paint.class, SetPaint.Detail[].class );
-			setupStatements.add( createMethodInvocationStatement(new FieldAccess(groundField), setGroundPaintMethod, createFieldAccess(groundAppearance ) ) );
-			if( groundOpacity != 1 ) {
-				JavaMethod setGroundOpacityMethod = JavaMethod.getInstance( SGround.class, "setOpacity", Number.class, SetOpacity.Detail[].class );
-				setupStatements.add( createMethodInvocationStatement(new FieldAccess(groundField), setGroundOpacityMethod, new DoubleLiteral(groundOpacity ) ) );
-			}
-		}
+    if (groundAppearance != null) {
+      JavaMethod setGroundPaintMethod = JavaMethod.getInstance(SGround.class, "setPaint", Paint.class, SetPaint.Detail[].class);
+      setupStatements.add(createMethodInvocationStatement(new FieldAccess(groundField), setGroundPaintMethod, createFieldAccess(groundAppearance)));
+      if (groundOpacity != 1) {
+        JavaMethod setGroundOpacityMethod = JavaMethod.getInstance(SGround.class, "setOpacity", Number.class, SetOpacity.Detail[].class);
+        setupStatements.add(createMethodInvocationStatement(new FieldAccess(groundField), setGroundOpacityMethod, new DoubleLiteral(groundOpacity)));
+      }
+    }
 
-		return createProgramType( modelFields, setupStatements.toArray( new ExpressionStatement[ setupStatements.size() ] ), atmosphereColor, fogDensity, aboveLightColor, belowLightColor );
-	}
+    return createProgramType(modelFields, setupStatements.toArray(new ExpressionStatement[setupStatements.size()]), atmosphereColor, fogDensity, aboveLightColor, belowLightColor);
+  }
 }

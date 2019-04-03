@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsPromptIncludingPreviewState extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsPromptIncludingPreviewState instance = new IsPromptIncludingPreviewState();
-	}
+  private static class SingletonHolder {
+    private static IsPromptIncludingPreviewState instance = new IsPromptIncludingPreviewState();
+  }
 
-	public static IsPromptIncludingPreviewState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsPromptIncludingPreviewState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsPromptIncludingPreviewState() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "292ccba4-7de7-4385-9b93-2723c2ddb745" ), true );
-	}
+  private IsPromptIncludingPreviewState() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("292ccba4-7de7-4385-9b93-2723c2ddb745"), true);
+  }
 }

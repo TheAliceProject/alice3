@@ -58,28 +58,28 @@ import java.util.List;
  */
 public class SimsStoryApiConfigurationManager extends StoryApiConfigurationManager {
 
-	public SimsStoryApiConfigurationManager() {
-		super();
-		IconFactoryManager.registerIconFactory( SRoom.class, RoomIconFactory.getInstance() );
-	}
+  public SimsStoryApiConfigurationManager() {
+    super();
+    IconFactoryManager.registerIconFactory(SRoom.class, RoomIconFactory.getInstance());
+  }
 
-	private static final JavaType PERSON_RESOURCE_TYPE = JavaType.getInstance( PersonResource.class );
+  private static final JavaType PERSON_RESOURCE_TYPE = JavaType.getInstance(PersonResource.class);
 
-	@Override
-	public JavaType getGalleryResourceParentFor( JavaType type ) {
-		if( type == PERSON_RESOURCE_TYPE ) {
-			return BIPED_RESOURCE_TYPE;
-		} else {
-			return super.getGalleryResourceParentFor( type );
-		}
-	}
+  @Override
+  public JavaType getGalleryResourceParentFor(JavaType type) {
+    if (type == PERSON_RESOURCE_TYPE) {
+      return BIPED_RESOURCE_TYPE;
+    } else {
+      return super.getGalleryResourceParentFor(type);
+    }
+  }
 
-	@Override
-	public List<AbstractDeclaration> getGalleryResourceChildrenFor( AbstractType<?, ?, ?> type ) {
-		List<AbstractDeclaration> rv = super.getGalleryResourceChildrenFor( type );
-		if( type == BIPED_RESOURCE_TYPE ) {
-			rv.add( 0, PERSON_RESOURCE_TYPE );
-		}
-		return rv;
-	}
+  @Override
+  public List<AbstractDeclaration> getGalleryResourceChildrenFor(AbstractType<?, ?, ?> type) {
+    List<AbstractDeclaration> rv = super.getGalleryResourceChildrenFor(type);
+    if (type == BIPED_RESOURCE_TYPE) {
+      rv.add(0, PERSON_RESOURCE_TYPE);
+    }
+    return rv;
+  }
 }

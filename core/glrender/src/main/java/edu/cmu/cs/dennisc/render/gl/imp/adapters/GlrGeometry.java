@@ -65,123 +65,123 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Dennis Cosgrove
  */
 public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
-	public void addRenderContext( RenderContext rc ) {
-		this.renderContexts.add( rc );
-	}
+  public void addRenderContext(RenderContext rc) {
+    this.renderContexts.add(rc);
+  }
 
-	public void removeRenderContext( RenderContext rc ) {
-		this.renderContexts.remove( rc );
-	}
+  public void removeRenderContext(RenderContext rc) {
+    this.renderContexts.remove(rc);
+  }
 
-	@Override
-	public void initialize( T element ) {
-		super.initialize( element );
-		// The jitter factor is used to tweak otherwise coplanar surfaces that might end up interwoven during render.
-		// The problem is referred to as "Z fighting".
-		// This jitter, in combination with upping the bit depth in GlDrawableUtils, will lessen the problem likelihood
-		// and intensity, but not eliminate it.
-		// TODO Use a value based on element that would remain consistent across executions to preserve z-ordering seen.
-		jitterFactor =  ThreadLocalRandom.current().nextFloat();
-	}
+  @Override
+  public void initialize(T element) {
+    super.initialize(element);
+    // The jitter factor is used to tweak otherwise coplanar surfaces that might end up interwoven during render.
+    // The problem is referred to as "Z fighting".
+    // This jitter, in combination with upping the bit depth in GlDrawableUtils, will lessen the problem likelihood
+    // and intensity, but not eliminate it.
+    // TODO Use a value based on element that would remain consistent across executions to preserve z-ordering seen.
+    jitterFactor = ThreadLocalRandom.current().nextFloat();
+  }
 
-	@Override
-	protected void handleReleased() {
-		super.handleReleased();
-		if( this.renderContexts.size() > 0 ) {
-			RenderContext[] renderContexts = new RenderContext[ this.renderContexts.size() ];
-			this.renderContexts.toArray( renderContexts );
-			for( RenderContext rc : renderContexts ) {
-				rc.forgetGeometryAdapter( this, true );
-			}
-		}
-	}
+  @Override
+  protected void handleReleased() {
+    super.handleReleased();
+    if (this.renderContexts.size() > 0) {
+      RenderContext[] renderContexts = new RenderContext[this.renderContexts.size()];
+      this.renderContexts.toArray(renderContexts);
+      for (RenderContext rc : renderContexts) {
+        rc.forgetGeometryAdapter(this, true);
+      }
+    }
+  }
 
-	public abstract boolean isAlphaBlended();
+  public abstract boolean isAlphaBlended();
 
-	public boolean hasOpaque() {
-		return !isAlphaBlended();
-	}
+  public boolean hasOpaque() {
+    return !isAlphaBlended();
+  }
 
-	protected boolean isGeometryChanged() {
-		return this.isGeometryChanged;
-	}
+  protected boolean isGeometryChanged() {
+    return this.isGeometryChanged;
+  }
 
-	protected boolean isDisplayListDesired() {
-		return true;
-	}
+  protected boolean isDisplayListDesired() {
+    return true;
+  }
 
-	protected boolean isDisplayListInNeedOfRefresh( RenderContext rc ) {
-		return isGeometryChanged();
-	}
+  protected boolean isDisplayListInNeedOfRefresh(RenderContext rc) {
+    return isGeometryChanged();
+  }
 
-	protected void setIsGeometryChanged( boolean isGeometryChanged ) {
-		this.isGeometryChanged = isGeometryChanged;
-	}
+  protected void setIsGeometryChanged(boolean isGeometryChanged) {
+    this.isGeometryChanged = isGeometryChanged;
+  }
 
-	//todo: better name
-	protected abstract void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType );
+  //todo: better name
+  protected abstract void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType);
 
-	protected abstract void pickGeometry( PickContext pc, boolean isSubElementRequired );
+  protected abstract void pickGeometry(PickContext pc, boolean isSubElementRequired);
 
-	public final void render( RenderContext rc, GlrVisual.RenderType renderType ) {
-		if( isDisplayListDesired() ) {
-			Integer id = rc.getDisplayListID( this );
-			if( id == null ) {
-				id = rc.generateDisplayListID( this );
-				setIsGeometryChanged( true );
-			}
-			if( isDisplayListInNeedOfRefresh( rc ) || ( rc.gl.glIsList( id ) == false ) ) {
-				rc.gl.glNewList( id, GL_COMPILE_AND_EXECUTE );
-				renderGeometry( rc, renderType );
-				rc.gl.glEndList();
-				int error = rc.gl.glGetError();
-				if( error != GL.GL_NO_ERROR ) {
-					Logger.severe( rc.glu.gluErrorString( error ), error, this );
-					//throw new com.jogamp.opengl.GLException( rc.glu.gluErrorString( error ) + " " + error + " " + this.toString() );
-				}
-				setIsGeometryChanged( false );
-			} else {
-				if( rc.gl.glIsList( id ) ) {
-					rc.gl.glEnable(GL_POLYGON_OFFSET_FILL);
-					rc.gl.glPolygonOffset(jitterFactor, 1);
-					rc.gl.glCallList( id );
-					rc.gl.glDisable(GL_POLYGON_OFFSET_FILL);
-				} else {
-					Logger.severe( this );
-				}
-			}
-		} else {
-			renderGeometry( rc, renderType );
-		}
-	}
+  public final void render(RenderContext rc, GlrVisual.RenderType renderType) {
+    if (isDisplayListDesired()) {
+      Integer id = rc.getDisplayListID(this);
+      if (id == null) {
+        id = rc.generateDisplayListID(this);
+        setIsGeometryChanged(true);
+      }
+      if (isDisplayListInNeedOfRefresh(rc) || (rc.gl.glIsList(id) == false)) {
+        rc.gl.glNewList(id, GL_COMPILE_AND_EXECUTE);
+        renderGeometry(rc, renderType);
+        rc.gl.glEndList();
+        int error = rc.gl.glGetError();
+        if (error != GL.GL_NO_ERROR) {
+          Logger.severe(rc.glu.gluErrorString(error), error, this);
+          //throw new com.jogamp.opengl.GLException( rc.glu.gluErrorString( error ) + " " + error + " " + this.toString() );
+        }
+        setIsGeometryChanged(false);
+      } else {
+        if (rc.gl.glIsList(id)) {
+          rc.gl.glEnable(GL_POLYGON_OFFSET_FILL);
+          rc.gl.glPolygonOffset(jitterFactor, 1);
+          rc.gl.glCallList(id);
+          rc.gl.glDisable(GL_POLYGON_OFFSET_FILL);
+        } else {
+          Logger.severe(this);
+        }
+      }
+    } else {
+      renderGeometry(rc, renderType);
+    }
+  }
 
-	public final void pick( PickContext pc, boolean isSubElementRequired ) {
-		//todo: display lists?
-		pickGeometry( pc, isSubElementRequired );
-	}
+  public final void pick(PickContext pc, boolean isSubElementRequired) {
+    //todo: display lists?
+    pickGeometry(pc, isSubElementRequired);
+  }
 
-	protected static Point3 getIntersectionInSourceFromPlaneInLocal( Point3 rv, Ray ray, AffineMatrix4x4 m, double px, double py, double pz, double nx, double ny, double nz ) {
-		Point3 position = new Point3( px, py, pz );
-		Vector3 direction = new Vector3( nx, ny, nz );
-		m.transform( position );
-		m.transform( direction );
-		Plane plane = Plane.createInstance( position, direction );
-		if( plane.isNaN() ) {
-			rv.setNaN();
-		} else {
-			double t = plane.intersect( ray );
-			ray.getPointAlong( rv, t );
-		}
-		return rv;
-	}
+  protected static Point3 getIntersectionInSourceFromPlaneInLocal(Point3 rv, Ray ray, AffineMatrix4x4 m, double px, double py, double pz, double nx, double ny, double nz) {
+    Point3 position = new Point3(px, py, pz);
+    Vector3 direction = new Vector3(nx, ny, nz);
+    m.transform(position);
+    m.transform(direction);
+    Plane plane = Plane.createInstance(position, direction);
+    if (plane.isNaN()) {
+      rv.setNaN();
+    } else {
+      double t = plane.intersect(ray);
+      ray.getPointAlong(rv, t);
+    }
+    return rv;
+  }
 
-	protected static Point3 getIntersectionInSourceFromPlaneInLocal( Point3 rv, Ray ray, AffineMatrix4x4 m, Point3 planePosition, Vector3 planeDirection ) {
-		return getIntersectionInSourceFromPlaneInLocal( rv, ray, m, planePosition.x, planePosition.y, planePosition.x, planeDirection.x, planeDirection.y, planeDirection.z );
-	}
+  protected static Point3 getIntersectionInSourceFromPlaneInLocal(Point3 rv, Ray ray, AffineMatrix4x4 m, Point3 planePosition, Vector3 planeDirection) {
+    return getIntersectionInSourceFromPlaneInLocal(rv, ray, m, planePosition.x, planePosition.y, planePosition.x, planeDirection.x, planeDirection.y, planeDirection.z);
+  }
 
-	public abstract Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement );
+  public abstract Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement);
 
-	private final List<RenderContext> renderContexts = Lists.newLinkedList();
-	private boolean isGeometryChanged;
-	private float jitterFactor;
+  private final List<RenderContext> renderContexts = Lists.newLinkedList();
+  private boolean isGeometryChanged;
+  private float jitterFactor;
 }

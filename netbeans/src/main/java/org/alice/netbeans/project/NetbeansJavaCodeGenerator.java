@@ -52,51 +52,50 @@ import org.lgna.project.ast.JavaCodeGenerator;
  */
 class NetbeansJavaCodeGenerator extends JavaCodeGenerator {
 
-	private static final String INDENT = "    "; //todo: query indent from netbeans format
-	private static final String IMPORT_TEXT = "imports";
+  private static final String INDENT = "    "; //todo: query indent from netbeans format
+  private static final String IMPORT_TEXT = "imports";
 
-	NetbeansJavaCodeGenerator(JavaCodeGenerator.Builder javaCodeGeneratorBuilder) {
-		super(javaCodeGeneratorBuilder);
-	}
+  NetbeansJavaCodeGenerator(JavaCodeGenerator.Builder javaCodeGeneratorBuilder) {
+    super(javaCodeGeneratorBuilder);
+  }
 
-	@Override
-	protected String getImportsPrefix() {
-		if( Alice3OptionsPanelController.isImportCollapsingDesired() ) {
-			return "// <editor-fold defaultstate=\"collapsed\" desc=\"" + IMPORT_TEXT + "\">\n";
-		} else {
-			return super.getImportsPostfix();
-		}
-	}
+  @Override
+  protected String getImportsPrefix() {
+    if (Alice3OptionsPanelController.isImportCollapsingDesired()) {
+      return "// <editor-fold defaultstate=\"collapsed\" desc=\"" + IMPORT_TEXT + "\">\n";
+    } else {
+      return super.getImportsPostfix();
+    }
+  }
 
-	@Override
-	protected String getImportsPostfix() {
-		if( Alice3OptionsPanelController.isImportCollapsingDesired() ) {
-			return "\n// </editor-fold>\n";
-		} else {
-			return super.getImportsPostfix();
-		}
-	}
+  @Override
+  protected String getImportsPostfix() {
+    if (Alice3OptionsPanelController.isImportCollapsingDesired()) {
+      return "\n// </editor-fold>\n";
+    } else {
+      return super.getImportsPostfix();
+    }
+  }
 
-	@Override
-	protected void appendSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
-		String sectionComment = getLocalizedMultiLineComment( declaringType, sectionName );
-		if (shouldCollapse && Alice3OptionsPanelController.isBoilerPlateMethodCollapsingDesired()) {
-			String desc = sectionComment != null ? "desc=\""+ sectionComment + "\"" : "";
-			getCodeStringBuilder().append("\n" + INDENT + "// <editor-fold defaultstate=\"collapsed\" ")
-								  .append(desc).append(">\n");
-		} else if( sectionComment != null ) {
-			getCodeStringBuilder().append("\n\n" + INDENT).append(sectionComment).append("\n");
-		} else {
-			super.appendSectionPrefix(declaringType, sectionName, shouldCollapse);
-		}
-	}
+  @Override
+  protected void appendSectionPrefix(AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse) {
+    String sectionComment = getLocalizedMultiLineComment(declaringType, sectionName);
+    if (shouldCollapse && Alice3OptionsPanelController.isBoilerPlateMethodCollapsingDesired()) {
+      String desc = sectionComment != null ? "desc=\"" + sectionComment + "\"" : "";
+      getCodeStringBuilder().append("\n" + INDENT + "// <editor-fold defaultstate=\"collapsed\" ").append(desc).append(">\n");
+    } else if (sectionComment != null) {
+      getCodeStringBuilder().append("\n\n" + INDENT).append(sectionComment).append("\n");
+    } else {
+      super.appendSectionPrefix(declaringType, sectionName, shouldCollapse);
+    }
+  }
 
-        @Override
-	protected void appendSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
-		if (shouldCollapse && Alice3OptionsPanelController.isBoilerPlateMethodCollapsingDesired()) {
-			getCodeStringBuilder().append("\n" + INDENT + "// </editor-fold>\n" );
-		} else {
-			super.appendSectionPostfix(declaringType, sectionName, shouldCollapse);
-		}
-	}
+  @Override
+  protected void appendSectionPostfix(AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse) {
+    if (shouldCollapse && Alice3OptionsPanelController.isBoilerPlateMethodCollapsingDesired()) {
+      getCodeStringBuilder().append("\n" + INDENT + "// </editor-fold>\n");
+    } else {
+      super.appendSectionPostfix(declaringType, sectionName, shouldCollapse);
+    }
+  }
 }

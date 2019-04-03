@@ -50,11 +50,11 @@ import org.alice.stageide.apis.org.lgna.story.ClassInfoUtilities;
  * @author Dennis Cosgrove
  */
 public class AliceIde extends StageIDE {
-	static {
-		ClassInfoUtilities.loadClassInfos();
-	}
+  static {
+    ClassInfoUtilities.loadClassInfos();
+  }
 
-	public AliceIde( CrashDetector crashDetector ) {
-		super( new AliceIdeConfiguration(), crashDetector );
-	}
+  public AliceIde(CrashDetector crashDetector) {
+    super(new AliceIdeConfiguration(), crashDetector);
+  }
 }

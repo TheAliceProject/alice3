@@ -49,19 +49,19 @@ import java.awt.font.TextAttribute;
  * @author Dennis Cosgrove
  */
 public class WeightValue implements WeightAttribute {
-	private Float m_value;
+  private Float m_value;
 
-	public WeightValue( Float value ) {
-		m_value = value;
-	}
+  public WeightValue(Float value) {
+    m_value = value;
+  }
 
-	@Override
-	public TextAttribute getKey() {
-		return TextAttribute.WEIGHT;
-	}
+  @Override
+  public TextAttribute getKey() {
+    return TextAttribute.WEIGHT;
+  }
 
-	@Override
-	public Float getValue() {
-		return m_value;
-	}
+  @Override
+  public Float getValue() {
+    return m_value;
+  }
 }

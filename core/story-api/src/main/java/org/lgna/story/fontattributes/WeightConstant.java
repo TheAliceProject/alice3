@@ -49,32 +49,20 @@ import java.awt.font.TextAttribute;
  * @author Dennis Cosgrove
  */
 public enum WeightConstant implements WeightAttribute {
-	EXTRA_LIGHT( TextAttribute.WEIGHT_EXTRA_LIGHT ),
-	LIGHT( TextAttribute.WEIGHT_LIGHT ),
-	DEMILIGHT( TextAttribute.WEIGHT_DEMILIGHT ),
-	REGULAR( TextAttribute.WEIGHT_REGULAR ),
-	SEMIBOLD(
-			TextAttribute.WEIGHT_SEMIBOLD ),
-	MEDIUM( TextAttribute.WEIGHT_MEDIUM ),
-	DEMIBOLD( TextAttribute.WEIGHT_DEMIBOLD ),
-	BOLD( TextAttribute.WEIGHT_BOLD ),
-	HEAVY(
-			TextAttribute.WEIGHT_HEAVY ),
-	EXTRABOLD( TextAttribute.WEIGHT_EXTRABOLD ),
-	ULTRABOLD( TextAttribute.WEIGHT_ULTRABOLD );
-	private Float m_value;
+  EXTRA_LIGHT(TextAttribute.WEIGHT_EXTRA_LIGHT), LIGHT(TextAttribute.WEIGHT_LIGHT), DEMILIGHT(TextAttribute.WEIGHT_DEMILIGHT), REGULAR(TextAttribute.WEIGHT_REGULAR), SEMIBOLD(TextAttribute.WEIGHT_SEMIBOLD), MEDIUM(TextAttribute.WEIGHT_MEDIUM), DEMIBOLD(TextAttribute.WEIGHT_DEMIBOLD), BOLD(TextAttribute.WEIGHT_BOLD), HEAVY(TextAttribute.WEIGHT_HEAVY), EXTRABOLD(TextAttribute.WEIGHT_EXTRABOLD), ULTRABOLD(TextAttribute.WEIGHT_ULTRABOLD);
+  private Float m_value;
 
-	private WeightConstant( Float value ) {
-		m_value = value;
-	}
+  private WeightConstant(Float value) {
+    m_value = value;
+  }
 
-	@Override
-	public TextAttribute getKey() {
-		return TextAttribute.WEIGHT;
-	}
+  @Override
+  public TextAttribute getKey() {
+    return TextAttribute.WEIGHT;
+  }
 
-	@Override
-	public Float getValue() {
-		return m_value;
-	}
+  @Override
+  public Float getValue() {
+    return m_value;
+  }
 }

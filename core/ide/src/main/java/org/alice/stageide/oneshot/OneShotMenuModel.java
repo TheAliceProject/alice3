@@ -56,22 +56,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class OneShotMenuModel extends PredeterminedMenuModel {
-	private static Map<InstanceFactory, OneShotMenuModel> map = Maps.newHashMap();
+  private static Map<InstanceFactory, OneShotMenuModel> map = Maps.newHashMap();
 
-	public static OneShotMenuModel getInstance( InstanceFactory instanceFactory ) {
-		synchronized( map ) {
-			OneShotMenuModel rv = map.get( instanceFactory );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new OneShotMenuModel( instanceFactory, OneShotUtilities.createMenuItemPrepModels( instanceFactory ) );
-				map.put( instanceFactory, rv );
-			}
-			return rv;
-		}
-	}
+  public static OneShotMenuModel getInstance(InstanceFactory instanceFactory) {
+    synchronized (map) {
+      OneShotMenuModel rv = map.get(instanceFactory);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new OneShotMenuModel(instanceFactory, OneShotUtilities.createMenuItemPrepModels(instanceFactory));
+        map.put(instanceFactory, rv);
+      }
+      return rv;
+    }
+  }
 
-	private OneShotMenuModel( InstanceFactory instanceFactory, List<StandardMenuItemPrepModel> models ) {
-		super( UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ), models );
-	}
+  private OneShotMenuModel(InstanceFactory instanceFactory, List<StandardMenuItemPrepModel> models) {
+    super(UUID.fromString("97a7d1e5-bbd3-429f-a853-30d7a7dee89f"), models);
+  }
 }

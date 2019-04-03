@@ -51,39 +51,39 @@ import static com.jogamp.opengl.GL.GL_FALSE;
  * @author Dennis Cosgrove
  */
 public class GetUtilities {
-	public static boolean getBoolean( GL gl, int which ) {
-		byte[] tmp = new byte[ 1 ];
-		gl.glGetBooleanv( which, tmp, 0 );
-		return tmp[ 0 ] != GL_FALSE;
-	}
+  public static boolean getBoolean(GL gl, int which) {
+    byte[] tmp = new byte[1];
+    gl.glGetBooleanv(which, tmp, 0);
+    return tmp[0] != GL_FALSE;
+  }
 
-	public static int getInteger( GL gl, int which ) {
-		int[] tmp = new int[ 1 ];
-		gl.glGetIntegerv( which, tmp, 0 );
-		return tmp[ 0 ];
-	}
+  public static int getInteger(GL gl, int which) {
+    int[] tmp = new int[1];
+    gl.glGetIntegerv(which, tmp, 0);
+    return tmp[0];
+  }
 
-	public static float getFloat( GL gl, int which ) {
-		float[] tmp = new float[ 1 ];
-		gl.glGetFloatv( which, tmp, 0 );
-		return tmp[ 0 ];
-	}
+  public static float getFloat(GL gl, int which) {
+    float[] tmp = new float[1];
+    gl.glGetFloatv(which, tmp, 0);
+    return tmp[0];
+  }
 
-	public static double getDouble( GL2 gl, int which ) {
-		double[] tmp = new double[ 1 ];
-		gl.glGetDoublev( which, tmp, 0 );
-		return tmp[ 0 ];
-	}
+  public static double getDouble(GL2 gl, int which) {
+    double[] tmp = new double[1];
+    gl.glGetDoublev(which, tmp, 0);
+    return tmp[0];
+  }
 
-	public static int getTexParameterInteger( GL gl, int target, int name ) {
-		int[] tmp = new int[ 1 ];
-		gl.glGetTexParameteriv( target, name, tmp, 0 );
-		return tmp[ 0 ];
-	}
+  public static int getTexParameterInteger(GL gl, int target, int name) {
+    int[] tmp = new int[1];
+    gl.glGetTexParameteriv(target, name, tmp, 0);
+    return tmp[0];
+  }
 
-	public static float getTexParameterFloat( GL gl, int target, int name ) {
-		float[] tmp = new float[ 1 ];
-		gl.glGetTexParameterfv( target, name, tmp, 0 );
-		return tmp[ 0 ];
-	}
+  public static float getTexParameterFloat(GL gl, int target, int name) {
+    float[] tmp = new float[1];
+    gl.glGetTexParameterfv(target, name, tmp, 0);
+    return tmp[0];
+  }
 }

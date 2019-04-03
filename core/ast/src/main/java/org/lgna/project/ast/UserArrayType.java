@@ -55,183 +55,183 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class UserArrayType extends AbstractType {
-	private static MapToMap<UserType<?>, Integer, UserArrayType> s_map = new MapToMap<UserType<?>, Integer, UserArrayType>();
+  private static MapToMap<UserType<?>, Integer, UserArrayType> s_map = new MapToMap<UserType<?>, Integer, UserArrayType>();
 
-	public static UserArrayType getInstance( UserType<?> leafType, int dimensionCount ) {
-		UserArrayType rv = s_map.get( leafType, dimensionCount );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new UserArrayType( leafType, dimensionCount );
-			s_map.put( leafType, dimensionCount, rv );
-		}
-		return rv;
-	}
+  public static UserArrayType getInstance(UserType<?> leafType, int dimensionCount) {
+    UserArrayType rv = s_map.get(leafType, dimensionCount);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new UserArrayType(leafType, dimensionCount);
+      s_map.put(leafType, dimensionCount, rv);
+    }
+    return rv;
+  }
 
-	private UserArrayType( UserType<?> leafType, int dimensionCount ) {
-		this.leafType = leafType;
-		this.dimensionCount = dimensionCount;
-	}
+  private UserArrayType(UserType<?> leafType, int dimensionCount) {
+    this.leafType = leafType;
+    this.dimensionCount = dimensionCount;
+  }
 
-	public UserType<?> getLeafType() {
-		return this.leafType;
-	}
+  public UserType<?> getLeafType() {
+    return this.leafType;
+  }
 
-	public int getDimensionCount() {
-		return this.dimensionCount;
-	}
+  public int getDimensionCount() {
+    return this.dimensionCount;
+  }
 
-	@Override
-	protected boolean isAssignableFromType( AbstractType other ) {
-		if( other.isArray() ) {
-			return this.getComponentType().isAssignableFrom( other.getComponentType() );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  protected boolean isAssignableFromType(AbstractType other) {
+    if (other.isArray()) {
+      return this.getComponentType().isAssignableFrom(other.getComponentType());
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public String getName() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( this.leafType.getName() );
-		for( int i = 0; i < this.dimensionCount; i++ ) {
-			sb.append( "[]" );
-		}
-		return sb.toString();
-	}
+  @Override
+  public String getName() {
+    StringBuffer sb = new StringBuffer();
+    sb.append(this.leafType.getName());
+    for (int i = 0; i < this.dimensionCount; i++) {
+      sb.append("[]");
+    }
+    return sb.toString();
+  }
 
-	@Override
-	public StringProperty getNamePropertyIfItExists() {
-		//todo?
-		return null;
-	}
+  @Override
+  public StringProperty getNamePropertyIfItExists() {
+    //todo?
+    return null;
+  }
 
-	@Override
-	public boolean isArray() {
-		return true;
-	}
+  @Override
+  public boolean isArray() {
+    return true;
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getComponentType() {
-		if( this.dimensionCount == 1 ) {
-			return this.leafType;
-		} else {
-			return UserArrayType.getInstance( this.leafType, this.dimensionCount - 1 );
-		}
-	}
+  @Override
+  public AbstractType<?, ?, ?> getComponentType() {
+    if (this.dimensionCount == 1) {
+      return this.leafType;
+    } else {
+      return UserArrayType.getInstance(this.leafType, this.dimensionCount - 1);
+    }
+  }
 
-	@Override
-	public boolean isUserAuthored() {
-		return true;
-	}
+  @Override
+  public boolean isUserAuthored() {
+    return true;
+  }
 
-	@Override
-	public AbstractPackage getPackage() {
-		//todo?
-		return this.leafType.getPackage();
-	}
+  @Override
+  public AbstractPackage getPackage() {
+    //todo?
+    return this.leafType.getPackage();
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getSuperType() {
-		Logger.todo( "the super type of a java array is Object" );
-		AbstractType<?, ?, ?> leafSuperType = this.leafType.getSuperType();
-		if( leafSuperType instanceof UserType<?> ) {
-			return UserArrayType.getInstance( ( (UserType<?>)leafSuperType ), this.dimensionCount );
-		} else {
-			assert leafSuperType instanceof JavaType;
-			Class<?> leafSuperCls = ( (JavaType)leafSuperType ).getClassReflectionProxy().getReification();
-			Class<?> superCls = ReflectionUtilities.getArrayClass( leafSuperCls, this.dimensionCount );
-			return JavaType.getInstance( superCls );
-		}
-	}
+  @Override
+  public AbstractType<?, ?, ?> getSuperType() {
+    Logger.todo("the super type of a java array is Object");
+    AbstractType<?, ?, ?> leafSuperType = this.leafType.getSuperType();
+    if (leafSuperType instanceof UserType<?>) {
+      return UserArrayType.getInstance(((UserType<?>) leafSuperType), this.dimensionCount);
+    } else {
+      assert leafSuperType instanceof JavaType;
+      Class<?> leafSuperCls = ((JavaType) leafSuperType).getClassReflectionProxy().getReification();
+      Class<?> superCls = ReflectionUtilities.getArrayClass(leafSuperCls, this.dimensionCount);
+      return JavaType.getInstance(superCls);
+    }
+  }
 
-	@Override
-	public AbstractType<?, ?, ?>[] getInterfaces() {
-		return new AbstractType<?, ?, ?>[] {};
-	}
+  @Override
+  public AbstractType<?, ?, ?>[] getInterfaces() {
+    return new AbstractType<?, ?, ?>[] {};
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getKeywordFactoryType() {
-		return null;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getKeywordFactoryType() {
+    return null;
+  }
 
-	@Override
-	public boolean isFollowToSuperClassDesired() {
-		//todo?
-		return this.leafType.isFollowToSuperClassDesired();
-	}
+  @Override
+  public boolean isFollowToSuperClassDesired() {
+    //todo?
+    return this.leafType.isFollowToSuperClassDesired();
+  }
 
-	@Override
-	public boolean isConsumptionBySubClassDesired() {
-		//todo?
-		return this.leafType.isConsumptionBySubClassDesired();
-	}
+  @Override
+  public boolean isConsumptionBySubClassDesired() {
+    //todo?
+    return this.leafType.isConsumptionBySubClassDesired();
+  }
 
-	@Override
-	public List<AbstractConstructor> getDeclaredConstructors() {
-		return Collections.emptyList();
-	}
+  @Override
+  public List<AbstractConstructor> getDeclaredConstructors() {
+    return Collections.emptyList();
+  }
 
-	@Override
-	public List<AbstractField> getDeclaredFields() {
-		return Collections.emptyList();
-	}
+  @Override
+  public List<AbstractField> getDeclaredFields() {
+    return Collections.emptyList();
+  }
 
-	@Override
-	public List<AbstractMethod> getDeclaredMethods() {
-		return Collections.emptyList();
-	}
+  @Override
+  public List<AbstractMethod> getDeclaredMethods() {
+    return Collections.emptyList();
+  }
 
-	@Override
-	public AccessLevel getAccessLevel() {
-		return this.leafType.getAccessLevel();
-	}
+  @Override
+  public AccessLevel getAccessLevel() {
+    return this.leafType.getAccessLevel();
+  }
 
-	@Override
-	public boolean isPrimitive() {
-		return false;
-	}
+  @Override
+  public boolean isPrimitive() {
+    return false;
+  }
 
-	@Override
-	public boolean isInterface() {
-		//todo?
-		return this.leafType.isInterface();
-	}
+  @Override
+  public boolean isInterface() {
+    //todo?
+    return this.leafType.isInterface();
+  }
 
-	@Override
-	public boolean isAbstract() {
-		//todo?
-		return this.leafType.isAbstract();
-	}
+  @Override
+  public boolean isAbstract() {
+    //todo?
+    return this.leafType.isAbstract();
+  }
 
-	@Override
-	public boolean isFinal() {
-		//todo?
-		return this.leafType.isFinal();
-	}
+  @Override
+  public boolean isFinal() {
+    //todo?
+    return this.leafType.isFinal();
+  }
 
-	@Override
-	public boolean isStatic() {
-		//todo?
-		return this.leafType.isStatic();
-	}
+  @Override
+  public boolean isStatic() {
+    //todo?
+    return this.leafType.isStatic();
+  }
 
-	@Override
-	public boolean isStrictFloatingPoint() {
-		//todo?
-		return this.leafType.isStrictFloatingPoint();
-	}
+  @Override
+  public boolean isStrictFloatingPoint() {
+    //todo?
+    return this.leafType.isStrictFloatingPoint();
+  }
 
-	@Override
-	public boolean isEnum() {
-		return false;
-	}
+  @Override
+  public boolean isEnum() {
+    return false;
+  }
 
-	@Override
-	public AbstractType getArrayType() {
-		return UserArrayType.getInstance( this.leafType, this.dimensionCount + 1 );
-	}
+  @Override
+  public AbstractType getArrayType() {
+    return UserArrayType.getInstance(this.leafType, this.dimensionCount + 1);
+  }
 
-	private final UserType<?> leafType;
-	private final int dimensionCount;
+  private final UserType<?> leafType;
+  private final int dimensionCount;
 }

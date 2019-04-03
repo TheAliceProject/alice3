@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,45 +34,35 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum ToiletResource implements PropResource {
-	VALUE_CREAM_SEAT_CREAM( ImplementationAndVisualType.SIMS2 ),
-	VALUE_GREEN_SEAT_GREEN( ImplementationAndVisualType.SIMS2 ),
-	VALUE_PINK_SEAT_PINK( ImplementationAndVisualType.SIMS2 ),
-	VALUE_ROSES_SEAT_WHITE( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_WHITE( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_BLACK( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_CREAM( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_BLUE( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_CHROME( ImplementationAndVisualType.SIMS2 ),
-	EXPENSIVE_GRAY( ImplementationAndVisualType.SIMS2 );
+  VALUE_CREAM_SEAT_CREAM(ImplementationAndVisualType.SIMS2), VALUE_GREEN_SEAT_GREEN(ImplementationAndVisualType.SIMS2), VALUE_PINK_SEAT_PINK(ImplementationAndVisualType.SIMS2), VALUE_ROSES_SEAT_WHITE(ImplementationAndVisualType.SIMS2), EXPENSIVE_WHITE(ImplementationAndVisualType.SIMS2), EXPENSIVE_BLACK(ImplementationAndVisualType.SIMS2), EXPENSIVE_CREAM(ImplementationAndVisualType.SIMS2), EXPENSIVE_BLUE(ImplementationAndVisualType.SIMS2), EXPENSIVE_CHROME(ImplementationAndVisualType.SIMS2), EXPENSIVE_GRAY(ImplementationAndVisualType.SIMS2);
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, ToiletResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId SEAT = new JointId( ROOT, ToiletResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, ToiletResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId SEAT = new JointId(ROOT, ToiletResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	ToiletResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	ToiletResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  ToiletResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return ToiletResource.JOINT_ID_ROOTS;
-	}
+  ToiletResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return ToiletResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

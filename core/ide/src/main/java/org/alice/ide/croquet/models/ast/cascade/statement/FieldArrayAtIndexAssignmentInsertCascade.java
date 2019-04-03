@@ -55,38 +55,38 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FieldArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
-	private static MapToMap<BlockStatementIndexPair, AbstractField, FieldArrayAtIndexAssignmentInsertCascade> mapToMap = MapToMap.newInstance();
+  private static MapToMap<BlockStatementIndexPair, AbstractField, FieldArrayAtIndexAssignmentInsertCascade> mapToMap = MapToMap.newInstance();
 
-	public static synchronized FieldArrayAtIndexAssignmentInsertCascade getInstance( BlockStatementIndexPair blockStatementIndexPair, AbstractField field ) {
-		FieldArrayAtIndexAssignmentInsertCascade rv = mapToMap.get( blockStatementIndexPair, field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FieldArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, field );
-			mapToMap.put( blockStatementIndexPair, field, rv );
-		}
-		return rv;
-	}
+  public static synchronized FieldArrayAtIndexAssignmentInsertCascade getInstance(BlockStatementIndexPair blockStatementIndexPair, AbstractField field) {
+    FieldArrayAtIndexAssignmentInsertCascade rv = mapToMap.get(blockStatementIndexPair, field);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new FieldArrayAtIndexAssignmentInsertCascade(blockStatementIndexPair, field);
+      mapToMap.put(blockStatementIndexPair, field, rv);
+    }
+    return rv;
+  }
 
-	private final AbstractField field;
+  private final AbstractField field;
 
-	private FieldArrayAtIndexAssignmentInsertCascade( BlockStatementIndexPair blockStatementIndexPair, AbstractField field ) {
-		super( UUID.fromString( "9097fa73-b622-47a0-8f69-3c4bfaf55d71" ), blockStatementIndexPair, field.getValueType(), null );
-		this.field = field;
-	}
+  private FieldArrayAtIndexAssignmentInsertCascade(BlockStatementIndexPair blockStatementIndexPair, AbstractField field) {
+    super(UUID.fromString("9097fa73-b622-47a0-8f69-3c4bfaf55d71"), blockStatementIndexPair, field.getValueType(), null);
+    this.field = field;
+  }
 
-	@Override
-	protected String getDeclarationName() {
-		return this.field.getName();
-	}
+  @Override
+  protected String getDeclarationName() {
+    return this.field.getName();
+  }
 
-	@Override
-	protected Expression createAccessExpression() {
-		return new FieldAccess(field);
-	}
-	//todo
-	//	@Override
-	//	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndFieldStaticGetInstanceResolver createResolver() {
-	//		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndFieldStaticGetInstanceResolver( this );
-	//	}
+  @Override
+  protected Expression createAccessExpression() {
+    return new FieldAccess(field);
+  }
+  //todo
+  //  @Override
+  //  protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndFieldStaticGetInstanceResolver createResolver() {
+  //    return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndFieldStaticGetInstanceResolver( this );
+  //  }
 }

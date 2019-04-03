@@ -64,159 +64,159 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractCompletionModel {
-	private static class DataListModel<T> extends AbstractListModel {
-		private final ListData<T> data;
+  private static class DataListModel<T> extends AbstractListModel {
+    private final ListData<T> data;
 
-		//todo handle refresh/mutation
-		public DataListModel( ListData<T> data ) {
-			this.data = data;
-		}
+    //todo handle refresh/mutation
+    public DataListModel(ListData<T> data) {
+      this.data = data;
+    }
 
-		public ListData<T> getData() {
-			return this.data;
-		}
+    public ListData<T> getData() {
+      return this.data;
+    }
 
-		@Override
-		public Object getElementAt( int index ) {
-			return data.getItemAt( index );
-		}
+    @Override
+    public Object getElementAt(int index) {
+      return data.getItemAt(index);
+    }
 
-		@Override
-		public int getSize() {
-			return data.getItemCount();
-		}
-	}
+    @Override
+    public int getSize() {
+      return data.getItemCount();
+    }
+  }
 
-	public static class SwingModel<T> {
-		private final DataListModel<T> listModel;
-		private final ListSelectionModel listSelectionModel = new DefaultListSelectionModel();
+  public static class SwingModel<T> {
+    private final DataListModel<T> listModel;
+    private final ListSelectionModel listSelectionModel = new DefaultListSelectionModel();
 
-		public SwingModel( final ListData<T> data ) {
-			this.listModel = new DataListModel<T>( data );
-		}
+    public SwingModel(final ListData<T> data) {
+      this.listModel = new DataListModel<T>(data);
+    }
 
-		public ListModel getListModel() {
-			return this.listModel;
-		}
+    public ListModel getListModel() {
+      return this.listModel;
+    }
 
-		public ListSelectionModel getListSelectionModel() {
-			return this.listSelectionModel;
-		}
-	}
+    public ListSelectionModel getListSelectionModel() {
+      return this.listSelectionModel;
+    }
+  }
 
-	private final List<ValueListener<List<T>>> newSchoolValueListeners = Lists.newCopyOnWriteArrayList();
-	private final SwingModel<T> swingModel;
+  private final List<ValueListener<List<T>>> newSchoolValueListeners = Lists.newCopyOnWriteArrayList();
+  private final SwingModel<T> swingModel;
 
-	private boolean isInTheMidstOfSettingSwingValue;
-	private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
-		@Override
-		public void valueChanged( ListSelectionEvent e ) {
-			if( isInTheMidstOfSettingSwingValue ) {
-				//pass
-			} else {
-				if( e.getValueIsAdjusting() ) {
-					//pass
-				} else {
-					fireChanged( getValue() );
-				}
-			}
-		}
-	};
+  private boolean isInTheMidstOfSettingSwingValue;
+  private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+      if (isInTheMidstOfSettingSwingValue) {
+        //pass
+      } else {
+        if (e.getValueIsAdjusting()) {
+          //pass
+        } else {
+          fireChanged(getValue());
+        }
+      }
+    }
+  };
 
-	public MultipleSelectionListState( Group group, UUID migrationId, ListData<T> data ) {
-		super( group, migrationId );
-		this.swingModel = new SwingModel<T>( data );
-		this.swingModel.listSelectionModel.addListSelectionListener( this.listSelectionListener );
-	}
+  public MultipleSelectionListState(Group group, UUID migrationId, ListData<T> data) {
+    super(group, migrationId);
+    this.swingModel = new SwingModel<T>(data);
+    this.swingModel.listSelectionModel.addListSelectionListener(this.listSelectionListener);
+  }
 
-	public ListData<T> getData() {
-		return this.swingModel.listModel.getData();
-	}
+  public ListData<T> getData() {
+    return this.swingModel.listModel.getData();
+  }
 
-	public SwingModel<T> getSwingModel() {
-		return this.swingModel;
-	}
+  public SwingModel<T> getSwingModel() {
+    return this.swingModel;
+  }
 
-	public List<T> getValue() {
-		List<T> rv = Lists.newLinkedList();
-		final int N = this.swingModel.listModel.data.getItemCount();
-		for( int i = 0; i < N; i++ ) {
-			if( this.swingModel.listSelectionModel.isSelectedIndex( i ) ) {
-				rv.add( this.swingModel.listModel.data.getItemAt( i ) );
-			}
-		}
-		return rv;
-	}
+  public List<T> getValue() {
+    List<T> rv = Lists.newLinkedList();
+    final int N = this.swingModel.listModel.data.getItemCount();
+    for (int i = 0; i < N; i++) {
+      if (this.swingModel.listSelectionModel.isSelectedIndex(i)) {
+        rv.add(this.swingModel.listModel.data.getItemAt(i));
+      }
+    }
+    return rv;
+  }
 
-	public void setValue( List<T> list ) {
-		this.isInTheMidstOfSettingSwingValue = true;
-		try {
-			this.swingModel.listSelectionModel.setValueIsAdjusting( true );
-			this.swingModel.listSelectionModel.clearSelection();
-			synchronized( this.swingModel.listModel.data ) {
-				final int N = this.swingModel.listModel.data.getItemCount();
-				for( int i = 0; i < N; i++ ) {
-					T item = this.swingModel.listModel.data.getItemAt( i );
-					if( list.contains( item ) ) {
-						this.swingModel.listSelectionModel.addSelectionInterval( i, i );
-					}
-				}
-			}
-			this.swingModel.listSelectionModel.setValueIsAdjusting( false );
-		} finally {
-			this.isInTheMidstOfSettingSwingValue = false;
-		}
-	}
+  public void setValue(List<T> list) {
+    this.isInTheMidstOfSettingSwingValue = true;
+    try {
+      this.swingModel.listSelectionModel.setValueIsAdjusting(true);
+      this.swingModel.listSelectionModel.clearSelection();
+      synchronized (this.swingModel.listModel.data) {
+        final int N = this.swingModel.listModel.data.getItemCount();
+        for (int i = 0; i < N; i++) {
+          T item = this.swingModel.listModel.data.getItemAt(i);
+          if (list.contains(item)) {
+            this.swingModel.listSelectionModel.addSelectionInterval(i, i);
+          }
+        }
+      }
+      this.swingModel.listSelectionModel.setValueIsAdjusting(false);
+    } finally {
+      this.isInTheMidstOfSettingSwingValue = false;
+    }
+  }
 
-	public void addNewSchoolValueListener( ValueListener<List<T>> valueListener ) {
-		if( this.newSchoolValueListeners.contains( valueListener ) ) {
-			Logger.severe( "listener already contained", this, valueListener );
-		}
-		this.newSchoolValueListeners.add( valueListener );
-	}
+  public void addNewSchoolValueListener(ValueListener<List<T>> valueListener) {
+    if (this.newSchoolValueListeners.contains(valueListener)) {
+      Logger.severe("listener already contained", this, valueListener);
+    }
+    this.newSchoolValueListeners.add(valueListener);
+  }
 
-	public void addAndInvokeNewSchoolValueListener( ValueListener<List<T>> valueListener ) {
-		this.addNewSchoolValueListener( valueListener );
-		ValueEvent<List<T>> e = ValueEvent.createInstance( this.getValue() );
-		valueListener.valueChanged( e );
-	}
+  public void addAndInvokeNewSchoolValueListener(ValueListener<List<T>> valueListener) {
+    this.addNewSchoolValueListener(valueListener);
+    ValueEvent<List<T>> e = ValueEvent.createInstance(this.getValue());
+    valueListener.valueChanged(e);
+  }
 
-	public void removeNewSchoolValueListener( ValueListener<List<T>> valueListener ) {
-		if( this.newSchoolValueListeners.contains( valueListener ) ) {
-			//pass
-		} else {
-			Logger.severe( "listener not contained", this, valueListener );
-		}
-		this.newSchoolValueListeners.remove( valueListener );
-	}
+  public void removeNewSchoolValueListener(ValueListener<List<T>> valueListener) {
+    if (this.newSchoolValueListeners.contains(valueListener)) {
+      //pass
+    } else {
+      Logger.severe("listener not contained", this, valueListener);
+    }
+    this.newSchoolValueListeners.remove(valueListener);
+  }
 
-	//	private void fireChanged( java.util.List<T> prevValue, java.util.List<T> nextValue, IsAdjusting isAdjusting ) {
-	//		if( this.newSchoolValueListeners.size() > 0 ) {
-	//			org.lgna.croquet.event.ValueEvent<java.util.List<T>> e = org.lgna.croquet.event.ValueEvent.createInstance( prevValue, nextValue, isAdjusting.getValue() );
-	//			for( org.lgna.croquet.event.ValueListener<java.util.List<T>> valueListener : this.newSchoolValueListeners ) {
-	//				valueListener.valueChanged( e );
-	//			}
-	//		}
-	//	}
-	private void fireChanged( List<T> nextValue ) {
-		if( this.newSchoolValueListeners.size() > 0 ) {
-			ValueEvent<List<T>> e = ValueEvent.createInstance( nextValue );
-			for( ValueListener<List<T>> valueListener : this.newSchoolValueListeners ) {
-				valueListener.valueChanged( e );
-			}
-		}
-	}
+  //  private void fireChanged( java.util.List<T> prevValue, java.util.List<T> nextValue, IsAdjusting isAdjusting ) {
+  //  if( this.newSchoolValueListeners.size() > 0 ) {
+  //    org.lgna.croquet.event.ValueEvent<java.util.List<T>> e = org.lgna.croquet.event.ValueEvent.createInstance( prevValue, nextValue, isAdjusting.getValue() );
+  //    for( org.lgna.croquet.event.ValueListener<java.util.List<T>> valueListener : this.newSchoolValueListeners ) {
+  //      valueListener.valueChanged( e );
+  //    }
+  //  }
+  //  }
+  private void fireChanged(List<T> nextValue) {
+    if (this.newSchoolValueListeners.size() > 0) {
+      ValueEvent<List<T>> e = ValueEvent.createInstance(nextValue);
+      for (ValueListener<List<T>> valueListener : this.newSchoolValueListeners) {
+        valueListener.valueChanged(e);
+      }
+    }
+  }
 
-	@Override
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		return Collections.emptyList();
-	}
+  @Override
+  public List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    return Collections.emptyList();
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	public MultipleSelectionListView<T> createMultipleSelectionListView() {
-		return new MultipleSelectionListView<T>( this );
-	}
+  public MultipleSelectionListView<T> createMultipleSelectionListView() {
+    return new MultipleSelectionListView<T>(this);
+  }
 }

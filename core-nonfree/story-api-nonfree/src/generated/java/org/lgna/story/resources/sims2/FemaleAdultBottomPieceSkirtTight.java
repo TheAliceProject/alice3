@@ -44,6 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultBottomPieceSkirtTight implements FemaleAdultBottomPiece {
-	DARK_RED;
+  DARK_RED
 
 }

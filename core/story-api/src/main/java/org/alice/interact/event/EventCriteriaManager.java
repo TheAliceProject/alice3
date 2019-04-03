@@ -51,31 +51,31 @@ import java.util.List;
  * @author David Culyba
  */
 public class EventCriteriaManager {
-	public void addCondition( ManipulationEventCriteria condition ) {
-		if( !this.manipulationConditions.contains( condition ) ) {
-			this.manipulationConditions.add( condition );
-		}
-	}
+  public void addCondition(ManipulationEventCriteria condition) {
+    if (!this.manipulationConditions.contains(condition)) {
+      this.manipulationConditions.add(condition);
+    }
+  }
 
-	public void removeCondition( ManipulationEventCriteria condition ) {
-		this.manipulationConditions.remove( condition );
-	}
+  public void removeCondition(ManipulationEventCriteria condition) {
+    this.manipulationConditions.remove(condition);
+  }
 
-	public void setTargetTransformable( AbstractTransformable transformable ) {
-		this.targetTransformable = transformable;
-	}
+  public void setTargetTransformable(AbstractTransformable transformable) {
+    this.targetTransformable = transformable;
+  }
 
-	public boolean matches( ManipulationEvent event ) {
-		if( ( this.targetTransformable == null ) || ( event.getTarget() == null ) || ( this.targetTransformable == event.getTarget() ) ) {
-			for( ManipulationEventCriteria condition : this.manipulationConditions ) {
-				if( condition.matches( event ) ) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+  public boolean matches(ManipulationEvent event) {
+    if ((this.targetTransformable == null) || (event.getTarget() == null) || (this.targetTransformable == event.getTarget())) {
+      for (ManipulationEventCriteria condition : this.manipulationConditions) {
+        if (condition.matches(event)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
-	private final List<ManipulationEventCriteria> manipulationConditions = Lists.newCopyOnWriteArrayList();
-	private AbstractTransformable targetTransformable;
+  private final List<ManipulationEventCriteria> manipulationConditions = Lists.newCopyOnWriteArrayList();
+  private AbstractTransformable targetTransformable;
 }

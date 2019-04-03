@@ -50,9 +50,9 @@ import org.lgna.project.ast.Node;
  * @author Dennis Cosgrove
  */
 public abstract class AstMigration extends AbstractMigration {
-	public AstMigration( Version minimumVersion, Version resultVersion ) {
-		super( minimumVersion, resultVersion );
-	}
+  public AstMigration(Version minimumVersion, Version resultVersion) {
+    super(minimumVersion, resultVersion);
+  }
 
-	public abstract void migrate( Node node, Project projectIfApplicable );
+  public abstract void migrate(Node node, Project projectIfApplicable);
 }

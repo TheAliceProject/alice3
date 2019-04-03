@@ -54,46 +54,46 @@ import java.awt.event.KeyListener;
  * @author Dennis Cosgrove
  */
 public class KeyViewController extends ViewController<JLabel, KeyState> {
-	private final KeyListener keyListener = new KeyListener() {
-		@Override
-		public void keyPressed( KeyEvent e ) {
-			KeyViewController.this.getModel().handleKeyPressed( KeyViewController.this, e );
-		}
+  private final KeyListener keyListener = new KeyListener() {
+    @Override
+    public void keyPressed(KeyEvent e) {
+      KeyViewController.this.getModel().handleKeyPressed(KeyViewController.this, e);
+    }
 
-		@Override
-		public void keyReleased( KeyEvent e ) {
-		}
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
 
-		@Override
-		public void keyTyped( KeyEvent e ) {
-		}
-	};
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+  };
 
-	public KeyViewController( KeyState state ) {
-		super( state );
-	}
+  public KeyViewController(KeyState state) {
+    super(state);
+  }
 
-	@Override
-	protected JLabel createAwtComponent() {
-		JLabel rv = new JLabel() {
-			@Override
-			public void addNotify() {
-				super.addNotify();
-				this.getRootPane().setDefaultButton( null );
-				this.requestFocusInWindow();
-				this.addKeyListener( keyListener );
-			}
+  @Override
+  protected JLabel createAwtComponent() {
+    JLabel rv = new JLabel() {
+      @Override
+      public void addNotify() {
+        super.addNotify();
+        this.getRootPane().setDefaultButton(null);
+        this.requestFocusInWindow();
+        this.addKeyListener(keyListener);
+      }
 
-			@Override
-			public void removeNotify() {
-				this.removeKeyListener( keyListener );
-				super.removeNotify();
-			}
-		};
-		rv.setFocusable( true );
-		rv.setFocusTraversalKeysEnabled( false );
-		rv.setHorizontalAlignment( SwingConstants.CENTER );
-		return rv;
-	}
+      @Override
+      public void removeNotify() {
+        this.removeKeyListener(keyListener);
+        super.removeNotify();
+      }
+    };
+    rv.setFocusable(true);
+    rv.setFocusTraversalKeysEnabled(false);
+    rv.setHorizontalAlignment(SwingConstants.CENTER);
+    return rv;
+  }
 
 }

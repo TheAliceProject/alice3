@@ -60,128 +60,128 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
-	public static final StandardMenuItemPrepModel SEPARATOR = null;
-	private final Class<? extends AbstractElement> clsForI18N;
-	private Action action = new AbstractAction() {
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-		}
-	};
+  public static final StandardMenuItemPrepModel SEPARATOR = null;
+  private final Class<? extends AbstractElement> clsForI18N;
+  private Action action = new AbstractAction() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+    }
+  };
 
-	public AbstractMenuModel( UUID individualId, Class<? extends AbstractElement> clsForI18N ) {
-		super( individualId );
-		this.clsForI18N = clsForI18N;
-	}
+  public AbstractMenuModel(UUID individualId, Class<? extends AbstractElement> clsForI18N) {
+    super(individualId);
+    this.clsForI18N = clsForI18N;
+  }
 
-	@Override
-	protected Class<? extends Element> getClassUsedForLocalization() {
-		if( this.clsForI18N != null ) {
-			return this.clsForI18N;
-		} else {
-			return this.getClass();
-		}
-	}
+  @Override
+  protected Class<? extends Element> getClassUsedForLocalization() {
+    if (this.clsForI18N != null) {
+      return this.clsForI18N;
+    } else {
+      return this.getClass();
+    }
+  }
 
-	@Override
-	protected void localize() {
-		safeSetNameAndMnemonic( this.action, this.findDefaultLocalizedText(), this.getLocalizedMnemonicKey() );
-		this.action.putValue( Action.ACCELERATOR_KEY, this.getLocalizedAcceleratorKeyStroke() );
-	}
+  @Override
+  protected void localize() {
+    safeSetNameAndMnemonic(this.action, this.findDefaultLocalizedText(), this.getLocalizedMnemonicKey());
+    this.action.putValue(Action.ACCELERATOR_KEY, this.getLocalizedAcceleratorKeyStroke());
+  }
 
-	public Action getAction() {
-		return this.action;
-	}
+  public Action getAction() {
+    return this.action;
+  }
 
-	private String getName() {
-		return (String)this.action.getValue( Action.NAME );
-	}
+  private String getName() {
+    return (String) this.action.getValue(Action.NAME);
+  }
 
-	public void setName( String name ) {
-		this.action.putValue( Action.NAME, name );
-	}
+  public void setName(String name) {
+    this.action.putValue(Action.NAME, name);
+  }
 
-	private Icon getSmallIcon() {
-		return (Icon)this.action.getValue( Action.SMALL_ICON );
-	}
+  private Icon getSmallIcon() {
+    return (Icon) this.action.getValue(Action.SMALL_ICON);
+  }
 
-	public void setSmallIcon( Icon icon ) {
-		this.action.putValue( Action.SMALL_ICON, icon );
-	}
+  public void setSmallIcon(Icon icon) {
+    this.action.putValue(Action.SMALL_ICON, icon);
+  }
 
-	@Override
-	public boolean isEnabled() {
-		return this.action.isEnabled();
-	}
+  @Override
+  public boolean isEnabled() {
+    return this.action.isEnabled();
+  }
 
-	@Override
-	public void setEnabled( boolean isEnabled ) {
-		this.action.setEnabled( isEnabled );
-	}
+  @Override
+  public void setEnabled(boolean isEnabled) {
+    this.action.setEnabled(isEnabled);
+  }
 
-	public void handlePopupMenuPrologue( PopupMenu popupMenu ) {
-	}
+  public void handlePopupMenuPrologue(PopupMenu popupMenu) {
+  }
 
-	protected void handleShowing( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
-	}
+  protected void handleShowing(MenuItemContainer menuItemContainer, PopupMenuEvent e) {
+  }
 
-	protected void handleHiding( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
-	}
+  protected void handleHiding(MenuItemContainer menuItemContainer, PopupMenuEvent e) {
+  }
 
-	protected void handleCanceled( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
-		UserActivity activity = menuItemContainer.getActivity();
-		if (activity != null) {
-			MenuItemSelectStep step = activity.findFirstMenuSelectStep();
-			if ( step != null && step.getModel() == this ) {
-				activity.cancel();
-			}
-		}
-	}
+  protected void handleCanceled(MenuItemContainer menuItemContainer, PopupMenuEvent e) {
+    UserActivity activity = menuItemContainer.getActivity();
+    if (activity != null) {
+      MenuItemSelectStep step = activity.findFirstMenuSelectStep();
+      if (step != null && step.getModel() == this) {
+        activity.cancel();
+      }
+    }
+  }
 
-	private class PopupMenuListener implements javax.swing.event.PopupMenuListener {
-		private MenuItemContainer menuItemContainer;
+  private class PopupMenuListener implements javax.swing.event.PopupMenuListener {
+    private MenuItemContainer menuItemContainer;
 
-		public PopupMenuListener( MenuItemContainer menuItemContainer ) {
-			this.menuItemContainer = menuItemContainer;
-		}
+    public PopupMenuListener(MenuItemContainer menuItemContainer) {
+      this.menuItemContainer = menuItemContainer;
+    }
 
-		@Override
-		public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {
-			AbstractMenuModel.this.handleShowing( this.menuItemContainer, e );
-		}
+    @Override
+    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+      AbstractMenuModel.this.handleShowing(this.menuItemContainer, e);
+    }
 
-		@Override
-		public void popupMenuWillBecomeInvisible( PopupMenuEvent e ) {
-			AbstractMenuModel.this.handleHiding( this.menuItemContainer, e );
-		}
+    @Override
+    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+      AbstractMenuModel.this.handleHiding(this.menuItemContainer, e);
+    }
 
-		@Override
-		public void popupMenuCanceled( PopupMenuEvent e ) {
-			AbstractMenuModel.this.handleCanceled( this.menuItemContainer, e );
-		}
-	}
+    @Override
+    public void popupMenuCanceled(PopupMenuEvent e) {
+      AbstractMenuModel.this.handleCanceled(this.menuItemContainer, e);
+    }
+  }
 
-	private PopupMenuListener popupMenuListener;
+  private PopupMenuListener popupMenuListener;
 
-	public final void addPopupMenuListener( MenuItemContainer menuItemContainer ) {
-		assert this.popupMenuListener == null : this;
-		this.popupMenuListener = new PopupMenuListener( menuItemContainer );
-		menuItemContainer.addPopupMenuListener( this.popupMenuListener );
-	}
+  public final void addPopupMenuListener(MenuItemContainer menuItemContainer) {
+    assert this.popupMenuListener == null : this;
+    this.popupMenuListener = new PopupMenuListener(menuItemContainer);
+    menuItemContainer.addPopupMenuListener(this.popupMenuListener);
+  }
 
-	public final void removePopupMenuListener( MenuItemContainer menuItemContainer ) {
-		assert this.popupMenuListener != null : this;
-		menuItemContainer.removePopupMenuListener( this.popupMenuListener );
-		this.popupMenuListener = null;
-	}
+  public final void removePopupMenuListener(MenuItemContainer menuItemContainer) {
+    assert this.popupMenuListener != null : this;
+    menuItemContainer.removePopupMenuListener(this.popupMenuListener);
+    this.popupMenuListener = null;
+  }
 
-	public Menu createMenu() {
-		return new Menu( this );
-	};
+  public Menu createMenu() {
+    return new Menu(this);
+  }
 
-	@Override
-	public Menu createMenuItemAndAddTo( MenuItemContainer menuItemContainer ) {
-		Menu rv = this.createMenu();
-		menuItemContainer.addMenu( rv );
-		return rv;
-	}
+  @Override
+  public Menu createMenuItemAndAddTo(MenuItemContainer menuItemContainer) {
+    Menu rv = this.createMenu();
+    menuItemContainer.addMenu(rv);
+    return rv;
+  }
 }

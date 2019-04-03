@@ -52,20 +52,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ArgumentCascade extends AbstractArgumentCascade {
-	private static Map<SimpleArgument, ArgumentCascade> map = Maps.newHashMap();
+  private static Map<SimpleArgument, ArgumentCascade> map = Maps.newHashMap();
 
-	public static synchronized ArgumentCascade getInstance( SimpleArgument argument ) {
-		ArgumentCascade rv = map.get( argument );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ArgumentCascade( argument );
-			map.put( argument, rv );
-		}
-		return rv;
-	}
+  public static synchronized ArgumentCascade getInstance(SimpleArgument argument) {
+    ArgumentCascade rv = map.get(argument);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ArgumentCascade(argument);
+      map.put(argument, rv);
+    }
+    return rv;
+  }
 
-	private ArgumentCascade( SimpleArgument argument ) {
-		super( UUID.fromString( "c60b0eec-d8ac-4256-a8be-54b16605fc0e" ), argument );
-	}
+  private ArgumentCascade(SimpleArgument argument) {
+    super(UUID.fromString("c60b0eec-d8ac-4256-a8be-54b16605fc0e"), argument);
+  }
 }

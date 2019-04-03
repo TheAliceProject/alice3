@@ -60,51 +60,51 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FunctionsOfReturnTypeSubComposite extends MethodsSubComposite {
-	private static Map<AbstractType<?, ?, ?>, FunctionsOfReturnTypeSubComposite> map = Maps.newHashMap();
+  private static Map<AbstractType<?, ?, ?>, FunctionsOfReturnTypeSubComposite> map = Maps.newHashMap();
 
-	public static synchronized FunctionsOfReturnTypeSubComposite getInstance( AbstractType<?, ?, ?> type ) {
-		if( type != null ) {
-			FunctionsOfReturnTypeSubComposite rv = map.get( type );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new FunctionsOfReturnTypeSubComposite( type );
-				map.put( type, rv );
-			}
-			return rv;
-		} else {
-			return null;
-		}
-	}
+  public static synchronized FunctionsOfReturnTypeSubComposite getInstance(AbstractType<?, ?, ?> type) {
+    if (type != null) {
+      FunctionsOfReturnTypeSubComposite rv = map.get(type);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new FunctionsOfReturnTypeSubComposite(type);
+        map.put(type, rv);
+      }
+      return rv;
+    } else {
+      return null;
+    }
+  }
 
-	private List<AbstractMethod> methods = Collections.emptyList();
-	private final AbstractType<?, ?, ?> returnType;
+  private List<AbstractMethod> methods = Collections.emptyList();
+  private final AbstractType<?, ?, ?> returnType;
 
-	private FunctionsOfReturnTypeSubComposite( AbstractType<?, ?, ?> returnType ) {
-		super( UUID.fromString( "76b131c5-133c-43a0-9592-e200b9cd1f25" ), returnType != JavaType.getInstance( SJoint.class ) );
-		this.returnType = returnType;
+  private FunctionsOfReturnTypeSubComposite(AbstractType<?, ?, ?> returnType) {
+    super(UUID.fromString("76b131c5-133c-43a0-9592-e200b9cd1f25"), returnType != JavaType.getInstance(SJoint.class));
+    this.returnType = returnType;
 
-		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new TypeIcon( this.returnType ) );
-		//this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( this.returnType ) );
-		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "Functions returning" );
-	}
+    this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse(new TypeIcon(this.returnType));
+    //this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( this.returnType ) );
+    this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse("Functions returning");
+  }
 
-	public AbstractType<?, ?, ?> getReturnType() {
-		return this.returnType;
-	}
+  public AbstractType<?, ?, ?> getReturnType() {
+    return this.returnType;
+  }
 
-	@Override
-	public List<? extends AbstractMethod> getMethods() {
-		return this.methods;
-	}
+  @Override
+  public List<? extends AbstractMethod> getMethods() {
+    return this.methods;
+  }
 
-	public void setMethods( List<AbstractMethod> methods ) {
-		this.methods = Collections.unmodifiableList( methods );
-		this.getView().refreshLater();
-	}
+  public void setMethods(List<AbstractMethod> methods) {
+    this.methods = Collections.unmodifiableList(methods);
+    this.getView().refreshLater();
+  }
 
-	@Override
-	protected MethodsSubView<FunctionsOfReturnTypeSubComposite> createView() {
-		return new MethodsSubView<FunctionsOfReturnTypeSubComposite>( this );
-	}
+  @Override
+  protected MethodsSubView<FunctionsOfReturnTypeSubComposite> createView() {
+    return new MethodsSubView<FunctionsOfReturnTypeSubComposite>(this);
+  }
 }

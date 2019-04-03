@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitHipBootIsCool implements FemaleTeenFullBodyOutfit {
-	BLUE,
-	PURPLE,
-	RED;
+  BLUE, PURPLE, RED
 
 }

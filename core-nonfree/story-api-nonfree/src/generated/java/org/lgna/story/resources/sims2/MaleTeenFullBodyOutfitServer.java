@@ -44,6 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenFullBodyOutfitServer implements MaleTeenFullBodyOutfit {
-	UNIFORM;
+  UNIFORM
 
 }

@@ -73,142 +73,142 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
  */
 public class PickUtilities {
 
-	public static Component getFirstClassFromComponent( Component object ) {
-		if( object == null ) {
-			return null;
-		}
-		if( object instanceof ManipulationHandle3D ) {
-			return object;
-		}
-		if( EntityImp.getInstance( object ) != null ) {
-			return object;
-		}
-		return getFirstClassFromComponent( object.getParent() );
-	}
+  public static Component getFirstClassFromComponent(Component object) {
+    if (object == null) {
+      return null;
+    }
+    if (object instanceof ManipulationHandle3D) {
+      return object;
+    }
+    if (EntityImp.getInstance(object) != null) {
+      return object;
+    }
+    return getFirstClassFromComponent(object.getParent());
+  }
 
-	public static PickHint getPickType( PickResult pickObject ) {
-		boolean isNull = ( pickObject == null ) || ( pickObject.getGeometry() == null ) || ( pickObject.getVisual() == null );
-		if( isNull ) {
-			return PickHint.PickType.NOTHING.pickHint();
-		} else {
-			PickHint pickType = getPickType( pickObject.getVisual() );
-			return pickType;
-		}
-	}
+  public static PickHint getPickType(PickResult pickObject) {
+    boolean isNull = (pickObject == null) || (pickObject.getGeometry() == null) || (pickObject.getVisual() == null);
+    if (isNull) {
+      return PickHint.PickType.NOTHING.pickHint();
+    } else {
+      PickHint pickType = getPickType(pickObject.getVisual());
+      return pickType;
+    }
+  }
 
-	private static <E> E getParentOfClass( Component object, Class<E> cls ) {
-		if( object != null ) {
-			if( cls.isAssignableFrom( object.getClass() ) ) {
-				return cls.cast( object );
-			} else {
-				return getParentOfClass( object.getParent(), cls );
-			}
-		} else {
-			return null;
-		}
-	}
+  private static <E> E getParentOfClass(Component object, Class<E> cls) {
+    if (object != null) {
+      if (cls.isAssignableFrom(object.getClass())) {
+        return cls.cast(object);
+      } else {
+        return getParentOfClass(object.getParent(), cls);
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public static EntityImp getEntityImpFromPickedObject( Component pickedObject ) {
-		if( pickedObject != null ) {
-			Component mainComponent = PickUtilities.getFirstClassFromComponent( pickedObject );
-			EntityImp entityImplementation = EntityImp.getInstance( mainComponent );
-			return entityImplementation;
-		} else {
-			return null;
-		}
-	}
+  public static EntityImp getEntityImpFromPickedObject(Component pickedObject) {
+    if (pickedObject != null) {
+      Component mainComponent = PickUtilities.getFirstClassFromComponent(pickedObject);
+      EntityImp entityImplementation = EntityImp.getInstance(mainComponent);
+      return entityImplementation;
+    } else {
+      return null;
+    }
+  }
 
-	public static SThing getEntityFromPickedObject( Component pickedObject ) {
-		if( pickedObject != null ) {
-			Component mainComponent = PickUtilities.getFirstClassFromComponent( pickedObject );
-			EntityImp entityImplementation = EntityImp.getInstance( mainComponent );
-			if( entityImplementation != null ) {
-				return entityImplementation.getAbstraction();
-			}
-		}
-		return null;
-	}
+  public static SThing getEntityFromPickedObject(Component pickedObject) {
+    if (pickedObject != null) {
+      Component mainComponent = PickUtilities.getFirstClassFromComponent(pickedObject);
+      EntityImp entityImplementation = EntityImp.getInstance(mainComponent);
+      if (entityImplementation != null) {
+        return entityImplementation.getAbstraction();
+      }
+    }
+    return null;
+  }
 
-	public static PickHint getPickHintForEntity( SThing entity ) {
-		List<PickHint.PickType> pickTypes = Lists.newLinkedList();
-		if( entity != null ) {
-			if( entity instanceof STurnable ) {
-				pickTypes.add( PickHint.PickType.TURNABLE );
-			}
-			if( entity instanceof SMovableTurnable ) {
-				pickTypes.add( PickHint.PickType.MOVEABLE );
-			}
-			if( entity instanceof Resizable ) {
-				pickTypes.add( PickHint.PickType.RESIZABLE );
-			}
-			if( ( entity instanceof SCamera ) || ( entity instanceof SModel ) || ( entity instanceof SMarker ) ) {
-				pickTypes.add( PickHint.PickType.SELECTABLE );
-			}
-			if( entity instanceof SMovableTurnable ) {
-				pickTypes.add( PickHint.PickType.VIEWABLE );
-			}
-			if( entity instanceof CameraMarker ) {
-				pickTypes.add( PickHint.PickType.CAMERA_MARKER );
-			}
-			if( entity instanceof SThingMarker ) {
-				pickTypes.add( PickHint.PickType.OBJECT_MARKER );
-			}
-			if( entity instanceof SSun ) {
-				pickTypes.add( PickHint.PickType.SUN );
-			}
-			if( entity instanceof SJoint ) {
-				pickTypes.add( PickHint.PickType.JOINT );
-			}
-			if( entity instanceof JointSelectionSphere ) {
-				pickTypes.add( PickHint.PickType.JOINT );
-			}
-		}
-		if( pickTypes.size() == 0 ) {
-			return new PickHint();
-		} else {
-			return new PickHint( pickTypes.toArray( new PickHint.PickType[ pickTypes.size() ] ) );
-		}
-	}
+  public static PickHint getPickHintForEntity(SThing entity) {
+    List<PickHint.PickType> pickTypes = Lists.newLinkedList();
+    if (entity != null) {
+      if (entity instanceof STurnable) {
+        pickTypes.add(PickHint.PickType.TURNABLE);
+      }
+      if (entity instanceof SMovableTurnable) {
+        pickTypes.add(PickHint.PickType.MOVEABLE);
+      }
+      if (entity instanceof Resizable) {
+        pickTypes.add(PickHint.PickType.RESIZABLE);
+      }
+      if ((entity instanceof SCamera) || (entity instanceof SModel) || (entity instanceof SMarker)) {
+        pickTypes.add(PickHint.PickType.SELECTABLE);
+      }
+      if (entity instanceof SMovableTurnable) {
+        pickTypes.add(PickHint.PickType.VIEWABLE);
+      }
+      if (entity instanceof CameraMarker) {
+        pickTypes.add(PickHint.PickType.CAMERA_MARKER);
+      }
+      if (entity instanceof SThingMarker) {
+        pickTypes.add(PickHint.PickType.OBJECT_MARKER);
+      }
+      if (entity instanceof SSun) {
+        pickTypes.add(PickHint.PickType.SUN);
+      }
+      if (entity instanceof SJoint) {
+        pickTypes.add(PickHint.PickType.JOINT);
+      }
+      if (entity instanceof JointSelectionSphere) {
+        pickTypes.add(PickHint.PickType.JOINT);
+      }
+    }
+    if (pickTypes.size() == 0) {
+      return new PickHint();
+    } else {
+      return new PickHint(pickTypes.toArray(new PickHint.PickType[pickTypes.size()]));
+    }
+  }
 
-	public static PickHint getPickTypeForImp( EntityImp imp ) {
-		if( imp != null ) {
-			return getPickHintForEntity( imp.getAbstraction() );
-		} else {
-			return getPickHintForEntity( (SThing)null );
-		}
-	}
+  public static PickHint getPickTypeForImp(EntityImp imp) {
+    if (imp != null) {
+      return getPickHintForEntity(imp.getAbstraction());
+    } else {
+      return getPickHintForEntity((SThing) null);
+    }
+  }
 
-	public static PickHint getPickType( Component pickedObject ) {
-		PickHint returnHint = null;
-		if( pickedObject != null ) {
-			SThing entity = getEntityFromPickedObject( pickedObject );
-			returnHint = getPickHintForEntity( entity );
+  public static PickHint getPickType(Component pickedObject) {
+    PickHint returnHint = null;
+    if (pickedObject != null) {
+      SThing entity = getEntityFromPickedObject(pickedObject);
+      returnHint = getPickHintForEntity(entity);
 
-			if( pickedObject instanceof Composite ) {
-				AbstractCamera camera = null;
-				for( Component c : ( (Composite)pickedObject ).getComponents() ) {
-					if( c instanceof AbstractCamera ) {
-						camera = (AbstractCamera)c;
-					}
-				}
-				if( camera != null ) {
-					if( camera instanceof SymmetricPerspectiveCamera ) {
-						returnHint.addPickType( PickHint.PickType.PERSPECTIVE_CAMERA );
-					} else if( camera instanceof OrthographicCamera ) {
-						returnHint.addPickType( PickHint.PickType.ORTHOGRAPHIC_CAMERA );
-					}
-				} else {
-					ManipulationHandle3D handle3D = getParentOfClass( pickedObject, ManipulationHandle3D.class );
-					if( handle3D != null ) {
-						returnHint.addPickType( PickHint.PickType.THREE_D_HANDLE );
-					}
-				}
-			}
-		}
-		if( ( returnHint == null ) || returnHint.isEmpty() ) {
-			return PickHint.PickType.NOTHING.pickHint();
-		} else {
-			return returnHint;
-		}
-	}
+      if (pickedObject instanceof Composite) {
+        AbstractCamera camera = null;
+        for (Component c : ((Composite) pickedObject).getComponents()) {
+          if (c instanceof AbstractCamera) {
+            camera = (AbstractCamera) c;
+          }
+        }
+        if (camera != null) {
+          if (camera instanceof SymmetricPerspectiveCamera) {
+            returnHint.addPickType(PickHint.PickType.PERSPECTIVE_CAMERA);
+          } else if (camera instanceof OrthographicCamera) {
+            returnHint.addPickType(PickHint.PickType.ORTHOGRAPHIC_CAMERA);
+          }
+        } else {
+          ManipulationHandle3D handle3D = getParentOfClass(pickedObject, ManipulationHandle3D.class);
+          if (handle3D != null) {
+            returnHint.addPickType(PickHint.PickType.THREE_D_HANDLE);
+          }
+        }
+      }
+    }
+    if ((returnHint == null) || returnHint.isEmpty()) {
+      return PickHint.PickType.NOTHING.pickHint();
+    } else {
+      return returnHint;
+    }
+  }
 }

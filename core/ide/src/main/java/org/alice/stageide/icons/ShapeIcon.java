@@ -56,37 +56,37 @@ import java.awt.geom.GeneralPath;
  * @author Dennis Cosgrove
  */
 public abstract class ShapeIcon extends AbstractIcon {
-	protected static void drawLine( Graphics2D g2, float x0, float y0, float x1, float y1 ) {
-		GeneralPath path = new GeneralPath();
-		path.moveTo( x0, y0 );
-		path.lineTo( x1, y1 );
-		g2.draw( path );
-	}
+  protected static void drawLine(Graphics2D g2, float x0, float y0, float x1, float y1) {
+    GeneralPath path = new GeneralPath();
+    path.moveTo(x0, y0);
+    path.lineTo(x1, y1);
+    g2.draw(path);
+  }
 
-	protected static final int PAD = 2;
-	protected static final Color FILL_PAINT = new Color( 191, 191, 255 );
+  protected static final int PAD = 2;
+  protected static final Color FILL_PAINT = new Color(191, 191, 255);
 
-	public ShapeIcon( Dimension size ) {
-		super( size );
-	}
+  public ShapeIcon(Dimension size) {
+    super(size);
+  }
 
-	protected abstract void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint );
+  protected abstract void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint);
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2 ) {
-		int xOffset = PAD;
-		int yOffset = PAD;
-		int width = this.getIconWidth() - PAD - PAD;
-		int height = this.getIconHeight() - PAD - PAD;
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2) {
+    int xOffset = PAD;
+    int yOffset = PAD;
+    int width = this.getIconWidth() - PAD - PAD;
+    int height = this.getIconHeight() - PAD - PAD;
 
-		GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g2 );
-		gc.pushAndSetAntialiasing( true );
-		try {
-			g2.translate( xOffset, yOffset );
-			this.paintIcon( c, g2, width, height, FILL_PAINT, Color.BLACK );
-			g2.translate( -xOffset, -yOffset );
-		} finally {
-			gc.popAll();
-		}
-	}
+    GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics(g2);
+    gc.pushAndSetAntialiasing(true);
+    try {
+      g2.translate(xOffset, yOffset);
+      this.paintIcon(c, g2, width, height, FILL_PAINT, Color.BLACK);
+      g2.translate(-xOffset, -yOffset);
+    } finally {
+      gc.popAll();
+    }
+  }
 }

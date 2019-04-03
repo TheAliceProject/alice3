@@ -49,6 +49,6 @@ import edu.cmu.cs.dennisc.property.DoubleProperty;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractNearPlaneAndFarPlaneCamera extends AbstractCamera {
-	public final DoubleProperty nearClippingPlaneDistance = new DoubleProperty( this, 0.125 );
-	public final DoubleProperty farClippingPlaneDistance = new DoubleProperty( this, 256.0 );
+  public final DoubleProperty nearClippingPlaneDistance = new DoubleProperty(this, 0.125);
+  public final DoubleProperty farClippingPlaneDistance = new DoubleProperty(this, 256.0);
 }

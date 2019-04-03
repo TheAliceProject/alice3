@@ -48,11 +48,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author dculyba
  */
 public class IsToTheRightOf extends AsSeenByArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = IsToTheRightOf.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = IsToTheRightOf.class) public static interface Detail {
+  }
 
-	private IsToTheRightOf() {
-		super();
-	}
+  private IsToTheRightOf() {
+    super();
+  }
 }

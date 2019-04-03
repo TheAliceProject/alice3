@@ -55,20 +55,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class InitializerState extends StandardExpressionState {
-	private final InitializerStateOwner owner;
+  private final InitializerStateOwner owner;
 
-	public InitializerState( InitializerStateOwner owner, Expression initialValue ) {
-		super( Application.INHERIT_GROUP, UUID.fromString( "4edd354e-da3c-400d-9c55-66da924c09a7" ), initialValue );
-		this.owner = owner;
-	}
+  public InitializerState(InitializerStateOwner owner, Expression initialValue) {
+    super(Application.INHERIT_GROUP, UUID.fromString("4edd354e-da3c-400d-9c55-66da924c09a7"), initialValue);
+    this.owner = owner;
+  }
 
-	@Override
-	protected ValueDetails<?> getValueDetails() {
-		return null;
-	}
+  @Override
+  protected ValueDetails<?> getValueDetails() {
+    return null;
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getType() {
-		return this.owner.getValueType();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getType() {
+    return this.owner.getValueType();
+  }
 }

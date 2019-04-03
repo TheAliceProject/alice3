@@ -52,45 +52,45 @@ import java.nio.DoubleBuffer;
  * @author Dennis Cosgrove
  */
 public class GlrPointLight<T extends PointLight> extends GlrLight<T> {
-	@Override
-	protected float[] getPosition( float[] rv ) {
-		DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
-		rv[ 0 ] = (float)db.get( 12 );
-		rv[ 1 ] = (float)db.get( 13 );
-		rv[ 2 ] = (float)db.get( 14 );
-		rv[ 3 ] = 1.0f;
-		return rv;
-	}
+  @Override
+  protected float[] getPosition(float[] rv) {
+    DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
+    rv[0] = (float) db.get(12);
+    rv[1] = (float) db.get(13);
+    rv[2] = (float) db.get(14);
+    rv[3] = 1.0f;
+    return rv;
+  }
 
-	@Override
-	protected float getConstantAttenuation() {
-		return this.constant;
-	}
+  @Override
+  protected float getConstantAttenuation() {
+    return this.constant;
+  }
 
-	@Override
-	protected float getLinearAttenuation() {
-		return this.linear;
-	}
+  @Override
+  protected float getLinearAttenuation() {
+    return this.linear;
+  }
 
-	@Override
-	protected float getQuadraticAttenuation() {
-		return this.quadratic;
-	}
+  @Override
+  protected float getQuadraticAttenuation() {
+    return this.quadratic;
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.constantAttenuation ) {
-			this.constant = owner.constantAttenuation.getValue().floatValue();
-		} else if( property == owner.linearAttenuation ) {
-			this.linear = owner.linearAttenuation.getValue().floatValue();
-		} else if( property == owner.quadraticAttenuation ) {
-			this.quadratic = owner.quadraticAttenuation.getValue().floatValue();
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.constantAttenuation) {
+      this.constant = owner.constantAttenuation.getValue().floatValue();
+    } else if (property == owner.linearAttenuation) {
+      this.linear = owner.linearAttenuation.getValue().floatValue();
+    } else if (property == owner.quadraticAttenuation) {
+      this.quadratic = owner.quadraticAttenuation.getValue().floatValue();
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private float constant;
-	private float linear;
-	private float quadratic;
+  private float constant;
+  private float linear;
+  private float quadratic;
 }

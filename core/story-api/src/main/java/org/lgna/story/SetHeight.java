@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class SetHeight extends DurationAnimationStyleSetDimensionPolicyArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = SetHeight.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = SetHeight.class) public static interface Detail {
+  }
 
-	private SetHeight() {
-		super();
-	}
+  private SetHeight() {
+    super();
+  }
 }

@@ -62,41 +62,41 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class TypeExpressionCascadeMenu extends ExpressionCascadeMenu<Expression> {
-	private static InitializingIfAbsentMap<AbstractType, TypeExpressionCascadeMenu> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<AbstractType, TypeExpressionCascadeMenu> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static TypeExpressionCascadeMenu getInstance( AbstractType type ) {
-		return map.getInitializingIfAbsent( type, new InitializingIfAbsentMap.Initializer<AbstractType, TypeExpressionCascadeMenu>() {
-			@Override
-			public TypeExpressionCascadeMenu initialize( AbstractType key ) {
-				return new TypeExpressionCascadeMenu( key, null );
-			}
-		} );
-	}
+  public static TypeExpressionCascadeMenu getInstance(AbstractType type) {
+    return map.getInitializingIfAbsent(type, new InitializingIfAbsentMap.Initializer<AbstractType, TypeExpressionCascadeMenu>() {
+      @Override
+      public TypeExpressionCascadeMenu initialize(AbstractType key) {
+        return new TypeExpressionCascadeMenu(key, null);
+      }
+    });
+  }
 
-	public static TypeExpressionCascadeMenu getInstance( Class<?> cls ) {
-		return getInstance( JavaType.getInstance( cls ) );
-	}
+  public static TypeExpressionCascadeMenu getInstance(Class<?> cls) {
+    return getInstance(JavaType.getInstance(cls));
+  }
 
-	private final AbstractType<?, ?, ?> valueType;
-	private final ValueDetails<?> details;
+  private final AbstractType<?, ?, ?> valueType;
+  private final ValueDetails<?> details;
 
-	private TypeExpressionCascadeMenu( AbstractType<?, ?, ?> valueType, ValueDetails<?> details ) {
-		super( UUID.fromString( "abafdc1c-7e12-4db4-94b2-17120c6a7110" ) );
-		this.valueType = valueType;
-		this.details = details;
-	}
+  private TypeExpressionCascadeMenu(AbstractType<?, ?, ?> valueType, ValueDetails<?> details) {
+    super(UUID.fromString("abafdc1c-7e12-4db4-94b2-17120c6a7110"));
+    this.valueType = valueType;
+    this.details = details;
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			ide.getExpressionCascadeManager().appendItems( blankChildren, blankNode, this.valueType, this.details );
-		}
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      ide.getExpressionCascadeManager().appendItems(blankChildren, blankNode, this.valueType, this.details);
+    }
+  }
 
-	@Override
-	public Icon getMenuItemIcon( ItemNode<? super Expression, Expression> node ) {
-		return TypeIcon.getInstance( this.valueType );
-	}
+  @Override
+  public Icon getMenuItemIcon(ItemNode<? super Expression, Expression> node) {
+    return TypeIcon.getInstance(this.valueType);
+  }
 
 }

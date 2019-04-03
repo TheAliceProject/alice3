@@ -51,60 +51,60 @@ import java.util.logging.LogRecord;
  * @author Dennis Cosgrove
  */
 public class ConsoleFormatter extends Formatter {
-	private static String CLASS_NAME = Logger.class.getName();
+  private static String CLASS_NAME = Logger.class.getName();
 
-	private int getStackTraceIndex( StackTraceElement[] stack ) {
-		int index = 0;
-		while( index < stack.length ) {
-			if( CLASS_NAME.equals( stack[ index ].getClassName() ) ) {
-				break;
-			}
-			index++;
-		}
-		while( index < stack.length ) {
-			if( CLASS_NAME.equals( stack[ index ].getClassName() ) ) {
-				//pass
-			} else {
-				return index;
-			}
-			index++;
-		}
+  private int getStackTraceIndex(StackTraceElement[] stack) {
+    int index = 0;
+    while (index < stack.length) {
+      if (CLASS_NAME.equals(stack[index].getClassName())) {
+        break;
+      }
+      index++;
+    }
+    while (index < stack.length) {
+      if (CLASS_NAME.equals(stack[index].getClassName())) {
+        //pass
+      } else {
+        return index;
+      }
+      index++;
+    }
 
-		return -1;
-	}
+    return -1;
+  }
 
-	@Override
-	public String format( LogRecord record ) {
-		Level level = record.getLevel();
-		StringBuilder sb = new StringBuilder();
-		sb.append( level );
-		sb.append( ": " );
-		sb.append( record.getMessage() );
-		sb.append( "\n" );
-		StackTraceElement[] stack = new Throwable().getStackTrace();
-		int index = this.getStackTraceIndex( stack );
-		if( index >= 0 ) {
-			int N;
-			if( Level.SEVERE.intValue() <= level.intValue() ) {
-				N = index + 16;
-			} else {
-				N = index + 1;
-			}
-			N = Math.min( N, stack.length );
-			for( int i = index; i < N; i++ ) {
-				StackTraceElement stackTraceElement = stack[ i ];
-				sb.append( "\tat " );
-				sb.append( stackTraceElement.getClassName() );
-				sb.append( "." );
-				sb.append( stackTraceElement.getMethodName() );
-				sb.append( "(" );
-				sb.append( stackTraceElement.getFileName() );
-				sb.append( ":" );
-				sb.append( stackTraceElement.getLineNumber() );
-				sb.append( ")" );
-				sb.append( "\n" );
-			}
-		}
-		return sb.toString();
-	}
+  @Override
+  public String format(LogRecord record) {
+    Level level = record.getLevel();
+    StringBuilder sb = new StringBuilder();
+    sb.append(level);
+    sb.append(": ");
+    sb.append(record.getMessage());
+    sb.append("\n");
+    StackTraceElement[] stack = new Throwable().getStackTrace();
+    int index = this.getStackTraceIndex(stack);
+    if (index >= 0) {
+      int N;
+      if (Level.SEVERE.intValue() <= level.intValue()) {
+        N = index + 16;
+      } else {
+        N = index + 1;
+      }
+      N = Math.min(N, stack.length);
+      for (int i = index; i < N; i++) {
+        StackTraceElement stackTraceElement = stack[i];
+        sb.append("\tat ");
+        sb.append(stackTraceElement.getClassName());
+        sb.append(".");
+        sb.append(stackTraceElement.getMethodName());
+        sb.append("(");
+        sb.append(stackTraceElement.getFileName());
+        sb.append(":");
+        sb.append(stackTraceElement.getLineNumber());
+        sb.append(")");
+        sb.append("\n");
+      }
+    }
+    return sb.toString();
+  }
 }

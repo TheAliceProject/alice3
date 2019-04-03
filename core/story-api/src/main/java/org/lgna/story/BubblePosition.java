@@ -47,39 +47,36 @@ import edu.cmu.cs.dennisc.scenegraph.graphics.Bubble;
 /**
  * @author user
  */
-public enum BubblePosition implements
-		Say.Detail, Think.Detail {
-	AUTOMATIC( Bubble.PositionPreference.AUTOMATIC ),
-	LEFT( Bubble.PositionPreference.TOP_LEFT ),
-	CENTER( Bubble.PositionPreference.TOP_CENTER ),
-	RIGHT( Bubble.PositionPreference.TOP_RIGHT );
+public enum BubblePosition implements Say.Detail, Think.Detail {
+  AUTOMATIC(Bubble.PositionPreference.AUTOMATIC), LEFT(Bubble.PositionPreference.TOP_LEFT), CENTER(Bubble.PositionPreference.TOP_CENTER), RIGHT(Bubble.PositionPreference.TOP_RIGHT);
 
-	private static final BubblePosition DEFAULT_VALUE = BubblePosition.AUTOMATIC;
+  private static final BubblePosition DEFAULT_VALUE = BubblePosition.AUTOMATIC;
 
-	private Bubble.PositionPreference internal;
+  private Bubble.PositionPreference internal;
 
-	BubblePosition( Bubble.PositionPreference internal ) {
-		this.internal = internal;
-	}
+  BubblePosition(Bubble.PositionPreference internal) {
+    this.internal = internal;
+  }
 
-	/* package-private */Bubble.PositionPreference getInternal() {
-		return this.internal;
-	}
+  /* package-private */Bubble.PositionPreference getInternal() {
+    return this.internal;
+  }
 
-	BubblePosition() {
-	}
+  BubblePosition() {
+  }
 
-	private static BubblePosition getValue( Object[] details, BubblePosition defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof BubblePosition ) {
-				BubblePosition textPosition = (BubblePosition)detail;
-				return textPosition;
-			}
-		}
-		return defaultValue;
-	}
+  private static BubblePosition getValue(Object[] details, BubblePosition defaultValue) {
+    for (Object detail : details) {
+      if (detail instanceof BubblePosition) {
+        BubblePosition textPosition = (BubblePosition) detail;
+        return textPosition;
+      }
+    }
+    return defaultValue;
+  }
 
-	/* package-private */static BubblePosition getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
-	}
+  /* package-private */
+  static BubblePosition getValue(Object[] details) {
+    return getValue(details, DEFAULT_VALUE);
+  }
 }

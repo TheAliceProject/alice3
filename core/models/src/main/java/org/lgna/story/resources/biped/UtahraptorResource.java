@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.biped;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SBiped;
@@ -33,65 +34,47 @@ import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 public enum UtahraptorResource implements BipedResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId JAW_TRIP = new JointId( MOUTH, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_INDEX_FINGER_TIP = new JointId( LEFT_INDEX_FINGER_KNUCKLE, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_MIDDLE_FINGER_TIP = new JointId( LEFT_MIDDLE_FINGER_KNUCKLE, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_PINKY_FINGER_TIP = new JointId( LEFT_PINKY_FINGER_KNUCKLE, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId( RIGHT_INDEX_FINGER_KNUCKLE, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_MIDDLE_FINGER_TIP = new JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_PINKY_FINGER_TIP = new JointId( RIGHT_PINKY_FINGER_KNUCKLE, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_TOE_TIP = new JointId( LEFT_TOES, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_CLAW = new JointId( LEFT_FOOT, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME, methodNameHint="getTail")
-	public static final JointId TAIL_0 = new JointId( PELVIS_LOWER_BODY, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_1 = new JointId( TAIL_0, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_2 = new JointId( TAIL_1, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_3 = new JointId( TAIL_2, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_4 = new JointId( TAIL_3, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_5 = new JointId( TAIL_4, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_TOE_TIP = new JointId( RIGHT_TOES, UtahraptorResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_CLAW = new JointId( RIGHT_FOOT, UtahraptorResource.class );
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId JAW_TRIP = new JointId(MOUTH, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_INDEX_FINGER_TIP = new JointId(LEFT_INDEX_FINGER_KNUCKLE, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_MIDDLE_FINGER_TIP = new JointId(LEFT_MIDDLE_FINGER_KNUCKLE, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_PINKY_FINGER_TIP = new JointId(LEFT_PINKY_FINGER_KNUCKLE, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId(RIGHT_INDEX_FINGER_KNUCKLE, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_MIDDLE_FINGER_TIP = new JointId(RIGHT_MIDDLE_FINGER_KNUCKLE, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_PINKY_FINGER_TIP = new JointId(RIGHT_PINKY_FINGER_KNUCKLE, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_TOES = new JointId(LEFT_FOOT, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_TOE_TIP = new JointId(LEFT_TOES, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_CLAW = new JointId(LEFT_FOOT, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME, methodNameHint = "getTail") public static final JointId TAIL_0 = new JointId(PELVIS_LOWER_BODY, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_1 = new JointId(TAIL_0, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_2 = new JointId(TAIL_1, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_3 = new JointId(TAIL_2, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_4 = new JointId(TAIL_3, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_5 = new JointId(TAIL_4, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_TOES = new JointId(RIGHT_FOOT, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_TOE_TIP = new JointId(RIGHT_TOES, UtahraptorResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_CLAW = new JointId(RIGHT_FOOT, UtahraptorResource.class);
 
-	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4, TAIL_5 };
+  public static final JointId[] TAIL_ARRAY = {TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4, TAIL_5};
 
-	private final ImplementationAndVisualType resourceType;
-	UtahraptorResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	UtahraptorResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  UtahraptorResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
+  UtahraptorResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BipedImp createImplementation( SBiped abstraction ) {
-		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BipedImp createImplementation(SBiped abstraction) {
+    return new BipedImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

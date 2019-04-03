@@ -56,20 +56,20 @@ import edu.cmu.cs.dennisc.scenegraph.TriangleFan;
  * @author Dennis Cosgrove
  */
 public class GlrTriangleFan extends GlrVertexGeometry<TriangleFan> {
-	@Override
-	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
-		renderPrimative( rc, GL_TRIANGLE_FAN );
-	}
+  @Override
+  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
+    renderPrimative(rc, GL_TRIANGLE_FAN);
+  }
 
-	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		pickPrimative( pc, GL_TRIANGLE_FAN );
-	}
+  @Override
+  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
+    pickPrimative(pc, GL_TRIANGLE_FAN);
+  }
 
-	@Override
-	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
-		//todo
-		rv.setNaN();
-		return rv;
-	}
+  @Override
+  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+    //todo
+    rv.setNaN();
+    return rv;
+  }
 }

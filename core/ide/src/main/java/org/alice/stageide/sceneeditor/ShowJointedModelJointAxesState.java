@@ -56,30 +56,30 @@ import java.util.UUID;
  */
 public class ShowJointedModelJointAxesState extends BooleanState {
 
-	private static Map<AbstractField, ShowJointedModelJointAxesState> map = Maps.newHashMap();
+  private static Map<AbstractField, ShowJointedModelJointAxesState> map = Maps.newHashMap();
 
-	public static ShowJointedModelJointAxesState getInstance( AbstractField value ) {
-		synchronized( map ) {
-			ShowJointedModelJointAxesState rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ShowJointedModelJointAxesState( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
+  public static ShowJointedModelJointAxesState getInstance(AbstractField value) {
+    synchronized (map) {
+      ShowJointedModelJointAxesState rv = map.get(value);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ShowJointedModelJointAxesState(value);
+        map.put(value, rv);
+      }
+      return rv;
+    }
+  }
 
-	private AbstractField field;
+  private AbstractField field;
 
-	private ShowJointedModelJointAxesState( AbstractField field ) {
-		super( IDE.DOCUMENT_UI_GROUP, UUID.fromString( "3b3bdd30-4f04-4160-ae58-e466732a4c6c" ), false );
-		this.field = field;
-	}
+  private ShowJointedModelJointAxesState(AbstractField field) {
+    super(IDE.DOCUMENT_UI_GROUP, UUID.fromString("3b3bdd30-4f04-4160-ae58-e466732a4c6c"), false);
+    this.field = field;
+  }
 
-	public AbstractField getField() {
-		return this.field;
-	}
+  public AbstractField getField() {
+    return this.field;
+  }
 
 }

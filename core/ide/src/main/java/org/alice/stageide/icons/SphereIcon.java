@@ -53,25 +53,25 @@ import java.awt.geom.Ellipse2D;
  * @author Dennis Cosgrove
  */
 public class SphereIcon extends ShapeIcon {
-	public SphereIcon( Dimension size ) {
-		super( size );
-	}
+  public SphereIcon(Dimension size) {
+    super(size);
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
-		int diameter = Math.min( width, height );
-		int x = ( width - diameter ) / 2;
-		int y = ( height - diameter ) / 2;
-		Ellipse2D core = new Ellipse2D.Float( x, y, diameter, diameter );
-		Ellipse2D slice = new Ellipse2D.Float( x, y + ( diameter * 0.35f ), diameter, diameter * 0.3f );
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    int diameter = Math.min(width, height);
+    int x = (width - diameter) / 2;
+    int y = (height - diameter) / 2;
+    Ellipse2D core = new Ellipse2D.Float(x, y, diameter, diameter);
+    Ellipse2D slice = new Ellipse2D.Float(x, y + (diameter * 0.35f), diameter, diameter * 0.3f);
 
-		g2.setPaint( fillPaint );
-		g2.fill( core );
+    g2.setPaint(fillPaint);
+    g2.fill(core);
 
-		g2.setPaint( Color.GRAY );
-		g2.draw( slice );
+    g2.setPaint(Color.GRAY);
+    g2.draw(slice);
 
-		g2.setPaint( drawPaint );
-		g2.draw( core );
-	}
+    g2.setPaint(drawPaint);
+    g2.draw(core);
+  }
 }

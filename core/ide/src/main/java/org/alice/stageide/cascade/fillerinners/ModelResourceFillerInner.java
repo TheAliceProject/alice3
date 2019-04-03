@@ -59,18 +59,18 @@ import java.util.List;
  */
 public class ModelResourceFillerInner extends ExpressionFillerInner {
 
-	public ModelResourceFillerInner() {
-		super( JointedModelResource.class );
-	}
+  public ModelResourceFillerInner() {
+    super(JointedModelResource.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		if( details instanceof PublicStaticFieldValueDetails ) {
-			PublicStaticFieldValueDetails publicStaticFieldValueDetails = (PublicStaticFieldValueDetails)details;
-			Field[] flds = publicStaticFieldValueDetails.getFlds();
-			for( Field fld : flds ) {
-				items.add( StaticFieldAccessFillIn.getInstance( fld ) );
-			}
-		}
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    if (details instanceof PublicStaticFieldValueDetails) {
+      PublicStaticFieldValueDetails publicStaticFieldValueDetails = (PublicStaticFieldValueDetails) details;
+      Field[] flds = publicStaticFieldValueDetails.getFlds();
+      for (Field fld : flds) {
+        items.add(StaticFieldAccessFillIn.getInstance(fld));
+      }
+    }
+  }
 }

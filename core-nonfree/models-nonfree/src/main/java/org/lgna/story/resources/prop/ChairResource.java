@@ -32,100 +32,102 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum ChairResource implements PropResource {
-	ART_NOUVEAU_DARK_WOOD( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_WOOD( ImplementationAndVisualType.SIMS2 ),
-	CLUB_DARK_GREEN( ImplementationAndVisualType.SIMS2 ),
-	CLUB_GREEN( ImplementationAndVisualType.SIMS2 ),
-	CLUB_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	CLUB_DARK_WOOD( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_BLUE_PATTERN( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_DIAMONDS( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_YELLOW( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_GOLD_PATTERN( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_BLUE( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_RED_STRIPES( ImplementationAndVisualType.SIMS2 ),
-	FANCY_COLONIAL_TAN( ImplementationAndVisualType.SIMS2 ),
-	FANCY_COLONIAL_BLUE_PATTERN( ImplementationAndVisualType.SIMS2 ),
-	FANCY_COLONIAL_BLUE( ImplementationAndVisualType.SIMS2 ),
-	FANCY_COLONIAL_DIAMONDS( ImplementationAndVisualType.SIMS2 ),
-	FANCY_COLONIAL_GOLD_PATTERN( ImplementationAndVisualType.SIMS2 ),
-	FANCY_COLONIAL_YELLOW( ImplementationAndVisualType.SIMS2 ),
-	FANCY_COLONIAL_RED_STRIPES( ImplementationAndVisualType.SIMS2 ),
-	PARK_CHESTNUT( ImplementationAndVisualType.SIMS2 ),
-	PARK_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	PARK_OAK( ImplementationAndVisualType.SIMS2 ),
-	PARK_BLUE( ImplementationAndVisualType.SIMS2 ),
-	PARK_GREEN( ImplementationAndVisualType.SIMS2 ),
-	PARK_RED( ImplementationAndVisualType.SIMS2 ),
-	PARK_WALNUT( ImplementationAndVisualType.SIMS2 ),
-	DANISH_MODERN_BLUE( ImplementationAndVisualType.SIMS2 ),
-	DANISH_MODERN_GREEN( ImplementationAndVisualType.SIMS2 ),
-	DANISH_MODERN_PURPLE( ImplementationAndVisualType.SIMS2 ),
-	DANISH_MODERN_RED( ImplementationAndVisualType.SIMS2 ),
-	DANISH_MODERN_WHITE( ImplementationAndVisualType.SIMS2 ),
-	LOFT_FORK_BLUE_BLACK( ImplementationAndVisualType.SIMS2 ),
-	LOFT_FORK_BLUE_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_FORK_GREEN_BLACK( ImplementationAndVisualType.SIMS2 ),
-	LOFT_FORK_GREEN_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_FORK_YELLOW_BLACK( ImplementationAndVisualType.SIMS2 ),
-	LOFT_FORK_YELLOW_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_FORK_RED_BLACK( ImplementationAndVisualType.SIMS2 ),
-	LOFT_FORK_RED_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_FORK_WHITE_BLACK( ImplementationAndVisualType.SIMS2 ),
-	LOFT_FORK_WHITE_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_OFFICE_BLUE_BLACK( ImplementationAndVisualType.SIMS2 ),
-	LOFT_OFFICE_BLUE_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_OFFICE_GREEN_BLACK( ImplementationAndVisualType.SIMS2 ),
-	LOFT_OFFICE_GREEN_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_OFFICE_YELLOW_BLACK( ImplementationAndVisualType.SIMS2 ),
-	LOFT_OFFICE_YELLOW_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_OFFICE_RED_BLACK( ImplementationAndVisualType.SIMS2 ),
-	LOFT_OFFICE_RED_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_OFFICE_WHITE_BLACK( ImplementationAndVisualType.SIMS2 ),
-	LOFT_OFFICE_WHITE_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_BLUE_BLACK_BODY( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_BLUE_WOOD_BODY( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_YELLOW_STRIPES_BLACK_BODY( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_YELLOW_STRIPES_WOOD_BODY( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_GRAY_BLACK_BODY( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_GRAY_WOOD_BODY( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_RED_BLACK_BODY( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_RED_WOOD_BODY( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_TEAL_BLACK_BODY( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_TEAL_WOOD_BODY( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_YELLOW_BLACK_BODY( ImplementationAndVisualType.SIMS2 ),
-	MODERATE_YELLOW_WOOD_BODY( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_YELLOW( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_BLUE_STRIPES( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_RED( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_WHITE( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_BLACK( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_ORANGE_WOOD( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_RED( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_WOOD( ImplementationAndVisualType.SIMS2 );
+  ART_NOUVEAU_DARK_WOOD(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_WOOD(ImplementationAndVisualType.SIMS2),
+  CLUB_DARK_GREEN(ImplementationAndVisualType.SIMS2),
+  CLUB_GREEN(ImplementationAndVisualType.SIMS2),
+  CLUB_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  CLUB_DARK_WOOD(ImplementationAndVisualType.SIMS2),
+  COLONIAL_BLUE_PATTERN(ImplementationAndVisualType.SIMS2),
+  COLONIAL_DIAMONDS(ImplementationAndVisualType.SIMS2),
+  COLONIAL_YELLOW(ImplementationAndVisualType.SIMS2),
+  COLONIAL_GOLD_PATTERN(ImplementationAndVisualType.SIMS2),
+  COLONIAL_BLUE(ImplementationAndVisualType.SIMS2),
+  COLONIAL_RED_STRIPES(ImplementationAndVisualType.SIMS2),
+  FANCY_COLONIAL_TAN(ImplementationAndVisualType.SIMS2),
+  FANCY_COLONIAL_BLUE_PATTERN(ImplementationAndVisualType.SIMS2),
+  FANCY_COLONIAL_BLUE(ImplementationAndVisualType.SIMS2),
+  FANCY_COLONIAL_DIAMONDS(ImplementationAndVisualType.SIMS2),
+  FANCY_COLONIAL_GOLD_PATTERN(ImplementationAndVisualType.SIMS2),
+  FANCY_COLONIAL_YELLOW(ImplementationAndVisualType.SIMS2),
+  FANCY_COLONIAL_RED_STRIPES(ImplementationAndVisualType.SIMS2),
+  PARK_CHESTNUT(ImplementationAndVisualType.SIMS2),
+  PARK_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  PARK_OAK(ImplementationAndVisualType.SIMS2),
+  PARK_BLUE(ImplementationAndVisualType.SIMS2),
+  PARK_GREEN(ImplementationAndVisualType.SIMS2),
+  PARK_RED(ImplementationAndVisualType.SIMS2),
+  PARK_WALNUT(ImplementationAndVisualType.SIMS2),
+  DANISH_MODERN_BLUE(ImplementationAndVisualType.SIMS2),
+  DANISH_MODERN_GREEN(ImplementationAndVisualType.SIMS2),
+  DANISH_MODERN_PURPLE(ImplementationAndVisualType.SIMS2),
+  DANISH_MODERN_RED(ImplementationAndVisualType.SIMS2),
+  DANISH_MODERN_WHITE(ImplementationAndVisualType.SIMS2),
+  LOFT_FORK_BLUE_BLACK(ImplementationAndVisualType.SIMS2),
+  LOFT_FORK_BLUE_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_FORK_GREEN_BLACK(ImplementationAndVisualType.SIMS2),
+  LOFT_FORK_GREEN_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_FORK_YELLOW_BLACK(ImplementationAndVisualType.SIMS2),
+  LOFT_FORK_YELLOW_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_FORK_RED_BLACK(ImplementationAndVisualType.SIMS2),
+  LOFT_FORK_RED_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_FORK_WHITE_BLACK(ImplementationAndVisualType.SIMS2),
+  LOFT_FORK_WHITE_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_OFFICE_BLUE_BLACK(ImplementationAndVisualType.SIMS2),
+  LOFT_OFFICE_BLUE_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_OFFICE_GREEN_BLACK(ImplementationAndVisualType.SIMS2),
+  LOFT_OFFICE_GREEN_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_OFFICE_YELLOW_BLACK(ImplementationAndVisualType.SIMS2),
+  LOFT_OFFICE_YELLOW_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_OFFICE_RED_BLACK(ImplementationAndVisualType.SIMS2),
+  LOFT_OFFICE_RED_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_OFFICE_WHITE_BLACK(ImplementationAndVisualType.SIMS2),
+  LOFT_OFFICE_WHITE_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  MODERATE_BLUE_BLACK_BODY(ImplementationAndVisualType.SIMS2),
+  MODERATE_BLUE_WOOD_BODY(ImplementationAndVisualType.SIMS2),
+  MODERATE_YELLOW_STRIPES_BLACK_BODY(ImplementationAndVisualType.SIMS2),
+  MODERATE_YELLOW_STRIPES_WOOD_BODY(ImplementationAndVisualType.SIMS2),
+  MODERATE_GRAY_BLACK_BODY(ImplementationAndVisualType.SIMS2),
+  MODERATE_GRAY_WOOD_BODY(ImplementationAndVisualType.SIMS2),
+  MODERATE_RED_BLACK_BODY(ImplementationAndVisualType.SIMS2),
+  MODERATE_RED_WOOD_BODY(ImplementationAndVisualType.SIMS2),
+  MODERATE_TEAL_BLACK_BODY(ImplementationAndVisualType.SIMS2),
+  MODERATE_TEAL_WOOD_BODY(ImplementationAndVisualType.SIMS2),
+  MODERATE_YELLOW_BLACK_BODY(ImplementationAndVisualType.SIMS2),
+  MODERATE_YELLOW_WOOD_BODY(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_YELLOW(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_BLUE_STRIPES(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_RED(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_WHITE(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_BLACK(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_ORANGE_WOOD(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_RED(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_WOOD(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	ChairResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	ChairResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  ChairResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  ChairResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

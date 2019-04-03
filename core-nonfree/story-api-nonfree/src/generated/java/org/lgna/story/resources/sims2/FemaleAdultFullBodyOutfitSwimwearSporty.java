@@ -44,6 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultFullBodyOutfitSwimwearSporty implements FemaleAdultFullBodyOutfit {
-	ONE_PIECE_BLUE;
+  ONE_PIECE_BLUE
 
 }

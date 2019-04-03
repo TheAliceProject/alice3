@@ -46,19 +46,19 @@ package org.lgna.common;
  * @author Dennis Cosgrove
  */
 public abstract class LgnaRuntimeException extends RuntimeException {
-	public LgnaRuntimeException() {
-		super();
-	}
+  public LgnaRuntimeException() {
+    super();
+  }
 
-	public LgnaRuntimeException( String message ) {
-		super( message );
-	}
+  public LgnaRuntimeException(String message) {
+    super(message);
+  }
 
-	protected abstract void appendFormattedString( StringBuilder sb );
+  protected abstract void appendFormattedString(StringBuilder sb);
 
-	public final String getFormattedString() {
-		StringBuilder sb = new StringBuilder();
-		this.appendFormattedString( sb );
-		return sb.toString();
-	}
+  public final String getFormattedString() {
+    StringBuilder sb = new StringBuilder();
+    this.appendFormattedString(sb);
+    return sb.toString();
+  }
 }

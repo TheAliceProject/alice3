@@ -49,20 +49,20 @@ import java.nio.IntBuffer;
  * @author Dennis Cosgrove
  */
 public class IntBufferProperty extends PrimitiveBufferProperty<IntBuffer> {
-	public IntBufferProperty( InstancePropertyOwner owner, IntBuffer value ) {
-		super( owner, value );
-	}
+  public IntBufferProperty(InstancePropertyOwner owner, IntBuffer value) {
+    super(owner, value);
+  }
 
-	public IntBufferProperty( InstancePropertyOwner owner, int[] value ) {
-		super( owner, IntBuffer.wrap( value ) );
-	}
+  public IntBufferProperty(InstancePropertyOwner owner, int[] value) {
+    super(owner, IntBuffer.wrap(value));
+  }
 
-	public void setValue( int[] value ) {
-		this.setValue( IntBuffer.wrap( value ) );
-	}
+  public void setValue(int[] value) {
+    this.setValue(IntBuffer.wrap(value));
+  }
 
-	@Deprecated
-	public int[] getValueAsArray() {
-		return this.getValue().array();
-	}
+  @Deprecated
+  public int[] getValueAsArray() {
+    return this.getValue().array();
+  }
 }

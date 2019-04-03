@@ -58,71 +58,71 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  * @author Matt May
  */
 public class PoserSphereManipulator {
-	private OmniDirectionalPoserSphereManipulator omni = new OmniDirectionalPoserSphereManipulator();
-	private UpDownPoserSphereManipulator uppy = new UpDownPoserSphereManipulator();
+  private OmniDirectionalPoserSphereManipulator omni = new OmniDirectionalPoserSphereManipulator();
+  private UpDownPoserSphereManipulator uppy = new UpDownPoserSphereManipulator();
 
-	List<PoserSphereManipulatorListener> listeners = Lists.newArrayList();
+  List<PoserSphereManipulatorListener> listeners = Lists.newArrayList();
 
-	public void addListener( PoserSphereManipulatorListener listener ) {
-		listeners.add( listener );
-	}
+  public void addListener(PoserSphereManipulatorListener listener) {
+    listeners.add(listener);
+  }
 
-	private void fireAllStart( JointSelectionSphere sphere ) {
-		fireFinish( sphere );
-	}
+  private void fireAllStart(JointSelectionSphere sphere) {
+    fireFinish(sphere);
+  }
 
-	private void fireFinish( JointSelectionSphere sphere ) {
-		for( PoserSphereManipulatorListener listener : listeners ) {
-			listener.fireStart( new PoserEvent( sphere ) );
-		}
-	}
+  private void fireFinish(JointSelectionSphere sphere) {
+    for (PoserSphereManipulatorListener listener : listeners) {
+      listener.fireStart(new PoserEvent(sphere));
+    }
+  }
 
-	public OmniDirectionalPoserSphereManipulator getOmni() {
-		return this.omni;
-	}
+  public OmniDirectionalPoserSphereManipulator getOmni() {
+    return this.omni;
+  }
 
-	public UpDownPoserSphereManipulator getUppy() {
-		return this.uppy;
-	}
+  public UpDownPoserSphereManipulator getUppy() {
+    return this.uppy;
+  }
 
-	public class OmniDirectionalPoserSphereManipulator extends OmniDirectionalDragManipulator {
+  public class OmniDirectionalPoserSphereManipulator extends OmniDirectionalDragManipulator {
 
-		@Override
-		public boolean doStartManipulator( InputState startInput ) {
-			boolean rv = super.doStartManipulator( startInput );
-			if( manipulatedTransformable != null ) {
-				SThing abstractionFromSgElement = EntityImp.getAbstractionFromSgElement( manipulatedTransformable );
-				if( abstractionFromSgElement instanceof JointSelectionSphere ) {
-					JointSelectionSphere sphere = (JointSelectionSphere)abstractionFromSgElement;
-					fireStart( sphere );
-				}
-			}
-			return rv;
-		}
+    @Override
+    public boolean doStartManipulator(InputState startInput) {
+      boolean rv = super.doStartManipulator(startInput);
+      if (manipulatedTransformable != null) {
+        SThing abstractionFromSgElement = EntityImp.getAbstractionFromSgElement(manipulatedTransformable);
+        if (abstractionFromSgElement instanceof JointSelectionSphere) {
+          JointSelectionSphere sphere = (JointSelectionSphere) abstractionFromSgElement;
+          fireStart(sphere);
+        }
+      }
+      return rv;
+    }
 
-		private void fireStart( JointSelectionSphere sphere ) {
-			fireAllStart( sphere );
-		}
+    private void fireStart(JointSelectionSphere sphere) {
+      fireAllStart(sphere);
+    }
 
-	}
+  }
 
-	public class UpDownPoserSphereManipulator extends ObjectUpDownDragManipulator {
+  public class UpDownPoserSphereManipulator extends ObjectUpDownDragManipulator {
 
-		@Override
-		public boolean doStartManipulator( InputState startInput ) {
-			boolean rv = super.doStartManipulator( startInput );
-			if( manipulatedTransformable != null ) {
-				SThing abstractionFromSgElement = EntityImp.getAbstractionFromSgElement( manipulatedTransformable );
-				if( abstractionFromSgElement instanceof JointSelectionSphere ) {
-					JointSelectionSphere sphere = (JointSelectionSphere)abstractionFromSgElement;
-					fireStart( sphere );
-				}
-			}
-			return rv;
-		}
+    @Override
+    public boolean doStartManipulator(InputState startInput) {
+      boolean rv = super.doStartManipulator(startInput);
+      if (manipulatedTransformable != null) {
+        SThing abstractionFromSgElement = EntityImp.getAbstractionFromSgElement(manipulatedTransformable);
+        if (abstractionFromSgElement instanceof JointSelectionSphere) {
+          JointSelectionSphere sphere = (JointSelectionSphere) abstractionFromSgElement;
+          fireStart(sphere);
+        }
+      }
+      return rv;
+    }
 
-		private void fireStart( JointSelectionSphere sphere ) {
-			fireAllStart( sphere );
-		}
-	}
+    private void fireStart(JointSelectionSphere sphere) {
+      fireAllStart(sphere);
+    }
+  }
 }

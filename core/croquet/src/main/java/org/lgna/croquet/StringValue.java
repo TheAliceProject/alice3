@@ -54,54 +54,54 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class StringValue extends AbstractElement {
-	private String originalLocalizedText;
-	private final AbstractDocument document;
+  private String originalLocalizedText;
+  private final AbstractDocument document;
 
-	public StringValue( UUID id, AbstractDocument document ) {
-		super( id );
-		this.document = document;
-	}
+  public StringValue(UUID id, AbstractDocument document) {
+    super(id);
+    this.document = document;
+  }
 
-	@Override
-	protected void localize() {
-		this.originalLocalizedText = this.findDefaultLocalizedText();
-		this.setText( this.modifiedLocalizedTextIfAppropriate( this.originalLocalizedText ) );
-	}
+  @Override
+  protected void localize() {
+    this.originalLocalizedText = this.findDefaultLocalizedText();
+    this.setText(this.modifiedLocalizedTextIfAppropriate(this.originalLocalizedText));
+  }
 
-	protected String modifiedLocalizedTextIfAppropriate( String originalLocalizedText ) {
-		return originalLocalizedText;
-	}
+  protected String modifiedLocalizedTextIfAppropriate(String originalLocalizedText) {
+    return originalLocalizedText;
+  }
 
-	public String getOriginalLocalizedText() {
-		this.initializeIfNecessary();
-		return this.originalLocalizedText;
-	}
+  public String getOriginalLocalizedText() {
+    this.initializeIfNecessary();
+    return this.originalLocalizedText;
+  }
 
-	public AbstractDocument getDocument() {
-		return this.document;
-	}
+  public AbstractDocument getDocument() {
+    return this.document;
+  }
 
-	public String getText() {
-		try {
-			return this.document.getText( 0, this.document.getLength() );
-		} catch( BadLocationException ble ) {
-			throw new RuntimeException( ble );
-		}
-	}
+  public String getText() {
+    try {
+      return this.document.getText(0, this.document.getLength());
+    } catch (BadLocationException ble) {
+      throw new RuntimeException(ble);
+    }
+  }
 
-	public final void setText( String text ) {
-		try {
-			this.document.replace( 0, this.document.getLength(), text, null );
-		} catch( BadLocationException ble ) {
-			throw new RuntimeException( text, ble );
-		}
-	}
+  public final void setText(String text) {
+    try {
+      this.document.replace(0, this.document.getLength(), text, null);
+    } catch (BadLocationException ble) {
+      throw new RuntimeException(text, ble);
+    }
+  }
 
-	public AbstractLabel createLabel( float fontScalar, TextAttribute<?>... textAttributes ) {
-		return new DocumentLabel( this.document, fontScalar, textAttributes );
-	}
+  public AbstractLabel createLabel(float fontScalar, TextAttribute<?>... textAttributes) {
+    return new DocumentLabel(this.document, fontScalar, textAttributes);
+  }
 
-	public AbstractLabel createLabel( TextAttribute<?>... textAttributes ) {
-		return this.createLabel( 1.0f, textAttributes );
-	}
+  public AbstractLabel createLabel(TextAttribute<?>... textAttributes) {
+    return this.createLabel(1.0f, textAttributes);
+  }
 }

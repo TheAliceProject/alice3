@@ -44,13 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitDressFormalTrumpet implements FemaleTeenFullBodyOutfit {
-	PUPLE_WHITE_STRIPES,
-	BLACK_CIRCLES,
-	RED_CIRCLES,
-	SILVER_CIRCLES,
-	GOLD,
-	LIGHT_BLUE,
-	GREEN,
-	PINK;
+  PUPLE_WHITE_STRIPES, BLACK_CIRCLES, RED_CIRCLES, SILVER_CIRCLES, GOLD, LIGHT_BLUE, GREEN, PINK
 
 }

@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitShirtFlares implements MaleAdultFullBodyOutfit {
-	GREEN_BOWLER,
-	BLACK_TAN,
-	BLUE_TAN,
-	HEATHER_OLIVE,
-	RED_BLACK,
-	BLUE_BLACK;
+  GREEN_BOWLER, BLACK_TAN, BLUE_TAN, HEATHER_OLIVE, RED_BLACK, BLUE_BLACK
 
 }

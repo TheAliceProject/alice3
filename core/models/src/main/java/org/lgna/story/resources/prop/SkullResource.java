@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,48 +34,41 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum SkullResource implements PropResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, SkullResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId HEAD = new JointId( ROOT, SkullResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MOUTH = new JointId( HEAD, SkullResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, SkullResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_EYE = new JointId( HEAD, SkullResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_EYELID = new JointId( HEAD, SkullResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_EYE = new JointId( HEAD, SkullResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_EYELID = new JointId( HEAD, SkullResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, SkullResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId HEAD = new JointId(ROOT, SkullResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MOUTH = new JointId(HEAD, SkullResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LOWER_LIP = new JointId(MOUTH, SkullResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_EYE = new JointId(HEAD, SkullResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_EYELID = new JointId(HEAD, SkullResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_EYE = new JointId(HEAD, SkullResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_EYELID = new JointId(HEAD, SkullResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	SkullResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	SkullResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  SkullResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return SkullResource.JOINT_ID_ROOTS;
-	}
+  SkullResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return SkullResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

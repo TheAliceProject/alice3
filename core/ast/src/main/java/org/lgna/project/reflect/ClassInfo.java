@@ -61,124 +61,124 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class ClassInfo implements BinaryEncodableAndDecodable {
-	private transient boolean isGetClassForNameAlreadyAttempted = false;
-	private transient Class<?> cls;
-	private final String clsName;
+  private transient boolean isGetClassForNameAlreadyAttempted = false;
+  private transient Class<?> cls;
+  private final String clsName;
 
-	private final List<ConstructorInfo> constructorInfos = new LinkedList<ConstructorInfo>();
-	private final List<MethodInfo> methodInfos = new LinkedList<MethodInfo>();
+  private final List<ConstructorInfo> constructorInfos = new LinkedList<ConstructorInfo>();
+  private final List<MethodInfo> methodInfos = new LinkedList<MethodInfo>();
 
-	private static Map<String, ClassInfo> map = new HashMap<String, ClassInfo>();
+  private static Map<String, ClassInfo> map = new HashMap<String, ClassInfo>();
 
-	public static ClassInfo forName( String clsName ) {
-		ClassInfo rv = map.get( clsName );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ClassInfo( clsName );
-		}
-		return rv;
-	}
+  public static ClassInfo forName(String clsName) {
+    ClassInfo rv = map.get(clsName);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ClassInfo(clsName);
+    }
+    return rv;
+  }
 
-	private ClassInfo( String clsName ) {
-		this.clsName = clsName;
-	}
+  private ClassInfo(String clsName) {
+    this.clsName = clsName;
+  }
 
-	public ClassInfo( BinaryDecoder binaryDecoder ) {
-		this.clsName = binaryDecoder.decodeString();
-		ArrayUtilities.set( this.constructorInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( ConstructorInfo.class ) );
-		ArrayUtilities.set( this.methodInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( MethodInfo.class ) );
-	}
+  public ClassInfo(BinaryDecoder binaryDecoder) {
+    this.clsName = binaryDecoder.decodeString();
+    ArrayUtilities.set(this.constructorInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray(ConstructorInfo.class));
+    ArrayUtilities.set(this.methodInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray(MethodInfo.class));
+  }
 
-	public String getClsName() {
-		return this.clsName;
-	}
+  public String getClsName() {
+    return this.clsName;
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.clsName );
-		binaryEncoder.encode( ArrayUtilities.createArray( this.constructorInfos, ConstructorInfo.class ) );
-		binaryEncoder.encode( ArrayUtilities.createArray( this.methodInfos, MethodInfo.class ) );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    binaryEncoder.encode(this.clsName);
+    binaryEncoder.encode(ArrayUtilities.createArray(this.constructorInfos, ConstructorInfo.class));
+    binaryEncoder.encode(ArrayUtilities.createArray(this.methodInfos, MethodInfo.class));
+  }
 
-	/* package-private */Class<?> getCls() {
-		if( this.isGetClassForNameAlreadyAttempted ) {
-			//pass
-		} else {
-			this.isGetClassForNameAlreadyAttempted = true;
-			//			if( this.cls != null ) {
-			//				//pass
-			//			} else {
-			try {
-				this.cls = Class.forName( this.clsName );
-				assert this.cls != null : this.clsName;
-			} catch( Throwable t ) {
-				System.err.println( "getCls" + t + " " + this.clsName );
-			}
-			//			}
-		}
-		return this.cls;
-	}
+  /* package-private */Class<?> getCls() {
+    if (this.isGetClassForNameAlreadyAttempted) {
+      //pass
+    } else {
+      this.isGetClassForNameAlreadyAttempted = true;
+      //      if( this.cls != null ) {
+      //        //pass
+      //      } else {
+      try {
+        this.cls = Class.forName(this.clsName);
+        assert this.cls != null : this.clsName;
+      } catch (Throwable t) {
+        System.err.println("getCls" + t + " " + this.clsName);
+      }
+      //      }
+    }
+    return this.cls;
+  }
 
-	public void addConstructorInfo( String[] parameterClassNames, String[] parameterNames ) {
-		ConstructorInfo constructorInfo = new ConstructorInfo( this, parameterClassNames, parameterNames );
-		this.constructorInfos.add( constructorInfo );
-	}
+  public void addConstructorInfo(String[] parameterClassNames, String[] parameterNames) {
+    ConstructorInfo constructorInfo = new ConstructorInfo(this, parameterClassNames, parameterNames);
+    this.constructorInfos.add(constructorInfo);
+  }
 
-	public void addMethodInfo( String name, String[] parameterClassNames, String[] parameterNames ) {
-		MethodInfo methodInfo = new MethodInfo( this, name, parameterClassNames, parameterNames );
-		this.methodInfos.add( methodInfo );
-	}
+  public void addMethodInfo(String name, String[] parameterClassNames, String[] parameterNames) {
+    MethodInfo methodInfo = new MethodInfo(this, name, parameterClassNames, parameterNames);
+    this.methodInfos.add(methodInfo);
+  }
 
-	public List<ConstructorInfo> getConstructorInfos() {
-		return Collections.unmodifiableList( this.constructorInfos );
-	}
+  public List<ConstructorInfo> getConstructorInfos() {
+    return Collections.unmodifiableList(this.constructorInfos);
+  }
 
-	public List<MethodInfo> getMethodInfos() {
-		return Collections.unmodifiableList( this.methodInfos );
-	}
+  public List<MethodInfo> getMethodInfos() {
+    return Collections.unmodifiableList(this.methodInfos);
+  }
 
-	private Set<MethodInfo> outOfDateMethodInfos = new HashSet<MethodInfo>();
+  private Set<MethodInfo> outOfDateMethodInfos = new HashSet<MethodInfo>();
 
-	public MethodInfo lookupInfo( Method mthd ) {
-		for( MethodInfo methodInfo : getMethodInfos() ) {
-			if( this.outOfDateMethodInfos.contains( methodInfo ) ) {
-				//pass
-			} else {
-				try {
-					Method m = methodInfo.getMthd();
-					if( m.equals( mthd ) ) {
-						return methodInfo;
-					}
-				} catch( RuntimeException re ) {
-					//re.printStackTrace();
-					this.outOfDateMethodInfos.add( methodInfo );
-				}
-			}
-		}
-		return null;
-	}
+  public MethodInfo lookupInfo(Method mthd) {
+    for (MethodInfo methodInfo : getMethodInfos()) {
+      if (this.outOfDateMethodInfos.contains(methodInfo)) {
+        //pass
+      } else {
+        try {
+          Method m = methodInfo.getMthd();
+          if (m.equals(mthd)) {
+            return methodInfo;
+          }
+        } catch (RuntimeException re) {
+          //re.printStackTrace();
+          this.outOfDateMethodInfos.add(methodInfo);
+        }
+      }
+    }
+    return null;
+  }
 
-	public ConstructorInfo lookupInfo( Constructor<?> cnstrctr ) {
-		for( ConstructorInfo constructorInfo : getConstructorInfos() ) {
-			if( constructorInfo.getCnstrctr().equals( cnstrctr ) ) {
-				return constructorInfo;
-			}
-		}
-		return null;
-	}
+  public ConstructorInfo lookupInfo(Constructor<?> cnstrctr) {
+    for (ConstructorInfo constructorInfo : getConstructorInfos()) {
+      if (constructorInfo.getCnstrctr().equals(cnstrctr)) {
+        return constructorInfo;
+      }
+    }
+    return null;
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[name=" );
-		sb.append( this.getClsName() );
-		sb.append( "]" );
-		for( MethodInfo methodInfo : this.methodInfos ) {
-			sb.append( "\n\t" );
-			sb.append( methodInfo );
-		}
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getSimpleName());
+    sb.append("[name=");
+    sb.append(this.getClsName());
+    sb.append("]");
+    for (MethodInfo methodInfo : this.methodInfos) {
+      sb.append("\n\t");
+      sb.append(methodInfo);
+    }
+    return sb.toString();
+  }
 }

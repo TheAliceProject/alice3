@@ -52,23 +52,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CopyOperation extends InconsequentialActionOperation {
-	private static class SingletonHolder {
-		private static CopyOperation instance = new CopyOperation();
-	}
+  private static class SingletonHolder {
+    private static CopyOperation instance = new CopyOperation();
+  }
 
-	public static CopyOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static CopyOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private CopyOperation() {
-		super( UUID.fromString( "4caee2f0-7d3c-427c-9816-f277bc2fcecb" ) );
-	}
+  private CopyOperation() {
+    super(UUID.fromString("4caee2f0-7d3c-427c-9816-f277bc2fcecb"));
+  }
 
-	@Override
-	protected void performInternal() {
-		String modifierId = SystemUtilities.isMac() ? "alt" : "control";
-		String modifier = findLocalizedText( modifierId );
-		String content = String.format( findLocalizedText( "content"), modifier, modifier );
-		Dialogs.showInfo( findLocalizedText( "title" ), content );
-	}
+  @Override
+  protected void performInternal() {
+    String modifierId = SystemUtilities.isMac() ? "alt" : "control";
+    String modifier = findLocalizedText(modifierId);
+    String content = String.format(findLocalizedText("content"), modifier, modifier);
+    Dialogs.showInfo(findLocalizedText("title"), content);
+  }
 }

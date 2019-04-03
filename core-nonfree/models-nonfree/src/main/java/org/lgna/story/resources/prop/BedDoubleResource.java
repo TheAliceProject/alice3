@@ -32,88 +32,90 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum BedDoubleResource implements PropResource {
-	BASIC_GRAY_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	BASIC_BLUE_STRIPES_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	BASIC_LIGHT_BLUE_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	BASIC_BLUE_SQUARES_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	BASIC_WHITE_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	BASIC_OFF_WHITE_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	BASIC_PINK_FLOWERS_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	BASIC_YELLOW_FLOWERS_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_BROWN_CIRCLES_ORANGE_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_BROWN_CIRCLES_RED_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_LEOPARD_ORANGE_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_LEOPARD_RED_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_WHITE_ORANGE_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_WHITE_RED_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_OFF_WHITE_ORANGE_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_OFF_WHITE_RED_FRAME( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_BROWN_CIRCLES_CHERRY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_BROWN_CIRCLES_MAHOGANY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_PURPLE_CIRCLES_CHERRY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_PURPLE_CIRCLES_MAHOGANY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_RED_CIRCLES_CHERRY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_RED_CIRCLES_MAHOGANY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_WHITE_CHERRY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_WHITE_MAHOGANY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_OFF_WHITE_CHERRY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_OFF_WHITE_MAHOGANY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_BLUE_STRIPES_GRAY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_BLUE_STRIPES_PLANK_FRAME( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_LEOPARD_GRAY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_LEOPARD_PLANK_FRAME( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_BLUE_SQUARES_GRAY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_BLUE_SQUARES_PLANK_FRAME( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_OFF_WHITE_GRAY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_OFF_WHITE_PLANK_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_GRAY_PURPLE_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_GRAY_GREEN_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_GRAY_RED_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_GRAY_LIGHT_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_STRIPES_PURPLE_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_STRIPES_GREEN_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_STRIPES_RED_FRAME( ImplementationAndVisualType.SIMS2 ),
-	LOFT_STRIPES_LIGHT_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_TAN_CIRCLES_EBONY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_TAN_CIRCLES_LIGHT_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_BROWN_CIRCLES_EBONY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_BROWN_CIRCLES_LIGHT_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_PURPLE_CIRCLES_EBONY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_PURPLE_CIRCLES_LIGHT_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_BLUE_CIRCLES_EBONY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_BLUE_CIRCLES_LIGHT_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_RED_CIRCLES_EBONY_FRAME( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_RED_CIRCLES_LIGHT_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERN_LEOPARD_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERN_LEOPARD_ORANGE_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERN_LEOPARD_GREEN_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERN_STRIPES_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERN_STRIPES_ORANGE_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERN_STRIPES_GREEN_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERN_WHITE_WOOD_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERN_WHITE_ORANGE_FRAME( ImplementationAndVisualType.SIMS2 ),
-	MODERN_WHITE_GREEN_FRAME( ImplementationAndVisualType.SIMS2 );
+  BASIC_GRAY_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  BASIC_BLUE_STRIPES_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  BASIC_LIGHT_BLUE_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  BASIC_BLUE_SQUARES_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  BASIC_WHITE_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  BASIC_OFF_WHITE_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  BASIC_PINK_FLOWERS_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  BASIC_YELLOW_FLOWERS_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_BROWN_CIRCLES_ORANGE_FRAME(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_BROWN_CIRCLES_RED_FRAME(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_LEOPARD_ORANGE_FRAME(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_LEOPARD_RED_FRAME(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_WHITE_ORANGE_FRAME(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_WHITE_RED_FRAME(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_OFF_WHITE_ORANGE_FRAME(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_OFF_WHITE_RED_FRAME(ImplementationAndVisualType.SIMS2),
+  COLONIAL_BROWN_CIRCLES_CHERRY_FRAME(ImplementationAndVisualType.SIMS2),
+  COLONIAL_BROWN_CIRCLES_MAHOGANY_FRAME(ImplementationAndVisualType.SIMS2),
+  COLONIAL_PURPLE_CIRCLES_CHERRY_FRAME(ImplementationAndVisualType.SIMS2),
+  COLONIAL_PURPLE_CIRCLES_MAHOGANY_FRAME(ImplementationAndVisualType.SIMS2),
+  COLONIAL_RED_CIRCLES_CHERRY_FRAME(ImplementationAndVisualType.SIMS2),
+  COLONIAL_RED_CIRCLES_MAHOGANY_FRAME(ImplementationAndVisualType.SIMS2),
+  COLONIAL_WHITE_CHERRY_FRAME(ImplementationAndVisualType.SIMS2),
+  COLONIAL_WHITE_MAHOGANY_FRAME(ImplementationAndVisualType.SIMS2),
+  COLONIAL_OFF_WHITE_CHERRY_FRAME(ImplementationAndVisualType.SIMS2),
+  COLONIAL_OFF_WHITE_MAHOGANY_FRAME(ImplementationAndVisualType.SIMS2),
+  DESIGNER_BLUE_STRIPES_GRAY_FRAME(ImplementationAndVisualType.SIMS2),
+  DESIGNER_BLUE_STRIPES_PLANK_FRAME(ImplementationAndVisualType.SIMS2),
+  DESIGNER_LEOPARD_GRAY_FRAME(ImplementationAndVisualType.SIMS2),
+  DESIGNER_LEOPARD_PLANK_FRAME(ImplementationAndVisualType.SIMS2),
+  DESIGNER_BLUE_SQUARES_GRAY_FRAME(ImplementationAndVisualType.SIMS2),
+  DESIGNER_BLUE_SQUARES_PLANK_FRAME(ImplementationAndVisualType.SIMS2),
+  DESIGNER_OFF_WHITE_GRAY_FRAME(ImplementationAndVisualType.SIMS2),
+  DESIGNER_OFF_WHITE_PLANK_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_GRAY_PURPLE_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_GRAY_GREEN_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_GRAY_RED_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_GRAY_LIGHT_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_STRIPES_PURPLE_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_STRIPES_GREEN_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_STRIPES_RED_FRAME(ImplementationAndVisualType.SIMS2),
+  LOFT_STRIPES_LIGHT_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_TAN_CIRCLES_EBONY_FRAME(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_TAN_CIRCLES_LIGHT_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_BROWN_CIRCLES_EBONY_FRAME(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_BROWN_CIRCLES_LIGHT_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_PURPLE_CIRCLES_EBONY_FRAME(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_PURPLE_CIRCLES_LIGHT_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_BLUE_CIRCLES_EBONY_FRAME(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_BLUE_CIRCLES_LIGHT_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_RED_CIRCLES_EBONY_FRAME(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_RED_CIRCLES_LIGHT_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERN_LEOPARD_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERN_LEOPARD_ORANGE_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERN_LEOPARD_GREEN_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERN_STRIPES_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERN_STRIPES_ORANGE_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERN_STRIPES_GREEN_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERN_WHITE_WOOD_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERN_WHITE_ORANGE_FRAME(ImplementationAndVisualType.SIMS2),
+  MODERN_WHITE_GREEN_FRAME(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	BedDoubleResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	BedDoubleResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  BedDoubleResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  BedDoubleResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

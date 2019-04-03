@@ -57,26 +57,26 @@ import javax.swing.*;
  * @author Dennis Cosgrove
  */
 public abstract class GalleryTabView extends BorderPanel {
-	protected static final int PAD = 4;
-	private final GalleryDragComponentCache cache = new GalleryDragComponentCache();
+  protected static final int PAD = 4;
+  private final GalleryDragComponentCache cache = new GalleryDragComponentCache();
 
-	public GalleryTabView( GalleryTab composite ) {
-		super( composite, 0, PAD );
-		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		this.setBorder( BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
-	}
+  public GalleryTabView(GalleryTab composite) {
+    super(composite, 0, PAD);
+    this.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
+    this.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
+  }
 
-	protected GalleryDragComponent getGalleryDragComponent( ResourceNode resourceNode, SingleSelectTreeState<ResourceNode> controller ) {
-		return this.cache.getGalleryDragComponent( resourceNode, controller );
-	}
+  protected GalleryDragComponent getGalleryDragComponent(ResourceNode resourceNode, SingleSelectTreeState<ResourceNode> controller) {
+    return this.cache.getGalleryDragComponent(resourceNode, controller);
+  }
 
-	protected static ScrollPane createGalleryScrollPane( AwtComponentView<?> view ) {
-		ScrollPane rv = new HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( view );
-		rv.setBothScrollBarIncrements( 16, 160 );
-		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		return rv;
-	}
+  protected static ScrollPane createGalleryScrollPane(AwtComponentView<?> view) {
+    ScrollPane rv = new HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane(view);
+    rv.setBothScrollBarIncrements(16, 160);
+    rv.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
+    return rv;
+  }
 
-	public void modelUpdated() {
-	}
+  public void modelUpdated() {
+  }
 }

@@ -52,21 +52,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TabExampleComposite extends SimpleComposite<TabExampleView> {
-	public TabExampleComposite() {
-		super( UUID.fromString( "8ce6ffd5-a515-429d-a599-e79ff634ca85" ) );
-	}
+  public TabExampleComposite() {
+    super(UUID.fromString("8ce6ffd5-a515-429d-a599-e79ff634ca85"));
+  }
 
-	public ImmutableDataTabState<AbstractTab> getTabState() {
-		return this.tabState;
-	}
+  public ImmutableDataTabState<AbstractTab> getTabState() {
+    return this.tabState;
+  }
 
-	@Override
-	protected TabExampleView createView() {
-		return new TabExampleView( this );
-	}
+  @Override
+  protected TabExampleView createView() {
+    return new TabExampleView(this);
+  }
 
-	private final TabA tabA = new TabA();
-	private final TabB tabB = new TabB();
-	private final ImmutableDataTabState<AbstractTab> tabState = this.createImmutableTabState( "tabState", 0, AbstractTab.class, this.tabA, this.tabB );
+  private final TabA tabA = new TabA();
+  private final TabB tabB = new TabB();
+  private final ImmutableDataTabState<AbstractTab> tabState = this.createImmutableTabState("tabState", 0, AbstractTab.class, this.tabA, this.tabB);
 
 }

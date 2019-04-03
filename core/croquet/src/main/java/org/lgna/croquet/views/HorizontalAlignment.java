@@ -49,18 +49,14 @@ import javax.swing.SwingConstants;
  * @author Dennis Cosgrove
  */
 public enum HorizontalAlignment {
-	LEFT( SwingConstants.LEFT ),
-	CENTER( SwingConstants.CENTER ),
-	RIGHT( SwingConstants.RIGHT ),
-	LEADING( SwingConstants.LEADING ),
-	TRAILING( SwingConstants.TRAILING );
-	private int internal;
+  LEFT(SwingConstants.LEFT), CENTER(SwingConstants.CENTER), RIGHT(SwingConstants.RIGHT), LEADING(SwingConstants.LEADING), TRAILING(SwingConstants.TRAILING);
+  private int internal;
 
-	private HorizontalAlignment( int internal ) {
-		this.internal = internal;
-	}
+  private HorizontalAlignment(int internal) {
+    this.internal = internal;
+  }
 
-	/* package-private */int getInternal() {
-		return this.internal;
-	}
+  /* package-private */int getInternal() {
+    return this.internal;
+  }
 }

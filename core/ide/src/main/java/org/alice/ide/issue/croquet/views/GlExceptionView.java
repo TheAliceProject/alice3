@@ -59,20 +59,16 @@ import javax.swing.UIManager;
  * @author Dennis Cosgrove
  */
 public class GlExceptionView extends MigPanel {
-	public static final Icon ICON = IconUtilities.createImageIcon( GlExceptionView.class.getResource( "images/paintingTheRoses.png" ) );
+  public static final Icon ICON = IconUtilities.createImageIcon(GlExceptionView.class.getResource("images/paintingTheRoses.png"));
 
-	public GlExceptionView( GlExceptionComposite composite ) {
-		super( composite, "", "", "[top][top]" );
+  public GlExceptionView(GlExceptionComposite composite) {
+    super(composite, "", "", "[top][top]");
 
-		this.addComponent( new Label( ICON ), "span 1 2" );
-		this.addComponent( new Label( "Alice has encountered a graphics problem", UIManager.getIcon( "OptionPane.errorIcon" ), 2.0f, TextWeight.BOLD ), "wrap" );
-		this.addComponent( new GraphicsHelpView(), "wrap" );
-		this.addComponent( new LineAxisPanel(
-				new Label( "If you have updated your video drivers and the problem still persists please " ),
-				new Label( "submit a bug report", TextPosture.OBLIQUE ),
-				new Label( "." )
-				), "wrap, span 2" );
+    this.addComponent(new Label(ICON), "span 1 2");
+    this.addComponent(new Label("Alice has encountered a graphics problem", UIManager.getIcon("OptionPane.errorIcon"), 2.0f, TextWeight.BOLD), "wrap");
+    this.addComponent(new GraphicsHelpView(), "wrap");
+    this.addComponent(new LineAxisPanel(new Label("If you have updated your video drivers and the problem still persists please "), new Label("submit a bug report", TextPosture.OBLIQUE), new Label(".")), "wrap, span 2");
 
-		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-	}
+    this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+  }
 }

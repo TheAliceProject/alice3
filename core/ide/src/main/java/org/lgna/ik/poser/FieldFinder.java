@@ -68,86 +68,86 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  */
 public class FieldFinder {
 
-	private FieldFinder() {
-	}
+  private FieldFinder() {
+  }
 
-	private static class SingletonHolder {
-		static final FieldFinder instance = new FieldFinder();
-	}
+  private static class SingletonHolder {
+    static final FieldFinder instance = new FieldFinder();
+  }
 
-	public static FieldFinder getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static FieldFinder getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private NamedUserType sceneType;
-	private final ReleaseVirtualMachine vm = new ReleaseVirtualMachine();
+  private NamedUserType sceneType;
+  private final ReleaseVirtualMachine vm = new ReleaseVirtualMachine();
 
-	public void refreshScene() {
-		sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProject( ProjectStack.peekProject() );
-	}
+  public void refreshScene() {
+    sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProject(ProjectStack.peekProject());
+  }
 
-	public ArrayList<JointedModelResource> getResourcesForType( NamedUserType type ) {
-		ArrayList<JointedModelResource> rv = Lists.newArrayList();
-		refreshScene();
-		if( sceneType == null ) {
-			JointedModelResource ogre = new DynamicBipedResource( "ogre", "ogre");
-			return Lists.newArrayList( ogre );
-		}
-		List<UserField> fields = sceneType.getDeclaredFields();
-		for( UserField field : fields ) {
-			if( field.getManagementLevel().isManaged() ) {
-				if( field.getValueType().isAssignableTo( type ) ) {
-					InstanceCreation creation = (InstanceCreation)field.initializer.getValue();
-					if( creation.requiredArguments.size() > 0 ) {
-						SimpleArgument simpleArgument = creation.requiredArguments.get( 0 );
-						Expression[] arr = new Expression[ 1 ];
-						arr[ 0 ] = simpleArgument.expression.getValue();
-						Object[] evaluated = vm.ENTRY_POINT_evaluate( null, arr );
-						Object resource = evaluated[ 0 ];
-						rv.add( (JointedModelResource)resource );
-					} else {
-						NamedUserConstructor constructor = (NamedUserConstructor)creation.constructor.getValue();
-						ConstructorInvocationStatement constructorInvocationStatement = constructor.body.getValue().constructorInvocationStatement.getValue();
-						SimpleArgument simpleArgument = constructorInvocationStatement.requiredArguments.get( 0 );
+  public ArrayList<JointedModelResource> getResourcesForType(NamedUserType type) {
+    ArrayList<JointedModelResource> rv = Lists.newArrayList();
+    refreshScene();
+    if (sceneType == null) {
+      JointedModelResource ogre = new DynamicBipedResource("ogre", "ogre");
+      return Lists.newArrayList(ogre);
+    }
+    List<UserField> fields = sceneType.getDeclaredFields();
+    for (UserField field : fields) {
+      if (field.getManagementLevel().isManaged()) {
+        if (field.getValueType().isAssignableTo(type)) {
+          InstanceCreation creation = (InstanceCreation) field.initializer.getValue();
+          if (creation.requiredArguments.size() > 0) {
+            SimpleArgument simpleArgument = creation.requiredArguments.get(0);
+            Expression[] arr = new Expression[1];
+            arr[0] = simpleArgument.expression.getValue();
+            Object[] evaluated = vm.ENTRY_POINT_evaluate(null, arr);
+            Object resource = evaluated[0];
+            rv.add((JointedModelResource) resource);
+          } else {
+            NamedUserConstructor constructor = (NamedUserConstructor) creation.constructor.getValue();
+            ConstructorInvocationStatement constructorInvocationStatement = constructor.body.getValue().constructorInvocationStatement.getValue();
+            SimpleArgument simpleArgument = constructorInvocationStatement.requiredArguments.get(0);
 
-						Expression[] arr = new Expression[ 1 ];
-						arr[ 0 ] = simpleArgument.expression.getValue();
-						Object[] evaluated = vm.ENTRY_POINT_evaluate( null, arr );
-						Object resource = evaluated[ 0 ];
-						assert resource instanceof JointedModelResource : resource;
-						rv.add( (JointedModelResource)resource );
-					}
-				}
-			}
-		}
-		return rv;
-	}
+            Expression[] arr = new Expression[1];
+            arr[0] = simpleArgument.expression.getValue();
+            Object[] evaluated = vm.ENTRY_POINT_evaluate(null, arr);
+            Object resource = evaluated[0];
+            assert resource instanceof JointedModelResource : resource;
+            rv.add((JointedModelResource) resource);
+          }
+        }
+      }
+    }
+    return rv;
+  }
 
-	public static TypeNode populateList( AbstractType<?, ?, ?> rootType ) {
-		TypeNode rootNode = new TypeNode( rootType );
-		Project project = ProjectStack.peekProject();
-		Iterable<NamedUserType> types = project.getNamedUserTypes();
-		for( NamedUserType type : types ) {
-			if( type.isAssignableTo( rootType ) ) {
-				TypeNode newNode = new TypeNode( type );
-				insert( newNode, rootNode );
-			}
-		}
-		return rootNode;
-	}
+  public static TypeNode populateList(AbstractType<?, ?, ?> rootType) {
+    TypeNode rootNode = new TypeNode(rootType);
+    Project project = ProjectStack.peekProject();
+    Iterable<NamedUserType> types = project.getNamedUserTypes();
+    for (NamedUserType type : types) {
+      if (type.isAssignableTo(rootType)) {
+        TypeNode newNode = new TypeNode(type);
+        insert(newNode, rootNode);
+      }
+    }
+    return rootNode;
+  }
 
-	private static void insert( TypeNode newNode, TypeNode rootNode ) {
-		for( int i = 0; i != rootNode.getChildCount(); ++i ) {
-			TypeNode child = (TypeNode)rootNode.getChildAt( i );
-			if( child.getType().isAssignableTo( newNode.getType() ) ) {
-				rootNode.add( newNode );
-				newNode.add( child );
-			} else if( newNode.getType().isAssignableTo( child.getType() ) ) {
-				insert( newNode, child );
-			}
-		}
-		if( newNode.getParent() == null ) {
-			rootNode.add( newNode );
-		}
-	}
+  private static void insert(TypeNode newNode, TypeNode rootNode) {
+    for (int i = 0; i != rootNode.getChildCount(); ++i) {
+      TypeNode child = (TypeNode) rootNode.getChildAt(i);
+      if (child.getType().isAssignableTo(newNode.getType())) {
+        rootNode.add(newNode);
+        newNode.add(child);
+      } else if (newNode.getType().isAssignableTo(child.getType())) {
+        insert(newNode, child);
+      }
+    }
+    if (newNode.getParent() == null) {
+      rootNode.add(newNode);
+    }
+  }
 }

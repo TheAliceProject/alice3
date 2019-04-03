@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleElderFullBodyOutfitDressShirtShortsSocksShoes implements MaleElderFullBodyOutfit {
-	RED_HAWAIIAN_BLUE_SHORTS,
-	BROWN_GREEN_SHORTS,
-	GREEN_TAN_SHORTS,
-	PURPLE_HAWAIIAN_TAN_SHORTS,
-	RED_WHITE_SHORTS;
+  RED_HAWAIIAN_BLUE_SHORTS, BROWN_GREEN_SHORTS, GREEN_TAN_SHORTS, PURPLE_HAWAIIAN_TAN_SHORTS, RED_WHITE_SHORTS
 
 }

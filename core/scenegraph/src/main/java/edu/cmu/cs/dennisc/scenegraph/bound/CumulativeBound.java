@@ -56,63 +56,63 @@ import java.util.Vector;
  * @author Dennis Cosgrove
  */
 public class CumulativeBound {
-	private Vector<Point3> m_transformedPoints = new Vector<Point3>();
+  private Vector<Point3> m_transformedPoints = new Vector<Point3>();
 
-	//	public CumulativeBound() {
-	//	}
-	//	public CumulativeBound( edu.cmu.cs.dennisc.scenegraph.Composite sgRoot, final edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-	//		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( sgRoot, edu.cmu.cs.dennisc.scenegraph.Visual.class ) ) {
-	//			if( sgVisual.isShowing.getValue() ) {
-	//				add( sgVisual, sgVisual.getTransformation( asSeenBy ) );
-	//				//add( sgVisual, asSeenBy.getTransformation( sgVisual ) );
-	//			}
-	//		}
-	//	}
-	private void addPoint( Point3 p, AffineMatrix4x4 trans ) {
-		assert p.isNaN() == false;
-		assert trans.isNaN() == false;
-		trans.transform( p );
-		m_transformedPoints.addElement( p );
-	}
+  //  public CumulativeBound() {
+  //  }
+  //  public CumulativeBound( edu.cmu.cs.dennisc.scenegraph.Composite sgRoot, final edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
+  //    for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( sgRoot, edu.cmu.cs.dennisc.scenegraph.Visual.class ) ) {
+  //      if( sgVisual.isShowing.getValue() ) {
+  //        add( sgVisual, sgVisual.getTransformation( asSeenBy ) );
+  //        //add( sgVisual, asSeenBy.getTransformation( sgVisual ) );
+  //      }
+  //    }
+  //  }
+  private void addPoint(Point3 p, AffineMatrix4x4 trans) {
+    assert p.isNaN() == false;
+    assert trans.isNaN() == false;
+    trans.transform(p);
+    m_transformedPoints.addElement(p);
+  }
 
-	public void add( Visual sgVisual, AffineMatrix4x4 trans ) {
-		AxisAlignedBox box = sgVisual.getAxisAlignedMinimumBoundingBox();
-		this.addBoundingBox( box, trans );
-	}
+  public void add(Visual sgVisual, AffineMatrix4x4 trans) {
+    AxisAlignedBox box = sgVisual.getAxisAlignedMinimumBoundingBox();
+    this.addBoundingBox(box, trans);
+  }
 
-	public void addSkeletonVisual( SkeletonVisual sgSkeletonVisual, AffineMatrix4x4 trans, boolean ignoreJointOrientations ) {
-		AxisAlignedBox box = sgSkeletonVisual.getAxisAlignedMinimumBoundingBox( new AxisAlignedBox(), ignoreJointOrientations );
-		this.addBoundingBox( box, trans );
-	}
+  public void addSkeletonVisual(SkeletonVisual sgSkeletonVisual, AffineMatrix4x4 trans, boolean ignoreJointOrientations) {
+    AxisAlignedBox box = sgSkeletonVisual.getAxisAlignedMinimumBoundingBox(new AxisAlignedBox(), ignoreJointOrientations);
+    this.addBoundingBox(box, trans);
+  }
 
-	public void addOrigin( AffineMatrix4x4 trans ) {
-		addPoint( Point3.createZero(), trans );
-	}
+  public void addOrigin(AffineMatrix4x4 trans) {
+    addPoint(Point3.createZero(), trans);
+  }
 
-	public void addBoundingBox( AxisAlignedBox box, AffineMatrix4x4 trans ) {
-		if( box.isNaN() ) {
-			//pass
-		} else {
-			Hexahedron hexahedron = box.getHexahedron();
-			for( int i = 0; i < 8; i++ ) {
-				addPoint( hexahedron.getPointAt( i ), trans );
-			}
-		}
-	}
+  public void addBoundingBox(AxisAlignedBox box, AffineMatrix4x4 trans) {
+    if (box.isNaN()) {
+      //pass
+    } else {
+      Hexahedron hexahedron = box.getHexahedron();
+      for (int i = 0; i < 8; i++) {
+        addPoint(hexahedron.getPointAt(i), trans);
+      }
+    }
+  }
 
-	public Sphere getBoundingSphere( Sphere rv ) {
-		return BoundUtilities.getBoundingSphere( rv, m_transformedPoints );
-	}
+  public Sphere getBoundingSphere(Sphere rv) {
+    return BoundUtilities.getBoundingSphere(rv, m_transformedPoints);
+  }
 
-	public Sphere getBoundingSphere() {
-		return getBoundingSphere( new Sphere() );
-	}
+  public Sphere getBoundingSphere() {
+    return getBoundingSphere(new Sphere());
+  }
 
-	public AxisAlignedBox getBoundingBox( AxisAlignedBox rv ) {
-		return BoundUtilities.getBoundingBox( rv, m_transformedPoints );
-	}
+  public AxisAlignedBox getBoundingBox(AxisAlignedBox rv) {
+    return BoundUtilities.getBoundingBox(rv, m_transformedPoints);
+  }
 
-	public AxisAlignedBox getBoundingBox() {
-		return getBoundingBox( new AxisAlignedBox() );
-	}
+  public AxisAlignedBox getBoundingBox() {
+    return getBoundingBox(new AxisAlignedBox());
+  }
 }

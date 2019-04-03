@@ -83,227 +83,227 @@ import java.util.UUID;
  * @author Matt May
  */
 public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, ExportToYouTubeWizardDialogComposite> {
-	private VideoEncodingProgramContext programContext;
-	private WebmRecordingAdapter encoder;
-	private final BooleanState isRecordingState = this.createBooleanState( "isRecordingState", false );
-	private final BoundedIntegerState frameRateState = this.createBoundedIntegerState( "frameRateState", new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ) );
-	private final Status errorIsRecording = createErrorStatus( "errorIsRecording" );
-	private final Status errorHasNotYetRecorded = createErrorStatus( "errorNothingIsRecorded" );
-	private BufferedImage image;
-	private int imageCount;
+  private VideoEncodingProgramContext programContext;
+  private WebmRecordingAdapter encoder;
+  private final BooleanState isRecordingState = this.createBooleanState("isRecordingState", false);
+  private final BoundedIntegerState frameRateState = this.createBoundedIntegerState("frameRateState", new BoundedIntegerDetails().minimum(0).maximum(96).initialValue(24));
+  private final Status errorIsRecording = createErrorStatus("errorIsRecording");
+  private final Status errorHasNotYetRecorded = createErrorStatus("errorNothingIsRecorded");
+  private BufferedImage image;
+  private int imageCount;
 
-	public ImageRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
-		super( UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ), owner );
-		this.isRecordingState.setIconForBothTrueAndFalse( new IsRecordingIcon() );
-		this.isRecordingState.addNewSchoolValueListener( this.isRecordingListener );
-		restartOperation.setEnabled( false );
-	}
+  public ImageRecordComposite(ExportToYouTubeWizardDialogComposite owner) {
+    super(UUID.fromString("67306c85-667c-46e5-9898-2c19a2d6cd21"), owner);
+    this.isRecordingState.setIconForBothTrueAndFalse(new IsRecordingIcon());
+    this.isRecordingState.addNewSchoolValueListener(this.isRecordingListener);
+    restartOperation.setEnabled(false);
+  }
 
-	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
-		@Override
-		public void valueChanged( ValueEvent<Boolean> e ) {
-			setRecording( e.getNextValue() );
-		}
-	};
+  private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
+    @Override
+    public void valueChanged(ValueEvent<Boolean> e) {
+      setRecording(e.getNextValue());
+    }
+  };
 
-	private final ActionOperation restartOperation = createActionOperation( "restartImageRecorder", new Action() {
+  private final ActionOperation restartOperation = createActionOperation("restartImageRecorder", new Action() {
 
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			isRecordingState.setValueTransactionlessly( false );
-			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
-			programContext.getProgramImp().stopAnimator();
-			resetData();
-			restartOperation.setEnabled( false );
-			return null;
-		}
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      isRecordingState.setValueTransactionlessly(false);
+      programContext.getProgramImp().getAnimator().removeFrameObserver(frameListener);
+      programContext.getProgramImp().stopAnimator();
+      resetData();
+      restartOperation.setEnabled(false);
+      return null;
+    }
 
-	} );
+  });
 
-	@Override
-	protected ImageRecordView createView() {
-		return new ImageRecordView( this );
-	}
+  @Override
+  protected ImageRecordView createView() {
+    return new ImageRecordView(this);
+  }
 
-	private final FrameObserver frameListener = new FrameObserver() {
-		@Override
-		public void update( final double tCurrent ) {
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					getView().updateTime( tCurrent );
-				}
-			} );
-			OnscreenRenderTarget<?> renderTarget = programContext.getProgramImp().getOnscreenRenderTarget();
-			if( renderTarget instanceof GlrCaptureFauxOnscreenRenderTarget ) {
-				GlrCaptureFauxOnscreenRenderTarget captureLookingGlass = (GlrCaptureFauxOnscreenRenderTarget)renderTarget;
-				captureLookingGlass.captureImage( new GlrCaptureFauxOnscreenRenderTarget.Observer() {
-					@Override
-					public void handleImage( BufferedImage image, boolean isUpSideDown ) {
-						if( image != null ) {
-							if( isUpSideDown ) {
-								ImageRecordComposite.this.handleImage( image, imageCount, isUpSideDown );
-								imageCount++;
-							}
-						}
-					}
-				} );
-			} else {
-				Dimension drawableSize = renderTarget.getDrawableSize();
-				if( ( drawableSize.width > 0 ) && ( drawableSize.height > 0 ) ) {
-					if( image != null ) {
-						//pass
-					} else {
-						image = renderTarget.getSynchronousImageCapturer().createBufferedImageForUseAsColorBuffer();
-						//					image = new BufferedImage( lookingGlass.getWidth(), lookingGlass.getHeight(), BufferedImage.TYPE_3BYTE_BGR );
-					}
-					if( image != null ) {
-						boolean[] atIsUpsideDown = { false };
-						synchronized( image ) {
-							image = renderTarget.getSynchronousImageCapturer().getColorBufferNotBotheringToFlipVertically( image, atIsUpsideDown );
-							if( atIsUpsideDown[ 0 ] ) {
-								handleImage( image, imageCount, atIsUpsideDown[ 0 ] );
-							} else {
-								System.out.println( "SEVERE: IMAGE IS NOT UPSIDE DOWN" );
-							}
-						}
-						imageCount++;
-					} else {
-						Logger.severe( "image is null" );
-					}
-				} else {
-					Logger.severe( "width:", drawableSize.width, "height:", drawableSize.height );
-				}
-			}
-		}
+  private final FrameObserver frameListener = new FrameObserver() {
+    @Override
+    public void update(final double tCurrent) {
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          getView().updateTime(tCurrent);
+        }
+      });
+      OnscreenRenderTarget<?> renderTarget = programContext.getProgramImp().getOnscreenRenderTarget();
+      if (renderTarget instanceof GlrCaptureFauxOnscreenRenderTarget) {
+        GlrCaptureFauxOnscreenRenderTarget captureLookingGlass = (GlrCaptureFauxOnscreenRenderTarget) renderTarget;
+        captureLookingGlass.captureImage(new GlrCaptureFauxOnscreenRenderTarget.Observer() {
+          @Override
+          public void handleImage(BufferedImage image, boolean isUpSideDown) {
+            if (image != null) {
+              if (isUpSideDown) {
+                ImageRecordComposite.this.handleImage(image, imageCount, isUpSideDown);
+                imageCount++;
+              }
+            }
+          }
+        });
+      } else {
+        Dimension drawableSize = renderTarget.getDrawableSize();
+        if ((drawableSize.width > 0) && (drawableSize.height > 0)) {
+          if (image != null) {
+            //pass
+          } else {
+            image = renderTarget.getSynchronousImageCapturer().createBufferedImageForUseAsColorBuffer();
+            //          image = new BufferedImage( lookingGlass.getWidth(), lookingGlass.getHeight(), BufferedImage.TYPE_3BYTE_BGR );
+          }
+          if (image != null) {
+            boolean[] atIsUpsideDown = {false};
+            synchronized (image) {
+              image = renderTarget.getSynchronousImageCapturer().getColorBufferNotBotheringToFlipVertically(image, atIsUpsideDown);
+              if (atIsUpsideDown[0]) {
+                handleImage(image, imageCount, atIsUpsideDown[0]);
+              } else {
+                System.out.println("SEVERE: IMAGE IS NOT UPSIDE DOWN");
+              }
+            }
+            imageCount++;
+          } else {
+            Logger.severe("image is null");
+          }
+        } else {
+          Logger.severe("width:", drawableSize.width, "height:", drawableSize.height);
+        }
+      }
+    }
 
-		@Override
-		public void complete() {
-		}
-	};
+    @Override
+    public void complete() {
+    }
+  };
 
-	public boolean isRecording() {
-		return this.isRecordingState.getValue();
-	}
+  public boolean isRecording() {
+    return this.isRecordingState.getValue();
+  }
 
-	public void setRecording( boolean isRecording ) {
-		if( !this.isRecordingState.getValue() ) {
-			this.encoder.stopAnimationsAndClear();
-			programContext.getProgramImp().getAnimator().setSpeedFactor( 0 );
-			MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( null );
-			encoder.stopVideoEncoding();
-		} else {
-			MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
-			programContext.getProgramImp().getAnimator().setFramesPerSecond( this.frameRateState.getValue() );
-			this.encoder.setFrameRate( frameRateState.getValue() );
-			this.frameRateState.setEnabled( false );
-			programContext.getProgramImp().startAnimator();
-			programContext.getProgramImp().getAnimator().setSpeedFactor( 1 );
-			restartOperation.setEnabled( true );
-			this.encoder.startVideoEncoding();
-		}
-	}
+  public void setRecording(boolean isRecording) {
+    if (!this.isRecordingState.getValue()) {
+      this.encoder.stopAnimationsAndClear();
+      programContext.getProgramImp().getAnimator().setSpeedFactor(0);
+      MediaPlayerAnimation.EPIC_HACK_setAnimationObserver(null);
+      encoder.stopVideoEncoding();
+    } else {
+      MediaPlayerAnimation.EPIC_HACK_setAnimationObserver(this.encoder);
+      programContext.getProgramImp().getAnimator().setFramesPerSecond(this.frameRateState.getValue());
+      this.encoder.setFrameRate(frameRateState.getValue());
+      this.frameRateState.setEnabled(false);
+      programContext.getProgramImp().startAnimator();
+      programContext.getProgramImp().getAnimator().setSpeedFactor(1);
+      restartOperation.setEnabled(true);
+      this.encoder.startVideoEncoding();
+    }
+  }
 
-	public BoundedIntegerState getFrameRateState() {
-		return frameRateState;
-	}
+  public BoundedIntegerState getFrameRateState() {
+    return frameRateState;
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		isRecordingState.setValueTransactionlessly( false );
-		if( ( encoder != null ) ) {
-			this.getOwner().setTempRecordedVideoFile( this.encoder.getEncodedVideoFile() );
-		}
-		this.getView().disableLookingGlassContainer();
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    isRecordingState.setValueTransactionlessly(false);
+    if ((encoder != null)) {
+      this.getOwner().setTempRecordedVideoFile(this.encoder.getEncodedVideoFile());
+    }
+    this.getView().disableLookingGlassContainer();
+    super.handlePostDeactivation();
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		ExportToYouTubeWizardDialogComposite owner = this.getOwner();
-		this.getView().setEventListPaneVisible( owner.getEventList().getData().getItemCount() > 0 );
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    ExportToYouTubeWizardDialogComposite owner = this.getOwner();
+    this.getView().setEventListPaneVisible(owner.getEventList().getData().getItemCount() > 0);
 
-		getEventList().clear();
-		if( owner.getEventScript() != null ) {
-			for( EventScriptEvent event : owner.getEventScript().getEventList() ) {
-				getEventList().addItem( event );
-			}
-		}
-		RandomUtilities.setSeed( owner.getRandomSeed() );
-		this.getView().enableLookingGlassContainer();
-	}
+    getEventList().clear();
+    if (owner.getEventScript() != null) {
+      for (EventScriptEvent event : owner.getEventScript().getEventList()) {
+        getEventList().addItem(event);
+      }
+    }
+    RandomUtilities.setSeed(owner.getRandomSeed());
+    this.getView().enableLookingGlassContainer();
+  }
 
-	private void handleImage( BufferedImage image, int imageCount, boolean isUpsideDown ) {
-		if( image != null ) {
-			encoder.addBufferedImage( image, isUpsideDown );
-		}
-	}
+  private void handleImage(BufferedImage image, int imageCount, boolean isUpsideDown) {
+    if (image != null) {
+      encoder.addBufferedImage(image, isUpsideDown);
+    }
+  }
 
-	@Override
-	public Status getPageStatus() {
-		if( isRecordingState.getValue() ) {
-			return errorIsRecording;
-		} else if( imageCount == 0 ) {
-			return errorHasNotYetRecorded;
-		}
-		return IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  public Status getPageStatus() {
+    if (isRecordingState.getValue()) {
+      return errorIsRecording;
+    } else if (imageCount == 0) {
+      return errorHasNotYetRecorded;
+    }
+    return IS_GOOD_TO_GO_STATUS;
+  }
 
-	public BooleanState getIsRecordingState() {
-		return this.isRecordingState;
-	}
+  public BooleanState getIsRecordingState() {
+    return this.isRecordingState;
+  }
 
-	public MutableDataSingleSelectListState<EventScriptEvent> getEventList() {
-		return getOwner().getEventList();
-	}
+  public MutableDataSingleSelectListState<EventScriptEvent> getEventList() {
+    return getOwner().getEventList();
+  }
 
-	private void restartProgramContext() {
-		ExportToYouTubeWizardDialogComposite owner = this.getOwner();
-		restartOperation.setEnabled( false );
-		RandomUtilities.setSeed( owner.getRandomSeed() );
-		NamedUserType programType = owner.getProject().getProgramType();
-		image = null;
-		imageCount = 0;
+  private void restartProgramContext() {
+    ExportToYouTubeWizardDialogComposite owner = this.getOwner();
+    restartOperation.setEnabled(false);
+    RandomUtilities.setSeed(owner.getRandomSeed());
+    NamedUserType programType = owner.getProject().getProgramType();
+    image = null;
+    imageCount = 0;
 
-		programContext = new VideoEncodingProgramContext( programType, frameRateState.getValue() );
-		programContext.initializeInContainer( this.getView().getLookingGlassContainer().getAwtComponent() );
-		getView().revalidateAndRepaint();
+    programContext = new VideoEncodingProgramContext(programType, frameRateState.getValue());
+    programContext.initializeInContainer(this.getView().getLookingGlassContainer().getAwtComponent());
+    getView().revalidateAndRepaint();
 
-		UserInstance programInstance = programContext.getProgramInstance();
-		UserField sceneField = programInstance.getType().fields.get( 0 );
-		SScene scene = programContext.getProgramInstance().getFieldValueInstanceInJava( sceneField, SScene.class );
-		SceneImp sceneImp = EmployeesOnly.getImplementation( scene );
-		EventManager manager = sceneImp.getEventManager();
+    UserInstance programInstance = programContext.getProgramInstance();
+    UserField sceneField = programInstance.getType().fields.get(0);
+    SScene scene = programContext.getProgramInstance().getFieldValueInstanceInJava(sceneField, SScene.class);
+    SceneImp sceneImp = EmployeesOnly.getImplementation(scene);
+    EventManager manager = sceneImp.getEventManager();
 
-		programContext.getProgramImp().setAnimator( new FrameBasedAnimatorWithEventScript( owner.getEventScript(), manager ) );
-		programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
-		programContext.setActiveScene();
-		getView().updateTime( 0 );
-		encoder = new WebmRecordingAdapter();
-		frameRateState.setEnabled( true );
-		encoder.setDimension( programContext.getOnscreenRenderTarget().getDrawableSize() );
-		this.encoder.initializeAudioRecording();
-	}
+    programContext.getProgramImp().setAnimator(new FrameBasedAnimatorWithEventScript(owner.getEventScript(), manager));
+    programContext.getProgramImp().getAnimator().addFrameObserver(frameListener);
+    programContext.setActiveScene();
+    getView().updateTime(0);
+    encoder = new WebmRecordingAdapter();
+    frameRateState.setEnabled(true);
+    encoder.setDimension(programContext.getOnscreenRenderTarget().getDrawableSize());
+    this.encoder.initializeAudioRecording();
+  }
 
-	public ActionOperation getRestartOperation() {
-		return this.restartOperation;
-	}
+  public ActionOperation getRestartOperation() {
+    return this.restartOperation;
+  }
 
-	@Override
-	public void resetData() {
-		BorderPanel lookingGlassContainer = getView().getLookingGlassContainer();
-		if( ( getView() != null ) && ( lookingGlassContainer != null ) ) {
-			synchronized( lookingGlassContainer.getTreeLock() ) {
-				lookingGlassContainer.removeAllComponents();
-			}
-		}
-		restartProgramContext();
-	}
+  @Override
+  public void resetData() {
+    BorderPanel lookingGlassContainer = getView().getLookingGlassContainer();
+    if ((getView() != null) && (lookingGlassContainer != null)) {
+      synchronized (lookingGlassContainer.getTreeLock()) {
+        lookingGlassContainer.removeAllComponents();
+      }
+    }
+    restartProgramContext();
+  }
 
-	@Override
-	public void handlePostHideDialog() {
-		super.handlePostHideDialog();
-		programContext.cleanUpProgram();
-	}
+  @Override
+  public void handlePostHideDialog() {
+    super.handlePostHideDialog();
+    programContext.cleanUpProgram();
+  }
 }

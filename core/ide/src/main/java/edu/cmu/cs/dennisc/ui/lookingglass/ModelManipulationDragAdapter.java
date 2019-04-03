@@ -67,173 +67,174 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 //todo: allow specification of a reference frame other than absolute
+
 /**
  * @author Dennis Cosgrove
  */
 public class ModelManipulationDragAdapter extends OnscreenLookingGlassDragAdapter {
-	private AbstractCamera m_sgCamera = null;
-	private Transformable m_sgDragAcceptor = null;
-	private Plane m_planeInAbsolute = Plane.NaN;
-	private Point3 m_xyzInAbsoluteAtPress = null;
-	private Point3 m_xyzInDragAcceptorAtPress = null;
-	private Vector3 m_offset = null;
+  private AbstractCamera m_sgCamera = null;
+  private Transformable m_sgDragAcceptor = null;
+  private Plane m_planeInAbsolute = Plane.NaN;
+  private Point3 m_xyzInAbsoluteAtPress = null;
+  private Point3 m_xyzInDragAcceptorAtPress = null;
+  private Vector3 m_offset = null;
 
-	private AffineMatrix4x4 m_undoPOV;
+  private AffineMatrix4x4 m_undoPOV;
 
-	@Override
-	protected boolean isAcceptable( MouseEvent e ) {
-		return MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
-	}
+  @Override
+  protected boolean isAcceptable(MouseEvent e) {
+    return MouseEventUtilities.isQuoteLeftUnquoteMouseButton(e);
+  }
 
-	protected PickObserver getPickObserver() {
-		return null;
-	}
+  protected PickObserver getPickObserver() {
+    return null;
+  }
 
-	protected void updateTranslation( Transformable sgDragAcceptor, Tuple3 xyz, ReferenceFrame asSeenBy ) {
-		if( sgDragAcceptor != null ) {
-			sgDragAcceptor.setTranslationOnly( xyz, asSeenBy );
-		}
-	}
+  protected void updateTranslation(Transformable sgDragAcceptor, Tuple3 xyz, ReferenceFrame asSeenBy) {
+    if (sgDragAcceptor != null) {
+      sgDragAcceptor.setTranslationOnly(xyz, asSeenBy);
+    }
+  }
 
-	protected Transformable lookupDragAcceptor( Visual sgVisual ) {
-		Composite sgParent = sgVisual.getParent();
-		if( sgParent instanceof Transformable ) {
-			return (Transformable)sgParent;
-		} else {
-			return null;
-		}
-	}
+  protected Transformable lookupDragAcceptor(Visual sgVisual) {
+    Composite sgParent = sgVisual.getParent();
+    if (sgParent instanceof Transformable) {
+      return (Transformable) sgParent;
+    } else {
+      return null;
+    }
+  }
 
-	protected Transformable getDragAcceptor() {
-		return m_sgDragAcceptor;
-	}
+  protected Transformable getDragAcceptor() {
+    return m_sgDragAcceptor;
+  }
 
-	private Point3 getPointInPlane( Plane plane, int xPixel, int yPixel ) {
-		Ray ray = getOnscreenRenderTarget().getRayAtPixel( xPixel, yPixel, m_sgCamera );
-		AffineMatrix4x4 m = m_sgCamera.getAbsoluteTransformation();
-		ray.transform( m );
-		double t = plane.intersect( ray );
-		return ray.getPointAlong( t );
-	}
+  private Point3 getPointInPlane(Plane plane, int xPixel, int yPixel) {
+    Ray ray = getOnscreenRenderTarget().getRayAtPixel(xPixel, yPixel, m_sgCamera);
+    AffineMatrix4x4 m = m_sgCamera.getAbsoluteTransformation();
+    ray.transform(m);
+    double t = plane.intersect(ray);
+    return ray.getPointAlong(t);
+  }
 
-	private double yDelta = 0.0;
+  private double yDelta = 0.0;
 
-	@Override
-	protected void handleMousePress( Point current, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
-		if( isOriginalAsOpposedToStyleChange ) {
-			PickResult pickResult = getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost( current.x, current.y, PickSubElementPolicy.NOT_REQUIRED, getPickObserver() );
-			m_sgCamera = (AbstractCamera)pickResult.getSource();
-			Visual sgVisual = pickResult.getVisual();
-			if( sgVisual != null ) {
-				m_sgDragAcceptor = lookupDragAcceptor( sgVisual );
-				if( m_sgDragAcceptor != null ) {
-					m_undoPOV = m_sgDragAcceptor.getTransformation( AsSeenBy.SCENE );
-					m_xyzInAbsoluteAtPress = TransformationUtilities.transformToAbsolute_New( pickResult.getPositionInSource(), m_sgCamera );
-				}
-			}
-			this.yDelta = 0.0;
-		} else {
-			if( m_sgDragAcceptor != null ) {
-				Ray ray = getOnscreenRenderTarget().getRayAtPixel( current.x, current.y, m_sgCamera );
-				ray.transform( m_sgCamera.getAbsoluteTransformation() );
-				double t = m_planeInAbsolute.intersect( ray );
-				m_xyzInAbsoluteAtPress = ray.getPointAlong( t );
-				//m_xyzInAbsoluteAtPress.y += this.yDelta;
-			}
-		}
+  @Override
+  protected void handleMousePress(Point current, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange) {
+    if (isOriginalAsOpposedToStyleChange) {
+      PickResult pickResult = getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost(current.x, current.y, PickSubElementPolicy.NOT_REQUIRED, getPickObserver());
+      m_sgCamera = (AbstractCamera) pickResult.getSource();
+      Visual sgVisual = pickResult.getVisual();
+      if (sgVisual != null) {
+        m_sgDragAcceptor = lookupDragAcceptor(sgVisual);
+        if (m_sgDragAcceptor != null) {
+          m_undoPOV = m_sgDragAcceptor.getTransformation(AsSeenBy.SCENE);
+          m_xyzInAbsoluteAtPress = TransformationUtilities.transformToAbsolute_New(pickResult.getPositionInSource(), m_sgCamera);
+        }
+      }
+      this.yDelta = 0.0;
+    } else {
+      if (m_sgDragAcceptor != null) {
+        Ray ray = getOnscreenRenderTarget().getRayAtPixel(current.x, current.y, m_sgCamera);
+        ray.transform(m_sgCamera.getAbsoluteTransformation());
+        double t = m_planeInAbsolute.intersect(ray);
+        m_xyzInAbsoluteAtPress = ray.getPointAlong(t);
+        //m_xyzInAbsoluteAtPress.y += this.yDelta;
+      }
+    }
 
-		if( m_sgDragAcceptor != null ) {
-			AffineMatrix4x4 m = m_sgDragAcceptor.getAbsoluteTransformation();
-			m_offset = Vector3.createSubtraction( m_xyzInAbsoluteAtPress, m.translation );
-			m_xyzInDragAcceptorAtPress = m_sgDragAcceptor.transformTo_New( m_xyzInAbsoluteAtPress, m_sgDragAcceptor.getRoot()/* todo: edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE */);
-			if( dragStyle.isShiftDown() ) {
-				AffineMatrix4x4 cameraAbsolute = m_sgCamera.getAbsoluteTransformation();
-				Vector3 axis = Vector3.createSubtraction( cameraAbsolute.translation, m_xyzInAbsoluteAtPress );
-				axis.normalize();
-				m_planeInAbsolute = Plane.createInstance( m_xyzInAbsoluteAtPress, axis );
-			} else {
-				m_planeInAbsolute = Plane.createInstance( m_xyzInAbsoluteAtPress, Vector3.accessPositiveYAxis() );
-			}
-		} else {
-			m_planeInAbsolute = Plane.NaN;
-			m_xyzInAbsoluteAtPress = Point3.createNaN();
-			m_xyzInDragAcceptorAtPress = null;
-		}
-	}
+    if (m_sgDragAcceptor != null) {
+      AffineMatrix4x4 m = m_sgDragAcceptor.getAbsoluteTransformation();
+      m_offset = Vector3.createSubtraction(m_xyzInAbsoluteAtPress, m.translation);
+      m_xyzInDragAcceptorAtPress = m_sgDragAcceptor.transformTo_New(m_xyzInAbsoluteAtPress, m_sgDragAcceptor.getRoot()/* todo: edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE */);
+      if (dragStyle.isShiftDown()) {
+        AffineMatrix4x4 cameraAbsolute = m_sgCamera.getAbsoluteTransformation();
+        Vector3 axis = Vector3.createSubtraction(cameraAbsolute.translation, m_xyzInAbsoluteAtPress);
+        axis.normalize();
+        m_planeInAbsolute = Plane.createInstance(m_xyzInAbsoluteAtPress, axis);
+      } else {
+        m_planeInAbsolute = Plane.createInstance(m_xyzInAbsoluteAtPress, Vector3.accessPositiveYAxis());
+      }
+    } else {
+      m_planeInAbsolute = Plane.NaN;
+      m_xyzInAbsoluteAtPress = Point3.createNaN();
+      m_xyzInDragAcceptorAtPress = null;
+    }
+  }
 
-	@Override
-	protected void handleMouseDrag( Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, DragStyle dragStyle ) {
-		if( ( m_sgDragAcceptor == null ) || m_planeInAbsolute.isNaN() || m_xyzInDragAcceptorAtPress.isNaN() ) {
-			//pass
-		} else {
-			if( dragStyle.isControlDown() ) {
-				//				if( false ) {
-				//					final int THRESHOLD = 25;
-				//					if( (yDeltaSince0 * yDeltaSince0 + xDeltaSince0 * xDeltaSince0) > THRESHOLD ) {
-				//						edu.cmu.cs.dennisc.math.Vector3d dir = edu.cmu.cs.dennisc.math.LinearAlgebra.subtract( xyzInAbsolutePlane, m_xyzInAbsoluteAtPress );
-				//						double yaw = Math.atan2( dir.x, dir.z );
-				//						//y += Math.PI / 2;
-				//						m_sgDragAcceptor.setAxesOnly( edu.cmu.cs.dennisc.math.LinearAlgebra.newRotationAboutYAxisMatrix3d( yaw, edu.cmu.cs.dennisc.math.UnitOfAngle.RADIANS ), edu.cmu.cs.dennisc.scenegraph.ReferenceFrame.AsSeenBy.SCENE );
-				//					} else {
-				//						//						System.out.println( "too close" );
-				//					}
-				//				} else {
-				//double yaw0 = Math.atan2( m_undoPOV.right.z, m_undoPOV.backward.z );
-				m_sgDragAcceptor.applyRotationAboutYAxis( new AngleInRadians( xDeltaSincePrevious * 0.01 ) );
-				//				}
-			} else {
-				if( dragStyle.isShiftDown() ) {
-					if( m_sgDragAcceptor != null ) {
-						Point3 t = m_sgDragAcceptor.getAbsoluteTransformation().translation;
-						final Point3 xyzInAbsolutePlane = getPointInPlane( m_planeInAbsolute, current.x, current.y );
+  @Override
+  protected void handleMouseDrag(Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, DragStyle dragStyle) {
+    if ((m_sgDragAcceptor == null) || m_planeInAbsolute.isNaN() || m_xyzInDragAcceptorAtPress.isNaN()) {
+      //pass
+    } else {
+      if (dragStyle.isControlDown()) {
+        //        if( false ) {
+        //          final int THRESHOLD = 25;
+        //          if( (yDeltaSince0 * yDeltaSince0 + xDeltaSince0 * xDeltaSince0) > THRESHOLD ) {
+        //            edu.cmu.cs.dennisc.math.Vector3d dir = edu.cmu.cs.dennisc.math.LinearAlgebra.subtract( xyzInAbsolutePlane, m_xyzInAbsoluteAtPress );
+        //            double yaw = Math.atan2( dir.x, dir.z );
+        //            //y += Math.PI / 2;
+        //            m_sgDragAcceptor.setAxesOnly( edu.cmu.cs.dennisc.math.LinearAlgebra.newRotationAboutYAxisMatrix3d( yaw, edu.cmu.cs.dennisc.math.UnitOfAngle.RADIANS ), edu.cmu.cs.dennisc.scenegraph.ReferenceFrame.AsSeenBy.SCENE );
+        //          } else {
+        //            //            System.out.println( "too close" );
+        //          }
+        //        } else {
+        //double yaw0 = Math.atan2( m_undoPOV.right.z, m_undoPOV.backward.z );
+        m_sgDragAcceptor.applyRotationAboutYAxis(new AngleInRadians(xDeltaSincePrevious * 0.01));
+        //        }
+      } else {
+        if (dragStyle.isShiftDown()) {
+          if (m_sgDragAcceptor != null) {
+            Point3 t = m_sgDragAcceptor.getAbsoluteTransformation().translation;
+            final Point3 xyzInAbsolutePlane = getPointInPlane(m_planeInAbsolute, current.x, current.y);
 
-						this.yDelta += xyzInAbsolutePlane.y - t.y;
+            this.yDelta += xyzInAbsolutePlane.y - t.y;
 
-						xyzInAbsolutePlane.subtract( m_offset );
-						xyzInAbsolutePlane.x = t.x;
-						xyzInAbsolutePlane.z = t.z;
+            xyzInAbsolutePlane.subtract(m_offset);
+            xyzInAbsolutePlane.x = t.x;
+            xyzInAbsolutePlane.z = t.z;
 
-						getOnscreenRenderTarget().getRenderFactory().invokeLater( new Runnable() {
-							@Override
-							public void run() {
-								updateTranslation( m_sgDragAcceptor, xyzInAbsolutePlane, AsSeenBy.SCENE );
-							}
-						} );
-					}
-				} else {
-					final Point3 xyzInAbsolutePlane = getPointInPlane( m_planeInAbsolute, current.x, current.y );
-					xyzInAbsolutePlane.subtract( m_offset );
-					getOnscreenRenderTarget().getRenderFactory().invokeLater( new Runnable() {
-						@Override
-						public void run() {
-							updateTranslation( m_sgDragAcceptor, xyzInAbsolutePlane, AsSeenBy.SCENE );
-						}
-					} );
-				}
-			}
-		}
-	}
+            getOnscreenRenderTarget().getRenderFactory().invokeLater(new Runnable() {
+              @Override
+              public void run() {
+                updateTranslation(m_sgDragAcceptor, xyzInAbsolutePlane, AsSeenBy.SCENE);
+              }
+            });
+          }
+        } else {
+          final Point3 xyzInAbsolutePlane = getPointInPlane(m_planeInAbsolute, current.x, current.y);
+          xyzInAbsolutePlane.subtract(m_offset);
+          getOnscreenRenderTarget().getRenderFactory().invokeLater(new Runnable() {
+            @Override
+            public void run() {
+              updateTranslation(m_sgDragAcceptor, xyzInAbsolutePlane, AsSeenBy.SCENE);
+            }
+          });
+        }
+      }
+    }
+  }
 
-	@Override
-	protected Point handleMouseRelease( Point rv, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
-		if( ( m_sgCamera != null ) && ( m_sgDragAcceptor != null ) ) {
-			//			if( dragStyle.isControlDown() ) {
-			//				java.awt.Point p = m_sgDragAcceptor.transformToAWT_New( m_xyzInDragAcceptorAtPress, getOnscreenLookingGlass(), m_sgCamera );
-			//				warpCursor( p );
-			//				showCursor();
-			//				rv.setLocation( p );
-			//			}
-		}
-		if( isOriginalAsOpposedToStyleChange ) {
-			if( m_sgDragAcceptor != null ) {
-				AffineMatrix4x4 redoPOV = m_sgDragAcceptor.getTransformation( AsSeenBy.SCENE );
-				if( getUndoRedoManager() != null ) {
-					getUndoRedoManager().pushAlreadyRunActionOntoUndoStack( new SetPointOfViewAction( getAnimator(), m_sgDragAcceptor, AsSeenBy.SCENE, m_undoPOV, redoPOV ) );
-				}
-			}
-			m_sgDragAcceptor = null;
-			m_planeInAbsolute = Plane.NaN;
-		}
-		return rv;
-	}
+  @Override
+  protected Point handleMouseRelease(Point rv, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange) {
+    if ((m_sgCamera != null) && (m_sgDragAcceptor != null)) {
+      //      if( dragStyle.isControlDown() ) {
+      //        java.awt.Point p = m_sgDragAcceptor.transformToAWT_New( m_xyzInDragAcceptorAtPress, getOnscreenLookingGlass(), m_sgCamera );
+      //        warpCursor( p );
+      //        showCursor();
+      //        rv.setLocation( p );
+      //      }
+    }
+    if (isOriginalAsOpposedToStyleChange) {
+      if (m_sgDragAcceptor != null) {
+        AffineMatrix4x4 redoPOV = m_sgDragAcceptor.getTransformation(AsSeenBy.SCENE);
+        if (getUndoRedoManager() != null) {
+          getUndoRedoManager().pushAlreadyRunActionOntoUndoStack(new SetPointOfViewAction(getAnimator(), m_sgDragAcceptor, AsSeenBy.SCENE, m_undoPOV, redoPOV));
+        }
+      }
+      m_sgDragAcceptor = null;
+      m_planeInAbsolute = Plane.NaN;
+    }
+    return rv;
+  }
 }

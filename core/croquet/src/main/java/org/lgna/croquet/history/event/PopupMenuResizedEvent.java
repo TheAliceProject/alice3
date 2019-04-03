@@ -47,6 +47,6 @@ package org.lgna.croquet.history.event;
  * @author Dennis Cosgrove
  */
 public class PopupMenuResizedEvent implements ActivityEvent {
-	public PopupMenuResizedEvent() {
-	}
+  public PopupMenuResizedEvent() {
+  }
 }

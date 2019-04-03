@@ -54,14 +54,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class SceneLayoutComposite extends SplitComposite {
-	public SceneLayoutComposite() {
-		super( UUID.fromString( "c1bb78a0-814c-4658-93b5-2a00c058b756" ), new SceneComposite(), new SideComposite() );
-	}
+  public SceneLayoutComposite() {
+    super(UUID.fromString("c1bb78a0-814c-4658-93b5-2a00c058b756"), new SceneComposite(), new SideComposite());
+  }
 
-	@Override
-	protected SplitPane createView() {
-		SplitPane rv = this.createHorizontalSplitPane();
-		rv.setResizeWeight( 1.0 );
-		return rv;
-	}
+  @Override
+  protected SplitPane createView() {
+    SplitPane rv = this.createHorizontalSplitPane();
+    rv.setResizeWeight(1.0);
+    return rv;
+  }
 }

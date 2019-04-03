@@ -59,66 +59,66 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DeclarationCompositeFillIn extends ImmutableCascadeFillIn<DeclarationComposite, Void> {
-	private static final Map<DeclarationComposite, DeclarationCompositeFillIn> map = Maps.newHashMap();
+  private static final Map<DeclarationComposite, DeclarationCompositeFillIn> map = Maps.newHashMap();
 
-	public static synchronized DeclarationCompositeFillIn getInstance( DeclarationComposite declarationComposite ) {
-		DeclarationCompositeFillIn rv = map.get( declarationComposite );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DeclarationCompositeFillIn( declarationComposite );
-			map.put( declarationComposite, rv );
-		}
-		return rv;
-	}
+  public static synchronized DeclarationCompositeFillIn getInstance(DeclarationComposite declarationComposite) {
+    DeclarationCompositeFillIn rv = map.get(declarationComposite);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new DeclarationCompositeFillIn(declarationComposite);
+      map.put(declarationComposite, rv);
+    }
+    return rv;
+  }
 
-	private final DeclarationComposite declarationComposite;
+  private final DeclarationComposite declarationComposite;
 
-	public DeclarationCompositeFillIn( DeclarationComposite declarationComposite ) {
-		super( UUID.fromString( "7d731332-2dd6-4861-b08e-386c50c7a580" ) );
-		this.declarationComposite = declarationComposite;
-	}
+  public DeclarationCompositeFillIn(DeclarationComposite declarationComposite) {
+    super(UUID.fromString("7d731332-2dd6-4861-b08e-386c50c7a580"));
+    this.declarationComposite = declarationComposite;
+  }
 
-	@Override
-	public DeclarationComposite createValue( ItemNode<? super DeclarationComposite, Void> node ) {
-		return this.declarationComposite;
-	}
+  @Override
+  public DeclarationComposite createValue(ItemNode<? super DeclarationComposite, Void> node) {
+    return this.declarationComposite;
+  }
 
-	@Override
-	public DeclarationComposite getTransientValue( ItemNode<? super DeclarationComposite, Void> node ) {
-		return this.declarationComposite;
-	}
+  @Override
+  public DeclarationComposite getTransientValue(ItemNode<? super DeclarationComposite, Void> node) {
+    return this.declarationComposite;
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super DeclarationComposite, Void> node ) {
-		throw new AssertionError();
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super DeclarationComposite, Void> node) {
+    throw new AssertionError();
+  }
 
-	@Override
-	public String getMenuItemText() {
-		AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
-		if( declaration instanceof AbstractType<?, ?, ?> ) {
-			AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>)declaration;
-			return null;
-		} else if( declaration instanceof AbstractCode ) {
-			AbstractCode code = (AbstractCode)declaration;
-			return code.getName();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public String getMenuItemText() {
+    AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
+    if (declaration instanceof AbstractType<?, ?, ?>) {
+      AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>) declaration;
+      return null;
+    } else if (declaration instanceof AbstractCode) {
+      AbstractCode code = (AbstractCode) declaration;
+      return code.getName();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public Icon getMenuItemIcon( ItemNode<? super DeclarationComposite, Void> node ) {
-		AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
-		if( declaration instanceof AbstractType<?, ?, ?> ) {
-			AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>)declaration;
-			return TypeIcon.getInstance( type );
-		} else if( declaration instanceof AbstractCode ) {
-			AbstractCode code = (AbstractCode)declaration;
-			return TypeIcon.getInstance( code.getDeclaringType() );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Icon getMenuItemIcon(ItemNode<? super DeclarationComposite, Void> node) {
+    AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
+    if (declaration instanceof AbstractType<?, ?, ?>) {
+      AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>) declaration;
+      return TypeIcon.getInstance(type);
+    } else if (declaration instanceof AbstractCode) {
+      AbstractCode code = (AbstractCode) declaration;
+      return TypeIcon.getInstance(code.getDeclaringType());
+    } else {
+      return null;
+    }
+  }
 }

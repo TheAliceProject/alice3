@@ -48,18 +48,18 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractTransformable;
 
 public class GlrNebulousJoint extends GlrAbstractTransformable<NebulousJoint> {
-	private double[] m_localTransformation = new double[ 16 ];
-	private DoubleBuffer m_localTransformationBuffer = DoubleBuffer.wrap( m_localTransformation );
-	private AffineMatrix4x4 m_localTransformationMatrix = new AffineMatrix4x4();
+  private double[] m_localTransformation = new double[16];
+  private DoubleBuffer m_localTransformationBuffer = DoubleBuffer.wrap(m_localTransformation);
+  private AffineMatrix4x4 m_localTransformationMatrix = new AffineMatrix4x4();
 
-	private void updateLocalTransformation() {
-		owner.getLocalTransformation( m_localTransformationMatrix );
-		this.m_localTransformationMatrix.getAsColumnMajorArray16( m_localTransformation );
-	}
+  private void updateLocalTransformation() {
+    owner.getLocalTransformation(m_localTransformationMatrix);
+    this.m_localTransformationMatrix.getAsColumnMajorArray16(m_localTransformation);
+  }
 
-	@Override
-	public DoubleBuffer accessLocalTransformationAsBuffer() {
-		this.updateLocalTransformation();
-		return this.m_localTransformationBuffer;
-	}
+  @Override
+  public DoubleBuffer accessLocalTransformationAsBuffer() {
+    this.updateLocalTransformation();
+    return this.m_localTransformationBuffer;
+  }
 }

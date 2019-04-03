@@ -46,35 +46,35 @@ package edu.cmu.cs.dennisc.math.immutable;
  * @author Dennis Cosgrove
  */
 public abstract class MTuple3 {
-	public MTuple3( double x, double y, double z ) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	}
+  public MTuple3(double x, double y, double z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
 
-	public double calculateMagnitudeSquared() {
-		return ( this.x * this.x ) + ( this.y * this.y ) + ( this.z * this.z );
-	}
+  public double calculateMagnitudeSquared() {
+    return (this.x * this.x) + (this.y * this.y) + (this.z * this.z);
+  }
 
-	public boolean isNaN() {
-		return Double.isNaN( x ) || Double.isNaN( y ) || Double.isNaN( z );
-	}
+  public boolean isNaN() {
+    return Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z);
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.x );
-		sb.append( "," );
-		sb.append( this.y );
-		sb.append( "," );
-		sb.append( this.z );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getSimpleName());
+    sb.append("[");
+    sb.append(this.x);
+    sb.append(",");
+    sb.append(this.y);
+    sb.append(",");
+    sb.append(this.z);
+    sb.append("]");
+    return sb.toString();
+  }
 
-	public final double x;
-	public final double y;
-	public final double z;
+  public final double x;
+  public final double y;
+  public final double z;
 }

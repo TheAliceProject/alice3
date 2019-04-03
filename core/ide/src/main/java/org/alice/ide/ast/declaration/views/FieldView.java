@@ -62,57 +62,54 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 public abstract class FieldView extends DeclarationView<UserField> {
-	public FieldView( DeclarationLikeSubstanceComposite<UserField> composite ) {
-		super( composite );
-	}
+  public FieldView(DeclarationLikeSubstanceComposite<UserField> composite) {
+    super(composite);
+  }
 
-	private final Label typeIconView = new Label( EmptyIconFactory.getInstance().getIcon( Theme.DEFAULT_LARGE_ICON_SIZE ) );
+  private final Label typeIconView = new Label(EmptyIconFactory.getInstance().getIcon(Theme.DEFAULT_LARGE_ICON_SIZE));
 
-	public FieldView( AddFieldComposite composite ) {
-		super( composite );
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getFieldColor() );
-	}
+  public FieldView(AddFieldComposite composite) {
+    super(composite);
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getFieldColor());
+  }
 
-	@Override
-	public SwingComponentView<?> createPreviewSubComponent() {
-		DeclarationLikeSubstanceComposite<UserField> composite = (DeclarationLikeSubstanceComposite<UserField>)this.getComposite();
-		UserField field = composite.getPreviewValue();
-		return new FieldDeclarationPane( PreviewAstI18nFactory.getInstance(), field );
-	}
+  @Override
+  public SwingComponentView<?> createPreviewSubComponent() {
+    DeclarationLikeSubstanceComposite<UserField> composite = (DeclarationLikeSubstanceComposite<UserField>) this.getComposite();
+    UserField field = composite.getPreviewValue();
+    return new FieldDeclarationPane(PreviewAstI18nFactory.getInstance(), field);
+  }
 
-	protected SwingComponentView<?> getSideView() {
-		return this.typeIconView;
-	}
+  protected SwingComponentView<?> getSideView() {
+    return this.typeIconView;
+  }
 
-	@Override
-	protected SwingComponentView<?> createPageStartComponent() {
-		return new BorderPanel.Builder()
-				.lineStart( super.createPageStartComponent() )
-				.lineEnd( this.getSideView() )
-				.build();
-	}
+  @Override
+  protected SwingComponentView<?> createPageStartComponent() {
+    return new BorderPanel.Builder().lineStart(super.createPageStartComponent()).lineEnd(this.getSideView()).build();
+  }
 
-	@Override
-	protected boolean isPreviewDesired() {
-		return IsPromptIncludingPreviewState.getInstance().getValue();
-	}
+  @Override
+  protected boolean isPreviewDesired() {
+    return IsPromptIncludingPreviewState.getInstance().getValue();
+  }
 
-	//	@Override
-	//	public void handleValueTypeChanged( org.lgna.project.ast.AbstractType<?, ?, ?> nextType ) {
-	//		super.handleValueTypeChanged( nextType );
-	//
-	//		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( nextType );
-	//		this.typeIconView.setIcon( iconFactory.getIcon( iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
-	//		this.typeIconView.revalidateAndRepaint();
-	//	}
+  //  @Override
+  //  public void handleValueTypeChanged( org.lgna.project.ast.AbstractType<?, ?, ?> nextType ) {
+  //    super.handleValueTypeChanged( nextType );
+  //
+  //    org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( nextType );
+  //    this.typeIconView.setIcon( iconFactory.getIcon( iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
+  //    this.typeIconView.revalidateAndRepaint();
+  //  }
 
-	@Override
-	public void handleInitializerChanged( Expression expression ) {
-		super.handleInitializerChanged( expression );
-		DeclarationLikeSubstanceComposite<UserField> composite = (DeclarationLikeSubstanceComposite<UserField>)this.getComposite();
-		UserField field = composite.getPreviewValue();
-		IconFactory iconFactory = IconFactoryManager.getIconFactoryForField( field );
-		this.typeIconView.setIcon( iconFactory.getIcon( iconFactory.getDefaultSize( Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
-		this.typeIconView.revalidateAndRepaint();
-	}
+  @Override
+  public void handleInitializerChanged(Expression expression) {
+    super.handleInitializerChanged(expression);
+    DeclarationLikeSubstanceComposite<UserField> composite = (DeclarationLikeSubstanceComposite<UserField>) this.getComposite();
+    UserField field = composite.getPreviewValue();
+    IconFactory iconFactory = IconFactoryManager.getIconFactoryForField(field);
+    this.typeIconView.setIcon(iconFactory.getIcon(iconFactory.getDefaultSize(Theme.DEFAULT_LARGE_ICON_SIZE)));
+    this.typeIconView.revalidateAndRepaint();
+  }
 }

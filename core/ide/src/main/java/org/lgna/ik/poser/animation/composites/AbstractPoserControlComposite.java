@@ -68,144 +68,144 @@ import org.lgna.story.Color;
  */
 public abstract class AbstractPoserControlComposite<T extends AbstractPoserControlView> extends SimpleComposite<T> {
 
-	private final JointSelectionSphereState rightArmAnchor;
-	private final JointSelectionSphereState leftArmAnchor;
-	private final JointSelectionSphereState rightLegAnchor;
-	private final JointSelectionSphereState leftLegAnchor;
-	private final StringValue rightArmLabel = this.createStringValue( "rightArm" );
-	private final StringValue leftArmLabel = this.createStringValue( "leftArm" );
-	private final StringValue rightLegLabel = this.createStringValue( "rightLeg" );
-	private final StringValue leftLegLabel = this.createStringValue( "leftLeg" );
-	private final StringValue typeSelectionLabel = this.createStringValue( "typeSelectionLabel" );
-	private final BooleanState isUsingIK = createBooleanState( "isUsingIK", true );
-	//			createListSelectionState( "chooseResource" ), new RefreshableListData<JointedModelResource>( DefaultItemCodec.createInstance( JointedModelResource.class ) )
-	private final BooleanState jointRotationHandleVisibilityState = createBooleanState( "showHandles", false );
-	protected AbstractPoserOrAnimatorComposite parent;
-	private final PoserControllerAdapter adapter;
+  private final JointSelectionSphereState rightArmAnchor;
+  private final JointSelectionSphereState leftArmAnchor;
+  private final JointSelectionSphereState rightLegAnchor;
+  private final JointSelectionSphereState leftLegAnchor;
+  private final StringValue rightArmLabel = this.createStringValue("rightArm");
+  private final StringValue leftArmLabel = this.createStringValue("leftArm");
+  private final StringValue rightLegLabel = this.createStringValue("rightLeg");
+  private final StringValue leftLegLabel = this.createStringValue("leftLeg");
+  private final StringValue typeSelectionLabel = this.createStringValue("typeSelectionLabel");
+  private final BooleanState isUsingIK = createBooleanState("isUsingIK", true);
+  //      createListSelectionState( "chooseResource" ), new RefreshableListData<JointedModelResource>( DefaultItemCodec.createInstance( JointedModelResource.class ) )
+  private final BooleanState jointRotationHandleVisibilityState = createBooleanState("showHandles", false);
+  protected AbstractPoserOrAnimatorComposite parent;
+  private final PoserControllerAdapter adapter;
 
-	public AbstractPoserControlComposite( AbstractPoserOrAnimatorComposite parent, UUID uid ) {
-		super( uid );
-		this.parent = parent;
-		parent.getJointSelectionSheres();
-		AbstractPoserScene scene = parent.getScene();
-		rightArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKCore.Limb.RIGHT_ARM ), scene.getJointsForLimb( IKCore.Limb.RIGHT_ARM ) );
-		leftArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKCore.Limb.LEFT_ARM ), scene.getJointsForLimb( IKCore.Limb.LEFT_ARM ) );
-		rightLegAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKCore.Limb.RIGHT_LEG ), scene.getJointsForLimb( IKCore.Limb.RIGHT_LEG ) );
-		leftLegAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKCore.Limb.LEFT_LEG ), scene.getJointsForLimb( IKCore.Limb.LEFT_LEG ) );
-		rightArmAnchor.getValue().setPaint( Color.GREEN );
-		leftArmAnchor.getValue().setPaint( Color.GREEN );
-		rightLegAnchor.getValue().setPaint( Color.GREEN );
-		leftLegAnchor.getValue().setPaint( Color.GREEN );
-		adapter = new PoserControllerAdapter( this );
-		parent.setAdapter( adapter );
-	}
+  public AbstractPoserControlComposite(AbstractPoserOrAnimatorComposite parent, UUID uid) {
+    super(uid);
+    this.parent = parent;
+    parent.getJointSelectionSheres();
+    AbstractPoserScene scene = parent.getScene();
+    rightArmAnchor = new JointSelectionSphereState(scene.getDefaultAnchorJoint(IKCore.Limb.RIGHT_ARM), scene.getJointsForLimb(IKCore.Limb.RIGHT_ARM));
+    leftArmAnchor = new JointSelectionSphereState(scene.getDefaultAnchorJoint(IKCore.Limb.LEFT_ARM), scene.getJointsForLimb(IKCore.Limb.LEFT_ARM));
+    rightLegAnchor = new JointSelectionSphereState(scene.getDefaultAnchorJoint(IKCore.Limb.RIGHT_LEG), scene.getJointsForLimb(IKCore.Limb.RIGHT_LEG));
+    leftLegAnchor = new JointSelectionSphereState(scene.getDefaultAnchorJoint(IKCore.Limb.LEFT_LEG), scene.getJointsForLimb(IKCore.Limb.LEFT_LEG));
+    rightArmAnchor.getValue().setPaint(Color.GREEN);
+    leftArmAnchor.getValue().setPaint(Color.GREEN);
+    rightLegAnchor.getValue().setPaint(Color.GREEN);
+    leftLegAnchor.getValue().setPaint(Color.GREEN);
+    adapter = new PoserControllerAdapter(this);
+    parent.setAdapter(adapter);
+  }
 
-	protected ActionOperation straightenJointsOperation = createActionOperation( "straightenJoints", new Action() {
+  protected ActionOperation straightenJointsOperation = createActionOperation("straightenJoints", new Action() {
 
-		@Override
-		public AbstractEdit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			parent.getModel().straightenOutJoints();
-			return null;
-		}
+    @Override
+    public AbstractEdit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      parent.getModel().straightenOutJoints();
+      return null;
+    }
 
-	} );
+  });
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-	};
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    super.handlePostDeactivation();
+  }
 
-	public BooleanState getIsUsingIK() {
-		return this.isUsingIK;
-	}
+  public BooleanState getIsUsingIK() {
+    return this.isUsingIK;
+  }
 
-	public ActionOperation getStraightenJointsOperation() {
-		return this.straightenJointsOperation;
-	}
+  public ActionOperation getStraightenJointsOperation() {
+    return this.straightenJointsOperation;
+  }
 
-	public void addRightArmAnchorListener( ValueListener<JointSelectionSphere> listener ) {
-		rightArmAnchor.addValueListener( listener );
-	}
+  public void addRightArmAnchorListener(ValueListener<JointSelectionSphere> listener) {
+    rightArmAnchor.addValueListener(listener);
+  }
 
-	public void addRightLegAnchorListener( ValueListener<JointSelectionSphere> listener ) {
-		rightLegAnchor.addValueListener( listener );
-	}
+  public void addRightLegAnchorListener(ValueListener<JointSelectionSphere> listener) {
+    rightLegAnchor.addValueListener(listener);
+  }
 
-	public void addLeftArmAnchorListener( ValueListener<JointSelectionSphere> listener ) {
-		leftArmAnchor.addValueListener( listener );
-	}
+  public void addLeftArmAnchorListener(ValueListener<JointSelectionSphere> listener) {
+    leftArmAnchor.addValueListener(listener);
+  }
 
-	public void addLeftLegAnchorListener( ValueListener<JointSelectionSphere> listener ) {
-		leftLegAnchor.addValueListener( listener );
-	}
+  public void addLeftLegAnchorListener(ValueListener<JointSelectionSphere> listener) {
+    leftLegAnchor.addValueListener(listener);
+  }
 
-	public StringValue getRightArmLabel() {
-		return this.rightArmLabel;
-	}
+  public StringValue getRightArmLabel() {
+    return this.rightArmLabel;
+  }
 
-	public StringValue getLeftArmLabel() {
-		return this.leftArmLabel;
-	}
+  public StringValue getLeftArmLabel() {
+    return this.leftArmLabel;
+  }
 
-	public StringValue getRightLegLabel() {
-		return this.rightLegLabel;
-	}
+  public StringValue getRightLegLabel() {
+    return this.rightLegLabel;
+  }
 
-	public StringValue getLeftLegLabel() {
-		return this.leftLegLabel;
-	}
+  public StringValue getLeftLegLabel() {
+    return this.leftLegLabel;
+  }
 
-	public JointSelectionSphereState getRightArmAnchor() {
-		return this.rightArmAnchor;
-	}
+  public JointSelectionSphereState getRightArmAnchor() {
+    return this.rightArmAnchor;
+  }
 
-	public JointSelectionSphereState getRightLegAnchor() {
-		return this.rightLegAnchor;
-	}
+  public JointSelectionSphereState getRightLegAnchor() {
+    return this.rightLegAnchor;
+  }
 
-	public JointSelectionSphereState getLeftArmAnchor() {
-		return this.leftArmAnchor;
-	}
+  public JointSelectionSphereState getLeftArmAnchor() {
+    return this.leftArmAnchor;
+  }
 
-	public JointSelectionSphereState getLeftLegAnchor() {
-		return this.leftLegAnchor;
-	}
+  public JointSelectionSphereState getLeftLegAnchor() {
+    return this.leftLegAnchor;
+  }
 
-	public void updateSphere( Limb limb, JointSelectionSphere sphere ) {
-		switch( limb ) {
-		case LEFT_ARM:
-			leftArmAnchor.setValueTransactionlessly( sphere );
-			break;
-		case LEFT_LEG:
-			leftLegAnchor.setValueTransactionlessly( sphere );
-			break;
-		case RIGHT_ARM:
-			rightArmAnchor.setValueTransactionlessly( sphere );
-			break;
-		case RIGHT_LEG:
-			rightLegAnchor.setValueTransactionlessly( sphere );
-			break;
-		}
-	}
+  public void updateSphere(Limb limb, JointSelectionSphere sphere) {
+    switch (limb) {
+    case LEFT_ARM:
+      leftArmAnchor.setValueTransactionlessly(sphere);
+      break;
+    case LEFT_LEG:
+      leftLegAnchor.setValueTransactionlessly(sphere);
+      break;
+    case RIGHT_ARM:
+      rightArmAnchor.setValueTransactionlessly(sphere);
+      break;
+    case RIGHT_LEG:
+      rightLegAnchor.setValueTransactionlessly(sphere);
+      break;
+    }
+  }
 
-	public UserType<?> getDeclaringType() {
-		return parent.getDeclaringType();
-	}
+  public UserType<?> getDeclaringType() {
+    return parent.getDeclaringType();
+  }
 
-	public PoserControllerAdapter getAdapter() {
-		return this.adapter;
-	}
+  public PoserControllerAdapter getAdapter() {
+    return this.adapter;
+  }
 
-	public BooleanState getJointRotationHandleVisibilityState() {
-		return jointRotationHandleVisibilityState;
-	}
+  public BooleanState getJointRotationHandleVisibilityState() {
+    return jointRotationHandleVisibilityState;
+  }
 
-	public StringValue getTypeSelectionLabel() {
-		return this.typeSelectionLabel;
-	}
+  public StringValue getTypeSelectionLabel() {
+    return this.typeSelectionLabel;
+  }
 }

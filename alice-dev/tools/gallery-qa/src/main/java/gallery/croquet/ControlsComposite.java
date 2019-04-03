@@ -47,34 +47,34 @@ package gallery.croquet;
  * @author Dennis Cosgrove
  */
 public class ControlsComposite extends org.lgna.croquet.AbstractComposite<gallery.croquet.views.ControlsPanel> {
-	public ControlsComposite() {
-		super( java.util.UUID.fromString( "76991dd9-0b64-43b0-9ca9-c60e6a914dfc" ) );
-	}
+  public ControlsComposite() {
+    super(java.util.UUID.fromString("76991dd9-0b64-43b0-9ca9-c60e6a914dfc"));
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
-	}
+  @Override
+  public boolean contains(org.lgna.croquet.Model model) {
+    return false;
+  }
 
-	@Override
-	protected gallery.croquet.views.ControlsPanel createView() {
-		return new gallery.croquet.views.ControlsPanel( this );
-	}
+  @Override
+  protected gallery.croquet.views.ControlsPanel createView() {
+    return new gallery.croquet.views.ControlsPanel(this);
+  }
 
-	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	public org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeState getTreeState() {
-		return org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeState.getInstance();
-	}
+  public org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeState getTreeState() {
+    return org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeState.getInstance();
+  }
 
-	public IsVisualizationShowingState getViz() {
-		return IsVisualizationShowingState.getInstance();
-	}
+  public IsVisualizationShowingState getViz() {
+    return IsVisualizationShowingState.getInstance();
+  }
 }

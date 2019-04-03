@@ -47,7 +47,7 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public interface ReferenceFrame {
-	public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame();
+  public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame();
 
-	public EntityImp getActualEntityImplementation( EntityImp ths );
+  public EntityImp getActualEntityImplementation(EntityImp ths);
 }

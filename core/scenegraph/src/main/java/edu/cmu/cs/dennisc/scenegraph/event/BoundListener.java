@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.scenegraph.event;
  * @author Dennis Cosgrove
  */
 public interface BoundListener {
-	public void boundChanged( BoundEvent boundEvent );
+  public void boundChanged(BoundEvent boundEvent);
 }

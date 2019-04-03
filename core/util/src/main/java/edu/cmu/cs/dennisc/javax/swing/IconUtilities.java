@@ -59,111 +59,111 @@ import java.net.URL;
  *
  */
 public class IconUtilities {
-	private IconUtilities() {
-		throw new AssertionError();
-	}
+  private IconUtilities() {
+    throw new AssertionError();
+  }
 
-	private static final boolean IS_PRINT_USED = true;
-	private static final Container privateContainer = new Container();
+  private static final boolean IS_PRINT_USED = true;
+  private static final Container privateContainer = new Container();
 
-	public static Icon createIcon( Component component ) {
-		Icon rv;
-		Dimension size = component.getPreferredSize();
-		if( ( size.width > 0 ) && ( size.height > 0 ) ) {
-			BufferedImage image = new BufferedImage( size.width, size.height, BufferedImage.TYPE_INT_ARGB );
-			Graphics g = image.getGraphics();
-			if( IS_PRINT_USED ) {
-				component.print( g );
-			} else {
-				SwingUtilities.paintComponent( g, component, privateContainer, 0, 0, size.width, size.height );
-			}
-			g.dispose();
-			rv = new ImageIcon( image );
-		} else {
-			rv = new Icon() {
-				@Override
-				public int getIconWidth() {
-					return 24;
-				}
+  public static Icon createIcon(Component component) {
+    Icon rv;
+    Dimension size = component.getPreferredSize();
+    if ((size.width > 0) && (size.height > 0)) {
+      BufferedImage image = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
+      Graphics g = image.getGraphics();
+      if (IS_PRINT_USED) {
+        component.print(g);
+      } else {
+        SwingUtilities.paintComponent(g, component, privateContainer, 0, 0, size.width, size.height);
+      }
+      g.dispose();
+      rv = new ImageIcon(image);
+    } else {
+      rv = new Icon() {
+        @Override
+        public int getIconWidth() {
+          return 24;
+        }
 
-				@Override
-				public int getIconHeight() {
-					return 12;
-				}
+        @Override
+        public int getIconHeight() {
+          return 12;
+        }
 
-				@Override
-				public void paintIcon( Component c, Graphics g, int x, int y ) {
-				}
-			};
-		}
-		return rv;
-	}
+        @Override
+        public void paintIcon(Component c, Graphics g, int x, int y) {
+        }
+      };
+    }
+    return rv;
+  }
 
-	public static ImageIcon createImageIcon( URL url ) {
-		if( url != null ) {
-			return new ImageIcon( url );
-		} else {
-			return null;
-		}
-	}
+  public static ImageIcon createImageIcon(URL url) {
+    if (url != null) {
+      return new ImageIcon(url);
+    } else {
+      return null;
+    }
+  }
 
-	public static ImageIcon createImageIcon( Image image ) {
-		if( image != null ) {
-			return new ImageIcon( image );
-		} else {
-			return null;
-		}
-	}
+  public static ImageIcon createImageIcon(Image image) {
+    if (image != null) {
+      return new ImageIcon(image);
+    } else {
+      return null;
+    }
+  }
 
-	public static ImageIcon[] createImageIcons( URL... urls ) {
-		ImageIcon[] rv = new ImageIcon[ urls.length ];
-		int i = 0;
-		for( URL url : urls ) {
-			rv[ i ] = createImageIcon( url );
-			i++;
-		}
-		return rv;
-	}
+  public static ImageIcon[] createImageIcons(URL... urls) {
+    ImageIcon[] rv = new ImageIcon[urls.length];
+    int i = 0;
+    for (URL url : urls) {
+      rv[i] = createImageIcon(url);
+      i++;
+    }
+    return rv;
+  }
 
-	public static ImageIcon[] createImageIcons( Image... images ) {
-		ImageIcon[] rv = new ImageIcon[ images.length ];
-		int i = 0;
-		for( Image image : images ) {
-			rv[ i ] = createImageIcon( image );
-			i++;
-		}
-		return rv;
-	}
+  public static ImageIcon[] createImageIcons(Image... images) {
+    ImageIcon[] rv = new ImageIcon[images.length];
+    int i = 0;
+    for (Image image : images) {
+      rv[i] = createImageIcon(image);
+      i++;
+    }
+    return rv;
+  }
 
-	public static boolean areSizesEqual( Icon prevIcon, Icon nextIcon ) {
-		int prevWidth = prevIcon != null ? prevIcon.getIconWidth() : 0;
-		int prevHeight = prevIcon != null ? prevIcon.getIconHeight() : 0;
-		int nextWidth = nextIcon != null ? nextIcon.getIconWidth() : 0;
-		int nextHeight = nextIcon != null ? nextIcon.getIconHeight() : 0;
-		return ( prevWidth == nextWidth ) && ( prevHeight == nextHeight );
-	}
+  public static boolean areSizesEqual(Icon prevIcon, Icon nextIcon) {
+    int prevWidth = prevIcon != null ? prevIcon.getIconWidth() : 0;
+    int prevHeight = prevIcon != null ? prevIcon.getIconHeight() : 0;
+    int nextWidth = nextIcon != null ? nextIcon.getIconWidth() : 0;
+    int nextHeight = nextIcon != null ? nextIcon.getIconHeight() : 0;
+    return (prevWidth == nextWidth) && (prevHeight == nextHeight);
+  }
 
-	public static Icon getInformationIcon() {
-		return UIManager.getIcon( "OptionPane.informationIcon" );
-	}
+  public static Icon getInformationIcon() {
+    return UIManager.getIcon("OptionPane.informationIcon");
+  }
 
-	public static Icon getQuestionIcon() {
-		return UIManager.getIcon( "OptionPane.questionIcon" );
-	}
+  public static Icon getQuestionIcon() {
+    return UIManager.getIcon("OptionPane.questionIcon");
+  }
 
-	public static Icon getWarningIcon() {
-		return UIManager.getIcon( "OptionPane.warningIcon" );
-	}
+  public static Icon getWarningIcon() {
+    return UIManager.getIcon("OptionPane.warningIcon");
+  }
 
-	public static Icon getErrorIcon() {
-		return UIManager.getIcon( "OptionPane.errorIcon" );
-	}
+  public static Icon getErrorIcon() {
+    return UIManager.getIcon("OptionPane.errorIcon");
+  }
 
-	public static Dimension newDimension( Icon icon ) {
-		if( icon != null ) {
-			return new Dimension( icon.getIconWidth(), icon.getIconHeight() );
-		} else {
-			return null;
-		}
-	}
+  public static Dimension newDimension(Icon icon) {
+    if (icon != null) {
+      return new Dimension(icon.getIconWidth(), icon.getIconHeight());
+    } else {
+      return null;
+    }
+  }
 }

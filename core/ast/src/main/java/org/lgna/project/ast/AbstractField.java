@@ -50,44 +50,44 @@ import java.util.Collection;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractField extends AbstractMember implements Accessible {
-	public abstract boolean isValid();
+  public abstract boolean isValid();
 
-	@Override
-	public abstract AbstractType<?, ?, ?> getValueType();
+  @Override
+  public abstract AbstractType<?, ?, ?> getValueType();
 
-	public abstract boolean isStatic();
+  public abstract boolean isStatic();
 
-	//cannot be final and volatile
-	public abstract boolean isFinal();
+  //cannot be final and volatile
+  public abstract boolean isFinal();
 
-	public abstract boolean isVolatile();
+  public abstract boolean isVolatile();
 
-	public abstract boolean isTransient();
+  public abstract boolean isTransient();
 
-	@Override
-	public void addModifiers( Collection<Modifier> modifiers ) {
-		super.addModifiers( modifiers );
-		if( this.isFinal() ) {
-			modifiers.add( Modifier.FINAL );
-		} else if( this.isVolatile() ) {
-			modifiers.add( Modifier.VOLATILE );
-		}
-		if( this.isStatic() ) {
-			modifiers.add( Modifier.STATIC );
-		}
-		if( this.isTransient() ) {
-			modifiers.add( Modifier.TRANSIENT );
-		}
-	}
+  @Override
+  public void addModifiers(Collection<Modifier> modifiers) {
+    super.addModifiers(modifiers);
+    if (this.isFinal()) {
+      modifiers.add(Modifier.FINAL);
+    } else if (this.isVolatile()) {
+      modifiers.add(Modifier.VOLATILE);
+    }
+    if (this.isStatic()) {
+      modifiers.add(Modifier.STATIC);
+    }
+    if (this.isTransient()) {
+      modifiers.add(Modifier.TRANSIENT);
+    }
+  }
 
-	@Override
-	public String getValidName( Node context ) {
-		return this.getName();
-	}
+  @Override
+  public String getValidName(Node context) {
+    return this.getName();
+  }
 
-	@Override
-	@Deprecated
-	public String getValidName() {
-		return this.getValidName( null );
-	}
+  @Override
+  @Deprecated
+  public String getValidName() {
+    return this.getValidName(null);
+  }
 }

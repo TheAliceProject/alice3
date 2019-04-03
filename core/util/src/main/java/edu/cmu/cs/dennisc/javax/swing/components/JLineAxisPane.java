@@ -49,15 +49,15 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public class JLineAxisPane extends JBoxPane {
-	public JLineAxisPane( Component... components ) {
-		super( BoxLayout.LINE_AXIS );
-		for( Component component : components ) {
-			this.add( component );
-			component.doLayout();
-		}
-		if( components.length > 0 ) {
-			//			this.revalidate();
-			this.doLayout();
-		}
-	}
+  public JLineAxisPane(Component... components) {
+    super(BoxLayout.LINE_AXIS);
+    for (Component component : components) {
+      this.add(component);
+      component.doLayout();
+    }
+    if (components.length > 0) {
+      //      this.revalidate();
+      this.doLayout();
+    }
+  }
 }

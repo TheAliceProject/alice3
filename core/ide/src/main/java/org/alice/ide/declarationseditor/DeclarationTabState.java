@@ -79,207 +79,207 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DeclarationTabState extends MutableDataTabState<DeclarationComposite<?, ?>> {
-	private final ProjectChangeOfInterestListener projectChangeOfInterestListener = new ProjectChangeOfInterestListener() {
-		@Override
-		public void projectChanged() {
-			handleAstChangeThatCouldBeOfInterest();
-		}
-	};
+  private final ProjectChangeOfInterestListener projectChangeOfInterestListener = new ProjectChangeOfInterestListener() {
+    @Override
+    public void projectChanged() {
+      handleAstChangeThatCouldBeOfInterest();
+    }
+  };
 
-	public DeclarationTabState() {
-		super( IDE.DOCUMENT_UI_GROUP, UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), DeclarationCompositeCodec.SINGLETON );
-		ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
-	}
+  public DeclarationTabState() {
+    super(IDE.DOCUMENT_UI_GROUP, UUID.fromString("7b3f95a0-c188-43bf-9089-21ec77c99a69"), DeclarationCompositeCodec.SINGLETON);
+    ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener(this.projectChangeOfInterestListener);
+  }
 
-	@Override
-	protected void setCurrentTruthAndBeautyValue( DeclarationComposite<?, ?> declarationComposite ) {
-		if( declarationComposite != null ) {
-			ListData<DeclarationComposite<?, ?>> data = this.getData();
-			if( data.contains( declarationComposite ) ) {
-				//pass
-			} else {
-				class TypeListPair {
-					private final NamedUserType type;
-					private final List<DeclarationComposite<?, ?>> list = Lists.newLinkedList();
+  @Override
+  protected void setCurrentTruthAndBeautyValue(DeclarationComposite<?, ?> declarationComposite) {
+    if (declarationComposite != null) {
+      ListData<DeclarationComposite<?, ?>> data = this.getData();
+      if (data.contains(declarationComposite)) {
+        //pass
+      } else {
+        class TypeListPair {
+          private final NamedUserType type;
+          private final List<DeclarationComposite<?, ?>> list = Lists.newLinkedList();
 
-					public TypeListPair( NamedUserType type ) {
-						this.type = type;
-					}
+          public TypeListPair(NamedUserType type) {
+            this.type = type;
+          }
 
-					public void addDeclarationComposite( DeclarationComposite<?, ?> declarationComposite ) {
-						if( declarationComposite instanceof TypeComposite ) {
-							this.list.add( 0, declarationComposite );
-						} else {
-							this.list.add( declarationComposite );
-						}
-					}
+          public void addDeclarationComposite(DeclarationComposite<?, ?> declarationComposite) {
+            if (declarationComposite instanceof TypeComposite) {
+              this.list.add(0, declarationComposite);
+            } else {
+              this.list.add(declarationComposite);
+            }
+          }
 
-					public void update( List<DeclarationComposite<?, ?>> updatee, boolean isTypeRequired ) {
-						if( isTypeRequired ) {
-							TypeComposite typeComposite = TypeComposite.getInstance( this.type );
-							if( this.list.contains( typeComposite ) ) {
-								//pass
-							} else {
-								updatee.add( typeComposite );
-							}
-						}
-						updatee.addAll( this.list );
-					}
-				}
+          public void update(List<DeclarationComposite<?, ?>> updatee, boolean isTypeRequired) {
+            if (isTypeRequired) {
+              TypeComposite typeComposite = TypeComposite.getInstance(this.type);
+              if (this.list.contains(typeComposite)) {
+                //pass
+              } else {
+                updatee.add(typeComposite);
+              }
+            }
+            updatee.addAll(this.list);
+          }
+        }
 
-				InitializingIfAbsentMap<NamedUserType, TypeListPair> map = Maps.newInitializingIfAbsentHashMap();
-				List<TypeListPair> typeListPairs = Lists.newLinkedList();
+        InitializingIfAbsentMap<NamedUserType, TypeListPair> map = Maps.newInitializingIfAbsentHashMap();
+        List<TypeListPair> typeListPairs = Lists.newLinkedList();
 
-				List<DeclarationComposite<?, ?>> prevItems = Lists.newArrayList( data.toArray() );
-				prevItems.add( declarationComposite );
+        List<DeclarationComposite<?, ?>> prevItems = Lists.newArrayList(data.toArray());
+        prevItems.add(declarationComposite);
 
-				List<DeclarationComposite<?, ?>> orphans = Lists.newLinkedList();
-				for( DeclarationComposite<?, ?> item : prevItems ) {
-					if( item != null ) {
-						NamedUserType namedUserType = (NamedUserType)item.getType();
-						if( namedUserType != null ) {
-							TypeListPair typeListPair = map.getInitializingIfAbsent( namedUserType, new InitializingIfAbsentMap.Initializer<NamedUserType, TypeListPair>() {
-								@Override
-								public TypeListPair initialize( NamedUserType key ) {
-									return new TypeListPair( key );
-								}
-							} );
-							typeListPair.addDeclarationComposite( item );
-							if( typeListPairs.contains( typeListPair ) ) {
-								//pass
-							} else {
-								typeListPairs.add( typeListPair );
-							}
-						} else {
-							orphans.add( item );
-						}
-					}
-				}
-				List<DeclarationComposite<?, ?>> nextItems = Lists.newLinkedList();
-				boolean isTypeRequired = true; //typeListPairs.size() > 1;
-				boolean isSeparatorDesired = false;
-				for( TypeListPair typeListPair : typeListPairs ) {
-					if( isSeparatorDesired ) {
-						nextItems.add( null );
-					}
-					typeListPair.update( nextItems, isTypeRequired );
-					isSeparatorDesired = true;
-				}
+        List<DeclarationComposite<?, ?>> orphans = Lists.newLinkedList();
+        for (DeclarationComposite<?, ?> item : prevItems) {
+          if (item != null) {
+            NamedUserType namedUserType = (NamedUserType) item.getType();
+            if (namedUserType != null) {
+              TypeListPair typeListPair = map.getInitializingIfAbsent(namedUserType, new InitializingIfAbsentMap.Initializer<NamedUserType, TypeListPair>() {
+                @Override
+                public TypeListPair initialize(NamedUserType key) {
+                  return new TypeListPair(key);
+                }
+              });
+              typeListPair.addDeclarationComposite(item);
+              if (typeListPairs.contains(typeListPair)) {
+                //pass
+              } else {
+                typeListPairs.add(typeListPair);
+              }
+            } else {
+              orphans.add(item);
+            }
+          }
+        }
+        List<DeclarationComposite<?, ?>> nextItems = Lists.newLinkedList();
+        boolean isTypeRequired = true; //typeListPairs.size() > 1;
+        boolean isSeparatorDesired = false;
+        for (TypeListPair typeListPair : typeListPairs) {
+          if (isSeparatorDesired) {
+            nextItems.add(null);
+          }
+          typeListPair.update(nextItems, isTypeRequired);
+          isSeparatorDesired = true;
+        }
 
-				if( orphans.size() > 0 ) {
-					nextItems.add( null );
-					nextItems.addAll( orphans );
-				}
-				data.internalSetAllItems( nextItems );
-			}
-		}
-		super.setCurrentTruthAndBeautyValue( declarationComposite );
-	}
+        if (orphans.size() > 0) {
+          nextItems.add(null);
+          nextItems.addAll(orphans);
+        }
+        data.internalSetAllItems(nextItems);
+      }
+    }
+    super.setCurrentTruthAndBeautyValue(declarationComposite);
+  }
 
-	private static final Dimension ICON_SIZE = new Dimension( 16, 16 );
-	private static final Icon TYPE_ICON = new TabIcon( ICON_SIZE, DefaultTheme.DEFAULT_TYPE_COLOR );
-	private static final Icon FIELD_ICON = new TabIcon( ICON_SIZE, DefaultTheme.DEFAULT_TYPE_COLOR ) {
-		@Override
-		protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
-			super.paintIcon( c, g2, width, height, fillPaint, drawPaint );
-			g2.setPaint( DefaultTheme.DEFAULT_FIELD_COLOR );
-			g2.fill( new Rectangle2D.Float( 0.3f * width, 0.7f * height, 0.6f * width, 0.1f * height ) );
-		}
-	};
+  private static final Dimension ICON_SIZE = new Dimension(16, 16);
+  private static final Icon TYPE_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_TYPE_COLOR);
+  private static final Icon FIELD_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_TYPE_COLOR) {
+    @Override
+    protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+      super.paintIcon(c, g2, width, height, fillPaint, drawPaint);
+      g2.setPaint(DefaultTheme.DEFAULT_FIELD_COLOR);
+      g2.fill(new Rectangle2D.Float(0.3f * width, 0.7f * height, 0.6f * width, 0.1f * height));
+    }
+  };
 
-	private static final Icon PROCEDURE_ICON = new TabIcon( ICON_SIZE, DefaultTheme.DEFAULT_PROCEDURE_COLOR );
-	private static final Icon FUNCTION_ICON = new TabIcon( ICON_SIZE, DefaultTheme.DEFAULT_FUNCTION_COLOR );
-	private static final Icon CONSTRUCTOR_ICON = new TabIcon( ICON_SIZE, DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR );
+  private static final Icon PROCEDURE_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_PROCEDURE_COLOR);
+  private static final Icon FUNCTION_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_FUNCTION_COLOR);
+  private static final Icon CONSTRUCTOR_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR);
 
-	public static Icon getProcedureIcon() {
-		return PROCEDURE_ICON;
-	}
+  public static Icon getProcedureIcon() {
+    return PROCEDURE_ICON;
+  }
 
-	public static Icon getFunctionIcon() {
-		return FUNCTION_ICON;
-	}
+  public static Icon getFunctionIcon() {
+    return FUNCTION_ICON;
+  }
 
-	public static Icon getFieldIcon() {
-		return FIELD_ICON;
-	}
+  public static Icon getFieldIcon() {
+    return FIELD_ICON;
+  }
 
-	public static Icon getConstructorIcon() {
-		return CONSTRUCTOR_ICON;
-	}
+  public static Icon getConstructorIcon() {
+    return CONSTRUCTOR_ICON;
+  }
 
-	public Operation getItemSelectionOperationForType( NamedUserType type ) {
-		Operation rv = this.getItemSelectionOperation( TypeComposite.getInstance( type ) );
-		rv.setSmallIcon( TYPE_ICON );
-		return rv;
-	}
+  public Operation getItemSelectionOperationForType(NamedUserType type) {
+    Operation rv = this.getItemSelectionOperation(TypeComposite.getInstance(type));
+    rv.setSmallIcon(TYPE_ICON);
+    return rv;
+  }
 
-	public Operation getItemSelectionOperationForMethod( AbstractMethod method ) {
-		final Operation rv = this.getItemSelectionOperation( CodeComposite.getInstance( method ) );
-		if( method.isProcedure() ) {
-			rv.setSmallIcon( PROCEDURE_ICON );
-		} else {
-			rv.setSmallIcon( FUNCTION_ICON );
-		}
-		if( method instanceof UserMethod ) {
-			UserMethod userMethod = (UserMethod)method;
-			userMethod.name.addPropertyListener( new PropertyListener() {
-				@Override
-				public void propertyChanging( PropertyEvent e ) {
-				}
+  public Operation getItemSelectionOperationForMethod(AbstractMethod method) {
+    final Operation rv = this.getItemSelectionOperation(CodeComposite.getInstance(method));
+    if (method.isProcedure()) {
+      rv.setSmallIcon(PROCEDURE_ICON);
+    } else {
+      rv.setSmallIcon(FUNCTION_ICON);
+    }
+    if (method instanceof UserMethod) {
+      UserMethod userMethod = (UserMethod) method;
+      userMethod.name.addPropertyListener(new PropertyListener() {
+        @Override
+        public void propertyChanging(PropertyEvent e) {
+        }
 
-				@Override
-				public void propertyChanged( PropertyEvent e ) {
-					rv.setName( (String)e.getValue() );
-				}
-			} );
-			//todo: release?
-		}
-		return rv;
-	}
+        @Override
+        public void propertyChanged(PropertyEvent e) {
+          rv.setName((String) e.getValue());
+        }
+      });
+      //todo: release?
+    }
+    return rv;
+  }
 
-	public Operation getItemSelectionOperationForConstructor( AbstractConstructor constructor ) {
-		Operation rv = this.getItemSelectionOperation( CodeComposite.getInstance( constructor ) );
-		rv.setSmallIcon( CONSTRUCTOR_ICON );
-		return rv;
-	}
+  public Operation getItemSelectionOperationForConstructor(AbstractConstructor constructor) {
+    Operation rv = this.getItemSelectionOperation(CodeComposite.getInstance(constructor));
+    rv.setSmallIcon(CONSTRUCTOR_ICON);
+    return rv;
+  }
 
-	public Operation getItemSelectionOperationForCode( AbstractCode code ) {
-		if( code instanceof AbstractMethod ) {
-			return this.getItemSelectionOperationForMethod( (AbstractMethod)code );
-		} else if( code instanceof AbstractConstructor ) {
-			return this.getItemSelectionOperationForConstructor( (AbstractConstructor)code );
-		} else {
-			return null;
-		}
-	}
+  public Operation getItemSelectionOperationForCode(AbstractCode code) {
+    if (code instanceof AbstractMethod) {
+      return this.getItemSelectionOperationForMethod((AbstractMethod) code);
+    } else if (code instanceof AbstractConstructor) {
+      return this.getItemSelectionOperationForConstructor((AbstractConstructor) code);
+    } else {
+      return null;
+    }
+  }
 
-	private void handleAstChangeThatCouldBeOfInterest() {
-		DeclarationComposite<?, ?> declarationComposite = this.getValue();
-		if( declarationComposite instanceof CodeComposite ) {
-			CodeComposite codeComposite = (CodeComposite)declarationComposite;
-			codeComposite.handleAstChangeThatCouldBeOfInterest();
-		}
-	}
+  private void handleAstChangeThatCouldBeOfInterest() {
+    DeclarationComposite<?, ?> declarationComposite = this.getValue();
+    if (declarationComposite instanceof CodeComposite) {
+      CodeComposite codeComposite = (CodeComposite) declarationComposite;
+      codeComposite.handleAstChangeThatCouldBeOfInterest();
+    }
+  }
 
-	public void removeAllOrphans() {
-		List<DeclarationComposite<?, ?>> orphans = Lists.newLinkedList();
-		for( DeclarationComposite<?, ?> composite : this ) {
-			if( composite != null ) {
-				AbstractDeclaration declaration = composite.getDeclaration();
-				if( declaration instanceof UserCode ) {
-					UserCode code = (UserCode)declaration;
-					UserType<?> declaringType = code.getDeclaringType();
-					if( declaringType != null ) {
-						//pass
-					} else {
-						orphans.add( composite );
-					}
-				}
-			}
-		}
+  public void removeAllOrphans() {
+    List<DeclarationComposite<?, ?>> orphans = Lists.newLinkedList();
+    for (DeclarationComposite<?, ?> composite : this) {
+      if (composite != null) {
+        AbstractDeclaration declaration = composite.getDeclaration();
+        if (declaration instanceof UserCode) {
+          UserCode code = (UserCode) declaration;
+          UserType<?> declaringType = code.getDeclaringType();
+          if (declaringType != null) {
+            //pass
+          } else {
+            orphans.add(composite);
+          }
+        }
+      }
+    }
 
-		for( DeclarationComposite<?, ?> orphan : orphans ) {
-			this.removeItem( orphan );
-		}
-	}
+    for (DeclarationComposite<?, ?> orphan : orphans) {
+      this.removeItem(orphan);
+    }
+  }
 }

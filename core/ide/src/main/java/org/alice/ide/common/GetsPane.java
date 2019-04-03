@@ -63,105 +63,105 @@ import java.awt.RenderingHints;
  * @author Dennis Cosgrove
  */
 public class GetsPane extends Label {
-	private static Paint createGradientPaint( int width, boolean isReversalDesired ) {
-		Color colorStart = ThemeUtilities.getActiveTheme().getColorFor( ExpressionStatement.class );
-		Color colorEnd = colorStart.darker();
-		Color color0;
-		Color color1;
-		if( isReversalDesired ) {
-			color0 = colorEnd;
-			color1 = colorStart;
-		} else {
-			color0 = colorStart;
-			color1 = colorEnd;
-		}
-		return new GradientPaint( 0.0f, 0.0f, color0, width, 0.0f, color1 );
-	}
+  private static Paint createGradientPaint(int width, boolean isReversalDesired) {
+    Color colorStart = ThemeUtilities.getActiveTheme().getColorFor(ExpressionStatement.class);
+    Color colorEnd = colorStart.darker();
+    Color color0;
+    Color color1;
+    if (isReversalDesired) {
+      color0 = colorEnd;
+      color1 = colorStart;
+    } else {
+      color0 = colorStart;
+      color1 = colorEnd;
+    }
+    return new GradientPaint(0.0f, 0.0f, color0, width, 0.0f, color1);
+  }
 
-	private GetsPane( boolean isTowardLeadingEdge, int length ) {
-		this.isTowardLeadingEdge = isTowardLeadingEdge;
-		this.length = length;
-		this.setIcon( new Icon() {
-			private FontMetrics getFontMetrics() {
-				return GetsPane.this.getAwtComponent().getFontMetrics( GetsPane.this.getFont() );
-			}
+  private GetsPane(boolean isTowardLeadingEdge, int length) {
+    this.isTowardLeadingEdge = isTowardLeadingEdge;
+    this.length = length;
+    this.setIcon(new Icon() {
+      private FontMetrics getFontMetrics() {
+        return GetsPane.this.getAwtComponent().getFontMetrics(GetsPane.this.getFont());
+      }
 
-			@Override
-			public int getIconWidth() {
-				if( FormatterState.isJava() ) {
-					FontMetrics fontMetrics = this.getFontMetrics();
-					return fontMetrics.getHeight();
-				} else {
-					return ( this.getIconHeight() * GetsPane.this.length ) + 1;
-				}
-			}
+      @Override
+      public int getIconWidth() {
+        if (FormatterState.isJava()) {
+          FontMetrics fontMetrics = this.getFontMetrics();
+          return fontMetrics.getHeight();
+        } else {
+          return (this.getIconHeight() * GetsPane.this.length) + 1;
+        }
+      }
 
-			@Override
-			public int getIconHeight() {
-				if( FormatterState.isJava() ) {
-					FontMetrics fontMetrics = this.getFontMetrics();
-					return fontMetrics.charWidth( '=' );
-				} else {
-					return (int)( GetsPane.this.getFont().getSize2D() * 1.4f );
-				}
-			}
+      @Override
+      public int getIconHeight() {
+        if (FormatterState.isJava()) {
+          FontMetrics fontMetrics = this.getFontMetrics();
+          return fontMetrics.charWidth('=');
+        } else {
+          return (int) (GetsPane.this.getFont().getSize2D() * 1.4f);
+        }
+      }
 
-			@Override
-			public void paintIcon( Component c, Graphics g, int x, int y ) {
-				int width = this.getIconWidth();
-				int height = this.getIconHeight();
-				if( FormatterState.isJava() ) {
-					GraphicsUtilities.drawCenteredText( g, "=", x, y, width, height );
-				} else {
+      @Override
+      public void paintIcon(Component c, Graphics g, int x, int y) {
+        int width = this.getIconWidth();
+        int height = this.getIconHeight();
+        if (FormatterState.isJava()) {
+          GraphicsUtilities.drawCenteredText(g, "=", x, y, width, height);
+        } else {
 
-					int halfLineSize = height / 5;
-					int yTop = 0;
-					int yBottom = getHeight() - 1;
-					int yCenter = ( yTop + yBottom ) / 2;
-					int yTopLine = yCenter - halfLineSize;
-					int yBottomLine = yCenter + halfLineSize;
+          int halfLineSize = height / 5;
+          int yTop = 0;
+          int yBottom = getHeight() - 1;
+          int yCenter = (yTop + yBottom) / 2;
+          int yTopLine = yCenter - halfLineSize;
+          int yBottomLine = yCenter + halfLineSize;
 
-					final int INSET = 2;
-					int xLeft = INSET;
-					int xHeadRight = yBottom;
-					int xHeadRightInABit = ( xHeadRight * 4 ) / 5;
-					int xRight = getWidth() - 1 - ( INSET * 2 );
+          final int INSET = 2;
+          int xLeft = INSET;
+          int xHeadRight = yBottom;
+          int xHeadRightInABit = (xHeadRight * 4) / 5;
+          int xRight = getWidth() - 1 - (INSET * 2);
 
-					int[] xPoints = { xLeft, xHeadRight, xHeadRightInABit, xRight, xRight, xHeadRightInABit, xHeadRight };
-					int[] yPoints = { yCenter, yTop, yTopLine, yTopLine, yBottomLine, yBottomLine, yBottom };
+          int[] xPoints = {xLeft, xHeadRight, xHeadRightInABit, xRight, xRight, xHeadRightInABit, xHeadRight};
+          int[] yPoints = {yCenter, yTop, yTopLine, yTopLine, yBottomLine, yBottomLine, yBottom};
 
-					boolean isReversalDesired = GetsPane.this.isReversalDesired();
-					if( isReversalDesired ) {
-						for( int i = 0; i < xPoints.length; i++ ) {
-							xPoints[ i ] = getWidth() - xPoints[ i ];
-						}
-					}
+          boolean isReversalDesired = GetsPane.this.isReversalDesired();
+          if (isReversalDesired) {
+            for (int i = 0; i < xPoints.length; i++) {
+              xPoints[i] = getWidth() - xPoints[i];
+            }
+          }
 
-					Graphics2D g2 = (Graphics2D)g;
-					GraphicsUtilities.setRenderingHint( g2, RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+          Graphics2D g2 = (Graphics2D) g;
+          GraphicsUtilities.setRenderingHint(g2, RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-					g2.setPaint( GetsPane.createGradientPaint( width, isReversalDesired ) );
-					g2.fillPolygon( xPoints, yPoints, xPoints.length );
-					g2.setColor( Color.GRAY );
-					g2.drawPolygon( xPoints, yPoints, xPoints.length );
-				}
-			}
-		} );
-	}
+          g2.setPaint(GetsPane.createGradientPaint(width, isReversalDesired));
+          g2.fillPolygon(xPoints, yPoints, xPoints.length);
+          g2.setColor(Color.GRAY);
+          g2.drawPolygon(xPoints, yPoints, xPoints.length);
+        }
+      }
+    });
+  }
 
-	public GetsPane( boolean isTowardLeadingEdge ) {
-		this( isTowardLeadingEdge, 2 );
-	}
+  public GetsPane(boolean isTowardLeadingEdge) {
+    this(isTowardLeadingEdge, 2);
+  }
 
-	private boolean isReversalDesired() {
-		ComponentOrientation componentOrientation = this.getComponentOrientation();
-		if( componentOrientation.isLeftToRight() ) {
-			return isTowardLeadingEdge == false;
-		} else {
-			return isTowardLeadingEdge;
-		}
-	}
+  private boolean isReversalDesired() {
+    ComponentOrientation componentOrientation = this.getComponentOrientation();
+    if (componentOrientation.isLeftToRight()) {
+      return isTowardLeadingEdge == false;
+    } else {
+      return isTowardLeadingEdge;
+    }
+  }
 
-	private final boolean isTowardLeadingEdge;
-	private final int length;
+  private final boolean isTowardLeadingEdge;
+  private final int length;
 }

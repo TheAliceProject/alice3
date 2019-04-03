@@ -46,30 +46,28 @@ package test.gallery;
  * @author Dennis Cosgrove
  */
 public class ReadGalleryAst {
-	public static void main( String[] args ) throws Exception {
-		org.lgna.project.Version version = new org.lgna.project.Version( args[ 0 ] );
-		java.io.File file = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), version + ".xml" );
-		java.io.FileInputStream fis = new java.io.FileInputStream( file );
-		org.lgna.project.io.MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs = {
-				new org.lgna.project.io.MigrationManagerDecodedVersionPair( org.lgna.project.migration.ProjectMigrationManager.getInstance(), version )
-		};
-		org.w3c.dom.Document xmlDocument = org.lgna.project.io.IoUtilities.readXML( fis, migrationManagerDecodedVersionPairs );
-		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)org.lgna.project.ast.BlockStatement.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion() );
+  public static void main(String[] args) throws Exception {
+    org.lgna.project.Version version = new org.lgna.project.Version(args[0]);
+    java.io.File file = new java.io.File(edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), version + ".xml");
+    java.io.FileInputStream fis = new java.io.FileInputStream(file);
+    org.lgna.project.io.MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs = {new org.lgna.project.io.MigrationManagerDecodedVersionPair(org.lgna.project.migration.ProjectMigrationManager.getInstance(), version)};
+    org.w3c.dom.Document xmlDocument = org.lgna.project.io.IoUtilities.readXML(fis, migrationManagerDecodedVersionPairs);
+    org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement) org.lgna.project.ast.BlockStatement.decode(xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion());
 
-		org.lgna.project.Project project = null;
-		org.lgna.project.migration.ProjectMigrationManager projectMigrationManager = org.lgna.project.migration.ProjectMigrationManager.getInstance();
-		projectMigrationManager.migrate( blockStatement, project, version );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( blockStatement.statements.size() );
-		for( org.lgna.project.ast.Statement statement : blockStatement.statements ) {
-			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expressionStatement.expression.getValue();
-			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)fieldAccess.field.getValue();
-			java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
-			if( fld != null ) {
-				//pass
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "FAILURE:", field.getDeclaringType(), field );
-			}
-		}
-	}
+    org.lgna.project.Project project = null;
+    org.lgna.project.migration.ProjectMigrationManager projectMigrationManager = org.lgna.project.migration.ProjectMigrationManager.getInstance();
+    projectMigrationManager.migrate(blockStatement, project, version);
+    edu.cmu.cs.dennisc.java.util.logging.Logger.outln(blockStatement.statements.size());
+    for (org.lgna.project.ast.Statement statement : blockStatement.statements) {
+      org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement) statement;
+      org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess) expressionStatement.expression.getValue();
+      org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField) fieldAccess.field.getValue();
+      java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
+      if (fld != null) {
+        //pass
+      } else {
+        edu.cmu.cs.dennisc.java.util.logging.Logger.errln("FAILURE:", field.getDeclaringType(), field);
+      }
+    }
+  }
 }

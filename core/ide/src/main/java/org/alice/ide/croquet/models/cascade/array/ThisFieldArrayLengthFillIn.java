@@ -55,29 +55,29 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ThisFieldArrayLengthFillIn extends ArrayLengthFillIn {
-	private static Map<AbstractField, ThisFieldArrayLengthFillIn> map = Maps.newHashMap();
+  private static Map<AbstractField, ThisFieldArrayLengthFillIn> map = Maps.newHashMap();
 
-	public static synchronized ThisFieldArrayLengthFillIn getInstance( AbstractField field ) {
-		assert field != null;
-		ThisFieldArrayLengthFillIn rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ThisFieldArrayLengthFillIn( field );
-			map.put( field, rv );
-		}
-		return rv;
-	}
+  public static synchronized ThisFieldArrayLengthFillIn getInstance(AbstractField field) {
+    assert field != null;
+    ThisFieldArrayLengthFillIn rv = map.get(field);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ThisFieldArrayLengthFillIn(field);
+      map.put(field, rv);
+    }
+    return rv;
+  }
 
-	private final AbstractField field;
+  private final AbstractField field;
 
-	private ThisFieldArrayLengthFillIn( AbstractField field ) {
-		super( UUID.fromString( "b67e8cf6-e96f-4289-8cd2-1848b8a206ab" ) );
-		this.field = field;
-	}
+  private ThisFieldArrayLengthFillIn(AbstractField field) {
+    super(UUID.fromString("b67e8cf6-e96f-4289-8cd2-1848b8a206ab"));
+    this.field = field;
+  }
 
-	@Override
-	protected Expression createAccessExpression() {
-		return new FieldAccess(field);
-	}
+  @Override
+  protected Expression createAccessExpression() {
+    return new FieldAccess(field);
+  }
 }

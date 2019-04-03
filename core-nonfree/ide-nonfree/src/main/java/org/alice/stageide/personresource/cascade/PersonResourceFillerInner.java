@@ -60,32 +60,32 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class PersonResourceFillerInner extends ExpressionFillerInner {
-	private final LifeStage lifeStage;
+  private final LifeStage lifeStage;
 
-	public PersonResourceFillerInner( Class<? extends PersonResource> cls, LifeStage lifeStage ) {
-		super( cls );
-		this.lifeStage = lifeStage;
-	}
+  public PersonResourceFillerInner(Class<? extends PersonResource> cls, LifeStage lifeStage) {
+    super(cls);
+    this.lifeStage = lifeStage;
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		CascadeFillIn<InstanceCreation, Void> fillIn = null;
-		if( prevExpression instanceof InstanceCreation ) {
-			InstanceCreation instanceCreation = (InstanceCreation)prevExpression;
-			AbstractType<?, ?, ?> type = instanceCreation.getType();
-			if( type instanceof JavaType ) {
-				JavaType javaType = (JavaType)type;
-				if( javaType.isAssignableTo( PersonResource.class ) ) {
-					fillIn = PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter().getFillIn();
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    CascadeFillIn<InstanceCreation, Void> fillIn = null;
+    if (prevExpression instanceof InstanceCreation) {
+      InstanceCreation instanceCreation = (InstanceCreation) prevExpression;
+      AbstractType<?, ?, ?> type = instanceCreation.getType();
+      if (type instanceof JavaType) {
+        JavaType javaType = (JavaType) type;
+        if (javaType.isAssignableTo(PersonResource.class)) {
+          fillIn = PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter().getFillIn();
 
-				}
-			}
-		}
-		if( fillIn != null ) {
-			//pass
-		} else {
-			fillIn = PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage ).getFillIn();
-		}
-		items.add( fillIn );
-	}
+        }
+      }
+    }
+    if (fillIn != null) {
+      //pass
+    } else {
+      fillIn = PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter(this.lifeStage).getFillIn();
+    }
+    items.add(fillIn);
+  }
 }

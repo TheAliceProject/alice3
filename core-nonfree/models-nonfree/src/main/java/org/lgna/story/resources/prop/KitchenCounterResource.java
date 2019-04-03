@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,69 +34,68 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum KitchenCounterResource implements PropResource {
-	DESIGNER_BLUE( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_PINK( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_GREEN( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_DARK_BLUE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_GREEN_TILE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_BROWN_TILE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_RED_TILE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_GRAY_TILE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_TEAL_TILE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_SMALL_GREEN_TILE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_LIGHT_GRAY_TILE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_SOLID_BLACK( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_GRAY( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_GREEN( ImplementationAndVisualType.SIMS2 ),
-	LOFT_STEEL( ImplementationAndVisualType.SIMS2 ),
-	LOFT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_BLACK_AND_GRAY( ImplementationAndVisualType.SIMS2 ),
-	LOFT_GRANITE( ImplementationAndVisualType.SIMS2 ),
-	LOFT_MARBLE( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_ORANGE( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_TAN( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_GREEN( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_BLUE( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_PINK( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_WHITE( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_GREEN( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_RED( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_GRAY( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_BLUE( ImplementationAndVisualType.SIMS2 ),
-	VALUE_PINK( ImplementationAndVisualType.SIMS2 ),
-	VALUE_WHITE( ImplementationAndVisualType.SIMS2 ),
-	VALUE_GREEN( ImplementationAndVisualType.SIMS2 ),
-	VALUE_BLUE( ImplementationAndVisualType.SIMS2 );
+  DESIGNER_BLUE(ImplementationAndVisualType.SIMS2),
+  DESIGNER_PINK(ImplementationAndVisualType.SIMS2),
+  DESIGNER_GREEN(ImplementationAndVisualType.SIMS2),
+  DESIGNER_DARK_BLUE(ImplementationAndVisualType.SIMS2),
+  CLUB_GREEN_TILE(ImplementationAndVisualType.SIMS2),
+  CLUB_BROWN_TILE(ImplementationAndVisualType.SIMS2),
+  CLUB_RED_TILE(ImplementationAndVisualType.SIMS2),
+  CLUB_GRAY_TILE(ImplementationAndVisualType.SIMS2),
+  CLUB_TEAL_TILE(ImplementationAndVisualType.SIMS2),
+  CLUB_SMALL_GREEN_TILE(ImplementationAndVisualType.SIMS2),
+  CLUB_LIGHT_GRAY_TILE(ImplementationAndVisualType.SIMS2),
+  CLUB_SOLID_BLACK(ImplementationAndVisualType.SIMS2),
+  COLONIAL_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  COLONIAL_GRAY(ImplementationAndVisualType.SIMS2),
+  COLONIAL_GREEN(ImplementationAndVisualType.SIMS2),
+  LOFT_STEEL(ImplementationAndVisualType.SIMS2),
+  LOFT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_BLACK_AND_GRAY(ImplementationAndVisualType.SIMS2),
+  LOFT_GRANITE(ImplementationAndVisualType.SIMS2),
+  LOFT_MARBLE(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_ORANGE(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_TAN(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_GREEN(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_BLUE(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_PINK(ImplementationAndVisualType.SIMS2),
+  QUAINT_WHITE(ImplementationAndVisualType.SIMS2),
+  QUAINT_GREEN(ImplementationAndVisualType.SIMS2),
+  QUAINT_RED(ImplementationAndVisualType.SIMS2),
+  QUAINT_GRAY(ImplementationAndVisualType.SIMS2),
+  QUAINT_BLUE(ImplementationAndVisualType.SIMS2),
+  VALUE_PINK(ImplementationAndVisualType.SIMS2),
+  VALUE_WHITE(ImplementationAndVisualType.SIMS2),
+  VALUE_GREEN(ImplementationAndVisualType.SIMS2),
+  VALUE_BLUE(ImplementationAndVisualType.SIMS2);
 
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_DOOR = new JointId( null, KitchenCounterResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_DOOR = new JointId( null, KitchenCounterResource.class );
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_DOOR = new JointId(null, KitchenCounterResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_DOOR = new JointId(null, KitchenCounterResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { RIGHT_DOOR, LEFT_DOOR };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {RIGHT_DOOR, LEFT_DOOR};
 
-	private final ImplementationAndVisualType resourceType;
-	KitchenCounterResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	KitchenCounterResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  KitchenCounterResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return KitchenCounterResource.JOINT_ID_ROOTS;
-	}
+  KitchenCounterResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return KitchenCounterResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

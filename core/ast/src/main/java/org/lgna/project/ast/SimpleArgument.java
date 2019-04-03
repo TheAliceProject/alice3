@@ -49,25 +49,25 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class SimpleArgument extends AbstractArgument {
-	public SimpleArgument() {
-	}
+  public SimpleArgument() {
+  }
 
-	public SimpleArgument( AbstractParameter parameter, Expression expression ) {
-		super( parameter, expression );
-	}
+  public SimpleArgument(AbstractParameter parameter, Expression expression) {
+    super(parameter, expression);
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getExpressionTypeForParameterType( AbstractType<?, ?, ?> parameterType ) {
-		return parameterType;
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getExpressionTypeForParameterType(AbstractType<?, ?, ?> parameterType) {
+    return parameterType;
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		safeAppendRepr( localizer, this.expression.getValue() );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    safeAppendRepr(localizer, this.expression.getValue());
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendExpression( this.expression.getValue() );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendExpression(this.expression.getValue());
+  }
 }

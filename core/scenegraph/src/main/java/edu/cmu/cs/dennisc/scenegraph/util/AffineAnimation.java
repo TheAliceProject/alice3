@@ -54,117 +54,116 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class AffineAnimation {
-	private static final long SLEEP_MSEC = 25;
-	private static long s_t0 = System.currentTimeMillis();
+@Deprecated public class AffineAnimation {
+  private static final long SLEEP_MSEC = 25;
+  private static long s_t0 = System.currentTimeMillis();
 
-	private static void waitForLookingGlass() {
-		ThreadUtilities.sleep( SLEEP_MSEC );
-	}
+  private static void waitForLookingGlass() {
+    ThreadUtilities.sleep(SLEEP_MSEC);
+  }
 
-	private static double getCurrentTime() {
-		return ( System.currentTimeMillis() - s_t0 ) * 0.001;
-	}
+  private static double getCurrentTime() {
+    return (System.currentTimeMillis() - s_t0) * 0.001;
+  }
 
-	public static void setTranslation( Transformable transformable, double x, double y, double z, double rate ) {
-		double t0 = getCurrentTime();
+  public static void setTranslation(Transformable transformable, double x, double y, double z, double rate) {
+    double t0 = getCurrentTime();
 
-		AffineMatrix4x4 m = transformable.getLocalTransformation();
-		double x0 = m.translation.x;
-		double y0 = m.translation.y;
-		double z0 = m.translation.z;
+    AffineMatrix4x4 m = transformable.getLocalTransformation();
+    double x0 = m.translation.x;
+    double y0 = m.translation.y;
+    double z0 = m.translation.z;
 
-		if( Double.isNaN( x ) ) {
-			x = x0;
-		}
-		if( Double.isNaN( y ) ) {
-			y = y0;
-		}
-		if( Double.isNaN( z ) ) {
-			z = z0;
-		}
+    if (Double.isNaN(x)) {
+      x = x0;
+    }
+    if (Double.isNaN(y)) {
+      y = y0;
+    }
+    if (Double.isNaN(z)) {
+      z = z0;
+    }
 
-		double xDelta = x - x0;
-		double yDelta = y - y0;
-		double zDelta = z - z0;
+    double xDelta = x - x0;
+    double yDelta = y - y0;
+    double zDelta = z - z0;
 
-		double distance = Tuple3.calculateMagnitude( xDelta, yDelta, zDelta );
+    double distance = Tuple3.calculateMagnitude(xDelta, yDelta, zDelta);
 
-		if( distance != 0 ) {
-			double xRate = ( rate * xDelta ) / distance;
-			double yRate = ( rate * yDelta ) / distance;
-			double zRate = ( rate * zDelta ) / distance;
+    if (distance != 0) {
+      double xRate = (rate * xDelta) / distance;
+      double yRate = (rate * yDelta) / distance;
+      double zRate = (rate * zDelta) / distance;
 
-			double duration = distance / rate;
+      double duration = distance / rate;
 
-			double tComplete = t0 + duration;
-			while( true ) {
-				double tCurr = getCurrentTime();
-				if( tCurr > tComplete ) {
-					break;
-				} else {
-					double tDelta = tCurr - t0;
+      double tComplete = t0 + duration;
+      while (true) {
+        double tCurr = getCurrentTime();
+        if (tCurr > tComplete) {
+          break;
+        } else {
+          double tDelta = tCurr - t0;
 
-					m.translation.set( x0 + ( xRate * tDelta ), y0 + ( yRate * tDelta ), z0 + ( zRate * tDelta ) );
-					transformable.setLocalTransformation( m );
-					waitForLookingGlass();
-				}
-			}
+          m.translation.set(x0 + (xRate * tDelta), y0 + (yRate * tDelta), z0 + (zRate * tDelta));
+          transformable.setLocalTransformation(m);
+          waitForLookingGlass();
+        }
+      }
 
-			m.translation.set( x, y, z );
-			transformable.setLocalTransformation( m );
-			waitForLookingGlass();
-		}
-	}
+      m.translation.set(x, y, z);
+      transformable.setLocalTransformation(m);
+      waitForLookingGlass();
+    }
+  }
 
-	private static void rotate( Transformable transformable, Vector3 axis, double angleInRevolutions, double duration ) {
-		double t0 = getCurrentTime();
+  private static void rotate(Transformable transformable, Vector3 axis, double angleInRevolutions, double duration) {
+    double t0 = getCurrentTime();
 
-		double tComplete = t0 + duration;
+    double tComplete = t0 + duration;
 
-		double angleSum = 0;
-		while( true ) {
-			double tCurr = getCurrentTime();
-			if( tCurr > tComplete ) {
-				break;
-			} else {
-				double tDelta = tCurr - t0;
-				double tPortion = tDelta / duration;
+    double angleSum = 0;
+    while (true) {
+      double tCurr = getCurrentTime();
+      if (tCurr > tComplete) {
+        break;
+      } else {
+        double tDelta = tCurr - t0;
+        double tPortion = tDelta / duration;
 
-				double anglePortion = ( angleInRevolutions * tPortion ) - angleSum;
+        double anglePortion = (angleInRevolutions * tPortion) - angleSum;
 
-				transformable.applyRotationAboutArbitraryAxis( axis, new AngleInRevolutions( anglePortion ) );
+        transformable.applyRotationAboutArbitraryAxis(axis, new AngleInRevolutions(anglePortion));
 
-				angleSum += anglePortion;
-				waitForLookingGlass();
-			}
-		}
-		transformable.applyRotationAboutArbitraryAxis( axis, new AngleInRevolutions( angleInRevolutions - angleSum ) );
-		waitForLookingGlass();
-	}
+        angleSum += anglePortion;
+        waitForLookingGlass();
+      }
+    }
+    transformable.applyRotationAboutArbitraryAxis(axis, new AngleInRevolutions(angleInRevolutions - angleSum));
+    waitForLookingGlass();
+  }
 
-	public static void turnLeft( Transformable transformable, double angleInRevolutions, double duration ) {
-		rotate( transformable, Vector3.accessPositiveYAxis(), angleInRevolutions, duration );
-	}
+  public static void turnLeft(Transformable transformable, double angleInRevolutions, double duration) {
+    rotate(transformable, Vector3.accessPositiveYAxis(), angleInRevolutions, duration);
+  }
 
-	public static void turnRight( Transformable transformable, double angleInRevolutions, double duration ) {
-		turnLeft( transformable, -angleInRevolutions, duration );
-	}
+  public static void turnRight(Transformable transformable, double angleInRevolutions, double duration) {
+    turnLeft(transformable, -angleInRevolutions, duration);
+  }
 
-	public static void turnForward( Transformable transformable, double angleInRevolutions, double duration ) {
-		rotate( transformable, Vector3.accessPositiveXAxis(), angleInRevolutions, duration );
-	}
+  public static void turnForward(Transformable transformable, double angleInRevolutions, double duration) {
+    rotate(transformable, Vector3.accessPositiveXAxis(), angleInRevolutions, duration);
+  }
 
-	public static void turnBackward( Transformable transformable, double angleInRevolutions, double duration ) {
-		turnForward( transformable, -angleInRevolutions, duration );
-	}
+  public static void turnBackward(Transformable transformable, double angleInRevolutions, double duration) {
+    turnForward(transformable, -angleInRevolutions, duration);
+  }
 
-	public static void rollLeft( Transformable transformable, double angleInRevolutions, double duration ) {
-		rotate( transformable, Vector3.accessPositiveZAxis(), angleInRevolutions, duration );
-	}
+  public static void rollLeft(Transformable transformable, double angleInRevolutions, double duration) {
+    rotate(transformable, Vector3.accessPositiveZAxis(), angleInRevolutions, duration);
+  }
 
-	public static void rollRight( Transformable transformable, double angleInRevolutions, double duration ) {
-		rollLeft( transformable, -angleInRevolutions, duration );
-	}
+  public static void rollRight(Transformable transformable, double angleInRevolutions, double duration) {
+    rollLeft(transformable, -angleInRevolutions, duration);
+  }
 }

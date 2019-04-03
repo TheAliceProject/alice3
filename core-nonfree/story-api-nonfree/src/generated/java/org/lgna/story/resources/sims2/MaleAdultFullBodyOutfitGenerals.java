@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitGenerals implements MaleAdultFullBodyOutfit {
-	HIGH_RANK,
-	MID_RANK,
-	LOW_RANK;
+  HIGH_RANK, MID_RANK, LOW_RANK
 
 }

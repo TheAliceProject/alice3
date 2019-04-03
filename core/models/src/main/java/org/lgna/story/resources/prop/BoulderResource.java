@@ -32,43 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum BoulderResource implements PropResource {
-	BOULDER1_GRAY,
-	BOULDER1_RED,
-	BOULDER1_BROWN,
-	BOULDER2_GRAY,
-	BOULDER2_RED,
-	BOULDER2_BROWN,
-	BOULDER3_GRAY,
-	BOULDER3_RED,
-	BOULDER3_BROWN,
-	BOULDER4_GRAY,
-	BOULDER4_RED,
-	BOULDER4_BROWN,
-	BOULDER5_GRAY,
-	BOULDER5_RED,
-	BOULDER5_BROWN;
+  BOULDER1_GRAY, BOULDER1_RED, BOULDER1_BROWN, BOULDER2_GRAY, BOULDER2_RED, BOULDER2_BROWN, BOULDER3_GRAY, BOULDER3_RED, BOULDER3_BROWN, BOULDER4_GRAY, BOULDER4_RED, BOULDER4_BROWN, BOULDER5_GRAY, BOULDER5_RED, BOULDER5_BROWN;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	BoulderResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  BoulderResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	BoulderResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  BoulderResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

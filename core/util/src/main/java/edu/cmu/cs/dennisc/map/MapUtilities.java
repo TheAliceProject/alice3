@@ -48,12 +48,12 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public abstract class MapUtilities {
-	public static <A, B> Map<A, B> fillInReverseMap( Map<A, B> rv, Map<B, A> src ) {
-		assert rv.isEmpty();
-		assert src.isEmpty() == false;
-		for( B b : src.keySet() ) {
-			rv.put( src.get( b ), b );
-		}
-		return rv;
-	}
+  public static <A, B> Map<A, B> fillInReverseMap(Map<A, B> rv, Map<B, A> src) {
+    assert rv.isEmpty();
+    assert src.isEmpty() == false;
+    for (B b : src.keySet()) {
+      rv.put(src.get(b), b);
+    }
+    return rv;
+  }
 }

@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleElderFullBodyOutfitOveralls implements MaleElderFullBodyOutfit {
-	PLAID_N_BLUE,
-	PLAID_N_BROWN;
+  PLAID_N_BLUE, PLAID_N_BROWN
 
 }

@@ -51,53 +51,53 @@ import org.lgna.project.annotations.ValueDetails;
  * @author Dennis Cosgrove
  */
 public class UserParameter extends AbstractParameter {
-	public UserParameter() {
-	}
+  public UserParameter() {
+  }
 
-	public UserParameter( String name, AbstractType<?, ?, ?> valueType ) {
-		this.name.setValue( name );
-		this.valueType.setValue( valueType );
-	}
+  public UserParameter(String name, AbstractType<?, ?, ?> valueType) {
+    this.name.setValue(name);
+    this.valueType.setValue(valueType);
+  }
 
-	public UserParameter( String name, Class<?> valueCls ) {
-		this( name, JavaType.getInstance( valueCls ) );
-	}
+  public UserParameter(String name, Class<?> valueCls) {
+    this(name, JavaType.getInstance(valueCls));
+  }
 
-	@Override
-	public UserCode getCode() {
-		return ClassUtilities.getInstance( this.getParent(), UserCode.class );
-	}
+  @Override
+  public UserCode getCode() {
+    return ClassUtilities.getInstance(this.getParent(), UserCode.class);
+  }
 
-	@Override
-	public boolean isUserAuthored() {
-		return true;
-	}
+  @Override
+  public boolean isUserAuthored() {
+    return true;
+  }
 
-	@Override
-	public String getName() {
-		return name.getValue();
-	}
+  @Override
+  public String getName() {
+    return name.getValue();
+  }
 
-	@Override
-	public StringProperty getNamePropertyIfItExists() {
-		return this.name;
-	}
+  @Override
+  public StringProperty getNamePropertyIfItExists() {
+    return this.name;
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getValueType() {
-		return valueType.getValue();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getValueType() {
+    return valueType.getValue();
+  }
 
-	@Override
-	public ValueDetails<?> getDetails() {
-		return null;
-	}
+  @Override
+  public ValueDetails<?> getDetails() {
+    return null;
+  }
 
-	@Override
-	public boolean isVariableLength() {
-		return false;
-	}
+  @Override
+  public boolean isVariableLength() {
+    return false;
+  }
 
-	public final StringProperty name = new StringProperty( this, null );
-	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = DeclarationProperty.createReferenceInstance( this );
+  public final StringProperty name = new StringProperty(this, null);
+  public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = DeclarationProperty.createReferenceInstance(this);
 }

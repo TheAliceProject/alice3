@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum ChildTopPieceShortSleeve implements MaleChildTopPiece, FemaleChildTopPiece {
-	PURPLE_BEAR,
-	FLOWER,
-	RAINBOW,
-	CHICKY_MONKEY;
+  PURPLE_BEAR, FLOWER, RAINBOW, CHICKY_MONKEY
 
 }

@@ -52,136 +52,136 @@ import java.awt.Container;
  * @author Dennis Cosgrove
  */
 public abstract class AwtContainerView<J extends Container> extends AwtComponentView<J> {
-	//	private java.awt.event.ContainerListener containerListener = new java.awt.event.ContainerListener() {
-	//		public void componentAdded(java.awt.event.ContainerEvent e) {
-	//			assert e.getContainer() == Component.this.getJComponent();
-	//			java.awt.Component awtComponent = e.getChild();
-	//			Component<?> child = Component.lookup( awtComponent );
-	//			if( child != null ) {
-	//				child.handleAddedTo( Component.this );
-	//			} else {
-	//				if( awtComponent instanceof javax.swing.plaf.UIResource ) {
-	//					//pass
-	//				} else {
-	//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for child" );
-	//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "    parent:", Component.this );
-	//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChild:", awtComponent );
-	//				}
-	//			}
-	//		}
-	//		public void componentRemoved(java.awt.event.ContainerEvent e) {
-	//			assert e.getContainer() == Component.this.getJComponent();
-	//			java.awt.Component awtComponent = e.getChild();
-	//			Component<?> child = Component.lookup( awtComponent );
-	//			if( child != null ) {
-	//				child.handleRemovedFrom( Component.this );
-	//			} else {
-	//				if( awtComponent instanceof javax.swing.plaf.UIResource ) {
-	//					//pass
-	//				} else {
-	//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for child" );
-	//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "    parent:", Component.this );
-	//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChild:", awtComponent );
-	//				}
-	//			}
-	//		}
-	//	};
-	@Deprecated
-	public AwtComponentView<?> getComponent( int i ) {
-		return AwtComponentView.lookup( this.getAwtComponent().getComponent( i ) );
-	}
+  //  private java.awt.event.ContainerListener containerListener = new java.awt.event.ContainerListener() {
+  //  public void componentAdded(java.awt.event.ContainerEvent e) {
+  //    assert e.getContainer() == Component.this.getJComponent();
+  //    java.awt.Component awtComponent = e.getChild();
+  //    Component<?> child = Component.lookup( awtComponent );
+  //    if( child != null ) {
+  //      child.handleAddedTo( Component.this );
+  //    } else {
+  //      if( awtComponent instanceof javax.swing.plaf.UIResource ) {
+  //        //pass
+  //      } else {
+  //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for child" );
+  //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "    parent:", Component.this );
+  //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChild:", awtComponent );
+  //      }
+  //    }
+  //  }
+  //  public void componentRemoved(java.awt.event.ContainerEvent e) {
+  //    assert e.getContainer() == Component.this.getJComponent();
+  //    java.awt.Component awtComponent = e.getChild();
+  //    Component<?> child = Component.lookup( awtComponent );
+  //    if( child != null ) {
+  //      child.handleRemovedFrom( Component.this );
+  //    } else {
+  //      if( awtComponent instanceof javax.swing.plaf.UIResource ) {
+  //        //pass
+  //      } else {
+  //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for child" );
+  //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "    parent:", Component.this );
+  //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChild:", awtComponent );
+  //      }
+  //    }
+  //  }
+  //  };
+  @Deprecated
+  public AwtComponentView<?> getComponent(int i) {
+    return AwtComponentView.lookup(this.getAwtComponent().getComponent(i));
+  }
 
-	@Deprecated
-	public AwtComponentView<?>[] getComponents() {
-		Component[] components = this.getAwtComponent().getComponents();
-		final int N = components.length;
-		AwtComponentView<?>[] rv = new AwtComponentView<?>[ N ];
-		for( int i = 0; i < N; i++ ) {
-			rv[ i ] = AwtComponentView.lookup( components[ i ] );
-		}
-		return rv;
-	}
+  @Deprecated
+  public AwtComponentView<?>[] getComponents() {
+    Component[] components = this.getAwtComponent().getComponents();
+    final int N = components.length;
+    AwtComponentView<?>[] rv = new AwtComponentView<?>[N];
+    for (int i = 0; i < N; i++) {
+      rv[i] = AwtComponentView.lookup(components[i]);
+    }
+    return rv;
+  }
 
-	public int getComponentZOrder( AwtComponentView<?> component ) {
-		return this.getAwtComponent().getComponentZOrder( component.getAwtComponent() );
-	}
+  public int getComponentZOrder(AwtComponentView<?> component) {
+    return this.getAwtComponent().getComponentZOrder(component.getAwtComponent());
+  }
 
-	public void setComponentZOrder( AwtComponentView<?> component, int index ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setComponentZOrder( component.getAwtComponent(), index );
-	}
+  public void setComponentZOrder(AwtComponentView<?> component, int index) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setComponentZOrder(component.getAwtComponent(), index);
+  }
 
-	public int getComponentCount() {
-		return getAwtComponent().getComponentCount();
-	}
+  public int getComponentCount() {
+    return getAwtComponent().getComponentCount();
+  }
 
-	public boolean isAncestorOf( AwtComponentView<?> other ) {
-		return this.getAwtComponent().isAncestorOf( other.getAwtComponent() );
-	}
+  public boolean isAncestorOf(AwtComponentView<?> other) {
+    return this.getAwtComponent().isAncestorOf(other.getAwtComponent());
+  }
 
-	protected final void internalAddComponent( AwtComponentView<?> component ) {
-		assert component != null : this;
-		assert component != this : this;
-		this.checkEventDispatchThread();
-		this.checkTreeLock();
-		this.getAwtComponent().add( component.getAwtComponent() );
-	}
+  protected final void internalAddComponent(AwtComponentView<?> component) {
+    assert component != null : this;
+    assert component != this : this;
+    this.checkEventDispatchThread();
+    this.checkTreeLock();
+    this.getAwtComponent().add(component.getAwtComponent());
+  }
 
-	protected final void internalAddComponent( AwtComponentView<?> component, Object constraints ) {
-		assert component != null : this;
-		assert component != this : this;
-		this.checkEventDispatchThread();
-		this.checkTreeLock();
-		this.getAwtComponent().add( component.getAwtComponent(), constraints );
-	}
+  protected final void internalAddComponent(AwtComponentView<?> component, Object constraints) {
+    assert component != null : this;
+    assert component != this : this;
+    this.checkEventDispatchThread();
+    this.checkTreeLock();
+    this.getAwtComponent().add(component.getAwtComponent(), constraints);
+  }
 
-	private void internalRemoveComponent( AwtComponentView<?> component, boolean isReleaseDesired ) {
-		assert component != null : this;
-		assert component != this : this;
-		this.checkEventDispatchThread();
-		this.checkTreeLock();
-		this.getAwtComponent().remove( component.getAwtComponent() );
-		//		if( component.getAwtComponent().isDisplayable() ) {
-		//			component.handleUndisplayable();
-		//		}
-		if( isReleaseDesired ) {
-			if( component instanceof AwtContainerView<?> ) {
-				AwtContainerView<?> container = (AwtContainerView<?>)component;
-				container.internalRemoveAllComponents( true );
-			}
-			component.release();
-		}
-	}
+  private void internalRemoveComponent(AwtComponentView<?> component, boolean isReleaseDesired) {
+    assert component != null : this;
+    assert component != this : this;
+    this.checkEventDispatchThread();
+    this.checkTreeLock();
+    this.getAwtComponent().remove(component.getAwtComponent());
+    //  if( component.getAwtComponent().isDisplayable() ) {
+    //    component.handleUndisplayable();
+    //  }
+    if (isReleaseDesired) {
+      if (component instanceof AwtContainerView<?>) {
+        AwtContainerView<?> container = (AwtContainerView<?>) component;
+        container.internalRemoveAllComponents(true);
+      }
+      component.release();
+    }
+  }
 
-	private final void internalRemoveAllComponents( boolean isReleaseDesired ) {
-		Component[] awtComponents = this.getAwtComponent().getComponents();
-		for( Component awtComponent : awtComponents ) {
-			if( awtComponent != null ) {
-				AwtComponentView<?> component = lookup( awtComponent );
-				this.internalRemoveComponent( component, isReleaseDesired );
-			} else {
-				Logger.warning( "encountered null component", this );
-			}
-		}
-	}
+  private final void internalRemoveAllComponents(boolean isReleaseDesired) {
+    Component[] awtComponents = this.getAwtComponent().getComponents();
+    for (Component awtComponent : awtComponents) {
+      if (awtComponent != null) {
+        AwtComponentView<?> component = lookup(awtComponent);
+        this.internalRemoveComponent(component, isReleaseDesired);
+      } else {
+        Logger.warning("encountered null component", this);
+      }
+    }
+  }
 
-	protected void internalRemoveComponent( AwtComponentView<?> component ) {
-		this.internalRemoveComponent( component, false );
-	}
+  protected void internalRemoveComponent(AwtComponentView<?> component) {
+    this.internalRemoveComponent(component, false);
+  }
 
-	protected final void internalRemoveAllComponents() {
-		this.internalRemoveAllComponents( false );
-	}
+  protected final void internalRemoveAllComponents() {
+    this.internalRemoveAllComponents(false);
+  }
 
-	protected void internalForgetAndRemoveComponent( AwtComponentView<?> component ) {
-		this.internalRemoveComponent( component, true );
-		//		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveComponent( this.getAwtComponent(), component.getAwtComponent(), forgetObserver );
-		//		this.repaint();
-	}
+  protected void internalForgetAndRemoveComponent(AwtComponentView<?> component) {
+    this.internalRemoveComponent(component, true);
+    //  edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveComponent( this.getAwtComponent(), component.getAwtComponent(), forgetObserver );
+    //  this.repaint();
+  }
 
-	protected void internalForgetAndRemoveAllComponents() {
-		this.internalRemoveAllComponents( true );
-		//		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this.getAwtComponent(), forgetObserver );
-		//		this.repaint();
-	}
+  protected void internalForgetAndRemoveAllComponents() {
+    this.internalRemoveAllComponents(true);
+    //  edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this.getAwtComponent(), forgetObserver );
+    //  this.repaint();
+  }
 }

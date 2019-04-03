@@ -51,12 +51,12 @@ import org.lgna.croquet.views.BorderPanel;
  * @author Dennis Cosgrove
  */
 public class ListDemoView extends BorderPanel {
-	public ListDemoView( ListDemoComposite composite ) {
-		super( composite );
-		ImmutableDataSingleSelectListState<ZodiacSign> zodiacState = composite.getZodiacState();
-		this.addCenterComponent( zodiacState.createList() );
-		this.addPageStartComponent( zodiacState.createHorizontalDefaultRadioButtons() );
-		this.addLineStartComponent( zodiacState.createVerticalDefaultRadioButtons() );
-		this.addPageEndComponent( zodiacState.getPrepModel().createComboBox() );
-	}
+  public ListDemoView(ListDemoComposite composite) {
+    super(composite);
+    ImmutableDataSingleSelectListState<ZodiacSign> zodiacState = composite.getZodiacState();
+    this.addCenterComponent(zodiacState.createList());
+    this.addPageStartComponent(zodiacState.createHorizontalDefaultRadioButtons());
+    this.addLineStartComponent(zodiacState.createVerticalDefaultRadioButtons());
+    this.addPageEndComponent(zodiacState.getPrepModel().createComboBox());
+  }
 }

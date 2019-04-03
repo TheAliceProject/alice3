@@ -64,40 +64,38 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocalStatementCascade extends CascadeWithInternalBlank<Expression> {
-	private static MapToMap<UserLocal, BlockStatementIndexPair, LocalStatementCascade> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserLocal, BlockStatementIndexPair, LocalStatementCascade> mapToMap = MapToMap.newInstance();
 
-	public static synchronized LocalStatementCascade getInstance( UserLocal local, BlockStatementIndexPair blockStatementIndexPair ) {
-		return mapToMap.getInitializingIfAbsent( local, blockStatementIndexPair, new MapToMap.Initializer<UserLocal, BlockStatementIndexPair, LocalStatementCascade>() {
-			@Override
-			public LocalStatementCascade initialize( UserLocal local, BlockStatementIndexPair blockStatementIndexPair ) {
-				return new LocalStatementCascade( local, blockStatementIndexPair );
-			}
-		} );
-	}
+  public static synchronized LocalStatementCascade getInstance(UserLocal local, BlockStatementIndexPair blockStatementIndexPair) {
+    return mapToMap.getInitializingIfAbsent(local, blockStatementIndexPair, new MapToMap.Initializer<UserLocal, BlockStatementIndexPair, LocalStatementCascade>() {
+      @Override
+      public LocalStatementCascade initialize(UserLocal local, BlockStatementIndexPair blockStatementIndexPair) {
+        return new LocalStatementCascade(local, blockStatementIndexPair);
+      }
+    });
+  }
 
-	private final UserLocal local;
-	private final BlockStatementIndexPair blockStatementIndexPair;
+  private final UserLocal local;
+  private final BlockStatementIndexPair blockStatementIndexPair;
 
-	private LocalStatementCascade( UserLocal local, BlockStatementIndexPair blockStatementIndexPair ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "0c4a6b56-3935-4e4b-a4e0-7828338d0f8c" ), Expression.class );
-		this.local = local;
-		this.blockStatementIndexPair = blockStatementIndexPair;
-	}
+  private LocalStatementCascade(UserLocal local, BlockStatementIndexPair blockStatementIndexPair) {
+    super(Application.PROJECT_GROUP, UUID.fromString("0c4a6b56-3935-4e4b-a4e0-7828338d0f8c"), Expression.class);
+    this.local = local;
+    this.blockStatementIndexPair = blockStatementIndexPair;
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity, Expression[] values ) {
-		return new InsertStatementEdit( userActivity,
-				this.blockStatementIndexPair,
-				new ExpressionStatement( values[ 0 ] ) );
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity, Expression[] values) {
+    return new InsertStatementEdit(userActivity, this.blockStatementIndexPair, new ExpressionStatement(values[0]));
+  }
 
-	@Override
-	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<Expression> blankNode ) {
-		rv.add( LocalAssignmentFillIn.getInstance( this.local ) );
-		AbstractType<?, ?, ?> type = this.local.getValueType();
-		if( type.isArray() ) {
-			rv.add( LocalArrayAtIndexAssignmentFillIn.getInstance( this.local ) );
-		}
-		return rv;
-	}
+  @Override
+  protected List<CascadeBlankChild> updateBlankChildren(List<CascadeBlankChild> rv, BlankNode<Expression> blankNode) {
+    rv.add(LocalAssignmentFillIn.getInstance(this.local));
+    AbstractType<?, ?, ?> type = this.local.getValueType();
+    if (type.isArray()) {
+      rv.add(LocalArrayAtIndexAssignmentFillIn.getInstance(this.local));
+    }
+    return rv;
+  }
 }

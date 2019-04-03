@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitOverhangTshirtGamespy implements MaleAdultFullBodyOutfit {
-	GREEN_LOGO,
-	BLACK_BUNNY;
+  GREEN_LOGO, BLACK_BUNNY
 
 }

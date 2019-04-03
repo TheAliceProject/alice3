@@ -49,8 +49,8 @@ import org.alice.ide.member.ProcedureTabComposite;
  * @author Dennis Cosgrove
  */
 public class ProcedureTabView extends MemberTabView {
-	public ProcedureTabView( ProcedureTabComposite composite ) {
-		super( composite );
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getProcedureColor() );
-	}
+  public ProcedureTabView(ProcedureTabComposite composite) {
+    super(composite);
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getProcedureColor());
+  }
 }

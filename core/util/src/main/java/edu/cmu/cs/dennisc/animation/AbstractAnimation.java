@@ -46,98 +46,94 @@ package edu.cmu.cs.dennisc.animation;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractAnimation implements Animation {
-	private enum State {
-		INITIALIZE_IS_REQUIRED,
-		PROLOGUE_IS_REQUIRED,
-		UPDATE_IS_REQUIRED,
-		EPILOGUE_IS_REQUIRED,
-		COMPLETED
-	}
+  private enum State {
+    INITIALIZE_IS_REQUIRED, PROLOGUE_IS_REQUIRED, UPDATE_IS_REQUIRED, EPILOGUE_IS_REQUIRED, COMPLETED
+  }
 
-	private State m_state = State.PROLOGUE_IS_REQUIRED;
-	private double m_t0 = Double.NaN;
-	private double m_tPrevious = Double.NaN;
+  private State m_state = State.PROLOGUE_IS_REQUIRED;
+  private double m_t0 = Double.NaN;
+  private double m_tPrevious = Double.NaN;
 
-	//	public AbstractAnimation() {
-	//		initialize();
-	//	}
+  //  public AbstractAnimation() {
+  //    initialize();
+  //  }
 
-	@Override
-	public final synchronized void reset() {
-		m_state = State.INITIALIZE_IS_REQUIRED;
-	}
+  @Override
+  public final synchronized void reset() {
+    m_state = State.INITIALIZE_IS_REQUIRED;
+  }
 
-	@Override
-	public final synchronized double update( double tCurrent, AnimationObserver animationObserver ) {
-		double tRemaining = Double.NaN;
-		if( m_state != State.COMPLETED ) {
-			if( m_state == State.INITIALIZE_IS_REQUIRED ) {
-				m_t0 = Double.NaN;
-				m_tPrevious = Double.NaN;
-				m_state = State.PROLOGUE_IS_REQUIRED;
-			}
-			if( m_state == State.PROLOGUE_IS_REQUIRED ) {
-				m_t0 = tCurrent;
-				prologue();
-				if( animationObserver != null ) {
-					animationObserver.started( this );
-				}
-				m_state = State.UPDATE_IS_REQUIRED;
-			}
-			if( m_state == State.UPDATE_IS_REQUIRED ) {
-				tRemaining = update( tCurrent - m_t0, tCurrent - m_tPrevious, animationObserver );
-				if( tRemaining <= 0.0 ) {
-					m_state = State.EPILOGUE_IS_REQUIRED;
-				}
-				m_tPrevious = tCurrent;
-			}
-			if( m_state == State.EPILOGUE_IS_REQUIRED ) {
-				this.preEpilogue();
-				epilogue();
-				if( animationObserver != null ) {
-					animationObserver.finished( this );
-				}
-				m_state = State.COMPLETED;
-				tRemaining = 0.0;
-			}
-		} else {
-			//todo
-			tRemaining = 0.0;
-		}
-		assert Double.isNaN( tRemaining ) == false;
-		return tRemaining;
-	}
+  @Override
+  public final synchronized double update(double tCurrent, AnimationObserver animationObserver) {
+    double tRemaining = Double.NaN;
+    if (m_state != State.COMPLETED) {
+      if (m_state == State.INITIALIZE_IS_REQUIRED) {
+        m_t0 = Double.NaN;
+        m_tPrevious = Double.NaN;
+        m_state = State.PROLOGUE_IS_REQUIRED;
+      }
+      if (m_state == State.PROLOGUE_IS_REQUIRED) {
+        m_t0 = tCurrent;
+        prologue();
+        if (animationObserver != null) {
+          animationObserver.started(this);
+        }
+        m_state = State.UPDATE_IS_REQUIRED;
+      }
+      if (m_state == State.UPDATE_IS_REQUIRED) {
+        tRemaining = update(tCurrent - m_t0, tCurrent - m_tPrevious, animationObserver);
+        if (tRemaining <= 0.0) {
+          m_state = State.EPILOGUE_IS_REQUIRED;
+        }
+        m_tPrevious = tCurrent;
+      }
+      if (m_state == State.EPILOGUE_IS_REQUIRED) {
+        this.preEpilogue();
+        epilogue();
+        if (animationObserver != null) {
+          animationObserver.finished(this);
+        }
+        m_state = State.COMPLETED;
+        tRemaining = 0.0;
+      }
+    } else {
+      //todo
+      tRemaining = 0.0;
+    }
+    assert Double.isNaN(tRemaining) == false;
+    return tRemaining;
+  }
 
-	@Override
-	public final synchronized void complete( AnimationObserver animationObserver ) {
-		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "complete: ", m_state );
-		if( m_state == State.PROLOGUE_IS_REQUIRED ) {
-			prologue();
-			if( animationObserver != null ) {
-				animationObserver.started( this );
-			}
-			m_state = State.UPDATE_IS_REQUIRED;
-		}
-		if( m_state == State.UPDATE_IS_REQUIRED ) {
-			update( 0, 0, animationObserver );
-			m_state = State.EPILOGUE_IS_REQUIRED;
-		}
-		if( m_state == State.EPILOGUE_IS_REQUIRED ) {
-			this.preEpilogue();
-			epilogue();
-			if( animationObserver != null ) {
-				animationObserver.finished( this );
-			}
-			m_state = State.PROLOGUE_IS_REQUIRED;
-		}
-	}
+  @Override
+  public final synchronized void complete(AnimationObserver animationObserver) {
+    //    edu.cmu.cs.dennisc.print.PrintUtilities.println( "complete: ", m_state );
+    if (m_state == State.PROLOGUE_IS_REQUIRED) {
+      prologue();
+      if (animationObserver != null) {
+        animationObserver.started(this);
+      }
+      m_state = State.UPDATE_IS_REQUIRED;
+    }
+    if (m_state == State.UPDATE_IS_REQUIRED) {
+      update(0, 0, animationObserver);
+      m_state = State.EPILOGUE_IS_REQUIRED;
+    }
+    if (m_state == State.EPILOGUE_IS_REQUIRED) {
+      this.preEpilogue();
+      epilogue();
+      if (animationObserver != null) {
+        animationObserver.finished(this);
+      }
+      m_state = State.PROLOGUE_IS_REQUIRED;
+    }
+  }
 
-	protected abstract void prologue();
+  protected abstract void prologue();
 
-	protected abstract double update( double tDeltaSincePrologue, double tDeltaSinceLastUpdate, AnimationObserver animationObserver );
+  protected abstract double update(double tDeltaSincePrologue, double tDeltaSinceLastUpdate, AnimationObserver animationObserver);
 
-	//todo: clean
-	protected abstract void preEpilogue();
+  //todo: clean
+  protected abstract void preEpilogue();
 
-	protected abstract void epilogue();
+  protected abstract void epilogue();
 }

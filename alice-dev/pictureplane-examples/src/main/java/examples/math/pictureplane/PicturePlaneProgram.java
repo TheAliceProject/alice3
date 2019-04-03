@@ -55,27 +55,27 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 class PicturePlaneProgram extends SProgram {
-	private final PicturePlaneScene scene = new PicturePlaneScene();
+  private final PicturePlaneScene scene = new PicturePlaneScene();
 
-	private void start() {
-		this.setActiveScene( this.scene );
-		SSphere sphere = this.scene.getSphere();
+  private void start() {
+    this.setActiveScene(this.scene);
+    SSphere sphere = this.scene.getSphere();
 
-		ProgramImp programImp = EmployeesOnly.getImplementation( this );
-		final SphereImp sphereImp = EmployeesOnly.getImplementation( sphere );
+    ProgramImp programImp = EmployeesOnly.getImplementation(this);
+    final SphereImp sphereImp = EmployeesOnly.getImplementation(sphere);
 
-		PicturePlaneInteraction picturePlaneInteraction = new PicturePlaneInteraction( programImp.getOnscreenRenderTarget(), programImp.getOnscreenRenderTarget().getSgCameraAt( 0 ) ) {
-			@Override
-			protected Transformable pick( MouseEvent e ) {
-				return sphereImp.getSgComposite();
-			}
-		};
-		picturePlaneInteraction.startUp();
-	}
+    PicturePlaneInteraction picturePlaneInteraction = new PicturePlaneInteraction(programImp.getOnscreenRenderTarget(), programImp.getOnscreenRenderTarget().getSgCameraAt(0)) {
+      @Override
+      protected Transformable pick(MouseEvent e) {
+        return sphereImp.getSgComposite();
+      }
+    };
+    picturePlaneInteraction.startUp();
+  }
 
-	public static void main( String[] args ) {
-		PicturePlaneProgram test = new PicturePlaneProgram();
-		test.initializeInFrame( args );
-		test.start();
-	}
+  public static void main(String[] args) {
+    PicturePlaneProgram test = new PicturePlaneProgram();
+    test.initializeInFrame(args);
+    test.start();
+  }
 }

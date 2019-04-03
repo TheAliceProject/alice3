@@ -53,44 +53,44 @@ import java.awt.Paint;
  * @author Dennis Cosgrove
  */
 public class PaintIcon implements Icon {
-	private Paint fillPaint;
-	private int width;
-	private int height;
+  private Paint fillPaint;
+  private int width;
+  private int height;
 
-	public PaintIcon( Paint fillPaint ) {
-		this( fillPaint, ColorIcon.DEFAULT_SIZE );
-	}
+  public PaintIcon(Paint fillPaint) {
+    this(fillPaint, ColorIcon.DEFAULT_SIZE);
+  }
 
-	public PaintIcon( Paint fillPaint, int size ) {
-		this( fillPaint, size, size );
-	}
+  public PaintIcon(Paint fillPaint, int size) {
+    this(fillPaint, size, size);
+  }
 
-	public PaintIcon( Paint fillPaint, Dimension size ) {
-		this( fillPaint, size.width, size.height );
-	}
+  public PaintIcon(Paint fillPaint, Dimension size) {
+    this(fillPaint, size.width, size.height);
+  }
 
-	public PaintIcon( Paint fillPaint, int width, int height ) {
-		this.fillPaint = fillPaint;
-		this.width = width;
-		this.height = height;
-	}
+  public PaintIcon(Paint fillPaint, int width, int height) {
+    this.fillPaint = fillPaint;
+    this.width = width;
+    this.height = height;
+  }
 
-	@Override
-	public int getIconWidth() {
-		return this.width;
-	}
+  @Override
+  public int getIconWidth() {
+    return this.width;
+  }
 
-	@Override
-	public int getIconHeight() {
-		return this.height;
-	}
+  @Override
+  public int getIconHeight() {
+    return this.height;
+  }
 
-	@Override
-	public void paintIcon( Component arg0, Graphics g, int x, int y ) {
-		Graphics2D g2 = (Graphics2D)g;
-		g2.setPaint( this.fillPaint );
-		g2.translate( x, y );
-		g2.fillRect( 0, 0, this.width, this.height );
-		g2.translate( -x, -y );
-	}
+  @Override
+  public void paintIcon(Component arg0, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g;
+    g2.setPaint(this.fillPaint);
+    g2.translate(x, y);
+    g2.fillRect(0, 0, this.width, this.height);
+    g2.translate(-x, -y);
+  }
 }

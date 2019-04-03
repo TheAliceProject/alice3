@@ -65,167 +65,167 @@ import org.lgna.project.ast.UserMethod;
  */
 public class FindReferencesTreeState extends CustomSingleSelectTreeState<SearchTreeNode> {
 
-	private static final SearchTreeNode root = new SearchTreeNode( null );
-	private static final ItemCodec<SearchTreeNode> SEARCH_TREE_NODE_CODEC = DefaultItemCodec.createInstance( SearchTreeNode.class );
+  private static final SearchTreeNode root = new SearchTreeNode(null);
+  private static final ItemCodec<SearchTreeNode> SEARCH_TREE_NODE_CODEC = DefaultItemCodec.createInstance(SearchTreeNode.class);
 
-	public FindReferencesTreeState() {
-		super( AbstractFindComposite.FIND_COMPOSITE_GROUP, UUID.fromString( "88fc8668-1de6-4976-9f3b-5c9688675e2b" ), root, SEARCH_TREE_NODE_CODEC );
-	}
+  public FindReferencesTreeState() {
+    super(AbstractFindComposite.FIND_COMPOSITE_GROUP, UUID.fromString("88fc8668-1de6-4976-9f3b-5c9688675e2b"), root, SEARCH_TREE_NODE_CODEC);
+  }
 
-	@Override
-	protected String getTextForNode( SearchTreeNode node ) {
-		return "TODO: get text";
-	}
+  @Override
+  protected String getTextForNode(SearchTreeNode node) {
+    return "TODO: get text";
+  }
 
-	@Override
-	protected Icon getIconForNode( SearchTreeNode node ) {
-		return null;
-	}
+  @Override
+  protected Icon getIconForNode(SearchTreeNode node) {
+    return null;
+  }
 
-	@Override
-	public SearchTreeNode getParent( SearchTreeNode node ) {
-		return node.getParent();
-	}
+  @Override
+  public SearchTreeNode getParent(SearchTreeNode node) {
+    return node.getParent();
+  }
 
-	@Override
-	protected int getChildCount( SearchTreeNode parent ) {
-		return parent.getChildren().size();
-	}
+  @Override
+  protected int getChildCount(SearchTreeNode parent) {
+    return parent.getChildren().size();
+  }
 
-	@Override
-	protected SearchTreeNode getChild( SearchTreeNode parent, int index ) {
-		return parent.getChildren().get( index );
-	}
+  @Override
+  protected SearchTreeNode getChild(SearchTreeNode parent, int index) {
+    return parent.getChildren().get(index);
+  }
 
-	@Override
-	protected int getIndexOfChild( SearchTreeNode parent, SearchTreeNode child ) {
-		return parent.getChildren().indexOf( child );
-	}
+  @Override
+  protected int getIndexOfChild(SearchTreeNode parent, SearchTreeNode child) {
+    return parent.getChildren().indexOf(child);
+  }
 
-	@Override
-	protected SearchTreeNode getRoot() {
-		return root;
-	}
+  @Override
+  protected SearchTreeNode getRoot() {
+    return root;
+  }
 
-	@Override
-	public boolean isLeaf( SearchTreeNode node ) {
-		return node.getIsLeaf();
-	}
+  @Override
+  public boolean isLeaf(SearchTreeNode node) {
+    return node.getIsLeaf();
+  }
 
-	public void refreshWith( SearchResult searchObject ) {
-		this.setValueTransactionlessly( null );
-		root.removeAllChildren();
-		if( searchObject != null ) {
-			List<Expression> references = searchObject.getReferences();
-			for( Expression reference : references ) {
-				UserLambda lambda = reference.getFirstAncestorAssignableTo( UserLambda.class );
-				UserMethod userMethod = null;
-				if( lambda != null ) {
-					//pass
-				} else {
-					userMethod = reference.getFirstAncestorAssignableTo( UserMethod.class );
-				}
-				AbstractDeclaration parentObject = lambda != null ? lambda : userMethod;
-				SearchTreeNode parentNode = root.getChildForReference( parentObject );
-				assert parentObject != null : lambda + ", " + userMethod;
-				if( parentNode == null ) {
-					SearchTreeNode newChildNode = new DeclarationSeachTreeNode( root, parentObject );
-					root.addChild( newChildNode );
-					newChildNode.addChild( new ExpressionSearchTreeNode( newChildNode, reference ) );
-				} else {
-					parentNode.addChild( new ExpressionSearchTreeNode( parentNode, reference ) );
-				}
-			}
-		}
-		refreshAll();
-	}
+  public void refreshWith(SearchResult searchObject) {
+    this.setValueTransactionlessly(null);
+    root.removeAllChildren();
+    if (searchObject != null) {
+      List<Expression> references = searchObject.getReferences();
+      for (Expression reference : references) {
+        UserLambda lambda = reference.getFirstAncestorAssignableTo(UserLambda.class);
+        UserMethod userMethod = null;
+        if (lambda != null) {
+          //pass
+        } else {
+          userMethod = reference.getFirstAncestorAssignableTo(UserMethod.class);
+        }
+        AbstractDeclaration parentObject = lambda != null ? lambda : userMethod;
+        SearchTreeNode parentNode = root.getChildForReference(parentObject);
+        assert parentObject != null : lambda + ", " + userMethod;
+        if (parentNode == null) {
+          SearchTreeNode newChildNode = new DeclarationSeachTreeNode(root, parentObject);
+          root.addChild(newChildNode);
+          newChildNode.addChild(new ExpressionSearchTreeNode(newChildNode, reference));
+        } else {
+          parentNode.addChild(new ExpressionSearchTreeNode(parentNode, reference));
+        }
+      }
+    }
+    refreshAll();
+  }
 
-	//	public List<Expression> getReferencesForSearchResult( SearchResult searchObject ) {
-	//		List<Expression> rv = Lists.newArrayList();
-	//		for( Expression reference : searchObject.getReferences() ) {
-	//			UserMethod userMethod = reference.getFirstAncestorAssignableTo( UserMethod.class );
-	//			if( showGenerated || !userMethod.getManagementLevel().isGenerated() ) {
-	//				rv.add( reference );
-	//			}
-	//		}
-	//		searchObject.setFilteredReferences( rv );
-	//		return rv;
-	//	}
+  //  public List<Expression> getReferencesForSearchResult( SearchResult searchObject ) {
+  //    List<Expression> rv = Lists.newArrayList();
+  //    for( Expression reference : searchObject.getReferences() ) {
+  //      UserMethod userMethod = reference.getFirstAncestorAssignableTo( UserMethod.class );
+  //      if( showGenerated || !userMethod.getManagementLevel().isGenerated() ) {
+  //        rv.add( reference );
+  //      }
+  //    }
+  //    searchObject.setFilteredReferences( rv );
+  //    return rv;
+  //  }
 
-	public void moveSelectedUpOne() {
-		SearchTreeNode selected = this.getValue();
-		if( selected.getParent() == root ) {
-			if( selected.getLocationAmongstSiblings() > 0 ) {
-				SearchTreeNode olderSibling = selected.getOlderSibling();
-				setValueTransactionlessly( olderSibling.getChildren().get( olderSibling.getChildren().size() - 1 ) );
-			}
-		} else {
-			if( selected.getLocationAmongstSiblings() > 0 ) {
-				this.setValueTransactionlessly( selected.getOlderSibling() );
-			} else {
-				this.setValueTransactionlessly( selected.getParent() );
-			}
-		}
-	}
+  public void moveSelectedUpOne() {
+    SearchTreeNode selected = this.getValue();
+    if (selected.getParent() == root) {
+      if (selected.getLocationAmongstSiblings() > 0) {
+        SearchTreeNode olderSibling = selected.getOlderSibling();
+        setValueTransactionlessly(olderSibling.getChildren().get(olderSibling.getChildren().size() - 1));
+      }
+    } else {
+      if (selected.getLocationAmongstSiblings() > 0) {
+        this.setValueTransactionlessly(selected.getOlderSibling());
+      } else {
+        this.setValueTransactionlessly(selected.getParent());
+      }
+    }
+  }
 
-	public void moveSelectedDownOne() {
-		SearchTreeNode selected = this.getValue();
-		if( selected.getParent() == root ) {
-			this.setValueTransactionlessly( selected.getChildren().get( 0 ) );
-		} else {
-			if( selected.getLocationAmongstSiblings() < ( selected.getParent().getChildren().size() - 1 ) ) {
-				this.setValueTransactionlessly( selected.getYoungerSibling() );
-			} else if( selected.getParent().getLocationAmongstSiblings() < ( selected.getParent().getParent().getChildren().size() - 1 ) ) {
-				this.setValueTransactionlessly( selected.getParent().getYoungerSibling() );
-			}
-		}
-	}
+  public void moveSelectedDownOne() {
+    SearchTreeNode selected = this.getValue();
+    if (selected.getParent() == root) {
+      this.setValueTransactionlessly(selected.getChildren().get(0));
+    } else {
+      if (selected.getLocationAmongstSiblings() < (selected.getParent().getChildren().size() - 1)) {
+        this.setValueTransactionlessly(selected.getYoungerSibling());
+      } else if (selected.getParent().getLocationAmongstSiblings() < (selected.getParent().getParent().getChildren().size() - 1)) {
+        this.setValueTransactionlessly(selected.getParent().getYoungerSibling());
+      }
+    }
+  }
 
-	public SearchTreeNode selectAtCoordinates( int a, int b ) {
-		if( b == -1 ) {
-			return root.getChildren().get( a );
-		} else {
-			return root.getChildren().get( a ).getChildren().get( b );
-		}
-	}
+  public SearchTreeNode selectAtCoordinates(int a, int b) {
+    if (b == -1) {
+      return root.getChildren().get(a);
+    } else {
+      return root.getChildren().get(a).getChildren().get(b);
+    }
+  }
 
-	public boolean isEmpty() {
-		return root.getChildren().size() > 0;
-	}
+  public boolean isEmpty() {
+    return root.getChildren().size() > 0;
+  }
 
-	public SearchTreeNode getTopValue() {
-		return root.getChildren().get( 0 );
-	}
+  public SearchTreeNode getTopValue() {
+    return root.getChildren().get(0);
+  }
 
-	public TwoDimensionalTreeCoordinate getSelectedCoordinates() {
-		int a;
-		int b;
-		SearchTreeNode value = this.getValue();
-		if( value.getParent() == root ) {
-			b = -1;
-			a = value.getLocationAmongstSiblings();
-		} else {
-			b = value.getLocationAmongstSiblings();
-			a = value.getParent().getLocationAmongstSiblings();
-		}
-		return new TwoDimensionalTreeCoordinate( a, b );
-	}
+  public TwoDimensionalTreeCoordinate getSelectedCoordinates() {
+    int a;
+    int b;
+    SearchTreeNode value = this.getValue();
+    if (value.getParent() == root) {
+      b = -1;
+      a = value.getLocationAmongstSiblings();
+    } else {
+      b = value.getLocationAmongstSiblings();
+      a = value.getParent().getLocationAmongstSiblings();
+    }
+    return new TwoDimensionalTreeCoordinate(a, b);
+  }
 
-	public class TwoDimensionalTreeCoordinate {
-		private final int a;
-		private final int b;
+  public class TwoDimensionalTreeCoordinate {
+    private final int a;
+    private final int b;
 
-		public TwoDimensionalTreeCoordinate( int a, int b ) {
-			this.a = a;
-			this.b = b;
-		}
+    public TwoDimensionalTreeCoordinate(int a, int b) {
+      this.a = a;
+      this.b = b;
+    }
 
-		public int getA() {
-			return a;
-		}
+    public int getA() {
+      return a;
+    }
 
-		public int getB() {
-			return b;
-		}
-	}
+    public int getB() {
+      return b;
+    }
+  }
 }

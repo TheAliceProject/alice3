@@ -58,90 +58,90 @@ import java.awt.image.BufferedImage;
  * @author Dennis Cosgrove
  */
 public class GlrCustomTexture extends GlrTexture<CustomTexture> {
-	@Override
-	protected boolean isDirty() {
-		return owner.isAnimated() || super.isDirty();
-	}
+  @Override
+  protected boolean isDirty() {
+    return owner.isAnimated() || super.isDirty();
+  }
 
-	public Graphics2D createGraphics() {
-		//		edu.cmu.cs.dennisc.scenegraph.CustomTexture sgCustomTexture = this.sgE;
-		//		if( this.textureRenderer != null ) {
-		//			this.textureRenderer.dispose();
-		//		}
-		//		this.textureRenderer = new com.sun.opengl.util.awt.TextureRenderer( sgCustomTexture.getWidth(), sgCustomTexture.getHeight(), sgCustomTexture.isPotentiallyAlphaBlended() );
-		Graphics2D g = this.textureRenderer.createGraphics();
-		//		sgCustomTexture.paint( g );
-		//this.textureRenderer.beginOrthoRendering( this.textureRenderer.getWidth(), this.textureRenderer.getHeight() );
-		return g;
+  public Graphics2D createGraphics() {
+    //    edu.cmu.cs.dennisc.scenegraph.CustomTexture sgCustomTexture = this.sgE;
+    //    if( this.textureRenderer != null ) {
+    //      this.textureRenderer.dispose();
+    //    }
+    //    this.textureRenderer = new com.sun.opengl.util.awt.TextureRenderer( sgCustomTexture.getWidth(), sgCustomTexture.getHeight(), sgCustomTexture.isPotentiallyAlphaBlended() );
+    Graphics2D g = this.textureRenderer.createGraphics();
+    //    sgCustomTexture.paint( g );
+    //this.textureRenderer.beginOrthoRendering( this.textureRenderer.getWidth(), this.textureRenderer.getHeight() );
+    return g;
 
-	}
+  }
 
-	public void commitGraphics( Graphics2D g, int x, int y, int width, int height ) {
-		//this.textureRenderer.drawOrthoRect( width, height );
-		//this.textureRenderer.sync( x, y, width, height );
-		this.textureRenderer.markDirty( x, y, width, height );
-		//this.textureRenderer.endOrthoRendering();
-	}
+  public void commitGraphics(Graphics2D g, int x, int y, int width, int height) {
+    //this.textureRenderer.drawOrthoRect( width, height );
+    //this.textureRenderer.sync( x, y, width, height );
+    this.textureRenderer.markDirty(x, y, width, height);
+    //this.textureRenderer.endOrthoRendering();
+  }
 
-	public Image getImage() {
-		return this.textureRenderer.getImage();
-	}
+  public Image getImage() {
+    return this.textureRenderer.getImage();
+  }
 
-	@Override
-	protected TextureData newTextureData( GL gl, TextureData currentTextureData ) {
-		boolean isNewTextureRendererRequired;
-		if( currentTextureData != null ) {
-			if( this.textureRenderer != null ) {
-				//todo: check mip mapping
-				isNewTextureRendererRequired = ( currentTextureData.getWidth() != this.textureRenderer.getWidth() ) || ( currentTextureData.getHeight() != this.textureRenderer.getHeight() );
-			} else {
-				isNewTextureRendererRequired = true;
-			}
-		} else {
-			isNewTextureRendererRequired = true;
-		}
-		if( isNewTextureRendererRequired ) {
-			if( this.textureRenderer != null ) {
-				this.textureRenderer.dispose();
-			}
-			this.textureRenderer = new TextureRenderer( owner.getWidth(), owner.getHeight(), owner.isPotentiallyAlphaBlended() );
-		}
-		Graphics2D g = this.textureRenderer.createGraphics();
-		owner.paint( g, this.textureRenderer.getWidth(), this.textureRenderer.getHeight() );
-		g.dispose();
-		this.textureRenderer.markDirty( 0, 0, this.textureRenderer.getWidth(), this.textureRenderer.getHeight() );
+  @Override
+  protected TextureData newTextureData(GL gl, TextureData currentTextureData) {
+    boolean isNewTextureRendererRequired;
+    if (currentTextureData != null) {
+      if (this.textureRenderer != null) {
+        //todo: check mip mapping
+        isNewTextureRendererRequired = (currentTextureData.getWidth() != this.textureRenderer.getWidth()) || (currentTextureData.getHeight() != this.textureRenderer.getHeight());
+      } else {
+        isNewTextureRendererRequired = true;
+      }
+    } else {
+      isNewTextureRendererRequired = true;
+    }
+    if (isNewTextureRendererRequired) {
+      if (this.textureRenderer != null) {
+        this.textureRenderer.dispose();
+      }
+      this.textureRenderer = new TextureRenderer(owner.getWidth(), owner.getHeight(), owner.isPotentiallyAlphaBlended());
+    }
+    Graphics2D g = this.textureRenderer.createGraphics();
+    owner.paint(g, this.textureRenderer.getWidth(), this.textureRenderer.getHeight());
+    g.dispose();
+    this.textureRenderer.markDirty(0, 0, this.textureRenderer.getWidth(), this.textureRenderer.getHeight());
 
-		if( owner.isMipMappingDesired() ) {
-			Image image = this.textureRenderer.getImage();
-			if( image instanceof BufferedImage ) {
-				BufferedImage bufferedImage = (BufferedImage)image;
-				if( owner.isPotentiallyAlphaBlended() ) {
-					//pass
-				} else {
-					try {
-						return newTextureData( gl, bufferedImage, true );
-					} catch( AssertionError ae ) {
-						Logger.warning( "unable to directly generate mipmapped texture." );
-					} catch( RuntimeException re ) {
-						Logger.warning( "unable to directly generate mipmapped texture." );
-					}
-				}
-				BufferedImage hackBI = new BufferedImage( bufferedImage.getWidth(), bufferedImage.getHeight(), BufferedImage.TYPE_4BYTE_ABGR_PRE );
-				Graphics2D hackG = hackBI.createGraphics();
-				hackG.drawImage( bufferedImage, 0, 0, ImageUtilities.accessImageObserver() );
-				hackG.dispose();
-				bufferedImage = hackBI;
-				return newTextureData( gl, bufferedImage, true );
-			} else {
-				Logger.todo( "textureRenderer.getTextureData()" );
-				return null;
-				//return this.textureRenderer.getTextureData();
-			}
-		} else {
-			Logger.todo( "textureRenderer.getTextureData()" );
-			return null;
-		}
-	}
+    if (owner.isMipMappingDesired()) {
+      Image image = this.textureRenderer.getImage();
+      if (image instanceof BufferedImage) {
+        BufferedImage bufferedImage = (BufferedImage) image;
+        if (owner.isPotentiallyAlphaBlended()) {
+          //pass
+        } else {
+          try {
+            return newTextureData(gl, bufferedImage, true);
+          } catch (AssertionError ae) {
+            Logger.warning("unable to directly generate mipmapped texture.");
+          } catch (RuntimeException re) {
+            Logger.warning("unable to directly generate mipmapped texture.");
+          }
+        }
+        BufferedImage hackBI = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), BufferedImage.TYPE_4BYTE_ABGR_PRE);
+        Graphics2D hackG = hackBI.createGraphics();
+        hackG.drawImage(bufferedImage, 0, 0, ImageUtilities.accessImageObserver());
+        hackG.dispose();
+        bufferedImage = hackBI;
+        return newTextureData(gl, bufferedImage, true);
+      } else {
+        Logger.todo("textureRenderer.getTextureData()");
+        return null;
+        //return this.textureRenderer.getTextureData();
+      }
+    } else {
+      Logger.todo("textureRenderer.getTextureData()");
+      return null;
+    }
+  }
 
-	private TextureRenderer textureRenderer = null;
+  private TextureRenderer textureRenderer = null;
 }

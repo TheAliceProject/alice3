@@ -44,18 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenHairCornRowsLong implements FemaleTeenHair {
-	BLACK,
-	BLOND,
-	RED,
-	BROWN;
+  BLACK, BLOND, RED, BROWN;
 
-	@Override
-	public Boolean hasHair() {
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat() {
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

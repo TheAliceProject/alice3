@@ -48,7 +48,7 @@ import org.alice.ide.ProjectDocumentFrame;
  * @author Dennis Cosgrove
  */
 public class AliceMenuBar extends MenuBarComposite {
-	public AliceMenuBar( ProjectDocumentFrame projectDocumentFrame ) {
-		super( projectDocumentFrame );
-	}
+  public AliceMenuBar(ProjectDocumentFrame projectDocumentFrame) {
+    super(projectDocumentFrame);
+  }
 }

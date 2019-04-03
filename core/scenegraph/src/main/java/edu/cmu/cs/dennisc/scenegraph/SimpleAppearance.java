@@ -50,79 +50,79 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
 
 public class SimpleAppearance extends Appearance {
 
-	public final Color4fProperty ambientColor = new Color4fProperty( this, new Color4f( Float.NaN, Float.NaN, Float.NaN, Float.NaN ), true ) {
-		@Override
-		public void setValue( Color4f value ) {
-			if( value == null ) {
-				value = Color4f.createNaN();
-			}
-			super.setValue( value );
-		}
-	};
+  public final Color4fProperty ambientColor = new Color4fProperty(this, new Color4f(Float.NaN, Float.NaN, Float.NaN, Float.NaN), true) {
+    @Override
+    public void setValue(Color4f value) {
+      if (value == null) {
+        value = Color4f.createNaN();
+      }
+      super.setValue(value);
+    }
+  };
 
-	public final Color4fProperty diffuseColor = new Color4fProperty( this, Color4f.WHITE );
-	public final FloatProperty opacity = new FloatProperty( this, 1.0f );
-	public final InstanceProperty<FillingStyle> fillingStyle = new InstanceProperty<FillingStyle>( this, FillingStyle.SOLID ) {
-		@Override
-		public void setValue( FillingStyle value ) {
-			assert value != null : this;
-			super.setValue( value );
-		}
-	};
-	public final InstanceProperty<ShadingStyle> shadingStyle = new InstanceProperty<ShadingStyle>( this, ShadingStyle.SMOOTH ) {
-		@Override
-		public void setValue( ShadingStyle value ) {
-			assert value != null : this;
-			super.setValue( value );
-		}
-	};
-	public final Color4fProperty specularHighlightColor = new Color4fProperty( this, Color4f.BLACK );
-	public final Color4fProperty emissiveColor = new Color4fProperty( this, Color4f.BLACK );
-	public final FloatProperty specularHighlightExponent = new FloatProperty( this, 0.0f );
-	public final BooleanProperty isEthereal = new BooleanProperty( this, false );
+  public final Color4fProperty diffuseColor = new Color4fProperty(this, Color4f.WHITE);
+  public final FloatProperty opacity = new FloatProperty(this, 1.0f);
+  public final InstanceProperty<FillingStyle> fillingStyle = new InstanceProperty<FillingStyle>(this, FillingStyle.SOLID) {
+    @Override
+    public void setValue(FillingStyle value) {
+      assert value != null : this;
+      super.setValue(value);
+    }
+  };
+  public final InstanceProperty<ShadingStyle> shadingStyle = new InstanceProperty<ShadingStyle>(this, ShadingStyle.SMOOTH) {
+    @Override
+    public void setValue(ShadingStyle value) {
+      assert value != null : this;
+      super.setValue(value);
+    }
+  };
+  public final Color4fProperty specularHighlightColor = new Color4fProperty(this, Color4f.BLACK);
+  public final Color4fProperty emissiveColor = new Color4fProperty(this, Color4f.BLACK);
+  public final FloatProperty specularHighlightExponent = new FloatProperty(this, 0.0f);
+  public final BooleanProperty isEthereal = new BooleanProperty(this, false);
 
-	@Override
-	public void setAmbientColor( Color4f ambientColor ) {
-		this.ambientColor.setValue( ambientColor );
-	}
+  @Override
+  public void setAmbientColor(Color4f ambientColor) {
+    this.ambientColor.setValue(ambientColor);
+  }
 
-	@Override
-	public void setDiffuseColor( Color4f diffuseColor ) {
-		this.diffuseColor.setValue( diffuseColor );
-	}
+  @Override
+  public void setDiffuseColor(Color4f diffuseColor) {
+    this.diffuseColor.setValue(diffuseColor);
+  }
 
-	@Override
-	public void setOpacity( float opacity ) {
-		this.opacity.setValue( opacity );
-	}
+  @Override
+  public void setOpacity(float opacity) {
+    this.opacity.setValue(opacity);
+  }
 
-	@Override
-	public void setSpecularHighlightExponent( float specularHighlightExponent ) {
-		this.specularHighlightExponent.setValue( specularHighlightExponent );
-	}
+  @Override
+  public void setSpecularHighlightExponent(float specularHighlightExponent) {
+    this.specularHighlightExponent.setValue(specularHighlightExponent);
+  }
 
-	@Override
-	public void setSpecularHighlightColor( Color4f specularHighlightColor ) {
-		this.specularHighlightColor.setValue( specularHighlightColor );
-	}
+  @Override
+  public void setSpecularHighlightColor(Color4f specularHighlightColor) {
+    this.specularHighlightColor.setValue(specularHighlightColor);
+  }
 
-	@Override
-	public void setEmissiveColor( Color4f emissiveColor ) {
-		this.emissiveColor.setValue( emissiveColor );
-	}
+  @Override
+  public void setEmissiveColor(Color4f emissiveColor) {
+    this.emissiveColor.setValue(emissiveColor);
+  }
 
-	@Override
-	public void setShadingStyle( ShadingStyle shadingStyle ) {
-		this.shadingStyle.setValue( shadingStyle );
-	}
+  @Override
+  public void setShadingStyle(ShadingStyle shadingStyle) {
+    this.shadingStyle.setValue(shadingStyle);
+  }
 
-	@Override
-	public void setFillingStyle( FillingStyle fillingStyle ) {
-		this.fillingStyle.setValue( fillingStyle );
-	}
+  @Override
+  public void setFillingStyle(FillingStyle fillingStyle) {
+    this.fillingStyle.setValue(fillingStyle);
+  }
 
-	@Override
-	public void setEthereal( boolean isEthereal ) {
-		this.isEthereal.setValue( isEthereal );
-	}
+  @Override
+  public void setEthereal(boolean isEthereal) {
+    this.isEthereal.setValue(isEthereal);
+  }
 }

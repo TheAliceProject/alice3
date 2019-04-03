@@ -47,30 +47,30 @@ package test;
  * @author Dennis Cosgrove
  */
 public class TestBufferCodec {
-	private static void print( java.nio.DoubleBuffer buffer ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( buffer, buffer.isDirect(), buffer.isReadOnly(), buffer.order() );
-		while( buffer.hasRemaining() ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( buffer.get() );
-		}
-		buffer.rewind();
-	}
+  private static void print(java.nio.DoubleBuffer buffer) {
+    edu.cmu.cs.dennisc.print.PrintUtilities.println(buffer, buffer.isDirect(), buffer.isReadOnly(), buffer.order());
+    while (buffer.hasRemaining()) {
+      edu.cmu.cs.dennisc.print.PrintUtilities.println(buffer.get());
+    }
+    buffer.rewind();
+  }
 
-	public static void main( String[] args ) {
-		//int[] srcArray = { 1,1,2,3,5,8,13,21 };
-		//java.nio.IntBuffer srcBuffer = java.nio.IntBuffer.wrap( srcArray );
-		double[] srcArray = { 1, 1, 2, 3, 5, 8, 13, 21 };
-		java.nio.DoubleBuffer srcBuffer = java.nio.DoubleBuffer.wrap( srcArray );
-		print( srcBuffer );
+  public static void main(String[] args) {
+    //int[] srcArray = { 1,1,2,3,5,8,13,21 };
+    //java.nio.IntBuffer srcBuffer = java.nio.IntBuffer.wrap( srcArray );
+    double[] srcArray = {1, 1, 2, 3, 5, 8, 13, 21};
+    java.nio.DoubleBuffer srcBuffer = java.nio.DoubleBuffer.wrap(srcArray);
+    print(srcBuffer);
 
-		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
-		boolean isNativeRequired = true;
-		edu.cmu.cs.dennisc.codec.BufferUtilities.encode( encoder, srcBuffer, isNativeRequired );
-		byte[] bytes = baos.toByteArray();
+    java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+    edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder(baos);
+    boolean isNativeRequired = true;
+    edu.cmu.cs.dennisc.codec.BufferUtilities.encode(encoder, srcBuffer, isNativeRequired);
+    byte[] bytes = baos.toByteArray();
 
-		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( bytes );
-		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
-		java.nio.DoubleBuffer dstBuffer = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeDoubleBuffer( decoder, isNativeRequired );
-		print( dstBuffer );
-	}
+    java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(bytes);
+    edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder(bais);
+    java.nio.DoubleBuffer dstBuffer = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeDoubleBuffer(decoder, isNativeRequired);
+    print(dstBuffer);
+  }
 }

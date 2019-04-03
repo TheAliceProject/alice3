@@ -50,76 +50,70 @@ import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
  * @author Dennis Cosgrove
  */
 public class ProjectFilePerGalleryModelGeneration {
-	private static void test( java.util.List<Throwable> brokenModels, org.alice.stageide.modelresource.ResourceNode node, Class<? extends org.lgna.story.SJointedModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException, java.io.IOException {
-		if( node.getResourceKey() instanceof EnumConstantResourceKey ) {
-			EnumConstantResourceKey key = (EnumConstantResourceKey)node.getResourceKey();
-			org.lgna.project.ast.JavaField argumentField = key.getField();
+  private static void test(java.util.List<Throwable> brokenModels, org.alice.stageide.modelresource.ResourceNode node, Class<? extends org.lgna.story.SJointedModel> instanceCls, Class<?>... parameterClses) throws IllegalAccessException, java.io.IOException {
+    if (node.getResourceKey() instanceof EnumConstantResourceKey) {
+      EnumConstantResourceKey key = (EnumConstantResourceKey) node.getResourceKey();
+      org.lgna.project.ast.JavaField argumentField = key.getField();
 
-			org.lgna.project.ast.AbstractType<?, ?, ?> valueType = argumentField.getValueType();
+      org.lgna.project.ast.AbstractType<?, ?, ?> valueType = argumentField.getValueType();
 
-			org.lgna.project.ast.AbstractConstructor bogusConstructor = key.createInstanceCreation().constructor.getValue();
-			org.lgna.project.ast.NamedUserType namedUserType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField( bogusConstructor.getDeclaringType().getFirstEncounteredJavaType(), (org.lgna.project.ast.JavaField)argumentField );
-			org.lgna.project.ast.AbstractConstructor constructor = namedUserType.constructors.get( 0 );
-			org.lgna.project.ast.InstanceCreation instanceCreation = org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( argumentField ) );
+      org.lgna.project.ast.AbstractConstructor bogusConstructor = key.createInstanceCreation().constructor.getValue();
+      org.lgna.project.ast.NamedUserType namedUserType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField(bogusConstructor.getDeclaringType().getFirstEncounteredJavaType(), (org.lgna.project.ast.JavaField) argumentField);
+      org.lgna.project.ast.AbstractConstructor constructor = namedUserType.constructors.get(0);
+      org.lgna.project.ast.InstanceCreation instanceCreation = org.lgna.project.ast.AstUtilities.createInstanceCreation(constructor, org.lgna.project.ast.AstUtilities.createStaticFieldAccess(argumentField));
 
-			org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField( argumentField.getName(), namedUserType, instanceCreation );
-			field.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
-			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+      org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField(argumentField.getName(), namedUserType, instanceCreation);
+      field.managementLevel.setValue(org.lgna.project.ast.ManagementLevel.MANAGED);
+      field.finalVolatileOrNeither.setValue(org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL);
 
-			org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS;
-			org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
-			org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)programType.fields.get( 0 ).getValueType();
-			sceneType.fields.add( field );
+      org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS;
+      org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType(template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor());
+      org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType) programType.fields.get(0).getValueType();
+      sceneType.fields.add(field);
 
-			org.lgna.project.ast.UserMethod performGeneratedSetupMethod = (org.lgna.project.ast.UserMethod)sceneType.findMethod( org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME );
+      org.lgna.project.ast.UserMethod performGeneratedSetupMethod = (org.lgna.project.ast.UserMethod) sceneType.findMethod(org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME);
 
-			org.lgna.project.ast.JavaMethod setVehicleMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SModel.class, "setVehicle", org.lgna.story.SThing.class );
+      org.lgna.project.ast.JavaMethod setVehicleMethod = org.lgna.project.ast.JavaMethod.getInstance(org.lgna.story.SModel.class, "setVehicle", org.lgna.story.SThing.class);
 
-			performGeneratedSetupMethod.body.getValue().statements.add(
-					org.lgna.project.ast.AstUtilities.createMethodInvocationStatement(
-							new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), field ),
-							setVehicleMethod,
-							new org.lgna.project.ast.ThisExpression()
-							)
-					);
+      performGeneratedSetupMethod.body.getValue().statements.add(org.lgna.project.ast.AstUtilities.createMethodInvocationStatement(new org.lgna.project.ast.FieldAccess(new org.lgna.project.ast.ThisExpression(), field), setVehicleMethod, new org.lgna.project.ast.ThisExpression()));
 
-			org.lgna.project.Project project = new org.lgna.project.Project( programType );
+      org.lgna.project.Project project = new org.lgna.project.Project(programType);
 
-			String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/" + org.lgna.project.ProjectVersion.getCurrentVersionText() + "/" + valueType.getName() + "/" + argumentField.getName() + ".a3p";
+      String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/" + org.lgna.project.ProjectVersion.getCurrentVersionText() + "/" + valueType.getName() + "/" + argumentField.getName() + ".a3p";
 
-			org.lgna.project.io.IoUtilities.writeProject( path, project );
+      org.lgna.project.io.IoUtilities.writeProject(path, project);
 
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( path );
-		}
-		for( org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren() ) {
-			test( brokenModels, child, instanceCls, parameterClses );
-		}
-	}
+      edu.cmu.cs.dennisc.java.util.logging.Logger.outln(path);
+    }
+    for (org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren()) {
+      test(brokenModels, child, instanceCls, parameterClses);
+    }
+  }
 
-	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
-		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde( null );
-		org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
-		java.util.List<Throwable> brokenModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+  public static void main(String[] args) throws Exception {
+    edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel(java.util.logging.Level.INFO);
+    org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde(null);
+    org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
+    java.util.List<Throwable> brokenModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
-		for( org.alice.stageide.modelresource.ResourceNode child : rootGalleryNode.getNodeChildren() ) {
-			ResourceKey key = child.getResourceKey();
-			if( key instanceof ClassResourceKey ) {
-				ClassResourceKey classKey = (ClassResourceKey)key;
-				Class<? extends org.lgna.story.SJointedModel> modelClass = (Class<? extends org.lgna.story.SJointedModel>)AliceResourceClassUtilities.getModelClassForResourceClass( classKey.getModelResourceCls() );
-				test( brokenModels, child, modelClass, classKey.getModelResourceCls() );
-			}
-		}
+    for (org.alice.stageide.modelresource.ResourceNode child : rootGalleryNode.getNodeChildren()) {
+      ResourceKey key = child.getResourceKey();
+      if (key instanceof ClassResourceKey) {
+        ClassResourceKey classKey = (ClassResourceKey) key;
+        Class<? extends org.lgna.story.SJointedModel> modelClass = (Class<? extends org.lgna.story.SJointedModel>) AliceResourceClassUtilities.getModelClassForResourceClass(classKey.getModelResourceCls());
+        test(brokenModels, child, modelClass, classKey.getModelResourceCls());
+      }
+    }
 
-		if( brokenModels.size() > 0 ) {
-			//			System.err.println();
-			//			System.err.println();
-			//			System.err.println();
-			//			for( Throwable t : brokenModels ) {
-			//				t.printStackTrace();
-			//			}
-			javax.swing.JOptionPane.showMessageDialog( null, brokenModels.size() + " broken models." );
-		}
+    if (brokenModels.size() > 0) {
+      //      System.err.println();
+      //      System.err.println();
+      //      System.err.println();
+      //      for( Throwable t : brokenModels ) {
+      //        t.printStackTrace();
+      //      }
+      javax.swing.JOptionPane.showMessageDialog(null, brokenModels.size() + " broken models.");
+    }
 
-	}
+  }
 }

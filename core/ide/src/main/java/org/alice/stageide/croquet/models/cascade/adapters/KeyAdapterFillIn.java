@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class KeyAdapterFillIn extends LambdaExpressionFillIn {
-	private static class SingletonHolder {
-		private static KeyAdapterFillIn instance = new KeyAdapterFillIn();
-	}
+  private static class SingletonHolder {
+    private static KeyAdapterFillIn instance = new KeyAdapterFillIn();
+  }
 
-	public static KeyAdapterFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static KeyAdapterFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private KeyAdapterFillIn() {
-		super( UUID.fromString( "58f52823-5d1d-4de2-ae5f-d62f2f6d5dde" ), KeyPressListener.class );
-	}
+  private KeyAdapterFillIn() {
+    super(UUID.fromString("58f52823-5d1d-4de2-ae5f-d62f2f6d5dde"), KeyPressListener.class);
+  }
 }

@@ -53,12 +53,12 @@ import test.ik.croquet.SceneComposite;
  * @author Dennis Cosgrove
  */
 public class ScenePanel extends BorderPanel {
-	public ScenePanel( SceneComposite composite ) {
-		super( composite );
-	}
+  public ScenePanel(SceneComposite composite) {
+    super(composite);
+  }
 
-	public void initializeInAwtContainer( SProgram program ) {
-		ProgramImp programImp = EmployeesOnly.getImplementation( program );
-		programImp.initializeInAwtContainer( this.getAwtComponent() );
-	}
+  public void initializeInAwtContainer(SProgram program) {
+    ProgramImp programImp = EmployeesOnly.getImplementation(program);
+    programImp.initializeInAwtContainer(this.getAwtComponent());
+  }
 }

@@ -52,21 +52,21 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class ThemeIconFactory extends AbstractIconFactory {
-	private final ResourceKey key;
+  private final ResourceKey key;
 
-	public ThemeIconFactory( ResourceKey key ) {
-		super( IsCachingDesired.TRUE );
-		this.key = key;
-	}
+  public ThemeIconFactory(ResourceKey key) {
+    super(IsCachingDesired.TRUE);
+    this.key = key;
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new ThemeIcon( size, this.key );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new ThemeIcon(size, this.key);
+  }
 
-	@Override
-	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
-		//todo
-		return sizeIfResolutionIndependent;
-	}
+  @Override
+  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
+    //todo
+    return sizeIfResolutionIndependent;
+  }
 }

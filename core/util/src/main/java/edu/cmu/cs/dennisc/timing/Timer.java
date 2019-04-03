@@ -52,36 +52,36 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class Timer {
-	private final String description;
-	private final List<Mark> marks = Lists.newLinkedList();
-	private long tStart;
+  private final String description;
+  private final List<Mark> marks = Lists.newLinkedList();
+  private long tStart;
 
-	public Timer( String description ) {
-		this.description = description;
-	}
+  public Timer(String description) {
+    this.description = description;
+  }
 
-	public void start() {
-		this.tStart = System.currentTimeMillis();
-		this.marks.clear();
-	}
+  public void start() {
+    this.tStart = System.currentTimeMillis();
+    this.marks.clear();
+  }
 
-	public void mark( Object o ) {
-		this.marks.add( new Mark( o ) );
-	}
+  public void mark(Object o) {
+    this.marks.add(new Mark(o));
+  }
 
-	public void stopAndPrintResults() {
-		long tPrev = this.tStart;
-		long tStop = System.currentTimeMillis();
-		Logger.outln( "timer:", this.description );
-		if( this.marks.size() > 0 ) {
-			for( Mark mark : this.marks ) {
-				long tMark = mark.getTime();
-				Logger.outln( "...", tMark - tPrev, mark.getObject() );
-				tPrev = tMark;
-			}
-			Logger.outln( "... ", tStop - tPrev, "end" );
-		}
-		Logger.outln( "total:", ( tStop - this.tStart ), "msec" );
-		this.marks.clear();
-	}
+  public void stopAndPrintResults() {
+    long tPrev = this.tStart;
+    long tStop = System.currentTimeMillis();
+    Logger.outln("timer:", this.description);
+    if (this.marks.size() > 0) {
+      for (Mark mark : this.marks) {
+        long tMark = mark.getTime();
+        Logger.outln("...", tMark - tPrev, mark.getObject());
+        tPrev = tMark;
+      }
+      Logger.outln("... ", tStop - tPrev, "end");
+    }
+    Logger.outln("total:", (tStop - this.tStart), "msec");
+    this.marks.clear();
+  }
 }

@@ -58,50 +58,50 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class MembersComposite extends SimpleComposite<MembersView> {
-	private static class SingletonHolder {
-		private static MembersComposite instance = new MembersComposite();
-	}
+  private static class SingletonHolder {
+    private static MembersComposite instance = new MembersComposite();
+  }
 
-	public static MembersComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static MembersComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final ProcedureTabComposite procedureTabComposite = new ProcedureTabComposite();
-	private final FunctionTabComposite functionTabComposite = new FunctionTabComposite();
-	private final ControlFlowTabComposite controlStructureTabComposite;
-	private final ImmutableDataTabState<MemberOrControlFlowTabComposite<?>> tabState;
+  private final ProcedureTabComposite procedureTabComposite = new ProcedureTabComposite();
+  private final FunctionTabComposite functionTabComposite = new FunctionTabComposite();
+  private final ControlFlowTabComposite controlStructureTabComposite;
+  private final ImmutableDataTabState<MemberOrControlFlowTabComposite<?>> tabState;
 
-	private MembersComposite() {
-		super( UUID.fromString( "10225a3f-f05d-42f3-baaf-f6bd0f8a7c68" ) );
-		MemberOrControlFlowTabComposite<?>[] tabComposites;
-		if( IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-			this.controlStructureTabComposite = null;
-			tabComposites = new MemberOrControlFlowTabComposite[] { this.procedureTabComposite, this.functionTabComposite };
-		} else {
-			this.controlStructureTabComposite = new ControlFlowTabComposite();
-			tabComposites = new MemberOrControlFlowTabComposite[] { this.procedureTabComposite, this.functionTabComposite, this.controlStructureTabComposite };
-		}
-		this.tabState = (ImmutableDataTabState)this.createImmutableTabState( "tabState", 0, MemberOrControlFlowTabComposite.class, tabComposites );
-	}
+  private MembersComposite() {
+    super(UUID.fromString("10225a3f-f05d-42f3-baaf-f6bd0f8a7c68"));
+    MemberOrControlFlowTabComposite<?>[] tabComposites;
+    if (IsAlwaysShowingBlocksState.getInstance().getValue()) {
+      this.controlStructureTabComposite = null;
+      tabComposites = new MemberOrControlFlowTabComposite[] {this.procedureTabComposite, this.functionTabComposite};
+    } else {
+      this.controlStructureTabComposite = new ControlFlowTabComposite();
+      tabComposites = new MemberOrControlFlowTabComposite[] {this.procedureTabComposite, this.functionTabComposite, this.controlStructureTabComposite};
+    }
+    this.tabState = (ImmutableDataTabState) this.createImmutableTabState("tabState", 0, MemberOrControlFlowTabComposite.class, tabComposites);
+  }
 
-	public ImmutableDataTabState<MemberOrControlFlowTabComposite<?>> getTabState() {
-		return this.tabState;
-	}
+  public ImmutableDataTabState<MemberOrControlFlowTabComposite<?>> getTabState() {
+    return this.tabState;
+  }
 
-	public ProcedureTabComposite getProcedureTabComposite() {
-		return this.procedureTabComposite;
-	}
+  public ProcedureTabComposite getProcedureTabComposite() {
+    return this.procedureTabComposite;
+  }
 
-	public FunctionTabComposite getFunctionTabComposite() {
-		return this.functionTabComposite;
-	}
+  public FunctionTabComposite getFunctionTabComposite() {
+    return this.functionTabComposite;
+  }
 
-	public ControlFlowTabComposite getControlStructureTabComposite() {
-		return this.controlStructureTabComposite;
-	}
+  public ControlFlowTabComposite getControlStructureTabComposite() {
+    return this.controlStructureTabComposite;
+  }
 
-	@Override
-	protected MembersView createView() {
-		return new MembersView( this );
-	}
+  @Override
+  protected MembersView createView() {
+    return new MembersView(this);
+  }
 }

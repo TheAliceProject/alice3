@@ -58,35 +58,35 @@ import java.awt.Shape;
  * @author Dennis Cosgrove
  */
 public class CompleteControlFlowStatementTemplate extends StatementTemplate {
-	public CompleteControlFlowStatementTemplate( StatementTemplateDragModel dragModel ) {
-		super( dragModel, dragModel.getStatementCls() );
-		Statement incompleteStatement = dragModel.getPossiblyIncompleteStatement();
-		SwingComponentView<?> incompleteStatementPane;
-		if( incompleteStatement instanceof Comment ) {
-			incompleteStatementPane = new CommentPane( null, TemplateAstI18nFactory.getInstance(), (Comment)incompleteStatement, null ) {
-				@Override
-				protected void paintOutline( Graphics2D g2, Shape shape ) {
-				}
+  public CompleteControlFlowStatementTemplate(StatementTemplateDragModel dragModel) {
+    super(dragModel, dragModel.getStatementCls());
+    Statement incompleteStatement = dragModel.getPossiblyIncompleteStatement();
+    SwingComponentView<?> incompleteStatementPane;
+    if (incompleteStatement instanceof Comment) {
+      incompleteStatementPane = new CommentPane(null, TemplateAstI18nFactory.getInstance(), (Comment) incompleteStatement, null) {
+        @Override
+        protected void paintOutline(Graphics2D g2, Shape shape) {
+        }
 
-				@Override
-				protected boolean contains( int x, int y, boolean jContains ) {
-					return false;
-				}
-			};
-		} else {
-			incompleteStatementPane = new DefaultStatementPane( null, TemplateAstI18nFactory.getInstance(), incompleteStatement, null ) {
-				@Override
-				protected void paintOutline( Graphics2D g2, Shape shape ) {
-				}
+        @Override
+        protected boolean contains(int x, int y, boolean jContains) {
+          return false;
+        }
+      };
+    } else {
+      incompleteStatementPane = new DefaultStatementPane(null, TemplateAstI18nFactory.getInstance(), incompleteStatement, null) {
+        @Override
+        protected void paintOutline(Graphics2D g2, Shape shape) {
+        }
 
-				@Override
-				protected boolean contains( int x, int y, boolean jContains ) {
-					return false;
-				}
-			};
-			//			incompleteStatementPane = org.alice.ide.x.TemplateAstI18nFactory.getInstance().createComponent( incompleteStatement );
-		}
-		//org.alice.ide.common.AbstractStatementPane incompleteStatementPane = org.alice.ide.x.TemplateAstI18nFactory.getInstance().createStatementPane( null, incompleteStatement, null );
-		this.internalAddComponent( incompleteStatementPane );
-	}
+        @Override
+        protected boolean contains(int x, int y, boolean jContains) {
+          return false;
+        }
+      };
+      //      incompleteStatementPane = org.alice.ide.x.TemplateAstI18nFactory.getInstance().createComponent( incompleteStatement );
+    }
+    //org.alice.ide.common.AbstractStatementPane incompleteStatementPane = org.alice.ide.x.TemplateAstI18nFactory.getInstance().createStatementPane( null, incompleteStatement, null );
+    this.internalAddComponent(incompleteStatementPane);
+  }
 }

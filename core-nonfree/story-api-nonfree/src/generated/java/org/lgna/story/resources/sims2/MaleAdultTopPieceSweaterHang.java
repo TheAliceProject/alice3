@@ -44,13 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultTopPieceSweaterHang implements MaleAdultTopPiece {
-	GREEN,
-	BROWN,
-	GREY,
-	RED,
-	V_BLUE,
-	V_GREY_BLUE,
-	V_MALOON,
-	V_ORANGE;
+  GREEN, BROWN, GREY, RED, V_BLUE, V_GREY_BLUE, V_MALOON, V_ORANGE
 
 }

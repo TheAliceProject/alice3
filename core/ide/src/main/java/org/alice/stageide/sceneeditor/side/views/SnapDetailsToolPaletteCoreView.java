@@ -54,43 +54,43 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public class SnapDetailsToolPaletteCoreView extends MigPanel {
-	private final ValueListener<Boolean> isEnabledListener = new ValueListener<Boolean>() {
-		@Override
-		public void valueChanged( ValueEvent<Boolean> e ) {
-			handleEnabledChanged( e.getNextValue() );
-		}
-	};
+  private final ValueListener<Boolean> isEnabledListener = new ValueListener<Boolean>() {
+    @Override
+    public void valueChanged(ValueEvent<Boolean> e) {
+      handleEnabledChanged(e.getNextValue());
+    }
+  };
 
-	public SnapDetailsToolPaletteCoreView( SnapDetailsToolPaletteCoreComposite composite ) {
-		super( composite, "", "24[][]" );
+  public SnapDetailsToolPaletteCoreView(SnapDetailsToolPaletteCoreComposite composite) {
+    super(composite, "", "24[][]");
 
-		this.addComponent( composite.getIsGridShowingState().createCheckBox() );
-		this.addComponent( composite.getGridSpacingState().getSidekickLabel().createLabel(), "align right" );
-		this.addComponent( composite.getGridSpacingState().createSpinner(), "wrap, growx" );
+    this.addComponent(composite.getIsGridShowingState().createCheckBox());
+    this.addComponent(composite.getGridSpacingState().getSidekickLabel().createLabel(), "align right");
+    this.addComponent(composite.getGridSpacingState().createSpinner(), "wrap, growx");
 
-		this.addComponent( composite.getIsRotationState().createCheckBox() );
-		this.addComponent( composite.getAngleState().getSidekickLabel().createLabel(), "align right" );
-		this.addComponent( composite.getAngleState().createSpinner(), "wrap, growx" );
+    this.addComponent(composite.getIsRotationState().createCheckBox());
+    this.addComponent(composite.getAngleState().getSidekickLabel().createLabel(), "align right");
+    this.addComponent(composite.getAngleState().createSpinner(), "wrap, growx");
 
-		this.addComponent( composite.getIsSnapToGroundEnabledState().createCheckBox(), "wrap, gapy 6" );
-	}
+    this.addComponent(composite.getIsSnapToGroundEnabledState().createCheckBox(), "wrap, gapy 6");
+  }
 
-	private void handleEnabledChanged( boolean nextValue ) {
-		for( Component awtComponent : this.getAwtComponent().getComponents() ) {
-			awtComponent.setEnabled( nextValue );
-		}
-	}
+  private void handleEnabledChanged(boolean nextValue) {
+    for (Component awtComponent : this.getAwtComponent().getComponents()) {
+      awtComponent.setEnabled(nextValue);
+    }
+  }
 
-	@Override
-	public void handleCompositePreActivation() {
-		super.handleCompositePreActivation();
-		SideComposite.getInstance().getIsSnapEnabledState().addAndInvokeNewSchoolValueListener( this.isEnabledListener );
+  @Override
+  public void handleCompositePreActivation() {
+    super.handleCompositePreActivation();
+    SideComposite.getInstance().getIsSnapEnabledState().addAndInvokeNewSchoolValueListener(this.isEnabledListener);
 
-	}
+  }
 
-	@Override
-	public void handleCompositePostDeactivation() {
-		SideComposite.getInstance().getIsSnapEnabledState().removeNewSchoolValueListener( this.isEnabledListener );
-		super.handleCompositePostDeactivation();
-	}
+  @Override
+  public void handleCompositePostDeactivation() {
+    SideComposite.getInstance().getIsSnapEnabledState().removeNewSchoolValueListener(this.isEnabledListener);
+    super.handleCompositePostDeactivation();
+  }
 }

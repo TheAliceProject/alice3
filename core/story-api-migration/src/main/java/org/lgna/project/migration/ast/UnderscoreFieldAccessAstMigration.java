@@ -56,35 +56,35 @@ import java.lang.reflect.Field;
  * @author Dennis Cosgrove
  */
 public class UnderscoreFieldAccessAstMigration extends FieldAccessAstMigration {
-	public UnderscoreFieldAccessAstMigration( Version minimumVersion, Version resultVersion ) {
-		super( minimumVersion, resultVersion );
-	}
+  public UnderscoreFieldAccessAstMigration(Version minimumVersion, Version resultVersion) {
+    super(minimumVersion, resultVersion);
+  }
 
-	@Override
-	protected void migrate( FieldAccess fieldAccess ) {
-		AbstractField field = fieldAccess.field.getValue();
-		if( field instanceof JavaField ) {
-			JavaField javaField = (JavaField)field;
-			FieldReflectionProxy fieldReflectionProxy = javaField.getFieldReflectionProxy();
-			Field reification = fieldReflectionProxy.getReification();
-			if( reification != null ) {
-				//pass
-			} else {
-				JavaType declaringType = javaField.getDeclaringType();
-				Class<?> declaringCls = declaringType.getClassReflectionProxy().getReification();
-				if( declaringCls != null ) {
-					String previousName = fieldReflectionProxy.getName();
-					for( Field fld : declaringCls.getFields() ) {
-						String fldName = fld.getName();
-						if( fldName.replace( "_", "" ).contentEquals( fieldReflectionProxy.getName() ) ) {
-							AbstractField replacementField = declaringType.findField( fldName );
-							fieldAccess.field.setValue( replacementField );
-							Logger.outln( "replacing", javaField, "with", replacementField );
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
+  @Override
+  protected void migrate(FieldAccess fieldAccess) {
+    AbstractField field = fieldAccess.field.getValue();
+    if (field instanceof JavaField) {
+      JavaField javaField = (JavaField) field;
+      FieldReflectionProxy fieldReflectionProxy = javaField.getFieldReflectionProxy();
+      Field reification = fieldReflectionProxy.getReification();
+      if (reification != null) {
+        //pass
+      } else {
+        JavaType declaringType = javaField.getDeclaringType();
+        Class<?> declaringCls = declaringType.getClassReflectionProxy().getReification();
+        if (declaringCls != null) {
+          String previousName = fieldReflectionProxy.getName();
+          for (Field fld : declaringCls.getFields()) {
+            String fldName = fld.getName();
+            if (fldName.replace("_", "").contentEquals(fieldReflectionProxy.getName())) {
+              AbstractField replacementField = declaringType.findField(fldName);
+              fieldAccess.field.setValue(replacementField);
+              Logger.outln("replacing", javaField, "with", replacementField);
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
 }

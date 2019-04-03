@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class Resize extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = Resize.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = Resize.class) public static interface Detail {
+  }
 
-	private Resize() {
-		super();
-	}
+  private Resize() {
+    super();
+  }
 }

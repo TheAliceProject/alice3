@@ -57,59 +57,53 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class PersonResourceIconFactory extends AbstractIconFactory {
-	private final List<? extends AbstractSingleSourceImageIconFactory> iconFactories;
+  private final List<? extends AbstractSingleSourceImageIconFactory> iconFactories;
 
-	public PersonResourceIconFactory() {
-		super( IsCachingDesired.TRUE );
-		//todo
-		this.iconFactories = (List)Collections.unmodifiableList( Lists.newArrayList(
-				PersonResourceKey.getChildInstance().getIconFactory(),
-				PersonResourceKey.getElderInstance().getIconFactory(),
-				PersonResourceKey.getTeenInstance().getIconFactory(),
-				PersonResourceKey.getAdultInstance().getIconFactory(),
-				PersonResourceKey.getToddlerInstance().getIconFactory()
-				) );
-	}
+  public PersonResourceIconFactory() {
+    super(IsCachingDesired.TRUE);
+    //todo
+    this.iconFactories = (List) Collections.unmodifiableList(Lists.newArrayList(PersonResourceKey.getChildInstance().getIconFactory(), PersonResourceKey.getElderInstance().getIconFactory(), PersonResourceKey.getTeenInstance().getIconFactory(), PersonResourceKey.getAdultInstance().getIconFactory(), PersonResourceKey.getToddlerInstance().getIconFactory()));
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new CollageIcon( size, this.iconFactories ) {
-			@Override
-			protected Shape createBackShape( double width, double height ) {
-				return null;
-			}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new CollageIcon(size, this.iconFactories) {
+      @Override
+      protected Shape createBackShape(double width, double height) {
+        return null;
+      }
 
-			@Override
-			protected Shape createFrontShape( double width, double height ) {
-				return null;
-			}
+      @Override
+      protected Shape createFrontShape(double width, double height) {
+        return null;
+      }
 
-			@Override
-			protected double getX( int i ) {
-				switch( i ) {
-				case 0:
-					return 0.5;
-				case 1:
-					return 0.2;
-				case 2:
-					return 0.4;
-				case 3:
-					return 0.6;
-				case 4:
-					return 0.3;
-				default:
-					return super.getX( i );
-				}
-			}
-		};
-	}
+      @Override
+      protected double getX(int i) {
+        switch (i) {
+        case 0:
+          return 0.5;
+        case 1:
+          return 0.2;
+        case 2:
+          return 0.4;
+        case 3:
+          return 0.6;
+        case 4:
+          return 0.3;
+        default:
+          return super.getX(i);
+        }
+      }
+    };
+  }
 
-	@Override
-	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
-		if( this.iconFactories.size() > 0 ) {
-			return this.iconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
-		} else {
-			return sizeIfResolutionIndependent;
-		}
-	}
+  @Override
+  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
+    if (this.iconFactories.size() > 0) {
+      return this.iconFactories.get(0).getDefaultSize(sizeIfResolutionIndependent);
+    } else {
+      return sizeIfResolutionIndependent;
+    }
+  }
 }

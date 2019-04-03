@@ -51,18 +51,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeCancel<F> extends CascadeItem<F, Void> {
-	public CascadeCancel( UUID id ) {
-		super( id );
-	}
+  public CascadeCancel(UUID id) {
+    super(id);
+  }
 
-	@Override
-	public final F createValue( ItemNode<? super F, Void> node ) {
-		throw new CancelException( this.getMenuItemText() );
-	}
+  @Override
+  public final F createValue(ItemNode<? super F, Void> node) {
+    throw new CancelException(this.getMenuItemText());
+  }
 
-	@Override
-	public final F getTransientValue( ItemNode<? super F, Void> node ) {
-		return null;
-	}
+  @Override
+  public final F getTransientValue(ItemNode<? super F, Void> node) {
+    return null;
+  }
 
 }

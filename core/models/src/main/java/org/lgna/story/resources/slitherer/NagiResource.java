@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.slitherer;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SSlitherer;
@@ -33,117 +34,78 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.SlithererResource;
 
 public enum NagiResource implements SlithererResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_EAR = new JointId( HEAD, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_EAR = new JointId( HEAD, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_CLAVICLE = new JointId( SPINE_UPPER, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_SHOULDER = new JointId( LEFT_CLAVICLE, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_ELBOW = new JointId( LEFT_SHOULDER, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_WRIST = new JointId( LEFT_ELBOW, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_HAND = new JointId( LEFT_WRIST, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_PINKY_FINGER = new JointId( LEFT_HAND, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_PINKY_FINGER_KNUCKLE = new JointId( LEFT_PINKY_FINGER, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_MIDDLE_FINGER = new JointId( LEFT_HAND, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_MIDDLE_FINGER_KNUCKLE = new JointId( LEFT_MIDDLE_FINGER, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_RING_FINGER = new JointId( LEFT_HAND, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_RING_FINGER_KNUCKLE = new JointId( LEFT_RING_FINGER, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_INDEX_FINGER = new JointId( LEFT_HAND, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_INDEX_FINGER_KNUCKLE = new JointId( LEFT_INDEX_FINGER, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_THUMB = new JointId( LEFT_HAND, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_THUMB_KNUCKLE = new JointId( LEFT_THUMB, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_THUMB_TIP = new JointId( LEFT_THUMB_KNUCKLE, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_CLAVICLE = new JointId( SPINE_UPPER, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_SHOULDER = new JointId( RIGHT_CLAVICLE, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_ELBOW = new JointId( RIGHT_SHOULDER, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_WRIST = new JointId( RIGHT_ELBOW, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_HAND = new JointId( RIGHT_WRIST, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_PINKY_FINGER = new JointId( RIGHT_HAND, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_PINKY_FINGER_KNUCKLE = new JointId( RIGHT_PINKY_FINGER, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_MIDDLE_FINGER = new JointId( RIGHT_HAND, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_MIDDLE_FINGER_KNUCKLE = new JointId( RIGHT_MIDDLE_FINGER, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_RING_FINGER = new JointId( RIGHT_HAND, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_RING_FINGER_KNUCKLE = new JointId( RIGHT_RING_FINGER, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_INDEX_FINGER = new JointId( RIGHT_HAND, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_INDEX_FINGER_KNUCKLE = new JointId( RIGHT_INDEX_FINGER, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_THUMB = new JointId( RIGHT_HAND, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_THUMB_KNUCKLE = new JointId( RIGHT_THUMB, NagiResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_THUMB_TIP = new JointId( RIGHT_THUMB_KNUCKLE, NagiResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_1 = new JointId( TAIL_0, NagiResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_2 = new JointId( TAIL_1, NagiResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_3 = new JointId( TAIL_2, NagiResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_4 = new JointId( TAIL_3, NagiResource.class );
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LOWER_LIP = new JointId(MOUTH, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_EAR = new JointId(HEAD, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_EAR_TIP = new JointId(LEFT_EAR, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_EAR = new JointId(HEAD, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_EAR_TIP = new JointId(RIGHT_EAR, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_CLAVICLE = new JointId(SPINE_UPPER, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_SHOULDER = new JointId(LEFT_CLAVICLE, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_ELBOW = new JointId(LEFT_SHOULDER, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_WRIST = new JointId(LEFT_ELBOW, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_HAND = new JointId(LEFT_WRIST, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_PINKY_FINGER = new JointId(LEFT_HAND, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_PINKY_FINGER_KNUCKLE = new JointId(LEFT_PINKY_FINGER, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_MIDDLE_FINGER = new JointId(LEFT_HAND, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_MIDDLE_FINGER_KNUCKLE = new JointId(LEFT_MIDDLE_FINGER, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_RING_FINGER = new JointId(LEFT_HAND, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_RING_FINGER_KNUCKLE = new JointId(LEFT_RING_FINGER, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_INDEX_FINGER = new JointId(LEFT_HAND, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_INDEX_FINGER_KNUCKLE = new JointId(LEFT_INDEX_FINGER, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_THUMB = new JointId(LEFT_HAND, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_THUMB_KNUCKLE = new JointId(LEFT_THUMB, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_THUMB_TIP = new JointId(LEFT_THUMB_KNUCKLE, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_CLAVICLE = new JointId(SPINE_UPPER, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_SHOULDER = new JointId(RIGHT_CLAVICLE, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_ELBOW = new JointId(RIGHT_SHOULDER, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_WRIST = new JointId(RIGHT_ELBOW, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_HAND = new JointId(RIGHT_WRIST, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_PINKY_FINGER = new JointId(RIGHT_HAND, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_PINKY_FINGER_KNUCKLE = new JointId(RIGHT_PINKY_FINGER, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_MIDDLE_FINGER = new JointId(RIGHT_HAND, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_MIDDLE_FINGER_KNUCKLE = new JointId(RIGHT_MIDDLE_FINGER, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_RING_FINGER = new JointId(RIGHT_HAND, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_RING_FINGER_KNUCKLE = new JointId(RIGHT_RING_FINGER, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_INDEX_FINGER = new JointId(RIGHT_HAND, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_INDEX_FINGER_KNUCKLE = new JointId(RIGHT_INDEX_FINGER, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_THUMB = new JointId(RIGHT_HAND, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_THUMB_KNUCKLE = new JointId(RIGHT_THUMB, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_THUMB_TIP = new JointId(RIGHT_THUMB_KNUCKLE, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_1 = new JointId(TAIL_0, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_2 = new JointId(TAIL_1, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_3 = new JointId(TAIL_2, NagiResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_4 = new JointId(TAIL_3, NagiResource.class);
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4 };
-	@Override
-	public JointId[] getTailArray() {
-		return NagiResource.TAIL_ARRAY;
-	}
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] TAIL_ARRAY = {TAIL_0, TAIL_1, TAIL_2, TAIL_3, TAIL_4};
 
-	private final ImplementationAndVisualType resourceType;
-	NagiResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  @Override
+  public JointId[] getTailArray() {
+    return NagiResource.TAIL_ARRAY;
+  }
 
-	NagiResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	public JointId[] getRootJointIds() {
-		return SlithererResource.JOINT_ID_ROOTS;
-	}
+  NagiResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public SlithererImp createImplementation( SSlitherer abstraction ) {
-		return new SlithererImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  NagiResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
+
+  public JointId[] getRootJointIds() {
+    return SlithererResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public SlithererImp createImplementation(SSlitherer abstraction) {
+    return new SlithererImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

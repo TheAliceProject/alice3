@@ -55,61 +55,61 @@ import java.util.logging.Level;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMigrationManager implements MigrationManager {
-	private final List<Migration> versionIndependentMigrations = Lists.newCopyOnWriteArrayList();
+  private final List<Migration> versionIndependentMigrations = Lists.newCopyOnWriteArrayList();
 
-	private final Version currentVersion;
+  private final Version currentVersion;
 
-	AbstractMigrationManager(Version currentVersion) {
-		this.currentVersion = currentVersion;
-	}
+  AbstractMigrationManager(Version currentVersion) {
+    this.currentVersion = currentVersion;
+  }
 
-	protected abstract TextMigration[] getTextMigrations();
+  protected abstract TextMigration[] getTextMigrations();
 
-	protected abstract AstMigration[] getAstMigrations();
+  protected abstract AstMigration[] getAstMigrations();
 
-	Version getCurrentVersion() {
-		return this.currentVersion;
-	}
+  Version getCurrentVersion() {
+    return this.currentVersion;
+  }
 
-	boolean hasVersionIndependentMigrations() {
-		return versionIndependentMigrations.size() > 0;
-	}
+  boolean hasVersionIndependentMigrations() {
+    return versionIndependentMigrations.size() > 0;
+  }
 
-	@Override
-	public String migrate( String source, Version version ) {
-		String rv = source;
-		for( TextMigration textMigration : this.getTextMigrations() ) {
-			if( textMigration.isApplicable( version ) ) {
-				if( Logger.getLevel().intValue() < Level.SEVERE.intValue() ) {
-					Logger.outln( version, textMigration );
-				}
-				rv = textMigration.migrate( rv );
-				version = textMigration.getResultVersion();
-			}
-		}
-		return rv;
-	}
+  @Override
+  public String migrate(String source, Version version) {
+    String rv = source;
+    for (TextMigration textMigration : this.getTextMigrations()) {
+      if (textMigration.isApplicable(version)) {
+        if (Logger.getLevel().intValue() < Level.SEVERE.intValue()) {
+          Logger.outln(version, textMigration);
+        }
+        rv = textMigration.migrate(rv);
+        version = textMigration.getResultVersion();
+      }
+    }
+    return rv;
+  }
 
-	@Override
-	public void migrate( Node root, Project projectIfApplicable, Version version ) {
-		for( AstMigration astMigration : this.getAstMigrations() ) {
-			if( astMigration != null ) {
-				if( astMigration.isApplicable( version ) ) {
-					if( Logger.getLevel().intValue() < Level.SEVERE.intValue() ) {
-						Logger.outln( version, astMigration );
-					}
-					astMigration.migrate( root, projectIfApplicable );
-					version = astMigration.getResultVersion();
-				}
-			}
-		}
-	}
+  @Override
+  public void migrate(Node root, Project projectIfApplicable, Version version) {
+    for (AstMigration astMigration : this.getAstMigrations()) {
+      if (astMigration != null) {
+        if (astMigration.isApplicable(version)) {
+          if (Logger.getLevel().intValue() < Level.SEVERE.intValue()) {
+            Logger.outln(version, astMigration);
+          }
+          astMigration.migrate(root, projectIfApplicable);
+          version = astMigration.getResultVersion();
+        }
+      }
+    }
+  }
 
-	public void addVersionIndependentMigration( Migration migration ) {
-		versionIndependentMigrations.add( migration );
-	}
+  public void addVersionIndependentMigration(Migration migration) {
+    versionIndependentMigrations.add(migration);
+  }
 
-	public void removeVersionIndependentMigration( Migration migration ) {
-		versionIndependentMigrations.remove( migration );
-	}
+  public void removeVersionIndependentMigration(Migration migration) {
+    versionIndependentMigrations.remove(migration);
+  }
 }

@@ -46,19 +46,19 @@ package edu.cmu.cs.dennisc.java.util;
  * @author Dennis Cosgrove
  */
 public class Objects {
-	private Objects() {
-		throw new Error();
-	}
+  private Objects() {
+    throw new Error();
+  }
 
-	public static boolean equals( Object a, Object b ) {
-		if( a != null ) {
-			return a.equals( b );
-		} else {
-			return b == null;
-		}
-	}
+  public static boolean equals(Object a, Object b) {
+    if (a != null) {
+      return a.equals(b);
+    } else {
+      return b == null;
+    }
+  }
 
-	public static boolean notEquals( Object a, Object b ) {
-		return !equals( a, b );
-	}
+  public static boolean notEquals(Object a, Object b) {
+    return !equals(a, b);
+  }
 }

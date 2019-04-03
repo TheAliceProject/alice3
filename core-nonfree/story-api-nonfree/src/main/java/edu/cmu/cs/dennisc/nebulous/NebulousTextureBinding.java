@@ -51,12 +51,12 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  *
  */
 public final class NebulousTextureBinding implements ForgettableBinding {
-	public void bind( RenderContext rc, NebulousTexture texture ) {
-		texture.doSetup( rc.gl );
-	}
+  public void bind(RenderContext rc, NebulousTexture texture) {
+    texture.doSetup(rc.gl);
+  }
 
-	@Override
-	public void forget( RenderContext rc ) {
-		Logger.todo( "IMPLEMENT forget" );
-	}
+  @Override
+  public void forget(RenderContext rc) {
+    Logger.todo("IMPLEMENT forget");
+  }
 }

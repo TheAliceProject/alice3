@@ -65,81 +65,78 @@ import java.util.Map;
 /**
  * @author Dennis Cosgrove
  */
-public class JointImplementationAndVisualDataFactory<R extends JointedModelResource>
-	implements JointedModelImp.JointImplementationAndVisualDataFactory {
-	private static final Map<JointedModelResource, JointImplementationAndVisualDataFactory> map = Maps.newHashMap();
+public class JointImplementationAndVisualDataFactory<R extends JointedModelResource> implements JointedModelImp.JointImplementationAndVisualDataFactory {
+  private static final Map<JointedModelResource, JointImplementationAndVisualDataFactory> map = Maps.newHashMap();
 
-	public static <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getInstance( R resource ) {
-		synchronized( map ) {
-			JointImplementationAndVisualDataFactory<R> rv = map.get( resource );
-			if (rv == null) {
-				rv = new JointImplementationAndVisualDataFactory<>( resource );
-				map.put( resource, rv );
-			}
-			return rv;
-		}
-	}
+  public static <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getInstance(R resource) {
+    synchronized (map) {
+      JointImplementationAndVisualDataFactory<R> rv = map.get(resource);
+      if (rv == null) {
+        rv = new JointImplementationAndVisualDataFactory<>(resource);
+        map.put(resource, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final JointedModelResource resource;
+  private final JointedModelResource resource;
 
-	private JointImplementationAndVisualDataFactory( JointedModelResource resource ) {
-		this.resource = resource;
-	}
+  private JointImplementationAndVisualDataFactory(JointedModelResource resource) {
+    this.resource = resource;
+  }
 
-	@Override
-	public JointedModelResource getResource() {
-		return this.resource;
-	}
+  @Override
+  public JointedModelResource getResource() {
+    return this.resource;
+  }
 
+  @Override
+  public JointImp createJointImplementation(JointedModelImp jointedModelImplementation, JointId jointId) {
+    assert jointedModelImplementation.getVisualData() instanceof NebulousVisualData;
+    Model nebModel = ((NebulousVisualData<Model>) jointedModelImplementation.getVisualData()).getNebModel();
+    return new JointImplementation(jointedModelImplementation, new NebulousJoint(nebModel, jointId));
+  }
 
+  @Override
+  public boolean hasJointImplementation(JointedModelImp jointedModelImplementation, JointId jointId) {
+    assert jointedModelImplementation.getVisualData() instanceof NebulousVisualData;
+    Model nebModel = ((NebulousVisualData<Model>) jointedModelImplementation.getVisualData()).getNebModel();
+    return nebModel.hasJoint(jointId);
+  }
 
-	@Override
-	public JointImp createJointImplementation( JointedModelImp jointedModelImplementation, JointId jointId ) {
-		assert jointedModelImplementation.getVisualData() instanceof NebulousVisualData;
-		Model nebModel = ( (NebulousVisualData<Model>)jointedModelImplementation.getVisualData() ).getNebModel();
-		return new JointImplementation( jointedModelImplementation, new NebulousJoint( nebModel, jointId ) );
-	}
+  //Not supported on nebulous models
+  @Override
+  public JointId[] getJointArrayIds(JointedModelImp jointedModelImplementation, JointArrayId jointArrayId) {
+    return new JointId[0];
+  }
 
-	@Override
-	public boolean hasJointImplementation( JointedModelImp jointedModelImplementation, JointId jointId ) {
-		assert jointedModelImplementation.getVisualData() instanceof NebulousVisualData;
-		Model nebModel = ( (NebulousVisualData<Model>)jointedModelImplementation.getVisualData() ).getNebModel();
-		return nebModel.hasJoint( jointId );
-	}
+  @Override
+  public JointedModelImp.VisualData createVisualData() {
+    try {
+      if (this.resource instanceof PersonResource) {
+        PersonResource personResource = (PersonResource) this.resource;
+        return NebulousPersonVisualData.createInstance(personResource);
+      } else {
+        String modelResourceName = AliceResourceUtilties.getVisualResourceName(this.resource);
+        modelResourceName = AliceResourceUtilties.camelCaseToEnum(modelResourceName);
+        String textureResourceName = AliceResourceUtilties.getTextureResourceName(this.resource);
+        //        return new NebulousVisualData< edu.cmu.cs.dennisc.nebulous.Model >( new edu.cmu.cs.dennisc.nebulous.Thing( this.resource, modelResourceName+"__"+textureResourceName ) );
+        return new NebulousVisualData<Model>(new Thing(this.resource, this.resource));
+      }
+    } catch (LicenseRejectedException lre) {
+      throw new RuntimeException(lre);
+    }
+  }
 
-	//Not supported on nebulous models
-	@Override
-	public JointId[] getJointArrayIds(JointedModelImp jointedModelImplementation, JointArrayId jointArrayId) {
-		return new JointId[0];
-	}
+  @Override
+  public UnitQuaternion getOriginalJointOrientation(JointId jointId) {
+    return this.getOriginalJointTransformation(jointId).orientation.createUnitQuaternion();
+  }
 
-	@Override
-	public JointedModelImp.VisualData createVisualData() {
-		try {
-			if( this.resource instanceof PersonResource ) {
-				PersonResource personResource = (PersonResource)this.resource;
-				return NebulousPersonVisualData.createInstance( personResource );
-			} else {
-				String modelResourceName = AliceResourceUtilties.getVisualResourceName( this.resource );
-				modelResourceName = AliceResourceUtilties.camelCaseToEnum( modelResourceName );
-				String textureResourceName = AliceResourceUtilties.getTextureResourceName( this.resource );
-				//				return new NebulousVisualData< edu.cmu.cs.dennisc.nebulous.Model >( new edu.cmu.cs.dennisc.nebulous.Thing( this.resource, modelResourceName+"__"+textureResourceName ) );
-				return new NebulousVisualData<Model>( new Thing( this.resource, this.resource ) );
-			}
-		} catch( LicenseRejectedException lre ) {
-			throw new RuntimeException( lre );
-		}
-	}
-
-	@Override
-	public UnitQuaternion getOriginalJointOrientation( JointId jointId ) {
-		return this.getOriginalJointTransformation( jointId ).orientation.createUnitQuaternion();
-	}
-
-	@Override
-	public AffineMatrix4x4 getOriginalJointTransformation( JointId jointId ) {
-		Logger.severe( "getOriginalJointTransformation not supported from nebulous factory" );
-		return AffineMatrix4x4.createIdentity();
-	}
+  @Override
+  public AffineMatrix4x4 getOriginalJointTransformation(JointId jointId) {
+    Logger.severe("getOriginalJointTransformation not supported from nebulous factory");
+    return AffineMatrix4x4.createIdentity();
+  }
 
 }

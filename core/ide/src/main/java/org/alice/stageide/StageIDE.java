@@ -125,414 +125,412 @@ import java.io.File;
 import java.util.List;
 
 public abstract class StageIDE extends IDE {
-	public static final String PERFORM_GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
-	public static final String INITIALIZE_EVENT_LISTENERS_METHOD_NAME = "initializeEventListeners";
-	private static final String MODEL_IMPORT_DIRECTORY_KEY = "modelImportDirectory";
+  public static final String PERFORM_GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
+  public static final String INITIALIZE_EVENT_LISTENERS_METHOD_NAME = "initializeEventListeners";
+  private static final String MODEL_IMPORT_DIRECTORY_KEY = "modelImportDirectory";
 
-	public static StageIDE getActiveInstance() {
-		return ClassUtilities.getInstance( IDE.getActiveInstance(), StageIDE.class );
-	}
+  public static StageIDE getActiveInstance() {
+    return ClassUtilities.getInstance(IDE.getActiveInstance(), StageIDE.class);
+  }
 
-	private ExpressionCascadeManager cascadeManager = NebulousIde.nonfree.newExpressionCascadeManager();
+  private ExpressionCascadeManager cascadeManager = NebulousIde.nonfree.newExpressionCascadeManager();
 
-	public StageIDE( IdeConfiguration ideConfiguration, CrashDetector crashDetector ) {
-		super( ideConfiguration, StoryApiConfigurationManager.getInstance(), crashDetector );
-		this.getDocumentFrame().getFrame().addWindowStateListener( new WindowStateListener() {
-			@Override
-			public void windowStateChanged( WindowEvent e ) {
-				int oldState = e.getOldState();
-				int newState = e.getNewState();
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "windowStateChanged", oldState, newState, java.awt.Frame.ICONIFIED );
-				if( ( oldState & Frame.ICONIFIED ) == Frame.ICONIFIED ) {
-					RenderUtils.getDefaultRenderFactory().incrementAutomaticDisplayCount();
-				}
-				if( ( newState & Frame.ICONIFIED ) == Frame.ICONIFIED ) {
-					RenderUtils.getDefaultRenderFactory().decrementAutomaticDisplayCount();
-				}
-			}
-		} );
-	}
+  public StageIDE(IdeConfiguration ideConfiguration, CrashDetector crashDetector) {
+    super(ideConfiguration, StoryApiConfigurationManager.getInstance(), crashDetector);
+    this.getDocumentFrame().getFrame().addWindowStateListener(new WindowStateListener() {
+      @Override
+      public void windowStateChanged(WindowEvent e) {
+        int oldState = e.getOldState();
+        int newState = e.getNewState();
+        //edu.cmu.cs.dennisc.print.PrintUtilities.println( "windowStateChanged", oldState, newState, java.awt.Frame.ICONIFIED );
+        if ((oldState & Frame.ICONIFIED) == Frame.ICONIFIED) {
+          RenderUtils.getDefaultRenderFactory().incrementAutomaticDisplayCount();
+        }
+        if ((newState & Frame.ICONIFIED) == Frame.ICONIFIED) {
+          RenderUtils.getDefaultRenderFactory().decrementAutomaticDisplayCount();
+        }
+      }
+    });
+  }
 
-	@Override
-	public void initialize( String[] args ) {
-		super.initialize( args );
-		StoryApiDirectoryUtilities.setUserGalleryDirectory(this.getGalleryDirectory());
-	}
+  @Override
+  public void initialize(String[] args) {
+    super.initialize(args);
+    StoryApiDirectoryUtilities.setUserGalleryDirectory(this.getGalleryDirectory());
+  }
 
-	@Override
-	protected String getInnerCommentForMethodName( String methodName ) {
-		return StoryApiSpecificAstUtilities.getInnerCommentForMethodName( this.getSceneType(), methodName );
-	}
+  @Override
+  protected String getInnerCommentForMethodName(String methodName) {
+    return StoryApiSpecificAstUtilities.getInnerCommentForMethodName(this.getSceneType(), methodName);
+  }
 
-	@Override
-	protected IdeFrameTitleGenerator createFrameTitleGenerator() {
-		return new AliceIdeFrameTitleGenerator();
-	}
+  @Override
+  protected IdeFrameTitleGenerator createFrameTitleGenerator() {
+    return new AliceIdeFrameTitleGenerator();
+  }
 
-	@Deprecated
-	public UserField getSceneField() {
-		return StoryApiSpecificAstUtilities.getSceneFieldFromProgramType( this.getProgramType() );
-	}
+  @Deprecated
+  public UserField getSceneField() {
+    return StoryApiSpecificAstUtilities.getSceneFieldFromProgramType(this.getProgramType());
+  }
 
-	@Deprecated
-	public NamedUserType getSceneType() {
-		return StoryApiSpecificAstUtilities.getSceneTypeFromProgramType( this.getProgramType() );
-	}
+  @Deprecated
+  public NamedUserType getSceneType() {
+    return StoryApiSpecificAstUtilities.getSceneTypeFromProgramType(this.getProgramType());
+  }
 
-	@Override
-	public StorytellingSceneEditor getSceneEditor() {
-		return StorytellingSceneEditor.getInstance();
-	}
+  @Override
+  public StorytellingSceneEditor getSceneEditor() {
+    return StorytellingSceneEditor.getInstance();
+  }
 
-	private final Criterion<Declaration> declarationFilter = new Criterion<Declaration>() {
-		@Override
-		public boolean accept( Declaration declaration ) {
-			return PERFORM_GENERATED_SET_UP_METHOD_NAME.equals( declaration.getName() ) == false;
-		}
-	};
+  private final Criterion<Declaration> declarationFilter = new Criterion<Declaration>() {
+    @Override
+    public boolean accept(Declaration declaration) {
+      return PERFORM_GENERATED_SET_UP_METHOD_NAME.equals(declaration.getName()) == false;
+    }
+  };
 
-	@Override
-	protected Criterion<Declaration> getDeclarationFilter() {
-		return this.declarationFilter;
-	}
+  @Override
+  protected Criterion<Declaration> getDeclarationFilter() {
+    return this.declarationFilter;
+  }
 
-	@Override
-	protected void registerAdaptersForSceneEditorVm( VirtualMachine vm ) {
-		vm.registerAbstractClassAdapter( SScene.class, SceneAdapter.class );
-		vm.registerProtectedMethodAdapter( ReflectionUtilities.getDeclaredMethod( SJointedModel.class, "setJointedModelResource", JointedModelResource.class ),
-				ReflectionUtilities.getDeclaredMethod( EmployeesOnly.class, "invokeSetJointedModelResource", SJointedModel.class, JointedModelResource.class ) );
-	}
+  @Override
+  protected void registerAdaptersForSceneEditorVm(VirtualMachine vm) {
+    vm.registerAbstractClassAdapter(SScene.class, SceneAdapter.class);
+    vm.registerProtectedMethodAdapter(ReflectionUtilities.getDeclaredMethod(SJointedModel.class, "setJointedModelResource", JointedModelResource.class), ReflectionUtilities.getDeclaredMethod(EmployeesOnly.class, "invokeSetJointedModelResource", SJointedModel.class, JointedModelResource.class));
+  }
 
-	@Override
-	public ExpressionCascadeManager getExpressionCascadeManager() {
-		return this.cascadeManager;
-	}
+  @Override
+  public ExpressionCascadeManager getExpressionCascadeManager() {
+    return this.cascadeManager;
+  }
 
-	@Override
-	protected void promptForLicenseAgreements() {
-		final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
-		try {
-			EULAUtilities.promptUserToAcceptEULAIfNecessary( License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 1 of 2): Alice 3", License.TEXT, "Alice" );
-			NebulousIde.nonfree.promptForLicenseAgreements( IS_LICENSE_ACCEPTED_PREFERENCE_KEY );
-		} catch( LicenseRejectedException lre ) {
-			Dialogs.showInfo(
-				"You must accept the license agreements in order to use Alice 3 and The Sims (TM) 2 Art Assets.  Exiting." );
-			System.exit( -1 );
-		}
-	}
+  @Override
+  protected void promptForLicenseAgreements() {
+    final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
+    try {
+      EULAUtilities.promptUserToAcceptEULAIfNecessary(License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 1 of 2): Alice 3", License.TEXT, "Alice");
+      NebulousIde.nonfree.promptForLicenseAgreements(IS_LICENSE_ACCEPTED_PREFERENCE_KEY);
+    } catch (LicenseRejectedException lre) {
+      Dialogs.showInfo("You must accept the license agreements in order to use Alice 3 and The Sims (TM) 2 Art Assets.  Exiting.");
+      System.exit(-1);
+    }
+  }
 
-	private static final JavaType COLOR_TYPE = JavaType.getInstance( org.lgna.story.Color.class );
-	private static final JavaType JOINTED_MODEL_RESOURCE_TYPE = JavaType.getInstance( JointedModelResource.class );
+  private static final JavaType COLOR_TYPE = JavaType.getInstance(org.lgna.story.Color.class);
+  private static final JavaType JOINTED_MODEL_RESOURCE_TYPE = JavaType.getInstance(JointedModelResource.class);
 
-	private Icon getIconFor( AbstractField field ) {
-		if( field == null ) {
-			return null;
-		}
-		AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
-		AbstractType<?, ?, ?> valueType = field.getValueType();
-		if( ( declaringType != null ) && ( valueType != null ) ) {
-			if( ( declaringType == COLOR_TYPE ) && ( valueType == COLOR_TYPE ) ) {
-				try {
-					JavaField javaField = (JavaField)field;
-					org.lgna.story.Color color = (org.lgna.story.Color)ReflectionUtilities.get( javaField.getFieldReflectionProxy().getReification(), null );
-					Color awtColor = EmployeesOnly.getAwtColor( color );
-					return new ColorIconFactory( awtColor ).getIcon( new Dimension( 15, 15 ) );
-				} catch( RuntimeException re ) {
-					//pass
-					Logger.throwable( re, field );
-					return null;
-				}
-			} else if( declaringType.isAssignableTo( JOINTED_MODEL_RESOURCE_TYPE ) && valueType.isAssignableTo( JOINTED_MODEL_RESOURCE_TYPE ) ) {
-				if( field instanceof JavaField ) {
-					JavaField javaField = (JavaField)field;
-					try {
-						ModelResource modelResource = (ModelResource)javaField.getFieldReflectionProxy().getReification().get( null );
-						IconFactory iconFactory = IconFactoryManager.getIconFactoryForResourceInstance( modelResource );
-						return iconFactory.getIcon( new Dimension( 20, 15 ) );
-					} catch( Exception e ) {
-						Logger.throwable( e, field );
-						return null;
-					}
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-		return null;
-	}
+  private Icon getIconFor(AbstractField field) {
+    if (field == null) {
+      return null;
+    }
+    AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
+    AbstractType<?, ?, ?> valueType = field.getValueType();
+    if ((declaringType != null) && (valueType != null)) {
+      if ((declaringType == COLOR_TYPE) && (valueType == COLOR_TYPE)) {
+        try {
+          JavaField javaField = (JavaField) field;
+          org.lgna.story.Color color = (org.lgna.story.Color) ReflectionUtilities.get(javaField.getFieldReflectionProxy().getReification(), null);
+          Color awtColor = EmployeesOnly.getAwtColor(color);
+          return new ColorIconFactory(awtColor).getIcon(new Dimension(15, 15));
+        } catch (RuntimeException re) {
+          //pass
+          Logger.throwable(re, field);
+          return null;
+        }
+      } else if (declaringType.isAssignableTo(JOINTED_MODEL_RESOURCE_TYPE) && valueType.isAssignableTo(JOINTED_MODEL_RESOURCE_TYPE)) {
+        if (field instanceof JavaField) {
+          JavaField javaField = (JavaField) field;
+          try {
+            ModelResource modelResource = (ModelResource) javaField.getFieldReflectionProxy().getReification().get(null);
+            IconFactory iconFactory = IconFactoryManager.getIconFactoryForResourceInstance(modelResource);
+            return iconFactory.getIcon(new Dimension(20, 15));
+          } catch (Exception e) {
+            Logger.throwable(e, field);
+            return null;
+          }
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
+    return null;
+  }
 
-	@Override
-	protected boolean isAccessibleDesired( Accessible accessible ) {
-		if( super.isAccessibleDesired( accessible ) ) {
-			//			if( accessible.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Marker.class) ) {
-			//				return false;
-			//			} else {
-			return accessible.getValueType().isAssignableTo( SThing.class );
-			//			}
-		} else {
-			return false;
-		}
-	}
+  @Override
+  protected boolean isAccessibleDesired(Accessible accessible) {
+    if (super.isAccessibleDesired(accessible)) {
+      //      if( accessible.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Marker.class) ) {
+      //        return false;
+      //      } else {
+      return accessible.getValueType().isAssignableTo(SThing.class);
+      //      }
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public AwtComponentView<?> getPrefixPaneForFieldAccessIfAppropriate( FieldAccess fieldAccess ) {
-		AbstractField field = fieldAccess.field.getValue();
-		Icon icon = getIconFor( field );
-		if( icon != null ) {
-			Label rv = new Label( icon );
-			//			rv.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
-			//			rv.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.CENTER );
-			rv.getAwtComponent().setAlignmentY( 0.5f );
-			return rv;
-		}
-		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
-	}
+  @Override
+  public AwtComponentView<?> getPrefixPaneForFieldAccessIfAppropriate(FieldAccess fieldAccess) {
+    AbstractField field = fieldAccess.field.getValue();
+    Icon icon = getIconFor(field);
+    if (icon != null) {
+      Label rv = new Label(icon);
+      //      rv.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
+      //      rv.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.CENTER );
+      rv.getAwtComponent().setAlignmentY(0.5f);
+      return rv;
+    }
+    return super.getPrefixPaneForFieldAccessIfAppropriate(fieldAccess);
+  }
 
-	@Override
-	public AwtComponentView<?> getPrefixPaneForInstanceCreationIfAppropriate( InstanceCreation instanceCreation ) {
-		AbstractConstructor constructor = instanceCreation.constructor.getValue();
-		if( constructor != null ) {
-			AbstractType<?, ?, ?> type = constructor.getDeclaringType();
-			if( COLOR_TYPE.isAssignableFrom( type ) ) {
-				Label rv = new Label();
-				org.lgna.story.Color color = this.getSceneEditor().getInstanceInJavaVMForExpression( instanceCreation, org.lgna.story.Color.class );
-				Color awtColor = EmployeesOnly.getAwtColor( color );
-				rv.setIcon( new ColorIcon( awtColor ) );
-				return rv;
-			}
-		}
-		return super.getPrefixPaneForInstanceCreationIfAppropriate( instanceCreation );
-	}
+  @Override
+  public AwtComponentView<?> getPrefixPaneForInstanceCreationIfAppropriate(InstanceCreation instanceCreation) {
+    AbstractConstructor constructor = instanceCreation.constructor.getValue();
+    if (constructor != null) {
+      AbstractType<?, ?, ?> type = constructor.getDeclaringType();
+      if (COLOR_TYPE.isAssignableFrom(type)) {
+        Label rv = new Label();
+        org.lgna.story.Color color = this.getSceneEditor().getInstanceInJavaVMForExpression(instanceCreation, org.lgna.story.Color.class);
+        Color awtColor = EmployeesOnly.getAwtColor(color);
+        rv.setIcon(new ColorIcon(awtColor));
+        return rv;
+      }
+    }
+    return super.getPrefixPaneForInstanceCreationIfAppropriate(instanceCreation);
+  }
 
-	@Override
-	public boolean isDropDownDesiredFor( Expression expression ) {
-		if( super.isDropDownDesiredFor( expression ) ) {
-			if( expression != null ) {
-				if( expression instanceof LambdaExpression ) {
-					return false;
-				} else {
-					Node parent = expression.getParent();
-					if( parent instanceof FieldAccess ) {
-						FieldAccess fieldAccess = (FieldAccess)parent;
-						AbstractField field = fieldAccess.field.getValue();
-						assert field != null;
-						AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
-						if( ( declaringType != null ) && declaringType.isAssignableTo( SScene.class ) ) {
-							if( field.getValueType().isAssignableTo( STurnable.class ) ) {
-								return false;
-							}
-						}
-					} else if( parent instanceof AbstractArgument ) {
-						AbstractArgument argument = (AbstractArgument)parent;
-						Node grandparent = argument.getParent();
-						if( grandparent instanceof InstanceCreation ) {
-							InstanceCreation instanceCreation = (InstanceCreation)grandparent;
-							AbstractConstructor constructor = instanceCreation.constructor.getValue();
-							if( constructor != null ) {
-								AbstractType<?, ?, ?> type = constructor.getDeclaringType();
-								return ( COLOR_TYPE.isAssignableFrom( type ) || NebulousIde.nonfree.isPersonResourceTypeAssingleFrom( type ) ) == false;
-							}
-						}
-					} else if( parent instanceof MethodInvocation ) {
-						MethodInvocation methodInvocation = (MethodInvocation)parent;
-						if( StoryApiConfigurationManager.getInstance().isBuildMethod( methodInvocation ) ) {
-							return false;
-						}
-					}
-				}
-			}
-			return true;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean isDropDownDesiredFor(Expression expression) {
+    if (super.isDropDownDesiredFor(expression)) {
+      if (expression != null) {
+        if (expression instanceof LambdaExpression) {
+          return false;
+        } else {
+          Node parent = expression.getParent();
+          if (parent instanceof FieldAccess) {
+            FieldAccess fieldAccess = (FieldAccess) parent;
+            AbstractField field = fieldAccess.field.getValue();
+            assert field != null;
+            AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
+            if ((declaringType != null) && declaringType.isAssignableTo(SScene.class)) {
+              if (field.getValueType().isAssignableTo(STurnable.class)) {
+                return false;
+              }
+            }
+          } else if (parent instanceof AbstractArgument) {
+            AbstractArgument argument = (AbstractArgument) parent;
+            Node grandparent = argument.getParent();
+            if (grandparent instanceof InstanceCreation) {
+              InstanceCreation instanceCreation = (InstanceCreation) grandparent;
+              AbstractConstructor constructor = instanceCreation.constructor.getValue();
+              if (constructor != null) {
+                AbstractType<?, ?, ?> type = constructor.getDeclaringType();
+                return (COLOR_TYPE.isAssignableFrom(type) || NebulousIde.nonfree.isPersonResourceTypeAssingleFrom(type)) == false;
+              }
+            }
+          } else if (parent instanceof MethodInvocation) {
+            MethodInvocation methodInvocation = (MethodInvocation) parent;
+            if (StoryApiConfigurationManager.getInstance().isBuildMethod(methodInvocation)) {
+              return false;
+            }
+          }
+        }
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	//	@Override
-	//	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, org.lgna.project.ast.MethodInvocation emptyExpressionMethodInvocation ) {
-	//		this.ensureProjectCodeUpToDate();
-	//		org.lgna.project.ast.AbstractField field = this.getFieldSelectionState().getValue();
-	//		if( field == this.getSceneField() ) {
-	//			field = null;
-	//		}
-	//		TestMethodProgram testProgram = new TestMethodProgram( this.getSceneType(), field, emptyExpressionMethodInvocation );
-	//		this.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
-	//		try {
-	//			testProgram.showInJDialog( this.getFrame().getAwtWindow(), true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
-	//		} finally {
-	//			this.enableRendering();
-	//			try {
-	//				this.xLocation = Integer.parseInt( testProgram.getParameter( "X_LOCATION" ) );
-	//			} catch( Throwable t ) {
-	//				this.xLocation = 0;
-	//			}
-	//			try {
-	//				this.yLocation = Integer.parseInt( testProgram.getParameter( "Y_LOCATION" ) );
-	//			} catch( Throwable t ) {
-	//				this.yLocation = 0;
-	//			}
-	//		}
-	//	}
+  //  @Override
+  //  public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, org.lgna.project.ast.MethodInvocation emptyExpressionMethodInvocation ) {
+  //    this.ensureProjectCodeUpToDate();
+  //    org.lgna.project.ast.AbstractField field = this.getFieldSelectionState().getValue();
+  //    if( field == this.getSceneField() ) {
+  //      field = null;
+  //    }
+  //    TestMethodProgram testProgram = new TestMethodProgram( this.getSceneType(), field, emptyExpressionMethodInvocation );
+  //    this.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
+  //    try {
+  //      testProgram.showInJDialog( this.getFrame().getAwtWindow(), true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
+  //    } finally {
+  //      this.enableRendering();
+  //      try {
+  //        this.xLocation = Integer.parseInt( testProgram.getParameter( "X_LOCATION" ) );
+  //      } catch( Throwable t ) {
+  //        this.xLocation = 0;
+  //      }
+  //      try {
+  //        this.yLocation = Integer.parseInt( testProgram.getParameter( "Y_LOCATION" ) );
+  //      } catch( Throwable t ) {
+  //        this.yLocation = 0;
+  //      }
+  //    }
+  //  }
 
-	@Override
-	public Operation getAboutOperation() {
-		return IdeApp.INSTANCE.getAboutDialogLaunchOperation();
-	}
+  @Override
+  public Operation getAboutOperation() {
+    return IdeApp.INSTANCE.getAboutDialogLaunchOperation();
+  }
 
-	public List<UserMethod> getUserMethodsInvokedFromSceneActivationListeners() {
-		return StoryApiSpecificAstUtilities.getUserMethodsInvokedSceneActivationListeners( this.getSceneType() );
-	}
+  public List<UserMethod> getUserMethodsInvokedFromSceneActivationListeners() {
+    return StoryApiSpecificAstUtilities.getUserMethodsInvokedSceneActivationListeners(this.getSceneType());
+  }
 
-	private void setRootField( final UserField rootField ) {
-		final NamedUserType type;
-		if( rootField != null ) {
-			type = (NamedUserType)rootField.getValueType();
-		} else {
-			type = null;
-		}
-		if( type != null ) {
-			//org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( type );
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					final int N = type.fields.size();
-					int i = N;
-					while( i > 0 ) {
-						i--;
-						UserField field = type.fields.get( i );
-						if( field.managementLevel.getValue() == ManagementLevel.MANAGED ) {
-							if( getApiConfigurationManager().isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-								getDocumentFrame().getInstanceFactoryState().setValueTransactionlessly( ThisFieldAccessFactory.getInstance( field ) );
-								break;
-							}
-						}
-					}
-				}
-			} );
-		}
-		AstEventManager.fireTypeHierarchyListeners();
-	}
+  private void setRootField(final UserField rootField) {
+    final NamedUserType type;
+    if (rootField != null) {
+      type = (NamedUserType) rootField.getValueType();
+    } else {
+      type = null;
+    }
+    if (type != null) {
+      //org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( type );
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          final int N = type.fields.size();
+          int i = N;
+          while (i > 0) {
+            i--;
+            UserField field = type.fields.get(i);
+            if (field.managementLevel.getValue() == ManagementLevel.MANAGED) {
+              if (getApiConfigurationManager().isInstanceFactoryDesiredForType(field.getValueType())) {
+                getDocumentFrame().getInstanceFactoryState().setValueTransactionlessly(ThisFieldAccessFactory.getInstance(field));
+                break;
+              }
+            }
+          }
+        }
+      });
+    }
+    AstEventManager.fireTypeHierarchyListeners();
+  }
 
-	@Override
-	public void setProject( Project project ) {
-		super.setProject( project );
+  @Override
+  public void setProject(Project project) {
+    super.setProject(project);
 
-		this.getDocumentFrame().getInstanceFactoryState().pushIgnoreAstChanges();
-		try {
-			this.setRootField( this.getSceneField() );
-		} finally {
-			this.getDocumentFrame().getInstanceFactoryState().popIgnoreAstChanges();
-		}
+    this.getDocumentFrame().getInstanceFactoryState().pushIgnoreAstChanges();
+    try {
+      this.setRootField(this.getSceneField());
+    } finally {
+      this.getDocumentFrame().getInstanceFactoryState().popIgnoreAstChanges();
+    }
 
-		DeclarationTabState tabState = this.getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-		tabState.clear();
-		if( project != null ) {
-			NamedUserType programType = project.getProgramType();
-			NamedUserType sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProgramType( programType );
-			if( sceneType != null ) {
-				ListData<DeclarationComposite<?, ?>> data = tabState.getData();
+    DeclarationTabState tabState = this.getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+    tabState.clear();
+    if (project != null) {
+      NamedUserType programType = project.getProgramType();
+      NamedUserType sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProgramType(programType);
+      if (sceneType != null) {
+        ListData<DeclarationComposite<?, ?>> data = tabState.getData();
 
-				data.internalAddItem( TypeComposite.getInstance( sceneType ) );
+        data.internalAddItem(TypeComposite.getInstance(sceneType));
 
-				List<AbstractMethod> methods = Lists.newLinkedList();
-				methods.add( sceneType.findMethod( INITIALIZE_EVENT_LISTENERS_METHOD_NAME ) );
-				methods.addAll( this.getUserMethodsInvokedFromSceneActivationListeners() );
+        List<AbstractMethod> methods = Lists.newLinkedList();
+        methods.add(sceneType.findMethod(INITIALIZE_EVENT_LISTENERS_METHOD_NAME));
+        methods.addAll(this.getUserMethodsInvokedFromSceneActivationListeners());
 
-				for( AbstractMethod method : methods ) {
-					if( method != null ) {
-						if( method.getDeclaringType() == sceneType ) {
-							data.internalAddItem( CodeComposite.getInstance( method ) );
-						}
-					}
-				}
-				tabState.setValueTransactionlessly( data.getItemAt( data.getItemCount() - 1 ) );
-			}
-		}
-		SceneIconFactory.getInstance().markAllIconsDirty();
-	}
+        for (AbstractMethod method : methods) {
+          if (method != null) {
+            if (method.getDeclaringType() == sceneType) {
+              data.internalAddItem(CodeComposite.getInstance(method));
+            }
+          }
+        }
+        tabState.setValueTransactionlessly(data.getItemAt(data.getItemCount() - 1));
+      }
+    }
+    SceneIconFactory.getInstance().markAllIconsDirty();
+  }
 
-	@Override
-	public boolean isInstanceCreationAllowableFor( NamedUserType userType ) {
-		JavaType javaType = userType.getFirstEncounteredJavaType();
-		return false == ClassUtilities.isAssignableToAtLeastOne( javaType.getClassReflectionProxy().getReification(), SScene.class, SCamera.class );
-	}
+  @Override
+  public boolean isInstanceCreationAllowableFor(NamedUserType userType) {
+    JavaType javaType = userType.getFirstEncounteredJavaType();
+    return false == ClassUtilities.isAssignableToAtLeastOne(javaType.getClassReflectionProxy().getReification(), SScene.class, SCamera.class);
+  }
 
-	private ThumbnailGenerator thumbnailGenerator;
+  private ThumbnailGenerator thumbnailGenerator;
 
-	@Override
-	protected BufferedImage createThumbnail() throws Throwable {
-		if( thumbnailGenerator != null ) {
-			//pass
-		} else {
-			thumbnailGenerator = new ThumbnailGenerator( AbstractThumbnailMaker.DEFAULT_THUMBNAIL_WIDTH, AbstractThumbnailMaker.DEFAULT_THUMBNAIL_HEIGHT );
-		}
-		return this.thumbnailGenerator.createThumbnail();
-	}
+  @Override
+  protected BufferedImage createThumbnail() throws Throwable {
+    if (thumbnailGenerator != null) {
+      //pass
+    } else {
+      thumbnailGenerator = new ThumbnailGenerator(AbstractThumbnailMaker.DEFAULT_THUMBNAIL_WIDTH, AbstractThumbnailMaker.DEFAULT_THUMBNAIL_HEIGHT);
+    }
+    return this.thumbnailGenerator.createThumbnail();
+  }
 
-	@Override
-	public UserMethod getPerformEditorGeneratedSetUpMethod() {
-		NamedUserType sceneType = this.getSceneType();
-		return StoryApiSpecificAstUtilities.getPerformEditorGeneratedSetUpMethod( sceneType );
-	}
+  @Override
+  public UserMethod getPerformEditorGeneratedSetUpMethod() {
+    NamedUserType sceneType = this.getSceneType();
+    return StoryApiSpecificAstUtilities.getPerformEditorGeneratedSetUpMethod(sceneType);
+  }
 
-	private InstanceFactory getInstanceFactoryForSceneOrSceneField( UserField field ) {
-		NamedUserType programType = this.getProgramType();
-		if( programType != null ) {
-			NamedUserType sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProgramType( programType );
-			if( sceneType != null ) {
-				NamedUserType scopeType = IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
-				if( scopeType == sceneType ) {
-					if( field != null ) {
-						return ThisFieldAccessFactory.getInstance( field );
-					} else {
-						return ThisInstanceFactory.getInstance();
-					}
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  private InstanceFactory getInstanceFactoryForSceneOrSceneField(UserField field) {
+    NamedUserType programType = this.getProgramType();
+    if (programType != null) {
+      NamedUserType sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProgramType(programType);
+      if (sceneType != null) {
+        NamedUserType scopeType = IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
+        if (scopeType == sceneType) {
+          if (field != null) {
+            return ThisFieldAccessFactory.getInstance(field);
+          } else {
+            return ThisInstanceFactory.getInstance();
+          }
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public InstanceFactory getInstanceFactoryForScene() {
-		return this.getInstanceFactoryForSceneOrSceneField( null );
-	}
+  public InstanceFactory getInstanceFactoryForScene() {
+    return this.getInstanceFactoryForSceneOrSceneField(null);
+  }
 
-	public InstanceFactory getInstanceFactoryForSceneField( UserField field ) {
-		assert field != null : this;
-		return this.getInstanceFactoryForSceneOrSceneField( field );
-	}
+  public InstanceFactory getInstanceFactoryForSceneField(UserField field) {
+    assert field != null : this;
+    return this.getInstanceFactoryForSceneOrSceneField(field);
+  }
 
-	public File getGalleryDirectory() {
-		return getUserDirectory(  "9894f0b8-a30d-460d-abc2-0e5cdbf885f0", "MyGallery" );
-	}
+  public File getGalleryDirectory() {
+    return getUserDirectory("9894f0b8-a30d-460d-abc2-0e5cdbf885f0", "MyGallery");
+  }
 
-	public File getTypesDirectory() {
-		return getUserDirectory(  "7f431542-fedc-4c21-8719-4f751836addf", "MyClasses" );
-	}
+  public File getTypesDirectory() {
+    return getUserDirectory("7f431542-fedc-4c21-8719-4f751836addf", "MyClasses");
+  }
 
-	public File getVideosDirectory() {
-		return getUserDirectory(  "ba6036ad-61d6-4b7e-b2a7-5ea7c7760cfe", "MyVideos" );
-	}
+  public File getVideosDirectory() {
+    return getUserDirectory("ba6036ad-61d6-4b7e-b2a7-5ea7c7760cfe", "MyVideos");
+  }
 
-	public File getProjectsDirectory() {
-		return getUserDirectory(  "b6cf8508-35ce-46b5-a208-b53784ebeca6", "MyProjects" );
-}
+  public File getProjectsDirectory() {
+    return getUserDirectory("b6cf8508-35ce-46b5-a208-b53784ebeca6", "MyProjects");
+  }
 
-	public File getModelImportDirectory() {
-		return getUserDirectory( MODEL_IMPORT_DIRECTORY_KEY, "" );
-	}
+  public File getModelImportDirectory() {
+    return getUserDirectory(MODEL_IMPORT_DIRECTORY_KEY, "");
+  }
 
-	public void setModelImportDirectory( File path) {
-		getPreferencesManager().setValue( MODEL_IMPORT_DIRECTORY_KEY, path.getAbsolutePath());
-	}
+  public void setModelImportDirectory(File path) {
+    getPreferencesManager().setValue(MODEL_IMPORT_DIRECTORY_KEY, path.getAbsolutePath());
+  }
 
-	private File getUserDirectory( String key, String leaf ) {
-		return getPreferencesManager().getUserDirectory( key, leaf );
-	}
+  private File getUserDirectory(String key, String leaf) {
+    return getPreferencesManager().getUserDirectory(key, leaf);
+  }
 }

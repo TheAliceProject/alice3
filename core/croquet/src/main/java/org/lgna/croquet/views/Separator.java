@@ -51,32 +51,32 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public final class Separator extends SwingComponentView<JSeparator> {
-	public static Separator createInstanceSeparatingTopFromBottom() {
-		return new Separator( SwingConstants.HORIZONTAL );
-	}
+  public static Separator createInstanceSeparatingTopFromBottom() {
+    return new Separator(SwingConstants.HORIZONTAL);
+  }
 
-	public static Separator createInstanceSeparatingLeftFromRight() {
-		return new Separator( SwingConstants.VERTICAL );
-	}
+  public static Separator createInstanceSeparatingLeftFromRight() {
+    return new Separator(SwingConstants.VERTICAL);
+  }
 
-	private Separator( int orientation ) {
-		this.getAwtComponent().setOrientation( orientation );
-	}
+  private Separator(int orientation) {
+    this.getAwtComponent().setOrientation(orientation);
+  }
 
-	@Override
-	protected JSeparator createAwtComponent() {
-		return new JSeparator() {
-			@Override
-			public Dimension getMaximumSize() {
-				Dimension rv = super.getMaximumSize();
-				Dimension preferredSize = this.getPreferredSize();
-				if( Separator.this.getAwtComponent().getOrientation() == JSeparator.HORIZONTAL ) {
-					rv.height = preferredSize.height;
-				} else {
-					rv.width = preferredSize.width;
-				}
-				return rv;
-			}
-		};
-	}
+  @Override
+  protected JSeparator createAwtComponent() {
+    return new JSeparator() {
+      @Override
+      public Dimension getMaximumSize() {
+        Dimension rv = super.getMaximumSize();
+        Dimension preferredSize = this.getPreferredSize();
+        if (Separator.this.getAwtComponent().getOrientation() == JSeparator.HORIZONTAL) {
+          rv.height = preferredSize.height;
+        } else {
+          rv.width = preferredSize.width;
+        }
+        return rv;
+      }
+    };
+  }
 }

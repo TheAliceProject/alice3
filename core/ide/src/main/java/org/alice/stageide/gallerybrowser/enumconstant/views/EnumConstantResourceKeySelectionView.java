@@ -54,15 +54,15 @@ import org.lgna.croquet.views.ScrollPane;
  * @author Dennis Cosgrove
  */
 public class EnumConstantResourceKeySelectionView extends BorderPanel {
-	public EnumConstantResourceKeySelectionView( EnumConstantResourceKeySelectionComposite composite ) {
-		super( composite );
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getFieldColor() );
-		List<EnumConstantResourceKey> list = composite.getEnumConstantResourceKeyState().createList();
-		list.setCellRenderer( new EnumConstantResourceKeyListCellRenderer() );
-		list.setLayoutOrientation( List.LayoutOrientation.HORIZONTAL_WRAP );
-		list.setVisibleRowCount( -1 );
-		list.setBackgroundColor( this.getBackgroundColor() );
-		list.enableClickingDefaultButtonOnDoubleClick();
-		this.addCenterComponent( new ScrollPane( list ) );
-	}
+  public EnumConstantResourceKeySelectionView(EnumConstantResourceKeySelectionComposite composite) {
+    super(composite);
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getFieldColor());
+    List<EnumConstantResourceKey> list = composite.getEnumConstantResourceKeyState().createList();
+    list.setCellRenderer(new EnumConstantResourceKeyListCellRenderer());
+    list.setLayoutOrientation(List.LayoutOrientation.HORIZONTAL_WRAP);
+    list.setVisibleRowCount(-1);
+    list.setBackgroundColor(this.getBackgroundColor());
+    list.enableClickingDefaultButtonOnDoubleClick();
+    this.addCenterComponent(new ScrollPane(list));
+  }
 }

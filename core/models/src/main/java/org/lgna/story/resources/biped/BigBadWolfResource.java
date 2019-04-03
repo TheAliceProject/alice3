@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.biped;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SBiped;
@@ -33,53 +34,41 @@ import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 public enum BigBadWolfResource implements BipedResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_EAR = new JointId( HEAD, BigBadWolfResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, BigBadWolfResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_EAR = new JointId( HEAD, BigBadWolfResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, BigBadWolfResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId JAW_BOTTOM_TIP = new JointId( MOUTH, BigBadWolfResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId JAW_TOP = new JointId( HEAD, BigBadWolfResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId JAW_TOP_TIP = new JointId( JAW_TOP, BigBadWolfResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_TOE = new JointId( LEFT_FOOT, BigBadWolfResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_TOE = new JointId( RIGHT_FOOT, BigBadWolfResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME, methodNameHint="getTail")
-	public static final JointId TAIL_0 = new JointId( PELVIS_LOWER_BODY, BigBadWolfResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_1 = new JointId( TAIL_0, BigBadWolfResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_2 = new JointId( TAIL_1, BigBadWolfResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId TAIL_3 = new JointId( TAIL_2, BigBadWolfResource.class );
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_EAR = new JointId(HEAD, BigBadWolfResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_EAR_TIP = new JointId(RIGHT_EAR, BigBadWolfResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_EAR = new JointId(HEAD, BigBadWolfResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_EAR_TIP = new JointId(LEFT_EAR, BigBadWolfResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId JAW_BOTTOM_TIP = new JointId(MOUTH, BigBadWolfResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId JAW_TOP = new JointId(HEAD, BigBadWolfResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId JAW_TOP_TIP = new JointId(JAW_TOP, BigBadWolfResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_TOE = new JointId(LEFT_FOOT, BigBadWolfResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_TOE = new JointId(RIGHT_FOOT, BigBadWolfResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME, methodNameHint = "getTail") public static final JointId TAIL_0 = new JointId(PELVIS_LOWER_BODY, BigBadWolfResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_1 = new JointId(TAIL_0, BigBadWolfResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_2 = new JointId(TAIL_1, BigBadWolfResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_3 = new JointId(TAIL_2, BigBadWolfResource.class);
 
-	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
+  public static final JointId[] TAIL_ARRAY = {TAIL_0, TAIL_1, TAIL_2, TAIL_3};
 
-	private final ImplementationAndVisualType resourceType;
-	BigBadWolfResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	BigBadWolfResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  BigBadWolfResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
+  BigBadWolfResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BipedImp createImplementation( SBiped abstraction ) {
-		return new BipedImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BipedImp createImplementation(SBiped abstraction) {
+    return new BipedImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

@@ -52,32 +52,32 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public interface DropReceptor {
-	public TrackableShape getTrackableShape( DropSite potentialDropSite );
+  public TrackableShape getTrackableShape(DropSite potentialDropSite);
 
-	public boolean isPotentiallyAcceptingOf( DragModel dragModel );
+  public boolean isPotentiallyAcceptingOf(DragModel dragModel);
 
-	//public ViewController<?,?> getViewController();
-	//todo: rename
-	public SwingComponentView<?> getViewController();
+  //public ViewController<?,?> getViewController();
+  //todo: rename
+  public SwingComponentView<?> getViewController();
 
-	public void dragStarted( DragStep step );
+  public void dragStarted(DragStep step);
 
-	public void dragEntered( DragStep step );
+  public void dragEntered(DragStep step);
 
-	public DropSite dragUpdated( DragStep step );
+  public DropSite dragUpdated(DragStep step);
 
-	//todo: Dropped or Exited but not both?
-	public Triggerable dragDropped( DragStep step );
+  //todo: Dropped or Exited but not both?
+  public Triggerable dragDropped(DragStep step);
 
-	public void dragExited( DragStep step, boolean isDropRecipient );
+  public void dragExited(DragStep step, boolean isDropRecipient);
 
-	public void dragStopped( DragStep step );
+  public void dragStopped(DragStep step);
 
-	public void addDropRejector( DropRejector dropRejector );
+  public void addDropRejector(DropRejector dropRejector);
 
-	public void removeDropRejector( DropRejector dropRejector );
+  public void removeDropRejector(DropRejector dropRejector);
 
-	public void clearDropRejectors();
+  public void clearDropRejectors();
 
-	public List<DropRejector> getDropRejectors();
+  public List<DropRejector> getDropRejectors();
 }

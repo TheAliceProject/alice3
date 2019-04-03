@@ -46,25 +46,26 @@ package org.lgna.story;
  * @author dculyba
  */
 public class TextScale implements Say.Detail, Think.Detail {
-	private static final double DEFAULT_VALUE = 1.0;
-	private final double value;
+  private static final double DEFAULT_VALUE = 1.0;
+  private final double value;
 
-	public TextScale( Number value ) {
-		this.value = value.doubleValue();
-	}
+  public TextScale(Number value) {
+    this.value = value.doubleValue();
+  }
 
-	private static double getValue( Object[] details, double defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof TextScale ) {
-				TextScale textScale = (TextScale)detail;
-				return textScale.value;
-			}
-		}
-		return defaultValue;
-	}
+  private static double getValue(Object[] details, double defaultValue) {
+    for (Object detail : details) {
+      if (detail instanceof TextScale) {
+        TextScale textScale = (TextScale) detail;
+        return textScale.value;
+      }
+    }
+    return defaultValue;
+  }
 
-	/* package-private */static double getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
-	}
+  /* package-private */
+  static double getValue(Object[] details) {
+    return getValue(details, DEFAULT_VALUE);
+  }
 
 }

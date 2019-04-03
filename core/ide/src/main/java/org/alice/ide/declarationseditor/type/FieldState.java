@@ -53,7 +53,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class FieldState extends FilteredMemberState<UserField> {
-	public FieldState( UUID id, FieldData data ) {
-		super( Application.PROJECT_GROUP, id, data );
-	}
+  public FieldState(UUID id, FieldData data) {
+    super(Application.PROJECT_GROUP, id, data);
+  }
 }

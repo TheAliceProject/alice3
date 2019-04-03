@@ -56,140 +56,140 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public class NilVideoPlayer implements VideoPlayer {
-	private final NilVideoCanvas nilVideoCanvas = new NilVideoCanvas();
-	private URI uri;
-	private Painter<VideoPlayer> painter;
-	private long timeInMilliseconds;
-	private float position;
-	private boolean isMuted;
-	private float volume;
-	private boolean isPrepared;
+  private final NilVideoCanvas nilVideoCanvas = new NilVideoCanvas();
+  private URI uri;
+  private Painter<VideoPlayer> painter;
+  private long timeInMilliseconds;
+  private float position;
+  private boolean isMuted;
+  private float volume;
+  private boolean isPrepared;
 
-	@Override
-	public Canvas getVideoSurface() {
-		return this.nilVideoCanvas;
-	}
+  @Override
+  public Canvas getVideoSurface() {
+    return this.nilVideoCanvas;
+  }
 
-	@Override
-	public Dimension getVideoSize() {
-		return new Dimension( 0, 0 );
-	}
+  @Override
+  public Dimension getVideoSize() {
+    return new Dimension(0, 0);
+  }
 
-	@Override
-	public Painter<VideoPlayer> getPainter() {
-		return this.painter;
-	}
+  @Override
+  public Painter<VideoPlayer> getPainter() {
+    return this.painter;
+  }
 
-	@Override
-	public void setPainter( Painter<VideoPlayer> painter ) {
-		this.painter = painter;
-	}
+  @Override
+  public void setPainter(Painter<VideoPlayer> painter) {
+    this.painter = painter;
+  }
 
-	@Override
-	public boolean prepareMedia( URI uri ) {
-		this.uri = uri;
-		this.isPrepared = true; //?
-		return this.isPrepared;
-	}
+  @Override
+  public boolean prepareMedia(URI uri) {
+    this.uri = uri;
+    this.isPrepared = true; //?
+    return this.isPrepared;
+  }
 
-	@Override
-	public boolean isPrepared() {
-		return this.isPrepared;
-	}
+  @Override
+  public boolean isPrepared() {
+    return this.isPrepared;
+  }
 
-	@Override
-	public void parse() {
-	}
+  @Override
+  public void parse() {
+  }
 
-	@Override
-	public boolean isPlayable() {
-		return false;
-	}
+  @Override
+  public boolean isPlayable() {
+    return false;
+  }
 
-	@Override
-	public boolean isPlaying() {
-		return false;
-	}
+  @Override
+  public boolean isPlaying() {
+    return false;
+  }
 
-	@Override
-	public void playResume() {
-	}
+  @Override
+  public void playResume() {
+  }
 
-	@Override
-	public void pause() {
-	}
+  @Override
+  public void pause() {
+  }
 
-	@Override
-	public void stop() {
-	}
+  @Override
+  public void stop() {
+  }
 
-	@Override
-	public long getTimeInMilliseconds() {
-		return this.timeInMilliseconds;
-	}
+  @Override
+  public long getTimeInMilliseconds() {
+    return this.timeInMilliseconds;
+  }
 
-	@Override
-	public void setTimeInMilliseconds( long timeInMilliseconds ) {
-		this.timeInMilliseconds = timeInMilliseconds;
-	}
+  @Override
+  public void setTimeInMilliseconds(long timeInMilliseconds) {
+    this.timeInMilliseconds = timeInMilliseconds;
+  }
 
-	@Override
-	public float getPosition() {
-		return this.position;
-	}
+  @Override
+  public float getPosition() {
+    return this.position;
+  }
 
-	@Override
-	public void setPosition( float position ) {
-		//todo?
-		this.position = position;
-	}
+  @Override
+  public void setPosition(float position) {
+    //todo?
+    this.position = position;
+  }
 
-	@Override
-	public long getLengthInMilliseconds() {
-		return 0;
-	}
+  @Override
+  public long getLengthInMilliseconds() {
+    return 0;
+  }
 
-	@Override
-	public boolean isMuted() {
-		return this.isMuted;
-	}
+  @Override
+  public boolean isMuted() {
+    return this.isMuted;
+  }
 
-	@Override
-	public void setMuted( boolean isMuted ) {
-		//todo?
-		this.isMuted = isMuted;
-	}
+  @Override
+  public void setMuted(boolean isMuted) {
+    //todo?
+    this.isMuted = isMuted;
+  }
 
-	@Override
-	public float getVolume() {
-		return this.volume;
-	}
+  @Override
+  public float getVolume() {
+    return this.volume;
+  }
 
-	@Override
-	public void setVolume( float volume ) {
-		//todo?
-		this.volume = volume;
-	}
+  @Override
+  public void setVolume(float volume) {
+    //todo?
+    this.volume = volume;
+  }
 
-	@Override
-	public boolean writeSnapshot( File file ) {
-		return false;
-	}
+  @Override
+  public boolean writeSnapshot(File file) {
+    return false;
+  }
 
-	@Override
-	public void addMediaListener( MediaListener listener ) {
-	}
+  @Override
+  public void addMediaListener(MediaListener listener) {
+  }
 
-	@Override
-	public void removeMediaListener( MediaListener listener ) {
-	}
+  @Override
+  public void removeMediaListener(MediaListener listener) {
+  }
 
-	@Override
-	public void release() {
-	}
+  @Override
+  public void release() {
+  }
 
-	@Override
-	public Image getSnapshot() {
-		return null;
-	}
+  @Override
+  public Image getSnapshot() {
+    return null;
+  }
 }

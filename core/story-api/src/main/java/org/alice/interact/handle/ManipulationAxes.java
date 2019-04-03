@@ -51,91 +51,91 @@ import edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes;
  *
  */
 public class ManipulationAxes extends ManipulationHandle3D {
-	private static final double MIN_SIZE = .6;
+  private static final double MIN_SIZE = .6;
 
-	public ManipulationAxes() {
-		this.axis = new ExtravagantAxes( 1, 1.5 );
-		this.axis.setParent( this );
-	}
+  public ManipulationAxes() {
+    this.axis = new ExtravagantAxes(1, 1.5);
+    this.axis.setParent(this);
+  }
 
-	@Override
-	public ManipulationHandle3D clone() {
-		return new ManipulationAxes();
-	}
+  @Override
+  public ManipulationHandle3D clone() {
+    return new ManipulationAxes();
+  }
 
-	@Override
-	protected void setScale( double scale ) {
-		if( scale < 1.0 ) {
-			scale = 1;
-		}
-		this.diameterScale = scale * 1.4;
-	}
+  @Override
+  protected void setScale(double scale) {
+    if (scale < 1.0) {
+      scale = 1;
+    }
+    this.diameterScale = scale * 1.4;
+  }
 
-	@Override
-	public ReferenceFrame getSnapReferenceFrame() {
-		return null;
-	}
+  @Override
+  public ReferenceFrame getSnapReferenceFrame() {
+    return null;
+  }
 
-	@Override
-	public void positionRelativeToObject() {
-		//Do nothing
-	}
+  @Override
+  public void positionRelativeToObject() {
+    //Do nothing
+  }
 
-	@Override
-	public boolean isPickable() {
-		return false;
-	}
+  @Override
+  public boolean isPickable() {
+    return false;
+  }
 
-	@Override
-	public void setVisualsShowing( boolean showing ) {
-		super.setVisualsShowing( showing );
-		if( this.axis != null ) {
-			this.axis.setIsShowing( showing );
-		}
-	}
+  @Override
+  public void setVisualsShowing(boolean showing) {
+    super.setVisualsShowing(showing);
+    if (this.axis != null) {
+      this.axis.setIsShowing(showing);
+    }
+  }
 
-	@Override
-	protected float getOpacity() {
-		if( this.axis != null ) {
-			return this.axis.getOpacity();
-		} else {
-			return super.getOpacity();
-		}
-	}
+  @Override
+  protected float getOpacity() {
+    if (this.axis != null) {
+      return this.axis.getOpacity();
+    } else {
+      return super.getOpacity();
+    }
+  }
 
-	@Override
-	protected void setOpacity( float opacity ) {
-		super.setOpacity( opacity );
-		if( this.axis != null ) {
-			this.axis.setOpacity( opacity );
-		}
+  @Override
+  protected void setOpacity(float opacity) {
+    super.setOpacity(opacity);
+    if (this.axis != null) {
+      this.axis.setOpacity(opacity);
+    }
 
-	}
+  }
 
-	@Override
-	protected double getDesiredOpacity( HandleRenderState renderState ) {
-		switch( renderState ) {
-		case NOT_VISIBLE:
-			return 0.0d;
-		default:
-			return 0.6d * this.cameraRelativeOpacity;
-		}
-	}
+  @Override
+  protected double getDesiredOpacity(HandleRenderState renderState) {
+    switch (renderState) {
+    case NOT_VISIBLE:
+      return 0.0d;
+    default:
+      return 0.6d * this.cameraRelativeOpacity;
+    }
+  }
 
-	@Override
-	public void resizeToObject() {
-		if( ( this.getParentTransformable() != null ) && ( this.manipulatedObject != null ) ) {
-			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
-			double diagonal = boundingBox.getDiagonal();
-			if( Double.isNaN( diagonal ) || ( diagonal < MIN_SIZE ) ) {
-				diagonal = MIN_SIZE;
-			}
-			if( this.axis != null ) {
-				this.axis.resize( diagonal * .5, 1.5, this.diameterScale );
-			}
-		}
-	}
+  @Override
+  public void resizeToObject() {
+    if ((this.getParentTransformable() != null) && (this.manipulatedObject != null)) {
+      AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
+      double diagonal = boundingBox.getDiagonal();
+      if (Double.isNaN(diagonal) || (diagonal < MIN_SIZE)) {
+        diagonal = MIN_SIZE;
+      }
+      if (this.axis != null) {
+        this.axis.resize(diagonal * .5, 1.5, this.diameterScale);
+      }
+    }
+  }
 
-	private final ExtravagantAxes axis;
-	private double diameterScale = 1;
+  private final ExtravagantAxes axis;
+  private double diameterScale = 1;
 }

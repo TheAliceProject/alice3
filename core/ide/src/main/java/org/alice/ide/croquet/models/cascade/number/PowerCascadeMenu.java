@@ -56,21 +56,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PowerCascadeMenu extends ExpressionCascadeMenu<Expression> {
-	private static class SingletonHolder {
-		private static PowerCascadeMenu instance = new PowerCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static PowerCascadeMenu instance = new PowerCascadeMenu();
+  }
 
-	public static PowerCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static PowerCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private PowerCascadeMenu() {
-		super( UUID.fromString( "2d1bbbdb-cf33-406d-98a9-4ba421bfd10e" ) );
-	}
+  private PowerCascadeMenu() {
+    super(UUID.fromString("2d1bbbdb-cf33-406d-98a9-4ba421bfd10e"));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> context ) {
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "sqrt", Double.TYPE ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "pow", Double.TYPE, Double.TYPE ) );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> context) {
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "sqrt", Double.TYPE));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "pow", Double.TYPE, Double.TYPE));
+  }
 }

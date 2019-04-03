@@ -48,9 +48,9 @@ import org.lgna.ik.poser.controllers.PoserEvent;
  * @author Matt May
  */
 public interface PoserSphereManipulatorListener {
-	public void fireStart( PoserEvent poserEvent );
+  public void fireStart(PoserEvent poserEvent);
 
-	public void fireFinish( PoserEvent poserEvent );
+  public void fireFinish(PoserEvent poserEvent);
 
-	public void fireAnchorUpdate( PoserEvent poserEvent );
+  public void fireAnchorUpdate(PoserEvent poserEvent);
 }

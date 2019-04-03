@@ -54,22 +54,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class NumberArithmeticExpressionRightOperandOnlyFillIn extends ArithmeticExpressionRightOperandOnlyFillIn {
-	private static Map<ArithmeticInfixExpression.Operator, NumberArithmeticExpressionRightOperandOnlyFillIn> map = Maps.newHashMap();
+  private static Map<ArithmeticInfixExpression.Operator, NumberArithmeticExpressionRightOperandOnlyFillIn> map = Maps.newHashMap();
 
-	public static NumberArithmeticExpressionRightOperandOnlyFillIn getInstance( ArithmeticInfixExpression.Operator operator ) {
-		synchronized( map ) {
-			NumberArithmeticExpressionRightOperandOnlyFillIn rv = map.get( operator );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new NumberArithmeticExpressionRightOperandOnlyFillIn( operator );
-				map.put( operator, rv );
-			}
-			return rv;
-		}
-	}
+  public static NumberArithmeticExpressionRightOperandOnlyFillIn getInstance(ArithmeticInfixExpression.Operator operator) {
+    synchronized (map) {
+      NumberArithmeticExpressionRightOperandOnlyFillIn rv = map.get(operator);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new NumberArithmeticExpressionRightOperandOnlyFillIn(operator);
+        map.put(operator, rv);
+      }
+      return rv;
+    }
+  }
 
-	private NumberArithmeticExpressionRightOperandOnlyFillIn( ArithmeticInfixExpression.Operator operator ) {
-		super( UUID.fromString( "7caac1c5-db6b-4f5a-9d9b-ca22b972e6ef" ), Double.class, Number.class, operator, Number.class );
-	}
+  private NumberArithmeticExpressionRightOperandOnlyFillIn(ArithmeticInfixExpression.Operator operator) {
+    super(UUID.fromString("7caac1c5-db6b-4f5a-9d9b-ca22b972e6ef"), Double.class, Number.class, operator, Number.class);
+  }
 }

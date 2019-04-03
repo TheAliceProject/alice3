@@ -32,42 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum DeskResource implements PropResource {
-	CENTRAL_ASIAN_REDWOOD( ImplementationAndVisualType.SIMS2 ),
-	CENTRAL_ASIAN_BLACK( ImplementationAndVisualType.SIMS2 ),
-	CENTRAL_ASIAN_RED( ImplementationAndVisualType.SIMS2 ),
-	CENTRAL_ASIAN_WALNUT( ImplementationAndVisualType.SIMS2 ),
-	CLUB_ASH( ImplementationAndVisualType.SIMS2 ),
-	CLUB_DARK_WOOD( ImplementationAndVisualType.SIMS2 ),
-	CLUB_REDWOOD( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_BLUE( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_WHITE( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_RED( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_GREEN( ImplementationAndVisualType.SIMS2 ),
-	VALUE_MAPLE( ImplementationAndVisualType.SIMS2 ),
-	VALUE_METAL( ImplementationAndVisualType.SIMS2 ),
-	VALUE_RED( ImplementationAndVisualType.SIMS2 ),
-	VALUE_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 );
+  CENTRAL_ASIAN_REDWOOD(ImplementationAndVisualType.SIMS2), CENTRAL_ASIAN_BLACK(ImplementationAndVisualType.SIMS2), CENTRAL_ASIAN_RED(ImplementationAndVisualType.SIMS2), CENTRAL_ASIAN_WALNUT(ImplementationAndVisualType.SIMS2), CLUB_ASH(ImplementationAndVisualType.SIMS2), CLUB_DARK_WOOD(ImplementationAndVisualType.SIMS2), CLUB_REDWOOD(ImplementationAndVisualType.SIMS2), QUAINT_BLUE(ImplementationAndVisualType.SIMS2), QUAINT_WHITE(ImplementationAndVisualType.SIMS2), QUAINT_RED(ImplementationAndVisualType.SIMS2), QUAINT_GREEN(ImplementationAndVisualType.SIMS2), VALUE_MAPLE(ImplementationAndVisualType.SIMS2), VALUE_METAL(ImplementationAndVisualType.SIMS2), VALUE_RED(ImplementationAndVisualType.SIMS2), VALUE_LIGHT_WOOD(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	DeskResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	DeskResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  DeskResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  DeskResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

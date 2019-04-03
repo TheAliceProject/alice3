@@ -50,31 +50,31 @@ import javax.swing.JSplitPane;
  * @author Dennis Cosgrove
  */
 public abstract class MutableSplitPane extends AbstractSplitPane<MutableSplitComposite> {
-	private final GridPanel leadingPanel = GridPanel.createGridPane( 1, 1 );
-	private final GridPanel trailingPanel = GridPanel.createGridPane( 1, 1 );
+  private final GridPanel leadingPanel = GridPanel.createGridPane(1, 1);
+  private final GridPanel trailingPanel = GridPanel.createGridPane(1, 1);
 
-	protected MutableSplitPane( MutableSplitComposite composite, int orientation ) {
-		super( composite, orientation );
-	}
+  protected MutableSplitPane(MutableSplitComposite composite, int orientation) {
+    super(composite, orientation);
+  }
 
-	@Override
-	protected JSplitPane createJSplitPane( int orientation ) {
-		return new JSplitPane( orientation, this.leadingPanel.getAwtComponent(), this.trailingPanel.getAwtComponent() );
-	}
+  @Override
+  protected JSplitPane createJSplitPane(int orientation) {
+    return new JSplitPane(orientation, this.leadingPanel.getAwtComponent(), this.trailingPanel.getAwtComponent());
+  }
 
-	public void setLeadingComponent( AwtComponentView<?> component ) {
-		this.leadingPanel.removeAllComponents();
-		if( component != null ) {
-			this.leadingPanel.addComponent( component );
-		}
-		this.revalidateAndRepaint();
-	}
+  public void setLeadingComponent(AwtComponentView<?> component) {
+    this.leadingPanel.removeAllComponents();
+    if (component != null) {
+      this.leadingPanel.addComponent(component);
+    }
+    this.revalidateAndRepaint();
+  }
 
-	public void setTrailingComponent( AwtComponentView<?> component ) {
-		this.trailingPanel.removeAllComponents();
-		if( component != null ) {
-			this.trailingPanel.addComponent( component );
-		}
-		this.revalidateAndRepaint();
-	}
+  public void setTrailingComponent(AwtComponentView<?> component) {
+    this.trailingPanel.removeAllComponents();
+    if (component != null) {
+      this.trailingPanel.addComponent(component);
+    }
+    this.revalidateAndRepaint();
+  }
 }

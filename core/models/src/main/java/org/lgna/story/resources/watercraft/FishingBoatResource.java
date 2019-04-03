@@ -32,29 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.WatercraftResource;
 
 public enum FishingBoatResource implements WatercraftResource {
-	DEFAULT;
+  DEFAULT;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	FishingBoatResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  FishingBoatResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	FishingBoatResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  FishingBoatResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public TransportImp createImplementation( STransport abstraction ) {
-		return new TransportImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public TransportImp createImplementation(STransport abstraction) {
+    return new TransportImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

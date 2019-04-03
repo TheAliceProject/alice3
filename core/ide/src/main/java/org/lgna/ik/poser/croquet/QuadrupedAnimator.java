@@ -55,18 +55,18 @@ import java.util.UUID;
  */
 public class QuadrupedAnimator extends AnimatorComposite<SQuadruped> {
 
-	public QuadrupedAnimator( NamedUserType valueType, UserMethod editedMethod ) {
-		super( UUID.fromString( "561a5a2e-c2a0-465f-8560-92a484d0a4ca" ), valueType, editedMethod );
-	}
+  public QuadrupedAnimator(NamedUserType valueType, UserMethod editedMethod) {
+    super(UUID.fromString("561a5a2e-c2a0-465f-8560-92a484d0a4ca"), valueType, editedMethod);
+  }
 
-	@Override
-	protected AbstractPoserScene<SQuadruped> initScene() {
-		return new QuadrupedPoserScene( this.getModel() );
-	}
+  @Override
+  protected AbstractPoserScene<SQuadruped> initScene() {
+    return new QuadrupedPoserScene(this.getModel());
+  }
 
-	@Override
-	public Class<SQuadruped> getModelClass() {
-		return SQuadruped.class;
-	}
+  @Override
+  public Class<SQuadruped> getModelClass() {
+    return SQuadruped.class;
+  }
 
 }

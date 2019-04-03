@@ -54,31 +54,31 @@ import org.lgna.ik.poser.animation.views.TimeLineModifierView;
  */
 public class AnimatorControlView extends AbstractPoserControlView {
 
-	public AnimatorControlView( AnimatorControlComposite controlComposite ) {
-		super( controlComposite );
+  public AnimatorControlView(AnimatorControlComposite controlComposite) {
+    super(controlComposite);
 
-		TimeLineModifierView editView = controlComposite.getEditComposite().getView();
-		editView.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
-		//		this.addComponent( controlComposite.getDeselectPoseOperation().createButton(), "grow" );
-		//		this.addComponent( controlComposite.getDeletePoseOperation().createButton(), "grow, wrap" );
+    TimeLineModifierView editView = controlComposite.getEditComposite().getView();
+    editView.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+    //    this.addComponent( controlComposite.getDeselectPoseOperation().createButton(), "grow" );
+    //    this.addComponent( controlComposite.getDeletePoseOperation().createButton(), "grow, wrap" );
 
-		//		org.lgna.croquet.components.DefaultRadioButtons<?> radioButtons = controlComposite.getPosesList().createVerticalDefaultRadioButtons();
-		//		radioButtons.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
-		//		this.addComponent( new org.lgna.croquet.components.ScrollPane( radioButtons ), "span 2, grow 100, wrap" );
+    //    org.lgna.croquet.components.DefaultRadioButtons<?> radioButtons = controlComposite.getPosesList().createVerticalDefaultRadioButtons();
+    //    radioButtons.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
+    //    this.addComponent( new org.lgna.croquet.components.ScrollPane( radioButtons ), "span 2, grow 100, wrap" );
 
-		//		this.addComponent( controlComposite.getSavePoseOperation().createButton(), "grow" );
-		//		this.addComponent( controlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
+    //    this.addComponent( controlComposite.getSavePoseOperation().createButton(), "grow" );
+    //    this.addComponent( controlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
 
-		//		this.addComponent( controlComposite.getRunAnimationOperation().createButton(), "span 2, grow, wrap" );
-		BorderPanel bPanel = new BorderPanel();
-		bPanel.addLineStartComponent( controlComposite.getNameState().getSidekickLabel().createLabel() );
-		bPanel.addCenterComponent( controlComposite.getNameState().createTextField() );
-		this.addComponent( editView, "span 2" );
-		this.addComponent( bPanel, "south" );
+    //    this.addComponent( controlComposite.getRunAnimationOperation().createButton(), "span 2, grow, wrap" );
+    BorderPanel bPanel = new BorderPanel();
+    bPanel.addLineStartComponent(controlComposite.getNameState().getSidekickLabel().createLabel());
+    bPanel.addCenterComponent(controlComposite.getNameState().createTextField());
+    this.addComponent(editView, "span 2");
+    this.addComponent(bPanel, "south");
 
-		//		OuterTimeLineView component = controlComposite.getTimeLine().createView();
-		//		this.addComponent( component, "grow, span 2, wrap" );
-		//		this.addComponent( controlComposite.getCurrentTime().createSpinner(), "growx" );
-		//		this.addComponent( controlComposite.getAppendTimeComposite().getOperation().createButton(), "growx" );
-	}
+    //    OuterTimeLineView component = controlComposite.getTimeLine().createView();
+    //    this.addComponent( component, "grow, span 2, wrap" );
+    //    this.addComponent( controlComposite.getCurrentTime().createSpinner(), "growx" );
+    //    this.addComponent( controlComposite.getAppendTimeComposite().getOperation().createButton(), "growx" );
+  }
 }

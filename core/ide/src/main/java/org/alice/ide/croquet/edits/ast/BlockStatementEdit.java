@@ -55,25 +55,25 @@ import org.lgna.project.ast.BlockStatement;
  * @author Dennis Cosgrove
  */
 public abstract class BlockStatementEdit<M extends CompletionModel> extends AbstractEdit<M> {
-	private final BlockStatement blockStatement;
+  private final BlockStatement blockStatement;
 
-	public BlockStatementEdit( UserActivity userActivity, BlockStatement blockStatement ) {
-		super( userActivity );
-		this.blockStatement = blockStatement;
-	}
+  public BlockStatementEdit(UserActivity userActivity, BlockStatement blockStatement) {
+    super(userActivity);
+    this.blockStatement = blockStatement;
+  }
 
-	public BlockStatementEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.blockStatement = NodeCodec.getInstance( BlockStatement.class ).decodeValue( binaryDecoder );
-	}
+  public BlockStatementEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.blockStatement = NodeCodec.getInstance(BlockStatement.class).decodeValue(binaryDecoder);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		NodeCodec.getInstance( BlockStatement.class ).encodeValue( binaryEncoder, this.blockStatement );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    NodeCodec.getInstance(BlockStatement.class).encodeValue(binaryEncoder, this.blockStatement);
+  }
 
-	public BlockStatement getBlockStatement() {
-		return this.blockStatement;
-	}
+  public BlockStatement getBlockStatement() {
+    return this.blockStatement;
+  }
 }

@@ -32,53 +32,55 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum DiningTableResource implements PropResource {
-	CLUB_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	CLUB_OAK( ImplementationAndVisualType.SIMS2 ),
-	CLUB_PINE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_REDWOOD( ImplementationAndVisualType.SIMS2 ),
-	CLUB_MAHOGANY( ImplementationAndVisualType.SIMS2 ),
-	CLUB_CURLY_DARK_WOOD( ImplementationAndVisualType.SIMS2 ),
-	CLUB_WOOD( ImplementationAndVisualType.SIMS2 ),
-	CLUB_DARK_WOOD( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_BLUE( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_LIGHT_BLUE( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_GREEN( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_TURQUOISE( ImplementationAndVisualType.SIMS2 ),
-	OUTDOOR_ASH( ImplementationAndVisualType.SIMS2 ),
-	OUTDOOR_PINE( ImplementationAndVisualType.SIMS2 ),
-	OUTDOOR_OAK( ImplementationAndVisualType.SIMS2 ),
-	OUTDOOR_RED( ImplementationAndVisualType.SIMS2 ),
-	OUTDOOR_WHITE( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_BLUE( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_GREEN( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_WHITE( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_RED( ImplementationAndVisualType.SIMS2 ),
-	LOFT_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_RED( ImplementationAndVisualType.SIMS2 ),
-	LOFT_GRAY( ImplementationAndVisualType.SIMS2 ),
-	LOFT_BLACK( ImplementationAndVisualType.SIMS2 ),
-	LOFT_ORANGE_WOOD( ImplementationAndVisualType.SIMS2 );
+  CLUB_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  CLUB_OAK(ImplementationAndVisualType.SIMS2),
+  CLUB_PINE(ImplementationAndVisualType.SIMS2),
+  CLUB_REDWOOD(ImplementationAndVisualType.SIMS2),
+  CLUB_MAHOGANY(ImplementationAndVisualType.SIMS2),
+  CLUB_CURLY_DARK_WOOD(ImplementationAndVisualType.SIMS2),
+  CLUB_WOOD(ImplementationAndVisualType.SIMS2),
+  CLUB_DARK_WOOD(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_BLUE(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_LIGHT_BLUE(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_GREEN(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_TURQUOISE(ImplementationAndVisualType.SIMS2),
+  OUTDOOR_ASH(ImplementationAndVisualType.SIMS2),
+  OUTDOOR_PINE(ImplementationAndVisualType.SIMS2),
+  OUTDOOR_OAK(ImplementationAndVisualType.SIMS2),
+  OUTDOOR_RED(ImplementationAndVisualType.SIMS2),
+  OUTDOOR_WHITE(ImplementationAndVisualType.SIMS2),
+  QUAINT_BLUE(ImplementationAndVisualType.SIMS2),
+  QUAINT_GREEN(ImplementationAndVisualType.SIMS2),
+  QUAINT_WHITE(ImplementationAndVisualType.SIMS2),
+  QUAINT_RED(ImplementationAndVisualType.SIMS2),
+  LOFT_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_RED(ImplementationAndVisualType.SIMS2),
+  LOFT_GRAY(ImplementationAndVisualType.SIMS2),
+  LOFT_BLACK(ImplementationAndVisualType.SIMS2),
+  LOFT_ORANGE_WOOD(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	DiningTableResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	DiningTableResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  DiningTableResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  DiningTableResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

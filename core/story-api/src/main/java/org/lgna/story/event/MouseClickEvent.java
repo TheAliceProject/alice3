@@ -50,25 +50,25 @@ import org.lgna.project.annotations.Visibility;
  */
 public abstract class MouseClickEvent extends AbstractEvent {
 
-	protected final MouseClickEventImp implementation;
+  protected final MouseClickEventImp implementation;
 
-	public MouseClickEvent( MouseClickEventImp e ) {
-		this.implementation = e;
-	}
+  public MouseClickEvent(MouseClickEventImp e) {
+    this.implementation = e;
+  }
 
-	public Double getScreenDistanceFromLeft() {
-		return implementation.getScreenDistanceFromLeft();
-	}
+  public Double getScreenDistanceFromLeft() {
+    return implementation.getScreenDistanceFromLeft();
+  }
 
-	public Double getScreenDistanceFromBottom() {
-		return implementation.getScreenDistanceFromBottom();
-	}
+  public Double getScreenDistanceFromBottom() {
+    return implementation.getScreenDistanceFromBottom();
+  }
 
-	@Deprecated
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public Double[] getRelativeXYPosition() {
-		Double[] rv = { this.getScreenDistanceFromLeft(), this.getScreenDistanceFromBottom() };
-		return rv;
-	}
+  @Deprecated
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public Double[] getRelativeXYPosition() {
+    Double[] rv = {this.getScreenDistanceFromLeft(), this.getScreenDistanceFromBottom()};
+    return rv;
+  }
 
 }

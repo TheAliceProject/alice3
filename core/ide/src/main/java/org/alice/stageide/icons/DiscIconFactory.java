@@ -51,19 +51,19 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class DiscIconFactory extends ResolutionIndependantIconFactory {
-	private static class SingletonHolder {
-		private static DiscIconFactory instance = new DiscIconFactory();
-	}
+  private static class SingletonHolder {
+    private static DiscIconFactory instance = new DiscIconFactory();
+  }
 
-	public static DiscIconFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static DiscIconFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private DiscIconFactory() {
-	}
+  private DiscIconFactory() {
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new DiscIcon( size );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new DiscIcon(size);
+  }
 }

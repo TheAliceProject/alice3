@@ -53,42 +53,42 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public class ExpandAllToBoundsLayoutManager implements LayoutManager {
-	@Override
-	public void layoutContainer( Container parent ) {
-		Dimension size = parent.getSize();
-		for( Component component : parent.getComponents() ) {
-			component.setLocation( 0, 0 );
-			component.setSize( size );
-		}
-	}
+  @Override
+  public void layoutContainer(Container parent) {
+    Dimension size = parent.getSize();
+    for (Component component : parent.getComponents()) {
+      component.setLocation(0, 0);
+      component.setSize(size);
+    }
+  }
 
-	@Override
-	public Dimension minimumLayoutSize( Container parent ) {
-		Dimension rv = new Dimension( 0, 0 );
-		for( Component component : parent.getComponents() ) {
-			Dimension size = component.getMinimumSize();
-			rv.width = Math.max( rv.width, size.width );
-			rv.height = Math.max( rv.height, size.height );
-		}
-		return rv;
-	}
+  @Override
+  public Dimension minimumLayoutSize(Container parent) {
+    Dimension rv = new Dimension(0, 0);
+    for (Component component : parent.getComponents()) {
+      Dimension size = component.getMinimumSize();
+      rv.width = Math.max(rv.width, size.width);
+      rv.height = Math.max(rv.height, size.height);
+    }
+    return rv;
+  }
 
-	@Override
-	public Dimension preferredLayoutSize( Container parent ) {
-		Dimension rv = new Dimension( 0, 0 );
-		for( Component component : parent.getComponents() ) {
-			Dimension size = component.getPreferredSize();
-			rv.width = Math.max( rv.width, size.width );
-			rv.height = Math.max( rv.height, size.height );
-		}
-		return rv;
-	}
+  @Override
+  public Dimension preferredLayoutSize(Container parent) {
+    Dimension rv = new Dimension(0, 0);
+    for (Component component : parent.getComponents()) {
+      Dimension size = component.getPreferredSize();
+      rv.width = Math.max(rv.width, size.width);
+      rv.height = Math.max(rv.height, size.height);
+    }
+    return rv;
+  }
 
-	@Override
-	public void addLayoutComponent( String name, Component comp ) {
-	}
+  @Override
+  public void addLayoutComponent(String name, Component comp) {
+  }
 
-	@Override
-	public void removeLayoutComponent( Component comp ) {
-	}
+  @Override
+  public void removeLayoutComponent(Component comp) {
+  }
 }

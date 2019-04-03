@@ -54,63 +54,63 @@ import java.awt.geom.AffineTransform;
  * @author Dennis Cosgrove
  */
 public class TrimmedIcon extends AbstractIcon {
-	private final ImageIcon imageIcon;
+  private final ImageIcon imageIcon;
 
-	public TrimmedIcon( ImageIcon imageIcon, Dimension size ) {
-		super( size );
-		this.imageIcon = imageIcon;
-	}
+  public TrimmedIcon(ImageIcon imageIcon, Dimension size) {
+    super(size);
+    this.imageIcon = imageIcon;
+  }
 
-	public ImageIcon getImageIcon() {
-		return this.imageIcon;
-	}
+  public ImageIcon getImageIcon() {
+    return this.imageIcon;
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2 ) {
-		if( this.imageIcon != null ) {
-			Image image = this.imageIcon.getImage();
-			int imageWidth = image.getWidth( c );
-			int imageHeight = image.getHeight( c );
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2) {
+    if (this.imageIcon != null) {
+      Image image = this.imageIcon.getImage();
+      int imageWidth = image.getWidth(c);
+      int imageHeight = image.getHeight(c);
 
-			int width = this.getIconWidth();
-			int height = this.getIconHeight();
+      int width = this.getIconWidth();
+      int height = this.getIconHeight();
 
-			AffineTransform t = g2.getTransform();
+      AffineTransform t = g2.getTransform();
 
-			//todo
-			int dx;
-			int dy;
-			if( ( height != imageHeight ) || ( width != imageWidth ) ) {
-				double factorX = width / (double)imageWidth;
-				double factorY = height / (double)imageHeight;
-				double factor;
+      //todo
+      int dx;
+      int dy;
+      if ((height != imageHeight) || (width != imageWidth)) {
+        double factorX = width / (double) imageWidth;
+        double factorY = height / (double) imageHeight;
+        double factor;
 
-				//todo: handle icons larger than image
-				if( factorX > factorY ) {
-					factor = factorY;
-					dx = (int)( ( ( width / factor ) - imageWidth ) / 2 );
-					dy = 0;
-				} else {
-					factor = factorX;
-					dx = 0;
-					dy = (int)( ( ( height / factor ) - imageHeight ) / 2 );
-				}
-				g2.scale( factor, factor );
-			} else {
-				dx = ( width - imageWidth ) / 2;
-				dy = ( height - imageHeight ) / 2;
-				final boolean DEBUG = false;
-				if( DEBUG ) {
-					g2.setPaint( Color.RED );
-					g2.fillRect( 0, 0, this.getIconWidth(), this.getIconHeight() );
-					g2.setPaint( Color.GREEN );
-					g2.fillRect( dx, dy, this.imageIcon.getIconWidth(), this.imageIcon.getIconHeight() );
-				}
-			}
+        //todo: handle icons larger than image
+        if (factorX > factorY) {
+          factor = factorY;
+          dx = (int) (((width / factor) - imageWidth) / 2);
+          dy = 0;
+        } else {
+          factor = factorX;
+          dx = 0;
+          dy = (int) (((height / factor) - imageHeight) / 2);
+        }
+        g2.scale(factor, factor);
+      } else {
+        dx = (width - imageWidth) / 2;
+        dy = (height - imageHeight) / 2;
+        final boolean DEBUG = false;
+        if (DEBUG) {
+          g2.setPaint(Color.RED);
+          g2.fillRect(0, 0, this.getIconWidth(), this.getIconHeight());
+          g2.setPaint(Color.GREEN);
+          g2.fillRect(dx, dy, this.imageIcon.getIconWidth(), this.imageIcon.getIconHeight());
+        }
+      }
 
-			g2.translate( dx, dy );
-			g2.drawImage( image, 0, 0, imageWidth, imageHeight, c );
-			g2.setTransform( t );
-		}
-	}
+      g2.translate(dx, dy);
+      g2.drawImage(image, 0, 0, imageWidth, imageHeight, c);
+      g2.setTransform(t);
+    }
+  }
 }

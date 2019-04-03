@@ -51,9 +51,9 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class PopupButton extends AbstractPopupButton<PopupPrepModel> {
-	public PopupButton( PopupPrepModel model ) {
-		super( model );
-		this.setClobberIcon( new DropDownArrowIcon( 10, Color.DARK_GRAY ) );
-		this.setHorizontalTextPosition( HorizontalTextPosition.LEADING );
-	}
+  public PopupButton(PopupPrepModel model) {
+    super(model);
+    this.setClobberIcon(new DropDownArrowIcon(10, Color.DARK_GRAY));
+    this.setHorizontalTextPosition(HorizontalTextPosition.LEADING);
+  }
 }

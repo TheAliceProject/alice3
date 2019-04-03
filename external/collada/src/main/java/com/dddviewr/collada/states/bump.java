@@ -9,27 +9,24 @@ import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.effects.Effect;
 import com.dddviewr.collada.effects.EffectAttribute;
 
-
 public class bump extends State {
-	protected EffectAttribute attrib;
+  protected EffectAttribute attrib;
 
-	public void init(String name, Attributes attrs, StateManager mngr) {
-		super.init(name, attrs, mngr);
+  public void init(String name, Attributes attrs, StateManager mngr) {
+    super.init(name, attrs, mngr);
 
-		this.attrib = new EffectAttribute("Bump");
+    this.attrib = new EffectAttribute("Bump");
 
-		State effectState = getParent().getParent().getParent().getParent().getParent();
-		try {
-			Method method = effectState.getClass().getMethod("getEffect",
-					new Class[0]);
-			Effect ef = (Effect) method.invoke(effectState,
-					new Object[0]);
-			ef.getEffectMaterial().setBump(attrib);
-		} catch (Exception localException) {
-		}
-	}
+    State effectState = getParent().getParent().getParent().getParent().getParent();
+    try {
+      Method method = effectState.getClass().getMethod("getEffect", new Class[0]);
+      Effect ef = (Effect) method.invoke(effectState, new Object[0]);
+      ef.getEffectMaterial().setBump(attrib);
+    } catch (Exception localException) {
+    }
+  }
 
-	public EffectAttribute getAttrib() {
-		return this.attrib;
-	}
+  public EffectAttribute getAttrib() {
+    return this.attrib;
+  }
 }

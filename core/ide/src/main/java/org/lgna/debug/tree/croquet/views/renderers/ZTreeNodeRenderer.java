@@ -54,23 +54,23 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class ZTreeNodeRenderer<T> extends TreeCellRenderer<ZTreeNode<T>> {
-	@Override
-	protected JLabel updateListCellRendererComponent( JLabel rv, JTree tree, ZTreeNode<T> treeNode, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		T value = treeNode.getValue();
-		rv.setText( value.toString() );
-		if( this.valuesToMute != null ) {
-			if( this.valuesToMute.contains( value ) ) {
-				rv.setForeground( Color.LIGHT_GRAY );
-			} else {
-				rv.setForeground( Color.BLACK );
-			}
-		}
-		return rv;
-	}
+  @Override
+  protected JLabel updateListCellRendererComponent(JLabel rv, JTree tree, ZTreeNode<T> treeNode, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    T value = treeNode.getValue();
+    rv.setText(value.toString());
+    if (this.valuesToMute != null) {
+      if (this.valuesToMute.contains(value)) {
+        rv.setForeground(Color.LIGHT_GRAY);
+      } else {
+        rv.setForeground(Color.BLACK);
+      }
+    }
+    return rv;
+  }
 
-	public void setValuesToMute( Set<T> valuesToMute ) {
-		this.valuesToMute = valuesToMute;
-	}
+  public void setValuesToMute(Set<T> valuesToMute) {
+    this.valuesToMute = valuesToMute;
+  }
 
-	private Set<T> valuesToMute;
+  private Set<T> valuesToMute;
 }

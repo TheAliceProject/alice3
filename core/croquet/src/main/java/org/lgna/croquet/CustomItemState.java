@@ -56,93 +56,93 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CustomItemState<T> extends ItemState<T> {
-	public static class InternalRoot<T> extends CascadeRoot<T, CustomItemState<T>> {
-		private final CustomItemState<T> state;
+  public static class InternalRoot<T> extends CascadeRoot<T, CustomItemState<T>> {
+    private final CustomItemState<T> state;
 
-		private InternalRoot( CustomItemState<T> state ) {
-			super( UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ) );
-			this.state = state;
-		}
+    private InternalRoot(CustomItemState<T> state) {
+      super(UUID.fromString("8a973789-9896-443f-b701-4a819fc61d46"));
+      this.state = state;
+    }
 
-		@Override
-		public List<? extends CascadeBlank<T>> getBlanks() {
-			return this.state.getBlanks();
-		}
+    @Override
+    public List<? extends CascadeBlank<T>> getBlanks() {
+      return this.state.getBlanks();
+    }
 
-		@Override
-		public Class<T> getComponentType() {
-			return this.state.getItemCodec().getValueClass();
-		}
+    @Override
+    public Class<T> getComponentType() {
+      return this.state.getItemCodec().getValueClass();
+    }
 
-		@Override
-		public CustomItemState<T> getCompletionModel() {
-			return this.state;
-		}
+    @Override
+    public CustomItemState<T> getCompletionModel() {
+      return this.state;
+    }
 
-		@Override
-		protected void prologue() {
-			super.prologue();
-			this.state.prologue();
-		}
+    @Override
+    protected void prologue() {
+      super.prologue();
+      this.state.prologue();
+    }
 
-		@Override
-		protected void epilogue() {
-			this.state.epilogue();
-			super.epilogue();
-		}
+    @Override
+    protected void epilogue() {
+      this.state.epilogue();
+      super.epilogue();
+    }
 
-		@Override
-		public void handleCompletion( UserActivity userActivity, RtRoot<T, CustomItemState<T>> rtRoot ) {
-			recordCompletionModel( userActivity );
-			T[] values = rtRoot.createValues( getComponentType() );
-			state.changeValueFromIndirectModel( values[ 0 ], userActivity );
-			getPopupPrepModel().handleFinally();
-		}
-	}
+    @Override
+    public void handleCompletion(UserActivity userActivity, RtRoot<T, CustomItemState<T>> rtRoot) {
+      recordCompletionModel(userActivity);
+      T[] values = rtRoot.createValues(getComponentType());
+      state.changeValueFromIndirectModel(values[0], userActivity);
+      getPopupPrepModel().handleFinally();
+    }
+  }
 
-	private final InternalRoot<T> root;
+  private final InternalRoot<T> root;
 
-	public CustomItemState( Group group, UUID id, T initialValue, ItemCodec<T> itemCodec ) {
-		super( group, id, initialValue, itemCodec );
-		this.root = new InternalRoot<T>( this );
-	}
+  public CustomItemState(Group group, UUID id, T initialValue, ItemCodec<T> itemCodec) {
+    super(group, id, initialValue, itemCodec);
+    this.root = new InternalRoot<T>(this);
+  }
 
-	protected abstract List<? extends CascadeBlank<T>> getBlanks();
+  protected abstract List<? extends CascadeBlank<T>> getBlanks();
 
-	public InternalRoot<T> getCascadeRoot() {
-		return this.root;
-	}
+  public InternalRoot<T> getCascadeRoot() {
+    return this.root;
+  }
 
-	protected void appendPrepModelsToCascadeRootPath( List<PrepModel> cascadeRootPath, Edit edit ) {
-	}
+  protected void appendPrepModelsToCascadeRootPath(List<PrepModel> cascadeRootPath, Edit edit) {
+  }
 
-	@Override
-	public final List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		PrepModel rootPrepModel = this.root.getPopupPrepModel();
-		ArrayList<PrepModel> cascadeRootPath = Lists.newArrayList( rootPrepModel );
-		List<List<PrepModel>> rv = Lists.newArrayList();
-		rv.add( cascadeRootPath );
-		this.appendPrepModelsToCascadeRootPath( cascadeRootPath, edit );
-		return rv;
-	}
+  @Override
+  public final List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    PrepModel rootPrepModel = this.root.getPopupPrepModel();
+    ArrayList<PrepModel> cascadeRootPath = Lists.newArrayList(rootPrepModel);
+    List<List<PrepModel>> rv = Lists.newArrayList();
+    rv.add(cascadeRootPath);
+    this.appendPrepModelsToCascadeRootPath(cascadeRootPath, edit);
+    return rv;
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	protected void prologue() {
-	}
+  protected void prologue() {
+  }
 
-	protected void epilogue() {
-	}
+  protected void epilogue() {
+  }
 
-	@Override
-	public boolean isEnabled() {
-		return this.getCascadeRoot().getPopupPrepModel().isEnabled();
-	}
+  @Override
+  public boolean isEnabled() {
+    return this.getCascadeRoot().getPopupPrepModel().isEnabled();
+  }
 
-	@Override
-	public void setEnabled( boolean isEnabled ) {
-		this.getCascadeRoot().getPopupPrepModel().setEnabled( isEnabled );
-	}
+  @Override
+  public void setEnabled(boolean isEnabled) {
+    this.getCascadeRoot().getPopupPrepModel().setEnabled(isEnabled);
+  }
 }

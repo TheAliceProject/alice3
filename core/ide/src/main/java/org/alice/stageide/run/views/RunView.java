@@ -49,7 +49,7 @@ import org.lgna.croquet.views.BorderPanel;
  * @author Dennis Cosgrove
  */
 public class RunView extends BorderPanel {
-	public RunView( RunComposite composite ) {
-		super( composite );
-	}
+  public RunView(RunComposite composite) {
+    super(composite);
+  }
 }

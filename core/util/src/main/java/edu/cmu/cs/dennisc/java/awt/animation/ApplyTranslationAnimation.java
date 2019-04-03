@@ -52,60 +52,60 @@ import java.awt.Point;
  * @author Dennis Cosgrove
  */
 public class ApplyTranslationAnimation extends SubjectAnimation {
-	private Point2f m_translation = new Point2f();
-	private Point2f m_sum = new Point2f();
-	private Point2f m_interp = new Point2f();
-	private Point m_runtime = new Point();
+  private Point2f m_translation = new Point2f();
+  private Point2f m_sum = new Point2f();
+  private Point2f m_interp = new Point2f();
+  private Point m_runtime = new Point();
 
-	public ApplyTranslationAnimation() {
-		m_translation.setNaN();
-		m_sum.setNaN();
-	}
+  public ApplyTranslationAnimation() {
+    m_translation.setNaN();
+    m_sum.setNaN();
+  }
 
-	public ApplyTranslationAnimation( Component awtSubject, Point2f translation ) {
-		super( awtSubject );
-		setTranslation( translation );
-		m_sum.setNaN();
-	}
+  public ApplyTranslationAnimation(Component awtSubject, Point2f translation) {
+    super(awtSubject);
+    setTranslation(translation);
+    m_sum.setNaN();
+  }
 
-	public Point2f accessTranslation() {
-		return m_translation;
-	}
+  public Point2f accessTranslation() {
+    return m_translation;
+  }
 
-	public Point2f getTranslation( Point2f rv ) {
-		rv.set( m_translation );
-		return rv;
-	}
+  public Point2f getTranslation(Point2f rv) {
+    rv.set(m_translation);
+    return rv;
+  }
 
-	public Point2f getTranslation() {
-		return getTranslation( new Point2f() );
-	}
+  public Point2f getTranslation() {
+    return getTranslation(new Point2f());
+  }
 
-	public void setTranslation( Point2f translation ) {
-		m_translation.set( translation );
-	}
+  public void setTranslation(Point2f translation) {
+    m_translation.set(translation);
+  }
 
-	@Override
-	public void prologue() {
-		m_sum.set( 0, 0 );
-	}
+  @Override
+  public void prologue() {
+    m_sum.set(0, 0);
+  }
 
-	@Override
-	public void setPortion( double portion ) {
-		InterpolationUtilities.interpolate( m_interp, m_translation, portion );
+  @Override
+  public void setPortion(double portion) {
+    InterpolationUtilities.interpolate(m_interp, m_translation, portion);
 
-		getSubject().getLocation( m_runtime );
+    getSubject().getLocation(m_runtime);
 
-		m_runtime.x += m_interp.x - m_sum.x;
-		m_runtime.y += m_interp.y - m_sum.y;
+    m_runtime.x += m_interp.x - m_sum.x;
+    m_runtime.y += m_interp.y - m_sum.y;
 
-		getSubject().setLocation( m_runtime );
+    getSubject().setLocation(m_runtime);
 
-		m_sum.set( m_interp );
-	}
+    m_sum.set(m_interp);
+  }
 
-	@Override
-	public void epilogue() {
-		m_sum.setNaN();
-	}
+  @Override
+  public void epilogue() {
+    m_sum.setNaN();
+  }
 }

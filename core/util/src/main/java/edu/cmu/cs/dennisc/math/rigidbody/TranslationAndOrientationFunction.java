@@ -50,212 +50,172 @@ import edu.cmu.cs.dennisc.math.Vector3;
  * @author Dennis Cosgrove
  */
 public abstract class TranslationAndOrientationFunction extends TranslationFunction<TranslationAndOrientationDerivative> {
-	private UnitQuaternion m_orientation = UnitQuaternion.createNaN();
-	private Vector3 m_angularMomentum = new Vector3();
+  private UnitQuaternion m_orientation = UnitQuaternion.createNaN();
+  private Vector3 m_angularMomentum = new Vector3();
 
-	private UnitQuaternion m_spin = UnitQuaternion.createNaN();
-	private Vector3 m_angularVelocity = new Vector3();
+  private UnitQuaternion m_spin = UnitQuaternion.createNaN();
+  private Vector3 m_angularVelocity = new Vector3();
 
-	//todo: use Matrix
-	private double m_inertiaTensor = 1 / 6.0;
-	private double m_inverseInertiaTensor = 6.0;
+  //todo: use Matrix
+  private double m_inertiaTensor = 1 / 6.0;
+  private double m_inverseInertiaTensor = 6.0;
 
-	//	@Override
-	//	protected Object clone() throws CloneNotSupportedException {
-	//		TranslationAndOrientationFunction pof = (TranslationAndOrientationFunction)super.clone();
-	//		pof.m_orientation = new edu.cmu.cs.dennisc.math.UnitQuaternion( m_orientation );
-	//		pof.m_angularMomentum = new edu.cmu.cs.dennisc.math.Vector3( m_angularMomentum );
-	//		pof.m_spin = new edu.cmu.cs.dennisc.math.UnitQuaternion( m_spin );
-	//		pof.m_angularVelocity = new edu.cmu.cs.dennisc.math.Vector3( m_angularVelocity );
-	//		return pof;
-	//	}
+  //  @Override
+  //  protected Object clone() throws CloneNotSupportedException {
+  //    TranslationAndOrientationFunction pof = (TranslationAndOrientationFunction)super.clone();
+  //    pof.m_orientation = new edu.cmu.cs.dennisc.math.UnitQuaternion( m_orientation );
+  //    pof.m_angularMomentum = new edu.cmu.cs.dennisc.math.Vector3( m_angularMomentum );
+  //    pof.m_spin = new edu.cmu.cs.dennisc.math.UnitQuaternion( m_spin );
+  //    pof.m_angularVelocity = new edu.cmu.cs.dennisc.math.Vector3( m_angularVelocity );
+  //    return pof;
+  //  }
 
-	public UnitQuaternion accessOrientation() {
-		return m_orientation;
-	}
+  public UnitQuaternion accessOrientation() {
+    return m_orientation;
+  }
 
-	public UnitQuaternion getOrientation( UnitQuaternion rv ) {
-		rv.setValue( m_orientation );
-		return rv;
-	}
+  public UnitQuaternion getOrientation(UnitQuaternion rv) {
+    rv.setValue(m_orientation);
+    return rv;
+  }
 
-	public UnitQuaternion getOrientation() {
-		return getOrientation( UnitQuaternion.createNaN() );
-	}
+  public UnitQuaternion getOrientation() {
+    return getOrientation(UnitQuaternion.createNaN());
+  }
 
-	public void setOrientation( UnitQuaternion orientation ) {
-		m_orientation.setValue( orientation );
-	}
+  public void setOrientation(UnitQuaternion orientation) {
+    m_orientation.setValue(orientation);
+  }
 
-	public void setOrientation( double x, double y, double z, double w ) {
-		m_orientation.set( x, y, z, w );
-	}
+  public void setOrientation(double x, double y, double z, double w) {
+    m_orientation.set(x, y, z, w);
+  }
 
-	public Vector3 accessAngularMomentum() {
-		return m_angularMomentum;
-	}
+  public Vector3 accessAngularMomentum() {
+    return m_angularMomentum;
+  }
 
-	public Vector3 getAngularMomentum( Vector3 rv ) {
-		rv.set( m_angularMomentum );
-		return rv;
-	}
+  public Vector3 getAngularMomentum(Vector3 rv) {
+    rv.set(m_angularMomentum);
+    return rv;
+  }
 
-	public Vector3 getAngularMomentum() {
-		return getAngularMomentum( new Vector3() );
-	}
+  public Vector3 getAngularMomentum() {
+    return getAngularMomentum(new Vector3());
+  }
 
-	public void setAngularMomentum( Vector3 angularMomentum ) {
-		m_angularMomentum.set( angularMomentum );
-	}
+  public void setAngularMomentum(Vector3 angularMomentum) {
+    m_angularMomentum.set(angularMomentum);
+  }
 
-	public void setAngularMomentum( double x, double y, double z ) {
-		m_angularMomentum.set( x, y, z );
-	}
+  public void setAngularMomentum(double x, double y, double z) {
+    m_angularMomentum.set(x, y, z);
+  }
 
-	public UnitQuaternion accessSpin() {
-		return m_spin;
-	}
+  public UnitQuaternion accessSpin() {
+    return m_spin;
+  }
 
-	public UnitQuaternion getSpin( UnitQuaternion rv ) {
-		rv.setValue( m_spin );
-		return rv;
-	}
+  public UnitQuaternion getSpin(UnitQuaternion rv) {
+    rv.setValue(m_spin);
+    return rv;
+  }
 
-	public UnitQuaternion getSpin() {
-		return getSpin( UnitQuaternion.createNaN() );
-	}
+  public UnitQuaternion getSpin() {
+    return getSpin(UnitQuaternion.createNaN());
+  }
 
-	public void setSpin( UnitQuaternion spin ) {
-		m_spin.setValue( spin );
-	}
+  public void setSpin(UnitQuaternion spin) {
+    m_spin.setValue(spin);
+  }
 
-	public void setSpin( double w, double x, double y, double z ) {
-		m_spin.set( w, x, y, z );
-	}
+  public void setSpin(double w, double x, double y, double z) {
+    m_spin.set(w, x, y, z);
+  }
 
-	public Vector3 accessAngularVelocity() {
-		return m_angularVelocity;
-	}
+  public Vector3 accessAngularVelocity() {
+    return m_angularVelocity;
+  }
 
-	public Vector3 getAngularVelocity( Vector3 rv ) {
-		rv.set( m_angularVelocity );
-		return rv;
-	}
+  public Vector3 getAngularVelocity(Vector3 rv) {
+    rv.set(m_angularVelocity);
+    return rv;
+  }
 
-	public Vector3 getAngularVelocity() {
-		return getAngularVelocity( new Vector3() );
-	}
+  public Vector3 getAngularVelocity() {
+    return getAngularVelocity(new Vector3());
+  }
 
-	public void setAngularVelocity( Vector3 angularVelocity ) {
-		m_angularVelocity.set( angularVelocity );
-	}
+  public void setAngularVelocity(Vector3 angularVelocity) {
+    m_angularVelocity.set(angularVelocity);
+  }
 
-	public void setAngularVelocity( double x, double y, double z ) {
-		m_angularVelocity.set( x, y, z );
-	}
+  public void setAngularVelocity(double x, double y, double z) {
+    m_angularVelocity.set(x, y, z);
+  }
 
-	public double getInertiaTensor() {
-		return m_inertiaTensor;
-	}
+  public double getInertiaTensor() {
+    return m_inertiaTensor;
+  }
 
-	public void setInertiaTensor( double inertiaTensor ) {
-		m_inertiaTensor = inertiaTensor;
-		m_inverseInertiaTensor = 1 / m_inertiaTensor;
-	}
+  public void setInertiaTensor(double inertiaTensor) {
+    m_inertiaTensor = inertiaTensor;
+    m_inverseInertiaTensor = 1 / m_inertiaTensor;
+  }
 
-	public AffineMatrix4x4 getTransformation( AffineMatrix4x4 rv ) {
-		rv.set( m_orientation, accessTranslation() );
-		return rv;
-	}
+  public AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv) {
+    rv.set(m_orientation, accessTranslation());
+    return rv;
+  }
 
-	public AffineMatrix4x4 getTransformation() {
-		return getTransformation( AffineMatrix4x4.createNaN() );
-	}
+  public AffineMatrix4x4 getTransformation() {
+    return getTransformation(AffineMatrix4x4.createNaN());
+  }
 
-	public void setTransformation( AffineMatrix4x4 transformation ) {
-		accessTranslation().set( transformation.translation );
-		m_orientation.setValue( transformation.orientation );
-	}
+  public void setTransformation(AffineMatrix4x4 transformation) {
+    accessTranslation().set(transformation.translation);
+    m_orientation.setValue(transformation.orientation);
+  }
 
-	protected abstract Vector3 getTorque( Vector3 rv, double t );
+  protected abstract Vector3 getTorque(Vector3 rv, double t);
 
-	@Override
-	protected TranslationAndOrientationDerivative newDerivative() {
-		return new TranslationAndOrientationDerivative();
-	}
+  @Override
+  protected TranslationAndOrientationDerivative newDerivative() {
+    return new TranslationAndOrientationDerivative();
+  }
 
-	@Override
-	protected TranslationAndOrientationDerivative evaluate( TranslationAndOrientationDerivative rv, double t ) {
-		rv.spin.setValue( m_spin );
-		getTorque( rv.torque, t );
-		return super.evaluate( rv, t );
-	}
+  @Override
+  protected TranslationAndOrientationDerivative evaluate(TranslationAndOrientationDerivative rv, double t) {
+    rv.spin.setValue(m_spin);
+    getTorque(rv.torque, t);
+    return super.evaluate(rv, t);
+  }
 
-	@Override
-	protected void update( double t, double dt, TranslationAndOrientationDerivative derivative ) {
-		super.update( t, dt, derivative );
-		m_orientation.add( UnitQuaternion.createMultiplication( derivative.spin, dt ) );
-		m_orientation.normalize();
-		m_angularMomentum.add( Vector3.createMultiplication( derivative.torque, dt ) );
-	}
+  @Override
+  protected void update(double t, double dt, TranslationAndOrientationDerivative derivative) {
+    super.update(t, dt, derivative);
+    m_orientation.add(UnitQuaternion.createMultiplication(derivative.spin, dt));
+    m_orientation.normalize();
+    m_angularMomentum.add(Vector3.createMultiplication(derivative.torque, dt));
+  }
 
-	@Override
-	protected TranslationAndOrientationDerivative evaluate( TranslationAndOrientationDerivative rv, double t, double dt, TranslationAndOrientationDerivative positionDerivative ) {
-		return super.evaluate( rv, t, dt, positionDerivative );
-	}
+  @Override
+  protected TranslationAndOrientationDerivative evaluate(TranslationAndOrientationDerivative rv, double t, double dt, TranslationAndOrientationDerivative positionDerivative) {
+    return super.evaluate(rv, t, dt, positionDerivative);
+  }
 
-	@Override
-	public void update( TranslationAndOrientationDerivative a, TranslationAndOrientationDerivative b, TranslationAndOrientationDerivative c, TranslationAndOrientationDerivative d, double dt ) {
-		super.update( a, b, c, d, dt );
-		m_orientation.add(
-				UnitQuaternion.createMultiplication(
-						UnitQuaternion.createAddition(
-								a.spin,
-								UnitQuaternion.createAddition(
-										UnitQuaternion.createMultiplication(
-												UnitQuaternion.createAddition(
-														b.spin,
-														c.spin
-														),
-												2.0
-												),
-										d.spin
-										)
-								),
-						dt / 6
-						)
-				);
-		m_orientation.normalize();
-		m_angularMomentum.add(
-				Vector3.createMultiplication(
-						Vector3.createAddition(
-								a.torque,
-								Vector3.createAddition(
-										Vector3.createMultiplication(
-												Vector3.createAddition(
-														b.torque,
-														c.torque
-														),
-												2.0
-												),
-										d.torque
-										)
-								),
-						dt / 6
-						)
-				);
-	}
+  @Override
+  public void update(TranslationAndOrientationDerivative a, TranslationAndOrientationDerivative b, TranslationAndOrientationDerivative c, TranslationAndOrientationDerivative d, double dt) {
+    super.update(a, b, c, d, dt);
+    m_orientation.add(UnitQuaternion.createMultiplication(UnitQuaternion.createAddition(a.spin, UnitQuaternion.createAddition(UnitQuaternion.createMultiplication(UnitQuaternion.createAddition(b.spin, c.spin), 2.0), d.spin)), dt / 6));
+    m_orientation.normalize();
+    m_angularMomentum.add(Vector3.createMultiplication(Vector3.createAddition(a.torque, Vector3.createAddition(Vector3.createMultiplication(Vector3.createAddition(b.torque, c.torque), 2.0), d.torque)), dt / 6));
+  }
 
-	@Override
-	public void update() {
-		super.update();
-		m_angularVelocity.setToMultiplication( m_angularMomentum, m_inverseInertiaTensor );
-		m_spin.setToMultiplication(
-				UnitQuaternion.createMultiplication(
-						new UnitQuaternion( 0, m_angularVelocity.x, m_angularVelocity.y, m_angularVelocity.z ),
-						m_orientation
-						),
-				0.5
-				);
-	}
+  @Override
+  public void update() {
+    super.update();
+    m_angularVelocity.setToMultiplication(m_angularMomentum, m_inverseInertiaTensor);
+    m_spin.setToMultiplication(UnitQuaternion.createMultiplication(new UnitQuaternion(0, m_angularVelocity.x, m_angularVelocity.y, m_angularVelocity.z), m_orientation), 0.5);
+  }
 }

@@ -51,19 +51,19 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class GroundIconFactory extends ResolutionIndependantIconFactory {
-	private static class SingletonHolder {
-		private static GroundIconFactory instance = new GroundIconFactory();
-	}
+  private static class SingletonHolder {
+    private static GroundIconFactory instance = new GroundIconFactory();
+  }
 
-	public static GroundIconFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static GroundIconFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private GroundIconFactory() {
-	}
+  private GroundIconFactory() {
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new GroundIcon( size );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new GroundIcon(size);
+  }
 }

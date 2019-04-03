@@ -46,11 +46,11 @@ import org.lgna.story.SModel;
 
 public class MouseClickOnObjectEvent extends MouseClickEvent {
 
-	public MouseClickOnObjectEvent( MouseClickEventImp e ) {
-		super( e );
-	}
+  public MouseClickOnObjectEvent(MouseClickEventImp e) {
+    super(e);
+  }
 
-	public SModel getModelAtMouseLocation() {
-		return implementation.getModelAtMouseLocation();
-	}
+  public SModel getModelAtMouseLocation() {
+    return implementation.getModelAtMouseLocation();
+  }
 }

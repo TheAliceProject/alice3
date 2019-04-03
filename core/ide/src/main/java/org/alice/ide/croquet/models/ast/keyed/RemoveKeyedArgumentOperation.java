@@ -57,42 +57,42 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RemoveKeyedArgumentOperation extends ActionOperation {
-	private static MapToMap<KeyedArgumentListProperty, JavaKeyedArgument, RemoveKeyedArgumentOperation> mapToMap = MapToMap.newInstance();
+  private static MapToMap<KeyedArgumentListProperty, JavaKeyedArgument, RemoveKeyedArgumentOperation> mapToMap = MapToMap.newInstance();
 
-	public static RemoveKeyedArgumentOperation getInstance( KeyedArgumentListProperty argumentListProperty, JavaKeyedArgument argument ) {
-		return mapToMap.getInitializingIfAbsent( argumentListProperty, argument, new MapToMap.Initializer<KeyedArgumentListProperty, JavaKeyedArgument, RemoveKeyedArgumentOperation>() {
-			@Override
-			public RemoveKeyedArgumentOperation initialize( KeyedArgumentListProperty argumentListProperty, JavaKeyedArgument argument ) {
-				return new RemoveKeyedArgumentOperation( argumentListProperty, argument );
-			}
-		} );
-	}
+  public static RemoveKeyedArgumentOperation getInstance(KeyedArgumentListProperty argumentListProperty, JavaKeyedArgument argument) {
+    return mapToMap.getInitializingIfAbsent(argumentListProperty, argument, new MapToMap.Initializer<KeyedArgumentListProperty, JavaKeyedArgument, RemoveKeyedArgumentOperation>() {
+      @Override
+      public RemoveKeyedArgumentOperation initialize(KeyedArgumentListProperty argumentListProperty, JavaKeyedArgument argument) {
+        return new RemoveKeyedArgumentOperation(argumentListProperty, argument);
+      }
+    });
+  }
 
-	private final KeyedArgumentListProperty argumentListProperty;
-	private final JavaKeyedArgument argument;
+  private final KeyedArgumentListProperty argumentListProperty;
+  private final JavaKeyedArgument argument;
 
-	private RemoveKeyedArgumentOperation( KeyedArgumentListProperty argumentListProperty, JavaKeyedArgument argument ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "b2332b11-7ed9-448f-8cfd-b61ea347d6ce" ) );
-		this.argumentListProperty = argumentListProperty;
-		this.argument = argument;
-	}
+  private RemoveKeyedArgumentOperation(KeyedArgumentListProperty argumentListProperty, JavaKeyedArgument argument) {
+    super(Application.PROJECT_GROUP, UUID.fromString("b2332b11-7ed9-448f-8cfd-b61ea347d6ce"));
+    this.argumentListProperty = argumentListProperty;
+    this.argument = argument;
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( "Remove " + this.argument.getKeyMethod().getName() + " Argument" );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setName("Remove " + this.argument.getKeyMethod().getName() + " Argument");
+  }
 
-	public JavaKeyedArgument getArgument() {
-		return this.argument;
-	}
+  public JavaKeyedArgument getArgument() {
+    return this.argument;
+  }
 
-	public KeyedArgumentListProperty getArgumentListProperty() {
-		return this.argumentListProperty;
-	}
+  public KeyedArgumentListProperty getArgumentListProperty() {
+    return this.argumentListProperty;
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		activity.commitAndInvokeDo( new RemoveKeyedArgumentEdit( activity ) );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    activity.commitAndInvokeDo(new RemoveKeyedArgumentEdit(activity));
+  }
 }

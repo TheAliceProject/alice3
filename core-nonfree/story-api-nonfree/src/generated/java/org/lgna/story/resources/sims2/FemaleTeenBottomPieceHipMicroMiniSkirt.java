@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenBottomPieceHipMicroMiniSkirt implements FemaleTeenBottomPiece {
-	BELT,
-	BEIGE,
-	DENIM,
-	SEVENTIES_MOD;
+  BELT, BEIGE, DENIM, SEVENTIES_MOD
 
 }

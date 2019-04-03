@@ -49,30 +49,30 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public class UUIDPreference extends Preference<UUID> {
-	public UUIDPreference( UUID defaultValue ) {
-		super( defaultValue );
-	}
+  public UUIDPreference(UUID defaultValue) {
+    super(defaultValue);
+  }
 
-	@Override
-	protected UUID getValue( Preferences utilPrefs, String key, UUID defaultValue ) {
-		UUID rv;
-		String s = utilPrefs.get( key, null );
-		if( s != null ) {
-			rv = UUID.fromString( s );
-		} else {
-			rv = defaultValue;
-		}
-		return rv;
-	}
+  @Override
+  protected UUID getValue(Preferences utilPrefs, String key, UUID defaultValue) {
+    UUID rv;
+    String s = utilPrefs.get(key, null);
+    if (s != null) {
+      rv = UUID.fromString(s);
+    } else {
+      rv = defaultValue;
+    }
+    return rv;
+  }
 
-	@Override
-	protected void setAndCommitValue( Preferences utilPrefs, String key, UUID nextValue ) {
-		String s;
-		if( nextValue != null ) {
-			s = nextValue.toString();
-		} else {
-			s = null;
-		}
-		utilPrefs.put( key, s );
-	}
+  @Override
+  protected void setAndCommitValue(Preferences utilPrefs, String key, UUID nextValue) {
+    String s;
+    if (nextValue != null) {
+      s = nextValue.toString();
+    } else {
+      s = null;
+    }
+    utilPrefs.put(key, s);
+  }
 }

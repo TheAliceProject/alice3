@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleElderFullBodyOutfitKilt implements MaleElderFullBodyOutfit {
-	TAN_RED,
-	TAN_GREEN;
+  TAN_RED, TAN_GREEN
 
 }

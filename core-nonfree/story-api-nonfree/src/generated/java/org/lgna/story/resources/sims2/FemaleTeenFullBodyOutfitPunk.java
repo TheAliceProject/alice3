@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitPunk implements FemaleTeenFullBodyOutfit {
-	CAMMO,
-	BLUE_WHITE,
-	BLUE_GREY,
-	BLACK;
+  CAMMO, BLUE_WHITE, BLUE_GREY, BLACK
 
 }

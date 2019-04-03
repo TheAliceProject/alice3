@@ -48,25 +48,25 @@ import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.Label;
 
 public abstract class LabelBasedPropertyController<P> extends BasicPropertyController<P> {
-	protected Label label;
+  protected Label label;
 
-	public LabelBasedPropertyController( AbstractPropertyAdapter<P, ?> propertyAdapter ) {
-		super( propertyAdapter );
-	}
+  public LabelBasedPropertyController(AbstractPropertyAdapter<P, ?> propertyAdapter) {
+    super(propertyAdapter);
+  }
 
-	@Override
-	protected void initializeComponents() {
-		super.initializeComponents();
-		this.label = (Label)this.propertyComponent;
-	}
+  @Override
+  protected void initializeComponents() {
+    super.initializeComponents();
+    this.label = (Label) this.propertyComponent;
+  }
 
-	@Override
-	protected AwtComponentView<?> createPropertyComponent() {
-		return new Label();
-	}
+  @Override
+  protected AwtComponentView<?> createPropertyComponent() {
+    return new Label();
+  }
 
-	protected void setTextOnPropertyComponent( String text ) {
-		this.label.setText( text );
-	}
+  protected void setTextOnPropertyComponent(String text) {
+    this.label.setText(text);
+  }
 
 }

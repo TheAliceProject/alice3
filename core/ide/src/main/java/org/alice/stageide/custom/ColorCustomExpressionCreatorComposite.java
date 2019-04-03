@@ -69,85 +69,85 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ColorCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<CustomExpressionCreatorView> {
-	private static class SingletonHolder {
-		private static ColorCustomExpressionCreatorComposite instance = new ColorCustomExpressionCreatorComposite();
-	}
+  private static class SingletonHolder {
+    private static ColorCustomExpressionCreatorComposite instance = new ColorCustomExpressionCreatorComposite();
+  }
 
-	public static ColorCustomExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ColorCustomExpressionCreatorComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final JColorChooser jColorChooser = new JColorChooser();
-	private final ChangeListener changeListener = new ChangeListener() {
-		@Override
-		public void stateChanged( ChangeEvent e ) {
-			PrepStep step = new EmptyPrepStep( ChangeEventTrigger.createUserInstance( openingActivity.getActivityWithoutTrigger(), e ), "Color chosen");
-			step.getUserActivity().finish();
-		}
-	};
+  private final JColorChooser jColorChooser = new JColorChooser();
+  private final ChangeListener changeListener = new ChangeListener() {
+    @Override
+    public void stateChanged(ChangeEvent e) {
+      PrepStep step = new EmptyPrepStep(ChangeEventTrigger.createUserInstance(openingActivity.getActivityWithoutTrigger(), e), "Color chosen");
+      step.getUserActivity().finish();
+    }
+  };
 
-	private ColorCustomExpressionCreatorComposite() {
-		super( UUID.fromString( "6a187cbd-d41f-4513-aa5e-e8750d1d921f" ) );
-	}
+  private ColorCustomExpressionCreatorComposite() {
+    super(UUID.fromString("6a187cbd-d41f-4513-aa5e-e8750d1d921f"));
+  }
 
-	@Override
-	protected CustomExpressionCreatorView createView() {
-		class ColorCustomExpressionCreatorView extends CustomExpressionCreatorView {
-			public ColorCustomExpressionCreatorView( ColorCustomExpressionCreatorComposite composite ) {
-				super( composite );
-			}
+  @Override
+  protected CustomExpressionCreatorView createView() {
+    class ColorCustomExpressionCreatorView extends CustomExpressionCreatorView {
+      public ColorCustomExpressionCreatorView(ColorCustomExpressionCreatorComposite composite) {
+        super(composite);
+      }
 
-			@Override
-			protected SwingComponentView<?> createMainComponent() {
-				return new SwingAdapter( jColorChooser );
-			}
-		}
-		return new ColorCustomExpressionCreatorView( this );
-	}
+      @Override
+      protected SwingComponentView<?> createMainComponent() {
+        return new SwingAdapter(jColorChooser);
+      }
+    }
+    return new ColorCustomExpressionCreatorView(this);
+  }
 
-	@Override
-	protected Expression createValue() {
-		java.awt.Color awtColor = this.jColorChooser.getColor();
-		IDE ide = IDE.getActiveInstance();
-		ExpressionCreator expressionCreator = ide.getApiConfigurationManager().getExpressionCreator();
-		Color color = EmployeesOnly.createColor( awtColor );
-		try {
-			return expressionCreator.createExpression( color );
-		} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
-			Logger.throwable( ccee, color );
-			return null;
-		}
-	}
+  @Override
+  protected Expression createValue() {
+    java.awt.Color awtColor = this.jColorChooser.getColor();
+    IDE ide = IDE.getActiveInstance();
+    ExpressionCreator expressionCreator = ide.getApiConfigurationManager().getExpressionCreator();
+    Color color = EmployeesOnly.createColor(awtColor);
+    try {
+      return expressionCreator.createExpression(color);
+    } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+      Logger.throwable(ccee, color);
+      return null;
+    }
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		return IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    return IS_GOOD_TO_GO_STATUS;
+  }
 
-	@Override
-	protected void initializeToPreviousExpression( Expression expression ) {
-		if( expression != null ) {
-			try {
-				Color color = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( expression, Color.class );
-				if( color != null ) {
-					Color4f color4f = EmployeesOnly.getColor4f( color );
-					this.jColorChooser.setColor( ColorUtilities.toAwtColor( color4f ) );
-				}
-			} catch( Throwable t ) {
-				Logger.throwable( t, expression );
-			}
-		}
-	}
+  @Override
+  protected void initializeToPreviousExpression(Expression expression) {
+    if (expression != null) {
+      try {
+        Color color = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression(expression, Color.class);
+        if (color != null) {
+          Color4f color4f = EmployeesOnly.getColor4f(color);
+          this.jColorChooser.setColor(ColorUtilities.toAwtColor(color4f));
+        }
+      } catch (Throwable t) {
+        Logger.throwable(t, expression);
+      }
+    }
+  }
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		super.handlePreShowDialog( dialog );
-		this.jColorChooser.getSelectionModel().addChangeListener( this.changeListener );
-	}
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    super.handlePreShowDialog(dialog);
+    this.jColorChooser.getSelectionModel().addChangeListener(this.changeListener);
+  }
 
-	@Override
-	protected void handlePostHideDialog() {
-		this.jColorChooser.getSelectionModel().removeChangeListener( this.changeListener );
-		super.handlePostHideDialog();
-	}
+  @Override
+  protected void handlePostHideDialog() {
+    this.jColorChooser.getSelectionModel().removeChangeListener(this.changeListener);
+    super.handlePostHideDialog();
+  }
 }

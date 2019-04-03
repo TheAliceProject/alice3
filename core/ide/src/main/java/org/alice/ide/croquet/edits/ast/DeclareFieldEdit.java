@@ -57,39 +57,39 @@ import org.lgna.project.ast.UserType;
  * @author Dennis Cosgrove
  */
 public abstract class DeclareFieldEdit extends AbstractEdit {
-	private final UserType<?> declaringType;
-	private final UserField field;
+  private final UserType<?> declaringType;
+  private final UserField field;
 
-	public DeclareFieldEdit( UserActivity userActivity, UserType<?> declaringType, UserField field ) {
-		super( userActivity );
-		this.declaringType = declaringType;
-		this.field = field;
-	}
+  public DeclareFieldEdit(UserActivity userActivity, UserType<?> declaringType, UserField field) {
+    super(userActivity);
+    this.declaringType = declaringType;
+    this.field = field;
+  }
 
-	public DeclareFieldEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.declaringType = NodeCodec.getInstance( UserType.class ).decodeValue( binaryDecoder );
-		this.field = NodeCodec.getInstance( UserField.class ).decodeValue( binaryDecoder );
-	}
+  public DeclareFieldEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.declaringType = NodeCodec.getInstance(UserType.class).decodeValue(binaryDecoder);
+    this.field = NodeCodec.getInstance(UserField.class).decodeValue(binaryDecoder);
+  }
 
-	protected UserType<?> getDeclaringType() {
-		return this.declaringType;
-	}
+  protected UserType<?> getDeclaringType() {
+    return this.declaringType;
+  }
 
-	protected UserField getField() {
-		return this.field;
-	}
+  protected UserField getField() {
+    return this.field;
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		NodeCodec.getInstance( UserType.class ).encodeValue( binaryEncoder, this.declaringType );
-		NodeCodec.getInstance( UserField.class ).encodeValue( binaryEncoder, this.field );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    NodeCodec.getInstance(UserType.class).encodeValue(binaryEncoder, this.declaringType);
+    NodeCodec.getInstance(UserField.class).encodeValue(binaryEncoder, this.field);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "declare:" );
-		NodeUtilities.safeAppendRepr( rv, field, Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("declare:");
+    NodeUtilities.safeAppendRepr(rv, field, Application.getLocale());
+  }
 }

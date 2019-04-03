@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenFullBodyOutfitTightPantsLooseShirt implements MaleTeenFullBodyOutfit {
-	BLACK_GOTH,
-	BLOOD_GOTH;
+  BLACK_GOTH, BLOOD_GOTH
 
 }

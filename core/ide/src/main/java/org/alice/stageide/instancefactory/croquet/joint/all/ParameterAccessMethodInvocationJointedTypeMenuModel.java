@@ -58,43 +58,43 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ParameterAccessMethodInvocationJointedTypeMenuModel extends JointedTypeMenuModel {
-	private static MapToMapToMap<UserParameter, AbstractMethod, Integer, ParameterAccessMethodInvocationJointedTypeMenuModel> mapToMapToMap = MapToMapToMap.newInstance();
+  private static MapToMapToMap<UserParameter, AbstractMethod, Integer, ParameterAccessMethodInvocationJointedTypeMenuModel> mapToMapToMap = MapToMapToMap.newInstance();
 
-	public static ParameterAccessMethodInvocationJointedTypeMenuModel getInstance( UserParameter parameter, AbstractMethod method ) {
-		List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances( method.getReturnType() );
-		return getInstance( parameter, method, jointedTypeInfos, 0 );
-	}
+  public static ParameterAccessMethodInvocationJointedTypeMenuModel getInstance(UserParameter parameter, AbstractMethod method) {
+    List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances(method.getReturnType());
+    return getInstance(parameter, method, jointedTypeInfos, 0);
+  }
 
-	private static ParameterAccessMethodInvocationJointedTypeMenuModel getInstance( UserParameter parameter, AbstractMethod method, List<JointedTypeInfo> jointedTypeInfos, int index ) {
-		//todo
-		synchronized( mapToMapToMap ) {
-			ParameterAccessMethodInvocationJointedTypeMenuModel rv = mapToMapToMap.get( parameter, method, index );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ParameterAccessMethodInvocationJointedTypeMenuModel( parameter, method, jointedTypeInfos, index );
-				mapToMapToMap.put( parameter, method, index, rv );
-			}
-			return rv;
-		}
-	}
+  private static ParameterAccessMethodInvocationJointedTypeMenuModel getInstance(UserParameter parameter, AbstractMethod method, List<JointedTypeInfo> jointedTypeInfos, int index) {
+    //todo
+    synchronized (mapToMapToMap) {
+      ParameterAccessMethodInvocationJointedTypeMenuModel rv = mapToMapToMap.get(parameter, method, index);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ParameterAccessMethodInvocationJointedTypeMenuModel(parameter, method, jointedTypeInfos, index);
+        mapToMapToMap.put(parameter, method, index, rv);
+      }
+      return rv;
+    }
+  }
 
-	private ParameterAccessMethodInvocationJointedTypeMenuModel( UserParameter parameter, AbstractMethod method, List<JointedTypeInfo> jointedTypeInfos, int index ) {
-		super( UUID.fromString( "4abaaf96-15fe-4269-8bee-d4e8404934a6" ), jointedTypeInfos, index );
-		this.parameter = parameter;
-		this.method = method;
-	}
+  private ParameterAccessMethodInvocationJointedTypeMenuModel(UserParameter parameter, AbstractMethod method, List<JointedTypeInfo> jointedTypeInfos, int index) {
+    super(UUID.fromString("4abaaf96-15fe-4269-8bee-d4e8404934a6"), jointedTypeInfos, index);
+    this.parameter = parameter;
+    this.method = method;
+  }
 
-	@Override
-	protected JointedTypeMenuModel getInstance( List<JointedTypeInfo> jointedTypeInfos, int index ) {
-		return getInstance( this.parameter, this.method, jointedTypeInfos, index );
-	}
+  @Override
+  protected JointedTypeMenuModel getInstance(List<JointedTypeInfo> jointedTypeInfos, int index) {
+    return getInstance(this.parameter, this.method, jointedTypeInfos, index);
+  }
 
-	@Override
-	protected CascadeFillIn<InstanceFactory, ?> getFillIn( AbstractMethod method ) {
-		return InstanceFactoryFillIn.getInstance( ParameterAccessMethodInvocationMethodInvocationFactory.getInstance( this.parameter, this.method, method ) );
-	}
+  @Override
+  protected CascadeFillIn<InstanceFactory, ?> getFillIn(AbstractMethod method) {
+    return InstanceFactoryFillIn.getInstance(ParameterAccessMethodInvocationMethodInvocationFactory.getInstance(this.parameter, this.method, method));
+  }
 
-	private final UserParameter parameter;
-	private final AbstractMethod method;
+  private final UserParameter parameter;
+  private final AbstractMethod method;
 }

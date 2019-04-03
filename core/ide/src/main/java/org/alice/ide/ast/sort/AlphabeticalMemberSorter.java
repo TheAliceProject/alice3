@@ -54,32 +54,32 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public enum AlphabeticalMemberSorter implements MemberSorter {
-	SINGLETON {
-		@Override
-		public <T extends AbstractMember> List<T> createSortedList( List<T> src ) {
-			List<T> rv = Lists.newArrayList( src );
-			Collections.sort( rv, new Comparator<T>() {
-				@Override
-				public int compare( T o1, T o2 ) {
-					//todo: support locale
-					String name1 = o1 != null ? o1.getName() : null;
-					String name2 = o2 != null ? o2.getName() : null;
-					if( name1 != null ) {
-						if( name2 != null ) {
-							return name1.compareToIgnoreCase( name2 );
-						} else {
-							return 1;
-						}
-					} else {
-						if( name2 != null ) {
-							return -1;
-						} else {
-							return 0;
-						}
-					}
-				}
-			} );
-			return rv;
-		}
-	}
+  SINGLETON {
+    @Override
+    public <T extends AbstractMember> List<T> createSortedList(List<T> src) {
+      List<T> rv = Lists.newArrayList(src);
+      Collections.sort(rv, new Comparator<T>() {
+        @Override
+        public int compare(T o1, T o2) {
+          //todo: support locale
+          String name1 = o1 != null ? o1.getName() : null;
+          String name2 = o2 != null ? o2.getName() : null;
+          if (name1 != null) {
+            if (name2 != null) {
+              return name1.compareToIgnoreCase(name2);
+            } else {
+              return 1;
+            }
+          } else {
+            if (name2 != null) {
+              return -1;
+            } else {
+              return 0;
+            }
+          }
+        }
+      });
+      return rv;
+    }
+  }
 }

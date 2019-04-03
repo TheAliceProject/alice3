@@ -54,18 +54,18 @@ import java.util.UUID;
  */
 public class QuadrupedPoser extends PoserComposite<SQuadruped> {
 
-	public QuadrupedPoser( NamedUserType valueType ) {
-		super( UUID.fromString( "b1a11f61-d63c-430b-9b3a-62ffb8fac0d8" ), valueType );
-	}
+  public QuadrupedPoser(NamedUserType valueType) {
+    super(UUID.fromString("b1a11f61-d63c-430b-9b3a-62ffb8fac0d8"), valueType);
+  }
 
-	@Override
-	protected AbstractPoserScene<SQuadruped> initScene() {
-		return new QuadrupedPoserScene( this.getModel() );
-	}
+  @Override
+  protected AbstractPoserScene<SQuadruped> initScene() {
+    return new QuadrupedPoserScene(this.getModel());
+  }
 
-	@Override
-	public Class<SQuadruped> getModelClass() {
-		return SQuadruped.class;
-	}
+  @Override
+  public Class<SQuadruped> getModelClass() {
+    return SQuadruped.class;
+  }
 
 }

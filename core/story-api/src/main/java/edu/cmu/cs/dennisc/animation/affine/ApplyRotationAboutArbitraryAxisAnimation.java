@@ -51,36 +51,36 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  * @author Dennis Cosgrove
  */
 public class ApplyRotationAboutArbitraryAxisAnimation extends AbstractApplyRotationAnimation {
-	private Vector3 m_axis = new Vector3();
+  private Vector3 m_axis = new Vector3();
 
-	public ApplyRotationAboutArbitraryAxisAnimation() {
-		m_axis.setNaN();
-	}
+  public ApplyRotationAboutArbitraryAxisAnimation() {
+    m_axis.setNaN();
+  }
 
-	public ApplyRotationAboutArbitraryAxisAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Angle angle, Vector3 axis ) {
-		super( sgSubject, sgAsSeenBy, angle );
-		setAxis( axis );
-	}
+  public ApplyRotationAboutArbitraryAxisAnimation(AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Angle angle, Vector3 axis) {
+    super(sgSubject, sgAsSeenBy, angle);
+    setAxis(axis);
+  }
 
-	public Vector3 accessAxis() {
-		return m_axis;
-	}
+  public Vector3 accessAxis() {
+    return m_axis;
+  }
 
-	public Vector3 getAxis( Vector3 rv ) {
-		rv.set( m_axis );
-		return rv;
-	}
+  public Vector3 getAxis(Vector3 rv) {
+    rv.set(m_axis);
+    return rv;
+  }
 
-	public Vector3 getAxis() {
-		return getAxis( new Vector3() );
-	}
+  public Vector3 getAxis() {
+    return getAxis(new Vector3());
+  }
 
-	public void setAxis( Vector3 axis ) {
-		m_axis.set( axis );
-	}
+  public void setAxis(Vector3 axis) {
+    m_axis.set(axis);
+  }
 
-	@Override
-	protected void applyRotationInRadians( double angleInRadians ) {
-		getSubject().applyRotationAboutArbitraryAxisInRadians( m_axis, angleInRadians, getAsSeenBy() );
-	}
+  @Override
+  protected void applyRotationInRadians(double angleInRadians) {
+    getSubject().applyRotationAboutArbitraryAxisInRadians(m_axis, angleInRadians, getAsSeenBy());
+  }
 }

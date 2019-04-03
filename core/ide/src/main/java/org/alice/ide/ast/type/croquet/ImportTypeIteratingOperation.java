@@ -71,63 +71,63 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ImportTypeIteratingOperation extends SingleThreadIteratingOperation {
-	private final NamedUserType dstType;
+  private final NamedUserType dstType;
 
-	public ImportTypeIteratingOperation( NamedUserType dstType ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "bae897e2-63cb-481a-8ff6-41c99052a026" ) );
-		this.dstType = dstType;
-		this.setButtonIcon( new LineAxisIcon( Icons.FOLDER_ICON_SMALL, PlusIconFactory.getInstance().getIcon( new Dimension( Icons.FOLDER_ICON_SMALL.getIconWidth(), Icons.FOLDER_ICON_SMALL.getIconHeight() ) ) ) );
-	}
+  public ImportTypeIteratingOperation(NamedUserType dstType) {
+    super(Application.PROJECT_GROUP, UUID.fromString("bae897e2-63cb-481a-8ff6-41c99052a026"));
+    this.dstType = dstType;
+    this.setButtonIcon(new LineAxisIcon(Icons.FOLDER_ICON_SMALL, PlusIconFactory.getInstance().getIcon(new Dimension(Icons.FOLDER_ICON_SMALL.getIconWidth(), Icons.FOLDER_ICON_SMALL.getIconHeight()))));
+  }
 
-	@Override
-	protected boolean hasNext( List<UserActivity> finishedSteps ) {
-		return finishedSteps.size() < 2;
-	}
+  @Override
+  protected boolean hasNext(List<UserActivity> finishedSteps) {
+    return finishedSteps.size() < 2;
+  }
 
-	@Override
-	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
-		switch( finishedSteps.size() ) {
-		case 0:
-			return new FileDialogValueCreator( null, StageIDE.getActiveInstance().getTypesDirectory(), IoUtilities.TYPE_EXTENSION );
-		case 1:
-			UserActivity prevSubStep = finishedSteps.get( 0 );
-			if( prevSubStep.getProducedValue() != null ) {
-				File file = (File)prevSubStep.getProducedValue();
-				try {
-					TypeResourcesPair typeResourcesPair = IoUtilities.readType( file );
-					NamedUserType importedType = typeResourcesPair.getType();
-					Set<Resource> importedResources = typeResourcesPair.getResources();
-					NamedUserType srcType;
-					if( importedType.getName().contentEquals( this.dstType.getName() ) ) {
-						srcType = importedType;
-					} else {
-						srcType = null;
-						IsInstanceCrawler<NamedUserType> crawler = IsInstanceCrawler.createInstance( NamedUserType.class );
-						importedType.crawl( crawler, CrawlPolicy.COMPLETE );
-						for( NamedUserType type : crawler.getList() ) {
-							if( type.getName().contentEquals( this.dstType.getName() ) ) {
-								srcType = type;
-								break;
-							}
-						}
-					}
-					if( srcType != null ) {
-						return new ImportTypeWizard( file.toURI(), importedType, importedResources, srcType, this.dstType ).getLaunchOperation();
-					} else {
-						Dialogs.showInfo( "Cannot find class " + this.dstType.getName() + " in " + file );
-						return null;
-					}
-				} catch( IOException ioe ) {
-					Dialogs.showInfo( "Unable to read " + file.getName() );
-				} catch( VersionNotSupportedException vnse ) {
-					Dialogs.showInfo( "version not supported " + vnse.getVersion() );
-				}
-				return null;
-			} else {
-				return null;
-			}
-		default:
-			return null;
-		}
-	}
+  @Override
+  protected Triggerable getNext(List<UserActivity> finishedSteps) {
+    switch (finishedSteps.size()) {
+    case 0:
+      return new FileDialogValueCreator(null, StageIDE.getActiveInstance().getTypesDirectory(), IoUtilities.TYPE_EXTENSION);
+    case 1:
+      UserActivity prevSubStep = finishedSteps.get(0);
+      if (prevSubStep.getProducedValue() != null) {
+        File file = (File) prevSubStep.getProducedValue();
+        try {
+          TypeResourcesPair typeResourcesPair = IoUtilities.readType(file);
+          NamedUserType importedType = typeResourcesPair.getType();
+          Set<Resource> importedResources = typeResourcesPair.getResources();
+          NamedUserType srcType;
+          if (importedType.getName().contentEquals(this.dstType.getName())) {
+            srcType = importedType;
+          } else {
+            srcType = null;
+            IsInstanceCrawler<NamedUserType> crawler = IsInstanceCrawler.createInstance(NamedUserType.class);
+            importedType.crawl(crawler, CrawlPolicy.COMPLETE);
+            for (NamedUserType type : crawler.getList()) {
+              if (type.getName().contentEquals(this.dstType.getName())) {
+                srcType = type;
+                break;
+              }
+            }
+          }
+          if (srcType != null) {
+            return new ImportTypeWizard(file.toURI(), importedType, importedResources, srcType, this.dstType).getLaunchOperation();
+          } else {
+            Dialogs.showInfo("Cannot find class " + this.dstType.getName() + " in " + file);
+            return null;
+          }
+        } catch (IOException ioe) {
+          Dialogs.showInfo("Unable to read " + file.getName());
+        } catch (VersionNotSupportedException vnse) {
+          Dialogs.showInfo("version not supported " + vnse.getVersion());
+        }
+        return null;
+      } else {
+        return null;
+      }
+    default:
+      return null;
+    }
+  }
 }

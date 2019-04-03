@@ -54,23 +54,23 @@ import javax.swing.SwingUtilities;
  * @author Dennis Cosgrove
  */
 public class StringExample {
-	public static void main( String[] args ) {
-		SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				UIManagerUtilities.setLookAndFeel( "Nimbus" );
-				SimpleApplication app = new SimpleApplication();
+  public static void main(String[] args) {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        UIManagerUtilities.setLookAndFeel("Nimbus");
+        SimpleApplication app = new SimpleApplication();
 
-				StringExampleComposite composite = new StringExampleComposite();
+        StringExampleComposite composite = new StringExampleComposite();
 
-				DocumentFrame documentFrame = app.getDocumentFrame();
-				Frame frame = documentFrame.getFrame();
-				frame.setTitle( "String Example" );
-				frame.setMainComposite( composite );
-				frame.setDefaultCloseOperation( Frame.DefaultCloseOperation.EXIT );
-				frame.pack();
-				frame.setVisible( true );
-			}
-		} );
-	}
+        DocumentFrame documentFrame = app.getDocumentFrame();
+        Frame frame = documentFrame.getFrame();
+        frame.setTitle("String Example");
+        frame.setMainComposite(composite);
+        frame.setDefaultCloseOperation(Frame.DefaultCloseOperation.EXIT);
+        frame.pack();
+        frame.setVisible(true);
+      }
+    });
+  }
 }

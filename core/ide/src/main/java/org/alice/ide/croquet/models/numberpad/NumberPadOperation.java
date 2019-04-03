@@ -50,10 +50,10 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class NumberPadOperation extends ActionOperation {
-	protected NumberModel<?> numberModel;
+  protected NumberModel<?> numberModel;
 
-	public NumberPadOperation( UUID individualId, NumberModel<?> numberModel ) {
-		super( NumberModel.NUMBER_PAD_GROUP, individualId );
-		this.numberModel = numberModel;
-	}
+  public NumberPadOperation(UUID individualId, NumberModel<?> numberModel) {
+    super(NumberModel.NUMBER_PAD_GROUP, individualId);
+    this.numberModel = numberModel;
+  }
 }

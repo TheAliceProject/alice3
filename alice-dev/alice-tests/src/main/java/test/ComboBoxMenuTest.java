@@ -47,40 +47,37 @@ package test;
  * @author Dennis Cosgrove
  */
 public class ComboBoxMenuTest {
-	public static void main( String[] args ) {
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
-		org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
-		javax.swing.DefaultComboBoxModel model = new javax.swing.DefaultComboBoxModel();
-		model.addElement( "manny" );
-		model.addElement( "mo" );
-		model.addElement( "jack" );
-		model.addElement( "berkeley" );
-		javax.swing.JComboBox jComboBox = new javax.swing.JComboBox( model );
+  public static void main(String[] args) {
+    org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+    org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
+    org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
+    javax.swing.DefaultComboBoxModel model = new javax.swing.DefaultComboBoxModel();
+    model.addElement("manny");
+    model.addElement("mo");
+    model.addElement("jack");
+    model.addElement("berkeley");
+    javax.swing.JComboBox jComboBox = new javax.swing.JComboBox(model);
 
-		javax.swing.Action action = new javax.swing.AbstractAction() {
-			@Override
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				System.out.println( e );
-			}
-		};
-		action.putValue( javax.swing.Action.NAME, "does not work" );
-		final org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label();
-		final org.lgna.croquet.views.BorderPanel borderPanel = new org.lgna.croquet.views.BorderPanel.Builder()
-				.lineStart( label )
-				.center( new org.lgna.croquet.views.SwingAdapter( new javax.swing.JButton( action ) ) )
-				.build();
-		class ListCellRenderer implements javax.swing.ListCellRenderer {
-			@Override
-			public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-				label.setText( (String)value );
-				return borderPanel.getAwtComponent();
-			}
-		}
+    javax.swing.Action action = new javax.swing.AbstractAction() {
+      @Override
+      public void actionPerformed(java.awt.event.ActionEvent e) {
+        System.out.println(e);
+      }
+    };
+    action.putValue(javax.swing.Action.NAME, "does not work");
+    final org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label();
+    final org.lgna.croquet.views.BorderPanel borderPanel = new org.lgna.croquet.views.BorderPanel.Builder().lineStart(label).center(new org.lgna.croquet.views.SwingAdapter(new javax.swing.JButton(action))).build();
+    class ListCellRenderer implements javax.swing.ListCellRenderer {
+      @Override
+      public java.awt.Component getListCellRendererComponent(javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        label.setText((String) value);
+        return borderPanel.getAwtComponent();
+      }
+    }
 
-		jComboBox.setRenderer( new ListCellRenderer() );
-		frame.getContentPane().getAwtComponent().add( jComboBox, java.awt.BorderLayout.PAGE_START );
-		frame.pack();
-		frame.setVisible( true );
-	}
+    jComboBox.setRenderer(new ListCellRenderer());
+    frame.getContentPane().getAwtComponent().add(jComboBox, java.awt.BorderLayout.PAGE_START);
+    frame.pack();
+    frame.setVisible(true);
+  }
 }

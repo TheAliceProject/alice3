@@ -51,12 +51,12 @@ import org.lgna.story.implementation.Property;
  */
 public class DoublePropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Double, O> {
 
-	public DoublePropertyAdapter( String repr, O instance, Property<Double> property, StandardExpressionState expressionState ) {
-		super( repr, instance, property, expressionState );
-	}
+  public DoublePropertyAdapter(String repr, O instance, Property<Double> property, StandardExpressionState expressionState) {
+    super(repr, instance, property, expressionState);
+  }
 
-	@Override
-	public Double getValueCopyIfMutable() {
-		return new Double( this.getValue() );
-	}
+  @Override
+  public Double getValueCopyIfMutable() {
+    return new Double(this.getValue());
+  }
 }

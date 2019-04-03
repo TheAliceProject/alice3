@@ -60,36 +60,36 @@ import edu.cmu.cs.dennisc.java.util.Maps;
  */
 public class TransformationHandler extends TransformationChangedHandler<PointOfViewChangeListener, PointOfViewEvent> {
 
-	private final Map<SThing, List<PointOfViewChangeListener>> checkMap = Maps.newConcurrentHashMap();
+  private final Map<SThing, List<PointOfViewChangeListener>> checkMap = Maps.newConcurrentHashMap();
 
-	public void addTransformationListener( PointOfViewChangeListener transformationlistener, SThing[] shouldListenTo ) {
-		registerIsFiringMap( transformationlistener );
-		registerPolicyMap( transformationlistener, MultipleEventPolicy.IGNORE );
-		List<SThing> allObserving = Lists.newCopyOnWriteArrayList( shouldListenTo );
-		for( SThing m : allObserving ) {
-			if( !getModelList().contains( m ) ) {
-				getModelList().add( m );
-				EmployeesOnly.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
-				//				collisionEventHandler.register( collisionListener, groupOne, groupTwo );
-			}
-		}
-		for( SThing e : shouldListenTo ) {
-			if( checkMap.get( e ) == null ) {
-				checkMap.put( e, new LinkedList<PointOfViewChangeListener>() );
-			}
-			checkMap.get( e ).add( transformationlistener );
-		}
-	}
+  public void addTransformationListener(PointOfViewChangeListener transformationlistener, SThing[] shouldListenTo) {
+    registerIsFiringMap(transformationlistener);
+    registerPolicyMap(transformationlistener, MultipleEventPolicy.IGNORE);
+    List<SThing> allObserving = Lists.newCopyOnWriteArrayList(shouldListenTo);
+    for (SThing m : allObserving) {
+      if (!getModelList().contains(m)) {
+        getModelList().add(m);
+        EmployeesOnly.getImplementation(m).getSgComposite().addAbsoluteTransformationListener(this);
+        //        collisionEventHandler.register( collisionListener, groupOne, groupTwo );
+      }
+    }
+    for (SThing e : shouldListenTo) {
+      if (checkMap.get(e) == null) {
+        checkMap.put(e, new LinkedList<PointOfViewChangeListener>());
+      }
+      checkMap.get(e).add(transformationlistener);
+    }
+  }
 
-	@Override
-	protected void check( SThing changedEntity ) {
-		for( PointOfViewChangeListener listener : checkMap.get( changedEntity ) ) {
-			fireEvent( listener, new PointOfViewEvent( changedEntity ) );
-		}
-	}
+  @Override
+  protected void check(SThing changedEntity) {
+    for (PointOfViewChangeListener listener : checkMap.get(changedEntity)) {
+      fireEvent(listener, new PointOfViewEvent(changedEntity));
+    }
+  }
 
-	@Override
-	protected void fire( PointOfViewChangeListener listener, PointOfViewEvent event ) {
-		listener.pointOfViewChanged( event );
-	}
+  @Override
+  protected void fire(PointOfViewChangeListener listener, PointOfViewEvent event) {
+    listener.pointOfViewChanged(event);
+  }
 }

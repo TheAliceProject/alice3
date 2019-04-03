@@ -34,56 +34,43 @@ import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 public enum BiplaneResource implements AircraftResource {
-	PLANE2,
-	PLANE3,
-	PLANE1,
-	PLANE4,
-	PLANE5;
+  PLANE2, PLANE3, PLANE1, PLANE4, PLANE5;
 
-@FieldTemplate(visibility= Visibility.PRIME_TIME)
-	public static final JointId BIPLANE_ROOT = new JointId( null, BiplaneResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId BIPLANE_PROPELLER = new JointId( BIPLANE_ROOT, BiplaneResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_BIPLANE_TOP_WING_FIN = new JointId( BIPLANE_ROOT, BiplaneResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_BIPLANE_BOTTOM_WING_FIN = new JointId( BIPLANE_ROOT, BiplaneResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_BIPLANE_TAIL_FIN = new JointId( BIPLANE_ROOT, BiplaneResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_BIPLANE_WHEEL = new JointId( BIPLANE_ROOT, BiplaneResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_BIPLANE_TOP_WING_FIN = new JointId( BIPLANE_ROOT, BiplaneResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_BIPLANE_BOTTOM_WING_FIN = new JointId( BIPLANE_ROOT, BiplaneResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_BIPLANE_TAIL_FIN = new JointId( BIPLANE_ROOT, BiplaneResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_BIPLANE_WHEEL = new JointId( BIPLANE_ROOT, BiplaneResource.class );
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId BIPLANE_ROOT = new JointId(null, BiplaneResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId BIPLANE_PROPELLER = new JointId(BIPLANE_ROOT, BiplaneResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_BIPLANE_TOP_WING_FIN = new JointId(BIPLANE_ROOT, BiplaneResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_BIPLANE_BOTTOM_WING_FIN = new JointId(BIPLANE_ROOT, BiplaneResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_BIPLANE_TAIL_FIN = new JointId(BIPLANE_ROOT, BiplaneResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_BIPLANE_WHEEL = new JointId(BIPLANE_ROOT, BiplaneResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_BIPLANE_TOP_WING_FIN = new JointId(BIPLANE_ROOT, BiplaneResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_BIPLANE_BOTTOM_WING_FIN = new JointId(BIPLANE_ROOT, BiplaneResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_BIPLANE_TAIL_FIN = new JointId(BIPLANE_ROOT, BiplaneResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_BIPLANE_WHEEL = new JointId(BIPLANE_ROOT, BiplaneResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { BIPLANE_ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {BIPLANE_ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	BiplaneResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	BiplaneResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  BiplaneResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return BiplaneResource.JOINT_ID_ROOTS;
-	}
+  BiplaneResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public TransportImp createImplementation( STransport abstraction ) {
-		return new TransportImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return BiplaneResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public TransportImp createImplementation(STransport abstraction) {
+    return new TransportImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

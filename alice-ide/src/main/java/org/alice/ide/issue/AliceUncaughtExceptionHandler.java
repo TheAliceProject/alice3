@@ -51,33 +51,33 @@ import org.lgna.common.LgnaIllegalArgumentException;
  * @author Dennis Cosgrove
  */
 public class AliceUncaughtExceptionHandler extends IdeUncaughtExceptionHandler {
-	public AliceUncaughtExceptionHandler() {
-		super( new AliceIdeIssueConfiguration() );
-	}
+  public AliceUncaughtExceptionHandler() {
+    super(new AliceIdeIssueConfiguration());
+  }
 
-	public static void main( String[] args ) throws Exception {
-		UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		Thread.setDefaultUncaughtExceptionHandler( new AliceUncaughtExceptionHandler() );
-		final boolean IS_TESTING_LGNA = false;
-		if( IS_TESTING_LGNA ) {
-			AliceIde ide = new AliceIde( null );
-			throw new LgnaIllegalArgumentException( "DELETE ME", 0, null );
-		} else {
-			//while( true ) {
-			new Thread() {
-				@Override
-				public void run() {
-					super.run();
-					final boolean IS_TESTING_GL = true;
-					if( IS_TESTING_GL ) {
-						throw new GLException( "DELETE ME" );
-					} else {
-						throw new RuntimeException( "DELETE ME" );
-					}
-				}
-			}.start();
-			Thread.sleep( 100 );
-			//}
-		}
-	}
+  public static void main(String[] args) throws Exception {
+    UIManagerUtilities.setLookAndFeel("Nimbus");
+    Thread.setDefaultUncaughtExceptionHandler(new AliceUncaughtExceptionHandler());
+    final boolean IS_TESTING_LGNA = false;
+    if (IS_TESTING_LGNA) {
+      AliceIde ide = new AliceIde(null);
+      throw new LgnaIllegalArgumentException("DELETE ME", 0, null);
+    } else {
+      //while( true ) {
+      new Thread() {
+        @Override
+        public void run() {
+          super.run();
+          final boolean IS_TESTING_GL = true;
+          if (IS_TESTING_GL) {
+            throw new GLException("DELETE ME");
+          } else {
+            throw new RuntimeException("DELETE ME");
+          }
+        }
+      }.start();
+      Thread.sleep(100);
+      //}
+    }
+  }
 }

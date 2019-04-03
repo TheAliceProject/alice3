@@ -57,59 +57,59 @@ import java.awt.event.ActionEvent;
  * @author Dennis Cosgrove
  */
 public class JExceptionSubPane extends JPanel {
-	private final Thread thread;
-	private final Throwable originalThrowable;
-	private final Throwable originalThrowableOrTarget;
+  private final Thread thread;
+  private final Throwable originalThrowable;
+  private final Throwable originalThrowableOrTarget;
 
-	public JExceptionSubPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget ) {
-		assert thread != null;
-		assert originalThrowable != null;
-		this.thread = thread;
-		this.originalThrowable = originalThrowable;
-		this.originalThrowableOrTarget = originalThrowableOrTarget;
-		//this.removeAll();
-		this.setLayout( new BoxLayout( this, BoxLayout.PAGE_AXIS ) );
-		JFauxHyperlink vcShowStackTrace = new JFauxHyperlink( new AbstractAction( "show complete stack trace..." ) {
-			@Override
-			public void actionPerformed( ActionEvent e ) {
-				JOptionPaneUtilities.showMessageDialogInScrollableUneditableTextArea( JExceptionSubPane.this, ThrowableUtilities.getStackTraceAsString( getOriginalThrowable() ), "Stack Trace", JOptionPane.INFORMATION_MESSAGE );
-			}
-		} );
+  public JExceptionSubPane(Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget) {
+    assert thread != null;
+    assert originalThrowable != null;
+    this.thread = thread;
+    this.originalThrowable = originalThrowable;
+    this.originalThrowableOrTarget = originalThrowableOrTarget;
+    //this.removeAll();
+    this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+    JFauxHyperlink vcShowStackTrace = new JFauxHyperlink(new AbstractAction("show complete stack trace...") {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        JOptionPaneUtilities.showMessageDialogInScrollableUneditableTextArea(JExceptionSubPane.this, ThrowableUtilities.getStackTraceAsString(getOriginalThrowable()), "Stack Trace", JOptionPane.INFORMATION_MESSAGE);
+      }
+    });
 
-		StringBuffer sb = new StringBuffer();
-		sb.append( originalThrowable.getClass().getSimpleName() );
-		String message = originalThrowable.getLocalizedMessage();
-		if( ( message != null ) && ( message.length() > 0 ) ) {
-			sb.append( "[" );
-			sb.append( message );
-			sb.append( "]" );
-		}
-		sb.append( " in " );
-		sb.append( thread.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( thread.getName() );
-		sb.append( "]" );
+    StringBuffer sb = new StringBuffer();
+    sb.append(originalThrowable.getClass().getSimpleName());
+    String message = originalThrowable.getLocalizedMessage();
+    if ((message != null) && (message.length() > 0)) {
+      sb.append("[");
+      sb.append(message);
+      sb.append("]");
+    }
+    sb.append(" in ");
+    sb.append(thread.getClass().getSimpleName());
+    sb.append("[");
+    sb.append(thread.getName());
+    sb.append("]");
 
-		this.add( new JLabel( sb.toString() ) );
-		StackTraceElement[] elements = originalThrowable.getStackTrace();
-		if( elements.length > 0 ) {
-			StackTraceElement e0 = elements[ 0 ];
-			this.add( new JLabel( "class: " + e0.getClassName() ) );
-			this.add( new JLabel( "method: " + e0.getMethodName() ) );
-			this.add( new JLabel( "in file " + e0.getFileName() + " at line number " + e0.getLineNumber() ) );
-		}
-		this.add( vcShowStackTrace );
-	}
+    this.add(new JLabel(sb.toString()));
+    StackTraceElement[] elements = originalThrowable.getStackTrace();
+    if (elements.length > 0) {
+      StackTraceElement e0 = elements[0];
+      this.add(new JLabel("class: " + e0.getClassName()));
+      this.add(new JLabel("method: " + e0.getMethodName()));
+      this.add(new JLabel("in file " + e0.getFileName() + " at line number " + e0.getLineNumber()));
+    }
+    this.add(vcShowStackTrace);
+  }
 
-	public Thread getThread() {
-		return this.thread;
-	}
+  public Thread getThread() {
+    return this.thread;
+  }
 
-	public Throwable getOriginalThrowable() {
-		return this.originalThrowable;
-	}
+  public Throwable getOriginalThrowable() {
+    return this.originalThrowable;
+  }
 
-	public Throwable getOriginalThrowableOrTarget() {
-		return this.originalThrowableOrTarget;
-	}
+  public Throwable getOriginalThrowableOrTarget() {
+    return this.originalThrowableOrTarget;
+  }
 }

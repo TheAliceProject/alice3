@@ -48,8 +48,8 @@ import org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposit
  * @author Dennis Cosgrove
  */
 public class ConstructorsToolPaletteCoreView extends MembersToolPaletteCoreView {
-	public ConstructorsToolPaletteCoreView( ConstructorsToolPaletteCoreComposite composite ) {
-		super( composite );
-		this.addComponent( composite.getMembersComposite().getView() );
-	}
+  public ConstructorsToolPaletteCoreView(ConstructorsToolPaletteCoreComposite composite) {
+    super(composite);
+    this.addComponent(composite.getMembersComposite().getView());
+  }
 }

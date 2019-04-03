@@ -32,33 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum CloudResource implements PropResource {
-	CUMULUS,
-	NIMBUS,
-	STRATUS,
-	CIRRUS,
-	CIRRUS_SMALL;
+  CUMULUS, NIMBUS, STRATUS, CIRRUS, CIRRUS_SMALL;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	CloudResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  CloudResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	CloudResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  CloudResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

@@ -56,58 +56,58 @@ import java.awt.Image;
  * @author Dennis Cosgrove
  */
 public class ScaledImageIcon implements Icon {
-	private final Image sourceImage;
-	private int width;
-	private int height;
+  private final Image sourceImage;
+  private int width;
+  private int height;
 
-	public static Icon createSafeInstanceInPixels( Image sourceImage, int width, int height ) {
-		if( sourceImage != null ) {
-			int sourceWidth = ImageUtilities.getWidth( sourceImage );
-			int sourceHeight = ImageUtilities.getWidth( sourceImage );
-			if( ( sourceWidth > 0 ) && ( sourceHeight > 0 ) ) {
-				return new ScaledImageIcon( sourceImage, width, height );
-			} else {
-				Logger.severe( "source image size is", sourceWidth, ",", sourceHeight );
-				return new ColorIcon( Color.RED, width, height );
-			}
-		} else {
-			Logger.severe( "source image is null" );
-			return new ColorIcon( Color.RED, width, height );
-		}
-	}
+  public static Icon createSafeInstanceInPixels(Image sourceImage, int width, int height) {
+    if (sourceImage != null) {
+      int sourceWidth = ImageUtilities.getWidth(sourceImage);
+      int sourceHeight = ImageUtilities.getWidth(sourceImage);
+      if ((sourceWidth > 0) && (sourceHeight > 0)) {
+        return new ScaledImageIcon(sourceImage, width, height);
+      } else {
+        Logger.severe("source image size is", sourceWidth, ",", sourceHeight);
+        return new ColorIcon(Color.RED, width, height);
+      }
+    } else {
+      Logger.severe("source image is null");
+      return new ColorIcon(Color.RED, width, height);
+    }
+  }
 
-	private ScaledImageIcon( Image sourceImage, int width, int height ) {
-		assert sourceImage != null : this;
-		this.sourceImage = sourceImage;
-		this.width = width;
-		this.height = height;
-	}
+  private ScaledImageIcon(Image sourceImage, int width, int height) {
+    assert sourceImage != null : this;
+    this.sourceImage = sourceImage;
+    this.width = width;
+    this.height = height;
+  }
 
-	@Override
-	public int getIconWidth() {
-		return this.width;
-	}
+  @Override
+  public int getIconWidth() {
+    return this.width;
+  }
 
-	@Override
-	public int getIconHeight() {
-		return this.height;
-	}
+  @Override
+  public int getIconHeight() {
+    return this.height;
+  }
 
-	public Image getSourceImage() {
-		return this.sourceImage;
-	}
+  public Image getSourceImage() {
+    return this.sourceImage;
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		Graphics2D g2 = (Graphics2D)g;
-		if( this.sourceImage != null ) {
-			int imageWidth = this.sourceImage.getWidth( c );
-			int imageHeight = this.sourceImage.getHeight( c );
-			if( ( imageWidth > 0 ) && ( imageHeight > 0 ) ) {
-				g2.translate( x, y );
-				g2.drawImage( this.sourceImage, 0, 0, this.width, this.height, 0, 0, imageWidth, imageHeight, c );
-				g2.translate( -x, -y );
-			}
-		}
-	}
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g;
+    if (this.sourceImage != null) {
+      int imageWidth = this.sourceImage.getWidth(c);
+      int imageHeight = this.sourceImage.getHeight(c);
+      if ((imageWidth > 0) && (imageHeight > 0)) {
+        g2.translate(x, y);
+        g2.drawImage(this.sourceImage, 0, 0, this.width, this.height, 0, 0, imageWidth, imageHeight, c);
+        g2.translate(-x, -y);
+      }
+    }
+  }
 }

@@ -54,34 +54,34 @@ import java.awt.Font;
  */
 public class TextFontPropertyAdapter extends AbstractPropertyAdapter<Font, TextModelImp> {
 
-	public TextFontPropertyAdapter( TextModelImp instance, StandardExpressionState expressionState ) {
-		super( "Font", instance, expressionState );
-	}
+  public TextFontPropertyAdapter(TextModelImp instance, StandardExpressionState expressionState) {
+    super("Font", instance, expressionState);
+  }
 
-	@Override
-	public void setValue( Font value ) {
-		super.setValue( value );
-		if( this.instance != null ) {
-			this.instance.setFont( value );
-		}
-	}
+  @Override
+  public void setValue(Font value) {
+    super.setValue(value);
+    if (this.instance != null) {
+      this.instance.setFont(value);
+    }
+  }
 
-	@Override
-	public Class<Font> getPropertyType() {
-		return Font.class;
-	}
+  @Override
+  public Class<Font> getPropertyType() {
+    return Font.class;
+  }
 
-	@Override
-	public Font getValue() {
-		if( this.instance != null ) {
-			return this.instance.getFont();
-		}
-		return null;
-	}
+  @Override
+  public Font getValue() {
+    if (this.instance != null) {
+      return this.instance.getFont();
+    }
+    return null;
+  }
 
-	@Override
-	public Font getValueCopyIfMutable() {
-		return this.getValue();
-	}
+  @Override
+  public Font getValueCopyIfMutable() {
+    return this.getValue();
+  }
 
 }

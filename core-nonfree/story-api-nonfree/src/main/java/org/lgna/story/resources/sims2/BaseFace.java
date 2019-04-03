@@ -48,34 +48,9 @@ import edu.cmu.cs.dennisc.random.RandomUtilities;
  * @author Alice Build
  */
 public enum BaseFace implements Face {
-	HUMAN_00,
-	HUMAN_01,
-	HUMAN_02,
-	HUMAN_03,
-	HUMAN_04,
-	HUMAN_05,
-	HUMAN_06,
-	HUMAN_07,
-	HUMAN_08,
-	HUMAN_09,
-	HUMAN_10,
-	HUMAN_11,
-	HUMAN_12,
-	HUMAN_13,
-	HUMAN_14,
-	HUMAN_15,
-	HUMAN_16,
-	HUMAN_17,
-	HUMAN_18,
-	HUMAN_19,
-	HUMAN_20,
-	HUMAN_21,
-	HUMAN_22,
-	HUMAN_23,
-	ELF,
-	ALIEN;
+  HUMAN_00, HUMAN_01, HUMAN_02, HUMAN_03, HUMAN_04, HUMAN_05, HUMAN_06, HUMAN_07, HUMAN_08, HUMAN_09, HUMAN_10, HUMAN_11, HUMAN_12, HUMAN_13, HUMAN_14, HUMAN_15, HUMAN_16, HUMAN_17, HUMAN_18, HUMAN_19, HUMAN_20, HUMAN_21, HUMAN_22, HUMAN_23, ELF, ALIEN;
 
-	public static BaseFace getRandom() {
-		return RandomUtilities.getRandomEnumConstant( BaseFace.class );
-	}
+  public static BaseFace getRandom() {
+    return RandomUtilities.getRandomEnumConstant(BaseFace.class);
+  }
 }

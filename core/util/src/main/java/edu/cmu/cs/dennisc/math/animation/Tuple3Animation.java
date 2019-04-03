@@ -50,13 +50,13 @@ import edu.cmu.cs.dennisc.math.Tuple3;
  * @author Dennis Cosgrove
  */
 public abstract class Tuple3Animation<E extends Tuple3> extends InterpolationAnimation<E> {
-	public Tuple3Animation( Number duration, Style style, E t0, E t1 ) {
-		super( duration, style, t0, t1 );
-	}
+  public Tuple3Animation(Number duration, Style style, E t0, E t1) {
+    super(duration, style, t0, t1);
+  }
 
-	@Override
-	protected E interpolate( E rv, E v0, E v1, double portion ) {
-		rv.setToInterpolation( v0, v1, portion );
-		return rv;
-	}
+  @Override
+  protected E interpolate(E rv, E v0, E v1, double portion) {
+    rv.setToInterpolation(v0, v1, portion);
+    return rv;
+  }
 }

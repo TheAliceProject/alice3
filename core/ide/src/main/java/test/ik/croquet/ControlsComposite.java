@@ -52,12 +52,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ControlsComposite extends SimpleComposite<ControlsPanel> {
-	public ControlsComposite() {
-		super( UUID.fromString( "88035214-3a37-4aa7-a083-ce093a24bb88" ) );
-	}
+  public ControlsComposite() {
+    super(UUID.fromString("88035214-3a37-4aa7-a083-ce093a24bb88"));
+  }
 
-	@Override
-	protected ControlsPanel createView() {
-		return new ControlsPanel( this );
-	}
+  @Override
+  protected ControlsPanel createView() {
+    return new ControlsPanel(this);
+  }
 }

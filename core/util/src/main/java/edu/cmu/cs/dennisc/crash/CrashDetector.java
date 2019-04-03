@@ -49,40 +49,40 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public final class CrashDetector {
-	private static final String IS_OPENED_KEY = "IS_OPENED";
-	private static final String IS_SUCCESSFULLY_CLOSED_KEY = "IS_SUCCESSFULLY_CLOSED";
+  private static final String IS_OPENED_KEY = "IS_OPENED";
+  private static final String IS_SUCCESSFULLY_CLOSED_KEY = "IS_SUCCESSFULLY_CLOSED";
 
-	public CrashDetector( Class<?> cls ) {
-		this.cls = cls;
-	}
+  public CrashDetector(Class<?> cls) {
+    this.cls = cls;
+  }
 
-	private Preferences getPreferences() {
-		return Preferences.userNodeForPackage( cls );
-	}
+  private Preferences getPreferences() {
+    return Preferences.userNodeForPackage(cls);
+  }
 
-	public boolean isPreviouslyOpenedButNotSucessfullyClosed() {
-		Preferences preferences = this.getPreferences();
-		boolean isOpened = preferences.getBoolean( IS_OPENED_KEY, false );
-		boolean isSuccessfullyClosed = preferences.getBoolean( IS_SUCCESSFULLY_CLOSED_KEY, false );
-		return isOpened && ( isSuccessfullyClosed == false );
-	}
+  public boolean isPreviouslyOpenedButNotSucessfullyClosed() {
+    Preferences preferences = this.getPreferences();
+    boolean isOpened = preferences.getBoolean(IS_OPENED_KEY, false);
+    boolean isSuccessfullyClosed = preferences.getBoolean(IS_SUCCESSFULLY_CLOSED_KEY, false);
+    return isOpened && (isSuccessfullyClosed == false);
+  }
 
-	public void open() {
-		Preferences preferences = this.getPreferences();
-		preferences.putBoolean( IS_OPENED_KEY, true );
-		preferences.putBoolean( IS_SUCCESSFULLY_CLOSED_KEY, false );
-	}
+  public void open() {
+    Preferences preferences = this.getPreferences();
+    preferences.putBoolean(IS_OPENED_KEY, true);
+    preferences.putBoolean(IS_SUCCESSFULLY_CLOSED_KEY, false);
+  }
 
-	public void close() {
-		Preferences preferences = this.getPreferences();
-		preferences.putBoolean( IS_OPENED_KEY, true );
-		preferences.putBoolean( IS_SUCCESSFULLY_CLOSED_KEY, true );
-	}
+  public void close() {
+    Preferences preferences = this.getPreferences();
+    preferences.putBoolean(IS_OPENED_KEY, true);
+    preferences.putBoolean(IS_SUCCESSFULLY_CLOSED_KEY, true);
+  }
 
-	public void clearCrashDetectionPreferences() throws BackingStoreException {
-		Preferences preferences = this.getPreferences();
-		preferences.clear();
-	}
+  public void clearCrashDetectionPreferences() throws BackingStoreException {
+    Preferences preferences = this.getPreferences();
+    preferences.clear();
+  }
 
-	private final Class<?> cls;
+  private final Class<?> cls;
 }

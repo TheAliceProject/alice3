@@ -55,37 +55,37 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public class FixedAspectRatioPanel extends SingleComponentPanel {
-	private final double widthToHeightRatio/* = edu.cmu.cs.dennisc.math.GoldenRatio.PHI */;
+  private final double widthToHeightRatio/* = edu.cmu.cs.dennisc.math.GoldenRatio.PHI */;
 
-	public FixedAspectRatioPanel( AwtComponentView<?> centerPanel, double widthToHeightRatio ) {
-		super( centerPanel );
-		assert widthToHeightRatio != 0.0;
-		this.widthToHeightRatio = widthToHeightRatio;
-	}
+  public FixedAspectRatioPanel(AwtComponentView<?> centerPanel, double widthToHeightRatio) {
+    super(centerPanel);
+    assert widthToHeightRatio != 0.0;
+    this.widthToHeightRatio = widthToHeightRatio;
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		return new SingleComponentLayoutManager() {
-			@Override
-			protected void layoutComponent( Container parent, Component component ) {
-				Dimension parentSize = parent.getSize();
-				Dimension componentSize = DimensionUtilities.calculateBestFittingSize( parentSize, widthToHeightRatio );
-				component.setLocation( ( parentSize.width - componentSize.width ) / 2, ( parentSize.height - componentSize.height ) / 2 );
-				component.setSize( componentSize );
-			}
-		};
-	}
-	//	public static void main( String[] args ) {
-	//		final java.awt.Dimension size = new java.awt.Dimension( 640, 360 );
-	//		BorderPanel centerComponent = new BorderPanel();
-	//		centerComponent.setPreferredSize( size );
-	//		centerComponent.setBackgroundColor( java.awt.Color.BLUE );
-	//		FixedAspectRatioPanel panel = new FixedAspectRatioPanel( centerComponent, 16.0/9.0 );
-	//		panel.setBackgroundColor( java.awt.Color.BLACK );
-	//
-	//		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
-	//		application.getFrame().getContentPanel().addComponent( panel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-	//		application.getFrame().pack();
-	//		application.getFrame().setVisible( true );
-	//	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    return new SingleComponentLayoutManager() {
+      @Override
+      protected void layoutComponent(Container parent, Component component) {
+        Dimension parentSize = parent.getSize();
+        Dimension componentSize = DimensionUtilities.calculateBestFittingSize(parentSize, widthToHeightRatio);
+        component.setLocation((parentSize.width - componentSize.width) / 2, (parentSize.height - componentSize.height) / 2);
+        component.setSize(componentSize);
+      }
+    };
+  }
+  //  public static void main( String[] args ) {
+  //  final java.awt.Dimension size = new java.awt.Dimension( 640, 360 );
+  //  BorderPanel centerComponent = new BorderPanel();
+  //  centerComponent.setPreferredSize( size );
+  //  centerComponent.setBackgroundColor( java.awt.Color.BLUE );
+  //  FixedAspectRatioPanel panel = new FixedAspectRatioPanel( centerComponent, 16.0/9.0 );
+  //  panel.setBackgroundColor( java.awt.Color.BLACK );
+  //
+  //  org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
+  //  application.getFrame().getContentPanel().addComponent( panel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+  //  application.getFrame().pack();
+  //  application.getFrame().setVisible( true );
+  //  }
 }

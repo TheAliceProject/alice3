@@ -52,27 +52,27 @@ import org.lgna.project.ast.NamedUserConstructor;
  * @author Dennis Cosgrove
  */
 public class ConstructorHeaderPane extends AbstractCodeHeaderPane {
-	private final NamedUserConstructor userConstructor;
+  private final NamedUserConstructor userConstructor;
 
-	public ConstructorHeaderPane( NamedUserConstructor userConstructor, boolean isPreview ) {
-		super( isPreview );
-		this.userConstructor = userConstructor;
-	}
+  public ConstructorHeaderPane(NamedUserConstructor userConstructor, boolean isPreview) {
+    super(isPreview);
+    this.userConstructor = userConstructor;
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		forgetAndRemoveAllComponents();
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    forgetAndRemoveAllComponents();
 
-		if( FormatterState.isJava() ) {
-			addComponent( TypeComponent.createInstance( userConstructor.getDeclaringType() ) );
-			addComponent( new Label( "()" ) );
-		} else {
-			addComponent(getDeclareLabel());
-			addComponent( new Label( localize("constructor" ), NAME_SCALE ) );
-			if (!isPreview()) {
-				addComponent( new ParametersPane( ProjectEditorAstI18nFactory.getInstance(), userConstructor ) );
-			}
-		}
-	}
+    if (FormatterState.isJava()) {
+      addComponent(TypeComponent.createInstance(userConstructor.getDeclaringType()));
+      addComponent(new Label("()"));
+    } else {
+      addComponent(getDeclareLabel());
+      addComponent(new Label(localize("constructor"), NAME_SCALE));
+      if (!isPreview()) {
+        addComponent(new ParametersPane(ProjectEditorAstI18nFactory.getInstance(), userConstructor));
+      }
+    }
+  }
 }

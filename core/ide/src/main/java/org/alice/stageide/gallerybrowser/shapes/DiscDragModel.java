@@ -58,37 +58,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DiscDragModel extends ShapeDragModel {
-	private static final SDisc sModel = new SDisc();
+  private static final SDisc sModel = new SDisc();
 
-	private static class SingletonHolder {
-		private static DiscDragModel instance = new DiscDragModel();
-	}
+  private static class SingletonHolder {
+    private static DiscDragModel instance = new DiscDragModel();
+  }
 
-	public static DiscDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static DiscDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private DiscDragModel() {
-		super( UUID.fromString( "461b82ed-0e75-4549-90ff-6e34a809fb2c" ) );
-	}
+  private DiscDragModel() {
+    super(UUID.fromString("461b82ed-0e75-4549-90ff-6e34a809fb2c"));
+  }
 
-	@Override
-	public AxisAlignedBox getBoundingBox() {
-		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
-	}
+  @Override
+  public AxisAlignedBox getBoundingBox() {
+    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
+  }
 
-	@Override
-	public boolean placeOnGround() {
-		return true;
-	}
+  @Override
+  public boolean placeOnGround() {
+    return true;
+  }
 
-	@Override
-	public Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller ) {
-		return AddDiscManagedFieldComposite.getInstance().getLaunchOperation();
-	}
+  @Override
+  public Triggerable getLeftButtonClickOperation(SingleSelectTreeState<ResourceNode> controller) {
+    return AddDiscManagedFieldComposite.getInstance().getLaunchOperation();
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return DiscIconFactory.getInstance();
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return DiscIconFactory.getInstance();
+  }
 }

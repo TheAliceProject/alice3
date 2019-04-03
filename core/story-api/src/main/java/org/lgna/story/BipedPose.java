@@ -48,7 +48,7 @@ import org.lgna.story.implementation.JointIdTransformationPair;
  * @author Matt May
  */
 public final class BipedPose extends Pose<SBiped> {
-	/*package-private*/ BipedPose( JointIdTransformationPair... pairs ) {
-		super( SBiped.class, pairs );
-	}
+  /*package-private*/ BipedPose(JointIdTransformationPair... pairs) {
+    super(SBiped.class, pairs);
+  }
 }

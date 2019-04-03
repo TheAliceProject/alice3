@@ -54,21 +54,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessMenuModel extends PredeterminedMenuModel {
-	private static Map<UserParameter, ParameterAccessMenuModel> map = Maps.newHashMap();
+  private static Map<UserParameter, ParameterAccessMenuModel> map = Maps.newHashMap();
 
-	public static synchronized ParameterAccessMenuModel getInstance( UserParameter parameter ) {
-		ParameterAccessMenuModel rv = map.get( parameter );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ParameterAccessMenuModel( parameter );
-			map.put( parameter, rv );
-		}
-		return rv;
-	}
+  public static synchronized ParameterAccessMenuModel getInstance(UserParameter parameter) {
+    ParameterAccessMenuModel rv = map.get(parameter);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ParameterAccessMenuModel(parameter);
+      map.put(parameter, rv);
+    }
+    return rv;
+  }
 
-	private ParameterAccessMenuModel( UserParameter parameter ) {
-		super( UUID.fromString( "7a9b90a1-a645-4e13-aeef-9ca631baad55" ),
-				RenameParameterComposite.getInstance( parameter ).getLaunchOperation().getMenuItemPrepModel() );
-	}
+  private ParameterAccessMenuModel(UserParameter parameter) {
+    super(UUID.fromString("7a9b90a1-a645-4e13-aeef-9ca631baad55"), RenameParameterComposite.getInstance(parameter).getLaunchOperation().getMenuItemPrepModel());
+  }
 }

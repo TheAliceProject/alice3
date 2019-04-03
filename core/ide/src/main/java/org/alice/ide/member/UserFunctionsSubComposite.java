@@ -56,32 +56,32 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class UserFunctionsSubComposite extends UserMethodsSubComposite {
-	private static Map<NamedUserType, UserFunctionsSubComposite> map = Maps.newHashMap();
+  private static Map<NamedUserType, UserFunctionsSubComposite> map = Maps.newHashMap();
 
-	public static synchronized UserFunctionsSubComposite getInstance( NamedUserType type ) {
-		assert type != null;
-		UserFunctionsSubComposite rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new UserFunctionsSubComposite( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized UserFunctionsSubComposite getInstance(NamedUserType type) {
+    assert type != null;
+    UserFunctionsSubComposite rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new UserFunctionsSubComposite(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private UserFunctionsSubComposite( NamedUserType type ) {
-		super( UUID.fromString( "7e67d035-f06d-4a05-962c-b7924c48893a" ), type, AddFunctionComposite.getInstance( type ).getLaunchOperation() );
-		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "'s Editable Functions" );
-	}
+  private UserFunctionsSubComposite(NamedUserType type) {
+    super(UUID.fromString("7e67d035-f06d-4a05-962c-b7924c48893a"), type, AddFunctionComposite.getInstance(type).getLaunchOperation());
+    this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse("'s Editable Functions");
+  }
 
-	@Override
-	protected boolean isAcceptable( AbstractMethod method ) {
-		return method.isFunction();
-	}
+  @Override
+  protected boolean isAcceptable(AbstractMethod method) {
+    return method.isFunction();
+  }
 
-	@Override
-	protected List<? extends AbstractMethod> getGettersOrSetters( UserField field ) {
-		return field.getGetters();
-	}
+  @Override
+  protected List<? extends AbstractMethod> getGettersOrSetters(UserField field) {
+    return field.getGetters();
+  }
 }

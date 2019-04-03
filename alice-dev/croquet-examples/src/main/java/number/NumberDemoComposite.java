@@ -59,54 +59,54 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class NumberDemoComposite extends SimpleOperationInputDialogCoreComposite<NumberDemoView> {
-	private final BoundedIntegerState waterTempFahrenheitState = this.createBoundedIntegerState( "waterTempFahrenheitState", new BoundedIntegerDetails().minimum( 32 ).maximum( 212 ).initialValue( 70 ) );
+  private final BoundedIntegerState waterTempFahrenheitState = this.createBoundedIntegerState("waterTempFahrenheitState", new BoundedIntegerDetails().minimum(32).maximum(212).initialValue(70));
 
-	private final ValueListener<Integer> listener = new ValueListener<Integer>() {
-		@Override
-		public void valueChanged( ValueEvent<Integer> e ) {
-			System.out.println( e.getNextValue() );
-		}
-	};
+  private final ValueListener<Integer> listener = new ValueListener<Integer>() {
+    @Override
+    public void valueChanged(ValueEvent<Integer> e) {
+      System.out.println(e.getNextValue());
+    }
+  };
 
-	public NumberDemoComposite() {
-		super( UUID.fromString( "f2d46859-44a9-4b38-9cce-65c8b8dfaef1" ), Application.DOCUMENT_UI_GROUP );
-	}
+  public NumberDemoComposite() {
+    super(UUID.fromString("f2d46859-44a9-4b38-9cce-65c8b8dfaef1"), Application.DOCUMENT_UI_GROUP);
+  }
 
-	public BoundedIntegerState getWaterTempFahrenheitState() {
-		return this.waterTempFahrenheitState;
-	}
+  public BoundedIntegerState getWaterTempFahrenheitState() {
+    return this.waterTempFahrenheitState;
+  }
 
-	@Override
-	protected NumberDemoView createView() {
-		return new NumberDemoView( this );
-	}
+  @Override
+  protected NumberDemoView createView() {
+    return new NumberDemoView(this);
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		return IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    return IS_GOOD_TO_GO_STATUS;
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		return null;
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity) {
+    return null;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.waterTempFahrenheitState.addNewSchoolValueListener( this.listener );
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    this.waterTempFahrenheitState.addNewSchoolValueListener(this.listener);
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		this.waterTempFahrenheitState.removeNewSchoolValueListener( this.listener );
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    this.waterTempFahrenheitState.removeNewSchoolValueListener(this.listener);
+    super.handlePostDeactivation();
+  }
 
-	public static void main( String[] args ) throws Exception {
-		UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		SimpleApplication app = new SimpleApplication();
-		new NumberDemoComposite().getLaunchOperation().fire();
-		System.exit( 0 );
-	}
+  public static void main(String[] args) throws Exception {
+    UIManagerUtilities.setLookAndFeel("Nimbus");
+    SimpleApplication app = new SimpleApplication();
+    new NumberDemoComposite().getLaunchOperation().fire();
+    System.exit(0);
+  }
 }

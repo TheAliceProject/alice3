@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenBottomPieceKneeShorts implements MaleTeenBottomPiece {
-	TAN,
-	GREY,
-	DK_BLUE,
-	TAN_WHITE_SOCKS,
-	GREY_WHITE_SOCKS,
-	DK_BLUE_WHITE_SOCKS;
+  TAN, GREY, DK_BLUE, TAN_WHITE_SOCKS, GREY_WHITE_SOCKS, DK_BLUE_WHITE_SOCKS
 
 }

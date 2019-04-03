@@ -50,6 +50,6 @@ import edu.cmu.cs.dennisc.property.FloatProperty;
  * @author Dennis Cosgrove
  */
 public class Silhouette extends Element {
-	public final Color4fProperty color = new Color4fProperty( this, Color4f.YELLOW );
-	public final FloatProperty width = new FloatProperty( this, 1.5f );
+  public final Color4fProperty color = new Color4fProperty(this, Color4f.YELLOW);
+  public final FloatProperty width = new FloatProperty(this, 1.5f);
 }

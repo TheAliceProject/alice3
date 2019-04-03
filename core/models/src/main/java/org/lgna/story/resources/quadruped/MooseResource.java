@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.quadruped;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SQuadruped;
@@ -33,53 +34,46 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.QuadrupedResource;
 
 public enum MooseResource implements QuadrupedResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, MooseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_HORN = new JointId( HEAD, MooseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_EAR_TIP = new JointId( RIGHT_EAR, MooseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_HORN_TIP = new JointId( RIGHT_HORN, MooseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_HORN = new JointId( HEAD, MooseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_EAR_TIP = new JointId( LEFT_EAR, MooseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_HORN_TIP = new JointId( LEFT_HORN, MooseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId TAIL = new JointId( PELVIS_LOWER_BODY, MooseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId TAIL_TIP = new JointId( TAIL, MooseResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LOWER_LIP = new JointId(MOUTH, MooseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_HORN = new JointId(HEAD, MooseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_EAR_TIP = new JointId(RIGHT_EAR, MooseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_HORN_TIP = new JointId(RIGHT_HORN, MooseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_HORN = new JointId(HEAD, MooseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_EAR_TIP = new JointId(LEFT_EAR, MooseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_HORN_TIP = new JointId(LEFT_HORN, MooseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId TAIL = new JointId(PELVIS_LOWER_BODY, MooseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId TAIL_TIP = new JointId(TAIL, MooseResource.class);
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] TAIL_ARRAY = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
-	@Override
-	public JointId[] getTailArray() {
-		return MooseResource.TAIL_ARRAY;
-	}
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] TAIL_ARRAY = {TAIL_0, TAIL_1, TAIL_2, TAIL_3};
 
-	private final ImplementationAndVisualType resourceType;
-	MooseResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  @Override
+  public JointId[] getTailArray() {
+    return MooseResource.TAIL_ARRAY;
+  }
 
-	MooseResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	public JointId[] getRootJointIds() {
-		return QuadrupedResource.JOINT_ID_ROOTS;
-	}
+  MooseResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public QuadrupedImp createImplementation( SQuadruped abstraction ) {
-		return new QuadrupedImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  MooseResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
+
+  public JointId[] getRootJointIds() {
+    return QuadrupedResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public QuadrupedImp createImplementation(SQuadruped abstraction) {
+    return new QuadrupedImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

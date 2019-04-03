@@ -56,56 +56,43 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class SourceCopyrightBatch {
-	public static void main( String[] args ) throws Exception {
-		String[] txtResourcePaths = {
-				"2010_art_a.txt",
-				"2010_art_b.txt",
-				"2010_art_c.txt",
-				"2011_art_a.txt",
-				"2011_art_b.txt",
-				"2012_art_a.txt",
-				"2012_art_b.txt",
-				"2012_art_c.txt",
-				"2013_art_a.txt",
-				"2013_art_b.txt",
-				"2013_art_generated.txt",
-				"2014_art.txt",
-		};
-		List<String> headers = Lists.newArrayListWithInitialCapacity( txtResourcePaths.length );
+  public static void main(String[] args) throws Exception {
+    String[] txtResourcePaths = {"2010_art_a.txt", "2010_art_b.txt", "2010_art_c.txt", "2011_art_a.txt", "2011_art_b.txt", "2012_art_a.txt", "2012_art_b.txt", "2012_art_c.txt", "2013_art_a.txt", "2013_art_b.txt", "2013_art_generated.txt", "2014_art.txt",};
+    List<String> headers = Lists.newArrayListWithInitialCapacity(txtResourcePaths.length);
 
-		for( String txtResourcePath : txtResourcePaths ) {
-			InputStream is = SourceCopyrightBatch.class.getResourceAsStream( "headers/" + txtResourcePath );
-			assert is != null : txtResourcePath;
-			headers.add( TextFileUtilities.read( is ) );
-		}
+    for (String txtResourcePath : txtResourcePaths) {
+      InputStream is = SourceCopyrightBatch.class.getResourceAsStream("headers/" + txtResourcePath);
+      assert is != null : txtResourcePath;
+      headers.add(TextFileUtilities.read(is));
+    }
 
-		Logger.outln( headers );
+    Logger.outln(headers);
 
-		File inRoot = new File( FileUtilities.getDefaultDirectory(), "alice" );
-		assert inRoot.exists() : inRoot;
-		File[] inFiles = FileUtilities.listDescendants( inRoot, "java" );
-		int countNoCopyright = 0;
-		int count = 0;
-		for( File inFile : inFiles ) {
-			String inFileText = TextFileUtilities.read( inFile );
-			boolean isFound = false;
-			for( String header : headers ) {
-				if( inFileText.startsWith( header ) ) {
-					isFound = true;
-				}
-			}
-			if( isFound ) {
-				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "Y", inFile );
-			} else {
-				if( inFileText.startsWith( "package " ) || inFileText.startsWith( "import " ) ) {
-					countNoCopyright++;
-				} else {
-					count++;
-					Logger.errln( "N", inFile );
-				}
-			}
-		}
-		Logger.outln( countNoCopyright );
-		Logger.outln( count );
-	}
+    File inRoot = new File(FileUtilities.getDefaultDirectory(), "alice");
+    assert inRoot.exists() : inRoot;
+    File[] inFiles = FileUtilities.listDescendants(inRoot, "java");
+    int countNoCopyright = 0;
+    int count = 0;
+    for (File inFile : inFiles) {
+      String inFileText = TextFileUtilities.read(inFile);
+      boolean isFound = false;
+      for (String header : headers) {
+        if (inFileText.startsWith(header)) {
+          isFound = true;
+        }
+      }
+      if (isFound) {
+        //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "Y", inFile );
+      } else {
+        if (inFileText.startsWith("package ") || inFileText.startsWith("import ")) {
+          countNoCopyright++;
+        } else {
+          count++;
+          Logger.errln("N", inFile);
+        }
+      }
+    }
+    Logger.outln(countNoCopyright);
+    Logger.outln(count);
+  }
 }

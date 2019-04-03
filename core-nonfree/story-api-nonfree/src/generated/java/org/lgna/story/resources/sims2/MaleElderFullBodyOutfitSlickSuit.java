@@ -44,12 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleElderFullBodyOutfitSlickSuit implements MaleElderFullBodyOutfit {
-	NAVY,
-	GATOR,
-	BLACK,
-	BGATOR,
-	RED,
-	GRAY,
-	WHITE;
+  NAVY, GATOR, BLACK, BGATOR, RED, GRAY, WHITE
 
 }

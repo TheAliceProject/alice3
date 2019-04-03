@@ -50,22 +50,22 @@ import org.lgna.project.ast.StaticAnalysisUtilities;
 
 public abstract class NodeNameValidator extends NameValidator {
 
-	private Node node;
+  private Node node;
 
-	public NodeNameValidator( Node node ) {
-		this.node = node;
-	}
+  public NodeNameValidator(Node node) {
+    this.node = node;
+  }
 
-	public Node getNode() {
-		return this.node;
-	}
+  public Node getNode() {
+    return this.node;
+  }
 
-	@Override
-	public final boolean isNameValid( String name ) {
-		if( IsIdentifierNameValidityStrictState.getInstance().getValue() ) {
-			return StaticAnalysisUtilities.isValidIdentifier( name );
-		} else {
-			return ( name != null ) && ( name.length() > 0 );
-		}
-	}
+  @Override
+  public final boolean isNameValid(String name) {
+    if (IsIdentifierNameValidityStrictState.getInstance().getValue()) {
+      return StaticAnalysisUtilities.isValidIdentifier(name);
+    } else {
+      return (name != null) && (name.length() > 0);
+    }
+  }
 }

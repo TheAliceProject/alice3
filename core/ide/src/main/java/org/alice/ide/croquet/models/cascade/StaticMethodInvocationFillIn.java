@@ -64,47 +64,47 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks<MethodInvocation> {
-	private static Map<AbstractMethod, StaticMethodInvocationFillIn> map = Maps.newHashMap();
+  private static Map<AbstractMethod, StaticMethodInvocationFillIn> map = Maps.newHashMap();
 
-	public static StaticMethodInvocationFillIn getInstance( AbstractMethod method ) {
-		synchronized( map ) {
-			StaticMethodInvocationFillIn rv = map.get( method );
-			if( rv != null ) {
-				//pass
-			} else {
-				List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
-				//note: assuming static methods are in java, which therefore do not change their signatures
-				rv = new StaticMethodInvocationFillIn( method, MethodUtilities.createParameterBlanks( method ) );
-				map.put( method, rv );
-			}
-			return rv;
-		}
-	}
+  public static StaticMethodInvocationFillIn getInstance(AbstractMethod method) {
+    synchronized (map) {
+      StaticMethodInvocationFillIn rv = map.get(method);
+      if (rv != null) {
+        //pass
+      } else {
+        List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
+        //note: assuming static methods are in java, which therefore do not change their signatures
+        rv = new StaticMethodInvocationFillIn(method, MethodUtilities.createParameterBlanks(method));
+        map.put(method, rv);
+      }
+      return rv;
+    }
+  }
 
-	public static StaticMethodInvocationFillIn getInstance( AbstractType<?, ?, ?> type, String methodName, Class<?>... parameterClses ) {
-		AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
-		assert method != null : methodName;
-		return getInstance( method );
-	}
+  public static StaticMethodInvocationFillIn getInstance(AbstractType<?, ?, ?> type, String methodName, Class<?>... parameterClses) {
+    AbstractMethod method = type.getDeclaredMethod(methodName, parameterClses);
+    assert method != null : methodName;
+    return getInstance(method);
+  }
 
-	public static StaticMethodInvocationFillIn getInstance( Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( JavaType.getInstance( cls ), methodName, parameterClses );
-	}
+  public static StaticMethodInvocationFillIn getInstance(Class<?> cls, String methodName, Class<?>... parameterClses) {
+    return getInstance(JavaType.getInstance(cls), methodName, parameterClses);
+  }
 
-	private final MethodInvocation transientValue;
+  private final MethodInvocation transientValue;
 
-	private StaticMethodInvocationFillIn( AbstractMethod method, CascadeBlank<Expression>[] blanks ) {
-		super( UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ), blanks );
-		this.transientValue = IncompleteAstUtilities.createIncompleteStaticMethodInvocation( method );
-	}
+  private StaticMethodInvocationFillIn(AbstractMethod method, CascadeBlank<Expression>[] blanks) {
+    super(UUID.fromString("fb3e7243-639b-43e7-8b70-ef7988ed7a97"), blanks);
+    this.transientValue = IncompleteAstUtilities.createIncompleteStaticMethodInvocation(method);
+  }
 
-	@Override
-	protected MethodInvocation createValue( Expression[] expressions ) {
-		return AstUtilities.createStaticMethodInvocation( this.transientValue.method.getValue(), expressions );
-	}
+  @Override
+  protected MethodInvocation createValue(Expression[] expressions) {
+    return AstUtilities.createStaticMethodInvocation(this.transientValue.method.getValue(), expressions);
+  }
 
-	@Override
-	public MethodInvocation getTransientValue( ItemNode<? super MethodInvocation, Expression> step ) {
-		return this.transientValue;
-	}
+  @Override
+  public MethodInvocation getTransientValue(ItemNode<? super MethodInvocation, Expression> step) {
+    return this.transientValue;
+  }
 }

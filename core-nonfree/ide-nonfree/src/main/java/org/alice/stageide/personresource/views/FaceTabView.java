@@ -61,39 +61,39 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class FaceTabView extends MigPanel {
-	public FaceTabView( FaceTabComposite composite ) {
-		super( composite, "insets 2, fillx", "[right][left, grow, shrink]", "" );
-		Color backgroundColor = IngredientsView.BACKGROUND_COLOR;
-		this.setBackgroundColor( backgroundColor );
-		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+  public FaceTabView(FaceTabComposite composite) {
+    super(composite, "insets 2, fillx", "[right][left, grow, shrink]", "");
+    Color backgroundColor = IngredientsView.BACKGROUND_COLOR;
+    this.setBackgroundColor(backgroundColor);
+    this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-		List<BaseFace> faceList = new HorizontalWrapList<BaseFace>( composite.getBaseFaceState(), -1, FaceListCellRenderer.getInstance() );
-		faceList.setBackgroundColor( IngredientsView.BACKGROUND_COLOR );
-		this.addComponent( composite.getBaseFaceState().getSidekickLabel().createLabel(), "top" );
-		ScrollPane faceScrollPane = new ScrollPane( faceList );
-		faceScrollPane.setHorizontalScrollbarPolicy( ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		faceScrollPane.setBothScrollBarIncrements( 66, 66 );
-		this.addComponent( faceScrollPane, "wrap, grow, shrink" );
+    List<BaseFace> faceList = new HorizontalWrapList<BaseFace>(composite.getBaseFaceState(), -1, FaceListCellRenderer.getInstance());
+    faceList.setBackgroundColor(IngredientsView.BACKGROUND_COLOR);
+    this.addComponent(composite.getBaseFaceState().getSidekickLabel().createLabel(), "top");
+    ScrollPane faceScrollPane = new ScrollPane(faceList);
+    faceScrollPane.setHorizontalScrollbarPolicy(ScrollPane.HorizontalScrollbarPolicy.NEVER);
+    faceScrollPane.setBothScrollBarIncrements(66, 66);
+    this.addComponent(faceScrollPane, "wrap, grow, shrink");
 
-		this.addComponent( composite.getBaseEyeColorState().getSidekickLabel().createLabel() );
-		final boolean IS_LIST_DESIRED = false;
-		if( IS_LIST_DESIRED ) {
-			this.addComponent( new HorizontalWrapList( composite.getBaseEyeColorState(), 1 ), "wrap, shrink" );
-		} else {
-			ImmutableDataSingleSelectListState<BaseEyeColor> eyeColorState = composite.getBaseEyeColorState();
-			BaseEyeColor[] baseEyeColors = BaseEyeColor.values();
-			String constraint = "split " + baseEyeColors.length;
-			for( BaseEyeColor baseEyeColor : baseEyeColors ) {
-				Color awtColor = baseEyeColor.getColor();
-				BooleanState itemSelectedState = eyeColorState.getItemSelectedState( baseEyeColor );
-				itemSelectedState.initializeIfNecessary();
-				itemSelectedState.setTextForBothTrueAndFalse( "" );
-				itemSelectedState.setIconForBothTrueAndFalse( new ColorIcon( awtColor ) );
-				ToggleButton toggleButton = itemSelectedState.createToggleButton();
-				toggleButton.tightenUpMargin( IngredientsView.COLOR_BUTTON_MARGIN );
-				this.addComponent( toggleButton, constraint );
-				constraint = "";
-			}
-		}
-	}
+    this.addComponent(composite.getBaseEyeColorState().getSidekickLabel().createLabel());
+    final boolean IS_LIST_DESIRED = false;
+    if (IS_LIST_DESIRED) {
+      this.addComponent(new HorizontalWrapList(composite.getBaseEyeColorState(), 1), "wrap, shrink");
+    } else {
+      ImmutableDataSingleSelectListState<BaseEyeColor> eyeColorState = composite.getBaseEyeColorState();
+      BaseEyeColor[] baseEyeColors = BaseEyeColor.values();
+      String constraint = "split " + baseEyeColors.length;
+      for (BaseEyeColor baseEyeColor : baseEyeColors) {
+        Color awtColor = baseEyeColor.getColor();
+        BooleanState itemSelectedState = eyeColorState.getItemSelectedState(baseEyeColor);
+        itemSelectedState.initializeIfNecessary();
+        itemSelectedState.setTextForBothTrueAndFalse("");
+        itemSelectedState.setIconForBothTrueAndFalse(new ColorIcon(awtColor));
+        ToggleButton toggleButton = itemSelectedState.createToggleButton();
+        toggleButton.tightenUpMargin(IngredientsView.COLOR_BUTTON_MARGIN);
+        this.addComponent(toggleButton, constraint);
+        constraint = "";
+      }
+    }
+  }
 }

@@ -48,18 +48,18 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
  * @author Dennis Cosgrove
  */
 public class SystemPropertiesAttachment implements Attachment {
-	@Override
-	public byte[] getBytes() {
-		return SystemUtilities.getPropertiesAsXMLByteArray();
-	}
+  @Override
+  public byte[] getBytes() {
+    return SystemUtilities.getPropertiesAsXMLByteArray();
+  }
 
-	@Override
-	public String getMIMEType() {
-		return "application/xml";
-	}
+  @Override
+  public String getMIMEType() {
+    return "application/xml";
+  }
 
-	@Override
-	public String getFileName() {
-		return "systemProperties.xml";
-	}
+  @Override
+  public String getFileName() {
+    return "systemProperties.xml";
+  }
 }

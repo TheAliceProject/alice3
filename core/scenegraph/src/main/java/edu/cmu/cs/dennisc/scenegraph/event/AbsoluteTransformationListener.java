@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.scenegraph.event;
  * @author Dennis Cosgrove
  */
 public interface AbsoluteTransformationListener {
-	public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent );
+  public void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent);
 }

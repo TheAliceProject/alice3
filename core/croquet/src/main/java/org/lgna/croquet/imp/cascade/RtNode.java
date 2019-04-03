@@ -49,104 +49,104 @@ import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
  * @author Dennis Cosgrove
  */
 abstract class RtNode<E, N extends CascadeNode<E>> {
-	private final E element;
-	private final N node;
-	private RtNode<?, ?> parent;
-	private RtNode<?, ?> nextSibling;
+  private final E element;
+  private final N node;
+  private RtNode<?, ?> parent;
+  private RtNode<?, ?> nextSibling;
 
-	public RtNode( E element, N node ) {
-		assert element != null;
-		this.element = element;
-		assert node != null : element;
-		this.node = node;
-	}
+  public RtNode(E element, N node) {
+    assert element != null;
+    this.element = element;
+    assert node != null : element;
+    this.node = node;
+  }
 
-	public E getElement() {
-		return this.element;
-	}
+  public E getElement() {
+    return this.element;
+  }
 
-	public N getNode() {
-		return this.node;
-	}
+  public N getNode() {
+    return this.node;
+  }
 
-	public RtRoot<?, ?> getRtRoot() {
-		return this.parent.getRtRoot();
-	}
+  public RtRoot<?, ?> getRtRoot() {
+    return this.parent.getRtRoot();
+  }
 
-	protected RtNode<?, ?> getParent() {
-		return this.parent;
-	}
+  protected RtNode<?, ?> getParent() {
+    return this.parent;
+  }
 
-	protected RtNode<?, ?> getNextSibling() {
-		return this.nextSibling;
-	}
+  protected RtNode<?, ?> getNextSibling() {
+    return this.nextSibling;
+  }
 
-	public void setParent( RtNode<?, ?> parent ) {
-		this.parent = parent;
-	}
+  public void setParent(RtNode<?, ?> parent) {
+    this.parent = parent;
+  }
 
-	public void setNextSibling( RtNode<?, ?> nextSibling ) {
-		this.nextSibling = nextSibling;
-	}
+  public void setNextSibling(RtNode<?, ?> nextSibling) {
+    this.nextSibling = nextSibling;
+  }
 
-	protected void updateParentsAndNextSiblings( RtNode<?, ?>[] rtNodes ) {
-		for( RtNode<?, ?> rtNode : rtNodes ) {
-			rtNode.setParent( this );
-		}
-		if( rtNodes.length > 0 ) {
-			RtNode<?, ?> rtNodeA = rtNodes[ 0 ];
-			for( int i = 1; i < rtNodes.length; i++ ) {
-				RtNode<?, ?> rtNodeB = rtNodes[ i ];
-				rtNodeA.setNextSibling( rtNodeB );
-				rtNodeA = rtNodeB;
-			}
-			rtNodeA.setNextSibling( null );
-		}
-	}
+  protected void updateParentsAndNextSiblings(RtNode<?, ?>[] rtNodes) {
+    for (RtNode<?, ?> rtNode : rtNodes) {
+      rtNode.setParent(this);
+    }
+    if (rtNodes.length > 0) {
+      RtNode<?, ?> rtNodeA = rtNodes[0];
+      for (int i = 1; i < rtNodes.length; i++) {
+        RtNode<?, ?> rtNodeB = rtNodes[i];
+        rtNodeA.setNextSibling(rtNodeB);
+        rtNodeA = rtNodeB;
+      }
+      rtNodeA.setNextSibling(null);
+    }
+  }
 
-	public abstract RtBlank<?> getNearestBlank();
+  public abstract RtBlank<?> getNearestBlank();
 
-	public RtBlank<?> getNextBlank() {
-		RtBlank<?> blank = this.getNearestBlank();
-		if( blank != null ) {
-			RtBlank<?> nextSibling = (RtBlank<?>)blank.getNextSibling();
-			if( nextSibling != null ) {
-				return nextSibling;
-			}
-		}
-		if( this.parent != null ) {
-			return this.parent.getNextBlank();
-		} else {
-			return null;
-		}
-		//		RtBlank< ? > rv = null;
-		//		RtBlank< ? > blank = this.getNearestBlank();
-		//		if( blank != null ) {
-		//			RtBlank<?> nextSibling = (RtBlank<?>)blank.getNextSibling();
-		//			if( nextSibling != null ) {
-		//				rv = nextSibling;
-		//			}
-		//		}
-		//		if( rv != null ) {
-		//			if( this.parent != null ) {
-		//				rv = this.parent.getNextBlank();
-		//			}
-		//		}
-		//		if( rv != null ) {
-		//			if( rv.isAutomaticallyDetermined() ) {
-		//				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rv );
-		//			}
-		//		}
-		//		return rv;
-	}
+  public RtBlank<?> getNextBlank() {
+    RtBlank<?> blank = this.getNearestBlank();
+    if (blank != null) {
+      RtBlank<?> nextSibling = (RtBlank<?>) blank.getNextSibling();
+      if (nextSibling != null) {
+        return nextSibling;
+      }
+    }
+    if (this.parent != null) {
+      return this.parent.getNextBlank();
+    } else {
+      return null;
+    }
+    //  RtBlank< ? > rv = null;
+    //  RtBlank< ? > blank = this.getNearestBlank();
+    //  if( blank != null ) {
+    //    RtBlank<?> nextSibling = (RtBlank<?>)blank.getNextSibling();
+    //    if( nextSibling != null ) {
+    //      rv = nextSibling;
+    //    }
+    //  }
+    //  if( rv != null ) {
+    //    if( this.parent != null ) {
+    //      rv = this.parent.getNextBlank();
+    //    }
+    //  }
+    //  if( rv != null ) {
+    //    if( rv.isAutomaticallyDetermined() ) {
+    //      edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rv );
+    //    }
+    //  }
+    //  return rv;
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		ClassUtilities.getTrimmedClassName( this.getClass() );
-		sb.append( "[" );
-		sb.append( this.element );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    ClassUtilities.getTrimmedClassName(this.getClass());
+    sb.append("[");
+    sb.append(this.element);
+    sb.append("]");
+    return sb.toString();
+  }
 }

@@ -53,58 +53,58 @@ import edu.cmu.cs.dennisc.math.Point3;
 import org.lgna.story.implementation.ModelImp;
 
 public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3, ModelImp> {
-	public ModelSizeAdapter( ModelImp instance, StandardExpressionState expressionState ) {
-		super( "Size", instance, null, expressionState );
-	}
+  public ModelSizeAdapter(ModelImp instance, StandardExpressionState expressionState) {
+    super("Size", instance, null, expressionState);
+  }
 
-	@Override
-	public Dimension3 getValue() {
-		if( this.instance != null ) {
-			Dimension3 size = this.instance.getSize();
-			size = this.instance.getSize();
-			return size;
-		}
-		return null;
-	}
+  @Override
+  public Dimension3 getValue() {
+    if (this.instance != null) {
+      Dimension3 size = this.instance.getSize();
+      size = this.instance.getSize();
+      return size;
+    }
+    return null;
+  }
 
-	@Override
-	public void setValue( Dimension3 value ) {
-		Dimension3 currentValue = getValue();
-		super.setValue( value );
-		if( this.instance != null ) {
-			double dist = Point3.calculateDistanceBetween( currentValue, value );
-			double duration = 1;
-			if( dist < .02 ) {
-				duration = 0;
-			} else if( dist < .5 ) {
-				duration = ( dist - .02 ) / ( .5 - .02 );
-			}
+  @Override
+  public void setValue(Dimension3 value) {
+    Dimension3 currentValue = getValue();
+    super.setValue(value);
+    if (this.instance != null) {
+      double dist = Point3.calculateDistanceBetween(currentValue, value);
+      double duration = 1;
+      if (dist < .02) {
+        duration = 0;
+      } else if (dist < .5) {
+        duration = (dist - .02) / (.5 - .02);
+      }
 
-			this.instance.animateSetSize( value, duration, TraditionalStyle.BEGIN_AND_END_GENTLY );
-		}
-	}
+      this.instance.animateSetSize(value, duration, TraditionalStyle.BEGIN_AND_END_GENTLY);
+    }
+  }
 
-	@Override
-	protected void addPropertyListener( PropertyListener propertyListener ) {
-		if( this.instance != null ) {
-			this.instance.addScaleListener( propertyListener );
-		}
-	}
+  @Override
+  protected void addPropertyListener(PropertyListener propertyListener) {
+    if (this.instance != null) {
+      this.instance.addScaleListener(propertyListener);
+    }
+  }
 
-	@Override
-	protected void removePropertyListener( PropertyListener propertyListener ) {
-		if( this.instance != null ) {
-			this.instance.removeScaleListener( propertyListener );
-		}
-	}
+  @Override
+  protected void removePropertyListener(PropertyListener propertyListener) {
+    if (this.instance != null) {
+      this.instance.removeScaleListener(propertyListener);
+    }
+  }
 
-	@Override
-	public Class<Dimension3> getPropertyType() {
-		return Dimension3.class;
-	}
+  @Override
+  public Class<Dimension3> getPropertyType() {
+    return Dimension3.class;
+  }
 
-	@Override
-	public Dimension3 getValueCopyIfMutable() {
-		return new Dimension3( this.getValue() );
-	}
+  @Override
+  public Dimension3 getValueCopyIfMutable() {
+    return new Dimension3(this.getValue());
+  }
 }

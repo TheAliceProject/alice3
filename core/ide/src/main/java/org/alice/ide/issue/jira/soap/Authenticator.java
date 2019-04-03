@@ -50,8 +50,8 @@ import java.rmi.RemoteException;
  * @author Dennis Cosgrove
  */
 public class Authenticator implements edu.cmu.cs.dennisc.jira.soap.Authenticator {
-	@Override
-	public String login( JiraSoapService service ) throws RemoteException {
-		return service.login( "alice3_soap", "BW@U~1.455g45u" );
-	}
+  @Override
+  public String login(JiraSoapService service) throws RemoteException {
+    return service.login("alice3_soap", "BW@U~1.455g45u");
+  }
 }

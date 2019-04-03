@@ -53,22 +53,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class BackwardOperation extends ActionOperation {
-	private static class SingletonHolder {
-		private static BackwardOperation instance = new BackwardOperation();
-	}
+  private static class SingletonHolder {
+    private static BackwardOperation instance = new BackwardOperation();
+  }
 
-	public static BackwardOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static BackwardOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private BackwardOperation() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "b640eded-bbcc-4fdb-836d-dcd0993ff45d" ) );
-		this.setButtonIcon( Icons.PREVIOUS_SMALL );
-	}
+  private BackwardOperation() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("b640eded-bbcc-4fdb-836d-dcd0993ff45d"));
+    this.setButtonIcon(Icons.PREVIOUS_SMALL);
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		DeclarationCompositeHistory.getInstance().goBackward();
-		activity.finish();
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    DeclarationCompositeHistory.getInstance().goBackward();
+    activity.finish();
+  }
 }

@@ -53,12 +53,12 @@ import org.lgna.story.implementation.RoomImp;
  * @author Dennis Cosgrove
  */
 public class SetWallPaintEdit extends AbstractSetPaintEdit<RoomImp> {
-	public SetWallPaintEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		super( userActivity, instanceFactory, method, argumentExpressions );
-	}
+  public SetWallPaintEdit(UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions) {
+    super(userActivity, instanceFactory, method, argumentExpressions);
+  }
 
-	@Override
-	protected PaintProperty getPaintProperty( RoomImp roomImp ) {
-		return roomImp.wallPaint;
-	}
+  @Override
+  protected PaintProperty getPaintProperty(RoomImp roomImp) {
+    return roomImp.wallPaint;
+  }
 }

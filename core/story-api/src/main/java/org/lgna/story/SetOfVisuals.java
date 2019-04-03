@@ -48,24 +48,25 @@ import org.lgna.story.implementation.eventhandling.MouseClickedHandler;
  * @author Matt May
  */
 public class SetOfVisuals implements AddMouseClickOnObjectListener.Detail {
-	private static final Visual[] DEFAULT_VALUE = MouseClickedHandler.ALL_VISUALS;
-	private final Visual[] value;
+  private static final Visual[] DEFAULT_VALUE = MouseClickedHandler.ALL_VISUALS;
+  private final Visual[] value;
 
-	public SetOfVisuals( Visual... value ) {
-		this.value = value;
-	}
+  public SetOfVisuals(Visual... value) {
+    this.value = value;
+  }
 
-	private static Visual[] getValue( Object[] details, Visual[] defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof SetOfVisuals ) {
-				SetOfVisuals setOfVisuals = (SetOfVisuals)detail;
-				return setOfVisuals.value;
-			}
-		}
-		return defaultValue;
-	}
+  private static Visual[] getValue(Object[] details, Visual[] defaultValue) {
+    for (Object detail : details) {
+      if (detail instanceof SetOfVisuals) {
+        SetOfVisuals setOfVisuals = (SetOfVisuals) detail;
+        return setOfVisuals.value;
+      }
+    }
+    return defaultValue;
+  }
 
-	/* package-private */static Visual[] getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
-	}
+  /* package-private */
+  static Visual[] getValue(Object[] details) {
+    return getValue(details, DEFAULT_VALUE);
+  }
 }

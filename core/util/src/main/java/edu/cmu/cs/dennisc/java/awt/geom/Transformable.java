@@ -52,77 +52,77 @@ import java.awt.geom.NoninvertibleTransformException;
  * @author Dennis Cosgrove
  */
 public abstract class Transformable {
-	private AffineTransform m_affineTransform = new AffineTransform();
-	private AffineTransform m_inverseAffineTransform = null;
+  private AffineTransform m_affineTransform = new AffineTransform();
+  private AffineTransform m_inverseAffineTransform = null;
 
-	public AffineTransform getInverseAffineTransform( AffineTransform rv ) {
-		if( m_inverseAffineTransform == null ) {
-			try {
-				m_inverseAffineTransform = m_affineTransform.createInverse();
-			} catch( NoninvertibleTransformException nte ) {
-				throw new RuntimeException( nte );
-			}
-		}
-		rv.setTransform( m_inverseAffineTransform );
-		return rv;
-	}
+  public AffineTransform getInverseAffineTransform(AffineTransform rv) {
+    if (m_inverseAffineTransform == null) {
+      try {
+        m_inverseAffineTransform = m_affineTransform.createInverse();
+      } catch (NoninvertibleTransformException nte) {
+        throw new RuntimeException(nte);
+      }
+    }
+    rv.setTransform(m_inverseAffineTransform);
+    return rv;
+  }
 
-	public AffineTransform getInverseAffineTransform() {
-		return getInverseAffineTransform( new AffineTransform() );
-	}
+  public AffineTransform getInverseAffineTransform() {
+    return getInverseAffineTransform(new AffineTransform());
+  }
 
-	public AffineTransform getAffineTransform( AffineTransform rv ) {
-		rv.setTransform( m_affineTransform );
-		return rv;
-	}
+  public AffineTransform getAffineTransform(AffineTransform rv) {
+    rv.setTransform(m_affineTransform);
+    return rv;
+  }
 
-	public AffineTransform getAffineTransform() {
-		return getAffineTransform( new AffineTransform() );
-	}
+  public AffineTransform getAffineTransform() {
+    return getAffineTransform(new AffineTransform());
+  }
 
-	public void setAffineTransform( AffineTransform affineTransform ) {
-		m_affineTransform.setTransform( affineTransform );
-		m_inverseAffineTransform = null;
+  public void setAffineTransform(AffineTransform affineTransform) {
+    m_affineTransform.setTransform(affineTransform);
+    m_inverseAffineTransform = null;
 
-	}
+  }
 
-	public void applyTranslation( double x, double y ) {
-		m_affineTransform.translate( x, y );
-		m_inverseAffineTransform = null;
-	}
+  public void applyTranslation(double x, double y) {
+    m_affineTransform.translate(x, y);
+    m_inverseAffineTransform = null;
+  }
 
-	public void applyRotation( Angle theta ) {
-		m_affineTransform.rotate( theta.getAsRadians() );
-		m_inverseAffineTransform = null;
-	}
+  public void applyRotation(Angle theta) {
+    m_affineTransform.rotate(theta.getAsRadians());
+    m_inverseAffineTransform = null;
+  }
 
-	public void applyScale( double x, double y ) {
-		m_affineTransform.scale( x, y );
-		m_inverseAffineTransform = null;
-	}
+  public void applyScale(double x, double y) {
+    m_affineTransform.scale(x, y);
+    m_inverseAffineTransform = null;
+  }
 
-	protected abstract void paintComponent( GraphicsContext gc );
+  protected abstract void paintComponent(GraphicsContext gc);
 
-	public final void paint( GraphicsContext gc ) {
-		gc.pushAffineTransform();
-		gc.multiplyAffineTransform( m_affineTransform );
+  public final void paint(GraphicsContext gc) {
+    gc.pushAffineTransform();
+    gc.multiplyAffineTransform(m_affineTransform);
 
-		paintComponent( gc );
+    paintComponent(gc);
 
-		gc.popAffineTransform();
-	}
+    gc.popAffineTransform();
+  }
 
-	protected abstract Area update( Area rv, TransformContext tc );
+  protected abstract Area update(Area rv, TransformContext tc);
 
-	public final Area getArea( Area rv, TransformContext tc ) {
-		tc.pushAffineTransform();
-		tc.multiplyAffineTransform( m_affineTransform );
-		update( rv, tc );
-		tc.popAffineTransform();
-		return rv;
-	}
+  public final Area getArea(Area rv, TransformContext tc) {
+    tc.pushAffineTransform();
+    tc.multiplyAffineTransform(m_affineTransform);
+    update(rv, tc);
+    tc.popAffineTransform();
+    return rv;
+  }
 
-	public final Area getArea( TransformContext tc ) {
-		return getArea( new Area(), tc );
-	}
+  public final Area getArea(TransformContext tc) {
+    return getArea(new Area(), tc);
+  }
 }

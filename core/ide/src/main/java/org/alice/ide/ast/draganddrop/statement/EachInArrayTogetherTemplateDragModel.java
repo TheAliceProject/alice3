@@ -56,20 +56,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class EachInArrayTogetherTemplateDragModel extends PotentiallyEnvelopingStatementTemplateDragModel {
-	private static class SingletonHolder {
-		private static EachInArrayTogetherTemplateDragModel instance = new EachInArrayTogetherTemplateDragModel();
-	}
+  private static class SingletonHolder {
+    private static EachInArrayTogetherTemplateDragModel instance = new EachInArrayTogetherTemplateDragModel();
+  }
 
-	public static EachInArrayTogetherTemplateDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static EachInArrayTogetherTemplateDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private EachInArrayTogetherTemplateDragModel() {
-		super( UUID.fromString( "34fe45c5-d5cf-4a22-a1b0-c76a9a08adba" ), EachInArrayTogether.class, IncompleteAstUtilities.createIncompleteEachInArrayTogether() );
-	}
+  private EachInArrayTogetherTemplateDragModel() {
+    super(UUID.fromString("34fe45c5-d5cf-4a22-a1b0-c76a9a08adba"), EachInArrayTogether.class, IncompleteAstUtilities.createIncompleteEachInArrayTogether());
+  }
 
-	@Override
-	protected Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		return InsertEachInArrayTogetherComposite.getInstance( blockStatementIndexPair, isEnveloping ).getLaunchOperation();
-	}
+  @Override
+  protected Triggerable getDropOperation(DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    return InsertEachInArrayTogetherComposite.getInstance(blockStatementIndexPair, isEnveloping).getLaunchOperation();
+  }
 }

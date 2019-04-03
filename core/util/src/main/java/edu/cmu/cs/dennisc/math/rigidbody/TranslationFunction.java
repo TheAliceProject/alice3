@@ -50,177 +50,147 @@ import edu.cmu.cs.dennisc.math.rungekutta.Function;
  * @author Dennis Cosgrove
  */
 public abstract class TranslationFunction<E extends TranslationDerivative> implements Function<E> {
-	private Point3 m_translation = new Point3();
-	private Vector3 m_momentum = new Vector3();
+  private Point3 m_translation = new Point3();
+  private Vector3 m_momentum = new Vector3();
 
-	private Vector3 m_velocity = new Vector3();
+  private Vector3 m_velocity = new Vector3();
 
-	private double m_mass = 1.0;
-	private double m_inverseMass = 1.0;
+  private double m_mass = 1.0;
+  private double m_inverseMass = 1.0;
 
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		TranslationFunction<E> pf = (TranslationFunction<E>)super.clone();
-		pf.m_translation = new Point3( m_translation );
-		pf.m_momentum = new Vector3( m_momentum );
-		pf.m_velocity = new Vector3( m_velocity );
-		return pf;
-	}
+  @Override
+  protected Object clone() throws CloneNotSupportedException {
+    TranslationFunction<E> pf = (TranslationFunction<E>) super.clone();
+    pf.m_translation = new Point3(m_translation);
+    pf.m_momentum = new Vector3(m_momentum);
+    pf.m_velocity = new Vector3(m_velocity);
+    return pf;
+  }
 
-	public Point3 accessTranslation() {
-		return m_translation;
-	}
+  public Point3 accessTranslation() {
+    return m_translation;
+  }
 
-	public Point3 getTranslation( Point3 rv ) {
-		rv.set( m_translation );
-		return rv;
-	}
+  public Point3 getTranslation(Point3 rv) {
+    rv.set(m_translation);
+    return rv;
+  }
 
-	public Point3 getTranslation() {
-		return getTranslation( new Point3() );
-	}
+  public Point3 getTranslation() {
+    return getTranslation(new Point3());
+  }
 
-	public void setTranslation( Point3 translation ) {
-		m_translation.set( translation );
-	}
+  public void setTranslation(Point3 translation) {
+    m_translation.set(translation);
+  }
 
-	public void setTranslation( double x, double y, double z ) {
-		m_translation.set( x, y, z );
-	}
+  public void setTranslation(double x, double y, double z) {
+    m_translation.set(x, y, z);
+  }
 
-	public Vector3 accessMomentum() {
-		return m_momentum;
-	}
+  public Vector3 accessMomentum() {
+    return m_momentum;
+  }
 
-	public Vector3 getMomentum( Vector3 rv ) {
-		rv.set( m_momentum );
-		return rv;
-	}
+  public Vector3 getMomentum(Vector3 rv) {
+    rv.set(m_momentum);
+    return rv;
+  }
 
-	public Vector3 getMomentum() {
-		return getMomentum( new Vector3() );
-	}
+  public Vector3 getMomentum() {
+    return getMomentum(new Vector3());
+  }
 
-	public void setMomentum( Vector3 momentum ) {
-		m_momentum.set( momentum );
-	}
+  public void setMomentum(Vector3 momentum) {
+    m_momentum.set(momentum);
+  }
 
-	public void setMomentum( double x, double y, double z ) {
-		m_momentum.set( x, y, z );
-	}
+  public void setMomentum(double x, double y, double z) {
+    m_momentum.set(x, y, z);
+  }
 
-	public Vector3 accessVelocity() {
-		return m_velocity;
-	}
+  public Vector3 accessVelocity() {
+    return m_velocity;
+  }
 
-	public Vector3 getVelocity( Vector3 rv ) {
-		rv.set( m_velocity );
-		return rv;
-	}
+  public Vector3 getVelocity(Vector3 rv) {
+    rv.set(m_velocity);
+    return rv;
+  }
 
-	public Vector3 getVelocity() {
-		return getVelocity( new Vector3() );
-	}
+  public Vector3 getVelocity() {
+    return getVelocity(new Vector3());
+  }
 
-	public void setVelocity( Vector3 velocity ) {
-		m_velocity.set( velocity );
-	}
+  public void setVelocity(Vector3 velocity) {
+    m_velocity.set(velocity);
+  }
 
-	public void setVelocity( double x, double y, double z ) {
-		m_velocity.set( x, y, z );
-	}
+  public void setVelocity(double x, double y, double z) {
+    m_velocity.set(x, y, z);
+  }
 
-	public double getMass() {
-		return m_mass;
-	}
+  public double getMass() {
+    return m_mass;
+  }
 
-	public void setMass( double mass ) {
-		m_mass = mass;
-		m_inverseMass = 1 / m_mass;
-	}
+  public void setMass(double mass) {
+    m_mass = mass;
+    m_inverseMass = 1 / m_mass;
+  }
 
-	protected abstract Vector3 getForce( Vector3 rv, double t );
+  protected abstract Vector3 getForce(Vector3 rv, double t);
 
-	protected E newDerivative() {
-		return (E)new TranslationDerivative();
-	}
+  protected E newDerivative() {
+    return (E) new TranslationDerivative();
+  }
 
-	protected E evaluate( E rv, double t ) {
-		rv.velocity.set( m_velocity );
-		getForce( rv.force, t );
-		return rv;
-	}
+  protected E evaluate(E rv, double t) {
+    rv.velocity.set(m_velocity);
+    getForce(rv.force, t);
+    return rv;
+  }
 
-	//todo: better name
-	protected void update( double t, double dt, E derivative ) {
-		//todo?
-		//m_translation.add( edu.cmu.cs.dennisc.math.PointD3.createFromProduct( dt, derivative.velocity ) );
-		m_translation.add( Vector3.createMultiplication( derivative.velocity, dt ) );
+  //todo: better name
+  protected void update(double t, double dt, E derivative) {
+    //todo?
+    //m_translation.add( edu.cmu.cs.dennisc.math.PointD3.createFromProduct( dt, derivative.velocity ) );
+    m_translation.add(Vector3.createMultiplication(derivative.velocity, dt));
 
-		m_momentum.add( Vector3.createMultiplication( derivative.force, dt ) );
-	}
+    m_momentum.add(Vector3.createMultiplication(derivative.force, dt));
+  }
 
-	protected E evaluate( E rv, double t, double dt, E derivative ) {
-		try {
-			TranslationFunction<E> pf = (TranslationFunction<E>)this.clone();
-			pf.update( t, dt, derivative );
-			pf.update();
-			return pf.evaluate( t + dt );
-		} catch( CloneNotSupportedException cnse ) {
-			throw new RuntimeException( cnse );
-		}
-	}
+  protected E evaluate(E rv, double t, double dt, E derivative) {
+    try {
+      TranslationFunction<E> pf = (TranslationFunction<E>) this.clone();
+      pf.update(t, dt, derivative);
+      pf.update();
+      return pf.evaluate(t + dt);
+    } catch (CloneNotSupportedException cnse) {
+      throw new RuntimeException(cnse);
+    }
+  }
 
-	@Override
-	public final E evaluate( double t ) {
-		return evaluate( newDerivative(), t );
-	}
+  @Override
+  public final E evaluate(double t) {
+    return evaluate(newDerivative(), t);
+  }
 
-	@Override
-	public final E evaluate( double t, double dt, E derivative ) {
-		return evaluate( newDerivative(), t, dt, derivative );
-	}
+  @Override
+  public final E evaluate(double t, double dt, E derivative) {
+    return evaluate(newDerivative(), t, dt, derivative);
+  }
 
-	@Override
-	public void update( E a, E b, E c, E d, double dt ) {
-		//todo?
-		//m_translation.add( edu.cmu.cs.dennisc.math.PointD3.createFromProduct( dt / 6, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( a.velocity, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( edu.cmu.cs.dennisc.math.PointD3.createFromProduct( 2.0, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( b.velocity, c.velocity ) ), d.velocity ) ) ) );
-		m_translation.add( Vector3.createMultiplication(
-				Vector3.createAddition(
-						a.velocity,
-						Vector3.createAddition(
-								Vector3.createMultiplication(
-										Vector3.createAddition(
-												b.velocity,
-												c.velocity
-												),
-										2.0
-										),
-								d.velocity
-								)
-						),
-				dt / 6
-				) );
-		m_momentum.add( Vector3.createMultiplication(
-				Vector3.createAddition(
-						a.force,
-						Vector3.createAddition(
-								Vector3.createMultiplication(
-										Vector3.createAddition(
-												b.force,
-												c.force
-												),
-										2.0
-										),
-								d.force
-								)
-						),
-				dt / 6
-				) );
-	}
+  @Override
+  public void update(E a, E b, E c, E d, double dt) {
+    //todo?
+    //m_translation.add( edu.cmu.cs.dennisc.math.PointD3.createFromProduct( dt / 6, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( a.velocity, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( edu.cmu.cs.dennisc.math.PointD3.createFromProduct( 2.0, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( b.velocity, c.velocity ) ), d.velocity ) ) ) );
+    m_translation.add(Vector3.createMultiplication(Vector3.createAddition(a.velocity, Vector3.createAddition(Vector3.createMultiplication(Vector3.createAddition(b.velocity, c.velocity), 2.0), d.velocity)), dt / 6));
+    m_momentum.add(Vector3.createMultiplication(Vector3.createAddition(a.force, Vector3.createAddition(Vector3.createMultiplication(Vector3.createAddition(b.force, c.force), 2.0), d.force)), dt / 6));
+  }
 
-	@Override
-	public void update() {
-		Vector3.setReturnValueToMultiplication( m_velocity, m_momentum, m_inverseMass );
-	}
+  @Override
+  public void update() {
+    Vector3.setReturnValueToMultiplication(m_velocity, m_momentum, m_inverseMass);
+  }
 }

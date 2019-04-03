@@ -50,15 +50,15 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  * @author Dennis Cosgrove
  */
 public class ApplyRotationAboutZAxisAnimation extends AbstractApplyRotationAnimation {
-	public ApplyRotationAboutZAxisAnimation() {
-	}
+  public ApplyRotationAboutZAxisAnimation() {
+  }
 
-	public ApplyRotationAboutZAxisAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Angle angle ) {
-		super( sgSubject, sgAsSeenBy, angle );
-	}
+  public ApplyRotationAboutZAxisAnimation(AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Angle angle) {
+    super(sgSubject, sgAsSeenBy, angle);
+  }
 
-	@Override
-	protected void applyRotationInRadians( double angleInRadians ) {
-		getSubject().applyRotationAboutZAxisInRadians( angleInRadians, getAsSeenBy() );
-	}
+  @Override
+  protected void applyRotationInRadians(double angleInRadians) {
+    getSubject().applyRotationAboutZAxisInRadians(angleInRadians, getAsSeenBy());
+  }
 }

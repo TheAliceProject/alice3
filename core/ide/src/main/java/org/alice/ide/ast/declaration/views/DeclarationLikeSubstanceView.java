@@ -66,93 +66,88 @@ import javax.swing.SwingUtilities;
  * @author Dennis Cosgrove
  */
 public abstract class DeclarationLikeSubstanceView extends PanelWithPreview {
-	private TextField nameTextField;
+  private TextField nameTextField;
 
-	public DeclarationLikeSubstanceView( DeclarationLikeSubstanceComposite<?> composite ) {
-		super( composite );
-		this.setMinimumPreferredWidth( 480 );
-	}
+  public DeclarationLikeSubstanceView(DeclarationLikeSubstanceComposite<?> composite) {
+    super(composite);
+    this.setMinimumPreferredWidth(480);
+  }
 
-	public void handleInitializerChanged( Expression expression ) {
-	}
+  public void handleInitializerChanged(Expression expression) {
+  }
 
-	protected SwingComponentView<?> createPageStartComponent() {
-		final DeclarationLikeSubstanceComposite<?> composite = (DeclarationLikeSubstanceComposite<?>)this.getComposite();
-		MigPanel rv = new MigPanel( null, "", "[align right]12[]24[]" );
-		AstI18nFactory factory = PreviewAstI18nFactory.getInstance();
+  protected SwingComponentView<?> createPageStartComponent() {
+    final DeclarationLikeSubstanceComposite<?> composite = (DeclarationLikeSubstanceComposite<?>) this.getComposite();
+    MigPanel rv = new MigPanel(null, "", "[align right]12[]24[]");
+    AstI18nFactory factory = PreviewAstI18nFactory.getInstance();
 
-		BooleanState isFinalState = composite.getIsFinalState();
-		if( isFinalState != null ) {
-			rv.addComponent( isFinalState.getSidekickLabel().createLabel() );
-			rv.addComponent( isFinalState.createVerticalRadioButtons( false ), "wrap" );
-		}
+    BooleanState isFinalState = composite.getIsFinalState();
+    if (isFinalState != null) {
+      rv.addComponent(isFinalState.getSidekickLabel().createLabel());
+      rv.addComponent(isFinalState.createVerticalRadioButtons(false), "wrap");
+    }
 
-		if( composite.isValueComponentTypeDisplayed() ) {
-			CustomItemState<AbstractType> valueComponentTypeState = composite.getValueComponentTypeState();
-			BooleanState valueIsArrayTypeState = composite.getValueIsArrayTypeState();
-			if( valueComponentTypeState != null ) {
-				SwingComponentView<?> component;
-				if( valueComponentTypeState.isEnabled() ) {
-					TypeDropDown typeDropDown = new TypeDropDown( valueComponentTypeState );
-					if( composite.isValueIsArrayTypeStateDisplayed() ) {
-						component = new BorderPanel.Builder()
-								.center( typeDropDown )
-								.lineEnd( valueIsArrayTypeState.createCheckBox() )
-								.build();
-					} else {
-						component = typeDropDown;
-					}
-				} else {
-					component = new TypeView( valueComponentTypeState, valueIsArrayTypeState.getValue() );
-				}
-				rv.addComponent( valueComponentTypeState.getSidekickLabel().createLabel() );
-				rv.addComponent( component, "wrap" );
-			}
-		}
+    if (composite.isValueComponentTypeDisplayed()) {
+      CustomItemState<AbstractType> valueComponentTypeState = composite.getValueComponentTypeState();
+      BooleanState valueIsArrayTypeState = composite.getValueIsArrayTypeState();
+      if (valueComponentTypeState != null) {
+        SwingComponentView<?> component;
+        if (valueComponentTypeState.isEnabled()) {
+          TypeDropDown typeDropDown = new TypeDropDown(valueComponentTypeState);
+          if (composite.isValueIsArrayTypeStateDisplayed()) {
+            component = new BorderPanel.Builder().center(typeDropDown).lineEnd(valueIsArrayTypeState.createCheckBox()).build();
+          } else {
+            component = typeDropDown;
+          }
+        } else {
+          component = new TypeView(valueComponentTypeState, valueIsArrayTypeState.getValue());
+        }
+        rv.addComponent(valueComponentTypeState.getSidekickLabel().createLabel());
+        rv.addComponent(component, "wrap");
+      }
+    }
 
-		StringState nameState = composite.getNameState();
-		if( nameState != null ) {
-			nameTextField = nameState.createTextField();
-			nameTextField.enableSelectAllWhenFocusGained();
-			nameTextField.getAwtComponent().setColumns( 24 );
-			rv.addComponent( nameState.getSidekickLabel().createLabel() );
-			rv.addComponent( nameTextField, "wrap" );
-		}
+    StringState nameState = composite.getNameState();
+    if (nameState != null) {
+      nameTextField = nameState.createTextField();
+      nameTextField.enableSelectAllWhenFocusGained();
+      nameTextField.getAwtComponent().setColumns(24);
+      rv.addComponent(nameState.getSidekickLabel().createLabel());
+      rv.addComponent(nameTextField, "wrap");
+    }
 
-		if( composite.isInitializerDisplayed() ) {
-			CustomItemState<Expression> initializerState = composite.getInitializerState();
-			if( initializerState != null ) {
-				SwingComponentView<?> component;
-				if( initializerState.isEnabled() ) {
-					component = new ExpressionDropDown( initializerState, factory );
-				} else {
-					component = new ExpressionStateView( initializerState, factory );
-				}
-				rv.addComponent( initializerState.getSidekickLabel().createLabel() );
-				rv.addComponent( component, "wrap" );
-			}
-		}
-		return rv;
-	}
+    if (composite.isInitializerDisplayed()) {
+      CustomItemState<Expression> initializerState = composite.getInitializerState();
+      if (initializerState != null) {
+        SwingComponentView<?> component;
+        if (initializerState.isEnabled()) {
+          component = new ExpressionDropDown(initializerState, factory);
+        } else {
+          component = new ExpressionStateView(initializerState, factory);
+        }
+        rv.addComponent(initializerState.getSidekickLabel().createLabel());
+        rv.addComponent(component, "wrap");
+      }
+    }
+    return rv;
+  }
 
-	@Override
-	protected BorderPanel createMainComponent() {
-		return new BorderPanel.Builder()
-				.pageStart( this.createPageStartComponent() )
-				.build();
+  @Override
+  protected BorderPanel createMainComponent() {
+    return new BorderPanel.Builder().pageStart(this.createPageStartComponent()).build();
 
-	}
+  }
 
-	@Override
-	public void handleCompositePreActivation() {
-		super.handleCompositePreActivation();
-		if( this.nameTextField != null ) {
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					nameTextField.requestFocus();
-				}
-			} );
-		}
-	}
+  @Override
+  public void handleCompositePreActivation() {
+    super.handleCompositePreActivation();
+    if (this.nameTextField != null) {
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          nameTextField.requestFocus();
+        }
+      });
+    }
+  }
 }

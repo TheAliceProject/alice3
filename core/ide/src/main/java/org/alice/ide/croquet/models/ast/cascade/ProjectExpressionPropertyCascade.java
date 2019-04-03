@@ -54,7 +54,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ProjectExpressionPropertyCascade extends ExpressionPropertyCascade {
-	public ProjectExpressionPropertyCascade( UUID id, ExpressionProperty expressionProperty, CascadeBlank<Expression>... blanks ) {
-		super( Application.PROJECT_GROUP, id, expressionProperty, blanks );
-	}
+  public ProjectExpressionPropertyCascade(UUID id, ExpressionProperty expressionProperty, CascadeBlank<Expression>... blanks) {
+    super(Application.PROJECT_GROUP, id, expressionProperty, blanks);
+  }
 }

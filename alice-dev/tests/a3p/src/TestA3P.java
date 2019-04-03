@@ -41,25 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class TestA3P {
-	public static void main( String[] args ) throws Exception {
-		String path = args.length > 0 ? args[ 0 ] : new java.io.File( org.alice.ide.croquet.models.ui.preferences.UserProjectsDirectoryState.getInstance().getDirectoryEnsuringExistance(), "a.a3p" ).getAbsolutePath();
-		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( path );
-		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
-		org.lgna.project.ast.UserMethod mainMethod = programType.getDeclaredMethod( "main", String[].class );
+  public static void main(String[] args) throws Exception {
+    String path = args.length > 0 ? args[0] : new java.io.File(org.alice.ide.croquet.models.ui.preferences.UserProjectsDirectoryState.getInstance().getDirectoryEnsuringExistance(), "a.a3p").getAbsolutePath();
+    org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject(path);
+    org.lgna.project.ast.NamedUserType programType = project.getProgramType();
+    org.lgna.project.ast.UserMethod mainMethod = programType.getDeclaredMethod("main", String[].class);
 
-		org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+    org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 
-		vm.registerAbstractClassAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
-		vm.registerAbstractClassAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
-		vm.registerProtectedMethodAdapter(
-				edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( org.lgna.story.SJointedModel.class, "setJointedModelResource", org.lgna.story.resources.JointedModelResource.class ),
-				edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( org.lgna.story.EmployeesOnly.class, "invokeSetJointedModelResource", org.lgna.story.SJointedModel.class, org.lgna.story.resources.JointedModelResource.class ) );
-		
-		vm.ENTRY_POINT_invoke( null, mainMethod, ((Object)args) );
-	}
+    vm.registerAbstractClassAdapter(org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class);
+    vm.registerAbstractClassAdapter(org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class);
+    vm.registerProtectedMethodAdapter(edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod(org.lgna.story.SJointedModel.class, "setJointedModelResource", org.lgna.story.resources.JointedModelResource.class), edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod(org.lgna.story.EmployeesOnly.class, "invokeSetJointedModelResource", org.lgna.story.SJointedModel.class, org.lgna.story.resources.JointedModelResource.class));
+
+    vm.ENTRY_POINT_invoke(null, mainMethod, ((Object) args));
+  }
 }

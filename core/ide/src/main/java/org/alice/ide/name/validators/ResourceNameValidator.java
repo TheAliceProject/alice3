@@ -50,31 +50,31 @@ import org.lgna.project.Project;
 import org.lgna.project.ast.StaticAnalysisUtilities;
 
 public class ResourceNameValidator extends NameValidator {
-	private Resource resource;
+  private Resource resource;
 
-	public Resource getResource() {
-		return this.resource;
-	}
+  public Resource getResource() {
+    return this.resource;
+  }
 
-	public void setResource( Resource resource ) {
-		this.resource = resource;
-	}
+  public void setResource(Resource resource) {
+    this.resource = resource;
+  }
 
-	@Override
-	public boolean isNameAvailable( String name ) {
-		if( this.resource != null ) {
-			IDE ide = IDE.getActiveInstance();
-			if( ide != null ) {
-				Project project = ide.getProject();
-				return StaticAnalysisUtilities.isAvailableResourceName( project, name, this.resource );
-			}
-		}
-		return true;
-	}
+  @Override
+  public boolean isNameAvailable(String name) {
+    if (this.resource != null) {
+      IDE ide = IDE.getActiveInstance();
+      if (ide != null) {
+        Project project = ide.getProject();
+        return StaticAnalysisUtilities.isAvailableResourceName(project, name, this.resource);
+      }
+    }
+    return true;
+  }
 
-	@Override
-	public boolean isNameValid( String name ) {
-		//todo?
-		return true;
-	}
+  @Override
+  public boolean isNameValid(String name) {
+    //todo?
+    return true;
+  }
 }

@@ -56,30 +56,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class AddConeManagedFieldComposite extends AddModelManagedFieldComposite {
-	private static class SingletonHolder {
-		private static AddConeManagedFieldComposite instance = new AddConeManagedFieldComposite();
-	}
+  private static class SingletonHolder {
+    private static AddConeManagedFieldComposite instance = new AddConeManagedFieldComposite();
+  }
 
-	public static AddConeManagedFieldComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddConeManagedFieldComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final CustomItemState<Expression> baseRadiusState = this.createInitialPropertyValueExpressionState( "baseRadiusState", 0.5, SCone.class, "setBaseRadius", Number.class, SetBaseRadius.Detail[].class );
-	private final CustomItemState<Expression> lengthState = this.createInitialPropertyValueExpressionState( "lengthState", 1.0, SCone.class, "setLength", Number.class, SetLength.Detail[].class );
+  private final CustomItemState<Expression> baseRadiusState = this.createInitialPropertyValueExpressionState("baseRadiusState", 0.5, SCone.class, "setBaseRadius", Number.class, SetBaseRadius.Detail[].class);
+  private final CustomItemState<Expression> lengthState = this.createInitialPropertyValueExpressionState("lengthState", 1.0, SCone.class, "setLength", Number.class, SetLength.Detail[].class);
 
-	private AddConeManagedFieldComposite() {
-		super( UUID.fromString( "c3df5655-242d-4580-aeb9-b1b0e23f7e00" ), SCone.class );
-	}
+  private AddConeManagedFieldComposite() {
+    super(UUID.fromString("c3df5655-242d-4580-aeb9-b1b0e23f7e00"), SCone.class);
+  }
 
-	@Override protected ShapeDragModel getDragModel() {
-		return ConeDragModel.getInstance();
-	}
+  @Override
+  protected ShapeDragModel getDragModel() {
+    return ConeDragModel.getInstance();
+  }
 
-	public CustomItemState<Expression> getBaseRadiusState() {
-		return this.baseRadiusState;
-	}
+  public CustomItemState<Expression> getBaseRadiusState() {
+    return this.baseRadiusState;
+  }
 
-	public CustomItemState<Expression> getLengthState() {
-		return this.lengthState;
-	}
+  public CustomItemState<Expression> getLengthState() {
+    return this.lengthState;
+  }
 }

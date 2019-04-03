@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,58 +34,46 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum RibCageResource implements PropResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, RibCageResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId SPINE_BASE = new JointId( ROOT, RibCageResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId SPINE_MIDDLE = new JointId( SPINE_BASE, RibCageResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId SPINE_UPPER = new JointId( SPINE_MIDDLE, RibCageResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId NECK = new JointId( SPINE_UPPER, RibCageResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId HEAD = new JointId( NECK, RibCageResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_CLAVICLE = new JointId( SPINE_UPPER, RibCageResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_SHOULDER = new JointId( LEFT_CLAVICLE, RibCageResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_CLAVICLE = new JointId( SPINE_UPPER, RibCageResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_SHOULDER = new JointId( RIGHT_CLAVICLE, RibCageResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId PELVIS_LOWER_BODY = new JointId( ROOT, RibCageResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_HIP = new JointId( PELVIS_LOWER_BODY, RibCageResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_HIP = new JointId( PELVIS_LOWER_BODY, RibCageResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, RibCageResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId SPINE_BASE = new JointId(ROOT, RibCageResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId SPINE_MIDDLE = new JointId(SPINE_BASE, RibCageResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId SPINE_UPPER = new JointId(SPINE_MIDDLE, RibCageResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId NECK = new JointId(SPINE_UPPER, RibCageResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId HEAD = new JointId(NECK, RibCageResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_CLAVICLE = new JointId(SPINE_UPPER, RibCageResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_SHOULDER = new JointId(LEFT_CLAVICLE, RibCageResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_CLAVICLE = new JointId(SPINE_UPPER, RibCageResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_SHOULDER = new JointId(RIGHT_CLAVICLE, RibCageResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId PELVIS_LOWER_BODY = new JointId(ROOT, RibCageResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_HIP = new JointId(PELVIS_LOWER_BODY, RibCageResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_HIP = new JointId(PELVIS_LOWER_BODY, RibCageResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	RibCageResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	RibCageResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  RibCageResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return RibCageResource.JOINT_ID_ROOTS;
-	}
+  RibCageResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return RibCageResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

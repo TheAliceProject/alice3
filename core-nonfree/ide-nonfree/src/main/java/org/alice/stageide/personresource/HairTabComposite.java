@@ -58,38 +58,38 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class HairTabComposite extends SimpleTabComposite<HairTabView> {
-	private final HairColorNameListData hairColorNameData = new HairColorNameListData();
-	private final RefreshableDataSingleSelectListState<HairColorName> hairColorNameState = this.createRefreshableListState( "hairColorNameState", this.hairColorNameData, -1 );
-	private final HairHatStyleListData hairHatStyleListData = new HairHatStyleListData();
-	private final RefreshableDataSingleSelectListState<HairHatStyle> hairHatStyleState = this.createRefreshableListState( "hairHatStyleState", this.hairHatStyleListData, -1 );
+  private final HairColorNameListData hairColorNameData = new HairColorNameListData();
+  private final RefreshableDataSingleSelectListState<HairColorName> hairColorNameState = this.createRefreshableListState("hairColorNameState", this.hairColorNameData, -1);
+  private final HairHatStyleListData hairHatStyleListData = new HairHatStyleListData();
+  private final RefreshableDataSingleSelectListState<HairHatStyle> hairHatStyleState = this.createRefreshableListState("hairHatStyleState", this.hairHatStyleListData, -1);
 
-	public HairTabComposite() {
-		super( UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), IsCloseable.FALSE );
-	}
+  public HairTabComposite() {
+    super(UUID.fromString("1e1d604d-974f-4666-91e0-ccf5adec0e4d"), IsCloseable.FALSE);
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	@Override
-	protected HairTabView createView() {
-		return new HairTabView( this );
-	}
+  @Override
+  protected HairTabView createView() {
+    return new HairTabView(this);
+  }
 
-	public HairColorNameListData getHairColorNameData() {
-		return this.hairColorNameData;
-	}
+  public HairColorNameListData getHairColorNameData() {
+    return this.hairColorNameData;
+  }
 
-	public RefreshableDataSingleSelectListState<HairColorName> getHairColorNameState() {
-		return this.hairColorNameState;
-	}
+  public RefreshableDataSingleSelectListState<HairColorName> getHairColorNameState() {
+    return this.hairColorNameState;
+  }
 
-	public HairHatStyleListData getHairHatStyleListData() {
-		return this.hairHatStyleListData;
-	}
+  public HairHatStyleListData getHairHatStyleListData() {
+    return this.hairHatStyleListData;
+  }
 
-	public RefreshableDataSingleSelectListState<HairHatStyle> getHairHatStyleState() {
-		return this.hairHatStyleState;
-	}
-};
+  public RefreshableDataSingleSelectListState<HairHatStyle> getHairHatStyleState() {
+    return this.hairHatStyleState;
+  }
+}

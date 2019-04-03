@@ -63,51 +63,51 @@ import java.awt.image.BufferedImage;
  * @author Dennis Cosgrove
  */
 public class ResourceRenamePanel extends RenamePanel {
-	private static final int SIZE = 128;
-	private final BorderPanel centerPanel = new BorderPanel();
-	private final ImageView imageView = new ImageView();
-	private Player audioPlayer = null;
+  private static final int SIZE = 128;
+  private final BorderPanel centerPanel = new BorderPanel();
+  private final ImageView imageView = new ImageView();
+  private Player audioPlayer = null;
 
-	public ResourceRenamePanel( RenameResourceComposite composite ) {
-		super( composite );
-		this.centerPanel.setMinimumPreferredHeight( SIZE );
-		this.centerPanel.setBorder( BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
-		this.addCenterComponent( this.centerPanel );
-	}
+  public ResourceRenamePanel(RenameResourceComposite composite) {
+    super(composite);
+    this.centerPanel.setMinimumPreferredHeight(SIZE);
+    this.centerPanel.setBorder(BorderFactory.createEmptyBorder(8, 0, 0, 0));
+    this.addCenterComponent(this.centerPanel);
+  }
 
-	public void setResource( Resource resource ) {
-		if( this.audioPlayer != null ) {
-			this.audioPlayer.stop();
-			this.audioPlayer = null;
-		}
-		this.centerPanel.forgetAndRemoveAllComponents();
-		Component awtComponent;
-		String constraint;
-		if( resource instanceof ImageResource ) {
-			ImageResource imageResource = (ImageResource)resource;
-			BufferedImage bufferedImage = ImageFactory.getBufferedImage( imageResource );
-			imageView.setImage( bufferedImage );
-			awtComponent = imageView.getAwtComponent();
-			constraint = BorderLayout.CENTER;
-		} else if( resource instanceof AudioResource ) {
-			AudioResource audioResource = (AudioResource)resource;
-			Player player = MediaFactory.getSingleton().createPlayer( audioResource );
-			awtComponent = player.getControlPanelComponent();
-			constraint = BorderLayout.PAGE_START;
-			this.audioPlayer = player;
-		} else {
-			awtComponent = null;
-			constraint = null;
-		}
-		if( awtComponent != null ) {
-			this.centerPanel.getAwtComponent().add( awtComponent, constraint );
-		}
-	}
+  public void setResource(Resource resource) {
+    if (this.audioPlayer != null) {
+      this.audioPlayer.stop();
+      this.audioPlayer = null;
+    }
+    this.centerPanel.forgetAndRemoveAllComponents();
+    Component awtComponent;
+    String constraint;
+    if (resource instanceof ImageResource) {
+      ImageResource imageResource = (ImageResource) resource;
+      BufferedImage bufferedImage = ImageFactory.getBufferedImage(imageResource);
+      imageView.setImage(bufferedImage);
+      awtComponent = imageView.getAwtComponent();
+      constraint = BorderLayout.CENTER;
+    } else if (resource instanceof AudioResource) {
+      AudioResource audioResource = (AudioResource) resource;
+      Player player = MediaFactory.getSingleton().createPlayer(audioResource);
+      awtComponent = player.getControlPanelComponent();
+      constraint = BorderLayout.PAGE_START;
+      this.audioPlayer = player;
+    } else {
+      awtComponent = null;
+      constraint = null;
+    }
+    if (awtComponent != null) {
+      this.centerPanel.getAwtComponent().add(awtComponent, constraint);
+    }
+  }
 
-	public void onHide() {
-		if( this.audioPlayer != null ) {
-			this.audioPlayer.stop();
-			this.audioPlayer = null;
-		}
-	}
+  public void onHide() {
+    if (this.audioPlayer != null) {
+      this.audioPlayer.stop();
+      this.audioPlayer = null;
+    }
+  }
 }

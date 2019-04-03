@@ -76,228 +76,228 @@ import java.awt.event.KeyEvent;
  */
 public abstract class MutableList<E> extends SwingComponentView<JPanel> {
 
-	private class MutableListLayout implements LayoutManager {
-		@Override
-		public void addLayoutComponent( String name, Component comp ) {
-		}
+  private class MutableListLayout implements LayoutManager {
+    @Override
+    public void addLayoutComponent(String name, Component comp) {
+    }
 
-		@Override
-		public void removeLayoutComponent( Component comp ) {
-		}
+    @Override
+    public void removeLayoutComponent(Component comp) {
+    }
 
-		@Override
-		public Dimension minimumLayoutSize( Container parent ) {
-			return new Dimension( 0, 0 );
-		}
+    @Override
+    public Dimension minimumLayoutSize(Container parent) {
+      return new Dimension(0, 0);
+    }
 
-		@Override
-		public Dimension preferredLayoutSize( Container parent ) {
-			final int M = data.getItemCount();
-			Dimension rv = new Dimension( 0, 0 );
-			for( int i = 0; i < M; i++ ) {
-				Component componentI = parent.getComponent( i );
-				Dimension size = componentI.getPreferredSize();
-				rv.width = Math.max( rv.width, size.width );
-				rv.height += size.height;
-			}
-			return rv;
-		}
+    @Override
+    public Dimension preferredLayoutSize(Container parent) {
+      final int M = data.getItemCount();
+      Dimension rv = new Dimension(0, 0);
+      for (int i = 0; i < M; i++) {
+        Component componentI = parent.getComponent(i);
+        Dimension size = componentI.getPreferredSize();
+        rv.width = Math.max(rv.width, size.width);
+        rv.height += size.height;
+      }
+      return rv;
+    }
 
-		@Override
-		public void layoutContainer( Container parent ) {
-			Dimension parentSize = parent.getSize();
-			int y = 0;
-			final int N = parent.getComponentCount();
-			final int M = data.getItemCount();
-			for( int i = 0; i < M; i++ ) {
-				Component componentI = parent.getComponent( i );
-				componentI.setLocation( 0, y );
-				int height = componentI.getPreferredSize().height;
-				componentI.setSize( parentSize.width, height );
-				y += height;
-			}
-			for( int i = M; i < N; i++ ) {
-				Component componentI = parent.getComponent( i );
-				componentI.setSize( 0, 0 );
-			}
-		}
-	}
+    @Override
+    public void layoutContainer(Container parent) {
+      Dimension parentSize = parent.getSize();
+      int y = 0;
+      final int N = parent.getComponentCount();
+      final int M = data.getItemCount();
+      for (int i = 0; i < M; i++) {
+        Component componentI = parent.getComponent(i);
+        componentI.setLocation(0, y);
+        int height = componentI.getPreferredSize().height;
+        componentI.setSize(parentSize.width, height);
+        y += height;
+      }
+      for (int i = M; i < N; i++) {
+        Component componentI = parent.getComponent(i);
+        componentI.setSize(0, 0);
+      }
+    }
+  }
 
-	private static Color BASE_COLOR = new Color( 221, 221, 255 );
-	private static Color HIGHLIGHT_COLOR = BASE_COLOR.brighter();
+  private static Color BASE_COLOR = new Color(221, 221, 255);
+  private static Color HIGHLIGHT_COLOR = BASE_COLOR.brighter();
 
-	private static Color SELECTED_BASE_COLOR = new Color( 57, 105, 138 );
-	private static Color SELECTED_HIGHLIGHT_COLOR = SELECTED_BASE_COLOR.brighter();
+  private static Color SELECTED_BASE_COLOR = new Color(57, 105, 138);
+  private static Color SELECTED_HIGHLIGHT_COLOR = SELECTED_BASE_COLOR.brighter();
 
-	protected abstract class JItemAtIndexButton extends JToggleButton {
-		public JItemAtIndexButton() {
-			this.setOpaque( false );
-			this.setBorder( BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
-			this.setLayout( new BorderLayout() );
-			this.setRolloverEnabled( true );
-		}
+  protected abstract class JItemAtIndexButton extends JToggleButton {
+    public JItemAtIndexButton() {
+      this.setOpaque(false);
+      this.setBorder(BorderFactory.createEmptyBorder(4, 14, 4, 4));
+      this.setLayout(new BorderLayout());
+      this.setRolloverEnabled(true);
+    }
 
-		public abstract void update();
+    public abstract void update();
 
-		@Override
-		public void updateUI() {
-			this.setUI( new BasicButtonUI() );
-		}
+    @Override
+    public void updateUI() {
+      this.setUI(new BasicButtonUI());
+    }
 
-		@Override
-		protected void paintComponent( Graphics g ) {
-			//super.paintComponent( g );
-			ButtonModel model = this.getModel();
-			Paint paint;
-			int width = this.getWidth() - 1;
-			int height = this.getHeight() - 1;
-			if( model.isSelected() ) {
-				if( model.isRollover() ) {
-					paint = new GradientPaint( 0, 0, SELECTED_HIGHLIGHT_COLOR, 0, height, SELECTED_BASE_COLOR );
-				} else {
-					paint = SELECTED_BASE_COLOR;
-				}
-			} else {
-				if( model.isRollover() ) {
-					paint = new GradientPaint( 0, 0, HIGHLIGHT_COLOR, 0, height, BASE_COLOR );
-				} else {
-					paint = BASE_COLOR;
-				}
-			}
-			Graphics2D g2 = (Graphics2D)g;
-			if( paint != null ) {
-				Object prevAntialiasing = g2.getRenderingHint( RenderingHints.KEY_ANTIALIASING );
-				g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+    @Override
+    protected void paintComponent(Graphics g) {
+      //super.paintComponent( g );
+      ButtonModel model = this.getModel();
+      Paint paint;
+      int width = this.getWidth() - 1;
+      int height = this.getHeight() - 1;
+      if (model.isSelected()) {
+        if (model.isRollover()) {
+          paint = new GradientPaint(0, 0, SELECTED_HIGHLIGHT_COLOR, 0, height, SELECTED_BASE_COLOR);
+        } else {
+          paint = SELECTED_BASE_COLOR;
+        }
+      } else {
+        if (model.isRollover()) {
+          paint = new GradientPaint(0, 0, HIGHLIGHT_COLOR, 0, height, BASE_COLOR);
+        } else {
+          paint = BASE_COLOR;
+        }
+      }
+      Graphics2D g2 = (Graphics2D) g;
+      if (paint != null) {
+        Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-				g2.setPaint( paint );
-				g2.fillRoundRect( 0, 0, width, height, 8, 8 );
-				g2.setPaint( Color.DARK_GRAY );
-				g2.drawRoundRect( 0, 0, width, height, 8, 8 );
-				if( model.isRollover() ) {
-					paint = Color.LIGHT_GRAY;
-				} else {
-					paint = Color.GRAY;
-				}
-				g2.setPaint( paint );
-				KnurlUtilities.paintKnurl5( g, 2, 2, 6, height - 5 );
+        g2.setPaint(paint);
+        g2.fillRoundRect(0, 0, width, height, 8, 8);
+        g2.setPaint(Color.DARK_GRAY);
+        g2.drawRoundRect(0, 0, width, height, 8, 8);
+        if (model.isRollover()) {
+          paint = Color.LIGHT_GRAY;
+        } else {
+          paint = Color.GRAY;
+        }
+        g2.setPaint(paint);
+        KnurlUtilities.paintKnurl5(g, 2, 2, 6, height - 5);
 
-				g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-			} else {
-				//						g2.setPaint( MutableList.this.getUnselectedBackgroundColor() );
-				//						g.clearRect( 0, 0, width, height );
-			}
-		}
-	}
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing);
+      } else {
+        //          g2.setPaint( MutableList.this.getUnselectedBackgroundColor() );
+        //          g.clearRect( 0, 0, width, height );
+      }
+    }
+  }
 
-	private final MutableListData<E> data;
-	private final java.util.List<JItemAtIndexButton> jButtons = Lists.newCopyOnWriteArrayList();
-	private final ClearableButtonGroup buttonGroup = new ClearableButtonGroup();
-	private final ListDataListener listDataListener = new ListDataListener() {
-		@Override
-		public void intervalAdded( ListDataEvent e ) {
-			MutableList.this.handleListDataChanged();
-		}
+  private final MutableListData<E> data;
+  private final java.util.List<JItemAtIndexButton> jButtons = Lists.newCopyOnWriteArrayList();
+  private final ClearableButtonGroup buttonGroup = new ClearableButtonGroup();
+  private final ListDataListener listDataListener = new ListDataListener() {
+    @Override
+    public void intervalAdded(ListDataEvent e) {
+      MutableList.this.handleListDataChanged();
+    }
 
-		@Override
-		public void intervalRemoved( ListDataEvent e ) {
-			MutableList.this.handleListDataChanged();
-		}
+    @Override
+    public void intervalRemoved(ListDataEvent e) {
+      MutableList.this.handleListDataChanged();
+    }
 
-		@Override
-		public void contentsChanged( ListDataEvent e ) {
-			MutableList.this.handleListDataChanged();
-		}
-	};
+    @Override
+    public void contentsChanged(ListDataEvent e) {
+      MutableList.this.handleListDataChanged();
+    }
+  };
 
-	public MutableList( MutableListData<E> data ) {
-		this.data = data;
-		this.data.addListener( this.listDataListener );
-		this.handleListDataChanged();
-	}
+  public MutableList(MutableListData<E> data) {
+    this.data = data;
+    this.data.addListener(this.listDataListener);
+    this.handleListDataChanged();
+  }
 
-	public MutableListData<E> getData() {
-		return this.data;
-	}
+  public MutableListData<E> getData() {
+    return this.data;
+  }
 
-	public void clearSelection() {
-		this.buttonGroup.clearSelectedModel();
-	}
+  public void clearSelection() {
+    this.buttonGroup.clearSelectedModel();
+  }
 
-	protected abstract JItemAtIndexButton createJItemAtIndexButton( int index );
+  protected abstract JItemAtIndexButton createJItemAtIndexButton(int index);
 
-	private void createAndAddJButton( int index ) {
-		JItemAtIndexButton jButton = this.createJItemAtIndexButton( index );
-		jButton.setFocusable( true );
-		this.getAwtComponent().add( jButton );
-		this.jButtons.add( jButton );
-		this.buttonGroup.add( jButton );
-	}
+  private void createAndAddJButton(int index) {
+    JItemAtIndexButton jButton = this.createJItemAtIndexButton(index);
+    jButton.setFocusable(true);
+    this.getAwtComponent().add(jButton);
+    this.jButtons.add(jButton);
+    this.buttonGroup.add(jButton);
+  }
 
-	private void handleListDataChanged() {
-		synchronized( this.data ) {
-			final int N = data.getItemCount();
-			synchronized( this.getTreeLock() ) {
-				for( int i = this.jButtons.size(); i < N; i++ ) {
-					this.createAndAddJButton( i );
-				}
-				for( JItemAtIndexButton jButton : this.jButtons ) {
-					jButton.update();
-				}
-			}
-		}
-		this.clearSelection();
-		this.revalidateAndRepaint();
-	}
+  private void handleListDataChanged() {
+    synchronized (this.data) {
+      final int N = data.getItemCount();
+      synchronized (this.getTreeLock()) {
+        for (int i = this.jButtons.size(); i < N; i++) {
+          this.createAndAddJButton(i);
+        }
+        for (JItemAtIndexButton jButton : this.jButtons) {
+          jButton.update();
+        }
+      }
+    }
+    this.clearSelection();
+    this.revalidateAndRepaint();
+  }
 
-	@Override
-	protected JPanel createAwtComponent() {
-		JPanel rv = new JPanel();
-		rv.setLayout( new MutableListLayout() );
-		return rv;
-	}
+  @Override
+  protected JPanel createAwtComponent() {
+    JPanel rv = new JPanel();
+    rv.setLayout(new MutableListLayout());
+    return rv;
+  }
 
-	private static final KeyStroke DELETE_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_DELETE, 0 );
-	private static final KeyStroke BACK_SPACE_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_BACK_SPACE, 0 );
-	//note: ups/downs do not seem to work
-	private static final KeyStroke UP_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_UP, 0 );
-	private static final KeyStroke KEYPAD_UP_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_KP_UP, 0 );
-	private static final KeyStroke DOWN_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_DOWN, 0 );
-	private static final KeyStroke KEYPAD_DOWN_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_KP_DOWN, 0 );
-	private final ActionListener removeSelectedListener = new ActionListener() {
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			System.out.println( "removeSelectedItem" );
-			//MutableList.this.removeSelectedItem();
-		}
-	};
-	private final ActionListener moveSelectionUpListener = new ActionListener() {
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			System.out.println( "moveSelectionUp" );
-		}
-	};
-	private final ActionListener moveSelectionDownListener = new ActionListener() {
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			System.out.println( "moveSelectionDown" );
-		}
-	};
+  private static final KeyStroke DELETE_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
+  private static final KeyStroke BACK_SPACE_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0);
+  //note: ups/downs do not seem to work
+  private static final KeyStroke UP_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0);
+  private static final KeyStroke KEYPAD_UP_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0);
+  private static final KeyStroke DOWN_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
+  private static final KeyStroke KEYPAD_DOWN_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0);
+  private final ActionListener removeSelectedListener = new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      System.out.println("removeSelectedItem");
+      //MutableList.this.removeSelectedItem();
+    }
+  };
+  private final ActionListener moveSelectionUpListener = new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      System.out.println("moveSelectionUp");
+    }
+  };
+  private final ActionListener moveSelectionDownListener = new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      System.out.println("moveSelectionDown");
+    }
+  };
 
-	public void registerKeyboardActions() {
-		this.registerKeyboardAction( this.removeSelectedListener, DELETE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
-		this.registerKeyboardAction( this.removeSelectedListener, BACK_SPACE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
-		this.registerKeyboardAction( this.moveSelectionUpListener, UP_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
-		this.registerKeyboardAction( this.moveSelectionUpListener, KEYPAD_UP_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
-		this.registerKeyboardAction( this.moveSelectionDownListener, DOWN_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
-		this.registerKeyboardAction( this.moveSelectionDownListener, KEYPAD_DOWN_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
-	}
+  public void registerKeyboardActions() {
+    this.registerKeyboardAction(this.removeSelectedListener, DELETE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW);
+    this.registerKeyboardAction(this.removeSelectedListener, BACK_SPACE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW);
+    this.registerKeyboardAction(this.moveSelectionUpListener, UP_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW);
+    this.registerKeyboardAction(this.moveSelectionUpListener, KEYPAD_UP_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW);
+    this.registerKeyboardAction(this.moveSelectionDownListener, DOWN_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW);
+    this.registerKeyboardAction(this.moveSelectionDownListener, KEYPAD_DOWN_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW);
+  }
 
-	public void unregisterKeyboardActions() {
-		this.unregisterKeyboardAction( KEYPAD_DOWN_KEY_STROKE );
-		this.unregisterKeyboardAction( DOWN_KEY_STROKE );
-		this.unregisterKeyboardAction( KEYPAD_UP_KEY_STROKE );
-		this.unregisterKeyboardAction( UP_KEY_STROKE );
-		this.unregisterKeyboardAction( BACK_SPACE_KEY_STROKE );
-		this.unregisterKeyboardAction( DELETE_KEY_STROKE );
-	}
+  public void unregisterKeyboardActions() {
+    this.unregisterKeyboardAction(KEYPAD_DOWN_KEY_STROKE);
+    this.unregisterKeyboardAction(DOWN_KEY_STROKE);
+    this.unregisterKeyboardAction(KEYPAD_UP_KEY_STROKE);
+    this.unregisterKeyboardAction(UP_KEY_STROKE);
+    this.unregisterKeyboardAction(BACK_SPACE_KEY_STROKE);
+    this.unregisterKeyboardAction(DELETE_KEY_STROKE);
+  }
 }

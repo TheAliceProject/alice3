@@ -58,199 +58,199 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class State<T> extends AbstractCompletionModel {
-	// These are "Old School" listeners and are being replaced by the "New School" org.lgna.croquet.event.ValueListener
-	public interface ValueListener<T> {
-		void changing( State<T> state, T prevValue, T nextValue );
-		void changed( State<T> state, T prevValue, T nextValue );
-	};
+  // These are "Old School" listeners and are being replaced by the "New School" org.lgna.croquet.event.ValueListener
+  public interface ValueListener<T> {
+    void changing(State<T> state, T prevValue, T nextValue);
 
-	private final List<org.lgna.croquet.event.ValueListener<T>> newSchoolValueListeners = Lists.newCopyOnWriteArrayList();
-	private final List<ValueListener<T>> oldSchoolValueListeners = Lists.newCopyOnWriteArrayList();
+    void changed(State<T> state, T prevValue, T nextValue);
+  }
 
-	private T currentValue;
-	T previousValue;
+  private final List<org.lgna.croquet.event.ValueListener<T>> newSchoolValueListeners = Lists.newCopyOnWriteArrayList();
+  private final List<ValueListener<T>> oldSchoolValueListeners = Lists.newCopyOnWriteArrayList();
 
-	public State( Group group, UUID migrationId, T initialValue ) {
-		super( group, migrationId );
-		currentValue = initialValue;
-		previousValue = initialValue;
-	}
+  private T currentValue;
+  T previousValue;
 
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.setSwingValue( this.getCurrentTruthAndBeautyValue() );
-	}
+  public State(Group group, UUID migrationId, T initialValue) {
+    super(group, migrationId);
+    currentValue = initialValue;
+    previousValue = initialValue;
+  }
 
-	public abstract T decodeValue( BinaryDecoder binaryDecoder );
+  @Override
+  protected void initialize() {
+    super.initialize();
+    this.setSwingValue(this.getCurrentTruthAndBeautyValue());
+  }
 
-	public abstract void encodeValue( BinaryEncoder binaryEncoder, T value );
+  public abstract T decodeValue(BinaryDecoder binaryDecoder);
 
-	public abstract void appendRepresentation( StringBuilder sb, T value );
+  public abstract void encodeValue(BinaryEncoder binaryEncoder, T value);
 
-	public void addValueListener( ValueListener<T> valueListener ) {
-		if( this.oldSchoolValueListeners.contains( valueListener ) ) {
-			Logger.severe( "listener already contained", this, valueListener );
-		}
-		this.oldSchoolValueListeners.add( valueListener );
-	}
+  public abstract void appendRepresentation(StringBuilder sb, T value);
 
-	@Deprecated
-	public void addAndInvokeValueListener( ValueListener<T> valueListener ) {
-		this.addValueListener( valueListener );
-		//todo
-		T prevValue = null;
-		valueListener.changed( this, prevValue, this.getValue() );
-	}
+  public void addValueListener(ValueListener<T> valueListener) {
+    if (this.oldSchoolValueListeners.contains(valueListener)) {
+      Logger.severe("listener already contained", this, valueListener);
+    }
+    this.oldSchoolValueListeners.add(valueListener);
+  }
 
-	public void removeValueListener( ValueListener<T> valueListener ) {
-		if ( !this.oldSchoolValueListeners.contains( valueListener ) ) {
-			Logger.severe( "listener not contained", this, valueListener );
-		}
-		this.oldSchoolValueListeners.remove( valueListener );
-	}
+  @Deprecated
+  public void addAndInvokeValueListener(ValueListener<T> valueListener) {
+    this.addValueListener(valueListener);
+    //todo
+    T prevValue = null;
+    valueListener.changed(this, prevValue, this.getValue());
+  }
 
-	public void addNewSchoolValueListener( org.lgna.croquet.event.ValueListener<T> valueListener ) {
-		if( this.newSchoolValueListeners.contains( valueListener ) ) {
-			Logger.severe( "listener already contained", this, valueListener );
-		}
-		this.newSchoolValueListeners.add( valueListener );
-	}
+  public void removeValueListener(ValueListener<T> valueListener) {
+    if (!this.oldSchoolValueListeners.contains(valueListener)) {
+      Logger.severe("listener not contained", this, valueListener);
+    }
+    this.oldSchoolValueListeners.remove(valueListener);
+  }
 
-	public void addAndInvokeNewSchoolValueListener( org.lgna.croquet.event.ValueListener<T> valueListener ) {
-		this.addNewSchoolValueListener( valueListener );
-		ValueEvent<T> e = ValueEvent.createInstance( this.getValue() );
-		valueListener.valueChanged( e );
-	}
+  public void addNewSchoolValueListener(org.lgna.croquet.event.ValueListener<T> valueListener) {
+    if (this.newSchoolValueListeners.contains(valueListener)) {
+      Logger.severe("listener already contained", this, valueListener);
+    }
+    this.newSchoolValueListeners.add(valueListener);
+  }
 
-	public void removeNewSchoolValueListener( org.lgna.croquet.event.ValueListener<T> valueListener ) {
-		if ( !this.newSchoolValueListeners.contains( valueListener ) ) {
-			Logger.severe( "listener not contained", this, valueListener );
-		}
-		this.newSchoolValueListeners.remove( valueListener );
-	}
+  public void addAndInvokeNewSchoolValueListener(org.lgna.croquet.event.ValueListener<T> valueListener) {
+    this.addNewSchoolValueListener(valueListener);
+    ValueEvent<T> e = ValueEvent.createInstance(this.getValue());
+    valueListener.valueChanged(e);
+  }
 
-	protected void fireChanging( T prevValue, T nextValue ) {
-		for( ValueListener<T> valueListener : this.oldSchoolValueListeners ) {
-			valueListener.changing( this, prevValue, nextValue );
-		}
-	}
+  public void removeNewSchoolValueListener(org.lgna.croquet.event.ValueListener<T> valueListener) {
+    if (!this.newSchoolValueListeners.contains(valueListener)) {
+      Logger.severe("listener not contained", this, valueListener);
+    }
+    this.newSchoolValueListeners.remove(valueListener);
+  }
 
-	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
-		for( ValueListener<T> valueListener : this.oldSchoolValueListeners ) {
-			valueListener.changed( this, prevValue, nextValue );
-		}
-		if( this.newSchoolValueListeners.size() > 0 ) {
-			ValueEvent<T> e = ValueEvent.createInstance( prevValue, nextValue, isAdjusting );
-			for( org.lgna.croquet.event.ValueListener<T> valueListener : this.newSchoolValueListeners ) {
-				valueListener.valueChanged( e );
-			}
-		}
-	}
+  protected void fireChanging(T prevValue, T nextValue) {
+    for (ValueListener<T> valueListener : this.oldSchoolValueListeners) {
+      valueListener.changing(this, prevValue, nextValue);
+    }
+  }
 
-	protected void handleTruthAndBeautyValueChange( T nextValue ) {
-	}
+  protected void fireChanged(T prevValue, T nextValue, boolean isAdjusting) {
+    for (ValueListener<T> valueListener : this.oldSchoolValueListeners) {
+      valueListener.changed(this, prevValue, nextValue);
+    }
+    if (this.newSchoolValueListeners.size() > 0) {
+      ValueEvent<T> e = ValueEvent.createInstance(prevValue, nextValue, isAdjusting);
+      for (org.lgna.croquet.event.ValueListener<T> valueListener : this.newSchoolValueListeners) {
+        valueListener.valueChanged(e);
+      }
+    }
+  }
 
-	void commitStateEdit( T prevValue, T nextValue, UserActivity activity ) {
-		// NB This activity is not expected to have any child activities
-		if (activity != null) {
-			activity.setCompletionModel( this );
-			StateEdit<T> edit = new StateEdit<T>( activity, prevValue, nextValue );
-			activity.commitAndInvokeDo( edit );
-		}
-		this.handleTruthAndBeautyValueChange( nextValue );
-	}
+  protected void handleTruthAndBeautyValueChange(T nextValue) {
+  }
 
-	protected T getCurrentTruthAndBeautyValue() {
-		return this.currentValue;
-	}
+  void commitStateEdit(T prevValue, T nextValue, UserActivity activity) {
+    // NB This activity is not expected to have any child activities
+    if (activity != null) {
+      activity.setCompletionModel(this);
+      StateEdit<T> edit = new StateEdit<T>(activity, prevValue, nextValue);
+      activity.commitAndInvokeDo(edit);
+    }
+    this.handleTruthAndBeautyValueChange(nextValue);
+  }
 
-	protected void setCurrentTruthAndBeautyValue( T value ) {
-		this.currentValue = value;
-	}
+  protected T getCurrentTruthAndBeautyValue() {
+    return this.currentValue;
+  }
 
-	protected abstract T getSwingValue();
+  protected void setCurrentTruthAndBeautyValue(T value) {
+    this.currentValue = value;
+  }
 
-	protected abstract void setSwingValue( T nextValue );
+  protected abstract T getSwingValue();
 
-	public final T getValue() {
-		return this.getCurrentTruthAndBeautyValue();
-	}
+  protected abstract void setSwingValue(T nextValue);
 
-	private boolean isInTheMidstOfChange = false;
+  public final T getValue() {
+    return this.getCurrentTruthAndBeautyValue();
+  }
 
-	void changeValue( T prevValue, T nextValue ) {
-		changeValue( prevValue, nextValue, () -> recordFinalValue( prevValue, nextValue) );
-	}
+  private boolean isInTheMidstOfChange = false;
 
-	void changeValue( T prevValue, T nextValue, Runnable bookkeeping) {
-		if ( shouldUpdateSwingModel( nextValue ) ) {
-			setSwingValue( nextValue );
-		}
-		changeModelValue( prevValue, nextValue, bookkeeping );
-	}
+  void changeValue(T prevValue, T nextValue) {
+    changeValue(prevValue, nextValue, () -> recordFinalValue(prevValue, nextValue));
+  }
 
-	protected boolean shouldUpdateSwingModel( T nextValue ) {
-		return !(Objects.equals( getSwingValue(), nextValue ));
-	}
+  void changeValue(T prevValue, T nextValue, Runnable bookkeeping) {
+    if (shouldUpdateSwingModel(nextValue)) {
+      setSwingValue(nextValue);
+    }
+    changeModelValue(prevValue, nextValue, bookkeeping);
+  }
 
-	final void changeModelValue( T prevValue, T nextValue, Runnable bookkeeping ) {
-		if ( !Objects.equals( this.previousValue, nextValue ) && !isInTheMidstOfChange ) {
-			isInTheMidstOfChange = true;
-			try {
-				fireChanging( prevValue, nextValue );
-				setCurrentTruthAndBeautyValue( nextValue );
+  protected boolean shouldUpdateSwingModel(T nextValue) {
+    return !(Objects.equals(getSwingValue(), nextValue));
+  }
 
-				bookkeeping.run();
+  final void changeModelValue(T prevValue, T nextValue, Runnable bookkeeping) {
+    if (!Objects.equals(this.previousValue, nextValue) && !isInTheMidstOfChange) {
+      isInTheMidstOfChange = true;
+      try {
+        fireChanging(prevValue, nextValue);
+        setCurrentTruthAndBeautyValue(nextValue);
 
-				previousValue = nextValue;
-			} finally {
-				isInTheMidstOfChange = false;
-			}
-		}
-	}
+        bookkeeping.run();
 
-	private void recordFinalValue( T prevValue, T nextValue ) {
-		fireChanged( prevValue, nextValue, false );
-	}
+        previousValue = nextValue;
+      } finally {
+        isInTheMidstOfChange = false;
+      }
+    }
+  }
 
-	private void commitFinalValue( T prevValue, T nextValue, UserActivity activity ) {
-		commitStateEdit( prevValue, nextValue, activity );
-		fireChanged( prevValue, nextValue, false );
-	}
+  private void recordFinalValue(T prevValue, T nextValue) {
+    fireChanged(prevValue, nextValue, false);
+  }
 
-	protected void adjustModelValueFromSwing( T nextValue, UserActivity activity ) {
-		// Ignore adjustments by default
-	}
+  private void commitFinalValue(T prevValue, T nextValue, UserActivity activity) {
+    commitStateEdit(prevValue, nextValue, activity);
+    fireChanged(prevValue, nextValue, false);
+  }
 
+  protected void adjustModelValueFromSwing(T nextValue, UserActivity activity) {
+    // Ignore adjustments by default
+  }
 
-	// Updates to the state of the State come in to these methods
+  // Updates to the state of the State come in to these methods
 
-	// A change from the GUI. The isAdjusting flag indicates if the value is still in flux.
-	final void changingValueFromSwing( T nextValue, boolean isAdjusting, UserActivity activity ) {
-		if (isAdjusting) {
-			adjustModelValueFromSwing( nextValue, activity );
-		} else {
-			changeValueFromSwing( nextValue, activity );
-		}
-	}
+  // A change from the GUI. The isAdjusting flag indicates if the value is still in flux.
+  final void changingValueFromSwing(T nextValue, boolean isAdjusting, UserActivity activity) {
+    if (isAdjusting) {
+      adjustModelValueFromSwing(nextValue, activity);
+    } else {
+      changeValueFromSwing(nextValue, activity);
+    }
+  }
 
-	// Final (not adjusting) change from the GUI. Change only the model's value.
-	protected final void changeValueFromSwing( T nextValue, UserActivity activity ) {
-		changeModelValue( previousValue, nextValue, () -> commitFinalValue( previousValue, nextValue, activity ) );
-	}
+  // Final (not adjusting) change from the GUI. Change only the model's value.
+  protected final void changeValueFromSwing(T nextValue, UserActivity activity) {
+    changeModelValue(previousValue, nextValue, () -> commitFinalValue(previousValue, nextValue, activity));
+  }
 
-	void changeValueFromIndirectModel( T nextValue, UserActivity activity ) {
-		changeValue( previousValue, nextValue, () -> commitFinalValue( previousValue, nextValue, activity ) );
-	}
+  void changeValueFromIndirectModel(T nextValue, UserActivity activity) {
+    changeValue(previousValue, nextValue, () -> commitFinalValue(previousValue, nextValue, activity));
+  }
 
-	public final void setValueTransactionlessly( T value ) {
-		changeValue( previousValue, value );
-	}
+  public final void setValueTransactionlessly(T value) {
+    changeValue(previousValue, value);
+  }
 
-	// Used by undo and redo
-	public final void changeValueFromEdit( T nextValue ) {
-		changeValue( previousValue, nextValue );
-		handleTruthAndBeautyValueChange( nextValue );
-	}
+  // Used by undo and redo
+  public final void changeValueFromEdit(T nextValue) {
+    changeValue(previousValue, nextValue);
+    handleTruthAndBeautyValueChange(nextValue);
+  }
 }

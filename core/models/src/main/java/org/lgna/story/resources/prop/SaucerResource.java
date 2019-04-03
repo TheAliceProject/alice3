@@ -32,34 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum SaucerResource implements PropResource {
-	CHESHIRE_CAT,
-	MAD_HATTER,
-	MARCH_HARE,
-	PLAYING_CARD,
-	QUEEN_OF_HEARTS,
-	WHITE_RABBIT;
+  CHESHIRE_CAT, MAD_HATTER, MARCH_HARE, PLAYING_CARD, QUEEN_OF_HEARTS, WHITE_RABBIT;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	SaucerResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  SaucerResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	SaucerResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  SaucerResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

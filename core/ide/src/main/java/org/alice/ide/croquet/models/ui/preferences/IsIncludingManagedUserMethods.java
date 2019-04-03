@@ -51,21 +51,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsIncludingManagedUserMethods extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsIncludingManagedUserMethods instance = new IsIncludingManagedUserMethods();
-	}
+  private static class SingletonHolder {
+    private static IsIncludingManagedUserMethods instance = new IsIncludingManagedUserMethods();
+  }
 
-	public static IsIncludingManagedUserMethods getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsIncludingManagedUserMethods getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsIncludingManagedUserMethods() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "4a09a9bf-2a1d-4a2a-9b96-e287bd66ca0f" ), false );
-	}
+  private IsIncludingManagedUserMethods() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("4a09a9bf-2a1d-4a2a-9b96-e287bd66ca0f"), false);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setTextForBothTrueAndFalse( "Is Including Managed User Methods" );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setTextForBothTrueAndFalse("Is Including Managed User Methods");
+  }
 }

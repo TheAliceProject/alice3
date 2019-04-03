@@ -49,144 +49,144 @@ import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
  * @author Dennis Cosgrove
  */
 public final class ClassReflectionProxy extends ReflectionProxy<Class<?>> {
-	public static ClassReflectionProxy[] create( Class<?>[] clses ) {
-		ClassReflectionProxy[] rv = new ClassReflectionProxy[ clses.length ];
-		for( int i = 0; i < clses.length; i++ ) {
-			rv[ i ] = new ClassReflectionProxy( clses[ i ] );
-		}
-		return rv;
-	}
+  public static ClassReflectionProxy[] create(Class<?>[] clses) {
+    ClassReflectionProxy[] rv = new ClassReflectionProxy[clses.length];
+    for (int i = 0; i < clses.length; i++) {
+      rv[i] = new ClassReflectionProxy(clses[i]);
+    }
+    return rv;
+  }
 
-	public static Class<?>[] getReifications( ClassReflectionProxy[] classReflectionProxies ) {
-		Class<?>[] rv = new Class<?>[ classReflectionProxies.length ];
-		for( int i = 0; i < rv.length; i++ ) {
-			rv[ i ] = classReflectionProxies[ i ].getReification();
-		}
-		return rv;
-	}
+  public static Class<?>[] getReifications(ClassReflectionProxy[] classReflectionProxies) {
+    Class<?>[] rv = new Class<?>[classReflectionProxies.length];
+    for (int i = 0; i < rv.length; i++) {
+      rv[i] = classReflectionProxies[i].getReification();
+    }
+    return rv;
+  }
 
-	private final String name;
+  private final String name;
 
-	public ClassReflectionProxy( String name ) {
-		this.name = name;
-	}
+  public ClassReflectionProxy(String name) {
+    this.name = name;
+  }
 
-	public ClassReflectionProxy( Class<?> cls ) {
-		super( cls );
-		this.name = cls.getName();
-	}
+  public ClassReflectionProxy(Class<?> cls) {
+    super(cls);
+    this.name = cls.getName();
+  }
 
-	@Override
-	protected int hashCodeNonReifiable() {
-		return this.name.hashCode();
-	}
+  @Override
+  protected int hashCodeNonReifiable() {
+    return this.name.hashCode();
+  }
 
-	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( ReflectionProxy<?> o ) {
-		ClassReflectionProxy other = (ClassReflectionProxy)o;
-		return this.name != null ? this.name.equals( other.name ) : other.name == null;
-	}
+  @Override
+  protected boolean equalsInstanceOfSameClassButNonReifiable(ReflectionProxy<?> o) {
+    ClassReflectionProxy other = (ClassReflectionProxy) o;
+    return this.name != null ? this.name.equals(other.name) : other.name == null;
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	public String getSimpleName() {
-		Class<?> cls = this.getReification();
-		if( cls != null ) {
-			return cls.getSimpleName();
-		} else {
-			String[] simpleNames = ClassUtilities.getSimpleClassNames( this.name );
-			return simpleNames[ simpleNames.length - 1 ];
-		}
-	}
+  public String getSimpleName() {
+    Class<?> cls = this.getReification();
+    if (cls != null) {
+      return cls.getSimpleName();
+    } else {
+      String[] simpleNames = ClassUtilities.getSimpleClassNames(this.name);
+      return simpleNames[simpleNames.length - 1];
+    }
+  }
 
-	public boolean isArray() {
-		Class<?> cls = this.getReification();
-		if( cls != null ) {
-			return cls.isArray();
-		} else {
-			return ClassUtilities.getArrayDimensionCount( this.name ) > 0;
-		}
-	}
+  public boolean isArray() {
+    Class<?> cls = this.getReification();
+    if (cls != null) {
+      return cls.isArray();
+    } else {
+      return ClassUtilities.getArrayDimensionCount(this.name) > 0;
+    }
+  }
 
-	public ClassReflectionProxy getComponentClassReflectionProxy() {
-		Class<?> cls = this.getReification();
-		if( cls != null ) {
-			Class<?> componentCls = cls.getComponentType();
-			if( componentCls != null ) {
-				return new ClassReflectionProxy( componentCls );
-			} else {
-				return null;
-			}
-		} else {
-			if( this.name.charAt( 0 ) == '[' ) {
-				String s = this.name.substring( 1 );
-				if( s.charAt( 0 ) == '[' ) {
-					//pass
-				} else {
-					assert s.charAt( 0 ) == 'L';
-					assert s.charAt( s.length() - 1 ) == ';';
-					s = s.substring( 1, s.length() - 1 );
-				}
-				return new ClassReflectionProxy( s );
-			} else {
-				return null;
-			}
-		}
-	}
+  public ClassReflectionProxy getComponentClassReflectionProxy() {
+    Class<?> cls = this.getReification();
+    if (cls != null) {
+      Class<?> componentCls = cls.getComponentType();
+      if (componentCls != null) {
+        return new ClassReflectionProxy(componentCls);
+      } else {
+        return null;
+      }
+    } else {
+      if (this.name.charAt(0) == '[') {
+        String s = this.name.substring(1);
+        if (s.charAt(0) == '[') {
+          //pass
+        } else {
+          assert s.charAt(0) == 'L';
+          assert s.charAt(s.length() - 1) == ';';
+          s = s.substring(1, s.length() - 1);
+        }
+        return new ClassReflectionProxy(s);
+      } else {
+        return null;
+      }
+    }
+  }
 
-	public ClassReflectionProxy getDeclaringClassReflectionProxy() {
-		Class<?> cls = this.getReification();
-		if( cls != null ) {
-			Class<?> declaringCls = cls.getDeclaringClass();
-			if( declaringCls != null ) {
-				return new ClassReflectionProxy( declaringCls );
-			} else {
-				return null;
-			}
-		} else {
-			int index = this.name.lastIndexOf( "$" );
-			if( index != -1 ) {
-				return new ClassReflectionProxy( this.name.substring( 0, index ) );
-			} else {
-				return null;
-			}
-		}
-	}
+  public ClassReflectionProxy getDeclaringClassReflectionProxy() {
+    Class<?> cls = this.getReification();
+    if (cls != null) {
+      Class<?> declaringCls = cls.getDeclaringClass();
+      if (declaringCls != null) {
+        return new ClassReflectionProxy(declaringCls);
+      } else {
+        return null;
+      }
+    } else {
+      int index = this.name.lastIndexOf("$");
+      if (index != -1) {
+        return new ClassReflectionProxy(this.name.substring(0, index));
+      } else {
+        return null;
+      }
+    }
+  }
 
-	public PackageReflectionProxy getPackageReflectionProxy() {
-		Class<?> cls = this.getReification();
-		if( cls != null ) {
-			Package pckg = ClassUtilities.getPackage( cls );
-			if( pckg != null ) {
-				return new PackageReflectionProxy( pckg );
-			} else {
-				return null;
-			}
-		} else {
-			String packageName = ClassUtilities.getPackageName( this.name );
-			if( packageName != null ) {
-				return new PackageReflectionProxy( packageName );
-			} else {
-				return null;
-			}
-		}
-	}
+  public PackageReflectionProxy getPackageReflectionProxy() {
+    Class<?> cls = this.getReification();
+    if (cls != null) {
+      Package pckg = ClassUtilities.getPackage(cls);
+      if (pckg != null) {
+        return new PackageReflectionProxy(pckg);
+      } else {
+        return null;
+      }
+    } else {
+      String packageName = ClassUtilities.getPackageName(this.name);
+      if (packageName != null) {
+        return new PackageReflectionProxy(packageName);
+      } else {
+        return null;
+      }
+    }
+  }
 
-	@Override
-	protected Class<?> reify() {
-		try {
-			return ClassUtilities.forName( this.name );
-		} catch( ClassNotFoundException cnfe ) {
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "could not find class", this.name );
-			return null;
-		}
-	}
+  @Override
+  protected Class<?> reify() {
+    try {
+      return ClassUtilities.forName(this.name);
+    } catch (ClassNotFoundException cnfe) {
+      //edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "could not find class", this.name );
+      return null;
+    }
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		sb.append( "name=" );
-		sb.append( this.name );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    sb.append("name=");
+    sb.append(this.name);
+  }
 }

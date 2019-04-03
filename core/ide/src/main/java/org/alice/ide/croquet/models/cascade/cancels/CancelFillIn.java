@@ -53,25 +53,25 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CancelFillIn<F> extends CascadeCancel<F> {
-	private String menuItemText;
+  private String menuItemText;
 
-	public CancelFillIn( UUID id ) {
-		super( id );
-	}
+  public CancelFillIn(UUID id) {
+    super(id);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.menuItemText = this.findDefaultLocalizedText();
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.menuItemText = this.findDefaultLocalizedText();
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super F, Void> step ) {
-		return null;
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super F, Void> step) {
+    return null;
+  }
 
-	@Override
-	public String getMenuItemText() {
-		return this.menuItemText;
-	}
+  @Override
+  public String getMenuItemText() {
+    return this.menuItemText;
+  }
 }

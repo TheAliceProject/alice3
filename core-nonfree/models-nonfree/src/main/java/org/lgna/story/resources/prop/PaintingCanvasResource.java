@@ -32,39 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum PaintingCanvasResource implements PropResource {
-	CLOWNS( ImplementationAndVisualType.SIMS2 ),
-	DESERT_SUNSET( ImplementationAndVisualType.SIMS2 ),
-	SIMPLE_PERSON( ImplementationAndVisualType.SIMS2 ),
-	LLAMA( ImplementationAndVisualType.SIMS2 ),
-	MOON( ImplementationAndVisualType.SIMS2 ),
-	LINES( ImplementationAndVisualType.SIMS2 ),
-	RED_FOREST( ImplementationAndVisualType.SIMS2 ),
-	RIVER( ImplementationAndVisualType.SIMS2 ),
-	TIGER( ImplementationAndVisualType.SIMS2 ),
-	FLOWER( ImplementationAndVisualType.SIMS2 ),
-	PORTRAIT( ImplementationAndVisualType.SIMS2 ),
-	BLANK( ImplementationAndVisualType.SIMS2 );
+  CLOWNS(ImplementationAndVisualType.SIMS2), DESERT_SUNSET(ImplementationAndVisualType.SIMS2), SIMPLE_PERSON(ImplementationAndVisualType.SIMS2), LLAMA(ImplementationAndVisualType.SIMS2), MOON(ImplementationAndVisualType.SIMS2), LINES(ImplementationAndVisualType.SIMS2), RED_FOREST(ImplementationAndVisualType.SIMS2), RIVER(ImplementationAndVisualType.SIMS2), TIGER(ImplementationAndVisualType.SIMS2), FLOWER(ImplementationAndVisualType.SIMS2), PORTRAIT(ImplementationAndVisualType.SIMS2), BLANK(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	PaintingCanvasResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	PaintingCanvasResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  PaintingCanvasResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  PaintingCanvasResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

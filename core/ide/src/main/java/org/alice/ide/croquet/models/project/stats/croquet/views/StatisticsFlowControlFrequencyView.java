@@ -79,180 +79,180 @@ import edu.cmu.cs.dennisc.java.util.Maps;
  */
 public class StatisticsFlowControlFrequencyView extends BorderPanel {
 
-	public StatisticsFlowControlFrequencyView( StatisticsFlowControlFrequencyComposite composite ) {
-		super( composite );
-		GridPanel gridPanel = GridPanel.createGridPane( 2, 1 );
-		SingleSelectListState<UserMethod, ?> userMethodList = composite.getUserMethodList();
-		ControlDisplay statsDisplay = new ControlDisplay( userMethodList );
-		statsDisplay.setMaximum();
-		userMethodList.setValueTransactionlessly( StatisticsFlowControlFrequencyComposite.root );
-		userMethodList.addNewSchoolValueListener( statsDisplay );
-		statsDisplay.update( StatisticsFlowControlFrequencyComposite.root );
-		gridPanel.addComponent( statsDisplay.getLayout() );
-		List<UserMethod> list = new List<UserMethod>( userMethodList );
-		list.setCellRenderer( new ListCellRenderer() );
+  public StatisticsFlowControlFrequencyView(StatisticsFlowControlFrequencyComposite composite) {
+    super(composite);
+    GridPanel gridPanel = GridPanel.createGridPane(2, 1);
+    SingleSelectListState<UserMethod, ?> userMethodList = composite.getUserMethodList();
+    ControlDisplay statsDisplay = new ControlDisplay(userMethodList);
+    statsDisplay.setMaximum();
+    userMethodList.setValueTransactionlessly(StatisticsFlowControlFrequencyComposite.root);
+    userMethodList.addNewSchoolValueListener(statsDisplay);
+    statsDisplay.update(StatisticsFlowControlFrequencyComposite.root);
+    gridPanel.addComponent(statsDisplay.getLayout());
+    List<UserMethod> list = new List<UserMethod>(userMethodList);
+    list.setCellRenderer(new ListCellRenderer());
 
-		ScrollPane scrollPane = new ScrollPane( list );
-		gridPanel.addComponent( scrollPane );
-		scrollPane.setMaximumPreferredHeight( StatisticsFrameComposite.BOTTOM_SIZE );
-		scrollPane.setMinimumPreferredHeight( StatisticsFrameComposite.BOTTOM_SIZE );
-		statsDisplay.gridPanel.setMaximumPreferredHeight( StatisticsFrameComposite.TOP_SIZE );
-		statsDisplay.gridPanel.setMinimumPreferredHeight( StatisticsFrameComposite.TOP_SIZE );
-		this.addComponent( gridPanel, Constraint.CENTER );
-	}
+    ScrollPane scrollPane = new ScrollPane(list);
+    gridPanel.addComponent(scrollPane);
+    scrollPane.setMaximumPreferredHeight(StatisticsFrameComposite.BOTTOM_SIZE);
+    scrollPane.setMinimumPreferredHeight(StatisticsFrameComposite.BOTTOM_SIZE);
+    statsDisplay.gridPanel.setMaximumPreferredHeight(StatisticsFrameComposite.TOP_SIZE);
+    statsDisplay.gridPanel.setMinimumPreferredHeight(StatisticsFrameComposite.TOP_SIZE);
+    this.addComponent(gridPanel, Constraint.CENTER);
+  }
 
-	public class ControlDisplay implements ValueListener<UserMethod> {
+  public class ControlDisplay implements ValueListener<UserMethod> {
 
-		private GridPanel gridPanel;
-		private Map<Integer, Map<Integer, AwtComponentView>> componentMap = Maps.newHashMap();
-		private int numRows = 10;
-		private int numCols = 2;
-		private int maximum = 10;
-		private final Class[] clsArr = { ConditionalStatement.class, CountLoop.class, WhileLoop.class, AbstractForEachLoop.class, AbstractEachInTogether.class, ReturnStatement.class, LocalDeclarationStatement.class, DoInOrder.class, DoTogether.class };
+    private GridPanel gridPanel;
+    private Map<Integer, Map<Integer, AwtComponentView>> componentMap = Maps.newHashMap();
+    private int numRows = 10;
+    private int numCols = 2;
+    private int maximum = 10;
+    private final Class[] clsArr = {ConditionalStatement.class, CountLoop.class, WhileLoop.class, AbstractForEachLoop.class, AbstractEachInTogether.class, ReturnStatement.class, LocalDeclarationStatement.class, DoInOrder.class, DoTogether.class};
 
-		public ControlDisplay( SingleSelectListState<UserMethod, ?> listSelectionState ) {
-			this.gridPanel = GridPanel.createGridPane( numRows, numCols, 5, 5 );
-			populateGridPanel();
-			populateLeftCol();
-			this.gridPanel.setBackgroundColor( Color.WHITE );
-		}
+    public ControlDisplay(SingleSelectListState<UserMethod, ?> listSelectionState) {
+      this.gridPanel = GridPanel.createGridPane(numRows, numCols, 5, 5);
+      populateGridPanel();
+      populateLeftCol();
+      this.gridPanel.setBackgroundColor(Color.WHITE);
+    }
 
-		public void setMaximum( /* Map<UserMethod,List<Statement>> methodToConstructMap */) {
-			( (StatisticsFlowControlFrequencyComposite)getComposite() ).getMaximum( clsArr );
-		}
+    public void setMaximum() {
+      ((StatisticsFlowControlFrequencyComposite) getComposite()).getMaximum(clsArr);
+    }
 
-		private class BarLabel extends Label {
+    private class BarLabel extends Label {
 
-			private int count;
+      private int count;
 
-			public BarLabel() {
-				this.setBackgroundColor( null );
-				this.setForegroundColor( Color.BLACK );
-			}
+      public BarLabel() {
+        this.setBackgroundColor(null);
+        this.setForegroundColor(Color.BLACK);
+      }
 
-			public int getCount() {
-				return this.count;
-			}
+      public int getCount() {
+        return this.count;
+      }
 
-			public void setCount( int count ) {
-				this.count = count;
-				this.setText( "" + this.count );
-			}
+      public void setCount(int count) {
+        this.count = count;
+        this.setText("" + this.count);
+      }
 
-			@Override
-			protected JLabel createAwtComponent() {
-				return new JLabel() {
-					@Override
-					protected void paintComponent( Graphics g ) {
-						Graphics2D g2 = (Graphics2D)g;
-						//g2.setPaint( this.getBackground() );
-						g2.setPaint( new Color( 150, 255, 150 ) );
+      @Override
+      protected JLabel createAwtComponent() {
+        return new JLabel() {
+          @Override
+          protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
+            //g2.setPaint( this.getBackground() );
+            g2.setPaint(new Color(150, 255, 150));
 
-						int w = (int)( this.getWidth() * ( count / (double)maximum ) ) + 1;
-						g2.fillRect( 0, 0, w, this.getHeight() );
-						g2.setPaint( this.getForeground() );
-						super.paintComponent( g );
-					}
+            int w = (int) (this.getWidth() * (count / (double) maximum)) + 1;
+            g2.fillRect(0, 0, w, this.getHeight());
+            g2.setPaint(this.getForeground());
+            super.paintComponent(g);
+          }
 
-					@Override
-					public Dimension getPreferredSize() {
-						return DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
-					}
-				};
-			}
-		}
+          @Override
+          public Dimension getPreferredSize() {
+            return DimensionUtilities.constrainToMinimumWidth(super.getPreferredSize(), 320);
+          }
+        };
+      }
+    }
 
-		private void populateGridPanel() {
-			for( int i = 0; i != numRows; ++i ) {
-				componentMap.put( i, new HashMap<Integer, AwtComponentView>() );
-				for( int j = 0; j != numCols; ++j ) {
-					Label label;
-					if( ( j == 1 ) && ( i != 0 ) ) {
-						label = new BarLabel();
-					} else {
-						label = new Label();
-						label.setHorizontalAlignment( HorizontalAlignment.RIGHT );
-					}
-					gridPanel.addComponent( label );
-					componentMap.get( i ).put( j, label );
-				}
-			}
-		}
+    private void populateGridPanel() {
+      for (int i = 0; i != numRows; ++i) {
+        componentMap.put(i, new HashMap<Integer, AwtComponentView>());
+        for (int j = 0; j != numCols; ++j) {
+          Label label;
+          if ((j == 1) && (i != 0)) {
+            label = new BarLabel();
+          } else {
+            label = new Label();
+            label.setHorizontalAlignment(HorizontalAlignment.RIGHT);
+          }
+          gridPanel.addComponent(label);
+          componentMap.get(i).put(j, label);
+        }
+      }
+    }
 
-		public GridPanel getLayout() {
-			return gridPanel;
-		}
+    public GridPanel getLayout() {
+      return gridPanel;
+    }
 
-		private void update( UserMethod selected ) {
-			if( selected == null ) {
-				selected = StatisticsFlowControlFrequencyComposite.root;
-			}
-			( (Label)getCell( 0, 0 ) ).setText( "<HTML><Strong>" + getFormattedName(selected) + "</Strong></HTML>" );
-			for( int i = 1; i != numRows; ++i ) {
-				setCell( 1, i, getCount( selected, clsArr[ i - 1 ] ) );
-			}
-		}
+    private void update(UserMethod selected) {
+      if (selected == null) {
+        selected = StatisticsFlowControlFrequencyComposite.root;
+      }
+      ((Label) getCell(0, 0)).setText("<HTML><Strong>" + getFormattedName(selected) + "</Strong></HTML>");
+      for (int i = 1; i != numRows; ++i) {
+        setCell(1, i, getCount(selected, clsArr[i - 1]));
+      }
+    }
 
-		private void populateLeftCol() {
-			( (Label)getCell( 0, 1 ) ).setText( getLocalizedStringByKey( "labelIf" ) );
-			( (Label)getCell( 0, 2 ) ).setText( getLocalizedStringByKey( "labelCount" ) );
-			( (Label)getCell( 0, 3 ) ).setText( getLocalizedStringByKey( "labelWhile" ) );
-			( (Label)getCell( 0, 4 ) ).setText( getLocalizedStringByKey( "labelFor" ) );
-			( (Label)getCell( 0, 5 ) ).setText( getLocalizedStringByKey( "labelEachTogether" ) );
-			( (Label)getCell( 0, 6 ) ).setText( getLocalizedStringByKey( "labelReturn" ) );
-			( (Label)getCell( 0, 7 ) ).setText( getLocalizedStringByKey( "labelLocal" ) );
-			( (Label)getCell( 0, 8 ) ).setText( getLocalizedStringByKey( "labelDoInOrder" ) );
-			( (Label)getCell( 0, 9 ) ).setText( getLocalizedStringByKey( "labelDoTogether" ) );
-		}
+    private void populateLeftCol() {
+      ((Label) getCell(0, 1)).setText(getLocalizedStringByKey("labelIf"));
+      ((Label) getCell(0, 2)).setText(getLocalizedStringByKey("labelCount"));
+      ((Label) getCell(0, 3)).setText(getLocalizedStringByKey("labelWhile"));
+      ((Label) getCell(0, 4)).setText(getLocalizedStringByKey("labelFor"));
+      ((Label) getCell(0, 5)).setText(getLocalizedStringByKey("labelEachTogether"));
+      ((Label) getCell(0, 6)).setText(getLocalizedStringByKey("labelReturn"));
+      ((Label) getCell(0, 7)).setText(getLocalizedStringByKey("labelLocal"));
+      ((Label) getCell(0, 8)).setText(getLocalizedStringByKey("labelDoInOrder"));
+      ((Label) getCell(0, 9)).setText(getLocalizedStringByKey("labelDoTogether"));
+    }
 
-		private void setCell( int col, int row, int count ) {
-			AwtComponentView component = getCell( col, row );
-			if( component instanceof BarLabel ) {
-				BarLabel label = (BarLabel)component;
-				label.setCount( count );
-			}
-		}
+    private void setCell(int col, int row, int count) {
+      AwtComponentView component = getCell(col, row);
+      if (component instanceof BarLabel) {
+        BarLabel label = (BarLabel) component;
+        label.setCount(count);
+      }
+    }
 
-		private AwtComponentView getCell( int col, int row ) {
-			return componentMap.get( row ).get( col );
-		}
+    private AwtComponentView getCell(int col, int row) {
+      return componentMap.get(row).get(col);
+    }
 
-		public int getCount( UserMethod method, Class<? extends Statement> cls ) {
-			return ( (StatisticsFlowControlFrequencyComposite)getComposite() ).getCount( method, cls );
-		}
+    public int getCount(UserMethod method, Class<? extends Statement> cls) {
+      return ((StatisticsFlowControlFrequencyComposite) getComposite()).getCount(method, cls);
+    }
 
-		@Override
-		public void valueChanged( ValueEvent<UserMethod> e ) {
-			update( e.getNextValue() );
-		}
-	}
+    @Override
+    public void valueChanged(ValueEvent<UserMethod> e) {
+      update(e.getNextValue());
+    }
+  }
 
-	private class ListCellRenderer extends DefaultListCellRenderer {
-		@Override
-		public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-			Label rv = new Label();
-			if( isSelected ) {
-				rv.setBackgroundColor( Color.BLUE );
-				rv.setForegroundColor( Color.WHITE );
-			}
-			if( !value.equals( StatisticsFlowControlFrequencyComposite.root ) ) {
-				if( value instanceof UserMethod ) {
-					UserMethod userMethod = (UserMethod)value;
-					rv.setText( getFormattedName(userMethod) );
-					return rv.getAwtComponent();
-				}
-			}
-			rv.setText( "<HTML><Strong>" + getLocalizedStringByKey("myProject") + "</Strong></HTML>" );
-			return rv.getAwtComponent();
-		}
-	}
+  private class ListCellRenderer extends DefaultListCellRenderer {
+    @Override
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+      Label rv = new Label();
+      if (isSelected) {
+        rv.setBackgroundColor(Color.BLUE);
+        rv.setForegroundColor(Color.WHITE);
+      }
+      if (!value.equals(StatisticsFlowControlFrequencyComposite.root)) {
+        if (value instanceof UserMethod) {
+          UserMethod userMethod = (UserMethod) value;
+          rv.setText(getFormattedName(userMethod));
+          return rv.getAwtComponent();
+        }
+      }
+      rv.setText("<HTML><Strong>" + getLocalizedStringByKey("myProject") + "</Strong></HTML>");
+      return rv.getAwtComponent();
+    }
+  }
 
-	private String getFormattedName( AbstractDeclaration declaration ) {
-		Formatter formatter = FormatterState.getInstance().getValue();
-		return formatter.getNameForDeclaration( declaration );
-	}
+  private String getFormattedName(AbstractDeclaration declaration) {
+    Formatter formatter = FormatterState.getInstance().getValue();
+    return formatter.getNameForDeclaration(declaration);
+  }
 
-	private static String getLocalizedStringByKey( String key ) {
-		return ResourceBundleUtilities.getStringForKey( key, StatisticsFrameComposite.class );
-	}
+  private static String getLocalizedStringByKey(String key) {
+    return ResourceBundleUtilities.getStringForKey(key, StatisticsFrameComposite.class);
+  }
 }

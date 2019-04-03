@@ -54,56 +54,55 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class ActivityNode<M extends Model> {
-	private final List<Listener> listeners = Lists.newCopyOnWriteArrayList();
-	private UserActivity owner;
-	Trigger trigger;
-	M model;
+  private final List<Listener> listeners = Lists.newCopyOnWriteArrayList();
+  private UserActivity owner;
+  Trigger trigger;
+  M model;
 
+  ActivityNode(UserActivity owner, M model, Trigger trigger) {
+    this.setOwner(owner);
+    this.model = model;
+    this.trigger = trigger;
+  }
 
-	ActivityNode( UserActivity owner, M model, Trigger trigger) {
-		this.setOwner( owner );
-		this.model = model;
-		this.trigger = trigger;
-	}
+  ActivityNode(UserActivity owner) {
+    this.setOwner(owner);
+  }
 
-	ActivityNode( UserActivity owner ) {
-		this.setOwner( owner );
-	}
+  public M getModel() {
+    return this.model;
+  }
 
-	public M getModel() {
-		return this.model;
-	}
+  public UserActivity getOwner() {
+    return this.owner;
+  }
 
-	public UserActivity getOwner() {
-		return this.owner;
-	}
+  void setOwner(UserActivity owner) {
+    this.owner = owner;
+  }
 
-	void setOwner( UserActivity owner ) {
-		this.owner = owner;
-	}
+  public Trigger getTrigger() {
+    return this.trigger;
+  }
 
-	public Trigger getTrigger() {
-		return this.trigger;
-	}
+  public void addListener(Listener listener) {
+    this.listeners.add(listener);
+  }
 
-	public void addListener( Listener listener ) {
-		this.listeners.add( listener );
-	}
+  public void removeListener(Listener listener) {
+    this.listeners.remove(listener);
+  }
 
-	public void removeListener( Listener listener ) {
-		this.listeners.remove( listener );
-	}
+  public boolean isListening(Listener listener) {
+    return this.listeners.contains(listener);
+  }
 
-	public boolean isListening( Listener listener ) {
-		return this.listeners.contains( listener );
-	}
-
-	protected void fireChanged( ActivityEvent e ) {
-		if( this.owner != null ) {
-			this.owner.fireChanged( e );
-		}
-		for( Listener listener : this.listeners ) {
-			listener.changed( e );
-		}
-	}
+  protected void fireChanged(ActivityEvent e) {
+    if (this.owner != null) {
+      this.owner.fireChanged(e);
+    }
+    for (Listener listener : this.listeners) {
+      listener.changed(e);
+    }
+  }
 }

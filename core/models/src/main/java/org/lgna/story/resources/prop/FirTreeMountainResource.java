@@ -32,36 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum FirTreeMountainResource implements PropResource {
-	DEFAULT_DAYLIGHT,
-	DEFAULT_DARK,
-	DEFAULT_MEDIUM,
-	DEFAULT_LIGHT,
-	FLIPPED_DAYLIGHT,
-	FLIPPED_DARK,
-	FLIPPED_MEDIUM,
-	FLIPPED_LIGHT;
+  DEFAULT_DAYLIGHT, DEFAULT_DARK, DEFAULT_MEDIUM, DEFAULT_LIGHT, FLIPPED_DAYLIGHT, FLIPPED_DARK, FLIPPED_MEDIUM, FLIPPED_LIGHT;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	FirTreeMountainResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  FirTreeMountainResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	FirTreeMountainResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  FirTreeMountainResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

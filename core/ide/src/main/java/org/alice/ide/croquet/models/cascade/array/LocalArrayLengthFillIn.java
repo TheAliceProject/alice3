@@ -55,29 +55,29 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocalArrayLengthFillIn extends ArrayLengthFillIn {
-	private static Map<UserLocal, LocalArrayLengthFillIn> map = Maps.newHashMap();
+  private static Map<UserLocal, LocalArrayLengthFillIn> map = Maps.newHashMap();
 
-	public static synchronized LocalArrayLengthFillIn getInstance( UserLocal local ) {
-		assert local != null;
-		LocalArrayLengthFillIn rv = map.get( local );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalArrayLengthFillIn( local );
-			map.put( local, rv );
-		}
-		return rv;
-	}
+  public static synchronized LocalArrayLengthFillIn getInstance(UserLocal local) {
+    assert local != null;
+    LocalArrayLengthFillIn rv = map.get(local);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new LocalArrayLengthFillIn(local);
+      map.put(local, rv);
+    }
+    return rv;
+  }
 
-	private final UserLocal local;
+  private final UserLocal local;
 
-	private LocalArrayLengthFillIn( UserLocal local ) {
-		super( UUID.fromString( "007ec992-c623-4a2b-afcc-5642dfd7be75" ) );
-		this.local = local;
-	}
+  private LocalArrayLengthFillIn(UserLocal local) {
+    super(UUID.fromString("007ec992-c623-4a2b-afcc-5642dfd7be75"));
+    this.local = local;
+  }
 
-	@Override
-	protected Expression createAccessExpression() {
-		return new LocalAccess( this.local );
-	}
+  @Override
+  protected Expression createAccessExpression() {
+    return new LocalAccess(this.local);
+  }
 }

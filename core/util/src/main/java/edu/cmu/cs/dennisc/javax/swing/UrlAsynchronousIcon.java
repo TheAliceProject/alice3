@@ -51,23 +51,23 @@ import java.net.URL;
  * @author Dennis Cosgrove
  */
 public class UrlAsynchronousIcon extends AsynchronousWorkerIcon {
-	public UrlAsynchronousIcon( int iconWidthFallback, int iconHeightFallback, URL url ) {
-		super( iconWidthFallback, iconHeightFallback );
-		this.url = url;
-	}
+  public UrlAsynchronousIcon(int iconWidthFallback, int iconHeightFallback, URL url) {
+    super(iconWidthFallback, iconHeightFallback);
+    this.url = url;
+  }
 
-	@Override
-	protected void paintIconFallback( Component c, Graphics g, int x, int y ) {
-		if( c.isOpaque() ) {
-			g.setColor( c.getBackground() );
-			g.fillRect( x, y, this.getIconWidthFallback(), this.getIconHeightFallback() );
-		}
-	}
+  @Override
+  protected void paintIconFallback(Component c, Graphics g, int x, int y) {
+    if (c.isOpaque()) {
+      g.setColor(c.getBackground());
+      g.fillRect(x, y, this.getIconWidthFallback(), this.getIconHeightFallback());
+    }
+  }
 
-	@Override
-	protected Icon do_onBackgroundThread() throws Exception {
-		return IconUtilities.createImageIcon( this.url );
-	}
+  @Override
+  protected Icon do_onBackgroundThread() throws Exception {
+    return IconUtilities.createImageIcon(this.url);
+  }
 
-	private final URL url;
+  private final URL url;
 }

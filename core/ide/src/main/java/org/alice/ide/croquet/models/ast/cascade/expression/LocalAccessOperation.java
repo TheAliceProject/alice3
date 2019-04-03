@@ -56,28 +56,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocalAccessOperation extends ProjectExpressionPropertyOperation {
-	private static MapToMap<UserLocal, ExpressionProperty, LocalAccessOperation> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserLocal, ExpressionProperty, LocalAccessOperation> mapToMap = MapToMap.newInstance();
 
-	public static LocalAccessOperation getInstance( UserLocal local, ExpressionProperty expressionProperty ) {
-		assert local != null;
-		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new MapToMap.Initializer<UserLocal, ExpressionProperty, LocalAccessOperation>() {
-			@Override
-			public LocalAccessOperation initialize( UserLocal local, ExpressionProperty expressionProperty ) {
-				return new LocalAccessOperation( local, expressionProperty );
-			}
-		} );
-	}
+  public static LocalAccessOperation getInstance(UserLocal local, ExpressionProperty expressionProperty) {
+    assert local != null;
+    assert expressionProperty != null;
+    return mapToMap.getInitializingIfAbsent(local, expressionProperty, new MapToMap.Initializer<UserLocal, ExpressionProperty, LocalAccessOperation>() {
+      @Override
+      public LocalAccessOperation initialize(UserLocal local, ExpressionProperty expressionProperty) {
+        return new LocalAccessOperation(local, expressionProperty);
+      }
+    });
+  }
 
-	private final UserLocal local;
+  private final UserLocal local;
 
-	private LocalAccessOperation( UserLocal local, ExpressionProperty expressionProperty ) {
-		super( UUID.fromString( "e3a514b8-1414-47a1-b9ec-82cd4678417c" ), expressionProperty );
-		this.local = local;
-	}
+  private LocalAccessOperation(UserLocal local, ExpressionProperty expressionProperty) {
+    super(UUID.fromString("e3a514b8-1414-47a1-b9ec-82cd4678417c"), expressionProperty);
+    this.local = local;
+  }
 
-	@Override
-	protected Expression createExpression() {
-		return new LocalAccess( this.local );
-	}
+  @Override
+  protected Expression createExpression() {
+    return new LocalAccess(this.local);
+  }
 }

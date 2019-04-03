@@ -54,23 +54,23 @@ import javax.swing.SwingUtilities;
  * @author Dennis Cosgrove
  */
 public class BooleanExample {
-	public static void main( String[] args ) {
-		SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				UIManagerUtilities.setLookAndFeel( "Nimbus" );
-				SimpleApplication app = new SimpleApplication();
-				DocumentFrame documentFrame = app.getDocumentFrame();
-				Frame frame = documentFrame.getFrame();
+  public static void main(String[] args) {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        UIManagerUtilities.setLookAndFeel("Nimbus");
+        SimpleApplication app = new SimpleApplication();
+        DocumentFrame documentFrame = app.getDocumentFrame();
+        Frame frame = documentFrame.getFrame();
 
-				BooleanExampleComposite composite = new BooleanExampleComposite();
+        BooleanExampleComposite composite = new BooleanExampleComposite();
 
-				frame.setTitle( "Boolean Example" );
-				frame.setMainComposite( composite );
-				frame.setDefaultCloseOperation( Frame.DefaultCloseOperation.EXIT );
-				frame.pack();
-				frame.setVisible( true );
-			}
-		} );
-	}
+        frame.setTitle("Boolean Example");
+        frame.setMainComposite(composite);
+        frame.setDefaultCloseOperation(Frame.DefaultCloseOperation.EXIT);
+        frame.pack();
+        frame.setVisible(true);
+      }
+    });
+  }
 }

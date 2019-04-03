@@ -46,27 +46,31 @@ package org.alice.stageide.videoencode;
 /**
  * @author Dennis Cosgrove
  */
-public class CaptureImagesPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > {
-	private final ErrorStatus noFramesError = this.createErrorStatus( this.createKey( "noFramesError" ) );
-	private final org.lgna.croquet.StringState bogusStringState = this.createStringState( this.createKey( "bogusStringState" ) );
-	public CaptureImagesPage() {
-		super( java.util.UUID.fromString( "ae1152d7-4ff3-4137-b410-f83f7c089387" ) );
-	}
-	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( this.bogusStringState.createTextField(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
-		return rv;
-	}
-	public org.lgna.croquet.StringState getBogusStringState() {
-		return this.bogusStringState;
-	}
-	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( this.bogusStringState.getValue().length() > 0 ) {
-			return IS_GOOD_TO_GO_STATUS;
-		} else {
-			return this.noFramesError;
-		}
-	}
+public class CaptureImagesPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.components.BorderPanel> {
+  private final ErrorStatus noFramesError = this.createErrorStatus(this.createKey("noFramesError"));
+  private final org.lgna.croquet.StringState bogusStringState = this.createStringState(this.createKey("bogusStringState"));
+
+  public CaptureImagesPage() {
+    super(java.util.UUID.fromString("ae1152d7-4ff3-4137-b410-f83f7c089387"));
+  }
+
+  @Override
+  protected org.lgna.croquet.components.BorderPanel createView() {
+    org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+    rv.addComponent(this.bogusStringState.createTextField(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START);
+    return rv;
+  }
+
+  public org.lgna.croquet.StringState getBogusStringState() {
+    return this.bogusStringState;
+  }
+
+  @Override
+  public Status getPageStatus(org.lgna.croquet.history.CompletionStep<?> step) {
+    if (this.bogusStringState.getValue().length() > 0) {
+      return IS_GOOD_TO_GO_STATUS;
+    } else {
+      return this.noFramesError;
+    }
+  }
 }

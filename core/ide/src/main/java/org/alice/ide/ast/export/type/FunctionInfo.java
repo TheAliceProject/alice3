@@ -46,19 +46,19 @@ package org.alice.ide.ast.export.type;
  * @author Dennis Cosgrove
  */
 public final class FunctionInfo {
-	private final String returnClassName;
-	private final String name;
+  private final String returnClassName;
+  private final String name;
 
-	public FunctionInfo( String returnClassName, String name ) {
-		this.returnClassName = returnClassName;
-		this.name = name;
-	}
+  public FunctionInfo(String returnClassName, String name) {
+    this.returnClassName = returnClassName;
+    this.name = name;
+  }
 
-	public String getReturnClassName() {
-		return this.returnClassName;
-	}
+  public String getReturnClassName() {
+    return this.returnClassName;
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public String getName() {
+    return this.name;
+  }
 }

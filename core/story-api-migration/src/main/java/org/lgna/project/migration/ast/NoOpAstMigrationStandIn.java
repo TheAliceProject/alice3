@@ -51,11 +51,11 @@ import org.lgna.project.migration.AstMigration;
  * @author Dennis Cosgrove
  */
 public class NoOpAstMigrationStandIn extends AstMigration {
-	public NoOpAstMigrationStandIn( Version minimumVersion, Version resultVersion ) {
-		super( minimumVersion, resultVersion );
-	}
+  public NoOpAstMigrationStandIn(Version minimumVersion, Version resultVersion) {
+    super(minimumVersion, resultVersion);
+  }
 
-	@Override
-	public void migrate( Node node, Project projectIfApplicable ) {
-	}
+  @Override
+  public void migrate(Node node, Project projectIfApplicable) {
+  }
 }

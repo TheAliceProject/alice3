@@ -61,38 +61,38 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocalAssignmentFillIn extends ExpressionFillInWithExpressionBlanks<AssignmentExpression> {
-	private static Map<UserLocal, LocalAssignmentFillIn> map = Maps.newHashMap();
+  private static Map<UserLocal, LocalAssignmentFillIn> map = Maps.newHashMap();
 
-	public static synchronized LocalAssignmentFillIn getInstance( UserLocal local ) {
-		LocalAssignmentFillIn rv = map.get( local );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalAssignmentFillIn( local );
-			map.put( local, rv );
-		}
-		return rv;
-	}
+  public static synchronized LocalAssignmentFillIn getInstance(UserLocal local) {
+    LocalAssignmentFillIn rv = map.get(local);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new LocalAssignmentFillIn(local);
+      map.put(local, rv);
+    }
+    return rv;
+  }
 
-	private final AssignmentExpression transientValue;
+  private final AssignmentExpression transientValue;
 
-	private LocalAssignmentFillIn( UserLocal local ) {
-		super( UUID.fromString( "0a624cbf-fca2-4a89-a6b0-11415b8cc084" ), ExpressionBlank.createBlanks( local.valueType.getValue() ) );
-		this.transientValue = IncompleteAstUtilities.createIncompleteLocalAssignment( local );
-	}
+  private LocalAssignmentFillIn(UserLocal local) {
+    super(UUID.fromString("0a624cbf-fca2-4a89-a6b0-11415b8cc084"), ExpressionBlank.createBlanks(local.valueType.getValue()));
+    this.transientValue = IncompleteAstUtilities.createIncompleteLocalAssignment(local);
+  }
 
-	private UserLocal getLocal() {
-		LocalAccess localAccess = (LocalAccess)this.transientValue.leftHandSide.getValue();
-		return localAccess.local.getValue();
-	}
+  private UserLocal getLocal() {
+    LocalAccess localAccess = (LocalAccess) this.transientValue.leftHandSide.getValue();
+    return localAccess.local.getValue();
+  }
 
-	@Override
-	protected AssignmentExpression createValue( Expression[] expressions ) {
-		return AstUtilities.createLocalAssignment( this.getLocal(), expressions[ 0 ] );
-	}
+  @Override
+  protected AssignmentExpression createValue(Expression[] expressions) {
+    return AstUtilities.createLocalAssignment(this.getLocal(), expressions[0]);
+  }
 
-	@Override
-	public AssignmentExpression getTransientValue( ItemNode<? super AssignmentExpression, Expression> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public AssignmentExpression getTransientValue(ItemNode<? super AssignmentExpression, Expression> node) {
+    return this.transientValue;
+  }
 }

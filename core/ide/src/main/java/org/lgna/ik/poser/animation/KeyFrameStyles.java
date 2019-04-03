@@ -48,55 +48,52 @@ import org.lgna.story.AnimationStyle;
  * @author Matt May
  */
 public enum KeyFrameStyles {
-	ARRIVE_AND_EXIT_ABRUPTLY( false, false ),
-	ARRIVE_ABRUPTLY_AND_EXIT_GENTLY( false, true ),
-	ARRIVE_GENTLY_AND_EXIT_ABRUPTLY( true, false ),
-	ARRIVE_AND_EXIT_GENTLY( true, true );
-	private boolean isSlowInDesired;
-	private boolean isSlowOutDesired;
+  ARRIVE_AND_EXIT_ABRUPTLY(false, false), ARRIVE_ABRUPTLY_AND_EXIT_GENTLY(false, true), ARRIVE_GENTLY_AND_EXIT_ABRUPTLY(true, false), ARRIVE_AND_EXIT_GENTLY(true, true);
+  private boolean isSlowInDesired;
+  private boolean isSlowOutDesired;
 
-	KeyFrameStyles( boolean isSlowInDesired, boolean isSlowOutDesired ) {
-		this.isSlowInDesired = isSlowInDesired;
-		this.isSlowOutDesired = isSlowOutDesired;
-	}
+  KeyFrameStyles(boolean isSlowInDesired, boolean isSlowOutDesired) {
+    this.isSlowInDesired = isSlowInDesired;
+    this.isSlowOutDesired = isSlowOutDesired;
+  }
 
-	public boolean getIsSlowOutDesired() {
-		return isSlowOutDesired;
-	}
+  public boolean getIsSlowOutDesired() {
+    return isSlowOutDesired;
+  }
 
-	public boolean getIsSlowInDesired() {
-		return isSlowInDesired;
-	}
+  public boolean getIsSlowInDesired() {
+    return isSlowInDesired;
+  }
 
-	public static AnimationStyle getAnimationStyleFromTwoKeyFramStyles( KeyFrameStyles previous, KeyFrameStyles current ) {
-		return getAnimationStyleForBooleanPair( ( previous == null ) || previous.isSlowOutDesired, current.isSlowInDesired );
-	}
+  public static AnimationStyle getAnimationStyleFromTwoKeyFramStyles(KeyFrameStyles previous, KeyFrameStyles current) {
+    return getAnimationStyleForBooleanPair((previous == null) || previous.isSlowOutDesired, current.isSlowInDesired);
+  }
 
-	public static KeyFrameStyles getKeyFrameStyleFromTwoAnimationStyles( AnimationStyle first, AnimationStyle second ) {
-		if( first.equals( AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ) || first.equals( AnimationStyle.BEGIN_AND_END_GENTLY ) ) {
-			if( second.equals( AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ) || second.equals( AnimationStyle.BEGIN_AND_END_ABRUPTLY ) ) {
-				return ARRIVE_GENTLY_AND_EXIT_ABRUPTLY;
-			} else {
-				return ARRIVE_AND_EXIT_GENTLY;
-			}
-		} else {
-			if( second.equals( AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ) || second.equals( AnimationStyle.BEGIN_AND_END_ABRUPTLY ) ) {
-				return ARRIVE_AND_EXIT_ABRUPTLY;
-			} else {
-				return ARRIVE_ABRUPTLY_AND_EXIT_GENTLY;
-			}
-		}
-	}
+  public static KeyFrameStyles getKeyFrameStyleFromTwoAnimationStyles(AnimationStyle first, AnimationStyle second) {
+    if (first.equals(AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY) || first.equals(AnimationStyle.BEGIN_AND_END_GENTLY)) {
+      if (second.equals(AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY) || second.equals(AnimationStyle.BEGIN_AND_END_ABRUPTLY)) {
+        return ARRIVE_GENTLY_AND_EXIT_ABRUPTLY;
+      } else {
+        return ARRIVE_AND_EXIT_GENTLY;
+      }
+    } else {
+      if (second.equals(AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY) || second.equals(AnimationStyle.BEGIN_AND_END_ABRUPTLY)) {
+        return ARRIVE_AND_EXIT_ABRUPTLY;
+      } else {
+        return ARRIVE_ABRUPTLY_AND_EXIT_GENTLY;
+      }
+    }
+  }
 
-	private static AnimationStyle getAnimationStyleForBooleanPair( boolean startGently, boolean endGently ) {
-		if( startGently && endGently ) {
-			return AnimationStyle.BEGIN_AND_END_GENTLY;
-		} else if( startGently && !endGently ) {
-			return AnimationStyle.BEGIN_GENTLY_AND_END_ABRUPTLY;
-		} else if( !startGently && endGently ) {
-			return AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY;
-		} else {
-			return AnimationStyle.BEGIN_AND_END_ABRUPTLY;
-		}
-	}
+  private static AnimationStyle getAnimationStyleForBooleanPair(boolean startGently, boolean endGently) {
+    if (startGently && endGently) {
+      return AnimationStyle.BEGIN_AND_END_GENTLY;
+    } else if (startGently && !endGently) {
+      return AnimationStyle.BEGIN_GENTLY_AND_END_ABRUPTLY;
+    } else if (!startGently && endGently) {
+      return AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY;
+    } else {
+      return AnimationStyle.BEGIN_AND_END_ABRUPTLY;
+    }
+  }
 }

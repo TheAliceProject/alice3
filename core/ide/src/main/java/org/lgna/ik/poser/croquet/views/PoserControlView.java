@@ -49,7 +49,7 @@ import org.lgna.ik.poser.controllers.PoserControlComposite;
  */
 public class PoserControlView extends AbstractPoserControlView {
 
-	public PoserControlView( PoserControlComposite controlComposite ) {
-		super( controlComposite );
-	}
+  public PoserControlView(PoserControlComposite controlComposite) {
+    super(controlComposite);
+  }
 }

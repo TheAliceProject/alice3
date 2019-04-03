@@ -53,53 +53,53 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class LabelUtilities {
-	private LabelUtilities() {
-		throw new AssertionError();
-	}
+  private LabelUtilities() {
+    throw new AssertionError();
+  }
 
-	public static JLabel createLabel() {
-		return new JLabel();
-	}
+  public static JLabel createLabel() {
+    return new JLabel();
+  }
 
-	public static JLabel createLabel( Icon icon ) {
-		JLabel rv = createLabel();
-		rv.setIcon( icon );
-		return rv;
-	}
+  public static JLabel createLabel(Icon icon) {
+    JLabel rv = createLabel();
+    rv.setIcon(icon);
+    return rv;
+  }
 
-	public static JLabel createLabel( String text ) {
-		JLabel rv = createLabel();
-		rv.setText( text );
-		return rv;
-	}
+  public static JLabel createLabel(String text) {
+    JLabel rv = createLabel();
+    rv.setText(text);
+    return rv;
+  }
 
-	public static JLabel createLabel( String text, Map<? extends java.awt.font.TextAttribute, Object> map ) {
-		JLabel rv = createLabel( text );
-		FontUtilities.setFontToDerivedFont( rv, map );
-		return rv;
-	}
+  public static JLabel createLabel(String text, Map<? extends java.awt.font.TextAttribute, Object> map) {
+    JLabel rv = createLabel(text);
+    FontUtilities.setFontToDerivedFont(rv, map);
+    return rv;
+  }
 
-	public static JLabel createLabel( String text, java.awt.font.TextAttribute attribute, Object value ) {
-		JLabel rv = createLabel( text );
-		FontUtilities.setFontToDerivedFont( rv, attribute, value );
-		return rv;
-	}
+  public static JLabel createLabel(String text, java.awt.font.TextAttribute attribute, Object value) {
+    JLabel rv = createLabel(text);
+    FontUtilities.setFontToDerivedFont(rv, attribute, value);
+    return rv;
+  }
 
-	public static JLabel createLabel( String text, TextAttribute<?>... textAttributes ) {
-		JLabel rv = createLabel( text );
-		FontUtilities.setFontToDerivedFont( rv, textAttributes );
-		return rv;
-	}
+  public static JLabel createLabel(String text, TextAttribute<?>... textAttributes) {
+    JLabel rv = createLabel(text);
+    FontUtilities.setFontToDerivedFont(rv, textAttributes);
+    return rv;
+  }
 
-	public static JLabel createLabelWithScaledFont( String text, float scaleFactor ) {
-		JLabel rv = createLabel( text );
-		FontUtilities.setFontToScaledFont( rv, scaleFactor );
-		return rv;
-	}
+  public static JLabel createLabelWithScaledFont(String text, float scaleFactor) {
+    JLabel rv = createLabel(text);
+    FontUtilities.setFontToScaledFont(rv, scaleFactor);
+    return rv;
+  }
 
-	public static JLabel createLabelWithScaledFont( String text, float scaleFactor, TextAttribute<?>... textAttributes ) {
-		JLabel rv = createLabel( text, textAttributes );
-		FontUtilities.setFontToScaledFont( rv, scaleFactor );
-		return rv;
-	}
+  public static JLabel createLabelWithScaledFont(String text, float scaleFactor, TextAttribute<?>... textAttributes) {
+    JLabel rv = createLabel(text, textAttributes);
+    FontUtilities.setFontToScaledFont(rv, scaleFactor);
+    return rv;
+  }
 }

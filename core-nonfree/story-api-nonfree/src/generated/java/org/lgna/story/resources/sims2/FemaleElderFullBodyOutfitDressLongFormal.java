@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderFullBodyOutfitDressLongFormal implements FemaleElderFullBodyOutfit {
-	CREAM,
-	AZUL,
-	CELADON,
-	RUST;
+  CREAM, AZUL, CELADON, RUST
 
 }

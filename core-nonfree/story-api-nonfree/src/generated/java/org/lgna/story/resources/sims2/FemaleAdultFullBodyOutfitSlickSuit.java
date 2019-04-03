@@ -44,12 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultFullBodyOutfitSlickSuit implements FemaleAdultFullBodyOutfit {
-	BLACK,
-	BROWN,
-	RED,
-	CREAM,
-	WHITE,
-	PURPLE,
-	GREY;
+  BLACK, BROWN, RED, CREAM, WHITE, PURPLE, GREY
 
 }

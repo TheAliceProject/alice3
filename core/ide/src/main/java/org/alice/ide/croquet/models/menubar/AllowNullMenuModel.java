@@ -52,17 +52,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AllowNullMenuModel extends PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static AllowNullMenuModel instance = new AllowNullMenuModel();
-	}
+  private static class SingletonHolder {
+    private static AllowNullMenuModel instance = new AllowNullMenuModel();
+  }
 
-	public static AllowNullMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AllowNullMenuModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private AllowNullMenuModel() {
-		super( UUID.fromString( "95c7c508-4aea-4ada-ac3c-0ff2972f9766" ),
-				IsNullAllowedForFieldInitializers.getInstance().getMenuItemPrepModel(),
-				IsNullAllowedForLocalInitializers.getInstance().getMenuItemPrepModel() );
-	}
+  private AllowNullMenuModel() {
+    super(UUID.fromString("95c7c508-4aea-4ada-ac3c-0ff2972f9766"), IsNullAllowedForFieldInitializers.getInstance().getMenuItemPrepModel(), IsNullAllowedForLocalInitializers.getInstance().getMenuItemPrepModel());
+  }
 }

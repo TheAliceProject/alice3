@@ -52,23 +52,23 @@ import edu.cmu.cs.dennisc.scenegraph.ComponentArray;
  * @author Dennis Cosgrove
  */
 public abstract class GlrComponentArray extends GlrVertexGeometry<ComponentArray> {
-	@Override
-	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.component ) {
-			setIsGeometryChanged( true );
-			throw new RuntimeException( "todo" );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.component) {
+      setIsGeometryChanged(true);
+      throw new RuntimeException("todo");
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 }

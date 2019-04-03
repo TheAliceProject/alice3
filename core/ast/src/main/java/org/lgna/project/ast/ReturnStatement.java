@@ -43,38 +43,38 @@
 
 package org.lgna.project.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public final class ReturnStatement extends Statement {
-	public ReturnStatement() {
-	}
+  public ReturnStatement() {
+  }
 
-	public ReturnStatement( AbstractType<?, ?, ?> expressionType, Expression expression ) {
-		this.expressionType.setValue( expressionType );
-		this.expression.setValue( expression );
-	}
+  public ReturnStatement(AbstractType<?, ?, ?> expressionType, Expression expression) {
+    this.expressionType.setValue(expressionType);
+    this.expression.setValue(expression);
+  }
 
-	@Override public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendReturnStatement(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendReturnStatement(this);
+  }
 
-	@Override
-	boolean containsAtLeastOneEnabledReturnStatement() {
-		return isEnabled.getValue();
-	}
+  @Override
+  boolean containsAtLeastOneEnabledReturnStatement() {
+    return isEnabled.getValue();
+  }
 
-	@Override
-	boolean containsAReturnForEveryPath() {
-		return isEnabled.getValue();
-	}
+  @Override
+  boolean containsAReturnForEveryPath() {
+    return isEnabled.getValue();
+  }
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );
-	public final ExpressionProperty expression = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return ReturnStatement.this.expressionType.getValue();
-		}
-	};
+  public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance(this);
+  public final ExpressionProperty expression = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      return ReturnStatement.this.expressionType.getValue();
+    }
+  };
 }

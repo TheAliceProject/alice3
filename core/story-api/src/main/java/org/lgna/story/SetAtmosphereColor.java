@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class SetAtmosphereColor extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = SetAtmosphereColor.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = SetAtmosphereColor.class) public static interface Detail {
+  }
 
-	private SetAtmosphereColor() {
-		super();
-	}
+  private SetAtmosphereColor() {
+    super();
+  }
 }

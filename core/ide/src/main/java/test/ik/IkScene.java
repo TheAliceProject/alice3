@@ -59,65 +59,65 @@ import org.lgna.story.implementation.JointedModelImp;
  * @author Dennis Cosgrove
  */
 public class IkScene extends SScene {
-	private final SSun sun = new SSun();
-	private final SGround snow = new SGround();
-	private final SCamera camera;
-	public final SBiped ogre;
-	private final SModel target;
+  private final SSun sun = new SSun();
+  private final SGround snow = new SGround();
+  private final SCamera camera;
+  public final SBiped ogre;
+  private final SModel target;
 
-	public SSphere anchor = new SSphere();
-	public SSphere ee = new SSphere();
+  public SSphere anchor = new SSphere();
+  public SSphere ee = new SSphere();
 
-	public IkScene( SCamera camera, SBiped ogre, SModel target ) {
-		this.camera = camera;
-		this.ogre = ogre;
-		this.target = target;
-	}
+  public IkScene(SCamera camera, SBiped ogre, SModel target) {
+    this.camera = camera;
+    this.ogre = ogre;
+    this.target = target;
+  }
 
-	private void performGeneratedSetup() {
-		this.snow.setVehicle( this );
-		this.sun.setVehicle( this );
-		this.camera.setVehicle( this );
-		this.ogre.setVehicle( this );
-		this.target.setVehicle( this );
-		anchor.setVehicle( this );
-		ee.setVehicle( this );
+  private void performGeneratedSetup() {
+    this.snow.setVehicle(this);
+    this.sun.setVehicle(this);
+    this.camera.setVehicle(this);
+    this.ogre.setVehicle(this);
+    this.target.setVehicle(this);
+    anchor.setVehicle(this);
+    ee.setVehicle(this);
 
-		anchor.setRadius( .15 );
-		anchor.setPaint( Color.GREEN );
-		anchor.setOpacity( 0.5 );
+    anchor.setRadius(.15);
+    anchor.setPaint(Color.GREEN);
+    anchor.setOpacity(0.5);
 
-		ee.setRadius( .1 );
-		ee.setPaint( Color.BLUE );
+    ee.setRadius(.1);
+    ee.setPaint(Color.BLUE);
 
-		this.ogre.place( SpatialRelation.ABOVE, this.snow );
-		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
+    this.ogre.place(SpatialRelation.ABOVE, this.snow);
+    this.snow.setPaint(SGround.SurfaceAppearance.SNOW);
 
-		//		target.setPositionRelativeToVehicle(new Position(1, 0, 0));
+    //    target.setPositionRelativeToVehicle(new Position(1, 0, 0));
 
-		//camera vantage point taken care of by camera navigator
-		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
-	}
+    //camera vantage point taken care of by camera navigator
+    //this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
+  }
 
-	private void performCustomSetup() {
-		//if you want the skeleton visualization to be co-located
-		//		this.ogre.setOpacity( 0.25 );
+  private void performCustomSetup() {
+    //if you want the skeleton visualization to be co-located
+    //    this.ogre.setOpacity( 0.25 );
 
-		JointedModelImp impl = EmployeesOnly.getImplementation( this.ogre );
-		impl.showVisualization();
-	}
+    JointedModelImp impl = EmployeesOnly.getImplementation(this.ogre);
+    impl.showVisualization();
+  }
 
-	@Override
-	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
-		if( isActive ) {
-			if( activeCount == 1 ) {
-				this.performGeneratedSetup();
-				this.performCustomSetup();
-			} else {
-				this.restoreStateAndEventListeners();
-			}
-		} else {
-			this.restoreStateAndEventListeners();
-		}
-	}
+  @Override
+  protected void handleActiveChanged(Boolean isActive, Integer activeCount) {
+    if (isActive) {
+      if (activeCount == 1) {
+        this.performGeneratedSetup();
+        this.performCustomSetup();
+      } else {
+        this.restoreStateAndEventListeners();
+      }
+    } else {
+      this.restoreStateAndEventListeners();
+    }
+  }
 }

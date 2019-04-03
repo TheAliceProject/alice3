@@ -58,172 +58,169 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ResourceNode extends ResourceGalleryDragModel implements Comparable<ResourceNode> {
-	private ResourceNode parent;
-	private final ResourceKey resourceKey;
-	private final List<ResourceNode> children;
-	private final CascadeBlankChild<ResourceNode> blankChild;
-	private final boolean isBreadcrumbButtonIconDesired;
+  private ResourceNode parent;
+  private final ResourceKey resourceKey;
+  private final List<ResourceNode> children;
+  private final CascadeBlankChild<ResourceNode> blankChild;
+  private final boolean isBreadcrumbButtonIconDesired;
 
+  public ResourceNode(UUID migrationId, ResourceKey key) {
+    this(migrationId, key, Collections.emptyList(), false);
+  }
 
-	public ResourceNode( UUID migrationId, ResourceKey key ) {
-		this( migrationId, key, Collections.emptyList(), false );
-	}
+  public ResourceNode(ResourceKey resourceKey, List<ResourceNode> children) {
+    this(resourceKey, children, false);
+  }
 
-	public ResourceNode( ResourceKey resourceKey, List<ResourceNode> children ) {
-		this( resourceKey, children, false );
-	}
+  public ResourceNode(ResourceKey resourceKey, List<ResourceNode> children, boolean isBreadcrumbButtonDesired) {
+    this(UUID.fromString("cdf2a199-6160-4f87-9001-17a6b8f0c355"), resourceKey, children, isBreadcrumbButtonDesired);
+  }
 
-	public ResourceNode( ResourceKey resourceKey, List<ResourceNode> children, boolean isBreadcrumbButtonDesired ) {
-		this( UUID.fromString( "cdf2a199-6160-4f87-9001-17a6b8f0c355" ), resourceKey, children, isBreadcrumbButtonDesired);
-	}
+  private ResourceNode(UUID migrationId, ResourceKey resourceKey, List<ResourceNode> children, boolean isBreadcrumbButtonIconDesired) {
+    super(migrationId);
+    this.resourceKey = resourceKey;
+    this.isBreadcrumbButtonIconDesired = isBreadcrumbButtonIconDesired;
+    for (ResourceNode child : children) {
+      assert child.parent == null : parent;
+      child.parent = this;
+    }
+    this.children = children;
+    if (this.resourceKey.isLeaf()) {
+      if (this.resourceKey instanceof ClassResourceKey) {
+        this.blankChild = null;
+      } else {
+        this.blankChild = new ResourceFillIn(this);
+      }
+    } else {
+      this.blankChild = new ResourceMenuModel(this);
+    }
+  }
 
-	private ResourceNode( UUID migrationId, ResourceKey resourceKey, List<ResourceNode> children, boolean isBreadcrumbButtonIconDesired ) {
-		super( migrationId );
-		this.resourceKey = resourceKey;
-		this.isBreadcrumbButtonIconDesired = isBreadcrumbButtonIconDesired;
-		for( ResourceNode child : children ) {
-			assert child.parent == null : parent;
-			child.parent = this;
-		}
-		this.children = children;
-		if( this.resourceKey.isLeaf() ) {
-			if( this.resourceKey instanceof ClassResourceKey ) {
-				this.blankChild = null;
-			} else {
-				this.blankChild = new ResourceFillIn( this );
-			}
-		} else {
-			this.blankChild = new ResourceMenuModel( this );
-		}
-	}
+  @Override
+  protected void localize() {
+  }
 
-	@Override
-	protected void localize() {
-	}
+  public ResourceNode getParent() {
+    return this.parent;
+  }
 
-	public ResourceNode getParent() {
-		return this.parent;
-	}
+  public ResourceKey getResourceKey() {
+    return this.resourceKey;
+  }
 
-	public ResourceKey getResourceKey() {
-		return this.resourceKey;
-	}
+  public boolean isUserDefinedModel() {
+    return (this.resourceKey instanceof DynamicResourceKey);
+  }
 
-	public boolean isUserDefinedModel() {
-		return (this.resourceKey instanceof DynamicResourceKey);
-	}
+  boolean isSubclassable() {
+    return resourceKey.isInterface() && !getFirstChild().isSubclassable();
+  }
 
-	boolean isSubclassable() {
-		return resourceKey.isInterface() && !getFirstChild().isSubclassable();
-	}
+  boolean isSubclassableAndDoesNotRequirePoses() {
+    return !resourceKey.getInternalText().equals("Slitherer") && !resourceKey.getInternalText().equals("Flyer") && isSubclassable();
+  }
 
-	boolean isSubclassableAndDoesNotRequirePoses() {
-		return !resourceKey.getInternalText().equals("Slitherer")
-			&& !resourceKey.getInternalText().equals("Flyer")
-			&& isSubclassable();
-	}
+  @Override
+  public List<ResourceNode> getNodeChildren() {
+    return this.children;
+  }
 
-	@Override
-	public List<ResourceNode> getNodeChildren() {
-		return this.children;
-	}
+  void addNodeChild(ResourceNode nodeChild) {
+    nodeChild.parent = this;
+    this.children.add(nodeChild);
+    Collections.sort(children);
+  }
 
-	void addNodeChild( ResourceNode nodeChild ) {
-		nodeChild.parent = this;
-		this.children.add( nodeChild );
-		Collections.sort( children );
-	}
+  void addNodeChild(int index, ResourceNode nodeChild) {
+    nodeChild.parent = this;
+    this.children.add(index, nodeChild);
+  }
 
-	void addNodeChild( int index, ResourceNode nodeChild ) {
-		nodeChild.parent = this;
-		this.children.add( index, nodeChild );
-	}
+  @Override
+  public String getText() {
+    return this.resourceKey.getLocalizedDisplayText();
+  }
 
-	@Override
-	public String getText() {
-		return this.resourceKey.getLocalizedDisplayText();
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return this.resourceKey.getIconFactory();
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return this.resourceKey.getIconFactory();
-	}
+  public CascadeBlankChild<ResourceNode> getAddFieldBlankChild() {
+    if (this.resourceKey instanceof ClassResourceKey) {
+      ClassResourceKey classResourceKey = (ClassResourceKey) this.resourceKey;
+      if (classResourceKey.isLeaf()) {
+        return this.children.get(0).getAddFieldBlankChild();
+      }
+    }
+    return this.blankChild;
+  }
 
-	public CascadeBlankChild<ResourceNode> getAddFieldBlankChild() {
-		if( this.resourceKey instanceof ClassResourceKey ) {
-			ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
-			if( classResourceKey.isLeaf() ) {
-				return this.children.get( 0 ).getAddFieldBlankChild();
-			}
-		}
-		return this.blankChild;
-	}
+  @Override
+  public Triggerable getDropOperation(DragStep step, DropSite dropSite) {
+    return resourceKey.getDropOperation(this, step, dropSite);
+  }
 
-	@Override
-	public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
-		return resourceKey.getDropOperation(this, step, dropSite);
-	}
+  public boolean isBreadcrumbButtonIconDesired() {
+    return isBreadcrumbButtonIconDesired;
+  }
 
-	public boolean isBreadcrumbButtonIconDesired() {
-		return isBreadcrumbButtonIconDesired;
-	}
+  private static boolean ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull = false;
 
-	private static boolean ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull = false;
+  public static void ACCEPTABLE_HACK_FOR_GALLERY_QA_setLeftClickModelAlwaysNull(boolean ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull) {
+    ResourceNode.ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull = ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull;
+  }
 
-	public static void ACCEPTABLE_HACK_FOR_GALLERY_QA_setLeftClickModelAlwaysNull( boolean ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull ) {
-		ResourceNode.ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull = ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull;
-	}
+  @Override
+  public Triggerable getLeftButtonClickOperation(SingleSelectTreeState<ResourceNode> controller) {
+    if (ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull) {
+      return null;
+    } else {
+      return resourceKey.getLeftClickOperation(this, controller);
+    }
+  }
 
-	@Override
-	public Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller ) {
-		if( ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull ) {
-			return null;
-		} else {
-			return resourceKey.getLeftClickOperation(this, controller);
-		}
-	}
+  ResourceNode getFirstChild() {
+    if (this.children.size() > 0) {
+      return this.children.get(0);
+    } else {
+      return null;
+    }
+  }
 
-	ResourceNode getFirstChild() {
-		if( this.children.size() > 0 ) {
-			return this.children.get( 0 );
-		} else {
-			return null;
-		}
-	}
+  public boolean isInstanceCreator() {
+    return this.resourceKey.isInstanceCreator();
+  }
 
-	public boolean isInstanceCreator() {
-		return this.resourceKey.isInstanceCreator();
-	}
+  private InstanceCreatorKey getInstanceCreatorKey() {
+    return (resourceKey instanceof InstanceCreatorKey) ? (InstanceCreatorKey) resourceKey : null;
+  }
 
-	private InstanceCreatorKey getInstanceCreatorKey() {
-		return (resourceKey instanceof InstanceCreatorKey) ? (InstanceCreatorKey) resourceKey : null;
-	}
+  @Override
+  public AxisAlignedBox getBoundingBox() {
+    InstanceCreatorKey key = getInstanceCreatorKey();
+    return (key != null) ? key.getBoundingBox() : null;
+  }
 
-	@Override
-	public AxisAlignedBox getBoundingBox() {
-		InstanceCreatorKey key = getInstanceCreatorKey();
-		return (key != null) ? key.getBoundingBox() : null;
-	}
+  @Override
+  public boolean placeOnGround() {
+    InstanceCreatorKey key = getInstanceCreatorKey();
+    return key != null && key.getPlaceOnGround();
+  }
 
-	@Override
-	public boolean placeOnGround() {
-		InstanceCreatorKey key = getInstanceCreatorKey();
-		return key != null && key.getPlaceOnGround();
-	}
+  @Override
+  public int compareTo(ResourceNode other) {
+    return this.getText().toLowerCase().compareTo(other.getText().toLowerCase());
+  }
 
-	@Override
-	public int compareTo( ResourceNode other ) {
-		return this.getText().toLowerCase().compareTo( other.getText().toLowerCase() );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    super.appendRepr(sb);
+    sb.append("key=");
+    sb.append(this.resourceKey);
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( "key=" );
-		sb.append( this.resourceKey );
-	}
-
-	public String getSimpleClassName() {
-		return getResourceKey().getSearchText();
-	}
+  public String getSimpleClassName() {
+    return getResourceKey().getSearchText();
+  }
 }

@@ -51,19 +51,19 @@ import org.lgna.story.resources.JointedModelResource;
  * @author Dennis Cosgrove
  */
 public class StoryApiReflectionUtilities {
-	private StoryApiReflectionUtilities() {
-		throw new AssertionError();
-	}
+  private StoryApiReflectionUtilities() {
+    throw new AssertionError();
+  }
 
-	public static Class<? extends JointedModelResource> getResourceClassForModelClass( Class<? extends SJointedModel> modelCls ) {
-		for( Constructor<?> jConstructor : modelCls.getConstructors() ) {
-			Class<?>[] parameterTypes = jConstructor.getParameterTypes();
-			if( parameterTypes.length == 1 ) {
-				if( JointedModelResource.class.isAssignableFrom( parameterTypes[ 0 ] ) ) {
-					return (Class<? extends JointedModelResource>)parameterTypes[ 0 ];
-				}
-			}
-		}
-		return null;
-	}
+  public static Class<? extends JointedModelResource> getResourceClassForModelClass(Class<? extends SJointedModel> modelCls) {
+    for (Constructor<?> jConstructor : modelCls.getConstructors()) {
+      Class<?>[] parameterTypes = jConstructor.getParameterTypes();
+      if (parameterTypes.length == 1) {
+        if (JointedModelResource.class.isAssignableFrom(parameterTypes[0])) {
+          return (Class<? extends JointedModelResource>) parameterTypes[0];
+        }
+      }
+    }
+    return null;
+  }
 }

@@ -56,39 +56,39 @@ import javax.swing.SwingConstants;
  * @author Dennis Cosgrove
  */
 public class ExpressionDropDown<M extends Expression> extends ItemDropDown<M, CustomItemState<M>> {
-	private static class MainComponent extends BorderPanel {
-		private final AstI18nFactory factory;
-		private Expression expression;
+  private static class MainComponent extends BorderPanel {
+    private final AstI18nFactory factory;
+    private Expression expression;
 
-		public MainComponent( AstI18nFactory factory ) {
-			this.factory = factory;
-		}
+    public MainComponent(AstI18nFactory factory) {
+      this.factory = factory;
+    }
 
-		private void setExpression( Expression expression ) {
-			this.expression = expression;
-			this.refreshLater();
-		}
+    private void setExpression(Expression expression) {
+      this.expression = expression;
+      this.refreshLater();
+    }
 
-		@Override
-		protected void internalRefresh() {
-			super.internalRefresh();
-			this.forgetAndRemoveAllComponents();
-			this.addCenterComponent( factory.createExpressionPane( this.expression ) );
-			this.revalidateAndRepaint();
-		}
-	};
+    @Override
+    protected void internalRefresh() {
+      super.internalRefresh();
+      this.forgetAndRemoveAllComponents();
+      this.addCenterComponent(factory.createExpressionPane(this.expression));
+      this.revalidateAndRepaint();
+    }
+  }
 
-	private final MainComponent mainComponent;
+  private final MainComponent mainComponent;
 
-	public ExpressionDropDown( CustomItemState<M> model, AstI18nFactory factory ) {
-		super( model );
-		this.mainComponent = new MainComponent( factory );
-		this.setMainComponent( this.mainComponent );
-		this.getAwtComponent().setHorizontalAlignment( SwingConstants.LEADING );
-	}
+  public ExpressionDropDown(CustomItemState<M> model, AstI18nFactory factory) {
+    super(model);
+    this.mainComponent = new MainComponent(factory);
+    this.setMainComponent(this.mainComponent);
+    this.getAwtComponent().setHorizontalAlignment(SwingConstants.LEADING);
+  }
 
-	@Override
-	protected void handleChanged( State<M> state, M prevValue, M nextValue ) {
-		this.mainComponent.setExpression( nextValue );
-	}
-};
+  @Override
+  protected void handleChanged(State<M> state, M prevValue, M nextValue) {
+    this.mainComponent.setExpression(nextValue);
+  }
+}

@@ -51,29 +51,29 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public final class LayeredPane extends SwingComponentView<JLayeredPane> {
-	private final Map<Integer, Layer> mapIdToLayer = Maps.newHashMap();
+  private final Map<Integer, Layer> mapIdToLayer = Maps.newHashMap();
 
-	private final RootPane rootPane;
+  private final RootPane rootPane;
 
-	/* package-private */LayeredPane( RootPane rootPane ) {
-		this.rootPane = rootPane;
-	}
+  /* package-private */LayeredPane(RootPane rootPane) {
+    this.rootPane = rootPane;
+  }
 
-	@Override
-	protected JLayeredPane createAwtComponent() {
-		return this.rootPane.getAwtComponent().getLayeredPane();
-	}
+  @Override
+  protected JLayeredPane createAwtComponent() {
+    return this.rootPane.getAwtComponent().getLayeredPane();
+  }
 
-	public Layer getLayer( Integer id ) {
-		synchronized( this.mapIdToLayer ) {
-			Layer rv = this.mapIdToLayer.get( id );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new Layer( this, id );
-				this.mapIdToLayer.put( id, rv );
-			}
-			return rv;
-		}
-	}
+  public Layer getLayer(Integer id) {
+    synchronized (this.mapIdToLayer) {
+      Layer rv = this.mapIdToLayer.get(id);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new Layer(this, id);
+        this.mapIdToLayer.put(id, rv);
+      }
+      return rv;
+    }
+  }
 }

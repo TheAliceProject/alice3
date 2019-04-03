@@ -50,79 +50,79 @@ import edu.cmu.cs.dennisc.math.Tuple3;
  * @author Dennis Cosgrove
  */
 public final class MPlane {
-	private static MPlane createInstance( MPoint3 position, double xNormal, double yNormal, double zNormal ) {
-		assert position.isNaN() == false;
+  private static MPlane createInstance(MPoint3 position, double xNormal, double yNormal, double zNormal) {
+    assert position.isNaN() == false;
 
-		final double EPSILON = 0.01;
-		double magnitudeSquared = Tuple3.calculateMagnitudeSquared( xNormal, yNormal, zNormal );
-		if( EpsilonUtilities.isWithinEpsilonOf1InSquaredSpace( magnitudeSquared, EPSILON ) ) {
-			//pass
-		} else {
-			double magnitude = Math.sqrt( magnitudeSquared );
-			Logger.severe( magnitude, xNormal, yNormal, zNormal );
-			xNormal /= magnitude;
-			yNormal /= magnitude;
-			zNormal /= magnitude;
-		}
-		double d = -( ( xNormal * position.x ) + ( yNormal * position.y ) + ( zNormal * position.z ) );
-		return new MPlane( position, new MVector3( xNormal, yNormal, zNormal ), d );
-	}
+    final double EPSILON = 0.01;
+    double magnitudeSquared = Tuple3.calculateMagnitudeSquared(xNormal, yNormal, zNormal);
+    if (EpsilonUtilities.isWithinEpsilonOf1InSquaredSpace(magnitudeSquared, EPSILON)) {
+      //pass
+    } else {
+      double magnitude = Math.sqrt(magnitudeSquared);
+      Logger.severe(magnitude, xNormal, yNormal, zNormal);
+      xNormal /= magnitude;
+      yNormal /= magnitude;
+      zNormal /= magnitude;
+    }
+    double d = -((xNormal * position.x) + (yNormal * position.y) + (zNormal * position.z));
+    return new MPlane(position, new MVector3(xNormal, yNormal, zNormal), d);
+  }
 
-	public static MPlane createInstance( MPoint3 position, MVector3 normal ) {
-		assert position.isNaN() == false;
-		assert normal.isNaN() == false;
+  public static MPlane createInstance(MPoint3 position, MVector3 normal) {
+    assert position.isNaN() == false;
+    assert normal.isNaN() == false;
 
-		return createInstance( position, normal.x, normal.y, normal.z );
-	}
+    return createInstance(position, normal.x, normal.y, normal.z);
+  }
 
-	public static MPlane createInstance( MAffineMatrix4x4 m ) {
-		assert m.isNaN() == false;
-		return createInstance( m.translation, -m.orientation.backward.x, -m.orientation.backward.y, -m.orientation.backward.z );
-	}
+  public static MPlane createInstance(MAffineMatrix4x4 m) {
+    assert m.isNaN() == false;
+    return createInstance(m.translation, -m.orientation.backward.x, -m.orientation.backward.y, -m.orientation.backward.z);
+  }
 
-	public static MPlane createInstance( MPoint3 a, MPoint3 b, MPoint3 c ) {
-		assert a.isNaN() == false;
-		assert b.isNaN() == false;
-		assert c.isNaN() == false;
-		MVector3 ac = MVector3.createSubtraction( c, a );
-		MVector3 ab = MVector3.createSubtraction( b, a );
-		ac = ac.createNormal();
-		ab = ab.createNormal();
-		MVector3 normal = MVector3.createCrossProduct( ac, ab );
-		return createInstance( a, normal );
-	}
+  public static MPlane createInstance(MPoint3 a, MPoint3 b, MPoint3 c) {
+    assert a.isNaN() == false;
+    assert b.isNaN() == false;
+    assert c.isNaN() == false;
+    MVector3 ac = MVector3.createSubtraction(c, a);
+    MVector3 ab = MVector3.createSubtraction(b, a);
+    ac = ac.createNormal();
+    ab = ab.createNormal();
+    MVector3 normal = MVector3.createCrossProduct(ac, ab);
+    return createInstance(a, normal);
+  }
 
-	private MPlane( MPoint3 position, MVector3 normal, double d ) {
-		this.position = position;
-		this.normal = normal;
-		this.d = d;
-	}
+  private MPlane(MPoint3 position, MVector3 normal, double d) {
+    this.position = position;
+    this.normal = normal;
+    this.d = d;
+  }
 
-	public double intersect( MRay ray ) {
-		double a = this.normal.x;
-		double b = this.normal.y;
-		double c = this.normal.z;
-		double denom = ( a * ray.direction.x ) + ( b * ray.direction.y ) + ( c * ray.direction.z );
-		if( denom == 0.0 ) {
-			return Double.NaN;
-		} else {
-			double numer = ( a * ray.origin.x ) + ( b * ray.origin.y ) + ( c * ray.origin.z ) + this.d;
-			return -numer / denom;
-		}
-	}
+  public double intersect(MRay ray) {
+    double a = this.normal.x;
+    double b = this.normal.y;
+    double c = this.normal.z;
+    double denom = (a * ray.direction.x) + (b * ray.direction.y) + (c * ray.direction.z);
+    if (denom == 0.0) {
+      return Double.NaN;
+    } else {
+      double numer = (a * ray.origin.x) + (b * ray.origin.y) + (c * ray.origin.z) + this.d;
+      return -numer / denom;
+    }
+  }
 
-	public double evaluate( MPoint3 p ) {
-		double a = this.normal.x;
-		double b = this.normal.y;
-		double c = this.normal.z;
-		return ( a * p.x ) + ( b * p.y ) + ( c * p.z ) + this.d;
-	}
+  public double evaluate(MPoint3 p) {
+    double a = this.normal.x;
+    double b = this.normal.y;
+    double c = this.normal.z;
+    return (a * p.x) + (b * p.y) + (c * p.z) + this.d;
+  }
 
-	public MPlane createTransformed( MAffineMatrix4x4 m ) {
-		return createInstance( this.position.createTransformed( m ), this.normal.createTransformed( m ) );
-	}
+  public MPlane createTransformed(MAffineMatrix4x4 m) {
+    return createInstance(this.position.createTransformed(m), this.normal.createTransformed(m));
+  }
 
-	public final MPoint3 position;
-	public final MVector3 normal;
-	private final double d;
+  public final MPoint3 position;
+  public final MVector3 normal;
+  private final double d;
 }

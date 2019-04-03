@@ -51,84 +51,83 @@ import com.jogamp.opengl.GLOffscreenAutoDrawable;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
-	private final GLEventListener glEventListener = new GLEventListener() {
-		@Override
-		public void init( GLAutoDrawable drawable ) {
-		}
+  private final GLEventListener glEventListener = new GLEventListener() {
+    @Override
+    public void init(GLAutoDrawable drawable) {
+    }
 
-		@Override
-		public void reshape( GLAutoDrawable drawable, int x, int y, int width, int height ) {
-		}
+    @Override
+    public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+    }
 
-		@Override
-		public void display( GLAutoDrawable drawable ) {
-			Throwable throwable = null;
-			try {
-				drawable.getGL();
-				drawable.getContext().makeCurrent();
-			} catch( Throwable t ) {
-				throwable = t;
-			}
-			if( throwable != null ) {
-				if( throwable instanceof NullPointerException ) {
-					NullPointerException nullPointerException = (NullPointerException)throwable;
-					Logger.info( nullPointerException );
-				} else {
-					Logger.throwable( throwable );
-				}
-			} else {
-				fireDisplay( drawable.getGL().getGL2() );
-			}
-		}
+    @Override
+    public void display(GLAutoDrawable drawable) {
+      Throwable throwable = null;
+      try {
+        drawable.getGL();
+        drawable.getContext().makeCurrent();
+      } catch (Throwable t) {
+        throwable = t;
+      }
+      if (throwable != null) {
+        if (throwable instanceof NullPointerException) {
+          NullPointerException nullPointerException = (NullPointerException) throwable;
+          Logger.info(nullPointerException);
+        } else {
+          Logger.throwable(throwable);
+        }
+      } else {
+        fireDisplay(drawable.getGL().getGL2());
+      }
+    }
 
-		@Override
-		public void dispose( GLAutoDrawable drawable ) {
-		}
-	};
+    @Override
+    public void dispose(GLAutoDrawable drawable) {
+    }
+  };
 
-	private GLOffscreenAutoDrawable glPixelBuffer;
+  private GLOffscreenAutoDrawable glPixelBuffer;
 
-	public PixelBufferOffscreenDrawable( DisplayCallback callback ) {
-		super( callback );
-	}
+  public PixelBufferOffscreenDrawable(DisplayCallback callback) {
+    super(callback);
+  }
 
-	@Override
-	protected GLOffscreenAutoDrawable getGlDrawable() {
-		return this.glPixelBuffer;
-	}
+  @Override
+  protected GLOffscreenAutoDrawable getGlDrawable() {
+    return this.glPixelBuffer;
+  }
 
-	@Override
-	public void initialize( GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height ) {
-		if( this.glPixelBuffer != null ) {
-			Logger.severe( this );
-		} else {
-			this.glPixelBuffer = GlDrawableUtils.createGlPixelBuffer( glRequestedCapabilities, glCapabilitiesChooser, width, height, glShareContext );
-			if( this.getCallback() != null ) {
-				this.glPixelBuffer.addGLEventListener( glEventListener );
-			}
-		}
-	}
+  @Override
+  public void initialize(GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height) {
+    if (this.glPixelBuffer != null) {
+      Logger.severe(this);
+    } else {
+      this.glPixelBuffer = GlDrawableUtils.createGlPixelBuffer(glRequestedCapabilities, glCapabilitiesChooser, width, height, glShareContext);
+      if (this.getCallback() != null) {
+        this.glPixelBuffer.addGLEventListener(glEventListener);
+      }
+    }
+  }
 
-	@Override
-	public void destroy() {
-		if( this.glPixelBuffer != null ) {
-			this.glPixelBuffer.destroy();
-			this.glPixelBuffer = null;
-		}
-	}
+  @Override
+  public void destroy() {
+    if (this.glPixelBuffer != null) {
+      this.glPixelBuffer.destroy();
+      this.glPixelBuffer = null;
+    }
+  }
 
-	@Override
-	public void display() {
-		this.glPixelBuffer.display();
-	}
+  @Override
+  public void display() {
+    this.glPixelBuffer.display();
+  }
 
-	@Override
-	public boolean isHardwareAccelerated() {
-		return true;
-	}
+  @Override
+  public boolean isHardwareAccelerated() {
+    return true;
+  }
 }

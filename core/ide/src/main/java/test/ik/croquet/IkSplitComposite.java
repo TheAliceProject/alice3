@@ -53,20 +53,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IkSplitComposite extends SplitComposite {
-	public IkSplitComposite() {
-		super( UUID.fromString( "0c407385-c75d-4bd1-b653-87abf9f1960c" ), new ControlsComposite(), new SceneComposite() );
-	}
+  public IkSplitComposite() {
+    super(UUID.fromString("0c407385-c75d-4bd1-b653-87abf9f1960c"), new ControlsComposite(), new SceneComposite());
+  }
 
-	public ControlsComposite getControlsComposite() {
-		return (ControlsComposite)this.getLeadingComposite();
-	}
+  public ControlsComposite getControlsComposite() {
+    return (ControlsComposite) this.getLeadingComposite();
+  }
 
-	public SceneComposite getSceneComposite() {
-		return (SceneComposite)this.getTrailingComposite();
-	}
+  public SceneComposite getSceneComposite() {
+    return (SceneComposite) this.getTrailingComposite();
+  }
 
-	@Override
-	protected SplitPane createView() {
-		return new HorizontalSplitPane( this );
-	}
+  @Override
+  protected SplitPane createView() {
+    return new HorizontalSplitPane(this);
+  }
 }

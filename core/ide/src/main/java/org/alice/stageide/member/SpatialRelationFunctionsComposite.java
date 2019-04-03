@@ -50,15 +50,15 @@ import java.util.UUID;
  * @author dculyba
  */
 public class SpatialRelationFunctionsComposite extends NameFilteredJavaFunctionsComposite {
-	private static class SingletonHolder {
-		private static SpatialRelationFunctionsComposite instance = new SpatialRelationFunctionsComposite();
-	}
+  private static class SingletonHolder {
+    private static SpatialRelationFunctionsComposite instance = new SpatialRelationFunctionsComposite();
+  }
 
-	public static SpatialRelationFunctionsComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static SpatialRelationFunctionsComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private SpatialRelationFunctionsComposite() {
-		super( UUID.fromString( "8f722e09-9406-4a17-ae84-12bc50661778" ), "getDistanceTo", "getDistanceAbove", "isAbove", "getDistanceBelow", "isBelow", "getDistanceToTheRightOf", "isToTheRightOf", "getDistanceToTheLeftOf", "isToTheLeftOf", "getDistanceInFrontOf", "isInFrontOf", "getDistanceBehind", "isBehind" );
-	}
+  private SpatialRelationFunctionsComposite() {
+    super(UUID.fromString("8f722e09-9406-4a17-ae84-12bc50661778"), "getDistanceTo", "getDistanceAbove", "isAbove", "getDistanceBelow", "isBelow", "getDistanceToTheRightOf", "isToTheRightOf", "getDistanceToTheLeftOf", "isToTheLeftOf", "getDistanceInFrontOf", "isInFrontOf", "getDistanceBehind", "isBehind");
+  }
 }

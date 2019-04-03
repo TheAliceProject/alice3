@@ -52,11 +52,11 @@ import java.awt.event.ItemEvent;
  * @author Dennis Cosgrove
  */
 public class ItemEventTrigger extends EventObjectTrigger<ItemEvent> {
-	public static UserActivity createUserActivity( ItemEvent itemEvent ) {
-		return new ItemEventTrigger( itemEvent ).getUserActivity();
-	}
+  public static UserActivity createUserActivity(ItemEvent itemEvent) {
+    return new ItemEventTrigger(itemEvent).getUserActivity();
+  }
 
-	private ItemEventTrigger( ItemEvent itemEvent ) {
-		super( Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), null, itemEvent );
-	}
+  private ItemEventTrigger(ItemEvent itemEvent) {
+    super(Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), null, itemEvent);
+  }
 }

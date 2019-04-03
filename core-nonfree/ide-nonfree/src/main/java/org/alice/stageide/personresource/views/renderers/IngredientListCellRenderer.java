@@ -69,169 +69,169 @@ import java.util.Map;
  */
 public abstract class IngredientListCellRenderer<E> extends ListCellRenderer<E> {
 
-	private static final File GALLERY_ROOT = StorytellingResources.getGalleryRootDirectory();
-	private static final File IMAGE_ROOT = new File( GALLERY_ROOT, "ide/person" );
-	private static final String DEFAULT_SKIN_TONE_NAME = "GRAY";
+  private static final File GALLERY_ROOT = StorytellingResources.getGalleryRootDirectory();
+  private static final File IMAGE_ROOT = new File(GALLERY_ROOT, "ide/person");
+  private static final String DEFAULT_SKIN_TONE_NAME = "GRAY";
 
-	private static final Map<URL, Icon> map = Maps.newHashMap();
-	private static final Map<String, URL> pathMap = Maps.newHashMap();
+  private static final Map<URL, Icon> map = Maps.newHashMap();
+  private static final Map<String, URL> pathMap = Maps.newHashMap();
 
-	private static final Map<String, Boolean> skinToneIconMap = Maps.newHashMap();
+  private static final Map<String, Boolean> skinToneIconMap = Maps.newHashMap();
 
-	private static boolean hasIconForPath( String path ) {
-		URL urlForIcon = getURLForPath( path );
-		return urlForIcon != null;
-	}
+  private static boolean hasIconForPath(String path) {
+    URL urlForIcon = getURLForPath(path);
+    return urlForIcon != null;
+  }
 
-	public static URL getURLForPath( String path ) {
-		URL urlForIcon = null;
-		if( pathMap.containsKey( path ) ) {
-			urlForIcon = pathMap.get( path );
-		}
-		if( urlForIcon == null ) {
-			File file = new File( IMAGE_ROOT, path );
-			if( file.exists() ) {
-				try {
-					urlForIcon = file.toURL();
-				} catch( MalformedURLException murle ) {
-					Logger.throwable( murle, file );
-					urlForIcon = null;
-				}
-			} else {
-				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( file );
-				urlForIcon = null;
-			}
-			//			if( urlForIcon != null ) {
-			//				//pass
-			//			} else {
-			//				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( path );
-			//			}
-			pathMap.put( path, urlForIcon );
-		}
-		return urlForIcon;
-	}
+  public static URL getURLForPath(String path) {
+    URL urlForIcon = null;
+    if (pathMap.containsKey(path)) {
+      urlForIcon = pathMap.get(path);
+    }
+    if (urlForIcon == null) {
+      File file = new File(IMAGE_ROOT, path);
+      if (file.exists()) {
+        try {
+          urlForIcon = file.toURL();
+        } catch (MalformedURLException murle) {
+          Logger.throwable(murle, file);
+          urlForIcon = null;
+        }
+      } else {
+        //edu.cmu.cs.dennisc.java.util.logging.Logger.errln( file );
+        urlForIcon = null;
+      }
+      //      if( urlForIcon != null ) {
+      //        //pass
+      //      } else {
+      //        edu.cmu.cs.dennisc.java.util.logging.Logger.severe( path );
+      //      }
+      pathMap.put(path, urlForIcon);
+    }
+    return urlForIcon;
+  }
 
-	public static Icon getIconForPath( int width, int height, String path ) {
-		URL urlForIcon = getURLForPath( path );
-		Icon rv = map.get( urlForIcon );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new UrlAsynchronousIcon( width, height, urlForIcon );
-			map.put( urlForIcon, rv );
-		}
-		return rv;
-		//return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );
-	}
+  public static Icon getIconForPath(int width, int height, String path) {
+    URL urlForIcon = getURLForPath(path);
+    Icon rv = map.get(urlForIcon);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new UrlAsynchronousIcon(width, height, urlForIcon);
+      map.put(urlForIcon, rv);
+    }
+    return rv;
+    //return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );
+  }
 
-	private Border border = BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
+  private Border border = BorderFactory.createEmptyBorder(2, 2, 2, 2);
 
-	public IngredientListCellRenderer( int width, int height ) {
-		this.width = width;
-		this.height = height;
-	}
+  public IngredientListCellRenderer(int width, int height) {
+    this.width = width;
+    this.height = height;
+  }
 
-	public boolean ACCEPTABLE_HACK_AT_THIS_TIME_FOR_LIST_DATA_hasValidImageFor( E value, SkinTone baseSkinTone ) {
-		Object v = getValue( value );
-		String clsName = v.getClass().getSimpleName();
-		clsName = this.modifyClsNameIfNecessary( clsName, PersonResourceComposite.getInstance().getIngredientsComposite().getLifeStageState().getValue(), PersonResourceComposite.getInstance().getIngredientsComposite().getGenderState().getValue() );
-		String enumConstantName = v.toString();
-		String path = this.getValidIconPath( baseSkinTone, clsName, enumConstantName );
+  public boolean ACCEPTABLE_HACK_AT_THIS_TIME_FOR_LIST_DATA_hasValidImageFor(E value, SkinTone baseSkinTone) {
+    Object v = getValue(value);
+    String clsName = v.getClass().getSimpleName();
+    clsName = this.modifyClsNameIfNecessary(clsName, PersonResourceComposite.getInstance().getIngredientsComposite().getLifeStageState().getValue(), PersonResourceComposite.getInstance().getIngredientsComposite().getGenderState().getValue());
+    String enumConstantName = v.toString();
+    String path = this.getValidIconPath(baseSkinTone, clsName, enumConstantName);
 
-		return path != null;
-	}
+    return path != null;
+  }
 
-	protected abstract String getSubPath();
+  protected abstract String getSubPath();
 
-	private SkinTone getSkinTone() {
-		return PersonResourceComposite.getInstance().getIngredientsComposite().getClosestBaseSkinTone();
-	}
+  private SkinTone getSkinTone() {
+    return PersonResourceComposite.getInstance().getIngredientsComposite().getClosestBaseSkinTone();
+  }
 
-	private String getIngredientResourceName( String skinToneString, String clsName, String enumConstantName ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getSubPath() );
-		sb.append( "/" );
-		sb.append( skinToneString );
-		sb.append( "/" );
-		sb.append( clsName );
-		sb.append( "." );
-		sb.append( enumConstantName );
-		sb.append( ".png" );
-		return sb.toString();
-	}
+  private String getIngredientResourceName(String skinToneString, String clsName, String enumConstantName) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getSubPath());
+    sb.append("/");
+    sb.append(skinToneString);
+    sb.append("/");
+    sb.append(clsName);
+    sb.append(".");
+    sb.append(enumConstantName);
+    sb.append(".png");
+    return sb.toString();
+  }
 
-	private String getIngredientResourceName( SkinTone skinTone, String clsName, String enumConstantName ) {
-		return getIngredientResourceName( skinTone.toString(), clsName, enumConstantName );
-	}
+  private String getIngredientResourceName(SkinTone skinTone, String clsName, String enumConstantName) {
+    return getIngredientResourceName(skinTone.toString(), clsName, enumConstantName);
+  }
 
-	protected String modifyClsNameIfNecessary( String clsName, LifeStage lifeStage, Gender gender ) {
-		return clsName;
-	}
+  protected String modifyClsNameIfNecessary(String clsName, LifeStage lifeStage, Gender gender) {
+    return clsName;
+  }
 
-	protected Object getValue( E value ) {
-		return value;
-	}
+  protected Object getValue(E value) {
+    return value;
+  }
 
-	private String getValidIconPath( SkinTone baseSkinTone, String clsName, String enumConstantName ) {
-		String path = null;
+  private String getValidIconPath(SkinTone baseSkinTone, String clsName, String enumConstantName) {
+    String path = null;
 
-		boolean lookForSkinToneIcon = true;
-		if( skinToneIconMap.containsKey( clsName ) ) {
-			lookForSkinToneIcon = skinToneIconMap.get( clsName );
-		}
-		if( ( baseSkinTone != null ) && lookForSkinToneIcon ) {
-			path = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
-			//If the clsName isn't in the map, then check to see if there's an icon for this path and remember the results by recording it in the map
-			if( !skinToneIconMap.containsKey( clsName ) ) {
-				if( !hasIconForPath( path ) ) {
-					skinToneIconMap.put( clsName, false );
-					path = this.getIngredientResourceName( DEFAULT_SKIN_TONE_NAME, clsName, enumConstantName );
-				} else {
-					skinToneIconMap.put( clsName, true );
-				}
-			}
-		} else {
-			path = this.getIngredientResourceName( DEFAULT_SKIN_TONE_NAME, clsName, enumConstantName );
-		}
-		if( hasIconForPath( path ) ) {
-			return path;
-		}
-		return null;
-	}
+    boolean lookForSkinToneIcon = true;
+    if (skinToneIconMap.containsKey(clsName)) {
+      lookForSkinToneIcon = skinToneIconMap.get(clsName);
+    }
+    if ((baseSkinTone != null) && lookForSkinToneIcon) {
+      path = this.getIngredientResourceName(baseSkinTone, clsName, enumConstantName);
+      //If the clsName isn't in the map, then check to see if there's an icon for this path and remember the results by recording it in the map
+      if (!skinToneIconMap.containsKey(clsName)) {
+        if (!hasIconForPath(path)) {
+          skinToneIconMap.put(clsName, false);
+          path = this.getIngredientResourceName(DEFAULT_SKIN_TONE_NAME, clsName, enumConstantName);
+        } else {
+          skinToneIconMap.put(clsName, true);
+        }
+      }
+    } else {
+      path = this.getIngredientResourceName(DEFAULT_SKIN_TONE_NAME, clsName, enumConstantName);
+    }
+    if (hasIconForPath(path)) {
+      return path;
+    }
+    return null;
+  }
 
-	@Override
-	protected JLabel getListCellRendererComponent( JLabel rv, JList list, E val, int index, boolean isSelected, boolean cellHasFocus ) {
-		assert rv != null;
-		Object v = getValue( val );
-		if( v != null ) {
-			String clsName = v.getClass().getSimpleName();
-			clsName = this.modifyClsNameIfNecessary( clsName, PersonResourceComposite.getInstance().getIngredientsComposite().getLifeStageState().getValue(), PersonResourceComposite.getInstance().getIngredientsComposite().getGenderState().getValue() );
-			String enumConstantName = v.toString();
+  @Override
+  protected JLabel getListCellRendererComponent(JLabel rv, JList list, E val, int index, boolean isSelected, boolean cellHasFocus) {
+    assert rv != null;
+    Object v = getValue(val);
+    if (v != null) {
+      String clsName = v.getClass().getSimpleName();
+      clsName = this.modifyClsNameIfNecessary(clsName, PersonResourceComposite.getInstance().getIngredientsComposite().getLifeStageState().getValue(), PersonResourceComposite.getInstance().getIngredientsComposite().getGenderState().getValue());
+      String enumConstantName = v.toString();
 
-			rv.setHorizontalTextPosition( SwingConstants.CENTER );
-			rv.setVerticalTextPosition( SwingConstants.BOTTOM );
+      rv.setHorizontalTextPosition(SwingConstants.CENTER);
+      rv.setVerticalTextPosition(SwingConstants.BOTTOM);
 
-			rv.setOpaque( isSelected );
-			SkinTone baseSkinTone = this.getSkinTone();
-			Icon icon;
-			String path = getValidIconPath( baseSkinTone, clsName, enumConstantName );
-			icon = getIconForPath( this.width, this.height, path );
-			if( icon != null ) {
-				rv.setIcon( icon );
-				rv.setText( "" );
-				if( isSelected ) {
-					rv.setBackground( IngredientsView.SELECTED_COLOR );
-				}
-			} else {
-				rv.setText( "image not found" );
-			}
-			rv.setBorder( this.border );
-		} else {
-			rv.setText( "null" );
-		}
-		return rv;
-	}
+      rv.setOpaque(isSelected);
+      SkinTone baseSkinTone = this.getSkinTone();
+      Icon icon;
+      String path = getValidIconPath(baseSkinTone, clsName, enumConstantName);
+      icon = getIconForPath(this.width, this.height, path);
+      if (icon != null) {
+        rv.setIcon(icon);
+        rv.setText("");
+        if (isSelected) {
+          rv.setBackground(IngredientsView.SELECTED_COLOR);
+        }
+      } else {
+        rv.setText("image not found");
+      }
+      rv.setBorder(this.border);
+    } else {
+      rv.setText("null");
+    }
+    return rv;
+  }
 
-	private final int width;
-	private final int height;
+  private final int width;
+  private final int height;
 }

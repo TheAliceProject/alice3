@@ -50,39 +50,39 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public class ScaledIcon extends AbstractScaledIcon {
-	private final Icon sourceIcon;
+  private final Icon sourceIcon;
 
-	public ScaledIcon( Icon sourceIcon, int width, int height ) {
-		super( width, height );
-		if( sourceIcon == null ) {
-			System.out.println( "" );
-		}
-		assert sourceIcon != null;
-		this.sourceIcon = sourceIcon;
-	}
+  public ScaledIcon(Icon sourceIcon, int width, int height) {
+    super(width, height);
+    if (sourceIcon == null) {
+      System.out.println("");
+    }
+    assert sourceIcon != null;
+    this.sourceIcon = sourceIcon;
+  }
 
-	public ScaledIcon( Icon sourceIcon, float factor ) {
-		super( factor );
-		assert sourceIcon != null;
-		this.sourceIcon = sourceIcon;
-	}
+  public ScaledIcon(Icon sourceIcon, float factor) {
+    super(factor);
+    assert sourceIcon != null;
+    this.sourceIcon = sourceIcon;
+  }
 
-	public Icon getSourceIcon() {
-		return this.sourceIcon;
-	}
+  public Icon getSourceIcon() {
+    return this.sourceIcon;
+  }
 
-	@Override
-	protected int getSourceWidth() {
-		return this.sourceIcon.getIconWidth();
-	}
+  @Override
+  protected int getSourceWidth() {
+    return this.sourceIcon.getIconWidth();
+  }
 
-	@Override
-	protected int getSourceHeight() {
-		return this.sourceIcon.getIconHeight();
-	}
+  @Override
+  protected int getSourceHeight() {
+    return this.sourceIcon.getIconHeight();
+  }
 
-	@Override
-	protected void paintSource( Component c, Graphics g ) {
-		this.sourceIcon.paintIcon( c, g, 0, 0 );
-	}
+  @Override
+  protected void paintSource(Component c, Graphics g) {
+    this.sourceIcon.paintIcon(c, g, 0, 0);
+  }
 }

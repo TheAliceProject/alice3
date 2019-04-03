@@ -55,40 +55,40 @@ import java.io.IOException;
  */
 public class FFmpegImageExtractor {
 
-	public static void getFrameAt( final String videoPath, final float frameTimeSeconds, final File snapshotFile ) {
-		// https://trac.ffmpeg.org/wiki/Seeking%20with%20FFmpeg
-		final Float GOP_SEEK = 10.0f * 2.0f; // GOP is typically 10 seconds, so let's double it.
-		Float fastSeek = frameTimeSeconds - GOP_SEEK;
-		Float accurateSeek = GOP_SEEK;
-		if( fastSeek < 0.0f ) {
-			fastSeek = 0.0f;
-			accurateSeek = frameTimeSeconds;
-		}
-		// Sometimes VLCJ returns negative values for position due to being stopped. Just correct for it.
-		if( accurateSeek < 0.0f ) {
-			accurateSeek = 0.0f;
-		}
+  public static void getFrameAt(final String videoPath, final float frameTimeSeconds, final File snapshotFile) {
+    // https://trac.ffmpeg.org/wiki/Seeking%20with%20FFmpeg
+    final Float GOP_SEEK = 10.0f * 2.0f; // GOP is typically 10 seconds, so let's double it.
+    Float fastSeek = frameTimeSeconds - GOP_SEEK;
+    Float accurateSeek = GOP_SEEK;
+    if (fastSeek < 0.0f) {
+      fastSeek = 0.0f;
+      accurateSeek = frameTimeSeconds;
+    }
+    // Sometimes VLCJ returns negative values for position due to being stopped. Just correct for it.
+    if (accurateSeek < 0.0f) {
+      accurateSeek = 0.0f;
+    }
 
-		FFmpegProcess ffmpegProcess = new FFmpegProcess( "-y", "-ss", fastSeek.toString(), "-i", videoPath, "-ss", accurateSeek.toString(), "-f", "image2", "-vframes", "1", snapshotFile.getAbsolutePath() );
-		ffmpegProcess.start();
-		int status = ffmpegProcess.stop();
-		if( status != 0 ) {
-			Logger.severe( "encoding failed; status != 0", status );
-			throw new FFmpegProcessException( ffmpegProcess.getProcessInput(), ffmpegProcess.getProcessError() );
-		}
-	}
+    FFmpegProcess ffmpegProcess = new FFmpegProcess("-y", "-ss", fastSeek.toString(), "-i", videoPath, "-ss", accurateSeek.toString(), "-f", "image2", "-vframes", "1", snapshotFile.getAbsolutePath());
+    ffmpegProcess.start();
+    int status = ffmpegProcess.stop();
+    if (status != 0) {
+      Logger.severe("encoding failed; status != 0", status);
+      throw new FFmpegProcessException(ffmpegProcess.getProcessInput(), ffmpegProcess.getProcessError());
+    }
+  }
 
-	public static Image getFrameAt( final String mrl, final float seconds ) {
-		Image snapshot = null;
-		try {
-			File snapshotFile = File.createTempFile( "snapshot", ".png" );
-			snapshotFile.deleteOnExit();
-			getFrameAt( mrl, seconds, snapshotFile );
-			snapshot = ImageIO.read( snapshotFile );
-			snapshotFile.delete();
-		} catch( IOException e ) {
-			Logger.severe( e );
-		}
-		return snapshot;
-	}
+  public static Image getFrameAt(final String mrl, final float seconds) {
+    Image snapshot = null;
+    try {
+      File snapshotFile = File.createTempFile("snapshot", ".png");
+      snapshotFile.deleteOnExit();
+      getFrameAt(mrl, seconds, snapshotFile);
+      snapshot = ImageIO.read(snapshotFile);
+      snapshotFile.delete();
+    } catch (IOException e) {
+      Logger.severe(e);
+    }
+    return snapshot;
+  }
 }

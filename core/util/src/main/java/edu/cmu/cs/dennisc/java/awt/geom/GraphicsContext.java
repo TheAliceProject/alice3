@@ -49,19 +49,19 @@ import java.awt.geom.AffineTransform;
  * @author Dennis Cosgrove
  */
 public class GraphicsContext extends TransformContext {
-	private Graphics2D m_g2;
+  private Graphics2D m_g2;
 
-	public void initialize( Graphics2D g2 ) {
-		super.initialize();
-		m_g2 = g2;
-	}
+  public void initialize(Graphics2D g2) {
+    super.initialize();
+    m_g2 = g2;
+  }
 
-	public Graphics2D getAWTGraphics2D() {
-		return m_g2;
-	}
+  public Graphics2D getAWTGraphics2D() {
+    return m_g2;
+  }
 
-	@Override
-	protected void update( AffineTransform affineTransform ) {
-		m_g2.setTransform( affineTransform );
-	}
+  @Override
+  protected void update(AffineTransform affineTransform) {
+    m_g2.setTransform(affineTransform);
+  }
 }

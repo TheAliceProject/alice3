@@ -50,12 +50,12 @@ import org.lgna.story.event.StartOcclusionEvent;
 
 public class StartOcclusionEventAdapter extends AbstractAdapter implements OcclusionStartListener {
 
-	public StartOcclusionEventAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public StartOcclusionEventAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void occlusionStarted( StartOcclusionEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void occlusionStarted(StartOcclusionEvent e) {
+    invokeEntryPoint(e);
+  }
 }

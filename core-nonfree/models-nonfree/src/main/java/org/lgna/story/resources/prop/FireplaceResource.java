@@ -32,41 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum FireplaceResource implements PropResource {
-	COLONIAL_PINK( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_CREAM( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_WHITE( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_BROWN( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_REDWOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_RED( ImplementationAndVisualType.SIMS2 ),
-	LOFT_BROWN( ImplementationAndVisualType.SIMS2 ),
-	LOFT_CONCRETE( ImplementationAndVisualType.SIMS2 ),
-	LOFT_STEEL( ImplementationAndVisualType.SIMS2 ),
-	LOFT_ORANGE( ImplementationAndVisualType.SIMS2 ),
-	MORROCAN_RED( ImplementationAndVisualType.SIMS2 ),
-	MORROCAN_BLUE( ImplementationAndVisualType.SIMS2 ),
-	MORROCAN_ORANGE( ImplementationAndVisualType.SIMS2 ),
-	MORROCAN_WHITE( ImplementationAndVisualType.SIMS2 );
+  COLONIAL_PINK(ImplementationAndVisualType.SIMS2), COLONIAL_CREAM(ImplementationAndVisualType.SIMS2), COLONIAL_WHITE(ImplementationAndVisualType.SIMS2), COLONIAL_BROWN(ImplementationAndVisualType.SIMS2), COLONIAL_REDWOOD(ImplementationAndVisualType.SIMS2), LOFT_RED(ImplementationAndVisualType.SIMS2), LOFT_BROWN(ImplementationAndVisualType.SIMS2), LOFT_CONCRETE(ImplementationAndVisualType.SIMS2), LOFT_STEEL(ImplementationAndVisualType.SIMS2), LOFT_ORANGE(ImplementationAndVisualType.SIMS2), MORROCAN_RED(ImplementationAndVisualType.SIMS2), MORROCAN_BLUE(ImplementationAndVisualType.SIMS2), MORROCAN_ORANGE(ImplementationAndVisualType.SIMS2), MORROCAN_WHITE(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	FireplaceResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	FireplaceResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  FireplaceResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  FireplaceResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

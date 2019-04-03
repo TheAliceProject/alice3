@@ -59,59 +59,59 @@ import java.awt.Font;
  * @author Dennis Cosgrove
  */
 public abstract class BubbleImp extends PropertyOwnerImp {
-	public BubbleImp( EntityImp imp, Bubble bubble, String text, Font font, Color4f textColor, Color4f fillColor, Color4f outlineColor ) {
-		this.imp = imp;
-		this.bubble = bubble;
-		this.bubble.text.setValue( text );
-		this.bubble.font.setValue( font );
-		this.bubble.textColor.setValue( textColor );
-		this.bubble.fillColor.setValue( fillColor );
-		this.bubble.outlineColor.setValue( outlineColor );
-	}
+  public BubbleImp(EntityImp imp, Bubble bubble, String text, Font font, Color4f textColor, Color4f fillColor, Color4f outlineColor) {
+    this.imp = imp;
+    this.bubble = bubble;
+    this.bubble.text.setValue(text);
+    this.bubble.font.setValue(font);
+    this.bubble.textColor.setValue(textColor);
+    this.bubble.fillColor.setValue(fillColor);
+    this.bubble.outlineColor.setValue(outlineColor);
+  }
 
-	public Bubble getBubble() {
-		return this.bubble;
-	}
+  public Bubble getBubble() {
+    return this.bubble;
+  }
 
-	@Override
-	public ProgramImp getProgram() {
-		return this.imp.getProgram();
-	}
+  @Override
+  public ProgramImp getProgram() {
+    return this.imp.getProgram();
+  }
 
-	private final EntityImp imp;
-	private final Bubble bubble;
+  private final EntityImp imp;
+  private final Bubble bubble;
 
-	private static final double CLOSE_ENOUGH_TO_ZERO = 0.001;
-	public final DoubleProperty portion = new DoubleProperty( this ) {
-		private Layer getSgLayer() {
-			SceneImp scene = imp.getScene();
-			CameraImp<?> camera = scene.findFirstCamera();
-			return camera.getPostRenderLayer();
-		}
+  private static final double CLOSE_ENOUGH_TO_ZERO = 0.001;
+  public final DoubleProperty portion = new DoubleProperty(this) {
+    private Layer getSgLayer() {
+      SceneImp scene = imp.getScene();
+      CameraImp<?> camera = scene.findFirstCamera();
+      return camera.getPostRenderLayer();
+    }
 
-		@Override
-		public Double getValue() {
-			return bubble.portion.getValue();
-		}
+    @Override
+    public Double getValue() {
+      return bubble.portion.getValue();
+    }
 
-		@Override
-		protected void handleSetValue( Double value ) {
-			double prevValue = bubble.portion.getValue();
-			double nextValue = value.doubleValue();
-			if( prevValue < CLOSE_ENOUGH_TO_ZERO ) {
-				if( nextValue < CLOSE_ENOUGH_TO_ZERO ) {
-					//pass
-				} else {
-					this.getSgLayer().addGraphic( bubble );
-				}
-			} else {
-				if( nextValue < CLOSE_ENOUGH_TO_ZERO ) {
-					this.getSgLayer().removeGraphic( bubble );
-					//todo:
-					BubbleManager.getInstance().removeBubble( bubble );
-				}
-			}
-			bubble.portion.setValue( nextValue );
-		}
-	};
+    @Override
+    protected void handleSetValue(Double value) {
+      double prevValue = bubble.portion.getValue();
+      double nextValue = value.doubleValue();
+      if (prevValue < CLOSE_ENOUGH_TO_ZERO) {
+        if (nextValue < CLOSE_ENOUGH_TO_ZERO) {
+          //pass
+        } else {
+          this.getSgLayer().addGraphic(bubble);
+        }
+      } else {
+        if (nextValue < CLOSE_ENOUGH_TO_ZERO) {
+          this.getSgLayer().removeGraphic(bubble);
+          //todo:
+          BubbleManager.getInstance().removeBubble(bubble);
+        }
+      }
+      bubble.portion.setValue(nextValue);
+    }
+  };
 }

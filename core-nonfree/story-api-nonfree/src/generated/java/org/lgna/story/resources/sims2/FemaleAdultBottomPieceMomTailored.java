@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultBottomPieceMomTailored implements FemaleAdultBottomPiece {
-	BLACK,
-	BLUE,
-	FIRE,
-	GREEN,
-	PINK,
-	SAND;
+  BLACK, BLUE, FIRE, GREEN, PINK, SAND
 
 }

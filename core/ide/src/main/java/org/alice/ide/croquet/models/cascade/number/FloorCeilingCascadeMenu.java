@@ -56,23 +56,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FloorCeilingCascadeMenu extends ExpressionCascadeMenu<Expression> {
-	private static class SingletonHolder {
-		private static FloorCeilingCascadeMenu instance = new FloorCeilingCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static FloorCeilingCascadeMenu instance = new FloorCeilingCascadeMenu();
+  }
 
-	public static FloorCeilingCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static FloorCeilingCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private FloorCeilingCascadeMenu() {
-		super( UUID.fromString( "08742482-baf4-4b41-851a-b00e4af231ce" ) );
-	}
+  private FloorCeilingCascadeMenu() {
+    super(UUID.fromString("08742482-baf4-4b41-851a-b00e4af231ce"));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> context ) {
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "abs", Double.TYPE ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "rint", Double.TYPE ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "ceil", Double.TYPE ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "floor", Double.TYPE ) );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> context) {
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "abs", Double.TYPE));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "rint", Double.TYPE));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "ceil", Double.TYPE));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "floor", Double.TYPE));
+  }
 }

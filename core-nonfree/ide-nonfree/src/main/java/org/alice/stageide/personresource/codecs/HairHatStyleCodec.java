@@ -51,24 +51,25 @@ import org.lgna.croquet.ItemCodec;
  * @author Dennis Cosgrove
  */
 public enum HairHatStyleCodec implements ItemCodec<HairHatStyle> {
-	SINGLETON;
-	@Override
-	public Class<HairHatStyle> getValueClass() {
-		return HairHatStyle.class;
-	}
+  SINGLETON;
 
-	@Override
-	public HairHatStyle decodeValue( BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public Class<HairHatStyle> getValueClass() {
+    return HairHatStyle.class;
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, HairHatStyle value ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public HairHatStyle decodeValue(BinaryDecoder binaryDecoder) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, HairHatStyle value ) {
-		sb.append( value );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, HairHatStyle value) {
+    throw new RuntimeException("todo");
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, HairHatStyle value) {
+    sb.append(value);
+  }
 }

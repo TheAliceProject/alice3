@@ -52,6 +52,6 @@ import edu.cmu.cs.dennisc.math.property.AngleProperty;
  * @author Dennis Cosgrove
  */
 public class SymmetricPerspectiveCamera extends AbstractPerspectiveCamera {
-	public final AngleProperty verticalViewingAngle = new AngleProperty( this, new AngleInRadians( 0.5 ), true );
-	public final AngleProperty horizontalViewingAngle = new AngleProperty( this, new AngleInRadians( Double.NaN ), true );
+  public final AngleProperty verticalViewingAngle = new AngleProperty(this, new AngleInRadians(0.5), true);
+  public final AngleProperty horizontalViewingAngle = new AngleProperty(this, new AngleInRadians(Double.NaN), true);
 }

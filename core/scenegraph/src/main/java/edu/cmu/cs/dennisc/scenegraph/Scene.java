@@ -53,28 +53,28 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
  * @author Dennis Cosgrove
  */
 public class Scene extends Composite {
-	@Override
-	public AffineMatrix4x4 getAbsoluteTransformation( AffineMatrix4x4 rv ) {
-		rv.setIdentity();
-		return rv;
-	}
+  @Override
+  public AffineMatrix4x4 getAbsoluteTransformation(AffineMatrix4x4 rv) {
+    rv.setIdentity();
+    return rv;
+  }
 
-	@Override
-	public AffineMatrix4x4 getInverseAbsoluteTransformation( AffineMatrix4x4 rv ) {
-		rv.setIdentity();
-		return rv;
-	}
+  @Override
+  public AffineMatrix4x4 getInverseAbsoluteTransformation(AffineMatrix4x4 rv) {
+    rv.setIdentity();
+    return rv;
+  }
 
-	@Override
-	public Composite getRoot() {
-		return this;
-	}
+  @Override
+  public Composite getRoot() {
+    return this;
+  }
 
-	//todo: check to see if other is a descendant
-	public boolean isSceneOf( ReferenceFrame other ) {
-		return true;
-	}
+  //todo: check to see if other is a descendant
+  public boolean isSceneOf(ReferenceFrame other) {
+    return true;
+  }
 
-	public final InstanceProperty<Background> background = new InstanceProperty<Background>( this, null );
-	public final FloatProperty globalBrightness = new FloatProperty( this, 1.0f );
+  public final InstanceProperty<Background> background = new InstanceProperty<Background>(this, null);
+  public final FloatProperty globalBrightness = new FloatProperty(this, 1.0f);
 }

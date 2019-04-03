@@ -52,16 +52,16 @@ import java.awt.Point;
  * @author Dennis Cosgrove
  */
 public class IterationTrigger extends Trigger {
-	public static IterationTrigger createUserInstance( UserActivity userActivity ) {
-		return new IterationTrigger(userActivity);
-	}
+  public static IterationTrigger createUserInstance(UserActivity userActivity) {
+    return new IterationTrigger(userActivity);
+  }
 
-	private IterationTrigger(UserActivity userActivity) {
-		super(userActivity);
-	}
+  private IterationTrigger(UserActivity userActivity) {
+    super(userActivity);
+  }
 
-	@Override
-	public void showPopupMenu( PopupMenu popupMenu ) {
-		PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new Point() );
-	}
+  @Override
+  public void showPopupMenu(PopupMenu popupMenu) {
+    PopupMenuUtilities.showModal(popupMenu.getAwtComponent(), null, new Point());
+  }
 }

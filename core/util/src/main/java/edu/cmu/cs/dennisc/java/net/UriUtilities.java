@@ -50,19 +50,19 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public class UriUtilities {
-	private UriUtilities() {
-		throw new AssertionError();
-	}
+  private UriUtilities() {
+    throw new AssertionError();
+  }
 
-	public static File getFile( URI uri ) {
-		if( uri != null ) {
-			if( uri.getScheme().equalsIgnoreCase( "file" ) ) {
-				return new File( uri );
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  public static File getFile(URI uri) {
+    if (uri != null) {
+      if (uri.getScheme().equalsIgnoreCase("file")) {
+        return new File(uri);
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 }

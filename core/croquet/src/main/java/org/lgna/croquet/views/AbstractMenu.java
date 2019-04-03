@@ -55,155 +55,155 @@ import javax.swing.event.PopupMenuListener;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMenu<M extends PrepModel> extends ViewController<JMenu, M> implements MenuItemContainer {
-	private boolean isIconSet;
-	private Icon setIcon;
+  private boolean isIconSet;
+  private Icon setIcon;
 
-	public AbstractMenu( M model ) {
-		super( model );
-	}
+  public AbstractMenu(M model) {
+    super(model);
+  }
 
-	protected Icon getSetIcon() {
-		return this.setIcon;
-	}
+  protected Icon getSetIcon() {
+    return this.setIcon;
+  }
 
-	public boolean isIconSet() {
-		return this.isIconSet;
-	}
+  public boolean isIconSet() {
+    return this.isIconSet;
+  }
 
-	public void setIconSet( boolean isIconSet ) {
-		this.isIconSet = isIconSet;
-	}
+  public void setIconSet(boolean isIconSet) {
+    this.isIconSet = isIconSet;
+  }
 
-	public Icon getIcon() {
-		return this.getAwtComponent().getIcon();
-	}
+  public Icon getIcon() {
+    return this.getAwtComponent().getIcon();
+  }
 
-	public void setIcon( Icon icon ) {
-		this.setIconSet( true );
-		this.setIcon = icon;
-	}
+  public void setIcon(Icon icon) {
+    this.setIconSet(true);
+    this.setIcon = icon;
+  }
 
-	protected abstract boolean areIconsDisplayedInMenus();
+  protected abstract boolean areIconsDisplayedInMenus();
 
-	@Override
-	protected JMenu createAwtComponent() {
-		JMenu rv = new JMenu() {
-			@Override
-			public Icon getIcon() {
-				if( AbstractMenu.this.areIconsDisplayedInMenus() ) {
-					if( AbstractMenu.this.isIconSet() ) {
-						return AbstractMenu.this.getSetIcon();
-					} else {
-						return super.getIcon();
-					}
-				} else {
-					return null;
-				}
-			}
-		};
-		ScrollingPopupMenuUtilities.initializeScrollingCapability( rv.getPopupMenu() );
-		return rv;
-	}
+  @Override
+  protected JMenu createAwtComponent() {
+    JMenu rv = new JMenu() {
+      @Override
+      public Icon getIcon() {
+        if (AbstractMenu.this.areIconsDisplayedInMenus()) {
+          if (AbstractMenu.this.isIconSet()) {
+            return AbstractMenu.this.getSetIcon();
+          } else {
+            return super.getIcon();
+          }
+        } else {
+          return null;
+        }
+      }
+    };
+    ScrollingPopupMenuUtilities.initializeScrollingCapability(rv.getPopupMenu());
+    return rv;
+  }
 
-	@Override
-	public AwtComponentView<?> getMenuComponent( int i ) {
-		return AwtComponentView.lookup( this.getAwtComponent().getMenuComponent( i ) );
-	}
+  @Override
+  public AwtComponentView<?> getMenuComponent(int i) {
+    return AwtComponentView.lookup(this.getAwtComponent().getMenuComponent(i));
+  }
 
-	@Override
-	public int getMenuComponentCount() {
-		return this.getAwtComponent().getMenuComponentCount();
-	}
+  @Override
+  public int getMenuComponentCount() {
+    return this.getAwtComponent().getMenuComponentCount();
+  }
 
-	@Override
-	public synchronized AwtComponentView<?>[] getMenuComponents() {
-		final int N = this.getMenuComponentCount();
-		AwtComponentView<?>[] rv = new AwtComponentView<?>[ N ];
-		for( int i = 0; i < N; i++ ) {
-			rv[ i ] = this.getMenuComponent( i );
-		}
-		return rv;
-	}
+  @Override
+  public synchronized AwtComponentView<?>[] getMenuComponents() {
+    final int N = this.getMenuComponentCount();
+    AwtComponentView<?>[] rv = new AwtComponentView<?>[N];
+    for (int i = 0; i < N; i++) {
+      rv[i] = this.getMenuComponent(i);
+    }
+    return rv;
+  }
 
-	@Override
-	public final ViewController<?, ?> getViewController() {
-		return this;
-	}
+  @Override
+  public final ViewController<?, ?> getViewController() {
+    return this;
+  }
 
-	@Override
-	public void addPopupMenuListener( PopupMenuListener listener ) {
-		this.getAwtComponent().getPopupMenu().addPopupMenuListener( listener );
-	}
+  @Override
+  public void addPopupMenuListener(PopupMenuListener listener) {
+    this.getAwtComponent().getPopupMenu().addPopupMenuListener(listener);
+  }
 
-	@Override
-	public void removePopupMenuListener( PopupMenuListener listener ) {
-		this.getAwtComponent().getPopupMenu().removePopupMenuListener( listener );
-	}
+  @Override
+  public void removePopupMenuListener(PopupMenuListener listener) {
+    this.getAwtComponent().getPopupMenu().removePopupMenuListener(listener);
+  }
 
-	@Override
-	public void addMenu( Menu menu ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().add( menu.getAwtComponent() );
-	}
+  @Override
+  public void addMenu(Menu menu) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().add(menu.getAwtComponent());
+  }
 
-	@Override
-	public void addMenuItem( MenuItem menuItem ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().add( menuItem.getAwtComponent() );
-	}
+  @Override
+  public void addMenuItem(MenuItem menuItem) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().add(menuItem.getAwtComponent());
+  }
 
-	@Override
-	public void addCascadeMenu( CascadeMenu cascadeMenu ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().add( cascadeMenu.getAwtComponent() );
-	}
+  @Override
+  public void addCascadeMenu(CascadeMenu cascadeMenu) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().add(cascadeMenu.getAwtComponent());
+  }
 
-	@Override
-	public void addCascadeCombo( CascadeMenuItem cascadeMenuItem, CascadeMenu cascadeMenu ) {
-		this.checkEventDispatchThread();
-		this.addCascadeMenuItem( cascadeMenuItem );
-		ScrollingPopupMenuUtilities.addSideMenu( this.getAwtComponent().getPopupMenu(), cascadeMenu.getAwtComponent() );
-	}
+  @Override
+  public void addCascadeCombo(CascadeMenuItem cascadeMenuItem, CascadeMenu cascadeMenu) {
+    this.checkEventDispatchThread();
+    this.addCascadeMenuItem(cascadeMenuItem);
+    ScrollingPopupMenuUtilities.addSideMenu(this.getAwtComponent().getPopupMenu(), cascadeMenu.getAwtComponent());
+  }
 
-	@Override
-	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().add( cascadeMenuItem.getAwtComponent() );
-	}
+  @Override
+  public void addCascadeMenuItem(CascadeMenuItem cascadeMenuItem) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().add(cascadeMenuItem.getAwtComponent());
+  }
 
-	@Override
-	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().add( checkBoxMenuItem.getAwtComponent() );
-	}
+  @Override
+  public void addCheckBoxMenuItem(CheckBoxMenuItem checkBoxMenuItem) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().add(checkBoxMenuItem.getAwtComponent());
+  }
 
-	@Override
-	public void addSeparator( MenuTextSeparator menuTextSeparator ) {
-		this.checkEventDispatchThread();
-		if( menuTextSeparator != null ) {
-			this.getAwtComponent().add( menuTextSeparator.getAwtComponent() );
-		} else {
-			this.getAwtComponent().addSeparator();
-		}
-	}
+  @Override
+  public void addSeparator(MenuTextSeparator menuTextSeparator) {
+    this.checkEventDispatchThread();
+    if (menuTextSeparator != null) {
+      this.getAwtComponent().add(menuTextSeparator.getAwtComponent());
+    } else {
+      this.getAwtComponent().addSeparator();
+    }
+  }
 
-	@Override
-	public final void addSeparator() {
-		this.addSeparator( null );
-	}
+  @Override
+  public final void addSeparator() {
+    this.addSeparator(null);
+  }
 
-	@Override
-	public void removeAllMenuItems() {
-		this.checkEventDispatchThread();
-		//this.internalRemoveAllComponents();
-		ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent().getPopupMenu() );
-	}
+  @Override
+  public void removeAllMenuItems() {
+    this.checkEventDispatchThread();
+    //this.internalRemoveAllComponents();
+    ScrollingPopupMenuUtilities.removeAllNonScrollComponents(this.getAwtComponent().getPopupMenu());
+  }
 
-	@Override
-	public void forgetAndRemoveAllMenuItems() {
-		this.checkEventDispatchThread();
-		//this.internalForgetAndRemoveAllComponents();
-		Logger.todo( "forget" );
-		ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent().getPopupMenu() );
-	}
+  @Override
+  public void forgetAndRemoveAllMenuItems() {
+    this.checkEventDispatchThread();
+    //this.internalForgetAndRemoveAllComponents();
+    Logger.todo("forget");
+    ScrollingPopupMenuUtilities.removeAllNonScrollComponents(this.getAwtComponent().getPopupMenu());
+  }
 }

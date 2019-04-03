@@ -55,35 +55,35 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class SimpleApplication extends Application<DocumentFrame> {
-	@Override
-	public DocumentFrame getDocumentFrame() {
-		return this.documentFrame;
-	}
+  @Override
+  public DocumentFrame getDocumentFrame() {
+    return this.documentFrame;
+  }
 
-	@Override
-	protected void handleOpenFiles( List<File> files ) {
-	}
+  @Override
+  protected void handleOpenFiles(List<File> files) {
+  }
 
-	@Override
-	protected void handleWindowOpened( WindowEvent e ) {
-	}
+  @Override
+  protected void handleWindowOpened(WindowEvent e) {
+  }
 
-	@Override
-	public void handleQuit( UserActivity activity ) {
-		System.exit( 0 );
-	}
+  @Override
+  public void handleQuit(UserActivity activity) {
+    System.exit(0);
+  }
 
-	@Override
-	protected Operation getAboutOperation() {
-		return null;
-	}
+  @Override
+  protected Operation getAboutOperation() {
+    return null;
+  }
 
-	@Override
-	protected Operation getPreferencesOperation() {
-		return null;
-	}
+  @Override
+  protected Operation getPreferencesOperation() {
+    return null;
+  }
 
-	private final DocumentFrame documentFrame = new SimpleDocumentFrame();
+  private final DocumentFrame documentFrame = new SimpleDocumentFrame();
 
   @Override
   public String getApplicationSubPath() {

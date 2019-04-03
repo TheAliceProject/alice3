@@ -100,117 +100,115 @@ import org.lgna.story.resources.JointedModelResource;
  * @author Dennis Cosgrove
  */
 public abstract class ProgramContext {
-	protected static NamedUserType getUpToDateProgramTypeFromActiveIde() {
-		final StageIDE ide = StageIDE.getActiveInstance();
-		if( ide != null ) {
-			return ide.getUpToDateProgramType();
-		} else {
-			return null;
-		}
-	}
+  protected static NamedUserType getUpToDateProgramTypeFromActiveIde() {
+    final StageIDE ide = StageIDE.getActiveInstance();
+    if (ide != null) {
+      return ide.getUpToDateProgramType();
+    } else {
+      return null;
+    }
+  }
 
-	private final UserInstance programInstance;
-	private final VirtualMachine vm;
+  private final UserInstance programInstance;
+  private final VirtualMachine vm;
 
-	public ProgramContext( NamedUserType programType ) {
-		assert programType != null;
-		this.vm = this.createVirtualMachine();
-		this.vm.registerAbstractClassAdapter( SScene.class, SceneAdapter.class );
-		this.vm.registerAbstractClassAdapter( SceneActivationListener.class, SceneActivationAdapter.class );
-		this.vm.registerAbstractClassAdapter( MouseClickOnScreenListener.class, MouseClickOnScreenAdapter.class );
-		this.vm.registerAbstractClassAdapter( MouseClickOnObjectListener.class, MouseClickOnObjectAdapter.class );
-		this.vm.registerAbstractClassAdapter( KeyPressListener.class, KeyAdapter.class );
-		this.vm.registerAbstractClassAdapter( ArrowKeyPressListener.class, ArrowKeyAdapter.class );
-		this.vm.registerAbstractClassAdapter( NumberKeyPressListener.class, NumberKeyAdapter.class );
-		this.vm.registerAbstractClassAdapter( PointOfViewChangeListener.class, TransformationEventAdapter.class );
-		this.vm.registerAbstractClassAdapter( ViewEnterListener.class, ComesIntoViewEventAdapter.class );
-		this.vm.registerAbstractClassAdapter( ViewExitListener.class, ComesOutOfViewEventAdapter.class );
-		this.vm.registerAbstractClassAdapter( CollisionStartListener.class, StartCollisionAdapter.class );
-		this.vm.registerAbstractClassAdapter( CollisionEndListener.class, EndCollisionAdapter.class );
-		this.vm.registerAbstractClassAdapter( ProximityEnterListener.class, EnterProximityAdapter.class );
-		this.vm.registerAbstractClassAdapter( ProximityExitListener.class, ExitProximityAdapter.class );
-		this.vm.registerAbstractClassAdapter( OcclusionStartListener.class, StartOcclusionEventAdapter.class );
-		this.vm.registerAbstractClassAdapter( OcclusionEndListener.class, EndOcclusionEventAdapter.class );
-		this.vm.registerAbstractClassAdapter( TimeListener.class, TimerEventAdapter.class );
+  public ProgramContext(NamedUserType programType) {
+    assert programType != null;
+    this.vm = this.createVirtualMachine();
+    this.vm.registerAbstractClassAdapter(SScene.class, SceneAdapter.class);
+    this.vm.registerAbstractClassAdapter(SceneActivationListener.class, SceneActivationAdapter.class);
+    this.vm.registerAbstractClassAdapter(MouseClickOnScreenListener.class, MouseClickOnScreenAdapter.class);
+    this.vm.registerAbstractClassAdapter(MouseClickOnObjectListener.class, MouseClickOnObjectAdapter.class);
+    this.vm.registerAbstractClassAdapter(KeyPressListener.class, KeyAdapter.class);
+    this.vm.registerAbstractClassAdapter(ArrowKeyPressListener.class, ArrowKeyAdapter.class);
+    this.vm.registerAbstractClassAdapter(NumberKeyPressListener.class, NumberKeyAdapter.class);
+    this.vm.registerAbstractClassAdapter(PointOfViewChangeListener.class, TransformationEventAdapter.class);
+    this.vm.registerAbstractClassAdapter(ViewEnterListener.class, ComesIntoViewEventAdapter.class);
+    this.vm.registerAbstractClassAdapter(ViewExitListener.class, ComesOutOfViewEventAdapter.class);
+    this.vm.registerAbstractClassAdapter(CollisionStartListener.class, StartCollisionAdapter.class);
+    this.vm.registerAbstractClassAdapter(CollisionEndListener.class, EndCollisionAdapter.class);
+    this.vm.registerAbstractClassAdapter(ProximityEnterListener.class, EnterProximityAdapter.class);
+    this.vm.registerAbstractClassAdapter(ProximityExitListener.class, ExitProximityAdapter.class);
+    this.vm.registerAbstractClassAdapter(OcclusionStartListener.class, StartOcclusionEventAdapter.class);
+    this.vm.registerAbstractClassAdapter(OcclusionEndListener.class, EndOcclusionEventAdapter.class);
+    this.vm.registerAbstractClassAdapter(TimeListener.class, TimerEventAdapter.class);
 
-		vm.registerProtectedMethodAdapter(
-				ReflectionUtilities.getDeclaredMethod( SJointedModel.class, "setJointedModelResource", JointedModelResource.class ),
-				ReflectionUtilities.getDeclaredMethod( EmployeesOnly.class, "invokeSetJointedModelResource", SJointedModel.class, JointedModelResource.class ) );
+    vm.registerProtectedMethodAdapter(ReflectionUtilities.getDeclaredMethod(SJointedModel.class, "setJointedModelResource", JointedModelResource.class), ReflectionUtilities.getDeclaredMethod(EmployeesOnly.class, "invokeSetJointedModelResource", SJointedModel.class, JointedModelResource.class));
 
-		UserProgramRunningStateUtilities.setUserProgramRunning( true );
-		this.programInstance = this.createProgramInstance( programType );
-	}
+    UserProgramRunningStateUtilities.setUserProgramRunning(true);
+    this.programInstance = this.createProgramInstance(programType);
+  }
 
-	protected UserInstance createProgramInstance( NamedUserType programType ) {
-		return this.vm.ENTRY_POINT_createInstance( programType );
-	}
+  protected UserInstance createProgramInstance(NamedUserType programType) {
+    return this.vm.ENTRY_POINT_createInstance(programType);
+  }
 
-	protected VirtualMachine createVirtualMachine() {
-		return new ReleaseVirtualMachine();
-	}
+  protected VirtualMachine createVirtualMachine() {
+    return new ReleaseVirtualMachine();
+  }
 
-	public UserInstance getProgramInstance() {
-		return this.programInstance;
-	}
+  public UserInstance getProgramInstance() {
+    return this.programInstance;
+  }
 
-	public SProgram getProgram() {
-		return this.programInstance.getJavaInstance( SProgram.class );
-	}
+  public SProgram getProgram() {
+    return this.programInstance.getJavaInstance(SProgram.class);
+  }
 
-	public ProgramImp getProgramImp() {
-		return EmployeesOnly.getImplementation( this.getProgram() );
-	}
+  public ProgramImp getProgramImp() {
+    return EmployeesOnly.getImplementation(this.getProgram());
+  }
 
-	public VirtualMachine getVirtualMachine() {
-		return this.vm;
-	}
+  public VirtualMachine getVirtualMachine() {
+    return this.vm;
+  }
 
-	public OnscreenRenderTarget<?> getOnscreenRenderTarget() {
-		ProgramImp programImp = this.getProgramImp();
-		return programImp != null ? programImp.getOnscreenRenderTarget() : null;
-	}
+  public OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+    ProgramImp programImp = this.getProgramImp();
+    return programImp != null ? programImp.getOnscreenRenderTarget() : null;
+  }
 
-	private ReasonToDisableSomeAmountOfRendering rendering;
+  private ReasonToDisableSomeAmountOfRendering rendering;
 
-	void disableRendering() {
-		this.rendering = ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN;
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			ide.getDocumentFrame().disableRendering( rendering );
-		}
-	}
+  void disableRendering() {
+    this.rendering = ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN;
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      ide.getDocumentFrame().disableRendering(rendering);
+    }
+  }
 
-	private void enableRendering() {
-		if( this.rendering != null ) {
-			IDE ide = IDE.getActiveInstance();
-			if( ide != null ) {
-				ide.getDocumentFrame().enableRendering();
-			}
-			this.rendering = null;
-		}
-	}
+  private void enableRendering() {
+    if (this.rendering != null) {
+      IDE ide = IDE.getActiveInstance();
+      if (ide != null) {
+        ide.getDocumentFrame().enableRendering();
+      }
+      this.rendering = null;
+    }
+  }
 
-	public void setActiveScene() {
-		ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
-			@Override
-			public void run() {
-				UserField sceneField = null;
-				for( UserField field : programInstance.getType().fields ) {
-					if( field.valueType.getValue().isAssignableTo( SScene.class ) ) {
-						sceneField = field;
-					}
-				}
-				assert sceneField != null;
-				UserInstance programInstance = ProgramContext.this.getProgramInstance();
-				ProgramContext.this.getVirtualMachine().ENTRY_POINT_invoke( programInstance, StoryApiConfigurationManager.SET_ACTIVE_SCENE_METHOD, programInstance.getFieldValue( sceneField ) );
-			}
-		} );
-	}
+  public void setActiveScene() {
+    ProgramClosedException.invokeAndCatchProgramClosedException(new Runnable() {
+      @Override
+      public void run() {
+        UserField sceneField = null;
+        for (UserField field : programInstance.getType().fields) {
+          if (field.valueType.getValue().isAssignableTo(SScene.class)) {
+            sceneField = field;
+          }
+        }
+        assert sceneField != null;
+        UserInstance programInstance = ProgramContext.this.getProgramInstance();
+        ProgramContext.this.getVirtualMachine().ENTRY_POINT_invoke(programInstance, StoryApiConfigurationManager.SET_ACTIVE_SCENE_METHOD, programInstance.getFieldValue(sceneField));
+      }
+    });
+  }
 
-	public void cleanUpProgram() {
-		UserProgramRunningStateUtilities.setUserProgramRunning( false );
-		this.getProgramImp().shutDown();
-		vm.stopExecution();
-		enableRendering();
-	}
+  public void cleanUpProgram() {
+    UserProgramRunningStateUtilities.setUserProgramRunning(false);
+    this.getProgramImp().shutDown();
+    vm.stopExecution();
+    enableRendering();
+  }
 }

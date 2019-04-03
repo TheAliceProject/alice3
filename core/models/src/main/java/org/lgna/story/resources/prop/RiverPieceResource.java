@@ -32,52 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum RiverPieceResource implements PropResource {
-	STRAIGHT1_BLUE,
-	STRAIGHT1_BROWN,
-	STRAIGHT2_BLUE,
-	STRAIGHT2_BROWN,
-	STRAIGHT3_BLUE,
-	STRAIGHT3_BROWN,
-	STRAIGHT4_BLUE,
-	STRAIGHT4_BROWN,
-	CURVE1_BLUE,
-	CURVE1_BROWN,
-	CURVE2_BLUE,
-	CURVE2_BROWN,
-	CURVE3_BLUE,
-	CURVE3_BROWN,
-	CURVE4_BLUE,
-	CURVE4_BROWN,
-	BOW1_BLUE,
-	BOW1_BROWN,
-	BOW2_BLUE,
-	BOW2_BROWN,
-	BOW3_BLUE,
-	BOW3_BROWN,
-	SHARP_BEND_BLUE,
-	SHARP_BEND_BROWN;
+  STRAIGHT1_BLUE, STRAIGHT1_BROWN, STRAIGHT2_BLUE, STRAIGHT2_BROWN, STRAIGHT3_BLUE, STRAIGHT3_BROWN, STRAIGHT4_BLUE, STRAIGHT4_BROWN, CURVE1_BLUE, CURVE1_BROWN, CURVE2_BLUE, CURVE2_BROWN, CURVE3_BLUE, CURVE3_BROWN, CURVE4_BLUE, CURVE4_BROWN, BOW1_BLUE, BOW1_BROWN, BOW2_BLUE, BOW2_BROWN, BOW3_BLUE, BOW3_BROWN, SHARP_BEND_BLUE, SHARP_BEND_BROWN;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	RiverPieceResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  RiverPieceResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	RiverPieceResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  RiverPieceResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

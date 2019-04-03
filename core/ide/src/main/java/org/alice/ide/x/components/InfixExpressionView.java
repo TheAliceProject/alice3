@@ -59,38 +59,38 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public class InfixExpressionView extends AbstractExpressionView<InfixExpression> {
-	public InfixExpressionView( AstI18nFactory factory, InfixExpression<? extends Enum<?>> infixExpression ) {
-		super( factory, infixExpression );
-		Formatter formatter = FormatterState.getInstance().getValue();
-		Page page = new Page( formatter.getInfixExpressionText( infixExpression ) );
-		SwingComponentView<?> component = factory.createComponent( page, infixExpression );
-		for( Component child : component.getAwtComponent().getComponents() ) {
-			if( child instanceof JLabel ) {
-				JLabel label = (JLabel)child;
-				String text = label.getText();
-				//todo: remove this terrible hack
-				boolean isScaleDesired = false;
-				if( text.length() == 3 ) {
-					char c0 = text.charAt( 0 );
-					char c1 = text.charAt( 1 );
-					char c2 = text.charAt( 2 );
-					if( ( c0 == ' ' ) && ( c2 == ' ' ) ) {
-						if( Character.isLetterOrDigit( c1 ) ) {
-							//pass
-						} else {
-							isScaleDesired = true;
-						}
-					}
-				} else if( text.length() == 4 ) {
-					isScaleDesired = " >= ".equals( text ) || " <= ".equals( text ) || " == ".equals( text );
-				}
-				FontUtilities.setFontToDerivedFont( label, TextWeight.BOLD );
-				if( isScaleDesired ) {
-					FontUtilities.setFontToScaledFont( label, 1.5f );
-				}
-				//label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
-			}
-		}
-		this.addComponent( component );
-	}
+  public InfixExpressionView(AstI18nFactory factory, InfixExpression<? extends Enum<?>> infixExpression) {
+    super(factory, infixExpression);
+    Formatter formatter = FormatterState.getInstance().getValue();
+    Page page = new Page(formatter.getInfixExpressionText(infixExpression));
+    SwingComponentView<?> component = factory.createComponent(page, infixExpression);
+    for (Component child : component.getAwtComponent().getComponents()) {
+      if (child instanceof JLabel) {
+        JLabel label = (JLabel) child;
+        String text = label.getText();
+        //todo: remove this terrible hack
+        boolean isScaleDesired = false;
+        if (text.length() == 3) {
+          char c0 = text.charAt(0);
+          char c1 = text.charAt(1);
+          char c2 = text.charAt(2);
+          if ((c0 == ' ') && (c2 == ' ')) {
+            if (Character.isLetterOrDigit(c1)) {
+              //pass
+            } else {
+              isScaleDesired = true;
+            }
+          }
+        } else if (text.length() == 4) {
+          isScaleDesired = " >= ".equals(text) || " <= ".equals(text) || " == ".equals(text);
+        }
+        FontUtilities.setFontToDerivedFont(label, TextWeight.BOLD);
+        if (isScaleDesired) {
+          FontUtilities.setFontToScaledFont(label, 1.5f);
+        }
+        //label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
+      }
+    }
+    this.addComponent(component);
+  }
 }

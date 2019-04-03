@@ -58,55 +58,54 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class JavaCodeFrameComposite extends FrameCompositeWithInternalIsShowingState<Panel> {
-	private static class SingletonHolder {
-		private static JavaCodeFrameComposite instance = new JavaCodeFrameComposite();
-	}
+  private static class SingletonHolder {
+    private static JavaCodeFrameComposite instance = new JavaCodeFrameComposite();
+  }
 
-	public static JavaCodeFrameComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static JavaCodeFrameComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private JavaCodeFrameComposite() {
-		super( UUID.fromString( "7015e117-22dd-49a1-a194-55d5fe17f821" ), Application.DOCUMENT_UI_GROUP );
-	}
+  private JavaCodeFrameComposite() {
+    super(UUID.fromString("7015e117-22dd-49a1-a194-55d5fe17f821"), Application.DOCUMENT_UI_GROUP);
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return new ScrollPane();
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return new ScrollPane();
+  }
 
-	@Override
-	protected Panel createView() {
-		return new BorderPanel.Builder()
-				//.center( this.stringValue.createImmutableEditorPane( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED ) )
-				.center( this.javaCodeView )
-				.build();
-	}
+  @Override
+  protected Panel createView() {
+    return new BorderPanel.Builder()
+        //.center( this.stringValue.createImmutableEditorPane( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED ) )
+        .center(this.javaCodeView).build();
+  }
 
-	@Override
-	protected Integer getWiderGoldenRatioSizeFromHeight() {
-		return 400;
-	}
+  @Override
+  protected Integer getWiderGoldenRatioSizeFromHeight() {
+    return 400;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().addAndInvokeValueListener( this.declarationListener );
-		super.handlePreActivation();
-	}
+  @Override
+  public void handlePreActivation() {
+    IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().addAndInvokeValueListener(this.declarationListener);
+    super.handlePreActivation();
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		super.handlePostDeactivation();
-		IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().removeValueListener( this.declarationListener );
-	}
+  @Override
+  public void handlePostDeactivation() {
+    super.handlePostDeactivation();
+    IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().removeValueListener(this.declarationListener);
+  }
 
-	private final MetaDeclarationFauxState.ValueListener declarationListener = new MetaDeclarationFauxState.ValueListener() {
-		@Override
-		public void changed( AbstractDeclaration prevValue, AbstractDeclaration nextValue ) {
-			javaCodeView.setDeclaration( nextValue );
-		}
-	};
+  private final MetaDeclarationFauxState.ValueListener declarationListener = new MetaDeclarationFauxState.ValueListener() {
+    @Override
+    public void changed(AbstractDeclaration prevValue, AbstractDeclaration nextValue) {
+      javaCodeView.setDeclaration(nextValue);
+    }
+  };
 
-	private final JavaCodeView javaCodeView = new JavaCodeView();
+  private final JavaCodeView javaCodeView = new JavaCodeView();
 
 }

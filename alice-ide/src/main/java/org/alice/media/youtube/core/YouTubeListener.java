@@ -46,9 +46,9 @@ package org.alice.media.youtube.core;
  * @author David Culyba
  */
 public interface YouTubeListener {
-	//	public void loginFinished(boolean success, String message);
-	//	public void loginStarted();
-	//	public void uploadStarted();
-	//	public void uploadFinished(boolean success, String message);
-	public void youTubeEventTriggered( YouTubeEvent event );
+  //  public void loginFinished(boolean success, String message);
+  //  public void loginStarted();
+  //  public void uploadStarted();
+  //  public void uploadFinished(boolean success, String message);
+  public void youTubeEventTriggered(YouTubeEvent event);
 }

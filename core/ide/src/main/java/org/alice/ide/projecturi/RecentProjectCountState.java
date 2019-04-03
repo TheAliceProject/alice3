@@ -52,15 +52,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RecentProjectCountState extends BoundedIntegerState {
-	private static class SingletonHolder {
-		private static RecentProjectCountState instance = new RecentProjectCountState();
-	}
+  private static class SingletonHolder {
+    private static RecentProjectCountState instance = new RecentProjectCountState();
+  }
 
-	public static RecentProjectCountState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static RecentProjectCountState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private RecentProjectCountState() {
-		super( new Details( Application.DOCUMENT_UI_GROUP, UUID.fromString( "15c030d1-d6c7-4415-ac20-e1b5bc6993de" ) ).minimum( 0 ).maximum( 100 ).initialValue( 10 ) );
-	}
+  private RecentProjectCountState() {
+    super(new Details(Application.DOCUMENT_UI_GROUP, UUID.fromString("15c030d1-d6c7-4415-ac20-e1b5bc6993de")).minimum(0).maximum(100).initialValue(10));
+  }
 }

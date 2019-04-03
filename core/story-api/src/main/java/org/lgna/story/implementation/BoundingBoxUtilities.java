@@ -52,33 +52,33 @@ import org.lgna.story.STurnable;
 
 public class BoundingBoxUtilities {
 
-	private static AxisAlignedBox getSGTransformableBBox( AbstractTransformable sgTransformable, boolean ignoreJointOrientations ) {
-		AxisAlignedBox boundingBox = null;
-		if( sgTransformable != null ) {
-			EntityImp entityImp = EntityImp.getInstance( sgTransformable );
-			if( entityImp instanceof JointedModelImp<?, ?> ) {
-				boundingBox = ( (JointedModelImp<?, ?>)entityImp ).getAxisAlignedMinimumBoundingBox( ignoreJointOrientations );
-			} else if( entityImp instanceof ModelImp ) {
-				boundingBox = ( (ModelImp)entityImp ).getAxisAlignedMinimumBoundingBox();
-			} else if( entityImp instanceof JointImp ) {
-				boundingBox = ( (JointImp)entityImp ).getAxisAlignedMinimumBoundingBox();
-			}
-		}
-		return boundingBox;
-	}
+  private static AxisAlignedBox getSGTransformableBBox(AbstractTransformable sgTransformable, boolean ignoreJointOrientations) {
+    AxisAlignedBox boundingBox = null;
+    if (sgTransformable != null) {
+      EntityImp entityImp = EntityImp.getInstance(sgTransformable);
+      if (entityImp instanceof JointedModelImp<?, ?>) {
+        boundingBox = ((JointedModelImp<?, ?>) entityImp).getAxisAlignedMinimumBoundingBox(ignoreJointOrientations);
+      } else if (entityImp instanceof ModelImp) {
+        boundingBox = ((ModelImp) entityImp).getAxisAlignedMinimumBoundingBox();
+      } else if (entityImp instanceof JointImp) {
+        boundingBox = ((JointImp) entityImp).getAxisAlignedMinimumBoundingBox();
+      }
+    }
+    return boundingBox;
+  }
 
-	public static AxisAlignedBox getSGTransformableScaledBBox( AbstractTransformable sgTransformable, boolean ignoreJointOrientations ) {
-		return getSGTransformableBBox( sgTransformable, ignoreJointOrientations );
-	}
+  public static AxisAlignedBox getSGTransformableScaledBBox(AbstractTransformable sgTransformable, boolean ignoreJointOrientations) {
+    return getSGTransformableBBox(sgTransformable, ignoreJointOrientations);
+  }
 
-	public static AxisAlignedBox getTransformableScaledBBox( STurnable transformable, boolean ignoreJointOrientations ) {
-		AbstractTransformable sgTransformable = (AbstractTransformable)EmployeesOnly.getImplementation( transformable ).getSgComposite();
-		return getSGTransformableBBox( sgTransformable, ignoreJointOrientations );
-	}
+  public static AxisAlignedBox getTransformableScaledBBox(STurnable transformable, boolean ignoreJointOrientations) {
+    AbstractTransformable sgTransformable = (AbstractTransformable) EmployeesOnly.getImplementation(transformable).getSgComposite();
+    return getSGTransformableBBox(sgTransformable, ignoreJointOrientations);
+  }
 
-	public static AxisAlignedBox getTransformableScaledBBox( ModelImp modelImp, boolean ignoreJointOrientations ) {
-		Transformable sgTransformable = modelImp.getSgComposite();
-		return getSGTransformableBBox( sgTransformable, ignoreJointOrientations );
-	}
+  public static AxisAlignedBox getTransformableScaledBBox(ModelImp modelImp, boolean ignoreJointOrientations) {
+    Transformable sgTransformable = modelImp.getSgComposite();
+    return getSGTransformableBBox(sgTransformable, ignoreJointOrientations);
+  }
 
 }

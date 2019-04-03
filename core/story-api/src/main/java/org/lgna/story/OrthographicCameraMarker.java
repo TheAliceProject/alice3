@@ -47,14 +47,13 @@ import org.lgna.story.implementation.OrthographicCameraMarkerImp;
 /**
  * @author David Culyba
  */
-@Deprecated
-public class OrthographicCameraMarker extends CameraMarker {
+@Deprecated public class OrthographicCameraMarker extends CameraMarker {
 
-	private final OrthographicCameraMarkerImp implementation = new OrthographicCameraMarkerImp( this );
+  private final OrthographicCameraMarkerImp implementation = new OrthographicCameraMarkerImp(this);
 
-	@Override
-	/* package-private */OrthographicCameraMarkerImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */OrthographicCameraMarkerImp getImplementation() {
+    return this.implementation;
+  }
 
 }

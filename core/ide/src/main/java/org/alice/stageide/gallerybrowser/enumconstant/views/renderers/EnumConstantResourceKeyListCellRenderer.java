@@ -55,16 +55,16 @@ import javax.swing.SwingConstants;
  * @author Dennis Cosgrove
  */
 public class EnumConstantResourceKeyListCellRenderer extends ListCellRenderer<EnumConstantResourceKey> {
-	@Override
-	protected JLabel getListCellRendererComponent( JLabel rv, JList list, EnumConstantResourceKey value, int index, boolean isSelected, boolean cellHasFocus ) {
-		if( value != null ) {
-			rv.setText( value.getLocalizedDisplayText() );
-			IconFactory iconFactory = value.getIconFactory();
-			rv.setIcon( iconFactory.getIcon( iconFactory.getDefaultSize( Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
-			rv.setHorizontalTextPosition( SwingConstants.CENTER );
-			rv.setVerticalTextPosition( SwingConstants.BOTTOM );
-			rv.setHorizontalAlignment( SwingConstants.CENTER );
-		}
-		return rv;
-	}
+  @Override
+  protected JLabel getListCellRendererComponent(JLabel rv, JList list, EnumConstantResourceKey value, int index, boolean isSelected, boolean cellHasFocus) {
+    if (value != null) {
+      rv.setText(value.getLocalizedDisplayText());
+      IconFactory iconFactory = value.getIconFactory();
+      rv.setIcon(iconFactory.getIcon(iconFactory.getDefaultSize(Theme.DEFAULT_LARGE_ICON_SIZE)));
+      rv.setHorizontalTextPosition(SwingConstants.CENTER);
+      rv.setVerticalTextPosition(SwingConstants.BOTTOM);
+      rv.setHorizontalAlignment(SwingConstants.CENTER);
+    }
+    return rv;
+  }
 }

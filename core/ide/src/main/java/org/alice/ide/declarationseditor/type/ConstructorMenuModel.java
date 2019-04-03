@@ -58,21 +58,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ConstructorMenuModel extends MemberMenuModel<NamedUserConstructor> {
-	private static InitializingIfAbsentMap<NamedUserConstructor, ConstructorMenuModel> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<NamedUserConstructor, ConstructorMenuModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static ConstructorMenuModel getInstance( NamedUserConstructor constructor ) {
-		return map.getInitializingIfAbsent( constructor, new InitializingIfAbsentMap.Initializer<NamedUserConstructor, ConstructorMenuModel>() {
-			@Override
-			public ConstructorMenuModel initialize( NamedUserConstructor key ) {
-				List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
-				DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-				prepModels.add( tabState.getAlternateLocalizationItemSelectionOperation( CodeComposite.getInstance( key ) ).getMenuItemPrepModel() );
-				return new ConstructorMenuModel( key, prepModels );
-			}
-		} );
-	}
+  public static ConstructorMenuModel getInstance(NamedUserConstructor constructor) {
+    return map.getInitializingIfAbsent(constructor, new InitializingIfAbsentMap.Initializer<NamedUserConstructor, ConstructorMenuModel>() {
+      @Override
+      public ConstructorMenuModel initialize(NamedUserConstructor key) {
+        List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
+        DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+        prepModels.add(tabState.getAlternateLocalizationItemSelectionOperation(CodeComposite.getInstance(key)).getMenuItemPrepModel());
+        return new ConstructorMenuModel(key, prepModels);
+      }
+    });
+  }
 
-	private ConstructorMenuModel( NamedUserConstructor constructor, List<StandardMenuItemPrepModel> prepModels ) {
-		super( UUID.fromString( "22fbfd6d-3b0f-41b3-834e-dd8078fd0733" ), constructor, prepModels );
-	}
+  private ConstructorMenuModel(NamedUserConstructor constructor, List<StandardMenuItemPrepModel> prepModels) {
+    super(UUID.fromString("22fbfd6d-3b0f-41b3-834e-dd8078fd0733"), constructor, prepModels);
+  }
 }

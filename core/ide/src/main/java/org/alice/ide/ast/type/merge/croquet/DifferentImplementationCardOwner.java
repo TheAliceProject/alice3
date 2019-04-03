@@ -53,97 +53,97 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class DifferentImplementationCardOwner extends CardOwnerComposite {
-	public static class Builder {
-		private final DifferentImplementation<?> differentImplementation;
-		private Composite<?> neitherCard;
-		private Composite<?> replaceCard;
-		private Composite<?> keepCard;
-		private Composite<?> renameCard;
+  public static class Builder {
+    private final DifferentImplementation<?> differentImplementation;
+    private Composite<?> neitherCard;
+    private Composite<?> replaceCard;
+    private Composite<?> keepCard;
+    private Composite<?> renameCard;
 
-		public Builder( DifferentImplementation<?> differentImplementation ) {
-			this.differentImplementation = differentImplementation;
-		}
+    public Builder(DifferentImplementation<?> differentImplementation) {
+      this.differentImplementation = differentImplementation;
+    }
 
-		public Builder neither( Composite<?> neitherCard ) {
-			this.neitherCard = neitherCard;
-			return this;
-		}
+    public Builder neither(Composite<?> neitherCard) {
+      this.neitherCard = neitherCard;
+      return this;
+    }
 
-		public Builder replace( Composite<?> replaceCard ) {
-			this.replaceCard = replaceCard;
-			return this;
-		}
+    public Builder replace(Composite<?> replaceCard) {
+      this.replaceCard = replaceCard;
+      return this;
+    }
 
-		public Builder keep( Composite<?> keepCard ) {
-			this.keepCard = keepCard;
-			return this;
-		}
+    public Builder keep(Composite<?> keepCard) {
+      this.keepCard = keepCard;
+      return this;
+    }
 
-		public Builder rename( Composite<?> renameCard ) {
-			this.renameCard = renameCard;
-			return this;
-		}
+    public Builder rename(Composite<?> renameCard) {
+      this.renameCard = renameCard;
+      return this;
+    }
 
-		public DifferentImplementationCardOwner build() {
-			return new DifferentImplementationCardOwner( this.differentImplementation, this.neitherCard, this.replaceCard, this.keepCard, this.renameCard );
-		}
-	}
+    public DifferentImplementationCardOwner build() {
+      return new DifferentImplementationCardOwner(this.differentImplementation, this.neitherCard, this.replaceCard, this.keepCard, this.renameCard);
+    }
+  }
 
-	private final DifferentImplementation<?> differentImplementation;
-	private final Composite<?> neitherCard;
-	private final Composite<?> replaceCard;
-	private final Composite<?> keepCard;
-	private final Composite<?> renameCard;
+  private final DifferentImplementation<?> differentImplementation;
+  private final Composite<?> neitherCard;
+  private final Composite<?> replaceCard;
+  private final Composite<?> keepCard;
+  private final Composite<?> renameCard;
 
-	private final ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
-		@Override
-		public void valueChanged( ValueEvent<Boolean> e ) {
-			updateCard();
-		}
-	};
+  private final ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
+    @Override
+    public void valueChanged(ValueEvent<Boolean> e) {
+      updateCard();
+    }
+  };
 
-	private DifferentImplementationCardOwner( DifferentImplementation<?> differentImplementation, Composite<?> neitherCard, Composite<?> replaceCard, Composite<?> keepCard, Composite<?> renameCard ) {
-		super( UUID.fromString( "e49e92f7-1eac-4571-bbef-b53970b11b3d" ) );
-		this.differentImplementation = differentImplementation;
-		this.neitherCard = neitherCard;
-		this.replaceCard = replaceCard;
-		this.keepCard = keepCard;
-		this.renameCard = renameCard;
+  private DifferentImplementationCardOwner(DifferentImplementation<?> differentImplementation, Composite<?> neitherCard, Composite<?> replaceCard, Composite<?> keepCard, Composite<?> renameCard) {
+    super(UUID.fromString("e49e92f7-1eac-4571-bbef-b53970b11b3d"));
+    this.differentImplementation = differentImplementation;
+    this.neitherCard = neitherCard;
+    this.replaceCard = replaceCard;
+    this.keepCard = keepCard;
+    this.renameCard = renameCard;
 
-		if( this.neitherCard != null ) {
-			this.addCard( this.neitherCard );
-		}
-		if( this.replaceCard != null ) {
-			this.addCard( this.replaceCard );
-		}
-		if( this.keepCard != null ) {
-			this.addCard( this.keepCard );
-		}
-		if( this.renameCard != null ) {
-			this.addCard( this.renameCard );
-		}
+    if (this.neitherCard != null) {
+      this.addCard(this.neitherCard);
+    }
+    if (this.replaceCard != null) {
+      this.addCard(this.replaceCard);
+    }
+    if (this.keepCard != null) {
+      this.addCard(this.keepCard);
+    }
+    if (this.renameCard != null) {
+      this.addCard(this.renameCard);
+    }
 
-		this.differentImplementation.getImportHub().getIsDesiredState().addNewSchoolValueListener( this.valueListener );
-		this.differentImplementation.getProjectHub().getIsDesiredState().addAndInvokeNewSchoolValueListener( this.valueListener );
-	}
+    this.differentImplementation.getImportHub().getIsDesiredState().addNewSchoolValueListener(this.valueListener);
+    this.differentImplementation.getProjectHub().getIsDesiredState().addAndInvokeNewSchoolValueListener(this.valueListener);
+  }
 
-	private void updateCard() {
-		boolean isAddDesired = this.differentImplementation.getImportHub().getIsDesiredState().getValue();
-		boolean isKeepDesired = this.differentImplementation.getProjectHub().getIsDesiredState().getValue();
-		Composite<?> card;
-		if( isKeepDesired ) {
-			if( isAddDesired ) {
-				card = this.renameCard;
-			} else {
-				card = this.keepCard;
-			}
-		} else {
-			if( isAddDesired ) {
-				card = this.replaceCard;
-			} else {
-				card = this.neitherCard;
-			}
-		}
-		this.showCard( card );
-	}
+  private void updateCard() {
+    boolean isAddDesired = this.differentImplementation.getImportHub().getIsDesiredState().getValue();
+    boolean isKeepDesired = this.differentImplementation.getProjectHub().getIsDesiredState().getValue();
+    Composite<?> card;
+    if (isKeepDesired) {
+      if (isAddDesired) {
+        card = this.renameCard;
+      } else {
+        card = this.keepCard;
+      }
+    } else {
+      if (isAddDesired) {
+        card = this.replaceCard;
+      } else {
+        card = this.neitherCard;
+      }
+    }
+    this.showCard(card);
+  }
 }

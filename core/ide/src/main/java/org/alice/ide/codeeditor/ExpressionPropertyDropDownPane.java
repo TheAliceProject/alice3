@@ -69,89 +69,89 @@ import java.awt.Point;
  * @author Dennis Cosgrove
  */
 public class ExpressionPropertyDropDownPane extends DropDown<CascadeRoot.InternalPopupPrepModel<Expression>> {
-	private class ExpressionPropertyDropReceptor extends AbstractDropReceptor {
-		@Override
-		public boolean isPotentiallyAcceptingOf( DragModel dragModel ) {
-			return dragModel instanceof AbstractExpressionDragModel;
-		}
+  private class ExpressionPropertyDropReceptor extends AbstractDropReceptor {
+    @Override
+    public boolean isPotentiallyAcceptingOf(DragModel dragModel) {
+      return dragModel instanceof AbstractExpressionDragModel;
+    }
 
-		@Override
-		public void dragStarted( DragStep dragStep ) {
-		}
+    @Override
+    public void dragStarted(DragStep dragStep) {
+    }
 
-		@Override
-		public void dragEntered( DragStep dragStep ) {
-			dragStep.getDragSource().setDropProxyLocationAndShowIfNecessary( new Point( 0, 0 ), ExpressionPropertyDropDownPane.this.getMainComponent(), ExpressionPropertyDropDownPane.this.getBounds().height, -1 );
-		}
+    @Override
+    public void dragEntered(DragStep dragStep) {
+      dragStep.getDragSource().setDropProxyLocationAndShowIfNecessary(new Point(0, 0), ExpressionPropertyDropDownPane.this.getMainComponent(), ExpressionPropertyDropDownPane.this.getBounds().height, -1);
+    }
 
-		@Override
-		public DropSite dragUpdated( DragStep dragStep ) {
-			return null;
-		}
+    @Override
+    public DropSite dragUpdated(DragStep dragStep) {
+      return null;
+    }
 
-		@Override
-		protected Triggerable dragDroppedPostRejectorCheck( DragStep dragStep ) {
-			DragModel dragModel = dragStep.getModel();
-			Triggerable rv;
-			if( dragModel instanceof AbstractExpressionDragModel ) {
-				AbstractExpressionDragModel expressionDragModel = (AbstractExpressionDragModel)dragModel;
-				rv = expressionDragModel.getDropOperation( dragStep, new ExpressionPropertyDropSite( ExpressionPropertyDropDownPane.this.expressionProperty ) );
-			} else {
-				rv = null;
-			}
-			if ( rv == null ) {
-				dragStep.cancelActivity();
-			}
-			return rv;
-		}
+    @Override
+    protected Triggerable dragDroppedPostRejectorCheck(DragStep dragStep) {
+      DragModel dragModel = dragStep.getModel();
+      Triggerable rv;
+      if (dragModel instanceof AbstractExpressionDragModel) {
+        AbstractExpressionDragModel expressionDragModel = (AbstractExpressionDragModel) dragModel;
+        rv = expressionDragModel.getDropOperation(dragStep, new ExpressionPropertyDropSite(ExpressionPropertyDropDownPane.this.expressionProperty));
+      } else {
+        rv = null;
+      }
+      if (rv == null) {
+        dragStep.cancelActivity();
+      }
+      return rv;
+    }
 
-		@Override
-		public void dragExited( DragStep dragStep, boolean isDropRecipient ) {
-			//			edu.cmu.cs.dennisc.croquet.DragComponent source = dragStep.getDragSource();
-			//			source.hideDropProxyIfNecessary();
-		}
+    @Override
+    public void dragExited(DragStep dragStep, boolean isDropRecipient) {
+      //      edu.cmu.cs.dennisc.croquet.DragComponent source = dragStep.getDragSource();
+      //      source.hideDropProxyIfNecessary();
+    }
 
-		@Override
-		public void dragStopped( DragStep dragStep ) {
-		}
+    @Override
+    public void dragStopped(DragStep dragStep) {
+    }
 
-		@Override
-		public ViewController<?, ?> getViewController() {
-			return ExpressionPropertyDropDownPane.this;
-		}
+    @Override
+    public ViewController<?, ?> getViewController() {
+      return ExpressionPropertyDropDownPane.this;
+    }
 
-		@Override
-		public TrackableShape getTrackableShape( DropSite potentialDropSite ) {
-			return ExpressionPropertyDropDownPane.this;
-		}
-	}
+    @Override
+    public TrackableShape getTrackableShape(DropSite potentialDropSite) {
+      return ExpressionPropertyDropDownPane.this;
+    }
+  }
 
-	private final ExpressionPropertyDropReceptor dropReceptor = new ExpressionPropertyDropReceptor();
-	private final ExpressionProperty expressionProperty;
+  private final ExpressionPropertyDropReceptor dropReceptor = new ExpressionPropertyDropReceptor();
+  private final ExpressionProperty expressionProperty;
 
-	public ExpressionPropertyDropDownPane( CascadeRoot.InternalPopupPrepModel<Expression> model, SwingComponentView<?> prefixPane, SwingComponentView<?> component, ExpressionProperty expressionProperty ) {
-		super( model, prefixPane, component, null );
-		this.expressionProperty = expressionProperty;
-	}
+  public ExpressionPropertyDropDownPane(CascadeRoot.InternalPopupPrepModel<Expression> model, SwingComponentView<?> prefixPane, SwingComponentView<?> component, ExpressionProperty expressionProperty) {
+    super(model, prefixPane, component, null);
+    this.expressionProperty = expressionProperty;
+  }
 
-	public ExpressionProperty getExpressionProperty() {
-		return this.expressionProperty;
-	}
+  public ExpressionProperty getExpressionProperty() {
+    return this.expressionProperty;
+  }
 
-	public ExpressionPropertyDropReceptor getDropReceptor() {
-		return this.dropReceptor;
-	}
+  public ExpressionPropertyDropReceptor getDropReceptor() {
+    return this.dropReceptor;
+  }
 
-	@Override
-	protected boolean isInactiveFeedbackDesired() {
-		Expression expression = this.expressionProperty.getValue();
-		if( expression != null ) {
-			Node parent = expression.getParent();
-			if( ( parent instanceof InfixExpression ) || ( parent instanceof LogicalComplement ) ) {
-				Node grandparent = parent.getParent();
-				return ( grandparent instanceof MethodInvocation ) || ( grandparent instanceof AssignmentExpression ) || ( grandparent instanceof ArrayAccess );
-			}
-		}
-		return super.isInactiveFeedbackDesired();
-	}
+  @Override
+  protected boolean isInactiveFeedbackDesired() {
+    Expression expression = this.expressionProperty.getValue();
+    if (expression != null) {
+      Node parent = expression.getParent();
+      if ((parent instanceof InfixExpression) || (parent instanceof LogicalComplement)) {
+        Node grandparent = parent.getParent();
+        return (grandparent instanceof MethodInvocation) || (grandparent instanceof AssignmentExpression) || (grandparent instanceof ArrayAccess);
+      }
+    }
+    return super.isInactiveFeedbackDesired();
+  }
 }

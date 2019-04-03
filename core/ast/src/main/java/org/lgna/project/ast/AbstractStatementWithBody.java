@@ -49,31 +49,31 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractStatementWithBody extends Statement implements StatementWithBody {
-	public AbstractStatementWithBody() {
-	}
+  public AbstractStatementWithBody() {
+  }
 
-	public AbstractStatementWithBody( BlockStatement body ) {
-		this.body.setValue( body );
-	}
+  public AbstractStatementWithBody(BlockStatement body) {
+    this.body.setValue(body);
+  }
 
-	@Override
-	boolean containsAtLeastOneEnabledReturnStatement() {
-		return isEnabled.getValue() && body.getValue().containsAtLeastOneEnabledReturnStatement();
-	}
+  @Override
+  boolean containsAtLeastOneEnabledReturnStatement() {
+    return isEnabled.getValue() && body.getValue().containsAtLeastOneEnabledReturnStatement();
+  }
 
-	@Override
-	boolean containsUnreachableCode() {
-		return isEnabled.getValue() && body.getValue().containsUnreachableCode();
-	}
+  @Override
+  boolean containsUnreachableCode() {
+    return isEnabled.getValue() && body.getValue().containsUnreachableCode();
+  }
 
-	@Override
-	public NodeProperty<BlockStatement> getBodyProperty() {
-		return this.body;
-	}
+  @Override
+  public NodeProperty<BlockStatement> getBodyProperty() {
+    return this.body;
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+  }
 
-	public final NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );
+  public final NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>(this);
 }

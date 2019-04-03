@@ -64,92 +64,92 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
  * @author Dennis Cosgrove
  */
 public class MouseClickEventImp {
-	private final MouseEvent e;
-	private final SScene scene;
+  private final MouseEvent e;
+  private final SScene scene;
 
-	private Rectangle viewport;
-	private boolean isPickPerformed = false;
-	private SModel modelAtMouseLocation;
+  private Rectangle viewport;
+  private boolean isPickPerformed = false;
+  private SModel modelAtMouseLocation;
 
-	public MouseClickEventImp( MouseEvent e, SScene scene ) {
-		this.e = e;
-		this.scene = scene;
-	}
+  public MouseClickEventImp(MouseEvent e, SScene scene) {
+    this.e = e;
+    this.scene = scene;
+  }
 
-	private OnscreenRenderTarget<?> getOnscreenRenderTarget() {
-		if( this.scene != null ) {
-			SceneImp sceneImp = EmployeesOnly.getImplementation( this.scene );
-			ProgramImp programImp = sceneImp.getProgram();
-			if( programImp != null ) {
-				return programImp.getOnscreenRenderTarget();
-			}
-		}
-		return null;
-	}
+  private OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+    if (this.scene != null) {
+      SceneImp sceneImp = EmployeesOnly.getImplementation(this.scene);
+      ProgramImp programImp = sceneImp.getProgram();
+      if (programImp != null) {
+        return programImp.getOnscreenRenderTarget();
+      }
+    }
+    return null;
+  }
 
-	private Rectangle getActualViewport() {
-		if( this.viewport != null ) {
-			//pass
-		} else {
-			OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
-			//todo: search through cameras for the one that contains mouse point, or default to [0] if outside
-			AbstractCamera sgCamera = rt.getSgCameraAt( 0 );
-			this.viewport = rt.getActualViewportAsAwtRectangle( sgCamera );
-		}
-		return this.viewport;
-	}
+  private Rectangle getActualViewport() {
+    if (this.viewport != null) {
+      //pass
+    } else {
+      OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
+      //todo: search through cameras for the one that contains mouse point, or default to [0] if outside
+      AbstractCamera sgCamera = rt.getSgCameraAt(0);
+      this.viewport = rt.getActualViewportAsAwtRectangle(sgCamera);
+    }
+    return this.viewport;
+  }
 
-	protected synchronized void pickIfNecessary() {
-		if( this.isPickPerformed ) {
-			//pass
-		} else {
-			if( this.scene != null ) {
-				OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
-				if( rt != null ) {
-					PickResult pickResult = rt.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
-					if( pickResult != null ) {
-						SThing e = PickUtilities.getEntityFromPickedObject( pickResult.getVisual() );
-						if( e instanceof SModel ) {
-							this.modelAtMouseLocation = (SModel)e;
-						}
-					}
-				}
-			}
-			this.isPickPerformed = true;
-		}
-	}
+  protected synchronized void pickIfNecessary() {
+    if (this.isPickPerformed) {
+      //pass
+    } else {
+      if (this.scene != null) {
+        OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
+        if (rt != null) {
+          PickResult pickResult = rt.getSynchronousPicker().pickFrontMost(e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED);
+          if (pickResult != null) {
+            SThing e = PickUtilities.getEntityFromPickedObject(pickResult.getVisual());
+            if (e instanceof SModel) {
+              this.modelAtMouseLocation = (SModel) e;
+            }
+          }
+        }
+      }
+      this.isPickPerformed = true;
+    }
+  }
 
-	//	public org.lookingglassandalice.storytelling.Model getPartAtMouseLocation() {
-	//		this.pickIfNecessary();
-	//		return this.partAtMouseLocation;
-	//	}
-	public SModel getModelAtMouseLocation() {
-		this.pickIfNecessary();
-		return this.modelAtMouseLocation;
-	}
+  //  public org.lookingglassandalice.storytelling.Model getPartAtMouseLocation() {
+  //    this.pickIfNecessary();
+  //    return this.partAtMouseLocation;
+  //  }
+  public SModel getModelAtMouseLocation() {
+    this.pickIfNecessary();
+    return this.modelAtMouseLocation;
+  }
 
-	public Double getScreenDistanceFromLeft() {
-		Rectangle viewport = this.getActualViewport();
-		return ( this.e.getX() - viewport.x ) / (double)this.viewport.width;
-	}
+  public Double getScreenDistanceFromLeft() {
+    Rectangle viewport = this.getActualViewport();
+    return (this.e.getX() - viewport.x) / (double) this.viewport.width;
+  }
 
-	public Double getScreenDistanceFromBottom() {
-		Rectangle viewport = this.getActualViewport();
-		return 1.0 - ( ( this.e.getY() - viewport.y ) / (double)this.viewport.height );
-	}
+  public Double getScreenDistanceFromBottom() {
+    Rectangle viewport = this.getActualViewport();
+    return 1.0 - ((this.e.getY() - viewport.y) / (double) this.viewport.height);
+  }
 
-	@Deprecated
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public Double[] getRelativeXYPosition() {
-		Double[] rv = { this.getScreenDistanceFromLeft(), this.getScreenDistanceFromBottom() };
-		return rv;
-	}
+  @Deprecated
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public Double[] getRelativeXYPosition() {
+    Double[] rv = {this.getScreenDistanceFromLeft(), this.getScreenDistanceFromBottom()};
+    return rv;
+  }
 
-	public SScene getScene() {
-		return this.scene;
-	}
+  public SScene getScene() {
+    return this.scene;
+  }
 
-	public MouseEvent getEvent() {
-		return this.e;
-	}
+  public MouseEvent getEvent() {
+    return this.e;
+  }
 }

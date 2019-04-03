@@ -56,31 +56,31 @@ import java.util.UUID;
  */
 public class YouTubeLoginComposite extends AbstractLoginComposite<LoginView> {
 
-	private final UploadComposite uploadComposite;
+  private final UploadComposite uploadComposite;
 
-	public YouTubeLoginComposite( UploadComposite uploadComposite ) {
-		super( UUID.fromString( "511e94a5-dc9b-4b2f-be3a-873f94dd6f93" ), null );
-		this.uploadComposite = uploadComposite;
-	}
+  public YouTubeLoginComposite(UploadComposite uploadComposite) {
+    super(UUID.fromString("511e94a5-dc9b-4b2f-be3a-873f94dd6f93"), null);
+    this.uploadComposite = uploadComposite;
+  }
 
-	@Override
-	protected boolean tryToLogin() {
-		try {
-			this.uploadComposite.getUploader().logIn( this.getUserNameState().getValue(), this.getPasswordState().getValue() );
-			setConnectionFailed( false );
-			return true;
-		} catch( AuthenticationException e ) {
-			if( e instanceof InvalidCredentialsException ) {
-				return false;
-			} else {
-				setConnectionFailed( true );
-				return false;
-			}
-		}
-	}
+  @Override
+  protected boolean tryToLogin() {
+    try {
+      this.uploadComposite.getUploader().logIn(this.getUserNameState().getValue(), this.getPasswordState().getValue());
+      setConnectionFailed(false);
+      return true;
+    } catch (AuthenticationException e) {
+      if (e instanceof InvalidCredentialsException) {
+        return false;
+      } else {
+        setConnectionFailed(true);
+        return false;
+      }
+    }
+  }
 
-	@Override
-	public void logout() {
-	}
+  @Override
+  public void logout() {
+  }
 
 }

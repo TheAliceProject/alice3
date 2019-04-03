@@ -101,176 +101,169 @@ import org.lgna.story.resources.sims2.PersonResource;
  */
 public class IdeNonfree extends NebulousIde {
 
-	private static final JavaType PERSON_RESOURCE_TYPE = JavaType.getInstance( PersonResource.class );
+  private static final JavaType PERSON_RESOURCE_TYPE = JavaType.getInstance(PersonResource.class);
 
-	@Override
-	public boolean isNonFreeEnabled() {
-		return true;
-	}
+  @Override
+  public boolean isNonFreeEnabled() {
+    return true;
+  }
 
-	@Override
-	public void promptForLicenseAgreements( String licenseKey ) throws LicenseRejectedException {
-		EULAUtilities.promptUserToAcceptEULAIfNecessary( License.class, licenseKey, "License Agreement (Part 2 of 2): The Sims (TM) 2 Art Assets", License.TEXT,
-				"The Sims (TM) 2 Art Assets" );
-	}
+  @Override
+  public void promptForLicenseAgreements(String licenseKey) throws LicenseRejectedException {
+    EULAUtilities.promptUserToAcceptEULAIfNecessary(License.class, licenseKey, "License Agreement (Part 2 of 2): The Sims (TM) 2 Art Assets", License.TEXT, "The Sims (TM) 2 Art Assets");
+  }
 
-	@Override
-	public Operation newSimsArtEulaDialogLaunchOperation() {
-		return LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-				SimsArtAssetsEulaComposite.class,
-				Application.INFORMATION_GROUP ).getLaunchOperation();
-	}
+  @Override
+  public Operation newSimsArtEulaDialogLaunchOperation() {
+    return LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(SimsArtAssetsEulaComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
+  }
 
-	@Override
-	public NamedUserType createProgramType( TemplateUriState.Template template ) {
-		return SimsBootstrapUtilties.createProgramType(
-				template.getSurfaceAppearance(),
-				template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(),
-				template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(),
-				template.getGroundOpacity() );
-	}
+  @Override
+  public NamedUserType createProgramType(TemplateUriState.Template template) {
+    return SimsBootstrapUtilties.createProgramType(template.getSurfaceAppearance(), template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity());
+  }
 
-	@Override
-	public AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter( JavaMethod setter, StandardExpressionState state, EntityImp entityImp ) {
-		if( setter.getName().equalsIgnoreCase( "setWallPaint" ) ) {
-			if( entityImp instanceof RoomImp ) {
-				return new RoomWallPaintPropertyAdapter( (RoomImp)entityImp, state );
-			}
-		} else if( setter.getName().equalsIgnoreCase( "setFloorPaint" ) ) {
-			if( entityImp instanceof RoomImp ) {
-				return new RoomFloorPaintPropertyAdapter( (RoomImp)entityImp, state );
-			}
-		} else if( setter.getName().equalsIgnoreCase( "setCeilingPaint" ) ) {
-			if( entityImp instanceof RoomImp ) {
-				return new RoomCeilingPaintPropertyAdapter( (RoomImp)entityImp, state );
-			}
-		}
-		return null;
-	}
+  @Override
+  public AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter(JavaMethod setter, StandardExpressionState state, EntityImp entityImp) {
+    if (setter.getName().equalsIgnoreCase("setWallPaint")) {
+      if (entityImp instanceof RoomImp) {
+        return new RoomWallPaintPropertyAdapter((RoomImp) entityImp, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setFloorPaint")) {
+      if (entityImp instanceof RoomImp) {
+        return new RoomFloorPaintPropertyAdapter((RoomImp) entityImp, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setCeilingPaint")) {
+      if (entityImp instanceof RoomImp) {
+        return new RoomCeilingPaintPropertyAdapter((RoomImp) entityImp, state);
+      }
+    }
+    return null;
+  }
 
-	@Override
-	public void addBipedResourceResourceNodes( List<ResourceNode> childNodes, List<ResourceNode> emptyList ) {
-		childNodes.add( new ResourceNode( PersonResourceKey.getElderInstance(), emptyList, true ) );
-		childNodes.add( new ResourceNode( PersonResourceKey.getAdultInstance(), emptyList, true ) );
-		childNodes.add( new ResourceNode( PersonResourceKey.getTeenInstance(), emptyList, true ) );
-		childNodes.add( new ResourceNode( PersonResourceKey.getChildInstance(), emptyList, true ) );
-		childNodes.add( new ResourceNode( PersonResourceKey.getToddlerInstance(), emptyList, true ) );
-	}
+  @Override
+  public void addBipedResourceResourceNodes(List<ResourceNode> childNodes, List<ResourceNode> emptyList) {
+    childNodes.add(new ResourceNode(PersonResourceKey.getElderInstance(), emptyList, true));
+    childNodes.add(new ResourceNode(PersonResourceKey.getAdultInstance(), emptyList, true));
+    childNodes.add(new ResourceNode(PersonResourceKey.getTeenInstance(), emptyList, true));
+    childNodes.add(new ResourceNode(PersonResourceKey.getChildInstance(), emptyList, true));
+    childNodes.add(new ResourceNode(PersonResourceKey.getToddlerInstance(), emptyList, true));
+  }
 
-	@Override
-	public void unloadNebulousModelData() {
-		Manager.unloadNebulousModelData();
-	}
+  @Override
+  public void unloadNebulousModelData() {
+    Manager.unloadNebulousModelData();
+  }
 
-	@Override
-	public void unloadPerson() {
-		PersonResourceComposite.getInstance().getPreviewComposite().unloadPerson();
-	}
+  @Override
+  public void unloadPerson() {
+    PersonResourceComposite.getInstance().getPreviewComposite().unloadPerson();
+  }
 
-	@Override
-	public IconFactory createIconFactory( ModelResource instance ) {
-		return SimsIconFactoryManager.createIconFactory( instance );
-	}
+  @Override
+  public IconFactory createIconFactory(ModelResource instance) {
+    return SimsIconFactoryManager.createIconFactory(instance);
+  }
 
-	@Override
-	public double setOneShotSortValues( Map<JavaMethod, Double> map, double value, double INCREMENT ) {
-		return super.setOneShotSortValues( map, value, INCREMENT );
-	}
+  @Override
+  public double setOneShotSortValues(Map<JavaMethod, Double> map, double value, double INCREMENT) {
+    return super.setOneShotSortValues(map, value, INCREMENT);
+  }
 
-	@Override
-	public boolean isInstanceOfPersonResourceKey( ResourceKey resourceKey ) {
-		return ( resourceKey instanceof PersonResourceKey );
-	}
+  @Override
+  public boolean isInstanceOfPersonResourceKey(ResourceKey resourceKey) {
+    return (resourceKey instanceof PersonResourceKey);
+  }
 
-	@Override
-	public Triggerable getPersonResourceDropOperation( ResourceKey resourceKey ) {
-		if( resourceKey instanceof PersonResourceKey ) {
-			PersonResourceKey personResourceKey = (PersonResourceKey)resourceKey;
-			return DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( personResourceKey.getLifeStage() );
-			//todo
-			//		if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) ) {
-			//			return new org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite( this.resourceKey ).getOperation();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Triggerable getPersonResourceDropOperation(ResourceKey resourceKey) {
+    if (resourceKey instanceof PersonResourceKey) {
+      PersonResourceKey personResourceKey = (PersonResourceKey) resourceKey;
+      return DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage(personResourceKey.getLifeStage());
+      //todo
+      //    if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) ) {
+      //      return new org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite( this.resourceKey ).getOperation();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public void addRoomMethods( AbstractType<?, ?, ?> instanceFactoryValueType, List<JavaMethod> methods ) {
-		JavaType roomType = JavaType.getInstance( SRoom.class );
-		if( roomType.isAssignableFrom( instanceFactoryValueType ) ) {
-			methods.add( SimsOneShotSorter.ROOM_SET_CEILING_PAINT_METHOD );
-			methods.add( SimsOneShotSorter.ROOM_SET_WALL_PAINT_METHOD );
-			methods.add( SimsOneShotSorter.ROOM_SET_FLOOR_PAINT_METHOD );
-			methods.add( SimsOneShotSorter.ROOM_SET_OPACITY_METHOD );
-		}
-	}
+  @Override
+  public void addRoomMethods(AbstractType<?, ?, ?> instanceFactoryValueType, List<JavaMethod> methods) {
+    JavaType roomType = JavaType.getInstance(SRoom.class);
+    if (roomType.isAssignableFrom(instanceFactoryValueType)) {
+      methods.add(SimsOneShotSorter.ROOM_SET_CEILING_PAINT_METHOD);
+      methods.add(SimsOneShotSorter.ROOM_SET_WALL_PAINT_METHOD);
+      methods.add(SimsOneShotSorter.ROOM_SET_FLOOR_PAINT_METHOD);
+      methods.add(SimsOneShotSorter.ROOM_SET_OPACITY_METHOD);
+    }
+  }
 
-	@Override
-	public CascadeBlankChild<?> getRoomFillIns( JavaMethod method, InstanceFactory instanceFactory ) {
-		if( "setCeilingPaint".equals( method.getName() ) ) {
-			return SetCeilingPaintMethodInvocationFillIn.getInstance( instanceFactory, method );
-		} else if( "setWallPaint".equals( method.getName() ) ) {
-			return SetWallPaintMethodInvocationFillIn.getInstance( instanceFactory, method );
-		} else if( "setFloorPaint".equals( method.getName() ) ) {
-			return SetFloorPaintMethodInvocationFillIn.getInstance( instanceFactory, method );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public CascadeBlankChild<?> getRoomFillIns(JavaMethod method, InstanceFactory instanceFactory) {
+    if ("setCeilingPaint".equals(method.getName())) {
+      return SetCeilingPaintMethodInvocationFillIn.getInstance(instanceFactory, method);
+    } else if ("setWallPaint".equals(method.getName())) {
+      return SetWallPaintMethodInvocationFillIn.getInstance(instanceFactory, method);
+    } else if ("setFloorPaint".equals(method.getName())) {
+      return SetFloorPaintMethodInvocationFillIn.getInstance(instanceFactory, method);
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public ResourceKeyUriIteratingOperation getPersonResourceKeyUriIteratingOperation() {
-		return PersonResourceKeyUriIteratingOperation.getInstance();
-	}
+  @Override
+  public ResourceKeyUriIteratingOperation getPersonResourceKeyUriIteratingOperation() {
+    return PersonResourceKeyUriIteratingOperation.getInstance();
+  }
 
-	@Override
-	public ExpressionCascadeManager newExpressionCascadeManager() {
-		return new SimsExpressionCascadeManager();
-	}
+  @Override
+  public ExpressionCascadeManager newExpressionCascadeManager() {
+    return new SimsExpressionCascadeManager();
+  }
 
-	@Override
-	public StoryApiConfigurationManager newStoryApiConfigurationManager() {
-		return new SimsStoryApiConfigurationManager();
-	}
+  @Override
+  public StoryApiConfigurationManager newStoryApiConfigurationManager() {
+    return new SimsStoryApiConfigurationManager();
+  }
 
-	@Override
-	public boolean isAssignableToPersonResource( AbstractType<?, ?, ?> type ) {
-		return ( type.isAssignableTo( PersonResource.class ) );
-	}
+  @Override
+  public boolean isAssignableToPersonResource(AbstractType<?, ?, ?> type) {
+    return (type.isAssignableTo(PersonResource.class));
+  }
 
-	@Override
-	public Paint getFloorApperanceRedwood() {
-		return SRoom.FloorAppearance.REDWOOD;
-	}
+  @Override
+  public Paint getFloorApperanceRedwood() {
+    return SRoom.FloorAppearance.REDWOOD;
+  }
 
-	@Override
-	public Paint getWallApperanceYellow() {
-		return SRoom.WallAppearance.YELLOW;
-	}
+  @Override
+  public Paint getWallApperanceYellow() {
+    return SRoom.WallAppearance.YELLOW;
+  }
 
-	@Override
-	public CascadeBlankChild<?> getGalleryPersonResourceFillInInstance( AbstractType<?, ?, ?> type ) {
-		return GalleryPersonResourceFillIn.getInstance( type );
-	}
+  @Override
+  public CascadeBlankChild<?> getGalleryPersonResourceFillInInstance(AbstractType<?, ?, ?> type) {
+    return GalleryPersonResourceFillIn.getInstance(type);
+  }
 
-	@Override
-	public boolean isPersonResourceAssignableFrom( Class<?> cls ) {
-		return ( PersonResource.class.isAssignableFrom( cls ) );
-	}
+  @Override
+  public boolean isPersonResourceAssignableFrom(Class<?> cls) {
+    return (PersonResource.class.isAssignableFrom(cls));
+  }
 
-	@Override
-	public InstanceCreatorKey getPersonResourceKeyInstanceForResourceClass( Class<? extends ModelResource> resourceCls ) {
-		return PersonResourceKey.getInstanceForResourceClass( resourceCls );
-	}
+  @Override
+  public InstanceCreatorKey getPersonResourceKeyInstanceForResourceClass(Class<? extends ModelResource> resourceCls) {
+    return PersonResourceKey.getInstanceForResourceClass(resourceCls);
+  }
 
-	@Override
-	public ExpressionCreator newExpressionCreator() {
-		return new SimsExpressionCreator();
-	}
+  @Override
+  public ExpressionCreator newExpressionCreator() {
+    return new SimsExpressionCreator();
+  }
 
-	@Override
-	public boolean isPersonResourceTypeAssingleFrom( AbstractType<?, ?, ?> type ) {
-		return PERSON_RESOURCE_TYPE.isAssignableFrom( type );
-	}
+  @Override
+  public boolean isPersonResourceTypeAssingleFrom(AbstractType<?, ?, ?> type) {
+    return PERSON_RESOURCE_TYPE.isAssignableFrom(type);
+  }
 }

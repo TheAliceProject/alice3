@@ -70,92 +70,92 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public abstract class MemberTabView extends MigPanel {
-	private final Map<Member, SwingComponentView<?>> map = Maps.newHashMap();
+  private final Map<Member, SwingComponentView<?>> map = Maps.newHashMap();
 
-	private final PopupButton popupButton;
-	private final ComboBox<String> comboBox;
+  private final PopupButton popupButton;
+  private final ComboBox<String> comboBox;
 
-	public MemberTabView( MemberTabComposite<?> composite ) {
-		super( composite, "insets 0, fill", "[]", "[grow 0][]" );
-		AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
-		if( addMethodMenuModel != null ) {
-			this.popupButton = addMethodMenuModel.getPopupPrepModel().createPopupButton();
-			this.popupButton.setClobberIcon( PlusIconFactory.getInstance().getIcon( new Dimension( 16, 16 ) ) );
-			this.popupButton.tightenUpMargin( new Insets( -2, -10, -2, -8 ) );
-		} else {
-			this.popupButton = null;
-		}
-		this.comboBox = composite.getSortState().getPrepModel().createComboBoxWithItemCodecListCellRenderer();
-	}
+  public MemberTabView(MemberTabComposite<?> composite) {
+    super(composite, "insets 0, fill", "[]", "[grow 0][]");
+    AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
+    if (addMethodMenuModel != null) {
+      this.popupButton = addMethodMenuModel.getPopupPrepModel().createPopupButton();
+      this.popupButton.setClobberIcon(PlusIconFactory.getInstance().getIcon(new Dimension(16, 16)));
+      this.popupButton.tightenUpMargin(new Insets(-2, -10, -2, -8));
+    } else {
+      this.popupButton = null;
+    }
+    this.comboBox = composite.getSortState().getPrepModel().createComboBoxWithItemCodecListCellRenderer();
+  }
 
-	private static SwingComponentView<?> createDragView( Member member ) {
-		return new Label( member.getName() );
-	}
+  private static SwingComponentView<?> createDragView(Member member) {
+    return new Label(member.getName());
+  }
 
-	protected SwingComponentView<?> getComponentFor( Member member ) {
-		synchronized( this.map ) {
-			SwingComponentView<?> rv = this.map.get( member );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = createDragView( member );
-				this.map.put( member, rv );
-			}
-			return rv;
-		}
-	}
+  protected SwingComponentView<?> getComponentFor(Member member) {
+    synchronized (this.map) {
+      SwingComponentView<?> rv = this.map.get(member);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = createDragView(member);
+        this.map.put(member, rv);
+      }
+      return rv;
+    }
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		MemberTabComposite<?> composite = (MemberTabComposite<?>)this.getComposite();
-		this.removeAllComponents();
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    MemberTabComposite<?> composite = (MemberTabComposite<?>) this.getComposite();
+    this.removeAllComponents();
 
-		AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
-		SwingComponentView<?> leftTopComponent;
-		if( addMethodMenuModel != null ) {
-			if( addMethodMenuModel.isRelevant() ) {
-				leftTopComponent = this.popupButton;
-			} else {
-				leftTopComponent = null;
-			}
-		} else {
-			leftTopComponent = null;
-		}
-		String scrollPaneConstraints = "grow";
-		if( leftTopComponent != null ) {
-			this.addComponent( leftTopComponent, "align left" );
-			scrollPaneConstraints += ", span 2";
-		}
-		this.addComponent( this.comboBox, "align right, wrap" );
+    AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
+    SwingComponentView<?> leftTopComponent;
+    if (addMethodMenuModel != null) {
+      if (addMethodMenuModel.isRelevant()) {
+        leftTopComponent = this.popupButton;
+      } else {
+        leftTopComponent = null;
+      }
+    } else {
+      leftTopComponent = null;
+    }
+    String scrollPaneConstraints = "grow";
+    if (leftTopComponent != null) {
+      this.addComponent(leftTopComponent, "align left");
+      scrollPaneConstraints += ", span 2";
+    }
+    this.addComponent(this.comboBox, "align right, wrap");
 
-		MigPanel scrollPaneView = new MigPanel( null, "insets 0", "[]", "[]0[]" );
-		for( MethodsSubComposite subComposite : composite.getSubComposites() ) {
-			if( subComposite != MemberTabComposite.SEPARATOR ) {
-				if( subComposite.isShowingDesired() ) {
-					ToolPaletteView view = subComposite.getOuterComposite().getView();
-					if( subComposite instanceof FunctionsOfReturnTypeSubComposite ) {
-						view.getTitle().setHorizontalTextPosition( HorizontalTextPosition.LEADING );
-					}
-					view.getTitle().changeFont( TextPosture.OBLIQUE );
-					if( MemberTabComposite.ARE_TOOL_PALETTES_INERT ) {
-						view.getTitle().setInert( true );
-					} else {
-						view.getTitle().setRenderingStyle( ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
-					}
-					view.setBackgroundColor( this.getBackgroundColor() );
-					if( subComposite instanceof UserMethodsSubComposite ) {
-						UserMethodsSubComposite userMethodsSubComposite = (UserMethodsSubComposite)subComposite;
-						view.getTitle().setSuppressed( userMethodsSubComposite.isRelevant() == false );
-					}
-					scrollPaneView.addComponent( view, "wrap" );
-				}
-			} else {
-				scrollPaneView.addComponent( Separator.createInstanceSeparatingTopFromBottom(), "wrap" );
-			}
-		}
-		scrollPaneView.setBackgroundColor( this.getBackgroundColor() );
-		ScrollPane scrollPane = new ScrollPane( scrollPaneView );
-		this.addComponent( scrollPane, scrollPaneConstraints );
-	}
+    MigPanel scrollPaneView = new MigPanel(null, "insets 0", "[]", "[]0[]");
+    for (MethodsSubComposite subComposite : composite.getSubComposites()) {
+      if (subComposite != MemberTabComposite.SEPARATOR) {
+        if (subComposite.isShowingDesired()) {
+          ToolPaletteView view = subComposite.getOuterComposite().getView();
+          if (subComposite instanceof FunctionsOfReturnTypeSubComposite) {
+            view.getTitle().setHorizontalTextPosition(HorizontalTextPosition.LEADING);
+          }
+          view.getTitle().changeFont(TextPosture.OBLIQUE);
+          if (MemberTabComposite.ARE_TOOL_PALETTES_INERT) {
+            view.getTitle().setInert(true);
+          } else {
+            view.getTitle().setRenderingStyle(ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY);
+          }
+          view.setBackgroundColor(this.getBackgroundColor());
+          if (subComposite instanceof UserMethodsSubComposite) {
+            UserMethodsSubComposite userMethodsSubComposite = (UserMethodsSubComposite) subComposite;
+            view.getTitle().setSuppressed(userMethodsSubComposite.isRelevant() == false);
+          }
+          scrollPaneView.addComponent(view, "wrap");
+        }
+      } else {
+        scrollPaneView.addComponent(Separator.createInstanceSeparatingTopFromBottom(), "wrap");
+      }
+    }
+    scrollPaneView.setBackgroundColor(this.getBackgroundColor());
+    ScrollPane scrollPane = new ScrollPane(scrollPaneView);
+    this.addComponent(scrollPane, scrollPaneConstraints);
+  }
 }

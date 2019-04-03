@@ -60,27 +60,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class MarkerColorIdCascade extends ImmutableCascade<Expression> {
-	private static InitializingIfAbsentMap<UserField, MarkerColorIdCascade> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<UserField, MarkerColorIdCascade> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static MarkerColorIdCascade getInstance( UserField field ) {
-		return map.getInitializingIfAbsent( field, new InitializingIfAbsentMap.Initializer<UserField, MarkerColorIdCascade>() {
-			@Override
-			public MarkerColorIdCascade initialize( UserField key ) {
-				return new MarkerColorIdCascade( key );
-			}
-		} );
-	}
+  public static MarkerColorIdCascade getInstance(UserField field) {
+    return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<UserField, MarkerColorIdCascade>() {
+      @Override
+      public MarkerColorIdCascade initialize(UserField key) {
+        return new MarkerColorIdCascade(key);
+      }
+    });
+  }
 
-	private final UserField field;
+  private final UserField field;
 
-	private MarkerColorIdCascade( UserField field ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "1f6171eb-193b-46a9-a49a-22bacab341de" ), Expression.class, ExpressionBlank.createBlanks( Color.class ) );
-		this.field = field;
-	}
+  private MarkerColorIdCascade(UserField field) {
+    super(Application.PROJECT_GROUP, UUID.fromString("1f6171eb-193b-46a9-a49a-22bacab341de"), Expression.class, ExpressionBlank.createBlanks(Color.class));
+    this.field = field;
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity, Expression[] values ) {
-		assert values.length == 1;
-		return new MarkerColorIdEdit( userActivity, this.field, values[ 0 ] );
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity, Expression[] values) {
+    assert values.length == 1;
+    return new MarkerColorIdEdit(userActivity, this.field, values[0]);
+  }
 }

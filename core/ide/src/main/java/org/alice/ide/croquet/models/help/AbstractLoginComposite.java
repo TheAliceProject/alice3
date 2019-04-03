@@ -64,134 +64,134 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  */
 public abstract class AbstractLoginComposite<V extends LoginView> extends SimpleOperationInputDialogCoreComposite<V> {
 
-	private final BooleanState isRememberingState = this.createPreferenceBooleanState( "isRememberingState", false );
-	protected final PreferenceStringState userNameState = this.createPreferenceStringState( "userNameState", "", this.isRememberingState );
-	protected final PreferenceStringState passwordState = this.createPreferenceStringState( "passwordState", "", this.isRememberingState, UUID.fromString( "fa5a952b-d1d2-4c29-80f3-88dec338f8f9" ) );
-	protected final BooleanState displayPasswordValue = createBooleanState( "displayPasswordState", false );
-	protected final BooleanState isLoggedIn = createBooleanState( "isLoggedIn", false );
-	private Status status;
-	protected Status loginFailedStatus = createWarningStatus( "warningLoginFailed" );
-	protected Status connectionFailedStatus = createWarningStatus( "warningConnectionFailed" );
-	private final BooleanState connectionFailed = this.createBooleanState( "doNotLocalize", false );
-	private final List<LogInOutListener> listeners = Lists.newCopyOnWriteArrayList();
+  private final BooleanState isRememberingState = this.createPreferenceBooleanState("isRememberingState", false);
+  protected final PreferenceStringState userNameState = this.createPreferenceStringState("userNameState", "", this.isRememberingState);
+  protected final PreferenceStringState passwordState = this.createPreferenceStringState("passwordState", "", this.isRememberingState, UUID.fromString("fa5a952b-d1d2-4c29-80f3-88dec338f8f9"));
+  protected final BooleanState displayPasswordValue = createBooleanState("displayPasswordState", false);
+  protected final BooleanState isLoggedIn = createBooleanState("isLoggedIn", false);
+  private Status status;
+  protected Status loginFailedStatus = createWarningStatus("warningLoginFailed");
+  protected Status connectionFailedStatus = createWarningStatus("warningConnectionFailed");
+  private final BooleanState connectionFailed = this.createBooleanState("doNotLocalize", false);
+  private final List<LogInOutListener> listeners = Lists.newCopyOnWriteArrayList();
 
-	public AbstractLoginComposite( UUID migrationId, Group operationGroup ) {
-		super( migrationId, operationGroup );
-	}
+  public AbstractLoginComposite(UUID migrationId, Group operationGroup) {
+    super(migrationId, operationGroup);
+  }
 
-	private final ActionOperation logOutOperation = createActionOperation( "logOutOperation", new Action() {
+  private final ActionOperation logOutOperation = createActionOperation("logOutOperation", new Action() {
 
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			internalLogout();
-			isLoggedIn.setValueTransactionlessly( false );
-			userNameState.setValueTransactionlessly( "" );
-			passwordState.setValueTransactionlessly( "" );
-			return null;
-		}
-	} );
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      internalLogout();
+      isLoggedIn.setValueTransactionlessly(false);
+      userNameState.setValueTransactionlessly("");
+      passwordState.setValueTransactionlessly("");
+      return null;
+    }
+  });
 
-	public StringState getUserNameState() {
-		return this.userNameState;
-	}
+  public StringState getUserNameState() {
+    return this.userNameState;
+  }
 
-	public StringState getPasswordState() {
-		return this.passwordState;
-	}
+  public StringState getPasswordState() {
+    return this.passwordState;
+  }
 
-	public BooleanState getDisplayPasswordValue() {
-		return this.displayPasswordValue;
-	}
+  public BooleanState getDisplayPasswordValue() {
+    return this.displayPasswordValue;
+  }
 
-	public BooleanState getIsLoggedIn() {
-		return this.isLoggedIn;
-	}
+  public BooleanState getIsLoggedIn() {
+    return this.isLoggedIn;
+  }
 
-	public BooleanState getIsRememberingState() {
-		return this.isRememberingState;
-	}
+  public BooleanState getIsRememberingState() {
+    return this.isRememberingState;
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		//note: work is done in isClearedForCommit
-		return null;
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity) {
+    //note: work is done in isClearedForCommit
+    return null;
+  }
 
-	@Override
-	protected boolean isClearedForCommit() {
-		if( super.isClearedForCommit() ) {
-			boolean loginSuccess = internalLogin();
-			if( loginSuccess ) {
-				isLoggedIn.setValueTransactionlessly( true );
-				status = IS_GOOD_TO_GO_STATUS;
-			} else if( !connectionFailed.getValue() ) {
-				status = loginFailedStatus;
-			} else {
-				status = connectionFailedStatus;
-			}
-			refreshStatus();
-			return loginSuccess;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  protected boolean isClearedForCommit() {
+    if (super.isClearedForCommit()) {
+      boolean loginSuccess = internalLogin();
+      if (loginSuccess) {
+        isLoggedIn.setValueTransactionlessly(true);
+        status = IS_GOOD_TO_GO_STATUS;
+      } else if (!connectionFailed.getValue()) {
+        status = loginFailedStatus;
+      } else {
+        status = connectionFailedStatus;
+      }
+      refreshStatus();
+      return loginSuccess;
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	protected V createView() {
-		return (V)new LoginView( this );
-	}
+  @Override
+  protected V createView() {
+    return (V) new LoginView(this);
+  }
 
-	@Override
-	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
-		return this.status;
-	}
+  @Override
+  protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
+    return this.status;
+  }
 
-	private boolean internalLogin() {
-		boolean rv = tryToLogin();
-		if( rv ) {
-			fireLoggedIn();
-		}
-		return rv;
-	}
+  private boolean internalLogin() {
+    boolean rv = tryToLogin();
+    if (rv) {
+      fireLoggedIn();
+    }
+    return rv;
+  }
 
-	private void internalLogout() {
-		logout();
-		fireLoggedOut();
-	}
+  private void internalLogout() {
+    logout();
+    fireLoggedOut();
+  }
 
-	protected abstract boolean tryToLogin();
+  protected abstract boolean tryToLogin();
 
-	protected abstract void logout();
+  protected abstract void logout();
 
-	public final ActionOperation getLogOutOperation() {
-		return logOutOperation;
-	}
+  public final ActionOperation getLogOutOperation() {
+    return logOutOperation;
+  }
 
-	public String updateUserNameForWelcomeString() {
-		return "";
-	}
+  public String updateUserNameForWelcomeString() {
+    return "";
+  }
 
-	protected void setConnectionFailed( boolean isFailed ) {
-		this.connectionFailed.setValueTransactionlessly( isFailed );
-	}
+  protected void setConnectionFailed(boolean isFailed) {
+    this.connectionFailed.setValueTransactionlessly(isFailed);
+  }
 
-	public boolean getCanLogIn() {
-		return !connectionFailed.getValue();
-	}
+  public boolean getCanLogIn() {
+    return !connectionFailed.getValue();
+  }
 
-	private void fireLoggedIn() {
-		for( LogInOutListener listener : listeners ) {
-			listener.fireLoggedIn( this );
-		}
-	}
+  private void fireLoggedIn() {
+    for (LogInOutListener listener : listeners) {
+      listener.fireLoggedIn(this);
+    }
+  }
 
-	private void fireLoggedOut() {
-		for( LogInOutListener listener : listeners ) {
-			listener.fireLoggedOut( this );
-		}
-	}
+  private void fireLoggedOut() {
+    for (LogInOutListener listener : listeners) {
+      listener.fireLoggedOut(this);
+    }
+  }
 
-	public void addListener( LogInOutListener listener ) {
-		listeners.add( listener );
-	}
+  public void addListener(LogInOutListener listener) {
+    listeners.add(listener);
+  }
 }

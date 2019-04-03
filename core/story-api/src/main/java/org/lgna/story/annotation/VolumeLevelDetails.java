@@ -49,24 +49,25 @@ import org.lgna.project.annotations.NumberValueDetails;
  * @author Dennis Cosgrove
  */
 public enum VolumeLevelDetails implements NumberValueDetails {
-	SINGLETON;
-	@Override
-	public Class<Number> getSupportedCls() {
-		return Number.class;
-	}
+  SINGLETON;
 
-	@Override
-	public Double getMinimumValue() {
-		return 0.0;
-	}
+  @Override
+  public Class<Number> getSupportedCls() {
+    return Number.class;
+  }
 
-	@Override
-	public Double getMaximumValue() {
-		return null;
-	}
+  @Override
+  public Double getMinimumValue() {
+    return 0.0;
+  }
 
-	@Override
-	public double[] getLiterals() {
-		return new double[] { 0.0, 0.25, 0.5, 1.0, 2.0 };
-	}
+  @Override
+  public Double getMaximumValue() {
+    return null;
+  }
+
+  @Override
+  public double[] getLiterals() {
+    return new double[] {0.0, 0.25, 0.5, 1.0, 2.0};
+  }
 }

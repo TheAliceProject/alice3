@@ -45,23 +45,22 @@ package org.lgna.project.virtualmachine;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class Variable<E> {
-	public Variable() {
-	}
+@Deprecated public class Variable<E> {
+  public Variable() {
+  }
 
-	public Variable( E value ) {
-		this.value = value;
-	}
+  public Variable(E value) {
+    this.value = value;
+  }
 
-	//todo: reduce visibility to private?
-	public E value;
+  //todo: reduce visibility to private?
+  public E value;
 
-	public E retrieve() {
-		return this.value;
-	}
+  public E retrieve() {
+    return this.value;
+  }
 
-	public void assign( E value ) {
-		this.value = value;
-	}
+  public void assign(E value) {
+    this.value = value;
+  }
 }

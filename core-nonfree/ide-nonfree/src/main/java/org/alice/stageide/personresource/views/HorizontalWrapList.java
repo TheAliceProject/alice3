@@ -53,16 +53,16 @@ import javax.swing.ListCellRenderer;
  * @author Dennis Cosgrove
  */
 public class HorizontalWrapList<T> extends List<T> {
-	public HorizontalWrapList( SingleSelectListState<T, ?> model, int visibleRowCount, ListCellRenderer cellRenderer ) {
-		super( model );
-		this.setLayoutOrientation( List.LayoutOrientation.HORIZONTAL_WRAP );
-		this.setVisibleRowCount( visibleRowCount );
-		this.setBackgroundColor( IngredientsView.BACKGROUND_COLOR );
-		this.setCellRenderer( cellRenderer );
-		this.getAwtComponent().setEnabled( model.isEnabled() );
-	}
+  public HorizontalWrapList(SingleSelectListState<T, ?> model, int visibleRowCount, ListCellRenderer cellRenderer) {
+    super(model);
+    this.setLayoutOrientation(List.LayoutOrientation.HORIZONTAL_WRAP);
+    this.setVisibleRowCount(visibleRowCount);
+    this.setBackgroundColor(IngredientsView.BACKGROUND_COLOR);
+    this.setCellRenderer(cellRenderer);
+    this.getAwtComponent().setEnabled(model.isEnabled());
+  }
 
-	public HorizontalWrapList( SingleSelectListState<T, ?> model, int visibleRowCount ) {
-		this( model, visibleRowCount, SimpleListCellRenderer.SINGLETON );
-	}
+  public HorizontalWrapList(SingleSelectListState<T, ?> model, int visibleRowCount) {
+    this(model, visibleRowCount, SimpleListCellRenderer.SINGLETON);
+  }
 }

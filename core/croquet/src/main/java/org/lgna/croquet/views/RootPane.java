@@ -48,30 +48,30 @@ import javax.swing.JRootPane;
  * @author Dennis Cosgrove
  */
 public class RootPane extends SwingComponentView<JRootPane> {
-	private final AbstractWindow<?> window;
+  private final AbstractWindow<?> window;
 
-	private final LayeredPane layeredPane;
+  private final LayeredPane layeredPane;
 
-	/* package-private */RootPane( AbstractWindow<?> window ) {
-		this.window = window;
-		this.layeredPane = new LayeredPane( this );
-	}
+  /* package-private */RootPane(AbstractWindow<?> window) {
+    this.window = window;
+    this.layeredPane = new LayeredPane(this);
+  }
 
-	public LayeredPane getLayeredPane() {
-		return this.layeredPane;
-	}
+  public LayeredPane getLayeredPane() {
+    return this.layeredPane;
+  }
 
-	@Override
-	protected JRootPane createAwtComponent() {
-		return this.window.getJRootPane();
-	}
+  @Override
+  protected JRootPane createAwtComponent() {
+    return this.window.getJRootPane();
+  }
 
-	public AwtComponentView<?> getGlassPane() {
-		return AwtComponentView.lookup( this.getAwtComponent().getGlassPane() );
-	}
+  public AwtComponentView<?> getGlassPane() {
+    return AwtComponentView.lookup(this.getAwtComponent().getGlassPane());
+  }
 
-	public void setGlassPane( AwtComponentView<?> component ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setGlassPane( component != null ? component.getAwtComponent() : null );
-	}
+  public void setGlassPane(AwtComponentView<?> component) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setGlassPane(component != null ? component.getAwtComponent() : null);
+  }
 }

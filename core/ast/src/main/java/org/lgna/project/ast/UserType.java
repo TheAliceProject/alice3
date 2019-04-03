@@ -49,125 +49,125 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class UserType<C extends UserConstructor> extends AbstractType<C, UserMethod, UserField> {
-	public UserType() {
-	}
+  public UserType() {
+  }
 
-	public UserType( AbstractType<?, ?, ?> superType, UserMethod[] methods, UserField[] fields ) {
-		this.superType.setValue( superType );
-		this.methods.add( methods );
-		this.fields.add( fields );
-	}
+  public UserType(AbstractType<?, ?, ?> superType, UserMethod[] methods, UserField[] fields) {
+    this.superType.setValue(superType);
+    this.methods.add(methods);
+    this.fields.add(fields);
+  }
 
-	private boolean isEqualToOrSubTypeOf( UserType<?> candidate ) {
-		if( this == candidate ) {
-			return true;
-		} else {
-			AbstractType<?, ?, ?> superType = this.superType.getValue();
-			if( superType instanceof UserType<?> ) {
-				UserType<?> superUserType = (UserType<?>)superType;
-				return superUserType.isEqualToOrSubTypeOf( candidate );
-			} else {
-				return false;
-			}
-		}
-	}
+  private boolean isEqualToOrSubTypeOf(UserType<?> candidate) {
+    if (this == candidate) {
+      return true;
+    } else {
+      AbstractType<?, ?, ?> superType = this.superType.getValue();
+      if (superType instanceof UserType<?>) {
+        UserType<?> superUserType = (UserType<?>) superType;
+        return superUserType.isEqualToOrSubTypeOf(candidate);
+      } else {
+        return false;
+      }
+    }
+  }
 
-	@Override
-	protected boolean isAssignableFromType( AbstractType<?, ?, ?> other ) {
-		if( other.isArray() ) {
-			return false;
-		} else {
-			if( other instanceof UserType<?> ) {
-				UserType<?> otherUserType = (UserType<?>)other;
-				return otherUserType.isEqualToOrSubTypeOf( this );
-			} else {
-				return false;
-			}
-		}
-	}
+  @Override
+  protected boolean isAssignableFromType(AbstractType<?, ?, ?> other) {
+    if (other.isArray()) {
+      return false;
+    } else {
+      if (other instanceof UserType<?>) {
+        UserType<?> otherUserType = (UserType<?>) other;
+        return otherUserType.isEqualToOrSubTypeOf(this);
+      } else {
+        return false;
+      }
+    }
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getKeywordFactoryType() {
-		return null;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getKeywordFactoryType() {
+    return null;
+  }
 
-	@Override
-	public final boolean isFollowToSuperClassDesired() {
-		return true;
-	}
+  @Override
+  public final boolean isFollowToSuperClassDesired() {
+    return true;
+  }
 
-	@Override
-	public final boolean isConsumptionBySubClassDesired() {
-		return false;
-	}
+  @Override
+  public final boolean isConsumptionBySubClassDesired() {
+    return false;
+  }
 
-	@Override
-	public final AbstractType<?, ?, ?> getSuperType() {
-		return superType.getValue();
-	}
+  @Override
+  public final AbstractType<?, ?, ?> getSuperType() {
+    return superType.getValue();
+  }
 
-	@Override
-	public AbstractType<?, ?, ?>[] getInterfaces() {
-		return new AbstractType<?, ?, ?>[] {};
-	}
+  @Override
+  public AbstractType<?, ?, ?>[] getInterfaces() {
+    return new AbstractType<?, ?, ?>[] {};
+  }
 
-	@Override
-	public final List<UserMethod> getDeclaredMethods() {
-		return methods.getValue();
-	}
+  @Override
+  public final List<UserMethod> getDeclaredMethods() {
+    return methods.getValue();
+  }
 
-	@Override
-	public final List<UserField> getDeclaredFields() {
-		return fields.getValue();
-	}
+  @Override
+  public final List<UserField> getDeclaredFields() {
+    return fields.getValue();
+  }
 
-	@Override
-	public boolean isPrimitive() {
-		return false;
-	}
+  @Override
+  public boolean isPrimitive() {
+    return false;
+  }
 
-	@Override
-	public final boolean isInterface() {
-		return false;
-	}
+  @Override
+  public final boolean isInterface() {
+    return false;
+  }
 
-	@Override
-	public final boolean isUserAuthored() {
-		return true;
-	}
+  @Override
+  public final boolean isUserAuthored() {
+    return true;
+  }
 
-	@Override
-	public final boolean isArray() {
-		return false;
-	}
+  @Override
+  public final boolean isArray() {
+    return false;
+  }
 
-	@Override
-	public boolean isEnum() {
-		return false;
-	}
+  @Override
+  public boolean isEnum() {
+    return false;
+  }
 
-	@Override
-	public final AbstractType<?, ?, ?> getComponentType() {
-		return null;
-	}
+  @Override
+  public final AbstractType<?, ?, ?> getComponentType() {
+    return null;
+  }
 
-	@Override
-	public final AbstractType<?, ?, ?> getArrayType() {
-		return UserArrayType.getInstance( this, 1 );
-	}
+  @Override
+  public final AbstractType<?, ?, ?> getArrayType() {
+    return UserArrayType.getInstance(this, 1);
+  }
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> superType = new DeclarationProperty<AbstractType<?, ?, ?>>( this ) {
-		@Override
-		public boolean isReference() {
-			return true;
-		}
+  public final DeclarationProperty<AbstractType<?, ?, ?>> superType = new DeclarationProperty<AbstractType<?, ?, ?>>(this) {
+    @Override
+    public boolean isReference() {
+      return true;
+    }
 
-		@Override
-		public void setValue( AbstractType<?, ?, ?> value ) {
-			assert ( value == null ) || ( value.isArray() == false );
-			super.setValue( value );
-		}
-	};
-	public final NodeListProperty<UserMethod> methods = new NodeListProperty<UserMethod>( this );
-	public final NodeListProperty<UserField> fields = new NodeListProperty<UserField>( this );
+    @Override
+    public void setValue(AbstractType<?, ?, ?> value) {
+      assert (value == null) || (value.isArray() == false);
+      super.setValue(value);
+    }
+  };
+  public final NodeListProperty<UserMethod> methods = new NodeListProperty<UserMethod>(this);
+  public final NodeListProperty<UserField> fields = new NodeListProperty<UserField>(this);
 }

@@ -65,88 +65,87 @@ import java.util.Set;
  */
 public class GenerateMethod18nProperties {
 
-	/**
-	 * Scans all classes accessible from the context class loader which belong to the given package and subpackages.
-	 *
-	 * @param packageName The base package
-	 */
-	private static Class[] getClasses(String packageName)
-					throws ClassNotFoundException, IOException {
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		assert classLoader != null;
-		String path = packageName.replace('.', '/');
-		Enumeration<URL> resources = classLoader.getResources(path);
-		List<File> dirs = new ArrayList<>();
-		while (resources.hasMoreElements()) {
-			URL resource = resources.nextElement();
-			dirs.add(new File(resource.getFile()));
-		}
-		ArrayList<Class> classes = new ArrayList<>();
-		for (File directory : dirs) {
-			classes.addAll(findClasses(directory, packageName));
-		}
-		return classes.toArray(new Class[classes.size()]);
-	}
+  /**
+   * Scans all classes accessible from the context class loader which belong to the given package and subpackages.
+   *
+   * @param packageName The base package
+   */
+  private static Class[] getClasses(String packageName) throws ClassNotFoundException, IOException {
+    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    assert classLoader != null;
+    String path = packageName.replace('.', '/');
+    Enumeration<URL> resources = classLoader.getResources(path);
+    List<File> dirs = new ArrayList<>();
+    while (resources.hasMoreElements()) {
+      URL resource = resources.nextElement();
+      dirs.add(new File(resource.getFile()));
+    }
+    ArrayList<Class> classes = new ArrayList<>();
+    for (File directory : dirs) {
+      classes.addAll(findClasses(directory, packageName));
+    }
+    return classes.toArray(new Class[classes.size()]);
+  }
 
-	/**
-	 * Recursive method used to find all classes in a given directory and subdirs.
-	 *
-	 * @param directory   The base directory
-	 * @param packageName The package name for classes found inside the base directory
-	 * @return The classes
-	 */
-	private static List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException {
-		List<Class> classes = new ArrayList<>();
-		if (directory.exists()) {
-			File[] files = directory.listFiles();
-			for (File file : files) {
-				if (file.isDirectory()) {
-					assert !file.getName().contains(".");
-					classes.addAll(findClasses(file, packageName + "." + file.getName()));
-				} else if (file.getName().endsWith(".class")) {
-					classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
-				}
-			}
-		}
-		return classes;
-	}
+  /**
+   * Recursive method used to find all classes in a given directory and subdirs.
+   *
+   * @param directory   The base directory
+   * @param packageName The package name for classes found inside the base directory
+   * @return The classes
+   */
+  private static List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException {
+    List<Class> classes = new ArrayList<>();
+    if (directory.exists()) {
+      File[] files = directory.listFiles();
+      for (File file : files) {
+        if (file.isDirectory()) {
+          assert !file.getName().contains(".");
+          classes.addAll(findClasses(file, packageName + "." + file.getName()));
+        } else if (file.getName().endsWith(".class")) {
+          classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+        }
+      }
+    }
+    return classes;
+  }
 
-	private static void listMethods() {
-		Set<String> methodNames = Sets.newHashSet();
-		try {
-			Class<?>[] classes = getClasses("org.lgna.story");
-			for (Class<?> aClass : classes) {
-				for( Method method : aClass.getDeclaredMethods() ) {
-					for ( Annotation anno : method.getAnnotations()) {
-						if ((anno instanceof MethodTemplate)  && !((MethodTemplate) anno).visibility().equals(Visibility.COMPLETELY_HIDDEN)) {
-							methodNames.add( method.getName() );
-						}
-					}
-				}
-			}
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
-		}
-		List<String> list = Lists.newArrayList( methodNames );
-		Collections.sort( list );
-		StringBuilder sb = new StringBuilder();
-		for( String methodName : list ) {
-			sb.append( methodName );
-			sb.append( " = " );
-			sb.append( methodName );
-			sb.append( "\n" );
-		}
-		sb.append("\nCanadian\n");
-		for( String methodName : list ) {
-			sb.append( methodName );
-			sb.append( " = |" );
-			sb.append( methodName );
-			sb.append( "|\n" );
-		}
-		Logger.outln( sb );
-	}
+  private static void listMethods() {
+    Set<String> methodNames = Sets.newHashSet();
+    try {
+      Class<?>[] classes = getClasses("org.lgna.story");
+      for (Class<?> aClass : classes) {
+        for (Method method : aClass.getDeclaredMethods()) {
+          for (Annotation anno : method.getAnnotations()) {
+            if ((anno instanceof MethodTemplate) && !((MethodTemplate) anno).visibility().equals(Visibility.COMPLETELY_HIDDEN)) {
+              methodNames.add(method.getName());
+            }
+          }
+        }
+      }
+    } catch (ClassNotFoundException | IOException e) {
+      e.printStackTrace();
+    }
+    List<String> list = Lists.newArrayList(methodNames);
+    Collections.sort(list);
+    StringBuilder sb = new StringBuilder();
+    for (String methodName : list) {
+      sb.append(methodName);
+      sb.append(" = ");
+      sb.append(methodName);
+      sb.append("\n");
+    }
+    sb.append("\nCanadian\n");
+    for (String methodName : list) {
+      sb.append(methodName);
+      sb.append(" = |");
+      sb.append(methodName);
+      sb.append("|\n");
+    }
+    Logger.outln(sb);
+  }
 
-	public static void main( String[] args ) throws Exception {
-		listMethods();
-	}
+  public static void main(String[] args) throws Exception {
+    listMethods();
+  }
 }

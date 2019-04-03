@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class MoveToward extends DurationAnimationStyleAsSeenByArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = MoveToward.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = MoveToward.class) public static interface Detail {
+  }
 
-	private MoveToward() {
-		super();
-	}
+  private MoveToward() {
+    super();
+  }
 }

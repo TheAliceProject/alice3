@@ -68,171 +68,171 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ResourceManagerComposite extends LazyOperationUnadornedDialogCoreComposite<ResourceManagerView> {
-	public ResourceManagerComposite( ProjectDocumentFrame projectDocumentFrame ) {
-		super( UUID.fromString( "7351e244-fcd7-4b21-9b54-83254fc44db7" ) );
-		this.projectDocumentFrame = projectDocumentFrame;
-	}
+  public ResourceManagerComposite(ProjectDocumentFrame projectDocumentFrame) {
+    super(UUID.fromString("7351e244-fcd7-4b21-9b54-83254fc44db7"));
+    this.projectDocumentFrame = projectDocumentFrame;
+  }
 
-	public ImportAudioResourceOperation getImportAudioResourceOperation() {
-		return this.importAudioResourceOperation;
-	}
+  public ImportAudioResourceOperation getImportAudioResourceOperation() {
+    return this.importAudioResourceOperation;
+  }
 
-	public ImportImageResourceOperation getImportImageResourceOperation() {
-		return this.importImageResourceOperation;
-	}
+  public ImportImageResourceOperation getImportImageResourceOperation() {
+    return this.importImageResourceOperation;
+  }
 
-	public ResourceSingleSelectTableRowState getResourcesState() {
-		return this.resourcesState;
-	}
+  public ResourceSingleSelectTableRowState getResourcesState() {
+    return this.resourcesState;
+  }
 
-	public RenameResourceComposite getRenameResourceComposite() {
-		return this.renameResourceComposite;
-	}
+  public RenameResourceComposite getRenameResourceComposite() {
+    return this.renameResourceComposite;
+  }
 
-	public Operation getRemoveResourceOperation() {
-		return this.removeResourceOperation;
-	}
+  public Operation getRemoveResourceOperation() {
+    return this.removeResourceOperation;
+  }
 
-	public Operation getReloadContentOperation() {
-		return this.reloadContentOperation;
-	}
+  public Operation getReloadContentOperation() {
+    return this.reloadContentOperation;
+  }
 
-	@Override
-	protected ResourceManagerView createView() {
-		return new ResourceManagerView( this );
-	}
+  @Override
+  protected ResourceManagerView createView() {
+    return new ResourceManagerView(this);
+  }
 
-	private void reloadTableModel( Project project ) {
-		this.resourcesState.reloadTableModel( project );
-		Collection<Resource> currentResources = this.resourcesState.getItems();
-		for( Resource resource : this.previousResources ) {
-			if( currentResources.contains( resource ) ) {
-				//pass
-			} else {
-				resource.removeNameListener( this.nameListener );
-			}
-		}
-		for( Resource resource : currentResources ) {
-			if( this.previousResources.contains( resource ) ) {
-				//pass
-			} else {
-				resource.addNameListener( this.nameListener );
-			}
-		}
-		this.previousResources = currentResources;
-	}
+  private void reloadTableModel(Project project) {
+    this.resourcesState.reloadTableModel(project);
+    Collection<Resource> currentResources = this.resourcesState.getItems();
+    for (Resource resource : this.previousResources) {
+      if (currentResources.contains(resource)) {
+        //pass
+      } else {
+        resource.removeNameListener(this.nameListener);
+      }
+    }
+    for (Resource resource : currentResources) {
+      if (this.previousResources.contains(resource)) {
+        //pass
+      } else {
+        resource.addNameListener(this.nameListener);
+      }
+    }
+    this.previousResources = currentResources;
+  }
 
-	private Project getProject() {
-		//TODO: use this.projectDocumentFrame
-		IDE ide = IDE.getActiveInstance();
-		Project project;
-		if( ide != null ) {
-			project = ide.getProject();
-		} else {
-			project = null;
-		}
-		return project;
-	}
+  private Project getProject() {
+    //TODO: use this.projectDocumentFrame
+    IDE ide = IDE.getActiveInstance();
+    Project project;
+    if (ide != null) {
+      project = ide.getProject();
+    } else {
+      project = null;
+    }
+    return project;
+  }
 
-	private void reloadTableModel() {
-		this.reloadTableModel( this.getProject() );
-	}
+  private void reloadTableModel() {
+    this.reloadTableModel(this.getProject());
+  }
 
-	@Override
-	public void handlePreActivation() {
-		this.projectBeingListenedTo = this.getProject();
-		if( this.projectBeingListenedTo != null ) {
-			this.projectBeingListenedTo.addResourceListener( this.resourceListener );
-		}
-		this.reloadTableModel( this.projectBeingListenedTo );
-		this.resourcesState.addAndInvokeNewSchoolValueListener( this.rowListener );
-		super.handlePreActivation();
-	}
+  @Override
+  public void handlePreActivation() {
+    this.projectBeingListenedTo = this.getProject();
+    if (this.projectBeingListenedTo != null) {
+      this.projectBeingListenedTo.addResourceListener(this.resourceListener);
+    }
+    this.reloadTableModel(this.projectBeingListenedTo);
+    this.resourcesState.addAndInvokeNewSchoolValueListener(this.rowListener);
+    super.handlePreActivation();
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		if( this.projectBeingListenedTo != null ) {
-			this.projectBeingListenedTo.removeResourceListener( this.resourceListener );
-		}
-		this.resourcesState.removeNewSchoolValueListener( this.rowListener );
-		for( Resource resource : this.previousResources ) {
-			resource.removeNameListener( this.nameListener );
-		}
-		this.previousResources = Collections.emptyList();
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    if (this.projectBeingListenedTo != null) {
+      this.projectBeingListenedTo.removeResourceListener(this.resourceListener);
+    }
+    this.resourcesState.removeNewSchoolValueListener(this.rowListener);
+    for (Resource resource : this.previousResources) {
+      resource.removeNameListener(this.nameListener);
+    }
+    this.previousResources = Collections.emptyList();
+    super.handlePostDeactivation();
+  }
 
-	private void handleSelection( Resource nextValue ) {
-		boolean isSelected = nextValue != null;
-		String renameAndReplaceToolTipText;
+  private void handleSelection(Resource nextValue) {
+    boolean isSelected = nextValue != null;
+    String renameAndReplaceToolTipText;
 
-		String removeToolTipText;
-		boolean isReferenced;
-		if( isSelected ) {
+    String removeToolTipText;
+    boolean isReferenced;
+    if (isSelected) {
 
-			TableModel resourceTableModel = this.resourcesState.getSwingModel().getTableModel();
-			ListSelectionModel listSelectionModel = this.resourcesState.getSwingModel().getListSelectionModel();
+      TableModel resourceTableModel = this.resourcesState.getSwingModel().getTableModel();
+      ListSelectionModel listSelectionModel = this.resourcesState.getSwingModel().getListSelectionModel();
 
-			isReferenced = (Boolean)resourceTableModel.getValueAt( listSelectionModel.getLeadSelectionIndex(), ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX );
-			renameAndReplaceToolTipText = null;
-			if( isReferenced ) {
-				removeToolTipText = this.findLocalizedText( "referencedToolTip" );
-			} else {
-				removeToolTipText = null;
-			}
-		} else {
-			isReferenced = false;
-			renameAndReplaceToolTipText = this.findLocalizedText( "toolTip" );
-			removeToolTipText = renameAndReplaceToolTipText;
-		}
-		this.renameResourceComposite.getLaunchOperation().setEnabled( isSelected );
-		this.renameResourceComposite.getLaunchOperation().setToolTipText( renameAndReplaceToolTipText );
-		this.reloadContentOperation.setEnabled( isSelected );
-		this.reloadContentOperation.setToolTipText( renameAndReplaceToolTipText );
+      isReferenced = (Boolean) resourceTableModel.getValueAt(listSelectionModel.getLeadSelectionIndex(), ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX);
+      renameAndReplaceToolTipText = null;
+      if (isReferenced) {
+        removeToolTipText = this.findLocalizedText("referencedToolTip");
+      } else {
+        removeToolTipText = null;
+      }
+    } else {
+      isReferenced = false;
+      renameAndReplaceToolTipText = this.findLocalizedText("toolTip");
+      removeToolTipText = renameAndReplaceToolTipText;
+    }
+    this.renameResourceComposite.getLaunchOperation().setEnabled(isSelected);
+    this.renameResourceComposite.getLaunchOperation().setToolTipText(renameAndReplaceToolTipText);
+    this.reloadContentOperation.setEnabled(isSelected);
+    this.reloadContentOperation.setToolTipText(renameAndReplaceToolTipText);
 
-		this.removeResourceOperation.setEnabled( isSelected && ( isReferenced == false ) );
-		this.removeResourceOperation.setToolTipText( removeToolTipText );
-	}
+    this.removeResourceOperation.setEnabled(isSelected && (isReferenced == false));
+    this.removeResourceOperation.setToolTipText(removeToolTipText);
+  }
 
-	private final ResourceListener resourceListener = new ResourceListener() {
-		@Override
-		public void resourceAdded( ResourceEvent e ) {
-			reloadTableModel();
-		}
+  private final ResourceListener resourceListener = new ResourceListener() {
+    @Override
+    public void resourceAdded(ResourceEvent e) {
+      reloadTableModel();
+    }
 
-		@Override
-		public void resourceRemoved( ResourceEvent e ) {
-			reloadTableModel();
-		}
-	};
+    @Override
+    public void resourceRemoved(ResourceEvent e) {
+      reloadTableModel();
+    }
+  };
 
-	private final NameListener nameListener = new NameListener() {
-		@Override
-		public void nameChanging( NameEvent nameEvent ) {
-		}
+  private final NameListener nameListener = new NameListener() {
+    @Override
+    public void nameChanging(NameEvent nameEvent) {
+    }
 
-		@Override
-		public void nameChanged( NameEvent nameEvent ) {
-			Logger.outln( nameEvent );
-			getView().repaint();
-		}
-	};
+    @Override
+    public void nameChanged(NameEvent nameEvent) {
+      Logger.outln(nameEvent);
+      getView().repaint();
+    }
+  };
 
-	private final ValueListener<Resource> rowListener = new ValueListener<Resource>() {
-		@Override
-		public void valueChanged( ValueEvent<Resource> e ) {
-			handleSelection( e.getNextValue() );
-		}
-	};
+  private final ValueListener<Resource> rowListener = new ValueListener<Resource>() {
+    @Override
+    public void valueChanged(ValueEvent<Resource> e) {
+      handleSelection(e.getNextValue());
+    }
+  };
 
-	private final ProjectDocumentFrame projectDocumentFrame;
-	private final ResourceSingleSelectTableRowState resourcesState = new ResourceSingleSelectTableRowState();
-	private final Operation reloadContentOperation = new ReloadContentResourceOperation( this.resourcesState );
-	private final Operation removeResourceOperation = new RemoveResourceOperation( this.resourcesState );
-	private final RenameResourceComposite renameResourceComposite = new RenameResourceComposite( this.resourcesState );
-	private final ImportImageResourceOperation importImageResourceOperation = new ImportImageResourceOperation();
-	private final ImportAudioResourceOperation importAudioResourceOperation = new ImportAudioResourceOperation();
+  private final ProjectDocumentFrame projectDocumentFrame;
+  private final ResourceSingleSelectTableRowState resourcesState = new ResourceSingleSelectTableRowState();
+  private final Operation reloadContentOperation = new ReloadContentResourceOperation(this.resourcesState);
+  private final Operation removeResourceOperation = new RemoveResourceOperation(this.resourcesState);
+  private final RenameResourceComposite renameResourceComposite = new RenameResourceComposite(this.resourcesState);
+  private final ImportImageResourceOperation importImageResourceOperation = new ImportImageResourceOperation();
+  private final ImportAudioResourceOperation importAudioResourceOperation = new ImportAudioResourceOperation();
 
-	private Collection<Resource> previousResources = Collections.emptyList();
-	private Project projectBeingListenedTo;
+  private Collection<Resource> previousResources = Collections.emptyList();
+  private Project projectBeingListenedTo;
 }

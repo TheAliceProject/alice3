@@ -59,26 +59,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class FieldMenuModel extends MemberMenuModel<UserField> {
-	private static InitializingIfAbsentMap<UserField, FieldMenuModel> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<UserField, FieldMenuModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static FieldMenuModel getInstance( UserField field ) {
-		return map.getInitializingIfAbsent( field, new InitializingIfAbsentMap.Initializer<UserField, FieldMenuModel>() {
-			@Override
-			public FieldMenuModel initialize( UserField key ) {
-				List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
-				prepModels.add( RenameFieldComposite.getInstance( key ).getLaunchOperation().getMenuItemPrepModel() );
-				prepModels.add( DeleteFieldOperation.getInstance( key ).getMenuItemPrepModel() );
+  public static FieldMenuModel getInstance(UserField field) {
+    return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<UserField, FieldMenuModel>() {
+      @Override
+      public FieldMenuModel initialize(UserField key) {
+        List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
+        prepModels.add(RenameFieldComposite.getInstance(key).getLaunchOperation().getMenuItemPrepModel());
+        prepModels.add(DeleteFieldOperation.getInstance(key).getMenuItemPrepModel());
 
-				if( key.getValueType().isAssignableTo( SMarker.class ) ) {
-					prepModels.add( MarkerColorIdCascade.getInstance( key ).getMenuModel() );
-				}
+        if (key.getValueType().isAssignableTo(SMarker.class)) {
+          prepModels.add(MarkerColorIdCascade.getInstance(key).getMenuModel());
+        }
 
-				return new FieldMenuModel( key, prepModels );
-			}
-		} );
-	}
+        return new FieldMenuModel(key, prepModels);
+      }
+    });
+  }
 
-	private FieldMenuModel( UserField field, List<StandardMenuItemPrepModel> prepModels ) {
-		super( UUID.fromString( "cb192f6c-0f06-462d-9e4c-baa19ca49ce7" ), field, prepModels );
-	}
+  private FieldMenuModel(UserField field, List<StandardMenuItemPrepModel> prepModels) {
+    super(UUID.fromString("cb192f6c-0f06-462d-9e4c-baa19ca49ce7"), field, prepModels);
+  }
 }

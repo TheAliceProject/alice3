@@ -59,50 +59,50 @@ import org.lgna.project.ast.UserField;
  *
  */
 public class RevertFieldEdit extends AbstractEdit {
-	private final UserField field;
-	private final Statement redoStateCode;
+  private final UserField field;
+  private final Statement redoStateCode;
 
-	public RevertFieldEdit( UserActivity userActivity, UserField field ) {
-		super( userActivity );
-		this.field = field;
-		this.redoStateCode = IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField( this.field );
-	}
+  public RevertFieldEdit(UserActivity userActivity, UserField field) {
+    super(userActivity);
+    this.field = field;
+    this.redoStateCode = IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField(this.field);
+  }
 
-	public RevertFieldEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.field = NodeCodec.getInstance( UserField.class ).decodeValue( binaryDecoder );
-		this.redoStateCode = IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField( this.field );
-	}
+  public RevertFieldEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.field = NodeCodec.getInstance(UserField.class).decodeValue(binaryDecoder);
+    this.redoStateCode = IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField(this.field);
+  }
 
-	protected UserField getField() {
-		return this.field;
-	}
+  protected UserField getField() {
+    return this.field;
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		NodeCodec.getInstance( UserField.class ).encodeValue( binaryEncoder, this.field );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    NodeCodec.getInstance(UserField.class).encodeValue(binaryEncoder, this.field);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "declare:" );
-		NodeUtilities.safeAppendRepr( rv, field, Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("declare:");
+    NodeUtilities.safeAppendRepr(rv, field, Application.getLocale());
+  }
 
-	@Override
-	public void doOrRedoInternal( boolean isDo ) {
-		UserField field = this.getField();
-		if( field.managementLevel.getValue() == ManagementLevel.MANAGED ) {
-			IDE.getActiveInstance().getSceneEditor().revertFieldToInitialState( field );
-		}
-	}
+  @Override
+  public void doOrRedoInternal(boolean isDo) {
+    UserField field = this.getField();
+    if (field.managementLevel.getValue() == ManagementLevel.MANAGED) {
+      IDE.getActiveInstance().getSceneEditor().revertFieldToInitialState(field);
+    }
+  }
 
-	@Override
-	public void undoInternal() {
-		UserField field = this.getField();
-		if( field.managementLevel.getValue() == ManagementLevel.MANAGED ) {
-			IDE.getActiveInstance().getSceneEditor().setFieldToState( field, redoStateCode );
-		}
-	}
+  @Override
+  public void undoInternal() {
+    UserField field = this.getField();
+    if (field.managementLevel.getValue() == ManagementLevel.MANAGED) {
+      IDE.getActiveInstance().getSceneEditor().setFieldToState(field, redoStateCode);
+    }
+  }
 }

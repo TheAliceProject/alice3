@@ -54,16 +54,16 @@ import org.lgna.project.ast.ThisExpression;
  * @author Dennis Cosgrove
  */
 public class ThisExpressionLikeView extends AbstractExpressionView<Expression> {
-	private ThisExpressionLikeView( AstI18nFactory factory, Expression expression ) {
-		super( factory, expression );
-		this.addComponent( new Label( FormatterState.getInstance().getValue().getTextForThis() ) );
-	}
+  private ThisExpressionLikeView(AstI18nFactory factory, Expression expression) {
+    super(factory, expression);
+    this.addComponent(new Label(FormatterState.getInstance().getValue().getTextForThis()));
+  }
 
-	public ThisExpressionLikeView( AstI18nFactory factory, ThisExpression thisExpression ) {
-		this( factory, (Expression)thisExpression );
-	}
+  public ThisExpressionLikeView(AstI18nFactory factory, ThisExpression thisExpression) {
+    this(factory, (Expression) thisExpression);
+  }
 
-	public ThisExpressionLikeView( AstI18nFactory factory, CurrentThisExpression currentThisExpression ) {
-		this( factory, (Expression)currentThisExpression );
-	}
+  public ThisExpressionLikeView(AstI18nFactory factory, CurrentThisExpression currentThisExpression) {
+    this(factory, (Expression) currentThisExpression);
+  }
 }

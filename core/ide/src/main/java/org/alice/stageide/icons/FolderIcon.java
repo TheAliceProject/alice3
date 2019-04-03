@@ -56,27 +56,27 @@ import java.awt.Graphics2D;
  * @author Dennis Cosgrove
  */
 public class FolderIcon extends AbstractIcon {
-	private final Icon icon;
+  private final Icon icon;
 
-	public FolderIcon( Dimension size, Icon icon ) {
-		super( size );
-		this.icon = icon;
-	}
+  public FolderIcon(Dimension size, Icon icon) {
+    super(size);
+    this.icon = icon;
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2 ) {
-		boolean b = ( this.getIconWidth() == Icons.FOLDER_ICON_LARGE_SIZE.width ) && ( this.getIconHeight() == Icons.FOLDER_ICON_LARGE_SIZE.height );
-		if( b ) {
-			Icons.FOLDER_BACK_ICON_LARGE.paintIcon( c, g2, 0, 0 );
-		}
-		if( this.icon != null ) {
-			this.icon.paintIcon( c, g2, 0, 0 );
-		}
-		if( b ) {
-			Composite prevComposite = g2.getComposite();
-			g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, 0.9f ) );
-			Icons.FOLDER_FRONT_ICON_LARGE.paintIcon( c, g2, 0, 0 );
-			g2.setComposite( prevComposite );
-		}
-	}
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2) {
+    boolean b = (this.getIconWidth() == Icons.FOLDER_ICON_LARGE_SIZE.width) && (this.getIconHeight() == Icons.FOLDER_ICON_LARGE_SIZE.height);
+    if (b) {
+      Icons.FOLDER_BACK_ICON_LARGE.paintIcon(c, g2, 0, 0);
+    }
+    if (this.icon != null) {
+      this.icon.paintIcon(c, g2, 0, 0);
+    }
+    if (b) {
+      Composite prevComposite = g2.getComposite();
+      g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f));
+      Icons.FOLDER_FRONT_ICON_LARGE.paintIcon(c, g2, 0, 0);
+      g2.setComposite(prevComposite);
+    }
+  }
 }

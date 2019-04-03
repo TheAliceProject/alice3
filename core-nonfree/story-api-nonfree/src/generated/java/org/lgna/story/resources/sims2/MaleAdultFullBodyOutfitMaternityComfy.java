@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitMaternityComfy implements MaleAdultFullBodyOutfit {
-	GREEN_GREY,
-	PINK,
-	ALOHA;
+  GREEN_GREY, PINK, ALOHA
 
 }

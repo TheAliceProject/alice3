@@ -60,20 +60,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractKeyCascadeMenu extends ExpressionCascadeMenu<FieldAccess> {
-	private final Key[] keys;
+  private final Key[] keys;
 
-	public AbstractKeyCascadeMenu( UUID id, Key... keys ) {
-		super( id );
-		this.keys = keys;
-	}
+  public AbstractKeyCascadeMenu(UUID id, Key... keys) {
+    super(id);
+    this.keys = keys;
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<FieldAccess> context ) {
-		AbstractType<?, ?, ?> type = JavaType.getInstance( Key.class );
-		for( Key key : this.keys ) {
-			AbstractField field = type.getDeclaredField( key.name() );
-			assert field.isPublicAccess() && field.isStatic() && field.isFinal();
-			blankChildren.add( StaticFieldAccessFillIn.getInstance( field ) );
-		}
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<FieldAccess> context) {
+    AbstractType<?, ?, ?> type = JavaType.getInstance(Key.class);
+    for (Key key : this.keys) {
+      AbstractField field = type.getDeclaredField(key.name());
+      assert field.isPublicAccess() && field.isStatic() && field.isFinal();
+      blankChildren.add(StaticFieldAccessFillIn.getInstance(field));
+    }
+  }
 }

@@ -62,92 +62,94 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
-	private Map<AudioResource, DataSource> audioResourceToDataSourceMap = new HashMap<AudioResource, DataSource>();
-	private ResourceContentListener resourceContentListener = new ResourceContentListener() {
-		@Override
-		public void contentChanging( ResourceContentEvent e ) {
-		}
+  private Map<AudioResource, DataSource> audioResourceToDataSourceMap = new HashMap<AudioResource, DataSource>();
+  private ResourceContentListener resourceContentListener = new ResourceContentListener() {
+    @Override
+    public void contentChanging(ResourceContentEvent e) {
+    }
 
-		@Override
-		public void contentChanged( ResourceContentEvent e ) {
-			MediaFactory.this.forget( (AudioResource)e.getTypedSource() );
-		}
-	};
-	static {
-		System.out.print( "Attempting to register mp3 capability... " );
-		JavaDecoder.main( new String[] {} );
-		FixedJavaSoundRenderer.usurpControlFromJavaSoundRenderer();
-	}
+    @Override
+    public void contentChanged(ResourceContentEvent e) {
+      MediaFactory.this.forget((AudioResource) e.getTypedSource());
+    }
+  };
 
-	private static MediaFactory singleton;
-	static {
-		MediaFactory.singleton = new MediaFactory();
-	}
+  static {
+    System.out.print("Attempting to register mp3 capability... ");
+    JavaDecoder.main(new String[] {});
+    FixedJavaSoundRenderer.usurpControlFromJavaSoundRenderer();
+  }
 
-	public static MediaFactory getSingleton() {
-		return MediaFactory.singleton;
-	}
+  private static MediaFactory singleton;
 
-	private MediaFactory() {
-	}
+  static {
+    MediaFactory.singleton = new MediaFactory();
+  }
 
-	private void forget( AudioResource audioResource ) {
-		this.audioResourceToDataSourceMap.remove( audioResource );
-		audioResource.removeContentListener( this.resourceContentListener );
-	}
+  public static MediaFactory getSingleton() {
+    return MediaFactory.singleton;
+  }
 
-	public AudioResource createAudioResource( File file ) throws IOException {
-		String contentType = AudioResource.getContentType( file );
-		if( contentType != null ) {
-			final AudioResource rv = new AudioResource( file, contentType );
-			Runnable runnable = new Runnable() {
-				@Override
-				public void run() {
-					Player player = new Player( createJMFPlayer( rv ), 1.0, 0.0, Double.NaN, rv );
-					player.realize();
-					rv.setDuration( player.getDuration() );
-				}
-			};
-			final boolean USE_THREAD_JUST_TO_BE_SORT_OF_SAFE = true;
-			if( USE_THREAD_JUST_TO_BE_SORT_OF_SAFE ) {
-				new Thread( runnable ).start();
-			} else {
-				runnable.run();
-			}
-			return rv;
-		} else {
-			throw new RuntimeException( "content type not found for " + file );
-		}
-	}
+  private MediaFactory() {
+  }
 
-	private javax.media.Player createJMFPlayer( AudioResource audioResource ) {
-		assert audioResource != null;
-		DataSource dataSource = this.audioResourceToDataSourceMap.get( audioResource );
-		if( dataSource != null ) {
-			//pass
-		} else {
-			dataSource = new ByteArrayDataSource( audioResource.getData(), audioResource.getContentType() );
-			audioResource.addContentListener( this.resourceContentListener );
-			this.audioResourceToDataSourceMap.put( audioResource, dataSource );
-		}
-		try {
-			return Manager.createRealizedPlayer( dataSource );
-		} catch( CannotRealizeException cre ) {
-			throw new RuntimeException( audioResource.toString(), cre );
-		} catch( NoPlayerException npe ) {
-			throw new RuntimeException( audioResource.toString(), npe );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( audioResource.toString(), ioe );
-		}
-	}
+  private void forget(AudioResource audioResource) {
+    this.audioResourceToDataSourceMap.remove(audioResource);
+    audioResource.removeContentListener(this.resourceContentListener);
+  }
 
-	@Override
-	public Player createPlayer( AudioResource audioResource, double volume, double startTime, double stopTime ) {
-		Player player = new Player( createJMFPlayer( audioResource ), volume, startTime, stopTime, audioResource );
-		if( Double.isNaN( audioResource.getDuration() ) ) {
-			player.realize();
-			audioResource.setDuration( player.getDuration() );
-		}
-		return player;
-	}
+  public AudioResource createAudioResource(File file) throws IOException {
+    String contentType = AudioResource.getContentType(file);
+    if (contentType != null) {
+      final AudioResource rv = new AudioResource(file, contentType);
+      Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+          Player player = new Player(createJMFPlayer(rv), 1.0, 0.0, Double.NaN, rv);
+          player.realize();
+          rv.setDuration(player.getDuration());
+        }
+      };
+      final boolean USE_THREAD_JUST_TO_BE_SORT_OF_SAFE = true;
+      if (USE_THREAD_JUST_TO_BE_SORT_OF_SAFE) {
+        new Thread(runnable).start();
+      } else {
+        runnable.run();
+      }
+      return rv;
+    } else {
+      throw new RuntimeException("content type not found for " + file);
+    }
+  }
+
+  private javax.media.Player createJMFPlayer(AudioResource audioResource) {
+    assert audioResource != null;
+    DataSource dataSource = this.audioResourceToDataSourceMap.get(audioResource);
+    if (dataSource != null) {
+      //pass
+    } else {
+      dataSource = new ByteArrayDataSource(audioResource.getData(), audioResource.getContentType());
+      audioResource.addContentListener(this.resourceContentListener);
+      this.audioResourceToDataSourceMap.put(audioResource, dataSource);
+    }
+    try {
+      return Manager.createRealizedPlayer(dataSource);
+    } catch (CannotRealizeException cre) {
+      throw new RuntimeException(audioResource.toString(), cre);
+    } catch (NoPlayerException npe) {
+      throw new RuntimeException(audioResource.toString(), npe);
+    } catch (IOException ioe) {
+      throw new RuntimeException(audioResource.toString(), ioe);
+    }
+  }
+
+  @Override
+  public Player createPlayer(AudioResource audioResource, double volume, double startTime, double stopTime) {
+    Player player = new Player(createJMFPlayer(audioResource), volume, startTime, stopTime, audioResource);
+    if (Double.isNaN(audioResource.getDuration())) {
+      player.realize();
+      audioResource.setDuration(player.getDuration());
+    }
+    return player;
+  }
 }

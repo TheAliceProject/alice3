@@ -52,15 +52,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class InfoState extends StringState {
-	private static class SingletonHolder {
-		private static InfoState instance = new InfoState();
-	}
+  private static class SingletonHolder {
+    private static InfoState instance = new InfoState();
+  }
 
-	public static InfoState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static InfoState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private InfoState() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "da932f7d-8a24-4cb4-af00-b519993b9044" ), "" );
-	}
+  private InfoState() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("da932f7d-8a24-4cb4-af00-b519993b9044"), "");
+  }
 }

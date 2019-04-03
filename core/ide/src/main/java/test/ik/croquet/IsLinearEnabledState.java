@@ -52,15 +52,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsLinearEnabledState extends BooleanState {
-	private static class SingletonHolder {
-		private static IsLinearEnabledState instance = new IsLinearEnabledState();
-	}
+  private static class SingletonHolder {
+    private static IsLinearEnabledState instance = new IsLinearEnabledState();
+  }
 
-	public static IsLinearEnabledState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsLinearEnabledState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsLinearEnabledState() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "71f69cd4-e3aa-49e6-9501-3dedbcddc8a6" ), true );
-	}
+  private IsLinearEnabledState() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("71f69cd4-e3aa-49e6-9501-3dedbcddc8a6"), true);
+  }
 }

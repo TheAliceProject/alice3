@@ -53,29 +53,29 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SaveOverComposite extends YesNoConfirmDialogComposite<Panel> {
-	private final PlainStringValue prevHeader = this.createStringValue( "prevHeader" );
-	private final PlainStringValue nextHeader = this.createStringValue( "nextHeader" );
-	private final SaveOperation owner;
+  private final PlainStringValue prevHeader = this.createStringValue("prevHeader");
+  private final PlainStringValue nextHeader = this.createStringValue("nextHeader");
+  private final SaveOperation owner;
 
-	public SaveOverComposite( SaveOperation owner ) {
-		super( UUID.fromString( "3f859738-f422-4aae-bee4-9001d6bd94f9" ) );
-		this.owner = owner;
-	}
+  public SaveOverComposite(SaveOperation owner) {
+    super(UUID.fromString("3f859738-f422-4aae-bee4-9001d6bd94f9"));
+    this.owner = owner;
+  }
 
-	public PlainStringValue getPrevHeader() {
-		return this.prevHeader;
-	}
+  public PlainStringValue getPrevHeader() {
+    return this.prevHeader;
+  }
 
-	public PlainStringValue getNextHeader() {
-		return this.nextHeader;
-	}
+  public PlainStringValue getNextHeader() {
+    return this.nextHeader;
+  }
 
-	public SaveOperation getOwner() {
-		return this.owner;
-	}
+  public SaveOperation getOwner() {
+    return this.owner;
+  }
 
-	@Override
-	protected SaveOverPane createView() {
-		return new SaveOverPane( this );
-	}
+  @Override
+  protected SaveOverPane createView() {
+    return new SaveOverPane(this);
+  }
 }

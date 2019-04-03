@@ -50,15 +50,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class FieldsSeparatorModel extends CascadeLabelSeparator {
-	private static class SingletonHolder {
-		private static FieldsSeparatorModel instance = new FieldsSeparatorModel();
-	}
+  private static class SingletonHolder {
+    private static FieldsSeparatorModel instance = new FieldsSeparatorModel();
+  }
 
-	public static FieldsSeparatorModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static FieldsSeparatorModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private FieldsSeparatorModel() {
-		super( UUID.fromString( "6189318a-e871-430c-8f70-31845ac03f4e" ) );
-	}
+  private FieldsSeparatorModel() {
+    super(UUID.fromString("6189318a-e871-430c-8f70-31845ac03f4e"));
+  }
 }

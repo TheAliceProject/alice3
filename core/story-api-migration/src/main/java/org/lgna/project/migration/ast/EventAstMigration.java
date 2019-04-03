@@ -66,87 +66,75 @@ import org.lgna.story.event.MouseClickOnScreenEvent;
  * @author Matt May
  */
 public class EventAstMigration extends MethodInvocationAstMigration {
-	private static final JavaMethod[] removeTheseDetails = {
-			EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD,
-			EventListenerMethodUtilities.MOVE_WITH_ARROWS,
-			EventListenerMethodUtilities.ADD_TRANSFORMATION_LISTENER_METHOD,
-			EventListenerMethodUtilities.ADD_START_COLLISION_LISTENER_METHOD,
-			EventListenerMethodUtilities.ADD_END_COLLISION_LISTENER_METHOD,
-			EventListenerMethodUtilities.ADD_START_OCCLUSION_EVENT_LISTENER_METHOD,
-			EventListenerMethodUtilities.ADD_END_OCCLUSION_EVENT_LISTENER_METHOD,
-			EventListenerMethodUtilities.ADD_ENTER_PROXIMITY_LISTENER_METHOD,
-			EventListenerMethodUtilities.ADD_EXIT_PROXIMITY_LISTENER_METHOD,
-			EventListenerMethodUtilities.ADD_ENTER_VIEW_EVENT_LISTENER_METHOD,
-			EventListenerMethodUtilities.ADD_EXIT_VIEW_EVENT_LISTENER_METHOD
-	};
+  private static final JavaMethod[] removeTheseDetails = {EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD, EventListenerMethodUtilities.MOVE_WITH_ARROWS, EventListenerMethodUtilities.ADD_TRANSFORMATION_LISTENER_METHOD, EventListenerMethodUtilities.ADD_START_COLLISION_LISTENER_METHOD, EventListenerMethodUtilities.ADD_END_COLLISION_LISTENER_METHOD, EventListenerMethodUtilities.ADD_START_OCCLUSION_EVENT_LISTENER_METHOD, EventListenerMethodUtilities.ADD_END_OCCLUSION_EVENT_LISTENER_METHOD, EventListenerMethodUtilities.ADD_ENTER_PROXIMITY_LISTENER_METHOD, EventListenerMethodUtilities.ADD_EXIT_PROXIMITY_LISTENER_METHOD, EventListenerMethodUtilities.ADD_ENTER_VIEW_EVENT_LISTENER_METHOD, EventListenerMethodUtilities.ADD_EXIT_VIEW_EVENT_LISTENER_METHOD};
 
-	public EventAstMigration( Version minimumVersion, Version maximumVersion ) {
-		super( minimumVersion, maximumVersion );
-	}
+  public EventAstMigration(Version minimumVersion, Version maximumVersion) {
+    super(minimumVersion, maximumVersion);
+  }
 
-	@Override
-	protected void migrate( MethodInvocation methodInvocation, Project projectIfApplicable ) {
-		AbstractMethod method = methodInvocation.method.getValue();
-		if( method instanceof JavaMethod ) {
-			JavaMethod javaMethod = (JavaMethod)method;
-			JavaMethod replacementMethod = null;
-			if( javaMethod.getDeclaringType() == JavaType.getInstance( SScene.class ) ) {
-				String methodName = method.getName();
-				if( methodName.equals( "addTimeListener" ) ) {
-					handleAddTimeListener( methodInvocation, javaMethod );
-				} else if( methodName.equals( "addProximityEnterListener" ) || methodName.equals( "addProximityExitListener" ) ) {
-					JavaMethod newMethod = javaMethod.getName().equals( "addProximityEnterListener" ) ? EventListenerMethodUtilities.ADD_ENTER_PROXIMITY_LISTENER_METHOD : EventListenerMethodUtilities.ADD_EXIT_PROXIMITY_LISTENER_METHOD;
-					methodInvocation.method.setValue( newMethod );
-				} else if( methodName.equals( "addMouseClickOnScreenListener" ) ) {
-					addMouseClickOnScreenEventParameter( methodInvocation );
-				} else if( ( replacementMethod = needsKeyedParamsRemoved( methodName ) ) != null ) {
-					removeTheseParams( methodInvocation, replacementMethod );
-				}
-			}
-		}
-	}
+  @Override
+  protected void migrate(MethodInvocation methodInvocation, Project projectIfApplicable) {
+    AbstractMethod method = methodInvocation.method.getValue();
+    if (method instanceof JavaMethod) {
+      JavaMethod javaMethod = (JavaMethod) method;
+      JavaMethod replacementMethod = null;
+      if (javaMethod.getDeclaringType() == JavaType.getInstance(SScene.class)) {
+        String methodName = method.getName();
+        if (methodName.equals("addTimeListener")) {
+          handleAddTimeListener(methodInvocation, javaMethod);
+        } else if (methodName.equals("addProximityEnterListener") || methodName.equals("addProximityExitListener")) {
+          JavaMethod newMethod = javaMethod.getName().equals("addProximityEnterListener") ? EventListenerMethodUtilities.ADD_ENTER_PROXIMITY_LISTENER_METHOD : EventListenerMethodUtilities.ADD_EXIT_PROXIMITY_LISTENER_METHOD;
+          methodInvocation.method.setValue(newMethod);
+        } else if (methodName.equals("addMouseClickOnScreenListener")) {
+          addMouseClickOnScreenEventParameter(methodInvocation);
+        } else if ((replacementMethod = needsKeyedParamsRemoved(methodName)) != null) {
+          removeTheseParams(methodInvocation, replacementMethod);
+        }
+      }
+    }
+  }
 
-	private void removeTheseParams( MethodInvocation methodInvocation, JavaMethod replacementMethod ) {
-		methodInvocation.method.setValue( replacementMethod );
-		AstUtilities.fixRequiredArgumentsIfNecessary( methodInvocation );
-	}
+  private void removeTheseParams(MethodInvocation methodInvocation, JavaMethod replacementMethod) {
+    methodInvocation.method.setValue(replacementMethod);
+    AstUtilities.fixRequiredArgumentsIfNecessary(methodInvocation);
+  }
 
-	private JavaMethod needsKeyedParamsRemoved( String methodName ) {
-		for( JavaMethod method : removeTheseDetails ) {
-			if( methodName.equals( method.getName() ) ) {
-				return method;
-			}
-		}
-		return null;
-	}
+  private JavaMethod needsKeyedParamsRemoved(String methodName) {
+    for (JavaMethod method : removeTheseDetails) {
+      if (methodName.equals(method.getName())) {
+        return method;
+      }
+    }
+    return null;
+  }
 
-	private void addMouseClickOnScreenEventParameter( MethodInvocation methodInvocation ) {
-		SimpleArgument simpleArgument = methodInvocation.requiredArguments.get( 0 );
-		LambdaExpression lambda = (LambdaExpression)simpleArgument.expression.getValue();
-		UserLambda value = (UserLambda)lambda.value.getValue();
-		value.requiredParameters.add( new UserParameter( "event", MouseClickOnScreenEvent.class ) );
-	}
+  private void addMouseClickOnScreenEventParameter(MethodInvocation methodInvocation) {
+    SimpleArgument simpleArgument = methodInvocation.requiredArguments.get(0);
+    LambdaExpression lambda = (LambdaExpression) simpleArgument.expression.getValue();
+    UserLambda value = (UserLambda) lambda.value.getValue();
+    value.requiredParameters.add(new UserParameter("event", MouseClickOnScreenEvent.class));
+  }
 
-	private void handleAddTimeListener( MethodInvocation methodInvocation, JavaMethod javaMethod ) {
-		ArrayList<JavaKeyedArgument> keyedParameter = methodInvocation.keyedArguments.getValue();
-		Double duration = null;
-		JavaKeyedArgument argToRemove = null;
-		for( JavaKeyedArgument arg : keyedParameter ) {
-			Expression value = ( (MethodInvocation)arg.expression.getValue() ).requiredArguments.get( 0 ).expression.getValue();
-			if( value instanceof DoubleLiteral ) {
-				duration = ( (DoubleLiteral)value ).value.getValue();
-				argToRemove = arg;
-				break;
-			} else {
-				//pass
-			}
-		}
-		if( duration != null ) {
-			keyedParameter.remove( argToRemove );
-		} else {
-			duration = 0.0;
-		}
-		methodInvocation.requiredArguments.add( new SimpleArgument( javaMethod.getRequiredParameters().get( 0 ), new DoubleLiteral( duration ) ) );
-		methodInvocation.method.setValue( EventListenerMethodUtilities.ADD_TIMER_EVENT_LISTENER_METHOD );
-	}
+  private void handleAddTimeListener(MethodInvocation methodInvocation, JavaMethod javaMethod) {
+    ArrayList<JavaKeyedArgument> keyedParameter = methodInvocation.keyedArguments.getValue();
+    Double duration = null;
+    JavaKeyedArgument argToRemove = null;
+    for (JavaKeyedArgument arg : keyedParameter) {
+      Expression value = ((MethodInvocation) arg.expression.getValue()).requiredArguments.get(0).expression.getValue();
+      if (value instanceof DoubleLiteral) {
+        duration = ((DoubleLiteral) value).value.getValue();
+        argToRemove = arg;
+        break;
+      } else {
+        //pass
+      }
+    }
+    if (duration != null) {
+      keyedParameter.remove(argToRemove);
+    } else {
+      duration = 0.0;
+    }
+    methodInvocation.requiredArguments.add(new SimpleArgument(javaMethod.getRequiredParameters().get(0), new DoubleLiteral(duration)));
+    methodInvocation.method.setValue(EventListenerMethodUtilities.ADD_TIMER_EVENT_LISTENER_METHOD);
+  }
 }

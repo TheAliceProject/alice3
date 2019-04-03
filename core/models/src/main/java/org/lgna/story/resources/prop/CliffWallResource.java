@@ -32,32 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum CliffWallResource implements PropResource {
-	DEFAULT_DESERT,
-	DEFAULT_MARS,
-	FLIPPED_DESERT,
-	FLIPPED_MARS;
+  DEFAULT_DESERT, DEFAULT_MARS, FLIPPED_DESERT, FLIPPED_MARS;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	CliffWallResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  CliffWallResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	CliffWallResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  CliffWallResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

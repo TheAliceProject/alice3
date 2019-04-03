@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitMadScientist implements MaleAdultFullBodyOutfit {
-	CLASSIC_WHITE,
-	CLASSIC_BLUE,
-	CLASSIC_GREEN;
+  CLASSIC_WHITE, CLASSIC_BLUE, CLASSIC_GREEN
 
 }

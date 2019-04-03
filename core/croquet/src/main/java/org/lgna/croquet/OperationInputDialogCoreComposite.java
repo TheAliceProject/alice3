@@ -53,38 +53,38 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class OperationInputDialogCoreComposite<V extends CompositeView<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	OperationInputDialogCoreComposite( UUID migrationId ) {
-		super( migrationId );
-	}
+  OperationInputDialogCoreComposite(UUID migrationId) {
+    super(migrationId);
+  }
 
-	@Override
-	public String modifyNameIfNecessary( String text ) {
-		return text;
-	}
+  @Override
+  public String modifyNameIfNecessary(String text) {
+    return text;
+  }
 
-	protected abstract Edit createEdit( UserActivity userActivity );
+  protected abstract Edit createEdit(UserActivity userActivity);
 
-	@Override
-	protected void handlePostHideDialog() {
-		super.handlePostHideDialog();
-		if( isCommitted ) { // close button condition
-			try {
-				Edit edit = createEdit( openingActivity );
-				if ( edit != null ) {
-					openingActivity.commitAndInvokeDo( edit );
-				} else {
-					openingActivity.finish();
-				}
-			} catch (CancelException ce) {
-				cancel(ce);
-			}
-		} else {
-			cancel( null );
-		}
-	}
+  @Override
+  protected void handlePostHideDialog() {
+    super.handlePostHideDialog();
+    if (isCommitted) { // close button condition
+      try {
+        Edit edit = createEdit(openingActivity);
+        if (edit != null) {
+          openingActivity.commitAndInvokeDo(edit);
+        } else {
+          openingActivity.finish();
+        }
+      } catch (CancelException ce) {
+        cancel(ce);
+      }
+    } else {
+      cancel(null);
+    }
+  }
 
-	@Override
-	public void perform( UserActivity userActivity ) {
-		this.showDialog( userActivity );
-	}
+  @Override
+  public void perform(UserActivity userActivity) {
+    this.showDialog(userActivity);
+  }
 }

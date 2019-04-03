@@ -55,58 +55,58 @@ import org.lgna.project.ast.UserParameter;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessMethodInvocationFactory extends MethodInvocationFactory {
-	private static MapToMap<UserParameter, AbstractMethod, ParameterAccessMethodInvocationFactory> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserParameter, AbstractMethod, ParameterAccessMethodInvocationFactory> mapToMap = MapToMap.newInstance();
 
-	public static synchronized ParameterAccessMethodInvocationFactory getInstance( UserParameter parameter, AbstractMethod method ) {
-		assert parameter != null;
-		ParameterAccessMethodInvocationFactory rv = mapToMap.get( parameter, method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ParameterAccessMethodInvocationFactory( parameter, method );
-			mapToMap.put( parameter, method, rv );
-		}
-		return rv;
-	}
+  public static synchronized ParameterAccessMethodInvocationFactory getInstance(UserParameter parameter, AbstractMethod method) {
+    assert parameter != null;
+    ParameterAccessMethodInvocationFactory rv = mapToMap.get(parameter, method);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ParameterAccessMethodInvocationFactory(parameter, method);
+      mapToMap.put(parameter, method, rv);
+    }
+    return rv;
+  }
 
-	private final UserParameter parameter;
+  private final UserParameter parameter;
 
-	private ParameterAccessMethodInvocationFactory( UserParameter parameter, AbstractMethod method ) {
-		super( method, parameter.name );
-		this.parameter = parameter;
-	}
+  private ParameterAccessMethodInvocationFactory(UserParameter parameter, AbstractMethod method) {
+    super(method, parameter.name);
+    this.parameter = parameter;
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getValidInstanceType( AbstractType<?, ?, ?> type, AbstractCode code ) {
-		if( code != null ) {
-			if( this.parameter.getFirstAncestorAssignableTo( AbstractCode.class ) == code ) {
-				return this.parameter.getValueType();
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getValidInstanceType(AbstractType<?, ?, ?> type, AbstractCode code) {
+    if (code != null) {
+      if (this.parameter.getFirstAncestorAssignableTo(AbstractCode.class) == code) {
+        return this.parameter.getValueType();
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public UserParameter getParameter() {
-		return this.parameter;
-	}
+  public UserParameter getParameter() {
+    return this.parameter;
+  }
 
-	@Override
-	protected Expression createTransientExpressionForMethodInvocation() {
-		//todo?
-		return new ParameterAccess( this.parameter );
-	}
+  @Override
+  protected Expression createTransientExpressionForMethodInvocation() {
+    //todo?
+    return new ParameterAccess(this.parameter);
+  }
 
-	@Override
-	protected Expression createExpressionForMethodInvocation() {
-		return new ParameterAccess( this.parameter );
-	}
+  @Override
+  protected Expression createExpressionForMethodInvocation() {
+    return new ParameterAccess(this.parameter);
+  }
 
-	@Override
-	protected StringBuilder addAccessRepr( StringBuilder rv ) {
-		rv.append( this.parameter.getName() );
-		return rv;
-	}
+  @Override
+  protected StringBuilder addAccessRepr(StringBuilder rv) {
+    rv.append(this.parameter.getName());
+    return rv;
+  }
 }

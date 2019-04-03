@@ -43,33 +43,32 @@
 
 package org.alice.flite;
 
-public class TextVoicePair
-{
-	private String text;
-	private String voice;
+public class TextVoicePair {
+  private String text;
+  private String voice;
 
-	public TextVoicePair( String text, String voice ) {
-		this.text = text;
-		this.voice = voice;
-	}
+  public TextVoicePair(String text, String voice) {
+    this.text = text;
+    this.voice = voice;
+  }
 
-	public String getText() {
-		return this.text;
-	}
+  public String getText() {
+    return this.text;
+  }
 
-	public String getVoice() {
-		return this.voice;
-	}
+  public String getVoice() {
+    return this.voice;
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( obj instanceof TextVoicePair ) {
-			TextVoicePair other = (TextVoicePair)obj;
-			if( ( this.text != null ) && ( other.text != null ) && ( this.voice != null ) && ( other.voice != null ) ) {
-				return this.text.equalsIgnoreCase( other.text ) && this.voice.equals( other.voice );
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof TextVoicePair) {
+      TextVoicePair other = (TextVoicePair) obj;
+      if ((this.text != null) && (other.text != null) && (this.voice != null) && (other.voice != null)) {
+        return this.text.equalsIgnoreCase(other.text) && this.voice.equals(other.voice);
+      }
+    }
+    return false;
+  }
 
 }

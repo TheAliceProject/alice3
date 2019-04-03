@@ -54,42 +54,42 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public class LinkScaleIcon implements Icon {
-	private static Icon createImageIcon( String path ) {
-		return new ImageIcon( LinkScaleButton.class.getResource( path ) );
-	}
+  private static Icon createImageIcon(String path) {
+    return new ImageIcon(LinkScaleButton.class.getResource(path));
+  }
 
-	/*package-private*/static final Icon SCALE_ICON = new LinkScaleIcon( createImageIcon( "images/scaleLinked.png" ), createImageIcon( "images/scaleUnlinked.png" ) );
-	/*package-private*/static final Icon SUB_SCALE_ICON = new LinkScaleIcon( createImageIcon( "images/subScaleLinked.png" ), createImageIcon( "images/subScaleUnlinked.png" ) );
-	/*package-private*/static final Icon SUB_SCALE_LONG_ICON = new LinkScaleIcon( createImageIcon( "images/subScaleLinked_long.png" ), createImageIcon( "images/subScaleUnlinked_long.png" ) );
+  /*package-private*/static final Icon SCALE_ICON = new LinkScaleIcon(createImageIcon("images/scaleLinked.png"), createImageIcon("images/scaleUnlinked.png"));
+  /*package-private*/static final Icon SUB_SCALE_ICON = new LinkScaleIcon(createImageIcon("images/subScaleLinked.png"), createImageIcon("images/subScaleUnlinked.png"));
+  /*package-private*/static final Icon SUB_SCALE_LONG_ICON = new LinkScaleIcon(createImageIcon("images/subScaleLinked_long.png"), createImageIcon("images/subScaleUnlinked_long.png"));
 
-	private final Icon selectedIcon;
-	private final Icon unselectedIcon;
+  private final Icon selectedIcon;
+  private final Icon unselectedIcon;
 
-	public LinkScaleIcon( Icon selectedIcon, Icon unselectedIcon ) {
-		this.selectedIcon = selectedIcon;
-		this.unselectedIcon = unselectedIcon;
-	}
+  public LinkScaleIcon(Icon selectedIcon, Icon unselectedIcon) {
+    this.selectedIcon = selectedIcon;
+    this.unselectedIcon = unselectedIcon;
+  }
 
-	@Override
-	public int getIconWidth() {
-		return Math.max( this.selectedIcon.getIconWidth(), this.unselectedIcon.getIconWidth() );
-	}
+  @Override
+  public int getIconWidth() {
+    return Math.max(this.selectedIcon.getIconWidth(), this.unselectedIcon.getIconWidth());
+  }
 
-	@Override
-	public int getIconHeight() {
-		return Math.max( this.selectedIcon.getIconHeight(), this.unselectedIcon.getIconHeight() );
-	}
+  @Override
+  public int getIconHeight() {
+    return Math.max(this.selectedIcon.getIconHeight(), this.unselectedIcon.getIconHeight());
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		if( c instanceof AbstractButton ) {
-			AbstractButton button = (AbstractButton)c;
-			ButtonModel buttonModel = button.getModel();
-			Icon icon = buttonModel.isSelected() ? this.selectedIcon : this.unselectedIcon;
-			icon.paintIcon( c, g, x, y );
-		} else {
-			g.setColor( Color.RED );
-			g.fillRect( x, y, c.getWidth(), c.getHeight() );
-		}
-	}
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    if (c instanceof AbstractButton) {
+      AbstractButton button = (AbstractButton) c;
+      ButtonModel buttonModel = button.getModel();
+      Icon icon = buttonModel.isSelected() ? this.selectedIcon : this.unselectedIcon;
+      icon.paintIcon(c, g, x, y);
+    } else {
+      g.setColor(Color.RED);
+      g.fillRect(x, y, c.getWidth(), c.getHeight());
+    }
+  }
 }

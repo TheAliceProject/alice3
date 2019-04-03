@@ -51,15 +51,15 @@ import org.lgna.ik.poser.animation.TimeLine;
  */
 public abstract class TimeLineEdit extends AbstractEdit {
 
-	private final TimeLine timeLine;
+  private final TimeLine timeLine;
 
-	TimeLineEdit( UserActivity userActivity, TimeLine timeLine ) {
-		super( userActivity );
-		this.timeLine = timeLine;
-	}
+  TimeLineEdit(UserActivity userActivity, TimeLine timeLine) {
+    super(userActivity);
+    this.timeLine = timeLine;
+  }
 
-	public TimeLine getTimeLine() {
-		return this.timeLine;
-	}
+  public TimeLine getTimeLine() {
+    return this.timeLine;
+  }
 
 }

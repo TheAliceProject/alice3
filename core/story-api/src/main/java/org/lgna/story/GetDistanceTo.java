@@ -48,11 +48,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class GetDistanceTo {
-	@ClassTemplate( keywordFactoryCls = GetDistanceTo.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = GetDistanceTo.class) public static interface Detail {
+  }
 
-	private GetDistanceTo() {
-		super();
-	}
+  private GetDistanceTo() {
+    super();
+  }
 }

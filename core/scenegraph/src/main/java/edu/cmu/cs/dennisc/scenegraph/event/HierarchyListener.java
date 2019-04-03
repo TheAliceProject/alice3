@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.scenegraph.event;
  * @author Dennis Cosgrove
  */
 public interface HierarchyListener {
-	public void hierarchyChanged( HierarchyEvent hierarchyEvent );
+  public void hierarchyChanged(HierarchyEvent hierarchyEvent);
 }

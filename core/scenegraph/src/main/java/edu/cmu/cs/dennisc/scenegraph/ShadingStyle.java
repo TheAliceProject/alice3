@@ -50,7 +50,5 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public enum ShadingStyle {
-	NONE,
-	FLAT,
-	SMOOTH
+  NONE, FLAT, SMOOTH
 }

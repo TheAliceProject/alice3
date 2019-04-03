@@ -52,39 +52,39 @@ import org.lgna.story.OrthographicCameraMarker;
  *
  */
 public class OrthographicCameraMarkerImp extends CameraMarkerImp {
-	public OrthographicCameraMarkerImp( OrthographicCameraMarker abstraction ) {
-		super( abstraction );
-	}
+  public OrthographicCameraMarkerImp(OrthographicCameraMarker abstraction) {
+    super(abstraction);
+  }
 
-	@Override
-	protected void createVisuals() {
-		//Do nothing
-	}
+  @Override
+  protected void createVisuals() {
+    //Do nothing
+  }
 
-	public void setPicturePlane( ClippedZPlane picturePlane ) {
-		this.picturePlane.set( picturePlane );
-	}
+  public void setPicturePlane(ClippedZPlane picturePlane) {
+    this.picturePlane.set(picturePlane);
+  }
 
-	public ClippedZPlane getPicturePlane() {
-		return this.picturePlane;
-	}
+  public ClippedZPlane getPicturePlane() {
+    return this.picturePlane;
+  }
 
-	@Override
-	protected final TexturedAppearance[] getSgPaintAppearances() {
-		return this.sgAppearances;
-	}
+  @Override
+  protected final TexturedAppearance[] getSgPaintAppearances() {
+    return this.sgAppearances;
+  }
 
-	@Override
-	protected final TexturedAppearance[] getSgOpacityAppearances() {
-		return this.getSgPaintAppearances();
-	}
+  @Override
+  protected final TexturedAppearance[] getSgOpacityAppearances() {
+    return this.getSgPaintAppearances();
+  }
 
-	@Override
-	public Visual[] getSgVisuals() {
-		return this.sgVisuals;
-	}
+  @Override
+  public Visual[] getSgVisuals() {
+    return this.sgVisuals;
+  }
 
-	private final ClippedZPlane picturePlane = new ClippedZPlane();
-	private final TexturedAppearance[] sgAppearances = {};
-	private final Visual[] sgVisuals = {};
+  private final ClippedZPlane picturePlane = new ClippedZPlane();
+  private final TexturedAppearance[] sgAppearances = {};
+  private final Visual[] sgVisuals = {};
 }

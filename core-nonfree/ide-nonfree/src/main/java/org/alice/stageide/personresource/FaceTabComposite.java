@@ -59,41 +59,41 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class FaceTabComposite extends SimpleTabComposite<FaceTabView> {
-	private final ImmutableDataSingleSelectListState<BaseEyeColor> baseEyeColorState = this.createImmutableListStateForEnum( "baseEyeColorState", BaseEyeColor.class, BaseEyeColor.getRandom() );
-	private final ImmutableDataSingleSelectListState<BaseFace> baseFaceState = this.createImmutableListStateForEnum( "baseFaceState", BaseFace.class, BaseFace.getRandom() );
+  private final ImmutableDataSingleSelectListState<BaseEyeColor> baseEyeColorState = this.createImmutableListStateForEnum("baseEyeColorState", BaseEyeColor.class, BaseEyeColor.getRandom());
+  private final ImmutableDataSingleSelectListState<BaseFace> baseFaceState = this.createImmutableListStateForEnum("baseFaceState", BaseFace.class, BaseFace.getRandom());
 
-	public FaceTabComposite() {
-		super( UUID.fromString( "44c44e61-7bcb-4891-a631-2142a49ac73c" ), IsCloseable.FALSE );
-	}
+  public FaceTabComposite() {
+    super(UUID.fromString("44c44e61-7bcb-4891-a631-2142a49ac73c"), IsCloseable.FALSE);
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	@Override
-	protected FaceTabView createView() {
-		return new FaceTabView( this );
-	}
+  @Override
+  protected FaceTabView createView() {
+    return new FaceTabView(this);
+  }
 
-	public ImmutableDataSingleSelectListState<BaseEyeColor> getBaseEyeColorState() {
-		return this.baseEyeColorState;
-	}
+  public ImmutableDataSingleSelectListState<BaseEyeColor> getBaseEyeColorState() {
+    return this.baseEyeColorState;
+  }
 
-	public ImmutableDataSingleSelectListState<BaseFace> getBaseFaceState() {
-		return this.baseFaceState;
-	}
+  public ImmutableDataSingleSelectListState<BaseFace> getBaseFaceState() {
+    return this.baseFaceState;
+  }
 
-	public static void main( String[] args ) throws Exception {
-		UIManagerUtilities.setLookAndFeel( "Nimbus" );
+  public static void main(String[] args) throws Exception {
+    UIManagerUtilities.setLookAndFeel("Nimbus");
 
-		SimpleApplication app = new SimpleApplication();
-		DocumentFrame documentFrame = app.getDocumentFrame();
-		Frame frame = documentFrame.getFrame();
+    SimpleApplication app = new SimpleApplication();
+    DocumentFrame documentFrame = app.getDocumentFrame();
+    Frame frame = documentFrame.getFrame();
 
-		FaceTabComposite faceTabComposite = new FaceTabComposite();
-		frame.getContentPane().addCenterComponent( faceTabComposite.getRootComponent() );
-		frame.setSize( 600, 400 );
-		frame.setVisible( true );
-	}
-};
+    FaceTabComposite faceTabComposite = new FaceTabComposite();
+    frame.getContentPane().addCenterComponent(faceTabComposite.getRootComponent());
+    frame.setSize(600, 400);
+    frame.setVisible(true);
+  }
+}

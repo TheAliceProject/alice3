@@ -61,90 +61,81 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DeleteFieldOperation extends DeleteMemberOperation<UserField> {
-	private static Map<UserField, DeleteFieldOperation> map = Maps.newHashMap();
+  private static Map<UserField, DeleteFieldOperation> map = Maps.newHashMap();
 
-	public static synchronized DeleteFieldOperation getInstance( UserField field ) {
-		return getInstance( field, field.getDeclaringType() );
-	}
+  public static synchronized DeleteFieldOperation getInstance(UserField field) {
+    return getInstance(field, field.getDeclaringType());
+  }
 
-	public static synchronized DeleteFieldOperation getInstance( UserField field, UserType<?> declaringType ) {
-		DeleteFieldOperation rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DeleteFieldOperation( field, declaringType );
-			map.put( field, rv );
-		}
-		return rv;
-	}
+  public static synchronized DeleteFieldOperation getInstance(UserField field, UserType<?> declaringType) {
+    DeleteFieldOperation rv = map.get(field);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new DeleteFieldOperation(field, declaringType);
+      map.put(field, rv);
+    }
+    return rv;
+  }
 
-	private Statement[] doStatements;
-	private Statement[] undoStatements;
-	private transient int index;
+  private Statement[] doStatements;
+  private Statement[] undoStatements;
+  private transient int index;
 
-	private DeleteFieldOperation( UserField field, UserType<?> declaringType ) {
-		super( UUID.fromString( "29e5416c-c0c4-4b6d-9146-5461d5c73c42" ), field, declaringType );
-		this.setEnabled( field.isDeletionAllowed.getValue() );
-	}
+  private DeleteFieldOperation(UserField field, UserType<?> declaringType) {
+    super(UUID.fromString("29e5416c-c0c4-4b6d-9146-5461d5c73c42"), field, declaringType);
+    this.setEnabled(field.isDeletionAllowed.getValue());
+  }
 
-	@Override
-	public Class<UserField> getNodeParameterType() {
-		return UserField.class;
-	}
+  @Override
+  public Class<UserField> getNodeParameterType() {
+    return UserField.class;
+  }
 
-	@Override
-	public NodeListProperty<UserField> getNodeListProperty( UserType<?> declaringType ) {
-		return declaringType.fields;
-	}
+  @Override
+  public NodeListProperty<UserField> getNodeListProperty(UserType<?> declaringType) {
+    return declaringType.fields;
+  }
 
-	@Override
-	protected boolean isClearToDelete( UserField field ) {
-		List<FieldAccess> references = IDE.getActiveInstance().getFieldAccesses( field );
-		final int N = references.size();
-		if( N > 0 ) {
-			ReferencesToFieldPreventingDeletionDialog referencesToFieldPreventingDeletionDialog = new ReferencesToFieldPreventingDeletionDialog( field, references );
-			referencesToFieldPreventingDeletionDialog.getLaunchOperation().fire();
-			if( true ) {//step.isSuccessfullyCompleted() ) {
-				ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
-				projectDocumentFrame.getFindComposite().getMemberReferencesOperationInstance( field ).fire();
-			}
-			return false;
-		} else {
-			return true;
-		}
-	}
+  @Override
+  protected boolean isClearToDelete(UserField field) {
+    List<FieldAccess> references = IDE.getActiveInstance().getFieldAccesses(field);
+    final int N = references.size();
+    if (N > 0) {
+      ReferencesToFieldPreventingDeletionDialog referencesToFieldPreventingDeletionDialog = new ReferencesToFieldPreventingDeletionDialog(field, references);
+      referencesToFieldPreventingDeletionDialog.getLaunchOperation().fire();
+      if (true) { //step.isSuccessfullyCompleted() ) {
+        ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
+        projectDocumentFrame.getFindComposite().getMemberReferencesOperationInstance(field).fire();
+      }
+      return false;
+    } else {
+      return true;
+    }
+  }
 
-	@Override
-	public void doOrRedoInternal( boolean isDo ) {
-		UserField field = this.getMember();
-		if( field.managementLevel.getValue() == ManagementLevel.MANAGED ) {
-			//Save the index position of the field so we can insert it correctly on undo
-			this.index = this.getDeclaringType().fields.indexOf( field );
-			//Save the state of field by precomputing the undo and redo statements
-			this.doStatements = IDE.getActiveInstance().getSceneEditor().getDoStatementsForRemoveField( field );
-			this.undoStatements = IDE.getActiveInstance().getSceneEditor().getUndoStatementsForRemoveField( field );
-			IDE.getActiveInstance().getSceneEditor().removeField(
-					this.getDeclaringType(),
-					field,
-					this.doStatements
-					);
-		} else {
-			super.doOrRedoInternal( isDo );
-		}
-	}
+  @Override
+  public void doOrRedoInternal(boolean isDo) {
+    UserField field = this.getMember();
+    if (field.managementLevel.getValue() == ManagementLevel.MANAGED) {
+      //Save the index position of the field so we can insert it correctly on undo
+      this.index = this.getDeclaringType().fields.indexOf(field);
+      //Save the state of field by precomputing the undo and redo statements
+      this.doStatements = IDE.getActiveInstance().getSceneEditor().getDoStatementsForRemoveField(field);
+      this.undoStatements = IDE.getActiveInstance().getSceneEditor().getUndoStatementsForRemoveField(field);
+      IDE.getActiveInstance().getSceneEditor().removeField(this.getDeclaringType(), field, this.doStatements);
+    } else {
+      super.doOrRedoInternal(isDo);
+    }
+  }
 
-	@Override
-	public void undoInternal() {
-		UserField field = this.getMember();
-		if( field.managementLevel.getValue() == ManagementLevel.MANAGED ) {
-			IDE.getActiveInstance().getSceneEditor().addField(
-					this.getDeclaringType(),
-					field,
-					this.index,
-					this.undoStatements
-					);
-		} else {
-			super.undoInternal();
-		}
-	}
+  @Override
+  public void undoInternal() {
+    UserField field = this.getMember();
+    if (field.managementLevel.getValue() == ManagementLevel.MANAGED) {
+      IDE.getActiveInstance().getSceneEditor().addField(this.getDeclaringType(), field, this.index, this.undoStatements);
+    } else {
+      super.undoInternal();
+    }
+  }
 }

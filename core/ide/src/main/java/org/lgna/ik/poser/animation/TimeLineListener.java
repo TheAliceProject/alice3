@@ -49,15 +49,15 @@ import org.lgna.story.Pose;
  */
 public interface TimeLineListener {
 
-	public void currentTimeChanged( double currentTime, Pose pose );
+  public void currentTimeChanged(double currentTime, Pose pose);
 
-	public void keyFrameAdded( KeyFrameData event );
+  public void keyFrameAdded(KeyFrameData event);
 
-	public void selectedKeyFrameChanged( KeyFrameData event );
+  public void selectedKeyFrameChanged(KeyFrameData event);
 
-	public void keyFrameModified( KeyFrameData event );
+  public void keyFrameModified(KeyFrameData event);
 
-	public void keyFrameDeleted( KeyFrameData event );
+  public void keyFrameDeleted(KeyFrameData event);
 
-	public void endTimeChanged( double endTime );
+  public void endTimeChanged(double endTime);
 }

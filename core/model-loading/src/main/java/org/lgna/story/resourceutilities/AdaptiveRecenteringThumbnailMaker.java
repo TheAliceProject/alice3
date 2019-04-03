@@ -57,139 +57,139 @@ import java.awt.image.BufferedImage;
 import java.nio.FloatBuffer;
 
 public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
-	private static final double DEFAULT_SEARCH_FACTOR = .25;
-	private static AdaptiveRecenteringThumbnailMaker instance;
+  private static final double DEFAULT_SEARCH_FACTOR = .25;
+  private static AdaptiveRecenteringThumbnailMaker instance;
 
-	public static AdaptiveRecenteringThumbnailMaker getInstance( int width, int height ) {
-		if( ( instance == null ) || ( instance.getWidth() != width ) || ( instance.getHeight() != height ) ) {
-			instance = new AdaptiveRecenteringThumbnailMaker( width, height );
-		} else {
-			instance.clear();
-		}
-		return instance;
-	}
+  public static AdaptiveRecenteringThumbnailMaker getInstance(int width, int height) {
+    if ((instance == null) || (instance.getWidth() != width) || (instance.getHeight() != height)) {
+      instance = new AdaptiveRecenteringThumbnailMaker(width, height);
+    } else {
+      instance.clear();
+    }
+    return instance;
+  }
 
-	public static AdaptiveRecenteringThumbnailMaker getInstance() {
-		if( instance == null ) {
-			instance = new AdaptiveRecenteringThumbnailMaker();
-		} else {
-			instance.clear();
-		}
-		return instance;
-	}
+  public static AdaptiveRecenteringThumbnailMaker getInstance() {
+    if (instance == null) {
+      instance = new AdaptiveRecenteringThumbnailMaker();
+    } else {
+      instance.clear();
+    }
+    return instance;
+  }
 
-	private final double searchFactor;
-	private final OffscreenRenderTarget testImageOffscreenRenderTarget;
+  private final double searchFactor;
+  private final OffscreenRenderTarget testImageOffscreenRenderTarget;
 
-	private AdaptiveRecenteringThumbnailMaker( int width, int height ) {
-		super( width, height, AbstractThumbnailMaker.DEFAULT_ANTI_ALIAS_FACTOR );
-		this.searchFactor = DEFAULT_SEARCH_FACTOR;
-		this.testImageOffscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget( (int)( this.getWidth() * this.searchFactor ), (int)( this.getHeight() * this.searchFactor ), null, new RenderCapabilities.Builder().build() );
-		setUpCamera( this.testImageOffscreenRenderTarget );
-	}
+  private AdaptiveRecenteringThumbnailMaker(int width, int height) {
+    super(width, height, AbstractThumbnailMaker.DEFAULT_ANTI_ALIAS_FACTOR);
+    this.searchFactor = DEFAULT_SEARCH_FACTOR;
+    this.testImageOffscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget((int) (this.getWidth() * this.searchFactor), (int) (this.getHeight() * this.searchFactor), null, new RenderCapabilities.Builder().build());
+    setUpCamera(this.testImageOffscreenRenderTarget);
+  }
 
-	private AdaptiveRecenteringThumbnailMaker() {
-		this( AbstractThumbnailMaker.DEFAULT_THUMBNAIL_WIDTH, AbstractThumbnailMaker.DEFAULT_THUMBNAIL_HEIGHT );
-	}
+  private AdaptiveRecenteringThumbnailMaker() {
+    this(AbstractThumbnailMaker.DEFAULT_THUMBNAIL_WIDTH, AbstractThumbnailMaker.DEFAULT_THUMBNAIL_HEIGHT);
+  }
 
-	@Override
-	protected void clear() {
-		super.clear();
-		this.testImageOffscreenRenderTarget.forgetAllCachedItems();
-	}
+  @Override
+  protected void clear() {
+    super.clear();
+    this.testImageOffscreenRenderTarget.forgetAllCachedItems();
+  }
 
-	private Point3 getRecenterPositionBasedOnImage( BufferedImage testImage, Point3 currentPosition, AxisAlignedBox bbox ) {
-		int topBorder = getTopBorder( testImage );
-		int bottomBorder = getBottomBorder( testImage );
-		int rightBorder = getRightBorder( testImage );
-		int leftBorder = getLeftBorder( testImage );
+  private Point3 getRecenterPositionBasedOnImage(BufferedImage testImage, Point3 currentPosition, AxisAlignedBox bbox) {
+    int topBorder = getTopBorder(testImage);
+    int bottomBorder = getBottomBorder(testImage);
+    int rightBorder = getRightBorder(testImage);
+    int leftBorder = getLeftBorder(testImage);
 
-		double shiftUpPercent = ( bottomBorder - topBorder ) / ( (double)testImage.getHeight() );
-		double shiftRightPercent = ( leftBorder - rightBorder ) / ( (double)testImage.getHeight() );
+    double shiftUpPercent = (bottomBorder - topBorder) / ((double) testImage.getHeight());
+    double shiftRightPercent = (leftBorder - rightBorder) / ((double) testImage.getHeight());
 
-		double shiftUpAmount = shiftUpPercent * bbox.getHeight() * .75;
-		double shiftRightAmount = shiftRightPercent * bbox.getWidth() * .75;
+    double shiftUpAmount = shiftUpPercent * bbox.getHeight() * .75;
+    double shiftRightAmount = shiftRightPercent * bbox.getWidth() * .75;
 
-		Point3 testPosition = new Point3( currentPosition );
+    Point3 testPosition = new Point3(currentPosition);
 
-		testPosition.y += shiftUpAmount;
-		testPosition.x += shiftRightAmount;
+    testPosition.y += shiftUpAmount;
+    testPosition.x += shiftRightAmount;
 
-		return testPosition;
-	}
+    return testPosition;
+  }
 
-	@Override
-	protected AffineMatrix4x4 getThumbnailTransform( Visual v, AxisAlignedBox bbox ) {
-		v.setParent( this.getModelTransformable() );
-		getSGCameraVehicle().setLocalTransformation( getThumbnailCameraOrientation( bbox ) );
+  @Override
+  protected AffineMatrix4x4 getThumbnailTransform(Visual v, AxisAlignedBox bbox) {
+    v.setParent(this.getModelTransformable());
+    getSGCameraVehicle().setLocalTransformation(getThumbnailCameraOrientation(bbox));
 
-		AffineMatrix4x4 cameraTransform = getSGCameraVehicle().getAbsoluteTransformation();
+    AffineMatrix4x4 cameraTransform = getSGCameraVehicle().getAbsoluteTransformation();
 
-		OffscreenRenderTarget testImageRT = testImageOffscreenRenderTarget;
-		BufferedImage testImage = testImageRT.getSynchronousImageCapturer().createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
-		FloatBuffer depthBuffer = testImageRT.getSynchronousImageCapturer().createFloatBufferForUseAsDepthBuffer();
+    OffscreenRenderTarget testImageRT = testImageOffscreenRenderTarget;
+    BufferedImage testImage = testImageRT.getSynchronousImageCapturer().createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
+    FloatBuffer depthBuffer = testImageRT.getSynchronousImageCapturer().createFloatBufferForUseAsDepthBuffer();
 
-		testImageRT.clearAndRenderOffscreen();
-		testImage = testImageRT.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
+    testImageRT.clearAndRenderOffscreen();
+    testImage = testImageRT.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 
-		writeDebugImageIfAppropriate( "initial.png", testImage );
+    writeDebugImageIfAppropriate("initial.png", testImage);
 
-		Point3 testPosition = getRecenterPositionBasedOnImage( testImage, cameraTransform.translation, bbox );
-		getSGCameraVehicle().setTranslationOnly( testPosition, this.getScene().getSgReferenceFrame() );
-		Point3 lastGoodPosition = new Point3( testPosition );
+    Point3 testPosition = getRecenterPositionBasedOnImage(testImage, cameraTransform.translation, bbox);
+    getSGCameraVehicle().setTranslationOnly(testPosition, this.getScene().getSgReferenceFrame());
+    Point3 lastGoodPosition = new Point3(testPosition);
 
-		Ray cameraRay = new Ray( testPosition, Vector3.createMultiplication( cameraTransform.orientation.backward, -1 ) );
-		double distanceToCenter = Point3.calculateDistanceBetween( cameraRay.accessOrigin(), bbox.getCenter() );
-		double bboxDiagonal = Point3.calculateDistanceBetween( bbox.getMinimum(), bbox.getMaximum() );
-		double distanceToEdge = distanceToCenter - bboxDiagonal;
-		double distanceStep = distanceToCenter / 20;
-		double currentT = 0;
-		boolean framed = isFullyFramed( testImage );
-		//zoom out until framed
-		final int COUNT_LIMIT = 30;
-		int limitCount = 0;
-		while( !framed && ( limitCount < COUNT_LIMIT ) ) {
-			cameraRay.getPointAlong( testPosition, currentT );
-			getSGCameraVehicle().setTranslationOnly( testPosition, this.getScene().getSgReferenceFrame() );
-			testImageRT.clearAndRenderOffscreen();
-			testImage = testImageRT.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
+    Ray cameraRay = new Ray(testPosition, Vector3.createMultiplication(cameraTransform.orientation.backward, -1));
+    double distanceToCenter = Point3.calculateDistanceBetween(cameraRay.accessOrigin(), bbox.getCenter());
+    double bboxDiagonal = Point3.calculateDistanceBetween(bbox.getMinimum(), bbox.getMaximum());
+    double distanceToEdge = distanceToCenter - bboxDiagonal;
+    double distanceStep = distanceToCenter / 20;
+    double currentT = 0;
+    boolean framed = isFullyFramed(testImage);
+    //zoom out until framed
+    final int COUNT_LIMIT = 30;
+    int limitCount = 0;
+    while (!framed && (limitCount < COUNT_LIMIT)) {
+      cameraRay.getPointAlong(testPosition, currentT);
+      getSGCameraVehicle().setTranslationOnly(testPosition, this.getScene().getSgReferenceFrame());
+      testImageRT.clearAndRenderOffscreen();
+      testImage = testImageRT.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 
-			writeDebugImageIfAppropriate( "test" + limitCount + ".png", testImage );
+      writeDebugImageIfAppropriate("test" + limitCount + ".png", testImage);
 
-			framed = isFullyFramed( testImage );
-			if( framed ) {
-				lastGoodPosition.set( testPosition );
-			}
-			limitCount++;
-			currentT -= distanceStep;
-		}
-		if( limitCount > COUNT_LIMIT ) {
-			System.err.println( "hit thumbnail limit count" );
-		}
-		int firstLimit = limitCount;
-		limitCount = 0;
-		//zoom in until just framed
-		while( ( limitCount < COUNT_LIMIT ) && framed && ( ( distanceToEdge - currentT ) > getSGCamera().nearClippingPlaneDistance.getValue() ) ) {
-			cameraRay.getPointAlong( testPosition, currentT );
-			getSGCameraVehicle().setTranslationOnly( testPosition, this.getScene().getSgReferenceFrame() );
-			testImageRT.clearAndRenderOffscreen();
-			testImage = testImageRT.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
+      framed = isFullyFramed(testImage);
+      if (framed) {
+        lastGoodPosition.set(testPosition);
+      }
+      limitCount++;
+      currentT -= distanceStep;
+    }
+    if (limitCount > COUNT_LIMIT) {
+      System.err.println("hit thumbnail limit count");
+    }
+    int firstLimit = limitCount;
+    limitCount = 0;
+    //zoom in until just framed
+    while ((limitCount < COUNT_LIMIT) && framed && ((distanceToEdge - currentT) > getSGCamera().nearClippingPlaneDistance.getValue())) {
+      cameraRay.getPointAlong(testPosition, currentT);
+      getSGCameraVehicle().setTranslationOnly(testPosition, this.getScene().getSgReferenceFrame());
+      testImageRT.clearAndRenderOffscreen();
+      testImage = testImageRT.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 
-			writeDebugImageIfAppropriate( "test" + ( firstLimit + limitCount ) + ".png", testImage );
+      writeDebugImageIfAppropriate("test" + (firstLimit + limitCount) + ".png", testImage);
 
-			framed = isFullyFramed( testImage );
-			if( framed ) {
-				lastGoodPosition.set( testPosition );
-			}
-			limitCount++;
-			currentT += distanceStep;
-		}
-		if( limitCount > COUNT_LIMIT ) {
-			System.err.println( "hit thumbnail limit count" );
-		}
-		getSGCameraVehicle().setTranslationOnly( lastGoodPosition, this.getScene().getSgReferenceFrame() );
-		AffineMatrix4x4 finalCameraTransform = getSGCameraVehicle().getLocalTransformation();
-		return finalCameraTransform;
-	}
+      framed = isFullyFramed(testImage);
+      if (framed) {
+        lastGoodPosition.set(testPosition);
+      }
+      limitCount++;
+      currentT += distanceStep;
+    }
+    if (limitCount > COUNT_LIMIT) {
+      System.err.println("hit thumbnail limit count");
+    }
+    getSGCameraVehicle().setTranslationOnly(lastGoodPosition, this.getScene().getSgReferenceFrame());
+    AffineMatrix4x4 finalCameraTransform = getSGCameraVehicle().getLocalTransformation();
+    return finalCameraTransform;
+  }
 
 }

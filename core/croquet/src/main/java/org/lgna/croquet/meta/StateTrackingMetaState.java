@@ -50,24 +50,24 @@ import org.lgna.croquet.event.ValueListener;
  * @author Dennis Cosgrove
  */
 public abstract class StateTrackingMetaState<T, ST> extends MetaState<T> {
-	public StateTrackingMetaState( State<ST> state ) {
-		this.state = state;
-		this.setPrevValue( this.getValue() );
-		this.state.addNewSchoolValueListener( this.valueListener );
-	}
+  public StateTrackingMetaState(State<ST> state) {
+    this.state = state;
+    this.setPrevValue(this.getValue());
+    this.state.addNewSchoolValueListener(this.valueListener);
+  }
 
-	protected abstract T getValue( State<ST> state );
+  protected abstract T getValue(State<ST> state);
 
-	@Override
-	public final T getValue() {
-		return this.getValue( this.state );
-	}
+  @Override
+  public final T getValue() {
+    return this.getValue(this.state);
+  }
 
-	private final State<ST> state;
-	private final ValueListener<ST> valueListener = new ValueListener<ST>() {
-		@Override
-		public void valueChanged( ValueEvent<ST> e ) {
-			checkValueAndFireIfAppropriate();
-		}
-	};
+  private final State<ST> state;
+  private final ValueListener<ST> valueListener = new ValueListener<ST>() {
+    @Override
+    public void valueChanged(ValueEvent<ST> e) {
+      checkValueAndFireIfAppropriate();
+    }
+  };
 }

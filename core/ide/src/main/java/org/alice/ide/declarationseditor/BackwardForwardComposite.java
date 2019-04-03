@@ -51,12 +51,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class BackwardForwardComposite extends SimpleComposite<BackwardForwardView> {
-	public BackwardForwardComposite() {
-		super( UUID.fromString( "47fbe002-73ba-4e9a-b415-da81acc11b4c" ) );
-	}
+  public BackwardForwardComposite() {
+    super(UUID.fromString("47fbe002-73ba-4e9a-b415-da81acc11b4c"));
+  }
 
-	@Override
-	protected BackwardForwardView createView() {
-		return new BackwardForwardView( this );
-	}
+  @Override
+  protected BackwardForwardView createView() {
+    return new BackwardForwardView(this);
+  }
 }

@@ -52,12 +52,12 @@ import org.lgna.story.event.ViewEnterListener;
 import java.util.List;
 
 public class ComesIntoViewEventListenerFillerInner extends ExpressionFillerInner {
-	public ComesIntoViewEventListenerFillerInner() {
-		super( ViewEnterListener.class );
-	}
+  public ComesIntoViewEventListenerFillerInner() {
+    super(ViewEnterListener.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		items.add( ComesIntoViewEventListenerFillIn.getInstance() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    items.add(ComesIntoViewEventListenerFillIn.getInstance());
+  }
 }

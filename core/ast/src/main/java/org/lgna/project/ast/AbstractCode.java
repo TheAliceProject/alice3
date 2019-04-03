@@ -51,59 +51,59 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCode extends AbstractMember implements Code {
-	public AbstractCode getShortestInChain() {
-		AbstractCode next = this.getNextShorterInChain();
-		if( next != null ) {
-			return next.getShortestInChain();
-		} else {
-			return this;
-		}
-	}
+  public AbstractCode getShortestInChain() {
+    AbstractCode next = this.getNextShorterInChain();
+    if (next != null) {
+      return next.getShortestInChain();
+    } else {
+      return this;
+    }
+  }
 
-	public AbstractCode getLongestInChain() {
-		AbstractCode next = this.getNextLongerInChain();
-		if( next != null ) {
-			return next.getLongestInChain();
-		} else {
-			return this;
-		}
-	}
+  public AbstractCode getLongestInChain() {
+    AbstractCode next = this.getNextLongerInChain();
+    if (next != null) {
+      return next.getLongestInChain();
+    } else {
+      return this;
+    }
+  }
 
-	public final boolean isValid() {
-		return this.getDeclaringType() != null;
-	}
+  public final boolean isValid() {
+    return this.getDeclaringType() != null;
+  }
 
-	public abstract AbstractCode getNextLongerInChain();
+  public abstract AbstractCode getNextLongerInChain();
 
-	public abstract AbstractCode getNextShorterInChain();
+  public abstract AbstractCode getNextShorterInChain();
 
-	@Override
-	public abstract boolean isSignatureLocked();
+  @Override
+  public abstract boolean isSignatureLocked();
 
-	@Override
-	public final AbstractParameter[] getAllParameters() {
-		List<? extends AbstractParameter> requiredParameters = this.getRequiredParameters();
-		AbstractParameter variableLengthParameter = this.getVariableLengthParameter();
-		AbstractParameter keyedParameter = this.getKeyedParameter();
+  @Override
+  public final AbstractParameter[] getAllParameters() {
+    List<? extends AbstractParameter> requiredParameters = this.getRequiredParameters();
+    AbstractParameter variableLengthParameter = this.getVariableLengthParameter();
+    AbstractParameter keyedParameter = this.getKeyedParameter();
 
-		int length = requiredParameters.size();
-		if( variableLengthParameter != null ) {
-			length += 1;
-		}
-		if( keyedParameter != null ) {
-			length += 1;
-		}
-		AbstractParameter[] rv = new AbstractParameter[ length ];
-		requiredParameters.toArray( rv );
-		int i = requiredParameters.size();
-		if( variableLengthParameter != null ) {
-			rv[ i ] = variableLengthParameter;
-			i += 1;
-		}
-		if( keyedParameter != null ) {
-			rv[ i ] = keyedParameter;
-			i += 1;
-		}
-		return rv;
-	}
+    int length = requiredParameters.size();
+    if (variableLengthParameter != null) {
+      length += 1;
+    }
+    if (keyedParameter != null) {
+      length += 1;
+    }
+    AbstractParameter[] rv = new AbstractParameter[length];
+    requiredParameters.toArray(rv);
+    int i = requiredParameters.size();
+    if (variableLengthParameter != null) {
+      rv[i] = variableLengthParameter;
+      i += 1;
+    }
+    if (keyedParameter != null) {
+      rv[i] = keyedParameter;
+      i += 1;
+    }
+    return rv;
+  }
 }

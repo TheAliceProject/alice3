@@ -5,15 +5,16 @@ import org.alice.tweedle.run.Frame;
 
 public abstract class TweedleValue extends TweedleExpression {
 
-	protected TweedleValue( TweedleType type ) {
-		super( type );
-	}
+  protected TweedleValue(TweedleType type) {
+    super(type);
+  }
 
-	@Override public TweedleValue evaluate( Frame frame ) {
-		return this;
-	}
+  @Override
+  public TweedleValue evaluate(Frame frame) {
+    return this;
+  }
 
-	public String toTextString() {
-		return getType().valueToString(this);
-	}
+  public String toTextString() {
+    return getType().valueToString(this);
+  }
 }

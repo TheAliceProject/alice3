@@ -44,14 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultFullBodyOutfitMaternityShirtPants implements FemaleAdultFullBodyOutfit {
-	WINTER,
-	SPRING,
-	FALL,
-	BLACK_VIOLET,
-	GRAPEVINE,
-	NAVY_RUST,
-	BRIGHT_GREEN,
-	BRIGHT_PURPLE,
-	BRIGHT_RED;
+  WINTER, SPRING, FALL, BLACK_VIOLET, GRAPEVINE, NAVY_RUST, BRIGHT_GREEN, BRIGHT_PURPLE, BRIGHT_RED
 
 }

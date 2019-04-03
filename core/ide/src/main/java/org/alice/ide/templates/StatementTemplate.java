@@ -52,12 +52,12 @@ import javax.swing.BoxLayout;
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplate extends StatementLikeSubstance {
-	public StatementTemplate( AbstractStatementDragModel model, Class<? extends Statement> cls ) {
-		super( model, cls, BoxLayout.LINE_AXIS );
-	}
+  public StatementTemplate(AbstractStatementDragModel model, Class<? extends Statement> cls) {
+    super(model, cls, BoxLayout.LINE_AXIS);
+  }
 
-	@Override
-	protected boolean isClickAndClackAppropriate() {
-		return true;
-	}
+  @Override
+  protected boolean isClickAndClackAppropriate() {
+    return true;
+  }
 }

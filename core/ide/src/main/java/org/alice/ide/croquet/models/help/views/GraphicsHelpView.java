@@ -58,57 +58,52 @@ import org.lgna.croquet.views.MigPanel;
  * @author Dennis Cosgrove
  */
 public class GraphicsHelpView extends MigPanel {
-	private static String getSystemInformation() {
-		return String.format( getLocalizedStringByKey( "systemInfo" ),
-						System.getProperty( "os.name" ),
-						System.getProperty( "sun.arch.data.model" ) );
-	}
+  private static String getSystemInformation() {
+    return String.format(getLocalizedStringByKey("systemInfo"), System.getProperty("os.name"), System.getProperty("sun.arch.data.model"));
+  }
 
-	private static String getGraphicsInformation() {
-		ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
+  private static String getGraphicsInformation() {
+    ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
 
-		return String.format( getLocalizedStringByKey( "graphicsInfo" ),
-						sharedDetails != null ? sharedDetails.getRenderer() : getLocalizedStringByKey( "unknownGraphics" ));
-	}
+    return String.format(getLocalizedStringByKey("graphicsInfo"), sharedDetails != null ? sharedDetails.getRenderer() : getLocalizedStringByKey("unknownGraphics"));
+  }
 
-	public GraphicsHelpView() {
-		final int LEVEL_1 = 16;
-		final int LEVEL_2 = 32;
+  public GraphicsHelpView() {
+    final int LEVEL_1 = 16;
+    final int LEVEL_2 = 32;
 
-		this.addComponent( new Label( getLocalizedStringByKey( "commonFix" ), 1.2f, TextWeight.BOLD ), "wrap" );
-		this.addComponent( new Label( getLocalizedStringByKey( "helpHeader" ) ), "wrap, gapleft " + LEVEL_1 );
-		if( SystemUtilities.isWindows() ) {
-			this.addComponent( WindowsSystemAssessmentToolComposite.getInstance().getLaunchOperation().createButton(), "wrap, gapleft " + LEVEL_2 );
-			this.addComponent( StartPerformanceInformationAndToolsOperation.getInstance().createButton(), "wrap, gapleft " + LEVEL_2 );
-		}
-		this.addComponent( SearchForGraphicsDriversOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2 );
-		this.addComponent( GraphicsDriverHelpOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2 );
-		this.addComponent( new Label( getLocalizedStringByKey( "aboutHeader" ) ), "wrap, gaptop 16, gapleft " + LEVEL_1 );
-		this.addComponent( new Label( getGraphicsInformation() ), "wrap, gapleft " + LEVEL_2 );
-		this.addComponent( new Label( getSystemInformation() ), "wrap, gapleft " + LEVEL_2 );
-		this.addComponent( new Label( getLocalizedStringByKey( getPickInfoKey() ) ), "wrap, gaptop 24" );
-	}
+    this.addComponent(new Label(getLocalizedStringByKey("commonFix"), 1.2f, TextWeight.BOLD), "wrap");
+    this.addComponent(new Label(getLocalizedStringByKey("helpHeader")), "wrap, gapleft " + LEVEL_1);
+    if (SystemUtilities.isWindows()) {
+      this.addComponent(WindowsSystemAssessmentToolComposite.getInstance().getLaunchOperation().createButton(), "wrap, gapleft " + LEVEL_2);
+      this.addComponent(StartPerformanceInformationAndToolsOperation.getInstance().createButton(), "wrap, gapleft " + LEVEL_2);
+    }
+    this.addComponent(SearchForGraphicsDriversOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2);
+    this.addComponent(GraphicsDriverHelpOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2);
+    this.addComponent(new Label(getLocalizedStringByKey("aboutHeader")), "wrap, gaptop 16, gapleft " + LEVEL_1);
+    this.addComponent(new Label(getGraphicsInformation()), "wrap, gapleft " + LEVEL_2);
+    this.addComponent(new Label(getSystemInformation()), "wrap, gapleft " + LEVEL_2);
+    this.addComponent(new Label(getLocalizedStringByKey(getPickInfoKey())), "wrap, gaptop 24");
+  }
 
-	private String getPickInfoKey() {
-		ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
-		if (synchronousPickDetails == null) {
-			return "sceneClickNothing";
-		}
+  private String getPickInfoKey() {
+    ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
+    if (synchronousPickDetails == null) {
+      return "sceneClickNothing";
+    }
 
-		if( synchronousPickDetails.isPickFunctioningCorrectly() ) {
-			if( synchronousPickDetails.isPickActuallyHardwareAccelerated() ) {
-				return "sceneClickHardware";
-			} else {
-				return synchronousPickDetails.isReportingPickCanBeHardwareAccelerated() ?
-								"sceneClickSoftwareAccel" :
-								"sceneClickSoftware";
-			}
-		} else {
-			return "sceneClickNoPick";
-		}
-	}
+    if (synchronousPickDetails.isPickFunctioningCorrectly()) {
+      if (synchronousPickDetails.isPickActuallyHardwareAccelerated()) {
+        return "sceneClickHardware";
+      } else {
+        return synchronousPickDetails.isReportingPickCanBeHardwareAccelerated() ? "sceneClickSoftwareAccel" : "sceneClickSoftware";
+      }
+    } else {
+      return "sceneClickNoPick";
+    }
+  }
 
-	private static String getLocalizedStringByKey( String key ) {
-		return ResourceBundleUtilities.getStringForKey( key, GraphicsHelpComposite.class );
-	}
+  private static String getLocalizedStringByKey(String key) {
+    return ResourceBundleUtilities.getStringForKey(key, GraphicsHelpComposite.class);
+  }
 }

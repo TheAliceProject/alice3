@@ -62,60 +62,60 @@ import org.lgna.story.SQuadruped;
  * @author Matt May
  */
 public abstract class AnimatorComposite<M extends SJointedModel> extends AbstractPoserOrAnimatorComposite<AnimatorControlComposite<M>, M> {
-	private MethodNameValidator validator;
-	private UserMethod method;
+  private MethodNameValidator validator;
+  private UserMethod method;
 
-	public AnimatorComposite( UUID migrationId, NamedUserType valueType, UserMethod editedMethod ) {
-		super( migrationId, valueType );
-		this.method = editedMethod;
-	}
+  public AnimatorComposite(UUID migrationId, NamedUserType valueType, UserMethod editedMethod) {
+    super(migrationId, valueType);
+    this.method = editedMethod;
+  }
 
-	@Override
-	protected AnimatorControlComposite<M> createControlComposite() {
-		return new AnimatorControlComposite<M>( this );
-	}
+  @Override
+  protected AnimatorControlComposite<M> createControlComposite() {
+    return new AnimatorControlComposite<M>(this);
+  }
 
-	@Override
-	protected Panel createView() {
-		CompositeView splitPane = super.createView();
-		BorderPanel panel = new BorderPanel();
-		panel.addCenterComponent( splitPane );
-		panel.addPageEndComponent( this.getControlComposite().getSouthViewForDialog() );
-		return panel;
-	}
+  @Override
+  protected Panel createView() {
+    CompositeView splitPane = super.createView();
+    BorderPanel panel = new BorderPanel();
+    panel.addCenterComponent(splitPane);
+    panel.addPageEndComponent(this.getControlComposite().getSouthViewForDialog());
+    return panel;
+  }
 
-	public static boolean isStrictlyAnimation( UserMethod candidate ) {
-		if( candidate != null ) {
-			if( !( candidate.getDeclaringType() instanceof NamedUserType ) ) {
-				return false;
-			}
-			return CheckIfAnimationCrawler.initiateAndCheckMethod( candidate );
-		} else {
-			return true;
-		}
-	}
+  public static boolean isStrictlyAnimation(UserMethod candidate) {
+    if (candidate != null) {
+      if (!(candidate.getDeclaringType() instanceof NamedUserType)) {
+        return false;
+      }
+      return CheckIfAnimationCrawler.initiateAndCheckMethod(candidate);
+    } else {
+      return true;
+    }
+  }
 
-	public UserMethod getMethod() {
-		return this.method;
-	}
+  public UserMethod getMethod() {
+    return this.method;
+  }
 
-	public static AnimatorComposite<?> getDialogForUserType( UserType<?> declaringType, UserMethod method ) {
-		if( declaringType != null ) {
-			if( ( declaringType instanceof NamedUserType ) && AnimatorComposite.isStrictlyAnimation( method ) ) {
-				NamedUserType namedUserType = (NamedUserType)declaringType;
-				if( namedUserType.isAssignableTo( SBiped.class ) ) {
-					return new BipedAnimator( namedUserType, method );
-				} else if( namedUserType.isAssignableTo( SQuadruped.class ) ) {
-					return new QuadrupedAnimator( namedUserType, method );
-				} else if( namedUserType.isAssignableTo( SFlyer.class ) ) {
-					return new FlyerAnimator( namedUserType, method );
-				}
-			}
-		}
-		return null;
-	}
+  public static AnimatorComposite<?> getDialogForUserType(UserType<?> declaringType, UserMethod method) {
+    if (declaringType != null) {
+      if ((declaringType instanceof NamedUserType) && AnimatorComposite.isStrictlyAnimation(method)) {
+        NamedUserType namedUserType = (NamedUserType) declaringType;
+        if (namedUserType.isAssignableTo(SBiped.class)) {
+          return new BipedAnimator(namedUserType, method);
+        } else if (namedUserType.isAssignableTo(SQuadruped.class)) {
+          return new QuadrupedAnimator(namedUserType, method);
+        } else if (namedUserType.isAssignableTo(SFlyer.class)) {
+          return new FlyerAnimator(namedUserType, method);
+        }
+      }
+    }
+    return null;
+  }
 
-	public static AnimatorComposite<?> getDialogForUserMethod( UserMethod method ) {
-		return getDialogForUserType( method.getDeclaringType(), method );
-	}
+  public static AnimatorComposite<?> getDialogForUserMethod(UserMethod method) {
+    return getDialogForUserType(method.getDeclaringType(), method);
+  }
 }

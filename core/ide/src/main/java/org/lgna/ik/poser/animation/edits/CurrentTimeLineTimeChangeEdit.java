@@ -50,27 +50,27 @@ import org.lgna.ik.poser.animation.TimeLine;
  */
 public class CurrentTimeLineTimeChangeEdit extends TimeLineEdit {
 
-	private final double newTime;
-	private final double prevTime;
+  private final double newTime;
+  private final double prevTime;
 
-	public CurrentTimeLineTimeChangeEdit( UserActivity userActivity, TimeLine timeLine, double newTime, double previousTime ) {
-		super( userActivity, timeLine );
-		this.newTime = newTime;
-		this.prevTime = previousTime;
-	}
+  public CurrentTimeLineTimeChangeEdit(UserActivity userActivity, TimeLine timeLine, double newTime, double previousTime) {
+    super(userActivity, timeLine);
+    this.newTime = newTime;
+    this.prevTime = previousTime;
+  }
 
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		getTimeLine().setCurrentTime( newTime );
-	}
+  @Override
+  protected void doOrRedoInternal(boolean isDo) {
+    getTimeLine().setCurrentTime(newTime);
+  }
 
-	@Override
-	protected void undoInternal() {
-		getTimeLine().setCurrentTime( prevTime );
-	}
+  @Override
+  protected void undoInternal() {
+    getTimeLine().setCurrentTime(prevTime);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+  }
 
 }

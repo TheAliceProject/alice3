@@ -47,39 +47,23 @@ package edu.cmu.cs.dennisc.math;
  * @author Dennis Cosgrove
  */
 public class Frustum extends Hexahedron {
-	public static Frustum createInstance( Matrix4x4 projection ) {
-		double xMin = -1.0;
-		double xMax = +1.0;
-		double yMin = -1.0;
-		double yMax = +1.0;
-		double zMin = -1.0;
-		double zMax = +1.0;
+  public static Frustum createInstance(Matrix4x4 projection) {
+    double xMin = -1.0;
+    double xMax = +1.0;
+    double yMin = -1.0;
+    double yMax = +1.0;
+    double zMin = -1.0;
+    double zMax = +1.0;
 
-		Point3[] points = {
-				new Point3( xMin, yMin, zMin ),
-				new Point3( xMax, yMin, zMin ),
-				new Point3( xMin, yMax, zMin ),
-				new Point3( xMax, yMax, zMin ),
-				new Point3( xMin, yMin, zMax ),
-				new Point3( xMax, yMin, zMax ),
-				new Point3( xMin, yMax, zMax ),
-				new Point3( xMax, yMax, zMax )
-		};
-		Vector3[] normals = {
-				new Vector3( +1, 0, 0 ),
-				new Vector3( -1, 0, 0 ),
-				new Vector3( 0, +1, 0 ),
-				new Vector3( 0, -1, 0 ),
-				new Vector3( 0, 0, +1 ),
-				new Vector3( 0, 0, -1 )
-		};
+    Point3[] points = {new Point3(xMin, yMin, zMin), new Point3(xMax, yMin, zMin), new Point3(xMin, yMax, zMin), new Point3(xMax, yMax, zMin), new Point3(xMin, yMin, zMax), new Point3(xMax, yMin, zMax), new Point3(xMin, yMax, zMax), new Point3(xMax, yMax, zMax)};
+    Vector3[] normals = {new Vector3(+1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, +1, 0), new Vector3(0, -1, 0), new Vector3(0, 0, +1), new Vector3(0, 0, -1)};
 
-		Frustum rv = new Frustum( points, normals );
-		rv.transform( projection );
-		return rv;
-	}
+    Frustum rv = new Frustum(points, normals);
+    rv.transform(projection);
+    return rv;
+  }
 
-	private Frustum( Point3[] points, Vector3[] normals ) {
-		super( points, normals );
-	}
+  private Frustum(Point3[] points, Vector3[] normals) {
+    super(points, normals);
+  }
 }

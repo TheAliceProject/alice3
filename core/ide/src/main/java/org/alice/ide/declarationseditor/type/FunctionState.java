@@ -54,20 +54,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FunctionState extends MethodState {
-	private static Map<NamedUserType, FunctionState> map = Maps.newHashMap();
+  private static Map<NamedUserType, FunctionState> map = Maps.newHashMap();
 
-	public static synchronized FunctionState getInstance( NamedUserType type ) {
-		FunctionState rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FunctionState( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized FunctionState getInstance(NamedUserType type) {
+    FunctionState rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new FunctionState(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private FunctionState( NamedUserType type ) {
-		super( UUID.fromString( "042cf23a-65e6-4df8-b9cd-2964e44c7a34" ), new FunctionData( type ) );
-	}
+  private FunctionState(NamedUserType type) {
+    super(UUID.fromString("042cf23a-65e6-4df8-b9cd-2964e44c7a34"), new FunctionData(type));
+  }
 }

@@ -52,31 +52,31 @@ import java.awt.Frame;
  * @author Dennis Cosgrove
  */
 public class JDialogUtilities {
-	public static JDialog createJDialog( Component ownerComponent, String title, boolean isModal ) {
-		JDialog rv;
-		Component root;
-		if( ownerComponent != null ) {
-			root = SwingUtilities.getRoot( ownerComponent );
-		} else {
-			root = null;
-		}
-		if( root instanceof Frame ) {
-			rv = new JDialog( (Frame)root );
-		} else if( root instanceof Dialog ) {
-			rv = new JDialog( (Dialog)root );
-		} else {
-			rv = new JDialog();
-		}
-		rv.setTitle( title );
-		rv.setModal( isModal );
-		return rv;
-	}
+  public static JDialog createJDialog(Component ownerComponent, String title, boolean isModal) {
+    JDialog rv;
+    Component root;
+    if (ownerComponent != null) {
+      root = SwingUtilities.getRoot(ownerComponent);
+    } else {
+      root = null;
+    }
+    if (root instanceof Frame) {
+      rv = new JDialog((Frame) root);
+    } else if (root instanceof Dialog) {
+      rv = new JDialog((Dialog) root);
+    } else {
+      rv = new JDialog();
+    }
+    rv.setTitle(title);
+    rv.setModal(isModal);
+    return rv;
+  }
 
-	public static JDialog createPackedJDialog( Component content, Component ownerComponent, String title, boolean isModal, int closeOperation ) {
-		JDialog rv = createJDialog( ownerComponent, title, isModal );
-		rv.getContentPane().add( content );
-		rv.pack();
-		rv.setDefaultCloseOperation( closeOperation );
-		return rv;
-	}
+  public static JDialog createPackedJDialog(Component content, Component ownerComponent, String title, boolean isModal, int closeOperation) {
+    JDialog rv = createJDialog(ownerComponent, title, isModal);
+    rv.getContentPane().add(content);
+    rv.pack();
+    rv.setDefaultCloseOperation(closeOperation);
+    return rv;
+  }
 }

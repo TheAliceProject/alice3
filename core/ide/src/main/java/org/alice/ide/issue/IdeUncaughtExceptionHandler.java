@@ -61,84 +61,81 @@ import java.awt.BorderLayout;
  * @author Dennis Cosgrove
  */
 public abstract class IdeUncaughtExceptionHandler extends AbstractUncaughtExceptionHandler {
-	private static final String SILENTLY_FAIL_TEXT = "Silently Fail";
-	private static final String CONTINUE_TEXT = "Continue";
+  private static final String SILENTLY_FAIL_TEXT = "Silently Fail";
+  private static final String CONTINUE_TEXT = "Continue";
 
-	public IdeUncaughtExceptionHandler( ApplicationIssueConfiguration config ) {
-		this.config = config;
-	}
+  public IdeUncaughtExceptionHandler(ApplicationIssueConfiguration config) {
+    this.config = config;
+  }
 
-	@Override
-	protected boolean handleUncaughtLgnaRuntimeException( Thread thread, Throwable originalThrowable, LgnaRuntimeException originalThrowableOrTarget ) {
-		Application application = Application.getActiveInstance();
-		if( application != null ) {
-			//todo: check to see if program running
-			new LgnaExceptionComposite( thread, originalThrowableOrTarget ).getLaunchOperation().fire();
-			return true;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  protected boolean handleUncaughtLgnaRuntimeException(Thread thread, Throwable originalThrowable, LgnaRuntimeException originalThrowableOrTarget) {
+    Application application = Application.getActiveInstance();
+    if (application != null) {
+      //todo: check to see if program running
+      new LgnaExceptionComposite(thread, originalThrowableOrTarget).getLaunchOperation().fire();
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	protected void handleUncaughtException( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget ) {
-		this.count++;
-		if( this.isBugReportSubmissionPaneDesired ) {
-			final JSubmitPane jSubmitPane = new JSubmitPane( thread, originalThrowable, originalThrowableOrTarget, this.config );
+  @Override
+  protected void handleUncaughtException(Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget) {
+    this.count++;
+    if (this.isBugReportSubmissionPaneDesired) {
+      final JSubmitPane jSubmitPane = new JSubmitPane(thread, originalThrowable, originalThrowableOrTarget, this.config);
 
-			StringBuilder sbTitle = new StringBuilder();
-			sbTitle.append( "Please Submit Bug Report: " );
-			sbTitle.append( config.getApplicationName() );
+      StringBuilder sbTitle = new StringBuilder();
+      sbTitle.append("Please Submit Bug Report: ");
+      sbTitle.append(config.getApplicationName());
 
-			final JDialog dialog = new JDialogBuilder()
-					.title( sbTitle.toString() )
-					.isModal( true )
-					.build();
+      final JDialog dialog = new JDialogBuilder().title(sbTitle.toString()).isModal(true).build();
 
-			dialog.getContentPane().add( jSubmitPane, BorderLayout.CENTER );
-			dialog.pack();
+      dialog.getContentPane().add(jSubmitPane, BorderLayout.CENTER);
+      dialog.pack();
 
-			//todo
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					dialog.pack();
-				}
-			} );
+      //todo
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          dialog.pack();
+        }
+      });
 
-			dialog.setVisible( true );
+      dialog.setVisible(true);
 
-			if( jSubmitPane.isSubmitAttempted() ) {
-				//pass
-			} else {
-				if( this.count > 1 ) {
-					Object[] options = { CONTINUE_TEXT, SILENTLY_FAIL_TEXT };
-					String message = "If you are caught in an unending stream of exceptions:\n    1) Press the \"" + SILENTLY_FAIL_TEXT + "\" button,\n    2) Attempt save your project to a different file (use Save As...), and\n    3) Restart " + config.getApplicationName() + ".\nElse\n    1) Press the \"" + CONTINUE_TEXT + "\" button.";
-					String title = "Multiple Exceptions Detected";
-					int resultIgnore = JOptionPane.showOptionDialog( WindowStack.peek(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, CONTINUE_TEXT );
-					if( resultIgnore == JOptionPane.NO_OPTION ) {
-						this.isBugReportSubmissionPaneDesired = false;
-					}
-				}
-			}
-		}
-		boolean isSystemExitDesired = true;
-		Application application = Application.getActiveInstance();
-		if( application != null ) {
-			Frame frame = application.getDocumentFrame().getFrame();
-			if( frame != null ) {
-				if( frame.isVisible() ) {
-					isSystemExitDesired = false;
-				}
-			}
-		}
-		if( isSystemExitDesired ) {
-			JOptionPane.showMessageDialog( null, "Exception occurred before application was able to show window.  Exiting." );
-			System.exit( -1 );
-		}
-	}
+      if (jSubmitPane.isSubmitAttempted()) {
+        //pass
+      } else {
+        if (this.count > 1) {
+          Object[] options = {CONTINUE_TEXT, SILENTLY_FAIL_TEXT};
+          String message = "If you are caught in an unending stream of exceptions:\n    1) Press the \"" + SILENTLY_FAIL_TEXT + "\" button,\n    2) Attempt save your project to a different file (use Save As...), and\n    3) Restart " + config.getApplicationName() + ".\nElse\n    1) Press the \"" + CONTINUE_TEXT + "\" button.";
+          String title = "Multiple Exceptions Detected";
+          int resultIgnore = JOptionPane.showOptionDialog(WindowStack.peek(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, CONTINUE_TEXT);
+          if (resultIgnore == JOptionPane.NO_OPTION) {
+            this.isBugReportSubmissionPaneDesired = false;
+          }
+        }
+      }
+    }
+    boolean isSystemExitDesired = true;
+    Application application = Application.getActiveInstance();
+    if (application != null) {
+      Frame frame = application.getDocumentFrame().getFrame();
+      if (frame != null) {
+        if (frame.isVisible()) {
+          isSystemExitDesired = false;
+        }
+      }
+    }
+    if (isSystemExitDesired) {
+      JOptionPane.showMessageDialog(null, "Exception occurred before application was able to show window.  Exiting.");
+      System.exit(-1);
+    }
+  }
 
-	private final ApplicationIssueConfiguration config;
-	private boolean isBugReportSubmissionPaneDesired = true;
-	private int count = 0;
+  private final ApplicationIssueConfiguration config;
+  private boolean isBugReportSubmissionPaneDesired = true;
+  private int count = 0;
 }

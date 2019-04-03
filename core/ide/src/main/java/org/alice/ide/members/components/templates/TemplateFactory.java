@@ -53,80 +53,80 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class TemplateFactory {
-	private TemplateFactory() {
-		throw new AssertionError();
-	}
+  private TemplateFactory() {
+    throw new AssertionError();
+  }
 
-	private static Map<AbstractMethod, DragComponent> mapMethodToProcedureInvocationTemplate = Maps.newHashMap();
-	private static Map<AbstractMethod, DragComponent> mapMethodToFunctionInvocationTemplate = Maps.newHashMap();
+  private static Map<AbstractMethod, DragComponent> mapMethodToProcedureInvocationTemplate = Maps.newHashMap();
+  private static Map<AbstractMethod, DragComponent> mapMethodToFunctionInvocationTemplate = Maps.newHashMap();
 
-	private static Map<AbstractField, DragComponent> mapMethodToAccessorTemplate = Maps.newHashMap();
-	private static Map<AbstractField, DragComponent> mapMethodToAccessArrayAtIndexTemplate = Maps.newHashMap();
-	private static Map<AbstractField, DragComponent> mapMethodToArrayLengthTemplate = Maps.newHashMap();
+  private static Map<AbstractField, DragComponent> mapMethodToAccessorTemplate = Maps.newHashMap();
+  private static Map<AbstractField, DragComponent> mapMethodToAccessArrayAtIndexTemplate = Maps.newHashMap();
+  private static Map<AbstractField, DragComponent> mapMethodToArrayLengthTemplate = Maps.newHashMap();
 
-	private static Map<AbstractField, DragComponent> mapMethodToMutatorTemplate = Maps.newHashMap();
-	private static Map<AbstractField, DragComponent> mapMethodToMutateArrayAtIndexTemplate = Maps.newHashMap();
+  private static Map<AbstractField, DragComponent> mapMethodToMutatorTemplate = Maps.newHashMap();
+  private static Map<AbstractField, DragComponent> mapMethodToMutateArrayAtIndexTemplate = Maps.newHashMap();
 
-	public static DragComponent getProcedureInvocationTemplate( AbstractMethod method ) {
-		DragComponent rv = mapMethodToProcedureInvocationTemplate.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ProcedureInvocationTemplate( method );
-			mapMethodToProcedureInvocationTemplate.put( method, rv );
-		}
-		return rv;
-	}
+  public static DragComponent getProcedureInvocationTemplate(AbstractMethod method) {
+    DragComponent rv = mapMethodToProcedureInvocationTemplate.get(method);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ProcedureInvocationTemplate(method);
+      mapMethodToProcedureInvocationTemplate.put(method, rv);
+    }
+    return rv;
+  }
 
-	public static DragComponent getFunctionInvocationTemplate( AbstractMethod method ) {
-		DragComponent rv = mapMethodToFunctionInvocationTemplate.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FunctionInvocationTemplate( method );
-			mapMethodToFunctionInvocationTemplate.put( method, rv );
-		}
-		return rv;
-	}
+  public static DragComponent getFunctionInvocationTemplate(AbstractMethod method) {
+    DragComponent rv = mapMethodToFunctionInvocationTemplate.get(method);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new FunctionInvocationTemplate(method);
+      mapMethodToFunctionInvocationTemplate.put(method, rv);
+    }
+    return rv;
+  }
 
-	public static DragComponent getMethodInvocationTemplate( AbstractMethod method ) {
-		if( method.isProcedure() ) {
-			return getProcedureInvocationTemplate( method );
-		} else {
-			return getFunctionInvocationTemplate( method );
-		}
-	}
+  public static DragComponent getMethodInvocationTemplate(AbstractMethod method) {
+    if (method.isProcedure()) {
+      return getProcedureInvocationTemplate(method);
+    } else {
+      return getFunctionInvocationTemplate(method);
+    }
+  }
 
-	public static DragComponent getAccessorTemplate( AbstractField field ) {
-		DragComponent rv = mapMethodToAccessorTemplate.get( field );
-		if( rv != null ) {
+  public static DragComponent getAccessorTemplate(AbstractField field) {
+    DragComponent rv = mapMethodToAccessorTemplate.get(field);
+    if (rv != null) {
 
-		} else {
-			rv = new GetterTemplate( field );
-			mapMethodToAccessorTemplate.put( field, rv );
-		}
-		return rv;
-	}
+    } else {
+      rv = new GetterTemplate(field);
+      mapMethodToAccessorTemplate.put(field, rv);
+    }
+    return rv;
+  }
 
-	public static DragComponent getAccessArrayAtIndexTemplate( AbstractField field ) {
-		DragComponent rv = mapMethodToAccessArrayAtIndexTemplate.get( field );
-		if( rv != null ) {
+  public static DragComponent getAccessArrayAtIndexTemplate(AbstractField field) {
+    DragComponent rv = mapMethodToAccessArrayAtIndexTemplate.get(field);
+    if (rv != null) {
 
-		} else {
-			rv = new AccessFieldArrayAtIndexTemplate( field );
-			mapMethodToAccessArrayAtIndexTemplate.put( field, rv );
-		}
-		return rv;
-	}
+    } else {
+      rv = new AccessFieldArrayAtIndexTemplate(field);
+      mapMethodToAccessArrayAtIndexTemplate.put(field, rv);
+    }
+    return rv;
+  }
 
-	public static DragComponent getArrayLengthTemplate( AbstractField field ) {
-		DragComponent rv = mapMethodToArrayLengthTemplate.get( field );
-		if( rv != null ) {
+  public static DragComponent getArrayLengthTemplate(AbstractField field) {
+    DragComponent rv = mapMethodToArrayLengthTemplate.get(field);
+    if (rv != null) {
 
-		} else {
-			rv = new FieldArrayLengthTemplate( field );
-			mapMethodToArrayLengthTemplate.put( field, rv );
-		}
-		return rv;
-	}
+    } else {
+      rv = new FieldArrayLengthTemplate(field);
+      mapMethodToArrayLengthTemplate.put(field, rv);
+    }
+    return rv;
+  }
 }

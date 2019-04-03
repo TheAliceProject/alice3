@@ -64,58 +64,55 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class JavaKeyedArgumentFillIn extends ImmutableCascadeFillIn<JavaKeyedArgument, Expression> {
-	private static Map<JavaMethod, JavaKeyedArgumentFillIn> map = Maps.newHashMap();
+  private static Map<JavaMethod, JavaKeyedArgumentFillIn> map = Maps.newHashMap();
 
-	public static JavaKeyedArgumentFillIn getInstance( JavaMethod value ) {
-		synchronized( map ) {
-			JavaKeyedArgumentFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new JavaKeyedArgumentFillIn( value, MethodUtilities.createParameterBlanks( value ) );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
+  public static JavaKeyedArgumentFillIn getInstance(JavaMethod value) {
+    synchronized (map) {
+      JavaKeyedArgumentFillIn rv = map.get(value);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new JavaKeyedArgumentFillIn(value, MethodUtilities.createParameterBlanks(value));
+        map.put(value, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final JavaKeyedArgument transientValue;
+  private final JavaKeyedArgument transientValue;
 
-	private JavaKeyedArgumentFillIn( JavaMethod keyMethod, CascadeBlank<Expression>[] blanks ) {
-		super( UUID.fromString( "484ff351-b7a9-4c7a-b2de-a6479b97ade7" ), blanks );
-		this.transientValue = new JavaKeyedArgument();
-		this.transientValue.expression.setValue( IncompleteAstUtilities.createIncompleteStaticMethodInvocation( keyMethod ) );
-	}
+  private JavaKeyedArgumentFillIn(JavaMethod keyMethod, CascadeBlank<Expression>[] blanks) {
+    super(UUID.fromString("484ff351-b7a9-4c7a-b2de-a6479b97ade7"), blanks);
+    this.transientValue = new JavaKeyedArgument();
+    this.transientValue.expression.setValue(IncompleteAstUtilities.createIncompleteStaticMethodInvocation(keyMethod));
+  }
 
-	@Override
-	public String getMenuItemText() {
-		Formatter formatter = FormatterState.getInstance().getValue();
-		JavaMethod method = this.transientValue.getKeyMethod();
-		return formatter.getNameForDeclaration( method );
-	}
+  @Override
+  public String getMenuItemText() {
+    Formatter formatter = FormatterState.getInstance().getValue();
+    JavaMethod method = this.transientValue.getKeyMethod();
+    return formatter.getNameForDeclaration(method);
+  }
 
-	@Override
-	public Icon getMenuItemIcon( ItemNode<? super JavaKeyedArgument, Expression> node ) {
-		return null;
-	}
+  @Override
+  public Icon getMenuItemIcon(ItemNode<? super JavaKeyedArgument, Expression> node) {
+    return null;
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super JavaKeyedArgument, Expression> node ) {
-		throw new AssertionError();
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super JavaKeyedArgument, Expression> node) {
+    throw new AssertionError();
+  }
 
-	@Override
-	public JavaKeyedArgument createValue( ItemNode<? super JavaKeyedArgument, Expression> node ) {
-		Expression[] argumentExpressions = this.createFromBlanks( node, Expression.class );
-		JavaMethod keyMethod = this.transientValue.getKeyMethod();
-		return new JavaKeyedArgument(
-				this.transientValue.parameter.getValue(),
-				keyMethod,
-				argumentExpressions );
-	}
+  @Override
+  public JavaKeyedArgument createValue(ItemNode<? super JavaKeyedArgument, Expression> node) {
+    Expression[] argumentExpressions = this.createFromBlanks(node, Expression.class);
+    JavaMethod keyMethod = this.transientValue.getKeyMethod();
+    return new JavaKeyedArgument(this.transientValue.parameter.getValue(), keyMethod, argumentExpressions);
+  }
 
-	@Override
-	public JavaKeyedArgument getTransientValue( ItemNode<? super JavaKeyedArgument, Expression> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public JavaKeyedArgument getTransientValue(ItemNode<? super JavaKeyedArgument, Expression> node) {
+    return this.transientValue;
+  }
 }

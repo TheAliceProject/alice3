@@ -53,8 +53,8 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PreferenceMutableDataSingleSelectListState<T> extends MutableDataSingleSelectListState<T> {
-	public PreferenceMutableDataSingleSelectListState( Group group, UUID id, int selectionIndex, ItemCodec<T> codec, T... values ) {
-		super( group, id, selectionIndex, codec, values );
-		PreferenceManager.registerAndInitializeSelectionOnlyOfListSelectionState( this );
-	}
+  public PreferenceMutableDataSingleSelectListState(Group group, UUID id, int selectionIndex, ItemCodec<T> codec, T... values) {
+    super(group, id, selectionIndex, codec, values);
+    PreferenceManager.registerAndInitializeSelectionOnlyOfListSelectionState(this);
+  }
 }

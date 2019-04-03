@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitFormalDress implements FemaleTeenFullBodyOutfit {
-	WHITE_TAP,
-	WHITE_FLOWER,
-	RED,
-	BLACK;
+  WHITE_TAP, WHITE_FLOWER, RED, BLACK
 
 }

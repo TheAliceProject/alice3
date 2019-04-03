@@ -50,18 +50,18 @@ import org.lgna.croquet.views.AwtComponentView;
  * @author Dennis Cosgrove
  */
 public class IsAddDesiredListener implements ValueListener<Boolean> {
-	private final AwtComponentView<?>[] components;
+  private final AwtComponentView<?>[] components;
 
-	public IsAddDesiredListener( AwtComponentView<?>... components ) {
-		this.components = components;
-	}
+  public IsAddDesiredListener(AwtComponentView<?>... components) {
+    this.components = components;
+  }
 
-	@Override
-	public void valueChanged( ValueEvent<Boolean> e ) {
-		for( AwtComponentView<?> component : this.components ) {
-			synchronized( component.getTreeLock() ) {
-				component.setVisible( e.getNextValue() );
-			}
-		}
-	}
+  @Override
+  public void valueChanged(ValueEvent<Boolean> e) {
+    for (AwtComponentView<?> component : this.components) {
+      synchronized (component.getTreeLock()) {
+        component.setVisible(e.getNextValue());
+      }
+    }
+  }
 }

@@ -53,140 +53,141 @@ import org.lgna.project.ast.JavaType;
  * @author Dennis Cosgrove
  */
 public enum IdentifierNameGenerator {
-	SINGLETON;
-	public String convertConstantNameToMethodName( String constantName, String prefix ) {
-		StringBuilder sb = new StringBuilder();
-		if( prefix != null ) {
-			sb.append( prefix );
-		}
-		boolean isUpperNext = sb.length() > 0;
-		for( char c : constantName.toCharArray() ) {
-			if( c == '_' ) {
-				isUpperNext = true;
-			} else {
-				if( isUpperNext ) {
-					sb.append( c );
-				} else {
-					sb.append( Character.toLowerCase( c ) );
-				}
-				isUpperNext = false;
-			}
-		}
-		return sb.toString();
-	}
+  SINGLETON;
 
-	public String convertConstantNameToMethodName( String constantName ) {
-		return this.convertConstantNameToMethodName( constantName, null );
-	}
+  public String convertConstantNameToMethodName(String constantName, String prefix) {
+    StringBuilder sb = new StringBuilder();
+    if (prefix != null) {
+      sb.append(prefix);
+    }
+    boolean isUpperNext = sb.length() > 0;
+    for (char c : constantName.toCharArray()) {
+      if (c == '_') {
+        isUpperNext = true;
+      } else {
+        if (isUpperNext) {
+          sb.append(c);
+        } else {
+          sb.append(Character.toLowerCase(c));
+        }
+        isUpperNext = false;
+      }
+    }
+    return sb.toString();
+  }
 
-	private String convertFirstCharacterToLowerCase( String name ) {
-		if( name != null ) {
-			if( name.length() > 0 ) {
-				return Character.toLowerCase( name.charAt( 0 ) ) + name.substring( 1 );
-			} else {
-				return name;
-			}
-		} else {
-			return null;
-		}
-	}
+  public String convertConstantNameToMethodName(String constantName) {
+    return this.convertConstantNameToMethodName(constantName, null);
+  }
 
-	public String createIdentifierNameFromResourceKey( ResourceKey key ) {
-		if (key != null) {
+  private String convertFirstCharacterToLowerCase(String name) {
+    if (name != null) {
+      if (name.length() > 0) {
+        return Character.toLowerCase(name.charAt(0)) + name.substring(1);
+      } else {
+        return name;
+      }
+    } else {
+      return null;
+    }
+  }
 
-			// Try to use JavaType, untranslated, if it exists.
-			InstanceCreation creation = key.createInstanceCreation();
-			if( creation != null ) {
-				AbstractConstructor constructor = creation.constructor.getValue();
-				if (constructor != null) {
-					AbstractType<?, ?, ?> type = constructor.getDeclaringType();
-					if (type != null && type instanceof JavaType) {
-						String typeName = type.getName();
-						if (typeName != null) {
-							if (typeName.length() > 1 && (typeName.charAt(0) == 'S') && Character.isUpperCase(typeName.charAt(1))) {
-								typeName = typeName.substring(1);
-							}
-							return convertFirstCharacterToLowerCase(typeName);
-						}
-					}
-				}
-			}
+  public String createIdentifierNameFromResourceKey(ResourceKey key) {
+    if (key != null) {
 
-			// Otherwise use translated resource
-			String localizedName = key.getSearchText();
-			if (localizedName != null) {
-				return convertFirstCharacterToLowerCase(localizedName);
-			}
-		}
-		return "";
-	}
+      // Try to use JavaType, untranslated, if it exists.
+      InstanceCreation creation = key.createInstanceCreation();
+      if (creation != null) {
+        AbstractConstructor constructor = creation.constructor.getValue();
+        if (constructor != null) {
+          AbstractType<?, ?, ?> type = constructor.getDeclaringType();
+          if (type != null && type instanceof JavaType) {
+            String typeName = type.getName();
+            if (typeName != null) {
+              if (typeName.length() > 1 && (typeName.charAt(0) == 'S') && Character.isUpperCase(typeName.charAt(1))) {
+                typeName = typeName.substring(1);
+              }
+              return convertFirstCharacterToLowerCase(typeName);
+            }
+          }
+        }
+      }
 
-	public String createIdentifierNameFromClassName(String className) {
-		return convertFirstCharacterToLowerCase(className);
-	}
+      // Otherwise use translated resource
+      String localizedName = key.getSearchText();
+      if (localizedName != null) {
+        return convertFirstCharacterToLowerCase(localizedName);
+      }
+    }
+    return "";
+  }
 
-	public String createIdentifierNameFromInstanceCreation( InstanceCreation instanceCreation ) {
-		String rv = "";
-		if( instanceCreation != null ) {
-			AbstractConstructor constructor = instanceCreation.constructor.getValue();
-			if( constructor != null ) {
-				AbstractType<?, ?, ?> type = constructor.getDeclaringType();
-				if( type != null ) {
-					String typeName = type.getName();
-					if( typeName != null ) {
-						if( type instanceof JavaType ) {
-							if( typeName.length() > 1 ) {
-								if( ( typeName.charAt( 0 ) == 'S' ) && Character.isUpperCase( typeName.charAt( 1 ) ) ) {
-									typeName = typeName.substring( 1 );
-								}
-							}
-						}
-						rv = this.convertFirstCharacterToLowerCase( typeName );
-					}
-				}
-			}
-		}
-		return rv;
-		//		if( instanceCreation != null ) {
-		//			java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
-		//			if( fld != null ) {
-		//				return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( fld.getName() );
-		//			} else {
-		//				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-		//				org.lgna.project.ast.AbstractType<?, ?, ?> abstractType = constructor.getDeclaringType();
-		//				String typeName = abstractType.getName();
-		//				if( typeName != null ) {
-		//					//todo: move to api configuration
-		//					if( typeName.length() > 1 ) {
-		//						if( ( typeName.charAt( 0 ) == 'S' ) && Character.isUpperCase( typeName.charAt( 1 ) ) ) {
-		//							typeName = typeName.substring( 1 );
-		//						}
-		//					}
-		//					return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertFirstCharacterToLowerCase( typeName );
-		//				} else {
-		//					return "";
-		//				}
-		//			}
-		//		} else {
-		//			return "";
-		//		}
+  public String createIdentifierNameFromClassName(String className) {
+    return convertFirstCharacterToLowerCase(className);
+  }
 
-		//		if( instanceCreation != null ) {
-		//		java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
-		//		if( fld != null ) {
-		//			return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( fld.getName() );
-		//		} else {
-		//			org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-		//			org.lgna.project.ast.AbstractType<?, ?, ?> abstractType = constructor.getDeclaringType();
-		//			String typeName = abstractType.getName();
-		//			if( typeName != null ) {
-		//				return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertFirstCharacterToLowerCase( typeName );
-		//			} else {
-		//				return "";
-		//			}
-		//		}
-		//	} else {
-		//		return "";
-		//	}
-	}
+  public String createIdentifierNameFromInstanceCreation(InstanceCreation instanceCreation) {
+    String rv = "";
+    if (instanceCreation != null) {
+      AbstractConstructor constructor = instanceCreation.constructor.getValue();
+      if (constructor != null) {
+        AbstractType<?, ?, ?> type = constructor.getDeclaringType();
+        if (type != null) {
+          String typeName = type.getName();
+          if (typeName != null) {
+            if (type instanceof JavaType) {
+              if (typeName.length() > 1) {
+                if ((typeName.charAt(0) == 'S') && Character.isUpperCase(typeName.charAt(1))) {
+                  typeName = typeName.substring(1);
+                }
+              }
+            }
+            rv = this.convertFirstCharacterToLowerCase(typeName);
+          }
+        }
+      }
+    }
+    return rv;
+    //    if( instanceCreation != null ) {
+    //      java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
+    //      if( fld != null ) {
+    //        return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( fld.getName() );
+    //      } else {
+    //        org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+    //        org.lgna.project.ast.AbstractType<?, ?, ?> abstractType = constructor.getDeclaringType();
+    //        String typeName = abstractType.getName();
+    //        if( typeName != null ) {
+    //          //todo: move to api configuration
+    //          if( typeName.length() > 1 ) {
+    //            if( ( typeName.charAt( 0 ) == 'S' ) && Character.isUpperCase( typeName.charAt( 1 ) ) ) {
+    //              typeName = typeName.substring( 1 );
+    //            }
+    //          }
+    //          return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertFirstCharacterToLowerCase( typeName );
+    //        } else {
+    //          return "";
+    //        }
+    //      }
+    //    } else {
+    //      return "";
+    //    }
+
+    //    if( instanceCreation != null ) {
+    //    java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
+    //    if( fld != null ) {
+    //      return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( fld.getName() );
+    //    } else {
+    //      org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+    //      org.lgna.project.ast.AbstractType<?, ?, ?> abstractType = constructor.getDeclaringType();
+    //      String typeName = abstractType.getName();
+    //      if( typeName != null ) {
+    //        return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertFirstCharacterToLowerCase( typeName );
+    //      } else {
+    //        return "";
+    //      }
+    //    }
+    //  } else {
+    //    return "";
+    //  }
+  }
 }

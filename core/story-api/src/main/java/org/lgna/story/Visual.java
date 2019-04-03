@@ -48,9 +48,9 @@ package org.lgna.story;
  */
 public interface Visual {
 
-	public Double getOpacity();
+  public Double getOpacity();
 
-	public void setOpacity( Number opacity, SetOpacity.Detail... details );
-	//	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener );
-	//	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener );
+  public void setOpacity(Number opacity, SetOpacity.Detail... details);
+  //  public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener );
+  //  public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener );
 }

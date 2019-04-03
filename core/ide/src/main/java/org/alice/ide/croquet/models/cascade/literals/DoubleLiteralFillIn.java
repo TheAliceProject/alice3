@@ -52,22 +52,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DoubleLiteralFillIn extends AbstractDoubleLiteralFillIn {
-	private static Map<Double, DoubleLiteralFillIn> map = Maps.newHashMap();
+  private static Map<Double, DoubleLiteralFillIn> map = Maps.newHashMap();
 
-	public static DoubleLiteralFillIn getInstance( double value ) {
-		synchronized( map ) {
-			DoubleLiteralFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new DoubleLiteralFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
+  public static DoubleLiteralFillIn getInstance(double value) {
+    synchronized (map) {
+      DoubleLiteralFillIn rv = map.get(value);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new DoubleLiteralFillIn(value);
+        map.put(value, rv);
+      }
+      return rv;
+    }
+  }
 
-	private DoubleLiteralFillIn( double value ) {
-		super( UUID.fromString( "5ecebce8-0957-404e-9168-38eb06f7866c" ), value );
-	}
+  private DoubleLiteralFillIn(double value) {
+    super(UUID.fromString("5ecebce8-0957-404e-9168-38eb06f7866c"), value);
+  }
 }

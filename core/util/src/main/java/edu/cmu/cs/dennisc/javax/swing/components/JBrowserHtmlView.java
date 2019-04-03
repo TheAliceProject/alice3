@@ -53,40 +53,40 @@ import java.net.URL;
  * @author Dennis Cosgrove
  */
 public class JBrowserHtmlView extends JHtmlView {
-	public JBrowserHtmlView( String text ) {
-		super( text );
-	}
+  public JBrowserHtmlView(String text) {
+    super(text);
+  }
 
-	public JBrowserHtmlView() {
-		this( "" );
-	}
+  public JBrowserHtmlView() {
+    this("");
+  }
 
-	protected void handleBrowseException( Exception e, URL url ) {
-		e.printStackTrace();
-		JOptionPane.showMessageDialog( this, "unable to browse: " + url, "error", JOptionPane.ERROR_MESSAGE );
-	}
+  protected void handleBrowseException(Exception e, URL url) {
+    e.printStackTrace();
+    JOptionPane.showMessageDialog(this, "unable to browse: " + url, "error", JOptionPane.ERROR_MESSAGE);
+  }
 
-	@Override
-	protected void handleHyperlinkUpdate( HyperlinkEvent e ) {
-		HyperlinkEvent.EventType eventType = e.getEventType();
-		if( eventType == HyperlinkEvent.EventType.ACTIVATED ) {
-			URL url = e.getURL();
-			try {
-				BrowserUtilities.browse( url );
-			} catch( Exception exc ) {
-				this.handleBrowseException( exc, url );
-			}
-		}
-	}
+  @Override
+  protected void handleHyperlinkUpdate(HyperlinkEvent e) {
+    HyperlinkEvent.EventType eventType = e.getEventType();
+    if (eventType == HyperlinkEvent.EventType.ACTIVATED) {
+      URL url = e.getURL();
+      try {
+        BrowserUtilities.browse(url);
+      } catch (Exception exc) {
+        this.handleBrowseException(exc, url);
+      }
+    }
+  }
 
-	protected boolean isRightToLeftComponentOrientationAllowed() {
-		return true;
-	}
+  protected boolean isRightToLeftComponentOrientationAllowed() {
+    return true;
+  }
 
-	@Override
-	public void setComponentOrientation( ComponentOrientation o ) {
-		if( this.isRightToLeftComponentOrientationAllowed() ) {
-			super.setComponentOrientation( o );
-		}
-	}
+  @Override
+  public void setComponentOrientation(ComponentOrientation o) {
+    if (this.isRightToLeftComponentOrientationAllowed()) {
+      super.setComponentOrientation(o);
+    }
+  }
 }

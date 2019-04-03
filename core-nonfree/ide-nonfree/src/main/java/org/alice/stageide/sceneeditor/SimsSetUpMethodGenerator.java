@@ -58,25 +58,25 @@ import org.lgna.story.resources.sims2.PersonResource;
  * @author Dennis Cosgrove
  */
 public class SimsSetUpMethodGenerator extends SetUpMethodGenerator {
-	public static InstanceCreation createSims2PersonRecourseInstanceCreation( PersonResource personResource ) throws ExpressionCreator.CannotCreateExpressionException {
-		Class<?>[] parameterClses = {
-				Gender.class,
-				Color.class,
-				EyeColor.class,
-				Hair.class,
-				Number.class,
-				Outfit.class,
-				Face.class,
-		};
-		Expression[] arguments = {
-				getExpressionCreator().createExpression( personResource.getGender() ),
-				getExpressionCreator().createExpression( personResource.getSkinColor() ),
-				getExpressionCreator().createExpression( personResource.getEyeColor() ),
-				getExpressionCreator().createExpression( personResource.getHair() ),
-				getExpressionCreator().createExpression( personResource.getObesityLevel() ),
-				getExpressionCreator().createExpression( personResource.getOutfit() ),
-				getExpressionCreator().createExpression( personResource.getFace() ),
-		};
-		return AstUtilities.createInstanceCreation( personResource.getClass(), parameterClses, arguments );
-	}
+  public static InstanceCreation createSims2PersonRecourseInstanceCreation(PersonResource personResource) throws ExpressionCreator.CannotCreateExpressionException {
+    Class<?>[] parameterClses = {
+        Gender.class,
+        Color.class,
+        EyeColor.class,
+        Hair.class,
+        Number.class,
+        Outfit.class,
+        Face.class,
+    };
+    Expression[] arguments = {
+        getExpressionCreator().createExpression(personResource.getGender()),
+        getExpressionCreator().createExpression(personResource.getSkinColor()),
+        getExpressionCreator().createExpression(personResource.getEyeColor()),
+        getExpressionCreator().createExpression(personResource.getHair()),
+        getExpressionCreator().createExpression(personResource.getObesityLevel()),
+        getExpressionCreator().createExpression(personResource.getOutfit()),
+        getExpressionCreator().createExpression(personResource.getFace()),
+    };
+    return AstUtilities.createInstanceCreation(personResource.getClass(), parameterClses, arguments);
+  }
 }

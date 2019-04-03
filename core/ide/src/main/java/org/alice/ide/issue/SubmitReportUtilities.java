@@ -52,50 +52,50 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public class SubmitReportUtilities {
-	private SubmitReportUtilities() {
-		throw new AssertionError();
-	}
+  private SubmitReportUtilities() {
+    throw new AssertionError();
+  }
 
-	public static ProgressPane submitReport( ReportGenerator issueReportGenerator, edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration reportSubmissionConfiguration ) {
-		ProgressPane progressPane = new ProgressPane();
-		progressPane.initializeAndExecuteWorker( issueReportGenerator, reportSubmissionConfiguration );
+  public static ProgressPane submitReport(ReportGenerator issueReportGenerator, edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration reportSubmissionConfiguration) {
+    ProgressPane progressPane = new ProgressPane();
+    progressPane.initializeAndExecuteWorker(issueReportGenerator, reportSubmissionConfiguration);
 
-		Component owner = null;
-		String title = "Uploading Bug Report";
-		String text = "run in background";
-		int result = JOptionPane.showOptionDialog( owner, progressPane, title, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { text }, text );
-		switch( result ) {
-		case JOptionPane.OK_OPTION:
-			System.out.println( "background" );
-			break;
-		case JOptionPane.CLOSED_OPTION:
-			System.out.println( "closed" );
-			break;
-		}
+    Component owner = null;
+    String title = "Uploading Bug Report";
+    String text = "run in background";
+    int result = JOptionPane.showOptionDialog(owner, progressPane, title, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] {text}, text);
+    switch (result) {
+    case JOptionPane.OK_OPTION:
+      System.out.println("background");
+      break;
+    case JOptionPane.CLOSED_OPTION:
+      System.out.println("closed");
+      break;
+    }
 
-		//		//this.isSubmitBackgrounded = false;
-		//		javax.swing.JFrame frame = new javax.swing.JFrame();
-		//		javax.swing.JDialog dialog = new javax.swing.JDialog( frame, "Uploading Bug Report", true );
-		//		dialog.addWindowListener( new java.awt.event.WindowAdapter() {
-		//			@Override
-		//			public void windowClosing( java.awt.event.WindowEvent e ) {
-		//				//				IssueReportPane.this.isSubmitBackgrounded = true;
-		//				//				e.getComponent().setVisible( false );
-		//			}
-		//		} );
-		//		dialog.getContentPane().add( progressPane );
-		//		dialog.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
-		//		dialog.pack();
-		//		dialog.setVisible( true );
+    //    //this.isSubmitBackgrounded = false;
+    //    javax.swing.JFrame frame = new javax.swing.JFrame();
+    //    javax.swing.JDialog dialog = new javax.swing.JDialog( frame, "Uploading Bug Report", true );
+    //    dialog.addWindowListener( new java.awt.event.WindowAdapter() {
+    //      @Override
+    //      public void windowClosing( java.awt.event.WindowEvent e ) {
+    //        //        IssueReportPane.this.isSubmitBackgrounded = true;
+    //        //        e.getComponent().setVisible( false );
+    //      }
+    //    } );
+    //    dialog.getContentPane().add( progressPane );
+    //    dialog.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
+    //    dialog.pack();
+    //    dialog.setVisible( true );
 
-		//		if( this.isSubmitBackgrounded ) {
-		//			//pass
-		//		} else {
-		//			this.isSubmitBackgrounded = progressPane.isBackgrounded();
-		//		}
-		//
-		//		this.urlResult = progressPane.getURLResult();
+    //    if( this.isSubmitBackgrounded ) {
+    //      //pass
+    //    } else {
+    //      this.isSubmitBackgrounded = progressPane.isBackgrounded();
+    //    }
+    //
+    //    this.urlResult = progressPane.getURLResult();
 
-		return progressPane;
-	}
+    return progressPane;
+  }
 }

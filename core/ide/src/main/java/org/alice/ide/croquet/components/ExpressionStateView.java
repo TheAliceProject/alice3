@@ -53,38 +53,38 @@ import org.lgna.project.ast.Expression;
  * @author Dennis Cosgrove
  */
 public class ExpressionStateView extends BorderPanel {
-	private final CustomItemState<Expression> model;
-	private final AstI18nFactory factory;
+  private final CustomItemState<Expression> model;
+  private final AstI18nFactory factory;
 
-	private final ValueListener<Expression> valueListener = new ValueListener<Expression>() {
-		@Override
-		public void valueChanged( ValueEvent<Expression> e ) {
-			ExpressionStateView.this.refreshLater();
-		}
-	};
+  private final ValueListener<Expression> valueListener = new ValueListener<Expression>() {
+    @Override
+    public void valueChanged(ValueEvent<Expression> e) {
+      ExpressionStateView.this.refreshLater();
+    }
+  };
 
-	public ExpressionStateView( CustomItemState<Expression> model, AstI18nFactory factory ) {
-		this.model = model;
-		this.factory = factory;
-	}
+  public ExpressionStateView(CustomItemState<Expression> model, AstI18nFactory factory) {
+    this.model = model;
+    this.factory = factory;
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.model.addAndInvokeNewSchoolValueListener( this.valueListener );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.model.addAndInvokeNewSchoolValueListener(this.valueListener);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.model.removeNewSchoolValueListener( this.valueListener );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.model.removeNewSchoolValueListener(this.valueListener);
+    super.handleUndisplayable();
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		this.forgetAndRemoveAllComponents();
-		this.addCenterComponent( factory.createExpressionPane( this.model.getValue() ) );
-		this.revalidateAndRepaint();
-	}
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    this.forgetAndRemoveAllComponents();
+    this.addCenterComponent(factory.createExpressionPane(this.model.getValue()));
+    this.revalidateAndRepaint();
+  }
 }

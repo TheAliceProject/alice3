@@ -52,12 +52,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class OutfitTabComposite<V extends OutfitTabView> extends SimpleTabComposite<V> {
-	public OutfitTabComposite( UUID migrationId ) {
-		super( migrationId, IsCloseable.FALSE );
-	}
+  public OutfitTabComposite(UUID migrationId) {
+    super(migrationId, IsCloseable.FALSE);
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 }

@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  *
  */
 public class SetOrientationRelativeToVehicle extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = SetOrientationRelativeToVehicle.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = SetOrientationRelativeToVehicle.class) public static interface Detail {
+  }
 
-	private SetOrientationRelativeToVehicle() {
-		super();
-	}
+  private SetOrientationRelativeToVehicle() {
+    super();
+  }
 }

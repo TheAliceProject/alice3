@@ -1,4 +1,4 @@
-package org.lgna.story.resourceutilities;/*
+/*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,22 +41,21 @@ package org.lgna.story.resourceutilities;/*
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
+package org.lgna.story.resourceutilities;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.DoubleBuffer;
 
-
 public class Utilities {
-	public static DoubleBuffer createDoubleBuffer( double[] data ) {
-		if (data == null) {
-			return null;
-		}
-		DoubleBuffer buf = ByteBuffer.allocateDirect((Double.SIZE / 8) * data.length).order(ByteOrder.nativeOrder()).asDoubleBuffer();
-		buf.clear();
-		buf.put(data);
-		buf.flip();
-		return buf;
-	}
+  public static DoubleBuffer createDoubleBuffer(double[] data) {
+    if (data == null) {
+      return null;
+    }
+    DoubleBuffer buf = ByteBuffer.allocateDirect((Double.SIZE / 8) * data.length).order(ByteOrder.nativeOrder()).asDoubleBuffer();
+    buf.clear();
+    buf.put(data);
+    buf.flip();
+    return buf;
+  }
 }

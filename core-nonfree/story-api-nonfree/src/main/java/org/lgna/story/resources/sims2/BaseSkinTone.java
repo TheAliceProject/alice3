@@ -50,51 +50,48 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public enum BaseSkinTone implements SkinTone {
-	LIGHTER( new Color( 206, 148, 115 ) ),
-	LIGHT( new Color( 189, 129, 90 ) ),
-	DARK( new Color( 158, 102, 58 ) ),
-	DARKER( new Color( 102, 54, 13 ) );
-	private final Color color;
+  LIGHTER(new Color(206, 148, 115)), LIGHT(new Color(189, 129, 90)), DARK(new Color(158, 102, 58)), DARKER(new Color(102, 54, 13));
+  private final Color color;
 
-	private BaseSkinTone( Color color ) {
-		this.color = color;
-	}
+  private BaseSkinTone(Color color) {
+    this.color = color;
+  }
 
-	public static BaseSkinTone getRandom() {
-		return RandomUtilities.getRandomEnumConstant( BaseSkinTone.class );
-	}
+  public static BaseSkinTone getRandom() {
+    return RandomUtilities.getRandomEnumConstant(BaseSkinTone.class);
+  }
 
-	//todo: package-private
-	public Color getColor() {
-		return this.color;
-	}
+  //todo: package-private
+  public Color getColor() {
+    return this.color;
+  }
 
-	//todo: package-private
-	public static BaseSkinTone getClosestToColor( Color other ) {
-		if( other != null ) {
-			float[] hsbOther = new float[ 3 ];
-			float[] hsb = new float[ 3 ];
+  //todo: package-private
+  public static BaseSkinTone getClosestToColor(Color other) {
+    if (other != null) {
+      float[] hsbOther = new float[3];
+      float[] hsb = new float[3];
 
-			Color.RGBtoHSB( other.getRed(), other.getGreen(), other.getBlue(), hsbOther );
+      Color.RGBtoHSB(other.getRed(), other.getGreen(), other.getBlue(), hsbOther);
 
-			BaseSkinTone minBaseSkinTone = null;
-			float minDistanceSquared = Float.MAX_VALUE;
-			for( BaseSkinTone baseSkinTone : values() ) {
-				Color color = baseSkinTone.getColor();
-				Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), hsb );
+      BaseSkinTone minBaseSkinTone = null;
+      float minDistanceSquared = Float.MAX_VALUE;
+      for (BaseSkinTone baseSkinTone : values()) {
+        Color color = baseSkinTone.getColor();
+        Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsb);
 
-				//note: ignore hue for now
-				float sDelta = hsbOther[ 1 ] - hsb[ 1 ];
-				float bDelta = hsbOther[ 2 ] - hsb[ 2 ];
-				float distanceSquared = ( sDelta * sDelta ) + ( bDelta * bDelta );
-				if( distanceSquared < minDistanceSquared ) {
-					minBaseSkinTone = baseSkinTone;
-					minDistanceSquared = distanceSquared;
-				}
-			}
-			return minBaseSkinTone;
-		} else {
-			return null;
-		}
-	}
+        //note: ignore hue for now
+        float sDelta = hsbOther[1] - hsb[1];
+        float bDelta = hsbOther[2] - hsb[2];
+        float distanceSquared = (sDelta * sDelta) + (bDelta * bDelta);
+        if (distanceSquared < minDistanceSquared) {
+          minBaseSkinTone = baseSkinTone;
+          minDistanceSquared = distanceSquared;
+        }
+      }
+      return minBaseSkinTone;
+    } else {
+      return null;
+    }
+  }
 }

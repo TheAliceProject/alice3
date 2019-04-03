@@ -46,12 +46,12 @@ package test.javaexport;
  * @author Dennis Cosgrove
  */
 public class JavaExport {
-	public static void main( String[] args ) throws Exception {
-		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
-		java.io.File outDirectory = new java.io.File( args[ 1 ] );
-		for( org.lgna.project.ast.NamedUserType namedUserType : project.getNamedUserTypes() ) {
-			java.io.File file = new java.io.File( outDirectory, namedUserType.getName() + ".java" );
-			edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( file, namedUserType.generateJavaCode( org.lgna.story.ast.JavaCodeUtilities.createJavaCodeGenerator() ) );
-		}
-	}
+  public static void main(String[] args) throws Exception {
+    org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject(args[0]);
+    java.io.File outDirectory = new java.io.File(args[1]);
+    for (org.lgna.project.ast.NamedUserType namedUserType : project.getNamedUserTypes()) {
+      java.io.File file = new java.io.File(outDirectory, namedUserType.getName() + ".java");
+      edu.cmu.cs.dennisc.java.io.TextFileUtilities.write(file, namedUserType.generateJavaCode(org.lgna.story.ast.JavaCodeUtilities.createJavaCodeGenerator()));
+    }
+  }
 }

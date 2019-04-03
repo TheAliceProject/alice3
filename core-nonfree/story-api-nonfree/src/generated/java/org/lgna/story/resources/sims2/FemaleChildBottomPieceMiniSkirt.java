@@ -44,15 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleChildBottomPieceMiniSkirt implements FemaleChildBottomPiece {
-	STRIPY,
-	DENIM_BLUE,
-	DENIM_GREEN,
-	DENIM_PINK,
-	RED,
-	DENIM_YELLOW,
-	PLAID,
-	BROWN_PLAID,
-	CORDS,
-	CORDS_PINK;
+  STRIPY, DENIM_BLUE, DENIM_GREEN, DENIM_PINK, RED, DENIM_YELLOW, PLAID, BROWN_PLAID, CORDS, CORDS_PINK
 
 }

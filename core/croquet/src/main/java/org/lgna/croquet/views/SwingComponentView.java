@@ -57,105 +57,103 @@ import java.awt.event.ActionListener;
  */
 public abstract class SwingComponentView<J extends JComponent> extends AwtContainerView<J> {
 
-	@Override
-	public void setBackgroundColor( Color color ) {
-		super.setBackgroundColor( color );
-		this.getAwtComponent().setOpaque( color != null );
-	}
+  @Override
+  public void setBackgroundColor(Color color) {
+    super.setBackgroundColor(color);
+    this.getAwtComponent().setOpaque(color != null);
+  }
 
-	public void setAlignmentX( float alignmentX ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setAlignmentX( alignmentX );
-	}
+  public void setAlignmentX(float alignmentX) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setAlignmentX(alignmentX);
+  }
 
-	public void setAlignmentY( float alignmentY ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setAlignmentY( alignmentY );
-	}
+  public void setAlignmentY(float alignmentY) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setAlignmentY(alignmentY);
+  }
 
-	@Override
-	public Rectangle getVisibleRectangle() {
-		return this.getAwtComponent().getVisibleRect();
-	}
+  @Override
+  public Rectangle getVisibleRectangle() {
+    return this.getAwtComponent().getVisibleRect();
+  }
 
-	public Insets getInsets() {
-		return this.getAwtComponent().getInsets();
-	}
+  public Insets getInsets() {
+    return this.getAwtComponent().getInsets();
+  }
 
-	private void scrollRectToVisible( Rectangle rect ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().scrollRectToVisible( rect );
-	}
+  private void scrollRectToVisible(Rectangle rect) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().scrollRectToVisible(rect);
+  }
 
-	public final void scrollToVisible() {
-		this.scrollRectToVisible( SwingUtilities.getLocalBounds( this.getAwtComponent() ) );
-	}
+  public final void scrollToVisible() {
+    this.scrollRectToVisible(SwingUtilities.getLocalBounds(this.getAwtComponent()));
+  }
 
-	public String getToolTipText() {
-		return this.getAwtComponent().getToolTipText();
-	}
+  public String getToolTipText() {
+    return this.getAwtComponent().getToolTipText();
+  }
 
-	public void setToolTipText( String toolTipText ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setToolTipText( toolTipText );
-	}
+  public void setToolTipText(String toolTipText) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setToolTipText(toolTipText);
+  }
 
-	public Border getBorder() {
-		return this.getAwtComponent().getBorder();
-	}
+  public Border getBorder() {
+    return this.getAwtComponent().getBorder();
+  }
 
-	public void setBorder( Border border ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setBorder( border );
-	}
+  public void setBorder(Border border) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setBorder(border);
+  }
 
-	public void setOpaque( boolean isOpaque ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setOpaque( isOpaque );
-	}
+  public void setOpaque(boolean isOpaque) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setOpaque(isOpaque);
+  }
 
-	public static enum Condition {
-		WHEN_FOCUSED( JComponent.WHEN_FOCUSED ),
-		WHEN_IN_FOCUSED_WINDOW( JComponent.WHEN_IN_FOCUSED_WINDOW ),
-		WHEN_ANCESTOR_OF_FOCUSED_COMPONENT( JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT );
-		private int internal;
+  public static enum Condition {
+    WHEN_FOCUSED(JComponent.WHEN_FOCUSED), WHEN_IN_FOCUSED_WINDOW(JComponent.WHEN_IN_FOCUSED_WINDOW), WHEN_ANCESTOR_OF_FOCUSED_COMPONENT(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    private int internal;
 
-		private Condition( int internal ) {
-			this.internal = internal;
-		}
+    private Condition(int internal) {
+      this.internal = internal;
+    }
 
-		private int getInternal() {
-			return this.internal;
-		}
+    private int getInternal() {
+      return this.internal;
+    }
 
-		public static Condition valueOf( int constant ) {
-			switch( constant ) {
-			case JComponent.WHEN_FOCUSED:
-				return WHEN_FOCUSED;
-			case JComponent.WHEN_IN_FOCUSED_WINDOW:
-				return WHEN_IN_FOCUSED_WINDOW;
-			case JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT:
-				return WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
-			default:
-				return null;
-			}
-		}
-	}
+    public static Condition valueOf(int constant) {
+      switch (constant) {
+      case JComponent.WHEN_FOCUSED:
+        return WHEN_FOCUSED;
+      case JComponent.WHEN_IN_FOCUSED_WINDOW:
+        return WHEN_IN_FOCUSED_WINDOW;
+      case JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT:
+        return WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
+      default:
+        return null;
+      }
+    }
+  }
 
-	public void registerKeyboardAction( ActionListener actionListener, KeyStroke keyStroke, Condition condition ) {
-		this.getAwtComponent().registerKeyboardAction( actionListener, keyStroke, condition.getInternal() );
-	}
+  public void registerKeyboardAction(ActionListener actionListener, KeyStroke keyStroke, Condition condition) {
+    this.getAwtComponent().registerKeyboardAction(actionListener, keyStroke, condition.getInternal());
+  }
 
-	public void unregisterKeyboardAction( KeyStroke keyStroke ) {
-		this.getAwtComponent().unregisterKeyboardAction( keyStroke );
-	}
+  public void unregisterKeyboardAction(KeyStroke keyStroke) {
+    this.getAwtComponent().unregisterKeyboardAction(keyStroke);
+  }
 
-	private void revalidate() {
-		this.getAwtComponent().revalidate();
-	}
+  private void revalidate() {
+    this.getAwtComponent().revalidate();
+  }
 
-	public void revalidateAndRepaint() {
-		this.revalidate();
-		this.repaint();
-	}
+  public void revalidateAndRepaint() {
+    this.revalidate();
+    this.repaint();
+  }
 }

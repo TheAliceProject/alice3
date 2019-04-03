@@ -51,12 +51,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class NameFilteredJavaProceduresComposite extends NameFilteredJavaMethodsSubComposite {
-	public NameFilteredJavaProceduresComposite( UUID migrationId, String... methodNames ) {
-		super( migrationId, methodNames );
-	}
+  public NameFilteredJavaProceduresComposite(UUID migrationId, String... methodNames) {
+    super(migrationId, methodNames);
+  }
 
-	@Override
-	protected boolean isAcceptingOf( JavaMethod method ) {
-		return method.isProcedure() && super.isAcceptingOf( method );
-	}
+  @Override
+  protected boolean isAcceptingOf(JavaMethod method) {
+    return method.isProcedure() && super.isAcceptingOf(method);
+  }
 }

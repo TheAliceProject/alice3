@@ -46,7 +46,7 @@ import org.lgna.story.SThing;
 
 public class StartCollisionEvent extends CollisionEvent {
 
-	public StartCollisionEvent( SThing a, SThing b ) {
-		super( a, b );
-	}
+  public StartCollisionEvent(SThing a, SThing b) {
+    super(a, b);
+  }
 }

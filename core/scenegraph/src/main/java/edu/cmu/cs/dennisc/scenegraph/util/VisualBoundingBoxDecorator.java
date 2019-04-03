@@ -51,34 +51,34 @@ import edu.cmu.cs.dennisc.scenegraph.event.BoundListener;
  * @author Dennis Cosgrove
  */
 public class VisualBoundingBoxDecorator extends BoundingBoxDecorator implements BoundListener {
-	public Visual getSubject() {
-		return this.sgSubject;
-	}
+  public Visual getSubject() {
+    return this.sgSubject;
+  }
 
-	public void setSubject( Visual sgSubject ) {
-		if( this.sgSubject != null ) {
-			setParent( null );
-			Geometry sgGeometry = this.sgSubject.getGeometry();
-			if( sgGeometry != null ) {
-				sgGeometry.removeBoundListener( this );
-			}
-		}
-		this.sgSubject = sgSubject;
-		if( this.sgSubject != null ) {
-			Geometry sgGeometry = this.sgSubject.getGeometry();
-			if( sgGeometry != null ) {
-				setBox( sgGeometry.getAxisAlignedMinimumBoundingBox() );
-				setParent( this.sgSubject.getParent() );
-				sgGeometry.addBoundListener( this );
-			}
-		}
-	}
+  public void setSubject(Visual sgSubject) {
+    if (this.sgSubject != null) {
+      setParent(null);
+      Geometry sgGeometry = this.sgSubject.getGeometry();
+      if (sgGeometry != null) {
+        sgGeometry.removeBoundListener(this);
+      }
+    }
+    this.sgSubject = sgSubject;
+    if (this.sgSubject != null) {
+      Geometry sgGeometry = this.sgSubject.getGeometry();
+      if (sgGeometry != null) {
+        setBox(sgGeometry.getAxisAlignedMinimumBoundingBox());
+        setParent(this.sgSubject.getParent());
+        sgGeometry.addBoundListener(this);
+      }
+    }
+  }
 
-	@Override
-	public void boundChanged( BoundEvent e ) {
-		Geometry sgGeometry = e.getTypedSource();
-		setBox( sgGeometry.getAxisAlignedMinimumBoundingBox() );
-	}
+  @Override
+  public void boundChanged(BoundEvent e) {
+    Geometry sgGeometry = e.getTypedSource();
+    setBox(sgGeometry.getAxisAlignedMinimumBoundingBox());
+  }
 
-	private Visual sgSubject = null;
+  private Visual sgSubject = null;
 }

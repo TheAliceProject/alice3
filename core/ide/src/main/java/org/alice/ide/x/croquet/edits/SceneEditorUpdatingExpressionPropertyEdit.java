@@ -61,31 +61,31 @@ import org.lgna.story.resources.JointedModelResource;
  * @author Dennis Cosgrove
  */
 public class SceneEditorUpdatingExpressionPropertyEdit extends ExpressionPropertyEdit {
-	private final UserField field;
+  private final UserField field;
 
-	public SceneEditorUpdatingExpressionPropertyEdit( UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression, UserField field ) {
-		super( userActivity, expressionProperty, prevExpression, nextExpression );
-		this.field = field;
-	}
+  public SceneEditorUpdatingExpressionPropertyEdit(UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression, UserField field) {
+    super(userActivity, expressionProperty, prevExpression, nextExpression);
+    this.field = field;
+  }
 
-	public SceneEditorUpdatingExpressionPropertyEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.field = null; //todo
-	}
+  public SceneEditorUpdatingExpressionPropertyEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.field = null; //todo
+  }
 
-	@Override
-	protected void setValue( Expression expression ) {
-		super.setValue( expression );
-		// update Scene Editor
-		StorytellingSceneEditor sceneEditor = StageIDE.getActiveInstance().getSceneEditor();
-		SJointedModel model = sceneEditor.getInstanceInJavaVMForField( this.field, SJointedModel.class );
-		JointedModelImp<?, ?> imp = EmployeesOnly.getImplementation( model );
+  @Override
+  protected void setValue(Expression expression) {
+    super.setValue(expression);
+    // update Scene Editor
+    StorytellingSceneEditor sceneEditor = StageIDE.getActiveInstance().getSceneEditor();
+    SJointedModel model = sceneEditor.getInstanceInJavaVMForField(this.field, SJointedModel.class);
+    JointedModelImp<?, ?> imp = EmployeesOnly.getImplementation(model);
 
-		VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
-		UserInstance userInstance = null;
-		Object[] array = vm.ENTRY_POINT_evaluate( userInstance, new Expression[] { expression } );
-		JointedModelResource resource = (JointedModelResource)array[ 0 ];
-		imp.setNewResource( resource );
-	}
+    VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
+    UserInstance userInstance = null;
+    Object[] array = vm.ENTRY_POINT_evaluate(userInstance, new Expression[] {expression});
+    JointedModelResource resource = (JointedModelResource) array[0];
+    imp.setNewResource(resource);
+  }
 
 }

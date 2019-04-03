@@ -51,32 +51,32 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class AstEventManager {
-	public static interface TypeHierarchyListener {
-		public void typeHierarchyHasPotentiallyChanged();
-	}
+  public static interface TypeHierarchyListener {
+    public void typeHierarchyHasPotentiallyChanged();
+  }
 
-	private static final List<TypeHierarchyListener> typeHierarchyListeners = Lists.newCopyOnWriteArrayList();
+  private static final List<TypeHierarchyListener> typeHierarchyListeners = Lists.newCopyOnWriteArrayList();
 
-	private AstEventManager() {
-		throw new AssertionError();
-	}
+  private AstEventManager() {
+    throw new AssertionError();
+  }
 
-	public static void addTypeHierarchyListener( TypeHierarchyListener typeHierarchyListener ) {
-		typeHierarchyListeners.add( typeHierarchyListener );
-	}
+  public static void addTypeHierarchyListener(TypeHierarchyListener typeHierarchyListener) {
+    typeHierarchyListeners.add(typeHierarchyListener);
+  }
 
-	public static void addAndInvokeTypeHierarchyListener( TypeHierarchyListener typeHierarchyListener ) {
-		addTypeHierarchyListener( typeHierarchyListener );
-		typeHierarchyListener.typeHierarchyHasPotentiallyChanged();
-	}
+  public static void addAndInvokeTypeHierarchyListener(TypeHierarchyListener typeHierarchyListener) {
+    addTypeHierarchyListener(typeHierarchyListener);
+    typeHierarchyListener.typeHierarchyHasPotentiallyChanged();
+  }
 
-	public static void removeTypeHierarchyListener( TypeHierarchyListener typeHierarchyListener ) {
-		typeHierarchyListeners.remove( typeHierarchyListener );
-	}
+  public static void removeTypeHierarchyListener(TypeHierarchyListener typeHierarchyListener) {
+    typeHierarchyListeners.remove(typeHierarchyListener);
+  }
 
-	public static void fireTypeHierarchyListeners() {
-		for( TypeHierarchyListener typeHierarchyListener : typeHierarchyListeners ) {
-			typeHierarchyListener.typeHierarchyHasPotentiallyChanged();
-		}
-	}
+  public static void fireTypeHierarchyListeners() {
+    for (TypeHierarchyListener typeHierarchyListener : typeHierarchyListeners) {
+      typeHierarchyListener.typeHierarchyHasPotentiallyChanged();
+    }
+  }
 }

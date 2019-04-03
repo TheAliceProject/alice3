@@ -59,147 +59,148 @@ import java.util.Map;
  */
 public class CodeOrganizer {
 
-	public static class CodeOrganizerDefinition {
-		private final LinkedHashMap<String, String[]> codeSections = new LinkedHashMap<String, String[]>();
-		private final HashMap<String, Boolean> shouldCollapseSection = new HashMap<String, Boolean>();
+  public static class CodeOrganizerDefinition {
+    private final LinkedHashMap<String, String[]> codeSections = new LinkedHashMap<String, String[]>();
+    private final HashMap<String, Boolean> shouldCollapseSection = new HashMap<String, Boolean>();
 
-		public CodeOrganizerDefinition() {
-		}
+    public CodeOrganizerDefinition() {
+    }
 
-		public void addSection( String sectionKey, String... itemKeys ) {
-			addSection( sectionKey, false, itemKeys );
-		}
+    public void addSection(String sectionKey, String... itemKeys) {
+      addSection(sectionKey, false, itemKeys);
+    }
 
-		public void addSection( String sectionKey, Boolean shouldCollapse, String... itemKeys ) {
-			codeSections.put( sectionKey, itemKeys );
-			shouldCollapseSection.put( sectionKey, shouldCollapse );
-		}
-	}
+    public void addSection(String sectionKey, Boolean shouldCollapse, String... itemKeys) {
+      codeSections.put(sectionKey, itemKeys);
+      shouldCollapseSection.put(sectionKey, shouldCollapse);
+    }
+  }
 
-	public static CodeOrganizerDefinition defaultCodeOrganizer = new CodeOrganizerDefinition();
-	public static CodeOrganizerDefinition sceneClassCodeOrganizer = new CodeOrganizerDefinition();
-	public static CodeOrganizerDefinition programClassCodeOrganizer = new CodeOrganizerDefinition();
-	static {
-		defaultCodeOrganizer.addSection( "ConstructorSection", CodeOrganizer.CONSTRUCTORS );
-		defaultCodeOrganizer.addSection( "MethodsAndFunctionsSection", CodeOrganizer.NON_STATIC_METHODS );
-		defaultCodeOrganizer.addSection( "GettersAndSettersSection", CodeOrganizer.GETTERS_AND_SETTERS );
-		defaultCodeOrganizer.addSection( "FieldsSection", CodeOrganizer.FIELDS );
-		defaultCodeOrganizer.addSection( "StaticMethodsSection", CodeOrganizer.STATIC_METHODS );
+  public static CodeOrganizerDefinition defaultCodeOrganizer = new CodeOrganizerDefinition();
+  public static CodeOrganizerDefinition sceneClassCodeOrganizer = new CodeOrganizerDefinition();
+  public static CodeOrganizerDefinition programClassCodeOrganizer = new CodeOrganizerDefinition();
 
-		sceneClassCodeOrganizer.addSection( "ConstructorSection", CodeOrganizer.CONSTRUCTORS );
-		sceneClassCodeOrganizer.addSection( "EventListenersSection", "initializeEventListeners" );
-		sceneClassCodeOrganizer.addSection( "MethodsAndFunctionsSection", CodeOrganizer.NON_STATIC_METHODS );
-		sceneClassCodeOrganizer.addSection( "FieldsSection", true, CodeOrganizer.FIELDS );
-		sceneClassCodeOrganizer.addSection( "SceneSetupSection", true, "performCustomSetup", "performGeneratedSetUp" );
-		sceneClassCodeOrganizer.addSection( "MultipleSceneSection", true, "handleActiveChanged", CodeOrganizer.GETTERS_AND_SETTERS );
-		sceneClassCodeOrganizer.addSection( "StaticMethodsSection", CodeOrganizer.STATIC_METHODS );
+  static {
+    defaultCodeOrganizer.addSection("ConstructorSection", CodeOrganizer.CONSTRUCTORS);
+    defaultCodeOrganizer.addSection("MethodsAndFunctionsSection", CodeOrganizer.NON_STATIC_METHODS);
+    defaultCodeOrganizer.addSection("GettersAndSettersSection", CodeOrganizer.GETTERS_AND_SETTERS);
+    defaultCodeOrganizer.addSection("FieldsSection", CodeOrganizer.FIELDS);
+    defaultCodeOrganizer.addSection("StaticMethodsSection", CodeOrganizer.STATIC_METHODS);
 
-		programClassCodeOrganizer.addSection( "ConstructorSection", CodeOrganizer.CONSTRUCTORS );
-		programClassCodeOrganizer.addSection( "FieldsSection", "myScene", CodeOrganizer.FIELDS );
-		programClassCodeOrganizer.addSection( "MainFunction", "main" );
-		programClassCodeOrganizer.addSection( "GettersAndSettersSection", CodeOrganizer.GETTERS_AND_SETTERS );
-	}
+    sceneClassCodeOrganizer.addSection("ConstructorSection", CodeOrganizer.CONSTRUCTORS);
+    sceneClassCodeOrganizer.addSection("EventListenersSection", "initializeEventListeners");
+    sceneClassCodeOrganizer.addSection("MethodsAndFunctionsSection", CodeOrganizer.NON_STATIC_METHODS);
+    sceneClassCodeOrganizer.addSection("FieldsSection", true, CodeOrganizer.FIELDS);
+    sceneClassCodeOrganizer.addSection("SceneSetupSection", true, "performCustomSetup", "performGeneratedSetUp");
+    sceneClassCodeOrganizer.addSection("MultipleSceneSection", true, "handleActiveChanged", CodeOrganizer.GETTERS_AND_SETTERS);
+    sceneClassCodeOrganizer.addSection("StaticMethodsSection", CodeOrganizer.STATIC_METHODS);
 
-	private final LinkedHashMap<String, String[]> codeSections;
-	private final HashMap<String, Boolean> shouldCollapseSection;
-	private final Map<String, List<CodeAppender>> itemLists = new HashMap<String, List<CodeAppender>>();
+    programClassCodeOrganizer.addSection("ConstructorSection", CodeOrganizer.CONSTRUCTORS);
+    programClassCodeOrganizer.addSection("FieldsSection", "myScene", CodeOrganizer.FIELDS);
+    programClassCodeOrganizer.addSection("MainFunction", "main");
+    programClassCodeOrganizer.addSection("GettersAndSettersSection", CodeOrganizer.GETTERS_AND_SETTERS);
+  }
 
-	public static final String ALL_METHODS = "ALL_METHODS";
-	public static final String NON_STATIC_METHODS = "NON_STATIC_METHODS";
-	public static final String STATIC_METHODS = "STATIC_METHODS";
-	public static final String FIELDS = "FIELDS";
-	public static final String GETTERS_AND_SETTERS = "GETTERS_AND_SETTERS";
-	public static final String GETTERS = "GETTERS";
-	public static final String SETTERS = "SETTERS";
-	public static final String CONSTRUCTORS = "CONSTRUCTORS";
+  private final LinkedHashMap<String, String[]> codeSections;
+  private final HashMap<String, Boolean> shouldCollapseSection;
+  private final Map<String, List<CodeAppender>> itemLists = new HashMap<String, List<CodeAppender>>();
 
-	private static final String DEFAULT = "DEFAULT";
+  public static final String ALL_METHODS = "ALL_METHODS";
+  public static final String NON_STATIC_METHODS = "NON_STATIC_METHODS";
+  public static final String STATIC_METHODS = "STATIC_METHODS";
+  public static final String FIELDS = "FIELDS";
+  public static final String GETTERS_AND_SETTERS = "GETTERS_AND_SETTERS";
+  public static final String GETTERS = "GETTERS";
+  public static final String SETTERS = "SETTERS";
+  public static final String CONSTRUCTORS = "CONSTRUCTORS";
 
-	public CodeOrganizer( CodeOrganizerDefinition codeOrganizerDefinition ) {
-		codeSections = codeOrganizerDefinition.codeSections;
-		shouldCollapseSection = codeOrganizerDefinition.shouldCollapseSection;
-	}
+  private static final String DEFAULT = "DEFAULT";
 
-	private boolean hasItemKey( String itemKey ) {
-		for( Map.Entry<String, String[]> entry : codeSections.entrySet() ) {
-			for( String item : entry.getValue() ) {
-				if( itemKey.equalsIgnoreCase( item ) ) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+  public CodeOrganizer(CodeOrganizerDefinition codeOrganizerDefinition) {
+    codeSections = codeOrganizerDefinition.codeSections;
+    shouldCollapseSection = codeOrganizerDefinition.shouldCollapseSection;
+  }
 
-	private void addItem( CodeAppender toAdd, String... keyOptions ) {
-		//Use the list of keyOptions to search the codeSections map to see where to put this item
-		//The keyOptions list is a prioritized list, so the first match we find is where we put the item
-		for( String itemKeyOption : keyOptions ) {
-			if( hasItemKey( itemKeyOption ) ) {
-				if( !itemLists.containsKey( itemKeyOption ) ) {
-					itemLists.put( itemKeyOption, new LinkedList<CodeAppender>() );
-				}
-				itemLists.get( itemKeyOption ).add( toAdd );
-				return;
-			}
-		}
-		//Put the item in the DEFAULT list if it doesn't match a list
-		if( !itemLists.containsKey( DEFAULT ) ) {
-			itemLists.put( DEFAULT, new LinkedList<CodeAppender>() );
-		}
-		itemLists.get( DEFAULT ).add( toAdd );
-	}
+  private boolean hasItemKey(String itemKey) {
+    for (Map.Entry<String, String[]> entry : codeSections.entrySet()) {
+      for (String item : entry.getValue()) {
+        if (itemKey.equalsIgnoreCase(item)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
-	public void addConstructor( NamedUserConstructor constructor ) {
-		addItem( constructor, constructor.getName(), CONSTRUCTORS );
-	}
+  private void addItem(CodeAppender toAdd, String... keyOptions) {
+    //Use the list of keyOptions to search the codeSections map to see where to put this item
+    //The keyOptions list is a prioritized list, so the first match we find is where we put the item
+    for (String itemKeyOption : keyOptions) {
+      if (hasItemKey(itemKeyOption)) {
+        if (!itemLists.containsKey(itemKeyOption)) {
+          itemLists.put(itemKeyOption, new LinkedList<CodeAppender>());
+        }
+        itemLists.get(itemKeyOption).add(toAdd);
+        return;
+      }
+    }
+    //Put the item in the DEFAULT list if it doesn't match a list
+    if (!itemLists.containsKey(DEFAULT)) {
+      itemLists.put(DEFAULT, new LinkedList<CodeAppender>());
+    }
+    itemLists.get(DEFAULT).add(toAdd);
+  }
 
-	public void addStaticMethod( UserMethod method ) {
-		addItem( method, method.getName(), STATIC_METHODS, ALL_METHODS );
-	}
+  public void addConstructor(NamedUserConstructor constructor) {
+    addItem(constructor, constructor.getName(), CONSTRUCTORS);
+  }
 
-	public void addNonStaticMethod( UserMethod method ) {
-		addItem( method, method.getName(), NON_STATIC_METHODS, ALL_METHODS );
-	}
+  public void addStaticMethod(UserMethod method) {
+    addItem(method, method.getName(), STATIC_METHODS, ALL_METHODS);
+  }
 
-	public void addGetters( List<Getter> getters ) {
-		for (Getter getter : getters) {
-			addItem( getter, getter.getName(), GETTERS, GETTERS_AND_SETTERS );
-		}
-	}
+  public void addNonStaticMethod(UserMethod method) {
+    addItem(method, method.getName(), NON_STATIC_METHODS, ALL_METHODS);
+  }
 
-	public void addSetters( List<Setter> setters ) {
-		for (Setter setter : setters) {
-			addItem( setter, setter.getName(), SETTERS, GETTERS_AND_SETTERS );
-		}
-	}
+  public void addGetters(List<Getter> getters) {
+    for (Getter getter : getters) {
+      addItem(getter, getter.getName(), GETTERS, GETTERS_AND_SETTERS);
+    }
+  }
 
-	public void addField( UserField field ) {
-		addItem( field, field.getName(), FIELDS );
-	}
+  public void addSetters(List<Setter> setters) {
+    for (Setter setter : setters) {
+      addItem(setter, setter.getName(), SETTERS, GETTERS_AND_SETTERS);
+    }
+  }
 
-	public boolean shouldCollapseSection( String sectionKey ) {
-		if( this.shouldCollapseSection.containsKey( sectionKey ) ) {
-			return this.shouldCollapseSection.get( sectionKey );
-		}
-		return false;
-	}
+  public void addField(UserField field) {
+    addItem(field, field.getName(), FIELDS);
+  }
 
-	public LinkedHashMap<String, List<CodeAppender>> getOrderedSections() {
-		LinkedHashMap<String, List<CodeAppender>> orderedMap = new LinkedHashMap<String, List<CodeAppender>>();
-		for( Map.Entry<String, String[]> entry : codeSections.entrySet() ) {
-			List<CodeAppender> orderedAppenders = new LinkedList<CodeAppender>();
-			for( String itemKey : entry.getValue() ) {
-				if( itemLists.containsKey( itemKey ) ) {
-					orderedAppenders.addAll( itemLists.get( itemKey ) );
-				}
-			}
-			orderedMap.put( entry.getKey(), orderedAppenders );
-		}
-		if( itemLists.containsKey( DEFAULT ) && !itemLists.get( DEFAULT ).isEmpty() ) {
-			orderedMap.put( DEFAULT, itemLists.get( DEFAULT ) );
-		}
-		return orderedMap;
-	}
+  public boolean shouldCollapseSection(String sectionKey) {
+    if (this.shouldCollapseSection.containsKey(sectionKey)) {
+      return this.shouldCollapseSection.get(sectionKey);
+    }
+    return false;
+  }
+
+  public LinkedHashMap<String, List<CodeAppender>> getOrderedSections() {
+    LinkedHashMap<String, List<CodeAppender>> orderedMap = new LinkedHashMap<String, List<CodeAppender>>();
+    for (Map.Entry<String, String[]> entry : codeSections.entrySet()) {
+      List<CodeAppender> orderedAppenders = new LinkedList<CodeAppender>();
+      for (String itemKey : entry.getValue()) {
+        if (itemLists.containsKey(itemKey)) {
+          orderedAppenders.addAll(itemLists.get(itemKey));
+        }
+      }
+      orderedMap.put(entry.getKey(), orderedAppenders);
+    }
+    if (itemLists.containsKey(DEFAULT) && !itemLists.get(DEFAULT).isEmpty()) {
+      orderedMap.put(DEFAULT, itemLists.get(DEFAULT));
+    }
+    return orderedMap;
+  }
 
 }

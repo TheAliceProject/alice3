@@ -43,62 +43,62 @@
 
 package org.lgna.project.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public final class ConditionalStatement extends Statement {
-	public ConditionalStatement() {
-	}
+  public ConditionalStatement() {
+  }
 
-	public ConditionalStatement( BooleanExpressionBodyPair[] booleanExpressionBodyPairs, BlockStatement elseBody ) {
-		this.booleanExpressionBodyPairs.add( booleanExpressionBodyPairs );
-		this.elseBody.setValue( elseBody );
-	}
+  public ConditionalStatement(BooleanExpressionBodyPair[] booleanExpressionBodyPairs, BlockStatement elseBody) {
+    this.booleanExpressionBodyPairs.add(booleanExpressionBodyPairs);
+    this.elseBody.setValue(elseBody);
+  }
 
-	@Override public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendConditional(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendConditional(this);
+  }
 
-	@Override
-	boolean containsAtLeastOneEnabledReturnStatement() {
-		if (!isEnabled.getValue()) {
-			return false;
-		}
-		for( BooleanExpressionBodyPair booleanExpressionBodyPair : booleanExpressionBodyPairs ) {
-			if ( booleanExpressionBodyPair.body.getValue().containsAtLeastOneEnabledReturnStatement() ) {
-				return true;
-			}
-		}
-		return elseBody.getValue().containsAtLeastOneEnabledReturnStatement();
-	}
+  @Override
+  boolean containsAtLeastOneEnabledReturnStatement() {
+    if (!isEnabled.getValue()) {
+      return false;
+    }
+    for (BooleanExpressionBodyPair booleanExpressionBodyPair : booleanExpressionBodyPairs) {
+      if (booleanExpressionBodyPair.body.getValue().containsAtLeastOneEnabledReturnStatement()) {
+        return true;
+      }
+    }
+    return elseBody.getValue().containsAtLeastOneEnabledReturnStatement();
+  }
 
-	@Override
-	boolean containsAReturnForEveryPath() {
-		if (!isEnabled.getValue()) {
-			return false;
-		}
-		for( BooleanExpressionBodyPair booleanExpressionBodyPair : booleanExpressionBodyPairs ) {
-			if ( !booleanExpressionBodyPair.body.getValue().containsAReturnForEveryPath() ) {
-				return false;
-			}
-		}
-		return elseBody.getValue().containsAReturnForEveryPath();
-	}
+  @Override
+  boolean containsAReturnForEveryPath() {
+    if (!isEnabled.getValue()) {
+      return false;
+    }
+    for (BooleanExpressionBodyPair booleanExpressionBodyPair : booleanExpressionBodyPairs) {
+      if (!booleanExpressionBodyPair.body.getValue().containsAReturnForEveryPath()) {
+        return false;
+      }
+    }
+    return elseBody.getValue().containsAReturnForEveryPath();
+  }
 
-	@Override
-	boolean containsUnreachableCode() {
-		if (!isEnabled.getValue()) {
-			return false;
-		}
-		for( BooleanExpressionBodyPair booleanExpressionBodyPair : booleanExpressionBodyPairs ) {
-			if ( booleanExpressionBodyPair.body.getValue().containsUnreachableCode() ) {
-				return true;
-			}
-		}
-		return elseBody.getValue().containsUnreachableCode();
-	}
+  @Override
+  boolean containsUnreachableCode() {
+    if (!isEnabled.getValue()) {
+      return false;
+    }
+    for (BooleanExpressionBodyPair booleanExpressionBodyPair : booleanExpressionBodyPairs) {
+      if (booleanExpressionBodyPair.body.getValue().containsUnreachableCode()) {
+        return true;
+      }
+    }
+    return elseBody.getValue().containsUnreachableCode();
+  }
 
-	public final NodeListProperty<BooleanExpressionBodyPair> booleanExpressionBodyPairs = new NodeListProperty<BooleanExpressionBodyPair>( this );
-	public final NodeProperty<BlockStatement> elseBody = new NodeProperty<BlockStatement>( this );
+  public final NodeListProperty<BooleanExpressionBodyPair> booleanExpressionBodyPairs = new NodeListProperty<BooleanExpressionBodyPair>(this);
+  public final NodeProperty<BlockStatement> elseBody = new NodeProperty<BlockStatement>(this);
 }

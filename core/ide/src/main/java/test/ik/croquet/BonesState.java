@@ -55,36 +55,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class BonesState extends MutableDataSingleSelectListState<Bone> {
-	private static class SingletonHolder {
-		private static BonesState instance = new BonesState();
-	}
+  private static class SingletonHolder {
+    private static BonesState instance = new BonesState();
+  }
 
-	public static BonesState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static BonesState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private BonesState() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "32660ce0-bf86-4472-8f12-6aa2bc0a39b5" ), BoneCodec.SINGLETON );
-	}
+  private BonesState() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("32660ce0-bf86-4472-8f12-6aa2bc0a39b5"), BoneCodec.SINGLETON);
+  }
 
-	public void setChain( Chain chain ) {
-		if( chain == null ) {
-			this.clear();
-		} else {
-			Bone prevBone = this.getValue();
-			Bone[] bones = chain.getBones();
-			int selectionIndex = -1;
-			if( prevBone != null ) {
-				int index = 0;
-				for( Bone bone : bones ) {
-					if( prevBone.getA() == bone.getA() ) {
-						selectionIndex = index;
-						break;
-					}
-					index++;
-				}
-			}
-			this.setListData( selectionIndex, bones );
-		}
-	}
+  public void setChain(Chain chain) {
+    if (chain == null) {
+      this.clear();
+    } else {
+      Bone prevBone = this.getValue();
+      Bone[] bones = chain.getBones();
+      int selectionIndex = -1;
+      if (prevBone != null) {
+        int index = 0;
+        for (Bone bone : bones) {
+          if (prevBone.getA() == bone.getA()) {
+            selectionIndex = index;
+            break;
+          }
+          index++;
+        }
+      }
+      this.setListData(selectionIndex, bones);
+    }
+  }
 }

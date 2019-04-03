@@ -62,154 +62,152 @@ import org.apache.commons.text.translate.*;
  */
 public class GenerateDebugTranslation {
 
-	private static PathMatcher PROPERTIES_MATCHER = FileSystems.getDefault().getPathMatcher( "glob:**.properties" );
+  private static PathMatcher PROPERTIES_MATCHER = FileSystems.getDefault().getPathMatcher("glob:**.properties");
 
-	// Based on StringEscapeUtils.escapeJava, but does not escape "s
-	private static CharSequenceTranslator JAVA_ESCAPE = new AggregateTranslator(new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_ESCAPE)).with(
-					JavaUnicodeEscaper.outsideOf(32, 127));
+  // Based on StringEscapeUtils.escapeJava, but does not escape "s
+  private static CharSequenceTranslator JAVA_ESCAPE = new AggregateTranslator(new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_ESCAPE)).with(JavaUnicodeEscaper.outsideOf(32, 127));
 
+  private static boolean isSrcFolder(Path path) {
+    if (Files.exists(path.resolve("main")) && Files.exists(path.resolve("l10n-alice"))) {
+      return true;
+    }
+    return false;
+  }
 
-	private static boolean isSrcFolder( Path path ) {
-		if( Files.exists( path.resolve( "main" ) ) && Files.exists( path.resolve( "l10n-alice" ) ) ) {
-			return true;
-		}
-		return false;
-	}
+  private static boolean isPropertiesFile(Path path) {
+    boolean matches = PROPERTIES_MATCHER.matches(path.getFileName());
+    return matches;
+  }
 
-	private static boolean isPropertiesFile( Path path ) {
-		boolean matches = PROPERTIES_MATCHER.matches( path.getFileName() );
-		return matches;
-	}
+  private static boolean shouldSkipValue(String value) {
+    if (value.contains("VK_")) {
+      return true;
+    }
+    return false;
+  }
 
-	private static boolean shouldSkipValue( String value ) {
-		if( value.contains( "VK_" ) ) {
-			return true;
-		}
-		return false;
-	}
+  private static void copyPropertiesFile(Path srcPath, Path localizePath, Path propertiesPath, String suffix, String customKey, boolean deleteOverride) {
+    Path relativePropertyPath = srcPath.relativize(propertiesPath);
+    Path localizePropertyPath = localizePath.resolve(relativePropertyPath);
+    Path newLocalizePropertyPath = localizePropertyPath.resolveSibling(relativePropertyPath.getFileName().toString().replace(".properties", suffix + ".properties"));
 
-	private static void copyPropertiesFile( Path srcPath, Path localizePath, Path propertiesPath, String suffix, String customKey, boolean deleteOverride ) {
-		Path relativePropertyPath = srcPath.relativize( propertiesPath );
-		Path localizePropertyPath = localizePath.resolve( relativePropertyPath );
-		Path newLocalizePropertyPath = localizePropertyPath.resolveSibling( relativePropertyPath.getFileName().toString().replace( ".properties", suffix + ".properties" ) );
+    if (deleteOverride) {
+      if (Files.exists(newLocalizePropertyPath)) {
+        try {
+          Files.delete(newLocalizePropertyPath);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+      return;
+    }
 
-		if( deleteOverride ) {
-			if( Files.exists( newLocalizePropertyPath ) ) {
-				try {
-					Files.delete( newLocalizePropertyPath );
-				} catch( Exception e ) {
-					e.printStackTrace();
-				}
-			}
-			return;
-		}
+    try {
 
-		try {
+      ResourceBundle rb = new PropertyResourceBundle(Files.newInputStream(propertiesPath));
+      //      ResourceBundle rb = ResourceBundle.getBundle( relativePropertyPath.toString(), Locale.getDefault(), loader );
+      if (!Files.exists(newLocalizePropertyPath)) {
+        newLocalizePropertyPath.toFile().getParentFile().mkdirs();
+        Files.createFile(newLocalizePropertyPath);
+      }
+      BufferedWriter writer = Files.newBufferedWriter(newLocalizePropertyPath);
+      Enumeration<String> keys = rb.getKeys();
+      while (keys.hasMoreElements()) {
+        String key = keys.nextElement();
+        String value = rb.getString(key);
+        if (!shouldSkipValue(value)) {
+          writer.write(key + " = " + customKey + escapeJava(value) + customKey + "\r\n");
+        }
+      }
+      writer.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
-			ResourceBundle rb = new PropertyResourceBundle( Files.newInputStream( propertiesPath ) );
-			//			ResourceBundle rb = ResourceBundle.getBundle( relativePropertyPath.toString(), Locale.getDefault(), loader );
-			if( !Files.exists( newLocalizePropertyPath ) ) {
-				newLocalizePropertyPath.toFile().getParentFile().mkdirs();
-				Files.createFile( newLocalizePropertyPath );
-			}
-			BufferedWriter writer = Files.newBufferedWriter( newLocalizePropertyPath );
-			Enumeration<String> keys = rb.getKeys();
-			while( keys.hasMoreElements() ) {
-				String key = keys.nextElement();
-				String value = rb.getString( key );
-				if( !shouldSkipValue( value ) ) {
-					writer.write( key + " = " + customKey + escapeJava(value) + customKey + "\r\n" );
-				}
-			}
-			writer.close();
-		} catch( Exception e ) {
-			e.printStackTrace();
-		}
+    System.out.println("Wrote new file: " + newLocalizePropertyPath);
+  }
 
-		System.out.println( "Wrote new file: " + newLocalizePropertyPath );
-	}
+  private static String escapeJava(String value) {
+    return JAVA_ESCAPE.translate(value);
+  }
 
-	private static String escapeJava(String value) {
-		return JAVA_ESCAPE.translate(value);
-	}
+  public static String stripQuotes(String toStrip) {
+    if ((toStrip.startsWith("\"") && toStrip.endsWith("\"")) || (toStrip.startsWith("\'") && toStrip.endsWith("\'"))) {
+      toStrip = toStrip.substring(1, toStrip.length() - 1);
+    }
+    return toStrip;
+  }
 
-	public static String stripQuotes( String toStrip ) {
-		if( ( toStrip.startsWith( "\"" ) && toStrip.endsWith( "\"" ) ) || ( toStrip.startsWith( "\'" ) && toStrip.endsWith( "\'" ) ) ) {
-			toStrip = toStrip.substring( 1, toStrip.length() - 1 );
-		}
-		return toStrip;
-	}
+  public static void main(String[] args) throws Exception {
+    boolean deleteOverride = false;
+    String exportPath = null;
+    String generatedFileSuffix = "_en_CA";
+    String customKey = "|";
+    int i = 0;
+    while (i < args.length) {
+      if (args[i].equalsIgnoreCase("-d")) {
+        deleteOverride = true;
+        i++;
+      } else if (args[i].equalsIgnoreCase("-x")) {
+        if ((i + 1) < args.length) {
+          exportPath = args[i + 1];
+          i += 2;
+        }
+      } else if (args[i].equalsIgnoreCase("-s")) {
+        if ((i + 1) < args.length) {
+          generatedFileSuffix = args[i + 1];
+          generatedFileSuffix = stripQuotes(generatedFileSuffix);
+          i += 2;
+        } else {
+          generatedFileSuffix = "";
+          i += 1;
+        }
+      } else if (args[i].equalsIgnoreCase("-k")) {
+        if ((i + 1) < args.length) {
+          customKey = args[i + 1];
+          customKey = stripQuotes(customKey);
+          i += 2;
+        } else {
+          customKey = "";
+          i += 1;
+        }
+      }
+    }
 
-	public static void main( String[] args ) throws Exception {
-		boolean deleteOverride = false;
-		String exportPath = null;
-		String generatedFileSuffix = "_en_CA";
-		String customKey = "|";
-		int i = 0;
-		while( i < args.length ) {
-			if( args[ i ].equalsIgnoreCase( "-d" ) ) {
-				deleteOverride = true;
-				i++;
-			} else if( args[ i ].equalsIgnoreCase( "-x" ) ) {
-				if( ( i + 1 ) < args.length ) {
-					exportPath = args[ i + 1 ];
-					i += 2;
-				}
-			} else if( args[ i ].equalsIgnoreCase( "-s" ) ) {
-				if( ( i + 1 ) < args.length ) {
-					generatedFileSuffix = args[ i + 1 ];
-					generatedFileSuffix = stripQuotes( generatedFileSuffix );
-					i += 2;
-				} else {
-					generatedFileSuffix = "";
-					i += 1;
-				}
-			} else if( args[ i ].equalsIgnoreCase( "-k" ) ) {
-				if( ( i + 1 ) < args.length ) {
-					customKey = args[ i + 1 ];
-					customKey = stripQuotes( customKey );
-					i += 2;
-				} else {
-					customKey = "";
-					i += 1;
-				}
-			}
-		}
+    File repoRoot = new File(System.getProperty("user.dir"), "../../../");
+    repoRoot = repoRoot.getCanonicalFile();
+    List<Path> srcPaths = new ArrayList<Path>();
 
-		File repoRoot = new File( System.getProperty( "user.dir" ), "../../../" );
-		repoRoot = repoRoot.getCanonicalFile();
-		List<Path> srcPaths = new ArrayList<Path>();
+    try (Stream<Path> stream = Files.walk(Paths.get(repoRoot.getAbsolutePath()))) {
+      stream.filter(path -> isSrcFolder(path)).forEach(path -> srcPaths.add(path));
+    }
 
-		try ( Stream<Path> stream = Files.walk( Paths.get( repoRoot.getAbsolutePath() ) ) ) {
-			stream.filter( path -> isSrcFolder( path ) ).forEach( path -> srcPaths.add( path ) );
-		}
+    int fileCount = 0;
+    for (Path rootPath : srcPaths) {
+      List<Path> propertyPaths = new ArrayList<Path>();
+      Path srcPath = rootPath.resolve("main");
+      Path localizePath;
+      if (exportPath != null) {
+        localizePath = Paths.get(exportPath);
+      } else {
+        localizePath = rootPath.resolve("l10n-alice");
+      }
+      try (Stream<Path> stream = Files.walk(srcPath)) {
+        stream.filter(path -> isPropertiesFile(path)).forEach(path -> propertyPaths.add(path));
+      }
 
-		int fileCount = 0;
-		for( Path rootPath : srcPaths ) {
-			List<Path> propertyPaths = new ArrayList<Path>();
-			Path srcPath = rootPath.resolve( "main" );
-			Path localizePath;
-			if( exportPath != null ) {
-				localizePath = Paths.get( exportPath );
-			} else {
-				localizePath = rootPath.resolve( "l10n-alice" );
-			}
-			try ( Stream<Path> stream = Files.walk( srcPath ) ) {
-				stream.filter( path -> isPropertiesFile( path ) ).forEach( path -> propertyPaths.add( path ) );
-			}
+      for (Path propertyPath : propertyPaths) {
+        copyPropertiesFile(srcPath, localizePath, propertyPath, generatedFileSuffix, customKey, deleteOverride);
+        fileCount++;
+      }
+    }
 
-			for( Path propertyPath : propertyPaths ) {
-				copyPropertiesFile( srcPath, localizePath, propertyPath, generatedFileSuffix, customKey, deleteOverride );
-				fileCount++;
-			}
-		}
+    if (deleteOverride) {
+      System.out.println("Deleted generated translation files");
+    } else {
+      System.out.println();
+      System.out.println("Wrote " + fileCount + " properties files");
+    }
 
-		if( deleteOverride ) {
-			System.out.println( "Deleted generated translation files" );
-		} else {
-			System.out.println();
-			System.out.println( "Wrote " + fileCount + " properties files" );
-		}
-
-	}
+  }
 }

@@ -54,22 +54,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IntegerArithmeticExpressionLeftAndRightOperandsFillIn extends ArithmeticExpressionLeftAndRightOperandsFillIn {
-	private static Map<ArithmeticInfixExpression.Operator, IntegerArithmeticExpressionLeftAndRightOperandsFillIn> map = Maps.newHashMap();
+  private static Map<ArithmeticInfixExpression.Operator, IntegerArithmeticExpressionLeftAndRightOperandsFillIn> map = Maps.newHashMap();
 
-	public static IntegerArithmeticExpressionLeftAndRightOperandsFillIn getInstance( ArithmeticInfixExpression.Operator operator ) {
-		synchronized( map ) {
-			IntegerArithmeticExpressionLeftAndRightOperandsFillIn rv = map.get( operator );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new IntegerArithmeticExpressionLeftAndRightOperandsFillIn( operator );
-				map.put( operator, rv );
-			}
-			return rv;
-		}
-	}
+  public static IntegerArithmeticExpressionLeftAndRightOperandsFillIn getInstance(ArithmeticInfixExpression.Operator operator) {
+    synchronized (map) {
+      IntegerArithmeticExpressionLeftAndRightOperandsFillIn rv = map.get(operator);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new IntegerArithmeticExpressionLeftAndRightOperandsFillIn(operator);
+        map.put(operator, rv);
+      }
+      return rv;
+    }
+  }
 
-	private IntegerArithmeticExpressionLeftAndRightOperandsFillIn( ArithmeticInfixExpression.Operator operator ) {
-		super( UUID.fromString( "18b9bfcc-4938-435e-b751-51d9fe38524c" ), Integer.class, Integer.class, operator, Integer.class );
-	}
+  private IntegerArithmeticExpressionLeftAndRightOperandsFillIn(ArithmeticInfixExpression.Operator operator) {
+    super(UUID.fromString("18b9bfcc-4938-435e-b751-51d9fe38524c"), Integer.class, Integer.class, operator, Integer.class);
+  }
 }

@@ -76,77 +76,48 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class InternalTestingMenuModel extends PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static InternalTestingMenuModel instance = new InternalTestingMenuModel();
-	}
+  private static class SingletonHolder {
+    private static InternalTestingMenuModel instance = new InternalTestingMenuModel();
+  }
 
-	public static InternalTestingMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static InternalTestingMenuModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private static BooleanState createSgDebugFrameLazyIsFrameShowingState() {
-		BooleanState rv = LazyIsFrameShowingState.createNoArgumentConstructorInstance(
-				Application.INFORMATION_GROUP,
-				SgDebugFrame.class );
+  private static BooleanState createSgDebugFrameLazyIsFrameShowingState() {
+    BooleanState rv = LazyIsFrameShowingState.createNoArgumentConstructorInstance(Application.INFORMATION_GROUP, SgDebugFrame.class);
 
-		rv.initializeIfNecessary();
-		rv.setTextForBothTrueAndFalse( "Debug SceneGraph" );
-		rv.getImp().getSwingModel().getAction().putValue( Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke( KeyEvent.VK_F7, InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK ) );
+    rv.initializeIfNecessary();
+    rv.setTextForBothTrueAndFalse("Debug SceneGraph");
+    rv.getImp().getSwingModel().getAction().putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F7, InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK));
 
-		return rv;
-	}
+    return rv;
+  }
 
-	private static BooleanState createGlrDebugFrameLazyIsFrameShowingState() {
-		BooleanState rv = LazyIsFrameShowingState.createNoArgumentConstructorInstance(
-				Application.INFORMATION_GROUP,
-				GlrDebugFrame.class );
+  private static BooleanState createGlrDebugFrameLazyIsFrameShowingState() {
+    BooleanState rv = LazyIsFrameShowingState.createNoArgumentConstructorInstance(Application.INFORMATION_GROUP, GlrDebugFrame.class);
 
-		rv.initializeIfNecessary();
-		rv.setTextForBothTrueAndFalse( "Debug Render" );
-		rv.getImp().getSwingModel().getAction().putValue( Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke( KeyEvent.VK_F8, InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK ) );
+    rv.initializeIfNecessary();
+    rv.setTextForBothTrueAndFalse("Debug Render");
+    rv.getImp().getSwingModel().getAction().putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F8, InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK));
 
-		return rv;
-	}
+    return rv;
+  }
 
-	private static BooleanState createPickDebugFrameLazyIsFrameShowingState() {
-		BooleanState rv = LazyIsFrameShowingState.createNoArgumentConstructorInstance(
-				Application.INFORMATION_GROUP,
-				PickDebugFrame.class );
+  private static BooleanState createPickDebugFrameLazyIsFrameShowingState() {
+    BooleanState rv = LazyIsFrameShowingState.createNoArgumentConstructorInstance(Application.INFORMATION_GROUP, PickDebugFrame.class);
 
-		rv.initializeIfNecessary();
-		rv.setTextForBothTrueAndFalse( "Debug Pick" );
-		rv.getImp().getSwingModel().getAction().putValue( Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke( KeyEvent.VK_F9, InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK ) );
+    rv.initializeIfNecessary();
+    rv.setTextForBothTrueAndFalse("Debug Pick");
+    rv.getImp().getSwingModel().getAction().putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F9, InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK));
 
-		return rv;
-	}
+    return rv;
+  }
 
-	private InternalTestingMenuModel() {
-		super( UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
-				createSgDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),
-				createGlrDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),
-				createPickDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),
-				SEPARATOR,
-				ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel(),
-				SEPARATOR,
-				JavaCodeFrameComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
-				SEPARATOR,
-				ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(),
-				ThrowBogusGlExceptionOperation.getInstance().getMenuItemPrepModel(),
-				ThrowBogusLgnaExceptionOperation.getInstance().getMenuItemPrepModel(),
-				RaiseAnomalousSituationOperation.getInstance().getMenuItemPrepModel(),
-				SEPARATOR,
-				BreakProjectAddNullMethodOperation.getInstance().getMenuItemPrepModel(),
-				SEPARATOR,
-				new CycleFrameSizeOperation().getMenuItemPrepModel(),
-				SEPARATOR,
-				ActiveTransactionHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
-				//org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
-				IsFullTypeHierarchyDesiredState.getInstance().getMenuItemPrepModel(),
-				IsIncludingPackagePrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				IsIncludingProtectedUserMethods.getInstance().getMenuItemPrepModel(),
-				IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				IsIncludingManagedUserMethods.getInstance().getMenuItemPrepModel(),
-				ExportToPovRayOperation.getInstance().getMenuItemPrepModel(),
-				new ShowMeOperation().getMenuItemPrepModel() );
-	}
+  private InternalTestingMenuModel() {
+    super(UUID.fromString("6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8"), createSgDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(), createGlrDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(), createPickDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(), SEPARATOR, ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel(), SEPARATOR, JavaCodeFrameComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(), SEPARATOR, ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(), ThrowBogusGlExceptionOperation.getInstance().getMenuItemPrepModel(), ThrowBogusLgnaExceptionOperation.getInstance().getMenuItemPrepModel(), RaiseAnomalousSituationOperation.getInstance().getMenuItemPrepModel(), SEPARATOR,
+          BreakProjectAddNullMethodOperation.getInstance().getMenuItemPrepModel(), SEPARATOR, new CycleFrameSizeOperation().getMenuItemPrepModel(), SEPARATOR, ActiveTransactionHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
+          //org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
+          IsFullTypeHierarchyDesiredState.getInstance().getMenuItemPrepModel(), IsIncludingPackagePrivateUserMethods.getInstance().getMenuItemPrepModel(), IsIncludingProtectedUserMethods.getInstance().getMenuItemPrepModel(), IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(), IsIncludingManagedUserMethods.getInstance().getMenuItemPrepModel(), ExportToPovRayOperation.getInstance().getMenuItemPrepModel(), new ShowMeOperation().getMenuItemPrepModel());
+  }
 }

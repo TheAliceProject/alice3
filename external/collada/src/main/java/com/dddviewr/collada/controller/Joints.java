@@ -8,20 +8,21 @@ import com.dddviewr.collada.Base;
 import com.dddviewr.collada.Input;
 
 public class Joints extends Base {
-	protected List<Input> inputs = new ArrayList<Input>();
+  protected List<Input> inputs = new ArrayList<Input>();
 
-	public List<Input> getInputs() {
-		return this.inputs;
-	}
+  public List<Input> getInputs() {
+    return this.inputs;
+  }
 
-	public void dump(PrintStream out, int indent) {
-		String prefix = createIndent(indent);
-		out.println(prefix + "Joints");
-		for (Input inp : this.inputs)
-			inp.dump(out, indent + 1);
-	}
+  public void dump(PrintStream out, int indent) {
+    String prefix = createIndent(indent);
+    out.println(prefix + "Joints");
+    for (Input inp : this.inputs) {
+      inp.dump(out, indent + 1);
+    }
+  }
 
-	public void addInput(Input inp) {
-		this.inputs.add(inp);
-	}
+  public void addInput(Input inp) {
+    this.inputs.add(inp);
+  }
 }

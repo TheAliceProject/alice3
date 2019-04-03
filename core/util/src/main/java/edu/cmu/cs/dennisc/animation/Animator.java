@@ -48,31 +48,31 @@ import java.lang.reflect.InvocationTargetException;
  * @author Dennis Cosgrove
  */
 public interface Animator {
-	public double getCurrentTime();
+  public double getCurrentTime();
 
-	public double getSpeedFactor();
+  public double getSpeedFactor();
 
-	public void setSpeedFactor( double speedFactor );
+  public void setSpeedFactor(double speedFactor);
 
-	public boolean isUpdateRequired();
+  public boolean isUpdateRequired();
 
-	public void update();
+  public void update();
 
-	public void invokeLater( Animation animation, AnimationObserver animationObserver );
+  public void invokeLater(Animation animation, AnimationObserver animationObserver);
 
-	public void invokeAndWait( Animation animation, AnimationObserver animationObserver ) throws InterruptedException, InvocationTargetException;
+  public void invokeAndWait(Animation animation, AnimationObserver animationObserver) throws InterruptedException, InvocationTargetException;
 
-	public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Animation animation, AnimationObserver animationObserver );
+  public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary(Animation animation, AnimationObserver animationObserver);
 
-	public void addFrameObserver( FrameObserver runnable );
+  public void addFrameObserver(FrameObserver runnable);
 
-	public void removeFrameObserver( FrameObserver runnable );
+  public void removeFrameObserver(FrameObserver runnable);
 
-	public Iterable<FrameObserver> getFrameObservers();
+  public Iterable<FrameObserver> getFrameObservers();
 
-	public void completeAnimations( AnimationObserver animationObserver );
+  public void completeAnimations(AnimationObserver animationObserver);
 
-	public void completeFrameObservers();
+  public void completeFrameObservers();
 
-	public void completeAll( AnimationObserver animationObserver );
+  public void completeAll(AnimationObserver animationObserver);
 }

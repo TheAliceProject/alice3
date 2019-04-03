@@ -32,38 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum SavanaGrassResource implements PropResource {
-	GRASS1,
-	GRASS1_YELLOW_GREEN,
-	GRASS1_GREEN,
-	GRASS1_DARK_GREEN,
-	GRASS1_BRIGHT_GREEN,
-	GRASS2,
-	GRASS2_YELLOW_GREEN,
-	GRASS2_GREEN,
-	GRASS2_DARK_GREEN,
-	GRASS2_BRIGHT_GREEN;
+  GRASS1, GRASS1_YELLOW_GREEN, GRASS1_GREEN, GRASS1_DARK_GREEN, GRASS1_BRIGHT_GREEN, GRASS2, GRASS2_YELLOW_GREEN, GRASS2_GREEN, GRASS2_DARK_GREEN, GRASS2_BRIGHT_GREEN;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	SavanaGrassResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  SavanaGrassResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	SavanaGrassResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  SavanaGrassResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

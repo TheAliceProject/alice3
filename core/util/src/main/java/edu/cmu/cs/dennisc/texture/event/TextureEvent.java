@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.texture.Texture;
  * @author Dennis Cosgrove
  */
 public class TextureEvent extends Event<Texture> {
-	public TextureEvent( Texture source ) {
-		super( source );
-	}
+  public TextureEvent(Texture source) {
+    super(source);
+  }
 }

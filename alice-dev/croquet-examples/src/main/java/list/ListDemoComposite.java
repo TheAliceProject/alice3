@@ -57,35 +57,35 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ListDemoComposite extends SimpleOperationInputDialogCoreComposite<ListDemoView> {
-	public ListDemoComposite() {
-		super( UUID.fromString( "f6bf1c33-4682-4d6a-85b9-391f762f5ef9" ), Application.DOCUMENT_UI_GROUP );
-	}
+  public ListDemoComposite() {
+    super(UUID.fromString("f6bf1c33-4682-4d6a-85b9-391f762f5ef9"), Application.DOCUMENT_UI_GROUP);
+  }
 
-	public ImmutableDataSingleSelectListState<ZodiacSign> getZodiacState() {
-		return this.zodiacState;
-	}
+  public ImmutableDataSingleSelectListState<ZodiacSign> getZodiacState() {
+    return this.zodiacState;
+  }
 
-	@Override
-	protected ListDemoView createView() {
-		return new ListDemoView( this );
-	}
+  @Override
+  protected ListDemoView createView() {
+    return new ListDemoView(this);
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		return IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    return IS_GOOD_TO_GO_STATUS;
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		return null;
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity) {
+    return null;
+  }
 
-	public static void main( String[] args ) throws Exception {
-		UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		SimpleApplication app = new SimpleApplication();
-		new ListDemoComposite().getLaunchOperation().fire();
-		System.exit( 0 );
-	}
+  public static void main(String[] args) throws Exception {
+    UIManagerUtilities.setLookAndFeel("Nimbus");
+    SimpleApplication app = new SimpleApplication();
+    new ListDemoComposite().getLaunchOperation().fire();
+    System.exit(0);
+  }
 
-	private final ImmutableDataSingleSelectListState<ZodiacSign> zodiacState = this.createImmutableListStateForEnum( "zodiacState", ZodiacSign.class, ZodiacSign.TAURUS );
+  private final ImmutableDataSingleSelectListState<ZodiacSign> zodiacState = this.createImmutableListStateForEnum("zodiacState", ZodiacSign.class, ZodiacSign.TAURUS);
 }

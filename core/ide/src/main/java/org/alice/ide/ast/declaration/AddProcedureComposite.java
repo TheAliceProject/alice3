@@ -54,26 +54,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class AddProcedureComposite extends AddMethodComposite {
-	private static InitializingIfAbsentMap<UserType<?>, AddProcedureComposite> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<UserType<?>, AddProcedureComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static AddProcedureComposite getInstance( UserType<?> declaringType ) {
-		return map.getInitializingIfAbsent( declaringType, new InitializingIfAbsentMap.Initializer<UserType<?>, AddProcedureComposite>() {
-			@Override
-			public AddProcedureComposite initialize( UserType<?> declaringType ) {
-				return new AddProcedureComposite( declaringType );
-			}
-		} );
-	}
+  public static AddProcedureComposite getInstance(UserType<?> declaringType) {
+    return map.getInitializingIfAbsent(declaringType, new InitializingIfAbsentMap.Initializer<UserType<?>, AddProcedureComposite>() {
+      @Override
+      public AddProcedureComposite initialize(UserType<?> declaringType) {
+        return new AddProcedureComposite(declaringType);
+      }
+    });
+  }
 
-	private AddProcedureComposite( UserType<?> declaringType ) {
-		super( UUID.fromString( "1e7af2e9-2ce0-4c7e-9ddd-9af001601660" ), new Details()
-				.valueComponentType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, JavaType.VOID_TYPE )
-				.name( ApplicabilityStatus.EDITABLE )
-				, declaringType );
-	}
+  private AddProcedureComposite(UserType<?> declaringType) {
+    super(UUID.fromString("1e7af2e9-2ce0-4c7e-9ddd-9af001601660"), new Details().valueComponentType(ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, JavaType.VOID_TYPE).name(ApplicabilityStatus.EDITABLE), declaringType);
+  }
 
-	@Override
-	protected AddProcedureView createView() {
-		return new AddProcedureView( this );
-	}
+  @Override
+  protected AddProcedureView createView() {
+    return new AddProcedureView(this);
+  }
 }

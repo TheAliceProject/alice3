@@ -52,23 +52,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class HelpComposite extends LazyOperationUnadornedDialogCoreComposite<HelpView> {
-	public HelpComposite() {
-		super( UUID.fromString( "5b7c1e0d-18ed-4c1a-8eb0-13d3eb0c3c62" ) );
-	}
+  public HelpComposite() {
+    super(UUID.fromString("5b7c1e0d-18ed-4c1a-8eb0-13d3eb0c3c62"));
+  }
 
-	public PlainStringValue getWhereToFindHelpText() {
-		return this.whereToFindHelpText;
-	}
+  public PlainStringValue getWhereToFindHelpText() {
+    return this.whereToFindHelpText;
+  }
 
-	public HelpBrowserOperation getBrowserOperation() {
-		return this.browserOperation;
-	}
+  public HelpBrowserOperation getBrowserOperation() {
+    return this.browserOperation;
+  }
 
-	@Override
-	protected HelpView createView() {
-		return new HelpView( this );
-	}
+  @Override
+  protected HelpView createView() {
+    return new HelpView(this);
+  }
 
-	private final HelpBrowserOperation browserOperation = new HelpBrowserOperation();
-	private final PlainStringValue whereToFindHelpText = this.createStringValue( "whereToFindHelpText" );
+  private final HelpBrowserOperation browserOperation = new HelpBrowserOperation();
+  private final PlainStringValue whereToFindHelpText = this.createStringValue("whereToFindHelpText");
 }

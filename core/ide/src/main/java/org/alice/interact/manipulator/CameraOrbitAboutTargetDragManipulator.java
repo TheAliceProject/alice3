@@ -53,18 +53,18 @@ import edu.cmu.cs.dennisc.math.Point3;
  */
 public class CameraOrbitAboutTargetDragManipulator extends CameraOrbitDragManipulator {
 
-	private EntityImp target;
+  private EntityImp target;
 
-	public void setTarget( SModel target ) {
-		this.target = EmployeesOnly.getImplementation( target );
-	}
+  public void setTarget(SModel target) {
+    this.target = EmployeesOnly.getImplementation(target);
+  }
 
-	@Override
-	public void setPivotPoint( Point3 pivotPoint ) {
-		if( target != null ) {
-			super.setPivotPoint( target.getAbsoluteTransformation().translation );
-		} else {
-			super.setPivotPoint( pivotPoint );
-		}
-	}
+  @Override
+  public void setPivotPoint(Point3 pivotPoint) {
+    if (target != null) {
+      super.setPivotPoint(target.getAbsoluteTransformation().translation);
+    } else {
+      super.setPivotPoint(pivotPoint);
+    }
+  }
 }

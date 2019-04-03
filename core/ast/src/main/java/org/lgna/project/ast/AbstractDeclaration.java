@@ -53,50 +53,50 @@ import java.util.function.BinaryOperator;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDeclaration extends AbstractNode implements Declaration {
-	public abstract boolean isUserAuthored();
+  public abstract boolean isUserAuthored();
 
-	@Override
-	public abstract StringProperty getNamePropertyIfItExists();
+  @Override
+  public abstract StringProperty getNamePropertyIfItExists();
 
-	@Override
-	protected Set<AbstractDeclaration> fillInDeclarationSet( Set<AbstractDeclaration> rv, Set<AbstractNode> nodes ) {
-		rv.add( this );
-		return super.fillInDeclarationSet( rv, nodes );
-	}
+  @Override
+  protected Set<AbstractDeclaration> fillInDeclarationSet(Set<AbstractDeclaration> rv, Set<AbstractNode> nodes) {
+    rv.add(this);
+    return super.fillInDeclarationSet(rv, nodes);
+  }
 
-	public String formatName(BinaryOperator<String> localizer) {
-		return localizer.apply(getName(), getName());
-	}
+  public String formatName(BinaryOperator<String> localizer) {
+    return localizer.apply(getName(), getName());
+  }
 
-	@Override
-	public String getName() {
-		StringProperty nameProperty = this.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			return nameProperty.getValue();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public String getName() {
+    StringProperty nameProperty = this.getNamePropertyIfItExists();
+    if (nameProperty != null) {
+      return nameProperty.getValue();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public void setName( String name ) {
-		StringProperty nameProperty = this.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			nameProperty.setValue( name );
-		} else {
-			throw new RuntimeException( this + " " + name );
-		}
-	}
+  @Override
+  public void setName(String name) {
+    StringProperty nameProperty = this.getNamePropertyIfItExists();
+    if (nameProperty != null) {
+      nameProperty.setValue(name);
+    } else {
+      throw new RuntimeException(this + " " + name);
+    }
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		localizer.appendDeclaration( this );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    localizer.appendDeclaration(this);
+  }
 
-	@Override
-	protected StringBuilder appendStringDetails( StringBuilder rv ) {
-		super.appendStringDetails( rv );
-		rv.append( this.getName() );
-		return rv;
-	}
+  @Override
+  protected StringBuilder appendStringDetails(StringBuilder rv) {
+    super.appendStringDetails(rv);
+    rv.append(this.getName());
+    return rv;
+  }
 }

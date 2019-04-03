@@ -58,37 +58,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TorusDragModel extends ShapeDragModel {
-	private static final STorus sModel = new STorus();
+  private static final STorus sModel = new STorus();
 
-	private static class SingletonHolder {
-		private static TorusDragModel instance = new TorusDragModel();
-	}
+  private static class SingletonHolder {
+    private static TorusDragModel instance = new TorusDragModel();
+  }
 
-	public static TorusDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static TorusDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private TorusDragModel() {
-		super( UUID.fromString( "d86ba308-7869-4c9c-a5d6-93635c8159a6" ) );
-	}
+  private TorusDragModel() {
+    super(UUID.fromString("d86ba308-7869-4c9c-a5d6-93635c8159a6"));
+  }
 
-	@Override
-	public AxisAlignedBox getBoundingBox() {
-		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
-	}
+  @Override
+  public AxisAlignedBox getBoundingBox() {
+    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
+  }
 
-	@Override
-	public boolean placeOnGround() {
-		return true;
-	}
+  @Override
+  public boolean placeOnGround() {
+    return true;
+  }
 
-	@Override
-	public Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller ) {
-		return AddTorusManagedFieldComposite.getInstance().getLaunchOperation();
-	}
+  @Override
+  public Triggerable getLeftButtonClickOperation(SingleSelectTreeState<ResourceNode> controller) {
+    return AddTorusManagedFieldComposite.getInstance().getLaunchOperation();
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return TorusIconFactory.getInstance();
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return TorusIconFactory.getInstance();
+  }
 }

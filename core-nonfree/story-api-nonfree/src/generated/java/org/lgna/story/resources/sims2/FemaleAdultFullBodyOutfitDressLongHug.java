@@ -44,12 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultFullBodyOutfitDressLongHug implements FemaleAdultFullBodyOutfit {
-	BLACK,
-	GOLD,
-	GREEN,
-	PINK,
-	PURPLE,
-	RED,
-	WHITE;
+  BLACK, GOLD, GREEN, PINK, PURPLE, RED, WHITE
 
 }

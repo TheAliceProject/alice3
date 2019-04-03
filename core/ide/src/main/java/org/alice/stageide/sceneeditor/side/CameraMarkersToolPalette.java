@@ -53,27 +53,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CameraMarkersToolPalette extends MarkersToolPalette<CameraMarkersView> {
-	public CameraMarkersToolPalette() {
-		super( UUID.fromString( "0e436ae7-b89b-4c8f-b48a-e4f658e6f82f" ), new CameraMarkerFieldData() );
-	}
+  public CameraMarkersToolPalette() {
+    super(UUID.fromString("0e436ae7-b89b-4c8f-b48a-e4f658e6f82f"), new CameraMarkerFieldData());
+  }
 
-	@Override
-	public Operation getMoveMarkerToOperation() {
-		return MoveMarkerToActiveCameraActionOperation.getInstance();
-	}
+  @Override
+  public Operation getMoveMarkerToOperation() {
+    return MoveMarkerToActiveCameraActionOperation.getInstance();
+  }
 
-	@Override
-	public Operation getMoveToMarkerOperation() {
-		return MoveActiveCameraToMarkerActionOperation.getInstance();
-	}
+  @Override
+  public Operation getMoveToMarkerOperation() {
+    return MoveActiveCameraToMarkerActionOperation.getInstance();
+  }
 
-	@Override
-	public Operation getAddOperation() {
-		return AddCameraMarkerFieldComposite.getInstance().getLaunchOperation();
-	}
+  @Override
+  public Operation getAddOperation() {
+    return AddCameraMarkerFieldComposite.getInstance().getLaunchOperation();
+  }
 
-	@Override
-	protected CameraMarkersView createView() {
-		return new CameraMarkersView( this );
-	}
+  @Override
+  protected CameraMarkersView createView() {
+    return new CameraMarkersView(this);
+  }
 }

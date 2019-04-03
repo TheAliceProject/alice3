@@ -131,332 +131,329 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public abstract class AstI18nFactory extends I18nFactory {
-	protected abstract AbstractType<?, ?, ?> getFallBackTypeForThisExpression();
+  protected abstract AbstractType<?, ?, ?> getFallBackTypeForThisExpression();
 
-	protected SwingComponentView<?> EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( SwingComponentView<?> component ) {
-		return component;
-	}
+  protected SwingComponentView<?> EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent(SwingComponentView<?> component) {
+    return component;
+  }
 
-	public Paint getInvalidExpressionPaint( Paint paint, int x, int y, int width, int height ) {
-		return paint;
-	}
+  public Paint getInvalidExpressionPaint(Paint paint, int x, int y, int width, int height) {
+    return paint;
+  }
 
-	public boolean isCommentMutable( Comment comment ) {
-		return false;
-	}
+  public boolean isCommentMutable(Comment comment) {
+    return false;
+  }
 
-	public boolean isSignatureLocked( Code code ) {
-		return true;
-	}
+  public boolean isSignatureLocked(Code code) {
+    return true;
+  }
 
-	public boolean isLocalDraggableAndMutable( UserLocal local ) {
-		return true;
-	}
+  public boolean isLocalDraggableAndMutable(UserLocal local) {
+    return true;
+  }
 
-	public SwingComponentView<?> createNameView( AbstractDeclaration declaration ) {
-		return new DeclarationNameLabel( declaration );
-	}
+  public SwingComponentView<?> createNameView(AbstractDeclaration declaration) {
+    return new DeclarationNameLabel(declaration);
+  }
 
-	protected float getDeclarationNameFontScale() {
-		return 1.1f;
-	}
+  protected float getDeclarationNameFontScale() {
+    return 1.1f;
+  }
 
-	@Override
-	protected SwingComponentView<?> createComponent( MethodInvocationChunk methodInvocationChunk, InstancePropertyOwner owner ) {
-		String methodName = methodInvocationChunk.getMethodName();
-		SwingComponentView<?> rv;
-		if( ( owner instanceof AbstractDeclaration ) && methodName.equals( "getName" ) ) {
-			AbstractDeclaration declaration = (AbstractDeclaration)owner;
-			DeclarationNameLabel label = new DeclarationNameLabel( declaration );
-			if( declaration instanceof AbstractMethod ) {
-				AbstractMethod method = (AbstractMethod)declaration;
-				if( method.getReturnType() == JavaType.VOID_TYPE ) {
-					label.scaleFont( this.getDeclarationNameFontScale() );
-					label.changeFont( TextWeight.BOLD );
-				}
-			}
-			rv = label;
-		} else if( ( owner instanceof SimpleArgument ) && methodName.equals( "getParameterNameText" ) ) {
-			SimpleArgument argument = (SimpleArgument)owner;
-			rv = new DeclarationNameLabel( argument.parameter.getValue() );
-		} else if( ( owner instanceof AbstractConstructor ) && methodName.equals( "getDeclaringType" ) ) {
-			AbstractConstructor constructor = (AbstractConstructor)owner;
-			rv = this.createTypeComponent( constructor.getDeclaringType() );
-		} else if( ( owner instanceof UserMethod ) && methodName.equals( "getReturnType" ) ) {
-			UserMethod method = (UserMethod)owner;
-			rv = this.createTypeComponent( method.getReturnType() );
-		} else if( ( owner instanceof UserCode ) && methodName.equals( "getParameters" ) ) {
-			UserCode code = (UserCode)owner;
-			rv = new ParametersPane( this, code );
-		} else {
-			Method mthd = ReflectionUtilities.getMethod( owner.getClass(), methodName );
-			Object o = ReflectionUtilities.invoke( owner, mthd );
-			String s;
-			if( o != null ) {
-				if( o instanceof AbstractType<?, ?, ?> ) {
-					s = ( (AbstractType<?, ?, ?>)o ).getName();
-				} else {
-					s = o.toString();
-				}
-			} else {
-				s = null;
-			}
-			rv = new Label( s );
-		}
-		return rv;
-	}
+  @Override
+  protected SwingComponentView<?> createComponent(MethodInvocationChunk methodInvocationChunk, InstancePropertyOwner owner) {
+    String methodName = methodInvocationChunk.getMethodName();
+    SwingComponentView<?> rv;
+    if ((owner instanceof AbstractDeclaration) && methodName.equals("getName")) {
+      AbstractDeclaration declaration = (AbstractDeclaration) owner;
+      DeclarationNameLabel label = new DeclarationNameLabel(declaration);
+      if (declaration instanceof AbstractMethod) {
+        AbstractMethod method = (AbstractMethod) declaration;
+        if (method.getReturnType() == JavaType.VOID_TYPE) {
+          label.scaleFont(this.getDeclarationNameFontScale());
+          label.changeFont(TextWeight.BOLD);
+        }
+      }
+      rv = label;
+    } else if ((owner instanceof SimpleArgument) && methodName.equals("getParameterNameText")) {
+      SimpleArgument argument = (SimpleArgument) owner;
+      rv = new DeclarationNameLabel(argument.parameter.getValue());
+    } else if ((owner instanceof AbstractConstructor) && methodName.equals("getDeclaringType")) {
+      AbstractConstructor constructor = (AbstractConstructor) owner;
+      rv = this.createTypeComponent(constructor.getDeclaringType());
+    } else if ((owner instanceof UserMethod) && methodName.equals("getReturnType")) {
+      UserMethod method = (UserMethod) owner;
+      rv = this.createTypeComponent(method.getReturnType());
+    } else if ((owner instanceof UserCode) && methodName.equals("getParameters")) {
+      UserCode code = (UserCode) owner;
+      rv = new ParametersPane(this, code);
+    } else {
+      Method mthd = ReflectionUtilities.getMethod(owner.getClass(), methodName);
+      Object o = ReflectionUtilities.invoke(owner, mthd);
+      String s;
+      if (o != null) {
+        if (o instanceof AbstractType<?, ?, ?>) {
+          s = ((AbstractType<?, ?, ?>) o).getName();
+        } else {
+          s = o.toString();
+        }
+      } else {
+        s = null;
+      }
+      rv = new Label(s);
+    }
+    return rv;
+  }
 
-	protected ExpressionPropertyCascade getArgumentCascade( SimpleArgument simpleArgument ) {
-		return ArgumentCascade.getInstance( simpleArgument );
-	}
+  protected ExpressionPropertyCascade getArgumentCascade(SimpleArgument simpleArgument) {
+    return ArgumentCascade.getInstance(simpleArgument);
+  }
 
-	protected boolean isDropDownDesiredFor( ExpressionProperty expressionProperty ) {
-		Expression expression = expressionProperty.getValue();
-		return IDE.getActiveInstance().isDropDownDesiredFor( expression );
-	}
+  protected boolean isDropDownDesiredFor(ExpressionProperty expressionProperty) {
+    Expression expression = expressionProperty.getValue();
+    return IDE.getActiveInstance().isDropDownDesiredFor(expression);
+  }
 
-	public SwingComponentView<?> createArgumentPane( AbstractArgument argument, SwingComponentView<?> prefixPane ) {
-		if( argument instanceof SimpleArgument ) {
-			SimpleArgument simpleArgument = (SimpleArgument)argument;
-			ExpressionProperty expressionProperty = simpleArgument.expression;
-			SwingComponentView<?> rv = new ExpressionPropertyView( this, expressionProperty );
-			if( this.isDropDownDesiredFor( expressionProperty ) ) {
-				ExpressionPropertyCascade model = this.getArgumentCascade( simpleArgument );
-				ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), prefixPane, rv, expressionProperty );
-				rv = expressionPropertyDropDownPane;
-			}
-			return rv;
-		} else if( argument instanceof JavaKeyedArgument ) {
-			JavaKeyedArgument keyedArgument = (JavaKeyedArgument)argument;
-			return new KeyedArgumentView( this, keyedArgument );
-		} else {
-			throw new RuntimeException( "todo: " + argument );
-		}
-	}
+  public SwingComponentView<?> createArgumentPane(AbstractArgument argument, SwingComponentView<?> prefixPane) {
+    if (argument instanceof SimpleArgument) {
+      SimpleArgument simpleArgument = (SimpleArgument) argument;
+      ExpressionProperty expressionProperty = simpleArgument.expression;
+      SwingComponentView<?> rv = new ExpressionPropertyView(this, expressionProperty);
+      if (this.isDropDownDesiredFor(expressionProperty)) {
+        ExpressionPropertyCascade model = this.getArgumentCascade(simpleArgument);
+        ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane(model.getRoot().getPopupPrepModel(), prefixPane, rv, expressionProperty);
+        rv = expressionPropertyDropDownPane;
+      }
+      return rv;
+    } else if (argument instanceof JavaKeyedArgument) {
+      JavaKeyedArgument keyedArgument = (JavaKeyedArgument) argument;
+      return new KeyedArgumentView(this, keyedArgument);
+    } else {
+      throw new RuntimeException("todo: " + argument);
+    }
+  }
 
-	protected SwingComponentView<?> createInstanceCreationPane( InstanceCreation instanceCreation ) {
-		AbstractConstructor constructor = instanceCreation.constructor.getValue();
-		if( constructor instanceof AnonymousUserConstructor ) {
-			return new AnonymousConstructorPane( this, (AnonymousUserConstructor)constructor );
-		} else {
-			return new InstanceCreationView( this, instanceCreation );
-		}
-	}
+  protected SwingComponentView<?> createInstanceCreationPane(InstanceCreation instanceCreation) {
+    AbstractConstructor constructor = instanceCreation.constructor.getValue();
+    if (constructor instanceof AnonymousUserConstructor) {
+      return new AnonymousConstructorPane(this, (AnonymousUserConstructor) constructor);
+    } else {
+      return new InstanceCreationView(this, instanceCreation);
+    }
+  }
 
-	protected SwingComponentView<?> createFieldAccessPane( FieldAccess fieldAccess ) {
-		return new FieldAccessView( this, fieldAccess );
-	}
+  protected SwingComponentView<?> createFieldAccessPane(FieldAccess fieldAccess) {
+    return new FieldAccessView(this, fieldAccess);
+  }
 
-	@Override
-	protected SwingComponentView<?> createGetsComponent( boolean isTowardLeadingEdge ) {
-		return new GetsPane( isTowardLeadingEdge );
-	}
+  @Override
+  protected SwingComponentView<?> createGetsComponent(boolean isTowardLeadingEdge) {
+    return new GetsPane(isTowardLeadingEdge);
+  }
 
-	private SwingComponentView<?> createTypeComponent( AbstractType<?, ?, ?> type ) {
-		return TypeComponent.createInstance( type );
-	}
+  private SwingComponentView<?> createTypeComponent(AbstractType<?, ?, ?> type) {
+    return TypeComponent.createInstance(type);
+  }
 
-	protected SwingComponentView<?> createLocalDeclarationPane( UserLocal userLocal ) {
-		return new LocalDeclarationPane( userLocal, this.createLocalPane( userLocal ) );
-	}
+  protected SwingComponentView<?> createLocalDeclarationPane(UserLocal userLocal) {
+    return new LocalDeclarationPane(userLocal, this.createLocalPane(userLocal));
+  }
 
-	protected SwingComponentView<?> createLocalPane( UserLocal userLocal ) {
-		return new LocalPane( userLocal, this.isLocalDraggableAndMutable( userLocal ) );
-	}
+  protected SwingComponentView<?> createLocalPane(UserLocal userLocal) {
+    return new LocalPane(userLocal, this.isLocalDraggableAndMutable(userLocal));
+  }
 
-	protected SwingComponentView<?> createGenericNodePropertyPane( NodeProperty<?> nodeProperty ) {
-		return new NodePropertyView( this, nodeProperty );
-	}
+  protected SwingComponentView<?> createGenericNodePropertyPane(NodeProperty<?> nodeProperty) {
+    return new NodePropertyView(this, nodeProperty);
+  }
 
-	public abstract SwingComponentView<?> createExpressionPropertyPane( ExpressionProperty expressionProperty, AbstractType<?, ?, ?> type );
+  public abstract SwingComponentView<?> createExpressionPropertyPane(ExpressionProperty expressionProperty, AbstractType<?, ?, ?> type);
 
-	public final SwingComponentView<?> createExpressionPropertyPane( ExpressionProperty expressionProperty ) {
-		return this.createExpressionPropertyPane( expressionProperty, null );
-	}
+  public final SwingComponentView<?> createExpressionPropertyPane(ExpressionProperty expressionProperty) {
+    return this.createExpressionPropertyPane(expressionProperty, null);
+  }
 
-	protected SwingComponentView<?> createResourcePropertyPane( ResourceProperty resourceProperty ) {
-		return new ResourcePropertyView( this, resourceProperty );
-	}
+  protected SwingComponentView<?> createResourcePropertyPane(ResourceProperty resourceProperty) {
+    return new ResourcePropertyView(this, resourceProperty);
+  }
 
-	protected SwingComponentView<?> createStatementListPropertyPane( StatementListProperty statementListProperty ) {
-		return new StatementListPropertyView( this, statementListProperty );
-	}
+  protected SwingComponentView<?> createStatementListPropertyPane(StatementListProperty statementListProperty) {
+    return new StatementListPropertyView(this, statementListProperty);
+  }
 
-	protected abstract SwingComponentView<?> createSimpleArgumentListPropertyPane( SimpleArgumentListProperty argumentListProperty );
+  protected abstract SwingComponentView<?> createSimpleArgumentListPropertyPane(SimpleArgumentListProperty argumentListProperty);
 
-	protected abstract SwingComponentView<?> createKeyedArgumentListPropertyPane( KeyedArgumentListProperty argumentListProperty );
+  protected abstract SwingComponentView<?> createKeyedArgumentListPropertyPane(KeyedArgumentListProperty argumentListProperty);
 
-	protected SwingComponentView<?> createExpressionListPropertyPane( ExpressionListProperty expressionListProperty ) {
-		return new ExpressionListPropertyPane( this, expressionListProperty );
-	}
+  protected SwingComponentView<?> createExpressionListPropertyPane(ExpressionListProperty expressionListProperty) {
+    return new ExpressionListPropertyPane(this, expressionListProperty);
+  }
 
-	protected SwingComponentView<?> createGenericNodeListPropertyPane( NodeListProperty<AbstractNode> nodeListProperty ) {
-		return new DefaultNodeListPropertyPane( this, nodeListProperty );
-	}
+  protected SwingComponentView<?> createGenericNodeListPropertyPane(NodeListProperty<AbstractNode> nodeListProperty) {
+    return new DefaultNodeListPropertyPane(this, nodeListProperty);
+  }
 
-	protected SwingComponentView<?> createGenericListPropertyPane( ListProperty<Object> listProperty ) {
-		return new ListPropertyLabelsView( this, listProperty );
-	}
+  protected SwingComponentView<?> createGenericListPropertyPane(ListProperty<Object> listProperty) {
+    return new ListPropertyLabelsView(this, listProperty);
+  }
 
-	protected SwingComponentView<?> createGenericInstancePropertyPane( InstanceProperty property ) {
-		return new InstancePropertyLabelView( this, property );
-	}
+  protected SwingComponentView<?> createGenericInstancePropertyPane(InstanceProperty property) {
+    return new InstancePropertyLabelView(this, property);
+  }
 
-	public AbstractStatementPane createStatementPane( DragModel dragModel, Statement statement, StatementListProperty statementListProperty ) {
-		AbstractStatementPane rv;
-		if( statement instanceof ExpressionStatement ) {
-			rv = new ExpressionStatementPane( dragModel, this, (ExpressionStatement)statement, statementListProperty );
-		} else if( statement instanceof Comment ) {
-			rv = new CommentPane( dragModel, this, (Comment)statement, statementListProperty );
-		} else {
-			rv = new DefaultStatementPane( dragModel, this, statement, statementListProperty );
-		}
-		return rv;
-	}
+  public AbstractStatementPane createStatementPane(DragModel dragModel, Statement statement, StatementListProperty statementListProperty) {
+    AbstractStatementPane rv;
+    if (statement instanceof ExpressionStatement) {
+      rv = new ExpressionStatementPane(dragModel, this, (ExpressionStatement) statement, statementListProperty);
+    } else if (statement instanceof Comment) {
+      rv = new CommentPane(dragModel, this, (Comment) statement, statementListProperty);
+    } else {
+      rv = new DefaultStatementPane(dragModel, this, statement, statementListProperty);
+    }
+    return rv;
+  }
 
-	public AbstractStatementPane createStatementPane( Statement statement ) {
-		return this.createStatementPane( StatementDragModel.getInstance( statement ), statement, null );
-	}
+  public AbstractStatementPane createStatementPane(Statement statement) {
+    return this.createStatementPane(StatementDragModel.getInstance(statement), statement, null);
+  }
 
-	protected abstract SwingComponentView<?> createIdeExpressionPane( IdeExpression ideExpression );
+  protected abstract SwingComponentView<?> createIdeExpressionPane(IdeExpression ideExpression);
 
-	public SwingComponentView<?> createExpressionPane( Expression expression ) {
-		if( expression instanceof IdeExpression ) {
-			IdeExpression ideExpression = (IdeExpression)expression;
-			return this.createIdeExpressionPane( ideExpression );
-		} else {
-			SwingComponentView<?> rv = null;
-			if( expression instanceof InfixExpression ) {
-				rv = new InfixExpressionView( this, (InfixExpression<? extends Enum<?>>)expression );
-			} else if( expression instanceof AssignmentExpression ) {
-				rv = new AssignmentExpressionPane( this, (AssignmentExpression)expression );
-			} else if( expression instanceof FieldAccess ) {
-				rv = this.createFieldAccessPane( (FieldAccess)expression );
-			} else if( expression instanceof TypeExpression ) {
-				if( FormatterState.getInstance().getValue().isTypeExpressionDesired() ) {
-					TypeExpression typeExpression = (TypeExpression)expression;
-					Node parent = typeExpression.getParent();
-					if( parent instanceof MethodInvocation ) {
-						MethodInvocation methodInvocation = (MethodInvocation)parent;
-						Node grandparent = methodInvocation.getParent();
-						if( grandparent instanceof JavaKeyedArgument ) {
-							JavaKeyedArgument javaKeyedArgument = (JavaKeyedArgument)grandparent;
-							AbstractType<?, ?, ?> type = AstUtilities.getKeywordFactoryType( javaKeyedArgument );
-							if( type != null ) {
-								rv = new Label( type.getName() + "." );
-								//rv.makeStandOut();
-							}
-						}
-					}
-					if( rv != null ) {
-						//pass
-					} else {
-						AbstractType<?, ?, ?> type = typeExpression.value.getValue();
-						rv = new LineAxisPanel(
-								new DeclarationNameLabel( type ),
-								new Label( "." )
-								);
-					}
-				} else {
-					rv = new Label();
-				}
-			} else if( expression instanceof InstanceCreation ) {
-				rv = this.createInstanceCreationPane( (InstanceCreation)expression );
-				//				} else if( expression instanceof org.lgna.project.ast.AbstractLiteral ) {
-				//					rv = this.createComponent( expression );
-			} else {
-				SwingComponentView<?> component = null;
-				if( expression != null ) {
-					Node parent = expression.getParent();
-					if( parent instanceof MethodInvocation ) {
-						MethodInvocation methodInvocation = (MethodInvocation)parent;
-						if( expression == methodInvocation.expression.getValue() ) {
-							AbstractType<?, ?, ?> type = StoryApiConfigurationManager.getInstance().getBuildMethodPoseBuilderType( methodInvocation );
-							if( type != null ) {
-								StringBuilder sb = new StringBuilder();
-								sb.append( "new " );
-								sb.append( type.getName() );
-								sb.append( "(...)." );
-								component = new Label( sb.toString() );
-							}
-						}
-					}
-				}
-				if( component != null ) {
-					rv = this.EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( component );
-				} else {
-					if( IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() ) {
-						rv = new ExpressionView( this, expression );
-					} else {
-						if( IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() ) {
-							rv = new ExpressionView( this, expression );
-						} else {
-							component = this.createComponent( expression );
-							rv = this.EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( component );
-						}
-					}
-				}
-			}
-			return rv;
-		}
-	}
+  public SwingComponentView<?> createExpressionPane(Expression expression) {
+    if (expression instanceof IdeExpression) {
+      IdeExpression ideExpression = (IdeExpression) expression;
+      return this.createIdeExpressionPane(ideExpression);
+    } else {
+      SwingComponentView<?> rv = null;
+      if (expression instanceof InfixExpression) {
+        rv = new InfixExpressionView(this, (InfixExpression<? extends Enum<?>>) expression);
+      } else if (expression instanceof AssignmentExpression) {
+        rv = new AssignmentExpressionPane(this, (AssignmentExpression) expression);
+      } else if (expression instanceof FieldAccess) {
+        rv = this.createFieldAccessPane((FieldAccess) expression);
+      } else if (expression instanceof TypeExpression) {
+        if (FormatterState.getInstance().getValue().isTypeExpressionDesired()) {
+          TypeExpression typeExpression = (TypeExpression) expression;
+          Node parent = typeExpression.getParent();
+          if (parent instanceof MethodInvocation) {
+            MethodInvocation methodInvocation = (MethodInvocation) parent;
+            Node grandparent = methodInvocation.getParent();
+            if (grandparent instanceof JavaKeyedArgument) {
+              JavaKeyedArgument javaKeyedArgument = (JavaKeyedArgument) grandparent;
+              AbstractType<?, ?, ?> type = AstUtilities.getKeywordFactoryType(javaKeyedArgument);
+              if (type != null) {
+                rv = new Label(type.getName() + ".");
+                //rv.makeStandOut();
+              }
+            }
+          }
+          if (rv != null) {
+            //pass
+          } else {
+            AbstractType<?, ?, ?> type = typeExpression.value.getValue();
+            rv = new LineAxisPanel(new DeclarationNameLabel(type), new Label("."));
+          }
+        } else {
+          rv = new Label();
+        }
+      } else if (expression instanceof InstanceCreation) {
+        rv = this.createInstanceCreationPane((InstanceCreation) expression);
+        //        } else if( expression instanceof org.lgna.project.ast.AbstractLiteral ) {
+        //          rv = this.createComponent( expression );
+      } else {
+        SwingComponentView<?> component = null;
+        if (expression != null) {
+          Node parent = expression.getParent();
+          if (parent instanceof MethodInvocation) {
+            MethodInvocation methodInvocation = (MethodInvocation) parent;
+            if (expression == methodInvocation.expression.getValue()) {
+              AbstractType<?, ?, ?> type = StoryApiConfigurationManager.getInstance().getBuildMethodPoseBuilderType(methodInvocation);
+              if (type != null) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("new ");
+                sb.append(type.getName());
+                sb.append("(...).");
+                component = new Label(sb.toString());
+              }
+            }
+          }
+        }
+        if (component != null) {
+          rv = this.EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent(component);
+        } else {
+          if (IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue()) {
+            rv = new ExpressionView(this, expression);
+          } else {
+            if (IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue()) {
+              rv = new ExpressionView(this, expression);
+            } else {
+              component = this.createComponent(expression);
+              rv = this.EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent(component);
+            }
+          }
+        }
+      }
+      return rv;
+    }
+  }
 
-	private static final Set<String> LOCAL_PROPERTY_NAMES = Sets.newHashSet( "local", "item", "variable", "constant" );
+  private static final Set<String> LOCAL_PROPERTY_NAMES = Sets.newHashSet("local", "item", "variable", "constant");
 
-	@Override
-	protected SwingComponentView<?> createPropertyComponent( InstanceProperty<?> property, int underscoreCount ) {
-		//todo:
-		String propertyName = property.getName();
-		//
+  @Override
+  protected SwingComponentView<?> createPropertyComponent(InstanceProperty<?> property, int underscoreCount) {
+    //todo:
+    String propertyName = property.getName();
+    //
 
-		SwingComponentView<?> rv;
-		if( underscoreCount == 2 ) {
-			if( LOCAL_PROPERTY_NAMES.contains( propertyName ) ) {
-				rv = this.createLocalDeclarationPane( (UserLocal)property.getValue() );
-			} else {
-				rv = new Label( "TODO: handle underscore count 2: " + propertyName );
-			}
-		} else if( underscoreCount == 1 ) {
-			if( LOCAL_PROPERTY_NAMES.contains( propertyName ) ) {
-				rv = this.createLocalPane( (UserLocal)property.getValue() );
-			} else {
-				rv = new Label( "TODO: handle underscore count 1: " + propertyName );
-			}
-		} else {
-			rv = null;
-			if( rv != null ) {
-				//pass
-			} else {
-				if( property instanceof NodeProperty<?> ) {
-					if( property instanceof ExpressionProperty ) {
-						rv = this.createExpressionPropertyPane( (ExpressionProperty)property );
-					} else {
-						rv = this.createGenericNodePropertyPane( (NodeProperty<?>)property );
-					}
-				} else if( property instanceof ResourceProperty ) {
-					rv = this.createResourcePropertyPane( (ResourceProperty)property );
-				} else if( property instanceof ListProperty<?> ) {
-					if( property instanceof NodeListProperty<?> ) {
-						if( property instanceof StatementListProperty ) {
-							rv = this.createStatementListPropertyPane( (StatementListProperty)property );
-						} else if( property instanceof SimpleArgumentListProperty ) {
-							rv = this.createSimpleArgumentListPropertyPane( (SimpleArgumentListProperty)property );
-						} else if( property instanceof KeyedArgumentListProperty ) {
-							rv = this.createKeyedArgumentListPropertyPane( (KeyedArgumentListProperty)property );
-						} else if( property instanceof ExpressionListProperty ) {
-							rv = this.createExpressionListPropertyPane( (ExpressionListProperty)property );
-						} else {
-							rv = this.createGenericNodeListPropertyPane( (NodeListProperty<AbstractNode>)property );
-						}
-					} else {
-						rv = this.createGenericListPropertyPane( (ListProperty<Object>)property );
-					}
-				} else {
-					rv = this.createGenericInstancePropertyPane( property );
-				}
-			}
-		}
-		assert rv != null : property;
-		return rv;
-	}
+    SwingComponentView<?> rv;
+    if (underscoreCount == 2) {
+      if (LOCAL_PROPERTY_NAMES.contains(propertyName)) {
+        rv = this.createLocalDeclarationPane((UserLocal) property.getValue());
+      } else {
+        rv = new Label("TODO: handle underscore count 2: " + propertyName);
+      }
+    } else if (underscoreCount == 1) {
+      if (LOCAL_PROPERTY_NAMES.contains(propertyName)) {
+        rv = this.createLocalPane((UserLocal) property.getValue());
+      } else {
+        rv = new Label("TODO: handle underscore count 1: " + propertyName);
+      }
+    } else {
+      rv = null;
+      if (rv != null) {
+        //pass
+      } else {
+        if (property instanceof NodeProperty<?>) {
+          if (property instanceof ExpressionProperty) {
+            rv = this.createExpressionPropertyPane((ExpressionProperty) property);
+          } else {
+            rv = this.createGenericNodePropertyPane((NodeProperty<?>) property);
+          }
+        } else if (property instanceof ResourceProperty) {
+          rv = this.createResourcePropertyPane((ResourceProperty) property);
+        } else if (property instanceof ListProperty<?>) {
+          if (property instanceof NodeListProperty<?>) {
+            if (property instanceof StatementListProperty) {
+              rv = this.createStatementListPropertyPane((StatementListProperty) property);
+            } else if (property instanceof SimpleArgumentListProperty) {
+              rv = this.createSimpleArgumentListPropertyPane((SimpleArgumentListProperty) property);
+            } else if (property instanceof KeyedArgumentListProperty) {
+              rv = this.createKeyedArgumentListPropertyPane((KeyedArgumentListProperty) property);
+            } else if (property instanceof ExpressionListProperty) {
+              rv = this.createExpressionListPropertyPane((ExpressionListProperty) property);
+            } else {
+              rv = this.createGenericNodeListPropertyPane((NodeListProperty<AbstractNode>) property);
+            }
+          } else {
+            rv = this.createGenericListPropertyPane((ListProperty<Object>) property);
+          }
+        } else {
+          rv = this.createGenericInstancePropertyPane(property);
+        }
+      }
+    }
+    assert rv != null : property;
+    return rv;
+  }
 }

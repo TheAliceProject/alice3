@@ -56,27 +56,27 @@ import java.util.UUID;
  * @author Matt May
  */
 public class DeclareAnimationProcedureDialog extends AnimationProcedureDialog {
-	private static InitializingIfAbsentMap<NamedUserType, DeclareAnimationProcedureDialog> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<NamedUserType, DeclareAnimationProcedureDialog> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static DeclareAnimationProcedureDialog getInstance( NamedUserType declaringType ) {
-		if( PoserComposite.isPoseable( declaringType ) ) {
-			return map.getInitializingIfAbsent( declaringType, new InitializingIfAbsentMap.Initializer<NamedUserType, DeclareAnimationProcedureDialog>() {
-				@Override
-				public DeclareAnimationProcedureDialog initialize( NamedUserType declaringType ) {
-					return new DeclareAnimationProcedureDialog( declaringType );
-				}
-			} );
-		} else {
-			return null;
-		}
-	}
+  public static DeclareAnimationProcedureDialog getInstance(NamedUserType declaringType) {
+    if (PoserComposite.isPoseable(declaringType)) {
+      return map.getInitializingIfAbsent(declaringType, new InitializingIfAbsentMap.Initializer<NamedUserType, DeclareAnimationProcedureDialog>() {
+        @Override
+        public DeclareAnimationProcedureDialog initialize(NamedUserType declaringType) {
+          return new DeclareAnimationProcedureDialog(declaringType);
+        }
+      });
+    } else {
+      return null;
+    }
+  }
 
-	private DeclareAnimationProcedureDialog( NamedUserType declaringType ) {
-		super( UUID.fromString( "a403b127-9867-4c04-9878-b78e267b83ee" ), AnimatorComposite.getDialogForUserType( declaringType, null ) );
-	}
+  private DeclareAnimationProcedureDialog(NamedUserType declaringType) {
+    super(UUID.fromString("a403b127-9867-4c04-9878-b78e267b83ee"), AnimatorComposite.getDialogForUserType(declaringType, null));
+  }
 
-	@Override
-	protected AbstractEdit createEdit( UserActivity userActivity ) {
-		return new DeclareMethodEdit( userActivity, getAnimatorComposite().getDeclaringType(), getAnimatorComposite().getControlComposite().getNameState().getValue(), JavaType.VOID_TYPE, getAnimatorComposite().getControlComposite().createMethodBody() );
-	}
+  @Override
+  protected AbstractEdit createEdit(UserActivity userActivity) {
+    return new DeclareMethodEdit(userActivity, getAnimatorComposite().getDeclaringType(), getAnimatorComposite().getControlComposite().getNameState().getValue(), JavaType.VOID_TYPE, getAnimatorComposite().getControlComposite().createMethodBody());
+  }
 }

@@ -44,19 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultHairShortTuckin implements FemaleAdultHair, FemaleElderHair {
-	GREY,
-	BLOND,
-	BLACK,
-	BROWN,
-	RED;
+  GREY, BLOND, BLACK, BROWN, RED;
 
-	@Override
-	public Boolean hasHair() {
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat() {
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

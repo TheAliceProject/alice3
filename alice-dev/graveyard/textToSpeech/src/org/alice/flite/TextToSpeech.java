@@ -53,99 +53,94 @@ import javax.sound.sampled.AudioSystem;
 
 import org.lgna.common.resources.AudioResource;
 
-public class TextToSpeech
-{
+public class TextToSpeech {
 
-	public final static String MALE_VOICE = "MALE";
-	public final static String FEMALE_VOICE = "FEMALE";
+  public final static String MALE_VOICE = "MALE";
+  public final static String FEMALE_VOICE = "FEMALE";
 
-	private String type;
-	private int numSamples;
-	private int numChannels;
-	private int sampleRate;
-	private short[] samples;
+  private String type;
+  private int numSamples;
+  private int numChannels;
+  private int sampleRate;
+  private short[] samples;
 
-	native void initWithTextToSpeech( String text, String voice );
+  native void initWithTextToSpeech(String text, String voice);
 
-	static
-	{
-		try
-		{
-			edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadLibrary( "", "jni_flite", edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle.EXCEPTION );
-		} catch( Exception e ) {
-			e.printStackTrace();
-		}
-	}
+  static {
+    try {
+      edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadLibrary("", "jni_flite", edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle.EXCEPTION);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
-	public TextToSpeech() {
-		this.type = null;
-		this.numSamples = 0;
-		this.numChannels = 0;
-		this.sampleRate = 0;
-		this.samples = null;
-	}
+  public TextToSpeech() {
+    this.type = null;
+    this.numSamples = 0;
+    this.numChannels = 0;
+    this.sampleRate = 0;
+    this.samples = null;
+  }
 
-	public void processText( String text, String voice ) {
-		this.initWithTextToSpeech( text, voice );
-	}
+  public void processText(String text, String voice) {
+    this.initWithTextToSpeech(text, voice);
+  }
 
-	public double getDuration() {
-		return ( this.numSamples / (double)this.sampleRate );
-	}
+  public double getDuration() {
+    return (this.numSamples / (double) this.sampleRate);
+  }
 
-	public byte[] saveToByteArray() {
-		if( this.samples != null ) {
-			ShortArrayInputStream shortStream = new ShortArrayInputStream( this.samples );
-			AudioFormat wavFormat = new AudioFormat( this.sampleRate, 16, this.numChannels, true, true );
-			AudioInputStream audioStream = new AudioInputStream( shortStream, wavFormat, this.numSamples );
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			try
-			{
-				AudioSystem.write( audioStream, AudioFileFormat.Type.WAVE, out );
-			} catch( Exception e ) {
-				return null;
-			}
-			return out.toByteArray();
-		}
-		return null;
-	}
+  public byte[] saveToByteArray() {
+    if (this.samples != null) {
+      ShortArrayInputStream shortStream = new ShortArrayInputStream(this.samples);
+      AudioFormat wavFormat = new AudioFormat(this.sampleRate, 16, this.numChannels, true, true);
+      AudioInputStream audioStream = new AudioInputStream(shortStream, wavFormat, this.numSamples);
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      try {
+        AudioSystem.write(audioStream, AudioFileFormat.Type.WAVE, out);
+      } catch (Exception e) {
+        return null;
+      }
+      return out.toByteArray();
+    }
+    return null;
+  }
 
-	static void doTextToSpeech( String toSaveTo, String text, String voice ) {
-		try
-		{
-			//System.out.println("Doing text to speech on: \""+text+"\"");
-			long startTime = System.currentTimeMillis();
-			TextToSpeech tts = new TextToSpeech();
-			tts.initWithTextToSpeech( text, voice );
-			long initTime = System.currentTimeMillis();
-			ShortArrayInputStream shortStream = new ShortArrayInputStream( tts.samples );
-			AudioFormat wavFormat = new AudioFormat( tts.sampleRate, 16, tts.numChannels, true, true );
-			AudioInputStream audioStream = new AudioInputStream( shortStream, wavFormat, tts.numSamples );
+  static void doTextToSpeech(String toSaveTo, String text, String voice) {
+    try {
+      //System.out.println("Doing text to speech on: \""+text+"\"");
+      long startTime = System.currentTimeMillis();
+      TextToSpeech tts = new TextToSpeech();
+      tts.initWithTextToSpeech(text, voice);
+      long initTime = System.currentTimeMillis();
+      ShortArrayInputStream shortStream = new ShortArrayInputStream(tts.samples);
+      AudioFormat wavFormat = new AudioFormat(tts.sampleRate, 16, tts.numChannels, true, true);
+      AudioInputStream audioStream = new AudioInputStream(shortStream, wavFormat, tts.numSamples);
 
-			File audioFile = new File( "C:/" + toSaveTo + ".wav" );
+      File audioFile = new File("C:/" + toSaveTo + ".wav");
 
-			long dumpToFileTime = System.currentTimeMillis();
-			AudioResource ttsAudioResource = new AudioResource( audioFile );
-			long doneLoadingTime = System.currentTimeMillis();
+      long dumpToFileTime = System.currentTimeMillis();
+      AudioResource ttsAudioResource = new AudioResource(audioFile);
+      long doneLoadingTime = System.currentTimeMillis();
 
-			//			org.lgna.story.AudioSource ttsAudioSource = new org.lgna.story.AudioSource(ttsAudioResource);
+      //      org.lgna.story.AudioSource ttsAudioSource = new org.lgna.story.AudioSource(ttsAudioResource);
 
-			//			edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
-			//			edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( ttsAudioSource.getAudioResource(), ttsAudioSource.getVolume(), ttsAudioSource.getStartTime(), ttsAudioSource.getStopTime() );
-			long endTime = System.currentTimeMillis();
-			int wordCount = text.split( " " ).length;
-			System.out.print( text + " | " );
-			System.out.print( audioFile.getAbsolutePath() + " | " );
-			System.out.print( wordCount + " | " );
-			System.out.print( ( initTime - startTime ) + " | " );
-			System.out.print( ( dumpToFileTime - initTime ) + " | " );
-			System.out.print( ( doneLoadingTime - dumpToFileTime ) + " | " );
-			System.out.print( ( endTime - startTime ) );
-			System.out.println();
-			//player.playUntilStop();
-		} catch( Exception e ) {
-			e.printStackTrace();
-		}
-	}
+      //      edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
+      //      edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( ttsAudioSource.getAudioResource(), ttsAudioSource.getVolume(), ttsAudioSource.getStartTime(), ttsAudioSource.getStopTime() );
+      long endTime = System.currentTimeMillis();
+      int wordCount = text.split(" ").length;
+      System.out.print(text + " | ");
+      System.out.print(audioFile.getAbsolutePath() + " | ");
+      System.out.print(wordCount + " | ");
+      System.out.print((initTime - startTime) + " | ");
+      System.out.print((dumpToFileTime - initTime) + " | ");
+      System.out.print((doneLoadingTime - dumpToFileTime) + " | ");
+      System.out.print((endTime - startTime));
+      System.out.println();
+      //player.playUntilStop();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
 }

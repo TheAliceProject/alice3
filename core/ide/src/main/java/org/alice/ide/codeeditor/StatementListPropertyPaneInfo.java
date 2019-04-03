@@ -50,32 +50,32 @@ import java.awt.event.MouseEvent;
 /**
  * @author Dennis Cosgrove
  */
-public class StatementListPropertyPaneInfo /* implements edu.cmu.cs.dennisc.croquet.TrackableShape */{
-	private StatementListPropertyView statementListPropertyPane;
-	private Rectangle bounds;
+public class StatementListPropertyPaneInfo /* implements edu.cmu.cs.dennisc.croquet.TrackableShape */ {
+  private StatementListPropertyView statementListPropertyPane;
+  private Rectangle bounds;
 
-	public StatementListPropertyPaneInfo( StatementListPropertyView statementListPropertyPane, Rectangle bounds ) {
-		this.statementListPropertyPane = statementListPropertyPane;
-		this.bounds = bounds;
-	}
+  public StatementListPropertyPaneInfo(StatementListPropertyView statementListPropertyPane, Rectangle bounds) {
+    this.statementListPropertyPane = statementListPropertyPane;
+    this.bounds = bounds;
+  }
 
-	public boolean contains( MouseEvent e ) {
-		return this.bounds.contains( e.getPoint() );
-	}
+  public boolean contains(MouseEvent e) {
+    return this.bounds.contains(e.getPoint());
+  }
 
-	public StatementListPropertyView getStatementListPropertyPane() {
-		return this.statementListPropertyPane;
-	}
+  public StatementListPropertyView getStatementListPropertyPane() {
+    return this.statementListPropertyPane;
+  }
 
-	public void setStatementListPropertyPane( StatementListPropertyView statementListPropertyPane ) {
-		this.statementListPropertyPane = statementListPropertyPane;
-	}
+  public void setStatementListPropertyPane(StatementListPropertyView statementListPropertyPane) {
+    this.statementListPropertyPane = statementListPropertyPane;
+  }
 
-	public Rectangle getBounds() {
-		return this.bounds;
-	}
+  public Rectangle getBounds() {
+    return this.bounds;
+  }
 
-	public void setBounds( Rectangle bounds ) {
-		this.bounds = bounds;
-	}
+  public void setBounds(Rectangle bounds) {
+    this.bounds = bounds;
+  }
 }

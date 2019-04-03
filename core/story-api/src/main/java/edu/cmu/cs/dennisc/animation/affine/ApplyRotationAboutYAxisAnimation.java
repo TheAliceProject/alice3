@@ -50,15 +50,15 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  * @author Dennis Cosgrove
  */
 public class ApplyRotationAboutYAxisAnimation extends AbstractApplyRotationAnimation {
-	public ApplyRotationAboutYAxisAnimation() {
-	}
+  public ApplyRotationAboutYAxisAnimation() {
+  }
 
-	public ApplyRotationAboutYAxisAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Angle angle ) {
-		super( sgSubject, sgAsSeenBy, angle );
-	}
+  public ApplyRotationAboutYAxisAnimation(AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Angle angle) {
+    super(sgSubject, sgAsSeenBy, angle);
+  }
 
-	@Override
-	protected void applyRotationInRadians( double angleInRadians ) {
-		getSubject().applyRotationAboutYAxisInRadians( angleInRadians, getAsSeenBy() );
-	}
+  @Override
+  protected void applyRotationInRadians(double angleInRadians) {
+    getSubject().applyRotationAboutYAxisInRadians(angleInRadians, getAsSeenBy());
+  }
 }

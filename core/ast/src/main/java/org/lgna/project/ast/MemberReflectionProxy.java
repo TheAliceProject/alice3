@@ -47,37 +47,37 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class MemberReflectionProxy<E> extends ReflectionProxy<E> {
-	private ClassReflectionProxy declaringClassReflectionProxy;
+  private ClassReflectionProxy declaringClassReflectionProxy;
 
-	public MemberReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy ) {
-		this.declaringClassReflectionProxy = declaringClassReflectionProxy;
-	}
+  public MemberReflectionProxy(ClassReflectionProxy declaringClassReflectionProxy) {
+    this.declaringClassReflectionProxy = declaringClassReflectionProxy;
+  }
 
-	public MemberReflectionProxy( E e, Class<?> declaringCls ) {
-		super( e );
-		this.declaringClassReflectionProxy = new ClassReflectionProxy( declaringCls );
-	}
+  public MemberReflectionProxy(E e, Class<?> declaringCls) {
+    super(e);
+    this.declaringClassReflectionProxy = new ClassReflectionProxy(declaringCls);
+  }
 
-	@Override
-	protected int hashCodeNonReifiable() {
-		int rv = 17;
-		rv = ( 37 * rv ) + this.declaringClassReflectionProxy.hashCode();
-		return rv;
-	}
+  @Override
+  protected int hashCodeNonReifiable() {
+    int rv = 17;
+    rv = (37 * rv) + this.declaringClassReflectionProxy.hashCode();
+    return rv;
+  }
 
-	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( ReflectionProxy<?> o ) {
-		MemberReflectionProxy<?> other = (MemberReflectionProxy<?>)o;
-		return this.declaringClassReflectionProxy != null ? this.declaringClassReflectionProxy.equals( other.declaringClassReflectionProxy ) : other.declaringClassReflectionProxy == null;
-	}
+  @Override
+  protected boolean equalsInstanceOfSameClassButNonReifiable(ReflectionProxy<?> o) {
+    MemberReflectionProxy<?> other = (MemberReflectionProxy<?>) o;
+    return this.declaringClassReflectionProxy != null ? this.declaringClassReflectionProxy.equals(other.declaringClassReflectionProxy) : other.declaringClassReflectionProxy == null;
+  }
 
-	public ClassReflectionProxy getDeclaringClassReflectionProxy() {
-		return this.declaringClassReflectionProxy;
-	}
+  public ClassReflectionProxy getDeclaringClassReflectionProxy() {
+    return this.declaringClassReflectionProxy;
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		sb.append( "declaringClassName=" );
-		sb.append( this.declaringClassReflectionProxy.getName() );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    sb.append("declaringClassName=");
+    sb.append(this.declaringClassReflectionProxy.getName());
+  }
 }

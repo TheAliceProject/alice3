@@ -53,14 +53,14 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class RenameExampleView extends FormPanel {
-	public RenameExampleView( RenameExampleComposite composite ) {
-		super( composite );
-	}
+  public RenameExampleView(RenameExampleComposite composite) {
+    super(composite);
+  }
 
-	@Override
-	protected void appendRows( List<LabeledFormRow> rows ) {
-		RenameExampleComposite composite = (RenameExampleComposite)this.getComposite();
-		StringState nameState = composite.getNameState();
-		rows.add( new LabeledFormRow( nameState.getSidekickLabel(), nameState.createTextField() ) );
-	}
+  @Override
+  protected void appendRows(List<LabeledFormRow> rows) {
+    RenameExampleComposite composite = (RenameExampleComposite) this.getComposite();
+    StringState nameState = composite.getNameState();
+    rows.add(new LabeledFormRow(nameState.getSidekickLabel(), nameState.createTextField()));
+  }
 }

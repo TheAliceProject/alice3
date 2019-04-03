@@ -56,108 +56,108 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractIsFrameShowingState extends BooleanState {
-	public AbstractIsFrameShowingState( Group group, UUID migrationId ) {
-		super( group, migrationId, false );
-	}
+  public AbstractIsFrameShowingState(Group group, UUID migrationId) {
+    super(group, migrationId, false);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.title = this.findLocalizedText( "title" );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.title = this.findLocalizedText("title");
+  }
 
-	@Override
-	protected abstract Class<? extends Element> getClassUsedForLocalization();
+  @Override
+  protected abstract Class<? extends Element> getClassUsedForLocalization();
 
-	public abstract FrameComposite<?> getFrameComposite();
+  public abstract FrameComposite<?> getFrameComposite();
 
-	private String getFrameTitle() {
-		this.initializeIfNecessary();
-		String rv = this.title;
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = this.getTrueText();
-			if( rv != null ) {
-				rv = rv.replaceAll( "<[a-z]*>", "" );
-				rv = rv.replaceAll( "</[a-z]*>", "" );
-				if( rv.endsWith( "..." ) ) {
-					rv = rv.substring( 0, rv.length() - 3 );
-				}
-			}
-		}
-		return rv;
-	}
+  private String getFrameTitle() {
+    this.initializeIfNecessary();
+    String rv = this.title;
+    if (rv != null) {
+      //pass
+    } else {
+      rv = this.getTrueText();
+      if (rv != null) {
+        rv = rv.replaceAll("<[a-z]*>", "");
+        rv = rv.replaceAll("</[a-z]*>", "");
+        if (rv.endsWith("...")) {
+          rv = rv.substring(0, rv.length() - 3);
+        }
+      }
+    }
+    return rv;
+  }
 
-	@Override
-	protected void fireChanged( Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		super.fireChanged( prevValue, nextValue, isAdjusting );
-		if( nextValue ) {
-			Frame frameView = this.getOwnerFrameView_createIfNecessary();
-			frameView.setTitle( this.getFrameTitle() );
-			this.getFrameComposite().handlePreActivation();
-			frameView.setVisible( true );
-		} else {
-			if( this.ownerFrameView != null ) {
-				if( this.ownerFrameView.isVisible() ) {
-					this.getFrameComposite().handlePostDeactivation();
-					this.ownerFrameView.setVisible( false );
-				}
-			} else {
-				//pass
-			}
-		}
-	}
+  @Override
+  protected void fireChanged(Boolean prevValue, Boolean nextValue, boolean isAdjusting) {
+    super.fireChanged(prevValue, nextValue, isAdjusting);
+    if (nextValue) {
+      Frame frameView = this.getOwnerFrameView_createIfNecessary();
+      frameView.setTitle(this.getFrameTitle());
+      this.getFrameComposite().handlePreActivation();
+      frameView.setVisible(true);
+    } else {
+      if (this.ownerFrameView != null) {
+        if (this.ownerFrameView.isVisible()) {
+          this.getFrameComposite().handlePostDeactivation();
+          this.ownerFrameView.setVisible(false);
+        }
+      } else {
+        //pass
+      }
+    }
+  }
 
-	private Frame getOwnerFrameView_createIfNecessary() {
-		if( this.ownerFrameView != null ) {
-			//pass
-		} else {
-			FrameComposite<?> frameComposite = this.getFrameComposite();
-			this.ownerFrameView = new Frame();
-			this.ownerFrameView.getContentPane().addCenterComponent( frameComposite.getRootComponent() );
-			frameComposite.updateWindowSize( this.ownerFrameView );
-			this.ownerFrameView.addWindowListener( this.windowListener );
-		}
-		return this.ownerFrameView;
-	}
+  private Frame getOwnerFrameView_createIfNecessary() {
+    if (this.ownerFrameView != null) {
+      //pass
+    } else {
+      FrameComposite<?> frameComposite = this.getFrameComposite();
+      this.ownerFrameView = new Frame();
+      this.ownerFrameView.getContentPane().addCenterComponent(frameComposite.getRootComponent());
+      frameComposite.updateWindowSize(this.ownerFrameView);
+      this.ownerFrameView.addWindowListener(this.windowListener);
+    }
+    return this.ownerFrameView;
+  }
 
-	private void handleWindowClosing( WindowEvent e ) {
-		this.setValueTransactionlessly( false );
-	}
+  private void handleWindowClosing(WindowEvent e) {
+    this.setValueTransactionlessly(false);
+  }
 
-	private final WindowListener windowListener = new WindowListener() {
-		@Override
-		public void windowActivated( WindowEvent e ) {
-		}
+  private final WindowListener windowListener = new WindowListener() {
+    @Override
+    public void windowActivated(WindowEvent e) {
+    }
 
-		@Override
-		public void windowDeactivated( WindowEvent e ) {
-		}
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+    }
 
-		@Override
-		public void windowIconified( WindowEvent e ) {
-		}
+    @Override
+    public void windowIconified(WindowEvent e) {
+    }
 
-		@Override
-		public void windowDeiconified( WindowEvent e ) {
-		}
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    }
 
-		@Override
-		public void windowOpened( WindowEvent e ) {
-		}
+    @Override
+    public void windowOpened(WindowEvent e) {
+    }
 
-		@Override
-		public void windowClosing( WindowEvent e ) {
-			handleWindowClosing( e );
-		}
+    @Override
+    public void windowClosing(WindowEvent e) {
+      handleWindowClosing(e);
+    }
 
-		@Override
-		public void windowClosed( WindowEvent e ) {
-		}
-	};
+    @Override
+    public void windowClosed(WindowEvent e) {
+    }
+  };
 
-	private String title;
-	private Frame ownerFrameView;
+  private String title;
+  private Frame ownerFrameView;
 
 }

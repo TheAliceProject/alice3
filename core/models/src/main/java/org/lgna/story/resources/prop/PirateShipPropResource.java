@@ -31,31 +31,31 @@ import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
-@Deprecated
-public enum PirateShipPropResource implements PropResource {
-	DEFAULT;
+@Deprecated public enum PirateShipPropResource implements PropResource {
+  DEFAULT;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	PirateShipPropResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  PirateShipPropResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	PirateShipPropResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  PirateShipPropResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

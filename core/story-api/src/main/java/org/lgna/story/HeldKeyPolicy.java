@@ -47,23 +47,23 @@ package org.lgna.story;
  */
 public enum HeldKeyPolicy implements AddKeyPressListener.Detail {
 
-	FIRE_MULTIPLE,
-	FIRE_ONCE_ON_PRESS,
-	FIRE_ONCE_ON_RELEASE;
+  FIRE_MULTIPLE, FIRE_ONCE_ON_PRESS, FIRE_ONCE_ON_RELEASE;
 
-	static HeldKeyPolicy DEFAULT_VALUE = FIRE_MULTIPLE;
+  static HeldKeyPolicy DEFAULT_VALUE = FIRE_MULTIPLE;
 
-	/* package-private */static HeldKeyPolicy getValue( Object[] details, HeldKeyPolicy defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof HeldKeyPolicy ) {
-				HeldKeyPolicy heldKeyPolicy = (HeldKeyPolicy)detail;
-				return heldKeyPolicy;
-			}
-		}
-		return defaultValue;
-	}
+  /* package-private */
+  static HeldKeyPolicy getValue(Object[] details, HeldKeyPolicy defaultValue) {
+    for (Object detail : details) {
+      if (detail instanceof HeldKeyPolicy) {
+        HeldKeyPolicy heldKeyPolicy = (HeldKeyPolicy) detail;
+        return heldKeyPolicy;
+      }
+    }
+    return defaultValue;
+  }
 
-	/* package-private */static HeldKeyPolicy getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
-	}
+  /* package-private */
+  static HeldKeyPolicy getValue(Object[] details) {
+    return getValue(details, DEFAULT_VALUE);
+  }
 }

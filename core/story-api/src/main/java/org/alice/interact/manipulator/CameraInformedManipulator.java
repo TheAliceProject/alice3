@@ -50,12 +50,12 @@ import org.alice.interact.DragAdapter;
  */
 public interface CameraInformedManipulator {
 
-	public AbstractCamera getCamera();
+  public AbstractCamera getCamera();
 
-	public void setCamera( AbstractCamera camera );
+  public void setCamera(AbstractCamera camera);
 
-	public DragAdapter.CameraView getDesiredCameraView();
+  public DragAdapter.CameraView getDesiredCameraView();
 
-	public void setDesiredCameraView( DragAdapter.CameraView cameraView );
+  public void setDesiredCameraView(DragAdapter.CameraView cameraView);
 
 }

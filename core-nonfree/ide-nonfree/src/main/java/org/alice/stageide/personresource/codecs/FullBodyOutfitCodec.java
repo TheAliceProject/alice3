@@ -51,24 +51,25 @@ import org.lgna.story.resources.sims2.FullBodyOutfit;
  * @author Dennis Cosgrove
  */
 public enum FullBodyOutfitCodec implements ItemCodec<FullBodyOutfit> {
-	SINGLETON;
-	@Override
-	public Class<FullBodyOutfit> getValueClass() {
-		return FullBodyOutfit.class;
-	}
+  SINGLETON;
 
-	@Override
-	public FullBodyOutfit decodeValue( BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public Class<FullBodyOutfit> getValueClass() {
+    return FullBodyOutfit.class;
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, FullBodyOutfit value ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public FullBodyOutfit decodeValue(BinaryDecoder binaryDecoder) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, FullBodyOutfit value ) {
-		sb.append( value );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, FullBodyOutfit value) {
+    throw new RuntimeException("todo");
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, FullBodyOutfit value) {
+    sb.append(value);
+  }
 }

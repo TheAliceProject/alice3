@@ -62,64 +62,62 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public final class Font {
-	private java.awt.Font m_awtFont;
+  private java.awt.Font m_awtFont;
 
-	public Font(
-			@ParameterAnnotation( isVariable = true )
-			Attribute<?>... attributes ) {
-		Map<TextAttribute, Object> map = new HashMap<TextAttribute, Object>();
-		for( Attribute<?> attribute : attributes ) {
-			map.put( attribute.getKey(), attribute.getValue() );
-		}
-		m_awtFont = new java.awt.Font( map );
-	}
+  public Font(@ParameterAnnotation(isVariable = true) Attribute<?>... attributes) {
+    Map<TextAttribute, Object> map = new HashMap<TextAttribute, Object>();
+    for (Attribute<?> attribute : attributes) {
+      map.put(attribute.getKey(), attribute.getValue());
+    }
+    m_awtFont = new java.awt.Font(map);
+  }
 
-	public Font( java.awt.Font awtFont ) {
-		m_awtFont = awtFont;
-	}
+  public Font(java.awt.Font awtFont) {
+    m_awtFont = awtFont;
+  }
 
-	public java.awt.Font getAsAWTFont() {
-		return m_awtFont;
-	}
+  public java.awt.Font getAsAWTFont() {
+    return m_awtFont;
+  }
 
-	//todo
-	public Font deriveScaledFont( float scalar ) {
-		return deriveSizeFont( (int)( m_awtFont.getSize() * scalar ) );
-	}
+  //todo
+  public Font deriveScaledFont(float scalar) {
+    return deriveSizeFont((int) (m_awtFont.getSize() * scalar));
+  }
 
-	public Font deriveSizeFont( float size ) {
-		return new Font( m_awtFont.deriveFont( size ) );
-	}
+  public Font deriveSizeFont(float size) {
+    return new Font(m_awtFont.deriveFont(size));
+  }
 
-	public FamilyAttribute getFamily() {
-		String family = m_awtFont.getFamily();
-		if( family.equals( "Serif" ) ) {
-			return FamilyConstant.SERIF;
-		} else {
-			return FamilyConstant.SANS_SERIF;
-		}
-	}
+  public FamilyAttribute getFamily() {
+    String family = m_awtFont.getFamily();
+    if (family.equals("Serif")) {
+      return FamilyConstant.SERIF;
+    } else {
+      return FamilyConstant.SANS_SERIF;
+    }
+  }
 
-	public WeightAttribute getWeight() {
-		int style = m_awtFont.getStyle();
-		if( ( style & java.awt.Font.BOLD ) != 0 ) {
-			return WeightConstant.BOLD;
-		} else {
-			return WeightConstant.REGULAR;
-		}
-	}
+  public WeightAttribute getWeight() {
+    int style = m_awtFont.getStyle();
+    if ((style & java.awt.Font.BOLD) != 0) {
+      return WeightConstant.BOLD;
+    } else {
+      return WeightConstant.REGULAR;
+    }
+  }
 
-	public PostureAttribute getPosture() {
-		int style = m_awtFont.getStyle();
-		if( ( style & java.awt.Font.ITALIC ) != 0 ) {
-			return PostureConstant.OBLIQUE;
-		} else {
-			return PostureConstant.REGULAR;
-		}
-	}
+  public PostureAttribute getPosture() {
+    int style = m_awtFont.getStyle();
+    if ((style & java.awt.Font.ITALIC) != 0) {
+      return PostureConstant.OBLIQUE;
+    } else {
+      return PostureConstant.REGULAR;
+    }
+  }
 
-	public SizeAttribute getSize() {
-		int size = m_awtFont.getSize();
-		return new SizeValue( (float)size );
-	}
+  public SizeAttribute getSize() {
+    int size = m_awtFont.getSize();
+    return new SizeValue((float) size);
+  }
 }

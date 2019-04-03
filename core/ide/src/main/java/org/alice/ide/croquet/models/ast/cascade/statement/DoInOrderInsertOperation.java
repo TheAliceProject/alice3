@@ -55,28 +55,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DoInOrderInsertOperation extends TemplateStatementInsertOperation {
-	private static Map<BlockStatementIndexPair, DoInOrderInsertOperation> mapEnveloping = Maps.newHashMap();
-	private static Map<BlockStatementIndexPair, DoInOrderInsertOperation> mapInsert = Maps.newHashMap();
+  private static Map<BlockStatementIndexPair, DoInOrderInsertOperation> mapEnveloping = Maps.newHashMap();
+  private static Map<BlockStatementIndexPair, DoInOrderInsertOperation> mapInsert = Maps.newHashMap();
 
-	public static synchronized DoInOrderInsertOperation getInstance( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		Map<BlockStatementIndexPair, DoInOrderInsertOperation> map = isEnveloping ? mapEnveloping : mapInsert;
-		assert blockStatementIndexPair != null;
-		DoInOrderInsertOperation rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DoInOrderInsertOperation( blockStatementIndexPair, isEnveloping );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
-	}
+  public static synchronized DoInOrderInsertOperation getInstance(BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    Map<BlockStatementIndexPair, DoInOrderInsertOperation> map = isEnveloping ? mapEnveloping : mapInsert;
+    assert blockStatementIndexPair != null;
+    DoInOrderInsertOperation rv = map.get(blockStatementIndexPair);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new DoInOrderInsertOperation(blockStatementIndexPair, isEnveloping);
+      map.put(blockStatementIndexPair, rv);
+    }
+    return rv;
+  }
 
-	private DoInOrderInsertOperation( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( UUID.fromString( "6f297fb3-8618-4d6c-bfdc-63c8320471f7" ), blockStatementIndexPair, isEnveloping );
-	}
+  private DoInOrderInsertOperation(BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    super(UUID.fromString("6f297fb3-8618-4d6c-bfdc-63c8320471f7"), blockStatementIndexPair, isEnveloping);
+  }
 
-	@Override
-	protected final Statement createStatement() {
-		return AstUtilities.createDoInOrder();
-	}
+  @Override
+  protected final Statement createStatement() {
+    return AstUtilities.createDoInOrder();
+  }
 }

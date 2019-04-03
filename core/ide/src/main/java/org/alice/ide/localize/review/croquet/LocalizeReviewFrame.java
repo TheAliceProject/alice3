@@ -73,193 +73,172 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocalizeReviewFrame extends FrameComposite<LocalizeReviewFrameView> {
-	private static final String SUFFIX = ".properties";
-	private static final Map<Locale, Locale> mapLocaleToLocale;
-	static {
-		Map<Locale, Locale> map = Maps.newHashMap();
-		map.put( new Locale( "pt" ), new Locale( "pt", "PT" ) );
-		mapLocaleToLocale = Collections.unmodifiableMap( map );
-	}
+  private static final String SUFFIX = ".properties";
+  private static final Map<Locale, Locale> mapLocaleToLocale;
 
-	public LocalizeReviewFrame() {
-		super( UUID.fromString( "2652798a-f27d-4658-8907-3f0b6bb0aac2" ) );
-		this.tableModel = new LocalizationTableModel();
-	}
+  static {
+    Map<Locale, Locale> map = Maps.newHashMap();
+    map.put(new Locale("pt"), new Locale("pt", "PT"));
+    mapLocaleToLocale = Collections.unmodifiableMap(map);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.localeState.getSidekickLabel().setText( "locale:" );
-		this.isIncludingUntranslatedState.setTextForBothTrueAndFalse( "include untranslated?" );
-	}
+  public LocalizeReviewFrame() {
+    super(UUID.fromString("2652798a-f27d-4658-8907-3f0b6bb0aac2"));
+    this.tableModel = new LocalizationTableModel();
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.localeState.addAndInvokeNewSchoolValueListener( this.localeListener );
-		this.isIncludingUntranslatedState.addAndInvokeNewSchoolValueListener( this.isIncludingUntranslatedListener );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.localeState.getSidekickLabel().setText("locale:");
+    this.isIncludingUntranslatedState.setTextForBothTrueAndFalse("include untranslated?");
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		this.isIncludingUntranslatedState.removeNewSchoolValueListener( this.isIncludingUntranslatedListener );
-		this.localeState.removeNewSchoolValueListener( this.localeListener );
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    this.localeState.addAndInvokeNewSchoolValueListener(this.localeListener);
+    this.isIncludingUntranslatedState.addAndInvokeNewSchoolValueListener(this.isIncludingUntranslatedListener);
+  }
 
-	@Override
-	protected LocalizeReviewFrameView createView() {
-		return new LocalizeReviewFrameView( this );
-	}
+  @Override
+  public void handlePostDeactivation() {
+    this.isIncludingUntranslatedState.removeNewSchoolValueListener(this.isIncludingUntranslatedListener);
+    this.localeState.removeNewSchoolValueListener(this.localeListener);
+    super.handlePostDeactivation();
+  }
 
-	public ImmutableDataSingleSelectListState<Locale> getLocaleState() {
-		return this.localeState;
-	}
+  @Override
+  protected LocalizeReviewFrameView createView() {
+    return new LocalizeReviewFrameView(this);
+  }
 
-	public BooleanState getIsIncludingUntranslatedState() {
-		return this.isIncludingUntranslatedState;
-	}
+  public ImmutableDataSingleSelectListState<Locale> getLocaleState() {
+    return this.localeState;
+  }
 
-	public TableModel getTableModel() {
-		return this.tableModel;
-	}
+  public BooleanState getIsIncludingUntranslatedState() {
+    return this.isIncludingUntranslatedState;
+  }
 
-	public String getBundleName( int row ) {
-		return this.tableModel.getItems().get( row ).getBundleName();
-	}
+  public TableModel getTableModel() {
+    return this.tableModel;
+  }
 
-	public URI createUri( int row ) {
-		Locale locale = this.getLocaleState().getValue();
-		if( mapLocaleToLocale.containsKey( locale ) ) {
-			locale = mapLocaleToLocale.get( locale );
-		}
-		String localeTag = LocaleUtilities.toLanguageTag( locale );
-		return this.tableModel.getItems().get( row ).createUri( localeTag );
-	}
+  public String getBundleName(int row) {
+    return this.tableModel.getItems().get(row).getBundleName();
+  }
 
-	private final ImmutableDataSingleSelectListState<Locale> localeState = this.createImmutableListState( "localeState", Locale.class, LocaleCodec.SINGLETON, 13,
-			new Locale( "pt" ),
-			new Locale( "pt", "BR" ),
-			new Locale( "es" ),
-			new Locale( "fr" ),
-			new Locale( "fr", "BE" ),
-			new Locale( "it" ),
-			new Locale( "nl" ),
-			new Locale( "de" ),
-			new Locale( "el" ),
-			new Locale( "ro" ),
-			new Locale( "cs" ),
-			new Locale( "sl" ),
-			new Locale( "lt" ),
-			new Locale( "ru" ),
-			new Locale( "uk" ),
-			new Locale( "tr" ),
-			new Locale( "ar" ),
-			new Locale( "iw" ),
-			new Locale( "in" ),
-			new Locale( "zh", "CN" ),
-			new Locale( "zh", "TW" ),
-			new Locale( "ko" ) );
+  public URI createUri(int row) {
+    Locale locale = this.getLocaleState().getValue();
+    if (mapLocaleToLocale.containsKey(locale)) {
+      locale = mapLocaleToLocale.get(locale);
+    }
+    String localeTag = LocaleUtilities.toLanguageTag(locale);
+    return this.tableModel.getItems().get(row).createUri(localeTag);
+  }
 
-	private final BooleanState isIncludingUntranslatedState = this.createBooleanState( "isIncludingUntranslatedState", false );
+  private final ImmutableDataSingleSelectListState<Locale> localeState = this.createImmutableListState("localeState", Locale.class, LocaleCodec.SINGLETON, 13, new Locale("pt"), new Locale("pt", "BR"), new Locale("es"), new Locale("fr"), new Locale("fr", "BE"), new Locale("it"), new Locale("nl"), new Locale("de"), new Locale("el"), new Locale("ro"), new Locale("cs"), new Locale("sl"), new Locale("lt"), new Locale("ru"), new Locale("uk"), new Locale("tr"), new Locale("ar"), new Locale("iw"), new Locale("in"), new Locale("zh", "CN"), new Locale("zh", "TW"), new Locale("ko"));
 
-	private final ValueListener<Locale> localeListener = new ValueListener<Locale>() {
-		@Override
-		public void valueChanged( ValueEvent<Locale> e ) {
-			tableModel.setLocale( e.getNextValue() );
-		}
-	};
+  private final BooleanState isIncludingUntranslatedState = this.createBooleanState("isIncludingUntranslatedState", false);
 
-	private final ValueListener<Boolean> isIncludingUntranslatedListener = new ValueListener<Boolean>() {
-		@Override
-		public void valueChanged( ValueEvent<Boolean> e ) {
-			tableModel.setIncludingUntranslated( e.getNextValue() );
-		}
-	};
+  private final ValueListener<Locale> localeListener = new ValueListener<Locale>() {
+    @Override
+    public void valueChanged(ValueEvent<Locale> e) {
+      tableModel.setLocale(e.getNextValue());
+    }
+  };
 
-	private final LocalizationTableModel tableModel;
+  private final ValueListener<Boolean> isIncludingUntranslatedListener = new ValueListener<Boolean>() {
+    @Override
+    public void valueChanged(ValueEvent<Boolean> e) {
+      tableModel.setIncludingUntranslated(e.getNextValue());
+    }
+  };
 
-	private static class LocalizationTableModel extends AbstractTableModel {
+  private final LocalizationTableModel tableModel;
 
-		public LocalizationTableModel() {
-			IDE ide = IDE.getActiveInstance();
-			this.allItems = LocalizeUtils.getItems( ide.getClass(), "alice-ide" );
-		}
+  private static class LocalizationTableModel extends AbstractTableModel {
 
-		public void setLocale( Locale locale ) {
-			List<Item> _translatedItems = Lists.newLinkedList();
-			for( Item item : this.allItems ) {
-				ResourceBundle resourceBundleB = ResourceBundleUtilities.getUtf8Bundle( item.getBundleName(), locale );
-				try {
-					item.setLocalizedValue( resourceBundleB.getString( item.getKey() ) );
-				} catch( MissingResourceException mre ) {
-					item.setLocalizedValue( "MissingResourceException" );
-					mre.printStackTrace();
-				}
-			}
-			this.translatedItems = Collections.unmodifiableList( _translatedItems );
-			this.fireTableDataChanged();
-		}
+    public LocalizationTableModel() {
+      IDE ide = IDE.getActiveInstance();
+      this.allItems = LocalizeUtils.getItems(ide.getClass(), "alice-ide");
+    }
 
-		public void setIncludingUntranslated( boolean isIncludingUntranslated ) {
-			if( this.isIncludingUntranslated != isIncludingUntranslated ) {
-				this.isIncludingUntranslated = isIncludingUntranslated;
-				this.fireTableDataChanged();
-			}
-		}
+    public void setLocale(Locale locale) {
+      List<Item> _translatedItems = Lists.newLinkedList();
+      for (Item item : this.allItems) {
+        ResourceBundle resourceBundleB = ResourceBundleUtilities.getUtf8Bundle(item.getBundleName(), locale);
+        try {
+          item.setLocalizedValue(resourceBundleB.getString(item.getKey()));
+        } catch (MissingResourceException mre) {
+          item.setLocalizedValue("MissingResourceException");
+          mre.printStackTrace();
+        }
+      }
+      this.translatedItems = Collections.unmodifiableList(_translatedItems);
+      this.fireTableDataChanged();
+    }
 
-		private List<Item> getItems() {
-			if( this.isIncludingUntranslated ) {
-				return this.allItems;
-			} else {
-				List<Item> _translatedItems = Lists.newLinkedList();
-				for( Item item : this.allItems ) {
-					if( Objects.equals( item.getDefaultValue(), item.getLocalizedValue() ) ) {
-						//pass
-					} else {
-						_translatedItems.add( item );
-					}
-				}
-				this.translatedItems = Collections.unmodifiableList( _translatedItems );
-				return this.translatedItems;
-			}
-		}
+    public void setIncludingUntranslated(boolean isIncludingUntranslated) {
+      if (this.isIncludingUntranslated != isIncludingUntranslated) {
+        this.isIncludingUntranslated = isIncludingUntranslated;
+        this.fireTableDataChanged();
+      }
+    }
 
-		@Override
-		public int getColumnCount() {
-			return 5;
-		}
+    private List<Item> getItems() {
+      if (this.isIncludingUntranslated) {
+        return this.allItems;
+      } else {
+        List<Item> _translatedItems = Lists.newLinkedList();
+        for (Item item : this.allItems) {
+          if (Objects.equals(item.getDefaultValue(), item.getLocalizedValue())) {
+            //pass
+          } else {
+            _translatedItems.add(item);
+          }
+        }
+        this.translatedItems = Collections.unmodifiableList(_translatedItems);
+        return this.translatedItems;
+      }
+    }
 
-		@Override
-		public int getRowCount() {
-			return this.getItems().size();
-		}
+    @Override
+    public int getColumnCount() {
+      return 5;
+    }
 
-		@Override
-		public Object getValueAt( int rowIndex, int columnIndex ) {
-			Item item = this.getItems().get( rowIndex );
-			switch( columnIndex ) {
-			case 0:
-				return rowIndex;
-			case 1:
-				return item.getKey();
-			case 2:
-				return item.getDefaultValue();
-			case 3:
-				if( Objects.equals( item.getDefaultValue(), item.getLocalizedValue() ) ) {
-					return null;
-				} else {
-					return item.getLocalizedValue();
-				}
-			case 4:
-				return item;
-			default:
-				throw new Error();
-			}
-		}
+    @Override
+    public int getRowCount() {
+      return this.getItems().size();
+    }
 
-		private final List<Item> allItems;
-		private List<Item> translatedItems;
-		private boolean isIncludingUntranslated;
-	}
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex) {
+      Item item = this.getItems().get(rowIndex);
+      switch (columnIndex) {
+      case 0:
+        return rowIndex;
+      case 1:
+        return item.getKey();
+      case 2:
+        return item.getDefaultValue();
+      case 3:
+        if (Objects.equals(item.getDefaultValue(), item.getLocalizedValue())) {
+          return null;
+        } else {
+          return item.getLocalizedValue();
+        }
+      case 4:
+        return item;
+      default:
+        throw new Error();
+      }
+    }
+
+    private final List<Item> allItems;
+    private List<Item> translatedItems;
+    private boolean isIncludingUntranslated;
+  }
 }

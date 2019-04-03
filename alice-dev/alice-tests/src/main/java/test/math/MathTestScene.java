@@ -49,53 +49,53 @@ import org.lgna.story.SGround;
 import org.lgna.story.SSphere;
 
 public class MathTestScene extends org.lgna.story.SScene {
-	private void performGeneratedSetup() {
-		this.sphere.setName( "sphere" );
-		this.sphere.setVehicle( this );
-		this.sphere.move( org.lgna.story.MoveDirection.UP, 1.0 );
-		this.sphere.setPaint( Color.BLUE );
-		this.sphere.setOpacity( 0.5 );
+  private void performGeneratedSetup() {
+    this.sphere.setName("sphere");
+    this.sphere.setVehicle(this);
+    this.sphere.move(org.lgna.story.MoveDirection.UP, 1.0);
+    this.sphere.setPaint(Color.BLUE);
+    this.sphere.setOpacity(0.5);
 
-		this.camera.setVehicle( this );
-		this.camera.move( org.lgna.story.MoveDirection.BACKWARD, 8.0 );
-		this.camera.move( org.lgna.story.MoveDirection.UP, 4.0 );
-		this.camera.pointAt( this.sphere );
+    this.camera.setVehicle(this);
+    this.camera.move(org.lgna.story.MoveDirection.BACKWARD, 8.0);
+    this.camera.move(org.lgna.story.MoveDirection.UP, 4.0);
+    this.camera.pointAt(this.sphere);
 
-		this.ground.setVehicle( this );
-		this.ground.setPaint( SGround.SurfaceAppearance.GRASS );
-		this.ground.setOpacity( 0.5 );
-	}
+    this.ground.setVehicle(this);
+    this.ground.setPaint(SGround.SurfaceAppearance.GRASS);
+    this.ground.setOpacity(0.5);
+  }
 
-	private void performCustomSetup() {
-	}
+  private void performCustomSetup() {
+  }
 
-	@Override
-	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
-		if( isActive ) {
-			if( activeCount == 1 ) {
-				this.performGeneratedSetup();
-				this.performCustomSetup();
-			} else {
-				this.restoreStateAndEventListeners();
-			}
-		} else {
-			this.preserveStateAndEventListeners();
-		}
-	}
+  @Override
+  protected void handleActiveChanged(Boolean isActive, Integer activeCount) {
+    if (isActive) {
+      if (activeCount == 1) {
+        this.performGeneratedSetup();
+        this.performCustomSetup();
+      } else {
+        this.restoreStateAndEventListeners();
+      }
+    } else {
+      this.preserveStateAndEventListeners();
+    }
+  }
 
-	public SGround getGround() {
-		return this.ground;
-	}
+  public SGround getGround() {
+    return this.ground;
+  }
 
-	public SCamera getCamera() {
-		return this.camera;
-	}
+  public SCamera getCamera() {
+    return this.camera;
+  }
 
-	public SSphere getSphere() {
-		return this.sphere;
-	}
+  public SSphere getSphere() {
+    return this.sphere;
+  }
 
-	private final SCamera camera = new SCamera();
-	private final SGround ground = new SGround();
-	private final SSphere sphere = new SSphere();
+  private final SCamera camera = new SCamera();
+  private final SGround ground = new SGround();
+  private final SSphere sphere = new SSphere();
 }

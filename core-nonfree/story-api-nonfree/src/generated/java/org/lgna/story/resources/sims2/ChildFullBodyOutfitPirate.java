@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum ChildFullBodyOutfitPirate implements MaleChildFullBodyOutfit, FemaleChildFullBodyOutfit {
-	BLUE_STRIPE,
-	GREEN_STRIPE,
-	RED_STRIPE;
+  BLUE_STRIPE, GREEN_STRIPE, RED_STRIPE
 
 }

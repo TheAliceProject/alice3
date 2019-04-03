@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class MethodDifferentSignatureHelpComposite extends DifferentSignatureHelpComposite<UserMethod> {
-	public MethodDifferentSignatureHelpComposite( DifferentSignature<UserMethod> differentSignature ) {
-		super( UUID.fromString( "aa2122eb-647e-4cc7-a78c-b479ca518aa4" ), differentSignature, "signature" );
-	}
+  public MethodDifferentSignatureHelpComposite(DifferentSignature<UserMethod> differentSignature) {
+    super(UUID.fromString("aa2122eb-647e-4cc7-a78c-b479ca518aa4"), differentSignature, "signature");
+  }
 }

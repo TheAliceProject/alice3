@@ -49,27 +49,27 @@ import org.lgna.story.Color;
  * @author Dennis Cosgrove
  */
 public final class ToddlerPersonResource extends PersonResource {
-	public ToddlerPersonResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
-		super( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
-	}
+  public ToddlerPersonResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
+    super(gender, skinColor, eyeColor, hair, obseityLevel, outfit, face);
+  }
 
-	@Deprecated
-	public ToddlerPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
-		super( gender, skinTone, eyeColor, hair, obseityLevel, outfit, face );
-	}
+  @Deprecated
+  public ToddlerPersonResource(Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
+    super(gender, skinTone, eyeColor, hair, obseityLevel, outfit, face);
+  }
 
-	@Deprecated
-	public ToddlerPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
-		this( gender, skinTone, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00 );
-	}
+  @Deprecated
+  public ToddlerPersonResource(Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit) {
+    this(gender, skinTone, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00);
+  }
 
-	@Deprecated
-	public ToddlerPersonResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
-		super( gender, skinColor, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00 );
-	}
+  @Deprecated
+  public ToddlerPersonResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit) {
+    super(gender, skinColor, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00);
+  }
 
-	@Override
-	public LifeStage getLifeStage() {
-		return LifeStage.TODDLER;
-	}
+  @Override
+  public LifeStage getLifeStage() {
+    return LifeStage.TODDLER;
+  }
 }

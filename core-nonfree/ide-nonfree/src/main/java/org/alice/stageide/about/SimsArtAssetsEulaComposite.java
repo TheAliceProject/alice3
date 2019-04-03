@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class SimsArtAssetsEulaComposite extends EulaComposite {
-	public SimsArtAssetsEulaComposite() {
-		super( UUID.fromString( "9eb18cfd-0a2f-40e1-b521-15ffa5921ac9" ), License.TEXT );
-	}
+  public SimsArtAssetsEulaComposite() {
+    super(UUID.fromString("9eb18cfd-0a2f-40e1-b521-15ffa5921ac9"), License.TEXT);
+  }
 }

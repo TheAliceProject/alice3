@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.automobile;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.STransport;
@@ -33,37 +34,35 @@ import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 public enum HumveeResource implements AutomobileResource {
-	HUMVEE( ImplementationAndVisualType.SIMS2 );
+  HUMVEE(ImplementationAndVisualType.SIMS2);
 
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId BACK_LEFT_DOOR = new JointId( ROOT, HumveeResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId FRONT_LEFT_DOOR = new JointId( ROOT, HumveeResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId BACK_RIGHT_DOOR = new JointId( ROOT, HumveeResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId FRONT_RIGHT_DOOR = new JointId( ROOT, HumveeResource.class );
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId BACK_LEFT_DOOR = new JointId(ROOT, HumveeResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId FRONT_LEFT_DOOR = new JointId(ROOT, HumveeResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId BACK_RIGHT_DOOR = new JointId(ROOT, HumveeResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId FRONT_RIGHT_DOOR = new JointId(ROOT, HumveeResource.class);
 
-	private final ImplementationAndVisualType resourceType;
-	HumveeResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	HumveeResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  HumveeResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return AutomobileResource.JOINT_ID_ROOTS;
-	}
+  HumveeResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public TransportImp createImplementation( STransport abstraction ) {
-		return new TransportImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return AutomobileResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public TransportImp createImplementation(STransport abstraction) {
+    return new TransportImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

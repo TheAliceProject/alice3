@@ -61,52 +61,52 @@ import org.lgna.project.ast.SimpleArgumentListProperty;
  * @author Dennis Cosgrove
  */
 public class ArgumentListPropertyPane extends AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( ImmutableAstI18nFactory factory, SimpleArgumentListProperty property ) {
-		super( factory, property );
-	}
+  public ArgumentListPropertyPane(ImmutableAstI18nFactory factory, SimpleArgumentListProperty property) {
+    super(factory, property);
+  }
 
-	@Override
-	protected boolean isComponentDesiredFor( SimpleArgument argument, int i, int N ) {
-		if( i == 0 ) {
-			if( argument != null ) {
-				AbstractParameter parameter = argument.parameter.getValue();
-				if( parameter != null ) {
-					Code code = parameter.getCode();
-					if( code instanceof JavaMethod ) {
-						JavaMethod javaMethod = (JavaMethod)code;
-						if( javaMethod.isAnnotationPresent( AddEventListenerTemplate.class ) ) {
-							AbstractType<?, ?, ?> parameterType = parameter.getValueType();
-							if( parameterType != null ) {
-								if( parameterType.isInterface() ) {
-									//assume it is going to be a lambda
-									return parameterType.getDeclaredMethods().size() != 1;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return super.isComponentDesiredFor( argument, i, N );
-	}
+  @Override
+  protected boolean isComponentDesiredFor(SimpleArgument argument, int i, int N) {
+    if (i == 0) {
+      if (argument != null) {
+        AbstractParameter parameter = argument.parameter.getValue();
+        if (parameter != null) {
+          Code code = parameter.getCode();
+          if (code instanceof JavaMethod) {
+            JavaMethod javaMethod = (JavaMethod) code;
+            if (javaMethod.isAnnotationPresent(AddEventListenerTemplate.class)) {
+              AbstractType<?, ?, ?> parameterType = parameter.getValueType();
+              if (parameterType != null) {
+                if (parameterType.isInterface()) {
+                  //assume it is going to be a lambda
+                  return parameterType.getDeclaredMethods().size() != 1;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return super.isComponentDesiredFor(argument, i, N);
+  }
 
-	@Override
-	protected AwtComponentView<?> createComponent( SimpleArgument argument ) {
-		AwtComponentView<?> expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
-		AbstractParameter parameter = argument.parameter.getValue();
-		final boolean IS_PARAMETER_NAME_DESIRED = parameter.getParent() instanceof AbstractMethod;
-		if( IS_PARAMETER_NAME_DESIRED ) {
-			String parameterName = FormatterState.getInstance().getValue().getNameForDeclaration( parameter );
-			if( ( parameterName != null ) && ( parameterName.length() > 0 ) ) {
-				LineAxisPanel rv = new LineAxisPanel();
-				rv.addComponent( new Label( parameterName + ": " ) );
-				rv.addComponent( expressionComponent );
-				return rv;
-			} else {
-				return expressionComponent;
-			}
-		} else {
-			return expressionComponent;
-		}
-	}
+  @Override
+  protected AwtComponentView<?> createComponent(SimpleArgument argument) {
+    AwtComponentView<?> expressionComponent = this.getFactory().createExpressionPane(argument.expression.getValue());
+    AbstractParameter parameter = argument.parameter.getValue();
+    final boolean IS_PARAMETER_NAME_DESIRED = parameter.getParent() instanceof AbstractMethod;
+    if (IS_PARAMETER_NAME_DESIRED) {
+      String parameterName = FormatterState.getInstance().getValue().getNameForDeclaration(parameter);
+      if ((parameterName != null) && (parameterName.length() > 0)) {
+        LineAxisPanel rv = new LineAxisPanel();
+        rv.addComponent(new Label(parameterName + ": "));
+        rv.addComponent(expressionComponent);
+        return rv;
+      } else {
+        return expressionComponent;
+      }
+    } else {
+      return expressionComponent;
+    }
+  }
 }

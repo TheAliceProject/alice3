@@ -52,19 +52,19 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class RoomIconFactory extends ResolutionIndependantIconFactory {
-	private static class SingletonHolder {
-		private static RoomIconFactory instance = new RoomIconFactory();
-	}
+  private static class SingletonHolder {
+    private static RoomIconFactory instance = new RoomIconFactory();
+  }
 
-	public static RoomIconFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static RoomIconFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private RoomIconFactory() {
-	}
+  private RoomIconFactory() {
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new RoomIcon( size );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new RoomIcon(size);
+  }
 }

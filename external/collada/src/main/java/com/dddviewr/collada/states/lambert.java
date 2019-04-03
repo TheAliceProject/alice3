@@ -9,17 +9,16 @@ import com.dddviewr.collada.effects.EffectMaterial;
 import com.dddviewr.collada.effects.Lambert;
 
 public class lambert extends State {
-	protected Lambert theLambert;
+  protected Lambert theLambert;
 
-	public void init(String name, Attributes attrs, StateManager mngr) {
-		super.init(name, attrs, mngr);
-		this.theLambert = new Lambert();
-		Effect effect = ((effect) getParent().getParent().getParent())
-				.getEffect();
-		effect.setEffectMaterial(theLambert);
-	}
+  public void init(String name, Attributes attrs, StateManager mngr) {
+    super.init(name, attrs, mngr);
+    this.theLambert = new Lambert();
+    Effect effect = ((effect) getParent().getParent().getParent()).getEffect();
+    effect.setEffectMaterial(theLambert);
+  }
 
-	public EffectMaterial getMaterial() {
-		return theLambert;
-	}
+  public EffectMaterial getMaterial() {
+    return theLambert;
+  }
 }

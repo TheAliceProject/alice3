@@ -66,200 +66,200 @@ import java.util.concurrent.ExecutionException;
  * @author Dennis Cosgrove
  */
 public final class IssueReportWorker extends SwingWorker<Boolean, String> {
-	private final WorkerListener workerListener;
-	private final ReportGenerator issueReportGenerator;
-	private final ReportSubmissionConfiguration reportSubmissionConfiguration;
-	private String key = null;
+  private final WorkerListener workerListener;
+  private final ReportGenerator issueReportGenerator;
+  private final ReportSubmissionConfiguration reportSubmissionConfiguration;
+  private String key = null;
 
-	public IssueReportWorker( WorkerListener workerListener, ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration ) {
-		assert workerListener != null;
-		this.workerListener = workerListener;
-		this.issueReportGenerator = issueReportGenerator;
-		this.reportSubmissionConfiguration = reportSubmissionConfiguration;
-	}
+  public IssueReportWorker(WorkerListener workerListener, ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration) {
+    assert workerListener != null;
+    this.workerListener = workerListener;
+    this.issueReportGenerator = issueReportGenerator;
+    this.reportSubmissionConfiguration = reportSubmissionConfiguration;
+  }
 
-	@Override
-	protected void process( List<String> chunks ) {
-		this.workerListener.process( chunks );
-	}
+  @Override
+  protected void process(List<String> chunks) {
+    this.workerListener.process(chunks);
+  }
 
-	private void process( String... chunks ) {
-		this.process( Lists.newArrayList( chunks ) );
-	}
+  private void process(String... chunks) {
+    this.process(Lists.newArrayList(chunks));
+  }
 
-	private void uploadToJiraViaRest() throws Exception {
-		JIRAReport jiraReport = issueReportGenerator.generateIssueForSOAP();
-		if( jiraReport != null ) {
-			BasicIssue result = RestUtilities.createIssue(reportSubmissionConfiguration.getJIRAViaRestServer(), jiraReport);
-			this.key = result.getKey();
+  private void uploadToJiraViaRest() throws Exception {
+    JIRAReport jiraReport = issueReportGenerator.generateIssueForSOAP();
+    if (jiraReport != null) {
+      BasicIssue result = RestUtilities.createIssue(reportSubmissionConfiguration.getJIRAViaRestServer(), jiraReport);
+      this.key = result.getKey();
 
-			List<Attachment> attachments = jiraReport.getAttachments();
-			if( ( attachments != null ) && ( attachments.size() > 0 ) ) {
-				this.process( "\n" );
-				for( Attachment attachment : attachments ) {
-					this.process( "\t" + attachment.getFileName() + "... " );
-					RestUtilities.addAttachment(reportSubmissionConfiguration.getJIRAViaRestServer(), result, attachment);
-					this.process( "done.\n" );
-				}
-			}
-		} else {
-			throw new Exception( "pass" );
-		}
-	}
+      List<Attachment> attachments = jiraReport.getAttachments();
+      if ((attachments != null) && (attachments.size() > 0)) {
+        this.process("\n");
+        for (Attachment attachment : attachments) {
+          this.process("\t" + attachment.getFileName() + "... ");
+          RestUtilities.addAttachment(reportSubmissionConfiguration.getJIRAViaRestServer(), result, attachment);
+          this.process("done.\n");
+        }
+      }
+    } else {
+      throw new Exception("pass");
+    }
+  }
 
-	private boolean uploadToJIRAViaSOAP() throws Exception {
-		JIRAReport jiraReport = this.issueReportGenerator.generateIssueForSOAP();
-		if( jiraReport != null ) {
-			JiraSoapServiceServiceLocator jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
-			JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( this.reportSubmissionConfiguration.getJIRAViaSOAPServer() );
-			String token = this.reportSubmissionConfiguration.getJIRAViaSOAPAuthenticator().login( service );
-			RemoteIssue result = SOAPUtilities.createIssue( jiraReport, service, token );
+  private boolean uploadToJIRAViaSOAP() throws Exception {
+    JIRAReport jiraReport = this.issueReportGenerator.generateIssueForSOAP();
+    if (jiraReport != null) {
+      JiraSoapServiceServiceLocator jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
+      JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2(this.reportSubmissionConfiguration.getJIRAViaSOAPServer());
+      String token = this.reportSubmissionConfiguration.getJIRAViaSOAPAuthenticator().login(service);
+      RemoteIssue result = SOAPUtilities.createIssue(jiraReport, service, token);
 
-			List<Attachment> attachments = jiraReport.getAttachments();
-			boolean rv = true;
-			if( ( attachments != null ) && ( attachments.size() > 0 ) ) {
-				this.process( "\n" );
-				for( Attachment attachment : attachments ) {
-					this.process( "\t" + attachment.getFileName() + "... " );
-					try {
-						SOAPUtilities.addAttachment( result, attachment, service, token );
-						rv = true;
-					} catch( RemoteException re ) {
-						re.printStackTrace();
-						rv = false;
-					}
-					this.process( "done.\n" );
-				}
-			}
+      List<Attachment> attachments = jiraReport.getAttachments();
+      boolean rv = true;
+      if ((attachments != null) && (attachments.size() > 0)) {
+        this.process("\n");
+        for (Attachment attachment : attachments) {
+          this.process("\t" + attachment.getFileName() + "... ");
+          try {
+            SOAPUtilities.addAttachment(result, attachment, service, token);
+            rv = true;
+          } catch (RemoteException re) {
+            re.printStackTrace();
+            rv = false;
+          }
+          this.process("done.\n");
+        }
+      }
 
-			this.key = result.getKey();
-			service.logout( token );
+      this.key = result.getKey();
+      service.logout(token);
 
-			return rv;
-		} else {
-			throw new Exception( "pass" );
-		}
-	}
+      return rv;
+    } else {
+      throw new Exception("pass");
+    }
+  }
 
-	private void uploadToJIRAViaRPC() throws Exception {
-		JIRAReport jiraReport = this.issueReportGenerator.generateIssueForRPC();
-		if( jiraReport != null ) {
-			final boolean STREAM_MESSAGES = true;
-			XmlRpcClient client = new XmlRpcClient( this.reportSubmissionConfiguration.getJIRAViaRPCServer(), STREAM_MESSAGES );
-			Object token = this.reportSubmissionConfiguration.getJIRAViaRPCAuthenticator().login( client );
-			try {
-				XmlRpcStruct remote = RPCUtilities.createIssue( jiraReport, client, token );
-				this.key = RPCUtilities.getKey( remote );
-			} finally {
-				client.invoke( "jira1.logout", new Object[] { token } );
-			}
-		} else {
-			throw new Exception( "pass" );
-		}
-	}
+  private void uploadToJIRAViaRPC() throws Exception {
+    JIRAReport jiraReport = this.issueReportGenerator.generateIssueForRPC();
+    if (jiraReport != null) {
+      final boolean STREAM_MESSAGES = true;
+      XmlRpcClient client = new XmlRpcClient(this.reportSubmissionConfiguration.getJIRAViaRPCServer(), STREAM_MESSAGES);
+      Object token = this.reportSubmissionConfiguration.getJIRAViaRPCAuthenticator().login(client);
+      try {
+        XmlRpcStruct remote = RPCUtilities.createIssue(jiraReport, client, token);
+        this.key = RPCUtilities.getKey(remote);
+      } finally {
+        client.invoke("jira1.logout", new Object[] {token});
+      }
+    } else {
+      throw new Exception("pass");
+    }
+  }
 
-	//	protected void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride ) throws Exception {
-	//		MailReport mailReport = this.issueReportGenerator.generateIssueForSMTP();
-	//		if( mailReport != null ) {
-	//			edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( isTransportLayerSecurityDesired, portOverride, this.reportSubmissionConfiguration.getMailServer(), this.reportSubmissionConfiguration.getMailAuthenticator(), mailReport.getReplyTo(), mailReport.getReplyToPersonal(), this.reportSubmissionConfiguration.getMailRecipient(), mailReport.getSubject(), mailReport.getBody(), mailReport.getAttachments() );
-	//			this.key = null;
-	//		} else {
-	//			throw new Exception( "pass" );
-	//		}
-	//	}
+  //  protected void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride ) throws Exception {
+  //    MailReport mailReport = this.issueReportGenerator.generateIssueForSMTP();
+  //    if( mailReport != null ) {
+  //      edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( isTransportLayerSecurityDesired, portOverride, this.reportSubmissionConfiguration.getMailServer(), this.reportSubmissionConfiguration.getMailAuthenticator(), mailReport.getReplyTo(), mailReport.getReplyToPersonal(), this.reportSubmissionConfiguration.getMailRecipient(), mailReport.getSubject(), mailReport.getBody(), mailReport.getAttachments() );
+  //      this.key = null;
+  //    } else {
+  //      throw new Exception( "pass" );
+  //    }
+  //  }
 
-	@Override
-	protected Boolean doInBackground() throws Exception {
-		this.process( "attempting to submit bug report...\n" );
+  @Override
+  protected Boolean doInBackground() throws Exception {
+    this.process("attempting to submit bug report...\n");
 
-		this.process( "* uploading directly to database via REST... " );
-		try {
-			uploadToJiraViaRest();
-			this.process( "SUCCEEDED.\n" );
-		} catch ( Exception e) {
-			e.printStackTrace();
-			try {
-				this.process( "FAILED.\n" );
-				this.process( "* uploading directly to database via SOAP... " );
-				boolean isSuccessAttachment = this.uploadToJIRAViaSOAP();
-				if( isSuccessAttachment ) {
-					this.process( "SUCCEEDED.\n" );
-				} else {
-					this.process( "PARTIALLY SUCCEEDED (attachments failed).\n" );
-					//				this.process( "* sending mail (on smtp port)... " );
-					//				try {
-					//					this.sendMail( false, null );
-					//					this.process( "SUCCEEDED.\n" );
-					//				} catch( Exception eC ) {
-					//					eC.printStackTrace();
-					//					this.process( "FAILED.\n" );
-					//				}
-				}
-			} catch( Exception eA ) {
-				eA.printStackTrace();
-				try {
-					this.process( "FAILED.\n" );
-					this.process( "* uploading directly to database via RPC... " );
-					this.uploadToJIRAViaRPC();
-					this.process( "SUCCEEDED.\n" );
-				} catch (Exception eB) {
-					eB.printStackTrace();
-					this.process( "FAILED.\n" );
-					//				this.process( "* sending mail (on smtp port)... " );
-					//				try {
-					//					this.sendMail( false, null );
-					//					this.process( "SUCCEEDED.\n" );
-					//				} catch( Exception eC ) {
-					//					eC.printStackTrace();
-					//					this.process( "FAILED.\n" );
-					//					//					this.process( "* sending secure mail (on secure smtp port)... " );
-					//					//					try {
-					//					//						this.sendMail( true, null );
-					//					//						this.process( "SUCCEEDED.\n" );
-					//					//					} catch( Exception eD ) {
-					//					//						eD.printStackTrace();
-					//					//						this.process( "FAILED.\n" );
-					//					//						this.process( "* sending secure mail (on http port)... " );
-					//					//						try {
-					//					//							this.sendMail( true, 80 );
-					//					//							this.process( "SUCCEEDED.\n" );
-					//					//						} catch( Exception eE ) {
-					//					//							eE.printStackTrace();
-					//					this.process( "FAILED.\n" );
-					//					return false;
-					//					//						}
-					//					//					}
-					//				}
-				}
-			}
-		}
-		return true;
-	}
+    this.process("* uploading directly to database via REST... ");
+    try {
+      uploadToJiraViaRest();
+      this.process("SUCCEEDED.\n");
+    } catch (Exception e) {
+      e.printStackTrace();
+      try {
+        this.process("FAILED.\n");
+        this.process("* uploading directly to database via SOAP... ");
+        boolean isSuccessAttachment = this.uploadToJIRAViaSOAP();
+        if (isSuccessAttachment) {
+          this.process("SUCCEEDED.\n");
+        } else {
+          this.process("PARTIALLY SUCCEEDED (attachments failed).\n");
+          //        this.process( "* sending mail (on smtp port)... " );
+          //        try {
+          //          this.sendMail( false, null );
+          //          this.process( "SUCCEEDED.\n" );
+          //        } catch( Exception eC ) {
+          //          eC.printStackTrace();
+          //          this.process( "FAILED.\n" );
+          //        }
+        }
+      } catch (Exception eA) {
+        eA.printStackTrace();
+        try {
+          this.process("FAILED.\n");
+          this.process("* uploading directly to database via RPC... ");
+          this.uploadToJIRAViaRPC();
+          this.process("SUCCEEDED.\n");
+        } catch (Exception eB) {
+          eB.printStackTrace();
+          this.process("FAILED.\n");
+          //        this.process( "* sending mail (on smtp port)... " );
+          //        try {
+          //          this.sendMail( false, null );
+          //          this.process( "SUCCEEDED.\n" );
+          //        } catch( Exception eC ) {
+          //          eC.printStackTrace();
+          //          this.process( "FAILED.\n" );
+          //          //          this.process( "* sending secure mail (on secure smtp port)... " );
+          //          //          try {
+          //          //            this.sendMail( true, null );
+          //          //            this.process( "SUCCEEDED.\n" );
+          //          //          } catch( Exception eD ) {
+          //          //            eD.printStackTrace();
+          //          //            this.process( "FAILED.\n" );
+          //          //            this.process( "* sending secure mail (on http port)... " );
+          //          //            try {
+          //          //              this.sendMail( true, 80 );
+          //          //              this.process( "SUCCEEDED.\n" );
+          //          //            } catch( Exception eE ) {
+          //          //              eE.printStackTrace();
+          //          this.process( "FAILED.\n" );
+          //          return false;
+          //          //            }
+          //          //          }
+          //        }
+        }
+      }
+    }
+    return true;
+  }
 
-	@Override
-	protected void done() {
-		try {
-			Boolean isSuccessful = this.get();
-			if( isSuccessful != null ) {
-				URL urlResult;
-				if( this.key != null ) {
-					try {
-						URL urlSOAP = this.reportSubmissionConfiguration.getJIRAViaSOAPServer();
-						urlResult = new URL( urlSOAP.getProtocol(), urlSOAP.getHost(), urlSOAP.getPort(), "/browse/" + this.key );
-					} catch( MalformedURLException murle ) {
-						urlResult = null;
-					}
-				} else {
-					urlResult = null;
-				}
-				this.workerListener.done( isSuccessful, urlResult );
-			} else {
-				System.out.println( "IssueReportWorker: isSuccessful is null." );
-			}
-		} catch( ExecutionException ee ) {
-			ee.printStackTrace();
-		} catch( InterruptedException ie ) {
-			ie.printStackTrace();
-		}
-	}
+  @Override
+  protected void done() {
+    try {
+      Boolean isSuccessful = this.get();
+      if (isSuccessful != null) {
+        URL urlResult;
+        if (this.key != null) {
+          try {
+            URL urlSOAP = this.reportSubmissionConfiguration.getJIRAViaSOAPServer();
+            urlResult = new URL(urlSOAP.getProtocol(), urlSOAP.getHost(), urlSOAP.getPort(), "/browse/" + this.key);
+          } catch (MalformedURLException murle) {
+            urlResult = null;
+          }
+        } else {
+          urlResult = null;
+        }
+        this.workerListener.done(isSuccessful, urlResult);
+      } else {
+        System.out.println("IssueReportWorker: isSuccessful is null.");
+      }
+    } catch (ExecutionException ee) {
+      ee.printStackTrace();
+    } catch (InterruptedException ie) {
+      ie.printStackTrace();
+    }
+  }
 }

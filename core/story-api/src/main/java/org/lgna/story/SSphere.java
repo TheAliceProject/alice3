@@ -51,21 +51,21 @@ import org.lgna.story.implementation.SphereImp;
  * @author Dennis Cosgrove
  */
 public class SSphere extends SShape {
-	private final SphereImp implementation = new SphereImp( this );
+  private final SphereImp implementation = new SphereImp(this);
 
-	@Override
-	/* package-private */SphereImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */SphereImp getImplementation() {
+    return this.implementation;
+  }
 
-	@GetterTemplate( isPersistent = true )
-	@MethodTemplate( )
-	public Double getRadius() {
-		return this.implementation.radius.getValue();
-	}
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate()
+  public Double getRadius() {
+    return this.implementation.radius.getValue();
+  }
 
-	@MethodTemplate( )
-	public void setRadius( Number radius, SetRadius.Detail... details ) {
-		this.implementation.radius.animateValue( radius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void setRadius(Number radius, SetRadius.Detail... details) {
+    this.implementation.radius.animateValue(radius.doubleValue(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 }

@@ -53,11 +53,11 @@ import javax.swing.event.TreeSelectionEvent;
  * @author Dennis Cosgrove
  */
 public class TreeSelectionEventTrigger extends EventObjectTrigger<TreeSelectionEvent> {
-	public static UserActivity createUserActivity( TreeSelectionEvent treeSelectionEvent ) {
-		return new TreeSelectionEventTrigger( null, treeSelectionEvent ).getUserActivity();
-	}
+  public static UserActivity createUserActivity(TreeSelectionEvent treeSelectionEvent) {
+    return new TreeSelectionEventTrigger(null, treeSelectionEvent).getUserActivity();
+  }
 
-	private TreeSelectionEventTrigger( ViewController<?, ?> viewController, TreeSelectionEvent treeSelectionEvent ) {
-		super( Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), viewController, treeSelectionEvent );
-	}
+  private TreeSelectionEventTrigger(ViewController<?, ?> viewController, TreeSelectionEvent treeSelectionEvent) {
+    super(Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), viewController, treeSelectionEvent);
+  }
 }

@@ -55,19 +55,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionStatementInsertCascade extends StatementInsertCascade {
-	public ExpressionStatementInsertCascade( UUID id, BlockStatementIndexPair blockStatementIndexPair, CascadeBlank<Expression>... blanks ) {
-		super( id, blockStatementIndexPair, false, blanks );
-	}
+  public ExpressionStatementInsertCascade(UUID id, BlockStatementIndexPair blockStatementIndexPair, CascadeBlank<Expression>... blanks) {
+    super(id, blockStatementIndexPair, false, blanks);
+  }
 
-	protected abstract Expression createExpression( Expression... expressions );
+  protected abstract Expression createExpression(Expression... expressions);
 
-	@Override
-	protected final Statement createStatement( Expression... expressions ) {
-		Expression expression = this.createExpression( expressions );
-		if( expression != null ) {
-			return new ExpressionStatement( expression );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected final Statement createStatement(Expression... expressions) {
+    Expression expression = this.createExpression(expressions);
+    if (expression != null) {
+      return new ExpressionStatement(expression);
+    } else {
+      return null;
+    }
+  }
 }

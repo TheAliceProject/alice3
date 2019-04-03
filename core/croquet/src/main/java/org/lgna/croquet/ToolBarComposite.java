@@ -51,14 +51,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ToolBarComposite extends AbstractComposite<ToolBarView> {
-	public ToolBarComposite( UUID migrationId ) {
-		super( migrationId );
-	}
+  public ToolBarComposite(UUID migrationId) {
+    super(migrationId);
+  }
 
-	public abstract Iterable<? extends Element> getSubElements();
+  public abstract Iterable<? extends Element> getSubElements();
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 }

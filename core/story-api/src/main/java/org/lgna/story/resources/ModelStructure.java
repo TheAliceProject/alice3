@@ -53,28 +53,28 @@ import java.net.URI;
  */
 public interface ModelStructure<I extends JointedModelImp, T extends SThing> extends JointedModelResource {
 
-	I createImplementation(T abstraction );
+  I createImplementation(T abstraction);
 
-	String[] getTags();
+  String[] getTags();
 
-	String[] getGroupTags();
+  String[] getGroupTags();
 
-	String getModelClassName();
+  String getModelClassName();
 
-	String getInternalModelClassName();
+  String getInternalModelClassName();
 
-	String[] getThemeTags();
+  String[] getThemeTags();
 
-	JointId[] getModelSpecificJoints();
+  JointId[] getModelSpecificJoints();
 
-	AxisAlignedBox getBoundingBox();
+  AxisAlignedBox getBoundingBox();
 
-	boolean getPlaceOnGround();
+  boolean getPlaceOnGround();
 
-	URI getIconURI();
+  URI getIconURI();
 
-	URI getVisualURI();
+  URI getVisualURI();
 
-	URI getTextureURI();
+  URI getTextureURI();
 
 }

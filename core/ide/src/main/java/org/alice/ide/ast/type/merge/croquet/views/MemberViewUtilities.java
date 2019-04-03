@@ -58,75 +58,75 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class MemberViewUtilities {
-	public static Color ACTION_MUST_BE_TAKEN_COLOR = new Color( 170, 0, 0 );
+  public static Color ACTION_MUST_BE_TAKEN_COLOR = new Color(170, 0, 0);
 
-	//	public static org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon KEEP_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
-	//		@Override
-	//		protected ActionStatus getActionStatus() {
-	//			return ActionStatus.KEEP;
-	//		}
-	//	};
+  //  public static org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon KEEP_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
+  //    @Override
+  //    protected ActionStatus getActionStatus() {
+  //      return ActionStatus.KEEP;
+  //    }
+  //  };
 
-	//
-	//	private static javax.swing.Icon DELETE_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
-	//		@Override
-	//		protected ActionStatus getActionStatus() {
-	//			return ActionStatus.DELETE;
-	//		}
-	//	};
+  //
+  //  private static javax.swing.Icon DELETE_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
+  //    @Override
+  //    protected ActionStatus getActionStatus() {
+  //      return ActionStatus.DELETE;
+  //    }
+  //  };
 
-	private static AbstractLabel createMemberLabel( Member member, String prefix, String postfix, Icon icon ) {
-		return new Label( "<html>" + prefix + member.getName() + postfix + "</html>", icon );
-	}
+  private static AbstractLabel createMemberLabel(Member member, String prefix, String postfix, Icon icon) {
+    return new Label("<html>" + prefix + member.getName() + postfix + "</html>", icon);
+  }
 
-	public static AbstractLabel createAddMemberLabel( Member member ) {
-		return createMemberLabel( member, "", "", null );
-	}
+  public static AbstractLabel createAddMemberLabel(Member member) {
+    return createMemberLabel(member, "", "", null);
+  }
 
-	public static AbstractLabel createDeleteMemberLabel( Member member ) {
-		AbstractLabel rv = createMemberLabel( member, "<strike>", "</strike>", null );
-		rv.getAwtComponent().setEnabled( false );
-		return rv;
-	}
+  public static AbstractLabel createDeleteMemberLabel(Member member) {
+    AbstractLabel rv = createMemberLabel(member, "<strike>", "</strike>", null);
+    rv.getAwtComponent().setEnabled(false);
+    return rv;
+  }
 
-	public static AbstractLabel createReplaceMemberLabel( Member member ) {
-		return createMemberLabel( member, "", " <em>(replace with version from class file)</em>", null );
-	}
+  public static AbstractLabel createReplaceMemberLabel(Member member) {
+    return createMemberLabel(member, "", " <em>(replace with version from class file)</em>", null);
+  }
 
-	public static AbstractLabel createKeepInsteadOfReplaceMemberLabel( Member member ) {
-		return createMemberLabel( member, "", " <em>(keep version already in project)</em>", null );
-	}
+  public static AbstractLabel createKeepInsteadOfReplaceMemberLabel(Member member) {
+    return createMemberLabel(member, "", " <em>(keep version already in project)</em>", null);
+  }
 
-	public static AbstractLabel createKeepIdenticalMemberLabel( Member member ) {
-		return createMemberLabel( member, "", " <em>(identical)</em>", null );
-	}
+  public static AbstractLabel createKeepIdenticalMemberLabel(Member member) {
+    return createMemberLabel(member, "", " <em>(identical)</em>", null);
+  }
 
-	public static AbstractLabel createKeepUniqueMemberLabel( Member member ) {
-		return createMemberLabel( member, "", "", null );
-	}
+  public static AbstractLabel createKeepUniqueMemberLabel(Member member) {
+    return createMemberLabel(member, "", "", null);
+  }
 
-	public static AbstractLabel createActionMustBeTakeMemberLabel( Member member ) {
-		AbstractLabel rv = createMemberLabel( member, "", "", null );
-		rv.setForegroundColor( ACTION_MUST_BE_TAKEN_COLOR );
-		return rv;
-	}
+  public static AbstractLabel createActionMustBeTakeMemberLabel(Member member) {
+    AbstractLabel rv = createMemberLabel(member, "", "", null);
+    rv.setForegroundColor(ACTION_MUST_BE_TAKEN_COLOR);
+    return rv;
+  }
 
-	public static TextField createTextField( StringState state, ColorCustomizer foregroundCustomizer ) {
-		TextField rv = state.createTextField();
-		rv.enableSelectAllWhenFocusGained();
-		rv.getAwtComponent().setForegroundCustomizer( foregroundCustomizer );
-		rv.getAwtComponent().setColumns( 24 );
-		return rv;
-	}
+  public static TextField createTextField(StringState state, ColorCustomizer foregroundCustomizer) {
+    TextField rv = state.createTextField();
+    rv.enableSelectAllWhenFocusGained();
+    rv.getAwtComponent().setForegroundCustomizer(foregroundCustomizer);
+    rv.getAwtComponent().setColumns(24);
+    return rv;
+  }
 
-	//	public static <M extends org.lgna.project.ast.Member> org.lgna.croquet.components.HoverPopupView createPopupView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, M member, javax.swing.Icon icon ) {
-	//		org.lgna.croquet.components.HoverPopupView rv = composite.getPopupMemberFor( member ).getHoverPopupElement().createHoverPopupView();
-	//		rv.getAwtComponent().setIcon( icon );
-	//		return rv;
-	//	}
-	public static HoverPopupView createPopupView( MemberPopupCoreComposite popup ) {
-		HoverPopupView rv = popup.getHoverPopupElement().createHoverPopupView();
-		rv.getAwtComponent().setIcon( popup.getIcon() );
-		return rv;
-	}
+  //  public static <M extends org.lgna.project.ast.Member> org.lgna.croquet.components.HoverPopupView createPopupView( org.alice.stageide.gallerybrowser.uri.merge.AddMembersComposite<?, M> composite, M member, javax.swing.Icon icon ) {
+  //    org.lgna.croquet.components.HoverPopupView rv = composite.getPopupMemberFor( member ).getHoverPopupElement().createHoverPopupView();
+  //    rv.getAwtComponent().setIcon( icon );
+  //    return rv;
+  //  }
+  public static HoverPopupView createPopupView(MemberPopupCoreComposite popup) {
+    HoverPopupView rv = popup.getHoverPopupElement().createHoverPopupView();
+    rv.getAwtComponent().setIcon(popup.getIcon());
+    return rv;
+  }
 }

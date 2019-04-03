@@ -48,19 +48,19 @@ import org.lgna.story.resources.JointId;
  * @author Dennis Cosgrove
  */
 public class AnchorEvent {
-	private final JointId previousValue;
-	private final JointId nextValue;
+  private final JointId previousValue;
+  private final JointId nextValue;
 
-	public AnchorEvent( JointId previousValue, JointId nextValue ) {
-		this.previousValue = previousValue;
-		this.nextValue = nextValue;
-	}
+  public AnchorEvent(JointId previousValue, JointId nextValue) {
+    this.previousValue = previousValue;
+    this.nextValue = nextValue;
+  }
 
-	public JointId getPreviousValue() {
-		return this.previousValue;
-	}
+  public JointId getPreviousValue() {
+    return this.previousValue;
+  }
 
-	public JointId getNextValue() {
-		return this.nextValue;
-	}
+  public JointId getNextValue() {
+    return this.nextValue;
+  }
 }

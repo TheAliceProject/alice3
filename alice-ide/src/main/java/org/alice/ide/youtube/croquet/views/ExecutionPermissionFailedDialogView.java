@@ -50,13 +50,13 @@ import org.lgna.croquet.views.MigPanel;
  * @author Matt May
  */
 public class ExecutionPermissionFailedDialogView extends MigPanel {
-	public ExecutionPermissionFailedDialogView( ExecutionPermissionFailedDialogComposite composite ) {
-		super( composite );
-		this.addComponent( composite.getExplanation().createLabel(), "wrap" );
-		this.addComponent( composite.getBrowserOperation().createHyperlink(), "wrap" );
-		ActionOperation troubleShootAction = composite.getTroubleShootAction();
-		if( troubleShootAction != null ) {
-			this.addComponent( troubleShootAction.createButton(), "wrap" );
-		}
-	}
+  public ExecutionPermissionFailedDialogView(ExecutionPermissionFailedDialogComposite composite) {
+    super(composite);
+    this.addComponent(composite.getExplanation().createLabel(), "wrap");
+    this.addComponent(composite.getBrowserOperation().createHyperlink(), "wrap");
+    ActionOperation troubleShootAction = composite.getTroubleShootAction();
+    if (troubleShootAction != null) {
+      this.addComponent(troubleShootAction.createButton(), "wrap");
+    }
+  }
 }

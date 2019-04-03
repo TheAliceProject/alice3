@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenTopPieceBlousedWaist implements FemaleTeenTopPiece {
-	RED,
-	ORANGE,
-	PURPLE,
-	BLACK_UNDER_THINGS,
-	CREAM_UNDER_THINGS,
-	ROSE_UNDER_THINGS;
+  RED, ORANGE, PURPLE, BLACK_UNDER_THINGS, CREAM_UNDER_THINGS, ROSE_UNDER_THINGS
 
 }

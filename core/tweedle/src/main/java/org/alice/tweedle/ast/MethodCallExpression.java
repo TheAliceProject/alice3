@@ -8,36 +8,37 @@ import java.util.Map;
 
 public class MethodCallExpression extends MemberAccessExpression {
 
-	private final String methodName;
-	private final Map<String, TweedleExpression> arguments;
+  private final String methodName;
+  private final Map<String, TweedleExpression> arguments;
 
-	public MethodCallExpression( TweedleExpression target, String methodName ) {
-		super( target );
-		this.methodName = methodName;
-		arguments = new HashMap<>();
-	}
+  public MethodCallExpression(TweedleExpression target, String methodName) {
+    super(target);
+    this.methodName = methodName;
+    arguments = new HashMap<>();
+  }
 
-	public MethodCallExpression( TweedleExpression target, String methodName, Map<String, TweedleExpression> arguments ) {
-		super( target );
-		this.methodName = methodName;
-		this.arguments = arguments;
-	}
+  public MethodCallExpression(TweedleExpression target, String methodName, Map<String, TweedleExpression> arguments) {
+    super(target);
+    this.methodName = methodName;
+    this.arguments = arguments;
+  }
 
-	@Override public TweedleValue evaluate( Frame frame ) {
-		evaluateTarget( frame );
-		// TODO invoke the method on the target.
-		return null;
-	}
+  @Override
+  public TweedleValue evaluate(Frame frame) {
+    evaluateTarget(frame);
+    // TODO invoke the method on the target.
+    return null;
+  }
 
-	public String getMethodName() {
-		return methodName;
-	}
+  public String getMethodName() {
+    return methodName;
+  }
 
-	public void addArgument( String argName, TweedleExpression argValue ) {
-		arguments.put( argName, argValue );
-	}
+  public void addArgument(String argName, TweedleExpression argValue) {
+    arguments.put(argName, argValue);
+  }
 
-	public TweedleExpression getArg( String argName ) {
-		return arguments.get( argName );
-	}
+  public TweedleExpression getArg(String argName) {
+    return arguments.get(argName);
+  }
 }

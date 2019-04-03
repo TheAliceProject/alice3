@@ -54,42 +54,42 @@ import java.awt.Frame;
  * @author Dennis Cosgrove
  */
 public class JDialogBuilder {
-	public JDialogBuilder owner( Component owner ) {
-		this.owner = owner;
-		return this;
-	}
+  public JDialogBuilder owner(Component owner) {
+    this.owner = owner;
+    return this;
+  }
 
-	public JDialogBuilder isModal( boolean isModal ) {
-		this.isModal = isModal;
-		return this;
-	}
+  public JDialogBuilder isModal(boolean isModal) {
+    this.isModal = isModal;
+    return this;
+  }
 
-	public JDialogBuilder title( String title ) {
-		this.title = title;
-		return this;
-	}
+  public JDialogBuilder title(String title) {
+    this.title = title;
+    return this;
+  }
 
-	public JDialog build() {
-		JDialog rv;
-		if( this.owner != null ) {
-			Component root = SwingUtilities.getRoot( this.owner );
-			if( root instanceof Frame ) {
-				rv = new JDialog( (Frame)root );
-			} else if( root instanceof Dialog ) {
-				rv = new JDialog( (Dialog)root );
-			} else {
-				Logger.warning( "owner's root is not Frame or Dialog", this.owner, root );
-				rv = new JDialog();
-			}
-		} else {
-			rv = new JDialog();
-		}
-		rv.setModal( isModal );
-		rv.setTitle( title );
-		return rv;
-	}
+  public JDialog build() {
+    JDialog rv;
+    if (this.owner != null) {
+      Component root = SwingUtilities.getRoot(this.owner);
+      if (root instanceof Frame) {
+        rv = new JDialog((Frame) root);
+      } else if (root instanceof Dialog) {
+        rv = new JDialog((Dialog) root);
+      } else {
+        Logger.warning("owner's root is not Frame or Dialog", this.owner, root);
+        rv = new JDialog();
+      }
+    } else {
+      rv = new JDialog();
+    }
+    rv.setModal(isModal);
+    rv.setTitle(title);
+    return rv;
+  }
 
-	private Component owner;
-	private boolean isModal;
-	private String title;
+  private Component owner;
+  private boolean isModal;
+  private String title;
 }

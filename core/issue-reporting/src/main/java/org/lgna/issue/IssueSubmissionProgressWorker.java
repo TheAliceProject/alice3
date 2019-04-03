@@ -59,61 +59,58 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class IssueSubmissionProgressWorker extends WorkerWithProgress<Boolean, String> {
-	private static final String START_MESSAGE = "START_MESSAGE";
-	private static final String END_MESSAGE = "END_MESSAGE";
+  private static final String START_MESSAGE = "START_MESSAGE";
+  private static final String END_MESSAGE = "END_MESSAGE";
 
-	public IssueSubmissionProgressWorker( JSubmitPane owner ) {
-		this.owner = owner;
-	}
+  public IssueSubmissionProgressWorker(JSubmitPane owner) {
+    this.owner = owner;
+  }
 
-	protected abstract Boolean doInternal_onBackgroundThread( Issue.Builder issueBuilder ) throws Exception;
+  protected abstract Boolean doInternal_onBackgroundThread(Issue.Builder issueBuilder) throws Exception;
 
-	@Override
-	protected final Boolean do_onBackgroundThread() throws Exception {
-		this.publish( START_MESSAGE );
-		Issue.Builder issueBuilder = this.owner.createIssueBuilder();
-		boolean rv = this.doInternal_onBackgroundThread( issueBuilder );
-		this.publish( END_MESSAGE );
-		return rv;
-	}
+  @Override
+  protected final Boolean do_onBackgroundThread() throws Exception {
+    this.publish(START_MESSAGE);
+    Issue.Builder issueBuilder = this.owner.createIssueBuilder();
+    boolean rv = this.doInternal_onBackgroundThread(issueBuilder);
+    this.publish(END_MESSAGE);
+    return rv;
+  }
 
-	@Override
-	protected final void handleProcess_onEventDispatchThread( List<String> chunks ) {
-		for( String message : chunks ) {
-			if( START_MESSAGE.equals( message ) ) {
-				JDialog dialog = new JDialogBuilder()
-						.owner( this.owner )
-						.title( "Uploading Bug Report" )
-						.build();
-				dialog.add( this.progressPane, BorderLayout.CENTER );
-				dialog.pack();
-				dialog.setVisible( true );
-			} else if( END_MESSAGE.equals( message ) ) {
-				SwingUtilities.getRoot( this.progressPane ).setVisible( false );
-			} else {
-				this.progressPane.addMessage( message );
-			}
-		}
-	}
+  @Override
+  protected final void handleProcess_onEventDispatchThread(List<String> chunks) {
+    for (String message : chunks) {
+      if (START_MESSAGE.equals(message)) {
+        JDialog dialog = new JDialogBuilder().owner(this.owner).title("Uploading Bug Report").build();
+        dialog.add(this.progressPane, BorderLayout.CENTER);
+        dialog.pack();
+        dialog.setVisible(true);
+      } else if (END_MESSAGE.equals(message)) {
+        SwingUtilities.getRoot(this.progressPane).setVisible(false);
+      } else {
+        this.progressPane.addMessage(message);
+      }
+    }
+  }
 
-	@Override
-	protected final void handleDone_onEventDispatchThread( Boolean value ) {
-		if( this.progressPane.isBackgrounded() || ( SwingUtilities.getRoot( this.owner ).isVisible() == false ) ) {
-			Logger.outln( "issue submission result:", value );
-		} else {
-			if( value ) {
-				JOptionPane.showMessageDialog( this.owner, "Your bug report has been successfully submitted.  Thank you." );
-			} else {
-				JOptionPane.showMessageDialog( this.owner, "Your bug report FAILED to submit.  Thank you for trying." );
-			}
-			this.hideOwnerDialog();
-		}
-	}
+  @Override
+  protected final void handleDone_onEventDispatchThread(Boolean value) {
+    if (this.progressPane.isBackgrounded() || (SwingUtilities.getRoot(this.owner).isVisible() == false)) {
+      Logger.outln("issue submission result:", value);
+    } else {
+      if (value) {
+        JOptionPane.showMessageDialog(this.owner, "Your bug report has been successfully submitted.  Thank you.");
+      } else {
+        JOptionPane.showMessageDialog(this.owner, "Your bug report FAILED to submit.  Thank you for trying.");
+      }
+      this.hideOwnerDialog();
+    }
+  }
 
-	public void hideOwnerDialog() {
-		SwingUtilities.getRoot( this.owner ).setVisible( false );
-	}
+  public void hideOwnerDialog() {
+    SwingUtilities.getRoot(this.owner).setVisible(false);
+  }
 
-	private final JSubmitPane owner;
-	private final JProgressPane progressPane = new JProgressPane( this );
+  private final JSubmitPane owner;
+  private final JProgressPane progressPane = new JProgressPane(this);
 }

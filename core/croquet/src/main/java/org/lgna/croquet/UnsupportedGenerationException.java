@@ -46,18 +46,18 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public class UnsupportedGenerationException extends Exception {
-	public UnsupportedGenerationException() {
-	}
+  public UnsupportedGenerationException() {
+  }
 
-	public UnsupportedGenerationException( String message ) {
-		super( message );
-	}
+  public UnsupportedGenerationException(String message) {
+    super(message);
+  }
 
-	public UnsupportedGenerationException( String message, Throwable cause ) {
-		super( message, cause );
-	}
+  public UnsupportedGenerationException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-	public UnsupportedGenerationException( Throwable cause ) {
-		super( cause );
-	}
+  public UnsupportedGenerationException(Throwable cause) {
+    super(cause);
+  }
 }

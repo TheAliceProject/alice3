@@ -49,7 +49,7 @@ import org.lgna.story.resources.sims2.LifeStage;
  * @author Dennis Cosgrove
  */
 public class ChildPersonResourceFillerInner extends PersonResourceFillerInner {
-	public ChildPersonResourceFillerInner() {
-		super( ChildPersonResource.class, LifeStage.CHILD );
-	}
+  public ChildPersonResourceFillerInner() {
+    super(ChildPersonResource.class, LifeStage.CHILD);
+  }
 }

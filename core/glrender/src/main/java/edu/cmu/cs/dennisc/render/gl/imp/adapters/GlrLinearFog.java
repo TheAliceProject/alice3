@@ -56,25 +56,25 @@ import edu.cmu.cs.dennisc.scenegraph.LinearFog;
  * @author Dennis Cosgrove
  */
 public class GlrLinearFog extends GlrFog<LinearFog> {
-	@Override
-	public void setupAffectors( RenderContext rc ) {
-		super.setupAffectors( rc );
-		rc.gl.glFogi( GL_FOG_MODE, GL_LINEAR );
-		rc.gl.glFogf( GL_FOG_START, this.near );
-		rc.gl.glFogf( GL_FOG_END, this.far );
-	}
+  @Override
+  public void setupAffectors(RenderContext rc) {
+    super.setupAffectors(rc);
+    rc.gl.glFogi(GL_FOG_MODE, GL_LINEAR);
+    rc.gl.glFogf(GL_FOG_START, this.near);
+    rc.gl.glFogf(GL_FOG_END, this.far);
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.nearDistance ) {
-			this.near = owner.nearDistance.getValue().floatValue();
-		} else if( property == owner.farDistance ) {
-			this.far = owner.farDistance.getValue().floatValue();
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.nearDistance) {
+      this.near = owner.nearDistance.getValue().floatValue();
+    } else if (property == owner.farDistance) {
+      this.far = owner.farDistance.getValue().floatValue();
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private float near;
-	private float far;
+  private float near;
+  private float far;
 }

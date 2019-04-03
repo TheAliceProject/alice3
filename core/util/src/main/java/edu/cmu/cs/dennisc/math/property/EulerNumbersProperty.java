@@ -50,31 +50,31 @@ import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
  * @author Dennis Cosgrove
  */
 public class EulerNumbersProperty extends CopyableInstanceProperty<EulerNumbers> {
-	public EulerNumbersProperty( InstancePropertyOwner owner, EulerNumbers value ) {
-		super( owner, value );
-	}
+  public EulerNumbersProperty(InstancePropertyOwner owner, EulerNumbers value) {
+    super(owner, value);
+  }
 
-	@Override
-	public void setValue( EulerNumbers value ) {
-		assert value != null : this;
-		assert value.isNaN() == false : this;
-		super.setValue( value );
-	}
+  @Override
+  public void setValue(EulerNumbers value) {
+    assert value != null : this;
+    assert value.isNaN() == false : this;
+    super.setValue(value);
+  }
 
-	@Override
-	public EulerNumbers getCopy( EulerNumbers rv ) {
-		rv.set( this.getValue() );
-		return rv;
-	}
+  @Override
+  public EulerNumbers getCopy(EulerNumbers rv) {
+    rv.set(this.getValue());
+    return rv;
+  }
 
-	@Override
-	public final EulerNumbers getCopy() {
-		return this.getCopy( new EulerNumbers() );
-	}
+  @Override
+  public final EulerNumbers getCopy() {
+    return this.getCopy(new EulerNumbers());
+  }
 
-	@Override
-	public void setCopy( EulerNumbers value ) {
-		//todo?
-		this.setValue( new EulerNumbers( value ) );
-	}
+  @Override
+  public void setCopy(EulerNumbers value) {
+    //todo?
+    this.setValue(new EulerNumbers(value));
+  }
 }

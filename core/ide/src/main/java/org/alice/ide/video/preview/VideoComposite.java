@@ -80,141 +80,141 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class VideoComposite extends SimpleComposite<VideoView> {
-	private final Operation togglePlayPauseOperation = this.createActionOperation( "togglePlayPauseOperation", new Action() {
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			if( getView().isErrorFreeSinceLastPrepareMedia() ) {
-				VideoPlayer videoPlayer = getView().getVideoPlayer();
-				if( videoPlayer.isPlaying() ) {
-					videoPlayer.pause();
-				} else {
-					videoPlayer.playResume();
-				}
-			} else {
-				Logger.severe();
-			}
-			return null;
-		}
-	} );
+  private final Operation togglePlayPauseOperation = this.createActionOperation("togglePlayPauseOperation", new Action() {
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      if (getView().isErrorFreeSinceLastPrepareMedia()) {
+        VideoPlayer videoPlayer = getView().getVideoPlayer();
+        if (videoPlayer.isPlaying()) {
+          videoPlayer.pause();
+        } else {
+          videoPlayer.playResume();
+        }
+      } else {
+        Logger.severe();
+      }
+      return null;
+    }
+  });
 
-	public VideoComposite() {
-		super( UUID.fromString( "ffa047e2-9bce-4a46-8a16-70c19ced4d00" ) );
-	}
+  public VideoComposite() {
+    super(UUID.fromString("ffa047e2-9bce-4a46-8a16-70c19ced4d00"));
+  }
 
-	public Operation getTogglePlayPauseOperation() {
-		return this.togglePlayPauseOperation;
-	}
+  public Operation getTogglePlayPauseOperation() {
+    return this.togglePlayPauseOperation;
+  }
 
-	@Override
-	protected VideoView createView() {
-		return new VideoView( this );
-	}
+  @Override
+  protected VideoView createView() {
+    return new VideoView(this);
+  }
 
-	public static void main( String[] args ) throws Exception {
-		UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		final URL SECURE_URL = new URL( "https://lookingglass.wustl.edu/videos/projects/483.webm?1382676625" );
-		final boolean IS_SIMPLE_TEST_DESIRED = false;
-		if( IS_SIMPLE_TEST_DESIRED ) {
-			final boolean IS_APPLICATION_ROOT_DESIRED = true;
-			VideoPlayer videoPlayer;
-			if( IS_APPLICATION_ROOT_DESIRED ) {
-				videoPlayer = VlcjUtilities.createVideoPlayer();
-			} else {
-				final boolean IS_NATIVE_DISCOVERY_DESIRED = false;
-				if( IS_NATIVE_DISCOVERY_DESIRED ) {
-					NativeDiscovery nativeDiscovery = new NativeDiscovery();
-					if( nativeDiscovery.discover() ) {
-						//pass
-					} else {
-						System.err.println( "vlcj native discovery failed" );
-					}
-				} else {
-					if( SystemUtilities.isWindows() ) {
-						if( SystemUtilities.is64Bit() ) {
-							NativeLibrary.addSearchPath( RuntimeUtil.getLibVlcLibraryName(), "C:/Program Files/VideoLAN/VLC" );
-						} else {
-							throw new RuntimeException();
-						}
-					} else {
-						throw new RuntimeException();
-					}
-				}
-				Native.loadLibrary( RuntimeUtil.getLibVlcLibraryName(), LibVlc.class );
-				videoPlayer = new VlcjVideoPlayer();
-			}
+  public static void main(String[] args) throws Exception {
+    UIManagerUtilities.setLookAndFeel("Nimbus");
+    final URL SECURE_URL = new URL("https://lookingglass.wustl.edu/videos/projects/483.webm?1382676625");
+    final boolean IS_SIMPLE_TEST_DESIRED = false;
+    if (IS_SIMPLE_TEST_DESIRED) {
+      final boolean IS_APPLICATION_ROOT_DESIRED = true;
+      VideoPlayer videoPlayer;
+      if (IS_APPLICATION_ROOT_DESIRED) {
+        videoPlayer = VlcjUtilities.createVideoPlayer();
+      } else {
+        final boolean IS_NATIVE_DISCOVERY_DESIRED = false;
+        if (IS_NATIVE_DISCOVERY_DESIRED) {
+          NativeDiscovery nativeDiscovery = new NativeDiscovery();
+          if (nativeDiscovery.discover()) {
+            //pass
+          } else {
+            System.err.println("vlcj native discovery failed");
+          }
+        } else {
+          if (SystemUtilities.isWindows()) {
+            if (SystemUtilities.is64Bit()) {
+              NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "C:/Program Files/VideoLAN/VLC");
+            } else {
+              throw new RuntimeException();
+            }
+          } else {
+            throw new RuntimeException();
+          }
+        }
+        Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
+        videoPlayer = new VlcjVideoPlayer();
+      }
 
-			JFrame frame = new JFrame( "vlcj test" );
-			frame.setLocation( 100, 100 );
-			frame.setSize( 1050, 600 );
-			frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-			frame.getContentPane().add( videoPlayer.getVideoSurface(), BorderLayout.CENTER );
-			frame.setVisible( true );
+      JFrame frame = new JFrame("vlcj test");
+      frame.setLocation(100, 100);
+      frame.setSize(1050, 600);
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frame.getContentPane().add(videoPlayer.getVideoSurface(), BorderLayout.CENTER);
+      frame.setVisible(true);
 
-			videoPlayer.prepareMedia( SECURE_URL.toURI() );
-			videoPlayer.playResume();
-		} else {
-			final URI uriA;
-			final URI uriB;
-			if( args.length > 0 ) {
-				uriA = new URI( args[ 0 ] );
-				uriB = new URI( args[ 1 ] );
-			} else {
-				File directory = FileUtilities.getDefaultDirectory();
-				if( SystemUtilities.isWindows() ) {
-					directory = directory.getParentFile();
-				}
-				File fileB = new File( directory, "Videos/b.webm" );
-				final boolean IS_SECURE_URL_TEST_DESIRED = true;
-				if( IS_SECURE_URL_TEST_DESIRED ) {
-					uriA = SECURE_URL.toURI();
-				} else {
-					File fileA = new File( directory, "Videos/c.webm" );
-					uriA = fileA.toURI();
-				}
-				uriB = fileB.toURI();
-			}
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					SimpleApplication app = new SimpleApplication();
-					DocumentFrame documentFrame = app.getDocumentFrame();
-					Frame frame = documentFrame.getFrame();
+      videoPlayer.prepareMedia(SECURE_URL.toURI());
+      videoPlayer.playResume();
+    } else {
+      final URI uriA;
+      final URI uriB;
+      if (args.length > 0) {
+        uriA = new URI(args[0]);
+        uriB = new URI(args[1]);
+      } else {
+        File directory = FileUtilities.getDefaultDirectory();
+        if (SystemUtilities.isWindows()) {
+          directory = directory.getParentFile();
+        }
+        File fileB = new File(directory, "Videos/b.webm");
+        final boolean IS_SECURE_URL_TEST_DESIRED = true;
+        if (IS_SECURE_URL_TEST_DESIRED) {
+          uriA = SECURE_URL.toURI();
+        } else {
+          File fileA = new File(directory, "Videos/c.webm");
+          uriA = fileA.toURI();
+        }
+        uriB = fileB.toURI();
+      }
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          SimpleApplication app = new SimpleApplication();
+          DocumentFrame documentFrame = app.getDocumentFrame();
+          Frame frame = documentFrame.getFrame();
 
-					final VideoComposite videoComposite = new VideoComposite();
-					videoComposite.getView().setUri( uriA );
-					frame.setMainComposite( videoComposite );
+          final VideoComposite videoComposite = new VideoComposite();
+          videoComposite.getView().setUri(uriA);
+          frame.setMainComposite(videoComposite);
 
-					javax.swing.Action action = new AbstractAction() {
-						@Override
-						public void actionPerformed( ActionEvent e ) {
-							videoComposite.getView().setUri( uriB );
-						}
-					};
-					action.putValue( javax.swing.Action.NAME, "set second video" );
-					frame.getMainComposite().getView().getAwtComponent().add( new JButton( action ), BorderLayout.PAGE_START );
+          javax.swing.Action action = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              videoComposite.getView().setUri(uriB);
+            }
+          };
+          action.putValue(javax.swing.Action.NAME, "set second video");
+          frame.getMainComposite().getView().getAwtComponent().add(new JButton(action), BorderLayout.PAGE_START);
 
-					frame.pack();
-					frame.setVisible( true );
+          frame.pack();
+          frame.setVisible(true);
 
-					final boolean IS_SNAPSHOT_TEST = false;
-					if( IS_SNAPSHOT_TEST ) {
-						new Thread() {
-							@Override
-							public void run() {
-								float tPrev = Float.NaN;
-								while( true ) {
-									float tCurr = videoComposite.getView().getVideoPlayer().getPosition();
-									if( tCurr != tPrev ) {
-										Logger.outln( tCurr );
-										tPrev = tCurr;
-									}
-									ThreadUtilities.sleep( 1 );
-								}
-							}
-						}.start();
-					}
-				}
-			} );
-		}
-	}
+          final boolean IS_SNAPSHOT_TEST = false;
+          if (IS_SNAPSHOT_TEST) {
+            new Thread() {
+              @Override
+              public void run() {
+                float tPrev = Float.NaN;
+                while (true) {
+                  float tCurr = videoComposite.getView().getVideoPlayer().getPosition();
+                  if (tCurr != tPrev) {
+                    Logger.outln(tCurr);
+                    tPrev = tCurr;
+                  }
+                  ThreadUtilities.sleep(1);
+                }
+              }
+            }.start();
+          }
+        }
+      });
+    }
+  }
 }

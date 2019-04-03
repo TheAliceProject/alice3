@@ -48,11 +48,11 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractValueLiteral<T> extends AbstractLiteral {
-	public abstract InstanceProperty<T> getValueProperty();
+  public abstract InstanceProperty<T> getValueProperty();
 
-	@Override
-	public boolean isValid() {
-		return this.getValueProperty().getValue() != null;
-	}
+  @Override
+  public boolean isValid() {
+    return this.getValueProperty().getValue() != null;
+  }
 
 }

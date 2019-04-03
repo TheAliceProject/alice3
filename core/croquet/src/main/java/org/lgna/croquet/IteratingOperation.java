@@ -53,46 +53,46 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class IteratingOperation extends Operation {
-	public IteratingOperation( Group group, UUID id ) {
-		super( group, id );
-	}
+  public IteratingOperation(Group group, UUID id) {
+    super(group, id);
+  }
 
-	protected abstract boolean hasNext( List<UserActivity> finishedSteps );
+  protected abstract boolean hasNext(List<UserActivity> finishedSteps);
 
-	protected abstract Triggerable getNext( List<UserActivity> finishedSteps );
+  protected abstract Triggerable getNext(List<UserActivity> finishedSteps);
 
-	protected Object getLastValueProduced( List<UserActivity> finishedSteps ) {
-		return finishedSteps.get( finishedSteps.size() - 1 ).getProducedValue();
-	}
+  protected Object getLastValueProduced(List<UserActivity> finishedSteps) {
+    return finishedSteps.get(finishedSteps.size() - 1).getProducedValue();
+  }
 
-	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ){
-		activity.finish();
-	}
+  protected void handleSuccessfulCompletionOfSubModels(UserActivity activity) {
+    activity.finish();
+  }
 
-	protected void iterateOverSubModels( UserActivity activity ) {
-		activity.setCompletionModel( this );
-		try {
-			List<UserActivity> finishedActivities = Lists.newLinkedList();
-			while( hasNext( finishedActivities ) ) {
-				Triggerable next = getNext( finishedActivities );
-				if( next != null ) {
-					UserActivity child = activity.newChildActivity();
-					next.fire( child );
-					if ( child.isSuccessfullyCompleted() ) {
-						finishedActivities.add( child );
-					} else {
-						if (child.isPending()) {
-							Logger.severe( "Canceling while a subStep is pending. The substep should either finish or throw CancelException.", this );
-						}
-						throw new CancelException();
-					}
-				} else {
-					throw new CancelException();
-				}
-			}
-			this.handleSuccessfulCompletionOfSubModels( activity );
-		} catch( CancelException ce ) {
-			activity.cancel(ce);
-		}
-	}
+  protected void iterateOverSubModels(UserActivity activity) {
+    activity.setCompletionModel(this);
+    try {
+      List<UserActivity> finishedActivities = Lists.newLinkedList();
+      while (hasNext(finishedActivities)) {
+        Triggerable next = getNext(finishedActivities);
+        if (next != null) {
+          UserActivity child = activity.newChildActivity();
+          next.fire(child);
+          if (child.isSuccessfullyCompleted()) {
+            finishedActivities.add(child);
+          } else {
+            if (child.isPending()) {
+              Logger.severe("Canceling while a subStep is pending. The substep should either finish or throw CancelException.", this);
+            }
+            throw new CancelException();
+          }
+        } else {
+          throw new CancelException();
+        }
+      }
+      this.handleSuccessfulCompletionOfSubModels(activity);
+    } catch (CancelException ce) {
+      activity.cancel(ce);
+    }
+  }
 }

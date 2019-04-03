@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.fish;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SSwimmer;
@@ -33,35 +34,31 @@ import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 public enum BlueTangResource implements FishResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, BlueTangResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FRONT_LEFT_FIN_TIP = new JointId( FRONT_LEFT_FIN, BlueTangResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FRONT_RIGHT_FIN_TIP = new JointId( FRONT_RIGHT_FIN, BlueTangResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId BACK_TOP_FIN_TIP = new JointId( TAIL, BlueTangResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId BACK_BOTTOM_FIN_TIP = new JointId( TAIL, BlueTangResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LOWER_LIP = new JointId(MOUTH, BlueTangResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FRONT_LEFT_FIN_TIP = new JointId(FRONT_LEFT_FIN, BlueTangResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FRONT_RIGHT_FIN_TIP = new JointId(FRONT_RIGHT_FIN, BlueTangResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId BACK_TOP_FIN_TIP = new JointId(TAIL, BlueTangResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId BACK_BOTTOM_FIN_TIP = new JointId(TAIL, BlueTangResource.class);
 
-	private final ImplementationAndVisualType resourceType;
-	BlueTangResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	BlueTangResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  BlueTangResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
+  BlueTangResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public SwimmerImp createImplementation( SSwimmer abstraction ) {
-		return new SwimmerImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public SwimmerImp createImplementation(SSwimmer abstraction) {
+    return new SwimmerImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

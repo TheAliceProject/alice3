@@ -50,26 +50,26 @@ import org.alice.stageide.personresource.data.HairHatStyle;
  * @author Dennis Cosgrove
  */
 public class HairListCellRenderer extends IngredientListCellRenderer<HairHatStyle> {
-	private static class SingletonHolder {
-		private static HairListCellRenderer instance = new HairListCellRenderer();
-	}
+  private static class SingletonHolder {
+    private static HairListCellRenderer instance = new HairListCellRenderer();
+  }
 
-	public static HairListCellRenderer getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static HairListCellRenderer getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private HairListCellRenderer() {
-		super( 90, 120 );
-	}
+  private HairListCellRenderer() {
+    super(90, 120);
+  }
 
-	@Override
-	protected Object getValue( HairHatStyle value ) {
-		IngredientsComposite ingredientsComposite = PersonResourceComposite.getInstance().getIngredientsComposite();
-		return ingredientsComposite.getHairForHairHatStyle( value );
-	}
+  @Override
+  protected Object getValue(HairHatStyle value) {
+    IngredientsComposite ingredientsComposite = PersonResourceComposite.getInstance().getIngredientsComposite();
+    return ingredientsComposite.getHairForHairHatStyle(value);
+  }
 
-	@Override
-	protected String getSubPath() {
-		return "hair_pictures";
-	}
+  @Override
+  protected String getSubPath() {
+    return "hair_pictures";
+  }
 }

@@ -52,54 +52,54 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class WorkerWithProgress<T, V> extends AbstractWorker<T, V> {
-	protected class InternalSwingWorkerWithProgress extends InternalSwingWorker {
-		private void DEEMED_ACCEPTABLE_ACCESS_publish( V... chunks ) {
-			this.publish( chunks );
-		}
+  protected class InternalSwingWorkerWithProgress extends InternalSwingWorker {
+    private void DEEMED_ACCEPTABLE_ACCESS_publish(V... chunks) {
+      this.publish(chunks);
+    }
 
-		private void DEEMED_ACCEPTABLE_ACCESS_setProgress( int progress ) {
-			this.setProgress( progress );
-		}
+    private void DEEMED_ACCEPTABLE_ACCESS_setProgress(int progress) {
+      this.setProgress(progress);
+    }
 
-		@Override
-		protected void process( List<V> chunks ) {
-			super.process( chunks );
-			if( this.isCancelled() ) {
-				//pass
-			} else {
-				WorkerWithProgress.this.handleProcess_onEventDispatchThread( chunks );
-			}
-		}
-	}
+    @Override
+    protected void process(List<V> chunks) {
+      super.process(chunks);
+      if (this.isCancelled()) {
+        //pass
+      } else {
+        WorkerWithProgress.this.handleProcess_onEventDispatchThread(chunks);
+      }
+    }
+  }
 
-	private final InternalSwingWorkerWithProgress swingWorker = new InternalSwingWorkerWithProgress();
+  private final InternalSwingWorkerWithProgress swingWorker = new InternalSwingWorkerWithProgress();
 
-	@Override
-	protected final SwingWorker<T, V> getSwingWorker() {
-		return this.swingWorker;
-	}
+  @Override
+  protected final SwingWorker<T, V> getSwingWorker() {
+    return this.swingWorker;
+  }
 
-	protected final void publish( V... chunks ) {
-		if( this.isCancelled() ) {
-			Logger.outln( "isCancelled. omitting publish:", Arrays.toString( chunks ) );
-		} else {
-			this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_publish( chunks );
-		}
-	}
+  protected final void publish(V... chunks) {
+    if (this.isCancelled()) {
+      Logger.outln("isCancelled. omitting publish:", Arrays.toString(chunks));
+    } else {
+      this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_publish(chunks);
+    }
+  }
 
-	public int getProgress() {
-		return this.swingWorker.getProgress();
-	}
+  public int getProgress() {
+    return this.swingWorker.getProgress();
+  }
 
-	protected final void setProgress( int progress ) {
-		if( this.isCancelled() ) {
-			Logger.outln( "isCancelled.  omitting setProgress:", progress );
-		} else {
-			assert progress >= 0 : progress;
-			assert progress <= 100 : progress;
-			this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_setProgress( progress );
-		}
-	}
+  protected final void setProgress(int progress) {
+    if (this.isCancelled()) {
+      Logger.outln("isCancelled.  omitting setProgress:", progress);
+    } else {
+      assert progress >= 0 : progress;
+      assert progress <= 100 : progress;
+      this.swingWorker.DEEMED_ACCEPTABLE_ACCESS_setProgress(progress);
+    }
+  }
 
-	protected abstract void handleProcess_onEventDispatchThread( List<V> chunks );
+  protected abstract void handleProcess_onEventDispatchThread(List<V> chunks);
 }

@@ -50,32 +50,32 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class BooleanLiteral extends AbstractValueLiteral<Boolean> {
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.getInstance( Boolean.class );
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return JavaType.getInstance(Boolean.class);
+  }
 
-	public BooleanLiteral() {
-	}
+  public BooleanLiteral() {
+  }
 
-	public BooleanLiteral( Boolean value ) {
-		this.value.setValue( value );
-	}
+  public BooleanLiteral(Boolean value) {
+    this.value.setValue(value);
+  }
 
-	@Override
-	public InstanceProperty<Boolean> getValueProperty() {
-		return this.value;
-	}
+  @Override
+  public InstanceProperty<Boolean> getValueProperty() {
+    return this.value;
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		localizer.appendBoolean( this.value.getValue() );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    localizer.appendBoolean(this.value.getValue());
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendBoolean( this.value.getValue() );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendBoolean(this.value.getValue());
+  }
 
-	public final BooleanProperty value = new BooleanProperty( this, null );
+  public final BooleanProperty value = new BooleanProperty(this, null);
 }

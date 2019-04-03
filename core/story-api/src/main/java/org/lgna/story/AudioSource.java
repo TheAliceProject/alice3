@@ -55,80 +55,68 @@ import org.lgna.story.annotation.VolumeLevelDetails;
  * @author Dennis Cosgrove
  */
 public final class AudioSource {
-	public static boolean isWithinReasonableEpsilonOfDefaultVolume( double volume ) {
-		return EpsilonUtilities.isWithinReasonableEpsilon( MediaFactory.DEFAULT_VOLUME, volume );
-	}
+  public static boolean isWithinReasonableEpsilonOfDefaultVolume(double volume) {
+    return EpsilonUtilities.isWithinReasonableEpsilon(MediaFactory.DEFAULT_VOLUME, volume);
+  }
 
-	public static boolean isWithinReasonableEpsilonOfDefaultStartTime( double startTime ) {
-		return EpsilonUtilities.isWithinReasonableEpsilon( MediaFactory.DEFAULT_START_TIME, startTime );
-	}
+  public static boolean isWithinReasonableEpsilonOfDefaultStartTime(double startTime) {
+    return EpsilonUtilities.isWithinReasonableEpsilon(MediaFactory.DEFAULT_START_TIME, startTime);
+  }
 
-	public static boolean isDefaultStopTime_aka_NaN( double stopTime ) {
-		return Double.isNaN( stopTime );
-	}
+  public static boolean isDefaultStopTime_aka_NaN(double stopTime) {
+    return Double.isNaN(stopTime);
+  }
 
-	private final AudioResource audioResource;
-	private final Double volume;
-	private final Double startTime;
-	private final Double stopTime;
+  private final AudioResource audioResource;
+  private final Double volume;
+  private final Double startTime;
+  private final Double stopTime;
 
-	@ConstructorTemplate( )
-	public AudioSource(
-			AudioResource audioResource,
-			@ValueTemplate( detailsEnumCls = VolumeLevelDetails.class )
-			Number volume,
-			Number startTime,
-			Number stopTime ) {
-		this.audioResource = audioResource;
-		this.volume = volume.doubleValue();
-		if( startTime != null ) {
-			this.startTime = startTime.doubleValue();
-		} else {
-			this.startTime = Double.NaN;
-		}
-		if( stopTime != null ) {
-			this.stopTime = stopTime.doubleValue();
-		} else {
-			this.stopTime = Double.NaN;
-		}
-	}
+  @ConstructorTemplate()
+  public AudioSource(AudioResource audioResource, @ValueTemplate(detailsEnumCls = VolumeLevelDetails.class) Number volume, Number startTime, Number stopTime) {
+    this.audioResource = audioResource;
+    this.volume = volume.doubleValue();
+    if (startTime != null) {
+      this.startTime = startTime.doubleValue();
+    } else {
+      this.startTime = Double.NaN;
+    }
+    if (stopTime != null) {
+      this.stopTime = stopTime.doubleValue();
+    } else {
+      this.stopTime = Double.NaN;
+    }
+  }
 
-	@ConstructorTemplate( )
-	public AudioSource(
-			AudioResource audioResource,
-			@ValueTemplate( detailsEnumCls = VolumeLevelDetails.class )
-			Number volume,
-			Number startTime ) {
-		this( audioResource, volume, startTime, MediaFactory.DEFAULT_STOP_TIME );
-	}
+  @ConstructorTemplate()
+  public AudioSource(AudioResource audioResource, @ValueTemplate(detailsEnumCls = VolumeLevelDetails.class) Number volume, Number startTime) {
+    this(audioResource, volume, startTime, MediaFactory.DEFAULT_STOP_TIME);
+  }
 
-	@ConstructorTemplate( )
-	public AudioSource(
-			AudioResource audioResource,
-			@ValueTemplate( detailsEnumCls = VolumeLevelDetails.class )
-			Number volume ) {
-		this( audioResource, volume, MediaFactory.DEFAULT_START_TIME );
-	}
+  @ConstructorTemplate()
+  public AudioSource(AudioResource audioResource, @ValueTemplate(detailsEnumCls = VolumeLevelDetails.class) Number volume) {
+    this(audioResource, volume, MediaFactory.DEFAULT_START_TIME);
+  }
 
-	@ConstructorTemplate( isFollowedByLongerConstructor = true )
-	public AudioSource( AudioResource audioResource ) {
-		this( audioResource, MediaFactory.DEFAULT_VOLUME );
-	}
+  @ConstructorTemplate(isFollowedByLongerConstructor = true)
+  public AudioSource(AudioResource audioResource) {
+    this(audioResource, MediaFactory.DEFAULT_VOLUME);
+  }
 
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public AudioResource getAudioResource() {
-		return this.audioResource;
-	}
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public AudioResource getAudioResource() {
+    return this.audioResource;
+  }
 
-	public Double getVolume() {
-		return this.volume;
-	}
+  public Double getVolume() {
+    return this.volume;
+  }
 
-	public Double getStartTime() {
-		return this.startTime;
-	}
+  public Double getStartTime() {
+    return this.startTime;
+  }
 
-	public Double getStopTime() {
-		return this.stopTime;
-	}
+  public Double getStopTime() {
+    return this.stopTime;
+  }
 }

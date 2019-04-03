@@ -56,30 +56,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class InsertForEachInArrayLoopComposite extends InsertEachInArrayComposite<ForEachInArrayLoop> {
-	private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertForEachInArrayLoopComposite> mapEnveloping = Maps.newInitializingIfAbsentHashMap();
-	private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertForEachInArrayLoopComposite> mapInsert = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertForEachInArrayLoopComposite> mapEnveloping = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertForEachInArrayLoopComposite> mapInsert = Maps.newInitializingIfAbsentHashMap();
 
-	public static synchronized InsertForEachInArrayLoopComposite getInstance( BlockStatementIndexPair blockStatementIndexPair, final boolean isEnveloping ) {
-		InitializingIfAbsentMap<BlockStatementIndexPair, InsertForEachInArrayLoopComposite> map = isEnveloping ? mapEnveloping : mapInsert;
-		return map.getInitializingIfAbsent( blockStatementIndexPair, new InitializingIfAbsentMap.Initializer<BlockStatementIndexPair, InsertForEachInArrayLoopComposite>() {
-			@Override
-			public InsertForEachInArrayLoopComposite initialize( BlockStatementIndexPair blockStatementIndexPair ) {
-				return new InsertForEachInArrayLoopComposite( blockStatementIndexPair, isEnveloping );
-			}
-		} );
-	}
+  public static synchronized InsertForEachInArrayLoopComposite getInstance(BlockStatementIndexPair blockStatementIndexPair, final boolean isEnveloping) {
+    InitializingIfAbsentMap<BlockStatementIndexPair, InsertForEachInArrayLoopComposite> map = isEnveloping ? mapEnveloping : mapInsert;
+    return map.getInitializingIfAbsent(blockStatementIndexPair, new InitializingIfAbsentMap.Initializer<BlockStatementIndexPair, InsertForEachInArrayLoopComposite>() {
+      @Override
+      public InsertForEachInArrayLoopComposite initialize(BlockStatementIndexPair blockStatementIndexPair) {
+        return new InsertForEachInArrayLoopComposite(blockStatementIndexPair, isEnveloping);
+      }
+    });
+  }
 
-	private InsertForEachInArrayLoopComposite( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( UUID.fromString( "4341639b-4123-419a-b06f-16987fb7d356" ), blockStatementIndexPair, isEnveloping );
-	}
+  private InsertForEachInArrayLoopComposite(BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    super(UUID.fromString("4341639b-4123-419a-b06f-16987fb7d356"), blockStatementIndexPair, isEnveloping);
+  }
 
-	@Override
-	protected ForEachInArrayLoop createStatement( UserLocal item, Expression initializer ) {
-		return new ForEachInArrayLoop(
-				item,
-				initializer,
-				new BlockStatement() );
-	}
+  @Override
+  protected ForEachInArrayLoop createStatement(UserLocal item, Expression initializer) {
+    return new ForEachInArrayLoop(item, initializer, new BlockStatement());
+  }
 
-	public final ErrorStatus EPIC_HACK_externalErrorStatus = this.createErrorStatus( "EPIC_HACK_externalErrorStatus" );
+  public final ErrorStatus EPIC_HACK_externalErrorStatus = this.createErrorStatus("EPIC_HACK_externalErrorStatus");
 }

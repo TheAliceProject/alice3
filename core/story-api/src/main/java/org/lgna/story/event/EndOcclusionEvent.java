@@ -50,8 +50,8 @@ import org.lgna.story.SModel;
  */
 public class EndOcclusionEvent extends OcclusionEvent {
 
-	public EndOcclusionEvent( SModel foreground, SModel background ) {
-		super( foreground, background );
-	}
+  public EndOcclusionEvent(SModel foreground, SModel background) {
+    super(foreground, background);
+  }
 
 }

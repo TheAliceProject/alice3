@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,80 +34,56 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum CandyFactoryResource implements PropResource {
-	LIGHT_GREEN( ImplementationAndVisualType.SIMS2 ),
-	LIGHT_OFF( ImplementationAndVisualType.SIMS2 ),
-	LIGHT_RED( ImplementationAndVisualType.SIMS2 );
+  LIGHT_GREEN(ImplementationAndVisualType.SIMS2), LIGHT_OFF(ImplementationAndVisualType.SIMS2), LIGHT_RED(ImplementationAndVisualType.SIMS2);
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId PROCESS_STATION_ROOT = new JointId( ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId AUX_PISTON_2_ROOT = new JointId( PROCESS_STATION_ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MAIN_PISTON_ROOT = new JointId( PROCESS_STATION_ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId AUX_PISTON_2_CYCLIC_ARM = new JointId( AUX_PISTON_2_ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId AUX_PISTON_1_SHAFT_END = new JointId( PROCESS_STATION_ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId FLAVOR_STATION_ROOT = new JointId( ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId AUX_PISTON_2_CYCLIC_ARM_END = new JointId( AUX_PISTON_2_CYCLIC_ARM, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MAIN_PISTON_CYCLIC_ARM = new JointId( MAIN_PISTON_ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId CHOCOLATE_ROTATOR = new JointId( FLAVOR_STATION_ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId AUX_PISTON_2_SHAFT_END = new JointId( PROCESS_STATION_ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MAIN_PISTON_SHAFT_END = new JointId( PROCESS_STATION_ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId CANDY_BOX = new JointId( ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId FAN_OSCILLATE = new JointId( ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId START_LEVER = new JointId( ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId AUX_PISTON_1_ROOT = new JointId( PROCESS_STATION_ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId CHOCOLATE_STIRRER = new JointId( FLAVOR_STATION_ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId START_LEVER_SAFETY = new JointId( START_LEVER, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId AUX_PISTON_1_CYCLIC_ARM = new JointId( AUX_PISTON_1_ROOT, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MAIN_PISTON_CYCLIC_ARM_END = new JointId( MAIN_PISTON_CYCLIC_ARM, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId START_LEVER_END = new JointId( START_LEVER_SAFETY, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId FAN_BLADES = new JointId( FAN_OSCILLATE, CandyFactoryResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId AUX_PISTON_1_CYCLIC_ARM_END = new JointId( AUX_PISTON_1_CYCLIC_ARM, CandyFactoryResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId PROCESS_STATION_ROOT = new JointId(ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId AUX_PISTON_2_ROOT = new JointId(PROCESS_STATION_ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MAIN_PISTON_ROOT = new JointId(PROCESS_STATION_ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId AUX_PISTON_2_CYCLIC_ARM = new JointId(AUX_PISTON_2_ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId AUX_PISTON_1_SHAFT_END = new JointId(PROCESS_STATION_ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId FLAVOR_STATION_ROOT = new JointId(ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId AUX_PISTON_2_CYCLIC_ARM_END = new JointId(AUX_PISTON_2_CYCLIC_ARM, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MAIN_PISTON_CYCLIC_ARM = new JointId(MAIN_PISTON_ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId CHOCOLATE_ROTATOR = new JointId(FLAVOR_STATION_ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId AUX_PISTON_2_SHAFT_END = new JointId(PROCESS_STATION_ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MAIN_PISTON_SHAFT_END = new JointId(PROCESS_STATION_ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId CANDY_BOX = new JointId(ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId FAN_OSCILLATE = new JointId(ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId START_LEVER = new JointId(ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId AUX_PISTON_1_ROOT = new JointId(PROCESS_STATION_ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId CHOCOLATE_STIRRER = new JointId(FLAVOR_STATION_ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId START_LEVER_SAFETY = new JointId(START_LEVER, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId AUX_PISTON_1_CYCLIC_ARM = new JointId(AUX_PISTON_1_ROOT, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MAIN_PISTON_CYCLIC_ARM_END = new JointId(MAIN_PISTON_CYCLIC_ARM, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId START_LEVER_END = new JointId(START_LEVER_SAFETY, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId FAN_BLADES = new JointId(FAN_OSCILLATE, CandyFactoryResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId AUX_PISTON_1_CYCLIC_ARM_END = new JointId(AUX_PISTON_1_CYCLIC_ARM, CandyFactoryResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	CandyFactoryResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	CandyFactoryResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  CandyFactoryResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return CandyFactoryResource.JOINT_ID_ROOTS;
-	}
+  CandyFactoryResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return CandyFactoryResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

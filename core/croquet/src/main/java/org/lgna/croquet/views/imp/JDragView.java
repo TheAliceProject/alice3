@@ -51,8 +51,8 @@ import javax.swing.JPanel;
  * @author Dennis Cosgrove
  */
 public class JDragView extends JPanel {
-	public boolean isActuallyDraggable() {
-		DragComponent<?> dragComponent = (DragComponent<?>)AwtComponentView.lookup( this );
-		return dragComponent.getModel() != null;
-	}
+  public boolean isActuallyDraggable() {
+    DragComponent<?> dragComponent = (DragComponent<?>) AwtComponentView.lookup(this);
+    return dragComponent.getModel() != null;
+  }
 }

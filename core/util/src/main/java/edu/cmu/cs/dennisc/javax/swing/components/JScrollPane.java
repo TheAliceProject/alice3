@@ -48,40 +48,36 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public class JScrollPane extends javax.swing.JScrollPane {
-	public enum VerticalScrollbarPolicy {
-		NEVER( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_NEVER ),
-		AS_NEEDED( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ),
-		ALWAYS( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
-		private int internal;
+  public enum VerticalScrollbarPolicy {
+    NEVER(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_NEVER), AS_NEEDED(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED), ALWAYS(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    private int internal;
 
-		private VerticalScrollbarPolicy( int internal ) {
-			this.internal = internal;
-		}
-	}
+    private VerticalScrollbarPolicy(int internal) {
+      this.internal = internal;
+    }
+  }
 
-	public enum HorizontalScrollbarPolicy {
-		NEVER( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ),
-		AS_NEEDED( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED ),
-		ALWAYS( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS );
-		private int internal;
+  public enum HorizontalScrollbarPolicy {
+    NEVER(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), AS_NEEDED(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), ALWAYS(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+    private int internal;
 
-		private HorizontalScrollbarPolicy( int internal ) {
-			this.internal = internal;
-		}
-	}
+    private HorizontalScrollbarPolicy(int internal) {
+      this.internal = internal;
+    }
+  }
 
-	public JScrollPane() {
-	}
+  public JScrollPane() {
+  }
 
-	public JScrollPane( Component view ) {
-		super( view );
-	}
+  public JScrollPane(Component view) {
+    super(view);
+  }
 
-	public JScrollPane( Component view, VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		super( view, verticalScrollbarPolicy.internal, horizontalScrollbarPolicy.internal );
-	}
+  public JScrollPane(Component view, VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy) {
+    super(view, verticalScrollbarPolicy.internal, horizontalScrollbarPolicy.internal);
+  }
 
-	public JScrollPane( VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		super( verticalScrollbarPolicy.internal, horizontalScrollbarPolicy.internal );
-	}
+  public JScrollPane(VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy) {
+    super(verticalScrollbarPolicy.internal, horizontalScrollbarPolicy.internal);
+  }
 }

@@ -61,47 +61,47 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class PreviewPane extends MigPanel {
-	public PreviewPane( PreviewPage page ) {
-		super( page, "fillx", "", "[grow 0][grow]" );
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getTypeColor() );
-	}
+  public PreviewPane(PreviewPage page) {
+    super(page, "fillx", "", "[grow 0][grow]");
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getTypeColor());
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		this.forgetAndRemoveAllComponents();
-		PreviewPage page = (PreviewPage)this.getComposite();
-		AddMembersPage addMembersPage = page.getOwner().getAddMembersPage();
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    this.forgetAndRemoveAllComponents();
+    PreviewPage page = (PreviewPage) this.getComposite();
+    AddMembersPage addMembersPage = page.getOwner().getAddMembersPage();
 
-		MigPanel panel = new MigPanel( null, "fillx, insets 0" );
+    MigPanel panel = new MigPanel(null, "fillx, insets 0");
 
-		Theme theme = ThemeUtilities.getActiveTheme();
+    Theme theme = ThemeUtilities.getActiveTheme();
 
-		List<MemberHub<UserMethod>> procedureHubs = addMembersPage.getPreviewProcedureHubs();
-		if( procedureHubs.size() > 0 ) {
-			panel.addComponent( new MembersSubPane<UserMethod>( "procedures", theme.getProcedureColor(), procedureHubs ), "gap 8, grow, shrink, wrap" );
-		}
+    List<MemberHub<UserMethod>> procedureHubs = addMembersPage.getPreviewProcedureHubs();
+    if (procedureHubs.size() > 0) {
+      panel.addComponent(new MembersSubPane<UserMethod>("procedures", theme.getProcedureColor(), procedureHubs), "gap 8, grow, shrink, wrap");
+    }
 
-		List<MemberHub<UserMethod>> functionHubs = addMembersPage.getPreviewFunctionHubs();
-		if( functionHubs.size() > 0 ) {
-			panel.addComponent( new MembersSubPane<UserMethod>( "functions", theme.getFunctionColor(), functionHubs ), "gap 8, grow, shrink, wrap" );
-		}
+    List<MemberHub<UserMethod>> functionHubs = addMembersPage.getPreviewFunctionHubs();
+    if (functionHubs.size() > 0) {
+      panel.addComponent(new MembersSubPane<UserMethod>("functions", theme.getFunctionColor(), functionHubs), "gap 8, grow, shrink, wrap");
+    }
 
-		List<MemberHub<UserField>> fieldHubs = addMembersPage.getPreviewFieldHubs();
-		if( fieldHubs.size() > 0 ) {
-			panel.addComponent( new MembersSubPane<UserField>( "properties", theme.getFieldColor(), fieldHubs ), "gap 8, grow, shrink, wrap" );
-		}
+    List<MemberHub<UserField>> fieldHubs = addMembersPage.getPreviewFieldHubs();
+    if (fieldHubs.size() > 0) {
+      panel.addComponent(new MembersSubPane<UserField>("properties", theme.getFieldColor(), fieldHubs), "gap 8, grow, shrink, wrap");
+    }
 
-		Label classLabel = new Label( "class", TypeIcon.getInstance( addMembersPage.getDstType() ) );
-		//classLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-		classLabel.scaleFont( 1.2f );
-		classLabel.setHorizontalTextPosition( HorizontalTextPosition.LEADING );
-		this.addComponent( classLabel, "split 3, grow, shrink, push" );
-		this.addComponent( page.getIsIncludingAllState().getSidekickLabel().createLabel() );
-		this.addComponent( page.getIsIncludingAllState().createHorizontalToggleButtons( false ), "wrap" );
+    Label classLabel = new Label("class", TypeIcon.getInstance(addMembersPage.getDstType()));
+    //classLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+    classLabel.scaleFont(1.2f);
+    classLabel.setHorizontalTextPosition(HorizontalTextPosition.LEADING);
+    this.addComponent(classLabel, "split 3, grow, shrink, push");
+    this.addComponent(page.getIsIncludingAllState().getSidekickLabel().createLabel());
+    this.addComponent(page.getIsIncludingAllState().createHorizontalToggleButtons(false), "wrap");
 
-		ScrollPane scrollPane = new ScrollPane( panel );
-		panel.setBackgroundColor( this.getBackgroundColor() );
-		this.addComponent( scrollPane, "grow, shrink, wrap" );
-	}
+    ScrollPane scrollPane = new ScrollPane(panel);
+    panel.setBackgroundColor(this.getBackgroundColor());
+    this.addComponent(scrollPane, "grow, shrink, wrap");
+  }
 }

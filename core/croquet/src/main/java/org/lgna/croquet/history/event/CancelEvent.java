@@ -46,6 +46,6 @@ package org.lgna.croquet.history.event;
  * @author Kyle J. Harms
  */
 public class CancelEvent implements ActivityEvent {
-	public CancelEvent() {
-	}
+  public CancelEvent() {
+  }
 }

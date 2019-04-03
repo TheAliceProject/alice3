@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderFullBodyOutfitPuffySleevesOutfit implements FemaleElderFullBodyOutfit {
-	GOLD,
-	PURPLE,
-	GREEN;
+  GOLD, PURPLE, GREEN
 
 }

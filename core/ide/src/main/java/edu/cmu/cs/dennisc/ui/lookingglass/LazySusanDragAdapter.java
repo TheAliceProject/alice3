@@ -59,73 +59,73 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public class LazySusanDragAdapter extends DragAdapter {
-	private Transformable m_lazySusan;
-	private double m_radiansPerPixel;
+  private Transformable m_lazySusan;
+  private double m_radiansPerPixel;
 
-	private static final boolean USE_EULER_ANGLES = true;
-	private EulerAngles m_ea0 = null;
-	private double m_yaw0 = Double.NaN;
+  private static final boolean USE_EULER_ANGLES = true;
+  private EulerAngles m_ea0 = null;
+  private double m_yaw0 = Double.NaN;
 
-	public LazySusanDragAdapter( Transformable lazySusan, double radiansPerPixel ) {
-		m_lazySusan = lazySusan;
-		m_radiansPerPixel = radiansPerPixel;
-	}
+  public LazySusanDragAdapter(Transformable lazySusan, double radiansPerPixel) {
+    m_lazySusan = lazySusan;
+    m_radiansPerPixel = radiansPerPixel;
+  }
 
-	@Override
-	protected boolean isAcceptable( MouseEvent e ) {
-		return MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
-	}
+  @Override
+  protected boolean isAcceptable(MouseEvent e) {
+    return MouseEventUtilities.isQuoteLeftUnquoteMouseButton(e);
+  }
 
-	//todo: add get/set m_lazySusan
-	//todo: add get/set m_radiansPerPixel
+  //todo: add get/set m_lazySusan
+  //todo: add get/set m_radiansPerPixel
 
-	@Override
-	protected void handleMousePress( Point current, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
-		EulerAngles ea = new EulerAngles( m_lazySusan.getLocalTransformation().orientation );
-		if( USE_EULER_ANGLES ) {
-			m_ea0 = ea;
-		} else {
-			m_yaw0 = ea.yaw.getAsRadians();
-		}
-	}
+  @Override
+  protected void handleMousePress(Point current, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange) {
+    EulerAngles ea = new EulerAngles(m_lazySusan.getLocalTransformation().orientation);
+    if (USE_EULER_ANGLES) {
+      m_ea0 = ea;
+    } else {
+      m_yaw0 = ea.yaw.getAsRadians();
+    }
+  }
 
-	@Override
-	protected void handleMouseDrag( Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, DragStyle dragStyle ) {
-		double deltaYaw = xDeltaSince0 * m_radiansPerPixel;
-		OrthogonalMatrix3x3 m;
-		if( USE_EULER_ANGLES ) {
-			EulerAngles ea = new EulerAngles( m_ea0 );
-			double yawInRadians = ea.yaw.getAsRadians();
+  @Override
+  protected void handleMouseDrag(Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, DragStyle dragStyle) {
+    double deltaYaw = xDeltaSince0 * m_radiansPerPixel;
+    OrthogonalMatrix3x3 m;
+    if (USE_EULER_ANGLES) {
+      EulerAngles ea = new EulerAngles(m_ea0);
+      double yawInRadians = ea.yaw.getAsRadians();
 
-			boolean isUpsideDownAndBackwardsSoToSpeak = false;
-			final double EPSILON = 0.01;
-			if( EpsilonUtilities.isWithinEpsilon( ea.pitch.getAsRadians(), Math.PI, EPSILON ) ) {
-				if( EpsilonUtilities.isWithinEpsilon( ea.roll.getAsRadians(), Math.PI, EPSILON ) ) {
-					isUpsideDownAndBackwardsSoToSpeak = true;
-				}
-			}
+      boolean isUpsideDownAndBackwardsSoToSpeak = false;
+      final double EPSILON = 0.01;
+      if (EpsilonUtilities.isWithinEpsilon(ea.pitch.getAsRadians(), Math.PI, EPSILON)) {
+        if (EpsilonUtilities.isWithinEpsilon(ea.roll.getAsRadians(), Math.PI, EPSILON)) {
+          isUpsideDownAndBackwardsSoToSpeak = true;
+        }
+      }
 
-			if( isUpsideDownAndBackwardsSoToSpeak ) {
-				yawInRadians -= deltaYaw;
-			} else {
-				yawInRadians += deltaYaw;
-			}
+      if (isUpsideDownAndBackwardsSoToSpeak) {
+        yawInRadians -= deltaYaw;
+      } else {
+        yawInRadians += deltaYaw;
+      }
 
-			ea.yaw.setAsRadians( yawInRadians );
-			m = new OrthogonalMatrix3x3( ea );
-		} else {
-			m = OrthogonalMatrix3x3.createFromRotationAboutYAxis( new AngleInRadians( m_yaw0 + deltaYaw ) );
-		}
-		m_lazySusan.setAxesOnly( m, AsSeenBy.PARENT );
-	}
+      ea.yaw.setAsRadians(yawInRadians);
+      m = new OrthogonalMatrix3x3(ea);
+    } else {
+      m = OrthogonalMatrix3x3.createFromRotationAboutYAxis(new AngleInRadians(m_yaw0 + deltaYaw));
+    }
+    m_lazySusan.setAxesOnly(m, AsSeenBy.PARENT);
+  }
 
-	@Override
-	protected Point handleMouseRelease( Point rvCurrent, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
-		if( USE_EULER_ANGLES ) {
-			m_ea0 = null;
-		} else {
-			m_yaw0 = Double.NaN;
-		}
-		return rvCurrent;
-	}
+  @Override
+  protected Point handleMouseRelease(Point rvCurrent, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange) {
+    if (USE_EULER_ANGLES) {
+      m_ea0 = null;
+    } else {
+      m_yaw0 = Double.NaN;
+    }
+    return rvCurrent;
+  }
 }

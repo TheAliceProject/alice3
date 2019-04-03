@@ -55,29 +55,29 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FullBodyOutfitTabComposite extends OutfitTabComposite<FullBodyOutfitTabView> {
-	private final FullBodyOutfitData fullBodyOutfitData = new FullBodyOutfitData();
-	private final RefreshableDataSingleSelectListState<FullBodyOutfit> fullBodyOutfitState = this.createRefreshableListState( "fullBodyOutfitState", this.fullBodyOutfitData, -1 );
+  private final FullBodyOutfitData fullBodyOutfitData = new FullBodyOutfitData();
+  private final RefreshableDataSingleSelectListState<FullBodyOutfit> fullBodyOutfitState = this.createRefreshableListState("fullBodyOutfitState", this.fullBodyOutfitData, -1);
 
-	public FullBodyOutfitTabComposite() {
-		super( UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ) );
-	}
+  public FullBodyOutfitTabComposite() {
+    super(UUID.fromString("10c0d057-a5d7-4a36-8cd7-c30f46f5aac2"));
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	@Override
-	protected FullBodyOutfitTabView createView() {
-		return new FullBodyOutfitTabView( this );
-	}
+  @Override
+  protected FullBodyOutfitTabView createView() {
+    return new FullBodyOutfitTabView(this);
+  }
 
-	public FullBodyOutfitData getFullBodyOutfitData() {
-		return this.fullBodyOutfitData;
-	}
+  public FullBodyOutfitData getFullBodyOutfitData() {
+    return this.fullBodyOutfitData;
+  }
 
-	public RefreshableDataSingleSelectListState<FullBodyOutfit> getFullBodyOutfitState() {
-		return this.fullBodyOutfitState;
-	}
+  public RefreshableDataSingleSelectListState<FullBodyOutfit> getFullBodyOutfitState() {
+    return this.fullBodyOutfitState;
+  }
 
 }

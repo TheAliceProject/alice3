@@ -49,46 +49,47 @@ import org.lgna.project.code.PrecedentedAppender;
  * @author Dennis Cosgrove
  */
 public final class StringConcatenation extends Expression implements PrecedentedAppender {
-	public StringConcatenation() {
-	}
+  public StringConcatenation() {
+  }
 
-	public StringConcatenation( Expression leftOperand, Expression rightOperand ) {
-		this.leftOperand.setValue( leftOperand );
-		this.rightOperand.setValue( rightOperand );
-	}
+  public StringConcatenation(Expression leftOperand, Expression rightOperand) {
+    this.leftOperand.setValue(leftOperand);
+    this.rightOperand.setValue(rightOperand);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.STRING_TYPE;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return JavaType.STRING_TYPE;
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		safeAppendRepr( localizer, this.leftOperand.getValue() );
-		localizer.appendText( " + " );
-		safeAppendRepr( localizer, this.rightOperand.getValue() );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    safeAppendRepr(localizer, this.leftOperand.getValue());
+    localizer.appendText(" + ");
+    safeAppendRepr(localizer, this.rightOperand.getValue());
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendConcatenation(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendConcatenation(this);
+  }
 
-	@Override public int getLevelOfPrecedence() {
-		return 11;
-	}
+  @Override
+  public int getLevelOfPrecedence() {
+    return 11;
+  }
 
-	public final ExpressionProperty leftOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			//todo: allow both objects?
-			return JavaType.OBJECT_TYPE;
-		}
-	};
-	public final ExpressionProperty rightOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return JavaType.OBJECT_TYPE;
-		}
-	};
+  public final ExpressionProperty leftOperand = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      //todo: allow both objects?
+      return JavaType.OBJECT_TYPE;
+    }
+  };
+  public final ExpressionProperty rightOperand = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      return JavaType.OBJECT_TYPE;
+    }
+  };
 }

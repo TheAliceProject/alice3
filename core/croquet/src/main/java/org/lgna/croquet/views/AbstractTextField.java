@@ -51,26 +51,26 @@ import javax.swing.JTextField;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTextField<V extends JTextField> extends TextComponent<V> {
-	private final Operation operation;
+  private final Operation operation;
 
-	public AbstractTextField( StringState model, Operation operation ) {
-		super( model );
-		this.operation = operation;
-	}
+  public AbstractTextField(StringState model, Operation operation) {
+    super(model);
+    this.operation = operation;
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.operation != null ) {
-			this.getAwtComponent().addActionListener( this.operation.getImp().getSwingModel().getAction() );
-		}
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    if (this.operation != null) {
+      this.getAwtComponent().addActionListener(this.operation.getImp().getSwingModel().getAction());
+    }
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		if( this.operation != null ) {
-			this.getAwtComponent().removeActionListener( this.operation.getImp().getSwingModel().getAction() );
-		}
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    if (this.operation != null) {
+      this.getAwtComponent().removeActionListener(this.operation.getImp().getSwingModel().getAction());
+    }
+    super.handleUndisplayable();
+  }
 }

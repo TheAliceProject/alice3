@@ -49,15 +49,15 @@ import java.nio.DoubleBuffer;
  * @author Dennis Cosgrove
  */
 public class DoubleBufferProperty extends PrimitiveBufferProperty<DoubleBuffer> {
-	public DoubleBufferProperty( InstancePropertyOwner owner, DoubleBuffer value ) {
-		super( owner, value );
-	}
+  public DoubleBufferProperty(InstancePropertyOwner owner, DoubleBuffer value) {
+    super(owner, value);
+  }
 
-	public DoubleBufferProperty( InstancePropertyOwner owner, double[] value ) {
-		super( owner, DoubleBuffer.wrap( value ) );
-	}
+  public DoubleBufferProperty(InstancePropertyOwner owner, double[] value) {
+    super(owner, DoubleBuffer.wrap(value));
+  }
 
-	public final void setValue( double[] value ) {
-		this.setValue( DoubleBuffer.wrap( value ) );
-	}
+  public final void setValue(double[] value) {
+    this.setValue(DoubleBuffer.wrap(value));
+  }
 }

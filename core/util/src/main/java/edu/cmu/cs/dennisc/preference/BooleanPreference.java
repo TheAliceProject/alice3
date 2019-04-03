@@ -48,17 +48,17 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public class BooleanPreference extends Preference<Boolean> {
-	public BooleanPreference( Boolean defaultValue ) {
-		super( defaultValue );
-	}
+  public BooleanPreference(Boolean defaultValue) {
+    super(defaultValue);
+  }
 
-	@Override
-	protected Boolean getValue( Preferences utilPrefs, String key, Boolean defaultValue ) {
-		return utilPrefs.getBoolean( key, defaultValue );
-	}
+  @Override
+  protected Boolean getValue(Preferences utilPrefs, String key, Boolean defaultValue) {
+    return utilPrefs.getBoolean(key, defaultValue);
+  }
 
-	@Override
-	protected void setAndCommitValue( Preferences utilPrefs, String key, Boolean nextValue ) {
-		utilPrefs.putBoolean( key, nextValue );
-	}
+  @Override
+  protected void setAndCommitValue(Preferences utilPrefs, String key, Boolean nextValue) {
+    utilPrefs.putBoolean(key, nextValue);
+  }
 }

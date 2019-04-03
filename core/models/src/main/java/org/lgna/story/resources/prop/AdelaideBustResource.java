@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,70 +34,54 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum AdelaideBustResource implements PropResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId NECK = new JointId( ROOT, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId HEAD = new JointId( NECK, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MOUTH = new JointId( HEAD, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_EYE = new JointId( HEAD, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_EYELID = new JointId( HEAD, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_HAIR_0 = new JointId( HEAD, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_HAIR_1 = new JointId( LEFT_HAIR_0, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LEFT_HAIR_2 = new JointId( LEFT_HAIR_1, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_EYEBROW = new JointId( HEAD, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_EYE = new JointId( HEAD, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_EYELID = new JointId( HEAD, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_EYEBROW = new JointId( HEAD, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_HAIR_0 = new JointId( HEAD, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_HAIR_1 = new JointId( RIGHT_HAIR_0, AdelaideBustResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId RIGHT_HAIR_2 = new JointId( RIGHT_HAIR_1, AdelaideBustResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId NECK = new JointId(ROOT, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId HEAD = new JointId(NECK, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MOUTH = new JointId(HEAD, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LOWER_LIP = new JointId(MOUTH, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_EYE = new JointId(HEAD, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_EYELID = new JointId(HEAD, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_HAIR_0 = new JointId(HEAD, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_HAIR_1 = new JointId(LEFT_HAIR_0, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LEFT_HAIR_2 = new JointId(LEFT_HAIR_1, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_EYEBROW = new JointId(HEAD, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_EYE = new JointId(HEAD, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_EYELID = new JointId(HEAD, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_EYEBROW = new JointId(HEAD, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_HAIR_0 = new JointId(HEAD, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_HAIR_1 = new JointId(RIGHT_HAIR_0, AdelaideBustResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId RIGHT_HAIR_2 = new JointId(RIGHT_HAIR_1, AdelaideBustResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	public static final JointId[] RIGHT_HAIR_ARRAY = { RIGHT_HAIR_0, RIGHT_HAIR_1, RIGHT_HAIR_2 };
+  public static final JointId[] RIGHT_HAIR_ARRAY = {RIGHT_HAIR_0, RIGHT_HAIR_1, RIGHT_HAIR_2};
 
-	public static final JointId[] LEFT_HAIR_ARRAY = { LEFT_HAIR_0, LEFT_HAIR_1, LEFT_HAIR_2 };
+  public static final JointId[] LEFT_HAIR_ARRAY = {LEFT_HAIR_0, LEFT_HAIR_1, LEFT_HAIR_2};
 
-	private final ImplementationAndVisualType resourceType;
-	AdelaideBustResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	AdelaideBustResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  AdelaideBustResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return AdelaideBustResource.JOINT_ID_ROOTS;
-	}
+  AdelaideBustResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return AdelaideBustResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

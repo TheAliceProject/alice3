@@ -44,97 +44,30 @@
 package org.lgna.story.resources.sims2;
 
 public class TopPieceManager extends IngredientManager<TopPiece> {
-	private static TopPieceManager singleton = new TopPieceManager();
+  private static TopPieceManager singleton = new TopPieceManager();
 
-	public static TopPieceManager getSingleton() {
-		return singleton;
-	}
+  public static TopPieceManager getSingleton() {
+    return singleton;
+  }
 
-	private TopPieceManager() {
-		this.add( MaleElderTopPiece.class,
-				MaleElderTopPieceDressShirt.class,
-				MaleElderTopPieceNaked.class,
-				MaleElderTopPieceShortSleeveCollar.class,
-				MaleElderTopPieceSweaterVestCollarShirt.class
-				);
-		this.add( FemaleElderTopPiece.class,
-				FemaleElderTopPieceBlouse.class,
-				FemaleElderTopPieceCowgirlShirt.class,
-				FemaleElderTopPieceFlaredWaist.class,
-				FemaleElderTopPiecePoloShirt.class,
-				FemaleElderTopPieceSweaterSet.class,
-				FemaleElderTopPieceTuckedWaist.class
-				);
-		this.add( MaleTeenTopPiece.class,
-				MaleTeenTopPieceCrewneckShirtOver.class,
-				MaleTeenTopPieceHipJacket.class,
-				MaleTeenTopPieceJacketTshirtHang.class,
-				MaleTeenTopPieceMockTurtle.class,
-				MaleTeenTopPieceNaked.class,
-				MaleTeenTopPieceShortSleeveCollar.class,
-				MaleTeenTopPieceShortSleevedTie.class,
-				MaleTeenTopPieceSweaterVestCollarShirt.class,
-				MaleTeenTopPieceVNeckShortSleeve.class
-				);
-		this.add( FemaleTeenTopPiece.class,
-				FemaleTeenTopPieceBlousedWaist.class,
-				FemaleTeenTopPieceCowgirlShirt.class,
-				FemaleTeenTopPieceCrewneckShirtOver.class,
-				FemaleTeenTopPieceFlaredMidriff.class,
-				FemaleTeenTopPieceHalter.class,
-				FemaleTeenTopPieceJeansJacket.class,
-				FemaleTeenTopPieceMidSleeveTshirt.class,
-				FemaleTeenTopPiecePoloShirt.class,
-				FemaleTeenTopPieceTankTop.class,
-				FemaleTeenTopPieceTShirt.class,
-				FemaleTeenTopPieceVNeckLongSleeve.class
-				);
-		this.add( MaleChildTopPiece.class,
-				MaleChildTopPieceCowboyShirt.class,
-				MaleChildTopPieceVNeckShortSleeve.class,
-				MaleChildTopPieceNaked.class,
-				ChildTopPieceShortSleeve.class,
-				ChildTopPieceShortSleeveCollar.class
-				);
-		this.add( FemaleChildTopPiece.class,
-				FemaleChildTopPieceCamisole.class,
-				FemaleChildTopPieceHalter.class,
-				FemaleChildTopPieceTShirt.class,
-				ChildTopPieceShortSleeve.class,
-				ChildTopPieceShortSleeveCollar.class
-				);
-		this.add( FemaleAdultTopPiece.class,
-				FemaleAdultTopPieceBlousedWaist.class,
-				FemaleAdultTopPieceCowgirlShirt.class,
-				FemaleAdultTopPieceCrewneckCollarShirt.class,
-				FemaleAdultTopPieceHalter.class,
-				FemaleAdultTopPieceMidSleeveTshirt.class,
-				FemaleAdultTopPieceMomShirt.class,
-				FemaleAdultTopPiecePoloShirt.class,
-				FemaleAdultTopPieceSweaterSet.class,
-				FemaleAdultTopPieceTShirt.class,
-				FemaleAdultTopPieceTuckedWaist.class,
-				FemaleAdultTopPieceVNeckLongSleeve.class
-				);
-		this.add( MaleAdultTopPiece.class,
-				MaleAdultTopPieceCowboyShirt.class,
-				MaleAdultTopPieceJacketTshirtHang.class,
-				MaleAdultTopPieceNaked.class,
-				MaleAdultTopPieceShirtPolo.class,
-				MaleAdultTopPieceShortSleeveCollar.class,
-				MaleAdultTopPieceSweaterHang.class,
-				MaleAdultTopPieceTankTop.class,
-				MaleAdultTopPieceVNeckShortSleeve.class
-				);
-	}
+  private TopPieceManager() {
+    this.add(MaleElderTopPiece.class, MaleElderTopPieceDressShirt.class, MaleElderTopPieceNaked.class, MaleElderTopPieceShortSleeveCollar.class, MaleElderTopPieceSweaterVestCollarShirt.class);
+    this.add(FemaleElderTopPiece.class, FemaleElderTopPieceBlouse.class, FemaleElderTopPieceCowgirlShirt.class, FemaleElderTopPieceFlaredWaist.class, FemaleElderTopPiecePoloShirt.class, FemaleElderTopPieceSweaterSet.class, FemaleElderTopPieceTuckedWaist.class);
+    this.add(MaleTeenTopPiece.class, MaleTeenTopPieceCrewneckShirtOver.class, MaleTeenTopPieceHipJacket.class, MaleTeenTopPieceJacketTshirtHang.class, MaleTeenTopPieceMockTurtle.class, MaleTeenTopPieceNaked.class, MaleTeenTopPieceShortSleeveCollar.class, MaleTeenTopPieceShortSleevedTie.class, MaleTeenTopPieceSweaterVestCollarShirt.class, MaleTeenTopPieceVNeckShortSleeve.class);
+    this.add(FemaleTeenTopPiece.class, FemaleTeenTopPieceBlousedWaist.class, FemaleTeenTopPieceCowgirlShirt.class, FemaleTeenTopPieceCrewneckShirtOver.class, FemaleTeenTopPieceFlaredMidriff.class, FemaleTeenTopPieceHalter.class, FemaleTeenTopPieceJeansJacket.class, FemaleTeenTopPieceMidSleeveTshirt.class, FemaleTeenTopPiecePoloShirt.class, FemaleTeenTopPieceTankTop.class, FemaleTeenTopPieceTShirt.class, FemaleTeenTopPieceVNeckLongSleeve.class);
+    this.add(MaleChildTopPiece.class, MaleChildTopPieceCowboyShirt.class, MaleChildTopPieceVNeckShortSleeve.class, MaleChildTopPieceNaked.class, ChildTopPieceShortSleeve.class, ChildTopPieceShortSleeveCollar.class);
+    this.add(FemaleChildTopPiece.class, FemaleChildTopPieceCamisole.class, FemaleChildTopPieceHalter.class, FemaleChildTopPieceTShirt.class, ChildTopPieceShortSleeve.class, ChildTopPieceShortSleeveCollar.class);
+    this.add(FemaleAdultTopPiece.class, FemaleAdultTopPieceBlousedWaist.class, FemaleAdultTopPieceCowgirlShirt.class, FemaleAdultTopPieceCrewneckCollarShirt.class, FemaleAdultTopPieceHalter.class, FemaleAdultTopPieceMidSleeveTshirt.class, FemaleAdultTopPieceMomShirt.class, FemaleAdultTopPiecePoloShirt.class, FemaleAdultTopPieceSweaterSet.class, FemaleAdultTopPieceTShirt.class, FemaleAdultTopPieceTuckedWaist.class, FemaleAdultTopPieceVNeckLongSleeve.class);
+    this.add(MaleAdultTopPiece.class, MaleAdultTopPieceCowboyShirt.class, MaleAdultTopPieceJacketTshirtHang.class, MaleAdultTopPieceNaked.class, MaleAdultTopPieceShirtPolo.class, MaleAdultTopPieceShortSleeveCollar.class, MaleAdultTopPieceSweaterHang.class, MaleAdultTopPieceTankTop.class, MaleAdultTopPieceVNeckShortSleeve.class);
+  }
 
-	@Override
-	protected Class<Class<? extends TopPiece>> getImplementingClassesComponentType() {
-		return (Class<Class<? extends TopPiece>>)TopPiece.class.getClass();
-	}
+  @Override
+  protected Class<Class<? extends TopPiece>> getImplementingClassesComponentType() {
+    return (Class<Class<? extends TopPiece>>) TopPiece.class.getClass();
+  }
 
-	@Override
-	protected Class<? extends TopPiece> getGenderedInterfaceClass( LifeStage lifeStage, Gender gender ) {
-		return lifeStage.getGenderedTopPieceInterfaceClass( gender );
-	}
+  @Override
+  protected Class<? extends TopPiece> getGenderedInterfaceClass(LifeStage lifeStage, Gender gender) {
+    return lifeStage.getGenderedTopPieceInterfaceClass(gender);
+  }
 }

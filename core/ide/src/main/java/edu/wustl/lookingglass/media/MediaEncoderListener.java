@@ -49,9 +49,9 @@ import java.awt.image.BufferedImage;
  * @author Kyle J. Harms
  */
 public interface MediaEncoderListener {
-	public void encodingStarted( boolean success );
+  public void encodingStarted(boolean success);
 
-	public void encodingFinished( boolean success );
+  public void encodingFinished(boolean success);
 
-	public void frameUpdate( int frameCount, BufferedImage frame );
+  public void frameUpdate(int frameCount, BufferedImage frame);
 }

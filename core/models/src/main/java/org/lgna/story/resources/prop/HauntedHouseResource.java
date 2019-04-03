@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,158 +34,100 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum HauntedHouseResource implements PropResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_HINGE = new JointId( ROOT, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_DOOR_FRONT = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_SHUTTER_FRONT_BOTTOM = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_SHUTTER_RIGHT_SIDE_FIRST = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_SHUTTER_RIGHT_SIDE_FIRST = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_SHUTTER_RIGHT_SIDE_SECOND = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_SHUTTER_RIGHT_SIDE_SECOND = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_SHUTTER_FRONT_TOP = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_DOOR_BACK = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Y_00 = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Y_01 = new JointId( STAIRS_Y_00, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Y_02 = new JointId( STAIRS_Y_01, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Y_03 = new JointId( STAIRS_Y_02, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Y_04 = new JointId( STAIRS_Y_03, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Y_05 = new JointId( STAIRS_Y_04, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Y_06 = new JointId( STAIRS_Y_05, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Y_07 = new JointId( STAIRS_Y_06, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Y_08 = new JointId( STAIRS_Y_07, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Y_09 = new JointId( STAIRS_Y_08, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Y_10 = new JointId( STAIRS_Y_09, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_X_0 = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_X_1 = new JointId( STAIRS_X_0, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_X_2 = new JointId( STAIRS_X_1, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_X_3 = new JointId( STAIRS_X_2, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_X_4 = new JointId( STAIRS_X_3, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_W_0 = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_W_1 = new JointId( STAIRS_W_0, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_W_2 = new JointId( STAIRS_W_1, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_W_3 = new JointId( STAIRS_W_2, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_W_4 = new JointId( STAIRS_W_3, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MARKER_TOP_W = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MARKER_BASE_W = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MARKER_BASE_X = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MARKER_TOP_X = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MARKER_BASE_Y = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MARKER_TOP_Y = new JointId( RIGHT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_HINGE = new JointId( ROOT, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_DOOR_FRONT = new JointId( LEFT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_SHUTTER_FRONT_BOTTOM = new JointId( LEFT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_SHUTTER_FRONT_TOP = new JointId( LEFT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_SHUTTER_LEFT_SIDE_FIRST = new JointId( LEFT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_SHUTTER_LEFT_SIDE_FIRST = new JointId( LEFT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RIGHT_SHUTTER_LEFT_SIDE_SECOND = new JointId( LEFT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_SHUTTER_LEFT_SIDE_SECOND = new JointId( LEFT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MARKER_TOP_Z = new JointId( LEFT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId MARKER_BASE_Z = new JointId( LEFT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LEFT_DOOR_BACK = new JointId( LEFT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Z_00 = new JointId( LEFT_HINGE, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Z_01 = new JointId( STAIRS_Z_00, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Z_02 = new JointId( STAIRS_Z_01, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Z_03 = new JointId( STAIRS_Z_02, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Z_04 = new JointId( STAIRS_Z_03, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Z_05 = new JointId( STAIRS_Z_04, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Z_06 = new JointId( STAIRS_Z_05, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Z_07 = new JointId( STAIRS_Z_06, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Z_08 = new JointId( STAIRS_Z_07, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Z_09 = new JointId( STAIRS_Z_08, HauntedHouseResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRS_Z_10 = new JointId( STAIRS_Z_09, HauntedHouseResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_HINGE = new JointId(ROOT, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_DOOR_FRONT = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_SHUTTER_FRONT_BOTTOM = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_SHUTTER_RIGHT_SIDE_FIRST = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_SHUTTER_RIGHT_SIDE_FIRST = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_SHUTTER_RIGHT_SIDE_SECOND = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_SHUTTER_RIGHT_SIDE_SECOND = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_SHUTTER_FRONT_TOP = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_DOOR_BACK = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Y_00 = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Y_01 = new JointId(STAIRS_Y_00, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Y_02 = new JointId(STAIRS_Y_01, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Y_03 = new JointId(STAIRS_Y_02, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Y_04 = new JointId(STAIRS_Y_03, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Y_05 = new JointId(STAIRS_Y_04, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Y_06 = new JointId(STAIRS_Y_05, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Y_07 = new JointId(STAIRS_Y_06, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Y_08 = new JointId(STAIRS_Y_07, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Y_09 = new JointId(STAIRS_Y_08, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Y_10 = new JointId(STAIRS_Y_09, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_X_0 = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_X_1 = new JointId(STAIRS_X_0, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_X_2 = new JointId(STAIRS_X_1, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_X_3 = new JointId(STAIRS_X_2, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_X_4 = new JointId(STAIRS_X_3, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_W_0 = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_W_1 = new JointId(STAIRS_W_0, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_W_2 = new JointId(STAIRS_W_1, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_W_3 = new JointId(STAIRS_W_2, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_W_4 = new JointId(STAIRS_W_3, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MARKER_TOP_W = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MARKER_BASE_W = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MARKER_BASE_X = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MARKER_TOP_X = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MARKER_BASE_Y = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MARKER_TOP_Y = new JointId(RIGHT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_HINGE = new JointId(ROOT, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_DOOR_FRONT = new JointId(LEFT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_SHUTTER_FRONT_BOTTOM = new JointId(LEFT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_SHUTTER_FRONT_TOP = new JointId(LEFT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_SHUTTER_LEFT_SIDE_FIRST = new JointId(LEFT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_SHUTTER_LEFT_SIDE_FIRST = new JointId(LEFT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RIGHT_SHUTTER_LEFT_SIDE_SECOND = new JointId(LEFT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_SHUTTER_LEFT_SIDE_SECOND = new JointId(LEFT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MARKER_TOP_Z = new JointId(LEFT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId MARKER_BASE_Z = new JointId(LEFT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LEFT_DOOR_BACK = new JointId(LEFT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Z_00 = new JointId(LEFT_HINGE, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Z_01 = new JointId(STAIRS_Z_00, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Z_02 = new JointId(STAIRS_Z_01, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Z_03 = new JointId(STAIRS_Z_02, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Z_04 = new JointId(STAIRS_Z_03, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Z_05 = new JointId(STAIRS_Z_04, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Z_06 = new JointId(STAIRS_Z_05, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Z_07 = new JointId(STAIRS_Z_06, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Z_08 = new JointId(STAIRS_Z_07, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Z_09 = new JointId(STAIRS_Z_08, HauntedHouseResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRS_Z_10 = new JointId(STAIRS_Z_09, HauntedHouseResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	public static final JointId[] STAIRS_W_ARRAY = { STAIRS_W_0, STAIRS_W_1, STAIRS_W_2, STAIRS_W_3, STAIRS_W_4 };
+  public static final JointId[] STAIRS_W_ARRAY = {STAIRS_W_0, STAIRS_W_1, STAIRS_W_2, STAIRS_W_3, STAIRS_W_4};
 
-	public static final JointId[] STAIRS_X_ARRAY = { STAIRS_X_0, STAIRS_X_1, STAIRS_X_2, STAIRS_X_3, STAIRS_X_4 };
+  public static final JointId[] STAIRS_X_ARRAY = {STAIRS_X_0, STAIRS_X_1, STAIRS_X_2, STAIRS_X_3, STAIRS_X_4};
 
-	public static final JointId[] STAIRS_Y_ARRAY = { STAIRS_Y_00, STAIRS_Y_01, STAIRS_Y_02, STAIRS_Y_03, STAIRS_Y_04, STAIRS_Y_05, STAIRS_Y_06, STAIRS_Y_07, STAIRS_Y_08, STAIRS_Y_09, STAIRS_Y_10 };
+  public static final JointId[] STAIRS_Y_ARRAY = {STAIRS_Y_00, STAIRS_Y_01, STAIRS_Y_02, STAIRS_Y_03, STAIRS_Y_04, STAIRS_Y_05, STAIRS_Y_06, STAIRS_Y_07, STAIRS_Y_08, STAIRS_Y_09, STAIRS_Y_10};
 
-	public static final JointId[] STAIRS_Z_ARRAY = { STAIRS_Z_00, STAIRS_Z_01, STAIRS_Z_02, STAIRS_Z_03, STAIRS_Z_04, STAIRS_Z_05, STAIRS_Z_06, STAIRS_Z_07, STAIRS_Z_08, STAIRS_Z_09, STAIRS_Z_10 };
+  public static final JointId[] STAIRS_Z_ARRAY = {STAIRS_Z_00, STAIRS_Z_01, STAIRS_Z_02, STAIRS_Z_03, STAIRS_Z_04, STAIRS_Z_05, STAIRS_Z_06, STAIRS_Z_07, STAIRS_Z_08, STAIRS_Z_09, STAIRS_Z_10};
 
-	private final ImplementationAndVisualType resourceType;
-	HauntedHouseResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	HauntedHouseResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  HauntedHouseResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return HauntedHouseResource.JOINT_ID_ROOTS;
-	}
+  HauntedHouseResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return HauntedHouseResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

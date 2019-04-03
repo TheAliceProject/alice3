@@ -44,6 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenFullBodyOutfitMechanic implements MaleTeenFullBodyOutfit {
-	D_K_BLUE;
+  D_K_BLUE
 
 }

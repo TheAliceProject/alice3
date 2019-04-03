@@ -57,50 +57,50 @@ import org.lgna.project.ast.UserParameter;
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
-	private AbstractMethod method;
-	private ListPropertyListener<UserParameter> parameterAdapter = new SimplifiedListPropertyAdapter<UserParameter>() {
-		@Override
-		protected void changing( ListPropertyEvent<UserParameter> e ) {
-		}
+  private AbstractMethod method;
+  private ListPropertyListener<UserParameter> parameterAdapter = new SimplifiedListPropertyAdapter<UserParameter>() {
+    @Override
+    protected void changing(ListPropertyEvent<UserParameter> e) {
+    }
 
-		@Override
-		protected void changed( ListPropertyEvent<UserParameter> e ) {
-			ProcedureInvocationTemplate.this.refresh();
-		}
-	};
+    @Override
+    protected void changed(ListPropertyEvent<UserParameter> e) {
+      ProcedureInvocationTemplate.this.refresh();
+    }
+  };
 
-	/* package-private */ProcedureInvocationTemplate( AbstractMethod method ) {
-		super( ProcedureInvocationTemplateDragModel.getInstance( method ) );
-		this.method = method;
+  /* package-private */ProcedureInvocationTemplate(AbstractMethod method) {
+    super(ProcedureInvocationTemplateDragModel.getInstance(method));
+    this.method = method;
 
-		if( this.method instanceof UserMethod ) {
-			this.setPopupPrepModel( MethodTemplateMenuModel.getInstance( (UserMethod)this.method ).getPopupPrepModel() );
-		}
-	}
+    if (this.method instanceof UserMethod) {
+      this.setPopupPrepModel(MethodTemplateMenuModel.getInstance((UserMethod) this.method).getPopupPrepModel());
+    }
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.method instanceof UserMethod ) {
-			( (UserMethod)this.method ).requiredParameters.addListPropertyListener( this.parameterAdapter );
-			this.refresh();
-		}
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    if (this.method instanceof UserMethod) {
+      ((UserMethod) this.method).requiredParameters.addListPropertyListener(this.parameterAdapter);
+      this.refresh();
+    }
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		if( this.method instanceof UserMethod ) {
-			( (UserMethod)this.method ).requiredParameters.removeListPropertyListener( this.parameterAdapter );
-		}
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    if (this.method instanceof UserMethod) {
+      ((UserMethod) this.method).requiredParameters.removeListPropertyListener(this.parameterAdapter);
+    }
+    super.handleUndisplayable();
+  }
 
-	public AbstractMethod getMethod() {
-		return this.method;
-	}
+  public AbstractMethod getMethod() {
+    return this.method;
+  }
 
-	@Override
-	protected Expression createIncompleteExpression() {
-		return IncompleteAstUtilities.createIncompleteMethodInvocation( this.method );
-	}
+  @Override
+  protected Expression createIncompleteExpression() {
+    return IncompleteAstUtilities.createIncompleteMethodInvocation(this.method);
+  }
 }

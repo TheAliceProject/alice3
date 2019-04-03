@@ -71,141 +71,140 @@ import java.util.concurrent.Callable;
  * @author Dennis Cosgrove
  */
 public class IngredientsView extends MigPanel {
-	public static final Insets COLOR_BUTTON_MARGIN = new Insets( 1, -7, 1, -7 ); //todo
-	public static final Color BACKGROUND_COLOR = new Color( 173, 167, 208 );
-	public static final Color SELECTED_COLOR = ColorUtilities.scaleHSB( Color.YELLOW, 1.0, 0.3, 1.0 );
-	public static final Color UNSELECTED_COLOR = ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+  public static final Insets COLOR_BUTTON_MARGIN = new Insets(1, -7, 1, -7); //todo
+  public static final Color BACKGROUND_COLOR = new Color(173, 167, 208);
+  public static final Color SELECTED_COLOR = ColorUtilities.scaleHSB(Color.YELLOW, 1.0, 0.3, 1.0);
+  public static final Color UNSELECTED_COLOR = ColorUtilities.scaleHSB(BACKGROUND_COLOR, 1.0, 0.9, 0.8);
 
-	private final Label isLifeStageLockedLabel = new Label();
-	private final HorizontalWrapList<LifeStage> lifeStageList;
+  private final Label isLifeStageLockedLabel = new Label();
+  private final HorizontalWrapList<LifeStage> lifeStageList;
 
-	private static final Icon LOCKED_ICON = IconUtilities.createImageIcon( IngredientsComposite.class.getResource( "images/locked.png" ) );
+  private static final Icon LOCKED_ICON = IconUtilities.createImageIcon(IngredientsComposite.class.getResource("images/locked.png"));
 
-	public IngredientsView( final IngredientsComposite composite ) {
-		super( composite, "insets 0, fill", "[][align right][][grow]", "[][][][][shrink]" );
+  public IngredientsView(final IngredientsComposite composite) {
+    super(composite, "insets 0, fill", "[][align right][][grow]", "[][][][][shrink]");
 
-		this.addComponent( this.isLifeStageLockedLabel );
-		this.addComponent( composite.getLifeStageState().getSidekickLabel().createLabel(), "" );
+    this.addComponent(this.isLifeStageLockedLabel);
+    this.addComponent(composite.getLifeStageState().getSidekickLabel().createLabel(), "");
 
-		this.lifeStageList = new HorizontalWrapList( composite.getLifeStageState(), 1 );
-		this.addComponent( this.lifeStageList, "push" );
-		this.addComponent( composite.getRandomize().createButton(), "push, align right, wrap" );
+    this.lifeStageList = new HorizontalWrapList(composite.getLifeStageState(), 1);
+    this.addComponent(this.lifeStageList, "push");
+    this.addComponent(composite.getRandomize().createButton(), "push, align right, wrap");
 
-		this.addComponent( composite.getGenderState().getSidekickLabel().createLabel(), "skip" );
-		this.addComponent( new HorizontalWrapList( composite.getGenderState(), 1 ), "wrap" );
+    this.addComponent(composite.getGenderState().getSidekickLabel().createLabel(), "skip");
+    this.addComponent(new HorizontalWrapList(composite.getGenderState(), 1), "wrap");
 
-		final SkinColorState skinColorState = composite.getSkinColorState();
-		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "skip" );
+    final SkinColorState skinColorState = composite.getSkinColorState();
+    this.addComponent(composite.getSkinColorState().getSidekickLabel().createLabel(), "skip");
 
-		final Color[] melaninChipColors = skinColorState.getMelaninChooserTabComposite().getMelaninChipShades();
-		String constraints = "gap 0, split " + melaninChipColors.length;
-		for( Color melaninShade : melaninChipColors ) {
-			BooleanState itemSelectedState = skinColorState.getItemSelectedState( melaninShade );
-			itemSelectedState.initializeIfNecessary();
-			itemSelectedState.setTextForBothTrueAndFalse( "" );
-			itemSelectedState.setIconForBothTrueAndFalse( new ColorIcon( melaninShade ) );
-			ToggleButton button = itemSelectedState.createToggleButton();
-			button.tightenUpMargin( COLOR_BUTTON_MARGIN );
-			this.addComponent( button, constraints );
-			constraints = "gap 0";
-		}
+    final Color[] melaninChipColors = skinColorState.getMelaninChooserTabComposite().getMelaninChipShades();
+    String constraints = "gap 0, split " + melaninChipColors.length;
+    for (Color melaninShade : melaninChipColors) {
+      BooleanState itemSelectedState = skinColorState.getItemSelectedState(melaninShade);
+      itemSelectedState.initializeIfNecessary();
+      itemSelectedState.setTextForBothTrueAndFalse("");
+      itemSelectedState.setIconForBothTrueAndFalse(new ColorIcon(melaninShade));
+      ToggleButton button = itemSelectedState.createToggleButton();
+      button.tightenUpMargin(COLOR_BUTTON_MARGIN);
+      this.addComponent(button, constraints);
+      constraints = "gap 0";
+    }
 
-		class OtherColorCallable implements Callable<Color> {
-			private Color value = null;
+    class OtherColorCallable implements Callable<Color> {
+      private Color value = null;
 
-			public Color getValue() {
-				return this.value;
-			}
+      public Color getValue() {
+        return this.value;
+      }
 
-			public void setValue( Color value ) {
-				this.value = value;
-			}
+      public void setValue(Color value) {
+        this.value = value;
+      }
 
-			@Override
-			public Color call() throws Exception {
-				return this.value;
-			}
-		}
+      @Override
+      public Color call() throws Exception {
+        return this.value;
+      }
+    }
 
-		final OtherColorCallable otherColorCallable = new OtherColorCallable();
+    final OtherColorCallable otherColorCallable = new OtherColorCallable();
 
-		final BooleanState otherColorState = skinColorState.getItemSelectedState( otherColorCallable );
-		final ToggleButton otherColorButton = otherColorState.createToggleButton();
-		final int SIZE = ColorIcon.DEFAULT_SIZE;
-		class OtherColorIcon implements Icon {
-			@Override
-			public int getIconWidth() {
-				return SIZE;
-			}
+    final BooleanState otherColorState = skinColorState.getItemSelectedState(otherColorCallable);
+    final ToggleButton otherColorButton = otherColorState.createToggleButton();
+    final int SIZE = ColorIcon.DEFAULT_SIZE;
+    class OtherColorIcon implements Icon {
+      @Override
+      public int getIconWidth() {
+        return SIZE;
+      }
 
-			@Override
-			public int getIconHeight() {
-				return SIZE;
-			}
+      @Override
+      public int getIconHeight() {
+        return SIZE;
+      }
 
-			@Override
-			public void paintIcon( Component c, Graphics g, int x, int y ) {
-				Color color = otherColorCallable.getValue();
-				if( color != null ) {
-					g.setColor( color );
-					g.fillRect( x, y, SIZE, SIZE );
-				}
-			}
-		}
+      @Override
+      public void paintIcon(Component c, Graphics g, int x, int y) {
+        Color color = otherColorCallable.getValue();
+        if (color != null) {
+          g.setColor(color);
+          g.fillRect(x, y, SIZE, SIZE);
+        }
+      }
+    }
 
-		otherColorButton.getAwtComponent().setText( "" );
-		otherColorButton.getAwtComponent().setIcon( new OtherColorIcon() );
-		otherColorButton.tightenUpMargin( COLOR_BUTTON_MARGIN );
-		this.addComponent( otherColorButton, "gap 8, split 2" );
+    otherColorButton.getAwtComponent().setText("");
+    otherColorButton.getAwtComponent().setIcon(new OtherColorIcon());
+    otherColorButton.tightenUpMargin(COLOR_BUTTON_MARGIN);
+    this.addComponent(otherColorButton, "gap 8, split 2");
 
-		//this.addComponent( new MelaninSlider( composite.getSkinColorState() ) );
-		final Button customColorDialogButton = composite.getSkinColorState().getChooserDialogCoreComposite().getLaunchOperation().createButton();
-		String customColorLabel = ResourceBundleUtilities.getStringForKey("ColorCustomExpressionCreatorComposite",
-						ColorCustomExpressionCreatorComposite.class);
-		customColorDialogButton.setClobberText( customColorLabel );
+    //this.addComponent( new MelaninSlider( composite.getSkinColorState() ) );
+    final Button customColorDialogButton = composite.getSkinColorState().getChooserDialogCoreComposite().getLaunchOperation().createButton();
+    String customColorLabel = ResourceBundleUtilities.getStringForKey("ColorCustomExpressionCreatorComposite", ColorCustomExpressionCreatorComposite.class);
+    customColorDialogButton.setClobberText(customColorLabel);
 
-		ValueListener<Color> colorListener = new ValueListener<Color>() {
-			@Override
-			public void valueChanged( ValueEvent<Color> e ) {
-				Color nextValue = e.getNextValue();
-				boolean isColorMelaninShade = false;
-				for( Color melaninShade : skinColorState.getMelaninChooserTabComposite().getMelaninChipShades() ) {
-					if( melaninShade.equals( nextValue ) ) {
-						isColorMelaninShade = true;
-						break;
-					}
-				}
-				if( isColorMelaninShade ) {
-					//pass
-				} else {
-					otherColorCallable.setValue( nextValue );
-				}
-				otherColorState.setEnabled( otherColorCallable.getValue() != null );
-			}
-		};
-		skinColorState.addAndInvokeNewSchoolValueListener( colorListener );
+    ValueListener<Color> colorListener = new ValueListener<Color>() {
+      @Override
+      public void valueChanged(ValueEvent<Color> e) {
+        Color nextValue = e.getNextValue();
+        boolean isColorMelaninShade = false;
+        for (Color melaninShade : skinColorState.getMelaninChooserTabComposite().getMelaninChipShades()) {
+          if (melaninShade.equals(nextValue)) {
+            isColorMelaninShade = true;
+            break;
+          }
+        }
+        if (isColorMelaninShade) {
+          //pass
+        } else {
+          otherColorCallable.setValue(nextValue);
+        }
+        otherColorState.setEnabled(otherColorCallable.getValue() != null);
+      }
+    };
+    skinColorState.addAndInvokeNewSchoolValueListener(colorListener);
 
-		this.addComponent( customColorDialogButton, "gapx 0, wrap" );
+    this.addComponent(customColorDialogButton, "gapx 0, wrap");
 
-		final Color[] melaninSliderColors = skinColorState.getMelaninChooserTabComposite().getMelaninSliderShades();
-		this.getAwtComponent().add( new JColorSlider( melaninSliderColors ) {
-			@Override
-			protected void handleNextColor( Color nextColor ) {
-				//todo
-				skinColorState.setValueTransactionlessly( nextColor );
-			}
-		}, "skip 2, grow, gaptop 0, wrap" );
+    final Color[] melaninSliderColors = skinColorState.getMelaninChooserTabComposite().getMelaninSliderShades();
+    this.getAwtComponent().add(new JColorSlider(melaninSliderColors) {
+      @Override
+      protected void handleNextColor(Color nextColor) {
+        //todo
+        skinColorState.setValueTransactionlessly(nextColor);
+      }
+    }, "skip 2, grow, gaptop 0, wrap");
 
-		FolderTabbedPane tabbedPane = composite.getBodyHeadHairTabState().createFolderTabbedPane();
-		tabbedPane.setBackgroundColor( BACKGROUND_COLOR );
-		this.addComponent( tabbedPane, "span 4, grow" );
-		this.setBackgroundColor( BACKGROUND_COLOR );
-	}
+    FolderTabbedPane tabbedPane = composite.getBodyHeadHairTabState().createFolderTabbedPane();
+    tabbedPane.setBackgroundColor(BACKGROUND_COLOR);
+    this.addComponent(tabbedPane, "span 4, grow");
+    this.setBackgroundColor(BACKGROUND_COLOR);
+  }
 
-	@Override
-	public void handleCompositePreActivation() {
-		IngredientsComposite composite = (IngredientsComposite)this.getComposite();
-		this.isLifeStageLockedLabel.setIcon( composite.getLifeStageState().isEnabled() ? null : LOCKED_ICON );
-		super.handleCompositePreActivation();
-	}
+  @Override
+  public void handleCompositePreActivation() {
+    IngredientsComposite composite = (IngredientsComposite) this.getComposite();
+    this.isLifeStageLockedLabel.setIcon(composite.getLifeStageState().isEnabled() ? null : LOCKED_ICON);
+    super.handleCompositePreActivation();
+  }
 }

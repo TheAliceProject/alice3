@@ -48,7 +48,7 @@ import org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
  * @author Dennis Cosgrove
  */
 public abstract class TransientPane extends AccessiblePane {
-	public TransientPane( AbstractExpressionDragModel model ) {
-		super( model );
-	}
+  public TransientPane(AbstractExpressionDragModel model) {
+    super(model);
+  }
 }

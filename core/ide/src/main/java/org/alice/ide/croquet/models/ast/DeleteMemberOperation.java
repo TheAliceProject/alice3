@@ -60,64 +60,64 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class DeleteMemberOperation<N extends AbstractMember> extends ActionOperation implements ResponsibleModel {
-	private N member;
-	private UserType<?> declaringType;
+  private N member;
+  private UserType<?> declaringType;
 
-	//todo
-	//note: index not preserved and restored
-	//in the case where it is undone across sessions, it will not know where to insert the declaration
-	private transient int index = -1;
+  //todo
+  //note: index not preserved and restored
+  //in the case where it is undone across sessions, it will not know where to insert the declaration
+  private transient int index = -1;
 
-	public DeleteMemberOperation( UUID individualId, N node, UserType<?> declaringType ) {
-		super( Application.PROJECT_GROUP, individualId );
-		this.member = node;
-		this.declaringType = declaringType;
-	}
+  public DeleteMemberOperation(UUID individualId, N node, UserType<?> declaringType) {
+    super(Application.PROJECT_GROUP, individualId);
+    this.member = node;
+    this.declaringType = declaringType;
+  }
 
-	public abstract Class<N> getNodeParameterType();
+  public abstract Class<N> getNodeParameterType();
 
-	public UserType<?> getDeclaringType() {
-		return this.declaringType;
-	}
+  public UserType<?> getDeclaringType() {
+    return this.declaringType;
+  }
 
-	public N getMember() {
-		return this.member;
-	}
+  public N getMember() {
+    return this.member;
+  }
 
-	protected abstract NodeListProperty<N> getNodeListProperty( UserType<?> declaringType );
+  protected abstract NodeListProperty<N> getNodeListProperty(UserType<?> declaringType);
 
-	protected abstract boolean isClearToDelete( N node );
+  protected abstract boolean isClearToDelete(N node);
 
-	@Override
-	public void doOrRedoInternal( boolean isDo ) {
-		NodeListProperty<N> owner = this.getNodeListProperty( this.declaringType );
-		this.index = owner.indexOf( this.member );
-		owner.remove( index );
-		DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-		declarationTabState.removeAllOrphans();
-	}
+  @Override
+  public void doOrRedoInternal(boolean isDo) {
+    NodeListProperty<N> owner = this.getNodeListProperty(this.declaringType);
+    this.index = owner.indexOf(this.member);
+    owner.remove(index);
+    DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+    declarationTabState.removeAllOrphans();
+  }
 
-	@Override
-	public void undoInternal() {
-		NodeListProperty<N> owner = this.getNodeListProperty( this.declaringType );
-		if( this.index == -1 ) {
-			this.index += owner.size();
-		}
-		owner.add( this.index, member );
-	}
+  @Override
+  public void undoInternal() {
+    NodeListProperty<N> owner = this.getNodeListProperty(this.declaringType);
+    if (this.index == -1) {
+      this.index += owner.size();
+    }
+    owner.add(this.index, member);
+  }
 
-	@Override
-	public void appendDescription( StringBuilder rv, boolean isDetailed ) {
-		rv.append( "delete: " );
-		NodeUtilities.safeAppendRepr( rv, member, Application.getLocale() );
-	}
+  @Override
+  public void appendDescription(StringBuilder rv, boolean isDetailed) {
+    rv.append("delete: ");
+    NodeUtilities.safeAppendRepr(rv, member, Application.getLocale());
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		if( this.isClearToDelete( this.member ) ) {
-			activity.commitAndInvokeDo( new DependentEdit<DeleteMemberOperation<N>>( activity ) );
-		} else {
-			activity.cancel();
-		}
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    if (this.isClearToDelete(this.member)) {
+      activity.commitAndInvokeDo(new DependentEdit<DeleteMemberOperation<N>>(activity));
+    } else {
+      activity.cancel();
+    }
+  }
 }

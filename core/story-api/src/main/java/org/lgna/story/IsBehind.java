@@ -48,11 +48,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author dculyba
  */
 public class IsBehind extends AsSeenByArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = IsBehind.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = IsBehind.class) public static interface Detail {
+  }
 
-	private IsBehind() {
-		super();
-	}
+  private IsBehind() {
+    super();
+  }
 }

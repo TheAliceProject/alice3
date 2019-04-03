@@ -32,31 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum GardenGnomeResource implements PropResource {
-	RED_HAT( ImplementationAndVisualType.SIMS2 ),
-	YELLOW_HAT( ImplementationAndVisualType.SIMS2 ),
-	ALOHA( ImplementationAndVisualType.SIMS2 ),
-	ALIEN( ImplementationAndVisualType.SIMS2 );
+  RED_HAT(ImplementationAndVisualType.SIMS2), YELLOW_HAT(ImplementationAndVisualType.SIMS2), ALOHA(ImplementationAndVisualType.SIMS2), ALIEN(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	GardenGnomeResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	GardenGnomeResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  GardenGnomeResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  GardenGnomeResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

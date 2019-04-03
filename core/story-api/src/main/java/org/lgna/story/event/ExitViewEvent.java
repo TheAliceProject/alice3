@@ -45,7 +45,7 @@ package org.lgna.story.event;
 import org.lgna.story.SModel;
 
 public class ExitViewEvent extends ViewEvent {
-	public ExitViewEvent( SModel model ) {
-		super( model );
-	}
+  public ExitViewEvent(SModel model) {
+    super(model);
+  }
 }

@@ -50,61 +50,58 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public class ManipulationHandle2DCameraZoom extends ImageBasedManipulationHandle2D {
-	private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
-		Inactive( "images/zoom.png" ),
-		Highlighted( "images/zoomHighlight.png" ),
-		ZoomingIn( "images/zoomIn.png" ),
-		ZoomingOut( "images/zoomOut.png" );
+  private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
+    Inactive("images/zoom.png"), Highlighted("images/zoomHighlight.png"), ZoomingIn("images/zoomIn.png"), ZoomingOut("images/zoomOut.png");
 
-		private ControlState( String resourceString ) {
-			Icon icon;
-			try {
-				icon = new ImageIcon( this.getClass().getResource( resourceString ) );
-			} catch( Exception e ) {
-				Logger.errln( "cannot load", resourceString, this );
-				icon = null;
-			}
-			this.icon = icon;
-		}
+    private ControlState(String resourceString) {
+      Icon icon;
+      try {
+        icon = new ImageIcon(this.getClass().getResource(resourceString));
+      } catch (Exception e) {
+        Logger.errln("cannot load", resourceString, this);
+        icon = null;
+      }
+      this.icon = icon;
+    }
 
-		@Override
-		public Icon getIcon() {
-			return this.icon;
-		}
+    @Override
+    public Icon getIcon() {
+      return this.icon;
+    }
 
-		private final Icon icon;
-	}
+    private final Icon icon;
+  }
 
-	public ManipulationHandle2DCameraZoom() {
-		super( "images/zoomMask.png" );
-	}
+  public ManipulationHandle2DCameraZoom() {
+    super("images/zoomMask.png");
+  }
 
-	@Override
-	protected ImageState getStateForManipulationStatus() {
-		if( this.zoomingIn ) {
-			return ControlState.ZoomingIn;
-		} else if( this.zoomingOut ) {
-			return ControlState.ZoomingOut;
-		} else if( this.state.isRollover() ) {
-			//If we're not moving in one of the directions, choose highlighted or inactive
-			return ControlState.Highlighted;
-		} else {
-			return ControlState.Inactive;
-		}
-	}
+  @Override
+  protected ImageState getStateForManipulationStatus() {
+    if (this.zoomingIn) {
+      return ControlState.ZoomingIn;
+    } else if (this.zoomingOut) {
+      return ControlState.ZoomingOut;
+    } else if (this.state.isRollover()) {
+      //If we're not moving in one of the directions, choose highlighted or inactive
+      return ControlState.Highlighted;
+    } else {
+      return ControlState.Inactive;
+    }
+  }
 
-	@Override
-	protected void setManipulationState( ManipulationEvent event, boolean isActive ) {
-		switch( event.getMovementDescription().direction ) {
-		case FORWARD:
-			this.zoomingIn = isActive;
-			break;
-		case BACKWARD:
-			this.zoomingOut = isActive;
-			break;
-		}
-	}
+  @Override
+  protected void setManipulationState(ManipulationEvent event, boolean isActive) {
+    switch (event.getMovementDescription().direction) {
+    case FORWARD:
+      this.zoomingIn = isActive;
+      break;
+    case BACKWARD:
+      this.zoomingOut = isActive;
+      break;
+    }
+  }
 
-	private boolean zoomingIn = false;
-	private boolean zoomingOut = false;
+  private boolean zoomingIn = false;
+  private boolean zoomingOut = false;
 }

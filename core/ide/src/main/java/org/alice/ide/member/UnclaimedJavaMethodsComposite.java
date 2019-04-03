@@ -51,19 +51,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class UnclaimedJavaMethodsComposite extends FilteredJavaMethodsSubComposite {
-	private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
-		@Override
-		public int compare( JavaMethod methodA, JavaMethod methodB ) {
-			return compareMethodNames( methodA, methodB );
-		}
-	};
+  private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
+    @Override
+    public int compare(JavaMethod methodA, JavaMethod methodB) {
+      return compareMethodNames(methodA, methodB);
+    }
+  };
 
-	public UnclaimedJavaMethodsComposite( UUID migrationId ) {
-		super( migrationId, true );
-	}
+  public UnclaimedJavaMethodsComposite(UUID migrationId) {
+    super(migrationId, true);
+  }
 
-	@Override
-	public Comparator<JavaMethod> getComparator() {
-		return this.comparator;
-	}
+  @Override
+  public Comparator<JavaMethod> getComparator() {
+    return this.comparator;
+  }
 }

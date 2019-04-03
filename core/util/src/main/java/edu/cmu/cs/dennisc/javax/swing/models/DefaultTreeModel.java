@@ -48,24 +48,24 @@ import javax.swing.tree.TreePath;
  * @author Dennis Cosgrove
  */
 public class DefaultTreeModel<E> extends javax.swing.tree.DefaultTreeModel implements TreeModel<TreeNode<E>> {
-	public DefaultTreeModel( TreeNode<E> root ) {
-		super( root );
-	}
+  public DefaultTreeModel(TreeNode<E> root) {
+    super(root);
+  }
 
-	@Override
-	public TreeNode<E> getChild( Object parent, int index ) {
-		return (TreeNode<E>)super.getChild( parent, index );
-	}
+  @Override
+  public TreeNode<E> getChild(Object parent, int index) {
+    return (TreeNode<E>) super.getChild(parent, index);
+  }
 
-	@Override
-	public TreeNode<E> getRoot() {
-		return (TreeNode<E>)super.getRoot();
-	}
+  @Override
+  public TreeNode<E> getRoot() {
+    return (TreeNode<E>) super.getRoot();
+  }
 
-	@Override
-	public TreePath getTreePath( TreeNode<E> e ) {
-		Object[] nodes = this.getPathToRoot( e );
-		TreePath path = new TreePath( nodes );
-		return path;
-	}
+  @Override
+  public TreePath getTreePath(TreeNode<E> e) {
+    Object[] nodes = this.getPathToRoot(e);
+    TreePath path = new TreePath(nodes);
+    return path;
+  }
 }

@@ -51,24 +51,25 @@ import org.lgna.story.resources.sims2.TopPiece;
  * @author Dennis Cosgrove
  */
 public enum TopPieceCodec implements ItemCodec<TopPiece> {
-	SINGLETON;
-	@Override
-	public Class<TopPiece> getValueClass() {
-		return TopPiece.class;
-	}
+  SINGLETON;
 
-	@Override
-	public TopPiece decodeValue( BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public Class<TopPiece> getValueClass() {
+    return TopPiece.class;
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, TopPiece value ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public TopPiece decodeValue(BinaryDecoder binaryDecoder) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, TopPiece value ) {
-		sb.append( value );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, TopPiece value) {
+    throw new RuntimeException("todo");
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, TopPiece value) {
+    sb.append(value);
+  }
 }

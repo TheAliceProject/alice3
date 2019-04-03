@@ -54,23 +54,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DynamicOneShotMenuModel extends MenuModel {
-	private static class SingletonHolder {
-		private static DynamicOneShotMenuModel instance = new DynamicOneShotMenuModel();
-	}
+  private static class SingletonHolder {
+    private static DynamicOneShotMenuModel instance = new DynamicOneShotMenuModel();
+  }
 
-	public static DynamicOneShotMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static DynamicOneShotMenuModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private DynamicOneShotMenuModel() {
-		super( UUID.fromString( "7d9c9a68-be0c-4593-943a-a2d11866646c" ) );
-	}
+  private DynamicOneShotMenuModel() {
+    super(UUID.fromString("7d9c9a68-be0c-4593-943a-a2d11866646c"));
+  }
 
-	@Override
-	public void handlePopupMenuPrologue( PopupMenu popupMenu ) {
-		super.handlePopupMenuPrologue( popupMenu );
-		InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
-		MenuItemContainerUtilities.setMenuElements( popupMenu, OneShotUtilities.createMenuItemPrepModels( instanceFactory ) );
-	}
+  @Override
+  public void handlePopupMenuPrologue(PopupMenu popupMenu) {
+    super.handlePopupMenuPrologue(popupMenu);
+    InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+    MenuItemContainerUtilities.setMenuElements(popupMenu, OneShotUtilities.createMenuItemPrepModels(instanceFactory));
+  }
 
 }

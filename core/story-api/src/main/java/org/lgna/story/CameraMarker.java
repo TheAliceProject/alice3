@@ -43,6 +43,5 @@
 
 package org.lgna.story;
 
-@Deprecated
-public abstract class CameraMarker extends SMarker {
+@Deprecated public abstract class CameraMarker extends SMarker {
 }

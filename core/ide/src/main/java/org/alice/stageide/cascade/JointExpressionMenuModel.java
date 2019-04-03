@@ -66,62 +66,62 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class JointExpressionMenuModel extends CascadeMenuModel<Expression> {
-	private final Expression expression;
-	private final List<JointedTypeInfo> jointedTypeInfos;
-	private final int index;
-	private final boolean isOwnedByCascadeItemMenuCombo;
+  private final Expression expression;
+  private final List<JointedTypeInfo> jointedTypeInfos;
+  private final int index;
+  private final boolean isOwnedByCascadeItemMenuCombo;
 
-	public JointExpressionMenuModel( Expression expression, List<JointedTypeInfo> jointedTypeInfos, int index, boolean isOwnedByCascadeItemMenuCombo ) {
-		super( UUID.fromString( "c70ca3a5-b1e0-4ed9-8648-14acd52a4091" ) );
-		this.expression = expression;
-		this.jointedTypeInfos = jointedTypeInfos;
-		this.index = index;
-		this.isOwnedByCascadeItemMenuCombo = isOwnedByCascadeItemMenuCombo;
-	}
+  public JointExpressionMenuModel(Expression expression, List<JointedTypeInfo> jointedTypeInfos, int index, boolean isOwnedByCascadeItemMenuCombo) {
+    super(UUID.fromString("c70ca3a5-b1e0-4ed9-8648-14acd52a4091"));
+    this.expression = expression;
+    this.jointedTypeInfos = jointedTypeInfos;
+    this.index = index;
+    this.isOwnedByCascadeItemMenuCombo = isOwnedByCascadeItemMenuCombo;
+  }
 
-	@Override
-	protected JComponent getMenuProxy( ItemNode<? super Expression, Expression> node ) {
-		if( this.isOwnedByCascadeItemMenuCombo ) {
-			return super.getMenuProxy( node );
-		} else {
-			JComponent expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane( this.expression ).getAwtComponent();
-			return expressionPane;
-		}
-	}
+  @Override
+  protected JComponent getMenuProxy(ItemNode<? super Expression, Expression> node) {
+    if (this.isOwnedByCascadeItemMenuCombo) {
+      return super.getMenuProxy(node);
+    } else {
+      JComponent expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane(this.expression).getAwtComponent();
+      return expressionPane;
+    }
+  }
 
-	@Override
-	protected final void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
-		JointedTypeInfo info = jointedTypeInfos.get( this.index );
-		JointedModelTypeSeparator separator = JointedModelTypeSeparator.getInstance( info.getType() );
-		CascadeBlankChild child;
-		if( jointedTypeInfos.size() > ( this.index + 1 ) ) {
-			child = new CascadeItemMenuCombo( separator, new JointExpressionMenuModel( this.expression, this.jointedTypeInfos, this.index + 1, true ) );
-		} else {
-			child = separator;
-		}
-		blankChildren.add( child );
+  @Override
+  protected final void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
+    JointedTypeInfo info = jointedTypeInfos.get(this.index);
+    JointedModelTypeSeparator separator = JointedModelTypeSeparator.getInstance(info.getType());
+    CascadeBlankChild child;
+    if (jointedTypeInfos.size() > (this.index + 1)) {
+      child = new CascadeItemMenuCombo(separator, new JointExpressionMenuModel(this.expression, this.jointedTypeInfos, this.index + 1, true));
+    } else {
+      child = separator;
+    }
+    blankChildren.add(child);
 
-		JointsSubMenu<MethodInvocation>[] subMenus = JointsSubMenuManager.getSubMenusForType( info.getType() );
+    JointsSubMenu<MethodInvocation>[] subMenus = JointsSubMenuManager.getSubMenusForType(info.getType());
 
-		for( AbstractMethod method : info.getJointGetters() ) {
-			JointExpressionFillIn fillIn = JointExpressionFillIn.getInstance( expression, method );
-			if( fillIn != null ) {
-				boolean isConsumed = false;
-				for( JointsSubMenu<MethodInvocation> subMenu : subMenus ) {
-					if( subMenu.consumeIfAppropriate( method, fillIn ) ) {
-						isConsumed = true;
-						break;
-					}
-				}
-				if( isConsumed ) {
-					//pass
-				} else {
-					blankChildren.add( fillIn );
-				}
-			} else {
-				Logger.info( "no fillIn for", method );
-			}
-		}
-		Collections.addAll( blankChildren, subMenus );
-	}
+    for (AbstractMethod method : info.getJointGetters()) {
+      JointExpressionFillIn fillIn = JointExpressionFillIn.getInstance(expression, method);
+      if (fillIn != null) {
+        boolean isConsumed = false;
+        for (JointsSubMenu<MethodInvocation> subMenu : subMenus) {
+          if (subMenu.consumeIfAppropriate(method, fillIn)) {
+            isConsumed = true;
+            break;
+          }
+        }
+        if (isConsumed) {
+          //pass
+        } else {
+          blankChildren.add(fillIn);
+        }
+      } else {
+        Logger.info("no fillIn for", method);
+      }
+    }
+    Collections.addAll(blankChildren, subMenus);
+  }
 }

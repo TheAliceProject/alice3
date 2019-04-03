@@ -55,26 +55,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class UriPotentialClearanceIteratingOperation extends PotentialClearanceIteratingOperation {
-	UriPotentialClearanceIteratingOperation( UUID migrationId, Triggerable postClearanceModel ) {
-		super( ProjectApplication.URI_GROUP, migrationId, postClearanceModel );
-	}
+  UriPotentialClearanceIteratingOperation(UUID migrationId, Triggerable postClearanceModel) {
+    super(ProjectApplication.URI_GROUP, migrationId, postClearanceModel);
+  }
 
-	protected abstract UriProjectLoader getUriProjectLoader( List<UserActivity> subSteps );
+  protected abstract UriProjectLoader getUriProjectLoader(List<UserActivity> subSteps);
 
-	@Override
-	protected final void handleSuccessfulCompletionOfSubModels( UserActivity activity, List<UserActivity> subSteps ) {
-		UriProjectLoader uriProjectPair = this.getUriProjectLoader( subSteps );
-		if( uriProjectPair != null ) {
-			ProjectApplication.getActiveInstance().loadProject(activity, uriProjectPair );
-		}
-		if( subSteps.size() > 0 ) {
-			UriProjectLoader value = (UriProjectLoader) subSteps.get( subSteps.size() - 1 ).getProducedValue();
-			Logger.outln( value );
-		}
+  @Override
+  protected final void handleSuccessfulCompletionOfSubModels(UserActivity activity, List<UserActivity> subSteps) {
+    UriProjectLoader uriProjectPair = this.getUriProjectLoader(subSteps);
+    if (uriProjectPair != null) {
+      ProjectApplication.getActiveInstance().loadProject(activity, uriProjectPair);
+    }
+    if (subSteps.size() > 0) {
+      UriProjectLoader value = (UriProjectLoader) subSteps.get(subSteps.size() - 1).getProducedValue();
+      Logger.outln(value);
+    }
 
-		if ( uriProjectPair == null ) {
-			activity.cancel();
-		}
-	}
+    if (uriProjectPair == null) {
+      activity.cancel();
+    }
+  }
 
 }

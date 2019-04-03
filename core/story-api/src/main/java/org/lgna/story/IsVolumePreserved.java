@@ -47,29 +47,30 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class IsVolumePreserved implements ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail {
-	private static final boolean DEFAULT_VALUE = true;
-	private final boolean value;
+  private static final boolean DEFAULT_VALUE = true;
+  private final boolean value;
 
-	public IsVolumePreserved( Boolean value ) {
-		this.value = value.booleanValue();
-	}
+  public IsVolumePreserved(Boolean value) {
+    this.value = value.booleanValue();
+  }
 
-	private static boolean getValue( Object[] details, boolean defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof IsVolumePreserved ) {
-				IsVolumePreserved isVolumePreserved = (IsVolumePreserved)detail;
-				return isVolumePreserved.value;
-			}
-		}
-		return defaultValue;
-	}
+  private static boolean getValue(Object[] details, boolean defaultValue) {
+    for (Object detail : details) {
+      if (detail instanceof IsVolumePreserved) {
+        IsVolumePreserved isVolumePreserved = (IsVolumePreserved) detail;
+        return isVolumePreserved.value;
+      }
+    }
+    return defaultValue;
+  }
 
-	/* package-private */static boolean getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
-	}
+  /* package-private */
+  static boolean getValue(Object[] details) {
+    return getValue(details, DEFAULT_VALUE);
+  }
 
-	//Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
-	public static IsVolumePreserved make( Boolean value ) {
-		return new IsVolumePreserved( value );
-	}
+  //Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
+  public static IsVolumePreserved make(Boolean value) {
+    return new IsVolumePreserved(value);
+  }
 }

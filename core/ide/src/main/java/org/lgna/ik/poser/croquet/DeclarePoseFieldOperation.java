@@ -58,58 +58,58 @@ import java.util.UUID;
  * @author Matt May
  */
 public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
-	private static InitializingIfAbsentMap<NamedUserType, DeclarePoseFieldOperation> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<NamedUserType, DeclarePoseFieldOperation> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static DeclarePoseFieldOperation getInstance( NamedUserType declaringType ) {
-		if( PoserComposite.isPoseable( declaringType ) ) {
-			return map.getInitializingIfAbsent( declaringType, new InitializingIfAbsentMap.Initializer<NamedUserType, DeclarePoseFieldOperation>() {
-				@Override
-				public DeclarePoseFieldOperation initialize( NamedUserType declaringType ) {
-					return new DeclarePoseFieldOperation( declaringType );
-				}
-			} );
-		} else {
-			return null;
-		}
-	}
+  public static DeclarePoseFieldOperation getInstance(NamedUserType declaringType) {
+    if (PoserComposite.isPoseable(declaringType)) {
+      return map.getInitializingIfAbsent(declaringType, new InitializingIfAbsentMap.Initializer<NamedUserType, DeclarePoseFieldOperation>() {
+        @Override
+        public DeclarePoseFieldOperation initialize(NamedUserType declaringType) {
+          return new DeclarePoseFieldOperation(declaringType);
+        }
+      });
+    } else {
+      return null;
+    }
+  }
 
-	private DeclarePoseFieldOperation( NamedUserType declaringType ) {
-		super( IDE.PROJECT_GROUP, UUID.fromString( "c20e6e66-78dd-4bb7-9ed9-8cb2096f5e18" ) );
-		this.declaringType = declaringType;
-	}
+  private DeclarePoseFieldOperation(NamedUserType declaringType) {
+    super(IDE.PROJECT_GROUP, UUID.fromString("c20e6e66-78dd-4bb7-9ed9-8cb2096f5e18"));
+    this.declaringType = declaringType;
+  }
 
-	@Override
-	protected boolean hasNext( List<UserActivity> finishedSteps ) {
-		return finishedSteps.size() < 2;
-	}
+  @Override
+  protected boolean hasNext(List<UserActivity> finishedSteps) {
+    return finishedSteps.size() < 2;
+  }
 
-	@Override
-	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
-		switch( finishedSteps.size() ) {
-		case 0:
-			return PoseExpressionCreatorComposite.getInstance( this.declaringType ).getValueCreator();
-		case 1:
-			UserActivity prevSubStep = finishedSteps.get( 0 );
-			if( prevSubStep.getProducedValue() != null ) {
-				Expression expression = (Expression)prevSubStep.getProducedValue();
-				AddUnmanagedPoseFieldComposite addUnmanagedPoseFieldComposite = AddUnmanagedPoseFieldComposite.getInstance( this.declaringType );
-				addUnmanagedPoseFieldComposite.setInitializerInitialValue( expression );
-				return addUnmanagedPoseFieldComposite.getLaunchOperation();
-			} else {
-				return null;
-			}
+  @Override
+  protected Triggerable getNext(List<UserActivity> finishedSteps) {
+    switch (finishedSteps.size()) {
+    case 0:
+      return PoseExpressionCreatorComposite.getInstance(this.declaringType).getValueCreator();
+    case 1:
+      UserActivity prevSubStep = finishedSteps.get(0);
+      if (prevSubStep.getProducedValue() != null) {
+        Expression expression = (Expression) prevSubStep.getProducedValue();
+        AddUnmanagedPoseFieldComposite addUnmanagedPoseFieldComposite = AddUnmanagedPoseFieldComposite.getInstance(this.declaringType);
+        addUnmanagedPoseFieldComposite.setInitializerInitialValue(expression);
+        return addUnmanagedPoseFieldComposite.getLaunchOperation();
+      } else {
+        return null;
+      }
 
-		default:
-			throw new Error();
-		}
-	}
+    default:
+      throw new Error();
+    }
+  }
 
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ) {
-		//		UserField field = getControlComposite().createPoseField( getControlComposite().getNameState().getValue() );
-		//		NamedUserType declaringType = this.getDeclaringType();
-		//		return new DeclareNonGalleryFieldEdit( completionStep, declaringType, field );
-	}
+  @Override
+  protected void handleSuccessfulCompletionOfSubModels(UserActivity activity) {
+    //    UserField field = getControlComposite().createPoseField( getControlComposite().getNameState().getValue() );
+    //    NamedUserType declaringType = this.getDeclaringType();
+    //    return new DeclareNonGalleryFieldEdit( completionStep, declaringType, field );
+  }
 
-	private final NamedUserType declaringType;
+  private final NamedUserType declaringType;
 }

@@ -84,219 +84,216 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public class MembersView extends BorderPanel {
-	private static MapToMap<Class<?>, AbstractType<?, ?, ?>, TypeComponent> mapToMap = MapToMap.newInstance();
-	public static final byte PROTOTYPE = 0;
+  private static MapToMap<Class<?>, AbstractType<?, ?, ?>, TypeComponent> mapToMap = MapToMap.newInstance();
+  public static final byte PROTOTYPE = 0;
 
-	public static TypeComponent getComponentFor( Class<?> cls, AbstractType<?, ?, ?> type ) {
-		return mapToMap.getInitializingIfAbsent( cls, type, new MapToMap.Initializer<Class<?>, AbstractType<?, ?, ?>, TypeComponent>() {
-			@Override
-			public TypeComponent initialize( Class<?> cls, AbstractType<?, ?, ?> type ) {
-				return TypeComponent.createInstance( type );
-			}
-		} );
-	}
+  public static TypeComponent getComponentFor(Class<?> cls, AbstractType<?, ?, ?> type) {
+    return mapToMap.getInitializingIfAbsent(cls, type, new MapToMap.Initializer<Class<?>, AbstractType<?, ?, ?>, TypeComponent>() {
+      @Override
+      public TypeComponent initialize(Class<?> cls, AbstractType<?, ?, ?> type) {
+        return TypeComponent.createInstance(type);
+      }
+    });
+  }
 
-	private static final int SIZE = 32;
+  private static final int SIZE = 32;
 
-	private static enum DragReceptorState {
-		IDLE( null, null, null, 0 ),
-		STARTED( Color.YELLOW, new Color( 191, 191, 191, 0 ), null, SIZE ),
-		ENTERED( Color.YELLOW, new Color( 127, 127, 127, 191 ), new ClosedTrashCanSymbolicStyleIcon( 128, 128, Color.LIGHT_GRAY ), SIZE ),
-		ENTERED_FAR_ENOUGH( new Color( 0xCCFF99 ), new Color( 127, 127, 127, 191 ), new OpenTrashCanSymbolicStyleIcon( 128, 128, Color.WHITE ), SIZE );
-		private final Color colorA;
-		private final Color colorB;
-		private final Icon icon;
-		private final int gradientAmount;
+  private static enum DragReceptorState {
+    IDLE(null, null, null, 0), STARTED(Color.YELLOW, new Color(191, 191, 191, 0), null, SIZE), ENTERED(Color.YELLOW, new Color(127, 127, 127, 191), new ClosedTrashCanSymbolicStyleIcon(128, 128, Color.LIGHT_GRAY), SIZE), ENTERED_FAR_ENOUGH(new Color(0xCCFF99), new Color(127, 127, 127, 191), new OpenTrashCanSymbolicStyleIcon(128, 128, Color.WHITE), SIZE);
+    private final Color colorA;
+    private final Color colorB;
+    private final Icon icon;
+    private final int gradientAmount;
 
-		private DragReceptorState( Color colorA, Color colorB, Icon icon, int gradientAmount ) {
-			this.colorA = colorA;
-			this.colorB = colorB;
-			this.icon = icon;
-			this.gradientAmount = gradientAmount;
-		}
+    private DragReceptorState(Color colorA, Color colorB, Icon icon, int gradientAmount) {
+      this.colorA = colorA;
+      this.colorB = colorB;
+      this.icon = icon;
+      this.gradientAmount = gradientAmount;
+    }
 
-		public Color getColorA() {
-			return this.colorA;
-		}
+    public Color getColorA() {
+      return this.colorA;
+    }
 
-		public Color getColorB() {
-			return this.colorB;
-		}
+    public Color getColorB() {
+      return this.colorB;
+    }
 
-		public int getGradientAmount() {
-			return this.gradientAmount;
-		}
+    public int getGradientAmount() {
+      return this.gradientAmount;
+    }
 
-		public Icon getIcon() {
-			return this.icon;
-		}
-	};
+    public Icon getIcon() {
+      return this.icon;
+    }
+  }
 
-	private class RecycleBinDropReceptor extends AbstractDropReceptor {
-		private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
+  private class RecycleBinDropReceptor extends AbstractDropReceptor {
+    private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
 
-		@Override
-		public boolean isPotentiallyAcceptingOf( DragModel dragModel ) {
-			return dragModel instanceof StatementDragModel;
-		}
+    @Override
+    public boolean isPotentiallyAcceptingOf(DragModel dragModel) {
+      return dragModel instanceof StatementDragModel;
+    }
 
-		private void setDragReceptorState( DragReceptorState dragReceptorState ) {
-			this.dragReceptorState = dragReceptorState;
-			MembersView.this.repaint();
-		}
+    private void setDragReceptorState(DragReceptorState dragReceptorState) {
+      this.dragReceptorState = dragReceptorState;
+      MembersView.this.repaint();
+    }
 
-		@Override
-		public void dragStarted( DragStep step ) {
-			this.setDragReceptorState( DragReceptorState.STARTED );
-		}
+    @Override
+    public void dragStarted(DragStep step) {
+      this.setDragReceptorState(DragReceptorState.STARTED);
+    }
 
-		@Override
-		public void dragEntered( DragStep step ) {
-			this.setDragReceptorState( DragReceptorState.ENTERED );
-		}
+    @Override
+    public void dragEntered(DragStep step) {
+      this.setDragReceptorState(DragReceptorState.ENTERED);
+    }
 
-		@Override
-		public DropSite dragUpdated( DragStep step ) {
-			MouseEvent e = step.getLatestMouseEvent();
-			Point p = ComponentUtilities.convertPoint( e.getComponent(), e.getPoint(), MembersView.this.getAwtComponent() );
+    @Override
+    public DropSite dragUpdated(DragStep step) {
+      MouseEvent e = step.getLatestMouseEvent();
+      Point p = ComponentUtilities.convertPoint(e.getComponent(), e.getPoint(), MembersView.this.getAwtComponent());
 
-			final int FAR_ENOUGH = 64;
-			if( p.x < ( MembersView.this.getWidth() - FAR_ENOUGH ) ) {
-				this.setDragReceptorState( DragReceptorState.ENTERED_FAR_ENOUGH );
-				return MembersView.this.dropSite;
-			} else {
-				this.setDragReceptorState( DragReceptorState.ENTERED );
-				return null;
-			}
-		}
+      final int FAR_ENOUGH = 64;
+      if (p.x < (MembersView.this.getWidth() - FAR_ENOUGH)) {
+        this.setDragReceptorState(DragReceptorState.ENTERED_FAR_ENOUGH);
+        return MembersView.this.dropSite;
+      } else {
+        this.setDragReceptorState(DragReceptorState.ENTERED);
+        return null;
+      }
+    }
 
-		@Override
-		protected Triggerable dragDroppedPostRejectorCheck( DragStep step ) {
-			DropSite dropSite = step.getCurrentPotentialDropSite();
-			if( dropSite != null ) {
-				DragModel dragModel = step.getModel();
-				if( dragModel instanceof StatementDragModel ) {
-					StatementDragModel statementDragModel = (StatementDragModel)dragModel;
-					Statement statement = statementDragModel.getStatement();
-					return new DeleteStatementOperation( statement );
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
+    @Override
+    protected Triggerable dragDroppedPostRejectorCheck(DragStep step) {
+      DropSite dropSite = step.getCurrentPotentialDropSite();
+      if (dropSite != null) {
+        DragModel dragModel = step.getModel();
+        if (dragModel instanceof StatementDragModel) {
+          StatementDragModel statementDragModel = (StatementDragModel) dragModel;
+          Statement statement = statementDragModel.getStatement();
+          return new DeleteStatementOperation(statement);
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
 
-		@Override
-		public void dragExited( DragStep step, boolean isDropRecipient ) {
-			//			step.getDragSource().showDragProxy();
-			this.setDragReceptorState( DragReceptorState.STARTED );
-		}
+    @Override
+    public void dragExited(DragStep step, boolean isDropRecipient) {
+      //      step.getDragSource().showDragProxy();
+      this.setDragReceptorState(DragReceptorState.STARTED);
+    }
 
-		@Override
-		public void dragStopped( DragStep step ) {
-			this.setDragReceptorState( DragReceptorState.IDLE );
-		}
+    @Override
+    public void dragStopped(DragStep step) {
+      this.setDragReceptorState(DragReceptorState.IDLE);
+    }
 
-		@Override
-		public TrackableShape getTrackableShape( DropSite potentialDropSite ) {
-			return MembersView.this;
-		}
+    @Override
+    public TrackableShape getTrackableShape(DropSite potentialDropSite) {
+      return MembersView.this;
+    }
 
-		@Override
-		public SwingComponentView<?> getViewController() {
-			return MembersView.this;
-		}
+    @Override
+    public SwingComponentView<?> getViewController() {
+      return MembersView.this;
+    }
 
-	}
+  }
 
-	//todo
-	private static class RecycleBinDropSite implements DropSite {
-		public RecycleBinDropSite() {
-		}
+  //todo
+  private static class RecycleBinDropSite implements DropSite {
+    public RecycleBinDropSite() {
+    }
 
-		public RecycleBinDropSite( BinaryDecoder binaryDecoder ) {
-			//todo
-		}
+    public RecycleBinDropSite(BinaryDecoder binaryDecoder) {
+      //todo
+    }
 
-		@Override
-		public void encode( BinaryEncoder binaryEncoder ) {
-			//todo
-		}
+    @Override
+    public void encode(BinaryEncoder binaryEncoder) {
+      //todo
+    }
 
-		@Override
-		public int hashCode() {
-			return 0;
-		}
+    @Override
+    public int hashCode() {
+      return 0;
+    }
 
-		@Override
-		public boolean equals( Object obj ) {
-			return obj instanceof RecycleBinDropSite;
-		}
+    @Override
+    public boolean equals(Object obj) {
+      return obj instanceof RecycleBinDropSite;
+    }
 
-		@Override
-		public DropReceptor getOwningDropReceptor() {
-			return RecycleBin.SINGLETON.getDropReceptor();
-		}
-	}
+    @Override
+    public DropReceptor getOwningDropReceptor() {
+      return RecycleBin.SINGLETON.getDropReceptor();
+    }
+  }
 
-	private final RecycleBinDropSite dropSite = new RecycleBinDropSite();
+  private final RecycleBinDropSite dropSite = new RecycleBinDropSite();
 
-	private final RecycleBinDropReceptor recycleBinDropReceptor = new RecycleBinDropReceptor();
+  private final RecycleBinDropReceptor recycleBinDropReceptor = new RecycleBinDropReceptor();
 
-	public MembersView( MembersComposite composite ) {
-		super( composite );
-		InstanceFactoryPopupButton instanceFactoryPopupButton = new InstanceFactoryPopupButton( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() );
-		//		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
-		//		instancePanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ) );
-		//		instancePanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-		//		instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 4 ) );
-		//
-		//		this.addPageStartComponent( instancePanel );
-		this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-		this.addPageStartComponent( instanceFactoryPopupButton );
-		TabbedPane<?> tabbedPane;
-		if( IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-			tabbedPane = composite.getTabState().createFolderTabbedPane();
-		} else {
-			tabbedPane = composite.getTabState().createToolPaletteTabbedPane();
-		}
-		this.addCenterComponent( tabbedPane );
-	}
+  public MembersView(MembersComposite composite) {
+    super(composite);
+    InstanceFactoryPopupButton instanceFactoryPopupButton = new InstanceFactoryPopupButton(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState());
+    //    org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
+    //    instancePanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ) );
+    //    instancePanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+    //    instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 4 ) );
+    //
+    //    this.addPageStartComponent( instancePanel );
+    this.setBackgroundColor(FolderTabbedPane.DEFAULT_BACKGROUND_COLOR);
+    this.addPageStartComponent(instanceFactoryPopupButton);
+    TabbedPane<?> tabbedPane;
+    if (IsAlwaysShowingBlocksState.getInstance().getValue()) {
+      tabbedPane = composite.getTabState().createFolderTabbedPane();
+    } else {
+      tabbedPane = composite.getTabState().createToolPaletteTabbedPane();
+    }
+    this.addCenterComponent(tabbedPane);
+  }
 
-	@Override
-	protected JPanel createJPanel() {
-		JPanel rv = new DefaultJPanel() {
-			@Override
-			public void paint( Graphics g ) {
-				super.paint( g );
-				if( recycleBinDropReceptor.dragReceptorState == DragReceptorState.IDLE ) {
-					//pass
-				} else {
-					Graphics2D g2 = (Graphics2D)g;
-					int width = this.getWidth();
-					int height = this.getHeight();
-					Color colorA = recycleBinDropReceptor.dragReceptorState.getColorA();
-					Color colorB = recycleBinDropReceptor.dragReceptorState.getColorB();
-					int gradientAmount = recycleBinDropReceptor.dragReceptorState.getGradientAmount();
-					Paint paint = new GradientPaint( width, 0, colorA, width - gradientAmount, gradientAmount, colorB );
-					g2.setPaint( paint );
-					g2.fillRect( 0, 0, width, height );
-					Icon icon = recycleBinDropReceptor.dragReceptorState.getIcon();
-					if( icon != null ) {
-						g2.setPaint( new Color( 221, 221, 221 ) );
-						int x = ( width - icon.getIconWidth() ) / 2;
-						int y = ( height - icon.getIconHeight() ) / 2;
-						y = Math.min( y, 100 );
-						icon.paintIcon( this, g2, x, y );
-					}
-				}
-			}
-		};
-		return rv;
-	}
+  @Override
+  protected JPanel createJPanel() {
+    JPanel rv = new DefaultJPanel() {
+      @Override
+      public void paint(Graphics g) {
+        super.paint(g);
+        if (recycleBinDropReceptor.dragReceptorState == DragReceptorState.IDLE) {
+          //pass
+        } else {
+          Graphics2D g2 = (Graphics2D) g;
+          int width = this.getWidth();
+          int height = this.getHeight();
+          Color colorA = recycleBinDropReceptor.dragReceptorState.getColorA();
+          Color colorB = recycleBinDropReceptor.dragReceptorState.getColorB();
+          int gradientAmount = recycleBinDropReceptor.dragReceptorState.getGradientAmount();
+          Paint paint = new GradientPaint(width, 0, colorA, width - gradientAmount, gradientAmount, colorB);
+          g2.setPaint(paint);
+          g2.fillRect(0, 0, width, height);
+          Icon icon = recycleBinDropReceptor.dragReceptorState.getIcon();
+          if (icon != null) {
+            g2.setPaint(new Color(221, 221, 221));
+            int x = (width - icon.getIconWidth()) / 2;
+            int y = (height - icon.getIconHeight()) / 2;
+            y = Math.min(y, 100);
+            icon.paintIcon(this, g2, x, y);
+          }
+        }
+      }
+    };
+    return rv;
+  }
 
-	public RecycleBinDropReceptor getRecycleBinDropReceptor() {
-		return this.recycleBinDropReceptor;
-	}
+  public RecycleBinDropReceptor getRecycleBinDropReceptor() {
+    return this.recycleBinDropReceptor;
+  }
 }

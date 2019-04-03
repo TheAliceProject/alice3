@@ -51,43 +51,43 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class Group {
-	private static Map<UUID, Group> map = Maps.newHashMap();
+  private static Map<UUID, Group> map = Maps.newHashMap();
 
-	public static synchronized Group getInstance( UUID id ) {
-		Group rv = map.get( id );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new Group( id );
-			map.put( id, rv );
-		}
-		return rv;
-	}
+  public static synchronized Group getInstance(UUID id) {
+    Group rv = map.get(id);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new Group(id);
+      map.put(id, rv);
+    }
+    return rv;
+  }
 
-	public static Group getInstance( UUID id, String description ) {
-		Group rv = getInstance( id );
-		assert rv.description == null;
-		rv.description = description;
-		return rv;
-	}
+  public static Group getInstance(UUID id, String description) {
+    Group rv = getInstance(id);
+    assert rv.description == null;
+    rv.description = description;
+    return rv;
+  }
 
-	private UUID id;
-	private String description;
+  private UUID id;
+  private String description;
 
-	private Group( UUID id ) {
-		this.id = id;
-	}
+  private Group(UUID id) {
+    this.id = id;
+  }
 
-	public UUID getId() {
-		return this.id;
-	}
+  public UUID getId() {
+    return this.id;
+  }
 
-	@Override
-	public String toString() {
-		if( this.description != null ) {
-			return this.description;
-		} else {
-			return "Unknown Group";
-		}
-	}
+  @Override
+  public String toString() {
+    if (this.description != null) {
+      return this.description;
+    } else {
+      return "Unknown Group";
+    }
+  }
 }

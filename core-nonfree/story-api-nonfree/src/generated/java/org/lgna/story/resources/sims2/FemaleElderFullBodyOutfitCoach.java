@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderFullBodyOutfitCoach implements FemaleElderFullBodyOutfit {
-	RED_BLUE,
-	BLUE_RED;
+  RED_BLUE, BLUE_RED
 
 }

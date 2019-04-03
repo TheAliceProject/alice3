@@ -49,6 +49,6 @@ import org.lgna.story.implementation.JointedModelImp;
  * @author Dennis Cosgrove
  */
 public interface JointedModelResource extends ModelResource {
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory();
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory();
 
 }

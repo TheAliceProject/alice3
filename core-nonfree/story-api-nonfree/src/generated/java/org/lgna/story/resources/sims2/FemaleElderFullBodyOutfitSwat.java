@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderFullBodyOutfitSwat implements FemaleElderFullBodyOutfit {
-	SAND,
-	BLUE;
+  SAND, BLUE
 
 }

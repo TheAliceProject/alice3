@@ -50,24 +50,24 @@ import org.lgna.ik.poser.animation.TimeLine;
  * @author Matt May
  */
 public class AddKeyFrameToTimeLineEdit extends TimeLineEdit {
-	private final KeyFrameData keyFrameData;
+  private final KeyFrameData keyFrameData;
 
-	public AddKeyFrameToTimeLineEdit( UserActivity userActivity, TimeLine timeLine, KeyFrameData data ) {
-		super( userActivity, timeLine );
-		this.keyFrameData = data;
-	}
+  public AddKeyFrameToTimeLineEdit(UserActivity userActivity, TimeLine timeLine, KeyFrameData data) {
+    super(userActivity, timeLine);
+    this.keyFrameData = data;
+  }
 
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		getTimeLine().addKeyFrameData( keyFrameData );
-	}
+  @Override
+  protected void doOrRedoInternal(boolean isDo) {
+    getTimeLine().addKeyFrameData(keyFrameData);
+  }
 
-	@Override
-	protected void undoInternal() {
-		getTimeLine().removeKeyFrameData( keyFrameData );
-	}
+  @Override
+  protected void undoInternal() {
+    getTimeLine().removeKeyFrameData(keyFrameData);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+  }
 }

@@ -57,22 +57,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ExponentCascadeMenu extends ExpressionCascadeMenu<Expression> {
-	private static class SingletonHolder {
-		private static ExponentCascadeMenu instance = new ExponentCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static ExponentCascadeMenu instance = new ExponentCascadeMenu();
+  }
 
-	public static ExponentCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ExponentCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ExponentCascadeMenu() {
-		super( UUID.fromString( "53e6ac46-5f75-4a6e-8149-9161b2e330d1" ) );
-	}
+  private ExponentCascadeMenu() {
+    super(UUID.fromString("53e6ac46-5f75-4a6e-8149-9161b2e330d1"));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> context ) {
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "exp", Double.TYPE ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "log", Double.TYPE ) );
-		blankChildren.add( StaticFieldAccessFillIn.getInstance( Math.class, "E" ) );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> context) {
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "exp", Double.TYPE));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "log", Double.TYPE));
+    blankChildren.add(StaticFieldAccessFillIn.getInstance(Math.class, "E"));
+  }
 }

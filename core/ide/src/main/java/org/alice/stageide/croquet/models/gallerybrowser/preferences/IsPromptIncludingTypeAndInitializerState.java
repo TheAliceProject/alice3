@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsPromptIncludingTypeAndInitializerState extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsPromptIncludingTypeAndInitializerState instance = new IsPromptIncludingTypeAndInitializerState();
-	}
+  private static class SingletonHolder {
+    private static IsPromptIncludingTypeAndInitializerState instance = new IsPromptIncludingTypeAndInitializerState();
+  }
 
-	public static IsPromptIncludingTypeAndInitializerState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsPromptIncludingTypeAndInitializerState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsPromptIncludingTypeAndInitializerState() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "fc13ea25-fda8-4ba4-8a8e-3f287d711664" ), true );
-	}
+  private IsPromptIncludingTypeAndInitializerState() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("fc13ea25-fda8-4ba4-8a8e-3f287d711664"), true);
+  }
 }

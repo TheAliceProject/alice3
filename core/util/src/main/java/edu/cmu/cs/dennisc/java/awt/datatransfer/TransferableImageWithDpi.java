@@ -64,80 +64,76 @@ import java.util.Arrays;
  * @author Dennis Cosgrove
  */
 public class TransferableImageWithDpi implements Transferable {
-	private static final DataFlavor PNG_IMAGE_FLAVOR = new DataFlavor( "image/png", "PNG Image" );
+  private static final DataFlavor PNG_IMAGE_FLAVOR = new DataFlavor("image/png", "PNG Image");
 
-	private static final DataFlavor[] DPI_DATA_FLAVORS = {
-			//PNG_IMAGE_FLAVOR,
-			DataFlavor.javaFileListFlavor,
-			DataFlavor.imageFlavor
-	};
+  private static final DataFlavor[] DPI_DATA_FLAVORS = {
+      //PNG_IMAGE_FLAVOR,
+      DataFlavor.javaFileListFlavor, DataFlavor.imageFlavor};
 
-	private static final DataFlavor[] IMAGE_ONLY_DATA_FLAVORS = {
-			DataFlavor.imageFlavor
-	};
+  private static final DataFlavor[] IMAGE_ONLY_DATA_FLAVORS = {DataFlavor.imageFlavor};
 
-	private final Image image;
-	private final Integer dpi;
+  private final Image image;
+  private final Integer dpi;
 
-	public TransferableImageWithDpi( Image image, Integer dpi ) {
-		assert image != null : this;
-		this.image = image;
-		this.dpi = dpi;
-	}
+  public TransferableImageWithDpi(Image image, Integer dpi) {
+    assert image != null : this;
+    this.image = image;
+    this.dpi = dpi;
+  }
 
-	@Override
-	public DataFlavor[] getTransferDataFlavors() {
-		return this.dpi != null ? DPI_DATA_FLAVORS : IMAGE_ONLY_DATA_FLAVORS;
-	}
+  @Override
+  public DataFlavor[] getTransferDataFlavors() {
+    return this.dpi != null ? DPI_DATA_FLAVORS : IMAGE_ONLY_DATA_FLAVORS;
+  }
 
-	@Override
-	public boolean isDataFlavorSupported( DataFlavor flavor ) {
-		return Arrays.asList( this.getTransferDataFlavors() ).contains( flavor );
-	}
+  @Override
+  public boolean isDataFlavorSupported(DataFlavor flavor) {
+    return Arrays.asList(this.getTransferDataFlavors()).contains(flavor);
+  }
 
-	private RenderedImage getRenderedImage() {
-		if( image instanceof RenderedImage ) {
-			return (RenderedImage)image;
-		} else {
-			int width = ImageUtilities.getWidth( image );
-			int height = ImageUtilities.getHeight( image );
-			int[] pixels = ImageUtilities.getPixels( image, width, height );
-			BufferedImage bufferedImage = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
-			bufferedImage.setRGB( 0, 0, width, height, pixels, 0, width );
-			return bufferedImage;
-		}
-	}
+  private RenderedImage getRenderedImage() {
+    if (image instanceof RenderedImage) {
+      return (RenderedImage) image;
+    } else {
+      int width = ImageUtilities.getWidth(image);
+      int height = ImageUtilities.getHeight(image);
+      int[] pixels = ImageUtilities.getPixels(image, width, height);
+      BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+      bufferedImage.setRGB(0, 0, width, height, pixels, 0, width);
+      return bufferedImage;
+    }
+  }
 
-	private File createFile( String ext ) throws IOException {
-		RenderedImage renderedImage = this.getRenderedImage();
-		File file = File.createTempFile( "clipboard", ext );
-		if( ( this.dpi != null ) && "png".equals( ext ) ) {
-			PngUtilities.write( renderedImage, this.dpi, file );
-		} else {
-			ImageIO.write( renderedImage, ext, file );
-		}
-		return file;
-	}
+  private File createFile(String ext) throws IOException {
+    RenderedImage renderedImage = this.getRenderedImage();
+    File file = File.createTempFile("clipboard", ext);
+    if ((this.dpi != null) && "png".equals(ext)) {
+      PngUtilities.write(renderedImage, this.dpi, file);
+    } else {
+      ImageIO.write(renderedImage, ext, file);
+    }
+    return file;
+  }
 
-	private InputStream createStream( DataFlavor flavor ) throws IOException {
-		RenderedImage renderedImage = this.getRenderedImage();
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write( renderedImage, flavor.getSubType(), baos );
-		baos.flush();
-		return new ByteArrayInputStream( baos.toByteArray() );
-	}
+  private InputStream createStream(DataFlavor flavor) throws IOException {
+    RenderedImage renderedImage = this.getRenderedImage();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ImageIO.write(renderedImage, flavor.getSubType(), baos);
+    baos.flush();
+    return new ByteArrayInputStream(baos.toByteArray());
+  }
 
-	@Override
-	public Object getTransferData( DataFlavor flavor ) throws UnsupportedFlavorException, IOException {
-		if( DataFlavor.javaFileListFlavor.equals( flavor ) ) {
-			String ext = "png";
-			return Lists.newArrayList( this.createFile( ext ) );
-		} else if( DataFlavor.imageFlavor.equals( flavor ) ) {
-			return image;
-		} else if( PNG_IMAGE_FLAVOR.equals( flavor ) ) {
-			return this.createStream( flavor );
-		} else {
-			throw new UnsupportedFlavorException( flavor );
-		}
-	}
+  @Override
+  public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+    if (DataFlavor.javaFileListFlavor.equals(flavor)) {
+      String ext = "png";
+      return Lists.newArrayList(this.createFile(ext));
+    } else if (DataFlavor.imageFlavor.equals(flavor)) {
+      return image;
+    } else if (PNG_IMAGE_FLAVOR.equals(flavor)) {
+      return this.createStream(flavor);
+    } else {
+      throw new UnsupportedFlavorException(flavor);
+    }
+  }
 }

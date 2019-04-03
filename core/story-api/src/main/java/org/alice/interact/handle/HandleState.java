@@ -46,45 +46,45 @@ package org.alice.interact.handle;
  * @author David Culyba
  */
 public class HandleState {
-	public HandleState() {
-	}
+  public HandleState() {
+  }
 
-	public HandleState( HandleState handleState ) {
-		this.isActive = handleState.isActive;
-		this.isRollover = handleState.isRollover;
-		this.isVisible = handleState.isVisible;
-	}
+  public HandleState(HandleState handleState) {
+    this.isActive = handleState.isActive;
+    this.isRollover = handleState.isRollover;
+    this.isVisible = handleState.isVisible;
+  }
 
-	//Any of the booleans being true makes the handle visible
-	public boolean shouldRender() {
-		return this.isVisible || this.isActive || this.isRollover;
-	}
+  //Any of the booleans being true makes the handle visible
+  public boolean shouldRender() {
+    return this.isVisible || this.isActive || this.isRollover;
+  }
 
-	public boolean isActive() {
-		return isActive;
-	}
+  public boolean isActive() {
+    return isActive;
+  }
 
-	public void setActive( boolean isActive ) {
-		this.isActive = isActive;
-	}
+  public void setActive(boolean isActive) {
+    this.isActive = isActive;
+  }
 
-	public boolean isRollover() {
-		return isRollover;
-	}
+  public boolean isRollover() {
+    return isRollover;
+  }
 
-	public void setRollover( boolean isRollover ) {
-		this.isRollover = isRollover;
-	}
+  public void setRollover(boolean isRollover) {
+    this.isRollover = isRollover;
+  }
 
-	public boolean isVisible() {
-		return this.isVisible;
-	}
+  public boolean isVisible() {
+    return this.isVisible;
+  }
 
-	public boolean setVisible( boolean isVisible ) {
-		return this.isVisible = isVisible;
-	}
+  public boolean setVisible(boolean isVisible) {
+    return this.isVisible = isVisible;
+  }
 
-	private boolean isActive = false;
-	private boolean isRollover = false;
-	private boolean isVisible = false;
+  private boolean isActive = false;
+  private boolean isRollover = false;
+  private boolean isVisible = false;
 }

@@ -50,12 +50,12 @@ import edu.cmu.cs.dennisc.math.Dimension3;
  * @author Dennis Cosgrove
  */
 public abstract class Dimension3Animation extends Tuple3Animation<Dimension3> {
-	public Dimension3Animation( double duration, Style style, Dimension3 v0, Dimension3 v1 ) {
-		super( duration, style, v0, v1 );
-	}
+  public Dimension3Animation(double duration, Style style, Dimension3 v0, Dimension3 v1) {
+    super(duration, style, v0, v1);
+  }
 
-	@Override
-	protected Dimension3 newE( Dimension3 other ) {
-		return new Dimension3( other );
-	}
+  @Override
+  protected Dimension3 newE(Dimension3 other) {
+    return new Dimension3(other);
+  }
 }

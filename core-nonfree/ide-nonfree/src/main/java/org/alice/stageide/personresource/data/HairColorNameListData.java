@@ -54,36 +54,36 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class HairColorNameListData extends RefreshableListData<HairColorName> {
-	private HairHatStyle hairHatStyle;
+  private HairHatStyle hairHatStyle;
 
-	public HairColorNameListData() {
-		super( EnumCodec.getInstance( HairColorName.class ) );
-	}
+  public HairColorNameListData() {
+    super(EnumCodec.getInstance(HairColorName.class));
+  }
 
-	public HairHatStyle getHairHatStyle() {
-		return this.hairHatStyle;
-	}
+  public HairHatStyle getHairHatStyle() {
+    return this.hairHatStyle;
+  }
 
-	public void setHairHatStyle( HairHatStyle hairHatStyle ) {
-		if( Objects.equals( this.hairHatStyle, hairHatStyle ) ) {
-			//pass
-		} else {
-			this.hairHatStyle = hairHatStyle;
-			this.refresh();
-		}
-	}
+  public void setHairHatStyle(HairHatStyle hairHatStyle) {
+    if (Objects.equals(this.hairHatStyle, hairHatStyle)) {
+      //pass
+    } else {
+      this.hairHatStyle = hairHatStyle;
+      this.refresh();
+    }
+  }
 
-	@Override
-	protected List<HairColorName> createValues() {
-		if( this.hairHatStyle != null ) {
-			List<HairColorNameHairCombo> hairColorNameHairCombos = this.hairHatStyle.getHairColorNameHairCombos();
-			List<HairColorName> rv = Lists.newArrayListWithInitialCapacity( hairColorNameHairCombos.size() );
-			for( HairColorNameHairCombo hairColorNameHairCombo : hairColorNameHairCombos ) {
-				rv.add( hairColorNameHairCombo.getHairColorName() );
-			}
-			return rv;
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  @Override
+  protected List<HairColorName> createValues() {
+    if (this.hairHatStyle != null) {
+      List<HairColorNameHairCombo> hairColorNameHairCombos = this.hairHatStyle.getHairColorNameHairCombos();
+      List<HairColorName> rv = Lists.newArrayListWithInitialCapacity(hairColorNameHairCombos.size());
+      for (HairColorNameHairCombo hairColorNameHairCombo : hairColorNameHairCombos) {
+        rv.add(hairColorNameHairCombo.getHairColorName());
+      }
+      return rv;
+    } else {
+      return Collections.emptyList();
+    }
+  }
 }

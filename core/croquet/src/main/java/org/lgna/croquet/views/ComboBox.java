@@ -75,231 +75,230 @@ import java.awt.event.ItemListener;
  * @author Dennis Cosgrove
  */
 public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListStateComboBoxPrepModel<E, ?>> {
-	public ComboBox( SingleSelectListStateComboBoxPrepModel<E, ?> model ) {
-		super( model );
-		this.setSwingComboBoxModel( model.getListSelectionState().getSwingModel().getComboBoxModel() );
-	}
+  public ComboBox(SingleSelectListStateComboBoxPrepModel<E, ?> model) {
+    super(model);
+    this.setSwingComboBoxModel(model.getListSelectionState().getSwingModel().getComboBoxModel());
+  }
 
-	private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
-		@Override
-		public void valueChanged( ListSelectionEvent e ) {
-			repaint();
-			//			if( e.getValueIsAdjusting() ) {
-			//				//pass
-			//			} else {
-			//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "valueChanged:", e );
-			//			}
-		}
-	};
+  private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+      repaint();
+      //    if( e.getValueIsAdjusting() ) {
+      //      //pass
+      //    } else {
+      //      edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "valueChanged:", e );
+      //    }
+    }
+  };
 
-	//	@Override
-	//	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.UserActivity transaction ) {
-	//		super.appendPrepStepsIfNecessary( transaction );
-	//		org.lgna.croquet.CompletionModel completionModel = transaction.getModel();
-	//		assert completionModel == this.getModel();
-	//		org.lgna.croquet.ListSelectionState.InternalPrepModel< E > prepModel = this.getModel().getPrepModel();
-	//		if( transaction.getPrepStepCount() == 1 ) {
-	//			org.lgna.croquet.history.PrepStep< ? > prepStep = transaction.getPrepStepAt( 0 );
-	//			if( prepStep.getModel() == prepModel ) {
-	//				return;
-	//			}
-	//		}
-	//		transaction.removeAllPrepSteps();
-	//		org.lgna.croquet.history.ListSelectionStatePrepStep.createAndAddToActivity( transaction, prepModel, new org.lgna.croquet.triggers.SimulatedTrigger() );
-	//	}
+  //  @Override
+  //  public void appendPrepStepsIfNecessary( org.lgna.croquet.history.UserActivity transaction ) {
+  //  super.appendPrepStepsIfNecessary( transaction );
+  //  org.lgna.croquet.CompletionModel completionModel = transaction.getModel();
+  //  assert completionModel == this.getModel();
+  //  org.lgna.croquet.ListSelectionState.InternalPrepModel< E > prepModel = this.getModel().getPrepModel();
+  //  if( transaction.getPrepStepCount() == 1 ) {
+  //    org.lgna.croquet.history.PrepStep< ? > prepStep = transaction.getPrepStepAt( 0 );
+  //    if( prepStep.getModel() == prepModel ) {
+  //      return;
+  //    }
+  //  }
+  //  transaction.removeAllPrepSteps();
+  //  org.lgna.croquet.history.ListSelectionStatePrepStep.createAndAddToActivity( transaction, prepModel, new org.lgna.croquet.triggers.SimulatedTrigger() );
+  //  }
 
-	@Override
-	protected JComboBox createAwtComponent() {
-		JComboBox rv = new JComboBox() {
-			@Override
-			public Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			}
+  @Override
+  protected JComboBox createAwtComponent() {
+    JComboBox rv = new JComboBox() {
+      @Override
+      public Dimension getPreferredSize() {
+        return constrainPreferredSizeIfNecessary(super.getPreferredSize());
+      }
 
-			@Override
-			public Dimension getMaximumSize() {
-				Dimension rv = super.getMaximumSize();
-				if( ComboBox.this.isMaximumSizeClampedToPreferredSize() ) {
-					rv.setSize( this.getPreferredSize() );
-				} else {
-					rv.height = this.getPreferredSize().height;
-				}
-				return rv;
-			}
-		};
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "comboBoxUI:", rv.getUI() );
-		return rv;
-	}
+      @Override
+      public Dimension getMaximumSize() {
+        Dimension rv = super.getMaximumSize();
+        if (ComboBox.this.isMaximumSizeClampedToPreferredSize()) {
+          rv.setSize(this.getPreferredSize());
+        } else {
+          rv.height = this.getPreferredSize().height;
+        }
+        return rv;
+      }
+    };
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( "comboBoxUI:", rv.getUI() );
+    return rv;
+  }
 
-	private PopupMenuListener popupMenuListener = new PopupMenuListener() {
-		@Override
-		public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {
-			ListSelectionStatePrepStep.createAndAddToActivity(
-					ComboBox.this.getModel(), PopupMenuEventTrigger.createUserActivity( ComboBox.this, e ) );
-		}
+  private PopupMenuListener popupMenuListener = new PopupMenuListener() {
+    @Override
+    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+      ListSelectionStatePrepStep.createAndAddToActivity(ComboBox.this.getModel(), PopupMenuEventTrigger.createUserActivity(ComboBox.this, e));
+    }
 
-		@Override
-		public void popupMenuWillBecomeInvisible( PopupMenuEvent e ) {
-		}
+    @Override
+    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+    }
 
-		@Override
-		public void popupMenuCanceled( PopupMenuEvent e ) {
-			final UserActivity activity = PopupMenuEventTrigger.createUserActivity( ComboBox.this, e );
-			activity.setCompletionModel( ComboBox.this.getModel().getListSelectionState() );
-			activity.cancel();
-		}
-	};
+    @Override
+    public void popupMenuCanceled(PopupMenuEvent e) {
+      final UserActivity activity = PopupMenuEventTrigger.createUserActivity(ComboBox.this, e);
+      activity.setCompletionModel(ComboBox.this.getModel().getListSelectionState());
+      activity.cancel();
+    }
+  };
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getAwtComponent().addPopupMenuListener( this.popupMenuListener );
-		this.getModel().getListSelectionState().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.getAwtComponent().addPopupMenuListener(this.popupMenuListener);
+    this.getModel().getListSelectionState().getSwingModel().getListSelectionModel().addListSelectionListener(this.listSelectionListener);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.getModel().getListSelectionState().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
-		this.getAwtComponent().removePopupMenuListener( this.popupMenuListener );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.getModel().getListSelectionState().getSwingModel().getListSelectionModel().removeListSelectionListener(this.listSelectionListener);
+    this.getAwtComponent().removePopupMenuListener(this.popupMenuListener);
+    super.handleUndisplayable();
+  }
 
-	public ListCellRenderer getRenderer() {
-		return this.getAwtComponent().getRenderer();
-	}
+  public ListCellRenderer getRenderer() {
+    return this.getAwtComponent().getRenderer();
+  }
 
-	public void setRenderer( ListCellRenderer listCellRenderer ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setRenderer( listCellRenderer );
-	}
+  public void setRenderer(ListCellRenderer listCellRenderer) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setRenderer(listCellRenderer);
+  }
 
-	public int getMaximumRowCount() {
-		return this.getAwtComponent().getMaximumRowCount();
-	}
+  public int getMaximumRowCount() {
+    return this.getAwtComponent().getMaximumRowCount();
+  }
 
-	public void setMaximumRowCount( int maximumRowCount ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setMaximumRowCount( maximumRowCount );
-	}
+  public void setMaximumRowCount(int maximumRowCount) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setMaximumRowCount(maximumRowCount);
+  }
 
-	private class ItemInPopupTrackableShape implements TrackableShape {
-		private final E item;
+  private class ItemInPopupTrackableShape implements TrackableShape {
+    private final E item;
 
-		public ItemInPopupTrackableShape( E item ) {
-			this.item = item;
-		}
+    public ItemInPopupTrackableShape(E item) {
+      this.item = item;
+    }
 
-		private Component getView() {
-			JComboBox jComboBox = ComboBox.this.getAwtComponent();
-			if( jComboBox.isPopupVisible() ) {
-				Accessible accessible = jComboBox.getUI().getAccessibleChild( jComboBox, 0 );
-				if( accessible instanceof JPopupMenu ) {
-					JPopupMenu jPopupMenu = (JPopupMenu)accessible;
-					Component component = jPopupMenu.getComponent( 0 );
-					if( component instanceof JScrollPane ) {
-						JScrollPane scrollPane = (JScrollPane)component;
-						JViewport viewport = scrollPane.getViewport();
-						return viewport.getView();
-					}
-				}
-			}
-			return null;
-		}
+    private Component getView() {
+      JComboBox jComboBox = ComboBox.this.getAwtComponent();
+      if (jComboBox.isPopupVisible()) {
+        Accessible accessible = jComboBox.getUI().getAccessibleChild(jComboBox, 0);
+        if (accessible instanceof JPopupMenu) {
+          JPopupMenu jPopupMenu = (JPopupMenu) accessible;
+          Component component = jPopupMenu.getComponent(0);
+          if (component instanceof JScrollPane) {
+            JScrollPane scrollPane = (JScrollPane) component;
+            JViewport viewport = scrollPane.getViewport();
+            return viewport.getView();
+          }
+        }
+      }
+      return null;
+    }
 
-		@Override
-		public ScrollPane getScrollPaneAncestor() {
-			//todo
-			return null;
-		}
+    @Override
+    public ScrollPane getScrollPaneAncestor() {
+      //todo
+      return null;
+    }
 
-		@Override
-		public Shape getShape( ScreenElement asSeenBy, Insets insets ) {
-			Component view = this.getView();
-			if( view != null ) {
-				Rectangle rv = ComponentUtilities.convertRectangle( view.getParent(), view.getBounds(), asSeenBy.getAwtComponent() );
-				SingleSelectListState<E, ?> listSelectionState = ComboBox.this.getModel().getListSelectionState();
-				final int N = listSelectionState.getItemCount();
-				int index = listSelectionState.indexOf( item );
-				if( index != -1 ) {
-					int offsetY = 0;
-					int height = rv.height;
-					//									if( view instanceof javax.swing.JComponent ) {
-					//										javax.swing.JComponent jView = (javax.swing.JComponent)view;
-					//										javax.swing.border.Border border = scrollPane.getBorder();
-					//										java.awt.Insets viewInsets = border.getBorderInsets( scrollPane );
-					//										java.awt.Insets viewInsets = scrollPane.getInsets();
-					//
-					//										if( viewInsets != null ) {
-					//											offsetY = viewInsets.top;
-					//											height = rv.height - viewInsets.top - viewInsets.bottom;
-					//										}
-					//									}
-					//									javax.swing.ListCellRenderer listCellRenderer = ComboBox.this.getAwtComponent().getRenderer();
-					//									if( listCellRenderer instanceof javax.swing.JComponent ) {
-					//										edu.cmu.cs.dennisc.print.PrintUtilities.println( ((javax.swing.JComponent)listCellRenderer).getInsets() );
-					//									}
-					double heightPerCell = height / (double)N;
-					rv.y += offsetY;
-					rv.y += (int)( heightPerCell * index );
-					rv.height = (int)heightPerCell;
+    @Override
+    public Shape getShape(ScreenElement asSeenBy, Insets insets) {
+      Component view = this.getView();
+      if (view != null) {
+        Rectangle rv = ComponentUtilities.convertRectangle(view.getParent(), view.getBounds(), asSeenBy.getAwtComponent());
+        SingleSelectListState<E, ?> listSelectionState = ComboBox.this.getModel().getListSelectionState();
+        final int N = listSelectionState.getItemCount();
+        int index = listSelectionState.indexOf(item);
+        if (index != -1) {
+          int offsetY = 0;
+          int height = rv.height;
+          //                if( view instanceof javax.swing.JComponent ) {
+          //                  javax.swing.JComponent jView = (javax.swing.JComponent)view;
+          //                  javax.swing.border.Border border = scrollPane.getBorder();
+          //                  java.awt.Insets viewInsets = border.getBorderInsets( scrollPane );
+          //                  java.awt.Insets viewInsets = scrollPane.getInsets();
+          //
+          //                  if( viewInsets != null ) {
+          //                    offsetY = viewInsets.top;
+          //                    height = rv.height - viewInsets.top - viewInsets.bottom;
+          //                  }
+          //                }
+          //                javax.swing.ListCellRenderer listCellRenderer = ComboBox.this.getAwtComponent().getRenderer();
+          //                if( listCellRenderer instanceof javax.swing.JComponent ) {
+          //                  edu.cmu.cs.dennisc.print.PrintUtilities.println( ((javax.swing.JComponent)listCellRenderer).getInsets() );
+          //                }
+          double heightPerCell = height / (double) N;
+          rv.y += offsetY;
+          rv.y += (int) (heightPerCell * index);
+          rv.height = (int) heightPerCell;
 
-					//todo
-					rv.y += 3;
-					rv.height -= 6;
+          //todo
+          rv.y += 3;
+          rv.height -= 6;
 
-				}
-				RectangleUtilities.inset( rv, insets );
-				return rv;
-			}
-			return null;
-		}
+        }
+        RectangleUtilities.inset(rv, insets);
+        return rv;
+      }
+      return null;
+    }
 
-		@Override
-		public Shape getVisibleShape( ScreenElement asSeenBy, Insets insets ) {
-			return getShape( asSeenBy, insets );
-		}
+    @Override
+    public Shape getVisibleShape(ScreenElement asSeenBy, Insets insets) {
+      return getShape(asSeenBy, insets);
+    }
 
-		@Override
-		public boolean isInView() {
-			Component view = this.getView();
-			if( view != null ) {
-				return view.isShowing();
-			} else {
-				return false;
-			}
-		}
+    @Override
+    public boolean isInView() {
+      Component view = this.getView();
+      if (view != null) {
+        return view.isShowing();
+      } else {
+        return false;
+      }
+    }
 
-		@Override
-		public void addComponentListener( ComponentListener listener ) {
-		}
+    @Override
+    public void addComponentListener(ComponentListener listener) {
+    }
 
-		@Override
-		public void removeComponentListener( ComponentListener listener ) {
-		}
+    @Override
+    public void removeComponentListener(ComponentListener listener) {
+    }
 
-		@Override
-		public void addHierarchyBoundsListener( HierarchyBoundsListener listener ) {
-		}
+    @Override
+    public void addHierarchyBoundsListener(HierarchyBoundsListener listener) {
+    }
 
-		@Override
-		public void removeHierarchyBoundsListener( HierarchyBoundsListener listener ) {
-		}
-	}
+    @Override
+    public void removeHierarchyBoundsListener(HierarchyBoundsListener listener) {
+    }
+  }
 
-	public TrackableShape getTrackableShapeFor( E item ) {
-		return new ItemInPopupTrackableShape( item );
-	}
+  public TrackableShape getTrackableShapeFor(E item) {
+    return new ItemInPopupTrackableShape(item);
+  }
 
-	/* package-private */void setSwingComboBoxModel( ComboBoxModel model ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setModel( model );
-	}
+  /* package-private */void setSwingComboBoxModel(ComboBoxModel model) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setModel(model);
+  }
 
-	/* package-private */void addItemListener( ItemListener itemListener ) {
-		this.getAwtComponent().addItemListener( itemListener );
-	}
+  /* package-private */void addItemListener(ItemListener itemListener) {
+    this.getAwtComponent().addItemListener(itemListener);
+  }
 
-	/* package-private */void removeItemListener( ItemListener itemListener ) {
-		this.getAwtComponent().removeItemListener( itemListener );
-	}
+  /* package-private */void removeItemListener(ItemListener itemListener) {
+    this.getAwtComponent().removeItemListener(itemListener);
+  }
 }

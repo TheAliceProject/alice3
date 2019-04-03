@@ -50,46 +50,46 @@ import org.lgna.story.Pose;
 
 public class KeyFrameData {
 
-	private double eventTime;
-	private Pose<?> pose;
-	private KeyFrameStyles style = KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY;
-	private Pose<?> poseForAnimator;
+  private double eventTime;
+  private Pose<?> pose;
+  private KeyFrameStyles style = KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY;
+  private Pose<?> poseForAnimator;
 
-	public KeyFrameData( double time, Pose<?> pose ) {
-		this.eventTime = time;
-		this.pose = pose;
-		this.poseForAnimator = pose;
-	}
+  public KeyFrameData(double time, Pose<?> pose) {
+    this.eventTime = time;
+    this.pose = pose;
+    this.poseForAnimator = pose;
+  }
 
-	public void setStyle( KeyFrameStyles style ) {
-		this.style = style;
-	}
+  public void setStyle(KeyFrameStyles style) {
+    this.style = style;
+  }
 
-	public double getEventTime() {
-		return this.eventTime;
-	}
+  public double getEventTime() {
+    return this.eventTime;
+  }
 
-	public Pose<?> getPose() {
-		return pose;
-	}
+  public Pose<?> getPose() {
+    return pose;
+  }
 
-	public KeyFrameStyles getEventStyle() {
-		return style;
-	}
+  public KeyFrameStyles getEventStyle() {
+    return style;
+  }
 
-	public void setPose( Pose<?> pose ) {
-		this.pose = pose;
-	}
+  public void setPose(Pose<?> pose) {
+    this.pose = pose;
+  }
 
-	public void setTime( double newTime ) {
-		this.eventTime = newTime;
-	}
+  public void setTime(double newTime) {
+    this.eventTime = newTime;
+  }
 
-	public Pose<?> getPoseActual() {
-		return poseForAnimator;
-	}
+  public Pose<?> getPoseActual() {
+    return poseForAnimator;
+  }
 
-	public void setPoseActual( Pose<?> pose ) {
-		this.poseForAnimator = pose;
-	}
+  public void setPoseActual(Pose<?> pose) {
+    this.poseForAnimator = pose;
+  }
 }

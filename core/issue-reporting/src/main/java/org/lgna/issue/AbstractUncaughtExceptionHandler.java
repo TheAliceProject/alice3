@@ -50,44 +50,44 @@ import java.lang.reflect.InvocationTargetException;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
-	protected abstract boolean handleUncaughtLgnaRuntimeException( Thread thread, Throwable originalThrowable, LgnaRuntimeException originalThrowableOrTarget );
+  protected abstract boolean handleUncaughtLgnaRuntimeException(Thread thread, Throwable originalThrowable, LgnaRuntimeException originalThrowableOrTarget);
 
-	protected abstract void handleUncaughtException( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget );
+  protected abstract void handleUncaughtException(Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget);
 
-	private boolean isInTheMidstOfHandlingAThrowable;
+  private boolean isInTheMidstOfHandlingAThrowable;
 
-	@Override
-	public final void uncaughtException( Thread thread, Throwable throwable ) {
-		throwable.printStackTrace();
-		if( isInTheMidstOfHandlingAThrowable ) {
-			//pass
-		} else {
-			this.isInTheMidstOfHandlingAThrowable = true;
-			try {
-				Throwable cause = throwable.getCause();
-				Throwable originalThrowableOrTarget;
-				if( cause instanceof InvocationTargetException ) {
-					InvocationTargetException invocationTargetException = (InvocationTargetException)cause;
-					originalThrowableOrTarget = invocationTargetException.getTargetException();
-				} else {
-					originalThrowableOrTarget = throwable;
-				}
+  @Override
+  public final void uncaughtException(Thread thread, Throwable throwable) {
+    throwable.printStackTrace();
+    if (isInTheMidstOfHandlingAThrowable) {
+      //pass
+    } else {
+      this.isInTheMidstOfHandlingAThrowable = true;
+      try {
+        Throwable cause = throwable.getCause();
+        Throwable originalThrowableOrTarget;
+        if (cause instanceof InvocationTargetException) {
+          InvocationTargetException invocationTargetException = (InvocationTargetException) cause;
+          originalThrowableOrTarget = invocationTargetException.getTargetException();
+        } else {
+          originalThrowableOrTarget = throwable;
+        }
 
-				boolean isHandled = false;
-				if( originalThrowableOrTarget instanceof LgnaRuntimeException ) {
-					LgnaRuntimeException lgnaRuntimeException = (LgnaRuntimeException)originalThrowableOrTarget;
-					isHandled = this.handleUncaughtLgnaRuntimeException( thread, throwable, lgnaRuntimeException );
-				}
-				if( isHandled ) {
-					//pass
-				} else {
-					this.handleUncaughtException( thread, throwable, originalThrowableOrTarget );
-				}
-			} catch( Throwable t ) {
-				t.printStackTrace();
-			} finally {
-				this.isInTheMidstOfHandlingAThrowable = false;
-			}
-		}
-	}
+        boolean isHandled = false;
+        if (originalThrowableOrTarget instanceof LgnaRuntimeException) {
+          LgnaRuntimeException lgnaRuntimeException = (LgnaRuntimeException) originalThrowableOrTarget;
+          isHandled = this.handleUncaughtLgnaRuntimeException(thread, throwable, lgnaRuntimeException);
+        }
+        if (isHandled) {
+          //pass
+        } else {
+          this.handleUncaughtException(thread, throwable, originalThrowableOrTarget);
+        }
+      } catch (Throwable t) {
+        t.printStackTrace();
+      } finally {
+        this.isInTheMidstOfHandlingAThrowable = false;
+      }
+    }
+  }
 }

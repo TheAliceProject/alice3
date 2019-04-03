@@ -53,46 +53,46 @@ import javax.swing.JButton;
  * @author Dennis Cosgrove
  */
 public class Button extends OperationButton<JButton, Operation> {
-	public Button( Operation model ) {
-		super( model, "Button" );
-	}
+  public Button(Operation model) {
+    super(model, "Button");
+  }
 
-	public Button( Operation model, float fontScalar, TextAttribute<?>... textAttributes ) {
-		this( model );
-		this.scaleFont( fontScalar );
-		this.changeFont( textAttributes );
-	}
+  public Button(Operation model, float fontScalar, TextAttribute<?>... textAttributes) {
+    this(model);
+    this.scaleFont(fontScalar);
+    this.changeFont(textAttributes);
+  }
 
-	public Button( Operation model, TextAttribute<?>... textAttributes ) {
-		this( model, 1.0f, textAttributes );
-	}
+  public Button(Operation model, TextAttribute<?>... textAttributes) {
+    this(model, 1.0f, textAttributes);
+  }
 
-	@Override
-	protected final JButton createAwtComponent() {
-		return new JButton() {
-			@Override
-			public Icon getIcon() {
-				if( Button.this.isIconClobbered() ) {
-					return Button.this.getClobberIcon();
-				} else {
-					Operation model = Button.this.getModel();
-					Icon buttonIcon = model.getButtonIcon();
-					if( buttonIcon != null ) {
-						return buttonIcon;
-					} else {
-						return super.getIcon();
-					}
-				}
-			}
+  @Override
+  protected final JButton createAwtComponent() {
+    return new JButton() {
+      @Override
+      public Icon getIcon() {
+        if (Button.this.isIconClobbered()) {
+          return Button.this.getClobberIcon();
+        } else {
+          Operation model = Button.this.getModel();
+          Icon buttonIcon = model.getButtonIcon();
+          if (buttonIcon != null) {
+            return buttonIcon;
+          } else {
+            return super.getIcon();
+          }
+        }
+      }
 
-			@Override
-			public String getText() {
-				if( isTextClobbered() ) {
-					return getClobberText();
-				} else {
-					return super.getText();
-				}
-			}
-		};
-	}
+      @Override
+      public String getText() {
+        if (isTextClobbered()) {
+          return getClobberText();
+        } else {
+          return super.getText();
+        }
+      }
+    };
+  }
 }

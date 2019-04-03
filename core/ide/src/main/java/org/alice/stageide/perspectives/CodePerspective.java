@@ -58,34 +58,34 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CodePerspective extends AbstractCodePerspective {
-	public CodePerspective( ProjectDocumentFrame projectDocumentFrame, MenuBarComposite menuBar ) {
-		super( UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), projectDocumentFrame, menuBar );
-	}
+  public CodePerspective(ProjectDocumentFrame projectDocumentFrame, MenuBarComposite menuBar) {
+    super(UUID.fromString("b48ade6a-7af7-46fa-9b31-46fb4df79ed3"), projectDocumentFrame, menuBar);
+  }
 
-	@Override
-	public Composite<?> getMainComposite() {
-		return this.mainCompositeLazy.get();
-	}
+  @Override
+  public Composite<?> getMainComposite() {
+    return this.mainCompositeLazy.get();
+  }
 
-	@Override
-	public ToolBarComposite getToolBarComposite() {
-		if( IsToolBarShowing.getValue() ) {
-			return this.toolBarLazy.get();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public ToolBarComposite getToolBarComposite() {
+    if (IsToolBarShowing.getValue()) {
+      return this.toolBarLazy.get();
+    } else {
+      return null;
+    }
+  }
 
-	private final Lazy<ToolBarComposite> toolBarLazy = new Lazy<ToolBarComposite>() {
-		@Override
-		protected ToolBarComposite create() {
-			return new CodeToolBarComposite( getProjectDocumentFrame() );
-		}
-	};
-	private final Lazy<Composite<?>> mainCompositeLazy = new Lazy<Composite<?>>() {
-		@Override
-		protected Composite<?> create() {
-			return new CodePerspectiveComposite( getProjectDocumentFrame() );
-		}
-	};
+  private final Lazy<ToolBarComposite> toolBarLazy = new Lazy<ToolBarComposite>() {
+    @Override
+    protected ToolBarComposite create() {
+      return new CodeToolBarComposite(getProjectDocumentFrame());
+    }
+  };
+  private final Lazy<Composite<?>> mainCompositeLazy = new Lazy<Composite<?>>() {
+    @Override
+    protected Composite<?> create() {
+      return new CodePerspectiveComposite(getProjectDocumentFrame());
+    }
+  };
 }

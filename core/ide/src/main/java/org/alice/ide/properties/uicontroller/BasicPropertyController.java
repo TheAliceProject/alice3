@@ -51,52 +51,50 @@ import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.BoxUtilities;
 
 public abstract class BasicPropertyController<P> extends AbstractAdapterController<P> {
-	protected static final String BLANK_STRING = "NO VALUE";
+  protected static final String BLANK_STRING = "NO VALUE";
 
-	protected AwtComponentView<?> propertyComponent;
+  protected AwtComponentView<?> propertyComponent;
 
-	public BasicPropertyController( AbstractPropertyAdapter<P, ?> propertyAdapter ) {
-		super( propertyAdapter );
-	}
+  public BasicPropertyController(AbstractPropertyAdapter<P, ?> propertyAdapter) {
+    super(propertyAdapter);
+  }
 
-	protected abstract AwtComponentView<?> createPropertyComponent();
+  protected abstract AwtComponentView<?> createPropertyComponent();
 
-	@Override
-	protected void initializeComponents() {
-		super.initializeComponents();
-		this.propertyComponent = createPropertyComponent();
-		this.setMinimumPreferredHeight( PropertyAdapterController.MIN_ADAPTER_HEIGHT );
-	}
+  @Override
+  protected void initializeComponents() {
+    super.initializeComponents();
+    this.propertyComponent = createPropertyComponent();
+    this.setMinimumPreferredHeight(PropertyAdapterController.MIN_ADAPTER_HEIGHT);
+  }
 
-	@Override
-	protected void updateUIFromNewAdapter() {
-		this.removeAllComponents();
-		int xIndex = 0;
-		this.addComponent( this.propertyComponent, new GridBagConstraints(
-				xIndex++, // gridX
-				0, // gridY
-				1, // gridWidth
-				1, // gridHeight
-				0.0, // weightX
-				0.0, // weightY
-				GridBagConstraints.WEST, // anchor
-				GridBagConstraints.HORIZONTAL, // fill
-				new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
-				0, // ipadX
-				0 ) // ipadY
-		);
-		this.addComponent( BoxUtilities.createHorizontalGlue(), new GridBagConstraints(
-				xIndex++, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets( 0, 0, 0, 0 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-	}
+  @Override
+  protected void updateUIFromNewAdapter() {
+    this.removeAllComponents();
+    int xIndex = 0;
+    this.addComponent(this.propertyComponent, new GridBagConstraints(xIndex++, // gridX
+                                                                     0, // gridY
+                                                                     1, // gridWidth
+                                                                     1, // gridHeight
+                                                                     0.0, // weightX
+                                                                     0.0, // weightY
+                                                                     GridBagConstraints.WEST, // anchor
+                                                                     GridBagConstraints.HORIZONTAL, // fill
+                                                                     new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                                                                     0, // ipadX
+                                                                     0) // ipadY
+    );
+    this.addComponent(BoxUtilities.createHorizontalGlue(), new GridBagConstraints(xIndex++, //gridX
+                                                                                  0, //gridY
+                                                                                  1, //gridWidth
+                                                                                  1, //gridHeight
+                                                                                  1.0, //weightX
+                                                                                  0.0, //weightY
+                                                                                  GridBagConstraints.WEST, //anchor
+                                                                                  GridBagConstraints.HORIZONTAL, //fill
+                                                                                  new Insets(0, 0, 0, 0), //insets
+                                                                                  0, //ipadX
+                                                                                  0) //ipadY
+    );
+  }
 }

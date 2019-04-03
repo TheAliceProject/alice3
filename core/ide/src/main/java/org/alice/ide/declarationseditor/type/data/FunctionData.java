@@ -50,12 +50,12 @@ import org.lgna.project.ast.UserMethod;
  * @author Dennis Cosgrove
  */
 public class FunctionData extends MethodData {
-	public FunctionData( NamedUserType type ) {
-		super( type );
-	}
+  public FunctionData(NamedUserType type) {
+    super(type);
+  }
 
-	@Override
-	protected boolean isAcceptableItem( UserMethod value ) {
-		return super.isAcceptableItem( value ) && value.isFunction();
-	}
+  @Override
+  protected boolean isAcceptableItem(UserMethod value) {
+    return super.isAcceptableItem(value) && value.isFunction();
+  }
 }

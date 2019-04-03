@@ -51,29 +51,29 @@ import org.lgna.ik.poser.animation.TimeLine;
  */
 public class ModifyTimeOfExistingKeyFrameInTimeLineEdit extends TimeLineEdit {
 
-	private KeyFrameData keyFrameData;
-	private final double newTime;
-	private final double prevTime;
+  private KeyFrameData keyFrameData;
+  private final double newTime;
+  private final double prevTime;
 
-	public ModifyTimeOfExistingKeyFrameInTimeLineEdit( UserActivity userActivity, TimeLine timeLine, KeyFrameData data, double newTime, double previousTime ) {
-		super( userActivity, timeLine );
-		this.keyFrameData = data;
-		this.newTime = newTime;
-		this.prevTime = previousTime;
-	}
+  public ModifyTimeOfExistingKeyFrameInTimeLineEdit(UserActivity userActivity, TimeLine timeLine, KeyFrameData data, double newTime, double previousTime) {
+    super(userActivity, timeLine);
+    this.keyFrameData = data;
+    this.newTime = newTime;
+    this.prevTime = previousTime;
+  }
 
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		getTimeLine().moveExistingKeyFrameData( keyFrameData, newTime );
-	}
+  @Override
+  protected void doOrRedoInternal(boolean isDo) {
+    getTimeLine().moveExistingKeyFrameData(keyFrameData, newTime);
+  }
 
-	@Override
-	protected void undoInternal() {
-		getTimeLine().moveExistingKeyFrameData( keyFrameData, prevTime );
-	}
+  @Override
+  protected void undoInternal() {
+    getTimeLine().moveExistingKeyFrameData(keyFrameData, prevTime);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+  }
 
 }

@@ -49,79 +49,78 @@ import org.alice.interact.InputState;
  */
 public class AndInputCondition extends InputCondition {
 
-	public AndInputCondition( InputCondition... requiredConditions ) {
-		this.requiredConditions = requiredConditions;
-	}
+  public AndInputCondition(InputCondition... requiredConditions) {
+    this.requiredConditions = requiredConditions;
+  }
 
-	@Override
-	public boolean isRunning( InputState currentState, InputState previousState ) {
-		for( InputCondition requiredCondition : this.requiredConditions ) {
-			if( requiredCondition.isRunning( currentState, previousState ) ) {
-				//pass
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
+  @Override
+  public boolean isRunning(InputState currentState, InputState previousState) {
+    for (InputCondition requiredCondition : this.requiredConditions) {
+      if (requiredCondition.isRunning(currentState, previousState)) {
+        //pass
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
 
-	@Override
-	public boolean justEnded( InputState currentState, InputState previousState ) {
-		for( InputCondition requiredCondition : requiredConditions ) {
-			if( requiredCondition.justEnded( currentState, previousState ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean justEnded(InputState currentState, InputState previousState) {
+    for (InputCondition requiredCondition : requiredConditions) {
+      if (requiredCondition.justEnded(currentState, previousState)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-	@Override
-	/*
-	 * Returns true if any of the conditions have "just started" and any that haven't "just started" are already "running"
-	 */
-	public boolean justStarted( InputState currentState, InputState previousState ) {
-		boolean anyStart = false;
-		for( InputCondition requiredCondition : requiredConditions ) {
-			if( requiredCondition.justStarted( currentState, previousState ) ) {
-				anyStart = true;
-			} else if( requiredCondition.isRunning( currentState, previousState ) == false ) {
-				return false;
-			}
-		}
-		return anyStart;
-	}
+  @Override
+  /*
+   * Returns true if any of the conditions have "just started" and any that haven't "just started" are already "running"
+   */ public boolean justStarted(InputState currentState, InputState previousState) {
+    boolean anyStart = false;
+    for (InputCondition requiredCondition : requiredConditions) {
+      if (requiredCondition.justStarted(currentState, previousState)) {
+        anyStart = true;
+      } else if (requiredCondition.isRunning(currentState, previousState) == false) {
+        return false;
+      }
+    }
+    return anyStart;
+  }
 
-	@Override
-	public boolean stateChanged( InputState currentState, InputState previousState ) {
-		for( InputCondition requiredCondition : requiredConditions ) {
-			if( requiredCondition.stateChanged( currentState, previousState ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean stateChanged(InputState currentState, InputState previousState) {
+    for (InputCondition requiredCondition : requiredConditions) {
+      if (requiredCondition.stateChanged(currentState, previousState)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-	@Override
-	protected boolean testState( InputState state ) {
-		for( int i = 0; i < requiredConditions.length; i++ ) {
-			if( !requiredConditions[ i ].testState( state ) ) {
-				return false;
-			}
-		}
-		return true;
-	}
+  @Override
+  protected boolean testState(InputState state) {
+    for (int i = 0; i < requiredConditions.length; i++) {
+      if (!requiredConditions[i].testState(state)) {
+        return false;
+      }
+    }
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		String separator = "";
-		for( InputCondition requiredCondition : this.requiredConditions ) {
-			sb.append( separator );
-			sb.append( requiredCondition );
-			separator = " AND ";
-		}
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    String separator = "";
+    for (InputCondition requiredCondition : this.requiredConditions) {
+      sb.append(separator);
+      sb.append(requiredCondition);
+      separator = " AND ";
+    }
+    return sb.toString();
+  }
 
-	private final InputCondition[] requiredConditions;
+  private final InputCondition[] requiredConditions;
 }

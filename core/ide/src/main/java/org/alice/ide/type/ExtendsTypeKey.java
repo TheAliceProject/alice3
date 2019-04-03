@@ -49,7 +49,7 @@ import org.lgna.project.ast.AbstractType;
  * @author Dennis Cosgrove
  */
 public final class ExtendsTypeKey extends AbstractExtendsTypeKey {
-	public ExtendsTypeKey( AbstractType<?, ?, ?> superType ) {
-		super( superType );
-	}
+  public ExtendsTypeKey(AbstractType<?, ?, ?> superType) {
+    super(superType);
+  }
 }

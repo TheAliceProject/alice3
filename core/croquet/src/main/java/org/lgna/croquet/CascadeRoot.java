@@ -61,170 +61,170 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeRoot<T, CM extends CompletionModel> extends CascadeBlankOwner<T[], T> {
-	public static final class InternalPopupPrepModel<T> extends PopupPrepModel {
-		private final CascadeRoot<T, ?> root;
+  public static final class InternalPopupPrepModel<T> extends PopupPrepModel {
+    private final CascadeRoot<T, ?> root;
 
-		private InternalPopupPrepModel( CascadeRoot<T, ?> root ) {
-			super( UUID.fromString( "56116a5f-a081-4ce8-9626-9c515c6c5887" ) );
-			this.root = root;
-		}
+    private InternalPopupPrepModel(CascadeRoot<T, ?> root) {
+      super(UUID.fromString("56116a5f-a081-4ce8-9626-9c515c6c5887"));
+      this.root = root;
+    }
 
-		public CascadeRoot<T, ?> getCascadeRoot() {
-			return this.root;
-		}
+    public CascadeRoot<T, ?> getCascadeRoot() {
+      return this.root;
+    }
 
-		@Override
-		protected Class<? extends Element> getClassUsedForLocalization() {
-			return this.root.getClassUsedForLocalization();
-		}
+    @Override
+    protected Class<? extends Element> getClassUsedForLocalization() {
+      return this.root.getClassUsedForLocalization();
+    }
 
-		@Override
-		protected String getSubKeyForLocalization() {
-			return this.root.getSubKeyForLocalization();
-		}
+    @Override
+    protected String getSubKeyForLocalization() {
+      return this.root.getSubKeyForLocalization();
+    }
 
-		@Override
-		protected void prologue( Trigger trigger ) {
-			super.prologue( trigger );
-			this.root.prologue();
-		}
+    @Override
+    protected void prologue(Trigger trigger) {
+      super.prologue(trigger);
+      this.root.prologue();
+    }
 
-		@Override
-		protected void epilogue() {
-			this.root.epilogue();
-			super.epilogue();
-		}
+    @Override
+    protected void epilogue() {
+      this.root.epilogue();
+      super.epilogue();
+    }
 
-		void handleFinally() {
-			this.epilogue();
-		}
+    void handleFinally() {
+      this.epilogue();
+    }
 
-		@Override
-		protected void perform( UserActivity activity ) {
-			this.prologue( activity.getTrigger() );
-			final RtRoot<T, ?> rtRoot = new RtRoot<>( this.root );
-			if( rtRoot.isAutomaticallyDetermined() ) {
-				rtRoot.complete( CascadeAutomaticDeterminationTrigger.createChildActivity(activity) );
-			} else {
-				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( this, activity );
-				final PopupMenu popupMenu = new PopupMenu( this, activity );
-				popupMenu.addComponentListener( new ComponentListener() {
-					@Override
-					public void componentShown( ComponentEvent e ) {
-					}
+    @Override
+    protected void perform(UserActivity activity) {
+      this.prologue(activity.getTrigger());
+      final RtRoot<T, ?> rtRoot = new RtRoot<>(this.root);
+      if (rtRoot.isAutomaticallyDetermined()) {
+        rtRoot.complete(CascadeAutomaticDeterminationTrigger.createChildActivity(activity));
+      } else {
+        final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity(this, activity);
+        final PopupMenu popupMenu = new PopupMenu(this, activity);
+        popupMenu.addComponentListener(new ComponentListener() {
+          @Override
+          public void componentShown(ComponentEvent e) {
+          }
 
-					@Override
-					public void componentMoved( ComponentEvent e ) {
-					}
+          @Override
+          public void componentMoved(ComponentEvent e) {
+          }
 
-					@Override
-					public void componentResized( ComponentEvent e ) {
-						prepStep.firePopupMenuResized();
-					}
+          @Override
+          public void componentResized(ComponentEvent e) {
+            prepStep.firePopupMenuResized();
+          }
 
-					@Override
-					public void componentHidden( ComponentEvent e ) {
-					}
-				} );
-				popupMenu.addPopupMenuListener( rtRoot.createPopupMenuListener( popupMenu ) );
-				prepStep.showPopupMenu( popupMenu );
-			}
-		}
+          @Override
+          public void componentHidden(ComponentEvent e) {
+          }
+        });
+        popupMenu.addPopupMenuListener(rtRoot.createPopupMenuListener(popupMenu));
+        prepStep.showPopupMenu(popupMenu);
+      }
+    }
 
-		@Override
-		protected void appendRepr( StringBuilder sb ) {
-			super.appendRepr( sb );
-			sb.append( this.root );
-		}
-	}
+    @Override
+    protected void appendRepr(StringBuilder sb) {
+      super.appendRepr(sb);
+      sb.append(this.root);
+    }
+  }
 
-	private final InternalPopupPrepModel<T> popupPrepModel = new InternalPopupPrepModel<>( this );
-	private String text;
+  private final InternalPopupPrepModel<T> popupPrepModel = new InternalPopupPrepModel<>(this);
+  private String text;
 
-	CascadeRoot( UUID id ) {
-		super( id );
-	}
+  CascadeRoot(UUID id) {
+    super(id);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.text = this.findDefaultLocalizedText();
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.text = this.findDefaultLocalizedText();
+  }
 
-	public InternalPopupPrepModel<T> getPopupPrepModel() {
-		return this.popupPrepModel;
-	}
+  public InternalPopupPrepModel<T> getPopupPrepModel() {
+    return this.popupPrepModel;
+  }
 
-	@Override
-	protected Class<? extends Element> getClassUsedForLocalization() {
-		return this.getCompletionModel().getClassUsedForLocalization();
-	}
+  @Override
+  protected Class<? extends Element> getClassUsedForLocalization() {
+    return this.getCompletionModel().getClassUsedForLocalization();
+  }
 
-	@Override
-	protected String getSubKeyForLocalization() {
-		return this.getCompletionModel().getSubKeyForLocalization();
-	}
+  @Override
+  protected String getSubKeyForLocalization() {
+    return this.getCompletionModel().getSubKeyForLocalization();
+  }
 
-	@Override
-	protected final JComponent createMenuItemIconProxy( ItemNode<? super T[], T> step ) {
-		return null;
-	}
+  @Override
+  protected final JComponent createMenuItemIconProxy(ItemNode<? super T[], T> step) {
+    return null;
+  }
 
-	@Override
-	public final T[] createValue( ItemNode<? super T[], T> node ) {
-		//todo
-		//this.cascade.getComponentType();
-		//handled elsewhere for now
-		throw new AssertionError();
-	}
+  @Override
+  public final T[] createValue(ItemNode<? super T[], T> node) {
+    //todo
+    //this.cascade.getComponentType();
+    //handled elsewhere for now
+    throw new AssertionError();
+  }
 
-	@Override
-	public final T[] getTransientValue( ItemNode<? super T[], T> step ) {
-		//todo
-		//this.cascade.getComponentType();
-		//handled elsewhere for now
-		throw new AssertionError();
-	}
+  @Override
+  public final T[] getTransientValue(ItemNode<? super T[], T> step) {
+    //todo
+    //this.cascade.getComponentType();
+    //handled elsewhere for now
+    throw new AssertionError();
+  }
 
-	@Override
-	public final String getMenuItemText() {
-		return this.text;
-	}
+  @Override
+  public final String getMenuItemText() {
+    return this.text;
+  }
 
-	@Override
-	public final Icon getMenuItemIcon( ItemNode<? super T[], T> step ) {
-		return null;
-	}
+  @Override
+  public final Icon getMenuItemIcon(ItemNode<? super T[], T> step) {
+    return null;
+  }
 
-	protected void prologue() {
-	}
+  protected void prologue() {
+  }
 
-	protected void epilogue() {
-	}
+  protected void epilogue() {
+  }
 
-	public abstract AbstractCompletionModel getCompletionModel();
+  public abstract AbstractCompletionModel getCompletionModel();
 
-	public abstract Class<T> getComponentType();
+  public abstract Class<T> getComponentType();
 
-	final void recordCompletionModel( UserActivity userActivity ) {
-		userActivity.setCompletionModel( getCompletionModel() );
-	}
+  final void recordCompletionModel(UserActivity userActivity) {
+    userActivity.setCompletionModel(getCompletionModel());
+  }
 
-	public abstract void handleCompletion( UserActivity userActivity, RtRoot<T, CM> rtRoot );
+  public abstract void handleCompletion(UserActivity userActivity, RtRoot<T, CM> rtRoot);
 
-	public final void handleCancel( UserActivity userActivity ) {
-		try {
-			if ( userActivity.getCompletionModel() == null ) {
-				userActivity.setCompletionModel( getCompletionModel() );
-			}
-		} finally {
-			this.getPopupPrepModel().handleFinally();
-		}
-	}
+  public final void handleCancel(UserActivity userActivity) {
+    try {
+      if (userActivity.getCompletionModel() == null) {
+        userActivity.setCompletionModel(getCompletionModel());
+      }
+    } finally {
+      this.getPopupPrepModel().handleFinally();
+    }
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( this.getCompletionModel() );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    super.appendRepr(sb);
+    sb.append(this.getCompletionModel());
+  }
 }

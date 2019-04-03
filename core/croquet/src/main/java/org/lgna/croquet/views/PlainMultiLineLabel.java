@@ -55,48 +55,48 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class PlainMultiLineLabel extends MultiLineLabel<JTextArea> {
-	public PlainMultiLineLabel( String text, float fontScalar, TextAttribute<?>... textAttributes ) {
-		super( new PlainDocument(), text, fontScalar, textAttributes );
-	}
+  public PlainMultiLineLabel(String text, float fontScalar, TextAttribute<?>... textAttributes) {
+    super(new PlainDocument(), text, fontScalar, textAttributes);
+  }
 
-	public PlainMultiLineLabel( String text, TextAttribute<?>... textAttributes ) {
-		this( text, 1.0f, textAttributes );
-	}
+  public PlainMultiLineLabel(String text, TextAttribute<?>... textAttributes) {
+    this(text, 1.0f, textAttributes);
+  }
 
-	public PlainMultiLineLabel( TextAttribute<?>... textAttributes ) {
-		this( "", textAttributes );
-	}
+  public PlainMultiLineLabel(TextAttribute<?>... textAttributes) {
+    this("", textAttributes);
+  }
 
-	@Override
-	protected JTextArea createJTextComponent( AbstractDocument document ) {
-		JTextArea rv = new JTextArea( document ) {
-			@Override
-			public Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			}
+  @Override
+  protected JTextArea createJTextComponent(AbstractDocument document) {
+    JTextArea rv = new JTextArea(document) {
+      @Override
+      public Dimension getPreferredSize() {
+        return constrainPreferredSizeIfNecessary(super.getPreferredSize());
+      }
 
-			@Override
-			public Dimension getMaximumSize() {
-				Dimension rv = super.getMaximumSize();
-				if( PlainMultiLineLabel.this.isMaximumSizeClampedToPreferredSize() ) {
-					rv.setSize( this.getPreferredSize() );
-				}
-				return rv;
-			}
+      @Override
+      public Dimension getMaximumSize() {
+        Dimension rv = super.getMaximumSize();
+        if (PlainMultiLineLabel.this.isMaximumSizeClampedToPreferredSize()) {
+          rv.setSize(this.getPreferredSize());
+        }
+        return rv;
+      }
 
-			@Override
-			public Color getBackground() {
-				return getDesiredBackgroundColor( this.getParent() );
-			}
+      @Override
+      public Color getBackground() {
+        return getDesiredBackgroundColor(this.getParent());
+      }
 
-			@Override
-			public void updateUI() {
-				this.setUI( new BasicTextAreaUI() );
-			}
-		};
-		rv.setMinimumSize( new Dimension() );
-		rv.setWrapStyleWord( true );
-		rv.setLineWrap( true );
-		return rv;
-	}
+      @Override
+      public void updateUI() {
+        this.setUI(new BasicTextAreaUI());
+      }
+    };
+    rv.setMinimumSize(new Dimension());
+    rv.setWrapStyleWord(true);
+    rv.setLineWrap(true);
+    return rv;
+  }
 }

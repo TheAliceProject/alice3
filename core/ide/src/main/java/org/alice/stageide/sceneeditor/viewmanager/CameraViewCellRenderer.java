@@ -60,35 +60,35 @@ import javax.swing.border.Border;
  */
 public class CameraViewCellRenderer extends ListCellRenderer<View> {
 
-	private final Border separatorBelowBorder = BorderFactory.createEmptyBorder( 2, 2, 8, 0 );
-	private final Border emptyBorder = BorderFactory.createEmptyBorder( 2, 2, 2, 0 );
+  private final Border separatorBelowBorder = BorderFactory.createEmptyBorder(2, 2, 8, 0);
+  private final Border emptyBorder = BorderFactory.createEmptyBorder(2, 2, 2, 0);
 
-	private final CameraMarkerTracker cameraMarkerTracker;
+  private final CameraMarkerTracker cameraMarkerTracker;
 
-	public CameraViewCellRenderer( CameraMarkerTracker cameraMarkerTracker ) {
-		this.cameraMarkerTracker = cameraMarkerTracker;
-	}
+  public CameraViewCellRenderer(CameraMarkerTracker cameraMarkerTracker) {
+    this.cameraMarkerTracker = cameraMarkerTracker;
+  }
 
-	@Override
-	protected JLabel getListCellRendererComponent( JLabel rv, JList list, View view, int index, boolean isSelected, boolean cellHasFocus ) {
-		CameraMarkerImp value = this.cameraMarkerTracker.getCameraMarker( view );
-		rv.setText( MarkerUtilities.getNameForView( view ) );
-		if( index == 0 ) {
-			rv.setBorder( separatorBelowBorder );
-		} else {
-			rv.setBorder( emptyBorder );
-		}
-		if( isSelected ) {
-			rv.setOpaque( true );
-			rv.setBackground( new Color( 57, 105, 138 ) );
-			rv.setForeground( Color.WHITE );
-			rv.setIcon( MarkerUtilities.getHighlightedIconForCameraMarkerImp( value ) );
-		} else {
-			rv.setOpaque( false );
-			rv.setForeground( Color.BLACK );
-			rv.setIcon( MarkerUtilities.getIconForCameraMarkerImp( value ) );
-		}
-		return rv;
-	}
+  @Override
+  protected JLabel getListCellRendererComponent(JLabel rv, JList list, View view, int index, boolean isSelected, boolean cellHasFocus) {
+    CameraMarkerImp value = this.cameraMarkerTracker.getCameraMarker(view);
+    rv.setText(MarkerUtilities.getNameForView(view));
+    if (index == 0) {
+      rv.setBorder(separatorBelowBorder);
+    } else {
+      rv.setBorder(emptyBorder);
+    }
+    if (isSelected) {
+      rv.setOpaque(true);
+      rv.setBackground(new Color(57, 105, 138));
+      rv.setForeground(Color.WHITE);
+      rv.setIcon(MarkerUtilities.getHighlightedIconForCameraMarkerImp(value));
+    } else {
+      rv.setOpaque(false);
+      rv.setForeground(Color.BLACK);
+      rv.setIcon(MarkerUtilities.getIconForCameraMarkerImp(value));
+    }
+    return rv;
+  }
 
 }

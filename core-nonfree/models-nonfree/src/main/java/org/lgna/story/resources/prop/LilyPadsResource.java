@@ -32,42 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum LilyPadsResource implements PropResource {
-	NO_FLOWERS_GREEN( ImplementationAndVisualType.SIMS2 ),
-	NO_FLOWERS_YELLOW( ImplementationAndVisualType.SIMS2 ),
-	NO_FLOWERS_PURPLE( ImplementationAndVisualType.SIMS2 ),
-	SOME_FLOWERS_PINK( ImplementationAndVisualType.SIMS2 ),
-	SOME_FLOWERS_YELLOW( ImplementationAndVisualType.SIMS2 ),
-	SOME_FLOWERS_PURPLE( ImplementationAndVisualType.SIMS2 ),
-	SOME_FLOWERS_BLUE( ImplementationAndVisualType.SIMS2 ),
-	MANY_FLOWERS_PINK( ImplementationAndVisualType.SIMS2 ),
-	MANY_FLOWERS_YELLOW( ImplementationAndVisualType.SIMS2 ),
-	MANY_FLOWERS_PURPLE( ImplementationAndVisualType.SIMS2 ),
-	MANY_FLOWERS_BLUE( ImplementationAndVisualType.SIMS2 ),
-	SPARSE_PINK( ImplementationAndVisualType.SIMS2 ),
-	SPARSE_YELLOW( ImplementationAndVisualType.SIMS2 ),
-	SPARSE_PURPLE( ImplementationAndVisualType.SIMS2 ),
-	SPARSE_BLUE( ImplementationAndVisualType.SIMS2 );
+  NO_FLOWERS_GREEN(ImplementationAndVisualType.SIMS2), NO_FLOWERS_YELLOW(ImplementationAndVisualType.SIMS2), NO_FLOWERS_PURPLE(ImplementationAndVisualType.SIMS2), SOME_FLOWERS_PINK(ImplementationAndVisualType.SIMS2), SOME_FLOWERS_YELLOW(ImplementationAndVisualType.SIMS2), SOME_FLOWERS_PURPLE(ImplementationAndVisualType.SIMS2), SOME_FLOWERS_BLUE(ImplementationAndVisualType.SIMS2), MANY_FLOWERS_PINK(ImplementationAndVisualType.SIMS2), MANY_FLOWERS_YELLOW(ImplementationAndVisualType.SIMS2), MANY_FLOWERS_PURPLE(ImplementationAndVisualType.SIMS2), MANY_FLOWERS_BLUE(ImplementationAndVisualType.SIMS2), SPARSE_PINK(ImplementationAndVisualType.SIMS2), SPARSE_YELLOW(ImplementationAndVisualType.SIMS2), SPARSE_PURPLE(ImplementationAndVisualType.SIMS2), SPARSE_BLUE(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	LilyPadsResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	LilyPadsResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  LilyPadsResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  LilyPadsResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

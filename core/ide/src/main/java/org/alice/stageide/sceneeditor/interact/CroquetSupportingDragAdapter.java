@@ -57,70 +57,70 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public abstract class CroquetSupportingDragAdapter extends DragAdapter {
-	private Point getDragAndDropPoint( DragStep dragAndDropContext ) {
-		MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
-		Point pointInLookingGlass = SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.getAWTComponent() );
-		return pointInLookingGlass;
-	}
+  private Point getDragAndDropPoint(DragStep dragAndDropContext) {
+    MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
+    Point pointInLookingGlass = SwingUtilities.convertPoint(eSource.getComponent(), eSource.getPoint(), this.getAWTComponent());
+    return pointInLookingGlass;
+  }
 
-	public void dragUpdated( DragStep dragAndDropContext ) {
-		this.currentInputState.setDragAndDropContext( dragAndDropContext );
-		this.currentInputState.setIsDragEvent( true );
-		this.currentInputState.setMouseLocation( getDragAndDropPoint( dragAndDropContext ) );
-		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent( dragAndDropContext.getLatestMouseEvent() );
-		this.fireStateChange();
-	}
+  public void dragUpdated(DragStep dragAndDropContext) {
+    this.currentInputState.setDragAndDropContext(dragAndDropContext);
+    this.currentInputState.setIsDragEvent(true);
+    this.currentInputState.setMouseLocation(getDragAndDropPoint(dragAndDropContext));
+    this.currentInputState.setTimeCaptured();
+    this.currentInputState.setInputEvent(dragAndDropContext.getLatestMouseEvent());
+    this.fireStateChange();
+  }
 
-	public void dragEntered( DragStep dragAndDropContext ) {
-		this.currentInputState.setDragAndDropContext( dragAndDropContext );
-		this.currentInputState.setIsDragEvent( true );
-		this.currentInputState.setMouseLocation( getDragAndDropPoint( dragAndDropContext ) );
-		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent( dragAndDropContext.getLatestMouseEvent() );
-		this.fireStateChange();
-	}
+  public void dragEntered(DragStep dragAndDropContext) {
+    this.currentInputState.setDragAndDropContext(dragAndDropContext);
+    this.currentInputState.setIsDragEvent(true);
+    this.currentInputState.setMouseLocation(getDragAndDropPoint(dragAndDropContext));
+    this.currentInputState.setTimeCaptured();
+    this.currentInputState.setInputEvent(dragAndDropContext.getLatestMouseEvent());
+    this.fireStateChange();
+  }
 
-	public void dragExited( DragStep dragAndDropContext ) {
-		this.currentInputState.setDragAndDropContext( dragAndDropContext ); //We need a valid dragAndDropContext when we handle the update
-		this.currentInputState.setIsDragEvent( false );
-		this.currentInputState.setMouseLocation( getDragAndDropPoint( dragAndDropContext ) );
-		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent( dragAndDropContext.getLatestMouseEvent() );
-		this.fireStateChange();
-		this.currentInputState.setDragAndDropContext( null );
-	}
+  public void dragExited(DragStep dragAndDropContext) {
+    this.currentInputState.setDragAndDropContext(dragAndDropContext); //We need a valid dragAndDropContext when we handle the update
+    this.currentInputState.setIsDragEvent(false);
+    this.currentInputState.setMouseLocation(getDragAndDropPoint(dragAndDropContext));
+    this.currentInputState.setTimeCaptured();
+    this.currentInputState.setInputEvent(dragAndDropContext.getLatestMouseEvent());
+    this.fireStateChange();
+    this.currentInputState.setDragAndDropContext(null);
+  }
 
-	protected abstract SingleSelectListState<HandleStyle, ?> getHandleStyleState();
+  protected abstract SingleSelectListState<HandleStyle, ?> getHandleStyleState();
 
-	@Override
-	protected void setHandleSelectionState( HandleStyle handleStyle ) {
-		SingleSelectListState<HandleStyle, ?> handleStyleListSelectionState = this.getHandleStyleState();
-		if( handleStyleListSelectionState != null ) {
-			handleStyleListSelectionState.setValueTransactionlessly( handleStyle );
-		}
-	}
+  @Override
+  protected void setHandleSelectionState(HandleStyle handleStyle) {
+    SingleSelectListState<HandleStyle, ?> handleStyleListSelectionState = this.getHandleStyleState();
+    if (handleStyleListSelectionState != null) {
+      handleStyleListSelectionState.setValueTransactionlessly(handleStyle);
+    }
+  }
 
-	@Override
-	protected void updateHandleSelection( AbstractTransformableImp selected ) {
-		SingleSelectListState<HandleStyle, ?> handleStyleListSelectionState = this.getHandleStyleState();
-		if( handleStyleListSelectionState != null ) {
-			HandleStyle currentHandleStyle = handleStyleListSelectionState.getValue();
-			InteractionGroup selectedStateGroup = this.mapHandleStyleToInteractionGroup.get( currentHandleStyle );
-			InteractionInfo selectedState = selectedStateGroup.getMatchingInfo( ObjectType.getObjectType( selected ) );
-			if( selectedState != null ) { //Sometimes we don't support handles--like in the create-a-sim editor
-				PickHint pickHint = PickUtilities.getPickTypeForImp( selected );
-				if( !selectedState.canUseIteractionGroup( pickHint ) ) {
-					for( HandleStyle handleStyle : handleStyleListSelectionState ) {
-						InteractionGroup interactionStateGroup = this.mapHandleStyleToInteractionGroup.get( handleStyle );
-						InteractionInfo interactionState = interactionStateGroup.getMatchingInfo( ObjectType.getObjectType( selected ) );
-						if( interactionState.canUseIteractionGroup( pickHint ) ) {
-							handleStyleListSelectionState.setValueTransactionlessly( handleStyle );
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
+  @Override
+  protected void updateHandleSelection(AbstractTransformableImp selected) {
+    SingleSelectListState<HandleStyle, ?> handleStyleListSelectionState = this.getHandleStyleState();
+    if (handleStyleListSelectionState != null) {
+      HandleStyle currentHandleStyle = handleStyleListSelectionState.getValue();
+      InteractionGroup selectedStateGroup = this.mapHandleStyleToInteractionGroup.get(currentHandleStyle);
+      InteractionInfo selectedState = selectedStateGroup.getMatchingInfo(ObjectType.getObjectType(selected));
+      if (selectedState != null) { //Sometimes we don't support handles--like in the create-a-sim editor
+        PickHint pickHint = PickUtilities.getPickTypeForImp(selected);
+        if (!selectedState.canUseIteractionGroup(pickHint)) {
+          for (HandleStyle handleStyle : handleStyleListSelectionState) {
+            InteractionGroup interactionStateGroup = this.mapHandleStyleToInteractionGroup.get(handleStyle);
+            InteractionInfo interactionState = interactionStateGroup.getMatchingInfo(ObjectType.getObjectType(selected));
+            if (interactionState.canUseIteractionGroup(pickHint)) {
+              handleStyleListSelectionState.setValueTransactionlessly(handleStyle);
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
 }

@@ -47,5 +47,5 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public interface Method extends Code {
-	public AbstractType<?, ?, ?> getReturnType();
+  public AbstractType<?, ?, ?> getReturnType();
 }

@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class SetOpacity extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = SetOpacity.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = SetOpacity.class) public static interface Detail {
+  }
 
-	private SetOpacity() {
-		super();
-	}
+  private SetOpacity() {
+    super();
+  }
 }

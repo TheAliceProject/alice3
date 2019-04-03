@@ -60,69 +60,69 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class SaveOperation extends SingleThreadIteratingOperation {
-	private final ImageEditorFrame owner;
-	private final SaveOverComposite saveOverComposite = new SaveOverComposite( this );
-	private File file;
+  private final ImageEditorFrame owner;
+  private final SaveOverComposite saveOverComposite = new SaveOverComposite(this);
+  private File file;
 
-	public SaveOperation( ImageEditorFrame owner ) {
-		super( Application.INHERIT_GROUP, UUID.fromString( "754c7a0e-8aec-4760-83e0-dff2817ac7a0" ) );
-		this.owner = owner;
-	}
+  public SaveOperation(ImageEditorFrame owner) {
+    super(Application.INHERIT_GROUP, UUID.fromString("754c7a0e-8aec-4760-83e0-dff2817ac7a0"));
+    this.owner = owner;
+  }
 
-	public ImageEditorFrame getOwner() {
-		return this.owner;
-	}
+  public ImageEditorFrame getOwner() {
+    return this.owner;
+  }
 
-	@Override
-	protected boolean hasNext( List<UserActivity> finishedSteps ) {
-		if( finishedSteps.size() == 0 ) {
-			this.file = this.owner.getFile();
-			return this.file == null || this.file.exists();
-		} else {
-			return false;
-		}
-	}
+  @Override
+  protected boolean hasNext(List<UserActivity> finishedSteps) {
+    if (finishedSteps.size() == 0) {
+      this.file = this.owner.getFile();
+      return this.file == null || this.file.exists();
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
-		//note: could return from within switch, but switches without breaks seem ill advised at the moment
-		Triggerable rv;
-		switch( finishedSteps.size() ) {
-		case 0:
-			if( owner.isGoodToGoCroppingIfNecessary() ) {
-				if( this.file != null ) {
-					if( this.file.exists() ) {
-						rv = this.saveOverComposite.getValueCreator();
-					} else {
-						rv = null;
-					}
-				} else {
-					Dialogs.showInfo( "Please select a file" );
-					throw new CancelException();
-				}
-			} else {
-				throw new CancelException();
-			}
-			break;
-		case 1:
-			rv = this.saveOverComposite.getValueCreator();
-			break;
-		default:
-			rv = null;
-		}
-		return rv;
-	}
+  @Override
+  protected Triggerable getNext(List<UserActivity> finishedSteps) {
+    //note: could return from within switch, but switches without breaks seem ill advised at the moment
+    Triggerable rv;
+    switch (finishedSteps.size()) {
+    case 0:
+      if (owner.isGoodToGoCroppingIfNecessary()) {
+        if (this.file != null) {
+          if (this.file.exists()) {
+            rv = this.saveOverComposite.getValueCreator();
+          } else {
+            rv = null;
+          }
+        } else {
+          Dialogs.showInfo("Please select a file");
+          throw new CancelException();
+        }
+      } else {
+        throw new CancelException();
+      }
+      break;
+    case 1:
+      rv = this.saveOverComposite.getValueCreator();
+      break;
+    default:
+      rv = null;
+    }
+    return rv;
+  }
 
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ) {
-		if( this.file != null ) {
-			Image image = owner.getView().render();
-			try {
-				ImageUtilities.write( this.file, image );
-			} catch( IOException ioe ) {
-				throw new RuntimeException( this.file.getAbsolutePath(), ioe );
-			}
-			this.getOwner().getIsFrameShowingState().setValueTransactionlessly( false );
-		}
-	}
+  @Override
+  protected void handleSuccessfulCompletionOfSubModels(UserActivity activity) {
+    if (this.file != null) {
+      Image image = owner.getView().render();
+      try {
+        ImageUtilities.write(this.file, image);
+      } catch (IOException ioe) {
+        throw new RuntimeException(this.file.getAbsolutePath(), ioe);
+      }
+      this.getOwner().getIsFrameShowingState().setValueTransactionlessly(false);
+    }
+  }
 }

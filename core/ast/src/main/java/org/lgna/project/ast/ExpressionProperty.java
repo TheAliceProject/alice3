@@ -46,9 +46,9 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionProperty extends NodeProperty<Expression> {
-	public ExpressionProperty( AbstractNode owner ) {
-		super( owner );
-	}
+  public ExpressionProperty(AbstractNode owner) {
+    super(owner);
+  }
 
-	public abstract AbstractType<?, ?, ?> getExpressionType();
+  public abstract AbstractType<?, ?, ?> getExpressionType();
 }

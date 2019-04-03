@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultTopPieceCrewneckCollarShirt implements FemaleAdultTopPiece {
-	BLUE,
-	BROWN,
-	GREY,
-	ORANGE,
-	PINK,
-	RED;
+  BLUE, BROWN, GREY, ORANGE, PINK, RED
 
 }

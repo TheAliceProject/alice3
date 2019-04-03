@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class Turn extends DurationAnimationStyleAsSeenByArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = Turn.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = Turn.class) public static interface Detail {
+  }
 
-	private Turn() {
-		super();
-	}
+  private Turn() {
+    super();
+  }
 }

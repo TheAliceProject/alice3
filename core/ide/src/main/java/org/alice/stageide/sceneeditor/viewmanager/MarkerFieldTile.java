@@ -58,51 +58,51 @@ import org.lgna.story.implementation.MarkerImp;
 import java.awt.Color;
 
 public class MarkerFieldTile extends LineAxisPanel {
-	private UserField field;
-	private Label iconLabel = new Label();
-	private Label textLabel = new Label();
+  private UserField field;
+  private Label iconLabel = new Label();
+  private Label textLabel = new Label();
 
-	public MarkerFieldTile() {
-		super();
-		this.setBackgroundColor( null );
-		this.setBorder( BorderFactory.createEmptyBorder() );
+  public MarkerFieldTile() {
+    super();
+    this.setBackgroundColor(null);
+    this.setBorder(BorderFactory.createEmptyBorder());
 
-		this.textLabel.changeFont( TextPosture.REGULAR, TextWeight.BOLD );
-		this.textLabel.scaleFont( 1.4f );
-		this.textLabel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-	}
+    this.textLabel.changeFont(TextPosture.REGULAR, TextWeight.BOLD);
+    this.textLabel.scaleFont(1.4f);
+    this.textLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+  }
 
-	public MarkerFieldTile( UserField field ) {
-		this();
-		setField( field );
-	}
+  public MarkerFieldTile(UserField field) {
+    this();
+    setField(field);
+  }
 
-	public void setSelected( boolean isSelected ) {
-		MarkerImp marker = StageIDE.getActiveInstance().getSceneEditor().getMarkerForField( field );
-		Color foregroundColor;
-		if( marker != null ) {
-			foregroundColor = ColorUtilities.toAwtColor( marker.getMarkerColor() );
-			if( isSelected ) {
-				//pass
-			} else {
-				foregroundColor = ColorUtilities.scaleHSB( foregroundColor, 1.0, 0.5, 0.5 );
-			}
-		} else {
-			foregroundColor = Color.BLACK;
-		}
-		this.textLabel.setForegroundColor( foregroundColor );
-	}
+  public void setSelected(boolean isSelected) {
+    MarkerImp marker = StageIDE.getActiveInstance().getSceneEditor().getMarkerForField(field);
+    Color foregroundColor;
+    if (marker != null) {
+      foregroundColor = ColorUtilities.toAwtColor(marker.getMarkerColor());
+      if (isSelected) {
+        //pass
+      } else {
+        foregroundColor = ColorUtilities.scaleHSB(foregroundColor, 1.0, 0.5, 0.5);
+      }
+    } else {
+      foregroundColor = Color.BLACK;
+    }
+    this.textLabel.setForegroundColor(foregroundColor);
+  }
 
-	public void setField( UserField field ) {
-		this.removeAllComponents();
-		this.field = field;
+  public void setField(UserField field) {
+    this.removeAllComponents();
+    this.field = field;
 
-		this.textLabel.setText( this.field.getName() );
-		MarkerImp marker = StageIDE.getActiveInstance().getSceneEditor().getMarkerForField( field );
-		this.textLabel.setForegroundColor( ColorUtilities.toAwtColor( marker.getMarkerColor() ) );
-		this.iconLabel.setIcon( MarkerUtilities.getIconForMarkerField( field ) );
-		this.addComponent( iconLabel );
-		this.addComponent( this.textLabel );
-		this.addComponent( BoxUtilities.createHorizontalSliver( 16 ) );
-	}
+    this.textLabel.setText(this.field.getName());
+    MarkerImp marker = StageIDE.getActiveInstance().getSceneEditor().getMarkerForField(field);
+    this.textLabel.setForegroundColor(ColorUtilities.toAwtColor(marker.getMarkerColor()));
+    this.iconLabel.setIcon(MarkerUtilities.getIconForMarkerField(field));
+    this.addComponent(iconLabel);
+    this.addComponent(this.textLabel);
+    this.addComponent(BoxUtilities.createHorizontalSliver(16));
+  }
 }

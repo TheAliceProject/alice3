@@ -49,9 +49,9 @@ import org.lgna.croquet.views.BorderPanel;
  * @author Dennis Cosgrove
  */
 public class SetupScenePerspectiveView extends BorderPanel {
-	public SetupScenePerspectiveView( SetupScenePerspectiveComposite composite ) {
-		super( composite );
-		this.addCenterComponent( composite.getSceneLayoutComposite().getView() );
-		this.addPageEndComponent( composite.getGalleryComposite().getView() );
-	}
+  public SetupScenePerspectiveView(SetupScenePerspectiveComposite composite) {
+    super(composite);
+    this.addCenterComponent(composite.getSceneLayoutComposite().getView());
+    this.addPageEndComponent(composite.getGalleryComposite().getView());
+  }
 }

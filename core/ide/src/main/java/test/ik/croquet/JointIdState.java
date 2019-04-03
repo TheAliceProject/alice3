@@ -59,38 +59,38 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class JointIdState extends CustomItemStateWithInternalBlank<JointId> {
-	private JointId value;
+  private JointId value;
 
-	public JointIdState( UUID id ) {
-		super( Application.DOCUMENT_UI_GROUP, id, null, JointIdCodec.SINGLETON );
-	}
+  public JointIdState(UUID id) {
+    super(Application.DOCUMENT_UI_GROUP, id, null, JointIdCodec.SINGLETON);
+  }
 
-	@Override
-	protected JointId getSwingValue() {
-		return value;
-	}
+  @Override
+  protected JointId getSwingValue() {
+    return value;
+  }
 
-	@Override
-	protected void setSwingValue( JointId nextValue ) {
-		//		this.setSwingValue( nextValue );
-		this.value = nextValue;
-	}
+  @Override
+  protected void setSwingValue(JointId nextValue) {
+    //    this.setSwingValue( nextValue );
+    this.value = nextValue;
+  }
 
-	private static void fillIn( List<CascadeBlankChild> rv, JointId id ) {
-		rv.add( JointIdFillIn.getInstance( id ) );
-		//TODO: Make this work for resource classes that have different joints based on different resources
-		//(this only happens when the resource class declares an array and different resources have a variable number of joint in that array, like railroad track pieces)
-//		for( JointId childId : id.getDeclaredChildren( null ) ) {
-//			fillIn( rv, childId );
-//		}
-	}
+  private static void fillIn(List<CascadeBlankChild> rv, JointId id) {
+    rv.add(JointIdFillIn.getInstance(id));
+    //TODO: Make this work for resource classes that have different joints based on different resources
+    //(this only happens when the resource class declares an array and different resources have a variable number of joint in that array, like railroad track pieces)
+    //    for( JointId childId : id.getDeclaredChildren( null ) ) {
+    //      fillIn( rv, childId );
+    //    }
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<JointId> blankNode ) {
-		JointId[] rootIds = BipedResource.JOINT_ID_ROOTS;
-		for( JointId rootId : rootIds ) {
-			fillIn( blankChildren, rootId );
-			blankChildren.add( CascadeLineSeparator.getInstance() );
-		}
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<JointId> blankNode) {
+    JointId[] rootIds = BipedResource.JOINT_ID_ROOTS;
+    for (JointId rootId : rootIds) {
+      fillIn(blankChildren, rootId);
+      blankChildren.add(CascadeLineSeparator.getInstance());
+    }
+  }
 }

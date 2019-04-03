@@ -57,48 +57,48 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public abstract class PlanarProjectionDragAdapter extends OnscreenLookingGlassDragAdapter {
-	protected abstract Plane getPlaneInAbsolute();
+  protected abstract Plane getPlaneInAbsolute();
 
-	protected abstract void handlePointInAbsolute( Point3 xyzInAbsolute );
+  protected abstract void handlePointInAbsolute(Point3 xyzInAbsolute);
 
-	@Override
-	protected boolean isAcceptable( MouseEvent e ) {
-		return MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
-	}
+  @Override
+  protected boolean isAcceptable(MouseEvent e) {
+    return MouseEventUtilities.isQuoteLeftUnquoteMouseButton(e);
+  }
 
-	private Point3 getPointInAbsolutePlane( Point p ) {
-		Point3 rv;
-		AbstractCamera sgCamera = getOnscreenRenderTarget().getCameraAtPixel( p.x, p.y );
-		if( sgCamera != null ) {
-			Ray ray = getOnscreenRenderTarget().getRayAtPixel( p.x, p.y, sgCamera );
-			AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
-			ray.transform( m );
-			Plane planeInAbsolute = this.getPlaneInAbsolute();
-			double t = planeInAbsolute.intersect( ray );
-			rv = ray.getPointAlong( t );
-		} else {
-			rv = null;
-		}
-		return rv;
-	}
+  private Point3 getPointInAbsolutePlane(Point p) {
+    Point3 rv;
+    AbstractCamera sgCamera = getOnscreenRenderTarget().getCameraAtPixel(p.x, p.y);
+    if (sgCamera != null) {
+      Ray ray = getOnscreenRenderTarget().getRayAtPixel(p.x, p.y, sgCamera);
+      AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
+      ray.transform(m);
+      Plane planeInAbsolute = this.getPlaneInAbsolute();
+      double t = planeInAbsolute.intersect(ray);
+      rv = ray.getPointAlong(t);
+    } else {
+      rv = null;
+    }
+    return rv;
+  }
 
-	@Override
-	protected void handleMousePress( Point current, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
-		if( isOriginalAsOpposedToStyleChange ) {
-		} else {
-		}
-	}
+  @Override
+  protected void handleMousePress(Point current, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange) {
+    if (isOriginalAsOpposedToStyleChange) {
+    } else {
+    }
+  }
 
-	@Override
-	protected void handleMouseDrag( Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, DragStyle dragStyle ) {
-		Point3 xyzInAbsolute = getPointInAbsolutePlane( current );
-		if( xyzInAbsolute != null ) {
-			handlePointInAbsolute( xyzInAbsolute );
-		}
-	}
+  @Override
+  protected void handleMouseDrag(Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, DragStyle dragStyle) {
+    Point3 xyzInAbsolute = getPointInAbsolutePlane(current);
+    if (xyzInAbsolute != null) {
+      handlePointInAbsolute(xyzInAbsolute);
+    }
+  }
 
-	@Override
-	protected Point handleMouseRelease( Point rv, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
-		return rv;
-	}
+  @Override
+  protected Point handleMouseRelease(Point rv, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange) {
+    return rv;
+  }
 }

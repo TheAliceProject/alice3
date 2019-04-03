@@ -50,21 +50,21 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public final class StashProjectLoader extends UriProjectLoader {
-	private final Project project;
-	private final URI uri;
+  private final Project project;
+  private final URI uri;
 
-	public StashProjectLoader( Project project, URI uri ) {
-		this.project = project;
-		this.uri = uri;
-	}
+  public StashProjectLoader(Project project, URI uri) {
+    this.project = project;
+    this.uri = uri;
+  }
 
-	@Override
-	protected Project load() {
-		return this.project;
-	}
+  @Override
+  protected Project load() {
+    return this.project;
+  }
 
-	@Override
-	public URI getUri() {
-		return this.uri;
-	}
+  @Override
+  public URI getUri() {
+    return this.uri;
+  }
 }

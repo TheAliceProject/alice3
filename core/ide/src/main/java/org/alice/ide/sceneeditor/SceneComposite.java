@@ -52,32 +52,32 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class SceneComposite extends SimpleComposite<BorderPanel> {
-	public SceneComposite() {
-		super( UUID.fromString( "b334790e-d706-456b-b519-8fc3f585c098" ) );
-	}
+  public SceneComposite() {
+    super(UUID.fromString("b334790e-d706-456b-b519-8fc3f585c098"));
+  }
 
-	@Override
-	protected BorderPanel createView() {
-		return new BorderPanel( this );
-	}
+  @Override
+  protected BorderPanel createView() {
+    return new BorderPanel(this);
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		BorderPanel view = this.getView();
-		synchronized( view.getTreeLock() ) {
-			StorytellingSceneEditor.getInstance().handleShowing();
-			view.addCenterComponent( StorytellingSceneEditor.getInstance() );
-		}
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    BorderPanel view = this.getView();
+    synchronized (view.getTreeLock()) {
+      StorytellingSceneEditor.getInstance().handleShowing();
+      view.addCenterComponent(StorytellingSceneEditor.getInstance());
+    }
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		StorytellingSceneEditor.getInstance().handleHiding();
-		BorderPanel view = this.getView();
-		synchronized( view.getTreeLock() ) {
-			this.getView().removeAllComponents();
-		}
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    StorytellingSceneEditor.getInstance().handleHiding();
+    BorderPanel view = this.getView();
+    synchronized (view.getTreeLock()) {
+      this.getView().removeAllComponents();
+    }
+    super.handlePostDeactivation();
+  }
 }

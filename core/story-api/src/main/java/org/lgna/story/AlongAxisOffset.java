@@ -47,31 +47,32 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class AlongAxisOffset implements
-		//MoveableTurnable
-		Place.Detail {
-	private static final double DEFAULT_VALUE = 0.0;
-	private final double value;
+                             //MoveableTurnable
+                                 Place.Detail {
+  private static final double DEFAULT_VALUE = 0.0;
+  private final double value;
 
-	public AlongAxisOffset( Number value ) {
-		this.value = value.doubleValue();
-	}
+  public AlongAxisOffset(Number value) {
+    this.value = value.doubleValue();
+  }
 
-	private static double getValue( Object[] details, double defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof AlongAxisOffset ) {
-				AlongAxisOffset duration = (AlongAxisOffset)detail;
-				return duration.value;
-			}
-		}
-		return defaultValue;
-	}
+  private static double getValue(Object[] details, double defaultValue) {
+    for (Object detail : details) {
+      if (detail instanceof AlongAxisOffset) {
+        AlongAxisOffset duration = (AlongAxisOffset) detail;
+        return duration.value;
+      }
+    }
+    return defaultValue;
+  }
 
-	/* package-private */static double getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
-	}
+  /* package-private */
+  static double getValue(Object[] details) {
+    return getValue(details, DEFAULT_VALUE);
+  }
 
-	//Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
-	public static AlongAxisOffset make( Number value ) {
-		return new AlongAxisOffset( value );
-	}
+  //Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
+  public static AlongAxisOffset make(Number value) {
+    return new AlongAxisOffset(value);
+  }
 }

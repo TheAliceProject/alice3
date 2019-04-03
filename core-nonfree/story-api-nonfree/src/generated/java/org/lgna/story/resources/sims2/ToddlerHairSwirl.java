@@ -44,18 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum ToddlerHairSwirl implements MaleToddlerHair, FemaleToddlerHair {
-	BLOND,
-	BLACK,
-	BROWN,
-	RED;
+  BLOND, BLACK, BROWN, RED;
 
-	@Override
-	public Boolean hasHair() {
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat() {
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

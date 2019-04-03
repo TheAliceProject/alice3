@@ -57,33 +57,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ExampleMainComposite extends SimpleComposite<Panel> {
-	private final ExampleFocusWindowComposite focusWindow = new ExampleFocusWindowComposite();
-	private final BooleanState questionState = this.createBooleanState( "questionState", true );
+  private final ExampleFocusWindowComposite focusWindow = new ExampleFocusWindowComposite();
+  private final BooleanState questionState = this.createBooleanState("questionState", true);
 
-	public ExampleMainComposite() {
-		super( UUID.fromString( "3807180f-0937-475a-8b5c-827557fb58ad" ) );
-	}
+  public ExampleMainComposite() {
+    super(UUID.fromString("3807180f-0937-475a-8b5c-827557fb58ad"));
+  }
 
-	public ExampleFocusWindowComposite getFocusWindow() {
-		return this.focusWindow;
-	}
+  public ExampleFocusWindowComposite getFocusWindow() {
+    return this.focusWindow;
+  }
 
-	public BooleanState getQuestionState() {
-		return this.questionState;
-	}
+  public BooleanState getQuestionState() {
+    return this.questionState;
+  }
 
-	@Override
-	protected Panel createView() {
-		return new ExampleMainPane( this );
-	}
+  @Override
+  protected Panel createView() {
+    return new ExampleMainPane(this);
+  }
 
-	public static void main( String[] args ) throws Exception {
-		UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		SimpleApplication app = new SimpleApplication();
-		DocumentFrame documentFrame = app.getDocumentFrame();
-		Frame frame = documentFrame.getFrame();
-		frame.setMainComposite( new ExampleMainComposite() );
-		frame.pack();
-		frame.setVisible( true );
-	}
+  public static void main(String[] args) throws Exception {
+    UIManagerUtilities.setLookAndFeel("Nimbus");
+    SimpleApplication app = new SimpleApplication();
+    DocumentFrame documentFrame = app.getDocumentFrame();
+    Frame frame = documentFrame.getFrame();
+    frame.setMainComposite(new ExampleMainComposite());
+    frame.pack();
+    frame.setVisible(true);
+  }
 }

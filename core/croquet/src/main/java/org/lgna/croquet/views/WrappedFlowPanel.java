@@ -51,20 +51,20 @@ import java.awt.FlowLayout;
  * @author Dennis Cosgrove
  */
 public class WrappedFlowPanel extends FlowPanel {
-	public WrappedFlowPanel() {
-	}
+  public WrappedFlowPanel() {
+  }
 
-	public WrappedFlowPanel( Alignment alignment ) {
-		super( alignment );
-	}
+  public WrappedFlowPanel(Alignment alignment) {
+    super(alignment);
+  }
 
-	public WrappedFlowPanel( Alignment alignment, int hgap, int vgap ) {
-		super( alignment, hgap, vgap );
-	}
+  public WrappedFlowPanel(Alignment alignment, int hgap, int vgap) {
+    super(alignment, hgap, vgap);
+  }
 
-	@Override
-	protected FlowLayout createFlowLayout( int alignment, int hgap, int vgap ) {
-		return new WrappedFlowLayout( alignment, hgap, vgap );
-		//return new java.awt.FlowLayout(alignment, hgap, vgap);
-	}
+  @Override
+  protected FlowLayout createFlowLayout(int alignment, int hgap, int vgap) {
+    return new WrappedFlowLayout(alignment, hgap, vgap);
+    //return new java.awt.FlowLayout(alignment, hgap, vgap);
+  }
 }

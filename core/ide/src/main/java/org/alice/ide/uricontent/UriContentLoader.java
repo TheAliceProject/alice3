@@ -56,44 +56,44 @@ import java.util.function.Consumer;
  */
 //todo: make more thread safe and more sophisticated
 public abstract class UriContentLoader<T> {
-	private class Worker {
-		private final Consumer<T> consumer;
-		private final FutureTask<T> futureTask;
-		private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+  private class Worker {
+    private final Consumer<T> consumer;
+    private final FutureTask<T> futureTask;
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-		Worker(Consumer<T> consumer) {
-			this.consumer = consumer;
-			futureTask = new FutureTask<T>(UriContentLoader.this::load) {
-				@Override
-				protected void done() {
-					super.done();
-					try {
-						acceptOnEventDispatchThread(get());
-					} catch (InterruptedException | ExecutionException e) {
-						throw new Error("done", e);
-					}
-				}
-			};
-		}
+    Worker(Consumer<T> consumer) {
+      this.consumer = consumer;
+      futureTask = new FutureTask<T>(UriContentLoader.this::load) {
+        @Override
+        protected void done() {
+          super.done();
+          try {
+            acceptOnEventDispatchThread(get());
+          } catch (InterruptedException | ExecutionException e) {
+            throw new Error("done", e);
+          }
+        }
+      };
+    }
 
-		private void acceptOnEventDispatchThread(final T content ) {
-			if( EventQueue.isDispatchThread() ) {
-				consumer.accept(content );
-			} else {
-				SwingUtilities.invokeLater(() -> consumer.accept(content ));
-			}
-		}
+    private void acceptOnEventDispatchThread(final T content) {
+      if (EventQueue.isDispatchThread()) {
+        consumer.accept(content);
+      } else {
+        SwingUtilities.invokeLater(() -> consumer.accept(content));
+      }
+    }
 
-		void execute() {
-			executorService.execute(futureTask);
-		}
-	}
+    void execute() {
+      executorService.execute(futureTask);
+    }
+  }
 
-	public abstract URI getUri();
+  public abstract URI getUri();
 
-	protected abstract T load();
+  protected abstract T load();
 
-	public synchronized void deliverContentOnEventDispatchThread(Consumer<T> observer) {
-		new Worker(observer).execute();
-	}
+  public synchronized void deliverContentOnEventDispatchThread(Consumer<T> observer) {
+    new Worker(observer).execute();
+  }
 }

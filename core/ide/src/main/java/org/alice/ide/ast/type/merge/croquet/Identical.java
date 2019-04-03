@@ -48,26 +48,26 @@ import org.lgna.project.ast.Member;
  * @author Dennis Cosgrove
  */
 public final class Identical<M extends Member> {
-	private final BareBonesMemberHub<M> importHub;
-	private final MemberHub<M> projectHub;
+  private final BareBonesMemberHub<M> importHub;
+  private final MemberHub<M> projectHub;
 
-	public Identical( M importMember, M projectMember ) {
-		this.importHub = new BareBonesMemberHub<M>( importMember, false );
-		this.projectHub = new MemberHub<M>( projectMember, true ) {
-			@Override
-			public ActionStatus getActionStatus() {
-				return ActionStatus.KEEP_IDENTICAL;
-			}
-		};
-		this.importHub.getIsDesiredState().setEnabled( false );
-		this.projectHub.getIsDesiredState().setEnabled( false );
-	}
+  public Identical(M importMember, M projectMember) {
+    this.importHub = new BareBonesMemberHub<M>(importMember, false);
+    this.projectHub = new MemberHub<M>(projectMember, true) {
+      @Override
+      public ActionStatus getActionStatus() {
+        return ActionStatus.KEEP_IDENTICAL;
+      }
+    };
+    this.importHub.getIsDesiredState().setEnabled(false);
+    this.projectHub.getIsDesiredState().setEnabled(false);
+  }
 
-	public BareBonesMemberHub<M> getImportHub() {
-		return this.importHub;
-	}
+  public BareBonesMemberHub<M> getImportHub() {
+    return this.importHub;
+  }
 
-	public MemberHub<M> getProjectHub() {
-		return this.projectHub;
-	}
+  public MemberHub<M> getProjectHub() {
+    return this.projectHub;
+  }
 }

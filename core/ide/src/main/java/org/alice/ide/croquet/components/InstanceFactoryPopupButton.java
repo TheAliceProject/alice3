@@ -71,99 +71,99 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class InstanceFactoryPopupButton extends CustomItemStatePopupButton<InstanceFactory> {
-	// note: for singleton ThisInstanceFactory
-	private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
-		@Override
-		public void valueChanged( ValueEvent<NamedUserType> e ) {
-			InstanceFactoryPopupButton.this.repaint();
-		}
-	};
+  // note: for singleton ThisInstanceFactory
+  private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
+    @Override
+    public void valueChanged(ValueEvent<NamedUserType> e) {
+      InstanceFactoryPopupButton.this.repaint();
+    }
+  };
 
-	public InstanceFactoryPopupButton( InstanceFactoryState instanceFactoryState ) {
-		super( instanceFactoryState );
-		this.getAwtComponent().setLayout( new BoxLayout( this.getAwtComponent(), BoxLayout.LINE_AXIS ) );
-	}
+  public InstanceFactoryPopupButton(InstanceFactoryState instanceFactoryState) {
+    super(instanceFactoryState);
+    this.getAwtComponent().setLayout(new BoxLayout(this.getAwtComponent(), BoxLayout.LINE_AXIS));
+  }
 
-	@Override
-	protected AbstractButton createSwingButton() {
-		return new JFauxComboBoxPopupButton() {
-			@Override
-			public void invalidate() {
-				super.invalidate();
-				refreshIfNecessary();
-			}
-		};
-	}
+  @Override
+  protected AbstractButton createSwingButton() {
+    return new JFauxComboBoxPopupButton() {
+      @Override
+      public void invalidate() {
+        super.invalidate();
+        refreshIfNecessary();
+      }
+    };
+  }
 
-	private InstanceFactory nextValue;
+  private InstanceFactory nextValue;
 
-	@Override
-	protected void handleChanged( State<InstanceFactory> state, InstanceFactory prevValue, InstanceFactory nextValue ) {
-		this.nextValue = nextValue;
-		this.refreshLater();
-	}
+  @Override
+  protected void handleChanged(State<InstanceFactory> state, InstanceFactory prevValue, InstanceFactory nextValue) {
+    this.nextValue = nextValue;
+    this.refreshLater();
+  }
 
-	private boolean isInTheMidstOfRefreshing = false;
-	private boolean isRefreshNecessary = true;
+  private boolean isInTheMidstOfRefreshing = false;
+  private boolean isRefreshNecessary = true;
 
-	protected void internalRefresh() {
-		this.internalForgetAndRemoveAllComponents();
-		SwingComponentView<?> expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue != null ? nextValue.createTransientExpression() : null );
+  protected void internalRefresh() {
+    this.internalForgetAndRemoveAllComponents();
+    SwingComponentView<?> expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane(nextValue != null ? nextValue.createTransientExpression() : null);
 
-		for( JLabel label : ComponentUtilities.findAllMatches( expressionPane.getAwtComponent(), HowMuch.COMPONENT_AND_DESCENDANTS, JLabel.class ) ) {
-			FontUtilities.setFontToScaledFont( label, 2.0f );
-		}
+    for (JLabel label : ComponentUtilities.findAllMatches(expressionPane.getAwtComponent(), HowMuch.COMPONENT_AND_DESCENDANTS, JLabel.class)) {
+      FontUtilities.setFontToScaledFont(label, 2.0f);
+    }
 
-		if( nextValue != null ) {
-			IconFactory iconFactory = nextValue.getIconFactory();
-			if( ( iconFactory != null ) && ( iconFactory != EmptyIconFactory.getInstance() ) ) {
-				final boolean IS_TRIMMED_ICON_DESIRED = true;
-				Dimension size = IS_TRIMMED_ICON_DESIRED ? iconFactory.getTrimmedSizeForHeight( Theme.DEFAULT_SMALL_ICON_SIZE.height ) : Theme.DEFAULT_SMALL_ICON_SIZE;
-				Icon icon = iconFactory.getIcon( size );
-				if( icon != null ) {
-					this.internalAddComponent( new Label( icon ) );
-				}
-			}
-		}
-		this.internalAddComponent( expressionPane );
+    if (nextValue != null) {
+      IconFactory iconFactory = nextValue.getIconFactory();
+      if ((iconFactory != null) && (iconFactory != EmptyIconFactory.getInstance())) {
+        final boolean IS_TRIMMED_ICON_DESIRED = true;
+        Dimension size = IS_TRIMMED_ICON_DESIRED ? iconFactory.getTrimmedSizeForHeight(Theme.DEFAULT_SMALL_ICON_SIZE.height) : Theme.DEFAULT_SMALL_ICON_SIZE;
+        Icon icon = iconFactory.getIcon(size);
+        if (icon != null) {
+          this.internalAddComponent(new Label(icon));
+        }
+      }
+    }
+    this.internalAddComponent(expressionPane);
 
-		this.revalidateAndRepaint();
-	}
+    this.revalidateAndRepaint();
+  }
 
-	private void refreshIfNecessary() {
-		if( this.isRefreshNecessary ) {
-			if( this.isInTheMidstOfRefreshing ) {
-				//pass
-			} else {
-				this.isInTheMidstOfRefreshing = true;
-				try {
-					//this.forgetAndRemoveAllComponents();
-					synchronized( this.getTreeLock() ) {
-						this.internalRefresh();
-					}
-					this.isRefreshNecessary = false;
-				} finally {
-					this.isInTheMidstOfRefreshing = false;
-				}
-			}
-		}
-	}
+  private void refreshIfNecessary() {
+    if (this.isRefreshNecessary) {
+      if (this.isInTheMidstOfRefreshing) {
+        //pass
+      } else {
+        this.isInTheMidstOfRefreshing = true;
+        try {
+          //this.forgetAndRemoveAllComponents();
+          synchronized (this.getTreeLock()) {
+            this.internalRefresh();
+          }
+          this.isRefreshNecessary = false;
+        } finally {
+          this.isInTheMidstOfRefreshing = false;
+        }
+      }
+    }
+  }
 
-	public final void refreshLater() {
-		this.isRefreshNecessary = true;
-		this.revalidateAndRepaint();
-	}
+  public final void refreshLater() {
+    this.isRefreshNecessary = true;
+    this.revalidateAndRepaint();
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.refreshLater();
-		IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addValueListener( this.typeListener );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.refreshLater();
+    IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addValueListener(this.typeListener);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().removeValueListener( this.typeListener );
-		super.handleUndisplayable();
-	}
-};
+  @Override
+  protected void handleUndisplayable() {
+    IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().removeValueListener(this.typeListener);
+    super.handleUndisplayable();
+  }
+}

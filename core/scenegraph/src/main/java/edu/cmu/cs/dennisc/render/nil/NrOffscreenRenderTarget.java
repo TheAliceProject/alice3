@@ -52,26 +52,26 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 /*package-private*/class NrOffscreenRenderTarget extends NrRenderTarget implements OffscreenRenderTarget {
-	public NrOffscreenRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
-		super( requestedCapabilities );
-		this.surfaceSize = new Dimension( width, height );
-		this.renderTargetToShareContextWith = renderTargetToShareContextWith;
-	}
+  public NrOffscreenRenderTarget(int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
+    super(requestedCapabilities);
+    this.surfaceSize = new Dimension(width, height);
+    this.renderTargetToShareContextWith = renderTargetToShareContextWith;
+  }
 
-	@Override
-	public Dimension getSurfaceSize() {
-		return this.surfaceSize;
-	}
+  @Override
+  public Dimension getSurfaceSize() {
+    return this.surfaceSize;
+  }
 
-	@Override
-	public Dimension getDrawableSize() {
-		return this.surfaceSize;
-	}
+  @Override
+  public Dimension getDrawableSize() {
+    return this.surfaceSize;
+  }
 
-	@Override
-	public void clearAndRenderOffscreen() {
-	}
+  @Override
+  public void clearAndRenderOffscreen() {
+  }
 
-	private final Dimension surfaceSize;
-	private final RenderTarget renderTargetToShareContextWith;
+  private final Dimension surfaceSize;
+  private final RenderTarget renderTargetToShareContextWith;
 }

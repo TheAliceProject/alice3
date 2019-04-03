@@ -53,31 +53,31 @@ import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
  */
 public class EventScriptIterator {
 
-	private final EventScript eventScript;
-	private int itrIndex = 0;
+  private final EventScript eventScript;
+  private int itrIndex = 0;
 
-	public EventScriptIterator( EventScript script ) {
-		eventScript = script;
-	}
+  public EventScriptIterator(EventScript script) {
+    eventScript = script;
+  }
 
-	public List<Object> getEventsSinceLastQuery( double time ) {
-		List<Object> rv = Lists.newLinkedList();
-		ListIterator<EventScriptEvent> itr = eventScript.getEventList().listIterator( itrIndex );
-		EventScriptEvent event;
-		while( itr.hasNext() ) {
-			event = itr.next();
-			if( event.getTime() < time ) {
-				rv.add( event.getEvent() );
-				++itrIndex;
-			} else {
-				break;
-			}
-		}
-		return rv;
-	}
+  public List<Object> getEventsSinceLastQuery(double time) {
+    List<Object> rv = Lists.newLinkedList();
+    ListIterator<EventScriptEvent> itr = eventScript.getEventList().listIterator(itrIndex);
+    EventScriptEvent event;
+    while (itr.hasNext()) {
+      event = itr.next();
+      if (event.getTime() < time) {
+        rv.add(event.getEvent());
+        ++itrIndex;
+      } else {
+        break;
+      }
+    }
+    return rv;
+  }
 
-	public void reset() {
-		itrIndex = 0;
-	}
+  public void reset() {
+    itrIndex = 0;
+  }
 
 }

@@ -44,20 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenHairRocker implements MaleTeenHair {
-	BLACK,
-	BLOND,
-	BROWN,
-	GREY,
-	RED,
-	BLEND;
+  BLACK, BLOND, BROWN, GREY, RED, BLEND;
 
-	@Override
-	public Boolean hasHair() {
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat() {
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

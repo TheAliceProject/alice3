@@ -51,21 +51,21 @@ import javax.swing.JToggleButton;
  * @author Dennis Cosgrove
  */
 public class ToggleButton extends BooleanStateButton<JToggleButton> {
-	public ToggleButton( BooleanState model ) {
-		super( model, "ToggleButton" );
-	}
+  public ToggleButton(BooleanState model) {
+    super(model, "ToggleButton");
+  }
 
-	@Override
-	protected JToggleButton createAwtComponent() {
-		return new JToggleButton() {
-			@Override
-			public Icon getIcon() {
-				if( isIconClobbered() ) {
-					return getClobberIcon();
-				} else {
-					return super.getIcon();
-				}
-			}
-		};
-	}
+  @Override
+  protected JToggleButton createAwtComponent() {
+    return new JToggleButton() {
+      @Override
+      public Icon getIcon() {
+        if (isIconClobbered()) {
+          return getClobberIcon();
+        } else {
+          return super.getIcon();
+        }
+      }
+    };
+  }
 }

@@ -61,55 +61,47 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class GalleryComposite extends SimpleComposite<GalleryView> {
-	private final TreeOwningGalleryTab resourceBasedTab =
-		new TreeOwningGalleryTab( TreeUtilities.getClassTreeState(), "ResourceBasedTab");
-	private final TreeOwningGalleryTab themeBasedTab =
-		new TreeOwningGalleryTab( TreeUtilities.getThemeTreeState(), "ThemeBasedTab" );
-	private final TreeOwningGalleryTab groupBasedTab =
-		new TreeOwningGalleryTab( TreeUtilities.getGroupTreeState(), "GroupBasedTab" );
-	private final ShapesTab shapesTab = new ShapesTab();
-	private final SearchTab searchTab = new SearchTab();
-	private final ImportTab importTab = new ImportTab();
-	private final TreeOwningGalleryTab myGalleryTab =
-		new TreeOwningGalleryTab( TreeUtilities.getUserTreeState(), "CustomGalleryTab" );
-	private final ImmutableDataTabState<GalleryTab> tabState = this.createImmutableTabState( "tabState", 0, GalleryTab.class,
-			IsIncludingImportAndExportType.getValue()
-				? new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.importTab, this.myGalleryTab }
-				: new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.myGalleryTab }
-			);
+  private final TreeOwningGalleryTab resourceBasedTab = new TreeOwningGalleryTab(TreeUtilities.getClassTreeState(), "ResourceBasedTab");
+  private final TreeOwningGalleryTab themeBasedTab = new TreeOwningGalleryTab(TreeUtilities.getThemeTreeState(), "ThemeBasedTab");
+  private final TreeOwningGalleryTab groupBasedTab = new TreeOwningGalleryTab(TreeUtilities.getGroupTreeState(), "GroupBasedTab");
+  private final ShapesTab shapesTab = new ShapesTab();
+  private final SearchTab searchTab = new SearchTab();
+  private final ImportTab importTab = new ImportTab();
+  private final TreeOwningGalleryTab myGalleryTab = new TreeOwningGalleryTab(TreeUtilities.getUserTreeState(), "CustomGalleryTab");
+  private final ImmutableDataTabState<GalleryTab> tabState = this.createImmutableTabState("tabState", 0, GalleryTab.class, IsIncludingImportAndExportType.getValue() ? new GalleryTab[] {this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.importTab, this.myGalleryTab} : new GalleryTab[] {this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.myGalleryTab});
 
-	public GalleryComposite() {
-		super( UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );
-	}
+  public GalleryComposite() {
+    super(UUID.fromString("c3dd549e-6622-4641-913b-27b08dc4dba5"));
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.tabState.setItemIconForBothTrueAndFalse( this.shapesTab, new TorusIcon( new Dimension( 24, 24 ) ) );
-		this.tabState.setItemIconForBothTrueAndFalse( this.resourceBasedTab, Icons.EMPTY_HEIGHT_ICON_SMALL );
-		this.tabState.setItemIconForBothTrueAndFalse( this.themeBasedTab, Icons.EMPTY_HEIGHT_ICON_SMALL );
-		this.tabState.setItemIconForBothTrueAndFalse( this.groupBasedTab, Icons.EMPTY_HEIGHT_ICON_SMALL );
-		this.tabState.setItemIconForBothTrueAndFalse( this.searchTab, SearchTabView.SEARCH_ICON );
-		this.tabState.setItemIconForBothTrueAndFalse( this.importTab, Icons.FOLDER_ICON_SMALL );
-		this.tabState.setItemIconForBothTrueAndFalse( this.myGalleryTab, Icons.FOLDER_ICON_SMALL );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.tabState.setItemIconForBothTrueAndFalse(this.shapesTab, new TorusIcon(new Dimension(24, 24)));
+    this.tabState.setItemIconForBothTrueAndFalse(this.resourceBasedTab, Icons.EMPTY_HEIGHT_ICON_SMALL);
+    this.tabState.setItemIconForBothTrueAndFalse(this.themeBasedTab, Icons.EMPTY_HEIGHT_ICON_SMALL);
+    this.tabState.setItemIconForBothTrueAndFalse(this.groupBasedTab, Icons.EMPTY_HEIGHT_ICON_SMALL);
+    this.tabState.setItemIconForBothTrueAndFalse(this.searchTab, SearchTabView.SEARCH_ICON);
+    this.tabState.setItemIconForBothTrueAndFalse(this.importTab, Icons.FOLDER_ICON_SMALL);
+    this.tabState.setItemIconForBothTrueAndFalse(this.myGalleryTab, Icons.FOLDER_ICON_SMALL);
+  }
 
-	public ImmutableDataTabState<GalleryTab> getTabState() {
-		return this.tabState;
-	}
+  public ImmutableDataTabState<GalleryTab> getTabState() {
+    return this.tabState;
+  }
 
-	@Override
-	protected GalleryView createView() {
-		return new GalleryView( this );
-	}
+  @Override
+  protected GalleryView createView() {
+    return new GalleryView(this);
+  }
 
-	public GalleryDragModel getDragModelForCls( Class<?> cls ) {
-		return this.shapesTab.getDragModelForCls( cls );
-	}
+  public GalleryDragModel getDragModelForCls(Class<?> cls) {
+    return this.shapesTab.getDragModelForCls(cls);
+  }
 
-	public void modelUpdated() {
-		resourceBasedTab.modelUpdated();
-		searchTab.modelUpdated();
-		myGalleryTab.modelUpdated();
-	}
+  public void modelUpdated() {
+    resourceBasedTab.modelUpdated();
+    searchTab.modelUpdated();
+    myGalleryTab.modelUpdated();
+  }
 }

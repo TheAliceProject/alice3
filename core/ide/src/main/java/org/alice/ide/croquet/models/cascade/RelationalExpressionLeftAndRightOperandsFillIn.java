@@ -57,36 +57,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RelationalExpressionLeftAndRightOperandsFillIn extends ExpressionFillInWithExpressionBlanks<RelationalInfixExpression> {
-	private static MapToMap<AbstractType<?, ?, ?>, RelationalInfixExpression.Operator, RelationalExpressionLeftAndRightOperandsFillIn> mapToMap = MapToMap.newInstance();
+  private static MapToMap<AbstractType<?, ?, ?>, RelationalInfixExpression.Operator, RelationalExpressionLeftAndRightOperandsFillIn> mapToMap = MapToMap.newInstance();
 
-	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( AbstractType<?, ?, ?> operandType, RelationalInfixExpression.Operator operator ) {
-		return mapToMap.getInitializingIfAbsent( operandType, operator, new MapToMap.Initializer<AbstractType<?, ?, ?>, RelationalInfixExpression.Operator, RelationalExpressionLeftAndRightOperandsFillIn>() {
-			@Override
-			public RelationalExpressionLeftAndRightOperandsFillIn initialize( AbstractType<?, ?, ?> operandType, RelationalInfixExpression.Operator operator ) {
-				return new RelationalExpressionLeftAndRightOperandsFillIn( operandType, operator );
-			}
-		} );
-	}
+  public static RelationalExpressionLeftAndRightOperandsFillIn getInstance(AbstractType<?, ?, ?> operandType, RelationalInfixExpression.Operator operator) {
+    return mapToMap.getInitializingIfAbsent(operandType, operator, new MapToMap.Initializer<AbstractType<?, ?, ?>, RelationalInfixExpression.Operator, RelationalExpressionLeftAndRightOperandsFillIn>() {
+      @Override
+      public RelationalExpressionLeftAndRightOperandsFillIn initialize(AbstractType<?, ?, ?> operandType, RelationalInfixExpression.Operator operator) {
+        return new RelationalExpressionLeftAndRightOperandsFillIn(operandType, operator);
+      }
+    });
+  }
 
-	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( Class<?> operandCls, RelationalInfixExpression.Operator operator ) {
-		return getInstance( JavaType.getInstance( operandCls ), operator );
-	}
+  public static RelationalExpressionLeftAndRightOperandsFillIn getInstance(Class<?> operandCls, RelationalInfixExpression.Operator operator) {
+    return getInstance(JavaType.getInstance(operandCls), operator);
+  }
 
-	private final RelationalInfixExpression transientValue;
+  private final RelationalInfixExpression transientValue;
 
-	private RelationalExpressionLeftAndRightOperandsFillIn( AbstractType<?, ?, ?> operandType, RelationalInfixExpression.Operator operator ) {
-		super( UUID.fromString( "f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a" ), ExpressionBlank.createBlanks( operandType, operandType ) );
-		this.transientValue = IncompleteAstUtilities.createIncompleteRelationalInfixExpression( operandType, operator, operandType );
-	}
+  private RelationalExpressionLeftAndRightOperandsFillIn(AbstractType<?, ?, ?> operandType, RelationalInfixExpression.Operator operator) {
+    super(UUID.fromString("f0dd5d2e-947f-4d8d-86b0-99a4ec6e759a"), ExpressionBlank.createBlanks(operandType, operandType));
+    this.transientValue = IncompleteAstUtilities.createIncompleteRelationalInfixExpression(operandType, operator, operandType);
+  }
 
-	@Override
-	protected RelationalInfixExpression createValue( Expression[] expressions ) {
-		assert expressions.length == 2;
-		return new RelationalInfixExpression( expressions[ 0 ], this.transientValue.operator.getValue(), expressions[ 1 ], this.transientValue.leftOperandType.getValue(), this.transientValue.rightOperandType.getValue() );
-	}
+  @Override
+  protected RelationalInfixExpression createValue(Expression[] expressions) {
+    assert expressions.length == 2;
+    return new RelationalInfixExpression(expressions[0], this.transientValue.operator.getValue(), expressions[1], this.transientValue.leftOperandType.getValue(), this.transientValue.rightOperandType.getValue());
+  }
 
-	@Override
-	public RelationalInfixExpression getTransientValue( ItemNode<? super RelationalInfixExpression, Expression> step ) {
-		return this.transientValue;
-	}
+  @Override
+  public RelationalInfixExpression getTransientValue(ItemNode<? super RelationalInfixExpression, Expression> step) {
+    return this.transientValue;
+  }
 }

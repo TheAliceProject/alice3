@@ -48,17 +48,17 @@ package edu.wustl.lookingglass.media;
  */
 public class FFmpegProcessException extends RuntimeException {
 
-	private static final long serialVersionUID = -1149452336821467247L;
+  private static final long serialVersionUID = -1149452336821467247L;
 
-	public FFmpegProcessException( Exception e ) {
-		super( e );
-	}
+  public FFmpegProcessException(Exception e) {
+    super(e);
+  }
 
-	public FFmpegProcessException( String output, String error ) {
-		super( output + "\n\n" + error );
-	}
+  public FFmpegProcessException(String output, String error) {
+    super(output + "\n\n" + error);
+  }
 
-	public FFmpegProcessException( Exception e, String output, String error ) {
-		super( output + "\n\n" + error, e );
-	}
+  public FFmpegProcessException(Exception e, String output, String error) {
+    super(output + "\n\n" + error, e);
+  }
 }

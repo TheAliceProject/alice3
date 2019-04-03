@@ -45,9 +45,9 @@ package edu.cmu.cs.dennisc.issue;
 import edu.cmu.cs.dennisc.jira.JIRAReport;
 
 public interface ReportGenerator {
-	public JIRAReport generateIssueForSOAP();
+  public JIRAReport generateIssueForSOAP();
 
-	public JIRAReport generateIssueForRPC();
+  public JIRAReport generateIssueForRPC();
 
-	//	public MailReport generateIssueForSMTP();
+  //  public MailReport generateIssueForSMTP();
 }

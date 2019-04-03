@@ -46,20 +46,20 @@ package org.alice.ide.i18n;
  * @author Dennis Cosgrove
  */
 public class GetsChunk extends Chunk {
-	private boolean isTowardLeading;
+  private boolean isTowardLeading;
 
-	public GetsChunk( boolean isTowardLeading ) {
-		this.isTowardLeading = isTowardLeading;
-	}
+  public GetsChunk(boolean isTowardLeading) {
+    this.isTowardLeading = isTowardLeading;
+  }
 
-	public boolean isTowardLeading() {
-		return this.isTowardLeading;
-	}
+  public boolean isTowardLeading() {
+    return this.isTowardLeading;
+  }
 
-	@Override
-	protected StringBuilder updateRepr( StringBuilder rv ) {
-		rv.append( "isTowardLeading=" );
-		rv.append( this.isTowardLeading );
-		return rv;
-	}
+  @Override
+  protected StringBuilder updateRepr(StringBuilder rv) {
+    rv.append("isTowardLeading=");
+    rv.append(this.isTowardLeading);
+    return rv;
+  }
 }

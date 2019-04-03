@@ -48,11 +48,11 @@ import java.awt.Insets;
  * @author Dennis Cosgrove
  */
 public class SunkenBorder extends BevelBorder {
-	public SunkenBorder( Insets insets ) {
-		super( insets, false );
-	}
+  public SunkenBorder(Insets insets) {
+    super(insets, false);
+  }
 
-	public SunkenBorder( int top, int left, int bottom, int right ) {
-		super( top, left, bottom, right, false );
-	}
+  public SunkenBorder(int top, int left, int bottom, int right) {
+    super(top, left, bottom, right, false);
+  }
 }

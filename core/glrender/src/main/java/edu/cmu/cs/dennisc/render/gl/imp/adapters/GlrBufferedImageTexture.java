@@ -51,17 +51,17 @@ import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
  * @author Dennis Cosgrove
  */
 public class GlrBufferedImageTexture extends GlrTexture<BufferedImageTexture> {
-	@Override
-	protected TextureData newTextureData( GL gl, TextureData currentTextureData ) {
-		return newTextureData( gl, owner.getBufferedImage(), owner.isMipMappingDesired() );
-	}
-	//
-	//	@Override
-	//	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-	//		if( property == m_texture.bufferedImage ) {
-	//			setDirty( true );
-	//		} else {
-	//			super.propertyChanged( property );
-	//		}
-	//	}
+  @Override
+  protected TextureData newTextureData(GL gl, TextureData currentTextureData) {
+    return newTextureData(gl, owner.getBufferedImage(), owner.isMipMappingDesired());
+  }
+  //
+  //  @Override
+  //  protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+  //    if( property == m_texture.bufferedImage ) {
+  //      setDirty( true );
+  //    } else {
+  //      super.propertyChanged( property );
+  //    }
+  //  }
 }

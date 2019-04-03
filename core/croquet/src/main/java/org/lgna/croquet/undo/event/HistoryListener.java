@@ -46,15 +46,15 @@ package org.lgna.croquet.undo.event;
  * @author Dennis Cosgrove
  */
 public interface HistoryListener {
-	public void operationPushing( HistoryPushEvent e );
+  public void operationPushing(HistoryPushEvent e);
 
-	public void operationPushed( HistoryPushEvent e );
+  public void operationPushed(HistoryPushEvent e);
 
-	public void insertionIndexChanging( HistoryInsertionIndexEvent e );
+  public void insertionIndexChanging(HistoryInsertionIndexEvent e);
 
-	public void insertionIndexChanged( HistoryInsertionIndexEvent e );
+  public void insertionIndexChanged(HistoryInsertionIndexEvent e);
 
-	public void clearing( HistoryClearEvent e );
+  public void clearing(HistoryClearEvent e);
 
-	public void cleared( HistoryClearEvent e );
+  public void cleared(HistoryClearEvent e);
 }

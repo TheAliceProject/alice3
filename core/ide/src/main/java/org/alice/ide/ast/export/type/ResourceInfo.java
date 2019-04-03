@@ -46,19 +46,19 @@ package org.alice.ide.ast.export.type;
  * @author Dennis Cosgrove
  */
 public final class ResourceInfo {
-	private final String className;
-	private final String fieldName;
+  private final String className;
+  private final String fieldName;
 
-	public ResourceInfo( String className, String fieldName ) {
-		this.className = className;
-		this.fieldName = fieldName;
-	}
+  public ResourceInfo(String className, String fieldName) {
+    this.className = className;
+    this.fieldName = fieldName;
+  }
 
-	public String getClassName() {
-		return this.className;
-	}
+  public String getClassName() {
+    return this.className;
+  }
 
-	public String getFieldName() {
-		return this.fieldName;
-	}
+  public String getFieldName() {
+    return this.fieldName;
+  }
 }

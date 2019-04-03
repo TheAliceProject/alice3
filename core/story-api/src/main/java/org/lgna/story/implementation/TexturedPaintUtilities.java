@@ -51,13 +51,13 @@ import org.lgna.story.Paint;
  * @author Dennis Cosgrove
  */
 public class TexturedPaintUtilities {
-	private TexturedPaintUtilities() {
-		throw new AssertionError();
-	}
+  private TexturedPaintUtilities() {
+    throw new AssertionError();
+  }
 
-	protected static void setPaint( TexturedVisual sgTexturedVisual, Paint paint ) {
-		//sgTexturedVisual.setPaint( paint );
-		sgTexturedVisual.getAppearance().setDiffuseColor( EmployeesOnly.getColor4f( paint, Color4f.WHITE ) );
-		sgTexturedVisual.setTexture( EmployeesOnly.getTexture( paint, null ) );
-	}
+  protected static void setPaint(TexturedVisual sgTexturedVisual, Paint paint) {
+    //sgTexturedVisual.setPaint( paint );
+    sgTexturedVisual.getAppearance().setDiffuseColor(EmployeesOnly.getColor4f(paint, Color4f.WHITE));
+    sgTexturedVisual.setTexture(EmployeesOnly.getTexture(paint, null));
+  }
 }

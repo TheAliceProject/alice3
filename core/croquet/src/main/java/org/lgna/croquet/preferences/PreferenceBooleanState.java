@@ -55,34 +55,34 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public abstract class PreferenceBooleanState extends BooleanState {
-	private static boolean getInitialValue( String preferenceKey, boolean defaultInitialValue ) {
-		Preferences userPreferences = PreferenceManager.getUserPreferences();
-		if( userPreferences != null ) {
-			return userPreferences.getBoolean( preferenceKey, defaultInitialValue );
-		} else {
-			return defaultInitialValue;
-		}
-	}
+  private static boolean getInitialValue(String preferenceKey, boolean defaultInitialValue) {
+    Preferences userPreferences = PreferenceManager.getUserPreferences();
+    if (userPreferences != null) {
+      return userPreferences.getBoolean(preferenceKey, defaultInitialValue);
+    } else {
+      return defaultInitialValue;
+    }
+  }
 
-	private static List<PreferenceBooleanState> instances = Lists.newCopyOnWriteArrayList();
+  private static List<PreferenceBooleanState> instances = Lists.newCopyOnWriteArrayList();
 
-	public static final void preserveAll( Preferences userPreferences ) {
-		for( PreferenceBooleanState state : instances ) {
-			userPreferences.putBoolean( state.preferenceKey, state.getValue() );
-		}
-	}
+  public static final void preserveAll(Preferences userPreferences) {
+    for (PreferenceBooleanState state : instances) {
+      userPreferences.putBoolean(state.preferenceKey, state.getValue());
+    }
+  }
 
-	private final String preferenceKey;
+  private final String preferenceKey;
 
-	public PreferenceBooleanState( Group group, UUID migrationId, boolean initialValue, String preferenceKey ) {
-		super( group, migrationId, getInitialValue( preferenceKey, initialValue ) );
-		assert instances.contains( this ) == false;
-		instances.add( this );
+  public PreferenceBooleanState(Group group, UUID migrationId, boolean initialValue, String preferenceKey) {
+    super(group, migrationId, getInitialValue(preferenceKey, initialValue));
+    assert instances.contains(this) == false;
+    instances.add(this);
 
-		this.preferenceKey = preferenceKey;
-	}
+    this.preferenceKey = preferenceKey;
+  }
 
-	public PreferenceBooleanState( Group group, UUID migrationId, boolean initialValue ) {
-		this( group, migrationId, initialValue, migrationId.toString() );
-	}
+  public PreferenceBooleanState(Group group, UUID migrationId, boolean initialValue) {
+    this(group, migrationId, initialValue, migrationId.toString());
+  }
 }

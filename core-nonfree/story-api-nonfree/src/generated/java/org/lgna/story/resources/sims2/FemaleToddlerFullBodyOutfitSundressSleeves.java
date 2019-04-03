@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleToddlerFullBodyOutfitSundressSleeves implements FemaleToddlerFullBodyOutfit {
-	PINK_RUFFLES,
-	GREEN_RUFFLES,
-	YELLOW_RUFFLES;
+  PINK_RUFFLES, GREEN_RUFFLES, YELLOW_RUFFLES
 
 }

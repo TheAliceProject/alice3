@@ -55,22 +55,22 @@ import java.util.UUID;
  */
 public class BipedAnimator extends AnimatorComposite<SBiped> {
 
-	public BipedAnimator( NamedUserType valueType, UserMethod editedMethod ) {
-		super( UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ), valueType, editedMethod );
-	}
+  public BipedAnimator(NamedUserType valueType, UserMethod editedMethod) {
+    super(UUID.fromString("170f4252-5b51-41ec-bb9b-98445ff5f2bf"), valueType, editedMethod);
+  }
 
-	public BipedAnimator( NamedUserType type ) {
-		this( type, null );
-	}
+  public BipedAnimator(NamedUserType type) {
+    this(type, null);
+  }
 
-	@Override
-	public AbstractPoserScene<SBiped> initScene() {
-		return new BipedPoserScene( this.getModel() );
-	}
+  @Override
+  public AbstractPoserScene<SBiped> initScene() {
+    return new BipedPoserScene(this.getModel());
+  }
 
-	@Override
-	public Class<SBiped> getModelClass() {
-		return SBiped.class;
-	}
+  @Override
+  public Class<SBiped> getModelClass() {
+    return SBiped.class;
+  }
 
 }

@@ -56,144 +56,144 @@ import org.lgna.story.SMarker;
  *
  */
 public abstract class MarkerImp extends VisualScaleModelImp {
-	protected MarkerImp( SMarker abstraction ) {
-		super();
-		this.initializeData();
-		this.abstraction = abstraction;
-		createVisuals();
-		this.boundingBox = this.calculateBoundingBox();
-		setMarkerColor( getDefaultMarkerColor() );
-		setMarkerOpacity( getDefaultMarkerOpacity() );
-		this.setShowing( false );
-	}
+  protected MarkerImp(SMarker abstraction) {
+    super();
+    this.initializeData();
+    this.abstraction = abstraction;
+    createVisuals();
+    this.boundingBox = this.calculateBoundingBox();
+    setMarkerColor(getDefaultMarkerColor());
+    setMarkerOpacity(getDefaultMarkerOpacity());
+    this.setShowing(false);
+  }
 
-	protected void initializeData() {
+  protected void initializeData() {
 
-	}
+  }
 
-	@Override
-	public SMarker getAbstraction() {
-		return this.abstraction;
-	}
+  @Override
+  public SMarker getAbstraction() {
+    return this.abstraction;
+  }
 
-	@Override
-	public Resizer[] getResizers() {
-		return new Resizer[] {};
-	}
+  @Override
+  public Resizer[] getResizers() {
+    return new Resizer[] {};
+  }
 
-	@Override
-	public double getValueForResizer( Resizer resizer ) {
-		assert false : resizer;
-		return Double.NaN;
-	}
+  @Override
+  public double getValueForResizer(Resizer resizer) {
+    assert false : resizer;
+    return Double.NaN;
+  }
 
-	@Override
-	public void setValueForResizer( Resizer resizer, double value ) {
-		assert false : resizer;
-	}
+  @Override
+  public void setValueForResizer(Resizer resizer, double value) {
+    assert false : resizer;
+  }
 
-	protected abstract void createVisuals();
+  protected abstract void createVisuals();
 
-	public boolean isShowing() {
-		return this.isShowing;
-	}
+  public boolean isShowing() {
+    return this.isShowing;
+  }
 
-	@Override
-	public void setSize( Dimension3 size ) {
-		setScale( getScaleForSize( size ) );
-	}
+  @Override
+  public void setSize(Dimension3 size) {
+    setScale(getScaleForSize(size));
+  }
 
-	public void setShowing( boolean isShowing ) {
-		if( this.isShowing != isShowing ) {
-			this.isShowing = isShowing;
-			if( this.getDisplayEnabled() ) {
-				Visual[] visuals = this.getSgVisuals();
-				if( ( visuals != null ) && ( visuals.length > 0 ) ) {
-					for( Visual v : visuals ) {
-						v.isShowing.setValue( this.isShowing );
-					}
-				}
-			}
-		}
-	}
+  public void setShowing(boolean isShowing) {
+    if (this.isShowing != isShowing) {
+      this.isShowing = isShowing;
+      if (this.getDisplayEnabled()) {
+        Visual[] visuals = this.getSgVisuals();
+        if ((visuals != null) && (visuals.length > 0)) {
+          for (Visual v : visuals) {
+            v.isShowing.setValue(this.isShowing);
+          }
+        }
+      }
+    }
+  }
 
-	public boolean getDisplayEnabled() {
-		return this.displayEnabled;
-	}
+  public boolean getDisplayEnabled() {
+    return this.displayEnabled;
+  }
 
-	public void setDisplayVisuals( boolean useDisplay ) {
-		this.displayEnabled = useDisplay;
-		if( !this.displayEnabled ) {
-			Visual[] visuals = this.getSgVisuals();
-			if( ( visuals != null ) && ( visuals.length > 0 ) ) {
-				for( Visual v : visuals ) {
-					v.isShowing.setValue( false );
-				}
-			}
-		}
-	}
+  public void setDisplayVisuals(boolean useDisplay) {
+    this.displayEnabled = useDisplay;
+    if (!this.displayEnabled) {
+      Visual[] visuals = this.getSgVisuals();
+      if ((visuals != null) && (visuals.length > 0)) {
+        for (Visual v : visuals) {
+          v.isShowing.setValue(false);
+        }
+      }
+    }
+  }
 
-	protected AxisAlignedBox calculateBoundingBox() {
-		AxisAlignedBox bbox = new AxisAlignedBox();
-		Visual[] visuals = this.getSgVisuals();
-		if( ( visuals != null ) && ( visuals.length > 0 ) ) {
-			for( Visual v : this.getSgVisuals() ) {
-				for( Geometry g : v.geometries.getValue() ) {
-					bbox.union( g.getAxisAlignedMinimumBoundingBox() );
-				}
-			}
-		}
-		return bbox;
-	}
+  protected AxisAlignedBox calculateBoundingBox() {
+    AxisAlignedBox bbox = new AxisAlignedBox();
+    Visual[] visuals = this.getSgVisuals();
+    if ((visuals != null) && (visuals.length > 0)) {
+      for (Visual v : this.getSgVisuals()) {
+        for (Geometry g : v.geometries.getValue()) {
+          bbox.union(g.getAxisAlignedMinimumBoundingBox());
+        }
+      }
+    }
+    return bbox;
+  }
 
-	protected Color4f getDefaultMarkerColor() {
-		return Color4f.CYAN;
-	}
+  protected Color4f getDefaultMarkerColor() {
+    return Color4f.CYAN;
+  }
 
-	protected float getDefaultMarkerOpacity() {
-		return 0.5f;
-	}
+  protected float getDefaultMarkerOpacity() {
+    return 0.5f;
+  }
 
-	public Color4f getMarkerColor() {
-		SimpleAppearance[] appearances = this.getSgPaintAppearances();
-		if( ( appearances != null ) && ( appearances.length > 0 ) ) {
-			return appearances[ 0 ].diffuseColor.getValue();
-		}
-		return Color4f.WHITE;
-	}
+  public Color4f getMarkerColor() {
+    SimpleAppearance[] appearances = this.getSgPaintAppearances();
+    if ((appearances != null) && (appearances.length > 0)) {
+      return appearances[0].diffuseColor.getValue();
+    }
+    return Color4f.WHITE;
+  }
 
-	public void setMarkerColor( Color4f color ) {
-		SimpleAppearance[] appearances = this.getSgPaintAppearances();
-		if( ( appearances != null ) && ( appearances.length > 0 ) ) {
-			for( SimpleAppearance sgAppearance : this.getSgPaintAppearances() ) {
-				sgAppearance.diffuseColor.setValue( color );
-			}
-		}
-	}
+  public void setMarkerColor(Color4f color) {
+    SimpleAppearance[] appearances = this.getSgPaintAppearances();
+    if ((appearances != null) && (appearances.length > 0)) {
+      for (SimpleAppearance sgAppearance : this.getSgPaintAppearances()) {
+        sgAppearance.diffuseColor.setValue(color);
+      }
+    }
+  }
 
-	public float getMarkerOpacity() {
-		SimpleAppearance[] appearances = this.getSgOpacityAppearances();
-		if( ( appearances != null ) && ( appearances.length > 0 ) ) {
-			float actualValue = appearances[ 0 ].opacity.getValue();
-			float scaledValue = actualValue / this.getDefaultMarkerOpacity();
-			return scaledValue;
-		}
-		return 1;
-	}
+  public float getMarkerOpacity() {
+    SimpleAppearance[] appearances = this.getSgOpacityAppearances();
+    if ((appearances != null) && (appearances.length > 0)) {
+      float actualValue = appearances[0].opacity.getValue();
+      float scaledValue = actualValue / this.getDefaultMarkerOpacity();
+      return scaledValue;
+    }
+    return 1;
+  }
 
-	protected void setMarkerOpacity( float opacity ) {
-		SimpleAppearance[] appearances = this.getSgOpacityAppearances();
-		float scaledValue = opacity * this.getDefaultMarkerOpacity();
-		if( ( appearances != null ) && ( appearances.length > 0 ) ) {
-			for( SimpleAppearance sgAppearance : this.getSgOpacityAppearances() ) {
-				sgAppearance.opacity.setValue( scaledValue );
-			}
-		}
-	}
+  protected void setMarkerOpacity(float opacity) {
+    SimpleAppearance[] appearances = this.getSgOpacityAppearances();
+    float scaledValue = opacity * this.getDefaultMarkerOpacity();
+    if ((appearances != null) && (appearances.length > 0)) {
+      for (SimpleAppearance sgAppearance : this.getSgOpacityAppearances()) {
+        sgAppearance.opacity.setValue(scaledValue);
+      }
+    }
+  }
 
-	private final SMarker abstraction;
+  private final SMarker abstraction;
 
-	private boolean isShowing = true;
-	private boolean displayEnabled = true;
-	private AxisAlignedBox boundingBox;
+  private boolean isShowing = true;
+  private boolean displayEnabled = true;
+  private AxisAlignedBox boundingBox;
 }

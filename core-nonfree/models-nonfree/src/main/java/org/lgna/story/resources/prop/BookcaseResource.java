@@ -32,45 +32,47 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum BookcaseResource implements PropResource {
-	LOFT_DARK_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_METAL( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_BLACK( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_MAHOGANY( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_OAK( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_PINE( ImplementationAndVisualType.SIMS2 ),
-	CHEAP_PLANK( ImplementationAndVisualType.SIMS2 ),
-	CINDER_BLOCK_BLACK( ImplementationAndVisualType.SIMS2 ),
-	CINDER_BLOCK_PINE( ImplementationAndVisualType.SIMS2 ),
-	CINDER_BLOCK_PLANK( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_WOOD( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_REDWOOD( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_DARK_WOOD( ImplementationAndVisualType.SIMS2 ),
-	VALUE_PINE( ImplementationAndVisualType.SIMS2 ),
-	VALUE_DARK_PINE( ImplementationAndVisualType.SIMS2 );
+  LOFT_DARK_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_METAL(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU(ImplementationAndVisualType.SIMS2),
+  CHEAP_BLACK(ImplementationAndVisualType.SIMS2),
+  CHEAP_MAHOGANY(ImplementationAndVisualType.SIMS2),
+  CHEAP_OAK(ImplementationAndVisualType.SIMS2),
+  CHEAP_PINE(ImplementationAndVisualType.SIMS2),
+  CHEAP_PLANK(ImplementationAndVisualType.SIMS2),
+  CINDER_BLOCK_BLACK(ImplementationAndVisualType.SIMS2),
+  CINDER_BLOCK_PINE(ImplementationAndVisualType.SIMS2),
+  CINDER_BLOCK_PLANK(ImplementationAndVisualType.SIMS2),
+  COLONIAL_WOOD(ImplementationAndVisualType.SIMS2),
+  COLONIAL_REDWOOD(ImplementationAndVisualType.SIMS2),
+  COLONIAL_DARK_WOOD(ImplementationAndVisualType.SIMS2),
+  VALUE_PINE(ImplementationAndVisualType.SIMS2),
+  VALUE_DARK_PINE(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	BookcaseResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	BookcaseResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  BookcaseResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  BookcaseResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

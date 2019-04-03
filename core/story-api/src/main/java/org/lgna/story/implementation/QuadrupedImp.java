@@ -51,17 +51,17 @@ import org.lgna.story.resources.QuadrupedResource;
  *
  */
 public final class QuadrupedImp extends JointedModelImp<SQuadruped, QuadrupedResource> {
-	public QuadrupedImp( SQuadruped abstraction, JointImplementationAndVisualDataFactory<QuadrupedResource> factory ) {
-		super( abstraction, factory );
-	}
+  public QuadrupedImp(SQuadruped abstraction, JointImplementationAndVisualDataFactory<QuadrupedResource> factory) {
+    super(abstraction, factory);
+  }
 
-	@Override
-	protected Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint( this.getJointImplementation( QuadrupedResource.HEAD ) );
-	}
+  @Override
+  protected Vector4 getThoughtBubbleOffset() {
+    return this.getTopOffsetForJoint(this.getJointImplementation(QuadrupedResource.HEAD));
+  }
 
-	@Override
-	protected Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint( this.getJointImplementation( QuadrupedResource.MOUTH ) );
-	}
+  @Override
+  protected Vector4 getSpeechBubbleOffset() {
+    return this.getFrontOffsetForJoint(this.getJointImplementation(QuadrupedResource.MOUTH));
+  }
 }

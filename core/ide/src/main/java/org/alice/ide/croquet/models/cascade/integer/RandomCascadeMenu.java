@@ -57,22 +57,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RandomCascadeMenu extends ExpressionCascadeMenu<MethodInvocation> {
-	private static class SingletonHolder {
-		private static RandomCascadeMenu instance = new RandomCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static RandomCascadeMenu instance = new RandomCascadeMenu();
+  }
 
-	public static RandomCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static RandomCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private RandomCascadeMenu() {
-		super( UUID.fromString( "d0b0e182-e766-49ba-8e10-239df62def0a" ) );
-	}
+  private RandomCascadeMenu() {
+    super(UUID.fromString("d0b0e182-e766-49ba-8e10-239df62def0a"));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> context ) {
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( RandomUtilities.class, "nextIntegerFrom0ToNExclusive", Integer.class ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( RandomUtilities.class, "nextIntegerFromAToBExclusive", Integer.class, Integer.class ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( RandomUtilities.class, "nextIntegerFromAToBInclusive", Integer.class, Integer.class ) );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> context) {
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(RandomUtilities.class, "nextIntegerFrom0ToNExclusive", Integer.class));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(RandomUtilities.class, "nextIntegerFromAToBExclusive", Integer.class, Integer.class));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(RandomUtilities.class, "nextIntegerFromAToBInclusive", Integer.class, Integer.class));
+  }
 }

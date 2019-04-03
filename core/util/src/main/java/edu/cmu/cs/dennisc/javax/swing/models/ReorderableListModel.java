@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.javax.swing.models;
  * @author Dennis Cosgrove
  */
 public interface ReorderableListModel<E> extends ListModel<E> {
-	public void swap( int indexA, int indexB );
+  public void swap(int indexA, int indexB);
 
-	public void slide( int prevIndex, int nextIndex );
+  public void slide(int prevIndex, int nextIndex);
 }

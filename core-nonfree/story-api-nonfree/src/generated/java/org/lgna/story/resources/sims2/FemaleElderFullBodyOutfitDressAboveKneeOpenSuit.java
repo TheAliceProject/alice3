@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderFullBodyOutfitDressAboveKneeOpenSuit implements FemaleElderFullBodyOutfit {
-	PURPLE,
-	DK_BLUE;
+  PURPLE, DK_BLUE
 
 }

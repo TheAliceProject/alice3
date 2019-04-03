@@ -47,37 +47,37 @@ package gallery.croquet.views;
  * @author Dennis Cosgrove
  */
 public class ControlsPanel extends org.lgna.croquet.views.BorderPanel {
-	public ControlsPanel( gallery.croquet.ControlsComposite composite ) {
-		super( composite );
+  public ControlsPanel(gallery.croquet.ControlsComposite composite) {
+    super(composite);
 
-		org.lgna.croquet.views.Tree<?> tree = composite.getTreeState().createTree();
-		tree.expandAllRows();
-		tree.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.alice.stageide.modelresource.ResourceNode>() {
-			@Override
-			protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.stageide.modelresource.ResourceNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-				if( value != null ) {
-					org.lgna.croquet.icon.IconFactory iconFactory = value.getIconFactory();
-					javax.swing.Icon icon;
-					if( iconFactory != null ) {
-						icon = iconFactory.getIcon( new java.awt.Dimension( 64, 48 ) );
-					} else {
-						icon = null;
-					}
-					rv.setIcon( icon );
-					rv.setText( value.getText() );
-				} else {
-					rv.setIcon( null );
-					rv.setText( null );
-				}
-				return rv;
-			}
-		} );
+    org.lgna.croquet.views.Tree<?> tree = composite.getTreeState().createTree();
+    tree.expandAllRows();
+    tree.setCellRenderer(new edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.alice.stageide.modelresource.ResourceNode>() {
+      @Override
+      protected javax.swing.JLabel updateListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.stageide.modelresource.ResourceNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+        if (value != null) {
+          org.lgna.croquet.icon.IconFactory iconFactory = value.getIconFactory();
+          javax.swing.Icon icon;
+          if (iconFactory != null) {
+            icon = iconFactory.getIcon(new java.awt.Dimension(64, 48));
+          } else {
+            icon = null;
+          }
+          rv.setIcon(icon);
+          rv.setText(value.getText());
+        } else {
+          rv.setIcon(null);
+          rv.setText(null);
+        }
+        return rv;
+      }
+    });
 
-		this.addCenterComponent( new org.lgna.croquet.views.ScrollPane( tree ) );
+    this.addCenterComponent(new org.lgna.croquet.views.ScrollPane(tree));
 
-		org.lgna.croquet.views.CheckBox checkBox = composite.getViz().createCheckBox();
-		this.addPageStartComponent( checkBox );
+    org.lgna.croquet.views.CheckBox checkBox = composite.getViz().createCheckBox();
+    this.addPageStartComponent(checkBox);
 
-		checkBox.getAwtComponent().setFocusable( false );
-	}
+    checkBox.getAwtComponent().setFocusable(false);
+  }
 }

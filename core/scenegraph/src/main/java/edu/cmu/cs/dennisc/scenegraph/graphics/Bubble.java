@@ -57,53 +57,41 @@ import java.awt.geom.Point2D;
  * @author Dennis Cosgrove
  */
 public abstract class Bubble extends ShapeEnclosedText {
-	public static interface Originator {
-		public void calculate(
-				Point2D.Float out_originOfTail,
-				Point2D.Float out_bodyConnectionLocationOfTail,
-				Point2D.Float out_textBoundsOffset,
-				Bubble bubble,
-				RenderTarget renderTarget,
-				Rectangle actualViewport,
-				AbstractCamera camera,
-				Dimension2D textSize
-				);
-	}
+  public static interface Originator {
+    public void calculate(Point2D.Float out_originOfTail, Point2D.Float out_bodyConnectionLocationOfTail, Point2D.Float out_textBoundsOffset, Bubble bubble, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera, Dimension2D textSize);
+  }
 
-	public enum PositionPreference {
-		AUTOMATIC,
-		TOP_LEFT,
-		TOP_CENTER,
-		TOP_RIGHT
-	}
+  public enum PositionPreference {
+    AUTOMATIC, TOP_LEFT, TOP_CENTER, TOP_RIGHT
+  }
 
-	public static final Color4f DEFAULT_TEXT_COLOR = Color4f.BLACK;
-	public static final Font DEFAULT_FONT = new Font( null, Font.PLAIN, 12 );
-	public static final Color4f DEFAULT_FILL_COLOR = Color4f.WHITE;
-	public static final Color4f DEFAULT_OUTLINE_COLOR = Color4f.BLACK;
-	public static final PositionPreference DEFAULT_POSITION_PREFERENCE = PositionPreference.AUTOMATIC;
+  public static final Color4f DEFAULT_TEXT_COLOR = Color4f.BLACK;
+  public static final Font DEFAULT_FONT = new Font(null, Font.PLAIN, 12);
+  public static final Color4f DEFAULT_FILL_COLOR = Color4f.WHITE;
+  public static final Color4f DEFAULT_OUTLINE_COLOR = Color4f.BLACK;
+  public static final PositionPreference DEFAULT_POSITION_PREFERENCE = PositionPreference.AUTOMATIC;
 
-	public Bubble( Originator originator, PositionPreference positionPreference ) {
-		super( DEFAULT_TEXT_COLOR, DEFAULT_FONT, DEFAULT_FILL_COLOR, DEFAULT_OUTLINE_COLOR );
-		this.originator = originator;
-		this.positionPreference = positionPreference;
-	}
+  public Bubble(Originator originator, PositionPreference positionPreference) {
+    super(DEFAULT_TEXT_COLOR, DEFAULT_FONT, DEFAULT_FILL_COLOR, DEFAULT_OUTLINE_COLOR);
+    this.originator = originator;
+    this.positionPreference = positionPreference;
+  }
 
-	public Bubble( Originator originator ) {
-		this( originator, DEFAULT_POSITION_PREFERENCE );
-	}
+  public Bubble(Originator originator) {
+    this(originator, DEFAULT_POSITION_PREFERENCE);
+  }
 
-	public Originator getOriginator() {
-		return this.originator;
-	}
+  public Originator getOriginator() {
+    return this.originator;
+  }
 
-	public PositionPreference getPositionPreference() {
-		return this.positionPreference;
-	}
+  public PositionPreference getPositionPreference() {
+    return this.positionPreference;
+  }
 
-	//todo: better name
-	public final DoubleProperty portion = new DoubleProperty( this, 0.0 );
+  //todo: better name
+  public final DoubleProperty portion = new DoubleProperty(this, 0.0);
 
-	private final Originator originator;
-	private final PositionPreference positionPreference;
+  private final Originator originator;
+  private final PositionPreference positionPreference;
 }

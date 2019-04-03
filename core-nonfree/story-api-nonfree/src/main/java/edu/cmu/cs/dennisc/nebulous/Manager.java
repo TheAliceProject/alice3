@@ -60,137 +60,132 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public class Manager {
-	public static final double NEBULOUS_VERSION = 1.7;
+  public static final double NEBULOUS_VERSION = 1.7;
 
-	private static boolean s_isInitialized = false;
-	private static boolean s_isLicensePromptDesired = true;
-	private static final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
+  private static boolean s_isInitialized = false;
+  private static boolean s_isLicensePromptDesired = true;
+  private static final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
 
-	private static List<File> s_pendingBundles;
+  private static List<File> s_pendingBundles;
 
-	private static native void setVersion( double version );
+  private static native void setVersion(double version);
 
-	private static native void addBundlePath( String bundlePath );
+  private static native void addBundlePath(String bundlePath);
 
-	private static native void removeBundlePath( String bundlePath );
+  private static native void removeBundlePath(String bundlePath);
 
-	private static native void setRawResourceDirectory( String rourcePath );
+  private static native void setRawResourceDirectory(String rourcePath);
 
-	private static native void unloadActiveModelData();
+  private static native void unloadActiveModelData();
 
-	private static native void unloadUnusedTextures( GL gl );
+  private static native void unloadUnusedTextures(GL gl);
 
-	public static native void setDebugDraw( boolean debugDraw );
+  public static native void setDebugDraw(boolean debugDraw);
 
-	private static void doInitializationIfNecessary() {
-		try {
-			initializeIfNecessary();
-		} catch( LicenseRejectedException lre ) {
-			JOptionPane.showMessageDialog( null, "license rejected" );
-			//throw new RuntimeException( lre );
-		} catch( Throwable t ) {
-			JOptionPane.showMessageDialog( null, "failed to initialize art assets" );
-			t.printStackTrace();
-		}
-	}
+  private static void doInitializationIfNecessary() {
+    try {
+      initializeIfNecessary();
+    } catch (LicenseRejectedException lre) {
+      JOptionPane.showMessageDialog(null, "license rejected");
+      //throw new RuntimeException( lre );
+    } catch (Throwable t) {
+      JOptionPane.showMessageDialog(null, "failed to initialize art assets");
+      t.printStackTrace();
+    }
+  }
 
-	private static List<File> getPendingBundles() {
-		if( s_pendingBundles != null ) {
-			//pass
-		} else {
-			s_pendingBundles = new LinkedList<File>();
-		}
-		return s_pendingBundles;
-	}
+  private static List<File> getPendingBundles() {
+    if (s_pendingBundles != null) {
+      //pass
+    } else {
+      s_pendingBundles = new LinkedList<File>();
+    }
+    return s_pendingBundles;
+  }
 
-	public static void unloadNebulousModelData() {
-		if( isInitialized() ) {
-			unloadActiveModelData();
-		}
-	}
+  public static void unloadNebulousModelData() {
+    if (isInitialized()) {
+      unloadActiveModelData();
+    }
+  }
 
-	public static void unloadUnusedNebulousTextureData( GL gl ) {
-		if( isInitialized() ) {
-			try {
-				unloadUnusedTextures( gl );
-			} catch( RuntimeException e ) {
-				e.printStackTrace();
-			}
-		}
-	}
+  public static void unloadUnusedNebulousTextureData(GL gl) {
+    if (isInitialized()) {
+      try {
+        unloadUnusedTextures(gl);
+      } catch (RuntimeException e) {
+        e.printStackTrace();
+      }
+    }
+  }
 
-	public static void initializeIfNecessary() throws LicenseRejectedException {
-		if( isInitialized() ) {
-			//pass
-		} else {
-			if( s_isLicensePromptDesired ) {
-				EULAUtilities.promptUserToAcceptEULAIfNecessary(
-						License.class,
-						IS_LICENSE_ACCEPTED_PREFERENCE_KEY,
-						"License Agreement: The Sims (TM) 2 Art Assets",
-						License.TEXT,
-						"The Sims (TM) 2 Art Assets" );
-				Preferences userPreferences = Preferences.userNodeForPackage( License.class );
-				boolean isLicenseAccepted = userPreferences.getBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, false );
-				if( isLicenseAccepted ) {
-					//pass
-				} else {
-					s_isLicensePromptDesired = false;
-				}
-				if( isLicenseAccepted ) {
-					userPreferences.putBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, true );
-					if( SystemUtilities.isPropertyTrue( "org.alice.ide.internalDebugMode" ) ) {
-						SystemUtilities.loadLibrary( "", "jni_nebulous", LoadLibraryReportStyle.EXCEPTION );
-					} else {
-						SystemUtilities.loadLibrary( "nebulous", "jni_nebulous", LoadLibraryReportStyle.EXCEPTION );
-					}
-					for( File directory : Manager.getPendingBundles() ) {
-						Manager.addBundlePath( directory.getAbsolutePath() );
-					}
-					Manager.setVersion( NEBULOUS_VERSION );
+  public static void initializeIfNecessary() throws LicenseRejectedException {
+    if (isInitialized()) {
+      //pass
+    } else {
+      if (s_isLicensePromptDesired) {
+        EULAUtilities.promptUserToAcceptEULAIfNecessary(License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement: The Sims (TM) 2 Art Assets", License.TEXT, "The Sims (TM) 2 Art Assets");
+        Preferences userPreferences = Preferences.userNodeForPackage(License.class);
+        boolean isLicenseAccepted = userPreferences.getBoolean(IS_LICENSE_ACCEPTED_PREFERENCE_KEY, false);
+        if (isLicenseAccepted) {
+          //pass
+        } else {
+          s_isLicensePromptDesired = false;
+        }
+        if (isLicenseAccepted) {
+          userPreferences.putBoolean(IS_LICENSE_ACCEPTED_PREFERENCE_KEY, true);
+          if (SystemUtilities.isPropertyTrue("org.alice.ide.internalDebugMode")) {
+            SystemUtilities.loadLibrary("", "jni_nebulous", LoadLibraryReportStyle.EXCEPTION);
+          } else {
+            SystemUtilities.loadLibrary("nebulous", "jni_nebulous", LoadLibraryReportStyle.EXCEPTION);
+          }
+          for (File directory : Manager.getPendingBundles()) {
+            Manager.addBundlePath(directory.getAbsolutePath());
+          }
+          Manager.setVersion(NEBULOUS_VERSION);
 
-					s_isInitialized = true;
-				} else {
-					throw new LicenseRejectedException();
-				}
-			}
-			RenderContext.addUnusedTexturesListener( new RenderContext.UnusedTexturesListener() {
-				@Override
-				public void unusedTexturesCleared( GL gl ) {
-					unloadUnusedNebulousTextureData( gl );
-				}
-			} );
-		}
-	}
+          s_isInitialized = true;
+        } else {
+          throw new LicenseRejectedException();
+        }
+      }
+      RenderContext.addUnusedTexturesListener(new RenderContext.UnusedTexturesListener() {
+        @Override
+        public void unusedTexturesCleared(GL gl) {
+          unloadUnusedNebulousTextureData(gl);
+        }
+      });
+    }
+  }
 
-	public static boolean isInitialized() {
-		return s_isInitialized;
-	}
+  public static boolean isInitialized() {
+    return s_isInitialized;
+  }
 
-	public static void resetLicensePromptDesiredToTrue() {
-		s_isLicensePromptDesired = true;
-	}
+  public static void resetLicensePromptDesiredToTrue() {
+    s_isLicensePromptDesired = true;
+  }
 
-	public static void setRawResourcePath( File file ) {
-		doInitializationIfNecessary();
-		Manager.setRawResourceDirectory( file.getAbsolutePath() );
-	}
+  public static void setRawResourcePath(File file) {
+    doInitializationIfNecessary();
+    Manager.setRawResourceDirectory(file.getAbsolutePath());
+  }
 
-	public static void addBundle( File file ) {
-		doInitializationIfNecessary();
-		if( isInitialized() ) {
-			Manager.addBundlePath( file.getAbsolutePath() );
-		} else {
-			Manager.getPendingBundles().add( file );
-		}
-	}
+  public static void addBundle(File file) {
+    doInitializationIfNecessary();
+    if (isInitialized()) {
+      Manager.addBundlePath(file.getAbsolutePath());
+    } else {
+      Manager.getPendingBundles().add(file);
+    }
+  }
 
-	public static void removeBundle( File file ) {
-		doInitializationIfNecessary();
-		if( isInitialized() ) {
-			Manager.removeBundlePath( file.getAbsolutePath() );
-		} else {
-			Manager.getPendingBundles().remove( file );
-		}
-	}
+  public static void removeBundle(File file) {
+    doInitializationIfNecessary();
+    if (isInitialized()) {
+      Manager.removeBundlePath(file.getAbsolutePath());
+    } else {
+      Manager.getPendingBundles().remove(file);
+    }
+  }
 }

@@ -58,68 +58,69 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPropertyPane<P extends InstanceProperty<T>, T> extends Panel {
-	private final AstI18nFactory factory;
-	private final P property;
-	private final int axis;
-	private final PropertyListener propertyAdapter = new PropertyListener() {
-		@Override
-		public void propertyChanging( PropertyEvent e ) {
-		};
+  private final AstI18nFactory factory;
+  private final P property;
+  private final int axis;
+  private final PropertyListener propertyAdapter = new PropertyListener() {
+    @Override
+    public void propertyChanging(PropertyEvent e) {
+    }
 
-		@Override
-		public void propertyChanged( PropertyEvent e ) {
-			AbstractPropertyPane.this.refreshLater();
-		};
-	};
+    @Override
+    public void propertyChanged(PropertyEvent e) {
+      AbstractPropertyPane.this.refreshLater();
+    }
 
-	public AbstractPropertyPane( AstI18nFactory factory, P property, int axis ) {
-		assert property != null;
-		this.factory = factory;
-		this.property = property;
-		this.axis = axis;
-	}
+  };
 
-	protected AstI18nFactory getFactory() {
-		return this.factory;
-	}
+  public AbstractPropertyPane(AstI18nFactory factory, P property, int axis) {
+    assert property != null;
+    this.factory = factory;
+    this.property = property;
+    this.axis = axis;
+  }
 
-	public P getProperty() {
-		return this.property;
-	}
+  protected AstI18nFactory getFactory() {
+    return this.factory;
+  }
 
-	protected int getBoxLayoutPad() {
-		return 0;
-	}
+  public P getProperty() {
+    return this.property;
+  }
 
-	@Override
-	protected final LayoutManager createLayoutManager( JPanel jPanel ) {
-		assert ( this.axis == BoxLayout.LINE_AXIS ) || ( this.axis == BoxLayout.PAGE_AXIS );
-		int pad = this.getBoxLayoutPad();
-		if( pad > 0 ) {
-			return new PaddedBoxLayout( jPanel, this.axis, pad );
-		} else {
-			return new BoxLayout( jPanel, this.axis );
-		}
-	}
+  protected int getBoxLayoutPad() {
+    return 0;
+  }
 
-	public void addComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component );
-	}
+  @Override
+  protected final LayoutManager createLayoutManager(JPanel jPanel) {
+    assert (this.axis == BoxLayout.LINE_AXIS) || (this.axis == BoxLayout.PAGE_AXIS);
+    int pad = this.getBoxLayoutPad();
+    if (pad > 0) {
+      return new PaddedBoxLayout(jPanel, this.axis, pad);
+    } else {
+      return new BoxLayout(jPanel, this.axis);
+    }
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.property.addPropertyListener( this.propertyAdapter );
-	}
+  public void addComponent(AwtComponentView<?> component) {
+    this.internalAddComponent(component);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.property.removePropertyListener( this.propertyAdapter );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.property.addPropertyListener(this.propertyAdapter);
+  }
 
-	@Override
-	protected boolean isRefreshOnAddedToDesired() {
-		return true;
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.property.removePropertyListener(this.propertyAdapter);
+    super.handleUndisplayable();
+  }
+
+  @Override
+  protected boolean isRefreshOnAddedToDesired() {
+    return true;
+  }
 }

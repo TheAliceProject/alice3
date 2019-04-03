@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenTopPieceMockTurtle implements MaleTeenTopPiece {
-	BROWN_CABLE,
-	CREAM_CABLE,
-	CHARCOAL_KNIT,
-	NAVY_KNIT,
-	RED_KNIT,
-	YELLOW_CABLE;
+  BROWN_CABLE, CREAM_CABLE, CHARCOAL_KNIT, NAVY_KNIT, RED_KNIT, YELLOW_CABLE
 
 }

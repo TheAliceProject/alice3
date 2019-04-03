@@ -50,15 +50,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ActionOperation extends Operation {
-	public ActionOperation( Group group, UUID id ) {
-		super( group, id );
-	}
+  public ActionOperation(Group group, UUID id) {
+    super(group, id);
+  }
 
-	protected abstract void perform( UserActivity activity );
+  protected abstract void perform(UserActivity activity);
 
-	@Override
-	protected  void performInActivity( UserActivity activity ) {
-		activity.setCompletionModel( this ); // Is this needed here?
-		this.perform( activity );
-	}
+  @Override
+  protected void performInActivity(UserActivity activity) {
+    activity.setCompletionModel(this); // Is this needed here?
+    this.perform(activity);
+  }
 }

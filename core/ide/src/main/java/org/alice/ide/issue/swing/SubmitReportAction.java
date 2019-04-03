@@ -48,7 +48,7 @@ import javax.swing.AbstractAction;
  * @author Dennis Cosgrove
  */
 public abstract class SubmitReportAction extends AbstractAction {
-	public SubmitReportAction() {
-		super( "submit bug report" );
-	}
+  public SubmitReportAction() {
+    super("submit bug report");
+  }
 }

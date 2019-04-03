@@ -52,59 +52,58 @@ import org.lgna.story.implementation.QuadrupedImp;
  * @author dculyba
  *
  */
-@ResourceTemplate( modelClass = SQuadruped.class )
-public interface QuadrupedResource extends JointedModelResource {
-	public static final JointId ROOT = new JointId( null, QuadrupedResource.class );
-	public static final JointId SPINE_BASE = new JointId( ROOT, QuadrupedResource.class );
-	public static final JointId SPINE_MIDDLE = new JointId( SPINE_BASE, QuadrupedResource.class );
-	public static final JointId SPINE_UPPER = new JointId( SPINE_MIDDLE, QuadrupedResource.class );
-	public static final JointId NECK = new JointId( SPINE_UPPER, QuadrupedResource.class );
-	public static final JointId HEAD = new JointId( NECK, QuadrupedResource.class );
-	public static final JointId LEFT_EYE = new JointId( HEAD, QuadrupedResource.class );
-	public static final JointId LEFT_EYELID = new JointId( HEAD, QuadrupedResource.class );
-	public static final JointId LEFT_EAR = new JointId( HEAD, QuadrupedResource.class );
-	public static final JointId MOUTH = new JointId( HEAD, QuadrupedResource.class );
-	public static final JointId RIGHT_EAR = new JointId( HEAD, QuadrupedResource.class );
-	public static final JointId RIGHT_EYE = new JointId( HEAD, QuadrupedResource.class );
-	public static final JointId RIGHT_EYELID = new JointId( HEAD, QuadrupedResource.class );
-	public static final JointId FRONT_LEFT_CLAVICLE = new JointId( SPINE_UPPER, QuadrupedResource.class );
-	public static final JointId FRONT_LEFT_SHOULDER = new JointId( FRONT_LEFT_CLAVICLE, QuadrupedResource.class );
-	public static final JointId FRONT_LEFT_KNEE = new JointId( FRONT_LEFT_SHOULDER, QuadrupedResource.class );
-	public static final JointId FRONT_LEFT_ANKLE = new JointId( FRONT_LEFT_KNEE, QuadrupedResource.class );
-	public static final JointId FRONT_LEFT_FOOT = new JointId( FRONT_LEFT_ANKLE, QuadrupedResource.class );
-	public static final JointId FRONT_LEFT_TOE = new JointId( FRONT_LEFT_FOOT, QuadrupedResource.class );
-	public static final JointId FRONT_RIGHT_CLAVICLE = new JointId( SPINE_UPPER, QuadrupedResource.class );
-	public static final JointId FRONT_RIGHT_SHOULDER = new JointId( FRONT_RIGHT_CLAVICLE, QuadrupedResource.class );
-	public static final JointId FRONT_RIGHT_KNEE = new JointId( FRONT_RIGHT_SHOULDER, QuadrupedResource.class );
-	public static final JointId FRONT_RIGHT_ANKLE = new JointId( FRONT_RIGHT_KNEE, QuadrupedResource.class );
-	public static final JointId FRONT_RIGHT_FOOT = new JointId( FRONT_RIGHT_ANKLE, QuadrupedResource.class );
-	public static final JointId FRONT_RIGHT_TOE = new JointId( FRONT_RIGHT_FOOT, QuadrupedResource.class );
-	public static final JointId PELVIS_LOWER_BODY = new JointId( ROOT, QuadrupedResource.class );
+@ResourceTemplate(modelClass = SQuadruped.class) public interface QuadrupedResource extends JointedModelResource {
+  public static final JointId ROOT = new JointId(null, QuadrupedResource.class);
+  public static final JointId SPINE_BASE = new JointId(ROOT, QuadrupedResource.class);
+  public static final JointId SPINE_MIDDLE = new JointId(SPINE_BASE, QuadrupedResource.class);
+  public static final JointId SPINE_UPPER = new JointId(SPINE_MIDDLE, QuadrupedResource.class);
+  public static final JointId NECK = new JointId(SPINE_UPPER, QuadrupedResource.class);
+  public static final JointId HEAD = new JointId(NECK, QuadrupedResource.class);
+  public static final JointId LEFT_EYE = new JointId(HEAD, QuadrupedResource.class);
+  public static final JointId LEFT_EYELID = new JointId(HEAD, QuadrupedResource.class);
+  public static final JointId LEFT_EAR = new JointId(HEAD, QuadrupedResource.class);
+  public static final JointId MOUTH = new JointId(HEAD, QuadrupedResource.class);
+  public static final JointId RIGHT_EAR = new JointId(HEAD, QuadrupedResource.class);
+  public static final JointId RIGHT_EYE = new JointId(HEAD, QuadrupedResource.class);
+  public static final JointId RIGHT_EYELID = new JointId(HEAD, QuadrupedResource.class);
+  public static final JointId FRONT_LEFT_CLAVICLE = new JointId(SPINE_UPPER, QuadrupedResource.class);
+  public static final JointId FRONT_LEFT_SHOULDER = new JointId(FRONT_LEFT_CLAVICLE, QuadrupedResource.class);
+  public static final JointId FRONT_LEFT_KNEE = new JointId(FRONT_LEFT_SHOULDER, QuadrupedResource.class);
+  public static final JointId FRONT_LEFT_ANKLE = new JointId(FRONT_LEFT_KNEE, QuadrupedResource.class);
+  public static final JointId FRONT_LEFT_FOOT = new JointId(FRONT_LEFT_ANKLE, QuadrupedResource.class);
+  public static final JointId FRONT_LEFT_TOE = new JointId(FRONT_LEFT_FOOT, QuadrupedResource.class);
+  public static final JointId FRONT_RIGHT_CLAVICLE = new JointId(SPINE_UPPER, QuadrupedResource.class);
+  public static final JointId FRONT_RIGHT_SHOULDER = new JointId(FRONT_RIGHT_CLAVICLE, QuadrupedResource.class);
+  public static final JointId FRONT_RIGHT_KNEE = new JointId(FRONT_RIGHT_SHOULDER, QuadrupedResource.class);
+  public static final JointId FRONT_RIGHT_ANKLE = new JointId(FRONT_RIGHT_KNEE, QuadrupedResource.class);
+  public static final JointId FRONT_RIGHT_FOOT = new JointId(FRONT_RIGHT_ANKLE, QuadrupedResource.class);
+  public static final JointId FRONT_RIGHT_TOE = new JointId(FRONT_RIGHT_FOOT, QuadrupedResource.class);
+  public static final JointId PELVIS_LOWER_BODY = new JointId(ROOT, QuadrupedResource.class);
 
-	//Tails are now included as arrays access
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId TAIL_0 = new JointId( PELVIS_LOWER_BODY, QuadrupedResource.class );
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId TAIL_1 = new JointId( TAIL_0, QuadrupedResource.class );
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId TAIL_2 = new JointId( TAIL_1, QuadrupedResource.class );
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId TAIL_3 = new JointId( TAIL_2, QuadrupedResource.class );
+  //Tails are now included as arrays access
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_0 = new JointId(PELVIS_LOWER_BODY, QuadrupedResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_1 = new JointId(TAIL_0, QuadrupedResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_2 = new JointId(TAIL_1, QuadrupedResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_3 = new JointId(TAIL_2, QuadrupedResource.class);
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static JointId[] DEFAULT_TAIL = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static JointId[] DEFAULT_TAIL = {TAIL_0, TAIL_1, TAIL_2, TAIL_3};
 
-	public static final JointId BACK_LEFT_HIP = new JointId( PELVIS_LOWER_BODY, QuadrupedResource.class );
-	public static final JointId BACK_LEFT_KNEE = new JointId( BACK_LEFT_HIP, QuadrupedResource.class );
-	public static final JointId BACK_LEFT_HOCK = new JointId( BACK_LEFT_KNEE, QuadrupedResource.class );
-	public static final JointId BACK_LEFT_ANKLE = new JointId( BACK_LEFT_HOCK, QuadrupedResource.class );
-	public static final JointId BACK_LEFT_FOOT = new JointId( BACK_LEFT_ANKLE, QuadrupedResource.class );
-	public static final JointId BACK_LEFT_TOE = new JointId( BACK_LEFT_FOOT, QuadrupedResource.class );
-	public static final JointId BACK_RIGHT_HIP = new JointId( PELVIS_LOWER_BODY, QuadrupedResource.class );
-	public static final JointId BACK_RIGHT_KNEE = new JointId( BACK_RIGHT_HIP, QuadrupedResource.class );
-	public static final JointId BACK_RIGHT_HOCK = new JointId( BACK_RIGHT_KNEE, QuadrupedResource.class );
-	public static final JointId BACK_RIGHT_ANKLE = new JointId( BACK_RIGHT_HOCK, QuadrupedResource.class );
-	public static final JointId BACK_RIGHT_FOOT = new JointId( BACK_RIGHT_ANKLE, QuadrupedResource.class );
-	public static final JointId BACK_RIGHT_TOE = new JointId( BACK_RIGHT_FOOT, QuadrupedResource.class );
+  public static final JointId BACK_LEFT_HIP = new JointId(PELVIS_LOWER_BODY, QuadrupedResource.class);
+  public static final JointId BACK_LEFT_KNEE = new JointId(BACK_LEFT_HIP, QuadrupedResource.class);
+  public static final JointId BACK_LEFT_HOCK = new JointId(BACK_LEFT_KNEE, QuadrupedResource.class);
+  public static final JointId BACK_LEFT_ANKLE = new JointId(BACK_LEFT_HOCK, QuadrupedResource.class);
+  public static final JointId BACK_LEFT_FOOT = new JointId(BACK_LEFT_ANKLE, QuadrupedResource.class);
+  public static final JointId BACK_LEFT_TOE = new JointId(BACK_LEFT_FOOT, QuadrupedResource.class);
+  public static final JointId BACK_RIGHT_HIP = new JointId(PELVIS_LOWER_BODY, QuadrupedResource.class);
+  public static final JointId BACK_RIGHT_KNEE = new JointId(BACK_RIGHT_HIP, QuadrupedResource.class);
+  public static final JointId BACK_RIGHT_HOCK = new JointId(BACK_RIGHT_KNEE, QuadrupedResource.class);
+  public static final JointId BACK_RIGHT_ANKLE = new JointId(BACK_RIGHT_HOCK, QuadrupedResource.class);
+  public static final JointId BACK_RIGHT_FOOT = new JointId(BACK_RIGHT_ANKLE, QuadrupedResource.class);
+  public static final JointId BACK_RIGHT_TOE = new JointId(BACK_RIGHT_FOOT, QuadrupedResource.class);
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	public JointId[] getTailArray();
+  public JointId[] getTailArray();
 
-	public QuadrupedImp createImplementation( SQuadruped abstraction );
+  public QuadrupedImp createImplementation(SQuadruped abstraction);
 }

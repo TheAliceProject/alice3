@@ -44,6 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderFullBodyOutfitMechanic implements FemaleElderFullBodyOutfit {
-	D_K_BLUE;
+  D_K_BLUE
 
 }

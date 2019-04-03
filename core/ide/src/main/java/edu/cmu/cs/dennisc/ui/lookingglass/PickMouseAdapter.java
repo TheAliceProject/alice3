@@ -53,45 +53,45 @@ import java.awt.event.MouseListener;
  * @author Dennis Cosgrove
  */
 public abstract class PickMouseAdapter implements MouseListener {
-	private OnscreenRenderTarget<?> m_onscreenLookingGlass;
+  private OnscreenRenderTarget<?> m_onscreenLookingGlass;
 
-	public PickMouseAdapter() {
-		this( null );
-	}
+  public PickMouseAdapter() {
+    this(null);
+  }
 
-	public PickMouseAdapter( OnscreenRenderTarget<?> onscreenLookingGlass ) {
-		setOnscreenLookingGlass( onscreenLookingGlass );
-	}
+  public PickMouseAdapter(OnscreenRenderTarget<?> onscreenLookingGlass) {
+    setOnscreenLookingGlass(onscreenLookingGlass);
+  }
 
-	protected abstract void handlePickResult( PickResult pickResult );
+  protected abstract void handlePickResult(PickResult pickResult);
 
-	public OnscreenRenderTarget<?> getOnscreenLookingGlass() {
-		return m_onscreenLookingGlass;
-	}
+  public OnscreenRenderTarget<?> getOnscreenLookingGlass() {
+    return m_onscreenLookingGlass;
+  }
 
-	public void setOnscreenLookingGlass( OnscreenRenderTarget<?> onscreenLookingGlass ) {
-		m_onscreenLookingGlass = onscreenLookingGlass;
-	}
+  public void setOnscreenLookingGlass(OnscreenRenderTarget<?> onscreenLookingGlass) {
+    m_onscreenLookingGlass = onscreenLookingGlass;
+  }
 
-	@Override
-	public void mousePressed( MouseEvent e ) {
-		assert m_onscreenLookingGlass != null;
-		handlePickResult( m_onscreenLookingGlass.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED ) );
-	}
+  @Override
+  public void mousePressed(MouseEvent e) {
+    assert m_onscreenLookingGlass != null;
+    handlePickResult(m_onscreenLookingGlass.getSynchronousPicker().pickFrontMost(e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED));
+  }
 
-	@Override
-	public void mouseReleased( MouseEvent e ) {
-	}
+  @Override
+  public void mouseReleased(MouseEvent e) {
+  }
 
-	@Override
-	public void mouseClicked( MouseEvent arg0 ) {
-	}
+  @Override
+  public void mouseClicked(MouseEvent arg0) {
+  }
 
-	@Override
-	public void mouseEntered( MouseEvent e ) {
-	}
+  @Override
+  public void mouseEntered(MouseEvent e) {
+  }
 
-	@Override
-	public void mouseExited( MouseEvent e ) {
-	}
+  @Override
+  public void mouseExited(MouseEvent e) {
+  }
 }

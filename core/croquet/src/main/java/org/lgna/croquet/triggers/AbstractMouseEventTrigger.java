@@ -54,23 +54,24 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMouseEventTrigger extends ComponentEventTrigger<MouseEvent> {
-	AbstractMouseEventTrigger( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
-		super( viewController, mouseEvent );
-	}
-	AbstractMouseEventTrigger( UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
-		super( userActivity, viewController, mouseEvent );
-	}
+  AbstractMouseEventTrigger(ViewController<?, ?> viewController, MouseEvent mouseEvent) {
+    super(viewController, mouseEvent);
+  }
 
-	@Override
-	protected Point getPoint() {
-		MouseEvent e = this.getEvent();
-		Point p = e.getPoint();
-		ViewController<?, ?> viewController = this.getViewController();
-		Component awtComponent = viewController != null ? viewController.getAwtComponent() : null;
-		if( ( awtComponent == null ) || ( e.getComponent() == awtComponent ) ) {
-			return p;
-		} else {
-			return SwingUtilities.convertPoint( e.getComponent(), p, awtComponent );
-		}
-	}
+  AbstractMouseEventTrigger(UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent mouseEvent) {
+    super(userActivity, viewController, mouseEvent);
+  }
+
+  @Override
+  protected Point getPoint() {
+    MouseEvent e = this.getEvent();
+    Point p = e.getPoint();
+    ViewController<?, ?> viewController = this.getViewController();
+    Component awtComponent = viewController != null ? viewController.getAwtComponent() : null;
+    if ((awtComponent == null) || (e.getComponent() == awtComponent)) {
+      return p;
+    } else {
+      return SwingUtilities.convertPoint(e.getComponent(), p, awtComponent);
+    }
+  }
 }

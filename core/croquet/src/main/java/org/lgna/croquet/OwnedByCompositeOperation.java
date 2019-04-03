@@ -48,42 +48,42 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class OwnedByCompositeOperation<C extends OperationOwningComposite<?>> extends AbstractOwnedByCompositeOperation<C> {
-	public OwnedByCompositeOperation( Group group, C composite, OwnedByCompositeOperationSubKey subKey, Initializer<C> initializer ) {
-		super( group, UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ), initializer );
-		assert subKey != null : composite;
-		this.composite = composite;
-		this.subKey = subKey;
-	}
+  public OwnedByCompositeOperation(Group group, C composite, OwnedByCompositeOperationSubKey subKey, Initializer<C> initializer) {
+    super(group, UUID.fromString("c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce"), initializer);
+    assert subKey != null : composite;
+    this.composite = composite;
+    this.subKey = subKey;
+  }
 
-	@Override
-	protected void initialize() {
-		this.composite.initializeIfNecessary();
-		super.initialize();
-	}
+  @Override
+  protected void initialize() {
+    this.composite.initializeIfNecessary();
+    super.initialize();
+  }
 
-	@Override
-	protected String getSubKeyForLocalization() {
-		return this.subKey.getText();
-	}
+  @Override
+  protected String getSubKeyForLocalization() {
+    return this.subKey.getText();
+  }
 
-	@Override
-	public C getComposite() {
-		return this.composite;
-	}
+  @Override
+  public C getComposite() {
+    return this.composite;
+  }
 
-	@Override
-	protected Class<? extends Element> getClassUsedForLocalization() {
-		//todo
-		return ( (AbstractComposite<?>)this.composite ).getClassUsedForLocalization();
-	}
+  @Override
+  protected Class<? extends Element> getClassUsedForLocalization() {
+    //todo
+    return ((AbstractComposite<?>) this.composite).getClassUsedForLocalization();
+  }
 
-	//todo: pass subKey into composite methods
+  //todo: pass subKey into composite methods
 
-	@Override
-	protected String modifyNameIfNecessary( String text ) {
-		return this.composite.modifyNameIfNecessary( super.modifyNameIfNecessary( text ) );
-	}
+  @Override
+  protected String modifyNameIfNecessary(String text) {
+    return this.composite.modifyNameIfNecessary(super.modifyNameIfNecessary(text));
+  }
 
-	private final C composite;
-	private final OwnedByCompositeOperationSubKey subKey;
+  private final C composite;
+  private final OwnedByCompositeOperationSubKey subKey;
 }

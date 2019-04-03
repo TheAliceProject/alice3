@@ -81,222 +81,222 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class AdapterFactory {
-	private static final Map<Releasable, GlrObject<? extends Releasable>> s_elementToAdapterMap = Maps.newHashMap();
-	private static final Map<Class<? extends Releasable>, Class<? extends GlrObject<? extends Releasable>>> s_classToAdapterClassMap = Maps.newHashMap();
+  private static final Map<Releasable, GlrObject<? extends Releasable>> s_elementToAdapterMap = Maps.newHashMap();
+  private static final Map<Class<? extends Releasable>, Class<? extends GlrObject<? extends Releasable>>> s_classToAdapterClassMap = Maps.newHashMap();
 
-	private static final String SCENEGRAPH_PACKAGE_NAME = Element.class.getPackage().getName();
-	private static final String RENDERER_PACKAGE_NAME = GlrElement.class.getPackage().getName();
-	private static final String SCENEGRAPH_GRAPHICS_PACKAGE_NAME = Text.class.getPackage().getName();
-	private static final String RENDERER_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics.GlrText.class.getPackage().getName();
-	private static final String SCENEGRAPH_ADORN_PACKAGE_NAME = StickFigure.class.getPackage().getName();
-	private static final String RENDERER_ADORN_PACKAGE_NAME = GlrStickFigure.class.getPackage().getName();
+  private static final String SCENEGRAPH_PACKAGE_NAME = Element.class.getPackage().getName();
+  private static final String RENDERER_PACKAGE_NAME = GlrElement.class.getPackage().getName();
+  private static final String SCENEGRAPH_GRAPHICS_PACKAGE_NAME = Text.class.getPackage().getName();
+  private static final String RENDERER_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics.GlrText.class.getPackage().getName();
+  private static final String SCENEGRAPH_ADORN_PACKAGE_NAME = StickFigure.class.getPackage().getName();
+  private static final String RENDERER_ADORN_PACKAGE_NAME = GlrStickFigure.class.getPackage().getName();
 
-	static {
-		register( BufferedImageTexture.class, GlrBufferedImageTexture.class );
-	}
+  static {
+    register(BufferedImageTexture.class, GlrBufferedImageTexture.class);
+  }
 
-	private AdapterFactory() {
-		throw new AssertionError();
-	}
+  private AdapterFactory() {
+    throw new AssertionError();
+  }
 
-	public static <SG extends Releasable, GLR extends GlrObject<SG>> void register( Class<SG> sgClass, Class<GLR> adapterClass ) {
-		s_classToAdapterClassMap.put( sgClass, adapterClass );
-	}
+  public static <SG extends Releasable, GLR extends GlrObject<SG>> void register(Class<SG> sgClass, Class<GLR> adapterClass) {
+    s_classToAdapterClassMap.put(sgClass, adapterClass);
+  }
 
-	private static void createNecessaryProxies( Releasable sgElement ) {
-		GlrObject<?> unused = getAdapterForElement( sgElement );
-		if( sgElement instanceof Composite ) {
-			Composite sgComposite = (Composite)sgElement;
-			for( Component sgComponent : sgComposite.getComponents() ) {
-				createNecessaryProxies( sgComponent );
-			}
-		}
-	}
+  private static void createNecessaryProxies(Releasable sgElement) {
+    GlrObject<?> unused = getAdapterForElement(sgElement);
+    if (sgElement instanceof Composite) {
+      Composite sgComposite = (Composite) sgElement;
+      for (Component sgComponent : sgComposite.getComponents()) {
+        createNecessaryProxies(sgComponent);
+      }
+    }
+  }
 
-	private static <SG extends Releasable, GLR extends GlrObject<SG>> GLR createAdapterFor( SG sgElement ) {
-		Class sgClass = sgElement.getClass();
-		Class cls = s_classToAdapterClassMap.get( sgClass );
-		if( cls != null ) {
-			//pass
-		} else {
-			StringBuffer sb = new StringBuffer();
-			while( sgClass != null ) {
-				Package sgPackage = sgClass.getPackage();
-				if( ( sgPackage != null ) && sgPackage.getName().equals( SCENEGRAPH_PACKAGE_NAME ) ) {
-					sb.append( RENDERER_PACKAGE_NAME );
-					break;
-				} else if( sgClass == CustomTexture.class ) {
-					sb.append( RENDERER_PACKAGE_NAME );
-					break;
-				} else if( ( sgPackage != null ) && sgPackage.getName().equals( SCENEGRAPH_GRAPHICS_PACKAGE_NAME ) ) {
-					sb.append( RENDERER_GRAPHICS_PACKAGE_NAME );
-					break;
-				} else if( ( sgPackage != null ) && sgPackage.getName().equals( SCENEGRAPH_ADORN_PACKAGE_NAME ) ) {
-					sb.append( RENDERER_ADORN_PACKAGE_NAME );
-					break;
-				} else {
-					sgClass = sgClass.getSuperclass();
-				}
-			}
-			assert sgClass != null;
-			sb.append( '.' );
-			sb.append( "Glr" );
-			sb.append( sgClass.getSimpleName() );
-			cls = ReflectionUtilities.getClassForName( sb.toString() );
-			if( cls != null ) {
-				register( sgClass, cls );
-			}
-		}
-		GLR rv;
-		if( cls != null ) {
-			try {
-				rv = (GLR)ReflectionUtilities.newInstance( cls );
-			} catch( Throwable t ) {
-				Logger.throwable( t, cls );
-				rv = null;
-			}
-		} else {
-			Logger.severe( "cannot find adapter for", sgClass );
-			rv = null;
-		}
-		return rv;
-	}
+  private static <SG extends Releasable, GLR extends GlrObject<SG>> GLR createAdapterFor(SG sgElement) {
+    Class sgClass = sgElement.getClass();
+    Class cls = s_classToAdapterClassMap.get(sgClass);
+    if (cls != null) {
+      //pass
+    } else {
+      StringBuffer sb = new StringBuffer();
+      while (sgClass != null) {
+        Package sgPackage = sgClass.getPackage();
+        if ((sgPackage != null) && sgPackage.getName().equals(SCENEGRAPH_PACKAGE_NAME)) {
+          sb.append(RENDERER_PACKAGE_NAME);
+          break;
+        } else if (sgClass == CustomTexture.class) {
+          sb.append(RENDERER_PACKAGE_NAME);
+          break;
+        } else if ((sgPackage != null) && sgPackage.getName().equals(SCENEGRAPH_GRAPHICS_PACKAGE_NAME)) {
+          sb.append(RENDERER_GRAPHICS_PACKAGE_NAME);
+          break;
+        } else if ((sgPackage != null) && sgPackage.getName().equals(SCENEGRAPH_ADORN_PACKAGE_NAME)) {
+          sb.append(RENDERER_ADORN_PACKAGE_NAME);
+          break;
+        } else {
+          sgClass = sgClass.getSuperclass();
+        }
+      }
+      assert sgClass != null;
+      sb.append('.');
+      sb.append("Glr");
+      sb.append(sgClass.getSimpleName());
+      cls = ReflectionUtilities.getClassForName(sb.toString());
+      if (cls != null) {
+        register(sgClass, cls);
+      }
+    }
+    GLR rv;
+    if (cls != null) {
+      try {
+        rv = (GLR) ReflectionUtilities.newInstance(cls);
+      } catch (Throwable t) {
+        Logger.throwable(t, cls);
+        rv = null;
+      }
+    } else {
+      Logger.severe("cannot find adapter for", sgClass);
+      rv = null;
+    }
+    return rv;
+  }
 
-	private static <SG extends Releasable, GLR extends GlrObject<SG>> GLR getAdapterForElement( SG sgElement ) {
-		GLR rv;
-		if( sgElement != null ) {
-			synchronized( s_elementToAdapterMap ) {
-				rv = (GLR)s_elementToAdapterMap.get( sgElement );
-				if( rv == null ) {
-					rv = createAdapterFor( sgElement );
-					if( rv != null ) {
-						s_elementToAdapterMap.put( sgElement, rv );
-						rv.initialize( sgElement );
-						ChangeHandler.addListeners( sgElement );
-						createNecessaryProxies( sgElement );
-					} else {
-						// todo
-						// edu.cmu.cs.dennisc.pattern.AbstractElement.warnln( "warning: could
-						// not create rv for: " + sgElement );
-					}
-				} else {
-					if( rv.getOwner() == null ) {
-						rv = null;
-						// todo
-						// edu.cmu.cs.dennisc.pattern.AbstractElement.warnln( sgElement + "'s
-						// rv has null for a sgElement" );
-					}
-				}
-			}
-		} else {
-			rv = null;
-		}
-		return rv;
-	}
+  private static <SG extends Releasable, GLR extends GlrObject<SG>> GLR getAdapterForElement(SG sgElement) {
+    GLR rv;
+    if (sgElement != null) {
+      synchronized (s_elementToAdapterMap) {
+        rv = (GLR) s_elementToAdapterMap.get(sgElement);
+        if (rv == null) {
+          rv = createAdapterFor(sgElement);
+          if (rv != null) {
+            s_elementToAdapterMap.put(sgElement, rv);
+            rv.initialize(sgElement);
+            ChangeHandler.addListeners(sgElement);
+            createNecessaryProxies(sgElement);
+          } else {
+            // todo
+            // edu.cmu.cs.dennisc.pattern.AbstractElement.warnln( "warning: could
+            // not create rv for: " + sgElement );
+          }
+        } else {
+          if (rv.getOwner() == null) {
+            rv = null;
+            // todo
+            // edu.cmu.cs.dennisc.pattern.AbstractElement.warnln( sgElement + "'s
+            // rv has null for a sgElement" );
+          }
+        }
+      }
+    } else {
+      rv = null;
+    }
+    return rv;
+  }
 
-	public static GlrObject<?> getAdapterFor( Releasable releasable ) {
-		return (GlrObject<?>)getAdapterForElement( releasable );
-	}
+  public static GlrObject<?> getAdapterFor(Releasable releasable) {
+    return (GlrObject<?>) getAdapterForElement(releasable);
+  }
 
-	public static GlrElement<?> getAdapterFor( Element sgElement ) {
-		return (GlrElement<?>)getAdapterForElement( sgElement );
-	}
+  public static GlrElement<?> getAdapterFor(Element sgElement) {
+    return (GlrElement<?>) getAdapterForElement(sgElement);
+  }
 
-	public static GlrAbstractCamera<?> getAdapterFor( AbstractCamera sgCamera ) {
-		return (GlrAbstractCamera<?>)getAdapterForElement( sgCamera );
-	}
+  public static GlrAbstractCamera<?> getAdapterFor(AbstractCamera sgCamera) {
+    return (GlrAbstractCamera<?>) getAdapterForElement(sgCamera);
+  }
 
-	public static GlrProjectionCamera getAdapterFor( ProjectionCamera sgProjectionCamera ) {
-		return (GlrProjectionCamera)getAdapterForElement( sgProjectionCamera );
-	}
+  public static GlrProjectionCamera getAdapterFor(ProjectionCamera sgProjectionCamera) {
+    return (GlrProjectionCamera) getAdapterForElement(sgProjectionCamera);
+  }
 
-	public static GlrOrthographicCamera getAdapterFor( OrthographicCamera sgOrthographicCamera ) {
-		return (GlrOrthographicCamera)getAdapterForElement( sgOrthographicCamera );
-	}
+  public static GlrOrthographicCamera getAdapterFor(OrthographicCamera sgOrthographicCamera) {
+    return (GlrOrthographicCamera) getAdapterForElement(sgOrthographicCamera);
+  }
 
-	public static GlrFrustumPerspectiveCamera getAdapterFor( FrustumPerspectiveCamera sgFrustumPerspectiveCamera ) {
-		return (GlrFrustumPerspectiveCamera)getAdapterForElement( sgFrustumPerspectiveCamera );
-	}
+  public static GlrFrustumPerspectiveCamera getAdapterFor(FrustumPerspectiveCamera sgFrustumPerspectiveCamera) {
+    return (GlrFrustumPerspectiveCamera) getAdapterForElement(sgFrustumPerspectiveCamera);
+  }
 
-	public static GlrSymmetricPerspectiveCamera getAdapterFor( SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera ) {
-		return (GlrSymmetricPerspectiveCamera)getAdapterForElement( sgSymmetricPerspectiveCamera );
-	}
+  public static GlrSymmetricPerspectiveCamera getAdapterFor(SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera) {
+    return (GlrSymmetricPerspectiveCamera) getAdapterForElement(sgSymmetricPerspectiveCamera);
+  }
 
-	public static GlrBackground getAdapterFor( Background sgBackground ) {
-		return (GlrBackground)getAdapterForElement( sgBackground );
-	}
+  public static GlrBackground getAdapterFor(Background sgBackground) {
+    return (GlrBackground) getAdapterForElement(sgBackground);
+  }
 
-	public static GlrComponent<?> getAdapterFor( Component sgComponent ) {
-		return (GlrComponent<?>)getAdapterForElement( sgComponent );
-	}
+  public static GlrComponent<?> getAdapterFor(Component sgComponent) {
+    return (GlrComponent<?>) getAdapterForElement(sgComponent);
+  }
 
-	public static GlrComposite<?> getAdapterFor( Composite sgComposite ) {
-		return (GlrComposite<?>)getAdapterForElement( sgComposite );
-	}
+  public static GlrComposite<?> getAdapterFor(Composite sgComposite) {
+    return (GlrComposite<?>) getAdapterForElement(sgComposite);
+  }
 
-	public static GlrAppearance<?> getAdapterFor( Appearance sgAppearance ) {
-		return (GlrAppearance<?>)getAdapterForElement( sgAppearance );
-	}
+  public static GlrAppearance<?> getAdapterFor(Appearance sgAppearance) {
+    return (GlrAppearance<?>) getAdapterForElement(sgAppearance);
+  }
 
-	public static GlrTexturedAppearance getAdapterFor( TexturedAppearance sgSingleAppearance ) {
-		return (GlrTexturedAppearance)getAdapterForElement( sgSingleAppearance );
-	}
+  public static GlrTexturedAppearance getAdapterFor(TexturedAppearance sgSingleAppearance) {
+    return (GlrTexturedAppearance) getAdapterForElement(sgSingleAppearance);
+  }
 
-	public static GlrMultipleAppearance getAdapterFor( MultipleAppearance sgMultipleAppearance ) {
-		return (GlrMultipleAppearance)getAdapterForElement( sgMultipleAppearance );
-	}
+  public static GlrMultipleAppearance getAdapterFor(MultipleAppearance sgMultipleAppearance) {
+    return (GlrMultipleAppearance) getAdapterForElement(sgMultipleAppearance);
+  }
 
-	public static GlrGeometry<?> getAdapterFor( Geometry sgGeometry ) {
-		return (GlrGeometry<?>)getAdapterForElement( sgGeometry );
-	}
+  public static GlrGeometry<?> getAdapterFor(Geometry sgGeometry) {
+    return (GlrGeometry<?>) getAdapterForElement(sgGeometry);
+  }
 
-	public static GlrScene getAdapterFor( Scene sgScene ) {
-		return (GlrScene)getAdapterForElement( sgScene );
-	}
+  public static GlrScene getAdapterFor(Scene sgScene) {
+    return (GlrScene) getAdapterForElement(sgScene);
+  }
 
-	public static GlrAbstractTransformable<?> getAdapterFor( AbstractTransformable sgTransformable ) {
-		return (GlrAbstractTransformable<?>)getAdapterForElement( sgTransformable );
-	}
+  public static GlrAbstractTransformable<?> getAdapterFor(AbstractTransformable sgTransformable) {
+    return (GlrAbstractTransformable<?>) getAdapterForElement(sgTransformable);
+  }
 
-	public static GlrTransformable<?> getAdapterFor( Transformable sgTransformable ) {
-		return (GlrTransformable<?>)getAdapterForElement( sgTransformable );
-	}
+  public static GlrTransformable<?> getAdapterFor(Transformable sgTransformable) {
+    return (GlrTransformable<?>) getAdapterForElement(sgTransformable);
+  }
 
-	public static GlrGhost getAdapterFor( Ghost sgGhost ) {
-		return (GlrGhost)getAdapterForElement( sgGhost );
-	}
+  public static GlrGhost getAdapterFor(Ghost sgGhost) {
+    return (GlrGhost) getAdapterForElement(sgGhost);
+  }
 
-	public static GlrTexture<?> getAdapterFor( Texture texture ) {
-		return (GlrTexture<?>)getAdapterForElement( texture );
-	}
+  public static GlrTexture<?> getAdapterFor(Texture texture) {
+    return (GlrTexture<?>) getAdapterForElement(texture);
+  }
 
-	public static GlrLayer getAdapterFor( Layer sgLayer ) {
-		return (GlrLayer)getAdapterForElement( sgLayer );
-	}
+  public static GlrLayer getAdapterFor(Layer sgLayer) {
+    return (GlrLayer) getAdapterForElement(sgLayer);
+  }
 
-	public static GlrGraphic<?> getAdapterFor( Graphic sgGraphic ) {
-		return (GlrGraphic<?>)getAdapterForElement( sgGraphic );
-	}
+  public static GlrGraphic<?> getAdapterFor(Graphic sgGraphic) {
+    return (GlrGraphic<?>) getAdapterForElement(sgGraphic);
+  }
 
-	public static GlrSilhouette getAdapterFor( Silhouette sgSilhouette ) {
-		return (GlrSilhouette)getAdapterForElement( sgSilhouette );
-	}
+  public static GlrSilhouette getAdapterFor(Silhouette sgSilhouette) {
+    return (GlrSilhouette) getAdapterForElement(sgSilhouette);
+  }
 
-	public static <E extends GlrObject> E[] getAdaptersFor( Releasable[] sgElements, Class<? extends E> componentType ) {
-		if( sgElements != null ) {
-			E[] proxies = (E[])Array.newInstance( componentType, sgElements.length );
-			for( int i = 0; i < sgElements.length; i++ ) {
-				proxies[ i ] = (E)getAdapterForElement( sgElements[ i ] );
-			}
-			return proxies;
-		} else {
-			return null;
-		}
-	}
+  public static <E extends GlrObject> E[] getAdaptersFor(Releasable[] sgElements, Class<? extends E> componentType) {
+    if (sgElements != null) {
+      E[] proxies = (E[]) Array.newInstance(componentType, sgElements.length);
+      for (int i = 0; i < sgElements.length; i++) {
+        proxies[i] = (E) getAdapterForElement(sgElements[i]);
+      }
+      return proxies;
+    } else {
+      return null;
+    }
+  }
 
-	public static void forget( Releasable sgElement ) {
-		synchronized( s_elementToAdapterMap ) {
-			s_elementToAdapterMap.remove( sgElement );
-		}
-	}
+  public static void forget(Releasable sgElement) {
+    synchronized (s_elementToAdapterMap) {
+      s_elementToAdapterMap.remove(sgElement);
+    }
+  }
 }

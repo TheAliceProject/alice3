@@ -57,47 +57,47 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSaveOperation extends UriActionOperation {
-	AbstractSaveOperation( UUID id ) {
-		super( id );
-	}
+  AbstractSaveOperation(UUID id) {
+    super(id);
+  }
 
-	protected abstract boolean isPromptNecessary( File file );
+  protected abstract boolean isPromptNecessary(File file);
 
-	protected abstract File getDefaultDirectory( StageIDE application );
+  protected abstract File getDefaultDirectory(StageIDE application);
 
-	protected abstract String getExtension();
+  protected abstract String getExtension();
 
-	protected abstract void save( ProjectApplication application, File file ) throws IOException;
+  protected abstract void save(ProjectApplication application, File file) throws IOException;
 
-	protected abstract String getInitialFilename();
+  protected abstract String getInitialFilename();
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		StageIDE application = StageIDE.getActiveInstance();
-		URI uri = application.getUri();
-		File filePrevious = UriUtilities.getFile( uri );
-		boolean isExceptionRaised = false;
-		do {
-			File fileNext;
-			if( isExceptionRaised || this.isPromptNecessary( filePrevious ) ) {
-				fileNext = application.getDocumentFrame().showSaveFileDialog( this.getDefaultDirectory( application ), this.getInitialFilename(), this.getExtension(), true );
-			} else {
-				fileNext = filePrevious;
-			}
-			isExceptionRaised = false;
-			if( fileNext != null ) {
-				try {
-					this.save( application, fileNext );
-				} catch( IOException ioe ) {
-					isExceptionRaised = true;
-					Dialogs.showError( "Unable to save file", ioe.getMessage() );
-				}
-				if ( !isExceptionRaised ) {
-					activity.finish();
-				}
-			} else {
-				activity.cancel();
-			}
-		} while( isExceptionRaised );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    StageIDE application = StageIDE.getActiveInstance();
+    URI uri = application.getUri();
+    File filePrevious = UriUtilities.getFile(uri);
+    boolean isExceptionRaised = false;
+    do {
+      File fileNext;
+      if (isExceptionRaised || this.isPromptNecessary(filePrevious)) {
+        fileNext = application.getDocumentFrame().showSaveFileDialog(this.getDefaultDirectory(application), this.getInitialFilename(), this.getExtension(), true);
+      } else {
+        fileNext = filePrevious;
+      }
+      isExceptionRaised = false;
+      if (fileNext != null) {
+        try {
+          this.save(application, fileNext);
+        } catch (IOException ioe) {
+          isExceptionRaised = true;
+          Dialogs.showError("Unable to save file", ioe.getMessage());
+        }
+        if (!isExceptionRaised) {
+          activity.finish();
+        }
+      } else {
+        activity.cancel();
+      }
+    } while (isExceptionRaised);
+  }
 }

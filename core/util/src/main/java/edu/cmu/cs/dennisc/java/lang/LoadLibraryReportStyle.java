@@ -46,7 +46,5 @@ package edu.cmu.cs.dennisc.java.lang;
  * @author Dennis Cosgrove
  */
 public enum LoadLibraryReportStyle {
-	EXCEPTION,
-	SEVERE,
-	SILENT
+  EXCEPTION, SEVERE, SILENT
 }

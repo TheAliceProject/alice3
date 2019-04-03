@@ -51,30 +51,30 @@ import javax.swing.JOptionPane;
  * @author Dennis Cosgrove
  */
 public class AliceIdeIssueConfiguration extends IdeIssueConfiguration {
-	@Override
-	public String getApplicationName() {
-		return "Alice";
-	}
+  @Override
+  public String getApplicationName() {
+    return "Alice";
+  }
 
-	@Override
-	public String getDownloadUrlSpec() {
-		return "http://www.alice.org/get-alice/alice-3";
-	}
+  @Override
+  public String getDownloadUrlSpec() {
+    return "http://www.alice.org/get-alice/alice-3";
+  }
 
-	@Override
-	public String getDownloadUrlText() {
-		return this.getDownloadUrlSpec();
-	}
+  @Override
+  public String getDownloadUrlText() {
+    return this.getDownloadUrlSpec();
+  }
 
-	@Override
-	public void submit( JSubmitPane jSubmitPane ) {
-		ApplicationIssueConfiguration config = jSubmitPane.getConfig();
-		int option = JOptionPane.showConfirmDialog( jSubmitPane, "Submitting your current project might greatly help the " + config.getApplicationName() + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + config.getApplicationName() + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", JOptionPane.YES_NO_CANCEL_OPTION );
-		if( option == JOptionPane.CANCEL_OPTION ) {
-			//pass
-		} else {
-			jSubmitPane.setSubmitAttempted( true );
-			new AliceIssueSubmissionProgressWorker( jSubmitPane, option == JOptionPane.YES_OPTION ).execute();
-		}
-	}
+  @Override
+  public void submit(JSubmitPane jSubmitPane) {
+    ApplicationIssueConfiguration config = jSubmitPane.getConfig();
+    int option = JOptionPane.showConfirmDialog(jSubmitPane, "Submitting your current project might greatly help the " + config.getApplicationName() + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + config.getApplicationName() + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", JOptionPane.YES_NO_CANCEL_OPTION);
+    if (option == JOptionPane.CANCEL_OPTION) {
+      //pass
+    } else {
+      jSubmitPane.setSubmitAttempted(true);
+      new AliceIssueSubmissionProgressWorker(jSubmitPane, option == JOptionPane.YES_OPTION).execute();
+    }
+  }
 }

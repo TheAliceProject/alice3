@@ -83,353 +83,354 @@ import java.awt.geom.Rectangle2D;
  * @author Dennis Cosgrove
  */
 public class JImageEditorView extends JComponent {
-	private static final int CLICK_THRESHOLD = 3;
-	private static final Paint CROP_PAINT = new Color( 0, 0, 0, 127 );
+  private static final int CLICK_THRESHOLD = 3;
+  private static final Paint CROP_PAINT = new Color(0, 0, 0, 127);
 
-	private static Shape createShape( Point a, Point b, double scale, Rectangle cropRectangle ) {
-		int x = Math.min( a.x, b.x );
-		int y = Math.min( a.y, b.y );
-		int width = Math.abs( b.x - a.x );
-		int height = Math.abs( b.y - a.y );
+  private static Shape createShape(Point a, Point b, double scale, Rectangle cropRectangle) {
+    int x = Math.min(a.x, b.x);
+    int y = Math.min(a.y, b.y);
+    int width = Math.abs(b.x - a.x);
+    int height = Math.abs(b.y - a.y);
 
-		x -= 1;
-		y -= 1;
+    x -= 1;
+    y -= 1;
 
-		if( ( width > CLICK_THRESHOLD ) || ( height > CLICK_THRESHOLD ) ) {
-			double sx = x / scale;
-			double sy = y / scale;
-			double sw = width / scale;
-			double sh = height / scale;
-			if( cropRectangle != null ) {
-				sx += cropRectangle.x;
-				sy += cropRectangle.y;
-			}
-			return new Rectangle2D.Double( sx, sy, sw, sh );
-		} else {
-			return null;
-		}
-	}
+    if ((width > CLICK_THRESHOLD) || (height > CLICK_THRESHOLD)) {
+      double sx = x / scale;
+      double sy = y / scale;
+      double sw = width / scale;
+      double sh = height / scale;
+      if (cropRectangle != null) {
+        sx += cropRectangle.x;
+        sy += cropRectangle.y;
+      }
+      return new Rectangle2D.Double(sx, sy, sw, sh);
+    } else {
+      return null;
+    }
+  }
 
-	private static final Stroke SHAPE_STROKE = new BasicStroke( 8.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
-	private static final Stroke OUTLINE_STROKE = new BasicStroke( 0.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 8.0f, new float[] { 8.0f }, 0.0f );
-	private static final KeyStroke ESCAPE_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_ESCAPE, 0 );
-	private static final KeyStroke CLEAR_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_X, InputEvent.CTRL_MASK );
+  private static final Stroke SHAPE_STROKE = new BasicStroke(8.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+  private static final Stroke OUTLINE_STROKE = new BasicStroke(0.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 8.0f, new float[] {8.0f}, 0.0f);
+  private static final KeyStroke ESCAPE_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+  private static final KeyStroke CLEAR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK);
 
-	private static final Stroke[] DROP_SHADOW_STROKES;
-	static {
-		final int N = 5;
-		DROP_SHADOW_STROKES = new Stroke[ N ];
-		for( int i = 0; i < N; i++ ) {
-			DROP_SHADOW_STROKES[ i ] = new BasicStroke( ( i + 1 ) * 5.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
-		}
-	};
+  private static final Stroke[] DROP_SHADOW_STROKES;
 
-	private static final Paint DROP_SHADOW_PAINT = new Color( 127, 127, 127, 15 );
+  static {
+    final int N = 5;
+    DROP_SHADOW_STROKES = new Stroke[N];
+    for (int i = 0; i < N; i++) {
+      DROP_SHADOW_STROKES[i] = new BasicStroke((i + 1) * 5.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    }
+  }
 
-	private static Point getClampedPoint( MouseEvent e ) {
-		Component awtComponent = e.getComponent();
-		Point rv = e.getPoint();
-		rv.x = Math.min( Math.max( 1, e.getX() ), awtComponent.getWidth() - 2 );
-		rv.y = Math.min( Math.max( 1, e.getY() ), awtComponent.getHeight() - 2 );
-		return rv;
-	}
+  private static final Paint DROP_SHADOW_PAINT = new Color(127, 127, 127, 15);
 
-	private final MouseListener mouseListener = new MouseListener() {
-		@Override
-		public void mousePressed( MouseEvent e ) {
-			if( e.getButton() == MouseEvent.BUTTON1 ) {
-				ptPressed = getClampedPoint( e );
-			} else {
-				ptPressed = null;
-			}
-		}
+  private static Point getClampedPoint(MouseEvent e) {
+    Component awtComponent = e.getComponent();
+    Point rv = e.getPoint();
+    rv.x = Math.min(Math.max(1, e.getX()), awtComponent.getWidth() - 2);
+    rv.y = Math.min(Math.max(1, e.getY()), awtComponent.getHeight() - 2);
+    return rv;
+  }
 
-		@Override
-		public void mouseReleased( MouseEvent e ) {
-			if( ptPressed != null ) {
-				handleMouseReleased( e );
-				ptPressed = null;
-				ptDragged = null;
-				repaint();
-			}
-		}
+  private final MouseListener mouseListener = new MouseListener() {
+    @Override
+    public void mousePressed(MouseEvent e) {
+      if (e.getButton() == MouseEvent.BUTTON1) {
+        ptPressed = getClampedPoint(e);
+      } else {
+        ptPressed = null;
+      }
+    }
 
-		@Override
-		public void mouseClicked( MouseEvent e ) {
-		}
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      if (ptPressed != null) {
+        handleMouseReleased(e);
+        ptPressed = null;
+        ptDragged = null;
+        repaint();
+      }
+    }
 
-		@Override
-		public void mouseEntered( MouseEvent e ) {
-		}
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseExited( MouseEvent e ) {
-		}
-	};
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-	private final MouseMotionListener mouseMotionListener = new MouseMotionListener() {
-		@Override
-		public void mouseMoved( MouseEvent e ) {
-		}
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+  };
 
-		@Override
-		public void mouseDragged( MouseEvent e ) {
-			if( ptPressed != null ) {
-				ptDragged = e.getPoint();
-				repaint();
-			}
-		}
-	};
+  private final MouseMotionListener mouseMotionListener = new MouseMotionListener() {
+    @Override
+    public void mouseMoved(MouseEvent e) {
+    }
 
-	private final ActionListener escapeListener = new ActionListener() {
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			ptPressed = null;
-			ptDragged = null;
-			repaint();
-		}
-	};
+    @Override
+    public void mouseDragged(MouseEvent e) {
+      if (ptPressed != null) {
+        ptDragged = e.getPoint();
+        repaint();
+      }
+    }
+  };
 
-	private Point ptPressed;
-	private Point ptDragged;
+  private final ActionListener escapeListener = new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      ptPressed = null;
+      ptDragged = null;
+      repaint();
+    }
+  };
 
-	private final ImageEditorFrame imageEditorFrame;
+  private Point ptPressed;
+  private Point ptDragged;
 
-	public JImageEditorView( ImageEditorFrame imageEditorFrame ) {
-		this.imageEditorFrame = imageEditorFrame;
-	}
+  private final ImageEditorFrame imageEditorFrame;
 
-	private void handleMouseReleased( final MouseEvent e ) {
-		Point p = getClampedPoint( e );
-		Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
-		Shape shape = createShape( ptPressed, p, getScale(), crop );
-		Tool tool = this.imageEditorFrame.getToolState().getValue();
-		if( tool == Tool.ADD_RECTANGLE ) {
-			if( shape != null ) {
-				// NB This activity is not expected to have any child activities
-				UserActivity activity = MouseEventTrigger.createUserActivity( e );
-				AddShapeEdit edit = new AddShapeEdit( activity, shape, imageEditorFrame );
-				activity.commitAndInvokeDo( edit );
-			}
-		} else if( tool == Tool.CROP_SELECT ) {
-			this.imageEditorFrame.getCropSelectHolder().setValue( shape != null ? shape.getBounds() : null );
-		}
-	}
+  public JImageEditorView(ImageEditorFrame imageEditorFrame) {
+    this.imageEditorFrame = imageEditorFrame;
+  }
 
-	private void drawShapes( Graphics2D g2, AffineTransform mOriginal ) {
-		Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
+  private void handleMouseReleased(final MouseEvent e) {
+    Point p = getClampedPoint(e);
+    Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
+    Shape shape = createShape(ptPressed, p, getScale(), crop);
+    Tool tool = this.imageEditorFrame.getToolState().getValue();
+    if (tool == Tool.ADD_RECTANGLE) {
+      if (shape != null) {
+        // NB This activity is not expected to have any child activities
+        UserActivity activity = MouseEventTrigger.createUserActivity(e);
+        AddShapeEdit edit = new AddShapeEdit(activity, shape, imageEditorFrame);
+        activity.commitAndInvokeDo(edit);
+      }
+    } else if (tool == Tool.CROP_SELECT) {
+      this.imageEditorFrame.getCropSelectHolder().setValue(shape != null ? shape.getBounds() : null);
+    }
+  }
 
-		Stroke prevStroke = g2.getStroke();
-		Object prevAntialias = g2.getRenderingHint( RenderingHints.KEY_ANTIALIASING );
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+  private void drawShapes(Graphics2D g2, AffineTransform mOriginal) {
+    Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
 
-		if( imageEditorFrame.getDropShadowState().getValue() ) {
-			final int DROP_SHADOW_OFFSET = 8;
-			g2.translate( DROP_SHADOW_OFFSET, DROP_SHADOW_OFFSET );
-			g2.setPaint( DROP_SHADOW_PAINT );
-			for( Stroke stroke : DROP_SHADOW_STROKES ) {
-				g2.setStroke( stroke );
-				for( Shape shape : imageEditorFrame.getShapes() ) {
-					g2.draw( shape );
-				}
-			}
-			g2.translate( -DROP_SHADOW_OFFSET, -DROP_SHADOW_OFFSET );
-		}
+    Stroke prevStroke = g2.getStroke();
+    Object prevAntialias = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		g2.setPaint( Color.RED );
-		g2.setStroke( SHAPE_STROKE );
-		for( Shape shape : imageEditorFrame.getShapes() ) {
-			g2.draw( shape );
-		}
+    if (imageEditorFrame.getDropShadowState().getValue()) {
+      final int DROP_SHADOW_OFFSET = 8;
+      g2.translate(DROP_SHADOW_OFFSET, DROP_SHADOW_OFFSET);
+      g2.setPaint(DROP_SHADOW_PAINT);
+      for (Stroke stroke : DROP_SHADOW_STROKES) {
+        g2.setStroke(stroke);
+        for (Shape shape : imageEditorFrame.getShapes()) {
+          g2.draw(shape);
+        }
+      }
+      g2.translate(-DROP_SHADOW_OFFSET, -DROP_SHADOW_OFFSET);
+    }
 
-		Shape cropShape = null;
+    g2.setPaint(Color.RED);
+    g2.setStroke(SHAPE_STROKE);
+    for (Shape shape : imageEditorFrame.getShapes()) {
+      g2.draw(shape);
+    }
 
-		boolean isInTheMidstOfDragging = ( ptPressed != null ) && ( ptDragged != null );
-		Tool tool = this.imageEditorFrame.getToolState().getValue();
-		if( isInTheMidstOfDragging ) {
-			Shape shape = createShape( ptPressed, ptDragged, this.getScale(), crop );
-			if( shape != null ) {
-				if( tool == Tool.ADD_RECTANGLE ) {
-					g2.draw( shape );
-				} else if( tool == Tool.CROP_SELECT ) {
-					cropShape = shape;
-				}
-			}
-		}
+    Shape cropShape = null;
 
-		Rectangle selection = this.imageEditorFrame.getCropSelectHolder().getValue();
-		if( selection != null ) {
-			if( cropShape != null ) {
-				// pass
-			} else {
-				cropShape = selection;
-			}
-		}
+    boolean isInTheMidstOfDragging = (ptPressed != null) && (ptDragged != null);
+    Tool tool = this.imageEditorFrame.getToolState().getValue();
+    if (isInTheMidstOfDragging) {
+      Shape shape = createShape(ptPressed, ptDragged, this.getScale(), crop);
+      if (shape != null) {
+        if (tool == Tool.ADD_RECTANGLE) {
+          g2.draw(shape);
+        } else if (tool == Tool.CROP_SELECT) {
+          cropShape = shape;
+        }
+      }
+    }
 
-		if( cropShape != null ) {
-			try {
-				AffineTransform m = g2.getTransform();
-				Point2D.Double ptA = new Point2D.Double( 0, 0 );
-				Point2D.Double ptB = new Point2D.Double( this.getWidth(), this.getHeight() );
-				mOriginal.transform( ptA, ptA );
-				mOriginal.transform( ptB, ptB );
-				m.inverseTransform( ptA, ptA );
-				m.inverseTransform( ptB, ptB );
+    Rectangle selection = this.imageEditorFrame.getCropSelectHolder().getValue();
+    if (selection != null) {
+      if (cropShape != null) {
+        // pass
+      } else {
+        cropShape = selection;
+      }
+    }
 
-				Shape bounds = new Rectangle2D.Double( ptA.getX(), ptA.getY(), ptB.getX() - ptA.getX(), ptB.getY() - ptA.getY() );
-				Area area = AreaUtilities.createSubtraction( bounds, cropShape );
-				g2.setPaint( CROP_PAINT );
-				g2.fill( area );
-			} catch( NoninvertibleTransformException nte ) {
-				throw new RuntimeException( nte );
-			}
-		}
+    if (cropShape != null) {
+      try {
+        AffineTransform m = g2.getTransform();
+        Point2D.Double ptA = new Point2D.Double(0, 0);
+        Point2D.Double ptB = new Point2D.Double(this.getWidth(), this.getHeight());
+        mOriginal.transform(ptA, ptA);
+        mOriginal.transform(ptB, ptB);
+        m.inverseTransform(ptA, ptA);
+        m.inverseTransform(ptB, ptB);
 
-		g2.setStroke( prevStroke );
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, prevAntialias );
-	}
+        Shape bounds = new Rectangle2D.Double(ptA.getX(), ptA.getY(), ptB.getX() - ptA.getX(), ptB.getY() - ptA.getY());
+        Area area = AreaUtilities.createSubtraction(bounds, cropShape);
+        g2.setPaint(CROP_PAINT);
+        g2.fill(area);
+      } catch (NoninvertibleTransformException nte) {
+        throw new RuntimeException(nte);
+      }
+    }
 
-	private int getImageResolution() {
-		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: getImageResolution()" );
-		return 300;
-	}
+    g2.setStroke(prevStroke);
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialias);
+  }
 
-	private int getScreenResolution() {
-		return ToolkitUtilities.getScreenResolution( this );
-	}
+  private int getImageResolution() {
+    //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: getImageResolution()" );
+    return 300;
+  }
 
-	private double getScale() {
-		if( imageEditorFrame.getShowInScreenResolutionState().getValue() ) {
-			return this.getScreenResolution() / (double)this.getImageResolution();
-		} else {
-			return 1.0;
-		}
-	}
+  private int getScreenResolution() {
+    return ToolkitUtilities.getScreenResolution(this);
+  }
 
-	private int scaledImageWidth = -1;
-	private int scaledImageHeight = -1;
-	private Image scaledImage = null;
+  private double getScale() {
+    if (imageEditorFrame.getShowInScreenResolutionState().getValue()) {
+      return this.getScreenResolution() / (double) this.getImageResolution();
+    } else {
+      return 1.0;
+    }
+  }
 
-	private Image getScaledImage( Image image, int width, int height ) {
-		if( ( width != this.scaledImageWidth ) || ( height != this.scaledImageHeight ) ) {
-			this.scaledImage = null;
-		}
-		if( this.scaledImage != null ) {
-			//pass
-		} else {
-			this.scaledImageWidth = width;
-			this.scaledImageHeight = height;
-			this.scaledImage = image.getScaledInstance( this.scaledImageWidth, this.scaledImageHeight, Image.SCALE_SMOOTH );
-		}
-		return this.scaledImage;
-	}
+  private int scaledImageWidth = -1;
+  private int scaledImageHeight = -1;
+  private Image scaledImage = null;
 
-	@Override
-	protected void paintComponent( Graphics g ) {
-		super.paintComponent( g );
-		Graphics2D g2 = (Graphics2D)g;
+  private Image getScaledImage(Image image, int width, int height) {
+    if ((width != this.scaledImageWidth) || (height != this.scaledImageHeight)) {
+      this.scaledImage = null;
+    }
+    if (this.scaledImage != null) {
+      //pass
+    } else {
+      this.scaledImageWidth = width;
+      this.scaledImageHeight = height;
+      this.scaledImage = image.getScaledInstance(this.scaledImageWidth, this.scaledImageHeight, Image.SCALE_SMOOTH);
+    }
+    return this.scaledImage;
+  }
 
-		Image image = imageEditorFrame.getImageHolder().getValue();
+  @Override
+  protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    Graphics2D g2 = (Graphics2D) g;
 
-		if( image != null ) {
-			AffineTransform m = g2.getTransform();
-			g2.translate( 1, 1 );
-			Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
-			double scale = this.getScale();
-			if( scale != 1.0 ) {
-				int imageWidth = image.getWidth( this );
-				int imageHeight = image.getHeight( this );
-				int scaledImageWidth = (int)Math.ceil( imageWidth * scale );
-				int scaledImageHeight = (int)Math.ceil( imageHeight * scale );
-				if( crop != null ) {
-					g2.scale( scale, scale );
-					if( crop != null ) {
-						g2.translate( -crop.x, -crop.y );
-					}
-					g2.drawImage( image, 0, 0, this );
-				} else {
-					g2.drawImage( this.getScaledImage( image, scaledImageWidth, scaledImageHeight ), 0, 0, this );
-					g2.scale( scale, scale );
-				}
-			} else {
-				if( crop != null ) {
-					g2.translate( -crop.x, -crop.y );
-				}
-				g2.drawImage( image, 0, 0, this );
-			}
+    Image image = imageEditorFrame.getImageHolder().getValue();
 
-			this.drawShapes( g2, m );
-			g2.setTransform( m );
-		}
-		if( imageEditorFrame.getShowDashedBorderState().getValue() ) {
-			Stroke prevStroke = g2.getStroke();
-			g2.setColor( Color.DARK_GRAY );
-			g2.setStroke( OUTLINE_STROKE );
-			g2.drawRect( 0, 0, this.getWidth() - 1, this.getHeight() - 1 );
-			g2.setStroke( prevStroke );
-		}
-	}
+    if (image != null) {
+      AffineTransform m = g2.getTransform();
+      g2.translate(1, 1);
+      Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
+      double scale = this.getScale();
+      if (scale != 1.0) {
+        int imageWidth = image.getWidth(this);
+        int imageHeight = image.getHeight(this);
+        int scaledImageWidth = (int) Math.ceil(imageWidth * scale);
+        int scaledImageHeight = (int) Math.ceil(imageHeight * scale);
+        if (crop != null) {
+          g2.scale(scale, scale);
+          if (crop != null) {
+            g2.translate(-crop.x, -crop.y);
+          }
+          g2.drawImage(image, 0, 0, this);
+        } else {
+          g2.drawImage(this.getScaledImage(image, scaledImageWidth, scaledImageHeight), 0, 0, this);
+          g2.scale(scale, scale);
+        }
+      } else {
+        if (crop != null) {
+          g2.translate(-crop.x, -crop.y);
+        }
+        g2.drawImage(image, 0, 0, this);
+      }
 
-	/* package-private */void render( Graphics2D g2 ) {
-		Image image = imageEditorFrame.getImageHolder().getValue();
-		if( image != null ) {
-			Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
-			if( crop != null ) {
-				g2.translate( -crop.x, -crop.y );
-			}
-			g2.drawImage( image, 0, 0, this );
-			this.drawShapes( g2, g2.getTransform() );
-		} else {
-			Logger.severe( this );
-		}
-	}
+      this.drawShapes(g2, m);
+      g2.setTransform(m);
+    }
+    if (imageEditorFrame.getShowDashedBorderState().getValue()) {
+      Stroke prevStroke = g2.getStroke();
+      g2.setColor(Color.DARK_GRAY);
+      g2.setStroke(OUTLINE_STROKE);
+      g2.drawRect(0, 0, this.getWidth() - 1, this.getHeight() - 1);
+      g2.setStroke(prevStroke);
+    }
+  }
 
-	@Override
-	public Dimension getMinimumSize() {
-		return this.getPreferredSize();
-	}
+  /* package-private */void render(Graphics2D g2) {
+    Image image = imageEditorFrame.getImageHolder().getValue();
+    if (image != null) {
+      Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
+      if (crop != null) {
+        g2.translate(-crop.x, -crop.y);
+      }
+      g2.drawImage(image, 0, 0, this);
+      this.drawShapes(g2, g2.getTransform());
+    } else {
+      Logger.severe(this);
+    }
+  }
 
-	@Override
-	public Dimension getPreferredSize() {
-		Image image = imageEditorFrame.getImageHolder().getValue();
-		if( image != null ) {
-			Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
-			int srcWidth = image.getWidth( this );
-			int srcHeight = image.getHeight( this );
-			int width;
-			int height;
-			if( crop != null ) {
-				srcWidth = crop.width;
-				srcHeight = crop.height;
-			}
-			if( imageEditorFrame.getShowInScreenResolutionState().getValue() ) {
-				double scale = this.getScale();
-				width = (int)Math.ceil( srcWidth * scale );
-				height = (int)Math.ceil( srcHeight * scale );
-			} else {
-				width = srcWidth;
-				height = srcHeight;
-			}
-			return new Dimension( width + 2, height + 2 );
-		} else {
-			return super.getPreferredSize();
-		}
-	}
+  @Override
+  public Dimension getMinimumSize() {
+    return this.getPreferredSize();
+  }
 
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		this.addMouseListener( this.mouseListener );
-		this.addMouseMotionListener( this.mouseMotionListener );
-		this.registerKeyboardAction( this.escapeListener, ESCAPE_KEY_STROKE, JComponent.WHEN_IN_FOCUSED_WINDOW );
-	}
+  @Override
+  public Dimension getPreferredSize() {
+    Image image = imageEditorFrame.getImageHolder().getValue();
+    if (image != null) {
+      Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
+      int srcWidth = image.getWidth(this);
+      int srcHeight = image.getHeight(this);
+      int width;
+      int height;
+      if (crop != null) {
+        srcWidth = crop.width;
+        srcHeight = crop.height;
+      }
+      if (imageEditorFrame.getShowInScreenResolutionState().getValue()) {
+        double scale = this.getScale();
+        width = (int) Math.ceil(srcWidth * scale);
+        height = (int) Math.ceil(srcHeight * scale);
+      } else {
+        width = srcWidth;
+        height = srcHeight;
+      }
+      return new Dimension(width + 2, height + 2);
+    } else {
+      return super.getPreferredSize();
+    }
+  }
 
-	@Override
-	public void removeNotify() {
-		this.unregisterKeyboardAction( CLEAR_KEY_STROKE );
-		this.unregisterKeyboardAction( ESCAPE_KEY_STROKE );
-		this.removeMouseMotionListener( this.mouseMotionListener );
-		this.removeMouseListener( this.mouseListener );
-		super.removeNotify();
-	}
-};
+  @Override
+  public void addNotify() {
+    super.addNotify();
+    this.addMouseListener(this.mouseListener);
+    this.addMouseMotionListener(this.mouseMotionListener);
+    this.registerKeyboardAction(this.escapeListener, ESCAPE_KEY_STROKE, JComponent.WHEN_IN_FOCUSED_WINDOW);
+  }
+
+  @Override
+  public void removeNotify() {
+    this.unregisterKeyboardAction(CLEAR_KEY_STROKE);
+    this.unregisterKeyboardAction(ESCAPE_KEY_STROKE);
+    this.removeMouseMotionListener(this.mouseMotionListener);
+    this.removeMouseListener(this.mouseListener);
+    super.removeNotify();
+  }
+}

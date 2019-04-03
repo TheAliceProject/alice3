@@ -50,58 +50,56 @@ import edu.cmu.cs.dennisc.animation.AnimationObserver;
  *
  */
 public abstract class OpenUpdateCloseOverlayGraphicAnimation extends AbstractAnimation {
-	protected static enum State {
-		OPENNING,
-		UPDATING,
-		CLOSING,
-	}
+  protected static enum State {
+    OPENNING, UPDATING, CLOSING,
+  }
 
-	public OpenUpdateCloseOverlayGraphicAnimation( double openingDuration, double updatingDuration, double closingDuration ) {
-		this.openingDuration = openingDuration;
-		this.updatingDuration = updatingDuration;
-		this.closingDuration = closingDuration;
-	}
+  public OpenUpdateCloseOverlayGraphicAnimation(double openingDuration, double updatingDuration, double closingDuration) {
+    this.openingDuration = openingDuration;
+    this.updatingDuration = updatingDuration;
+    this.closingDuration = closingDuration;
+  }
 
-	protected abstract void updateStateAndPortion( State state, double portion );
+  protected abstract void updateStateAndPortion(State state, double portion);
 
-	@Override
-	protected final void prologue() {
-		this.updateStateAndPortion( State.OPENNING, 0.0 );
-	}
+  @Override
+  protected final void prologue() {
+    this.updateStateAndPortion(State.OPENNING, 0.0);
+  }
 
-	@Override
-	protected final double update( double deltaSincePrologue, double deltaSinceLastUpdate, AnimationObserver animationObserver ) {
-		State state;
-		double portion;
-		if( ( this.openingDuration > 0.0 ) && ( deltaSincePrologue <= this.openingDuration ) ) {
-			state = State.OPENNING;
-			portion = deltaSincePrologue / this.openingDuration;
-		} else if( ( this.updatingDuration > 0.0 ) && ( deltaSincePrologue <= ( this.openingDuration + this.updatingDuration ) ) ) {
-			state = State.UPDATING;
-			portion = ( deltaSincePrologue - this.openingDuration ) / this.updatingDuration;
-		} else {
-			state = State.CLOSING;
-			if( this.closingDuration > 0.0 ) {
-				portion = Math.min( ( deltaSincePrologue - this.openingDuration - this.updatingDuration ) / this.closingDuration, 1.0 );
-			} else {
-				portion = 1.0;
-			}
-		}
-		this.updateStateAndPortion( state, portion );
-		double toReturn = ( this.openingDuration + this.updatingDuration + this.closingDuration ) - deltaSincePrologue;
-		return toReturn;
-	}
+  @Override
+  protected final double update(double deltaSincePrologue, double deltaSinceLastUpdate, AnimationObserver animationObserver) {
+    State state;
+    double portion;
+    if ((this.openingDuration > 0.0) && (deltaSincePrologue <= this.openingDuration)) {
+      state = State.OPENNING;
+      portion = deltaSincePrologue / this.openingDuration;
+    } else if ((this.updatingDuration > 0.0) && (deltaSincePrologue <= (this.openingDuration + this.updatingDuration))) {
+      state = State.UPDATING;
+      portion = (deltaSincePrologue - this.openingDuration) / this.updatingDuration;
+    } else {
+      state = State.CLOSING;
+      if (this.closingDuration > 0.0) {
+        portion = Math.min((deltaSincePrologue - this.openingDuration - this.updatingDuration) / this.closingDuration, 1.0);
+      } else {
+        portion = 1.0;
+      }
+    }
+    this.updateStateAndPortion(state, portion);
+    double toReturn = (this.openingDuration + this.updatingDuration + this.closingDuration) - deltaSincePrologue;
+    return toReturn;
+  }
 
-	@Override
-	protected void preEpilogue() {
-	}
+  @Override
+  protected void preEpilogue() {
+  }
 
-	@Override
-	protected final void epilogue() {
-		this.updateStateAndPortion( State.CLOSING, 1.0 );
-	}
+  @Override
+  protected final void epilogue() {
+    this.updateStateAndPortion(State.CLOSING, 1.0);
+  }
 
-	private final double openingDuration;
-	private final double updatingDuration;
-	private final double closingDuration;
+  private final double openingDuration;
+  private final double updatingDuration;
+  private final double closingDuration;
 }

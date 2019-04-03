@@ -55,20 +55,16 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public abstract class OutfitTabView extends BorderPanel {
-	public OutfitTabView( OutfitTabComposite<?> composite ) {
-		super( composite );
-		Color backgroundColor = IngredientsView.BACKGROUND_COLOR;
-		IngredientsComposite ingredientsComposite = PersonResourceComposite.getInstance().getIngredientsComposite();
-		Slider slider = ingredientsComposite.getObesityLevelState().createSlider();
-		slider.setBackgroundColor( backgroundColor );
+  public OutfitTabView(OutfitTabComposite<?> composite) {
+    super(composite);
+    Color backgroundColor = IngredientsView.BACKGROUND_COLOR;
+    IngredientsComposite ingredientsComposite = PersonResourceComposite.getInstance().getIngredientsComposite();
+    Slider slider = ingredientsComposite.getObesityLevelState().createSlider();
+    slider.setBackgroundColor(backgroundColor);
 
-		BorderPanel obesityLevelPane = new BorderPanel.Builder()
-				.hgap( 4 )
-				.lineStart( ingredientsComposite.getObesityLevelState().getSidekickLabel().createLabel() )
-				.center( slider )
-				.build();
-		obesityLevelPane.setBorder( BorderFactory.createEmptyBorder( 8, 8, 4, 4 ) );
-		this.addPageEndComponent( obesityLevelPane );
-		this.setBackgroundColor( backgroundColor );
-	}
+    BorderPanel obesityLevelPane = new BorderPanel.Builder().hgap(4).lineStart(ingredientsComposite.getObesityLevelState().getSidekickLabel().createLabel()).center(slider).build();
+    obesityLevelPane.setBorder(BorderFactory.createEmptyBorder(8, 8, 4, 4));
+    this.addPageEndComponent(obesityLevelPane);
+    this.setBackgroundColor(backgroundColor);
+  }
 }

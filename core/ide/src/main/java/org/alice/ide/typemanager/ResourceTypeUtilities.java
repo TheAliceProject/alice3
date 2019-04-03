@@ -58,57 +58,57 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class ResourceTypeUtilities {
-	private ResourceTypeUtilities() {
-		throw new AssertionError();
-	}
+  private ResourceTypeUtilities() {
+    throw new AssertionError();
+  }
 
-	public static JavaType getResourceType( NamedUserType type ) {
-		Declaration declaration = getResourceFieldOrType( type );
-		if( declaration instanceof JavaType ) {
-			JavaType resourceType = (JavaType)declaration;
-			return resourceType;
-		} else if( declaration instanceof JavaField ) {
-			JavaField resourceField = (JavaField)declaration;
-			return resourceField.getDeclaringType();
-		} else {
-			return null;
-		}
-	}
+  public static JavaType getResourceType(NamedUserType type) {
+    Declaration declaration = getResourceFieldOrType(type);
+    if (declaration instanceof JavaType) {
+      JavaType resourceType = (JavaType) declaration;
+      return resourceType;
+    } else if (declaration instanceof JavaField) {
+      JavaField resourceField = (JavaField) declaration;
+      return resourceField.getDeclaringType();
+    } else {
+      return null;
+    }
+  }
 
-	public static Declaration getResourceFieldOrType( NamedUserType type ) {
-		List<NamedUserConstructor> constructors = type.getDeclaredConstructors();
-		final int CONSTRUCTOR_COUNT = constructors.size();
-		switch( CONSTRUCTOR_COUNT ) {
-		case 1:
-			NamedUserConstructor constructor0 = constructors.get( 0 );
-			List<? extends AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
-			final int REQUIRED_PARAMETER_COUNT = requiredParameters.size();
-			switch( REQUIRED_PARAMETER_COUNT ) {
-			case 0:
-				ConstructorInvocationStatement constructorInvocationStatement = constructor0.body.getValue().constructorInvocationStatement.getValue();
-				final int SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT = constructorInvocationStatement.requiredArguments.size();
-				switch( SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT ) {
-				case 0:
-					return null;
-				case 1:
-					Expression expression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
-					if( expression instanceof FieldAccess ) {
-						FieldAccess fieldAccess = (FieldAccess)expression;
-						return fieldAccess.field.getValue();
-					} else {
-						return null;
-					}
-				default:
-					return null;
-				}
-			case 1:
-				AbstractParameter parameter0 = requiredParameters.get( 0 );
-				return parameter0.getValueType();
-			default:
-				return null;
-			}
-		default:
-			return null;
-		}
-	}
+  public static Declaration getResourceFieldOrType(NamedUserType type) {
+    List<NamedUserConstructor> constructors = type.getDeclaredConstructors();
+    final int CONSTRUCTOR_COUNT = constructors.size();
+    switch (CONSTRUCTOR_COUNT) {
+    case 1:
+      NamedUserConstructor constructor0 = constructors.get(0);
+      List<? extends AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
+      final int REQUIRED_PARAMETER_COUNT = requiredParameters.size();
+      switch (REQUIRED_PARAMETER_COUNT) {
+      case 0:
+        ConstructorInvocationStatement constructorInvocationStatement = constructor0.body.getValue().constructorInvocationStatement.getValue();
+        final int SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT = constructorInvocationStatement.requiredArguments.size();
+        switch (SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT) {
+        case 0:
+          return null;
+        case 1:
+          Expression expression = constructorInvocationStatement.requiredArguments.get(0).expression.getValue();
+          if (expression instanceof FieldAccess) {
+            FieldAccess fieldAccess = (FieldAccess) expression;
+            return fieldAccess.field.getValue();
+          } else {
+            return null;
+          }
+        default:
+          return null;
+        }
+      case 1:
+        AbstractParameter parameter0 = requiredParameters.get(0);
+        return parameter0.getValueType();
+      default:
+        return null;
+      }
+    default:
+      return null;
+    }
+  }
 }

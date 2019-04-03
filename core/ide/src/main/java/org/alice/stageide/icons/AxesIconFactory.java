@@ -51,19 +51,19 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class AxesIconFactory extends ResolutionIndependantIconFactory {
-	private static class SingletonHolder {
-		private static AxesIconFactory instance = new AxesIconFactory();
-	}
+  private static class SingletonHolder {
+    private static AxesIconFactory instance = new AxesIconFactory();
+  }
 
-	public static AxesIconFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AxesIconFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private AxesIconFactory() {
-	}
+  private AxesIconFactory() {
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new AxesIcon( size );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new AxesIcon(size);
+  }
 }

@@ -53,40 +53,40 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author Dennis Cosgrove
  */
 public class SetPointOfViewAction implements Action {
-	private Animator m_animator;
-	private Transformable m_sgSubject;
-	private ReferenceFrame m_sgAsSeenBy;
-	private AffineMatrix4x4 m_undoPOV;
-	private AffineMatrix4x4 m_redoPOV;
+  private Animator m_animator;
+  private Transformable m_sgSubject;
+  private ReferenceFrame m_sgAsSeenBy;
+  private AffineMatrix4x4 m_undoPOV;
+  private AffineMatrix4x4 m_redoPOV;
 
-	public SetPointOfViewAction( Animator animator, Transformable sgSubject, ReferenceFrame sgAsSeenBy, AffineMatrix4x4 undoPOV, AffineMatrix4x4 redoPOV ) {
-		m_animator = animator;
-		m_sgSubject = sgSubject;
-		m_sgAsSeenBy = sgAsSeenBy;
-		m_undoPOV = undoPOV;
-		m_redoPOV = redoPOV;
-	}
+  public SetPointOfViewAction(Animator animator, Transformable sgSubject, ReferenceFrame sgAsSeenBy, AffineMatrix4x4 undoPOV, AffineMatrix4x4 redoPOV) {
+    m_animator = animator;
+    m_sgSubject = sgSubject;
+    m_sgAsSeenBy = sgAsSeenBy;
+    m_undoPOV = undoPOV;
+    m_redoPOV = redoPOV;
+  }
 
-	@Override
-	public void run() {
-		assert m_undoPOV == null;
-		m_undoPOV = m_sgSubject.getTransformation( m_sgAsSeenBy );
-		redo();
-	}
+  @Override
+  public void run() {
+    assert m_undoPOV == null;
+    m_undoPOV = m_sgSubject.getTransformation(m_sgAsSeenBy);
+    redo();
+  }
 
-	private void animate( AffineMatrix4x4 pov ) {
-		if( m_animator != null ) {
-			m_animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary( new PointOfViewAnimation( m_sgSubject, m_sgAsSeenBy, PointOfViewAnimation.USE_EXISTING_VALUE_AT_RUN_TIME, pov ), null );
-		}
-	}
+  private void animate(AffineMatrix4x4 pov) {
+    if (m_animator != null) {
+      m_animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary(new PointOfViewAnimation(m_sgSubject, m_sgAsSeenBy, PointOfViewAnimation.USE_EXISTING_VALUE_AT_RUN_TIME, pov), null);
+    }
+  }
 
-	@Override
-	public void undo() {
-		animate( m_undoPOV );
-	}
+  @Override
+  public void undo() {
+    animate(m_undoPOV);
+  }
 
-	@Override
-	public void redo() {
-		animate( m_redoPOV );
-	}
+  @Override
+  public void redo() {
+    animate(m_redoPOV);
+  }
 }

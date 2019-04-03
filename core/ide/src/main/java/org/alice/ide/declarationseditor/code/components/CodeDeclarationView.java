@@ -52,12 +52,12 @@ import org.lgna.croquet.views.AwtComponentView;
  * @author Dennis Cosgrove
  */
 public class CodeDeclarationView extends AbstractCodeDeclarationView {
-	public CodeDeclarationView( CodeComposite composite ) {
-		super( composite, new CodeEditor( ProjectEditorAstI18nFactory.getInstance(), composite.getDeclaration() ) );
-	}
+  public CodeDeclarationView(CodeComposite composite) {
+    super(composite, new CodeEditor(ProjectEditorAstI18nFactory.getInstance(), composite.getDeclaration()));
+  }
 
-	@Override
-	protected AwtComponentView<?> getMainComponent() {
-		return this.getCodePanelWithDropReceptor();
-	}
+  @Override
+  protected AwtComponentView<?> getMainComponent() {
+    return this.getCodePanelWithDropReceptor();
+  }
 }

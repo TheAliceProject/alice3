@@ -70,134 +70,134 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CodeContextSplitComposite extends ImmutableSplitComposite {
-	public CodeContextSplitComposite( CodePerspectiveComposite codePerspectiveComposite ) {
-		super( UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ) );
-		this.codePerspectiveComposite = codePerspectiveComposite;
-		this.sceneOrNonSceneComposite = this.createCardOwnerCompositeButDoNotRegister( this.sceneComposite, this.nonSceneTypeComposite );
-		this.typeOrCodeCardOwnerComposite = this.createCardOwnerCompositeButDoNotRegister( this.typeHierarchyComposite, MembersComposite.getInstance() );
-	}
+  public CodeContextSplitComposite(CodePerspectiveComposite codePerspectiveComposite) {
+    super(UUID.fromString("c3336f34-9da4-4aaf-86ff-d742f4717d94"));
+    this.codePerspectiveComposite = codePerspectiveComposite;
+    this.sceneOrNonSceneComposite = this.createCardOwnerCompositeButDoNotRegister(this.sceneComposite, this.nonSceneTypeComposite);
+    this.typeOrCodeCardOwnerComposite = this.createCardOwnerCompositeButDoNotRegister(this.typeHierarchyComposite, MembersComposite.getInstance());
+  }
 
-	@Override
-	public Composite<?> getLeadingComposite() {
-		return this.sceneOrNonSceneComposite;
-	}
+  @Override
+  public Composite<?> getLeadingComposite() {
+    return this.sceneOrNonSceneComposite;
+  }
 
-	@Override
-	public Composite<?> getTrailingComposite() {
-		return this.typeOrCodeCardOwnerComposite;
-	}
+  @Override
+  public Composite<?> getTrailingComposite() {
+    return this.typeOrCodeCardOwnerComposite;
+  }
 
-	private void handleTypeStateChanged( NamedUserType nextValue ) {
-		Composite<?> composite;
-		if( nextValue != null ) {
-			if( nextValue.isAssignableTo( SScene.class ) ) {
-				composite = this.sceneComposite;
-			} else {
-				composite = this.nonSceneTypeComposite;
-			}
-			//			org.lgna.croquet.components.JComponent< ? > view = key.getView();
-			//			if( view instanceof NonSceneTypeView ) {
-			//				NonSceneTypeView nonSceneTypeView = (NonSceneTypeView)view;
-			//				nonSceneTypeView.handlePreShow();
-			//			}
-		} else {
-			composite = null;
-		}
-		this.sceneOrNonSceneComposite.showCard( composite );
-	}
+  private void handleTypeStateChanged(NamedUserType nextValue) {
+    Composite<?> composite;
+    if (nextValue != null) {
+      if (nextValue.isAssignableTo(SScene.class)) {
+        composite = this.sceneComposite;
+      } else {
+        composite = this.nonSceneTypeComposite;
+      }
+      //      org.lgna.croquet.components.JComponent< ? > view = key.getView();
+      //      if( view instanceof NonSceneTypeView ) {
+      //        NonSceneTypeView nonSceneTypeView = (NonSceneTypeView)view;
+      //        nonSceneTypeView.handlePreShow();
+      //      }
+    } else {
+      composite = null;
+    }
+    this.sceneOrNonSceneComposite.showCard(composite);
+  }
 
-	private void handleDeclarationStateChanged( DeclarationComposite nextValue ) {
-		Composite<?> composite;
-		if( IsEmphasizingClassesState.getInstance().getValue() ) {
-			if( nextValue != null ) {
-				if( nextValue.getDeclaration() instanceof AbstractType ) {
-					composite = this.typeHierarchyComposite;
-				} else {
-					composite = MembersComposite.getInstance();
-				}
-			} else {
-				composite = null;
-			}
-		} else {
-			composite = MembersComposite.getInstance();
-		}
-		this.typeOrCodeCardOwnerComposite.showCard( composite );
-	}
+  private void handleDeclarationStateChanged(DeclarationComposite nextValue) {
+    Composite<?> composite;
+    if (IsEmphasizingClassesState.getInstance().getValue()) {
+      if (nextValue != null) {
+        if (nextValue.getDeclaration() instanceof AbstractType) {
+          composite = this.typeHierarchyComposite;
+        } else {
+          composite = MembersComposite.getInstance();
+        }
+      } else {
+        composite = null;
+      }
+    } else {
+      composite = MembersComposite.getInstance();
+    }
+    this.typeOrCodeCardOwnerComposite.showCard(composite);
+  }
 
-	public void incrementIgnoreDividerLocationChangeCount() {
-		this.ignoreDividerChangeCount++;
-	}
+  public void incrementIgnoreDividerLocationChangeCount() {
+    this.ignoreDividerChangeCount++;
+  }
 
-	public void decrementIgnoreDividerLocationChangeCount() {
-		this.ignoreDividerChangeCount--;
-	}
+  public void decrementIgnoreDividerLocationChangeCount() {
+    this.ignoreDividerChangeCount--;
+  }
 
-	@Override
-	protected SplitPane createView() {
-		SplitPane rv = this.createVerticalSplitPane();
-		rv.addDividerLocationChangeListener( this.dividerLocationListener );
-		rv.setResizeWeight( 0.0 );
-		return rv;
-	}
+  @Override
+  protected SplitPane createView() {
+    SplitPane rv = this.createVerticalSplitPane();
+    rv.addDividerLocationChangeListener(this.dividerLocationListener);
+    rv.setResizeWeight(0.0);
+    return rv;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
-		projectDocumentFrame.getTypeMetaState().addAndInvokeValueListener( this.typeListener );
-		projectDocumentFrame.getDeclarationsEditorComposite().getTabState().addAndInvokeNewSchoolValueListener( this.declarationListener );
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
+    projectDocumentFrame.getTypeMetaState().addAndInvokeValueListener(this.typeListener);
+    projectDocumentFrame.getDeclarationsEditorComposite().getTabState().addAndInvokeNewSchoolValueListener(this.declarationListener);
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
-		projectDocumentFrame.getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationListener );
-		projectDocumentFrame.getTypeMetaState().removeValueListener( this.typeListener );
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
+    projectDocumentFrame.getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener(this.declarationListener);
+    projectDocumentFrame.getTypeMetaState().removeValueListener(this.typeListener);
+    super.handlePostDeactivation();
+  }
 
-	private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
-		@Override
-		public void valueChanged( ValueEvent<NamedUserType> e ) {
-			CodeContextSplitComposite.this.handleTypeStateChanged( e.getNextValue() );
-		}
-	};
-	private final ValueListener<DeclarationComposite<?, ?>> declarationListener = new ValueListener<DeclarationComposite<?, ?>>() {
-		@Override
-		public void valueChanged( ValueEvent<DeclarationComposite<?, ?>> e ) {
-			CodeContextSplitComposite.this.handleDeclarationStateChanged( e.getNextValue() );
-		}
-	};
+  private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
+    @Override
+    public void valueChanged(ValueEvent<NamedUserType> e) {
+      CodeContextSplitComposite.this.handleTypeStateChanged(e.getNextValue());
+    }
+  };
+  private final ValueListener<DeclarationComposite<?, ?>> declarationListener = new ValueListener<DeclarationComposite<?, ?>>() {
+    @Override
+    public void valueChanged(ValueEvent<DeclarationComposite<?, ?>> e) {
+      CodeContextSplitComposite.this.handleDeclarationStateChanged(e.getNextValue());
+    }
+  };
 
-	private final PropertyChangeListener dividerLocationListener = new PropertyChangeListener() {
-		@Override
-		public void propertyChange( PropertyChangeEvent e ) {
-			if( ignoreDividerChangeCount > 0 ) {
-				//pass
-			} else {
-				SplitPane otherSplitPane = codePerspectiveComposite.getView();
-				int prevValue = otherSplitPane.getDividerLocation();
-				int nextValue = (int)( (Integer)e.getNewValue() * RunComposite.WIDTH_TO_HEIGHT_RATIO );
-				if( prevValue != nextValue ) {
-					codePerspectiveComposite.incrementIgnoreDividerLocationChangeCount();
-					try {
-						otherSplitPane.setDividerLocation( nextValue );
-					} finally {
-						codePerspectiveComposite.decrementIgnoreDividerLocationChangeCount();
-					}
-				}
-				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "inner:", e.getOldValue(), e.getNewValue() );
-			}
-		}
-	};
+  private final PropertyChangeListener dividerLocationListener = new PropertyChangeListener() {
+    @Override
+    public void propertyChange(PropertyChangeEvent e) {
+      if (ignoreDividerChangeCount > 0) {
+        //pass
+      } else {
+        SplitPane otherSplitPane = codePerspectiveComposite.getView();
+        int prevValue = otherSplitPane.getDividerLocation();
+        int nextValue = (int) ((Integer) e.getNewValue() * RunComposite.WIDTH_TO_HEIGHT_RATIO);
+        if (prevValue != nextValue) {
+          codePerspectiveComposite.incrementIgnoreDividerLocationChangeCount();
+          try {
+            otherSplitPane.setDividerLocation(nextValue);
+          } finally {
+            codePerspectiveComposite.decrementIgnoreDividerLocationChangeCount();
+          }
+        }
+        //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "inner:", e.getOldValue(), e.getNewValue() );
+      }
+    }
+  };
 
-	private final CodePerspectiveComposite codePerspectiveComposite;
-	private final CardOwnerComposite sceneOrNonSceneComposite;
-	private final CardOwnerComposite typeOrCodeCardOwnerComposite;
-	private int ignoreDividerChangeCount = 0;
+  private final CodePerspectiveComposite codePerspectiveComposite;
+  private final CardOwnerComposite sceneOrNonSceneComposite;
+  private final CardOwnerComposite typeOrCodeCardOwnerComposite;
+  private int ignoreDividerChangeCount = 0;
 
-	private final SceneComposite sceneComposite = new SceneComposite();
-	private final NonSceneTypeComposite nonSceneTypeComposite = new NonSceneTypeComposite();
+  private final SceneComposite sceneComposite = new SceneComposite();
+  private final NonSceneTypeComposite nonSceneTypeComposite = new NonSceneTypeComposite();
 
-	private final TypeHierarchyComposite typeHierarchyComposite = new TypeHierarchyComposite();
+  private final TypeHierarchyComposite typeHierarchyComposite = new TypeHierarchyComposite();
 }

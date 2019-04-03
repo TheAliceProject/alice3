@@ -46,33 +46,33 @@ package org.alice.ide.i18n;
  * @author Dennis Cosgrove
  */
 public class PropertyChunk extends Chunk {
-	private String propertyName;
-	private int underscoreCount;
+  private String propertyName;
+  private int underscoreCount;
 
-	public PropertyChunk( String propertyName ) {
+  public PropertyChunk(String propertyName) {
 
-		if( propertyName.startsWith( "__" ) && propertyName.endsWith( "__" ) ) {
-			this.underscoreCount = 2;
-		} else if( propertyName.startsWith( "_" ) && propertyName.endsWith( "_" ) ) {
-			this.underscoreCount = 1;
-		} else {
-			this.underscoreCount = 0;
-		}
-		this.propertyName = propertyName.substring( this.underscoreCount, propertyName.length() - this.underscoreCount );
-	}
+    if (propertyName.startsWith("__") && propertyName.endsWith("__")) {
+      this.underscoreCount = 2;
+    } else if (propertyName.startsWith("_") && propertyName.endsWith("_")) {
+      this.underscoreCount = 1;
+    } else {
+      this.underscoreCount = 0;
+    }
+    this.propertyName = propertyName.substring(this.underscoreCount, propertyName.length() - this.underscoreCount);
+  }
 
-	public int getUnderscoreCount() {
-		return this.underscoreCount;
-	}
+  public int getUnderscoreCount() {
+    return this.underscoreCount;
+  }
 
-	public String getPropertyName() {
-		return this.propertyName;
-	}
+  public String getPropertyName() {
+    return this.propertyName;
+  }
 
-	@Override
-	protected StringBuilder updateRepr( StringBuilder rv ) {
-		rv.append( "propertyName=" );
-		rv.append( this.propertyName );
-		return rv;
-	}
+  @Override
+  protected StringBuilder updateRepr(StringBuilder rv) {
+    rv.append("propertyName=");
+    rv.append(this.propertyName);
+    return rv;
+  }
 }

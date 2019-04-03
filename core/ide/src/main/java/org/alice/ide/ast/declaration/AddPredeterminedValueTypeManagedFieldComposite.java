@@ -59,53 +59,49 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AddPredeterminedValueTypeManagedFieldComposite extends AddManagedFieldComposite {
-	private final JavaType javaValueType;
-	private AbstractType<?, ?, ?> type;
+  private final JavaType javaValueType;
+  private AbstractType<?, ?, ?> type;
 
-	private AddPredeterminedValueTypeManagedFieldComposite( UUID migrationId, JavaType javaValueType ) {
-		super( migrationId, new FieldDetailsBuilder()
-				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
-				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
-				.initializer( ApplicabilityStatus.DISPLAYED, null )
-				.build() );
-		this.javaValueType = javaValueType;
-		IconFactory iconFactory = IconFactoryManager.getIconFactoryForType( this.javaValueType );
-		if( ( iconFactory != null ) && ( iconFactory != EmptyIconFactory.getInstance() ) ) {
-			this.getLaunchOperation().setButtonIcon( iconFactory.getIcon( IconSize.SMALL.getSize() ) );
-		}
-	}
+  private AddPredeterminedValueTypeManagedFieldComposite(UUID migrationId, JavaType javaValueType) {
+    super(migrationId, new FieldDetailsBuilder().valueComponentType(ApplicabilityStatus.DISPLAYED, null).valueIsArrayType(ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false).initializer(ApplicabilityStatus.DISPLAYED, null).build());
+    this.javaValueType = javaValueType;
+    IconFactory iconFactory = IconFactoryManager.getIconFactoryForType(this.javaValueType);
+    if ((iconFactory != null) && (iconFactory != EmptyIconFactory.getInstance())) {
+      this.getLaunchOperation().setButtonIcon(iconFactory.getIcon(IconSize.SMALL.getSize()));
+    }
+  }
 
-	public AddPredeterminedValueTypeManagedFieldComposite( UUID migrationId, Class<?> valueCls ) {
-		this( migrationId, JavaType.getInstance( valueCls ) );
-	}
+  public AddPredeterminedValueTypeManagedFieldComposite(UUID migrationId, Class<?> valueCls) {
+    this(migrationId, JavaType.getInstance(valueCls));
+  }
 
-	protected boolean isUserTypeDesired() {
-		return true;
-	}
+  protected boolean isUserTypeDesired() {
+    return true;
+  }
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		if( this.isUserTypeDesired() ) {
-			this.type = TypeManager.getNamedUserTypeFromSuperType( this.javaValueType );
-		} else {
-			this.type = this.javaValueType;
-		}
-		super.handlePreShowDialog( dialog );
-	}
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    if (this.isUserTypeDesired()) {
+      this.type = TypeManager.getNamedUserTypeFromSuperType(this.javaValueType);
+    } else {
+      this.type = this.javaValueType;
+    }
+    super.handlePreShowDialog(dialog);
+  }
 
-	@Override
-	protected void handlePostHideDialog() {
-		super.handlePostHideDialog();
-		this.type = null;
-	}
+  @Override
+  protected void handlePostHideDialog() {
+    super.handlePostHideDialog();
+    this.type = null;
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
-		return this.type;
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
+    return this.type;
+  }
 
-	@Override
-	protected Expression getInitializerInitialValue() {
-		return AstUtilities.createInstanceCreation( this.type );
-	}
+  @Override
+  protected Expression getInitializerInitialValue() {
+    return AstUtilities.createInstanceCreation(this.type);
+  }
 }

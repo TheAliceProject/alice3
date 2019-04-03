@@ -72,10 +72,10 @@ import edu.cmu.cs.dennisc.property.DoubleProperty;
  * @author Dennis Cosgrove
  */
 public class PointLight extends Light {
-	//todo Double -> Float?
-	public final DoubleProperty constantAttenuation = new DoubleProperty( this, 1.0 );
-	//todo Double -> Float?
-	public final DoubleProperty linearAttenuation = new DoubleProperty( this, 0.0 );
-	//todo Double -> Float?
-	public final DoubleProperty quadraticAttenuation = new DoubleProperty( this, 0.0 );
+  //todo Double -> Float?
+  public final DoubleProperty constantAttenuation = new DoubleProperty(this, 1.0);
+  //todo Double -> Float?
+  public final DoubleProperty linearAttenuation = new DoubleProperty(this, 0.0);
+  //todo Double -> Float?
+  public final DoubleProperty quadraticAttenuation = new DoubleProperty(this, 0.0);
 }

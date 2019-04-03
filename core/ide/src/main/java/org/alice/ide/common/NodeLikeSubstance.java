@@ -53,13 +53,13 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public abstract class NodeLikeSubstance extends KnurlDragComponent<DragModel> {
-	public NodeLikeSubstance( DragModel model ) {
-		super( model, true );
-		this.setMaximumSizeClampedToPreferredSize( true );
-	}
+  public NodeLikeSubstance(DragModel model) {
+    super(model, true);
+    this.setMaximumSizeClampedToPreferredSize(true);
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jComponent ) {
-		return new BoxLayout( jComponent, BoxLayout.LINE_AXIS );
-	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jComponent) {
+    return new BoxLayout(jComponent, BoxLayout.LINE_AXIS);
+  }
 }

@@ -62,62 +62,62 @@ import java.util.zip.ZipInputStream;
  * @author Dennis Cosgrove
  */
 public class ClassPathUtilities {
-	public static List<String> getClassPathEntries( URL url, final Criterion<String> filter ) throws IOException {
-		try {
-			File root = new File( url.toURI() );
-			if( root.isDirectory() ) {
-				File[] descendants = FileUtilities.listDescendants( root, new FileFilter() {
-					@Override
-					public boolean accept( File f ) {
-						if( f.isDirectory() ) {
-							return false;
-						} else {
-							return filter.accept( f.getAbsolutePath() );
-						}
-					}
-				} );
-				List<String> rv = Lists.newArrayListWithInitialCapacity( descendants.length );
-				for( File descendant : descendants ) {
-					String path = descendant.getAbsolutePath().substring( root.getAbsolutePath().length() + 1 ).replaceAll( "\\\\", "/" );
-					rv.add( path );
-				}
-				return rv;
-			} else {
-				List<String> rv = Lists.newLinkedList();
-				ZipInputStream zis = new ZipInputStream( new FileInputStream( root.getAbsoluteFile() ) );
-				for( ZipEntry entry = zis.getNextEntry(); entry != null; entry = zis.getNextEntry() ) {
-					if( entry.isDirectory() ) {
-						//pass
-					} else {
-						String path = entry.getName();
-						if( filter.accept( path ) ) {
-							rv.add( path );
-						}
-					}
-				}
-				zis.close();
-				return rv;
-			}
-		} catch( URISyntaxException urise ) {
-			throw new RuntimeException( urise );
-		}
-	}
+  public static List<String> getClassPathEntries(URL url, final Criterion<String> filter) throws IOException {
+    try {
+      File root = new File(url.toURI());
+      if (root.isDirectory()) {
+        File[] descendants = FileUtilities.listDescendants(root, new FileFilter() {
+          @Override
+          public boolean accept(File f) {
+            if (f.isDirectory()) {
+              return false;
+            } else {
+              return filter.accept(f.getAbsolutePath());
+            }
+          }
+        });
+        List<String> rv = Lists.newArrayListWithInitialCapacity(descendants.length);
+        for (File descendant : descendants) {
+          String path = descendant.getAbsolutePath().substring(root.getAbsolutePath().length() + 1).replaceAll("\\\\", "/");
+          rv.add(path);
+        }
+        return rv;
+      } else {
+        List<String> rv = Lists.newLinkedList();
+        ZipInputStream zis = new ZipInputStream(new FileInputStream(root.getAbsoluteFile()));
+        for (ZipEntry entry = zis.getNextEntry(); entry != null; entry = zis.getNextEntry()) {
+          if (entry.isDirectory()) {
+            //pass
+          } else {
+            String path = entry.getName();
+            if (filter.accept(path)) {
+              rv.add(path);
+            }
+          }
+        }
+        zis.close();
+        return rv;
+      }
+    } catch (URISyntaxException urise) {
+      throw new RuntimeException(urise);
+    }
+  }
 
-	public static List<String> getClassPathEntries( CodeSource codeSource, final Criterion<String> filter ) throws IOException {
-		URL url = codeSource.getLocation();
-		assert url != null : codeSource;
-		return getClassPathEntries( url, filter );
-	}
+  public static List<String> getClassPathEntries(CodeSource codeSource, final Criterion<String> filter) throws IOException {
+    URL url = codeSource.getLocation();
+    assert url != null : codeSource;
+    return getClassPathEntries(url, filter);
+  }
 
-	public static List<String> getClassPathEntries( ProtectionDomain protectionDomain, final Criterion<String> filter ) throws IOException {
-		CodeSource codeSource = protectionDomain.getCodeSource();
-		assert codeSource != null : protectionDomain;
-		return getClassPathEntries( codeSource, filter );
-	}
+  public static List<String> getClassPathEntries(ProtectionDomain protectionDomain, final Criterion<String> filter) throws IOException {
+    CodeSource codeSource = protectionDomain.getCodeSource();
+    assert codeSource != null : protectionDomain;
+    return getClassPathEntries(codeSource, filter);
+  }
 
-	public static List<String> getClassPathEntries( Class<?> cls, final Criterion<String> filter ) throws IOException {
-		ProtectionDomain protectionDomain = cls.getProtectionDomain();
-		assert protectionDomain != null : cls;
-		return getClassPathEntries( protectionDomain, filter );
-	}
+  public static List<String> getClassPathEntries(Class<?> cls, final Criterion<String> filter) throws IOException {
+    ProtectionDomain protectionDomain = cls.getProtectionDomain();
+    assert protectionDomain != null : cls;
+    return getClassPathEntries(protectionDomain, filter);
+  }
 }

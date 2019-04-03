@@ -46,30 +46,26 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 public enum HowMuch {
-	COMPONENT_ONLY( true, false, false ),
-	COMPONENT_AND_CHILDREN_ONLY( true, true, false ),
-	CHILDREN_ONLY( false, true, false ),
-	DESCENDANTS_ONLY( false, true, true ),
-	COMPONENT_AND_DESCENDANTS( true, true, true );
-	private boolean m_isComponentACandidate;
-	private boolean m_isChildACandidate;
-	private boolean m_isGrandchildAndBeyondACandidate;
+  COMPONENT_ONLY(true, false, false), COMPONENT_AND_CHILDREN_ONLY(true, true, false), CHILDREN_ONLY(false, true, false), DESCENDANTS_ONLY(false, true, true), COMPONENT_AND_DESCENDANTS(true, true, true);
+  private boolean m_isComponentACandidate;
+  private boolean m_isChildACandidate;
+  private boolean m_isGrandchildAndBeyondACandidate;
 
-	HowMuch( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate ) {
-		m_isComponentACandidate = isComponentACandidate;
-		m_isChildACandidate = isChildACandidate;
-		m_isGrandchildAndBeyondACandidate = isGrandchildAndBeyondACandidate;
-	}
+  HowMuch(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate) {
+    m_isComponentACandidate = isComponentACandidate;
+    m_isChildACandidate = isChildACandidate;
+    m_isGrandchildAndBeyondACandidate = isGrandchildAndBeyondACandidate;
+  }
 
-	public boolean isComponentACandidate() {
-		return m_isComponentACandidate;
-	}
+  public boolean isComponentACandidate() {
+    return m_isComponentACandidate;
+  }
 
-	public boolean isChildACandidate() {
-		return m_isChildACandidate;
-	}
+  public boolean isChildACandidate() {
+    return m_isChildACandidate;
+  }
 
-	public boolean isGrandchildAndBeyondACandidate() {
-		return m_isGrandchildAndBeyondACandidate;
-	}
+  public boolean isGrandchildAndBeyondACandidate() {
+    return m_isGrandchildAndBeyondACandidate;
+  }
 }

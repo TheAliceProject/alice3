@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,39 +34,36 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum FoodProcessorResource implements PropResource {
-	CHOPPING( ImplementationAndVisualType.SIMS2 ),
-	CHOPPED( ImplementationAndVisualType.SIMS2 );
+  CHOPPING(ImplementationAndVisualType.SIMS2), CHOPPED(ImplementationAndVisualType.SIMS2);
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, FoodProcessorResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId BOWL = new JointId( ROOT, FoodProcessorResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LID = new JointId( BOWL, FoodProcessorResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, FoodProcessorResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId BOWL = new JointId(ROOT, FoodProcessorResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LID = new JointId(BOWL, FoodProcessorResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	FoodProcessorResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	FoodProcessorResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  FoodProcessorResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return FoodProcessorResource.JOINT_ID_ROOTS;
-	}
+  FoodProcessorResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return FoodProcessorResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

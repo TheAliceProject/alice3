@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.codec;
  * @author Dennis Cosgrove
  */
 public interface BinaryEncodableAndDecodable {
-	//to support immutability, implement
-	//public constructor( BinaryDecoder binaryDecoder );
-	//instead of
-	//public void decode( BinaryDecoder binaryDecoder );
-	//why doesn't java support this?
-	public void encode( BinaryEncoder binaryEncoder );
+  //to support immutability, implement
+  //public constructor( BinaryDecoder binaryDecoder );
+  //instead of
+  //public void decode( BinaryDecoder binaryDecoder );
+  //why doesn't java support this?
+  public void encode(BinaryEncoder binaryEncoder);
 }

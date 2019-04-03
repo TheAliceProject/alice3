@@ -44,15 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenTopPieceFlaredMidriff implements FemaleTeenTopPiece {
-	BLACK_TANK,
-	YELLOW_LACE,
-	PINK_LACE,
-	WHITE_LACE,
-	BLUE_LACE,
-	GREEN_LACE,
-	GRAPE_TANK,
-	PINK_TANK,
-	TURQUOISE_TANK,
-	YELLOW_TANK;
+  BLACK_TANK, YELLOW_LACE, PINK_LACE, WHITE_LACE, BLUE_LACE, GREEN_LACE, GRAPE_TANK, PINK_TANK, TURQUOISE_TANK, YELLOW_TANK
 
 }

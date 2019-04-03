@@ -53,64 +53,64 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public class JSuggestiveTextField extends JTextField {
-	private String textForBlankCondition;
-	private ColorCustomizer foregroundCustomizer;
+  private String textForBlankCondition;
+  private ColorCustomizer foregroundCustomizer;
 
-	public JSuggestiveTextField( String text, String textForBlankCondition ) {
-		//this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
-		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
-		if( text != null ) {
-			this.setText( text );
-		}
-		if( textForBlankCondition != null ) {
-			this.setTextForBlankCondition( textForBlankCondition );
-		}
-	}
+  public JSuggestiveTextField(String text, String textForBlankCondition) {
+    //this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
+    this.addFocusListener(new SuggestiveTextFocusAdapter(this));
+    if (text != null) {
+      this.setText(text);
+    }
+    if (textForBlankCondition != null) {
+      this.setTextForBlankCondition(textForBlankCondition);
+    }
+  }
 
-	public JSuggestiveTextField( String text ) {
-		this( text, null );
-	}
+  public JSuggestiveTextField(String text) {
+    this(text, null);
+  }
 
-	public JSuggestiveTextField() {
-		this( null, null );
-	}
+  public JSuggestiveTextField() {
+    this(null, null);
+  }
 
-	public String getTextForBlankCondition() {
-		return this.textForBlankCondition;
-	}
+  public String getTextForBlankCondition() {
+    return this.textForBlankCondition;
+  }
 
-	public void setTextForBlankCondition( String textForBlankCondition ) {
-		this.textForBlankCondition = textForBlankCondition;
-	}
+  public void setTextForBlankCondition(String textForBlankCondition) {
+    this.textForBlankCondition = textForBlankCondition;
+  }
 
-	public ColorCustomizer getForegroundCustomizer() {
-		return this.foregroundCustomizer;
-	}
+  public ColorCustomizer getForegroundCustomizer() {
+    return this.foregroundCustomizer;
+  }
 
-	public void setForegroundCustomizer( ColorCustomizer foregroundCustomizer ) {
-		this.foregroundCustomizer = foregroundCustomizer;
-	}
+  public void setForegroundCustomizer(ColorCustomizer foregroundCustomizer) {
+    this.foregroundCustomizer = foregroundCustomizer;
+  }
 
-	@Override
-	public Color getForeground() {
-		Color rv = super.getForeground();
-		if( this.foregroundCustomizer != null ) {
-			rv = this.foregroundCustomizer.changeColorIfAppropriate( rv );
-		}
-		return rv;
-	}
+  @Override
+  public Color getForeground() {
+    Color rv = super.getForeground();
+    if (this.foregroundCustomizer != null) {
+      rv = this.foregroundCustomizer.changeColorIfAppropriate(rv);
+    }
+    return rv;
+  }
 
-	@Override
-	public Dimension getMaximumSize() {
-		Dimension rv = super.getMaximumSize();
-		Dimension preferred = getPreferredSize();
-		rv.height = preferred.height;
-		return rv;
-	}
+  @Override
+  public Dimension getMaximumSize() {
+    Dimension rv = super.getMaximumSize();
+    Dimension preferred = getPreferredSize();
+    rv.height = preferred.height;
+    return rv;
+  }
 
-	@Override
-	protected void paintComponent( Graphics g ) {
-		super.paintComponent( g );
-		SuggestiveTextUtilities.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
-	}
+  @Override
+  protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    SuggestiveTextUtilities.drawBlankTextIfNecessary(this, g, this.textForBlankCondition);
+  }
 }

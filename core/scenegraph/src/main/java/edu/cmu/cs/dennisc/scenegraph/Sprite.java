@@ -52,34 +52,34 @@ import edu.cmu.cs.dennisc.math.Vector3;
  * @author Dennis Cosgrove
  */
 public class Sprite extends Geometry {
-	@Override
-	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
-		double d = radius.getValue();
-		boundingBox.setMinimum( -d, -d, 0 );
-		boundingBox.setMaximum( d, d, 0 );
-	}
+  @Override
+  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+    double d = radius.getValue();
+    boundingBox.setMinimum(-d, -d, 0);
+    boundingBox.setMaximum(d, d, 0);
+  }
 
-	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		boundingSphere.center.set( 0, 0, 0 );
-		boundingSphere.radius = radius.getValue();
-	}
+  @Override
+  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
+    boundingSphere.center.set(0, 0, 0);
+    boundingSphere.radius = radius.getValue();
+  }
 
-	@Override
-	public void transform( AbstractMatrix4x4 trans ) {
-		throw new RuntimeException( "TODO" );
-	}
+  @Override
+  public void transform(AbstractMatrix4x4 trans) {
+    throw new RuntimeException("TODO");
+  }
 
-	@Override
-	protected void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation ) {
-		throw new RuntimeException( "TODO" );
-	}
+  @Override
+  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
+    throw new RuntimeException("TODO");
+  }
 
-	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 0.5 ) {
-		@Override
-		public void setValue( Double value ) {
-			assert value >= 0.0;
-			super.setValue( value );
-		}
-	};
+  public final BoundDoubleProperty radius = new BoundDoubleProperty(this, 0.5) {
+    @Override
+    public void setValue(Double value) {
+      assert value >= 0.0;
+      super.setValue(value);
+    }
+  };
 }

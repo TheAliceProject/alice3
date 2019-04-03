@@ -78,123 +78,123 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class ControlFlowTabView extends MigPanel {
-	private static final boolean IS_MINI_DESIRED = true;
-	private static final int GAP_TOP = IS_MINI_DESIRED ? 8 : 16;
+  private static final boolean IS_MINI_DESIRED = true;
+  private static final int GAP_TOP = IS_MINI_DESIRED ? 8 : 16;
 
-	private final AbstractLabel returnHeader;
-	private final DragComponent<?> returnDragComponent;
+  private final AbstractLabel returnHeader;
+  private final DragComponent<?> returnDragComponent;
 
-	public ControlFlowTabView( ControlFlowTabComposite composite ) {
-		super( composite, "insets 4, gap 0" );
-		this.addHeader( composite.getDoInOrderHeader() );
-		this.addDragComponent( DoInOrderTemplateDragModel.getInstance() );
-		this.addHeader( composite.getDoTogetherHeader() );
-		this.addDragComponent( DoTogetherTemplateDragModel.getInstance() );
-		this.addHeader( composite.getLoopHeader() );
-		this.addDragComponent( CountLoopTemplateDragModel.getInstance() );
-		this.addDragComponent( WhileLoopTemplateDragModel.getInstance() );
-		this.addDragComponent( ForEachInArrayLoopTemplateDragModel.getInstance() );
-		this.addHeader( composite.getIfThenHeader() );
-		this.addDragComponent( ConditionalStatementTemplateDragModel.getInstance() );
-		this.addHeader( composite.getEachInTogetherHeader() );
-		this.addDragComponent( EachInArrayTogetherTemplateDragModel.getInstance() );
-		this.addHeader( composite.getCommentHeader() );
-		this.addDragComponent( CommentTemplateDragModel.getInstance() );
-		this.addHeader( composite.getLocalHeader() );
-		this.addDragComponent( DeclareLocalDragModel.getInstance() );
-		this.addDragComponent( AssignmentTemplateDragModel.getInstance() );
-		this.returnHeader = this.createHeader( composite.getReturnHeader() );
-		this.returnDragComponent = this.createDragComponent( ReturnStatementTemplateDragModel.getInstance( null ) );
-		this.setBackgroundColor( new Color( 0xd29669 ) );
-	}
+  public ControlFlowTabView(ControlFlowTabComposite composite) {
+    super(composite, "insets 4, gap 0");
+    this.addHeader(composite.getDoInOrderHeader());
+    this.addDragComponent(DoInOrderTemplateDragModel.getInstance());
+    this.addHeader(composite.getDoTogetherHeader());
+    this.addDragComponent(DoTogetherTemplateDragModel.getInstance());
+    this.addHeader(composite.getLoopHeader());
+    this.addDragComponent(CountLoopTemplateDragModel.getInstance());
+    this.addDragComponent(WhileLoopTemplateDragModel.getInstance());
+    this.addDragComponent(ForEachInArrayLoopTemplateDragModel.getInstance());
+    this.addHeader(composite.getIfThenHeader());
+    this.addDragComponent(ConditionalStatementTemplateDragModel.getInstance());
+    this.addHeader(composite.getEachInTogetherHeader());
+    this.addDragComponent(EachInArrayTogetherTemplateDragModel.getInstance());
+    this.addHeader(composite.getCommentHeader());
+    this.addDragComponent(CommentTemplateDragModel.getInstance());
+    this.addHeader(composite.getLocalHeader());
+    this.addDragComponent(DeclareLocalDragModel.getInstance());
+    this.addDragComponent(AssignmentTemplateDragModel.getInstance());
+    this.returnHeader = this.createHeader(composite.getReturnHeader());
+    this.returnDragComponent = this.createDragComponent(ReturnStatementTemplateDragModel.getInstance(null));
+    this.setBackgroundColor(new Color(0xd29669));
+  }
 
-	private AbstractLabel createHeader( PlainStringValue stringValue ) {
-		return stringValue.createLabel( TextPosture.OBLIQUE );
-	}
+  private AbstractLabel createHeader(PlainStringValue stringValue) {
+    return stringValue.createLabel(TextPosture.OBLIQUE);
+  }
 
-	private void addHeader( AbstractLabel label ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "wrap" );
-		if( this.getComponentCount() > 0 ) {
-			sb.append( ", gaptop " );
-			sb.append( GAP_TOP );
-		}
-		this.addComponent( label, sb.toString() );
-	}
+  private void addHeader(AbstractLabel label) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("wrap");
+    if (this.getComponentCount() > 0) {
+      sb.append(", gaptop ");
+      sb.append(GAP_TOP);
+    }
+    this.addComponent(label, sb.toString());
+  }
 
-	private void addHeader( PlainStringValue stringValue ) {
-		this.addHeader( this.createHeader( stringValue ) );
-	}
+  private void addHeader(PlainStringValue stringValue) {
+    this.addHeader(this.createHeader(stringValue));
+  }
 
-	private DragComponent<?> createDragComponent( StatementTemplateDragModel dragModel ) {
-		DragComponent<?> dragComponent;
-		if( IS_MINI_DESIRED ) {
-			dragComponent = new MiniControlFlowStatementTemplate( dragModel );
-		} else {
-			dragComponent = new CompleteControlFlowStatementTemplate( dragModel );
-		}
-		return dragComponent;
-	}
+  private DragComponent<?> createDragComponent(StatementTemplateDragModel dragModel) {
+    DragComponent<?> dragComponent;
+    if (IS_MINI_DESIRED) {
+      dragComponent = new MiniControlFlowStatementTemplate(dragModel);
+    } else {
+      dragComponent = new CompleteControlFlowStatementTemplate(dragModel);
+    }
+    return dragComponent;
+  }
 
-	private void addDragComponent( DragComponent<?> dragComponent ) {
-		this.addComponent( dragComponent, "wrap, gapleft 8" );
-	}
+  private void addDragComponent(DragComponent<?> dragComponent) {
+    this.addComponent(dragComponent, "wrap, gapleft 8");
+  }
 
-	private void addDragComponent( StatementTemplateDragModel dragModel ) {
-		this.addDragComponent( this.createDragComponent( dragModel ) );
-	}
+  private void addDragComponent(StatementTemplateDragModel dragModel) {
+    this.addDragComponent(this.createDragComponent(dragModel));
+  }
 
-	private final ValueListener<DeclarationComposite<?, ?>> declarationTabListener = new ValueListener<DeclarationComposite<?, ?>>() {
-		@Override
-		public void valueChanged( ValueEvent<DeclarationComposite<?, ?>> e ) {
-			updateReturn( e.getNextValue() );
-		}
-	};
+  private final ValueListener<DeclarationComposite<?, ?>> declarationTabListener = new ValueListener<DeclarationComposite<?, ?>>() {
+    @Override
+    public void valueChanged(ValueEvent<DeclarationComposite<?, ?>> e) {
+      updateReturn(e.getNextValue());
+    }
+  };
 
-	private void updateReturn( DeclarationComposite declarationComposite ) {
-		final boolean isReturnDesired;
-		if( declarationComposite instanceof CodeComposite ) {
-			CodeComposite codeComposite = (CodeComposite)declarationComposite;
-			AbstractCode code = codeComposite.getDeclaration();
-			if( code instanceof AbstractMethod ) {
-				AbstractMethod method = (AbstractMethod)code;
-				isReturnDesired = method.isFunction();
-			} else {
-				isReturnDesired = false;
-			}
-		} else {
-			isReturnDesired = false;
-		}
-		boolean isReturnShowing = this.returnHeader.isShowing();
-		if( isReturnDesired != isReturnShowing ) {
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					synchronized( getTreeLock() ) {
-						if( isReturnDesired ) {
-							addHeader( returnHeader );
-							addDragComponent( returnDragComponent );
-						} else {
-							removeComponent( returnDragComponent );
-							removeComponent( returnHeader );
-						}
-					}
-					revalidateAndRepaint();
-				}
-			} );
-		}
-		Logger.outln( declarationComposite );
-	}
+  private void updateReturn(DeclarationComposite declarationComposite) {
+    final boolean isReturnDesired;
+    if (declarationComposite instanceof CodeComposite) {
+      CodeComposite codeComposite = (CodeComposite) declarationComposite;
+      AbstractCode code = codeComposite.getDeclaration();
+      if (code instanceof AbstractMethod) {
+        AbstractMethod method = (AbstractMethod) code;
+        isReturnDesired = method.isFunction();
+      } else {
+        isReturnDesired = false;
+      }
+    } else {
+      isReturnDesired = false;
+    }
+    boolean isReturnShowing = this.returnHeader.isShowing();
+    if (isReturnDesired != isReturnShowing) {
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          synchronized (getTreeLock()) {
+            if (isReturnDesired) {
+              addHeader(returnHeader);
+              addDragComponent(returnDragComponent);
+            } else {
+              removeComponent(returnDragComponent);
+              removeComponent(returnHeader);
+            }
+          }
+          revalidateAndRepaint();
+        }
+      });
+    }
+    Logger.outln(declarationComposite);
+  }
 
-	@Override
-	public void handleCompositePreActivation() {
-		super.handleCompositePreActivation();
-		IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addAndInvokeNewSchoolValueListener( this.declarationTabListener );
-	}
+  @Override
+  public void handleCompositePreActivation() {
+    super.handleCompositePreActivation();
+    IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addAndInvokeNewSchoolValueListener(this.declarationTabListener);
+  }
 
-	@Override
-	public void handleCompositePostDeactivation() {
-		IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationTabListener );
-		super.handleCompositePostDeactivation();
-	}
+  @Override
+  public void handleCompositePostDeactivation() {
+    IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener(this.declarationTabListener);
+    super.handleCompositePostDeactivation();
+  }
 }

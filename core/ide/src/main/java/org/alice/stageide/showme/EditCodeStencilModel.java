@@ -50,7 +50,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class EditCodeStencilModel extends ChangePerspectiveStencilModel {
-	public EditCodeStencilModel() {
-		super( UUID.fromString( "4fe46e36-b8d3-4c3f-b2a9-691779b6d7b4" ), IDE.getActiveInstance().getDocumentFrame().getCodePerspective() );
-	}
+  public EditCodeStencilModel() {
+    super(UUID.fromString("4fe46e36-b8d3-4c3f-b2a9-691779b6d7b4"), IDE.getActiveInstance().getDocumentFrame().getCodePerspective());
+  }
 }

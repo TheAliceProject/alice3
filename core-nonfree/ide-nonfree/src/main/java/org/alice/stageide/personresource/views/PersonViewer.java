@@ -55,96 +55,96 @@ import org.lgna.story.resources.sims2.LifeStage;
  * @author Dennis Cosgrove
  */
 public class PersonViewer extends ModelViewer {
-	private final PersonImp personImp = new PersonImp();
-	private final CreateAPersonDragAdapter dragAdapter = new CreateAPersonDragAdapter();
+  private final PersonImp personImp = new PersonImp();
+  private final CreateAPersonDragAdapter dragAdapter = new CreateAPersonDragAdapter();
 
-	public PersonViewer() {
-		this.setMinimumPreferredWidth( 300 );
-		this.setPerson( this.personImp );
-	}
+  public PersonViewer() {
+    this.setMinimumPreferredWidth(300);
+    this.setPerson(this.personImp);
+  }
 
-	private void positionAndOrientCamera( double height, int index, double duration ) {
-		assert Double.isNaN( height ) == false;
-		double xzFactor;
-		if( index == 0 ) {
-			xzFactor = 2.0 * height;
-		} else {
-			xzFactor = 1.0;
-		}
-		double pointAtFactor;
-		double yFactor = 1.5;
-		if( index == 0 ) {
-			pointAtFactor = 0.5;
-		} else {
-			pointAtFactor = 0.9;
-		}
-		yFactor *= 0.65;
-		xzFactor *= 0.65;
-		if( this.getScene() != null ) {
-			AffineMatrix4x4 prevPOV = this.getCamera().getLocalTransformation();
-			this.getCamera().setTransformation( this.getScene().createOffsetStandIn( -0.3 * xzFactor, height * yFactor, -height * xzFactor ) );
-			this.getCamera().setOrientationOnlyToPointAt( this.getScene().createOffsetStandIn( 0, height * pointAtFactor, 0 ) );
-			Animator animator = this.getAnimator();
-			if( ( duration > 0.0 ) && ( animator != null ) ) {
-				AffineMatrix4x4 nextPOV = this.getCamera().getLocalTransformation();
-				this.getCamera().setLocalTransformation( prevPOV );
+  private void positionAndOrientCamera(double height, int index, double duration) {
+    assert Double.isNaN(height) == false;
+    double xzFactor;
+    if (index == 0) {
+      xzFactor = 2.0 * height;
+    } else {
+      xzFactor = 1.0;
+    }
+    double pointAtFactor;
+    double yFactor = 1.5;
+    if (index == 0) {
+      pointAtFactor = 0.5;
+    } else {
+      pointAtFactor = 0.9;
+    }
+    yFactor *= 0.65;
+    xzFactor *= 0.65;
+    if (this.getScene() != null) {
+      AffineMatrix4x4 prevPOV = this.getCamera().getLocalTransformation();
+      this.getCamera().setTransformation(this.getScene().createOffsetStandIn(-0.3 * xzFactor, height * yFactor, -height * xzFactor));
+      this.getCamera().setOrientationOnlyToPointAt(this.getScene().createOffsetStandIn(0, height * pointAtFactor, 0));
+      Animator animator = this.getAnimator();
+      if ((duration > 0.0) && (animator != null)) {
+        AffineMatrix4x4 nextPOV = this.getCamera().getLocalTransformation();
+        this.getCamera().setLocalTransformation(prevPOV);
 
-				PointOfViewAnimation povAnimation = new PointOfViewAnimation( this.getCamera().getSgComposite(), AsSeenBy.PARENT, null, nextPOV );
-				povAnimation.setDuration( duration );
+        PointOfViewAnimation povAnimation = new PointOfViewAnimation(this.getCamera().getSgComposite(), AsSeenBy.PARENT, null, nextPOV);
+        povAnimation.setDuration(duration);
 
-				animator.completeAll( null );
-				animator.invokeLater( povAnimation, null );
-			}
-		}
-	}
+        animator.completeAll(null);
+        animator.invokeLater(povAnimation, null);
+      }
+    }
+  }
 
-	private final double ADULT_HEIGHT = 1.7;
-	private final double TEEN_HEIGHT = 1.6;
-	private final double CHILD_HEIGHT = 1.2;
-	private final double TODDLER_HEIGHT = .75;
+  private final double ADULT_HEIGHT = 1.7;
+  private final double TEEN_HEIGHT = 1.6;
+  private final double CHILD_HEIGHT = 1.2;
+  private final double TODDLER_HEIGHT = .75;
 
-	public void setCameraToFullView( LifeStage lifeStage ) {
-		//		this.positionAndOrientCamera( ADULT_HEIGHT, 0, 0.5 );
-		double height;
-		if( ( lifeStage == LifeStage.ELDER ) || ( lifeStage == LifeStage.ADULT ) || ( lifeStage == LifeStage.TEEN ) || ( lifeStage == LifeStage.CHILD ) ) {
-			height = ADULT_HEIGHT;
-		} else if( lifeStage == LifeStage.TODDLER ) {
-			height = ADULT_HEIGHT;
-		} else {
-			height = ADULT_HEIGHT;
-		}
-		this.positionAndOrientCamera( height, 0, 0.5 );
-	}
+  public void setCameraToFullView(LifeStage lifeStage) {
+    //    this.positionAndOrientCamera( ADULT_HEIGHT, 0, 0.5 );
+    double height;
+    if ((lifeStage == LifeStage.ELDER) || (lifeStage == LifeStage.ADULT) || (lifeStage == LifeStage.TEEN) || (lifeStage == LifeStage.CHILD)) {
+      height = ADULT_HEIGHT;
+    } else if (lifeStage == LifeStage.TODDLER) {
+      height = ADULT_HEIGHT;
+    } else {
+      height = ADULT_HEIGHT;
+    }
+    this.positionAndOrientCamera(height, 0, 0.5);
+  }
 
-	public void setCameraToCloseUp( LifeStage lifeStage ) {
-		double height;
-		if( ( lifeStage == LifeStage.ADULT ) || ( lifeStage == LifeStage.ELDER ) ) {
-			height = ADULT_HEIGHT;
-		} else if( lifeStage == LifeStage.TEEN ) {
-			height = TEEN_HEIGHT;
-		} else if( lifeStage == LifeStage.CHILD ) {
-			height = CHILD_HEIGHT;
-		} else {
-			height = TODDLER_HEIGHT;
-		}
-		this.positionAndOrientCamera( height, 1, 0.5 );
-	}
+  public void setCameraToCloseUp(LifeStage lifeStage) {
+    double height;
+    if ((lifeStage == LifeStage.ADULT) || (lifeStage == LifeStage.ELDER)) {
+      height = ADULT_HEIGHT;
+    } else if (lifeStage == LifeStage.TEEN) {
+      height = TEEN_HEIGHT;
+    } else if (lifeStage == LifeStage.CHILD) {
+      height = CHILD_HEIGHT;
+    } else {
+      height = TODDLER_HEIGHT;
+    }
+    this.positionAndOrientCamera(height, 1, 0.5);
+  }
 
-	public PersonImp getPerson() {
-		return (PersonImp)this.getModel();
-	}
+  public PersonImp getPerson() {
+    return (PersonImp) this.getModel();
+  }
 
-	public void setPerson( PersonImp person ) {
-		this.setModel( person );
-		this.dragAdapter.setSelectedImplementation( person );
-		this.positionAndOrientCamera( ADULT_HEIGHT, 0, 0.0 );
-	}
+  public void setPerson(PersonImp person) {
+    this.setModel(person);
+    this.dragAdapter.setSelectedImplementation(person);
+    this.positionAndOrientCamera(ADULT_HEIGHT, 0, 0.0);
+  }
 
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.dragAdapter.setOnscreenRenderTarget( this.getOnscreenRenderTarget() );
-		this.dragAdapter.addCameraView( DragAdapter.CameraView.MAIN, this.getCamera().getSgCamera(), null );
-		this.dragAdapter.makeCameraActive( this.getCamera().getSgCamera() );
-	}
+  @Override
+  protected void initialize() {
+    super.initialize();
+    this.dragAdapter.setOnscreenRenderTarget(this.getOnscreenRenderTarget());
+    this.dragAdapter.addCameraView(DragAdapter.CameraView.MAIN, this.getCamera().getSgCamera(), null);
+    this.dragAdapter.makeCameraActive(this.getCamera().getSgCamera());
+  }
 }

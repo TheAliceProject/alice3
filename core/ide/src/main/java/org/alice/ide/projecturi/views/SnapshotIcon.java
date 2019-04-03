@@ -51,26 +51,26 @@ import java.awt.Image;
  * @author Dennis Cosgrove
  */
 public class SnapshotIcon implements Icon {
-	private static final int WIDTH = 160;
-	private static final int HEIGHT = ( WIDTH * 9 ) / 16;
-	private final Image image;
+  private static final int WIDTH = 160;
+  private static final int HEIGHT = (WIDTH * 9) / 16;
+  private final Image image;
 
-	public SnapshotIcon( Image image ) {
-		this.image = image;
-	}
+  public SnapshotIcon(Image image) {
+    this.image = image;
+  }
 
-	@Override
-	public int getIconWidth() {
-		return WIDTH;
-	}
+  @Override
+  public int getIconWidth() {
+    return WIDTH;
+  }
 
-	@Override
-	public int getIconHeight() {
-		return HEIGHT;
-	}
+  @Override
+  public int getIconHeight() {
+    return HEIGHT;
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		g.drawImage( this.image, x, y, WIDTH, HEIGHT, c );
-	}
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    g.drawImage(this.image, x, y, WIDTH, HEIGHT, c);
+  }
 }

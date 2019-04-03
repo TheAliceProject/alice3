@@ -49,9 +49,9 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 
 public class GlrMainTitle extends GlrTitle<MainTitle> {
-	@Override
-	protected Rectangle2D.Float getFillBounds( Rectangle2D.Float rv, Rectangle actualViewport, Dimension2D multilineTextSize ) {
-		rv.setFrame( actualViewport );
-		return rv;
-	}
+  @Override
+  protected Rectangle2D.Float getFillBounds(Rectangle2D.Float rv, Rectangle actualViewport, Dimension2D multilineTextSize) {
+    rv.setFrame(actualViewport);
+    return rv;
+  }
 }

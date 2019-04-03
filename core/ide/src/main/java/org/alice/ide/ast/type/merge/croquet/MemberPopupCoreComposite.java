@@ -54,41 +54,41 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class MemberPopupCoreComposite extends PopupCoreComposite<MemberPopupCoreView> {
-	private final MemberHub<?> memberHub;
+  private final MemberHub<?> memberHub;
 
-	private final HtmlStringValue description = new HtmlStringValue( UUID.fromString( "c6a7c06d-143a-4bd8-afca-c8e4b544473c" ) ) {
+  private final HtmlStringValue description = new HtmlStringValue(UUID.fromString("c6a7c06d-143a-4bd8-afca-c8e4b544473c")) {
 
-	};
+  };
 
-	public MemberPopupCoreComposite( MemberHub<?> memberHub ) {
-		super( UUID.fromString( "7f3eb347-2ef0-4447-a208-dab648d41112" ) );
-		this.memberHub = memberHub;
-	}
+  public MemberPopupCoreComposite(MemberHub<?> memberHub) {
+    super(UUID.fromString("7f3eb347-2ef0-4447-a208-dab648d41112"));
+    this.memberHub = memberHub;
+  }
 
-	public MemberHub<?> getMemberHub() {
-		return this.memberHub;
-	}
+  public MemberHub<?> getMemberHub() {
+    return this.memberHub;
+  }
 
-	public Member getMember() {
-		return this.memberHub.getMember();
-	}
+  public Member getMember() {
+    return this.memberHub.getMember();
+  }
 
-	public Icon getIcon() {
-		return this.memberHub.getIcon();
-	}
+  public Icon getIcon() {
+    return this.memberHub.getIcon();
+  }
 
-	public HtmlStringValue getDescription() {
-		return this.description;
-	}
+  public HtmlStringValue getDescription() {
+    return this.description;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.description.setText( this.memberHub.getDescriptionText() );
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    this.description.setText(this.memberHub.getDescriptionText());
+  }
 
-	@Override
-	protected MemberPopupCoreView createView() {
-		return new MemberPopupCoreView( this );
-	}
+  @Override
+  protected MemberPopupCoreView createView() {
+    return new MemberPopupCoreView(this);
+  }
 }

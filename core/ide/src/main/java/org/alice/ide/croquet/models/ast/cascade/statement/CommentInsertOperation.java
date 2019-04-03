@@ -57,28 +57,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CommentInsertOperation extends TemplateStatementInsertOperation {
-	private static Map<BlockStatementIndexPair, CommentInsertOperation> map = Maps.newHashMap();
+  private static Map<BlockStatementIndexPair, CommentInsertOperation> map = Maps.newHashMap();
 
-	public static synchronized CommentInsertOperation getInstance( BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		CommentInsertOperation rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new CommentInsertOperation( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
-	}
+  public static synchronized CommentInsertOperation getInstance(BlockStatementIndexPair blockStatementIndexPair) {
+    assert blockStatementIndexPair != null;
+    CommentInsertOperation rv = map.get(blockStatementIndexPair);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new CommentInsertOperation(blockStatementIndexPair);
+      map.put(blockStatementIndexPair, rv);
+    }
+    return rv;
+  }
 
-	private CommentInsertOperation( BlockStatementIndexPair blockStatementIndexPair ) {
-		super( UUID.fromString( "363d6a9e-b926-4355-a644-2f3b8e65c5c3" ), blockStatementIndexPair, false );
-	}
+  private CommentInsertOperation(BlockStatementIndexPair blockStatementIndexPair) {
+    super(UUID.fromString("363d6a9e-b926-4355-a644-2f3b8e65c5c3"), blockStatementIndexPair, false);
+  }
 
-	@Override
-	protected final Statement createStatement() {
-		Comment rv = AstUtilities.createComment();
-		IDE.getActiveInstance().setCommentThatWantsFocus( rv );
-		return rv;
-	}
+  @Override
+  protected final Statement createStatement() {
+    Comment rv = AstUtilities.createComment();
+    IDE.getActiveInstance().setCommentThatWantsFocus(rv);
+    return rv;
+  }
 }

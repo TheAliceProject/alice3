@@ -53,21 +53,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ImageResourceExpressionFillIn extends ResourceExpressionFillIn<ImageResource> {
-	private static Map<ImageResource, ImageResourceExpressionFillIn> map = Maps.newHashMap();
+  private static Map<ImageResource, ImageResourceExpressionFillIn> map = Maps.newHashMap();
 
-	public static synchronized ImageResourceExpressionFillIn getInstance( ImageResource resource ) {
-		assert resource != null;
-		ImageResourceExpressionFillIn rv = map.get( resource );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ImageResourceExpressionFillIn( resource );
-			map.put( resource, rv );
-		}
-		return rv;
-	}
+  public static synchronized ImageResourceExpressionFillIn getInstance(ImageResource resource) {
+    assert resource != null;
+    ImageResourceExpressionFillIn rv = map.get(resource);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ImageResourceExpressionFillIn(resource);
+      map.put(resource, rv);
+    }
+    return rv;
+  }
 
-	private ImageResourceExpressionFillIn( ImageResource resource ) {
-		super( UUID.fromString( "4ffd82b6-f6bd-4ff6-8270-cbbe0b02741a" ), ImageResource.class, resource );
-	}
+  private ImageResourceExpressionFillIn(ImageResource resource) {
+    super(UUID.fromString("4ffd82b6-f6bd-4ff6-8270-cbbe0b02741a"), ImageResource.class, resource);
+  }
 }

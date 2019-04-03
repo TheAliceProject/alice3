@@ -49,21 +49,20 @@ import java.awt.font.TextAttribute;
  * @author Dennis Cosgrove
  */
 public enum FamilyConstant implements FamilyAttribute {
-	SERIF( "Serif" ),
-	SANS_SERIF( "SansSerif" );
-	private String m_value;
+  SERIF("Serif"), SANS_SERIF("SansSerif");
+  private String m_value;
 
-	private FamilyConstant( String value ) {
-		m_value = value;
-	}
+  private FamilyConstant(String value) {
+    m_value = value;
+  }
 
-	@Override
-	public TextAttribute getKey() {
-		return TextAttribute.FAMILY;
-	}
+  @Override
+  public TextAttribute getKey() {
+    return TextAttribute.FAMILY;
+  }
 
-	@Override
-	public String getValue() {
-		return m_value;
-	}
+  @Override
+  public String getValue() {
+    return m_value;
+  }
 }

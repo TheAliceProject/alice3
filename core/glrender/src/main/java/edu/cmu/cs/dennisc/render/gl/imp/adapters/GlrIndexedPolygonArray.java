@@ -56,96 +56,96 @@ import edu.cmu.cs.dennisc.scenegraph.Vertex;
  * @author Dennis Cosgrove
  */
 public abstract class GlrIndexedPolygonArray<T extends IndexedPolygonArray> extends GlrVertexGeometry<T> {
-	public GlrIndexedPolygonArray( int mode, int indicesPerPolygon ) {
-		this.mode = mode;
-		this.indicesPerPolygon = indicesPerPolygon;
-	}
+  public GlrIndexedPolygonArray(int mode, int indicesPerPolygon) {
+    this.mode = mode;
+    this.indicesPerPolygon = indicesPerPolygon;
+  }
 
-	protected abstract void renderPolygon( RenderContext rc, int[] polygonData, int i );
+  protected abstract void renderPolygon(RenderContext rc, int[] polygonData, int i);
 
-	protected abstract void pickPolygon( PickContext pc, int[] polygonData, int i );
+  protected abstract void pickPolygon(PickContext pc, int[] polygonData, int i);
 
-	@Override
-	protected boolean isDisplayListInNeedOfRefresh( RenderContext rc ) {
-		float uRatio = rc.getURatio();
-		float vRatio = rc.getVRatio();
-		return super.isDisplayListInNeedOfRefresh( rc ) || ( Float.compare( uRatio, this.uRatioPrev ) != 0 ) || ( Float.compare( vRatio, this.vRatioPrev ) != 0 );
-	}
+  @Override
+  protected boolean isDisplayListInNeedOfRefresh(RenderContext rc) {
+    float uRatio = rc.getURatio();
+    float vRatio = rc.getVRatio();
+    return super.isDisplayListInNeedOfRefresh(rc) || (Float.compare(uRatio, this.uRatioPrev) != 0) || (Float.compare(vRatio, this.vRatioPrev) != 0);
+  }
 
-	@Override
-	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
-		float uRatio = rc.getURatio();
-		float vRatio = rc.getVRatio();
-		int[] polygonData = owner.polygonData.getValueAsArray();
-		rc.gl.glBegin( mode );
-		try {
-			for( int i = 0; i < polygonData.length; i += indicesPerPolygon ) {
-				renderPolygon( rc, polygonData, i );
-			}
-		} finally {
-			rc.gl.glEnd();
-		}
-		this.uRatioPrev = uRatio;
-		this.vRatioPrev = vRatio;
-	}
+  @Override
+  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
+    float uRatio = rc.getURatio();
+    float vRatio = rc.getVRatio();
+    int[] polygonData = owner.polygonData.getValueAsArray();
+    rc.gl.glBegin(mode);
+    try {
+      for (int i = 0; i < polygonData.length; i += indicesPerPolygon) {
+        renderPolygon(rc, polygonData, i);
+      }
+    } finally {
+      rc.gl.glEnd();
+    }
+    this.uRatioPrev = uRatio;
+    this.vRatioPrev = vRatio;
+  }
 
-	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		int[] polygonData = owner.polygonData.getValueAsArray();
-		//todo: add try/finally pairs
-		pc.gl.glPushName( -1 );
-		if( isSubElementRequired ) {
-			int id = 0;
-			for( int i = 0; i < polygonData.length; i += indicesPerPolygon ) {
-				pc.gl.glLoadName( id++ );
-				pc.gl.glBegin( mode );
-				try {
-					pickPolygon( pc, polygonData, i );
-				} finally {
-					pc.gl.glEnd();
-				}
-			}
-		} else {
-			pc.gl.glBegin( mode );
-			try {
-				for( int i = 0; i < polygonData.length; i += indicesPerPolygon ) {
-					pickPolygon( pc, polygonData, i );
-				}
-			} finally {
-				pc.gl.glEnd();
-			}
-		}
-		pc.gl.glPopName();
-	}
+  @Override
+  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
+    int[] polygonData = owner.polygonData.getValueAsArray();
+    //todo: add try/finally pairs
+    pc.gl.glPushName(-1);
+    if (isSubElementRequired) {
+      int id = 0;
+      for (int i = 0; i < polygonData.length; i += indicesPerPolygon) {
+        pc.gl.glLoadName(id++);
+        pc.gl.glBegin(mode);
+        try {
+          pickPolygon(pc, polygonData, i);
+        } finally {
+          pc.gl.glEnd();
+        }
+      }
+    } else {
+      pc.gl.glBegin(mode);
+      try {
+        for (int i = 0; i < polygonData.length; i += indicesPerPolygon) {
+          pickPolygon(pc, polygonData, i);
+        }
+      } finally {
+        pc.gl.glEnd();
+      }
+    }
+    pc.gl.glPopName();
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.polygonData ) {
-			setIsGeometryChanged( true );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.polygonData) {
+      setIsGeometryChanged(true);
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	@Override
-	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
-		if( subElement != -1 ) {
-			int[] polygonData = owner.polygonData.getValueAsArray();
-			int index = subElement * indicesPerPolygon;
-			if( ( 0 <= index ) && ( index < polygonData.length ) ) {
-				Vertex v = accessVertexAt( polygonData[ index ] );
-				GlrGeometry.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, v.position.x, v.position.y, v.position.z, v.normal.x, v.normal.y, v.normal.z );
-			} else {
-				rv.setNaN();
-			}
-		} else {
-			rv.setNaN();
-		}
-		return rv;
-	}
+  @Override
+  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+    if (subElement != -1) {
+      int[] polygonData = owner.polygonData.getValueAsArray();
+      int index = subElement * indicesPerPolygon;
+      if ((0 <= index) && (index < polygonData.length)) {
+        Vertex v = accessVertexAt(polygonData[index]);
+        GlrGeometry.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, v.position.x, v.position.y, v.position.z, v.normal.x, v.normal.y, v.normal.z);
+      } else {
+        rv.setNaN();
+      }
+    } else {
+      rv.setNaN();
+    }
+    return rv;
+  }
 
-	private final int mode;
-	private final int indicesPerPolygon;
-	private float uRatioPrev = Float.NaN;
-	private float vRatioPrev = Float.NaN;
+  private final int mode;
+  private final int indicesPerPolygon;
+  private float uRatioPrev = Float.NaN;
+  private float vRatioPrev = Float.NaN;
 }

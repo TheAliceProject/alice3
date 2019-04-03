@@ -44,17 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitOverhangTshirtLongShorts implements MaleAdultFullBodyOutfit {
-	BLACK_SUN,
-	RED,
-	BLUE,
-	BLACK,
-	ASH_LOGO,
-	BLUE_LOGO,
-	BROWN_LOGO,
-	GREEN_LOGO,
-	PLUM_LOGO,
-	WHITE_LOGO,
-	GRAY_PAW,
-	CAMO;
+  BLACK_SUN, RED, BLUE, BLACK, ASH_LOGO, BLUE_LOGO, BROWN_LOGO, GREEN_LOGO, PLUM_LOGO, WHITE_LOGO, GRAY_PAW, CAMO
 
 }

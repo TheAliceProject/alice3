@@ -49,13 +49,13 @@ import org.lgna.project.ast.JavaMethod;
  * @author Matt May
  */
 public class PoseAstUtilities {
-	public static final String STRIKE_POSE_METHOD_NAME = "strikePose";
+  public static final String STRIKE_POSE_METHOD_NAME = "strikePose";
 
-	public static boolean isStrikePoseMethod( AbstractMethod method ) {
-		if( method instanceof JavaMethod ) {
-			return method.getName().equals( "strikePose" );
-		} else {
-			return false;
-		}
-	}
+  public static boolean isStrikePoseMethod(AbstractMethod method) {
+    if (method instanceof JavaMethod) {
+      return method.getName().equals("strikePose");
+    } else {
+      return false;
+    }
+  }
 }

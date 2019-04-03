@@ -54,94 +54,85 @@ import javax.swing.ImageIcon;
  */
 public class ManipulationHandle2DCameraStrafe extends ImageBasedManipulationHandle2D {
 
-	private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
-		Inactive( "images/slide.png" ),
-		Highlighted( "images/slideHighlight.png" ),
-		Down( "images/slideDown.png" ),
-		DownLeft( "images/slideDownLeft.png" ),
-		DownRight( "images/slideDownRight.png" ),
-		Up( "images/slideUp.png" ),
-		UpLeft( "images/slideUpLeft.png" ),
-		UpRight( "images/slideUpRight.png" ),
-		Left( "images/slideLeft.png" ),
-		Right( "images/slideRight.png" );
+  private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
+    Inactive("images/slide.png"), Highlighted("images/slideHighlight.png"), Down("images/slideDown.png"), DownLeft("images/slideDownLeft.png"), DownRight("images/slideDownRight.png"), Up("images/slideUp.png"), UpLeft("images/slideUpLeft.png"), UpRight("images/slideUpRight.png"), Left("images/slideLeft.png"), Right("images/slideRight.png");
 
-		private ControlState( String resourceString ) {
-			Icon icon;
-			try {
-				icon = new ImageIcon( this.getClass().getResource( resourceString ) );
-			} catch( Exception e ) {
-				Logger.errln( "cannot load", resourceString, this );
-				icon = null;
-			}
-			this.icon = icon;
-		}
+    private ControlState(String resourceString) {
+      Icon icon;
+      try {
+        icon = new ImageIcon(this.getClass().getResource(resourceString));
+      } catch (Exception e) {
+        Logger.errln("cannot load", resourceString, this);
+        icon = null;
+      }
+      this.icon = icon;
+    }
 
-		@Override
-		public Icon getIcon() {
-			return this.icon;
-		}
+    @Override
+    public Icon getIcon() {
+      return this.icon;
+    }
 
-		private final Icon icon;
-	}
+    private final Icon icon;
+  }
 
-	private MovementDirection handleUp = MovementDirection.UP;
-	private MovementDirection handleDown = MovementDirection.DOWN;
-	private MovementDirection handleRight = MovementDirection.RIGHT;
-	private MovementDirection handleLeft = MovementDirection.LEFT;
+  private MovementDirection handleUp = MovementDirection.UP;
+  private MovementDirection handleDown = MovementDirection.DOWN;
+  private MovementDirection handleRight = MovementDirection.RIGHT;
+  private MovementDirection handleLeft = MovementDirection.LEFT;
 
-	private boolean movingLeft = false;
-	private boolean movingRight = false;
-	private boolean movingUp = false;
-	private boolean movingDown = false;
+  private boolean movingLeft = false;
+  private boolean movingRight = false;
+  private boolean movingUp = false;
+  private boolean movingDown = false;
 
-	public ManipulationHandle2DCameraStrafe() {
-		super( "images/slideMask.png" );
-	}
+  public ManipulationHandle2DCameraStrafe() {
+    super("images/slideMask.png");
+  }
 
-	public void remapDirections( MovementDirection up, MovementDirection down, MovementDirection left, MovementDirection right ) {
-		this.handleUp = up;
-		this.handleDown = down;
-		this.handleLeft = left;
-		this.handleRight = right;
-	}
+  public void remapDirections(MovementDirection up, MovementDirection down, MovementDirection left, MovementDirection right) {
+    this.handleUp = up;
+    this.handleDown = down;
+    this.handleLeft = left;
+    this.handleRight = right;
+  }
 
-	@Override
-	protected ImageState getStateForManipulationStatus() {
-		if( this.movingDown && !this.movingLeft && !this.movingRight ) {
-			return ControlState.Down;
-		} else if( this.movingDown && this.movingLeft ) {
-			return ControlState.DownLeft;
-		} else if( this.movingDown && this.movingRight ) {
-			return ControlState.DownRight;
-		} else if( this.movingUp && !this.movingLeft && !this.movingRight ) {
-			return ControlState.Up;
-		} else if( this.movingUp && this.movingLeft ) {
-			return ControlState.UpLeft;
-		} else if( this.movingUp && this.movingRight ) {
-			return ControlState.UpRight;
-		} else if( this.movingLeft && !this.movingUp && !this.movingDown ) {
-			return ControlState.Left;
-		} else if( this.movingRight && !this.movingUp && !this.movingDown ) {
-			return ControlState.Right;
-		} else if( this.state.isRollover() ) {
-			//If we're not moving in one of the directions, choose highlighted or inactive
-			return ControlState.Highlighted;
-		} else {
-			return ControlState.Inactive;
-		}
-	}
+  @Override
+  protected ImageState getStateForManipulationStatus() {
+    if (this.movingDown && !this.movingLeft && !this.movingRight) {
+      return ControlState.Down;
+    } else if (this.movingDown && this.movingLeft) {
+      return ControlState.DownLeft;
+    } else if (this.movingDown && this.movingRight) {
+      return ControlState.DownRight;
+    } else if (this.movingUp && !this.movingLeft && !this.movingRight) {
+      return ControlState.Up;
+    } else if (this.movingUp && this.movingLeft) {
+      return ControlState.UpLeft;
+    } else if (this.movingUp && this.movingRight) {
+      return ControlState.UpRight;
+    } else if (this.movingLeft && !this.movingUp && !this.movingDown) {
+      return ControlState.Left;
+    } else if (this.movingRight && !this.movingUp && !this.movingDown) {
+      return ControlState.Right;
+    } else if (this.state.isRollover()) {
+      //If we're not moving in one of the directions, choose highlighted or inactive
+      return ControlState.Highlighted;
+    } else {
+      return ControlState.Inactive;
+    }
+  }
 
-	@Override
-	protected void setManipulationState( ManipulationEvent event, boolean isActive ) {
-		if( event.getMovementDescription().direction == handleUp ) {
-			this.movingUp = isActive;
-		} else if( event.getMovementDescription().direction == handleDown ) {
-			this.movingDown = isActive;
-		} else if( event.getMovementDescription().direction == handleRight ) {
-			this.movingRight = isActive;
-		} else if( event.getMovementDescription().direction == handleLeft ) {
-			this.movingLeft = isActive;
-		}
-	}
+  @Override
+  protected void setManipulationState(ManipulationEvent event, boolean isActive) {
+    if (event.getMovementDescription().direction == handleUp) {
+      this.movingUp = isActive;
+    } else if (event.getMovementDescription().direction == handleDown) {
+      this.movingDown = isActive;
+    } else if (event.getMovementDescription().direction == handleRight) {
+      this.movingRight = isActive;
+    } else if (event.getMovementDescription().direction == handleLeft) {
+      this.movingLeft = isActive;
+    }
+  }
 }

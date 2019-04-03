@@ -59,104 +59,104 @@ import edu.cmu.cs.dennisc.scenegraph.Torus;
  * @author Dennis Cosgrove
  */
 public class GlrTorus extends GlrShape<Torus> {
-	private void glVertex( Context context, Torus.CoordinatePlane coordinatePlane, double majorRadius, double minorRadius, double theta, double phi, boolean isLightingEnabled ) {
-		double sinTheta = Math.sin( theta );
-		double cosTheta = Math.cos( theta );
-		double sinPhi = Math.sin( phi );
-		double cosPhi = Math.cos( phi );
+  private void glVertex(Context context, Torus.CoordinatePlane coordinatePlane, double majorRadius, double minorRadius, double theta, double phi, boolean isLightingEnabled) {
+    double sinTheta = Math.sin(theta);
+    double cosTheta = Math.cos(theta);
+    double sinPhi = Math.sin(phi);
+    double cosPhi = Math.cos(phi);
 
-		double y = minorRadius * sinPhi;
-		double r = majorRadius + ( minorRadius * cosPhi );
-		double x = sinTheta * r;
-		double z = cosTheta * r;
-		if( isLightingEnabled ) {
-			double i = sinTheta * cosPhi;
-			double j = sinPhi;
-			double k = cosTheta * cosPhi;
-			if( coordinatePlane == Torus.CoordinatePlane.XY ) {
-				//todo
-			} else if( coordinatePlane == Torus.CoordinatePlane.YZ ) {
-				//todo
-			}
-			context.gl.glNormal3d( i, j, k );
-		}
-		if( coordinatePlane == Torus.CoordinatePlane.XY ) {
-			//todo
-		} else if( coordinatePlane == Torus.CoordinatePlane.YZ ) {
-			//todo
-		}
-		context.gl.glVertex3d( x, y, z );
-	}
+    double y = minorRadius * sinPhi;
+    double r = majorRadius + (minorRadius * cosPhi);
+    double x = sinTheta * r;
+    double z = cosTheta * r;
+    if (isLightingEnabled) {
+      double i = sinTheta * cosPhi;
+      double j = sinPhi;
+      double k = cosTheta * cosPhi;
+      if (coordinatePlane == Torus.CoordinatePlane.XY) {
+        //todo
+      } else if (coordinatePlane == Torus.CoordinatePlane.YZ) {
+        //todo
+      }
+      context.gl.glNormal3d(i, j, k);
+    }
+    if (coordinatePlane == Torus.CoordinatePlane.XY) {
+      //todo
+    } else if (coordinatePlane == Torus.CoordinatePlane.YZ) {
+      //todo
+    }
+    context.gl.glVertex3d(x, y, z);
+  }
 
-	private void glTorus( Context context, boolean isLightingEnabled ) {
+  private void glTorus(Context context, boolean isLightingEnabled) {
 
-		Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
-		double majorRadius = this.owner.majorRadius.getValue();
-		double minorRadius = this.owner.minorRadius.getValue();
+    Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
+    double majorRadius = this.owner.majorRadius.getValue();
+    double minorRadius = this.owner.minorRadius.getValue();
 
-		//todo: add scenegraph hint
-		final int N = 32;
-		final int M = 16;
-		double dTheta = ( 2 * Math.PI ) / ( N - 1 );
-		double dPhi = ( 2 * Math.PI ) / ( M - 1 );
+    //todo: add scenegraph hint
+    final int N = 32;
+    final int M = 16;
+    double dTheta = (2 * Math.PI) / (N - 1);
+    double dPhi = (2 * Math.PI) / (M - 1);
 
-		double theta = 0;
-		for( int i = 0; i < ( N - 1 ); i++ ) {
-			double phi = 0;
-			context.gl.glBegin( GL_QUAD_STRIP );
-			for( int j = 0; j < M; j++ ) {
-				glVertex( context, coordinatePlane, majorRadius, minorRadius, theta, phi, isLightingEnabled );
-				glVertex( context, coordinatePlane, majorRadius, minorRadius, theta + dTheta, phi, isLightingEnabled );
-				phi += dPhi;
-			}
-			context.gl.glEnd();
-			theta += dTheta;
-		}
-	}
+    double theta = 0;
+    for (int i = 0; i < (N - 1); i++) {
+      double phi = 0;
+      context.gl.glBegin(GL_QUAD_STRIP);
+      for (int j = 0; j < M; j++) {
+        glVertex(context, coordinatePlane, majorRadius, minorRadius, theta, phi, isLightingEnabled);
+        glVertex(context, coordinatePlane, majorRadius, minorRadius, theta + dTheta, phi, isLightingEnabled);
+        phi += dPhi;
+      }
+      context.gl.glEnd();
+      theta += dTheta;
+    }
+  }
 
-	@Override
-	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
-		glTorus( rc, true );
-	}
+  @Override
+  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
+    glTorus(rc, true);
+  }
 
-	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		int name;
-		if( isSubElementRequired ) {
-			name = 0;
-		} else {
-			name = -1;
-		}
-		pc.gl.glPushName( name );
-		glTorus( pc, false );
-		pc.gl.glPopName();
-	}
+  @Override
+  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
+    int name;
+    if (isSubElementRequired) {
+      name = 0;
+    } else {
+      name = -1;
+    }
+    pc.gl.glPushName(name);
+    glTorus(pc, false);
+    pc.gl.glPopName();
+  }
 
-	@Override
-	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
-		//todo: solve for intersection with actual torus as opposed to just the plane
-		Vector3 direction = new Vector3( 0, 0, 0 );
-		Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
-		if( coordinatePlane == Torus.CoordinatePlane.XY ) {
-			direction.z = 1;
-		} else if( coordinatePlane == Torus.CoordinatePlane.YZ ) {
-			direction.x = 1;
-		} else {
-			direction.y = 1;
-		}
-		return GlrGeometry.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, direction.x, direction.y, direction.z );
-	}
+  @Override
+  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+    //todo: solve for intersection with actual torus as opposed to just the plane
+    Vector3 direction = new Vector3(0, 0, 0);
+    Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
+    if (coordinatePlane == Torus.CoordinatePlane.XY) {
+      direction.z = 1;
+    } else if (coordinatePlane == Torus.CoordinatePlane.YZ) {
+      direction.x = 1;
+    } else {
+      direction.y = 1;
+    }
+    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, 0, 0, 0, direction.x, direction.y, direction.z);
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.majorRadius ) {
-			setIsGeometryChanged( true );
-		} else if( property == owner.minorRadius ) {
-			setIsGeometryChanged( true );
-		} else if( property == owner.coordinatePlane ) {
-			setIsGeometryChanged( true );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.majorRadius) {
+      setIsGeometryChanged(true);
+    } else if (property == owner.minorRadius) {
+      setIsGeometryChanged(true);
+    } else if (property == owner.coordinatePlane) {
+      setIsGeometryChanged(true);
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 }

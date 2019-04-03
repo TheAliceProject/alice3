@@ -85,250 +85,250 @@ import java.util.List;
 import java.util.UUID;
 
 class PasswordPane extends JPageAxisPane {
-	private static final String HIDDEN_KEY = "HIDDEN_KEY";
-	private static final String EXPOSED_KEY = "EXPOSED_KEY";
+  private static final String HIDDEN_KEY = "HIDDEN_KEY";
+  private static final String EXPOSED_KEY = "EXPOSED_KEY";
 
-	class PasswordCardPane extends JCardPane {
-		private JPasswordField hidden = new JPasswordField() {
-			@Override
-			public Dimension getPreferredSize() {
-				return DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 256 );
-			}
-		};
-		private JTextField exposed = new JTextField();
-		private boolean isExposed = false;
+  class PasswordCardPane extends JCardPane {
+    private JPasswordField hidden = new JPasswordField() {
+      @Override
+      public Dimension getPreferredSize() {
+        return DimensionUtilities.constrainToMinimumWidth(super.getPreferredSize(), 256);
+      }
+    };
+    private JTextField exposed = new JTextField();
+    private boolean isExposed = false;
 
-		public PasswordCardPane() {
-			this.add( hidden, HIDDEN_KEY );
-			this.add( exposed, EXPOSED_KEY );
-			this.exposed.setDocument( this.hidden.getDocument() );
-		}
+    public PasswordCardPane() {
+      this.add(hidden, HIDDEN_KEY);
+      this.add(exposed, EXPOSED_KEY);
+      this.exposed.setDocument(this.hidden.getDocument());
+    }
 
-		public void toggle() {
-			if( this.isExposed ) {
-				this.show( HIDDEN_KEY );
-				this.hidden.requestFocus();
-			} else {
-				this.show( EXPOSED_KEY );
-				this.exposed.requestFocus();
-			}
-			this.isExposed = !this.isExposed;
-		}
-	}
+    public void toggle() {
+      if (this.isExposed) {
+        this.show(HIDDEN_KEY);
+        this.hidden.requestFocus();
+      } else {
+        this.show(EXPOSED_KEY);
+        this.exposed.requestFocus();
+      }
+      this.isExposed = !this.isExposed;
+    }
+  }
 
-	private PasswordCardPane passwordCardPane = new PasswordCardPane();
-	private JCheckBox checkBox = new JCheckBox( "display password" );
+  private PasswordCardPane passwordCardPane = new PasswordCardPane();
+  private JCheckBox checkBox = new JCheckBox("display password");
 
-	public PasswordPane() {
-		checkBox.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed( ActionEvent e ) {
-				passwordCardPane.toggle();
-			}
-		} );
-		this.add( passwordCardPane );
-		this.add( checkBox );
-	}
+  public PasswordPane() {
+    checkBox.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        passwordCardPane.toggle();
+      }
+    });
+    this.add(passwordCardPane);
+    this.add(checkBox);
+  }
 
-	public String getPassword() {
-		return passwordCardPane.exposed.getText();
-	}
+  public String getPassword() {
+    return passwordCardPane.exposed.getText();
+  }
 }
 
 class LogInPane extends JPageAxisPane {
-	class TestLogInOperation extends InconsequentialActionOperation {
-		public TestLogInOperation() {
-			super( UUID.fromString( "cf700b82-c80b-4fb4-8886-2d170503a253" ) );
-		}
+  class TestLogInOperation extends InconsequentialActionOperation {
+    public TestLogInOperation() {
+      super(UUID.fromString("cf700b82-c80b-4fb4-8886-2d170503a253"));
+    }
 
-		@Override
-		protected void localize() {
-			super.localize();
-			this.setName( "Log In" );
-		}
+    @Override
+    protected void localize() {
+      super.localize();
+      this.setName("Log In");
+    }
 
-		@Override
-		protected void performInternal() {
-			try {
-				JiraSoapServiceServiceLocator jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
-				JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new URL( ReportSubmissionConfiguration.JIRA_SOAP_URL ) );
-				String username = textUsername.getText();
-				try {
-					String password = passwordPane.getPassword();
-					String token = service.login( username, password );
-					try {
-						RemoteUser remoteUser = service.getUser( token, username );
-						AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
-					} finally {
-						service.logout( token );
-					}
-					SwingUtilities.getRoot( LogInPane.this ).setVisible( false );
-				} catch( RemoteAuthenticationException rae ) {
-					JOptionPane.showMessageDialog( null, rae );
-					//edu.cmu.cs.dennisc.account.AccountManager.logOut( BUGS_ALICE_ORG_KEY );
-				}
-			} catch( Exception e ) {
-				throw new RuntimeException( e );
-			}
-		}
-	}
+    @Override
+    protected void performInternal() {
+      try {
+        JiraSoapServiceServiceLocator jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
+        JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2(new URL(ReportSubmissionConfiguration.JIRA_SOAP_URL));
+        String username = textUsername.getText();
+        try {
+          String password = passwordPane.getPassword();
+          String token = service.login(username, password);
+          try {
+            RemoteUser remoteUser = service.getUser(token, username);
+            AccountManager.logIn(LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname());
+          } finally {
+            service.logout(token);
+          }
+          SwingUtilities.getRoot(LogInPane.this).setVisible(false);
+        } catch (RemoteAuthenticationException rae) {
+          JOptionPane.showMessageDialog(null, rae);
+          //edu.cmu.cs.dennisc.account.AccountManager.logOut( BUGS_ALICE_ORG_KEY );
+        }
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
 
-	private JTextField textUsername = new JTextField();
-	private PasswordPane passwordPane = new PasswordPane();
-	//todo: remove. rely only on operations.
-	private JButton logInButton = new TestLogInOperation().createButton().getAwtComponent();
+  private JTextField textUsername = new JTextField();
+  private PasswordPane passwordPane = new PasswordPane();
+  //todo: remove. rely only on operations.
+  private JButton logInButton = new TestLogInOperation().createButton().getAwtComponent();
 
-	private Component createLabel( String text ) {
-		JLabel rv = LabelUtilities.createLabel( text );
-		rv.setVerticalAlignment( SwingConstants.TOP );
-		rv.setHorizontalAlignment( SwingConstants.TRAILING );
-		return rv;
-	}
+  private Component createLabel(String text) {
+    JLabel rv = LabelUtilities.createLabel(text);
+    rv.setVerticalAlignment(SwingConstants.TOP);
+    rv.setHorizontalAlignment(SwingConstants.TRAILING);
+    return rv;
+  }
 
-	public LogInPane() {
-		JRowsSpringPane rowsPane = new JRowsSpringPane( 8, 4 ) {
-			@Override
-			protected List<Component[]> addComponentRows( List<Component[]> rv ) {
-				rv.add( SpringUtilities.createRow( createLabel( "Username:" ), textUsername ) );
-				rv.add( SpringUtilities.createRow( createLabel( "Password:" ), passwordPane ) );
-				return rv;
-			}
-		};
+  public LogInPane() {
+    JRowsSpringPane rowsPane = new JRowsSpringPane(8, 4) {
+      @Override
+      protected List<Component[]> addComponentRows(List<Component[]> rv) {
+        rv.add(SpringUtilities.createRow(createLabel("Username:"), textUsername));
+        rv.add(SpringUtilities.createRow(createLabel("Password:"), passwordPane));
+        return rv;
+      }
+    };
 
-		JPane signUpPane = new JPane();
-		signUpPane.add( LabelUtilities.createLabel( "Not a member?" ) );
-		SignUpOperation signUpOperation = new SignUpOperation();
-		signUpPane.add( signUpOperation.createHyperlink().getAwtComponent() );
-		signUpPane.add( LabelUtilities.createLabel( "for an account." ) );
+    JPane signUpPane = new JPane();
+    signUpPane.add(LabelUtilities.createLabel("Not a member?"));
+    SignUpOperation signUpOperation = new SignUpOperation();
+    signUpPane.add(signUpOperation.createHyperlink().getAwtComponent());
+    signUpPane.add(LabelUtilities.createLabel("for an account."));
 
-		JPane buttonPane = new JPane();
-		buttonPane.add( this.logInButton );
+    JPane buttonPane = new JPane();
+    buttonPane.add(this.logInButton);
 
-		signUpPane.setAlignmentX( JComponent.CENTER_ALIGNMENT );
-		rowsPane.setAlignmentX( JComponent.CENTER_ALIGNMENT );
-		buttonPane.setAlignmentX( JComponent.CENTER_ALIGNMENT );
+    signUpPane.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+    rowsPane.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+    buttonPane.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
-		this.add( signUpPane );
-		this.add( Box.createVerticalStrut( 32 ) );
-		this.add( rowsPane );
-		this.add( Box.createVerticalStrut( 6 ) );
-		this.add( buttonPane );
+    this.add(signUpPane);
+    this.add(Box.createVerticalStrut(32));
+    this.add(rowsPane);
+    this.add(Box.createVerticalStrut(6));
+    this.add(buttonPane);
 
-		this.setBorder( BorderFactory.createEmptyBorder( 8, 32, 8, 32 ) );
-	}
+    this.setBorder(BorderFactory.createEmptyBorder(8, 32, 8, 32));
+  }
 
-	public JButton getLogInButton() {
-		return this.logInButton;
-	}
+  public JButton getLogInButton() {
+    return this.logInButton;
+  }
 }
 
 public class LogInStatusPane extends JCardPane {
-	public static final String BUGS_ALICE_ORG_KEY = "bugs.alice.org";
+  public static final String BUGS_ALICE_ORG_KEY = "bugs.alice.org";
 
-	class LogInOperation extends InconsequentialActionOperation {
-		public LogInOperation() {
-			super( UUID.fromString( "f2d620ad-9b18-42e7-8b77-240e7a829b03" ) );
-			this.setName( "Log In... (Optional)" );
-		}
+  class LogInOperation extends InconsequentialActionOperation {
+    public LogInOperation() {
+      super(UUID.fromString("f2d620ad-9b18-42e7-8b77-240e7a829b03"));
+      this.setName("Log In... (Optional)");
+    }
 
-		@Override
-		protected void performInternal() {
-			LogInPane pane = new LogInPane();
-			// TODO work out a way to get an owner or get rid of this code
-			Component owner = null;
-			JDialog dialog = JDialogUtilities.createPackedJDialog( pane, owner, "Log In", true, WindowConstants.DISPOSE_ON_CLOSE );
-			WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, SwingUtilities.getRoot( owner ) );
-			dialog.getRootPane().setDefaultButton( pane.getLogInButton() );
-			dialog.setVisible( true );
-			AccountInformation accountInformation = AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
-			if( accountInformation != null ) {
-				LogInStatusPane.this.onPane.refresh();
-				LogInStatusPane.this.show( ON_KEY );
-			}
-		}
-	}
+    @Override
+    protected void performInternal() {
+      LogInPane pane = new LogInPane();
+      // TODO work out a way to get an owner or get rid of this code
+      Component owner = null;
+      JDialog dialog = JDialogUtilities.createPackedJDialog(pane, owner, "Log In", true, WindowConstants.DISPOSE_ON_CLOSE);
+      WindowUtilities.setLocationOnScreenToCenteredWithin(dialog, SwingUtilities.getRoot(owner));
+      dialog.getRootPane().setDefaultButton(pane.getLogInButton());
+      dialog.setVisible(true);
+      AccountInformation accountInformation = AccountManager.get(LogInStatusPane.BUGS_ALICE_ORG_KEY);
+      if (accountInformation != null) {
+        LogInStatusPane.this.onPane.refresh();
+        LogInStatusPane.this.show(ON_KEY);
+      }
+    }
+  }
 
-	class LogOutOperation extends InconsequentialActionOperation {
-		public LogOutOperation() {
-			super( UUID.fromString( "73bf08cc-3666-463d-86da-3d483a4d8f2b" ) );
-			this.setName( "Log Out" );
-		}
+  class LogOutOperation extends InconsequentialActionOperation {
+    public LogOutOperation() {
+      super(UUID.fromString("73bf08cc-3666-463d-86da-3d483a4d8f2b"));
+      this.setName("Log Out");
+    }
 
-		@Override
-		protected void performInternal() {
-			AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
-			LogInStatusPane.this.show( OFF_KEY );
-		}
-	}
+    @Override
+    protected void performInternal() {
+      AccountManager.logOut(LogInStatusPane.BUGS_ALICE_ORG_KEY);
+      LogInStatusPane.this.show(OFF_KEY);
+    }
+  }
 
-	private static final String OFF_KEY = "OFF_KEY";
-	private static final String ON_KEY = "ON_KEY";
-	private JButton logInButton = new LogInOperation().createButton().getAwtComponent();
-	private JButton logOutButton = new LogOutOperation().createButton().getAwtComponent();
+  private static final String OFF_KEY = "OFF_KEY";
+  private static final String ON_KEY = "ON_KEY";
+  private JButton logInButton = new LogInOperation().createButton().getAwtComponent();
+  private JButton logOutButton = new LogOutOperation().createButton().getAwtComponent();
 
-	class OffPane extends JLineAxisPane {
-		public OffPane() {
-			this.add( Box.createHorizontalGlue() );
-			this.add( logInButton );
-		}
-	}
+  class OffPane extends JLineAxisPane {
+    public OffPane() {
+      this.add(Box.createHorizontalGlue());
+      this.add(logInButton);
+    }
+  }
 
-	class OnPane extends JLineAxisPane {
-		private JLabel nameLabel = new JLabel( "Full Name" ) {
-			@Override
-			public Dimension getPreferredSize() {
-				return DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
-			}
+  class OnPane extends JLineAxisPane {
+    private JLabel nameLabel = new JLabel("Full Name") {
+      @Override
+      public Dimension getPreferredSize() {
+        return DimensionUtilities.constrainToMinimumWidth(super.getPreferredSize(), 320);
+      }
 
-			@Override
-			public Dimension getMaximumSize() {
-				return this.getPreferredSize();
-			}
-		};
+      @Override
+      public Dimension getMaximumSize() {
+        return this.getPreferredSize();
+      }
+    };
 
-		public OnPane() {
-			this.refresh();
-			this.nameLabel.setHorizontalAlignment( SwingConstants.TRAILING );
-			this.nameLabel.setForeground( Color.WHITE );
-			this.add( Box.createHorizontalGlue() );
-			this.add( this.nameLabel );
-			this.add( Box.createHorizontalStrut( 8 ) );
-			this.add( logOutButton );
-		}
+    public OnPane() {
+      this.refresh();
+      this.nameLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+      this.nameLabel.setForeground(Color.WHITE);
+      this.add(Box.createHorizontalGlue());
+      this.add(this.nameLabel);
+      this.add(Box.createHorizontalStrut(8));
+      this.add(logOutButton);
+    }
 
-		public void refresh() {
-			AccountInformation accountInformation = AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
-			if( accountInformation != null ) {
-				this.nameLabel.setText( accountInformation.getFullName() );
-				this.revalidate();
-			}
-		}
-	}
+    public void refresh() {
+      AccountInformation accountInformation = AccountManager.get(LogInStatusPane.BUGS_ALICE_ORG_KEY);
+      if (accountInformation != null) {
+        this.nameLabel.setText(accountInformation.getFullName());
+        this.revalidate();
+      }
+    }
+  }
 
-	private OffPane offPane = new OffPane();
-	private OnPane onPane = new OnPane();
+  private OffPane offPane = new OffPane();
+  private OnPane onPane = new OnPane();
 
-	public LogInStatusPane() {
-		this.add( this.offPane, OFF_KEY );
-		this.add( this.onPane, ON_KEY );
-		AccountInformation accountInformation = AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
-		if( accountInformation != null ) {
-			LogInStatusPane.this.show( ON_KEY );
-		}
-	}
+  public LogInStatusPane() {
+    this.add(this.offPane, OFF_KEY);
+    this.add(this.onPane, ON_KEY);
+    AccountInformation accountInformation = AccountManager.get(LogInStatusPane.BUGS_ALICE_ORG_KEY);
+    if (accountInformation != null) {
+      LogInStatusPane.this.show(ON_KEY);
+    }
+  }
 
-	//	@Override
-	//	public void show( String key ) {
-	//		super.show( key );
-	//		this.revalidate();
-	//	}
-	public static void main( String[] args ) {
-		LogInStatusPane pane = new LogInStatusPane();
-		//LogInPane pane = new LogInPane();
-		//PasswordPane pane = new PasswordPane();
-		JDialog dialog = JDialogUtilities.createPackedJDialog( pane, null, "", true, WindowConstants.DISPOSE_ON_CLOSE );
-		dialog.getContentPane().setBackground( Color.DARK_GRAY );
-		dialog.setLocation( 200, 200 );
-		dialog.setVisible( true );
-	}
+  //  @Override
+  //  public void show( String key ) {
+  //    super.show( key );
+  //    this.revalidate();
+  //  }
+  public static void main(String[] args) {
+    LogInStatusPane pane = new LogInStatusPane();
+    //LogInPane pane = new LogInPane();
+    //PasswordPane pane = new PasswordPane();
+    JDialog dialog = JDialogUtilities.createPackedJDialog(pane, null, "", true, WindowConstants.DISPOSE_ON_CLOSE);
+    dialog.getContentPane().setBackground(Color.DARK_GRAY);
+    dialog.setLocation(200, 200);
+    dialog.setVisible(true);
+  }
 }

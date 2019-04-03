@@ -55,30 +55,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ShapeDragModel extends GalleryDragModel {
-	private String text;
+  private String text;
 
-	public ShapeDragModel( UUID migrationId ) {
-		super( migrationId );
-	}
+  public ShapeDragModel(UUID migrationId) {
+    super(migrationId);
+  }
 
-	@Override
-	protected void localize() {
-		Formatter formatter = FormatterState.getInstance().getValue();
-		this.text = String.format(formatter.getNewFormat(), findDefaultLocalizedText(), "");
-	}
+  @Override
+  protected void localize() {
+    Formatter formatter = FormatterState.getInstance().getValue();
+    this.text = String.format(formatter.getNewFormat(), findDefaultLocalizedText(), "");
+  }
 
-	@Override
-	public final String getText() {
-		return this.text;
-	}
+  @Override
+  public final String getText() {
+    return this.text;
+  }
 
-	public String getLocalizedClassName() {
-		return this.findDefaultLocalizedText();
-	}
+  public String getLocalizedClassName() {
+    return this.findDefaultLocalizedText();
+  }
 
-	@Override
-	public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
-		return this.getLeftButtonClickOperation(null);
-	}
+  @Override
+  public Triggerable getDropOperation(DragStep step, DropSite dropSite) {
+    return this.getLeftButtonClickOperation(null);
+  }
 
 }

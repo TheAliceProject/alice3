@@ -57,78 +57,78 @@ import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.AsSeenBy;
 
 public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<Point3, SMovableTurnable> {
-	private AbsoluteTransformationListener absoluteTransformationListener;
+  private AbsoluteTransformationListener absoluteTransformationListener;
 
-	public MoveableTurnableTranslationAdapter( SMovableTurnable instance, StandardExpressionState expressionState ) {
-		super( "Position", instance, expressionState );
-	}
+  public MoveableTurnableTranslationAdapter(SMovableTurnable instance, StandardExpressionState expressionState) {
+    super("Position", instance, expressionState);
+  }
 
-	private void initializeTransformationListenersIfNecessary() {
-		if( this.absoluteTransformationListener == null ) {
-			this.absoluteTransformationListener = new AbsoluteTransformationListener() {
-				@Override
-				public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
-					MoveableTurnableTranslationAdapter.this.handleInternalValueChanged();
-				}
-			};
-		}
-	}
+  private void initializeTransformationListenersIfNecessary() {
+    if (this.absoluteTransformationListener == null) {
+      this.absoluteTransformationListener = new AbsoluteTransformationListener() {
+        @Override
+        public void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent) {
+          MoveableTurnableTranslationAdapter.this.handleInternalValueChanged();
+        }
+      };
+    }
+  }
 
-	@Override
-	public void startListening() {
-		if( this.instance != null ) {
-			this.initializeTransformationListenersIfNecessary();
-			AbstractTransformableImp implementation = EmployeesOnly.getImplementation( this.instance );
-			implementation.getSgComposite().addAbsoluteTransformationListener( this.absoluteTransformationListener );
-		}
-	}
+  @Override
+  public void startListening() {
+    if (this.instance != null) {
+      this.initializeTransformationListenersIfNecessary();
+      AbstractTransformableImp implementation = EmployeesOnly.getImplementation(this.instance);
+      implementation.getSgComposite().addAbsoluteTransformationListener(this.absoluteTransformationListener);
+    }
+  }
 
-	@Override
-	public void stopListening() {
-		if( this.instance != null ) {
-			AbstractTransformableImp implementation = EmployeesOnly.getImplementation( this.instance );
-			implementation.getSgComposite().removeAbsoluteTransformationListener( this.absoluteTransformationListener );
-		}
-	}
+  @Override
+  public void stopListening() {
+    if (this.instance != null) {
+      AbstractTransformableImp implementation = EmployeesOnly.getImplementation(this.instance);
+      implementation.getSgComposite().removeAbsoluteTransformationListener(this.absoluteTransformationListener);
+    }
+  }
 
-	@Override
-	public Class<Point3> getPropertyType() {
-		return Point3.class;
-	}
+  @Override
+  public Class<Point3> getPropertyType() {
+    return Point3.class;
+  }
 
-	@Override
-	public Point3 getValueCopyIfMutable() {
-		return new Point3( this.getValue() );
-	}
+  @Override
+  public Point3 getValueCopyIfMutable() {
+    return new Point3(this.getValue());
+  }
 
-	@Override
-	public Point3 getValue() {
-		if( this.instance != null ) {
-			return EmployeesOnly.getImplementation( this.instance ).getAbsoluteTransformation().translation;
-		}
-		return null;
-	}
+  @Override
+  public Point3 getValue() {
+    if (this.instance != null) {
+      return EmployeesOnly.getImplementation(this.instance).getAbsoluteTransformation().translation;
+    }
+    return null;
+  }
 
-	@Override
-	public void setValue( Point3 newValue ) {
-		super.setValue( newValue );
-		if( this.instance != null ) {
-			AffineMatrix4x4 currentTrans = EmployeesOnly.getImplementation( this.instance ).getAbsoluteTransformation();
-			double dist = Point3.calculateDistanceBetween( currentTrans.translation, newValue );
-			double duration = 1;
-			if( dist < .02 ) {
-				duration = 0;
-			} else if( dist < .5 ) {
-				duration = ( dist - .02 ) / ( .5 - .02 );
-			}
+  @Override
+  public void setValue(Point3 newValue) {
+    super.setValue(newValue);
+    if (this.instance != null) {
+      AffineMatrix4x4 currentTrans = EmployeesOnly.getImplementation(this.instance).getAbsoluteTransformation();
+      double dist = Point3.calculateDistanceBetween(currentTrans.translation, newValue);
+      double duration = 1;
+      if (dist < .02) {
+        duration = 0;
+      } else if (dist < .5) {
+        duration = (dist - .02) / (.5 - .02);
+      }
 
-			AbstractTransformableImp implementation = EmployeesOnly.getImplementation( this.instance );
-			implementation.animatePositionOnly( AsSeenBy.SCENE.getActualEntityImplementation( implementation ), newValue, false, duration, TraditionalStyle.BEGIN_AND_END_GENTLY );
-		}
-	}
+      AbstractTransformableImp implementation = EmployeesOnly.getImplementation(this.instance);
+      implementation.animatePositionOnly(AsSeenBy.SCENE.getActualEntityImplementation(implementation), newValue, false, duration, TraditionalStyle.BEGIN_AND_END_GENTLY);
+    }
+  }
 
-	protected void handleInternalValueChanged() {
-		this.notifyValueObservers( this.getValue() );
-	}
+  protected void handleInternalValueChanged() {
+    this.notifyValueObservers(this.getValue());
+  }
 
 }

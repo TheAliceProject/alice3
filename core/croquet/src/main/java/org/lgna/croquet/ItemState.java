@@ -62,205 +62,202 @@ import java.util.concurrent.Callable;
  * @author Dennis Cosgrove
  */
 public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec<T> itemCodec;
+  private final ItemCodec<T> itemCodec;
 
-	public ItemState( Group group, UUID id, T initialValue, ItemCodec<T> itemCodec ) {
-		super( group, id, initialValue );
-		if ( itemCodec == null ) {
-			Logger.severe( "itemCodec is null for ", this );
-		}
-		this.itemCodec = itemCodec;
-	}
+  public ItemState(Group group, UUID id, T initialValue, ItemCodec<T> itemCodec) {
+    super(group, id, initialValue);
+    if (itemCodec == null) {
+      Logger.severe("itemCodec is null for ", this);
+    }
+    this.itemCodec = itemCodec;
+  }
 
-	@Override
-	public final T decodeValue( BinaryDecoder binaryDecoder ) {
-		return this.itemCodec.decodeValue( binaryDecoder );
-	}
+  @Override
+  public final T decodeValue(BinaryDecoder binaryDecoder) {
+    return this.itemCodec.decodeValue(binaryDecoder);
+  }
 
-	@Override
-	public final void encodeValue( BinaryEncoder binaryEncoder, T value ) {
-		this.itemCodec.encodeValue( binaryEncoder, value );
-	}
+  @Override
+  public final void encodeValue(BinaryEncoder binaryEncoder, T value) {
+    this.itemCodec.encodeValue(binaryEncoder, value);
+  }
 
-	@Override
-	public final void appendRepresentation( StringBuilder sb, T value ) {
-		this.itemCodec.appendRepresentation( sb, value );
-	}
+  @Override
+  public final void appendRepresentation(StringBuilder sb, T value) {
+    this.itemCodec.appendRepresentation(sb, value);
+  }
 
-	public ItemCodec<T> getItemCodec() {
-		return this.itemCodec;
-	}
+  public ItemCodec<T> getItemCodec() {
+    return this.itemCodec;
+  }
 
-	@Override
-	public void appendUserRepr( StringBuilder sb ) {
-		this.appendRepresentation( sb, this.getValue() );
-	}
+  @Override
+  public void appendUserRepr(StringBuilder sb) {
+    this.appendRepresentation(sb, this.getValue());
+  }
 
-	private static <T> T getItem( Callable<T> itemCallable ) {
-		try {
-			return itemCallable.call();
-		} catch( Exception e ) {
-			throw new RuntimeException( e );
-		}
-	}
+  private static <T> T getItem(Callable<T> itemCallable) {
+    try {
+      return itemCallable.call();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
 
-	private static class RadioButtonesqueModel extends JToggleButton.ToggleButtonModel {
-		private boolean isIgnoringSetSelectedFalse;
+  private static class RadioButtonesqueModel extends JToggleButton.ToggleButtonModel {
+    private boolean isIgnoringSetSelectedFalse;
 
-		@Override
-		public void setSelected( boolean b ) {
-			if ( b || !this.isIgnoringSetSelectedFalse ) {
-				super.setSelected( b );
-			}
-		}
+    @Override
+    public void setSelected(boolean b) {
+      if (b || !this.isIgnoringSetSelectedFalse) {
+        super.setSelected(b);
+      }
+    }
 
-		@Override
-		public void setPressed( boolean b ) {
-			if( this.isSelected() ) {
-				this.isIgnoringSetSelectedFalse = true;
-			}
-			super.setPressed( b );
-			this.isIgnoringSetSelectedFalse = false;
-		}
-	}
+    @Override
+    public void setPressed(boolean b) {
+      if (this.isSelected()) {
+        this.isIgnoringSetSelectedFalse = true;
+      }
+      super.setPressed(b);
+      this.isIgnoringSetSelectedFalse = false;
+    }
+  }
 
-	private class InternalItemSelectedState extends BooleanState {
-		private final Callable<T> itemCallable;
+  private class InternalItemSelectedState extends BooleanState {
+    private final Callable<T> itemCallable;
 
-		private InternalItemSelectedState( ItemState<T> state, Callable<T> itemCallable ) {
-			super( state.getGroup(),
-						 UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ),
-						 state.getValue() == getItem( itemCallable ),
-						 new RadioButtonesqueModel() );
-			this.itemCallable = itemCallable;
-		}
+    private InternalItemSelectedState(ItemState<T> state, Callable<T> itemCallable) {
+      super(state.getGroup(), UUID.fromString("18f0b3e3-392f-49e0-adab-a6fca7816d63"), state.getValue() == getItem(itemCallable), new RadioButtonesqueModel());
+      this.itemCallable = itemCallable;
+    }
 
-		@Override
-		protected void localize() {
-			super.localize();
-			StringBuilder sb = new StringBuilder();
-			getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
-			this.setTextForBothTrueAndFalse( sb.toString() );
-		}
+    @Override
+    protected void localize() {
+      super.localize();
+      StringBuilder sb = new StringBuilder();
+      getItemCodec().appendRepresentation(sb, getItem(this.itemCallable));
+      this.setTextForBothTrueAndFalse(sb.toString());
+    }
 
-		@Override
-		protected void handleItemStateChanged( ItemEvent e ) {
-			//note: do not invoke super
-			if( e.getStateChange() == ItemEvent.SELECTED ) {
-				T item = getItem( this.itemCallable );
-				final UserActivity activity = ItemEventTrigger.createUserActivity( e );
-				ItemState.this.changeValueFromIndirectModel( item, activity );
-			}
-		}
+    @Override
+    protected void handleItemStateChanged(ItemEvent e) {
+      //note: do not invoke super
+      if (e.getStateChange() == ItemEvent.SELECTED) {
+        T item = getItem(this.itemCallable);
+        final UserActivity activity = ItemEventTrigger.createUserActivity(e);
+        ItemState.this.changeValueFromIndirectModel(item, activity);
+      }
+    }
 
-		@Override
-		protected void appendRepr( StringBuilder sb ) {
-			super.appendRepr( sb );
-			sb.append( ";item=" );
-			getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
-		}
-	}
+    @Override
+    protected void appendRepr(StringBuilder sb) {
+      super.appendRepr(sb);
+      sb.append(";item=");
+      getItemCodec().appendRepresentation(sb, getItem(this.itemCallable));
+    }
+  }
 
-	private class InternalSelectItemOperation extends Operation {
-		private final Callable<T> itemCallable;
-		private final boolean isAlternateLocalization;
+  private class InternalSelectItemOperation extends Operation {
+    private final Callable<T> itemCallable;
+    private final boolean isAlternateLocalization;
 
-		private InternalSelectItemOperation( ItemState<T> state, Callable<T> itemCallable, boolean isAlternateLocalization ) {
-			super( state.getGroup(), UUID.fromString( "6de1225e-3fb6-4bd0-9c78-1188c642325c" ) );
-			this.itemCallable = itemCallable;
-			this.isAlternateLocalization = isAlternateLocalization;
-		}
+    private InternalSelectItemOperation(ItemState<T> state, Callable<T> itemCallable, boolean isAlternateLocalization) {
+      super(state.getGroup(), UUID.fromString("6de1225e-3fb6-4bd0-9c78-1188c642325c"));
+      this.itemCallable = itemCallable;
+      this.isAlternateLocalization = isAlternateLocalization;
+    }
 
-		@Override
-		protected void localize() {
-			super.localize();
-			StringBuilder sb = new StringBuilder();
-			if( this.isAlternateLocalization ) {
-				sb.append( "Edit" );
-			} else {
-				getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
-			}
-			this.setName( sb.toString() );
-		}
+    @Override
+    protected void localize() {
+      super.localize();
+      StringBuilder sb = new StringBuilder();
+      if (this.isAlternateLocalization) {
+        sb.append("Edit");
+      } else {
+        getItemCodec().appendRepresentation(sb, getItem(this.itemCallable));
+      }
+      this.setName(sb.toString());
+    }
 
-		@Override
-		protected final void performInActivity( UserActivity userActivity ) {
-			ItemState.this.changeValueFromIndirectModel( getItem( this.itemCallable ), userActivity );
-		}
-	}
+    @Override
+    protected final void performInActivity(UserActivity userActivity) {
+      ItemState.this.changeValueFromIndirectModel(getItem(this.itemCallable), userActivity);
+    }
+  }
 
-	private Map<Callable<T>, InternalItemSelectedState> mapItemCallableToItemSelectedState;
+  private Map<Callable<T>, InternalItemSelectedState> mapItemCallableToItemSelectedState;
 
-	//note: itemCallable must be valid key
-	public BooleanState getItemSelectedState( Callable<T> itemCallable ) {
-		if ( mapItemCallableToItemSelectedState == null ) {
-			this.mapItemCallableToItemSelectedState = Maps.newHashMap();
-		}
-		InternalItemSelectedState rv = this.mapItemCallableToItemSelectedState.get( itemCallable );
-		if ( rv == null ) {
-			rv = new InternalItemSelectedState( this, itemCallable );
-			this.mapItemCallableToItemSelectedState.put( itemCallable, rv );
-		}
-		return rv;
-	}
+  //note: itemCallable must be valid key
+  public BooleanState getItemSelectedState(Callable<T> itemCallable) {
+    if (mapItemCallableToItemSelectedState == null) {
+      this.mapItemCallableToItemSelectedState = Maps.newHashMap();
+    }
+    InternalItemSelectedState rv = this.mapItemCallableToItemSelectedState.get(itemCallable);
+    if (rv == null) {
+      rv = new InternalItemSelectedState(this, itemCallable);
+      this.mapItemCallableToItemSelectedState.put(itemCallable, rv);
+    }
+    return rv;
+  }
 
-	public BooleanState getItemSelectedState( T item ) {
-		return getItemSelectedState( new ValueCallable<>( item ) );
-	}
+  public BooleanState getItemSelectedState(T item) {
+    return getItemSelectedState(new ValueCallable<>(item));
+  }
 
-	private Map<Callable<T>, InternalSelectItemOperation> mapItemCallableToSelectionOperation;
-	private Map<Callable<T>, InternalSelectItemOperation> mapItemCallableToSelectionOperationAlternate;
+  private Map<Callable<T>, InternalSelectItemOperation> mapItemCallableToSelectionOperation;
+  private Map<Callable<T>, InternalSelectItemOperation> mapItemCallableToSelectionOperationAlternate;
 
-	private Map<Callable<T>, InternalSelectItemOperation> getMapItemCallableToSelectionOperation( boolean isAlternateLocalization ) {
-		if( isAlternateLocalization ) {
-			if ( mapItemCallableToSelectionOperationAlternate == null ) {
-				this.mapItemCallableToSelectionOperationAlternate = Maps.newHashMap();
-			}
-			return this.mapItemCallableToSelectionOperationAlternate;
-		} else {
-			if ( mapItemCallableToSelectionOperation == null ) {
-				this.mapItemCallableToSelectionOperation = Maps.newHashMap();
-			}
-			return this.mapItemCallableToSelectionOperation;
-		}
-	}
+  private Map<Callable<T>, InternalSelectItemOperation> getMapItemCallableToSelectionOperation(boolean isAlternateLocalization) {
+    if (isAlternateLocalization) {
+      if (mapItemCallableToSelectionOperationAlternate == null) {
+        this.mapItemCallableToSelectionOperationAlternate = Maps.newHashMap();
+      }
+      return this.mapItemCallableToSelectionOperationAlternate;
+    } else {
+      if (mapItemCallableToSelectionOperation == null) {
+        this.mapItemCallableToSelectionOperation = Maps.newHashMap();
+      }
+      return this.mapItemCallableToSelectionOperation;
+    }
+  }
 
-	private Operation getItemSelectionOperation( Callable<T> itemCallable, boolean isAlternateLocalization ) {
-		Map<Callable<T>, InternalSelectItemOperation> map = getMapItemCallableToSelectionOperation( isAlternateLocalization );
-		InternalSelectItemOperation rv = map.get( itemCallable );
-		if ( rv == null ) {
-			rv = new InternalSelectItemOperation( this, itemCallable, isAlternateLocalization );
-			map.put( itemCallable, rv );
-		}
-		return rv;
-	}
+  private Operation getItemSelectionOperation(Callable<T> itemCallable, boolean isAlternateLocalization) {
+    Map<Callable<T>, InternalSelectItemOperation> map = getMapItemCallableToSelectionOperation(isAlternateLocalization);
+    InternalSelectItemOperation rv = map.get(itemCallable);
+    if (rv == null) {
+      rv = new InternalSelectItemOperation(this, itemCallable, isAlternateLocalization);
+      map.put(itemCallable, rv);
+    }
+    return rv;
+  }
 
-	public Operation getItemSelectionOperation( Callable<T> itemCallable ) {
-		return this.getItemSelectionOperation( itemCallable, false );
-	}
+  public Operation getItemSelectionOperation(Callable<T> itemCallable) {
+    return this.getItemSelectionOperation(itemCallable, false);
+  }
 
-	public final Operation getItemSelectionOperation( final T item ) {
-		return this.getItemSelectionOperation( new ValueCallable<>( item ) );
-	}
+  public final Operation getItemSelectionOperation(final T item) {
+    return this.getItemSelectionOperation(new ValueCallable<>(item));
+  }
 
-	private Operation getAlternateLocalizationItemSelectionOperation( Callable<T> itemCallable ) {
-		return this.getItemSelectionOperation( itemCallable, true );
-	}
+  private Operation getAlternateLocalizationItemSelectionOperation(Callable<T> itemCallable) {
+    return this.getItemSelectionOperation(itemCallable, true);
+  }
 
-	public final Operation getAlternateLocalizationItemSelectionOperation( final T item ) {
-		return this.getAlternateLocalizationItemSelectionOperation( new ValueCallable<>( item ) );
-	}
+  public final Operation getAlternateLocalizationItemSelectionOperation(final T item) {
+    return this.getAlternateLocalizationItemSelectionOperation(new ValueCallable<>(item));
+  }
 
-	@Override
-	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
-		super.fireChanged( prevValue, nextValue, isAdjusting );
-		//todo
-		if( this.mapItemCallableToItemSelectedState != null ) {
-			for( InternalItemSelectedState itemSelectedState : this.mapItemCallableToItemSelectedState.values() ) {
-				T item = getItem( itemSelectedState.itemCallable );
-				boolean isSelected = Objects.equals( item, nextValue );
-				itemSelectedState.getImp().getSwingModel().getButtonModel().setSelected( isSelected );
-			}
-		}
-	}
+  @Override
+  protected void fireChanged(T prevValue, T nextValue, boolean isAdjusting) {
+    super.fireChanged(prevValue, nextValue, isAdjusting);
+    //todo
+    if (this.mapItemCallableToItemSelectedState != null) {
+      for (InternalItemSelectedState itemSelectedState : this.mapItemCallableToItemSelectedState.values()) {
+        T item = getItem(itemSelectedState.itemCallable);
+        boolean isSelected = Objects.equals(item, nextValue);
+        itemSelectedState.getImp().getSwingModel().getButtonModel().setSelected(isSelected);
+      }
+    }
+  }
 }

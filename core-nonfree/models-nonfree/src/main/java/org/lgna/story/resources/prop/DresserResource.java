@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,50 +34,50 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum DresserResource implements PropResource {
-	CENTRAL_ASIAN_GREEN( ImplementationAndVisualType.SIMS2 ),
-	CENTRAL_ASIAN_GREEN_FLOWERS( ImplementationAndVisualType.SIMS2 ),
-	CENTRAL_ASIAN_RED( ImplementationAndVisualType.SIMS2 ),
-	CENTRAL_ASIAN_RED_FLOWERS( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_WOOD( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_DARK_WOOD( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_REDWOOD( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_BLACK( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_BLUE( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_BROWN( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_RED( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	JAPANESE_BLACK( ImplementationAndVisualType.SIMS2 ),
-	JAPANESE_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	JAPANESE_WOOD( ImplementationAndVisualType.SIMS2 ),
-	JAPANESE_RED( ImplementationAndVisualType.SIMS2 );
+  CENTRAL_ASIAN_GREEN(ImplementationAndVisualType.SIMS2),
+  CENTRAL_ASIAN_GREEN_FLOWERS(ImplementationAndVisualType.SIMS2),
+  CENTRAL_ASIAN_RED(ImplementationAndVisualType.SIMS2),
+  CENTRAL_ASIAN_RED_FLOWERS(ImplementationAndVisualType.SIMS2),
+  COLONIAL_WOOD(ImplementationAndVisualType.SIMS2),
+  COLONIAL_DARK_WOOD(ImplementationAndVisualType.SIMS2),
+  COLONIAL_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  COLONIAL_REDWOOD(ImplementationAndVisualType.SIMS2),
+  DESIGNER_BLACK(ImplementationAndVisualType.SIMS2),
+  DESIGNER_BLUE(ImplementationAndVisualType.SIMS2),
+  DESIGNER_BROWN(ImplementationAndVisualType.SIMS2),
+  DESIGNER_RED(ImplementationAndVisualType.SIMS2),
+  DESIGNER_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  JAPANESE_BLACK(ImplementationAndVisualType.SIMS2),
+  JAPANESE_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  JAPANESE_WOOD(ImplementationAndVisualType.SIMS2),
+  JAPANESE_RED(ImplementationAndVisualType.SIMS2);
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, DresserResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, DresserResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	DresserResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	DresserResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  DresserResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return DresserResource.JOINT_ID_ROOTS;
-	}
+  DresserResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return DresserResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

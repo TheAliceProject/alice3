@@ -56,45 +56,45 @@ import java.awt.Graphics2D;
  */
 /* package-private */class HeavyweightMediaPlayerComponent extends EmbeddedMediaPlayerComponent implements VlcjMediaPlayerComponent {
 
-	private Painter<VideoPlayer> painter;
+  private Painter<VideoPlayer> painter;
 
-	private final VlcjVideoPlayer videoPlayer;
+  private final VlcjVideoPlayer videoPlayer;
 
-	public HeavyweightMediaPlayerComponent( VlcjVideoPlayer videoPlayer ) {
-		this.videoPlayer = videoPlayer;
-	}
+  public HeavyweightMediaPlayerComponent(VlcjVideoPlayer videoPlayer) {
+    this.videoPlayer = videoPlayer;
+  }
 
-	@Override
-	protected String[] onGetMediaPlayerFactoryArgs() {
-		String[] defaultArgs = super.onGetMediaPlayerFactoryArgs();
-		String[] defaultPlusCustomArgs = new String[ defaultArgs.length + CUSTOM_FACTORY_ARGS.length ];
-		System.arraycopy( defaultArgs, 0, defaultPlusCustomArgs, 0, defaultArgs.length );
-		System.arraycopy( CUSTOM_FACTORY_ARGS, 0, defaultPlusCustomArgs, defaultArgs.length, CUSTOM_FACTORY_ARGS.length );
-		return defaultPlusCustomArgs;
-	}
+  @Override
+  protected String[] onGetMediaPlayerFactoryArgs() {
+    String[] defaultArgs = super.onGetMediaPlayerFactoryArgs();
+    String[] defaultPlusCustomArgs = new String[defaultArgs.length + CUSTOM_FACTORY_ARGS.length];
+    System.arraycopy(defaultArgs, 0, defaultPlusCustomArgs, 0, defaultArgs.length);
+    System.arraycopy(CUSTOM_FACTORY_ARGS, 0, defaultPlusCustomArgs, defaultArgs.length, CUSTOM_FACTORY_ARGS.length);
+    return defaultPlusCustomArgs;
+  }
 
-	@Override
-	protected Canvas onGetCanvas() {
-		Canvas rv = new Canvas() {
-			@Override
-			public void paint( Graphics g ) {
-				super.paint( g );
-				if( painter != null ) {
-					painter.paint( (Graphics2D)g, videoPlayer, this.getWidth(), this.getHeight() );
-				}
-			}
-		};
-		rv.setBackground( Color.BLACK );
-		return rv;
-	}
+  @Override
+  protected Canvas onGetCanvas() {
+    Canvas rv = new Canvas() {
+      @Override
+      public void paint(Graphics g) {
+        super.paint(g);
+        if (painter != null) {
+          painter.paint((Graphics2D) g, videoPlayer, this.getWidth(), this.getHeight());
+        }
+      }
+    };
+    rv.setBackground(Color.BLACK);
+    return rv;
+  }
 
-	@Override
-	public Painter<VideoPlayer> getPainter() {
-		return this.painter;
-	}
+  @Override
+  public Painter<VideoPlayer> getPainter() {
+    return this.painter;
+  }
 
-	@Override
-	public void setPainter( Painter<VideoPlayer> painter ) {
-		this.painter = painter;
-	}
+  @Override
+  public void setPainter(Painter<VideoPlayer> painter) {
+    this.painter = painter;
+  }
 }

@@ -57,42 +57,42 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FieldAssignmentInsertCascade extends SimpleAssignmentInsertCascade {
-	private static MapToMap<BlockStatementIndexPair, AbstractField, FieldAssignmentInsertCascade> mapToMap = MapToMap.newInstance();
+  private static MapToMap<BlockStatementIndexPair, AbstractField, FieldAssignmentInsertCascade> mapToMap = MapToMap.newInstance();
 
-	public static synchronized FieldAssignmentInsertCascade getInstance( BlockStatementIndexPair blockStatementIndexPair, AbstractField field ) {
-		FieldAssignmentInsertCascade rv = mapToMap.get( blockStatementIndexPair, field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FieldAssignmentInsertCascade( blockStatementIndexPair, field );
-			mapToMap.put( blockStatementIndexPair, field, rv );
-		}
-		return rv;
-	}
+  public static synchronized FieldAssignmentInsertCascade getInstance(BlockStatementIndexPair blockStatementIndexPair, AbstractField field) {
+    FieldAssignmentInsertCascade rv = mapToMap.get(blockStatementIndexPair, field);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new FieldAssignmentInsertCascade(blockStatementIndexPair, field);
+      mapToMap.put(blockStatementIndexPair, field, rv);
+    }
+    return rv;
+  }
 
-	private final AbstractField field;
+  private final AbstractField field;
 
-	private FieldAssignmentInsertCascade( BlockStatementIndexPair blockStatementIndexPair, AbstractField field ) {
-		super( UUID.fromString( "2593d9c3-5619-4d8d-812b-481d73035fe9" ), blockStatementIndexPair, ExpressionBlank.createBlanks( field.getValueType() ) );
-		this.field = field;
-	}
+  private FieldAssignmentInsertCascade(BlockStatementIndexPair blockStatementIndexPair, AbstractField field) {
+    super(UUID.fromString("2593d9c3-5619-4d8d-812b-481d73035fe9"), blockStatementIndexPair, ExpressionBlank.createBlanks(field.getValueType()));
+    this.field = field;
+  }
 
-	public AbstractField getField() {
-		return this.field;
-	}
+  public AbstractField getField() {
+    return this.field;
+  }
 
-	@Override
-	protected String getDeclarationName() {
-		return this.field.getName();
-	}
+  @Override
+  protected String getDeclarationName() {
+    return this.field.getName();
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getValueType() {
-		return this.field.getValueType();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getValueType() {
+    return this.field.getValueType();
+  }
 
-	@Override
-	protected Expression createLeftHandSide( Expression... expressions ) {
-		return new FieldAccess(field);
-	}
+  @Override
+  protected Expression createLeftHandSide(Expression... expressions) {
+    return new FieldAccess(field);
+  }
 }

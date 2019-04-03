@@ -57,186 +57,184 @@ import java.awt.event.WindowListener;
  * @author Dennis Cosgrove
  */
 public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
-	public enum DefaultCloseOperation {
-		DO_NOTHING( WindowConstants.DO_NOTHING_ON_CLOSE ),
-		HIDE( WindowConstants.HIDE_ON_CLOSE ),
-		DISPOSE( WindowConstants.DISPOSE_ON_CLOSE );
-		//note: no longer necessary
-		private int internal;
+  public enum DefaultCloseOperation {
+    DO_NOTHING(WindowConstants.DO_NOTHING_ON_CLOSE), HIDE(WindowConstants.HIDE_ON_CLOSE), DISPOSE(WindowConstants.DISPOSE_ON_CLOSE);
+    //note: no longer necessary
+    private int internal;
 
-		private DefaultCloseOperation( int internal ) {
-			this.internal = internal;
-		}
+    private DefaultCloseOperation(int internal) {
+      this.internal = internal;
+    }
 
-		public static DefaultCloseOperation valueOf( int windowConstant ) {
-			for( DefaultCloseOperation defaultCloseOperation : DefaultCloseOperation.values() ) {
-				if( defaultCloseOperation.internal == windowConstant ) {
-					return defaultCloseOperation;
-				}
-			}
-			return null;
-		}
-	}
+    public static DefaultCloseOperation valueOf(int windowConstant) {
+      for (DefaultCloseOperation defaultCloseOperation : DefaultCloseOperation.values()) {
+        if (defaultCloseOperation.internal == windowConstant) {
+          return defaultCloseOperation;
+        }
+      }
+      return null;
+    }
+  }
 
-	private static class JDialog extends javax.swing.JDialog {
-		public JDialog( java.awt.Frame owner, boolean isModal ) {
-			super( owner, isModal );
-		}
+  private static class JDialog extends javax.swing.JDialog {
+    public JDialog(java.awt.Frame owner, boolean isModal) {
+      super(owner, isModal);
+    }
 
-		public JDialog( java.awt.Dialog owner, boolean isModal ) {
-			super( owner, isModal );
-		}
+    public JDialog(java.awt.Dialog owner, boolean isModal) {
+      super(owner, isModal);
+    }
 
-		public JDialog( boolean isModal ) {
-			this( (java.awt.Frame)null, isModal );
-		}
+    public JDialog(boolean isModal) {
+      this((java.awt.Frame) null, isModal);
+    }
 
-		@Override
-		public void setDefaultCloseOperation( int operation ) {
-			super.setDefaultCloseOperation( operation );
-			if( operation != WindowConstants.DO_NOTHING_ON_CLOSE ) {
-				Logger.warning( operation );
-			}
-		}
-	}
+    @Override
+    public void setDefaultCloseOperation(int operation) {
+      super.setDefaultCloseOperation(operation);
+      if (operation != WindowConstants.DO_NOTHING_ON_CLOSE) {
+        Logger.warning(operation);
+      }
+    }
+  }
 
-	private static javax.swing.JDialog createJDialog( ScreenElement owner, boolean isModal ) {
-		javax.swing.JDialog rv;
-		if( owner != null ) {
-			AbstractWindow<?> root = owner.getRoot();
-			if( root != null ) {
-				java.awt.Window ownerWindow = root.getAwtComponent();
-				if( ownerWindow instanceof java.awt.Frame ) {
-					rv = new JDialog( (java.awt.Frame)ownerWindow, isModal );
-				} else if( ownerWindow instanceof java.awt.Dialog ) {
-					rv = new JDialog( (java.awt.Dialog)ownerWindow, isModal );
-				} else {
-					rv = null;
-				}
-			} else {
-				rv = null;
-			}
-		} else {
-			rv = null;
-		}
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new JDialog( isModal );
-		}
-		return rv;
-	}
+  private static javax.swing.JDialog createJDialog(ScreenElement owner, boolean isModal) {
+    javax.swing.JDialog rv;
+    if (owner != null) {
+      AbstractWindow<?> root = owner.getRoot();
+      if (root != null) {
+        java.awt.Window ownerWindow = root.getAwtComponent();
+        if (ownerWindow instanceof java.awt.Frame) {
+          rv = new JDialog((java.awt.Frame) ownerWindow, isModal);
+        } else if (ownerWindow instanceof java.awt.Dialog) {
+          rv = new JDialog((java.awt.Dialog) ownerWindow, isModal);
+        } else {
+          rv = null;
+        }
+      } else {
+        rv = null;
+      }
+    } else {
+      rv = null;
+    }
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new JDialog(isModal);
+    }
+    return rv;
+  }
 
-	private DefaultCloseOperation defaultCloseOperation = DefaultCloseOperation.HIDE;
-	private final WindowListener windowListener = new WindowListener() {
-		@Override
-		public void windowOpened( WindowEvent e ) {
-		}
+  private DefaultCloseOperation defaultCloseOperation = DefaultCloseOperation.HIDE;
+  private final WindowListener windowListener = new WindowListener() {
+    @Override
+    public void windowOpened(WindowEvent e) {
+    }
 
-		@Override
-		public void windowClosing( WindowEvent e ) {
-			Dialog.this.handleWindowClosing( e );
-		}
+    @Override
+    public void windowClosing(WindowEvent e) {
+      Dialog.this.handleWindowClosing(e);
+    }
 
-		@Override
-		public void windowClosed( WindowEvent e ) {
-		}
+    @Override
+    public void windowClosed(WindowEvent e) {
+    }
 
-		@Override
-		public void windowActivated( WindowEvent e ) {
-		}
+    @Override
+    public void windowActivated(WindowEvent e) {
+    }
 
-		@Override
-		public void windowDeactivated( WindowEvent e ) {
-		}
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+    }
 
-		@Override
-		public void windowIconified( WindowEvent e ) {
-		}
+    @Override
+    public void windowIconified(WindowEvent e) {
+    }
 
-		@Override
-		public void windowDeiconified( WindowEvent e ) {
-		}
-	};
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    }
+  };
 
-	public Dialog() {
-		this( null );
-	}
+  public Dialog() {
+    this(null);
+  }
 
-	public Dialog( ScreenElement owner ) {
-		this( owner, true );
-	}
+  public Dialog(ScreenElement owner) {
+    this(owner, true);
+  }
 
-	public Dialog( ScreenElement owner, boolean isModal ) {
-		super( Dialog.createJDialog( owner, isModal ) );
-		//		this.getAwtComponent().setModal( isModal );
-		this.getAwtComponent().setDefaultCloseOperation( WindowConstants.DO_NOTHING_ON_CLOSE );
-		this.addWindowListener( this.windowListener );
-	}
+  public Dialog(ScreenElement owner, boolean isModal) {
+    super(Dialog.createJDialog(owner, isModal));
+    //  this.getAwtComponent().setModal( isModal );
+    this.getAwtComponent().setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    this.addWindowListener(this.windowListener);
+  }
 
-	protected boolean isClearedToClose() {
-		return true;
-	}
+  protected boolean isClearedToClose() {
+    return true;
+  }
 
-	private void handleWindowClosing( WindowEvent e ) {
-		if( ( this.defaultCloseOperation == DefaultCloseOperation.DO_NOTHING ) || ( this.defaultCloseOperation == null ) ) {
-			//pass
-		} else {
-			if( isClearedToClose() ) {
-				if( this.defaultCloseOperation == DefaultCloseOperation.HIDE ) {
-					this.setVisible( false );
-				} else {
-					System.exit( 0 );
-				}
-			}
-		}
-	}
+  private void handleWindowClosing(WindowEvent e) {
+    if ((this.defaultCloseOperation == DefaultCloseOperation.DO_NOTHING) || (this.defaultCloseOperation == null)) {
+      //pass
+    } else {
+      if (isClearedToClose()) {
+        if (this.defaultCloseOperation == DefaultCloseOperation.HIDE) {
+          this.setVisible(false);
+        } else {
+          System.exit(0);
+        }
+      }
+    }
+  }
 
-	@Override
-	/* package-private */Container getAwtContentPane() {
-		return this.getAwtComponent().getContentPane();
-	}
+  @Override
+    /* package-private */Container getAwtContentPane() {
+    return this.getAwtComponent().getContentPane();
+  }
 
-	@Override
-	/* package-private */JRootPane getJRootPane() {
-		return this.getAwtComponent().getRootPane();
-	}
+  @Override
+    /* package-private */JRootPane getJRootPane() {
+    return this.getAwtComponent().getRootPane();
+  }
 
-	public DefaultCloseOperation getDefaultCloseOperation() {
-		return this.defaultCloseOperation;
-	}
+  public DefaultCloseOperation getDefaultCloseOperation() {
+    return this.defaultCloseOperation;
+  }
 
-	public void setDefaultCloseOperation( DefaultCloseOperation defaultCloseOperation ) {
-		this.defaultCloseOperation = defaultCloseOperation;
-	}
+  public void setDefaultCloseOperation(DefaultCloseOperation defaultCloseOperation) {
+    this.defaultCloseOperation = defaultCloseOperation;
+  }
 
-	public String getTitle() {
-		return this.getAwtComponent().getTitle();
-	}
+  public String getTitle() {
+    return this.getAwtComponent().getTitle();
+  }
 
-	public void setTitle( String title ) {
-		this.getAwtComponent().setTitle( title );
-	}
+  public void setTitle(String title) {
+    this.getAwtComponent().setTitle(title);
+  }
 
-	@Override
-	public void setVisible( boolean isVisible ) {
-		if( isVisible != this.isVisible() ) {
-			if( isVisible ) {
-				Application.getActiveInstance().getDocumentFrame().pushWindow( this );
-			} else {
-				assert this == Application.getActiveInstance().getDocumentFrame().popWindow();
-			}
-			super.setVisible( isVisible );
-		}
-	}
+  @Override
+  public void setVisible(boolean isVisible) {
+    if (isVisible != this.isVisible()) {
+      if (isVisible) {
+        Application.getActiveInstance().getDocumentFrame().pushWindow(this);
+      } else {
+        assert this == Application.getActiveInstance().getDocumentFrame().popWindow();
+      }
+      super.setVisible(isVisible);
+    }
+  }
 
-	@Override
-	protected void setJMenuBar( JMenuBar jMenuBar ) {
-		this.getAwtComponent().setJMenuBar( jMenuBar );
-	}
+  @Override
+  protected void setJMenuBar(JMenuBar jMenuBar) {
+    this.getAwtComponent().setJMenuBar(jMenuBar);
+  }
 
-	public void dispose() {
-		this.removeWindowListener( this.windowListener );
-		this.getAwtComponent().dispose();
-	}
+  public void dispose() {
+    this.removeWindowListener(this.windowListener);
+    this.getAwtComponent().dispose();
+  }
 }

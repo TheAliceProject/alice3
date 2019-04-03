@@ -48,12 +48,12 @@ import org.lgna.project.ast.UserLocal;
  * @author Dennis Cosgrove
  */
 public class LocalValidNameLabel extends DeclarationNameLabel {
-	public LocalValidNameLabel( UserLocal local ) {
-		super( local );
-	}
+  public LocalValidNameLabel(UserLocal local) {
+    super(local);
+  }
 
-	@Override
-	protected String getTextForNullName() {
-		return ( (UserLocal)getDeclaration() ).getValidName();
-	}
+  @Override
+  protected String getTextForNullName() {
+    return ((UserLocal) getDeclaration()).getValidName();
+  }
 }

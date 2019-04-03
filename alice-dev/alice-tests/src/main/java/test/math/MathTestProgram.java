@@ -46,80 +46,80 @@ package test.math;
  * @author Dennis Cosgrove
  */
 public class MathTestProgram extends org.lgna.story.SProgram {
-	private final MathTestScene scene = new MathTestScene();
+  private final MathTestScene scene = new MathTestScene();
 
-	public static void main( final String[] args ) {
-		org.lgna.story.SSphere feedback = new org.lgna.story.SSphere();
-		feedback.setRadius( 0.1 );
-		feedback.setPaint( org.lgna.story.Color.RED );
+  public static void main(final String[] args) {
+    org.lgna.story.SSphere feedback = new org.lgna.story.SSphere();
+    feedback.setRadius(0.1);
+    feedback.setPaint(org.lgna.story.Color.RED);
 
-		MathTestProgram mathTestProgram = new MathTestProgram();
-		mathTestProgram.initializeInFrame( args );
-		mathTestProgram.setActiveScene( mathTestProgram.scene );
+    MathTestProgram mathTestProgram = new MathTestProgram();
+    mathTestProgram.initializeInFrame(args);
+    mathTestProgram.setActiveScene(mathTestProgram.scene);
 
-		final org.lgna.story.implementation.SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( mathTestProgram.scene );
-		final org.lgna.story.implementation.SphereImp feedbackImp = org.lgna.story.EmployeesOnly.getImplementation( feedback );
-		final org.lgna.story.implementation.GroundImp groundImp = org.lgna.story.EmployeesOnly.getImplementation( mathTestProgram.scene.getGround() );
-		final org.lgna.story.implementation.CameraImp<?> cameraImp = org.lgna.story.EmployeesOnly.getImplementation( mathTestProgram.scene.getCamera() );
+    final org.lgna.story.implementation.SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation(mathTestProgram.scene);
+    final org.lgna.story.implementation.SphereImp feedbackImp = org.lgna.story.EmployeesOnly.getImplementation(feedback);
+    final org.lgna.story.implementation.GroundImp groundImp = org.lgna.story.EmployeesOnly.getImplementation(mathTestProgram.scene.getGround());
+    final org.lgna.story.implementation.CameraImp<?> cameraImp = org.lgna.story.EmployeesOnly.getImplementation(mathTestProgram.scene.getCamera());
 
-		final org.lgna.story.implementation.SphereImp sphereImp = org.lgna.story.EmployeesOnly.getImplementation( mathTestProgram.scene.getSphere() );
+    final org.lgna.story.implementation.SphereImp sphereImp = org.lgna.story.EmployeesOnly.getImplementation(mathTestProgram.scene.getSphere());
 
-		org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.EmployeesOnly.getImplementation( mathTestProgram );
-		final edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> renderTarget = programImp.getOnscreenRenderTarget();
-		java.awt.Component awtComponent = renderTarget.getAwtComponent();
-		//				edu.cmu.cs.dennisc.math.Ray rayInCameraSpace = renderTarget.getRayAtPixel( e.getX(), e.getY() );
-		//				edu.cmu.cs.dennisc.math.Ray rayInSceneSpace = new edu.cmu.cs.dennisc.math.Ray( rayInCameraSpace );
-		//				rayInSceneSpace.transform( cameraImp.getAbsoluteTransformation() );
-		awtComponent.addMouseMotionListener( new java.awt.event.MouseMotionAdapter() {
-			@Override
-			public void mouseDragged( java.awt.event.MouseEvent e ) {
-				edu.cmu.cs.dennisc.math.Ray rayInCameraSpace = renderTarget.getRayAtPixel( e.getX(), e.getY() );
+    org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.EmployeesOnly.getImplementation(mathTestProgram);
+    final edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> renderTarget = programImp.getOnscreenRenderTarget();
+    java.awt.Component awtComponent = renderTarget.getAwtComponent();
+    //        edu.cmu.cs.dennisc.math.Ray rayInCameraSpace = renderTarget.getRayAtPixel( e.getX(), e.getY() );
+    //        edu.cmu.cs.dennisc.math.Ray rayInSceneSpace = new edu.cmu.cs.dennisc.math.Ray( rayInCameraSpace );
+    //        rayInSceneSpace.transform( cameraImp.getAbsoluteTransformation() );
+    awtComponent.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+      @Override
+      public void mouseDragged(java.awt.event.MouseEvent e) {
+        edu.cmu.cs.dennisc.math.Ray rayInCameraSpace = renderTarget.getRayAtPixel(e.getX(), e.getY());
 
-				edu.cmu.cs.dennisc.math.immutable.MRay mRayInCameraSpace = rayInCameraSpace.createImmutable();
+        edu.cmu.cs.dennisc.math.immutable.MRay mRayInCameraSpace = rayInCameraSpace.createImmutable();
 
-				edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4 mCameraAbsoluteTransformation = cameraImp.getAbsoluteTransformation().createImmutable();
-				edu.cmu.cs.dennisc.math.immutable.MRay mRayInSceneSpace = mRayInCameraSpace.createTransformed( mCameraAbsoluteTransformation );
+        edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4 mCameraAbsoluteTransformation = cameraImp.getAbsoluteTransformation().createImmutable();
+        edu.cmu.cs.dennisc.math.immutable.MRay mRayInSceneSpace = mRayInCameraSpace.createTransformed(mCameraAbsoluteTransformation);
 
-				final boolean IS_TESTING_CAMERA_SPACE = true;
-				final boolean IS_TESTING_PLANE = false;
+        final boolean IS_TESTING_CAMERA_SPACE = true;
+        final boolean IS_TESTING_PLANE = false;
 
-				edu.cmu.cs.dennisc.math.immutable.MRay mRay = IS_TESTING_CAMERA_SPACE ? mRayInCameraSpace : mRayInSceneSpace;
+        edu.cmu.cs.dennisc.math.immutable.MRay mRay = IS_TESTING_CAMERA_SPACE ? mRayInCameraSpace : mRayInSceneSpace;
 
-				edu.cmu.cs.dennisc.math.immutable.MPoint3 mPoint;
-				if( IS_TESTING_PLANE ) {
-					edu.cmu.cs.dennisc.math.immutable.MPlane mPlaneInSceneSpace = edu.cmu.cs.dennisc.math.immutable.MPlane.createInstance( new edu.cmu.cs.dennisc.math.immutable.MPoint3( 0, 0, 0 ), new edu.cmu.cs.dennisc.math.immutable.MVector3( 0, 1, 0 ) );
-					edu.cmu.cs.dennisc.math.immutable.MPlane mPlaneInCameraSpace = mPlaneInSceneSpace.createTransformed( mCameraAbsoluteTransformation.createInverse() );
+        edu.cmu.cs.dennisc.math.immutable.MPoint3 mPoint;
+        if (IS_TESTING_PLANE) {
+          edu.cmu.cs.dennisc.math.immutable.MPlane mPlaneInSceneSpace = edu.cmu.cs.dennisc.math.immutable.MPlane.createInstance(new edu.cmu.cs.dennisc.math.immutable.MPoint3(0, 0, 0), new edu.cmu.cs.dennisc.math.immutable.MVector3(0, 1, 0));
+          edu.cmu.cs.dennisc.math.immutable.MPlane mPlaneInCameraSpace = mPlaneInSceneSpace.createTransformed(mCameraAbsoluteTransformation.createInverse());
 
-					edu.cmu.cs.dennisc.math.immutable.MPlane mPlane = IS_TESTING_CAMERA_SPACE ? mPlaneInCameraSpace : mPlaneInSceneSpace;
+          edu.cmu.cs.dennisc.math.immutable.MPlane mPlane = IS_TESTING_CAMERA_SPACE ? mPlaneInCameraSpace : mPlaneInSceneSpace;
 
-					double t = mPlane.intersect( mRay );
-					if( Double.isNaN( t ) == false ) {
-						mPoint = mRay.calculatePointAlong( t );
-					} else {
-						mPoint = null;
-					}
-				} else {
-					edu.cmu.cs.dennisc.math.immutable.MSphere mSphereInSceneSpace = new edu.cmu.cs.dennisc.math.immutable.MSphere( sphereImp.getAbsoluteTransformation().translation.createImmutable(), sphereImp.radius.getValue() );
-					edu.cmu.cs.dennisc.math.immutable.MSphere mSphereInCameraSpace = mSphereInSceneSpace.createTransformed( mCameraAbsoluteTransformation.createInverse() );
+          double t = mPlane.intersect(mRay);
+          if (Double.isNaN(t) == false) {
+            mPoint = mRay.calculatePointAlong(t);
+          } else {
+            mPoint = null;
+          }
+        } else {
+          edu.cmu.cs.dennisc.math.immutable.MSphere mSphereInSceneSpace = new edu.cmu.cs.dennisc.math.immutable.MSphere(sphereImp.getAbsoluteTransformation().translation.createImmutable(), sphereImp.radius.getValue());
+          edu.cmu.cs.dennisc.math.immutable.MSphere mSphereInCameraSpace = mSphereInSceneSpace.createTransformed(mCameraAbsoluteTransformation.createInverse());
 
-					edu.cmu.cs.dennisc.math.immutable.MSphere mSphere = IS_TESTING_CAMERA_SPACE ? mSphereInCameraSpace : mSphereInSceneSpace;
-					double t = mSphere.intersect( mRay );
-					if( Double.isNaN( t ) == false ) {
-						mPoint = mRay.calculatePointAlong( t );
-					} else {
-						feedbackImp.setVehicle( null );
-						mPoint = null;
-					}
-				}
+          edu.cmu.cs.dennisc.math.immutable.MSphere mSphere = IS_TESTING_CAMERA_SPACE ? mSphereInCameraSpace : mSphereInSceneSpace;
+          double t = mSphere.intersect(mRay);
+          if (Double.isNaN(t) == false) {
+            mPoint = mRay.calculatePointAlong(t);
+          } else {
+            feedbackImp.setVehicle(null);
+            mPoint = null;
+          }
+        }
 
-				if( mPoint != null ) {
-					feedbackImp.setVehicle( sceneImp );
-					feedbackImp.setPositionOnly( IS_TESTING_CAMERA_SPACE ? cameraImp : sceneImp, new edu.cmu.cs.dennisc.math.Point3( mPoint ) );
-				} else {
-					feedbackImp.setVehicle( null );
-				}
+        if (mPoint != null) {
+          feedbackImp.setVehicle(sceneImp);
+          feedbackImp.setPositionOnly(IS_TESTING_CAMERA_SPACE ? cameraImp : sceneImp, new edu.cmu.cs.dennisc.math.Point3(mPoint));
+        } else {
+          feedbackImp.setVehicle(null);
+        }
 
-			}
-		} );
-	}
+      }
+    });
+  }
 }

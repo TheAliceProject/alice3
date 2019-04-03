@@ -48,8 +48,8 @@ import javax.swing.JScrollBar;
  * @author Dennis Cosgrove
  */
 public class VerticalScrollBarPaintOmittingWhenAppropriateJScrollPane extends ScrollBarPaintOmittingWhenAppropriateJScrollPane {
-	@Override
-	public JScrollBar createVerticalScrollBar() {
-		return new PaintOmittingJScrollBar( JScrollBar.VERTICAL );
-	}
+  @Override
+  public JScrollBar createVerticalScrollBar() {
+    return new PaintOmittingJScrollBar(JScrollBar.VERTICAL);
+  }
 }

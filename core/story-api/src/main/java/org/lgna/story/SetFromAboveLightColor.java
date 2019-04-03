@@ -48,11 +48,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class SetFromAboveLightColor extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = SetFromAboveLightColor.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = SetFromAboveLightColor.class) public static interface Detail {
+  }
 
-	private SetFromAboveLightColor() {
-		super();
-	}
+  private SetFromAboveLightColor() {
+    super();
+  }
 }

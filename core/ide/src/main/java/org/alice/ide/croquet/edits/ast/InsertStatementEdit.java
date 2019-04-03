@@ -66,135 +66,135 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class InsertStatementEdit<M extends InsertStatementCompletionModel> extends StatementEdit<M> {
-	public static final int AT_END = Short.MAX_VALUE;
-	private BlockStatement blockStatement;
-	private int specifiedIndex;
-	private Expression[] initialExpressions;
-	private final boolean isEnveloping;
+  public static final int AT_END = Short.MAX_VALUE;
+  private BlockStatement blockStatement;
+  private int specifiedIndex;
+  private Expression[] initialExpressions;
+  private final boolean isEnveloping;
 
-	public InsertStatementEdit( UserActivity userActivity, BlockStatementIndexPair blockStatementIndexPair, Statement statement, Expression[] initialExpressions, boolean isEnveloping ) {
-		super( userActivity, statement );
-		this.blockStatement = blockStatementIndexPair.getBlockStatement();
-		this.specifiedIndex = blockStatementIndexPair.getIndex();
-		this.initialExpressions = initialExpressions;
-		this.isEnveloping = isEnveloping;
-	}
+  public InsertStatementEdit(UserActivity userActivity, BlockStatementIndexPair blockStatementIndexPair, Statement statement, Expression[] initialExpressions, boolean isEnveloping) {
+    super(userActivity, statement);
+    this.blockStatement = blockStatementIndexPair.getBlockStatement();
+    this.specifiedIndex = blockStatementIndexPair.getIndex();
+    this.initialExpressions = initialExpressions;
+    this.isEnveloping = isEnveloping;
+  }
 
-	public InsertStatementEdit( UserActivity userActivity, BlockStatementIndexPair blockStatementIndexPair, Statement statement, Expression[] initialExpressions ) {
-		this( userActivity, blockStatementIndexPair, statement, initialExpressions, false );
-	}
+  public InsertStatementEdit(UserActivity userActivity, BlockStatementIndexPair blockStatementIndexPair, Statement statement, Expression[] initialExpressions) {
+    this(userActivity, blockStatementIndexPair, statement, initialExpressions, false);
+  }
 
-	public InsertStatementEdit( UserActivity userActivity, BlockStatementIndexPair blockStatementIndexPair, Statement statement ) {
-		this( userActivity, blockStatementIndexPair, statement, new Expression[] {} );
-	}
+  public InsertStatementEdit(UserActivity userActivity, BlockStatementIndexPair blockStatementIndexPair, Statement statement) {
+    this(userActivity, blockStatementIndexPair, statement, new Expression[] {});
+  }
 
-	public InsertStatementEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		IDE ide = IDE.getActiveInstance();
-		Project project = ide.getProject();
-		UUID blockStatementId = binaryDecoder.decodeId();
-		this.blockStatement = ProgramTypeUtilities.lookupNode( project, blockStatementId );
-		this.specifiedIndex = binaryDecoder.decodeInt();
-		UUID[] ids = binaryDecoder.decodeIdArray();
-		final int N = ids.length;
-		this.initialExpressions = new Expression[ N ];
-		for( int i = 0; i < N; i++ ) {
-			this.initialExpressions[ i ] = ProgramTypeUtilities.lookupNode( project, ids[ i ] );
-		}
-		this.isEnveloping = binaryDecoder.decodeBoolean();
-	}
+  public InsertStatementEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    IDE ide = IDE.getActiveInstance();
+    Project project = ide.getProject();
+    UUID blockStatementId = binaryDecoder.decodeId();
+    this.blockStatement = ProgramTypeUtilities.lookupNode(project, blockStatementId);
+    this.specifiedIndex = binaryDecoder.decodeInt();
+    UUID[] ids = binaryDecoder.decodeIdArray();
+    final int N = ids.length;
+    this.initialExpressions = new Expression[N];
+    for (int i = 0; i < N; i++) {
+      this.initialExpressions[i] = ProgramTypeUtilities.lookupNode(project, ids[i]);
+    }
+    this.isEnveloping = binaryDecoder.decodeBoolean();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.blockStatement.getId() );
-		binaryEncoder.encode( this.specifiedIndex );
-		final int N = this.initialExpressions.length;
-		UUID[] ids = new UUID[ N ];
-		for( int i = 0; i < N; i++ ) {
-			ids[ i ] = this.initialExpressions[ i ].getId();
-		}
-		binaryEncoder.encode( ids );
-		binaryEncoder.encode( this.isEnveloping );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    binaryEncoder.encode(this.blockStatement.getId());
+    binaryEncoder.encode(this.specifiedIndex);
+    final int N = this.initialExpressions.length;
+    UUID[] ids = new UUID[N];
+    for (int i = 0; i < N; i++) {
+      ids[i] = this.initialExpressions[i].getId();
+    }
+    binaryEncoder.encode(ids);
+    binaryEncoder.encode(this.isEnveloping);
+  }
 
-	public BlockStatement getBlockStatement() {
-		return this.blockStatement;
-	}
+  public BlockStatement getBlockStatement() {
+    return this.blockStatement;
+  }
 
-	public int getSpecifiedIndex() {
-		return this.specifiedIndex;
-	}
+  public int getSpecifiedIndex() {
+    return this.specifiedIndex;
+  }
 
-	public Expression[] getInitialExpressions() {
-		return this.initialExpressions;
-	}
+  public Expression[] getInitialExpressions() {
+    return this.initialExpressions;
+  }
 
-	private int getActualIndex() {
-		return Math.min( this.specifiedIndex, this.blockStatement.statements.size() );
-	}
+  private int getActualIndex() {
+    return Math.min(this.specifiedIndex, this.blockStatement.statements.size());
+  }
 
-	private static BlockStatement getDst( Statement statement ) {
-		if( statement instanceof AbstractStatementWithBody ) {
-			AbstractStatementWithBody statementWithBody = (AbstractStatementWithBody)statement;
-			return statementWithBody.body.getValue();
-		} else if( statement instanceof ConditionalStatement ) {
-			ConditionalStatement conditionalStatement = (ConditionalStatement)statement;
-			return conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue();
-		} else {
-			return null;
-		}
-	}
+  private static BlockStatement getDst(Statement statement) {
+    if (statement instanceof AbstractStatementWithBody) {
+      AbstractStatementWithBody statementWithBody = (AbstractStatementWithBody) statement;
+      return statementWithBody.body.getValue();
+    } else if (statement instanceof ConditionalStatement) {
+      ConditionalStatement conditionalStatement = (ConditionalStatement) statement;
+      return conditionalStatement.booleanExpressionBodyPairs.get(0).body.getValue();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		Statement statement = this.getStatement();
-		int actualIndex = this.getActualIndex();
-		if( this.isEnveloping ) {
-			BlockStatement dst = getDst( statement );
-			while( this.blockStatement.statements.size() > actualIndex ) {
-				Statement s = this.blockStatement.statements.get( actualIndex );
-				this.blockStatement.statements.remove( actualIndex );
-				dst.statements.add( s );
-			}
-		}
-		this.blockStatement.statements.add( actualIndex, statement );
-		//todo: remove
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    Statement statement = this.getStatement();
+    int actualIndex = this.getActualIndex();
+    if (this.isEnveloping) {
+      BlockStatement dst = getDst(statement);
+      while (this.blockStatement.statements.size() > actualIndex) {
+        Statement s = this.blockStatement.statements.get(actualIndex);
+        this.blockStatement.statements.remove(actualIndex);
+        dst.statements.add(s);
+      }
+    }
+    this.blockStatement.statements.add(actualIndex, statement);
+    //todo: remove
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+  }
 
-	@Override
-	protected final void undoInternal() {
-		Statement statement = this.getStatement();
-		int actualIndex = this.getActualIndex();
-		if( this.blockStatement.statements.get( actualIndex ) == statement ) {
-			this.blockStatement.statements.remove( actualIndex );
-			if( this.isEnveloping ) {
-				BlockStatement dst = getDst( statement );
-				while( dst.statements.size() > 0 ) {
-					Statement s = dst.statements.get( 0 );
-					dst.statements.remove( 0 );
-					this.blockStatement.statements.add( s );
-				}
-			}
-			//todo: remove
-			ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-		} else {
-			throw new CannotUndoException();
-		}
-	}
+  @Override
+  protected final void undoInternal() {
+    Statement statement = this.getStatement();
+    int actualIndex = this.getActualIndex();
+    if (this.blockStatement.statements.get(actualIndex) == statement) {
+      this.blockStatement.statements.remove(actualIndex);
+      if (this.isEnveloping) {
+        BlockStatement dst = getDst(statement);
+        while (dst.statements.size() > 0) {
+          Statement s = dst.statements.get(0);
+          dst.statements.remove(0);
+          this.blockStatement.statements.add(s);
+        }
+      }
+      //todo: remove
+      ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+    } else {
+      throw new CannotUndoException();
+    }
+  }
 
-	//	@Override
-	//	public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.ActionOperation > getAcceptableReplacement( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-	//		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
-	//		org.lgna.project.ast.Statement replacementStatement = retargeter.retarget( this.statement );
-	//		return new InsertStatementEdit( replacementBlockStatement, this.index, replacementStatement );
-	//	}
+  //  @Override
+  //  public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.ActionOperation > getAcceptableReplacement( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+  //    org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
+  //    org.lgna.project.ast.Statement replacementStatement = retargeter.retarget( this.statement );
+  //    return new InsertStatementEdit( replacementBlockStatement, this.index, replacementStatement );
+  //  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		Statement statement = this.getStatement();
-		rv.append( "insert: " );
-		NodeUtilities.safeAppendRepr( rv, statement, Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    Statement statement = this.getStatement();
+    rv.append("insert: ");
+    NodeUtilities.safeAppendRepr(rv, statement, Application.getLocale());
+  }
 }

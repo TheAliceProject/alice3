@@ -54,28 +54,28 @@ import javax.swing.JMenuItem;
  * @author Dennis Cosgrove
  */
 public class MenuTextSeparator extends ViewController<JMenuItem, LabelMenuSeparatorModel> {
-	public MenuTextSeparator( LabelMenuSeparatorModel model ) {
-		super( model );
-	}
+  public MenuTextSeparator(LabelMenuSeparatorModel model) {
+    super(model);
+  }
 
-	@Override
-	protected JMenuItem createAwtComponent() {
-		JMenuItem rv = new JMenuItem();
-		FontUtilities.setFontToDerivedFont( rv, TextPosture.OBLIQUE );
-		rv.setEnabled( false );
-		return rv;
-	}
+  @Override
+  protected JMenuItem createAwtComponent() {
+    JMenuItem rv = new JMenuItem();
+    FontUtilities.setFontToDerivedFont(rv, TextPosture.OBLIQUE);
+    rv.setEnabled(false);
+    return rv;
+  }
 
-	@Override
-	protected void handleAddedTo( AwtComponentView<?> parent ) {
-		LabelMenuSeparatorModel model = this.getModel();
-		String modelName = model.getName();
-		if( ( modelName != null ) && ( modelName.length() > 0 ) ) {
-			this.getAwtComponent().setText( modelName + ":" );
-		}
-		Icon icon = model.getIcon();
-		this.getAwtComponent().setIcon( icon );
-		this.getAwtComponent().setDisabledIcon( icon );
-		super.handleAddedTo( parent );
-	}
+  @Override
+  protected void handleAddedTo(AwtComponentView<?> parent) {
+    LabelMenuSeparatorModel model = this.getModel();
+    String modelName = model.getName();
+    if ((modelName != null) && (modelName.length() > 0)) {
+      this.getAwtComponent().setText(modelName + ":");
+    }
+    Icon icon = model.getIcon();
+    this.getAwtComponent().setIcon(icon);
+    this.getAwtComponent().setDisabledIcon(icon);
+    super.handleAddedTo(parent);
+  }
 }

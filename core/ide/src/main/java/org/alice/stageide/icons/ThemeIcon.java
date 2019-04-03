@@ -56,20 +56,20 @@ import java.awt.Graphics2D;
  * @author Dennis Cosgrove
  */
 public class ThemeIcon extends AbstractIcon {
-	private final ImageIcon icon;
+  private final ImageIcon icon;
 
-	public ThemeIcon( Dimension size, ResourceKey key ) {
-		super( size );
-		this.icon = IconUtilities.createImageIcon( ThemeIcon.class.getResource( "themes/" + key.getInternalText() + ".png" ) );
-	}
+  public ThemeIcon(Dimension size, ResourceKey key) {
+    super(size);
+    this.icon = IconUtilities.createImageIcon(ThemeIcon.class.getResource("themes/" + key.getInternalText() + ".png"));
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2 ) {
-		if( this.icon != null ) {
-			g2.drawImage( this.icon.getImage(), 0, 0, this.getIconWidth(), this.getIconHeight(), c );
-		} else {
-			g2.setColor( Color.RED );
-			g2.fillRect( 0, 0, this.getIconWidth(), this.getIconHeight() );
-		}
-	}
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2) {
+    if (this.icon != null) {
+      g2.drawImage(this.icon.getImage(), 0, 0, this.getIconWidth(), this.getIconHeight(), c);
+    } else {
+      g2.setColor(Color.RED);
+      g2.fillRect(0, 0, this.getIconWidth(), this.getIconHeight());
+    }
+  }
 }

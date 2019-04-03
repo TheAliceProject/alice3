@@ -52,12 +52,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ShowAllSystemPropertiesComposite extends SimpleOperationUnadornedDialogCoreComposite<ShowAllSystemPropertiesView> {
-	public ShowAllSystemPropertiesComposite() {
-		super( UUID.fromString( "17e79b9b-9a19-4edd-bef5-15685681a88e" ), Application.INFORMATION_GROUP );
-	}
+  public ShowAllSystemPropertiesComposite() {
+    super(UUID.fromString("17e79b9b-9a19-4edd-bef5-15685681a88e"), Application.INFORMATION_GROUP);
+  }
 
-	@Override
-	protected ShowAllSystemPropertiesView createView() {
-		return new ShowAllSystemPropertiesView( this );
-	}
+  @Override
+  protected ShowAllSystemPropertiesView createView() {
+    return new ShowAllSystemPropertiesView(this);
+  }
 }

@@ -48,22 +48,22 @@ import org.lgna.story.implementation.ModelImp;
  * @author Dennis Cosgrove
  */
 public class ModelViewer extends Viewer {
-	private ModelImp model = null;
+  private ModelImp model = null;
 
-	public ModelImp getModel() {
-		return this.model;
-	}
+  public ModelImp getModel() {
+    return this.model;
+  }
 
-	public void setModel( ModelImp model ) {
-		if( model != this.model ) {
-			if( this.model != null ) {
-				this.model.setVehicle( null );
-			}
-			this.model = model;
-			if( this.model != null ) {
-				this.model.setVehicle( this.getScene() );
-			}
-		}
-	}
+  public void setModel(ModelImp model) {
+    if (model != this.model) {
+      if (this.model != null) {
+        this.model.setVehicle(null);
+      }
+      this.model = model;
+      if (this.model != null) {
+        this.model.setVehicle(this.getScene());
+      }
+    }
+  }
 
 }

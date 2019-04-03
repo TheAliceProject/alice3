@@ -44,87 +44,87 @@
 package test.render;
 
 class ExceptionPane extends org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane {
-	@Override
-	protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
-		return new org.alice.ide.issue.ReportSubmissionConfiguration() {
-			@Override
-			public edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator() {
-				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY );
-				if( accountInformation != null ) {
-					return new edu.cmu.cs.dennisc.jira.rpc.Authenticator() {
-						@Override
-						public Object login( redstone.xmlrpc.XmlRpcClient client ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault {
-							return edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.logIn( client, accountInformation.getID(), accountInformation.getPassword() );
-						}
-					};
-				} else {
-					return super.getJIRAViaRPCAuthenticator();
-				}
-			}
+  @Override
+  protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
+    return new org.alice.ide.issue.ReportSubmissionConfiguration() {
+      @Override
+      public edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator() {
+        final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get(org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY);
+        if (accountInformation != null) {
+          return new edu.cmu.cs.dennisc.jira.rpc.Authenticator() {
+            @Override
+            public Object login(redstone.xmlrpc.XmlRpcClient client) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault {
+              return edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.logIn(client, accountInformation.getID(), accountInformation.getPassword());
+            }
+          };
+        } else {
+          return super.getJIRAViaRPCAuthenticator();
+        }
+      }
 
-			@Override
-			public edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator() {
-				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY );
-				if( accountInformation != null ) {
-					return new edu.cmu.cs.dennisc.jira.soap.Authenticator() {
-						@Override
-						public String login( com.atlassian.jira.rpc.soap.client.JiraSoapService service ) throws java.rmi.RemoteException {
-							return service.login( accountInformation.getID(), accountInformation.getPassword() );
-						}
-					};
-				} else {
-					return super.getJIRAViaSOAPAuthenticator();
-				}
-			}
-		};
-	}
+      @Override
+      public edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator() {
+        final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get(org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY);
+        if (accountInformation != null) {
+          return new edu.cmu.cs.dennisc.jira.soap.Authenticator() {
+            @Override
+            public String login(com.atlassian.jira.rpc.soap.client.JiraSoapService service) throws java.rmi.RemoteException {
+              return service.login(accountInformation.getID(), accountInformation.getPassword());
+            }
+          };
+        } else {
+          return super.getJIRAViaSOAPAuthenticator();
+        }
+      }
+    };
+  }
 
-	@Override
-	protected String getJIRAProjectKey() {
-		return "AIIIP";
-	}
+  @Override
+  protected String getJIRAProjectKey() {
+    return "AIIIP";
+  }
 
-	@Override
-	protected String[] getAffectsVersions() {
-		return new String[] { org.lgna.project.ProjectVersion.getCurrentVersionText() };
-	}
+  @Override
+  protected String[] getAffectsVersions() {
+    return new String[] {org.lgna.project.ProjectVersion.getCurrentVersionText()};
+  }
 }
 
 class ExceptionHandler implements Thread.UncaughtExceptionHandler {
-	@Override
-	public void uncaughtException( Thread thread, Throwable throwable ) {
-		throwable.printStackTrace();
-		int result = javax.swing.JOptionPane.showConfirmDialog( null, "please upload bug report", "", javax.swing.JOptionPane.OK_CANCEL_OPTION );
-		switch( result ) {
-		case javax.swing.JOptionPane.OK_OPTION:
-			ExceptionPane bugReportPane = new ExceptionPane();
-			bugReportPane.setThreadAndThrowable( thread, throwable );
-			bugReportPane.getSubmitButton().doClick();
-			break;
-		}
-	}
+  @Override
+  public void uncaughtException(Thread thread, Throwable throwable) {
+    throwable.printStackTrace();
+    int result = javax.swing.JOptionPane.showConfirmDialog(null, "please upload bug report", "", javax.swing.JOptionPane.OK_CANCEL_OPTION);
+    switch (result) {
+    case javax.swing.JOptionPane.OK_OPTION:
+      ExceptionPane bugReportPane = new ExceptionPane();
+      bugReportPane.setThreadAndThrowable(thread, throwable);
+      bugReportPane.getSubmitButton().doClick();
+      break;
+    }
+  }
 }
 
 /**
  * @author Dennis Cosgrove
  */
 public class RenderTest extends org.lgna.story.SProgram {
-	static {
-		ExceptionHandler exceptionHandler = new ExceptionHandler();
-		Thread.setDefaultUncaughtExceptionHandler( exceptionHandler );
-	}
+  static {
+    ExceptionHandler exceptionHandler = new ExceptionHandler();
+    Thread.setDefaultUncaughtExceptionHandler(exceptionHandler);
+  }
 
-	public static void main( final String[] args ) {
-		org.lgna.story.implementation.ProgramImp.ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( RenderTestProgramImp.class );
-		RenderTest test = new RenderTest();
+  public static void main(final String[] args) {
+    org.lgna.story.implementation.ProgramImp.ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance(RenderTestProgramImp.class);
+    RenderTest test = new RenderTest();
 
-		RenderTestScene scene = new RenderTestScene();
-		test.initializeInFrame( args );
-		test.setActiveScene( scene );
+    RenderTestScene scene = new RenderTestScene();
+    test.initializeInFrame(args);
+    test.setActiveScene(scene);
 
-		//javax.swing.SwingUtilities.invokeLater( new Runnable() {
-		//	public void run() {
-		//	}
-		//} );
-	}
+    //javax.swing.SwingUtilities.invokeLater( new Runnable() {
+    //  public void run() {
+    //  }
+    //} );
+  }
 }

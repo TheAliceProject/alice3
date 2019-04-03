@@ -68,295 +68,295 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class Component extends Element implements Visitable, ReferenceFrame {
-	@Override
-	public void accept( Visitor visitor ) {
-		visitor.visit( this );
-	}
+  @Override
+  public void accept(Visitor visitor) {
+    visitor.visit(this);
+  }
 
-	public Composite getRoot() {
-		if( this.vehicle != null ) {
-			return this.vehicle.getRoot();
-		} else {
-			return null;
-		}
-	}
+  public Composite getRoot() {
+    if (this.vehicle != null) {
+      return this.vehicle.getRoot();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public AffineMatrix4x4 getAbsoluteTransformation( AffineMatrix4x4 rv ) {
-		if( this.vehicle != null ) {
-			rv = this.vehicle.getAbsoluteTransformation( rv );
-		} else {
-			rv.setIdentity();
-		}
-		return rv;
-	}
+  @Override
+  public AffineMatrix4x4 getAbsoluteTransformation(AffineMatrix4x4 rv) {
+    if (this.vehicle != null) {
+      rv = this.vehicle.getAbsoluteTransformation(rv);
+    } else {
+      rv.setIdentity();
+    }
+    return rv;
+  }
 
-	@Override
-	public final AffineMatrix4x4 getAbsoluteTransformation() {
-		return getAbsoluteTransformation( AffineMatrix4x4.createNaN() );
-	}
+  @Override
+  public final AffineMatrix4x4 getAbsoluteTransformation() {
+    return getAbsoluteTransformation(AffineMatrix4x4.createNaN());
+  }
 
-	@Override
-	public AffineMatrix4x4 getInverseAbsoluteTransformation( AffineMatrix4x4 rv ) {
-		if( this.vehicle != null ) {
-			rv = this.vehicle.getInverseAbsoluteTransformation( rv );
-		} else {
-			rv.setIdentity();
-		}
-		return rv;
-	}
+  @Override
+  public AffineMatrix4x4 getInverseAbsoluteTransformation(AffineMatrix4x4 rv) {
+    if (this.vehicle != null) {
+      rv = this.vehicle.getInverseAbsoluteTransformation(rv);
+    } else {
+      rv.setIdentity();
+    }
+    return rv;
+  }
 
-	@Override
-	public final AffineMatrix4x4 getInverseAbsoluteTransformation() {
-		return getInverseAbsoluteTransformation( AffineMatrix4x4.createNaN() );
-	}
+  @Override
+  public final AffineMatrix4x4 getInverseAbsoluteTransformation() {
+    return getInverseAbsoluteTransformation(AffineMatrix4x4.createNaN());
+  }
 
-	@Override
-	public AffineMatrix4x4 getTransformation( AffineMatrix4x4 rv, ReferenceFrame asSeenBy ) {
-		if( this.vehicle != null ) {
-			return this.vehicle.getTransformation( rv, asSeenBy );
-		} else {
-			return asSeenBy.getInverseAbsoluteTransformation( rv );
-		}
-	}
+  @Override
+  public AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv, ReferenceFrame asSeenBy) {
+    if (this.vehicle != null) {
+      return this.vehicle.getTransformation(rv, asSeenBy);
+    } else {
+      return asSeenBy.getInverseAbsoluteTransformation(rv);
+    }
+  }
 
-	@Override
-	public final AffineMatrix4x4 getTransformation( ReferenceFrame asSeenBy ) {
-		return getTransformation( AffineMatrix4x4.createNaN(), asSeenBy );
-	}
+  @Override
+  public final AffineMatrix4x4 getTransformation(ReferenceFrame asSeenBy) {
+    return getTransformation(AffineMatrix4x4.createNaN(), asSeenBy);
+  }
 
-	public Point3 getTranslation( Point3 rv, ReferenceFrame asSeenBy ) {
-		rv.set( getTransformation( asSeenBy ).translation );
-		return rv;
-	}
+  public Point3 getTranslation(Point3 rv, ReferenceFrame asSeenBy) {
+    rv.set(getTransformation(asSeenBy).translation);
+    return rv;
+  }
 
-	public final Point3 getTranslation( ReferenceFrame asSeenBy ) {
-		return getTranslation( new Point3(), asSeenBy );
-	}
+  public final Point3 getTranslation(ReferenceFrame asSeenBy) {
+    return getTranslation(new Point3(), asSeenBy);
+  }
 
-	public OrthogonalMatrix3x3 getAxes( OrthogonalMatrix3x3 rv, ReferenceFrame asSeenBy ) {
-		rv.setValue( getTransformation( asSeenBy ).orientation );
-		return rv;
-	}
+  public OrthogonalMatrix3x3 getAxes(OrthogonalMatrix3x3 rv, ReferenceFrame asSeenBy) {
+    rv.setValue(getTransformation(asSeenBy).orientation);
+    return rv;
+  }
 
-	public final OrthogonalMatrix3x3 getAxes( ReferenceFrame asSeenBy ) {
-		return getAxes( OrthogonalMatrix3x3.createNaN(), asSeenBy );
-	}
+  public final OrthogonalMatrix3x3 getAxes(ReferenceFrame asSeenBy) {
+    return getAxes(OrthogonalMatrix3x3.createNaN(), asSeenBy);
+  }
 
-	public UnitQuaternion getUnitQuaternionD( UnitQuaternion rv, ReferenceFrame asSeenBy ) {
-		rv.setValue( getTransformation( asSeenBy ).orientation );
-		return rv;
-	}
+  public UnitQuaternion getUnitQuaternionD(UnitQuaternion rv, ReferenceFrame asSeenBy) {
+    rv.setValue(getTransformation(asSeenBy).orientation);
+    return rv;
+  }
 
-	public final UnitQuaternion getUnitQuaternionD( ReferenceFrame asSeenBy ) {
-		return getUnitQuaternionD( UnitQuaternion.createNaN(), asSeenBy );
-	}
+  public final UnitQuaternion getUnitQuaternionD(ReferenceFrame asSeenBy) {
+    return getUnitQuaternionD(UnitQuaternion.createNaN(), asSeenBy);
+  }
 
-	public EulerAngles getEulerAnglesD( EulerAngles rv, ReferenceFrame asSeenBy ) {
-		rv.setValue( getTransformation( asSeenBy ).orientation );
-		return rv;
-	}
+  public EulerAngles getEulerAnglesD(EulerAngles rv, ReferenceFrame asSeenBy) {
+    rv.setValue(getTransformation(asSeenBy).orientation);
+    return rv;
+  }
 
-	public final EulerAngles getEulerAnglesD( ReferenceFrame asSeenBy ) {
-		return getEulerAnglesD( EulerAngles.createNaN(), asSeenBy );
-	}
+  public final EulerAngles getEulerAnglesD(ReferenceFrame asSeenBy) {
+    return getEulerAnglesD(EulerAngles.createNaN(), asSeenBy);
+  }
 
-	public Composite getParent() {
-		return this.vehicle;
-	}
+  public Composite getParent() {
+    return this.vehicle;
+  }
 
-	public void setParent( Composite parent ) {
-		if( this.vehicle != parent ) {
-			if( this.vehicle != null ) {
-				this.vehicle.fireChildRemoved( this );
-			}
-			this.vehicle = parent;
-			if( this.vehicle != null ) {
-				this.vehicle.fireChildAdded( this );
-			}
-			//firePropertyChange( VEHICLE_PROPERTY_NAME );
-			fireAbsoluteTransformationChange();
-			fireHierarchyChanged();
-		}
-	}
+  public void setParent(Composite parent) {
+    if (this.vehicle != parent) {
+      if (this.vehicle != null) {
+        this.vehicle.fireChildRemoved(this);
+      }
+      this.vehicle = parent;
+      if (this.vehicle != null) {
+        this.vehicle.fireChildAdded(this);
+      }
+      //firePropertyChange( VEHICLE_PROPERTY_NAME );
+      fireAbsoluteTransformationChange();
+      fireHierarchyChanged();
+    }
+  }
 
-	@Override
-	public boolean isLocalOf( Component other ) {
-		return this == other;
-	}
+  @Override
+  public boolean isLocalOf(Component other) {
+    return this == other;
+  }
 
-	@Override
-	public boolean isVehicleOf( Component other ) {
-		return this == other.getParent();
-	}
+  @Override
+  public boolean isVehicleOf(Component other) {
+    return this == other.getParent();
+  }
 
-	@Override
-	public boolean isSceneOf( Component other ) {
-		return this == other.getRoot();
-	}
+  @Override
+  public boolean isSceneOf(Component other) {
+    return this == other.getRoot();
+  }
 
-	public boolean isDescendantOf( Composite possibleAncestor ) {
-		if( possibleAncestor == null ) {
-			return false;
-		}
-		if( this.vehicle == possibleAncestor ) {
-			return true;
-		} else {
-			if( this.vehicle == null ) {
-				return false;
-			} else {
-				return this.vehicle.isDescendantOf( possibleAncestor );
-			}
-		}
-	}
+  public boolean isDescendantOf(Composite possibleAncestor) {
+    if (possibleAncestor == null) {
+      return false;
+    }
+    if (this.vehicle == possibleAncestor) {
+      return true;
+    } else {
+      if (this.vehicle == null) {
+        return false;
+      } else {
+        return this.vehicle.isDescendantOf(possibleAncestor);
+      }
+    }
+  }
 
-	public void addAbsoluteTransformationListener( AbsoluteTransformationListener absoluteTransformationListener ) {
-		this.absoluteTransformationListeners.add( absoluteTransformationListener );
-	}
+  public void addAbsoluteTransformationListener(AbsoluteTransformationListener absoluteTransformationListener) {
+    this.absoluteTransformationListeners.add(absoluteTransformationListener);
+  }
 
-	public void removeAbsoluteTransformationListener( AbsoluteTransformationListener absoluteTransformationListener ) {
-		this.absoluteTransformationListeners.remove( absoluteTransformationListener );
-	}
+  public void removeAbsoluteTransformationListener(AbsoluteTransformationListener absoluteTransformationListener) {
+    this.absoluteTransformationListeners.remove(absoluteTransformationListener);
+  }
 
-	private void fireAbsoluteTransformationChange( AbsoluteTransformationEvent absoluteTransformationEvent ) {
-		for( AbsoluteTransformationListener atl : this.absoluteTransformationListeners ) {
-			atl.absoluteTransformationChanged( absoluteTransformationEvent );
-		}
-	}
+  private void fireAbsoluteTransformationChange(AbsoluteTransformationEvent absoluteTransformationEvent) {
+    for (AbsoluteTransformationListener atl : this.absoluteTransformationListeners) {
+      atl.absoluteTransformationChanged(absoluteTransformationEvent);
+    }
+  }
 
-	protected void fireAbsoluteTransformationChange() {
-		fireAbsoluteTransformationChange( new AbsoluteTransformationEvent( this ) );
-	}
+  protected void fireAbsoluteTransformationChange() {
+    fireAbsoluteTransformationChange(new AbsoluteTransformationEvent(this));
+  }
 
-	public void addHierarchyListener( HierarchyListener hierarchyListener ) {
-		this.hierarchyListeners.add( hierarchyListener );
-	}
+  public void addHierarchyListener(HierarchyListener hierarchyListener) {
+    this.hierarchyListeners.add(hierarchyListener);
+  }
 
-	public void removeHierarchyListener( HierarchyListener hierarchyListener ) {
-		this.hierarchyListeners.remove( hierarchyListener );
-	}
+  public void removeHierarchyListener(HierarchyListener hierarchyListener) {
+    this.hierarchyListeners.remove(hierarchyListener);
+  }
 
-	private void fireHierarchyChanged( HierarchyEvent hierarchyEvent ) {
-		for( HierarchyListener hl : this.hierarchyListeners ) {
-			hl.hierarchyChanged( hierarchyEvent );
-		}
-	}
+  private void fireHierarchyChanged(HierarchyEvent hierarchyEvent) {
+    for (HierarchyListener hl : this.hierarchyListeners) {
+      hl.hierarchyChanged(hierarchyEvent);
+    }
+  }
 
-	protected void fireHierarchyChanged() {
-		fireHierarchyChanged( new HierarchyEvent( this ) );
-	}
+  protected void fireHierarchyChanged() {
+    fireHierarchyChanged(new HierarchyEvent(this));
+  }
 
-	public Vector4 transformTo( Vector4 rv, Vector4 xyzw, Component to ) {
-		return TransformationUtilities.transformTo( rv, xyzw, this, to );
-	}
+  public Vector4 transformTo(Vector4 rv, Vector4 xyzw, Component to) {
+    return TransformationUtilities.transformTo(rv, xyzw, this, to);
+  }
 
-	public Vector4 transformFrom( Vector4 rv, Vector4 xyzw, Component from ) {
-		return from.transformTo( rv, xyzw, this );
-	}
+  public Vector4 transformFrom(Vector4 rv, Vector4 xyzw, Component from) {
+    return from.transformTo(rv, xyzw, this);
+  }
 
-	public Point3 transformTo( Point3 rv, Point3 xyz, Component to ) {
-		return TransformationUtilities.transformTo( rv, xyz, this, to );
-	}
+  public Point3 transformTo(Point3 rv, Point3 xyz, Component to) {
+    return TransformationUtilities.transformTo(rv, xyz, this, to);
+  }
 
-	public Point3 transformFrom( Point3 rv, Point3 xyz, Component from ) {
-		return from.transformTo( rv, xyz, this );
-	}
+  public Point3 transformFrom(Point3 rv, Point3 xyz, Component from) {
+    return from.transformTo(rv, xyz, this);
+  }
 
-	public Vector3 transformTo( Vector3 rv, Vector3 xyz, Component to ) {
-		return TransformationUtilities.transformTo( rv, xyz, this, to );
-	}
+  public Vector3 transformTo(Vector3 rv, Vector3 xyz, Component to) {
+    return TransformationUtilities.transformTo(rv, xyz, this, to);
+  }
 
-	public Vector3 transformFrom( Vector3 rv, Vector3 xyz, Component from ) {
-		return from.transformTo( rv, xyz, this );
-	}
+  public Vector3 transformFrom(Vector3 rv, Vector3 xyz, Component from) {
+    return from.transformTo(rv, xyz, this);
+  }
 
-	public Vector4 transformTo_New( Vector4 xyzw, Component to ) {
-		return TransformationUtilities.transformTo_New( xyzw, this, to );
-	}
+  public Vector4 transformTo_New(Vector4 xyzw, Component to) {
+    return TransformationUtilities.transformTo_New(xyzw, this, to);
+  }
 
-	public Vector4 transformFrom_New( Vector4 xyzw, Component from ) {
-		return from.transformTo_New( xyzw, this );
-	}
+  public Vector4 transformFrom_New(Vector4 xyzw, Component from) {
+    return from.transformTo_New(xyzw, this);
+  }
 
-	public Point3 transformTo_New( Point3 xyz, Component to ) {
-		return TransformationUtilities.transformTo_New( xyz, this, to );
-	}
+  public Point3 transformTo_New(Point3 xyz, Component to) {
+    return TransformationUtilities.transformTo_New(xyz, this, to);
+  }
 
-	public Point3 transformFrom_New( Point3 xyz, Component from ) {
-		return from.transformTo_New( xyz, this );
-	}
+  public Point3 transformFrom_New(Point3 xyz, Component from) {
+    return from.transformTo_New(xyz, this);
+  }
 
-	public Vector3 transformTo_New( Vector3 xyz, Component to ) {
-		return TransformationUtilities.transformTo_New( xyz, this, to );
-	}
+  public Vector3 transformTo_New(Vector3 xyz, Component to) {
+    return TransformationUtilities.transformTo_New(xyz, this, to);
+  }
 
-	public Vector3 transformFrom_New( Vector3 xyz, Component from ) {
-		return from.transformTo_New( xyz, this );
-	}
+  public Vector3 transformFrom_New(Vector3 xyz, Component from) {
+    return from.transformTo_New(xyz, this);
+  }
 
-	public Vector4 transformTo_AffectReturnValuePassedIn( Vector4 xyzw, Component to ) {
-		return TransformationUtilities.transformTo_AffectReturnValuePassedIn( xyzw, this, to );
-	}
+  public Vector4 transformTo_AffectReturnValuePassedIn(Vector4 xyzw, Component to) {
+    return TransformationUtilities.transformTo_AffectReturnValuePassedIn(xyzw, this, to);
+  }
 
-	public Vector4 transformFrom_AffectReturnValuePassedIn( Vector4 xyzw, Component from ) {
-		return from.transformTo_AffectReturnValuePassedIn( xyzw, this );
-	}
+  public Vector4 transformFrom_AffectReturnValuePassedIn(Vector4 xyzw, Component from) {
+    return from.transformTo_AffectReturnValuePassedIn(xyzw, this);
+  }
 
-	public Point3 transformTo_AffectReturnValuePassedIn( Point3 xyz, Component to ) {
-		return TransformationUtilities.transformTo_AffectReturnValuePassedIn( xyz, this, to );
-	}
+  public Point3 transformTo_AffectReturnValuePassedIn(Point3 xyz, Component to) {
+    return TransformationUtilities.transformTo_AffectReturnValuePassedIn(xyz, this, to);
+  }
 
-	public Point3 transformFrom_AffectReturnValuePassedIn( Point3 xyz, Component from ) {
-		return from.transformTo_AffectReturnValuePassedIn( xyz, this );
-	}
+  public Point3 transformFrom_AffectReturnValuePassedIn(Point3 xyz, Component from) {
+    return from.transformTo_AffectReturnValuePassedIn(xyz, this);
+  }
 
-	public Vector3 transformTo_AffectReturnValuePassedIn( Vector3 xyz, Component to ) {
-		return TransformationUtilities.transformTo_AffectReturnValuePassedIn( xyz, this, to );
-	}
+  public Vector3 transformTo_AffectReturnValuePassedIn(Vector3 xyz, Component to) {
+    return TransformationUtilities.transformTo_AffectReturnValuePassedIn(xyz, this, to);
+  }
 
-	public Vector3 transformFrom_AffectReturnValuePassedIn( Vector3 xyz, Component from ) {
-		return from.transformTo_AffectReturnValuePassedIn( xyz, this );
-	}
+  public Vector3 transformFrom_AffectReturnValuePassedIn(Vector3 xyz, Component from) {
+    return from.transformTo_AffectReturnValuePassedIn(xyz, this);
+  }
 
-	private static final Vector4 s_buffer = new Vector4();
+  private static final Vector4 s_buffer = new Vector4();
 
-	public Point transformToAWT( Point rv, Vector4 xyzw, RenderTarget renderTarget, AbstractCamera camera ) {
-		synchronized( s_buffer ) {
-			if( this != camera ) {
-				transformTo( s_buffer, xyzw, camera );
-			} else {
-				s_buffer.set( xyzw );
-			}
-			PicturePlaneUtils.transformFromCameraToAWT( rv, s_buffer, renderTarget, camera );
-		}
-		return rv;
-	}
+  public Point transformToAWT(Point rv, Vector4 xyzw, RenderTarget renderTarget, AbstractCamera camera) {
+    synchronized (s_buffer) {
+      if (this != camera) {
+        transformTo(s_buffer, xyzw, camera);
+      } else {
+        s_buffer.set(xyzw);
+      }
+      PicturePlaneUtils.transformFromCameraToAWT(rv, s_buffer, renderTarget, camera);
+    }
+    return rv;
+  }
 
-	public Vector4 transformFromAWT( Vector4 rv, Point p, double z, RenderTarget renderTarget, AbstractCamera camera ) {
-		PicturePlaneUtils.transformFromAWTToCamera( rv, p, z, renderTarget, camera );
-		if( this != camera ) {
-			transformFrom_AffectReturnValuePassedIn( rv, camera );
-		}
-		return rv;
-	}
+  public Vector4 transformFromAWT(Vector4 rv, Point p, double z, RenderTarget renderTarget, AbstractCamera camera) {
+    PicturePlaneUtils.transformFromAWTToCamera(rv, p, z, renderTarget, camera);
+    if (this != camera) {
+      transformFrom_AffectReturnValuePassedIn(rv, camera);
+    }
+    return rv;
+  }
 
-	public Point transformToAWT_New( Vector4 xyzw, RenderTarget renderTarget, AbstractCamera camera ) {
-		return transformToAWT( new Point(), xyzw, renderTarget, camera );
-	}
+  public Point transformToAWT_New(Vector4 xyzw, RenderTarget renderTarget, AbstractCamera camera) {
+    return transformToAWT(new Point(), xyzw, renderTarget, camera);
+  }
 
-	public Point transformToAWT_New( Point3 xyz, RenderTarget renderTarget, AbstractCamera camera ) {
-		return transformToAWT_New( new Vector4( xyz.x, xyz.y, xyz.z, 1.0 ), renderTarget, camera );
-	}
+  public Point transformToAWT_New(Point3 xyz, RenderTarget renderTarget, AbstractCamera camera) {
+    return transformToAWT_New(new Vector4(xyz.x, xyz.y, xyz.z, 1.0), renderTarget, camera);
+  }
 
-	public Vector4 transformFromAWT_NewVectorD4( Point p, double z, RenderTarget renderTarget, AbstractCamera camera ) {
-		return transformFromAWT( new Vector4(), p, z, renderTarget, camera );
-	}
+  public Vector4 transformFromAWT_NewVectorD4(Point p, double z, RenderTarget renderTarget, AbstractCamera camera) {
+    return transformFromAWT(new Vector4(), p, z, renderTarget, camera);
+  }
 
-	public Point3 transformFromAWT_NewPointD3( Point p, double z, RenderTarget renderTarget, AbstractCamera camera ) {
-		return Point3.createFromXYZW( transformFromAWT_NewVectorD4( p, z, renderTarget, camera ) );
-	}
+  public Point3 transformFromAWT_NewPointD3(Point p, double z, RenderTarget renderTarget, AbstractCamera camera) {
+    return Point3.createFromXYZW(transformFromAWT_NewVectorD4(p, z, renderTarget, camera));
+  }
 
-	private final List<AbsoluteTransformationListener> absoluteTransformationListeners = Lists.newCopyOnWriteArrayList();
-	private final List<HierarchyListener> hierarchyListeners = Lists.newCopyOnWriteArrayList();
-	private Composite vehicle = null;
+  private final List<AbsoluteTransformationListener> absoluteTransformationListeners = Lists.newCopyOnWriteArrayList();
+  private final List<HierarchyListener> hierarchyListeners = Lists.newCopyOnWriteArrayList();
+  private Composite vehicle = null;
 }

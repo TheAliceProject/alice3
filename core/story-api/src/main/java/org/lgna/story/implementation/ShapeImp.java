@@ -49,8 +49,8 @@ import edu.cmu.cs.dennisc.math.Dimension3;
  * @author Dennis Cosgrove
  */
 public abstract class ShapeImp extends SimpleModelImp {
-	@Override
-	public Dimension3 getScale() {
-		return new Dimension3(1, 1, 1);
-	}
+  @Override
+  public Dimension3 getScale() {
+    return new Dimension3(1, 1, 1);
+  }
 }

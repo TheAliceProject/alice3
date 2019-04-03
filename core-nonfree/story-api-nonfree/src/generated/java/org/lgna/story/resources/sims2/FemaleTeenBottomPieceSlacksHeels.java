@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenBottomPieceSlacksHeels implements FemaleTeenBottomPiece {
-	BEIGE,
-	BLACK,
-	FOREST,
-	NAVY,
-	RED,
-	RUST;
+  BEIGE, BLACK, FOREST, NAVY, RED, RUST
 
 }

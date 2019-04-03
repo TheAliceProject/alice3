@@ -71,134 +71,134 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ImageCaptureComposite extends FrameCompositeWithInternalIsShowingState<ImageCaptureView> {
-	//todo
-	private static final Group IMAGE_CAPTURE_GROUP = Group.getInstance( UUID.fromString( "220c4c60-aea1-4c18-95f9-7a0ef0a1f30b" ), "IMAGE_CAPTURE_GROUP" );
+  //todo
+  private static final Group IMAGE_CAPTURE_GROUP = Group.getInstance(UUID.fromString("220c4c60-aea1-4c18-95f9-7a0ef0a1f30b"), "IMAGE_CAPTURE_GROUP");
 
-	private static class SingletonHolder {
-		private static ImageCaptureComposite instance = new ImageCaptureComposite();
-	}
+  private static class SingletonHolder {
+    private static ImageCaptureComposite instance = new ImageCaptureComposite();
+  }
 
-	public static ImageCaptureComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ImageCaptureComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private static final int LAYER_ID = JLayeredPane.POPUP_LAYER + 1;
+  private static final int LAYER_ID = JLayeredPane.POPUP_LAYER + 1;
 
-	private ImageCaptureRectangleStencilView getImageCaptureRectangleStencilView( AbstractWindow<?> window ) {
-		return mapWindowToStencilView.getInitializingIfAbsent( window, new InitializingIfAbsentMap.Initializer<AbstractWindow<?>, ImageCaptureRectangleStencilView>() {
-			@Override
-			public ImageCaptureRectangleStencilView initialize( AbstractWindow<?> key ) {
-				return new ImageCaptureRectangleStencilView( key, LAYER_ID, ImageCaptureComposite.this );
-			}
-		} );
-	}
+  private ImageCaptureRectangleStencilView getImageCaptureRectangleStencilView(AbstractWindow<?> window) {
+    return mapWindowToStencilView.getInitializingIfAbsent(window, new InitializingIfAbsentMap.Initializer<AbstractWindow<?>, ImageCaptureRectangleStencilView>() {
+      @Override
+      public ImageCaptureRectangleStencilView initialize(AbstractWindow<?> key) {
+        return new ImageCaptureRectangleStencilView(key, LAYER_ID, ImageCaptureComposite.this);
+      }
+    });
+  }
 
-	private final Operation captureEntireWindowOperation = this.createActionOperation( "captureEntireWindow", new Action() {
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			Application app = Application.getActiveInstance();
-			AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
-			Image image = ImageCaptureUtilities.captureComplete( window.getAwtComponent(), getDpi() );
-			image = convertToRgbaIfNecessary( image );
+  private final Operation captureEntireWindowOperation = this.createActionOperation("captureEntireWindow", new Action() {
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      Application app = Application.getActiveInstance();
+      AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
+      Image image = ImageCaptureUtilities.captureComplete(window.getAwtComponent(), getDpi());
+      image = convertToRgbaIfNecessary(image);
 
-			ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
-			stencilView.getImageComposite().setImageClearShapesAndShowFrame( image );
-			//edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
-			return null;
-		}
-	} );
+      ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView(window);
+      stencilView.getImageComposite().setImageClearShapesAndShowFrame(image);
+      //edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
+      return null;
+    }
+  });
 
-	private final Operation captureEntireContentPaneOperation = this.createActionOperation( "captureEntireContentPane", new Action() {
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			Application app = Application.getActiveInstance();
-			AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
-			Image image = ImageCaptureUtilities.captureComplete( window.getRootPane().getAwtComponent(), getDpi() );
-			image = convertToRgbaIfNecessary( image );
-			ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
-			stencilView.getImageComposite().setImageClearShapesAndShowFrame( image );
-			//edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
-			return null;
-		}
-	} );
+  private final Operation captureEntireContentPaneOperation = this.createActionOperation("captureEntireContentPane", new Action() {
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      Application app = Application.getActiveInstance();
+      AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
+      Image image = ImageCaptureUtilities.captureComplete(window.getRootPane().getAwtComponent(), getDpi());
+      image = convertToRgbaIfNecessary(image);
+      ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView(window);
+      stencilView.getImageComposite().setImageClearShapesAndShowFrame(image);
+      //edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
+      return null;
+    }
+  });
 
-	private final Operation captureRectangleOperation = this.createActionOperation( "captureRectangle", new Action() {
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			Application app = Application.getActiveInstance();
-			AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
-			ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
-			stencilView.setStencilShowing( stencilView.isStencilShowing() == false );
-			return null;
-		}
-	} );
+  private final Operation captureRectangleOperation = this.createActionOperation("captureRectangle", new Action() {
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      Application app = Application.getActiveInstance();
+      AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
+      ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView(window);
+      stencilView.setStencilShowing(stencilView.isStencilShowing() == false);
+      return null;
+    }
+  });
 
-	private final PlainStringValue operationsHeader = this.createStringValue( "operationsHeader" );
-	private final PlainStringValue propertiesHeader = this.createStringValue( "propertiesHeader" );
-	private final BoundedIntegerState dpiState = this.createBoundedIntegerState( "dpiState", new BoundedIntegerDetails().minimum( 0 ).maximum( 3000 ).initialValue( 300 ) );
-	private final BooleanState isAlphaChannelState = this.createPreferenceBooleanState( "isAlphaChannelState", false );
+  private final PlainStringValue operationsHeader = this.createStringValue("operationsHeader");
+  private final PlainStringValue propertiesHeader = this.createStringValue("propertiesHeader");
+  private final BoundedIntegerState dpiState = this.createBoundedIntegerState("dpiState", new BoundedIntegerDetails().minimum(0).maximum(3000).initialValue(300));
+  private final BooleanState isAlphaChannelState = this.createPreferenceBooleanState("isAlphaChannelState", false);
 
-	private final InitializingIfAbsentMap<AbstractWindow<?>, ImageCaptureRectangleStencilView> mapWindowToStencilView = Maps.newInitializingIfAbsentHashMap();
+  private final InitializingIfAbsentMap<AbstractWindow<?>, ImageCaptureRectangleStencilView> mapWindowToStencilView = Maps.newInitializingIfAbsentHashMap();
 
-	private ImageCaptureComposite() {
-		super( UUID.fromString( "84f73ef2-a5d1-4784-a902-45343434b0f0" ), IMAGE_CAPTURE_GROUP );
-	}
+  private ImageCaptureComposite() {
+    super(UUID.fromString("84f73ef2-a5d1-4784-a902-45343434b0f0"), IMAGE_CAPTURE_GROUP);
+  }
 
-	public Image convertToRgbaIfNecessary( Image image ) {
-		if( this.isAlphaChannelState.getValue() ) {
-			int imageType = BufferedImage.TYPE_INT_ARGB_PRE; //to pre or not to pre
-			return ImageUtilities.createBufferedImage( image, imageType );
-		} else {
-			return image;
-		}
-	}
+  public Image convertToRgbaIfNecessary(Image image) {
+    if (this.isAlphaChannelState.getValue()) {
+      int imageType = BufferedImage.TYPE_INT_ARGB_PRE; //to pre or not to pre
+      return ImageUtilities.createBufferedImage(image, imageType);
+    } else {
+      return image;
+    }
+  }
 
-	public PlainStringValue getOperationsHeader() {
-		return this.operationsHeader;
-	}
+  public PlainStringValue getOperationsHeader() {
+    return this.operationsHeader;
+  }
 
-	public PlainStringValue getPropertiesHeader() {
-		return this.propertiesHeader;
-	}
+  public PlainStringValue getPropertiesHeader() {
+    return this.propertiesHeader;
+  }
 
-	public Operation getCaptureEntireWindowOperation() {
-		return this.captureEntireWindowOperation;
-	}
+  public Operation getCaptureEntireWindowOperation() {
+    return this.captureEntireWindowOperation;
+  }
 
-	public Operation getCaptureEntireContentPaneOperation() {
-		return this.captureEntireContentPaneOperation;
-	}
+  public Operation getCaptureEntireContentPaneOperation() {
+    return this.captureEntireContentPaneOperation;
+  }
 
-	public Operation getCaptureRectangleOperation() {
-		return this.captureRectangleOperation;
-	}
+  public Operation getCaptureRectangleOperation() {
+    return this.captureRectangleOperation;
+  }
 
-	public BoundedIntegerState getDpiState() {
-		return this.dpiState;
-	}
+  public BoundedIntegerState getDpiState() {
+    return this.dpiState;
+  }
 
-	public BooleanState getIsAlphaChannelState() {
-		return this.isAlphaChannelState;
-	}
+  public BooleanState getIsAlphaChannelState() {
+    return this.isAlphaChannelState;
+  }
 
-	public int getDpi() {
-		final boolean IS_SPINNER_UPDATING_CORRECTLY = false;
-		if( IS_SPINNER_UPDATING_CORRECTLY ) {
-			return this.dpiState.getValue();
-		} else {
-			return (Integer)this.dpiState.getSwingModel().getSpinnerModel().getValue();
-		}
-	}
+  public int getDpi() {
+    final boolean IS_SPINNER_UPDATING_CORRECTLY = false;
+    if (IS_SPINNER_UPDATING_CORRECTLY) {
+      return this.dpiState.getValue();
+    } else {
+      return (Integer) this.dpiState.getSwingModel().getSpinnerModel().getValue();
+    }
+  }
 
-	@Override
-	protected ImageCaptureView createView() {
-		return new ImageCaptureView( this );
-	}
+  @Override
+  protected ImageCaptureView createView() {
+    return new ImageCaptureView(this);
+  }
 
-	public static void main( String[] args ) throws Exception {
-		UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		SimpleApplication app = new SimpleApplication();
-		ImageCaptureComposite.getInstance().getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected( true );
-	}
+  public static void main(String[] args) throws Exception {
+    UIManagerUtilities.setLookAndFeel("Nimbus");
+    SimpleApplication app = new SimpleApplication();
+    ImageCaptureComposite.getInstance().getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected(true);
+  }
 
 }

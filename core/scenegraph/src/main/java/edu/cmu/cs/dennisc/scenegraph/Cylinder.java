@@ -54,248 +54,243 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
  * @author Dennis Cosgrove
  */
 public class Cylinder extends Shape {
-	public static enum OriginAlignment {
-		TOP,
-		CENTER,
-		BOTTOM
-	}
+  public static enum OriginAlignment {
+    TOP, CENTER, BOTTOM
+  }
 
-	public static enum BottomToTopAxis {
-		POSITIVE_X( +1, 0, 0 ),
-		POSITIVE_Y( 0, +1, 0 ),
-		POSITIVE_Z( 0, 0, +1 ),
-		NEGATIVE_X( -1, 0, 0 ),
-		NEGATIVE_Y( 0, -1, 0 ),
-		NEGATIVE_Z( 0, 0, -1 );
+  public static enum BottomToTopAxis {
+    POSITIVE_X(+1, 0, 0), POSITIVE_Y(0, +1, 0), POSITIVE_Z(0, 0, +1), NEGATIVE_X(-1, 0, 0), NEGATIVE_Y(0, -1, 0), NEGATIVE_Z(0, 0, -1);
 
-		BottomToTopAxis( double x, double y, double z ) {
-			this.axis.set( x, y, z );
-		}
+    BottomToTopAxis(double x, double y, double z) {
+      this.axis.set(x, y, z);
+    }
 
-		public Vector3 accessVector() {
-			return this.axis;
-		}
+    public Vector3 accessVector() {
+      return this.axis;
+    }
 
-		public Vector3 getVector( Vector3 rv ) {
-			rv.set( this.axis );
-			return rv;
-		}
+    public Vector3 getVector(Vector3 rv) {
+      rv.set(this.axis);
+      return rv;
+    }
 
-		public Vector3 getVector() {
-			return getVector( new Vector3() );
-		}
+    public Vector3 getVector() {
+      return getVector(new Vector3());
+    }
 
-		public boolean isPositive() {
-			return ( this.axis.x > 0 ) || ( this.axis.y > 0 ) || ( this.axis.z > 0 );
-		}
+    public boolean isPositive() {
+      return (this.axis.x > 0) || (this.axis.y > 0) || (this.axis.z > 0);
+    }
 
-		private final Vector3 axis = new Vector3();
-	}
+    private final Vector3 axis = new Vector3();
+  }
 
-	public double getActualTopRadius() {
-		if( Double.isNaN( topRadius.getValue() ) ) {
-			return bottomRadius.getValue();
-		} else {
-			return topRadius.getValue();
-		}
-	}
+  public double getActualTopRadius() {
+    if (Double.isNaN(topRadius.getValue())) {
+      return bottomRadius.getValue();
+    } else {
+      return topRadius.getValue();
+    }
+  }
 
-	private double getMaxRadius() {
-		if( Double.isNaN( topRadius.getValue() ) ) {
-			return bottomRadius.getValue();
-		} else {
-			return Math.max( bottomRadius.getValue(), topRadius.getValue() );
-		}
-	}
+  private double getMaxRadius() {
+    if (Double.isNaN(topRadius.getValue())) {
+      return bottomRadius.getValue();
+    } else {
+      return Math.max(bottomRadius.getValue(), topRadius.getValue());
+    }
+  }
 
-	private double getTop() {
-		OriginAlignment originAlignment = this.originAlignment.getValue();
-		if( originAlignment == OriginAlignment.BOTTOM ) {
-			return length.getValue();
-		} else if( originAlignment == OriginAlignment.CENTER ) {
-			return length.getValue() * 0.5;
-		} else if( originAlignment == OriginAlignment.TOP ) {
-			return 0;
-		} else {
-			throw new RuntimeException();
-		}
-	}
+  private double getTop() {
+    OriginAlignment originAlignment = this.originAlignment.getValue();
+    if (originAlignment == OriginAlignment.BOTTOM) {
+      return length.getValue();
+    } else if (originAlignment == OriginAlignment.CENTER) {
+      return length.getValue() * 0.5;
+    } else if (originAlignment == OriginAlignment.TOP) {
+      return 0;
+    } else {
+      throw new RuntimeException();
+    }
+  }
 
-	private double getBottom() {
-		OriginAlignment originAlignment = this.originAlignment.getValue();
-		if( originAlignment == OriginAlignment.BOTTOM ) {
-			return 0;
-		} else if( originAlignment == OriginAlignment.CENTER ) {
-			return -length.getValue() * 0.5;
-		} else if( originAlignment == OriginAlignment.TOP ) {
-			return -length.getValue();
-		} else {
-			throw new RuntimeException();
-		}
-	}
+  private double getBottom() {
+    OriginAlignment originAlignment = this.originAlignment.getValue();
+    if (originAlignment == OriginAlignment.BOTTOM) {
+      return 0;
+    } else if (originAlignment == OriginAlignment.CENTER) {
+      return -length.getValue() * 0.5;
+    } else if (originAlignment == OriginAlignment.TOP) {
+      return -length.getValue();
+    } else {
+      throw new RuntimeException();
+    }
+  }
 
-	private double getCenter() {
-		OriginAlignment originAlignment = this.originAlignment.getValue();
-		if( originAlignment == OriginAlignment.BOTTOM ) {
-			return length.getValue() * 0.5;
-		} else if( originAlignment == OriginAlignment.CENTER ) {
-			return 0;
-		} else if( originAlignment == OriginAlignment.TOP ) {
-			return -length.getValue() * 0.5;
-		} else {
-			throw new RuntimeException();
-		}
-	}
+  private double getCenter() {
+    OriginAlignment originAlignment = this.originAlignment.getValue();
+    if (originAlignment == OriginAlignment.BOTTOM) {
+      return length.getValue() * 0.5;
+    } else if (originAlignment == OriginAlignment.CENTER) {
+      return 0;
+    } else if (originAlignment == OriginAlignment.TOP) {
+      return -length.getValue() * 0.5;
+    } else {
+      throw new RuntimeException();
+    }
+  }
 
-	public Point3 getCenterOfTop( Point3 rv ) {
-		double top = getTop();
-		BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
-		if( bottomToTopAxis == BottomToTopAxis.POSITIVE_X ) {
-			rv.set( top, 0, 0 );
-		} else if( bottomToTopAxis == BottomToTopAxis.POSITIVE_Y ) {
-			rv.set( 0, top, 0 );
-		} else if( bottomToTopAxis == BottomToTopAxis.POSITIVE_Z ) {
-			rv.set( 0, 0, top );
-		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_X ) {
-			rv.set( -top, 0, 0 );
-		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_Y ) {
-			rv.set( 0, -top, 0 );
-		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_Z ) {
-			rv.set( 0, 0, -top );
-		} else {
-			throw new RuntimeException();
-		}
-		return rv;
-	}
+  public Point3 getCenterOfTop(Point3 rv) {
+    double top = getTop();
+    BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
+    if (bottomToTopAxis == BottomToTopAxis.POSITIVE_X) {
+      rv.set(top, 0, 0);
+    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Y) {
+      rv.set(0, top, 0);
+    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Z) {
+      rv.set(0, 0, top);
+    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_X) {
+      rv.set(-top, 0, 0);
+    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Y) {
+      rv.set(0, -top, 0);
+    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Z) {
+      rv.set(0, 0, -top);
+    } else {
+      throw new RuntimeException();
+    }
+    return rv;
+  }
 
-	public Point3 getCenterOfTop() {
-		return getCenterOfTop( new Point3() );
-	}
+  public Point3 getCenterOfTop() {
+    return getCenterOfTop(new Point3());
+  }
 
-	public Point3 getCenterOfBottom( Point3 rv ) {
-		double bottom = getBottom();
-		BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
-		if( bottomToTopAxis == BottomToTopAxis.POSITIVE_X ) {
-			rv.set( bottom, 0, 0 );
-		} else if( bottomToTopAxis == BottomToTopAxis.POSITIVE_Y ) {
-			rv.set( 0, bottom, 0 );
-		} else if( bottomToTopAxis == BottomToTopAxis.POSITIVE_Z ) {
-			rv.set( 0, 0, bottom );
-		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_X ) {
-			rv.set( -bottom, 0, 0 );
-		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_Y ) {
-			rv.set( 0, -bottom, 0 );
-		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_Z ) {
-			rv.set( 0, 0, -bottom );
-		} else {
-			throw new RuntimeException();
-		}
-		return rv;
-	}
+  public Point3 getCenterOfBottom(Point3 rv) {
+    double bottom = getBottom();
+    BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
+    if (bottomToTopAxis == BottomToTopAxis.POSITIVE_X) {
+      rv.set(bottom, 0, 0);
+    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Y) {
+      rv.set(0, bottom, 0);
+    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Z) {
+      rv.set(0, 0, bottom);
+    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_X) {
+      rv.set(-bottom, 0, 0);
+    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Y) {
+      rv.set(0, -bottom, 0);
+    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Z) {
+      rv.set(0, 0, -bottom);
+    } else {
+      throw new RuntimeException();
+    }
+    return rv;
+  }
 
-	public Point3 getCenterOfBottom() {
-		return getCenterOfBottom( new Point3() );
-	}
+  public Point3 getCenterOfBottom() {
+    return getCenterOfBottom(new Point3());
+  }
 
-	@Override
-	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
-		double top = getTop();
-		double bottom = getBottom();
-		double maxRadius = getMaxRadius();
-		BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
-		if( bottomToTopAxis == BottomToTopAxis.POSITIVE_X ) {
-			boundingBox.setMinimum( bottom, -maxRadius, -maxRadius );
-			boundingBox.setMaximum( top, +maxRadius, +maxRadius );
-		} else if( bottomToTopAxis == BottomToTopAxis.POSITIVE_Y ) {
-			boundingBox.setMinimum( -maxRadius, bottom, -maxRadius );
-			boundingBox.setMaximum( +maxRadius, top, +maxRadius );
-		} else if( bottomToTopAxis == BottomToTopAxis.POSITIVE_Z ) {
-			boundingBox.setMinimum( -maxRadius, -maxRadius, bottom );
-			boundingBox.setMaximum( +maxRadius, +maxRadius, top );
-		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_X ) {
-			boundingBox.setMinimum( top, -maxRadius, -maxRadius );
-			boundingBox.setMaximum( bottom, +maxRadius, +maxRadius );
-		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_Y ) {
-			boundingBox.setMinimum( -maxRadius, top, -maxRadius );
-			boundingBox.setMaximum( +maxRadius, bottom, +maxRadius );
-		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_Z ) {
-			boundingBox.setMinimum( -maxRadius, -maxRadius, top );
-			boundingBox.setMaximum( +maxRadius, +maxRadius, bottom );
-		} else {
-			throw new RuntimeException();
-		}
-	}
+  @Override
+  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+    double top = getTop();
+    double bottom = getBottom();
+    double maxRadius = getMaxRadius();
+    BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
+    if (bottomToTopAxis == BottomToTopAxis.POSITIVE_X) {
+      boundingBox.setMinimum(bottom, -maxRadius, -maxRadius);
+      boundingBox.setMaximum(top, +maxRadius, +maxRadius);
+    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Y) {
+      boundingBox.setMinimum(-maxRadius, bottom, -maxRadius);
+      boundingBox.setMaximum(+maxRadius, top, +maxRadius);
+    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Z) {
+      boundingBox.setMinimum(-maxRadius, -maxRadius, bottom);
+      boundingBox.setMaximum(+maxRadius, +maxRadius, top);
+    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_X) {
+      boundingBox.setMinimum(top, -maxRadius, -maxRadius);
+      boundingBox.setMaximum(bottom, +maxRadius, +maxRadius);
+    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Y) {
+      boundingBox.setMinimum(-maxRadius, top, -maxRadius);
+      boundingBox.setMaximum(+maxRadius, bottom, +maxRadius);
+    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Z) {
+      boundingBox.setMinimum(-maxRadius, -maxRadius, top);
+      boundingBox.setMaximum(+maxRadius, +maxRadius, bottom);
+    } else {
+      throw new RuntimeException();
+    }
+  }
 
-	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		double center = getCenter();
-		BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
-		if( bottomToTopAxis == BottomToTopAxis.POSITIVE_X ) {
-			boundingSphere.center.set( +center, 0, 0 );
-		} else if( bottomToTopAxis == BottomToTopAxis.POSITIVE_Y ) {
-			boundingSphere.center.set( 0, +center, 0 );
-		} else if( bottomToTopAxis == BottomToTopAxis.POSITIVE_Z ) {
-			boundingSphere.center.set( 0, 0, +center );
-		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_X ) {
-			boundingSphere.center.set( -center, 0, 0 );
-		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_Y ) {
-			boundingSphere.center.set( 0, -center, 0 );
-		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_Z ) {
-			boundingSphere.center.set( 0, 0, -center );
-		} else {
-			throw new RuntimeException();
-		}
-		double halfLength = length.getValue() * 0.5;
-		double halfLengthSquared = halfLength * halfLength;
-		double maxRadius = getMaxRadius();
-		double maxRadiusSquared = maxRadius * maxRadius;
-		boundingSphere.radius = Math.sqrt( halfLengthSquared + maxRadiusSquared + maxRadiusSquared );
-	}
+  @Override
+  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
+    double center = getCenter();
+    BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
+    if (bottomToTopAxis == BottomToTopAxis.POSITIVE_X) {
+      boundingSphere.center.set(+center, 0, 0);
+    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Y) {
+      boundingSphere.center.set(0, +center, 0);
+    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Z) {
+      boundingSphere.center.set(0, 0, +center);
+    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_X) {
+      boundingSphere.center.set(-center, 0, 0);
+    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Y) {
+      boundingSphere.center.set(0, -center, 0);
+    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Z) {
+      boundingSphere.center.set(0, 0, -center);
+    } else {
+      throw new RuntimeException();
+    }
+    double halfLength = length.getValue() * 0.5;
+    double halfLengthSquared = halfLength * halfLength;
+    double maxRadius = getMaxRadius();
+    double maxRadiusSquared = maxRadius * maxRadius;
+    boundingSphere.radius = Math.sqrt(halfLengthSquared + maxRadiusSquared + maxRadiusSquared);
+  }
 
-	public final BoundDoubleProperty length = new BoundDoubleProperty( this, 1.0 ) {
-		@Override
-		public void setValue( Double value ) {
-			assert value >= 0.0 : value;
-			super.setValue( value );
-		}
-	};
-	public final BoundDoubleProperty bottomRadius = new BoundDoubleProperty( this, 1.0 ) {
-		@Override
-		public void setValue( Double value ) {
-			assert value >= 0.0 : value;
-			super.setValue( value );
-		}
-	};
-	public final BoundDoubleProperty topRadius = new BoundDoubleProperty( this, 1.0 ) {
-		@Override
-		public void setValue( Double value ) {
-			assert value >= 0.0 : value;
-			super.setValue( value );
-		}
-	};
-	//todo: change default to CENTER?
-	public final InstanceProperty<OriginAlignment> originAlignment = new InstanceProperty<OriginAlignment>( this, OriginAlignment.BOTTOM ) {
-		@Override
-		public void setValue( OriginAlignment value ) {
-			if( Objects.notEquals( value, this.getValue() ) ) {
-				Cylinder.this.markBoundsDirty();
-				super.setValue( value );
-				Cylinder.this.fireBoundChanged();
-			}
-		};
-	};
+  public final BoundDoubleProperty length = new BoundDoubleProperty(this, 1.0) {
+    @Override
+    public void setValue(Double value) {
+      assert value >= 0.0 : value;
+      super.setValue(value);
+    }
+  };
+  public final BoundDoubleProperty bottomRadius = new BoundDoubleProperty(this, 1.0) {
+    @Override
+    public void setValue(Double value) {
+      assert value >= 0.0 : value;
+      super.setValue(value);
+    }
+  };
+  public final BoundDoubleProperty topRadius = new BoundDoubleProperty(this, 1.0) {
+    @Override
+    public void setValue(Double value) {
+      assert value >= 0.0 : value;
+      super.setValue(value);
+    }
+  };
+  //todo: change default to CENTER?
+  public final InstanceProperty<OriginAlignment> originAlignment = new InstanceProperty<OriginAlignment>(this, OriginAlignment.BOTTOM) {
+    @Override
+    public void setValue(OriginAlignment value) {
+      if (Objects.notEquals(value, this.getValue())) {
+        Cylinder.this.markBoundsDirty();
+        super.setValue(value);
+        Cylinder.this.fireBoundChanged();
+      }
+    }
 
-	//todo: change default to POSITIVE_Z? NEGATIVE_Z?
-	public final InstanceProperty<BottomToTopAxis> bottomToTopAxis = new InstanceProperty<BottomToTopAxis>( this, BottomToTopAxis.POSITIVE_Y ) {
-		@Override
-		public void setValue( BottomToTopAxis value ) {
-			if( Objects.notEquals( value, this.getValue() ) ) {
-				Cylinder.this.markBoundsDirty();
-				super.setValue( value );
-				Cylinder.this.fireBoundChanged();
-			}
-		};
-	};
-	public final BooleanProperty hasBottomCap = new BooleanProperty( this, true );
-	public final BooleanProperty hasTopCap = new BooleanProperty( this, true );
+  };
+
+  //todo: change default to POSITIVE_Z? NEGATIVE_Z?
+  public final InstanceProperty<BottomToTopAxis> bottomToTopAxis = new InstanceProperty<BottomToTopAxis>(this, BottomToTopAxis.POSITIVE_Y) {
+    @Override
+    public void setValue(BottomToTopAxis value) {
+      if (Objects.notEquals(value, this.getValue())) {
+        Cylinder.this.markBoundsDirty();
+        super.setValue(value);
+        Cylinder.this.fireBoundChanged();
+      }
+    }
+
+  };
+  public final BooleanProperty hasBottomCap = new BooleanProperty(this, true);
+  public final BooleanProperty hasTopCap = new BooleanProperty(this, true);
 }

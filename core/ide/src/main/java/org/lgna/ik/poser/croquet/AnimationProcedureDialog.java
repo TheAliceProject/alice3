@@ -56,50 +56,50 @@ import java.util.UUID;
  */
 public abstract class AnimationProcedureDialog extends SimpleOperationInputDialogCoreComposite<Panel> {
 
-	public AnimationProcedureDialog( UUID migrationId, AnimatorComposite animatorComposite ) {
-		super( migrationId, IDE.PROJECT_GROUP );
-		this.animatorComposite = this.registerSubComposite( animatorComposite );
-		this.animatorComposite.addStatusListener( statusUpdateListener );
-	}
+  public AnimationProcedureDialog(UUID migrationId, AnimatorComposite animatorComposite) {
+    super(migrationId, IDE.PROJECT_GROUP);
+    this.animatorComposite = this.registerSubComposite(animatorComposite);
+    this.animatorComposite.addStatusListener(statusUpdateListener);
+  }
 
-	@Override
-	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
-		if( animatorComposite.getControlComposite().isEmpty() ) {
-			return empty;
-		}
-		if( validator != null ) {
-			//pass
-		} else {
-			this.validator = new MethodNameValidator( animatorComposite.getDeclaringType() );
-		}
-		String candidate = animatorComposite.getControlComposite().getNameState().getValue();
-		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-		if( explanation != null ) {
-			errorStatus.setText( explanation );
-			return errorStatus;
-		}
-		return IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
+    if (animatorComposite.getControlComposite().isEmpty()) {
+      return empty;
+    }
+    if (validator != null) {
+      //pass
+    } else {
+      this.validator = new MethodNameValidator(animatorComposite.getDeclaringType());
+    }
+    String candidate = animatorComposite.getControlComposite().getNameState().getValue();
+    String explanation = validator.getExplanationIfOkButtonShouldBeDisabled(candidate);
+    if (explanation != null) {
+      errorStatus.setText(explanation);
+      return errorStatus;
+    }
+    return IS_GOOD_TO_GO_STATUS;
+  }
 
-	@Override
-	protected Panel createView() {
-		return new BorderPanel.Builder().center( this.animatorComposite.getRootComponent() ).build();
-	}
+  @Override
+  protected Panel createView() {
+    return new BorderPanel.Builder().center(this.animatorComposite.getRootComponent()).build();
+  }
 
-	private final AnimatorComposite<?> animatorComposite;
+  private final AnimatorComposite<?> animatorComposite;
 
-	private final StatusUpdateListener statusUpdateListener = new StatusUpdateListener() {
-		@Override
-		public void refreshStatus() {
-			AnimationProcedureDialog.this.refreshStatus();
-		}
-	};
+  private final StatusUpdateListener statusUpdateListener = new StatusUpdateListener() {
+    @Override
+    public void refreshStatus() {
+      AnimationProcedureDialog.this.refreshStatus();
+    }
+  };
 
-	public AnimatorComposite<?> getAnimatorComposite() {
-		return this.animatorComposite;
-	}
+  public AnimatorComposite<?> getAnimatorComposite() {
+    return this.animatorComposite;
+  }
 
-	private final AbstractSeverityStatusComposite.WarningStatus empty = createWarningStatus( "noPoses" );
-	private final AbstractSeverityStatusComposite.ErrorStatus errorStatus = createErrorStatus( "errorStatus" );
-	private MethodNameValidator validator;
+  private final AbstractSeverityStatusComposite.WarningStatus empty = createWarningStatus("noPoses");
+  private final AbstractSeverityStatusComposite.ErrorStatus errorStatus = createErrorStatus("errorStatus");
+  private MethodNameValidator validator;
 }

@@ -44,14 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum ChildBottomPieceBaggyPants implements MaleChildBottomPiece, FemaleChildBottomPiece {
-	CARPENTER_BLUE,
-	CARPENTER_BROWNISH,
-	CARPENTER_KHAKI,
-	GREEN,
-	BLACK,
-	PLAIN_BLUE,
-	PLAIN_DARK_BLUE,
-	FLOWERS_BLUE,
-	FLOWERS_RED;
+  CARPENTER_BLUE, CARPENTER_BROWNISH, CARPENTER_KHAKI, GREEN, BLACK, PLAIN_BLUE, PLAIN_DARK_BLUE, FLOWERS_BLUE, FLOWERS_RED
 
 }

@@ -49,13 +49,13 @@ import org.lgna.project.code.CodeAppender;
  * @author Dennis Cosgrove
  */
 public abstract class Expression extends AbstractNode implements CodeAppender {
-	public abstract AbstractType<?, ?, ?> getType();
+  public abstract AbstractType<?, ?, ?> getType();
 
-	//	public abstract boolean isValid();
-	public boolean isValid() {
-		return true;
-	}
+  //  public abstract boolean isValid();
+  public boolean isValid() {
+    return true;
+  }
 
-	@Override
-	public abstract void appendCode( SourceCodeGenerator generator );
+  @Override
+  public abstract void appendCode(SourceCodeGenerator generator);
 }

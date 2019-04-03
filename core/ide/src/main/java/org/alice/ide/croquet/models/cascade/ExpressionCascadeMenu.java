@@ -52,7 +52,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionCascadeMenu<T extends Expression> extends CascadeMenuModel<T> {
-	public ExpressionCascadeMenu( UUID id ) {
-		super( id );
-	}
+  public ExpressionCascadeMenu(UUID id) {
+    super(id);
+  }
 }

@@ -55,38 +55,38 @@ import org.lgna.project.Project;
  */
 public class ProjectDocument implements Document {
 
-	private final Project project;
-	private final UserActivity userActivity;
-	private final ProjectHistoryManager projectHistoryManager;
+  private final Project project;
+  private final UserActivity userActivity;
+  private final ProjectHistoryManager projectHistoryManager;
 
-	private final TypeCache typeCache;
+  private final TypeCache typeCache;
 
-	public ProjectDocument( Project project, UserActivity rootActivity ) {
-		this.project = project;
-		userActivity = rootActivity;
-		this.projectHistoryManager = new ProjectHistoryManager( this );
+  public ProjectDocument(Project project, UserActivity rootActivity) {
+    this.project = project;
+    userActivity = rootActivity;
+    this.projectHistoryManager = new ProjectHistoryManager(this);
 
-		// TODO: Store user activity as part of the profile file
-		//this.putValueFor( UserActivity.INTERACTION_HISTORY_PROPERTY_KEY, this.userActivity );
+    // TODO: Store user activity as part of the profile file
+    //this.putValueFor( UserActivity.INTERACTION_HISTORY_PROPERTY_KEY, this.userActivity );
 
-		this.typeCache = new TypeCache( this.project );
-	}
+    this.typeCache = new TypeCache(this.project);
+  }
 
-	public Project getProject() {
-		return this.project;
-	}
+  public Project getProject() {
+    return this.project;
+  }
 
-	public TypeCache getTypeCache() {
-		return this.typeCache;
-	}
+  public TypeCache getTypeCache() {
+    return this.typeCache;
+  }
 
-	@Override
-	public UserActivity getUserActivity() {
-		return userActivity;
-	}
+  @Override
+  public UserActivity getUserActivity() {
+    return userActivity;
+  }
 
-	@Override
-	public UndoHistory getUndoHistory( Group group ) {
-		return this.projectHistoryManager.getGroupHistory( group );
-	}
+  @Override
+  public UndoHistory getUndoHistory(Group group) {
+    return this.projectHistoryManager.getGroupHistory(group);
+  }
 }

@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum ChildFullBodyOutfitJumper implements MaleChildFullBodyOutfit, FemaleChildFullBodyOutfit {
-	YELLOW_BLUE_JEAN,
-	STRIPES,
-	SHIRT_OVER_SHORTS,
-	TAN,
-	BLUE,
-	GREEN;
+  YELLOW_BLUE_JEAN, STRIPES, SHIRT_OVER_SHORTS, TAN, BLUE, GREEN
 
 }

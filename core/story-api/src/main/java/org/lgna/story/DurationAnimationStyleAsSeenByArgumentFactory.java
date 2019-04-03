@@ -47,11 +47,11 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class DurationAnimationStyleAsSeenByArgumentFactory extends DurationAnimationStyleArgumentFactory {
-	protected DurationAnimationStyleAsSeenByArgumentFactory() {
-		super();
-	}
+  protected DurationAnimationStyleAsSeenByArgumentFactory() {
+    super();
+  }
 
-	public static AsSeenBy asSeenBy( SThing entity ) {
-		return new AsSeenBy( entity );
-	}
+  public static AsSeenBy asSeenBy(SThing entity) {
+    return new AsSeenBy(entity);
+  }
 }

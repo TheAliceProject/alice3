@@ -56,145 +56,145 @@ import org.lgna.story.resources.JointId;
  * @author Dennis Cosgrove
  */
 public class NebulousJoint extends AbstractTransformable implements ModelJoint {
-	static {
-		AdapterFactory.register( NebulousJoint.class, GlrNebulousJoint.class );
-	}
+  static {
+    AdapterFactory.register(NebulousJoint.class, GlrNebulousJoint.class);
+  }
 
-	public NebulousJoint( Model nebModel, JointId jointId ) {
-		this.nebModel = nebModel;
-		this.jointId = jointId;
-		this.setName( this.jointId.toString() );
-	}
+  public NebulousJoint(Model nebModel, JointId jointId) {
+    this.nebModel = nebModel;
+    this.jointId = jointId;
+    this.setName(this.jointId.toString());
+  }
 
-	public JointId getJointId() {
-		return this.jointId;
-	}
+  public JointId getJointId() {
+    return this.jointId;
+  }
 
-	public AffineMatrix4x4 getOriginalLocalTransformation() {
-		return this.nebModel.getOriginalTransformationForJoint( this.jointId );
-	}
+  public AffineMatrix4x4 getOriginalLocalTransformation() {
+    return this.nebModel.getOriginalTransformationForJoint(this.jointId);
+  }
 
-	@Override
-	protected AffineMatrix4x4 accessLocalTransformation() {
-		AffineMatrix4x4 aliceTransform = this.nebModel.getLocalTransformationForJoint( this.jointId );
-		if( this.actualTranslation != null ) {
-			aliceTransform.translation.set( this.actualTranslation );
-		}
-		return aliceTransform;
-	}
+  @Override
+  protected AffineMatrix4x4 accessLocalTransformation() {
+    AffineMatrix4x4 aliceTransform = this.nebModel.getLocalTransformationForJoint(this.jointId);
+    if (this.actualTranslation != null) {
+      aliceTransform.translation.set(this.actualTranslation);
+    }
+    return aliceTransform;
+  }
 
-	@Override
-	protected void touchLocalTransformation( AffineMatrix4x4 m ) {
-		AffineMatrix4x4 current = this.nebModel.getLocalTransformationForJoint( this.jointId );
-		current.orientation.setValue( m.orientation );
-		current.translation.set( m.translation );
-		if( this.actualTranslation == null ) {
-			this.actualTranslation = new Point3();
-		}
-		this.actualTranslation.set( m.translation );
-		this.nebModel.setLocalTransformationForJoint( this.jointId, current );
-	}
+  @Override
+  protected void touchLocalTransformation(AffineMatrix4x4 m) {
+    AffineMatrix4x4 current = this.nebModel.getLocalTransformationForJoint(this.jointId);
+    current.orientation.setValue(m.orientation);
+    current.translation.set(m.translation);
+    if (this.actualTranslation == null) {
+      this.actualTranslation = new Point3();
+    }
+    this.actualTranslation.set(m.translation);
+    this.nebModel.setLocalTransformationForJoint(this.jointId, current);
+  }
 
-	//
-	//	public void setSgParent( Composite sgParent )
-	//    {
-	//        this.sgParent = sgParent;
-	//    }
-	//
-	//	@Override
-	//	public void setParent(Composite parent) {
-	//		super.setParent(parent);
-	//	}
-	//
-	//    @Override
-	//    public Composite getParent()
-	//    {
-	//        if (super.getParent() == null)
-	//        {
-	//        	return this.sgParent;
-	//        }
-	//        return super.getParent();
-	//    }
-	//
-	@Override
-	protected Composite getVehicle() {
-		return this.getParent();
-	}
+  //
+  //  public void setSgParent( Composite sgParent )
+  //    {
+  //        this.sgParent = sgParent;
+  //    }
+  //
+  //  @Override
+  //  public void setParent(Composite parent) {
+  //    super.setParent(parent);
+  //  }
+  //
+  //    @Override
+  //    public Composite getParent()
+  //    {
+  //        if (super.getParent() == null)
+  //        {
+  //          return this.sgParent;
+  //        }
+  //        return super.getParent();
+  //    }
+  //
+  @Override
+  protected Composite getVehicle() {
+    return this.getParent();
+  }
 
-	//
-	//
-	//    @Override
-	//    public Composite getRoot()
-	//    {
-	//        if (super.getParent() == null && this.sgParent != null)
-	//        {
-	//            return this.sgParent.getRoot();
-	//        }
-	//        return super.getRoot();
-	//    }
-	//
-	//    @Override
-	//    public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
-	//        if (super.getParent() == null && this.sgParent != null)
-	//        {
-	//        	rv = this.sgParent.getAbsoluteTransformation(rv);
-	//			rv.setToMultiplication( rv, this.accessLocalTransformation() );
-	//            return rv;
-	//        }
-	//        return super.getAbsoluteTransformation(rv);
-	//    }
-	//
-	//
-	//    @Override
-	//    public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
-	//        if (super.getParent() == null && this.sgParent != null)
-	//        {
-	//        	rv = this.sgParent.getAbsoluteTransformation(rv);
-	//			rv.setToMultiplication( rv, this.accessLocalTransformation() );
-	//			rv.invert();
-	//			return rv;
-	//        }
-	//        return super.getInverseAbsoluteTransformation(rv);
-	//    }
-	//
-	//    @Override
-	//    public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-	//        if (super.getParent() == null && this.sgParent != null)
-	//        {
-	//            rv = this.sgParent.getTransformation(rv, asSeenBy);
-	//			rv.setToMultiplication( rv, this.accessLocalTransformation() );
-	//			return rv;
-	//        }
-	//        return super.getTransformation(rv, asSeenBy);
-	//    }
-	//
-	public AxisAlignedBox getAxisAlignedBoundingBox() {
-		return this.nebModel.getAxisAlignedBoundingBoxForJoint( this.jointId );
-	}
+  //
+  //
+  //    @Override
+  //    public Composite getRoot()
+  //    {
+  //        if (super.getParent() == null && this.sgParent != null)
+  //        {
+  //            return this.sgParent.getRoot();
+  //        }
+  //        return super.getRoot();
+  //    }
+  //
+  //    @Override
+  //    public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+  //        if (super.getParent() == null && this.sgParent != null)
+  //        {
+  //          rv = this.sgParent.getAbsoluteTransformation(rv);
+  //      rv.setToMultiplication( rv, this.accessLocalTransformation() );
+  //            return rv;
+  //        }
+  //        return super.getAbsoluteTransformation(rv);
+  //    }
+  //
+  //
+  //    @Override
+  //    public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+  //        if (super.getParent() == null && this.sgParent != null)
+  //        {
+  //          rv = this.sgParent.getAbsoluteTransformation(rv);
+  //      rv.setToMultiplication( rv, this.accessLocalTransformation() );
+  //      rv.invert();
+  //      return rv;
+  //        }
+  //        return super.getInverseAbsoluteTransformation(rv);
+  //    }
+  //
+  //    @Override
+  //    public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
+  //        if (super.getParent() == null && this.sgParent != null)
+  //        {
+  //            rv = this.sgParent.getTransformation(rv, asSeenBy);
+  //      rv.setToMultiplication( rv, this.accessLocalTransformation() );
+  //      return rv;
+  //        }
+  //        return super.getTransformation(rv, asSeenBy);
+  //    }
+  //
+  public AxisAlignedBox getAxisAlignedBoundingBox() {
+    return this.nebModel.getAxisAlignedBoundingBoxForJoint(this.jointId);
+  }
 
-	//
-	//	@Override
-	//	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
-	//		edu.cmu.cs.dennisc.scenegraph.Composite vehicle = this.getParent();
-	//		//edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.nebModel.getTransformation( this.jointId );
-	//		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
-	//		if( vehicle == null || vehicle.isSceneOf( this ) ) {
-	//			rv.set( m );
-	//		} else {
-	//			rv = vehicle.getAbsoluteTransformation( rv );
-	//			rv.setToMultiplication( rv, m );
-	//		}
-	//		return rv;
-	//	}
-	//
-	//	// todo: cache this information
-	//	@Override
-	//	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
-	//		rv = getAbsoluteTransformation( rv );
-	//		rv.invert();
-	//		return rv;
-	//	}
-	private final Model nebModel;
-	private final JointId jointId;
-	private Point3 actualTranslation;
+  //
+  //  @Override
+  //  public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+  //    edu.cmu.cs.dennisc.scenegraph.Composite vehicle = this.getParent();
+  //    //edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.nebModel.getTransformation( this.jointId );
+  //    edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+  //    if( vehicle == null || vehicle.isSceneOf( this ) ) {
+  //      rv.set( m );
+  //    } else {
+  //      rv = vehicle.getAbsoluteTransformation( rv );
+  //      rv.setToMultiplication( rv, m );
+  //    }
+  //    return rv;
+  //  }
+  //
+  //  // todo: cache this information
+  //  @Override
+  //  public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+  //    rv = getAbsoluteTransformation( rv );
+  //    rv.invert();
+  //    return rv;
+  //  }
+  private final Model nebModel;
+  private final JointId jointId;
+  private Point3 actualTranslation;
 }

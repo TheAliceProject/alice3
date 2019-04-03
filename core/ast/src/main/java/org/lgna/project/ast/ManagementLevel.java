@@ -47,23 +47,21 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public enum ManagementLevel {
-	NONE( false, false ),
-	GENERATED( true, false ),
-	MANAGED( true, true );
+  NONE(false, false), GENERATED(true, false), MANAGED(true, true);
 
-	private final boolean isGenerated;
-	private final boolean isManaged;
+  private final boolean isGenerated;
+  private final boolean isManaged;
 
-	private ManagementLevel( boolean isGenerated, boolean isManaged ) {
-		this.isGenerated = isGenerated;
-		this.isManaged = isManaged;
-	}
+  private ManagementLevel(boolean isGenerated, boolean isManaged) {
+    this.isGenerated = isGenerated;
+    this.isManaged = isManaged;
+  }
 
-	public boolean isGenerated() {
-		return this.isGenerated;
-	}
+  public boolean isGenerated() {
+    return this.isGenerated;
+  }
 
-	public boolean isManaged() {
-		return this.isManaged;
-	}
+  public boolean isManaged() {
+    return this.isManaged;
+  }
 }

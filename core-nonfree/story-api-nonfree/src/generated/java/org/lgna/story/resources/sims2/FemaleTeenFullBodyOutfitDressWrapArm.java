@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitDressWrapArm implements FemaleTeenFullBodyOutfit {
-	BLACK,
-	CREAM,
-	PINK;
+  BLACK, CREAM, PINK
 
 }

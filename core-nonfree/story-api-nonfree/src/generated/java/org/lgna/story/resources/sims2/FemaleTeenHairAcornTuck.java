@@ -44,19 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenHairAcornTuck implements FemaleTeenHair {
-	BLACK,
-	BLOND,
-	BROWN,
-	RED,
-	STRAWBERRY;
+  BLACK, BLOND, BROWN, RED, STRAWBERRY;
 
-	@Override
-	public Boolean hasHair() {
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat() {
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

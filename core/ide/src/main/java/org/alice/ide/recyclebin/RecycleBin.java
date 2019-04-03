@@ -49,8 +49,9 @@ import org.lgna.croquet.DropReceptor;
  * @author Dennis Cosgrove
  */
 public enum RecycleBin {
-	SINGLETON;
-	public DropReceptor getDropReceptor() {
-		return MembersComposite.getInstance().getView().getRecycleBinDropReceptor();
-	}
+  SINGLETON;
+
+  public DropReceptor getDropReceptor() {
+    return MembersComposite.getInstance().getView().getRecycleBinDropReceptor();
+  }
 }

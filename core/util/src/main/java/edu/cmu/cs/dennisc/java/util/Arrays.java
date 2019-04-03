@@ -46,22 +46,22 @@ package edu.cmu.cs.dennisc.java.util;
  * @author Dennis Cosgrove
  */
 public class Arrays {
-	public Arrays() {
-		throw new AssertionError();
-	}
+  public Arrays() {
+    throw new AssertionError();
+  }
 
-	public static int indexOf( Object[] array, Object item ) {
-		int i = 0;
-		for( Object o : array ) {
-			if( o == item ) {
-				return i;
-			}
-			i++;
-		}
-		return -1;
-	}
+  public static int indexOf(Object[] array, Object item) {
+    int i = 0;
+    for (Object o : array) {
+      if (o == item) {
+        return i;
+      }
+      i++;
+    }
+    return -1;
+  }
 
-	public static boolean contains( Object[] array, Object item ) {
-		return indexOf( array, item ) != -1;
-	}
+  public static boolean contains(Object[] array, Object item) {
+    return indexOf(array, item) != -1;
+  }
 }

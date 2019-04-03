@@ -62,68 +62,68 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TypeFillIn extends ImmutableCascadeFillIn<AbstractType<?, ?, ?>, Void> {
-	private static Map<AbstractType<?, ?, ?>, TypeFillIn> map = Maps.newHashMap();
+  private static Map<AbstractType<?, ?, ?>, TypeFillIn> map = Maps.newHashMap();
 
-	public static synchronized TypeFillIn getInstance( AbstractType<?, ?, ?> type ) {
-		TypeFillIn rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new TypeFillIn( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized TypeFillIn getInstance(AbstractType<?, ?, ?> type) {
+    TypeFillIn rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new TypeFillIn(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private AbstractType<?, ?, ?> type;
+  private AbstractType<?, ?, ?> type;
 
-	private TypeFillIn( AbstractType<?, ?, ?> type ) {
-		super( UUID.fromString( "8f3e1f74-d1fd-4484-98e0-bc37da452005" ) );
-		this.type = type;
-	}
+  private TypeFillIn(AbstractType<?, ?, ?> type) {
+    super(UUID.fromString("8f3e1f74-d1fd-4484-98e0-bc37da452005"));
+    this.type = type;
+  }
 
-	@Override
-	public AbstractType createValue( ItemNode<? super AbstractType<?, ?, ?>, Void> node ) {
-		return this.type;
-	}
+  @Override
+  public AbstractType createValue(ItemNode<? super AbstractType<?, ?, ?>, Void> node) {
+    return this.type;
+  }
 
-	@Override
-	public AbstractType getTransientValue( ItemNode<? super AbstractType<?, ?, ?>, Void> node ) {
-		return this.type;
-	}
+  @Override
+  public AbstractType getTransientValue(ItemNode<? super AbstractType<?, ?, ?>, Void> node) {
+    return this.type;
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super AbstractType<?, ?, ?>, Void> node ) {
-		int depth = StaticAnalysisUtilities.getUserTypeDepth( this.type );
-		if( depth > 0 ) {
-			StringBuilder sb = new StringBuilder();
-			for( int i = 0; i < depth; i++ ) {
-				sb.append( "+" );
-			}
-			return new LineAxisPanel( new Label( sb.toString() ), TypeComponent.createInstance( this.type ) ).getAwtComponent();
-		} else {
-			throw new AssertionError();
-		}
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super AbstractType<?, ?, ?>, Void> node) {
+    int depth = StaticAnalysisUtilities.getUserTypeDepth(this.type);
+    if (depth > 0) {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < depth; i++) {
+        sb.append("+");
+      }
+      return new LineAxisPanel(new Label(sb.toString()), TypeComponent.createInstance(this.type)).getAwtComponent();
+    } else {
+      throw new AssertionError();
+    }
+  }
 
-	@Override
-	public Icon getMenuItemIcon( ItemNode<? super AbstractType<?, ?, ?>, Void> node ) {
-		int depth = StaticAnalysisUtilities.getUserTypeDepth( this.type );
-		if( depth > 0 ) {
-			return super.getMenuItemIcon( node );
-		} else {
-			return TypeIcon.getInstance( this.type );
-		}
-	}
+  @Override
+  public Icon getMenuItemIcon(ItemNode<? super AbstractType<?, ?, ?>, Void> node) {
+    int depth = StaticAnalysisUtilities.getUserTypeDepth(this.type);
+    if (depth > 0) {
+      return super.getMenuItemIcon(node);
+    } else {
+      return TypeIcon.getInstance(this.type);
+    }
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( this.type );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    super.appendRepr(sb);
+    sb.append(this.type);
+  }
 
-	@Override
-	public String getMenuItemText() {
-		return IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( type );
-	}
+  @Override
+  public String getMenuItemText() {
+    return IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType(type);
+  }
 }

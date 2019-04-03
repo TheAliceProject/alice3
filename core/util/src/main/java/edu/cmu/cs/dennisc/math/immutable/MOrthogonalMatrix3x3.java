@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.math.immutable;
  * @author Dennis Cosgrove
  */
 public final class MOrthogonalMatrix3x3 extends MAbstractMatrix3x3 {
-	public MOrthogonalMatrix3x3( MVector3 right, MVector3 up, MVector3 backward ) {
-		super( right, up, backward );
-	}
+  public MOrthogonalMatrix3x3(MVector3 right, MVector3 up, MVector3 backward) {
+    super(right, up, backward);
+  }
 }

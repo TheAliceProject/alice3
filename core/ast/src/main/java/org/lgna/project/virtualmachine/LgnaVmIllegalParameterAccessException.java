@@ -48,19 +48,19 @@ import org.lgna.project.ast.UserParameter;
  * @author Dennis Cosgrove
  */
 public class LgnaVmIllegalParameterAccessException extends LgnaVmException {
-	private final UserParameter parameter;
+  private final UserParameter parameter;
 
-	public LgnaVmIllegalParameterAccessException( VirtualMachine vm, UserParameter parameter ) {
-		super( vm );
-		this.parameter = parameter;
-	}
+  public LgnaVmIllegalParameterAccessException(VirtualMachine vm, UserParameter parameter) {
+    super(vm);
+    this.parameter = parameter;
+  }
 
-	public final UserParameter getParameter() {
-		return this.parameter;
-	}
+  public final UserParameter getParameter() {
+    return this.parameter;
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder sb ) {
-		sb.append( this.parameter != null ? this.parameter.getName() : "null" );
-	}
+  @Override
+  protected void appendDescription(StringBuilder sb) {
+    sb.append(this.parameter != null ? this.parameter.getName() : "null");
+  }
 }

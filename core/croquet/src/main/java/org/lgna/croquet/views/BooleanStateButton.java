@@ -49,14 +49,14 @@ import org.lgna.croquet.BooleanState;
  * @author Dennis Cosgrove
  */
 public abstract class BooleanStateButton<J extends javax.swing.AbstractButton> extends AbstractButton<J, BooleanState> {
-	public BooleanStateButton( BooleanState model, String uiDefaultsName ) {
-		super( model, uiDefaultsName );
-		assert model != null;
-		this.setSwingButtonModel( this.getModel().getImp().getSwingModel().getButtonModel() );
-		this.setAction( this.getModel().getImp().getSwingModel().getAction() );
-	}
+  public BooleanStateButton(BooleanState model, String uiDefaultsName) {
+    super(model, uiDefaultsName);
+    assert model != null;
+    this.setSwingButtonModel(this.getModel().getImp().getSwingModel().getButtonModel());
+    this.setAction(this.getModel().getImp().getSwingModel().getAction());
+  }
 
-	public BooleanStateButton( BooleanState model ) {
-		this( model, null );
-	}
+  public BooleanStateButton(BooleanState model) {
+    this(model, null);
+  }
 }

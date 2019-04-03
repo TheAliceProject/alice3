@@ -4,12 +4,10 @@ import java.io.PrintStream;
 
 import com.dddviewr.collada.Base;
 
-public class InstanceVisualScene extends Base
-{
+public class InstanceVisualScene extends Base {
   protected String url;
 
-  public InstanceVisualScene(String url)
-  {
+  public InstanceVisualScene(String url) {
     this.url = url;
   }
 
@@ -21,8 +19,7 @@ public class InstanceVisualScene extends Base
     this.url = url;
   }
 
-  public void dump(PrintStream out, int indent)
-  {
+  public void dump(PrintStream out, int indent) {
     String prefix = createIndent(indent);
     out.println(prefix + "InstanceVisualScene (url: " + this.url + ")");
   }

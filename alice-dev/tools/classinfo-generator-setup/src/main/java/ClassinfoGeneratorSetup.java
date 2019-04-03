@@ -45,24 +45,24 @@
  * @author Dennis Cosgrove
  */
 public class ClassinfoGeneratorSetup {
-	public static java.io.File getMavenRepositoryDir() {
-		return new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".m2/repository" );
-	}
+  public static java.io.File getMavenRepositoryDir() {
+    return new java.io.File(edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".m2/repository");
+  }
 
-	public static void main( String[] args ) throws Exception {
-		java.io.File mavenRepositoryRootDirectory = getMavenRepositoryDir();
-		assert mavenRepositoryRootDirectory.isDirectory() : mavenRepositoryRootDirectory;
+  public static void main(String[] args) throws Exception {
+    java.io.File mavenRepositoryRootDirectory = getMavenRepositoryDir();
+    assert mavenRepositoryRootDirectory.isDirectory() : mavenRepositoryRootDirectory;
 
-		java.io.File classinfoGeneratorRootDirectory = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), "Documents/Projects/Alice/Code/alice/alice/tools/ClassinfoGenerator" );
-		assert classinfoGeneratorRootDirectory.isDirectory() : classinfoGeneratorRootDirectory;
+    java.io.File classinfoGeneratorRootDirectory = new java.io.File(edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), "Documents/Projects/Alice/Code/alice/alice/tools/ClassinfoGenerator");
+    assert classinfoGeneratorRootDirectory.isDirectory() : classinfoGeneratorRootDirectory;
 
-		String[] jarNames = { "util", "ast" };
-		for( String jarName : jarNames ) {
-			java.io.File in = new java.io.File( mavenRepositoryRootDirectory, "org/alice/" + jarName + "/0.0.1-SNAPSHOT/" + jarName + "-0.0.1-SNAPSHOT.jar" );
-			assert in.exists() : in;
+    String[] jarNames = {"util", "ast"};
+    for (String jarName : jarNames) {
+      java.io.File in = new java.io.File(mavenRepositoryRootDirectory, "org/alice/" + jarName + "/0.0.1-SNAPSHOT/" + jarName + "-0.0.1-SNAPSHOT.jar");
+      assert in.exists() : in;
 
-			java.io.File out = new java.io.File( classinfoGeneratorRootDirectory, "org.alice.netbeans/release/modules/ext/" + jarName + "-0.0.1-SNAPSHOT.jar" );
-			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( in, out );
-		}
-	}
+      java.io.File out = new java.io.File(classinfoGeneratorRootDirectory, "org.alice.netbeans/release/modules/ext/" + jarName + "-0.0.1-SNAPSHOT.jar");
+      edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile(in, out);
+    }
+  }
 }

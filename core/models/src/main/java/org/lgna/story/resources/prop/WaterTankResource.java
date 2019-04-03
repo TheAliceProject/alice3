@@ -32,36 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum WaterTankResource implements PropResource {
-	WATER_GRAY,
-	WATER_GOLD,
-	WATER_SAND,
-	WATER_RED,
-	NO_WATER_GRAY,
-	NO_WATER_GOLD,
-	NO_WATER_SAND,
-	NO_WATER_RED;
+  WATER_GRAY, WATER_GOLD, WATER_SAND, WATER_RED, NO_WATER_GRAY, NO_WATER_GOLD, NO_WATER_SAND, NO_WATER_RED;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	WaterTankResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  WaterTankResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	WaterTankResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  WaterTankResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

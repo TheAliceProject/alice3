@@ -51,16 +51,16 @@ import java.lang.reflect.Field;
  * @author Dennis Cosgrove
  */
 public class PopupFactoryUtilities {
-	public static JComboBox forceHeavyWeightPopups( JComboBox rv ) {
-		rv.setLightWeightPopupEnabled( false );
-		try {
-			Class<?> cls = Class.forName( "javax.swing.PopupFactory" );
-			Field field = cls.getDeclaredField( "forceHeavyWeightPopupKey" );
-			field.setAccessible( true );
-			rv.putClientProperty( field.get( null ), Boolean.TRUE );
-		} catch( Exception e ) {
-			Logger.errln( "note: cannot forceHeavyWeightPopups" );
-		}
-		return rv;
-	}
+  public static JComboBox forceHeavyWeightPopups(JComboBox rv) {
+    rv.setLightWeightPopupEnabled(false);
+    try {
+      Class<?> cls = Class.forName("javax.swing.PopupFactory");
+      Field field = cls.getDeclaredField("forceHeavyWeightPopupKey");
+      field.setAccessible(true);
+      rv.putClientProperty(field.get(null), Boolean.TRUE);
+    } catch (Exception e) {
+      Logger.errln("note: cannot forceHeavyWeightPopups");
+    }
+    return rv;
+  }
 }

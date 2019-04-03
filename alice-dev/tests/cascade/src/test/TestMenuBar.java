@@ -47,26 +47,28 @@ package test;
  * @author Dennis Cosgrove
  */
 public class TestMenuBar {
-	public static void main( String[] args ) {
-		javax.swing.JFrame frame = new javax.swing.JFrame();
-		javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
-		javax.swing.JMenu menu = new javax.swing.JMenu( "a" );
-		menu.getPopupMenu().addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
-			public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
-				System.err.println( "popupMenuWillBecomeVisible: " + e );
-			}
-			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-				System.err.println( "popupMenuWillBecomeInvisible: " + e );
-			}
-			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-				System.err.println( "popupMenuCanceled: " + e );
-			}
-		} );
-		menu.add( new javax.swing.JMenuItem( "b" ) );
-		menuBar.add( menu );
-		frame.setJMenuBar( menuBar );
-		frame.setDefaultCloseOperation( javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-		frame.pack();
-		frame.setVisible( true );
-	}
+  public static void main(String[] args) {
+    javax.swing.JFrame frame = new javax.swing.JFrame();
+    javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
+    javax.swing.JMenu menu = new javax.swing.JMenu("a");
+    menu.getPopupMenu().addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+      public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
+        System.err.println("popupMenuWillBecomeVisible: " + e);
+      }
+
+      public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {
+        System.err.println("popupMenuWillBecomeInvisible: " + e);
+      }
+
+      public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {
+        System.err.println("popupMenuCanceled: " + e);
+      }
+    });
+    menu.add(new javax.swing.JMenuItem("b"));
+    menuBar.add(menu);
+    frame.setJMenuBar(menuBar);
+    frame.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    frame.pack();
+    frame.setVisible(true);
+  }
 }

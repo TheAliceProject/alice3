@@ -69,90 +69,90 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class PersonImp extends SingleVisualModelImp {
-	public PersonImp() {
-		super( new Visual() );
-	}
+  public PersonImp() {
+    super(new Visual());
+  }
 
-	@Override
-	public SThing getAbstraction() {
-		return null;
-	}
+  @Override
+  public SThing getAbstraction() {
+    return null;
+  }
 
-	private final Map<LifeStage, Person> mapLifeStageToNebPerson = Maps.newHashMap();
+  private final Map<LifeStage, Person> mapLifeStageToNebPerson = Maps.newHashMap();
 
-	private Geometry getSgGeometry() {
-		Visual sgVisual = this.getSgVisuals()[ 0 ];
-		final int N = sgVisual.getGeometryCount();
-		if( N > 0 ) {
-			return sgVisual.getGeometryAt( 0 );
-		} else {
-			return null;
-		}
-	}
+  private Geometry getSgGeometry() {
+    Visual sgVisual = this.getSgVisuals()[0];
+    final int N = sgVisual.getGeometryCount();
+    if (N > 0) {
+      return sgVisual.getGeometryAt(0);
+    } else {
+      return null;
+    }
+  }
 
-	public void unload() {
-		for( Map.Entry<LifeStage, Person> entry : this.mapLifeStageToNebPerson.entrySet() ) {
-			entry.getValue().synchronizedUnload();
-		}
-		this.mapLifeStageToNebPerson.clear();
-		this.setSgGeometry( null );
-	}
+  public void unload() {
+    for (Map.Entry<LifeStage, Person> entry : this.mapLifeStageToNebPerson.entrySet()) {
+      entry.getValue().synchronizedUnload();
+    }
+    this.mapLifeStageToNebPerson.clear();
+    this.setSgGeometry(null);
+  }
 
-	private void setSgGeometry( Geometry sgGeometry ) {
-		Visual sgVisual = this.getSgVisuals()[ 0 ];
-		sgVisual.setGeometry( sgGeometry );
-	}
+  private void setSgGeometry(Geometry sgGeometry) {
+    Visual sgVisual = this.getSgVisuals()[0];
+    sgVisual.setGeometry(sgGeometry);
+  }
 
-	/* package-private */void updateNebPerson() {
-		IngredientsComposite composite = PersonResourceComposite.getInstance().getIngredientsComposite();
-		LifeStage lifeStage = composite.getLifeStageState().getValue();
-		Person nebPerson = this.mapLifeStageToNebPerson.get( lifeStage );
-		if( nebPerson != null ) {
-			//pass
-		} else {
-			try {
-				nebPerson = new Person( lifeStage );
-				this.mapLifeStageToNebPerson.put( lifeStage, nebPerson );
-			} catch( LicenseRejectedException lre ) {
-				//todo
-				throw new RuntimeException( lre );
-			}
-		}
-		PersonResource personResource = composite.createResourceFromStates();
-		if( personResource == null ) {
-			Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: null resource." );
-		} else {
+  /* package-private */void updateNebPerson() {
+    IngredientsComposite composite = PersonResourceComposite.getInstance().getIngredientsComposite();
+    LifeStage lifeStage = composite.getLifeStageState().getValue();
+    Person nebPerson = this.mapLifeStageToNebPerson.get(lifeStage);
+    if (nebPerson != null) {
+      //pass
+    } else {
+      try {
+        nebPerson = new Person(lifeStage);
+        this.mapLifeStageToNebPerson.put(lifeStage, nebPerson);
+      } catch (LicenseRejectedException lre) {
+        //todo
+        throw new RuntimeException(lre);
+      }
+    }
+    PersonResource personResource = composite.createResourceFromStates();
+    if (personResource == null) {
+      Logger.severe("NOT SETTNG ATTRIBUTES ON PERSON: null resource.");
+    } else {
 
-		}
-		Gender gender = personResource.getGender();
-		Color awtSkinColor = new Color( personResource.getSkinColor().getRed().floatValue(), personResource.getSkinColor().getGreen().floatValue(), personResource.getSkinColor().getBlue().floatValue() );
-		EyeColor eyeColor = personResource.getEyeColor();
-		double obesityLevel = personResource.getObesityLevel();
-		Hair hair = personResource.getHair();
-		Outfit outfit = personResource.getOutfit();
-		Face face = personResource.getFace();
+    }
+    Gender gender = personResource.getGender();
+    Color awtSkinColor = new Color(personResource.getSkinColor().getRed().floatValue(), personResource.getSkinColor().getGreen().floatValue(), personResource.getSkinColor().getBlue().floatValue());
+    EyeColor eyeColor = personResource.getEyeColor();
+    double obesityLevel = personResource.getObesityLevel();
+    Hair hair = personResource.getHair();
+    Outfit outfit = personResource.getOutfit();
+    Face face = personResource.getFace();
 
-		if( ( gender == null ) || ( outfit == null ) || ( awtSkinColor == null ) || ( eyeColor == null ) || ( hair == null ) || ( face == null ) ) {
-			Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skinColor" + awtSkinColor + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", hair=" + hair + ", face=" + face );
-		} else {
-			if( lifeStage.getGenderedHairInterfaceClass( gender ).isAssignableFrom( hair.getClass() ) ) {
-				if( ( ( ( outfit instanceof FullBodyOutfit ) && lifeStage.getGenderedFullBodyOutfitInterfaceClass( gender ).isAssignableFrom( outfit.getClass() ) ) || ( ( outfit instanceof TopAndBottomOutfit<?, ?> ) && lifeStage.getGenderedTopPieceInterfaceClass( gender ).isAssignableFrom( ( (TopAndBottomOutfit)outfit ).getTopPiece().getClass() ) && lifeStage.getGenderedBottomPieceInterfaceClass( gender ).isAssignableFrom( ( (TopAndBottomOutfit)outfit ).getBottomPiece().getClass() ) ) ) ) {
-					nebPerson.synchronizedSetAll( gender, outfit, awtSkinColor.getRGB(), obesityLevel, eyeColor, hair, face );
-				} else {
-					Logger.severe( outfit, lifeStage, gender );
-				}
-			} else {
-				Logger.severe( hair, lifeStage, gender );
-			}
-		}
-		Geometry sgGeometry = this.getSgGeometry();
-		if( nebPerson != sgGeometry ) {
-			this.setSgGeometry( nebPerson );
-		}
-	}
+    if ((gender == null) || (outfit == null) || (awtSkinColor == null) || (eyeColor == null) || (hair == null) || (face == null)) {
+      Logger.severe("NOT SETTNG ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skinColor" + awtSkinColor + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", hair=" + hair + ", face=" + face);
+    } else {
+      if (lifeStage.getGenderedHairInterfaceClass(gender).isAssignableFrom(hair.getClass())) {
+        if ((((outfit instanceof FullBodyOutfit) && lifeStage.getGenderedFullBodyOutfitInterfaceClass(gender).isAssignableFrom(outfit.getClass())) || ((outfit instanceof TopAndBottomOutfit<?, ?>) && lifeStage.getGenderedTopPieceInterfaceClass(gender).isAssignableFrom(((TopAndBottomOutfit) outfit).getTopPiece().getClass()) && lifeStage.getGenderedBottomPieceInterfaceClass(gender).isAssignableFrom(((TopAndBottomOutfit) outfit).getBottomPiece().getClass())))) {
+          nebPerson.synchronizedSetAll(gender, outfit, awtSkinColor.getRGB(), obesityLevel, eyeColor, hair, face);
+        } else {
+          Logger.severe(outfit, lifeStage, gender);
+        }
+      } else {
+        Logger.severe(hair, lifeStage, gender);
+      }
+    }
+    Geometry sgGeometry = this.getSgGeometry();
+    if (nebPerson != sgGeometry) {
+      this.setSgGeometry(nebPerson);
+    }
+  }
 
-	@Override
-	public void setSize( Dimension3 size ) {
-		this.setScale( getScaleForSize( size ) );
-	}
+  @Override
+  public void setSize(Dimension3 size) {
+    this.setScale(getScaleForSize(size));
+  }
 }

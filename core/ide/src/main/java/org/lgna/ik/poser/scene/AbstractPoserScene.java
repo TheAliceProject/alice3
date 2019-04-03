@@ -80,226 +80,226 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
  * @author Matt May
  */
 public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene {
-	private final SGround snow = new SGround();
-	private final SCamera camera = new SCamera();
-	private T model;
-	private final List<JointSelectionSphere> allJointSelectionSpheres;
-	private PoserControllerAdapter adapter;
-	private final Map<IKCore.Limb, List<JointSelectionSphere>> limbToJointMap;
-	private final Map<JointImp, IKCore.Limb> jointToLimbMap = Maps.newHashMap();
-	private final List<PoserSphereManipulatorListener> dragListeners = Lists.newCopyOnWriteArrayList();
-	private PoserAnimatorDragAdapter poserAnimatorDragAdapter;
-	private AffineMatrix4x4 cameraOrigin;
+  private final SGround snow = new SGround();
+  private final SCamera camera = new SCamera();
+  private T model;
+  private final List<JointSelectionSphere> allJointSelectionSpheres;
+  private PoserControllerAdapter adapter;
+  private final Map<IKCore.Limb, List<JointSelectionSphere>> limbToJointMap;
+  private final Map<JointImp, IKCore.Limb> jointToLimbMap = Maps.newHashMap();
+  private final List<PoserSphereManipulatorListener> dragListeners = Lists.newCopyOnWriteArrayList();
+  private PoserAnimatorDragAdapter poserAnimatorDragAdapter;
+  private AffineMatrix4x4 cameraOrigin;
 
-	public AbstractPoserScene( T model ) {
-		assert model != null : this;
-		this.camera.setVehicle( this );
-		this.model = model;
+  public AbstractPoserScene(T model) {
+    assert model != null : this;
+    this.camera.setVehicle(this);
+    this.model = model;
 
-		addDragListener( sphereDragListener );
+    addDragListener(sphereDragListener);
 
-		this.limbToJointMap = createJointSelectionSpheresAndLimbs( this.model );
+    this.limbToJointMap = createJointSelectionSpheresAndLimbs(this.model);
 
-		for( IKCore.Limb limb : limbToJointMap.keySet() ) {
-			for( JointSelectionSphere sphere : limbToJointMap.get( limb ) ) {
-				jointToLimbMap.put( sphere.getJoint(), limb );
-				sphere.setOpacity( 0 );
-			}
-		}
+    for (IKCore.Limb limb : limbToJointMap.keySet()) {
+      for (JointSelectionSphere sphere : limbToJointMap.get(limb)) {
+        jointToLimbMap.put(sphere.getJoint(), limb);
+        sphere.setOpacity(0);
+      }
+    }
 
-		List<JointSelectionSphere> temp = Lists.newLinkedList();
-		for( List<JointSelectionSphere> list : limbToJointMap.values() ) {
-			temp.addAll( list );
-		}
-		this.allJointSelectionSpheres = Collections.unmodifiableList( temp );
-	}
+    List<JointSelectionSphere> temp = Lists.newLinkedList();
+    for (List<JointSelectionSphere> list : limbToJointMap.values()) {
+      temp.addAll(list);
+    }
+    this.allJointSelectionSpheres = Collections.unmodifiableList(temp);
+  }
 
-	protected abstract Map<IKCore.Limb, List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs( T model );
+  protected abstract Map<IKCore.Limb, List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs(T model);
 
-	private final ValueListener<Boolean> jointHandleVisibilityListener = new ValueListener<Boolean>() {
+  private final ValueListener<Boolean> jointHandleVisibilityListener = new ValueListener<Boolean>() {
 
-		@Override
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
-		}
+    @Override
+    public void changing(State<Boolean> state, Boolean prevValue, Boolean nextValue) {
+    }
 
-		@Override
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
-			poserAnimatorDragAdapter.setHandleVisibility( nextValue );
-		}
-	};
-	private final PoserSphereManipulatorListener sphereDragListener = new PoserSphereManipulatorListener() {
+    @Override
+    public void changed(State<Boolean> state, Boolean prevValue, Boolean nextValue) {
+      poserAnimatorDragAdapter.setHandleVisibility(nextValue);
+    }
+  };
+  private final PoserSphereManipulatorListener sphereDragListener = new PoserSphereManipulatorListener() {
 
-		@Override
-		public void fireStart( PoserEvent poserEvent ) {
-			JointSelectionSphere jss = poserEvent.getJSS();
-			jss.setVehicle( AbstractPoserScene.this );
-			JointImp end = jss.getJoint();
-			JointId anchor = getAnchorForEndJoint( end );
-			if( anchor != null ) {
-				JointImp anchor2 = (JointImp)EmployeesOnly.getImplementation( model.getJoint( anchor ) );
-				IKCore.moveChainToPointInSceneSpace( anchor2, end, EmployeesOnly.getImplementation( jss ).getAbsoluteTransformation().translation );
-			}
-			jss.setVehicle( end.getAbstraction() );
-		}
+    @Override
+    public void fireStart(PoserEvent poserEvent) {
+      JointSelectionSphere jss = poserEvent.getJSS();
+      jss.setVehicle(AbstractPoserScene.this);
+      JointImp end = jss.getJoint();
+      JointId anchor = getAnchorForEndJoint(end);
+      if (anchor != null) {
+        JointImp anchor2 = (JointImp) EmployeesOnly.getImplementation(model.getJoint(anchor));
+        IKCore.moveChainToPointInSceneSpace(anchor2, end, EmployeesOnly.getImplementation(jss).getAbsoluteTransformation().translation);
+      }
+      jss.setVehicle(end.getAbstraction());
+    }
 
-		@Override
-		public void fireFinish( PoserEvent poserEvent ) {
-			JointSelectionSphere jss = poserEvent.getJSS();
-			jss.moveAndOrientTo( jss.getJoint().getAbstraction() );
-			poserAnimatorDragAdapter.setSelectedImplementation( jss.getJoint() );
-			poserAnimatorDragAdapter.setHandleVisibility( adapter.getJointRotationHandleVisibilityState().getValue() );
+    @Override
+    public void fireFinish(PoserEvent poserEvent) {
+      JointSelectionSphere jss = poserEvent.getJSS();
+      jss.moveAndOrientTo(jss.getJoint().getAbstraction());
+      poserAnimatorDragAdapter.setSelectedImplementation(jss.getJoint());
+      poserAnimatorDragAdapter.setHandleVisibility(adapter.getJointRotationHandleVisibilityState().getValue());
 
-		}
+    }
 
-		@Override
-		public void fireAnchorUpdate( PoserEvent poserEvent ) {
-			JointSelectionSphere jss = poserEvent.getJSS();
-			Limb limb = AbstractPoserScene.this.jointToLimbMap.get( jss.getJoint() );
-			assert limb != null;
-			AbstractPoserScene.this.adapter.updateSphere( limb, jss );
-		}
-	};
+    @Override
+    public void fireAnchorUpdate(PoserEvent poserEvent) {
+      JointSelectionSphere jss = poserEvent.getJSS();
+      Limb limb = AbstractPoserScene.this.jointToLimbMap.get(jss.getJoint());
+      assert limb != null;
+      AbstractPoserScene.this.adapter.updateSphere(limb, jss);
+    }
+  };
 
-	protected JointSelectionSphere createJSS( SJoint joint, JointSelectionSphere child ) {
-		return new JointSelectionSphere( (JointImp)EmployeesOnly.getImplementation( joint ), child );
-	}
+  protected JointSelectionSphere createJSS(SJoint joint, JointSelectionSphere child) {
+    return new JointSelectionSphere((JointImp) EmployeesOnly.getImplementation(joint), child);
+  }
 
-	private void performGeneratedSetup() {
-		this.snow.setVehicle( this );
-		this.camera.setVehicle( this );
-		this.model.setVehicle( this );
+  private void performGeneratedSetup() {
+    this.snow.setVehicle(this);
+    this.camera.setVehicle(this);
+    this.model.setVehicle(this);
 
-		this.model.place( SpatialRelation.ABOVE, this.snow );
-		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
-		camera.turnToFace( model );
-		performInitializeEvents();
-	}
+    this.model.place(SpatialRelation.ABOVE, this.snow);
+    this.snow.setPaint(SGround.SurfaceAppearance.SNOW);
+    camera.turnToFace(model);
+    performInitializeEvents();
+  }
 
-	private void performCustomSetup() {
-	}
+  private void performCustomSetup() {
+  }
 
-	private void performInitializeEvents() {
-		addCustomDragAdapter();
-	}
+  private void performInitializeEvents() {
+    addCustomDragAdapter();
+  }
 
-	private OnscreenRenderTarget<?> getOnscreenRenderTarget() {
-		return ( (SceneImp)EmployeesOnly.getImplementation( this ) ).getProgram().getOnscreenRenderTarget();
-	}
+  private OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+    return ((SceneImp) EmployeesOnly.getImplementation(this)).getProgram().getOnscreenRenderTarget();
+  }
 
-	public void jointSelected( JointSelectionSphere sphere, MouseEvent e ) {
+  public void jointSelected(JointSelectionSphere sphere, MouseEvent e) {
 
-		if( e.getButton() == 3 ) {//MouseClickEvent.isThisRightClick( e ) ) {
-			adapter.updateSphere( jointToLimbMap.get( sphere.getJoint() ), sphere );
-		} else {
-			//			dragAdapter.fireStart( poserEvent );
-		}
-	}
+    if (e.getButton() == 3) { //MouseClickEvent.isThisRightClick( e ) ) {
+      adapter.updateSphere(jointToLimbMap.get(sphere.getJoint()), sphere);
+    } else {
+      //      dragAdapter.fireStart( poserEvent );
+    }
+  }
 
-	public void addCustomDragAdapter() {
-		synchronized( dragListeners ) {
-			poserAnimatorDragAdapter = new PoserAnimatorDragAdapter( this );
-			poserAnimatorDragAdapter.setAnimator( ( (SceneImp)EmployeesOnly.getImplementation( this ) ).getProgram().getAnimator() );
-			poserAnimatorDragAdapter.setInteractionState( HandleStyle.ROTATION );
-			poserAnimatorDragAdapter.setTarget( model );
-			poserAnimatorDragAdapter.setOnscreenRenderTarget( getOnscreenRenderTarget() );
-			poserAnimatorDragAdapter.setHandleVisibility( adapter.getJointRotationHandleVisibilityState().getValue() );
-			for( PoserSphereManipulatorListener sphereListener : dragListeners ) {
-				poserAnimatorDragAdapter.addSphereDragListener( sphereListener );
-			}
-		}
-		dragListeners.clear();
-	}
+  public void addCustomDragAdapter() {
+    synchronized (dragListeners) {
+      poserAnimatorDragAdapter = new PoserAnimatorDragAdapter(this);
+      poserAnimatorDragAdapter.setAnimator(((SceneImp) EmployeesOnly.getImplementation(this)).getProgram().getAnimator());
+      poserAnimatorDragAdapter.setInteractionState(HandleStyle.ROTATION);
+      poserAnimatorDragAdapter.setTarget(model);
+      poserAnimatorDragAdapter.setOnscreenRenderTarget(getOnscreenRenderTarget());
+      poserAnimatorDragAdapter.setHandleVisibility(adapter.getJointRotationHandleVisibilityState().getValue());
+      for (PoserSphereManipulatorListener sphereListener : dragListeners) {
+        poserAnimatorDragAdapter.addSphereDragListener(sphereListener);
+      }
+    }
+    dragListeners.clear();
+  }
 
-	private JointId getAnchorForEndJoint( JointImp joint ) {
-		Limb limb = jointToLimbMap.get( joint );
-		JointId anchorJointID = adapter.getAnchorJointID( limb, joint );
-		if( isAParentOfB( anchorJointID, joint.getJointId() ) ) {
-			return anchorJointID;
-		}
-		return null;//joint.getJointedModelImplementation().getJointImplementation( joint.getJointId().getParent() ).getJointId();
-	}
+  private JointId getAnchorForEndJoint(JointImp joint) {
+    Limb limb = jointToLimbMap.get(joint);
+    JointId anchorJointID = adapter.getAnchorJointID(limb, joint);
+    if (isAParentOfB(anchorJointID, joint.getJointId())) {
+      return anchorJointID;
+    }
+    return null; //joint.getJointedModelImplementation().getJointImplementation( joint.getJointId().getParent() ).getJointId();
+  }
 
-	private boolean isAParentOfB( JointId parent, JointId joint ) {
-		if( parent.equals( joint ) ) {
-			return true;
-		}
-		JointId rv = joint.getParent();
-		if( rv != null ) {
-			return isAParentOfB( parent, rv );
-		}
-		return false;
-	}
+  private boolean isAParentOfB(JointId parent, JointId joint) {
+    if (parent.equals(joint)) {
+      return true;
+    }
+    JointId rv = joint.getParent();
+    if (rv != null) {
+      return isAParentOfB(parent, rv);
+    }
+    return false;
+  }
 
-	@Override
-	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
-		if( isActive ) {
-			if( activeCount == 1 ) {
-				this.performGeneratedSetup();
-				this.performCustomSetup();
-			} else {
-				this.restoreStateAndEventListeners();
-			}
-		} else {
-			this.restoreStateAndEventListeners();
-		}
-	}
+  @Override
+  protected void handleActiveChanged(Boolean isActive, Integer activeCount) {
+    if (isActive) {
+      if (activeCount == 1) {
+        this.performGeneratedSetup();
+        this.performCustomSetup();
+      } else {
+        this.restoreStateAndEventListeners();
+      }
+    } else {
+      this.restoreStateAndEventListeners();
+    }
+  }
 
-	public List<JointSelectionSphere> getJointSelectionSpheres() {
-		return this.allJointSelectionSpheres;
-	}
+  public List<JointSelectionSphere> getJointSelectionSpheres() {
+    return this.allJointSelectionSpheres;
+  }
 
-	public void setAdapter( PoserControllerAdapter adapter ) {
-		this.adapter = adapter;
-		adapter.getJointRotationHandleVisibilityState().addValueListener( jointHandleVisibilityListener );
-	}
+  public void setAdapter(PoserControllerAdapter adapter) {
+    this.adapter = adapter;
+    adapter.getJointRotationHandleVisibilityState().addValueListener(jointHandleVisibilityListener);
+  }
 
-	public List<JointSelectionSphere> getJointsForLimb( Limb key ) {
-		return limbToJointMap.get( key );
-	}
+  public List<JointSelectionSphere> getJointsForLimb(Limb key) {
+    return limbToJointMap.get(key);
+  }
 
-	protected int getLimbIndex( Limb key ) {
-		if( ( key == Limb.LEFT_ARM ) || ( key == Limb.RIGHT_ARM ) ) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
+  protected int getLimbIndex(Limb key) {
+    if ((key == Limb.LEFT_ARM) || (key == Limb.RIGHT_ARM)) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
 
-	public final JointSelectionSphere getDefaultAnchorJoint( Limb key ) {
-		return limbToJointMap.get( key ).get( this.getLimbIndex( key ) );
-	}
+  public final JointSelectionSphere getDefaultAnchorJoint(Limb key) {
+    return limbToJointMap.get(key).get(this.getLimbIndex(key));
+  }
 
-	public void addDragListener( PoserSphereManipulatorListener sphereDragListener ) {
-		if( poserAnimatorDragAdapter != null ) {
-			poserAnimatorDragAdapter.addSphereDragListener( sphereDragListener );
-		} else {
-			dragListeners.add( sphereDragListener );
-		}
-	}
+  public void addDragListener(PoserSphereManipulatorListener sphereDragListener) {
+    if (poserAnimatorDragAdapter != null) {
+      poserAnimatorDragAdapter.addSphereDragListener(sphereDragListener);
+    } else {
+      dragListeners.add(sphereDragListener);
+    }
+  }
 
-	public SCamera getCamera() {
-		return this.camera;
-	}
+  public SCamera getCamera() {
+    return this.camera;
+  }
 
-	public void setNewModel( T model ) {
-		this.model.setVehicle( null );
-		this.model = model;
-		this.model.turn( TurnDirection.RIGHT, .5, new Duration( 0 ) );
-		model.setVehicle( this );
-		poserAnimatorDragAdapter.setTarget( model );
-		createJointSelectionSpheresAndLimbs( model );
-	}
+  public void setNewModel(T model) {
+    this.model.setVehicle(null);
+    this.model = model;
+    this.model.turn(TurnDirection.RIGHT, .5, new Duration(0));
+    model.setVehicle(this);
+    poserAnimatorDragAdapter.setTarget(model);
+    createJointSelectionSpheresAndLimbs(model);
+  }
 
-	public void pointCamera() {
-		camera.moveAndOrientTo( model, new Duration( 0.0 ) );
-		camera.turn( TurnDirection.RIGHT, .5, new Duration( 0 ) );
-		camera.move( MoveDirection.BACKWARD, backupAmount(), new Duration( 0 ) );
-		camera.move( MoveDirection.UP, model.getHeight() * .5, new Duration( 0 ) );
-		model.turnToFace( getCamera(), new Duration( 0 ) );
-	}
+  public void pointCamera() {
+    camera.moveAndOrientTo(model, new Duration(0.0));
+    camera.turn(TurnDirection.RIGHT, .5, new Duration(0));
+    camera.move(MoveDirection.BACKWARD, backupAmount(), new Duration(0));
+    camera.move(MoveDirection.UP, model.getHeight() * .5, new Duration(0));
+    model.turnToFace(getCamera(), new Duration(0));
+  }
 
-	private Number backupAmount() {
-		double greaterDimension = model.getWidth() > model.getHeight() ? model.getWidth() : model.getHeight();
-		return greaterDimension * 2.5;
-	}
+  private Number backupAmount() {
+    double greaterDimension = model.getWidth() > model.getHeight() ? model.getWidth() : model.getHeight();
+    return greaterDimension * 2.5;
+  }
 }

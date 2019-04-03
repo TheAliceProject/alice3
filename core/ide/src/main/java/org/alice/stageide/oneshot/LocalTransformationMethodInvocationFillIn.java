@@ -55,33 +55,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocalTransformationMethodInvocationFillIn extends OneShotJavaMethodInvocationFillIn {
-	private static MapToMap<InstanceFactory, JavaMethod, LocalTransformationMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
+  private static MapToMap<InstanceFactory, JavaMethod, LocalTransformationMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
 
-	public static LocalTransformationMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaMethod method ) {
-		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new MapToMap.Initializer<InstanceFactory, JavaMethod, LocalTransformationMethodInvocationFillIn>() {
-			@Override
-			public LocalTransformationMethodInvocationFillIn initialize( InstanceFactory instanceFactory, JavaMethod method ) {
-				return new LocalTransformationMethodInvocationFillIn( instanceFactory, method );
-			}
-		} );
-	}
+  public static LocalTransformationMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, JavaMethod method) {
+    return mapToMap.getInitializingIfAbsent(instanceFactory, method, new MapToMap.Initializer<InstanceFactory, JavaMethod, LocalTransformationMethodInvocationFillIn>() {
+      @Override
+      public LocalTransformationMethodInvocationFillIn initialize(InstanceFactory instanceFactory, JavaMethod method) {
+        return new LocalTransformationMethodInvocationFillIn(instanceFactory, method);
+      }
+    });
+  }
 
-	public static LocalTransformationMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaType type, String methodName, Class<?>... parameterClses ) {
-		JavaMethod method = type.getDeclaredMethod( methodName, parameterClses );
-		assert method != null : methodName;
-		return getInstance( instanceFactory, method );
-	}
+  public static LocalTransformationMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, JavaType type, String methodName, Class<?>... parameterClses) {
+    JavaMethod method = type.getDeclaredMethod(methodName, parameterClses);
+    assert method != null : methodName;
+    return getInstance(instanceFactory, method);
+  }
 
-	public static LocalTransformationMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( instanceFactory, JavaType.getInstance( cls ), methodName, parameterClses );
-	}
+  public static LocalTransformationMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses) {
+    return getInstance(instanceFactory, JavaType.getInstance(cls), methodName, parameterClses);
+  }
 
-	private LocalTransformationMethodInvocationFillIn( InstanceFactory instanceFactory, JavaMethod method ) {
-		super( UUID.fromString( "955cb8c1-3861-4ac7-b76f-72ca93b1289b" ), instanceFactory, method );
-	}
+  private LocalTransformationMethodInvocationFillIn(InstanceFactory instanceFactory, JavaMethod method) {
+    super(UUID.fromString("955cb8c1-3861-4ac7-b76f-72ca93b1289b"), instanceFactory, method);
+  }
 
-	@Override
-	protected MethodInvocationEditFactory createMethodInvocationEditFactory( InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions ) {
-		return new LocalTransformationMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
-	}
+  @Override
+  protected MethodInvocationEditFactory createMethodInvocationEditFactory(InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions) {
+    return new LocalTransformationMethodInvocationEditFactory(instanceFactory, method, argumentExpressions);
+  }
 }

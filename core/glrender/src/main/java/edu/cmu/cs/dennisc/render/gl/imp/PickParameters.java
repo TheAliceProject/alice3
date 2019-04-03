@@ -60,66 +60,66 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class PickParameters {
-	private final List<PickResult> pickResults = Lists.newLinkedList();
-	private final RenderTarget renderTarget;
-	private final AbstractCamera sgCamera;
-	private final int x;
-	private final int y;
-	private final boolean isSubElementRequired;
-	private final PickObserver pickObserver;
+  private final List<PickResult> pickResults = Lists.newLinkedList();
+  private final RenderTarget renderTarget;
+  private final AbstractCamera sgCamera;
+  private final int x;
+  private final int y;
+  private final boolean isSubElementRequired;
+  private final PickObserver pickObserver;
 
-	public PickParameters( RenderTarget renderTarget, AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, PickObserver pickObserver ) {
-		this.renderTarget = renderTarget;
-		this.sgCamera = sgCamera;
-		this.x = x;
-		this.y = y;
-		this.isSubElementRequired = isSubElementRequired;
-		this.pickObserver = pickObserver;
-	}
+  public PickParameters(RenderTarget renderTarget, AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, PickObserver pickObserver) {
+    this.renderTarget = renderTarget;
+    this.sgCamera = sgCamera;
+    this.x = x;
+    this.y = y;
+    this.isSubElementRequired = isSubElementRequired;
+    this.pickObserver = pickObserver;
+  }
 
-	public void addPickResult( Component source, Visual sgVisual, boolean isFrontFacing, Geometry sgGeometry, int subElement, Point3 xyzInSource ) {
-		this.pickResults.add( new PickResult( source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource ) );
-	}
+  public void addPickResult(Component source, Visual sgVisual, boolean isFrontFacing, Geometry sgGeometry, int subElement, Point3 xyzInSource) {
+    this.pickResults.add(new PickResult(source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource));
+  }
 
-	public List<PickResult> accessAllPickResults() {
-		return this.pickResults;
-	}
+  public List<PickResult> accessAllPickResults() {
+    return this.pickResults;
+  }
 
-	public PickResult accessFrontMostPickResult() {
-		PickResult rv;
-		if( this.pickResults.isEmpty() ) {
-			rv = new PickResult( this.sgCamera );
-		} else {
-			rv = this.pickResults.get( 0 );
-		}
-		return rv;
-	}
+  public PickResult accessFrontMostPickResult() {
+    PickResult rv;
+    if (this.pickResults.isEmpty()) {
+      rv = new PickResult(this.sgCamera);
+    } else {
+      rv = this.pickResults.get(0);
+    }
+    return rv;
+  }
 
-	public RenderTarget getRenderTarget() {
-		return this.renderTarget;
-	}
+  public RenderTarget getRenderTarget() {
+    return this.renderTarget;
+  }
 
-	public AbstractCamera getSGCamera() {
-		return this.sgCamera;
-	}
+  public AbstractCamera getSGCamera() {
+    return this.sgCamera;
+  }
 
-	public int getX() {
-		return this.x;
-	}
+  public int getX() {
+    return this.x;
+  }
 
-	public int getY() {
-		return this.y;
-	}
+  public int getY() {
+    return this.y;
+  }
 
-	public int getFlippedY( Rectangle actualViewport ) {
-		return actualViewport.height - this.y;
-	}
+  public int getFlippedY(Rectangle actualViewport) {
+    return actualViewport.height - this.y;
+  }
 
-	public boolean isSubElementRequired() {
-		return this.isSubElementRequired;
-	}
+  public boolean isSubElementRequired() {
+    return this.isSubElementRequired;
+  }
 
-	public PickObserver getPickObserver() {
-		return this.pickObserver;
-	}
+  public PickObserver getPickObserver() {
+    return this.pickObserver;
+  }
 }

@@ -47,33 +47,33 @@ import org.alice.interact.InputState;
 import org.alice.interact.ModifierMask;
 
 public abstract class MousePickBasedCondition extends ModifierSensitiveCondition {
-	public MousePickBasedCondition( int mouseButton, PickCondition pickCondition, ModifierMask modifierMask ) {
-		super( modifierMask );
-		this.pickCondition = pickCondition;
-		this.mouseButton = mouseButton;
-	}
+  public MousePickBasedCondition(int mouseButton, PickCondition pickCondition, ModifierMask modifierMask) {
+    super(modifierMask);
+    this.pickCondition = pickCondition;
+    this.mouseButton = mouseButton;
+  }
 
-	@Override
-	protected boolean testState( InputState state ) {
-		return this.testInputsAndPick( state );
-	}
+  @Override
+  protected boolean testState(InputState state) {
+    return this.testInputsAndPick(state);
+  }
 
-	protected boolean testInputsAndPick( InputState state ) {
-		return this.testInputs( state ) && this.testPick( state );
-	}
+  protected boolean testInputsAndPick(InputState state) {
+    return this.testInputs(state) && this.testPick(state);
+  }
 
-	protected boolean testPick( InputState state ) {
-		return pickCondition.evalutateChain( state );
-	}
+  protected boolean testPick(InputState state) {
+    return pickCondition.evalutateChain(state);
+  }
 
-	protected boolean testMouse( InputState state ) {
-		return state.isMouseDown( this.mouseButton );
-	}
+  protected boolean testMouse(InputState state) {
+    return state.isMouseDown(this.mouseButton);
+  }
 
-	protected boolean testInputs( InputState state ) {
-		return super.testState( state ) && this.testMouse( state );
-	}
+  protected boolean testInputs(InputState state) {
+    return super.testState(state) && this.testMouse(state);
+  }
 
-	private final int mouseButton;
-	private final PickCondition pickCondition;
+  private final int mouseButton;
+  private final PickCondition pickCondition;
 }

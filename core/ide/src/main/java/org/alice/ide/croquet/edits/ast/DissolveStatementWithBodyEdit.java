@@ -61,67 +61,67 @@ import org.lgna.project.ast.Statement;
  * @author Dennis Cosgrove
  */
 public class DissolveStatementWithBodyEdit extends BlockStatementEdit<DissolveStatementWithBodyOperation> {
-	//todo:
-	private static DissolveStatementWithBodyOperation getModel( UserActivity userActivity ) {
-		return (DissolveStatementWithBodyOperation) userActivity.getCompletionModel();
-	}
+  //todo:
+  private static DissolveStatementWithBodyOperation getModel(UserActivity userActivity) {
+    return (DissolveStatementWithBodyOperation) userActivity.getCompletionModel();
+  }
 
-	private final int index;
-	private final Statement[] statements;
+  private final int index;
+  private final Statement[] statements;
 
-	public DissolveStatementWithBodyEdit( UserActivity userActivity ) {
-		super( userActivity, (BlockStatement)( getModel( userActivity ).getStatementWithBody().getParent() ) );
-		BlockStatement blockStatement = this.getBlockStatement();
-		AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
-		this.index = blockStatement.statements.indexOf( statementWithBody );
-		this.statements = ArrayUtilities.createArray( statementWithBody.body.getValue().statements.getValue(), Statement.class );
-	}
+  public DissolveStatementWithBodyEdit(UserActivity userActivity) {
+    super(userActivity, (BlockStatement) (getModel(userActivity).getStatementWithBody().getParent()));
+    BlockStatement blockStatement = this.getBlockStatement();
+    AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
+    this.index = blockStatement.statements.indexOf(statementWithBody);
+    this.statements = ArrayUtilities.createArray(statementWithBody.body.getValue().statements.getValue(), Statement.class);
+  }
 
-	public DissolveStatementWithBodyEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.index = binaryDecoder.decodeInt();
-		NodeCodec<Statement> codec = NodeCodec.getInstance( Statement.class );
-		this.statements = ItemCodec.Arrays.decodeArray( binaryDecoder, codec );
-	}
+  public DissolveStatementWithBodyEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.index = binaryDecoder.decodeInt();
+    NodeCodec<Statement> codec = NodeCodec.getInstance(Statement.class);
+    this.statements = ItemCodec.Arrays.decodeArray(binaryDecoder, codec);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.index );
-		NodeCodec<Statement> codec = NodeCodec.getInstance( Statement.class );
-		ItemCodec.Arrays.encodeArray( binaryEncoder, codec, this.statements );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    binaryEncoder.encode(this.index);
+    NodeCodec<Statement> codec = NodeCodec.getInstance(Statement.class);
+    ItemCodec.Arrays.encodeArray(binaryEncoder, codec, this.statements);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		//todo: check
-		BlockStatement owner = this.getBlockStatement();
-		AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    //todo: check
+    BlockStatement owner = this.getBlockStatement();
+    AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
 
-		owner.statements.remove( index );
-		statementWithBody.body.getValue().statements.clear();
-		owner.statements.add( index, statements );
+    owner.statements.remove(index);
+    statementWithBody.body.getValue().statements.clear();
+    owner.statements.add(index, statements);
 
-		//todo: remove
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-	}
+    //todo: remove
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+  }
 
-	@Override
-	protected final void undoInternal() {
-		//todo: check
-		BlockStatement owner = this.getBlockStatement();
-		AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
-		owner.statements.removeExclusive( this.index, this.index + this.statements.length );
-		statementWithBody.body.getValue().statements.add( this.statements );
-		owner.statements.add( index, statementWithBody );
+  @Override
+  protected final void undoInternal() {
+    //todo: check
+    BlockStatement owner = this.getBlockStatement();
+    AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
+    owner.statements.removeExclusive(this.index, this.index + this.statements.length);
+    statementWithBody.body.getValue().statements.add(this.statements);
+    owner.statements.add(index, statementWithBody);
 
-		//todo: remove
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-	}
+    //todo: remove
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "dissolve:" );
-		NodeUtilities.safeAppendRepr( rv, this.getModel().getStatementWithBody(), Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("dissolve:");
+    NodeUtilities.safeAppendRepr(rv, this.getModel().getStatementWithBody(), Application.getLocale());
+  }
 }

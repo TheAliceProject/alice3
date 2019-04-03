@@ -46,192 +46,191 @@ package edu.cmu.cs.dennisc.math;
  * @author Dennis Cosgrove
  */
 public final class Vector3f extends Tuple3f {
-	public Vector3f() {
-	}
+  public Vector3f() {
+  }
 
-	public Vector3f( Tuple3f other ) {
-		super( other );
-	}
+  public Vector3f(Tuple3f other) {
+    super(other);
+  }
 
-	public Vector3f( float x, float y, float z ) {
-		super( x, y, z );
-	}
+  public Vector3f(float x, float y, float z) {
+    super(x, y, z);
+  }
 
-	public static Vector3f createZero() {
-		return (Vector3f)setReturnValueToZero( new Vector3f() );
-	}
+  public static Vector3f createZero() {
+    return (Vector3f) setReturnValueToZero(new Vector3f());
+  }
 
-	public static Vector3f createNaN() {
-		return (Vector3f)setReturnValueToNaN( new Vector3f() );
-	}
+  public static Vector3f createNaN() {
+    return (Vector3f) setReturnValueToNaN(new Vector3f());
+  }
 
-	public static Vector3f createAddition( Tuple3f a, Tuple3f b ) {
-		return (Vector3f)setReturnValueToAddition( new Vector3f(), a, b );
-	}
+  public static Vector3f createAddition(Tuple3f a, Tuple3f b) {
+    return (Vector3f) setReturnValueToAddition(new Vector3f(), a, b);
+  }
 
-	public static Vector3f createSubtraction( Tuple3f a, Tuple3f b ) {
-		return (Vector3f)setReturnValueToSubtraction( new Vector3f(), a, b );
-	}
+  public static Vector3f createSubtraction(Tuple3f a, Tuple3f b) {
+    return (Vector3f) setReturnValueToSubtraction(new Vector3f(), a, b);
+  }
 
-	public static Vector3f createNegation( Tuple3f a ) {
-		return (Vector3f)setReturnValueToNegation( new Vector3f(), a );
-	}
+  public static Vector3f createNegation(Tuple3f a) {
+    return (Vector3f) setReturnValueToNegation(new Vector3f(), a);
+  }
 
-	public static Vector3f createMultiplication( Tuple3f a, Tuple3f b ) {
-		return (Vector3f)setReturnValueToMultiplication( new Vector3f(), a, b );
-	}
+  public static Vector3f createMultiplication(Tuple3f a, Tuple3f b) {
+    return (Vector3f) setReturnValueToMultiplication(new Vector3f(), a, b);
+  }
 
-	public static Vector3f createMultiplication( Tuple3f a, float b ) {
-		return (Vector3f)setReturnValueToMultiplication( new Vector3f(), a, b );
-	}
+  public static Vector3f createMultiplication(Tuple3f a, float b) {
+    return (Vector3f) setReturnValueToMultiplication(new Vector3f(), a, b);
+  }
 
-	public static Vector3f createDivision( Tuple3f a, Tuple3f b ) {
-		return (Vector3f)setReturnValueToDivision( new Vector3f(), a, b );
-	}
+  public static Vector3f createDivision(Tuple3f a, Tuple3f b) {
+    return (Vector3f) setReturnValueToDivision(new Vector3f(), a, b);
+  }
 
-	public static Vector3f createDivision( Tuple3f a, float b ) {
-		return (Vector3f)setReturnValueToDivision( new Vector3f(), a, b );
-	}
+  public static Vector3f createDivision(Tuple3f a, float b) {
+    return (Vector3f) setReturnValueToDivision(new Vector3f(), a, b);
+  }
 
-	public static Vector3f createInterpolation( Tuple3f a, Tuple3f b, float portion ) {
-		return (Vector3f)setReturnValueToInterpolation( new Vector3f(), a, b, portion );
-	}
+  public static Vector3f createInterpolation(Tuple3f a, Tuple3f b, float portion) {
+    return (Vector3f) setReturnValueToInterpolation(new Vector3f(), a, b, portion);
+  }
 
-	public static Vector3f createNormalized( Tuple3f a ) {
-		return (Vector3f)setReturnValueToNormalized( new Vector3f(), a );
-	}
+  public static Vector3f createNormalized(Tuple3f a) {
+    return (Vector3f) setReturnValueToNormalized(new Vector3f(), a);
+  }
 
-	public static float calculateDotProduct( Vector3f a, Vector3f b ) {
-		return ( a.x * b.x ) + ( a.y * b.y ) + ( a.z * b.z );
-	}
+  public static float calculateDotProduct(Vector3f a, Vector3f b) {
+    return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+  }
 
-	@Deprecated
-	public static float calculateCrossProductX( float ax, float ay, float az, float bx, float by, float bz ) {
-		return ( ay * bz ) - ( az * by );
-	}
+  @Deprecated
+  public static float calculateCrossProductX(float ax, float ay, float az, float bx, float by, float bz) {
+    return (ay * bz) - (az * by);
+  }
 
-	@Deprecated
-	public static float calculateCrossProductY( float ax, float ay, float az, float bx, float by, float bz ) {
-		return ( bx * az ) - ( bz * ax );
-	}
+  @Deprecated
+  public static float calculateCrossProductY(float ax, float ay, float az, float bx, float by, float bz) {
+    return (bx * az) - (bz * ax);
+  }
 
-	@Deprecated
-	public static float calculateCrossProductZ( float ax, float ay, float az, float bx, float by, float bz ) {
-		return ( ax * by ) - ( ay * bx );
-	}
+  @Deprecated
+  public static float calculateCrossProductZ(float ax, float ay, float az, float bx, float by, float bz) {
+    return (ax * by) - (ay * bx);
+  }
 
-	public static Vector3f setReturnValueToCrossProduct( Vector3f rv, Vector3f a, Vector3f b ) {
-		float x = ( a.y * b.z ) - ( a.z * b.y );
-		float y = ( b.x * a.z ) - ( b.z * a.x );
-		float z = ( a.x * b.y ) - ( a.y * b.x );
-		rv.x = x;
-		rv.y = y;
-		rv.z = z;
-		return rv;
-	}
+  public static Vector3f setReturnValueToCrossProduct(Vector3f rv, Vector3f a, Vector3f b) {
+    float x = (a.y * b.z) - (a.z * b.y);
+    float y = (b.x * a.z) - (b.z * a.x);
+    float z = (a.x * b.y) - (a.y * b.x);
+    rv.x = x;
+    rv.y = y;
+    rv.z = z;
+    return rv;
+  }
 
-	public void setToCrossProduct( Vector3f a, Vector3f b ) {
-		setReturnValueToCrossProduct( this, a, b );
-	}
+  public void setToCrossProduct(Vector3f a, Vector3f b) {
+    setReturnValueToCrossProduct(this, a, b);
+  }
 
-	public static Vector3f createFromCrossProduct( Vector3f a, Vector3f b ) {
-		return setReturnValueToCrossProduct( new Vector3f(), a, b );
-	}
+  public static Vector3f createFromCrossProduct(Vector3f a, Vector3f b) {
+    return setReturnValueToCrossProduct(new Vector3f(), a, b);
+  }
 
-	@Deprecated
-	public static boolean isWithinEpsilonOfPositiveOrNegativeYAxis( Vector3f v, float epsilon ) {
-		return EpsilonUtilities.isWithinEpsilon( Math.abs( v.y ), 1.0, epsilon ) && EpsilonUtilities.isWithinEpsilon( v.x, 0.0, epsilon )
-				&& EpsilonUtilities.isWithinEpsilon( v.z, 0.0, epsilon );
-	}
+  @Deprecated
+  public static boolean isWithinEpsilonOfPositiveOrNegativeYAxis(Vector3f v, float epsilon) {
+    return EpsilonUtilities.isWithinEpsilon(Math.abs(v.y), 1.0, epsilon) && EpsilonUtilities.isWithinEpsilon(v.x, 0.0, epsilon) && EpsilonUtilities.isWithinEpsilon(v.z, 0.0, epsilon);
+  }
 
-	private static final Vector3f ORIGIN = new Vector3f( 0, 0, 0 );
-	private static final Vector3f POSITIVE_X_AXIS = Vector3f.createPositiveXAxis();
-	private static final Vector3f POSITIVE_Y_AXIS = Vector3f.createPositiveYAxis();
-	private static final Vector3f POSITIVE_Z_AXIS = Vector3f.createPositiveZAxis();
-	private static final Vector3f NEGATIVE_X_AXIS = Vector3f.createNegativeXAxis();
-	private static final Vector3f NEGATIVE_Y_AXIS = Vector3f.createNegativeYAxis();
-	private static final Vector3f NEGATIVE_Z_AXIS = Vector3f.createNegativeZAxis();
+  private static final Vector3f ORIGIN = new Vector3f(0, 0, 0);
+  private static final Vector3f POSITIVE_X_AXIS = Vector3f.createPositiveXAxis();
+  private static final Vector3f POSITIVE_Y_AXIS = Vector3f.createPositiveYAxis();
+  private static final Vector3f POSITIVE_Z_AXIS = Vector3f.createPositiveZAxis();
+  private static final Vector3f NEGATIVE_X_AXIS = Vector3f.createNegativeXAxis();
+  private static final Vector3f NEGATIVE_Y_AXIS = Vector3f.createNegativeYAxis();
+  private static final Vector3f NEGATIVE_Z_AXIS = Vector3f.createNegativeZAxis();
 
-	public static Vector3f accessOrigin() {
-		ORIGIN.x = ORIGIN.y = ORIGIN.z = 0.0f;
-		return ORIGIN;
-	}
+  public static Vector3f accessOrigin() {
+    ORIGIN.x = ORIGIN.y = ORIGIN.z = 0.0f;
+    return ORIGIN;
+  }
 
-	public static Vector3f accessPositiveXAxis() {
-		POSITIVE_X_AXIS.set( 1, 0, 0 );
-		return POSITIVE_X_AXIS;
-	}
+  public static Vector3f accessPositiveXAxis() {
+    POSITIVE_X_AXIS.set(1, 0, 0);
+    return POSITIVE_X_AXIS;
+  }
 
-	public static Vector3f accessPositiveYAxis() {
-		POSITIVE_Y_AXIS.set( 0, 1, 0 );
-		return POSITIVE_Y_AXIS;
-	}
+  public static Vector3f accessPositiveYAxis() {
+    POSITIVE_Y_AXIS.set(0, 1, 0);
+    return POSITIVE_Y_AXIS;
+  }
 
-	public static Vector3f accessPositiveZAxis() {
-		POSITIVE_Z_AXIS.set( 0, 0, 1 );
-		return POSITIVE_Z_AXIS;
-	}
+  public static Vector3f accessPositiveZAxis() {
+    POSITIVE_Z_AXIS.set(0, 0, 1);
+    return POSITIVE_Z_AXIS;
+  }
 
-	public static Vector3f accessNegativeXAxis() {
-		NEGATIVE_X_AXIS.set( -1, 0, 0 );
-		return NEGATIVE_X_AXIS;
-	}
+  public static Vector3f accessNegativeXAxis() {
+    NEGATIVE_X_AXIS.set(-1, 0, 0);
+    return NEGATIVE_X_AXIS;
+  }
 
-	public static Vector3f accessNegativeYAxis() {
-		NEGATIVE_Y_AXIS.set( 0, -1, 0 );
-		return NEGATIVE_Y_AXIS;
-	}
+  public static Vector3f accessNegativeYAxis() {
+    NEGATIVE_Y_AXIS.set(0, -1, 0);
+    return NEGATIVE_Y_AXIS;
+  }
 
-	public static Vector3f accessNegativeZAxis() {
-		NEGATIVE_Z_AXIS.set( 0, 0, -1 );
-		return NEGATIVE_Z_AXIS;
-	}
+  public static Vector3f accessNegativeZAxis() {
+    NEGATIVE_Z_AXIS.set(0, 0, -1);
+    return NEGATIVE_Z_AXIS;
+  }
 
-	public static Vector3f createPositiveXAxis() {
-		return new Vector3f( 1, 0, 0 );
-	}
+  public static Vector3f createPositiveXAxis() {
+    return new Vector3f(1, 0, 0);
+  }
 
-	public static Vector3f createPositiveYAxis() {
-		return new Vector3f( 0, 1, 0 );
-	}
+  public static Vector3f createPositiveYAxis() {
+    return new Vector3f(0, 1, 0);
+  }
 
-	public static Vector3f createPositiveZAxis() {
-		return new Vector3f( 0, 0, 1 );
-	}
+  public static Vector3f createPositiveZAxis() {
+    return new Vector3f(0, 0, 1);
+  }
 
-	public static Vector3f createNegativeXAxis() {
-		return new Vector3f( -1, 0, 0 );
-	}
+  public static Vector3f createNegativeXAxis() {
+    return new Vector3f(-1, 0, 0);
+  }
 
-	public static Vector3f createNegativeYAxis() {
-		return new Vector3f( 0, -1, 0 );
-	}
+  public static Vector3f createNegativeYAxis() {
+    return new Vector3f(0, -1, 0);
+  }
 
-	public static Vector3f createNegativeZAxis() {
-		return new Vector3f( 0, 0, -1 );
-	}
+  public static Vector3f createNegativeZAxis() {
+    return new Vector3f(0, 0, -1);
+  }
 
-	public boolean isPositiveXAxis() {
-		return this.equals( accessPositiveXAxis() );
-	}
+  public boolean isPositiveXAxis() {
+    return this.equals(accessPositiveXAxis());
+  }
 
-	public boolean isPositiveYAxis() {
-		return this.equals( accessPositiveYAxis() );
-	}
+  public boolean isPositiveYAxis() {
+    return this.equals(accessPositiveYAxis());
+  }
 
-	public boolean isPositiveZAxis() {
-		return this.equals( accessPositiveZAxis() );
-	}
+  public boolean isPositiveZAxis() {
+    return this.equals(accessPositiveZAxis());
+  }
 
-	public boolean isNegativeXAxis() {
-		return this.equals( accessNegativeXAxis() );
-	}
+  public boolean isNegativeXAxis() {
+    return this.equals(accessNegativeXAxis());
+  }
 
-	public boolean isNegativeYAxis() {
-		return this.equals( accessNegativeYAxis() );
-	}
+  public boolean isNegativeYAxis() {
+    return this.equals(accessNegativeYAxis());
+  }
 
-	public boolean isNegativeZAxis() {
-		return this.equals( accessNegativeZAxis() );
-	}
+  public boolean isNegativeZAxis() {
+    return this.equals(accessNegativeZAxis());
+  }
 }

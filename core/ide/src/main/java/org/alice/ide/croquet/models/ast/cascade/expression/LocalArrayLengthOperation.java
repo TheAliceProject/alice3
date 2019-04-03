@@ -55,28 +55,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocalArrayLengthOperation extends ArrayLengthOperation {
-	private static MapToMap<UserLocal, ExpressionProperty, LocalArrayLengthOperation> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserLocal, ExpressionProperty, LocalArrayLengthOperation> mapToMap = MapToMap.newInstance();
 
-	public static LocalArrayLengthOperation getInstance( UserLocal local, ExpressionProperty expressionProperty ) {
-		assert local != null;
-		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new MapToMap.Initializer<UserLocal, ExpressionProperty, LocalArrayLengthOperation>() {
-			@Override
-			public LocalArrayLengthOperation initialize( UserLocal local, ExpressionProperty expressionProperty ) {
-				return new LocalArrayLengthOperation( local, expressionProperty );
-			}
-		} );
-	}
+  public static LocalArrayLengthOperation getInstance(UserLocal local, ExpressionProperty expressionProperty) {
+    assert local != null;
+    assert expressionProperty != null;
+    return mapToMap.getInitializingIfAbsent(local, expressionProperty, new MapToMap.Initializer<UserLocal, ExpressionProperty, LocalArrayLengthOperation>() {
+      @Override
+      public LocalArrayLengthOperation initialize(UserLocal local, ExpressionProperty expressionProperty) {
+        return new LocalArrayLengthOperation(local, expressionProperty);
+      }
+    });
+  }
 
-	private final UserLocal local;
+  private final UserLocal local;
 
-	private LocalArrayLengthOperation( UserLocal local, ExpressionProperty expressionProperty ) {
-		super( UUID.fromString( "becb523c-7af9-433d-8c63-3cda63a45680" ), expressionProperty );
-		this.local = local;
-	}
+  private LocalArrayLengthOperation(UserLocal local, ExpressionProperty expressionProperty) {
+    super(UUID.fromString("becb523c-7af9-433d-8c63-3cda63a45680"), expressionProperty);
+    this.local = local;
+  }
 
-	@Override
-	protected Expression createAccessExpression() {
-		return new LocalAccess( this.local );
-	}
+  @Override
+  protected Expression createAccessExpression() {
+    return new LocalAccess(this.local);
+  }
 }

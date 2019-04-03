@@ -66,45 +66,39 @@ import test.ik.croquet.IsLinearEnabledState;
  * @author Dennis Cosgrove
  */
 public class ControlsPanel extends PageAxisPanel {
-	public ControlsPanel( ControlsComposite composite ) {
-		super( composite );
+  public ControlsPanel(ControlsComposite composite) {
+    super(composite);
 
-		this.addComponent( IsLinearEnabledState.getInstance().createCheckBox() );
-		this.addComponent( IsAngularEnabledState.getInstance().createCheckBox() );
+    this.addComponent(IsLinearEnabledState.getInstance().createCheckBox());
+    this.addComponent(IsAngularEnabledState.getInstance().createCheckBox());
 
-		this.addComponent( new LineAxisPanel(
-				new Label( "anchor:", TextPosture.OBLIQUE ),
-				new JointIdDropDown( AnchorJointIdState.getInstance() )
-				) );
-		this.addComponent( new LineAxisPanel(
-				new Label( "end:", TextPosture.OBLIQUE ),
-				new JointIdDropDown( EndJointIdState.getInstance() )
-				) );
+    this.addComponent(new LineAxisPanel(new Label("anchor:", TextPosture.OBLIQUE), new JointIdDropDown(AnchorJointIdState.getInstance())));
+    this.addComponent(new LineAxisPanel(new Label("end:", TextPosture.OBLIQUE), new JointIdDropDown(EndJointIdState.getInstance())));
 
-		this.addComponent( BoxUtilities.createVerticalSliver( 4 ) );
-		this.addComponent( Separator.createInstanceSeparatingTopFromBottom() );
-		this.addComponent( BoxUtilities.createVerticalSliver( 4 ) );
+    this.addComponent(BoxUtilities.createVerticalSliver(4));
+    this.addComponent(Separator.createInstanceSeparatingTopFromBottom());
+    this.addComponent(BoxUtilities.createVerticalSliver(4));
 
-		this.addComponent( new Label( "chain:", TextPosture.OBLIQUE ) );
+    this.addComponent(new Label("chain:", TextPosture.OBLIQUE));
 
-		List<Bone> list = BonesState.getInstance().createList();
-		list.setAlignmentX( 0.0f );
-		list.setBackgroundColor( null );
-		this.addComponent( list );
+    List<Bone> list = BonesState.getInstance().createList();
+    list.setAlignmentX(0.0f);
+    list.setBackgroundColor(null);
+    this.addComponent(list);
 
-		this.addComponent( BoxUtilities.createVerticalSliver( 4 ) );
-		this.addComponent( Separator.createInstanceSeparatingTopFromBottom() );
-		this.addComponent( BoxUtilities.createVerticalSliver( 4 ) );
+    this.addComponent(BoxUtilities.createVerticalSliver(4));
+    this.addComponent(Separator.createInstanceSeparatingTopFromBottom());
+    this.addComponent(BoxUtilities.createVerticalSliver(4));
 
-		this.addComponent( new Label( "info:", TextPosture.OBLIQUE ) );
+    this.addComponent(new Label("info:", TextPosture.OBLIQUE));
 
-		TextArea textArea = InfoState.getInstance().createTextArea();
-		textArea.getAwtComponent().setEditable( false );
-		textArea.setBorder( null );
-		textArea.changeFont( TextFamily.MONOSPACED );
-		ScrollPane scrollPane = new ScrollPane( textArea );
-		scrollPane.setAlignmentX( 0.0f );
-		this.addComponent( scrollPane );
-		this.setMinimumPreferredWidth( 200 );
-	}
+    TextArea textArea = InfoState.getInstance().createTextArea();
+    textArea.getAwtComponent().setEditable(false);
+    textArea.setBorder(null);
+    textArea.changeFont(TextFamily.MONOSPACED);
+    ScrollPane scrollPane = new ScrollPane(textArea);
+    scrollPane.setAlignmentX(0.0f);
+    this.addComponent(scrollPane);
+    this.setMinimumPreferredWidth(200);
+  }
 }

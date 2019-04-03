@@ -66,71 +66,70 @@ import org.lgna.croquet.history.UserActivity;
  */
 public class VideoExportComposite extends WizardPageComposite<ExportVideoView, ExportToYouTubeWizardDialogComposite> {
 
-	private final VideoComposite videoComposite = new VideoComposite();
-	private final StringState previewState = this.createStringState( "preview", "Preview" );
+  private final VideoComposite videoComposite = new VideoComposite();
+  private final StringState previewState = this.createStringState("preview", "Preview");
 
-	public VideoExportComposite( ExportToYouTubeWizardDialogComposite owner ) {
-		super( UUID.fromString( "fbe4a55d-5076-42f7-9bcf-87560b74b204" ), owner );
-		this.registerSubComposite( this.videoComposite );
-	}
+  public VideoExportComposite(ExportToYouTubeWizardDialogComposite owner) {
+    super(UUID.fromString("fbe4a55d-5076-42f7-9bcf-87560b74b204"), owner);
+    this.registerSubComposite(this.videoComposite);
+  }
 
-	private final ActionOperation exportToFileOperation = this.createActionOperation( "exportToFileOperation", new Action() {
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
+  private final ActionOperation exportToFileOperation = this.createActionOperation("exportToFileOperation", new Action() {
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
 
-			File videosDirectory = StageIDE.getActiveInstance().getVideosDirectory();
+      File videosDirectory = StageIDE.getActiveInstance().getVideosDirectory();
 
-			String filename = "*.webm";
+      String filename = "*.webm";
 
-			File exportFile = FileDialogUtilities.showSaveFileDialog(
-					VideoExportComposite.this.getView().getAwtComponent(), "Save Video", videosDirectory, filename, FileUtilities.createFilenameFilter( "webm" ), "webm" );
-			if( exportFile != null ) {
-				try {
-					FileUtilities.copyFile( getOwner().getTempRecordedVideoFile(), exportFile );
-				} catch( IOException ioe ) {
-					Dialogs.showWarning( "cannot export file: " + exportFile );
-				}
-			}
-			return null;
-		}
-	} );
+      File exportFile = FileDialogUtilities.showSaveFileDialog(VideoExportComposite.this.getView().getAwtComponent(), "Save Video", videosDirectory, filename, FileUtilities.createFilenameFilter("webm"), "webm");
+      if (exportFile != null) {
+        try {
+          FileUtilities.copyFile(getOwner().getTempRecordedVideoFile(), exportFile);
+        } catch (IOException ioe) {
+          Dialogs.showWarning("cannot export file: " + exportFile);
+        }
+      }
+      return null;
+    }
+  });
 
-	public VideoComposite getVideoComposite() {
-		return this.videoComposite;
-	}
+  public VideoComposite getVideoComposite() {
+    return this.videoComposite;
+  }
 
-	public StringState getPreviewState() {
-		return this.previewState;
-	}
+  public StringState getPreviewState() {
+    return this.previewState;
+  }
 
-	public Operation getExportToFileOperation() {
-		return this.exportToFileOperation;
-	}
+  public Operation getExportToFileOperation() {
+    return this.exportToFileOperation;
+  }
 
-	@Override
-	protected ExportVideoView createView() {
-		return new ExportVideoView( this );
-	}
+  @Override
+  protected ExportVideoView createView() {
+    return new ExportVideoView(this);
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.videoComposite.getView().setUri( this.getOwner().getTempRecordedVideoFile().toURI() );
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    this.videoComposite.getView().setUri(this.getOwner().getTempRecordedVideoFile().toURI());
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		this.videoComposite.getView().setUri( null );
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    this.videoComposite.getView().setUri(null);
+    super.handlePostDeactivation();
+  }
 
-	@Override
-	public Status getPageStatus() {
-		Status rv = IS_GOOD_TO_GO_STATUS;
-		return rv;
-	}
+  @Override
+  public Status getPageStatus() {
+    Status rv = IS_GOOD_TO_GO_STATUS;
+    return rv;
+  }
 
-	@Override
-	public void resetData() {
-	}
+  @Override
+  public void resetData() {
+  }
 }

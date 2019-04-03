@@ -51,19 +51,19 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class ConeIconFactory extends ResolutionIndependantIconFactory {
-	private static class SingletonHolder {
-		private static ConeIconFactory instance = new ConeIconFactory();
-	}
+  private static class SingletonHolder {
+    private static ConeIconFactory instance = new ConeIconFactory();
+  }
 
-	public static ConeIconFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ConeIconFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ConeIconFactory() {
-	}
+  private ConeIconFactory() {
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new ConeIcon( size );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new ConeIcon(size);
+  }
 }

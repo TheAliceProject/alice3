@@ -49,15 +49,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TypeUnsetCancelFillIn extends CancelFillIn {
-	private static class SingletonHolder {
-		private static TypeUnsetCancelFillIn instance = new TypeUnsetCancelFillIn();
-	}
+  private static class SingletonHolder {
+    private static TypeUnsetCancelFillIn instance = new TypeUnsetCancelFillIn();
+  }
 
-	public static TypeUnsetCancelFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static TypeUnsetCancelFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private TypeUnsetCancelFillIn() {
-		super( UUID.fromString( "e51c0ec0-e8d4-4675-b0a1-50cbaa093d8a" ) );
-	}
+  private TypeUnsetCancelFillIn() {
+    super(UUID.fromString("e51c0ec0-e8d4-4675-b0a1-50cbaa093d8a"));
+  }
 }

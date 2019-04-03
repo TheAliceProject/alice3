@@ -54,20 +54,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IntegerToRealCascadeMenu extends ExpressionCascadeMenu<InstanceCreation> {
-	private static class SingletonHolder {
-		private static IntegerToRealCascadeMenu instance = new IntegerToRealCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static IntegerToRealCascadeMenu instance = new IntegerToRealCascadeMenu();
+  }
 
-	public static IntegerToRealCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IntegerToRealCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IntegerToRealCascadeMenu() {
-		super( UUID.fromString( "8c6de0dc-a320-4345-8755-729ea4ab440c" ) );
-	}
+  private IntegerToRealCascadeMenu() {
+    super(UUID.fromString("8c6de0dc-a320-4345-8755-729ea4ab440c"));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<InstanceCreation> context ) {
-		blankChildren.add( DoubleInstanceCreationFillIn.getInstance() );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<InstanceCreation> context) {
+    blankChildren.add(DoubleInstanceCreationFillIn.getInstance());
+  }
 }

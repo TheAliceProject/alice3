@@ -53,70 +53,70 @@ import java.util.Iterator;
  * @author Dennis Cosgrove
  */
 public final class ImmutableListData<T> extends ListData<T> {
-	private final T[] values;
+  private final T[] values;
 
-	public ImmutableListData( ItemCodec<T> itemCodec, T[] values ) {
-		super( itemCodec );
-		this.values = values;
-	}
+  public ImmutableListData(ItemCodec<T> itemCodec, T[] values) {
+    super(itemCodec);
+    this.values = values;
+  }
 
-	@Override
-	public final void addListener( ListDataListener listener ) {
-	}
+  @Override
+  public final void addListener(ListDataListener listener) {
+  }
 
-	@Override
-	public final void removeListener( ListDataListener listener ) {
-	}
+  @Override
+  public final void removeListener(ListDataListener listener) {
+  }
 
-	@Override
-	public boolean contains( T item ) {
-		return Arrays.asList( this.values ).contains( item );
-	}
+  @Override
+  public boolean contains(T item) {
+    return Arrays.asList(this.values).contains(item);
+  }
 
-	@Override
-	public T getItemAt( int index ) {
-		return this.values[ index ];
-	}
+  @Override
+  public T getItemAt(int index) {
+    return this.values[index];
+  }
 
-	@Override
-	public int getItemCount() {
-		return this.values.length;
-	}
+  @Override
+  public int getItemCount() {
+    return this.values.length;
+  }
 
-	@Override
-	public int indexOf( T item ) {
-		return Arrays.asList( this.values ).indexOf( item );
-	}
+  @Override
+  public int indexOf(T item) {
+    return Arrays.asList(this.values).indexOf(item);
+  }
 
-	@Override
-	public void internalAddItem( int index, T item ) {
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public void internalAddItem(int index, T item) {
+    throw new UnsupportedOperationException();
+  }
 
-	@Override
-	public void internalRemoveItem( T item ) {
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public void internalRemoveItem(T item) {
+    throw new UnsupportedOperationException();
+  }
 
-	@Override
-	public void internalSetAllItems( Collection<T> items ) {
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public void internalSetAllItems(Collection<T> items) {
+    throw new UnsupportedOperationException();
+  }
 
-	@Override
-	public void internalSetItemAt( int index, T item ) {
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public void internalSetItemAt(int index, T item) {
+    throw new UnsupportedOperationException();
+  }
 
-	@Override
-	public Iterator<T> iterator() {
-		return Arrays.asList( this.values ).iterator();
-	}
+  @Override
+  public Iterator<T> iterator() {
+    return Arrays.asList(this.values).iterator();
+  }
 
-	@Override
-	protected final T[] toArray( Class<T> componentType ) {
-		//todo: check type
-		//todo: copy?
-		return this.values;
-	}
+  @Override
+  protected final T[] toArray(Class<T> componentType) {
+    //todo: check type
+    //todo: copy?
+    return this.values;
+  }
 }

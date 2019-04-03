@@ -50,31 +50,31 @@ import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
  * @author Dennis Cosgrove
  */
 public class Dimension3Property extends CopyableInstanceProperty<Dimension3> {
-	public Dimension3Property( InstancePropertyOwner owner, Dimension3 value ) {
-		super( owner, value );
-	}
+  public Dimension3Property(InstancePropertyOwner owner, Dimension3 value) {
+    super(owner, value);
+  }
 
-	@Override
-	public void setValue( Dimension3 value ) {
-		assert value != null : this;
-		assert value.isNaN() == false : this;
-		super.setValue( value );
-	}
+  @Override
+  public void setValue(Dimension3 value) {
+    assert value != null : this;
+    assert value.isNaN() == false : this;
+    super.setValue(value);
+  }
 
-	@Override
-	public Dimension3 getCopy( Dimension3 rv ) {
-		rv.set( this.getValue() );
-		return rv;
-	}
+  @Override
+  public Dimension3 getCopy(Dimension3 rv) {
+    rv.set(this.getValue());
+    return rv;
+  }
 
-	@Override
-	public final Dimension3 getCopy() {
-		return this.getCopy( Dimension3.createNaN() );
-	}
+  @Override
+  public final Dimension3 getCopy() {
+    return this.getCopy(Dimension3.createNaN());
+  }
 
-	@Override
-	public void setCopy( Dimension3 value ) {
-		//todo?
-		this.setValue( new Dimension3( value ) );
-	}
+  @Override
+  public void setCopy(Dimension3 value) {
+    //todo?
+    this.setValue(new Dimension3(value));
+  }
 }

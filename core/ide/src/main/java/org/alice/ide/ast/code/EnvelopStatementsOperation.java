@@ -55,39 +55,39 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class EnvelopStatementsOperation extends ActionOperation {
-	private static MapToMap<BlockStatementIndexPair, BlockStatementIndexPair, EnvelopStatementsOperation> map = MapToMap.newInstance();
+  private static MapToMap<BlockStatementIndexPair, BlockStatementIndexPair, EnvelopStatementsOperation> map = MapToMap.newInstance();
 
-	public static synchronized EnvelopStatementsOperation getInstance( BlockStatementIndexPair fromLocation, BlockStatementIndexPair toLocation ) {
-		EnvelopStatementsOperation rv = map.get( fromLocation, toLocation );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new EnvelopStatementsOperation( fromLocation, toLocation );
-			map.put( fromLocation, toLocation, rv );
-		}
-		return rv;
-	}
+  public static synchronized EnvelopStatementsOperation getInstance(BlockStatementIndexPair fromLocation, BlockStatementIndexPair toLocation) {
+    EnvelopStatementsOperation rv = map.get(fromLocation, toLocation);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new EnvelopStatementsOperation(fromLocation, toLocation);
+      map.put(fromLocation, toLocation, rv);
+    }
+    return rv;
+  }
 
-	private final BlockStatementIndexPair fromLocation;
-	private final BlockStatementIndexPair toLocation;
+  private final BlockStatementIndexPair fromLocation;
+  private final BlockStatementIndexPair toLocation;
 
-	private EnvelopStatementsOperation( BlockStatementIndexPair fromLocation, BlockStatementIndexPair toLocation ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "170a3707-f31d-4c59-89a8-844fab44a7c4" ) );
-		this.fromLocation = fromLocation;
-		this.toLocation = toLocation;
-	}
+  private EnvelopStatementsOperation(BlockStatementIndexPair fromLocation, BlockStatementIndexPair toLocation) {
+    super(Application.PROJECT_GROUP, UUID.fromString("170a3707-f31d-4c59-89a8-844fab44a7c4"));
+    this.fromLocation = fromLocation;
+    this.toLocation = toLocation;
+  }
 
-	public BlockStatementIndexPair getFromLocation() {
-		return this.fromLocation;
-	}
+  public BlockStatementIndexPair getFromLocation() {
+    return this.fromLocation;
+  }
 
-	public BlockStatementIndexPair getToLocation() {
-		return this.toLocation;
-	}
+  public BlockStatementIndexPair getToLocation() {
+    return this.toLocation;
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		activity.commitAndInvokeDo( new EnvelopStatementsEdit( activity, this.fromLocation, this.toLocation ) );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    activity.commitAndInvokeDo(new EnvelopStatementsEdit(activity, this.fromLocation, this.toLocation));
+  }
 
 }

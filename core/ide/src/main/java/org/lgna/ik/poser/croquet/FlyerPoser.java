@@ -54,18 +54,18 @@ import java.util.UUID;
  */
 public class FlyerPoser extends PoserComposite<SFlyer> {
 
-	public FlyerPoser( NamedUserType valueType ) {
-		super( UUID.fromString( "6058e0b2-0c39-417c-806d-613c2aecd523" ), valueType );
-	}
+  public FlyerPoser(NamedUserType valueType) {
+    super(UUID.fromString("6058e0b2-0c39-417c-806d-613c2aecd523"), valueType);
+  }
 
-	@Override
-	protected AbstractPoserScene<SFlyer> initScene() {
-		return new FlyerPoserScene( this.getModel() );
-	}
+  @Override
+  protected AbstractPoserScene<SFlyer> initScene() {
+    return new FlyerPoserScene(this.getModel());
+  }
 
-	@Override
-	public Class<SFlyer> getModelClass() {
-		return SFlyer.class;
-	}
+  @Override
+  public Class<SFlyer> getModelClass() {
+    return SFlyer.class;
+  }
 
 }

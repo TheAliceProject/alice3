@@ -50,5 +50,5 @@ import edu.cmu.cs.dennisc.math.property.Matrix4x4Property;
  * @author Dennis Cosgrove
  */
 public class ProjectionCamera extends AbstractCamera {
-	public final Matrix4x4Property projection = new Matrix4x4Property( this, new Matrix4x4() );
+  public final Matrix4x4Property projection = new Matrix4x4Property(this, new Matrix4x4());
 }

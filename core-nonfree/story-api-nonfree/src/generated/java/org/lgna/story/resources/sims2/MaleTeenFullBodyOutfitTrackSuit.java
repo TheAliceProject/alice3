@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenFullBodyOutfitTrackSuit implements MaleTeenFullBodyOutfit {
-	BLACK,
-	RED,
-	GREEN,
-	BLUE;
+  BLACK, RED, GREEN, BLUE
 
 }

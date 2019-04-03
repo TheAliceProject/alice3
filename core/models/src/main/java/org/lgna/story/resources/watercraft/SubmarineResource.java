@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.watercraft;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.STransport;
@@ -33,38 +34,36 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.WatercraftResource;
 
 public enum SubmarineResource implements WatercraftResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, SubmarineResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId PROPELLER = new JointId( ROOT, SubmarineResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId RUDDER = new JointId( ROOT, SubmarineResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, SubmarineResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId PROPELLER = new JointId(ROOT, SubmarineResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId RUDDER = new JointId(ROOT, SubmarineResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	SubmarineResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	SubmarineResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  SubmarineResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return SubmarineResource.JOINT_ID_ROOTS;
-	}
+  SubmarineResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public TransportImp createImplementation( STransport abstraction ) {
-		return new TransportImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return SubmarineResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public TransportImp createImplementation(STransport abstraction) {
+    return new TransportImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

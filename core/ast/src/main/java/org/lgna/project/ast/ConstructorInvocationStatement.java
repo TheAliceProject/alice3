@@ -43,52 +43,51 @@
 
 package org.lgna.project.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ConstructorInvocationStatement extends Statement implements ArgumentOwner {
-	public ConstructorInvocationStatement() {
-	}
+  public ConstructorInvocationStatement() {
+  }
 
-	public ConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument... requiredArguments ) {
-		this( constructor, requiredArguments, null, null );
-	}
+  public ConstructorInvocationStatement(AbstractConstructor constructor, SimpleArgument... requiredArguments) {
+    this(constructor, requiredArguments, null, null);
+  }
 
-	public ConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
-		assert constructor != null;
-		this.constructor.setValue( constructor );
-		this.requiredArguments.add( requiredArguments );
-		if( variableArguments != null ) {
-			this.variableArguments.add( variableArguments );
-		}
-		if( keyedArguments != null ) {
-			this.keyedArguments.add( keyedArguments );
-		}
-	}
+  public ConstructorInvocationStatement(AbstractConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments) {
+    assert constructor != null;
+    this.constructor.setValue(constructor);
+    this.requiredArguments.add(requiredArguments);
+    if (variableArguments != null) {
+      this.variableArguments.add(variableArguments);
+    }
+    if (keyedArguments != null) {
+      this.keyedArguments.add(keyedArguments);
+    }
+  }
 
-	@Override
-	public DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
-		return this.constructor;
-	}
+  @Override
+  public DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
+    return this.constructor;
+  }
 
-	@Override
-	public SimpleArgumentListProperty getRequiredArgumentsProperty() {
-		return this.requiredArguments;
-	}
+  @Override
+  public SimpleArgumentListProperty getRequiredArgumentsProperty() {
+    return this.requiredArguments;
+  }
 
-	@Override
-	public SimpleArgumentListProperty getVariableArgumentsProperty() {
-		return this.variableArguments;
-	}
+  @Override
+  public SimpleArgumentListProperty getVariableArgumentsProperty() {
+    return this.variableArguments;
+  }
 
-	@Override
-	public KeyedArgumentListProperty getKeyedArgumentsProperty() {
-		return this.keyedArguments;
-	}
+  @Override
+  public KeyedArgumentListProperty getKeyedArgumentsProperty() {
+    return this.keyedArguments;
+  }
 
-	public final DeclarationProperty<AbstractConstructor> constructor = DeclarationProperty.createReferenceInstance( this );
-	public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
-	public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
-	public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
+  public final DeclarationProperty<AbstractConstructor> constructor = DeclarationProperty.createReferenceInstance(this);
+  public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty(this);
+  public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty(this);
+  public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty(this);
 }

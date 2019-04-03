@@ -59,34 +59,34 @@ import java.io.InputStream;
  * @author Dennis Cosgrove
  */
 public class SoundUtilities {
-	public static Clip createOpenedClip( InputStream inputStream ) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
-		Clip clip = AudioSystem.getClip();
-		AudioInputStream audioInputStream = AudioSystem.getAudioInputStream( inputStream );
-		clip.open( audioInputStream );
-		return clip;
-	}
+  public static Clip createOpenedClip(InputStream inputStream) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+    Clip clip = AudioSystem.getClip();
+    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
+    clip.open(audioInputStream);
+    return clip;
+  }
 
-	public static Clip createOpenedClip( byte[] array ) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
-		return createOpenedClip( new ByteArrayInputStream( array ) );
-	}
+  public static Clip createOpenedClip(byte[] array) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+    return createOpenedClip(new ByteArrayInputStream(array));
+  }
 
-	public static Clip createOpenedClip( Class<?> cls, String resourceName ) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
-		InputStream is = cls.getResourceAsStream( resourceName );
-		byte[] buffer = InputStreamUtilities.getBytes( is );
-		return createOpenedClip( buffer );
-	}
+  public static Clip createOpenedClip(Class<?> cls, String resourceName) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+    InputStream is = cls.getResourceAsStream(resourceName);
+    byte[] buffer = InputStreamUtilities.getBytes(is);
+    return createOpenedClip(buffer);
+  }
 
-	public static Clip createOpenedClip( File file ) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
-		return createOpenedClip( new FileInputStream( file ) );
-	}
+  public static Clip createOpenedClip(File file) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+    return createOpenedClip(new FileInputStream(file));
+  }
 
-	public static Clip createOpenedClip( String path ) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
-		return createOpenedClip( new File( path ) );
-	}
+  public static Clip createOpenedClip(String path) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+    return createOpenedClip(new File(path));
+  }
 
-	public static void playAndDrainClip( Clip clip ) {
-		clip.setFramePosition( 0 );
-		clip.start();
-		clip.drain();
-	}
+  public static void playAndDrainClip(Clip clip) {
+    clip.setFramePosition(0);
+    clip.start();
+    clip.drain();
+  }
 }

@@ -66,49 +66,49 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SceneEditorUpdatingPropertyState extends PropertyState {
-	private static MapToMap<UserField, JavaMethod, SceneEditorUpdatingPropertyState> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserField, JavaMethod, SceneEditorUpdatingPropertyState> mapToMap = MapToMap.newInstance();
 
-	public static synchronized SceneEditorUpdatingPropertyState getInstanceForSetter( UserField field, JavaMethod setter ) {
-		return mapToMap.getInitializingIfAbsent( field, setter, new MapToMap.Initializer<UserField, JavaMethod, SceneEditorUpdatingPropertyState>() {
-			@Override
-			public SceneEditorUpdatingPropertyState initialize( UserField field, JavaMethod setter ) {
-				return new SceneEditorUpdatingPropertyState( field, setter );
-			}
-		} );
-	}
+  public static synchronized SceneEditorUpdatingPropertyState getInstanceForSetter(UserField field, JavaMethod setter) {
+    return mapToMap.getInitializingIfAbsent(field, setter, new MapToMap.Initializer<UserField, JavaMethod, SceneEditorUpdatingPropertyState>() {
+      @Override
+      public SceneEditorUpdatingPropertyState initialize(UserField field, JavaMethod setter) {
+        return new SceneEditorUpdatingPropertyState(field, setter);
+      }
+    });
+  }
 
-	public static synchronized SceneEditorUpdatingPropertyState getInstanceForGetter( UserField field, JavaMethod getter ) {
-		return getInstanceForSetter( field, AstUtilities.getSetterForGetter( getter ) );
-	}
+  public static synchronized SceneEditorUpdatingPropertyState getInstanceForGetter(UserField field, JavaMethod getter) {
+    return getInstanceForSetter(field, AstUtilities.getSetterForGetter(getter));
+  }
 
-	private final UserField field;
+  private final UserField field;
 
-	private SceneEditorUpdatingPropertyState( UserField field, JavaMethod setter ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "f38ed248-1d68-43eb-b2c0-09ac62bd748e" ), setter );
-		this.field = field;
-	}
+  private SceneEditorUpdatingPropertyState(UserField field, JavaMethod setter) {
+    super(Application.PROJECT_GROUP, UUID.fromString("f38ed248-1d68-43eb-b2c0-09ac62bd748e"), setter);
+    this.field = field;
+  }
 
-	public UserField getField() {
-		return this.field;
-	}
+  public UserField getField() {
+    return this.field;
+  }
 
-	@Override
-	protected void handleTruthAndBeautyValueChange( Expression nextValue ) {
-		super.handleTruthAndBeautyValueChange( nextValue );
-		if( nextValue instanceof NullLiteral ) {
-			//do nothing for null literals
-		} else {
-			Expression e;
-			if( this.field == null ) {
-				e = ThisExpression.createInstanceThatCanExistWithoutAnAncestorType( StorytellingSceneEditor.getInstance().getActiveSceneType() );
-			} else {
-				e = new FieldAccess(field);
-			}
-			AbstractParameter parameter = this.getSetter().getRequiredParameters().get( 0 );
-			SimpleArgument argument = new SimpleArgument( parameter, nextValue );
-			MethodInvocation methodInvocation = new MethodInvocation( e, this.getSetter(), argument );
-			Statement s = new ExpressionStatement( methodInvocation );
-			StorytellingSceneEditor.getInstance().executeStatements( s );
-		}
-	}
+  @Override
+  protected void handleTruthAndBeautyValueChange(Expression nextValue) {
+    super.handleTruthAndBeautyValueChange(nextValue);
+    if (nextValue instanceof NullLiteral) {
+      //do nothing for null literals
+    } else {
+      Expression e;
+      if (this.field == null) {
+        e = ThisExpression.createInstanceThatCanExistWithoutAnAncestorType(StorytellingSceneEditor.getInstance().getActiveSceneType());
+      } else {
+        e = new FieldAccess(field);
+      }
+      AbstractParameter parameter = this.getSetter().getRequiredParameters().get(0);
+      SimpleArgument argument = new SimpleArgument(parameter, nextValue);
+      MethodInvocation methodInvocation = new MethodInvocation(e, this.getSetter(), argument);
+      Statement s = new ExpressionStatement(methodInvocation);
+      StorytellingSceneEditor.getInstance().executeStatements(s);
+    }
+  }
 }

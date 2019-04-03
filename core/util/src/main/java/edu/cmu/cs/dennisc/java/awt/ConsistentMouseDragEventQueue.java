@@ -58,152 +58,152 @@ import java.awt.event.MouseWheelEvent;
  * @author Dennis Cosgrove
  */
 public class ConsistentMouseDragEventQueue extends EventQueue {
-	private static final boolean IS_CLICK_AND_CLACK_DESIRED_DEFAULT = false;
-	private static final boolean IS_CLICK_AND_CLACK_DESIRED = IS_CLICK_AND_CLACK_DESIRED_DEFAULT || SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.isClickAndClackDesired" );
+  private static final boolean IS_CLICK_AND_CLACK_DESIRED_DEFAULT = false;
+  private static final boolean IS_CLICK_AND_CLACK_DESIRED = IS_CLICK_AND_CLACK_DESIRED_DEFAULT || SystemUtilities.isPropertyTrue("edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.isClickAndClackDesired");
 
-	private static class SingletonHolder {
-		private static ConsistentMouseDragEventQueue instance = new ConsistentMouseDragEventQueue();
-	}
+  private static class SingletonHolder {
+    private static ConsistentMouseDragEventQueue instance = new ConsistentMouseDragEventQueue();
+  }
 
-	public static ConsistentMouseDragEventQueue getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ConsistentMouseDragEventQueue getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	public static void pushIfAppropriate() {
-		if( ( IS_CLICK_AND_CLACK_DESIRED == false ) && SystemUtilities.isWindows() ) {
-			//pass
-		} else {
-			Toolkit.getDefaultToolkit().getSystemEventQueue().push( SingletonHolder.instance );
-		}
-	}
+  public static void pushIfAppropriate() {
+    if ((IS_CLICK_AND_CLACK_DESIRED == false) && SystemUtilities.isWindows()) {
+      //pass
+    } else {
+      Toolkit.getDefaultToolkit().getSystemEventQueue().push(SingletonHolder.instance);
+    }
+  }
 
-	private final DStack<Component> stack;
-	private int lastPressOrDragModifiers;
-	private Component componentForPotentialFollowUpClickEvent;
+  private final DStack<Component> stack;
+  private int lastPressOrDragModifiers;
+  private Component componentForPotentialFollowUpClickEvent;
 
-	private ConsistentMouseDragEventQueue() {
-		if( IS_CLICK_AND_CLACK_DESIRED ) {
-			this.stack = Stacks.newStack();
-		} else {
-			this.stack = null;
-		}
-	}
+  private ConsistentMouseDragEventQueue() {
+    if (IS_CLICK_AND_CLACK_DESIRED) {
+      this.stack = Stacks.newStack();
+    } else {
+      this.stack = null;
+    }
+  }
 
-	public boolean isClickAndClackSupported() {
-		return this.stack != null;
-	}
+  public boolean isClickAndClackSupported() {
+    return this.stack != null;
+  }
 
-	public Component peekClickAndClackComponent() {
-		if( this.stack != null ) {
-			if( this.stack.size() > 0 ) {
-				return this.stack.peek();
-			} else {
-				return null;
-			}
-		} else {
-			throw new UnsupportedOperationException();
-		}
-	}
+  public Component peekClickAndClackComponent() {
+    if (this.stack != null) {
+      if (this.stack.size() > 0) {
+        return this.stack.peek();
+      } else {
+        return null;
+      }
+    } else {
+      throw new UnsupportedOperationException();
+    }
+  }
 
-	public void pushClickAndClackMouseFocusComponent( Component awtComponent ) {
-		if( this.stack != null ) {
-			this.stack.push( awtComponent );
-		} else {
-			throw new UnsupportedOperationException();
-		}
-	}
+  public void pushClickAndClackMouseFocusComponent(Component awtComponent) {
+    if (this.stack != null) {
+      this.stack.push(awtComponent);
+    } else {
+      throw new UnsupportedOperationException();
+    }
+  }
 
-	public Component popClickAndClackMouseFocusComponent() {
-		if( this.stack != null ) {
-			return this.stack.pop();
-		} else {
-			throw new UnsupportedOperationException();
-		}
-	}
+  public Component popClickAndClackMouseFocusComponent() {
+    if (this.stack != null) {
+      return this.stack.pop();
+    } else {
+      throw new UnsupportedOperationException();
+    }
+  }
 
-	public Component popClickAndClackMouseFocusComponentButAllowForPotentialFollowUpClickEvent() {
-		Component rv = this.popClickAndClackMouseFocusComponent();
-		this.componentForPotentialFollowUpClickEvent = rv;
-		return rv;
-	}
+  public Component popClickAndClackMouseFocusComponentButAllowForPotentialFollowUpClickEvent() {
+    Component rv = this.popClickAndClackMouseFocusComponent();
+    this.componentForPotentialFollowUpClickEvent = rv;
+    return rv;
+  }
 
-	protected MouseEvent convertClickAndClackIfNecessary( MouseEvent e ) {
-		Component component;
-		if( this.componentForPotentialFollowUpClickEvent != null ) {
-			if( e.getID() == MouseEvent.MOUSE_CLICKED ) {
-				component = this.componentForPotentialFollowUpClickEvent;
-			} else {
-				component = null;
-			}
-			this.componentForPotentialFollowUpClickEvent = null;
-		} else {
-			component = null;
-		}
-		if( component != null ) {
-			//pass
-		} else {
-			if( this.stack.size() > 0 ) {
-				component = this.stack.peek();
-			} else {
-				component = null;
-			}
-		}
-		if( component != null ) {
-			Component curr = e.getComponent();
-			if( curr == component ) {
-				//pass
-			} else {
-				e = MouseEventUtilities.convertMouseEvent( curr, e, component );
-			}
-		}
-		return e;
-	}
+  protected MouseEvent convertClickAndClackIfNecessary(MouseEvent e) {
+    Component component;
+    if (this.componentForPotentialFollowUpClickEvent != null) {
+      if (e.getID() == MouseEvent.MOUSE_CLICKED) {
+        component = this.componentForPotentialFollowUpClickEvent;
+      } else {
+        component = null;
+      }
+      this.componentForPotentialFollowUpClickEvent = null;
+    } else {
+      component = null;
+    }
+    if (component != null) {
+      //pass
+    } else {
+      if (this.stack.size() > 0) {
+        component = this.stack.peek();
+      } else {
+        component = null;
+      }
+    }
+    if (component != null) {
+      Component curr = e.getComponent();
+      if (curr == component) {
+        //pass
+      } else {
+        e = MouseEventUtilities.convertMouseEvent(curr, e, component);
+      }
+    }
+    return e;
+  }
 
-	@Override
-	protected void dispatchEvent( AWTEvent e ) {
-		if( e instanceof MouseWheelEvent ) {
-			MouseWheelEvent mouseWheelEvent = (MouseWheelEvent)e;
+  @Override
+  protected void dispatchEvent(AWTEvent e) {
+    if (e instanceof MouseWheelEvent) {
+      MouseWheelEvent mouseWheelEvent = (MouseWheelEvent) e;
 
-			Component source = mouseWheelEvent.getComponent();
-			int id = mouseWheelEvent.getID();
-			long when = mouseWheelEvent.getWhen();
-			int modifiers = mouseWheelEvent.getModifiers();
-			int x = mouseWheelEvent.getX();
-			int y = mouseWheelEvent.getY();
-			//1.7
-			//int xAbs = mouseWheelEvent.getXOnScreen();
-			//int yAbs = mouseWheelEvent.getYOnScreen();
-			int clickCount = mouseWheelEvent.getClickCount();
-			boolean popupTrigger = mouseWheelEvent.isPopupTrigger();
-			int scrollType = mouseWheelEvent.getScrollType();
-			int scrollAmount = mouseWheelEvent.getScrollAmount();
-			int wheelRotation = mouseWheelEvent.getWheelRotation();
-			//1.7
-			//double preciseWheelRotation = mouseWheelEvent.getPreciseWheelRotation();
+      Component source = mouseWheelEvent.getComponent();
+      int id = mouseWheelEvent.getID();
+      long when = mouseWheelEvent.getWhen();
+      int modifiers = mouseWheelEvent.getModifiers();
+      int x = mouseWheelEvent.getX();
+      int y = mouseWheelEvent.getY();
+      //1.7
+      //int xAbs = mouseWheelEvent.getXOnScreen();
+      //int yAbs = mouseWheelEvent.getYOnScreen();
+      int clickCount = mouseWheelEvent.getClickCount();
+      boolean popupTrigger = mouseWheelEvent.isPopupTrigger();
+      int scrollType = mouseWheelEvent.getScrollType();
+      int scrollAmount = mouseWheelEvent.getScrollAmount();
+      int wheelRotation = mouseWheelEvent.getWheelRotation();
+      //1.7
+      //double preciseWheelRotation = mouseWheelEvent.getPreciseWheelRotation();
 
-			//note:
-			modifiers = this.lastPressOrDragModifiers;
+      //note:
+      modifiers = this.lastPressOrDragModifiers;
 
-			// 1.7
-			//= new java.awt.event.MouseWheelEvent( source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation, preciseWheelRotation );
+      // 1.7
+      //= new java.awt.event.MouseWheelEvent( source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation, preciseWheelRotation );
 
-			// 1.5
-			e = new MouseWheelEvent( source, id, when, modifiers, x, y, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation );
+      // 1.5
+      e = new MouseWheelEvent(source, id, when, modifiers, x, y, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation);
 
-		} else if( e instanceof MouseEvent ) {
-			MouseEvent mouseEvent = (MouseEvent)e;
-			int id = mouseEvent.getID();
-			switch( id ) {
-			case MouseEvent.MOUSE_PRESSED:
-			case MouseEvent.MOUSE_DRAGGED:
-				this.lastPressOrDragModifiers = mouseEvent.getModifiers();
-				break;
-			}
+    } else if (e instanceof MouseEvent) {
+      MouseEvent mouseEvent = (MouseEvent) e;
+      int id = mouseEvent.getID();
+      switch (id) {
+      case MouseEvent.MOUSE_PRESSED:
+      case MouseEvent.MOUSE_DRAGGED:
+        this.lastPressOrDragModifiers = mouseEvent.getModifiers();
+        break;
+      }
 
-			if( this.stack != null ) {
-				e = this.convertClickAndClackIfNecessary( mouseEvent );
-			}
-		}
-		super.dispatchEvent( e );
-	}
+      if (this.stack != null) {
+        e = this.convertClickAndClackIfNecessary(mouseEvent);
+      }
+    }
+    super.dispatchEvent(e);
+  }
 }

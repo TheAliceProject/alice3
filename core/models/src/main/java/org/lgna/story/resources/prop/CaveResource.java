@@ -32,37 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum CaveResource implements PropResource {
-	DEFAULT_UNDERWATER,
-	DEFAULT_ROCKY,
-	DEFAULT_MOSSY,
-	FLIPPED_UNDERWATER,
-	FLIPPED_ROCKY,
-	FLIPPED_MOSSY,
-	WIDE_UNDERWATER,
-	WIDE_ROCKY,
-	WIDE_MOSSY;
+  DEFAULT_UNDERWATER, DEFAULT_ROCKY, DEFAULT_MOSSY, FLIPPED_UNDERWATER, FLIPPED_ROCKY, FLIPPED_MOSSY, WIDE_UNDERWATER, WIDE_ROCKY, WIDE_MOSSY;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	CaveResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  CaveResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	CaveResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  CaveResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

@@ -51,12 +51,12 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 public abstract class MarkerFieldData extends FilteredListPropertyData<UserField> {
-	public MarkerFieldData() {
-		super( NodeCodec.getInstance( UserField.class ) );
-	}
+  public MarkerFieldData() {
+    super(NodeCodec.getInstance(UserField.class));
+  }
 
-	@Override
-	protected boolean isAcceptableItem( UserField value ) {
-		return value.managementLevel.getValue() == ManagementLevel.MANAGED;
-	}
+  @Override
+  protected boolean isAcceptableItem(UserField value) {
+    return value.managementLevel.getValue() == ManagementLevel.MANAGED;
+  }
 }

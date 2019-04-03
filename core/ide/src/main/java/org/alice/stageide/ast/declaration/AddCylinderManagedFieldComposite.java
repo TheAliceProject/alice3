@@ -56,30 +56,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AddCylinderManagedFieldComposite extends AddModelManagedFieldComposite {
-	private static class SingletonHolder {
-		private static AddCylinderManagedFieldComposite instance = new AddCylinderManagedFieldComposite();
-	}
+  private static class SingletonHolder {
+    private static AddCylinderManagedFieldComposite instance = new AddCylinderManagedFieldComposite();
+  }
 
-	public static AddCylinderManagedFieldComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddCylinderManagedFieldComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final CustomItemState<Expression> radiusState = this.createInitialPropertyValueExpressionState( "radiusState", 0.5, SCylinder.class, "setRadius", Number.class, SetRadius.Detail[].class );
-	private final CustomItemState<Expression> lengthState = this.createInitialPropertyValueExpressionState( "lengthState", 1.0, SCylinder.class, "setLength", Number.class, SetLength.Detail[].class );
+  private final CustomItemState<Expression> radiusState = this.createInitialPropertyValueExpressionState("radiusState", 0.5, SCylinder.class, "setRadius", Number.class, SetRadius.Detail[].class);
+  private final CustomItemState<Expression> lengthState = this.createInitialPropertyValueExpressionState("lengthState", 1.0, SCylinder.class, "setLength", Number.class, SetLength.Detail[].class);
 
-	private AddCylinderManagedFieldComposite() {
-		super( UUID.fromString( "a674d706-3c7b-476b-979a-4a2b1cf8e17c" ), SCylinder.class );
-	}
+  private AddCylinderManagedFieldComposite() {
+    super(UUID.fromString("a674d706-3c7b-476b-979a-4a2b1cf8e17c"), SCylinder.class);
+  }
 
-	@Override protected ShapeDragModel getDragModel() {
-		return CylinderDragModel.getInstance();
-	}
+  @Override
+  protected ShapeDragModel getDragModel() {
+    return CylinderDragModel.getInstance();
+  }
 
-	public CustomItemState<Expression> getRadiusState() {
-		return this.radiusState;
-	}
+  public CustomItemState<Expression> getRadiusState() {
+    return this.radiusState;
+  }
 
-	public CustomItemState<Expression> getLengthState() {
-		return this.lengthState;
-	}
+  public CustomItemState<Expression> getLengthState() {
+    return this.lengthState;
+  }
 }

@@ -46,5 +46,5 @@ package org.lgna.story.event;
  * @author Dennis Cosgrove
  */
 public interface KeyPressListener {
-	public void keyPressed( KeyEvent event );
+  public void keyPressed(KeyEvent event);
 }

@@ -55,25 +55,25 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ConstructorsComposite extends MembersComposite<NamedUserConstructor> {
-	private static Map<NamedUserType, ConstructorsComposite> map = Maps.newHashMap();
+  private static Map<NamedUserType, ConstructorsComposite> map = Maps.newHashMap();
 
-	public static synchronized ConstructorsComposite getInstance( NamedUserType type ) {
-		ConstructorsComposite rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ConstructorsComposite( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized ConstructorsComposite getInstance(NamedUserType type) {
+    ConstructorsComposite rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ConstructorsComposite(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private ConstructorsComposite( NamedUserType type ) {
-		super( UUID.fromString( "4d972e95-b2c4-4308-bd74-11c516caedf0" ), new ConstructorData( type ) );
-	}
+  private ConstructorsComposite(NamedUserType type) {
+    super(UUID.fromString("4d972e95-b2c4-4308-bd74-11c516caedf0"), new ConstructorData(type));
+  }
 
-	@Override
-	protected ConstructorsView createView() {
-		return new ConstructorsView( this );
-	}
+  @Override
+  protected ConstructorsView createView() {
+    return new ConstructorsView(this);
+  }
 }

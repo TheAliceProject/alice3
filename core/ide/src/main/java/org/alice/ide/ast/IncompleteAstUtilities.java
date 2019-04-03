@@ -78,177 +78,177 @@ import org.lgna.project.ast.WhileLoop;
  * @author Dennis Cosgrove
  */
 public class IncompleteAstUtilities {
-	private IncompleteAstUtilities() {
-		throw new AssertionError();
-	}
+  private IncompleteAstUtilities() {
+    throw new AssertionError();
+  }
 
-	public static ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( Expression leftOperand, ArithmeticInfixExpression.Operator operator, AbstractType<?, ?, ?> rightOperandType, AbstractType<?, ?, ?> expressionType ) {
-		return new ArithmeticInfixExpression( leftOperand, operator, new EmptyExpression( rightOperandType ), expressionType );
-	}
+  public static ArithmeticInfixExpression createIncompleteArithmeticInfixExpression(Expression leftOperand, ArithmeticInfixExpression.Operator operator, AbstractType<?, ?, ?> rightOperandType, AbstractType<?, ?, ?> expressionType) {
+    return new ArithmeticInfixExpression(leftOperand, operator, new EmptyExpression(rightOperandType), expressionType);
+  }
 
-	public static ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( Expression leftOperand, ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
-		return createIncompleteArithmeticInfixExpression( leftOperand, operator, JavaType.getInstance( rightOperandCls ), JavaType.getInstance( expressionCls ) );
-	}
+  public static ArithmeticInfixExpression createIncompleteArithmeticInfixExpression(Expression leftOperand, ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls) {
+    return createIncompleteArithmeticInfixExpression(leftOperand, operator, JavaType.getInstance(rightOperandCls), JavaType.getInstance(expressionCls));
+  }
 
-	public static ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( AbstractType<?, ?, ?> leftOperandType, ArithmeticInfixExpression.Operator operator, AbstractType<?, ?, ?> rightOperandType, AbstractType<?, ?, ?> expressionType ) {
-		return createIncompleteArithmeticInfixExpression( new EmptyExpression( rightOperandType ), operator, rightOperandType, expressionType );
-	}
+  public static ArithmeticInfixExpression createIncompleteArithmeticInfixExpression(AbstractType<?, ?, ?> leftOperandType, ArithmeticInfixExpression.Operator operator, AbstractType<?, ?, ?> rightOperandType, AbstractType<?, ?, ?> expressionType) {
+    return createIncompleteArithmeticInfixExpression(new EmptyExpression(rightOperandType), operator, rightOperandType, expressionType);
+  }
 
-	public static ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( Class<?> leftOperandCls, ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
-		return createIncompleteArithmeticInfixExpression( JavaType.getInstance( leftOperandCls ), operator, JavaType.getInstance( rightOperandCls ), JavaType.getInstance( expressionCls ) );
-	}
+  public static ArithmeticInfixExpression createIncompleteArithmeticInfixExpression(Class<?> leftOperandCls, ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls) {
+    return createIncompleteArithmeticInfixExpression(JavaType.getInstance(leftOperandCls), operator, JavaType.getInstance(rightOperandCls), JavaType.getInstance(expressionCls));
+  }
 
-	public static ConditionalInfixExpression createIncompleteConditionalInfixExpression( Expression leftOperand, ConditionalInfixExpression.Operator operator ) {
-		return new ConditionalInfixExpression( leftOperand, operator, new EmptyExpression( JavaType.BOOLEAN_OBJECT_TYPE ) );
-	}
+  public static ConditionalInfixExpression createIncompleteConditionalInfixExpression(Expression leftOperand, ConditionalInfixExpression.Operator operator) {
+    return new ConditionalInfixExpression(leftOperand, operator, new EmptyExpression(JavaType.BOOLEAN_OBJECT_TYPE));
+  }
 
-	public static ConditionalInfixExpression createIncompleteConditionalInfixExpression( ConditionalInfixExpression.Operator operator ) {
-		return createIncompleteConditionalInfixExpression( new EmptyExpression( JavaType.BOOLEAN_OBJECT_TYPE ), operator );
-	}
+  public static ConditionalInfixExpression createIncompleteConditionalInfixExpression(ConditionalInfixExpression.Operator operator) {
+    return createIncompleteConditionalInfixExpression(new EmptyExpression(JavaType.BOOLEAN_OBJECT_TYPE), operator);
+  }
 
-	public static RelationalInfixExpression createIncompleteRelationalInfixExpression( AbstractType<?, ?, ?> leftOperandType, RelationalInfixExpression.Operator operator, AbstractType<?, ?, ?> rightOperandType ) {
-		return new RelationalInfixExpression( new EmptyExpression( rightOperandType ), operator, new EmptyExpression( rightOperandType ), leftOperandType, rightOperandType );
-	}
+  public static RelationalInfixExpression createIncompleteRelationalInfixExpression(AbstractType<?, ?, ?> leftOperandType, RelationalInfixExpression.Operator operator, AbstractType<?, ?, ?> rightOperandType) {
+    return new RelationalInfixExpression(new EmptyExpression(rightOperandType), operator, new EmptyExpression(rightOperandType), leftOperandType, rightOperandType);
+  }
 
-	public static RelationalInfixExpression createIncompleteRelationalInfixExpression( Class<?> leftOperandCls, RelationalInfixExpression.Operator operator, Class<?> rightOperandCls ) {
-		return createIncompleteRelationalInfixExpression( JavaType.getInstance( leftOperandCls ), operator, JavaType.getInstance( rightOperandCls ) );
-	}
+  public static RelationalInfixExpression createIncompleteRelationalInfixExpression(Class<?> leftOperandCls, RelationalInfixExpression.Operator operator, Class<?> rightOperandCls) {
+    return createIncompleteRelationalInfixExpression(JavaType.getInstance(leftOperandCls), operator, JavaType.getInstance(rightOperandCls));
+  }
 
-	public static LogicalComplement createIncompleteLogicalComplement() {
-		return new LogicalComplement( new EmptyExpression( JavaType.BOOLEAN_OBJECT_TYPE ) );
-	}
+  public static LogicalComplement createIncompleteLogicalComplement() {
+    return new LogicalComplement(new EmptyExpression(JavaType.BOOLEAN_OBJECT_TYPE));
+  }
 
-	public static LocalDeclarationStatement createIncompleteLocalDeclarationStatement() {
-		AbstractType<?, ?, ?> type = JavaType.OBJECT_TYPE;
-		return AstUtilities.createLocalDeclarationStatement( new UserLocal( "???", type, false ), new EmptyExpression( type ) );
-	}
+  public static LocalDeclarationStatement createIncompleteLocalDeclarationStatement() {
+    AbstractType<?, ?, ?> type = JavaType.OBJECT_TYPE;
+    return AstUtilities.createLocalDeclarationStatement(new UserLocal("???", type, false), new EmptyExpression(type));
+  }
 
-	public static CountLoop createIncompleteCountLoop() {
-		return AstUtilities.createCountLoop( new EmptyExpression( JavaType.INTEGER_OBJECT_TYPE ) );
-	}
+  public static CountLoop createIncompleteCountLoop() {
+    return AstUtilities.createCountLoop(new EmptyExpression(JavaType.INTEGER_OBJECT_TYPE));
+  }
 
-	public static WhileLoop createIncompleteWhileLoop() {
-		return AstUtilities.createWhileLoop( new EmptyExpression( JavaType.BOOLEAN_OBJECT_TYPE ) );
-	}
+  public static WhileLoop createIncompleteWhileLoop() {
+    return AstUtilities.createWhileLoop(new EmptyExpression(JavaType.BOOLEAN_OBJECT_TYPE));
+  }
 
-	public static ConditionalStatement createIncompleteConditionalStatement() {
-		return AstUtilities.createConditionalStatement( new EmptyExpression( JavaType.BOOLEAN_OBJECT_TYPE ) );
-	}
+  public static ConditionalStatement createIncompleteConditionalStatement() {
+    return AstUtilities.createConditionalStatement(new EmptyExpression(JavaType.BOOLEAN_OBJECT_TYPE));
+  }
 
-	public static ForEachInArrayLoop createIncompleteForEachInArrayLoop() {
-		return AstUtilities.createForEachInArrayLoop( new EmptyExpression( JavaType.getInstance( Object[].class ) ) );
-	}
+  public static ForEachInArrayLoop createIncompleteForEachInArrayLoop() {
+    return AstUtilities.createForEachInArrayLoop(new EmptyExpression(JavaType.getInstance(Object[].class)));
+  }
 
-	public static EachInArrayTogether createIncompleteEachInArrayTogether() {
-		return AstUtilities.createEachInArrayTogether( new EmptyExpression( JavaType.getInstance( Object[].class ) ) );
-	}
+  public static EachInArrayTogether createIncompleteEachInArrayTogether() {
+    return AstUtilities.createEachInArrayTogether(new EmptyExpression(JavaType.getInstance(Object[].class)));
+  }
 
-	public static MethodInvocation createIncompleteMethodInvocation( Expression expression, AbstractMethod method ) {
-		MethodInvocation rv = new MethodInvocation();
-		rv.expression.setValue( expression );
-		rv.method.setValue( method );
-		for( AbstractParameter parameter : method.getRequiredParameters() ) {
-			SimpleArgument argument = new SimpleArgument( parameter, new EmptyExpression( parameter.getValueType() ) );
-			rv.requiredArguments.add( argument );
-		}
-		return rv;
-	}
+  public static MethodInvocation createIncompleteMethodInvocation(Expression expression, AbstractMethod method) {
+    MethodInvocation rv = new MethodInvocation();
+    rv.expression.setValue(expression);
+    rv.method.setValue(method);
+    for (AbstractParameter parameter : method.getRequiredParameters()) {
+      SimpleArgument argument = new SimpleArgument(parameter, new EmptyExpression(parameter.getValueType()));
+      rv.requiredArguments.add(argument);
+    }
+    return rv;
+  }
 
-	public static MethodInvocation createIncompleteMethodInvocation( AbstractMethod method ) {
-		return IncompleteAstUtilities.createIncompleteMethodInvocation( new SelectedInstanceFactoryExpression( method.getDeclaringType() ), method );
-	}
+  public static MethodInvocation createIncompleteMethodInvocation(AbstractMethod method) {
+    return IncompleteAstUtilities.createIncompleteMethodInvocation(new SelectedInstanceFactoryExpression(method.getDeclaringType()), method);
+  }
 
-	public static ExpressionStatement createIncompleteMethodInvocationStatement( AbstractMethod method ) {
-		return new ExpressionStatement( createIncompleteMethodInvocation( method ) );
-	}
+  public static ExpressionStatement createIncompleteMethodInvocationStatement(AbstractMethod method) {
+    return new ExpressionStatement(createIncompleteMethodInvocation(method));
+  }
 
-	public static MethodInvocation createIncompleteStaticMethodInvocation( AbstractMethod method ) {
-		return IncompleteAstUtilities.createIncompleteMethodInvocation( new TypeExpression( method.getDeclaringType() ), method );
-	}
+  public static MethodInvocation createIncompleteStaticMethodInvocation(AbstractMethod method) {
+    return IncompleteAstUtilities.createIncompleteMethodInvocation(new TypeExpression(method.getDeclaringType()), method);
+  }
 
-	public static ExpressionStatement createIncompleteStaticMethodInvocationStatement( AbstractMethod method ) {
-		return new ExpressionStatement( createIncompleteStaticMethodInvocation( method ) );
-	}
+  public static ExpressionStatement createIncompleteStaticMethodInvocationStatement(AbstractMethod method) {
+    return new ExpressionStatement(createIncompleteStaticMethodInvocation(method));
+  }
 
-	public static MethodInvocation completeMethodInvocation( MethodInvocation rv, Expression... argumentExpressions ) {
-		ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
-		return AstUtilities.completeMethodInvocation( rv, projectDocumentFrame.getInstanceFactoryState().getValue().createExpression(), argumentExpressions );
-	}
+  public static MethodInvocation completeMethodInvocation(MethodInvocation rv, Expression... argumentExpressions) {
+    ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
+    return AstUtilities.completeMethodInvocation(rv, projectDocumentFrame.getInstanceFactoryState().getValue().createExpression(), argumentExpressions);
+  }
 
-	public static FieldAccess createIncompleteFieldAccess( AbstractField field ) {
-		return new FieldAccess(new SelectedInstanceFactoryExpression(field.getDeclaringType() ), field);
-	}
+  public static FieldAccess createIncompleteFieldAccess(AbstractField field) {
+    return new FieldAccess(new SelectedInstanceFactoryExpression(field.getDeclaringType()), field);
+  }
 
-	public static AssignmentExpression createIncompleteAssignmentExpression( Expression expression, AbstractField field ) {
-		FieldAccess fieldAccess = new FieldAccess(expression, field);
-		AbstractType<?, ?, ?> valueType = field.getValueType();
-		return new AssignmentExpression( valueType, fieldAccess, AssignmentExpression.Operator.ASSIGN, new EmptyExpression( valueType ) );
-	}
+  public static AssignmentExpression createIncompleteAssignmentExpression(Expression expression, AbstractField field) {
+    FieldAccess fieldAccess = new FieldAccess(expression, field);
+    AbstractType<?, ?, ?> valueType = field.getValueType();
+    return new AssignmentExpression(valueType, fieldAccess, AssignmentExpression.Operator.ASSIGN, new EmptyExpression(valueType));
+  }
 
-	private static AssignmentExpression createIncompleteAssignmentExpression() {
-		AbstractType<?, ?, ?> valueType = null;
-		FieldAccess leftSideExpression = null;
-		return new AssignmentExpression( valueType, leftSideExpression, AssignmentExpression.Operator.ASSIGN, new EmptyExpression( valueType ) );
-	}
+  private static AssignmentExpression createIncompleteAssignmentExpression() {
+    AbstractType<?, ?, ?> valueType = null;
+    FieldAccess leftSideExpression = null;
+    return new AssignmentExpression(valueType, leftSideExpression, AssignmentExpression.Operator.ASSIGN, new EmptyExpression(valueType));
+  }
 
-	public static AssignmentExpression createIncompleteAssignmentExpression( AbstractField field ) {
-		return IncompleteAstUtilities.createIncompleteAssignmentExpression( new SelectedInstanceFactoryExpression( field.getDeclaringType() ), field );
-	}
+  public static AssignmentExpression createIncompleteAssignmentExpression(AbstractField field) {
+    return IncompleteAstUtilities.createIncompleteAssignmentExpression(new SelectedInstanceFactoryExpression(field.getDeclaringType()), field);
+  }
 
-	public static ExpressionStatement createIncompleteAssignmentExpressionStatement( Expression expression, AbstractField field ) {
-		return new ExpressionStatement( createIncompleteAssignmentExpression( expression, field ) );
-	}
+  public static ExpressionStatement createIncompleteAssignmentExpressionStatement(Expression expression, AbstractField field) {
+    return new ExpressionStatement(createIncompleteAssignmentExpression(expression, field));
+  }
 
-	public static ExpressionStatement createIncompleteAssignmentExpressionStatement( AbstractField field ) {
-		return new ExpressionStatement( createIncompleteAssignmentExpression( field ) );
-	}
+  public static ExpressionStatement createIncompleteAssignmentExpressionStatement(AbstractField field) {
+    return new ExpressionStatement(createIncompleteAssignmentExpression(field));
+  }
 
-	public static ExpressionStatement createIncompleteAssignmentExpressionStatement() {
-		return new ExpressionStatement( createIncompleteAssignmentExpression() );
-	}
+  public static ExpressionStatement createIncompleteAssignmentExpressionStatement() {
+    return new ExpressionStatement(createIncompleteAssignmentExpression());
+  }
 
-	public static InstanceCreation createIncompleteInstanceCreation( AbstractConstructor constructor ) {
-		InstanceCreation rv = new InstanceCreation( constructor );
-		for( AbstractParameter parameter : constructor.getRequiredParameters() ) {
-			SimpleArgument argument = new SimpleArgument( parameter, new EmptyExpression( parameter.getValueType() ) );
-			rv.requiredArguments.add( argument );
-		}
-		return rv;
-	}
+  public static InstanceCreation createIncompleteInstanceCreation(AbstractConstructor constructor) {
+    InstanceCreation rv = new InstanceCreation(constructor);
+    for (AbstractParameter parameter : constructor.getRequiredParameters()) {
+      SimpleArgument argument = new SimpleArgument(parameter, new EmptyExpression(parameter.getValueType()));
+      rv.requiredArguments.add(argument);
+    }
+    return rv;
+  }
 
-	public static ReturnStatement createIncompleteReturnStatement( AbstractType<?, ?, ?> type ) {
-		return AstUtilities.createReturnStatement( type, new EmptyExpression( type ) );
-	}
+  public static ReturnStatement createIncompleteReturnStatement(AbstractType<?, ?, ?> type) {
+    return AstUtilities.createReturnStatement(type, new EmptyExpression(type));
+  }
 
-	public static AssignmentExpression createIncompleteLocalAssignment( UserLocal local ) {
-		return AstUtilities.createLocalAssignment( local, new EmptyExpression( local.valueType.getValue() ) );
-	}
+  public static AssignmentExpression createIncompleteLocalAssignment(UserLocal local) {
+    return AstUtilities.createLocalAssignment(local, new EmptyExpression(local.valueType.getValue()));
+  }
 
-	public static ExpressionStatement createIncompleteLocalAssignmentStatement( UserLocal local ) {
-		return AstUtilities.createLocalAssignmentStatement( local, new EmptyExpression( local.valueType.getValue() ) );
-	}
+  public static ExpressionStatement createIncompleteLocalAssignmentStatement(UserLocal local) {
+    return AstUtilities.createLocalAssignmentStatement(local, new EmptyExpression(local.valueType.getValue()));
+  }
 
-	public static AssignmentExpression createIncompleteLocalArrayAssignment( UserLocal local ) {
-		return AstUtilities.createLocalArrayAssignment( local, new EmptyExpression( JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( local.valueType.getValue().getComponentType() ) );
-	}
+  public static AssignmentExpression createIncompleteLocalArrayAssignment(UserLocal local) {
+    return AstUtilities.createLocalArrayAssignment(local, new EmptyExpression(JavaType.INTEGER_OBJECT_TYPE), new EmptyExpression(local.valueType.getValue().getComponentType()));
+  }
 
-	public static ExpressionStatement createIncompleteLocalArrayAssignmentStatement( UserLocal local ) {
-		return AstUtilities.createLocalArrayAssignmentStatement( local, new EmptyExpression( JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( local.valueType.getValue().getComponentType() ) );
-	}
+  public static ExpressionStatement createIncompleteLocalArrayAssignmentStatement(UserLocal local) {
+    return AstUtilities.createLocalArrayAssignmentStatement(local, new EmptyExpression(JavaType.INTEGER_OBJECT_TYPE), new EmptyExpression(local.valueType.getValue().getComponentType()));
+  }
 
-	public static AssignmentExpression createIncompleteParameterArrayAssignment( UserParameter parameter ) {
-		return AstUtilities.createParameterArrayAssignment( parameter, new EmptyExpression( JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( parameter.valueType.getValue().getComponentType() ) );
-	}
+  public static AssignmentExpression createIncompleteParameterArrayAssignment(UserParameter parameter) {
+    return AstUtilities.createParameterArrayAssignment(parameter, new EmptyExpression(JavaType.INTEGER_OBJECT_TYPE), new EmptyExpression(parameter.valueType.getValue().getComponentType()));
+  }
 
-	public static ExpressionStatement createIncompleteParameterArrayAssignmentStatement( UserParameter parameter ) {
-		return AstUtilities.createParameterArrayAssignmentStatement( parameter, new EmptyExpression( JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( parameter.valueType.getValue().getComponentType() ) );
-	}
+  public static ExpressionStatement createIncompleteParameterArrayAssignmentStatement(UserParameter parameter) {
+    return AstUtilities.createParameterArrayAssignmentStatement(parameter, new EmptyExpression(JavaType.INTEGER_OBJECT_TYPE), new EmptyExpression(parameter.valueType.getValue().getComponentType()));
+  }
 
-	public static StringConcatenation createIncompleteStringConcatenation( Expression leftOperand ) {
-		return AstUtilities.createStringConcatenation( leftOperand, new EmptyExpression( JavaType.OBJECT_TYPE ) );
-	}
+  public static StringConcatenation createIncompleteStringConcatenation(Expression leftOperand) {
+    return AstUtilities.createStringConcatenation(leftOperand, new EmptyExpression(JavaType.OBJECT_TYPE));
+  }
 
-	public static StringConcatenation createIncompleteStringConcatenation() {
-		return createIncompleteStringConcatenation( new EmptyExpression( JavaType.OBJECT_TYPE ) );
-	}
+  public static StringConcatenation createIncompleteStringConcatenation() {
+    return createIncompleteStringConcatenation(new EmptyExpression(JavaType.OBJECT_TYPE));
+  }
 }

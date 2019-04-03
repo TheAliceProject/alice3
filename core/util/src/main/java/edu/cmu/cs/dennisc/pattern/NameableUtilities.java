@@ -47,15 +47,15 @@ package edu.cmu.cs.dennisc.pattern;
  */
 
 public class NameableUtilities {
-	private NameableUtilities() {
-		throw new AssertionError();
-	}
+  private NameableUtilities() {
+    throw new AssertionError();
+  }
 
-	public static String safeGetName( Nameable nameable ) {
-		if( nameable != null ) {
-			return nameable.getName();
-		} else {
-			return null;
-		}
-	}
+  public static String safeGetName(Nameable nameable) {
+    if (nameable != null) {
+      return nameable.getName();
+    } else {
+      return null;
+    }
+  }
 }

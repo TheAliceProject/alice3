@@ -51,122 +51,109 @@ import java.util.BitSet;
  */
 public class PickHint extends BitSet {
 
-	public static enum PickType {
-		NOTHING,
-		VIEWABLE,
-		SELECTABLE,
-		MOVEABLE,
-		TURNABLE,
-		RESIZABLE,
-		TWO_D_HANDLE,
-		THREE_D_HANDLE,
-		CAMERA_MARKER,
-		OBJECT_MARKER,
-		ORTHOGRAPHIC_CAMERA,
-		PERSPECTIVE_CAMERA,
-		JOINT,
-		SUN;
+  public static enum PickType {
+    NOTHING, VIEWABLE, SELECTABLE, MOVEABLE, TURNABLE, RESIZABLE, TWO_D_HANDLE, THREE_D_HANDLE, CAMERA_MARKER, OBJECT_MARKER, ORTHOGRAPHIC_CAMERA, PERSPECTIVE_CAMERA, JOINT, SUN;
 
-		private PickType() {
-		}
+    private PickType() {
+    }
 
-		public PickHint pickHint() {
-			if( this.pickHint == null ) {
-				this.pickHint = new PickHint( this );
-			}
-			return this.pickHint;
-		}
+    public PickHint pickHint() {
+      if (this.pickHint == null) {
+        this.pickHint = new PickHint(this);
+      }
+      return this.pickHint;
+    }
 
-		private PickHint pickHint = null;
-	}
+    private PickHint pickHint = null;
+  }
 
-	public static final Element.Key<PickHint> PICK_HINT_KEY = Element.Key.createInstance( "PICK_HINT_KEY" );
+  public static final Element.Key<PickHint> PICK_HINT_KEY = Element.Key.createInstance("PICK_HINT_KEY");
 
-	//	protected static final int NUM_TYPES = PickType.values().length;
+  //  protected static final int NUM_TYPES = PickType.values().length;
 
-	private static PickHint MARKERS = null;
+  private static PickHint MARKERS = null;
 
-	public static PickHint getMarkersHint() {
-		if( MARKERS == null ) {
-			MARKERS = new PickHint( PickType.CAMERA_MARKER, PickType.OBJECT_MARKER );
-		}
-		return MARKERS;
-	}
+  public static PickHint getMarkersHint() {
+    if (MARKERS == null) {
+      MARKERS = new PickHint(PickType.CAMERA_MARKER, PickType.OBJECT_MARKER);
+    }
+    return MARKERS;
+  }
 
-	private static PickHint ANYTHING = null;
+  private static PickHint ANYTHING = null;
 
-	public static PickHint getAnythingHint() {
-		if( ANYTHING == null ) {
-			ANYTHING = createEverythingHint();
-		}
-		return ANYTHING;
-	}
+  public static PickHint getAnythingHint() {
+    if (ANYTHING == null) {
+      ANYTHING = createEverythingHint();
+    }
+    return ANYTHING;
+  }
 
-	//	public static final PickHint MOVEABLE_OBJECTS = new PickHint( PickType.MOVEABLE_OBJECT, PickType.MARKER );
+  //  public static final PickHint MOVEABLE_OBJECTS = new PickHint( PickType.MOVEABLE_OBJECT, PickType.MARKER );
 
-	private static PickHint ALL_HANDLES = null;
+  private static PickHint ALL_HANDLES = null;
 
-	public static PickHint getAllHandlesHint() {
-		if( ALL_HANDLES == null ) {
-			ALL_HANDLES = new PickHint( PickType.TWO_D_HANDLE, PickType.THREE_D_HANDLE );
-		}
-		return ALL_HANDLES;
-	}
+  public static PickHint getAllHandlesHint() {
+    if (ALL_HANDLES == null) {
+      ALL_HANDLES = new PickHint(PickType.TWO_D_HANDLE, PickType.THREE_D_HANDLE);
+    }
+    return ALL_HANDLES;
+  }
 
-	private static PickHint NON_INTERACTIVE = null;
+  private static PickHint NON_INTERACTIVE = null;
 
-	public static PickHint getNonInteractiveHint() {
-		if( NON_INTERACTIVE == null ) {
-			NON_INTERACTIVE = new PickHint( PickType.NOTHING );
-		}
-		return NON_INTERACTIVE;
-	}
+  public static PickHint getNonInteractiveHint() {
+    if (NON_INTERACTIVE == null) {
+      NON_INTERACTIVE = new PickHint(PickType.NOTHING);
+    }
+    return NON_INTERACTIVE;
+  }
 
-	public PickHint() {
-		super( getNumTypes() );
-	}
+  public PickHint() {
+    super(getNumTypes());
+  }
 
-	public PickHint( PickType... pickTypes ) {
-		super( getNumTypes() );
-		for( PickType pickType : pickTypes ) {
-			this.set( pickType.ordinal() );
-		}
-	}
+  public PickHint(PickType... pickTypes) {
+    super(getNumTypes());
+    for (PickType pickType : pickTypes) {
+      this.set(pickType.ordinal());
+    }
+  }
 
-	public static PickHint createEverythingHint() {
-		PickHint toReturn = new PickHint();
-		for( int i = 0; i < getNumTypes(); i++ ) {
-			toReturn.set( i );
-		}
-		return toReturn;
-	}
+  public static PickHint createEverythingHint() {
+    PickHint toReturn = new PickHint();
+    for (int i = 0; i < getNumTypes(); i++) {
+      toReturn.set(i);
+    }
+    return toReturn;
+  }
 
-	protected static int getNumTypes() {
-		return PickType.values().length;
-	}
+  protected static int getNumTypes() {
+    return PickType.values().length;
+  }
 
-	public boolean get( PickType pickType ) {
-		return this.get( pickType.ordinal() );
-	}
+  public boolean get(PickType pickType) {
+    return this.get(pickType.ordinal());
+  }
 
-	public void addPickType( PickType pickType ) {
-		this.set( pickType.ordinal() );
-	}
+  public void addPickType(PickType pickType) {
+    this.set(pickType.ordinal());
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "pick: " );
-		boolean matches = false;
-		for( PickType pickType : PickType.values() ) {
-			if( this.intersects( pickType.pickHint() ) ) {
-				matches = true;
-				sb.append( pickType.toString() + " " );
-			}
-		}
-		if( !matches ) {
-			sb.append( "No Matches" );
-		}
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("pick: ");
+    boolean matches = false;
+    for (PickType pickType : PickType.values()) {
+      if (this.intersects(pickType.pickHint())) {
+        matches = true;
+        sb.append(pickType.toString() + " ");
+      }
+    }
+    if (!matches) {
+      sb.append("No Matches");
+    }
+    return sb.toString();
+  }
 }

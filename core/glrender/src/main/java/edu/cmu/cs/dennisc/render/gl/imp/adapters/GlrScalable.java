@@ -53,72 +53,72 @@ import edu.cmu.cs.dennisc.scenegraph.Scalable;
  * @author Dennis Cosgrove
  */
 public class GlrScalable extends GlrComposite<Scalable> {
-	@Override
-	public void renderOpaque( RenderContext rc ) {
-		if( this.isIdentity ) {
-			super.renderOpaque( rc );
-		} else {
-			rc.gl.glPushMatrix();
-			rc.incrementScaledCount();
-			try {
-				rc.gl.glScaled( this.x, this.y, this.z );
-				super.renderOpaque( rc );
-			} finally {
-				rc.decrementScaledCount();
-				rc.gl.glPopMatrix();
-			}
-		}
-	}
+  @Override
+  public void renderOpaque(RenderContext rc) {
+    if (this.isIdentity) {
+      super.renderOpaque(rc);
+    } else {
+      rc.gl.glPushMatrix();
+      rc.incrementScaledCount();
+      try {
+        rc.gl.glScaled(this.x, this.y, this.z);
+        super.renderOpaque(rc);
+      } finally {
+        rc.decrementScaledCount();
+        rc.gl.glPopMatrix();
+      }
+    }
+  }
 
-	@Override
-	public void renderGhost( RenderContext rc, GlrGhost root ) {
-		if( this.isIdentity ) {
-			super.renderGhost( rc, root );
-		} else {
-			rc.gl.glPushMatrix();
-			rc.incrementScaledCount();
-			try {
-				rc.gl.glScaled( this.x, this.y, this.z );
-				super.renderGhost( rc, root );
-			} finally {
-				rc.decrementScaledCount();
-				rc.gl.glPopMatrix();
-			}
-		}
-	}
+  @Override
+  public void renderGhost(RenderContext rc, GlrGhost root) {
+    if (this.isIdentity) {
+      super.renderGhost(rc, root);
+    } else {
+      rc.gl.glPushMatrix();
+      rc.incrementScaledCount();
+      try {
+        rc.gl.glScaled(this.x, this.y, this.z);
+        super.renderGhost(rc, root);
+      } finally {
+        rc.decrementScaledCount();
+        rc.gl.glPopMatrix();
+      }
+    }
+  }
 
-	@Override
-	public void pick( PickContext pc, PickParameters pickParameters ) {
-		if( this.isIdentity ) {
-			super.pick( pc, pickParameters );
-		} else {
-			pc.gl.glPushMatrix();
-			pc.incrementScaledCount();
-			try {
-				pc.gl.glScaled( this.x, this.y, this.z );
-				super.pick( pc, pickParameters );
-			} finally {
-				pc.decrementScaledCount();
-				pc.gl.glPopMatrix();
-			}
-		}
-	}
+  @Override
+  public void pick(PickContext pc, PickParameters pickParameters) {
+    if (this.isIdentity) {
+      super.pick(pc, pickParameters);
+    } else {
+      pc.gl.glPushMatrix();
+      pc.incrementScaledCount();
+      try {
+        pc.gl.glScaled(this.x, this.y, this.z);
+        super.pick(pc, pickParameters);
+      } finally {
+        pc.decrementScaledCount();
+        pc.gl.glPopMatrix();
+      }
+    }
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.scale ) {
-			Dimension3 scale = owner.scale.getValue();
-			this.isIdentity = ( scale.x == 1.0 ) && ( scale.y == 1.0 ) && ( scale.z == 1.0 );
-			this.x = scale.x;
-			this.y = scale.y;
-			this.z = scale.z;
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.scale) {
+      Dimension3 scale = owner.scale.getValue();
+      this.isIdentity = (scale.x == 1.0) && (scale.y == 1.0) && (scale.z == 1.0);
+      this.x = scale.x;
+      this.y = scale.y;
+      this.z = scale.z;
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private double x = Double.NaN;
-	private double y = Double.NaN;
-	private double z = Double.NaN;
-	private boolean isIdentity;
+  private double x = Double.NaN;
+  private double y = Double.NaN;
+  private double z = Double.NaN;
+  private boolean isIdentity;
 }

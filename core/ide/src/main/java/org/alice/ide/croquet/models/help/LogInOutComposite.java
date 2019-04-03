@@ -53,67 +53,67 @@ import org.lgna.croquet.event.ValueListener;
  */
 public class LogInOutComposite extends CardOwnerComposite {
 
-	private final LogInCard logInCard;
-	private final LogOutCard logOutCard;
-	private AbstractLoginComposite composite;
-	private final ValueListener<Boolean> isLoggedInListener = new ValueListener<Boolean>() {
-		@Override
-		public void valueChanged( ValueEvent<Boolean> e ) {
-			updateLogInOutComposite();
-		}
-	};
+  private final LogInCard logInCard;
+  private final LogOutCard logOutCard;
+  private AbstractLoginComposite composite;
+  private final ValueListener<Boolean> isLoggedInListener = new ValueListener<Boolean>() {
+    @Override
+    public void valueChanged(ValueEvent<Boolean> e) {
+      updateLogInOutComposite();
+    }
+  };
 
-	public LogInOutComposite( UUID id, AbstractLoginComposite loginComposite ) {
-		super( id );
-		this.composite = loginComposite;
-		this.logInCard = new LogInCard( loginComposite );
-		this.logOutCard = new LogOutCard( loginComposite.getLogOutOperation() );
+  public LogInOutComposite(UUID id, AbstractLoginComposite loginComposite) {
+    super(id);
+    this.composite = loginComposite;
+    this.logInCard = new LogInCard(loginComposite);
+    this.logOutCard = new LogOutCard(loginComposite.getLogOutOperation());
 
-		this.addCard( this.logInCard );
-		this.addCard( this.logOutCard );
+    this.addCard(this.logInCard);
+    this.addCard(this.logOutCard);
 
-		//todo: move to activate/deactivate
-		composite.getIsLoggedIn().addNewSchoolValueListener( isLoggedInListener );
-	}
+    //todo: move to activate/deactivate
+    composite.getIsLoggedIn().addNewSchoolValueListener(isLoggedInListener);
+  }
 
-	private void updateLogInOutComposite() {
-		if( composite.getIsLoggedIn().getValue() ) {
-			logOutCard.updateWelcomeString( composite.updateUserNameForWelcomeString() );
-			this.showCard( logOutCard );
-		} else {
-			this.showCard( logInCard );
-		}
-		this.getView().getAwtComponent().repaint();
-	}
+  private void updateLogInOutComposite() {
+    if (composite.getIsLoggedIn().getValue()) {
+      logOutCard.updateWelcomeString(composite.updateUserNameForWelcomeString());
+      this.showCard(logOutCard);
+    } else {
+      this.showCard(logInCard);
+    }
+    this.getView().getAwtComponent().repaint();
+  }
 
-	public AbstractLoginComposite getComposite() {
-		return this.composite;
-	}
+  public AbstractLoginComposite getComposite() {
+    return this.composite;
+  }
 
-	public LogOutCard getLogOutCard() {
-		return this.logOutCard;
-	}
+  public LogOutCard getLogOutCard() {
+    return this.logOutCard;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		Thread loginThread = new Thread( new Runnable() {
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    Thread loginThread = new Thread(new Runnable() {
 
-			@Override
-			public void run() {
-				if( composite.getIsRememberingState().getValue() && ( composite.getUserNameState().getValue().length() > 0 ) && ( composite.getPasswordState().getValue().length() > 0 ) ) {
-					composite.isClearedForCommit();
-				}
-			}
-		} );
-		loginThread.start();
-	}
+      @Override
+      public void run() {
+        if (composite.getIsRememberingState().getValue() && (composite.getUserNameState().getValue().length() > 0) && (composite.getPasswordState().getValue().length() > 0)) {
+          composite.isClearedForCommit();
+        }
+      }
+    });
+    loginThread.start();
+  }
 
-	public boolean getCanConnect() {
-		return composite.getCanLogIn();
-	}
+  public boolean getCanConnect() {
+    return composite.getCanLogIn();
+  }
 
-	public void addListener( LogInOutListener listener ) {
-		composite.addListener( listener );
-	}
+  public void addListener(LogInOutListener listener) {
+    composite.addListener(listener);
+  }
 }

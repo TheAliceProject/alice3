@@ -52,73 +52,73 @@ import java.awt.Point;
  */
 public class MouseDragCondition extends MousePickBasedCondition {
 
-	private static final double MIN_MOUSE_MOVE = 2.0d;
+  private static final double MIN_MOUSE_MOVE = 2.0d;
 
-	public MouseDragCondition( int mouseButton, PickCondition pickCondition ) {
-		this( mouseButton, pickCondition, null );
-	}
+  public MouseDragCondition(int mouseButton, PickCondition pickCondition) {
+    this(mouseButton, pickCondition, null);
+  }
 
-	public MouseDragCondition( int mouseButton, PickCondition pickCondition, ModifierMask modifierMask ) {
-		super( mouseButton, pickCondition, modifierMask );
-	}
+  public MouseDragCondition(int mouseButton, PickCondition pickCondition, ModifierMask modifierMask) {
+    super(mouseButton, pickCondition, modifierMask);
+  }
 
-	@Override
-	public boolean stateChanged( InputState currentState, InputState previousState ) {
-		//Null out the cached mouseDownLocation when the current state becomes invalid
-		if( !testInputs( currentState ) ) {
-			this.mouseDownLocation = null;
-		}
-		return ( super.stateChanged( currentState, previousState ) || !currentState.getMouseLocation().equals( previousState.getMouseLocation() ) );
-	}
+  @Override
+  public boolean stateChanged(InputState currentState, InputState previousState) {
+    //Null out the cached mouseDownLocation when the current state becomes invalid
+    if (!testInputs(currentState)) {
+      this.mouseDownLocation = null;
+    }
+    return (super.stateChanged(currentState, previousState) || !currentState.getMouseLocation().equals(previousState.getMouseLocation()));
+  }
 
-	@Override
-	public boolean isRunning( InputState currentState, InputState previousState ) {
-		return this.hasStarted && testState( currentState ) && testState( previousState );
-	}
+  @Override
+  public boolean isRunning(InputState currentState, InputState previousState) {
+    return this.hasStarted && testState(currentState) && testState(previousState);
+  }
 
-	@Override
-	public boolean justStarted( InputState currentState, InputState previousState ) {
-		boolean testClickVal = testInputsAndPick( currentState );
-		boolean testPreviousInputVal = testInputs( previousState );
-		//System.out.println("Checking justStarted in mouse drag.\n  click val: "+testClickVal+", previous input: "+testPreviousInputVal);
-		if( testClickVal && !testPreviousInputVal ) {
-			//			System.out.println("Setting mouseDownLocation: "+this.hashCode());
-			this.mouseDownLocation = new Point( currentState.getMouseLocation() );
-		}
-		boolean testCurrentInputs = testInputs( currentState );
-		//System.out.println("  current input: "+testCurrentInputs);
-		if( testCurrentInputs ) {
-			if( ( this.mouseDownLocation != null ) && ( currentState.getMouseLocation().distance( this.mouseDownLocation ) >= MIN_MOUSE_MOVE ) ) {
-				//				System.out.println("valid drag: "+this.hashCode());
-				this.mouseDownLocation = null;
-				this.hasStarted = true;
-				return true;
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean justStarted(InputState currentState, InputState previousState) {
+    boolean testClickVal = testInputsAndPick(currentState);
+    boolean testPreviousInputVal = testInputs(previousState);
+    //System.out.println("Checking justStarted in mouse drag.\n  click val: "+testClickVal+", previous input: "+testPreviousInputVal);
+    if (testClickVal && !testPreviousInputVal) {
+      //      System.out.println("Setting mouseDownLocation: "+this.hashCode());
+      this.mouseDownLocation = new Point(currentState.getMouseLocation());
+    }
+    boolean testCurrentInputs = testInputs(currentState);
+    //System.out.println("  current input: "+testCurrentInputs);
+    if (testCurrentInputs) {
+      if ((this.mouseDownLocation != null) && (currentState.getMouseLocation().distance(this.mouseDownLocation) >= MIN_MOUSE_MOVE)) {
+        //        System.out.println("valid drag: "+this.hashCode());
+        this.mouseDownLocation = null;
+        this.hasStarted = true;
+        return true;
+      }
+    }
+    return false;
+  }
 
-	@Override
-	public boolean justEnded( InputState currentState, InputState previousState ) {
-		if( this.hasStarted && !testState( currentState ) && testState( previousState ) ) {
-			this.hasStarted = false;
-			return true;
-		}
-		return false;
-	}
+  @Override
+  public boolean justEnded(InputState currentState, InputState previousState) {
+    if (this.hasStarted && !testState(currentState) && testState(previousState)) {
+      this.hasStarted = false;
+      return true;
+    }
+    return false;
+  }
 
-	@Override
-	public boolean clicked( InputState currentState, InputState previousState ) {
-		//		if (!this.hasStarted && !testState(currentState) && testState(previousState))
-		//		{
-		//			if (!testMouse(currentState) && testMouse(previousState))
-		//			{
-		//				return true;
-		//			}
-		//		}
-		return false;
-	}
+  @Override
+  public boolean clicked(InputState currentState, InputState previousState) {
+    //    if (!this.hasStarted && !testState(currentState) && testState(previousState))
+    //    {
+    //      if (!testMouse(currentState) && testMouse(previousState))
+    //      {
+    //        return true;
+    //      }
+    //    }
+    return false;
+  }
 
-	private Point mouseDownLocation;
-	protected boolean hasStarted;
+  private Point mouseDownLocation;
+  protected boolean hasStarted;
 }

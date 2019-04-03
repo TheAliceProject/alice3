@@ -51,25 +51,25 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public class EmptyIcon implements Icon {
-	private final int width;
-	private final int height;
+  private final int width;
+  private final int height;
 
-	public EmptyIcon( int width, int height ) {
-		this.width = width;
-		this.height = height;
-	}
+  public EmptyIcon(int width, int height) {
+    this.width = width;
+    this.height = height;
+  }
 
-	@Override
-	public int getIconWidth() {
-		return this.width;
-	}
+  @Override
+  public int getIconWidth() {
+    return this.width;
+  }
 
-	@Override
-	public int getIconHeight() {
-		return this.height;
-	}
+  @Override
+  public int getIconHeight() {
+    return this.height;
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-	}
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+  }
 }

@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitMRacer implements MaleAdultFullBodyOutfit {
-	BLUE,
-	RED,
-	WHITE;
+  BLUE, RED, WHITE
 
 }

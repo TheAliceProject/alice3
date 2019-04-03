@@ -52,15 +52,15 @@ import org.lgna.project.ast.Statement;
  * @author Dennis Cosgrove
  */
 public class InsertStatementView extends DeclarationLikeSubstanceView {
-	public InsertStatementView( InsertStatementComposite<?> composite ) {
-		super( composite );
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getColorFor( Statement.class ) );
-	}
+  public InsertStatementView(InsertStatementComposite<?> composite) {
+    super(composite);
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getColorFor(Statement.class));
+  }
 
-	@Override
-	public SwingComponentView<?> createPreviewSubComponent() {
-		InsertStatementComposite<?> composite = (InsertStatementComposite<?>)this.getComposite();
-		Statement statement = composite.getPreviewValue();
-		return PreviewAstI18nFactory.getInstance().createStatementPane( statement );
-	}
+  @Override
+  public SwingComponentView<?> createPreviewSubComponent() {
+    InsertStatementComposite<?> composite = (InsertStatementComposite<?>) this.getComposite();
+    Statement statement = composite.getPreviewValue();
+    return PreviewAstI18nFactory.getInstance().createStatementPane(statement);
+  }
 }

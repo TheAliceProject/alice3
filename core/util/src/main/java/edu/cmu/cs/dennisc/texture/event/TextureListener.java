@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.texture.event;
  * @author Dennis Cosgrove
  */
 public interface TextureListener {
-	public void textureChanged( TextureEvent textureEvent );
+  public void textureChanged(TextureEvent textureEvent);
 }

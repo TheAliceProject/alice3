@@ -51,9 +51,9 @@ import java.util.Collection;
  */
 
 public interface NameChangeListenable {
-	public void addNameListener( NameListener nameListener );
+  public void addNameListener(NameListener nameListener);
 
-	public void removeNameListener( NameListener nameListener );
+  public void removeNameListener(NameListener nameListener);
 
-	public Collection<NameListener> getNameListeners();
+  public Collection<NameListener> getNameListeners();
 }

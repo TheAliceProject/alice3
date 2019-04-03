@@ -67,102 +67,99 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCodeDeclarationView extends DeclarationView {
-	public AbstractCodeDeclarationView( CodeComposite composite, CodePanelWithDropReceptor codePanelWithDropReceptor ) {
-		super( composite );
-		this.codePanelWithDropReceptor = codePanelWithDropReceptor;
+  public AbstractCodeDeclarationView(CodeComposite composite, CodePanelWithDropReceptor codePanelWithDropReceptor) {
+    super(composite);
+    this.codePanelWithDropReceptor = codePanelWithDropReceptor;
 
-		AbstractCode code = composite.getDeclaration();
+    AbstractCode code = composite.getDeclaration();
 
-		SwingComponentView<?> controlFlowComponent;
-		if( IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-			controlFlowComponent = ControlFlowComposite.getInstance( code ).getView();
-		} else {
-			controlFlowComponent = null;
-		}
+    SwingComponentView<?> controlFlowComponent;
+    if (IsAlwaysShowingBlocksState.getInstance().getValue()) {
+      controlFlowComponent = ControlFlowComposite.getInstance(code).getView();
+    } else {
+      controlFlowComponent = null;
+    }
 
-		UserFunctionStatusComposite userFunctionStatusComposite = composite.getUserFunctionStatusComposite();
-		SwingComponentView<?> pageEndComponent;
-		if( userFunctionStatusComposite != null ) {
-			if( controlFlowComponent != null ) {
-				pageEndComponent = new BorderPanel.Builder()
-						.center( userFunctionStatusComposite.getView() )
-						.pageEnd( controlFlowComponent )
-						.build();
-			} else {
-				pageEndComponent = userFunctionStatusComposite.getView();
-			}
-		} else {
-			if( controlFlowComponent != null ) {
-				pageEndComponent = controlFlowComponent;
-			} else {
-				pageEndComponent = null;
-			}
-		}
+    UserFunctionStatusComposite userFunctionStatusComposite = composite.getUserFunctionStatusComposite();
+    SwingComponentView<?> pageEndComponent;
+    if (userFunctionStatusComposite != null) {
+      if (controlFlowComponent != null) {
+        pageEndComponent = new BorderPanel.Builder().center(userFunctionStatusComposite.getView()).pageEnd(controlFlowComponent).build();
+      } else {
+        pageEndComponent = userFunctionStatusComposite.getView();
+      }
+    } else {
+      if (controlFlowComponent != null) {
+        pageEndComponent = controlFlowComponent;
+      } else {
+        pageEndComponent = null;
+      }
+    }
 
-		if( pageEndComponent != null ) {
-			this.addPageEndComponent( pageEndComponent );
-		}
-		this.setBackgroundColor( this.codePanelWithDropReceptor.getBackgroundColor() );
-	}
+    if (pageEndComponent != null) {
+      this.addPageEndComponent(pageEndComponent);
+    }
+    this.setBackgroundColor(this.codePanelWithDropReceptor.getBackgroundColor());
+  }
 
-	@Deprecated
-	public final CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
-		return this.codePanelWithDropReceptor;
-	}
+  @Deprecated
+  public final CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
+    return this.codePanelWithDropReceptor;
+  }
 
-	@Override
-	public Printable getPrintable() {
-		return this.getCodePanelWithDropReceptor().getPrintable();
-	}
+  @Override
+  public Printable getPrintable() {
+    return this.getCodePanelWithDropReceptor().getPrintable();
+  }
 
-	@Override
-	public void addPotentialDropReceptors( List<DropReceptor> out, IdeDragModel dragModel ) {
-		if( dragModel instanceof CodeDragModel ) {
-			CodeDragModel codeDragModel = (CodeDragModel)dragModel;
-			final AbstractType<?, ?, ?> type = codeDragModel.getType();
-			if( type == JavaType.VOID_TYPE ) {
-				//pass
-			} else {
-				List<ExpressionPropertyDropDownPane> list = HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new Criterion<ExpressionPropertyDropDownPane>() {
-					@Override
-					public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
-						AbstractType<?, ?, ?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
-						assert expressionType != null : expressionPropertyDropDownPane.getExpressionProperty();
-						if( expressionType.isAssignableFrom( type ) ) {
-							return true;
-							//						} else {
-							//							if( type.isArray() ) {
-							//								if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
-							//									return true;
-							//								} else {
-							//									for( org.lgna.project.ast.JavaType integerType : org.lgna.project.ast.JavaType.INTEGER_TYPES ) {
-							//										if( expressionType == integerType ) {
-							//											return true;
-							//										}
-							//									}
-							//								}
-							//							}
-						}
-						return false;
-					}
-				} );
-				for( ExpressionPropertyDropDownPane pane : list ) {
-					out.add( pane.getDropReceptor() );
-				}
-			}
-			CodePanelWithDropReceptor codePanelWithDropReceptor = this.getCodePanelWithDropReceptor();
-			DropReceptor dropReceptor = codePanelWithDropReceptor.getDropReceptor();
-			if( dropReceptor.isPotentiallyAcceptingOf( codeDragModel ) ) {
-				out.add( dropReceptor );
-			}
-		}
-	}
+  @Override
+  public void addPotentialDropReceptors(List<DropReceptor> out, IdeDragModel dragModel) {
+    if (dragModel instanceof CodeDragModel) {
+      CodeDragModel codeDragModel = (CodeDragModel) dragModel;
+      final AbstractType<?, ?, ?> type = codeDragModel.getType();
+      if (type == JavaType.VOID_TYPE) {
+        //pass
+      } else {
+        List<ExpressionPropertyDropDownPane> list = HierarchyUtilities.findAllMatches(this, ExpressionPropertyDropDownPane.class, new Criterion<ExpressionPropertyDropDownPane>() {
+          @Override
+          public boolean accept(ExpressionPropertyDropDownPane expressionPropertyDropDownPane) {
+            AbstractType<?, ?, ?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
+            assert expressionType != null : expressionPropertyDropDownPane.getExpressionProperty();
+            if (expressionType.isAssignableFrom(type)) {
+              return true;
+              //            } else {
+              //              if( type.isArray() ) {
+              //                if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
+              //                  return true;
+              //                } else {
+              //                  for( org.lgna.project.ast.JavaType integerType : org.lgna.project.ast.JavaType.INTEGER_TYPES ) {
+              //                    if( expressionType == integerType ) {
+              //                      return true;
+              //                    }
+              //                  }
+              //                }
+              //              }
+            }
+            return false;
+          }
+        });
+        for (ExpressionPropertyDropDownPane pane : list) {
+          out.add(pane.getDropReceptor());
+        }
+      }
+      CodePanelWithDropReceptor codePanelWithDropReceptor = this.getCodePanelWithDropReceptor();
+      DropReceptor dropReceptor = codePanelWithDropReceptor.getDropReceptor();
+      if (dropReceptor.isPotentiallyAcceptingOf(codeDragModel)) {
+        out.add(dropReceptor);
+      }
+    }
+  }
 
-	@Override
-	protected void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
-		super.setJavaCodeOnTheSide( value, isFirstTime );
-		this.codePanelWithDropReceptor.setJavaCodeOnTheSide( value, isFirstTime );
-	}
+  @Override
+  protected void setJavaCodeOnTheSide(boolean value, boolean isFirstTime) {
+    super.setJavaCodeOnTheSide(value, isFirstTime);
+    this.codePanelWithDropReceptor.setJavaCodeOnTheSide(value, isFirstTime);
+  }
 
-	private final CodePanelWithDropReceptor codePanelWithDropReceptor;
+  private final CodePanelWithDropReceptor codePanelWithDropReceptor;
 }

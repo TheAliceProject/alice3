@@ -46,41 +46,41 @@ package edu.cmu.cs.dennisc.animation;
  * @author Dennis Cosgrove
  */
 public class FrameBasedAnimator extends AbstractAnimator {
-	private double m_framesPerSecond;
+  private double m_framesPerSecond;
 
-	private double m_tDelta;
-	private double m_tPrevious = Double.NaN;
+  private double m_tDelta;
+  private double m_tPrevious = Double.NaN;
 
-	public FrameBasedAnimator() {
-		this( 30.0 );
-	}
+  public FrameBasedAnimator() {
+    this(30.0);
+  }
 
-	public FrameBasedAnimator( double framesPerSecond ) {
-		setFramesPerSecond( framesPerSecond );
-	}
+  public FrameBasedAnimator(double framesPerSecond) {
+    setFramesPerSecond(framesPerSecond);
+  }
 
-	public double getFramesPerSecond() {
-		return m_framesPerSecond;
-	}
+  public double getFramesPerSecond() {
+    return m_framesPerSecond;
+  }
 
-	public void setFramesPerSecond( double framesPerSecond ) {
-		m_framesPerSecond = framesPerSecond;
-		m_tDelta = 1.0 / m_framesPerSecond;
-	}
+  public void setFramesPerSecond(double framesPerSecond) {
+    m_framesPerSecond = framesPerSecond;
+    m_tDelta = 1.0 / m_framesPerSecond;
+  }
 
-	@Override
-	protected void updateCurrentTime( boolean isPaused ) {
-		double tCurrent;
-		if( Double.isNaN( m_tPrevious ) ) {
-			tCurrent = 0.0;
-		} else {
-			if( isPaused ) {
-				tCurrent = m_tPrevious;
-			} else {
-				tCurrent = m_tPrevious + ( m_tDelta * getSpeedFactor() );
-			}
-		}
-		m_tPrevious = tCurrent;
-		setCurrentTime( tCurrent );
-	}
+  @Override
+  protected void updateCurrentTime(boolean isPaused) {
+    double tCurrent;
+    if (Double.isNaN(m_tPrevious)) {
+      tCurrent = 0.0;
+    } else {
+      if (isPaused) {
+        tCurrent = m_tPrevious;
+      } else {
+        tCurrent = m_tPrevious + (m_tDelta * getSpeedFactor());
+      }
+    }
+    m_tPrevious = tCurrent;
+    setCurrentTime(tCurrent);
+  }
 }

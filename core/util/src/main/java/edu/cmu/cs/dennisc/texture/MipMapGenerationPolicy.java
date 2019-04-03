@@ -46,6 +46,5 @@ package edu.cmu.cs.dennisc.texture;
  * @author Dennis Cosgrove
  */
 public enum MipMapGenerationPolicy {
-	PAINT_EACH_INDIVIDUAL_LEVEL,
-	PAINT_ONLY_HIGHEST_LEVEL_THEN_SCALE_REMAINING
+  PAINT_EACH_INDIVIDUAL_LEVEL, PAINT_ONLY_HIGHEST_LEVEL_THEN_SCALE_REMAINING
 }

@@ -56,44 +56,44 @@ import org.lgna.story.resources.BipedResource;
  */
 public final class BipedImp extends JointedModelImp<SBiped, BipedResource> {
 
-	public BipedImp( SBiped abstraction, JointImplementationAndVisualDataFactory<BipedResource> factory ) {
-		super( abstraction, factory );
-	}
+  public BipedImp(SBiped abstraction, JointImplementationAndVisualDataFactory<BipedResource> factory) {
+    super(abstraction, factory);
+  }
 
-	@Override
-	protected Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint( this.getJointImplementation( BipedResource.HEAD ) );
-	}
+  @Override
+  protected Vector4 getThoughtBubbleOffset() {
+    return this.getTopOffsetForJoint(this.getJointImplementation(BipedResource.HEAD));
+  }
 
-	@Override
-	protected Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint( this.getJointImplementation( BipedResource.MOUTH ) );
-	}
+  @Override
+  protected Vector4 getSpeechBubbleOffset() {
+    return this.getFrontOffsetForJoint(this.getJointImplementation(BipedResource.MOUTH));
+  }
 
-	public void reachFor( SThing entity, Limb reachingLimb ) {
-		JointImp anchor;
-		JointImp end;
-		switch( reachingLimb ) {
-		case RIGHT_ARM:
-			anchor = EmployeesOnly.getImplementation( this.getAbstraction().getRightClavicle() );
-			end = EmployeesOnly.getImplementation( this.getAbstraction().getRightWrist() );
-			break;
-		case LEFT_ARM:
-			anchor = EmployeesOnly.getImplementation( this.getAbstraction().getLeftClavicle() );
-			end = EmployeesOnly.getImplementation( this.getAbstraction().getLeftWrist() );
-			break;
-		case RIGHT_LEG:
-			anchor = EmployeesOnly.getImplementation( this.getAbstraction().getRightHip() );
-			end = EmployeesOnly.getImplementation( this.getAbstraction().getRightFoot() );
-			break;
-		case LEFT_LEG:
-			anchor = EmployeesOnly.getImplementation( this.getAbstraction().getLeftHip() );
-			end = EmployeesOnly.getImplementation( this.getAbstraction().getLeftFoot() );
-			break;
-		default:
-			System.out.println( "Unhandled LIMB: " + reachingLimb );
-			return;
-		}
-		IKCore.moveChainToPointInSceneSpace( anchor, end, EmployeesOnly.getImplementation( entity ).getTransformation( AsSeenBy.SCENE ).translation );
-	}
+  public void reachFor(SThing entity, Limb reachingLimb) {
+    JointImp anchor;
+    JointImp end;
+    switch (reachingLimb) {
+    case RIGHT_ARM:
+      anchor = EmployeesOnly.getImplementation(this.getAbstraction().getRightClavicle());
+      end = EmployeesOnly.getImplementation(this.getAbstraction().getRightWrist());
+      break;
+    case LEFT_ARM:
+      anchor = EmployeesOnly.getImplementation(this.getAbstraction().getLeftClavicle());
+      end = EmployeesOnly.getImplementation(this.getAbstraction().getLeftWrist());
+      break;
+    case RIGHT_LEG:
+      anchor = EmployeesOnly.getImplementation(this.getAbstraction().getRightHip());
+      end = EmployeesOnly.getImplementation(this.getAbstraction().getRightFoot());
+      break;
+    case LEFT_LEG:
+      anchor = EmployeesOnly.getImplementation(this.getAbstraction().getLeftHip());
+      end = EmployeesOnly.getImplementation(this.getAbstraction().getLeftFoot());
+      break;
+    default:
+      System.out.println("Unhandled LIMB: " + reachingLimb);
+      return;
+    }
+    IKCore.moveChainToPointInSceneSpace(anchor, end, EmployeesOnly.getImplementation(entity).getTransformation(AsSeenBy.SCENE).translation);
+  }
 }

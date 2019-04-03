@@ -57,38 +57,38 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PropertyState extends StandardExpressionState {
-	private final JavaMethod setter;
+  private final JavaMethod setter;
 
-	public PropertyState( Group group, UUID migrationId, JavaMethod setter ) {
-		super( group, migrationId, null );
-		this.setter = setter;
-	}
+  public PropertyState(Group group, UUID migrationId, JavaMethod setter) {
+    super(group, migrationId, null);
+    this.setter = setter;
+  }
 
-	public JavaMethod getSetter() {
-		return this.setter;
-	}
+  public JavaMethod getSetter() {
+    return this.setter;
+  }
 
-	private JavaMethodParameter getParameter0() {
-		return (JavaMethodParameter)this.setter.getRequiredParameters().get( 0 );
-	}
+  private JavaMethodParameter getParameter0() {
+    return (JavaMethodParameter) this.setter.getRequiredParameters().get(0);
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getType() {
-		return this.getParameter0().getValueType();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getType() {
+    return this.getParameter0().getValueType();
+  }
 
-	@Override
-	protected ValueDetails<?> getValueDetails() {
-		return this.getParameter0().getDetails();
-	}
+  @Override
+  protected ValueDetails<?> getValueDetails() {
+    return this.getParameter0().getDetails();
+  }
 
-	public Expression getValueOrNullLiteral() {
-		Expression rv = this.getValue();
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new NullLiteral();
-		}
-		return rv;
-	}
+  public Expression getValueOrNullLiteral() {
+    Expression rv = this.getValue();
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new NullLiteral();
+    }
+    return rv;
+  }
 }

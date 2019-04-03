@@ -48,5 +48,5 @@ import org.lgna.project.ast.AbstractMethod;
  * @author Dennis Cosgrove
  */
 public interface MethodContext {
-	public void invokeEntryPoint( AbstractMethod method, Object... arguments );
+  public void invokeEntryPoint(AbstractMethod method, Object... arguments);
 }

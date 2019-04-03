@@ -53,22 +53,22 @@ import org.lgna.croquet.undo.UndoHistory;
  */
 /*package-private*/class SimpleDocumentFrame extends DocumentFrame {
 
-	@Override
-	public Document getDocument() {
-		return this.document;
-	}
+  @Override
+  public Document getDocument() {
+    return this.document;
+  }
 
-	private final Document document = new Document() {
-		private final UserActivity userActivity = new UserActivity();
+  private final Document document = new Document() {
+    private final UserActivity userActivity = new UserActivity();
 
-		@Override
-		public UserActivity getUserActivity() {
-			return userActivity;
-		}
+    @Override
+    public UserActivity getUserActivity() {
+      return userActivity;
+    }
 
-		@Override
-		public UndoHistory getUndoHistory( Group group ) {
-			return null;
-		}
-	};
+    @Override
+    public UndoHistory getUndoHistory(Group group) {
+      return null;
+    }
+  };
 }

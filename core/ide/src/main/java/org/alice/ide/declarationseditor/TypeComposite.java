@@ -66,118 +66,116 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TypeComposite extends DeclarationComposite<NamedUserType, TypeDeclarationView> {
-	private static Map<NamedUserType, TypeComposite> map = Maps.newHashMap();
+  private static Map<NamedUserType, TypeComposite> map = Maps.newHashMap();
 
-	public static synchronized TypeComposite getInstance( NamedUserType type ) {
-		if( type != null ) {
-			TypeComposite rv = map.get( type );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new TypeComposite( type );
-				map.put( type, rv );
-			}
-			return rv;
-		} else {
-			return null;
-		}
-	}
+  public static synchronized TypeComposite getInstance(NamedUserType type) {
+    if (type != null) {
+      TypeComposite rv = map.get(type);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new TypeComposite(type);
+        map.put(type, rv);
+      }
+      return rv;
+    } else {
+      return null;
+    }
+  }
 
-	private final ConstructorsToolPaletteCoreComposite constructorsToolPaletteCoreComposite;
-	private final ProceduresToolPaletteCoreComposite proceduresToolPaletteCoreComposite;
-	private final FunctionsToolPaletteCoreComposite functionsToolPaletteCoreComposite;
-	private final FieldsToolPaletteCoreComposite fieldsToolPaletteCoreComposite;
-	private final ExportTypeToFileDialogOperation exportOperation;
-	private final ImportTypeIteratingOperation importOperation;
+  private final ConstructorsToolPaletteCoreComposite constructorsToolPaletteCoreComposite;
+  private final ProceduresToolPaletteCoreComposite proceduresToolPaletteCoreComposite;
+  private final FunctionsToolPaletteCoreComposite functionsToolPaletteCoreComposite;
+  private final FieldsToolPaletteCoreComposite fieldsToolPaletteCoreComposite;
+  private final ExportTypeToFileDialogOperation exportOperation;
+  private final ImportTypeIteratingOperation importOperation;
 
-	private TypeComposite( NamedUserType type ) {
-		super( UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type, NamedUserType.class );
-		this.constructorsToolPaletteCoreComposite = this.registerSubComposite( new ConstructorsToolPaletteCoreComposite( type ) );
-		this.proceduresToolPaletteCoreComposite = this.registerSubComposite( new ProceduresToolPaletteCoreComposite( type ) );
-		this.functionsToolPaletteCoreComposite = this.registerSubComposite( new FunctionsToolPaletteCoreComposite( type ) );
-		this.fieldsToolPaletteCoreComposite = this.registerSubComposite( new FieldsToolPaletteCoreComposite( type ) );
-		this.importOperation = new ImportTypeIteratingOperation( type );
-		this.exportOperation = new ExportTypeToFileDialogOperation( type );
-	}
+  private TypeComposite(NamedUserType type) {
+    super(UUID.fromString("ff057bea-73cc-4cf2-8bb3-b02e35b4b965"), type, NamedUserType.class);
+    this.constructorsToolPaletteCoreComposite = this.registerSubComposite(new ConstructorsToolPaletteCoreComposite(type));
+    this.proceduresToolPaletteCoreComposite = this.registerSubComposite(new ProceduresToolPaletteCoreComposite(type));
+    this.functionsToolPaletteCoreComposite = this.registerSubComposite(new FunctionsToolPaletteCoreComposite(type));
+    this.fieldsToolPaletteCoreComposite = this.registerSubComposite(new FieldsToolPaletteCoreComposite(type));
+    this.importOperation = new ImportTypeIteratingOperation(type);
+    this.exportOperation = new ExportTypeToFileDialogOperation(type);
+  }
 
-	public ConstructorsToolPaletteCoreComposite getConstructorsToolPaletteCoreComposite() {
-		return this.constructorsToolPaletteCoreComposite;
-	}
+  public ConstructorsToolPaletteCoreComposite getConstructorsToolPaletteCoreComposite() {
+    return this.constructorsToolPaletteCoreComposite;
+  }
 
-	public ProceduresToolPaletteCoreComposite getProceduresToolPaletteCoreComposite() {
-		return this.proceduresToolPaletteCoreComposite;
-	}
+  public ProceduresToolPaletteCoreComposite getProceduresToolPaletteCoreComposite() {
+    return this.proceduresToolPaletteCoreComposite;
+  }
 
-	public FunctionsToolPaletteCoreComposite getFunctionsToolPaletteCoreComposite() {
-		return this.functionsToolPaletteCoreComposite;
-	}
+  public FunctionsToolPaletteCoreComposite getFunctionsToolPaletteCoreComposite() {
+    return this.functionsToolPaletteCoreComposite;
+  }
 
-	public FieldsToolPaletteCoreComposite getFieldsToolPaletteCoreComposite() {
-		return this.fieldsToolPaletteCoreComposite;
-	}
+  public FieldsToolPaletteCoreComposite getFieldsToolPaletteCoreComposite() {
+    return this.fieldsToolPaletteCoreComposite;
+  }
 
-	public ImportTypeIteratingOperation getImportOperation() {
-		return this.importOperation;
-	}
+  public ImportTypeIteratingOperation getImportOperation() {
+    return this.importOperation;
+  }
 
-	public ExportTypeToFileDialogOperation getExportOperation() {
-		return this.exportOperation;
-	}
+  public ExportTypeToFileDialogOperation getExportOperation() {
+    return this.exportOperation;
+  }
 
-	@Override
-	public boolean contains( Model model ) {
-		if( super.contains( model ) ) {
-			return true;
-		} else {
-			//todo: this should really leverage Composite.contains and create sub composites and models
-			if( ( model == AddProcedureComposite.getInstance( this.getType() ).getLaunchOperation() )
-					||
-					( model == AddFunctionComposite.getInstance( this.getType() ).getLaunchOperation() ) ) {
-				return true;
-			} else {
-				//todo
-				return false;
-			}
-		}
-	}
+  @Override
+  public boolean contains(Model model) {
+    if (super.contains(model)) {
+      return true;
+    } else {
+      //todo: this should really leverage Composite.contains and create sub composites and models
+      if ((model == AddProcedureComposite.getInstance(this.getType()).getLaunchOperation()) || (model == AddFunctionComposite.getInstance(this.getType()).getLaunchOperation())) {
+        return true;
+      } else {
+        //todo
+        return false;
+      }
+    }
+  }
 
-	@Override
-	public UserType<?> getType() {
-		return this.getDeclaration();
-	}
+  @Override
+  public UserType<?> getType() {
+    return this.getDeclaration();
+  }
 
-	@Override
-	public void customizeTitleComponentAppearance( BooleanStateButton<?> button ) {
-		super.customizeTitleComponentAppearance( button );
-		button.scaleFont( 1.8f );
-	}
+  @Override
+  public void customizeTitleComponentAppearance(BooleanStateButton<?> button) {
+    super.customizeTitleComponentAppearance(button);
+    button.scaleFont(1.8f);
+  }
 
-	@Override
-	public boolean isCloseable() {
-		DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-		for( DeclarationComposite tab : tabState ) {
-			if( tab != null ) {
-				if( ( tab != this ) && ( tab.getType() == this.getDeclaration() ) ) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+  @Override
+  public boolean isCloseable() {
+    DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+    for (DeclarationComposite tab : tabState) {
+      if (tab != null) {
+        if ((tab != this) && (tab.getType() == this.getDeclaration())) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 
-	@Override
-	public boolean isPotentiallyCloseable() {
-		return true;
-	}
+  @Override
+  public boolean isPotentiallyCloseable() {
+    return true;
+  }
 
-	@Override
-	public boolean isValid() {
-		Logger.todo( "check to see if type is in project" );
-		return true;
-	}
+  @Override
+  public boolean isValid() {
+    Logger.todo("check to see if type is in project");
+    return true;
+  }
 
-	@Override
-	protected TypeDeclarationView createView() {
-		return new TypeDeclarationView( this );
-	}
+  @Override
+  protected TypeDeclarationView createView() {
+    return new TypeDeclarationView(this);
+  }
 }

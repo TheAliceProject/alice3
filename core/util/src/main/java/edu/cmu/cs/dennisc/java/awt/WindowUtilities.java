@@ -53,41 +53,41 @@ import java.awt.Window;
  * @author Dennis Cosgrove
  */
 public class WindowUtilities {
-	public static void setLocationOnScreenToCenteredWithin( Window window, Component root ) {
-		Dimension sizeDialog = window.getSize();
-		Rectangle boundsRoot;
-		if( ( root != null ) && root.isShowing() ) {
-			Point locationRoot = root.getLocationOnScreen();
-			Dimension sizeRoot = root.getSize();
-			boundsRoot = new Rectangle( locationRoot, sizeRoot );
-		} else {
-			//todo: handle multiple screens better?
-			boundsRoot = window.getGraphicsConfiguration().getBounds();
-		}
-		int x = boundsRoot.x + ( ( boundsRoot.width - sizeDialog.width ) / 2 );
-		int y = boundsRoot.y + ( ( boundsRoot.height - sizeDialog.height ) / 2 );
-		window.setLocation( x, y );
-		//ensureTopLeftCornerIsOnScreen( window );
-	}
+  public static void setLocationOnScreenToCenteredWithin(Window window, Component root) {
+    Dimension sizeDialog = window.getSize();
+    Rectangle boundsRoot;
+    if ((root != null) && root.isShowing()) {
+      Point locationRoot = root.getLocationOnScreen();
+      Dimension sizeRoot = root.getSize();
+      boundsRoot = new Rectangle(locationRoot, sizeRoot);
+    } else {
+      //todo: handle multiple screens better?
+      boundsRoot = window.getGraphicsConfiguration().getBounds();
+    }
+    int x = boundsRoot.x + ((boundsRoot.width - sizeDialog.width) / 2);
+    int y = boundsRoot.y + ((boundsRoot.height - sizeDialog.height) / 2);
+    window.setLocation(x, y);
+    //ensureTopLeftCornerIsOnScreen( window );
+  }
 
-	public static void ensureTopLeftCornerIsOnScreen( final Window window ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ensureTopLeftCornerIsOnScreen", window.isValid(), window.isVisible() );
-		assert window != null;
-		if( /* window.isValid() && */window.isVisible() ) {
-			Point ptScreen = window.getLocationOnScreen();
-			if( ( ptScreen.x < 0 ) || ( ptScreen.y < 0 ) ) {
-				Point ptParent = window.getLocation();
-				ptParent.x -= Math.min( ptScreen.x, 0 );
-				ptParent.y -= Math.min( ptScreen.y, 0 );
-				window.setLocation( ptParent );
-			}
-		} else {
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					WindowUtilities.ensureTopLeftCornerIsOnScreen( window );
-				}
-			} );
-		}
-	}
+  public static void ensureTopLeftCornerIsOnScreen(final Window window) {
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( "ensureTopLeftCornerIsOnScreen", window.isValid(), window.isVisible() );
+    assert window != null;
+    if (window.isVisible()) {
+      Point ptScreen = window.getLocationOnScreen();
+      if ((ptScreen.x < 0) || (ptScreen.y < 0)) {
+        Point ptParent = window.getLocation();
+        ptParent.x -= Math.min(ptScreen.x, 0);
+        ptParent.y -= Math.min(ptScreen.y, 0);
+        window.setLocation(ptParent);
+      }
+    } else {
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          WindowUtilities.ensureTopLeftCornerIsOnScreen(window);
+        }
+      });
+    }
+  }
 }

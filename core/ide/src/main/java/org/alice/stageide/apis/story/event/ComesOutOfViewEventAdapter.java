@@ -53,12 +53,12 @@ import org.lgna.story.event.ViewExitListener;
  */
 public class ComesOutOfViewEventAdapter extends AbstractAdapter implements ViewExitListener {
 
-	public ComesOutOfViewEventAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public ComesOutOfViewEventAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void viewExited( ExitViewEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void viewExited(ExitViewEvent e) {
+    invokeEntryPoint(e);
+  }
 }

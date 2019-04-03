@@ -53,28 +53,25 @@ import javax.swing.Icon;
  */
 public enum HandleStyle {
 
-	DEFAULT( "defaultHandlesIcon.png", "tooltipDefault" ),
-	ROTATION( "rotationHandlesIcon.png", "tooltipRotation" ),
-	TRANSLATION( "translateHandlesIcon.png", "tooltipTranslation" ),
-	RESIZE( "resizeHandlesIcon.png", "tooltipResize" );
+  DEFAULT("defaultHandlesIcon.png", "tooltipDefault"), ROTATION("rotationHandlesIcon.png", "tooltipRotation"), TRANSLATION("translateHandlesIcon.png", "tooltipTranslation"), RESIZE("resizeHandlesIcon.png", "tooltipResize");
 
-	private Icon icon;
-	private String toolTipKey;
+  private Icon icon;
+  private String toolTipKey;
 
-	HandleStyle( String iconName, String toolTipKey ) {
-		if( iconName != null ) {
-			this.icon = IconUtilities.createImageIcon( HandleStyle.class.getResource( "images/" + iconName ) );
-		}
-		this.toolTipKey = toolTipKey;
-	}
+  HandleStyle(String iconName, String toolTipKey) {
+    if (iconName != null) {
+      this.icon = IconUtilities.createImageIcon(HandleStyle.class.getResource("images/" + iconName));
+    }
+    this.toolTipKey = toolTipKey;
+  }
 
-	public Icon getIcon() {
-		return this.icon;
-	}
+  public Icon getIcon() {
+    return this.icon;
+  }
 
-	private String bundleName = getClass().getPackage().getName() + ".handle";
+  private String bundleName = getClass().getPackage().getName() + ".handle";
 
-	public String getToolTipText() {
-		return ResourceBundleUtilities.getStringForKey(toolTipKey, bundleName);
-	}
+  public String getToolTipText() {
+    return ResourceBundleUtilities.getStringForKey(toolTipKey, bundleName);
+  }
 }

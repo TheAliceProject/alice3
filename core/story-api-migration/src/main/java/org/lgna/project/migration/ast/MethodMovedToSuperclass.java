@@ -63,82 +63,75 @@ import java.util.function.Function;
  * The method is found by name, so this will not work for replacing overloaded methods.
  */
 public class MethodMovedToSuperclass implements NodeMigration {
-	private final Class oldClass;
-	private final Class newClass;
-	private final String methodName;
-	private final AbstractMethod replacementMethod;
+  private final Class oldClass;
+  private final Class newClass;
+  private final String methodName;
+  private final AbstractMethod replacementMethod;
 
-	public MethodMovedToSuperclass( Class<?> oldClass, Class<?> newClass, String methodName, Class<?>... parameterTypes ) {
-		this.oldClass = oldClass;
-		this.newClass = newClass;
-		this.methodName = methodName;
-		replacementMethod = JavaMethod.getInstance( newClass, methodName, parameterTypes );
-		if ( !newClass.isAssignableFrom(oldClass) ) {
-			Logger.severe(String.format(
-				"Using MethodMovedToSuperclass to move a method invocation from %s to %s, which is not a superclass.",
-				oldClass.getSimpleName(), newClass.getSimpleName() ));
-		}
-	}
+  public MethodMovedToSuperclass(Class<?> oldClass, Class<?> newClass, String methodName, Class<?>... parameterTypes) {
+    this.oldClass = oldClass;
+    this.newClass = newClass;
+    this.methodName = methodName;
+    replacementMethod = JavaMethod.getInstance(newClass, methodName, parameterTypes);
+    if (!newClass.isAssignableFrom(oldClass)) {
+      Logger.severe(String.format("Using MethodMovedToSuperclass to move a method invocation from %s to %s, which is not a superclass.", oldClass.getSimpleName(), newClass.getSimpleName()));
+    }
+  }
 
-	@Override
-	public void migrateNode( Crawlable node, Project projectIfApplicable ) {
-		if( node instanceof MethodInvocation ) {
-			MethodInvocation invocation = (MethodInvocation) node;
-			AbstractMethod method = invocation.method.getValue();
-			if ( isOldMethod( method ) ) {
-				invocation.method.setValue( replacementMethod );
-				replaceRequiredParamReferences( method, invocation );
-				replaceKeyedParamReferences( method, invocation );
-				Logger.outln( String.format( "Changed %s.%s call to %s.%s",
-											 oldClass.getSimpleName(), methodName, newClass.getSimpleName(), methodName ) );
-			}
-		}
-	}
+  @Override
+  public void migrateNode(Crawlable node, Project projectIfApplicable) {
+    if (node instanceof MethodInvocation) {
+      MethodInvocation invocation = (MethodInvocation) node;
+      AbstractMethod method = invocation.method.getValue();
+      if (isOldMethod(method)) {
+        invocation.method.setValue(replacementMethod);
+        replaceRequiredParamReferences(method, invocation);
+        replaceKeyedParamReferences(method, invocation);
+        Logger.outln(String.format("Changed %s.%s call to %s.%s", oldClass.getSimpleName(), methodName, newClass.getSimpleName(), methodName));
+      }
+    }
+  }
 
-	private boolean isOldMethod( AbstractMethod method ) {
-		return method instanceof JavaMethod
-			&& method.getDeclaringType() == JavaType.getInstance( oldClass )
-			&& method.getName().equals( methodName );
-	}
+  private boolean isOldMethod(AbstractMethod method) {
+    return method instanceof JavaMethod && method.getDeclaringType() == JavaType.getInstance(oldClass) && method.getName().equals(methodName);
+  }
 
-	private void replaceRequiredParamReferences( AbstractMethod oldMethod, MethodInvocation invocation ) {
-		replaceParamReferences( oldMethod, invocation.getRequiredArgumentsProperty().getValue(), this::findNewRequiredParam );
-	}
+  private void replaceRequiredParamReferences(AbstractMethod oldMethod, MethodInvocation invocation) {
+    replaceParamReferences(oldMethod, invocation.getRequiredArgumentsProperty().getValue(), this::findNewRequiredParam);
+  }
 
-	private void replaceKeyedParamReferences( AbstractMethod oldMethod, MethodInvocation invocation ) {
-		replaceParamReferences( oldMethod, invocation.getKeyedArgumentsProperty().getValue(), this::findNewKeyedParam );
+  private void replaceKeyedParamReferences(AbstractMethod oldMethod, MethodInvocation invocation) {
+    replaceParamReferences(oldMethod, invocation.getKeyedArgumentsProperty().getValue(), this::findNewKeyedParam);
 
-	}
+  }
 
-	private void replaceParamReferences( AbstractMethod oldMethod,
-										 ArrayList<? extends AbstractArgument> args,
-										 Function<JavaMethodParameter, AbstractParameter> filter) {
-		for ( AbstractArgument argument: args ) {
-			AbstractParameter param = argument.parameter.getValue();
-			if ( param instanceof JavaMethodParameter ) {
-				JavaMethodParameter javaParam = (JavaMethodParameter) param;
-				if ( oldMethod == javaParam.getCode() ) {
-					argument.parameter.setValue( filter.apply( javaParam ) );
-				}
-			}
-		}
-	}
+  private void replaceParamReferences(AbstractMethod oldMethod, ArrayList<? extends AbstractArgument> args, Function<JavaMethodParameter, AbstractParameter> filter) {
+    for (AbstractArgument argument : args) {
+      AbstractParameter param = argument.parameter.getValue();
+      if (param instanceof JavaMethodParameter) {
+        JavaMethodParameter javaParam = (JavaMethodParameter) param;
+        if (oldMethod == javaParam.getCode()) {
+          argument.parameter.setValue(filter.apply(javaParam));
+        }
+      }
+    }
+  }
 
-	private JavaMethodParameter findNewRequiredParam( JavaMethodParameter oldJavaParam ) {
-		for ( AbstractParameter parameter : replacementMethod.getRequiredParameters() ) {
-			final JavaMethodParameter newJavaParam = (JavaMethodParameter) parameter;
-			if ( oldJavaParam.getIndex() == newJavaParam.getIndex() ) {
-				return newJavaParam;
-			}
-		}
-		return null;
-	}
+  private JavaMethodParameter findNewRequiredParam(JavaMethodParameter oldJavaParam) {
+    for (AbstractParameter parameter : replacementMethod.getRequiredParameters()) {
+      final JavaMethodParameter newJavaParam = (JavaMethodParameter) parameter;
+      if (oldJavaParam.getIndex() == newJavaParam.getIndex()) {
+        return newJavaParam;
+      }
+    }
+    return null;
+  }
 
-	private AbstractParameter findNewKeyedParam( JavaMethodParameter oldJavaParam ) {
-		AbstractParameter keyParam = replacementMethod.getKeyedParameter();
-		if ( keyParam.getValueType() == oldJavaParam.getValueType() ) {
-			return keyParam;
-		}
-		return null;
-	}
+  private AbstractParameter findNewKeyedParam(JavaMethodParameter oldJavaParam) {
+    AbstractParameter keyParam = replacementMethod.getKeyedParameter();
+    if (keyParam.getValueType() == oldJavaParam.getValueType()) {
+      return keyParam;
+    }
+    return null;
+  }
 }

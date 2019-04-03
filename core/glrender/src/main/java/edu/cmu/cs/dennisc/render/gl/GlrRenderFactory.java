@@ -72,300 +72,300 @@ import java.util.concurrent.Semaphore;
  * @author Dennis Cosgrove
  */
 class WaitingRunnable implements Runnable {
-	private Runnable runnable;
-	private Thread thread;
-	private Exception exception;
+  private Runnable runnable;
+  private Thread thread;
+  private Exception exception;
 
-	public WaitingRunnable( Runnable runnable, Thread thread ) {
-		assert runnable != null;
-		assert thread != null;
-		this.runnable = runnable;
-		this.thread = thread;
-		this.exception = null;
-	}
+  public WaitingRunnable(Runnable runnable, Thread thread) {
+    assert runnable != null;
+    assert thread != null;
+    this.runnable = runnable;
+    this.thread = thread;
+    this.exception = null;
+  }
 
-	public Exception getException() {
-		return this.exception;
-	}
+  public Exception getException() {
+    return this.exception;
+  }
 
-	@Override
-	public void run() {
-		try {
-			this.runnable.run();
-		} catch( Exception e ) {
-			this.exception = e;
-		} finally {
-			synchronized( this.thread ) {
-				this.thread.notifyAll();
-			}
-		}
-	}
+  @Override
+  public void run() {
+    try {
+      this.runnable.run();
+    } catch (Exception e) {
+      this.exception = e;
+    } finally {
+      synchronized (this.thread) {
+        this.thread.notifyAll();
+      }
+    }
+  }
 }
 
 /**
  * @author Dennis Cosgrove
  */
 public class GlrRenderFactory implements RenderFactory {
-	static {
-		RendererNativeLibraryLoader.initializeIfNecessary();
-	}
+  static {
+    RendererNativeLibraryLoader.initializeIfNecessary();
+  }
 
-	private static class SingletonHolder {
-		private static GlrRenderFactory instance = new GlrRenderFactory();
-	}
+  private static class SingletonHolder {
+    private static GlrRenderFactory instance = new GlrRenderFactory();
+  }
 
-	public static GlrRenderFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static GlrRenderFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private GlrRenderFactory() {
-	}
+  private GlrRenderFactory() {
+  }
 
-	@Override
-	public ImageBuffer createImageBuffer( Color4f backgroundColor ) {
-		return new GlrImageBuffer( backgroundColor );
-	}
+  @Override
+  public ImageBuffer createImageBuffer(Color4f backgroundColor) {
+    return new GlrImageBuffer(backgroundColor);
+  }
 
-	@Override
-	public ImageBuffer createTransparentBackgroundImageBuffer() {
-		return this.createImageBuffer( null );
-	}
+  @Override
+  public ImageBuffer createTransparentBackgroundImageBuffer() {
+    return this.createImageBuffer(null);
+  }
 
-	//todo: just force start and stop? or rename methods
-	private int automaticDisplayCount = 0;
+  //todo: just force start and stop? or rename methods
+  private int automaticDisplayCount = 0;
 
-	private static boolean isDisplayDesired( GlrOnscreenRenderTarget lg ) {
-		if( lg.isRenderingEnabled() ) {
-			Component component = lg.getAwtComponent();
-			if( component.isVisible() && component.isValid() && ( component.getWidth() > 0 ) && ( component.getHeight() > 0 ) ) {
-				if( lg.getSgCameraCount() > 0 ) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+  private static boolean isDisplayDesired(GlrOnscreenRenderTarget lg) {
+    if (lg.isRenderingEnabled()) {
+      Component component = lg.getAwtComponent();
+      if (component.isVisible() && component.isValid() && (component.getWidth() > 0) && (component.getHeight() > 0)) {
+        if (lg.getSgCameraCount() > 0) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
-	/*package-private*/Animator.ThreadDeferenceAction step() {
-		Animator.ThreadDeferenceAction rv = Animator.ThreadDeferenceAction.SLEEP;
-		synchronized( this.toBeReleased ) {
-			for( Releasable releasable : this.toBeReleased ) {
-				if( releasable instanceof GlrOnscreenRenderTarget ) {
-					GlrOnscreenRenderTarget onscreenLookingGlass = (GlrOnscreenRenderTarget)releasable;
-					if( onscreenLookingGlass instanceof GlrHeavyweightOnscreenRenderTarget ) {
-						this.heavyweightOnscreenLookingGlasses.remove( onscreenLookingGlass );
-					} else if( onscreenLookingGlass instanceof GlrLightweightOnscreenRenderTarget ) {
-						this.lightweightOnscreenLookingGlasses.remove( onscreenLookingGlass );
-					} else {
-						assert false;
-					}
-					//this.animator.remove( onscreenLookingGlass.getGLAutoDrawable() );
-				} else if( releasable instanceof GlrOffscreenRenderTarget ) {
-					this.offscreenLookingGlasses.remove( releasable );
-				} else {
-					assert false;
-				}
-			}
-			this.toBeReleased.clear();
-		}
+  /*package-private*/Animator.ThreadDeferenceAction step() {
+    Animator.ThreadDeferenceAction rv = Animator.ThreadDeferenceAction.SLEEP;
+    synchronized (this.toBeReleased) {
+      for (Releasable releasable : this.toBeReleased) {
+        if (releasable instanceof GlrOnscreenRenderTarget) {
+          GlrOnscreenRenderTarget onscreenLookingGlass = (GlrOnscreenRenderTarget) releasable;
+          if (onscreenLookingGlass instanceof GlrHeavyweightOnscreenRenderTarget) {
+            this.heavyweightOnscreenLookingGlasses.remove(onscreenLookingGlass);
+          } else if (onscreenLookingGlass instanceof GlrLightweightOnscreenRenderTarget) {
+            this.lightweightOnscreenLookingGlasses.remove(onscreenLookingGlass);
+          } else {
+            assert false;
+          }
+          //this.animator.remove( onscreenLookingGlass.getGLAutoDrawable() );
+        } else if (releasable instanceof GlrOffscreenRenderTarget) {
+          this.offscreenLookingGlasses.remove(releasable);
+        } else {
+          assert false;
+        }
+      }
+      this.toBeReleased.clear();
+    }
 
-		if( this.automaticDisplayCount > 0 ) {
-			acquireRenderingLock();
-			try {
-				ChangeHandler.pushRenderingMode();
-				for( GlrOnscreenRenderTarget lg : this.heavyweightOnscreenLookingGlasses ) {
-					if( isDisplayDesired( lg ) ) {
-						//lg.getGLAutoDrawable().display();
-						lg.repaint();
-						//							edu.cmu.cs.dennisc.print.PrintUtilities.println( lg, System.currentTimeMillis() );
-						rv = Animator.ThreadDeferenceAction.YIELD;
-					}
-				}
-				try {
-					if( ChangeHandler.getEventCountSinceLastReset() > 0 /* || isJustCreatedOnscreenLookingGlassAccountedFor == false */) {
-						ChangeHandler.resetEventCount();
-						//isJustCreatedOnscreenLookingGlassAccountedFor = true;
-						for( GlrOnscreenRenderTarget lg : this.lightweightOnscreenLookingGlasses ) {
-							if( isDisplayDesired( lg ) ) {
-								//lg.getGLAutoDrawable().display();
-								lg.repaint();
-								//edu.cmu.cs.dennisc.print.PrintUtilities.println( lg );
-								rv = Animator.ThreadDeferenceAction.YIELD;
-							}
-						}
-					}
-				} finally {
-					ChangeHandler.popRenderingMode();
-				}
-			} finally {
-				releaseRenderingLock();
-			}
-		} else {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "this.automaticDisplayCount", this.automaticDisplayCount );
-		}
-		GlrRenderFactory.this.handleDisplayed();
-		return rv;
-	}
+    if (this.automaticDisplayCount > 0) {
+      acquireRenderingLock();
+      try {
+        ChangeHandler.pushRenderingMode();
+        for (GlrOnscreenRenderTarget lg : this.heavyweightOnscreenLookingGlasses) {
+          if (isDisplayDesired(lg)) {
+            //lg.getGLAutoDrawable().display();
+            lg.repaint();
+            //              edu.cmu.cs.dennisc.print.PrintUtilities.println( lg, System.currentTimeMillis() );
+            rv = Animator.ThreadDeferenceAction.YIELD;
+          }
+        }
+        try {
+          if (ChangeHandler.getEventCountSinceLastReset() > 0 /* || isJustCreatedOnscreenLookingGlassAccountedFor == false */) {
+            ChangeHandler.resetEventCount();
+            //isJustCreatedOnscreenLookingGlassAccountedFor = true;
+            for (GlrOnscreenRenderTarget lg : this.lightweightOnscreenLookingGlasses) {
+              if (isDisplayDesired(lg)) {
+                //lg.getGLAutoDrawable().display();
+                lg.repaint();
+                //edu.cmu.cs.dennisc.print.PrintUtilities.println( lg );
+                rv = Animator.ThreadDeferenceAction.YIELD;
+              }
+            }
+          }
+        } finally {
+          ChangeHandler.popRenderingMode();
+        }
+      } finally {
+        releaseRenderingLock();
+      }
+    } else {
+      //edu.cmu.cs.dennisc.print.PrintUtilities.println( "this.automaticDisplayCount", this.automaticDisplayCount );
+    }
+    GlrRenderFactory.this.handleDisplayed();
+    return rv;
+  }
 
-	@Override
-	public void acquireRenderingLock() {
-		try {
-			this.renderingLock.acquire();
-		} catch( InterruptedException ie ) {
-			throw new RuntimeException( ie );
-		}
-	}
+  @Override
+  public void acquireRenderingLock() {
+    try {
+      this.renderingLock.acquire();
+    } catch (InterruptedException ie) {
+      throw new RuntimeException(ie);
+    }
+  }
 
-	@Override
-	public void releaseRenderingLock() {
-		this.renderingLock.release();
-	}
+  @Override
+  public void releaseRenderingLock() {
+    this.renderingLock.release();
+  }
 
-	@Override
-	public int getAutomaticDisplayCount() {
-		return this.automaticDisplayCount;
-	}
+  @Override
+  public int getAutomaticDisplayCount() {
+    return this.automaticDisplayCount;
+  }
 
-	@Override
-	public synchronized void incrementAutomaticDisplayCount() {
-		this.automaticDisplayCount++;
-		if( this.animator != null ) {
-			//pass
-		} else {
-			this.animator = new Animator() {
-				@Override
-				protected ThreadDeferenceAction step() {
-					return GlrRenderFactory.this.step();
-				}
-			};
-			this.animator.start();
-		}
-	}
+  @Override
+  public synchronized void incrementAutomaticDisplayCount() {
+    this.automaticDisplayCount++;
+    if (this.animator != null) {
+      //pass
+    } else {
+      this.animator = new Animator() {
+        @Override
+        protected ThreadDeferenceAction step() {
+          return GlrRenderFactory.this.step();
+        }
+      };
+      this.animator.start();
+    }
+  }
 
-	@Override
-	public synchronized void decrementAutomaticDisplayCount() {
-		this.automaticDisplayCount--;
-	}
+  @Override
+  public synchronized void decrementAutomaticDisplayCount() {
+    this.automaticDisplayCount--;
+  }
 
-	@Override
-	public HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities ) {
-		GlrHeavyweightOnscreenRenderTarget holg = new GlrHeavyweightOnscreenRenderTarget( this, requestedCapabilities );
-		holg.addReleaseListener( this.releaseListener );
-		this.heavyweightOnscreenLookingGlasses.add( holg );
-		return holg;
-	}
+  @Override
+  public HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget(RenderCapabilities requestedCapabilities) {
+    GlrHeavyweightOnscreenRenderTarget holg = new GlrHeavyweightOnscreenRenderTarget(this, requestedCapabilities);
+    holg.addReleaseListener(this.releaseListener);
+    this.heavyweightOnscreenLookingGlasses.add(holg);
+    return holg;
+  }
 
-	@Override
-	public LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities ) {
-		GlrLightweightOnscreenRenderTarget lolg = new GlrLightweightOnscreenRenderTarget( this, requestedCapabilities );
-		lolg.addReleaseListener( this.releaseListener );
-		this.lightweightOnscreenLookingGlasses.add( lolg );
-		return lolg;
-	}
+  @Override
+  public LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget(RenderCapabilities requestedCapabilities) {
+    GlrLightweightOnscreenRenderTarget lolg = new GlrLightweightOnscreenRenderTarget(this, requestedCapabilities);
+    lolg.addReleaseListener(this.releaseListener);
+    this.lightweightOnscreenLookingGlasses.add(lolg);
+    return lolg;
+  }
 
-	@Override
-	public OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
-		assert ( renderTargetToShareContextWith == null ) || ( renderTargetToShareContextWith instanceof GlrRenderTarget );
-		GlrOffscreenRenderTarget olg = new GlrOffscreenRenderTarget( this, width, height, (GlrRenderTarget)renderTargetToShareContextWith, requestedCapabilities );
-		olg.addReleaseListener( this.releaseListener );
-		this.offscreenLookingGlasses.add( olg );
-		return olg;
-	}
+  @Override
+  public OffscreenRenderTarget createOffscreenRenderTarget(int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
+    assert (renderTargetToShareContextWith == null) || (renderTargetToShareContextWith instanceof GlrRenderTarget);
+    GlrOffscreenRenderTarget olg = new GlrOffscreenRenderTarget(this, width, height, (GlrRenderTarget) renderTargetToShareContextWith, requestedCapabilities);
+    olg.addReleaseListener(this.releaseListener);
+    this.offscreenLookingGlasses.add(olg);
+    return olg;
+  }
 
-	@Override
-	public ImageCaptureRenderTarget createImageCaptureRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
-		return new GlrImageCaptureRenderTarget( this, width, height, (GlrRenderTarget)renderTargetToShareContextWith, requestedCapabilities );
-	}
+  @Override
+  public ImageCaptureRenderTarget createImageCaptureRenderTarget(int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
+    return new GlrImageCaptureRenderTarget(this, width, height, (GlrRenderTarget) renderTargetToShareContextWith, requestedCapabilities);
+  }
 
-	@Override
-	public void addAutomaticDisplayListener( AutomaticDisplayListener automaticDisplayListener ) {
-		this.automaticDisplayListeners.add( automaticDisplayListener );
-	}
+  @Override
+  public void addAutomaticDisplayListener(AutomaticDisplayListener automaticDisplayListener) {
+    this.automaticDisplayListeners.add(automaticDisplayListener);
+  }
 
-	@Override
-	public void removeAutomaticDisplayListener( AutomaticDisplayListener automaticDisplayListener ) {
-		this.automaticDisplayListeners.remove( automaticDisplayListener );
-	}
+  @Override
+  public void removeAutomaticDisplayListener(AutomaticDisplayListener automaticDisplayListener) {
+    this.automaticDisplayListeners.remove(automaticDisplayListener);
+  }
 
-	@Override
-	public Iterable<AutomaticDisplayListener> getAutomaticDisplayListeners() {
-		return this.automaticDisplayListeners;
-	}
+  @Override
+  public Iterable<AutomaticDisplayListener> getAutomaticDisplayListeners() {
+    return this.automaticDisplayListeners;
+  }
 
-	private void handleDisplayed() {
-		for( AutomaticDisplayListener automaticDisplayListener : this.automaticDisplayListeners ) {
-			automaticDisplayListener.automaticDisplayCompleted( reusableAutomaticDisplayEvent );
-		}
-		while( this.runnables.isEmpty() == false ) {
-			Runnable runnable = this.runnables.remove();
-			runnable.run();
-		}
-	}
+  private void handleDisplayed() {
+    for (AutomaticDisplayListener automaticDisplayListener : this.automaticDisplayListeners) {
+      automaticDisplayListener.automaticDisplayCompleted(reusableAutomaticDisplayEvent);
+    }
+    while (this.runnables.isEmpty() == false) {
+      Runnable runnable = this.runnables.remove();
+      runnable.run();
+    }
+  }
 
-	@Override
-	public void invokeLater( Runnable runnable ) {
-		this.runnables.add( runnable );
-	}
+  @Override
+  public void invokeLater(Runnable runnable) {
+    this.runnables.add(runnable);
+  }
 
-	@Override
-	public void invokeAndWait( Runnable runnable ) throws InterruptedException, InvocationTargetException {
-		Thread currentThread = Thread.currentThread();
-		WaitingRunnable waitingRunnable = new WaitingRunnable( runnable, currentThread );
-		synchronized( currentThread ) {
-			this.runnables.add( waitingRunnable );
-			currentThread.wait();
-		}
-		if( waitingRunnable.getException() != null ) {
-			throw new InvocationTargetException( waitingRunnable.getException() );
-		}
-	}
+  @Override
+  public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
+    Thread currentThread = Thread.currentThread();
+    WaitingRunnable waitingRunnable = new WaitingRunnable(runnable, currentThread);
+    synchronized (currentThread) {
+      this.runnables.add(waitingRunnable);
+      currentThread.wait();
+    }
+    if (waitingRunnable.getException() != null) {
+      throw new InvocationTargetException(waitingRunnable.getException());
+    }
+  }
 
-	@Override
-	public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable ) {
-		try {
-			invokeAndWait( runnable );
-		} catch( InterruptedException ie ) {
-			throw new RuntimeException( ie );
-		} catch( InvocationTargetException ie ) {
-			throw new RuntimeException( ie );
-		}
-	}
+  @Override
+  public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary(Runnable runnable) {
+    try {
+      invokeAndWait(runnable);
+    } catch (InterruptedException ie) {
+      throw new RuntimeException(ie);
+    } catch (InvocationTargetException ie) {
+      throw new RuntimeException(ie);
+    }
+  }
 
-	private final ReleaseListener releaseListener = new ReleaseListener() {
-		@Override
-		public void releasing( ReleaseEvent releaseEvent ) {
-		}
+  private final ReleaseListener releaseListener = new ReleaseListener() {
+    @Override
+    public void releasing(ReleaseEvent releaseEvent) {
+    }
 
-		@Override
-		public void released( ReleaseEvent releaseEvent ) {
-			synchronized( toBeReleased ) {
-				toBeReleased.add( releaseEvent.getTypedSource() );
-			}
-		}
-	};
+    @Override
+    public void released(ReleaseEvent releaseEvent) {
+      synchronized (toBeReleased) {
+        toBeReleased.add(releaseEvent.getTypedSource());
+      }
+    }
+  };
 
-	private final List<GlrLightweightOnscreenRenderTarget> lightweightOnscreenLookingGlasses = Lists.newCopyOnWriteArrayList();
-	private final List<GlrHeavyweightOnscreenRenderTarget> heavyweightOnscreenLookingGlasses = Lists.newCopyOnWriteArrayList();
-	private final List<GlrOffscreenRenderTarget> offscreenLookingGlasses = Lists.newCopyOnWriteArrayList();
+  private final List<GlrLightweightOnscreenRenderTarget> lightweightOnscreenLookingGlasses = Lists.newCopyOnWriteArrayList();
+  private final List<GlrHeavyweightOnscreenRenderTarget> heavyweightOnscreenLookingGlasses = Lists.newCopyOnWriteArrayList();
+  private final List<GlrOffscreenRenderTarget> offscreenLookingGlasses = Lists.newCopyOnWriteArrayList();
 
-	private final List<Releasable> toBeReleased = Lists.newLinkedList();
-	private final Queue<Runnable> runnables = Queues.newConcurrentLinkedQueue();
+  private final List<Releasable> toBeReleased = Lists.newLinkedList();
+  private final Queue<Runnable> runnables = Queues.newConcurrentLinkedQueue();
 
-	private final Semaphore renderingLock = new Semaphore( 1 );
+  private final Semaphore renderingLock = new Semaphore(1);
 
-	private static class ReusableAutomaticDisplayEvent extends AutomaticDisplayEvent {
-		public ReusableAutomaticDisplayEvent( GlrRenderFactory lookingGlassFactory ) {
-			super( lookingGlassFactory );
-		}
+  private static class ReusableAutomaticDisplayEvent extends AutomaticDisplayEvent {
+    public ReusableAutomaticDisplayEvent(GlrRenderFactory lookingGlassFactory) {
+      super(lookingGlassFactory);
+    }
 
-		@Override
-		public boolean isReservedForReuse() {
-			return true;
-		}
-	};
+    @Override
+    public boolean isReservedForReuse() {
+      return true;
+    }
+  }
 
-	private final ReusableAutomaticDisplayEvent reusableAutomaticDisplayEvent = new ReusableAutomaticDisplayEvent( this );
-	private final List<AutomaticDisplayListener> automaticDisplayListeners = Lists.newCopyOnWriteArrayList();
+    private final ReusableAutomaticDisplayEvent reusableAutomaticDisplayEvent = new ReusableAutomaticDisplayEvent(this);
+  private final List<AutomaticDisplayListener> automaticDisplayListeners = Lists.newCopyOnWriteArrayList();
 
-	private Animator animator = null;
+  private Animator animator = null;
 }

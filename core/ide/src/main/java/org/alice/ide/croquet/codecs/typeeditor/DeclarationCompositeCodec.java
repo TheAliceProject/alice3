@@ -59,41 +59,42 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public enum DeclarationCompositeCodec implements ItemCodec<DeclarationComposite<?, ?>> {
-	SINGLETON;
-	@Override
-	public Class<DeclarationComposite<?, ?>> getValueClass() {
-		return (Class)DeclarationComposite.class;
-	}
+  SINGLETON;
 
-	@Override
-	public DeclarationComposite<?, ?> decodeValue( BinaryDecoder binaryDecoder ) {
-		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
-		if( valueIsNotNull ) {
-			UUID id = binaryDecoder.decodeId();
-			IDE ide = IDE.getActiveInstance();
-			AbstractDeclaration code = ProgramTypeUtilities.lookupNode( ide.getProject(), id );
-			return DeclarationComposite.getInstance( code );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Class<DeclarationComposite<?, ?>> getValueClass() {
+    return (Class) DeclarationComposite.class;
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, DeclarationComposite<?, ?> value ) {
-		boolean valueIsNotNull = value != null;
-		binaryEncoder.encode( valueIsNotNull );
-		if( valueIsNotNull ) {
-			binaryEncoder.encode( value.getDeclaration().getId() );
-		}
-	}
+  @Override
+  public DeclarationComposite<?, ?> decodeValue(BinaryDecoder binaryDecoder) {
+    boolean valueIsNotNull = binaryDecoder.decodeBoolean();
+    if (valueIsNotNull) {
+      UUID id = binaryDecoder.decodeId();
+      IDE ide = IDE.getActiveInstance();
+      AbstractDeclaration code = ProgramTypeUtilities.lookupNode(ide.getProject(), id);
+      return DeclarationComposite.getInstance(code);
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, DeclarationComposite<?, ?> value ) {
-		if (value == null) {
-			sb.append((Object) null);
-		} else {
-			Formatter formatter = FormatterState.getInstance().getValue();
-			sb.append(formatter.getNameForDeclaration(value.getDeclaration()));
-		}
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, DeclarationComposite<?, ?> value) {
+    boolean valueIsNotNull = value != null;
+    binaryEncoder.encode(valueIsNotNull);
+    if (valueIsNotNull) {
+      binaryEncoder.encode(value.getDeclaration().getId());
+    }
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, DeclarationComposite<?, ?> value) {
+    if (value == null) {
+      sb.append((Object) null);
+    } else {
+      Formatter formatter = FormatterState.getInstance().getValue();
+      sb.append(formatter.getNameForDeclaration(value.getDeclaration()));
+    }
+  }
 }

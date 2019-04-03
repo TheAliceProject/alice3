@@ -51,70 +51,70 @@ import java.util.concurrent.ExecutionException;
  * @author Dennis Cosgrove
  */
 public abstract class AsynchronousWorkerIcon extends AsynchronousIcon {
-	private class IconWorker extends Worker<Icon> {
-		@Override
-		protected Icon do_onBackgroundThread() throws Exception {
-			return AsynchronousWorkerIcon.this.do_onBackgroundThread();
-		}
+  private class IconWorker extends Worker<Icon> {
+    @Override
+    protected Icon do_onBackgroundThread() throws Exception {
+      return AsynchronousWorkerIcon.this.do_onBackgroundThread();
+    }
 
-		@Override
-		protected void handleDone_onEventDispatchThread( Icon value ) {
-			AsynchronousWorkerIcon.this.handleDone_onEventDispatchThread( value );
-		}
-	}
+    @Override
+    protected void handleDone_onEventDispatchThread(Icon value) {
+      AsynchronousWorkerIcon.this.handleDone_onEventDispatchThread(value);
+    }
+  }
 
-	public AsynchronousWorkerIcon( int iconWidthFallback, int iconHeightFallback ) {
-		this.iconWidthFallback = iconWidthFallback;
-		this.iconHeightFallback = iconHeightFallback;
-	}
+  public AsynchronousWorkerIcon(int iconWidthFallback, int iconHeightFallback) {
+    this.iconWidthFallback = iconWidthFallback;
+    this.iconHeightFallback = iconHeightFallback;
+  }
 
-	@Override
-	protected int getIconWidthFallback() {
-		return this.iconWidthFallback;
-	}
+  @Override
+  protected int getIconWidthFallback() {
+    return this.iconWidthFallback;
+  }
 
-	@Override
-	protected int getIconHeightFallback() {
-		return this.iconHeightFallback;
-	}
+  @Override
+  protected int getIconHeightFallback() {
+    return this.iconHeightFallback;
+  }
 
-	private Icon getIconFromDoneWorker() {
-		try {
-			return this.worker.get_obviouslyLockingCurrentThreadUntilDone();
-		} catch( InterruptedException ie ) {
-			throw new Error( ie );
-		} catch( ExecutionException ee ) {
-			throw new Error( ee );
-		}
-	}
+  private Icon getIconFromDoneWorker() {
+    try {
+      return this.worker.get_obviouslyLockingCurrentThreadUntilDone();
+    } catch (InterruptedException ie) {
+      throw new Error(ie);
+    } catch (ExecutionException ee) {
+      throw new Error(ee);
+    }
+  }
 
-	@Override
-	protected Icon getResult( boolean isPaint ) {
-		if( this.worker != null ) {
-			if( this.worker.isDone() ) {
-				return this.getIconFromDoneWorker();
-			} else {
-				return null;
-			}
-		} else {
-			if( isPaint ) {
-				this.worker = new IconWorker();
-				this.worker.execute();
-				if( this.worker.isDone() ) {
-					return this.getIconFromDoneWorker();
-				}
-			}
-			return null;
-		}
-	}
+  @Override
+  protected Icon getResult(boolean isPaint) {
+    if (this.worker != null) {
+      if (this.worker.isDone()) {
+        return this.getIconFromDoneWorker();
+      } else {
+        return null;
+      }
+    } else {
+      if (isPaint) {
+        this.worker = new IconWorker();
+        this.worker.execute();
+        if (this.worker.isDone()) {
+          return this.getIconFromDoneWorker();
+        }
+      }
+      return null;
+    }
+  }
 
-	protected abstract Icon do_onBackgroundThread() throws Exception;
+  protected abstract Icon do_onBackgroundThread() throws Exception;
 
-	private void handleDone_onEventDispatchThread( Icon value ) {
-		this.repaintComponentsIfNecessary();
-	}
+  private void handleDone_onEventDispatchThread(Icon value) {
+    this.repaintComponentsIfNecessary();
+  }
 
-	private final int iconWidthFallback;
-	private final int iconHeightFallback;
-	private IconWorker worker;
+  private final int iconWidthFallback;
+  private final int iconHeightFallback;
+  private IconWorker worker;
 }

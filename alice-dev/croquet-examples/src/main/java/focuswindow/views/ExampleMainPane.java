@@ -50,11 +50,11 @@ import org.lgna.croquet.views.MigPanel;
  * @author Dennis Cosgrove
  */
 public class ExampleMainPane extends MigPanel {
-	public ExampleMainPane( ExampleMainComposite composite ) {
-		super( composite );
-		this.addComponent( composite.getQuestionState().createCheckBox() );
-		Hyperlink hyperlink = composite.getFocusWindow().getLaunchOperation().createHyperlink();
-		hyperlink.setUnderlinedOnlyWhenRolledOver( false );
-		this.addComponent( hyperlink );
-	}
+  public ExampleMainPane(ExampleMainComposite composite) {
+    super(composite);
+    this.addComponent(composite.getQuestionState().createCheckBox());
+    Hyperlink hyperlink = composite.getFocusWindow().getLaunchOperation().createHyperlink();
+    hyperlink.setUnderlinedOnlyWhenRolledOver(false);
+    this.addComponent(hyperlink);
+  }
 }

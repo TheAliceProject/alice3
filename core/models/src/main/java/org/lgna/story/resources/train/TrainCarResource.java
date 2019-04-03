@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.train;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.STransport;
@@ -33,44 +34,37 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.TrainResource;
 
 public enum TrainCarResource implements TrainResource {
-	DEFAULT,
-	CIRCUS,
-	CIRCUS_LIGHTS,
-	ICE;
+  DEFAULT, CIRCUS, CIRCUS_LIGHTS, ICE;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId AXLE_1 = new JointId( ROOT, TrainCarResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId WHEELS_0 = new JointId( AXLE_1, TrainCarResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId WHEELS_1 = new JointId( AXLE_1, TrainCarResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId AXLE_0 = new JointId( ROOT, TrainCarResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId WHEELS_2 = new JointId( AXLE_0, TrainCarResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId WHEELS_3 = new JointId( AXLE_0, TrainCarResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId AXLE_1 = new JointId(ROOT, TrainCarResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId WHEELS_0 = new JointId(AXLE_1, TrainCarResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId WHEELS_1 = new JointId(AXLE_1, TrainCarResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId AXLE_0 = new JointId(ROOT, TrainCarResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId WHEELS_2 = new JointId(AXLE_0, TrainCarResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId WHEELS_3 = new JointId(AXLE_0, TrainCarResource.class);
 
-	private final ImplementationAndVisualType resourceType;
-	TrainCarResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	TrainCarResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  TrainCarResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return TrainResource.JOINT_ID_ROOTS;
-	}
+  TrainCarResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public TransportImp createImplementation( STransport abstraction ) {
-		return new TransportImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return TrainResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public TransportImp createImplementation(STransport abstraction) {
+    return new TransportImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

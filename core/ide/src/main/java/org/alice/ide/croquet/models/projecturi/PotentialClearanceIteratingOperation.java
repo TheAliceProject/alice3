@@ -60,57 +60,56 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PotentialClearanceIteratingOperation extends Operation {
-	public PotentialClearanceIteratingOperation( Group group, UUID migrationId, Triggerable postClearanceModel ) {
-		super( group, migrationId );
-		this.postClearanceModel = postClearanceModel;
-	}
+  public PotentialClearanceIteratingOperation(Group group, UUID migrationId, Triggerable postClearanceModel) {
+    super(group, migrationId);
+    this.postClearanceModel = postClearanceModel;
+  }
 
-	protected List<Triggerable> createIteratingData() {
-		List<Triggerable> steps = Lists.newLinkedList();
-		ProjectApplication application = ProjectApplication.getActiveInstance();
-		boolean isPostClearanceModelDesired = this.postClearanceModel != null;
-		if (!application.isProjectUpToDateWithFile()) {
-			YesNoCancelResult result =
-				Dialogs.confirmOrCancel( findLocalizedText( "title"), findLocalizedText( "message") );
-			if( result == YesNoCancelResult.CANCEL ) {
-				throw new CancelException();
-			}
-			if( result == YesNoCancelResult.YES ) {
-				steps.add( SaveProjectOperation.getInstance() );
-			}
-		}
-		if( isPostClearanceModelDesired ) {
-			steps.add( this.postClearanceModel );
-		}
-		return steps;
-	}
+  protected List<Triggerable> createIteratingData() {
+    List<Triggerable> steps = Lists.newLinkedList();
+    ProjectApplication application = ProjectApplication.getActiveInstance();
+    boolean isPostClearanceModelDesired = this.postClearanceModel != null;
+    if (!application.isProjectUpToDateWithFile()) {
+      YesNoCancelResult result = Dialogs.confirmOrCancel(findLocalizedText("title"), findLocalizedText("message"));
+      if (result == YesNoCancelResult.CANCEL) {
+        throw new CancelException();
+      }
+      if (result == YesNoCancelResult.YES) {
+        steps.add(SaveProjectOperation.getInstance());
+      }
+    }
+    if (isPostClearanceModelDesired) {
+      steps.add(this.postClearanceModel);
+    }
+    return steps;
+  }
 
-	@Override
-	protected final void performInActivity( final UserActivity userActivity ) {
-		userActivity.setCompletionModel( this );
-		try {
-			List<UserActivity> finishedActivities = Lists.newLinkedList();
-			for ( Triggerable step : createIteratingData() ) {
-				UserActivity child = userActivity.newChildActivity();
-				step.fire( child );
-				if ( child.isSuccessfullyCompleted() ) {
-					finishedActivities.add( child );
-				} else {
-					if (child.isPending()) {
-						Logger.severe( "Canceling while a subStep is pending. The substep should either finish or throw CancelException.", this );
-					}
-					throw new CancelException();
-				}
-			}
-			handleSuccessfulCompletionOfSubModels( userActivity, finishedActivities );
-		} catch( CancelException ce ) {
-			userActivity.cancel(ce);
-		}
-	}
+  @Override
+  protected final void performInActivity(final UserActivity userActivity) {
+    userActivity.setCompletionModel(this);
+    try {
+      List<UserActivity> finishedActivities = Lists.newLinkedList();
+      for (Triggerable step : createIteratingData()) {
+        UserActivity child = userActivity.newChildActivity();
+        step.fire(child);
+        if (child.isSuccessfullyCompleted()) {
+          finishedActivities.add(child);
+        } else {
+          if (child.isPending()) {
+            Logger.severe("Canceling while a subStep is pending. The substep should either finish or throw CancelException.", this);
+          }
+          throw new CancelException();
+        }
+      }
+      handleSuccessfulCompletionOfSubModels(userActivity, finishedActivities);
+    } catch (CancelException ce) {
+      userActivity.cancel(ce);
+    }
+  }
 
-	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity, List<UserActivity> subSteps ){
-		activity.finish();
-	}
+  protected void handleSuccessfulCompletionOfSubModels(UserActivity activity, List<UserActivity> subSteps) {
+    activity.finish();
+  }
 
-	private final Triggerable postClearanceModel;
+  private final Triggerable postClearanceModel;
 }

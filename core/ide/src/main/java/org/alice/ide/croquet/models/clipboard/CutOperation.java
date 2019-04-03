@@ -51,20 +51,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CutOperation extends InconsequentialActionOperation {
-	private static class SingletonHolder {
-		private static CutOperation instance = new CutOperation();
-	}
+  private static class SingletonHolder {
+    private static CutOperation instance = new CutOperation();
+  }
 
-	public static CutOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static CutOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private CutOperation() {
-		super( UUID.fromString( "48a0202c-8153-4772-89ca-08fe5a8f28b5" ) );
-	}
+  private CutOperation() {
+    super(UUID.fromString("48a0202c-8153-4772-89ca-08fe5a8f28b5"));
+  }
 
-	@Override
-	protected void performInternal() {
-		Dialogs.showInfo( findLocalizedText( "title" ), findLocalizedText( "content" ) );
-	}
+  @Override
+  protected void performInternal() {
+    Dialogs.showInfo(findLocalizedText("title"), findLocalizedText("content"));
+  }
 }

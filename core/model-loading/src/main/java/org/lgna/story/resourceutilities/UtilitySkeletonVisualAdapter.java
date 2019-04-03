@@ -1,4 +1,4 @@
-package org.lgna.story.resourceutilities;/*
+/*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@ package org.lgna.story.resourceutilities;/*
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
+package org.lgna.story.resourceutilities;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -59,91 +59,91 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
 public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual {
-	@Override
-	protected void updateAppearanceToMeshControllersMap() {
-		synchronized( appearanceIdToMeshControllersMap ) {
-			appearanceIdToMeshControllersMap.clear();
-			for( TexturedAppearance ta : this.owner.textures.getValue() ) {
-				List<GlrSkeletonVisual.WeightedMeshControl> controls = new LinkedList<GlrSkeletonVisual.WeightedMeshControl>();
-				for( WeightedMesh weightedMesh : this.owner.weightedMeshes.getValue() ) {
-					if( weightedMesh.textureId.getValue() == ta.textureId.getValue() ) {
-						GlrSkeletonVisual.WeightedMeshControl control = new UtilityWeightedMeshControl();
-						control.initialize( weightedMesh );
-						controls.add( control );
-					}
-				}
-				appearanceIdToMeshControllersMap.put( ta.textureId.getValue(), controls.toArray( new UtilityWeightedMeshControl[ controls.size() ] ) );
-			}
-		}
-	}
+  @Override
+  protected void updateAppearanceToMeshControllersMap() {
+    synchronized (appearanceIdToMeshControllersMap) {
+      appearanceIdToMeshControllersMap.clear();
+      for (TexturedAppearance ta : this.owner.textures.getValue()) {
+        List<GlrSkeletonVisual.WeightedMeshControl> controls = new LinkedList<GlrSkeletonVisual.WeightedMeshControl>();
+        for (WeightedMesh weightedMesh : this.owner.weightedMeshes.getValue()) {
+          if (weightedMesh.textureId.getValue() == ta.textureId.getValue()) {
+            GlrSkeletonVisual.WeightedMeshControl control = new UtilityWeightedMeshControl();
+            control.initialize(weightedMesh);
+            controls.add(control);
+          }
+        }
+        appearanceIdToMeshControllersMap.put(ta.textureId.getValue(), controls.toArray(new UtilityWeightedMeshControl[controls.size()]));
+      }
+    }
+  }
 
-		protected List<UtilityWeightedMeshControl> getUtilityWeightedMeshControls() {
-			List<UtilityWeightedMeshControl> controlList = new LinkedList<UtilityWeightedMeshControl>();
-			for (Entry<Integer, GlrSkeletonVisual.WeightedMeshControl[]> entry : this.appearanceIdToMeshControllersMap.entrySet()) {
-				for (GlrSkeletonVisual.WeightedMeshControl w : entry.getValue()) {
-					if (!controlList.contains(w)) {
-						assert w instanceof UtilityWeightedMeshControl;
-						controlList.add((UtilityWeightedMeshControl)w);
-					}
-				}
-			}
-			return controlList;
-		}
+  protected List<UtilityWeightedMeshControl> getUtilityWeightedMeshControls() {
+    List<UtilityWeightedMeshControl> controlList = new LinkedList<UtilityWeightedMeshControl>();
+    for (Entry<Integer, GlrSkeletonVisual.WeightedMeshControl[]> entry : this.appearanceIdToMeshControllersMap.entrySet()) {
+      for (GlrSkeletonVisual.WeightedMeshControl w : entry.getValue()) {
+        if (!controlList.contains(w)) {
+          assert w instanceof UtilityWeightedMeshControl;
+          controlList.add((UtilityWeightedMeshControl) w);
+        }
+      }
+    }
+    return controlList;
+  }
 
-	public AxisAlignedBox getAbsoluteBoundingBox() {
-		AxisAlignedBox box = new AxisAlignedBox();
-		for (UtilityWeightedMeshControl control : this.getUtilityWeightedMeshControls()) {
-			AxisAlignedBox subBox = control.getAbsoluteBoundingBox();
-			box.union(subBox);
-		}
-		return box;
-	}
+  public AxisAlignedBox getAbsoluteBoundingBox() {
+    AxisAlignedBox box = new AxisAlignedBox();
+    for (UtilityWeightedMeshControl control : this.getUtilityWeightedMeshControls()) {
+      AxisAlignedBox subBox = control.getAbsoluteBoundingBox();
+      box.union(subBox);
+    }
+    return box;
+  }
 
-	void initializeJointBoundingBoxes() {
-		initializeJointBoundingBoxes(owner.skeleton.getValue(), AffineMatrix4x4.createIdentity());
-	}
+  void initializeJointBoundingBoxes() {
+    initializeJointBoundingBoxes(owner.skeleton.getValue(), AffineMatrix4x4.createIdentity());
+  }
 
-	private void initializeJointBoundingBoxes(Composite currentNode, AffineMatrix4x4 parentTransform) {
-		if (currentNode == null) {
-			return;
-		}
-		AffineMatrix4x4 absoluteLocalTransform = parentTransform;
-		if (currentNode instanceof Transformable) {
-			absoluteLocalTransform = AffineMatrix4x4.createMultiplication(parentTransform, ((Transformable)currentNode).localTransformation.getValue());
-			if (currentNode instanceof Joint) {
-				AxisAlignedBox box = new AxisAlignedBox();
-				for (UtilityWeightedMeshControl control : this.getUtilityWeightedMeshControls()) {
-					AxisAlignedBox subBox = control.getBoundingBoxForJoint((Joint)currentNode);
-					box.union(subBox);
-				}
-				((Joint)currentNode).boundingBox.setValue(box);
-				//Now that the bounding boxes are set we can set the radii (they use the bounding box for their calculations)
-				//                double boundingRadius = Double.NaN;
-				//                for (WeightedMeshControl control : this.meshControls)
-				//                {
-				//                    if (control instanceof org.lgna.story.resourceutilities.UtilityWeightedMeshControl)
-				//                    {
-				//                        double radius = ((org.lgna.story.resourceutilities.UtilityWeightedMeshControl)control).getBoundingRadiusForJoint((Joint)currentNode);
-				//                        if (Double.isNaN(boundingRadius))
-				//                        {
-				//                            boundingRadius = radius;
-				//                        }
-				//                        else if (!Double.isNaN(radius))
-				//                        {
-				//                            boundingRadius = Math.max(boundingRadius, radius);
-				//                        }
-				//                    }
-				//                }
-				//                ((Joint)currentNode).boundingRadius.setValue(boundingRadius);
+  private void initializeJointBoundingBoxes(Composite currentNode, AffineMatrix4x4 parentTransform) {
+    if (currentNode == null) {
+      return;
+    }
+    AffineMatrix4x4 absoluteLocalTransform = parentTransform;
+    if (currentNode instanceof Transformable) {
+      absoluteLocalTransform = AffineMatrix4x4.createMultiplication(parentTransform, ((Transformable) currentNode).localTransformation.getValue());
+      if (currentNode instanceof Joint) {
+        AxisAlignedBox box = new AxisAlignedBox();
+        for (UtilityWeightedMeshControl control : this.getUtilityWeightedMeshControls()) {
+          AxisAlignedBox subBox = control.getBoundingBoxForJoint((Joint) currentNode);
+          box.union(subBox);
+        }
+        ((Joint) currentNode).boundingBox.setValue(box);
+        //Now that the bounding boxes are set we can set the radii (they use the bounding box for their calculations)
+        //                double boundingRadius = Double.NaN;
+        //                for (WeightedMeshControl control : this.meshControls)
+        //                {
+        //                    if (control instanceof org.lgna.story.resourceutilities.UtilityWeightedMeshControl)
+        //                    {
+        //                        double radius = ((org.lgna.story.resourceutilities.UtilityWeightedMeshControl)control).getBoundingRadiusForJoint((Joint)currentNode);
+        //                        if (Double.isNaN(boundingRadius))
+        //                        {
+        //                            boundingRadius = radius;
+        //                        }
+        //                        else if (!Double.isNaN(radius))
+        //                        {
+        //                            boundingRadius = Math.max(boundingRadius, radius);
+        //                        }
+        //                    }
+        //                }
+        //                ((Joint)currentNode).boundingRadius.setValue(boundingRadius);
 
-				PrintUtilities.println("Set bounding box on "+currentNode.getName()+" to: "+box/*+", and the bounding radius to "+boundingRadius*/);
-			}
-		}
-		for (Component comp : currentNode.getComponents()) {
-			if (comp instanceof Composite) {
-				initializeJointBoundingBoxes((Composite)comp, absoluteLocalTransform );
-			}
-		}
-	}
+        PrintUtilities.println("Set bounding box on " + currentNode.getName() + " to: " + box/*+", and the bounding radius to "+boundingRadius*/);
+      }
+    }
+    for (Component comp : currentNode.getComponents()) {
+      if (comp instanceof Composite) {
+        initializeJointBoundingBoxes((Composite) comp, absoluteLocalTransform);
+      }
+    }
+  }
 
 }

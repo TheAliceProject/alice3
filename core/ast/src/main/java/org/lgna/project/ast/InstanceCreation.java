@@ -44,88 +44,88 @@ package org.lgna.project.ast;
 
 import org.lgna.project.code.PrecedentedAppender;
 import org.lgna.project.virtualmachine.VirtualMachine;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class InstanceCreation extends Expression implements ArgumentOwner, PrecedentedAppender {
-	public InstanceCreation() {
-	}
+  public InstanceCreation() {
+  }
 
-	public InstanceCreation( AbstractConstructor constructor, SimpleArgument... requiredArguments ) {
-		this( constructor, requiredArguments, null, null );
-	}
+  public InstanceCreation(AbstractConstructor constructor, SimpleArgument... requiredArguments) {
+    this(constructor, requiredArguments, null, null);
+  }
 
-	public InstanceCreation( AbstractConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
-		assert constructor != null;
-		this.constructor.setValue( constructor );
-		this.requiredArguments.add( requiredArguments );
-		if( variableArguments != null ) {
-			this.variableArguments.add( variableArguments );
-		}
-		if( keyedArguments != null ) {
-			this.keyedArguments.add( keyedArguments );
-		}
-	}
+  public InstanceCreation(AbstractConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments) {
+    assert constructor != null;
+    this.constructor.setValue(constructor);
+    this.requiredArguments.add(requiredArguments);
+    if (variableArguments != null) {
+      this.variableArguments.add(variableArguments);
+    }
+    if (keyedArguments != null) {
+      this.keyedArguments.add(keyedArguments);
+    }
+  }
 
-	//	public InstanceCreation( java.lang.reflect.Constructor< ? > cnstrctr, Argument... arguments ) {
-	//		this( ConstructorDeclaredInJava.get( cnstrctr ), arguments );
-	//	}
-	@Override
-	public DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
-		return this.constructor;
-	}
+  //  public InstanceCreation( java.lang.reflect.Constructor< ? > cnstrctr, Argument... arguments ) {
+  //    this( ConstructorDeclaredInJava.get( cnstrctr ), arguments );
+  //  }
+  @Override
+  public DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
+    return this.constructor;
+  }
 
-	@Override
-	public SimpleArgumentListProperty getRequiredArgumentsProperty() {
-		return this.requiredArguments;
-	}
+  @Override
+  public SimpleArgumentListProperty getRequiredArgumentsProperty() {
+    return this.requiredArguments;
+  }
 
-	@Override
-	public SimpleArgumentListProperty getVariableArgumentsProperty() {
-		return this.variableArguments;
-	}
+  @Override
+  public SimpleArgumentListProperty getVariableArgumentsProperty() {
+    return this.variableArguments;
+  }
 
-	@Override
-	public KeyedArgumentListProperty getKeyedArgumentsProperty() {
-		return this.keyedArguments;
-	}
+  @Override
+  public KeyedArgumentListProperty getKeyedArgumentsProperty() {
+    return this.keyedArguments;
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return constructor.getValue().getDeclaringType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return constructor.getValue().getDeclaringType();
+  }
 
-	@Override
-	public boolean isValid() {
-		//todo
-		return true;
-	}
+  @Override
+  public boolean isValid() {
+    //todo
+    return true;
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendInstantiation(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendInstantiation(this);
+  }
 
-	@Override public int getLevelOfPrecedence() {
-		return 13;
-	}
+  @Override
+  public int getLevelOfPrecedence() {
+    return 13;
+  }
 
-	//todo: AbstractConstructor -> Expression<AbstractConstructor>
-	public final DeclarationProperty<AbstractConstructor> constructor = new DeclarationProperty<AbstractConstructor>( this ) {
-		@Override
-		public boolean isReference() {
-			return ( this.getValue() instanceof AnonymousUserConstructor ) == false;
-		}
-	};
-	public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
-	public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
-	public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
+  //todo: AbstractConstructor -> Expression<AbstractConstructor>
+  public final DeclarationProperty<AbstractConstructor> constructor = new DeclarationProperty<AbstractConstructor>(this) {
+    @Override
+    public boolean isReference() {
+      return (this.getValue() instanceof AnonymousUserConstructor) == false;
+    }
+  };
+  public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty(this);
+  public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty(this);
+  public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty(this);
 
-	public Object evaluate( VirtualMachine virtualMachine ) {
-		AbstractType<?, ?, ?> fallbackType = getParent() instanceof AbstractField ?
-						((AbstractField) getParent()).getValueType() :
-						null;
-		Object[] arguments = virtualMachine.evaluateArguments( constructor.getValue(), requiredArguments, variableArguments, keyedArguments );
-		return constructor.getValue().evaluate( virtualMachine, fallbackType, arguments );
-	}
+  public Object evaluate(VirtualMachine virtualMachine) {
+    AbstractType<?, ?, ?> fallbackType = getParent() instanceof AbstractField ? ((AbstractField) getParent()).getValueType() : null;
+    Object[] arguments = virtualMachine.evaluateArguments(constructor.getValue(), requiredArguments, variableArguments, keyedArguments);
+    return constructor.getValue().evaluate(virtualMachine, fallbackType, arguments);
+  }
 }

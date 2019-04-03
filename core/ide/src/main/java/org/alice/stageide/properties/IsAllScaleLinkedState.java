@@ -49,16 +49,16 @@ import org.lgna.croquet.BooleanState;
 import java.util.UUID;
 
 public class IsAllScaleLinkedState extends BooleanState {
-	private static class SingletonHolder {
-		private static IsAllScaleLinkedState instance = new IsAllScaleLinkedState();
-	}
+  private static class SingletonHolder {
+    private static IsAllScaleLinkedState instance = new IsAllScaleLinkedState();
+  }
 
-	public static IsAllScaleLinkedState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsAllScaleLinkedState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsAllScaleLinkedState() {
-		super( IDE.DOCUMENT_UI_GROUP, UUID.fromString( "2667c9ff-fc8a-4675-aa4d-0ae317dbcf51" ), true );
-		this.setIconForBothTrueAndFalse( LinkScaleIcon.SCALE_ICON );
-	}
+  private IsAllScaleLinkedState() {
+    super(IDE.DOCUMENT_UI_GROUP, UUID.fromString("2667c9ff-fc8a-4675-aa4d-0ae317dbcf51"), true);
+    this.setIconForBothTrueAndFalse(LinkScaleIcon.SCALE_ICON);
+  }
 }

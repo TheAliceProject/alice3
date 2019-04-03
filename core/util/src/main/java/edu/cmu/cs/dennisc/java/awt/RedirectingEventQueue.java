@@ -54,79 +54,79 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public class RedirectingEventQueue extends EventQueue {
-	private Component src;
-	private Component dst;
-	private Component last;
+  private Component src;
+  private Component dst;
+  private Component last;
 
-	public RedirectingEventQueue( Component src, Component dst ) {
-		this.src = src;
-		this.dst = dst;
-		this.last = null;
-	}
+  public RedirectingEventQueue(Component src, Component dst) {
+    this.src = src;
+    this.dst = dst;
+    this.last = null;
+  }
 
-	private static Component getDeepestMouseListener( Component dst, Component descendant ) {
-		Component rv = descendant;
-		while( rv != null ) {
-			if( ( rv.getMouseListeners().length > 0 ) || ( rv.getMouseMotionListeners().length > 0 ) ) {
-				break;
-			}
-			if( rv == dst ) {
-				rv = null;
-				break;
-			}
-			rv = rv.getParent();
-		}
-		return rv;
-	}
+  private static Component getDeepestMouseListener(Component dst, Component descendant) {
+    Component rv = descendant;
+    while (rv != null) {
+      if ((rv.getMouseListeners().length > 0) || (rv.getMouseMotionListeners().length > 0)) {
+        break;
+      }
+      if (rv == dst) {
+        rv = null;
+        break;
+      }
+      rv = rv.getParent();
+    }
+    return rv;
+  }
 
-	@Override
-	protected void dispatchEvent( AWTEvent e ) {
-		if( e instanceof MouseEvent ) {
-			MouseEvent me = (MouseEvent)e;
-			Component curr = me.getComponent();
-			int id = me.getID();
-			if( curr == this.src ) {
-				if( ( id == MouseEvent.MOUSE_ENTERED ) || ( id == MouseEvent.MOUSE_EXITED ) ) {
-					e = MouseEventUtilities.convertMouseEvent( this.src, me, this.dst );
-				} else if( id == MouseEvent.MOUSE_MOVED ) {
-					me = MouseEventUtilities.convertMouseEvent( this.src, me, dst );
-					Component descendant = SwingUtilities.getDeepestComponentAt( this.dst, me.getX(), me.getY() );
-					descendant = RedirectingEventQueue.getDeepestMouseListener( dst, descendant );
-					if( this.last != descendant ) {
-						Component exitComponent;
-						if( this.last != null ) {
-							exitComponent = this.last;
-						} else {
-							exitComponent = this.src;
-						}
-						MouseEvent exitEvent = new MouseEvent( exitComponent, MouseEvent.MOUSE_EXITED, me.getWhen(), me.getModifiers(), me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), me.getButton() );
-						exitEvent = MouseEventUtilities.convertMouseEvent( this.src, exitEvent, exitComponent );
-						//edu.cmu.cs.dennisc.print.PrintUtilities.println( exitEvent );
-						super.dispatchEvent( exitEvent );
-					}
-					if( descendant != null ) {
-						e = MouseEventUtilities.convertMouseEvent( dst, me, descendant );
-					}
-					if( this.last != descendant ) {
-						Component enterComponent;
-						if( descendant != null ) {
-							enterComponent = descendant;
-						} else {
-							enterComponent = this.src;
-						}
-						MouseEvent enterEvent = new MouseEvent( enterComponent, MouseEvent.MOUSE_ENTERED, me.getWhen(), me.getModifiers(), me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), me.getButton() );
-						enterEvent = MouseEventUtilities.convertMouseEvent( this.src, enterEvent, enterComponent );
-						//edu.cmu.cs.dennisc.print.PrintUtilities.println( enterEvent );
-						super.dispatchEvent( enterEvent );
-						this.last = descendant;
-					}
-				} else if( ( id == MouseEvent.MOUSE_PRESSED ) || ( id == MouseEvent.MOUSE_CLICKED ) || ( id == MouseEvent.MOUSE_RELEASED ) || ( id == MouseEvent.MOUSE_DRAGGED ) ) {
-					if( this.last != null ) {
-						e = MouseEventUtilities.convertMouseEvent( this.src, me, this.last );
-					}
-				}
-			}
-		}
-		super.dispatchEvent( e );
-	}
+  @Override
+  protected void dispatchEvent(AWTEvent e) {
+    if (e instanceof MouseEvent) {
+      MouseEvent me = (MouseEvent) e;
+      Component curr = me.getComponent();
+      int id = me.getID();
+      if (curr == this.src) {
+        if ((id == MouseEvent.MOUSE_ENTERED) || (id == MouseEvent.MOUSE_EXITED)) {
+          e = MouseEventUtilities.convertMouseEvent(this.src, me, this.dst);
+        } else if (id == MouseEvent.MOUSE_MOVED) {
+          me = MouseEventUtilities.convertMouseEvent(this.src, me, dst);
+          Component descendant = SwingUtilities.getDeepestComponentAt(this.dst, me.getX(), me.getY());
+          descendant = RedirectingEventQueue.getDeepestMouseListener(dst, descendant);
+          if (this.last != descendant) {
+            Component exitComponent;
+            if (this.last != null) {
+              exitComponent = this.last;
+            } else {
+              exitComponent = this.src;
+            }
+            MouseEvent exitEvent = new MouseEvent(exitComponent, MouseEvent.MOUSE_EXITED, me.getWhen(), me.getModifiers(), me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), me.getButton());
+            exitEvent = MouseEventUtilities.convertMouseEvent(this.src, exitEvent, exitComponent);
+            //edu.cmu.cs.dennisc.print.PrintUtilities.println( exitEvent );
+            super.dispatchEvent(exitEvent);
+          }
+          if (descendant != null) {
+            e = MouseEventUtilities.convertMouseEvent(dst, me, descendant);
+          }
+          if (this.last != descendant) {
+            Component enterComponent;
+            if (descendant != null) {
+              enterComponent = descendant;
+            } else {
+              enterComponent = this.src;
+            }
+            MouseEvent enterEvent = new MouseEvent(enterComponent, MouseEvent.MOUSE_ENTERED, me.getWhen(), me.getModifiers(), me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), me.getButton());
+            enterEvent = MouseEventUtilities.convertMouseEvent(this.src, enterEvent, enterComponent);
+            //edu.cmu.cs.dennisc.print.PrintUtilities.println( enterEvent );
+            super.dispatchEvent(enterEvent);
+            this.last = descendant;
+          }
+        } else if ((id == MouseEvent.MOUSE_PRESSED) || (id == MouseEvent.MOUSE_CLICKED) || (id == MouseEvent.MOUSE_RELEASED) || (id == MouseEvent.MOUSE_DRAGGED)) {
+          if (this.last != null) {
+            e = MouseEventUtilities.convertMouseEvent(this.src, me, this.last);
+          }
+        }
+      }
+    }
+    super.dispatchEvent(e);
+  }
 }

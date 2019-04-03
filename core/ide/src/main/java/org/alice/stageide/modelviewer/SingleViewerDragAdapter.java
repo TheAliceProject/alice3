@@ -67,94 +67,94 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 public class SingleViewerDragAdapter extends DragAdapter {
-	SingleViewerDragAdapter() {
-		addDragControl();
-		addZoomKeyControl();
-		addCameraKeyControl();
+  SingleViewerDragAdapter() {
+    addDragControl();
+    addZoomKeyControl();
+    addCameraKeyControl();
 
-		for( ManipulatorConditionSet manipulatorConditionSet : getManipulatorConditionSets() ) {
-			manipulatorConditionSet.getManipulator().setDragAdapter( this );
-		}
-	}
+    for (ManipulatorConditionSet manipulatorConditionSet : getManipulatorConditionSets()) {
+      manipulatorConditionSet.getManipulator().setDragAdapter(this);
+    }
+  }
 
-	private void addDragControl() {
-		MouseDragCondition leftClick = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.getAnythingHint() ) );
-		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
-		cameraOrbit.addCondition( leftClick );
-		addManipulatorConditionSet( cameraOrbit );
-	}
+  private void addDragControl() {
+    MouseDragCondition leftClick = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getAnythingHint()));
+    ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet(new CameraOrbitDragManipulator());
+    cameraOrbit.addCondition(leftClick);
+    addManipulatorConditionSet(cameraOrbit);
+  }
 
-	private void addZoomKeyControl() {
-		MovementKey[] zoomKeys = {
-				//Zoom out
-				new MovementKey( KeyEvent.VK_MINUS, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL ) ),
-				new MovementKey( KeyEvent.VK_SUBTRACT, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL) ),
-				//Zoom in
-				new MovementKey( KeyEvent.VK_EQUALS, new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ) ),
-				new MovementKey( KeyEvent.VK_ADD, new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ) ),
-		};
-		CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator( zoomKeys );
-		ManipulatorConditionSet cameraTranslate = new ManipulatorConditionSet( cameraTranslateManip );
-		for( MovementKey zoomKey : zoomKeys ) {
-			cameraTranslate.addCondition( new KeyPressCondition( zoomKey.keyValue ) );
-		}
-		addManipulatorConditionSet( cameraTranslate );
-	}
+  private void addZoomKeyControl() {
+    MovementKey[] zoomKeys = {
+        //Zoom out
+        new MovementKey(KeyEvent.VK_MINUS, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
+        new MovementKey(KeyEvent.VK_SUBTRACT, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
+        //Zoom in
+        new MovementKey(KeyEvent.VK_EQUALS, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
+        new MovementKey(KeyEvent.VK_ADD, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
+    };
+    CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator(zoomKeys);
+    ManipulatorConditionSet cameraTranslate = new ManipulatorConditionSet(cameraTranslateManip);
+    for (MovementKey zoomKey : zoomKeys) {
+      cameraTranslate.addCondition(new KeyPressCondition(zoomKey.keyValue));
+    }
+    addManipulatorConditionSet(cameraTranslate);
+  }
 
-	private void addCameraKeyControl() {
-		// Directions are at right angles to expected motion. Orbit uses a cross product to get the axis of rotation.
-		MovementKey[] movementKeys = {
-				//Up
-				new MovementKey( KeyEvent.VK_PAGE_UP, new MovementDescription( MovementDirection.RIGHT, MovementType.ABSOLUTE ), 10d ),
-				new MovementKey( KeyEvent.VK_UP, new MovementDescription( MovementDirection.RIGHT, MovementType.ABSOLUTE ), 10d ),
-				//Down
-				new MovementKey( KeyEvent.VK_PAGE_DOWN, new MovementDescription( MovementDirection.LEFT, MovementType.ABSOLUTE ), 10d ),
-				new MovementKey( KeyEvent.VK_DOWN, new MovementDescription( MovementDirection.LEFT, MovementType.ABSOLUTE ), 10d ),
-				//Left
-				new MovementKey( KeyEvent.VK_OPEN_BRACKET, new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE ), 10d ),
-				new MovementKey( KeyEvent.VK_LEFT, new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE ), 10d ),
-				//Right
-				new MovementKey( KeyEvent.VK_CLOSE_BRACKET, new MovementDescription( MovementDirection.DOWN, MovementType.ABSOLUTE ), 10d ),
-				new MovementKey( KeyEvent.VK_RIGHT, new MovementDescription( MovementDirection.DOWN, MovementType.ABSOLUTE ), 10d ),
-		};
+  private void addCameraKeyControl() {
+    // Directions are at right angles to expected motion. Orbit uses a cross product to get the axis of rotation.
+    MovementKey[] movementKeys = {
+        //Up
+        new MovementKey(KeyEvent.VK_PAGE_UP, new MovementDescription(MovementDirection.RIGHT, MovementType.ABSOLUTE), 10d),
+        new MovementKey(KeyEvent.VK_UP, new MovementDescription(MovementDirection.RIGHT, MovementType.ABSOLUTE), 10d),
+        //Down
+        new MovementKey(KeyEvent.VK_PAGE_DOWN, new MovementDescription(MovementDirection.LEFT, MovementType.ABSOLUTE), 10d),
+        new MovementKey(KeyEvent.VK_DOWN, new MovementDescription(MovementDirection.LEFT, MovementType.ABSOLUTE), 10d),
+        //Left
+        new MovementKey(KeyEvent.VK_OPEN_BRACKET, new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE), 10d),
+        new MovementKey(KeyEvent.VK_LEFT, new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE), 10d),
+        //Right
+        new MovementKey(KeyEvent.VK_CLOSE_BRACKET, new MovementDescription(MovementDirection.DOWN, MovementType.ABSOLUTE), 10d),
+        new MovementKey(KeyEvent.VK_RIGHT, new MovementDescription(MovementDirection.DOWN, MovementType.ABSOLUTE), 10d),
+    };
 
-		CameraOrbitKeyManipulator orbitKeyManipulator = new CameraOrbitKeyManipulator( movementKeys );
-		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( orbitKeyManipulator );
-		for( MovementKey movementKey : movementKeys ) {
-			cameraOrbit.addCondition( new KeyPressCondition( movementKey.keyValue ) );
-		}
-		addManipulatorConditionSet( cameraOrbit );
-	}
+    CameraOrbitKeyManipulator orbitKeyManipulator = new CameraOrbitKeyManipulator(movementKeys);
+    ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet(orbitKeyManipulator);
+    for (MovementKey movementKey : movementKeys) {
+      cameraOrbit.addCondition(new KeyPressCondition(movementKey.keyValue));
+    }
+    addManipulatorConditionSet(cameraOrbit);
+  }
 
-	@Override
-	protected void updateHandleSelection( AbstractTransformableImp selected ) {
-	}
+  @Override
+  protected void updateHandleSelection(AbstractTransformableImp selected) {
+  }
 
-	@Override
-	public void setSGCamera( AbstractCamera camera ) {
-		super.setSGCamera( camera );
-		AxisAlignedBox cameraBounds = new AxisAlignedBox();
-		Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation.backward;
+  @Override
+  public void setSGCamera(AbstractCamera camera) {
+    super.setSGCamera(camera);
+    AxisAlignedBox cameraBounds = new AxisAlignedBox();
+    Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation.backward;
 
-		Point3 cameraMin = new Point3( camera.getAbsoluteTransformation().translation );
-		Point3 cameraMax = new Point3( cameraMin );
-		double originalY = cameraMin.y;
-		cameraMin.add( Vector3.createMultiplication( cameraBackwards, 1.5d ) );
-		cameraMin.y = .25d;
-		cameraMax.subtract( Vector3.createMultiplication( cameraBackwards, 4.5d ) );
-		cameraMax.y = originalY + 1.5d;
-		cameraBounds.setMinimum( cameraMin );
-		cameraBounds.setMaximum( cameraMax );
-	}
+    Point3 cameraMin = new Point3(camera.getAbsoluteTransformation().translation);
+    Point3 cameraMax = new Point3(cameraMin);
+    double originalY = cameraMin.y;
+    cameraMin.add(Vector3.createMultiplication(cameraBackwards, 1.5d));
+    cameraMin.y = .25d;
+    cameraMax.subtract(Vector3.createMultiplication(cameraBackwards, 4.5d));
+    cameraMax.y = originalY + 1.5d;
+    cameraBounds.setMinimum(cameraMin);
+    cameraBounds.setMaximum(cameraMax);
+  }
 
-	@Override
-	protected void handleMouseMoved( MouseEvent e ) {
-		//Overridden to prevent picking every frame since there is no need for rollover events
-		currentInputState.setMouseLocation( e.getPoint() );
-		fireStateChange();
-	}
+  @Override
+  protected void handleMouseMoved(MouseEvent e) {
+    //Overridden to prevent picking every frame since there is no need for rollover events
+    currentInputState.setMouseLocation(e.getPoint());
+    fireStateChange();
+  }
 
-	@Override
-	public void undoRedoEndManipulation( AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation ) {
-	}
+  @Override
+  public void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation) {
+  }
 }

@@ -55,30 +55,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ThisExpressionDragModel extends AbstractExpressionDragModel {
-	private static class SingletonHolder {
-		private static ThisExpressionDragModel instance = new ThisExpressionDragModel();
-	}
+  private static class SingletonHolder {
+    private static ThisExpressionDragModel instance = new ThisExpressionDragModel();
+  }
 
-	public static ThisExpressionDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ThisExpressionDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ThisExpressionDragModel() {
-		super( UUID.fromString( "f1ae6805-24ec-400b-9459-7101f0663356" ) );
-	}
+  private ThisExpressionDragModel() {
+    super(UUID.fromString("f1ae6805-24ec-400b-9459-7101f0663356"));
+  }
 
-	@Override
-	public boolean isPotentialStatementCreator() {
-		return false;
-	}
+  @Override
+  public boolean isPotentialStatementCreator() {
+    return false;
+  }
 
-	@Override
-	protected Triggerable getDropOperation( ExpressionProperty expressionProperty ) {
-		return ThisOperation.getInstance( expressionProperty );
-	}
+  @Override
+  protected Triggerable getDropOperation(ExpressionProperty expressionProperty) {
+    return ThisOperation.getInstance(expressionProperty);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
+  }
 }

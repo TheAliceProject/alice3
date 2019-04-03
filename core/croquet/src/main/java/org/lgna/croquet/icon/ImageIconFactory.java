@@ -57,39 +57,39 @@ import java.net.URL;
  * @author Dennis Cosgrove
  */
 public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
-	public ImageIconFactory( ImageIcon imageIcon ) {
-		super( imageIcon );
-	}
+  public ImageIconFactory(ImageIcon imageIcon) {
+    super(imageIcon);
+  }
 
-	public ImageIconFactory( URL resource ) {
-		this( IconUtilities.createImageIcon( resource ) );
-	}
+  public ImageIconFactory(URL resource) {
+    this(IconUtilities.createImageIcon(resource));
+  }
 
-	public ImageIconFactory( Image image ) {
-		this( IconUtilities.createImageIcon( image ) );
-	}
+  public ImageIconFactory(Image image) {
+    this(IconUtilities.createImageIcon(image));
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		ImageIcon imageIcon = this.getSourceImageIcon();
-		if( imageIcon != null ) {
-			if( ( imageIcon.getIconWidth() == size.width ) && ( imageIcon.getIconHeight() == size.height ) ) {
-				return imageIcon;
-			} else {
-				return new ScaledIcon( imageIcon, size.width, size.height );
-			}
-		} else {
-			return new ColorIcon( Color.RED, size.width, size.height );
-		}
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    ImageIcon imageIcon = this.getSourceImageIcon();
+    if (imageIcon != null) {
+      if ((imageIcon.getIconWidth() == size.width) && (imageIcon.getIconHeight() == size.height)) {
+        return imageIcon;
+      } else {
+        return new ScaledIcon(imageIcon, size.width, size.height);
+      }
+    } else {
+      return new ColorIcon(Color.RED, size.width, size.height);
+    }
+  }
 
-	@Override
-	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
-		ImageIcon imageIcon = this.getSourceImageIcon();
-		if( imageIcon != null ) {
-			return new Dimension( imageIcon.getIconWidth(), imageIcon.getIconHeight() );
-		} else {
-			return sizeIfResolutionIndependent;
-		}
-	}
+  @Override
+  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
+    ImageIcon imageIcon = this.getSourceImageIcon();
+    if (imageIcon != null) {
+      return new Dimension(imageIcon.getIconWidth(), imageIcon.getIconHeight());
+    } else {
+      return sizeIfResolutionIndependent;
+    }
+  }
 }

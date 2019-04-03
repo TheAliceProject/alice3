@@ -52,14 +52,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTab extends SimpleTabComposite<Panel> {
-	public AbstractTab( UUID migrationId ) {
-		super( migrationId, IsCloseable.FALSE );
-	}
+  public AbstractTab(UUID migrationId) {
+    super(migrationId, IsCloseable.FALSE);
+  }
 
-	@Override
-	protected Panel createView() {
-		Panel rv = new BorderPanel();
-		rv.setMinimumPreferredHeight( 100 );
-		return rv;
-	}
+  @Override
+  protected Panel createView() {
+    Panel rv = new BorderPanel();
+    rv.setMinimumPreferredHeight(100);
+    return rv;
+  }
 }

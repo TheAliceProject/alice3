@@ -50,23 +50,23 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author Dennis Cosgrove
  */
 public class Queues {
-	private Queues() {
-		throw new Error();
-	}
+  private Queues() {
+    throw new Error();
+  }
 
-	public static <E> ConcurrentLinkedQueue<E> newConcurrentLinkedQueue() {
-		return new ConcurrentLinkedQueue<E>();
-	}
+  public static <E> ConcurrentLinkedQueue<E> newConcurrentLinkedQueue() {
+    return new ConcurrentLinkedQueue<E>();
+  }
 
-	public static <E, X extends E> ConcurrentLinkedQueue<E> newConcurrentLinkedQueue( X... array ) {
-		ConcurrentLinkedQueue<E> rv = new ConcurrentLinkedQueue<E>();
-		Collections.addAll( rv, array );
-		return rv;
-	}
+  public static <E, X extends E> ConcurrentLinkedQueue<E> newConcurrentLinkedQueue(X... array) {
+    ConcurrentLinkedQueue<E> rv = new ConcurrentLinkedQueue<E>();
+    Collections.addAll(rv, array);
+    return rv;
+  }
 
-	public static <E> ConcurrentLinkedQueue<E> newConcurrentLinkedQueue( Collection<E> other ) {
-		ConcurrentLinkedQueue<E> rv = new ConcurrentLinkedQueue<E>();
-		rv.addAll( other );
-		return rv;
-	}
+  public static <E> ConcurrentLinkedQueue<E> newConcurrentLinkedQueue(Collection<E> other) {
+    ConcurrentLinkedQueue<E> rv = new ConcurrentLinkedQueue<E>();
+    rv.addAll(other);
+    return rv;
+  }
 }

@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,58 +34,47 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum StaircaseUpResource implements PropResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, StaircaseUpResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRCASE_00 = new JointId( ROOT, StaircaseUpResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRCASE_01 = new JointId( STAIRCASE_00, StaircaseUpResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRCASE_02 = new JointId( STAIRCASE_01, StaircaseUpResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRCASE_03 = new JointId( STAIRCASE_02, StaircaseUpResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRCASE_04 = new JointId( STAIRCASE_03, StaircaseUpResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRCASE_05 = new JointId( STAIRCASE_04, StaircaseUpResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRCASE_06 = new JointId( STAIRCASE_05, StaircaseUpResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRCASE_07 = new JointId( STAIRCASE_06, StaircaseUpResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRCASE_08 = new JointId( STAIRCASE_07, StaircaseUpResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRCASE_09 = new JointId( STAIRCASE_08, StaircaseUpResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId STAIRCASE_10 = new JointId( STAIRCASE_09, StaircaseUpResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, StaircaseUpResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRCASE_00 = new JointId(ROOT, StaircaseUpResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRCASE_01 = new JointId(STAIRCASE_00, StaircaseUpResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRCASE_02 = new JointId(STAIRCASE_01, StaircaseUpResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRCASE_03 = new JointId(STAIRCASE_02, StaircaseUpResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRCASE_04 = new JointId(STAIRCASE_03, StaircaseUpResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRCASE_05 = new JointId(STAIRCASE_04, StaircaseUpResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRCASE_06 = new JointId(STAIRCASE_05, StaircaseUpResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRCASE_07 = new JointId(STAIRCASE_06, StaircaseUpResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRCASE_08 = new JointId(STAIRCASE_07, StaircaseUpResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRCASE_09 = new JointId(STAIRCASE_08, StaircaseUpResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId STAIRCASE_10 = new JointId(STAIRCASE_09, StaircaseUpResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	public static final JointId[] STAIRCASE_ARRAY = { STAIRCASE_00, STAIRCASE_01, STAIRCASE_02, STAIRCASE_03, STAIRCASE_04, STAIRCASE_05, STAIRCASE_06, STAIRCASE_07, STAIRCASE_08, STAIRCASE_09, STAIRCASE_10 };
+  public static final JointId[] STAIRCASE_ARRAY = {STAIRCASE_00, STAIRCASE_01, STAIRCASE_02, STAIRCASE_03, STAIRCASE_04, STAIRCASE_05, STAIRCASE_06, STAIRCASE_07, STAIRCASE_08, STAIRCASE_09, STAIRCASE_10};
 
-	private final ImplementationAndVisualType resourceType;
-	StaircaseUpResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	StaircaseUpResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  StaircaseUpResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return StaircaseUpResource.JOINT_ID_ROOTS;
-	}
+  StaircaseUpResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return StaircaseUpResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

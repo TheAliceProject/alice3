@@ -47,14 +47,14 @@ package org.alice.interact.event;
  */
 public interface ManipulationListener {
 
-	public void activate( ManipulationEvent event );
+  public void activate(ManipulationEvent event);
 
-	public void deactivate( ManipulationEvent event );
+  public void deactivate(ManipulationEvent event);
 
-	public boolean matches( ManipulationEvent event );
+  public boolean matches(ManipulationEvent event);
 
-	public void addCondition( ManipulationEventCriteria condition );
+  public void addCondition(ManipulationEventCriteria condition);
 
-	public void removeCondition( ManipulationEventCriteria condition );
+  public void removeCondition(ManipulationEventCriteria condition);
 
 }

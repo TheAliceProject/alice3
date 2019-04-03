@@ -52,18 +52,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class BooleanExampleComposite extends SimpleComposite<BooleanExampleView> {
-	public BooleanExampleComposite() {
-		super( UUID.fromString( "eacc4043-77b9-4cdc-aa2c-d91c16eee7a7" ) );
-	}
+  public BooleanExampleComposite() {
+    super(UUID.fromString("eacc4043-77b9-4cdc-aa2c-d91c16eee7a7"));
+  }
 
-	public BooleanState getIsAliveState() {
-		return this.isAliveState;
-	}
+  public BooleanState getIsAliveState() {
+    return this.isAliveState;
+  }
 
-	@Override
-	protected BooleanExampleView createView() {
-		return new BooleanExampleView( this );
-	}
+  @Override
+  protected BooleanExampleView createView() {
+    return new BooleanExampleView(this);
+  }
 
-	private final BooleanState isAliveState = this.createBooleanState( "isAliveState", true );
+  private final BooleanState isAliveState = this.createBooleanState("isAliveState", true);
 }

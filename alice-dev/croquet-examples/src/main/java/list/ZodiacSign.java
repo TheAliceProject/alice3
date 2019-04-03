@@ -46,15 +46,5 @@ package list;
  * @author Dennis Cosgrove
  */
 public enum ZodiacSign {
-	ARIES,
-	TAURUS,
-	GEMINI,
-	CANCER,
-	LEO,
-	VIRGO,
-	LIBRA,
-	SCORPIO,
-	SAGITARIUS,
-	CAPRICORN,
-	AQUARIUS
+  ARIES, TAURUS, GEMINI, CANCER, LEO, VIRGO, LIBRA, SCORPIO, SAGITARIUS, CAPRICORN, AQUARIUS
 }

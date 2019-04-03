@@ -54,20 +54,17 @@ import org.lgna.croquet.views.SwingComponentView;
  * @author Dennis Cosgrove
  */
 public class KeyCustomExpressionCreatorView extends CustomExpressionCreatorView {
-	public KeyCustomExpressionCreatorView( KeyCustomExpressionCreatorComposite composite ) {
-		super( composite );
-	}
+  public KeyCustomExpressionCreatorView(KeyCustomExpressionCreatorComposite composite) {
+    super(composite);
+  }
 
-	@Override
-	protected SwingComponentView<?> createMainComponent() {
-		KeyCustomExpressionCreatorComposite composite = (KeyCustomExpressionCreatorComposite)this.getComposite();
+  @Override
+  protected SwingComponentView<?> createMainComponent() {
+    KeyCustomExpressionCreatorComposite composite = (KeyCustomExpressionCreatorComposite) this.getComposite();
 
-		AbstractLabel pressAnyKeyLabel = composite.getPressAnyKeyLabel().createLabel( TextPosture.OBLIQUE );
-		pressAnyKeyLabel.setHorizontalAlignment( HorizontalAlignment.CENTER );
+    AbstractLabel pressAnyKeyLabel = composite.getPressAnyKeyLabel().createLabel(TextPosture.OBLIQUE);
+    pressAnyKeyLabel.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
-		return new BorderPanel.Builder()
-				.pageStart( pressAnyKeyLabel )
-				.center( composite.getValueState().createViewController() )
-				.build();
-	}
+    return new BorderPanel.Builder().pageStart(pressAnyKeyLabel).center(composite.getValueState().createViewController()).build();
+  }
 }

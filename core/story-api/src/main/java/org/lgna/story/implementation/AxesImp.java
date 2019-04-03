@@ -58,71 +58,71 @@ import org.lgna.story.SAxes;
  * @author Dennis Cosgrove
  */
 public class AxesImp extends VisualScaleModelImp {
-	public AxesImp( SAxes abstraction ) {
-		this.abstraction = abstraction;
-		for( Visual v : this.getSgVisuals() ) {
-			this.putInstance( v );
-		}
-		this.sgAxes.setParent( this.getSgComposite() );
-	}
+  public AxesImp(SAxes abstraction) {
+    this.abstraction = abstraction;
+    for (Visual v : this.getSgVisuals()) {
+      this.putInstance(v);
+    }
+    this.sgAxes.setParent(this.getSgComposite());
+  }
 
-	@Override
-	public SAxes getAbstraction() {
-		return this.abstraction;
-	}
+  @Override
+  public SAxes getAbstraction() {
+    return this.abstraction;
+  }
 
-	@Override
-	protected InstanceProperty[] getScaleProperties() {
-		return new InstanceProperty[] { this.sgAxes.getScaleProperty() };
-	}
+  @Override
+  protected InstanceProperty[] getScaleProperties() {
+    return new InstanceProperty[] {this.sgAxes.getScaleProperty()};
+  }
 
-	@Override
-	protected void setSgVisualsScale( Matrix3x3 m ) {
-		sgAxes.setScale( m );
-	}
+  @Override
+  protected void setSgVisualsScale(Matrix3x3 m) {
+    sgAxes.setScale(m);
+  }
 
-	@Override
-	protected Matrix3x3 getSgVisualsScale() {
-		return this.sgAxes.getScale();
-	}
+  @Override
+  protected Matrix3x3 getSgVisualsScale() {
+    return this.sgAxes.getScale();
+  }
 
-	@Override
-	protected void applyScale( Vector3 axis, boolean isScootDesired ) {
-		if( isScootDesired ) {
-			AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue();
-			m.translation.multiply( axis );
-			this.getSgComposite().localTransformation.setValue( m );
-		}
-		Matrix3x3 scale = sgAxes.getScale();
-		ScaleUtilities.applyScale( scale, axis );
-		setSgVisualsScale( scale );
-	}
+  @Override
+  protected void applyScale(Vector3 axis, boolean isScootDesired) {
+    if (isScootDesired) {
+      AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue();
+      m.translation.multiply(axis);
+      this.getSgComposite().localTransformation.setValue(m);
+    }
+    Matrix3x3 scale = sgAxes.getScale();
+    ScaleUtilities.applyScale(scale, axis);
+    setSgVisualsScale(scale);
+  }
 
-	//	@Override
-	//	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgComposite() {
-	//		return this.sgAxes;
-	//	}
+  //  @Override
+  //  public edu.cmu.cs.dennisc.scenegraph.Transformable getSgComposite() {
+  //    return this.sgAxes;
+  //  }
 
-	@Override
-	protected SimpleAppearance[] getSgPaintAppearances() {
-		return new SimpleAppearance[ 0 ];
-	}
+  @Override
+  protected SimpleAppearance[] getSgPaintAppearances() {
+    return new SimpleAppearance[0];
+  }
 
-	@Override
-	protected SimpleAppearance[] getSgOpacityAppearances() {
-		return sgAxes.getSgOpacityAppearances();
-	}
+  @Override
+  protected SimpleAppearance[] getSgOpacityAppearances() {
+    return sgAxes.getSgOpacityAppearances();
+  }
 
-	@Override
-	public Visual[] getSgVisuals() {
-		return sgAxes.getSgVisuals();
-	}
+  @Override
+  public Visual[] getSgVisuals() {
+    return sgAxes.getSgVisuals();
+  }
 
-	@Override
-	public void setSize( Dimension3 size ) {
-		this.setScale( getScaleForSize( size ) );
-	}
+  @Override
+  public void setSize(Dimension3 size) {
+    this.setScale(getScaleForSize(size));
+  }
 
-	private final SAxes abstraction;
-	private final ExtravagantAxes sgAxes = new ExtravagantAxes( 1.0, 1.0, 2.0 );
+  private final SAxes abstraction;
+  private final ExtravagantAxes sgAxes = new ExtravagantAxes(1.0, 1.0, 2.0);
 }

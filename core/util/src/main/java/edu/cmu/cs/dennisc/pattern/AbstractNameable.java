@@ -55,40 +55,40 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractNameable extends AbstractReleasable implements Nameable, NameChangeListenable {
-	@Override
-	public String getName() {
-		return this.name;
-	}
+  @Override
+  public String getName() {
+    return this.name;
+  }
 
-	@Override
-	public void setName( String name ) {
-		if( Objects.notEquals( this.name, name ) ) {
-			NameEvent nameEvent = new NameEvent( this, this.name, name );
-			for( NameListener nameListeners : this.nameListeners ) {
-				nameListeners.nameChanging( nameEvent );
-			}
-			this.name = name;
-			for( NameListener nameListeners : this.nameListeners ) {
-				nameListeners.nameChanged( nameEvent );
-			}
-		}
-	}
+  @Override
+  public void setName(String name) {
+    if (Objects.notEquals(this.name, name)) {
+      NameEvent nameEvent = new NameEvent(this, this.name, name);
+      for (NameListener nameListeners : this.nameListeners) {
+        nameListeners.nameChanging(nameEvent);
+      }
+      this.name = name;
+      for (NameListener nameListeners : this.nameListeners) {
+        nameListeners.nameChanged(nameEvent);
+      }
+    }
+  }
 
-	@Override
-	public void addNameListener( NameListener nameListener ) {
-		this.nameListeners.add( nameListener );
-	}
+  @Override
+  public void addNameListener(NameListener nameListener) {
+    this.nameListeners.add(nameListener);
+  }
 
-	@Override
-	public void removeNameListener( NameListener nameListener ) {
-		this.nameListeners.remove( nameListener );
-	}
+  @Override
+  public void removeNameListener(NameListener nameListener) {
+    this.nameListeners.remove(nameListener);
+  }
 
-	@Override
-	public Collection<NameListener> getNameListeners() {
-		return Collections.unmodifiableCollection( this.nameListeners );
-	}
+  @Override
+  public Collection<NameListener> getNameListeners() {
+    return Collections.unmodifiableCollection(this.nameListeners);
+  }
 
-	private final List<NameListener> nameListeners = Lists.newCopyOnWriteArrayList();
-	private String name = null;
+  private final List<NameListener> nameListeners = Lists.newCopyOnWriteArrayList();
+  private String name = null;
 }

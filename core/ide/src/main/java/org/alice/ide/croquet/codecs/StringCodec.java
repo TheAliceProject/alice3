@@ -50,24 +50,25 @@ import org.lgna.croquet.ItemCodec;
  * @author Dennis Cosgrove
  */
 public enum StringCodec implements ItemCodec<String> {
-	SINGLETON;
-	@Override
-	public Class<String> getValueClass() {
-		return String.class;
-	}
+  SINGLETON;
 
-	@Override
-	public String decodeValue( BinaryDecoder binaryDecoder ) {
-		return binaryDecoder.decodeString();
-	}
+  @Override
+  public Class<String> getValueClass() {
+    return String.class;
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, String value ) {
-		binaryEncoder.encode( value );
-	}
+  @Override
+  public String decodeValue(BinaryDecoder binaryDecoder) {
+    return binaryDecoder.decodeString();
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, String value ) {
-		sb.append( value );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, String value) {
+    binaryEncoder.encode(value);
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, String value) {
+    sb.append(value);
+  }
 }

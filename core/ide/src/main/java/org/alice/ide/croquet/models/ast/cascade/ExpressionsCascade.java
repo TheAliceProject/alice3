@@ -54,7 +54,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionsCascade extends ImmutableCascade<Expression> {
-	public ExpressionsCascade( Group group, UUID id, CascadeBlank<Expression>... blanks ) {
-		super( group, id, Expression.class, blanks );
-	}
+  public ExpressionsCascade(Group group, UUID id, CascadeBlank<Expression>... blanks) {
+    super(group, id, Expression.class, blanks);
+  }
 }

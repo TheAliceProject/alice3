@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleToddlerFullBodyOutfitOpenCoatDressShoes implements FemaleToddlerFullBodyOutfit {
-	GREY_CREAM,
-	PINK_YELLOW,
-	BLUE_P_INK;
+  GREY_CREAM, PINK_YELLOW, BLUE_P_INK
 
 }

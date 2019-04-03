@@ -49,38 +49,38 @@ import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractLoop extends AbstractStatementWithBody {
-	public AbstractLoop() {
-	}
+  public AbstractLoop() {
+  }
 
-	public AbstractLoop( BlockStatement body ) {
-		super( body );
-	}
+  public AbstractLoop(BlockStatement body) {
+    super(body);
+  }
 
-	@Override
-	public String generateLocalName( UserLocal local ) {
-		return local.isFinal.getValue() ? getConstantName() : getVariableName();
-	}
+  @Override
+  public String generateLocalName(UserLocal local) {
+    return local.isFinal.getValue() ? getConstantName() : getVariableName();
+  }
 
-	public String getVariableName() {
-		return "index" + getDepthSuffix();
-	}
+  public String getVariableName() {
+    return "index" + getDepthSuffix();
+  }
 
-	private String getConstantName() {
-		return "COUNT_" + getDepthSuffix();
-	}
+  private String getConstantName() {
+    return "COUNT_" + getDepthSuffix();
+  }
 
-	private int getInstanceDepth() {
-		UserCode code = getFirstAncestorAssignableTo( UserCode.class );
-		if (code == null) {
-			return -1;
-		}
-		IsInstanceCrawler<CountLoop> countLoopCrawler = IsInstanceCrawler.createInstance( CountLoop.class );
-		code.crawl( countLoopCrawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY, null );
-		return countLoopCrawler.getList().indexOf( this );
-	}
+  private int getInstanceDepth() {
+    UserCode code = getFirstAncestorAssignableTo(UserCode.class);
+    if (code == null) {
+      return -1;
+    }
+    IsInstanceCrawler<CountLoop> countLoopCrawler = IsInstanceCrawler.createInstance(CountLoop.class);
+    code.crawl(countLoopCrawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY, null);
+    return countLoopCrawler.getList().indexOf(this);
+  }
 
-	private char getDepthSuffix() {
-		int index = getInstanceDepth( );
-		return index != -1 ? (char) (((int) 'A') + index) : '_';
-	}
+  private char getDepthSuffix() {
+    int index = getInstanceDepth();
+    return index != -1 ? (char) (((int) 'A') + index) : '_';
+  }
 }

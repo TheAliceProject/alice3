@@ -54,82 +54,82 @@ import java.util.regex.Pattern;
  * @author Dennis Cosgrove
  */
 public class TextMigration extends AbstractMigration {
-	private static final boolean IS_SANITY_CHECKING_DESIRED = SystemUtilities.getBooleanProperty( "org.lgna.project.migration.TextMigration.isSanityCheckingDesired", false );
+  private static final boolean IS_SANITY_CHECKING_DESIRED = SystemUtilities.getBooleanProperty("org.lgna.project.migration.TextMigration.isSanityCheckingDesired", false);
 
-	private static class Pair {
-		private final Pattern pattern;
-		private final String replacement;
+  private static class Pair {
+    private final Pattern pattern;
+    private final String replacement;
 
-		public Pair( String regex, String replacement ) {
-			this.pattern = Pattern.compile( regex );
-			this.replacement = replacement;
-		}
+    public Pair(String regex, String replacement) {
+      this.pattern = Pattern.compile(regex);
+      this.replacement = replacement;
+    }
 
-		public String migrate( String source ) {
-			Matcher matcher = this.pattern.matcher( source );
-			if( matcher.find() ) {
-				//todo?
-				Logger.outln( "replace all", this.pattern, this.replacement );
-				matcher.reset();
-				String rv = matcher.replaceAll( this.replacement );
-				//				java.util.regex.Matcher postMatcher = this.pattern.matcher( rv );
-				//				assert postMatcher.find() == false : rv;
-				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rv );
-				return rv;
-			} else {
-				return source;
-			}
-		}
+    public String migrate(String source) {
+      Matcher matcher = this.pattern.matcher(source);
+      if (matcher.find()) {
+        //todo?
+        Logger.outln("replace all", this.pattern, this.replacement);
+        matcher.reset();
+        String rv = matcher.replaceAll(this.replacement);
+        //        java.util.regex.Matcher postMatcher = this.pattern.matcher( rv );
+        //        assert postMatcher.find() == false : rv;
+        //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rv );
+        return rv;
+      } else {
+        return source;
+      }
+    }
 
-		public boolean isPatternEqual( Pair other ) {
-			return this.pattern.toString().equals( other.pattern.toString() );
-		}
+    public boolean isPatternEqual(Pair other) {
+      return this.pattern.toString().equals(other.pattern.toString());
+    }
 
-		public boolean isReplacementEqual( Pair other ) {
-			return Objects.equals( this.replacement, other.replacement );
-		}
+    public boolean isReplacementEqual(Pair other) {
+      return Objects.equals(this.replacement, other.replacement);
+    }
 
-		@Override
-		public String toString() {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "Pair[pattern=" );
-			sb.append( this.pattern );
-			sb.append( ";replacement=" );
-			sb.append( this.replacement );
-			sb.append( "]" );
-			return sb.toString();
-		}
-	}
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder();
+      sb.append("Pair[pattern=");
+      sb.append(this.pattern);
+      sb.append(";replacement=");
+      sb.append(this.replacement);
+      sb.append("]");
+      return sb.toString();
+    }
+  }
 
-	private final Pair[] pairs;
+  private final Pair[] pairs;
 
-	public TextMigration( Version minimumVersion, Version resultVersion, String... values ) {
-		super( minimumVersion, resultVersion );
-		assert ( values.length % 2 ) == 0 : values.length;
-		this.pairs = new Pair[ values.length / 2 ];
-		for( int i = 0; i < this.pairs.length; i++ ) {
-			this.pairs[ i ] = new Pair( values[ i * 2 ], values[ ( i * 2 ) + 1 ] );
-		}
-		if( IS_SANITY_CHECKING_DESIRED ) {
-			Logger.outln( "sanity checking " + this.pairs.length );
-			for( int i = 0; i < this.pairs.length; i++ ) {
-				for( int j = i + 1; j < this.pairs.length; j++ ) {
-					if( this.pairs[ i ].isPatternEqual( this.pairs[ j ] ) ) {
-						if( this.pairs[ i ].isReplacementEqual( this.pairs[ j ] ) ) {
-							Logger.outln( "duplicate", i, j, this.pairs[ i ] );
-						} else {
-							Logger.errln( "severe problem", i, j, this.pairs[ i ], this.pairs[ j ] );
-						}
-					}
-				}
-			}
-		}
-	}
+  public TextMigration(Version minimumVersion, Version resultVersion, String... values) {
+    super(minimumVersion, resultVersion);
+    assert (values.length % 2) == 0 : values.length;
+    this.pairs = new Pair[values.length / 2];
+    for (int i = 0; i < this.pairs.length; i++) {
+      this.pairs[i] = new Pair(values[i * 2], values[(i * 2) + 1]);
+    }
+    if (IS_SANITY_CHECKING_DESIRED) {
+      Logger.outln("sanity checking " + this.pairs.length);
+      for (int i = 0; i < this.pairs.length; i++) {
+        for (int j = i + 1; j < this.pairs.length; j++) {
+          if (this.pairs[i].isPatternEqual(this.pairs[j])) {
+            if (this.pairs[i].isReplacementEqual(this.pairs[j])) {
+              Logger.outln("duplicate", i, j, this.pairs[i]);
+            } else {
+              Logger.errln("severe problem", i, j, this.pairs[i], this.pairs[j]);
+            }
+          }
+        }
+      }
+    }
+  }
 
-	public String migrate( String source ) {
-		for( Pair pair : this.pairs ) {
-			source = pair.migrate( source );
-		}
-		return source;
-	}
+  public String migrate(String source) {
+    for (Pair pair : this.pairs) {
+      source = pair.migrate(source);
+    }
+    return source;
+  }
 }

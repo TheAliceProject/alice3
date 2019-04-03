@@ -52,77 +52,77 @@ import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
  * @author Dave Culyba
  */
 public class SelectionIndicator extends ManipulationHandle3D {
-	public SelectionIndicator() {
-		this.sgBoundingBoxOffsetTransformable.setParent( this );
-		AffineMatrix4x4 offsetTransform = AffineMatrix4x4.createIdentity();
-		offsetTransform.translation.y = .01;
-		this.sgBoundingBoxOffsetTransformable.setLocalTransformation( offsetTransform );
-		this.sgBoundingBoxDecorator.setParent( this.sgBoundingBoxOffsetTransformable );
-	}
+  public SelectionIndicator() {
+    this.sgBoundingBoxOffsetTransformable.setParent(this);
+    AffineMatrix4x4 offsetTransform = AffineMatrix4x4.createIdentity();
+    offsetTransform.translation.y = .01;
+    this.sgBoundingBoxOffsetTransformable.setLocalTransformation(offsetTransform);
+    this.sgBoundingBoxDecorator.setParent(this.sgBoundingBoxOffsetTransformable);
+  }
 
-	@Override
-	public ManipulationHandle3D clone() {
-		return new SelectionIndicator();
-	}
+  @Override
+  public ManipulationHandle3D clone() {
+    return new SelectionIndicator();
+  }
 
-	@Override
-	protected void setScale( double scale ) {
-		//Do nothing
-	}
+  @Override
+  protected void setScale(double scale) {
+    //Do nothing
+  }
 
-	@Override
-	public ReferenceFrame getSnapReferenceFrame() {
-		return null;
-	}
+  @Override
+  public ReferenceFrame getSnapReferenceFrame() {
+    return null;
+  }
 
-	@Override
-	public void positionRelativeToObject() {
-		//Do nothing
-	}
+  @Override
+  public void positionRelativeToObject() {
+    //Do nothing
+  }
 
-	@Override
-	public boolean isPickable() {
-		return false;
-	}
+  @Override
+  public boolean isPickable() {
+    return false;
+  }
 
-	@Override
-	public void setVisualsShowing( boolean showing ) {
-		super.setVisualsShowing( showing );
-		if( this.sgBoundingBoxDecorator != null ) {
-			this.sgBoundingBoxDecorator.isShowing.setValue( showing );
-		}
-	}
+  @Override
+  public void setVisualsShowing(boolean showing) {
+    super.setVisualsShowing(showing);
+    if (this.sgBoundingBoxDecorator != null) {
+      this.sgBoundingBoxDecorator.isShowing.setValue(showing);
+    }
+  }
 
-	@Override
-	protected float getOpacity() {
-		return this.sgBoundingBoxDecorator.getSgFrontAppearance().opacity.getValue();
-	}
+  @Override
+  protected float getOpacity() {
+    return this.sgBoundingBoxDecorator.getSgFrontAppearance().opacity.getValue();
+  }
 
-	@Override
-	protected void setOpacity( float opacity ) {
-		super.setOpacity( opacity );
-		this.sgBoundingBoxDecorator.getSgFrontAppearance().opacity.setValue( opacity );
-		this.sgBoundingBoxDecorator.getSgBackAppearance().opacity.setValue( opacity );
-	}
+  @Override
+  protected void setOpacity(float opacity) {
+    super.setOpacity(opacity);
+    this.sgBoundingBoxDecorator.getSgFrontAppearance().opacity.setValue(opacity);
+    this.sgBoundingBoxDecorator.getSgBackAppearance().opacity.setValue(opacity);
+  }
 
-	@Override
-	protected double getDesiredOpacity( HandleRenderState renderState ) {
-		switch( renderState ) {
-		case NOT_VISIBLE:
-			return 0.0d;
-		default:
-			return 0.6d * this.cameraRelativeOpacity;
-		}
-	}
+  @Override
+  protected double getDesiredOpacity(HandleRenderState renderState) {
+    switch (renderState) {
+    case NOT_VISIBLE:
+      return 0.0d;
+    default:
+      return 0.6d * this.cameraRelativeOpacity;
+    }
+  }
 
-	@Override
-	public void resizeToObject() {
-		if( ( this.getParentTransformable() != null ) && ( this.manipulatedObject != null ) ) {
-			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
-			this.sgBoundingBoxDecorator.setBox( boundingBox );
-		}
-	}
+  @Override
+  public void resizeToObject() {
+    if ((this.getParentTransformable() != null) && (this.manipulatedObject != null)) {
+      AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
+      this.sgBoundingBoxDecorator.setBox(boundingBox);
+    }
+  }
 
-	private final BoundingBoxDecorator sgBoundingBoxDecorator = new BoundingBoxDecorator( false );
-	private final Transformable sgBoundingBoxOffsetTransformable = new Transformable();
+  private final BoundingBoxDecorator sgBoundingBoxDecorator = new BoundingBoxDecorator(false);
+  private final Transformable sgBoundingBoxOffsetTransformable = new Transformable();
 }

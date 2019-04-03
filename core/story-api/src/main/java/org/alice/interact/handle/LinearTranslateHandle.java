@@ -52,48 +52,48 @@ import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
  * @author David Culyba
  */
 public class LinearTranslateHandle extends LinearDragHandle {
-	public LinearTranslateHandle( MovementDescription dragDescription, Color4f baseColor ) {
-		super( dragDescription, baseColor );
-		this.initializeAppearance();
-	}
+  public LinearTranslateHandle(MovementDescription dragDescription, Color4f baseColor) {
+    super(dragDescription, baseColor);
+    this.initializeAppearance();
+  }
 
-	public LinearTranslateHandle( LinearTranslateHandle handle ) {
-		super( handle );
-		this.initializeAppearance();
-	}
+  public LinearTranslateHandle(LinearTranslateHandle handle) {
+    super(handle);
+    this.initializeAppearance();
+  }
 
-	@Override
-	public LinearTranslateHandle clone() {
-		return new LinearTranslateHandle( this );
-	}
+  @Override
+  public LinearTranslateHandle clone() {
+    return new LinearTranslateHandle(this);
+  }
 
-	@Override
-	protected void createShape() {
-		this.createShape( 1.0d );
-	}
+  @Override
+  protected void createShape() {
+    this.createShape(1.0d);
+  }
 
-	protected void createShape( double scale ) {
-		if( this.arrow == null ) {
-			this.arrow = new Arrow( .05 * scale, 0.1 * scale, 0.15 * scale, 0.15 * scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true );
-		} else {
-			this.arrow.resize( .05 * scale, 0.1 * scale, 0.15 * scale, 0.15 * scale );
-		}
-		this.arrow.setParent( this );
-	}
+  protected void createShape(double scale) {
+    if (this.arrow == null) {
+      this.arrow = new Arrow(.05 * scale, 0.1 * scale, 0.15 * scale, 0.15 * scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
+    } else {
+      this.arrow.resize(.05 * scale, 0.1 * scale, 0.15 * scale, 0.15 * scale);
+    }
+    this.arrow.setParent(this);
+  }
 
-	@Override
-	protected void setScale( double scale ) {
-		if( this.arrow != null ) {
-			this.arrow.setParent( null );
-		}
-		this.createShape( scale );
-	}
+  @Override
+  protected void setScale(double scale) {
+    if (this.arrow != null) {
+      this.arrow.setParent(null);
+    }
+    this.createShape(scale);
+  }
 
-	@Override
-	public void setVisualsShowing( boolean showing ) {
-		super.setVisualsShowing( showing );
-		this.arrow.setVisualShowing( showing );
-	}
+  @Override
+  public void setVisualsShowing(boolean showing) {
+    super.setVisualsShowing(showing);
+    this.arrow.setVisualShowing(showing);
+  }
 
-	private Arrow arrow;
+  private Arrow arrow;
 }

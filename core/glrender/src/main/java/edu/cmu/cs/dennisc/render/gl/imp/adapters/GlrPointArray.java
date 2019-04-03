@@ -56,20 +56,20 @@ import edu.cmu.cs.dennisc.scenegraph.PointArray;
  * @author Dennis Cosgrove
  */
 public class GlrPointArray extends GlrVertexGeometry<PointArray> {
-	@Override
-	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
-		renderPrimative( rc, GL_POINTS );
-	}
+  @Override
+  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
+    renderPrimative(rc, GL_POINTS);
+  }
 
-	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		pickPrimative( pc, GL_POINTS );
-	}
+  @Override
+  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
+    pickPrimative(pc, GL_POINTS);
+  }
 
-	@Override
-	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
-		//todo
-		rv.setNaN();
-		return rv;
-	}
+  @Override
+  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+    //todo
+    rv.setNaN();
+    return rv;
+  }
 }

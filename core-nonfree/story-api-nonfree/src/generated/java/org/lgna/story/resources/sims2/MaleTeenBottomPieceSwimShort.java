@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenBottomPieceSwimShort implements MaleTeenBottomPiece {
-	BLACK_RED,
-	BLUE,
-	DARK_BLUE,
-	LIME,
-	RED,
-	WHITE_ORANGE;
+  BLACK_RED, BLUE, DARK_BLUE, LIME, RED, WHITE_ORANGE
 
 }

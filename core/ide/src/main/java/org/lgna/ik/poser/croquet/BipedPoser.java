@@ -54,18 +54,18 @@ import java.util.UUID;
  */
 public class BipedPoser extends PoserComposite<SBiped> {
 
-	public BipedPoser( NamedUserType valueType ) {
-		super( UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ), valueType );
-	}
+  public BipedPoser(NamedUserType valueType) {
+    super(UUID.fromString("9818db03-7a9b-493c-b186-1ea58d9d49eb"), valueType);
+  }
 
-	@Override
-	public AbstractPoserScene<SBiped> initScene() {
-		return new BipedPoserScene( this.getModel() );
-	}
+  @Override
+  public AbstractPoserScene<SBiped> initScene() {
+    return new BipedPoserScene(this.getModel());
+  }
 
-	@Override
-	public Class<SBiped> getModelClass() {
-		return SBiped.class;
-	}
+  @Override
+  public Class<SBiped> getModelClass() {
+    return SBiped.class;
+  }
 
 }

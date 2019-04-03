@@ -54,23 +54,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PlainStringValue extends StringValue {
-	public PlainStringValue( UUID id ) {
-		super( id, new PlainDocument() );
-	}
+  public PlainStringValue(UUID id) {
+    super(id, new PlainDocument());
+  }
 
-	public ImmutableTextArea createImmutableTextArea( float fontScalar, TextAttribute<?>... textAttributes ) {
-		return new ImmutableTextArea( this, fontScalar, textAttributes );
-	}
+  public ImmutableTextArea createImmutableTextArea(float fontScalar, TextAttribute<?>... textAttributes) {
+    return new ImmutableTextArea(this, fontScalar, textAttributes);
+  }
 
-	public ImmutableTextArea createImmutableTextArea( TextAttribute<?>... textAttributes ) {
-		return this.createImmutableTextArea( 1.0f, textAttributes );
-	}
+  public ImmutableTextArea createImmutableTextArea(TextAttribute<?>... textAttributes) {
+    return this.createImmutableTextArea(1.0f, textAttributes);
+  }
 
-	public ImmutableTextField createImmutableTextField( float fontScalar, TextAttribute<?>... textAttributes ) {
-		return new ImmutableTextField( this, fontScalar, textAttributes );
-	}
+  public ImmutableTextField createImmutableTextField(float fontScalar, TextAttribute<?>... textAttributes) {
+    return new ImmutableTextField(this, fontScalar, textAttributes);
+  }
 
-	public ImmutableTextField createImmutableTextField( TextAttribute<?>... textAttributes ) {
-		return this.createImmutableTextField( 1.0f, textAttributes );
-	}
+  public ImmutableTextField createImmutableTextField(TextAttribute<?>... textAttributes) {
+    return this.createImmutableTextField(1.0f, textAttributes);
+  }
 }

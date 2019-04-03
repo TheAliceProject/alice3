@@ -44,7 +44,6 @@ package org.lgna.story.event;
 
 import org.lgna.project.annotations.ClassTemplate;
 
-@ClassTemplate( isFollowToSuperClassDesired = false )
-public abstract class AbstractEvent {
+@ClassTemplate(isFollowToSuperClassDesired = false) public abstract class AbstractEvent {
 
 }

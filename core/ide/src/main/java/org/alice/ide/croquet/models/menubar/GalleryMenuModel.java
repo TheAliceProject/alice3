@@ -53,21 +53,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class GalleryMenuModel extends PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static GalleryMenuModel instance = new GalleryMenuModel();
-	}
+  private static class SingletonHolder {
+    private static GalleryMenuModel instance = new GalleryMenuModel();
+  }
 
-	public static GalleryMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static GalleryMenuModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private GalleryMenuModel() {
-		super( UUID.fromString( "502915e7-f12b-47b6-a5d0-5fa49d378eca" ),
-				//todo:
-				//				org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptingUserForFieldNamesState.getInstance(),
-				//				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-				IsPromptProvidingInitialFieldNamesState.getInstance().getMenuItemPrepModel(),
-				IsPromptIncludingTypeAndInitializerState.getInstance().getMenuItemPrepModel(),
-				IsPromptIncludingPreviewState.getInstance().getMenuItemPrepModel() );
-	}
+  private GalleryMenuModel() {
+    super(UUID.fromString("502915e7-f12b-47b6-a5d0-5fa49d378eca"),
+          //todo:
+          //        org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptingUserForFieldNamesState.getInstance(),
+          //        edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+          IsPromptProvidingInitialFieldNamesState.getInstance().getMenuItemPrepModel(), IsPromptIncludingTypeAndInitializerState.getInstance().getMenuItemPrepModel(), IsPromptIncludingPreviewState.getInstance().getMenuItemPrepModel());
+  }
 }

@@ -47,16 +47,15 @@ import java.awt.Component;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class AwtAdapter extends AwtComponentView<Component> {
-	private final Component awtComponent;
+@Deprecated public class AwtAdapter extends AwtComponentView<Component> {
+  private final Component awtComponent;
 
-	public AwtAdapter( Component awtComponent ) {
-		this.awtComponent = awtComponent;
-	}
+  public AwtAdapter(Component awtComponent) {
+    this.awtComponent = awtComponent;
+  }
 
-	@Override
-	protected Component createAwtComponent() {
-		return this.awtComponent;
-	}
+  @Override
+  protected Component createAwtComponent() {
+    return this.awtComponent;
+  }
 }

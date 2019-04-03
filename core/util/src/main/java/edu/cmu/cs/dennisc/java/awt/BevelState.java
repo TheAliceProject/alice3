@@ -43,7 +43,5 @@
 package edu.cmu.cs.dennisc.java.awt;
 
 public enum BevelState {
-	RAISED,
-	FLUSH,
-	SUNKEN
+  RAISED, FLUSH, SUNKEN
 }

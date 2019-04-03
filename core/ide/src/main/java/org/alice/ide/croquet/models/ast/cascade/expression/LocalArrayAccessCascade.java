@@ -56,33 +56,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocalArrayAccessCascade extends ArrayAccessCascade {
-	private static MapToMap<UserLocal, ExpressionProperty, LocalArrayAccessCascade> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserLocal, ExpressionProperty, LocalArrayAccessCascade> mapToMap = MapToMap.newInstance();
 
-	public static LocalArrayAccessCascade getInstance( UserLocal local, ExpressionProperty expressionProperty ) {
-		assert local != null;
-		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new MapToMap.Initializer<UserLocal, ExpressionProperty, LocalArrayAccessCascade>() {
-			@Override
-			public LocalArrayAccessCascade initialize( UserLocal local, ExpressionProperty expressionProperty ) {
-				return new LocalArrayAccessCascade( local, expressionProperty );
-			}
-		} );
-	}
+  public static LocalArrayAccessCascade getInstance(UserLocal local, ExpressionProperty expressionProperty) {
+    assert local != null;
+    assert expressionProperty != null;
+    return mapToMap.getInitializingIfAbsent(local, expressionProperty, new MapToMap.Initializer<UserLocal, ExpressionProperty, LocalArrayAccessCascade>() {
+      @Override
+      public LocalArrayAccessCascade initialize(UserLocal local, ExpressionProperty expressionProperty) {
+        return new LocalArrayAccessCascade(local, expressionProperty);
+      }
+    });
+  }
 
-	private final UserLocal local;
+  private final UserLocal local;
 
-	private LocalArrayAccessCascade( UserLocal local, ExpressionProperty expressionProperty ) {
-		super( UUID.fromString( "93e8c105-e813-4000-ac8c-78a0d2d81d18" ), expressionProperty );
-		this.local = local;
-	}
+  private LocalArrayAccessCascade(UserLocal local, ExpressionProperty expressionProperty) {
+    super(UUID.fromString("93e8c105-e813-4000-ac8c-78a0d2d81d18"), expressionProperty);
+    this.local = local;
+  }
 
-	@Override
-	protected Expression createAccessExpression() {
-		return new LocalAccess( this.local );
-	}
+  @Override
+  protected Expression createAccessExpression() {
+    return new LocalAccess(this.local);
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getArrayType() {
-		return this.local.getValueType();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getArrayType() {
+    return this.local.getValueType();
+  }
 }

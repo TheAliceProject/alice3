@@ -54,12 +54,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 /*package-private*/final class RemoveResourceOperation extends SelectedResourceOperation {
-	public RemoveResourceOperation( ItemState<Resource> resourceState ) {
-		super( UUID.fromString( "a1df4e40-3d74-46b7-8d57-9b55d793cea6" ), resourceState );
-	}
+  public RemoveResourceOperation(ItemState<Resource> resourceState) {
+    super(UUID.fromString("a1df4e40-3d74-46b7-8d57-9b55d793cea6"), resourceState);
+  }
 
-	@Override
-	public Edit createEdit( UserActivity userActivity, Resource resource ) {
-		return new RemoveResourceEdit( userActivity, resource );
-	}
+  @Override
+  public Edit createEdit(UserActivity userActivity, Resource resource) {
+    return new RemoveResourceEdit(userActivity, resource);
+  }
 }

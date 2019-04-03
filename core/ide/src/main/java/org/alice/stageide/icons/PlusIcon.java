@@ -56,70 +56,70 @@ import java.awt.geom.Rectangle2D;
  * @author Dennis Cosgrove
  */
 public class PlusIcon extends ShapeIcon {
-	public PlusIcon( Dimension size ) {
-		super( size );
-	}
+  public PlusIcon(Dimension size) {
+    super(size);
+  }
 
-	private static Ellipse2D.Float createEllipse( float portion, int width, int height ) {
-		float diameter = Math.min( width, height ) * portion;
-		float x = ( width - diameter ) / 2;
-		float y = ( height - diameter ) / 2;
-		return new Ellipse2D.Float( x, y, diameter, diameter );
-	}
+  private static Ellipse2D.Float createEllipse(float portion, int width, int height) {
+    float diameter = Math.min(width, height) * portion;
+    float x = (width - diameter) / 2;
+    float y = (height - diameter) / 2;
+    return new Ellipse2D.Float(x, y, diameter, diameter);
+  }
 
-	protected Paint getOuterRingPaint( ButtonModel buttonModel ) {
-		boolean isArmed = buttonModel != null ? buttonModel.isArmed() : false;
-		return isArmed ? Color.WHITE : Color.DARK_GRAY;
-	}
+  protected Paint getOuterRingPaint(ButtonModel buttonModel) {
+    boolean isArmed = buttonModel != null ? buttonModel.isArmed() : false;
+    return isArmed ? Color.WHITE : Color.DARK_GRAY;
+  }
 
-	protected Paint getInnerCirclePaint( ButtonModel buttonModel ) {
-		boolean isArmed = buttonModel != null ? buttonModel.isArmed() : false;
-		return isArmed ? Color.GRAY : Color.LIGHT_GRAY;
-	}
+  protected Paint getInnerCirclePaint(ButtonModel buttonModel) {
+    boolean isArmed = buttonModel != null ? buttonModel.isArmed() : false;
+    return isArmed ? Color.GRAY : Color.LIGHT_GRAY;
+  }
 
-	protected Paint getPlusPaint( ButtonModel buttonModel ) {
-		boolean isArmed = buttonModel != null ? buttonModel.isArmed() : false;
-		return isArmed ? Color.WHITE : Color.BLACK;
-	}
+  protected Paint getPlusPaint(ButtonModel buttonModel) {
+    boolean isArmed = buttonModel != null ? buttonModel.isArmed() : false;
+    return isArmed ? Color.WHITE : Color.BLACK;
+  }
 
-	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint, ButtonModel buttonModel ) {
-		Paint paint;
-		paint = this.getOuterRingPaint( buttonModel );
-		if( paint != null ) {
-			g2.setPaint( paint );
-			g2.fill( createEllipse( 1.0f, width, height ) );
-		}
+  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint, ButtonModel buttonModel) {
+    Paint paint;
+    paint = this.getOuterRingPaint(buttonModel);
+    if (paint != null) {
+      g2.setPaint(paint);
+      g2.fill(createEllipse(1.0f, width, height));
+    }
 
-		paint = this.getInnerCirclePaint( buttonModel );
-		if( paint != null ) {
-			g2.setPaint( paint );
-			g2.fill( createEllipse( 0.9f, width, height ) );
-		}
+    paint = this.getInnerCirclePaint(buttonModel);
+    if (paint != null) {
+      g2.setPaint(paint);
+      g2.fill(createEllipse(0.9f, width, height));
+    }
 
-		float halfStrokeSize = 0.075f;
-		float shortPosition = 0.5f - halfStrokeSize;
-		float shortLength = halfStrokeSize * 2.0f;
+    float halfStrokeSize = 0.075f;
+    float shortPosition = 0.5f - halfStrokeSize;
+    float shortLength = halfStrokeSize * 2.0f;
 
-		float longPosition = 0.2f;
-		float longLength = 1.0f - ( longPosition * 2.0f );
+    float longPosition = 0.2f;
+    float longLength = 1.0f - (longPosition * 2.0f);
 
-		paint = this.getPlusPaint( buttonModel );
-		if( paint != null ) {
-			g2.setPaint( paint );
-			g2.fill( new Rectangle2D.Float( longPosition * width, shortPosition * height, longLength * width, shortLength * height ) );
-			g2.fill( new Rectangle2D.Float( shortPosition * width, longPosition * height, shortLength * width, longLength * height ) );
-		}
-	}
+    paint = this.getPlusPaint(buttonModel);
+    if (paint != null) {
+      g2.setPaint(paint);
+      g2.fill(new Rectangle2D.Float(longPosition * width, shortPosition * height, longLength * width, shortLength * height));
+      g2.fill(new Rectangle2D.Float(shortPosition * width, longPosition * height, shortLength * width, longLength * height));
+    }
+  }
 
-	@Override
-	protected final void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
-		ButtonModel buttonModel;
-		if( c instanceof AbstractButton ) {
-			AbstractButton button = (AbstractButton)c;
-			buttonModel = button.getModel();
-		} else {
-			buttonModel = null;
-		}
-		this.paintIcon( c, g2, width, height, fillPaint, drawPaint, buttonModel );
-	}
+  @Override
+  protected final void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    ButtonModel buttonModel;
+    if (c instanceof AbstractButton) {
+      AbstractButton button = (AbstractButton) c;
+      buttonModel = button.getModel();
+    } else {
+      buttonModel = null;
+    }
+    this.paintIcon(c, g2, width, height, fillPaint, drawPaint, buttonModel);
+  }
 }

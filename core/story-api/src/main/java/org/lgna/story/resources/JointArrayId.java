@@ -47,37 +47,37 @@ package org.lgna.story.resources;
  */
 public class JointArrayId {
 
-	private final Class<? extends JointedModelResource> containingClass;
-	private final String elementPattern;
-	private final JointId root;
+  private final Class<? extends JointedModelResource> containingClass;
+  private final String elementPattern;
+  private final JointId root;
 
-	public JointArrayId( String elementPattern, JointId root, Class<? extends JointedModelResource> containingClass ) {
-		this.root = root;
-		this.elementPattern = elementPattern;
-		this.containingClass = containingClass;
-	}
+  public JointArrayId(String elementPattern, JointId root, Class<? extends JointedModelResource> containingClass) {
+    this.root = root;
+    this.elementPattern = elementPattern;
+    this.containingClass = containingClass;
+  }
 
-	public Class<? extends JointedModelResource> getContainingClass() {
-		return this.containingClass;
-	}
+  public Class<? extends JointedModelResource> getContainingClass() {
+    return this.containingClass;
+  }
 
-//	//Returns true if the given JointId  is a member of this array
-//	public boolean isMemberOf( JointId jointId ) {
-//		if( jointId != null ) {
-//			if( this.containingClass.isAssignableFrom( jointId.getContainingClass() ) ) {
-//				if( jointId.toString().startsWith( this.elementPattern ) ) {
-//					return true;
-//				}
-//			}
-//		}
-//		return false;
-//	}
+  //  //Returns true if the given JointId  is a member of this array
+  //  public boolean isMemberOf( JointId jointId ) {
+  //    if( jointId != null ) {
+  //      if( this.containingClass.isAssignableFrom( jointId.getContainingClass() ) ) {
+  //        if( jointId.toString().startsWith( this.elementPattern ) ) {
+  //          return true;
+  //        }
+  //      }
+  //    }
+  //    return false;
+  //  }
 
-	public JointId getRoot() {
-		return this.root;
-	}
+  public JointId getRoot() {
+    return this.root;
+  }
 
-	public String getElementNamePattern() {
-		return this.elementPattern;
-	}
+  public String getElementNamePattern() {
+    return this.elementPattern;
+  }
 }

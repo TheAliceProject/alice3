@@ -56,47 +56,47 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public final class LaunchOperationOwningCompositeImp<C extends OperationOwningComposite<?>> {
-	public LaunchOperationOwningCompositeImp( C composite, Group operationGroup ) {
-		this.composite = composite;
-		this.operationGroup = operationGroup;
-	}
+  public LaunchOperationOwningCompositeImp(C composite, Group operationGroup) {
+    this.composite = composite;
+    this.operationGroup = operationGroup;
+  }
 
-	public C getComposite() {
-		return this.composite;
-	}
+  public C getComposite() {
+    return this.composite;
+  }
 
-	public Group getOperationGroup() {
-		return this.operationGroup;
-	}
+  public Group getOperationGroup() {
+    return this.operationGroup;
+  }
 
-	public Operation createAndRegisterLaunchOperation( String subKeyText, Initializer<C> initializer ) {
-		OwnedByCompositeOperationSubKey subKey = new OwnedByCompositeOperationSubKey( this.composite, subKeyText );
-		OwnedByCompositeOperation<C> rv = new OwnedByCompositeOperation<C>( this.operationGroup, this.composite, subKey, initializer );
-		if( subKeyText != null ) {
-			assert mapSubKeyToInitializerLaunchOperation.containsKey( subKeyText ) == false : subKeyText;
-			this.mapSubKeyToInitializerLaunchOperation.put( subKeyText, rv );
-		} else {
-			assert this.nullKeyLaunchOperation == null : this;
-			this.nullKeyLaunchOperation = rv;
-		}
-		return rv;
-	}
+  public Operation createAndRegisterLaunchOperation(String subKeyText, Initializer<C> initializer) {
+    OwnedByCompositeOperationSubKey subKey = new OwnedByCompositeOperationSubKey(this.composite, subKeyText);
+    OwnedByCompositeOperation<C> rv = new OwnedByCompositeOperation<C>(this.operationGroup, this.composite, subKey, initializer);
+    if (subKeyText != null) {
+      assert mapSubKeyToInitializerLaunchOperation.containsKey(subKeyText) == false : subKeyText;
+      this.mapSubKeyToInitializerLaunchOperation.put(subKeyText, rv);
+    } else {
+      assert this.nullKeyLaunchOperation == null : this;
+      this.nullKeyLaunchOperation = rv;
+    }
+    return rv;
+  }
 
-	public Operation createAndRegisterNullKeyLaunchOperation() {
-		return this.createAndRegisterLaunchOperation( null, null );
-	}
+  public Operation createAndRegisterNullKeyLaunchOperation() {
+    return this.createAndRegisterLaunchOperation(null, null);
+  }
 
-	public Operation getLaunchOperation( String subKeyText ) {
-		if( subKeyText != null ) {
-			return this.mapSubKeyToInitializerLaunchOperation.get( subKeyText );
-		} else {
-			return this.nullKeyLaunchOperation;
-		}
-	}
+  public Operation getLaunchOperation(String subKeyText) {
+    if (subKeyText != null) {
+      return this.mapSubKeyToInitializerLaunchOperation.get(subKeyText);
+    } else {
+      return this.nullKeyLaunchOperation;
+    }
+  }
 
-	private final C composite;
-	private final Group operationGroup;
+  private final C composite;
+  private final Group operationGroup;
 
-	private final Map<String, Operation> mapSubKeyToInitializerLaunchOperation = Maps.newHashMap();
-	private Operation nullKeyLaunchOperation;
+  private final Map<String, Operation> mapSubKeyToInitializerLaunchOperation = Maps.newHashMap();
+  private Operation nullKeyLaunchOperation;
 }

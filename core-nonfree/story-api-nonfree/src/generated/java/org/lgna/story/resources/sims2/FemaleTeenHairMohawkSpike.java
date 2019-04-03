@@ -44,17 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenHairMohawkSpike implements FemaleTeenHair {
-	PINK,
-	BLUE,
-	GREEN;
+  PINK, BLUE, GREEN;
 
-	@Override
-	public Boolean hasHair() {
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat() {
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

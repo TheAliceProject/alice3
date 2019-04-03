@@ -61,140 +61,140 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class DifferentImplementationHelpComposite<M extends Member> extends PotentialNameChangerHelpComposite<DifferentImplementationHelpView, M, DifferentImplementation<M>> {
-	private final EnumCodec.LocalizationCustomizer<DifferentImplementationChoice> localizationCustomizer = new EnumCodec.LocalizationCustomizer<DifferentImplementationChoice>() {
-		@Override
-		public String customize( String localization, DifferentImplementationChoice value ) {
-			Logger.outln( localization, value );
-			return AddMembersPage.modifyFilenameLocalizedText( localization, getPotentialNameChanger().getUriForDescriptionPurposesOnly() );
-		}
-	};
+  private final EnumCodec.LocalizationCustomizer<DifferentImplementationChoice> localizationCustomizer = new EnumCodec.LocalizationCustomizer<DifferentImplementationChoice>() {
+    @Override
+    public String customize(String localization, DifferentImplementationChoice value) {
+      Logger.outln(localization, value);
+      return AddMembersPage.modifyFilenameLocalizedText(localization, getPotentialNameChanger().getUriForDescriptionPurposesOnly());
+    }
+  };
 
-	private final ImmutableDataSingleSelectListState<DifferentImplementationChoice> choiceState = this.createImmutableListStateForEnum( "choiceStates", DifferentImplementationChoice.class, this.localizationCustomizer, null );
+  private final ImmutableDataSingleSelectListState<DifferentImplementationChoice> choiceState = this.createImmutableListStateForEnum("choiceStates", DifferentImplementationChoice.class, this.localizationCustomizer, null);
 
-	private final ErrorStatus noTopLevelError = this.createErrorStatus( "noTopLevelError" );
+  private final ErrorStatus noTopLevelError = this.createErrorStatus("noTopLevelError");
 
-	private final PlainStringValue selectOneHeader = this.createStringValue( "selectOneHeader" );
+  private final PlainStringValue selectOneHeader = this.createStringValue("selectOneHeader");
 
-	private final ValueListener<DifferentImplementationChoice> topLevelListener = new ValueListener<DifferentImplementationChoice>() {
-		@Override
-		public void valueChanged( ValueEvent<DifferentImplementationChoice> e ) {
-			handleChanged();
-		}
-	};
+  private final ValueListener<DifferentImplementationChoice> topLevelListener = new ValueListener<DifferentImplementationChoice>() {
+    @Override
+    public void valueChanged(ValueEvent<DifferentImplementationChoice> e) {
+      handleChanged();
+    }
+  };
 
-	public DifferentImplementationHelpComposite( UUID migrationId, DifferentImplementation<M> differentImplementation, String signatureText, String implementationPluralText ) {
-		super( migrationId, differentImplementation );
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "Class file </filename/> contains a </kindOfMember/> <strong>\"</memberName/>\"</strong> which has " );
-		sb.append( signatureText );
-		sb.append( " to a </kindOfMember/> already in your project.<p><p>" );
-		sb.append( "They have different " );
-		sb.append( implementationPluralText );
-		sb.append( " which leaves you with three options:" );
-		sb.append( "<ol>" );
-		sb.append( "<li><strong>add and retain both</strong> versions (note: renaming at least one will be required)" );
-		sb.append( "<li>only <strong>add</strong> the version in </filename/>" );
-		//sb.append( " (thereby replacing the version already in your project)" );
-		sb.append( "<li>only <strong>retain</strong> the version already in your project" );
-		//sb.append( " (thereby ignoring version in </filename/>)" );
-		sb.append( "</ol>" );
-		sb.append( "</html>" );
+  public DifferentImplementationHelpComposite(UUID migrationId, DifferentImplementation<M> differentImplementation, String signatureText, String implementationPluralText) {
+    super(migrationId, differentImplementation);
+    StringBuilder sb = new StringBuilder();
+    sb.append("<html>");
+    sb.append("Class file </filename/> contains a </kindOfMember/> <strong>\"</memberName/>\"</strong> which has ");
+    sb.append(signatureText);
+    sb.append(" to a </kindOfMember/> already in your project.<p><p>");
+    sb.append("They have different ");
+    sb.append(implementationPluralText);
+    sb.append(" which leaves you with three options:");
+    sb.append("<ol>");
+    sb.append("<li><strong>add and retain both</strong> versions (note: renaming at least one will be required)");
+    sb.append("<li>only <strong>add</strong> the version in </filename/>");
+    //sb.append( " (thereby replacing the version already in your project)" );
+    sb.append("<li>only <strong>retain</strong> the version already in your project");
+    //sb.append( " (thereby ignoring version in </filename/>)" );
+    sb.append("</ol>");
+    sb.append("</html>");
 
-		String kindOfMemberText;
-		M member = differentImplementation.getImportHub().getMember();
-		if( member instanceof UserMethod ) {
-			UserMethod method = (UserMethod)member;
-			kindOfMemberText = method.isProcedure() ? "procedure" : "function";
-		} else {
-			kindOfMemberText = "property";
-		}
-		String text = sb.toString();
-		text = AddMembersPage.modifyFilenameLocalizedText( text, differentImplementation.getUriForDescriptionPurposesOnly() );
-		text = text.replaceAll( "</kindOfMember/>", kindOfMemberText );
-		text = text.replaceAll( "</memberName/>", member.getName() );
-		this.getHeader().setText( text );
-	}
+    String kindOfMemberText;
+    M member = differentImplementation.getImportHub().getMember();
+    if (member instanceof UserMethod) {
+      UserMethod method = (UserMethod) member;
+      kindOfMemberText = method.isProcedure() ? "procedure" : "function";
+    } else {
+      kindOfMemberText = "property";
+    }
+    String text = sb.toString();
+    text = AddMembersPage.modifyFilenameLocalizedText(text, differentImplementation.getUriForDescriptionPurposesOnly());
+    text = text.replaceAll("</kindOfMember/>", kindOfMemberText);
+    text = text.replaceAll("</memberName/>", member.getName());
+    this.getHeader().setText(text);
+  }
 
-	public PlainStringValue getSelectOneHeader() {
-		return this.selectOneHeader;
-	}
+  public PlainStringValue getSelectOneHeader() {
+    return this.selectOneHeader;
+  }
 
-	public ImmutableDataSingleSelectListState<DifferentImplementationChoice> getChoiceState() {
-		return this.choiceState;
-	}
+  public ImmutableDataSingleSelectListState<DifferentImplementationChoice> getChoiceState() {
+    return this.choiceState;
+  }
 
-	@Override
-	protected DifferentImplementationHelpView createView() {
-		return new DifferentImplementationHelpView( this );
-	}
+  @Override
+  protected DifferentImplementationHelpView createView() {
+    return new DifferentImplementationHelpView(this);
+  }
 
-	@Override
-	protected boolean isRetainBothSelected() {
-		return this.choiceState.getValue() == DifferentImplementationChoice.ADD_AND_RETAIN_BOTH;
-	}
+  @Override
+  protected boolean isRetainBothSelected() {
+    return this.choiceState.getValue() == DifferentImplementationChoice.ADD_AND_RETAIN_BOTH;
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		Status rv = super.getStatusPreRejectorCheck();
-		if( rv == IS_GOOD_TO_GO_STATUS ) {
-			DifferentImplementationChoice topLevelChoice = this.choiceState.getValue();
-			if( topLevelChoice != null ) {
-				//pass
-			} else {
-				rv = this.noTopLevelError;
-			}
-		}
-		return rv;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    Status rv = super.getStatusPreRejectorCheck();
+    if (rv == IS_GOOD_TO_GO_STATUS) {
+      DifferentImplementationChoice topLevelChoice = this.choiceState.getValue();
+      if (topLevelChoice != null) {
+        //pass
+      } else {
+        rv = this.noTopLevelError;
+      }
+    }
+    return rv;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		boolean isImport = this.getPotentialNameChanger().getImportHub().getIsDesiredState().getValue();
-		boolean isProject = this.getPotentialNameChanger().getProjectHub().getIsDesiredState().getValue();
-		DifferentImplementationChoice topLevelChoice;
-		if( isImport ) {
-			if( isProject ) {
-				topLevelChoice = DifferentImplementationChoice.ADD_AND_RETAIN_BOTH;
-			} else {
-				topLevelChoice = DifferentImplementationChoice.ONLY_ADD_VERSION_IN_CLASS_FILE;
-			}
-		} else {
-			if( isProject ) {
-				topLevelChoice = DifferentImplementationChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT;
-			} else {
-				topLevelChoice = null;
-			}
-		}
-		this.choiceState.setValueTransactionlessly( topLevelChoice );
-		this.choiceState.addNewSchoolValueListener( this.topLevelListener );
-		super.handlePreActivation();
-	}
+  @Override
+  public void handlePreActivation() {
+    boolean isImport = this.getPotentialNameChanger().getImportHub().getIsDesiredState().getValue();
+    boolean isProject = this.getPotentialNameChanger().getProjectHub().getIsDesiredState().getValue();
+    DifferentImplementationChoice topLevelChoice;
+    if (isImport) {
+      if (isProject) {
+        topLevelChoice = DifferentImplementationChoice.ADD_AND_RETAIN_BOTH;
+      } else {
+        topLevelChoice = DifferentImplementationChoice.ONLY_ADD_VERSION_IN_CLASS_FILE;
+      }
+    } else {
+      if (isProject) {
+        topLevelChoice = DifferentImplementationChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT;
+      } else {
+        topLevelChoice = null;
+      }
+    }
+    this.choiceState.setValueTransactionlessly(topLevelChoice);
+    this.choiceState.addNewSchoolValueListener(this.topLevelListener);
+    super.handlePreActivation();
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		super.handlePostDeactivation();
-		this.choiceState.removeNewSchoolValueListener( this.topLevelListener );
-	}
+  @Override
+  public void handlePostDeactivation() {
+    super.handlePostDeactivation();
+    this.choiceState.removeNewSchoolValueListener(this.topLevelListener);
+  }
 
-	private void handleChanged() {
-		DifferentImplementationChoice choice = this.choiceState.getValue();
-		boolean isImport;
-		boolean isKeep;
-		if( choice == DifferentImplementationChoice.ADD_AND_RETAIN_BOTH ) {
-			isImport = true;
-			isKeep = true;
-		} else if( choice == DifferentImplementationChoice.ONLY_ADD_VERSION_IN_CLASS_FILE ) {
-			isImport = true;
-			isKeep = false;
-		} else if( choice == DifferentImplementationChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT ) {
-			isImport = false;
-			isKeep = true;
-		} else {
-			isImport = false;
-			isKeep = false;
-		}
-		this.getPotentialNameChanger().getImportHub().getIsDesiredState().setValueTransactionlessly( isImport );
-		this.getPotentialNameChanger().getProjectHub().getIsDesiredState().setValueTransactionlessly( isKeep );
-	}
+  private void handleChanged() {
+    DifferentImplementationChoice choice = this.choiceState.getValue();
+    boolean isImport;
+    boolean isKeep;
+    if (choice == DifferentImplementationChoice.ADD_AND_RETAIN_BOTH) {
+      isImport = true;
+      isKeep = true;
+    } else if (choice == DifferentImplementationChoice.ONLY_ADD_VERSION_IN_CLASS_FILE) {
+      isImport = true;
+      isKeep = false;
+    } else if (choice == DifferentImplementationChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT) {
+      isImport = false;
+      isKeep = true;
+    } else {
+      isImport = false;
+      isKeep = false;
+    }
+    this.getPotentialNameChanger().getImportHub().getIsDesiredState().setValueTransactionlessly(isImport);
+    this.getPotentialNameChanger().getProjectHub().getIsDesiredState().setValueTransactionlessly(isKeep);
+  }
 }

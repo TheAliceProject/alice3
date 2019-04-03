@@ -50,29 +50,29 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ValueConverter<T, TPRIME> extends ValueCreator<TPRIME> {
-	private final ValueCreator<T> source;
+  private final ValueCreator<T> source;
 
-	public ValueConverter( UUID migrationId, ValueCreator<T> source ) {
-		super( migrationId );
-		this.source = source;
-	}
+  public ValueConverter(UUID migrationId, ValueCreator<T> source) {
+    super(migrationId);
+    this.source = source;
+  }
 
-	@Override
-	protected Class<? extends Element> getClassUsedForLocalization() {
-		return this.source.getClassUsedForLocalization();
-	}
+  @Override
+  protected Class<? extends Element> getClassUsedForLocalization() {
+    return this.source.getClassUsedForLocalization();
+  }
 
-	@Override
-	protected String getSubKeyForLocalization() {
-		return this.source.getSubKeyForLocalization();
-	}
+  @Override
+  protected String getSubKeyForLocalization() {
+    return this.source.getSubKeyForLocalization();
+  }
 
-	protected abstract TPRIME convert( T value );
+  protected abstract TPRIME convert(T value);
 
-	@Override
-	protected final TPRIME createValue( UserActivity activity ) {
-		T value = this.source.createValue( activity );
-		return value == null ? null : this.convert( value );
-	}
+  @Override
+  protected final TPRIME createValue(UserActivity activity) {
+    T value = this.source.createValue(activity);
+    return value == null ? null : this.convert(value);
+  }
 
 }

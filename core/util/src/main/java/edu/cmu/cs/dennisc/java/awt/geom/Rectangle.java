@@ -48,19 +48,19 @@ import java.awt.geom.Rectangle2D;
  * @author Dennis Cosgrove
  */
 public class Rectangle extends Shape {
-	private Rectangle2D m_rect;
+  private Rectangle2D m_rect;
 
-	public Rectangle( double xHalfLength, double yHalfLength ) {
-		m_rect = new Rectangle2D.Double( -xHalfLength, -yHalfLength, xHalfLength + xHalfLength, yHalfLength + yHalfLength );
-	}
+  public Rectangle(double xHalfLength, double yHalfLength) {
+    m_rect = new Rectangle2D.Double(-xHalfLength, -yHalfLength, xHalfLength + xHalfLength, yHalfLength + yHalfLength);
+  }
 
-	@Override
-	protected java.awt.Shape getDrawShape() {
-		return m_rect;
-	}
+  @Override
+  protected java.awt.Shape getDrawShape() {
+    return m_rect;
+  }
 
-	@Override
-	protected java.awt.Shape getFillShape() {
-		return m_rect;
-	}
+  @Override
+  protected java.awt.Shape getFillShape() {
+    return m_rect;
+  }
 }

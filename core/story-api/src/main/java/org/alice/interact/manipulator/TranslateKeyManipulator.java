@@ -51,60 +51,60 @@ import org.alice.interact.MovementKey;
  * @author David Culyba
  */
 public abstract class TranslateKeyManipulator extends KeyManipulator {
-	TranslateKeyManipulator( MovementKey[] directionKeys ) {
-		super( directionKeys );
-	}
+  TranslateKeyManipulator(MovementKey[] directionKeys) {
+    super(directionKeys);
+  }
 
-	@Override
-	public String getUndoRedoDescription() {
-		return "Object Move";
-	}
+  @Override
+  public String getUndoRedoDescription() {
+    return "Object Move";
+  }
 
-	@Override
-	protected boolean shouldApplyEnding( double currentTime, double amountToMove ) {
-		if ( !super.shouldApplyEnding( currentTime, amountToMove ) ) {
-			return false;
-		}
-		Point3 positionDif = Point3.createSubtraction( manipulatedTransformable.getAbsoluteTransformation().translation, initialPoint );
-		double distanceAlreadyMoved = positionDif.calculateMagnitude();
-		return amountToMove > distanceAlreadyMoved;
-	}
+  @Override
+  protected boolean shouldApplyEnding(double currentTime, double amountToMove) {
+    if (!super.shouldApplyEnding(currentTime, amountToMove)) {
+      return false;
+    }
+    Point3 positionDif = Point3.createSubtraction(manipulatedTransformable.getAbsoluteTransformation().translation, initialPoint);
+    double distanceAlreadyMoved = positionDif.calculateMagnitude();
+    return amountToMove > distanceAlreadyMoved;
+  }
 
-	@Override
-	protected void manipulate( double amountToMove, MovementKey key ) {
-		key.applyTranslation( manipulatedTransformable, amountToMove );
-		enforceBounds();
-	}
+  @Override
+  protected void manipulate(double amountToMove, MovementKey key) {
+    key.applyTranslation(manipulatedTransformable, amountToMove);
+    enforceBounds();
+  }
 
-	public void setBounds( AxisAlignedBox bounds ) {
-		this.bounds = bounds;
-	}
+  public void setBounds(AxisAlignedBox bounds) {
+    this.bounds = bounds;
+  }
 
-private void enforceBounds() {
-		if( this.bounds != null ) {
-			Point3 currentPos = this.manipulatedTransformable.getTranslation( AsSeenBy.SCENE );
-			if( currentPos.x > this.bounds.getXMaximum() ) {
-				currentPos.x = this.bounds.getXMaximum();
-			}
-			if( currentPos.x < this.bounds.getXMinimum() ) {
-				currentPos.x = this.bounds.getXMinimum();
-			}
-			if( currentPos.y > this.bounds.getYMaximum() ) {
-				currentPos.y = this.bounds.getYMaximum();
-			}
-			if( currentPos.y < this.bounds.getYMinimum() ) {
-				currentPos.y = this.bounds.getYMinimum();
-			}
-			if( currentPos.z > this.bounds.getZMaximum() ) {
-				currentPos.z = this.bounds.getZMaximum();
-			}
-			if( currentPos.z < this.bounds.getZMinimum() ) {
-				currentPos.z = this.bounds.getZMinimum();
-			}
+  private void enforceBounds() {
+    if (this.bounds != null) {
+      Point3 currentPos = this.manipulatedTransformable.getTranslation(AsSeenBy.SCENE);
+      if (currentPos.x > this.bounds.getXMaximum()) {
+        currentPos.x = this.bounds.getXMaximum();
+      }
+      if (currentPos.x < this.bounds.getXMinimum()) {
+        currentPos.x = this.bounds.getXMinimum();
+      }
+      if (currentPos.y > this.bounds.getYMaximum()) {
+        currentPos.y = this.bounds.getYMaximum();
+      }
+      if (currentPos.y < this.bounds.getYMinimum()) {
+        currentPos.y = this.bounds.getYMinimum();
+      }
+      if (currentPos.z > this.bounds.getZMaximum()) {
+        currentPos.z = this.bounds.getZMaximum();
+      }
+      if (currentPos.z < this.bounds.getZMinimum()) {
+        currentPos.z = this.bounds.getZMinimum();
+      }
 
-			this.manipulatedTransformable.setTranslationOnly( currentPos, AsSeenBy.SCENE );
-		}
-	}
+      this.manipulatedTransformable.setTranslationOnly(currentPos, AsSeenBy.SCENE);
+    }
+  }
 
-	private AxisAlignedBox bounds;
+  private AxisAlignedBox bounds;
 }

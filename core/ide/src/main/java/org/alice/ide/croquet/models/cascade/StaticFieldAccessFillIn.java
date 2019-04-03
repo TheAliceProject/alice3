@@ -60,51 +60,51 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks<FieldAccess> {
-	private static Map<AbstractField, StaticFieldAccessFillIn> map = Maps.newHashMap();
+  private static Map<AbstractField, StaticFieldAccessFillIn> map = Maps.newHashMap();
 
-	public static StaticFieldAccessFillIn getInstance( AbstractField value ) {
-		synchronized( map ) {
-			StaticFieldAccessFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new StaticFieldAccessFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
+  public static StaticFieldAccessFillIn getInstance(AbstractField value) {
+    synchronized (map) {
+      StaticFieldAccessFillIn rv = map.get(value);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new StaticFieldAccessFillIn(value);
+        map.put(value, rv);
+      }
+      return rv;
+    }
+  }
 
-	public static StaticFieldAccessFillIn getInstance( AbstractType type, String fieldName ) {
-		return getInstance( type.findField( fieldName ) );
-	}
+  public static StaticFieldAccessFillIn getInstance(AbstractType type, String fieldName) {
+    return getInstance(type.findField(fieldName));
+  }
 
-	public static StaticFieldAccessFillIn getInstance( Field fld ) {
-		return getInstance( JavaField.getInstance( fld ) );
-	}
+  public static StaticFieldAccessFillIn getInstance(Field fld) {
+    return getInstance(JavaField.getInstance(fld));
+  }
 
-	public static StaticFieldAccessFillIn getInstance( Class<?> cls, String fieldName ) {
-		return getInstance( JavaType.getInstance( cls ), fieldName );
-	}
+  public static StaticFieldAccessFillIn getInstance(Class<?> cls, String fieldName) {
+    return getInstance(JavaType.getInstance(cls), fieldName);
+  }
 
-	private final FieldAccess transientValue;
+  private final FieldAccess transientValue;
 
-	private StaticFieldAccessFillIn( AbstractField field ) {
-		super( UUID.fromString( "dff6296d-9651-4c0a-98a1-57cd62ea2010" ) );
-		this.transientValue = this.createValue( field );
-	}
+  private StaticFieldAccessFillIn(AbstractField field) {
+    super(UUID.fromString("dff6296d-9651-4c0a-98a1-57cd62ea2010"));
+    this.transientValue = this.createValue(field);
+  }
 
-	private FieldAccess createValue( AbstractField field ) {
-		return new FieldAccess( new TypeExpression( field.getDeclaringType() ), field );
-	}
+  private FieldAccess createValue(AbstractField field) {
+    return new FieldAccess(new TypeExpression(field.getDeclaringType()), field);
+  }
 
-	@Override
-	public FieldAccess createValue( ItemNode<? super FieldAccess, Void> node ) {
-		return this.createValue( this.transientValue.field.getValue() );
-	}
+  @Override
+  public FieldAccess createValue(ItemNode<? super FieldAccess, Void> node) {
+    return this.createValue(this.transientValue.field.getValue());
+  }
 
-	@Override
-	public FieldAccess getTransientValue( ItemNode<? super FieldAccess, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public FieldAccess getTransientValue(ItemNode<? super FieldAccess, Void> node) {
+    return this.transientValue;
+  }
 }

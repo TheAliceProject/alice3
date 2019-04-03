@@ -62,89 +62,89 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FastForwardToStatementOperation extends Operation {
-	public FastForwardToStatementOperation( Statement statement ) {
-		super( IDE.RUN_GROUP, UUID.fromString( "7b7bef33-917d-47a9-b8a8-9e43153dc4a4" ) );
-		this.statement = statement;
-	}
+  public FastForwardToStatementOperation(Statement statement) {
+    super(IDE.RUN_GROUP, UUID.fromString("7b7bef33-917d-47a9-b8a8-9e43153dc4a4"));
+    this.statement = statement;
+  }
 
-	@Override
-	protected void performInActivity( UserActivity userActivity ) {
-		RunComposite.getInstance().setFastForwardToStatementOperation( this );
-		RunComposite.getInstance().getLaunchOperation().fire();
-	}
+  @Override
+  protected void performInActivity(UserActivity userActivity) {
+    RunComposite.getInstance().setFastForwardToStatementOperation(this);
+    RunComposite.getInstance().getLaunchOperation().fire();
+  }
 
-	public void pre( RunProgramContext runProgramContext ) {
-		this.runProgramContext = runProgramContext;
-		this.runProgramContext.getVirtualMachine().addVirtualMachineListener( this.virtualMachineListener );
-		this.runProgramContext.getProgramImp().setSimulationSpeedFactor( 10.0 );
-	}
+  public void pre(RunProgramContext runProgramContext) {
+    this.runProgramContext = runProgramContext;
+    this.runProgramContext.getVirtualMachine().addVirtualMachineListener(this.virtualMachineListener);
+    this.runProgramContext.getProgramImp().setSimulationSpeedFactor(10.0);
+  }
 
-	public void post() {
-		//todo: removeStatementListener without locking
-		if( this.runProgramContext != null ) {
-			runProgramContext.getVirtualMachine().removeVirtualMachineListener( this.virtualMachineListener );
-			runProgramContext = null;
-		}
-	}
+  public void post() {
+    //todo: removeStatementListener without locking
+    if (this.runProgramContext != null) {
+      runProgramContext.getVirtualMachine().removeVirtualMachineListener(this.virtualMachineListener);
+      runProgramContext = null;
+    }
+  }
 
-	private final VirtualMachineListener virtualMachineListener = new VirtualMachineListener() {
-		@Override
-		public void statementExecuting( StatementExecutionEvent statementExecutionEvent ) {
-			if( statementExecutionEvent.getStatement() == statement ) {
-				if( runProgramContext != null ) {
-					ProgramImp programImp = runProgramContext.getProgramImp();
-					if( programImp != null ) {
-						programImp.setSimulationSpeedFactor( 1.0 );
-					}
-					runProgramContext.getVirtualMachine().removeVirtualMachineListener( this );
-					runProgramContext = null;
-				}
-				//} else {
-				//	edu.cmu.cs.dennisc.java.util.logging.Logger.outln( statementEvent.getStatement() );
-			}
-		}
+  private final VirtualMachineListener virtualMachineListener = new VirtualMachineListener() {
+    @Override
+    public void statementExecuting(StatementExecutionEvent statementExecutionEvent) {
+      if (statementExecutionEvent.getStatement() == statement) {
+        if (runProgramContext != null) {
+          ProgramImp programImp = runProgramContext.getProgramImp();
+          if (programImp != null) {
+            programImp.setSimulationSpeedFactor(1.0);
+          }
+          runProgramContext.getVirtualMachine().removeVirtualMachineListener(this);
+          runProgramContext = null;
+        }
+        //} else {
+        //  edu.cmu.cs.dennisc.java.util.logging.Logger.outln( statementEvent.getStatement() );
+      }
+    }
 
-		@Override
-		public void statementExecuted( StatementExecutionEvent statementExecutionEvent ) {
-		}
+    @Override
+    public void statementExecuted(StatementExecutionEvent statementExecutionEvent) {
+    }
 
-		@Override
-		public void whileLoopIterating( WhileLoopIterationEvent whileLoopIterationEvent ) {
-		}
+    @Override
+    public void whileLoopIterating(WhileLoopIterationEvent whileLoopIterationEvent) {
+    }
 
-		@Override
-		public void whileLoopIterated( WhileLoopIterationEvent whileLoopIterationEvent ) {
-		}
+    @Override
+    public void whileLoopIterated(WhileLoopIterationEvent whileLoopIterationEvent) {
+    }
 
-		@Override
-		public void countLoopIterating( CountLoopIterationEvent countLoopIterationEvent ) {
-		}
+    @Override
+    public void countLoopIterating(CountLoopIterationEvent countLoopIterationEvent) {
+    }
 
-		@Override
-		public void countLoopIterated( CountLoopIterationEvent countLoopIterationEvent ) {
-		}
+    @Override
+    public void countLoopIterated(CountLoopIterationEvent countLoopIterationEvent) {
+    }
 
-		@Override
-		public void forEachLoopIterating( ForEachLoopIterationEvent forEachLoopIterationEvent ) {
-		}
+    @Override
+    public void forEachLoopIterating(ForEachLoopIterationEvent forEachLoopIterationEvent) {
+    }
 
-		@Override
-		public void forEachLoopIterated( ForEachLoopIterationEvent forEachLoopIterationEvent ) {
-		}
+    @Override
+    public void forEachLoopIterated(ForEachLoopIterationEvent forEachLoopIterationEvent) {
+    }
 
-		@Override
-		public void eachInTogetherItemExecuting( EachInTogetherItemEvent eachInTogetherItemEvent ) {
-		}
+    @Override
+    public void eachInTogetherItemExecuting(EachInTogetherItemEvent eachInTogetherItemEvent) {
+    }
 
-		@Override
-		public void eachInTogetherItemExecuted( EachInTogetherItemEvent eachInTogetherItemEvent ) {
-		}
+    @Override
+    public void eachInTogetherItemExecuted(EachInTogetherItemEvent eachInTogetherItemEvent) {
+    }
 
-		@Override
-		public void expressionEvaluated( ExpressionEvaluationEvent expressionEvaluationEvent ) {
-		}
-	};
+    @Override
+    public void expressionEvaluated(ExpressionEvaluationEvent expressionEvaluationEvent) {
+    }
+  };
 
-	private final Statement statement;
-	private RunProgramContext runProgramContext;
+  private final Statement statement;
+  private RunProgramContext runProgramContext;
 }

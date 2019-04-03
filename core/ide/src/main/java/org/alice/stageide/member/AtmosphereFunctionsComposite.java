@@ -50,15 +50,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AtmosphereFunctionsComposite extends NameFilteredJavaFunctionsComposite {
-	private static class SingletonHolder {
-		private static AtmosphereFunctionsComposite instance = new AtmosphereFunctionsComposite();
-	}
+  private static class SingletonHolder {
+    private static AtmosphereFunctionsComposite instance = new AtmosphereFunctionsComposite();
+  }
 
-	public static AtmosphereFunctionsComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AtmosphereFunctionsComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private AtmosphereFunctionsComposite() {
-		super( UUID.fromString( "1bd18017-3acf-4538-81be-83137c35b38b" ), "getAtmosphereColor", "getFromAboveLightColor", "getFromBelowLightColor", "getFogDensity" );
-	}
+  private AtmosphereFunctionsComposite() {
+    super(UUID.fromString("1bd18017-3acf-4538-81be-83137c35b38b"), "getAtmosphereColor", "getFromAboveLightColor", "getFromBelowLightColor", "getFogDensity");
+  }
 }

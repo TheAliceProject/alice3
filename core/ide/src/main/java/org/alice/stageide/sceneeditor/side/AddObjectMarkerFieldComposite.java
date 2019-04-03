@@ -54,30 +54,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AddObjectMarkerFieldComposite extends AddMarkerFieldComposite {
-	private static class SingletonHolder {
-		private static AddObjectMarkerFieldComposite instance = new AddObjectMarkerFieldComposite();
-	}
+  private static class SingletonHolder {
+    private static AddObjectMarkerFieldComposite instance = new AddObjectMarkerFieldComposite();
+  }
 
-	public static AddObjectMarkerFieldComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddObjectMarkerFieldComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private AddObjectMarkerFieldComposite() {
-		super( UUID.fromString( "d342bfca-8f67-481a-a0ce-1b8f51eb673c" ), SThingMarker.class );
-	}
+  private AddObjectMarkerFieldComposite() {
+    super(UUID.fromString("d342bfca-8f67-481a-a0ce-1b8f51eb673c"), SThingMarker.class);
+  }
 
-	@Override
-	protected String generateName() {
-		return MarkerUtilities.getBaseNameForObjectMarker();
-	}
+  @Override
+  protected String generateName() {
+    return MarkerUtilities.getBaseNameForObjectMarker();
+  }
 
-	@Override
-	protected Color getInitialMarkerColor() {
-		return StageIDE.getActiveInstance().getSceneEditor().getColorForNewObjectMarker();
-	}
+  @Override
+  protected Color getInitialMarkerColor() {
+    return StageIDE.getActiveInstance().getSceneEditor().getColorForNewObjectMarker();
+  }
 
-	@Override
-	protected AffineMatrix4x4 getInitialMarkerTransform() {
-		return StageIDE.getActiveInstance().getSceneEditor().getTransformForNewObjectMarker();
-	}
+  @Override
+  protected AffineMatrix4x4 getInitialMarkerTransform() {
+    return StageIDE.getActiveInstance().getSceneEditor().getTransformForNewObjectMarker();
+  }
 }

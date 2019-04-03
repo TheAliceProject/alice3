@@ -58,178 +58,178 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public final class UserField extends AbstractField implements UserMember, CodeGenerator {
-	public UserField() {
-	}
+  public UserField() {
+  }
 
-	public UserField( String name, AbstractType<?, ?, ?> valueType, Expression initializer ) {
-		this.name.setValue( name );
-		this.valueType.setValue( valueType );
-		this.initializer.setValue( initializer );
-	}
+  public UserField(String name, AbstractType<?, ?, ?> valueType, Expression initializer) {
+    this.name.setValue(name);
+    this.valueType.setValue(valueType);
+    this.initializer.setValue(initializer);
+  }
 
-	public UserField( String name, Class<?> valueCls, Expression initializer ) {
-		this( name, JavaType.getInstance( valueCls ), initializer );
-	}
+  public UserField(String name, Class<?> valueCls, Expression initializer) {
+    this(name, JavaType.getInstance(valueCls), initializer);
+  }
 
-	public Getter getGetter() {
-		return this.getter;
-	}
+  public Getter getGetter() {
+    return this.getter;
+  }
 
-	public Setter getSetter() {
-		if( this.isFinal() ) {
-			return null;
-		} else {
-			return this.setter;
-		}
-	}
+  public Setter getSetter() {
+    if (this.isFinal()) {
+      return null;
+    } else {
+      return this.setter;
+    }
+  }
 
-	public ArrayItemGetter getArrayItemGetter() {
-		initializeAccessors();
-		return arrayItemGetter;
-	}
+  public ArrayItemGetter getArrayItemGetter() {
+    initializeAccessors();
+    return arrayItemGetter;
+  }
 
-	public ArrayItemSetter getArrayItemSetter() {
-		initializeAccessors();
-		return arrayItemSetter;
-	}
+  public ArrayItemSetter getArrayItemSetter() {
+    initializeAccessors();
+    return arrayItemSetter;
+  }
 
-	public List<Getter> getGetters() {
-		initializeAccessors();
-		return getters;
-	}
+  public List<Getter> getGetters() {
+    initializeAccessors();
+    return getters;
+  }
 
-	public List<Setter> getSetters() {
-		initializeAccessors();
-		return setters;
-	}
+  public List<Setter> getSetters() {
+    initializeAccessors();
+    return setters;
+  }
 
-	@Override
-	public boolean isValid() {
-		return true;
-	}
+  @Override
+  public boolean isValid() {
+    return true;
+  }
 
-	@Override
-	public UserType<?> getDeclaringType() {
-		return (UserType<?>)super.getDeclaringType();
-	}
+  @Override
+  public UserType<?> getDeclaringType() {
+    return (UserType<?>) super.getDeclaringType();
+  }
 
-	@Override
-	public String getName() {
-		return name.getValue();
-	}
+  @Override
+  public String getName() {
+    return name.getValue();
+  }
 
-	@Override
-	public StringProperty getNamePropertyIfItExists() {
-		return this.name;
-	}
+  @Override
+  public StringProperty getNamePropertyIfItExists() {
+    return this.name;
+  }
 
-	@Override
-	public ManagementLevel getManagementLevel() {
-		return this.managementLevel.getValue();
-	}
+  @Override
+  public ManagementLevel getManagementLevel() {
+    return this.managementLevel.getValue();
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getValueType() {
-		return valueType.getValue();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getValueType() {
+    return valueType.getValue();
+  }
 
-	@Override
-	public Visibility getVisibility() {
-		return m_visibility;
-	}
+  @Override
+  public Visibility getVisibility() {
+    return m_visibility;
+  }
 
-	public void setVisibility( Visibility visibility ) {
-		m_visibility = visibility;
-	}
+  public void setVisibility(Visibility visibility) {
+    m_visibility = visibility;
+  }
 
-	@Override
-	public AccessLevel getAccessLevel() {
-		return this.accessLevel.getValue();
-	}
+  @Override
+  public AccessLevel getAccessLevel() {
+    return this.accessLevel.getValue();
+  }
 
-	@Override
-	public boolean isStatic() {
-		return this.isStatic.getValue();
-	}
+  @Override
+  public boolean isStatic() {
+    return this.isStatic.getValue();
+  }
 
-	@Override
-	public boolean isFinal() {
-		return finalVolatileOrNeither.getValue() == FieldModifierFinalVolatileOrNeither.FINAL;
-	}
+  @Override
+  public boolean isFinal() {
+    return finalVolatileOrNeither.getValue() == FieldModifierFinalVolatileOrNeither.FINAL;
+  }
 
-	@Override
-	public boolean isVolatile() {
-		return finalVolatileOrNeither.getValue() == FieldModifierFinalVolatileOrNeither.VOLATILE;
-	}
+  @Override
+  public boolean isVolatile() {
+    return finalVolatileOrNeither.getValue() == FieldModifierFinalVolatileOrNeither.VOLATILE;
+  }
 
-	@Override
-	public boolean isTransient() {
-		return this.isStatic.getValue();
-	}
+  @Override
+  public boolean isTransient() {
+    return this.isStatic.getValue();
+  }
 
-	@Override
-	public boolean isUserAuthored() {
-		return true;
-	}
+  @Override
+  public boolean isUserAuthored() {
+    return true;
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendField(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendField(this);
+  }
 
-	void addToOrganizer( CodeOrganizer codeOrganizer, boolean showPublicStaticFinal ) {
-		codeOrganizer.addField( this );
-		if (!showPublicStaticFinal && isPublicAccess() && isStatic() && isFinal()) {
-			return;
-		}
-		initializeAccessors();
-		codeOrganizer.addGetters( getters );
-		codeOrganizer.addSetters( setters );
-	}
+  void addToOrganizer(CodeOrganizer codeOrganizer, boolean showPublicStaticFinal) {
+    codeOrganizer.addField(this);
+    if (!showPublicStaticFinal && isPublicAccess() && isStatic() && isFinal()) {
+      return;
+    }
+    initializeAccessors();
+    codeOrganizer.addGetters(getters);
+    codeOrganizer.addSetters(setters);
+  }
 
-	// This is to support the instantiation process used in deserialization. If that changes this could be moved
-	// into the constructor and only called once with the variables becoming final.
-	private void initializeAccessors() {
-		if ( getters == null ) {
-			if (valueType.getValue().isArray()) {
-				arrayItemGetter = new ArrayItemGetter( this );
-				getters = Collections.unmodifiableList( Lists.newArrayList( arrayItemGetter, getter ) );
-			} else {
-				getters = Collections.singletonList( getter );
-			}
+  // This is to support the instantiation process used in deserialization. If that changes this could be moved
+  // into the constructor and only called once with the variables becoming final.
+  private void initializeAccessors() {
+    if (getters == null) {
+      if (valueType.getValue().isArray()) {
+        arrayItemGetter = new ArrayItemGetter(this);
+        getters = Collections.unmodifiableList(Lists.newArrayList(arrayItemGetter, getter));
+      } else {
+        getters = Collections.singletonList(getter);
+      }
 
-			if (isFinal()) {
-				setters = Collections.emptyList();
-			} else {
-				if (valueType.getValue().isArray()) {
-					arrayItemSetter = new ArrayItemSetter( this );
-					setters = Collections.unmodifiableList( Lists.newArrayList( arrayItemSetter, setter ) );
-				} else {
-					setters = Collections.singletonList( setter );
-				}
-			}
-		}
-	}
+      if (isFinal()) {
+        setters = Collections.emptyList();
+      } else {
+        if (valueType.getValue().isArray()) {
+          arrayItemSetter = new ArrayItemSetter(this);
+          setters = Collections.unmodifiableList(Lists.newArrayList(arrayItemSetter, setter));
+        } else {
+          setters = Collections.singletonList(setter);
+        }
+      }
+    }
+  }
 
-	public final StringProperty name = new StringProperty( this, null );
-	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = DeclarationProperty.createReferenceInstance( this );
-	public final EnumProperty<AccessLevel> accessLevel = new EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
-	public final EnumProperty<FieldModifierFinalVolatileOrNeither> finalVolatileOrNeither = new EnumProperty<FieldModifierFinalVolatileOrNeither>( this, FieldModifierFinalVolatileOrNeither.NEITHER );
-	public final BooleanProperty isStatic = new BooleanProperty( this, Boolean.FALSE );
-	public final BooleanProperty isTransient = new BooleanProperty( this, Boolean.FALSE );
-	public final EnumProperty<ManagementLevel> managementLevel = new EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
-	public final BooleanProperty isDeletionAllowed = new BooleanProperty( this, Boolean.TRUE );
-	public final ExpressionProperty initializer = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return UserField.this.valueType.getValue();
-		}
-	};
-	private Visibility m_visibility = Visibility.PRIME_TIME;
-	private final Getter getter = new Getter( this );
-	private final Setter setter = new Setter( this );
-	private ArrayItemGetter arrayItemGetter;
-	private ArrayItemSetter arrayItemSetter;
-	private List<Getter> getters;
-	private List<Setter> setters;
+  public final StringProperty name = new StringProperty(this, null);
+  public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = DeclarationProperty.createReferenceInstance(this);
+  public final EnumProperty<AccessLevel> accessLevel = new EnumProperty<AccessLevel>(this, AccessLevel.PUBLIC);
+  public final EnumProperty<FieldModifierFinalVolatileOrNeither> finalVolatileOrNeither = new EnumProperty<FieldModifierFinalVolatileOrNeither>(this, FieldModifierFinalVolatileOrNeither.NEITHER);
+  public final BooleanProperty isStatic = new BooleanProperty(this, Boolean.FALSE);
+  public final BooleanProperty isTransient = new BooleanProperty(this, Boolean.FALSE);
+  public final EnumProperty<ManagementLevel> managementLevel = new EnumProperty<ManagementLevel>(this, ManagementLevel.NONE);
+  public final BooleanProperty isDeletionAllowed = new BooleanProperty(this, Boolean.TRUE);
+  public final ExpressionProperty initializer = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      return UserField.this.valueType.getValue();
+    }
+  };
+  private Visibility m_visibility = Visibility.PRIME_TIME;
+  private final Getter getter = new Getter(this);
+  private final Setter setter = new Setter(this);
+  private ArrayItemGetter arrayItemGetter;
+  private ArrayItemSetter arrayItemSetter;
+  private List<Getter> getters;
+  private List<Setter> setters;
 }

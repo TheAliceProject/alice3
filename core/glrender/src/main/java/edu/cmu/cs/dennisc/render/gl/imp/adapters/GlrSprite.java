@@ -55,34 +55,34 @@ import edu.cmu.cs.dennisc.scenegraph.Sprite;
  * @author Dennis Cosgrove
  */
 public class GlrSprite extends GlrGeometry<Sprite> {
-	@Override
-	public boolean isAlphaBlended() {
-		return false;
-	}
+  @Override
+  public boolean isAlphaBlended() {
+    return false;
+  }
 
-	@Override
-	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.radius ) {
-			//todo
-			setIsGeometryChanged( true );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.radius) {
+      //todo
+      setIsGeometryChanged(true);
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	@Override
-	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
-		rv.setNaN();
-		return rv;
-	}
+  @Override
+  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+    rv.setNaN();
+    return rv;
+  }
 }

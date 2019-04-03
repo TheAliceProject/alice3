@@ -64,310 +64,310 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class ComponentUtilities {
-	public static void makeStandOut( Component component ) {
-		assert component != null;
-		if( component instanceof JComponent ) {
-			JComponent jComponent = (JComponent)component;
-			jComponent.setBorder( BorderFactory.createLineBorder( Color.RED, 4 ) );
-			jComponent.setOpaque( true );
-		}
-		component.setBackground( Color.GREEN );
-	}
+  public static void makeStandOut(Component component) {
+    assert component != null;
+    if (component instanceof JComponent) {
+      JComponent jComponent = (JComponent) component;
+      jComponent.setBorder(BorderFactory.createLineBorder(Color.RED, 4));
+      jComponent.setOpaque(true);
+    }
+    component.setBackground(Color.GREEN);
+  }
 
-	private static Point getLocation( Point rv, Component c, Component ancestor ) {
-		assert c != null;
-		if( c == ancestor ) {
-			return rv;
-		} else {
-			rv.x += c.getX();
-			rv.y += c.getY();
-			return getLocation( rv, c.getParent(), ancestor );
-		}
-	}
+  private static Point getLocation(Point rv, Component c, Component ancestor) {
+    assert c != null;
+    if (c == ancestor) {
+      return rv;
+    } else {
+      rv.x += c.getX();
+      rv.y += c.getY();
+      return getLocation(rv, c.getParent(), ancestor);
+    }
+  }
 
-	private static Point getLocation( Component c, Component ancestor ) {
-		return getLocation( new Point(), c, ancestor );
-	}
+  private static Point getLocation(Component c, Component ancestor) {
+    return getLocation(new Point(), c, ancestor);
+  }
 
-	public static Point convertPoint( Component src, int srcX, int srcY, Component dst ) {
-		Component srcRoot = SwingUtilities.getRoot( src );
-		Component dstRoot = SwingUtilities.getRoot( dst );
-		//avoid tree lock, if possible
-		if( ( srcRoot != null ) && ( srcRoot == dstRoot ) ) {
-			Point srcPt = getLocation( src, srcRoot );
-			Point dstPt = getLocation( dst, dstRoot );
-			Point rv = srcPt;
-			rv.x -= dstPt.x;
-			rv.y -= dstPt.y;
-			rv.x += srcX;
-			rv.y += srcY;
-			return rv;
-		} else {
-			return SwingUtilities.convertPoint( src, srcX, srcY, dst );
-		}
-	}
+  public static Point convertPoint(Component src, int srcX, int srcY, Component dst) {
+    Component srcRoot = SwingUtilities.getRoot(src);
+    Component dstRoot = SwingUtilities.getRoot(dst);
+    //avoid tree lock, if possible
+    if ((srcRoot != null) && (srcRoot == dstRoot)) {
+      Point srcPt = getLocation(src, srcRoot);
+      Point dstPt = getLocation(dst, dstRoot);
+      Point rv = srcPt;
+      rv.x -= dstPt.x;
+      rv.y -= dstPt.y;
+      rv.x += srcX;
+      rv.y += srcY;
+      return rv;
+    } else {
+      return SwingUtilities.convertPoint(src, srcX, srcY, dst);
+    }
+  }
 
-	public static Point convertPoint( Component src, Point srcPt, Component dst ) {
-		return convertPoint( src, srcPt.x, srcPt.y, dst );
-	}
+  public static Point convertPoint(Component src, Point srcPt, Component dst) {
+    return convertPoint(src, srcPt.x, srcPt.y, dst);
+  }
 
-	public static Rectangle convertRectangle( Component src, Rectangle srcRect, Component dst ) {
-		Point pt = convertPoint( src, srcRect.x, srcRect.y, dst );
-		return new Rectangle( pt.x, pt.y, srcRect.width, srcRect.height );
-	}
+  public static Rectangle convertRectangle(Component src, Rectangle srcRect, Component dst) {
+    Point pt = convertPoint(src, srcRect.x, srcRect.y, dst);
+    return new Rectangle(pt.x, pt.y, srcRect.width, srcRect.height);
+  }
 
-	public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.COMPONENT_AND_DESCENDANTS;
+  public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.COMPONENT_AND_DESCENDANTS;
 
-	private static <E extends Component> E getFirstToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, Component component, Class<E> cls, Criterion<?>... criterions ) {
-		assert component != null;
-		E rv = null;
-		boolean isAcceptedByAll;
-		if( isComponentACandidate ) {
-			if( ( cls == null ) || cls.isAssignableFrom( component.getClass() ) ) {
-				isAcceptedByAll = true;
-				if( criterions == null ) {
-					//pass
-				} else {
-					for( Criterion criterion : criterions ) {
-						if( criterion.accept( component ) ) {
-							//pass
-						} else {
-							isAcceptedByAll = false;
-							break;
-						}
-					}
-				}
-			} else {
-				isAcceptedByAll = false;
-			}
-		} else {
-			isAcceptedByAll = false;
-		}
-		if( isAcceptedByAll ) {
-			rv = (E)component;
-		} else {
-			if( isChildACandidate ) {
-				if( component instanceof Container ) {
-					for( Component componentI : ( (Container)component ).getComponents() ) {
-						rv = getFirstToAccept( isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, componentI, cls, criterions );
-						if( rv != null ) {
-							break;
-						}
-					}
-				}
-			}
-		}
-		return rv;
-	}
+  private static <E extends Component> E getFirstToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, Component component, Class<E> cls, Criterion<?>... criterions) {
+    assert component != null;
+    E rv = null;
+    boolean isAcceptedByAll;
+    if (isComponentACandidate) {
+      if ((cls == null) || cls.isAssignableFrom(component.getClass())) {
+        isAcceptedByAll = true;
+        if (criterions == null) {
+          //pass
+        } else {
+          for (Criterion criterion : criterions) {
+            if (criterion.accept(component)) {
+              //pass
+            } else {
+              isAcceptedByAll = false;
+              break;
+            }
+          }
+        }
+      } else {
+        isAcceptedByAll = false;
+      }
+    } else {
+      isAcceptedByAll = false;
+    }
+    if (isAcceptedByAll) {
+      rv = (E) component;
+    } else {
+      if (isChildACandidate) {
+        if (component instanceof Container) {
+          for (Component componentI : ((Container) component).getComponents()) {
+            rv = getFirstToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, componentI, cls, criterions);
+            if (rv != null) {
+              break;
+            }
+          }
+        }
+      }
+    }
+    return rv;
+  }
 
-	private static <E extends Component> void updateAllToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, List<E> list, Component component, Class<E> cls, Criterion<?>... criterions ) {
-		assert component != null;
+  private static <E extends Component> void updateAllToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, List<E> list, Component component, Class<E> cls, Criterion<?>... criterions) {
+    assert component != null;
 
-		if( isComponentACandidate ) {
-			if( ( cls == null ) || cls.isAssignableFrom( component.getClass() ) ) {
-				boolean isAcceptedByAll = true;
-				if( criterions == null ) {
-					//pass
-				} else {
-					for( Criterion criterion : criterions ) {
-						if( criterion.accept( component ) ) {
-							//pass
-						} else {
-							isAcceptedByAll = false;
-							break;
-						}
-					}
-				}
-				if( isAcceptedByAll ) {
-					list.add( (E)component );
-				}
-			}
-		}
+    if (isComponentACandidate) {
+      if ((cls == null) || cls.isAssignableFrom(component.getClass())) {
+        boolean isAcceptedByAll = true;
+        if (criterions == null) {
+          //pass
+        } else {
+          for (Criterion criterion : criterions) {
+            if (criterion.accept(component)) {
+              //pass
+            } else {
+              isAcceptedByAll = false;
+              break;
+            }
+          }
+        }
+        if (isAcceptedByAll) {
+          list.add((E) component);
+        }
+      }
+    }
 
-		if( isChildACandidate ) {
-			if( component instanceof Container ) {
-				for( Component componentI : ( (Container)component ).getComponents() ) {
-					updateAllToAccept( isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criterions );
-				}
-			}
-		}
-	}
+    if (isChildACandidate) {
+      if (component instanceof Container) {
+        for (Component componentI : ((Container) component).getComponents()) {
+          updateAllToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criterions);
+        }
+      }
+    }
+  }
 
-	private static <E extends Component> E getFirstToAccept( HowMuch candidateMask, Component component, Class<E> cls, Criterion<?>... criterions ) {
-		return getFirstToAccept( candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), component, cls, criterions );
-	}
+  private static <E extends Component> E getFirstToAccept(HowMuch candidateMask, Component component, Class<E> cls, Criterion<?>... criterions) {
+    return getFirstToAccept(candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), component, cls, criterions);
+  }
 
-	private static <E extends Component> void updateAllToAccept( HowMuch candidateMask, List<E> list, Component component, Class<E> cls, Criterion<?>... criterions ) {
-		updateAllToAccept( candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), list, component, cls, criterions );
-	}
+  private static <E extends Component> void updateAllToAccept(HowMuch candidateMask, List<E> list, Component component, Class<E> cls, Criterion<?>... criterions) {
+    updateAllToAccept(candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), list, component, cls, criterions);
+  }
 
-	public static <E extends Component> E findFirstMatch( Component component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions ) {
-		return ComponentUtilities.getFirstToAccept( howMuch, component, cls, criterions );
-	}
+  public static <E extends Component> E findFirstMatch(Component component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions) {
+    return ComponentUtilities.getFirstToAccept(howMuch, component, cls, criterions);
+  }
 
-	public static <E extends Component> E findFirstMatch( Component component, Class<E> cls, Criterion<?>... criterions ) {
-		return findFirstMatch( component, DEFAULT_HOW_MUCH, cls, criterions );
-	}
+  public static <E extends Component> E findFirstMatch(Component component, Class<E> cls, Criterion<?>... criterions) {
+    return findFirstMatch(component, DEFAULT_HOW_MUCH, cls, criterions);
+  }
 
-	public static <E extends Component> E findFirstMatch( Component component, Class<E> cls ) {
-		return findFirstMatch( component, cls, (Criterion<?>[])null );
-	}
+  public static <E extends Component> E findFirstMatch(Component component, Class<E> cls) {
+    return findFirstMatch(component, cls, (Criterion<?>[]) null);
+  }
 
-	public static Component findFirstMatch( Component component, Criterion<?>... criterions ) {
-		return findFirstMatch( component, null, criterions );
-	}
+  public static Component findFirstMatch(Component component, Criterion<?>... criterions) {
+    return findFirstMatch(component, null, criterions);
+  }
 
-	public static <E extends Component> List<E> findAllMatches( Component component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions ) {
-		List<E> list = new LinkedList<E>();
-		ComponentUtilities.updateAllToAccept( howMuch, list, component, cls, criterions );
-		return list;
-	}
+  public static <E extends Component> List<E> findAllMatches(Component component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions) {
+    List<E> list = new LinkedList<E>();
+    ComponentUtilities.updateAllToAccept(howMuch, list, component, cls, criterions);
+    return list;
+  }
 
-	public static <E extends Component> List<E> findAllMatches( Component component, Class<E> cls, Criterion<?>... criterions ) {
-		return findAllMatches( component, DEFAULT_HOW_MUCH, cls, criterions );
-	}
+  public static <E extends Component> List<E> findAllMatches(Component component, Class<E> cls, Criterion<?>... criterions) {
+    return findAllMatches(component, DEFAULT_HOW_MUCH, cls, criterions);
+  }
 
-	public static <E extends Component> List<E> findAllMatches( Component component, Class<E> cls ) {
-		return findAllMatches( component, cls, (Criterion<?>[])null );
-	}
+  public static <E extends Component> List<E> findAllMatches(Component component, Class<E> cls) {
+    return findAllMatches(component, cls, (Criterion<?>[]) null);
+  }
 
-	public static List<Component> findAllMatches( Component component, Criterion<?>... criterions ) {
-		return findAllMatches( component, null, criterions );
-	}
+  public static List<Component> findAllMatches(Component component, Criterion<?>... criterions) {
+    return findAllMatches(component, null, criterions);
+  }
 
-	public static List<Component> findAllMatches( Component component ) {
-		return findAllMatches( component, null, (Criterion<?>[])null );
-	}
+  public static List<Component> findAllMatches(Component component) {
+    return findAllMatches(component, null, (Criterion<?>[]) null);
+  }
 
-	public static <E extends Component> E findFirstAncestor( Component component, boolean isComponentIncludedInSearch, Class<E> cls, Criterion<?>... criterions ) {
-		Component c;
-		if( isComponentIncludedInSearch ) {
-			c = component;
-		} else {
-			c = component.getParent();
-		}
-		while( c != null ) {
-			boolean isAcceptedByAll;
-			if( ( cls == null ) || cls.isAssignableFrom( c.getClass() ) ) {
-				isAcceptedByAll = true;
-				if( criterions == null ) {
-					//pass
-				} else {
-					for( Criterion criterion : criterions ) {
-						if( criterion.accept( component ) ) {
-							//pass
-						} else {
-							isAcceptedByAll = false;
-							break;
-						}
-					}
-				}
-			} else {
-				isAcceptedByAll = false;
-			}
-			if( isAcceptedByAll ) {
-				return (E)c;
-			}
-			c = c.getParent();
-		}
-		return null;
-	}
+  public static <E extends Component> E findFirstAncestor(Component component, boolean isComponentIncludedInSearch, Class<E> cls, Criterion<?>... criterions) {
+    Component c;
+    if (isComponentIncludedInSearch) {
+      c = component;
+    } else {
+      c = component.getParent();
+    }
+    while (c != null) {
+      boolean isAcceptedByAll;
+      if ((cls == null) || cls.isAssignableFrom(c.getClass())) {
+        isAcceptedByAll = true;
+        if (criterions == null) {
+          //pass
+        } else {
+          for (Criterion criterion : criterions) {
+            if (criterion.accept(component)) {
+              //pass
+            } else {
+              isAcceptedByAll = false;
+              break;
+            }
+          }
+        }
+      } else {
+        isAcceptedByAll = false;
+      }
+      if (isAcceptedByAll) {
+        return (E) c;
+      }
+      c = c.getParent();
+    }
+    return null;
+  }
 
-	public static <E extends Component> E findFirstAncestor( Component component, boolean isComponentIncludedInSearch, Class<E> cls ) {
-		return findFirstAncestor( component, isComponentIncludedInSearch, cls, (Criterion<?>[])null );
-	}
+  public static <E extends Component> E findFirstAncestor(Component component, boolean isComponentIncludedInSearch, Class<E> cls) {
+    return findFirstAncestor(component, isComponentIncludedInSearch, cls, (Criterion<?>[]) null);
+  }
 
-	public static Component findFirstAncestor( Component component, boolean isComponentIncludedInSearch, Criterion<?>... criterions ) {
-		return findFirstAncestor( component, isComponentIncludedInSearch, null, criterions );
-	}
+  public static Component findFirstAncestor(Component component, boolean isComponentIncludedInSearch, Criterion<?>... criterions) {
+    return findFirstAncestor(component, isComponentIncludedInSearch, null, criterions);
+  }
 
-	public static void doLayoutTree( Component c ) {
-		//c.doLayout();
-		if( c instanceof Container ) {
-			Container container = (Container)c;
-			for( Component component : container.getComponents() ) {
-				doLayoutTree( component );
-			}
-		}
-		c.doLayout();
-	}
+  public static void doLayoutTree(Component c) {
+    //c.doLayout();
+    if (c instanceof Container) {
+      Container container = (Container) c;
+      for (Component component : container.getComponents()) {
+        doLayoutTree(component);
+      }
+    }
+    c.doLayout();
+  }
 
-	public static void setSizeToPreferredSizeTree( Component c ) {
-		if( c instanceof Container ) {
-			Container container = (Container)c;
-			for( Component component : container.getComponents() ) {
-				setSizeToPreferredSizeTree( component );
-			}
-		}
-		c.setSize( c.getPreferredSize() );
-	}
+  public static void setSizeToPreferredSizeTree(Component c) {
+    if (c instanceof Container) {
+      Container container = (Container) c;
+      for (Component component : container.getComponents()) {
+        setSizeToPreferredSizeTree(component);
+      }
+    }
+    c.setSize(c.getPreferredSize());
+  }
 
-	public static void invalidateTree( Component c ) {
-		c.invalidate();
-		if( c instanceof Container ) {
-			Container container = (Container)c;
-			for( Component component : container.getComponents() ) {
-				invalidateTree( component );
-			}
-		}
-	}
+  public static void invalidateTree(Component c) {
+    c.invalidate();
+    if (c instanceof Container) {
+      Container container = (Container) c;
+      for (Component component : container.getComponents()) {
+        invalidateTree(component);
+      }
+    }
+  }
 
-	public static void validateTree( Component c ) {
-		c.validate();
-		if( c instanceof Container ) {
-			Container container = (Container)c;
-			for( Component component : container.getComponents() ) {
-				validateTree( component );
-			}
-		}
-	}
+  public static void validateTree(Component c) {
+    c.validate();
+    if (c instanceof Container) {
+      Container container = (Container) c;
+      for (Component component : container.getComponents()) {
+        validateTree(component);
+      }
+    }
+  }
 
-	public static void revalidateTree( Component c ) {
-		if( c instanceof JComponent ) {
-			JComponent jc = (JComponent)c;
-			jc.revalidate();
-		}
-		if( c instanceof Container ) {
-			Container container = (Container)c;
-			for( Component component : container.getComponents() ) {
-				revalidateTree( component );
-			}
-		}
-	}
+  public static void revalidateTree(Component c) {
+    if (c instanceof JComponent) {
+      JComponent jc = (JComponent) c;
+      jc.revalidate();
+    }
+    if (c instanceof Container) {
+      Container container = (Container) c;
+      for (Component component : container.getComponents()) {
+        revalidateTree(component);
+      }
+    }
+  }
 
-	public static Frame getRootFrame( Component c ) {
-		Component root = SwingUtilities.getRoot( c );
-		if( root instanceof Frame ) {
-			return (Frame)root;
-		} else {
-			return null;
-		}
-	}
+  public static Frame getRootFrame(Component c) {
+    Component root = SwingUtilities.getRoot(c);
+    if (root instanceof Frame) {
+      return (Frame) root;
+    } else {
+      return null;
+    }
+  }
 
-	public static JFrame getRootJFrame( Component c ) {
-		Component root = SwingUtilities.getRoot( c );
-		if( root instanceof JFrame ) {
-			return (JFrame)root;
-		} else {
-			return null;
-		}
-	}
+  public static JFrame getRootJFrame(Component c) {
+    Component root = SwingUtilities.getRoot(c);
+    if (root instanceof JFrame) {
+      return (JFrame) root;
+    } else {
+      return null;
+    }
+  }
 
-	public static Dialog getRootDialog( Component c ) {
-		Component root = SwingUtilities.getRoot( c );
-		if( root instanceof Dialog ) {
-			return (Dialog)root;
-		} else {
-			return null;
-		}
-	}
+  public static Dialog getRootDialog(Component c) {
+    Component root = SwingUtilities.getRoot(c);
+    if (root instanceof Dialog) {
+      return (Dialog) root;
+    } else {
+      return null;
+    }
+  }
 
-	public static JDialog getRootJDialog( Component c ) {
-		Component root = SwingUtilities.getRoot( c );
-		if( root instanceof JDialog ) {
-			return (JDialog)root;
-		} else {
-			return null;
-		}
-	}
+  public static JDialog getRootJDialog(Component c) {
+    Component root = SwingUtilities.getRoot(c);
+    if (root instanceof JDialog) {
+      return (JDialog) root;
+    } else {
+      return null;
+    }
+  }
 }

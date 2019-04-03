@@ -49,8 +49,8 @@ import edu.cmu.cs.dennisc.property.ListProperty;
  * @author Dennis Cosgrove
  */
 public class NodeListProperty<E extends Node> extends ListProperty<E> {
-	public NodeListProperty( InstancePropertyOwner owner ) {
-		super( owner );
-	}
+  public NodeListProperty(InstancePropertyOwner owner) {
+    super(owner);
+  }
 
 }

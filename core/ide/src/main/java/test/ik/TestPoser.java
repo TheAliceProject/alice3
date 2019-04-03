@@ -65,45 +65,45 @@ import org.lgna.story.resources.DynamicBipedResource;
  * @author Matt May
  */
 public class TestPoser extends SProgram {
-	private static final boolean SHOULD_I_ANIMATE = true;
+  private static final boolean SHOULD_I_ANIMATE = true;
 
-	public static void main( String[] args ) {
-		IkTestApplication app = new IkTestApplication();
-		app.initialize( args );
+  public static void main(String[] args) {
+    IkTestApplication app = new IkTestApplication();
+    app.initialize(args);
 
-		ReleaseVirtualMachine vm = new ReleaseVirtualMachine();
+    ReleaseVirtualMachine vm = new ReleaseVirtualMachine();
 
-		BipedResource bipedResource = new DynamicBipedResource( "ogre", "ogre");
+    BipedResource bipedResource = new DynamicBipedResource("ogre", "ogre");
 
-		JavaType ancestorType = JavaType.getInstance( SBiped.class );
-		JavaField argumentField = JavaField.getInstance( bipedResource.getClass(), bipedResource.toString() );
-		NamedUserType type = TypeManager.getNamedUserTypeFromArgumentField( ancestorType, argumentField );
+    JavaType ancestorType = JavaType.getInstance(SBiped.class);
+    JavaField argumentField = JavaField.getInstance(bipedResource.getClass(), bipedResource.toString());
+    NamedUserType type = TypeManager.getNamedUserTypeFromArgumentField(ancestorType, argumentField);
 
-		NamedUserConstructor userConstructor = type.constructors.get( 0 );
-		final int N = userConstructor.requiredParameters.size();
-		Object[] arguments = new Object[ N ];
-		switch( N ) {
-		case 0:
-			break;
-		case 1:
-			arguments[ 0 ] = bipedResource;
-			break;
-		case 2:
-			assert false : N;
-		}
-		UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
-		Logger.outln( userInstance );
-		userInstance.getJavaInstance( SBiped.class );
-		AbstractPoserOrAnimatorComposite composite;
+    NamedUserConstructor userConstructor = type.constructors.get(0);
+    final int N = userConstructor.requiredParameters.size();
+    Object[] arguments = new Object[N];
+    switch (N) {
+    case 0:
+      break;
+    case 1:
+      arguments[0] = bipedResource;
+      break;
+    case 2:
+      assert false : N;
+    }
+    UserInstance userInstance = vm.ENTRY_POINT_createInstance(type, arguments);
+    Logger.outln(userInstance);
+    userInstance.getJavaInstance(SBiped.class);
+    AbstractPoserOrAnimatorComposite composite;
 
-		if( SHOULD_I_ANIMATE ) {
-			composite = new BipedAnimator( type );
-		} else {
-			composite = new BipedPoser( type );
-		}
-		app.getDocumentFrame().getFrame().setMainComposite( composite );
+    if (SHOULD_I_ANIMATE) {
+      composite = new BipedAnimator(type);
+    } else {
+      composite = new BipedPoser(type);
+    }
+    app.getDocumentFrame().getFrame().setMainComposite(composite);
 
-		app.getDocumentFrame().getFrame().setSize( 1200, 800 );
-		app.getDocumentFrame().getFrame().setVisible( true );
-	}
+    app.getDocumentFrame().getFrame().setSize(1200, 800);
+    app.getDocumentFrame().getFrame().setVisible(true);
+  }
 }

@@ -51,24 +51,25 @@ import org.lgna.story.resources.sims2.Hair;
  * @author Dennis Cosgrove
  */
 public enum HairCodec implements ItemCodec<Hair> {
-	SINGLETON;
-	@Override
-	public Class<Hair> getValueClass() {
-		return Hair.class;
-	}
+  SINGLETON;
 
-	@Override
-	public Hair decodeValue( BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public Class<Hair> getValueClass() {
+    return Hair.class;
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, Hair value ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public Hair decodeValue(BinaryDecoder binaryDecoder) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, Hair value ) {
-		sb.append( value );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, Hair value) {
+    throw new RuntimeException("todo");
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, Hair value) {
+    sb.append(value);
+  }
 }

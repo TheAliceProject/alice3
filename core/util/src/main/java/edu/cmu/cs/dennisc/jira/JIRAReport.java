@@ -52,112 +52,112 @@ import edu.cmu.cs.dennisc.issue.IssueUtilities;
  * @author Dennis Cosgrove
  */
 public class JIRAReport extends AbstractReport {
-	private static final int SUMMARY_MAX = 254;
+  private static final int SUMMARY_MAX = 254;
 
-	private final String projectKey;
-	private final IssueType type;
-	private final String summary;
-	private final String description;
-	private final String steps;
-	private final String environment;
-	private final String exception;
-	private final String[] affectsVersions;
-	private final String reportedBy;
-	private final String emailAddress;
+  private final String projectKey;
+  private final IssueType type;
+  private final String summary;
+  private final String description;
+  private final String steps;
+  private final String environment;
+  private final String exception;
+  private final String[] affectsVersions;
+  private final String reportedBy;
+  private final String emailAddress;
 
-	public JIRAReport( Issue issue, String projectKey ) {
-		this.projectKey = projectKey;
-		this.type = issue.getType();
-		this.summary = issue.getSummary();
-		this.description = issue.getDescription();
-		this.steps = issue.getSteps();
-		this.environment = issue.getEnvironment();
-		this.exception = IssueUtilities.getThrowableText( issue.getThrowable() );
-		String versionText = issue.getVersion();
-		if( versionText != null ) {
-			this.affectsVersions = new String[] { versionText };
-		} else {
-			this.affectsVersions = new String[] {};
-		}
-		this.reportedBy = issue.getReportedBy();
-		this.emailAddress = issue.getEmailAddress();
-	}
+  public JIRAReport(Issue issue, String projectKey) {
+    this.projectKey = projectKey;
+    this.type = issue.getType();
+    this.summary = issue.getSummary();
+    this.description = issue.getDescription();
+    this.steps = issue.getSteps();
+    this.environment = issue.getEnvironment();
+    this.exception = IssueUtilities.getThrowableText(issue.getThrowable());
+    String versionText = issue.getVersion();
+    if (versionText != null) {
+      this.affectsVersions = new String[] {versionText};
+    } else {
+      this.affectsVersions = new String[] {};
+    }
+    this.reportedBy = issue.getReportedBy();
+    this.emailAddress = issue.getEmailAddress();
+  }
 
-	public String getProjectKey() {
-		return this.projectKey;
-	}
+  public String getProjectKey() {
+    return this.projectKey;
+  }
 
-	public IssueType getType() {
-		return this.type;
-	}
+  public IssueType getType() {
+    return this.type;
+  }
 
-	public int getTypeID() {
-		switch (type) {
-		case BUG:
-			return 1;
-		case NEW_FEATURE:
-			return 2;
-		case IMPROVEMENT:
-			return 4;
-		default:
-			throw new RuntimeException();
-		}
-	}
+  public int getTypeID() {
+    switch (type) {
+    case BUG:
+      return 1;
+    case NEW_FEATURE:
+      return 2;
+    case IMPROVEMENT:
+      return 4;
+    default:
+      throw new RuntimeException();
+    }
+  }
 
-	public String getTruncatedSummary() {
-		return summary.length() < SUMMARY_MAX ? summary : summary.substring( 0, SUMMARY_MAX );
-	}
+  public String getTruncatedSummary() {
+    return summary.length() < SUMMARY_MAX ? summary : summary.substring(0, SUMMARY_MAX);
+  }
 
-	public String getDescription() {
-		return this.description;
-	}
+  public String getDescription() {
+    return this.description;
+  }
 
-	public String getSteps() {
-		return this.steps;
-	}
+  public String getSteps() {
+    return this.steps;
+  }
 
-	public String getEnvironment() {
-		return this.environment;
-	}
+  public String getEnvironment() {
+    return this.environment;
+  }
 
-	public String[] getAffectsVersions() {
-		return this.affectsVersions;
-	}
+  public String[] getAffectsVersions() {
+    return this.affectsVersions;
+  }
 
-	public String getException() {
-		return this.exception;
-	}
+  public String getException() {
+    return this.exception;
+  }
 
-	public String getReportedBy() {
-		return this.reportedBy;
-	}
+  public String getReportedBy() {
+    return this.reportedBy;
+  }
 
-	public String getEmailAddress() {
-		return this.emailAddress;
-	}
+  public String getEmailAddress() {
+    return this.emailAddress;
+  }
 
-	public String getAffectsVersionText() {
-		if( ( this.affectsVersions != null ) && ( this.affectsVersions.length > 0 ) ) {
-			return affectsVersions[ 0 ];
-		} else {
-			return "";
-		}
-	}
+  public String getAffectsVersionText() {
+    if ((this.affectsVersions != null) && (this.affectsVersions.length > 0)) {
+      return affectsVersions[0];
+    } else {
+      return "";
+    }
+  }
 
-	public String getCreditedDescription() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( getDescription() );
-		sb.append( "\n\n" );
-		if( ( reportedBy != null ) && ( reportedBy.length() > 0 ) ) {
-			sb.append( "\nReported by: " );
-			sb.append( reportedBy );
-		}
-		if( ( emailAddress != null ) && ( emailAddress.length() > 0 ) ) {
-			sb.append( "\nEmail address: " );
-			sb.append( emailAddress );
-		}
-		sb.append( "\nAffects version: " );
-		sb.append( getAffectsVersionText() );
-		return sb.toString();
-	}
+  public String getCreditedDescription() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(getDescription());
+    sb.append("\n\n");
+    if ((reportedBy != null) && (reportedBy.length() > 0)) {
+      sb.append("\nReported by: ");
+      sb.append(reportedBy);
+    }
+    if ((emailAddress != null) && (emailAddress.length() > 0)) {
+      sb.append("\nEmail address: ");
+      sb.append(emailAddress);
+    }
+    sb.append("\nAffects version: ");
+    sb.append(getAffectsVersionText());
+    return sb.toString();
+  }
 }

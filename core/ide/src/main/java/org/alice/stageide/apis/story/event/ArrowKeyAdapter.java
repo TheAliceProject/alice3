@@ -49,12 +49,12 @@ import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
 
 public class ArrowKeyAdapter extends AbstractAdapter implements ArrowKeyPressListener {
-	public ArrowKeyAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public ArrowKeyAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void arrowKeyPressed( ArrowKeyEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void arrowKeyPressed(ArrowKeyEvent e) {
+    invokeEntryPoint(e);
+  }
 }

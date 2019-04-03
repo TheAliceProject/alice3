@@ -57,20 +57,17 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class TopPieceData extends IngredientListData<TopPiece> {
-	public TopPieceData() {
-		super( TopPieceCodec.SINGLETON );
-	}
+  public TopPieceData() {
+    super(TopPieceCodec.SINGLETON);
+  }
 
-	@Override
-	protected List<TopPiece> createValues( LifeStage lifeStage, Gender gender ) {
-		return EnumUtilities.getEnumConstants(
-				TopPieceManager.getSingleton().getImplementingClasses( lifeStage, gender ),
-				new Criterion<TopPiece>() {
-					@Override
-					public boolean accept( TopPiece e ) {
-						return TopPieceListCellRenderer.getInstance().ACCEPTABLE_HACK_AT_THIS_TIME_FOR_LIST_DATA_hasValidImageFor( e, SKIN_TONE_FOR_FILTERING );
-					}
-				}
-				);
-	}
+  @Override
+  protected List<TopPiece> createValues(LifeStage lifeStage, Gender gender) {
+    return EnumUtilities.getEnumConstants(TopPieceManager.getSingleton().getImplementingClasses(lifeStage, gender), new Criterion<TopPiece>() {
+      @Override
+      public boolean accept(TopPiece e) {
+        return TopPieceListCellRenderer.getInstance().ACCEPTABLE_HACK_AT_THIS_TIME_FOR_LIST_DATA_hasValidImageFor(e, SKIN_TONE_FOR_FILTERING);
+      }
+    });
+  }
 }

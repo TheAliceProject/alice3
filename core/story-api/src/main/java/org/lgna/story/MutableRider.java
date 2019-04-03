@@ -47,5 +47,5 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public interface MutableRider extends Rider {
-	public void setVehicle( SThing vehicle );
+  public void setVehicle(SThing vehicle);
 }

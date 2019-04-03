@@ -56,90 +56,90 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class YouTubeCategories {
-	private YouTubeCategories() {
-		throw new AssertionError();
-	}
+  private YouTubeCategories() {
+    throw new AssertionError();
+  }
 
-	/**
-	 * borrowed from dave: YouTubeMeddiaGroupEditorPanel and then from matt
-	 */
-	private static final String CATEGORY_URL = "http://gdata.youtube.com/schemas/2007/categories.cat";
-	private static final String TERM_STRING = "term='";
-	private static final String DEPRECATED_STRING = "deprecated";
-	private static final String LABEL_STRING = "label='";
-	//	private static final String TERM_PATTERN = "term='[^']*'";
-	//	private static final String LABEL_PATTERN = "label='[^']*'";
-	//	private static final String[] DEFAULT_TAGS = { "alice", "alice3" };
-	//	private static final String DEFAULT_CATEGORY = "tech";
-	private static List<String> categoryStrings;
-	private static List<String> termStrings;
+  /**
+   * borrowed from dave: YouTubeMeddiaGroupEditorPanel and then from matt
+   */
+  private static final String CATEGORY_URL = "http://gdata.youtube.com/schemas/2007/categories.cat";
+  private static final String TERM_STRING = "term='";
+  private static final String DEPRECATED_STRING = "deprecated";
+  private static final String LABEL_STRING = "label='";
+  //  private static final String TERM_PATTERN = "term='[^']*'";
+  //  private static final String LABEL_PATTERN = "label='[^']*'";
+  //  private static final String[] DEFAULT_TAGS = { "alice", "alice3" };
+  //  private static final String DEFAULT_CATEGORY = "tech";
+  private static List<String> categoryStrings;
+  private static List<String> termStrings;
 
-	private static void initializeCategoriesAndTerms() throws IOException {
-		URL categoryURL = new URL( CATEGORY_URL );
-		InputStream is = categoryURL.openStream();
-		StringBuilder sb = new StringBuilder();
-		int readValue;
-		while( ( readValue = is.read() ) != -1 ) {
-			char charVal = (char)readValue;
-			sb.append( charVal );
-		}
-		String categoryData = sb.toString();
-		List<String> labels = Lists.newLinkedList();
-		List<String> terms = Lists.newLinkedList();
-		int TERM_LENGTH = TERM_STRING.length();
-		int LABEL_LENGTH = LABEL_STRING.length();
-		int DEPRECATED_LENGTH = DEPRECATED_STRING.length();
-		int categoryLength = categoryData.length();
-		String searchTerm = TERM_STRING;
-		int searchLength = TERM_LENGTH;
-		for( int i = 0; i < ( categoryLength - DEPRECATED_LENGTH ); ) {
-			if( categoryData.subSequence( i, i + searchLength ).equals( searchTerm ) ) {
-				int endIndex = categoryData.indexOf( "'", i + searchLength );
-				String foundString = categoryData.substring( i + searchLength, endIndex );
-				foundString = foundString.replace( "&amp;", "&" );
-				if( searchTerm == TERM_STRING ) {
-					searchTerm = LABEL_STRING;
-					searchLength = LABEL_LENGTH;
-					terms.add( foundString );
-				} else {
-					searchTerm = TERM_STRING;
-					searchLength = TERM_LENGTH;
-					labels.add( foundString );
-				}
-				i = endIndex;
-			} else if( categoryData.subSequence( i, i + DEPRECATED_LENGTH ).equals( DEPRECATED_STRING ) ) {
-				if( terms.size() == labels.size() ) {
-					terms.remove( terms.size() - 1 );
-					labels.remove( labels.size() - 1 );
-				} else {
-					Logger.severe( terms.size(), labels.size() );
-				}
-				i += DEPRECATED_LENGTH;
-			} else {
-				i++;
-			}
-		}
-		categoryStrings = labels;
-		termStrings = terms;
-	}
+  private static void initializeCategoriesAndTerms() throws IOException {
+    URL categoryURL = new URL(CATEGORY_URL);
+    InputStream is = categoryURL.openStream();
+    StringBuilder sb = new StringBuilder();
+    int readValue;
+    while ((readValue = is.read()) != -1) {
+      char charVal = (char) readValue;
+      sb.append(charVal);
+    }
+    String categoryData = sb.toString();
+    List<String> labels = Lists.newLinkedList();
+    List<String> terms = Lists.newLinkedList();
+    int TERM_LENGTH = TERM_STRING.length();
+    int LABEL_LENGTH = LABEL_STRING.length();
+    int DEPRECATED_LENGTH = DEPRECATED_STRING.length();
+    int categoryLength = categoryData.length();
+    String searchTerm = TERM_STRING;
+    int searchLength = TERM_LENGTH;
+    for (int i = 0; i < (categoryLength - DEPRECATED_LENGTH); ) {
+      if (categoryData.subSequence(i, i + searchLength).equals(searchTerm)) {
+        int endIndex = categoryData.indexOf("'", i + searchLength);
+        String foundString = categoryData.substring(i + searchLength, endIndex);
+        foundString = foundString.replace("&amp;", "&");
+        if (searchTerm == TERM_STRING) {
+          searchTerm = LABEL_STRING;
+          searchLength = LABEL_LENGTH;
+          terms.add(foundString);
+        } else {
+          searchTerm = TERM_STRING;
+          searchLength = TERM_LENGTH;
+          labels.add(foundString);
+        }
+        i = endIndex;
+      } else if (categoryData.subSequence(i, i + DEPRECATED_LENGTH).equals(DEPRECATED_STRING)) {
+        if (terms.size() == labels.size()) {
+          terms.remove(terms.size() - 1);
+          labels.remove(labels.size() - 1);
+        } else {
+          Logger.severe(terms.size(), labels.size());
+        }
+        i += DEPRECATED_LENGTH;
+      } else {
+        i++;
+      }
+    }
+    categoryStrings = labels;
+    termStrings = terms;
+  }
 
-	private static void initializeCategoriesAndTermsIfNecessary() {
-		if( categoryStrings != null ) {
-			//pass
-		} else {
-			try {
-				initializeCategoriesAndTerms();
-			} catch( Throwable t ) {
-				Logger.throwable( t );
-				categoryStrings = Collections.emptyList();
-				termStrings = Collections.emptyList();
-			}
-		}
+  private static void initializeCategoriesAndTermsIfNecessary() {
+    if (categoryStrings != null) {
+      //pass
+    } else {
+      try {
+        initializeCategoriesAndTerms();
+      } catch (Throwable t) {
+        Logger.throwable(t);
+        categoryStrings = Collections.emptyList();
+        termStrings = Collections.emptyList();
+      }
+    }
 
-	}
+  }
 
-	public static String[] getCategories() {
-		initializeCategoriesAndTermsIfNecessary();
-		return ArrayUtilities.createArray( categoryStrings, String.class );
-	}
+  public static String[] getCategories() {
+    initializeCategoriesAndTermsIfNecessary();
+    return ArrayUtilities.createArray(categoryStrings, String.class);
+  }
 }

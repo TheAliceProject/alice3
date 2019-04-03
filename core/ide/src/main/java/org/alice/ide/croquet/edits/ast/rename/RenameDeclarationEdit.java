@@ -54,47 +54,47 @@ import org.lgna.project.ast.AbstractDeclaration;
  * @author Dennis Cosgrove
  */
 public class RenameDeclarationEdit extends AbstractEdit {
-	private final AbstractDeclaration declaration;
-	private final String prevValue;
-	private final String nextValue;
+  private final AbstractDeclaration declaration;
+  private final String prevValue;
+  private final String nextValue;
 
-	public RenameDeclarationEdit( UserActivity userActivity, AbstractDeclaration declaration, String prevValue, String nextValue ) {
-		super( userActivity );
-		this.declaration = declaration;
-		this.prevValue = prevValue;
-		this.nextValue = nextValue;
-	}
+  public RenameDeclarationEdit(UserActivity userActivity, AbstractDeclaration declaration, String prevValue, String nextValue) {
+    super(userActivity);
+    this.declaration = declaration;
+    this.prevValue = prevValue;
+    this.nextValue = nextValue;
+  }
 
-	public RenameDeclarationEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.declaration = NodeCodec.getInstance( AbstractDeclaration.class ).decodeValue( binaryDecoder );
-		this.prevValue = binaryDecoder.decodeString();
-		this.nextValue = binaryDecoder.decodeString();
-	}
+  public RenameDeclarationEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.declaration = NodeCodec.getInstance(AbstractDeclaration.class).decodeValue(binaryDecoder);
+    this.prevValue = binaryDecoder.decodeString();
+    this.nextValue = binaryDecoder.decodeString();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		NodeCodec.getInstance( AbstractDeclaration.class ).encodeValue( binaryEncoder, this.declaration );
-		binaryEncoder.encode( this.prevValue );
-		binaryEncoder.encode( this.nextValue );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    NodeCodec.getInstance(AbstractDeclaration.class).encodeValue(binaryEncoder, this.declaration);
+    binaryEncoder.encode(this.prevValue);
+    binaryEncoder.encode(this.nextValue);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.declaration.getNamePropertyIfItExists().setValue( this.nextValue );
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    this.declaration.getNamePropertyIfItExists().setValue(this.nextValue);
+  }
 
-	@Override
-	protected final void undoInternal() {
-		this.declaration.getNamePropertyIfItExists().setValue( this.prevValue );
-	}
+  @Override
+  protected final void undoInternal() {
+    this.declaration.getNamePropertyIfItExists().setValue(this.prevValue);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "rename: " );
-		rv.append( this.prevValue );
-		rv.append( " ===> " );
-		rv.append( this.nextValue );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("rename: ");
+    rv.append(this.prevValue);
+    rv.append(" ===> ");
+    rv.append(this.nextValue);
+  }
 }

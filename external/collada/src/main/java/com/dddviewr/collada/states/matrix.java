@@ -8,22 +8,22 @@ import com.dddviewr.collada.nodes.Node;
 import com.dddviewr.collada.visualscene.Matrix;
 
 public class matrix extends State {
-	protected Matrix theMatrix;
+  protected Matrix theMatrix;
 
-	public void init(String name, Attributes attrs, StateManager mngr) {
-		super.init(name, attrs, mngr);
-		this.theMatrix = new Matrix(attrs.getValue("sid"));
-		Node node = ((node) getParent()).getNode();
-		node.addXform(this.theMatrix);
-		setContentNeeded(true);
-	}
+  public void init(String name, Attributes attrs, StateManager mngr) {
+    super.init(name, attrs, mngr);
+    this.theMatrix = new Matrix(attrs.getValue("sid"));
+    Node node = ((node) getParent()).getNode();
+    node.addXform(this.theMatrix);
+    setContentNeeded(true);
+  }
 
-	public void endElement(String name) {
-		this.theMatrix.parse(this.content);
-		super.endElement(name);
-	}
+  public void endElement(String name) {
+    this.theMatrix.parse(this.content);
+    super.endElement(name);
+  }
 
-	public Matrix getMatrix() {
-		return this.theMatrix;
-	}
+  public Matrix getMatrix() {
+    return this.theMatrix;
+  }
 }

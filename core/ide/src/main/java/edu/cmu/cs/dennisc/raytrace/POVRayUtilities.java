@@ -77,234 +77,230 @@ import java.io.PrintWriter;
  * @author Dennis Cosgrove
  */
 public class POVRayUtilities {
-	private static String toString( Color4f color ) {
-		return "color rgb <" + color.red + ", " + color.green + ", " + color.blue + ">";
-	}
+  private static String toString(Color4f color) {
+    return "color rgb <" + color.red + ", " + color.green + ", " + color.blue + ">";
+  }
 
-	private static String toString( Color4f color, float opacity ) {
-		return "color rgbt <" + color.red + ", " + color.green + ", " + color.blue + ", " + ( 1.0 - ( color.alpha * opacity ) ) + ">";
-	}
+  private static String toString(Color4f color, float opacity) {
+    return "color rgbt <" + color.red + ", " + color.green + ", " + color.blue + ", " + (1.0 - (color.alpha * opacity)) + ">";
+  }
 
-	private static String toString( AffineMatrix4x4 m ) {
-		return "matrix < " +
-				m.orientation.right.x + ", " + m.orientation.right.y + ", " + -m.orientation.right.z + ", " +
-				m.orientation.up.x + ", " + m.orientation.up.y + ", " + -m.orientation.up.z + ", " +
-				-m.orientation.backward.x + ", " + -m.orientation.backward.y + ", " + m.orientation.backward.z + ", " +
-				m.translation.x + ", " + m.translation.y + ", " + -m.translation.z + " >";
-	}
+  private static String toString(AffineMatrix4x4 m) {
+    return "matrix < " + m.orientation.right.x + ", " + m.orientation.right.y + ", " + -m.orientation.right.z + ", " + m.orientation.up.x + ", " + m.orientation.up.y + ", " + -m.orientation.up.z + ", " + -m.orientation.backward.x + ", " + -m.orientation.backward.y + ", " + m.orientation.backward.z + ", " + m.translation.x + ", " + m.translation.y + ", " + -m.translation.z + " >";
+  }
 
-	private static String toString( double x, double y, double z ) {
-		return "<" + x + ", " + y + ", " + -z + ">";
-	}
+  private static String toString(double x, double y, double z) {
+    return "<" + x + ", " + y + ", " + -z + ">";
+  }
 
-	private static String toString( Tuple3 t ) {
-		return toString( t.x, t.y, t.z );
-	}
+  private static String toString(Tuple3 t) {
+    return toString(t.x, t.y, t.z);
+  }
 
-	private static void exportBackground( PrintWriter pw, Background sgBackground ) {
-		pw.println( "background {" );
-		pw.println( toString( sgBackground.color.getValue() ) );
-		pw.println( "}" );
-	}
+  private static void exportBackground(PrintWriter pw, Background sgBackground) {
+    pw.println("background {");
+    pw.println(toString(sgBackground.color.getValue()));
+    pw.println("}");
+  }
 
-	private static void exportGeometry( PrintWriter pw, Geometry sgGeometry, Appearance sgAppearance, double reflection, AffineMatrix4x4 m ) {
-		if( sgGeometry instanceof Sphere ) {
-			Sphere sgSphere = (Sphere)sgGeometry;
-			pw.println( "sphere {" );
-			pw.println( "<" + m.translation.x + ", " + m.translation.y + ", " + -m.translation.z + ">, " + sgSphere.radius.getValue() );
-		} else if( sgGeometry instanceof Torus ) {
-			Torus sgTorus = (Torus)sgGeometry;
-			pw.println( "torus {" );
-			pw.println( sgTorus.majorRadius.getValue() + ", " + sgTorus.minorRadius.getValue() );
-			pw.println( toString( m ) );
-		} else if( sgGeometry instanceof Cylinder ) {
-			Cylinder sgCylinder = (Cylinder)sgGeometry;
-			pw.println( "cone {" );
-			Point3 base = sgCylinder.getCenterOfBottom();
-			Point3 cap = sgCylinder.getCenterOfTop();
-			pw.println( toString( base ) );
-			pw.println( sgCylinder.bottomRadius.getValue() + ", " );
-			pw.println( toString( cap ) );
-			pw.println( sgCylinder.getActualTopRadius() );
+  private static void exportGeometry(PrintWriter pw, Geometry sgGeometry, Appearance sgAppearance, double reflection, AffineMatrix4x4 m) {
+    if (sgGeometry instanceof Sphere) {
+      Sphere sgSphere = (Sphere) sgGeometry;
+      pw.println("sphere {");
+      pw.println("<" + m.translation.x + ", " + m.translation.y + ", " + -m.translation.z + ">, " + sgSphere.radius.getValue());
+    } else if (sgGeometry instanceof Torus) {
+      Torus sgTorus = (Torus) sgGeometry;
+      pw.println("torus {");
+      pw.println(sgTorus.majorRadius.getValue() + ", " + sgTorus.minorRadius.getValue());
+      pw.println(toString(m));
+    } else if (sgGeometry instanceof Cylinder) {
+      Cylinder sgCylinder = (Cylinder) sgGeometry;
+      pw.println("cone {");
+      Point3 base = sgCylinder.getCenterOfBottom();
+      Point3 cap = sgCylinder.getCenterOfTop();
+      pw.println(toString(base));
+      pw.println(sgCylinder.bottomRadius.getValue() + ", ");
+      pw.println(toString(cap));
+      pw.println(sgCylinder.getActualTopRadius());
 
-			if( sgCylinder.hasTopCap.getValue() ) {
-				if( sgCylinder.hasBottomCap.getValue() ) {
-					//pass
-				} else {
-					Logger.todo( "UNHANDLED CYLINDER CAP STATE: " + sgCylinder );
-				}
-			} else {
-				if( sgCylinder.hasBottomCap.getValue() ) {
-					Logger.todo( "UNHANDLED CYLINDER CAP STATE: " + sgCylinder );
-				} else {
-					pw.println( "open" );
-				}
-			}
-			pw.println( toString( m ) );
-		} else if( sgGeometry instanceof Disc ) {
-			Disc sgDisc = (Disc)sgGeometry;
-			pw.println( "disc {" );
-			pw.println( "<0,0,0>, <0,0,-1>, " + sgDisc.outerRadius.getValue() + ", " + sgDisc.innerRadius.getValue() );
-			pw.println( toString( m ) );
-		} else if( sgGeometry instanceof Box ) {
-			Box sgBox = (Box)sgGeometry;
-			Point3 minimum = sgBox.getMinimum();
-			Point3 maximum = sgBox.getMaximum();
-			pw.println( "box {" );
-			pw.print( toString( minimum ) );
-			pw.print( ", " );
-			pw.println( toString( maximum ) );
-			pw.println( toString( m ) );
-		} else if( sgGeometry instanceof TriangleFan ) {
-			TriangleFan sgTriangleFan = (TriangleFan)sgGeometry;
-			pw.println( "polygon {" );
-			int n = sgTriangleFan.vertices.getLength();
-			pw.println( n + "," );
-			Vertex[] sgVertices = sgTriangleFan.vertices.getValue();
-			for( int i = 0; i < n; i++ ) {
-				Vertex sgVertex = sgVertices[ i ];
-				Point3 p = new Point3( sgVertex.position );
-				m.transform( p );
-				pw.print( toString( p ) );
-				if( i < ( n - 1 ) ) {
-					pw.println( "," );
-				} else {
-					pw.println();
-				}
-			}
-		} else {
-			Logger.todo( "UNHANDLED GEOMETRY: " + sgGeometry );
-			return;
-		}
+      if (sgCylinder.hasTopCap.getValue()) {
+        if (sgCylinder.hasBottomCap.getValue()) {
+          //pass
+        } else {
+          Logger.todo("UNHANDLED CYLINDER CAP STATE: " + sgCylinder);
+        }
+      } else {
+        if (sgCylinder.hasBottomCap.getValue()) {
+          Logger.todo("UNHANDLED CYLINDER CAP STATE: " + sgCylinder);
+        } else {
+          pw.println("open");
+        }
+      }
+      pw.println(toString(m));
+    } else if (sgGeometry instanceof Disc) {
+      Disc sgDisc = (Disc) sgGeometry;
+      pw.println("disc {");
+      pw.println("<0,0,0>, <0,0,-1>, " + sgDisc.outerRadius.getValue() + ", " + sgDisc.innerRadius.getValue());
+      pw.println(toString(m));
+    } else if (sgGeometry instanceof Box) {
+      Box sgBox = (Box) sgGeometry;
+      Point3 minimum = sgBox.getMinimum();
+      Point3 maximum = sgBox.getMaximum();
+      pw.println("box {");
+      pw.print(toString(minimum));
+      pw.print(", ");
+      pw.println(toString(maximum));
+      pw.println(toString(m));
+    } else if (sgGeometry instanceof TriangleFan) {
+      TriangleFan sgTriangleFan = (TriangleFan) sgGeometry;
+      pw.println("polygon {");
+      int n = sgTriangleFan.vertices.getLength();
+      pw.println(n + ",");
+      Vertex[] sgVertices = sgTriangleFan.vertices.getValue();
+      for (int i = 0; i < n; i++) {
+        Vertex sgVertex = sgVertices[i];
+        Point3 p = new Point3(sgVertex.position);
+        m.transform(p);
+        pw.print(toString(p));
+        if (i < (n - 1)) {
+          pw.println(",");
+        } else {
+          pw.println();
+        }
+      }
+    } else {
+      Logger.todo("UNHANDLED GEOMETRY: " + sgGeometry);
+      return;
+    }
 
-		Color4f color = null;
-		float opacity = Float.NaN;
-		float specular = Float.NaN;
-		if( sgAppearance instanceof TexturedAppearance ) {
-			TexturedAppearance sgTexturedAppearance = (TexturedAppearance)sgAppearance;
-			color = sgTexturedAppearance.diffuseColor.getValue();
-			opacity = sgTexturedAppearance.opacity.getValue();
-			specular = sgTexturedAppearance.specularHighlightExponent.getValue();
-		}
-		pw.println( "texture {" );
-		if( color != null ) {
-			pw.println( "pigment { " );
-			pw.println( toString( color, opacity ) );
-			pw.println( "}" );
-		}
-		pw.println( "finish { " );
-		if( reflection > 0 ) {
-			pw.println( "reflection  " + reflection );
-		} else {
-			pw.println( "phong 1" );
-			if( Float.isNaN( specular ) == false ) {
-				pw.println( "specular " + specular );
-			}
-		}
-		pw.println( "}" );
-		pw.println( "}" );
-		pw.println( "}" );
-	}
+    Color4f color = null;
+    float opacity = Float.NaN;
+    float specular = Float.NaN;
+    if (sgAppearance instanceof TexturedAppearance) {
+      TexturedAppearance sgTexturedAppearance = (TexturedAppearance) sgAppearance;
+      color = sgTexturedAppearance.diffuseColor.getValue();
+      opacity = sgTexturedAppearance.opacity.getValue();
+      specular = sgTexturedAppearance.specularHighlightExponent.getValue();
+    }
+    pw.println("texture {");
+    if (color != null) {
+      pw.println("pigment { ");
+      pw.println(toString(color, opacity));
+      pw.println("}");
+    }
+    pw.println("finish { ");
+    if (reflection > 0) {
+      pw.println("reflection  " + reflection);
+    } else {
+      pw.println("phong 1");
+      if (Float.isNaN(specular) == false) {
+        pw.println("specular " + specular);
+      }
+    }
+    pw.println("}");
+    pw.println("}");
+    pw.println("}");
+  }
 
-	private static void exportVisual( PrintWriter pw, Visual sgVisual ) {
-		AffineMatrix4x4 m = sgVisual.getAbsoluteTransformation();
-		Appearance sgAppearance = sgVisual.frontFacingAppearance.getValue();
-		double reflection;
-		if( sgVisual instanceof PlanarReflector ) {
-			reflection = 0.6;
-		} else {
-			reflection = 0.0;
-		}
-		for( Geometry sgGeometry : sgVisual.geometries.getValue() ) {
-			exportGeometry( pw, sgGeometry, sgAppearance, reflection, m );
-		}
-	}
+  private static void exportVisual(PrintWriter pw, Visual sgVisual) {
+    AffineMatrix4x4 m = sgVisual.getAbsoluteTransformation();
+    Appearance sgAppearance = sgVisual.frontFacingAppearance.getValue();
+    double reflection;
+    if (sgVisual instanceof PlanarReflector) {
+      reflection = 0.6;
+    } else {
+      reflection = 0.0;
+    }
+    for (Geometry sgGeometry : sgVisual.geometries.getValue()) {
+      exportGeometry(pw, sgGeometry, sgAppearance, reflection, m);
+    }
+  }
 
-	private static void exportLight( PrintWriter pw, Light sgLight ) {
-		if( sgLight instanceof AmbientLight ) {
-			Logger.todo( "UNHANDLED AMBIENT LIGHT: " + sgLight );
-			return;
-		}
-		AffineMatrix4x4 m = sgLight.getAbsoluteTransformation();
-		pw.println( "light_source { " );
-		pw.println( "<" + m.translation.x + ", " + m.translation.y + ", " + -m.translation.z + ">" );
-		pw.println( toString( sgLight.color.getValue() ) );
-		if( sgLight instanceof PointLight ) {
-			//PointLight sgPointLight = (PointLight)sgLight;
-		} else if( sgLight instanceof DirectionalLight ) {
-			//DirectionalLight sgDirectionalLight = (DirectionalLight)sgLight;
-			pw.println( "parallel" );
+  private static void exportLight(PrintWriter pw, Light sgLight) {
+    if (sgLight instanceof AmbientLight) {
+      Logger.todo("UNHANDLED AMBIENT LIGHT: " + sgLight);
+      return;
+    }
+    AffineMatrix4x4 m = sgLight.getAbsoluteTransformation();
+    pw.println("light_source { ");
+    pw.println("<" + m.translation.x + ", " + m.translation.y + ", " + -m.translation.z + ">");
+    pw.println(toString(sgLight.color.getValue()));
+    if (sgLight instanceof PointLight) {
+      //PointLight sgPointLight = (PointLight)sgLight;
+    } else if (sgLight instanceof DirectionalLight) {
+      //DirectionalLight sgDirectionalLight = (DirectionalLight)sgLight;
+      pw.println("parallel");
 
-			double x = m.translation.x - m.orientation.backward.x;
-			double y = m.translation.y - m.orientation.backward.y;
-			double z = m.translation.z - m.orientation.backward.z;
+      double x = m.translation.x - m.orientation.backward.x;
+      double y = m.translation.y - m.orientation.backward.y;
+      double z = m.translation.z - m.orientation.backward.z;
 
-			pw.print( "point_at " );
-			pw.println( toString( x, y, z ) );
-		} else {
-			Logger.todo( "UNHANDLED LIGHT: " + sgLight );
-		}
-		pw.println( "}" );
-	}
+      pw.print("point_at ");
+      pw.println(toString(x, y, z));
+    } else {
+      Logger.todo("UNHANDLED LIGHT: " + sgLight);
+    }
+    pw.println("}");
+  }
 
-	public static void export( PrintWriter pw, AbstractCamera sgCamera ) {
-		//AbstractCamera sgCamera = lookingGlass.getCameraAt( 0 );
-		Composite sgRoot = sgCamera.getRoot();
-		if( sgRoot instanceof Scene ) {
-			Scene sgScene = (Scene)sgRoot;
-			Background background = sgCamera.background.getValue();
-			if( background != null ) {
-				//pass
-			} else {
-				background = sgScene.background.getValue();
-			}
-			exportBackground( pw, background );
+  public static void export(PrintWriter pw, AbstractCamera sgCamera) {
+    //AbstractCamera sgCamera = lookingGlass.getCameraAt( 0 );
+    Composite sgRoot = sgCamera.getRoot();
+    if (sgRoot instanceof Scene) {
+      Scene sgScene = (Scene) sgRoot;
+      Background background = sgCamera.background.getValue();
+      if (background != null) {
+        //pass
+      } else {
+        background = sgScene.background.getValue();
+      }
+      exportBackground(pw, background);
 
-			AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
-			pw.println( "camera {" );
-			pw.println( toString( m ) );
-			if( sgCamera instanceof SymmetricPerspectiveCamera ) {
-				SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera = (SymmetricPerspectiveCamera)sgCamera;
-				Angle angle = sgSymmetricPerspectiveCamera.horizontalViewingAngle.getValue();
-				double degrees;
-				if( angle.isNaN() ) {
-					//todo
-					degrees = 45;
-				} else {
-					degrees = angle.getAsDegrees();
-				}
-				//pw.println( "angle " + lookingGlass.getActualHorizontalViewingAngle( sgSymmetricPerspectiveCamera ).getAsDegrees() );
-				pw.println( "angle " + degrees );
-			}
-			pw.println( "}" );
+      AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
+      pw.println("camera {");
+      pw.println(toString(m));
+      if (sgCamera instanceof SymmetricPerspectiveCamera) {
+        SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera = (SymmetricPerspectiveCamera) sgCamera;
+        Angle angle = sgSymmetricPerspectiveCamera.horizontalViewingAngle.getValue();
+        double degrees;
+        if (angle.isNaN()) {
+          //todo
+          degrees = 45;
+        } else {
+          degrees = angle.getAsDegrees();
+        }
+        //pw.println( "angle " + lookingGlass.getActualHorizontalViewingAngle( sgSymmetricPerspectiveCamera ).getAsDegrees() );
+        pw.println("angle " + degrees);
+      }
+      pw.println("}");
 
-			for( Visual sgVisual : VisitUtilities.getAll( sgScene, Visual.class ) ) {
-				exportVisual( pw, sgVisual );
-			}
-			for( Light sgLight : VisitUtilities.getAll( sgScene, Light.class ) ) {
-				exportLight( pw, sgLight );
-			}
-			pw.flush();
-		}
-	}
-	//	public static void export( java.io.File file, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
-	//		try {
-	//			file.getParentFile().mkdirs();
-	//			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
-	//			java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( fos );
-	//			export( new java.io.PrintWriter( bos ), lookingGlass );
-	//			bos.flush();
-	//			fos.flush();
-	//			fos.close();
-	//		} catch( java.io.IOException ioe ) {
-	//			throw new RuntimeException( ioe );
-	//		}
-	//	}
-	//	public static void export( String path, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
-	//		export( new java.io.File( path ), lookingGlass );
-	//	}
-	//
-	//	public static int exec( String path ) {
-	//		return edu.cmu.cs.dennisc.java.lang.RuntimeUtilities.exec( new java.io.File( "s:/povray" ), "pvengine", "/RENDER", "test.pov" );
-	//	}
+      for (Visual sgVisual : VisitUtilities.getAll(sgScene, Visual.class)) {
+        exportVisual(pw, sgVisual);
+      }
+      for (Light sgLight : VisitUtilities.getAll(sgScene, Light.class)) {
+        exportLight(pw, sgLight);
+      }
+      pw.flush();
+    }
+  }
+  //  public static void export( java.io.File file, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
+  //    try {
+  //      file.getParentFile().mkdirs();
+  //      java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
+  //      java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( fos );
+  //      export( new java.io.PrintWriter( bos ), lookingGlass );
+  //      bos.flush();
+  //      fos.flush();
+  //      fos.close();
+  //    } catch( java.io.IOException ioe ) {
+  //      throw new RuntimeException( ioe );
+  //    }
+  //  }
+  //  public static void export( String path, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
+  //    export( new java.io.File( path ), lookingGlass );
+  //  }
+  //
+  //  public static int exec( String path ) {
+  //    return edu.cmu.cs.dennisc.java.lang.RuntimeUtilities.exec( new java.io.File( "s:/povray" ), "pvengine", "/RENDER", "test.pov" );
+  //  }
 }

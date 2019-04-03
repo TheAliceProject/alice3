@@ -57,33 +57,33 @@ import java.awt.Robot;
  * @author Dennis Cosgrove
  */
 public class RobotUtilities {
-	private RobotUtilities() {
-		throw new AssertionError();
-	}
+  private RobotUtilities() {
+    throw new AssertionError();
+  }
 
-	private static Robot robot = null;
+  private static Robot robot = null;
 
-	public static void mouseMove( Component awtComponent, Point p ) {
-		try {
-			GraphicsConfiguration graphicsConfiguration = awtComponent.getGraphicsConfiguration();
-			Rectangle graphicsConfigurationBounds = graphicsConfiguration.getBounds();
-			GraphicsDevice graphicsDevice = graphicsConfiguration.getDevice();
-			robot = new Robot( graphicsDevice );
-			SwingUtilities.convertPointToScreen( p, awtComponent );
-			p.x -= graphicsConfigurationBounds.x;
-			p.y -= graphicsConfigurationBounds.y;
-			robot.mouseMove( p.x, p.y );
-		} catch( Throwable t ) {
-			Logger.throwable( t );
-		}
-	}
+  public static void mouseMove(Component awtComponent, Point p) {
+    try {
+      GraphicsConfiguration graphicsConfiguration = awtComponent.getGraphicsConfiguration();
+      Rectangle graphicsConfigurationBounds = graphicsConfiguration.getBounds();
+      GraphicsDevice graphicsDevice = graphicsConfiguration.getDevice();
+      robot = new Robot(graphicsDevice);
+      SwingUtilities.convertPointToScreen(p, awtComponent);
+      p.x -= graphicsConfigurationBounds.x;
+      p.y -= graphicsConfigurationBounds.y;
+      robot.mouseMove(p.x, p.y);
+    } catch (Throwable t) {
+      Logger.throwable(t);
+    }
+  }
 
-	public static Color getPixelColor( int x, int y ) {
-		if( robot != null ) {
-			return robot.getPixelColor( x, y );
-		} else {
-			Logger.severe( robot );
-			return null;
-		}
-	}
+  public static Color getPixelColor(int x, int y) {
+    if (robot != null) {
+      return robot.getPixelColor(x, y);
+    } else {
+      Logger.severe(robot);
+      return null;
+    }
+  }
 }

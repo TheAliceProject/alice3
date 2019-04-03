@@ -50,23 +50,23 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author Dennis Cosgrove
  */
 public class TypeNode extends DefaultMutableTreeNode {
-	//	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
-	//
-	//	public static TypeNode getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-	//		return map.getInitializingIfAbsent( type, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode>() {
-	//			public TypeNode initialize( org.lgna.project.ast.AbstractType<?, ?, ?> key ) {
-	//				return new TypeNode( key );
-	//			}
-	//		} );
-	//	}
+  //  private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+  //
+  //  public static TypeNode getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+  //    return map.getInitializingIfAbsent( type, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode>() {
+  //      public TypeNode initialize( org.lgna.project.ast.AbstractType<?, ?, ?> key ) {
+  //        return new TypeNode( key );
+  //      }
+  //    } );
+  //  }
 
-	private final AbstractType<?, ?, ?> type;
+  private final AbstractType<?, ?, ?> type;
 
-	public TypeNode( AbstractType<?, ?, ?> type ) {
-		this.type = type;
-	}
+  public TypeNode(AbstractType<?, ?, ?> type) {
+    this.type = type;
+  }
 
-	public AbstractType<?, ?, ?> getType() {
-		return this.type;
-	}
+  public AbstractType<?, ?, ?> getType() {
+    return this.type;
+  }
 }

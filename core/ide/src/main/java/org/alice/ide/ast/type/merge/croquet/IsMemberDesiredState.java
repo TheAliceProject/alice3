@@ -52,14 +52,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class IsMemberDesiredState<M extends Member> extends BooleanState {
-	private final M member;
+  private final M member;
 
-	public IsMemberDesiredState( M member, boolean initialValue ) {
-		super( Application.INHERIT_GROUP, UUID.fromString( "02910edd-4bc6-404d-bf23-88e2e29fe539" ), initialValue );
-		this.member = member;
-	}
+  public IsMemberDesiredState(M member, boolean initialValue) {
+    super(Application.INHERIT_GROUP, UUID.fromString("02910edd-4bc6-404d-bf23-88e2e29fe539"), initialValue);
+    this.member = member;
+  }
 
-	public M getMember() {
-		return this.member;
-	}
+  public M getMember() {
+    return this.member;
+  }
 }

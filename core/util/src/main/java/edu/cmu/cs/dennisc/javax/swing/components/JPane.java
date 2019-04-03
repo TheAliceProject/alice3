@@ -50,28 +50,28 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class JPane extends JPanel {
-	public JPane() {
-		this.setOpaque( false );
-		this.setDoubleBuffered( false );
-		this.setAlignmentX( Component.LEFT_ALIGNMENT );
-		this.setAlignmentY( Component.CENTER_ALIGNMENT );
-	}
+  public JPane() {
+    this.setOpaque(false);
+    this.setDoubleBuffered(false);
+    this.setAlignmentX(Component.LEFT_ALIGNMENT);
+    this.setAlignmentY(Component.CENTER_ALIGNMENT);
+  }
 
-	//	@Override
-	//	protected void finalize() throws Throwable {
-	//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize " + this.getClass() );
-	//		super.finalize();
-	//	}
-	protected boolean isMaximumSizeClampedToPreferredSize() {
-		return true;
-	}
+  //  @Override
+  //  protected void finalize() throws Throwable {
+  //    edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize " + this.getClass() );
+  //    super.finalize();
+  //  }
+  protected boolean isMaximumSizeClampedToPreferredSize() {
+    return true;
+  }
 
-	@Override
-	public Dimension getMaximumSize() {
-		if( isMaximumSizeClampedToPreferredSize() ) {
-			return this.getPreferredSize();
-		} else {
-			return super.getMaximumSize();
-		}
-	}
+  @Override
+  public Dimension getMaximumSize() {
+    if (isMaximumSizeClampedToPreferredSize()) {
+      return this.getPreferredSize();
+    } else {
+      return super.getMaximumSize();
+    }
+  }
 }

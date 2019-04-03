@@ -51,17 +51,17 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class BackwardShiftParameterOperation extends SwapParametersOperation {
-	public BackwardShiftParameterOperation( NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
-		super( UUID.fromString( "d318d441-f58e-49b1-b01e-d16f15259c95" ), parametersProperty, parameter );
-	}
+  public BackwardShiftParameterOperation(NodeListProperty<UserParameter> parametersProperty, UserParameter parameter) {
+    super(UUID.fromString("d318d441-f58e-49b1-b01e-d16f15259c95"), parametersProperty, parameter);
+  }
 
-	@Override
-	protected boolean isAppropriate( int index, int n ) {
-		return index < ( n - 1 );
-	}
+  @Override
+  protected boolean isAppropriate(int index, int n) {
+    return index < (n - 1);
+  }
 
-	@Override
-	protected int getIndexA() {
-		return this.getIndex();
-	}
+  @Override
+  protected int getIndexA() {
+    return this.getIndex();
+  }
 }

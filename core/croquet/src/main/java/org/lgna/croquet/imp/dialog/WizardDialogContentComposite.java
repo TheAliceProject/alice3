@@ -51,12 +51,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class WizardDialogContentComposite extends GatedCommitDialogContentComposite<WizardDialogContentPane> {
-	public WizardDialogContentComposite( WizardDialogCoreComposite coreComposite ) {
-		super( UUID.fromString( "ecfac12c-7762-445b-a952-fcffc09126f9" ), coreComposite );
-	}
+  public WizardDialogContentComposite(WizardDialogCoreComposite coreComposite) {
+    super(UUID.fromString("ecfac12c-7762-445b-a952-fcffc09126f9"), coreComposite);
+  }
 
-	@Override
-	protected WizardDialogContentPane createView() {
-		return new WizardDialogContentPane( this );
-	}
+  @Override
+  protected WizardDialogContentPane createView() {
+    return new WizardDialogContentPane(this);
+  }
 }

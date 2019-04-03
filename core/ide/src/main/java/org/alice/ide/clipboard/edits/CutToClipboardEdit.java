@@ -53,27 +53,27 @@ import org.lgna.project.ast.Statement;
  * @author Dennis Cosgrove
  */
 public class CutToClipboardEdit extends ClipboardEdit {
-	public CutToClipboardEdit( UserActivity userActivity, Statement statement ) {
-		super( userActivity, statement, BlockStatementIndexPair.createInstanceFromChildStatement( statement ) );
-	}
+  public CutToClipboardEdit(UserActivity userActivity, Statement statement) {
+    super(userActivity, statement, BlockStatementIndexPair.createInstanceFromChildStatement(statement));
+  }
 
-	public CutToClipboardEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-	}
+  public CutToClipboardEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+  }
 
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		this.pushAndRemove();
-	}
+  @Override
+  protected void doOrRedoInternal(boolean isDo) {
+    this.pushAndRemove();
+  }
 
-	@Override
-	protected void undoInternal() {
-		this.popAndAdd();
-	}
+  @Override
+  protected void undoInternal() {
+    this.popAndAdd();
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "cut to clipboard" );
-		NodeUtilities.safeAppendRepr( rv, this.getStatement() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("cut to clipboard");
+    NodeUtilities.safeAppendRepr(rv, this.getStatement());
+  }
 }

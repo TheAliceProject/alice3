@@ -55,57 +55,57 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessMethodInvocationFactory extends MethodInvocationFactory {
-	private static MapToMap<UserField, AbstractMethod, ThisFieldAccessMethodInvocationFactory> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserField, AbstractMethod, ThisFieldAccessMethodInvocationFactory> mapToMap = MapToMap.newInstance();
 
-	public static synchronized ThisFieldAccessMethodInvocationFactory getInstance( UserField field, AbstractMethod method ) {
-		assert field != null;
-		return mapToMap.getInitializingIfAbsent( field, method, new MapToMap.Initializer<UserField, AbstractMethod, ThisFieldAccessMethodInvocationFactory>() {
-			@Override
-			public ThisFieldAccessMethodInvocationFactory initialize( UserField field, AbstractMethod method ) {
-				return new ThisFieldAccessMethodInvocationFactory( field, method );
-			}
-		} );
-	}
+  public static synchronized ThisFieldAccessMethodInvocationFactory getInstance(UserField field, AbstractMethod method) {
+    assert field != null;
+    return mapToMap.getInitializingIfAbsent(field, method, new MapToMap.Initializer<UserField, AbstractMethod, ThisFieldAccessMethodInvocationFactory>() {
+      @Override
+      public ThisFieldAccessMethodInvocationFactory initialize(UserField field, AbstractMethod method) {
+        return new ThisFieldAccessMethodInvocationFactory(field, method);
+      }
+    });
+  }
 
-	private final UserField field;
+  private final UserField field;
 
-	private ThisFieldAccessMethodInvocationFactory( UserField field, AbstractMethod method ) {
-		super( method, field.name );
-		this.field = field;
-	}
+  private ThisFieldAccessMethodInvocationFactory(UserField field, AbstractMethod method) {
+    super(method, field.name);
+    this.field = field;
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getValidInstanceType( AbstractType<?, ?, ?> type, AbstractCode code ) {
-		AbstractType<?, ?, ?> fieldDeclarationType = this.field.getDeclaringType();
-		if( ( fieldDeclarationType != null ) && fieldDeclarationType.isAssignableFrom( type ) ) {
-			return this.field.getValueType();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getValidInstanceType(AbstractType<?, ?, ?> type, AbstractCode code) {
+    AbstractType<?, ?, ?> fieldDeclarationType = this.field.getDeclaringType();
+    if ((fieldDeclarationType != null) && fieldDeclarationType.isAssignableFrom(type)) {
+      return this.field.getValueType();
+    } else {
+      return null;
+    }
+  }
 
-	public UserField getField() {
-		return this.field;
-	}
+  public UserField getField() {
+    return this.field;
+  }
 
-	private FieldAccess createFieldAccess( Expression expression ) {
-		return new FieldAccess( expression, this.field );
-	}
+  private FieldAccess createFieldAccess(Expression expression) {
+    return new FieldAccess(expression, this.field);
+  }
 
-	@Override
-	protected Expression createTransientExpressionForMethodInvocation() {
-		return this.createFieldAccess( createTransientThisExpression() );
-	}
+  @Override
+  protected Expression createTransientExpressionForMethodInvocation() {
+    return this.createFieldAccess(createTransientThisExpression());
+  }
 
-	@Override
-	protected Expression createExpressionForMethodInvocation() {
-		return this.createFieldAccess( createThisExpression() );
-	}
+  @Override
+  protected Expression createExpressionForMethodInvocation() {
+    return this.createFieldAccess(createThisExpression());
+  }
 
-	@Override
-	protected StringBuilder addAccessRepr( StringBuilder rv ) {
-		rv.append( "this." );
-		rv.append( this.field.getName() );
-		return rv;
-	}
+  @Override
+  protected StringBuilder addAccessRepr(StringBuilder rv) {
+    rv.append("this.");
+    rv.append(this.field.getName());
+    return rv;
+  }
 }

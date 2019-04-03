@@ -61,79 +61,79 @@ import java.awt.Paint;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractStatementPane extends StatementLikeSubstance {
-	private static final Color PASSIVE_OUTLINE_PAINT_FOR_NON_DRAGGABLE = ColorUtilities.createGray( 160 );
+  private static final Color PASSIVE_OUTLINE_PAINT_FOR_NON_DRAGGABLE = ColorUtilities.createGray(160);
 
-	public AbstractStatementPane( DragModel model, AstI18nFactory factory, Statement statement, StatementListProperty owner ) {
-		super( model, StatementLikeSubstance.getClassFor( statement ), BoxLayout.LINE_AXIS );
-		this.factory = factory;
-		this.statement = statement;
-		this.owner = owner;
-		if( this.factory instanceof MutableAstI18nFactory ) {
-			this.isEnabledListener = new PropertyListener() {
-				@Override
-				public void propertyChanging( PropertyEvent e ) {
-				}
+  public AbstractStatementPane(DragModel model, AstI18nFactory factory, Statement statement, StatementListProperty owner) {
+    super(model, StatementLikeSubstance.getClassFor(statement), BoxLayout.LINE_AXIS);
+    this.factory = factory;
+    this.statement = statement;
+    this.owner = owner;
+    if (this.factory instanceof MutableAstI18nFactory) {
+      this.isEnabledListener = new PropertyListener() {
+        @Override
+        public void propertyChanging(PropertyEvent e) {
+        }
 
-				@Override
-				public void propertyChanged( PropertyEvent e ) {
-					AbstractStatementPane.this.repaint();
-				}
-			};
-		} else {
-			this.isEnabledListener = null;
-		}
-	}
+        @Override
+        public void propertyChanged(PropertyEvent e) {
+          AbstractStatementPane.this.repaint();
+        }
+      };
+    } else {
+      this.isEnabledListener = null;
+    }
+  }
 
-	public AstI18nFactory getFactory() {
-		return this.factory;
-	}
+  public AstI18nFactory getFactory() {
+    return this.factory;
+  }
 
-	@Override
-	protected Paint getPassiveOutlinePaint() {
-		if( this.getModel() != null ) {
-			return super.getPassiveOutlinePaint();
-		} else {
-			return PASSIVE_OUTLINE_PAINT_FOR_NON_DRAGGABLE;
-		}
-	}
+  @Override
+  protected Paint getPassiveOutlinePaint() {
+    if (this.getModel() != null) {
+      return super.getPassiveOutlinePaint();
+    } else {
+      return PASSIVE_OUTLINE_PAINT_FOR_NON_DRAGGABLE;
+    }
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.isEnabledListener != null ) {
-			this.statement.isEnabled.addPropertyListener( this.isEnabledListener );
-		}
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    if (this.isEnabledListener != null) {
+      this.statement.isEnabled.addPropertyListener(this.isEnabledListener);
+    }
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		if( this.isEnabledListener != null ) {
-			this.statement.isEnabled.removePropertyListener( this.isEnabledListener );
-		}
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    if (this.isEnabledListener != null) {
+      this.statement.isEnabled.removePropertyListener(this.isEnabledListener);
+    }
+    super.handleUndisplayable();
+  }
 
-	public Statement getStatement() {
-		return this.statement;
-	}
+  public Statement getStatement() {
+    return this.statement;
+  }
 
-	public StatementListProperty getOwner() {
-		return this.owner;
-	}
+  public StatementListProperty getOwner() {
+    return this.owner;
+  }
 
-	@Override
-	protected void paintEpilogue( Graphics2D g2, int x, int y, int width, int height ) {
-		super.paintEpilogue( g2, x, y, width, height );
-		if( this.statement.isEnabled.getValue() ) {
-			//pass
-		} else {
-			g2.setPaint( PaintUtilities.getDisabledTexturePaint() );
-			this.fillBounds( g2 );
-		}
-	}
+  @Override
+  protected void paintEpilogue(Graphics2D g2, int x, int y, int width, int height) {
+    super.paintEpilogue(g2, x, y, width, height);
+    if (this.statement.isEnabled.getValue()) {
+      //pass
+    } else {
+      g2.setPaint(PaintUtilities.getDisabledTexturePaint());
+      this.fillBounds(g2);
+    }
+  }
 
-	private final AstI18nFactory factory;
-	private final Statement statement;
-	private final StatementListProperty owner;
-	private final PropertyListener isEnabledListener;
+  private final AstI18nFactory factory;
+  private final Statement statement;
+  private final StatementListProperty owner;
+  private final PropertyListener isEnabledListener;
 }

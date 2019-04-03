@@ -45,5 +45,5 @@ package org.lgna.croquet;
 import org.lgna.croquet.history.UserActivity;
 
 public interface Triggerable {
-	void fire( UserActivity activity );
+  void fire(UserActivity activity);
 }

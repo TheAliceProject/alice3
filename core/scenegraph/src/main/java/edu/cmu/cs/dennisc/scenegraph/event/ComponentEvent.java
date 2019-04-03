@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
  * @author Dennis Cosgrove
  */
 public abstract class ComponentEvent extends ChildEvent<Composite, Component> {
-	public ComponentEvent( Composite source, Component child ) {
-		super( source, child );
-	}
+  public ComponentEvent(Composite source, Component child) {
+    super(source, child);
+  }
 }

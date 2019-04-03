@@ -49,25 +49,25 @@ import org.lgna.story.Key;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractKeyEvent extends AbstractEvent {
-	private final java.awt.event.KeyEvent e;
+  private final java.awt.event.KeyEvent e;
 
-	public AbstractKeyEvent( java.awt.event.KeyEvent e ) {
-		this.e = e;
-	}
+  public AbstractKeyEvent(java.awt.event.KeyEvent e) {
+    this.e = e;
+  }
 
-	public Key getKey() {
-		return EmployeesOnly.getKeyFromKeyCode( e.getKeyCode() );
-	}
+  public Key getKey() {
+    return EmployeesOnly.getKeyFromKeyCode(e.getKeyCode());
+  }
 
-	public Boolean isKey( Key key ) {
-		return this.getKey() == key;
-	}
+  public Boolean isKey(Key key) {
+    return this.getKey() == key;
+  }
 
-	protected char getKeyChar() {
-		return this.e.getKeyChar();
-	}
+  protected char getKeyChar() {
+    return this.e.getKeyChar();
+  }
 
-	protected java.awt.event.KeyEvent getJavaEvent() {
-		return this.e;
-	}
+  protected java.awt.event.KeyEvent getJavaEvent() {
+    return this.e;
+  }
 }

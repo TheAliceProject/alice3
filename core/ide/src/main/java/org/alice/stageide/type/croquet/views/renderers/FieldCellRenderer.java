@@ -63,42 +63,42 @@ import java.awt.Paint;
  * @author Dennis Cosgrove
  */
 public class FieldCellRenderer extends ListCellRenderer<UserField> {
-	private static final Dimension ICON_SIZE = IconSize.EXTRA_SMALL.getSize();
-	private static final Icon EMPTY_ICON = EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
-	private static final Icon UNSELECTED_CHECK_ICON = CheckIconFactory.getInstance().getIcon( ICON_SIZE );
-	private static final Icon SELECTED_CHECK_ICON = new CheckIcon( ICON_SIZE ) {
-		@Override
-		protected Paint getInnerPaint( Component c ) {
-			return Color.WHITE;
-		}
+  private static final Dimension ICON_SIZE = IconSize.EXTRA_SMALL.getSize();
+  private static final Icon EMPTY_ICON = EmptyIconFactory.getInstance().getIcon(ICON_SIZE);
+  private static final Icon UNSELECTED_CHECK_ICON = CheckIconFactory.getInstance().getIcon(ICON_SIZE);
+  private static final Icon SELECTED_CHECK_ICON = new CheckIcon(ICON_SIZE) {
+    @Override
+    protected Paint getInnerPaint(Component c) {
+      return Color.WHITE;
+    }
 
-		@Override
-		protected Paint getOuterPaint( Component c ) {
-			return Color.BLACK;
-		}
-	};
+    @Override
+    protected Paint getOuterPaint(Component c) {
+      return Color.BLACK;
+    }
+  };
 
-	private final SingleSelectTreeState<TypeNode> typeState;
+  private final SingleSelectTreeState<TypeNode> typeState;
 
-	public FieldCellRenderer( SingleSelectTreeState<TypeNode> typeState ) {
-		this.typeState = typeState;
-	}
+  public FieldCellRenderer(SingleSelectTreeState<TypeNode> typeState) {
+    this.typeState = typeState;
+  }
 
-	@Override
-	protected JLabel getListCellRendererComponent( JLabel rv, JList list, UserField value, int index, boolean isSelected, boolean cellHasFocus ) {
-		if( value != null ) {
-			rv.setText( value.getName() );
-		}
-		Icon icon = EMPTY_ICON;
-		if( value != null ) {
-			TypeNode typeNode = this.typeState.getValue();
-			if( typeNode != null ) {
-				if( typeNode.getType().isAssignableFrom( value.getValueType() ) ) {
-					icon = isSelected ? SELECTED_CHECK_ICON : UNSELECTED_CHECK_ICON;
-				}
-			}
-		}
-		rv.setIcon( icon );
-		return rv;
-	}
+  @Override
+  protected JLabel getListCellRendererComponent(JLabel rv, JList list, UserField value, int index, boolean isSelected, boolean cellHasFocus) {
+    if (value != null) {
+      rv.setText(value.getName());
+    }
+    Icon icon = EMPTY_ICON;
+    if (value != null) {
+      TypeNode typeNode = this.typeState.getValue();
+      if (typeNode != null) {
+        if (typeNode.getType().isAssignableFrom(value.getValueType())) {
+          icon = isSelected ? SELECTED_CHECK_ICON : UNSELECTED_CHECK_ICON;
+        }
+      }
+    }
+    rv.setIcon(icon);
+    return rv;
+  }
 }

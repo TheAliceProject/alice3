@@ -49,17 +49,17 @@ import edu.cmu.cs.dennisc.math.Dimension3;
 import org.lgna.story.implementation.Property;
 
 public class ScalePropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Dimension3, O> {
-	public ScalePropertyAdapter( String repr, O instance, Property<Dimension3> property, StandardExpressionState expressionState ) {
-		super( repr, instance, property, expressionState );
-	}
+  public ScalePropertyAdapter(String repr, O instance, Property<Dimension3> property, StandardExpressionState expressionState) {
+    super(repr, instance, property, expressionState);
+  }
 
-	@Override
-	public Dimension3 getValueCopyIfMutable() {
-		return new Dimension3( this.getValue() );
-	}
+  @Override
+  public Dimension3 getValueCopyIfMutable() {
+    return new Dimension3(this.getValue());
+  }
 
-	@Override
-	public String getUndoRedoDescription() {
-		return "Scale";
-	}
+  @Override
+  public String getUndoRedoDescription() {
+    return "Scale";
+  }
 }

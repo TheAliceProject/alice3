@@ -55,41 +55,41 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public abstract class CollectionOfPreferences {
-	private Preferences utilPrefs;
-	private Preference<?>[] preferences;
+  private Preferences utilPrefs;
+  private Preference<?>[] preferences;
 
-	public void initialize() {
-		assert this.preferences == null;
-		assert this.utilPrefs == null;
-		this.utilPrefs = Preferences.userNodeForPackage( this.getClass() );
-		if( SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
-			try {
-				this.utilPrefs.clear();
-			} catch( BackingStoreException bse ) {
-				throw new RuntimeException( bse );
-			}
-		}
-		List<Field> fields = ReflectionUtilities.getPublicFinalFields( this.getClass(), Preference.class );
-		this.preferences = new Preference<?>[ fields.size() ];
-		int i = 0;
-		for( Field field : fields ) {
-			this.preferences[ i ] = (Preference)ReflectionUtilities.get( field, this );
-			this.preferences[ i ].initialize( this, field.getName(), Modifier.isTransient( field.getModifiers() ) );
-			i++;
-		}
-		this.setOrder( this.preferences );
-	}
+  public void initialize() {
+    assert this.preferences == null;
+    assert this.utilPrefs == null;
+    this.utilPrefs = Preferences.userNodeForPackage(this.getClass());
+    if (SystemUtilities.isPropertyTrue("org.alice.clearAllPreferences")) {
+      try {
+        this.utilPrefs.clear();
+      } catch (BackingStoreException bse) {
+        throw new RuntimeException(bse);
+      }
+    }
+    List<Field> fields = ReflectionUtilities.getPublicFinalFields(this.getClass(), Preference.class);
+    this.preferences = new Preference<?>[fields.size()];
+    int i = 0;
+    for (Field field : fields) {
+      this.preferences[i] = (Preference) ReflectionUtilities.get(field, this);
+      this.preferences[i].initialize(this, field.getName(), Modifier.isTransient(field.getModifiers()));
+      i++;
+    }
+    this.setOrder(this.preferences);
+  }
 
-	public Preferences getUtilPrefs() {
-		return this.utilPrefs;
-	}
+  public Preferences getUtilPrefs() {
+    return this.utilPrefs;
+  }
 
-	protected Preference<?>[] setOrder( Preference<?>[] rv ) {
-		return rv;
-	}
+  protected Preference<?>[] setOrder(Preference<?>[] rv) {
+    return rv;
+  }
 
-	public final Preference<?>[] getPreferences() {
-		assert this.preferences != null;
-		return this.preferences;
-	}
+  public final Preference<?>[] getPreferences() {
+    assert this.preferences != null;
+    return this.preferences;
+  }
 }

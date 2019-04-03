@@ -58,37 +58,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class BillboardDragModel extends ShapeDragModel {
-	private static final SBillboard sModel = new SBillboard();
+  private static final SBillboard sModel = new SBillboard();
 
-	private static class SingletonHolder {
-		private static BillboardDragModel instance = new BillboardDragModel();
-	}
+  private static class SingletonHolder {
+    private static BillboardDragModel instance = new BillboardDragModel();
+  }
 
-	public static BillboardDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static BillboardDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private BillboardDragModel() {
-		super( UUID.fromString( "32148b19-0314-4ae5-807e-894f4af1c581" ) );
-	}
+  private BillboardDragModel() {
+    super(UUID.fromString("32148b19-0314-4ae5-807e-894f4af1c581"));
+  }
 
-	@Override
-	public AxisAlignedBox getBoundingBox() {
-		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
-	}
+  @Override
+  public AxisAlignedBox getBoundingBox() {
+    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
+  }
 
-	@Override
-	public boolean placeOnGround() {
-		return true;
-	}
+  @Override
+  public boolean placeOnGround() {
+    return true;
+  }
 
-	@Override
-	public Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller ) {
-		return AddBillboardManagedFieldComposite.getInstance().getLaunchOperation();
-	}
+  @Override
+  public Triggerable getLeftButtonClickOperation(SingleSelectTreeState<ResourceNode> controller) {
+    return AddBillboardManagedFieldComposite.getInstance().getLaunchOperation();
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return BillboardIconFactory.getInstance();
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return BillboardIconFactory.getInstance();
+  }
 }

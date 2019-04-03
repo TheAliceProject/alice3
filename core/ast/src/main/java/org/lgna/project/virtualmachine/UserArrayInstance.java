@@ -49,41 +49,41 @@ import org.lgna.project.ast.UserArrayType;
  * @author Dennis Cosgrove
  */
 public class UserArrayInstance {
-	private final UserArrayType type;
-	private final int[] lengths;
-	private final Object[] values;
+  private final UserArrayType type;
+  private final int[] lengths;
+  private final Object[] values;
 
-	public UserArrayInstance( UserArrayType type, int[] lengths, Object[] values ) {
-		assert lengths.length == 1;
-		this.type = type;
-		this.lengths = lengths;
+  public UserArrayInstance(UserArrayType type, int[] lengths, Object[] values) {
+    assert lengths.length == 1;
+    this.type = type;
+    this.lengths = lengths;
 
-		int length = this.lengths[ 0 ];
-		this.values = new Object[ length ];
-		if( values != null ) {
-			for( int i = 0; i < values.length; i++ ) {
-				this.values[ i ] = values[ i ];
-			}
-		}
-	}
+    int length = this.lengths[0];
+    this.values = new Object[length];
+    if (values != null) {
+      for (int i = 0; i < values.length; i++) {
+        this.values[i] = values[i];
+      }
+    }
+  }
 
-	public UserArrayType getType() {
-		return this.type;
-	}
+  public UserArrayType getType() {
+    return this.type;
+  }
 
-	public Object get( int index ) {
-		return this.values[ index ];
-	}
+  public Object get(int index) {
+    return this.values[index];
+  }
 
-	public void set( int index, Object item ) {
-		this.values[ index ] = item;
-	}
+  public void set(int index, Object item) {
+    this.values[index] = item;
+  }
 
-	public int getLength() {
-		return this.lengths[ 0 ];
-	}
+  public int getLength() {
+    return this.lengths[0];
+  }
 
-	/* package-private */Object[] getValues() {
-		return this.values;
-	}
+  /* package-private */Object[] getValues() {
+    return this.values;
+  }
 }

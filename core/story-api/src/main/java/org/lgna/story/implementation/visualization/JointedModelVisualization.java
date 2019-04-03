@@ -51,17 +51,17 @@ import org.lgna.story.implementation.JointedModelImp;
  * @author Dennis Cosgrove
  */
 public class JointedModelVisualization extends Leaf {
-	static {
-		AdapterFactory.register( JointedModelVisualization.class, GlrJointedModelVisualization.class );
-	}
+  static {
+    AdapterFactory.register(JointedModelVisualization.class, GlrJointedModelVisualization.class);
+  }
 
-	public JointedModelVisualization( JointedModelImp implementation ) {
-		this.implementation = implementation;
-	}
+  public JointedModelVisualization(JointedModelImp implementation) {
+    this.implementation = implementation;
+  }
 
-	public JointedModelImp getImplementation() {
-		return this.implementation;
-	}
+  public JointedModelImp getImplementation() {
+    return this.implementation;
+  }
 
-	private final JointedModelImp implementation;
+  private final JointedModelImp implementation;
 }

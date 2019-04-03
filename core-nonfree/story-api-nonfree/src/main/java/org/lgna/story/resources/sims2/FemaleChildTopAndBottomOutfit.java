@@ -46,7 +46,7 @@ package org.lgna.story.resources.sims2;
  * @author Dennis Cosgrove
  */
 public final class FemaleChildTopAndBottomOutfit extends ChildTopAndBottomOutfit<FemaleChildTopPiece, FemaleChildBottomPiece> {
-	public FemaleChildTopAndBottomOutfit( FemaleChildTopPiece topPiece, FemaleChildBottomPiece bottomPiece ) {
-		super( topPiece, bottomPiece );
-	}
+  public FemaleChildTopAndBottomOutfit(FemaleChildTopPiece topPiece, FemaleChildBottomPiece bottomPiece) {
+    super(topPiece, bottomPiece);
+  }
 }

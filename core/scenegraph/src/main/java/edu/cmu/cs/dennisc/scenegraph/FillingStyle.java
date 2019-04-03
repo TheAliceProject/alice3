@@ -50,7 +50,5 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public enum FillingStyle {
-	SOLID,
-	WIREFRAME,
-	POINTS
+  SOLID, WIREFRAME, POINTS
 }

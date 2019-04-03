@@ -59,72 +59,72 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
  */
 public class PoserSceenMouseWheelManipulator extends CameraZoomMouseWheelManipulator {
 
-	private ModelImp model;
+  private ModelImp model;
 
-	public void setModel( ModelImp model ) {
-		this.model = model;
-	}
+  public void setModel(ModelImp model) {
+    this.model = model;
+  }
 
-	@Override
-	public String getUndoRedoDescription() {
-		return "Camera Zoom";
-	}
+  @Override
+  public String getUndoRedoDescription() {
+    return "Camera Zoom";
+  }
 
-	@Override
-	public boolean doStartManipulator( InputState startInput ) {
-		if( isTooClose() ) {
-			return false;
-		} else {
-			return super.doStartManipulator( startInput );
-		}
-	}
+  @Override
+  public boolean doStartManipulator(InputState startInput) {
+    if (isTooClose()) {
+      return false;
+    } else {
+      return super.doStartManipulator(startInput);
+    }
+  }
 
-	private boolean isTooClose() {
-		double distance = getDistance();
-		return distance < .33;
-	}
+  private boolean isTooClose() {
+    double distance = getDistance();
+    return distance < .33;
+  }
 
-	private double getDistance() {
-		Point3 modelLoc = model.getAbsoluteTransformation().translation;
-		Point3 cameraLoc = camera.getAbsoluteTransformation().translation;
-		modelLoc.z = 1;
-		cameraLoc.z = 1;
-		double distance = Point3.calculateDistanceBetween( modelLoc, cameraLoc );
-		return distance;
-	}
+  private double getDistance() {
+    Point3 modelLoc = model.getAbsoluteTransformation().translation;
+    Point3 cameraLoc = camera.getAbsoluteTransformation().translation;
+    modelLoc.z = 1;
+    cameraLoc.z = 1;
+    double distance = Point3.calculateDistanceBetween(modelLoc, cameraLoc);
+    return distance;
+  }
 
-	@Override
-	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		if( !isTooClose() && !currentInput.isAnyMouseButtonDown() && !( currentInput.getMouseWheelState() < 0 ) ) {
-			super.doDataUpdateManipulator( currentInput, previousInput );
-		}
-	}
+  @Override
+  public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
+    if (!isTooClose() && !currentInput.isAnyMouseButtonDown() && !(currentInput.getMouseWheelState() < 0)) {
+      super.doDataUpdateManipulator(currentInput, previousInput);
+    }
+  }
 
-	@Override
-	protected void zoomCamera( int direction ) {
-		if( this.camera instanceof SymmetricPerspectiveCamera ) {
-			AbstractTransformable cameraTransformable = getManipulatedTransformable();
-			//			super.zoomCamera( direction );
-			AffineMatrix4x4 originalTransformation = cameraTransformable.getAbsoluteTransformation();
-			OrthogonalMatrix3x3 orientation = originalTransformation.orientation;
-			Vector3 movementDirection = Vector3.createMultiplication( orientation.backward, direction );
-			movementDirection.normalize();
-			movementDirection.multiply( getZoomSpeed() );
-			originalTransformation.translation.add( movementDirection );
-			AffineMatrix4x4 targetTransform = new AffineMatrix4x4( orientation, originalTransformation.translation );
-			this.cameraAnimation.setTarget( new QuaternionAndTranslation( targetTransform ) );
-		} else {
-			super.zoomCamera( direction );
-		}
-	}
+  @Override
+  protected void zoomCamera(int direction) {
+    if (this.camera instanceof SymmetricPerspectiveCamera) {
+      AbstractTransformable cameraTransformable = getManipulatedTransformable();
+      //      super.zoomCamera( direction );
+      AffineMatrix4x4 originalTransformation = cameraTransformable.getAbsoluteTransformation();
+      OrthogonalMatrix3x3 orientation = originalTransformation.orientation;
+      Vector3 movementDirection = Vector3.createMultiplication(orientation.backward, direction);
+      movementDirection.normalize();
+      movementDirection.multiply(getZoomSpeed());
+      originalTransformation.translation.add(movementDirection);
+      AffineMatrix4x4 targetTransform = new AffineMatrix4x4(orientation, originalTransformation.translation);
+      this.cameraAnimation.setTarget(new QuaternionAndTranslation(targetTransform));
+    } else {
+      super.zoomCamera(direction);
+    }
+  }
 
-	private double getZoomSpeed() {
-		return getDistance() / 10;
-	}
+  private double getZoomSpeed() {
+    return getDistance() / 10;
+  }
 
-	@Override
-	public void doClickManipulator( InputState endInput, InputState previousInput ) {
-		// do nothing
-	}
+  @Override
+  public void doClickManipulator(InputState endInput, InputState previousInput) {
+    // do nothing
+  }
 
 }

@@ -50,40 +50,40 @@ import org.lgna.story.implementation.MarkerImp;
  */
 public abstract class SMarker extends SMovableTurnable implements MutableRider {
 
-	@Override
-	/* package-private */abstract MarkerImp getImplementation();
+  @Override
+  /* package-private */ abstract MarkerImp getImplementation();
 
-	@Override
-	public void setVehicle( SThing vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
-	}
+  @Override
+  public void setVehicle(SThing vehicle) {
+    this.getImplementation().setVehicle(vehicle != null ? vehicle.getImplementation() : null);
+  }
 
-	public Color getColorId() {
-		return (Color)this.getImplementation().paint.getValue();
-	}
+  public Color getColorId() {
+    return (Color) this.getImplementation().paint.getValue();
+  }
 
-	public void setColorId( Color color ) {
-		this.getImplementation().paint.setValue( color );
-	}
+  public void setColorId(Color color) {
+    this.getImplementation().paint.setValue(color);
+  }
 
-	//	@MethodTemplate()
-	//	@GetterTemplate(isPersistent = true)
-	//	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
-	//	public Double getOpacity() {
-	//		return (double)this.getImplementation().opacity.getValue();
-	//	}
-	//	@MethodTemplate()
-	//	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
-	//		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	//	}
-	//
-	//	@MethodTemplate()
-	//	@GetterTemplate(isPersistent = true)
-	//	public Paint getPaint() {
-	//		return this.getImplementation().paint.getValue();
-	//	}
-	//	@MethodTemplate()
-	//	public void setPaint( Paint paint, SetPaint.Detail... details ) {
-	//		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	//	}
+  //  @MethodTemplate()
+  //  @GetterTemplate(isPersistent = true)
+  //  @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
+  //  public Double getOpacity() {
+  //    return (double)this.getImplementation().opacity.getValue();
+  //  }
+  //  @MethodTemplate()
+  //  public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
+  //    this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+  //  }
+  //
+  //  @MethodTemplate()
+  //  @GetterTemplate(isPersistent = true)
+  //  public Paint getPaint() {
+  //    return this.getImplementation().paint.getValue();
+  //  }
+  //  @MethodTemplate()
+  //  public void setPaint( Paint paint, SetPaint.Detail... details ) {
+  //    this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+  //  }
 }

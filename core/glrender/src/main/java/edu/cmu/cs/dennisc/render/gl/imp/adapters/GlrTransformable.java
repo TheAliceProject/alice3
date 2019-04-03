@@ -52,20 +52,20 @@ import java.nio.DoubleBuffer;
  * @author Dennis Cosgrove
  */
 public class GlrTransformable<T extends Transformable> extends GlrAbstractTransformable<T> {
-	@Override
-	public DoubleBuffer accessLocalTransformationAsBuffer() {
-		return this.localTransformationBuffer;
-	}
+  @Override
+  public DoubleBuffer accessLocalTransformationAsBuffer() {
+    return this.localTransformationBuffer;
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.localTransformation ) {
-			owner.localTransformation.getValue().getAsColumnMajorArray16( this.localTransformation );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.localTransformation) {
+      owner.localTransformation.getValue().getAsColumnMajorArray16(this.localTransformation);
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private final double[] localTransformation = new double[ 16 ];
-	private final DoubleBuffer localTransformationBuffer = DoubleBuffer.wrap( this.localTransformation );
+  private final double[] localTransformation = new double[16];
+  private final DoubleBuffer localTransformationBuffer = DoubleBuffer.wrap(this.localTransformation);
 }

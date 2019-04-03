@@ -56,16 +56,16 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public final class MembersSubPane<M extends Member> extends MigPanel {
-	public MembersSubPane( String headerText, Color baseColor, List<MemberHub<M>> hubs ) {
-		super( null, "fillx", "[grow]" );
-		Color headerColor = ColorUtilities.scaleHSB( baseColor, 1.0, 0.9, 0.9 );
+  public MembersSubPane(String headerText, Color baseColor, List<MemberHub<M>> hubs) {
+    super(null, "fillx", "[grow]");
+    Color headerColor = ColorUtilities.scaleHSB(baseColor, 1.0, 0.9, 0.9);
 
-		this.setBackgroundColor( headerColor );
-		Label headerLabel = new Label( headerText );
-		headerLabel.setBackgroundColor( headerColor );
-		this.addComponent( headerLabel, "grow, shrink, wrap" );
-		for( MemberHub<M> hub : hubs ) {
-			this.addComponent( MemberPreviewPane.createView( hub, true ), "grow, shrink, wrap" );
-		}
-	}
+    this.setBackgroundColor(headerColor);
+    Label headerLabel = new Label(headerText);
+    headerLabel.setBackgroundColor(headerColor);
+    this.addComponent(headerLabel, "grow, shrink, wrap");
+    for (MemberHub<M> hub : hubs) {
+      this.addComponent(MemberPreviewPane.createView(hub, true), "grow, shrink, wrap");
+    }
+  }
 }

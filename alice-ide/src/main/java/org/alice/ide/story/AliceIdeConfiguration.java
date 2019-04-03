@@ -53,15 +53,15 @@ import org.lgna.issue.IssueReportingHub;
  * @author Dennis Cosgrove
  */
 public class AliceIdeConfiguration implements IdeConfiguration {
-	@Override
-	public Operation[] createUploadOperations( ProjectDocumentFrame projectDocumentFrame ) {
-		return new Operation[] { new UploadOperation( projectDocumentFrame ) };
-	}
+  @Override
+  public Operation[] createUploadOperations(ProjectDocumentFrame projectDocumentFrame) {
+    return new Operation[] {new UploadOperation(projectDocumentFrame)};
+  }
 
-	@Override
-	public IssueReportingHub getIssueReportingHub() {
-		return this.issueReportingHub;
-	}
+  @Override
+  public IssueReportingHub getIssueReportingHub() {
+    return this.issueReportingHub;
+  }
 
-	private final AliceIssueReportingHub issueReportingHub = new AliceIssueReportingHub();
+  private final AliceIssueReportingHub issueReportingHub = new AliceIssueReportingHub();
 }

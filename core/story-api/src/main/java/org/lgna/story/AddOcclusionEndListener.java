@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  */
 public class AddOcclusionEndListener {
 
-	@ClassTemplate( keywordFactoryCls = AddOcclusionEndListener.class )
-	public interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = AddOcclusionEndListener.class) public interface Detail {
+  }
 
-	public static MultipleEventPolicy multipleEventPolicy( MultipleEventPolicy multipleEventPolicy ) {
-		return multipleEventPolicy;
-	}
+  public static MultipleEventPolicy multipleEventPolicy(MultipleEventPolicy multipleEventPolicy) {
+    return multipleEventPolicy;
+  }
 }

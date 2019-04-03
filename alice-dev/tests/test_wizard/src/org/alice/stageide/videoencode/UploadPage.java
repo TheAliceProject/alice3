@@ -46,24 +46,26 @@ package org.alice.stageide.videoencode;
 /**
  * @author Dennis Cosgrove
  */
-public class UploadPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > {
-	public UploadPage() {
-		super( java.util.UUID.fromString( "92fe0efa-60f6-4ed7-af7c-6f27389356ac" ) );
-	}
-	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "todo: upload" );
-		label.setPreferredSize( new java.awt.Dimension( 800, 400 ) );
-		rv.addComponent( label, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
-		return rv;
-	}
-	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return null;
-	}
-//	@Override
-//	public boolean isOptional() {
-//		return true;
-//	}
+public class UploadPage extends org.lgna.croquet.WizardPageComposite<org.lgna.croquet.components.BorderPanel> {
+  public UploadPage() {
+    super(java.util.UUID.fromString("92fe0efa-60f6-4ed7-af7c-6f27389356ac"));
+  }
+
+  @Override
+  protected org.lgna.croquet.components.BorderPanel createView() {
+    org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+    org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label("todo: upload");
+    label.setPreferredSize(new java.awt.Dimension(800, 400));
+    rv.addComponent(label, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START);
+    return rv;
+  }
+
+  @Override
+  public Status getPageStatus(org.lgna.croquet.history.CompletionStep<?> step) {
+    return null;
+  }
+  //  @Override
+  //  public boolean isOptional() {
+  //    return true;
+  //  }
 }

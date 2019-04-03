@@ -54,19 +54,19 @@ import java.util.UUID;
  */
 public class ParameterNameSeparator extends CascadeLabelSeparator {
 
-	public static synchronized ParameterNameSeparator getInstance( AbstractParameter parameter ) {
-		return new ParameterNameSeparator( parameter );
-	}
+  public static synchronized ParameterNameSeparator getInstance(AbstractParameter parameter) {
+    return new ParameterNameSeparator(parameter);
+  }
 
-	private final AbstractParameter parameter;
+  private final AbstractParameter parameter;
 
-	private ParameterNameSeparator( AbstractParameter parameter ) {
-		super( UUID.fromString( "39d27239-d4c8-4c98-9194-fdafc189da72" ) );
-		this.parameter = parameter;
-	}
+  private ParameterNameSeparator(AbstractParameter parameter) {
+    super(UUID.fromString("39d27239-d4c8-4c98-9194-fdafc189da72"));
+    this.parameter = parameter;
+  }
 
-	@Override
-	protected String findDefaultLocalizedText() {
-		return FormatterState.getInstance().getValue().getNameForDeclaration( parameter );
-	}
+  @Override
+  protected String findDefaultLocalizedText() {
+    return FormatterState.getInstance().getValue().getNameForDeclaration(parameter);
+  }
 }

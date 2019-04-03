@@ -49,6 +49,6 @@ import edu.cmu.cs.dennisc.math.Vector3;
  * @author Dennis Cosgrove
  */
 public class TranslationAndOrientationDerivative extends TranslationDerivative {
-	public UnitQuaternion spin = UnitQuaternion.createIdentity();
-	public Vector3 torque = new Vector3();
+  public UnitQuaternion spin = UnitQuaternion.createIdentity();
+  public Vector3 torque = new Vector3();
 }

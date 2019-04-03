@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AudioProceduresComposite extends NameFilteredJavaProceduresComposite {
-	private static class SingletonHolder {
-		private static AudioProceduresComposite instance = new AudioProceduresComposite();
-	}
+  private static class SingletonHolder {
+    private static AudioProceduresComposite instance = new AudioProceduresComposite();
+  }
 
-	public static AudioProceduresComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AudioProceduresComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private AudioProceduresComposite() {
-		super( UUID.fromString( "d3f1026f-4b29-4337-969c-f2deadaa309e" ), "playAudio" );
-	}
+  private AudioProceduresComposite() {
+    super(UUID.fromString("d3f1026f-4b29-4337-969c-f2deadaa309e"), "playAudio");
+  }
 }

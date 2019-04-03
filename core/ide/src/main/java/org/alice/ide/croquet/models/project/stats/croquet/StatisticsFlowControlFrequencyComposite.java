@@ -63,106 +63,106 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.story.SProgram;
 
 public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<StatisticsFlowControlFrequencyView> {
-	private final Map<UserMethod, List<Statement>> methodToConstructMap = Maps.newHashMap();
-	private final MutableDataSingleSelectListState<UserMethod> userMethodList = createMutableListState( "userMethodList", UserMethod.class, NodeCodec.getInstance( UserMethod.class ), -1 );
-	public static final UserMethod root = new UserMethod();
+  private final Map<UserMethod, List<Statement>> methodToConstructMap = Maps.newHashMap();
+  private final MutableDataSingleSelectListState<UserMethod> userMethodList = createMutableListState("userMethodList", UserMethod.class, NodeCodec.getInstance(UserMethod.class), -1);
+  public static final UserMethod root = new UserMethod();
 
-	public StatisticsFlowControlFrequencyComposite() {
-		super( UUID.fromString( "b12770d1-e65e-430f-92a1-dc3159a85a7b" ), IsCloseable.FALSE );
-		root.setName( "Project" );
-		refresh();
-	}
+  public StatisticsFlowControlFrequencyComposite() {
+    super(UUID.fromString("b12770d1-e65e-430f-92a1-dc3159a85a7b"), IsCloseable.FALSE);
+    root.setName("Project");
+    refresh();
+  }
 
-	@Override
-	protected StatisticsFlowControlFrequencyView createView() {
-		return new StatisticsFlowControlFrequencyView( this );
-	}
+  @Override
+  protected StatisticsFlowControlFrequencyView createView() {
+    return new StatisticsFlowControlFrequencyView(this);
+  }
 
-	public Map<UserMethod, List<Statement>> getMethodToConstructMap() {
-		return this.methodToConstructMap;
-	}
+  public Map<UserMethod, List<Statement>> getMethodToConstructMap() {
+    return this.methodToConstructMap;
+  }
 
-	public MutableDataSingleSelectListState<UserMethod> getUserMethodList() {
-		return this.userMethodList;
-	}
+  public MutableDataSingleSelectListState<UserMethod> getUserMethodList() {
+    return this.userMethodList;
+  }
 
-	private class StatementCountCrawler implements Crawler {
-		private Map<Class<? extends Statement>, Integer> map = Maps.newHashMap();
+  private class StatementCountCrawler implements Crawler {
+    private Map<Class<? extends Statement>, Integer> map = Maps.newHashMap();
 
-		@Override
-		public void visit( Crawlable crawlable ) {
-			if( crawlable instanceof Statement ) {
-				Statement statement = (Statement)crawlable;
-				UserMethod method = statement.getFirstAncestorAssignableTo( UserMethod.class );
-				if( ( method != null ) && !method.getManagementLevel().isGenerated()
-						// This condition prevents counting methods of the Program class (e.g., main method) which a user cannot edit
-						&& !( method.getDeclaringType().isAssignableTo( SProgram.class ) ) && statement.isEnabled.getValue() ) {
-					if( !methodToConstructMap.keySet().contains( method ) ) {
-						methodToConstructMap.put( method, new LinkedList<Statement>() );
-					}
-					methodToConstructMap.get( method ).add( statement );
-				}
-			}
-		}
-	}
+    @Override
+    public void visit(Crawlable crawlable) {
+      if (crawlable instanceof Statement) {
+        Statement statement = (Statement) crawlable;
+        UserMethod method = statement.getFirstAncestorAssignableTo(UserMethod.class);
+        if ((method != null) && !method.getManagementLevel().isGenerated()
+            // This condition prevents counting methods of the Program class (e.g., main method) which a user cannot edit
+            && !(method.getDeclaringType().isAssignableTo(SProgram.class)) && statement.isEnabled.getValue()) {
+          if (!methodToConstructMap.keySet().contains(method)) {
+            methodToConstructMap.put(method, new LinkedList<Statement>());
+          }
+          methodToConstructMap.get(method).add(statement);
+        }
+      }
+    }
+  }
 
-	public int getCount( UserMethod method, Class<? extends Statement> cls ) {
-		int count = 0;
-		if( !method.equals( StatisticsFlowControlFrequencyComposite.root ) ) {
-			for( Statement statement : methodToConstructMap.get( method ) ) {
-				if( statement.getClass().isAssignableFrom( cls ) ) {
-					++count;
-				}
-			}
-		} else {
-			for( UserMethod userMethod : methodToConstructMap.keySet() ) {
-				for( Statement statement : methodToConstructMap.get( userMethod ) ) {
-					if( statement.getClass().isAssignableFrom( cls ) ) {
-						++count;
-					}
-				}
-			}
-		}
-		return count;
-	}
+  public int getCount(UserMethod method, Class<? extends Statement> cls) {
+    int count = 0;
+    if (!method.equals(StatisticsFlowControlFrequencyComposite.root)) {
+      for (Statement statement : methodToConstructMap.get(method)) {
+        if (statement.getClass().isAssignableFrom(cls)) {
+          ++count;
+        }
+      }
+    } else {
+      for (UserMethod userMethod : methodToConstructMap.keySet()) {
+        for (Statement statement : methodToConstructMap.get(userMethod)) {
+          if (statement.getClass().isAssignableFrom(cls)) {
+            ++count;
+          }
+        }
+      }
+    }
+    return count;
+  }
 
-	public int getMaximum( Class[] clsArr ) {
-		int maxCount = 0;
-		for( Class cls : clsArr ) {
-			int count = getCount( StatisticsFlowControlFrequencyComposite.root, cls );
-			if( count > maxCount ) {
-				maxCount = count;
-			}
-		}
-		return maxCount;
-	}
+  public int getMaximum(Class[] clsArr) {
+    int maxCount = 0;
+    for (Class cls : clsArr) {
+      int count = getCount(StatisticsFlowControlFrequencyComposite.root, cls);
+      if (count > maxCount) {
+        maxCount = count;
+      }
+    }
+    return maxCount;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		refresh();
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    refresh();
+  }
 
-	private void refresh() {
-		userMethodList.clear();
-		methodToConstructMap.clear();
-		IDE ide = IDE.getActiveInstance();
-		StatementCountCrawler crawler = new StatementCountCrawler();
-		ide.crawlFilteredProgramType( crawler );
-		List<UserMethod> methodContainingConstructList = new LinkedList<UserMethod>();
-		for( UserMethod method : methodToConstructMap.keySet() ) {
-			methodContainingConstructList.add( method );
-		}
-		Collections.sort( methodContainingConstructList, new Comparator<UserMethod>() {
-			@Override
-			public int compare( UserMethod o1, UserMethod o2 ) {
-				return o1.getName().compareTo( o2.getName() );
-			}
-		} );
-		getUserMethodList().addItem( root );
-		for( UserMethod method : methodContainingConstructList ) {
-			getUserMethodList().addItem( method );
-		}
-		userMethodList.setSelectedIndex( 0 );
-	}
+  private void refresh() {
+    userMethodList.clear();
+    methodToConstructMap.clear();
+    IDE ide = IDE.getActiveInstance();
+    StatementCountCrawler crawler = new StatementCountCrawler();
+    ide.crawlFilteredProgramType(crawler);
+    List<UserMethod> methodContainingConstructList = new LinkedList<UserMethod>();
+    for (UserMethod method : methodToConstructMap.keySet()) {
+      methodContainingConstructList.add(method);
+    }
+    Collections.sort(methodContainingConstructList, new Comparator<UserMethod>() {
+      @Override
+      public int compare(UserMethod o1, UserMethod o2) {
+        return o1.getName().compareTo(o2.getName());
+      }
+    });
+    getUserMethodList().addItem(root);
+    for (UserMethod method : methodContainingConstructList) {
+      getUserMethodList().addItem(method);
+    }
+    userMethodList.setSelectedIndex(0);
+  }
 }

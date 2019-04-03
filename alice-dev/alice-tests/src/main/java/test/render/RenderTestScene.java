@@ -48,31 +48,31 @@ import org.lgna.story.SCamera;
 import org.lgna.story.SSphere;
 
 public class RenderTestScene extends org.lgna.story.SScene {
-	private final SSphere sphere = new SSphere();
-	private final SCamera camera = new SCamera();
+  private final SSphere sphere = new SSphere();
+  private final SCamera camera = new SCamera();
 
-	private void performGeneratedSetup() {
-		this.camera.setVehicle( this );
-		this.sphere.setName( "sphere" );
-		this.sphere.setVehicle( this );
-		this.sphere.setPaint( Color.RED );
-		this.camera.move( org.lgna.story.MoveDirection.BACKWARD, 4.0 );
-	}
+  private void performGeneratedSetup() {
+    this.camera.setVehicle(this);
+    this.sphere.setName("sphere");
+    this.sphere.setVehicle(this);
+    this.sphere.setPaint(Color.RED);
+    this.camera.move(org.lgna.story.MoveDirection.BACKWARD, 4.0);
+  }
 
-	private void performCustomSetup() {
-	}
+  private void performCustomSetup() {
+  }
 
-	@Override
-	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
-		if( isActive ) {
-			if( activeCount == 1 ) {
-				this.performGeneratedSetup();
-				this.performCustomSetup();
-			} else {
-				this.restoreStateAndEventListeners();
-			}
-		} else {
-			this.preserveStateAndEventListeners();
-		}
-	}
+  @Override
+  protected void handleActiveChanged(Boolean isActive, Integer activeCount) {
+    if (isActive) {
+      if (activeCount == 1) {
+        this.performGeneratedSetup();
+        this.performCustomSetup();
+      } else {
+        this.restoreStateAndEventListeners();
+      }
+    } else {
+      this.preserveStateAndEventListeners();
+    }
+  }
 }

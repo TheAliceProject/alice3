@@ -50,60 +50,60 @@ import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
  * @author Dennis Cosgrove
  */
 public class GalleryTest {
-	private static void test( java.util.List<Throwable> brokenModels, java.util.List<String> brokenModelNames, org.alice.stageide.modelresource.ResourceNode node, Class<? extends org.lgna.story.SModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException {
-		if( node.getResourceKey() instanceof EnumConstantResourceKey ) {
-			EnumConstantResourceKey key = (EnumConstantResourceKey)node.getResourceKey();
-			org.lgna.project.ast.JavaField field = key.getField();
-			java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "TESTING:", field.getName(), field.getDeclaringType().getName() );
-			Object resource = fld.get( null );
-			assert parameterClses[ 0 ].isInstance( resource ) : parameterClses[ 0 ] + " " + resource;
-			try {
-				org.lgna.story.SJointedModel jointedModel = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( (Class<? extends org.lgna.story.SJointedModel>)instanceCls, parameterClses, resource );
-				jointedModel.straightenOutJoints();
-			} catch( Throwable t ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
-				brokenModels.add( t );
-				brokenModelNames.add( field.getDeclaringType().getName() + "." + field.getName() );
-			}
-			//			if (jointedModel instanceof org.lgna.story.Swimmer) {
-			//				jointedModel.straightenOutJoints();
-			//			}
-		}
+  private static void test(java.util.List<Throwable> brokenModels, java.util.List<String> brokenModelNames, org.alice.stageide.modelresource.ResourceNode node, Class<? extends org.lgna.story.SModel> instanceCls, Class<?>... parameterClses) throws IllegalAccessException {
+    if (node.getResourceKey() instanceof EnumConstantResourceKey) {
+      EnumConstantResourceKey key = (EnumConstantResourceKey) node.getResourceKey();
+      org.lgna.project.ast.JavaField field = key.getField();
+      java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
+      edu.cmu.cs.dennisc.java.util.logging.Logger.outln("TESTING:", field.getName(), field.getDeclaringType().getName());
+      Object resource = fld.get(null);
+      assert parameterClses[0].isInstance(resource) : parameterClses[0] + " " + resource;
+      try {
+        org.lgna.story.SJointedModel jointedModel = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance((Class<? extends org.lgna.story.SJointedModel>) instanceCls, parameterClses, resource);
+        jointedModel.straightenOutJoints();
+      } catch (Throwable t) {
+        edu.cmu.cs.dennisc.java.util.logging.Logger.throwable(t);
+        brokenModels.add(t);
+        brokenModelNames.add(field.getDeclaringType().getName() + "." + field.getName());
+      }
+      //      if (jointedModel instanceof org.lgna.story.Swimmer) {
+      //        jointedModel.straightenOutJoints();
+      //      }
+    }
 
-		for( org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren() ) {
-			test( brokenModels, brokenModelNames, child, instanceCls, parameterClses );
-		}
-	}
+    for (org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren()) {
+      test(brokenModels, brokenModelNames, child, instanceCls, parameterClses);
+    }
+  }
 
-	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
-		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde( null );
-		org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
-		java.util.List<Throwable> brokenModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.List<String> brokenModelNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+  public static void main(String[] args) throws Exception {
+    edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel(java.util.logging.Level.INFO);
+    org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde(null);
+    org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
+    java.util.List<Throwable> brokenModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+    java.util.List<String> brokenModelNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
-		for( org.alice.stageide.modelresource.ResourceNode child : rootGalleryNode.getNodeChildren() ) {
-			ResourceKey key = child.getResourceKey();
-			if( key instanceof ClassResourceKey ) {
-				ClassResourceKey classKey = (ClassResourceKey)key;
-				Class<? extends org.lgna.story.SModel> modelClass = AliceResourceClassUtilities.getModelClassForResourceClass( classKey.getModelResourceCls() );
-				test( brokenModels, brokenModelNames, child, modelClass, classKey.getModelResourceCls() );
-			}
-		}
+    for (org.alice.stageide.modelresource.ResourceNode child : rootGalleryNode.getNodeChildren()) {
+      ResourceKey key = child.getResourceKey();
+      if (key instanceof ClassResourceKey) {
+        ClassResourceKey classKey = (ClassResourceKey) key;
+        Class<? extends org.lgna.story.SModel> modelClass = AliceResourceClassUtilities.getModelClassForResourceClass(classKey.getModelResourceCls());
+        test(brokenModels, brokenModelNames, child, modelClass, classKey.getModelResourceCls());
+      }
+    }
 
-		if( brokenModels.size() > 0 ) {
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			for( int i = 0; i < brokenModels.size(); i++ ) {
-				System.err.println( "BROKEN: " + brokenModelNames.get( i ) );
-				//brokenModels.get( i ).printStackTrace();
-				//System.err.println();
-				//System.err.println();
-			}
-			//			javax.swing.JOptionPane.showMessageDialog( null, brokenModels.size() + " broken models." );
-		}
+    if (brokenModels.size() > 0) {
+      System.err.println();
+      System.err.println();
+      System.err.println();
+      for (int i = 0; i < brokenModels.size(); i++) {
+        System.err.println("BROKEN: " + brokenModelNames.get(i));
+        //brokenModels.get( i ).printStackTrace();
+        //System.err.println();
+        //System.err.println();
+      }
+      //      javax.swing.JOptionPane.showMessageDialog( null, brokenModels.size() + " broken models." );
+    }
 
-	}
+  }
 }

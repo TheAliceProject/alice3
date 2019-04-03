@@ -49,100 +49,100 @@ import org.lgna.story.implementation.Property.Listener;
 
 public abstract class AbstractImplementationPropertyAdapter<P, O> extends AbstractPropertyAdapter<P, O> {
 
-	private Listener<P> propertyListener;
-	private Property<P> property;
-	private boolean isPropertyListening = false;
-	private boolean isPropertyUpdate = false;
+  private Listener<P> propertyListener;
+  private Property<P> property;
+  private boolean isPropertyListening = false;
+  private boolean isPropertyUpdate = false;
 
-	private void initializeListenersIfNecessary() {
-		if( this.propertyListener == null ) {
-			this.propertyListener = new Listener<P>() {
-				@Override
-				public void propertyChanged( Property<P> property, P prevValue, P nextValue ) {
-					isPropertyUpdate = true;
-					handleInternalValueChanged();
-					isPropertyUpdate = false;
-				}
-			};
-		}
-	}
+  private void initializeListenersIfNecessary() {
+    if (this.propertyListener == null) {
+      this.propertyListener = new Listener<P>() {
+        @Override
+        public void propertyChanged(Property<P> property, P prevValue, P nextValue) {
+          isPropertyUpdate = true;
+          handleInternalValueChanged();
+          isPropertyUpdate = false;
+        }
+      };
+    }
+  }
 
-	@Override
-	protected void startPropertyListening() {
-		super.startPropertyListening();
-		if( this.instance != null ) {
-			this.initializeListenersIfNecessary();
-			this.addPropertyListener( this.propertyListener );
-		}
-	}
+  @Override
+  protected void startPropertyListening() {
+    super.startPropertyListening();
+    if (this.instance != null) {
+      this.initializeListenersIfNecessary();
+      this.addPropertyListener(this.propertyListener);
+    }
+  }
 
-	@Override
-	protected void stopPropertyListening() {
-		super.stopPropertyListening();
-		if( this.instance != null ) {
-			this.removePropertyListener( this.propertyListener );
-		}
-	}
+  @Override
+  protected void stopPropertyListening() {
+    super.stopPropertyListening();
+    if (this.instance != null) {
+      this.removePropertyListener(this.propertyListener);
+    }
+  }
 
-	public AbstractImplementationPropertyAdapter( String repr, O instance, Property<P> property, StandardExpressionState expressionState ) {
-		super( repr, instance, expressionState );
-		setProperty( property );
-		this.initializeExpressionState();
-	}
+  public AbstractImplementationPropertyAdapter(String repr, O instance, Property<P> property, StandardExpressionState expressionState) {
+    super(repr, instance, expressionState);
+    setProperty(property);
+    this.initializeExpressionState();
+  }
 
-	private void setProperty( Property<P> property ) {
-		stopPropertyListening();
-		this.property = property;
-		startPropertyListening();
-	}
+  private void setProperty(Property<P> property) {
+    stopPropertyListening();
+    this.property = property;
+    startPropertyListening();
+  }
 
-	@Override
-	public P getValue() {
-		if( this.property != null ) {
-			return this.property.getValue();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public P getValue() {
+    if (this.property != null) {
+      return this.property.getValue();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public Class<P> getPropertyType() {
-		return this.property.getValueCls();
-	}
+  @Override
+  public Class<P> getPropertyType() {
+    return this.property.getValueCls();
+  }
 
-	@Override
-	public void setValue( final P value ) {
-		if( !isPropertyUpdate ) {
-			super.setValue( value );
-			if( this.property != null ) {
-				new Thread() {
-					@Override
-					public void run() {
-						AbstractImplementationPropertyAdapter.this.property.setValue( value );
-					}
-				}.start();
-			}
-		}
+  @Override
+  public void setValue(final P value) {
+    if (!isPropertyUpdate) {
+      super.setValue(value);
+      if (this.property != null) {
+        new Thread() {
+          @Override
+          public void run() {
+            AbstractImplementationPropertyAdapter.this.property.setValue(value);
+          }
+        }.start();
+      }
+    }
 
-	}
+  }
 
-	protected void addPropertyListener( Listener<P> propertyListener ) {
-		if( this.property != null ) {
-			property.addPropertyListener( propertyListener );
-			isPropertyListening = true;
-		}
-	}
+  protected void addPropertyListener(Listener<P> propertyListener) {
+    if (this.property != null) {
+      property.addPropertyListener(propertyListener);
+      isPropertyListening = true;
+    }
+  }
 
-	protected void removePropertyListener( Listener<P> propertyListener ) {
-		if( ( this.property != null ) && isPropertyListening ) {
-			property.removePropertyListener( propertyListener );
-			isPropertyListening = false;
-		}
-	}
+  protected void removePropertyListener(Listener<P> propertyListener) {
+    if ((this.property != null) && isPropertyListening) {
+      property.removePropertyListener(propertyListener);
+      isPropertyListening = false;
+    }
+  }
 
-	protected void handleInternalValueChanged() {
-		P newValue = this.getValue();
-		this.notifyValueObservers( newValue );
-	}
+  protected void handleInternalValueChanged() {
+    P newValue = this.getValue();
+    this.notifyValueObservers(newValue);
+  }
 
 }

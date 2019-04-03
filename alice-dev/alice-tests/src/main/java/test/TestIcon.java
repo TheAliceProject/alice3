@@ -46,32 +46,32 @@ package test;
  * @author Dennis Cosgrove
  */
 public class TestIcon extends org.lgna.croquet.simple.SimpleApplication {
-	public static void main( String[] args ) {
-		TestCroquet testCroquet = new TestCroquet();
-		testCroquet.initialize( args );
+  public static void main(String[] args) {
+    TestCroquet testCroquet = new TestCroquet();
+    testCroquet.initialize(args);
 
-		org.lgna.croquet.views.FlowPanel flowPanel = new org.lgna.croquet.views.FlowPanel();
-		//		java.util.List<? extends org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
-		//				org.alice.stageide.icons.CylinderIconFactory.getInstance(),
-		//				org.alice.stageide.icons.SphereIconFactory.getInstance(),
-		//				org.alice.stageide.icons.ConeIconFactory.getInstance(),
-		//				org.alice.stageide.icons.BoxIconFactory.getInstance()
-		//				);
-		//		org.lgna.croquet.icon.IconFactory iconFactory = new org.alice.stageide.icons.GroupIconFactory( iconFactories );
-		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.ShowMeIconFactory.getInstance();
-		for( org.lgna.croquet.icon.IconSize iconSize : org.lgna.croquet.icon.IconSize.values() ) {
-			javax.swing.Icon icon = iconFactory.getIcon( iconSize.getSize() );
-			flowPanel.addComponent( new org.lgna.croquet.views.Label( icon ) );
-		}
-		flowPanel.addComponent( new org.lgna.croquet.views.Label( iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ) ) );
-		flowPanel.addComponent( new org.lgna.croquet.views.Label( iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
-		flowPanel.addComponent( new org.lgna.croquet.views.Label( iconFactory.getIcon( new java.awt.Dimension( 160, 120 ) ) ) );
+    org.lgna.croquet.views.FlowPanel flowPanel = new org.lgna.croquet.views.FlowPanel();
+    //    java.util.List<? extends org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
+    //        org.alice.stageide.icons.CylinderIconFactory.getInstance(),
+    //        org.alice.stageide.icons.SphereIconFactory.getInstance(),
+    //        org.alice.stageide.icons.ConeIconFactory.getInstance(),
+    //        org.alice.stageide.icons.BoxIconFactory.getInstance()
+    //        );
+    //    org.lgna.croquet.icon.IconFactory iconFactory = new org.alice.stageide.icons.GroupIconFactory( iconFactories );
+    org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.ShowMeIconFactory.getInstance();
+    for (org.lgna.croquet.icon.IconSize iconSize : org.lgna.croquet.icon.IconSize.values()) {
+      javax.swing.Icon icon = iconFactory.getIcon(iconSize.getSize());
+      flowPanel.addComponent(new org.lgna.croquet.views.Label(icon));
+    }
+    flowPanel.addComponent(new org.lgna.croquet.views.Label(iconFactory.getIcon(org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE)));
+    flowPanel.addComponent(new org.lgna.croquet.views.Label(iconFactory.getIcon(org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE)));
+    flowPanel.addComponent(new org.lgna.croquet.views.Label(iconFactory.getIcon(new java.awt.Dimension(160, 120))));
 
-		org.lgna.croquet.DocumentFrame documentFrame = testCroquet.getDocumentFrame();
-		org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
+    org.lgna.croquet.DocumentFrame documentFrame = testCroquet.getDocumentFrame();
+    org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
 
-		frame.getContentPane().addCenterComponent( flowPanel );
-		frame.pack();
-		frame.setVisible( true );
-	}
+    frame.getContentPane().addCenterComponent(flowPanel);
+    frame.pack();
+    frame.setVisible(true);
+  }
 }

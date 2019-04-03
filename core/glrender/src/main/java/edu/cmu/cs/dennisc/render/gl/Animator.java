@@ -50,84 +50,83 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class Animator implements Runnable {
-	private static final long DEFAULT_SLEEP_MILLIS = 16;
-	private boolean isActive = false;
-	private long tStart;
-	private int frameCount;
-	private int frameRate;
-	private long sleepMillis = DEFAULT_SLEEP_MILLIS;
+  private static final long DEFAULT_SLEEP_MILLIS = 16;
+  private boolean isActive = false;
+  private long tStart;
+  private int frameCount;
+  private int frameRate;
+  private long sleepMillis = DEFAULT_SLEEP_MILLIS;
 
-	public enum ThreadDeferenceAction {
-		SLEEP,
-		YIELD
-	}
+  public enum ThreadDeferenceAction {
+    SLEEP, YIELD
+  }
 
-	public void start() {
-		this.isActive = true;
-		this.frameCount = 0;
-		frameRate = 0;
-		this.tStart = System.currentTimeMillis();
-		new Thread( this ).start();
-	}
+  public void start() {
+    this.isActive = true;
+    this.frameCount = 0;
+    frameRate = 0;
+    this.tStart = System.currentTimeMillis();
+    new Thread(this).start();
+  }
 
-	public void stop() {
-		this.isActive = false;
-	}
+  public void stop() {
+    this.isActive = false;
+  }
 
-	public int getFrameRate() {
-		return frameRate;
-	}
+  public int getFrameRate() {
+    return frameRate;
+  }
 
-	public int getFrameCount() {
-		return this.frameCount;
-	}
+  public int getFrameCount() {
+    return this.frameCount;
+  }
 
-	public long getStartTimeMillis() {
-		return this.tStart;
-	}
+  public long getStartTimeMillis() {
+    return this.tStart;
+  }
 
-	public long getSleepMillis() {
-		return this.sleepMillis;
-	}
+  public long getSleepMillis() {
+    return this.sleepMillis;
+  }
 
-	public void setSleepMillis( long sleepMillis ) {
-		this.sleepMillis = sleepMillis;
-	}
+  public void setSleepMillis(long sleepMillis) {
+    this.sleepMillis = sleepMillis;
+  }
 
-	protected abstract ThreadDeferenceAction step();
+  protected abstract ThreadDeferenceAction step();
 
-	@Override
-	public void run() {
-		long tPrev = 0;
-		int fps = 0;
-		long millisSinceLastFps = 0;
+  @Override
+  public void run() {
+    long tPrev = 0;
+    int fps = 0;
+    long millisSinceLastFps = 0;
 
-		while( this.isActive ) {
-			while( true ) {
-				long tCurrent = System.currentTimeMillis();
-				if( ( tCurrent - tPrev ) < sleepMillis ) {
-					ThreadUtilities.sleep( sleepMillis );
-				} else {
-					millisSinceLastFps += (tCurrent - tPrev);
-					fps++;
-					if (millisSinceLastFps > 1000) {
-						frameRate = fps;
-						millisSinceLastFps = 0;
-						fps = 0;
-					}
-					tPrev = tCurrent;
-					break;
-				}
-			}
-			ThreadDeferenceAction threadAction = this.step();
-			if( threadAction == ThreadDeferenceAction.SLEEP ) {
-				ThreadUtilities.sleep( this.sleepMillis );
-			} else if( threadAction == ThreadDeferenceAction.YIELD ) {
-				Thread.yield();
-			} else {
-				PrintUtilities.println( "threadAction", threadAction );
-			}
-			this.frameCount++;
-		}
-	}
+    while (this.isActive) {
+      while (true) {
+        long tCurrent = System.currentTimeMillis();
+        if ((tCurrent - tPrev) < sleepMillis) {
+          ThreadUtilities.sleep(sleepMillis);
+        } else {
+          millisSinceLastFps += (tCurrent - tPrev);
+          fps++;
+          if (millisSinceLastFps > 1000) {
+            frameRate = fps;
+            millisSinceLastFps = 0;
+            fps = 0;
+          }
+          tPrev = tCurrent;
+          break;
+        }
+      }
+      ThreadDeferenceAction threadAction = this.step();
+      if (threadAction == ThreadDeferenceAction.SLEEP) {
+        ThreadUtilities.sleep(this.sleepMillis);
+      } else if (threadAction == ThreadDeferenceAction.YIELD) {
+        Thread.yield();
+      } else {
+        PrintUtilities.println("threadAction", threadAction);
+      }
+      this.frameCount++;
+    }
+  }
 }

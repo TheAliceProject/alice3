@@ -49,15 +49,14 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class MoveTo extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = MoveTo.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = MoveTo.class) public static interface Detail {
+  }
 
-	private MoveTo() {
-		super();
-	}
+  private MoveTo() {
+    super();
+  }
 
-	public static PathStyle pathStyle( PathStyle pathStyle ) {
-		return pathStyle;
-	}
+  public static PathStyle pathStyle(PathStyle pathStyle) {
+    return pathStyle;
+  }
 }

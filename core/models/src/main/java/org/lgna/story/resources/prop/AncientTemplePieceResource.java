@@ -32,56 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum AncientTemplePieceResource implements PropResource {
-	PLAZA_GRAY,
-	PLAZA_GOLD,
-	PLAZA_SAND,
-	PLAZA_RED,
-	STACK_GRAY,
-	STACK_GOLD,
-	STACK_SAND,
-	STACK_RED,
-	ROOM_GRAY,
-	ROOM_GOLD,
-	ROOM_SAND,
-	ROOM_RED,
-	END_GRAY,
-	END_GOLD,
-	END_SAND,
-	END_RED,
-	LEDGE_AND_STAIRS_GRAY,
-	LEDGE_AND_STAIRS_GOLD,
-	LEDGE_AND_STAIRS_SAND,
-	LEDGE_AND_STAIRS_RED,
-	LEDGE_GRAY,
-	LEDGE_GOLD,
-	LEDGE_SAND,
-	LEDGE_RED,
-	STAIRS_GRAY,
-	STAIRS_GOLD,
-	STAIRS_SAND,
-	STAIRS_RED;
+  PLAZA_GRAY, PLAZA_GOLD, PLAZA_SAND, PLAZA_RED, STACK_GRAY, STACK_GOLD, STACK_SAND, STACK_RED, ROOM_GRAY, ROOM_GOLD, ROOM_SAND, ROOM_RED, END_GRAY, END_GOLD, END_SAND, END_RED, LEDGE_AND_STAIRS_GRAY, LEDGE_AND_STAIRS_GOLD, LEDGE_AND_STAIRS_SAND, LEDGE_AND_STAIRS_RED, LEDGE_GRAY, LEDGE_GOLD, LEDGE_SAND, LEDGE_RED, STAIRS_GRAY, STAIRS_GOLD, STAIRS_SAND, STAIRS_RED;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	AncientTemplePieceResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  AncientTemplePieceResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	AncientTemplePieceResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  AncientTemplePieceResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

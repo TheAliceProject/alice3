@@ -46,146 +46,144 @@ package org.lgna.project;
  * @author Dennis Cosgrove
  */
 public final class Version implements Comparable<Version> {
-	private int[] subNumbers;
-	private String prerelease;
-	private String metadata;
+  private int[] subNumbers;
+  private String prerelease;
+  private String metadata;
 
-	/**
-	 * Alice 3's semantic versioning effectively shifts Major and Minor over one place.
-	 * 3.Major.Minor.Patch{-prerelease}{+metadata}
-	 *
-	 * Following the 3 is the semantic version - https://semver.org/
-	 * This means prerelease and metadata are both optional.
-	 *
-	 * Some older versions of Alice have additional subpatch numbers
-	 *
-	 * @param text formatted to follow Alice's semantic versioning
-	 */
-	public Version( String text ) {
-		String remainder = extractMetadata( text );
-		remainder = extractPrerelease( remainder );
-		extractSubNumbers( remainder);
-	}
+  /**
+   * Alice 3's semantic versioning effectively shifts Major and Minor over one place.
+   * 3.Major.Minor.Patch{-prerelease}{+metadata}
+   *
+   * Following the 3 is the semantic version - https://semver.org/
+   * This means prerelease and metadata are both optional.
+   *
+   * Some older versions of Alice have additional subpatch numbers
+   *
+   * @param text formatted to follow Alice's semantic versioning
+   */
+  public Version(String text) {
+    String remainder = extractMetadata(text);
+    remainder = extractPrerelease(remainder);
+    extractSubNumbers(remainder);
+  }
 
-	private String extractPrerelease( String text ) {
-		String[] chunks = text.split( "-" );
-		final int chunkCount = chunks.length;
-		if (chunkCount > 1) {
-			prerelease = chunks[1];
-		}
-		return chunks[0];
-	}
+  private String extractPrerelease(String text) {
+    String[] chunks = text.split("-");
+    final int chunkCount = chunks.length;
+    if (chunkCount > 1) {
+      prerelease = chunks[1];
+    }
+    return chunks[0];
+  }
 
-	private String extractMetadata( String text ) {
-		String[] chunks = text.split( "\\+" );
-		final int chunkCount = chunks.length;
-		if (chunkCount > 1) {
-			metadata = chunks[1];
-		}
-		return chunks[0];
-	}
+  private String extractMetadata(String text) {
+    String[] chunks = text.split("\\+");
+    final int chunkCount = chunks.length;
+    if (chunkCount > 1) {
+      metadata = chunks[1];
+    }
+    return chunks[0];
+  }
 
-	private void extractSubNumbers( String text ) {
-		String[] subTexts = text.split( "\\." );
-		final int N = subTexts.length;
-		this.subNumbers = new int[ N ];
-		for( int i = 0; i < N; i++ ) {
-			try {
-				this.subNumbers[ i ] = Integer.parseInt( subTexts[ i ] );
-			} catch( NumberFormatException nfe ) {
-				this.subNumbers[ i ] = -1;
-			}
-		}
-	}
+  private void extractSubNumbers(String text) {
+    String[] subTexts = text.split("\\.");
+    final int N = subTexts.length;
+    this.subNumbers = new int[N];
+    for (int i = 0; i < N; i++) {
+      try {
+        this.subNumbers[i] = Integer.parseInt(subTexts[i]);
+      } catch (NumberFormatException nfe) {
+        this.subNumbers[i] = -1;
+      }
+    }
+  }
 
-	public boolean isValid() {
-		for( int i : this.subNumbers ) {
-			if( i >= 0 ) {
-				//pass
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
+  public boolean isValid() {
+    for (int i : this.subNumbers) {
+      if (i >= 0) {
+        //pass
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
 
-	// This will remain 3. It is as much branding as version.
-	public int getAliceIdentifier() {
-		return this.subNumbers[ 0 ];
-	}
+  // This will remain 3. It is as much branding as version.
+  public int getAliceIdentifier() {
+    return this.subNumbers[0];
+  }
 
-	public int getMajor() {
-		return this.subNumbers[ 1 ];
-	}
+  public int getMajor() {
+    return this.subNumbers[1];
+  }
 
-	public int getMinor() {
-		return this.subNumbers[ 2 ];
-	}
+  public int getMinor() {
+    return this.subNumbers[2];
+  }
 
-	public String getMajorAndMinor() {
-		return getAliceIdentifier() + "." + getMajor() + "." + getMinor();
-	}
+  public String getMajorAndMinor() {
+    return getAliceIdentifier() + "." + getMajor() + "." + getMinor();
+  }
 
-	public int getPatch() {
-		return this.subNumbers[ 3 ];
-	}
+  public int getPatch() {
+    return this.subNumbers[3];
+  }
 
-	public boolean hasMetadata() {
-		return metadata != null && metadata.length() > 0;
-	}
+  public boolean hasMetadata() {
+    return metadata != null && metadata.length() > 0;
+  }
 
-	public boolean hasPrerelease() {
-		return prerelease != null && prerelease.length() > 0;
-	}
+  public boolean hasPrerelease() {
+    return prerelease != null && prerelease.length() > 0;
+  }
 
-	private static int[] growIfNecessary( int[] source, int[] other ) {
-		if( source.length < other.length ) {
-			int[] rv = new int[ other.length ];
-			System.arraycopy( source, 0, rv, 0, source.length );
-			return rv;
-		} else {
-			return source;
-		}
-	}
+  private static int[] growIfNecessary(int[] source, int[] other) {
+    if (source.length < other.length) {
+      int[] rv = new int[other.length];
+      System.arraycopy(source, 0, rv, 0, source.length);
+      return rv;
+    } else {
+      return source;
+    }
+  }
 
-	@Override
-	public int compareTo( Version other ) {
-		int[] thisSubNumbers = growIfNecessary( this.subNumbers, other.subNumbers );
-		int[] otherSubNumbers = growIfNecessary( other.subNumbers, this.subNumbers );
-		for( int i = 0; i < thisSubNumbers.length; i++ ) {
-			int result = Integer.signum( thisSubNumbers[ i ] - otherSubNumbers[ i ] );
-			if( result != 0 ) {
-				return result;
-			}
-		}
-		// Version numbers match. Check prerelease. The one without is behind.
-		if (this.hasPrerelease() && !other.hasPrerelease()) {
-			return -1;
-		}
-		if (!this.hasPrerelease() && other.hasPrerelease()) {
-			return 1;
-		}
-		// The metadata is not considered in ordering
-		return 0;
-	}
+  @Override
+  public int compareTo(Version other) {
+    int[] thisSubNumbers = growIfNecessary(this.subNumbers, other.subNumbers);
+    int[] otherSubNumbers = growIfNecessary(other.subNumbers, this.subNumbers);
+    for (int i = 0; i < thisSubNumbers.length; i++) {
+      int result = Integer.signum(thisSubNumbers[i] - otherSubNumbers[i]);
+      if (result != 0) {
+        return result;
+      }
+    }
+    // Version numbers match. Check prerelease. The one without is behind.
+    if (this.hasPrerelease() && !other.hasPrerelease()) {
+      return -1;
+    }
+    if (!this.hasPrerelease() && other.hasPrerelease()) {
+      return 1;
+    }
+    // The metadata is not considered in ordering
+    return 0;
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		String separator = "";
-		for( int subNumber : this.subNumbers ) {
-			sb.append( separator );
-			sb.append( subNumber );
-			separator = ".";
-		}
-		if (hasPrerelease()) {
-			sb.append( '-' )
-							.append( prerelease );
-		}
-		if (hasMetadata()) {
-			sb.append( '+' )
-							.append( metadata );
-		}
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    String separator = "";
+    for (int subNumber : this.subNumbers) {
+      sb.append(separator);
+      sb.append(subNumber);
+      separator = ".";
+    }
+    if (hasPrerelease()) {
+      sb.append('-').append(prerelease);
+    }
+    if (hasMetadata()) {
+      sb.append('+').append(metadata);
+    }
+    return sb.toString();
+  }
 }

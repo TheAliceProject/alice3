@@ -52,19 +52,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ViewListSelectionState extends EnumConstantState<View> {
-	private static class SingletonHolder {
-		private static ViewListSelectionState instance = new ViewListSelectionState();
-	}
+  private static class SingletonHolder {
+    private static ViewListSelectionState instance = new ViewListSelectionState();
+  }
 
-	public static ViewListSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ViewListSelectionState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ViewListSelectionState() {
-		super(
-				ProjectApplication.DOCUMENT_UI_GROUP,
-				UUID.fromString( "5ac32bb0-95ba-43b0-842d-66f824e3ef38" ),
-				0,
-				View.class );
-	}
+  private ViewListSelectionState() {
+    super(ProjectApplication.DOCUMENT_UI_GROUP, UUID.fromString("5ac32bb0-95ba-43b0-842d-66f824e3ef38"), 0, View.class);
+  }
 }

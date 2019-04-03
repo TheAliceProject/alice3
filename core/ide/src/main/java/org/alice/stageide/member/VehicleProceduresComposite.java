@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class VehicleProceduresComposite extends NameFilteredJavaProceduresComposite {
-	private static class SingletonHolder {
-		private static VehicleProceduresComposite instance = new VehicleProceduresComposite();
-	}
+  private static class SingletonHolder {
+    private static VehicleProceduresComposite instance = new VehicleProceduresComposite();
+  }
 
-	public static VehicleProceduresComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static VehicleProceduresComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private VehicleProceduresComposite() {
-		super( UUID.fromString( "27feec4a-33a9-4bd9-a635-2b1f7e4e6c86" ), "setVehicle" );
-	}
+  private VehicleProceduresComposite() {
+    super(UUID.fromString("27feec4a-33a9-4bd9-a635-2b1f7e4e6c86"), "setVehicle");
+  }
 }

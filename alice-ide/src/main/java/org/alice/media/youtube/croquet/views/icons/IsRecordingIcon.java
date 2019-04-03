@@ -60,40 +60,40 @@ import javax.swing.Icon;
  * @author Matt May
  */
 public class IsRecordingIcon implements Icon {
-	private static final int SIZE = 20;
-	private static final Color RECORD_BASE_COLOR = new Color( 191, 63, 63 );
-	private static final Color RECORD_HIGHLIGHT_COLOR = ColorUtilities.scaleHSB( RECORD_BASE_COLOR, 1.0, 1.0, 1.5 );
-	private static final Color RECORD_SHADOW_COLOR = ColorUtilities.scaleHSB( RECORD_BASE_COLOR, 1.0, 1.0, 0.5 );
-	private static final Color STOP_COLOR = Color.BLACK;
+  private static final int SIZE = 20;
+  private static final Color RECORD_BASE_COLOR = new Color(191, 63, 63);
+  private static final Color RECORD_HIGHLIGHT_COLOR = ColorUtilities.scaleHSB(RECORD_BASE_COLOR, 1.0, 1.0, 1.5);
+  private static final Color RECORD_SHADOW_COLOR = ColorUtilities.scaleHSB(RECORD_BASE_COLOR, 1.0, 1.0, 0.5);
+  private static final Color STOP_COLOR = Color.BLACK;
 
-	@Override
-	public int getIconHeight() {
-		return SIZE;
-	}
+  @Override
+  public int getIconHeight() {
+    return SIZE;
+  }
 
-	@Override
-	public int getIconWidth() {
-		return SIZE;
-	}
+  @Override
+  public int getIconWidth() {
+    return SIZE;
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		Graphics2D g2 = (Graphics2D)g;
-		Paint prevPaint = g2.getPaint();
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-		if( c instanceof AbstractButton ) {
-			AbstractButton button = (AbstractButton)c;
-			ButtonModel buttonModel = button.getModel();
-			if( buttonModel.isSelected() ) {
-				g.setColor( STOP_COLOR );
-				g.fillRect( x, y, SIZE, SIZE );
-			} else {
-				g2.setPaint( new GradientPaint( x, y, RECORD_HIGHLIGHT_COLOR, x + SIZE, y + SIZE, RECORD_SHADOW_COLOR ) );
-				g.fillOval( x, y, SIZE, SIZE );
-				g.setColor( Color.BLACK );
-				g.drawOval( x, y, SIZE, SIZE );
-			}
-		}
-		g2.setPaint( prevPaint );
-	}
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g;
+    Paint prevPaint = g2.getPaint();
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    if (c instanceof AbstractButton) {
+      AbstractButton button = (AbstractButton) c;
+      ButtonModel buttonModel = button.getModel();
+      if (buttonModel.isSelected()) {
+        g.setColor(STOP_COLOR);
+        g.fillRect(x, y, SIZE, SIZE);
+      } else {
+        g2.setPaint(new GradientPaint(x, y, RECORD_HIGHLIGHT_COLOR, x + SIZE, y + SIZE, RECORD_SHADOW_COLOR));
+        g.fillOval(x, y, SIZE, SIZE);
+        g.setColor(Color.BLACK);
+        g.drawOval(x, y, SIZE, SIZE);
+      }
+    }
+    g2.setPaint(prevPaint);
+  }
 }

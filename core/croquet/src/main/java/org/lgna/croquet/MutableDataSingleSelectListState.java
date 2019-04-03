@@ -50,15 +50,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MutableDataSingleSelectListState<T> extends SingleSelectListState<T, MutableListData<T>> {
-	public MutableDataSingleSelectListState( Group group, UUID migrationId, int selectionIndex, MutableListData<T> data ) {
-		super( group, migrationId, selectionIndex, data );
-	}
+  public MutableDataSingleSelectListState(Group group, UUID migrationId, int selectionIndex, MutableListData<T> data) {
+    super(group, migrationId, selectionIndex, data);
+  }
 
-	public MutableDataSingleSelectListState( Group group, UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, T... values ) {
-		this( group, migrationId, selectionIndex, new MutableListData<T>( itemCodec, values ) );
-	}
+  public MutableDataSingleSelectListState(Group group, UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, T... values) {
+    this(group, migrationId, selectionIndex, new MutableListData<T>(itemCodec, values));
+  }
 
-	public MutableDataSingleSelectListState( Group group, UUID migrationId, ItemCodec<T> itemCodec ) {
-		this( group, migrationId, -1, new MutableListData<T>( itemCodec ) );
-	}
+  public MutableDataSingleSelectListState(Group group, UUID migrationId, ItemCodec<T> itemCodec) {
+    this(group, migrationId, -1, new MutableListData<T>(itemCodec));
+  }
 }

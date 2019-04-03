@@ -53,14 +53,15 @@ import java.lang.reflect.Field;
  *
  */
 public enum RoomFloorAppearanceDetails implements PublicStaticFieldValueDetails<ImagePaint> {
-	SINGLETON;
-	@Override
-	public Class<ImagePaint> getSupportedCls() {
-		return ImagePaint.class;
-	}
+  SINGLETON;
 
-	@Override
-	public Field[] getFlds() {
-		return SRoom.FloorAppearance.class.getFields();
-	}
+  @Override
+  public Class<ImagePaint> getSupportedCls() {
+    return ImagePaint.class;
+  }
+
+  @Override
+  public Field[] getFlds() {
+    return SRoom.FloorAppearance.class.getFields();
+  }
 }

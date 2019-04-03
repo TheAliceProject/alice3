@@ -49,21 +49,22 @@ import edu.cmu.cs.dennisc.property.StringProperty;
  * @author Dennis Cosgrove
  */
 public class Comment extends Statement {
-	public Comment() {
-	}
+  public Comment() {
+  }
 
-	public Comment( String text ) {
-		this.text.setValue( text );
-	}
+  public Comment(String text) {
+    this.text.setValue(text);
+  }
 
-	@Override public void appendCode( SourceCodeGenerator generator ) {
-		generator.formatMultiLineComment(text.getValue());
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.formatMultiLineComment(text.getValue());
+  }
 
-	@Override
-	boolean isEnabledNonCommment() {
-		return false;
-	}
+  @Override
+  boolean isEnabledNonCommment() {
+    return false;
+  }
 
-	public final StringProperty text = new StringProperty( this, "" );
+  public final StringProperty text = new StringProperty(this, "");
 }

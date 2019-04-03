@@ -52,114 +52,111 @@ import java.util.Locale;
  * @author Dennis Cosgrove
  */
 public enum LifeStage implements LocalizedResource {
-	TODDLER {
-		@Override
-		public PersonResource createResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
-			return new ToddlerPersonResource( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
-		}
-	},
-	CHILD {
-		@Override
-		public PersonResource createResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
-			return new ChildPersonResource( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
-		}
-	},
-	TEEN {
-		@Override
-		public PersonResource createResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
-			return new TeenPersonResource( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
-		}
-	},
-	ADULT {
-		@Override
-		public PersonResource createResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
-			return new AdultPersonResource( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
-		}
-	},
-	ELDER {
-		@Override
-		public PersonResource createResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
-			return new ElderPersonResource( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
-		}
-	};
+  TODDLER {
+    @Override
+    public PersonResource createResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
+      return new ToddlerPersonResource(gender, skinColor, eyeColor, hair, obseityLevel, outfit, face);
+    }
+  }, CHILD {
+    @Override
+    public PersonResource createResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
+      return new ChildPersonResource(gender, skinColor, eyeColor, hair, obseityLevel, outfit, face);
+    }
+  }, TEEN {
+    @Override
+    public PersonResource createResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
+      return new TeenPersonResource(gender, skinColor, eyeColor, hair, obseityLevel, outfit, face);
+    }
+  }, ADULT {
+    @Override
+    public PersonResource createResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
+      return new AdultPersonResource(gender, skinColor, eyeColor, hair, obseityLevel, outfit, face);
+    }
+  }, ELDER {
+    @Override
+    public PersonResource createResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
+      return new ElderPersonResource(gender, skinColor, eyeColor, hair, obseityLevel, outfit, face);
+    }
+  };
 
-	public static LifeStage getRandom() {
-		return RandomUtilities.getRandomEnumConstant( LifeStage.class );
-	}
+  public static LifeStage getRandom() {
+    return RandomUtilities.getRandomEnumConstant(LifeStage.class);
+  }
 
-	private static final MapToMap<LifeStage, Gender, Class<? extends FullBodyOutfit>> mapLifeStageAndGenderToFullBodyOutfit = MapToMap.newInstance();
-	private static final MapToMap<LifeStage, Gender, Class<? extends TopPiece>> mapLifeStageAndGenderToTopPiece = MapToMap.newInstance();
-	private static final MapToMap<LifeStage, Gender, Class<? extends BottomPiece>> mapLifeStageAndGenderToBottomPiece = MapToMap.newInstance();
-	private static final MapToMap<LifeStage, Gender, Class<? extends Hair>> mapLifeStageAndGenderToHair = MapToMap.newInstance();
-	static {
-		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.ELDER, Gender.MALE, MaleElderFullBodyOutfit.class );
-		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.ELDER, Gender.FEMALE, FemaleElderFullBodyOutfit.class );
-		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.ADULT, Gender.MALE, MaleAdultFullBodyOutfit.class );
-		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultFullBodyOutfit.class );
-		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.TEEN, Gender.MALE, MaleTeenFullBodyOutfit.class );
-		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.TEEN, Gender.FEMALE, FemaleTeenFullBodyOutfit.class );
-		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.CHILD, Gender.MALE, MaleChildFullBodyOutfit.class );
-		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildFullBodyOutfit.class );
-		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.TODDLER, Gender.MALE, MaleToddlerFullBodyOutfit.class );
-		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.TODDLER, Gender.FEMALE, FemaleToddlerFullBodyOutfit.class );
+  private static final MapToMap<LifeStage, Gender, Class<? extends FullBodyOutfit>> mapLifeStageAndGenderToFullBodyOutfit = MapToMap.newInstance();
+  private static final MapToMap<LifeStage, Gender, Class<? extends TopPiece>> mapLifeStageAndGenderToTopPiece = MapToMap.newInstance();
+  private static final MapToMap<LifeStage, Gender, Class<? extends BottomPiece>> mapLifeStageAndGenderToBottomPiece = MapToMap.newInstance();
+  private static final MapToMap<LifeStage, Gender, Class<? extends Hair>> mapLifeStageAndGenderToHair = MapToMap.newInstance();
 
-		mapLifeStageAndGenderToTopPiece.put( LifeStage.ELDER, Gender.MALE, MaleElderTopPiece.class );
-		mapLifeStageAndGenderToTopPiece.put( LifeStage.ELDER, Gender.FEMALE, FemaleElderTopPiece.class );
-		mapLifeStageAndGenderToTopPiece.put( LifeStage.ADULT, Gender.MALE, MaleAdultTopPiece.class );
-		mapLifeStageAndGenderToTopPiece.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultTopPiece.class );
-		mapLifeStageAndGenderToTopPiece.put( LifeStage.TEEN, Gender.MALE, MaleTeenTopPiece.class );
-		mapLifeStageAndGenderToTopPiece.put( LifeStage.TEEN, Gender.FEMALE, FemaleTeenTopPiece.class );
-		mapLifeStageAndGenderToTopPiece.put( LifeStage.CHILD, Gender.MALE, MaleChildTopPiece.class );
-		mapLifeStageAndGenderToTopPiece.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildTopPiece.class );
+  static {
+    mapLifeStageAndGenderToFullBodyOutfit.put(LifeStage.ELDER, Gender.MALE, MaleElderFullBodyOutfit.class);
+    mapLifeStageAndGenderToFullBodyOutfit.put(LifeStage.ELDER, Gender.FEMALE, FemaleElderFullBodyOutfit.class);
+    mapLifeStageAndGenderToFullBodyOutfit.put(LifeStage.ADULT, Gender.MALE, MaleAdultFullBodyOutfit.class);
+    mapLifeStageAndGenderToFullBodyOutfit.put(LifeStage.ADULT, Gender.FEMALE, FemaleAdultFullBodyOutfit.class);
+    mapLifeStageAndGenderToFullBodyOutfit.put(LifeStage.TEEN, Gender.MALE, MaleTeenFullBodyOutfit.class);
+    mapLifeStageAndGenderToFullBodyOutfit.put(LifeStage.TEEN, Gender.FEMALE, FemaleTeenFullBodyOutfit.class);
+    mapLifeStageAndGenderToFullBodyOutfit.put(LifeStage.CHILD, Gender.MALE, MaleChildFullBodyOutfit.class);
+    mapLifeStageAndGenderToFullBodyOutfit.put(LifeStage.CHILD, Gender.FEMALE, FemaleChildFullBodyOutfit.class);
+    mapLifeStageAndGenderToFullBodyOutfit.put(LifeStage.TODDLER, Gender.MALE, MaleToddlerFullBodyOutfit.class);
+    mapLifeStageAndGenderToFullBodyOutfit.put(LifeStage.TODDLER, Gender.FEMALE, FemaleToddlerFullBodyOutfit.class);
 
-		mapLifeStageAndGenderToBottomPiece.put( LifeStage.ELDER, Gender.MALE, MaleElderBottomPiece.class );
-		mapLifeStageAndGenderToBottomPiece.put( LifeStage.ELDER, Gender.FEMALE, FemaleElderBottomPiece.class );
-		mapLifeStageAndGenderToBottomPiece.put( LifeStage.ADULT, Gender.MALE, MaleAdultBottomPiece.class );
-		mapLifeStageAndGenderToBottomPiece.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultBottomPiece.class );
-		mapLifeStageAndGenderToBottomPiece.put( LifeStage.TEEN, Gender.MALE, MaleTeenBottomPiece.class );
-		mapLifeStageAndGenderToBottomPiece.put( LifeStage.TEEN, Gender.FEMALE, FemaleTeenBottomPiece.class );
-		mapLifeStageAndGenderToBottomPiece.put( LifeStage.CHILD, Gender.MALE, MaleChildBottomPiece.class );
-		mapLifeStageAndGenderToBottomPiece.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildBottomPiece.class );
+    mapLifeStageAndGenderToTopPiece.put(LifeStage.ELDER, Gender.MALE, MaleElderTopPiece.class);
+    mapLifeStageAndGenderToTopPiece.put(LifeStage.ELDER, Gender.FEMALE, FemaleElderTopPiece.class);
+    mapLifeStageAndGenderToTopPiece.put(LifeStage.ADULT, Gender.MALE, MaleAdultTopPiece.class);
+    mapLifeStageAndGenderToTopPiece.put(LifeStage.ADULT, Gender.FEMALE, FemaleAdultTopPiece.class);
+    mapLifeStageAndGenderToTopPiece.put(LifeStage.TEEN, Gender.MALE, MaleTeenTopPiece.class);
+    mapLifeStageAndGenderToTopPiece.put(LifeStage.TEEN, Gender.FEMALE, FemaleTeenTopPiece.class);
+    mapLifeStageAndGenderToTopPiece.put(LifeStage.CHILD, Gender.MALE, MaleChildTopPiece.class);
+    mapLifeStageAndGenderToTopPiece.put(LifeStage.CHILD, Gender.FEMALE, FemaleChildTopPiece.class);
 
-		mapLifeStageAndGenderToHair.put( LifeStage.ELDER, Gender.MALE, MaleElderHair.class );
-		mapLifeStageAndGenderToHair.put( LifeStage.ELDER, Gender.FEMALE, FemaleElderHair.class );
-		mapLifeStageAndGenderToHair.put( LifeStage.ADULT, Gender.MALE, MaleAdultHair.class );
-		mapLifeStageAndGenderToHair.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultHair.class );
-		mapLifeStageAndGenderToHair.put( LifeStage.TEEN, Gender.MALE, MaleTeenHair.class );
-		mapLifeStageAndGenderToHair.put( LifeStage.TEEN, Gender.FEMALE, FemaleTeenHair.class );
-		mapLifeStageAndGenderToHair.put( LifeStage.CHILD, Gender.MALE, MaleChildHair.class );
-		mapLifeStageAndGenderToHair.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildHair.class );
-		mapLifeStageAndGenderToHair.put( LifeStage.TODDLER, Gender.MALE, MaleToddlerHair.class );
-		mapLifeStageAndGenderToHair.put( LifeStage.TODDLER, Gender.FEMALE, FemaleToddlerHair.class );
-	}
+    mapLifeStageAndGenderToBottomPiece.put(LifeStage.ELDER, Gender.MALE, MaleElderBottomPiece.class);
+    mapLifeStageAndGenderToBottomPiece.put(LifeStage.ELDER, Gender.FEMALE, FemaleElderBottomPiece.class);
+    mapLifeStageAndGenderToBottomPiece.put(LifeStage.ADULT, Gender.MALE, MaleAdultBottomPiece.class);
+    mapLifeStageAndGenderToBottomPiece.put(LifeStage.ADULT, Gender.FEMALE, FemaleAdultBottomPiece.class);
+    mapLifeStageAndGenderToBottomPiece.put(LifeStage.TEEN, Gender.MALE, MaleTeenBottomPiece.class);
+    mapLifeStageAndGenderToBottomPiece.put(LifeStage.TEEN, Gender.FEMALE, FemaleTeenBottomPiece.class);
+    mapLifeStageAndGenderToBottomPiece.put(LifeStage.CHILD, Gender.MALE, MaleChildBottomPiece.class);
+    mapLifeStageAndGenderToBottomPiece.put(LifeStage.CHILD, Gender.FEMALE, FemaleChildBottomPiece.class);
 
-	public Class<? extends FullBodyOutfit> getGenderedFullBodyOutfitInterfaceClass( Gender gender ) {
-		return mapLifeStageAndGenderToFullBodyOutfit.get( this, gender );
-	}
+    mapLifeStageAndGenderToHair.put(LifeStage.ELDER, Gender.MALE, MaleElderHair.class);
+    mapLifeStageAndGenderToHair.put(LifeStage.ELDER, Gender.FEMALE, FemaleElderHair.class);
+    mapLifeStageAndGenderToHair.put(LifeStage.ADULT, Gender.MALE, MaleAdultHair.class);
+    mapLifeStageAndGenderToHair.put(LifeStage.ADULT, Gender.FEMALE, FemaleAdultHair.class);
+    mapLifeStageAndGenderToHair.put(LifeStage.TEEN, Gender.MALE, MaleTeenHair.class);
+    mapLifeStageAndGenderToHair.put(LifeStage.TEEN, Gender.FEMALE, FemaleTeenHair.class);
+    mapLifeStageAndGenderToHair.put(LifeStage.CHILD, Gender.MALE, MaleChildHair.class);
+    mapLifeStageAndGenderToHair.put(LifeStage.CHILD, Gender.FEMALE, FemaleChildHair.class);
+    mapLifeStageAndGenderToHair.put(LifeStage.TODDLER, Gender.MALE, MaleToddlerHair.class);
+    mapLifeStageAndGenderToHair.put(LifeStage.TODDLER, Gender.FEMALE, FemaleToddlerHair.class);
+  }
 
-	public Class<? extends TopPiece> getGenderedTopPieceInterfaceClass( Gender gender ) {
-		return mapLifeStageAndGenderToTopPiece.get( this, gender );
-	}
+  public Class<? extends FullBodyOutfit> getGenderedFullBodyOutfitInterfaceClass(Gender gender) {
+    return mapLifeStageAndGenderToFullBodyOutfit.get(this, gender);
+  }
 
-	public Class<? extends BottomPiece> getGenderedBottomPieceInterfaceClass( Gender gender ) {
-		return mapLifeStageAndGenderToBottomPiece.get( this, gender );
-	}
+  public Class<? extends TopPiece> getGenderedTopPieceInterfaceClass(Gender gender) {
+    return mapLifeStageAndGenderToTopPiece.get(this, gender);
+  }
 
-	public Class<? extends Hair> getGenderedHairInterfaceClass( Gender gender ) {
-		return mapLifeStageAndGenderToHair.get( this, gender );
-	}
+  public Class<? extends BottomPiece> getGenderedBottomPieceInterfaceClass(Gender gender) {
+    return mapLifeStageAndGenderToBottomPiece.get(this, gender);
+  }
 
-	public abstract PersonResource createResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face );
+  public Class<? extends Hair> getGenderedHairInterfaceClass(Gender gender) {
+    return mapLifeStageAndGenderToHair.get(this, gender);
+  }
 
-	public String getDisplayText() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.name().charAt( 0 ) );
-		sb.append( this.name().substring( 1 ).toLowerCase( Locale.ENGLISH ) );
-		return sb.toString();
-	}
+  public abstract PersonResource createResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face);
 
-	@Override
-	public String getLocalizedDisplayText() {
-		return PersonResource.getLocalizedDisplayText( this.name().toLowerCase( Locale.ENGLISH ) );
-	}
+  public String getDisplayText() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.name().charAt(0));
+    sb.append(this.name().substring(1).toLowerCase(Locale.ENGLISH));
+    return sb.toString();
+  }
+
+  @Override
+  public String getLocalizedDisplayText() {
+    return PersonResource.getLocalizedDisplayText(this.name().toLowerCase(Locale.ENGLISH));
+  }
 }

@@ -51,86 +51,86 @@ import java.util.concurrent.CyclicBarrier;
  * @author Dennis Cosgrove
  */
 public class ThreadUtilities {
-	private static int threadCountForDescription = 0;
+  private static int threadCountForDescription = 0;
 
-	public static void doTogether( Runnable... runnables ) {
-		switch( runnables.length ) {
-		case 0:
-			break;
-		case 1:
-			runnables[ 0 ].run();
-			break;
-		default:
-			final List<RuntimeException> runtimeExceptions = new LinkedList<RuntimeException>();
-			final CyclicBarrier barrier = new CyclicBarrier( runnables.length + 1 );
-			for( final Runnable runnable : runnables ) {
-				new ComponentExecutor( new Runnable() {
-					@Override
-					public void run() {
-						try {
-							runnable.run();
-						} catch( RuntimeException re ) {
-							synchronized( runtimeExceptions ) {
-								runtimeExceptions.add( re );
-							}
-						} finally {
-							try {
-								barrier.await();
-							} catch( InterruptedException ie ) {
-								throw new RuntimeException( ie );
-							} catch( BrokenBarrierException bbe ) {
-								throw new RuntimeException( bbe );
-							}
-						}
-					}
-				}, "DoTogether-" + ( ThreadUtilities.threadCountForDescription++ ) ).start();
-			}
-			try {
-				barrier.await();
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( ie );
-			} catch( BrokenBarrierException bbe ) {
-				throw new RuntimeException( bbe );
-			}
-			synchronized( runtimeExceptions ) {
-				if( runtimeExceptions.isEmpty() ) {
-					//pass
-				} else {
-					//todo:
-					throw runtimeExceptions.get( 0 );
-				}
-			}
-		}
-	}
+  public static void doTogether(Runnable... runnables) {
+    switch (runnables.length) {
+    case 0:
+      break;
+    case 1:
+      runnables[0].run();
+      break;
+    default:
+      final List<RuntimeException> runtimeExceptions = new LinkedList<RuntimeException>();
+      final CyclicBarrier barrier = new CyclicBarrier(runnables.length + 1);
+      for (final Runnable runnable : runnables) {
+        new ComponentExecutor(new Runnable() {
+          @Override
+          public void run() {
+            try {
+              runnable.run();
+            } catch (RuntimeException re) {
+              synchronized (runtimeExceptions) {
+                runtimeExceptions.add(re);
+              }
+            } finally {
+              try {
+                barrier.await();
+              } catch (InterruptedException ie) {
+                throw new RuntimeException(ie);
+              } catch (BrokenBarrierException bbe) {
+                throw new RuntimeException(bbe);
+              }
+            }
+          }
+        }, "DoTogether-" + (ThreadUtilities.threadCountForDescription++)).start();
+      }
+      try {
+        barrier.await();
+      } catch (InterruptedException ie) {
+        throw new RuntimeException(ie);
+      } catch (BrokenBarrierException bbe) {
+        throw new RuntimeException(bbe);
+      }
+      synchronized (runtimeExceptions) {
+        if (runtimeExceptions.isEmpty()) {
+          //pass
+        } else {
+          //todo:
+          throw runtimeExceptions.get(0);
+        }
+      }
+    }
+  }
 
-	private static class ForEachRunnableAdapter<T> implements Runnable {
-		private final EachInTogetherRunnable<T> eachInTogetherRunnable;
-		private final T item;
+  private static class ForEachRunnableAdapter<T> implements Runnable {
+    private final EachInTogetherRunnable<T> eachInTogetherRunnable;
+    private final T item;
 
-		public ForEachRunnableAdapter( EachInTogetherRunnable<T> eachInTogetherRunnable, T item ) {
-			this.eachInTogetherRunnable = eachInTogetherRunnable;
-			this.item = item;
-		}
+    public ForEachRunnableAdapter(EachInTogetherRunnable<T> eachInTogetherRunnable, T item) {
+      this.eachInTogetherRunnable = eachInTogetherRunnable;
+      this.item = item;
+    }
 
-		@Override
-		public void run() {
-			this.eachInTogetherRunnable.run( this.item );
-		}
-	}
+    @Override
+    public void run() {
+      this.eachInTogetherRunnable.run(this.item);
+    }
+  }
 
-	public static <T> void eachInTogether( EachInTogetherRunnable<T> eachInTogetherRunnable, T... items ) {
-		switch( items.length ) {
-		case 0:
-			break;
-		case 1:
-			eachInTogetherRunnable.run( items[ 0 ] );
-			break;
-		default:
-			Runnable[] runnables = new Runnable[ items.length ];
-			for( int i = 0; i < runnables.length; i++ ) {
-				runnables[ i ] = new ForEachRunnableAdapter<T>( eachInTogetherRunnable, items[ i ] );
-			}
-			doTogether( runnables );
-		}
-	}
+  public static <T> void eachInTogether(EachInTogetherRunnable<T> eachInTogetherRunnable, T... items) {
+    switch (items.length) {
+    case 0:
+      break;
+    case 1:
+      eachInTogetherRunnable.run(items[0]);
+      break;
+    default:
+      Runnable[] runnables = new Runnable[items.length];
+      for (int i = 0; i < runnables.length; i++) {
+        runnables[i] = new ForEachRunnableAdapter<T>(eachInTogetherRunnable, items[i]);
+      }
+      doTogether(runnables);
+    }
+  }
 }

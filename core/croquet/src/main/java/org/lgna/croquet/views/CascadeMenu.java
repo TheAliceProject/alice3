@@ -51,18 +51,18 @@ import org.lgna.croquet.history.UserActivity;
  */
 public class CascadeMenu extends AbstractMenu<CascadeItem<?, ?>> {
 
-	public CascadeMenu( CascadeItem<?, ?> model ) {
-		super( model );
-	}
+  public CascadeMenu(CascadeItem<?, ?> model) {
+    super(model);
+  }
 
-	@Override
-	public UserActivity getActivity() {
-		return null;
-	}
+  @Override
+  public UserActivity getActivity() {
+    return null;
+  }
 
-	@Override
-	protected boolean areIconsDisplayedInMenus() {
-		//note: much of the cascading menu system leverages icons
-		return true;
-	}
+  @Override
+  protected boolean areIconsDisplayedInMenus() {
+    //note: much of the cascading menu system leverages icons
+    return true;
+  }
 }

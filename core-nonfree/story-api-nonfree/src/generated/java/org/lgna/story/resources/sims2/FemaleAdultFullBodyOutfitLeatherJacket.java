@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultFullBodyOutfitLeatherJacket implements FemaleAdultFullBodyOutfit {
-	BLACK,
-	BROWN,
-	RED,
-	LIME,
-	NAVY,
-	PURPLE;
+  BLACK, BROWN, RED, LIME, NAVY, PURPLE
 
 }

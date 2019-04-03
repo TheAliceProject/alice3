@@ -61,36 +61,33 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserMethod;
 
 public class AddEventListenerCascade extends CascadeWithInternalBlank<MethodInvocation> {
-	private static class SingletonHolder {
-		private static AddEventListenerCascade instance = new AddEventListenerCascade();
-	}
+  private static class SingletonHolder {
+    private static AddEventListenerCascade instance = new AddEventListenerCascade();
+  }
 
-	public static AddEventListenerCascade getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddEventListenerCascade getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private AddEventListenerCascade() {
-		super( Application.PROJECT_GROUP, UUID.fromString( "dc90da69-a11f-4de4-8923-e410058762a3" ), MethodInvocation.class );
-	}
+  private AddEventListenerCascade() {
+    super(Application.PROJECT_GROUP, UUID.fromString("dc90da69-a11f-4de4-8923-e410058762a3"), MethodInvocation.class);
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity, MethodInvocation[] values ) {
-		NamedUserType sceneType = StageIDE.getActiveInstance().getSceneType();
-		UserMethod method = sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
-		BlockStatement body = method.body.getValue();
-		BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair(
-				body,
-				body.statements.size()
-				);
-		return new InsertStatementEdit( userActivity, blockStatementIndexPair, new ExpressionStatement( values[ 0 ] ) );
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity, MethodInvocation[] values) {
+    NamedUserType sceneType = StageIDE.getActiveInstance().getSceneType();
+    UserMethod method = sceneType.getDeclaredMethod(StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME);
+    BlockStatement body = method.body.getValue();
+    BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair(body, body.statements.size());
+    return new InsertStatementEdit(userActivity, blockStatementIndexPair, new ExpressionStatement(values[0]));
+  }
 
-	@Override
-	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<MethodInvocation> blankNode ) {
-		rv.add( TimeEventListenerMenu.getInstance() );
-		rv.add( KeyboardEventListenerMenu.getInstance() );
-		rv.add( MouseEventListenerMenu.getInstance() );
-		rv.add( TransformationEventListenerMenu.getInstance() );
-		return rv;
-	}
+  @Override
+  protected List<CascadeBlankChild> updateBlankChildren(List<CascadeBlankChild> rv, BlankNode<MethodInvocation> blankNode) {
+    rv.add(TimeEventListenerMenu.getInstance());
+    rv.add(KeyboardEventListenerMenu.getInstance());
+    rv.add(MouseEventListenerMenu.getInstance());
+    rv.add(TransformationEventListenerMenu.getInstance());
+    return rv;
+  }
 }

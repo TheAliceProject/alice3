@@ -55,37 +55,37 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
  */
 public class NebulousStoryApi {
 
-	public static final NebulousStoryApi nonfree;
+  public static final NebulousStoryApi nonfree;
 
-	private static final String NONFREE_STORY_API_CLASSNAME = "org.alice.nonfree.StoryApiNonfree";
+  private static final String NONFREE_STORY_API_CLASSNAME = "org.alice.nonfree.StoryApiNonfree";
 
-	static {
-		NebulousStoryApi nonfreeInstance;
-		try {
-			Class<?> nonfreeClass = ClassUtilities.forName( NONFREE_STORY_API_CLASSNAME );
-			nonfreeInstance = (NebulousStoryApi)ReflectionUtilities.newInstance( nonfreeClass );
-		} catch( Throwable t ) {
-			Logger.warning( "unable to initialize story-api-nonfree library", t );
-			nonfreeInstance = new NebulousStoryApi();
-		}
-		nonfree = nonfreeInstance;
-	}
+  static {
+    NebulousStoryApi nonfreeInstance;
+    try {
+      Class<?> nonfreeClass = ClassUtilities.forName(NONFREE_STORY_API_CLASSNAME);
+      nonfreeInstance = (NebulousStoryApi) ReflectionUtilities.newInstance(nonfreeClass);
+    } catch (Throwable t) {
+      Logger.warning("unable to initialize story-api-nonfree library", t);
+      nonfreeInstance = new NebulousStoryApi();
+    }
+    nonfree = nonfreeInstance;
+  }
 
-	NebulousStoryApi() {
-	}
+  NebulousStoryApi() {
+  }
 
-	public boolean isNonFreeEnabled() {
-		return false;
-	}
+  public boolean isNonFreeEnabled() {
+    return false;
+  }
 
-	public String getNebulousResourceInstallPath() {
-		return null;
-	}
+  public String getNebulousResourceInstallPath() {
+    return null;
+  }
 
-	public <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getFactory( R resource ) {
-		return null;
-	}
+  public <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getFactory(R resource) {
+    return null;
+  }
 
-	public void setMipMappingDesiredOnNebulousTexture( Texture texture ) {
-	}
+  public void setMipMappingDesiredOnNebulousTexture(Texture texture) {
+  }
 }

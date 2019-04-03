@@ -49,14 +49,14 @@ import org.lgna.croquet.undo.UndoHistory;
  * @author Dennis Cosgrove
  */
 public class HistoryPushEvent extends HistoryEvent {
-	private Edit edit;
+  private Edit edit;
 
-	public HistoryPushEvent( UndoHistory source, Edit edit ) {
-		super( source );
-		this.edit = edit;
-	}
+  public HistoryPushEvent(UndoHistory source, Edit edit) {
+    super(source);
+    this.edit = edit;
+  }
 
-	public Edit getEdit() {
-		return this.edit;
-	}
+  public Edit getEdit() {
+    return this.edit;
+  }
 }

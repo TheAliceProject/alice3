@@ -51,12 +51,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ShowSystemPropertiesComposite extends LazyOperationUnadornedDialogCoreComposite<ShowSystemPropertiesView> {
-	public ShowSystemPropertiesComposite() {
-		super( UUID.fromString( "497ed779-82e4-4d6e-9198-f79d2328587a" ) );
-	}
+  public ShowSystemPropertiesComposite() {
+    super(UUID.fromString("497ed779-82e4-4d6e-9198-f79d2328587a"));
+  }
 
-	@Override
-	protected ShowSystemPropertiesView createView() {
-		return new ShowSystemPropertiesView( this );
-	}
+  @Override
+  protected ShowSystemPropertiesView createView() {
+    return new ShowSystemPropertiesView(this);
+  }
 }

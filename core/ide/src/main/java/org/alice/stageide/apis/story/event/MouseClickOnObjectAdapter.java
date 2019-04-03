@@ -49,12 +49,12 @@ import org.lgna.story.event.MouseClickOnObjectEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
 
 public class MouseClickOnObjectAdapter extends AbstractAdapter implements MouseClickOnObjectListener {
-	public MouseClickOnObjectAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public MouseClickOnObjectAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void mouseClicked( MouseClickOnObjectEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void mouseClicked(MouseClickOnObjectEvent e) {
+    invokeEntryPoint(e);
+  }
 }

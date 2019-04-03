@@ -55,73 +55,73 @@ import java.util.stream.Collectors;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSeverityStatusComposite<V extends CompositeView<?, ?>> extends AbstractComposite<V> {
-	public static final Status IS_GOOD_TO_GO_STATUS = null;
+  public static final Status IS_GOOD_TO_GO_STATUS = null;
 
-	public interface Status {
-		boolean isGoodToGo();
+  public interface Status {
+    boolean isGoodToGo();
 
-		String getText();
-	}
+    String getText();
+  }
 
-	private abstract static class AbstractStatus extends AbstractInternalStringValue implements Status {
-		private AbstractStatus( UUID id, Key key ) {
-			super( id, key );
-		}
+  private abstract static class AbstractStatus extends AbstractInternalStringValue implements Status {
+    private AbstractStatus(UUID id, Key key) {
+      super(id, key);
+    }
 
-		public final boolean setText( String... texts) {
-			String and = " " + findLocalizedText( AbstractSeverityStatusComposite.class, "andConjuction" ) + " ";
-			final String text = Arrays.stream( texts ).filter( Objects::nonNull ).collect( Collectors.joining( and) );
-			if (!text.isEmpty() && !".".equals(text.substring(text.length() - 1))) {
-				setText( text + "." );
-			} else {
-				setText( text );
-			}
-			return !text.isEmpty();
-		}
-	}
+    public final boolean setText(String... texts) {
+      String and = " " + findLocalizedText(AbstractSeverityStatusComposite.class, "andConjuction") + " ";
+      final String text = Arrays.stream(texts).filter(Objects::nonNull).collect(Collectors.joining(and));
+      if (!text.isEmpty() && !".".equals(text.substring(text.length() - 1))) {
+        setText(text + ".");
+      } else {
+        setText(text);
+      }
+      return !text.isEmpty();
+    }
+  }
 
-	public static final class WarningStatus extends AbstractStatus {
-		private WarningStatus( Key key ) {
-			super( UUID.fromString( "a1375dce-1d5f-4717-87a1-7d9759a12862" ), key );
-		}
+  public static final class WarningStatus extends AbstractStatus {
+    private WarningStatus(Key key) {
+      super(UUID.fromString("a1375dce-1d5f-4717-87a1-7d9759a12862"), key);
+    }
 
-		@Override
-		public boolean isGoodToGo() {
-			return true;
-		}
-	}
+    @Override
+    public boolean isGoodToGo() {
+      return true;
+    }
+  }
 
-	public static final class ErrorStatus extends AbstractStatus {
-		private ErrorStatus( Key key ) {
-			super( UUID.fromString( "e966c721-1a6e-478d-a22f-92725d68552e" ), key );
-		}
+  public static final class ErrorStatus extends AbstractStatus {
+    private ErrorStatus(Key key) {
+      super(UUID.fromString("e966c721-1a6e-478d-a22f-92725d68552e"), key);
+    }
 
-		@Override
-		public boolean isGoodToGo() {
-			return false;
-		}
-	}
+    @Override
+    public boolean isGoodToGo() {
+      return false;
+    }
+  }
 
-	protected WarningStatus createWarningStatus( String keyText ) {
-		Key key = this.createKey( keyText );
-		WarningStatus rv = new WarningStatus( key );
-		this.registerStringValue( rv );
-		return rv;
-	}
+  protected WarningStatus createWarningStatus(String keyText) {
+    Key key = this.createKey(keyText);
+    WarningStatus rv = new WarningStatus(key);
+    this.registerStringValue(rv);
+    return rv;
+  }
 
-	protected ErrorStatus createErrorStatus( String keyText ) {
-		Key key = this.createKey( keyText );
-		ErrorStatus rv = new ErrorStatus( key );
-		this.registerStringValue( rv );
-		return rv;
-	}
+  protected ErrorStatus createErrorStatus(String keyText) {
+    Key key = this.createKey(keyText);
+    ErrorStatus rv = new ErrorStatus(key);
+    this.registerStringValue(rv);
+    return rv;
+  }
 
-	public AbstractSeverityStatusComposite( UUID id ) {
-		super( id );
-	}
+  public AbstractSeverityStatusComposite(UUID id) {
+    super(id);
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 }

@@ -49,19 +49,19 @@ import java.awt.font.TextAttribute;
  * @author Dennis Cosgrove
  */
 public class FamilyValue implements FamilyAttribute {
-	private String m_value;
+  private String m_value;
 
-	public FamilyValue( String value ) {
-		m_value = value;
-	}
+  public FamilyValue(String value) {
+    m_value = value;
+  }
 
-	@Override
-	public TextAttribute getKey() {
-		return TextAttribute.FAMILY;
-	}
+  @Override
+  public TextAttribute getKey() {
+    return TextAttribute.FAMILY;
+  }
 
-	@Override
-	public String getValue() {
-		return m_value;
-	}
+  @Override
+  public String getValue() {
+    return m_value;
+  }
 }

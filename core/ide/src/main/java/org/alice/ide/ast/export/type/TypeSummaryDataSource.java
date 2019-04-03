@@ -53,21 +53,21 @@ import java.io.OutputStream;
  * @author Dennis Cosgrove
  */
 public class TypeSummaryDataSource extends DataSource {
-	public static final String FILENAME = "typeSummary.xml";
-	private final TypeSummary typeSummary;
+  public static final String FILENAME = "typeSummary.xml";
+  private final TypeSummary typeSummary;
 
-	public TypeSummaryDataSource( TypeSummary typeSummary ) {
-		this.typeSummary = typeSummary;
-	}
+  public TypeSummaryDataSource(TypeSummary typeSummary) {
+    this.typeSummary = typeSummary;
+  }
 
-	@Override
-	public String getName() {
-		return FILENAME;
-	}
+  @Override
+  public String getName() {
+    return FILENAME;
+  }
 
-	@Override
-	public void write( OutputStream os ) throws IOException {
-		Document xmlDocument = TypeXmlUtitlities.encode( this.typeSummary );
-		XMLUtilities.write( xmlDocument, os );
-	}
+  @Override
+  public void write(OutputStream os) throws IOException {
+    Document xmlDocument = TypeXmlUtitlities.encode(this.typeSummary);
+    XMLUtilities.write(xmlDocument, os);
+  }
 }

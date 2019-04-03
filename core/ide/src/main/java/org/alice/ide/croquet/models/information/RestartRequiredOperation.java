@@ -53,24 +53,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RestartRequiredOperation extends InconsequentialActionOperation {
-	public static final Icon TWEEDLEDUM_AND_TWEEDLEDEE_ICON = IconUtilities.createImageIcon( RestartRequiredOperation.class.getResource( "images/restartRequired.png" ) );
+  public static final Icon TWEEDLEDUM_AND_TWEEDLEDEE_ICON = IconUtilities.createImageIcon(RestartRequiredOperation.class.getResource("images/restartRequired.png"));
 
-	private static class SingletonHolder {
-		private static RestartRequiredOperation instance = new RestartRequiredOperation();
-	}
+  private static class SingletonHolder {
+    private static RestartRequiredOperation instance = new RestartRequiredOperation();
+  }
 
-	public static RestartRequiredOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static RestartRequiredOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private RestartRequiredOperation() {
-		super( UUID.fromString( "b3a861cb-1253-429c-b233-66209c1f4f65" ) );
-	}
+  private RestartRequiredOperation() {
+    super(UUID.fromString("b3a861cb-1253-429c-b233-66209c1f4f65"));
+  }
 
-	@Override
-	protected void performInternal() {
-		Dialogs.showInfo( "Restart Is Required",
-						  "Exiting and restarting Alice is required.",
-						  TWEEDLEDUM_AND_TWEEDLEDEE_ICON );
-	}
+  @Override
+  protected void performInternal() {
+    Dialogs.showInfo("Restart Is Required", "Exiting and restarting Alice is required.", TWEEDLEDUM_AND_TWEEDLEDEE_ICON);
+  }
 }

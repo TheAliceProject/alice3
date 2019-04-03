@@ -60,160 +60,160 @@ import org.lgna.story.resources.sims2.SkinTone;
  * @author Dennis Cosgrove
  */
 public class NebulousPersonVisualData extends NebulousVisualData<Person> {
-	private final LifeStage lifeStage;
-	private Gender gender;
-	private Outfit outfit;
-	private SkinTone skinTone;
-	private Color skinColor;
-	private double obesityLevel;
-	private Hair hair;
-	private EyeColor eyeColor;
-	private Face face;
+  private final LifeStage lifeStage;
+  private Gender gender;
+  private Outfit outfit;
+  private SkinTone skinTone;
+  private Color skinColor;
+  private double obesityLevel;
+  private Hair hair;
+  private EyeColor eyeColor;
+  private Face face;
 
-	private int atomicCount = 0;
+  private int atomicCount = 0;
 
-	public static NebulousPersonVisualData createInstance( PersonResource personResource ) throws LicenseRejectedException {
-		NebulousPersonVisualData rv = new NebulousPersonVisualData( personResource.getLifeStage() );
-		rv.pushAtomic();
-		try {
-			rv.setGender( personResource.getGender() );
-			rv.setOutfit( personResource.getOutfit() );
-			rv.setSkinTone( personResource.getSkinTone() );
-			rv.setSkinColor( personResource.getSkinColor() );
-			rv.setObesityLevel( personResource.getObesityLevel() );
-			rv.setHair( personResource.getHair() );
-			rv.setEyeColor( personResource.getEyeColor() );
-			rv.setFace( personResource.getFace() );
-		} finally {
-			rv.popAtomic();
-		}
-		return rv;
-	}
+  public static NebulousPersonVisualData createInstance(PersonResource personResource) throws LicenseRejectedException {
+    NebulousPersonVisualData rv = new NebulousPersonVisualData(personResource.getLifeStage());
+    rv.pushAtomic();
+    try {
+      rv.setGender(personResource.getGender());
+      rv.setOutfit(personResource.getOutfit());
+      rv.setSkinTone(personResource.getSkinTone());
+      rv.setSkinColor(personResource.getSkinColor());
+      rv.setObesityLevel(personResource.getObesityLevel());
+      rv.setHair(personResource.getHair());
+      rv.setEyeColor(personResource.getEyeColor());
+      rv.setFace(personResource.getFace());
+    } finally {
+      rv.popAtomic();
+    }
+    return rv;
+  }
 
-	public NebulousPersonVisualData( LifeStage lifeStage ) throws LicenseRejectedException {
-		super( new Person( lifeStage ) );
-		this.lifeStage = lifeStage;
-	}
+  public NebulousPersonVisualData(LifeStage lifeStage) throws LicenseRejectedException {
+    super(new Person(lifeStage));
+    this.lifeStage = lifeStage;
+  }
 
-	public LifeStage getLifeStage() {
-		return this.lifeStage;
-	}
+  public LifeStage getLifeStage() {
+    return this.lifeStage;
+  }
 
-	public void pushAtomic() {
-		if( this.atomicCount == 0 ) {
+  public void pushAtomic() {
+    if (this.atomicCount == 0) {
 
-		}
-		this.atomicCount++;
-	}
+    }
+    this.atomicCount++;
+  }
 
-	public void popAtomic() {
-		this.atomicCount--;
-		if( this.atomicCount == 0 ) {
-			this.getNebModel().synchronizedSetAll( this.gender, this.outfit, this.getValueForSkinTone(), this.obesityLevel, this.eyeColor, this.hair, this.face );
-		}
-	}
+  public void popAtomic() {
+    this.atomicCount--;
+    if (this.atomicCount == 0) {
+      this.getNebModel().synchronizedSetAll(this.gender, this.outfit, this.getValueForSkinTone(), this.obesityLevel, this.eyeColor, this.hair, this.face);
+    }
+  }
 
-	public Gender getGender() {
-		return this.gender;
-	}
+  public Gender getGender() {
+    return this.gender;
+  }
 
-	public void setGender( Gender gender ) {
-		this.gender = gender;
-		if( this.atomicCount == 0 ) {
-			this.getNebModel().synchronizedSetGender( this.gender );
-		}
-	}
+  public void setGender(Gender gender) {
+    this.gender = gender;
+    if (this.atomicCount == 0) {
+      this.getNebModel().synchronizedSetGender(this.gender);
+    }
+  }
 
-	public Outfit getOutfit() {
-		return this.outfit;
-	}
+  public Outfit getOutfit() {
+    return this.outfit;
+  }
 
-	public void setOutfit( Outfit outfit ) {
-		this.outfit = outfit;
-		if( this.atomicCount == 0 ) {
-			this.getNebModel().synchronizedSetOutfit( this.outfit );
-		}
-	}
+  public void setOutfit(Outfit outfit) {
+    this.outfit = outfit;
+    if (this.atomicCount == 0) {
+      this.getNebModel().synchronizedSetOutfit(this.outfit);
+    }
+  }
 
-	private Object getValueForSkinTone() {
-		java.awt.Color awtColor = EmployeesOnly.getAwtColor( this.skinColor );
-		return awtColor.getRGB();
-	}
+  private Object getValueForSkinTone() {
+    java.awt.Color awtColor = EmployeesOnly.getAwtColor(this.skinColor);
+    return awtColor.getRGB();
+  }
 
-	public Color getSkinColor() {
-		return this.skinColor;
-	}
+  public Color getSkinColor() {
+    return this.skinColor;
+  }
 
-	public void setSkinColor( Color skinColor ) {
-		this.skinColor = skinColor;
-		if( this.atomicCount == 0 ) {
-			this.getNebModel().synchronizedSetSkinTone( this.getValueForSkinTone() );
-		}
-	}
+  public void setSkinColor(Color skinColor) {
+    this.skinColor = skinColor;
+    if (this.atomicCount == 0) {
+      this.getNebModel().synchronizedSetSkinTone(this.getValueForSkinTone());
+    }
+  }
 
-	public SkinTone getSkinTone() {
-		return this.skinTone;
-	}
+  public SkinTone getSkinTone() {
+    return this.skinTone;
+  }
 
-	public void setSkinTone( SkinTone skinTone ) {
-		this.skinTone = skinTone;
-		if( this.atomicCount == 0 ) {
-			this.getNebModel().synchronizedSetSkinTone( this.skinTone );
-		}
-	}
+  public void setSkinTone(SkinTone skinTone) {
+    this.skinTone = skinTone;
+    if (this.atomicCount == 0) {
+      this.getNebModel().synchronizedSetSkinTone(this.skinTone);
+    }
+  }
 
-	public double getObesityLevel() {
-		return this.obesityLevel;
-	}
+  public double getObesityLevel() {
+    return this.obesityLevel;
+  }
 
-	public void setObesityLevel( double obesityLevel ) {
-		this.obesityLevel = obesityLevel;
-		if( this.atomicCount == 0 ) {
-			this.getNebModel().synchronizedSetObesityLevel( this.obesityLevel );
-		}
-	}
+  public void setObesityLevel(double obesityLevel) {
+    this.obesityLevel = obesityLevel;
+    if (this.atomicCount == 0) {
+      this.getNebModel().synchronizedSetObesityLevel(this.obesityLevel);
+    }
+  }
 
-	public Hair getHair() {
-		return this.hair;
-	}
+  public Hair getHair() {
+    return this.hair;
+  }
 
-	public void setHair( Hair hair ) {
-		this.hair = hair;
-		if( this.atomicCount == 0 ) {
-			this.getNebModel().synchronizedSetHair( this.hair );
-		}
-	}
+  public void setHair(Hair hair) {
+    this.hair = hair;
+    if (this.atomicCount == 0) {
+      this.getNebModel().synchronizedSetHair(this.hair);
+    }
+  }
 
-	public EyeColor getEyeColor() {
-		return this.eyeColor;
-	}
+  public EyeColor getEyeColor() {
+    return this.eyeColor;
+  }
 
-	public void setEyeColor( EyeColor eyeColor ) {
-		this.eyeColor = eyeColor;
-		if( this.atomicCount == 0 ) {
-			this.getNebModel().synchronizedSetEyeColor( this.eyeColor );
-		}
-	}
+  public void setEyeColor(EyeColor eyeColor) {
+    this.eyeColor = eyeColor;
+    if (this.atomicCount == 0) {
+      this.getNebModel().synchronizedSetEyeColor(this.eyeColor);
+    }
+  }
 
-	public void setFace( Face face ) {
-		this.face = face;
-		if( this.atomicCount == 0 ) {
-			this.getNebModel().synchronizedSetFace( this.face );
-		}
-	}
+  public void setFace(Face face) {
+    this.face = face;
+    if (this.atomicCount == 0) {
+      this.getNebModel().synchronizedSetFace(this.face);
+    }
+  }
 
-	//	@Override
-	//	public Dimension3 getSize() {
-	//		AxisAlignedBox aabb = this.nebPerson.getAxisAlignedMinimumBoundingBox();
-	//		if (!aabb.isNaN())
-	//		{
-	//			return new Dimension3(aabb.getWidth(), aabb.getHeight(), aabb.getDepth());
-	//		}
-	//		else
-	//		{
-	//			return new Dimension3(1, 2, 1);
-	//		}
-	//
-	//	}
+  //  @Override
+  //  public Dimension3 getSize() {
+  //    AxisAlignedBox aabb = this.nebPerson.getAxisAlignedMinimumBoundingBox();
+  //    if (!aabb.isNaN())
+  //    {
+  //      return new Dimension3(aabb.getWidth(), aabb.getHeight(), aabb.getDepth());
+  //    }
+  //    else
+  //    {
+  //      return new Dimension3(1, 2, 1);
+  //    }
+  //
+  //  }
 
 }

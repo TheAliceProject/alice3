@@ -54,19 +54,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PotentiallyEnvelopingStatementTemplateDragModel extends StatementTemplateDragModel {
-	public PotentiallyEnvelopingStatementTemplateDragModel( UUID id, Class<? extends Statement> statementCls, Statement possiblyIncompleteStatement ) {
-		super( id, statementCls, possiblyIncompleteStatement );
-	}
+  public PotentiallyEnvelopingStatementTemplateDragModel(UUID id, Class<? extends Statement> statementCls, Statement possiblyIncompleteStatement) {
+    super(id, statementCls, possiblyIncompleteStatement);
+  }
 
-	protected abstract Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping );
+  protected abstract Triggerable getDropOperation(DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping);
 
-	@Override
-	protected final Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
-		boolean isEnveloping = false;
-		MouseEvent e = step.getLatestMouseEvent();
-		if( e != null ) {
-			isEnveloping = e.isShiftDown();
-		}
-		return this.getDropOperation( step, blockStatementIndexPair, isEnveloping );
-	}
+  @Override
+  protected final Triggerable getDropOperation(DragStep step, BlockStatementIndexPair blockStatementIndexPair) {
+    boolean isEnveloping = false;
+    MouseEvent e = step.getLatestMouseEvent();
+    if (e != null) {
+      isEnveloping = e.isShiftDown();
+    }
+    return this.getDropOperation(step, blockStatementIndexPair, isEnveloping);
+  }
 }

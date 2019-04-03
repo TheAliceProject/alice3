@@ -59,40 +59,40 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ProjectAheadDialog extends SimpleOperationInputDialogCoreComposite<Panel> {
-	private final Version projectVersion;
+  private final Version projectVersion;
 
-	public ProjectAheadDialog( Version projectVersion ) {
-		super( UUID.fromString( "51405f1e-777c-4622-aa47-a5d65e87ea90" ), Application.INFORMATION_GROUP );
-		this.projectVersion = projectVersion;
-	}
+  public ProjectAheadDialog(Version projectVersion) {
+    super(UUID.fromString("51405f1e-777c-4622-aa47-a5d65e87ea90"), Application.INFORMATION_GROUP);
+    this.projectVersion = projectVersion;
+  }
 
-	public Version getProjectVersion() {
-		return this.projectVersion;
-	}
+  public Version getProjectVersion() {
+    return this.projectVersion;
+  }
 
-	public Version getApplicationVersion() {
-		return ProjectVersion.getCurrentVersion();
-	}
+  public Version getApplicationVersion() {
+    return ProjectVersion.getCurrentVersion();
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		return IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    return IS_GOOD_TO_GO_STATUS;
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		return null;
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity) {
+    return null;
+  }
 
-	@Override
-	protected Panel createView() {
-		return new ProjectAheadView( this );
-	}
+  @Override
+  protected Panel createView() {
+    return new ProjectAheadView(this);
+  }
 
-	public static void main( String[] args ) throws Exception {
-		UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		new SimpleApplication();
-		new ProjectAheadDialog( new Version( "3.1.112358.0.0" ) ).getLaunchOperation().fire();
-		System.exit( 0 );
-	}
+  public static void main(String[] args) throws Exception {
+    UIManagerUtilities.setLookAndFeel("Nimbus");
+    new SimpleApplication();
+    new ProjectAheadDialog(new Version("3.1.112358.0.0")).getLaunchOperation().fire();
+    System.exit(0);
+  }
 }

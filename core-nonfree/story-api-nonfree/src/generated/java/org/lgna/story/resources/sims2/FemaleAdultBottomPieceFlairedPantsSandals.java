@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultBottomPieceFlairedPantsSandals implements FemaleAdultBottomPiece {
-	BLUE_JEANS_BELT,
-	BLUE_JEANS,
-	BLACK_JEANS_BELT,
-	BLACK_JEANS,
-	DK_BLUE_JEANS_BELT,
-	DK_BLUE_JEANS;
+  BLUE_JEANS_BELT, BLUE_JEANS, BLACK_JEANS_BELT, BLACK_JEANS, DK_BLUE_JEANS_BELT, DK_BLUE_JEANS
 
 }

@@ -54,41 +54,41 @@ import java.awt.image.BufferedImage;
  * @author Dennis Cosgrove
  */
 public final class ThumbnailGenerator {
-	private final OffscreenRenderTarget offscreenRenderTarget;
+  private final OffscreenRenderTarget offscreenRenderTarget;
 
-	public ThumbnailGenerator( int width, int height ) {
-		this.offscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget( width, height, null, new RenderCapabilities.Builder().build() );
-	}
+  public ThumbnailGenerator(int width, int height) {
+    this.offscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget(width, height, null, new RenderCapabilities.Builder().build());
+  }
 
-	public BufferedImage createThumbnail() {
-		synchronized( this.offscreenRenderTarget ) {
-			StorytellingSceneEditor sceneEditor = StorytellingSceneEditor.getInstance();
-			AbstractCamera sgCamera = sceneEditor.getSgCameraForCreatingThumbnails();
-			if( sgCamera != null ) {
-				sceneEditor.preScreenCapture();
+  public BufferedImage createThumbnail() {
+    synchronized (this.offscreenRenderTarget) {
+      StorytellingSceneEditor sceneEditor = StorytellingSceneEditor.getInstance();
+      AbstractCamera sgCamera = sceneEditor.getSgCameraForCreatingThumbnails();
+      if (sgCamera != null) {
+        sceneEditor.preScreenCapture();
 
-				boolean isClearingAndAddingRequired;
-				if( offscreenRenderTarget.getSgCameraCount() == 1 ) {
-					if( offscreenRenderTarget.getSgCameraAt( 0 ) == sgCamera ) {
-						isClearingAndAddingRequired = false;
-					} else {
-						isClearingAndAddingRequired = true;
-					}
-				} else {
-					isClearingAndAddingRequired = true;
-				}
-				if( isClearingAndAddingRequired ) {
-					offscreenRenderTarget.clearSgCameras();
-					offscreenRenderTarget.addSgCamera( sgCamera );
-				}
-				BufferedImage thumbImage = offscreenRenderTarget.getSynchronousImageCapturer().getColorBuffer();
+        boolean isClearingAndAddingRequired;
+        if (offscreenRenderTarget.getSgCameraCount() == 1) {
+          if (offscreenRenderTarget.getSgCameraAt(0) == sgCamera) {
+            isClearingAndAddingRequired = false;
+          } else {
+            isClearingAndAddingRequired = true;
+          }
+        } else {
+          isClearingAndAddingRequired = true;
+        }
+        if (isClearingAndAddingRequired) {
+          offscreenRenderTarget.clearSgCameras();
+          offscreenRenderTarget.addSgCamera(sgCamera);
+        }
+        BufferedImage thumbImage = offscreenRenderTarget.getSynchronousImageCapturer().getColorBuffer();
 
-				sceneEditor.postScreenCapture();
-				return thumbImage;
-			} else {
-				return null;
-			}
-		}
-	}
+        sceneEditor.postScreenCapture();
+        return thumbImage;
+      } else {
+        return null;
+      }
+    }
+  }
 
 }

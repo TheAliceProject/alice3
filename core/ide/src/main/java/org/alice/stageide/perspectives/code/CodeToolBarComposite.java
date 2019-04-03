@@ -58,21 +58,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class CodeToolBarComposite extends IdeToolBar {
-	public CodeToolBarComposite( ProjectDocumentFrame projectDocumentFrame ) {
-		super( UUID.fromString( "633d89d9-9ddf-470b-a56b-e0169f3ba1d4" ) );
-		List<Element> list = Lists.newLinkedList();
-		ToolBarUtilities.appendDocumentSubElements( projectDocumentFrame, list );
-		ToolBarUtilities.appendUndoRedoSubElements( projectDocumentFrame, list );
-		ToolBarUtilities.appendRunSubElements( projectDocumentFrame, list );
-		list.add( PushToolBarSeparator.getInstance() );
-		list.add( Clipboard.SINGLETON.getDragModel() );
-		this.subElements = Collections.unmodifiableList( list );
-	}
+  public CodeToolBarComposite(ProjectDocumentFrame projectDocumentFrame) {
+    super(UUID.fromString("633d89d9-9ddf-470b-a56b-e0169f3ba1d4"));
+    List<Element> list = Lists.newLinkedList();
+    ToolBarUtilities.appendDocumentSubElements(projectDocumentFrame, list);
+    ToolBarUtilities.appendUndoRedoSubElements(projectDocumentFrame, list);
+    ToolBarUtilities.appendRunSubElements(projectDocumentFrame, list);
+    list.add(PushToolBarSeparator.getInstance());
+    list.add(Clipboard.SINGLETON.getDragModel());
+    this.subElements = Collections.unmodifiableList(list);
+  }
 
-	@Override
-	public Iterable<? extends Element> getSubElements() {
-		return this.subElements;
-	}
+  @Override
+  public Iterable<? extends Element> getSubElements() {
+    return this.subElements;
+  }
 
-	private final List<? extends Element> subElements;
+  private final List<? extends Element> subElements;
 }

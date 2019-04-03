@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.marinemammal;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SSwimmer;
@@ -33,35 +34,31 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.MarineMammalResource;
 
 public enum OrcaResource implements MarineMammalResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, OrcaResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FRONT_LEFT_FIN_TIP = new JointId( FRONT_LEFT_FIN, OrcaResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FRONT_RIGHT_FIN_TIP = new JointId( FRONT_RIGHT_FIN, OrcaResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId BACK_LEFT_FIN_TIP = new JointId( TAIL, OrcaResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId BACK_RIGHT_FIN_TIP = new JointId( TAIL, OrcaResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LOWER_LIP = new JointId(MOUTH, OrcaResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FRONT_LEFT_FIN_TIP = new JointId(FRONT_LEFT_FIN, OrcaResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FRONT_RIGHT_FIN_TIP = new JointId(FRONT_RIGHT_FIN, OrcaResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId BACK_LEFT_FIN_TIP = new JointId(TAIL, OrcaResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId BACK_RIGHT_FIN_TIP = new JointId(TAIL, OrcaResource.class);
 
-	private final ImplementationAndVisualType resourceType;
-	OrcaResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	OrcaResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  OrcaResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
+  OrcaResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public SwimmerImp createImplementation( SSwimmer abstraction ) {
-		return new SwimmerImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public SwimmerImp createImplementation(SSwimmer abstraction) {
+    return new SwimmerImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

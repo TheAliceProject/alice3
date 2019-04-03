@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.render.RenderTarget;
  * @author Dennis Cosgrove
  */
 public abstract class RenderTargetEvent extends Event<RenderTarget> {
-	public RenderTargetEvent( RenderTarget renderTarget ) {
-		super( renderTarget );
-	}
+  public RenderTargetEvent(RenderTarget renderTarget) {
+    super(renderTarget);
+  }
 }

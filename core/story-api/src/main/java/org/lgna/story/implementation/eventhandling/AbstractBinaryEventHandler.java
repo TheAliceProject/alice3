@@ -53,48 +53,47 @@ import org.lgna.story.event.AbstractEvent;
  */
 public abstract class AbstractBinaryEventHandler<L, E extends AbstractEvent> extends TransformationChangedHandler<L, E> {
 
-	protected void fireEvent( final L listener, final E event, final Object one, final Object two ) {
-		//		final Object o = object == null ? NULL_OBJECT : object;
-		if( isFiringMap.get( listener ) == null ) {
-			isFiringMap.put( listener, new ConcurrentHashMap<Object, Boolean>() );
-		}
-		if( isFiringMap.get( listener ).get( one ) == null ) {
-			isFiringMap.get( listener ).put( one, false );
-		}
-		if( isFiringMap.get( listener ).get( two ) == null ) {
-			isFiringMap.get( listener ).put( two, false );
-		}
-		if( shouldFire ) {
-			ComponentExecutor thread = new ComponentExecutor( new Runnable() {
-				@Override
-				public void run() {
-					fire( listener, event );
-					if( policyMap.get( listener ).equals( MultipleEventPolicy.ENQUEUE ) ) {
-						fireDequeue( listener );
-					}
-					isFiringMap.get( listener ).put( one, false );
-					isFiringMap.get( listener ).put( two, false );
-				}
-			}, "eventThread" );
-			if( isFiringMap.get( listener ).get( one ).equals( false ) && isFiringMap.get( listener ).get( two ).equals( false ) ) {
-				isFiringMap.get( listener ).put( one, true );
-				isFiringMap.get( listener ).put( two, true );
-				thread.start();
-				return;
-			} else if( policyMap.get( listener ).equals( MultipleEventPolicy.COMBINE ) ) {
-				thread.start();
-			} else if( policyMap.get( listener ).equals( MultipleEventPolicy.ENQUEUE ) ) {
-				enqueue( event );
-			}
-		}
-	}
+  protected void fireEvent(final L listener, final E event, final Object one, final Object two) {
+    //    final Object o = object == null ? NULL_OBJECT : object;
+    if (isFiringMap.get(listener) == null) {
+      isFiringMap.put(listener, new ConcurrentHashMap<Object, Boolean>());
+    }
+    if (isFiringMap.get(listener).get(one) == null) {
+      isFiringMap.get(listener).put(one, false);
+    }
+    if (isFiringMap.get(listener).get(two) == null) {
+      isFiringMap.get(listener).put(two, false);
+    }
+    if (shouldFire) {
+      ComponentExecutor thread = new ComponentExecutor(new Runnable() {
+        @Override
+        public void run() {
+          fire(listener, event);
+          if (policyMap.get(listener).equals(MultipleEventPolicy.ENQUEUE)) {
+            fireDequeue(listener);
+          }
+          isFiringMap.get(listener).put(one, false);
+          isFiringMap.get(listener).put(two, false);
+        }
+      }, "eventThread");
+      if (isFiringMap.get(listener).get(one).equals(false) && isFiringMap.get(listener).get(two).equals(false)) {
+        isFiringMap.get(listener).put(one, true);
+        isFiringMap.get(listener).put(two, true);
+        thread.start();
+        return;
+      } else if (policyMap.get(listener).equals(MultipleEventPolicy.COMBINE)) {
+        thread.start();
+      } else if (policyMap.get(listener).equals(MultipleEventPolicy.ENQUEUE)) {
+        enqueue(event);
+      }
+    }
+  }
 
-	@Override
-	@Deprecated
-	/**
-	 * If you are calling this method you are doing something wrong (mmay) use fireEvent(L,E,Object,Object)
-	 */
-	protected void fireEvent( L listener, E event ) {
-		super.fireEvent( listener, event );
-	}
+  @Override
+  @Deprecated
+  /**
+   * If you are calling this method you are doing something wrong (mmay) use fireEvent(L,E,Object,Object)
+   */ protected void fireEvent(L listener, E event) {
+    super.fireEvent(listener, event);
+  }
 }

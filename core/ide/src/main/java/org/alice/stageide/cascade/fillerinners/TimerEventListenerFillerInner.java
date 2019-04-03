@@ -55,12 +55,12 @@ import java.util.List;
  * @author Matt May
  */
 public class TimerEventListenerFillerInner extends ExpressionFillerInner {
-	public TimerEventListenerFillerInner() {
-		super( TimeListener.class );
-	}
+  public TimerEventListenerFillerInner() {
+    super(TimeListener.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		items.add( TimerEventListenerAdapterFillIn.getInstance() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    items.add(TimerEventListenerAdapterFillIn.getInstance());
+  }
 }

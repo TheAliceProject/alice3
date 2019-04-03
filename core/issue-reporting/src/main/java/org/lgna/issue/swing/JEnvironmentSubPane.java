@@ -61,53 +61,53 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 /*package-private*/class JEnvironmentSubPane extends JPanel {
-	private static JLabel createSystemPropertyLabel( String propertyName ) {
-		return new JLabel( propertyName + ": " + System.getProperty( propertyName ) );
-	}
+  private static JLabel createSystemPropertyLabel(String propertyName) {
+    return new JLabel(propertyName + ": " + System.getProperty(propertyName));
+  }
 
-	private class ShowAllSystemPropertiesAction extends AbstractAction {
-		public ShowAllSystemPropertiesAction() {
-			super( "show all system properties..." );
-		}
+  private class ShowAllSystemPropertiesAction extends AbstractAction {
+    public ShowAllSystemPropertiesAction() {
+      super("show all system properties...");
+    }
 
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			List<SystemProperty> propertyList = SystemUtilities.getSortedPropertyList();
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html>" );
-			sb.append( "<body>" );
-			for( SystemProperty property : propertyList ) {
-				sb.append( "<strong> " );
-				sb.append( property.getKey() );
-				sb.append( ":</strong> " );
-				sb.append( property.getValue() );
-				sb.append( "<br>" );
-			}
-			sb.append( "</body>" );
-			sb.append( "</html>" );
-			JEditorPane editorPane = new JEditorPane();
-			editorPane.setEditable( false );
-			editorPane.setContentType( "text/html" );
-			editorPane.setText( sb.toString() );
-			JOptionPane.showMessageDialog( JEnvironmentSubPane.this, new JScrollPane( editorPane ) {
-				@Override
-				public Dimension getPreferredSize() {
-					Dimension rv = super.getPreferredSize();
-					rv.width = Math.min( rv.width, 640 );
-					rv.height = Math.min( rv.height, 480 );
-					return rv;
-				}
-			}, "System Properties", JOptionPane.INFORMATION_MESSAGE );
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      List<SystemProperty> propertyList = SystemUtilities.getSortedPropertyList();
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html>");
+      sb.append("<body>");
+      for (SystemProperty property : propertyList) {
+        sb.append("<strong> ");
+        sb.append(property.getKey());
+        sb.append(":</strong> ");
+        sb.append(property.getValue());
+        sb.append("<br>");
+      }
+      sb.append("</body>");
+      sb.append("</html>");
+      JEditorPane editorPane = new JEditorPane();
+      editorPane.setEditable(false);
+      editorPane.setContentType("text/html");
+      editorPane.setText(sb.toString());
+      JOptionPane.showMessageDialog(JEnvironmentSubPane.this, new JScrollPane(editorPane) {
+        @Override
+        public Dimension getPreferredSize() {
+          Dimension rv = super.getPreferredSize();
+          rv.width = Math.min(rv.width, 640);
+          rv.height = Math.min(rv.height, 480);
+          return rv;
+        }
+      }, "System Properties", JOptionPane.INFORMATION_MESSAGE);
+    }
+  }
 
-	private JFauxHyperlink vcShowAllSystemProperties = new JFauxHyperlink( new ShowAllSystemPropertiesAction() );
+  private JFauxHyperlink vcShowAllSystemProperties = new JFauxHyperlink(new ShowAllSystemPropertiesAction());
 
-	public JEnvironmentSubPane( List<String> systemPropertyNames ) {
-		this.setLayout( new BoxLayout( this, BoxLayout.PAGE_AXIS ) );
-		for( String propertyName : systemPropertyNames ) {
-			this.add( createSystemPropertyLabel( propertyName ) );
-		}
-		this.add( this.vcShowAllSystemProperties );
-	}
+  public JEnvironmentSubPane(List<String> systemPropertyNames) {
+    this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+    for (String propertyName : systemPropertyNames) {
+      this.add(createSystemPropertyLabel(propertyName));
+    }
+    this.add(this.vcShowAllSystemProperties);
+  }
 }

@@ -49,16 +49,16 @@ import org.lgna.croquet.CascadeCancel;
  * @author Dennis Cosgrove
  */
 public class CancelNode<F> extends AbstractItemNode<F, Void, CascadeCancel<F>> {
-	public static <F> CancelNode<F> createInstance( CascadeCancel<F> model ) {
-		return new CancelNode<F>( model );
-	}
+  public static <F> CancelNode<F> createInstance(CascadeCancel<F> model) {
+    return new CancelNode<F>(model);
+  }
 
-	private CancelNode( CascadeCancel<F> model ) {
-		super( model );
-	}
+  private CancelNode(CascadeCancel<F> model) {
+    super(model);
+  }
 
-	@Override
-	public BlankNode<Void> getBlankStepAt( int index ) {
-		throw new AssertionError();
-	}
+  @Override
+  public BlankNode<Void> getBlankStepAt(int index) {
+    throw new AssertionError();
+  }
 }

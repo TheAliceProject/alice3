@@ -45,44 +45,44 @@
  * @author Dennis Cosgrove
  */
 public class AudioTest {
-	public static void main( String[] args ) throws Exception {
-		java.io.File root = org.lgna.story.implementation.StoryApiDirectoryUtilities.getSoundGalleryDirectory();
-		//root = new java.io.File( root, "Sound Effects" );
-		java.io.File[] files = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants( root, (java.io.FileFilter)null );
-		edu.cmu.cs.dennisc.media.jmf.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
-		for( java.io.File file : files ) {
-			if( file.isDirectory() ) {
-				//pass
-			} else {
-				String contentType = org.lgna.common.resources.AudioResource.getContentType( file );
-				if( contentType != null ) {
-					//org.lgna.common.resources.AudioResource audioResource = new org.lgna.common.resources.AudioResource( file, contentType );
-					//edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioResource );
-					//player.prefetch();
-					org.lgna.common.resources.AudioResource audioResource = mediaFactory.createAudioResource( file );
-					javax.media.protocol.DataSource dataSource = new edu.cmu.cs.dennisc.javax.media.protocol.ByteArrayDataSource( audioResource.getData(), audioResource.getContentType() );
-					javax.media.Player jmfPlayer = javax.media.Manager.createPlayer( dataSource );
-					jmfPlayer.addControllerListener( new javax.media.ControllerListener() {
-						@Override
-						public void controllerUpdate( javax.media.ControllerEvent e ) {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
-						}
-					} );
-					jmfPlayer.realize();
-					jmfPlayer.start();
-					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
-					jmfPlayer.stop();
-					jmfPlayer.deallocate();
-					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1000 );
-					System.gc();
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( Runtime.getRuntime().freeMemory() );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
-				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( file );
-				}
-			}
-		}
-	}
+  public static void main(String[] args) throws Exception {
+    java.io.File root = org.lgna.story.implementation.StoryApiDirectoryUtilities.getSoundGalleryDirectory();
+    //root = new java.io.File( root, "Sound Effects" );
+    java.io.File[] files = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants(root, (java.io.FileFilter) null);
+    edu.cmu.cs.dennisc.media.jmf.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
+    for (java.io.File file : files) {
+      if (file.isDirectory()) {
+        //pass
+      } else {
+        String contentType = org.lgna.common.resources.AudioResource.getContentType(file);
+        if (contentType != null) {
+          //org.lgna.common.resources.AudioResource audioResource = new org.lgna.common.resources.AudioResource( file, contentType );
+          //edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioResource );
+          //player.prefetch();
+          org.lgna.common.resources.AudioResource audioResource = mediaFactory.createAudioResource(file);
+          javax.media.protocol.DataSource dataSource = new edu.cmu.cs.dennisc.javax.media.protocol.ByteArrayDataSource(audioResource.getData(), audioResource.getContentType());
+          javax.media.Player jmfPlayer = javax.media.Manager.createPlayer(dataSource);
+          jmfPlayer.addControllerListener(new javax.media.ControllerListener() {
+            @Override
+            public void controllerUpdate(javax.media.ControllerEvent e) {
+              edu.cmu.cs.dennisc.java.util.logging.Logger.outln(e);
+            }
+          });
+          jmfPlayer.realize();
+          jmfPlayer.start();
+          edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep(2000);
+          jmfPlayer.stop();
+          jmfPlayer.deallocate();
+          edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep(1000);
+          System.gc();
+          edu.cmu.cs.dennisc.java.util.logging.Logger.outln(Runtime.getRuntime().freeMemory());
+          edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+          edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+          edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+        } else {
+          edu.cmu.cs.dennisc.java.util.logging.Logger.errln(file);
+        }
+      }
+    }
+  }
 }

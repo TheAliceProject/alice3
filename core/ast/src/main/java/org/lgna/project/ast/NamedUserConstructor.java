@@ -55,141 +55,140 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class NamedUserConstructor extends UserConstructor implements UserCode {
-	public NamedUserConstructor() {
-	}
+  public NamedUserConstructor() {
+  }
 
-	public NamedUserConstructor( UserParameter[] parameters, ConstructorBlockStatement body ) {
-		this.requiredParameters.add( parameters );
-		this.body.setValue( body );
-	}
+  public NamedUserConstructor(UserParameter[] parameters, ConstructorBlockStatement body) {
+    this.requiredParameters.add(parameters);
+    this.body.setValue(body);
+  }
 
-	@Override
-	public UserInstance evaluate( VirtualMachine vm, AbstractType fallbackType, Object[] arguments ) {
-		return UserInstance.createInstance( vm, this, (UserType<?>) fallbackType, arguments );
-	}
+  @Override
+  public UserInstance evaluate(VirtualMachine vm, AbstractType fallbackType, Object[] arguments) {
+    return UserInstance.createInstance(vm, this, (UserType<?>) fallbackType, arguments);
+  }
 
-	@Override
-	public ManagementLevel getManagementLevel() {
-		return this.managementLevel.getValue();
-	}
+  @Override
+  public ManagementLevel getManagementLevel() {
+    return this.managementLevel.getValue();
+  }
 
-	@Override
-	public NodeProperty<ConstructorBlockStatement> getBodyProperty() {
-		return this.body;
-	}
+  @Override
+  public NodeProperty<ConstructorBlockStatement> getBodyProperty() {
+    return this.body;
+  }
 
-	@Override
-	public NodeListProperty<UserParameter> getRequiredParamtersProperty() {
-		return this.requiredParameters;
-	}
+  @Override
+  public NodeListProperty<UserParameter> getRequiredParamtersProperty() {
+    return this.requiredParameters;
+  }
 
-	@Override
-	public Visibility getVisibility() {
-		return this.visibility;
-	}
+  @Override
+  public Visibility getVisibility() {
+    return this.visibility;
+  }
 
-	public void setVisibility( Visibility visibility ) {
-		this.visibility = visibility;
-	}
+  public void setVisibility(Visibility visibility) {
+    this.visibility = visibility;
+  }
 
-	@Override
-	public AbstractCode getNextLongerInChain() {
-		return null;
-	}
+  @Override
+  public AbstractCode getNextLongerInChain() {
+    return null;
+  }
 
-	@Override
-	public AbstractCode getNextShorterInChain() {
-		return null;
-	}
+  @Override
+  public AbstractCode getNextShorterInChain() {
+    return null;
+  }
 
-	@Override
-	public boolean isSignatureLocked() {
-		return this.isSignatureLocked.getValue();
-	}
+  @Override
+  public boolean isSignatureLocked() {
+    return this.isSignatureLocked.getValue();
+  }
 
-	@Override
-	public List<UserParameter> getRequiredParameters() {
-		return this.requiredParameters.getValue();
-	}
+  @Override
+  public List<UserParameter> getRequiredParameters() {
+    return this.requiredParameters.getValue();
+  }
 
-	@Override
-	public AccessLevel getAccessLevel() {
-		return this.accessLevel.getValue();
-	}
+  @Override
+  public AccessLevel getAccessLevel() {
+    return this.accessLevel.getValue();
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendConstructor( this );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendConstructor(this);
+  }
 
-	@Override
-	public Object instantiateFirstArgumentPassedToSuperConstructor() {
-		ConstructorInvocationStatement superConstructorInvocationStatement = body.getValue().constructorInvocationStatement.getValue();
-		SimpleArgumentListProperty arguments = superConstructorInvocationStatement.requiredArguments;
-		if( arguments.size() > 0 ) {
-			Expression expression = arguments.get( 0 ).expression.getValue();
-			if( expression instanceof FieldAccess ) {
-				return instantiateFieldAccess((FieldAccess) expression);
-			} else if (expression instanceof InstanceCreation) {
-				return instantiateInstanceCreation((InstanceCreation)expression);
-			}
-		}
-		return null;
-	}
+  @Override
+  public Object instantiateFirstArgumentPassedToSuperConstructor() {
+    ConstructorInvocationStatement superConstructorInvocationStatement = body.getValue().constructorInvocationStatement.getValue();
+    SimpleArgumentListProperty arguments = superConstructorInvocationStatement.requiredArguments;
+    if (arguments.size() > 0) {
+      Expression expression = arguments.get(0).expression.getValue();
+      if (expression instanceof FieldAccess) {
+        return instantiateFieldAccess((FieldAccess) expression);
+      } else if (expression instanceof InstanceCreation) {
+        return instantiateInstanceCreation((InstanceCreation) expression);
+      }
+    }
+    return null;
+  }
 
+  //This handles the case of a DynamicResource
+  //DynamicResources use a constructor that looks like this:
+  //  public DyanamicBipedResource(String modelName, String resourceName)
+  //And the InstanceCreation looks like this:
+  //  AstUtilities.createInstanceCreation(
+  //    DynamicBipedResource.class,
+  //    new Class<?>[] {
+  //      String.class,
+  //      String.class
+  //    },
+  //    new StringLiteral( dynamicResource.getModelClassName() ),
+  //    new StringLiteral( dynamicResource.getModelVariantName() ));
+  //This code pulls this information out of the InstanceCreation and then uses it to construct a new DynamicResource
+  private Object instantiateInstanceCreation(InstanceCreation instanceCreation) {
+    if (instanceCreation.constructor.getValue() instanceof JavaConstructor) {
+      JavaConstructor instanceConstructor = (JavaConstructor) instanceCreation.constructor.getValue();
+      Object[] constructorArguments = new Object[instanceConstructor.getRequiredParameters().size()];
+      int index = 0;
+      boolean canEvaluate = true;
+      for (SimpleArgument argument : instanceCreation.requiredArguments.getValue()) {
+        if (argument.expression.getValue() instanceof StringLiteral) {
+          StringLiteral literal = (StringLiteral) argument.expression.getValue();
+          String argumentValue = literal.getValueProperty().getValue();
+          constructorArguments[index++] = argumentValue;
+        } else {
+          canEvaluate = false;
+          break;
+        }
+      }
+      if (canEvaluate) {
+        return instanceConstructor.evaluate(null, null, constructorArguments);
+      }
+    }
+    return null;
+  }
 
-	//This handles the case of a DynamicResource
-	//DynamicResources use a constructor that looks like this:
-	//	public DyanamicBipedResource(String modelName, String resourceName)
-	//And the InstanceCreation looks like this:
-	//	AstUtilities.createInstanceCreation(
-	//		DynamicBipedResource.class,
-	//		new Class<?>[] {
-	//			String.class,
-	//			String.class
-	//		},
-	//		new StringLiteral( dynamicResource.getModelClassName() ),
-	//		new StringLiteral( dynamicResource.getModelVariantName() ));
-	//This code pulls this information out of the InstanceCreation and then uses it to construct a new DynamicResource
-	private Object instantiateInstanceCreation(InstanceCreation instanceCreation) {
-		if (instanceCreation.constructor.getValue() instanceof JavaConstructor) {
-			JavaConstructor instanceConstructor = (JavaConstructor)instanceCreation.constructor.getValue();
-			Object[] constructorArguments = new Object[instanceConstructor.getRequiredParameters().size()];
-			int index = 0;
-			boolean canEvaluate = true;
-			for (SimpleArgument argument : instanceCreation.requiredArguments.getValue()) {
-				if (argument.expression.getValue() instanceof StringLiteral) {
-					StringLiteral literal = (StringLiteral)argument.expression.getValue();
-					String argumentValue = literal.getValueProperty().getValue();
-					constructorArguments[index++] = argumentValue;
-				} else {
-					canEvaluate = false;
-					break;
-				}
-			}
-			if (canEvaluate) {
-				return instanceConstructor.evaluate(null, null, constructorArguments);
-			}
-		}
-		return null;
-	}
+  private Object instantiateFieldAccess(FieldAccess fieldAccess) {
+    JavaField javaField = (JavaField) fieldAccess.field.getValue();
+    try {
+      return javaField.getFieldReflectionProxy().getReification().get(null);
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 
-	private Object instantiateFieldAccess(FieldAccess fieldAccess) {
-		JavaField javaField = (JavaField)fieldAccess.field.getValue();
-		try {
-			return javaField.getFieldReflectionProxy().getReification().get(null);
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+  public final NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>(this);
+  public final EnumProperty<AccessLevel> accessLevel = new EnumProperty<AccessLevel>(this, AccessLevel.PUBLIC);
+  public final NodeProperty<ConstructorBlockStatement> body = new NodeProperty<ConstructorBlockStatement>(this);
+  public final EnumProperty<ManagementLevel> managementLevel = new EnumProperty<ManagementLevel>(this, ManagementLevel.NONE);
+  public final BooleanProperty isSignatureLocked = new BooleanProperty(this, Boolean.FALSE);
+  public final BooleanProperty isDeletionAllowed = new BooleanProperty(this, Boolean.FALSE);
 
-	public final NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>( this );
-	public final EnumProperty<AccessLevel> accessLevel = new EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
-	public final NodeProperty<ConstructorBlockStatement> body = new NodeProperty<ConstructorBlockStatement>( this );
-	public final EnumProperty<ManagementLevel> managementLevel = new EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
-	public final BooleanProperty isSignatureLocked = new BooleanProperty( this, Boolean.FALSE );
-	public final BooleanProperty isDeletionAllowed = new BooleanProperty( this, Boolean.FALSE );
-
-	private Visibility visibility = Visibility.PRIME_TIME;
+  private Visibility visibility = Visibility.PRIME_TIME;
 }

@@ -43,36 +43,37 @@
 
 package org.lgna.project.ast;
 
-
 //todo: rename AbstractEachInTogether
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractEachInTogether extends AbstractStatementWithBody implements EachInStatement {
-	public AbstractEachInTogether() {
-	}
+  public AbstractEachInTogether() {
+  }
 
-	public AbstractEachInTogether( UserLocal item, BlockStatement body ) {
-		super( body );
-		assert item.isFinal.getValue();
-		this.item.setValue( item );
-	}
+  public AbstractEachInTogether(UserLocal item, BlockStatement body) {
+    super(body);
+    assert item.isFinal.getValue();
+    this.item.setValue(item);
+  }
 
-	@Override
-	public DeclarationProperty<UserLocal> getItemProperty() {
-		return this.item;
-	}
+  @Override
+  public DeclarationProperty<UserLocal> getItemProperty() {
+    return this.item;
+  }
 
-	public abstract ExpressionProperty getArrayOrIterableProperty();
+  public abstract ExpressionProperty getArrayOrIterableProperty();
 
-	@Override public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendEachInTogether(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendEachInTogether(this);
+  }
 
-	public final DeclarationProperty<UserLocal> item = new DeclarationProperty<UserLocal>( this ) {
-		@Override
-		public boolean isReference() {
-			return false;
-		}
-	};
+  public final DeclarationProperty<UserLocal> item = new DeclarationProperty<UserLocal>(this) {
+    @Override
+    public boolean isReference() {
+      return false;
+    }
+  };
 }

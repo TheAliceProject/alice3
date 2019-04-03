@@ -49,8 +49,8 @@ import org.alice.ide.ast.declaration.AddFunctionComposite;
  * @author Dennis Cosgrove
  */
 public class AddFunctionView extends AddMethodView {
-	public AddFunctionView( AddFunctionComposite composite ) {
-		super( composite );
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getFunctionColor() );
-	}
+  public AddFunctionView(AddFunctionComposite composite) {
+    super(composite);
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getFunctionColor());
+  }
 }

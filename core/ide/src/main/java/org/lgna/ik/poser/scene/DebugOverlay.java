@@ -57,69 +57,69 @@ import edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent;
  */
 public class DebugOverlay implements RenderTargetListener {
 
-	private static final int DEFAULT_ALPHA = 256 / 2;
-	private final OverlayFunction function;
-	private boolean isPreservingAlpha;
+  private static final int DEFAULT_ALPHA = 256 / 2;
+  private final OverlayFunction function;
+  private boolean isPreservingAlpha;
 
-	public DebugOverlay( OverlayFunction overlayFunction, boolean isPreservingAlpha ) {
-		this.function = overlayFunction;
-		this.isPreservingAlpha = isPreservingAlpha;
-	}
+  public DebugOverlay(OverlayFunction overlayFunction, boolean isPreservingAlpha) {
+    this.function = overlayFunction;
+    this.isPreservingAlpha = isPreservingAlpha;
+  }
 
-	public DebugOverlay( OverlayFunction overlayFunction ) {
-		this( overlayFunction, false );
-	}
+  public DebugOverlay(OverlayFunction overlayFunction) {
+    this(overlayFunction, false);
+  }
 
-	@Override
-	public void initialized( RenderTargetInitializeEvent e ) {
-	}
+  @Override
+  public void initialized(RenderTargetInitializeEvent e) {
+  }
 
-	@Override
-	public void cleared( RenderTargetRenderEvent e ) {
-	}
+  @Override
+  public void cleared(RenderTargetRenderEvent e) {
+  }
 
-	@Override
-	public void rendered( RenderTargetRenderEvent e ) {
-		drawOverlay( e );
-	}
+  @Override
+  public void rendered(RenderTargetRenderEvent e) {
+    drawOverlay(e);
+  }
 
-	@Override
-	public void resized( RenderTargetResizeEvent e ) {
-	}
+  @Override
+  public void resized(RenderTargetResizeEvent e) {
+  }
 
-	@Override
-	public void displayChanged( RenderTargetDisplayChangeEvent e ) {
-	}
+  @Override
+  public void displayChanged(RenderTargetDisplayChangeEvent e) {
+  }
 
-	private BufferedImage cache;
+  private BufferedImage cache;
 
-	private void drawOverlay( RenderTargetRenderEvent e ) {
-		if( cache != null ) {
-			//pass
-		} else {
-			cache = getImage( e );
-		}
-		e.getGraphics2D().drawImage( cache, 0, 0, null );
-	}
+  private void drawOverlay(RenderTargetRenderEvent e) {
+    if (cache != null) {
+      //pass
+    } else {
+      cache = getImage(e);
+    }
+    e.getGraphics2D().drawImage(cache, 0, 0, null);
+  }
 
-	private BufferedImage getImage( RenderTargetRenderEvent e ) {
-		Dimension surfaceSize = e.getTypedSource().getSurfaceSize();
-		BufferedImage rv = new BufferedImage( surfaceSize.width, surfaceSize.height, BufferedImage.TYPE_INT_RGB );
-		for( int x = 0; x < surfaceSize.width; x += 2 ) {
-			for( int y = 0; y < surfaceSize.height; y += 2 ) {
-				Color c = function.getColorForXY( x, y );
-				if( !isPreservingAlpha ) {
-					c = new Color( c.getRed(), c.getGreen(), c.getBlue(), DEFAULT_ALPHA );
-				}
-				int rgb = c.getRGB();
+  private BufferedImage getImage(RenderTargetRenderEvent e) {
+    Dimension surfaceSize = e.getTypedSource().getSurfaceSize();
+    BufferedImage rv = new BufferedImage(surfaceSize.width, surfaceSize.height, BufferedImage.TYPE_INT_RGB);
+    for (int x = 0; x < surfaceSize.width; x += 2) {
+      for (int y = 0; y < surfaceSize.height; y += 2) {
+        Color c = function.getColorForXY(x, y);
+        if (!isPreservingAlpha) {
+          c = new Color(c.getRed(), c.getGreen(), c.getBlue(), DEFAULT_ALPHA);
+        }
+        int rgb = c.getRGB();
 
-				//2x2 grid
-				rv.setRGB( x, y, rgb );
-				rv.setRGB( Math.min( surfaceSize.width - 1, x + 1 ), y, rgb );
-				rv.setRGB( x, Math.min( surfaceSize.height - 1, y + 1 ), rgb );
-				rv.setRGB( Math.min( surfaceSize.width - 1, x + 1 ), Math.min( surfaceSize.height - 1, y + 1 ), rgb );
-			}
-		}
-		return rv;
-	}
+        //2x2 grid
+        rv.setRGB(x, y, rgb);
+        rv.setRGB(Math.min(surfaceSize.width - 1, x + 1), y, rgb);
+        rv.setRGB(x, Math.min(surfaceSize.height - 1, y + 1), rgb);
+        rv.setRGB(Math.min(surfaceSize.width - 1, x + 1), Math.min(surfaceSize.height - 1, y + 1), rgb);
+      }
+    }
+    return rv;
+  }
 }

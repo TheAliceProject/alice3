@@ -65,67 +65,66 @@ import java.util.zip.ZipInputStream;
  */
 public class GenerateJointI18nProperties {
 
-	// The specific jar hardcoded with location and version. Another developer or another version will require an update.
-	private static final String ALICE_MODEL_SOURCE_JAR =
-					"/Users/daniel/.m2/repository/org/alice/alice-model-source/2016.08.19/alice-model-source-2016.08.19.jar";
+  // The specific jar hardcoded with location and version. Another developer or another version will require an update.
+  private static final String ALICE_MODEL_SOURCE_JAR = "/Users/daniel/.m2/repository/org/alice/alice-model-source/2016.08.19/alice-model-source-2016.08.19.jar";
 
-	private static void listJoints() {
-		Set<String> methodNames = Sets.newHashSet();
+  private static void listJoints() {
+    Set<String> methodNames = Sets.newHashSet();
 
-		for( String className : getJointedSubclasses() ) {
-			try {
-				Class<?> cls = Class.forName(className);
-				for( Field field : cls.getDeclaredFields() ) {
-					for ( Annotation anno : field.getAnnotations()) {
-						if (anno instanceof FieldTemplate && ((FieldTemplate) anno).visibility().equals(Visibility.PRIME_TIME)) {
-							// Prefix with x to capitalize the first letter
-							String methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "x" );
-							// Remove x to get Joint to start with Capital
-							methodNames.add( methodName.substring(1) );
-						}
-					}
-				}
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		List<String> list = Lists.newArrayList( methodNames );
-		Collections.sort( list );
-		StringBuilder sb = new StringBuilder();
-		for( String methodName : list ) {
-			sb.append( methodName );
-			sb.append( " = " );
-			sb.append( methodName );
-			sb.append( "\n" );
-		}
-		sb.append("\nCanadian\n");
-		for( String methodName : list ) {
-			sb.append( methodName );
-			sb.append( " = |" );
-			sb.append( methodName );
-			sb.append( "|\n" );
-		}
-		Logger.outln( sb );
-	}
+    for (String className : getJointedSubclasses()) {
+      try {
+        Class<?> cls = Class.forName(className);
+        for (Field field : cls.getDeclaredFields()) {
+          for (Annotation anno : field.getAnnotations()) {
+            if (anno instanceof FieldTemplate && ((FieldTemplate) anno).visibility().equals(Visibility.PRIME_TIME)) {
+              // Prefix with x to capitalize the first letter
+              String methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName(field.getName(), "x");
+              // Remove x to get Joint to start with Capital
+              methodNames.add(methodName.substring(1));
+            }
+          }
+        }
+      } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+      }
+    }
+    List<String> list = Lists.newArrayList(methodNames);
+    Collections.sort(list);
+    StringBuilder sb = new StringBuilder();
+    for (String methodName : list) {
+      sb.append(methodName);
+      sb.append(" = ");
+      sb.append(methodName);
+      sb.append("\n");
+    }
+    sb.append("\nCanadian\n");
+    for (String methodName : list) {
+      sb.append(methodName);
+      sb.append(" = |");
+      sb.append(methodName);
+      sb.append("|\n");
+    }
+    Logger.outln(sb);
+  }
 
-	private static List<String> getJointedSubclasses() {
-		List<String> classNames = new ArrayList<>();
-		try {
-			ZipInputStream zip = new ZipInputStream(new FileInputStream(ALICE_MODEL_SOURCE_JAR));
-			for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
-				if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
-					// This ZipEntry represents a class
-					String className = entry.getName().replace('/', '.'); // including ".class"
-					classNames.add(className.substring(0, className.length() - ".class".length()));
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return classNames;
-	}
+  private static List<String> getJointedSubclasses() {
+    List<String> classNames = new ArrayList<>();
+    try {
+      ZipInputStream zip = new ZipInputStream(new FileInputStream(ALICE_MODEL_SOURCE_JAR));
+      for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
+        if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
+          // This ZipEntry represents a class
+          String className = entry.getName().replace('/', '.'); // including ".class"
+          classNames.add(className.substring(0, className.length() - ".class".length()));
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return classNames;
+  }
 
-	public static void main( String[] args ) throws Exception {
-		listJoints();
-	}
+  public static void main(String[] args) throws Exception {
+    listJoints();
+  }
 }

@@ -59,76 +59,76 @@ import java.awt.geom.Point2D;
  * @author Dennis Cosgrove
  */
 public class RoomIcon extends ShapeIcon {
-	private static final float x0 = 1.0f;
-	private static final float xA = 0.5f;
-	private static final float xB = 0.5f;
-	private static final float x1 = 0.0f;
+  private static final float x0 = 1.0f;
+  private static final float xA = 0.5f;
+  private static final float xB = 0.5f;
+  private static final float x1 = 0.0f;
 
-	private static final float y0 = 0.95f;
-	private static final float yA = 0.7f;
-	private static final float yB = 0.5f;
-	private static final float yC = 0.2f;
-	private static final float y1 = 0.1f;
+  private static final float y0 = 0.95f;
+  private static final float yA = 0.7f;
+  private static final float yB = 0.5f;
+  private static final float yC = 0.2f;
+  private static final float y1 = 0.1f;
 
-	private static final Point2D.Float a0 = new Point2D.Float( xA, y1 );
-	private static final Point2D.Float b0 = new Point2D.Float( x0, yC );
-	private static final Point2D.Float c0 = new Point2D.Float( x0, yA );
-	private static final Point2D.Float d0 = new Point2D.Float( xA, yB );
+  private static final Point2D.Float a0 = new Point2D.Float(xA, y1);
+  private static final Point2D.Float b0 = new Point2D.Float(x0, yC);
+  private static final Point2D.Float c0 = new Point2D.Float(x0, yA);
+  private static final Point2D.Float d0 = new Point2D.Float(xA, yB);
 
-	private static final Point2D.Float a1 = c0;
-	private static final Point2D.Float b1 = d0;
-	private static final Point2D.Float c1 = new Point2D.Float( x1, yA );
-	private static final Point2D.Float d1 = new Point2D.Float( xB, y0 );
+  private static final Point2D.Float a1 = c0;
+  private static final Point2D.Float b1 = d0;
+  private static final Point2D.Float c1 = new Point2D.Float(x1, yA);
+  private static final Point2D.Float d1 = new Point2D.Float(xB, y0);
 
-	private static final Point2D.Float a2 = c1;
-	private static final Point2D.Float b2 = b1;
-	private static final Point2D.Float c2 = a0;
-	private static final Point2D.Float d2 = new Point2D.Float( x1, yC );
+  private static final Point2D.Float a2 = c1;
+  private static final Point2D.Float b2 = b1;
+  private static final Point2D.Float c2 = a0;
+  private static final Point2D.Float d2 = new Point2D.Float(x1, yC);
 
-	private final Stroke STROKE = new BasicStroke( 0.0f );
+  private final Stroke STROKE = new BasicStroke(0.0f);
 
-	private static final Color SHADOW_COLOR = FILL_PAINT.darker();
-	private static final Color FLOOR_COLOR = Color.GRAY;
+  private static final Color SHADOW_COLOR = FILL_PAINT.darker();
+  private static final Color FLOOR_COLOR = Color.GRAY;
 
-	private static Shape createFace( Point2D.Float a, Point2D.Float b, Point2D.Float c, Point2D.Float d, int width, int height ) {
-		GeneralPath path = new GeneralPath();
-		path.moveTo( a.x * width, a.y * height );
-		path.lineTo( b.x * width, b.y * height );
-		path.lineTo( c.x * width, c.y * height );
-		path.lineTo( d.x * width, d.y * height );
-		path.closePath();
-		return path;
-	}
+  private static Shape createFace(Point2D.Float a, Point2D.Float b, Point2D.Float c, Point2D.Float d, int width, int height) {
+    GeneralPath path = new GeneralPath();
+    path.moveTo(a.x * width, a.y * height);
+    path.lineTo(b.x * width, b.y * height);
+    path.lineTo(c.x * width, c.y * height);
+    path.lineTo(d.x * width, d.y * height);
+    path.closePath();
+    return path;
+  }
 
-	public RoomIcon( Dimension size ) {
-		super( size );
-	}
+  public RoomIcon(Dimension size) {
+    super(size);
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
-		Stroke prevStroke = g2.getStroke();
-		try {
-			g2.setStroke( STROKE );
-			Shape face0 = createFace( a0, b0, c0, d0, width, height );
-			Shape face1 = createFace( a1, b1, c1, d1, width, height );
-			Shape face2 = createFace( a2, b2, c2, d2, width, height );
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    Stroke prevStroke = g2.getStroke();
+    try {
+      g2.setStroke(STROKE);
+      Shape face0 = createFace(a0, b0, c0, d0, width, height);
+      Shape face1 = createFace(a1, b1, c1, d1, width, height);
+      Shape face2 = createFace(a2, b2, c2, d2, width, height);
 
-			g2.setPaint( new GradientPaint( width, height / 2, FLOOR_COLOR.darker(), 0, height, FLOOR_COLOR.brighter() ) );
-			g2.fill( face1 );
-			g2.setPaint( SHADOW_COLOR );
-			g2.fill( face0 );
-			g2.setPaint( fillPaint );
-			g2.fill( face2 );
+      g2.setPaint(new GradientPaint(width, height / 2, FLOOR_COLOR.darker(), 0, height, FLOOR_COLOR.brighter()));
+      g2.fill(face1);
+      g2.setPaint(SHADOW_COLOR);
+      g2.fill(face0);
+      g2.setPaint(fillPaint);
+      g2.fill(face2);
 
-			g2.setPaint( drawPaint );
-			//			drawLine( g2, x0*width, yA*height, xA*width, yB*height );
-			//			drawLine( g2, x1*width, yA*height, xA*width, yB*height );
-			g2.draw( face1 );
+      g2.setPaint(drawPaint);
+      //      drawLine( g2, x0*width, yA*height, xA*width, yB*height );
+      //      drawLine( g2, x1*width, yA*height, xA*width, yB*height );
+      g2.draw(face1);
 
-			g2.setPaint( Color.GRAY );
-			drawLine( g2, xA * width, y1 * height, xA * width, yB * height );
-		} finally {
-			g2.setStroke( prevStroke );
-		}
-	}
+      g2.setPaint(Color.GRAY);
+      drawLine(g2, xA * width, y1 * height, xA * width, yB * height);
+    } finally {
+      g2.setStroke(prevStroke);
+    }
+  }
 }

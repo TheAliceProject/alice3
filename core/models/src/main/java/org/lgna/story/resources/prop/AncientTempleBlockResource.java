@@ -32,44 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum AncientTempleBlockResource implements PropResource {
-	SHELF_GRAY,
-	SHELF_GOLD,
-	SHELF_SAND,
-	SHELF_RED,
-	SOLID_GRAY,
-	SOLID_GOLD,
-	SOLID_SAND,
-	SOLID_RED,
-	PASSAGE_GRAY,
-	PASSAGE_GOLD,
-	PASSAGE_SAND,
-	PASSAGE_RED,
-	ARCHES_GRAY,
-	ARCHES_GOLD,
-	ARCHES_SAND,
-	ARCHES_RED;
+  SHELF_GRAY, SHELF_GOLD, SHELF_SAND, SHELF_RED, SOLID_GRAY, SOLID_GOLD, SOLID_SAND, SOLID_RED, PASSAGE_GRAY, PASSAGE_GOLD, PASSAGE_SAND, PASSAGE_RED, ARCHES_GRAY, ARCHES_GOLD, ARCHES_SAND, ARCHES_RED;
 
+  private final ImplementationAndVisualType resourceType;
 
-	private final ImplementationAndVisualType resourceType;
-	AncientTempleBlockResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  AncientTempleBlockResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	AncientTempleBlockResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  AncientTempleBlockResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

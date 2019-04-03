@@ -32,31 +32,30 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum HotTubResource implements PropResource {
-	BASIC_CALM( ImplementationAndVisualType.SIMS2 ),
-	BASIC_BUBBLES( ImplementationAndVisualType.SIMS2 ),
-	FANCY_CALM( ImplementationAndVisualType.SIMS2 ),
-	FANCY_BUBBLES( ImplementationAndVisualType.SIMS2 );
+  BASIC_CALM(ImplementationAndVisualType.SIMS2), BASIC_BUBBLES(ImplementationAndVisualType.SIMS2), FANCY_CALM(ImplementationAndVisualType.SIMS2), FANCY_BUBBLES(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	HotTubResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	HotTubResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  HotTubResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  HotTubResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

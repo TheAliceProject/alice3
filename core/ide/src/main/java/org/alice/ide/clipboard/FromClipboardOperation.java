@@ -57,21 +57,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class FromClipboardOperation extends StatementInsertOperation {
-	public FromClipboardOperation( UUID id, BlockStatementIndexPair blockStatementIndexPair ) {
-		super( id, blockStatementIndexPair );
-	}
+  public FromClipboardOperation(UUID id, BlockStatementIndexPair blockStatementIndexPair) {
+    super(id, blockStatementIndexPair);
+  }
 
-	protected abstract Edit createEdit( UserActivity userActivity, Statement statement );
+  protected abstract Edit createEdit(UserActivity userActivity, Statement statement);
 
-	@Override
-	protected final Edit createEdit( UserActivity userActivity ) {
-		Node node = Clipboard.SINGLETON.peek();
-		//todo: recast if necessary
-		if( node instanceof Statement ) {
-			Statement statement = (Statement)node;
-			return this.createEdit( userActivity, statement );
-		} else {
-			throw new CancelException();
-		}
-	}
+  @Override
+  protected final Edit createEdit(UserActivity userActivity) {
+    Node node = Clipboard.SINGLETON.peek();
+    //todo: recast if necessary
+    if (node instanceof Statement) {
+      Statement statement = (Statement) node;
+      return this.createEdit(userActivity, statement);
+    } else {
+      throw new CancelException();
+    }
+  }
 }

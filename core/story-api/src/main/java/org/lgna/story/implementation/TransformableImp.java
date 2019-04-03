@@ -49,14 +49,14 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author Dennis Cosgrove
  */
 public abstract class TransformableImp extends AbstractTransformableImp {
-	public TransformableImp() {
-		this.putInstance( this.sgTransformable );
-	}
+  public TransformableImp() {
+    this.putInstance(this.sgTransformable);
+  }
 
-	@Override
-	public Transformable getSgComposite() {
-		return this.sgTransformable;
-	}
+  @Override
+  public Transformable getSgComposite() {
+    return this.sgTransformable;
+  }
 
-	private final Transformable sgTransformable = new Transformable();
+  private final Transformable sgTransformable = new Transformable();
 }

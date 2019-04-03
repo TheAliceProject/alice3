@@ -59,18 +59,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class StandardExpressionState extends ExpressionState {
-	public StandardExpressionState( Group group, UUID id, Expression initialValue ) {
-		super( group, id, initialValue );
-	}
+  public StandardExpressionState(Group group, UUID id, Expression initialValue) {
+    super(group, id, initialValue);
+  }
 
-	protected abstract AbstractType<?, ?, ?> getType();
+  protected abstract AbstractType<?, ?, ?> getType();
 
-	protected abstract ValueDetails<?> getValueDetails();
+  protected abstract ValueDetails<?> getValueDetails();
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
-		//org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( this.getValue(), null );
-		Logger.errln( "todo: investigate cascade context" );
-		IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, this.getType(), this.getValueDetails() );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
+    //org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( this.getValue(), null );
+    Logger.errln("todo: investigate cascade context");
+    IDE.getActiveInstance().getExpressionCascadeManager().appendItems(blankChildren, blankNode, this.getType(), this.getValueDetails());
+  }
 }

@@ -50,31 +50,31 @@ import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
  * @author Dennis Cosgrove
  */
 public class EulerAnglesProperty extends CopyableInstanceProperty<EulerAngles> {
-	public EulerAnglesProperty( InstancePropertyOwner owner, EulerAngles value ) {
-		super( owner, value );
-	}
+  public EulerAnglesProperty(InstancePropertyOwner owner, EulerAngles value) {
+    super(owner, value);
+  }
 
-	@Override
-	public void setValue( EulerAngles value ) {
-		assert value != null : this;
-		assert value.isNaN() == false : this;
-		super.setValue( value );
-	}
+  @Override
+  public void setValue(EulerAngles value) {
+    assert value != null : this;
+    assert value.isNaN() == false : this;
+    super.setValue(value);
+  }
 
-	@Override
-	public EulerAngles getCopy( EulerAngles rv ) {
-		rv.setValue( this.getValue() );
-		return rv;
-	}
+  @Override
+  public EulerAngles getCopy(EulerAngles rv) {
+    rv.setValue(this.getValue());
+    return rv;
+  }
 
-	@Override
-	public final EulerAngles getCopy() {
-		return this.getCopy( EulerAngles.createNaN() );
-	}
+  @Override
+  public final EulerAngles getCopy() {
+    return this.getCopy(EulerAngles.createNaN());
+  }
 
-	@Override
-	public void setCopy( EulerAngles value ) {
-		//todo?
-		this.setValue( new EulerAngles( value ) );
-	}
+  @Override
+  public void setCopy(EulerAngles value) {
+    //todo?
+    this.setValue(new EulerAngles(value));
+  }
 }

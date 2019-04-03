@@ -53,114 +53,110 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BubbleManager {
-	private static int Y_GAP = 8; //Default distance to place bubble from top or bottom of screen (is scaled based on font scale)
-	private static int X_GAP = 16; //Default distance to place bubble from left or right of screen (is scaled based on font scale)
+  private static int Y_GAP = 8; //Default distance to place bubble from top or bottom of screen (is scaled based on font scale)
+  private static int X_GAP = 16; //Default distance to place bubble from left or right of screen (is scaled based on font scale)
 
-	private static class SingletonHolder {
-		private static BubbleManager instance = new BubbleManager();
-	}
+  private static class SingletonHolder {
+    private static BubbleManager instance = new BubbleManager();
+  }
 
-	public static BubbleManager getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static BubbleManager getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private Hashtable<Bubble, OnscreenBubble> bubbleMap = new Hashtable<Bubble, OnscreenBubble>();
-	private List<OnscreenBubble> activeBubbles = new LinkedList<OnscreenBubble>();
+  private Hashtable<Bubble, OnscreenBubble> bubbleMap = new Hashtable<Bubble, OnscreenBubble>();
+  private List<OnscreenBubble> activeBubbles = new LinkedList<OnscreenBubble>();
 
-	public synchronized OnscreenBubble addBubble( Bubble bubbleOwner, Point2D.Float originOfTail, Dimension2D textSize, float padding, float textScale, Rectangle viewport ) {
-		Bubble.PositionPreference positionPreference = bubbleOwner.getPositionPreference();
-		if( positionPreference == Bubble.PositionPreference.AUTOMATIC ) {
-			if( originOfTail.x < ( viewport.width * .33 ) ) {
-				positionPreference = Bubble.PositionPreference.TOP_LEFT;
-			} else if( originOfTail.x < ( viewport.width * .66 ) ) {
-				positionPreference = Bubble.PositionPreference.TOP_CENTER;
-			} else {
-				positionPreference = Bubble.PositionPreference.TOP_RIGHT;
-			}
-		}
-		double IPAD = padding;
-		Rectangle2D.Double bubbleBounds = getRectForBubble( ( textSize.getWidth() + ( IPAD * 2 ) ), ( textSize.getHeight() + ( IPAD * 2 ) ), positionPreference, viewport );
-		RoundRectangle2D.Double roundRect = new RoundRectangle2D.Double();
-		roundRect.width = bubbleBounds.width;
-		roundRect.height = bubbleBounds.height;
-		roundRect.x = bubbleBounds.x;
-		roundRect.y = bubbleBounds.y;
-		roundRect.arcwidth = IPAD;
-		roundRect.archeight = IPAD;
+  public synchronized OnscreenBubble addBubble(Bubble bubbleOwner, Point2D.Float originOfTail, Dimension2D textSize, float padding, float textScale, Rectangle viewport) {
+    Bubble.PositionPreference positionPreference = bubbleOwner.getPositionPreference();
+    if (positionPreference == Bubble.PositionPreference.AUTOMATIC) {
+      if (originOfTail.x < (viewport.width * .33)) {
+        positionPreference = Bubble.PositionPreference.TOP_LEFT;
+      } else if (originOfTail.x < (viewport.width * .66)) {
+        positionPreference = Bubble.PositionPreference.TOP_CENTER;
+      } else {
+        positionPreference = Bubble.PositionPreference.TOP_RIGHT;
+      }
+    }
+    double IPAD = padding;
+    Rectangle2D.Double bubbleBounds = getRectForBubble((textSize.getWidth() + (IPAD * 2)), (textSize.getHeight() + (IPAD * 2)), positionPreference, viewport);
+    RoundRectangle2D.Double roundRect = new RoundRectangle2D.Double();
+    roundRect.width = bubbleBounds.width;
+    roundRect.height = bubbleBounds.height;
+    roundRect.x = bubbleBounds.x;
+    roundRect.y = bubbleBounds.y;
+    roundRect.arcwidth = IPAD;
+    roundRect.archeight = IPAD;
 
-		Rectangle2D.Double textBounds = new Rectangle2D.Double(
-				roundRect.x + IPAD,
-				roundRect.y + IPAD,
-				textSize.getWidth(),
-				textSize.getHeight() );
+    Rectangle2D.Double textBounds = new Rectangle2D.Double(roundRect.x + IPAD, roundRect.y + IPAD, textSize.getWidth(), textSize.getHeight());
 
-		double percentOriginAcrossScreen = originOfTail.getX() / viewport.width;
-		double tailEndX = roundRect.getMinX() + IPAD + ( percentOriginAcrossScreen * textSize.getWidth() );
-		Point2D.Float endOfTail = new Point2D.Float( (float)tailEndX, (float)roundRect.getMaxY() );
+    double percentOriginAcrossScreen = originOfTail.getX() / viewport.width;
+    double tailEndX = roundRect.getMinX() + IPAD + (percentOriginAcrossScreen * textSize.getWidth());
+    Point2D.Float endOfTail = new Point2D.Float((float) tailEndX, (float) roundRect.getMaxY());
 
-		OnscreenBubble bubble = new OnscreenBubble( originOfTail, endOfTail, roundRect, textBounds, positionPreference );
-		placeBubble( bubble, viewport, textScale );
-		this.bubbleMap.put( bubbleOwner, bubble );
-		this.activeBubbles.add( bubble );
-		return bubble;
-	}
+    OnscreenBubble bubble = new OnscreenBubble(originOfTail, endOfTail, roundRect, textBounds, positionPreference);
+    placeBubble(bubble, viewport, textScale);
+    this.bubbleMap.put(bubbleOwner, bubble);
+    this.activeBubbles.add(bubble);
+    return bubble;
+  }
 
-	private Rectangle2D.Double getRectForBubble( double width, double height, Bubble.PositionPreference positionPreference, Rectangle viewport ) {
-		Rectangle2D.Double bubbleRect = new Rectangle2D.Double();
-		bubbleRect.width = width;
-		bubbleRect.height = height;
-		bubbleRect.x = 0;
-		bubbleRect.y = 0;
+  private Rectangle2D.Double getRectForBubble(double width, double height, Bubble.PositionPreference positionPreference, Rectangle viewport) {
+    Rectangle2D.Double bubbleRect = new Rectangle2D.Double();
+    bubbleRect.width = width;
+    bubbleRect.height = height;
+    bubbleRect.x = 0;
+    bubbleRect.y = 0;
 
-		return bubbleRect;
-	}
+    return bubbleRect;
+  }
 
-	private void placeBubble( OnscreenBubble bubble, Rectangle viewport, float textScale ) {
-		double scaledYGap = Y_GAP * textScale;
-		double scaledXGap = X_GAP * textScale;
-		double x, y;
-		switch( bubble.getPositionPreference() ) {
-		case TOP_LEFT:
-			x = scaledXGap;
-			break;
-		case TOP_CENTER:
-			x = ( viewport.width - bubble.getBubbleRect().width ) * .5f;
-			break;
-		case TOP_RIGHT:
-			x = viewport.width - bubble.getBubbleRect().width - scaledXGap;
-			break;
-		default:
-			x = scaledXGap;
-		}
-		double rightEdge = x + bubble.getBubbleRect().width;
-		double maxY = 0;
-		for( OnscreenBubble otherBubble : this.activeBubbles ) {
-			double minX = otherBubble.getBubbleRect().getMinX();
-			double maxX = otherBubble.getBubbleRect().getMaxX();
-			if( ( ( x >= minX ) && ( x <= maxX ) ) || ( ( rightEdge >= minX ) && ( rightEdge <= maxX ) ) ) {
-				if( otherBubble.getBubbleRect().getMaxY() > maxY ) {
-					maxY = otherBubble.getBubbleRect().getMaxY();
-				}
-			}
-		}
-		y = maxY + scaledYGap;
-		bubble.setPosition( x, y );
-	}
+  private void placeBubble(OnscreenBubble bubble, Rectangle viewport, float textScale) {
+    double scaledYGap = Y_GAP * textScale;
+    double scaledXGap = X_GAP * textScale;
+    double x, y;
+    switch (bubble.getPositionPreference()) {
+    case TOP_LEFT:
+      x = scaledXGap;
+      break;
+    case TOP_CENTER:
+      x = (viewport.width - bubble.getBubbleRect().width) * .5f;
+      break;
+    case TOP_RIGHT:
+      x = viewport.width - bubble.getBubbleRect().width - scaledXGap;
+      break;
+    default:
+      x = scaledXGap;
+    }
+    double rightEdge = x + bubble.getBubbleRect().width;
+    double maxY = 0;
+    for (OnscreenBubble otherBubble : this.activeBubbles) {
+      double minX = otherBubble.getBubbleRect().getMinX();
+      double maxX = otherBubble.getBubbleRect().getMaxX();
+      if (((x >= minX) && (x <= maxX)) || ((rightEdge >= minX) && (rightEdge <= maxX))) {
+        if (otherBubble.getBubbleRect().getMaxY() > maxY) {
+          maxY = otherBubble.getBubbleRect().getMaxY();
+        }
+      }
+    }
+    y = maxY + scaledYGap;
+    bubble.setPosition(x, y);
+  }
 
-	public void packBubbles( Rectangle viewport ) {
+  public void packBubbles(Rectangle viewport) {
 
-	}
+  }
 
-	public OnscreenBubble getBubble( Bubble bubbleOwner ) {
-		return this.bubbleMap.get( bubbleOwner );
-	}
+  public OnscreenBubble getBubble(Bubble bubbleOwner) {
+    return this.bubbleMap.get(bubbleOwner);
+  }
 
-	public synchronized void removeBubble( Bubble bubbleOwner ) {
-		OnscreenBubble bubble = this.bubbleMap.get( bubbleOwner );
-		if( bubble != null ) {
-			this.activeBubbles.remove( bubble );
-			this.bubbleMap.remove( bubbleOwner );
-		}
-	}
+  public synchronized void removeBubble(Bubble bubbleOwner) {
+    OnscreenBubble bubble = this.bubbleMap.get(bubbleOwner);
+    if (bubble != null) {
+      this.activeBubbles.remove(bubble);
+      this.bubbleMap.remove(bubbleOwner);
+    }
+  }
 
 }

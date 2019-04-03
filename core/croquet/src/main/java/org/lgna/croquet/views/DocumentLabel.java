@@ -55,78 +55,78 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class DocumentLabel extends AbstractLabel {
-	private class JDocumentLabel extends JLabel {
-		public JDocumentLabel( String text ) {
-			super( text );
-		}
+  private class JDocumentLabel extends JLabel {
+    public JDocumentLabel(String text) {
+      super(text);
+    }
 
-		@Override
-		public Dimension getPreferredSize() {
-			return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-		}
+    @Override
+    public Dimension getPreferredSize() {
+      return constrainPreferredSizeIfNecessary(super.getPreferredSize());
+    }
 
-		@Override
-		public Dimension getMaximumSize() {
-			Dimension rv = super.getMaximumSize();
-			if( isMaximumSizeClampedToPreferredSize() ) {
-				rv.setSize( this.getPreferredSize() );
-			}
-			return rv;
-		}
-	}
+    @Override
+    public Dimension getMaximumSize() {
+      Dimension rv = super.getMaximumSize();
+      if (isMaximumSizeClampedToPreferredSize()) {
+        rv.setSize(this.getPreferredSize());
+      }
+      return rv;
+    }
+  }
 
-	private final Document document;
+  private final Document document;
 
-	private static String getText( Document document ) {
-		try {
-			return document.getText( 0, document.getLength() );
-		} catch( BadLocationException ble ) {
-			throw new RuntimeException( ble );
-		}
-	}
+  private static String getText(Document document) {
+    try {
+      return document.getText(0, document.getLength());
+    } catch (BadLocationException ble) {
+      throw new RuntimeException(ble);
+    }
+  }
 
-	private final DocumentListener documentListener = new DocumentListener() {
-		@Override
-		public void changedUpdate( DocumentEvent e ) {
-			handleDocumentChanged();
-		}
+  private final DocumentListener documentListener = new DocumentListener() {
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+      handleDocumentChanged();
+    }
 
-		@Override
-		public void insertUpdate( DocumentEvent e ) {
-			handleDocumentChanged();
-		}
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+      handleDocumentChanged();
+    }
 
-		@Override
-		public void removeUpdate( DocumentEvent e ) {
-			handleDocumentChanged();
-		}
-	};
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+      handleDocumentChanged();
+    }
+  };
 
-	public DocumentLabel( Document document, float fontScalar, TextAttribute<?>... textAttributes ) {
-		this.document = document;
-		this.scaleFont( fontScalar );
-		this.changeFont( textAttributes );
-	}
+  public DocumentLabel(Document document, float fontScalar, TextAttribute<?>... textAttributes) {
+    this.document = document;
+    this.scaleFont(fontScalar);
+    this.changeFont(textAttributes);
+  }
 
-	@Override
-	protected JLabel createAwtComponent() {
-		return new JDocumentLabel( DocumentLabel.getText( this.document ) );
-	}
+  @Override
+  protected JLabel createAwtComponent() {
+    return new JDocumentLabel(DocumentLabel.getText(this.document));
+  }
 
-	private void handleDocumentChanged() {
-		this.setText( getText( this.document ) );
-	}
+  private void handleDocumentChanged() {
+    this.setText(getText(this.document));
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		this.handleDocumentChanged();
-		this.document.addDocumentListener( this.documentListener );
-		super.handleDisplayable();
-	}
+  @Override
+  protected void handleDisplayable() {
+    this.handleDocumentChanged();
+    this.document.addDocumentListener(this.documentListener);
+    super.handleDisplayable();
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		this.document.removeDocumentListener( this.documentListener );
-	}
+  @Override
+  protected void handleUndisplayable() {
+    super.handleUndisplayable();
+    this.document.removeDocumentListener(this.documentListener);
+  }
 }

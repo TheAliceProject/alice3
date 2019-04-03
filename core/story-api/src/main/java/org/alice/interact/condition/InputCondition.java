@@ -48,28 +48,28 @@ import org.alice.interact.InputState;
  * @author David Culyba
  */
 public abstract class InputCondition {
-	public boolean isRunning( InputState currentState, InputState previousState ) {
-		return testState( currentState ) && testState( previousState );
-	}
+  public boolean isRunning(InputState currentState, InputState previousState) {
+    return testState(currentState) && testState(previousState);
+  }
 
-	public boolean justEnded( InputState currentState, InputState previousState ) {
-		return ( testState( currentState ) == false ) && testState( previousState );
-	}
+  public boolean justEnded(InputState currentState, InputState previousState) {
+    return (testState(currentState) == false) && testState(previousState);
+  }
 
-	public boolean justStarted( InputState currentState, InputState previousState ) {
-		return testState( currentState ) && ( testState( previousState ) == false );
-	}
+  public boolean justStarted(InputState currentState, InputState previousState) {
+    return testState(currentState) && (testState(previousState) == false);
+  }
 
-	public boolean stateChanged( InputState currentState, InputState previousState ) {
-		return testState( currentState ) != testState( previousState );
-	}
+  public boolean stateChanged(InputState currentState, InputState previousState) {
+    return testState(currentState) != testState(previousState);
+  }
 
-	public boolean clicked( InputState currentState, InputState previousState ) {
-		return false;
-	}
+  public boolean clicked(InputState currentState, InputState previousState) {
+    return false;
+  }
 
-	protected void update( InputState currentState, InputState previousState ) {
-	}
+  protected void update(InputState currentState, InputState previousState) {
+  }
 
-	protected abstract boolean testState( InputState state );
+  protected abstract boolean testState(InputState state);
 }

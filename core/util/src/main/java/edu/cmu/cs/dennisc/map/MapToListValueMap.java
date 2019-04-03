@@ -50,34 +50,34 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class MapToListValueMap<A, B, E> extends AbstractMapToMap<A, B, List<E>> {
-	public static <A, B, E> MapToListValueMap<A, B, E> newInstance() {
-		return new MapToListValueMap<A, B, E>();
-	}
+  public static <A, B, E> MapToListValueMap<A, B, E> newInstance() {
+    return new MapToListValueMap<A, B, E>();
+  }
 
-	public List<E> getInitializingIfAbsentToLinkedList( A a, B b ) {
-		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, List<E>>() {
-			@Override
-			public List<E> initialize( A a, B b ) {
-				return Lists.newLinkedList();
-			}
-		} );
-	}
+  public List<E> getInitializingIfAbsentToLinkedList(A a, B b) {
+    return this.getInitializingIfAbsent(a, b, new Initializer<A, B, List<E>>() {
+      @Override
+      public List<E> initialize(A a, B b) {
+        return Lists.newLinkedList();
+      }
+    });
+  }
 
-	public List<E> getInitializingIfAbsentToArrayList( A a, B b ) {
-		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, List<E>>() {
-			@Override
-			public List<E> initialize( A a, B b ) {
-				return Lists.newArrayList();
-			}
-		} );
-	}
+  public List<E> getInitializingIfAbsentToArrayList(A a, B b) {
+    return this.getInitializingIfAbsent(a, b, new Initializer<A, B, List<E>>() {
+      @Override
+      public List<E> initialize(A a, B b) {
+        return Lists.newArrayList();
+      }
+    });
+  }
 
-	public List<E> getInitializingIfAbsentToCopyOnWriteArrayList( A a, B b ) {
-		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, List<E>>() {
-			@Override
-			public List<E> initialize( A a, B b ) {
-				return Lists.newCopyOnWriteArrayList();
-			}
-		} );
-	}
+  public List<E> getInitializingIfAbsentToCopyOnWriteArrayList(A a, B b) {
+    return this.getInitializingIfAbsent(a, b, new Initializer<A, B, List<E>>() {
+      @Override
+      public List<E> initialize(A a, B b) {
+        return Lists.newCopyOnWriteArrayList();
+      }
+    });
+  }
 }

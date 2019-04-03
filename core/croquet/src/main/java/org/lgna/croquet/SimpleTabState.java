@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class SimpleTabState<C extends SimpleTabComposite<?>> extends ImmutableDataTabState<C> {
-	public SimpleTabState( Group group, UUID migrationId, int selectionIndex, Class<C> cls, C[] values ) {
-		super( group, migrationId, selectionIndex, SimpleTabCompositeCodec.getInstance( cls ), values );
-	}
+  public SimpleTabState(Group group, UUID migrationId, int selectionIndex, Class<C> cls, C[] values) {
+    super(group, migrationId, selectionIndex, SimpleTabCompositeCodec.getInstance(cls), values);
+  }
 }

@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleToddlerFullBodyOutfitSundress implements FemaleToddlerFullBodyOutfit {
-	PINK_CHECK,
-	BLUE_CHECK,
-	GREEN_CHECK,
-	PURPLE_CHECK,
-	YELLOW_CHECK;
+  PINK_CHECK, BLUE_CHECK, GREEN_CHECK, PURPLE_CHECK, YELLOW_CHECK
 
 }

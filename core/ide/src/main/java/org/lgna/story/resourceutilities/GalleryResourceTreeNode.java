@@ -10,119 +10,119 @@ import java.util.List;
 
 public abstract class GalleryResourceTreeNode implements javax.swing.tree.TreeNode, Iterable<GalleryResourceTreeNode>, Comparable<GalleryResourceTreeNode> {
 
-	protected TypeDefinedGalleryTreeNode parent;
-	protected List<GalleryResourceTreeNode> children = Lists.newLinkedList();
-	protected String name;
-	private boolean isSorted = false;
-	private ResourceKey resourceKey;
+  protected TypeDefinedGalleryTreeNode parent;
+  protected List<GalleryResourceTreeNode> children = Lists.newLinkedList();
+  protected String name;
+  private boolean isSorted = false;
+  private ResourceKey resourceKey;
 
-	GalleryResourceTreeNode( String name ) {
-		this.name = name;
-	}
+  GalleryResourceTreeNode(String name) {
+    this.name = name;
+  }
 
-	public ResourceKey getResourceKey() {
-		if (resourceKey == null) {
-			resourceKey = createResourceKey();
-		}
-		return resourceKey;
-	}
+  public ResourceKey getResourceKey() {
+    if (resourceKey == null) {
+      resourceKey = createResourceKey();
+    }
+    return resourceKey;
+  }
 
-	abstract ResourceKey createResourceKey();
+  abstract ResourceKey createResourceKey();
 
-	public String getName() {
-		return this.name;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	@Override
-	public TypeDefinedGalleryTreeNode getParent() {
-		return this.parent;
-	}
+  @Override
+  public TypeDefinedGalleryTreeNode getParent() {
+    return this.parent;
+  }
 
-	public void setParent( TypeDefinedGalleryTreeNode parent ) {
-		if (this.parent == parent) {
-			return;
-		}
-		if( this.parent != null ) {
-			this.parent.removeChild( this );
-		}
-		this.parent = parent;
-		if( this.parent != null ) {
-			this.parent.addChild( this );
-		}
-	}
+  public void setParent(TypeDefinedGalleryTreeNode parent) {
+    if (this.parent == parent) {
+      return;
+    }
+    if (this.parent != null) {
+      this.parent.removeChild(this);
+    }
+    this.parent = parent;
+    if (this.parent != null) {
+      this.parent.addChild(this);
+    }
+  }
 
-	@Override
-	public boolean getAllowsChildren() {
-		return true;
-	}
+  @Override
+  public boolean getAllowsChildren() {
+    return true;
+  }
 
-	private List<GalleryResourceTreeNode> getSortedChildren() {
-		if( this.isSorted ) {
-			//pass
-		} else {
-			Collections.sort( this.children );
-			this.isSorted = true;
-		}
-		return this.children;
-	}
+  private List<GalleryResourceTreeNode> getSortedChildren() {
+    if (this.isSorted) {
+      //pass
+    } else {
+      Collections.sort(this.children);
+      this.isSorted = true;
+    }
+    return this.children;
+  }
 
-	public List<? extends GalleryResourceTreeNode> childrenList() {
-		return this.getSortedChildren();
-	}
+  public List<? extends GalleryResourceTreeNode> childrenList() {
+    return this.getSortedChildren();
+  }
 
-	@Override
-	public Enumeration<? extends GalleryResourceTreeNode> children() {
-		return Collections.enumeration( this.getSortedChildren() );
-	}
+  @Override
+  public Enumeration<? extends GalleryResourceTreeNode> children() {
+    return Collections.enumeration(this.getSortedChildren());
+  }
 
-	@Override
-	public Iterator iterator() {
-		return this.children.iterator();
-	}
+  @Override
+  public Iterator iterator() {
+    return this.children.iterator();
+  }
 
-	@Override
-	public GalleryResourceTreeNode getChildAt( int childIndex ) {
-		return this.getSortedChildren().get( childIndex );
-	}
+  @Override
+  public GalleryResourceTreeNode getChildAt(int childIndex) {
+    return this.getSortedChildren().get(childIndex);
+  }
 
-	@Override
-	public int getChildCount() {
-		return this.children.size();
-	}
+  @Override
+  public int getChildCount() {
+    return this.children.size();
+  }
 
-	@Override
-	public boolean isLeaf() {
-		return this.children.size() == 0;
-	}
+  @Override
+  public boolean isLeaf() {
+    return this.children.size() == 0;
+  }
 
-	@Override
-	public int getIndex( javax.swing.tree.TreeNode node ) {
-		return this.getSortedChildren().indexOf( node );
-	}
+  @Override
+  public int getIndex(javax.swing.tree.TreeNode node) {
+    return this.getSortedChildren().indexOf(node);
+  }
 
-	public void addChild( GalleryResourceTreeNode node ) {
-		this.children.add( node );
-		this.isSorted = false;
-	}
+  public void addChild(GalleryResourceTreeNode node) {
+    this.children.add(node);
+    this.isSorted = false;
+  }
 
-	public void removeChild( GalleryResourceTreeNode node ) {
-		this.children.remove( node );
-	}
+  public void removeChild(GalleryResourceTreeNode node) {
+    this.children.remove(node);
+  }
 
-	@Override
-	public int compareTo( GalleryResourceTreeNode other ) {
-		if( this.getAllowsChildren() ) {
-			if( other.getAllowsChildren() ) {
-				return this.getName().compareToIgnoreCase( other.getName() );
-			} else {
-				return -1;
-			}
-		} else {
-			if( other.getAllowsChildren() ) {
-				return 1;
-			} else {
-				return this.getName().compareToIgnoreCase( other.getName() );
-			}
-		}
-	}
+  @Override
+  public int compareTo(GalleryResourceTreeNode other) {
+    if (this.getAllowsChildren()) {
+      if (other.getAllowsChildren()) {
+        return this.getName().compareToIgnoreCase(other.getName());
+      } else {
+        return -1;
+      }
+    } else {
+      if (other.getAllowsChildren()) {
+        return 1;
+      } else {
+        return this.getName().compareToIgnoreCase(other.getName());
+      }
+    }
+  }
 }

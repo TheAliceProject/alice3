@@ -54,33 +54,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SetOpacityMethodInvocationFillIn extends OneShotJavaMethodInvocationFillIn {
-	private static MapToMap<InstanceFactory, JavaMethod, SetOpacityMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
+  private static MapToMap<InstanceFactory, JavaMethod, SetOpacityMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
 
-	public static SetOpacityMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaMethod method ) {
-		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new MapToMap.Initializer<InstanceFactory, JavaMethod, SetOpacityMethodInvocationFillIn>() {
-			@Override
-			public SetOpacityMethodInvocationFillIn initialize( InstanceFactory instanceFactory, JavaMethod method ) {
-				return new SetOpacityMethodInvocationFillIn( instanceFactory, method );
-			}
-		} );
-	}
+  public static SetOpacityMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, JavaMethod method) {
+    return mapToMap.getInitializingIfAbsent(instanceFactory, method, new MapToMap.Initializer<InstanceFactory, JavaMethod, SetOpacityMethodInvocationFillIn>() {
+      @Override
+      public SetOpacityMethodInvocationFillIn initialize(InstanceFactory instanceFactory, JavaMethod method) {
+        return new SetOpacityMethodInvocationFillIn(instanceFactory, method);
+      }
+    });
+  }
 
-	public static SetOpacityMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaType type, String methodName, Class<?>... parameterClses ) {
-		JavaMethod method = type.getDeclaredMethod( methodName, parameterClses );
-		assert method != null : methodName;
-		return getInstance( instanceFactory, method );
-	}
+  public static SetOpacityMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, JavaType type, String methodName, Class<?>... parameterClses) {
+    JavaMethod method = type.getDeclaredMethod(methodName, parameterClses);
+    assert method != null : methodName;
+    return getInstance(instanceFactory, method);
+  }
 
-	public static SetOpacityMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( instanceFactory, JavaType.getInstance( cls ), methodName, parameterClses );
-	}
+  public static SetOpacityMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses) {
+    return getInstance(instanceFactory, JavaType.getInstance(cls), methodName, parameterClses);
+  }
 
-	private SetOpacityMethodInvocationFillIn( InstanceFactory instanceFactory, JavaMethod method ) {
-		super( UUID.fromString( "52f83a5b-9005-4d21-b6a0-3dd96211dc33" ), instanceFactory, method );
-	}
+  private SetOpacityMethodInvocationFillIn(InstanceFactory instanceFactory, JavaMethod method) {
+    super(UUID.fromString("52f83a5b-9005-4d21-b6a0-3dd96211dc33"), instanceFactory, method);
+  }
 
-	@Override
-	protected MethodInvocationEditFactory createMethodInvocationEditFactory( InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions ) {
-		return new SetOpacityMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
-	}
+  @Override
+  protected MethodInvocationEditFactory createMethodInvocationEditFactory(InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions) {
+    return new SetOpacityMethodInvocationEditFactory(instanceFactory, method, argumentExpressions);
+  }
 }

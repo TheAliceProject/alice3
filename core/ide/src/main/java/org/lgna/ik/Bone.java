@@ -50,126 +50,128 @@ import org.lgna.story.implementation.JointImp;
  * @author Dennis Cosgrove
  */
 public class Bone {
-	/* package-private */static Vector3[] createAxes( boolean b, final int N ) {
-		if( b ) {
-			Vector3[] rv = new Vector3[ N ];
-			for( int i = 0; i < N; i++ ) {
-				rv[ i ] = Vector3.createZero();
-			}
-			return rv;
-		} else {
-			return null;
-		}
-	}
+  /* package-private */
+  static Vector3[] createAxes(boolean b, final int N) {
+    if (b) {
+      Vector3[] rv = new Vector3[N];
+      for (int i = 0; i < N; i++) {
+        rv[i] = Vector3.createZero();
+      }
+      return rv;
+    } else {
+      return null;
+    }
+  }
 
-	/* package-private */static double[] createVelocities( boolean isNotToBeNull, final int N ) {
-		if( isNotToBeNull ) {
-			return new double[ N ];
-		} else {
-			return null;
-		}
-	}
+  /* package-private */
+  static double[] createVelocities(boolean isNotToBeNull, final int N) {
+    if (isNotToBeNull) {
+      return new double[N];
+    } else {
+      return null;
+    }
+  }
 
-	private static class Axis {
-		private final Vector3 axis;
-		private double angularVelocity;
-		private final Vector3 linearContribution;
-		private final Vector3 angularContribution;
+  private static class Axis {
+    private final Vector3 axis;
+    private double angularVelocity;
+    private final Vector3 linearContribution;
+    private final Vector3 angularContribution;
 
-		public Axis( boolean isLinearEnabled, boolean isAngularEnabled ) {
-			this.axis = Vector3.createZero();
-			if( isLinearEnabled ) {
-				this.linearContribution = Vector3.createZero();
-			} else {
-				this.linearContribution = null;
-			}
-			if( isAngularEnabled ) {
-				this.angularContribution = Vector3.createZero();
-				this.angularVelocity = 0.0;
-			} else {
-				this.angularContribution = null;
-				this.angularVelocity = Double.NaN;
-			}
-		}
+    public Axis(boolean isLinearEnabled, boolean isAngularEnabled) {
+      this.axis = Vector3.createZero();
+      if (isLinearEnabled) {
+        this.linearContribution = Vector3.createZero();
+      } else {
+        this.linearContribution = null;
+      }
+      if (isAngularEnabled) {
+        this.angularContribution = Vector3.createZero();
+        this.angularVelocity = 0.0;
+      } else {
+        this.angularContribution = null;
+        this.angularVelocity = Double.NaN;
+      }
+    }
 
-		public void updateLinearContributions( Vector3 v ) {
-			if( this.linearContribution != null ) {
-				Vector3.setReturnValueToCrossProduct( this.linearContribution, this.axis, v );
-			}
-		}
+    public void updateLinearContributions(Vector3 v) {
+      if (this.linearContribution != null) {
+        Vector3.setReturnValueToCrossProduct(this.linearContribution, this.axis, v);
+      }
+    }
 
-		public void updateAngularContributions() {
-			if( this.angularContribution != null ) {
-				this.angularContribution.set( this.axis );
-			}
-		}
-	}
+    public void updateAngularContributions() {
+      if (this.angularContribution != null) {
+        this.angularContribution.set(this.axis);
+      }
+    }
+  }
 
-	private final Chain chain;
-	private final int index;
-	private final Axis[] axes = new Axis[ 3 ];
+  private final Chain chain;
+  private final int index;
+  private final Axis[] axes = new Axis[3];
 
-	public Bone( Chain chain, int index, boolean isLinearEnabled, boolean isAngularEnabled ) {
-		this.chain = chain;
-		this.index = index;
+  public Bone(Chain chain, int index, boolean isLinearEnabled, boolean isAngularEnabled) {
+    this.chain = chain;
+    this.index = index;
 
-		JointImp a = this.getA();
-		if( a.isFreeInX() ) {
-			this.axes[ 0 ] = new Axis( isLinearEnabled, isAngularEnabled );
-		}
-		if( a.isFreeInY() ) {
-			this.axes[ 1 ] = new Axis( isLinearEnabled, isAngularEnabled );
-		}
-		if( a.isFreeInZ() ) {
-			this.axes[ 2 ] = new Axis( isLinearEnabled, isAngularEnabled );
-		}
-	}
+    JointImp a = this.getA();
+    if (a.isFreeInX()) {
+      this.axes[0] = new Axis(isLinearEnabled, isAngularEnabled);
+    }
+    if (a.isFreeInY()) {
+      this.axes[1] = new Axis(isLinearEnabled, isAngularEnabled);
+    }
+    if (a.isFreeInZ()) {
+      this.axes[2] = new Axis(isLinearEnabled, isAngularEnabled);
+    }
+  }
 
-	public JointImp getA() {
-		return this.chain.getJointImpAt( this.index );
-	}
+  public JointImp getA() {
+    return this.chain.getJointImpAt(this.index);
+  }
 
-	public JointImp getB() {
-		return this.chain.getJointImpAt( this.index + 1 );
-	}
+  public JointImp getB() {
+    return this.chain.getJointImpAt(this.index + 1);
+  }
 
-	public int getDegreesOfFreedom() {
-		int rv = 0;
-		for( Axis axis : axes ) {
-			if( axis != null ) {
-				rv++;
-			}
-		}
-		return rv;
-	}
+  public int getDegreesOfFreedom() {
+    int rv = 0;
+    for (Axis axis : axes) {
+      if (axis != null) {
+        rv++;
+      }
+    }
+    return rv;
+  }
 
-	public void updateLinearContributions( Vector3 v ) {
-		for( Axis axis : axes ) {
-			if( axis != null ) {
-				axis.updateLinearContributions( v );
-			}
-		}
-	}
+  public void updateLinearContributions(Vector3 v) {
+    for (Axis axis : axes) {
+      if (axis != null) {
+        axis.updateLinearContributions(v);
+      }
+    }
+  }
 
-	public void updateAngularContributions() {
-		for( Axis axis : axes ) {
-			if( axis != null ) {
-				axis.updateAngularContributions();
-			}
-		}
-	}
+  public void updateAngularContributions() {
+    for (Axis axis : axes) {
+      if (axis != null) {
+        axis.updateAngularContributions();
+      }
+    }
+  }
 
-	@Override
-	public String toString() {
-		JointImp a = this.getA();
-		JointImp b = this.getB();
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Bone[" );
-		sb.append( a.getJointId() );
-		sb.append( "->" );
-		sb.append( b.getJointId() );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    JointImp a = this.getA();
+    JointImp b = this.getB();
+    StringBuilder sb = new StringBuilder();
+    sb.append("Bone[");
+    sb.append(a.getJointId());
+    sb.append("->");
+    sb.append(b.getJointId());
+    sb.append("]");
+    return sb.toString();
+  }
 
 }

@@ -32,61 +32,63 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum KitchenCounterCornerResource implements PropResource {
-	DESIGNER_BLUE( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_PINK( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_GREEN( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_DARK_BLUE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_GREEN_TILE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_BROWN_TILE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_RED_TILE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_GRAY_TILE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_TEAL_TILE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_SMALL_GREEN_TILE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_LIGHT_GRAY_TILE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_SOLID_BLACK( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_GRAY( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_GREEN( ImplementationAndVisualType.SIMS2 ),
-	LOFT_STEEL( ImplementationAndVisualType.SIMS2 ),
-	LOFT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_BLACK_AND_GRAY( ImplementationAndVisualType.SIMS2 ),
-	LOFT_GRANITE( ImplementationAndVisualType.SIMS2 ),
-	LOFT_MARBLE( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_ORANGE( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_TAN( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_GREEN( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_BLUE( ImplementationAndVisualType.SIMS2 ),
-	ART_NOUVEAU_PINK( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_WHITE( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_GREEN( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_RED( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_GRAY( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_BLUE( ImplementationAndVisualType.SIMS2 ),
-	VALUE_PINK( ImplementationAndVisualType.SIMS2 ),
-	VALUE_WHITE( ImplementationAndVisualType.SIMS2 ),
-	VALUE_GREEN( ImplementationAndVisualType.SIMS2 ),
-	VALUE_BLUE( ImplementationAndVisualType.SIMS2 );
+  DESIGNER_BLUE(ImplementationAndVisualType.SIMS2),
+  DESIGNER_PINK(ImplementationAndVisualType.SIMS2),
+  DESIGNER_GREEN(ImplementationAndVisualType.SIMS2),
+  DESIGNER_DARK_BLUE(ImplementationAndVisualType.SIMS2),
+  CLUB_GREEN_TILE(ImplementationAndVisualType.SIMS2),
+  CLUB_BROWN_TILE(ImplementationAndVisualType.SIMS2),
+  CLUB_RED_TILE(ImplementationAndVisualType.SIMS2),
+  CLUB_GRAY_TILE(ImplementationAndVisualType.SIMS2),
+  CLUB_TEAL_TILE(ImplementationAndVisualType.SIMS2),
+  CLUB_SMALL_GREEN_TILE(ImplementationAndVisualType.SIMS2),
+  CLUB_LIGHT_GRAY_TILE(ImplementationAndVisualType.SIMS2),
+  CLUB_SOLID_BLACK(ImplementationAndVisualType.SIMS2),
+  COLONIAL_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  COLONIAL_GRAY(ImplementationAndVisualType.SIMS2),
+  COLONIAL_GREEN(ImplementationAndVisualType.SIMS2),
+  LOFT_STEEL(ImplementationAndVisualType.SIMS2),
+  LOFT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_BLACK_AND_GRAY(ImplementationAndVisualType.SIMS2),
+  LOFT_GRANITE(ImplementationAndVisualType.SIMS2),
+  LOFT_MARBLE(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_ORANGE(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_TAN(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_GREEN(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_BLUE(ImplementationAndVisualType.SIMS2),
+  ART_NOUVEAU_PINK(ImplementationAndVisualType.SIMS2),
+  QUAINT_WHITE(ImplementationAndVisualType.SIMS2),
+  QUAINT_GREEN(ImplementationAndVisualType.SIMS2),
+  QUAINT_RED(ImplementationAndVisualType.SIMS2),
+  QUAINT_GRAY(ImplementationAndVisualType.SIMS2),
+  QUAINT_BLUE(ImplementationAndVisualType.SIMS2),
+  VALUE_PINK(ImplementationAndVisualType.SIMS2),
+  VALUE_WHITE(ImplementationAndVisualType.SIMS2),
+  VALUE_GREEN(ImplementationAndVisualType.SIMS2),
+  VALUE_BLUE(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	KitchenCounterCornerResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	KitchenCounterCornerResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  KitchenCounterCornerResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  KitchenCounterCornerResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

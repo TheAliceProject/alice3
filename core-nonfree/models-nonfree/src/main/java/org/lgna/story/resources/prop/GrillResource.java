@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.prop;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
@@ -33,47 +34,36 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum GrillResource implements PropResource {
-	GREEN_LIT( ImplementationAndVisualType.SIMS2 ),
-	GREEN_UNLIT( ImplementationAndVisualType.SIMS2 ),
-	BLACK_LIT( ImplementationAndVisualType.SIMS2 ),
-	BLACK_UNLIT( ImplementationAndVisualType.SIMS2 ),
-	YELLOW_LIT( ImplementationAndVisualType.SIMS2 ),
-	YELLOW_UNLIT( ImplementationAndVisualType.SIMS2 ),
-	RED_LIT( ImplementationAndVisualType.SIMS2 ),
-	RED_UNLIT( ImplementationAndVisualType.SIMS2 ),
-	BLUE_LIT( ImplementationAndVisualType.SIMS2 ),
-	BLUE_UNLIT( ImplementationAndVisualType.SIMS2 );
+  GREEN_LIT(ImplementationAndVisualType.SIMS2), GREEN_UNLIT(ImplementationAndVisualType.SIMS2), BLACK_LIT(ImplementationAndVisualType.SIMS2), BLACK_UNLIT(ImplementationAndVisualType.SIMS2), YELLOW_LIT(ImplementationAndVisualType.SIMS2), YELLOW_UNLIT(ImplementationAndVisualType.SIMS2), RED_LIT(ImplementationAndVisualType.SIMS2), RED_UNLIT(ImplementationAndVisualType.SIMS2), BLUE_LIT(ImplementationAndVisualType.SIMS2), BLUE_UNLIT(ImplementationAndVisualType.SIMS2);
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId ROOT = new JointId( null, GrillResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId LID = new JointId( ROOT, GrillResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId BASE = new JointId( ROOT, GrillResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, GrillResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId LID = new JointId(ROOT, GrillResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId BASE = new JointId(ROOT, GrillResource.class);
 
-@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	private final ImplementationAndVisualType resourceType;
-	GrillResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	GrillResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  GrillResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return GrillResource.JOINT_ID_ROOTS;
-	}
+  GrillResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return GrillResource.JOINT_ID_ROOTS;
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

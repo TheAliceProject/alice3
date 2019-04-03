@@ -62,77 +62,77 @@ import java.awt.geom.AffineTransform;
  * @author Dennis Cosgrove
  */
 public class JZoomView extends JComponent {
-	private static final Dimension SIZE = new Dimension( 192, 192 );
-	private MouseEvent e;
+  private static final Dimension SIZE = new Dimension(192, 192);
+  private MouseEvent e;
 
-	public JZoomView() {
-		this.setBorder( BorderFactory.createMatteBorder( 4, 4, 4, 4, Color.WHITE ) );
-	}
+  public JZoomView() {
+    this.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.WHITE));
+  }
 
-	@Override
-	public Dimension getPreferredSize() {
-		return SIZE;
-	}
+  @Override
+  public Dimension getPreferredSize() {
+    return SIZE;
+  }
 
-	public MouseEvent getMouseEvent() {
-		return this.e;
-	}
+  public MouseEvent getMouseEvent() {
+    return this.e;
+  }
 
-	private void printSubComponent( Graphics2D g2, Component awtComponent ) {
-		AffineTransform m = g2.getTransform();
-		g2.scale( 4.0, 4.0 );
-		g2.translate( awtComponent.getX(), awtComponent.getY() );
-		//todo: map point?
-		g2.translate( -e.getX(), -e.getY() );
-		int xCenter = SIZE.width / 2;
-		int yCenter = SIZE.height / 2;
-		g2.translate( xCenter * 0.25, yCenter * 0.25 );
-		final boolean IS_PRINT_GOOD_TO_GO_GL = false;
-		if( IS_PRINT_GOOD_TO_GO_GL ) {
-			awtComponent.print( g2 );
-		} else {
-			awtComponent.paint( g2 );
-		}
-		g2.setTransform( m );
-	}
+  private void printSubComponent(Graphics2D g2, Component awtComponent) {
+    AffineTransform m = g2.getTransform();
+    g2.scale(4.0, 4.0);
+    g2.translate(awtComponent.getX(), awtComponent.getY());
+    //todo: map point?
+    g2.translate(-e.getX(), -e.getY());
+    int xCenter = SIZE.width / 2;
+    int yCenter = SIZE.height / 2;
+    g2.translate(xCenter * 0.25, yCenter * 0.25);
+    final boolean IS_PRINT_GOOD_TO_GO_GL = false;
+    if (IS_PRINT_GOOD_TO_GO_GL) {
+      awtComponent.print(g2);
+    } else {
+      awtComponent.paint(g2);
+    }
+    g2.setTransform(m);
+  }
 
-	@Override
-	protected void paintComponent( Graphics g ) {
-		JRootPane jRootPane = getEventRootPane();
-		if( jRootPane != null ) {
-			Component c = e.getComponent();
-			JMenuBar jMenuBar = jRootPane.getJMenuBar();
-			Container jContentPane = jRootPane.getContentPane();
+  @Override
+  protected void paintComponent(Graphics g) {
+    JRootPane jRootPane = getEventRootPane();
+    if (jRootPane != null) {
+      Component c = e.getComponent();
+      JMenuBar jMenuBar = jRootPane.getJMenuBar();
+      Container jContentPane = jRootPane.getContentPane();
 
-			Graphics2D g2 = (Graphics2D) g;
+      Graphics2D g2 = (Graphics2D) g;
 
-			int xCenter = SIZE.width / 2;
-			int yCenter = SIZE.height / 2;
-			printSubComponent( g2, jMenuBar );
-			printSubComponent( g2, jContentPane );
+      int xCenter = SIZE.width / 2;
+      int yCenter = SIZE.height / 2;
+      printSubComponent(g2, jMenuBar);
+      printSubComponent(g2, jContentPane);
 
-			g2.setXORMode( Color.WHITE );
-			g2.setColor( Color.BLACK );
-			g2.fillRect( 0, yCenter, c.getWidth(), 1 );
-			g2.fillRect( xCenter, 0, 1, c.getHeight() );
-			g2.setPaintMode();
-		} else {
-			super.paintComponent( g );
-		}
-	}
+      g2.setXORMode(Color.WHITE);
+      g2.setColor(Color.BLACK);
+      g2.fillRect(0, yCenter, c.getWidth(), 1);
+      g2.fillRect(xCenter, 0, 1, c.getHeight());
+      g2.setPaintMode();
+    } else {
+      super.paintComponent(g);
+    }
+  }
 
-	private JRootPane getEventRootPane() {
-		if (e != null) {
-			JFrame jFrame = ComponentUtilities.getRootJFrame( e.getComponent() );
-			if (jFrame != null) {
-				 return jFrame.getRootPane();
-			}
-		}
-		return null;
-	}
+  private JRootPane getEventRootPane() {
+    if (e != null) {
+      JFrame jFrame = ComponentUtilities.getRootJFrame(e.getComponent());
+      if (jFrame != null) {
+        return jFrame.getRootPane();
+      }
+    }
+    return null;
+  }
 
-	public void handleMouseMovedOrDragged( MouseEvent e ) {
-		this.e = e;
-		this.repaint();
-	}
+  public void handleMouseMovedOrDragged(MouseEvent e) {
+    this.e = e;
+    this.repaint();
+  }
 }

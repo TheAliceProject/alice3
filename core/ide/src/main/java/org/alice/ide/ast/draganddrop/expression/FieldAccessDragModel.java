@@ -57,36 +57,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FieldAccessDragModel extends AbstractExpressionDragModel {
-	private static InitializingIfAbsentMap<AbstractField, FieldAccessDragModel> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<AbstractField, FieldAccessDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static FieldAccessDragModel getInstance( AbstractField field ) {
-		return map.getInitializingIfAbsent( field, new InitializingIfAbsentMap.Initializer<AbstractField, FieldAccessDragModel>() {
-			@Override
-			public FieldAccessDragModel initialize( AbstractField field ) {
-				return new FieldAccessDragModel( field );
-			}
-		} );
-	}
+  public static FieldAccessDragModel getInstance(AbstractField field) {
+    return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<AbstractField, FieldAccessDragModel>() {
+      @Override
+      public FieldAccessDragModel initialize(AbstractField field) {
+        return new FieldAccessDragModel(field);
+      }
+    });
+  }
 
-	private final AbstractField field;
+  private final AbstractField field;
 
-	private FieldAccessDragModel( AbstractField field ) {
-		super( UUID.fromString( "55de38ae-a90e-4c6a-9208-4a83f3f303d9" ) );
-		this.field = field;
-	}
+  private FieldAccessDragModel(AbstractField field) {
+    super(UUID.fromString("55de38ae-a90e-4c6a-9208-4a83f3f303d9"));
+    this.field = field;
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return this.field.getValueType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return this.field.getValueType();
+  }
 
-	@Override
-	public boolean isPotentialStatementCreator() {
-		return false;
-	}
+  @Override
+  public boolean isPotentialStatementCreator() {
+    return false;
+  }
 
-	@Override
-	protected Triggerable getDropOperation( ExpressionProperty expressionProperty ) {
-		return FieldAccessOperation.getInstance( this.field, expressionProperty );
-	}
+  @Override
+  protected Triggerable getDropOperation(ExpressionProperty expressionProperty) {
+    return FieldAccessOperation.getInstance(this.field, expressionProperty);
+  }
 }

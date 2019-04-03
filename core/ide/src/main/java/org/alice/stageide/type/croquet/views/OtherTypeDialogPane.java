@@ -70,75 +70,75 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public class OtherTypeDialogPane extends MigPanel {
-	private final Tree<TypeNode> treeView;
+  private final Tree<TypeNode> treeView;
 
-	private final AbstractLabel descriptionLabel;
-	private final ValueListener<TypeNode> typeListener = new ValueListener<TypeNode>() {
-		@Override
-		public void valueChanged( ValueEvent<TypeNode> e ) {
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					descriptionLabel.getAwtComponent().scrollRectToVisible( new Rectangle( 0, 0, 1, 1 ) );
-					TreePath treePath = treeView.getSelectionPath();
-					if( treePath != null ) {
-						treeView.scrollPathToVisible( treePath );
-					}
-				}
-			} );
-		}
-	};
+  private final AbstractLabel descriptionLabel;
+  private final ValueListener<TypeNode> typeListener = new ValueListener<TypeNode>() {
+    @Override
+    public void valueChanged(ValueEvent<TypeNode> e) {
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          descriptionLabel.getAwtComponent().scrollRectToVisible(new Rectangle(0, 0, 1, 1));
+          TreePath treePath = treeView.getSelectionPath();
+          if (treePath != null) {
+            treeView.scrollPathToVisible(treePath);
+          }
+        }
+      });
+    }
+  };
 
-	public OtherTypeDialogPane( OtherTypeDialog composite ) {
-		super( composite, "fill", "[grow 0, shrink 0]16[grow 0, shrink 0]4[grow, shrink]", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
+  public OtherTypeDialogPane(OtherTypeDialog composite) {
+    super(composite, "fill", "[grow 0, shrink 0]16[grow 0, shrink 0]4[grow, shrink]", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]");
 
-		this.treeView = composite.getTypeTreeState().createTree();
-		this.treeView.setCellRenderer( new TypeCellRenderer() );
-		this.addComponent( new Label( "Filtering", TextWeight.BOLD ) );
-		this.addComponent( new Label( "Selection", TextWeight.BOLD ) );
-		this.addComponent( new Label( "Available Procedures, Functions, and Properties", TextWeight.BOLD ), "wrap" );
+    this.treeView = composite.getTypeTreeState().createTree();
+    this.treeView.setCellRenderer(new TypeCellRenderer());
+    this.addComponent(new Label("Filtering", TextWeight.BOLD));
+    this.addComponent(new Label("Selection", TextWeight.BOLD));
+    this.addComponent(new Label("Available Procedures, Functions, and Properties", TextWeight.BOLD), "wrap");
 
-		this.addComponent( Separator.createInstanceSeparatingTopFromBottom(), "growx" );
-		this.addComponent( Separator.createInstanceSeparatingTopFromBottom(), "growx" );
-		this.addComponent( Separator.createInstanceSeparatingTopFromBottom(), "growx, wrap" );
+    this.addComponent(Separator.createInstanceSeparatingTopFromBottom(), "growx");
+    this.addComponent(Separator.createInstanceSeparatingTopFromBottom(), "growx");
+    this.addComponent(Separator.createInstanceSeparatingTopFromBottom(), "growx, wrap");
 
-		FolderTabbedPane tabbedPane = composite.getTabState().createFolderTabbedPane();
-		this.addComponent( tabbedPane, "grow" );
+    FolderTabbedPane tabbedPane = composite.getTabState().createFolderTabbedPane();
+    this.addComponent(tabbedPane, "grow");
 
-		ScrollPane treeScrollPane = new VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.treeView );
-		this.addComponent( treeScrollPane, "grow" );
+    ScrollPane treeScrollPane = new VerticalScrollBarPaintOmittingWhenAppropriateScrollPane(this.treeView);
+    this.addComponent(treeScrollPane, "grow");
 
-		this.descriptionLabel = composite.getDescriptionText().createLabel();
-		this.descriptionLabel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.descriptionLabel.setVerticalAlignment( VerticalAlignment.TOP );
-		ScrollPane descriptionScrollPane = new ScrollPane( descriptionLabel );
-		this.descriptionLabel.setBackgroundColor( Color.WHITE );
-		descriptionScrollPane.setBackgroundColor( Color.WHITE );
-		this.addComponent( descriptionScrollPane, "grow" );
+    this.descriptionLabel = composite.getDescriptionText().createLabel();
+    this.descriptionLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+    this.descriptionLabel.setVerticalAlignment(VerticalAlignment.TOP);
+    ScrollPane descriptionScrollPane = new ScrollPane(descriptionLabel);
+    this.descriptionLabel.setBackgroundColor(Color.WHITE);
+    descriptionScrollPane.setBackgroundColor(Color.WHITE);
+    this.addComponent(descriptionScrollPane, "grow");
 
-		Color color = ThemeUtilities.getActiveTheme().getTypeColor();
-		color = ColorUtilities.scaleHSB( color, 1.0, 0.9, 1.1 );
-		this.setBackgroundColor( color );
-		tabbedPane.setBackgroundColor( color );
-	}
+    Color color = ThemeUtilities.getActiveTheme().getTypeColor();
+    color = ColorUtilities.scaleHSB(color, 1.0, 0.9, 1.1);
+    this.setBackgroundColor(color);
+    tabbedPane.setBackgroundColor(color);
+  }
 
-	@Override
-	public OtherTypeDialog getComposite() {
-		return (OtherTypeDialog)super.getComposite();
-	}
+  @Override
+  public OtherTypeDialog getComposite() {
+    return (OtherTypeDialog) super.getComposite();
+  }
 
-	@Override
-	public void handleCompositePreActivation() {
-		OtherTypeDialog composite = this.getComposite();
-		composite.getTypeTreeState().addNewSchoolValueListener( this.typeListener );
-		this.treeView.expandAllRows();
-		super.handleCompositePreActivation();
-	}
+  @Override
+  public void handleCompositePreActivation() {
+    OtherTypeDialog composite = this.getComposite();
+    composite.getTypeTreeState().addNewSchoolValueListener(this.typeListener);
+    this.treeView.expandAllRows();
+    super.handleCompositePreActivation();
+  }
 
-	@Override
-	public void handleCompositePostDeactivation() {
-		OtherTypeDialog composite = this.getComposite();
-		composite.getTypeTreeState().removeNewSchoolValueListener( this.typeListener );
-		super.handleCompositePostDeactivation();
-	}
+  @Override
+  public void handleCompositePostDeactivation() {
+    OtherTypeDialog composite = this.getComposite();
+    composite.getTypeTreeState().removeNewSchoolValueListener(this.typeListener);
+    super.handleCompositePostDeactivation();
+  }
 }

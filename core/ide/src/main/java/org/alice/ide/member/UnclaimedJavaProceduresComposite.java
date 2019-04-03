@@ -51,20 +51,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class UnclaimedJavaProceduresComposite extends UnclaimedJavaMethodsComposite {
-	private static class SingletonHolder {
-		private static UnclaimedJavaProceduresComposite instance = new UnclaimedJavaProceduresComposite();
-	}
+  private static class SingletonHolder {
+    private static UnclaimedJavaProceduresComposite instance = new UnclaimedJavaProceduresComposite();
+  }
 
-	public static UnclaimedJavaProceduresComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static UnclaimedJavaProceduresComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private UnclaimedJavaProceduresComposite() {
-		super( UUID.fromString( "1ecd0cc1-1336-4c89-b099-5d17cb381aed" ) );
-	}
+  private UnclaimedJavaProceduresComposite() {
+    super(UUID.fromString("1ecd0cc1-1336-4c89-b099-5d17cb381aed"));
+  }
 
-	@Override
-	protected boolean isAcceptingOf( JavaMethod method ) {
-		return method.isProcedure();
-	}
+  @Override
+  protected boolean isAcceptingOf(JavaMethod method) {
+    return method.isProcedure();
+  }
 }

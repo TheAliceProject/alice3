@@ -53,73 +53,73 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class Anchors {
-	private final List<AnchorListener> anchorListeners = Lists.newCopyOnWriteArrayList();
-	private JointId leftArm;
-	private JointId rightArm;
-	private JointId leftLeg;
-	private JointId rightLeg;
+  private final List<AnchorListener> anchorListeners = Lists.newCopyOnWriteArrayList();
+  private JointId leftArm;
+  private JointId rightArm;
+  private JointId leftLeg;
+  private JointId rightLeg;
 
-	public void addAnchorListener( AnchorListener anchorListener ) {
-		this.anchorListeners.add( anchorListener );
-	}
+  public void addAnchorListener(AnchorListener anchorListener) {
+    this.anchorListeners.add(anchorListener);
+  }
 
-	public void removeAnchorListener( AnchorListener anchorListener ) {
-		this.anchorListeners.remove( anchorListener );
-	}
+  public void removeAnchorListener(AnchorListener anchorListener) {
+    this.anchorListeners.remove(anchorListener);
+  }
 
-	public JointId getLeftArm() {
-		return this.leftArm;
-	}
+  public JointId getLeftArm() {
+    return this.leftArm;
+  }
 
-	public JointId getRightArm() {
-		return this.rightArm;
-	}
+  public JointId getRightArm() {
+    return this.rightArm;
+  }
 
-	public JointId getLeftLeg() {
-		return this.leftLeg;
-	}
+  public JointId getLeftLeg() {
+    return this.leftLeg;
+  }
 
-	public JointId getRightLeg() {
-		return this.rightLeg;
-	}
+  public JointId getRightLeg() {
+    return this.rightLeg;
+  }
 
-	public void setLeftArm( JointId leftArm ) {
-		if( this.leftArm != leftArm ) {
-			AnchorEvent e = new AnchorEvent( this.leftArm, leftArm );
-			this.leftArm = leftArm;
-			for( AnchorListener anchorListener : this.anchorListeners ) {
-				anchorListener.leftArmChanged( e );
-			}
-		}
-	}
+  public void setLeftArm(JointId leftArm) {
+    if (this.leftArm != leftArm) {
+      AnchorEvent e = new AnchorEvent(this.leftArm, leftArm);
+      this.leftArm = leftArm;
+      for (AnchorListener anchorListener : this.anchorListeners) {
+        anchorListener.leftArmChanged(e);
+      }
+    }
+  }
 
-	public void setRightArm( JointId rightArm ) {
-		if( this.rightArm != rightArm ) {
-			AnchorEvent e = new AnchorEvent( this.rightArm, rightArm );
-			this.rightArm = rightArm;
-			for( AnchorListener anchorListener : this.anchorListeners ) {
-				anchorListener.rightArmChanged( e );
-			}
-		}
-	}
+  public void setRightArm(JointId rightArm) {
+    if (this.rightArm != rightArm) {
+      AnchorEvent e = new AnchorEvent(this.rightArm, rightArm);
+      this.rightArm = rightArm;
+      for (AnchorListener anchorListener : this.anchorListeners) {
+        anchorListener.rightArmChanged(e);
+      }
+    }
+  }
 
-	public void setLeftLeg( JointId leftLeg ) {
-		if( this.leftLeg != leftLeg ) {
-			AnchorEvent e = new AnchorEvent( this.leftLeg, leftLeg );
-			this.leftLeg = leftLeg;
-			for( AnchorListener anchorListener : this.anchorListeners ) {
-				anchorListener.leftLegChanged( e );
-			}
-		}
-	}
+  public void setLeftLeg(JointId leftLeg) {
+    if (this.leftLeg != leftLeg) {
+      AnchorEvent e = new AnchorEvent(this.leftLeg, leftLeg);
+      this.leftLeg = leftLeg;
+      for (AnchorListener anchorListener : this.anchorListeners) {
+        anchorListener.leftLegChanged(e);
+      }
+    }
+  }
 
-	public void setRightLeg( JointId rightLeg ) {
-		if( this.rightLeg != rightLeg ) {
-			AnchorEvent e = new AnchorEvent( this.rightLeg, rightLeg );
-			this.rightLeg = rightLeg;
-			for( AnchorListener anchorListener : this.anchorListeners ) {
-				anchorListener.rightLegChanged( e );
-			}
-		}
-	}
+  public void setRightLeg(JointId rightLeg) {
+    if (this.rightLeg != rightLeg) {
+      AnchorEvent e = new AnchorEvent(this.rightLeg, rightLeg);
+      this.rightLeg = rightLeg;
+      for (AnchorListener anchorListener : this.anchorListeners) {
+        anchorListener.rightLegChanged(e);
+      }
+    }
+  }
 }

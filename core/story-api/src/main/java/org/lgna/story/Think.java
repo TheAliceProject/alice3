@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  *
  */
 public class Think extends DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = Think.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = Think.class) public static interface Detail {
+  }
 
-	private Think() {
-		super();
-	}
+  private Think() {
+    super();
+  }
 }

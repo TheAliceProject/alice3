@@ -57,33 +57,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class MethodHeaderMenuModel extends StaticMenuModel {
-	private static Map<UserMethod, MethodHeaderMenuModel> map = Maps.newHashMap();
+  private static Map<UserMethod, MethodHeaderMenuModel> map = Maps.newHashMap();
 
-	public static synchronized MethodHeaderMenuModel getInstance( UserMethod method ) {
-		MethodHeaderMenuModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodHeaderMenuModel( method );
-			map.put( method, rv );
-		}
-		return rv;
-	}
+  public static synchronized MethodHeaderMenuModel getInstance(UserMethod method) {
+    MethodHeaderMenuModel rv = map.get(method);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new MethodHeaderMenuModel(method);
+      map.put(method, rv);
+    }
+    return rv;
+  }
 
-	private MethodHeaderMenuModel( UserMethod method ) {
-		super( UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ) );
-		this.method = method;
-	}
+  private MethodHeaderMenuModel(UserMethod method) {
+    super(UUID.fromString("e5c3fed5-6498-421e-9208-0484725adcef"));
+    this.method = method;
+  }
 
-	@Override
-	protected StandardMenuItemPrepModel[] createModels() {
-		//todo
-		ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
-		return new StandardMenuItemPrepModel[] {
-				RenameMethodComposite.getInstance( this.method ).getLaunchOperation().getMenuItemPrepModel(),
-				projectDocumentFrame.getFindComposite().getMemberReferencesOperationInstance( this.method ).getMenuItemPrepModel()
-		};
-	}
+  @Override
+  protected StandardMenuItemPrepModel[] createModels() {
+    //todo
+    ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
+    return new StandardMenuItemPrepModel[] {RenameMethodComposite.getInstance(this.method).getLaunchOperation().getMenuItemPrepModel(), projectDocumentFrame.getFindComposite().getMemberReferencesOperationInstance(this.method).getMenuItemPrepModel()};
+  }
 
-	private final UserMethod method;
+  private final UserMethod method;
 }

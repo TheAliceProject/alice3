@@ -53,221 +53,221 @@ import org.lgna.story.resources.BipedResource;
  * @author Dennis Cosgrove
  */
 public class SBiped extends SJointedModel implements Articulable {
-	private final BipedImp implementation;
+  private final BipedImp implementation;
 
-	public SBiped( BipedResource resource ) {
-		this.implementation = resource.createImplementation( this );
-	}
+  public SBiped(BipedResource resource) {
+    this.implementation = resource.createImplementation(this);
+  }
 
-	@Override
-			/* package-private */BipedImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */BipedImp getImplementation() {
+    return this.implementation;
+  }
 
-	@Override
-	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
-	public void walkTo( SThing entity ) {
-		//		implementation.walkTo( entity );
-	}
+  @Override
+  @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+  public void walkTo(SThing entity) {
+    //    implementation.walkTo( entity );
+  }
 
-	@Override
-	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
-	public void touch( SThing entity ) {
-		reachFor( Limb.RIGHT_ARM, entity );
-	}
+  @Override
+  @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+  public void touch(SThing entity) {
+    reachFor(Limb.RIGHT_ARM, entity);
+  }
 
-	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
-	public void reachFor( Limb limb, SThing target ) {
-		implementation.reachFor( target, limb );
-	}
+  @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+  public void reachFor(Limb limb, SThing target) {
+    implementation.reachFor(target, limb);
+  }
 
-	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
-	public SJoint getRoot() {
-		return SJoint.getJoint( this, BipedResource.ROOT );
-	}
+  @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+  public SJoint getRoot() {
+    return SJoint.getJoint(this, BipedResource.ROOT);
+  }
 
-	public SJoint getPelvis() {
-		return SJoint.getJoint( this, BipedResource.PELVIS_LOWER_BODY );
-	}
+  public SJoint getPelvis() {
+    return SJoint.getJoint(this, BipedResource.PELVIS_LOWER_BODY);
+  }
 
-	public SJoint getSpineBase() {
-		return SJoint.getJoint( this, BipedResource.SPINE_BASE );
-	}
+  public SJoint getSpineBase() {
+    return SJoint.getJoint(this, BipedResource.SPINE_BASE);
+  }
 
-	public SJoint getSpineMiddle() {
-		return SJoint.getJoint( this, BipedResource.SPINE_MIDDLE );
-	}
+  public SJoint getSpineMiddle() {
+    return SJoint.getJoint(this, BipedResource.SPINE_MIDDLE);
+  }
 
-	public SJoint getSpineUpper() {
-		return SJoint.getJoint( this, BipedResource.SPINE_UPPER );
-	}
+  public SJoint getSpineUpper() {
+    return SJoint.getJoint(this, BipedResource.SPINE_UPPER);
+  }
 
-	public SJoint getNeck() {
-		return SJoint.getJoint( this, BipedResource.NECK );
-	}
+  public SJoint getNeck() {
+    return SJoint.getJoint(this, BipedResource.NECK);
+  }
 
-	public SJoint getHead() {
-		return SJoint.getJoint( this, BipedResource.HEAD );
-	}
+  public SJoint getHead() {
+    return SJoint.getJoint(this, BipedResource.HEAD);
+  }
 
-	public SJoint getMouth() {
-		return SJoint.getJoint( this, BipedResource.MOUTH );
-	}
+  public SJoint getMouth() {
+    return SJoint.getJoint(this, BipedResource.MOUTH);
+  }
 
-	public SJoint getRightEye() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_EYE );
-	}
+  public SJoint getRightEye() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_EYE);
+  }
 
-	public SJoint getLeftEye() {
-		return SJoint.getJoint( this, BipedResource.LEFT_EYE );
-	}
+  public SJoint getLeftEye() {
+    return SJoint.getJoint(this, BipedResource.LEFT_EYE);
+  }
 
-	public SJoint getLeftEyelid() {
-		return SJoint.getJoint( this, BipedResource.LEFT_EYELID );
-	}
+  public SJoint getLeftEyelid() {
+    return SJoint.getJoint(this, BipedResource.LEFT_EYELID);
+  }
 
-	public SJoint getRightEyelid() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_EYELID );
-	}
+  public SJoint getRightEyelid() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_EYELID);
+  }
 
-	public SJoint getRightHip() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_HIP );
-	}
+  public SJoint getRightHip() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_HIP);
+  }
 
-	public SJoint getRightKnee() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_KNEE );
-	}
+  public SJoint getRightKnee() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_KNEE);
+  }
 
-	public SJoint getRightAnkle() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_ANKLE );
-	}
+  public SJoint getRightAnkle() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_ANKLE);
+  }
 
-	public SJoint getRightFoot() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_FOOT );
-	}
+  public SJoint getRightFoot() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_FOOT);
+  }
 
-	public SJoint getLeftHip() {
-		return SJoint.getJoint( this, BipedResource.LEFT_HIP );
-	}
+  public SJoint getLeftHip() {
+    return SJoint.getJoint(this, BipedResource.LEFT_HIP);
+  }
 
-	public SJoint getLeftKnee() {
-		return SJoint.getJoint( this, BipedResource.LEFT_KNEE );
-	}
+  public SJoint getLeftKnee() {
+    return SJoint.getJoint(this, BipedResource.LEFT_KNEE);
+  }
 
-	public SJoint getLeftAnkle() {
-		return SJoint.getJoint( this, BipedResource.LEFT_ANKLE );
-	}
+  public SJoint getLeftAnkle() {
+    return SJoint.getJoint(this, BipedResource.LEFT_ANKLE);
+  }
 
-	public SJoint getLeftFoot() {
-		return SJoint.getJoint( this, BipedResource.LEFT_FOOT );
-	}
+  public SJoint getLeftFoot() {
+    return SJoint.getJoint(this, BipedResource.LEFT_FOOT);
+  }
 
-	public SJoint getRightClavicle() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_CLAVICLE );
-	}
+  public SJoint getRightClavicle() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_CLAVICLE);
+  }
 
-	public SJoint getRightShoulder() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_SHOULDER );
-	}
+  public SJoint getRightShoulder() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_SHOULDER);
+  }
 
-	public SJoint getRightElbow() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_ELBOW );
-	}
+  public SJoint getRightElbow() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_ELBOW);
+  }
 
-	public SJoint getRightWrist() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_WRIST );
-	}
+  public SJoint getRightWrist() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_WRIST);
+  }
 
-	public SJoint getRightHand() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_HAND );
-	}
+  public SJoint getRightHand() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_HAND);
+  }
 
-	public SJoint getRightThumb() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_THUMB );
-	}
+  public SJoint getRightThumb() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_THUMB);
+  }
 
-	public SJoint getRightThumbKnuckle() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_THUMB_KNUCKLE );
-	}
+  public SJoint getRightThumbKnuckle() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_THUMB_KNUCKLE);
+  }
 
-	public SJoint getRightIndexFinger() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_INDEX_FINGER );
-	}
+  public SJoint getRightIndexFinger() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_INDEX_FINGER);
+  }
 
-	public SJoint getRightIndexFingerKnuckle() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_INDEX_FINGER_KNUCKLE );
-	}
+  public SJoint getRightIndexFingerKnuckle() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_INDEX_FINGER_KNUCKLE);
+  }
 
-	public SJoint getRightMiddleFinger() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_MIDDLE_FINGER );
-	}
+  public SJoint getRightMiddleFinger() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_MIDDLE_FINGER);
+  }
 
-	public SJoint getRightMiddleFingerKnuckle() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_MIDDLE_FINGER_KNUCKLE );
-	}
+  public SJoint getRightMiddleFingerKnuckle() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_MIDDLE_FINGER_KNUCKLE);
+  }
 
-	public SJoint getRightPinkyFinger() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_PINKY_FINGER );
-	}
+  public SJoint getRightPinkyFinger() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_PINKY_FINGER);
+  }
 
-	public SJoint getRightPinkyFingerKnuckle() {
-		return SJoint.getJoint( this, BipedResource.RIGHT_PINKY_FINGER_KNUCKLE );
-	}
+  public SJoint getRightPinkyFingerKnuckle() {
+    return SJoint.getJoint(this, BipedResource.RIGHT_PINKY_FINGER_KNUCKLE);
+  }
 
-	public SJoint getLeftClavicle() {
-		return SJoint.getJoint( this, BipedResource.LEFT_CLAVICLE );
-	}
+  public SJoint getLeftClavicle() {
+    return SJoint.getJoint(this, BipedResource.LEFT_CLAVICLE);
+  }
 
-	public SJoint getLeftShoulder() {
-		return SJoint.getJoint( this, BipedResource.LEFT_SHOULDER );
-	}
+  public SJoint getLeftShoulder() {
+    return SJoint.getJoint(this, BipedResource.LEFT_SHOULDER);
+  }
 
-	public SJoint getLeftElbow() {
-		return SJoint.getJoint( this, BipedResource.LEFT_ELBOW );
-	}
+  public SJoint getLeftElbow() {
+    return SJoint.getJoint(this, BipedResource.LEFT_ELBOW);
+  }
 
-	public SJoint getLeftWrist() {
-		return SJoint.getJoint( this, BipedResource.LEFT_WRIST );
-	}
+  public SJoint getLeftWrist() {
+    return SJoint.getJoint(this, BipedResource.LEFT_WRIST);
+  }
 
-	public SJoint getLeftHand() {
-		return SJoint.getJoint( this, BipedResource.LEFT_HAND );
-	}
+  public SJoint getLeftHand() {
+    return SJoint.getJoint(this, BipedResource.LEFT_HAND);
+  }
 
-	public SJoint getLeftThumb() {
-		return SJoint.getJoint( this, BipedResource.LEFT_THUMB );
-	}
+  public SJoint getLeftThumb() {
+    return SJoint.getJoint(this, BipedResource.LEFT_THUMB);
+  }
 
-	public SJoint getLeftThumbKnuckle() {
-		return SJoint.getJoint( this, BipedResource.LEFT_THUMB_KNUCKLE );
-	}
+  public SJoint getLeftThumbKnuckle() {
+    return SJoint.getJoint(this, BipedResource.LEFT_THUMB_KNUCKLE);
+  }
 
-	public SJoint getLeftIndexFinger() {
-		return SJoint.getJoint( this, BipedResource.LEFT_INDEX_FINGER );
-	}
+  public SJoint getLeftIndexFinger() {
+    return SJoint.getJoint(this, BipedResource.LEFT_INDEX_FINGER);
+  }
 
-	public SJoint getLeftIndexFingerKnuckle() {
-		return SJoint.getJoint( this, BipedResource.LEFT_INDEX_FINGER_KNUCKLE );
-	}
+  public SJoint getLeftIndexFingerKnuckle() {
+    return SJoint.getJoint(this, BipedResource.LEFT_INDEX_FINGER_KNUCKLE);
+  }
 
-	public SJoint getLeftMiddleFinger() {
-		return SJoint.getJoint( this, BipedResource.LEFT_MIDDLE_FINGER );
-	}
+  public SJoint getLeftMiddleFinger() {
+    return SJoint.getJoint(this, BipedResource.LEFT_MIDDLE_FINGER);
+  }
 
-	public SJoint getLeftMiddleFingerKnuckle() {
-		return SJoint.getJoint( this, BipedResource.LEFT_MIDDLE_FINGER_KNUCKLE );
-	}
+  public SJoint getLeftMiddleFingerKnuckle() {
+    return SJoint.getJoint(this, BipedResource.LEFT_MIDDLE_FINGER_KNUCKLE);
+  }
 
-	public SJoint getLeftPinkyFinger() {
-		return SJoint.getJoint( this, BipedResource.LEFT_PINKY_FINGER );
-	}
+  public SJoint getLeftPinkyFinger() {
+    return SJoint.getJoint(this, BipedResource.LEFT_PINKY_FINGER);
+  }
 
-	public SJoint getLeftPinkyFingerKnuckle() {
-		return SJoint.getJoint( this, BipedResource.LEFT_PINKY_FINGER_KNUCKLE );
-	}
+  public SJoint getLeftPinkyFingerKnuckle() {
+    return SJoint.getJoint(this, BipedResource.LEFT_PINKY_FINGER_KNUCKLE);
+  }
 
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public void strikePose( BipedPose pose, StrikePose.Detail... details ) {
-		super.strikePose( pose, details );
-	}
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public void strikePose(BipedPose pose, StrikePose.Detail... details) {
+    super.strikePose(pose, details);
+  }
 }

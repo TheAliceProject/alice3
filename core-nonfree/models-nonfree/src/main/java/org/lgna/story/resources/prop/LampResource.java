@@ -32,83 +32,85 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum LampResource implements PropResource {
-	SWING_ARM( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_BLUE_OFF( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_BLUE_ON( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_GREEN_OFF( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_GREEN_ON( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_ORANGE_OFF( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_ORANGE_ON( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_RED_OFF( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_RED_ON( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_WHITE_OFF( ImplementationAndVisualType.SIMS2 ),
-	DESIGNER_WHITE_ON( ImplementationAndVisualType.SIMS2 ),
-	GARDEN_BOLLARD_BLACK_OFF( ImplementationAndVisualType.SIMS2 ),
-	GARDEN_BOLLARD_BLACK_ON( ImplementationAndVisualType.SIMS2 ),
-	GARDEN_BOLLARD_GREEN_OFF( ImplementationAndVisualType.SIMS2 ),
-	GARDEN_BOLLARD_GREEN_ON( ImplementationAndVisualType.SIMS2 ),
-	GARDEN_TIER_BLACK_OFF( ImplementationAndVisualType.SIMS2 ),
-	GARDEN_TIER_BLACK_ON( ImplementationAndVisualType.SIMS2 ),
-	GARDEN_TIER_GREEN_OFF( ImplementationAndVisualType.SIMS2 ),
-	GARDEN_TIER_GREEN_ON( ImplementationAndVisualType.SIMS2 ),
-	LOFT_BLUE_OFF( ImplementationAndVisualType.SIMS2 ),
-	LOFT_BLUE_ON( ImplementationAndVisualType.SIMS2 ),
-	LOFT_GREEN_OFF( ImplementationAndVisualType.SIMS2 ),
-	LOFT_GREEN_ON( ImplementationAndVisualType.SIMS2 ),
-	LOFT_RED_OFF( ImplementationAndVisualType.SIMS2 ),
-	LOFT_RED_ON( ImplementationAndVisualType.SIMS2 ),
-	LOFT_YELLOW_OFF( ImplementationAndVisualType.SIMS2 ),
-	LOFT_YELLOW_ON( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_BLUE_OFF( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_BLUE_ON( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_GOLD_BLUE_OFF( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_GOLD_BLUE_ON( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_ORANGE_OFF( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_ORANGE_ON( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_RED_OFF( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_RED_ON( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_YELLOW_OFF( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_YELLOW_ON( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_ORANGE_OFF( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_ORANGE_ON( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_BLUE_OFF( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_BLUE_ON( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_GREEN_OFF( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_GREEN_ON( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_PINK_OFF( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_PINK_ON( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_WHITE_OFF( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_WHITE_ON( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_YELLOW_OFF( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_YELLOW_ON( ImplementationAndVisualType.SIMS2 ),
-	STUDIO_OFF( ImplementationAndVisualType.SIMS2 ),
-	STUDIO_ON( ImplementationAndVisualType.SIMS2 ),
-	VALUE_BLACK( ImplementationAndVisualType.SIMS2 ),
-	VALUE_GREEN( ImplementationAndVisualType.SIMS2 ),
-	VALUE_RED( ImplementationAndVisualType.SIMS2 ),
-	VALUE_TAN( ImplementationAndVisualType.SIMS2 ),
-	VALUE_WHITE( ImplementationAndVisualType.SIMS2 );
+  SWING_ARM(ImplementationAndVisualType.SIMS2),
+  DESIGNER_BLUE_OFF(ImplementationAndVisualType.SIMS2),
+  DESIGNER_BLUE_ON(ImplementationAndVisualType.SIMS2),
+  DESIGNER_GREEN_OFF(ImplementationAndVisualType.SIMS2),
+  DESIGNER_GREEN_ON(ImplementationAndVisualType.SIMS2),
+  DESIGNER_ORANGE_OFF(ImplementationAndVisualType.SIMS2),
+  DESIGNER_ORANGE_ON(ImplementationAndVisualType.SIMS2),
+  DESIGNER_RED_OFF(ImplementationAndVisualType.SIMS2),
+  DESIGNER_RED_ON(ImplementationAndVisualType.SIMS2),
+  DESIGNER_WHITE_OFF(ImplementationAndVisualType.SIMS2),
+  DESIGNER_WHITE_ON(ImplementationAndVisualType.SIMS2),
+  GARDEN_BOLLARD_BLACK_OFF(ImplementationAndVisualType.SIMS2),
+  GARDEN_BOLLARD_BLACK_ON(ImplementationAndVisualType.SIMS2),
+  GARDEN_BOLLARD_GREEN_OFF(ImplementationAndVisualType.SIMS2),
+  GARDEN_BOLLARD_GREEN_ON(ImplementationAndVisualType.SIMS2),
+  GARDEN_TIER_BLACK_OFF(ImplementationAndVisualType.SIMS2),
+  GARDEN_TIER_BLACK_ON(ImplementationAndVisualType.SIMS2),
+  GARDEN_TIER_GREEN_OFF(ImplementationAndVisualType.SIMS2),
+  GARDEN_TIER_GREEN_ON(ImplementationAndVisualType.SIMS2),
+  LOFT_BLUE_OFF(ImplementationAndVisualType.SIMS2),
+  LOFT_BLUE_ON(ImplementationAndVisualType.SIMS2),
+  LOFT_GREEN_OFF(ImplementationAndVisualType.SIMS2),
+  LOFT_GREEN_ON(ImplementationAndVisualType.SIMS2),
+  LOFT_RED_OFF(ImplementationAndVisualType.SIMS2),
+  LOFT_RED_ON(ImplementationAndVisualType.SIMS2),
+  LOFT_YELLOW_OFF(ImplementationAndVisualType.SIMS2),
+  LOFT_YELLOW_ON(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_BLUE_OFF(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_BLUE_ON(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_GOLD_BLUE_OFF(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_GOLD_BLUE_ON(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_ORANGE_OFF(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_ORANGE_ON(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_RED_OFF(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_RED_ON(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_YELLOW_OFF(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_YELLOW_ON(ImplementationAndVisualType.SIMS2),
+  QUAINT_ORANGE_OFF(ImplementationAndVisualType.SIMS2),
+  QUAINT_ORANGE_ON(ImplementationAndVisualType.SIMS2),
+  QUAINT_BLUE_OFF(ImplementationAndVisualType.SIMS2),
+  QUAINT_BLUE_ON(ImplementationAndVisualType.SIMS2),
+  QUAINT_GREEN_OFF(ImplementationAndVisualType.SIMS2),
+  QUAINT_GREEN_ON(ImplementationAndVisualType.SIMS2),
+  QUAINT_PINK_OFF(ImplementationAndVisualType.SIMS2),
+  QUAINT_PINK_ON(ImplementationAndVisualType.SIMS2),
+  QUAINT_WHITE_OFF(ImplementationAndVisualType.SIMS2),
+  QUAINT_WHITE_ON(ImplementationAndVisualType.SIMS2),
+  QUAINT_YELLOW_OFF(ImplementationAndVisualType.SIMS2),
+  QUAINT_YELLOW_ON(ImplementationAndVisualType.SIMS2),
+  STUDIO_OFF(ImplementationAndVisualType.SIMS2),
+  STUDIO_ON(ImplementationAndVisualType.SIMS2),
+  VALUE_BLACK(ImplementationAndVisualType.SIMS2),
+  VALUE_GREEN(ImplementationAndVisualType.SIMS2),
+  VALUE_RED(ImplementationAndVisualType.SIMS2),
+  VALUE_TAN(ImplementationAndVisualType.SIMS2),
+  VALUE_WHITE(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	LampResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	LampResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  LampResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  LampResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

@@ -49,14 +49,14 @@ import org.lgna.ik.poser.croquet.DeclareAnimationProcedureDialog;
  * @author Dennis Cosgrove
  */
 public class ProceduresToolPaletteCoreView extends MethodsToolPaletteCoreView {
-	public ProceduresToolPaletteCoreView( ProceduresToolPaletteCoreComposite composite ) {
-		super( composite );
-		final boolean IS_POSER_READY_FOR_PRIME_TIME = false;
-		if( IS_POSER_READY_FOR_PRIME_TIME ) {
-			DeclareAnimationProcedureDialog declareAnimationProcedureDialog = DeclareAnimationProcedureDialog.getInstance( composite.getType() );
-			if( declareAnimationProcedureDialog != null ) {
-				this.addComponent( declareAnimationProcedureDialog.getLaunchOperation().createButton() );
-			}
-		}
-	}
+  public ProceduresToolPaletteCoreView(ProceduresToolPaletteCoreComposite composite) {
+    super(composite);
+    final boolean IS_POSER_READY_FOR_PRIME_TIME = false;
+    if (IS_POSER_READY_FOR_PRIME_TIME) {
+      DeclareAnimationProcedureDialog declareAnimationProcedureDialog = DeclareAnimationProcedureDialog.getInstance(composite.getType());
+      if (declareAnimationProcedureDialog != null) {
+        this.addComponent(declareAnimationProcedureDialog.getLaunchOperation().createButton());
+      }
+    }
+  }
 }

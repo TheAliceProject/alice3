@@ -50,57 +50,56 @@ import java.util.List;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class ConstructorArgumentUtilities {
-	private ConstructorArgumentUtilities() {
-		throw new AssertionError();
-	}
+@Deprecated public class ConstructorArgumentUtilities {
+  private ConstructorArgumentUtilities() {
+    throw new AssertionError();
+  }
 
-	public static AbstractType<?, ?, ?> getParameter0Type( AbstractConstructor constructor ) {
-		if( constructor != null ) {
-			List<? extends AbstractParameter> requiredParameters = constructor.getRequiredParameters();
-			if( requiredParameters.size() > 0 ) {
-				AbstractParameter parameter0 = requiredParameters.get( 0 );
-				return parameter0.getValueType();
-			}
-		}
-		return null;
-	}
+  public static AbstractType<?, ?, ?> getParameter0Type(AbstractConstructor constructor) {
+    if (constructor != null) {
+      List<? extends AbstractParameter> requiredParameters = constructor.getRequiredParameters();
+      if (requiredParameters.size() > 0) {
+        AbstractParameter parameter0 = requiredParameters.get(0);
+        return parameter0.getValueType();
+      }
+    }
+    return null;
+  }
 
-	public static AbstractType<?, ?, ?> getContructor0Parameter0Type( AbstractType<?, ?, ?> type ) {
-		return getParameter0Type( type.getFirstDeclaredConstructor() );
-	}
+  public static AbstractType<?, ?, ?> getContructor0Parameter0Type(AbstractType<?, ?, ?> type) {
+    return getParameter0Type(type.getFirstDeclaredConstructor());
+  }
 
-	public static JavaField getField( SimpleArgumentListProperty arguments ) {
-		if( arguments.size() > 0 ) {
-			Expression expression = arguments.get( 0 ).expression.getValue();
-			if( expression instanceof FieldAccess ) {
-				FieldAccess fieldAccess = (FieldAccess)expression;
-				return (JavaField)fieldAccess.field.getValue();
-			}
-		}
-		return null;
-	}
+  public static JavaField getField(SimpleArgumentListProperty arguments) {
+    if (arguments.size() > 0) {
+      Expression expression = arguments.get(0).expression.getValue();
+      if (expression instanceof FieldAccess) {
+        FieldAccess fieldAccess = (FieldAccess) expression;
+        return (JavaField) fieldAccess.field.getValue();
+      }
+    }
+    return null;
+  }
 
-	public static JavaField getArgumentField( AbstractConstructor constructor ) {
-		if( constructor instanceof NamedUserConstructor ) {
-			NamedUserConstructor namedUserConstructor = (NamedUserConstructor)constructor;
-			ConstructorInvocationStatement constructorInvocationStatement = namedUserConstructor.body.getValue().constructorInvocationStatement.getValue();
-			return getField( constructorInvocationStatement.requiredArguments );
-		}
-		return null;
-	}
+  public static JavaField getArgumentField(AbstractConstructor constructor) {
+    if (constructor instanceof NamedUserConstructor) {
+      NamedUserConstructor namedUserConstructor = (NamedUserConstructor) constructor;
+      ConstructorInvocationStatement constructorInvocationStatement = namedUserConstructor.body.getValue().constructorInvocationStatement.getValue();
+      return getField(constructorInvocationStatement.requiredArguments);
+    }
+    return null;
+  }
 
-	public static JavaField getArgumentField( InstanceCreation instanceCreation ) {
-		if( instanceCreation != null ) {
-			AbstractConstructor constructor = instanceCreation.constructor.getValue();
-			if( instanceCreation.requiredArguments.size() == 1 ) {
-				return getField( instanceCreation.requiredArguments );
-			} else {
-				return getArgumentField( constructor );
-			}
-		} else {
-			return null;
-		}
-	}
+  public static JavaField getArgumentField(InstanceCreation instanceCreation) {
+    if (instanceCreation != null) {
+      AbstractConstructor constructor = instanceCreation.constructor.getValue();
+      if (instanceCreation.requiredArguments.size() == 1) {
+        return getField(instanceCreation.requiredArguments);
+      } else {
+        return getArgumentField(constructor);
+      }
+    } else {
+      return null;
+    }
+  }
 }

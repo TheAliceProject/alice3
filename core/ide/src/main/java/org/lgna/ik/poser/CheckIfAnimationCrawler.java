@@ -53,36 +53,36 @@ import edu.cmu.cs.dennisc.pattern.Crawler;
  * @author Matt May
  */
 public class CheckIfAnimationCrawler implements Crawler {
-	private UserMethod method;
-	private CrawlPolicy crawlPolicy = CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY;
-	private boolean containsStrikePose = false;
-	private boolean containsNotStrikePose = false;
+  private UserMethod method;
+  private CrawlPolicy crawlPolicy = CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY;
+  private boolean containsStrikePose = false;
+  private boolean containsNotStrikePose = false;
 
-	public static boolean initiateAndCheckMethod( UserMethod method ) {
-		CheckIfAnimationCrawler crawler = new CheckIfAnimationCrawler( method );
-		return crawler.crawl();
-	}
+  public static boolean initiateAndCheckMethod(UserMethod method) {
+    CheckIfAnimationCrawler crawler = new CheckIfAnimationCrawler(method);
+    return crawler.crawl();
+  }
 
-	private CheckIfAnimationCrawler( UserMethod method ) {
-		this.method = method;
-	}
+  private CheckIfAnimationCrawler(UserMethod method) {
+    this.method = method;
+  }
 
-	@Override
-	public void visit( Crawlable crawlable ) {
-		if( crawlable instanceof MethodInvocation ) {
-			MethodInvocation methodInv = (MethodInvocation)crawlable;
-			if( PoseAstUtilities.isStrikePoseMethod( methodInv.method.getValue() ) ) {
-				containsStrikePose = true;
-			} else {
-				containsNotStrikePose = true;
-			}
-		} else {
-			containsNotStrikePose = true;
-		}
-	}
+  @Override
+  public void visit(Crawlable crawlable) {
+    if (crawlable instanceof MethodInvocation) {
+      MethodInvocation methodInv = (MethodInvocation) crawlable;
+      if (PoseAstUtilities.isStrikePoseMethod(methodInv.method.getValue())) {
+        containsStrikePose = true;
+      } else {
+        containsNotStrikePose = true;
+      }
+    } else {
+      containsNotStrikePose = true;
+    }
+  }
 
-	private boolean crawl() {
-		method.crawl( this, crawlPolicy );
-		return containsStrikePose && !containsNotStrikePose;
-	}
+  private boolean crawl() {
+    method.crawl(this, crawlPolicy);
+    return containsStrikePose && !containsNotStrikePose;
+  }
 }

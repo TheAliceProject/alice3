@@ -50,31 +50,31 @@ import org.lgna.project.ast.LambdaExpression;
 import java.util.UUID;
 
 public abstract class LambdaExpressionFillIn extends ExpressionFillInWithoutBlanks<LambdaExpression> {
-	private final Class<?> listenerCls;
-	private final LambdaExpression transientValue;
+  private final Class<?> listenerCls;
+  private final LambdaExpression transientValue;
 
-	public LambdaExpressionFillIn( UUID id, Class<?> listenerCls ) {
-		super( id );
-		this.listenerCls = listenerCls;
-		this.transientValue = this.createValue();
-	}
+  public LambdaExpressionFillIn(UUID id, Class<?> listenerCls) {
+    super(id);
+    this.listenerCls = listenerCls;
+    this.transientValue = this.createValue();
+  }
 
-	@Override
-	public LambdaExpression getTransientValue( ItemNode<? super LambdaExpression, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public LambdaExpression getTransientValue(ItemNode<? super LambdaExpression, Void> node) {
+    return this.transientValue;
+  }
 
-	@Override
-	public LambdaExpression createValue( ItemNode<? super LambdaExpression, Void> node ) {
-		return this.createValue();
-	}
+  @Override
+  public LambdaExpression createValue(ItemNode<? super LambdaExpression, Void> node) {
+    return this.createValue();
+  }
 
-	@Override
-	public boolean isAutomaticallySelectedWhenSoleOption() {
-		return true;
-	}
+  @Override
+  public boolean isAutomaticallySelectedWhenSoleOption() {
+    return true;
+  }
 
-	private LambdaExpression createValue() {
-		return AstUtilities.createLambdaExpression( this.listenerCls );
-	}
+  private LambdaExpression createValue() {
+    return AstUtilities.createLambdaExpression(this.listenerCls);
+  }
 }

@@ -49,28 +49,27 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class Model extends Transformable {
-	public Model() {
-		this.sgVisual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
-		this.sgVisual.setParent( this );
-	}
+@Deprecated public class Model extends Transformable {
+  public Model() {
+    this.sgVisual.frontFacingAppearance.setValue(this.sgFrontFacingAppearance);
+    this.sgVisual.setParent(this);
+  }
 
-	public Visual getSGVisual() {
-		return this.sgVisual;
-	}
+  public Visual getSGVisual() {
+    return this.sgVisual;
+  }
 
-	public TexturedAppearance getSGFrontFacingAppearance() {
-		return this.sgFrontFacingAppearance;
-	}
+  public TexturedAppearance getSGFrontFacingAppearance() {
+    return this.sgFrontFacingAppearance;
+  }
 
-	@Override
-	public void setName( String name ) {
-		super.setName( name );
-		this.sgVisual.setName( name + ".sgVisual" );
-		this.sgFrontFacingAppearance.setName( name + ".sgFrontFacingAppearance" );
-	}
+  @Override
+  public void setName(String name) {
+    super.setName(name);
+    this.sgVisual.setName(name + ".sgVisual");
+    this.sgFrontFacingAppearance.setName(name + ".sgFrontFacingAppearance");
+  }
 
-	private final Visual sgVisual = new Visual();
-	private final TexturedAppearance sgFrontFacingAppearance = new TexturedAppearance();
+  private final Visual sgVisual = new Visual();
+  private final TexturedAppearance sgFrontFacingAppearance = new TexturedAppearance();
 }

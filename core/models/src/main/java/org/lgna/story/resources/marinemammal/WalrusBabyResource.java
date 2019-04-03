@@ -22,6 +22,7 @@
  */
 
 package org.lgna.story.resources.marinemammal;
+
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SSwimmer;
@@ -33,47 +34,37 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.MarineMammalResource;
 
 public enum WalrusBabyResource implements MarineMammalResource {
-	DEFAULT;
+  DEFAULT;
 
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId LOWER_LIP = new JointId( MOUTH, WalrusBabyResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId BACK_RIGHT_FIN = new JointId( TAIL, WalrusBabyResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId BACK_RIGHT_FIN_MIDDLE = new JointId( BACK_RIGHT_FIN, WalrusBabyResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId BACK_RIGHT_FIN_TIP = new JointId( BACK_RIGHT_FIN_MIDDLE, WalrusBabyResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId BACK_LEFT_FIN = new JointId( TAIL, WalrusBabyResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId BACK_LEFT_FIN_MIDDLE = new JointId( BACK_LEFT_FIN, WalrusBabyResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId BACK_LEFT_FIN_TIP = new JointId( BACK_LEFT_FIN_MIDDLE, WalrusBabyResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId FRONT_LEFT_FIN_MIDDLE = new JointId( FRONT_LEFT_FIN, WalrusBabyResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FRONT_LEFT_FIN_TIP = new JointId( FRONT_LEFT_FIN_MIDDLE, WalrusBabyResource.class );
-@FieldTemplate(visibility = Visibility.PRIME_TIME)
-	public static final JointId FRONT_RIGHT_FIN_MIDDLE = new JointId( FRONT_RIGHT_FIN, WalrusBabyResource.class );
-@FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public static final JointId FRONT_RIGHT_FIN_TIP = new JointId( FRONT_RIGHT_FIN_MIDDLE, WalrusBabyResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId LOWER_LIP = new JointId(MOUTH, WalrusBabyResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId BACK_RIGHT_FIN = new JointId(TAIL, WalrusBabyResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId BACK_RIGHT_FIN_MIDDLE = new JointId(BACK_RIGHT_FIN, WalrusBabyResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId BACK_RIGHT_FIN_TIP = new JointId(BACK_RIGHT_FIN_MIDDLE, WalrusBabyResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId BACK_LEFT_FIN = new JointId(TAIL, WalrusBabyResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId BACK_LEFT_FIN_MIDDLE = new JointId(BACK_LEFT_FIN, WalrusBabyResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId BACK_LEFT_FIN_TIP = new JointId(BACK_LEFT_FIN_MIDDLE, WalrusBabyResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId FRONT_LEFT_FIN_MIDDLE = new JointId(FRONT_LEFT_FIN, WalrusBabyResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FRONT_LEFT_FIN_TIP = new JointId(FRONT_LEFT_FIN_MIDDLE, WalrusBabyResource.class);
+  @FieldTemplate(visibility = Visibility.PRIME_TIME) public static final JointId FRONT_RIGHT_FIN_MIDDLE = new JointId(FRONT_RIGHT_FIN, WalrusBabyResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId FRONT_RIGHT_FIN_TIP = new JointId(FRONT_RIGHT_FIN_MIDDLE, WalrusBabyResource.class);
 
-	private final ImplementationAndVisualType resourceType;
-	WalrusBabyResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	WalrusBabyResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  WalrusBabyResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
+  WalrusBabyResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public SwimmerImp createImplementation( SSwimmer abstraction ) {
-		return new SwimmerImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public SwimmerImp createImplementation(SSwimmer abstraction) {
+    return new SwimmerImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

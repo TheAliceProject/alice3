@@ -61,61 +61,61 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class DeclarationComposite<D extends AbstractDeclaration, V extends DeclarationView> extends AbstractTabComposite<V> {
-	@Deprecated
-	public static synchronized DeclarationComposite<?, ?> getInstance( AbstractDeclaration declaration ) {
-		if( declaration instanceof AbstractCode ) {
-			return CodeComposite.getInstance( (AbstractCode)declaration );
-		} else if( declaration instanceof NamedUserType ) {
-			return TypeComposite.getInstance( (NamedUserType)declaration );
-		} else {
-			if( declaration != null ) {
-				throw new RuntimeException( "todo " + declaration );
-			} else {
-				return null;
-			}
-		}
-	}
+  @Deprecated
+  public static synchronized DeclarationComposite<?, ?> getInstance(AbstractDeclaration declaration) {
+    if (declaration instanceof AbstractCode) {
+      return CodeComposite.getInstance((AbstractCode) declaration);
+    } else if (declaration instanceof NamedUserType) {
+      return TypeComposite.getInstance((NamedUserType) declaration);
+    } else {
+      if (declaration != null) {
+        throw new RuntimeException("todo " + declaration);
+      } else {
+        return null;
+      }
+    }
+  }
 
-	private final D declaration;
-	private final Class<D> declarationCls;
+  private final D declaration;
+  private final Class<D> declarationCls;
 
-	public DeclarationComposite( UUID id, D declaration, Class<D> declarationCls ) {
-		super( id );
-		this.declaration = declaration;
-		this.declarationCls = declarationCls;
+  public DeclarationComposite(UUID id, D declaration, Class<D> declarationCls) {
+    super(id);
+    this.declaration = declaration;
+    this.declarationCls = declarationCls;
 
-		StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			PropertyListener nameListener = new PropertyListener() {
-				@Override
-				public void propertyChanging( PropertyEvent e ) {
-				}
+    StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
+    if (nameProperty != null) {
+      PropertyListener nameListener = new PropertyListener() {
+        @Override
+        public void propertyChanging(PropertyEvent e) {
+        }
 
-				@Override
-				public void propertyChanged( PropertyEvent e ) {
-					String nextName = (String)e.getValue();
-					IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectedState( DeclarationComposite.this ).setTextForBothTrueAndFalse( nextName );
-				}
-			};
-			nameProperty.addPropertyListener( nameListener );
-		}
-	}
+        @Override
+        public void propertyChanged(PropertyEvent e) {
+          String nextName = (String) e.getValue();
+          IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectedState(DeclarationComposite.this).setTextForBothTrueAndFalse(nextName);
+        }
+      };
+      nameProperty.addPropertyListener(nameListener);
+    }
+  }
 
-	@Override
-	protected String getSubKeyForLocalization() {
-		return declaration.getName();
-	}
+  @Override
+  protected String getSubKeyForLocalization() {
+    return declaration.getName();
+  }
 
-	public D getDeclaration() {
-		return this.declaration;
-	}
+  public D getDeclaration() {
+    return this.declaration;
+  }
 
-	public abstract AbstractType<?, ?, ?> getType();
+  public abstract AbstractType<?, ?, ?> getType();
 
-	public abstract boolean isValid();
+  public abstract boolean isValid();
 
-	@Override
-	protected final ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected final ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 }

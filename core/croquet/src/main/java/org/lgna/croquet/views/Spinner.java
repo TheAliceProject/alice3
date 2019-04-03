@@ -51,12 +51,12 @@ import javax.swing.JSpinner;
  * @author Dennis Cosgrove
  */
 public class Spinner extends ViewController<JSpinner, BoundedNumberState<?>> {
-	public Spinner( BoundedNumberState<?> model ) {
-		super( model );
-	}
+  public Spinner(BoundedNumberState<?> model) {
+    super(model);
+  }
 
-	@Override
-	protected JSpinner createAwtComponent() {
-		return new JSpinner( this.getModel().getSwingModel().getSpinnerModel() );
-	}
+  @Override
+  protected JSpinner createAwtComponent() {
+    return new JSpinner(this.getModel().getSwingModel().getSpinnerModel());
+  }
 }

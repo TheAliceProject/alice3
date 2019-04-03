@@ -69,66 +69,66 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FieldInitializerInstanceCreationArgument0State extends StandardExpressionState {
-	private static InitializingIfAbsentMap<UserField, FieldInitializerInstanceCreationArgument0State> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<UserField, FieldInitializerInstanceCreationArgument0State> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static FieldInitializerInstanceCreationArgument0State getInstance( UserField field ) {
-		if( field != null ) {
-			Expression initializer = field.initializer.getValue();
-			if( initializer instanceof InstanceCreation ) {
-				final InstanceCreation instanceCreation = (InstanceCreation)initializer;
-				AbstractConstructor constructor = instanceCreation.constructor.getValue();
-				List<? extends AbstractParameter> requiredParameters = constructor.getRequiredParameters();
-				if( requiredParameters.size() > 0 ) {
-					return map.getInitializingIfAbsent( field, new InitializingIfAbsentMap.Initializer<UserField, FieldInitializerInstanceCreationArgument0State>() {
-						@Override
-						public FieldInitializerInstanceCreationArgument0State initialize( UserField field ) {
-							return new FieldInitializerInstanceCreationArgument0State( field, instanceCreation );
-						}
-					} );
-				}
-			}
-		}
-		return null;
-	}
+  public static FieldInitializerInstanceCreationArgument0State getInstance(UserField field) {
+    if (field != null) {
+      Expression initializer = field.initializer.getValue();
+      if (initializer instanceof InstanceCreation) {
+        final InstanceCreation instanceCreation = (InstanceCreation) initializer;
+        AbstractConstructor constructor = instanceCreation.constructor.getValue();
+        List<? extends AbstractParameter> requiredParameters = constructor.getRequiredParameters();
+        if (requiredParameters.size() > 0) {
+          return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<UserField, FieldInitializerInstanceCreationArgument0State>() {
+            @Override
+            public FieldInitializerInstanceCreationArgument0State initialize(UserField field) {
+              return new FieldInitializerInstanceCreationArgument0State(field, instanceCreation);
+            }
+          });
+        }
+      }
+    }
+    return null;
+  }
 
-	private final UserField field;
-	private final InstanceCreation instanceCreation;
+  private final UserField field;
+  private final InstanceCreation instanceCreation;
 
-	private FieldInitializerInstanceCreationArgument0State( UserField field, InstanceCreation instanceCreation ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "5743343c-c7e5-43aa-9ccc-51d766f3a683" ), instanceCreation.requiredArguments.get( 0 ).expression.getValue() );
-		this.field = field;
-		this.instanceCreation = instanceCreation;
-	}
+  private FieldInitializerInstanceCreationArgument0State(UserField field, InstanceCreation instanceCreation) {
+    super(Application.PROJECT_GROUP, UUID.fromString("5743343c-c7e5-43aa-9ccc-51d766f3a683"), instanceCreation.requiredArguments.get(0).expression.getValue());
+    this.field = field;
+    this.instanceCreation = instanceCreation;
+  }
 
-	private AbstractParameter getRequiredParameter0() {
-		return this.instanceCreation.constructor.getValue().getRequiredParameters().get( 0 );
-	}
+  private AbstractParameter getRequiredParameter0() {
+    return this.instanceCreation.constructor.getValue().getRequiredParameters().get(0);
+  }
 
-	@Override
-	protected ValueDetails<?> getValueDetails() {
-		return this.getRequiredParameter0().getDetails();
-	}
+  @Override
+  protected ValueDetails<?> getValueDetails() {
+    return this.getRequiredParameter0().getDetails();
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getType() {
-		return this.getRequiredParameter0().getValueType();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getType() {
+    return this.getRequiredParameter0().getValueType();
+  }
 
-	@Override
-	protected void handleTruthAndBeautyValueChange( Expression nextValue ) {
-		super.handleTruthAndBeautyValueChange( nextValue );
-		// update AST
-		this.instanceCreation.requiredArguments.get( 0 ).expression.setValue( nextValue );
+  @Override
+  protected void handleTruthAndBeautyValueChange(Expression nextValue) {
+    super.handleTruthAndBeautyValueChange(nextValue);
+    // update AST
+    this.instanceCreation.requiredArguments.get(0).expression.setValue(nextValue);
 
-		// update Scene Editor
-		StorytellingSceneEditor sceneEditor = StageIDE.getActiveInstance().getSceneEditor();
-		SJointedModel model = sceneEditor.getInstanceInJavaVMForField( this.field, SJointedModel.class );
-		JointedModelImp<?, ?> imp = EmployeesOnly.getImplementation( model );
+    // update Scene Editor
+    StorytellingSceneEditor sceneEditor = StageIDE.getActiveInstance().getSceneEditor();
+    SJointedModel model = sceneEditor.getInstanceInJavaVMForField(this.field, SJointedModel.class);
+    JointedModelImp<?, ?> imp = EmployeesOnly.getImplementation(model);
 
-		VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
-		UserInstance userInstance = null;
-		Object[] array = vm.ENTRY_POINT_evaluate( userInstance, new Expression[] { nextValue } );
-		JointedModelResource resource = (JointedModelResource)array[ 0 ];
-		imp.setNewResource( resource );
-	}
+    VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
+    UserInstance userInstance = null;
+    Object[] array = vm.ENTRY_POINT_evaluate(userInstance, new Expression[] {nextValue});
+    JointedModelResource resource = (JointedModelResource) array[0];
+    imp.setNewResource(resource);
+  }
 }

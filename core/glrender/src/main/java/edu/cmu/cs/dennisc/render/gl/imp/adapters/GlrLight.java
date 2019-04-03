@@ -62,104 +62,104 @@ import java.nio.FloatBuffer;
  * @author Dennis Cosgrove
  */
 public abstract class GlrLight<T extends Light> extends GlrAffector<T> {
-	private static FloatBuffer s_ambientBlackBuffer = null;
+  private static FloatBuffer s_ambientBlackBuffer = null;
 
-	private static float[] s_position = new float[ 4 ];
-	private static FloatBuffer s_positionBuffer = FloatBuffer.wrap( s_position );
-	private static float[] s_spotDirection = new float[ 3 ];
-	private static FloatBuffer s_spotDirectionBuffer = FloatBuffer.wrap( s_spotDirection );
+  private static float[] s_position = new float[4];
+  private static FloatBuffer s_positionBuffer = FloatBuffer.wrap(s_position);
+  private static float[] s_spotDirection = new float[3];
+  private static FloatBuffer s_spotDirectionBuffer = FloatBuffer.wrap(s_spotDirection);
 
-	protected float[] getPosition( float[] rv ) {
-		rv[ 0 ] = 0;
-		rv[ 1 ] = 0;
-		rv[ 2 ] = 1;
-		rv[ 3 ] = 0;
-		return rv;
-	}
+  protected float[] getPosition(float[] rv) {
+    rv[0] = 0;
+    rv[1] = 0;
+    rv[2] = 1;
+    rv[3] = 0;
+    return rv;
+  }
 
-	protected float[] getSpotDirection( float[] rv ) {
-		rv[ 0 ] = 0;
-		rv[ 1 ] = 0;
-		rv[ 2 ] = -1;
-		return rv;
-	}
+  protected float[] getSpotDirection(float[] rv) {
+    rv[0] = 0;
+    rv[1] = 0;
+    rv[2] = -1;
+    return rv;
+  }
 
-	protected float getSpotExponent() {
-		return 0;
-	}
+  protected float getSpotExponent() {
+    return 0;
+  }
 
-	protected float getSpotCutoff() {
-		return 180;
-	}
+  protected float getSpotCutoff() {
+    return 180;
+  }
 
-	protected float getConstantAttenuation() {
-		return 1;
-	}
+  protected float getConstantAttenuation() {
+    return 1;
+  }
 
-	protected float getLinearAttenuation() {
-		return 0;
-	}
+  protected float getLinearAttenuation() {
+    return 0;
+  }
 
-	protected float getQuadraticAttenuation() {
-		return 0;
-	}
+  protected float getQuadraticAttenuation() {
+    return 0;
+  }
 
-	protected void setup( RenderContext rc, int id ) {
-		rc.gl.glEnable( id );
+  protected void setup(RenderContext rc, int id) {
+    rc.gl.glEnable(id);
 
-		//todo: investigate
-		if( s_ambientBlackBuffer == null ) {
-			s_ambientBlackBuffer = FloatBuffer.allocate( 4 );
-			s_ambientBlackBuffer.put( 0 );
-			s_ambientBlackBuffer.put( 0 );
-			s_ambientBlackBuffer.put( 0 );
-			s_ambientBlackBuffer.put( 1 );
-			s_ambientBlackBuffer.rewind();
-		}
-		rc.gl.glLightfv( id, GL_AMBIENT, s_ambientBlackBuffer );
+    //todo: investigate
+    if (s_ambientBlackBuffer == null) {
+      s_ambientBlackBuffer = FloatBuffer.allocate(4);
+      s_ambientBlackBuffer.put(0);
+      s_ambientBlackBuffer.put(0);
+      s_ambientBlackBuffer.put(0);
+      s_ambientBlackBuffer.put(1);
+      s_ambientBlackBuffer.rewind();
+    }
+    rc.gl.glLightfv(id, GL_AMBIENT, s_ambientBlackBuffer);
 
-		//todo: should lights' diffuse and specular colors be separated in the scenegraph?
-		rc.setLightColor( id, this.color, this.brightness );
+    //todo: should lights' diffuse and specular colors be separated in the scenegraph?
+    rc.setLightColor(id, this.color, this.brightness);
 
-		//        rc.gl.glLightfv( id, GL_DIFFUSE, this.colorTimesBrightnessBuffer );
-		//        rc.gl.glLightfv( id, GL_SPECULAR, this.colorTimesBrightnessBuffer );
+    //        rc.gl.glLightfv( id, GL_DIFFUSE, this.colorTimesBrightnessBuffer );
+    //        rc.gl.glLightfv( id, GL_SPECULAR, this.colorTimesBrightnessBuffer );
 
-		synchronized( s_position ) {
-			getPosition( s_position );
-			rc.gl.glLightfv( id, GL_POSITION, s_positionBuffer );
-		}
-		synchronized( s_spotDirection ) {
-			getSpotDirection( s_spotDirection );
-			rc.gl.glLightfv( id, GL_SPOT_DIRECTION, s_spotDirectionBuffer );
-		}
-		rc.gl.glLightf( id, GL_SPOT_EXPONENT, getSpotExponent() );
-		rc.gl.glLightf( id, GL_SPOT_CUTOFF, getSpotCutoff() );
-		rc.gl.glLightf( id, GL_CONSTANT_ATTENUATION, getConstantAttenuation() );
-		rc.gl.glLightf( id, GL_LINEAR_ATTENUATION, getLinearAttenuation() );
-		rc.gl.glLightf( id, GL_QUADRATIC_ATTENUATION, getQuadraticAttenuation() );
-	}
+    synchronized (s_position) {
+      getPosition(s_position);
+      rc.gl.glLightfv(id, GL_POSITION, s_positionBuffer);
+    }
+    synchronized (s_spotDirection) {
+      getSpotDirection(s_spotDirection);
+      rc.gl.glLightfv(id, GL_SPOT_DIRECTION, s_spotDirectionBuffer);
+    }
+    rc.gl.glLightf(id, GL_SPOT_EXPONENT, getSpotExponent());
+    rc.gl.glLightf(id, GL_SPOT_CUTOFF, getSpotCutoff());
+    rc.gl.glLightf(id, GL_CONSTANT_ATTENUATION, getConstantAttenuation());
+    rc.gl.glLightf(id, GL_LINEAR_ATTENUATION, getLinearAttenuation());
+    rc.gl.glLightf(id, GL_QUADRATIC_ATTENUATION, getQuadraticAttenuation());
+  }
 
-	@Override
-	public void setupAffectors( RenderContext rc ) {
-		if( this instanceof GlrAmbientLight ) {
-			rc.addAmbient( this.color, this.brightness );
-		} else {
-			int id = rc.getNextLightID();
-			setup( rc, id );
-		}
-	}
+  @Override
+  public void setupAffectors(RenderContext rc) {
+    if (this instanceof GlrAmbientLight) {
+      rc.addAmbient(this.color, this.brightness);
+    } else {
+      int id = rc.getNextLightID();
+      setup(rc, id);
+    }
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.color ) {
-			owner.color.getValue().getAsArray( this.color );
-		} else if( property == owner.brightness ) {
-			this.brightness = owner.brightness.getValue();
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.color) {
+      owner.color.getValue().getAsArray(this.color);
+    } else if (property == owner.brightness) {
+      this.brightness = owner.brightness.getValue();
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private final float[] color = { Float.NaN, Float.NaN, Float.NaN, Float.NaN };
-	private float brightness = Float.NaN;
+  private final float[] color = {Float.NaN, Float.NaN, Float.NaN, Float.NaN};
+  private float brightness = Float.NaN;
 }

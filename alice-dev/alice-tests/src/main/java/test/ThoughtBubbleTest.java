@@ -46,80 +46,80 @@ package test;
  * @author Dennis Cosgrove
  */
 public class ThoughtBubbleTest {
-	private static java.awt.geom.Ellipse2D createScaledOffsetRectangle2D( java.awt.geom.Rectangle2D.Double r, double offsetPortionX, double offsetPortionY, double scaleX, double scaleY ) {
-		return new java.awt.geom.Ellipse2D.Double( r.x + ( offsetPortionX * r.width ), r.y + ( offsetPortionY * r.height ), r.width * scaleX, r.height * scaleY );
-	}
+  private static java.awt.geom.Ellipse2D createScaledOffsetRectangle2D(java.awt.geom.Rectangle2D.Double r, double offsetPortionX, double offsetPortionY, double scaleX, double scaleY) {
+    return new java.awt.geom.Ellipse2D.Double(r.x + (offsetPortionX * r.width), r.y + (offsetPortionY * r.height), r.width * scaleX, r.height * scaleY);
+  }
 
-	private static java.awt.geom.Area createRotatedAboutCenterArea( java.awt.geom.Ellipse2D e, double theta ) {
-		return new java.awt.geom.Area( e ).createTransformedArea( java.awt.geom.AffineTransform.getRotateInstance( theta, e.getCenterX(), e.getCenterY() ) );
-	}
+  private static java.awt.geom.Area createRotatedAboutCenterArea(java.awt.geom.Ellipse2D e, double theta) {
+    return new java.awt.geom.Area(e).createTransformedArea(java.awt.geom.AffineTransform.getRotateInstance(theta, e.getCenterX(), e.getCenterY()));
+  }
 
-	private static java.awt.Shape createBubbleAround( java.awt.geom.Rectangle2D.Double r ) {
-		java.awt.geom.Ellipse2D rightEllipse = createScaledOffsetRectangle2D( r, 0.45, -0.05, 0.85, 1.25 );
-		java.awt.geom.Ellipse2D topEllipse = createScaledOffsetRectangle2D( r, 0.1, -0.4, 0.8, 1.2 );
-		java.awt.geom.Ellipse2D leftEllipse = createScaledOffsetRectangle2D( r, -0.2, -0.1, 0.7, 0.9 );
-		java.awt.geom.Ellipse2D bottomLeftEllipse = createScaledOffsetRectangle2D( r, -0.1, 0.15, 0.7, 1.2 );
-		java.awt.geom.Ellipse2D bottomRightEllipse = createScaledOffsetRectangle2D( r, 0.15, 0.45, 0.8, 1.0 );
+  private static java.awt.Shape createBubbleAround(java.awt.geom.Rectangle2D.Double r) {
+    java.awt.geom.Ellipse2D rightEllipse = createScaledOffsetRectangle2D(r, 0.45, -0.05, 0.85, 1.25);
+    java.awt.geom.Ellipse2D topEllipse = createScaledOffsetRectangle2D(r, 0.1, -0.4, 0.8, 1.2);
+    java.awt.geom.Ellipse2D leftEllipse = createScaledOffsetRectangle2D(r, -0.2, -0.1, 0.7, 0.9);
+    java.awt.geom.Ellipse2D bottomLeftEllipse = createScaledOffsetRectangle2D(r, -0.1, 0.15, 0.7, 1.2);
+    java.awt.geom.Ellipse2D bottomRightEllipse = createScaledOffsetRectangle2D(r, 0.15, 0.45, 0.8, 1.0);
 
-		java.awt.geom.AffineTransform m = java.awt.geom.AffineTransform.getRotateInstance( 0.1, topEllipse.getCenterX(), topEllipse.getCenterY() );
+    java.awt.geom.AffineTransform m = java.awt.geom.AffineTransform.getRotateInstance(0.1, topEllipse.getCenterX(), topEllipse.getCenterY());
 
-		java.awt.geom.Area rv = new java.awt.geom.Area( r );
-		rv.add( createRotatedAboutCenterArea( rightEllipse, -0.1 ) );
-		rv.add( createRotatedAboutCenterArea( topEllipse, -0.05 ) );
-		rv.add( new java.awt.geom.Area( leftEllipse ) );
-		rv.add( createRotatedAboutCenterArea( bottomLeftEllipse, -0.1 ) );
-		rv.add( createRotatedAboutCenterArea( bottomRightEllipse, 0.1 ) );
-		return rv;
-	}
+    java.awt.geom.Area rv = new java.awt.geom.Area(r);
+    rv.add(createRotatedAboutCenterArea(rightEllipse, -0.1));
+    rv.add(createRotatedAboutCenterArea(topEllipse, -0.05));
+    rv.add(new java.awt.geom.Area(leftEllipse));
+    rv.add(createRotatedAboutCenterArea(bottomLeftEllipse, -0.1));
+    rv.add(createRotatedAboutCenterArea(bottomRightEllipse, 0.1));
+    return rv;
+  }
 
-	public static void main( String[] args ) {
-		TestCroquet testCroquet = new TestCroquet();
-		testCroquet.initialize( args );
+  public static void main(String[] args) {
+    TestCroquet testCroquet = new TestCroquet();
+    testCroquet.initialize(args);
 
-		class JBubble extends javax.swing.JComponent {
-			java.awt.Point p0 = new java.awt.Point( 100, 100 );
-			java.awt.Point p1;
+    class JBubble extends javax.swing.JComponent {
+      java.awt.Point p0 = new java.awt.Point(100, 100);
+      java.awt.Point p1;
 
-			@Override
-			public void paint( java.awt.Graphics g ) {
-				super.paint( g );
+      @Override
+      public void paint(java.awt.Graphics g) {
+        super.paint(g);
 
-				if( ( p0 != null ) && ( p1 != null ) ) {
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+        if ((p0 != null) && (p1 != null)) {
+          java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
 
-					java.awt.geom.Rectangle2D.Double bounds = new java.awt.geom.Rectangle2D.Double( p0.x, p0.y, p1.x - p0.x, p1.y - p0.y );
-					g2.setPaint( java.awt.Color.RED );
-					g2.fill( bounds );
-					g2.setPaint( java.awt.Color.BLACK );
-					g2.draw( createBubbleAround( bounds ) );
-				}
-			}
-		}
+          java.awt.geom.Rectangle2D.Double bounds = new java.awt.geom.Rectangle2D.Double(p0.x, p0.y, p1.x - p0.x, p1.y - p0.y);
+          g2.setPaint(java.awt.Color.RED);
+          g2.fill(bounds);
+          g2.setPaint(java.awt.Color.BLACK);
+          g2.draw(createBubbleAround(bounds));
+        }
+      }
+    }
 
-		final JBubble a = new JBubble();
+    final JBubble a = new JBubble();
 
-		a.addMouseListener( new java.awt.event.MouseAdapter() {
-			@Override
-			public void mousePressed( java.awt.event.MouseEvent e ) {
-				a.p0 = e.getPoint();
-				a.p1 = null;
-				a.repaint();
-			}
-		} );
-		a.addMouseMotionListener( new java.awt.event.MouseMotionAdapter() {
-			@Override
-			public void mouseDragged( java.awt.event.MouseEvent e ) {
-				a.p1 = e.getPoint();
-				a.repaint();
-			}
-		} );
+    a.addMouseListener(new java.awt.event.MouseAdapter() {
+      @Override
+      public void mousePressed(java.awt.event.MouseEvent e) {
+        a.p0 = e.getPoint();
+        a.p1 = null;
+        a.repaint();
+      }
+    });
+    a.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+      @Override
+      public void mouseDragged(java.awt.event.MouseEvent e) {
+        a.p1 = e.getPoint();
+        a.repaint();
+      }
+    });
 
-		a.p1 = new java.awt.Point( a.p0.x + 600, a.p0.y + 40 );
+    a.p1 = new java.awt.Point(a.p0.x + 600, a.p0.y + 40);
 
-		org.lgna.croquet.DocumentFrame documentFrame = testCroquet.getDocumentFrame();
-		org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
-		frame.getContentPane().getAwtComponent().add( a );
-		frame.setSize( 800, 450 );
-		frame.setVisible( true );
-	}
+    org.lgna.croquet.DocumentFrame documentFrame = testCroquet.getDocumentFrame();
+    org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
+    frame.getContentPane().getAwtComponent().add(a);
+    frame.setSize(800, 450);
+    frame.setVisible(true);
+  }
 }

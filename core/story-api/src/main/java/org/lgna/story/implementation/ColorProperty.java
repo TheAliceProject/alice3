@@ -50,12 +50,12 @@ import org.lgna.story.EmployeesOnly;
  * @author Dennis Cosgrove
  */
 public abstract class ColorProperty extends Property<Color> {
-	public ColorProperty( PropertyOwnerImp owner ) {
-		super( owner, Color.class );
-	}
+  public ColorProperty(PropertyOwnerImp owner) {
+    super(owner, Color.class);
+  }
 
-	@Override
-	protected Color interpolate( Color a, Color b, double portion ) {
-		return EmployeesOnly.createInterpolation( a, b, (float)portion );
-	}
+  @Override
+  protected Color interpolate(Color a, Color b, double portion) {
+    return EmployeesOnly.createInterpolation(a, b, (float) portion);
+  }
 }

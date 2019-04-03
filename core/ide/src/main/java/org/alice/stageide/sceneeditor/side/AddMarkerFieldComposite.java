@@ -68,78 +68,68 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AddMarkerFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
-	public AddMarkerFieldComposite( UUID migrationId, Class<? extends SMarker> cls ) {
-		super( migrationId, cls );
-	}
+  public AddMarkerFieldComposite(UUID migrationId, Class<? extends SMarker> cls) {
+    super(migrationId, cls);
+  }
 
-	private final CustomItemState<Expression> colorIdState = this.createInitialPropertyValueExpressionState( "colorIdState", Color.RED, SMarker.class, "setColorId", Color.class, null );
+  private final CustomItemState<Expression> colorIdState = this.createInitialPropertyValueExpressionState("colorIdState", Color.RED, SMarker.class, "setColorId", Color.class, null);
 
-	public CustomItemState<Expression> getColorIdState() {
-		return this.colorIdState;
-	}
+  public CustomItemState<Expression> getColorIdState() {
+    return this.colorIdState;
+  }
 
-	protected abstract Color getInitialMarkerColor();
+  protected abstract Color getInitialMarkerColor();
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		Color initialMarkerColor = this.getInitialMarkerColor();
-		try {
-			Expression colorExpresion = StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression( initialMarkerColor );
-			this.colorIdState.setValueTransactionlessly( colorExpresion );
-		} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
-			ccee.printStackTrace();
-		}
-		super.handlePreShowDialog( dialog );
-	}
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    Color initialMarkerColor = this.getInitialMarkerColor();
+    try {
+      Expression colorExpresion = StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression(initialMarkerColor);
+      this.colorIdState.setValueTransactionlessly(colorExpresion);
+    } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+      ccee.printStackTrace();
+    }
+    super.handlePreShowDialog(dialog);
+  }
 
-	protected abstract AffineMatrix4x4 getInitialMarkerTransform();
+  protected abstract AffineMatrix4x4 getInitialMarkerTransform();
 
-	@Override
-	protected boolean isUserTypeDesired() {
-		return false;
-	}
+  @Override
+  protected boolean isUserTypeDesired() {
+    return false;
+  }
 
-	@Override
-	protected boolean isNameGenerationDesired() {
-		//todo?
-		return true;
-	}
+  @Override
+  protected boolean isNameGenerationDesired() {
+    //todo?
+    return true;
+  }
 
-	@Override
-	protected boolean isNumberAppendedToNameOfFirstField() {
-		return true;
-	}
+  @Override
+  protected boolean isNumberAppendedToNameOfFirstField() {
+    return true;
+  }
 
-	private static JavaMethod COLOR_ID_SETTER = JavaMethod.getInstance( SMarker.class, "setColorId", Color.class );
+  private static JavaMethod COLOR_ID_SETTER = JavaMethod.getInstance(SMarker.class, "setColorId", Color.class);
 
-	@Override
-	protected AddManagedFieldComposite.EditCustomization customize( UserActivity userActivity, UserType<?> declaringType, UserField field, AddManagedFieldComposite.EditCustomization rv ) {
-		super.customize( userActivity, declaringType, field, rv );
-		AffineMatrix4x4 initialMarkerTransform = this.getInitialMarkerTransform();
-		rv.addDoStatement( SetUpMethodGenerator.createSetterStatement(
-				false, field,
-				COLOR_ID_SETTER,
-				this.colorIdState.getValue()
-				) );
-		try {
-			Statement orientationStatement = SetUpMethodGenerator.createOrientationStatement(
-					false, field,
-					EmployeesOnly.createOrientation( initialMarkerTransform.orientation )
-					);
-			rv.addDoStatement( orientationStatement );
-		} catch( CannotCreateExpressionException ccee ) {
-			ccee.printStackTrace();
-		}
-		try {
-			Statement positionStatement = SetUpMethodGenerator.createPositionStatement(
-					false, field,
-					EmployeesOnly.createPosition( initialMarkerTransform.translation )
-					);
-			rv.addDoStatement( positionStatement );
-		} catch( CannotCreateExpressionException ccee ) {
-			ccee.printStackTrace();
-		}
-		return rv;
-	}
+  @Override
+  protected AddManagedFieldComposite.EditCustomization customize(UserActivity userActivity, UserType<?> declaringType, UserField field, AddManagedFieldComposite.EditCustomization rv) {
+    super.customize(userActivity, declaringType, field, rv);
+    AffineMatrix4x4 initialMarkerTransform = this.getInitialMarkerTransform();
+    rv.addDoStatement(SetUpMethodGenerator.createSetterStatement(false, field, COLOR_ID_SETTER, this.colorIdState.getValue()));
+    try {
+      Statement orientationStatement = SetUpMethodGenerator.createOrientationStatement(false, field, EmployeesOnly.createOrientation(initialMarkerTransform.orientation));
+      rv.addDoStatement(orientationStatement);
+    } catch (CannotCreateExpressionException ccee) {
+      ccee.printStackTrace();
+    }
+    try {
+      Statement positionStatement = SetUpMethodGenerator.createPositionStatement(false, field, EmployeesOnly.createPosition(initialMarkerTransform.translation));
+      rv.addDoStatement(positionStatement);
+    } catch (CannotCreateExpressionException ccee) {
+      ccee.printStackTrace();
+    }
+    return rv;
+  }
 
 }

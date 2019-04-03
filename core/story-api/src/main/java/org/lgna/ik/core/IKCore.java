@@ -66,182 +66,174 @@ import edu.cmu.cs.dennisc.math.Point3;
  */
 public class IKCore {
 
-	public enum Limb {
-		RIGHT_ARM,
-		LEFT_ARM,
-		RIGHT_LEG,
-		LEFT_LEG
-	}
+  public enum Limb {
+    RIGHT_ARM, LEFT_ARM, RIGHT_LEG, LEFT_LEG
+  }
 
-	private static final SBiped ogre = new SBiped( null );
-	private static final boolean USING_OLD = false;
-	private static List<JointId> defaultAnchors = Lists.newArrayList(
-			( (JointImp)EmployeesOnly.getImplementation( ogre.getRightShoulder() ) ).getJointId(),
-			( (JointImp)EmployeesOnly.getImplementation( ogre.getLeftShoulder() ) ).getJointId(),
-			( (JointImp)EmployeesOnly.getImplementation( ogre.getRightHip() ) ).getJointId(),
-			( (JointImp)EmployeesOnly.getImplementation( ogre.getLeftHip() ) ).getJointId()
-			);
+  private static final SBiped ogre = new SBiped(null);
+  private static final boolean USING_OLD = false;
+  private static List<JointId> defaultAnchors = Lists.newArrayList(((JointImp) EmployeesOnly.getImplementation(ogre.getRightShoulder())).getJointId(), ((JointImp) EmployeesOnly.getImplementation(ogre.getLeftShoulder())).getJointId(), ((JointImp) EmployeesOnly.getImplementation(ogre.getRightHip())).getJointId(), ((JointImp) EmployeesOnly.getImplementation(ogre.getLeftHip())).getJointId());
 
-	public static void moveChainToPointInSceneSpace( JointImp anchor, JointImp end, Point3 target ) {
-		//this because anchor does not behave as expected...
-		anchor = anchor.getJointedModelImplementation().getJointImplementation( anchor.getJointId().getParent() );
-		if( USING_OLD ) {
-			moveUsingOldJMIKEnforcer( anchor, end, target );
-		} else {
-			moveUsingNewTPIKEnforcer( anchor, end, target );
-		}
-	}
+  public static void moveChainToPointInSceneSpace(JointImp anchor, JointImp end, Point3 target) {
+    //this because anchor does not behave as expected...
+    anchor = anchor.getJointedModelImplementation().getJointImplementation(anchor.getJointId().getParent());
+    if (USING_OLD) {
+      moveUsingOldJMIKEnforcer(anchor, end, target);
+    } else {
+      moveUsingNewTPIKEnforcer(anchor, end, target);
+    }
+  }
 
-	private static void moveUsingNewTPIKEnforcer( JointImp anchor, JointImp end, Point3 target ) {
-		target = correctTarget( anchor, end, target );
-		JointedModelImp<?, ?> jointedParent = anchor.getJointedModelImplementation();
-		final TightPositionalIkEnforcer tightIkEnforcer = new TightPositionalIkEnforcer( jointedParent );
+  private static void moveUsingNewTPIKEnforcer(JointImp anchor, JointImp end, Point3 target) {
+    target = correctTarget(anchor, end, target);
+    JointedModelImp<?, ?> jointedParent = anchor.getJointedModelImplementation();
+    final TightPositionalIkEnforcer tightIkEnforcer = new TightPositionalIkEnforcer(jointedParent);
 
-		//TODO do what's below to complete it
-		// set its chain
-		int level = 0;
-		JointId endId = end.getJointId();
-		JointId anchorId = anchor.getJointId();
-		PositionConstraint myPositionConstraint = tightIkEnforcer.createPositionConstraint( level, anchorId, endId );
+    //TODO do what's below to complete it
+    // set its chain
+    int level = 0;
+    JointId endId = end.getJointId();
+    JointId anchorId = anchor.getJointId();
+    PositionConstraint myPositionConstraint = tightIkEnforcer.createPositionConstraint(level, anchorId, endId);
 
-		//				System.out.println("will start");
-		//				try {
-		//					System.in.read();
-		//				} catch (IOException e1) {
-		//					// TODO Auto-generated catch block
-		//					e1.printStackTrace();
-		//				}
-		//		while( true ) {
+    //        System.out.println("will start");
+    //        try {
+    //          System.in.read();
+    //        } catch (IOException e1) {
+    //          // TODO Auto-generated catch block
+    //          e1.printStackTrace();
+    //        }
+    //    while( true ) {
 
-		//not bad concurrent programming practice
-		//these could be multiple. in this app it is one pair.
+    //not bad concurrent programming practice
+    //these could be multiple. in this app it is one pair.
 
-		//					edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE );
-		myPositionConstraint.setEeDesiredPosition( target );
+    //          edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE );
+    myPositionConstraint.setEeDesiredPosition(target);
 
-		//					//this is a little weird. I'd better let the enforcer create and hold the constraint, and I should hold a pointer to it for myself.
-		//					for(PositionConstraint positionConstraint: constraints.activePositionConstraints) {
-		//						//should it be like this, or should constraints read them automatically?
-		//							//IK system reads joint angles automatically anyway
-		//							//but these desired position/orientations are not necessarily tied to scenegraph stuff. I should give them myself like this.
-		//						positionConstraint.setEeDesiredPosition(targetTransformation.translation);
-		//
-		//						//force bone reprint
-		//						//this should be fine even if the chain is not valid anymore.
-		//						//this would prevent me from selecting the list
-		////						javax.swing.SwingUtilities.invokeLater(new Runnable() {
-		////							public void run() {
-		////								test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
-		////							}
-		////						});
-		//					}
-		//
-		//					for(OrientationConstraint orientationConstraint: constraints.activeOrientationConstraints) {
-		//						System.out.println("orientaiton constraint!");
-		//						orientationConstraint.setEeDesiredOrientation(targetTransformation.orientation);
-		//					}
-		//perhaps better ways of setting constraint values?
+    //          //this is a little weird. I'd better let the enforcer create and hold the constraint, and I should hold a pointer to it for myself.
+    //          for(PositionConstraint positionConstraint: constraints.activePositionConstraints) {
+    //            //should it be like this, or should constraints read them automatically?
+    //              //IK system reads joint angles automatically anyway
+    //              //but these desired position/orientations are not necessarily tied to scenegraph stuff. I should give them myself like this.
+    //            positionConstraint.setEeDesiredPosition(targetTransformation.translation);
+    //
+    //            //force bone reprint
+    //            //this should be fine even if the chain is not valid anymore.
+    //            //this would prevent me from selecting the list
+    ////            javax.swing.SwingUtilities.invokeLater(new Runnable() {
+    ////              public void run() {
+    ////                test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
+    ////              }
+    ////            });
+    //          }
+    //
+    //          for(OrientationConstraint orientationConstraint: constraints.activeOrientationConstraints) {
+    //            System.out.println("orientaiton constraint!");
+    //            orientationConstraint.setEeDesiredOrientation(targetTransformation.orientation);
+    //          }
+    //perhaps better ways of setting constraint values?
 
-		//this enforces the constraints immediately right now. so, there is no talk about deltatime or speed
-		//had I had a maximum rotational speed for joints, then having time would make sense
-		tightIkEnforcer.enforceConstraints();
-		//			break;
+    //this enforces the constraints immediately right now. so, there is no talk about deltatime or speed
+    //had I had a maximum rotational speed for joints, then having time would make sense
+    tightIkEnforcer.enforceConstraints();
+    //      break;
 
-		//		}
+    //    }
 
-	}
+  }
 
-	private static Point3 correctTarget( JointImp anchor, JointImp end, Point3 target ) {
-		double lengthOfLimb = getLengthOfLimb( anchor, end );
-		Point3 vec = Point3.createSubtraction( target, anchor.getAbsoluteTransformation().translation );
-		if( lengthOfLimb < vec.calculateMagnitude() ) {
-			vec.setToDivision( vec, vec.calculateMagnitude() );
-			vec.setToMultiplication( vec, lengthOfLimb );
-			return Point3.createAddition( anchor.getAbsoluteTransformation().translation, vec );
-		}
-		return target;
-	}
+  private static Point3 correctTarget(JointImp anchor, JointImp end, Point3 target) {
+    double lengthOfLimb = getLengthOfLimb(anchor, end);
+    Point3 vec = Point3.createSubtraction(target, anchor.getAbsoluteTransformation().translation);
+    if (lengthOfLimb < vec.calculateMagnitude()) {
+      vec.setToDivision(vec, vec.calculateMagnitude());
+      vec.setToMultiplication(vec, lengthOfLimb);
+      return Point3.createAddition(anchor.getAbsoluteTransformation().translation, vec);
+    }
+    return target;
+  }
 
-	private static double getLengthOfLimb( JointImp anchor, JointImp end ) {
-		JointedModelImp model = end.getJointedModelParent();
-		if( !end.getJointId().equals( anchor.getJointId() ) ) {
-			JointImp parent = model.getJointImplementation( end.getJointId().getParent() );
-			return end.getDistanceTo( parent ) + getLengthOfLimb( anchor, parent );
-		} else {
-			return 0;
-		}
-	}
+  private static double getLengthOfLimb(JointImp anchor, JointImp end) {
+    JointedModelImp model = end.getJointedModelParent();
+    if (!end.getJointId().equals(anchor.getJointId())) {
+      JointImp parent = model.getJointImplementation(end.getJointId().getParent());
+      return end.getDistanceTo(parent) + getLengthOfLimb(anchor, parent);
+    } else {
+      return 0;
+    }
+  }
 
-	private static void moveUsingOldJMIKEnforcer( JointImp anchor, JointImp end, Point3 target ) {
-		JointedModelImp<?, ?> jointedParent = anchor.getJointedModelImplementation();
-		JointedModelIkEnforcer enforcer = new JointedModelIkEnforcer( jointedParent );
-		enforcer.addFullBodyDefaultPoseUsingCurrentPose();
-		enforcer.setDefaultJointWeight( 1 );
-		enforcer.setJointWeight( BipedResource.RIGHT_ELBOW, 1 );
-		JointId anchorId = anchor.getJointId();
-		JointId eeId = end.getJointId();
-		enforcer.setChainBetween( anchorId, eeId );
-		Point3 currTransformation = end.getTransformation( AsSeenBy.SCENE ).translation;
-		Point3 prevTransformation = new Point3( Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE );
-		double delta = .001;//arbitrary
-		while( Point3.calculateDistanceBetween( currTransformation, prevTransformation ) > delta ) {
-			prevTransformation = currTransformation;
-			//solver has the chain. can also have multiple chains.
-			//I can tell solver, for this chain this is the linear target, etc.
-			//it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok.
-			Map<Bone.Axis, Double> desiredSpeedForAxis = new HashMap<Bone.Axis, Double>();
+  private static void moveUsingOldJMIKEnforcer(JointImp anchor, JointImp end, Point3 target) {
+    JointedModelImp<?, ?> jointedParent = anchor.getJointedModelImplementation();
+    JointedModelIkEnforcer enforcer = new JointedModelIkEnforcer(jointedParent);
+    enforcer.addFullBodyDefaultPoseUsingCurrentPose();
+    enforcer.setDefaultJointWeight(1);
+    enforcer.setJointWeight(BipedResource.RIGHT_ELBOW, 1);
+    JointId anchorId = anchor.getJointId();
+    JointId eeId = end.getJointId();
+    enforcer.setChainBetween(anchorId, eeId);
+    Point3 currTransformation = end.getTransformation(AsSeenBy.SCENE).translation;
+    Point3 prevTransformation = new Point3(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+    double delta = .001; //arbitrary
+    while (Point3.calculateDistanceBetween(currTransformation, prevTransformation) > delta) {
+      prevTransformation = currTransformation;
+      //solver has the chain. can also have multiple chains.
+      //I can tell solver, for this chain this is the linear target, etc.
+      //it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok.
+      Map<Bone.Axis, Double> desiredSpeedForAxis = new HashMap<Bone.Axis, Double>();
 
-			//not bad concurrent programming practice
-			boolean isLinearEnabled = true; //todo: test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
-			boolean isAngularEnabled = true; //todo: test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
+      //not bad concurrent programming practice
+      boolean isLinearEnabled = true; //todo: test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
+      boolean isAngularEnabled = true; //todo: test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
 
-			//these could be multiple. in this app it is one pair.
-			//			final JointId eeId = test.ik.croquet.EndJointIdState.getInstance().getValue();
-			//			final JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
+      //these could be multiple. in this app it is one pair.
+      //      final JointId eeId = test.ik.croquet.EndJointIdState.getInstance().getValue();
+      //      final JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
 
-			double maxLinearSpeedForEe = IkConstants.MAX_LINEAR_SPEED_FOR_EE;
+      double maxLinearSpeedForEe = IkConstants.MAX_LINEAR_SPEED_FOR_EE;
 
-			double deltaTime = IkConstants.DESIRED_DELTA_TIME;
-			if( enforcer.hasActiveChain() && ( isLinearEnabled || isAngularEnabled ) ) {
-				//I could make chain setter not race with this
-				//However, racing is fine, as long as the old chain is still valid. It is.
-				//				if( isLinearEnabled ) {
-				enforcer.setEeDesiredPosition( eeId, target, maxLinearSpeedForEe );
-				//				}
+      double deltaTime = IkConstants.DESIRED_DELTA_TIME;
+      if (enforcer.hasActiveChain() && (isLinearEnabled || isAngularEnabled)) {
+        //I could make chain setter not race with this
+        //However, racing is fine, as long as the old chain is still valid. It is.
+        //        if( isLinearEnabled ) {
+        enforcer.setEeDesiredPosition(eeId, target, maxLinearSpeedForEe);
+        //        }
 
-				//				if( isAngularEnabled ) {
-				//					enforcer.setEeDesiredOrientation( eeId, targetTransformation.orientation, maxAngularSpeedForEe );
-				//				}
+        //        if( isAngularEnabled ) {
+        //          enforcer.setEeDesiredOrientation( eeId, targetTransformation.orientation, maxAngularSpeedForEe );
+        //        }
 
-				enforcer.advanceTime( deltaTime );
+        enforcer.advanceTime(deltaTime);
 
-				//this is for display of gazi's sphere's only
-				//				Point3 ep = enforcer.getEndEffectorPosition( eeId );
-				//				Point3 ap = enforcer.getAnchorPosition( anchorId );
-				//				scene.anchor.setPositionRelativeToVehicle( new Position( ap.x, ap.y, ap.z ) );
-				//				scene.ee.setPositionRelativeToVehicle( new Position( ep.x, ep.y, ep.z ) );
+        //this is for display of gazi's sphere's only
+        //        Point3 ep = enforcer.getEndEffectorPosition( eeId );
+        //        Point3 ap = enforcer.getAnchorPosition( anchorId );
+        //        scene.anchor.setPositionRelativeToVehicle( new Position( ap.x, ap.y, ap.z ) );
+        //        scene.ee.setPositionRelativeToVehicle( new Position( ep.x, ep.y, ep.z ) );
 
-				//force bone reprint
-				//this should be fine even if the chain is not valid anymore.
-				//						javax.swing.SwingUtilities.invokeLater(new Runnable() {
-				//							public void run() {
-				//								//this would prevent me from selecting the list
-				////								test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
-				//								//this would throw java.lang.IllegalStateException: Attempt to mutate in notification
-				////								updateInfo();
-				//							}
-				//						});
-			}
+        //force bone reprint
+        //this should be fine even if the chain is not valid anymore.
+        //            javax.swing.SwingUtilities.invokeLater(new Runnable() {
+        //              public void run() {
+        //                //this would prevent me from selecting the list
+        ////                test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
+        //                //this would throw java.lang.IllegalStateException: Attempt to mutate in notification
+        ////                updateInfo();
+        //              }
+        //            });
+      }
 
-			currTransformation = end.getTransformation( AsSeenBy.SCENE ).translation;
-		}
-	}
+      currTransformation = end.getTransformation(AsSeenBy.SCENE).translation;
+    }
+  }
 
-	public static JointId getDefaultAnchorForBipedEndJoint( JointId jointId ) {
-		while( ( jointId != null ) && !defaultAnchors.contains( jointId ) ) {
-			jointId = jointId.getParent();
-		}
-		return jointId;
-	}
+  public static JointId getDefaultAnchorForBipedEndJoint(JointId jointId) {
+    while ((jointId != null) && !defaultAnchors.contains(jointId)) {
+      jointId = jointId.getParent();
+    }
+    return jointId;
+  }
 
 }

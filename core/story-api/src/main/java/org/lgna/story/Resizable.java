@@ -47,31 +47,31 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public interface Resizable {
-	public Scale getScale();
+  public Scale getScale();
 
-	public void setScale( Scale size, SetScale.Detail... details );
+  public void setScale(Scale size, SetScale.Detail... details);
 
-	public Size getSize();
+  public Size getSize();
 
-	public void setSize( Size size, SetSize.Detail... details );
+  public void setSize(Size size, SetSize.Detail... details);
 
-	public Double getWidth();
+  public Double getWidth();
 
-	public void setWidth( Number width, SetWidth.Detail... details );
+  public void setWidth(Number width, SetWidth.Detail... details);
 
-	public Double getHeight();
+  public Double getHeight();
 
-	public void setHeight( Number height, SetHeight.Detail... details );
+  public void setHeight(Number height, SetHeight.Detail... details);
 
-	public Double getDepth();
+  public Double getDepth();
 
-	public void setDepth( Number depth, SetDepth.Detail... details );
+  public void setDepth(Number depth, SetDepth.Detail... details);
 
-	public void resize( Number factor, Resize.Detail... details );
+  public void resize(Number factor, Resize.Detail... details);
 
-	public void resizeWidth( Number factor, ResizeWidth.Detail... details );
+  public void resizeWidth(Number factor, ResizeWidth.Detail... details);
 
-	public void resizeHeight( Number factor, ResizeHeight.Detail... details );
+  public void resizeHeight(Number factor, ResizeHeight.Detail... details);
 
-	public void resizeDepth( Number factor, ResizeDepth.Detail... details );
+  public void resizeDepth(Number factor, ResizeDepth.Detail... details);
 }

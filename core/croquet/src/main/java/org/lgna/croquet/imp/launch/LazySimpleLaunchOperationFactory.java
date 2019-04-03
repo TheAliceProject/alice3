@@ -55,41 +55,41 @@ import java.lang.reflect.Modifier;
  * @author Dennis Cosgrove
  */
 public final class LazySimpleLaunchOperationFactory<C extends OperationOwningComposite<?>> extends LazyLaunchOperationFactory<C> {
-	public static <C extends OperationOwningComposite<?>> LazySimpleLaunchOperationFactory<C> createInstance( Class<C> cls, Lazy<C> lazy, Group launchGroup ) {
-		return new LazySimpleLaunchOperationFactory<C>( cls, lazy, launchGroup );
-	}
+  public static <C extends OperationOwningComposite<?>> LazySimpleLaunchOperationFactory<C> createInstance(Class<C> cls, Lazy<C> lazy, Group launchGroup) {
+    return new LazySimpleLaunchOperationFactory<C>(cls, lazy, launchGroup);
+  }
 
-	public static <C extends OperationOwningComposite<?>> LazySimpleLaunchOperationFactory<C> createNoArgumentConstructorInstance( Class<C> cls, Group launchGroup ) {
-		try {
-			final Constructor<C> jConstructor = cls.getConstructor();
-			assert Modifier.isPublic( jConstructor.getModifiers() ) : jConstructor;
-			return createInstance( cls, new Lazy<C>() {
-				@Override
-				protected C create() {
-					try {
-						return jConstructor.newInstance();
-					} catch( InvocationTargetException ite ) {
-						throw new RuntimeException( jConstructor.toString(), ite );
-					} catch( IllegalAccessException iae ) {
-						throw new RuntimeException( jConstructor.toString(), iae );
-					} catch( InstantiationException ie ) {
-						throw new RuntimeException( jConstructor.toString(), ie );
-					}
-				}
-			}, launchGroup );
-		} catch( NoSuchMethodException nsme ) {
-			throw new RuntimeException( nsme );
-		}
-	}
+  public static <C extends OperationOwningComposite<?>> LazySimpleLaunchOperationFactory<C> createNoArgumentConstructorInstance(Class<C> cls, Group launchGroup) {
+    try {
+      final Constructor<C> jConstructor = cls.getConstructor();
+      assert Modifier.isPublic(jConstructor.getModifiers()) : jConstructor;
+      return createInstance(cls, new Lazy<C>() {
+        @Override
+        protected C create() {
+          try {
+            return jConstructor.newInstance();
+          } catch (InvocationTargetException ite) {
+            throw new RuntimeException(jConstructor.toString(), ite);
+          } catch (IllegalAccessException iae) {
+            throw new RuntimeException(jConstructor.toString(), iae);
+          } catch (InstantiationException ie) {
+            throw new RuntimeException(jConstructor.toString(), ie);
+          }
+        }
+      }, launchGroup);
+    } catch (NoSuchMethodException nsme) {
+      throw new RuntimeException(nsme);
+    }
+  }
 
-	private LazySimpleLaunchOperationFactory( Class<C> cls, Lazy<C> lazy, Group launchGroup ) {
-		super( cls, lazy );
-		this.launchOperation = this.createLaunchOperation( launchGroup, null, null );
-	}
+  private LazySimpleLaunchOperationFactory(Class<C> cls, Lazy<C> lazy, Group launchGroup) {
+    super(cls, lazy);
+    this.launchOperation = this.createLaunchOperation(launchGroup, null, null);
+  }
 
-	public Operation getLaunchOperation() {
-		return this.launchOperation;
-	}
+  public Operation getLaunchOperation() {
+    return this.launchOperation;
+  }
 
-	private final Operation launchOperation;
+  private final Operation launchOperation;
 }

@@ -49,5 +49,5 @@ import java.awt.Color;
  */
 public interface OverlayFunction {
 
-	public Color getColorForXY( int x, int y );
+  public Color getColorForXY(int x, int y);
 }

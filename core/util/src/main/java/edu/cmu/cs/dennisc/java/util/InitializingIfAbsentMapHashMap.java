@@ -48,12 +48,12 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 /*package-private*/class InitializingIfAbsentMapHashMap<K, K2, E2> extends InitializingIfAbsentHashMap<K, Map<K2, E2>> {
-	public Map<K2, E2> getInitializingIfAbsentToHashMap( K key ) {
-		return this.getInitializingIfAbsent( key, new Initializer<K, Map<K2, E2>>() {
-			@Override
-			public Map<K2, E2> initialize( K key ) {
-				return Maps.newHashMap();
-			}
-		} );
-	}
+  public Map<K2, E2> getInitializingIfAbsentToHashMap(K key) {
+    return this.getInitializingIfAbsent(key, new Initializer<K, Map<K2, E2>>() {
+      @Override
+      public Map<K2, E2> initialize(K key) {
+        return Maps.newHashMap();
+      }
+    });
+  }
 }

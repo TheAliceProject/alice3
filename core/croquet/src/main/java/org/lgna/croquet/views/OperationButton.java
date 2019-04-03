@@ -49,27 +49,27 @@ import org.lgna.croquet.Operation;
  * @author Dennis Cosgrove
  */
 public abstract class OperationButton<J extends javax.swing.AbstractButton, M extends Operation> extends AbstractButton<J, M> {
-	private String clobberText;
+  private String clobberText;
 
-	public OperationButton( M model, String uiDefaultsName ) {
-		super( model, uiDefaultsName );
-		this.setAction( model.getImp().getSwingModel().getAction() );
-	}
+  public OperationButton(M model, String uiDefaultsName) {
+    super(model, uiDefaultsName);
+    this.setAction(model.getImp().getSwingModel().getAction());
+  }
 
-	public OperationButton( M model ) {
-		this( model, null );
-	}
+  public OperationButton(M model) {
+    this(model, null);
+  }
 
-	public boolean isTextClobbered() {
-		return this.clobberText != null;
-	}
+  public boolean isTextClobbered() {
+    return this.clobberText != null;
+  }
 
-	public String getClobberText() {
-		return this.clobberText;
-	}
+  public String getClobberText() {
+    return this.clobberText;
+  }
 
-	public void setClobberText( String clobberText ) {
-		this.clobberText = clobberText;
-		this.repaint();
-	}
+  public void setClobberText(String clobberText) {
+    this.clobberText = clobberText;
+    this.repaint();
+  }
 }

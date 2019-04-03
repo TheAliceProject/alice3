@@ -54,40 +54,40 @@ import java.awt.Shape;
  * @author Dennis Cosgrove
  */
 public final class AddShapeEdit extends AbstractEdit {
-	private final Shape shape;
-	private final ImageEditorFrame imageEditorFrame;
+  private final Shape shape;
+  private final ImageEditorFrame imageEditorFrame;
 
-	public AddShapeEdit( UserActivity userActivity, Shape shape, ImageEditorFrame imageEditorFrame ) {
-		super( userActivity );
-		this.shape = shape;
-		this.imageEditorFrame = imageEditorFrame;
-	}
+  public AddShapeEdit(UserActivity userActivity, Shape shape, ImageEditorFrame imageEditorFrame) {
+    super(userActivity);
+    this.shape = shape;
+    this.imageEditorFrame = imageEditorFrame;
+  }
 
-	public AddShapeEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.shape = null; //todo
-		this.imageEditorFrame = null; //todo
-	}
+  public AddShapeEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.shape = null; //todo
+    this.imageEditorFrame = null; //todo
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		//todo
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    //todo
+  }
 
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		this.imageEditorFrame.addShape( this.shape );
-	}
+  @Override
+  protected void doOrRedoInternal(boolean isDo) {
+    this.imageEditorFrame.addShape(this.shape);
+  }
 
-	@Override
-	protected void undoInternal() {
-		this.imageEditorFrame.removeShape( this.shape );
-	}
+  @Override
+  protected void undoInternal() {
+    this.imageEditorFrame.removeShape(this.shape);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "add " );
-		rv.append( this.shape );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("add ");
+    rv.append(this.shape);
+  }
 }

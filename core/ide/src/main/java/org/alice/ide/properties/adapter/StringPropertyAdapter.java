@@ -49,27 +49,27 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
 
 public class StringPropertyAdapter<O> extends AbstractInstancePropertyAdapter<String, O> {
 
-	public StringPropertyAdapter( O instance, InstanceProperty<String> property, StandardExpressionState expressionState ) {
-		this( "String", instance, property, expressionState );
-	}
+  public StringPropertyAdapter(O instance, InstanceProperty<String> property, StandardExpressionState expressionState) {
+    this("String", instance, property, expressionState);
+  }
 
-	public StringPropertyAdapter( String repr, O instance, InstanceProperty<String> property, StandardExpressionState expressionState ) {
-		super( repr, instance, property, expressionState );
-	}
+  public StringPropertyAdapter(String repr, O instance, InstanceProperty<String> property, StandardExpressionState expressionState) {
+    super(repr, instance, property, expressionState);
+  }
 
-	@Override
-	public String getUndoRedoDescription() {
-		return "String";
-	}
+  @Override
+  public String getUndoRedoDescription() {
+    return "String";
+  }
 
-	@Override
-	public String getValueCopyIfMutable() {
-		return new String( this.getValue() );
-	}
+  @Override
+  public String getValueCopyIfMutable() {
+    return new String(this.getValue());
+  }
 
-	@Override
-	public Class<String> getPropertyType() {
-		return String.class;
-	}
+  @Override
+  public Class<String> getPropertyType() {
+    return String.class;
+  }
 
 }

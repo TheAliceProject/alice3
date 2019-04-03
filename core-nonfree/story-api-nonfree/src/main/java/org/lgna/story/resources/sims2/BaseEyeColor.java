@@ -50,24 +50,20 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public enum BaseEyeColor implements EyeColor {
-	LIGHT_BLUE( new Color( 87, 125, 185 ) ),
-	DARK_BLUE( new Color( 56, 77, 121 ) ),
-	GREEN( new Color( 37, 123, 75 ) ),
-	GRAY( new Color( 140, 149, 164 ) ),
-	DARK_BROWN( new Color( 106, 74, 57 ) );
+  LIGHT_BLUE(new Color(87, 125, 185)), DARK_BLUE(new Color(56, 77, 121)), GREEN(new Color(37, 123, 75)), GRAY(new Color(140, 149, 164)), DARK_BROWN(new Color(106, 74, 57));
 
-	private final Color color;
+  private final Color color;
 
-	private BaseEyeColor( Color color ) {
-		this.color = color;
-	}
+  private BaseEyeColor(Color color) {
+    this.color = color;
+  }
 
-	public static BaseEyeColor getRandom() {
-		return RandomUtilities.getRandomEnumConstant( BaseEyeColor.class );
-	}
+  public static BaseEyeColor getRandom() {
+    return RandomUtilities.getRandomEnumConstant(BaseEyeColor.class);
+  }
 
-	//todo: package-private
-	public Color getColor() {
-		return this.color;
-	}
+  //todo: package-private
+  public Color getColor() {
+    return this.color;
+  }
 }

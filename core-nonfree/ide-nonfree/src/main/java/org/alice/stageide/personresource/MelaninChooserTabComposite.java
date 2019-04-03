@@ -59,45 +59,28 @@ import static org.lgna.story.resources.sims2.BaseSkinTone.LIGHTER;
  * @author Dennis Cosgrove
  */
 public final class MelaninChooserTabComposite extends ColorChooserTabComposite<MelaninChooserTabView> {
-	private static final Color[] MELANIN_CHIP_SHADES = {
-			ColorUtilities.scaleHSB( DARKER.getColor(), 1.0, 1.0, 0.7 ),
-			DARKER.getColor(),
-			ColorUtilities.interpolate( DARKER.getColor(), DARK.getColor(), 0.5f ),
-			DARK.getColor(),
-			ColorUtilities.interpolate( DARK.getColor(), LIGHT.getColor(), 0.5f ),
-			LIGHT.getColor(),
-			ColorUtilities.interpolate( LIGHT.getColor(), LIGHTER.getColor(), 0.5f ),
-			LIGHTER.getColor(),
-			ColorUtilities.scaleHSB( LIGHTER.getColor(), 1.0, 1.0, 1.1 )
-	};
-	private static final Color[] MELANIN_SLIDER_SHADES = {
-			MELANIN_CHIP_SHADES[ 0 ],
-			DARKER.getColor(),
-			DARK.getColor(),
-			LIGHT.getColor(),
-			LIGHTER.getColor(),
-			MELANIN_CHIP_SHADES[ MELANIN_CHIP_SHADES.length - 1 ]
-	};
+  private static final Color[] MELANIN_CHIP_SHADES = {ColorUtilities.scaleHSB(DARKER.getColor(), 1.0, 1.0, 0.7), DARKER.getColor(), ColorUtilities.interpolate(DARKER.getColor(), DARK.getColor(), 0.5f), DARK.getColor(), ColorUtilities.interpolate(DARK.getColor(), LIGHT.getColor(), 0.5f), LIGHT.getColor(), ColorUtilities.interpolate(LIGHT.getColor(), LIGHTER.getColor(), 0.5f), LIGHTER.getColor(), ColorUtilities.scaleHSB(LIGHTER.getColor(), 1.0, 1.0, 1.1)};
+  private static final Color[] MELANIN_SLIDER_SHADES = {MELANIN_CHIP_SHADES[0], DARKER.getColor(), DARK.getColor(), LIGHT.getColor(), LIGHTER.getColor(), MELANIN_CHIP_SHADES[MELANIN_CHIP_SHADES.length - 1]};
 
-	public MelaninChooserTabComposite() {
-		super( UUID.fromString( "e0d31df0-1775-4fdb-ab00-6ecfe74625bd" ) );
-	}
+  public MelaninChooserTabComposite() {
+    super(UUID.fromString("e0d31df0-1775-4fdb-ab00-6ecfe74625bd"));
+  }
 
-	public Color[] getMelaninChipShades() {
-		return MELANIN_CHIP_SHADES;
-	}
+  public Color[] getMelaninChipShades() {
+    return MELANIN_CHIP_SHADES;
+  }
 
-	public Color[] getMelaninSliderShades() {
-		return MELANIN_SLIDER_SHADES;
-	}
+  public Color[] getMelaninSliderShades() {
+    return MELANIN_SLIDER_SHADES;
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	@Override
-	protected MelaninChooserTabView createView() {
-		return new MelaninChooserTabView( this );
-	}
+  @Override
+  protected MelaninChooserTabView createView() {
+    return new MelaninChooserTabView(this);
+  }
 }

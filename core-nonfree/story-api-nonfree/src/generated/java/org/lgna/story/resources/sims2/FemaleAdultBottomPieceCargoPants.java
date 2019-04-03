@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultBottomPieceCargoPants implements FemaleAdultBottomPiece {
-	GREEN,
-	CAMO,
-	PINK,
-	GREY,
-	KHAKI,
-	BROWN;
+  GREEN, CAMO, PINK, GREY, KHAKI, BROWN
 
 }

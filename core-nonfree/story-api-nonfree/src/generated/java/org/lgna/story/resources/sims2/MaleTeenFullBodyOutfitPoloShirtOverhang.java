@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenFullBodyOutfitPoloShirtOverhang implements MaleTeenFullBodyOutfit {
-	DARK_BLUE,
-	BLUE,
-	GRAY,
-	BROWN,
-	TAN;
+  DARK_BLUE, BLUE, GRAY, BROWN, TAN
 
 }

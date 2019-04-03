@@ -9,20 +9,20 @@ import com.dddviewr.collada.nodes.LibraryNodes;
 import com.dddviewr.collada.nodes.Node;
 
 public class library_nodes extends State {
-	protected LibraryNodes library = new LibraryNodes();
+  protected LibraryNodes library = new LibraryNodes();
 
-	public void init(String name, Attributes attrs, StateManager mngr) {
-		super.init(name, attrs, mngr);
+  public void init(String name, Attributes attrs, StateManager mngr) {
+    super.init(name, attrs, mngr);
 
-		Collada collada = ((COLLADA) getParent()).getCollada();
-		collada.setLibraryNodes(this.library);
-	}
+    Collada collada = ((COLLADA) getParent()).getCollada();
+    collada.setLibraryNodes(this.library);
+  }
 
-	public LibraryNodes getLibrary() {
-		return this.library;
-	}
-	
-	public void addNode(Node node) {
-		library.addNode(node);
-	}
+  public LibraryNodes getLibrary() {
+    return this.library;
+  }
+
+  public void addNode(Node node) {
+    library.addNode(node);
+  }
 }

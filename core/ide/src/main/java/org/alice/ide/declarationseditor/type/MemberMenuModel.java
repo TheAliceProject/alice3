@@ -53,14 +53,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MemberMenuModel<M extends AbstractMember> extends PredeterminedMenuModel {
-	private final M member;
+  private final M member;
 
-	public MemberMenuModel( UUID migrationId, M member, List<StandardMenuItemPrepModel> prepModels ) {
-		super( migrationId, prepModels );
-		this.member = member;
-	}
+  public MemberMenuModel(UUID migrationId, M member, List<StandardMenuItemPrepModel> prepModels) {
+    super(migrationId, prepModels);
+    this.member = member;
+  }
 
-	public M getMember() {
-		return this.member;
-	}
+  public M getMember() {
+    return this.member;
+  }
 }

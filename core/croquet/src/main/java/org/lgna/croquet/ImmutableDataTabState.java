@@ -50,11 +50,11 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ImmutableDataTabState<T extends TabComposite<?>> extends TabState<T, ImmutableListData<T>> {
-	public ImmutableDataTabState( Group group, UUID migrationId, int selectionIndex, ImmutableListData<T> data ) {
-		super( group, migrationId, selectionIndex, data );
-	}
+  public ImmutableDataTabState(Group group, UUID migrationId, int selectionIndex, ImmutableListData<T> data) {
+    super(group, migrationId, selectionIndex, data);
+  }
 
-	public ImmutableDataTabState( Group group, UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, T... values ) {
-		this( group, migrationId, selectionIndex, new ImmutableListData<T>( itemCodec, values ) );
-	}
+  public ImmutableDataTabState(Group group, UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, T... values) {
+    this(group, migrationId, selectionIndex, new ImmutableListData<T>(itemCodec, values));
+  }
 }

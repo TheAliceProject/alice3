@@ -51,13 +51,13 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public abstract class TypedDeclarationPane extends LineAxisPanel {
-	public TypedDeclarationPane( AwtComponentView<?>... components ) {
-		super( components );
-		this.setForegroundColor( Color.GRAY );
-	}
-	//	@Override
-	//	protected void paintComponent( java.awt.Graphics g ) {
-	//		super.paintComponent( g );
-	//		g.drawRect( 0, 0, this.getWidth()-1, this.getHeight()-1);
-	//	}
+  public TypedDeclarationPane(AwtComponentView<?>... components) {
+    super(components);
+    this.setForegroundColor(Color.GRAY);
+  }
+  //  @Override
+  //  protected void paintComponent( java.awt.Graphics g ) {
+  //    super.paintComponent( g );
+  //    g.drawRect( 0, 0, this.getWidth()-1, this.getHeight()-1);
+  //  }
 }

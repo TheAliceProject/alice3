@@ -32,91 +32,93 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.PropResource;
 
 public enum EndTableResource implements PropResource {
-	CENTRAL_ASIAN_BLONDE_TOP_BLONDE( ImplementationAndVisualType.SIMS2 ),
-	CENTRAL_ASIAN_WOOD_TOP_BLONDE( ImplementationAndVisualType.SIMS2 ),
-	CENTRAL_ASIAN_WOOD_TOP_CHERRY( ImplementationAndVisualType.SIMS2 ),
-	CENTRAL_ASIAN_CHERRY_TOP_CHERRY( ImplementationAndVisualType.SIMS2 ),
-	CENTRAL_ASIAN_DARK_WOOD_TOP_BLONDE( ImplementationAndVisualType.SIMS2 ),
-	CENTRAL_ASIAN_DARK_WOOD_TOP_RED_LAQUER( ImplementationAndVisualType.SIMS2 ),
-	CENTRAL_ASIAN_ROUGH_TOP_ROUGH( ImplementationAndVisualType.SIMS2 ),
-	CLUB_WOOD( ImplementationAndVisualType.SIMS2 ),
-	CLUB_OAK( ImplementationAndVisualType.SIMS2 ),
-	CLUB_REDWOOD( ImplementationAndVisualType.SIMS2 ),
-	CLUB_MAHOGANY( ImplementationAndVisualType.SIMS2 ),
-	CLUB_BLUE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_GREEN( ImplementationAndVisualType.SIMS2 ),
-	CLUB_WHITE( ImplementationAndVisualType.SIMS2 ),
-	CLUB_CURLY_REDWOOD( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_DARK_WOOD( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_LIGHT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_REDWOOD( ImplementationAndVisualType.SIMS2 ),
-	COLONIAL_WOOD( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_YELLOW_INLAY( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_FANCY_INLAY( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_STARS_INLAY( ImplementationAndVisualType.SIMS2 ),
-	MOROCCAN_TILE_INLAY( ImplementationAndVisualType.SIMS2 ),
-	OCTAGONAL_CHERRY( ImplementationAndVisualType.SIMS2 ),
-	OCTAGONAL_DARK_WOOD( ImplementationAndVisualType.SIMS2 ),
-	OCTAGONAL_GREEN( ImplementationAndVisualType.SIMS2 ),
-	OCTAGONAL_WHITE( ImplementationAndVisualType.SIMS2 ),
-	OCTAGONAL_YELLOW( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_YELLOW_WHITE_WOOD( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_BLUE_BLUE_WOOD( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_GREEN_GREEN_WOOD( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_PINK_RED_WOOD( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_WHITE_WHITE_WOOD( ImplementationAndVisualType.SIMS2 ),
-	QUAINT_FLOWERS_WHITE_WOOD( ImplementationAndVisualType.SIMS2 ),
-	TRIANGULAR_BLACK_MARBLE_BLACK_WOOD( ImplementationAndVisualType.SIMS2 ),
-	TRIANGULAR_BLACK_MARBLE_OAK( ImplementationAndVisualType.SIMS2 ),
-	TRIANGULAR_BLACK_MARBLE_WHITE_WOOD( ImplementationAndVisualType.SIMS2 ),
-	TRIANGULAR_GREEN_MARBLE_BLACK_WOOD( ImplementationAndVisualType.SIMS2 ),
-	TRIANGULAR_GREEN_MARBLE_OAK( ImplementationAndVisualType.SIMS2 ),
-	TRIANGULAR_GREEN_MARBLE_WHITE_WOOD( ImplementationAndVisualType.SIMS2 ),
-	TRIANGULAR_WHITE_MARBLE_BLACK_WOOD( ImplementationAndVisualType.SIMS2 ),
-	TRIANGULAR_WHITE_MARBLE_OAK( ImplementationAndVisualType.SIMS2 ),
-	TRIANGULAR_WHITE_MARBLE_WHITE_WOOD( ImplementationAndVisualType.SIMS2 ),
-	UM_BLACK( ImplementationAndVisualType.SIMS2 ),
-	UM_BLUE( ImplementationAndVisualType.SIMS2 ),
-	UM_GREEN( ImplementationAndVisualType.SIMS2 ),
-	UM_ORANGE( ImplementationAndVisualType.SIMS2 ),
-	UM_PURPLE( ImplementationAndVisualType.SIMS2 ),
-	UM_WHITE( ImplementationAndVisualType.SIMS2 ),
-	UM_YELLOW( ImplementationAndVisualType.SIMS2 ),
-	FORMICA_RED( ImplementationAndVisualType.SIMS2 ),
-	FORMICA_PURPLE( ImplementationAndVisualType.SIMS2 ),
-	FORMICA_CHECKERBOARD( ImplementationAndVisualType.SIMS2 ),
-	FORMICA_BLUE( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_DRAGON_BROWN( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_DRAGON_RED( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_FISH_BROWN( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_FISH_RED( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_LOTUS_BLACK( ImplementationAndVisualType.SIMS2 ),
-	ORIENTAL_LOTUS_ORANGE( ImplementationAndVisualType.SIMS2 ),
-	LOFT_WOOD( ImplementationAndVisualType.SIMS2 ),
-	LOFT_GRAY( ImplementationAndVisualType.SIMS2 ),
-	LOFT_ORANGE( ImplementationAndVisualType.SIMS2 ),
-	LOFT_BLACK( ImplementationAndVisualType.SIMS2 );
+  CENTRAL_ASIAN_BLONDE_TOP_BLONDE(ImplementationAndVisualType.SIMS2),
+  CENTRAL_ASIAN_WOOD_TOP_BLONDE(ImplementationAndVisualType.SIMS2),
+  CENTRAL_ASIAN_WOOD_TOP_CHERRY(ImplementationAndVisualType.SIMS2),
+  CENTRAL_ASIAN_CHERRY_TOP_CHERRY(ImplementationAndVisualType.SIMS2),
+  CENTRAL_ASIAN_DARK_WOOD_TOP_BLONDE(ImplementationAndVisualType.SIMS2),
+  CENTRAL_ASIAN_DARK_WOOD_TOP_RED_LAQUER(ImplementationAndVisualType.SIMS2),
+  CENTRAL_ASIAN_ROUGH_TOP_ROUGH(ImplementationAndVisualType.SIMS2),
+  CLUB_WOOD(ImplementationAndVisualType.SIMS2),
+  CLUB_OAK(ImplementationAndVisualType.SIMS2),
+  CLUB_REDWOOD(ImplementationAndVisualType.SIMS2),
+  CLUB_MAHOGANY(ImplementationAndVisualType.SIMS2),
+  CLUB_BLUE(ImplementationAndVisualType.SIMS2),
+  CLUB_GREEN(ImplementationAndVisualType.SIMS2),
+  CLUB_WHITE(ImplementationAndVisualType.SIMS2),
+  CLUB_CURLY_REDWOOD(ImplementationAndVisualType.SIMS2),
+  COLONIAL_DARK_WOOD(ImplementationAndVisualType.SIMS2),
+  COLONIAL_LIGHT_WOOD(ImplementationAndVisualType.SIMS2),
+  COLONIAL_REDWOOD(ImplementationAndVisualType.SIMS2),
+  COLONIAL_WOOD(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_YELLOW_INLAY(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_FANCY_INLAY(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_STARS_INLAY(ImplementationAndVisualType.SIMS2),
+  MOROCCAN_TILE_INLAY(ImplementationAndVisualType.SIMS2),
+  OCTAGONAL_CHERRY(ImplementationAndVisualType.SIMS2),
+  OCTAGONAL_DARK_WOOD(ImplementationAndVisualType.SIMS2),
+  OCTAGONAL_GREEN(ImplementationAndVisualType.SIMS2),
+  OCTAGONAL_WHITE(ImplementationAndVisualType.SIMS2),
+  OCTAGONAL_YELLOW(ImplementationAndVisualType.SIMS2),
+  QUAINT_YELLOW_WHITE_WOOD(ImplementationAndVisualType.SIMS2),
+  QUAINT_BLUE_BLUE_WOOD(ImplementationAndVisualType.SIMS2),
+  QUAINT_GREEN_GREEN_WOOD(ImplementationAndVisualType.SIMS2),
+  QUAINT_PINK_RED_WOOD(ImplementationAndVisualType.SIMS2),
+  QUAINT_WHITE_WHITE_WOOD(ImplementationAndVisualType.SIMS2),
+  QUAINT_FLOWERS_WHITE_WOOD(ImplementationAndVisualType.SIMS2),
+  TRIANGULAR_BLACK_MARBLE_BLACK_WOOD(ImplementationAndVisualType.SIMS2),
+  TRIANGULAR_BLACK_MARBLE_OAK(ImplementationAndVisualType.SIMS2),
+  TRIANGULAR_BLACK_MARBLE_WHITE_WOOD(ImplementationAndVisualType.SIMS2),
+  TRIANGULAR_GREEN_MARBLE_BLACK_WOOD(ImplementationAndVisualType.SIMS2),
+  TRIANGULAR_GREEN_MARBLE_OAK(ImplementationAndVisualType.SIMS2),
+  TRIANGULAR_GREEN_MARBLE_WHITE_WOOD(ImplementationAndVisualType.SIMS2),
+  TRIANGULAR_WHITE_MARBLE_BLACK_WOOD(ImplementationAndVisualType.SIMS2),
+  TRIANGULAR_WHITE_MARBLE_OAK(ImplementationAndVisualType.SIMS2),
+  TRIANGULAR_WHITE_MARBLE_WHITE_WOOD(ImplementationAndVisualType.SIMS2),
+  UM_BLACK(ImplementationAndVisualType.SIMS2),
+  UM_BLUE(ImplementationAndVisualType.SIMS2),
+  UM_GREEN(ImplementationAndVisualType.SIMS2),
+  UM_ORANGE(ImplementationAndVisualType.SIMS2),
+  UM_PURPLE(ImplementationAndVisualType.SIMS2),
+  UM_WHITE(ImplementationAndVisualType.SIMS2),
+  UM_YELLOW(ImplementationAndVisualType.SIMS2),
+  FORMICA_RED(ImplementationAndVisualType.SIMS2),
+  FORMICA_PURPLE(ImplementationAndVisualType.SIMS2),
+  FORMICA_CHECKERBOARD(ImplementationAndVisualType.SIMS2),
+  FORMICA_BLUE(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_DRAGON_BROWN(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_DRAGON_RED(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_FISH_BROWN(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_FISH_RED(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_LOTUS_BLACK(ImplementationAndVisualType.SIMS2),
+  ORIENTAL_LOTUS_ORANGE(ImplementationAndVisualType.SIMS2),
+  LOFT_WOOD(ImplementationAndVisualType.SIMS2),
+  LOFT_GRAY(ImplementationAndVisualType.SIMS2),
+  LOFT_ORANGE(ImplementationAndVisualType.SIMS2),
+  LOFT_BLACK(ImplementationAndVisualType.SIMS2);
 
-	private final ImplementationAndVisualType resourceType;
-	EndTableResource() {
-		this( ImplementationAndVisualType.ALICE );
-	}
+  private final ImplementationAndVisualType resourceType;
 
-	EndTableResource( ImplementationAndVisualType resourceType ) {
-		this.resourceType = resourceType;
-	}
+  EndTableResource() {
+    this(ImplementationAndVisualType.ALICE);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
+  EndTableResource(ImplementationAndVisualType resourceType) {
+    this.resourceType = resourceType;
+  }
 
-	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
-		return this.resourceType.getFactory( this );
-	}
-	@Override
-	public BasicJointedModelImp createImplementation( SJointedModel abstraction ) {
-		return new BasicJointedModelImp( abstraction, this.resourceType.getFactory( this ) );
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return new JointId[0];
+  }
+
+  @Override
+  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory() {
+    return this.resourceType.getFactory(this);
+  }
+
+  @Override
+  public BasicJointedModelImp createImplementation(SJointedModel abstraction) {
+    return new BasicJointedModelImp(abstraction, this.resourceType.getFactory(this));
+  }
 }

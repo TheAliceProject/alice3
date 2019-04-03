@@ -58,110 +58,110 @@ import java.util.ArrayList;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractListPropertyPane<P extends ListProperty<T>, T> extends AbstractPropertyPane<P, ArrayList<T>> {
-	private final ListPropertyListener<T> listPropertyAdapter = new ListPropertyListener<T>() {
-		@Override
-		public void adding( AddListPropertyEvent<T> e ) {
-		}
+  private final ListPropertyListener<T> listPropertyAdapter = new ListPropertyListener<T>() {
+    @Override
+    public void adding(AddListPropertyEvent<T> e) {
+    }
 
-		@Override
-		public void added( AddListPropertyEvent<T> e ) {
-			AbstractListPropertyPane.this.refreshLater();
-		}
+    @Override
+    public void added(AddListPropertyEvent<T> e) {
+      AbstractListPropertyPane.this.refreshLater();
+    }
 
-		@Override
-		public void clearing( ClearListPropertyEvent<T> e ) {
-		}
+    @Override
+    public void clearing(ClearListPropertyEvent<T> e) {
+    }
 
-		@Override
-		public void cleared( ClearListPropertyEvent<T> e ) {
-			AbstractListPropertyPane.this.refreshLater();
-		}
+    @Override
+    public void cleared(ClearListPropertyEvent<T> e) {
+      AbstractListPropertyPane.this.refreshLater();
+    }
 
-		@Override
-		public void removing( RemoveListPropertyEvent<T> e ) {
-		}
+    @Override
+    public void removing(RemoveListPropertyEvent<T> e) {
+    }
 
-		@Override
-		public void removed( RemoveListPropertyEvent<T> e ) {
-			AbstractListPropertyPane.this.refreshLater();
-		}
+    @Override
+    public void removed(RemoveListPropertyEvent<T> e) {
+      AbstractListPropertyPane.this.refreshLater();
+    }
 
-		@Override
-		public void setting( SetListPropertyEvent<T> e ) {
-		}
+    @Override
+    public void setting(SetListPropertyEvent<T> e) {
+    }
 
-		@Override
-		public void set( SetListPropertyEvent<T> e ) {
-			AbstractListPropertyPane.this.refreshLater();
-		}
+    @Override
+    public void set(SetListPropertyEvent<T> e) {
+      AbstractListPropertyPane.this.refreshLater();
+    }
 
-	};
+  };
 
-	public AbstractListPropertyPane( AstI18nFactory factory, P property, int axis ) {
-		super( factory, property, axis );
-		this.refreshLater();
-	}
+  public AbstractListPropertyPane(AstI18nFactory factory, P property, int axis) {
+    super(factory, property, axis);
+    this.refreshLater();
+  }
 
-	protected boolean isComponentDesiredFor( T instance, int i, final int N ) {
-		return true;
-	}
+  protected boolean isComponentDesiredFor(T instance, int i, final int N) {
+    return true;
+  }
 
-	protected abstract AwtComponentView<?> createComponent( T instance );
+  protected abstract AwtComponentView<?> createComponent(T instance);
 
-	protected void addPrefixComponents() {
-	}
+  protected void addPrefixComponents() {
+  }
 
-	protected void addPostfixComponents() {
-	}
+  protected void addPostfixComponents() {
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getProperty().addListPropertyListener( this.listPropertyAdapter );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.getProperty().addListPropertyListener(this.listPropertyAdapter);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.getProperty().removeListPropertyListener( this.listPropertyAdapter );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.getProperty().removeListPropertyListener(this.listPropertyAdapter);
+    super.handleUndisplayable();
+  }
 
-	protected AwtComponentView<?> createInterstitial( int i, final int N ) {
-		return null;
-	}
+  protected AwtComponentView<?> createInterstitial(int i, final int N) {
+    return null;
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		this.forgetAndRemoveAllComponents();
-		this.addPrefixComponents();
-		final int N = getProperty().size();
-		int i = 0;
-		for( T o : getProperty() ) {
-			if( this.isComponentDesiredFor( o, i, N ) ) {
-				AwtComponentView<?> component;
-				if( o != null ) {
-					component = this.createComponent( o );
-				} else {
-					component = new Label( "null" );
-				}
-				if( component != null ) {
-					this.addComponent( component );
-					AwtComponentView<?> interstitial = this.createInterstitial( i, N );
-					if( interstitial != null ) {
-						this.addComponent( interstitial );
-					}
-				}
-			}
-			i++;
-		}
-		this.addPostfixComponents();
-		//
-		//
-		//		//todo: investigate on 1.5
-		//		edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( this.getAwtComponent() );
-		//
-		//
-		//		this.revalidateAndRepaint();
-	}
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    this.forgetAndRemoveAllComponents();
+    this.addPrefixComponents();
+    final int N = getProperty().size();
+    int i = 0;
+    for (T o : getProperty()) {
+      if (this.isComponentDesiredFor(o, i, N)) {
+        AwtComponentView<?> component;
+        if (o != null) {
+          component = this.createComponent(o);
+        } else {
+          component = new Label("null");
+        }
+        if (component != null) {
+          this.addComponent(component);
+          AwtComponentView<?> interstitial = this.createInterstitial(i, N);
+          if (interstitial != null) {
+            this.addComponent(interstitial);
+          }
+        }
+      }
+      i++;
+    }
+    this.addPostfixComponents();
+    //
+    //
+    //    //todo: investigate on 1.5
+    //    edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( this.getAwtComponent() );
+    //
+    //
+    //    this.revalidateAndRepaint();
+  }
 }

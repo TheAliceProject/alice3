@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleToddlerFullBodyOutfitJacketPants implements MaleToddlerFullBodyOutfit {
-	NAVY_NTAN,
-	BLUE_NRED;
+  NAVY_NTAN, BLUE_NRED
 
 }

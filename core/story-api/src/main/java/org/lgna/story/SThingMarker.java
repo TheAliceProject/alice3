@@ -46,10 +46,10 @@ package org.lgna.story;
 import org.lgna.story.implementation.ObjectMarkerImp;
 
 public class SThingMarker extends SMarker {
-	private final ObjectMarkerImp implementation = new ObjectMarkerImp( this );
+  private final ObjectMarkerImp implementation = new ObjectMarkerImp(this);
 
-	@Override
-	/* package-private */ObjectMarkerImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */ObjectMarkerImp getImplementation() {
+    return this.implementation;
+  }
 }

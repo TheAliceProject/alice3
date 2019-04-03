@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class SetDepth extends DurationAnimationStyleSetDimensionPolicyArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = SetDepth.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = SetDepth.class) public static interface Detail {
+  }
 
-	private SetDepth() {
-		super();
-	}
+  private SetDepth() {
+    super();
+  }
 }

@@ -67,265 +67,265 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class Cascade<T> extends AbstractCompletionModel implements Triggerable, JDropProxy.Hider {
-	public static final class InternalRoot<T> extends CascadeRoot<T, Cascade<T>> {
-		private final Cascade<T> cascade;
+  public static final class InternalRoot<T> extends CascadeRoot<T, Cascade<T>> {
+    private final Cascade<T> cascade;
 
-		private InternalRoot( Cascade<T> cascade ) {
-			super( UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ) );
-			this.cascade = cascade;
-		}
+    private InternalRoot(Cascade<T> cascade) {
+      super(UUID.fromString("40fe9d1b-003d-4108-9f38-73fccb29b978"));
+      this.cascade = cascade;
+    }
 
-		@Override
-		public List<? extends CascadeBlank<T>> getBlanks() {
-			return this.cascade.getBlanks();
-		}
+    @Override
+    public List<? extends CascadeBlank<T>> getBlanks() {
+      return this.cascade.getBlanks();
+    }
 
-		@Override
-		public Cascade<T> getCompletionModel() {
-			return this.cascade;
-		}
+    @Override
+    public Cascade<T> getCompletionModel() {
+      return this.cascade;
+    }
 
-		@Override
-		public Class<T> getComponentType() {
-			return this.cascade.getComponentType();
-		}
+    @Override
+    public Class<T> getComponentType() {
+      return this.cascade.getComponentType();
+    }
 
-		@Override
-		public void prologue() {
-			super.prologue();
-			this.cascade.prologue();
-		}
+    @Override
+    public void prologue() {
+      super.prologue();
+      this.cascade.prologue();
+    }
 
-		@Override
-		public void epilogue() {
-			this.cascade.epilogue();
-			super.epilogue();
-		}
+    @Override
+    public void epilogue() {
+      this.cascade.epilogue();
+      super.epilogue();
+    }
 
-		@Override
-		public void handleCompletion( UserActivity userActivity, RtRoot<T, Cascade<T>> rtRoot ) {
-				T[] values = rtRoot.createValues( this.getComponentType() );
-				Edit edit = cascade.createEdit( userActivity, values );
-				if( edit != null ) {
-					if (userActivity.getCompletionModel() == null) {
-						recordCompletionModel( userActivity );
-					}
-					userActivity.commitAndInvokeDo( edit );
-				} else {
-					if (userActivity.isPending()) {
-						throw new CancelException();
-					}
-				}
-				this.getPopupPrepModel().handleFinally();
-		}
-	}
+    @Override
+    public void handleCompletion(UserActivity userActivity, RtRoot<T, Cascade<T>> rtRoot) {
+      T[] values = rtRoot.createValues(this.getComponentType());
+      Edit edit = cascade.createEdit(userActivity, values);
+      if (edit != null) {
+        if (userActivity.getCompletionModel() == null) {
+          recordCompletionModel(userActivity);
+        }
+        userActivity.commitAndInvokeDo(edit);
+      } else {
+        if (userActivity.isPending()) {
+          throw new CancelException();
+        }
+      }
+      this.getPopupPrepModel().handleFinally();
+    }
+  }
 
-	private final Class<T> componentType;
-	private final InternalRoot<T> root;
+  private final Class<T> componentType;
+  private final InternalRoot<T> root;
 
-	public Cascade( Group group, UUID id, Class<T> componentType ) {
-		super( group, id );
-		this.componentType = componentType;
-		this.root = new InternalRoot<T>( this );
-	}
+  public Cascade(Group group, UUID id, Class<T> componentType) {
+    super(group, id);
+    this.componentType = componentType;
+    this.root = new InternalRoot<T>(this);
+  }
 
-	protected abstract List<? extends CascadeBlank<T>> getBlanks();
+  protected abstract List<? extends CascadeBlank<T>> getBlanks();
 
-	@Override
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		return Lists.newArrayListOfSingleArrayList( this.root.getPopupPrepModel() );
-	}
+  @Override
+  public List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    return Lists.newArrayListOfSingleArrayList(this.root.getPopupPrepModel());
+  }
 
-	public InternalRoot<T> getRoot() {
-		return this.root;
-	}
+  public InternalRoot<T> getRoot() {
+    return this.root;
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	@Override
-	public final void fire( UserActivity activity ) {
-		Triggerable surrogateModel = this.root.getPopupPrepModel();
-		if( surrogateModel != null ) {
-			Logger.errln( "todo: end use of surrogate", this );
-			surrogateModel.fire( activity );
-		} else {
-			throw new UnsupportedOperationException();
-		}
-	}
+  @Override
+  public final void fire(UserActivity activity) {
+    Triggerable surrogateModel = this.root.getPopupPrepModel();
+    if (surrogateModel != null) {
+      Logger.errln("todo: end use of surrogate", this);
+      surrogateModel.fire(activity);
+    } else {
+      throw new UnsupportedOperationException();
+    }
+  }
 
-	public Class<T> getComponentType() {
-		return this.componentType;
-	}
+  public Class<T> getComponentType() {
+    return this.componentType;
+  }
 
-	protected void prologue() {
-	}
+  protected void prologue() {
+  }
 
-	protected void epilogue() {
-		this.hideDropProxyIfNecessary();
-	}
+  protected void epilogue() {
+    this.hideDropProxyIfNecessary();
+  }
 
-	protected abstract Edit createEdit( UserActivity userActivity, T[] values );
+  protected abstract Edit createEdit(UserActivity userActivity, T[] values);
 
-	//todo: reduce visibility
-	public static final class InternalMenuModel<T> extends AbstractMenuModel {
-		private final Cascade<T> cascade;
+  //todo: reduce visibility
+  public static final class InternalMenuModel<T> extends AbstractMenuModel {
+    private final Cascade<T> cascade;
 
-		private InternalMenuModel( Cascade<T> cascade ) {
-			super( UUID.fromString( "d5ac0f5a-6f04-4c68-94c3-96d32775fd4e" ), cascade.getClass() );
-			this.cascade = cascade;
-		}
+    private InternalMenuModel(Cascade<T> cascade) {
+      super(UUID.fromString("d5ac0f5a-6f04-4c68-94c3-96d32775fd4e"), cascade.getClass());
+      this.cascade = cascade;
+    }
 
-		public Cascade<T> getCascade() {
-			return this.cascade;
-		}
+    public Cascade<T> getCascade() {
+      return this.cascade;
+    }
 
-		@Override
-		public boolean isEnabled() {
-			return this.cascade.isEnabled();
-		}
+    @Override
+    public boolean isEnabled() {
+      return this.cascade.isEnabled();
+    }
 
-		@Override
-		public void setEnabled( boolean isEnabled ) {
-			this.cascade.setEnabled( isEnabled );
-		}
+    @Override
+    public void setEnabled(boolean isEnabled) {
+      this.cascade.setEnabled(isEnabled);
+    }
 
-		private static class ComponentListener<T> implements java.awt.event.ComponentListener {
-			private PopupPrepStep prepStep;
+    private static class ComponentListener<T> implements java.awt.event.ComponentListener {
+      private PopupPrepStep prepStep;
 
-			public ComponentListener( PopupPrepStep prepStep ) {
-				this.prepStep = prepStep;
-			}
+      public ComponentListener(PopupPrepStep prepStep) {
+        this.prepStep = prepStep;
+      }
 
-			public PopupPrepStep getPrepStep() {
-				return this.prepStep;
-			}
+      public PopupPrepStep getPrepStep() {
+        return this.prepStep;
+      }
 
-			public void setPrepStep( PopupPrepStep prepStep ) {
-				this.prepStep = prepStep;
-			}
+      public void setPrepStep(PopupPrepStep prepStep) {
+        this.prepStep = prepStep;
+      }
 
-			@Override
-			public void componentShown( ComponentEvent e ) {
-			}
+      @Override
+      public void componentShown(ComponentEvent e) {
+      }
 
-			@Override
-			public void componentMoved( ComponentEvent e ) {
-			}
+      @Override
+      public void componentMoved(ComponentEvent e) {
+      }
 
-			@Override
-			public void componentResized( ComponentEvent e ) {
-				prepStep.firePopupMenuResized();
-			}
+      @Override
+      public void componentResized(ComponentEvent e) {
+        prepStep.firePopupMenuResized();
+      }
 
-			@Override
-			public void componentHidden( ComponentEvent e ) {
-			}
-		};
+      @Override
+      public void componentHidden(ComponentEvent e) {
+      }
+    }
 
-		private static class Listeners {
-			private final PopupMenuListener popupMenuListener;
-			private final ComponentListener componentListener;
+    private static class Listeners {
+      private final PopupMenuListener popupMenuListener;
+      private final ComponentListener componentListener;
 
-			public Listeners( PopupMenuListener popupMenuListener, ComponentListener componentListener ) {
-				this.popupMenuListener = popupMenuListener;
-				this.componentListener = componentListener;
-			}
+      public Listeners(PopupMenuListener popupMenuListener, ComponentListener componentListener) {
+        this.popupMenuListener = popupMenuListener;
+        this.componentListener = componentListener;
+      }
 
-			public PopupMenuListener getPopupMenuListener() {
-				return this.popupMenuListener;
-			}
+      public PopupMenuListener getPopupMenuListener() {
+        return this.popupMenuListener;
+      }
 
-			public ComponentListener getComponentListener() {
-				return this.componentListener;
-			}
-		}
+      public ComponentListener getComponentListener() {
+        return this.componentListener;
+      }
+    }
 
-		private Map<MenuItemContainer, Listeners> map = Maps.newHashMap();
+    private Map<MenuItemContainer, Listeners> map = Maps.newHashMap();
 
-		@Override
-		protected String findDefaultLocalizedText() {
-			String rv = super.findDefaultLocalizedText();
-			rv = this.cascade.modifyMenuTextIfDesired( rv );
-			return rv;
-		}
+    @Override
+    protected String findDefaultLocalizedText() {
+      String rv = super.findDefaultLocalizedText();
+      rv = this.cascade.modifyMenuTextIfDesired(rv);
+      return rv;
+    }
 
-		@Override
-		protected void handleShowing( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
-			super.handleShowing( menuItemContainer, e );
-			JPopupMenu jPopupMenu = (JPopupMenu)e.getSource();
-			//javax.swing.JMenu jMenu = (javax.swing.JMenu)jPopupMenu.getInvoker();
-			//org.lgna.croquet.components.MenuItemContainer menuItemContainer = (org.lgna.croquet.components.MenuItemContainer)org.lgna.croquet.components.Component.lookup( jMenu );
-			final RtRoot<T, Cascade<T>> rtRoot = new RtRoot<T, Cascade<T>>( this.getCascade().getRoot() );
-			if( rtRoot.isAutomaticallyDetermined() ) {
-				throw new RuntimeException( "todo" );
-			} else {
-				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( cascade.getRoot().getPopupPrepModel(), menuItemContainer.getActivity() );
-				Listeners listeners = map.get( menuItemContainer );
-				if( listeners != null ) {
-					listeners.componentListener.setPrepStep( prepStep );
-				} else {
-					ComponentListener componentListener = new ComponentListener<T>( prepStep );
-					PopupMenuListener popupMenuListener = rtRoot.createPopupMenuListener( menuItemContainer );
-					listeners = new Listeners( popupMenuListener, componentListener );
-					this.map.put( menuItemContainer, listeners );
-				}
-				jPopupMenu.addComponentListener( listeners.getComponentListener() );
-				//jPopupMenu.addPopupMenuListener( listeners.getPopupMenuListener() );
-				listeners.getPopupMenuListener().popupMenuWillBecomeVisible( e );
-			}
-		}
+    @Override
+    protected void handleShowing(MenuItemContainer menuItemContainer, PopupMenuEvent e) {
+      super.handleShowing(menuItemContainer, e);
+      JPopupMenu jPopupMenu = (JPopupMenu) e.getSource();
+      //javax.swing.JMenu jMenu = (javax.swing.JMenu)jPopupMenu.getInvoker();
+      //org.lgna.croquet.components.MenuItemContainer menuItemContainer = (org.lgna.croquet.components.MenuItemContainer)org.lgna.croquet.components.Component.lookup( jMenu );
+      final RtRoot<T, Cascade<T>> rtRoot = new RtRoot<T, Cascade<T>>(this.getCascade().getRoot());
+      if (rtRoot.isAutomaticallyDetermined()) {
+        throw new RuntimeException("todo");
+      } else {
+        final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity(cascade.getRoot().getPopupPrepModel(), menuItemContainer.getActivity());
+        Listeners listeners = map.get(menuItemContainer);
+        if (listeners != null) {
+          listeners.componentListener.setPrepStep(prepStep);
+        } else {
+          ComponentListener componentListener = new ComponentListener<T>(prepStep);
+          PopupMenuListener popupMenuListener = rtRoot.createPopupMenuListener(menuItemContainer);
+          listeners = new Listeners(popupMenuListener, componentListener);
+          this.map.put(menuItemContainer, listeners);
+        }
+        jPopupMenu.addComponentListener(listeners.getComponentListener());
+        //jPopupMenu.addPopupMenuListener( listeners.getPopupMenuListener() );
+        listeners.getPopupMenuListener().popupMenuWillBecomeVisible(e);
+      }
+    }
 
-		@Override
-		protected void handleHiding( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
-			Listeners listeners = map.get( menuItemContainer );
-			JPopupMenu jPopupMenu = ( (JMenu)menuItemContainer.getViewController().getAwtComponent() ).getPopupMenu();
-			jPopupMenu.removeComponentListener( listeners.getComponentListener() );
-			//jPopupMenu.removePopupMenuListener( listeners.getPopupMenuListener() );
-			listeners.getPopupMenuListener().popupMenuWillBecomeInvisible( e );
-			super.handleHiding( menuItemContainer, e );
-		}
+    @Override
+    protected void handleHiding(MenuItemContainer menuItemContainer, PopupMenuEvent e) {
+      Listeners listeners = map.get(menuItemContainer);
+      JPopupMenu jPopupMenu = ((JMenu) menuItemContainer.getViewController().getAwtComponent()).getPopupMenu();
+      jPopupMenu.removeComponentListener(listeners.getComponentListener());
+      //jPopupMenu.removePopupMenuListener( listeners.getPopupMenuListener() );
+      listeners.getPopupMenuListener().popupMenuWillBecomeInvisible(e);
+      super.handleHiding(menuItemContainer, e);
+    }
 
-		@Override
-		protected void handleCanceled( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
-			Listeners listeners = map.get( menuItemContainer );
-			listeners.getPopupMenuListener().popupMenuCanceled( e );
-			super.handleCanceled( menuItemContainer, e );
-		}
-	}
+    @Override
+    protected void handleCanceled(MenuItemContainer menuItemContainer, PopupMenuEvent e) {
+      Listeners listeners = map.get(menuItemContainer);
+      listeners.getPopupMenuListener().popupMenuCanceled(e);
+      super.handleCanceled(menuItemContainer, e);
+    }
+  }
 
-	private InternalMenuModel<T> menuModel;
+  private InternalMenuModel<T> menuModel;
 
-	protected String modifyMenuTextIfDesired( String text ) {
-		return text;
-	}
+  protected String modifyMenuTextIfDesired(String text) {
+    return text;
+  }
 
-	public synchronized InternalMenuModel<T> getMenuModel() {
-		if( this.menuModel != null ) {
-			//pass
-		} else {
-			this.menuModel = new InternalMenuModel<T>( this );
-		}
-		return this.menuModel;
-	}
+  public synchronized InternalMenuModel<T> getMenuModel() {
+    if (this.menuModel != null) {
+      //pass
+    } else {
+      this.menuModel = new InternalMenuModel<T>(this);
+    }
+    return this.menuModel;
+  }
 
-	@Override
-	public void appendUserRepr( StringBuilder sb ) {
-		sb.append( this.getRoot().getPopupPrepModel().getName() );
-	}
+  @Override
+  public void appendUserRepr(StringBuilder sb) {
+    sb.append(this.getRoot().getPopupPrepModel().getName());
+  }
 
-	private DragComponent dragSource;
+  private DragComponent dragSource;
 
-	@Override
-	public final void setDragSource( DragComponent dragSource ) {
-		this.dragSource = dragSource;
-	}
+  @Override
+  public final void setDragSource(DragComponent dragSource) {
+    this.dragSource = dragSource;
+  }
 
-	private void hideDropProxyIfNecessary() {
-		if( this.dragSource != null ) {
-			this.dragSource.hideDropProxyIfNecessary();
-			this.dragSource = null;
-		}
-	}
+  private void hideDropProxyIfNecessary() {
+    if (this.dragSource != null) {
+      this.dragSource.hideDropProxyIfNecessary();
+      this.dragSource = null;
+    }
+  }
 }

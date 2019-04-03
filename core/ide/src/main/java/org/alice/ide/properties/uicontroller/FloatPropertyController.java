@@ -49,24 +49,24 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class FloatPropertyController extends LabelBasedPropertyController<Float> {
-	private static NumberFormat FLOAT_FORMAT = new DecimalFormat( "0.0" );
+  private static NumberFormat FLOAT_FORMAT = new DecimalFormat("0.0");
 
-	public FloatPropertyController( AbstractPropertyAdapter<Float, ?> propertyAdapter ) {
-		super( propertyAdapter );
-	}
+  public FloatPropertyController(AbstractPropertyAdapter<Float, ?> propertyAdapter) {
+    super(propertyAdapter);
+  }
 
-	@Override
-	public Class<?> getPropertyType() {
-		return Double.class;
-	}
+  @Override
+  public Class<?> getPropertyType() {
+    return Double.class;
+  }
 
-	@Override
-	protected void setValueOnUI( Float value ) {
-		if( value != null ) {
-			this.label.setText( FLOAT_FORMAT.format( value ) );
-		} else {
-			this.label.setText( BLANK_STRING );
-		}
-	}
+  @Override
+  protected void setValueOnUI(Float value) {
+    if (value != null) {
+      this.label.setText(FLOAT_FORMAT.format(value));
+    } else {
+      this.label.setText(BLANK_STRING);
+    }
+  }
 
 }

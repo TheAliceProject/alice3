@@ -47,24 +47,25 @@ package org.lgna.story;
  *
  */
 public class TextColor implements Say.Detail, Think.Detail {
-	private final Color value;
+  private final Color value;
 
-	public TextColor( Color value ) {
-		this.value = value;
-	}
+  public TextColor(Color value) {
+    this.value = value;
+  }
 
-	/* package-private */static Color getValue( Object[] details, Color defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof TextColor ) {
-				TextColor textColor = (TextColor)detail;
-				return textColor.value;
-			}
-		}
-		return defaultValue;
-	}
+  /* package-private */
+  static Color getValue(Object[] details, Color defaultValue) {
+    for (Object detail : details) {
+      if (detail instanceof TextColor) {
+        TextColor textColor = (TextColor) detail;
+        return textColor.value;
+      }
+    }
+    return defaultValue;
+  }
 
-	//Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
-	public static TextColor make( Color value ) {
-		return new TextColor( value );
-	}
+  //Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
+  public static TextColor make(Color value) {
+    return new TextColor(value);
+  }
 }

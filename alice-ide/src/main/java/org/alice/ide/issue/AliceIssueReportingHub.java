@@ -59,58 +59,58 @@ import java.rmi.RemoteException;
  * @author Dennis Cosgrove
  */
 public class AliceIssueReportingHub implements IssueReportingHub {
-	@Override
-	public boolean isLoginSupported() {
-		return true;
-	}
+  @Override
+  public boolean isLoginSupported() {
+    return true;
+  }
 
-	@Override
-	public void checkRemoteUser( String username, String password, IssueReportingRemoteUserObserver observer ) {
-		JiraSoapServiceServiceLocator jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
-		JiraSoapService service = null;
-		try {
-			URL url = new URL( ReportSubmissionConfiguration.JIRA_SOAP_URL );
-			service = jiraSoapServiceLocator.getJirasoapserviceV2( url );
-		} catch( MalformedURLException murle ) {
-			// error
-			murle.printStackTrace();
-		} catch( ServiceException se ) {
-			se.printStackTrace();
-		}
-		boolean isConnectionSeeminglyPossible;
-		IssueReportRemoteUser user = null;
-		if( service != null ) {
-			isConnectionSeeminglyPossible = true;
-			try {
-				String token = service.login( username, password );
-				try {
-					RemoteUser jiraRemoteUser = service.getUser( token, username );
-					if( jiraRemoteUser != null ) {
-						user = new AliceIssueReportRemoteUser( jiraRemoteUser );
-						//todo?
-						//edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, jiraRemoteUser.getFullname() );
-					}
-				} catch( RemotePermissionException rpe ) {
-					rpe.printStackTrace();
-				} catch( RemoteException re ) {
-					re.printStackTrace();
-				} finally {
-					try {
-						service.logout( token );
-					} catch( RemoteException re ) {
-						//todo?
-						re.printStackTrace();
-					}
-				}
-			} catch( com.atlassian.jira.rpc.soap.client.RemoteException jirare ) {
-				//could not log in
-			} catch( RemoteException re ) {
-				//could not connect
-				isConnectionSeeminglyPossible = false;
-			}
-		} else {
-			isConnectionSeeminglyPossible = false;
-		}
-		observer.remoteUserAttemptCompleted( isConnectionSeeminglyPossible, user );
-	}
+  @Override
+  public void checkRemoteUser(String username, String password, IssueReportingRemoteUserObserver observer) {
+    JiraSoapServiceServiceLocator jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
+    JiraSoapService service = null;
+    try {
+      URL url = new URL(ReportSubmissionConfiguration.JIRA_SOAP_URL);
+      service = jiraSoapServiceLocator.getJirasoapserviceV2(url);
+    } catch (MalformedURLException murle) {
+      // error
+      murle.printStackTrace();
+    } catch (ServiceException se) {
+      se.printStackTrace();
+    }
+    boolean isConnectionSeeminglyPossible;
+    IssueReportRemoteUser user = null;
+    if (service != null) {
+      isConnectionSeeminglyPossible = true;
+      try {
+        String token = service.login(username, password);
+        try {
+          RemoteUser jiraRemoteUser = service.getUser(token, username);
+          if (jiraRemoteUser != null) {
+            user = new AliceIssueReportRemoteUser(jiraRemoteUser);
+            //todo?
+            //edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, jiraRemoteUser.getFullname() );
+          }
+        } catch (RemotePermissionException rpe) {
+          rpe.printStackTrace();
+        } catch (RemoteException re) {
+          re.printStackTrace();
+        } finally {
+          try {
+            service.logout(token);
+          } catch (RemoteException re) {
+            //todo?
+            re.printStackTrace();
+          }
+        }
+      } catch (com.atlassian.jira.rpc.soap.client.RemoteException jirare) {
+        //could not log in
+      } catch (RemoteException re) {
+        //could not connect
+        isConnectionSeeminglyPossible = false;
+      }
+    } else {
+      isConnectionSeeminglyPossible = false;
+    }
+    observer.remoteUserAttemptCompleted(isConnectionSeeminglyPossible, user);
+  }
 }

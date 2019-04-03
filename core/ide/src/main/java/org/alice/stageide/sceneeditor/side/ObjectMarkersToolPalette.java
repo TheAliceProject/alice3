@@ -53,27 +53,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ObjectMarkersToolPalette extends MarkersToolPalette<ObjectMarkersView> {
-	public ObjectMarkersToolPalette() {
-		super( UUID.fromString( "00796918-1721-4618-ae51-24b2e38eab05" ), new ObjectMarkerFieldData() );
-	}
+  public ObjectMarkersToolPalette() {
+    super(UUID.fromString("00796918-1721-4618-ae51-24b2e38eab05"), new ObjectMarkerFieldData());
+  }
 
-	@Override
-	public Operation getMoveMarkerToOperation() {
-		return MoveMarkerToSelectedObjectActionOperation.getInstance();
-	}
+  @Override
+  public Operation getMoveMarkerToOperation() {
+    return MoveMarkerToSelectedObjectActionOperation.getInstance();
+  }
 
-	@Override
-	public Operation getMoveToMarkerOperation() {
-		return MoveSelectedObjectToMarkerActionOperation.getInstance();
-	}
+  @Override
+  public Operation getMoveToMarkerOperation() {
+    return MoveSelectedObjectToMarkerActionOperation.getInstance();
+  }
 
-	@Override
-	public Operation getAddOperation() {
-		return AddObjectMarkerFieldComposite.getInstance().getLaunchOperation();
-	}
+  @Override
+  public Operation getAddOperation() {
+    return AddObjectMarkerFieldComposite.getInstance().getLaunchOperation();
+  }
 
-	@Override
-	protected ObjectMarkersView createView() {
-		return new ObjectMarkersView( this );
-	}
+  @Override
+  protected ObjectMarkersView createView() {
+    return new ObjectMarkersView(this);
+  }
 }

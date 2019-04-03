@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitHipMicroMiniSkirt implements FemaleTeenFullBodyOutfit {
-	DIAG_LINE,
-	STRIP;
+  DIAG_LINE, STRIP
 
 }

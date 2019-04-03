@@ -56,67 +56,67 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 
 public class DoubleTextField extends JTextField {
-	private static final NumberFormat CENTI_FORMAT = new DecimalFormat( "0.00" );
-	protected boolean isDirty = false;
-	protected double trueValue = Double.NaN;
+  private static final NumberFormat CENTI_FORMAT = new DecimalFormat("0.00");
+  protected boolean isDirty = false;
+  protected double trueValue = Double.NaN;
 
-	public DoubleTextField( int columns ) {
-		super( columns );
-		this.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed( ActionEvent e ) {
-				markValueSet();
-			}
-		} );
-		this.getDocument().addDocumentListener( new SimplifiedDocumentAdapter() {
-			@Override
-			protected void updated( DocumentEvent e ) {
-				markValueTemporary();
-				DoubleTextField.this.isDirty = true;
-			}
-		} );
-	}
+  public DoubleTextField(int columns) {
+    super(columns);
+    this.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        markValueSet();
+      }
+    });
+    this.getDocument().addDocumentListener(new SimplifiedDocumentAdapter() {
+      @Override
+      protected void updated(DocumentEvent e) {
+        markValueTemporary();
+        DoubleTextField.this.isDirty = true;
+      }
+    });
+  }
 
-	public boolean isValueValid() {
-		String text = this.getText();
-		Double value = DoubleUtilities.parseDoubleInCurrentDefaultLocale( text );
-		return Double.isNaN( value ) == false;
-	}
+  public boolean isValueValid() {
+    String text = this.getText();
+    Double value = DoubleUtilities.parseDoubleInCurrentDefaultLocale(text);
+    return Double.isNaN(value) == false;
+  }
 
-	public void markValueTemporary() {
-		if( isValueValid() ) {
-			DoubleTextField.this.setForeground( Color.GRAY );
-		} else {
-			DoubleTextField.this.setForeground( Color.RED );
-		}
-	}
+  public void markValueTemporary() {
+    if (isValueValid()) {
+      DoubleTextField.this.setForeground(Color.GRAY);
+    } else {
+      DoubleTextField.this.setForeground(Color.RED);
+    }
+  }
 
-	public void markValueSet() {
-		if( isValueValid() ) {
-			DoubleTextField.this.setForeground( Color.BLACK );
-		} else {
-			DoubleTextField.this.setForeground( Color.RED );
-		}
-	}
+  public void markValueSet() {
+    if (isValueValid()) {
+      DoubleTextField.this.setForeground(Color.BLACK);
+    } else {
+      DoubleTextField.this.setForeground(Color.RED);
+    }
+  }
 
-	public double getValue() {
-		if( this.isDirty ) {
-			double value = DoubleUtilities.parseDoubleInCurrentDefaultLocale( this.getText() );
-			this.trueValue = value;
-		}
-		this.isDirty = false;
-		return this.trueValue;
-	}
+  public double getValue() {
+    if (this.isDirty) {
+      double value = DoubleUtilities.parseDoubleInCurrentDefaultLocale(this.getText());
+      this.trueValue = value;
+    }
+    this.isDirty = false;
+    return this.trueValue;
+  }
 
-	public void setValue( Double value ) {
-		if( value != null ) {
-			this.trueValue = value;
-			this.setText( DoubleUtilities.format( this.trueValue, CENTI_FORMAT ) );
-		} else {
-			this.trueValue = Double.NaN;
-			this.setText( "None" );
-		}
-		this.isDirty = false;
-		this.markValueSet();
-	}
+  public void setValue(Double value) {
+    if (value != null) {
+      this.trueValue = value;
+      this.setText(DoubleUtilities.format(this.trueValue, CENTI_FORMAT));
+    } else {
+      this.trueValue = Double.NaN;
+      this.setText("None");
+    }
+    this.isDirty = false;
+    this.markValueSet();
+  }
 }

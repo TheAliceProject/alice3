@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SignUpOperation extends ImmutableBrowserOperation {
-	public SignUpOperation() {
-		super( UUID.fromString( "450727b2-d86a-4812-a77c-99eb785e10b2" ), ReportSubmissionConfiguration.JIRA_URL + "secure/Signup!default.jspa" );
-	}
+  public SignUpOperation() {
+    super(UUID.fromString("450727b2-d86a-4812-a77c-99eb785e10b2"), ReportSubmissionConfiguration.JIRA_URL + "secure/Signup!default.jspa");
+  }
 }

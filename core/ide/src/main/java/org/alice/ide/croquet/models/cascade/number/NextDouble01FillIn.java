@@ -58,31 +58,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class NextDouble01FillIn extends ExpressionFillInWithoutBlanks<MethodInvocation> {
-	private static class SingletonHolder {
-		private static NextDouble01FillIn instance = new NextDouble01FillIn();
-	}
+  private static class SingletonHolder {
+    private static NextDouble01FillIn instance = new NextDouble01FillIn();
+  }
 
-	public static NextDouble01FillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static NextDouble01FillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final MethodInvocation transientValue;
+  private final MethodInvocation transientValue;
 
-	private NextDouble01FillIn() {
-		super( UUID.fromString( "4d6ae280-3a3b-413b-b73e-437d513e9cc0" ) );
-		this.transientValue = this.createValue( null );
-	}
+  private NextDouble01FillIn() {
+    super(UUID.fromString("4d6ae280-3a3b-413b-b73e-437d513e9cc0"));
+    this.transientValue = this.createValue(null);
+  }
 
-	@Override
-	public MethodInvocation createValue( ItemNode<? super MethodInvocation, Void> node ) {
-		final String NEXT_DOUBLE_IN_RANGE_METHOD_NAME = "nextDoubleInRange";
-		JavaType RANDOM_UTILITIES_TYPE = JavaType.getInstance( RandomUtilities.class );
-		TypeExpression typeExpression = new TypeExpression( RANDOM_UTILITIES_TYPE );
-		return AstUtilities.createMethodInvocation( typeExpression, RANDOM_UTILITIES_TYPE.getDeclaredMethod( NEXT_DOUBLE_IN_RANGE_METHOD_NAME, Number.class, Number.class ), new DoubleLiteral( 0.0 ), new DoubleLiteral( 1.0 ) );
-	}
+  @Override
+  public MethodInvocation createValue(ItemNode<? super MethodInvocation, Void> node) {
+    final String NEXT_DOUBLE_IN_RANGE_METHOD_NAME = "nextDoubleInRange";
+    JavaType RANDOM_UTILITIES_TYPE = JavaType.getInstance(RandomUtilities.class);
+    TypeExpression typeExpression = new TypeExpression(RANDOM_UTILITIES_TYPE);
+    return AstUtilities.createMethodInvocation(typeExpression, RANDOM_UTILITIES_TYPE.getDeclaredMethod(NEXT_DOUBLE_IN_RANGE_METHOD_NAME, Number.class, Number.class), new DoubleLiteral(0.0), new DoubleLiteral(1.0));
+  }
 
-	@Override
-	public MethodInvocation getTransientValue( ItemNode<? super MethodInvocation, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public MethodInvocation getTransientValue(ItemNode<? super MethodInvocation, Void> node) {
+    return this.transientValue;
+  }
 }

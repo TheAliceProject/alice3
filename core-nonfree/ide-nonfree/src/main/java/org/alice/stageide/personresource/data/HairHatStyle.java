@@ -52,114 +52,114 @@ import java.util.Locale;
  * @author Dennis Cosgrove
  */
 public final class HairHatStyle implements Comparable<HairHatStyle> {
-	private final HairClsHatNameCombo hairClsHatNameCombo;
-	private final List<HairColorNameHairCombo> hairColorNameHairCombos;
+  private final HairClsHatNameCombo hairClsHatNameCombo;
+  private final List<HairColorNameHairCombo> hairColorNameHairCombos;
 
-	public HairHatStyle( HairClsHatNameCombo hairClsHatNameCombo, List<HairColorNameHairCombo> hairColorNames ) {
-		assert hairClsHatNameCombo != null;
-		assert hairColorNames != null;
-		this.hairClsHatNameCombo = hairClsHatNameCombo;
-		this.hairColorNameHairCombos = Collections.unmodifiableList( hairColorNames );
-	}
+  public HairHatStyle(HairClsHatNameCombo hairClsHatNameCombo, List<HairColorNameHairCombo> hairColorNames) {
+    assert hairClsHatNameCombo != null;
+    assert hairColorNames != null;
+    this.hairClsHatNameCombo = hairClsHatNameCombo;
+    this.hairColorNameHairCombos = Collections.unmodifiableList(hairColorNames);
+  }
 
-	public Class<? extends Hair> getHairCls() {
-		return this.hairClsHatNameCombo.getHairCls();
-	}
+  public Class<? extends Hair> getHairCls() {
+    return this.hairClsHatNameCombo.getHairCls();
+  }
 
-	public String getHatName() {
-		return this.hairClsHatNameCombo.getHatName();
-	}
+  public String getHatName() {
+    return this.hairClsHatNameCombo.getHatName();
+  }
 
-	public List<HairColorNameHairCombo> getHairColorNameHairCombos() {
-		return this.hairColorNameHairCombos;
-	}
+  public List<HairColorNameHairCombo> getHairColorNameHairCombos() {
+    return this.hairColorNameHairCombos;
+  }
 
-	public Hair getHair( HairColorName hairColorName ) {
-		for( HairColorNameHairCombo hairColorNameHairCombo : this.hairColorNameHairCombos ) {
-			if( hairColorNameHairCombo.getHairColorName() == hairColorName ) {
-				return hairColorNameHairCombo.getHair();
-			}
-		}
-		//		Class<? extends org.lgna.story.resources.sims2.Hair> hairCls = this.getHairCls();
-		//		String hatName = this.getHatName();
-		//		for( org.lgna.story.resources.sims2.Hair hair : hairCls.getEnumConstants() ) {
-		//			String[] hairColorNameAndHatName = HairUtilities.getHairColorNameAndHatName( hair );
-		//			if( edu.cmu.cs.dennisc.java.util.Objects.equals( hairColorName.name(), hairColorNameAndHatName[ 0 ] ) ) {
-		//				if( edu.cmu.cs.dennisc.java.util.Objects.equals( hatName, hairColorNameAndHatName[ 1 ] ) ) {
-		//					return hair;
-		//				}
-		//			}
-		//		}
-		//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( hairColorName, this.hairColorNameHairCombos );
-		return null;
-	}
+  public Hair getHair(HairColorName hairColorName) {
+    for (HairColorNameHairCombo hairColorNameHairCombo : this.hairColorNameHairCombos) {
+      if (hairColorNameHairCombo.getHairColorName() == hairColorName) {
+        return hairColorNameHairCombo.getHair();
+      }
+    }
+    //    Class<? extends org.lgna.story.resources.sims2.Hair> hairCls = this.getHairCls();
+    //    String hatName = this.getHatName();
+    //    for( org.lgna.story.resources.sims2.Hair hair : hairCls.getEnumConstants() ) {
+    //      String[] hairColorNameAndHatName = HairUtilities.getHairColorNameAndHatName( hair );
+    //      if( edu.cmu.cs.dennisc.java.util.Objects.equals( hairColorName.name(), hairColorNameAndHatName[ 0 ] ) ) {
+    //        if( edu.cmu.cs.dennisc.java.util.Objects.equals( hatName, hairColorNameAndHatName[ 1 ] ) ) {
+    //          return hair;
+    //        }
+    //      }
+    //    }
+    //edu.cmu.cs.dennisc.java.util.logging.Logger.severe( hairColorName, this.hairColorNameHairCombos );
+    return null;
+  }
 
-	private int compareHatName( HairHatStyle other ) {
-		String thisHatName = this.getHatName();
-		String otherHatName = other.getHatName();
-		if( thisHatName != null ) {
-			if( otherHatName != null ) {
-				return thisHatName.compareTo( otherHatName );
-			} else {
-				return -1;
-			}
-		} else {
-			if( otherHatName != null ) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}
-	}
+  private int compareHatName(HairHatStyle other) {
+    String thisHatName = this.getHatName();
+    String otherHatName = other.getHatName();
+    if (thisHatName != null) {
+      if (otherHatName != null) {
+        return thisHatName.compareTo(otherHatName);
+      } else {
+        return -1;
+      }
+    } else {
+      if (otherHatName != null) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+  }
 
-	private int compareClsName( HairHatStyle other ) {
-		Class<? extends Hair> thisHairCls = this.getHairCls();
-		Class<? extends Hair> otherHairCls = other.getHairCls();
-		String thisSimpleName = thisHairCls.getSimpleName().toLowerCase( Locale.ENGLISH );
-		String otherSimpleName = otherHairCls.getSimpleName().toLowerCase( Locale.ENGLISH );
-		String[] thisSplit = thisSimpleName.split( "hair", 2 );
-		assert thisSplit.length == 2 : thisHairCls;
-		String[] otherSplit = otherSimpleName.split( "hair", 2 );
-		assert otherSplit.length == 2 : otherHairCls;
-		return thisSplit[ 1 ].compareTo( otherSplit[ 1 ] );
-	}
+  private int compareClsName(HairHatStyle other) {
+    Class<? extends Hair> thisHairCls = this.getHairCls();
+    Class<? extends Hair> otherHairCls = other.getHairCls();
+    String thisSimpleName = thisHairCls.getSimpleName().toLowerCase(Locale.ENGLISH);
+    String otherSimpleName = otherHairCls.getSimpleName().toLowerCase(Locale.ENGLISH);
+    String[] thisSplit = thisSimpleName.split("hair", 2);
+    assert thisSplit.length == 2 : thisHairCls;
+    String[] otherSplit = otherSimpleName.split("hair", 2);
+    assert otherSplit.length == 2 : otherHairCls;
+    return thisSplit[1].compareTo(otherSplit[1]);
+  }
 
-	@Override
-	public int compareTo( HairHatStyle other ) {
-		Class<? extends Hair> thisHairCls = this.getHairCls();
-		Class<? extends Hair> otherHairCls = other.getHairCls();
-		if( thisHairCls.equals( otherHairCls ) ) {
-			return compareHatName( other );
-		} else {
-			Hair thisHair0 = thisHairCls.getEnumConstants()[ 0 ];
-			Hair otherHair0 = otherHairCls.getEnumConstants()[ 0 ];
-			if( thisHair0.hasHat() ) {
-				if( otherHair0.hasHat() ) {
-					return compareClsName( other );
-				} else {
-					return 1;
-				}
-			} else {
-				if( otherHair0.hasHat() ) {
-					return -1;
-				} else {
-					return compareClsName( other );
-				}
-			}
-		}
-	}
+  @Override
+  public int compareTo(HairHatStyle other) {
+    Class<? extends Hair> thisHairCls = this.getHairCls();
+    Class<? extends Hair> otherHairCls = other.getHairCls();
+    if (thisHairCls.equals(otherHairCls)) {
+      return compareHatName(other);
+    } else {
+      Hair thisHair0 = thisHairCls.getEnumConstants()[0];
+      Hair otherHair0 = otherHairCls.getEnumConstants()[0];
+      if (thisHair0.hasHat()) {
+        if (otherHair0.hasHat()) {
+          return compareClsName(other);
+        } else {
+          return 1;
+        }
+      } else {
+        if (otherHair0.hasHat()) {
+          return -1;
+        } else {
+          return compareClsName(other);
+        }
+      }
+    }
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.getHairCls().getSimpleName() );
-		sb.append( ";" );
-		sb.append( this.getHatName() );
-		sb.append( ";" );
-		sb.append( this.hairColorNameHairCombos );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getSimpleName());
+    sb.append("[");
+    sb.append(this.getHairCls().getSimpleName());
+    sb.append(";");
+    sb.append(this.getHatName());
+    sb.append(";");
+    sb.append(this.hairColorNameHairCombos);
+    sb.append("]");
+    return sb.toString();
+  }
 }

@@ -53,16 +53,16 @@ import test.ik.croquet.JointIdState;
  * @author Dennis Cosgrove
  */
 public class JointIdDropDown extends ItemDropDown<JointId, JointIdState> {
-	private final Label mainComponent = new Label();
+  private final Label mainComponent = new Label();
 
-	public JointIdDropDown( JointIdState model ) {
-		super( model );
-		this.setMainComponent( this.mainComponent );
-	}
+  public JointIdDropDown(JointIdState model) {
+    super(model);
+    this.setMainComponent(this.mainComponent);
+  }
 
-	@Override
-	protected void handleChanged( State<JointId> state, JointId prevValue, JointId nextValue ) {
-		this.mainComponent.setText( nextValue != null ? nextValue.toString() : "null" );
-		this.revalidateAndRepaint();
-	}
+  @Override
+  protected void handleChanged(State<JointId> state, JointId prevValue, JointId nextValue) {
+    this.mainComponent.setText(nextValue != null ? nextValue.toString() : "null");
+    this.revalidateAndRepaint();
+  }
 }

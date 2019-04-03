@@ -61,113 +61,113 @@ import java.util.Set;
 import java.util.UUID;
 
 class ResourceTableModel extends AbstractTableModel {
-	private Resource[] resources;
-	private Set<Resource> referencedResources;
+  private Resource[] resources;
+  private Set<Resource> referencedResources;
 
-	@Override
-	public int getColumnCount() {
-		return 3;
-	}
+  @Override
+  public int getColumnCount() {
+    return 3;
+  }
 
-	@Override
-	public int getRowCount() {
-		if( this.resources != null ) {
-			return this.resources.length;
-		} else {
-			return 0;
-		}
-	}
+  @Override
+  public int getRowCount() {
+    if (this.resources != null) {
+      return this.resources.length;
+    } else {
+      return 0;
+    }
+  }
 
-	private String findLocalizedText( String subKey, String defaultValue ) {
-		String bundleName = ResourceSingleSelectTableRowState.class.getPackage().getName() + ".croquet";
-		try {
-			ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( bundleName, JComponent.getDefaultLocale() );
-			String key = ResourceSingleSelectTableRowState.class.getSimpleName();
+  private String findLocalizedText(String subKey, String defaultValue) {
+    String bundleName = ResourceSingleSelectTableRowState.class.getPackage().getName() + ".croquet";
+    try {
+      ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle(bundleName, JComponent.getDefaultLocale());
+      String key = ResourceSingleSelectTableRowState.class.getSimpleName();
 
-			if( subKey != null ) {
-				StringBuilder sb = new StringBuilder();
-				sb.append( key );
-				sb.append( "." );
-				sb.append( subKey );
-				key = sb.toString();
-			}
-			String rv = resourceBundle.getString( key );
-			return rv;
-		} catch( MissingResourceException mre ) {
-			return defaultValue;
-		}
-	}
+      if (subKey != null) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(key);
+        sb.append(".");
+        sb.append(subKey);
+        key = sb.toString();
+      }
+      String rv = resourceBundle.getString(key);
+      return rv;
+    } catch (MissingResourceException mre) {
+      return defaultValue;
+    }
+  }
 
-	@Override
-	public String getColumnName( int columnIndex ) {
-		switch( columnIndex ) {
-		case ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX:
-			return findLocalizedText( "isReferenced", "is referenced?" );
-		case ResourceSingleSelectTableRowState.NAME_COLUMN_INDEX:
-			return findLocalizedText( "name", "name" );
-		case ResourceSingleSelectTableRowState.TYPE_COLUMN_INDEX:
-			return findLocalizedText( "type", "type" );
-		default:
-			return null;
-		}
-	}
+  @Override
+  public String getColumnName(int columnIndex) {
+    switch (columnIndex) {
+    case ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX:
+      return findLocalizedText("isReferenced", "is referenced?");
+    case ResourceSingleSelectTableRowState.NAME_COLUMN_INDEX:
+      return findLocalizedText("name", "name");
+    case ResourceSingleSelectTableRowState.TYPE_COLUMN_INDEX:
+      return findLocalizedText("type", "type");
+    default:
+      return null;
+    }
+  }
 
-	@Override
-	public Object getValueAt( int rowIndex, int columnIndex ) {
-		switch( columnIndex ) {
-		case ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX:
-			return this.referencedResources.contains( this.resources[ rowIndex ] );
-		case ResourceSingleSelectTableRowState.NAME_COLUMN_INDEX:
-			return this.resources[ rowIndex ];
-		case ResourceSingleSelectTableRowState.TYPE_COLUMN_INDEX:
-			return this.resources[ rowIndex ].getClass();
-		default:
-			return null;
-		}
-	}
+  @Override
+  public Object getValueAt(int rowIndex, int columnIndex) {
+    switch (columnIndex) {
+    case ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX:
+      return this.referencedResources.contains(this.resources[rowIndex]);
+    case ResourceSingleSelectTableRowState.NAME_COLUMN_INDEX:
+      return this.resources[rowIndex];
+    case ResourceSingleSelectTableRowState.TYPE_COLUMN_INDEX:
+      return this.resources[rowIndex].getClass();
+    default:
+      return null;
+    }
+  }
 
-	public Resource[] getResources() {
-		return this.resources;
-	}
+  public Resource[] getResources() {
+    return this.resources;
+  }
 
-	public void reload( Project project ) {
-		if( project != null ) {
-			// Calling getReferencedResources will update project with all currently used resources.
-			this.referencedResources = ProgramTypeUtilities.getReferencedResources( project );
-			this.resources = ArrayUtilities.createArray( project.getResources(), Resource.class, true );
-		} else {
-			this.resources = new Resource[] {};
-			this.referencedResources = Collections.emptySet();
-		}
-		this.fireTableDataChanged();
-	}
+  public void reload(Project project) {
+    if (project != null) {
+      // Calling getReferencedResources will update project with all currently used resources.
+      this.referencedResources = ProgramTypeUtilities.getReferencedResources(project);
+      this.resources = ArrayUtilities.createArray(project.getResources(), Resource.class, true);
+    } else {
+      this.resources = new Resource[] {};
+      this.referencedResources = Collections.emptySet();
+    }
+    this.fireTableDataChanged();
+  }
 }
 
 /**
  * @author Dennis Cosgrove
  */
 public class ResourceSingleSelectTableRowState extends SingleSelectTableRowState<Resource> {
-	public static final int NAME_COLUMN_INDEX = 0;
-	public static final int TYPE_COLUMN_INDEX = 1;
-	public static final int IS_REFERENCED_COLUMN_INDEX = 2;
+  public static final int NAME_COLUMN_INDEX = 0;
+  public static final int TYPE_COLUMN_INDEX = 1;
+  public static final int IS_REFERENCED_COLUMN_INDEX = 2;
 
-	public ResourceSingleSelectTableRowState() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "2b630438-6852-4b4d-b234-a1fba69f81f8" ), null, ResourceCodec.getInstance( Resource.class ), new ResourceTableModel() );
-	}
+  public ResourceSingleSelectTableRowState() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("2b630438-6852-4b4d-b234-a1fba69f81f8"), null, ResourceCodec.getInstance(Resource.class), new ResourceTableModel());
+  }
 
-	@Override
-	public Resource getItemAt( int index ) {
-		ResourceTableModel resourceTableModel = (ResourceTableModel)this.getSwingModel().getTableModel();
-		return resourceTableModel.getResources()[ index ];
-	}
+  @Override
+  public Resource getItemAt(int index) {
+    ResourceTableModel resourceTableModel = (ResourceTableModel) this.getSwingModel().getTableModel();
+    return resourceTableModel.getResources()[index];
+  }
 
-	@Override
-	protected void setSwingValue( Resource nextValue ) {
-		//todo
-	}
+  @Override
+  protected void setSwingValue(Resource nextValue) {
+    //todo
+  }
 
-	public void reloadTableModel( Project project ) {
-		ResourceTableModel resourceTableModel = (ResourceTableModel)this.getSwingModel().getTableModel();
-		resourceTableModel.reload( project );
-	}
+  public void reloadTableModel(Project project) {
+    ResourceTableModel resourceTableModel = (ResourceTableModel) this.getSwingModel().getTableModel();
+    resourceTableModel.reload(project);
+  }
 }

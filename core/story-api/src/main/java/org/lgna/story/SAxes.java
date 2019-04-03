@@ -49,10 +49,10 @@ import org.lgna.story.implementation.AxesImp;
  * @author Dennis Cosgrove
  */
 public class SAxes extends SShape implements MutableRider, Visual, Resizable {
-	private final AxesImp implementation = new AxesImp( this );
+  private final AxesImp implementation = new AxesImp(this);
 
-	@Override
-			/* package-private */AxesImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */AxesImp getImplementation() {
+    return this.implementation;
+  }
 }

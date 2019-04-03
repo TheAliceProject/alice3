@@ -49,21 +49,21 @@ import org.lgna.project.virtualmachine.VirtualMachine;
  * @author Dennis Cosgrove
  */
 public class WhileLoopIterationEvent extends VirtualMachineEvent {
-	public WhileLoopIterationEvent( VirtualMachine vm, WhileLoop whileLoop, int index ) {
-		super( vm );
-		this.whileLoop = whileLoop;
-		this.index = index;
-	}
+  public WhileLoopIterationEvent(VirtualMachine vm, WhileLoop whileLoop, int index) {
+    super(vm);
+    this.whileLoop = whileLoop;
+    this.index = index;
+  }
 
-	public WhileLoop getWhileLoop() {
-		return this.whileLoop;
-	}
+  public WhileLoop getWhileLoop() {
+    return this.whileLoop;
+  }
 
-	public int getIndex() {
-		return this.index;
-	}
+  public int getIndex() {
+    return this.index;
+  }
 
-	private final WhileLoop whileLoop;
-	private final int index;
+  private final WhileLoop whileLoop;
+  private final int index;
 
 }

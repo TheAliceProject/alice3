@@ -70,194 +70,194 @@ import java.nio.ShortBuffer;
  * @author Dennis Cosgrove
  */
 public class GlrOldMesh extends GlrGeometry<OldMesh> {
-	@Override
-	public boolean isAlphaBlended() {
-		return false;
-	}
+  @Override
+  public boolean isAlphaBlended() {
+    return false;
+  }
 
-	private void glDraw( GL2 gl, int mode, short[] xyzIndices, short[] ijkIndices, short[] uvIndices ) {
-		final int N = xyzIndices != null ? xyzIndices.length : 0;
-		if( N > 0 ) {
-			gl.glBegin( mode );
-			try {
-				for( int i = 0; i < N; i++ ) {
-					int xyzIndex = xyzIndices[ i ];
-					int ijkIndex = ijkIndices != null ? ijkIndices[ i ] : xyzIndex;
-					int uvIndex = uvIndices != null ? uvIndices[ i ] : xyzIndex;
-					gl.glTexCoord2f( this.uvs[ ( uvIndex * 2 ) + 0 ], this.uvs[ ( uvIndex * 2 ) + 1 ] );
-					gl.glNormal3f( this.ijks[ ( ijkIndex * 3 ) + 0 ], this.ijks[ ( ijkIndex * 3 ) + 1 ], this.ijks[ ( ijkIndex * 3 ) + 2 ] );
-					gl.glVertex3d( this.xyzs[ ( xyzIndex * 3 ) + 0 ], this.xyzs[ ( xyzIndex * 3 ) + 1 ], this.xyzs[ ( xyzIndex * 3 ) + 2 ] );
-				}
-			} finally {
-				gl.glEnd();
-			}
-		}
-	}
+  private void glDraw(GL2 gl, int mode, short[] xyzIndices, short[] ijkIndices, short[] uvIndices) {
+    final int N = xyzIndices != null ? xyzIndices.length : 0;
+    if (N > 0) {
+      gl.glBegin(mode);
+      try {
+        for (int i = 0; i < N; i++) {
+          int xyzIndex = xyzIndices[i];
+          int ijkIndex = ijkIndices != null ? ijkIndices[i] : xyzIndex;
+          int uvIndex = uvIndices != null ? uvIndices[i] : xyzIndex;
+          gl.glTexCoord2f(this.uvs[(uvIndex * 2) + 0], this.uvs[(uvIndex * 2) + 1]);
+          gl.glNormal3f(this.ijks[(ijkIndex * 3) + 0], this.ijks[(ijkIndex * 3) + 1], this.ijks[(ijkIndex * 3) + 2]);
+          gl.glVertex3d(this.xyzs[(xyzIndex * 3) + 0], this.xyzs[(xyzIndex * 3) + 1], this.xyzs[(xyzIndex * 3) + 2]);
+        }
+      } finally {
+        gl.glEnd();
+      }
+    }
+  }
 
-	private void glDrawElements( GL2 gl, int mode, boolean b ) {
-		if( b ) {
-			short[] xyzIndices;
-			if( mode == GL_TRIANGLES ) {
-				xyzIndices = this.xyzTriangleIndices;
-			} else if( mode == GL_QUADS ) {
-				xyzIndices = this.xyzQuadrangleIndices;
-			} else {
-				throw new AssertionError();
-			}
-			final int N = xyzIndices != null ? xyzIndices.length : 0;
-			if( N > 0 ) {
-				gl.glBegin( mode );
-				try {
-					for( int i = 0; i < xyzIndices.length; i++ ) {
-						gl.glArrayElement( i );
-					}
-				} finally {
-					gl.glEnd();
-				}
-			}
-		} else {
-			if( mode == GL_TRIANGLES ) {
-				if( this.triangleIndexBuffer != null ) {
-					//pass
-				} else {
-					this.triangleIndexBuffer = BufferUtilities.createDirectShortBuffer( this.xyzTriangleIndices );
-				}
-				this.triangleIndexBuffer.rewind();
+  private void glDrawElements(GL2 gl, int mode, boolean b) {
+    if (b) {
+      short[] xyzIndices;
+      if (mode == GL_TRIANGLES) {
+        xyzIndices = this.xyzTriangleIndices;
+      } else if (mode == GL_QUADS) {
+        xyzIndices = this.xyzQuadrangleIndices;
+      } else {
+        throw new AssertionError();
+      }
+      final int N = xyzIndices != null ? xyzIndices.length : 0;
+      if (N > 0) {
+        gl.glBegin(mode);
+        try {
+          for (int i = 0; i < xyzIndices.length; i++) {
+            gl.glArrayElement(i);
+          }
+        } finally {
+          gl.glEnd();
+        }
+      }
+    } else {
+      if (mode == GL_TRIANGLES) {
+        if (this.triangleIndexBuffer != null) {
+          //pass
+        } else {
+          this.triangleIndexBuffer = BufferUtilities.createDirectShortBuffer(this.xyzTriangleIndices);
+        }
+        this.triangleIndexBuffer.rewind();
 
-				gl.glDrawElements( mode, this.xyzTriangleIndices.length / 3, GL_SHORT, this.triangleIndexBuffer );
-			} else if( mode == GL_QUADS ) {
-				if( this.quadrangleIndexBuffer != null ) {
-					//pass
-				} else {
-					this.quadrangleIndexBuffer = BufferUtilities.createDirectShortBuffer( this.xyzQuadrangleIndices );
-					this.quadrangleIndexBuffer.rewind();
-				}
-				gl.glDrawElements( mode, this.xyzQuadrangleIndices.length / 4, GL_SHORT, this.quadrangleIndexBuffer );
-			} else {
-				throw new AssertionError();
-			}
-		}
-	}
+        gl.glDrawElements(mode, this.xyzTriangleIndices.length / 3, GL_SHORT, this.triangleIndexBuffer);
+      } else if (mode == GL_QUADS) {
+        if (this.quadrangleIndexBuffer != null) {
+          //pass
+        } else {
+          this.quadrangleIndexBuffer = BufferUtilities.createDirectShortBuffer(this.xyzQuadrangleIndices);
+          this.quadrangleIndexBuffer.rewind();
+        }
+        gl.glDrawElements(mode, this.xyzQuadrangleIndices.length / 4, GL_SHORT, this.quadrangleIndexBuffer);
+      } else {
+        throw new AssertionError();
+      }
+    }
+  }
 
-	private void glGeometry( GL2 gl, boolean isArrayRenderingDesired ) {
-		if( ( isArrayRenderingDesired == false ) || ( this.ijkTriangleIndices != null ) || ( this.uvTriangleIndices != null ) || ( this.ijkQuadrangleIndices != null ) || ( this.uvQuadrangleIndices != null ) ) {
-			glDraw( gl, GL_TRIANGLES, this.xyzTriangleIndices, this.ijkTriangleIndices, this.uvTriangleIndices );
-			glDraw( gl, GL_QUADS, this.xyzQuadrangleIndices, this.ijkQuadrangleIndices, this.uvQuadrangleIndices );
-		} else {
-			if( this.xyzBuffer != null ) {
-				//pass
-			} else {
-				this.xyzBuffer = BufferUtilities.createDirectDoubleBuffer( xyzs );
-			}
-			this.xyzBuffer.rewind();
-			if( this.ijkBuffer != null ) {
-				//pass
-			} else {
-				this.ijkBuffer = BufferUtilities.createDirectFloatBuffer( ijks );
-			}
-			this.ijkBuffer.rewind();
-			if( this.uvBuffer != null ) {
-				//pass
-			} else {
-				this.uvBuffer = BufferUtilities.createDirectFloatBuffer( uvs );
-			}
-			this.uvBuffer.rewind();
-			gl.glEnableClientState( GL_VERTEX_ARRAY );
-			gl.glEnableClientState( GL_NORMAL_ARRAY );
-			gl.glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-			try {
-				gl.glVertexPointer( 3, GL_DOUBLE, 0, this.xyzBuffer );
-				gl.glNormalPointer( GL_FLOAT, 0, this.ijkBuffer );
-				gl.glTexCoordPointer( 2, GL_FLOAT, 0, this.uvBuffer );
+  private void glGeometry(GL2 gl, boolean isArrayRenderingDesired) {
+    if ((isArrayRenderingDesired == false) || (this.ijkTriangleIndices != null) || (this.uvTriangleIndices != null) || (this.ijkQuadrangleIndices != null) || (this.uvQuadrangleIndices != null)) {
+      glDraw(gl, GL_TRIANGLES, this.xyzTriangleIndices, this.ijkTriangleIndices, this.uvTriangleIndices);
+      glDraw(gl, GL_QUADS, this.xyzQuadrangleIndices, this.ijkQuadrangleIndices, this.uvQuadrangleIndices);
+    } else {
+      if (this.xyzBuffer != null) {
+        //pass
+      } else {
+        this.xyzBuffer = BufferUtilities.createDirectDoubleBuffer(xyzs);
+      }
+      this.xyzBuffer.rewind();
+      if (this.ijkBuffer != null) {
+        //pass
+      } else {
+        this.ijkBuffer = BufferUtilities.createDirectFloatBuffer(ijks);
+      }
+      this.ijkBuffer.rewind();
+      if (this.uvBuffer != null) {
+        //pass
+      } else {
+        this.uvBuffer = BufferUtilities.createDirectFloatBuffer(uvs);
+      }
+      this.uvBuffer.rewind();
+      gl.glEnableClientState(GL_VERTEX_ARRAY);
+      gl.glEnableClientState(GL_NORMAL_ARRAY);
+      gl.glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+      try {
+        gl.glVertexPointer(3, GL_DOUBLE, 0, this.xyzBuffer);
+        gl.glNormalPointer(GL_FLOAT, 0, this.ijkBuffer);
+        gl.glTexCoordPointer(2, GL_FLOAT, 0, this.uvBuffer);
 
-				boolean b = true;
-				glDrawElements( gl, GL_TRIANGLES, b );
-				glDrawElements( gl, GL_QUADS, b );
-			} finally {
-				gl.glDisableClientState( GL_TEXTURE_COORD_ARRAY );
-				gl.glDisableClientState( GL_NORMAL_ARRAY );
-				gl.glDisableClientState( GL_VERTEX_ARRAY );
-			}
-		}
-	}
+        boolean b = true;
+        glDrawElements(gl, GL_TRIANGLES, b);
+        glDrawElements(gl, GL_QUADS, b);
+      } finally {
+        gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        gl.glDisableClientState(GL_NORMAL_ARRAY);
+        gl.glDisableClientState(GL_VERTEX_ARRAY);
+      }
+    }
+  }
 
-	@Override
-	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
-		//		if( xyzs != null && xyzs.length > Short.MAX_VALUE / 3 ) {
-		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning" );
-		//		}
-		glGeometry( rc.gl, false );
-	}
+  @Override
+  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
+    //    if( xyzs != null && xyzs.length > Short.MAX_VALUE / 3 ) {
+    //      edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning" );
+    //    }
+    glGeometry(rc.gl, false);
+  }
 
-	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		pc.gl.glPushName( -1 );
-		if( isSubElementRequired ) {
-			throw new RuntimeException( "todo" );
-		} else {
-			glGeometry( pc.gl, false );
-		}
-		pc.gl.glPopName();
-	}
+  @Override
+  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
+    pc.gl.glPushName(-1);
+    if (isSubElementRequired) {
+      throw new RuntimeException("todo");
+    } else {
+      glGeometry(pc.gl, false);
+    }
+    pc.gl.glPopName();
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.xyzs ) {
-			this.xyzs = owner.xyzs.getValue();
-			this.xyzBuffer = null;
-			setIsGeometryChanged( true );
-		} else if( property == owner.ijks ) {
-			this.ijks = owner.ijks.getValue();
-			this.ijkBuffer = null;
-			setIsGeometryChanged( true );
-		} else if( property == owner.uvs ) {
-			this.uvs = owner.uvs.getValue();
-			this.uvBuffer = null;
-			setIsGeometryChanged( true );
-		} else if( property == owner.xyzTriangleIndices ) {
-			this.xyzTriangleIndices = owner.xyzTriangleIndices.getValue();
-			this.triangleIndexBuffer = null;
-			setIsGeometryChanged( true );
-		} else if( property == owner.ijkTriangleIndices ) {
-			this.ijkTriangleIndices = owner.ijkTriangleIndices.getValue();
-			setIsGeometryChanged( true );
-		} else if( property == owner.uvTriangleIndices ) {
-			this.uvTriangleIndices = owner.uvTriangleIndices.getValue();
-			setIsGeometryChanged( true );
-		} else if( property == owner.xyzQuadrangleIndices ) {
-			this.xyzQuadrangleIndices = owner.xyzQuadrangleIndices.getValue();
-			this.quadrangleIndexBuffer = null;
-			setIsGeometryChanged( true );
-		} else if( property == owner.ijkQuadrangleIndices ) {
-			this.ijkQuadrangleIndices = owner.ijkQuadrangleIndices.getValue();
-			setIsGeometryChanged( true );
-		} else if( property == owner.uvQuadrangleIndices ) {
-			this.uvQuadrangleIndices = owner.uvQuadrangleIndices.getValue();
-			setIsGeometryChanged( true );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.xyzs) {
+      this.xyzs = owner.xyzs.getValue();
+      this.xyzBuffer = null;
+      setIsGeometryChanged(true);
+    } else if (property == owner.ijks) {
+      this.ijks = owner.ijks.getValue();
+      this.ijkBuffer = null;
+      setIsGeometryChanged(true);
+    } else if (property == owner.uvs) {
+      this.uvs = owner.uvs.getValue();
+      this.uvBuffer = null;
+      setIsGeometryChanged(true);
+    } else if (property == owner.xyzTriangleIndices) {
+      this.xyzTriangleIndices = owner.xyzTriangleIndices.getValue();
+      this.triangleIndexBuffer = null;
+      setIsGeometryChanged(true);
+    } else if (property == owner.ijkTriangleIndices) {
+      this.ijkTriangleIndices = owner.ijkTriangleIndices.getValue();
+      setIsGeometryChanged(true);
+    } else if (property == owner.uvTriangleIndices) {
+      this.uvTriangleIndices = owner.uvTriangleIndices.getValue();
+      setIsGeometryChanged(true);
+    } else if (property == owner.xyzQuadrangleIndices) {
+      this.xyzQuadrangleIndices = owner.xyzQuadrangleIndices.getValue();
+      this.quadrangleIndexBuffer = null;
+      setIsGeometryChanged(true);
+    } else if (property == owner.ijkQuadrangleIndices) {
+      this.ijkQuadrangleIndices = owner.ijkQuadrangleIndices.getValue();
+      setIsGeometryChanged(true);
+    } else if (property == owner.uvQuadrangleIndices) {
+      this.uvQuadrangleIndices = owner.uvQuadrangleIndices.getValue();
+      setIsGeometryChanged(true);
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	@Override
-	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
-		rv.setNaN();
-		return rv;
-	}
+  @Override
+  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+    rv.setNaN();
+    return rv;
+  }
 
-	private double[] xyzs;
-	private float[] ijks;
-	private float[] uvs;
-	private short[] xyzTriangleIndices;
-	private short[] ijkTriangleIndices;
-	private short[] uvTriangleIndices;
-	private short[] xyzQuadrangleIndices;
-	private short[] ijkQuadrangleIndices;
-	private short[] uvQuadrangleIndices;
+  private double[] xyzs;
+  private float[] ijks;
+  private float[] uvs;
+  private short[] xyzTriangleIndices;
+  private short[] ijkTriangleIndices;
+  private short[] uvTriangleIndices;
+  private short[] xyzQuadrangleIndices;
+  private short[] ijkQuadrangleIndices;
+  private short[] uvQuadrangleIndices;
 
-	private DoubleBuffer xyzBuffer;
-	private FloatBuffer ijkBuffer;
-	private FloatBuffer uvBuffer;
-	private ShortBuffer triangleIndexBuffer;
-	private ShortBuffer quadrangleIndexBuffer;
+  private DoubleBuffer xyzBuffer;
+  private FloatBuffer ijkBuffer;
+  private FloatBuffer uvBuffer;
+  private ShortBuffer triangleIndexBuffer;
+  private ShortBuffer quadrangleIndexBuffer;
 }

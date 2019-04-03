@@ -58,18 +58,18 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class AssignableTabPane extends BorderPanel {
-	public AssignableTabPane( AssignableTab tab ) {
-		super( tab, 4, 4 );
-		MultipleSelectionListView<UserField> listView = tab.getSceneFieldsState().createMultipleSelectionListView();
-		listView.setCellRenderer( new FieldCellRenderer( tab.getTypeTreeState() ) );
-		ScrollPane listScrollPane = new VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( listView );
+  public AssignableTabPane(AssignableTab tab) {
+    super(tab, 4, 4);
+    MultipleSelectionListView<UserField> listView = tab.getSceneFieldsState().createMultipleSelectionListView();
+    listView.setCellRenderer(new FieldCellRenderer(tab.getTypeTreeState()));
+    ScrollPane listScrollPane = new VerticalScrollBarPaintOmittingWhenAppropriateScrollPane(listView);
 
-		Color color = new Color( 221, 221, 255 );
-		listScrollPane.setBackgroundColor( color );
-		this.setBackgroundColor( color );
-		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+    Color color = new Color(221, 221, 255);
+    listScrollPane.setBackgroundColor(color);
+    this.setBackgroundColor(color);
+    this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
-		this.addPageStartComponent( new Label( "<html>Select class via the lowest common ancestor<br>assignable from the items below:</html>" ) );
-		this.addCenterComponent( listScrollPane );
-	}
+    this.addPageStartComponent(new Label("<html>Select class via the lowest common ancestor<br>assignable from the items below:</html>"));
+    this.addCenterComponent(listScrollPane);
+  }
 }

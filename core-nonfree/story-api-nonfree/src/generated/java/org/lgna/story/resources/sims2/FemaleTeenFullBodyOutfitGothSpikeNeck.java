@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitGothSpikeNeck implements FemaleTeenFullBodyOutfit {
-	BLACK,
-	BLACK_VIOLET,
-	RED,
-	RED_BLACK;
+  BLACK, BLACK_VIOLET, RED, RED_BLACK
 
 }

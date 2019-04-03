@@ -59,127 +59,127 @@ import java.io.OutputStream;
  * @author Kyle J. Harms
  */
 public class FFmpegProcess {
-	public static boolean isArchitectureSpecificCommandAbsolute() {
-		return SystemUtilities.isLinux() == false;
-	}
+  public static boolean isArchitectureSpecificCommandAbsolute() {
+    return SystemUtilities.isLinux() == false;
+  }
 
-	public static String getArchitectureSpecificCommand() {
-		final String FFMPEG_COMMAND = "ffmpeg";
-		if( SystemUtilities.isLinux() ) {
-			return FFMPEG_COMMAND;
-		} else {
-			File archDirectory = ApplicationRoot.getArchitectureSpecificDirectory();
-			StringBuilder sb = new StringBuilder();
-			sb.append( "ffmpeg/" );
-			sb.append( FFMPEG_COMMAND );
-			if( SystemUtilities.isWindows() ) {
-				sb.append( ".exe" );
-			}
-			File commandFile = new File( archDirectory, sb.toString() );
-			if( commandFile.exists() ) {
-				return commandFile.getAbsolutePath();
-			} else {
-				//todo: find on path
-				throw new RuntimeException( commandFile.getAbsolutePath() );
-			}
-		}
-	}
+  public static String getArchitectureSpecificCommand() {
+    final String FFMPEG_COMMAND = "ffmpeg";
+    if (SystemUtilities.isLinux()) {
+      return FFMPEG_COMMAND;
+    } else {
+      File archDirectory = ApplicationRoot.getArchitectureSpecificDirectory();
+      StringBuilder sb = new StringBuilder();
+      sb.append("ffmpeg/");
+      sb.append(FFMPEG_COMMAND);
+      if (SystemUtilities.isWindows()) {
+        sb.append(".exe");
+      }
+      File commandFile = new File(archDirectory, sb.toString());
+      if (commandFile.exists()) {
+        return commandFile.getAbsolutePath();
+      } else {
+        //todo: find on path
+        throw new RuntimeException(commandFile.getAbsolutePath());
+      }
+    }
+  }
 
-	private final String[] commandArgs;
-	private final ProcessBuilder processBuilder;
+  private final String[] commandArgs;
+  private final ProcessBuilder processBuilder;
 
-	private Process process;
-	private OutputStream outputStream;
-	private BufferedReader errorStream;
-	private BufferedReader inputStream;
-	private StringBuilder processInput;
-	private StringBuilder processError;
+  private Process process;
+  private OutputStream outputStream;
+  private BufferedReader errorStream;
+  private BufferedReader inputStream;
+  private StringBuilder processInput;
+  private StringBuilder processError;
 
-	public FFmpegProcess( String... args ) {
-		this.commandArgs = ArrayUtilities.concat( String.class, getArchitectureSpecificCommand(), args );
-		this.processBuilder = new ProcessBuilder( this.commandArgs );
-	}
+  public FFmpegProcess(String... args) {
+    this.commandArgs = ArrayUtilities.concat(String.class, getArchitectureSpecificCommand(), args);
+    this.processBuilder = new ProcessBuilder(this.commandArgs);
+  }
 
-	public synchronized Process start() throws FFmpegProcessException {
-		try {
-			this.process = this.processBuilder.start();
+  public synchronized Process start() throws FFmpegProcessException {
+    try {
+      this.process = this.processBuilder.start();
 
-			this.outputStream = new BufferedOutputStream( this.process.getOutputStream() );
-			this.outputStream.flush();
-			this.errorStream = new BufferedReader( new InputStreamReader( this.process.getErrorStream() ) );
-			this.inputStream = new BufferedReader( new InputStreamReader( this.process.getInputStream() ) );
+      this.outputStream = new BufferedOutputStream(this.process.getOutputStream());
+      this.outputStream.flush();
+      this.errorStream = new BufferedReader(new InputStreamReader(this.process.getErrorStream()));
+      this.inputStream = new BufferedReader(new InputStreamReader(this.process.getInputStream()));
 
-			this.processInput = new StringBuilder();
-			this.processError = new StringBuilder();
+      this.processInput = new StringBuilder();
+      this.processError = new StringBuilder();
 
-			// Windows requires that we close all other streams, otherwise the output stream for ffmpeg will lock.
-			final boolean IS_LOCKING_A_PROBLEM_ON_WINDOWS = true;
-			if( IS_LOCKING_A_PROBLEM_ON_WINDOWS && SystemUtilities.isWindows() ) {
-				this.process.getInputStream().close();
-				this.process.getErrorStream().close();
+      // Windows requires that we close all other streams, otherwise the output stream for ffmpeg will lock.
+      final boolean IS_LOCKING_A_PROBLEM_ON_WINDOWS = true;
+      if (IS_LOCKING_A_PROBLEM_ON_WINDOWS && SystemUtilities.isWindows()) {
+        this.process.getInputStream().close();
+        this.process.getErrorStream().close();
 
-				this.errorStream = null;
-				this.inputStream = null;
-			}
-		} catch( Exception e ) {
-			this.process = null;
-			Logger.severe( "failed to create ffmpeg process for encoding", this.commandArgs );
-			handleProcessError( e );
-		}
-		return this.process;
-	}
+        this.errorStream = null;
+        this.inputStream = null;
+      }
+    } catch (Exception e) {
+      this.process = null;
+      Logger.severe("failed to create ffmpeg process for encoding", this.commandArgs);
+      handleProcessError(e);
+    }
+    return this.process;
+  }
 
-	//	public Process getProcess() {
-	//		return this.process;
-	//	}
+  //  public Process getProcess() {
+  //    return this.process;
+  //  }
 
-	public synchronized int stop() throws FFmpegProcessException {
-		try {
-			synchronized( this.outputStream ) {
-				this.outputStream.close();
-			}
-		} catch( Exception e ) {
-			handleProcessError( e );
-		}
+  public synchronized int stop() throws FFmpegProcessException {
+    try {
+      synchronized (this.outputStream) {
+        this.outputStream.close();
+      }
+    } catch (Exception e) {
+      handleProcessError(e);
+    }
 
-		int status = -1;
-		try {
-			status = this.process.waitFor();
-		} catch( InterruptedException e ) {
-			handleProcessError( e );
-		}
-		return status;
-	}
+    int status = -1;
+    try {
+      status = this.process.waitFor();
+    } catch (InterruptedException e) {
+      handleProcessError(e);
+    }
+    return status;
+  }
 
-	public OutputStream getProcessOutputStream() {
-		return this.outputStream;
-	}
+  public OutputStream getProcessOutputStream() {
+    return this.outputStream;
+  }
 
-	public String getProcessInput() {
-		readStream( this.inputStream, this.processInput );
-		return ( this.processInput == null ) ? null : this.processInput.toString();
-	}
+  public String getProcessInput() {
+    readStream(this.inputStream, this.processInput);
+    return (this.processInput == null) ? null : this.processInput.toString();
+  }
 
-	public String getProcessError() {
-		readStream( this.errorStream, this.processError );
-		return ( this.processError == null ) ? null : this.processError.toString();
-	}
+  public String getProcessError() {
+    readStream(this.errorStream, this.processError);
+    return (this.processError == null) ? null : this.processError.toString();
+  }
 
-	private void handleProcessError( Exception e ) {
-		throw new FFmpegProcessException( e, getProcessInput(), getProcessError() );
-	}
+  private void handleProcessError(Exception e) {
+    throw new FFmpegProcessException(e, getProcessInput(), getProcessError());
+  }
 
-	private void readStream( BufferedReader reader, StringBuilder string ) {
-		if( ( reader == null ) || ( string == null ) ) {
-			return;
-		}
-		try {
-			while( reader.ready() ) {
-				string.append( reader.readLine() );
-				string.append( "\n" );
-			}
-		} catch( IOException e ) {
-			Logger.severe( "unable to read ffmpeg error", e );
-		}
-	}
+  private void readStream(BufferedReader reader, StringBuilder string) {
+    if ((reader == null) || (string == null)) {
+      return;
+    }
+    try {
+      while (reader.ready()) {
+        string.append(reader.readLine());
+        string.append("\n");
+      }
+    } catch (IOException e) {
+      Logger.severe("unable to read ffmpeg error", e);
+    }
+  }
 }

@@ -54,24 +54,24 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class ToolBarUtilities {
-	private ToolBarUtilities() {
-		throw new AssertionError();
-	}
+  private ToolBarUtilities() {
+    throw new AssertionError();
+  }
 
-	public static void appendDocumentSubElements( ProjectDocumentFrame projectDocumentFrame, List<Element> subElements ) {
-		subElements.add( projectDocumentFrame.getOpenProjectOperation() );
-		subElements.add( SaveProjectOperation.getInstance() );
-		subElements.add( GapToolBarSeparator.getInstance() );
-	}
+  public static void appendDocumentSubElements(ProjectDocumentFrame projectDocumentFrame, List<Element> subElements) {
+    subElements.add(projectDocumentFrame.getOpenProjectOperation());
+    subElements.add(SaveProjectOperation.getInstance());
+    subElements.add(GapToolBarSeparator.getInstance());
+  }
 
-	public static void appendUndoRedoSubElements( ProjectDocumentFrame projectDocumentFrame, List<Element> subElements ) {
-		subElements.add( projectDocumentFrame.getUndoOperation() );
-		subElements.add( projectDocumentFrame.getRedoOperation() );
-		subElements.add( GapToolBarSeparator.getInstance() );
-	}
+  public static void appendUndoRedoSubElements(ProjectDocumentFrame projectDocumentFrame, List<Element> subElements) {
+    subElements.add(projectDocumentFrame.getUndoOperation());
+    subElements.add(projectDocumentFrame.getRedoOperation());
+    subElements.add(GapToolBarSeparator.getInstance());
+  }
 
-	public static void appendRunSubElements( ProjectDocumentFrame projectDocumentFrame, List<Element> subElements ) {
-		subElements.add( RunComposite.getInstance().getLaunchOperation() );
-		subElements.add( GapToolBarSeparator.getInstance() );
-	}
+  public static void appendRunSubElements(ProjectDocumentFrame projectDocumentFrame, List<Element> subElements) {
+    subElements.add(RunComposite.getInstance().getLaunchOperation());
+    subElements.add(GapToolBarSeparator.getInstance());
+  }
 }

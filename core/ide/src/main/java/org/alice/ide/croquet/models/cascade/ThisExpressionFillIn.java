@@ -51,27 +51,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ThisExpressionFillIn extends ExpressionFillInWithoutBlanks<ThisExpression> {
-	private static class SingletonHolder {
-		private static ThisExpressionFillIn instance = new ThisExpressionFillIn();
-	}
+  private static class SingletonHolder {
+    private static ThisExpressionFillIn instance = new ThisExpressionFillIn();
+  }
 
-	public static ThisExpressionFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ThisExpressionFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final ThisExpression transientValue = new ThisExpression();
+  private final ThisExpression transientValue = new ThisExpression();
 
-	private ThisExpressionFillIn() {
-		super( UUID.fromString( "9183fbda-6571-4421-9336-dde1ec9188de" ) );
-	}
+  private ThisExpressionFillIn() {
+    super(UUID.fromString("9183fbda-6571-4421-9336-dde1ec9188de"));
+  }
 
-	@Override
-	public ThisExpression getTransientValue( ItemNode<? super ThisExpression, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public ThisExpression getTransientValue(ItemNode<? super ThisExpression, Void> node) {
+    return this.transientValue;
+  }
 
-	@Override
-	public ThisExpression createValue( ItemNode<? super ThisExpression, Void> node ) {
-		return new ThisExpression();
-	}
+  @Override
+  public ThisExpression createValue(ItemNode<? super ThisExpression, Void> node) {
+    return new ThisExpression();
+  }
 }

@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleChildFullBodyOutfitOverShirtShorts implements MaleChildFullBodyOutfit {
-	WHITE,
-	RED,
-	GREY,
-	BLUE;
+  WHITE, RED, GREY, BLUE
 
 }

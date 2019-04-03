@@ -53,13 +53,13 @@ import org.lgna.story.event.TimeListener;
  */
 public class TimerEventAdapter extends AbstractAdapter implements TimeListener {
 
-	public TimerEventAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public TimerEventAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void timeElapsed( TimeEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void timeElapsed(TimeEvent e) {
+    invokeEntryPoint(e);
+  }
 
 }

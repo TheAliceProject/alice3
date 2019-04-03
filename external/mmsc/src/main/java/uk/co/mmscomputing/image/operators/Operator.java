@@ -2,19 +2,21 @@ package uk.co.mmscomputing.image.operators;
 
 import java.awt.image.*;
 
-abstract public class Operator{
+abstract public class Operator {
 
-  static final int WHITE=0x00FFFFFF;
-  static final int BLACK=0x00000000;
+  static final int WHITE = 0x00FFFFFF;
+  static final int BLACK = 0x00000000;
 
-  static final int BWHITE=0xFF;
-  static final int BBLACK=0x00;
+  static final int BWHITE = 0xFF;
+  static final int BBLACK = 0x00;
 
-  public BufferedImage filter(BufferedImage src){return null;};
+  public BufferedImage filter(BufferedImage src) {
+    return null;
+  }
 
-/*
-  int w, h, size;				//	width height of image data
-  int[] px;					    //	pixel data
+  /*
+  int w, h, size;        //  width height of image data
+  int[] px;              //  pixel data
 
   public Operator(){
     w=-1; h=-1; size=0;px=null;

@@ -48,5 +48,5 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dennis Cosgrove
  */
 public interface VisualInclusionCriterion {
-	boolean isIncluded( Visual sgVisual );
+  boolean isIncluded(Visual sgVisual);
 }

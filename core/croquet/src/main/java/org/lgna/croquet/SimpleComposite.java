@@ -52,12 +52,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class SimpleComposite<V extends Panel> extends AbstractComposite<V> {
-	public SimpleComposite( UUID id ) {
-		super( id );
-	}
+  public SimpleComposite(UUID id) {
+    super(id);
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 }

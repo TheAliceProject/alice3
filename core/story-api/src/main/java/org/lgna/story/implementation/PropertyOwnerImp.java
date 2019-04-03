@@ -49,45 +49,45 @@ import edu.cmu.cs.dennisc.animation.AnimationObserver;
  * @author Dennis Cosgrove
  */
 public abstract class PropertyOwnerImp {
-	protected static final double RIGHT_NOW = 0.0;
+  protected static final double RIGHT_NOW = 0.0;
 
-	public abstract ProgramImp getProgram();
+  public abstract ProgramImp getProgram();
 
-	private double getSimulationSpeedFactor() {
-		ProgramImp programImplementation = this.getProgram();
-		if( programImplementation != null ) {
-			return programImplementation.getSimulationSpeedFactor();
-		} else {
-			return Double.NaN;
-		}
-	}
+  private double getSimulationSpeedFactor() {
+    ProgramImp programImplementation = this.getProgram();
+    if (programImplementation != null) {
+      return programImplementation.getSimulationSpeedFactor();
+    } else {
+      return Double.NaN;
+    }
+  }
 
-	protected double adjustDurationIfNecessary( double duration ) {
-		if( duration == RIGHT_NOW ) {
-			//pass
-		} else {
-			double simulationSpeedFactor = this.getSimulationSpeedFactor();
-			if( Double.isNaN( simulationSpeedFactor ) ) {
-				duration = RIGHT_NOW;
-			} else if( Double.isInfinite( simulationSpeedFactor ) ) {
-				duration = RIGHT_NOW;
-			} else {
-				duration = duration / simulationSpeedFactor;
-			}
-		}
-		return duration;
-	}
+  protected double adjustDurationIfNecessary(double duration) {
+    if (duration == RIGHT_NOW) {
+      //pass
+    } else {
+      double simulationSpeedFactor = this.getSimulationSpeedFactor();
+      if (Double.isNaN(simulationSpeedFactor)) {
+        duration = RIGHT_NOW;
+      } else if (Double.isInfinite(simulationSpeedFactor)) {
+        duration = RIGHT_NOW;
+      } else {
+        duration = duration / simulationSpeedFactor;
+      }
+    }
+    return duration;
+  }
 
-	protected void perform( Animation animation, AnimationObserver animationObserver ) {
-		ProgramImp programImplementation = this.getProgram();
-		if( programImplementation != null ) {
-			programImplementation.perform( animation, animationObserver );
-		} else {
-			animation.complete( animationObserver );
-		}
-	}
+  protected void perform(Animation animation, AnimationObserver animationObserver) {
+    ProgramImp programImplementation = this.getProgram();
+    if (programImplementation != null) {
+      programImplementation.perform(animation, animationObserver);
+    } else {
+      animation.complete(animationObserver);
+    }
+  }
 
-	protected final void perform( Animation animation ) {
-		this.perform( animation, null );
-	}
+  protected final void perform(Animation animation) {
+    this.perform(animation, null);
+  }
 }

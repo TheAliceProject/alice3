@@ -48,7 +48,7 @@ import org.alice.ide.ast.declaration.EditFieldComposite;
  * @author Dennis Cosgrove
  */
 public class EditFieldView extends FieldView {
-	public EditFieldView( EditFieldComposite composite ) {
-		super( composite );
-	}
+  public EditFieldView(EditFieldComposite composite) {
+    super(composite);
+  }
 }

@@ -55,23 +55,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class GalleryTab extends SimpleTabComposite<GalleryTabView> {
-	public GalleryTab( UUID id ) {
-		super( id, IsCloseable.FALSE );
-	}
+  public GalleryTab(UUID id) {
+    super(id, IsCloseable.FALSE);
+  }
 
-	@Override
-	protected final ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected final ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	@Override
-	public void customizeTitleComponentAppearance( BooleanStateButton<?> button ) {
-		super.customizeTitleComponentAppearance( button );
-		button.scaleFont( 1.2f );
-		button.setHorizontalTextPosition( HorizontalTextPosition.TRAILING );
-	}
+  @Override
+  public void customizeTitleComponentAppearance(BooleanStateButton<?> button) {
+    super.customizeTitleComponentAppearance(button);
+    button.scaleFont(1.2f);
+    button.setHorizontalTextPosition(HorizontalTextPosition.TRAILING);
+  }
 
-	protected void modelUpdated() {
-		getView().modelUpdated();
-	}
+  protected void modelUpdated() {
+    getView().modelUpdated();
+  }
 }

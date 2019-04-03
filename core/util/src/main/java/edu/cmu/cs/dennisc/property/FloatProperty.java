@@ -48,23 +48,23 @@ import edu.cmu.cs.dennisc.java.util.Objects;
  * @author Dennis Cosgrove
  */
 public class FloatProperty extends InstanceProperty<Float> {
-	public FloatProperty( InstancePropertyOwner owner, Float value, boolean isNaNAcceptable ) {
-		super( owner, value );
-		this.isNaNAcceptable = isNaNAcceptable;
-	}
+  public FloatProperty(InstancePropertyOwner owner, Float value, boolean isNaNAcceptable) {
+    super(owner, value);
+    this.isNaNAcceptable = isNaNAcceptable;
+  }
 
-	public FloatProperty( InstancePropertyOwner owner, Float value ) {
-		this( owner, value, false );
-	}
+  public FloatProperty(InstancePropertyOwner owner, Float value) {
+    this(owner, value, false);
+  }
 
-	@Override
-	public void setValue( Float value ) {
-		assert value != null : this;
-		assert ( Float.isNaN( value ) == false ) || this.isNaNAcceptable : this;
-		if( Objects.notEquals( value, this.getValue() ) ) {
-			super.setValue( value );
-		}
-	}
+  @Override
+  public void setValue(Float value) {
+    assert value != null : this;
+    assert (Float.isNaN(value) == false) || this.isNaNAcceptable : this;
+    if (Objects.notEquals(value, this.getValue())) {
+      super.setValue(value);
+    }
+  }
 
-	private final boolean isNaNAcceptable;
+  private final boolean isNaNAcceptable;
 }

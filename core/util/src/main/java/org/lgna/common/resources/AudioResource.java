@@ -55,103 +55,103 @@ import java.util.Map;
 import java.util.UUID;
 
 public class AudioResource extends Resource {
-	private static Map<String, String> extensionToContentTypeMap;
+  private static Map<String, String> extensionToContentTypeMap;
 
-	static {
-		AudioResource.extensionToContentTypeMap = new HashMap<String, String>();
-		AudioResource.extensionToContentTypeMap.put( "au", "audio.basic" );
-		AudioResource.extensionToContentTypeMap.put( "wav", "audio.x_wav" );
-		AudioResource.extensionToContentTypeMap.put( "mp3", "audio.mpeg" );
-	}
+  static {
+    AudioResource.extensionToContentTypeMap = new HashMap<String, String>();
+    AudioResource.extensionToContentTypeMap.put("au", "audio.basic");
+    AudioResource.extensionToContentTypeMap.put("wav", "audio.x_wav");
+    AudioResource.extensionToContentTypeMap.put("mp3", "audio.mpeg");
+  }
 
-	public static String getContentType( String path ) {
-		String extension = FileUtilities.getExtension( path );
-		String contentType = extension != null ? AudioResource.extensionToContentTypeMap.get( extension.toLowerCase( Locale.ENGLISH ) ) : null;
-		return contentType;
-	}
+  public static String getContentType(String path) {
+    String extension = FileUtilities.getExtension(path);
+    String contentType = extension != null ? AudioResource.extensionToContentTypeMap.get(extension.toLowerCase(Locale.ENGLISH)) : null;
+    return contentType;
+  }
 
-	public static String getContentType( File file ) {
-		return getContentType( file.getName() );
-	}
+  public static String getContentType(File file) {
+    return getContentType(file.getName());
+  }
 
-	public static boolean isAcceptableContentType( String contentType ) {
-		return AudioResource.extensionToContentTypeMap.containsValue( contentType );
-	}
+  public static boolean isAcceptableContentType(String contentType) {
+    return AudioResource.extensionToContentTypeMap.containsValue(contentType);
+  }
 
-	public static FilenameFilter createFilenameFilter( final boolean areDirectoriesAccepted ) {
-		return new FilenameFilter() {
-			@Override
-			public boolean accept( File dir, String name ) {
-				File file = new File( dir, name );
-				if( file.isDirectory() ) {
-					return areDirectoriesAccepted;
-				} else {
-					return getContentType( name ) != null;
-				}
-			}
-		};
-	}
+  public static FilenameFilter createFilenameFilter(final boolean areDirectoriesAccepted) {
+    return new FilenameFilter() {
+      @Override
+      public boolean accept(File dir, String name) {
+        File file = new File(dir, name);
+        if (file.isDirectory()) {
+          return areDirectoriesAccepted;
+        } else {
+          return getContentType(name) != null;
+        }
+      }
+    };
+  }
 
-	private static Map<UUID, AudioResource> uuidToResourceMap = new HashMap<UUID, AudioResource>();
+  private static Map<UUID, AudioResource> uuidToResourceMap = new HashMap<UUID, AudioResource>();
 
-	private static AudioResource get( UUID uuid ) {
-		AudioResource rv = uuidToResourceMap.get( uuid );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new AudioResource( uuid );
-			uuidToResourceMap.put( uuid, rv );
-		}
-		return rv;
-	}
+  private static AudioResource get(UUID uuid) {
+    AudioResource rv = uuidToResourceMap.get(uuid);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new AudioResource(uuid);
+      uuidToResourceMap.put(uuid, rv);
+    }
+    return rv;
+  }
 
-	public static AudioResource valueOf( String s ) {
-		return get( UUID.fromString( s ) );
-	}
+  public static AudioResource valueOf(String s) {
+    return get(UUID.fromString(s));
+  }
 
-	private double duration = Double.NaN;
+  private double duration = Double.NaN;
 
-	protected AudioResource( UUID uuid ) {
-		super( uuid );
-	}
+  protected AudioResource(UUID uuid) {
+    super(uuid);
+  }
 
-	public AudioResource( Class<?> cls, String resourceName, String contentType ) {
-		super( cls, resourceName, contentType );
-		uuidToResourceMap.put( this.getId(), this );
-	}
+  public AudioResource(Class<?> cls, String resourceName, String contentType) {
+    super(cls, resourceName, contentType);
+    uuidToResourceMap.put(this.getId(), this);
+  }
 
-	public AudioResource( Class<?> cls, String resourceName ) {
-		this( cls, resourceName, getContentType( resourceName ) );
-	}
+  public AudioResource(Class<?> cls, String resourceName) {
+    this(cls, resourceName, getContentType(resourceName));
+  }
 
-	public AudioResource( File file, String contentType ) throws IOException {
-		super( file, contentType );
-		uuidToResourceMap.put( this.getId(), this );
-	}
+  public AudioResource(File file, String contentType) throws IOException {
+    super(file, contentType);
+    uuidToResourceMap.put(this.getId(), this);
+  }
 
-	public AudioResource( File file ) throws IOException {
-		this( file, getContentType( file ) );
-	}
+  public AudioResource(File file) throws IOException {
+    this(file, getContentType(file));
+  }
 
-	public double getDuration() {
-		return this.duration;
-	}
+  public double getDuration() {
+    return this.duration;
+  }
 
-	public void setDuration( double duration ) {
-		this.duration = duration;
-	}
+  public void setDuration(double duration) {
+    this.duration = duration;
+  }
 
-	private static String XML_DURATION_ATTRIBUTE = "duration";
+  private static String XML_DURATION_ATTRIBUTE = "duration";
 
-	@Override
-	public void encodeAttributes( Element xmlElement ) {
-		super.encodeAttributes( xmlElement );
-		xmlElement.setAttribute( XML_DURATION_ATTRIBUTE, Double.toString( this.duration ) );
-	}
+  @Override
+  public void encodeAttributes(Element xmlElement) {
+    super.encodeAttributes(xmlElement);
+    xmlElement.setAttribute(XML_DURATION_ATTRIBUTE, Double.toString(this.duration));
+  }
 
-	@Override
-	public void decodeAttributes( Element xmlElement, byte[] data ) {
-		super.decodeAttributes( xmlElement, data );
-		this.duration = Double.parseDouble( xmlElement.getAttribute( XML_DURATION_ATTRIBUTE ) );
-	}
+  @Override
+  public void decodeAttributes(Element xmlElement, byte[] data) {
+    super.decodeAttributes(xmlElement, data);
+    this.duration = Double.parseDouble(xmlElement.getAttribute(XML_DURATION_ATTRIBUTE));
+  }
 }

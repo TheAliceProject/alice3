@@ -44,12 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderBottomPieceSlacksHeels implements FemaleElderBottomPiece {
-	BEIGE,
-	BLACK,
-	FOREST,
-	MUSTARD,
-	NAVY,
-	RED,
-	RUST;
+  BEIGE, BLACK, FOREST, MUSTARD, NAVY, RED, RUST
 
 }

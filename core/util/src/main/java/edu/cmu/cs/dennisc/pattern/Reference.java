@@ -46,13 +46,13 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 public class Reference<E> {
-	public static <E> Reference<E> newInstance( E value ) {
-		return new Reference( value );
-	}
+  public static <E> Reference<E> newInstance(E value) {
+    return new Reference(value);
+  }
 
-	private Reference( E value ) {
-		this.value = value;
-	}
+  private Reference(E value) {
+    this.value = value;
+  }
 
-	public E value;
+  public E value;
 }

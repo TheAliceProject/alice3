@@ -51,13 +51,13 @@ import edu.cmu.cs.dennisc.math.Vector3;
  * @author Dennis Cosgrove
  */
 public abstract class Shape extends Geometry {
-	@Override
-	public void transform( AbstractMatrix4x4 trans ) {
-		throw new RuntimeException( "TODO" );
-	}
+  @Override
+  public void transform(AbstractMatrix4x4 trans) {
+    throw new RuntimeException("TODO");
+  }
 
-	@Override
-	protected void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation ) {
-		throw new RuntimeException( "TODO" );
-	}
+  @Override
+  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
+    throw new RuntimeException("TODO");
+  }
 }

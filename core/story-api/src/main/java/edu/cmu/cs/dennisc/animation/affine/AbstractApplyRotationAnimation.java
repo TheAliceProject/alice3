@@ -51,45 +51,45 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractApplyRotationAnimation extends AffineAnimation {
-	private double m_angleInRadians;
-	private double m_sumInRadians;
+  private double m_angleInRadians;
+  private double m_sumInRadians;
 
-	public AbstractApplyRotationAnimation() {
-		m_angleInRadians = Double.NaN;
-		m_sumInRadians = Double.NaN;
-	}
+  public AbstractApplyRotationAnimation() {
+    m_angleInRadians = Double.NaN;
+    m_sumInRadians = Double.NaN;
+  }
 
-	public AbstractApplyRotationAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Angle angle ) {
-		super( sgSubject, sgAsSeenBy );
-		setAngle( angle );
-		m_sumInRadians = Double.NaN;
-	}
+  public AbstractApplyRotationAnimation(AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Angle angle) {
+    super(sgSubject, sgAsSeenBy);
+    setAngle(angle);
+    m_sumInRadians = Double.NaN;
+  }
 
-	public Angle getAngle() {
-		return new AngleInRadians( m_angleInRadians );
-	}
+  public Angle getAngle() {
+    return new AngleInRadians(m_angleInRadians);
+  }
 
-	public void setAngle( Angle angle ) {
-		m_angleInRadians = angle.getAsRadians();
-	}
+  public void setAngle(Angle angle) {
+    m_angleInRadians = angle.getAsRadians();
+  }
 
-	protected abstract void applyRotationInRadians( double angle );
+  protected abstract void applyRotationInRadians(double angle);
 
-	@Override
-	public void prologue() {
-		m_sumInRadians = 0.0;
-	}
+  @Override
+  public void prologue() {
+    m_sumInRadians = 0.0;
+  }
 
-	@Override
-	public void setPortion( double portion ) {
-		double interpInRadians = m_angleInRadians * portion;
-		double deltaInRadians = interpInRadians - m_sumInRadians;
-		applyRotationInRadians( deltaInRadians );
-		m_sumInRadians = interpInRadians;
-	}
+  @Override
+  public void setPortion(double portion) {
+    double interpInRadians = m_angleInRadians * portion;
+    double deltaInRadians = interpInRadians - m_sumInRadians;
+    applyRotationInRadians(deltaInRadians);
+    m_sumInRadians = interpInRadians;
+  }
 
-	@Override
-	public void epilogue() {
-		m_sumInRadians = Double.NaN;
-	}
+  @Override
+  public void epilogue() {
+    m_sumInRadians = Double.NaN;
+  }
 }

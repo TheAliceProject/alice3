@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class SelectedResourceOperation extends ResourceOperation {
-	public SelectedResourceOperation( UUID migrationId, ItemState<Resource> resourceState ) {
-		super( migrationId );
-		this.resourceState = resourceState;
-	}
+  public SelectedResourceOperation(UUID migrationId, ItemState<Resource> resourceState) {
+    super(migrationId);
+    this.resourceState = resourceState;
+  }
 
-	@Override
-	protected final Resource getResource() {
-		return this.resourceState.getValue();
-	}
+  @Override
+  protected final Resource getResource() {
+    return this.resourceState.getValue();
+  }
 
-	private final ItemState<Resource> resourceState;
+  private final ItemState<Resource> resourceState;
 }

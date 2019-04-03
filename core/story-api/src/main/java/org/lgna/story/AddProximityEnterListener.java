@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  */
 public class AddProximityEnterListener {
 
-	@ClassTemplate( keywordFactoryCls = AddProximityEnterListener.class )
-	public interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = AddProximityEnterListener.class) public interface Detail {
+  }
 
-	public static MultipleEventPolicy multipleEventPolicy( MultipleEventPolicy multipleEventPolicy ) {
-		return multipleEventPolicy;
-	}
+  public static MultipleEventPolicy multipleEventPolicy(MultipleEventPolicy multipleEventPolicy) {
+    return multipleEventPolicy;
+  }
 }

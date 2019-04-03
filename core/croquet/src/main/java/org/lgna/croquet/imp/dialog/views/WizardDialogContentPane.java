@@ -50,15 +50,15 @@ import org.lgna.croquet.views.BoxUtilities;
  * @author user
  */
 public class WizardDialogContentPane extends GatedCommitDialogContentPane {
-	public WizardDialogContentPane( WizardDialogContentComposite composite ) {
-		super( composite );
-		WizardDialogCoreComposite coreComposite = (WizardDialogCoreComposite)composite.getCoreComposite();
-		this.getControlLine().addComponent( BoxUtilities.createHorizontalGlue() );
-		this.getControlLine().addComponent( coreComposite.getPrevOperation().createButton() );
-		this.getControlLine().addComponent( coreComposite.getNextOperation().createButton() );
-		this.getControlLine().addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-		this.getControlLine().addComponent( this.getLeadingCommitCancelButton() );
-		this.getControlLine().addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-		this.getControlLine().addComponent( this.getTrailingCommitCancelButton() );
-	}
+  public WizardDialogContentPane(WizardDialogContentComposite composite) {
+    super(composite);
+    WizardDialogCoreComposite coreComposite = (WizardDialogCoreComposite) composite.getCoreComposite();
+    this.getControlLine().addComponent(BoxUtilities.createHorizontalGlue());
+    this.getControlLine().addComponent(coreComposite.getPrevOperation().createButton());
+    this.getControlLine().addComponent(coreComposite.getNextOperation().createButton());
+    this.getControlLine().addComponent(BoxUtilities.createHorizontalSliver(8));
+    this.getControlLine().addComponent(this.getLeadingCommitCancelButton());
+    this.getControlLine().addComponent(BoxUtilities.createHorizontalSliver(8));
+    this.getControlLine().addComponent(this.getTrailingCommitCancelButton());
+  }
 }

@@ -55,16 +55,16 @@ import javax.swing.BoxLayout;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractArgumentListPropertyPane extends AbstractListPropertyPane<SimpleArgumentListProperty, SimpleArgument> {
-	public AbstractArgumentListPropertyPane( AstI18nFactory factory, SimpleArgumentListProperty property ) {
-		super( factory, property, BoxLayout.LINE_AXIS );
-	}
+  public AbstractArgumentListPropertyPane(AstI18nFactory factory, SimpleArgumentListProperty property) {
+    super(factory, property, BoxLayout.LINE_AXIS);
+  }
 
-	@Override
-	protected AwtComponentView<?> createInterstitial( int i, final int N ) {
-		if( i < ( N - 1 ) ) {
-			return new Label( ", " );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected AwtComponentView<?> createInterstitial(int i, final int N) {
+    if (i < (N - 1)) {
+      return new Label(", ");
+    } else {
+      return null;
+    }
+  }
 }

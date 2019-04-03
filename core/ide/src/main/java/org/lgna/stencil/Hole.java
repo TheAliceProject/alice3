@@ -53,46 +53,46 @@ import java.awt.Shape;
  * @author Dennis Cosgrove
  */
 public class Hole extends Feature {
-	private static final int PAD = 4;
-	private static final int BOUNDS_PAD = PAD + 64;
-	private static final Insets PAINT_INSETS = new Insets( PAD, PAD, PAD, PAD );
-	private static final Insets BOUNDS_INSETS = new Insets( BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD );
+  private static final int PAD = 4;
+  private static final int BOUNDS_PAD = PAD + 64;
+  private static final Insets PAINT_INSETS = new Insets(PAD, PAD, PAD, PAD);
+  private static final Insets BOUNDS_INSETS = new Insets(BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD);
 
-	private final Painter painter;
+  private final Painter painter;
 
-	public Hole( RuntimeResolver<? extends TrackableShape> trackableShapeResolver, ConnectionPreference connectionPreference, Painter painter ) {
-		super( trackableShapeResolver, connectionPreference );
-		this.painter = painter;
-	}
+  public Hole(RuntimeResolver<? extends TrackableShape> trackableShapeResolver, ConnectionPreference connectionPreference, Painter painter) {
+    super(trackableShapeResolver, connectionPreference);
+    this.painter = painter;
+  }
 
-	@Override
-	protected boolean isPathRenderingDesired() {
-		return true;
-	}
+  @Override
+  protected boolean isPathRenderingDesired() {
+    return true;
+  }
 
-	protected boolean isHoleRenderingDesired() {
-		return true;
-	}
+  protected boolean isHoleRenderingDesired() {
+    return true;
+  }
 
-	@Override
-	protected Insets getBoundsInsets() {
-		return BOUNDS_INSETS;
-	}
+  @Override
+  protected Insets getBoundsInsets() {
+    return BOUNDS_INSETS;
+  }
 
-	@Override
-	protected Insets getContainsInsets() {
-		return null;
-	}
+  @Override
+  protected Insets getContainsInsets() {
+    return null;
+  }
 
-	@Override
-	protected Insets getPaintInsets() {
-		return PAINT_INSETS;
-	}
+  @Override
+  protected Insets getPaintInsets() {
+    return PAINT_INSETS;
+  }
 
-	@Override
-	protected void paint( Graphics2D g2, Shape shape, Connection actualConnection ) {
-		if( this.isHoleRenderingDesired() ) {
-			this.painter.paint( g2, shape );
-		}
-	}
+  @Override
+  protected void paint(Graphics2D g2, Shape shape, Connection actualConnection) {
+    if (this.isHoleRenderingDesired()) {
+      this.painter.paint(g2, shape);
+    }
+  }
 }
